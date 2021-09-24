@@ -23,6 +23,7 @@ export function getMatchUpScheduleDetails({
   afterRecoveryTimes = true,
   tournamentRecord,
   scheduleTiming,
+  matchUpFormat,
   matchUpType,
   matchUp,
   event,
@@ -81,9 +82,10 @@ export function getMatchUpScheduleDetails({
       recoveryMinutes,
       typeChangeRecoveryMinutes,
       typeChangeTimeAfterRecovery;
-    if (scheduleTiming && scheduledTime && afterRecoveryTimes) {
+
+    if (scheduleTiming?.policy && scheduledTime && afterRecoveryTimes) {
       const timingDetails = {
-        matchUpFormat: matchUp.matchUpFormat,
+        matchUpFormat: matchUp.matchUpFormat || matchUpFormat,
         ...scheduleTiming,
       };
       ({

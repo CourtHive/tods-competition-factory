@@ -1,9 +1,11 @@
 import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
-import { extractDate } from '../../../../utilities/dateTime';
+import { extractDate, timeStringMinutes } from '../../../../utilities/dateTime';
 import { mocksEngine, competitionEngine } from '../../../..';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+
+const showGlobalLog = false;
 
 it('can create virtual courts with overlapping bookings', () => {
   const drawId = 'drawId';
@@ -42,7 +44,7 @@ it('can create virtual courts with overlapping bookings', () => {
   const { matchUps } = competitionEngine.allCompetitionMatchUps();
   const scheduledMatchUps = matchUps.filter(hasSchedule);
 
-  visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog: true });
+  visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
   const { bookings, relevantMatchUps } = competitionEngine.generateBookings({
     scheduleDate: startDate,
@@ -61,11 +63,29 @@ it('can create virtual courts with overlapping bookings', () => {
 
   const { virtualCourts } = competitionEngine.generateVirtualCourts({
     scheduleDate: startDate,
-    startTime,
-    endTime,
+    periodLengh: 30,
     bookings,
     courts,
   });
 
-  console.log({ virtualCourts });
+  const hasOverlap = findOverlappingBooking(virtualCourts);
+  expect(hasOverlap).toEqual(true);
 });
+
+function findOverlappingBooking(virtualCourts) {
+  for (const virtualCourt of virtualCourts) {
+    const bookings = virtualCourt.dateAvailability[0].bookings;
+    for (const booking of bookings) {
+      const startMinutes = timeStringMinutes(booking.startTime);
+      const endMinutes = timeStringMinutes(booking.endTime);
+      const overlap = bookings.some(({ startTime }) => {
+        const bookingStartMinutes = timeStringMinutes(startTime);
+        const hasOverlap =
+          bookingStartMinutes > startMinutes &&
+          bookingStartMinutes < endMinutes;
+        return hasOverlap;
+      });
+      if (overlap) return true;
+    }
+  }
+}

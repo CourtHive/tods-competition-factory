@@ -1,8 +1,11 @@
+import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
+import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { instanceCount } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngineSync from '../../../sync';
 
 import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
+import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 
 test.each([competitionEngineSync])(
   'correctly enumerates participantProfiles for { eventType: DOUBLES }',
@@ -43,12 +46,13 @@ test.each([competitionEngineSync])(
   'auto schedules venue if only one venue provided',
   async (competitionEngine) => {
     const drawProfiles = [
-      { drawSize: 16, eventType: DOUBLES },
-      { drawSize: 64, eventType: SINGLES },
+      { idPrefix: 'dbl', drawId: 'dubs', drawSize: 16, eventType: DOUBLES },
+      { idPrefix: 'sgl', drawId: 'sing', drawSize: 64, eventType: SINGLES },
     ];
     const venueProfiles = [{ courtsCount: 3 }];
 
     const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+      policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
       startDate: '2021-05-05',
       endDate: '2021-05-07',
       drawProfiles,
@@ -100,6 +104,16 @@ test.each([competitionEngineSync])(
 
     result = competitionEngine.competitionScheduleMatchUps({
       matchUpFilters,
+    });
+    visualizeScheduledMatchUps({
+      scheduledMatchUps: result.dateMatchUps,
+      showGlobalLog: false,
+    });
+
+    const { matchUps } = competitionEngine.allCompetitionMatchUps();
+    matchUps.filter(hasSchedule).forEach(({ schedule }) => {
+      expect(schedule.averageMinutes).toBeGreaterThan(0);
+      expect(schedule.recoveryMinutes).toBeGreaterThan(0);
     });
 
     const reorderedMatchUpContextIds = result.dateMatchUps

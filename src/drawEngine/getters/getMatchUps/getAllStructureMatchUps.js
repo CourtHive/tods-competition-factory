@@ -259,6 +259,11 @@ export function getAllStructureMatchUps({
         (definition) => definition.collectionId === matchUp.collectionId
       );
 
+    const matchUpFormat =
+      matchUp.matchUpFormat || matchUp.collectionId
+        ? collectionDefinition && collectionDefinition.matchUpFormat
+        : structure.matchUpFormat || drawDefinition?.matchUpFormat;
+
     const matchUpType =
       matchUp.matchUpType ||
       collectionDefinition?.matchUpType ||
@@ -270,6 +275,7 @@ export function getAllStructureMatchUps({
     const { schedule, endDate } = getMatchUpScheduleDetails({
       scheduleVisibilityFilters,
       scheduleTiming,
+      matchUpFormat,
       matchUpType,
       matchUp,
       event,
@@ -308,6 +314,7 @@ export function getAllStructureMatchUps({
         stageSequence,
         drawPositions,
         matchUpStatus,
+        matchUpFormat,
         matchUpTieId,
         matchUpType,
         exitProfile,
@@ -398,21 +405,6 @@ export function getAllStructureMatchUps({
         };
       });
       Object.assign(matchUpWithContext, makeDeepCopy({ sides }, true, true));
-    }
-
-    if (matchUp.collectionId) {
-      const matchUpFormat =
-        collectionDefinition && collectionDefinition.matchUpFormat;
-
-      if (!matchUp.matchUpFormat && matchUpFormat) {
-        Object.assign(matchUpWithContext, { matchUpFormat });
-      }
-    } else {
-      if (!matchUp.matchUpFormat) {
-        const matchUpFormat =
-          structure.matchUpFormat || drawDefinition?.matchUpFormat;
-        if (matchUpFormat) Object.assign(matchUpWithContext, { matchUpFormat });
-      }
     }
 
     if (tournamentParticipants && matchUpWithContext.sides) {
