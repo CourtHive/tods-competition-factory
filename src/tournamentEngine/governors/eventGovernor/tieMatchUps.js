@@ -241,6 +241,7 @@ export function assignTieMatchUpParticipantId(params) {
 
       if (sideParticipantId) {
         side.participantId = sideParticipantId;
+        console.log({ participant });
       } else {
         side.participantId = UUID();
         const newPairParticipant = {
