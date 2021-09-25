@@ -126,7 +126,6 @@ it.each([
     let result = competitionEngine.scheduleProfileRounds({
       scheduleDates: [startDate],
       garmanSinglePass: false,
-      jinn: true,
     });
     expect(result.success).toEqual(true);
     if (result.iterations) expect(result.iterations).toEqual(iterations);
