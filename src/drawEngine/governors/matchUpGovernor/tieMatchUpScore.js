@@ -21,17 +21,17 @@ export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
     generateTieMatchUpScore({ matchUp });
 
   const scoreObject = {
-    sets: [set],
-    winningSide,
     scoreStringSide1,
     scoreStringSide2,
+    sets: [set],
   };
 
   modifyMatchUpScore({
-    drawDefinition,
-    matchUp,
     score: scoreObject,
+    drawDefinition,
+    winningSide,
+    matchUp,
   });
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

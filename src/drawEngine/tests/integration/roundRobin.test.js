@@ -191,10 +191,10 @@ function generateRoundRobin({
     if (seedAssignmentError) errors.push({ seedAssignmentError });
   });
 
-  const { errors: positioningErrors } = drawEngine.automatedPositioning({
+  const { error: positioningError } = drawEngine.automatedPositioning({
     structureId,
   });
-  if (positioningErrors) errors = errors.concat(...positioningErrors);
+  if (positioningError) errors.push(positioningError);
 
   if (errors.length) console.log(errors);
   return { structureId, errors };

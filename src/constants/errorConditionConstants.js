@@ -194,7 +194,8 @@ export const NOT_FOUND = 'Not found';
 export const NOT_IMPLEMENTED = 'Not implemented';
 
 export const EXISTING_FLIGHT = 'Existing flight';
-export const EXISTING_PROFILE = 'Existing Profile';
+export const EXISTING_PROFILE = 'Existing profile';
+export const EXISTING_OUTCOME = 'Existing outcome';
 
 export const METHOD_NOT_FOUND = 'Method not found';
 
@@ -214,6 +215,7 @@ export const errorConditionConstants = {
   EVENT_NOT_FOUND,
   EXISTING_END_TIME,
   EXISTING_FLIGHT,
+  EXISTING_OUTCOME,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   EXISTING_PARTICIPANT,
   EXISTING_POLICY_TYPE,

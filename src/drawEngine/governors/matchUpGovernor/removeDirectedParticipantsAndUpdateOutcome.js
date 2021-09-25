@@ -5,6 +5,7 @@ import { clearDrawPosition } from '../positionGovernor/positionClear';
 import { includesMatchUpStatuses } from './includesMatchUpStatuses';
 import { findStructure } from '../../getters/findStructure';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
+import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { instanceCount } from '../../../utilities';
 
 import { MISSING_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
@@ -14,17 +15,19 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function removeDirectedParticipants(params) {
   const {
-    drawDefinition,
-    structure,
-    matchUp,
-    matchUpStatus,
-    targetData,
-
-    matchUpsMap,
     inContextDrawMatchUps,
+    drawDefinition,
+    matchUpStatus,
+    matchUpsMap,
+    targetData,
+    structure,
   } = params;
 
-  if (!matchUp.drawPositions) return { error: MISSING_DRAW_POSITIONS };
+  const isCollectionMatchUp = Boolean(params.matchUp.collectionId);
+
+  // targetData will have team matchUp when params.matchUp is a collectionMatchUp
+  const { drawPositions, winningSide } = targetData.matchUp || {};
+  if (!drawPositions) return { error: MISSING_DRAW_POSITIONS };
 
   const {
     targetLinks: { loserTargetLink, winnerTargetLink },
@@ -33,13 +36,12 @@ export function removeDirectedParticipants(params) {
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
 
-  const winningSide = matchUp.winningSide;
   const winningIndex = winningSide - 1;
   const losingIndex = 1 - winningIndex;
-  const winningDrawPosition = matchUp.drawPositions[winningIndex];
-  const loserDrawPosition = matchUp.drawPositions[losingIndex];
+  const winningDrawPosition = drawPositions[winningIndex];
+  const loserDrawPosition = drawPositions[losingIndex];
 
-  // use redue for single pass resolution of both
+  // use reduce for single pass resolution of both
   const { winnerParticipantId, loserParticipantId } =
     positionAssignments.reduce(
       (assignments, assignment) => {
@@ -58,6 +60,12 @@ export function removeDirectedParticipants(params) {
     removeWinningSide: true,
   });
   if (result.error) return result;
+
+  if (isCollectionMatchUp) {
+    const { matchUpTieId } = params;
+    updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
+    return { ...SUCCESS };
+  }
 
   const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
     inContext: true,

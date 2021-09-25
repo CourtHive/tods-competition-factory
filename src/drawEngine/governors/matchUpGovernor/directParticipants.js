@@ -62,7 +62,7 @@ export function directParticipants(params) {
   if (isCollectionMatchUp) {
     const { matchUpTieId } = params;
     updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
-    return SUCCESS;
+    return { ...SUCCESS };
   }
 
   if (matchUp.drawPositions) {

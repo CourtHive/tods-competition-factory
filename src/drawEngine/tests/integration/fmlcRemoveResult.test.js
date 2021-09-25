@@ -8,6 +8,7 @@ import {
   verifyMatchUps,
 } from '../../tests/primitives/verifyMatchUps';
 
+import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { MALE } from '../../../constants/genderConstants';
 import {
@@ -75,7 +76,7 @@ it('can direct winners and losers', () => {
 
   result = drawEngine.setMatchUpStatus({
     matchUpId,
-    matchUpStatus: 'TO_BE_PLAYED',
+    matchUpStatus: TO_BE_PLAYED,
     score: { sets: [] },
     winningSide: undefined,
   });
