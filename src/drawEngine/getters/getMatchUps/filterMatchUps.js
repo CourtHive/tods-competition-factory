@@ -29,6 +29,7 @@ export function filterMatchUps(params) {
     drawIds,
     structureIds,
 
+    filterMatchUpIds = true,
     filterMatchUpTypes = true,
   } = params;
 
@@ -44,9 +45,10 @@ export function filterMatchUps(params) {
     ? roundNumbers.filter(Boolean)
     : [];
 
-  const targetMatchUpIds = Array.isArray(matchUpIds)
-    ? matchUpIds.filter(Boolean)
-    : [];
+  const targetMatchUpIds =
+    Array.isArray(matchUpIds) && filterMatchUpIds
+      ? matchUpIds.filter(Boolean)
+      : [];
   const targetMatchUpTypes =
     Array.isArray(matchUpTypes) && filterMatchUpTypes
       ? matchUpTypes.filter(Boolean)

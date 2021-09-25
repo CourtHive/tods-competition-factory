@@ -165,6 +165,7 @@ export function getAllStructureMatchUps({
       matchUps,
       ...matchUpFilters,
       filterMatchUpTypes: false,
+      filterMatchUpIds: false,
     });
   }
 
@@ -217,7 +218,7 @@ export function getAllStructureMatchUps({
     });
   }
 
-  // now filter again if there are any matchUpTypes
+  // now filter again if there are any matchUpTypes or matchUpIds
   if (matchUpFilters?.matchUpTypes) {
     matchUps = filterMatchUps({
       matchUps,
