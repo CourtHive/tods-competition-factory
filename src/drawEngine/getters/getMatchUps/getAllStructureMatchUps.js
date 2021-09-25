@@ -219,10 +219,11 @@ export function getAllStructureMatchUps({
   }
 
   // now filter again if there are any matchUpTypes or matchUpIds
-  if (matchUpFilters?.matchUpTypes) {
+  if (matchUpFilters?.matchUpTypes || matchUpFilters?.matchUpIds) {
     matchUps = filterMatchUps({
       matchUps,
       matchUpTypes: matchUpFilters.matchUpTypes,
+      matchUpIds: matchUpFilters.matchUpIds,
     });
   }
 
