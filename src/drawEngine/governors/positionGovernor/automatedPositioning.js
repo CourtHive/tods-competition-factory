@@ -41,9 +41,6 @@ export function automatedPositioning({
 
   const { seedingProfile } = structure;
 
-  let errors = [];
-  let byePositionError, seedBlockErrors;
-
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
 
   if (!inContextDrawMatchUps) {
@@ -59,77 +56,76 @@ export function automatedPositioning({
   if (seedingProfile === WATERFALL) {
     // since WATERFALL attempts to place ALL participants
     // BYEs must be placed first to ensure lower seeds get BYEs
-    ({ error: byePositionError } = positionByes({
+    let result = positionByes({
       drawDefinition,
       structure,
       seedsOnly,
 
       matchUpsMap,
-    }));
+    });
+    if (result.error) return result;
 
-    ({ errors: seedBlockErrors } = positionSeedBlocks({
+    result = positionSeedBlocks({
       drawDefinition,
       participants,
       structure,
 
       matchUpsMap,
       inContextDrawMatchUps,
-    }));
+    });
+    if (result.error) return result;
   } else {
     // otherwise... seeds need to be placed first so that BYEs
     // can follow the seedValues of placed seeds
-    ({ errors: seedBlockErrors } = positionSeedBlocks({
+    let result = positionSeedBlocks({
       drawDefinition,
       participants,
       structure,
 
       matchUpsMap,
       inContextDrawMatchUps,
-    }));
+    });
+    if (result.error) return result;
 
-    ({ error: byePositionError } = positionByes({
+    result = positionByes({
       drawDefinition,
       structure,
       seedsOnly,
 
       matchUpsMap,
       inContextDrawMatchUps,
-    }));
+    });
+    if (result.error) return result;
   }
 
   const conflicts = {};
 
   if (!seedsOnly) {
-    const { error: unseededPositionError, conflicts: unseededConflicts } =
-      positionUnseededParticipants({
-        candidatesCount,
-        drawDefinition,
-        participants,
-        structure,
+    let result = positionUnseededParticipants({
+      candidatesCount,
+      drawDefinition,
+      participants,
+      structure,
 
-        matchUpsMap,
-        inContextDrawMatchUps,
-      });
-    if (unseededConflicts) conflicts.unseededConflicts = unseededConflicts;
+      matchUpsMap,
+      inContextDrawMatchUps,
+    });
+    if (result.error) return result;
+    if (result.conflicts) conflicts.unseededConflicts = result.conflicts;
 
-    const { error: qualifierPositionError, conflicts: qualifierConflicts } =
-      positionQualifiers({
-        drawDefinition,
-        participants,
-        structure,
+    result = positionQualifiers({
+      drawDefinition,
+      participants,
+      structure,
 
-        matchUpsMap,
-        inContextDrawMatchUps,
-      });
-    if (qualifierConflicts) conflicts.qualifierConflicts = qualifierConflicts;
-
-    if (seedBlockErrors) errors = errors.concat(...seedBlockErrors);
-    if (byePositionError) errors.push(byePositionError);
-    if (qualifierPositionError) errors.push(qualifierPositionError);
-    if (unseededPositionError) errors.push(unseededPositionError);
+      matchUpsMap,
+      inContextDrawMatchUps,
+    });
+    if (result.error) return result;
+    if (result.conflicts) conflicts.qualifierConflicts = result.conflicts;
   }
 
   modifyDrawNotice({ drawDefinition });
 
-  return { errors, conflicts };
+  return { conflicts };
 }
