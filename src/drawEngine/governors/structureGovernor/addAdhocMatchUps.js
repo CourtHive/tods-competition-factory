@@ -73,7 +73,7 @@ export function addAdHocMatchUps({ drawDefinition, structureId, matchUps }) {
   structure.positionAssignments.push(...newPositionAssignments);
 
   addMatchUpsNotice({ drawDefinition, matchUps });
-  modifyDrawNotice({ drawDefinition });
+  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 
   return { ...SUCCESS };
 }

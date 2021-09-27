@@ -357,6 +357,7 @@ it.only('can both assign and remove individualParticipants in DOUBLES matchUps t
   // expect(result[0].success).toEqual(true);
   // expect(result[1].success).toEqual(true);
 
+  /*
   let {
     matchUps: [teamMatchUp],
   } = tournamentEngine.allTournamentMatchUps({
@@ -367,6 +368,7 @@ it.only('can both assign and remove individualParticipants in DOUBLES matchUps t
     expect(side.lineUp[0].collectionAssignments.length).toEqual(0);
     expect(side.lineUp[1].collectionAssignments.length).toEqual(1);
   });
+  */
 
   // result = removeDoublesParticipants({ sideMember: 2 });
 

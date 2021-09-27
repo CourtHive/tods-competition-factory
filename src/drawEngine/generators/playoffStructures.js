@@ -13,8 +13,12 @@ import { SUCCESS } from '../../constants/resultConstants';
 export function playoff(params) {
   const { structure, childStructures } = playoffStructures(params);
 
+  const structureIds = [
+    structure.structureId,
+    ...childStructures.map(({ structureId }) => structureId),
+  ];
   params.drawDefinition.structures.sort(structureSort);
-  modifyDrawNotice({ drawDefinition: params.drawDefinition });
+  modifyDrawNotice({ drawDefinition: params.drawDefinition, structureIds });
 
   return Object.assign({ structure, childStructures }, SUCCESS);
 }

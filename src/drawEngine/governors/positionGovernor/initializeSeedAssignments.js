@@ -63,7 +63,7 @@ export function initializeStructureSeedAssignments({
     })
   );
 
-  modifyDrawNotice({ drawDefinition });
+  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 
   return { ...SUCCESS, seedLimit: seedsCount };
 }
