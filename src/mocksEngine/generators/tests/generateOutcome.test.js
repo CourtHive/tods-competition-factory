@@ -57,7 +57,7 @@ it.each(generateRange(0, iterations))(
     }));
     expect(outcome.matchUpStatus).toEqual(WALKOVER);
     expect(outcome.score.sets).toEqual([]);
-    expect(outcome.score.side1ScoreString).toEqual('');
+    expect(outcome.score.scoreStringSide1).toEqual('');
     expect(outcome.score.side2ScoreString).toEqual('');
     expect([1, 2].includes(outcome.winningSide)).toEqual(true);
 
@@ -66,7 +66,7 @@ it.each(generateRange(0, iterations))(
     }));
     expect(outcome.matchUpStatus).toEqual(DOUBLE_WALKOVER);
     expect(outcome.score.sets).toEqual([]);
-    expect(outcome.score.side1ScoreString).toEqual('');
+    expect(outcome.score.scoreStringSide1).toEqual('');
     expect(outcome.score.side2ScoreString).toEqual('');
     expect(outcome.winningSide).toBeUndefined();
 

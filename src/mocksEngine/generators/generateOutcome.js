@@ -94,7 +94,7 @@ export function generateOutcome({
     (item) => outcomePointer <= item[0]
   ) || [100, COMPLETED])[1];
 
-  const noScore = { sets: [], side1ScoreString: '', side2ScoreString: '' };
+  const noScore = { sets: [], scoreStringSide1: '', side2ScoreString: '' };
   if ([WALKOVER, DEFAULTED].includes(matchUpStatus)) {
     winningSide = winningSide || randomInt(1, 2);
     const outcome = {

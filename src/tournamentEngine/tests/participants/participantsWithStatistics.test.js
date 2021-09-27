@@ -20,7 +20,7 @@ it('will return participant events including all entryStatuses', () => {
   });
   tournamentEngine.setState(tournamentRecord);
 
-  const { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
+  let { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
   const alternateEntries = event.entries.filter(
     ({ entryStatus }) => entryStatus === ALTERNATE
   );
@@ -29,6 +29,7 @@ it('will return participant events including all entryStatuses', () => {
   );
 
   const structureId = drawDefinition.structures[0].structureId;
+  const updatedAt = drawDefinition.structures[0].updatedAt;
   let { positionAssignments } = tournamentEngine.getPositionAssignments({
     structureId,
     drawId,
@@ -57,6 +58,12 @@ it('will return participant events including all entryStatuses', () => {
     participantId: alternateParticipantIds[0],
   });
   expect(result.success).toEqual(true);
+
+  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  const structure = drawDefinition.structures.find(
+    (structure) => structure.structureId === structureId
+  );
+  expect(structure.updatedAt).toBeGreaterThan(updatedAt);
 
   ({ positionAssignments } = tournamentEngine.getPositionAssignments({
     structureId,
