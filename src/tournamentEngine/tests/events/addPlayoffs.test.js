@@ -54,6 +54,10 @@ it.each([
         drawDefinition: { structures },
       } = tournamentEngine.getEvent({ drawId });
 
+      for (const structure of structures) {
+        expect(structure.updatedAt).not.toBeUndefined();
+      }
+
       const structureNames = structures.map(
         ({ structureName }) => structureName
       );
