@@ -98,6 +98,7 @@ export function addPlayoffStructures(params) {
     : playoffRoundsRanges;
 
   const newLinks = [];
+  const newStructureIds = [];
   for (const roundNumber of sourceRounds) {
     const roundInfo = roundsRanges.find(
       (roundInfo) => roundInfo.roundNumber === roundNumber
@@ -129,6 +130,7 @@ export function addPlayoffStructures(params) {
     });
 
     if (targetStructure) {
+      newStructureIds.push(targetStructure.structureId);
       const link = {
         linkType: LOSER,
         source: {
@@ -195,7 +197,7 @@ export function addPlayoffStructures(params) {
       matchUpsMap,
     });
 
-  modifyDrawNotice({ drawDefinition });
+  modifyDrawNotice({ drawDefinition, structureIds: newStructureIds });
 
   return { ...SUCCESS };
 }

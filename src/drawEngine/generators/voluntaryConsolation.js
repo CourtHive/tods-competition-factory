@@ -49,7 +49,7 @@ export function generateVoluntaryConsolationStructure({
     });
   }
 
-  modifyDrawNotice({ drawDefinition });
+  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 
   return { ...SUCCESS };
 }

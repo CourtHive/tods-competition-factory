@@ -125,7 +125,7 @@ export function automatedPositioning({
     if (result.conflicts) conflicts.qualifierConflicts = result.conflicts;
   }
 
-  modifyDrawNotice({ drawDefinition });
+  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 
   return { conflicts };
 }

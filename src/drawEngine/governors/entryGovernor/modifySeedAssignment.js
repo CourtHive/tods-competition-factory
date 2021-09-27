@@ -50,7 +50,7 @@ export function modifySeedAssignment({
     structure.seedAssignments.push({ seedNumber, seedValue, participantId });
   }
 
-  modifyDrawNotice({ drawDefinition });
+  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 
   return SUCCESS;
 }

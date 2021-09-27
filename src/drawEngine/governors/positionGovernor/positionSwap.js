@@ -71,7 +71,7 @@ export function swapDrawPositionAssignments({
   };
   addPositionActionTelemetry({ drawDefinition, positionAction });
 
-  modifyDrawNotice({ drawDefinition });
+  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
   return { ...SUCCESS };
 }
 

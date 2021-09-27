@@ -100,7 +100,7 @@ export function deleteAdHocMatchUps({
       matchUpIds: matchUpIdsToDelete,
       action: 'deleteAdHocMatchUps',
     });
-    modifyDrawNotice({ drawDefinition });
+    modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
   }
 
   return { ...SUCCESS };

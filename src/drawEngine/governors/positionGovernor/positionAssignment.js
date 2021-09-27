@@ -166,7 +166,7 @@ export function assignDrawPosition({
     addPositionActionTelemetry({ drawDefinition, positionAction });
   }
 
-  modifyDrawNotice({ drawDefinition });
+  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 
   return Object.assign({ positionAssignments }, SUCCESS);
 

@@ -85,7 +85,8 @@ export function setMatchUpFormat(params) {
     }
   }
 
-  modifyDrawNotice({ drawDefinition });
+  const structureIds = structureId ? [structureId] : undefined;
+  modifyDrawNotice({ drawDefinition, structureIds });
 
   return { ...SUCCESS };
 }

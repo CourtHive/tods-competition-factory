@@ -82,7 +82,7 @@ export function clearDrawPosition({
 
   if (!drawPositionCleared) return { error: DRAW_POSITION_NOT_CLEARED };
 
-  modifyDrawNotice({ drawDefinition });
+  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 
   return { ...SUCCESS, participantId };
 }

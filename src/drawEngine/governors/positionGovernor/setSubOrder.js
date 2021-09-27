@@ -79,6 +79,6 @@ export function setSubOrder({
   });
   if (result.error) return result;
 
-  modifyDrawNotice({ drawDefinition });
+  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
   return { ...SUCCESS };
 }

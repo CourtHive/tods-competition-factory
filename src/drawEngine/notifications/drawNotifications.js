@@ -8,13 +8,24 @@ import {
   MODIFY_MATCHUP,
 } from '../../constants/topicConstants';
 
-function drawUpdatedAt(drawDefinition) {
+function drawUpdatedAt(drawDefinition, structureIds) {
   if (!drawDefinition) return;
   let updatedAt = Date.now();
   if (updatedAt === drawDefinition.updatedAt) {
     updatedAt += 1;
   }
+
+  const relevantStructureIds = structureIds?.filter(Boolean);
+
   drawDefinition.updatedAt = updatedAt;
+  drawDefinition.structures?.forEach((structure) => {
+    if (
+      !relevantStructureIds?.length ||
+      relevantStructureIds?.includes(structure.structureId)
+    ) {
+      structure.updatedAt = updatedAt;
+    }
+  });
 }
 export function addMatchUpsNotice({ drawDefinition, matchUps }) {
   drawUpdatedAt(drawDefinition);
@@ -31,7 +42,8 @@ export function deleteMatchUpsNotice({ drawDefinition, matchUpIds, action }) {
   });
 }
 export function modifyMatchUpNotice({ drawDefinition, matchUp }) {
-  modifyDrawNotice({ drawDefinition });
+  const structureId = matchUp.structureId;
+  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
   addNotice({
     topic: MODIFY_MATCHUP,
     payload: { matchUp },
@@ -54,8 +66,8 @@ export function deleteDrawNotice({ drawId }) {
     payload: { drawId },
   });
 }
-export function modifyDrawNotice({ drawDefinition }) {
-  drawUpdatedAt(drawDefinition);
+export function modifyDrawNotice({ drawDefinition, structureIds }) {
+  drawUpdatedAt(drawDefinition, structureIds);
   addNotice({
     topic: MODIFY_DRAW_DEFINITION,
     payload: { drawDefinition },
