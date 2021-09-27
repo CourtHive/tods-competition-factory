@@ -23,7 +23,7 @@ const { outcome } = mocksEngine.generateOutcome({
 });
 
 const {
-  score: { sets, side1ScoreString, side2ScoreString },
+  score: { sets, scoreStringSide1, side2ScoreString },
   winningSide,
   matchUpStatus,
 } = outcome;
