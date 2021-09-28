@@ -13,6 +13,7 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
+import { findEvent } from './eventGetter';
 
 export function allTournamentMatchUps({
   scheduleVisibilityFilters,
@@ -370,6 +371,7 @@ export function publicFindMatchUp(params) {
 
 export function findMatchUp({
   tournamentRecord,
+  contextProfile,
   nextMatchUps,
   matchUpId,
   inContext,
@@ -386,25 +388,27 @@ export function findMatchUp({
 
   // since drawEngineFindMatchUp is being used, additional context needs to be provided
   const { eventId, drawId } = inContextMatchUp;
-  const context = {
+  const { event, drawDefinition } = findEvent({
+    tournamentRecord,
+    drawId,
+    eventId,
+  });
+
+  const additionalContext = {
+    surfaceCategory: event.surfaceCategory || tournamentRecord.surfaceCategory,
+    indoorOutDoor: event.indoorOutDoor || tournamentRecord.indoorOutDoor,
+    endDate: event.endDate || tournamentRecord.endDate,
     tournamentId: tournamentRecord.tournamentId,
-    endDate: tournamentRecord.endDate,
     eventId,
     drawId,
   };
 
-  const drawDefinitions = (tournamentRecord.events || [])
-    .map((event) => event.drawDefinitions || [])
-    .flat(Infinity);
-  const drawDefinition = drawDefinitions.find(
-    (drawDefinition) => drawDefinition.drawId === drawId
-  );
-
   const tournamentParticipants = tournamentRecord.participants || [];
   const { matchUp, structure } = drawEngineFindMatchUp({
-    context: inContext && context,
+    context: inContext && additionalContext,
     tournamentParticipants,
     drawDefinition,
+    contextProfile,
     nextMatchUps,
     matchUpId,
     inContext,

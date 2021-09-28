@@ -10,8 +10,6 @@ export function getStructureRoundProfile({ drawDefinition, structureId }) {
   if (error) return { error };
 
   // DEV-NOTE cannot pass drawDefinition parameter in this scenario; callstack error
-  const { matchUps } = getAllStructureMatchUps({
-    structure,
-  });
+  const { matchUps } = getAllStructureMatchUps({ structure });
   return getRoundMatchUps({ matchUps });
 }
