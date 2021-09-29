@@ -21,13 +21,13 @@ export function publicFindMatchUp(params) {
   function to find a matchUp within a draw
 */
 export function findMatchUp({
-  drawDefinition,
   tournamentParticipants,
+  drawDefinition,
+  contextProfile,
+  matchUpsMap,
   matchUpId,
   inContext,
   context,
-
-  matchUpsMap,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -39,6 +39,7 @@ export function findMatchUp({
     const { matchUps } = getAllStructureMatchUps({
       tournamentParticipants,
       drawDefinition,
+      contextProfile,
       matchUpsMap,
       inContext,
       structure,

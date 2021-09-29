@@ -17,44 +17,45 @@ import {
   *AND* where both drawPositions map to assigned participantIds
 */
 export function getStructureMatchUps({
-  event,
-  context,
-  inContext,
-  structure,
-  roundFilter,
-  structureId,
+  requireParticipants = true,
+  scheduleVisibilityFilters,
+  tournamentAppliedPolicies,
+  tournamentParticipants,
+  policyDefinitions,
   drawDefinition,
   matchUpFilters,
   contextFilters,
+  contextProfile,
   scheduleTiming,
-  policyDefinitions,
-  tournamentParticipants,
-  tournamentAppliedPolicies,
-  requireParticipants = true,
-  scheduleVisibilityFilters,
-
   matchUpsMap,
+  roundFilter,
+  structureId,
+  inContext,
+  structure,
+  context,
+  event,
 }) {
   if (!structure && structureId) {
     ({ structure } = findStructure({ drawDefinition, structureId }));
   }
   const { matchUps, error } = getAllStructureMatchUps({
-    event,
-    context,
-    structure,
-    inContext,
+    tournamentAppliedPolicies,
+    scheduleVisibilityFilters,
+    tournamentParticipants,
+    policyDefinitions,
     drawDefinition,
     matchUpFilters,
     contextFilters,
+    contextProfile,
     scheduleTiming,
-    policyDefinitions,
-    tournamentParticipants,
-    tournamentAppliedPolicies,
-    scheduleVisibilityFilters,
-
     matchUpsMap,
+    structure,
+    inContext,
+    context,
+    event,
   });
   if (error) return { error };
+
   const { assignedPositions } = structureAssignedDrawPositions({ structure });
   const participantAssignedDrawPositions = assignedPositions
     .filter((assignment) => assignment.participantId)

@@ -35,6 +35,7 @@ export function getAllStructureMatchUps({
   seedAssignments,
   drawDefinition,
   contextFilters,
+  contextProfile,
   matchUpFilters,
   scheduleTiming,
   context = {},
@@ -146,7 +147,6 @@ export function getAllStructureMatchUps({
 
   let matchUps = getMappedStructureMatchUps({
     matchUpsMap,
-
     structureId,
     inContext,
   });
@@ -457,6 +457,10 @@ export function getAllStructureMatchUps({
         allParticipantsCheckedIn,
         checkedInParticipantIds,
       });
+    }
+
+    if (Array.isArray(contextProfile?.exclude)) {
+      // loop through all attributes and delete them from matchUpWithContext
     }
 
     return matchUpWithContext;

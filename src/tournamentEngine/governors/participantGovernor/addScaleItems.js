@@ -148,9 +148,14 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
     participant,
     scaleAttributes: scaleItem,
   });
+
+  const isUndefined = (value) => [undefined, null, ''].includes(value);
+
   const valueChanged =
-    (!existingScaleItem && scaleItem.scaleValue) ||
-    existingScaleItem?.scaleValue !== scaleItem.scaleValue;
+    !(
+      isUndefined(existingScaleItem?.scaleValue) &&
+      isUndefined(scaleItem.scaleValue)
+    ) && existingScaleItem?.scaleValue !== scaleItem.scaleValue;
 
   if (valueChanged) {
     const { scaleType, eventType, scaleName } = scaleItem;

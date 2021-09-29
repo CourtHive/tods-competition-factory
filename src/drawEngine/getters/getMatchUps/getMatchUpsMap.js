@@ -46,7 +46,6 @@ export function getMatchUpsMap({ drawDefinition, structure }) {
 export function getMappedStructureMatchUps({
   mappedMatchUps,
   matchUpsMap,
-
   structureId,
   inContext,
 }) {
