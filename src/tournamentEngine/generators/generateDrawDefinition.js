@@ -107,8 +107,10 @@ export function generateDrawDefinition(params) {
       (!entry.entryStage || entry.entryStage === stage) &&
       STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
   );
+
+  // the reason for this needs to be clarified
   if ([ROUND_ROBIN].includes(drawType)) {
-    drawSize = stageEntries.length;
+    drawSize = stageEntries.length || drawSize;
   }
 
   const drawDefinition = newDrawDefinition({ drawType, drawId });
