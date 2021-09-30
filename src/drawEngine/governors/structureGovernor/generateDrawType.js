@@ -31,15 +31,14 @@ import {
   WIN_RATIO,
 } from '../../../constants/drawDefinitionConstants';
 
+import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { SINGLES } from '../../../constants/matchUpTypes';
 import {
   INVALID_DRAW_SIZE,
   STAGE_SEQUENCE_LIMIT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
-
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { SINGLES } from '../../../constants/matchUpTypes';
 
 /**
  *
@@ -87,7 +86,7 @@ export function generateDrawType(params = {}) {
           !isPowerOf2(drawSize))));
 
   if (invalidDrawSize) {
-    return { error: INVALID_DRAW_SIZE };
+    return { error: INVALID_DRAW_SIZE, drawSize };
   }
 
   const multiStructure = MULTI_STRUCTURE_DRAWS.includes(drawType);
