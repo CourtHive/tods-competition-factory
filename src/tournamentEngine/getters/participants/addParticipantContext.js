@@ -432,7 +432,8 @@ export function addParticipantContext(params) {
     if (Array.isArray(matchUp.potentialParticipants)) {
       const potentialParticipantIds = matchUp.potentialParticipants
         .flat()
-        .map(({ participantId }) => participantId);
+        .map(({ participantId }) => participantId)
+        .filter(Boolean);
 
       potentialParticipantIds?.forEach((participantId) => {
         const relevantParticipantIds = getRelevantParticipantIds(participantId);
