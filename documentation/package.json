@@ -23,7 +23,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-json-tree": "0.15.0",
-    "tods-competition-factory": "0.31.1"
+    "tods-competition-factory": "0.31.2"
   },
   "browserslist": {
     "production": [
@@ -38,6 +38,6 @@
     ]
   },
   "resolutions": {
-    "axios": "^0.21.1"
+    "axios": "^0.22.0"
   }
 }
