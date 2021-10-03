@@ -96,7 +96,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
       Object.assign(inContextMatchUp, { winnerTo, loserTo });
 
       if (inContextMatchUp.drawPositions.filter(Boolean).length) {
-        const participants = getParticipants(inContextMatchUp);
+        const participants = getMatchUpParticipants(inContextMatchUp);
         if (participants.length) {
           const winnerParticipantIds = getParticipantIds(winnerMatchUp);
           const loserParticipantIds = getParticipantIds(loserMatchUp);
@@ -144,12 +144,15 @@ function getParticipantIds(matchUp) {
     []
   );
 }
-function getParticipants(matchUp) {
+function getMatchUpParticipants(matchUp) {
   return (
     matchUp?.sides
       ?.map(
-        ({ participant, participantId }) =>
-          participant || (participantId && { participantId })
+        ({ participant, participantId, bye, qualifier }) =>
+          participant ||
+          (participantId && { participantId }) ||
+          (bye && { bye }) ||
+          (qualifier && { qualifier })
       )
       .filter(Boolean) || []
   );
