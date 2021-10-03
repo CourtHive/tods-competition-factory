@@ -4,7 +4,10 @@ import { timeStringMinutes } from '../../../utilities/dateTime';
 import { findStructure } from '../../getters/findStructure';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { WIN_RATIO } from '../../../constants/drawDefinitionConstants';
+import {
+  FIRST_MATCHUP,
+  WIN_RATIO,
+} from '../../../constants/drawDefinitionConstants';
 
 export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
   const scheduleConflictMatchUpIds = {};
@@ -96,6 +99,9 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
       Object.assign(inContextMatchUp, { winnerTo, loserTo });
 
       if (inContextMatchUp.drawPositions.filter(Boolean).length) {
+        const loserTargetLink = targetData.targetLinks?.loserTargetLink;
+        const firstMatchUp = loserTargetLink?.linkCondition === FIRST_MATCHUP;
+
         const participants = getMatchUpParticipants(inContextMatchUp);
         if (participants.length) {
           const winnerParticipantIds = getParticipantIds(winnerMatchUp);
@@ -103,17 +109,20 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
           const winnerDetermined = participants.find(({ participantId }) =>
             winnerParticipantIds.includes(participantId)
           );
-          const winnerPotentials = !winnerDetermined && participants;
+          const winnerPotentials = !winnerDetermined ? participants : [];
           const loserDetermined = participants.find(({ participantId }) =>
             loserParticipantIds.includes(participantId)
           );
-          const loserPotentials = !loserDetermined && participants;
-          if (winnerPotentials && winnerMatchUp) {
+          const loserPotentials = !loserDetermined ? participants : [];
+          if (loserMatchUp && firstMatchUp && loserPotentials.length < 2) {
+            loserPotentials.push({ bye: true });
+          }
+          if (winnerPotentials?.length && winnerMatchUp) {
             if (!winnerMatchUp.potentialParticipants)
               winnerMatchUp.potentialParticipants = [];
             winnerMatchUp.potentialParticipants.push(winnerPotentials);
           }
-          if (loserPotentials && loserMatchUp) {
+          if (loserPotentials?.length && loserMatchUp) {
             if (!loserMatchUp.potentialParticipants)
               loserMatchUp.potentialParticipants = [];
             loserMatchUp.potentialParticipants.push(loserPotentials);
@@ -148,10 +157,9 @@ function getMatchUpParticipants(matchUp) {
   return (
     matchUp?.sides
       ?.map(
-        ({ participant, participantId, bye, qualifier }) =>
+        ({ participant, participantId, qualifier }) =>
           participant ||
           (participantId && { participantId }) ||
-          (bye && { bye }) ||
           (qualifier && { qualifier })
       )
       .filter(Boolean) || []

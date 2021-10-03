@@ -68,10 +68,7 @@ it('handles potential BYES for FMLC consolation structures', () => {
   const { roundMatchUps } = drawEngine.getRoundMatchUps({
     matchUps: consolationMatchUps,
   });
-  expect(roundMatchUps[1][0].potentialParticipants[1][1]).toEqual({
-    bye: true,
-  });
-  expect(roundMatchUps[2][0].potentialParticipants[1][0]).toEqual({
+  expect(roundMatchUps[2][0].potentialParticipants[0][1]).toEqual({
     bye: true,
   });
 });
