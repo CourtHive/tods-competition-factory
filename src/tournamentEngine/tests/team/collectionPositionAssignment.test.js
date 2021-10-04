@@ -108,8 +108,6 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
     ).toEqual(singlesMatchUp.collectionPosition);
   });
 
-  // Assign a different individualParticipantId ###############################################
-
   // score the SINGLES matchUp
   let { outcome } = mocksEngine.generateOutcome(singlesMatchUp);
   let result = tournamentEngine.setMatchUpStatus({
@@ -125,6 +123,11 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
     matchUpFilters: { matchUpIds: [singlesMatchUp.matchUpId] },
   }));
   expect(singlesMatchUp.winningSide).toEqual(outcome.winningSide);
+
+  singlesMatchUp.sides.forEach((side) => {
+    expect(side.teamParticipant.participantName).not.toBeUndefined();
+    expect(side.teamParticipant.participantId).not.toBeUndefined();
+  });
 
   let {
     matchUps: [teamMatchUp],

@@ -288,10 +288,10 @@ export function getAllStructureMatchUps({
 
     const drawPositionCollectionAssignment =
       getDrawPositionCollectionAssignment({
-        sideLineUps,
-        collectionId,
         collectionPosition,
         drawPositions,
+        collectionId,
+        sideLineUps,
       });
 
     const roundName = roundNamingProfile && roundNamingProfile[roundNumber];
@@ -332,38 +332,6 @@ export function getAllStructureMatchUps({
       makeDeepCopy(matchUp, true, true)
     );
 
-    if (matchUpWithContext.tieMatchUps) {
-      const isCollectionBye = matchUpWithContext.matchUpStatus === BYE;
-      const lineUps = matchUp.sides?.map(
-        ({ sideNumber, lineUp, drawPosition }) => ({
-          drawPosition,
-          sideNumber,
-          lineUp,
-        })
-      );
-      matchUpWithContext.tieMatchUps = matchUpWithContext.tieMatchUps.map(
-        (matchUp) => {
-          const matchUpTieId = matchUpWithContext.matchUpId;
-
-          return addMatchUpContext({
-            tieDrawPositions: drawPositions,
-            scheduleVisibilityFilters,
-            sourceDrawPositionRanges,
-            sideLineUps: lineUps,
-            drawPositionsRanges,
-            roundNamingProfile,
-            appliedPolicies,
-            isCollectionBye,
-            matchUpTieId,
-            isRoundRobin,
-            roundProfile,
-            matchUp,
-            event,
-          });
-        }
-      );
-    }
-
     if (Array.isArray(drawPositions)) {
       const { orderedDrawPositions, displayOrder } = getOrderedDrawPositions({
         drawPositions,
@@ -385,8 +353,8 @@ export function getAllStructureMatchUps({
           displaySideNumber,
           seedAssignments,
           drawPosition,
-          sideNumber,
           isFeedRound,
+          sideNumber,
         });
 
         const existingSide = matchUp.sides?.find(
@@ -400,12 +368,15 @@ export function getAllStructureMatchUps({
           sourceDrawPositionRoundRanges &&
           sourceDrawPositionRoundRanges[columnPosition];
 
-        return {
+        const sideValue = {
           ...side,
           ...existingSide,
           sourceDrawPositionRange,
         };
+
+        return sideValue;
       });
+
       Object.assign(matchUpWithContext, makeDeepCopy({ sides }, true, true));
     }
 
@@ -439,6 +410,48 @@ export function getAllStructureMatchUps({
         const { matchUpType } = getMatchUpType({ matchUp: matchUpWithContext });
         if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
       }
+    }
+
+    if (matchUpWithContext.tieMatchUps) {
+      const isCollectionBye = matchUpWithContext.matchUpStatus === BYE;
+      const lineUps = matchUpWithContext.sides?.map(
+        ({ participant, drawPosition, sideNumber, lineUp }) => {
+          const teamParticipant =
+            participant?.participantType === TEAM && participant;
+          const teamParticipantValues = teamParticipant && {
+            participantName: teamParticipant.participantName,
+            participantId: teamParticipant.participantId,
+          };
+
+          return {
+            teamParticipant: teamParticipantValues,
+            drawPosition,
+            sideNumber,
+            lineUp,
+          };
+        }
+      );
+      matchUpWithContext.tieMatchUps = matchUpWithContext.tieMatchUps.map(
+        (matchUp) => {
+          const matchUpTieId = matchUpWithContext.matchUpId;
+
+          return addMatchUpContext({
+            tieDrawPositions: drawPositions,
+            scheduleVisibilityFilters,
+            sourceDrawPositionRanges,
+            sideLineUps: lineUps,
+            drawPositionsRanges,
+            roundNamingProfile,
+            appliedPolicies,
+            isCollectionBye,
+            matchUpTieId,
+            isRoundRobin,
+            roundProfile,
+            matchUp,
+            event,
+          });
+        }
+      );
     }
 
     const hasParticipants =
