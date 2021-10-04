@@ -54,6 +54,7 @@ export function randomUnseededSeparation({
   });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
 
+  // TODO: trace this use case
   const participantsWithGroupings = addParticipantGroupings({ participants });
 
   const unassignedPositions = positionAssignments.filter(
@@ -75,21 +76,21 @@ export function randomUnseededSeparation({
     : eliminationParticipantGroups(params);
 
   const idCollections = {};
-  idCollections.groupParticipants = participantsWithGroupings
+  idCollections.groupParticipants = participants
     .filter((participant) => participant.participantType === GROUP)
     .map((participant) => participant.participantId);
-  idCollections.teamParticipants = participantsWithGroupings
+  idCollections.teamParticipants = participants
     .filter((participant) => participant.participantType === TEAM)
     .map((participant) => participant.participantId);
-  idCollections.pairParticipants = participantsWithGroupings
+  idCollections.pairParticipants = participants
     .filter((participant) => participant.participantType === PAIR)
     .map((participant) => participant.participantId);
 
   const allGroups = getAttributeGroupings({
     targetParticipantIds: unseededParticipantIds,
-    participants: participantsWithGroupings,
     policyAttributes,
     idCollections,
+    participants,
   });
 
   const participantIdGroups = Object.assign(

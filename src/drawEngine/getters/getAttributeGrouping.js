@@ -22,10 +22,10 @@ import {
  */
 
 export function getAttributeGroupings({
-  participants,
-  idCollections,
-  policyAttributes,
   targetParticipantIds,
+  policyAttributes,
+  idCollections,
+  participants,
 }) {
   if (!Array.isArray(policyAttributes)) {
     return { error: MISSING_POLICY_ATTRIBUTES };
@@ -40,10 +40,10 @@ export function getAttributeGroupings({
     );
 
     const { values } = extractAttributeValues({
-      participant,
-      participants,
-      idCollections,
       policyAttributes,
+      idCollections,
+      participants,
+      participant,
     });
     if (values) {
       values.forEach((value) => {
