@@ -1,3 +1,4 @@
+import { addParticipantGroupings } from '../../governors/positionGovernor/avoidance/addParticipantGroupings';
 import { addUpcomingMatchUps } from '../../governors/matchUpGovernor/addUpcomingMatchUps';
 import { getStructureMatchUps } from './getStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
@@ -65,6 +66,13 @@ export function getDrawMatchUps({
   tournamentParticipants =
     (tournamentParticipants?.length && tournamentParticipants) ||
     tournamentRecord?.participants;
+
+  if (inContext && tournamentParticipants?.length) {
+    tournamentParticipants = addParticipantGroupings({
+      participants: tournamentParticipants,
+    });
+  }
+
   const { structures } = getDrawStructures({ drawDefinition });
 
   if (!matchUpsMap) {

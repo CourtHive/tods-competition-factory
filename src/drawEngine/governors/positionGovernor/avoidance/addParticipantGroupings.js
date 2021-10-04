@@ -25,7 +25,9 @@ export function addParticipantGroupings({ participants = [] }) {
   participantsWithGroupings.forEach((participant) => {
     if (participant.participantType === INDIVIDUAL) {
       const { participantId } = participant;
+      participant.teams = [];
       participant.teamParticipantIds = [];
+      participant.groups = [];
       participant.groupParticipantIds = [];
       participant.pairParticipantIds = [];
 
@@ -33,7 +35,11 @@ export function addParticipantGroupings({ participants = [] }) {
         (team?.individualParticipantIds || []).forEach(
           (individualParticipantId) => {
             if (individualParticipantId === participantId) {
-              participant.pairParticipantIds.push(team.participantId);
+              participant.teamParticipantIds.push(team.participantId);
+              participant.teams.push({
+                participantName: team.participantName,
+                participantId: team.participantId,
+              });
             }
           }
         );
@@ -51,12 +57,17 @@ export function addParticipantGroupings({ participants = [] }) {
         (group?.individualParticipantIds || []).forEach(
           (individualParticipantId) => {
             if (individualParticipantId === participantId) {
-              participant.pairParticipantIds.push(group.participantId);
+              participant.groupParticipantIds.push(group.participantId);
+              participant.groups.push({
+                participantName: group.participantName,
+                participantId: group.participantId,
+              });
             }
           }
         );
       });
     }
   });
+
   return participantsWithGroupings;
 }
