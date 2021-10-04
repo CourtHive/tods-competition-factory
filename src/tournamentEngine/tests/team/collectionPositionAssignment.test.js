@@ -108,8 +108,6 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
     ).toEqual(singlesMatchUp.collectionPosition);
   });
 
-  // Assign a different individualParticipantId ###############################################
-
   // score the SINGLES matchUp
   let { outcome } = mocksEngine.generateOutcome(singlesMatchUp);
   let result = tournamentEngine.setMatchUpStatus({
