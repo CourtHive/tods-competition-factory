@@ -67,9 +67,8 @@ export function drawPositionRemovals({
   const { matchUps: structureMatchUps } = getAllStructureMatchUps({
     drawDefinition,
     matchUpFilters,
-    structure,
-
     matchUpsMap,
+    structure,
   });
   const { roundProfile, roundMatchUps } = getRoundMatchUps({
     matchUps: structureMatchUps,

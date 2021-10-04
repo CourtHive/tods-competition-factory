@@ -11,16 +11,15 @@ import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
  *
  */
 export function getParticipantIdFinishingPositions({
-  drawDefinition,
-  tournamentParticipants,
-
   byeAdvancements = false,
+  tournamentParticipants,
+  drawDefinition,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const { participantIds, participantIdMatchUps } = getParticipantIdMatchUps({
-    drawDefinition,
     tournamentParticipants,
+    drawDefinition,
   });
 
   const participantIdFinishingPositions = participantIds.map(

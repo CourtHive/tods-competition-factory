@@ -16,9 +16,8 @@ export function getByesData({ drawDefinition, matchUpsMap, structure }) {
   const { matchUps, roundMatchUps } = getAllStructureMatchUps({
     drawDefinition,
     matchUpFilters,
-    structure,
-
     matchUpsMap,
+    structure,
   });
   const firstRoundMatchUps = (roundMatchUps && roundMatchUps[1]) || [];
 

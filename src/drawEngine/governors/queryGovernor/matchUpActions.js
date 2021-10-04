@@ -120,23 +120,22 @@ export function matchUpActions({
 
     if (!inContextDrawMatchUps) {
       ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-        drawDefinition,
-        inContext: true,
         includeByeMatchUps: true,
-
+        inContext: true,
+        drawDefinition,
         matchUpsMap,
       }));
     }
 
     const targetData = positionTargets({
-      matchUpId,
-      drawDefinition,
       inContextDrawMatchUps,
+      drawDefinition,
+      matchUpId,
     });
     activeDownstream = isActiveDownstream({
       inContextDrawMatchUps,
-      targetData,
       drawDefinition,
+      targetData,
     });
   }
 

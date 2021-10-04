@@ -28,8 +28,8 @@ export function getUnseededByePositions({
 
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps, roundMatchUps } = getAllStructureMatchUps({
-    structure,
     matchUpFilters,
+    structure,
   });
   const firstRoundMatchUps = (roundMatchUps && roundMatchUps[1]) || [];
 

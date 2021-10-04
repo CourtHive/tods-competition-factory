@@ -9,10 +9,9 @@ export function addGoesTo({
 }) {
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps, matchUpsMap } = getAllDrawMatchUps({
-      drawDefinition,
-      inContext: true,
       includeByeMatchUps: true,
-
+      inContext: true,
+      drawDefinition,
       matchUpsMap,
     }));
   }
@@ -20,9 +19,9 @@ export function addGoesTo({
   (inContextDrawMatchUps || []).forEach((inContextMatchUp) => {
     const { matchUpId, structureId } = inContextMatchUp;
     const targetData = positionTargets({
-      matchUpId,
-      drawDefinition,
       inContextDrawMatchUps,
+      drawDefinition,
+      matchUpId,
     });
     const { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
     const winnerMatchUpId = winnerMatchUp?.matchUpId;

@@ -16,15 +16,15 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
 
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
-    structure,
     matchUpFilters,
+    structure,
   });
 
   const activeMatchUps = matchUps.filter(isActiveMatchUp);
 
   const { positionAssignments } = getPositionAssignments({
-    structure,
     drawDefinition,
+    structure,
   });
 
   // first collect all drawPositions for the structure

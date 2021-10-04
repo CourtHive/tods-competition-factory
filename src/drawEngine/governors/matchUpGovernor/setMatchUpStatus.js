@@ -75,10 +75,9 @@ export function setMatchUpStatus(params) {
   // Get map of all drawMatchUps and inContextDrawMatchUPs ---------------------
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
-    inContext: true,
     includeByeMatchUps: true,
-
+    inContext: true,
+    drawDefinition,
     matchUpsMap,
   });
 

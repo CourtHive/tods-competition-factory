@@ -62,10 +62,9 @@ export function clearDrawPosition({
 
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-      drawDefinition,
-      inContext: true,
       includeByeMatchUps: true,
-
+      inContext: true,
+      drawDefinition,
       matchUpsMap,
     }));
   }

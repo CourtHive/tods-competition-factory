@@ -12,8 +12,8 @@ export function getParticipantIdMatchUps({
 
   const result = getAllDrawMatchUps({
     tournamentParticipants,
-    drawDefinition,
     inContext: true,
+    drawDefinition,
     event,
   });
 

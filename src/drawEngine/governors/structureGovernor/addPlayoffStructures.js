@@ -156,9 +156,9 @@ export function addPlayoffStructures(params) {
   drawDefinition.links = (drawDefinition.links || []).concat(...newLinks);
 
   const { matchUps: inContextDrawMatchUps, matchUpsMap } = getAllDrawMatchUps({
-    drawDefinition,
-    inContext: true,
     includeByeMatchUps: true,
+    inContext: true,
+    drawDefinition,
   });
 
   // now advance any players from completed matchUps into the newly added structures
@@ -170,22 +170,21 @@ export function addPlayoffStructures(params) {
   completedMatchUps.forEach((matchUp) => {
     const { matchUpId, score, winningSide } = matchUp;
     const targetData = positionTargets({
+      inContextDrawMatchUps,
+      drawDefinition,
       matchUpId,
       structure,
-      drawDefinition,
-      inContextDrawMatchUps,
     });
     const result = directParticipants({
+      inContextDrawMatchUps,
       drawDefinition,
-      structure,
-      targetData,
+      matchUpsMap,
       winningSide,
+      targetData,
       matchUpId,
+      structure,
       matchUp,
       score,
-
-      matchUpsMap,
-      inContextDrawMatchUps,
     });
     if (result.error) console.log(result.error);
   });

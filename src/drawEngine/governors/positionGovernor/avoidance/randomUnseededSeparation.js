@@ -49,8 +49,8 @@ export function randomUnseededSeparation({
 
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({
-    structure,
     matchUpsMap,
+    structure,
   });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
 

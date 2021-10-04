@@ -105,10 +105,9 @@ export function assignDrawPositionBye({
 
   // ########## gather reusable data for performance optimization ###########
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
-    inContext: true,
     includeByeMatchUps: true,
-
+    inContext: true,
+    drawDefinition,
     matchUpsMap,
   });
 
@@ -116,9 +115,8 @@ export function assignDrawPositionBye({
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
     matchUpFilters,
-    structure,
-
     matchUpsMap,
+    structure,
   });
 
   // modifies the structure's positionAssignments

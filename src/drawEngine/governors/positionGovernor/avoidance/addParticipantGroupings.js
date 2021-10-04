@@ -23,32 +23,38 @@ export function addParticipantGroupings({ participants = [] }) {
   );
 
   participantsWithGroupings.forEach((participant) => {
-    const { participantId } = participant;
-    participant.teamParticipantIds = [];
-    participant.groupParticipantIds = [];
-    participant.pairParticipantIds = [];
-
     if (participant.participantType === INDIVIDUAL) {
+      const { participantId } = participant;
+      participant.teamParticipantIds = [];
+      participant.groupParticipantIds = [];
+      participant.pairParticipantIds = [];
+
       teamParticipants.forEach((team) => {
-        (team?.individualParticipants || []).forEach((ip) => {
-          if (ip.participantId === participantId) {
-            participant.teamParticipantIds.push(ip.participantId);
+        (team?.individualParticipantIds || []).forEach(
+          (individualParticipantId) => {
+            if (individualParticipantId === participantId) {
+              participant.pairParticipantIds.push(team.participantId);
+            }
           }
-        });
+        );
       });
       pairParticipants.forEach((pair) => {
-        (pair?.individualParticipants || []).forEach((ip) => {
-          if (ip.participantId === participantId) {
-            participant.pairParticipantIds.push(ip.participantId);
+        (pair?.individualParticipantIds || []).forEach(
+          (individualParticipantId) => {
+            if (individualParticipantId === participantId) {
+              participant.pairParticipantIds.push(pair.participantId);
+            }
           }
-        });
+        );
       });
       groupParticipants.forEach((group) => {
-        (group?.individualParticipants || []).forEach((ip) => {
-          if (ip.participantId === participantId) {
-            participant.groupParticipantIds.push(ip.participantId);
+        (group?.individualParticipantIds || []).forEach(
+          (individualParticipantId) => {
+            if (individualParticipantId === participantId) {
+              participant.pairParticipantIds.push(group.participantId);
+            }
           }
-        });
+        );
       });
     }
   });

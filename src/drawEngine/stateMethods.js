@@ -42,16 +42,15 @@ export function paramsMiddleWare(drawDefinition) {
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
-    inContext: true,
     includeByeMatchUps: true,
-
+    inContext: true,
+    drawDefinition,
     matchUpsMap,
   });
 
   const additionalParams = {
-    matchUpsMap,
     inContextDrawMatchUps,
+    matchUpsMap,
   };
 
   return additionalParams;
