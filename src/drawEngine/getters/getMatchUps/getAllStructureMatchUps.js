@@ -418,10 +418,14 @@ export function getAllStructureMatchUps({
         ({ participant, drawPosition, sideNumber, lineUp }) => {
           const teamParticipant =
             participant?.participantType === TEAM && participant;
-          const teamParticipantValues = teamParticipant && {
-            participantName: teamParticipant.participantName,
-            participantId: teamParticipant.participantId,
-          };
+          const teamParticipantValues =
+            teamParticipant &&
+            definedAttributes({
+              participantOtherName: teamParticipant.participanOthertName,
+              participantName: teamParticipant.participantName,
+              participantId: teamParticipant.participantId,
+              representing: teamParticipant.representing,
+            });
 
           return {
             teamParticipant: teamParticipantValues,
