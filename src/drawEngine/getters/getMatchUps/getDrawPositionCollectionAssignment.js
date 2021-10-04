@@ -1,16 +1,19 @@
 export function getDrawPositionCollectionAssignment({
-  collectionId,
   collectionPosition,
   drawPositions = [],
+  collectionId,
   sideLineUps,
 }) {
   if (!collectionId || !collectionPosition) return;
 
   const drawPositionCollectionAssignment = drawPositions
     ?.map((drawPosition) => {
-      const lineUp = sideLineUps?.find(
+      const side = sideLineUps?.find(
         (lineUp) => lineUp.drawPosition === drawPosition
-      )?.lineUp;
+      );
+
+      const lineUp = side?.lineUp;
+      const teamParticipant = side?.teamParticipant;
 
       const relevantCompetitor = lineUp?.find((teamCompetitor) => {
         const collectionAssignment = teamCompetitor.collectionAssignments.find(
@@ -20,8 +23,14 @@ export function getDrawPositionCollectionAssignment({
       });
 
       const participantId = relevantCompetitor?.participantId;
-      return participantId && { [drawPosition]: participantId };
+
+      return (
+        participantId && {
+          [drawPosition]: { participantId, teamParticipant },
+        }
+      );
     })
     .filter(Boolean);
+
   return Object.assign({}, ...drawPositionCollectionAssignment);
 }

@@ -126,6 +126,11 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
   }));
   expect(singlesMatchUp.winningSide).toEqual(outcome.winningSide);
 
+  singlesMatchUp.sides.forEach((side) => {
+    expect(side.teamParticipant.participantName).not.toBeUndefined();
+    expect(side.teamParticipant.participantId).not.toBeUndefined();
+  });
+
   let {
     matchUps: [teamMatchUp],
   } = tournamentEngine.allTournamentMatchUps({
