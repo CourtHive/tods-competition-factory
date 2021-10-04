@@ -16,6 +16,7 @@ export function treeMatchUps({
   roundLimit,
   idPrefix,
   drawSize,
+  isMock,
   uuids,
 }) {
   if (isNaN(drawSize) || !isPowerOf2(drawSize) || drawSize < 2) {
@@ -37,6 +38,7 @@ export function treeMatchUps({
     matchUpType,
     idPrefix,
     matchUps,
+    isMock,
     nodes,
     uuids,
   }));
@@ -52,6 +54,7 @@ export function treeMatchUps({
       matchUpType,
       idPrefix,
       matchUps,
+      isMock,
       uuids,
     }));
     roundNumber++;
@@ -60,10 +63,10 @@ export function treeMatchUps({
   const roundsCount = roundNumber - 1;
 
   matchUps = addFinishingRounds({
-    matchUps,
-    roundLimit,
-    roundsCount,
     finishingPositionOffset,
+    roundsCount,
+    roundLimit,
+    matchUps,
   });
 
   if (roundLimit) {
@@ -135,6 +138,7 @@ function buildRound({
   roundNumber,
   matchUps,
   idPrefix,
+  isMock,
   uuids,
   nodes,
 }) {
@@ -176,6 +180,8 @@ function buildRound({
 
     // matchUpType is derived for inContext matchUps from structure or drawDefinition
     if (includeMatchUpType) matchUp.matchUpType = matchUpType;
+    if (isMock) matchUp.isMock = true;
+
     matchUps.push(matchUp);
     index += 2;
     roundPosition++;
@@ -221,6 +227,7 @@ export function feedInMatchUps({
   matchUpType,
   idPrefix,
   drawSize,
+  isMock,
   uuids,
   fmlc,
 }) {
@@ -314,6 +321,7 @@ export function feedInMatchUps({
       matchUpType,
       idPrefix,
       matchUps,
+      isMock,
       nodes,
       uuids,
     }));
@@ -430,8 +438,8 @@ function buildFeedRound({
     if (includeMatchUpType) newMatchUp.matchUpType = matchUpType;
     matchUps.push(newMatchUp);
 
-    const matchUp = { children: [position, feedArm] };
-    roundNodes.push(matchUp);
+    const roundNode = { children: [position, feedArm] };
+    roundNodes.push(roundNode);
   }
 
   const nextDrawPosition = drawPosition

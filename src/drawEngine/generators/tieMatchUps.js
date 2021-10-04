@@ -12,6 +12,7 @@ export function generateTieMatchUps({ tieFormat, uuids }) {
         const collectionPosition = index + 1;
 
         const matchUp = {
+          isMock: true,
           collectionId,
           matchUpType,
           matchUpFormat,

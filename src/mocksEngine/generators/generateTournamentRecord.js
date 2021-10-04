@@ -89,7 +89,8 @@ export function generateTournamentRecord({
   if (tournamentExtensions?.length && Array.isArray(tournamentExtensions)) {
     const extensions = tournamentExtensions.filter(validExtension);
 
-    if (extensions?.length) Object.assign(tournamentRecord, { extensions });
+    if (extensions?.length)
+      Object.assign(tournamentRecord, { extensions, isMock: true });
   }
 
   if (typeof policyDefinitions === 'object') {

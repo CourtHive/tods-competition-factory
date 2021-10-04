@@ -24,6 +24,7 @@ export function firstRoundLoserConsolation(params) {
     stage = MAIN,
     matchUpType,
     idPrefix,
+    isMock,
     uuids,
   } = params;
 
@@ -34,6 +35,7 @@ export function firstRoundLoserConsolation(params) {
     matchUpType,
     drawSize,
     idPrefix,
+    isMock,
     uuids,
   };
   const { matchUps } = staggeredEntry
@@ -60,6 +62,7 @@ export function firstRoundLoserConsolation(params) {
     drawSize: consolationDrawPositions,
     idPrefix: idPrefix && `${idPrefix}-c`,
     matchUpType,
+    isMock,
   });
 
   consolationStructureName =

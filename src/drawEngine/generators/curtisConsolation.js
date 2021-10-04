@@ -23,6 +23,7 @@ export function generateCurtisConsolation({
   drawDefinition,
   matchUpType,
   idPrefix,
+  isMock,
   uuids,
 }) {
   const drawSize = getStageDrawPositionsCount({ stage: MAIN, drawDefinition });
@@ -32,6 +33,7 @@ export function generateCurtisConsolation({
     matchUpType,
     drawSize,
     idPrefix,
+    isMock,
     uuids,
   };
   const { matchUps, roundsCount: mainDrawRoundsCount } = staggeredEntry
@@ -59,6 +61,7 @@ export function generateCurtisConsolation({
       roundOffset,
       matchUpType,
       drawSize,
+      isMock,
       index,
       uuids,
     });
@@ -88,6 +91,7 @@ export function generateCurtisConsolation({
       idPrefix: idPrefix && `${idPrefix}-p3t4`,
       drawSize: 2,
       matchUpType,
+      isMock,
     });
     const playoffStructure = structureTemplate({
       structureId: uuids?.pop(),
@@ -131,6 +135,7 @@ function consolationFeedStructure({
   structureId,
   idPrefix,
   drawSize,
+  isMock,
   index,
   uuids,
 }) {
@@ -144,6 +149,7 @@ function consolationFeedStructure({
       feedRounds: 1,
       matchUpType,
       idPrefix,
+      isMock,
       uuids,
     });
 

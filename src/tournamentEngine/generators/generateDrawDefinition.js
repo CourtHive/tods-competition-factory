@@ -176,6 +176,8 @@ export function generateDrawDefinition(params) {
 
     feedPolicy,
     goesTo: params.goesTo,
+
+    isMock: true,
   });
   if (result.error) return result;
 
