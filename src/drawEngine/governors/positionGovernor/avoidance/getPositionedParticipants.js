@@ -16,11 +16,10 @@ export function getPositionedParticipants({
   return candidatePositionAssignments.map((assignment) => {
     const participant = participantsMap[assignment.participantId];
     const { values } = extractAttributeValues({
-      participant,
-      policyAttributes,
-
-      idCollections,
       participants: participantsWithGroupings,
+      policyAttributes,
+      idCollections,
+      participant,
     });
     return { ...assignment, values };
   });

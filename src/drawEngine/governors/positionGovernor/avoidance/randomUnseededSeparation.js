@@ -86,10 +86,10 @@ export function randomUnseededSeparation({
     .map((participant) => participant.participantId);
 
   const allGroups = getAttributeGroupings({
-    participants: participantsWithGroupings,
-    idCollections,
-    policyAttributes,
     targetParticipantIds: unseededParticipantIds,
+    participants: participantsWithGroupings,
+    policyAttributes,
+    idCollections,
   });
 
   const participantIdGroups = Object.assign(

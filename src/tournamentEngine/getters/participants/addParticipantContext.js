@@ -227,12 +227,15 @@ export function addParticipantContext(params) {
           participantIdsWithConflicts.push(participant.participantId);
       }
     }
-    participant.groupParticipantIds =
-      participantIdMap[participant.participantId].groupParticipantIds;
-    participant.pairParticipantIds =
-      participantIdMap[participant.participantId].pairParticipantIds;
-    participant.teamParticipantIds =
-      participantIdMap[participant.participantId].teamParticipantIds;
+
+    if (params.withGroupings !== false) {
+      participant.groupParticipantIds =
+        participantIdMap[participant.participantId].groupParticipantIds;
+      participant.pairParticipantIds =
+        participantIdMap[participant.participantId].pairParticipantIds;
+      participant.teamParticipantIds =
+        participantIdMap[participant.participantId].teamParticipantIds;
+    }
   });
 
   function processMatchUp({ matchUp, drawDetails, eventType }) {
