@@ -15,11 +15,11 @@ export function findParticipant({
   const participantAttributes = policyDefinitions.participant;
 
   if (participantAttributes?.participant) {
-    const participantCopy = attributeFilter({
-      source: participant,
+    const filteredParticipant = attributeFilter({
       template: participantAttributes.participant,
+      source: participant,
     });
-    return makeDeepCopy(participantCopy);
+    return filteredParticipant;
   }
   return makeDeepCopy(participant);
 }

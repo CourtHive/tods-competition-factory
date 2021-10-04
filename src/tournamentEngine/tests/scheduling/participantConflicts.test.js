@@ -89,6 +89,7 @@ test('recognizes scheduling conflicts', () => {
   let { tournamentParticipants, participantIdsWithConflicts } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
+      scheduleAnalysis: true,
       withStatistics: true,
       withMatchUps: true,
     });

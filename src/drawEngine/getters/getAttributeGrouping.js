@@ -22,10 +22,10 @@ import {
  */
 
 export function getAttributeGroupings({
-  participants,
-  idCollections,
-  policyAttributes,
   targetParticipantIds,
+  policyAttributes,
+  idCollections,
+  participants,
 }) {
   if (!Array.isArray(policyAttributes)) {
     return { error: MISSING_POLICY_ATTRIBUTES };
@@ -40,10 +40,10 @@ export function getAttributeGroupings({
     );
 
     const { values } = extractAttributeValues({
-      participant,
-      participants,
-      idCollections,
       policyAttributes,
+      idCollections,
+      participants,
+      participant,
     });
     if (values) {
       values.forEach((value) => {
@@ -65,10 +65,10 @@ export function getAttributeGroupings({
  *
  */
 export function extractAttributeValues({
-  participant,
-  participants,
-  idCollections,
   policyAttributes,
+  idCollections,
+  participants,
+  participant,
 }) {
   if (!Array.isArray(policyAttributes)) {
     return { error: MISSING_POLICY_ATTRIBUTES };
@@ -86,6 +86,8 @@ export function extractAttributeValues({
       const keys = key.split('.');
       processKeys({ value, keys, significantCharacters });
     } else if (directive) {
+      // extractedValues are values to be avoided
+      // e.g. for { directive: 'pairParticipants' } the extractedValues would be [ 'partnerParticipantId' ]
       const includeIds = policyAttribute?.includeIds;
       const collectionIds = (
         (idCollections && idCollections[directive]) ||
@@ -109,9 +111,6 @@ export function extractAttributeValues({
           }
         });
       }
-
-      // extractedValues are values to be avoided
-      // e.g. for { directive: 'pairParticipants' } the extractedValues would be [ 'partnerParticipantId' ]
     } else if (groupings) {
       Object.keys(groupings).forEach((key) => {
         if (groupings[key].includes(participant.participantId)) {

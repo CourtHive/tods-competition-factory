@@ -45,10 +45,9 @@ export function automatedPositioning({
 
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-      drawDefinition,
-      inContext: true,
       includeByeMatchUps: true,
-
+      inContext: true,
+      drawDefinition,
       matchUpsMap,
     }));
   }

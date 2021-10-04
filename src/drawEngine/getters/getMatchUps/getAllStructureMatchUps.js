@@ -413,9 +413,9 @@ export function getAllStructureMatchUps({
       matchUpWithContext.sides.filter(Boolean).forEach((side) => {
         if (side.participantId) {
           const participant = findParticipant({
-            tournamentParticipants,
             policyDefinitions: appliedPolicies,
             participantId: side.participantId,
+            tournamentParticipants,
           });
           if (participant) {
             Object.assign(side, { participant });

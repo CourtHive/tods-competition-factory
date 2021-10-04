@@ -215,20 +215,27 @@ export function addParticipantContext(params) {
       participant,
       participantIdMap,
     });
+
     if (params.withScheduleItems) {
       participant.scheduleItems = scheduleItems;
     }
-    if (scheduleConflicts?.length) {
+
+    if (params.scheduleAnalysis) {
       participant.scheduleConflicts = scheduleConflicts;
-      if (!participantIdsWithConflicts.includes(participant.participantId))
-        participantIdsWithConflicts.push(participant.participantId);
+      if (scheduleConflicts?.length) {
+        if (!participantIdsWithConflicts.includes(participant.participantId))
+          participantIdsWithConflicts.push(participant.participantId);
+      }
     }
-    participant.groupParticipantIds =
-      participantIdMap[participant.participantId].groupParticipantIds;
-    participant.pairParticipantIds =
-      participantIdMap[participant.participantId].pairParticipantIds;
-    participant.teamParticipantIds =
-      participantIdMap[participant.participantId].teamParticipantIds;
+
+    if (params.withGroupings !== false) {
+      participant.groupParticipantIds =
+        participantIdMap[participant.participantId].groupParticipantIds;
+      participant.pairParticipantIds =
+        participantIdMap[participant.participantId].pairParticipantIds;
+      participant.teamParticipantIds =
+        participantIdMap[participant.participantId].teamParticipantIds;
+    }
   });
 
   function processMatchUp({ matchUp, drawDetails, eventType }) {

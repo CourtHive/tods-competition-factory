@@ -193,9 +193,7 @@ export function generateDrawType(params = {}) {
     return { error: UNRECOGNIZED_DRAW_TYPE };
   }
 
-  const { matchUps, matchUpsMap } = getAllDrawMatchUps({
-    drawDefinition,
-  });
+  const { matchUps, matchUpsMap } = getAllDrawMatchUps({ drawDefinition });
 
   if (tieFormat) {
     matchUps.forEach((matchUp) => {

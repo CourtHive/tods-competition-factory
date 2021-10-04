@@ -40,10 +40,9 @@ export function assignDrawPosition({
 
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-      drawDefinition,
-      inContext: true,
       includeByeMatchUps: true,
-
+      inContext: true,
+      drawDefinition,
       matchUpsMap,
     }));
   }
@@ -190,12 +189,11 @@ function addDrawPositionToMatchUps({
 }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
+    inContextDrawMatchUps,
     drawDefinition,
     matchUpFilters,
-    structure,
-
     matchUpsMap,
-    inContextDrawMatchUps,
+    structure,
   });
 
   const { roundMatchUps } = getRoundMatchUps({ matchUps });

@@ -12,12 +12,12 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function positionParticipantAction(params) {
   const {
-    participantId,
+    participantIdAttributeName = 'participantId',
+    positionActionName,
     drawDefinition,
+    participantId,
     drawPosition,
     structureId,
-    positionActionName,
-    participantIdAttributeName = 'participantId',
   } = params;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -31,10 +31,9 @@ export function positionParticipantAction(params) {
 
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-      drawDefinition,
-      inContext: true,
       includeByeMatchUps: true,
-
+      inContext: true,
+      drawDefinition,
       matchUpsMap,
     }));
     Object.assign(params, { inContextDrawMatchUps });
@@ -50,13 +49,12 @@ export function positionParticipantAction(params) {
 
   if (positionAssignment?.participantId) {
     let result = assignDrawPosition({
-      drawDefinition,
-      structureId,
-      drawPosition,
-      participantId,
-
-      matchUpsMap,
       inContextDrawMatchUps,
+      drawDefinition,
+      participantId,
+      drawPosition,
+      structureId,
+      matchUpsMap,
     });
     if (!result.success) {
       console.log({ result });
@@ -66,24 +64,22 @@ export function positionParticipantAction(params) {
     });
   }
   let result = clearDrawPosition({
+    inContextDrawMatchUps,
     drawDefinition,
     drawPosition,
     structureId,
-
     matchUpsMap,
-    inContextDrawMatchUps,
   });
   if (result.error) return result;
   const removedParticipantId = result.participantId;
 
   result = assignDrawPosition({
-    drawDefinition,
-    structureId,
-    drawPosition,
-    participantId,
-
-    matchUpsMap,
     inContextDrawMatchUps,
+    drawDefinition,
+    participantId,
+    drawPosition,
+    structureId,
+    matchUpsMap,
   });
   if (!result.success) return result;
 
@@ -92,14 +88,14 @@ export function positionParticipantAction(params) {
   function successNotice({ removedParticipantId }) {
     const { structure } = findStructure({ drawDefinition, structureId });
     conditionallyDisableLinkPositioning({
-      structure,
       drawPositions: [drawPosition],
+      structure,
     });
     const positionAction = {
+      [participantIdAttributeName]: participantId,
       name: positionActionName,
       drawPosition,
       structureId,
-      [participantIdAttributeName]: participantId,
     };
 
     addPositionActionTelemetry({ drawDefinition, positionAction });

@@ -70,8 +70,8 @@ export function removeDirectedParticipants(params) {
   const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
     inContext: true,
     drawDefinition,
-    structure,
     matchUpsMap,
+    structure,
   });
 
   const drawPositionMatchUps = sourceMatchUps.filter((matchUp) =>

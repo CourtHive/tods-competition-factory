@@ -54,9 +54,9 @@ export function getValidSwapAction({
     ({ drawPosition }) => drawPosition
   );
   const { matchUps } = getAllStructureMatchUps({
+    inContext: true,
     drawDefinition,
     structure,
-    inContext: true,
   });
   const relevantMatchUps = matchUps.filter(({ drawPositions }) =>
     overlap(drawPositions, filteredDrawPositions)

@@ -31,9 +31,9 @@ export function swapDrawPositionAssignments({
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
-    inContext: true,
     includeByeMatchUps: true,
+    inContext: true,
+    drawDefinition,
   });
 
   const { structure } = findStructure({ drawDefinition, structureId });

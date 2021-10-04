@@ -28,6 +28,7 @@ export function getTournamentParticipants({
 
   withScheduleItems,
   withStatistics,
+  withGroupings,
   withOpponents,
   withMatchUps,
   withEvents,
@@ -73,8 +74,9 @@ export function getTournamentParticipants({
     withEvents ||
     withDraws ||
     withMatchUps ||
-    withStatistics ||
+    withGroupings ||
     withOpponents ||
+    withStatistics ||
     scheduleAnalysis ||
     withScheduleItems
   ) {
@@ -86,6 +88,7 @@ export function getTournamentParticipants({
       withScheduleItems,
       scheduleAnalysis,
       withStatistics,
+      withGroupings,
       withOpponents,
       withMatchUps,
       withEvents,

@@ -1,5 +1,7 @@
 import { getNextUnfilledDrawPositions } from './positionActions/getNextUnfilledDrawPositions';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 import { getEliminationDrawSize } from '../../getters/getEliminationDrawSize';
 import { getParticipantIdFinishingPositions } from './finishingPositions';
@@ -10,24 +12,20 @@ import { credits } from '../../../fixtures/credits';
 import { getExitProfiles } from './getExitProfile';
 import { matchUpActions } from './matchUpActions';
 import {
+  getAllDrawMatchUps,
+  getDrawMatchUps,
+} from '../../getters/getMatchUps/drawMatchUps';
+import {
   generateTieMatchUpScore,
   matchUpDuration,
   getMatchUpScheduleDetails,
   getMatchUpContextIds,
 } from '../../accessors/matchUpAccessor';
-
 import {
   structureActions,
   isCompletedStructure,
   allPlayoffPositionsFilled,
 } from './structureActions';
-
-import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import {
-  getAllDrawMatchUps,
-  getDrawMatchUps,
-} from '../../getters/getMatchUps/drawMatchUps';
 
 /*
   return an array of all matchUps within a drawDefinition

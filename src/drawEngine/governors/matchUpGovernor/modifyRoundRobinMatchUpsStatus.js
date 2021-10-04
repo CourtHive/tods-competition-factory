@@ -6,13 +6,13 @@ import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 export function modifyRoundRobinMatchUpsStatus({
   positionAssignments,
   drawDefinition,
-  structure,
   matchUpsMap,
+  structure,
 }) {
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
-    structure,
     matchUpsMap,
+    structure,
   });
 
   matchUps.forEach((matchUp) => {

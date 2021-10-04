@@ -198,10 +198,14 @@ test('recognizes scheduling conflicts', () => {
   expect(Object.keys(matchUps[0].schedule).length).toEqual(2);
 
   const { participantIdsWithConflicts: ceConflicts } =
-    competitionEngine.getCompetitionParticipants({ withStatistics: true });
+    competitionEngine.getCompetitionParticipants({
+      scheduleAnalysis: true,
+      withStatistics: true,
+    });
 
   let { tournamentParticipants, participantIdsWithConflicts: teConflicts } =
     tournamentEngine.getTournamentParticipants({
+      scheduleAnalysis: true,
       withStatistics: true,
       withMatchUps: true,
     });
