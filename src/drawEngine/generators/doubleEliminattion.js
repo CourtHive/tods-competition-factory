@@ -18,6 +18,7 @@ export function generateDoubleElimination({
   matchUpType,
   idPrefix,
   drawSize,
+  isMock,
   uuids,
 }) {
   // feedIn MAIN structure needs 1st round feed and final round feed
@@ -26,6 +27,7 @@ export function generateDoubleElimination({
     drawSize: drawSize + 1,
     matchUpType,
     idPrefix,
+    isMock,
   });
   const mainStructure = structureTemplate({
     structureName: structureName || MAIN,
@@ -46,6 +48,7 @@ export function generateDoubleElimination({
     drawSize: drawSize - 1,
     isConsolation: true,
     matchUpType,
+    isMock,
     uuids,
   });
 
@@ -64,6 +67,7 @@ export function generateDoubleElimination({
     idPrefix: idPrefix && `${idPrefix}-p1t2`,
     drawSize: 2,
     matchUpType,
+    isMock,
   });
   const deciderStructure = structureTemplate({
     matchUps: deciderMatchUps,

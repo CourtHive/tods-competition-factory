@@ -37,10 +37,10 @@ export function generateParticipants({
   personIds,
   uuids,
 
-  personData,
   personExtensions,
   addressProps,
   matchUpType,
+  personData,
   sex,
 
   inContext,
@@ -128,6 +128,7 @@ export function generateParticipants({
 
       if (inContext)
         groupParticipant.individualParticipants = individualParticipants;
+
       return doubles || team
         ? [groupParticipant, ...individualParticipants]
         : individualParticipants;

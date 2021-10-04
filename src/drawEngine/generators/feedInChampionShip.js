@@ -23,6 +23,7 @@ export function feedInChampionship(params = {}) {
     staggeredEntry,
     feedPolicy,
     idPrefix,
+    isMock,
     fmlc,
   } = params;
 
@@ -32,6 +33,7 @@ export function feedInChampionship(params = {}) {
     matchUpType,
     drawSize,
     idPrefix,
+    isMock,
     uuids,
   };
   const { matchUps } = staggeredEntry
@@ -58,6 +60,7 @@ export function feedInChampionship(params = {}) {
     matchUpType,
     feedRounds,
     idPrefix: idPrefix && `${idPrefix}-c`,
+    isMock,
     uuids,
     fmlc,
   });

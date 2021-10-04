@@ -49,17 +49,17 @@ import {
 // TODO: consider refactoring to return structures rather than pushing them into drawDefinition
 export function generateDrawType(params = {}) {
   const {
+    drawType = SINGLE_ELIMINATION,
+    stageSequence = 1,
+    drawDefinition,
+    staggeredEntry,
+    structureName,
     goesTo = true,
     stage = MAIN,
-    structureName,
-    staggeredEntry,
-    stageSequence = 1,
-    drawType = SINGLE_ELIMINATION,
+    uuids,
     // qualifyingPositions, => passed through in params to treeMatchUps
     // qualifyingRound, => passed through in params to treeMatchUps
     // TODO: description => is this passed on?
-    drawDefinition,
-    uuids,
   } = params;
 
   let { tieFormat, matchUpType } = params;

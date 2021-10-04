@@ -56,6 +56,7 @@ function playoffStructures({
   matchUpType,
   idPrefix,
   drawSize,
+  isMock,
   uuids,
 }) {
   const generateStructure =
@@ -92,6 +93,7 @@ function playoffStructures({
     finishingPositionOffset,
     matchUpType,
     drawSize,
+    isMock,
     uuids,
   };
   const { matchUps } = staggeredEntry

@@ -11,10 +11,10 @@ import { MALE, FEMALE } from '../../constants/genderConstants';
  * @param {object} personExtensions - optional array of extentsions to apply to all persons
  */
 export function personMocks({
+  personExtensions,
+  personData,
   count = 1,
   sex,
-  personData,
-  personExtensions,
 } = {}) {
   if (isNaN(count)) return { error: INVALID_VALUES };
 
@@ -99,6 +99,7 @@ export function personMocks({
   const persons = shuffledPersons.slice(0, count).map((person, i) => {
     return Object.assign(person, {
       extensions: personExtensions || [{ name: 'regionCode', value: i + 1 }],
+      isMock: true,
     });
   });
   return { persons: (persons.length && persons) || shuffledPersons[0] };
