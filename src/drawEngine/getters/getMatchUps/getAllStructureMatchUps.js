@@ -421,6 +421,8 @@ export function getAllStructureMatchUps({
           const teamParticipantValues =
             teamParticipant &&
             definedAttributes({
+              participantRoleResponsibilities:
+                teamParticipant.participantRoleResponsibilities,
               participantOtherName: teamParticipant.participanOthertName,
               participantName: teamParticipant.participantName,
               participantId: teamParticipant.participantId,

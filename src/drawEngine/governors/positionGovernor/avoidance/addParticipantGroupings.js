@@ -37,8 +37,12 @@ export function addParticipantGroupings({ participants = [] }) {
             if (individualParticipantId === participantId) {
               participant.teamParticipantIds.push(team.participantId);
               participant.teams.push({
+                participantRoleResponsibilities:
+                  team.participantRoleResponsibilities,
+                participantOtherName: team.participantOtherName,
                 participantName: team.participantName,
                 participantId: team.participantId,
+                representing: team.representing,
               });
             }
           }
@@ -59,8 +63,12 @@ export function addParticipantGroupings({ participants = [] }) {
             if (individualParticipantId === participantId) {
               participant.groupParticipantIds.push(group.participantId);
               participant.groups.push({
+                participantRoleResponsibilities:
+                  group.participantRoleResponsibilities,
+                participantOtherName: group.participantOtherName,
                 participantName: group.participantName,
                 participantId: group.participantId,
+                representing: group.representing,
               });
             }
           }
