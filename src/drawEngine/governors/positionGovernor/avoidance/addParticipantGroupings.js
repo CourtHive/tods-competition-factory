@@ -34,7 +34,10 @@ export function addParticipantGroupings({ participants = [] }) {
       teamParticipants.forEach((team) => {
         (team?.individualParticipantIds || []).forEach(
           (individualParticipantId) => {
-            if (individualParticipantId === participantId) {
+            if (
+              individualParticipantId === participantId &&
+              !participant.teamParticipantIds.includes(team.participantId)
+            ) {
               participant.teamParticipantIds.push(team.participantId);
               participant.teams.push({
                 participantRoleResponsibilities:
@@ -51,7 +54,10 @@ export function addParticipantGroupings({ participants = [] }) {
       pairParticipants.forEach((pair) => {
         (pair?.individualParticipantIds || []).forEach(
           (individualParticipantId) => {
-            if (individualParticipantId === participantId) {
+            if (
+              individualParticipantId === participantId &&
+              !participant.pairParticipantIds.includes(pair.participantId)
+            ) {
               participant.pairParticipantIds.push(pair.participantId);
             }
           }
@@ -60,7 +66,10 @@ export function addParticipantGroupings({ participants = [] }) {
       groupParticipants.forEach((group) => {
         (group?.individualParticipantIds || []).forEach(
           (individualParticipantId) => {
-            if (individualParticipantId === participantId) {
+            if (
+              individualParticipantId === participantId &&
+              !participant.groupParticipantIds.includes(group.participantId)
+            ) {
               participant.groupParticipantIds.push(group.participantId);
               participant.groups.push({
                 participantRoleResponsibilities:
