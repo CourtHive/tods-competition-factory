@@ -45,7 +45,6 @@ export function addParticipantGroupings({ participants = [] }) {
                 participantOtherName: team.participantOtherName,
                 participantName: team.participantName,
                 participantId: team.participantId,
-                representing: team.representing,
               });
             }
           }
@@ -77,7 +76,6 @@ export function addParticipantGroupings({ participants = [] }) {
                 participantOtherName: group.participantOtherName,
                 participantName: group.participantName,
                 participantId: group.participantId,
-                representing: group.representing,
               });
             }
           }

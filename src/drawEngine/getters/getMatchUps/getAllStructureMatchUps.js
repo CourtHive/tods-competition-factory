@@ -426,7 +426,6 @@ export function getAllStructureMatchUps({
               participantOtherName: teamParticipant.participanOthertName,
               participantName: teamParticipant.participantName,
               participantId: teamParticipant.participantId,
-              representing: teamParticipant.representing,
             });
 
           return {
