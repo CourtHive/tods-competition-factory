@@ -3,9 +3,9 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { positionTargets } from '../positionGovernor/positionTargets';
 
 export function addGoesTo({
+  inContextDrawMatchUps,
   drawDefinition,
   matchUpsMap,
-  inContextDrawMatchUps,
 }) {
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps, matchUpsMap } = getAllDrawMatchUps({
@@ -35,9 +35,11 @@ export function addGoesTo({
 
     if (winnerMatchUpId) {
       Object.assign(matchUp, { winnerMatchUpId });
+      Object.assign(inContextMatchUp, { winnerMatchUpId });
     }
     if (loserMatchUpId) {
       Object.assign(matchUp, { loserMatchUpId });
+      Object.assign(inContextMatchUp, { loserMatchUpId });
     }
   });
 

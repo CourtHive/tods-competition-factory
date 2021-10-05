@@ -20,17 +20,10 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 export function doubleWalkoverAdvancement(params) {
-  const {
-    drawDefinition,
-    structure,
-    targetData,
-
-    matchUpsMap,
-  } = params;
-
+  const { drawDefinition, matchUpsMap, targetData, structure } = params;
   if (structure.structureType === CONTAINER) return SUCCESS;
-  const { matchUp: sourceMatchUp, targetMatchUps, targetLinks } = targetData;
 
+  const { matchUp: sourceMatchUp, targetMatchUps, targetLinks } = targetData;
   const { loserMatchUp, winnerMatchUp, loserTargetDrawPosition } =
     targetMatchUps;
 
@@ -50,7 +43,6 @@ export function doubleWalkoverAdvancement(params) {
   if (winnerMatchUp) {
     const result = conditionallyAdvanceDrawPosition({
       ...params,
-
       matchUpId: winnerMatchUp.matchUpId,
       sourceMatchUp,
       winnerMatchUp,
@@ -65,15 +57,13 @@ export function doubleWalkoverAdvancement(params) {
 // 2. Advances any drawPosition that is already present
 function conditionallyAdvanceDrawPosition(params) {
   const {
+    inContextDrawMatchUps,
     drawDefinition,
-    structure,
-
-    matchUpId,
     sourceMatchUp,
     winnerMatchUp,
-    inContextDrawMatchUps,
-
     matchUpsMap,
+    structure,
+    matchUpId,
   } = params;
 
   const noContextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
@@ -133,9 +123,9 @@ function conditionallyAdvanceDrawPosition(params) {
   const walkoverWinningSide =
     (hasDrawPosition &&
       getWalkoverWinningSide({
-        matchUpId,
         drawPosition: drawPositions[0],
         inContextDrawMatchUps,
+        matchUpId,
       })) ||
     undefined;
 

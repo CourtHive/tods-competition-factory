@@ -81,7 +81,7 @@ export function getMatchUpDependencies({
       // sort by stage/stageSequence/roundNumber/roundPosition
       .sort(matchUpSort);
 
-    const hasGoesTo = drawMatchUps.find(
+    const hasGoesTo = !!drawMatchUps.find(
       ({ winnerMatchUpId, loserMatchUpId }) => winnerMatchUpId || loserMatchUpId
     );
     if (!hasGoesTo) {

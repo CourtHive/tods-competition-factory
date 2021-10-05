@@ -10,6 +10,7 @@ import { isActiveDownstream } from './isActiveDownstream';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { addMatchUpScheduleItems } from './scheduleItems';
 import { swapWinnerLoser } from './swapWinnerLoser';
+import { addGoesTo } from './addGoesTo';
 import {
   isDirectingMatchUpStatus,
   isNonDirectingMatchUpStatus,
@@ -74,12 +75,21 @@ export function setMatchUpStatus(params) {
 
   // Get map of all drawMatchUps and inContextDrawMatchUPs ---------------------
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
-  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+  let { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     includeByeMatchUps: true,
     inContext: true,
     drawDefinition,
     matchUpsMap,
   });
+  const hasGoesTo = !!inContextDrawMatchUps.find(
+    ({ winnerMatchUpId, loserMatchUpId }) => winnerMatchUpId || loserMatchUpId
+  );
+  if (!hasGoesTo)
+    ({ inContextDrawMatchUps } = addGoesTo({
+      inContextDrawMatchUps,
+      drawDefinition,
+      matchUpsMap,
+    }));
 
   // Find target matchUp ------------------------------------------------------
   const matchUp = matchUpsMap.drawMatchUps.find(
@@ -93,7 +103,7 @@ export function setMatchUpStatus(params) {
   if (!matchUp || !inContextDrawMatchUps) return { error: MATCHUP_NOT_FOUND };
 
   if ((matchUp.winningSide || winningSide) && matchUpStatus === BYE) {
-    return { error: INCOMPATIBLE_MATCHUP_STATUS };
+    return { error: INCOMPATIBLE_MATCHUP_STATUS, matchUpStatus };
   }
 
   // Check validity of matchUpStatus considering assigned drawPositions -------
@@ -185,7 +195,11 @@ export function setMatchUpStatus(params) {
     !winningSide &&
     isNonDirectingMatchUpStatus({ matchUpStatus })
   ) {
-    return { error: INCOMPATIBLE_MATCHUP_STATUS };
+    return {
+      error: INCOMPATIBLE_MATCHUP_STATUS,
+      activeDownstream,
+      winningSide,
+    };
   }
 
   const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
@@ -196,7 +210,11 @@ export function setMatchUpStatus(params) {
     matchUpStatus &&
     !directingMatchUpStatus
   ) {
-    return { error: INCOMPATIBLE_MATCHUP_STATUS };
+    return {
+      error: INCOMPATIBLE_MATCHUP_STATUS,
+      directingMatchUpStatus,
+      matchUpStatus,
+    };
   }
 
   const validWinningSideChange =
