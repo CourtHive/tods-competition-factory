@@ -33,6 +33,7 @@ export function getScheduleTimes({
   remainingScheduleTimes, // times remaining from previous scheduling iteration
   averageMatchUpMinutes = 90,
   date = currentUTCDate(),
+  clearScheduleDates,
   periodLength = 30,
   startTime = '08:00',
   endTime = '19:00',
@@ -69,6 +70,7 @@ export function getScheduleTimes({
   const { virtualCourts } = generateVirtualCourts({
     remainingScheduleTimes,
     scheduleDate: date,
+    clearScheduleDates,
     periodLength,
     bookings,
     courts,

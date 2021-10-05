@@ -5,9 +5,10 @@ import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConsta
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function clearScheduledMatchUps({
-  tournamentRecords,
-  ignoreMatchUpStatuses = completedMatchUpStatuses,
   scheduleAttributes = ['scheduledDate', 'scheduledTime'],
+  ignoreMatchUpStatuses = completedMatchUpStatuses,
+  tournamentRecords,
+  scheduledDates,
 }) {
   const tournamentIds =
     typeof tournamentRecords === 'object' &&
@@ -19,9 +20,10 @@ export function clearScheduledMatchUps({
   for (const tournamentId of tournamentIds) {
     const tournamentRecord = tournamentRecords[tournamentId];
     const result = clearSchedules({
-      tournamentRecord,
       ignoreMatchUpStatuses,
       scheduleAttributes,
+      tournamentRecord,
+      scheduledDates,
     });
     if (result.error) return result;
   }

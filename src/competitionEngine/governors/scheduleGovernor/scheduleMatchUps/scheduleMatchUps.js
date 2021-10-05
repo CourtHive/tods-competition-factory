@@ -75,6 +75,7 @@ export function scheduleMatchUps({
 
   checkPotentialRequestConflicts = true,
   remainingScheduleTimes,
+  clearScheduleDates,
 
   periodLength = 30,
   scheduleDate,
@@ -142,6 +143,7 @@ export function scheduleMatchUps({
       endTime: extractTime(endTime),
       scheduleDate: extractDate(scheduleDate),
       averageMatchUpMinutes,
+      clearScheduleDates,
       periodLength,
       venueIds,
     });

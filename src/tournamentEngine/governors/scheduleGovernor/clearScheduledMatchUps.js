@@ -9,9 +9,10 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function clearScheduledMatchUps({
-  tournamentRecord,
-  ignoreMatchUpStatuses = completedMatchUpStatuses,
   scheduleAttributes = ['scheduledDate', 'scheduledTime'],
+  ignoreMatchUpStatuses = completedMatchUpStatuses,
+  tournamentRecord,
+  scheduledDates,
 }) {
   if (typeof tournamentRecord !== 'object')
     return { error: MISSING_TOURNAMENT_RECORD };
@@ -19,6 +20,7 @@ export function clearScheduledMatchUps({
   if (!Array.isArray(ignoreMatchUpStatuses)) return { error: INVALID_VALUES };
 
   const { matchUps } = allTournamentMatchUps({
+    matchUpFilters: { scheduledDates },
     tournamentRecord,
   });
 
@@ -37,8 +39,8 @@ export function clearScheduledMatchUps({
   };
 
   return bulkScheduleMatchUps({
-    tournamentRecord,
-    matchUpIds: relevantMatchUpIds,
     schedule: clearedScheduleValues,
+    matchUpIds: relevantMatchUpIds,
+    tournamentRecord,
   });
 }

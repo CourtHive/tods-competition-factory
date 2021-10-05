@@ -18,6 +18,7 @@ import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { checkDailyLimits } from '../scheduleMatchUps/checkDailyLimits';
 import { getPersonRequests } from '../scheduleMatchUps/personRequests';
 import { addNotice, getTopics } from '../../../../global/globalState';
+import { clearScheduledMatchUps } from '../clearScheduledMatchUps';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 import { generateScheduleTimes } from './generateScheduleTimes';
 import {
@@ -48,8 +49,9 @@ import {
 
 export function jinnScheduler({
   checkPotentialRequestConflicts = true, // passed to checkRequestConflicts
-  tournamentRecords,
+  clearScheduleDates,
   scheduleDates = [],
+  tournamentRecords,
   periodLength,
   dryRun,
 }) {
@@ -88,6 +90,13 @@ export function jinnScheduler({
 
   if (!profileDates.length) {
     return { error: NO_VALID_DATES };
+  }
+
+  if (clearScheduleDates && !dryRun) {
+    const scheduledDates = Array.isArray(clearScheduleDates)
+      ? clearScheduleDates
+      : undefined;
+    clearScheduledMatchUps({ tournamentRecords, scheduledDates });
   }
 
   const { courts } = getVenuesAndCourts({ tournamentRecords });
@@ -206,6 +215,7 @@ export function jinnScheduler({
         averageMatchUpMinutes: groupedRounds[0]?.averageMinutes,
         scheduleDate: extractDate(scheduleDate),
         venueIds: [venue.venueId],
+        clearScheduleDates,
         tournamentRecords,
         periodLength,
         matchUps,
