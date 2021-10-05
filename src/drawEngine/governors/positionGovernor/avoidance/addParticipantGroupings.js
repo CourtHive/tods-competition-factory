@@ -34,9 +34,15 @@ export function addParticipantGroupings({ participants = [] }) {
       teamParticipants.forEach((team) => {
         (team?.individualParticipantIds || []).forEach(
           (individualParticipantId) => {
-            if (individualParticipantId === participantId) {
+            if (
+              individualParticipantId === participantId &&
+              !participant.teamParticipantIds.includes(team.participantId)
+            ) {
               participant.teamParticipantIds.push(team.participantId);
               participant.teams.push({
+                participantRoleResponsibilities:
+                  team.participantRoleResponsibilities,
+                participantOtherName: team.participantOtherName,
                 participantName: team.participantName,
                 participantId: team.participantId,
               });
@@ -47,7 +53,10 @@ export function addParticipantGroupings({ participants = [] }) {
       pairParticipants.forEach((pair) => {
         (pair?.individualParticipantIds || []).forEach(
           (individualParticipantId) => {
-            if (individualParticipantId === participantId) {
+            if (
+              individualParticipantId === participantId &&
+              !participant.pairParticipantIds.includes(pair.participantId)
+            ) {
               participant.pairParticipantIds.push(pair.participantId);
             }
           }
@@ -56,9 +65,15 @@ export function addParticipantGroupings({ participants = [] }) {
       groupParticipants.forEach((group) => {
         (group?.individualParticipantIds || []).forEach(
           (individualParticipantId) => {
-            if (individualParticipantId === participantId) {
+            if (
+              individualParticipantId === participantId &&
+              !participant.groupParticipantIds.includes(group.participantId)
+            ) {
               participant.groupParticipantIds.push(group.participantId);
               participant.groups.push({
+                participantRoleResponsibilities:
+                  group.participantRoleResponsibilities,
+                participantOtherName: group.participantOtherName,
                 participantName: group.participantName,
                 participantId: group.participantId,
               });
