@@ -56,27 +56,42 @@ export function addParticipantContext(params) {
   allTournamentParticipants.forEach((participant) => {
     if (participant.participantType === GROUP) {
       const groupParticipantId = participant.participantId;
-      participant.individualParticipantIds.forEach((participantId) =>
-        participantIdMap[participantId].groupParticipantIds.push(
-          groupParticipantId
+      participant.individualParticipantIds.forEach((participantId) => {
+        if (
+          !participantIdMap[participantId].groupParticipantIds.includes(
+            groupParticipantId
+          )
         )
-      );
+          participantIdMap[participantId].groupParticipantIds.push(
+            groupParticipantId
+          );
+      });
     }
     if (participant.participantType === TEAM) {
       const teamParticipantId = participant.participantId;
-      participant.individualParticipantIds.forEach((participantId) =>
-        participantIdMap[participantId].teamParticipantIds.push(
-          teamParticipantId
+      participant.individualParticipantIds.forEach((participantId) => {
+        if (
+          !participantIdMap[participantId].teamParticipantIds.includes(
+            teamParticipantId
+          )
         )
-      );
+          participantIdMap[participantId].teamParticipantIds.push(
+            teamParticipantId
+          );
+      });
     }
     if (participant.participantType === PAIR) {
       const pairParticipantId = participant.participantId;
-      participant.individualParticipantIds.forEach((participantId) =>
+      participant.individualParticipantIds.forEach((participantId) => {
+        if (
+          !participantIdMap[participantId].pairParticipantIds.includes(
+            pairParticipantId
+          )
+        );
         participantIdMap[participantId].pairParticipantIds.push(
           pairParticipantId
-        )
-      );
+        );
+      });
     }
   });
 
