@@ -27,18 +27,17 @@ import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorCondition
  * @returns
  */
 export function calculateScheduleTimes({
-  tournamentRecords,
-  remainingScheduleTimes,
-
   calculateStartTimeFromCourts = true,
   defaultRecoveryMinutes = 60,
   averageMatchUpMinutes = 90,
+  remainingScheduleTimes,
+  clearScheduleDates,
   periodLength = 30,
+  tournamentRecords,
   scheduleDate,
   startTime,
-  endTime,
-
   venueIds,
+  endTime,
 }) {
   if (
     typeof tournamentRecords !== 'object' ||
@@ -162,12 +161,13 @@ export function calculateScheduleTimes({
     calculateStartTimeFromCourts,
     remainingScheduleTimes,
     averageMatchUpMinutes,
+    date: scheduleDate,
+    clearScheduleDates,
     periodLength,
     startTime,
     endTime,
     bookings,
     courts,
-    date: scheduleDate,
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);
 

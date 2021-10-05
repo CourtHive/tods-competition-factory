@@ -22,8 +22,9 @@ import {
 export function scheduleProfileRounds({
   garmanSinglePass = true, // forces all rounds to have greatestAverageMinutes
   checkPotentialRequestConflicts = true,
-  tournamentRecords,
+  clearScheduleDates,
   scheduleDates = [],
+  tournamentRecords,
   periodLength,
   jinn = true,
   dryRun,
@@ -34,6 +35,7 @@ export function scheduleProfileRounds({
   if (jinn)
     return jinnScheduler({
       checkPotentialRequestConflicts,
+      clearScheduleDates,
       tournamentRecords,
       scheduleDates,
       periodLength,

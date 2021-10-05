@@ -144,12 +144,8 @@ export function filterMatchUps(params) {
     }
 
     if (targetScheduledDates?.length) {
-      const { scheduledTime } = scheduledMatchUpTime({
-        matchUp,
-      });
-      const { scheduledDate: matchUpDate } = scheduledMatchUpDate({
-        matchUp,
-      });
+      const { scheduledTime } = scheduledMatchUpTime({ matchUp });
+      const { scheduledDate: matchUpDate } = scheduledMatchUpDate({ matchUp });
       const scheduledTimeDate = extractDate(scheduledTime);
       const comparisonDate = scheduledTimeDate || matchUpDate;
 

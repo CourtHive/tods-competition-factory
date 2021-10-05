@@ -14,6 +14,7 @@ import {
 
 export function generateVirtualCourts({
   remainingScheduleTimes = [],
+  clearScheduleDates,
   periodLength = 30,
   bookings = [],
   scheduleDate,
@@ -23,6 +24,14 @@ export function generateVirtualCourts({
     return { error: INVALID_VALUES, courts };
   if (!Array.isArray(bookings)) return { error: INVALID_BOOKINGS };
   if (!isValidDateString(scheduleDate)) return { error: INVALID_DATE };
+
+  if (clearScheduleDates) {
+    if (Array.isArray(clearScheduleDates)) {
+      if (clearScheduleDates.includes(scheduleDate)) bookings = [];
+    } else {
+      bookings = [];
+    }
+  }
 
   const { courtBookings, unassignedBookings } = bookings.reduce(
     (accumulator, booking) => {

@@ -23,6 +23,8 @@ export function generateScheduleTimes({
   calculateStartTimeFromCourts = true,
   defaultRecoveryMinutes = 60,
   averageMatchUpMinutes = 90,
+  remainingScheduleTimes,
+  clearScheduleDates,
   periodLength = 30,
   tournamentRecords,
   scheduleDate,
@@ -30,8 +32,6 @@ export function generateScheduleTimes({
   venueIds,
   matchUps,
   endTime,
-
-  remainingScheduleTimes,
 }) {
   if (
     typeof tournamentRecords !== 'object' ||
@@ -97,12 +97,13 @@ export function generateScheduleTimes({
     calculateStartTimeFromCourts,
     remainingScheduleTimes,
     averageMatchUpMinutes,
+    clearScheduleDates,
+    date: scheduleDate,
     periodLength,
     startTime,
     endTime,
     bookings,
     courts,
-    date: scheduleDate,
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);
 
