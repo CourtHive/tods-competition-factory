@@ -96,7 +96,7 @@ export function bulkRescheduleMatchUps({
           (matchUp) => matchUp.matchUpId === matchUpId
         );
         const schedule = inContextMatchUp.schedule;
-        const { scheduledTime, scheduledDate, averageMinutes } = schedule;
+        const { scheduledTime, scheduledDate } = schedule;
 
         let doNotReschedule, newScheduledTime, newScheduledDate;
         if (minutesChange && scheduledTime) {
@@ -104,7 +104,7 @@ export function bulkRescheduleMatchUps({
           const currentDayMinutes = timeStringMinutes(
             extractTime(scheduledTime)
           );
-          const newTime = currentDayMinutes + minutesChange + averageMinutes;
+          const newTime = currentDayMinutes + minutesChange;
           doNotReschedule = newTime < 0 || newTime > dayTotalMinutes;
 
           if (!doNotReschedule) {
