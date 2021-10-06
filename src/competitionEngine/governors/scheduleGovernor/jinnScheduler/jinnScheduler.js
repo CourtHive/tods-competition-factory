@@ -8,6 +8,7 @@ import { getScheduledRoundsDetails } from '../schedulingProfile/getScheduledRoun
 import { updateTimeAfterRecovery } from '../scheduleMatchUps/updateTimeAfterRecovery';
 import { getDrawDefinition } from '../../../../tournamentEngine/getters/eventGetter';
 import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
+import { checkDependendantTiming } from '../scheduleMatchUps/checkDependantTiming';
 import { checkRequestConflicts } from '../scheduleMatchUps/checkRequestConflicts';
 import { getSchedulingProfile } from '../schedulingProfile/schedulingProfile';
 import { processNextMatchUps } from '../scheduleMatchUps/processNextMatchUps';
@@ -223,9 +224,14 @@ export function jinnScheduler({
 
       // first build up a map of matchUpNotBeforeTimes and matchUpPotentialParticipantIds
       // based on already scheduled matchUps
-      const alreadyScheduled = matchUps.filter(({ matchUpId }) =>
-        dateScheduledMatchUpIds.includes(matchUpId)
-      );
+      const clearDate = Array.isArray(clearScheduleDates)
+        ? clearScheduleDates.includes(scheduleDate)
+        : clearScheduleDates;
+      const alreadyScheduled = clearDate
+        ? []
+        : matchUps.filter(({ matchUpId }) =>
+            dateScheduledMatchUpIds.includes(matchUpId)
+          );
       for (const matchUp of alreadyScheduled) {
         modifyParticipantMatchUpsCount({
           matchUpPotentialParticipantIds,
@@ -264,9 +270,8 @@ export function jinnScheduler({
         )
         .filter(Boolean)
         .filter((matchUp) => {
-          const alreadyScheduled = dateScheduledMatchUpIds.includes(
-            matchUp.matchUpId
-          );
+          const alreadyScheduled =
+            !clearDate && dateScheduledMatchUpIds.includes(matchUp.matchUpId);
 
           const doNotSchedule = [
             BYE,
@@ -354,6 +359,15 @@ export function jinnScheduler({
                   overLimitMatchUpIds[scheduleDate].push(matchUpId);
                 return false;
               }
+
+              const { scheduledDependant } = checkDependendantTiming({
+                matchUpScheduleTimes,
+                matchUpDependencies,
+                scheduleTime,
+                matchUpId,
+                details,
+              });
+              if (scheduledDependant) return false;
 
               const { dependenciesScheduled, remainingDependencies } =
                 checkDependenciesScheduled({

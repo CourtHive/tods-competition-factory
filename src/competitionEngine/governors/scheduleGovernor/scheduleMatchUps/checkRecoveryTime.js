@@ -12,6 +12,7 @@ export function checkRecoveryTime({
   const participantIdDependencies = (
     matchUpDependencies?.[matchUp.matchUpId]?.participantIds || []
   ).flat();
+
   const sufficientTimeForIndiiduals = participantIdDependencies.every(
     (participantId) => {
       checkParticipantProfileInitialization({
