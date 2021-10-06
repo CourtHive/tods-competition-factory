@@ -9,6 +9,7 @@ export function checkParticipantProfileInitialization({
       priorMatchUpType: undefined,
       potentialRecovery: {}, // { [drawId]: [timeString] } - timeAfterRecovery for potential matchUps by drawId
       potentialCounted: {}, // whether a potential matchUp has been counted for daily limits for a specific drawId
+      potentialBookings: {},
       bookings: [],
       counters: {},
     };
@@ -17,14 +18,23 @@ export function checkParticipantProfileInitialization({
 
 export function addParticipantPotentialRecovery({
   individualParticipantProfiles,
-  timeAfterRecovery,
+  recoveryValue,
   participantId,
+  scheduleTime,
   drawId,
 }) {
   if (!individualParticipantProfiles[participantId].potentialRecovery[drawId]) {
     individualParticipantProfiles[participantId].potentialRecovery[drawId] = [];
   }
   individualParticipantProfiles[participantId].potentialRecovery[drawId].push(
-    timeAfterRecovery
+    recoveryValue
   );
+
+  if (!individualParticipantProfiles[participantId].potentialBookings[drawId]) {
+    individualParticipantProfiles[participantId].potentialBookings[drawId] = [];
+  }
+  individualParticipantProfiles[participantId].potentialBookings[drawId].push({
+    timeAfterRecovery: recoveryValue,
+    scheduleTime,
+  });
 }

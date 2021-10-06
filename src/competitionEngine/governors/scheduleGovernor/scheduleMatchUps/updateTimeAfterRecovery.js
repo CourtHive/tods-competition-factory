@@ -15,9 +15,9 @@ export function updateTimeAfterRecovery({
   matchUpNotBeforeTimes,
   matchUpDependencies,
 
-  averageMatchUpMinutes,
+  averageMatchUpMinutes = 0,
   typeChangeRecoveryMinutes,
-  recoveryMinutes,
+  recoveryMinutes = 0,
   scheduleTime,
   matchUp,
 }) {
@@ -28,6 +28,7 @@ export function updateTimeAfterRecovery({
         scheduleTime,
         parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
       );
+
   const typeChangeTimeAfterRecovery =
     typeChangeRecoveryMinutes &&
     (endTime
@@ -51,27 +52,25 @@ export function updateTimeAfterRecovery({
       participantId,
     });
 
+    const matchUpTypeChange =
+      individualParticipantProfiles[participantId].priorMatchUpType !==
+      matchUp.matchUpType;
+
+    // if matchUpType of previous matchUp is different, use typeChangeTimeAfterRecovery (if available)
+    const recoveryValue = matchUpTypeChange
+      ? typeChangeTimeAfterRecovery || timeAfterRecovery
+      : timeAfterRecovery;
+
     // check whether this participantId is potential or actual for this matchUp
-    // IF: potential, ONLY keep track of timeAfterRecovery in .potentialRecovery[drawId]
     if (potentialIndividualParticipantIds.includes(participantId)) {
       addParticipantPotentialRecovery({
         individualParticipantProfiles,
         drawId: matchUp.drawId,
+        recoveryValue,
         participantId,
-
-        typeChangeTimeAfterRecovery,
-        timeAfterRecovery,
+        scheduleTime,
       });
     } else {
-      const matchUpTypeChange =
-        individualParticipantProfiles[participantId].priorMatchUpType !==
-        matchUp.matchUpType;
-
-      // if matchUpType of previous matchUp is different, use typeChangeTimeAfterRecovery (if available)
-      const recoveryValue = matchUpTypeChange
-        ? typeChangeTimeAfterRecovery || timeAfterRecovery
-        : timeAfterRecovery;
-
       individualParticipantProfiles[participantId].timeAfterRecovery =
         recoveryValue;
 

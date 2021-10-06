@@ -1,17 +1,28 @@
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
-import { minutesDifference, timeToDate } from '../../../../utilities/dateTime';
+import {
+  addMinutesToTimeString,
+  extractTime,
+  minutesDifference,
+  timeToDate,
+} from '../../../../utilities/dateTime';
+import { hasScheduleOverlap } from './hasScheduleOverlap';
 
 export function checkRecoveryTime({
-  // matchUpPotentialParticipantIds,
   individualParticipantProfiles,
   matchUpNotBeforeTimes,
   matchUpDependencies,
   scheduleTime,
   matchUp,
+  details,
 }) {
   const participantIdDependencies = (
     matchUpDependencies?.[matchUp.matchUpId]?.participantIds || []
   ).flat();
+
+  const averageMatchUpMinutes =
+    details?.minutesMap?.[matchUp.matchUpId]?.averageMinutes || 0;
+  const recoveryMinutes =
+    details?.minutesMap?.[matchUp.matchUpId]?.recoveryMinutes || 0;
 
   const sufficientTimeForIndiiduals = participantIdDependencies.every(
     (participantId) => {
@@ -30,10 +41,7 @@ export function checkRecoveryTime({
           .filter((drawId) => drawId !== matchUp.drawId)
           .map((drawId) => {
             const drawPotentials = profile.potentialRecovery[drawId] || [];
-            if (!Array.isArray(drawPotentials)) {
-              console.log({ drawPotentials });
-              return 0;
-            }
+            if (!Array.isArray(drawPotentials)) return 0;
             return Math.max(...drawPotentials.map(timeToDate), 0);
           }),
         0
@@ -49,6 +57,39 @@ export function checkRecoveryTime({
         timeToDate(scheduleTime),
         false
       );
+
+      // details are provided by jinnScheduler and this enables treating a participant's scheduled matchUps as "bookings"
+      if (details && timeBetween < 0) {
+        const endTime = extractTime(matchUp?.schedule?.endTime);
+        const timeAfterRecovery = endTime
+          ? addMinutesToTimeString(endTime, parseInt(recoveryMinutes))
+          : addMinutesToTimeString(
+              scheduleTime,
+              parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
+            );
+
+        const potentialParticipantBookings = Object.keys(
+          profile.potentialBookings
+        )
+          .filter((drawId) => drawId !== matchUp.drawId)
+          .map((drawId) => profile.potentialBookings[drawId])
+          .flat();
+
+        const participantBookings = [
+          ...potentialParticipantBookings,
+          ...profile.bookings,
+        ];
+
+        const timeOverlap = !!participantBookings.find((booking) => {
+          return hasScheduleOverlap(
+            { scheduleTime, timeAfterRecovery },
+            booking
+          );
+        });
+
+        return !timeOverlap;
+      }
+
       return timeBetween < 0 ? false : true;
     }
   );
