@@ -1,5 +1,9 @@
 import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
-import { dateStringDaysChange } from '../../../utilities/dateTime';
+import {
+  dateStringDaysChange,
+  extractDate,
+  extractTime,
+} from '../../../utilities/dateTime';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -180,8 +184,8 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
 
   ({ matchUps } = competitionEngine.allCompetitionMatchUps());
   scheduledMatchUps = matchUps.filter(hasSchedule);
-  expect(scheduledMatchUps[0].schedule.scheduledTime).toEqual(
-    '2022-01-01T13:00'
+  expect(extractTime(scheduledMatchUps[0].schedule.scheduledTime)).toEqual(
+    '13:00'
   );
 
   // nothing should be rescheduled because scheduledTimes would be next day
@@ -212,4 +216,34 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
     scheduleChange: { daysChange: 2 },
   });
   expect(result.success).toEqual(true);
+
+  result = competitionEngine.bulkRescheduleMatchUps({
+    matchUpIds,
+    scheduleChange: { daysChange: -3, minutesChange: -750 },
+  });
+  expect(result.success).toEqual(true);
+
+  ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+  scheduledMatchUps = matchUps.filter(hasSchedule);
+  expect(extractTime(scheduledMatchUps[0].schedule.scheduledTime)).toEqual(
+    '01:00'
+  );
+  expect(extractDate(scheduledMatchUps[0].schedule.scheduledDate)).toEqual(
+    '2022-01-01'
+  );
+
+  result = competitionEngine.bulkRescheduleMatchUps({
+    matchUpIds,
+    scheduleChange: { daysChange: -1 },
+  });
+  expect(result.success).toEqual(true);
+  expect(result.notRescheduled.length).toEqual(scheduledMatchUps.length);
+
+  const matchUpId = scheduledMatchUps[0].matchUpId;
+  result = competitionEngine.bulkRescheduleMatchUps({
+    matchUpIds: [matchUpId],
+    scheduleChange: { minutesChange: -61 },
+  });
+  expect(result.success).toEqual(true);
+  expect(result.notRescheduled.length).toEqual(1);
 });
