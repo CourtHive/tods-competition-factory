@@ -56,7 +56,7 @@ export function getMatchUpDependencies({
   const initializeMatchUpId = (matchUpId) => {
     if (!matchUpDependencies[matchUpId])
       matchUpDependencies[matchUpId] = {
-        dependantMatchUpIds: [],
+        dependentMatchUpIds: [],
         participantIds: [],
         matchUpIds: [],
       };
@@ -67,7 +67,7 @@ export function getMatchUpDependencies({
       matchUpDependencies[targetMatchUpId].matchUpIds.push(matchUpIdDependency)
     );
     matchUpDependencies[targetMatchUpId].matchUpIds.push(matchUpId);
-    matchUpDependencies[matchUpId].dependantMatchUpIds.push(targetMatchUpId);
+    matchUpDependencies[matchUpId].dependentMatchUpIds.push(targetMatchUpId);
 
     if (includeParticipantDependencies) {
       matchUpDependencies[matchUpId].participantIds.forEach(
