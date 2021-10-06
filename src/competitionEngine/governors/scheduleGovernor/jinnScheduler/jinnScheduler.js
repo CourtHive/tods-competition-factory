@@ -223,9 +223,14 @@ export function jinnScheduler({
 
       // first build up a map of matchUpNotBeforeTimes and matchUpPotentialParticipantIds
       // based on already scheduled matchUps
-      const alreadyScheduled = matchUps.filter(({ matchUpId }) =>
-        dateScheduledMatchUpIds.includes(matchUpId)
-      );
+      const clearDate = Array.isArray(clearScheduleDates)
+        ? clearScheduleDates.includes(scheduleDate)
+        : clearScheduleDates;
+      const alreadyScheduled = clearDate
+        ? []
+        : matchUps.filter(({ matchUpId }) =>
+            dateScheduledMatchUpIds.includes(matchUpId)
+          );
       for (const matchUp of alreadyScheduled) {
         modifyParticipantMatchUpsCount({
           matchUpPotentialParticipantIds,
@@ -264,9 +269,8 @@ export function jinnScheduler({
         )
         .filter(Boolean)
         .filter((matchUp) => {
-          const alreadyScheduled = dateScheduledMatchUpIds.includes(
-            matchUp.matchUpId
-          );
+          const alreadyScheduled =
+            !clearDate && dateScheduledMatchUpIds.includes(matchUp.matchUpId);
 
           const doNotSchedule = [
             BYE,
