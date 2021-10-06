@@ -1,5 +1,5 @@
-import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
+import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
 import { extractTime, timeStringMinutes } from '../../utilities/dateTime';
 import { competitionEngine } from '../..';
 import fs from 'fs';
@@ -16,17 +16,23 @@ competitionEngine.setState(tournamentRecord);
 const showGlobalLog = false;
 
 it('can auto schedule matchUps which are missing winnerMatchUpId and loserMatchUpid', () => {
+  let { matchUps } = competitionEngine.allCompetitionMatchUps();
+  let scheduledMatchUps = matchUps.filter(hasSchedule);
+  expect(scheduledMatchUps.length).toEqual(0);
+
   const { schedulingProfile } = competitionEngine.getSchedulingProfile();
   expect(schedulingProfile.length).toEqual(1);
+
   const { issuesCount } = competitionEngine.getSchedulingProfileIssues();
   expect(issuesCount).toEqual(0);
 
   const { startDate } = competitionEngine.getCompetitionDateRange();
+
   let result = competitionEngine.scheduleProfileRounds();
   let scheduledIdsCount = result.scheduledMatchUpIds[startDate].length;
 
-  const { matchUps } = competitionEngine.allCompetitionMatchUps();
-  const scheduledMatchUps = matchUps.filter(hasSchedule);
+  ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+  scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toEqual(scheduledIdsCount);
 
   scheduledMatchUps.forEach(({ matchUpType, schedule }) => {

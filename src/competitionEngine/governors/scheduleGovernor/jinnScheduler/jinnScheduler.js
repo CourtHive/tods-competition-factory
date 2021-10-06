@@ -392,6 +392,7 @@ export function jinnScheduler({
                 matchUpNotBeforeTimes,
                 matchUpDependencies,
                 scheduleTime,
+                details,
                 matchUp,
               });
 
@@ -404,8 +405,6 @@ export function jinnScheduler({
                 return false;
               }
 
-              const recoveryMinutes =
-                details.minutesMap?.[matchUpId]?.recoveryMinutes;
               const averageMatchUpMinutes = details.greatestAverageMinutes;
               // details.minutesMap?.[matchUpId]?.averageMinutes;
               // TODO: check the previous scheduled matchUp for each participantId/potentialParticipantId
@@ -429,6 +428,9 @@ export function jinnScheduler({
               }
 
               bumpLimits(relevantParticipantIds, matchUpType);
+
+              const recoveryMinutes =
+                details.minutesMap?.[matchUpId]?.recoveryMinutes;
 
               updateTimeAfterRecovery({
                 matchUpPotentialParticipantIds,

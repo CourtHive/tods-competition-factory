@@ -1,7 +1,7 @@
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
-import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 
 it('will not schedule Round 1 after Round 2 if Round 2 was manually scheduled at the start of the day', () => {
   const venueId = 'venue1';
@@ -27,7 +27,7 @@ it('will not schedule Round 1 after Round 2 if Round 2 was manually scheduled at
   const startDate = '2022-01-01';
   const endDate = '2022-01-07';
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
+    policyDefinitions: POLICY_SCHEDULING_USTA,
     eventProfiles,
     venueProfiles,
     startDate,
@@ -77,7 +77,7 @@ it('will not schedule Round 1 after Round 2 if Round 2 was manually scheduled at
   expect(result.scheduledMatchUpIds[startDate].length).toEqual(0);
 });
 
-it.skip('will schedule Round 1 after Round 2 if Round 2 was manually scheduled later in the day', () => {
+it('will schedule Round 1 after Round 2 if Round 2 was manually scheduled later in the day', () => {
   const venueId = 'venue1';
   const venueProfiles = [
     {
@@ -101,7 +101,7 @@ it.skip('will schedule Round 1 after Round 2 if Round 2 was manually scheduled l
   const startDate = '2022-01-01';
   const endDate = '2022-01-07';
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
+    policyDefinitions: POLICY_SCHEDULING_USTA,
     eventProfiles,
     venueProfiles,
     startDate,
@@ -148,6 +148,5 @@ it.skip('will schedule Round 1 after Round 2 if Round 2 was manually scheduled l
   result = competitionEngine.scheduleProfileRounds({
     scheduleDates: [startDate],
   });
-  console.log(result);
-  // expect(result.scheduledMatchUpIds[startDate].length).toEqual(0);
+  expect(result.scheduledMatchUpIds[startDate].length).toEqual(4);
 });
