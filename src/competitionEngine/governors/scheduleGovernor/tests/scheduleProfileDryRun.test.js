@@ -53,7 +53,7 @@ it('can simulate clearing schedule on dryRun scheduleProfileRounds', () => {
   let result = competitionEngine.bulkScheduleMatchUps({
     matchUpContextIds,
     schedule: {
-      scheduledTime: '8:00', // time will automatically be fixed to '08:00'
+      scheduledTime: '08:00',
       scheduledDate: startDate,
       venueId,
     },
