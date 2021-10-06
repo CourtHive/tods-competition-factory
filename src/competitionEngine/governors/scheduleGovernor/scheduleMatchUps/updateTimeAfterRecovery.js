@@ -68,10 +68,17 @@ export function updateTimeAfterRecovery({
         matchUp.matchUpType;
 
       // if matchUpType of previous matchUp is different, use typeChangeTimeAfterRecovery (if available)
+      const recoveryValue = matchUpTypeChange
+        ? typeChangeTimeAfterRecovery || timeAfterRecovery
+        : timeAfterRecovery;
+
       individualParticipantProfiles[participantId].timeAfterRecovery =
-        matchUpTypeChange
-          ? typeChangeTimeAfterRecovery || timeAfterRecovery
-          : timeAfterRecovery;
+        recoveryValue;
+
+      individualParticipantProfiles[participantId].bookings.push({
+        scheduleTime,
+        timeAfterRecovery: recoveryValue,
+      });
     }
   });
 

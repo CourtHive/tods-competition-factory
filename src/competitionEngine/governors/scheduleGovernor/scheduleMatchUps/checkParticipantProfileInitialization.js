@@ -9,6 +9,7 @@ export function checkParticipantProfileInitialization({
       priorMatchUpType: undefined,
       potentialRecovery: {}, // { [drawId]: [timeString] } - timeAfterRecovery for potential matchUps by drawId
       potentialCounted: {}, // whether a potential matchUp has been counted for daily limits for a specific drawId
+      bookings: [],
       counters: {},
     };
   }
