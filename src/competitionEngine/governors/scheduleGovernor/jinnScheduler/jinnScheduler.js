@@ -8,6 +8,7 @@ import { getScheduledRoundsDetails } from '../schedulingProfile/getScheduledRoun
 import { updateTimeAfterRecovery } from '../scheduleMatchUps/updateTimeAfterRecovery';
 import { getDrawDefinition } from '../../../../tournamentEngine/getters/eventGetter';
 import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
+import { checkDependendantTiming } from '../scheduleMatchUps/checkDependantTiming';
 import { checkRequestConflicts } from '../scheduleMatchUps/checkRequestConflicts';
 import { getSchedulingProfile } from '../schedulingProfile/schedulingProfile';
 import { processNextMatchUps } from '../scheduleMatchUps/processNextMatchUps';
@@ -358,6 +359,15 @@ export function jinnScheduler({
                   overLimitMatchUpIds[scheduleDate].push(matchUpId);
                 return false;
               }
+
+              const { scheduledDependant } = checkDependendantTiming({
+                matchUpScheduleTimes,
+                matchUpDependencies,
+                scheduleTime,
+                matchUpId,
+                details,
+              });
+              if (scheduledDependant) return false;
 
               const { dependenciesScheduled, remainingDependencies } =
                 checkDependenciesScheduled({
