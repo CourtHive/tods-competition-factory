@@ -109,13 +109,15 @@ export function generateVirtualCourts({
         let startDifference;
         const timeSlot = timeSlots.find(({ startTime, endTime }) => {
           startDifference = timeStringMinutes(startTime) - startMinutes;
+          const startFits = startMinutes >= timeStringMinutes(startTime);
           const endFits = endMinutes <= timeStringMinutes(endTime);
           return (
             endFits &&
             best.startDifference !== 0 &&
-            (startDifference === 0 || startDifference + periodLength >= 0) &&
-            (best.startDifference === undefined ||
-              startDifference < best.startDifference)
+            (((startDifference === 0 || startDifference + periodLength >= 0) &&
+              (best.startDifference === undefined ||
+                startDifference < best.startDifference)) ||
+              startFits)
           );
         });
         return timeSlot ? { courtId, startDifference } : best;
