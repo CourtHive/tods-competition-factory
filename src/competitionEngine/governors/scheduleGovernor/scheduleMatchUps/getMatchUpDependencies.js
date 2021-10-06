@@ -24,8 +24,8 @@ import {
  * @returns { [matchUpId]: { matchUpIds: [matchUpIdDependency] }, participantIds: [potentialParticipantId] }
  */
 export function getMatchUpDependencies({
-  tournamentRecords,
   includeParticipantDependencies,
+  tournamentRecords,
   matchUps = [], // requires matchUps { inContext: true }
   drawIds = [],
 }) {
@@ -55,7 +55,11 @@ export function getMatchUpDependencies({
 
   const initializeMatchUpId = (matchUpId) => {
     if (!matchUpDependencies[matchUpId])
-      matchUpDependencies[matchUpId] = { matchUpIds: [], participantIds: [] };
+      matchUpDependencies[matchUpId] = {
+        dependantMatchUpIds: [],
+        participantIds: [],
+        matchUpIds: [],
+      };
   };
 
   const propagateDependencies = (matchUpId, targetMatchUpId) => {
@@ -63,6 +67,7 @@ export function getMatchUpDependencies({
       matchUpDependencies[targetMatchUpId].matchUpIds.push(matchUpIdDependency)
     );
     matchUpDependencies[targetMatchUpId].matchUpIds.push(matchUpId);
+    matchUpDependencies[matchUpId].dependantMatchUpIds.push(targetMatchUpId);
 
     if (includeParticipantDependencies) {
       matchUpDependencies[matchUpId].participantIds.forEach(
