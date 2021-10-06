@@ -1,10 +1,6 @@
 import { jinnScheduler } from '../jinnScheduler/jinnScheduler';
 
-import {
-  INVALID_VALUES,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../../../constants/errorConditionConstants';
-
+// abstraction layer to allow other schedulers to be defined at a later time
 export function scheduleProfileRounds({
   checkPotentialRequestConflicts = true,
   clearScheduleDates,
@@ -13,9 +9,6 @@ export function scheduleProfileRounds({
   periodLength,
   dryRun,
 }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
-
   return jinnScheduler({
     checkPotentialRequestConflicts,
     clearScheduleDates,

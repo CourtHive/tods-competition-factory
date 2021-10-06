@@ -127,7 +127,6 @@ it.each([
 
     expect(dependency).not.toBeUndefined();
     expect(recovery).not.toBeUndefined();
-    expect(schedulerResult.jinn).toEqual(true);
 
     const dependencyDeferred =
       dependency &&

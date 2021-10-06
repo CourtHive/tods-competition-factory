@@ -600,6 +600,5 @@ export function jinnScheduler({
     noTimeMatchUpIds,
     requestConflicts,
     scheduledDates,
-    jinn: true,
   };
 }

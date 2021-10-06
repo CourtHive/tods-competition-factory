@@ -55,7 +55,6 @@ export function generateTournamentRecord({
   endDate,
   goesTo,
   uuids,
-  jinn,
 } = {}) {
   let { participantsCount, participantType = INDIVIDUAL } =
     participantsProfile || {};
@@ -337,7 +336,7 @@ export function generateTournamentRecord({
       const { tournamentId } = tournamentRecord;
       const tournamentRecords = { [tournamentId]: tournamentRecord };
 
-      schedulerResult = scheduleProfileRounds({ tournamentRecords, jinn });
+      schedulerResult = scheduleProfileRounds({ tournamentRecords });
     }
   }
 
