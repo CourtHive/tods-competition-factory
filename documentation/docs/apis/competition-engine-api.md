@@ -1008,6 +1008,7 @@ Auto-schedules all rounds which have been specified in a `schedulingProfile` whi
 const result = competitionEngine.scheduleProfileRounds({
   checkPotentialRequestConflicts, // boolean - defaults to true - consider individual requests when matchUp participants are "potential"
   periodLength = 30, // optional - size of scheduling blocks
+  clearScheduleDates, // optional - boolean: true to clear ALL dates, otherwise array of scheduleDates to clear
   scheduleDates, // optional array of dates to schedule
   dryRun, // boolean - only report what would happen without making modifications
 });
