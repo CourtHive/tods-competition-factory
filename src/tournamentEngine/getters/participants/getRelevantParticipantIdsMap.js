@@ -32,12 +32,14 @@ export function getRelevantParticipantIdsMap({
       ({ participantId, participantType, individualParticipantIds }) => {
         typeof processParticipantId === 'function' &&
           processParticipantId(participantId);
+
         const individualParticipantIdObjects = (
           individualParticipantIds || []
         ).map((relevantParticipantId) => ({
           relevantParticipantId,
           participantType: INDIVIDUAL,
         }));
+
         return {
           [participantId]: individualParticipantIdObjects.concat({
             relevantParticipantId: participantId,

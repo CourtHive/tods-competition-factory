@@ -1,12 +1,12 @@
 import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
+import { getScheduledRoundsDetails } from '../schedulingProfile/getScheduledRoundsDetails';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../../mocksEngine';
+import competitionEngine from '../../../sync';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { APPLIED_POLICIES } from '../../../../constants/extensionConstants';
-import competitionEngine from '../../../sync';
-import { getScheduledRoundsDetails } from '../schedulingProfile/getScheduledRoundsDetails';
 
 const showGlobalLog = false;
 
