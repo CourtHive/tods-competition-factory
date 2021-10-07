@@ -45,6 +45,7 @@ export function addParticipantGroupings({ participants = [] }) {
                 participantOtherName: team.participantOtherName,
                 participantName: team.participantName,
                 participantId: team.participantId,
+                teamId: team.teamId,
               });
             }
           }
