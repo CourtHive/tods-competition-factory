@@ -1,6 +1,7 @@
 import { instanceCount } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngineSync from '../../../sync';
+
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 
 test.each([competitionEngineSync])(

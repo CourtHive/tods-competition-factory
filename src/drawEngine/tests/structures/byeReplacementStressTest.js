@@ -104,11 +104,10 @@ export function replacementTest({
     tournamentRecord: updatedTournamentRecord,
     drawId,
   });
-  let result = completeDrawMatchUps({ drawDefinition });
-  if (result.error) return result;
+  completeDrawMatchUps({ drawDefinition });
   tournamentEngine.setState(updatedTournamentRecord);
 
-  result = tournamentEngine.tournamentMatchUps();
+  let result = tournamentEngine.tournamentMatchUps();
   const { byeMatchUps, completedMatchUps } = result;
 
   if (devMode) {
