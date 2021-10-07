@@ -22,7 +22,7 @@ import {
 export function addDrawDefinition({
   flight: flightDefinition,
   checkEntryStatus = true,
-  modifyEventEntries,
+  modifyEventEntries, // event.entries[{entryStatus}] are modified to match draw.entries[{entryStatus}]
   existingDrawCount,
   drawDefinition,
   event,
@@ -62,9 +62,9 @@ export function addDrawDefinition({
   const matchingFlighEntries = relevantFlight?.drawEntries.every(
     ({ participantId, entryStatus }) => {
       const drawEntry = drawEntries.find(
-        (drawEntry) => drawEntry.participantId === participantId
+        (drawEntry) => drawEntry && drawEntry.participantId === participantId
       );
-      return drawEntry.entryStatus === entryStatus;
+      return drawEntry?.entryStatus === entryStatus;
     }
   );
 
@@ -76,12 +76,17 @@ export function addDrawDefinition({
     };
 
   if (modifyEventEntries) {
-    drawEntries.forEach((drawEntry) => {
-      if (STRUCTURE_SELECTED_STATUSES.includes(drawEntry.entryStatus)) {
-        const eventEntry = eventEntries.find(
-          (eventEntry) => eventEntry.participantId === drawEntry.participantId
-        );
-        if (eventEntry.entryStatus !== drawEntry.entryStatus) {
+    drawEntries.filter(Boolean).forEach((drawEntry) => {
+      if (STRUCTURE_SELECTED_STATUSES.includes(drawEntry?.entryStatus)) {
+        const eventEntry = eventEntries
+          .filter(Boolean)
+          .find(
+            (eventEntry) => eventEntry.participantId === drawEntry.participantId
+          );
+        if (
+          drawEntry.entryStatus &&
+          eventEntry.entryStatus !== drawEntry.entryStatus
+        ) {
           eventEntry.entryStatus = drawEntry.entryStatus;
           modifiedEventEntryStatusCount += 1;
         }
