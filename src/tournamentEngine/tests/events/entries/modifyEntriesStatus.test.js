@@ -7,13 +7,18 @@ import {
   getParticipantIds,
 } from '../../../../global/functions/extractors';
 
-import { PARTICIPANT_ASSIGNED_DRAW_POSITION } from '../../../../constants/errorConditionConstants';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
 import { COMPETITOR } from '../../../../constants/participantRoles';
+import {
+  ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
+  INVALID_ENTRY_STATUS,
+  PARTICIPANT_ASSIGNED_DRAW_POSITION,
+} from '../../../../constants/errorConditionConstants';
 import {
   ALTERNATE,
   CONFIRMED,
   DIRECT_ACCEPTANCE,
+  LUCKY_LOSER,
   ORGANISER_ACCEPTANCE,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
@@ -274,4 +279,74 @@ it('can account for individuals appearing in multiple doubles pairs', () => {
 
   expect(firstFlight.drawEntries.length).toEqual(6);
   expect(secondFlight.drawEntries.length).toEqual(0);
+});
+
+it('will not allow event.entries to have entryStatus appropriate only for draws', () => {
+  const eventProfiles = [
+    {
+      eventId: 'eId',
+      drawProfiles: [
+        {
+          drawSize: 4,
+          idPrefix: 'a',
+          generate: false,
+        },
+      ],
+    },
+  ];
+  const {
+    drawIds: [drawId],
+    eventIds: [eventId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    eventProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let {
+    flightProfile: {
+      flights: [flight],
+    },
+  } = tournamentEngine.getFlightProfile({ eventId });
+  const participantIds = getParticipantIds(flight.drawEntries);
+
+  let result = tournamentEngine.modifyEntriesStatus({
+    entryStatus: LUCKY_LOSER,
+    participantIds,
+    eventId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  let { event } = tournamentEngine.getEvent({ eventId });
+  expect(unique(event.entries.map(getEntryStatus))).toEqual([
+    DIRECT_ACCEPTANCE,
+  ]);
+
+  ({
+    flightProfile: {
+      flights: [flight],
+    },
+  } = tournamentEngine.getFlightProfile({ eventId }));
+  expect(unique(flight.drawEntries.map(getEntryStatus))).toEqual([LUCKY_LOSER]);
+
+  result = tournamentEngine.modifyEntriesStatus({
+    entryStatus: 'invalidStatus',
+    participantIds,
+    eventId,
+  });
+  expect(result.error).toEqual(INVALID_ENTRY_STATUS);
+
+  result = tournamentEngine.modifyEntriesStatus({
+    entryStatus: LUCKY_LOSER,
+    participantIds,
+    eventId,
+  });
+  expect(result.error).toEqual(ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT);
+
+  ({ event } = tournamentEngine.getEvent({ eventId }));
+  expect(unique(event.entries.map(getEntryStatus))).toEqual([
+    DIRECT_ACCEPTANCE,
+  ]);
 });

@@ -147,6 +147,8 @@ export const PARTICIPANT_NOT_FOUND_IN_STAGE =
   'Participant not found in stageSequence';
 export const ENTRY_STATUS_NOT_ALLOWED_IN_STAGE =
   'entryStatus not allowed in stage';
+export const ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT =
+  'entryStatus not allowed for event';
 export const NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS =
   'No stage space available for entryStatus';
 
@@ -210,6 +212,7 @@ export const errorConditionConstants = {
   DRAW_POSITION_ASSIGNED,
   DRAW_POSITION_NOT_CLEARED,
   DRAW_POSITION_NOT_FOUND,
+  ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
   ENTRY_STATUS_NOT_ALLOWED_IN_STAGE,
   EVENT_EXISTS,
   EVENT_NOT_FOUND,

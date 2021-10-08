@@ -7,12 +7,14 @@ import { isUngrouped } from '../../../../global/isUngrouped';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { PAIR } from '../../../../constants/participantTypes';
 import {
+  ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
   INVALID_ENTRY_STATUS,
   INVALID_PARTICIPANT_ID,
   MISSING_EVENT,
   PARTICIPANT_ASSIGNED_DRAW_POSITION,
 } from '../../../../constants/errorConditionConstants';
 import {
+  DRAW_SPECIFIC_STATUSES,
   EQUIVALENT_ACCEPTANCE_STATUSES,
   VALID_ENTRY_STATUSES,
   WITHDRAWN,
@@ -144,7 +146,8 @@ export function modifyEntriesStatus({
 
   // ------------------------------------------------------------------------
   // update any flights which have no draw generated to keep entries in sync
-  const generatedDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId);
+  const generatedDrawIds =
+    event.drawDefinitions?.map(({ drawId }) => drawId) || [];
   const flightsNoDraw =
     flightProfile?.flights?.filter(
       (flight) => !generatedDrawIds.includes(flight.drawId)
@@ -159,6 +162,14 @@ export function modifyEntriesStatus({
   const singleDraw =
     flightProfile?.flights?.length === 1 &&
     event.drawDefinitions?.length <= flightProfile?.flights?.length;
+
+  if (
+    !flight &&
+    !drawDefinition &&
+    DRAW_SPECIFIC_STATUSES.includes(entryStatus)
+  ) {
+    return { error: ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT };
+  }
 
   if (
     (!flight && !drawDefinition) ||
