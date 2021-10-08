@@ -16,7 +16,6 @@ export function addFlight({
   stage,
   drawId,
   drawName,
-  drawSize,
   drawEntries = [],
   qualifyingPositions,
 }) {
@@ -54,7 +53,6 @@ export function addFlight({
   };
 
   if (stage) flight.stage = stage;
-  if (drawSize) flight.drawSize = drawSize;
   if (qualifyingPositions) flight.qualifyingPositions = qualifyingPositions;
 
   const flightExists = (flightProfile?.flights || []).find(
