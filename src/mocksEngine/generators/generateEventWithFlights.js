@@ -30,13 +30,13 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 export function generateEventWithFlights({
-  tournamentRecord,
   allUniqueParticipantIds,
-  autoEntryPositions,
+  matchUpStatusProfile,
   participantsProfile,
   completeAllMatchUps,
-  matchUpStatusProfile,
+  autoEntryPositions,
   randomWinningSide,
+  tournamentRecord,
   eventProfile,
   startDate,
   uuids,
@@ -270,116 +270,119 @@ export function generateEventWithFlights({
   if (Array.isArray(flightProfile?.flights)) {
     for (const [index, flight] of flightProfile.flights.entries()) {
       const { drawId, drawSize, stage, drawName, drawEntries } = flight;
-
-      const drawProfile = drawProfiles[index];
-      const { seedsCount } = drawProfile;
-      const drawParticipantIds = drawEntries
-        .filter(hasParticipantId)
-        .map(getParticipantId);
-
-      const seedingScaleName =
-        event.category?.ageCategoryCode ||
-        event.category?.categoryName ||
-        eventName;
-      if (
-        tournamentRecord &&
-        seedsCount &&
-        seedsCount <= drawParticipantIds.length
-      ) {
-        const scaleValues = generateRange(1, seedsCount + 1);
-        scaleValues.forEach((scaleValue, index) => {
-          let scaleItem = {
-            scaleValue,
-            scaleName: seedingScaleName,
-            scaleType: SEEDING,
-            eventType,
-            scaleDate: startDate,
-          };
-          const participantId = drawParticipantIds[index];
-          setParticipantScaleItem({
-            tournamentRecord,
-            participantId,
-            scaleItem,
-          });
-        });
-      }
-      let result = generateDrawDefinition({
-        ...drawProfile,
-        matchUpType: eventType,
-        seedingScaleName,
-        tournamentRecord,
-        drawEntries,
-        drawSize,
-        drawName,
-        drawId,
-        event,
-        stage,
-      });
-
-      const { drawDefinition, error } = result;
-      if (error) return { error };
-
-      const drawExtensions = drawProfiles[index].drawExtensions;
-      if (Array.isArray(drawExtensions)) {
-        drawExtensions
-          .filter(validExtension)
-          .forEach((extension) =>
-            addExtension({ element: drawDefinition, extension })
-          );
-      }
-
-      result = addDrawDefinition({
-        drawDefinition,
-        event,
-      });
-      if (result.error) return result;
       drawIds.push(flight.drawId);
 
-      if (drawProfile.withPlayoffs) {
-        const structureId = drawDefinition.structures[0].structureId;
-        const result = addPlayoffStructures({
-          idPrefix: drawProfile.idPrefix,
-          ...drawProfile.withPlayoffs,
+      const drawProfile = drawProfiles[index];
+      const { seedsCount, generate = true } = drawProfile;
+
+      if (generate) {
+        const drawParticipantIds = drawEntries
+          .filter(hasParticipantId)
+          .map(getParticipantId);
+
+        const seedingScaleName =
+          event.category?.ageCategoryCode ||
+          event.category?.categoryName ||
+          eventName;
+        if (
+          tournamentRecord &&
+          seedsCount &&
+          seedsCount <= drawParticipantIds.length
+        ) {
+          const scaleValues = generateRange(1, seedsCount + 1);
+          scaleValues.forEach((scaleValue, index) => {
+            let scaleItem = {
+              scaleValue,
+              scaleName: seedingScaleName,
+              scaleType: SEEDING,
+              eventType,
+              scaleDate: startDate,
+            };
+            const participantId = drawParticipantIds[index];
+            setParticipantScaleItem({
+              tournamentRecord,
+              participantId,
+              scaleItem,
+            });
+          });
+        }
+        let result = generateDrawDefinition({
+          ...drawProfile,
+          matchUpType: eventType,
+          seedingScaleName,
           tournamentRecord,
-          drawDefinition,
-          structureId,
+          drawEntries,
+          drawSize,
+          drawName,
+          drawId,
+          event,
+          stage,
         });
-        if (result?.error) return result;
-      }
 
-      // TODO: enable { outcomes: [] } in eventProfile: { drawProfiles }
+        const { drawDefinition, error } = result;
+        if (error) return { error };
 
-      const manual = drawProfile.automated === false;
-      if (!manual && completeAllMatchUps) {
-        const matchUpFormat = drawProfile.matchUpFormat;
-        const result = completeDrawMatchUps({
-          completeAllMatchUps,
-          matchUpStatusProfile,
-          randomWinningSide,
+        const drawExtensions = drawProfiles[index].drawExtensions;
+        if (Array.isArray(drawExtensions)) {
+          drawExtensions
+            .filter(validExtension)
+            .forEach((extension) =>
+              addExtension({ element: drawDefinition, extension })
+            );
+        }
+
+        result = addDrawDefinition({
           drawDefinition,
-          matchUpFormat,
+          event,
         });
         if (result.error) return result;
-        if (drawProfile.drawType === ROUND_ROBIN_WITH_PLAYOFF) {
-          const mainStructure = drawDefinition.structures.find(
-            (structure) => structure.stage === MAIN
-          );
-          let result = automatedPlayoffPositioning({
-            structureId: mainStructure.structureId,
+
+        if (drawProfile.withPlayoffs) {
+          const structureId = drawDefinition.structures[0].structureId;
+          const result = addPlayoffStructures({
+            idPrefix: drawProfile.idPrefix,
+            ...drawProfile.withPlayoffs,
             tournamentRecord,
             drawDefinition,
-            event,
+            structureId,
           });
-          if (result.error) return result;
+          if (result?.error) return result;
+        }
 
-          result = completeDrawMatchUps({
+        // TODO: enable { outcomes: [] } in eventProfile: { drawProfiles }
+
+        const manual = drawProfile.automated === false;
+        if (!manual && completeAllMatchUps) {
+          const matchUpFormat = drawProfile.matchUpFormat;
+          const result = completeDrawMatchUps({
             completeAllMatchUps,
             matchUpStatusProfile,
             randomWinningSide,
-            matchUpFormat,
             drawDefinition,
+            matchUpFormat,
           });
           if (result.error) return result;
+          if (drawProfile.drawType === ROUND_ROBIN_WITH_PLAYOFF) {
+            const mainStructure = drawDefinition.structures.find(
+              (structure) => structure.stage === MAIN
+            );
+            let result = automatedPlayoffPositioning({
+              structureId: mainStructure.structureId,
+              tournamentRecord,
+              drawDefinition,
+              event,
+            });
+            if (result.error) return result;
+
+            result = completeDrawMatchUps({
+              completeAllMatchUps,
+              matchUpStatusProfile,
+              randomWinningSide,
+              matchUpFormat,
+              drawDefinition,
+            });
+            if (result.error) return result;
+          }
         }
       }
     }
