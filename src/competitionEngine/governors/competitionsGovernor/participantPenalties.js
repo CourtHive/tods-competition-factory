@@ -1,4 +1,5 @@
 import { getTournamentParticipants } from '../../../tournamentEngine/getters/participants/getTournamentParticipants';
+import { getParticipantIds } from '../../../global/functions/extractors';
 import {
   getTournamentPenalties,
   addPenalty as penaltyAdd,
@@ -22,9 +23,9 @@ export function addPenalty(params) {
       tournamentRecord,
     });
 
-    const tournamentParticipantIds = tournamentParticipants
-      .map(({ participantId }) => participantId)
-      .filter((participantId) => participantIds.includes(participantId));
+    const tournamentParticipantIds = getParticipantIds(
+      tournamentParticipants
+    ).filter((participantId) => participantIds.includes(participantId));
 
     if (tournamentParticipantIds.length) {
       const result = penaltyAdd({

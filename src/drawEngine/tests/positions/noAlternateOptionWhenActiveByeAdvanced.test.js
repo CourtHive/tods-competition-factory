@@ -1,5 +1,6 @@
 import { generateOutcomeFromScoreString } from '../../../mocksEngine/generators/generateOutcomeFromScoreString';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
+import { getDrawPosition } from '../../../global/functions/extractors';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 
@@ -54,7 +55,7 @@ it('can create double bye and remove advanced participant when outcome is reset'
       ({ drawPosition, participantId }) =>
         participantId && drawPosition > 1 && drawPosition < 8
     )
-    .map(({ drawPosition }) => drawPosition);
+    .map(getDrawPosition);
 
   const expected = [
     undefined,

@@ -1,3 +1,4 @@
+import { getMatchUpIds } from '../../../global/functions/extractors';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { unique } from '../../../utilities';
 import mocksEngine from '../..';
@@ -72,7 +73,7 @@ test.each([
     .setState(tournamentRecord)
     .allTournamentMatchUps();
 
-  const matchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
+  const matchUpIds = getMatchUpIds(matchUps);
   expect(unique(matchUpIds).length).toEqual(matchUpIds.length);
 
   matchUps.forEach(({ matchUpId }) =>

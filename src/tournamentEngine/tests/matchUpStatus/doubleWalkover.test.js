@@ -1,6 +1,7 @@
 import { getOrderedDrawPositionPairs } from '../../../drawEngine/tests/testingUtilities';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
+import { getDrawPosition } from '../../../global/functions/extractors';
 import { setSubscriptions } from '../../../global/globalState';
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
@@ -377,7 +378,7 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   });
   const consolationByeDrawPositions = positionAssignments
     .filter(({ bye }) => bye)
-    .map(({ drawPosition }) => drawPosition);
+    .map(getDrawPosition);
   expect(consolationByeDrawPositions).toEqual([1, 4]);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({

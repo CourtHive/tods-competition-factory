@@ -1,3 +1,4 @@
+import { isUngrouped } from '../../../../global/isUngrouped';
 import drawEngine from '../../../../drawEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../sync';
@@ -6,7 +7,6 @@ import { WITHDRAWN } from '../../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { DOUBLES } from '../../../../constants/eventConstants';
 import { PAIR } from '../../../../constants/participantTypes';
-import { isUngrouped } from '../../../../global/isUngrouped';
 
 it('can add doubles events to a tournament record', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

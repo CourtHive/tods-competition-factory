@@ -1,6 +1,7 @@
-import { intersection } from '../../../../utilities/arrays';
-import { addParticipants } from '../../participantGovernor/addParticipants';
 import { getPairedParticipant } from '../../participantGovernor/getPairedParticipant';
+import { addParticipants } from '../../participantGovernor/addParticipants';
+import { getParticipantId } from '../../../../global/functions/extractors';
+import { intersection } from '../../../../utilities/arrays';
 import { addNotice } from '../../../../global/globalState';
 import { addEventEntries } from './addEventEntries';
 
@@ -133,9 +134,7 @@ export function addEventEntryPairs({
     addNotice({ topic: ADD_PARTICIPANTS, participants: newParticipants });
   }
 
-  const newParticipantIds = newParticipants.map(
-    ({ participantId }) => participantId
-  );
+  const newParticipantIds = newParticipants.map(getParticipantId);
 
   return { ...result, message, newParticipantIds };
 }

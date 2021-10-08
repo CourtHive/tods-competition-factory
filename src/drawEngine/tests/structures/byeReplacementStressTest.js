@@ -1,6 +1,11 @@
 import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
 import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 import { getPositionAssignments } from '../../getters/positionsGetter';
+import {
+  getDrawPosition,
+  getDrawPositions,
+} from '../../../global/functions/extractors';
+import { hasParticipantId } from '../../../global/functions/filters';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { randomInt } from '../../../utilities/math';
 import { shuffleArray } from '../../../utilities';
@@ -57,8 +62,8 @@ export function replacementTest({
 
   // find all drawPositions assigned to participantIds and shuffle the array
   const participantDrawPositions = positionAssignments
-    .filter(({ participantId }) => participantId)
-    .map(({ drawPosition }) => drawPosition);
+    .filter(hasParticipantId)
+    .map(getDrawPosition);
   const shuffledDrawPositions = shuffleArray(participantDrawPositions);
 
   // if no byeLimit or positionsToReplaceWithBye array is provided, replace all positions with BYEs
@@ -82,7 +87,7 @@ export function replacementTest({
     // shuffle updated positionAssignments and slice to select random number of drawPositions to assign
     const assignmentCount = randomInt(0, participantsCount);
     const drawPositionsToAssign = shuffleArray(
-      updatedPositionAssignments.map(({ drawPosition }) => drawPosition)
+      getDrawPositions(updatedPositionAssignments)
     ).slice(0, assignmentCount);
 
     // for each targeted drawPosition remove the BYE and assign participantId from availableParticipantIds

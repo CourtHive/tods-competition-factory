@@ -233,7 +233,7 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
 
   expect(singlesScheduled.length).toBeGreaterThanOrEqual(15);
   expect(doublesScheduled.length).toBeGreaterThanOrEqual(6);
-  expect(totalScheduledMatchUps).toBeGreaterThanOrEqual(25);
+  expect(totalScheduledMatchUps).toBeGreaterThanOrEqual(24);
 });
 
 it('multiple events at multiple venues with different participants will start at venue startTimes ', () => {

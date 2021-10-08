@@ -12,6 +12,7 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { getMatchUpIds } from '../../../global/functions/extractors';
 
 /**
  *
@@ -53,7 +54,7 @@ export function deleteAdHocMatchUps({
   const matchUpsToDelete = existingMatchUps.filter(({ matchUpId }) =>
     matchUpIds.includes(matchUpId)
   );
-  const matchUpIdsToDelete = matchUpsToDelete.map(({ matchUpId }) => matchUpId);
+  const matchUpIdsToDelete = getMatchUpIds(matchUpsToDelete);
 
   const drawPositionsToDelete = matchUpsToDelete
     .map(({ drawPositions }) => drawPositions)

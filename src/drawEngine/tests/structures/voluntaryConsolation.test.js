@@ -10,6 +10,7 @@ import {
   QUALIFYING,
   VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
+import { getParticipantIds } from '../../../global/functions/extractors';
 
 it('can add draw with empty voluntary consolation stage', () => {
   const eventProfiles = [
@@ -111,9 +112,10 @@ it('can add voluntary consolation structure to an existing draw', () => {
   } = tournamentEngine.getFlightProfile({ eventId });
   let flight = flights[0];
 
-  const consolationParticipantIds = flight.drawEntries
-    .map(({ participantId }) => participantId)
-    .slice(0, drawSize / 2);
+  const consolationParticipantIds = getParticipantIds(flight.drawEntries).slice(
+    0,
+    drawSize / 2
+  );
 
   result = tournamentEngine.addVoluntaryConsolationStage({
     drawId,

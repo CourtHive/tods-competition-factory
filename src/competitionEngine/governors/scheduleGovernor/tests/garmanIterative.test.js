@@ -1,5 +1,6 @@
 import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
+import { getParticipantId } from '../../../../global/functions/extractors';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { intersection } from '../../../../utilities';
@@ -142,9 +143,7 @@ it.each([
       const {
         drawDefinition: { entries: drawEntries },
       } = tournamentEngine.getEvent({ drawId });
-      drawEnteredParticipantIds.push(
-        drawEntries.map(({ participantId }) => participantId)
-      );
+      drawEnteredParticipantIds.push(drawEntries.map(getParticipantId));
     }
     // expect the two draws to have unique participants
     expect(

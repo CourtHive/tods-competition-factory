@@ -1,4 +1,5 @@
 import { removeParticipantsScaleItems } from '../../participantGovernor/removeScaleItems';
+import { getParticipantId } from '../../../../global/functions/extractors';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
@@ -44,7 +45,7 @@ export function removeScaleValues({
       STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
   );
 
-  const participantIds = stageEntries.map(({ participantId }) => participantId);
+  const participantIds = stageEntries.map(getParticipantId);
 
   const result = removeParticipantsScaleItems({
     tournamentRecord,

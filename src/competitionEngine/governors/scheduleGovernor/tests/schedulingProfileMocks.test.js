@@ -1,5 +1,6 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { mocksEngine, tournamentEngine, competitionEngine } from '../../../..';
+import { getMatchUpIds } from '../../../../global/functions/extractors';
 import { intersection, unique } from '../../../../utilities';
 
 import { EXISTING_ROUND } from '../../../../constants/errorConditionConstants';
@@ -142,7 +143,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
     );
     eventEnteredParticipantIds.push(enteredParticipantIds);
 
-    const matchUpIds = drawMatchUps.map(({ matchUpId }) => matchUpId);
+    const matchUpIds = getMatchUpIds(drawMatchUps);
     allMatchUpIds.push(...matchUpIds);
 
     const matchUpsNoBye = drawMatchUps.filter(

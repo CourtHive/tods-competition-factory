@@ -1,6 +1,7 @@
 import { getAvailableAdHocParticipantIds } from './getAvailableAdHocParticipantIds';
-import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
+import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
+import { getParticipantId } from '../../../../global/functions/extractors';
 import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { unique } from '../../../../utilities';
 
@@ -81,7 +82,7 @@ export function getValidAssignmentActions({
 
     const availableParticipantIds = unique(
       (completedMatchUps || [])
-        ?.map(({ sides }) => sides.map(({ participantId }) => participantId))
+        ?.map(({ sides }) => sides.map(getParticipantId))
         .flat()
         .filter(
           (participantId) => !assignedParticipantIds.includes(participantId)

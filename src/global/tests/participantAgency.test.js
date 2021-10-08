@@ -1,4 +1,5 @@
 import { resolveDrawPositions } from '../../drawEngine/generators/drawPositionsResolver';
+import { getDrawPosition, getParticipantId } from '../functions/extractors';
 import tournamentEngine from '../../tournamentEngine/sync';
 import mocksEngine from '../../mocksEngine';
 import {
@@ -47,7 +48,7 @@ it.each([
       drawDefinition.structures[0];
     const assignedParticipantIds = positionAssignments
       .filter(({ participantId }) => participantId)
-      .map(({ participantId }) => participantId);
+      .map(getParticipantId);
     const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
     const assignedByes = positionAssignments.filter(({ bye }) => bye);
     expect(assignedByes.length).toEqual(
@@ -77,7 +78,7 @@ it.each([
         drawSize - assignedByes.length - assignedSeedParticipantIds.length;
       const unassignedDrawPositions = positionAssignments
         .filter((assignment) => !assignment.participantId && !assignment.bye)
-        .map(({ drawPosition }) => drawPosition);
+        .map(getDrawPosition);
       expect(unassignedDrawPositions.length).toEqual(unseededParticipantsCount);
 
       const participantIdsWithAgency = unassignedParticipantIds.slice(

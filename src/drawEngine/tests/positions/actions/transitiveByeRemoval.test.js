@@ -1,3 +1,4 @@
+import { getDrawPosition } from '../../../../global/functions/extractors';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { generateRange } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
@@ -212,10 +213,10 @@ function swapTest({ swapPosition }) {
   const modifiedPositionAssignments = structures[0].positionAssignments;
   const originalByeAssignments = originalPositionAssignments
     .filter(({ bye }) => bye)
-    .map(({ drawPosition }) => drawPosition);
+    .map(getDrawPosition);
   const modifiedByeAssignments = modifiedPositionAssignments
     .filter(({ bye }) => bye)
-    .map(({ drawPosition }) => drawPosition);
+    .map(getDrawPosition);
 
   expect(originalByeAssignments).toEqual([2, 7]);
   expect(modifiedByeAssignments).toEqual([2, 3, 4, 7]);

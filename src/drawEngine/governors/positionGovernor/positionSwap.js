@@ -5,6 +5,7 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { getParticipantId } from '../../../global/functions/extractors';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 
@@ -231,9 +232,7 @@ function roundRobinSwap({
       inContextDrawMatchUps,
     });
   } else {
-    const participantIds = assignments.map(
-      ({ participantId }) => participantId
-    );
+    const participantIds = assignments.map(getParticipantId);
     assignments.forEach(
       (assignment, index) =>
         (assignment.participantId = participantIds[1 - index])

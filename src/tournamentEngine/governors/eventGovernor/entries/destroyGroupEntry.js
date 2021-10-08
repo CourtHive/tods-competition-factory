@@ -1,5 +1,6 @@
 import { deleteParticipants } from '../../participantGovernor/deleteParticipants';
 import { getStageEntries } from '../../../getters/participants/getStageEntries';
+import { getParticipantId } from '../../../../global/functions/extractors';
 import { removeEventEntries } from './removeEventEntries';
 import { indices } from '../../../../utilities/arrays';
 import { addEventEntries } from './addEventEntries';
@@ -83,9 +84,7 @@ export function destroyGroupEntry({
     event,
     stage,
   });
-  const groupedParticipantIds = stageEntries.map(
-    ({ participantId }) => participantId
-  );
+  const groupedParticipantIds = stageEntries.map(getParticipantId);
   const individualParticipantIdsInGroups = tournamentParticipants
     .filter(({ participantId }) =>
       groupedParticipantIds.includes(participantId)

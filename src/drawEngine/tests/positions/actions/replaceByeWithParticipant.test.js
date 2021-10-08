@@ -1,4 +1,5 @@
 import { replaceWithAlternate, replaceWithBye } from '../../testingUtilities';
+import { getDrawPosition } from '../../../../global/functions/extractors';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { generateRange } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
@@ -122,7 +123,7 @@ it('can replace BYE with ALTERNATE to Final in drawSize: 8 when 7 BYEs', () => {
   let { positionAssignments } = structures[0];
   const byeDrawPositions = positionAssignments
     .filter(({ bye }) => bye)
-    .map(({ drawPosition }) => drawPosition);
+    .map(getDrawPosition);
 
   expect(byeDrawPositions).toEqual(targetByeDrawPositions);
 

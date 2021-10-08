@@ -1,3 +1,4 @@
+import { getParticipantId } from '../../../../global/functions/extractors';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { extractTime } from '../../../../utilities/dateTime';
@@ -253,8 +254,8 @@ it('properly schedules 1st rounds of two 32 single elimination draws with 10 cou
     },
   });
   expect(result.success).toEqual(true);
-  eventEntries.push(entries.map(({ participantId }) => participantId));
-  eventDrawEntries.push(drawEntries.map(({ participantId }) => participantId));
+  eventEntries.push(entries.map(getParticipantId));
+  eventDrawEntries.push(drawEntries.map(getParticipantId));
 
   ({
     event: { eventId, entries },
@@ -276,8 +277,8 @@ it('properly schedules 1st rounds of two 32 single elimination draws with 10 cou
     },
   });
   expect(result.success).toEqual(true);
-  eventEntries.push(entries.map(({ participantId }) => participantId));
-  eventDrawEntries.push(drawEntries.map(({ participantId }) => participantId));
+  eventEntries.push(entries.map(getParticipantId));
+  eventDrawEntries.push(drawEntries.map(getParticipantId));
 
   // expect there to be no overlap in the entries between the two events
   expect(intersection(eventEntries[0], eventEntries[1]).length).toEqual(0);

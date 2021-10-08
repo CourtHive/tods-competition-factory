@@ -1,5 +1,9 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
+import {
+  getParticipantId,
+  getParticipantIds,
+} from '../../../../global/functions/extractors';
 
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
@@ -109,9 +113,7 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
     expect(result.success).toEqual(true);
   });
 
-  firstFlightParticipantIds = firstFlightEntries
-    .map(({ participantId }) => participantId)
-    .filter(Boolean);
+  firstFlightParticipantIds = getParticipantIds(firstFlightEntries);
 
   // confirm error when missing { drawId }
   result = tournamentEngine.removeDrawEntries({
@@ -149,7 +151,7 @@ it('can remove entries from drawDefinitions if they are not positioned', () => {
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const alternateIds = drawDefinition.entries
     .filter(({ entryStatus }) => entryStatus === ALTERNATE)
-    .map(({ participantId }) => participantId);
+    .map(getParticipantId);
 
   const result = tournamentEngine.removeDrawEntries({
     eventId,

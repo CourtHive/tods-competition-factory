@@ -12,6 +12,7 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { getParticipantId } from '../../../global/functions/extractors';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
 import { clearDrawPosition } from './positionClear';
@@ -90,9 +91,7 @@ export function assignDrawPosition({
         drawPosition,
         structure,
       }).includes(participantId)
-    : positionAssignments
-        .map(({ participantId }) => participantId)
-        .includes(participantId);
+    : positionAssignments.map(getParticipantId).includes(participantId);
 
   if (participantAlreadyAssigned) {
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };

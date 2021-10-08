@@ -1,13 +1,13 @@
 import { getStructureRoundProfile } from '../../../drawEngine/getters/getMatchUps/getStructureRoundProfile';
+import { getMatchUpIds } from '../../../global/functions/extractors';
 import competitionEngine from '../../../competitionEngine/sync';
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 
-import { eventConstants } from '../../../constants/eventConstants';
-
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import { eventConstants } from '../../../constants/eventConstants';
 import {
   INVALID_DATE,
   INVALID_TIME,
@@ -155,7 +155,7 @@ test('recognizes scheduling conflicts', () => {
     scheduledTime: '08:00',
     scheduledDate,
   };
-  let matchUpIds = roundMatchUps[1].map(({ matchUpId }) => matchUpId);
+  let matchUpIds = getMatchUpIds(roundMatchUps[1]);
   let result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
   expect(result.success).toEqual(true);
 
@@ -163,7 +163,7 @@ test('recognizes scheduling conflicts', () => {
     scheduledTime: '09:00',
     scheduledDate,
   };
-  matchUpIds = roundMatchUps[2].map(({ matchUpId }) => matchUpId);
+  matchUpIds = getMatchUpIds(roundMatchUps[2]);
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
   expect(result.success).toEqual(true);
 

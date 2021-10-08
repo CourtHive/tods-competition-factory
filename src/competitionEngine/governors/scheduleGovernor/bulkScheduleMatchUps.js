@@ -1,4 +1,5 @@
 import { bulkScheduleMatchUps as bulkSchedule } from '../../../tournamentEngine/governors/scheduleGovernor/bulkScheduleMatchUps';
+import { getMatchUpId } from '../../../global/functions/extractors';
 
 import {
   INVALID_VALUES,
@@ -19,7 +20,7 @@ export function bulkScheduleMatchUps({
     const { tournamentId } = tournamentRecord;
     const matchUpIds = matchUpContextIds
       .filter((contextIds) => contextIds.tournamentId === tournamentId)
-      .map(({ matchUpId }) => matchUpId);
+      .map(getMatchUpId);
 
     if (matchUpIds?.length) {
       const result = bulkSchedule({

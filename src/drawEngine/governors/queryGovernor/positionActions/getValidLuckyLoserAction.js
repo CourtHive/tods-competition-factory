@@ -1,6 +1,7 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructureMatchUps } from '../../../getters/getMatchUps/getStructureMatchUps';
 import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
+import { getParticipantId } from '../../../../global/functions/extractors';
 import { findStructure } from '../../../getters/findStructure';
 
 import { MISSING_DRAW_ID } from '../../../../constants/errorConditionConstants';
@@ -97,7 +98,7 @@ export function getValidLuckyLosersAction({
 
   const availableLuckyLoserParticipantIds = completedMatchUps
     ?.map(({ winningSide, sides }) => sides[1 - (winningSide - 1)])
-    .map(({ participantId }) => participantId)
+    .map(getParticipantId)
     .filter((participantId) => !assignedParticipantIds.includes(participantId));
 
   const availableLuckyLosers = tournamentParticipants?.filter((participant) =>

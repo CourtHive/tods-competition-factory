@@ -1,9 +1,10 @@
 import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { hasParticipantId } from '../../../global/functions/filters';
 import { instanceCount } from '../../../utilities';
 
 export function createSubOrderMap({ positionAssignments }) {
   const subOrderArray = (positionAssignments || [])
-    .filter(({ participantId }) => participantId)
+    .filter(hasParticipantId)
     .map((assignment) => {
       const { extension } = findExtension({
         element: assignment,

@@ -1,4 +1,5 @@
 import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
+import { getMatchUpId } from '../../../../global/functions/extractors';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
@@ -116,7 +117,7 @@ it('can identify conflicts with person requests', () => {
 
   const matchUpIds = matchUps
     .filter(({ roundNumber }) => roundNumber < 3)
-    .map(({ matchUpId }) => matchUpId);
+    .map(getMatchUpId);
 
   result = competitionEngine.scheduleMatchUps({
     scheduleDate: startDate,

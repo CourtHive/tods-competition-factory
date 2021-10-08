@@ -1,3 +1,4 @@
+import { getParticipantId } from '../../../global/functions/extractors';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -46,7 +47,7 @@ it('can generate TEAM events', () => {
   generateRange(0, groupsToGenerate).forEach((index) => {
     const individualParticipantIds = individualParticipants
       .slice(participantsPerGroup * index, participantsPerGroup * (index + 1))
-      .map(({ participantId }) => participantId);
+      .map(getParticipantId);
 
     result = tournamentEngine.createGroupParticipant({
       participantRoleResponsibilities: [schoolResponsibility],

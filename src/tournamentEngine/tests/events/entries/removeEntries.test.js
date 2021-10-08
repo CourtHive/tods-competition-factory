@@ -1,3 +1,4 @@
+import { getParticipantId } from '../../../../global/functions/extractors';
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
@@ -96,7 +97,7 @@ test('event entries are only removed when not placed in draw structures', () => 
   // now remove an alternate entry that is present in event, flight and drawDefinition
   const alternateParticipantIds = drawEntries
     .filter(({ entryStatus }) => entryStatus === ALTERNATE)
-    .map(({ participantId }) => participantId);
+    .map(getParticipantId);
   const alternateParticipantId = alternateParticipantIds[0];
 
   result = tournamentEngine.removeEventEntries({
@@ -123,7 +124,7 @@ test('event entries are only removed when not placed in draw structures', () => 
 
   const enteredParticipantIds = drawEntries
     .filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE)
-    .map(({ participantId }) => participantId);
+    .map(getParticipantId);
   const enteredParticipantId = enteredParticipantIds[0];
   result = tournamentEngine.removeEventEntries({
     participantIds: [enteredParticipantId],

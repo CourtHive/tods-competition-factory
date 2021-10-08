@@ -1,3 +1,4 @@
+import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
@@ -69,7 +70,7 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
   const drawPositions = singlesMatchUp.drawPositions;
   const teamParticipantIds = positionAssignments
     .filter(({ drawPosition }) => drawPositions.includes(drawPosition))
-    .map(({ participantId }) => participantId);
+    .map(getParticipantId);
 
   let { tournamentParticipants: teamParticipants } =
     tournamentEngine.getTournamentParticipants({
@@ -262,7 +263,7 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
   const drawPositions = doublesMatchUp.drawPositions;
   const teamParticipantIds = positionAssignments
     .filter(({ drawPosition }) => drawPositions.includes(drawPosition))
-    .map(({ participantId }) => participantId);
+    .map(getParticipantId);
 
   let { tournamentParticipants: teamParticipants } =
     tournamentEngine.getTournamentParticipants({

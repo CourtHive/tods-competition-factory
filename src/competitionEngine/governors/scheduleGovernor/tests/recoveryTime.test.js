@@ -1,3 +1,4 @@
+import { getMatchUpIds } from '../../../../global/functions/extractors';
 import { instanceCount } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngineSync from '../../../sync';
@@ -19,7 +20,7 @@ test.each([competitionEngineSync])(
     const { upcomingMatchUps } = competitionEngine.competitionMatchUps();
     const { startDate } = competitionEngine.getCompetitionDateRange();
 
-    const matchUpIds = upcomingMatchUps.map(({ matchUpId }) => matchUpId);
+    const matchUpIds = getMatchUpIds(upcomingMatchUps);
     expect(
       instanceCount(upcomingMatchUps.map(({ matchUpType }) => matchUpType))
     ).toEqual({ SINGLES: 12 });
@@ -68,7 +69,7 @@ test.each([competitionEngineSync])(
     const { upcomingMatchUps } = competitionEngine.competitionMatchUps();
     const { startDate } = competitionEngine.getCompetitionDateRange();
 
-    const matchUpIds = upcomingMatchUps.map(({ matchUpId }) => matchUpId);
+    const matchUpIds = getMatchUpIds(upcomingMatchUps);
     expect(
       instanceCount(upcomingMatchUps.map(({ matchUpType }) => matchUpType))
     ).toEqual({ SINGLES: 12 });

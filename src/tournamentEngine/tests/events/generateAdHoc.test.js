@@ -1,7 +1,12 @@
 import { generateRange, randomPop, unique } from '../../../utilities';
+import { hasParticipantId } from '../../../global/functions/filters';
 import { arrayIndices } from '../../../utilities/arrays';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import {
+  getMatchUpIds,
+  getParticipantId,
+} from '../../../global/functions/extractors';
 
 import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { AD_HOC, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
@@ -133,7 +138,7 @@ it('can generate AD_HOC drawDefinitions, add and delete matchUps', () => {
   });
   expect(result.success).toEqual(true);
 
-  const matchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
+  const matchUpIds = getMatchUpIds(matchUps);
   const randomMatchUpIds = generateRange(0, 5).map(() => randomPop(matchUpIds));
   expect(matchUpIds.length).toEqual(7);
   expect(randomMatchUpIds.length).toEqual(5);
@@ -312,8 +317,8 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   expect(positionAssignments.length).toEqual(drawSize * 2);
 
   const assignedParticipantIds = positionAssignments
-    .filter(({ participantId }) => participantId)
-    .map(({ participantId }) => participantId);
+    .filter(hasParticipantId)
+    .map(getParticipantId);
   expect(assignedParticipantIds.length).toEqual(3);
   expect(unique(assignedParticipantIds).length).toEqual(2);
   expect(arrayIndices(firstParticipantId, assignedParticipantIds)).toEqual([
