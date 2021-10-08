@@ -13,14 +13,13 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 export function addDrawEntries({
+  autoEntryPositions = true,
   drawDefinition,
   participantIds,
   entryStatus,
   entryStage,
   drawId,
   event,
-
-  autoEntryPositions = true,
 }) {
   if (!drawId) return { error: MISSING_DRAW_ID };
   if (!event) return { error: EVENT_NOT_FOUND };

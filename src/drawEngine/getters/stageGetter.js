@@ -26,8 +26,8 @@ import {
 
 function getEntryProfile({ drawDefinition }) {
   let { extension } = findDrawDefinitionExtension({
-    drawDefinition,
     name: ENTRY_PROFILE,
+    drawDefinition,
   });
   const entryProfile = extension?.value || drawDefinition.entryProfile || {};
   return { entryProfile };
@@ -83,8 +83,8 @@ export function getStageQualifiersCount({ stage, drawDefinition }) {
 export function getStageDrawPositionsAvailable({ stage, drawDefinition }) {
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
   const qualifyingPositions = getStageQualifiersCount({
-    stage,
     drawDefinition,
+    stage,
   });
   return drawSize && drawSize - qualifyingPositions;
 }
@@ -223,29 +223,29 @@ export function playoffEntries({ drawDefinition, structureId }) {
 
 export function getStageDirectEntriesCount({ stage, drawDefinition }) {
   return getStageEntryTypeCount({
-    stage,
-    drawDefinition,
     entryStatus: DIRECT_ACCEPTANCE,
+    drawDefinition,
+    stage,
   });
 }
 export function getStageWildcardEntriesCount({ stage, drawDefinition }) {
   return getStageEntryTypeCount({
-    stage,
-    drawDefinition,
     entryStatus: WILDCARD,
+    drawDefinition,
+    stage,
   });
 }
 export function stageAlternateEntries({ stage, drawDefinition }) {
   return getStageEntryTypeCount({
-    stage,
-    drawDefinition,
     entryStatus: ALTERNATE,
+    drawDefinition,
+    stage,
   });
 }
 export function stageSpace({
-  stage,
-  drawDefinition,
   entryStatus = DIRECT_ACCEPTANCE,
+  drawDefinition,
+  stage,
 }) {
   if (entryStatus === ALTERNATE) {
     if (stageAlternatesCount({ stage, drawDefinition })) {
@@ -256,19 +256,19 @@ export function stageSpace({
   }
 
   const stageDrawPositionsAvailable = getStageDrawPositionsAvailable({
-    stage,
     drawDefinition,
+    stage,
   });
   const wildcardPositions = getStageWildcardsCount({ stage, drawDefinition });
   const wildcardEntriesCount = getStageEntryTypeCount({
-    stage,
-    drawDefinition,
     entryStatus: WILDCARD,
+    drawDefinition,
+    stage,
   });
   const directEntriesCount = getStageEntryTypeCount({
-    stage,
-    drawDefinition,
     entryStatus: DIRECT_ACCEPTANCE,
+    drawDefinition,
+    stage,
   });
   const totalEntriesCount = wildcardEntriesCount + directEntriesCount;
   const stageFull = totalEntriesCount >= stageDrawPositionsAvailable;

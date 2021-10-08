@@ -98,12 +98,11 @@ export function addDrawEntry({
  *
  */
 export function addDrawEntries({
+  entryStatus = DIRECT_ACCEPTANCE,
+  autoEntryPositions = true,
   drawDefinition,
   participantIds,
-  entryStatus = DIRECT_ACCEPTANCE,
   stage = MAIN,
-
-  autoEntryPositions = true,
 }) {
   if (!stage) return { error: MISSING_STAGE };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

@@ -1,11 +1,12 @@
+// import { getRelevantParticipantIdsMap } from '../../../getters/participants/getRelevantParticipantIdsMap';
 import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
 import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
 import { findParticipant } from '../../../../common/deducers/findParticipant';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
+import { isUngrouped } from '../../../../global/isUngrouped';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { PAIR } from '../../../../constants/participantTypes';
-import { isUngrouped } from '../../../../global/isUngrouped';
 import {
   INVALID_ENTRY_STATUS,
   INVALID_PARTICIPANT_ID,
@@ -18,16 +19,15 @@ import {
 } from '../../../../constants/entryStatusConstants';
 
 export function modifyEntriesStatus({
+  autoEntryPositions = true,
   tournamentRecord,
   drawDefinition,
   participantIds,
   entryStatus,
+  eventSync,
   drawId,
   stage,
   event,
-
-  eventSync,
-  autoEntryPositions = true,
 }) {
   if (!participantIds || !Array.isArray(participantIds))
     return {
