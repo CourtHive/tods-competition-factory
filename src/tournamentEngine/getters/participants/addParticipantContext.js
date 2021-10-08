@@ -2,6 +2,7 @@ import { participantScheduledMatchUps } from '../../governors/queryGovernor/part
 import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { extensionConstants } from '../../../constants/extensionConstants';
+import { getParticipantIds } from '../../../global/functions/extractors';
 import { definedAttributes } from '../../../utilities/objects';
 import { allEventMatchUps } from '../matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities';
@@ -452,10 +453,9 @@ export function addParticipantContext(params) {
     });
 
     if (Array.isArray(matchUp.potentialParticipants)) {
-      const potentialParticipantIds = matchUp.potentialParticipants
-        .flat()
-        .map(({ participantId }) => participantId)
-        .filter(Boolean);
+      const potentialParticipantIds = getParticipantIds(
+        matchUp.potentialParticipants.flat()
+      );
 
       potentialParticipantIds?.forEach((participantId) => {
         const relevantParticipantIds = getRelevantParticipantIds(participantId);

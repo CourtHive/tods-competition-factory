@@ -1,3 +1,4 @@
+import { getParticipantId } from '../../../global/functions/extractors';
 import { addNotice, getTopics } from '../../../global/globalState';
 import { deepMerge } from '../../../utilities/deepMerge';
 
@@ -40,9 +41,8 @@ export function mergeParticipants({
     }
   );
 
-  const existingParticipantIds = tournamentRecord.participants.map(
-    ({ participantId }) => participantId
-  );
+  const existingParticipantIds =
+    tournamentRecord.participants.map(getParticipantId);
   const newParticipants = incomingParticipants.filter(
     ({ participantId }) => !existingParticipantIds.includes(participantId)
   );

@@ -1,5 +1,6 @@
 import { addDrawEntries as addEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
 import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
+import { getParticipantId } from '../../../../global/functions/extractors';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import { VOLUNTARY_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
@@ -24,9 +25,7 @@ export function addDrawEntries({
   if (!drawId) return { error: MISSING_DRAW_ID };
   if (!event) return { error: EVENT_NOT_FOUND };
 
-  const eventEnteredParticipantIds = event.entries.map(
-    ({ participantId }) => participantId
-  );
+  const eventEnteredParticipantIds = event.entries.map(getParticipantId);
   const missingEventEntries = participantIds.filter(
     (participantId) => !eventEnteredParticipantIds.includes(participantId)
   );

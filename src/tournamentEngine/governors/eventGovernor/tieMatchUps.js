@@ -4,6 +4,7 @@ import { getMatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatch
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { getParticipantIds } from '../../../global/functions/extractors';
 import { overlap } from '../../../utilities';
 import { UUID } from '../../../utilities/UUID';
 
@@ -69,16 +70,13 @@ export function assignTieMatchUpParticipantId(params) {
   const relevantAssignments = positionAssignments?.filter((assignment) =>
     drawPositions.includes(assignment.drawPosition)
   );
-  const teamParticipantIds = relevantAssignments.map(
-    ({ participantId }) => participantId
-  );
 
   const { tournamentParticipants: teamParticipants } =
     getTournamentParticipants({
       tournamentRecord,
       participantFilters: {
         participantTypes: [TEAM],
-        participantIds: teamParticipantIds,
+        participantIds: getParticipantIds(relevantAssignments),
       },
     });
 

@@ -1,4 +1,5 @@
 import { getAllPositionedParticipantIds } from '../../../drawEngine/getters/positionsGetter';
+import { getParticipantId } from '../../../global/functions/extractors';
 import { getAccessorValue } from '../../../utilities/getAccessorValue';
 import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 import { getFlightProfile } from '../getFlightProfile';
@@ -179,20 +180,14 @@ function getDrawEntries({ drawEntryStatuses, tournamentEvents }) {
         flightProfile?.flights
           ?.map(({ drawEntries }) =>
             Array.isArray(drawEntries)
-              ? drawEntries
-                  .filter(statusFilter)
-                  .map(({ participantId }) => participantId)
+              ? drawEntries.filter(statusFilter).map(getParticipantId)
               : []
           )
           .flat() || [];
 
       const drawEnteredParticipantIds =
         event.drawDefinitions?.map(({ entries }) =>
-          entries
-            ? entries
-                .filter(statusFilter)
-                .map(({ participantId }) => participantId)
-            : []
+          entries ? entries.filter(statusFilter).map(getParticipantId) : []
         ) || [];
 
       return entries.concat(...flightEntries, ...drawEnteredParticipantIds);
@@ -209,7 +204,7 @@ function getEventEntries({ eventEntryStatuses, tournamentEvents }) {
             ? true
             : eventEntryStatuses.includes(entryStatus)
         )
-        .map(({ participantId }) => participantId);
+        .map(getParticipantId);
 
       return entries.concat(...eventEntries);
     }, [])

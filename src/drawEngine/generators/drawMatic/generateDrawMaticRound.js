@@ -1,4 +1,5 @@
 import { assignDrawPosition } from '../../governors/positionGovernor/positionAssignment';
+import { getParticipantId } from '../../../global/functions/extractors';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
 import { generateCandidate } from './generateCandidate';
@@ -185,7 +186,7 @@ function getEncounters({ matchUps, positionAssignments }) {
       .filter(({ drawPosition }) =>
         matchUp.drawPositions.includes(drawPosition)
       )
-      .map(({ participantId }) => participantId)
+      .map(getParticipantId)
       .filter(Boolean);
     if (participantIds.length === 2) {
       const pairing = matchupHash(...participantIds);

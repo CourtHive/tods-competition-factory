@@ -1,3 +1,4 @@
+import { getParticipantIds } from '../../global/functions/extractors';
 import { findStructure } from './findStructure';
 
 import {
@@ -22,9 +23,7 @@ export function getAllPositionedParticipantIds({ drawDefinition }) {
   return (drawDefinition.structures || [])
     .map((structure) => {
       const { positionAssignments } = getPositionAssignments({ structure });
-      return positionAssignments
-        .map(({ participantId }) => participantId)
-        .filter(Boolean);
+      return getParticipantIds(positionAssignments);
     })
     .flat();
 }

@@ -12,6 +12,7 @@ import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaul
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { validExtension } from '../../global/validation/validExtension';
+import { getParticipantId } from '../../global/functions/extractors';
 import { generateParticipants } from './generateParticipants';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange, UUID } from '../../utilities';
@@ -230,7 +231,7 @@ export function generateEventWithFlights({
 
     const drawParticipantIds = drawParticipants
       .slice(0, entriesCount)
-      .map(({ participantId }) => participantId);
+      .map(getParticipantId);
 
     if (drawParticipantIds.length) {
       const result = addEventEntries({
@@ -273,7 +274,7 @@ export function generateEventWithFlights({
       const { seedsCount } = drawProfile;
       const drawParticipantIds = drawEntries
         .filter(({ participantId }) => participantId)
-        .map(({ participantId }) => participantId);
+        .map(getParticipantId);
 
       const seedingScaleName =
         event.category?.ageCategoryCode ||

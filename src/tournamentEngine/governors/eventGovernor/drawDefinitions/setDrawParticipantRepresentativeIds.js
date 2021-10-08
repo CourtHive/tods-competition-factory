@@ -1,4 +1,5 @@
 import { addDrawDefinitionExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { getParticipantIds } from '../../../../global/functions/extractors';
 import { intersection } from '../../../../utilities';
 
 import {
@@ -15,9 +16,9 @@ export function setDrawParticipantRepresentativeIds({
   if (!Array.isArray(representativeParticipantIds))
     return { error: INVALID_VALUES };
 
-  const enteredParticipantIds = (drawDefinition?.entries || [])
-    ?.map(({ participantId }) => participantId)
-    .filter(Boolean);
+  const enteredParticipantIds = getParticipantIds(
+    drawDefinition?.entries || []
+  );
 
   // An empty array is valid; if ids provided...
   // check that all representativeParticipantIds are enteredParticipantIds

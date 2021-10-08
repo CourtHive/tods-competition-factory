@@ -1,4 +1,5 @@
 import { addEventExtension } from '../tournamentGovernor/addRemoveExtensions';
+import { getParticipantIds } from '../../../global/functions/extractors';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { intersection, UUID } from '../../../utilities';
 
@@ -24,13 +25,8 @@ export function addFlight({
 
   if (drawEntries?.length) {
     // check that all drawEntries are in event.entries
-    const enteredParticipantIds =
-      event.entries
-        ?.map(({ participantId }) => participantId)
-        .filter(Boolean) || [];
-    const flightParticipantIds = drawEntries
-      .map(({ participantId }) => participantId)
-      .filter(Boolean);
+    const enteredParticipantIds = getParticipantIds(event.entries);
+    const flightParticipantIds = getParticipantIds(drawEntries);
     if (
       intersection(flightParticipantIds, enteredParticipantIds).length !==
       flightParticipantIds.length

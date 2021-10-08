@@ -1,5 +1,6 @@
 import { addEventExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
+import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../getters/getFlightProfile';
 import { getDevContext } from '../../global/globalState';
 import {
@@ -68,9 +69,7 @@ export function generateFlightProfile({
     sortDescending,
   });
 
-  const scaledEntryParticipantIds = scaledEntries.map(
-    ({ participantId }) => participantId
-  );
+  const scaledEntryParticipantIds = scaledEntries.map(getParticipantId);
   const unscaledEntries = eventEntries
     .filter(
       ({ participantId }) => !scaledEntryParticipantIds.includes(participantId)

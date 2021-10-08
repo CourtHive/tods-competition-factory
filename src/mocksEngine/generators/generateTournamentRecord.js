@@ -8,6 +8,7 @@ import { formatDate, isValidDateString } from '../../utilities/dateTime';
 import { validExtension } from '../../global/validation/validExtension';
 import { generateSchedulingProfile } from './generateSchedulingProfile';
 import { generateEventWithFlights } from './generateEventWithFlights';
+import { getParticipantId } from '../../global/functions/extractors';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { generateParticipants } from './generateParticipants';
 import { definedAttributes } from '../../utilities/objects';
@@ -239,7 +240,7 @@ export function generateTournamentRecord({
   // generate Team participants
   const allIndividualParticipantIds = participants
     .filter(({ participantType }) => participantType === INDIVIDUAL)
-    .map(({ participantId }) => participantId);
+    .map(getParticipantId);
   const teamParticipants = generateRange(0, largestTeamDraw).map(
     (teamIndex) => {
       const individualParticipantIds = allIndividualParticipantIds.slice(

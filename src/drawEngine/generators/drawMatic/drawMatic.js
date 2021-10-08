@@ -1,5 +1,6 @@
 import { participantScaleItem } from '../../../tournamentEngine/accessors/participantScaleItem';
 import { stageOrder } from '../../../constants/drawDefinitionConstants';
+import { getParticipantId } from '../../../global/functions/extractors';
 import { generateDrawMaticRound } from './generateDrawMaticRound';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -44,7 +45,7 @@ export function drawMatic({
           entryStatus
         )
     )
-    .map(({ participantId }) => participantId);
+    .map(getParticipantId);
 
   if (participantIds) {
     // ensure all participantIds are in drawDefinition.entries

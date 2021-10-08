@@ -11,6 +11,7 @@ import { getPolicyDefinitions } from '../governors/queryGovernor/getPolicyDefini
 import { assignSeed } from '../../drawEngine/governors/entryGovernor/seedAssignment';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { getDrawStructures } from '../../drawEngine/getters/structureGetter';
+import { getParticipantId } from '../../global/functions/extractors';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { addNotice } from '../../global/globalState';
@@ -243,9 +244,7 @@ export function generateDrawDefinition(params) {
     }
   }
 
-  const enteredParticipantIds = entries.map(
-    ({ participantId }) => participantId
-  );
+  const enteredParticipantIds = entries.map(getParticipantId);
 
   if (seededParticipants) seedsCount = seededParticipants.length;
   if (seedsCount > drawSize) seedsCount = drawSize;

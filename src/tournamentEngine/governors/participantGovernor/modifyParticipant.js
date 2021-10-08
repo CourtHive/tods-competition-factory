@@ -1,24 +1,25 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 import { addIndividualParticipantIds } from './groupings/addIndividualParticipantIds';
-import {
-  GROUP,
-  PAIR,
-  participantTypes,
-} from '../../../constants/participantTypes';
+import { getParticipantId } from '../../../global/functions/extractors';
 import { addNotice, getDevContext } from '../../../global/globalState';
 import { participantRoles } from '../../../constants/participantRoles';
 import { genderConstants } from '../../../constants/genderConstants';
 import { addParticipant } from './addParticipants';
 import { makeDeepCopy } from '../../../utilities';
 
+import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   MISSING_PARTICIPANT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
+import {
+  GROUP,
+  PAIR,
+  participantTypes,
+} from '../../../constants/participantTypes';
 
 export function modifyParticipant({
   tournamentRecord,
@@ -61,9 +62,8 @@ export function modifyParticipant({
         tournamentRecord,
         participantFilters: { participantTypes: [participantTypes.INDIVIDUAL] },
       });
-    const allIndividualParticipantIds = individualParticipants?.map(
-      ({ participantId }) => participantId
-    );
+    const allIndividualParticipantIds =
+      individualParticipants?.map(getParticipantId);
     if (allIndividualParticipantIds) {
       // check that all new individualParticipantIds exist and are { participantType: INDIVIDUAL }
       const updatedIndividualParticipantIds = individualParticipantIds.filter(
