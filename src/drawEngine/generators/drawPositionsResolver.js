@@ -1,3 +1,4 @@
+import { getDrawPosition } from '../../global/functions/extractors';
 import {
   makeDeepCopy,
   generateRange,
@@ -44,7 +45,7 @@ export function resolveDrawPositions({
       (assignment) =>
         !assignment.participantId && !assignment.bye && !assignment.qualifier
     )
-    .map(({ drawPosition }) => drawPosition);
+    .map(getDrawPosition);
 
   let drawPositionResolutions;
   let remainingPreferences = true;

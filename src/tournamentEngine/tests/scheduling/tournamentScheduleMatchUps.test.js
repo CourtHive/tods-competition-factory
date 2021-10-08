@@ -1,3 +1,4 @@
+import { getMatchUpIds } from '../../../global/functions/extractors';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -17,7 +18,7 @@ it('auto schedules venue if only one venue provided', () => {
   let { upcomingMatchUps } = competitionEngine.competitionMatchUps();
 
   const { startDate } = tournamentInfo;
-  const matchUpIds = upcomingMatchUps.map(({ matchUpId }) => matchUpId);
+  const matchUpIds = getMatchUpIds(upcomingMatchUps);
   expect(matchUpIds.length).toBeGreaterThan(0);
 
   const result = competitionEngine.scheduleMatchUps({

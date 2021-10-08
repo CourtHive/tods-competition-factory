@@ -6,18 +6,6 @@ import {
   MISSING_POSITION_ASSIGNMENTS,
 } from '../../constants/errorConditionConstants';
 
-export function getDrawPositions({ structure }) {
-  if (structure && structure.structures) {
-    return [].concat(
-      ...structure.structures.map((structure) =>
-        getDrawPositions({ structure })
-      )
-    );
-  } else if (structure) {
-    return structure.positionAssignments || [];
-  }
-}
-
 export function getAllPositionedParticipantIds({ drawDefinition }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   return (drawDefinition.structures || [])

@@ -1,5 +1,6 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getMatchUpIds } from '../../../global/functions/extractors';
 import { findStructure } from '../../getters/findStructure';
 import {
   deleteMatchUpsNotice,
@@ -43,7 +44,7 @@ export function removeStructure({ drawDefinition, structureId }) {
       structureId: idBeingRemoved,
     });
     const { matchUps } = getAllStructureMatchUps({ structure });
-    const matchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
+    const matchUpIds = getMatchUpIds(matchUps);
     removedMatchUpIds.push(...matchUpIds);
     drawDefinition.links =
       drawDefinition.links?.filter(

@@ -1,7 +1,10 @@
 import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
 import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 import { getPositionAssignments } from '../../getters/positionsGetter';
-import { getDrawPosition } from '../../../global/functions/extractors';
+import {
+  getDrawPosition,
+  getDrawPositions,
+} from '../../../global/functions/extractors';
 import { hasParticipantId } from '../../../global/functions/filters';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { randomInt } from '../../../utilities/math';
@@ -84,7 +87,7 @@ export function replacementTest({
     // shuffle updated positionAssignments and slice to select random number of drawPositions to assign
     const assignmentCount = randomInt(0, participantsCount);
     const drawPositionsToAssign = shuffleArray(
-      updatedPositionAssignments.map(({ drawPosition }) => drawPosition)
+      getDrawPositions(updatedPositionAssignments)
     ).slice(0, assignmentCount);
 
     // for each targeted drawPosition remove the BYE and assign participantId from availableParticipantIds

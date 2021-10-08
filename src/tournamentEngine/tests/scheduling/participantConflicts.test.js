@@ -1,3 +1,4 @@
+import { getMatchUpIds } from '../../../global/functions/extractors';
 import competitionEngine from '../../../competitionEngine/sync';
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
@@ -54,7 +55,7 @@ test('recognizes scheduling conflicts', () => {
     scheduledTime: '08:00',
     scheduledDate,
   };
-  let matchUpIds = roundMatchUps[1].map(({ matchUpId }) => matchUpId);
+  let matchUpIds = getMatchUpIds(roundMatchUps[1]);
   let result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
   expect(result.success).toEqual(true);
 
@@ -62,7 +63,7 @@ test('recognizes scheduling conflicts', () => {
     scheduledTime: '09:00',
     scheduledDate,
   };
-  matchUpIds = roundMatchUps[2].map(({ matchUpId }) => matchUpId);
+  matchUpIds = getMatchUpIds(roundMatchUps[2]);
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
   expect(result.success).toEqual(true);
 

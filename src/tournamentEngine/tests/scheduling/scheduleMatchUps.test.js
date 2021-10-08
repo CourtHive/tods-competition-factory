@@ -1,5 +1,6 @@
 import { getScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/garman/getScheduleTimes';
 import { removeCourtAssignment } from '../../governors/venueGovernor/removeCourtAssignment';
+import { getMatchUpIds } from '../../../global/functions/extractors';
 import { competitionEngine } from '../../../competitionEngine/sync';
 import { setSubscriptions } from '../../../global/globalState';
 import mocksEngine from '../../../mocksEngine';
@@ -148,7 +149,7 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
 
   await forceDelay();
 
-  const matchUpIds = upcoming.map(({ matchUpId }) => matchUpId);
+  const matchUpIds = getMatchUpIds(upcoming);
   result = competitionEngine
     .setState(tournamentRecords)
     .scheduleMatchUps({ scheduleDate: date, matchUpIds });
@@ -538,7 +539,7 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
     tournamentRecord.tournamentId;
   let tournamentRecords = { [tournamentId]: tournamentRecord };
 
-  const matchUpIds = upcoming.map(({ matchUpId }) => matchUpId);
+  const matchUpIds = getMatchUpIds(upcoming);
   result = competitionEngine
     .setState(tournamentRecords)
     .scheduleMatchUps({ scheduleDate: date, matchUpIds });

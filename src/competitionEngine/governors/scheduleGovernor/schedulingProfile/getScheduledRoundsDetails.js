@@ -5,6 +5,7 @@ import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpForma
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
+import { getMatchUpId } from '../../../../global/functions/extractors';
 import { isConvertableInteger } from '../../../../utilities/math';
 import { isPowerOf2 } from '../../../../utilities';
 
@@ -140,7 +141,7 @@ export function getScheduledRoundsDetails({
           !completedMatchUpStatuses.includes(matchUpStatus) &&
           matchUpStatus !== BYE
       )
-      .map(({ matchUpId }) => matchUpId);
+      .map(getMatchUpId);
     matchUpIds.forEach((matchUpId) => {
       minutesMap[matchUpId] = {
         typeChangeRecoveryMinutes,

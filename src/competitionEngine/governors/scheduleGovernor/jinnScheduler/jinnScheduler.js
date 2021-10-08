@@ -18,6 +18,7 @@ import { getGroupedRounds } from '../schedulingProfile/getGroupedRounds';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { checkDailyLimits } from '../scheduleMatchUps/checkDailyLimits';
 import { getPersonRequests } from '../scheduleMatchUps/personRequests';
+import { getMatchUpId } from '../../../../global/functions/extractors';
 import { addNotice, getTopics } from '../../../../global/globalState';
 import { clearScheduledMatchUps } from '../clearScheduledMatchUps';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
@@ -545,9 +546,10 @@ export function jinnScheduler({
         }
       });
 
-      noTimeMatchUpIds[scheduleDate] = venueScheduledRoundDetails[
-        venueId
-      ].matchUpsToSchedule.map(({ matchUpId }) => matchUpId);
+      noTimeMatchUpIds[scheduleDate] =
+        venueScheduledRoundDetails[venueId].matchUpsToSchedule.map(
+          getMatchUpId
+        );
 
       scheduleTimesRemaining[scheduleDate][venueId] =
         venueScheduledRoundDetails[venueId].scheduleTimes.sort(

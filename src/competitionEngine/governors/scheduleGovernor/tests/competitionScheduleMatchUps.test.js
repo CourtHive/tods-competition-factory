@@ -1,4 +1,5 @@
 import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
+import { getMatchUpIds } from '../../../../global/functions/extractors';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { instanceCount } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
@@ -24,7 +25,7 @@ test.each([competitionEngineSync])(
     const { upcomingMatchUps } = competitionEngine.competitionMatchUps();
     const { startDate } = competitionEngine.getCompetitionDateRange();
 
-    const matchUpIds = upcomingMatchUps.map(({ matchUpId }) => matchUpId);
+    const matchUpIds = getMatchUpIds(upcomingMatchUps);
     expect(
       instanceCount(upcomingMatchUps.map(({ matchUpType }) => matchUpType))
     ).toEqual({ DOUBLES: 8 });
@@ -63,7 +64,7 @@ test.each([competitionEngineSync])(
     const { upcomingMatchUps } = competitionEngine.competitionMatchUps();
     const { startDate } = competitionEngine.getCompetitionDateRange();
 
-    const matchUpIds = upcomingMatchUps.map(({ matchUpId }) => matchUpId);
+    const matchUpIds = getMatchUpIds(upcomingMatchUps);
     expect(
       instanceCount(upcomingMatchUps.map(({ matchUpType }) => matchUpType))
     ).toEqual({ DOUBLES: 8, SINGLES: 32 });

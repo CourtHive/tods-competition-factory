@@ -5,6 +5,7 @@ import { getDrawDefinition } from '../../../../tournamentEngine/getters/eventGet
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
 import { checkDependenciesScheduled } from './checkDependenciesScheduled';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
+import { getMatchUpIds } from '../../../../global/functions/extractors';
 import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
 import { getMatchUpDependencies } from './getMatchUpDependencies';
@@ -412,7 +413,7 @@ export function scheduleMatchUps({
     }
   });
 
-  const noTimeMatchUpIds = matchUpsToSchedule.map(({ matchUpId }) => matchUpId);
+  const noTimeMatchUpIds = getMatchUpIds(matchUpsToSchedule);
 
   return {
     ...SUCCESS,

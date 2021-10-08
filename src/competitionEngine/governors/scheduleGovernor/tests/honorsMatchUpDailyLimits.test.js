@@ -1,3 +1,4 @@
+import { getMatchUpIds } from '../../../../global/functions/extractors';
 import mocksEngine from '../../../../mocksEngine';
 import { unique } from '../../../../utilities';
 import competitionEngine from '../../../sync';
@@ -25,7 +26,7 @@ it('can set and honor matchUpDailyLimits', () => {
   const { matchUps } = competitionEngine.allCompetitionMatchUps();
   const { startDate } = competitionEngine.getCompetitionDateRange();
 
-  const matchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
+  const matchUpIds = getMatchUpIds(matchUps);
 
   let result = competitionEngine.setMatchUpDailyLimits({});
   expect(result.error).toEqual(INVALID_OBJECT);

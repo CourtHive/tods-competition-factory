@@ -1,4 +1,5 @@
 import { bulkRescheduleMatchUps as bulkReschedule } from '../../../tournamentEngine/governors/scheduleGovernor/bulkRescheduleMatchUps';
+import { getMatchUpIds } from '../../../global/functions/extractors';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -33,8 +34,7 @@ export function bulkRescheduleMatchUps({
       notRescheduled.push(...result.notRescheduled);
 
     // this is a check in case something has been rescheduled multiple times in the same call
-    const notRescheduledIds =
-      result.notRescheduled?.map(({ matchUpId }) => matchUpId) || [];
+    const notRescheduledIds = getMatchUpIds(result.notRescheduled);
     const removeFromNotScheduledIds = [];
     result.rescheduled?.forEach((matchUp) => {
       const { matchUpId } = matchUp;

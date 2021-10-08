@@ -1,12 +1,13 @@
 import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
+import { getMatchUpIds } from '../../../global/functions/extractors';
+import competitionEngine from '../../../competitionEngine/sync';
+import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
 import {
   dateStringDaysChange,
   extractDate,
   extractTime,
 } from '../../../utilities/dateTime';
-import competitionEngine from '../../../competitionEngine/sync';
-import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
 
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -115,7 +116,7 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
   expect(scheduledMatchUps[0].schedule.scheduledDate).toEqual(startDate);
   expect(scheduledMatchUps.length).toBeLessThan(matchUps.length);
 
-  const matchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
+  const matchUpIds = getMatchUpIds(matchUps);
   result = tournamentEngine.bulkRescheduleMatchUps({ matchUpIds });
   expect(result.error).toEqual(INVALID_VALUES);
 

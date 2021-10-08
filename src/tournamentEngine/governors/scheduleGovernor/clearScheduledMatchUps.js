@@ -1,6 +1,7 @@
 import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
+import { getMatchUpId } from '../../../global/functions/extractors';
 import { bulkScheduleMatchUps } from './bulkScheduleMatchUps';
 
 import {
@@ -30,7 +31,7 @@ export function clearScheduledMatchUps({
         !ignoreMatchUpStatuses.includes(matchUp.matchUpStatus) &&
         hasSchedule({ schedule: matchUp.schedule, scheduleAttributes })
     )
-    .map(({ matchUpId }) => matchUpId);
+    .map(getMatchUpId);
 
   const clearedScheduleValues = {
     venueId: '',

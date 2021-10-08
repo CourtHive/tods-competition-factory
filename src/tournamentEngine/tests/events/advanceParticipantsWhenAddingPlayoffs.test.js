@@ -1,3 +1,4 @@
+import { getParticipantIds } from '../../../global/functions/extractors';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
@@ -59,9 +60,9 @@ it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
   expect(structures.length).toEqual(2);
   expect(structures[1].structureName).toEqual('Playoff 3-4');
 
-  const consolationAssignedParticipantIds = structures[1].positionAssignments
-    .map(({ participantId }) => participantId)
-    .filter(Boolean);
+  const consolationAssignedParticipantIds = getParticipantIds(
+    structures[1].positionAssignments
+  );
   expect(consolationAssignedParticipantIds.length).toEqual(2);
 });
 

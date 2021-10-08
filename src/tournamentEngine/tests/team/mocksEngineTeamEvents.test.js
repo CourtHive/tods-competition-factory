@@ -1,3 +1,5 @@
+import { getParticipantId } from '../../../global/functions/extractors';
+import { hasParticipantId } from '../../../global/functions/filters';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
@@ -98,8 +100,8 @@ it('can generate TEAM events', () => {
   expect(positionAssignments.length).toEqual(drawSize);
 
   const positionedParticipantIds = positionAssignments
-    .filter(({ participantId }) => participantId)
-    .map(({ participantId }) => participantId);
+    .filter(hasParticipantId)
+    .map(getParticipantId);
   expect(positionedParticipantIds.length).toEqual(drawSize);
 
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({

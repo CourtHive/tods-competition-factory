@@ -4,6 +4,7 @@ import { getMatchUpsMap } from '../../drawEngine/getters/getMatchUps/getMatchUps
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 import { structureSort } from '../../drawEngine/getters/structureSort';
 import { matchUpSort } from '../../drawEngine/getters/matchUpSort';
+import { getMatchUpId } from '../../global/functions/extractors';
 import { generateOutcome } from './generateOutcome';
 
 import { SUCCESS } from '../../constants/resultConstants';
@@ -44,7 +45,7 @@ export function completeDrawMatchUps({
     const sortedMatchUpIds = matchUps
       .filter(({ winningSide }) => !winningSide)
       .sort(matchUpSort)
-      .map(({ matchUpId }) => matchUpId);
+      .map(getMatchUpId);
 
     for (const matchUpId of sortedMatchUpIds) {
       const { matchUps } = getAllStructureMatchUps({

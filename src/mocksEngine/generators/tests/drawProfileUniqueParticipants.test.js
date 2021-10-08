@@ -1,3 +1,4 @@
+import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../..';
 
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
@@ -19,7 +20,7 @@ test('with uniqueParticipants: false draw entries will overlap', () => {
     ({ entries }) =>
       entries
         .filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE)
-        .map(({ participantId }) => participantId)
+        .map(getParticipantId)
   );
   const overlap = eventEnteredParticipantIds[0].find((participantId) =>
     eventEnteredParticipantIds[1].includes(participantId)
@@ -43,7 +44,7 @@ test('drawProfiles can specify unique participants', () => {
     ({ entries }) =>
       entries
         .filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE)
-        .map(({ participantId }) => participantId)
+        .map(getParticipantId)
   );
   const overlap = eventEnteredParticipantIds[0].find((participantId) =>
     eventEnteredParticipantIds[1].includes(participantId)
@@ -83,7 +84,7 @@ test('event entries will overlap if uniqueParticipants is not true', () => {
     ({ entries }) =>
       entries
         .filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE)
-        .map(({ participantId }) => participantId)
+        .map(getParticipantId)
   );
   const overlap = eventEnteredParticipantIds[0].find((participantId) =>
     eventEnteredParticipantIds[1].includes(participantId)
@@ -124,7 +125,7 @@ test('drawProfiles within eventProfiles can specify unique participants', () => 
     ({ entries }) =>
       entries
         .filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE)
-        .map(({ participantId }) => participantId)
+        .map(getParticipantId)
   );
   const overlap = eventEnteredParticipantIds[0].find((participantId) =>
     eventEnteredParticipantIds[1].includes(participantId)
