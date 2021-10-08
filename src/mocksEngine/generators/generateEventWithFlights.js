@@ -13,6 +13,7 @@ import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfil
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { validExtension } from '../../global/validation/validExtension';
 import { getParticipantId } from '../../global/functions/extractors';
+import { hasParticipantId } from '../../global/functions/filters';
 import { generateParticipants } from './generateParticipants';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange, UUID } from '../../utilities';
@@ -273,7 +274,7 @@ export function generateEventWithFlights({
       const drawProfile = drawProfiles[index];
       const { seedsCount } = drawProfile;
       const drawParticipantIds = drawEntries
-        .filter(({ participantId }) => participantId)
+        .filter(hasParticipantId)
         .map(getParticipantId);
 
       const seedingScaleName =

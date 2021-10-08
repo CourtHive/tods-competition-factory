@@ -3,6 +3,7 @@ import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStru
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
+import { hasParticipantId } from '../../../global/functions/filters';
 import { findExtension } from '../queryGovernor/extensionQueries';
 import { getDevContext } from '../../../global/globalState';
 import {
@@ -104,7 +105,7 @@ export function getDrawData({
         });
 
         const participantResults = positionAssignments
-          .filter(({ participantId }) => participantId)
+          .filter(hasParticipantId)
           .map((assignment) => {
             participantPlacements = true;
             const { drawPosition, participantId } = assignment;

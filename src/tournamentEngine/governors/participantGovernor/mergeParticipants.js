@@ -1,4 +1,5 @@
 import { getParticipantId } from '../../../global/functions/extractors';
+import { hasParticipantId } from '../../../global/functions/filters';
 import { addNotice, getTopics } from '../../../global/globalState';
 import { deepMerge } from '../../../utilities/deepMerge';
 
@@ -19,7 +20,7 @@ export function mergeParticipants({
 
   const incomingIdMap = Object.assign(
     ...incomingParticipants
-      .filter(({ participantId }) => participantId)
+      .filter(hasParticipantId)
       .map((p) => ({ [p.participantId]: p }))
   );
 

@@ -1,4 +1,5 @@
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getParticipantIds } from '../../../global/functions/extractors';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { timeStringMinutes } from '../../../utilities/dateTime';
 import { findStructure } from '../../getters/findStructure';
@@ -104,8 +105,8 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
 
         const participants = getMatchUpParticipants(inContextMatchUp);
         if (participants.length) {
-          const winnerParticipantIds = getParticipantIds(winnerMatchUp);
-          const loserParticipantIds = getParticipantIds(loserMatchUp);
+          const winnerParticipantIds = getParticipantIds(winnerMatchUp?.sides);
+          const loserParticipantIds = getParticipantIds(loserMatchUp?.sides);
           const winnerDetermined = participants.find(({ participantId }) =>
             winnerParticipantIds.includes(participantId)
           );
@@ -147,12 +148,6 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
   return { scheduleConflictMatchUpIds };
 }
 
-function getParticipantIds(matchUp) {
-  return (
-    matchUp?.sides?.map(({ participantId }) => participantId).filter(Boolean) ||
-    []
-  );
-}
 function getMatchUpParticipants(matchUp) {
   return (
     matchUp?.sides
