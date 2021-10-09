@@ -10,6 +10,7 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 import { PUBLISH, PUBLIC, STATUS } from '../../../constants/timeItemConstants';
 import { PUBLISH_EVENT } from '../../../constants/topicConstants';
+import { unique } from '../../../utilities';
 
 export function publishEvent({
   tournamentRecord,
@@ -24,12 +25,15 @@ export function publishEvent({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
+  const itemType = `${PUBLISH}.${STATUS}`;
+  const eventDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId) || [];
+
   if (!drawIds && !drawIdsToAdd && !drawIdsToRemove) {
-    drawIds = event.drawDefinitions?.map(({ drawId }) => drawId) || [];
+    drawIds = eventDrawIds;
   } else if (!drawIds && (drawIdsToAdd?.length || drawIdsToRemove?.length)) {
     const { timeItem } = getEventTimeItem({
-      event,
       itemType,
+      event,
     });
     drawIds = timeItem?.itemValue?.PUBLIC?.drawIds || [];
   }
@@ -38,21 +42,22 @@ export function publishEvent({
     (drawId) => !drawIdsToRemove?.length || !drawIdsToRemove.includes(drawId)
   );
   if (drawIdsToAdd?.length) {
-    drawIds = drawIds.concat(...drawIdsToAdd);
+    drawIds = unique(
+      drawIds.concat(
+        ...drawIdsToAdd.filter((drawId) => eventDrawIds.includes(drawId))
+      )
+    );
   }
-
-  const itemType = `${PUBLISH}.${STATUS}`;
 
   const timeItem = {
     itemType,
     itemValue: { [status]: { drawIds, structureIds } },
   };
-  const result = addEventTimeItem({ event, timeItem });
-  if (result.error) return { error: result.error };
+  addEventTimeItem({ event, timeItem });
 
   const { eventData } = getEventData({
-    tournamentRecord,
     policyDefinitions,
+    tournamentRecord,
     event,
   });
 

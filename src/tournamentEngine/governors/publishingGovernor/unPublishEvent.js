@@ -1,13 +1,13 @@
 import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
 import { addNotice } from '../../../global/globalState';
 
+import { HIDDEN, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { UNPUBLISH_EVENT } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { HIDDEN, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
-import { UNPUBLISH_EVENT } from '../../../constants/topicConstants';
 
 export function unPublishEvent({ tournamentRecord, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -17,9 +17,7 @@ export function unPublishEvent({ tournamentRecord, event }) {
     itemType: `${PUBLISH}.${STATUS}`,
     itemValue: HIDDEN,
   };
-  const result = addEventTimeItem({ event, timeItem });
-  if (result.error) return { error: result.error };
-
+  addEventTimeItem({ event, timeItem });
   addNotice({ topic: UNPUBLISH_EVENT, payload: { eventId: event.eventId } });
 
   return Object.assign({ eventId: event.eventId }, SUCCESS);
