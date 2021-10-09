@@ -2,8 +2,9 @@ import { getEventMatchUpFormatTiming as getTiming } from '../../../../tournament
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 
 import {
+  EVENT_NOT_FOUND,
+  INVALID_VALUES,
   MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
 
 /**
@@ -23,20 +24,22 @@ export function getEventMatchUpFormatTiming({
   tournamentId,
   eventId,
 }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!eventId) return { error: MISSING_EVENT };
 
   const tournamentIds = Object.keys(tournamentRecords).filter(
     (currentTournamentId) =>
       !tournamentId || currentTournamentId === tournamentId
   );
+  if (tournamentId && !tournamentIds.length) return { error: INVALID_VALUES };
 
   let timing;
   let timingError;
+  let eventFound;
   tournamentIds.find((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
     const { event } = findEvent({ tournamentRecord, eventId });
     if (!event) return false;
+    eventFound = true;
 
     const { eventMatchUpFormatTiming, error } = getTiming({
       tournamentRecord,
@@ -49,7 +52,9 @@ export function getEventMatchUpFormatTiming({
     return true;
   });
 
-  return timingError
+  return !eventFound
+    ? { error: EVENT_NOT_FOUND }
+    : timingError
     ? { error: timingError }
     : { eventMatchUpFormatTiming: timing };
 }

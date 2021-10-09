@@ -5,7 +5,6 @@ import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
   MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
 
 export function modifyEventMatchUpFormatTiming({
@@ -18,7 +17,6 @@ export function modifyEventMatchUpFormatTiming({
   averageMinutes,
   recoveryMinutes,
 }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!eventId) return { error: MISSING_EVENT };
 
   const tournamentIds = Object.keys(tournamentRecords).filter(
@@ -32,6 +30,7 @@ export function modifyEventMatchUpFormatTiming({
   for (const currentTournamentId of tournamentIds) {
     const tournamentRecord = tournamentRecords[currentTournamentId];
     const { event } = findEvent({ tournamentRecord, eventId });
+
     if (event) {
       return modifyEventTiming({
         tournamentRecord,
