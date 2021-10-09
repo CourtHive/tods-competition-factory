@@ -210,8 +210,6 @@ export function generateEventWithDraw({
     tournamentRecord,
     seedingScaleName,
     matchUpFormat,
-    drawType,
-    drawSize,
     eventId,
     goesTo,
     event,
