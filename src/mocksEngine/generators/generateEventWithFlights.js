@@ -219,7 +219,7 @@ export function generateEventWithFlights({
       stage = MAIN,
       drawSize = 0,
       drawName,
-      drawId,
+      // drawId,
     } = drawProfile;
 
     const entriesCount = drawSize - qualifyingPositions;
@@ -256,7 +256,7 @@ export function generateEventWithFlights({
       drawName: drawName || drawType,
       qualifyingPositions,
       drawEntries,
-      drawId,
+      // drawId,
       event,
       stage,
     });
@@ -270,7 +270,7 @@ export function generateEventWithFlights({
 
   if (Array.isArray(flightProfile?.flights)) {
     for (const [index, flight] of flightProfile.flights.entries()) {
-      const { stage, drawName, drawEntries } = flight;
+      const { drawId, stage, drawName, drawEntries } = flight;
       drawIds.push(flight.drawId);
 
       const drawProfile = drawProfiles[index];
@@ -315,6 +315,7 @@ export function generateEventWithFlights({
           tournamentRecord,
           drawEntries,
           drawName,
+          drawId,
           event,
           stage,
         });
