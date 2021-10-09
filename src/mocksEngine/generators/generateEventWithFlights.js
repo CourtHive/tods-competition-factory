@@ -270,7 +270,7 @@ export function generateEventWithFlights({
 
   if (Array.isArray(flightProfile?.flights)) {
     for (const [index, flight] of flightProfile.flights.entries()) {
-      const { drawId, stage, drawName, drawEntries } = flight;
+      const { stage, drawName, drawEntries } = flight;
       drawIds.push(flight.drawId);
 
       const drawProfile = drawProfiles[index];
