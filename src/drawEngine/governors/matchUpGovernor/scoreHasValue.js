@@ -2,15 +2,5 @@ export function scoreHasValue({ score }) {
   if (!score) return false;
   const { sets, scoreStringSide1, scoreStringSide2 } = score || {};
   if (scoreStringSide1 || scoreStringSide2) return true;
-  if (sets?.length) {
-    return Object.values(sets[0]).some((value) => value);
-    /*
-    const { side1TiebreakScore, side2TiebreakScore, side1Score, side2Score } =
-      sets[0];
-    if (side1TiebreakScore || side2TiebreakScore || side1Score || side2Score)
-      return true;
-      */
-  }
-
-  return false;
+  return sets?.length ? Object.values(sets[0]).some((value) => value) : false;
 }
