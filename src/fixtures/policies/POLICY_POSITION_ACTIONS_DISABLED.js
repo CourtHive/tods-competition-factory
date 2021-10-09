@@ -6,7 +6,7 @@ export const POLICY_POSITION_ACTIONS_DISABLED = {
 
     // positionActions will be selectively enabled for structures matching { stages: [], stageSequences: [] }
     // enabledStructures: [] => all structures are enabled
-    enabledStructures: undefined,
+    enabledStructures: false,
   },
 };
 
