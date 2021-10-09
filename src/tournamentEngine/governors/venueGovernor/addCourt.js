@@ -1,18 +1,19 @@
 import { UUID, generateRange, makeDeepCopy } from '../../../utilities';
 import { addNotice, getDevContext } from '../../../global/globalState';
+import { extractDate, extractTime } from '../../../utilities/dateTime';
 import { courtTemplate } from '../../generators/courtTemplate';
 import { validDateAvailability } from './dateAvailability';
-import { extractDate, extractTime } from '../../../utilities/dateTime';
 import { findVenue } from '../../getters/venueGetter';
+import { isNumeric } from '../../../utilities/math';
 
+import { MODIFY_VENUE } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_VENUE_ID,
   MISSING_COURTS_INFO,
   VENUE_NOT_FOUND,
   COURT_EXISTS,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { MODIFY_VENUE } from '../../../constants/topicConstants';
 
 /**
  *
@@ -103,14 +104,15 @@ export function addCourt({
  * @param {object[]} dataAvailability - dataAvailability object
  */
 export function addCourts({
-  tournamentRecord,
-  venueId,
-  courtsCount,
-  courtNames = [],
   dateAvailability = [],
+  tournamentRecord,
+  courtNames = [],
+  courtsCount,
+  venueId,
 }) {
   if (!venueId) return { error: MISSING_VENUE_ID };
-  if (!courtsCount || !courtNames) return { error: MISSING_COURTS_INFO };
+  if (!isNumeric(courtsCount) || !courtNames)
+    return { error: MISSING_COURTS_INFO };
 
   courtsCount = courtsCount || courtNames.length;
   const courts = generateRange(0, courtsCount).map((i) => {

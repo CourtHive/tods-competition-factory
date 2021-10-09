@@ -33,6 +33,7 @@ export function assignSeed({
     drawDefinition,
     participantId,
   });
+
   if (participantId && !validParticipantId)
     return {
       error: INVALID_PARTICIPANT_ID,

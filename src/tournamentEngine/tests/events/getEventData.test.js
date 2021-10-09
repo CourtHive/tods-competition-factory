@@ -1,29 +1,41 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
-// import fs from 'fs';
 
 import { COMPASS } from '../../../constants/drawDefinitionConstants';
-
-// const tournamentRecordJSON = fs.readFileSync('./scratch/tods.json', 'utf-8');
+import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
 
 it('returns eventData', () => {
-  /*
-  const t = JSON.parse(tournamentRecordJSON);
-  const events = t.events;
-  const eventId = events[0].eventId;
-  const { eventData } = tournamentEngine.setState(t).getEventData({ eventId });
-  console.log(eventData.drawsData);
-  */
-
   const drawProfiles = [{ drawSize: 4, drawType: COMPASS }];
-  const { eventIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
+  const {
+    eventIds: [eventId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
     drawProfiles,
   });
-  const { eventData: generatedEventData } = tournamentEngine
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let result = tournamentEngine.getEventData();
+  expect(result.error).toEqual(MISSING_EVENT);
+
+  const { eventData } = tournamentEngine.getEventData({ eventId });
+  expect(eventData.drawsData[0].structures.length).toEqual(2);
+  expect(eventData.drawsData[0].updatedAt).not.toBeUndefined();
+});
+
+it('returns eventData', () => {
+  const eventProfiles = [{ eventName: 'Test Event' }];
+  const {
+    eventIds: [eventId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    eventProfiles,
+  });
+  const { eventData } = tournamentEngine
     .setState(tournamentRecord)
-    .getEventData({
-      eventId: eventIds[0],
-    });
-  expect(generatedEventData.drawsData[0].structures.length).toEqual(2);
-  expect(generatedEventData.drawsData[0].updatedAt).not.toBeUndefined();
+    .getEventData({ eventId });
+  expect(eventData.drawsData.length).toEqual(0);
+
+  const { event } = tournamentEngine.getEvent({ eventId });
+  expect(event.drawDefinitions).toBeUndefined();
 });
