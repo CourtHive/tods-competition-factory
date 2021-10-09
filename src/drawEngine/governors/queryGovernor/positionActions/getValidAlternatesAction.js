@@ -1,9 +1,8 @@
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import {
   CONSOLATION,
   MAIN,
 } from '../../../../constants/drawDefinitionConstants';
-import { ALTERNATE } from '../../../../constants/entryStatusConstants';
-import { MISSING_DRAW_ID } from '../../../../constants/errorConditionConstants';
 import {
   ALTERNATE_PARTICIPANT,
   ALTERNATE_PARTICIPANT_METHOD,
@@ -22,8 +21,6 @@ export function getValidAlternatesAction({
   possiblyDisablingAction,
   tournamentParticipants = [],
 }) {
-  if (!drawId)
-    return { error: MISSING_DRAW_ID, method: 'getValidAlternatesAction' };
   if (activeDrawPositions.includes(drawPosition)) return {};
 
   const assignedParticipantIds = positionAssignments

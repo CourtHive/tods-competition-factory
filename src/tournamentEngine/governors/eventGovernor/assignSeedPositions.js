@@ -1,6 +1,6 @@
-import { uniqueValues } from '../../../utilities/arrays';
-import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
 import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStructureSeedAssignments';
+import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
+import { uniqueValues } from '../../../utilities/arrays';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -16,12 +16,12 @@ import {
  */
 export function assignSeedPositions(params) {
   const {
+    useExistingSeedLimit,
     tournamentRecord,
     drawDefinition,
-    drawId,
     structureId,
     assignments,
-    useExistingSeedLimit,
+    drawId,
   } = params;
 
   let modifications = 0;
@@ -83,5 +83,7 @@ export function assignSeedPositions(params) {
     }
   }
 
-  return modifications ? { ...SUCCESS } : { error: NO_MODIFICATIONS_APPLIED };
+  return modifications
+    ? { ...SUCCESS, modifications }
+    : { error: NO_MODIFICATIONS_APPLIED };
 }

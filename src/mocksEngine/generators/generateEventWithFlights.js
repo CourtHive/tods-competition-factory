@@ -61,7 +61,7 @@ export function generateEventWithFlights({
   let uniqueDrawParticipants = [];
 
   for (const drawProfile of drawProfiles) {
-    if (!gender && drawProfile.gender) gender = drawProfile.gender;
+    if (!gender && drawProfile.gender) gender = drawProfile?.gender;
   }
 
   let uniqueParticipantsCount = {};
@@ -73,7 +73,7 @@ export function generateEventWithFlights({
         uniqueParticipants,
         stage = MAIN,
         drawSize = 0,
-      } = drawProfile;
+      } = drawProfile || {};
 
       if (!Object.keys(stageParticipantsCount).includes(stage))
         stageParticipantsCount[stage] = 0;
@@ -219,6 +219,7 @@ export function generateEventWithFlights({
       stage = MAIN,
       drawSize = 0,
       drawName,
+      drawId,
     } = drawProfile;
 
     const entriesCount = drawSize - qualifyingPositions;
@@ -255,6 +256,7 @@ export function generateEventWithFlights({
       drawName: drawName || drawType,
       qualifyingPositions,
       drawEntries,
+      drawId,
       event,
       stage,
     });
@@ -272,7 +274,7 @@ export function generateEventWithFlights({
       drawIds.push(flight.drawId);
 
       const drawProfile = drawProfiles[index];
-      const { seedsCount, generate = true } = drawProfile;
+      const { seedsCount, generate = true } = drawProfile || {};
 
       if (generate) {
         const drawParticipantIds = drawEntries
@@ -321,7 +323,7 @@ export function generateEventWithFlights({
         const { drawDefinition, error } = result;
         if (error) return { error };
 
-        const drawExtensions = drawProfiles[index].drawExtensions;
+        const drawExtensions = drawProfiles[index]?.drawExtensions;
         if (Array.isArray(drawExtensions)) {
           drawExtensions
             .filter(validExtension)
@@ -336,7 +338,7 @@ export function generateEventWithFlights({
         });
         if (result.error) return result;
 
-        if (drawProfile.withPlayoffs) {
+        if (drawProfile?.withPlayoffs) {
           const structureId = drawDefinition.structures[0].structureId;
           const result = addPlayoffStructures({
             idPrefix: drawProfile.idPrefix,
@@ -350,9 +352,9 @@ export function generateEventWithFlights({
 
         // TODO: enable { outcomes: [] } in eventProfile: { drawProfiles }
 
-        const manual = drawProfile.automated === false;
+        const manual = drawProfile?.automated === false;
         if (!manual && completeAllMatchUps) {
-          const matchUpFormat = drawProfile.matchUpFormat;
+          const matchUpFormat = drawProfile?.matchUpFormat;
           const result = completeDrawMatchUps({
             completeAllMatchUps,
             matchUpStatusProfile,
@@ -361,7 +363,7 @@ export function generateEventWithFlights({
             matchUpFormat,
           });
           if (result.error) return result;
-          if (drawProfile.drawType === ROUND_ROBIN_WITH_PLAYOFF) {
+          if (drawProfile?.drawType === ROUND_ROBIN_WITH_PLAYOFF) {
             const mainStructure = drawDefinition.structures.find(
               (structure) => structure.stage === MAIN
             );

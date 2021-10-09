@@ -212,7 +212,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
   expect(attachedSchedulingProfile[0].venues[0].rounds.length).toEqual(9);
 });
 
-it.only('mocksEngine can schedule Round Robin draws', () => {
+it('mocksEngine can schedule Round Robin draws', () => {
   const firstVenueId = 'firstVenueId';
   const venueProfiles = [{ venueId: firstVenueId, courtsCount: 31 }];
 

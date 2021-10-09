@@ -1,6 +1,19 @@
-import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine/sync';
+import { matchUpSort } from '../../../getters/matchUpSort';
+import mocksEngine from '../../../../mocksEngine';
 
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import POLICY_POSITION_ACTIONS_NO_MOVEMENT from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_NO_MOVEMENT';
+import POLICY_POSITION_ACTIONS_DISABLED from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DISABLED';
+import {
+  EXISTING_POLICY_TYPE,
+  MISSING_DRAW_DEFINITION,
+  MISSING_DRAW_POSITION,
+  MISSING_EVENT,
+  MISSING_STRUCTURE_ID,
+  STRUCTURE_NOT_FOUND,
+} from '../../../../constants/errorConditionConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 import {
   ADD_NICKNAME,
   ADD_PENALTY,
@@ -16,17 +29,19 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../../constants/drawDefinitionConstants';
-import POLICY_POSITION_ACTIONS_DISABLED from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DISABLED';
-import POLICY_POSITION_ACTIONS_NO_MOVEMENT from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_NO_MOVEMENT';
-import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import {
+  NICKNAME,
+  PENALTY,
+} from '../../../../constants/matchUpActionConstants';
+import { getParticipantIds } from '../../../../global/functions/extractors';
 
 // demonstrates that policyDefinitions can be used to change the behavior of positionActions
 it('supports policyDefinitions in positionActions', () => {
   const drawProfiles = [
     {
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
-      drawSize: 32,
       participantsCount: 30,
+      drawSize: 32,
     },
   ];
   const {
@@ -55,7 +70,7 @@ it('supports policyDefinitions in positionActions', () => {
   ];
   const noMovementActions = [SEED_VALUE, ADD_PENALTY, ADD_NICKNAME];
 
-  // will be testing the available positionActions for { drawPosition: 1 }
+  // will be testing the available positionActions for { drawPosition: 3 }
   // initially in mainStructure followed by consolationStructure
   let drawPosition = 3;
 
@@ -175,4 +190,190 @@ it('supports policyDefinitions in positionActions', () => {
     SWAP_PARTICIPANTS,
     ALTERNATE_PARTICIPANT,
   ]);
+});
+
+it('can disable actions for a specified structure', () => {
+  const drawProfiles = [
+    {
+      drawType: FIRST_MATCH_LOSER_CONSOLATION,
+      seedsCount: 2,
+      drawSize: 8,
+    },
+  ];
+
+  const {
+    drawIds: [drawId],
+    eventIds: [eventId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    inContext: true,
+    drawProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let {
+    drawDefinition: {
+      structures: [mainStructure, consolationStructure],
+    },
+  } = tournamentEngine.getEvent({ drawId });
+
+  let seedParticipantIds = getParticipantIds(mainStructure.seedAssignments);
+  expect(seedParticipantIds.length).toEqual(2);
+
+  let result = tournamentEngine.assignSeedPositions({
+    assignments: [{ seedNumber: 1, seedValue: 1, participantId: undefined }],
+    structureId: mainStructure.structureId,
+    eventId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({
+    drawDefinition: {
+      structures: [mainStructure, consolationStructure],
+    },
+  } = tournamentEngine.getEvent({ drawId }));
+
+  seedParticipantIds = getParticipantIds(mainStructure.seedAssignments);
+  expect(seedParticipantIds.length).toEqual(1);
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: { structureIds: [mainStructure.structureId] },
+  });
+
+  for (const matchUp of matchUps.sort(matchUpSort)) {
+    const { outcome } = mocksEngine.generateOutcome({
+      matchUpStatusProfile: {},
+    });
+    const result = tournamentEngine.setMatchUpStatus({
+      matchUpId: matchUp.matchUpId,
+      outcome,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+  }
+
+  // will be testing the available positionActions for { drawPosition: 4 }
+  // initially in mainStructure followed by consolationStructure
+  let drawPosition = 4;
+
+  // default configuration should return all validActions
+  result = tournamentEngine.positionActions({
+    structureId: mainStructure.structureId,
+    drawPosition,
+  });
+  expect(result.error).toEqual(MISSING_EVENT);
+
+  result = tournamentEngine.positionActions({
+    structureId: mainStructure.structureId,
+    drawPosition,
+    eventId,
+  });
+  expect(result.error).toEqual(MISSING_DRAW_DEFINITION);
+
+  result = tournamentEngine.positionActions({
+    drawPosition,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_STRUCTURE_ID);
+
+  result = tournamentEngine.positionActions({
+    structureId: 'bogusId',
+    drawPosition,
+    drawId,
+  });
+  expect(result.error).toEqual(STRUCTURE_NOT_FOUND);
+
+  result = tournamentEngine.positionActions({
+    structureId: mainStructure.structureId,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_DRAW_POSITION);
+
+  result = tournamentEngine.positionActions({
+    structureId: mainStructure.structureId,
+    drawPosition,
+    drawId,
+  });
+  expect(result.validActions.length).toBeGreaterThan(0);
+
+  let validActionTypes = result.validActions.map(({ type }) => type);
+  expect(validActionTypes.includes(PENALTY)).toEqual(true);
+  expect(validActionTypes.includes(NICKNAME)).toEqual(true);
+
+  // default configuration should return all validActions
+  result = tournamentEngine.positionActions({
+    structureId: consolationStructure.structureId,
+    drawPosition,
+    drawId,
+  });
+  expect(result.validActions.length).toBeGreaterThan(0);
+
+  let policyDefinitions = {
+    [POLICY_TYPE_POSITION_ACTIONS]: {
+      disabledStructures: [{ stages: [CONSOLATION] }],
+      enabledStructures: [
+        {
+          stages: [MAIN], // stages to which this policy applies
+          stageSequences: [1], // stageSequences to which this policy applies
+          enabledActions: [], // enabledActions: [] => all actions are enabled
+          disabledActions: [PENALTY], // disabledActions: [] => no actions are disabled
+        },
+      ],
+    },
+  };
+
+  tournamentEngine.attachPolicies({ policyDefinitions });
+
+  result = tournamentEngine.positionActions({
+    structureId: mainStructure.structureId,
+    drawPosition,
+    drawId,
+  });
+  expect(result.validActions.length).toBeGreaterThan(0);
+  validActionTypes = result.validActions.map(({ type }) => type);
+  expect(validActionTypes.includes(PENALTY)).toEqual(false);
+  expect(validActionTypes.includes(NICKNAME)).toEqual(true);
+  expect(validActionTypes.includes(SEED_VALUE)).toEqual(true);
+
+  result = tournamentEngine.positionActions({
+    structureId: consolationStructure.structureId,
+    drawPosition,
+    drawId,
+  });
+  expect(result.validActions.length).toEqual(0);
+
+  policyDefinitions = {
+    [POLICY_TYPE_POSITION_ACTIONS]: {
+      disabledStructures: [{ stages: [CONSOLATION] }],
+      enabledStructures: [
+        {
+          stages: [MAIN], // stages to which this policy applies
+          stageSequences: [1], // stageSequences to which this policy applies
+          enabledActions: [SEED_VALUE], // enabledActions: [] => all actions are enabled
+          disabledActions: [], // disabledActions: [] => no actions are disabled
+        },
+      ],
+    },
+  };
+
+  result = tournamentEngine.attachPolicies({ policyDefinitions });
+  expect(result.error).toEqual(EXISTING_POLICY_TYPE);
+
+  result = tournamentEngine.attachPolicies({
+    allowReplacement: true,
+    policyDefinitions,
+  });
+  expect(result.applied.length).toEqual(1);
+
+  result = tournamentEngine.positionActions({
+    structureId: mainStructure.structureId,
+    drawPosition,
+    drawId,
+  });
+  expect(result.validActions.length).toBeGreaterThan(0);
+  validActionTypes = result.validActions.map(({ type }) => type);
+  expect(validActionTypes.includes(PENALTY)).toEqual(false);
+  expect(validActionTypes.includes(SEED_VALUE)).toEqual(true);
 });

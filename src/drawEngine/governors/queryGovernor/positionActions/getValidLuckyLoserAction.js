@@ -4,7 +4,6 @@ import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { findStructure } from '../../../getters/findStructure';
 
-import { MISSING_DRAW_ID } from '../../../../constants/errorConditionConstants';
 import { ROUND_OUTCOME } from '../../../../constants/drawDefinitionConstants';
 import {
   LUCKY_PARTICIPANT,
@@ -24,8 +23,6 @@ export function getValidLuckyLosersAction({
   possiblyDisablingAction,
   tournamentParticipants = [],
 }) {
-  if (!drawId)
-    return { error: MISSING_DRAW_ID, method: 'getValidLuckyLosersAction' };
   if (activeDrawPositions.includes(drawPosition) || isWinRatioFedStructure)
     return {};
 

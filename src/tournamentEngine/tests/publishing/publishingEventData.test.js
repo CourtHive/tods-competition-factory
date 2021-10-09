@@ -152,6 +152,9 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
     PARTICIPANT_PRIVACY_DEFAULT
   );
 
+  result = tournamentEngine.publishEvent({ policyDefinitions });
+  expect(result.error).toEqual(MISSING_EVENT);
+
   const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
     eventId,
     policyDefinitions,
@@ -540,4 +543,70 @@ it('can filter out unpublished draws when publishing event', () => {
   });
   expect(publishSuccess).toEqual(true);
   expect(eventData.eventInfo.publish.state[PUBLIC].drawIds).toEqual([drawId]);
+
+  result = tournamentEngine.unPublishEvent();
+  expect(result.error).toEqual(MISSING_EVENT);
+
+  result = tournamentEngine.unPublishEvent({ eventId });
+  expect(result.success).toEqual(true);
+});
+
+it('can add or remove drawIds from a published event', () => {
+  const eventId = 'event1';
+  const eventProfiles = [
+    {
+      eventId,
+      drawProfiles: [
+        { drawSize: 8, drawId: 'draw1' },
+        { drawSize: 8, drawId: 'draw2' },
+        { drawSize: 8, drawId: 'draw3' },
+      ],
+    },
+  ];
+
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    eventProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const policyDefinitions = Object.assign(
+    {},
+    ROUND_NAMING_POLICY,
+    PARTICIPANT_PRIVACY_DEFAULT
+  );
+
+  let { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    drawIds: ['draw1', 'draw2'],
+    policyDefinitions,
+    eventId,
+  });
+  expect(publishSuccess).toEqual(true);
+  expect(eventData.drawsData.length).toEqual(2);
+
+  ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    drawIdsToAdd: ['draw3'],
+    policyDefinitions,
+    eventId,
+  }));
+  expect(publishSuccess).toEqual(true);
+  expect(eventData.drawsData.length).toEqual(3);
+
+  // attempt to add a drawId that is already there
+  ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    drawIdsToAdd: ['draw1'],
+    policyDefinitions,
+    eventId,
+  }));
+  expect(publishSuccess).toEqual(true);
+  expect(eventData.drawsData.length).toEqual(3);
+
+  // remove a drawId
+  ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    drawIdsToRemove: ['draw1'],
+    policyDefinitions,
+    eventId,
+  }));
+  expect(publishSuccess).toEqual(true);
+  expect(eventData.drawsData.length).toEqual(2);
 });

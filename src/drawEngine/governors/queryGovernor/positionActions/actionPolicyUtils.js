@@ -34,18 +34,19 @@ export function getEnabledStructures({
 }
 
 export function getPolicyActions({ enabledStructures, structure }) {
-  if (!enabledStructures) return {};
+  if (enabledStructures === false) return {};
 
-  if (!enabledStructures.length)
+  if (!enabledStructures?.length)
     return { policyActions: { enabledActions: [], disabledActions: [] } };
+
+  const { stage, stageSequence } = structure || {};
 
   const policyActions = enabledStructures.find((structurePolicy) => {
     const matchesStage =
-      !structurePolicy.stages?.length ||
-      structurePolicy.stages.includes(structure.stage);
+      !structurePolicy.stages?.length || structurePolicy.stages.includes(stage);
     const matchesStageSequence =
       !structurePolicy.stageSequences?.length ||
-      structurePolicy.stageSequences.includes(structure.stageSequence);
+      structurePolicy.stageSequences.includes(stageSequence);
     if (structurePolicy && matchesStage && matchesStageSequence) {
       return true;
     }
@@ -55,18 +56,15 @@ export function getPolicyActions({ enabledStructures, structure }) {
 }
 
 export function isAvailableAction({ action, policyActions }) {
-  if (
+  const disabled =
     !policyActions?.enabledActions ||
     (policyActions?.disabledActions?.length &&
-      policyActions.disabledActions.includes(action))
-  ) {
-    return false;
-  }
-  if (
+      policyActions.disabledActions.includes(action));
+  if (disabled) return false;
+
+  const enabled =
     policyActions?.enabledActions.length === 0 ||
-    policyActions?.enabledActions.includes(action)
-  ) {
-    return true;
-  }
-  return false;
+    policyActions?.enabledActions.includes(action);
+
+  return enabled && !disabled ? true : false;
 }

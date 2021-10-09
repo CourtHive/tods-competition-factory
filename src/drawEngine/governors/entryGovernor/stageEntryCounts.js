@@ -8,17 +8,19 @@ import {
   getStageWildcardEntriesCount,
 } from '../../getters/stageGetter';
 
+import { ALTERNATE } from '../../../constants/entryStatusConstants';
+import { MAIN } from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_STAGE,
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setStageDrawSize({ drawDefinition, stage, drawSize }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!stageExists({ drawDefinition, stage })) return { error: INVALID_STAGE };
+  if (!stageExists({ drawDefinition, stage })) {
+    return { error: INVALID_STAGE };
+  }
 
   const directAcceptanceEntries = getStageDirectEntriesCount({
     drawDefinition,
@@ -36,13 +38,13 @@ export function setStageDrawSize({ drawDefinition, stage, drawSize }) {
     };
   }
 
-  modifyEntryProfile({
+  const { entryProfile } = modifyEntryProfile({
     drawDefinition,
     attributes: [{ [stage]: { drawSize } }],
   });
 
   modifyDrawNotice({ drawDefinition });
-  return { ...SUCCESS };
+  return { ...SUCCESS, entryProfile };
 }
 
 export function setStageAlternatesCount({
@@ -51,7 +53,9 @@ export function setStageAlternatesCount({
   alternatesCount,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!stageExists({ drawDefinition, stage })) return { error: INVALID_STAGE };
+  if (!stageExists({ drawDefinition, stage })) {
+    return { error: INVALID_STAGE };
+  }
 
   modifyEntryProfile({
     drawDefinition,
@@ -75,7 +79,9 @@ export function setStageWildcardsCount({
   wildcardsCount = 0,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!stageExists({ drawDefinition, stage })) return { error: INVALID_STAGE };
+  if (!stageExists({ drawDefinition, stage })) {
+    return { error: INVALID_STAGE };
+  }
 
   const stageDrawPositions = getStageDrawPositionsCount({
     drawDefinition,
@@ -124,7 +130,9 @@ export function setStageQualifiersCount({
   qualifiersCount = 0,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!stageExists({ drawDefinition, stage })) return { error: INVALID_STAGE };
+  if (!stageExists({ drawDefinition, stage })) {
+    return { error: INVALID_STAGE };
+  }
   if (stage !== MAIN)
     return { error: 'qualifiersCount can only be set for main stage' };
 

@@ -206,7 +206,11 @@ export function getAllStructureMatchUps({
     });
 
     if (contextFilters) {
-      matchUps = filterMatchUps({ matchUps, ...contextFilters });
+      matchUps = filterMatchUps({
+        processContext: true,
+        ...contextFilters,
+        matchUps,
+      });
     }
   } else {
     const matchUpTies = matchUps?.filter((matchUp) =>

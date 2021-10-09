@@ -605,6 +605,19 @@ tournamentEngine.attachPolicies({ policyDefinitions: SEEDING_POLICY });
 
 ---
 
+## automatedPlayoffPositioning
+
+Uses Round Robin Tallies to position participants in playoff structure(s).
+
+```js
+tournamentEngine.automatedPlayoffPositioning({
+  structureId: mainStructure.structureId,
+  drawId,
+});
+```
+
+---
+
 ## automatedPositioning
 
 Positions participants in a draw structure.
@@ -1157,7 +1170,7 @@ const { participantsAdded } =
 
 ---
 
-### generateVoluntaryConsolationStructure
+## generateVoluntaryConsolationStructure
 
 Generates a new structure within a `drawDefinition` if any draw entries are present for `{ entryStage: VOLUNTARY_CONSOLATION }`.
 

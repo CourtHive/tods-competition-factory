@@ -1,7 +1,6 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { overlap, makeDeepCopy } from '../../../../utilities';
 
-import { MISSING_DRAW_ID } from '../../../../constants/errorConditionConstants';
 import {
   SWAP_PARTICIPANTS,
   SWAP_PARTICIPANT_METHOD,
@@ -24,7 +23,6 @@ export function getValidSwapAction({
   inactiveDrawPositions,
   possiblyDisablingAction,
 }) {
-  if (!drawId) return { error: MISSING_DRAW_ID, method: 'getValidSwapAction' };
   if (activeDrawPositions.includes(drawPosition)) return {};
 
   // assignmentCheck is used to filter out unassigned drawPositions

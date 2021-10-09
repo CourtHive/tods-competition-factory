@@ -93,8 +93,6 @@ export function positionActions({
     event,
   });
 
-  if (actionsDisabled) return { message: 'Actions Disabled for structure' };
-
   const { sourceStructureIds: positionSourceStructureIds } =
     getSourceStructureIdsDirectedBy({
       drawDefinition,
@@ -174,6 +172,16 @@ export function positionActions({
 
   const isByePosition = byeDrawPositions.includes(drawPosition);
   const isActiveDrawPosition = activeDrawPositions.includes(drawPosition);
+
+  if (actionsDisabled)
+    return {
+      message: 'Actions Disabled for structure',
+      isByePosition,
+      isActiveDrawPosition,
+      isDrawPosition: true,
+      hasPositionAssigned: !!positionAssignment,
+      validActions: [],
+    };
 
   if (
     isAvailableAction({ policyActions, action: ASSIGN_PARTICIPANT }) &&
@@ -276,7 +284,7 @@ export function positionActions({
     }
 
     if (!isByePosition && participantId) {
-      if (isAvailableAction({ policyActions, action: SEED_VALUE })) {
+      if (isAvailableAction({ policyActions, action: ADD_PENALTY })) {
         const addPenaltyAction = {
           type: ADD_PENALTY,
           method: ADD_PENALTY_METHOD,
