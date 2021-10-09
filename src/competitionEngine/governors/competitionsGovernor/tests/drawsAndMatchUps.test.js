@@ -6,7 +6,9 @@ import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDUL
 import POLICY_SCORING_USTA from '../../../../fixtures/policies/POLICY_SCORING_USTA';
 import {
   EVENT_NOT_FOUND,
+  INVALID_VALUES,
   MISSING_EVENT,
+  MISSING_SCORING_POLICY,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
 
@@ -190,15 +192,37 @@ test('can modify event timing for matchUpFormat codes', () => {
   let result = competitionEngine.getEventMatchUpFormatTiming({
     eventId,
   });
+  expect(result.error).toEqual(MISSING_SCORING_POLICY);
 
   let { eventMatchUpFormatTiming, error } = result;
   expect(eventMatchUpFormatTiming).toBeUndefined();
   expect(error).not.toBeUndefined();
 
   result = competitionEngine.modifyEventMatchUpFormatTiming({
-    eventId,
     matchUpFormat: 'SET3-S:6/TB7',
     averageMinutes: 127,
+  });
+  expect(result.error).toEqual(MISSING_EVENT);
+
+  result = competitionEngine.modifyEventMatchUpFormatTiming({
+    matchUpFormat: 'SET3-S:6/TB7',
+    tournamentId: 'bogusId',
+    averageMinutes: 127,
+    eventId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = competitionEngine.modifyEventMatchUpFormatTiming({
+    matchUpFormat: 'SET3-S:6/TB7',
+    averageMinutes: 127,
+    eventId: 'bogusId',
+  });
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
+
+  result = competitionEngine.modifyEventMatchUpFormatTiming({
+    matchUpFormat: 'SET3-S:6/TB7',
+    averageMinutes: 127,
+    eventId,
   });
   expect(result.success).toEqual(true);
 
@@ -232,8 +256,8 @@ test('can modify event timing for matchUpFormat codes', () => {
 
   ({ eventMatchUpFormatTiming } = competitionEngine.getEventMatchUpFormatTiming(
     {
-      eventId,
       matchUpFormats: ['SET3-S:6/TB7', 'SET1-S:4/TB10', 'SET1-S:4/TB10'],
+      eventId,
     }
   ));
   // expect duplicated matchUpFormat to be filtered out
@@ -246,8 +270,8 @@ test('can modify event timing for matchUpFormat codes', () => {
 
   ({ eventMatchUpFormatTiming } = competitionEngine.getEventMatchUpFormatTiming(
     {
-      eventId,
       matchUpFormats: ['SET3-S:6/TB7', 'SET1-S:4/TB10'],
+      eventId,
     }
   ));
   expect(eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([
@@ -260,7 +284,7 @@ test('can modify event timing for matchUpFormat codes', () => {
     }));
 
   expect(eventMatchUpFormatTiming).toBeUndefined();
-  expect(error).not.toBeUndefined();
+  expect(error).toEqual(MISSING_SCORING_POLICY);
 
   const policyDefinitions = POLICY_SCORING_USTA;
   competitionEngine.attachPolicies({
@@ -276,4 +300,17 @@ test('can modify event timing for matchUpFormat codes', () => {
   expect(policyDefinitions.scoring.matchUpFormats.length).toEqual(
     eventMatchUpFormatTiming.length
   );
+
+  ({ eventMatchUpFormatTiming, error } =
+    competitionEngine.getEventMatchUpFormatTiming({
+      eventId: 'bogusId',
+    }));
+  expect(error).toEqual(EVENT_NOT_FOUND);
+
+  ({ eventMatchUpFormatTiming, error } =
+    competitionEngine.getEventMatchUpFormatTiming({
+      tournamentId: 'bogusId',
+      eventId,
+    }));
+  expect(error).toEqual(INVALID_VALUES);
 });
