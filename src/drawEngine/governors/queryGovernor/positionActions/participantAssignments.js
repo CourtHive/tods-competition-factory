@@ -126,7 +126,6 @@ export function getValidAssignmentActions({
         unplacedSeedParticipantIds?.includes(seedAssignment.participantId)
       );
 
-      console.log({ validToAssign });
       validToAssign.sort(validAssignmentsSort);
       availableParticipantIds = validToAssign.map(
         (assignment) => assignment.participantId

@@ -205,13 +205,12 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
   } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantsCount: drawSize },
     // possible to specify score string with which to complete all matchUps
-    completeAllMatchUps: '6-1 6-1',
+    completeAllMatchUps: '6-1 6-1', // in this case we want side 1 to always win
     drawProfiles,
   });
   tournamentEngine.setState(tournamentRecord);
 
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const matchUpFormat = 'SET3-S:6/TB7';
 
   const mainStructure = drawDefinition.structures.find(
     (structure) => structure.stage === MAIN
@@ -246,29 +245,6 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
       link.target.structureId
     );
     expect(targetIsPlayoffStructure).toEqual(true);
-  });
-
-  const completeStructures = (structure, structureOrder) => {
-    const values = setsValues[structureOrder];
-    const structureMatchUps = structure.matchUps;
-    structureMatchUps.forEach((matchUp, matchUpIndex) => {
-      const { matchUpId } = matchUp;
-      const setValues = values[matchUpIndex];
-      const outcome = generateMatchUpOutcome({
-        matchUpFormat,
-        setValues,
-      });
-      const result = tournamentEngine.setMatchUpStatus({
-        drawId,
-        matchUpId,
-        outcome,
-      });
-      expect(result.success).toEqual(true);
-    });
-  };
-
-  mainStructure.structures.forEach((structure, structureOrder) => {
-    completeStructures(structure, structureOrder);
   });
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
@@ -332,6 +308,7 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
     ({ type }) => type === REMOVE_ASSIGNMENT
   );
   result = tournamentEngine[method](payload);
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.positionActions({
     drawId,
@@ -379,4 +356,172 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
   expect(
     intersection(validActionTypes, [ASSIGN_PARTICIPANT, ASSIGN_BYE]).length
   ).toEqual(2);
+});
+
+it('Playoff drawPosition assignment includes group winners who lost no matchUps', () => {
+  reset();
+  initialize();
+  const drawSize = 16;
+  const groupSize = 4;
+  const groupsCount = drawSize / groupSize;
+  const structureOptions = {
+    groupSize,
+    playoffGroups: [{ finishingPositions: [1], structureName: 'Gold Flight' }],
+  };
+
+  const drawProfiles = [
+    {
+      drawSize,
+      eventType: SINGLES,
+      participantsCount: drawSize,
+      drawType: ROUND_ROBIN_WITH_PLAYOFF,
+      structureOptions,
+    },
+  ];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: drawSize },
+    drawProfiles,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+
+  const mainStructure = drawDefinition.structures.find(
+    (structure) => structure.stage === MAIN
+  );
+
+  expect(mainStructure.structures.length).toEqual(groupsCount);
+  expect(mainStructure.structures[0].positionAssignments.length).toEqual(4);
+
+  const matchUpFormat = 'SET3-S:6/TB7';
+  const completeStructures = (structure, structureOrder) => {
+    const values = setsValues[structureOrder];
+    const structureMatchUps = structure.matchUps;
+    structureMatchUps.forEach((matchUp, matchUpIndex) => {
+      const { matchUpId } = matchUp;
+      const setValues = values[matchUpIndex];
+      const outcome = generateMatchUpOutcome({
+        matchUpFormat,
+        setValues,
+      });
+      const result = tournamentEngine.setMatchUpStatus({
+        drawId,
+        matchUpId,
+        outcome,
+      });
+      expect(result.success).toEqual(true);
+    });
+  };
+
+  mainStructure.structures.forEach((structure, structureOrder) => {
+    completeStructures(structure, structureOrder);
+  });
+
+  const playoffStructures = drawDefinition.structures.reduce(
+    (structures, structure) => {
+      return structure.stage === PLAY_OFF
+        ? structures.concat(structure)
+        : structures;
+    },
+    []
+  );
+
+  expect(playoffStructures.length).toEqual(1);
+  expect(playoffStructures[0].positionAssignments.length).toEqual(4);
+
+  const playoffStructureIds = playoffStructures.map(
+    (structure) => structure.structureId
+  );
+
+  const positioningLinks = drawDefinition.links.filter(
+    (link) => link.linkType === POSITION
+  );
+
+  positioningLinks.forEach((link) => {
+    expect(link.source.structureId).toEqual(mainStructure.structureId);
+    const targetIsPlayoffStructure = playoffStructureIds.includes(
+      link.target.structureId
+    );
+    expect(targetIsPlayoffStructure).toEqual(true);
+  });
+
+  let result = tournamentEngine.automatedPlayoffPositioning({
+    structureId: mainStructure.structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+
+  const structureId = playoffStructureIds[0];
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { structureIds: [structureId] },
+  });
+  expect(matchUps.length).toEqual(3);
+
+  // now test with seed position enforced (default behavior)
+  let drawPosition = 1;
+  let policyDefinitions = POLICY_POSITION_ACTIONS_UNRESTRICTED;
+  result = tournamentEngine.positionActions({
+    drawId,
+    structureId: playoffStructureIds[0],
+    drawPosition,
+    policyDefinitions,
+  });
+  expect(result.validActions.length).not.toEqual(0);
+
+  let validActionTypes = result.validActions.map(({ type }) => type);
+  expect(validActionTypes.includes(ASSIGN_BYE)).toEqual(true);
+
+  drawPosition = 2;
+  result = tournamentEngine.positionActions({
+    drawId,
+    structureId: playoffStructureIds[0],
+    drawPosition,
+    policyDefinitions,
+  });
+
+  validActionTypes = result.validActions.map(({ type }) => type);
+  expect(validActionTypes.includes(ASSIGN_BYE)).toEqual(true);
+  expect(validActionTypes.includes(REMOVE_ASSIGNMENT)).toEqual(true);
+
+  // remove one assignment to test available actions
+  let { method, payload } = result.validActions.find(
+    ({ type }) => type === REMOVE_ASSIGNMENT
+  );
+  result = tournamentEngine[method](payload);
+  expect(result.success).toEqual(true);
+
+  drawPosition = 3;
+  result = tournamentEngine.positionActions({
+    drawId,
+    structureId: playoffStructureIds[0],
+    drawPosition,
+    policyDefinitions,
+  });
+
+  validActionTypes = result.validActions.map(({ type }) => type);
+  expect(validActionTypes.includes(ASSIGN_BYE)).toEqual(true);
+  expect(validActionTypes.includes(REMOVE_ASSIGNMENT)).toEqual(true);
+
+  // remove one assignment to test available actions
+  ({ method, payload } = result.validActions.find(
+    ({ type }) => type === REMOVE_ASSIGNMENT
+  ));
+  result = tournamentEngine[method](payload);
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.positionActions({
+    drawId,
+    structureId: playoffStructureIds[0],
+    drawPosition,
+    policyDefinitions,
+  });
+  const participantsAvailable = result.validActions.find(
+    (action) => action.type === ASSIGN_PARTICIPANT
+  ).participantsAvailable;
+  expect(participantsAvailable.length).toEqual(2);
 });
