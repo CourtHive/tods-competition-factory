@@ -39,6 +39,7 @@ export function validStage({ stage, drawDefinition }) {
       getStageDrawPositionsCount({ stage, drawDefinition })
   );
 }
+
 export function stageExists({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
   const exists = Object.keys(entryProfile).includes(stage);
@@ -56,6 +57,7 @@ export function stageExists({ stage, drawDefinition }) {
   }
   return exists;
 }
+
 export function stageStructures({ stage, drawDefinition, stageSequence }) {
   return (
     drawDefinition &&

@@ -129,7 +129,8 @@ export function generateDrawDefinition(params) {
       .filter((entryStage) => entryStage !== stage)
       .filter(Boolean);
 
-    if (drawEntryStages.length) console.log({ drawEntryStages, drawEntries });
+    // if (drawEntryStages.length) console.log({ drawEntryStages, drawEntries });
+    if (drawEntryStages.length) console.log('drawEntryStages');
   }
 
   if (matchUpFormat || tieFormat) {

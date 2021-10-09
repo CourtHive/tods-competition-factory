@@ -564,7 +564,7 @@ it('can add or remove drawIds from a published event', () => {
     },
   ];
 
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
     eventProfiles,
   });
 
@@ -577,7 +577,8 @@ it('can add or remove drawIds from a published event', () => {
   );
 
   let { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    drawIds: ['draw1', 'draw2'],
+    // drawIds: ['draw1', 'draw2'],
+    drawIds: drawIds.slice(0, 2),
     policyDefinitions,
     eventId,
   });
@@ -585,7 +586,8 @@ it('can add or remove drawIds from a published event', () => {
   expect(eventData.drawsData.length).toEqual(2);
 
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    drawIdsToAdd: ['draw3'],
+    // drawIdsToAdd: ['draw3'],
+    drawIdsToAdd: drawIds.slice(2),
     policyDefinitions,
     eventId,
   }));
@@ -594,7 +596,8 @@ it('can add or remove drawIds from a published event', () => {
 
   // attempt to add a drawId that is already there
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    drawIdsToAdd: ['draw1'],
+    // drawIdsToAdd: ['draw1'],
+    drawIdsToAdd: drawIds.slice(0, 1),
     policyDefinitions,
     eventId,
   }));
@@ -603,7 +606,8 @@ it('can add or remove drawIds from a published event', () => {
 
   // remove a drawId
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    drawIdsToRemove: ['draw1'],
+    // drawIdsToRemove: ['draw1'],
+    drawIdsToRemove: drawIds.slice(0, 1),
     policyDefinitions,
     eventId,
   }));

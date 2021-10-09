@@ -34,17 +34,19 @@ import {
  *
  */
 export function addDrawEntry({
+  entryStatus = DIRECT_ACCEPTANCE,
+  entryStage = MAIN,
+  entryPosition,
   drawDefinition,
   participantId,
   participant,
-  entryStage = MAIN,
-  entryStatus = DIRECT_ACCEPTANCE,
-  entryPosition,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!entryStage) return { error: MISSING_STAGE };
-  if (!validStage({ stage: entryStage, drawDefinition }))
+  if (!validStage({ stage: entryStage, drawDefinition })) {
+    console.log('boo', { entryStage }, drawDefinition.extensions[0]);
     return { error: INVALID_STAGE };
+  }
   const spaceAvailable = stageSpace({
     stage: entryStage,
     drawDefinition,
@@ -107,7 +109,10 @@ export function addDrawEntries({
   if (!stage) return { error: MISSING_STAGE };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!Array.isArray(participantIds)) return { error: INVALID_PARTICIPANT_IDS };
-  if (!validStage({ stage, drawDefinition })) return { error: INVALID_STAGE };
+  if (!validStage({ stage, drawDefinition })) {
+    console.log('boo');
+    return { error: INVALID_STAGE };
+  }
 
   const spaceAvailable = stageSpace({ stage, drawDefinition, entryStatus });
   if (!spaceAvailable.success) {

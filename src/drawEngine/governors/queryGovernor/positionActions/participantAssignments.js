@@ -126,6 +126,7 @@ export function getValidAssignmentActions({
         unplacedSeedParticipantIds?.includes(seedAssignment.participantId)
       );
 
+      console.log({ validToAssign });
       validToAssign.sort(validAssignmentsSort);
       availableParticipantIds = validToAssign.map(
         (assignment) => assignment.participantId
@@ -164,10 +165,9 @@ export function getValidAssignmentActions({
         payload: { drawId, structureId, drawPosition },
       });
     }
-    return { validAssignmentActions };
-  } else {
-    return { message: 'No valid assignment actions' };
   }
+
+  return { validAssignmentActions };
 }
 
 function validAssignmentsSort(a, b) {

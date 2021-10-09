@@ -94,6 +94,7 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
       ],
     },
   ];
+
   const {
     drawIds: [drawId],
     eventIds: [eventId],

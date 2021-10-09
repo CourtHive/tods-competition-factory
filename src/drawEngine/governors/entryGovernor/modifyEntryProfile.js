@@ -25,4 +25,5 @@ export function modifyEntryProfile({ drawDefinition, attributes }) {
     value: entryProfile,
   };
   addDrawDefinitionExtension({ drawDefinition, extension });
+  return { entryProfile };
 }
