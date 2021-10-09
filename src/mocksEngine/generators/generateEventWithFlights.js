@@ -219,6 +219,7 @@ export function generateEventWithFlights({
       stage = MAIN,
       drawSize = 0,
       drawName,
+      drawId,
     } = drawProfile;
 
     const entriesCount = drawSize - qualifyingPositions;
@@ -255,6 +256,7 @@ export function generateEventWithFlights({
       drawName: drawName || drawType,
       qualifyingPositions,
       drawEntries,
+      drawId,
       event,
       stage,
     });
@@ -313,7 +315,6 @@ export function generateEventWithFlights({
           tournamentRecord,
           drawEntries,
           drawName,
-          drawId,
           event,
           stage,
         });
