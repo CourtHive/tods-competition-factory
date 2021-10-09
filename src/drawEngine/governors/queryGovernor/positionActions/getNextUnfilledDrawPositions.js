@@ -5,7 +5,6 @@ import { findStructure } from '../../../getters/findStructure';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
-  STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 
 export function getNextUnfilledDrawPositions({ drawDefinition, structureId }) {
@@ -19,9 +18,7 @@ export function getNextUnfilledDrawPositions({ drawDefinition, structureId }) {
   }
 
   const { structure, error } = findStructure({ drawDefinition, structureId });
-
   if (error) return { error };
-  if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   const result = structureAssignedDrawPositions({ structure });
   const positionAssignments = result?.positionAssignments || [];
