@@ -232,8 +232,8 @@ export function assignTieMatchUpParticipantId(params) {
 
     if (sideParticipantsCount === 2) {
       const { participant } = getPairedParticipant({
-        tournamentRecord,
         participantIds: individualParticipantIds,
+        tournamentRecord,
       });
       const sideParticipantId = participant?.participantId;
 
@@ -247,8 +247,8 @@ export function assignTieMatchUpParticipantId(params) {
           individualParticipantIds,
         };
         const result = addParticipant({
-          tournamentRecord,
           participant: newPairParticipant,
+          tournamentRecord,
         });
         if (result.error) return result;
         side.participantId = result.participant.participantId;

@@ -400,7 +400,7 @@ it('can allow duplicateParticipantIdsPairs and add them to events', () => {
   const { duplicatedPairParticipants } = tournamentEngine.getPairedParticipant({
     participantIds: pairParticipantToDuplicate.individualParticipantIds,
   });
-  expect(duplicatedPairParticipants.length).toEqual(2);
+  expect(duplicatedPairParticipants.length).toEqual(1);
   const duplicatedPairParticipantIds = duplicatedPairParticipants.map(
     ({ participantId }) => participantId
   );

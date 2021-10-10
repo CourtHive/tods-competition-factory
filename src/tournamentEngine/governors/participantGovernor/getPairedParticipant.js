@@ -15,7 +15,7 @@ export function getPairedParticipant({
   tournamentRecord,
   participantIds,
 }) {
-  if (!tournamentParticipants && tournamentRecord)
+  if (!tournamentParticipants && !tournamentRecord)
     return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(participantIds) || participantIds.length > 2)
     return { error: INVALID_PARTICIPANT_IDS };
@@ -23,18 +23,24 @@ export function getPairedParticipant({
 
   tournamentParticipants =
     tournamentParticipants || tournamentRecord?.participants || [];
+
   const existingPairedParticipants = tournamentParticipants.filter(
     (participant) =>
       participant.participantType === PAIR &&
       intersection(participantIds, participant.individualParticipantIds)
-        .length === participantIds.length
+        .length === participantIds.length &&
+      participant.individualParticipantIds.length === participantIds.length
   );
   const existingPairedParticipant = existingPairedParticipants[0];
   if (!existingPairedParticipant) return { error: PARTICIPANT_NOT_FOUND };
 
+  const duplicatedPairParticipants = makeDeepCopy(
+    existingPairedParticipants.slice(1)
+  );
+
   return {
-    ...SUCCESS,
     participant: makeDeepCopy(existingPairedParticipant),
-    duplicatedPairParticipants: makeDeepCopy(existingPairedParticipants),
+    duplicatedPairParticipants,
+    ...SUCCESS,
   };
 }

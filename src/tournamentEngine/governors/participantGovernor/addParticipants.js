@@ -74,6 +74,10 @@ export function addParticipant({
       const individualParticipantIds = tournamentParticipants
         .filter((participant) => participant.participantType === INDIVIDUAL)
         .map((participant) => participant.participantId);
+
+      if (!Array.isArray(participant.individualParticipantIds))
+        return { error: INVALID_PARTICIPANT_IDS };
+
       const validPairParticipants = participant.individualParticipantIds.reduce(
         (valid, participantId) =>
           individualParticipantIds.includes(participantId) && valid,
@@ -116,10 +120,13 @@ export function addParticipant({
             tournamentParticipant.participantId
           )
       );
-      const participantName = individualParticipants
+
+      let participantName = individualParticipants
         .map((participant) => participant.person?.standardFamilyName)
         .filter(Boolean)
         .join('/');
+      if (individualParticipants.length === 1) participantName += '/Unknown';
+
       participant.participantName = participantName;
     }
   } else if (participantType === INDIVIDUAL) {
