@@ -149,7 +149,7 @@ function generatePairParticipantName({ individualParticipants, newValues }) {
     .sort()
     .join('/');
 
-  if (individualParticipants.length === 1) participantName += '/Unknown';
+  if (individualParticipantIds.length === 1) participantName += '/Unknown';
   return participantName;
 }
 
