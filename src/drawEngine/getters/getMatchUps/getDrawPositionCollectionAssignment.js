@@ -30,11 +30,7 @@ export function getDrawPositionCollectionAssignment({
         );
       });
 
-      // if (matchUpType === DOUBLES || relevantCompetitors?.length === 2) {
-      if (matchUpType === DOUBLES) {
-        //
-      }
-      if (relevantCompetitors?.length === 2) {
+      if (matchUpType === DOUBLES || relevantCompetitors?.length === 2) {
         const participantIds = relevantCompetitors?.map(getParticipantId);
         const { participant } = getPairedParticipant({
           tournamentParticipants,

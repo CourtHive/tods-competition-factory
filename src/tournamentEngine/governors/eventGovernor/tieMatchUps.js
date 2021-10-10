@@ -154,9 +154,9 @@ export function assignTieMatchUpParticipantId(params) {
 
   if (!dualMatchUp.sides) {
     const extractSideDetail = ({
+      displaySideNumber,
       drawPosition,
       sideNumber,
-      displaySideNumber,
     }) => ({ drawPosition, sideNumber, displaySideNumber });
 
     dualMatchUp.sides = [
