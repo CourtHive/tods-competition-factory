@@ -4,6 +4,7 @@ import { getMatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatch
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { getParticipantIds } from '../../../global/functions/extractors';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { overlap } from '../../../utilities';
@@ -48,6 +49,7 @@ export function assignTieMatchUpParticipantId(params) {
 
   // tieMatchUp is matchUpType: SINGLES or DOUBLES
   const { matchUp: tieMatchUp, structure } = findMatchUp({
+    tournamentParticipants: tournamentRecord.participants,
     matchUpId: tieMatchUpId,
     inContext: true,
     drawDefinition,
@@ -152,6 +154,19 @@ export function assignTieMatchUpParticipantId(params) {
 
   if (!collectionDefinition) return { error: MISSING_COLLECTION_DEFINITION };
 
+  const tieMatchUpSide = tieMatchUp.sides.find(
+    (side) => side.sideNumber === sideNumber
+  );
+
+  if (matchUpType === DOUBLES && participantType !== PAIR) {
+    const result = addParticipantId2Pair({
+      side: tieMatchUpSide,
+      sideMember,
+    });
+    if (result.error) return result;
+    sideMember = sideMember || result.sideMember;
+  }
+
   if (!dualMatchUp.sides) {
     const extractSideDetail = ({
       displaySideNumber,
@@ -168,16 +183,6 @@ export function assignTieMatchUpParticipantId(params) {
   const dualMatchUpSide = dualMatchUp.sides.find(
     (side) => side.sideNumber === sideNumber
   );
-
-  if (matchUpType === DOUBLES && participantType !== PAIR) {
-    const result = addParticipantIdToPair({
-      side: dualMatchUpSide,
-      dualMatchUp,
-      sideMember,
-    });
-    sideMember = sideMember || result.sideMember;
-    if (result.error) return result;
-  }
 
   // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/sideMembers
   const modifiedLineUp = removeCollectionAssignment({
@@ -214,6 +219,49 @@ export function assignTieMatchUpParticipantId(params) {
 
   return { ...SUCCESS, modifiedLineUp };
 
+  // eslint-disable-next-line
+  function addParticipantId2Pair({ side, sideMember }) {
+    if (!side.participant) {
+      const newPairParticipant = {
+        participantType: PAIR,
+        participantRole: COMPETITOR,
+        individualParticipantIds: [participantId],
+      };
+      const result = addParticipant({
+        participant: newPairParticipant,
+        pairOverride: true,
+        tournamentRecord,
+      });
+      if (result.error) return result;
+      sideMember = 1;
+    } else {
+      const individualParticipantIds =
+        side.participant.individualParticipantIds || [];
+
+      const { participant } = getPairedParticipant({
+        participantIds: individualParticipantIds,
+        tournamentRecord,
+      });
+
+      const sideParticipantsCount =
+        individualParticipantIds.filter(Boolean).length;
+
+      if (sideParticipantsCount === 1) {
+        individualParticipantIds.push(participantId);
+        const result = modifyParticipant({
+          individualParticipantIds,
+          pairOverride: true,
+          tournamentRecord,
+          participant,
+        });
+        if (result.error) return result;
+        sideMember = 2;
+      }
+    }
+    return { ...SUCCESS, sideMember };
+  }
+
+  // eslint-disable-next-line
   function addParticipantIdToPair({ side, sideMember }) {
     if (!side.participant) {
       side.participant = {
@@ -254,6 +302,8 @@ export function assignTieMatchUpParticipantId(params) {
         side.participantId = result.participant.participantId;
       }
       delete side.participant;
+    } else {
+      console.log('side', side);
     }
 
     return { ...SUCCESS, sideMember };

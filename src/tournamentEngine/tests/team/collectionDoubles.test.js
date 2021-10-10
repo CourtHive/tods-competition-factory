@@ -3,6 +3,8 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
+import { PAIR } from '../../../constants/participantTypes';
+import { EXISTING_OUTCOME } from '../../../constants/errorConditionConstants';
 
 it.skip('can both assign and remove individualParticipants in DOUBLES matchUps that are part of team events', () => {
   const { tournamentRecord, drawId } = generateTeamTournament({ drawSize: 2 });
@@ -174,22 +176,21 @@ it.only('can both assign and remove individualParticipants in DOUBLES matchUps t
       expect(
         result.modifiedLineUp[i].collectionAssignments[0].collectionPosition
       ).toEqual(doublesMatchUp.collectionPosition);
+
+      doublesMatchUp = getDoublesMatchUp(doublesMatchUpId);
+      const matchUpSide = doublesMatchUp.sides.find(
+        (side) => side.sideNumber === sideNumber
+      );
+      expect(matchUpSide.participant.participantType).toEqual(PAIR);
+      expect(matchUpSide.participant.individualParticipantIds.length).toEqual(
+        i + 1
+      );
     });
-  });
-
-  doublesMatchUp = getDoublesMatchUp(doublesMatchUpId);
-  expect(doublesMatchUp.matchUpId).toEqual(doublesMatchUpId);
-
-  expect(doublesMatchUp.matchUpType).toEqual(DOUBLES);
-  doublesMatchUp.sides.forEach((side) => {
-    console.log('d', { side });
-    // expect(side.participant.participantType).toEqual(PAIR);
   });
 
   // Assign a different individualParticipantId ###############################################
 
   // score the DOUBLES matchUp
-  /*
   let { outcome } = mocksEngine.generateOutcome(doublesMatchUp);
   let result = tournamentEngine.setMatchUpStatus({
     matchUpId: doublesMatchUpId,
@@ -205,6 +206,7 @@ it.only('can both assign and remove individualParticipants in DOUBLES matchUps t
   result = removeDoublesParticipants();
   expect(result.error).toEqual(EXISTING_OUTCOME);
 
+  /*
   // remove the result from DOUBLES matchUp
   ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
     matchUpStatus: TO_BE_PLAYED,
@@ -249,6 +251,7 @@ it.only('can both assign and remove individualParticipants in DOUBLES matchUps t
     expect(side.lineUp[1].collectionAssignments.length).toEqual(0);
   });
 
+  */
   function removeDoublesParticipants({ sideMember = 1 } = {}) {
     const results = [];
     // remove individual participants from the DOUBLES matchUp
@@ -262,7 +265,7 @@ it.only('can both assign and remove individualParticipants in DOUBLES matchUps t
       );
       const { sideNumber } = side;
       result = tournamentEngine.assignTieMatchUpParticipantId({
-        tieMatchUpId: matchUpId,
+        tieMatchUpId: doublesMatchUpId,
         sideMember,
         sideNumber,
         drawId,
@@ -274,7 +277,6 @@ it.only('can both assign and remove individualParticipants in DOUBLES matchUps t
 
     return success ? results : results[0];
   }
-  */
 });
 
 function generateTeamTournament({ drawSize = 8, valueGoal = 2 } = {}) {
