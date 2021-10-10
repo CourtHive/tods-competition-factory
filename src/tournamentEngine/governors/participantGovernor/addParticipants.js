@@ -24,10 +24,11 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function addParticipant({
-  tournamentRecord,
-  participant,
-  disableNotice,
   allowDuplicateParticipantIdPairs,
+  tournamentRecord,
+  disableNotice,
+  pairOverride,
+  participant,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participant) return { error: MISSING_PARTICIPANT };
@@ -61,7 +62,10 @@ export function addParticipant({
       return { error: INVALID_VALUES, person: participant.person };
     if (!participant.individualParticipantIds) {
       return { error: MISSING_PARTICIPANT_IDS };
-    } else if (participant.individualParticipantIds.length !== 2) {
+    } else if (
+      participant.individualParticipantIds.length !== 2 &&
+      !pairOverride
+    ) {
       return {
         error: INVALID_PARTICIPANT_IDS,
         message: 'PAIR must be 2 individualParticipantIds',
