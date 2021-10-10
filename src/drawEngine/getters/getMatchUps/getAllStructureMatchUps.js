@@ -292,10 +292,12 @@ export function getAllStructureMatchUps({
 
     const drawPositionCollectionAssignment =
       getDrawPositionCollectionAssignment({
+        tournamentParticipants,
         collectionPosition,
         drawPositions,
         collectionId,
         sideLineUps,
+        matchUpType,
       });
 
     const roundName = roundNamingProfile && roundNamingProfile[roundNumber];

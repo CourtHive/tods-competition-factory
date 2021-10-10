@@ -22,10 +22,11 @@ import {
 } from '../../../constants/participantTypes';
 
 export function modifyParticipant({
-  tournamentRecord,
+  updateParticipantName = true,
   groupingParticipantId,
   removeFromOtherTeams,
-  updateParticipantName = true,
+  tournamentRecord,
+  pairOverride,
   participant,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -43,11 +44,11 @@ export function modifyParticipant({
     return addParticipant({ tournamentRecord, participant });
 
   const {
-    participantName,
-    onlineProfiles, // TODO: validate onlineProfiles
     individualParticipantIds,
+    participantName,
     participantRole,
     participantType,
+    onlineProfiles, // TODO: validate onlineProfiles
     person,
   } = participant;
 
@@ -56,6 +57,7 @@ export function modifyParticipant({
   if (onlineProfiles) newValues.onlineProfiles = onlineProfiles;
   if (participantName && typeof participantName === 'string')
     newValues.participantName = participantName;
+
   if (Array.isArray(individualParticipantIds)) {
     const { tournamentParticipants: individualParticipants } =
       getTournamentParticipants({
@@ -64,6 +66,7 @@ export function modifyParticipant({
       });
     const allIndividualParticipantIds =
       individualParticipants?.map(getParticipantId);
+
     if (allIndividualParticipantIds) {
       // check that all new individualParticipantIds exist and are { participantType: INDIVIDUAL }
       const updatedIndividualParticipantIds = individualParticipantIds.filter(
@@ -75,7 +78,7 @@ export function modifyParticipant({
       if (
         [GROUP, TEAM].includes(participantType) ||
         (participantType === PAIR &&
-          updatedIndividualParticipantIds.length === 2)
+          (updatedIndividualParticipantIds.length === 2 || pairOverride))
       ) {
         newValues.individualParticipantIds = updatedIndividualParticipantIds;
       }
@@ -137,7 +140,7 @@ export function modifyParticipant({
 
 function generatePairParticipantName({ individualParticipants, newValues }) {
   const individualParticipantIds = newValues.individualParticipantIds;
-  return individualParticipants
+  let participantName = individualParticipants
     .filter(({ participantId }) =>
       individualParticipantIds.includes(participantId)
     )
@@ -145,6 +148,9 @@ function generatePairParticipantName({ individualParticipants, newValues }) {
     .filter(Boolean)
     .sort()
     .join('/');
+
+  if (individualParticipantIds.length === 1) participantName += '/Unknown';
+  return participantName;
 }
 
 function updatePerson({

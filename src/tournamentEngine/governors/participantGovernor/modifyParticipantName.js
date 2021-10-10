@@ -1,14 +1,14 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 import { addNotice, getTopics } from '../../../global/globalState';
 
+import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 
 export function modifyParticipantName({
   tournamentRecord,

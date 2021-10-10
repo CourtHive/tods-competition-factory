@@ -16,11 +16,11 @@ export function findTournamentParticipant({ tournamentRecord, participantId }) {
 
 export function publicFindParticipant({
   tournamentRecord,
-  participantId,
-  personId,
   policyDefinitions,
   convertExtensions,
+  participantId,
   inContext,
+  personId,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof participantId !== 'string' && typeof personId !== 'string')
@@ -29,10 +29,10 @@ export function publicFindParticipant({
   const tournamentParticipants = tournamentRecord.participants || [];
   const participant = findParticipant({
     tournamentParticipants,
+    policyDefinitions,
     participantId,
     personId,
     inContext,
-    policyDefinitions,
   });
   return { participant: makeDeepCopy(participant, convertExtensions, true) };
 }

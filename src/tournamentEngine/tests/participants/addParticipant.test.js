@@ -246,7 +246,7 @@ it('will not add invalid PAIR participants', () => {
   expect(result[PAIR].length).toEqual(1);
   expect(result[PAIR][0].participantId).toEqual(pairParticipantId);
 
-  // Not attempt add again but this time allowDuplicates
+  // Now attempt add again but this time allowDuplicates
   pairParticipant = {
     participantType: PAIR,
     participantRole: COMPETITOR,
@@ -263,4 +263,32 @@ it('will not add invalid PAIR participants', () => {
   });
   expect(result[PAIR].length).toEqual(2);
   expect(result[PAIR][0].participantId).toEqual(pairParticipantId);
+
+  // now attempt to add pair participant with one individualPartiicipantId
+  // allowing override
+  pairParticipant = {
+    participantType: PAIR,
+    participantRole: COMPETITOR,
+    individualParticipantIds: [individualParticipantIds[0]],
+  };
+  result = tournamentEngine.addParticipant({
+    allowDuplicateParticipantIdPairs: true,
+    participant: pairParticipant,
+    pairOverride: true,
+  });
+  expect(result.success).toEqual(true);
+  const pairParticipantSingleIndividual = result.participant;
+
+  result = tournamentEngine.getParticipantMembership({
+    participantId: individualParticipantIds[0],
+  });
+  expect(result[PAIR].length).toEqual(3);
+  expect(result[PAIR][0].participantId).toEqual(pairParticipantId);
+
+  result = tournamentEngine.getPairedParticipant({
+    participantIds: [individualParticipantIds[0]],
+  });
+  expect(result.participant.participantId).toEqual(
+    pairParticipantSingleIndividual.participantId
+  );
 });

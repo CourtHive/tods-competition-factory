@@ -7,6 +7,7 @@ import {
 
 export function addParticipant({
   tournamentRecords,
+  pairOverride,
   tournamentId,
   participant,
 }) {
@@ -15,5 +16,5 @@ export function addParticipant({
   const tournamentRecord = tournamentRecords[tournamentId];
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
-  return participantAdd({ tournamentRecord, participant });
+  return participantAdd({ tournamentRecord, participant, pairOverride });
 }
