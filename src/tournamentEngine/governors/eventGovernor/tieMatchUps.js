@@ -201,6 +201,14 @@ export function assignTieMatchUpParticipantId(params) {
       sideMember,
     };
     modifiedLineUp.push(teamCompetitor);
+    const missingSideMember = modifiedLineUp.find((competitor) =>
+      competitor.collectionAssignments.find(
+        (assignment) =>
+          assignment.collectionPosition === collectionPosition &&
+          assignment.collectionId === collectionId
+      )
+    );
+    if (missingSideMember) missingSideMember.sideMember = 1;
   }
   dualMatchUpSide.lineUp = modifiedLineUp;
 

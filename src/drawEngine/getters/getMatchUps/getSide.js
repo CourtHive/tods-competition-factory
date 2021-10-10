@@ -28,6 +28,9 @@ export function getSide({
   const teamParticipant =
     drawPositionCollectionAssignment?.[drawPosition]?.teamParticipant;
 
+  const participant =
+    drawPositionCollectionAssignment?.[drawPosition]?.participant;
+
   const sideValue = assignment
     ? getSideValue({
         displaySideNumber,
@@ -46,9 +49,8 @@ export function getSide({
     }
   }
 
-  if (teamParticipant) {
-    Object.assign(sideValue, { teamParticipant });
-  }
+  if (participant) Object.assign(sideValue, { participant });
+  if (teamParticipant) Object.assign(sideValue, { teamParticipant });
 
   return sideValue;
 }

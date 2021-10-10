@@ -10,13 +10,19 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-export function getPairedParticipant({ tournamentRecord, participantIds }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+export function getPairedParticipant({
+  tournamentParticipants,
+  tournamentRecord,
+  participantIds,
+}) {
+  if (!tournamentParticipants && tournamentRecord)
+    return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(participantIds) || participantIds.length > 2)
     return { error: INVALID_PARTICIPANT_IDS };
   if (!participantIds.length) return { error: MISSING_PARTICIPANT_IDS };
 
-  const tournamentParticipants = tournamentRecord.participants || [];
+  tournamentParticipants =
+    tournamentParticipants || tournamentRecord?.participants || [];
   const existingPairedParticipants = tournamentParticipants.filter(
     (participant) =>
       participant.participantType === PAIR &&
