@@ -5,8 +5,8 @@ import { getPositionAssignments } from '../../../drawEngine/getters/positionsGet
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
 import { getParticipantIds } from '../../../global/functions/extractors';
+import { addParticipant } from '../participantGovernor/addParticipants';
 import { overlap } from '../../../utilities';
-import { UUID } from '../../../utilities/UUID';
 
 import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
@@ -217,14 +217,6 @@ export function assignTieMatchUpParticipantId(params) {
     const pcount = individualParticipantIds.filter(Boolean).length;
     sideMember = sideMember || pcount + 1 <= 2 ? pcount + 1 : 1;
 
-    const { tournamentParticipants: individualParticipants } =
-      getTournamentParticipants({
-        tournamentRecord,
-        participantFilters: {
-          participantIds: [individualParticipantIds],
-        },
-      });
-
     individualParticipantIds[sideMember - 1] = participantId;
 
     const sideParticipantsCount =
@@ -241,34 +233,22 @@ export function assignTieMatchUpParticipantId(params) {
         side.participantId = sideParticipantId;
         console.log({ participant });
       } else {
-        side.participantId = UUID();
         const newPairParticipant = {
-          participantId: side.participantId,
           participantType: PAIR,
           participantRole: COMPETITOR,
-          participantName: individualParticipants
-            .map(personFamilyName)
-            .join('/'),
           individualParticipantIds,
         };
-        tournamentRecord.participants.push(newPairParticipant);
+        const result = addParticipant({
+          tournamentRecord,
+          participant: newPairParticipant,
+        });
+        if (result.error) return result;
+        side.participantId = result.participant.participantId;
       }
       delete side.participant;
     }
 
     return { ...SUCCESS, sideMember };
-  }
-
-  function personFamilyName(participant) {
-    const { participantId } = participant;
-    const participantData = tournamentRecord.participants.reduce(
-      (data, candidate) => {
-        return candidate.participantId === participantId ? candidate : data;
-      },
-      undefined
-    );
-    const person = participantData && participantData.person;
-    return person && person.standardFamilyName;
   }
 
   /*
