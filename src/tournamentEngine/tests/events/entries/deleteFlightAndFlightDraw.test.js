@@ -30,8 +30,9 @@ it('can delete flight and flightDrawDefinition', () => {
 
   const flightsCount = 2;
   let { flightProfile } = tournamentEngine.generateFlightProfile({
-    eventId,
+    attachFlightProfile: true,
     flightsCount,
+    eventId,
   });
   expect(flightProfile.flights.length).toEqual(flightsCount);
   expect(flightProfile.flights[0].drawEntries.length).toEqual(

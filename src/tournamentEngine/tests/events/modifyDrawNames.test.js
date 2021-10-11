@@ -23,8 +23,9 @@ it('can modify flightNames and drawNames', () => {
   expect(result.success).toEqual(true);
 
   let { flightProfile } = tournamentEngine.generateFlightProfile({
-    eventId,
+    attachFlightProfile: true,
     flightsCount: 3,
+    eventId,
   });
 
   flightProfile.flights?.forEach((flight) => {
@@ -75,8 +76,9 @@ it('can modify flightNames when no drawDefinitions generated', () => {
   expect(result.success).toEqual(true);
 
   let { flightProfile } = tournamentEngine.generateFlightProfile({
-    eventId,
+    attachFlightProfile: true,
     flightsCount: 3,
+    eventId,
   });
 
   const drawId = flightProfile.flights[0].drawId;

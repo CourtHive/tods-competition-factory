@@ -66,10 +66,11 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   });
 
   let { flightProfile } = tournamentEngine.generateFlightProfile({
-    eventId,
+    splitMethod: SPLIT_WATERFALL,
+    attachFlightProfile: true,
     scaleAttributes,
     flightsCount: 2,
-    splitMethod: SPLIT_WATERFALL,
+    eventId,
   });
 
   flightProfile.flights?.forEach((flight) => {
@@ -83,10 +84,10 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
       drawSize,
     });
     const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-      eventId,
-      seedsCount,
-      drawId: flight.drawId,
       drawEntries: flight.drawEntries,
+      drawId: flight.drawId,
+      seedsCount,
+      eventId,
     });
     expect(drawDefinition.structures[0].seedLimit).toEqual(seedsCount);
     expect(drawDefinition.structures[0].seedAssignments.length).toEqual(

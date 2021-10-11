@@ -593,6 +593,16 @@ tournamentEngine.attachEventPolicies({
 
 ---
 
+## attachFlightProfile
+
+Attaches a `flightProfile` to the `event` specified by `eventId`. A `flightProfile` is first generated with `generateFlightProfile()`.
+
+```js
+tournamentEngine.attachFlightProfile({ flightProfile, eventId });
+```
+
+---
+
 ## attachPolicies
 
 Attaches a policy to a tournamentRecord.
@@ -1103,6 +1113,7 @@ const scaleAttributes = {
 
 const { flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
   eventId, // event for which entries will be split
+  attachFlightProfile, // boolean - also attach to event after generation
   scaleAttributes, // defines participant sort method prior to split
   scaleSortMethod, // optional - function(a, b) {} sort method, useful when scaleValue is an object or further proessing is required
   sortDescending, // optional - default sorting is ASCENDING; only applies to default sorting method.

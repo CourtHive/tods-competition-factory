@@ -26,8 +26,9 @@ it('can modify the drawOrder of flightProfile.flights and drawDefniitions within
   expect(result.success).toEqual(true);
 
   let { flightProfile } = tournamentEngine.generateFlightProfile({
-    eventId,
+    attachFlightProfile: true,
     flightsCount: 3,
+    eventId,
   });
 
   flightProfile.flights?.forEach((flight) => {
@@ -118,8 +119,9 @@ it('can modify the drawOrder of flightProfile.flights', () => {
   expect(result.success).toEqual(true);
 
   let { flightProfile } = tournamentEngine.generateFlightProfile({
-    eventId,
+    attachFlightProfile: true,
     flightsCount: 3,
+    eventId,
   });
 
   const existingOrder = flightProfile.flights.map(

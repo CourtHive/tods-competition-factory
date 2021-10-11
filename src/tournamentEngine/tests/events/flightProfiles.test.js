@@ -27,6 +27,7 @@ it('can create and return flighProfiles', () => {
   expect(result.success).toEqual(true);
 
   ({ flightProfile } = tournamentEngine.generateFlightProfile({
+    attachFlightProfile: true,
     flightsCount: 3,
     eventId,
   }));
@@ -42,6 +43,7 @@ it('can create and return flighProfiles', () => {
   expect(flightProfile.flights.every(({ drawId }) => drawId));
 
   result = tournamentEngine.generateFlightProfile({
+    attachFlightProfile: true,
     flightsCount: 4,
     eventId,
   });
@@ -49,6 +51,7 @@ it('can create and return flighProfiles', () => {
   expect(result.error).toEqual(EXISTING_PROFILE);
 
   const { success } = tournamentEngine.generateFlightProfile({
+    attachFlightProfile: true,
     deleteExisting: true,
     flightsCount: 4,
     eventId,
@@ -100,6 +103,7 @@ it('can create and return flighProfiles with drawDefinitions', () => {
   expect(result.success).toEqual(true);
 
   ({ flightProfile } = tournamentEngine.generateFlightProfile({
+    attachFlightProfile: true,
     flightsCount: 3,
     eventId,
   }));

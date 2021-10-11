@@ -514,8 +514,9 @@ it('can filter out unpublished draws when publishing event', () => {
   expect(result.success).toEqual(true);
 
   const { flightProfile } = tournamentEngine.generateFlightProfile({
-    eventId,
+    attachFlightProfile: true,
     flightsCount: 3,
+    eventId,
   });
 
   flightProfile.flights?.forEach((flight) => {

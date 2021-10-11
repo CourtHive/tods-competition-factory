@@ -44,8 +44,9 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
   expect(result.success).toEqual(true);
 
   let { flightProfile } = tournamentEngine.generateFlightProfile({
-    eventId,
+    attachFlightProfile: true,
     flightsCount: 3,
+    eventId,
   });
   expect(flightProfile.flights.length).toEqual(3);
   expect(

@@ -67,9 +67,10 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   });
 
   let { flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
-    eventId,
+    attachFlightProfile: true,
     scaleAttributes,
     flightsCount: 3,
+    eventId,
   });
   expect(flightProfile.flights.length).toEqual(3);
   expect(
@@ -83,11 +84,12 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   ).toEqual([]);
 
   ({ flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
-    eventId,
-    scaleAttributes,
-    flightsCount: 3,
-    deleteExisting: true,
     splitMethod: SPLIT_LEVEL_BASED,
+    attachFlightProfile: true,
+    deleteExisting: true,
+    flightsCount: 3,
+    scaleAttributes,
+    eventId,
   }));
   expect(flightProfile.flights.length).toEqual(3);
   expect(
@@ -101,11 +103,12 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   ).toEqual([]);
 
   ({ flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
-    eventId,
-    scaleAttributes,
-    flightsCount: 3,
-    deleteExisting: true,
     splitMethod: SPLIT_WATERFALL,
+    attachFlightProfile: true,
+    deleteExisting: true,
+    flightsCount: 3,
+    scaleAttributes,
+    eventId,
   }));
   expect(flightProfile.flights.length).toEqual(3);
   expect(
@@ -119,11 +122,12 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   ).toEqual([3, 6, 9, 12, 15]);
 
   ({ flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
-    eventId,
-    scaleAttributes,
-    flightsCount: 3,
-    deleteExisting: true,
     splitMethod: SPLIT_SHUTTLE,
+    attachFlightProfile: true,
+    deleteExisting: true,
+    flightsCount: 3,
+    scaleAttributes,
+    eventId,
   }));
   expect(flightProfile.flights.length).toEqual(3);
   expect(
