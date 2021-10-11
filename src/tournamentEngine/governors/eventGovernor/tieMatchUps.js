@@ -315,6 +315,7 @@ export function assignTieMatchUpParticipantId(params) {
         });
 
         if (!existingParticipant) {
+          participant.individualParticipantIds = individualParticipantIds;
           const result = modifyParticipant({
             individualParticipantIds,
             pairOverride: true,
