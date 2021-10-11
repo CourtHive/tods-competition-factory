@@ -310,7 +310,12 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
   }
 });
 
-function generateTeamTournament({ drawSize = 8, valueGoal = 2 } = {}) {
+function generateTeamTournament({
+  drawSize = 8,
+  doublesCount = 1,
+  singlesCount = 2,
+} = {}) {
+  const valueGoal = Math.ceil((doublesCount + singlesCount) / 2);
   const tieFormat = {
     winCriteria: { valueGoal },
     collectionDefinitions: [
@@ -318,7 +323,7 @@ function generateTeamTournament({ drawSize = 8, valueGoal = 2 } = {}) {
         collectionId: 'doublesCollectionId',
         collectionName: 'Doubles',
         matchUpType: DOUBLES,
-        matchUpCount: 1,
+        matchUpCount: doublesCount,
         matchUpFormat: 'SET3-S:6/TB7-F:TB10',
         matchUpValue: 1,
       },
@@ -326,7 +331,7 @@ function generateTeamTournament({ drawSize = 8, valueGoal = 2 } = {}) {
         collectionId: 'singlesCollectionId',
         collectionName: 'Singles',
         matchUpType: SINGLES,
-        matchUpCount: 2,
+        matchUpCount: singlesCount,
         matchUpFormat: 'SET3-S:6/TB7',
         matchUpValue: 1,
       },
