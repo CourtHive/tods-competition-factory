@@ -4,6 +4,7 @@ import { getMatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatch
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { getParticipantIds } from '../../../global/functions/extractors';
 import { addParticipant } from '../participantGovernor/addParticipants';
@@ -29,8 +30,6 @@ import {
 
 // removal of sideMember is currently done by assigning { participantId: undefined, sideNumber, sideMember }
 // TODO: implement removeTieMatchUpParticipantId where participantId is defined
-// inContext participants report not picking up pairParticipants in tie/dual matchUps
-// inContext PAIR participants do not have draws/event reporting, for the same reason?
 export function assignTieMatchUpParticipantId(params) {
   const { tournamentRecord, drawDefinition, event } = params;
   const { participantId, tieMatchUpId } = params;
@@ -214,6 +213,7 @@ export function assignTieMatchUpParticipantId(params) {
     (side) => side.sideNumber === sideNumber
   );
 
+  let deleteParticipantId;
   if (matchUpType === DOUBLES && participantType !== PAIR) {
     const result = addParticipantId2Pair({
       side: tieMatchUpSide,
@@ -221,6 +221,7 @@ export function assignTieMatchUpParticipantId(params) {
     });
     if (result.error) return result;
     sideMember = sideMember || result.sideMember;
+    deleteParticipantId = result.deleteParticipantId;
   } else if (matchUpType === DOUBLES && participantType === PAIR) {
     console.log({ participantToAssign });
     // TODO: each individual needs to be check to see that they are part of the team
@@ -261,9 +262,19 @@ export function assignTieMatchUpParticipantId(params) {
   }
   dualMatchUpSide.lineUp = modifiedLineUp;
 
+  if (deleteParticipantId) {
+    const result = deleteParticipants({
+      participantIds: [deleteParticipantId],
+      teamDrawIds: [drawDefinition.drawId],
+      tournamentRecord,
+    });
+    if (result.error) console.log('cleanup', { result });
+  }
   return { ...SUCCESS, modifiedLineUp };
 
   function addParticipantId2Pair({ side, sideMember }) {
+    let deleteParticipantId;
+
     if (!side.participant) {
       const newPairParticipant = {
         participantType: PAIR,
@@ -281,29 +292,39 @@ export function assignTieMatchUpParticipantId(params) {
       const individualParticipantIds =
         side.participant.individualParticipantIds || [];
 
-      const { participant } = getPairedParticipant({
-        participantIds: individualParticipantIds,
-        tournamentRecord,
-      });
-
       const sideParticipantsCount =
         individualParticipantIds.filter(Boolean).length;
 
       if (sideParticipantsCount === 1) {
-        // TODO: check if there is a pairParticipant that includes both individualParticipantIds
-        // if there is, use that and delete the PAIR participant with only one [individualParticipantId]
-        individualParticipantIds.push(participantId);
-        const result = modifyParticipant({
-          individualParticipantIds,
-          pairOverride: true,
+        const { participant } = getPairedParticipant({
+          participantIds: individualParticipantIds,
           tournamentRecord,
-          participant,
         });
-        if (result.error) return result;
+
+        individualParticipantIds.push(participantId);
+
+        const { participant: existingParticipant } = getPairedParticipant({
+          participantIds: individualParticipantIds,
+          tournamentRecord,
+        });
+
+        if (!existingParticipant) {
+          const result = modifyParticipant({
+            individualParticipantIds,
+            pairOverride: true,
+            tournamentRecord,
+            participant,
+          });
+          if (result.error) return result;
+        } else {
+          // check if there is a pairParticipant that includes both individualParticipantIds
+          // if there is, use that and delete the PAIR participant with only one [individualParticipantId]
+          deleteParticipantId = participant.participantId;
+        }
         sideMember = 2;
       }
     }
-    return { ...SUCCESS, sideMember };
+    return { ...SUCCESS, sideMember, deleteParticipantId };
   }
 }
 
