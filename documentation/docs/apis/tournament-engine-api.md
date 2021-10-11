@@ -1718,6 +1718,7 @@ const {
   inContext, // optional - adds individualParticipants for all individualParticipantIds
 
   withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
+  withGroupings, // optional - include membership in group, pair, and team participants
   withOpponents, // optional - include opponent participantIds
   withEvents, // optional - defaults to true
   withDraws, // optional - defaults to true
