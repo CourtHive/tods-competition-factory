@@ -12,12 +12,12 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function addFlight({
+  qualifyingPositions,
+  drawEntries = [],
+  drawName,
+  drawId,
   event,
   stage,
-  drawId,
-  drawName,
-  drawEntries = [],
-  qualifyingPositions,
 }) {
   if (!event) return { error: MISSING_EVENT };
   if (!drawName) return { error: MISSING_VALUE };

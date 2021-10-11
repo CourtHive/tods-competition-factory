@@ -72,6 +72,7 @@ import { addAdHocMatchUps } from './drawDefinitions/addAdHocMatchUps';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { modifyEventEntries } from './entries/modifyEventEntries';
+import { attachFlightProfile } from './attachFlightProfile';
 import { drawMatic } from './drawDefinitions/drawMatic';
 import { addFlight } from './addFlight';
 import {
@@ -115,13 +116,14 @@ const eventGovernor = {
   modifyEntriesStatus,
   modifySeedAssignment,
 
-  addFlight,
+  deleteFlightProfileAndFlightDraws,
+  deleteFlightAndFlightDraw,
+  generateFlightProfile,
+  attachFlightProfile,
+  updateDrawIdsOrder,
   getFlightProfile,
   getScaledEntries,
-  updateDrawIdsOrder,
-  generateFlightProfile,
-  deleteFlightAndFlightDraw,
-  deleteFlightProfileAndFlightDraws,
+  addFlight,
 
   addAdHocMatchUps,
   generateAdHocMatchUps,

@@ -1,23 +1,16 @@
-import { addEventExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
+import { attachFlightProfile as attachProfile } from '../governors/eventGovernor/attachFlightProfile';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
+import { chunkArray, generateRange, chunkByNth, UUID } from '../../utilities';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../getters/getFlightProfile';
 import { getDevContext } from '../../global/globalState';
-import {
-  chunkArray,
-  generateRange,
-  makeDeepCopy,
-  chunkByNth,
-  UUID,
-} from '../../utilities';
 
+import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   EXISTING_PROFILE,
   MISSING_EVENT,
 } from '../../constants/errorConditionConstants';
-import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
-import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
 import {
   SPLIT_SHUTTLE,
   SPLIT_WATERFALL,
@@ -37,21 +30,19 @@ import {
  *
  */
 export function generateFlightProfile({
+  drawNameRoot = 'Flight',
+  attachFlightProfile,
   tournamentRecord,
-  event,
-  stage,
-
-  deleteExisting,
-
   scaleAttributes,
   scaleSortMethod,
+  deleteExisting,
   sortDescending,
-  splitMethod,
-  flightsCount,
-
-  drawNameRoot = 'Flight',
   drawNames = [],
+  flightsCount,
+  splitMethod,
   uuids = [],
+  event,
+  stage,
 }) {
   if (!event) return { error: MISSING_EVENT };
   const eventEntries = event.entries || [];
@@ -61,12 +52,11 @@ export function generateFlightProfile({
 
   const { scaledEntries } = getScaledEntries({
     tournamentRecord,
-    event,
-    stage,
-
     scaleAttributes,
     scaleSortMethod,
     sortDescending,
+    event,
+    stage,
   });
 
   const scaledEntryParticipantIds = scaledEntries.map(getParticipantId);
@@ -111,24 +101,22 @@ export function generateFlightProfile({
     return flight;
   });
 
-  const extension = {
-    name: FLIGHT_PROFILE,
-    value: {
-      splitMethod,
-      scaleAttributes,
-      flights,
-    },
+  const updatedFlightProfile = {
+    scaleAttributes,
+    splitMethod,
+    flights,
   };
 
-  addEventExtension({ event, extension });
-
-  return {
-    ...SUCCESS,
-    flightProfile: makeDeepCopy(
-      { flights, scaleAttributes, splitMethod },
-      false,
-      true
-    ),
-    splitEntries: (getDevContext() && splitEntries) || undefined,
-  };
+  if (attachFlightProfile) {
+    const result = attachProfile({
+      flightProfile: updatedFlightProfile,
+      event,
+    });
+    return {
+      splitEntries: (getDevContext() && splitEntries) || undefined,
+      ...result,
+    };
+  } else {
+    return { flightProfile: updatedFlightProfile, ...SUCCESS };
+  }
 }

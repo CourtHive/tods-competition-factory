@@ -301,13 +301,13 @@ export function generateTournamentRecord({
         drawIds: generatedDrawIds,
         uniqueParticipantIds,
       } = generateEventWithFlights({
-        tournamentRecord,
         allUniqueParticipantIds,
-        autoEntryPositions,
+        matchUpStatusProfile,
         participantsProfile,
         completeAllMatchUps,
-        matchUpStatusProfile,
+        autoEntryPositions,
         randomWinningSide,
+        tournamentRecord,
         eventProfile,
         startDate,
       });
