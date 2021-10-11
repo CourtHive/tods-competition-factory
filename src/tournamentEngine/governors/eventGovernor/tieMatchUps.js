@@ -30,8 +30,6 @@ import {
 
 // removal of sideMember is currently done by assigning { participantId: undefined, sideNumber, sideMember }
 // TODO: implement removeTieMatchUpParticipantId where participantId is defined
-// inContext participants report not picking up pairParticipants in tie/dual matchUps
-// inContext PAIR participants do not have draws/event reporting, for the same reason?
 export function assignTieMatchUpParticipantId(params) {
   const { tournamentRecord, drawDefinition, event } = params;
   const { participantId, tieMatchUpId } = params;
