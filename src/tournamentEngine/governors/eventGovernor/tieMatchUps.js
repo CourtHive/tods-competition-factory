@@ -133,8 +133,6 @@ export function assignTieMatchUpParticipantId(params) {
         participantFilters: {
           participantIds: [pairParticipantId],
         },
-        withMatchUps: true,
-        inContext: true,
       });
 
       if (pairParticipant) {
@@ -322,6 +320,8 @@ export function assignTieMatchUpParticipantId(params) {
           deleteParticipantId = participant.participantId;
         }
         sideMember = 2;
+      } else {
+        console.log('###');
       }
     }
     return { ...SUCCESS, sideMember, deleteParticipantId };
