@@ -140,13 +140,21 @@ export function assignTieMatchUpParticipantId(params) {
           pairParticipant?.individualParticipantIds.filter(
             (participantId) => participantId !== removedParticipantId
           );
-        pairParticipant.individualParticipantIds = individualParticipantIds;
-        const result = modifyParticipant({
-          participant: pairParticipant,
-          pairOverride: true,
-          tournamentRecord,
-        });
-        if (result.error) return result;
+        if (individualParticipantIds.length) {
+          pairParticipant.individualParticipantIds = individualParticipantIds;
+          const result = modifyParticipant({
+            participant: pairParticipant,
+            pairOverride: true,
+            tournamentRecord,
+          });
+          if (result.error) return result;
+        } else {
+          const result = deleteParticipants({
+            participantIds: [pairParticipantId],
+            tournamentRecord,
+          });
+          if (result.error) console.log('cleanup', { result });
+        }
       } else {
         console.log('pair participant not found');
       }

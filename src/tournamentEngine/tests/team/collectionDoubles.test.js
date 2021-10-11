@@ -240,6 +240,18 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
     expect(side.participant.individualParticipantIds.length).toEqual(1);
   });
 
+  let { tournamentParticipants: pairParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [PAIR] },
+    });
+
+  let individualParticipantIdsCount = pairParticipants
+    .map(
+      ({ individualParticipantIds }) => individualParticipantIds?.length || 0
+    )
+    .sort();
+  expect(individualParticipantIdsCount).toEqual([1, 1, 2, 2, 2, 2, 2, 2]);
+
   result = removeDoublesParticipants({ sideMember: 2 });
   doublesMatchUp = getDoublesMatchUp(doublesMatchUpId);
 
@@ -258,6 +270,18 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
     expect(side.lineUp[0].collectionAssignments.length).toEqual(0);
     expect(side.lineUp[1].collectionAssignments.length).toEqual(0);
   });
+
+  ({ tournamentParticipants: pairParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [PAIR] },
+    }));
+
+  individualParticipantIdsCount = pairParticipants
+    .map(
+      ({ individualParticipantIds }) => individualParticipantIds?.length || 0
+    )
+    .sort();
+  expect(individualParticipantIdsCount).toEqual([2, 2, 2, 2, 2, 2]);
 
   function removeDoublesParticipants({ sideMember = 1 } = {}) {
     const results = [];
