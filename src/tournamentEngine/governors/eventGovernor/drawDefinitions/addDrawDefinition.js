@@ -68,6 +68,17 @@ export function addDrawDefinition({
     }
   );
 
+  // check that all drawEntries have equivalent entryStatus to event.entries
+  const matchingEventEntries =
+    !checkEntryStatus ||
+    (eventEntries &&
+      drawEntries?.every(({ participantId, entryStatus }) => {
+        const eventEntry = eventEntries.find(
+          (eventEntry) => eventEntry.participantId === participantId
+        );
+        return eventEntry?.entryStatus === entryStatus;
+      }));
+
   if (relevantFlight && !matchingFlighEntries)
     return {
       error: INVALID_DRAW_DEFINITION,
@@ -93,17 +104,6 @@ export function addDrawDefinition({
       }
     });
   }
-
-  // check that all drawEntries have equivalent entryStatus to event.entries
-  const matchingEventEntries =
-    !checkEntryStatus ||
-    (eventEntries &&
-      drawEntries?.every(({ participantId, entryStatus }) => {
-        const eventEntry = eventEntries.find(
-          (eventEntry) => eventEntry.participantId === participantId
-        );
-        return eventEntry?.entryStatus === entryStatus;
-      }));
 
   if (eventEntries && !matchingEventEntries)
     return {
