@@ -26,11 +26,11 @@ export function validDateAvailability({ dateAvailability }) {
     }
 
     const { date, startTime, endTime, bookings = [] } = availability;
-    if (!date || !startTime || !endTime) {
+    if (!startTime || !endTime) {
       return { error: INVALID_DATE_AVAILABILITY };
     }
 
-    if (!dateValidation.test(date)) {
+    if (date && !dateValidation.test(date)) {
       return {
         error: INVALID_DATE,
         dateAvailability: { date },

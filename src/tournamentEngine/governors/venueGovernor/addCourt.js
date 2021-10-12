@@ -23,10 +23,10 @@ import {
  */
 export function addCourt({
   tournamentRecord,
-  venueId,
-  court,
   disableNotice,
   returnDetails,
+  venueId,
+  court,
 }) {
   const { venue } = findVenue({ tournamentRecord, venueId });
   if (!venue) return { error: VENUE_NOT_FOUND };

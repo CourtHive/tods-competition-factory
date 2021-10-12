@@ -10,8 +10,8 @@ import {
 
 export function modifyVenue({
   tournamentRecords,
-  venueId,
   modifications,
+  venueId,
   force,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
@@ -23,8 +23,8 @@ export function modifyVenue({
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const result = venueModify({
       tournamentRecord,
-      venueId,
       modifications,
+      venueId,
       force,
     });
     if (result.success) success = true;
