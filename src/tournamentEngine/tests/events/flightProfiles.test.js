@@ -50,13 +50,13 @@ it('can create and return flighProfiles', () => {
 
   expect(result.error).toEqual(EXISTING_PROFILE);
 
-  const { success } = tournamentEngine.generateFlightProfile({
+  result = tournamentEngine.generateFlightProfile({
     attachFlightProfile: true,
     deleteExisting: true,
     flightsCount: 4,
     eventId,
   });
-  expect(success).toEqual(true);
+  expect(result.success).toEqual(true);
 
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
 

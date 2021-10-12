@@ -48,8 +48,9 @@ export function generateFlightProfile({
   const eventEntries = event.entries || [];
 
   const { flightProfile } = getFlightProfile({ event });
-  if (flightProfile && attachFlightProfile && !deleteExisting)
+  if (flightProfile && attachFlightProfile && !deleteExisting) {
     return { error: EXISTING_PROFILE };
+  }
 
   const { scaledEntries } = getScaledEntries({
     tournamentRecord,
@@ -111,6 +112,7 @@ export function generateFlightProfile({
   if (attachFlightProfile) {
     const result = attachProfile({
       flightProfile: updatedFlightProfile,
+      deleteExisting,
       event,
     });
     return {
