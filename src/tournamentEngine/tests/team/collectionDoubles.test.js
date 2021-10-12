@@ -84,7 +84,7 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
   ).toEqual(doublesMatchUp.collectionPosition);
 
   doublesMatchUp = getDoublesMatchUp(doublesMatchUpId, false);
-  expect(doublesMatchUp.sides).toEqual([{ SideNumber: 1 }, { SideNumber: 2 }]);
+  expect(doublesMatchUp.sides).toEqual([{ sideNumber: 1 }, { sideNumber: 2 }]);
 
   doublesMatchUp = getDoublesMatchUp(doublesMatchUpId);
   const targetSide = doublesMatchUp.sides.find(
@@ -312,6 +312,7 @@ it('can create new PAIR participants and remove/replace individualParticipants',
     .filter(({ drawPosition }) => drawPositions.includes(drawPosition))
     .map(getParticipantId);
 
+  // expect that there are initially six pair participants, 3 generated for each side
   let { tournamentParticipants: pairParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [PAIR] },
@@ -333,9 +334,10 @@ it('can create new PAIR participants and remove/replace individualParticipants',
     );
     const { sideNumber } = side;
 
+    // create new pairs from the first and third individuals on each team
     const individualParticipantIds =
       teamParticipant.individualParticipantIds.filter((id, index) =>
-        [0, 2].includes(index)
+        [1, 3].includes(index + 1)
       );
 
     individualParticipantIds.forEach((individualParticipantId, i) => {
@@ -367,11 +369,29 @@ it('can create new PAIR participants and remove/replace individualParticipants',
     });
   });
 
+  // confirm new doubles pairs have been created
   ({ tournamentParticipants: pairParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [PAIR] },
     }));
   expect(pairParticipants.length).toEqual(8);
+
+  teamParticipants.forEach((teamParticipant) => {
+    // get the third and fifth individual from each team
+    const individualParticipantIds =
+      teamParticipant.individualParticipantIds.filter((id, index) =>
+        [3, 5].includes(index + 1)
+      );
+    const [existingParticipantId, newParticipantId] = individualParticipantIds;
+
+    const result = tournamentEngine.replaceTieMatchUpParticipantId({
+      tieMatchUpId: doublesMatchUpId,
+      existingParticipantId,
+      newParticipantId,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+  });
 });
 
 function generateTeamTournament({
