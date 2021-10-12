@@ -1,6 +1,12 @@
+import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
+import { deleteParticipants } from '../participantGovernor/deleteParticipants';
+import { addParticipant } from '../participantGovernor/addParticipants';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 
+import { COMPETITOR } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { PAIR } from '../../../constants/participantTypes';
+import { DOUBLES } from '../../../constants/matchUpTypes';
 import {
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
@@ -15,6 +21,7 @@ export function replaceTieMatchUpParticipantId(params) {
     return { error: MISSING_PARTICIPANT_ID };
 
   const { collectionPosition, collectionId, dualMatchUp, tieMatchUp } = result;
+  const { matchUpType } = tieMatchUp;
 
   const side = tieMatchUp.sides.find(
     (side) =>
@@ -45,12 +52,13 @@ export function replaceTieMatchUpParticipantId(params) {
       )
     ) {
       const collectionAssignments =
-        teamCompetitor.collectionAssignments?.filter((assignment) => {
-          const target =
-            assignment.collectionId === collectionId &&
-            assignment.collectionPosition === collectionPosition;
-          return !target;
-        });
+        teamCompetitor.collectionAssignments?.filter(
+          (assignment) =>
+            !(
+              assignment.collectionId === collectionId &&
+              assignment.collectionPosition === collectionPosition
+            )
+        );
       return {
         participantId: teamCompetitor.participantId,
         collectionAssignments,
@@ -76,9 +84,74 @@ export function replaceTieMatchUpParticipantId(params) {
     });
   }
 
-  dualMatchUpSide.lineUp = modifiedLineUp;
+  const isDoubles = matchUpType === DOUBLES;
+
+  const existingIndividualParticipantIds =
+    isDoubles &&
+    dualMatchUpSide.lineUp
+      .map((teamCompetitor) => {
+        const assignment = teamCompetitor.collectionAssignments?.find(
+          (assignment) =>
+            assignment.collectionId === collectionId &&
+            assignment.collectionPosition === collectionPosition
+        );
+        return assignment && teamCompetitor.participantId;
+      })
+      .filter(Boolean);
 
   // now check whether new pairParticipant exists
+  const individualParticipantIds =
+    isDoubles &&
+    modifiedLineUp
+      .map((teamCompetitor) => {
+        const assignment = teamCompetitor.collectionAssignments?.find(
+          (assignment) =>
+            assignment.collectionId === collectionId &&
+            assignment.collectionPosition === collectionPosition
+        );
+        return assignment && teamCompetitor.participantId;
+      })
+      .filter(Boolean);
 
-  return { ...SUCCESS };
+  dualMatchUpSide.lineUp = modifiedLineUp;
+
+  let participantAdded, participantRemoved;
+  if (isDoubles) {
+    const { tournamentRecord } = params;
+    let result = getPairedParticipant({
+      participantIds: individualParticipantIds,
+      tournamentRecord,
+    });
+
+    if (!result.participant) {
+      const participant = {
+        individualParticipantIds,
+        participantType: PAIR,
+        participantRole: COMPETITOR,
+      };
+      const result = addParticipant({
+        tournamentRecord,
+        pairOverride: true,
+        participant,
+      });
+      if (result.error) return result;
+      participantAdded = result.participant?.participantId;
+    }
+
+    // now attempt to cleanup/delete previous pairParticipant
+    result = getPairedParticipant({
+      participantIds: existingIndividualParticipantIds,
+      tournamentRecord,
+    });
+    const existingPairParticipantId = result.participant?.participantId;
+    if (existingPairParticipantId) {
+      const result = deleteParticipants({
+        participantIds: [existingPairParticipantId],
+        tournamentRecord,
+      });
+      if (result.success) participantRemoved = existingPairParticipantId;
+    }
+  }
+
+  return { ...SUCCESS, participantRemoved, participantAdded };
 }
