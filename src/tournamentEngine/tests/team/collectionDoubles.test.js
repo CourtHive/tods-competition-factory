@@ -71,7 +71,6 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
     //
   }
 
-  // add the first sideMember for { sideNumber: 1 }
   let result = tournamentEngine.assignTieMatchUpParticipantId({
     participantId: firstParticipant.individualParticipantIds[0],
     sideNumber: firstParticipantSide.sideNumber,
@@ -79,9 +78,6 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
     drawId,
   });
   expect(result.success).toEqual(true);
-  expect(result.modifiedLineUp[0].collectionAssignments[0].sideMember).toEqual(
-    1
-  );
   expect(result.modifiedLineUp[0].participantId).toEqual(
     firstParticipant.individualParticipantIds[0]
   );
@@ -101,7 +97,6 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
   );
   expect(targetSide.participant).not.toBeUndefined();
 
-  // remove the first sideMember for { sideNumber: 1}
   const individualParticipantId =
     targetSide.participant.individualParticipantIds[0];
   result = tournamentEngine.removeTieMatchUpParticipantId({
