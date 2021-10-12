@@ -1,39 +1,42 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { scoreHasValue } from '../../../drawEngine/governors/matchUpGovernor/scoreHasValue';
-import { getMatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
-import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
-import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
-import { getParticipantIds } from '../../../global/functions/extractors';
 import { addParticipant } from '../participantGovernor/addParticipants';
+import { getTieMatchUpContext } from './getTieMatchUpContext';
 import { overlap } from '../../../utilities';
 
-import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantTypes';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
-  EVENT_NOT_FOUND,
   EXISTING_OUTCOME,
-  INVALID_MATCHUP,
   INVALID_PARTICIPANT_TYPE,
-  INVALID_VALUES,
-  MATCHUP_NOT_FOUND,
   MISSING_COLLECTION_DEFINITION,
-  MISSING_DRAW_ID,
   MISSING_SIDE_NUMBER,
   MISSING_TIE_FORMAT,
-  MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
 // removal of sideMember is currently done by assigning { participantId: undefined, sideNumber, sideMember }
-// TODO: implement removeTieMatchUpParticipantId where participantId is defined
 export function assignTieMatchUpParticipantId(params) {
-  const { tournamentRecord, drawDefinition, event } = params;
-  const { participantId, tieMatchUpId } = params;
+  const { tournamentRecord, drawDefinition, participantId } = params;
   let { sideMember } = params;
+
+  const result = getTieMatchUpContext(params);
+  if (result.error) return result;
+
+  const {
+    relevantAssignments,
+    collectionPosition,
+    teamParticipants,
+    collectionId,
+    matchUpType,
+    dualMatchUp,
+    tieMatchUp,
+    structure,
+  } = result;
 
   // sideNumber can be checked against the participantId, which can be resolved based on the participantId team membership
   // if sideNumber is not provided and there is a participantId then sideNumber can be resolved
@@ -42,49 +45,6 @@ export function assignTieMatchUpParticipantId(params) {
   // 2. get team participants for each side
   // 3. discover which team particiapntId belongs to and side for team participant
 
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!drawDefinition) return { error: MISSING_DRAW_ID };
-  if (!event) return { error: EVENT_NOT_FOUND };
-  if (sideMember && ![1, 2].includes(sideMember))
-    return { error: INVALID_VALUES };
-
-  const matchUpsMap = getMatchUpsMap({ drawDefinition });
-
-  // tieMatchUp is matchUpType: SINGLES or DOUBLES
-  const { matchUp: tieMatchUp, structure } = findMatchUp({
-    tournamentParticipants: tournamentRecord.participants,
-    matchUpId: tieMatchUpId,
-    inContext: true,
-    drawDefinition,
-    matchUpsMap,
-  });
-  if (!tieMatchUp) return { error: MATCHUP_NOT_FOUND };
-
-  const {
-    collectionId,
-    collectionPosition,
-    drawPositions,
-    matchUpTieId,
-    matchUpType,
-  } = tieMatchUp;
-
-  if (![SINGLES, DOUBLES].includes(matchUpType))
-    return { error: INVALID_MATCHUP };
-
-  const { positionAssignments } = getPositionAssignments({ structure });
-  const relevantAssignments = positionAssignments?.filter((assignment) =>
-    drawPositions.includes(assignment.drawPosition)
-  );
-
-  const { tournamentParticipants: teamParticipants } =
-    getTournamentParticipants({
-      tournamentRecord,
-      participantFilters: {
-        participantTypes: [TEAM],
-        participantIds: getParticipantIds(relevantAssignments),
-      },
-    });
-
   const {
     tournamentParticipants: [participantToAssign],
   } = getTournamentParticipants({
@@ -92,12 +52,6 @@ export function assignTieMatchUpParticipantId(params) {
     participantFilters: {
       participantIds: [participantId],
     },
-  });
-
-  const { matchUp: dualMatchUp } = findMatchUp({
-    matchUpId: matchUpTieId,
-    drawDefinition,
-    matchUpsMap,
   });
 
   if (!participantToAssign) {

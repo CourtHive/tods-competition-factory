@@ -14,7 +14,7 @@ import {
   automatedPositioning,
   automatedPlayoffPositioning,
 } from './automatedPositioning';
-import { assignTieMatchUpParticipantId } from './tieMatchUps';
+import { assignTieMatchUpParticipantId } from './assignTieMatchUpParticipant';
 import { deleteDrawDefinitions } from './drawDefinitions/deleteDrawDefinitions';
 import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
 import {
