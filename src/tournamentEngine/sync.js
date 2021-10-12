@@ -27,7 +27,6 @@ import { SUCCESS } from '../constants/resultConstants';
 import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
-  MISSING_TOURNAMENT_RECORD,
 } from '../constants/errorConditionConstants';
 
 export const tournamentEngine = (function () {
@@ -49,14 +48,6 @@ export const tournamentEngine = (function () {
   };
 
   engine.version = () => factoryVersion();
-  engine.forTournament = ({ tournamentRecord } = {}) => {
-    if (typeof tournamentRecord === 'object') {
-      engine.sandboxRecord = tournamentRecord;
-      return engine;
-    } else {
-      return { error: MISSING_TOURNAMENT_RECORD };
-    }
-  };
   engine.reset = () => {
     const result = removeTournamentRecord(getTournamentId());
     return processResult(result);
@@ -113,8 +104,7 @@ export const tournamentEngine = (function () {
   }
 
   function engineInvoke(method, params) {
-    const tournamentRecord =
-      engine.sandboxRecord || getTournamentRecord(getTournamentId());
+    const tournamentRecord = getTournamentRecord(getTournamentId());
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
