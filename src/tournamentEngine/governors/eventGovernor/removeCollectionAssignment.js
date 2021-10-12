@@ -21,5 +21,6 @@ export function removeCollectionAssignment({
       collectionAssignments,
     };
   });
+
   return { modifiedLineUp };
 }

@@ -56,6 +56,10 @@ test('competitionEngine can modify venues', () => {
         courtName: 'Custom Court 1',
         dateAvailability: [
           {
+            startTime: '16:30',
+            endTime: '17:30',
+          },
+          {
             date: '2021-01-01',
             startTime: '16:30',
             endTime: '17:30',
@@ -85,10 +89,7 @@ test('competitionEngine can modify venues', () => {
       },
     ],
   };
-  result = competitionEngine.modifyVenue({
-    venueId,
-    modifications,
-  });
+  result = competitionEngine.modifyVenue({ venueId, modifications });
   expect(result.success).toEqual(true);
 
   result = competitionEngine.getVenuesAndCourts();

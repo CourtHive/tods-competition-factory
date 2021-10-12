@@ -38,6 +38,10 @@ it('can define and modify a venue', () => {
         courtName: 'Custom Court 1',
         dateAvailability: [
           {
+            startTime: '04:30 pm',
+            endTime: '05:30 pm',
+          },
+          {
             date: '01/01/2021',
             startTime: '04:30 pm',
             endTime: '05:30 pm',
