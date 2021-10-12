@@ -25,9 +25,12 @@ export function removeTieMatchUpParticipantId(params) {
   if (scoreHasValue({ score: tieMatchUp.score }) || tieMatchUp.winningSide)
     return { error: EXISTING_OUTCOME };
 
-  const dualMatchUpSide = dualMatchUp.sides.find(
-    (side) => side.sideNumber === params.sideNumber
+  const dualMatchUpSide = dualMatchUp.sides.find((side) =>
+    side.lineUp?.find(
+      (teamCompetitor) => teamCompetitor.participantId === participantId
+    )
   );
+
   const { modifiedLineUp } = removeCollectionAssignment({
     collectionPosition,
     dualMatchUpSide,
@@ -38,7 +41,7 @@ export function removeTieMatchUpParticipantId(params) {
 
   if (matchUpType === DOUBLES) {
     const tieMatchUpSide = tieMatchUp.sides.find(
-      (side) => side.sideNumber === params.sideNumber
+      (side) => side.sideNumber === dualMatchUpSide.sideNumber
     );
 
     const { participantId: pairParticipantId } = tieMatchUpSide;
@@ -86,7 +89,9 @@ function removeCollectionAssignment({
   collectionId,
 }) {
   const modifiedLineUp = dualMatchUpSide.lineUp.map((teamCompetitor) => {
-    if (teamCompetitor.particiapntId !== participantId) return teamCompetitor;
+    if (teamCompetitor.participantId !== participantId) {
+      return teamCompetitor;
+    }
     const collectionAssignments = teamCompetitor.collectionAssignments?.filter(
       (assignment) => {
         const target =

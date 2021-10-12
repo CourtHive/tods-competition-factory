@@ -92,22 +92,23 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
     result.modifiedLineUp[0].collectionAssignments[0].collectionPosition
   ).toEqual(doublesMatchUp.collectionPosition);
 
+  doublesMatchUp = getDoublesMatchUp(doublesMatchUpId, false);
+  expect(doublesMatchUp.sides).toEqual([{ SideNumber: 1 }, { SideNumber: 2 }]);
+
   doublesMatchUp = getDoublesMatchUp(doublesMatchUpId);
   const targetSide = doublesMatchUp.sides.find(
     (side) => side.sideNumber === firstParticipantSide.sideNumber
   );
   expect(targetSide.participant).not.toBeUndefined();
 
-  doublesMatchUp = getDoublesMatchUp(doublesMatchUpId, false);
-  expect(doublesMatchUp.sides).toEqual([{ SideNumber: 1 }, { SideNumber: 2 }]);
-
   // remove the first sideMember for { sideNumber: 1}
-  result = tournamentEngine.assignTieMatchUpParticipantId({
-    sideNumber: firstParticipantSide.sideNumber,
+  const individualParticipantId =
+    targetSide.participant.individualParticipantIds[0];
+  result = tournamentEngine.removeTieMatchUpParticipantId({
+    participantId: individualParticipantId,
     tieMatchUpId: doublesMatchUpId,
     drawId,
   });
-  expect(result.success).toEqual(true);
   expect(result.modifiedLineUp[0].collectionAssignments.length).toEqual(0);
 });
 
@@ -204,7 +205,7 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
   expect(doublesMatchUp.winningSide).toEqual(outcome.winningSide);
 
   // attempt to remove participants from DOUBLES matchUp; expect error
-  result = removeDoublesParticipants();
+  result = removeFirstParticipantFromBothSides();
   expect(result.error).toEqual(EXISTING_OUTCOME);
 
   // remove the result from DOUBLES matchUp
@@ -220,7 +221,7 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
   expect(result.success).toEqual(true);
 
   // attempt to remove participants from DOUBLES matchUp; expect success
-  result = removeDoublesParticipants({ sideMember: 1 });
+  result = removeFirstParticipantFromBothSides();
   expect(result[0].success).toEqual(true);
   expect(result[1].success).toEqual(true);
   doublesMatchUp = getDoublesMatchUp(doublesMatchUpId);
@@ -241,7 +242,7 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
     .sort();
   expect(individualParticipantIdsCount).toEqual([1, 1, 2, 2, 2, 2, 2, 2]);
 
-  result = removeDoublesParticipants({ sideMember: 2 });
+  result = removeFirstParticipantFromBothSides();
   doublesMatchUp = getDoublesMatchUp(doublesMatchUpId);
 
   doublesMatchUp.sides.forEach((side) =>
@@ -272,7 +273,7 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
     .sort();
   expect(individualParticipantIdsCount).toEqual([2, 2, 2, 2, 2, 2]);
 
-  function removeDoublesParticipants({ sideMember = 1 } = {}) {
+  function removeFirstParticipantFromBothSides() {
     const results = [];
     // remove individual participants from each DOUBLES matchUp
     const success = teamParticipants.every((teamParticipant) => {
@@ -283,11 +284,11 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
       const side = doublesMatchUp.sides.find(
         (side) => side.drawPosition === assignment.drawPosition
       );
-      const { sideNumber } = side;
-      result = tournamentEngine.assignTieMatchUpParticipantId({
+      const individualParticipantId =
+        side.participant.individualParticipantIds[0];
+      result = tournamentEngine.removeTieMatchUpParticipantId({
+        participantId: individualParticipantId,
         tieMatchUpId: doublesMatchUpId,
-        sideMember,
-        sideNumber,
         drawId,
       });
       results.push(result);

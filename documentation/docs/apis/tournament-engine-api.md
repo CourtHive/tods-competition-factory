@@ -569,10 +569,9 @@ Used when interactively creating `{ participantType: PAIR }` participants.
 
 ```js
 tournamentEngine.assignTieMatchUpParticipantId({
-  drawId,
-  sideNumber,
-  tieMatchUpId: matchUpId,
   participantId: individualParticipantId,
+  tieMatchUpId: matchUpId,
+  drawId,
 });
 ```
 
@@ -2340,6 +2339,18 @@ Removes targeted `drawDefinition.structure` and all other child `structures` alo
 const { removedMatchUpIds } = tournamentEngine.removeStructure({
   drawId,
   structureId,
+});
+```
+
+---
+
+## removeTieMatchUpParticipantId
+
+```js
+tournamentEngine.removeTieMatchUpParticipantId({
+  participantId, // individual participantId to be removed
+  tieMatchUpId, // tieMatchUp, matchUpType either DOUBLES or SINGLES
+  drawId, // draw within which tieMatchUp is found
 });
 ```
 

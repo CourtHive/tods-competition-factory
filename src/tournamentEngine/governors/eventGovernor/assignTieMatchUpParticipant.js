@@ -1,5 +1,4 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
-import { scoreHasValue } from '../../../drawEngine/governors/matchUpGovernor/scoreHasValue';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
@@ -12,16 +11,16 @@ import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
-  EXISTING_OUTCOME,
   INVALID_PARTICIPANT_TYPE,
   MISSING_COLLECTION_DEFINITION,
-  MISSING_SIDE_NUMBER,
+  MISSING_PARTICIPANT_ID,
   MISSING_TIE_FORMAT,
+  PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-// removal of sideMember is currently done by assigning { participantId: undefined, sideNumber, sideMember }
 export function assignTieMatchUpParticipantId(params) {
   const { tournamentRecord, drawDefinition, participantId } = params;
+  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
   let { sideMember } = params;
 
   const result = getTieMatchUpContext(params);
@@ -55,66 +54,7 @@ export function assignTieMatchUpParticipantId(params) {
   });
 
   if (!participantToAssign) {
-    if (![1, 2].includes(params.sideNumber))
-      return { error: MISSING_SIDE_NUMBER };
-
-    if (scoreHasValue({ score: tieMatchUp.score }) || tieMatchUp.winningSide)
-      return { error: EXISTING_OUTCOME };
-
-    const dualMatchUpSide = dualMatchUp.sides.find(
-      (side) => side.sideNumber === params.sideNumber
-    );
-    const { modifiedLineUp, removedParticipantId } = removeCollectionAssignment(
-      {
-        collectionPosition,
-        dualMatchUpSide,
-        collectionId,
-        sideMember,
-      }
-    );
-    dualMatchUpSide.lineUp = modifiedLineUp;
-
-    if (matchUpType === DOUBLES) {
-      const tieMatchUpSide = tieMatchUp.sides.find(
-        (side) => side.sideNumber === params.sideNumber
-      );
-
-      const { participantId: pairParticipantId } = tieMatchUpSide;
-      const {
-        tournamentParticipants: [pairParticipant],
-      } = getTournamentParticipants({
-        tournamentRecord,
-        participantFilters: {
-          participantIds: [pairParticipantId],
-        },
-      });
-
-      if (pairParticipant) {
-        const individualParticipantIds =
-          pairParticipant?.individualParticipantIds.filter(
-            (participantId) => participantId !== removedParticipantId
-          );
-        if (individualParticipantIds.length) {
-          pairParticipant.individualParticipantIds = individualParticipantIds;
-          const result = modifyParticipant({
-            participant: pairParticipant,
-            pairOverride: true,
-            tournamentRecord,
-          });
-          if (result.error) return result;
-        } else {
-          const result = deleteParticipants({
-            participantIds: [pairParticipantId],
-            tournamentRecord,
-          });
-          if (result.error) console.log('cleanup', { result });
-        }
-      } else {
-        console.log('pair participant not found');
-      }
-    }
-
-    return { ...SUCCESS, modifiedLineUp };
+    return { error: PARTICIPANT_NOT_FOUND };
   }
 
   const { individualParticipantIds, participantType } = participantToAssign;

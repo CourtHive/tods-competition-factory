@@ -194,10 +194,10 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
       const side = singlesMatchUp.sides.find(
         (side) => side.drawPosition === assignment.drawPosition
       );
-      const { sideNumber } = side;
-      result = tournamentEngine.assignTieMatchUpParticipantId({
+      const { participantId: individualParticipantId } = side;
+      result = tournamentEngine.removeTieMatchUpParticipantId({
+        participantId: individualParticipantId,
         tieMatchUpId: matchUpId,
-        sideNumber,
         drawId,
       });
       results.push(result);
@@ -336,29 +336,6 @@ it('can assign SINGLES particiapnts to collectionPositions and complete matchUps
     };
     result = tournamentEngine.addParticipant({ participant: pairParticipant });
     expect(result.success).toEqual(true);
-    /*
-    const pairParticipantId = result.participant.participantId;
-
-    result = tournamentEngine.assignTieMatchUpParticipantId({
-      drawId,
-      sideNumber,
-      tieMatchUpId: matchUpId,
-      participantId: pairParticipantId,
-    });
-    expect(result.success).toEqual(true);
-
-    ({ matchUps: doublesMatchUps } = tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: { matchUpTypes: [DOUBLES] },
-    }));
-
-    modifiedTieMatchUp = doublesMatchUps.find(
-      (matchUp) => matchUp.matchUpId === matchUpId
-    );
-    targetSide = modifiedTieMatchUp.sides.find(
-      (side) => side.sideNumber === sideNumber
-    );
-    expect(targetSide.participantId).toEqual(pairParticipantId);
-    */
 
     ({ matchUps: dualMatchUps } = tournamentEngine.allTournamentMatchUps({
       matchUpFilters: { matchUpTypes: [TEAM] },
@@ -369,18 +346,9 @@ it('can assign SINGLES particiapnts to collectionPositions and complete matchUps
     dualMatchUpTargetSide = dualMatchUp.sides.find(
       (side) => side.sideNumber === sideNumber
     );
-    // expect(dualMatchUpTargetSide.lineUp.length).toEqual(2);
     expect(dualMatchUpTargetSide.lineUp[0].participantId).toEqual(
       individualParticipantId
     );
-    /*
-    targetCompetitor = dualMatchUpTargetSide.lineUp.find(
-      ({ participantId }) => participantId === pairParticipantId
-    );
-    expect(targetCompetitor.collectionAssignments[0].collectionId).toEqual(
-      doublesMatchUp.collectionId
-    );
-    */
   }
 
   // complete singlesMatchUps
@@ -421,6 +389,7 @@ it('can assign SINGLES particiapnts to collectionPositions and complete matchUps
     expect(side.participant.teams.length).toEqual(1);
   });
 });
+
 function generateTeamTournament({ drawSize = 8, valueGoal = 2 } = {}) {
   const tieFormat = {
     winCriteria: { valueGoal },

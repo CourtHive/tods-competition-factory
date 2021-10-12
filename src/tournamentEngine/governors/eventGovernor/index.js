@@ -15,6 +15,7 @@ import {
   automatedPlayoffPositioning,
 } from './automatedPositioning';
 import { assignTieMatchUpParticipantId } from './assignTieMatchUpParticipant';
+import { removeTieMatchUpParticipantId } from './removeTieMatchUpParticipant';
 import { deleteDrawDefinitions } from './drawDefinitions/deleteDrawDefinitions';
 import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
 import {
@@ -166,6 +167,7 @@ const eventGovernor = {
   addDrawDefinitionTimeItem,
 
   assignTieMatchUpParticipantId,
+  removeTieMatchUpParticipantId,
 };
 
 export default eventGovernor;
