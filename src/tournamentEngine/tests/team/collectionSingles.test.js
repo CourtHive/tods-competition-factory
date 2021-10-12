@@ -3,13 +3,13 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { COMPETITOR } from '../../../constants/participantRoles';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { COMPETITOR } from '../../../constants/participantRoles';
 import {
   EXISTING_OUTCOME,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_ID,
-  MISSING_SIDE_NUMBER,
+  MISSING_PARTICIPANT_ID,
 } from '../../../constants/errorConditionConstants';
 import {
   COMPLETED,
@@ -267,7 +267,7 @@ it('can assign SINGLES particiapnts to collectionPositions and complete matchUps
       tieMatchUpId: matchUpId,
       drawId,
     });
-    expect(result.error).toEqual(MISSING_SIDE_NUMBER);
+    expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
 
     // assign an individual particpant to a SINGLES matchUp
     result = tournamentEngine.assignTieMatchUpParticipantId({

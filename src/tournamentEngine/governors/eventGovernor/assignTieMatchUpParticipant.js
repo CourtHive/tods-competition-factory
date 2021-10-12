@@ -2,6 +2,7 @@ import { getTournamentParticipants } from '../../getters/participants/getTournam
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
+import { removeCollectionAssignment } from './removeCollectionAssignment';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 import { overlap } from '../../../utilities';
@@ -19,12 +20,12 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function assignTieMatchUpParticipantId(params) {
+  const result = getTieMatchUpContext(params);
+  if (result.error) return result;
+
   const { tournamentRecord, drawDefinition, participantId } = params;
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
   let { sideMember } = params;
-
-  const result = getTieMatchUpContext(params);
-  if (result.error) return result;
 
   const {
     relevantAssignments,
@@ -133,8 +134,8 @@ export function assignTieMatchUpParticipantId(params) {
   const { modifiedLineUp } = removeCollectionAssignment({
     collectionPosition,
     dualMatchUpSide,
+    participantId,
     collectionId,
-    sideMember,
   });
 
   const participantCompetitiorProfile = modifiedLineUp.find(
@@ -229,30 +230,4 @@ export function assignTieMatchUpParticipantId(params) {
     }
     return { ...SUCCESS, sideMember, deleteParticipantId };
   }
-}
-
-function removeCollectionAssignment({
-  collectionPosition,
-  dualMatchUpSide,
-  collectionId,
-  sideMember,
-}) {
-  let removedParticipantId;
-  const modifiedLineUp = dualMatchUpSide.lineUp.map((teamCompetitor) => {
-    const collectionAssignments = teamCompetitor.collectionAssignments?.filter(
-      (assignment) => {
-        const target =
-          assignment.collectionId === collectionId &&
-          assignment.collectionPosition === collectionPosition &&
-          (!sideMember || sideMember === assignment.sideMember);
-        if (target) removedParticipantId = teamCompetitor.participantId;
-        return !target;
-      }
-    );
-    return {
-      participantId: teamCompetitor.participantId,
-      collectionAssignments,
-    };
-  });
-  return { modifiedLineUp, removedParticipantId };
 }
