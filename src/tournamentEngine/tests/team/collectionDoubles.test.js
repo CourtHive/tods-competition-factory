@@ -53,9 +53,8 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
       participantFilters: { participantIds: teamParticipantIds },
     });
 
-  const [firstParticipant, secondParticipant] = teamParticipants;
+  const [firstParticipant] = teamParticipants;
   const firstParticipantId = firstParticipant.participantId;
-  const secondParticipantId = secondParticipant.participantId;
 
   const getSide = (id) => {
     const drawPosition = positionAssignments.find(
@@ -66,10 +65,6 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
     );
   };
   const firstParticipantSide = getSide(firstParticipantId);
-  const secondParticipantSide = getSide(secondParticipantId);
-  if (firstParticipantSide || secondParticipantSide) {
-    //
-  }
 
   let result = tournamentEngine.assignTieMatchUpParticipantId({
     participantId: firstParticipant.individualParticipantIds[0],
