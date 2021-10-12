@@ -16,6 +16,7 @@ import {
 } from './automatedPositioning';
 import { assignTieMatchUpParticipantId } from './assignTieMatchUpParticipant';
 import { removeTieMatchUpParticipantId } from './removeTieMatchUpParticipant';
+import { replaceTieMatchUpParticipantId } from './replaceTieMatchUpParticipant';
 import { deleteDrawDefinitions } from './drawDefinitions/deleteDrawDefinitions';
 import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
 import {
@@ -168,6 +169,7 @@ const eventGovernor = {
 
   assignTieMatchUpParticipantId,
   removeTieMatchUpParticipantId,
+  replaceTieMatchUpParticipantId,
 };
 
 export default eventGovernor;
