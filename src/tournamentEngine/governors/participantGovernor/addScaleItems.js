@@ -40,13 +40,13 @@ export function setParticipantScaleItem({
     );
 
     if (participant) {
-      const { newValue, error } = addParticipantScaleItem({
+      const { valueChanged, error } = addParticipantScaleItem({
         participant,
         scaleItem,
       });
       if (error) return { error };
 
-      equivalentValue = scaleItem.scaleValue === newValue;
+      equivalentValue = !valueChanged;
 
       const { topics } = getTopics();
       if (topics.includes(MODIFY_PARTICIPANTS)) {
@@ -59,9 +59,13 @@ export function setParticipantScaleItem({
   }
 
   return equivalentValue
-    ? { ...SUCCESS, message: VALUE_UNCHANGED, value: scaleItem.scaleValue }
+    ? {
+        ...SUCCESS,
+        message: VALUE_UNCHANGED,
+        existingValue: scaleItem.scaleValue,
+      }
     : participant
-    ? { ...SUCCESS, value: scaleItem.scaleValue }
+    ? { ...SUCCESS, newValue: scaleItem.scaleValue }
     : { error: PARTICIPANT_NOT_FOUND };
 }
 
@@ -173,5 +177,8 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
     participant.timeItems.push(timeItem);
   }
 
-  return Object.assign({ newValue: scaleItem.scaleValue }, SUCCESS);
+  return Object.assign(
+    { valueChanged, newValue: scaleItem.scaleValue },
+    SUCCESS
+  );
 }
