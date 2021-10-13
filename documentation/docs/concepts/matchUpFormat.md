@@ -2,6 +2,8 @@
 title: matchUpFormat Codes
 ---
 
+## Overview
+
 A **matchUpFormat** code describes the scoring method used for a specific **matchUp**, for all matchUps within a **structure**, for all matchUps within a **drawDefinition**, or for all matchUps within an **event**.
 
 :::tip

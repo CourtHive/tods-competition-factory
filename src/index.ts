@@ -7,7 +7,7 @@ import { dateTime, dateRange } from './utilities/dateTime';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
 import { numericSort } from './utilities/sorting';
 import { UUID, UUIDS } from './utilities/UUID';
-import { generateHashCode } from './utilities';
+import { generateHashCode, generateTimeCode } from './utilities';
 import { JSON2CSV } from './utilities/json';
 import {
   countValues,
@@ -30,6 +30,7 @@ export const utilities = {
   garman,
   generateRange,
   generateHashCode,
+  generateTimeCode,
   instanceCount,
   intersection,
   isNumeric,

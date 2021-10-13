@@ -1,3 +1,131 @@
 ---
-title: tieFormat
+title: tieFormats and lineUps
 ---
+
+## Overview
+
+### tieFormat
+
+A `tieFormat` both describes collections of singles and doubles `tieMatchUps` which are part of a **_Dual_** or **_Team_** match,
+and defines the target value which must be achieved in order to win the `matchUp`.
+
+There can be any number of `collectionDefinitions` in a `tieMatchUp`.
+For instance, there can be "Men's Singles", "Men's Doubles", "Womens's Singles", "Women's Doubles", and "Mixed Doubles".
+
+Each `collectionDefinition` defines how many `matchUps` are in the collection, the `matchUpType` (SINGLES or DOUBLES), the `matchUpFormat` to be used for scoring, and what value should be assigned to `matchUps` or entire collections.
+The value may be the same for each `matchUp`; `matchUps` may have a value tied to their `collectionPosition`;
+or a value may be awarded to the winner of the collection.
+
+### lineUps
+
+A `lineUp` is provided by each side of a **_Dual_** or **_Team_** match;
+it is a mapping of team `participants` to their `collectionAssignments` which specify the `matchUps` in which they will compete.
+
+## tieFormat Use
+
+### Generating Draws
+
+The generation of `drawDefinitions` requires a `tieFormat` to determine how many `tieMatchUps` for each collection are contained in the `matchUp` between two teams.
+When `tieMatchUps` are generated they are assigned a `collectionId` and a `collectionPosition`.
+If there are six `tieMatchUps` in a collection, they will be assigned `collectionPositions` **1-6**.
+
+### Determining Winners
+
+As results of singles and/or doubles `matchUps` are recorded, the `tieFormat` is used to calculate the score for each side and determine when a side has achieved the score neessary to win.
+
+### Mapping lineUps
+
+A `tieFormat` determines the relationship between a team's `lineUp` and the `tieMatchUps` within a `matchUp` by defining the mapping between `collectionIds`, `collectionPositions` and participant `collectionAssignments`.
+
+## tieFormat Example
+
+- each **SINGLES match** has a value of **1**
+- the entire **DOUBLES Collection** has a value of **1**
+- the `valueGoal` is **4**
+
+```js
+const tieFormat = {
+  winCriteria: {
+    valueGoal: 4, // the value that must be achieved to win the match
+  },
+  collectionDefinitions: [
+    {
+      collectionId: 'singlesCollectionId',
+      collectionName: 'Singles',
+      matchUpType: SINGLES,
+      matchUpCount: 6,
+      matchUpFormat: 'SET3-S:6/TB7',
+      matchUpValue: 1,
+    },
+    {
+      collectionId: 'doublesCollectionId',
+      collectionName: 'Doubles',
+      matchUpType: DOUBLES,
+      matchUpCount: 3,
+      matchUpFormat: 'SET3-S:6/TB7-F:TB10',
+      collectionValue: 1,
+    },
+  ],
+};
+```
+
+## lineUp Example
+
+In this example, each team member, identified by their `participantId`, is assigned to both a singles and a doubles `tieMatchUp`.
+They are assigned to **different** `collectionPositions` in the singles collection, but the **same** `collectionPosition` in the doubles collection,
+which means they also appear in the `tournamentRecord` as a PAIR.
+
+```js
+[
+  {
+    participantId: 'pId1',
+    collectionAssignments: [
+      {
+        collectionId: 'singlesCollectionId',
+        collectionPosition: 1,
+      },
+      {
+        collectionId: 'doublesCollectionId',
+        collectionPosition: 1,
+      },
+    ],
+  },
+  {
+    participantId: 'pId2',
+    collectionAssignments: [
+      {
+        collectionId: 'singlesCollectionId',
+        collectionPosition: 2,
+      },
+      {
+        collectionId: 'doublesCollectionId',
+        collectionPosition: 1,
+      },
+    ],
+  },
+];
+```
+
+## tieMatchUp Example
+
+`tieMatchUps` occur within a dual/team `matchUp` and need only contain a `collectionId`, `collectionPosition`, and `matchUpId`.
+When context is added to `matchUps` the engines of the Competition Factory utilize the `lineUps` and the `tieFormat` to include all relevant information, such as `sides` which include `participants`.
+
+```js
+{
+  drawPositions: [1, 2],
+  matchUpId: 'dualMatchUpId',
+  sides: [
+    { sideNumber: 1, lineUp: [] }, // see lineUp example above
+    { sideNumber: 2, lineUp: [] },
+  ],
+  tieFormat, // see tieFormat example above
+  tieMatchUps: [
+    {
+      collectionId: 'singlesCollectionId',
+      collectionPosition: 1,
+      matchUpId: 'first_tieMatchUpId',
+    },
+  ],
+};
+```
