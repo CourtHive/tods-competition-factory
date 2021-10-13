@@ -104,7 +104,11 @@ export const tournamentEngine = (function () {
   }
 
   function engineInvoke(method, params) {
-    const tournamentRecord = getTournamentRecord(getTournamentId());
+    const tournamentRecord =
+      params?.sandBoxRecord ||
+      params?.sandboxRecord ||
+      params?.sandboxTournament ||
+      getTournamentRecord(getTournamentId());
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecord, false, true);

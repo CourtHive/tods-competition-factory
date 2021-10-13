@@ -2,9 +2,11 @@
 title: matchUpFormat Codes
 ---
 
+## Overview
+
 A **matchUpFormat** code describes the scoring method used for a specific **matchUp**, for all matchUps within a **structure**, for all matchUps within a **drawDefinition**, or for all matchUps within an **event**.
 
-:::info
+:::tip
 Try the interactive [matchUpFormat code generator](https://courthive.github.io/tods-matchup-format-code/example)
 
 Check out the [Repository](https://github.com/CourtHive/tods-matchup-format-code) and [NPM Package](https://www.npmjs.com/package/tods-matchup-format-code) specifically for generating and parsing ITF TODS MatchUp Format Codes.

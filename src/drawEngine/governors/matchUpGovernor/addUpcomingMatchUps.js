@@ -116,7 +116,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
           );
           const loserPotentials = !loserDetermined ? participants : [];
           if (loserMatchUp && firstMatchUp && loserPotentials.length < 2) {
-            loserPotentials.push({ bye: true });
+            loserPotentials.push({ bye: true, tbd: true }); // tbd: true indiciates that for FMLC, WO/DEF could propagate a player
           }
           if (winnerPotentials?.length && winnerMatchUp) {
             if (!winnerMatchUp.potentialParticipants)

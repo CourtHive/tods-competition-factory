@@ -18,12 +18,12 @@
     "@docusaurus/preset-classic": "2.0.0-beta@next",
     "@docusaurus/theme-live-codeblock": "2.0.0-beta@next",
     "@mdx-js/react": "1.6.22",
-    "@types/react": "17.0.27",
+    "@types/react": "17.0.29",
     "clsx": "1.1.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-json-tree": "0.15.0",
-    "tods-competition-factory": "0.40.0"
+    "tods-competition-factory": "0.41.3"
   },
   "browserslist": {
     "production": [
@@ -38,6 +38,6 @@
     ]
   },
   "resolutions": {
-    "axios": "^0.22.0"
+    "axios": "^0.23.0"
   }
 }

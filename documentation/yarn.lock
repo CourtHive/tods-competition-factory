@@ -1852,10 +1852,10 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.4.tgz#15925414e0ad2cd765bfef58842f7e26a7accb24"
   integrity sha512-1HcDas8SEj4z1Wc696tH56G8OlRaH/sqZOynNNB+HF0WOeXPaxTtbYzJY2oEfiUxjSKjhCKr+MvR7dCHcEelug==
 
-"@types/react@17.0.27":
-  version "17.0.27"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.27.tgz#6498ed9b3ad117e818deb5525fa1946c09f2e0e6"
-  integrity sha512-zgiJwtsggVGtr53MndV7jfiUESTqrbxOcBvwfe6KS/9bzaVPCTDieTWnFNecVNx6EAaapg5xsLLWFfHHR437AA==
+"@types/react@17.0.29":
+  version "17.0.29"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.29.tgz#9535f3fc01a4981ce9cadcf0daa2593c0c2f2251"
+  integrity sha512-HSenIfBEBZ70BLrrVhtEtHpqaP79waauPtA8XKlczTxL3hXrW/ElGNLTpD1TmqkykgGlOAK55+D3SmUHEirpFw==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -2289,10 +2289,10 @@ autoprefixer@^10.2.0, autoprefixer@^10.2.5:
     normalize-range "^0.1.2"
     postcss-value-parser "^4.1.0"
 
-axios@^0.21.1, axios@^0.22.0:
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.22.0.tgz#bf702c41fb50fbca4539589d839a077117b79b25"
-  integrity sha512-Z0U3uhqQeg1oNcihswf4ZD57O3NrR1+ZXhxaROaWpDmsDTx7T2HNBV2ulBtie2hwJptu8UvgnJoK+BIqdzh/1w==
+axios@^0.21.1, axios@^0.23.0:
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.23.0.tgz#b0fa5d0948a8d1d75e3d5635238b6c4625b05149"
+  integrity sha512-NmvAE4i0YAv5cKq8zlDoPd1VLKAqX5oLuZKs8xkJa4qi6RGn0uhCYFjWtHHC9EM/MwOwYWOs53W+V0aqEXq1sg==
   dependencies:
     follow-redirects "^1.14.4"
 
@@ -8205,10 +8205,10 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
-tods-competition-factory@0.40.0:
-  version "0.40.0"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.40.0.tgz#be64c9c11bfa33642b6b6dd9707bb862f247572e"
-  integrity sha512-rCxBwNeFxkm+hISQmEkAh/jHhLVfrNq5jJCmvDeUt2mpZWvCIeaioqSaSrqIFrIe/DtRFmvExeDxr7KNisZ/6w==
+tods-competition-factory@0.41.3:
+  version "0.41.3"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.41.3.tgz#879e8b9892112a7ad9b2fdcad0cb1f133d639dce"
+  integrity sha512-C9f/y9vS0pLrBj4Hf9FNkHtiHehoyK4nJ7kg5xnVmZEPzlrAUSuBjL2/f0UyE+y5Fhd7zfRfwf/Ojq7wC1/DRQ==
   dependencies:
     tods-matchup-format-code "1.1.5"
 

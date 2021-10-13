@@ -7,6 +7,7 @@ export const MISSING_TOURNAMENT_ID = 'Missing tournamentId';
 
 export const INVALID_DRAW_DEFINITION = 'Invalid drawDefinition';
 export const MISSING_DRAW_DEFINITION = 'Missing drawDefinition';
+export const EXISTING_DRAW_DEFINITIONS = 'Existing drawDefinition(s)';
 export const DRAW_DEFINITION_NOT_FOUND = 'drawDefinition not found';
 export const INVALID_STRUCTURE = 'Invalid structure';
 
@@ -216,6 +217,7 @@ export const errorConditionConstants = {
   ENTRY_STATUS_NOT_ALLOWED_IN_STAGE,
   EVENT_EXISTS,
   EVENT_NOT_FOUND,
+  EXISTING_DRAW_DEFINITIONS,
   EXISTING_END_TIME,
   EXISTING_FLIGHT,
   EXISTING_OUTCOME,

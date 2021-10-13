@@ -16,6 +16,7 @@ module.exports = {
           'Data Structures': [
             'concepts/dataStructures',
             'concepts/matchUpFormat',
+            'concepts/tieFormat',
           ],
         },
         'concepts/drawGeneration',

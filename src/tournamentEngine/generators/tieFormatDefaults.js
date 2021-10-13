@@ -1,4 +1,4 @@
-import { SINGLES } from '../../constants/matchUpTypes';
+import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { UUID } from '../../utilities';
 
 export const tieFormatDefaults = ({ uuids } = {}) => ({
@@ -9,7 +9,7 @@ export const tieFormatDefaults = ({ uuids } = {}) => ({
     {
       collectionId: uuids?.pop() || UUID(),
       collectionName: 'Doubles',
-      matchUpType: 'DOUBLES',
+      matchUpType: DOUBLES,
       matchUpCount: 3,
       matchUpFormat: 'SET3-S:6/TB7-F:TB10',
       matchUpValue: 1,
