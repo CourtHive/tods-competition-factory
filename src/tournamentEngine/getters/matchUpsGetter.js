@@ -82,8 +82,7 @@ export function allDrawMatchUps({
   context,
   event,
 }) {
-  if (!event) return { error: MISSING_EVENT };
-  const { eventId, eventName, category, gender, matchUpFormat } = event;
+  const { eventId, eventName, category, gender, matchUpFormat } = event || {};
   const additionalContext = {
     ...context,
     eventId,
@@ -91,15 +90,16 @@ export function allDrawMatchUps({
     category,
     gender,
     matchUpFormat,
-    indoorOutDoor: event.indoorOutDoor || tournamentRecord?.indoorOutDoor,
-    surfaceCategory: event.surfaceCategory || tournamentRecord?.surfaceCategory,
-    endDate: event.endDate,
+    indoorOutDoor: event?.indoorOutDoor || tournamentRecord?.indoorOutDoor,
+    surfaceCategory:
+      event?.surfaceCategory || tournamentRecord?.surfaceCategory,
+    endDate: event?.endDate,
   };
   const tournamentParticipants =
     participants ||
     (tournamentRecord && getParticipants({ tournamentRecord })) ||
     [];
-  const { matchUps } = getAllDrawMatchUps({
+  return getAllDrawMatchUps({
     context: additionalContext,
     tournamentAppliedPolicies,
     scheduleVisibilityFilters,
@@ -114,8 +114,6 @@ export function allDrawMatchUps({
     inContext,
     event,
   });
-
-  return { matchUps };
 }
 
 export function allEventMatchUps({
@@ -326,7 +324,7 @@ export function drawMatchUps({
   event,
 }) {
   if (!event) return { error: MISSING_EVENT };
-  const { eventId, eventName, endDate } = event;
+  const { eventId, eventName, endDate } = event || {};
 
   const additionalContext = {
     ...context,
@@ -334,8 +332,9 @@ export function drawMatchUps({
     eventName,
     endDate: endDate || event?.endDate || tournamentRecord?.endDate,
     tournamentId: tournamentId || tournamentRecord?.tournamentId,
-    indoorOutDoor: event.indoorOutDoor || tournamentRecord?.indoorOutDoor,
-    surfaceCategory: event.surfaceCategory || tournamentRecord?.surfaceCategory,
+    indoorOutDoor: event?.indoorOutDoor || tournamentRecord?.indoorOutDoor,
+    surfaceCategory:
+      event?.surfaceCategory || tournamentRecord?.surfaceCategory,
   };
 
   const tournamentParticipants =
