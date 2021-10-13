@@ -4,6 +4,7 @@
  */
 
 import { addGoesTo } from '../../../../drawEngine/governors/matchUpGovernor/addGoesTo';
+import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
@@ -18,6 +19,7 @@ import {
 /**
  *
  * @param {object} tournamentRecords - passed in automatically by competitionEngine
+ * @param {object} drawDefinition - optional - when called internally with subset of matchUps
  * @param {boolean} includeParticipantDependencies - whether to attach all participantIds/potentialParticipantIds
  * @param {object[]} matchUps - optional - optimization to pass matchUps (with nextMatchUps)
  * @param {string[]} drawIds - optional - scope processing to specified drawIds
@@ -25,31 +27,13 @@ import {
  */
 export function getMatchUpDependencies({
   includeParticipantDependencies,
-  tournamentRecords,
+  tournamentRecords = {},
+  drawDefinition,
   matchUps = [], // requires matchUps { inContext: true }
   drawIds = [],
 }) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
   if (!Array.isArray(drawIds)) return { error: MISSING_DRAW_ID };
-
-  if (!matchUps.length) {
-    ({ matchUps } = allCompetitionMatchUps({
-      tournamentRecords,
-      nextMatchUps: true,
-    }));
-  }
-
-  if (!drawIds.length) {
-    drawIds = tournamentRecords
-      ? Object.values(tournamentRecords)
-          .map(({ events = [] }) =>
-            events.map(({ drawDefinitions = [] }) =>
-              drawDefinitions.map(({ drawId }) => drawId)
-            )
-          )
-          .flat(Infinity)
-      : [];
-  }
 
   const matchUpDependencies = {};
 
@@ -79,34 +63,8 @@ export function getMatchUpDependencies({
     }
   };
 
-  for (const drawId of drawIds) {
-    let drawMatchUps = matchUps
-      // first get all matchUps for the draw
-      .filter((matchUp) => matchUp.drawId === drawId)
-      // sort by stage/stageSequence/roundNumber/roundPosition
-      .sort(matchUpSort);
-
-    const hasGoesTo = !!drawMatchUps.find(
-      ({ winnerMatchUpId, loserMatchUpId }) => winnerMatchUpId || loserMatchUpId
-    );
-    if (!hasGoesTo) {
-      const isRoundRobin = drawMatchUps.find(
-        ({ roundPosition }) => roundPosition
-      );
-      // skip this if Round Robin because there is no "Goes To"
-      if (!isRoundRobin) {
-        const hasTournamentId = drawMatchUps.find(
-          ({ tournamentId }) => tournamentId
-        );
-        const { drawDefinition } = findEvent({
-          tournamentRecord: tournamentRecords[hasTournamentId.tournamentId],
-          drawId,
-        });
-        addGoesTo({ drawDefinition });
-      }
-    }
-
-    for (const matchUp of drawMatchUps) {
+  const processMatchUps = (matchUpsToProcess) => {
+    for (const matchUp of matchUpsToProcess) {
       const { matchUpId, winnerMatchUpId, loserMatchUpId } = matchUp;
       initializeMatchUpId(matchUpId);
 
@@ -125,6 +83,64 @@ export function getMatchUpDependencies({
         initializeMatchUpId(loserMatchUpId);
         propagateDependencies(matchUpId, loserMatchUpId);
       }
+    }
+  };
+
+  if (drawDefinition) {
+    addGoesTo({ drawDefinition });
+    if (!matchUps.length) {
+      ({ matchUps } = allDrawMatchUps({ drawDefinition }));
+    }
+    processMatchUps(matchUps);
+  } else {
+    if (!matchUps.length) {
+      ({ matchUps } = allCompetitionMatchUps({
+        tournamentRecords,
+        nextMatchUps: true,
+      }));
+    }
+
+    if (!drawIds.length) {
+      drawIds = tournamentRecords
+        ? Object.values(tournamentRecords)
+            .map(({ events = [] }) =>
+              events.map(({ drawDefinitions = [] }) =>
+                drawDefinitions.map(({ drawId }) => drawId)
+              )
+            )
+            .flat(Infinity)
+        : [];
+    }
+
+    for (const drawId of drawIds) {
+      let drawMatchUps = matchUps
+        // first get all matchUps for the draw
+        .filter((matchUp) => matchUp.drawId === drawId)
+        // sort by stage/stageSequence/roundNumber/roundPosition
+        .sort(matchUpSort);
+
+      const hasGoesTo = !!drawMatchUps.find(
+        ({ winnerMatchUpId, loserMatchUpId }) =>
+          winnerMatchUpId || loserMatchUpId
+      );
+      if (!hasGoesTo) {
+        const isRoundRobin = drawMatchUps.find(
+          ({ roundPosition }) => roundPosition
+        );
+        // skip this if Round Robin because there is no "Goes To"
+        if (!isRoundRobin) {
+          const hasTournamentId = drawMatchUps.find(
+            ({ tournamentId }) => tournamentId
+          );
+          const { drawDefinition } = findEvent({
+            tournamentRecord: tournamentRecords[hasTournamentId.tournamentId],
+            drawId,
+          });
+          addGoesTo({ drawDefinition });
+        }
+      }
+
+      processMatchUps(drawMatchUps);
     }
   }
 
