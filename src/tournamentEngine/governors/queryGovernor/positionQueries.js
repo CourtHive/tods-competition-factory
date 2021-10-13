@@ -2,8 +2,8 @@ import { positionActions as drawEnginePositionActions } from '../../../drawEngin
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 
 export function positionActions({
-  tournamentRecord,
   policyDefinitions,
+  tournamentRecord,
   drawDefinition,
   drawPosition,
   structureId,
@@ -16,8 +16,8 @@ export function positionActions({
   });
   return drawEnginePositionActions({
     tournamentParticipants,
-    tournamentRecord,
     policyDefinitions,
+    tournamentRecord,
     drawDefinition,
     drawPosition,
     structureId,

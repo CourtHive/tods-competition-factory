@@ -9,17 +9,16 @@ import {
 } from '../../../../constants/positionActionConstants';
 
 export function getValidAlternatesAction({
-  drawPosition,
-  structureId,
-  drawId,
-  event,
-
-  structure,
-  drawDefinition,
+  tournamentParticipants = [],
+  possiblyDisablingAction,
   activeDrawPositions,
   positionAssignments,
-  possiblyDisablingAction,
-  tournamentParticipants = [],
+  drawDefinition,
+  drawPosition,
+  structureId,
+  structure,
+  drawId,
+  event,
 }) {
   if (activeDrawPositions.includes(drawPosition)) return {};
 
