@@ -26,7 +26,7 @@ All tournamentEngine methods which make a mutation return either `{ success: tru
 :::note
 Multiple tournamentRecords can be loaded into `competitionEngine`.
 
-`tournamentEngine` can be pointed to different tournamentRecords in state.
+`tournamentEngine` can be pointed to different tournamentRecords in the shared state.
 
 ```js
 tournamentEngine.setTournamentId(tournamentId);
@@ -44,6 +44,8 @@ tournamentEngine.getTournamentParticipants({
 ```
 
 :::
+
+---
 
 ## addAdHocMatchUps
 
