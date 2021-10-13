@@ -3,15 +3,51 @@ name: API
 title: Tournament Engine API
 ---
 
+## Overview
+
+The Competition Factory's `tournamentEngine` operates on a complete tournament object, or `tournamentRecord`.
+
+```js
+import { tournamentEngine } from 'tods-competition-factory';
+// -- or --
+const { tournamentEngine } = require('tods-competition-factory');
+```
+
+The `tournamentEngine` is a state machine that performs mutations on a `tournamentRecord`, which can either be loaded into state or created.
+
+```js
+tournamentEngine.newTournamentRecord({ tournamentName: 'New Tournament' });
+// -- or ---
+tournamentEngine.setState(tournamentRecord);
+```
+
 All tournamentEngine methods which make a mutation return either `{ success: true }` or `{ error }`
+
+:::note
+Multiple tournamentRecords can be loaded into `competitionEngine`.
+
+`tournamentEngine` can be pointed to different tournamentRecords in state.
+
+```js
+tournamentEngine.setTournamentId(tournamentId);
+```
+
+:::
+
+:::tip
+To operate on a tournamentRecord without loading it into state, it is possible to pass it as a parameter to any engine method:
+
+```js
+tournamentEngine.getTournamentParticipants({
+  sandboxTournament: tournamentRecord,
+});
+```
+
+:::
 
 ## addAdHocMatchUps
 
 Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **DrawMatic**. The only restriction is that a participant may appear once per round.
-
-:::important
-`matchUps` to be added must be generated with `tournamentEngine.generateAdHocMatchUps`
-:::
 
 ```js
 const result = tournamentEngine.addAdHocMatchUps({
@@ -20,6 +56,10 @@ const result = tournamentEngine.addAdHocMatchUps({
   matchUps, // required - matchUps are generated with tournamentEngine.generateAdHocMatchUps
 });
 ```
+
+:::important
+`matchUps` to be added must be generated with `tournamentEngine.generateAdHocMatchUps`
+:::
 
 ---
 
