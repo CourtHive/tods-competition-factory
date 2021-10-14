@@ -121,6 +121,10 @@ export function generateTournamentRecord({
       largestTeamDraw = Math.max(largestTeamDraw, drawSize + alternatesCount);
       tieFormat = tieFormat || tieFormatDefaults();
       tieFormat?.collectionDefinitions?.forEach((collectionDefinition) => {
+        // ensure every collectionDefinition has a collectionId
+        if (!collectionDefinition.collectionId)
+          collectionDefinition.collectionId = UUID();
+
         if (collectionDefinition?.matchUpType === DOUBLES) {
           const doublesCount = collectionDefinition.matchUpCount;
           teamDoublesCount = Math.max(teamDoublesCount, doublesCount);
@@ -128,6 +132,7 @@ export function generateTournamentRecord({
             largestDoublesDraw =
               doublesCount * (drawSize + alternatesCount || 1);
         }
+
         if (collectionDefinition?.matchUpType === SINGLES) {
           const singlescount = collectionDefinition.matchUpCount;
           teamSinglesCount = Math.max(teamSinglesCount, singlescount);
