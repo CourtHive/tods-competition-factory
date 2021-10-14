@@ -18,6 +18,7 @@ import {
   SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
 import {
+  INVALID_TIE_FORMAT,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   STRUCTURE_NOT_FOUND,
@@ -176,18 +177,17 @@ it('can set matchUpFormat', () => {
   });
   expect(result.success).toEqual(true);
 
-  // TODO: validate tieFormat
   result = setMatchUpFormat({
     drawDefinition,
     structureId: structure.structureId,
     tieFormat: {},
   });
-  expect(result.success).toEqual(true);
+  expect(result.error).toEqual(INVALID_TIE_FORMAT);
 
   result = setMatchUpFormat({
     drawDefinition,
     matchUpId,
     tieFormat: {},
   });
-  expect(result.success).toEqual(true);
+  expect(result.error).toEqual(INVALID_TIE_FORMAT);
 });

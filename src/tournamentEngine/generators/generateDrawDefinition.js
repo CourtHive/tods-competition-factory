@@ -146,12 +146,18 @@ export function generateDrawDefinition(params) {
       let result = setMatchUpFormat({
         drawDefinition,
         matchUpFormat,
-        tieFormat,
         matchUpType,
+        tieFormat,
       });
 
       if (result.error)
-        return { error: result.error, message: 'matchUpFormat error' };
+        return {
+          error: result.error,
+          message: 'matchUpFormat or tieFormat error',
+        };
+
+      // update tieFormat if integrity check has added collectionIds
+      if (result.tieFormat) tieFormat = result.tieFormat;
     } else {
       if (matchUpType) drawDefinition.matchUpType = matchUpType;
     }

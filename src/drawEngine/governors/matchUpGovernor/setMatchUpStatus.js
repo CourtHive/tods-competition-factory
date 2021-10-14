@@ -142,10 +142,10 @@ export function setMatchUpStatus(params) {
     const tieFormat = dualMatchUp.tieFormat || drawDefinition.tieFormat;
 
     const { projectedWinningSide } = getProjectedDualWinningWide({
-      matchUp,
       winningSide,
       dualMatchUp,
       tieFormat,
+      matchUp,
     });
 
     const existingDualMatchUpWinningSide = dualMatchUp.winningSide;
@@ -154,7 +154,11 @@ export function setMatchUpStatus(params) {
 
     if (dualWinningSideChange) {
       if (getDevContext({ tieMatchUps: true }))
-        console.log('dualMatchUp', { projectedWinningSide });
+        console.log('dualMatchUp', {
+          projectedWinningSide,
+          dualWinningSideChange,
+          existingDualMatchUpWinningSide,
+        });
     }
   }
 
