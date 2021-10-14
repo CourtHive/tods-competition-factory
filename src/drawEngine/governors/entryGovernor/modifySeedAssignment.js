@@ -4,10 +4,12 @@ import { findStructure } from '../../getters/findStructure';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { isNumeric } from '../../../utilities/math';
 
 /**
  * method is made available to clients via positionActions
@@ -21,6 +23,7 @@ import {
  *
  */
 export function modifySeedAssignment({
+  validation = true,
   drawDefinition,
   participantId,
   structureId,
@@ -31,6 +34,12 @@ export function modifySeedAssignment({
 
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
+
+  const validValue =
+    !validation ||
+    isNumeric(seedValue) ||
+    (typeof seedValue === 'string' && seedValue.split('-').every(isNumeric));
+  if (!validValue) return { error: INVALID_VALUES };
 
   const { seedAssignments } = getStructureSeedAssignments({
     drawDefinition,

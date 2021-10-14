@@ -1,6 +1,6 @@
 ---
-name: API
-title: Competition Engine API
+name: Competition Engine API
+title: API
 ---
 
 All competitionEngine methods which make a mutation return either `{ success: true }` or `{ error }`

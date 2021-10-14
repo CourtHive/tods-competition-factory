@@ -1,50 +1,6 @@
 ---
-name: API
-title: Tournament Engine API
----
-
-## Overview
-
-The Competition Factory's `tournamentEngine` operates on a complete tournament object, or `tournamentRecord`.
-
-```js
-import { tournamentEngine } from 'tods-competition-factory';
-// -- or --
-const { tournamentEngine } = require('tods-competition-factory');
-```
-
-The `tournamentEngine` is a state machine that performs mutations on a `tournamentRecord`, which can either be loaded into state or created.
-
-```js
-tournamentEngine.newTournamentRecord({ tournamentName: 'New Tournament' });
-// -- or ---
-tournamentEngine.setState(tournamentRecord);
-```
-
-All tournamentEngine methods which make a mutation return either `{ success: true }` or `{ error }`
-
-:::note
-Multiple tournamentRecords can be loaded into `competitionEngine`.
-
-`tournamentEngine` can be pointed to different tournamentRecords in the shared state.
-
-```js
-tournamentEngine.setTournamentId(tournamentId);
-```
-
-:::
-
-:::tip
-To operate on a tournamentRecord without loading it into state, it is possible to pass it as a parameter to any engine method:
-
-```js
-tournamentEngine.getTournamentParticipants({
-  sandboxTournament: tournamentRecord,
-});
-```
-
-:::
-
+name: Tournament Engine API
+title: API
 ---
 
 ## addAdHocMatchUps
@@ -2091,6 +2047,8 @@ tournamentEngine.modifyParticipantsSignInStatus({
 ## modifySeedAssignment
 
 Change the display representation of a seedNumber for a specified `participantId`. This method is included in `validActions` for [positionActions](../policies/positionActions).
+
+The rationale for `seedValue` is to be able to, for instance, represent the fifth through the eighth seed as `5-8`, or simply as `5`. When there are no restrictions on seed positioning `seedValue` allows assigning seeding to arbitrary `participants`.
 
 ```js
 tournamentEngine.modifySeedAssignment({

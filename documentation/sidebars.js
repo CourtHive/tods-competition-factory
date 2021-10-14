@@ -37,28 +37,41 @@ module.exports = {
       ],
     },
     {
+      type: 'doc',
+      label: 'Constants',
+      id: 'constants',
+    },
+    {
       type: 'category',
       label: 'Mocks Engine',
-      items: ['engines/mocks-engine-examples', 'apis/mocks-engine-api'],
+      items: [
+        'apis/mocks-engine-overview',
+        'apis/mocks-engine-api',
+        'engines/mocks-engine-examples',
+      ],
     },
     {
       type: 'category',
       label: 'Competition Engine',
-      items: ['apis/competition-engine-api'],
+      items: [
+        'apis/competition-engine-overview',
+        'apis/competition-engine-api',
+      ],
     },
     {
       type: 'category',
       label: 'Tournament Engine',
-      items: ['apis/tournament-engine-api'],
+      items: ['apis/tournament-engine-overview', 'apis/tournament-engine-api'],
     },
     {
       type: 'category',
       label: 'Draw Engine',
-      items: [
-        'engines/draw-engine-introduction',
-        'engines/draw-types',
-        'apis/draw-engine-api',
-      ],
+      items: ['engines/draw-engine-overview', 'apis/draw-engine-api'],
+    },
+    {
+      type: 'doc',
+      label: 'scoreGovernor',
+      id: 'scoreGovernor',
     },
     {
       type: 'category',

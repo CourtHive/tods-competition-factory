@@ -8,6 +8,7 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
+import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
 
 /**
  *
@@ -25,21 +26,19 @@ import { TEAM } from '../../../constants/matchUpTypes';
  */
 
 export function modifyMatchUpScore({
+  matchUpStatusCodes,
+  removeWinningSide,
   tournamentRecord,
   drawDefinition,
-  event,
-
-  matchUpStatus,
-  matchUpStatusCodes,
   matchUpFormat,
+  matchUpStatus,
+  removeScore,
   winningSide,
   matchUpId,
   matchUp,
-  score,
+  event,
   notes,
-
-  removeScore,
-  removeWinningSide,
+  score,
 }) {
   let structure;
 
@@ -100,6 +99,17 @@ export function modifyMatchUpScore({
       matchUpFormat,
       matchUps,
     });
+  }
+
+  const winningSideChanged = winningSide !== matchUp.winningSide;
+  if (winningSideChanged) {
+    const { flightProfile } = getFlightProfile({ event });
+    const flight = flightProfile?.flights?.find(
+      (flight) => flight.drawId === drawDefinition.drawId
+    );
+    if (flight?.matchUpValue) {
+      console.log('recalculate team point tallies');
+    }
   }
 
   if (notes) {

@@ -23,12 +23,14 @@ import {
  * @param {string} splitMethod - one of the supported methods for splitting entries
  * @param {object} scaleAttributes - { scaleName, scaleType, evenTType }
  * @param {number} flightsCount - number of flights to create from existing entries
+ * @param {object[]} flightValues - optional - [{ flightNumber: 1, matchUpValue: 1, flightNumber: 2, matchUpValue: 2 }]
  * @param {string[]} drawNames - array of names to be used when generating flights
  * @param {string} drawNameRoot - root word for generating flight names
  * @param {boolean} deleteExisting - if flightProfile exists then delete
  * @param {string} stage - OPTIONAL - only consider event entries matching stage
  *
  */
+// TODO: add matchUpValue to each flight...
 export function generateFlightProfile({
   drawNameRoot = 'Flight',
   attachFlightProfile,
@@ -39,6 +41,7 @@ export function generateFlightProfile({
   sortDescending,
   drawNames = [],
   flightsCount,
+  flightValues,
   splitMethod,
   uuids = [],
   event,
@@ -92,14 +95,22 @@ export function generateFlightProfile({
   }
 
   const flights = generateRange(0, flightsCount).map((index) => {
+    const flightNumber = index + 1;
     const flight = {
-      flightNumber: index + 1,
+      flightNumber,
       drawId: uuids?.pop() || UUID(),
       drawEntries: getDrawEntries(splitEntries[index]),
       drawName:
         (drawNames?.length && drawNames[index]) ||
-        `${drawNameRoot} ${index + 1}`,
+        `${drawNameRoot} ${flightNumber}`,
     };
+
+    const matchUpValue = flightValues?.find(
+      (value) => value.flightNumber === flightNumber
+    )?.matchUpValue;
+
+    if (matchUpValue) flight.matchUpValue = matchUpValue;
+
     return flight;
   });
 

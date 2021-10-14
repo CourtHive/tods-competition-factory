@@ -3,19 +3,41 @@ import { unique, UUID } from '../../../utilities';
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 
-export function validateTieFormat({ tieFormat, checkCollectionIds = true }) {
-  if (
-    typeof tieFormat !== 'object' ||
-    typeof tieFormat.winCriteria !== 'object' ||
-    !Array.isArray(tieFormat.collectionDefinitions)
-  )
-    return { error: INVALID_TIE_FORMAT };
-
+export function validateTieFormat({
+  checkCollectionIds = true,
+  tieFormat,
+} = {}) {
   const errors = [];
+
+  if (typeof tieFormat !== 'object') {
+    errors.push('tieformat must be an object');
+    return { error: INVALID_TIE_FORMAT, errors };
+  }
+  if (typeof tieFormat.winCriteria !== 'object') {
+    errors.push('tieFormat.winCriteria must be an object');
+    return { error: INVALID_TIE_FORMAT, errors };
+  }
+
+  if (!Array.isArray(tieFormat.collectionDefinitions)) {
+    errors.push('tieFormat.collectionDefinitiosn must be an array of objects');
+    return { error: INVALID_TIE_FORMAT, errors };
+  }
+
+  const validWinCriteria =
+    typeof tieFormat.winCriteria.valueGoal === 'number' &&
+    tieFormat.winCriteria.valueGoal > 0;
+
+  if (!validWinCriteria)
+    errors.push('Non-zero valueGoal must be specified in winCriteria');
 
   const validCollections = tieFormat.collectionDefinitions.every(
     (collectionDefinition) => {
-      if (typeof collectionDefinition !== 'object') return false;
+      if (typeof collectionDefinition !== 'object') {
+        errors.push(
+          `collectionDefinition must be an object: ${collectionDefinition}`
+        );
+        return false;
+      }
 
       const {
         collectionValueProfile,
@@ -87,7 +109,7 @@ export function validateTieFormat({ tieFormat, checkCollectionIds = true }) {
           }
         }
         const collectionPositions = collectionValueProfile.map(
-          (collectionPosition) => collectionPosition
+          (valueProfile) => valueProfile.collectionPosition
         );
         if (collectionPositions.length !== unique(collectionPositions).length) {
           errors.push('collectionPositions are not unique');
@@ -111,10 +133,10 @@ export function validateTieFormat({ tieFormat, checkCollectionIds = true }) {
     !checkCollectionIds ||
     collectionIds.length === unique(collectionIds).length;
 
-  const validWinCriteria = typeof tieFormat.winCriteria.valueGoal === 'number';
-
   const valid = validCollections && validWinCriteria && uniqueCollectionIds;
-  return valid ? { valid: true } : { error: INVALID_TIE_FORMAT };
+  const result = { valid, errors };
+  if (!valid) result.error = INVALID_TIE_FORMAT;
+  return result;
 }
 
 // add collectionIds if missing

@@ -1,7 +1,6 @@
 ---
-title: Mocks Engine API
-menu: Mocks Engine
-route: /mocksEngine/api
+name: Mocks Engine API
+title: API
 ---
 
 ## generateOutcome

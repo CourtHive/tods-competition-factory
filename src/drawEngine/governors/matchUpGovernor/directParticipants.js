@@ -45,17 +45,17 @@ export function directParticipants(params) {
   const removeScore = [WALKOVER].includes(matchUpStatus);
 
   const result = modifyMatchUpScore({
+    matchUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
+    matchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
+    tournamentRecord,
     drawDefinition,
     matchUpFormat,
-    matchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
-    matchUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
-    tournamentRecord,
-    winningSide,
     removeScore,
+    winningSide,
     matchUpId,
     matchUp,
-    score,
     event,
+    score,
   });
   if (result.error) return result;
 

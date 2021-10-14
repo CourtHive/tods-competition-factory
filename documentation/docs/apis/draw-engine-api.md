@@ -1,5 +1,6 @@
 ---
-title: Draw Engine API
+name: Draw Engine API
+title: API
 ---
 
 ## addAdHocMatchUps
