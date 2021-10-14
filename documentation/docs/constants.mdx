@@ -1,0 +1,30 @@
+---
+title: Constants
+---
+
+The Competition Factory uses many constants internally and exports groupings of constants both directly and via `factoryConstants`.
+
+## Include in your project
+
+```js
+import { factoryConstants } from 'tods-competition-factory';
+// -- or --
+const { factoryConstants } = require('tods-competition-factory');
+```
+
+## Ineteractive Explorer
+
+Use this Live Editor to explore the factory constants. Edit the value of **grouping** to see exported constants.
+
+:::tip
+When the value of **grouping** is `''` or `undefined`, the list of constants groupings is displayed.
+:::
+
+```jsx live
+function ExploreConstants(props) {
+  // enter the name of a constants grouping from below, e.g. 'entryStatutsConstants'
+  const grouping = '';
+
+  return <ConstantsViewer grouping={grouping} />;
+}
+```
