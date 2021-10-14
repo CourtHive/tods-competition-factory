@@ -20,7 +20,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "0.41.3",
+  "version": "0.42.0",
   "license": "MIT",
   "private": false,
   "jest": {
@@ -93,7 +93,7 @@
     "@babel/preset-env": "7.15.8",
     "@babel/preset-typescript": "7.15.0",
     "@types/jest": "27.0.2",
-    "@types/node": "14.17.22",
+    "@types/node": "14.17.26",
     "@typescript-eslint/eslint-plugin": "5.0.0",
     "@typescript-eslint/parser": "5.0.0",
     "babel-jest": "27.2.5",

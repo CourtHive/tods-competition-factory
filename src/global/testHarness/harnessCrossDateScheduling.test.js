@@ -11,7 +11,7 @@ import fs from 'fs';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 
 const tournamentRecordJSON = fs.readFileSync(
-  './src/global/testHarness/crossDateSchedulingTournament.json',
+  './src/global/testHarness/crossDateSchedulingTournament.tods.json',
   'utf-8'
 );
 
