@@ -13,11 +13,7 @@ module.exports = {
         'concepts/accessors',
         'concepts/context',
         {
-          'Data Structures': [
-            'concepts/dataStructures',
-            'concepts/matchUpFormat',
-            'concepts/tieFormat',
-          ],
+          'Data Structures': ['concepts/matchUpFormat', 'concepts/tieFormat'],
         },
         'concepts/drawGeneration',
         'concepts/globalState',

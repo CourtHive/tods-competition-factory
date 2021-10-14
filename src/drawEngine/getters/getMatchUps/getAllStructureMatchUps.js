@@ -39,12 +39,11 @@ export function getAllStructureMatchUps({
   matchUpFilters,
   scheduleTiming,
   context = {},
+  matchUpsMap,
   roundFilter,
   structure,
   inContext,
   event,
-
-  matchUpsMap,
 }) {
   let collectionPositionMatchUps = {},
     roundMatchUps = {};

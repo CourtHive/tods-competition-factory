@@ -1,11 +1,9 @@
+import { getMatchUpDependencies } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
-import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionAssignments } from './positionsGetter';
+import { numericSort, unique } from '../../utilities';
 import { isActiveMatchUp } from './activeMatchUp';
 import { findStructure } from './findStructure';
-import { generateRange, overlap, numericSort, unique } from '../../utilities';
-
-import { CONTAINER } from '../../constants/drawDefinitionConstants';
 
 // active drawPositions occur in activeMatchUps...
 // ...which have a winningSide, a scoreString, or a completed matchUpStatus
@@ -15,15 +13,9 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   if (error) return { error };
 
   const { matchUps } = getAllStructureMatchUps({
+    inContext: true,
     drawDefinition,
     matchUpFilters,
-    structure,
-  });
-
-  const activeMatchUps = matchUps.filter(isActiveMatchUp);
-
-  const { positionAssignments } = getPositionAssignments({
-    drawDefinition,
     structure,
   });
 
@@ -34,63 +26,57 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
       .filter(Boolean)
   ).sort(numericSort);
 
+  // get a mapping of all matchUpIds to dependent matchUpIds
+  const { matchUpDependencies } = getMatchUpDependencies({
+    drawIds: [drawDefinition.drawId],
+    drawDefinition,
+    matchUps,
+  });
+
+  // determine which matchUps are active
+  const activeMatchUps = matchUps.filter(isActiveMatchUp);
+
+  // create an array of all matchUpIds active because they are dependent
+  const activeDependentMatchUpIds = unique(
+    activeMatchUps
+      .map((matchUp) =>
+        [].concat(
+          ...(matchUpDependencies[matchUp.matchUpId]?.matchUpIds || []),
+          matchUp.matchUpId
+        )
+      )
+      .flat()
+  );
+
+  const activeDrawPositions = unique(
+    matchUps
+      .map(({ matchUpId, drawPositions }) =>
+        activeDependentMatchUpIds.includes(matchUpId) ? drawPositions : []
+      )
+      .flat()
+      .filter(Boolean)
+  ).sort(numericSort);
+
+  const { positionAssignments } = getPositionAssignments({
+    drawDefinition,
+    structure,
+  });
+
   // determine which positions are BYEs
   const byeDrawPositions = positionAssignments
     .filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
 
-  const drawPositionsInActiveMatchUps = unique(
-    []
-      .concat(...activeMatchUps.map((matchUp) => matchUp.drawPositions || []))
-      .filter(Boolean)
-      .sort(numericSort)
+  const inactiveDrawPositions = drawPositions.filter(
+    (drawPosition) => !activeDrawPositions.includes(drawPosition)
   );
 
-  if (structure.structureType === CONTAINER) {
-    // BYEs are never considered ACTIVE in a Round Robin group
-    const inactiveDrawPositions = drawPositions.filter(
-      (drawPosition) => !drawPositionsInActiveMatchUps.includes(drawPosition)
-    );
-
-    return {
-      activeDrawPositions: drawPositionsInActiveMatchUps,
-      inactiveDrawPositions,
-      byeDrawPositions,
-      structure,
-    };
-  } else {
-    const dependentDrawPositions = [];
-    const { roundMatchUps } = getRoundMatchUps({ matchUps });
-    activeMatchUps.forEach((matchUp) => {
-      const { roundNumber, drawPositions } = matchUp;
-      dependentDrawPositions.push(...drawPositions);
-      const previousRoundNumbers = generateRange(1, roundNumber).reverse();
-      previousRoundNumbers.forEach((targetRoundNumber) => {
-        roundMatchUps[targetRoundNumber].forEach((targetRoundMatchUp) => {
-          if (
-            overlap(dependentDrawPositions, targetRoundMatchUp.drawPositions)
-          ) {
-            dependentDrawPositions.push(...targetRoundMatchUp.drawPositions);
-          }
-        });
-      });
-    });
-
-    const activeDrawPositions = unique(dependentDrawPositions).sort(
-      numericSort
-    );
-
-    const inactiveDrawPositions = drawPositions.filter(
-      (drawPosition) => !activeDrawPositions.includes(drawPosition)
-    );
-
-    return {
-      allDrawPositions: drawPositions,
-      positionAssignments,
-      activeDrawPositions,
-      inactiveDrawPositions,
-      byeDrawPositions,
-      structure,
-    };
-  }
+  return {
+    allDrawPositions: drawPositions,
+    inactiveDrawPositions,
+    positionAssignments,
+    activeDrawPositions,
+    byeDrawPositions,
+    structure,
+  };
 }

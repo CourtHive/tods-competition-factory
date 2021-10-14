@@ -38,9 +38,9 @@ export function getValidAssignmentActions({
 
   if (!ignoreSeedPositions) {
     const result = getNextSeedBlock({
+      randomize: true,
       drawDefinition,
       structureId,
-      randomize: true,
     });
     ({
       unplacedSeedParticipantIds,

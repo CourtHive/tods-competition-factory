@@ -90,16 +90,16 @@ export function removeAssignment({
 }
 
 export function replaceWithBye({
-  drawId,
-  structureId,
-  drawPosition,
   policyDefinitions,
+  drawPosition,
+  structureId,
+  drawId,
 }) {
   const { validActions } = tournamentEngine.positionActions({
-    drawId,
-    structureId,
-    drawPosition,
     policyDefinitions,
+    drawPosition,
+    structureId,
+    drawId,
   });
   const { method, payload } = validActions.find(({ type }) => type === BYE);
   const result = tournamentEngine[method](payload);
@@ -108,16 +108,16 @@ export function replaceWithBye({
 }
 
 export function replaceWithAlternate({
-  drawId,
-  structureId,
-  drawPosition,
   policyDefinitions,
+  drawPosition,
+  structureId,
+  drawId,
 }) {
   const { validActions } = tournamentEngine.positionActions({
-    drawId,
-    structureId,
-    drawPosition,
     policyDefinitions,
+    drawPosition,
+    structureId,
+    drawId,
   });
   let result = validActions.find(({ type }) => type === ALTERNATE);
   const { method, payload, availableAlternatesParticipantIds } = result;

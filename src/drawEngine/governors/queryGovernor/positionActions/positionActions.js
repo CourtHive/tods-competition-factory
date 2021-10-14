@@ -81,7 +81,11 @@ export function positionActions({
     inactiveDrawPositions,
     structure,
     error,
-  } = structureActiveDrawPositions({ drawDefinition, structureId });
+  } = structureActiveDrawPositions({
+    tournamentRecord,
+    drawDefinition,
+    structureId,
+  });
 
   if (error) return { error };
 
