@@ -1,3 +1,4 @@
+import { addParticipantGroupings } from '../../../drawEngine/governors/positionGovernor/avoidance/addParticipantGroupings';
 import { getEventTimeItem } from '../queryGovernor/timeItems';
 import { getTournamentInfo } from './getTournamentInfo';
 import { makeDeepCopy } from '../../../utilities';
@@ -17,8 +18,10 @@ export function getEventData({ tournamentRecord, event, policyDefinitions }) {
   if (!event) return { error: MISSING_EVENT };
 
   const { eventId } = event;
-  const { tournamentId, endDate } = tournamentRecord;
-  const tournamentParticipants = tournamentRecord?.participants || [];
+  const { tournamentId, endDate, participants } = tournamentRecord;
+
+  const tournamentParticipants = addParticipantGroupings({ participants });
+
   const drawDefinitions = event.drawDefinitions || [];
   const drawsData = drawDefinitions.map((drawDefinition) =>
     (({ drawInfo, structures }) => ({
