@@ -20,8 +20,10 @@ import { requestConstants } from './requestConstants';
 import { resultConstants } from './resultConstants';
 import { scaleConstants } from './scaleConstants';
 import { scheduleConstants } from './scheduleConstants';
+import { surfaceConstants } from './surfaceConstants';
 import { timeItemConstants } from './timeItemConstants';
 import { topicConstants } from './topicConstants';
+import { venueConstants } from './venueConstants';
 
 export const factoryConstants = {
   auditConstants,
@@ -46,8 +48,10 @@ export const factoryConstants = {
   resultConstants,
   scaleConstants,
   scheduleConstants,
+  surfaceConstants,
   timeItemConstants,
   topicConstants,
+  venueConstants,
 };
 
 export default factoryConstants;

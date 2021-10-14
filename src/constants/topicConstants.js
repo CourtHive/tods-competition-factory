@@ -14,7 +14,7 @@ export const MODIFY_VENUE = 'modifyVenue';
 export const PUBLISH_EVENT = 'publishEvent';
 export const UNPUBLISH_EVENT = 'unPublishEvent';
 
-export const topicConstants = [
+export const topicConstants = {
   ADD_DRAW_DEFINITION,
   ADD_MATCHUPS,
   ADD_PARTICIPANTS,
@@ -29,4 +29,4 @@ export const topicConstants = [
   MODIFY_PARTICIPANTS,
   MODIFY_VENUE,
   PUBLISH_EVENT,
-];
+};
