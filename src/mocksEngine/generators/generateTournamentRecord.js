@@ -1,4 +1,5 @@
 import { scheduleProfileRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
+import { generateTeamsFromParticipantAttribute } from '../../tournamentEngine/generators/teamsGenerator';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { attachPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { newTournamentRecord } from '../../tournamentEngine/generators/newTournamentRecord';
@@ -208,11 +209,12 @@ export function generateTournamentRecord({
     participantsCount = specifiedParicipantsCount;
 
   const {
-    valuesInstanceLimit,
     nationalityCodesCount,
     nationalityCodeType,
+    valuesInstanceLimit,
     nationalityCodes,
     personExtensions,
+    teamAttribute,
     addressProps,
     personData,
     personIds,
@@ -241,6 +243,14 @@ export function generateTournamentRecord({
 
   let result = addParticipants({ tournamentRecord, participants });
   if (!result.success) return result;
+
+  if (teamAttribute) {
+    const result = generateTeamsFromParticipantAttribute({
+      tournamentRecord,
+      ...teamAttribute,
+    });
+    if (result.error) return result;
+  }
 
   // generate Team participants
   const allIndividualParticipantIds = participants

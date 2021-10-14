@@ -88,7 +88,15 @@ tournamentEngine.addParticipants({ participants });
 
 ## generateTournamentRecord
 
-Generate a complete tournamentRecord from the following attributes
+Generate a complete tournamentRecord from the following attributes.
+
+:::note
+An additional attribute, `teamAttribute` is available for `participantsProfile`.
+
+**TEAM** participants will be generated from the values of the specified attribute on **INDIVIDUAL** participants.
+
+See `tournamentEngine.generateTeamsFromParticipantAttribute()` for more information.
+:::
 
 ```js
 // Optional values
