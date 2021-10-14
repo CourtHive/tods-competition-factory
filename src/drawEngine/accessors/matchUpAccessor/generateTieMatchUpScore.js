@@ -105,10 +105,8 @@ function getCollectionPositionValue({
 }) {
   const collectionValueProfile =
     collectionDefinition.collectionValueProfile || [];
-  const matchUpValue = collectionValueProfile.reduce((value, profile) => {
-    return profile.collectionPosition === collectionPosition
-      ? profile.matchUpValue
-      : value;
-  }, 0);
-  return matchUpValue;
+  const profile = collectionValueProfile.find(
+    (profile) => profile.collectionPosition === collectionPosition
+  );
+  return profile?.matchUpValue;
 }

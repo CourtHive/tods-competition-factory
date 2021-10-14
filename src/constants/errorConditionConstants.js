@@ -63,6 +63,7 @@ export const UNRECOGNIZED_MATCHUP_STATUS = 'Unrecognized matchUpStatus';
 export const UNRECOGNIZED_MATCHUP_FORMAT = 'Unrecognized matchUpFormat';
 export const INCOMPATIBLE_MATCHUP_STATUS = 'Incompatible matchUpStatus';
 export const INVALID_MATCHUP_STATUS = 'Invalid matchUpStatus';
+export const INVALID_TIE_FORMAT = 'Invalid tieFormat';
 export const INVALID_MATCHUP_FORMAT = 'Invalid matchUpFormat';
 export const MISSING_MATCHUP_FORMAT = 'Missing matchUpFormat';
 export const MISSING_COLLECTION_DEFINITION = 'Missing collectionDefinition';
@@ -258,6 +259,7 @@ export const errorConditionConstants = {
   INVALID_START_TIME,
   INVALID_STRUCTURE,
   INVALID_STOP_TIME,
+  INVALID_TIE_FORMAT,
   INVALID_TIME,
   INVALID_TIME_ITEM,
   INVALID_TOURNAMENT_DATES,

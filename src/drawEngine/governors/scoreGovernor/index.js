@@ -1,19 +1,21 @@
-import { analyzeSet } from './analyzeSet';
-import { analyzeMatchUp } from './analyzeMatchUp';
 import { tallyParticipantResults } from './roundRobinTally/roundRobinTally';
+import { getSetComplement, getTiebreakComplement } from './getComplement';
+import { validateTieFormat } from '../matchUpGovernor/tieFormatUtilities';
 import { keyValueScore, checkSetIsComplete } from './keyValueScore';
 import { generateScoreString } from './generateScoreString';
-import { getSetComplement, getTiebreakComplement } from './getComplement';
+import { analyzeMatchUp } from './analyzeMatchUp';
+import { analyzeSet } from './analyzeSet';
 
 export const scoreGovernor = {
-  analyzeSet,
-  keyValueScore,
-  analyzeMatchUp,
-  getSetComplement,
-  checkSetIsComplete,
-  generateScoreString,
-  getTiebreakComplement,
   tallyParticipantResults,
+  getTiebreakComplement,
+  generateScoreString,
+  checkSetIsComplete,
+  validateTieFormat,
+  getSetComplement,
+  analyzeMatchUp,
+  keyValueScore,
+  analyzeSet,
 };
 
 export default scoreGovernor;
