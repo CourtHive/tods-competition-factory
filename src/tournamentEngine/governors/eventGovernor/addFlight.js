@@ -11,9 +11,21 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
+/**
+ *
+ * @param {number} qualifyingPositions - optional - number of positions in draw to be reserved for qualifiers
+ * @param {object[]} drawEntries - [{ entryPosition, entryStatus, participantId }]
+ * @param {number} matchUpValue - point value of each matchUp (for team scoring)
+ * @param {number} drawName - name to be applied to draw generated from profile
+ * @param {string} drawId - optional - will be generated if not supplied
+ * @param {object} event - event to which fligh is being added
+ * @param {string} stage - stage of the draw that will be generated from profile
+ * @returns
+ */
 export function addFlight({
   qualifyingPositions,
   drawEntries = [],
+  matchUpValue,
   drawName,
   drawId,
   event,
@@ -46,10 +58,11 @@ export function addFlight({
   const flightNumber = Math.max(0, ...flightNumbers) + 1;
 
   const flight = {
-    drawName,
-    drawEntries,
-    flightNumber,
     drawId: drawId || UUID(),
+    flightNumber,
+    matchUpValue,
+    drawEntries,
+    drawName,
   };
 
   if (stage) flight.stage = stage;
