@@ -2048,6 +2048,8 @@ tournamentEngine.modifyParticipantsSignInStatus({
 
 Change the display representation of a seedNumber for a specified `participantId`. This method is included in `validActions` for [positionActions](../policies/positionActions).
 
+The rationale for `seedValue` is to be able to, for instance, represent the fifth through the eighth seed as `5-8`, or simply as `5`. When there are no restrictions on seed positioning `seedValue` allows assigning seeding to arbitrary `participants`.
+
 ```js
 tournamentEngine.modifySeedAssignment({
   drawId,
