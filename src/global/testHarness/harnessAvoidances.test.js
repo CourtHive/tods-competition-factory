@@ -3,7 +3,7 @@ import { timeKeeper } from '../globalState';
 import fs from 'fs';
 
 const tournamentRecordJSON = fs.readFileSync(
-  './src/global/testHarness/avoidancesTournament.json',
+  './src/global/testHarness/avoidancesTournament.tods.json',
   'utf-8'
 );
 
