@@ -4,7 +4,6 @@ import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { getDevContext } from '../../../global/globalState';
 import { findStructure } from '../../getters/findStructure';
 import { isActiveDownstream } from './isActiveDownstream';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
@@ -51,12 +50,12 @@ export function setMatchUpStatus(params) {
   // matchUpStatus in params is the new status
   // winningSide in params is new winningSide
   const {
-    drawDefinition,
-    matchUpId,
-    matchUpStatus,
-    tournamentRecord,
-    winningSide,
     allowChangePropagation = undefined, // factory default
+    tournamentRecord,
+    drawDefinition,
+    matchUpStatus,
+    winningSide,
+    matchUpId,
   } = params;
 
   // Check for missing parameters ---------------------------------------------
@@ -134,9 +133,8 @@ export function setMatchUpStatus(params) {
   let dualWinningSideChange;
   if (matchUpTieId) {
     const { matchUp: dualMatchUp } = findMatchUp({
-      drawDefinition,
       matchUpId: matchUpTieId,
-
+      drawDefinition,
       matchUpsMap,
     });
     const tieFormat = dualMatchUp.tieFormat || drawDefinition.tieFormat;
@@ -150,17 +148,14 @@ export function setMatchUpStatus(params) {
 
     const existingDualMatchUpWinningSide = dualMatchUp.winningSide;
     dualWinningSideChange =
-      existingDualMatchUpWinningSide &&
       projectedWinningSide !== existingDualMatchUpWinningSide;
 
-    if (dualWinningSideChange) {
-      if (getDevContext({ tieMatchUps: true }))
-        console.log('dualMatchUp', {
-          projectedWinningSide,
-          dualWinningSideChange,
-          existingDualMatchUpWinningSide,
-        });
-    }
+    Object.assign(params, {
+      dualWinningSideChange,
+      matchUpTieId,
+      dualMatchUp,
+      tieFormat,
+    });
   }
 
   // Add scheduling information to matchUp ------------------------------------
