@@ -287,8 +287,8 @@ export function getAllStructureMatchUps({
       event,
     });
     const drawPositions = matchUp.drawPositions || tieDrawPositions;
-    const { collectionPosition, collectionId, roundNumber, roundPosition } =
-      matchUp;
+    const { collectionPosition, collectionId, roundPosition } = matchUp;
+    const roundNumber = matchUp.roundNumber || additionalContext.roundNumber;
 
     const drawPositionCollectionAssignment =
       getDrawPositionCollectionAssignment({
@@ -329,6 +329,7 @@ export function getAllStructureMatchUps({
         matchUpType,
         exitProfile,
         structureId,
+        roundNumber,
         feedRound,
         roundName,
         drawName,
@@ -448,7 +449,7 @@ export function getAllStructureMatchUps({
       matchUpWithContext.tieMatchUps = matchUpWithContext.tieMatchUps.map(
         (matchUp) => {
           const matchUpTieId = matchUpWithContext.matchUpId;
-          const additionalContext = { roundName };
+          const additionalContext = { roundName, roundNumber };
 
           return addMatchUpContext({
             tieDrawPositions: drawPositions,
