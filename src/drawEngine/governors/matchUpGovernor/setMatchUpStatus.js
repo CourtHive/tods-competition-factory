@@ -127,8 +127,8 @@ export function setMatchUpStatus(params) {
   // Get winner/loser position targets ----------------------------------------
   const targetData = positionTargets({
     matchUpId: matchUpTieId || matchUpId, // get targets for TEAM matchUp if tieMatchUp
-    drawDefinition,
     inContextDrawMatchUps,
+    drawDefinition,
   });
 
   let dualWinningSideChange;
@@ -150,6 +150,7 @@ export function setMatchUpStatus(params) {
 
     const existingDualMatchUpWinningSide = dualMatchUp.winningSide;
     dualWinningSideChange =
+      existingDualMatchUpWinningSide &&
       projectedWinningSide !== existingDualMatchUpWinningSide;
 
     if (dualWinningSideChange) {
@@ -182,14 +183,13 @@ export function setMatchUpStatus(params) {
   const { structure } = findStructure({ drawDefinition, structureId });
 
   Object.assign(params, {
-    matchUp,
+    inContextDrawMatchUps,
     inContextMatchUp,
     matchUpTieId,
-    structure,
-    targetData,
-
     matchUpsMap,
-    inContextDrawMatchUps,
+    targetData,
+    structure,
+    matchUp,
   });
 
   // with propagating winningSide changes, activeDownstream only applies to eventType: TEAM
