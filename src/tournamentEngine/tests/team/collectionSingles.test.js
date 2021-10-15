@@ -16,6 +16,17 @@ import {
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
 
+// reusable
+const getMatchUp = (id, inContext) => {
+  const {
+    matchUps: [matchUp],
+  } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpIds: [id] },
+    inContext,
+  });
+  return matchUp;
+};
+
 it('can both assign and remove individualParticipants in SINGLES matchUps that are part of team events', () => {
   const { tournamentRecord, drawId } = generateTeamTournament();
   tournamentEngine.setState(tournamentRecord);
@@ -358,13 +369,15 @@ it('can assign SINGLES particiapnts to collectionPositions and complete matchUps
     matchUpStatus: COMPLETED,
   });
 
-  singlesMatchUps.forEach(({ matchUpId, drawPositions }) => {
+  singlesMatchUps.forEach(({ matchUpId }) => {
     let result = tournamentEngine.setMatchUpStatus({
-      drawId,
       matchUpId,
       outcome,
+      drawId,
     });
-    if (drawPositions.filter(Boolean).length === 2) {
+    const updatedSinglesMatchUp = getMatchUp(matchUpId);
+    const updatedDrawPositions = updatedSinglesMatchUp.drawPositions;
+    if (updatedDrawPositions.filter(Boolean).length === 2) {
       expect(result.success).toEqual(true);
     } else {
       expect(result.error).not.toBeUndefined();
@@ -377,9 +390,9 @@ it('can assign SINGLES particiapnts to collectionPositions and complete matchUps
   expect(teamMatchUps[0].winningSide).toEqual(1);
   expect(teamMatchUps[0].score.sets[0].side1Score).toEqual(2);
 
-  // expect that all 4 first round matchUps are complete
+  // expect that all 7 team matchUps have been completed
   expect(teamMatchUps.map((m) => m.winningSide).filter(Boolean).length).toEqual(
-    4
+    7
   );
 
   ({ matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({

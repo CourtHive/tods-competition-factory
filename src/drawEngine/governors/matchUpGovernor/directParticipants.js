@@ -14,21 +14,20 @@ import {
 
 export function directParticipants(params) {
   const {
-    tournamentRecord,
-    event,
-    drawDefinition,
-    matchUpStatus,
+    inContextDrawMatchUps,
     matchUpStatusCodes,
-    structure,
-    matchUp,
-    matchUpId,
+    tournamentRecord,
+    drawDefinition,
     matchUpFormat,
+    matchUpStatus,
+    matchUpsMap,
     winningSide,
     targetData,
+    matchUpId,
+    structure,
+    matchUp,
+    event,
     score,
-
-    matchUpsMap,
-    inContextDrawMatchUps,
   } = params;
 
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
@@ -59,17 +58,22 @@ export function directParticipants(params) {
   });
   if (result.error) return result;
 
+  let drawPositions = matchUp.drawPositions;
+
   if (isCollectionMatchUp) {
     const { matchUpTieId } = params;
     updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
-    return { ...SUCCESS };
+    const matchUpTie = inContextDrawMatchUps.find(
+      ({ matchUpId }) => matchUpId === matchUpTieId
+    );
+    drawPositions = matchUpTie?.drawPositions;
   }
 
-  if (matchUp.drawPositions) {
+  if (drawPositions) {
     const winningIndex = winningSide - 1;
     const losingIndex = 1 - winningIndex;
-    const winningDrawPosition = matchUp.drawPositions[winningIndex];
-    const loserDrawPosition = matchUp.drawPositions[losingIndex];
+    const winningDrawPosition = drawPositions[winningIndex];
+    const loserDrawPosition = drawPositions[losingIndex];
 
     const {
       targetLinks: { loserTargetLink, winnerTargetLink },

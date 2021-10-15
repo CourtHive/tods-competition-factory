@@ -8,6 +8,11 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP,
 } from '../../../constants/errorConditionConstants';
+import {
+  COMPLETED,
+  IN_PROGRESS,
+  TO_BE_PLAYED,
+} from '../../../constants/matchUpStatusConstants';
 
 export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -20,6 +25,13 @@ export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
   const { winningSide, set, scoreStringSide1, scoreStringSide2 } =
     generateTieMatchUpScore({ matchUp });
 
+  const hasWinner = [1, 2].includes(winningSide);
+  const matchUpStatus = hasWinner
+    ? COMPLETED
+    : scoreStringSide1
+    ? IN_PROGRESS
+    : TO_BE_PLAYED;
+
   const scoreObject = {
     scoreStringSide1,
     scoreStringSide2,
@@ -29,6 +41,7 @@ export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
   modifyMatchUpScore({
     score: scoreObject,
     drawDefinition,
+    matchUpStatus,
     winningSide,
     matchUp,
   });

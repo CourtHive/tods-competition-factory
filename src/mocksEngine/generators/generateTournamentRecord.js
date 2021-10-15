@@ -214,7 +214,7 @@ export function generateTournamentRecord({
     valuesInstanceLimit,
     nationalityCodes,
     personExtensions,
-    teamAttribute,
+    teamKey,
     addressProps,
     personData,
     personIds,
@@ -244,10 +244,10 @@ export function generateTournamentRecord({
   let result = addParticipants({ tournamentRecord, participants });
   if (!result.success) return result;
 
-  if (teamAttribute) {
+  if (teamKey) {
     const result = generateTeamsFromParticipantAttribute({
       tournamentRecord,
-      ...teamAttribute,
+      ...teamKey,
     });
     if (result.error) return result;
   }
