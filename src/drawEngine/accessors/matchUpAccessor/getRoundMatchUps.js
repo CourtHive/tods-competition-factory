@@ -1,5 +1,7 @@
 import { chunkArray, intersection, numericSort } from '../../../utilities';
 
+import { TEAM } from '../../../constants/matchUpTypes';
+
 export function getRoundMatchUps({ matchUps = [] }) {
   // create an array of arrays of matchUps grouped by roundNumber
   const roundMatchUpsArray = matchUps
@@ -10,10 +12,20 @@ export function getRoundMatchUps({ matchUps = [] }) {
     }, [])
     .sort(numericSort)
     .map((roundNumber) => {
+      const roundMatchUps = matchUps.filter(
+        (matchUp) => matchUp.roundNumber === roundNumber
+      );
+      const hasTeamMatchUps = roundMatchUps.find(
+        ({ matchUpType }) => matchUpType === TEAM
+      );
+      // if there are TEAM matchUps then all other matchUpTypes must be removed
+      const consideredMatchUps = hasTeamMatchUps
+        ? roundMatchUps.filter(({ matchUpType }) => matchUpType === TEAM)
+        : roundMatchUps;
       return {
-        [roundNumber]: matchUps
-          .filter((matchUp) => matchUp.roundNumber === roundNumber)
-          .sort((a, b) => numericSort(a.roundPosition, b.roundPosition)),
+        [roundNumber]: consideredMatchUps.sort((a, b) =>
+          numericSort(a.roundPosition, b.roundPosition)
+        ),
       };
     });
 
