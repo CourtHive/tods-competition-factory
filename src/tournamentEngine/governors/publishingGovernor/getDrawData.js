@@ -45,10 +45,10 @@ export function getDrawData({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const drawInfo = (({ drawId, drawName, matchUpFormat, updatedAt }) => ({
-    drawId,
-    drawName,
     matchUpFormat,
     updatedAt,
+    drawName,
+    drawId,
   }))(drawDefinition);
 
   let mainStageSeedAssignments, qualificationStageSeedAssignments;
