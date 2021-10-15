@@ -22,8 +22,9 @@ const getMatchUp = (id, inContext) => {
 const scenarios = [
   { drawSize: 2, singlesCount: 1, doublesCount: 0, valueGoal: 1 },
   { drawSize: 2, singlesCount: 3, doublesCount: 0, valueGoal: 2 },
-  // { drawSize: 4, singlesCount: 3, doublesCount: 0, valueGoal: 2 },
-  // { drawSize: 8, singlesCount: 3, doublesCount: 0, valueGoal: 2 },
+  { drawSize: 4, singlesCount: 1, doublesCount: 0, valueGoal: 1 },
+  { drawSize: 4, singlesCount: 3, doublesCount: 0, valueGoal: 2 },
+  { drawSize: 8, singlesCount: 3, doublesCount: 0, valueGoal: 2 },
 ];
 
 it.each(scenarios)('can advance teamParticipants', (scenario) => {
@@ -71,7 +72,7 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
   // check that all second round matchUps have two advanced positions
   if (secondRoundDualMatchUps.length) {
     secondRoundDualMatchUps.forEach((dualMatchUp) => {
-      expect(dualMatchUp.drawPositions.length).toEqual(0);
+      expect(dualMatchUp.drawPositions.filter(Boolean).length).toEqual(0);
     });
   }
 });
