@@ -1,4 +1,3 @@
-import { setDevContext } from '../../../global/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
@@ -18,8 +17,6 @@ const getMatchUp = (id, inContext) => {
   });
   return matchUp;
 };
-
-setDevContext({ tieMatchUps: true });
 
 const scenarios = [
   { drawSize: 2, singlesCount: 1, doublesCount: 0, valueGoal: 1 },
@@ -89,7 +86,7 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
     matchUpStatus: COMPLETED,
   });
 
-  // for all first round dualMatchUps complete all singles matchUps
+  // for all first round dualMatchUps complete all singles/doubles matchUps
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
     const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
       ({ matchUpType }) => matchUpType === SINGLES
