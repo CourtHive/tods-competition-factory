@@ -31,7 +31,7 @@ const scenarios = [
 ];
 
 it.each(scenarios)('can advance teamParticipants', (scenario) => {
-  const { tournamentRecord, drawId, valueGoal } =
+  const { tournamentRecord, drawId, eventId, valueGoal } =
     generateTeamTournament(scenario);
   expect(valueGoal).toEqual(scenario.valueGoal);
 
@@ -160,6 +160,21 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
       expect(dualMatchUp.drawPositions.length).toEqual(2);
     });
   }
+
+  const { eventData } = tournamentEngine.getEventData({ eventId });
+  expect(eventData.drawsData.length).toEqual(1);
+  eventData.drawsData[0].structures[0].roundMatchUps[1].forEach((matchUp) => {
+    // expect only TEAM matchUps (SINGLES/DOUBLES matchUps are not included)
+    expect(matchUp.tieMatchUps.length).toBeGreaterThan(0);
+    expect(matchUp.matchUpType).toEqual(TEAM);
+
+    // expect that each individual participant on the team also has team information
+    matchUp.sides.forEach((side) =>
+      side.participant.individualParticipants.forEach((individualParticipant) =>
+        expect(individualParticipant.teams.length).toEqual(1)
+      )
+    );
+  });
 });
 
 function generateTeamTournament({
@@ -211,5 +226,5 @@ function generateTeamTournament({
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ eventProfiles });
 
-  return { tournamentRecord, eventId, drawId, valueGoal };
+  return { drawId, eventId, tournamentRecord, valueGoal };
 }
