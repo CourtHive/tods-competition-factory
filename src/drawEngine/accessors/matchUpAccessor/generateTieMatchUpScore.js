@@ -15,10 +15,10 @@ import {
  * @returns scoreObject: { sets, winningSide, scoreStringSide1, scoreStringSide 2 }
  */
 export function generateTieMatchUpScore({
-  matchUp,
-  tieFormat,
-  separator = '-',
   sideAdjustments = [0, 0],
+  separator = '-',
+  tieFormat,
+  matchUp,
 }) {
   if (
     !Array.isArray(sideAdjustments) ||
@@ -92,10 +92,10 @@ export function generateTieMatchUpScore({
   }
 
   return {
-    set,
-    winningSide,
     scoreStringSide1,
     scoreStringSide2,
+    winningSide,
+    set,
   };
 }
 

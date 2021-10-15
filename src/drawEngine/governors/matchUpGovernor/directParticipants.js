@@ -14,6 +14,7 @@ import {
 
 export function directParticipants(params) {
   const {
+    dualWinningSideChange,
     inContextDrawMatchUps,
     matchUpStatusCodes,
     tournamentRecord,
@@ -67,6 +68,7 @@ export function directParticipants(params) {
       ({ matchUpId }) => matchUpId === matchUpTieId
     );
     drawPositions = matchUpTie?.drawPositions;
+    if (!dualWinningSideChange) return { ...SUCCESS };
   }
 
   if (drawPositions) {

@@ -18,16 +18,18 @@ export function getProjectedDualWinningWide({
     } else {
       sideAdjustments = [0, 1];
     }
-    // !winningSide is insufficient for recognizing if a winningSide is being removed
-    // matchUpStatus is not a completed status?
   } else if (existingTieMatchUpWinningSide && !winningSide) {
-    //
+    if (existingTieMatchUpWinningSide === 1) {
+      sideAdjustments = [-1, 0];
+    } else {
+      sideAdjustments = [0, -1];
+    }
   }
 
   const { winningSide: projectedWinningSide } = generateTieMatchUpScore({
     matchUp: dualMatchUp,
-    tieFormat,
     sideAdjustments,
+    tieFormat,
   });
 
   return { projectedWinningSide };

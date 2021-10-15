@@ -15,6 +15,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function removeDirectedParticipants(params) {
   const {
+    dualWinningSideChange,
     inContextDrawMatchUps,
     drawDefinition,
     matchUpStatus,
@@ -64,6 +65,7 @@ export function removeDirectedParticipants(params) {
   if (isCollectionMatchUp) {
     const { matchUpTieId } = params;
     updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
+    if (!dualWinningSideChange) return { ...SUCCESS };
   }
 
   const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
