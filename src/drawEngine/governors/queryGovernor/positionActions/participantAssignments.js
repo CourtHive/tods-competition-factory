@@ -5,6 +5,7 @@ import { getParticipantId } from '../../../../global/functions/extractors';
 import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { unique } from '../../../../utilities';
 
+import { POLICY_TYPE_SEEDING } from '../../../../constants/policyConstants';
 import {
   ASSIGN_BYE,
   ASSIGN_BYE_METHOD,
@@ -34,7 +35,7 @@ export function getValidAssignmentActions({
     unfilledPositions = [];
 
   const ignoreSeedPositions =
-    policyDefinitions?.seeding?.validSeedPositions?.ignore;
+    policyDefinitions?.[POLICY_TYPE_SEEDING]?.validSeedPositions?.ignore;
 
   if (!ignoreSeedPositions) {
     const result = getNextSeedBlock({

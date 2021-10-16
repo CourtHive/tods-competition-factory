@@ -1,4 +1,5 @@
 import { attributeFilter, makeDeepCopy } from '../../utilities';
+import { POLICY_TYPE_PARTICIPANT } from '../../constants/policyConstants';
 
 export function findParticipant({
   tournamentParticipants = [],
@@ -12,7 +13,7 @@ export function findParticipant({
       (personId && candidate.person && candidate.person.personId === personId)
   );
 
-  const participantAttributes = policyDefinitions.participant;
+  const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
 
   if (participantAttributes?.participant) {
     const filteredParticipant = attributeFilter({

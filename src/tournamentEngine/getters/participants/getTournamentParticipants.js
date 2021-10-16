@@ -2,6 +2,7 @@ import { attributeFilter, makeDeepCopy } from '../../../utilities';
 import { addParticipantContext } from './addParticipantContext';
 import { filterParticipants } from './filterParticipants';
 
+import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { GROUP, PAIR, TEAM } from '../../../constants/participantTypes';
 import {
   INVALID_OBJECT,
@@ -98,7 +99,7 @@ export function getTournamentParticipants({
     participantIdsWithConflicts = result?.participantIdsWithConflicts;
   }
 
-  const participantAttributes = policyDefinitions?.participant;
+  const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
   if (participantAttributes?.participant) {
     tournamentParticipants = tournamentParticipants.map((participant) =>
       attributeFilter({

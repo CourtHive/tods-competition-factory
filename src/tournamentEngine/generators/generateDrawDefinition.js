@@ -216,7 +216,10 @@ export function generateDrawDefinition(params) {
       policyTypes: [POLICY_TYPE_SEEDING],
     }) || {};
 
-  if (!policyDefinitions?.seeding && !seedingPolicy?.seeding) {
+  if (
+    !policyDefinitions?.[POLICY_TYPE_SEEDING] &&
+    !seedingPolicy?.[POLICY_TYPE_SEEDING]
+  ) {
     // if there is no seeding policy then use default seeing policy
     attachPolicies({ drawDefinition, policyDefinitions: POLICY_SEEDING_USTA });
   }
@@ -232,7 +235,10 @@ export function generateDrawDefinition(params) {
       policyTypes: [POLICY_TYPE_AVOIDANCE],
     }) || {};
 
-  if (!policyDefinitions?.avoidance && eventAvoidancePolicy?.avoidance) {
+  if (
+    !policyDefinitions?.[POLICY_TYPE_AVOIDANCE] &&
+    eventAvoidancePolicy?.[POLICY_TYPE_AVOIDANCE]
+  ) {
     attachPolicies({ drawDefinition, policyDefinitions: eventAvoidancePolicy });
   }
 
