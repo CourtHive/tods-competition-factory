@@ -31,10 +31,10 @@ export function initializeStructureSeedAssignments({
     return { error: SEEDSCOUNT_GREATER_THAN_DRAW_SIZE };
 
   const { policyDefinitions } = getPolicyDefinitions({
+    policyTypes: [POLICY_TYPE_SEEDING],
     tournamentRecord,
     drawDefinition,
     event,
-    policyTypes: [POLICY_TYPE_SEEDING],
   });
 
   const { seedsCount: maxSeedsCount } = getSeedsCount({

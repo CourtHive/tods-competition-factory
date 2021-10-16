@@ -51,6 +51,8 @@ import {
   QUALIFYING,
   WIN_RATIO,
 } from '../../../../constants/drawDefinitionConstants';
+import { getPolicyDefinitions } from '../../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 
 /**
  *
@@ -62,8 +64,8 @@ import {
  *
  */
 export function positionActions({
+  policyDefinitions: specifiedPolicyDefinitions,
   tournamentParticipants = [],
-  policyDefinitions,
   tournamentRecord,
   drawDefinition,
   drawPosition,
@@ -88,6 +90,18 @@ export function positionActions({
   });
 
   if (error) return { error };
+
+  const { policyDefinitions: attachedPolicyDefinitions } = getPolicyDefinitions(
+    {
+      policyTypes: [POLICY_TYPE_POSITION_ACTIONS],
+      tournamentRecord,
+      drawDefinition,
+      event,
+    }
+  );
+
+  const policyDefinitions =
+    specifiedPolicyDefinitions || attachedPolicyDefinitions;
 
   const { enabledStructures, actionsDisabled } = getEnabledStructures({
     policyDefinitions,
