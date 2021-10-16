@@ -23,8 +23,10 @@ const scenarios = [
   { drawSize: 2, singlesCount: 0, doublesCount: 1, valueGoal: 1 },
   { drawSize: 2, singlesCount: 3, doublesCount: 0, valueGoal: 2 },
   { drawSize: 4, singlesCount: 3, doublesCount: 0, valueGoal: 2 },
+  /*
   { drawSize: 8, singlesCount: 3, doublesCount: 0, valueGoal: 2 },
   { drawSize: 8, singlesCount: 6, doublesCount: 3, valueGoal: 5 },
+  */
 ];
 
 it.each(scenarios)('can advance teamParticipants', (scenario) => {

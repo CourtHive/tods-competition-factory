@@ -1,19 +1,22 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function directWinner({
-  drawDefinition,
-  winnerTargetLink,
-  winningDrawPosition,
-  winnerMatchUp,
   winnerMatchUpDrawPositionIndex,
-
-  matchUpsMap,
   inContextDrawMatchUps,
+  projectedWinningSide,
+  winningDrawPosition,
+  winnerTargetLink,
+  drawDefinition,
+  winnerMatchUp,
+  dualMatchUp,
+  matchUpsMap,
 }) {
-  let error;
-
   if (winnerTargetLink) {
     const targetMatchUpDrawPositions = winnerMatchUp.drawPositions || [];
     const targetMatchUpDrawPosition =
@@ -22,8 +25,8 @@ export function directWinner({
     const sourceStructureId = winnerTargetLink.source.structureId;
     const { positionAssignments: sourcePositionAssignments } =
       structureAssignedDrawPositions({
-        drawDefinition,
         structureId: sourceStructureId,
+        drawDefinition,
       });
 
     const relevantSourceAssignment = sourcePositionAssignments.find(
@@ -34,8 +37,8 @@ export function directWinner({
     const targetStructureId = winnerTargetLink.target.structureId;
     const { positionAssignments: targetPositionAssignments } =
       structureAssignedDrawPositions({
-        drawDefinition,
         structureId: targetStructureId,
+        drawDefinition,
       });
 
     const relevantAssignment = targetPositionAssignments.find(
@@ -61,46 +64,86 @@ export function directWinner({
       targetDrawPositionIsUnfilled
     ) {
       assignDrawPosition({
-        drawDefinition,
-        structureId: targetStructureId,
-        participantId: winnerParticipantId,
         drawPosition: targetMatchUpDrawPosition,
-        matchUpsMap,
+        participantId: winnerParticipantId,
+        structureId: targetStructureId,
         inContextDrawMatchUps,
+        drawDefinition,
+        matchUpsMap,
       });
     } else if (unfilledTargetMatchUpDrawPositions.length) {
       const drawPosition = unfilledTargetMatchUpDrawPositions.pop();
       assignDrawPosition({
-        drawDefinition,
-        structureId: targetStructureId,
         participantId: winnerParticipantId,
+        structureId: targetStructureId,
+        inContextDrawMatchUps,
+        drawDefinition,
         drawPosition,
         matchUpsMap,
-        inContextDrawMatchUps,
       });
     } else if (winnerExistingDrawPosition) {
-      ({ error } = assignMatchUpDrawPosition({
-        drawDefinition,
-        matchUpId: winnerMatchUp.matchUpId,
+      const result = assignMatchUpDrawPosition({
         drawPosition: winnerExistingDrawPosition,
-
-        matchUpsMap,
+        matchUpId: winnerMatchUp.matchUpId,
         inContextDrawMatchUps,
-      }));
+        drawDefinition,
+        matchUpsMap,
+      });
+      if (result.error) return result;
     } else {
-      error = 'winner target position unavaiallble';
+      const error = 'winner target position unavaiallble';
       console.log(error);
+      return { error };
     }
   } else {
-    ({ error } = assignMatchUpDrawPosition({
-      drawDefinition,
+    const result = assignMatchUpDrawPosition({
       matchUpId: winnerMatchUp.matchUpId,
       drawPosition: winningDrawPosition,
-
-      matchUpsMap,
       inContextDrawMatchUps,
-    }));
+      drawDefinition,
+      matchUpsMap,
+    });
+    if (result.error) return result;
   }
 
-  return { error };
+  if (dualMatchUp && projectedWinningSide) {
+    // propagate lineUp
+    const side = dualMatchUp.sides?.find(
+      (side) => side.sideNumber === projectedWinningSide
+    );
+    if (side?.lineUp) {
+      const source = dualMatchUp.roundPosition;
+      const target = winnerMatchUp.roundPosition;
+      const targetSideNumber =
+        (source === target && source !== 1) || Math.floor(source / 2) === target
+          ? 2
+          : 1;
+
+      const { matchUp: targetMatchUp } = findMatchUp({
+        matchUpId: winnerMatchUp.matchUpId,
+        drawDefinition,
+        matchUpsMap,
+      });
+
+      const updatedSides = [1, 2].map((sideNumber) => {
+        const existingSide =
+          targetMatchUp.sides?.find((side) => side.sideNumber === sideNumber) ||
+          {};
+        return { ...existingSide, sideNumber };
+      });
+
+      targetMatchUp.sides = updatedSides;
+      const targetSide = targetMatchUp.sides.find(
+        (side) => side.sideNumber === targetSideNumber
+      );
+
+      // attach to appropriate side of winnerMatchUp
+      if (targetSide) {
+        targetSide.lineUp = side.lineUp;
+        modifyMatchUpNotice({ drawDefinition, matchUp: targetMatchUp });
+      }
+    }
+  }
+
+  return { ...SUCCESS };
 }

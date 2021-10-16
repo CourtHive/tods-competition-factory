@@ -2,6 +2,7 @@ import { matchUpFormatTimes } from '../../../../tournamentEngine/governors/sched
 import { getScheduleTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { competitionScheduleMatchUps } from '../../../getters/matchUpsGetter';
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
+import { getMatchUpId } from '../../../../global/functions/extractors';
 import { getScheduleTimes } from '../garman/getScheduleTimes';
 import {
   addMinutesToTimeString,
@@ -179,9 +180,7 @@ export function calculateScheduleTimes({
       ? venues[0].venueId
       : undefined;
 
-  const dateScheduledMatchUpIds = relevantMatchUps.map(
-    ({ matchUpId }) => matchUpId
-  );
+  const dateScheduledMatchUpIds = relevantMatchUps.map(getMatchUpId);
 
   return { venueId, scheduleTimes, dateScheduledMatchUpIds };
 }

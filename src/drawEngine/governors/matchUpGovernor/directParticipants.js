@@ -15,12 +15,14 @@ import {
 export function directParticipants(params) {
   const {
     dualWinningSideChange,
+    projectedWinningSide,
     inContextDrawMatchUps,
     matchUpStatusCodes,
     tournamentRecord,
     drawDefinition,
     matchUpFormat,
     matchUpStatus,
+    dualMatchUp,
     matchUpsMap,
     winningSide,
     targetData,
@@ -77,43 +79,46 @@ export function directParticipants(params) {
   if (drawPositions) {
     const winningIndex = winningSide - 1;
     const losingIndex = 1 - winningIndex;
+
     const winningDrawPosition = drawPositions[winningIndex];
     const loserDrawPosition = drawPositions[losingIndex];
 
     const {
       targetLinks: { loserTargetLink, winnerTargetLink },
       targetMatchUps: {
-        loserMatchUp,
-        winnerMatchUp,
-        loserMatchUpDrawPositionIndex,
         winnerMatchUpDrawPositionIndex,
+        loserMatchUpDrawPositionIndex,
+        winnerMatchUp,
+        loserMatchUp,
       },
     } = targetData;
 
     if (winnerMatchUp) {
       const result = directWinner({
-        drawDefinition,
-        winnerTargetLink,
-        winningDrawPosition,
-        winnerMatchUp,
         winnerMatchUpDrawPositionIndex,
-
-        matchUpsMap,
         inContextDrawMatchUps,
+        projectedWinningSide,
+        winningDrawPosition,
+        winnerTargetLink,
+        drawDefinition,
+        winnerMatchUp,
+        dualMatchUp,
+        matchUpsMap,
       });
       if (result.error) return result;
     }
     if (loserMatchUp) {
       const result = directLoser({
-        drawDefinition,
-        loserTargetLink,
-        loserDrawPosition,
-        loserMatchUp,
         loserMatchUpDrawPositionIndex,
-        matchUpStatus,
-
-        matchUpsMap,
         inContextDrawMatchUps,
+        projectedWinningSide,
+        loserDrawPosition,
+        loserTargetLink,
+        drawDefinition,
+        matchUpStatus,
+        loserMatchUp,
+        winningSide,
+        matchUpsMap,
       });
       if (result.error) return result;
     }

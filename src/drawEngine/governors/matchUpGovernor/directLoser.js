@@ -1,28 +1,31 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import { numericSort } from '../../../utilities';
 
+import { INVALID_DRAW_POSITION } from '../../../constants/errorConditionConstants';
+import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { INVALID_DRAW_POSITION } from '../../../constants/errorConditionConstants';
 
 /*
   FIRST_MATCH_LOSER_CONSOLATION linkCondition... check whether it is a participant's first 
 */
 export function directLoser(params) {
   const {
-    loserMatchUp,
-    drawDefinition,
-    loserTargetLink,
-    loserDrawPosition,
     loserMatchUpDrawPositionIndex,
-
-    matchUpsMap,
     inContextDrawMatchUps,
+    projectedWinningSide,
+    loserDrawPosition,
+    loserTargetLink,
+    drawDefinition,
+    loserMatchUp,
+    dualMatchUp,
+    matchUpsMap,
   } = params;
 
   const loserLinkCondition = loserTargetLink.linkCondition;
@@ -125,25 +128,65 @@ export function directLoser(params) {
     loserTargetLink.target.roundNumber === 1 && targetDrawPositionIsUnfilled;
 
   if (fedDrawPositionFMLC) {
-    return loserLinkFedFMLC();
+    const result = loserLinkFedFMLC();
+    if (result.error) return result;
   } else if (isFirstRoundValidDrawPosition) {
-    return asssignLoserDrawPosition();
+    const result = asssignLoserDrawPosition();
+    if (result.error) return result;
   } else if (isFeedRound) {
     // if target.roundNumber > 1 then it is a feed round and should always take the lower drawPosition
     const fedDrawPosition =
       unfilledTargetMatchUpDrawPositions.sort(numericSort)[0];
-    return assignDrawPosition({
-      drawDefinition,
-      structureId: targetStructureId,
+    const result = assignDrawPosition({
       participantId: loserParticipantId,
+      structureId: targetStructureId,
       drawPosition: fedDrawPosition,
       automaticPlacement: true,
-      matchUpsMap,
       inContextDrawMatchUps,
+      drawDefinition,
+      matchUpsMap,
     });
+    if (result.error) return result;
   } else {
     return { error: INVALID_DRAW_POSITION };
   }
+
+  if (dualMatchUp && projectedWinningSide) {
+    // propagated lineUp
+    const side = dualMatchUp.sides?.find(
+      (side) => side.sideNumber === 3 - projectedWinningSide
+    );
+    if (side?.lineUp) {
+      const { roundNumber, roundPosition } = loserMatchUp;
+      // for matchUps fed to different structures, sideNumber is always 1 when roundNumber > 1 (fed position)
+      // when roundNumber === 1 then it is even/odd calculated as 2 minus the remainder of roundPositon % 2
+      const targetSideNumber = roundNumber === 1 ? 2 - (roundPosition % 2) : 1;
+
+      const { matchUp: targetMatchUp } = findMatchUp({
+        matchUpId: loserMatchUp.matchUpId,
+        drawDefinition,
+        matchUpsMap,
+      });
+      const updatedSides = [1, 2].map((sideNumber) => {
+        const existingSide =
+          targetMatchUp.sides?.find((side) => side.sideNumber === sideNumber) ||
+          {};
+        return { ...existingSide, sideNumber };
+      });
+
+      targetMatchUp.sides = updatedSides;
+      const targetSide = targetMatchUp.sides.find(
+        (side) => side.sideNumber === targetSideNumber
+      );
+
+      // attach to appropriate side of winnerMatchUp
+      if (targetSide) {
+        targetSide.lineUp = side.lineUp;
+        modifyMatchUpNotice({ drawDefinition, matchUp: targetMatchUp });
+      }
+    }
+  }
+  return { ...SUCCESS };
 
   function loserLinkFedFMLC() {
     if (validForConsolation) {

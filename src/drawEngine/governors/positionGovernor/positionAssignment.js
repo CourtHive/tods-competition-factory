@@ -28,14 +28,13 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function assignDrawPosition({
-  drawDefinition,
-  structureId,
-  drawPosition,
-  participantId,
-  automaticPlacement, // internal use to override public behaviors
-
-  matchUpsMap,
   inContextDrawMatchUps,
+  automaticPlacement, // internal use to override public behaviors
+  drawDefinition,
+  participantId,
+  drawPosition,
+  matchUpsMap,
+  structureId,
 }) {
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
 
