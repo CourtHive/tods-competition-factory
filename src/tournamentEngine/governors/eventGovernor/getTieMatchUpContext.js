@@ -35,6 +35,7 @@ export function getTieMatchUpContext({
     drawDefinition,
     matchUpsMap,
   });
+
   if (!tieMatchUp) return { error: MATCHUP_NOT_FOUND };
 
   const {

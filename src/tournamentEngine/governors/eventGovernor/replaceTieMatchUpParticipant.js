@@ -37,45 +37,46 @@ export function replaceTieMatchUpParticipantId(params) {
   );
 
   let newParticipantIdInLineUp;
-  const modifiedLineUp = dualMatchUpSide.lineUp.map((teamCompetitor) => {
-    if (
-      ![existingParticipantId, newParticipantId].includes(
-        teamCompetitor.participantId
-      )
-    ) {
-      return teamCompetitor;
-    }
+  const modifiedLineUp =
+    dualMatchUpSide.lineUp?.map((teamCompetitor) => {
+      if (
+        ![existingParticipantId, newParticipantId].includes(
+          teamCompetitor.participantId
+        )
+      ) {
+        return teamCompetitor;
+      }
 
-    if (
-      [existingParticipantId, newParticipantId].includes(
-        teamCompetitor.participantId
-      )
-    ) {
-      const collectionAssignments =
-        teamCompetitor.collectionAssignments?.filter(
-          (assignment) =>
-            !(
-              assignment.collectionId === collectionId &&
-              assignment.collectionPosition === collectionPosition
-            )
-        );
-      return {
-        participantId: teamCompetitor.participantId,
-        collectionAssignments,
-      };
-    }
+      if (
+        [existingParticipantId, newParticipantId].includes(
+          teamCompetitor.participantId
+        )
+      ) {
+        const collectionAssignments =
+          teamCompetitor.collectionAssignments?.filter(
+            (assignment) =>
+              !(
+                assignment.collectionId === collectionId &&
+                assignment.collectionPosition === collectionPosition
+              )
+          );
+        return {
+          participantId: teamCompetitor.participantId,
+          collectionAssignments,
+        };
+      }
 
-    if (teamCompetitor.participantId === newParticipantId) {
-      newParticipantIdInLineUp = true;
-      if (!teamCompetitor.collectionAssignments)
-        teamCompetitor.collectionAssignments = [];
-      teamCompetitor.collectionAssignments.push({
-        collectionId,
-        collectionPosition,
-      });
-      return teamCompetitor;
-    }
-  });
+      if (teamCompetitor.participantId === newParticipantId) {
+        newParticipantIdInLineUp = true;
+        if (!teamCompetitor.collectionAssignments)
+          teamCompetitor.collectionAssignments = [];
+        teamCompetitor.collectionAssignments.push({
+          collectionId,
+          collectionPosition,
+        });
+        return teamCompetitor;
+      }
+    }) || [];
 
   if (!newParticipantIdInLineUp) {
     modifiedLineUp.push({
