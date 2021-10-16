@@ -57,7 +57,11 @@ export function attachPolicies({
     : { ...SUCCESS, applied };
 }
 
-export function attachEventPolicies({ policyDefinitions, event }) {
+export function attachEventPolicies({
+  policyDefinitions,
+  allowReplacement,
+  event,
+}) {
   if (!event) {
     return { error: MISSING_EVENT };
   }
@@ -70,8 +74,10 @@ export function attachEventPolicies({ policyDefinitions, event }) {
   const { appliedPolicies } = getEventAppliedPolicies({ event });
 
   Object.keys(policyDefinitions).forEach((policyType) => {
-    appliedPolicies[policyType] = policyDefinitions[policyType];
-    policiesApplied++;
+    if (!appliedPolicies[policyType] || allowReplacement) {
+      appliedPolicies[policyType] = policyDefinitions[policyType];
+      policiesApplied++;
+    }
   });
 
   if (policiesApplied) {

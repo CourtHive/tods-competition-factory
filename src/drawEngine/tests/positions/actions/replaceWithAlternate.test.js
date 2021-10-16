@@ -1,9 +1,11 @@
-import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine/sync';
+import mocksEngine from '../../../../mocksEngine';
 
 import { ALTERNATE_PARTICIPANT } from '../../../../constants/positionActionConstants';
-import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
+import { APPLIED_POLICIES } from '../../../../constants/extensionConstants';
 
 it('can recognize valid ALTERNATES', () => {
   // Create mock tournament record
@@ -45,9 +47,9 @@ it('can recognize valid ALTERNATES', () => {
   expect(targetMatchUp.drawPositions.includes(drawPosition)).toEqual(true);
 
   let result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
@@ -86,4 +88,83 @@ it('can recognize valid ALTERNATES', () => {
   );
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.drawPositions.includes(drawPosition)).toEqual(true);
+});
+
+it('can extend Alternates to DIRECT_ACCEPTANCE participants in other flights', () => {
+  const policyDefinitions = {
+    [POLICY_TYPE_POSITION_ACTIONS]: {
+      otherFlightEntries: true,
+      enabledStructures: [],
+    },
+  };
+
+  const secondDrawSize = 8;
+  const eventProfiles = [
+    {
+      drawProfiles: [
+        {
+          drawSize: 4,
+          uniqueParticipants: true,
+        },
+        { drawSize: secondDrawSize, generate: false },
+      ],
+      policyDefinitions,
+    },
+  ];
+
+  const {
+    drawIds: [drawId],
+    eventIds: [eventId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({ eventProfiles });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let {
+    drawDefinition: {
+      structures: [{ structureId }],
+    },
+    event,
+  } = tournamentEngine.getEvent({ drawId });
+
+  const attachedPolicy = event.extensions.find(
+    ({ name }) => name === APPLIED_POLICIES
+  );
+  expect(
+    attachedPolicy.value[POLICY_TYPE_POSITION_ACTIONS]
+  ).not.toBeUndefined();
+
+  let result = tournamentEngine.positionActions({
+    drawPosition: 1,
+    structureId,
+    drawId,
+  });
+
+  let alternateAction = result.validActions.find(
+    ({ type }) => type === ALTERNATE_PARTICIPANT
+  );
+  expect(alternateAction).not.toBeUndefined();
+  expect(alternateAction.availableAlternatesParticipantIds.length).toEqual(
+    secondDrawSize
+  );
+  alternateAction.availableAlternates.forEach((alternate) =>
+    expect(alternate.entryPosition).toBeUndefined()
+  );
+
+  result = tournamentEngine.removeEventPolicy({
+    policyType: POLICY_TYPE_POSITION_ACTIONS,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.positionActions({
+    drawPosition: 1,
+    structureId,
+    drawId,
+  });
+
+  alternateAction = result.validActions.find(
+    ({ type }) => type === ALTERNATE_PARTICIPANT
+  );
+  expect(alternateAction).toBeUndefined();
 });

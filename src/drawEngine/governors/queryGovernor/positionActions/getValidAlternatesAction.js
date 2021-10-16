@@ -8,6 +8,7 @@ import {
   ALTERNATE_PARTICIPANT,
   ALTERNATE_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
+import { getFlightProfile } from '../../../../tournamentEngine/getters/getFlightProfile';
 
 export function getValidAlternatesAction({
   tournamentParticipants = [],
@@ -23,13 +24,19 @@ export function getValidAlternatesAction({
   event,
 }) {
   if (activeDrawPositions.includes(drawPosition)) return {};
-  const expandedFlightAlternates =
-    policyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS]?.expandedFlightAlternates;
+
+  const otherFlightEntries =
+    policyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS]?.otherFlightEntries;
+
+  const drawEnteredParticpantIds = (drawDefinition.entries || [])
+    .map(({ participantId }) => participantId)
+    .filter(Boolean);
 
   const assignedParticipantIds = positionAssignments
     .map((assignment) => assignment.participantId)
     .filter(Boolean);
   const eventEntries = event.entries || [];
+
   const availableAlternatesParticipantIds = eventEntries
     .filter(
       (entry) =>
@@ -37,11 +44,31 @@ export function getValidAlternatesAction({
         eligibleEntryStage({ structure, entry }) &&
         !assignedParticipantIds.includes(entry.participantId)
     )
-    .sort((a, b) => (a.entryPosition || 0) - (b.entryPosition || 0))
+    .sort((a, b) => (a.entryPosition || 9999) - (b.entryPosition || 9999))
     .map((entry) => entry.participantId);
 
-  if (expandedFlightAlternates) {
-    // include direct acceptance participants from other flights
+  if (otherFlightEntries) {
+    const { flightProfile } = getFlightProfile({ event });
+    const otherFlightEnteredParticipantIds = flightProfile?.flights
+      ?.filter((flight) => flight.drawId !== drawId)
+      .map((flight) =>
+        flight.drawEntries
+          .filter(
+            (entry) =>
+              entry.participantId &&
+              !drawEnteredParticpantIds.includes(entry.participantId)
+          )
+          .map(({ participantId }) => participantId)
+      )
+      .flat()
+      .filter(Boolean);
+
+    if (otherFlightEnteredParticipantIds?.length) {
+      // include direct acceptance participants from other flights
+      availableAlternatesParticipantIds.push(
+        ...otherFlightEnteredParticipantIds
+      );
+    }
   }
   const availableAlternates = tournamentParticipants?.filter((participant) =>
     availableAlternatesParticipantIds.includes(participant.participantId)
@@ -53,7 +80,7 @@ export function getValidAlternatesAction({
     alternate.entryPosition = entry?.entryPosition;
   });
   availableAlternates.sort(
-    (a, b) => (a.entryPosition || 0) - (b.entryPosition || 0)
+    (a, b) => (a.entryPosition || 9999) - (b.entryPosition || 9999)
   );
 
   if (availableAlternatesParticipantIds.length) {

@@ -155,6 +155,7 @@ it('can account for individuals appearing in multiple doubles pairs', () => {
   });
 
   tournamentEngine.setState(tournamentRecord);
+
   const { tournamentParticipants: individualParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },

@@ -2260,6 +2260,14 @@ tournamentEngine.removeEventMatchUpFormatTiming({ eventId });
 
 ---
 
+## removeEventPolicy
+
+```js
+tournamentEngine.removeEventPolicy({ policyType });
+```
+
+---
+
 ## removeIndividualParticipantIds
 
 Remove an array of individualParticipantIds from a grouping participant [TEAM, GROUP]
