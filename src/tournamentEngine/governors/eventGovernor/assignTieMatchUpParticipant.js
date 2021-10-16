@@ -37,13 +37,6 @@ export function assignTieMatchUpParticipantId(params) {
     structure,
   } = result;
 
-  // sideNumber can be checked against the participantId, which can be resolved based on the participantId team membership
-  // if sideNumber is not provided and there is a participantId then sideNumber can be resolved
-  // checks should ensure no attempts are made to add participant to incorrect side
-  // 1. get drawPositions for tieMatchUp
-  // 2. get team participants for each side
-  // 3. discover which team particiapntId belongs to and side for team participant
-
   const {
     tournamentParticipants: [participantToAssign],
   } = getTournamentParticipants({
@@ -135,8 +128,8 @@ export function assignTieMatchUpParticipantId(params) {
     collectionId,
   });
 
-  const participantCompetitiorProfile = modifiedLineUp.find(
-    (teamCompetitor) => teamCompetitor.participantId === participantId
+  const participantCompetitiorProfile = modifiedLineUp?.find(
+    (teamCompetitor) => teamCompetitor?.participantId === participantId
   );
 
   const newAssignment = { collectionId, collectionPosition };
