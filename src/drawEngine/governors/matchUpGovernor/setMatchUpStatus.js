@@ -293,5 +293,6 @@ function applyMatchUpValues(params) {
       drawDefinition,
     });
   }
+
   return result;
 }
