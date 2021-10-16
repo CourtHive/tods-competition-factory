@@ -28,13 +28,20 @@ export function noDownstreamDependencies(params) {
 
   const doubleWalkover = matchUpStatus === DOUBLE_WALKOVER;
   const scoreWithNoWinningSide =
-    !winningSide && scoreHasValue({ score }) && !doubleWalkover;
+    scoreHasValue({ score }) &&
+    !doubleWalkover &&
+    ((params.isCollectionMatchUp && !params.projectedWinningSide) ||
+      !winningSide);
+
   const removeScore = ![INCOMPLETE, ABANDONED].includes(
     matchUpStatus || INCOMPLETE
   );
 
   const removeWinningSide =
-    matchUp.winningSide && !winningSide && !scoreHasValue({ score });
+    (params.isCollectionMatchUp &&
+      params.dualMatchUp.winningSide &&
+      !params.projectedWinningSide) ||
+    (matchUp.winningSide && !winningSide && !scoreHasValue({ score }));
 
   const statusNotTBP = matchUpStatus && matchUpStatus !== TO_BE_PLAYED;
 
