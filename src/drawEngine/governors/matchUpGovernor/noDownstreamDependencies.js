@@ -3,6 +3,7 @@ import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { removeDoubleWalkover } from './removeDoubleWalkover';
+import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { scoreHasValue } from './scoreHasValue';
 
@@ -49,7 +50,23 @@ export function noDownstreamDependencies(params) {
     (scoreWithNoWinningSide && removeDirected({ removeScore })) ||
     (statusNotTBP && attemptToSetMatchUpStatus(params)) ||
     (removeWinningSide && removeDirected()) ||
-    (matchUp && modifyMatchUpScore({ ...params, removeScore: true })) ||
+    (matchUp && scoreModification({ ...params, removeScore: true })) ||
     (console.log('unknown condition') && { ...SUCCESS })
   );
+}
+
+function scoreModification(params) {
+  const isCollectionMatchUp = Boolean(params.matchUp.collectionId);
+  const result = modifyMatchUpScore({ ...params, removeScore: true });
+
+  // recalculate dualMatchUp score if isCollectionMatchUp
+  if (isCollectionMatchUp) {
+    const { matchUpTieId, drawDefinition } = params;
+    updateTieMatchUpScore({
+      matchUpId: matchUpTieId,
+      drawDefinition,
+    });
+  }
+
+  return result;
 }
