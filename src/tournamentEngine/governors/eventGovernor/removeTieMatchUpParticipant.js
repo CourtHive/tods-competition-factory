@@ -5,12 +5,18 @@ import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { removeCollectionAssignment } from './removeCollectionAssignment';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 
-import { EXISTING_OUTCOME } from '../../../constants/errorConditionConstants';
+import {
+  EXISTING_OUTCOME,
+  MISSING_PARTICIPANT_ID,
+  NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function removeTieMatchUpParticipantId(params) {
   const { tournamentRecord, participantId } = params;
+
+  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
   const result = getTieMatchUpContext(params);
   if (result.error) return result;
@@ -26,11 +32,15 @@ export function removeTieMatchUpParticipantId(params) {
   if (scoreHasValue({ score: tieMatchUp.score }) || tieMatchUp.winningSide)
     return { error: EXISTING_OUTCOME };
 
-  const dualMatchUpSide = dualMatchUp.sides.find((side) =>
+  const dualMatchUpSide = dualMatchUp.sides?.find((side) =>
     side.lineUp?.find(
       (teamCompetitor) => teamCompetitor.participantId === participantId
     )
   );
+
+  if (!dualMatchUpSide) {
+    return { error: NOT_FOUND, participantId };
+  }
 
   const { modifiedLineUp } = removeCollectionAssignment({
     collectionPosition,
@@ -38,6 +48,7 @@ export function removeTieMatchUpParticipantId(params) {
     participantId,
     collectionId,
   });
+
   dualMatchUpSide.lineUp = modifiedLineUp;
 
   if (matchUpType === DOUBLES) {
