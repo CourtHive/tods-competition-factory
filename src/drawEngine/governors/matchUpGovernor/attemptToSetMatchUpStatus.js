@@ -1,6 +1,7 @@
 import { removeDirectedParticipants } from './removeDirectedParticipantsAndUpdateOutcome';
 import { doubleWalkoverAdvancement } from '../positionGovernor/doubleWalkoverAdvancement';
 import { attemptToSetMatchUpStatusBYE } from './attemptToSetMatchUpStatusBYE';
+import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import {
   isDirectingMatchUpStatus,
@@ -42,7 +43,7 @@ export function attemptToSetMatchUpStatus(params) {
 
   return (
     (unrecognized && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
-    (onlyModifyScore && modifyMatchUpScore(params)) ||
+    (onlyModifyScore && scoreModification(params)) ||
     (changeCompletedToWOWO && removeWinningSideSetWOWO(params)) ||
     (existingWinningSide && removeDirectedParticipants(params)) ||
     (nonDirecting && clearScore()) ||
@@ -62,7 +63,28 @@ function removeWinningSideSetWOWO(params) {
 }
 
 function modifyScoreAndAdvanceWOWO(params) {
-  const result = modifyMatchUpScore({ ...params, removeScore: true });
+  const result = scoreModification({ ...params, removeScore: true });
   if (result.error) return result;
   return doubleWalkoverAdvancement(params);
+}
+
+function scoreModification(params) {
+  const removeDirected =
+    params.isCollectionMatchUp &&
+    params.dualMatchUp?.winningSide &&
+    params.projectedWinningSide;
+  const isCollectionMatchUp = Boolean(params.matchUp.collectionId);
+  const result = modifyMatchUpScore(params);
+
+  // recalculate dualMatchUp score if isCollectionMatchUp
+  if (isCollectionMatchUp) {
+    const { matchUpTieId, drawDefinition } = params;
+    const { removeWinningSide } = updateTieMatchUpScore({
+      matchUpId: matchUpTieId,
+      drawDefinition,
+    });
+    console.log('atsms', { removeWinningSide, removeDirected });
+  }
+
+  return result;
 }

@@ -1,3 +1,4 @@
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import {
   CONSOLATION,
@@ -13,6 +14,7 @@ export function getValidAlternatesAction({
   possiblyDisablingAction,
   activeDrawPositions,
   positionAssignments,
+  policyDefinitions,
   drawDefinition,
   drawPosition,
   structureId,
@@ -21,6 +23,8 @@ export function getValidAlternatesAction({
   event,
 }) {
   if (activeDrawPositions.includes(drawPosition)) return {};
+  const expandedFlightAlternates =
+    policyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS]?.expandedFlightAlternates;
 
   const assignedParticipantIds = positionAssignments
     .map((assignment) => assignment.participantId)
@@ -36,6 +40,9 @@ export function getValidAlternatesAction({
     .sort((a, b) => (a.entryPosition || 0) - (b.entryPosition || 0))
     .map((entry) => entry.participantId);
 
+  if (expandedFlightAlternates) {
+    // include direct acceptance participants from other flights
+  }
   const availableAlternates = tournamentParticipants?.filter((participant) =>
     availableAlternatesParticipantIds.includes(participant.participantId)
   );
@@ -45,6 +52,9 @@ export function getValidAlternatesAction({
     );
     alternate.entryPosition = entry?.entryPosition;
   });
+  availableAlternates.sort(
+    (a, b) => (a.entryPosition || 0) - (b.entryPosition || 0)
+  );
 
   if (availableAlternatesParticipantIds.length) {
     const validAlternatesAction = {

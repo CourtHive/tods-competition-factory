@@ -5,6 +5,7 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';
+import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { isActiveDownstream } from './isActiveDownstream';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { addMatchUpScheduleItems } from './scheduleItems';
@@ -15,7 +16,11 @@ import {
   isNonDirectingMatchUpStatus,
 } from './checkStatusType';
 
-import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
+import {
+  BYE,
+  COMPLETED,
+  WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   ABANDONED,
@@ -34,6 +39,7 @@ import {
   INCOMPATIBLE_MATCHUP_STATUS,
   CANNOT_CHANGE_WINNINGSIDE,
 } from '../../../constants/errorConditionConstants';
+import { scoreHasValue } from './scoreHasValue';
 
 /**
  *
@@ -151,11 +157,57 @@ export function setMatchUpStatus(params) {
       projectedWinningSide !== existingDualMatchUpWinningSide;
 
     Object.assign(params, {
+      isCollectionMatchUp: true,
       dualWinningSideChange,
+      projectedWinningSide,
       matchUpTieId,
       dualMatchUp,
       tieFormat,
     });
+  }
+
+  const structureId = inContextMatchUp.structureId;
+  const { structure } = findStructure({ drawDefinition, structureId });
+
+  Object.assign(params, {
+    inContextDrawMatchUps,
+    inContextMatchUp,
+    matchUpTieId,
+    matchUpsMap,
+    targetData,
+    structure,
+    matchUp,
+  });
+
+  // with propagating winningSide changes, activeDownstream only applies to eventType: TEAM
+  const activeDownstream = isActiveDownstream(params);
+  const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
+
+  if (!matchUpTieId) {
+    if (
+      activeDownstream &&
+      !winningSide &&
+      isNonDirectingMatchUpStatus({ matchUpStatus })
+    ) {
+      return {
+        error: INCOMPATIBLE_MATCHUP_STATUS,
+        activeDownstream,
+        winningSide,
+      };
+    }
+
+    if (
+      winningSide &&
+      winningSide === matchUp.winningSide &&
+      matchUpStatus &&
+      !directingMatchUpStatus
+    ) {
+      return {
+        error: INCOMPATIBLE_MATCHUP_STATUS,
+        directingMatchUpStatus,
+        matchUpStatus,
+      };
+    }
   }
 
   // Add scheduling information to matchUp ------------------------------------
@@ -173,49 +225,6 @@ export function setMatchUpStatus(params) {
     }
   }
 
-  // if there is a TEAM matchUp, assign it instead of the tieMatchUp ??
-  const structureId = inContextMatchUp.structureId;
-  const { structure } = findStructure({ drawDefinition, structureId });
-
-  Object.assign(params, {
-    inContextDrawMatchUps,
-    inContextMatchUp,
-    matchUpTieId,
-    matchUpsMap,
-    targetData,
-    structure,
-    matchUp,
-  });
-
-  // with propagating winningSide changes, activeDownstream only applies to eventType: TEAM
-  const activeDownstream = isActiveDownstream(params);
-  if (
-    activeDownstream &&
-    !winningSide &&
-    isNonDirectingMatchUpStatus({ matchUpStatus })
-  ) {
-    return {
-      error: INCOMPATIBLE_MATCHUP_STATUS,
-      activeDownstream,
-      winningSide,
-    };
-  }
-
-  const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
-
-  if (
-    winningSide &&
-    winningSide === matchUp.winningSide &&
-    matchUpStatus &&
-    !directingMatchUpStatus
-  ) {
-    return {
-      error: INCOMPATIBLE_MATCHUP_STATUS,
-      directingMatchUpStatus,
-      matchUpStatus,
-    };
-  }
-
   const validWinningSideChange =
     matchUp.matchUpType !== TEAM &&
     !dualWinningSideChange &&
@@ -231,8 +240,11 @@ export function setMatchUpStatus(params) {
     return swapWinnerLoser(params);
   }
 
+  const matchUpWinner =
+    (winningSide && !matchUpTieId) || params.projectedWinningSide;
+
   const result = (!activeDownstream && noDownstreamDependencies(params)) ||
-    (winningSide && winningSideWithDownstreamDependencies(params)) ||
+    (matchUpWinner && winningSideWithDownstreamDependencies(params)) ||
     (directingMatchUpStatus && applyMatchUpValues(params)) || {
       error: NO_VALID_ACTIONS,
     };
@@ -241,8 +253,11 @@ export function setMatchUpStatus(params) {
 }
 
 function winningSideWithDownstreamDependencies(params) {
-  const { matchUp, winningSide } = params;
-  if (winningSide === matchUp.winningSide) {
+  const { matchUp, winningSide, matchUpTieId, dualWinningSideChange } = params;
+  if (
+    winningSide === matchUp.winningSide ||
+    (matchUpTieId && !dualWinningSideChange)
+  ) {
     return applyMatchUpValues(params);
   } else {
     return { error: CANNOT_CHANGE_WINNINGSIDE };
@@ -250,8 +265,35 @@ function winningSideWithDownstreamDependencies(params) {
 }
 
 function applyMatchUpValues(params) {
-  return modifyMatchUpScore({
+  const { matchUp } = params;
+  const removeWinningSide =
+    params.isCollectionMatchUp &&
+    matchUp.winningSide &&
+    !params.winningSide &&
+    !scoreHasValue({ score: params.score });
+  const newMatchUpStatus = params.isCollectionMatchUp
+    ? params.machUpStatus || (removeWinningSide && TO_BE_PLAYED)
+    : params.matchUpStatus || COMPLETED;
+  const removeScore =
+    [CANCELLED, WALKOVER].includes(newMatchUpStatus) &&
+    ![INCOMPLETE, ABANDONED].includes(newMatchUpStatus);
+
+  const result = modifyMatchUpScore({
     ...params,
-    matchUpStatus: params.matchUpStatus || COMPLETED,
+    matchUpStatus: newMatchUpStatus,
+    removeWinningSide,
+    removeScore,
   });
+
+  // recalculate dualMatchUp score if isCollectionMatchUp
+  if (params.isCollectionMatchUp) {
+    const { matchUpTieId, drawDefinition } = params;
+    const { removeWinningSide } = updateTieMatchUpScore({
+      matchUpId: matchUpTieId,
+      drawDefinition,
+    });
+    console.log('sms', { removeWinningSide });
+  }
+
+  return result;
 }

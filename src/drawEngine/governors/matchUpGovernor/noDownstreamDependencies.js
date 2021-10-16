@@ -3,6 +3,7 @@ import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { removeDoubleWalkover } from './removeDoubleWalkover';
+import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { scoreHasValue } from './scoreHasValue';
 
@@ -27,13 +28,20 @@ export function noDownstreamDependencies(params) {
 
   const doubleWalkover = matchUpStatus === DOUBLE_WALKOVER;
   const scoreWithNoWinningSide =
-    !winningSide && scoreHasValue({ score }) && !doubleWalkover;
+    scoreHasValue({ score }) &&
+    !doubleWalkover &&
+    ((params.isCollectionMatchUp && !params.projectedWinningSide) ||
+      !winningSide);
+
   const removeScore = ![INCOMPLETE, ABANDONED].includes(
     matchUpStatus || INCOMPLETE
   );
 
   const removeWinningSide =
-    matchUp.winningSide && !winningSide && !scoreHasValue({ score });
+    (params.isCollectionMatchUp &&
+      params.dualMatchUp.winningSide &&
+      !params.projectedWinningSide) ||
+    (matchUp.winningSide && !winningSide && !scoreHasValue({ score }));
 
   const statusNotTBP = matchUpStatus && matchUpStatus !== TO_BE_PLAYED;
 
@@ -49,7 +57,28 @@ export function noDownstreamDependencies(params) {
     (scoreWithNoWinningSide && removeDirected({ removeScore })) ||
     (statusNotTBP && attemptToSetMatchUpStatus(params)) ||
     (removeWinningSide && removeDirected()) ||
-    (matchUp && modifyMatchUpScore({ ...params, removeScore: true })) ||
+    (matchUp && scoreModification({ ...params, removeScore: true })) ||
     (console.log('unknown condition') && { ...SUCCESS })
   );
+}
+
+function scoreModification(params) {
+  const isCollectionMatchUp = Boolean(params.matchUp.collectionId);
+  const removeDirected =
+    params.isCollectionMatchUp &&
+    params.dualMatchUp?.winningSide &&
+    params.projectedWinningSide;
+  const result = modifyMatchUpScore({ ...params, removeScore: true });
+
+  // recalculate dualMatchUp score if isCollectionMatchUp
+  if (isCollectionMatchUp) {
+    const { matchUpTieId, drawDefinition } = params;
+    const { removeWinningSide } = updateTieMatchUpScore({
+      matchUpId: matchUpTieId,
+      drawDefinition,
+    });
+    console.log('ndd', { removeWinningSide, removeDirected });
+  }
+
+  return result;
 }

@@ -27,11 +27,13 @@ export function generateTieMatchUpScore({
   ) {
     return { error: INVALID_VALUES };
   }
+
   if (!matchUp) return { error: MISSING_MATCHUP };
 
   const sidePoints = [0, 0];
   const tieMatchUps = matchUp?.tieMatchUps || [];
   const collectionDefinitions = matchUp?.tieFormat?.collectionDefinitions || [];
+
   collectionDefinitions.forEach((collectionDefinition) => {
     const collectionMatchUps = tieMatchUps.filter(
       (matchUp) => matchUp.collectionId === collectionDefinition.collectionId

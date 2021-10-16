@@ -341,16 +341,17 @@ export function positionActions({
     !disablePlacementActions
   ) {
     const { validAlternatesAction } = getValidAlternatesAction({
-      event,
-      drawId,
-      structure,
-      structureId,
-      drawPosition,
-      drawDefinition,
-      activeDrawPositions,
-      positionAssignments,
-      tournamentParticipants,
       possiblyDisablingAction,
+      tournamentParticipants,
+      positionAssignments,
+      activeDrawPositions,
+      policyDefinitions,
+      drawDefinition,
+      drawPosition,
+      structureId,
+      structure,
+      drawId,
+      event,
     });
     if (validAlternatesAction) validActions.push(validAlternatesAction);
   }
