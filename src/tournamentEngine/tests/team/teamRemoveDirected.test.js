@@ -27,7 +27,7 @@ const scenarios = [
   { drawSize: 8, singlesCount: 3, doublesCount: 0, valueGoal: 2 },
 ];
 
-it.each(scenarios)('can advance teamParticipants', (scenario) => {
+it.each(scenarios)('can remove directed teamParticipants', (scenario) => {
   const { tournamentRecord, valueGoal } = generateTeamTournament(scenario);
   expect(valueGoal).toEqual(scenario.valueGoal);
 
@@ -59,8 +59,6 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
     });
   }
 
-  setDevContext({ tieMatchUps: true });
-
   // remove outcomes
   processOutcome({ dualMatchUps: firstRoundDualMatchUps, outcome: toBePlayed });
 
@@ -77,7 +75,82 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
   }
 });
 
-function processOutcome({ dualMatchUps, outcome, valueGoal }) {
+it.each(scenarios)('can change winningSide', (scenario) => {
+  const { tournamentRecord, valueGoal } = generateTeamTournament(scenario);
+  expect(valueGoal).toEqual(scenario.valueGoal);
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let { matchUps: firstRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
+    });
+
+  let dualWinningSide = 1;
+  // generate outcome to be applied to each first round singles matchUp
+  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    winningSide: dualWinningSide,
+    matchUpStatus: COMPLETED,
+    scoreString: '6-1 6-1',
+  });
+
+  processOutcome({
+    dualMatchUps: firstRoundDualMatchUps,
+    checkForInProgress: true, // this can only be done on the first pass when winningSides aren't changing
+    dualWinningSide,
+    valueGoal,
+    outcome,
+  });
+
+  let { matchUps: secondRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [2] },
+    });
+
+  // check that all second round matchUps have two advanced positions
+  if (secondRoundDualMatchUps.length) {
+    secondRoundDualMatchUps.forEach((dualMatchUp) => {
+      expect(dualMatchUp.drawPositions.length).toEqual(2);
+    });
+  }
+
+  setDevContext({ tieMatchUps: true });
+
+  dualWinningSide = 2;
+  // generate outcome to be applied to each first round singles matchUp
+  ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
+    winningSide: dualWinningSide,
+    matchUpStatus: COMPLETED,
+    scoreString: '6-1 6-1',
+  }));
+
+  // chnange the winningSide of all tieMatchUps in firstRoundDualMatchUps
+  processOutcome({
+    dualMatchUps: firstRoundDualMatchUps,
+    dualWinningSide,
+    valueGoal,
+    outcome,
+  });
+
+  ({ matchUps: secondRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [2] },
+    }));
+
+  if (secondRoundDualMatchUps.length) {
+    secondRoundDualMatchUps.forEach((dualMatchUp) => {
+      expect(dualMatchUp.drawPositions.length).toEqual(2);
+    });
+  }
+});
+
+function processOutcome({
+  dualWinningSide = 1,
+  checkForInProgress,
+  dualMatchUps,
+  valueGoal,
+  outcome,
+}) {
   dualMatchUps.forEach((dualMatchUp) => {
     const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
       ({ matchUpType }) => matchUpType === SINGLES
@@ -94,12 +167,18 @@ function processOutcome({ dualMatchUps, outcome, valueGoal }) {
       const updatedDualMatchUp = getMatchUp(dualMatchUp.matchUpId);
       const { score, winningSide, matchUpStatus } = updatedDualMatchUp;
       if (valueGoal) {
-        expect(score.sets[0].side1Score).toEqual(i + 1);
+        if (dualWinningSide === 1) {
+          expect(score.sets[0].side1Score).toEqual(i + 1);
+        } else {
+          expect(score.sets[0].side2Score).toEqual(i + 1);
+        }
         if (i + 1 >= valueGoal) {
-          expect(winningSide).toEqual(1);
+          expect(winningSide).toEqual(dualWinningSide);
           expect(matchUpStatus).toEqual(COMPLETED);
         } else {
-          expect(matchUpStatus).toEqual(IN_PROGRESS);
+          if (checkForInProgress) {
+            expect(matchUpStatus).toEqual(IN_PROGRESS);
+          }
         }
       }
     });
