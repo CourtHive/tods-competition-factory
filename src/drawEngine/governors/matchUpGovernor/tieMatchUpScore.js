@@ -33,7 +33,6 @@ export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
     : TO_BE_PLAYED;
 
   const removeWinningSide = matchUp.winningSide && !hasWinner;
-  // console.log({ winningSide, hasWinner, matchUpStatus, removeWinningSide });
 
   const scoreObject = {
     scoreStringSide1,
@@ -50,5 +49,5 @@ export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
     matchUp,
   });
 
-  return { ...SUCCESS };
+  return { ...SUCCESS, removeWinningSide };
 }

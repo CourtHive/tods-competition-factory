@@ -69,16 +69,21 @@ function modifyScoreAndAdvanceWOWO(params) {
 }
 
 function scoreModification(params) {
+  const removeDirected =
+    params.isCollectionMatchUp &&
+    params.dualMatchUp?.winningSide &&
+    params.projectedWinningSide;
   const isCollectionMatchUp = Boolean(params.matchUp.collectionId);
   const result = modifyMatchUpScore(params);
 
   // recalculate dualMatchUp score if isCollectionMatchUp
   if (isCollectionMatchUp) {
     const { matchUpTieId, drawDefinition } = params;
-    updateTieMatchUpScore({
+    const { removeWinningSide } = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       drawDefinition,
     });
+    console.log('atsms', { removeWinningSide, removeDirected });
   }
 
   return result;

@@ -157,6 +157,7 @@ export function setMatchUpStatus(params) {
       projectedWinningSide !== existingDualMatchUpWinningSide;
 
     Object.assign(params, {
+      isCollectionMatchUp: true,
       dualWinningSideChange,
       projectedWinningSide,
       matchUpTieId,
@@ -265,13 +266,12 @@ function winningSideWithDownstreamDependencies(params) {
 
 function applyMatchUpValues(params) {
   const { matchUp } = params;
-  const isCollectionMatchUp = Boolean(matchUp.collectionId);
   const removeWinningSide =
-    isCollectionMatchUp &&
+    params.isCollectionMatchUp &&
     matchUp.winningSide &&
     !params.winningSide &&
     !scoreHasValue({ score: params.score });
-  const newMatchUpStatus = isCollectionMatchUp
+  const newMatchUpStatus = params.isCollectionMatchUp
     ? params.machUpStatus || (removeWinningSide && TO_BE_PLAYED)
     : params.matchUpStatus || COMPLETED;
   const removeScore =
@@ -286,12 +286,13 @@ function applyMatchUpValues(params) {
   });
 
   // recalculate dualMatchUp score if isCollectionMatchUp
-  if (isCollectionMatchUp) {
+  if (params.isCollectionMatchUp) {
     const { matchUpTieId, drawDefinition } = params;
-    updateTieMatchUpScore({
+    const { removeWinningSide } = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       drawDefinition,
     });
+    console.log('sms', { removeWinningSide });
   }
 
   return result;

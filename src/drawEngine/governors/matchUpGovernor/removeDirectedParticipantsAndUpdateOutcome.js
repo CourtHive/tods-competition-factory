@@ -64,8 +64,11 @@ export function removeDirectedParticipants(params) {
 
   if (isCollectionMatchUp) {
     const { matchUpTieId } = params;
-    updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
-    if (!dualWinningSideChange) return { ...SUCCESS };
+    const { removeWinningSide } = updateTieMatchUpScore({
+      drawDefinition,
+      matchUpId: matchUpTieId,
+    });
+    if (!dualWinningSideChange && !removeWinningSide) return { ...SUCCESS };
   }
 
   const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
