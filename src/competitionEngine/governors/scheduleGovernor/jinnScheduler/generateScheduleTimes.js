@@ -1,5 +1,6 @@
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
 import { sameDay, timeStringMinutes } from '../../../../utilities/dateTime';
+import { getMatchUpId } from '../../../../global/functions/extractors';
 import { getScheduleTimes } from '../garman/getScheduleTimes';
 import { generateBookings } from './generateBookings';
 
@@ -115,9 +116,7 @@ export function generateScheduleTimes({
       ? venues[0].venueId
       : undefined;
 
-  const dateScheduledMatchUpIds = relevantMatchUps.map(
-    ({ matchUpId }) => matchUpId
-  );
+  const dateScheduledMatchUpIds = relevantMatchUps.map(getMatchUpId);
 
   return { venueId, scheduleTimes, dateScheduledMatchUpIds };
 }

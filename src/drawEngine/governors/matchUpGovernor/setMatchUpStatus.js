@@ -140,6 +140,7 @@ export function setMatchUpStatus(params) {
   if (matchUpTieId) {
     const { matchUp: dualMatchUp } = findMatchUp({
       matchUpId: matchUpTieId,
+      inContext: true,
       drawDefinition,
       matchUpsMap,
     });

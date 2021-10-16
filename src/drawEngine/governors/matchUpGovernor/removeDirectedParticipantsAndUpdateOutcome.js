@@ -1,11 +1,12 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { clearDrawPosition } from '../positionGovernor/positionClear';
 import { includesMatchUpStatuses } from './includesMatchUpStatuses';
 import { findStructure } from '../../getters/findStructure';
-import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
+import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { instanceCount } from '../../../utilities';
 
 import { MISSING_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
@@ -20,6 +21,7 @@ export function removeDirectedParticipants(params) {
     drawDefinition,
     matchUpStatus,
     matchUpsMap,
+    dualMatchUp,
     targetData,
     structure,
   } = params;
@@ -90,6 +92,7 @@ export function removeDirectedParticipants(params) {
       winnerTargetLink,
       drawDefinition,
       winnerMatchUp,
+      dualMatchUp,
       matchUpsMap,
     });
     if (result.error) return result;
@@ -124,6 +127,7 @@ export function removeDirectedParticipants(params) {
       loserTargetLink,
       drawDefinition,
       loserMatchUp,
+      dualMatchUp,
       matchUpsMap,
     });
     if (removeLoserResult) return removeLoserResult;
@@ -140,6 +144,7 @@ export function removeDirectedWinner({
   drawDefinition,
   winnerMatchUp,
   matchUpsMap,
+  dualMatchUp,
 }) {
   const { structureId, roundNumber } = winnerMatchUp;
 
@@ -178,20 +183,28 @@ export function removeDirectedWinner({
   }
 
   // Remove participant's drawPosition from current and subsequent round matchUps
-  return removeSubsequentRoundsParticipant({
+  const result = removeSubsequentRoundsParticipant({
     targetDrawPosition: winningDrawPosition,
     inContextDrawMatchUps,
     drawDefinition,
+    dualMatchUp,
     matchUpsMap,
     roundNumber,
     structureId,
   });
+
+  if (result.error) return result;
+
+  return { ...SUCCESS };
 }
 
 function removeDirectedLoser({
+  inContextDrawMatchUps,
   loserParticipantId,
   loserTargetLink,
   drawDefinition,
+  loserMatchUp,
+  dualMatchUp,
 }) {
   const structureId = loserTargetLink.target.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
@@ -201,6 +214,27 @@ function removeDirectedLoser({
       delete assignment.participantId;
     }
   });
+
+  if (dualMatchUp) {
+    // remove propagated lineUp
+    const drawPositions = dualMatchUp.drawPositions;
+    const targetSideNumber = loserMatchUp?.sides?.find((side) =>
+      drawPositions.includes(side.drawPosition)
+    );
+    const targetMatchUp = inContextDrawMatchUps.find(
+      ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
+    );
+    const targetSide =
+      targetSideNumber &&
+      targetMatchUp?.sides?.find(
+        (side) => side.sideNumber === targetSideNumber
+      );
+    if (targetSide) {
+      delete targetSide.lineUp;
+      console.log('remove loser lineUp', { targetSide });
+      modifyMatchUpNotice({ drawDefinition, matchUp: targetMatchUp });
+    }
+  }
 
   return { ...SUCCESS };
 }

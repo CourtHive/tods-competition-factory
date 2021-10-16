@@ -12,15 +12,14 @@ import {
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
-// significant portsions of code shared with drawPositionRemovals.js
 export function removeSubsequentRoundsParticipant({
+  inContextDrawMatchUps,
+  targetDrawPosition,
   drawDefinition,
   structureId,
+  dualMatchUp,
   roundNumber,
-  targetDrawPosition,
-
   matchUpsMap,
-  inContextDrawMatchUps,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   if (structure.structureType === CONTAINER) return;
@@ -48,13 +47,13 @@ export function removeSubsequentRoundsParticipant({
 
   for (const matchUp of relevantMatchUps) {
     const result = removeDrawPosition({
-      matchUp,
-      drawDefinition,
-      targetDrawPosition,
-      positionAssignments,
-
-      matchUpsMap,
       inContextDrawMatchUps,
+      positionAssignments,
+      targetDrawPosition,
+      drawDefinition,
+      dualMatchUp,
+      matchUpsMap,
+      matchUp,
     });
     if (result.error) return result;
   }
@@ -63,11 +62,29 @@ export function removeSubsequentRoundsParticipant({
 }
 
 function removeDrawPosition({
-  matchUp,
-  drawDefinition,
-  targetDrawPosition,
+  inContextDrawMatchUps,
   positionAssignments,
+  targetDrawPosition,
+  drawDefinition,
+  dualMatchUp,
+  matchUp,
 }) {
+  if (dualMatchUp) {
+    // remove propagated lineUp
+    const inContextMatchUp = inContextDrawMatchUps.find(
+      ({ matchUpId }) => matchUp.matchUpId === matchUpId
+    );
+    const targetSideNumber = inContextMatchUp.sides?.find(
+      (side) => side.drawPosition === targetDrawPosition
+    )?.sideNumber;
+    const targetSide = matchUp.sides?.find(
+      (side) => side.sideNumber === targetSideNumber
+    );
+    if (targetSide) {
+      delete targetSide.lineUp;
+    }
+  }
+
   // UNDEFINED drawPositions
   matchUp.drawPositions = (matchUp.drawPositions || []).map((drawPosition) =>
     drawPosition === targetDrawPosition ? undefined : drawPosition
