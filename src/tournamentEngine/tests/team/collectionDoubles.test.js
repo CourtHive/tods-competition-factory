@@ -4,7 +4,12 @@ import tournamentEngine from '../../sync';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { PAIR } from '../../../constants/participantTypes';
-import { EXISTING_OUTCOME } from '../../../constants/errorConditionConstants';
+import {
+  EXISTING_OUTCOME,
+  INVALID_PARTICIPANT_TYPE,
+  MISSING_PARTICIPANT_ID,
+  PARTICIPANT_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 import {
   COMPLETED,
   TO_BE_PLAYED,
@@ -102,6 +107,23 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
     drawId,
   });
   expect(result.modifiedLineUp[0].collectionAssignments.length).toEqual(0);
+  result = tournamentEngine.removeTieMatchUpParticipantId({
+    participantId: individualParticipantId,
+    tieMatchUpId: doublesMatchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
+  result = tournamentEngine.removeTieMatchUpParticipantId({
+    tieMatchUpId: doublesMatchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
+  result = tournamentEngine.removeTieMatchUpParticipantId({
+    tieMatchUpId: doublesMatchUpId,
+    participantId: 'bogusId',
+    drawId,
+  });
+  expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
 });
 
 it('can both assign and remove individualParticipants in DOUBLES matchUps that are part of team events', () => {
@@ -396,6 +418,44 @@ it('can create new PAIR participants and remove/replace individualParticipants',
     });
     expect(result.success).toEqual(true);
   });
+
+  // test for error conditions
+
+  // attempt to replace an INDIVIDUAL with a PAIR participant; expect error.
+  const pairParticipantId = pairParticipants[0].participantId;
+  let result = teamParticipants.every((teamParticipant) => {
+    // get the third and fifth individual from each team
+    const individualParticipantIds =
+      teamParticipant.individualParticipantIds.filter((id, index) =>
+        [5].includes(index + 1)
+      );
+    const [existingParticipantId] = individualParticipantIds;
+    const newParticipantId = pairParticipantId;
+
+    let result = tournamentEngine.replaceTieMatchUpParticipantId({
+      tieMatchUpId: doublesMatchUpId,
+      existingParticipantId,
+      newParticipantId,
+      drawId,
+    });
+    expect(result.error).toEqual(INVALID_PARTICIPANT_TYPE);
+
+    result = tournamentEngine.replaceTieMatchUpParticipantId({
+      tieMatchUpId: doublesMatchUpId,
+      existingParticipantId: 'bogusId',
+      newParticipantId,
+      drawId,
+    });
+    expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
+    return result.success;
+  });
+  expect(result).toEqual(false);
+
+  result = tournamentEngine.replaceTieMatchUpParticipantId({
+    tieMatchUpId: doublesMatchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
 });
 
 it('can assign PAIR participants to tieMatchUps', () => {

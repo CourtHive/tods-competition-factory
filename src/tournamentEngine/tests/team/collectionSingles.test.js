@@ -7,6 +7,8 @@ import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import {
   EXISTING_OUTCOME,
+  INVALID_PARTICIPANT,
+  INVALID_PARTICIPANT_TYPE,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_PARTICIPANT_ID,
@@ -149,6 +151,20 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
     expect(side.lineUp[0].collectionAssignments.length).toEqual(1);
   });
 
+  let { tournamentParticipants: doublesParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [PAIR] },
+    });
+
+  // attempt to remove a DOUBLES participant from a SINGLES matchUp; expect error;
+  const participantId = doublesParticipants[0].participantId;
+  result = tournamentEngine.removeTieMatchUpParticipantId({
+    tieMatchUpId: matchUpId,
+    participantId,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_PARTICIPANT);
+
   // attempt to remove participants from SINGLES matchUp; expect success
   result = removeSinglesParticipants();
   expect(result.length).toEqual(2);
@@ -274,6 +290,20 @@ it('can assign SINGLES particiapnts to collectionPositions and complete matchUps
       drawId,
     });
     expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
+
+    let { tournamentParticipants: doublesParticipants } =
+      tournamentEngine.getTournamentParticipants({
+        participantFilters: { participantTypes: [PAIR] },
+      });
+
+    const doublesParticipantId = doublesParticipants[0].participantId;
+    // assign a PAIR particpant to a SINGLES matchUp; expect error
+    result = tournamentEngine.assignTieMatchUpParticipantId({
+      participantId: doublesParticipantId,
+      tieMatchUpId: matchUpId,
+      drawId,
+    });
+    expect(result.error).toEqual(INVALID_PARTICIPANT_TYPE);
 
     // assign an individual particpant to a SINGLES matchUp
     result = tournamentEngine.assignTieMatchUpParticipantId({

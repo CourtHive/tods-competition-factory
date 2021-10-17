@@ -118,7 +118,7 @@ export function removeTieMatchUpParticipantId(params) {
         if (result.error) console.log('cleanup', { result });
       }
     } else {
-      console.log('pair participant not found');
+      return { error: PARTICIPANT_NOT_FOUND };
     }
   }
 
