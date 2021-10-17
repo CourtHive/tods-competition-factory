@@ -1,12 +1,11 @@
 import { deleteNotices, setDevContext } from '../global/globalState';
 import { notifySubscribers } from '../global/notifySubscribers';
+import { factoryVersion } from '../global/factoryVersion';
 import mocksGovernor from './governors/mocksGovernor';
 
 export const mocksEngine = (function () {
   const engine = {
-    version: () => {
-      return '@VERSION@';
-    },
+    version: () => factoryVersion(),
     devContext: (isDev) => {
       setDevContext(isDev);
       return engine;
