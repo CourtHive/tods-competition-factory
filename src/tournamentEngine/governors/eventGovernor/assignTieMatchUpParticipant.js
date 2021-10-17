@@ -2,7 +2,7 @@ import { getTournamentParticipants } from '../../getters/participants/getTournam
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
-import { removeCollectionAssignment } from './removeCollectionAssignment';
+import { removeCollectionAssignments } from './removeCollectionAssignments';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 import { overlap } from '../../../utilities';
@@ -130,10 +130,10 @@ export function assignTieMatchUpParticipantId(params) {
   }
 
   // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/participantId
-  const { modifiedLineUp } = removeCollectionAssignment({
+  const { modifiedLineUp } = removeCollectionAssignments({
+    participantIds: [participantId],
     collectionPosition,
     dualMatchUpSide,
-    participantId,
     collectionId,
   });
 

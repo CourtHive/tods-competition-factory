@@ -2,7 +2,7 @@ import { getTournamentParticipants } from '../../getters/participants/getTournam
 import { scoreHasValue } from '../../../drawEngine/governors/matchUpGovernor/scoreHasValue';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
-import { removeCollectionAssignment } from './removeCollectionAssignment';
+import { removeCollectionAssignments } from './removeCollectionAssignments';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -42,10 +42,10 @@ export function removeTieMatchUpParticipantId(params) {
     return { error: NOT_FOUND, participantId };
   }
 
-  const { modifiedLineUp } = removeCollectionAssignment({
+  const { modifiedLineUp } = removeCollectionAssignments({
+    participantIds: [participantId],
     collectionPosition,
     dualMatchUpSide,
-    participantId,
     collectionId,
   });
 
