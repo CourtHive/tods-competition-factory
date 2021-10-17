@@ -75,7 +75,12 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
   });
 
   // score the SINGLES matchUp
-  let { outcome } = mocksEngine.generateOutcome(singlesMatchUp);
+  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '6-1 6-1',
+    winningSide: 1,
+    matchUpStatus: COMPLETED,
+  });
+
   let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,

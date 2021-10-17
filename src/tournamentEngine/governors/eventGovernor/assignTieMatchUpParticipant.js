@@ -123,10 +123,26 @@ export function assignTieMatchUpParticipantId(params) {
     if (result.error) return result;
     deleteParticipantId = result.deleteParticipantId;
   } else if (matchUpType === DOUBLES && participantType === PAIR) {
-    console.log({ participantToAssign });
-    // TODO: each individual needs to be check to see that they are part of the team
-    // each individual needs to have their collectionAssignments updated independently
-    return { error: 'Not implemented' };
+    const participantIds = participantToAssign.individualParticipantIds || [];
+    // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/participantId
+    const { modifiedLineUp } = removeCollectionAssignments({
+      collectionPosition,
+      participantIds,
+      dualMatchUpSide,
+      collectionId,
+    });
+
+    for (const participantId of participantIds) {
+      updateLineUp({
+        collectionPosition,
+        modifiedLineUp,
+        participantId,
+        collectionId,
+      });
+    }
+
+    dualMatchUpSide.lineUp = modifiedLineUp;
+    return { ...SUCCESS, modifiedLineUp };
   }
 
   // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/participantId
@@ -137,20 +153,12 @@ export function assignTieMatchUpParticipantId(params) {
     collectionId,
   });
 
-  const participantCompetitiorProfile = modifiedLineUp?.find(
-    (teamCompetitor) => teamCompetitor?.participantId === participantId
-  );
-
-  const newAssignment = { collectionId, collectionPosition };
-  if (participantCompetitiorProfile) {
-    participantCompetitiorProfile.collectionAssignments.push(newAssignment);
-  } else {
-    const teamCompetitor = {
-      collectionAssignments: [newAssignment],
-      participantId,
-    };
-    modifiedLineUp.push(teamCompetitor);
-  }
+  updateLineUp({
+    collectionPosition,
+    modifiedLineUp,
+    participantId,
+    collectionId,
+  });
 
   dualMatchUpSide.lineUp = modifiedLineUp;
 
@@ -218,5 +226,27 @@ export function assignTieMatchUpParticipantId(params) {
       }
     }
     return { ...SUCCESS, deleteParticipantId };
+  }
+}
+
+function updateLineUp({
+  collectionPosition,
+  modifiedLineUp,
+  participantId,
+  collectionId,
+}) {
+  const participantCompetitiorProfile = modifiedLineUp?.find(
+    (teamCompetitor) => teamCompetitor?.participantId === participantId
+  );
+
+  const newAssignment = { collectionId, collectionPosition };
+  if (participantCompetitiorProfile) {
+    participantCompetitiorProfile.collectionAssignments.push(newAssignment);
+  } else {
+    const teamCompetitor = {
+      collectionAssignments: [newAssignment],
+      participantId,
+    };
+    modifiedLineUp.push(teamCompetitor);
   }
 }
