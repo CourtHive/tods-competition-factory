@@ -142,9 +142,9 @@ test('collection matchUps appear in participant reports', () => {
   expect(placedPairParticipants.length).toEqual(drawSize);
 
   // expect all DOUBLES pairParticipants to appear in both DOUBLES and TEAM matchUps
-  placedPairParticipants.forEach((participant) =>
-    expect(participant.matchUps.length).toEqual(2)
-  );
+  placedPairParticipants.forEach((participant) => {
+    expect(participant.matchUps.length).toEqual(2);
+  });
 });
 
 function generateTeamTournament({ drawSize = 8, valueGoal = 2 } = {}) {
