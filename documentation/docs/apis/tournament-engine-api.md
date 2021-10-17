@@ -563,13 +563,14 @@ tournamentEngine.assignSeedPositions({
 
 ## assignTieMatchUpParticipantId
 
-Used when interactively creating `{ participantType: PAIR }` participants.
+Used when interactively assigning participants to `matchUps`. When individual `participantIds` are assigned to `{ matchUpType: 'DOUBLES' }` it handles creating `{ participantType: PAIR }` participants dynamically.
 
 ```js
 tournamentEngine.assignTieMatchUpParticipantId({
-  participantId: individualParticipantId,
-  tieMatchUpId: matchUpId,
-  drawId,
+  teamParticipantId, // optional - participant team can be derived from participantId. This supports assigning "borrowed" players from other teams.
+  participantId, // participantId of INDIVIDUAL or PAIR participant to be assigned to a matchUp
+  tieMatchUpId, // matchUpId of a SINGLES or DOUBLES that is part of a matchUp between teams
+  drawId, // identifies draw in which matchUp is present
 });
 ```
 
@@ -2356,7 +2357,7 @@ const { removedMatchUpIds } = tournamentEngine.removeStructure({
 
 ```js
 tournamentEngine.removeTieMatchUpParticipantId({
-  participantId, // individual participantId to be removed
+  participantId, // participantId of INDIVIDUAL or PAIR be removed
   tieMatchUpId, // tieMatchUp, matchUpType either DOUBLES or SINGLES
   drawId, // draw within which tieMatchUp is found
 });
@@ -2368,6 +2369,19 @@ tournamentEngine.removeTieMatchUpParticipantId({
 
 ```js
 tournamentEngine.removeTournamentExtension({ name });
+```
+
+---
+
+## replaceTieMatchUpParticipantId
+
+```js
+tournamentEngine.replaceTieMatchUpParticipantId({
+  existingParticipantId,
+  newParticipantId,
+  tieMatchUpId,
+  drawId,
+});
 ```
 
 ---

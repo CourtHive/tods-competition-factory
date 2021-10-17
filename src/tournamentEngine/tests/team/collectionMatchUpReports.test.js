@@ -36,23 +36,12 @@ test('collection matchUps appear in participant reports', () => {
     let { drawPositions, matchUpId: doublesMatchUpId } = doublesMatchUp;
     const teamParticipants = getTeamParticipants(drawPositions);
     teamParticipants.forEach((teamParticipant) => {
-      const { participantId } = teamParticipant;
-      const assignment = positionAssignments.find(
-        (assignment) => assignment.participantId === participantId
-      );
-      const side = doublesMatchUp.sides.find(
-        (side) => side.drawPosition === assignment.drawPosition
-      );
-      const { sideNumber } = side;
-
       const individualParticipantIds =
         teamParticipant.individualParticipantIds.slice(0, 2);
-
       individualParticipantIds.forEach((individualParticipantId, i) => {
         const result = tournamentEngine.assignTieMatchUpParticipantId({
           participantId: individualParticipantId,
           tieMatchUpId: doublesMatchUpId,
-          sideNumber,
           drawId,
         });
         expect(result.success).toEqual(true);
@@ -87,13 +76,6 @@ test('collection matchUps appear in participant reports', () => {
     const teamParticipants = getTeamParticipants(drawPositions);
     teamParticipants.forEach((teamParticipant) => {
       const { participantId } = teamParticipant;
-      const assignment = positionAssignments.find(
-        (assignment) => assignment.participantId === participantId
-      );
-      const side = singlesMatchUp.sides.find(
-        (side) => side.drawPosition === assignment.drawPosition
-      );
-      const { sideNumber } = side;
 
       if (!teamSinglesCount[participantId]) teamSinglesCount[participantId] = 0;
       const count = teamSinglesCount[participantId];
@@ -105,7 +87,6 @@ test('collection matchUps appear in participant reports', () => {
       const result = tournamentEngine.assignTieMatchUpParticipantId({
         participantId: individualParticipantId,
         tieMatchUpId: doublesMatchUpId,
-        sideNumber,
         drawId,
       });
       expect(result.success).toEqual(true);
