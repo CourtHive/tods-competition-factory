@@ -1,3 +1,4 @@
+import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { addParticipant } from '../participantGovernor/addParticipants';
@@ -8,6 +9,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { PAIR } from '../../../constants/participantTypes';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 import {
+  INVALID_PARTICIPANT_TYPE,
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
@@ -16,7 +18,7 @@ export function replaceTieMatchUpParticipantId(params) {
   const result = getTieMatchUpContext(params);
   if (result.error) return result;
 
-  const { existingParticipantId, newParticipantId } = params;
+  const { tournamentRecord, existingParticipantId, newParticipantId } = params;
   if (!existingParticipantId || !newParticipantId)
     return { error: MISSING_PARTICIPANT_ID };
 
@@ -31,6 +33,21 @@ export function replaceTieMatchUpParticipantId(params) {
       )
   );
   if (!side) return { error: PARTICIPANT_NOT_FOUND };
+
+  const { tournamentParticipants: targetParticipants } =
+    getTournamentParticipants({
+      tournamentRecord,
+      participantFilters: {
+        participantIds: [existingParticipantId, newParticipantId],
+      },
+    });
+
+  if (targetParticipants.length !== 2) return { error: MISSING_PARTICIPANT_ID };
+  if (
+    targetParticipants[0].participantType !==
+    targetParticipants[1].participantType
+  )
+    return { error: INVALID_PARTICIPANT_TYPE };
 
   const dualMatchUpSide = dualMatchUp.sides.find(
     ({ sideNumber }) => sideNumber === side.sideNumber
