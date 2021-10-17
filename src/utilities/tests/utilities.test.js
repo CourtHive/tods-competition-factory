@@ -1,3 +1,6 @@
+import { isOdd, nextPowerOf2, isPowerOf2 } from '../math';
+import { generateHashCode } from '../objects';
+import { JSON2CSV } from '../json';
 import {
   addMinutesToTimeString,
   addWeek,
@@ -15,19 +18,17 @@ import {
   timeUTC,
   weekDays,
 } from '../dateTime';
-import { JSON2CSV } from '../json';
-import { countValues } from '..';
 import {
   arrayIndices,
   chunkByNth,
   chunkSizeProfile,
+  countValues,
   groupConsecutiveNumbers,
   inPlaceSubSort,
   occurrences,
   subSort,
   overlap,
 } from '../arrays';
-import { isOdd, nextPowerOf2, isPowerOf2 } from '../math';
 
 it('can count values and determine active drawPositions', () => {
   const drawPositions = [1, 1, 2, 3, 4, 5, 5, 6];
@@ -216,6 +217,8 @@ test('miscellaneous math tests', () => {
   result = nextPowerOf2(2);
   expect(result).toEqual(2);
 
+  result = isOdd(0);
+  expect(result).toEqual(false);
   result = isOdd(1);
   expect(result).toEqual(true);
   result = isOdd('1');
@@ -289,4 +292,11 @@ test('overlap detects the presence of an intersection of two arrays', () => {
   expect(hasOverlap).toEqual(true);
   hasOverlap = overlap([1, 2], [3, 4, 6, 7]);
   expect(hasOverlap).toEqual(false);
+});
+
+it('can generate hashCodes and count object keys', () => {
+  let result = generateHashCode();
+  expect(result).toBeUndefined();
+  result = generateHashCode({ a: 1, b: 2 });
+  expect(result).toEqual('d2na');
 });

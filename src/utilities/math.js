@@ -37,14 +37,6 @@ export function isConvertableInteger(n) {
   return Number.isSafeInteger(typeof n === 'string' ? +n : n);
 }
 
-export function normalDistribution(mean, sd) {
-  var u = 1 - Math.random();
-  var v = 1 - Math.random();
-  return Math.abs(
-    mean + Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v) * sd
-  );
-}
-
 // produces an approximated normal distribution between 0 and max
 export function weightedRandom(max = 1, weight = 3, round = true) {
   let num = 0;
@@ -54,6 +46,7 @@ export function weightedRandom(max = 1, weight = 3, round = true) {
   return round && max > 1 ? Math.round(num) : num;
 }
 
+/*
 export function boxMueller(min = 0, max = 1, round = true) {
   const u = 1 - Math.random();
   const v = 1 - Math.random();
@@ -64,3 +57,12 @@ export function boxMueller(min = 0, max = 1, round = true) {
   num += min;
   return round && max > 1 ? Math.round(num) : num;
 }
+
+export function normalDistribution(mean, sd) {
+  var u = 1 - Math.random();
+  var v = 1 - Math.random();
+  return Math.abs(
+    mean + Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v) * sd
+  );
+}
+*/
