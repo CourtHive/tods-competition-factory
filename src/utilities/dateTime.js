@@ -1,8 +1,10 @@
 import { dateValidation, validDateString } from '../fixtures/validations/regex';
+/*
 import {
   INVALID_DATE,
   INVALID_TIME_ZONE,
 } from '../constants/errorConditionConstants';
+*/
 
 export function isDateObject(value) {
   if (typeof value !== 'object' || Array.isArray(value)) {
@@ -202,11 +204,11 @@ export function dateStringDaysChange(dateString, daysChange) {
 }
 
 function splitTime(value) {
-  value = value || '00:00';
+  value = typeof value !== 'string' ? '00:00' : value;
   const o = {},
     time = {};
-  ({ 0: o.time, 1: o.ampm } = (value && value.split(' ')) || '');
-  ({ 0: time.hours, 1: time.minutes } = (o.time && o.time.split(':')) || '');
+  ({ 0: o.time, 1: o.ampm } = value.split(' ') || []);
+  ({ 0: time.hours, 1: time.minutes } = o.time.split(':') || []);
   time.ampm = o.ampm;
   return time;
 }
@@ -349,6 +351,7 @@ export function sameDay(date1, date2) {
  * @param {date || string} date - date object or valid date string
  * @param {string} timeZone - IANA code, e.g. 'America/New_York'
  */
+/*
 export function getTimeZoneOffset({ date, timeZone } = {}) {
   // assume if provided a date string with no time element that
   // the date is intended to represent this date in local time zone
@@ -399,6 +402,7 @@ export function getTimeZoneOffset({ date, timeZone } = {}) {
     offsetMilliseconds,
   };
 }
+*/
 
 /*
 export function validDate(datestring, range) {
@@ -482,7 +486,7 @@ export const dateTime = {
   extractTime,
   formatDate,
   getDateByWeek,
-  getTimeZoneOffset,
+  // getTimeZoneOffset,
   isISODateString,
   isTimeString,
   offsetDate,
