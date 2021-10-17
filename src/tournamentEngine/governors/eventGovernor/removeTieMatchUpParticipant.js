@@ -1,13 +1,16 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { scoreHasValue } from '../../../drawEngine/governors/matchUpGovernor/scoreHasValue';
+import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
+import { addParticipant } from '../participantGovernor/addParticipants';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { COMPETITOR } from '../../../constants/participantRoles';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EXISTING_OUTCOME,
   INVALID_PARTICIPANT,
@@ -94,6 +97,7 @@ export function removeTieMatchUpParticipantId(params) {
       participantFilters: {
         participantIds: [pairParticipantId],
       },
+      withEvents: true,
     });
 
     if (pairParticipant) {
@@ -101,21 +105,45 @@ export function removeTieMatchUpParticipantId(params) {
         pairParticipant?.individualParticipantIds.filter(
           (currentId) => currentId !== participantId
         );
-      if (individualParticipantIds.length) {
-        // CHECK - don't modify pair participant that is part of other events/draws
-        pairParticipant.individualParticipantIds = individualParticipantIds;
-        const result = modifyParticipant({
-          participant: pairParticipant,
-          pairOverride: true,
-          tournamentRecord,
-        });
-        if (result.error) return result;
+
+      // don't modify pair participant that is part of other events/draws
+      if (!pairParticipant.draws.length) {
+        if (individualParticipantIds.length) {
+          pairParticipant.individualParticipantIds = individualParticipantIds;
+          const result = modifyParticipant({
+            participant: pairParticipant,
+            pairOverride: true,
+            tournamentRecord,
+          });
+          if (result.error) return result;
+        } else {
+          const result = deleteParticipants({
+            participantIds: [pairParticipantId],
+            tournamentRecord,
+          });
+          if (result.error) console.log('cleanup', { result });
+        }
       } else {
-        const result = deleteParticipants({
-          participantIds: [pairParticipantId],
-          tournamentRecord,
-        });
-        if (result.error) console.log('cleanup', { result });
+        if (individualParticipantIds.length === 1) {
+          // check to see if a pair with one individualParticipantId needs to be created
+          const { participant: existingParticipant } = getPairedParticipant({
+            participantIds: individualParticipantIds,
+            tournamentRecord,
+          });
+          if (!existingParticipant) {
+            const newPairParticipant = {
+              participantRole: COMPETITOR,
+              individualParticipantIds,
+              participantType: PAIR,
+            };
+            const result = addParticipant({
+              participant: newPairParticipant,
+              pairOverride: true,
+              tournamentRecord,
+            });
+            if (result.error) return result;
+          }
+        }
       }
     } else {
       return { error: PARTICIPANT_NOT_FOUND };

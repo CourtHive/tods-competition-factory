@@ -36,8 +36,8 @@ export function addParticipantContext(params) {
   const allTournamentParticipants = tournamentRecord?.participants || [];
 
   const { relevantParticipantIdsMap } = getRelevantParticipantIdsMap({
-    tournamentRecord,
     processParticipantId: initializeParticipantId,
+    tournamentRecord,
   });
 
   // optimize when filtering participants by participantIds
@@ -69,6 +69,7 @@ export function addParticipantContext(params) {
           );
       });
     }
+
     if (participant.participantType === TEAM) {
       const teamParticipantId = participant.participantId;
       participant.individualParticipantIds.forEach((participantId) => {
@@ -82,6 +83,7 @@ export function addParticipantContext(params) {
           );
       });
     }
+
     if (participant.participantType === PAIR) {
       const pairParticipantId = participant.participantId;
       participant.individualParticipantIds.forEach((participantId) => {
@@ -146,7 +148,12 @@ export function addParticipantContext(params) {
     const addDrawData = ({ drawId, drawEntry, drawName, drawType }) => {
       const { participantId, entryStage, entryStatus, entryPosition } =
         drawEntry;
+
       const relevantParticipantIds = getRelevantParticipantIds(participantId);
+      if (eventType === TEAM) {
+        console.log({ eventType }, relevantParticipantIds);
+      }
+
       relevantParticipantIds?.forEach(({ relevantParticipantId }) => {
         if (!participantIdMap[relevantParticipantId].events[eventId]) {
           participantIdMap[relevantParticipantId].events[eventId] = {
@@ -326,7 +333,17 @@ export function addParticipantContext(params) {
 
       // for all matchUps include all individual participants that are part of teams & pairs
       // this does NOT include PAIR participants in teams, because they are constructed from collectionAssignments
-      const relevantParticipantIds = getRelevantParticipantIds(participantId);
+      // if { eventType: TEAM } then only add relevant PAIR participantIds using doublesTieParticipants
+      // this will avoid adding a pair to all team events in which individuals appear
+      const relevantParticipantIds = getRelevantParticipantIds(
+        participantId
+      ).filter((relevant) => {
+        return (
+          eventType !== TEAM ||
+          (eventType === TEAM && matchUpType === DOUBLES) ||
+          relevant.participantType !== PAIR
+        );
+      });
 
       // for TEAM matchUps add all PAIR participants
       doublesTieParticipants
@@ -365,6 +382,7 @@ export function addParticipantContext(params) {
               partnerParticipantIds: [],
               drawIds: [],
               eventName,
+              eventId,
             };
           }
           const eventDrawIds =

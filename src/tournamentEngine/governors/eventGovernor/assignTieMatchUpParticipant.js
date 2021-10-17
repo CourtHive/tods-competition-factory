@@ -247,6 +247,7 @@ function updateLineUp({
       collectionAssignments: [newAssignment],
       participantId,
     };
+
     modifiedLineUp.push(teamCompetitor);
   }
 }
