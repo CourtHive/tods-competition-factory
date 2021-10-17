@@ -237,7 +237,6 @@ it('can assign SINGLES particiapnts to collectionPositions and complete matchUps
   );
   expect(tournamentParticipants.length).toEqual(drawSize);
 
-  // Assign a singles team participant to a collectionPosition
   let { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [SINGLES] },
   });
