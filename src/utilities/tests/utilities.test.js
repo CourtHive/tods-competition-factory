@@ -31,6 +31,7 @@ import {
   subSort,
   overlap,
 } from '../arrays';
+import { deepMerge } from '../deepMerge';
 
 it('can count values and determine active drawPositions', () => {
   const drawPositions = [1, 1, 2, 3, 4, 5, 5, 6];
@@ -354,4 +355,17 @@ it('can determine intersection and overlap', () => {
 it('can randomly pop from an array', () => {
   let result = randomPop();
   expect(result).toBeUndefined();
+});
+
+it('handles bad data', () => {
+  let result = deepMerge();
+  expect(result).toBeUndefined();
+  result = deepMerge(undefined, {});
+  expect(result).toEqual({});
+  result = deepMerge({}, undefined);
+  expect(result).toEqual({});
+  result = deepMerge({ a: 1 }, { b: 2 });
+  expect(result).toEqual({ a: 1, b: 2 });
+  result = deepMerge({ a: 1 }, { a: '2' });
+  expect(result).toEqual({ a: '2' });
 });
