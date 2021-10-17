@@ -3,6 +3,19 @@ import { attributeFilter } from '../attributeFilter';
 import { INDIVIDUAL } from '../../constants/participantTypes';
 import { MALE } from '../../constants/genderConstants';
 
+it('handles bad data', () => {
+  let result = attributeFilter();
+  expect(result).toEqual({});
+  result = attributeFilter('');
+  expect(result).toEqual({});
+  result = attributeFilter(null);
+  expect(result).toEqual({});
+  result = attributeFilter(undefined);
+  expect(result).toEqual({});
+  result = attributeFilter(1);
+  expect(result).toEqual({});
+});
+
 it('can filter attributes from arrays of object', () => {
   const privacy = {
     participantName: true,

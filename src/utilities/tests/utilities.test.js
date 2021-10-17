@@ -1,5 +1,7 @@
+import { intersection, makeDeepCopy, noNulls, randomPop } from '..';
 import { isOdd, nextPowerOf2, isPowerOf2 } from '../math';
 import { generateHashCode } from '../objects';
+import { safeUUID, UUIDS } from '../UUID';
 import { JSON2CSV } from '../json';
 import {
   addMinutesToTimeString,
@@ -299,4 +301,57 @@ it('can generate hashCodes and count object keys', () => {
   expect(result).toBeUndefined();
   result = generateHashCode({ a: 1, b: 2 });
   expect(result).toEqual('d2na');
+});
+
+test('makeDeepCopy turns date objects into strings', () => {
+  let result = makeDeepCopy({ date: new Date() });
+  expect(typeof result.date).toEqual('string');
+});
+
+test('can generate an array of UUIDs', () => {
+  let result = UUIDS();
+  expect(result.length).toEqual(1);
+  result = UUIDS(10);
+  expect(result.length).toEqual(10);
+});
+
+// UUIDs embedded in HTML cannot start with a number
+test('can generate an HTML-safe UUID', () => {
+  let result = safeUUID();
+  expect(typeof result).toEqual('string');
+  expect(parseInt(result[0])).toEqual(NaN);
+});
+
+it('can replace NULLs in an array with undefined', () => {
+  let result = noNulls();
+  expect(result).toEqual(undefined);
+  result = noNulls([1, 2, 3]);
+  expect(result).toEqual([1, 2, 3]);
+  result = noNulls([1, null, 2]);
+  expect(result).toEqual([1, undefined, 2]);
+});
+
+it('can determine intersection and overlap', () => {
+  let result = intersection();
+  expect(result).toEqual(0);
+  result = intersection(1, 2);
+  expect(result).toEqual(0);
+  result = intersection([1], 2);
+  expect(result).toEqual(0);
+  result = intersection(1, [2]);
+  expect(result).toEqual(0);
+
+  result = overlap();
+  expect(result).toEqual(false);
+  result = overlap(1, 2);
+  expect(result).toEqual(false);
+  result = overlap([1], 2);
+  expect(result).toEqual(false);
+  result = overlap(1, [2]);
+  expect(result).toEqual(false);
+});
+
+it('can randomly pop from an array', () => {
+  let result = randomPop();
+  expect(result).toBeUndefined();
 });
