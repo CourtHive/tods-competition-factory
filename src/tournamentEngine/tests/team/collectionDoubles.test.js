@@ -3,7 +3,10 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { EXISTING_OUTCOME } from '../../../constants/errorConditionConstants';
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import {
+  COMPLETED,
+  TO_BE_PLAYED,
+} from '../../../constants/matchUpStatusConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { PAIR } from '../../../constants/participantTypes';
 
@@ -68,7 +71,6 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
 
   let result = tournamentEngine.assignTieMatchUpParticipantId({
     participantId: firstParticipant.individualParticipantIds[0],
-    sideNumber: firstParticipantSide.sideNumber,
     tieMatchUpId: doublesMatchUpId,
     drawId,
   });
@@ -146,7 +148,6 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
       const result = tournamentEngine.assignTieMatchUpParticipantId({
         participantId: individualParticipantId,
         tieMatchUpId: doublesMatchUpId,
-        sideNumber,
         drawId,
       });
       expect(result.success).toEqual(true);
@@ -183,7 +184,11 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
   });
 
   // score the DOUBLES matchUp
-  let { outcome } = mocksEngine.generateOutcome(doublesMatchUp);
+  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '6-1 6-1',
+    winningSide: 1,
+    matchUpStatus: COMPLETED,
+  });
   let result = tournamentEngine.setMatchUpStatus({
     matchUpId: doublesMatchUpId,
     outcome,
@@ -344,7 +349,6 @@ it('can create new PAIR participants and remove/replace individualParticipants',
       const result = tournamentEngine.assignTieMatchUpParticipantId({
         participantId: individualParticipantId,
         tieMatchUpId: doublesMatchUpId,
-        sideNumber,
         drawId,
       });
       expect(result.success).toEqual(true);

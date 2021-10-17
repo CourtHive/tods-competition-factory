@@ -5,13 +5,13 @@ import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { removeCollectionAssignment } from './removeCollectionAssignment';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 
+import { SUCCESS } from '../../../constants/resultConstants';
+import { DOUBLES } from '../../../constants/matchUpTypes';
 import {
   EXISTING_OUTCOME,
   MISSING_PARTICIPANT_ID,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { DOUBLES } from '../../../constants/matchUpTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function removeTieMatchUpParticipantId(params) {
   const { tournamentRecord, participantId } = params;

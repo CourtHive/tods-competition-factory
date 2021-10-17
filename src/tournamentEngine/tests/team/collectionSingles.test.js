@@ -55,20 +55,11 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
 
   // assign individual participants to the first singles matchUp
   teamParticipants.forEach((teamParticipant) => {
-    const { participantId } = teamParticipant;
-    const assignment = positionAssignments.find(
-      (assignment) => assignment.participantId === participantId
-    );
-    const side = singlesMatchUp.sides.find(
-      (side) => side.drawPosition === assignment.drawPosition
-    );
-    const { sideNumber } = side;
     const individualParticipantId = teamParticipant.individualParticipantIds[0];
     assignedIndividualParticipantIds.push(individualParticipantId);
     const result = tournamentEngine.assignTieMatchUpParticipantId({
       participantId: individualParticipantId,
       tieMatchUpId: matchUpId,
-      sideNumber,
       drawId,
     });
     expect(result.success).toEqual(true);
@@ -283,7 +274,6 @@ it('can assign SINGLES particiapnts to collectionPositions and complete matchUps
     result = tournamentEngine.assignTieMatchUpParticipantId({
       participantId: individualParticipantId,
       tieMatchUpId: matchUpId,
-      sideNumber,
       drawId,
     });
     expect(result.success).toEqual(true);
