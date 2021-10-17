@@ -5,12 +5,15 @@ import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 
+import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { DOUBLES } from '../../../constants/matchUpTypes';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import {
   EXISTING_OUTCOME,
+  INVALID_PARTICIPANT,
   MISSING_PARTICIPANT_ID,
   NOT_FOUND,
+  PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
 export function removeTieMatchUpParticipantId(params) {
@@ -32,9 +35,31 @@ export function removeTieMatchUpParticipantId(params) {
   if (scoreHasValue({ score: tieMatchUp.score }) || tieMatchUp.winningSide)
     return { error: EXISTING_OUTCOME };
 
+  const {
+    tournamentParticipants: [participantToRemove],
+  } = getTournamentParticipants({
+    tournamentRecord,
+    participantFilters: {
+      participantIds: [participantId],
+    },
+  });
+
+  if (!participantToRemove) {
+    return { error: PARTICIPANT_NOT_FOUND };
+  }
+
+  if (matchUpType === SINGLES && participantToRemove.participantType === PAIR) {
+    return { error: INVALID_PARTICIPANT };
+  }
+
+  const participantIds =
+    participantToRemove.participantType === INDIVIDUAL
+      ? [participantId]
+      : participantToRemove.individualParticipantIds;
+
   const dualMatchUpSide = dualMatchUp.sides?.find((side) =>
-    side.lineUp?.find(
-      (teamCompetitor) => teamCompetitor.participantId === participantId
+    side.lineUp?.find((teamCompetitor) =>
+      participantIds.includes(teamCompetitor.participantId)
     )
   );
 
@@ -43,15 +68,20 @@ export function removeTieMatchUpParticipantId(params) {
   }
 
   const { modifiedLineUp } = removeCollectionAssignments({
-    participantIds: [participantId],
     collectionPosition,
     dualMatchUpSide,
+    participantIds,
     collectionId,
   });
 
   dualMatchUpSide.lineUp = modifiedLineUp;
 
-  if (matchUpType === DOUBLES) {
+  // if an INDIVIDUAL participant is being removed from a DOUBLES matchUp
+  // ...then the PAIR participant may need to be modified
+  if (
+    matchUpType === DOUBLES &&
+    participantToRemove.participantType === INDIVIDUAL
+  ) {
     const tieMatchUpSide = tieMatchUp.sides.find(
       (side) => side.sideNumber === dualMatchUpSide.sideNumber
     );
@@ -72,6 +102,7 @@ export function removeTieMatchUpParticipantId(params) {
           (currentId) => currentId !== participantId
         );
       if (individualParticipantIds.length) {
+        // CHECK - don't modify pair participant that is part of other events/draws
         pairParticipant.individualParticipantIds = individualParticipantIds;
         const result = modifyParticipant({
           participant: pairParticipant,
