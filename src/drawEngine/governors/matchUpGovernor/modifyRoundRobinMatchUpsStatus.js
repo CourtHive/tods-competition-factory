@@ -17,7 +17,7 @@ export function modifyRoundRobinMatchUpsStatus({
 
   matchUps.forEach((matchUp) => {
     const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
-      matchUp.drawPositions.includes(drawPosition)
+      matchUp.drawPositions?.includes(drawPosition)
     );
     const matchUpContainsBye = matchUpAssignments.filter(
       (assignment) => assignment.bye

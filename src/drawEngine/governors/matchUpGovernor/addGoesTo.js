@@ -16,32 +16,38 @@ export function addGoesTo({
     }));
   }
 
-  (inContextDrawMatchUps || []).forEach((inContextMatchUp) => {
-    const { matchUpId, structureId } = inContextMatchUp;
-    const targetData = positionTargets({
-      inContextDrawMatchUps,
-      drawDefinition,
-      matchUpId,
-    });
-    const { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
-    const winnerMatchUpId = winnerMatchUp?.matchUpId;
-    const loserMatchUpId = loserMatchUp?.matchUpId;
+  (inContextDrawMatchUps || [])
+    .filter(({ collectionId }) => !collectionId)
+    .forEach((inContextMatchUp) => {
+      const { matchUpId, structureId } = inContextMatchUp;
+      const targetData = positionTargets({
+        inContextDrawMatchUps,
+        drawDefinition,
+        matchUpId,
+      });
+      const { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
+      const winnerMatchUpId = winnerMatchUp?.matchUpId;
+      const loserMatchUpId = loserMatchUp?.matchUpId;
 
-    const matchUps = getMappedStructureMatchUps({
-      matchUpsMap,
-      structureId,
-    });
-    const matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
+      const matchUps = getMappedStructureMatchUps({
+        matchUpsMap,
+        structureId,
+      });
+      const matchUp = matchUps.find(
+        (matchUp) => matchUp.matchUpId === matchUpId
+      );
 
-    if (winnerMatchUpId) {
-      Object.assign(matchUp, { winnerMatchUpId });
-      Object.assign(inContextMatchUp, { winnerMatchUpId });
-    }
-    if (loserMatchUpId) {
-      Object.assign(matchUp, { loserMatchUpId });
-      Object.assign(inContextMatchUp, { loserMatchUpId });
-    }
-  });
+      if (matchUp) {
+        if (winnerMatchUpId) {
+          Object.assign(matchUp, { winnerMatchUpId });
+          Object.assign(inContextMatchUp, { winnerMatchUpId });
+        }
+        if (loserMatchUpId) {
+          Object.assign(matchUp, { loserMatchUpId });
+          Object.assign(inContextMatchUp, { loserMatchUpId });
+        }
+      }
+    });
 
   return { inContextDrawMatchUps };
 }
