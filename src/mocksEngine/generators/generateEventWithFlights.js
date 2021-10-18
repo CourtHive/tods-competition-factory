@@ -180,16 +180,16 @@ export function generateEventWithFlights({
   const eventId = eventProfile.eventId || UUID();
   const newEvent = {
     ...eventAttributes,
+    surfaceCategory,
+    discipline,
+    eventLevel,
+    eventName,
+    eventType,
+    tieFormat,
     ballType,
     category,
-    discipline,
     eventId,
-    eventName,
-    eventLevel,
-    eventType,
     gender,
-    surfaceCategory,
-    tieFormat,
   };
 
   // attach any valid eventExtensions
@@ -313,6 +313,7 @@ export function generateEventWithFlights({
           matchUpType: eventType,
           seedingScaleName,
           tournamentRecord,
+          isMock: true,
           drawEntries,
           drawName,
           drawId,
@@ -346,6 +347,7 @@ export function generateEventWithFlights({
             tournamentRecord,
             drawDefinition,
             structureId,
+            event,
           });
           if (result?.error) return result;
         }
@@ -356,8 +358,8 @@ export function generateEventWithFlights({
         if (!manual && completeAllMatchUps) {
           const matchUpFormat = drawProfile?.matchUpFormat;
           const result = completeDrawMatchUps({
-            completeAllMatchUps,
             matchUpStatusProfile,
+            completeAllMatchUps,
             randomWinningSide,
             drawDefinition,
             matchUpFormat,

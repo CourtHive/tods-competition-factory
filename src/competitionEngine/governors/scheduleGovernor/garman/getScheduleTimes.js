@@ -4,7 +4,7 @@ import { getFirstTimeSlotStartTime } from './getFirstTimeSlotStartTime';
 import { generateRange } from '../../../../utilities/arrays';
 import { courtGenerator } from './courtGenerator';
 import {
-  currentUTCDate,
+  getUTCdateString,
   extractTime,
   extractDate,
   timeStringMinutes,
@@ -32,7 +32,7 @@ export function getScheduleTimes({
   calculateStartTimeFromCourts = true,
   remainingScheduleTimes, // times remaining from previous scheduling iteration
   averageMatchUpMinutes = 90,
-  date = currentUTCDate(),
+  date = getUTCdateString(),
   clearScheduleDates,
   periodLength = 30,
   startTime = '08:00',

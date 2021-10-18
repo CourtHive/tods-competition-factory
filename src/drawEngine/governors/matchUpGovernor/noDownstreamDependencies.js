@@ -90,6 +90,7 @@ function scoreModification(params) {
     const { removeWinningSide } = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       drawDefinition,
+      event,
     });
     console.log('ndd', { removeWinningSide, removeDirected });
   }

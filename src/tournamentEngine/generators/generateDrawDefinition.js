@@ -34,8 +34,7 @@ import {
 } from '../../constants/policyConstants';
 
 /**
- * 
-    automated = true, // can be true/false or "truthy" { seedsOnly: true }
+ * automated = true, // can be true/false or "truthy" { seedsOnly: true }
  */
 export function generateDrawDefinition(params) {
   const {
@@ -59,6 +58,7 @@ export function generateDrawDefinition(params) {
     feedPolicy,
     idPrefix,
     drawId,
+    isMock,
     uuids,
   } = params;
 
@@ -146,7 +146,6 @@ export function generateDrawDefinition(params) {
       let result = setMatchUpFormat({
         drawDefinition,
         matchUpFormat,
-        matchUpType,
         tieFormat,
       });
 
@@ -155,6 +154,9 @@ export function generateDrawDefinition(params) {
           error: result.error,
           message: 'matchUpFormat or tieFormat error',
         };
+
+      if (matchUpType) drawDefinition.matchUpType = matchUpType;
+      if (tieFormat) drawDefinition.tieFormat = tieFormat;
 
       // update tieFormat if integrity check has added collectionIds
       if (result.tieFormat) tieFormat = result.tieFormat;
@@ -165,27 +167,23 @@ export function generateDrawDefinition(params) {
 
   tieFormat = tieFormat || event?.tieFormat;
   let result = generateDrawType({
-    drawDefinition,
-    matchUpType,
-    tieFormat,
-
-    stage,
-    drawType,
-    seedingProfile,
+    finishingPositionNaming,
+    goesTo: params.goesTo,
+    playoffMatchUpFormat,
+    qualifyingPositions,
     structureOptions,
     qualifyingRound,
-    qualifyingPositions,
-
-    uuids,
-    idPrefix,
+    drawDefinition,
+    seedingProfile,
     matchUpFormat,
-    playoffMatchUpFormat,
-    finishingPositionNaming,
-
+    matchUpType,
     feedPolicy,
-    goesTo: params.goesTo,
-
-    isMock: true,
+    tieFormat,
+    drawType,
+    idPrefix,
+    isMock,
+    stage,
+    uuids,
   });
   if (result.error) return result;
 
@@ -202,18 +200,18 @@ export function generateDrawDefinition(params) {
   if (typeof policyDefinitions === 'object') {
     for (const policyType of Object.keys(policyDefinitions)) {
       attachPolicies({
-        drawDefinition,
         policyDefinitions: { [policyType]: policyDefinitions[policyType] },
+        drawDefinition,
       });
     }
   }
 
   const { policyDefinitions: seedingPolicy } =
     getPolicyDefinitions({
+      policyTypes: [POLICY_TYPE_SEEDING],
       tournamentRecord,
       drawDefinition,
       event,
-      policyTypes: [POLICY_TYPE_SEEDING],
     }) || {};
 
   if (
@@ -229,10 +227,10 @@ export function generateDrawDefinition(params) {
   // because an event level policy COULD be modified or removed AFTER draw is generated...
   const { policyDefinitions: eventAvoidancePolicy } =
     getPolicyDefinitions({
+      policyTypes: [POLICY_TYPE_AVOIDANCE],
       tournamentRecord,
       drawDefinition,
       event,
-      policyTypes: [POLICY_TYPE_AVOIDANCE],
     }) || {};
 
   if (
@@ -264,14 +262,13 @@ export function generateDrawDefinition(params) {
   if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
 
   const { seedLimit } = initializeStructureSeedAssignments({
-    tournamentRecord,
-    drawDefinition,
-    event,
-
     participantCount: stageEntries.length,
     enforcePolicyLimits,
+    tournamentRecord,
+    drawDefinition,
     structureId,
     seedsCount,
+    event,
   });
 
   if (seedLimit && seedLimit < seedsCount) seedsCount = seedLimit;
@@ -377,17 +374,17 @@ export function generateDrawDefinition(params) {
   if (drawDefinition) Object.assign(drawDefinition, { drawName });
 
   const drawDetails = {
-    drawSize,
-    drawType,
-    automated,
-    drawName,
-    seedsCount,
-    tieFormat,
-    matchUpType,
-    seedingScaleName,
     drawId: drawDefinition.drawId,
     category: event?.category,
     eventId: event?.eventId,
+    seedingScaleName,
+    matchUpType,
+    seedsCount,
+    automated,
+    tieFormat,
+    drawSize,
+    drawType,
+    drawName,
   };
 
   addNotice({

@@ -62,9 +62,9 @@ export function generateDrawType(params = {}) {
     // TODO: description => is this passed on?
   } = params;
 
-  let { tieFormat, matchUpType } = params;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
+  let { tieFormat, matchUpType } = params;
   tieFormat = tieFormat || drawDefinition.tieFormat;
   matchUpType = matchUpType || drawDefinition.matchUpType || SINGLES;
 
@@ -199,6 +199,7 @@ export function generateDrawType(params = {}) {
     matchUps.forEach((matchUp) => {
       const { tieMatchUps } = generateTieMatchUps({ tieFormat });
       Object.assign(matchUp, { tieMatchUps, tieFormat, matchUpType });
+      // Object.assign(matchUp, { tieMatchUps, matchUpType });
     });
   }
 

@@ -210,6 +210,7 @@ export function generateEventWithDraw({
     tournamentRecord,
     seedingScaleName,
     matchUpFormat,
+    isMock: true,
     eventId,
     goesTo,
     event,
@@ -236,6 +237,7 @@ export function generateEventWithDraw({
       drawDefinition,
       structureId,
       idPrefix,
+      event,
     });
     if (result?.error) return result;
   }
@@ -244,9 +246,9 @@ export function generateEventWithDraw({
   if (!manual) {
     if (drawProfile.outcomes) {
       const { matchUps } = allDrawMatchUps({
-        event,
         drawDefinition,
         inContext: true,
+        event,
       });
       for (const outcomeDef of drawProfile.outcomes) {
         const {

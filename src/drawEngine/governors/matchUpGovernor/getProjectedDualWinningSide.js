@@ -1,10 +1,12 @@
 import { generateTieMatchUpScore } from '../../accessors/matchUpAccessor';
 
-export function getProjectedDualWinningWide({
+export function getProjectedDualWinningSide({
+  drawDefinition,
   winningSide,
   dualMatchUp,
   tieFormat,
   matchUp,
+  event,
 }) {
   const existingTieMatchUpWinningSide = matchUp.winningSide;
   let sideAdjustments = [0, 0];
@@ -25,6 +27,12 @@ export function getProjectedDualWinningWide({
       sideAdjustments = [0, -1];
     }
   }
+
+  tieFormat =
+    tieFormat ||
+    matchUp?.tieFormat ||
+    drawDefinition?.tieFormat ||
+    event?.tieFormat;
 
   const { winningSide: projectedWinningSide } = generateTieMatchUpScore({
     matchUp: dualMatchUp,

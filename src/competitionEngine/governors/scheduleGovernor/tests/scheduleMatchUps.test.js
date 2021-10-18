@@ -1,11 +1,17 @@
 import mocksEngine from '../../../../mocksEngine';
+import { tournamentEngine } from '../../../..';
 import competitionEngine from '../../../sync';
 
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
 import { OFFICIAL } from '../../../../constants/participantRoles';
-import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   COURT_NOT_FOUND,
+  INVALID_END_TIME,
+  INVALID_RESUME_TIME,
+  INVALID_START_TIME,
+  INVALID_STOP_TIME,
+  INVALID_TIME,
+  MISSING_MATCHUP_ID,
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
@@ -44,10 +50,10 @@ it('can add events, venues, and schedule matchUps', () => {
     venueIds: [venueId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
+    venueProfiles,
+    drawProfiles,
     startDate,
     endDate,
-    drawProfiles,
-    venueProfiles,
   });
 
   let result = competitionEngine.setState(tournamentRecord);
@@ -95,7 +101,7 @@ it('can add events, venues, and schedule matchUps', () => {
     venueId,
     drawId,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   result = competitionEngine.assignMatchUpVenue({
     tournamentId,
@@ -103,7 +109,7 @@ it('can add events, venues, and schedule matchUps', () => {
     venueId: undefined,
     drawId,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   result = competitionEngine.assignMatchUpCourt({
     tournamentId,
@@ -121,7 +127,7 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
     courtDayDate: startDate,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   result = competitionEngine.assignMatchUpCourt({
     tournamentId,
@@ -130,7 +136,7 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
     courtDayDate: startDate,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   result = competitionEngine.addMatchUpScheduledDate({
     tournamentId,
@@ -138,16 +144,16 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
     scheduledDate: startDate,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const scheduledTime = '08:00';
   result = competitionEngine.addMatchUpScheduledTime({
+    scheduledTime,
     tournamentId,
     matchUpId,
     drawId,
-    scheduledTime,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const startTime = '08:00';
   result = competitionEngine.addMatchUpStartTime({
@@ -156,7 +162,7 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
     startTime,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const stopTime = `08:15`;
   result = competitionEngine.addMatchUpStopTime({
@@ -165,7 +171,7 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
     stopTime,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const resumeTime = '14:30';
   result = competitionEngine.addMatchUpResumeTime({
@@ -174,7 +180,7 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
     resumeTime,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const endTime = '15:45';
   result = competitionEngine.addMatchUpEndTime({
@@ -183,7 +189,7 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
     endTime,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   result = competitionEngine.addMatchUpOfficial({
     tournamentId,
@@ -206,7 +212,7 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
     participantId: officialParticipantId,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   let { upcomingMatchUps } = competitionEngine.competitionMatchUps();
   expect(upcomingMatchUps[0].timeItems.length).toEqual(12);
@@ -245,7 +251,7 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
     courtDayDate: startDate,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   result = competitionEngine.matchUpScheduleChange({
     sourceMatchUpContextIds: { drawId, matchUpId, tournamentId },
@@ -273,11 +279,128 @@ it('can add events, venues, and schedule matchUps', () => {
 
   result = competitionEngine.addMatchUpScheduleItems({
     tournamentId,
-    matchUpId,
     drawId,
     schedule: {
       scheduledDate: startDate,
     },
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.error).toEqual(MISSING_MATCHUP_ID);
+
+  result = competitionEngine.addMatchUpScheduleItems({
+    tournamentId,
+    matchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_VALUE);
 });
+
+it('can schedule many attributes at once', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 8 }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+
+  let { tournamentId, drawId, matchUpId } = matchUps[0];
+  let result = competitionEngine.addMatchUpScheduleItems({
+    tournamentId,
+    matchUpId,
+    drawId,
+    schedule: {
+      scheduledTime: '08:00',
+      startTime: '08:15',
+      stopTime: '08:20',
+      resumeTime: '08:35',
+      endTime: '10:15',
+    },
+  });
+  expect(result.success).toEqual(true);
+
+  ({ tournamentId, drawId, matchUpId } = matchUps[1]);
+  result = competitionEngine.addMatchUpEndTime({
+    endTime: '10:00',
+    tournamentId,
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = competitionEngine.addMatchUpStartTime({
+    endTime: '12:00',
+    tournamentId,
+    matchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_START_TIME);
+});
+
+const scheduleItems = [
+  { scheduledTime: '24:00' },
+  { startTime: '24:00' },
+  { endTime: '24:00' },
+  { stopTime: '24:00' },
+  { resumeTime: '24:00' },
+];
+
+it.each(scheduleItems)(
+  'can schedule many attributes at once',
+  (scheduleItem) => {
+    const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+      drawProfiles: [{ drawSize: 8 }],
+    });
+
+    tournamentEngine.setState(tournamentRecord);
+
+    const { matchUps } = tournamentEngine.allTournamentMatchUps();
+
+    const { tournamentId, drawId, matchUpId } = matchUps[0];
+    let result = competitionEngine.addMatchUpScheduleItems({
+      schedule: scheduleItem,
+      tournamentId,
+      matchUpId,
+      drawId,
+    });
+    expect(result.error).toEqual(INVALID_TIME);
+  }
+);
+
+const scheduleScenarios = [
+  {
+    schedule: { startTime: '09:00', resumeTime: '08:00' },
+    error: INVALID_RESUME_TIME,
+  },
+  {
+    schedule: { startTime: '09:00', stopTime: '08:00' },
+    error: INVALID_STOP_TIME,
+  },
+  {
+    schedule: { startTime: '09:00', endTime: '08:00' },
+    error: INVALID_END_TIME,
+  },
+];
+
+it.each(scheduleScenarios)(
+  'can schedule many attributes at once',
+  (scheduleScenario) => {
+    const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+      drawProfiles: [{ drawSize: 8 }],
+    });
+
+    tournamentEngine.setState(tournamentRecord);
+
+    const { matchUps } = tournamentEngine.allTournamentMatchUps();
+
+    const { tournamentId, drawId, matchUpId } = matchUps[0];
+    const { schedule, error } = scheduleScenario;
+
+    let result = competitionEngine.addMatchUpScheduleItems({
+      tournamentId,
+      matchUpId,
+      schedule,
+      drawId,
+    });
+    expect(result.error).toEqual(error);
+  }
+);

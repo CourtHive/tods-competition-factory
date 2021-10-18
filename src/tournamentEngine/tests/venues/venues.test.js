@@ -1,3 +1,7 @@
+import {
+  MISSING_COURTS_INFO,
+  MISSING_VENUE_ID,
+} from '../../../constants/errorConditionConstants';
 import { tournamentEngine } from '../../sync';
 
 it('can define a new venue', () => {
@@ -30,10 +34,22 @@ it('can define a new venue', () => {
       ],
     },
   ];
+
+  result = tournamentEngine.addCourts({
+    dateAvailability,
+    courtsCount: 3,
+  });
+  expect(result.error).toEqual(MISSING_VENUE_ID);
+
   result = tournamentEngine.addCourts({
     venueId,
-    courtsCount: 3,
+  });
+  expect(result.error).toEqual(MISSING_COURTS_INFO);
+
+  result = tournamentEngine.addCourts({
     dateAvailability,
+    courtsCount: 3,
+    venueId,
   });
   expect(result.courts.length).toEqual(3);
 

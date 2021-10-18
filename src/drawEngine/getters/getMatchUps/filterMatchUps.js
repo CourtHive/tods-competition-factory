@@ -84,14 +84,10 @@ export function filterMatchUps(params) {
 
   const filteredMatchUps = matchUps.filter((matchUp) => {
     if (isMatchUpTie !== undefined) {
-      if (isMatchUpTie && !matchUp.tieFormat) {
+      if (isMatchUpTie && !matchUp.tieMatchUps) {
         return false;
       }
-      if (
-        !isMatchUpTie &&
-        matchUp.tieFormat &&
-        Object.keys(matchUp.tieFormat)?.length
-      ) {
+      if (!isMatchUpTie && matchUp.tieMatchUps) {
         return false;
       }
     }

@@ -23,7 +23,7 @@ import { INVALID_VALUES } from '../constants/errorConditionConstants';
  * NOTE: `columnMap` should not contain new columnName(s) that are `columnTransform` keys
  */
 export function JSON2CSV(arrayOfJSON, config) {
-  if (config && typeof config !== 'object') return { error: INVALID_VALUES };
+  if (config && typeof config !== 'object') return INVALID_VALUES;
   const {
     includeTransoformAccessors,
     columnAccessors = [],
@@ -41,16 +41,16 @@ export function JSON2CSV(arrayOfJSON, config) {
   if (
     !Array.isArray(arrayOfJSON) ||
     !Array.isArray(columnAccessors) ||
-    !Array.isArray(Object.keys(columnTransform || {})) ||
-    !Array.isArray(Object.keys(columnMap || {})) ||
-    !Array.isArray(Object.keys(valuesMap || {})) ||
-    !Array.isArray(Object.keys(context || {})) ||
+    typeof context !== 'object' ||
+    typeof columnMap !== 'object' ||
+    typeof columnTransform !== 'object' ||
+    typeof valuesMap !== 'object' ||
     typeof columnJoiner !== 'string' ||
     typeof rowJoiner !== 'string' ||
     typeof keyJoiner !== 'string' ||
     typeof delimiter !== 'string'
   )
-    return { error: INVALID_VALUES };
+    return INVALID_VALUES;
 
   const flattened = arrayOfJSON
     .filter(Boolean)
@@ -141,15 +141,18 @@ export function JSON2CSV(arrayOfJSON, config) {
   );
 }
 
-function flatten(obj, keyJoiner = '.', path = []) {
-  return Object.keys(obj || {}).reduce((result, key) => {
-    if (typeof obj[key] !== 'object') {
-      result[path.concat(key).join(keyJoiner)] = obj[key];
-      return result;
-    }
-    return Object.assign(
-      result,
-      flatten(obj[key], keyJoiner, path.concat(key), result)
-    );
-  }, {});
+function flatten(obj, keyJoiner, path = []) {
+  return (
+    typeof obj === 'object' &&
+    Object.keys(obj).reduce((result, key) => {
+      if (typeof obj[key] !== 'object') {
+        result[path.concat(key).join(keyJoiner)] = obj[key];
+        return result;
+      }
+      return Object.assign(
+        result,
+        flatten(obj[key], keyJoiner, path.concat(key))
+      );
+    }, {})
+  );
 }

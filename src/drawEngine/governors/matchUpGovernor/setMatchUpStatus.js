@@ -1,4 +1,4 @@
-import { getProjectedDualWinningWide } from './getProjectedDualWinningSide';
+import { getProjectedDualWinningSide } from './getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { positionTargets } from '../positionGovernor/positionTargets';
@@ -62,6 +62,7 @@ export function setMatchUpStatus(params) {
     matchUpStatus,
     winningSide,
     matchUpId,
+    event,
   } = params;
 
   // Check for missing parameters ---------------------------------------------
@@ -146,11 +147,12 @@ export function setMatchUpStatus(params) {
     });
     const tieFormat = dualMatchUp.tieFormat || drawDefinition.tieFormat;
 
-    const { projectedWinningSide } = getProjectedDualWinningWide({
+    const { projectedWinningSide } = getProjectedDualWinningSide({
       winningSide,
       dualMatchUp,
       tieFormat,
       matchUp,
+      event,
     });
 
     const existingDualMatchUpWinningSide = dualMatchUp.winningSide;
@@ -266,7 +268,7 @@ function winningSideWithDownstreamDependencies(params) {
 }
 
 function applyMatchUpValues(params) {
-  const { matchUp } = params;
+  const { matchUp, event } = params;
   const removeWinningSide =
     params.isCollectionMatchUp &&
     matchUp.winningSide &&
@@ -292,6 +294,7 @@ function applyMatchUpValues(params) {
     const { removeWinningSide } = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       drawDefinition,
+      event,
     });
     console.log('sms', { removeWinningSide });
   }

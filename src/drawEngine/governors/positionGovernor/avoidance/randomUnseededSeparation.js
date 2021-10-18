@@ -30,14 +30,14 @@ import { SUCCESS } from '../../../../constants/resultConstants';
  */
 export function randomUnseededSeparation({
   unseededParticipantIds,
+  inContextDrawMatchUps,
   drawDefinition,
   participants,
+  matchUpsMap,
   structureId,
   avoidance,
   entries, // entries for the specific stage of drawDefinition
-
-  matchUpsMap,
-  inContextDrawMatchUps,
+  event,
 }) {
   if (!avoidance) {
     return { error: MISSING_AVOIDANCE_POLICY };
@@ -51,6 +51,7 @@ export function randomUnseededSeparation({
   const { matchUps } = getAllStructureMatchUps({
     matchUpsMap,
     structure,
+    event,
   });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
 

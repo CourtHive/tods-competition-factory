@@ -7,7 +7,6 @@ import {
   modifyMatchUpNotice,
 } from '../../notifications/drawNotifications';
 
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/participantTypes';
 import {
@@ -19,8 +18,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function setMatchUpFormat(params) {
-  const { drawDefinition, matchUpFormat, matchUpType, structureId, matchUpId } =
-    params;
+  const { drawDefinition, matchUpFormat, structureId, matchUpId } = params;
   let { tieFormat } = params;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -28,9 +26,6 @@ export function setMatchUpFormat(params) {
 
   if (matchUpFormat && !matchUpFormatCode.isValidMatchUpFormat(matchUpFormat))
     return { error: UNRECOGNIZED_MATCHUP_FORMAT };
-
-  if (matchUpType && ![SINGLES, DOUBLES, TEAM].includes(matchUpType))
-    return { error: INVALID_VALUES };
 
   if (tieFormat) {
     const result = checkTieFormat(tieFormat);
@@ -45,15 +40,9 @@ export function setMatchUpFormat(params) {
     });
     if (error) return { error };
 
-    if (matchUpType) matchUp.matchUpType = matchUpType;
-
-    if (
-      matchUpFormat &&
-      matchUp.matchUpType !== TEAM &&
-      (!matchUpType || matchUpType !== TEAM)
-    ) {
+    if (matchUpFormat && matchUp.matchUpType !== TEAM) {
       matchUp.matchUpFormat = matchUpFormat;
-    } else if (tieFormat) {
+    } else if (tieFormat && matchUp.matchUpType === TEAM) {
       matchUp.tieFormat = tieFormat;
     } else {
       return { error: INVALID_VALUES };
@@ -65,21 +54,14 @@ export function setMatchUpFormat(params) {
     if (!structure) {
       return { error: STRUCTURE_NOT_FOUND };
     } else {
-      if (matchUpType) structure.matchUpType = matchUpType;
-
-      if (
-        matchUpFormat &&
-        structure.matchUpType !== TEAM &&
-        (!matchUpType || matchUpType !== TEAM)
-      ) {
+      if (matchUpFormat && structure.matchUpType !== TEAM) {
         structure.matchUpFormat = matchUpFormat;
       } else if (tieFormat) {
         structure.tieFormat = tieFormat;
       }
     }
   } else if (drawDefinition) {
-    if (matchUpType) drawDefinition.matchUpType = matchUpType;
-    if (matchUpFormat && (!matchUpType || matchUpType !== TEAM)) {
+    if (matchUpFormat) {
       drawDefinition.matchUpFormat = matchUpFormat;
     } else if (tieFormat) {
       drawDefinition.tieFormat = tieFormat;

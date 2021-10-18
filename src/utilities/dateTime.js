@@ -38,19 +38,19 @@ export function HHMMSS(s, format) {
   return timeString.split(':').map(zeroPad).join(':');
 }
 
-export const currentUTCDate = () => {
-  const date = new Date();
-  const utcMonth =
-    date.getUTCMonth().toString().length === 1
-      ? `0${date.getUTCMonth() + 1}`
-      : `${date.getUTCMonth()}`;
-  return `${date.getUTCFullYear()}-${zeroPad(utcMonth)}-${zeroPad(
-    date.getUTCDate()
+export const getUTCdateString = (date) => {
+  const dateDate =
+    isDate(date) || isISODateString(date) ? new Date(date) : new Date();
+  const monthNumber = dateDate.getUTCMonth() + 1;
+  const utcMonth = monthNumber < 10 ? `0${monthNumber}` : `${monthNumber}`;
+  return `${dateDate.getUTCFullYear()}-${zeroPad(utcMonth)}-${zeroPad(
+    dateDate.getUTCDate()
   )}`;
 };
 
 export function timeUTC(date) {
-  const dateDate = isDate(date) ? new Date(date) : new Date();
+  const dateDate =
+    isDate(date) || isISODateString(date) ? new Date(date) : new Date();
   return Date.UTC(
     dateDate.getFullYear(),
     dateDate.getMonth(),
@@ -480,7 +480,7 @@ export function isoDateString(date) {
 export const dateTime = {
   addMinutesToTimeString,
   convertTime,
-  currentUTCDate,
+  getUTCdateString,
   DateHHMM,
   extractDate,
   extractTime,

@@ -137,11 +137,6 @@ export function getAllStructureMatchUps({
     structure;
   const { drawId, drawName } = drawDefinition || {};
 
-  // a collectionDefinition can be found as a propery of tieFormat
-  // which can be found as a property of either a structure or a drawDefinition
-  const tieFormat =
-    structure.tieFormat || drawDefinition?.tieFormat || event?.tieFormat;
-  const collectionDefinitions = tieFormat && tieFormat.collectionDefinitions;
   const isRoundRobin = structure.structures;
 
   let matchUps = getMappedStructureMatchUps({
@@ -170,15 +165,13 @@ export function getAllStructureMatchUps({
 
   if (inContext) {
     const { sourceDrawPositionRanges } = getSourceDrawPositionRanges({
-      matchUpsMap,
-
       drawDefinition,
+      matchUpsMap,
       structureId,
     });
     const { drawPositionsRanges } = getDrawPositionsRanges({
-      matchUpsMap,
-
       drawDefinition,
+      matchUpsMap,
       structureId,
     });
 
@@ -259,6 +252,13 @@ export function getAllStructureMatchUps({
     matchUp,
     event,
   }) {
+    const tieFormat =
+      matchUp.tieFormat ||
+      structure.tieFormat ||
+      drawDefinition?.tieFormat ||
+      event?.tieFormat;
+
+    const collectionDefinitions = tieFormat?.collectionDefinitions;
     const collectionDefinition =
       matchUp.collectionId &&
       collectionDefinitions?.find(
@@ -268,7 +268,9 @@ export function getAllStructureMatchUps({
     const matchUpFormat =
       matchUp.matchUpFormat || matchUp.collectionId
         ? collectionDefinition && collectionDefinition.matchUpFormat
-        : structure.matchUpFormat || drawDefinition?.matchUpFormat;
+        : structure.matchUpFormat ||
+          drawDefinition?.matchUpFormat ||
+          event?.matchUpFormat;
 
     const matchUpType =
       matchUp.matchUpType ||
@@ -276,6 +278,9 @@ export function getAllStructureMatchUps({
       structure.matchUpType ||
       drawDefinition?.matchUpType ||
       (event?.eventType !== TEAM && event?.eventType);
+
+    // if (!tieFormat && !['SINGLES', 'DOUBLES'].includes(matchUpType))
+    //   console.log({ matchUpType, event });
 
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
     const { schedule, endDate } = getMatchUpScheduleDetails({
@@ -317,14 +322,17 @@ export function getAllStructureMatchUps({
 
     // order is important here as Round Robin matchUps already have inContext structureId
     const matchUpWithContext = Object.assign(
+      {},
+      definedAttributes(context),
       definedAttributes({
+        matchUpFormat: matchUp.matchUpType !== TEAM && matchUpFormat,
+        tieFormat: matchUp.matchUpType === TEAM && tieFormat,
         endDate: matchUp.endDate || endDate,
         drawPositionsRange,
         structureName,
         stageSequence,
         drawPositions,
         matchUpStatus,
-        matchUpFormat,
         matchUpTieId,
         matchUpType,
         exitProfile,
@@ -337,8 +345,7 @@ export function getAllStructureMatchUps({
         drawId,
         stage,
       }),
-      context,
-      makeDeepCopy(matchUp, true, true)
+      makeDeepCopy(definedAttributes(matchUp), true, true)
     );
 
     if (Array.isArray(drawPositions)) {

@@ -4,17 +4,17 @@ import { addTournamentTimeItem } from '../tournamentGovernor/addTimeItem';
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
 export function addPlayoffStructures({
-  tournamentRecord,
-  drawDefinition,
-
   playoffStructureNameBase,
   playoffAttributes,
   playoffPositions,
   exitProfileLimit,
+  tournamentRecord,
+  drawDefinition,
   roundProfiles,
   roundNumbers,
   structureId,
   idPrefix,
+  event,
   uuids,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -29,14 +29,15 @@ export function addPlayoffStructures({
     roundNumbers,
     structureId,
     idPrefix,
+    event,
     uuids,
   });
 
   const playoffDetails = {
-    structureId,
-    roundNumbers,
-    playoffPositions,
     playoffStructureNameBase,
+    playoffPositions,
+    roundNumbers,
+    structureId,
   };
 
   const timeItem = {

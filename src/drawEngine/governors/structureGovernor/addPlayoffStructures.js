@@ -4,14 +4,16 @@ import { directParticipants } from '../matchUpGovernor/directParticipants';
 import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
 import { matchUpIsComplete } from '../scoreGovernor/matchUpIsComplete';
 import { positionTargets } from '../positionGovernor/positionTargets';
+import { getMatchUpId } from '../../../global/functions/extractors';
+import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import { playoff } from '../../generators/playoffStructures';
 import { findStructure } from '../../getters/findStructure';
-import { getDevContext } from '../../../global/globalState';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 import { getSourceRounds } from './getSourceRounds';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   LOSER,
   PLAY_OFF,
@@ -32,8 +34,8 @@ import {
  */
 export function addPlayoffStructures(params) {
   const {
-    playoffRounds: availablePlayoffRounds,
     playoffRoundsRanges: availablePlayoffRoundsRanges,
+    playoffRounds: availablePlayoffRounds,
     error: playoffRoundsError,
   } = getAvailablePlayoffRounds(params);
   if (playoffRoundsError) return { error: playoffRoundsError };
@@ -56,6 +58,7 @@ export function addPlayoffStructures(params) {
     roundProfiles,
     roundNumbers,
     idPrefix,
+    event,
     uuids,
   } = params;
 
@@ -88,8 +91,8 @@ export function addPlayoffStructures(params) {
   }
 
   const { structure } = findStructure({
-    drawDefinition,
     structureId: sourceStructureId,
+    drawDefinition,
   });
 
   const sourceRounds = validRoundNumbers || playoffSourceRounds;
@@ -113,6 +116,7 @@ export function addPlayoffStructures(params) {
       roundProfile &&
       roundProfile[roundNumber] &&
       stageSequence + roundProfile[roundNumber] - 1;
+
     const { structure: targetStructure } = playoff({
       exitProfile: `0-${roundNumber}`,
       playoffStructureNameBase,
@@ -134,20 +138,15 @@ export function addPlayoffStructures(params) {
       const link = {
         linkType: LOSER,
         source: {
-          roundNumber,
           structureId: sourceStructureId,
+          roundNumber,
         },
         target: {
-          roundNumber: 1,
-          feedProfile: TOP_DOWN,
           structureId: targetStructure.structureId,
+          feedProfile: TOP_DOWN,
+          roundNumber: 1,
         },
       };
-
-      if (getDevContext()) {
-        link.source.structureName = structure.structureName;
-        link.target.structureName = targetStructure.structureName;
-      }
 
       newLinks.push(link);
     }
@@ -160,6 +159,25 @@ export function addPlayoffStructures(params) {
     inContext: true,
     drawDefinition,
   });
+
+  const addedMatchUpIds = inContextDrawMatchUps
+    .filter(({ structureId }) => newStructureIds.includes(structureId))
+    .map(getMatchUpId);
+
+  const addedMatchUps = matchUpsMap?.drawMatchUps?.filter(({ matchUpId }) =>
+    addedMatchUpIds.includes(matchUpId)
+  );
+
+  if (addedMatchUps.length) {
+    const tieFormat = drawDefinition.tieFormat || event?.tieFormat;
+    if (tieFormat) {
+      addedMatchUps.forEach((matchUp) => {
+        const { tieMatchUps } = generateTieMatchUps({ tieFormat });
+        Object.assign(matchUp, { tieMatchUps, tieFormat, matchUpType: TEAM });
+        // Object.assign(matchUp, { tieMatchUps, matchUpType: TEAM });
+      });
+    }
+  }
 
   // now advance any players from completed matchUps into the newly added structures
   const completedMatchUps = inContextDrawMatchUps.filter(
@@ -191,8 +209,8 @@ export function addPlayoffStructures(params) {
 
   if (params.goesTo)
     addGoesTo({
-      drawDefinition,
       inContextDrawMatchUps,
+      drawDefinition,
       matchUpsMap,
     });
 

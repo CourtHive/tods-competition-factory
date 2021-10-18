@@ -11,17 +11,17 @@ import {
 } from '../../../../constants/positionActionConstants';
 
 export function getValidLuckyLosersAction({
-  drawPosition,
-  structureId,
-  drawId,
-
-  structure,
-  drawDefinition,
+  tournamentParticipants = [],
+  possiblyDisablingAction,
+  isWinRatioFedStructure,
   activeDrawPositions,
   positionAssignments,
-  isWinRatioFedStructure,
-  possiblyDisablingAction,
-  tournamentParticipants = [],
+  drawDefinition,
+  drawPosition,
+  structureId,
+  structure,
+  drawId,
+  event,
 }) {
   if (activeDrawPositions.includes(drawPosition) || isWinRatioFedStructure)
     return {};
@@ -66,12 +66,13 @@ export function getValidLuckyLosersAction({
   const matchUpFilters = {};
   if (restrictBySourceRound) {
     const { matchUps } = getAllStructureMatchUps({
-      structure,
       drawDefinition,
+      structure,
+      event,
     });
     const { initialRoundNumber } = getInitialRoundNumber({
-      matchUps,
       drawPosition,
+      matchUps,
     });
     relevantLink = drawDefinition.links?.find(
       (link) =>

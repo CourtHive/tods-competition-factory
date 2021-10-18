@@ -24,8 +24,13 @@ export function assignTieMatchUpParticipantId(params) {
   const result = getTieMatchUpContext(params);
   if (result.error) return result;
 
-  const { tournamentRecord, drawDefinition, participantId, teamParticipantId } =
-    params;
+  const {
+    teamParticipantId,
+    tournamentRecord,
+    drawDefinition,
+    participantId,
+    event,
+  } = params;
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
   const {
@@ -84,9 +89,14 @@ export function assignTieMatchUpParticipantId(params) {
   const sideNumber = teamSide?.sideNumber;
 
   const tieFormat =
-    dualMatchUp.tieFormat || structure.tieFormat || drawDefinition.tieFormat;
+    dualMatchUp.tieFormat ||
+    structure.tieFormat ||
+    drawDefinition.tieFormat ||
+    event?.tieFormat;
 
-  if (!tieFormat) return { error: MISSING_TIE_FORMAT };
+  if (!tieFormat) {
+    return { error: MISSING_TIE_FORMAT };
+  }
 
   const collectionDefinition = tieFormat.collectionDefinitions?.find(
     (collectionDefinition) => collectionDefinition.collectionId === collectionId

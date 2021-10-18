@@ -7,38 +7,39 @@ import { findStructure } from '../../getters/findStructure';
 import { drawEngine } from '../../sync';
 
 export function completeMatchUp({
-  structureId,
-  roundNumber,
   roundPosition,
   matchUpStatus,
-  winningSide,
+  roundNumber,
   scoreString,
+  structureId,
+  winningSide,
 }) {
   const sets = scoreString && parseScoreString({ scoreString });
   const score = { sets };
   const { matchUp: targetMatchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber,
     roundPosition,
+    roundNumber,
+    structureId,
   });
   const { matchUpId } = targetMatchUp;
   const { matchUp, error, success } = drawEngine
     .devContext(true)
     .setMatchUpStatus({
-      matchUpId,
       matchUpStatus,
       winningSide,
+      matchUpId,
       score,
     });
   return { success, error, matchUp, matchUpId };
 }
 
 export function findMatchUpByRoundNumberAndPosition({
-  structureId,
   drawDefinition,
-  roundNumber,
   roundPosition,
+  roundNumber,
+  structureId,
   inContext,
+  event,
 }) {
   if (!drawDefinition) {
     ({ drawDefinition } = drawEngine.getState());
@@ -48,6 +49,7 @@ export function findMatchUpByRoundNumberAndPosition({
     drawDefinition,
     structure,
     inContext,
+    event,
   });
   const matchUp = matchUps.reduce((matchUp, candidate) => {
     return candidate.roundNumber === roundNumber &&
@@ -111,9 +113,9 @@ export function verifyMatchUps({
 }
 
 export function verifySideNumbers({
-  structureId,
-  drawDefinition,
   expectedDrawPositions,
+  drawDefinition,
+  structureId,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({

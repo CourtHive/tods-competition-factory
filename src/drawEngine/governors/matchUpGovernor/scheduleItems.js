@@ -95,15 +95,6 @@ export function addMatchUpScheduleItems({
     });
     if (result?.error) return { error: result.error, startTime };
   }
-  if (endTime !== undefined) {
-    const result = addMatchUpEndTime({
-      drawDefinition,
-      matchUpId,
-      endTime,
-      disableNotice: true,
-    });
-    if (result?.error) return { error: result.error, endTime };
-  }
   if (stopTime !== undefined) {
     const result = addMatchUpStopTime({
       drawDefinition,
@@ -121,6 +112,15 @@ export function addMatchUpScheduleItems({
       disableNotice: true,
     });
     if (result?.error) return { error: result.error, resumeTime };
+  }
+  if (endTime !== undefined) {
+    const result = addMatchUpEndTime({
+      drawDefinition,
+      matchUpId,
+      endTime,
+      disableNotice: true,
+    });
+    if (result?.error) return { error: result.error, endTime };
   }
   if (courtId !== undefined && scheduledDate !== undefined) {
     const result = assignMatchUpCourt({
@@ -237,9 +237,9 @@ export function addMatchUpOfficial({
 
 export function addMatchUpStartTime({
   drawDefinition,
+  disableNotice,
   matchUpId,
   startTime,
-  disableNotice,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(startTime)) return { error: INVALID_TIME };

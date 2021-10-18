@@ -1052,11 +1052,9 @@ Sets the default `matchUpFormat` for a `drawDefintion` or a `structure`, or for 
 ```js
 drawEngine.setMatchUpFormat({
   matchUpFormat,
-  matchUpType, // optional - ensures that a matchUpFormat is not set on a tieMatchUp
-  tieFormat, // optional - when setting the format for a tieMatchUp
-
   structureId, // optional - if structureId is present and not matchUpId is present, then set for structure
   matchUpId, // optional - if matchUpId is present then only set for matchUp
+  tieFormat, // optional - when setting the format for a tieMatchUp
 });
 ```
 
