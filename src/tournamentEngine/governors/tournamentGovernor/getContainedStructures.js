@@ -44,23 +44,4 @@ export function getContainedStructures({
   }
 
   return { containedStructures, containerStructures };
-
-  /*
-  return events.reduce((cs, event) => {
-    event?.drawDefinitions
-      ?.map(({ structures }) =>
-        structures?.filter((structure) => structure?.structures)
-      )
-      .flat()
-      .filter(Boolean)
-      .forEach((structureContainer) => {
-        const { structures, structureId } = structureContainer || {};
-        structures &&
-          (cs[structureId] = structures?.map(
-            (structure) => structure.structureId
-          ));
-      });
-    return cs;
-  }, {});
-  */
 }

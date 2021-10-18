@@ -1,6 +1,5 @@
 import { getAffectedTargetStructureIds } from './getAffectedTargetStructureIds';
 import { isCompletedStructure } from '../queryGovernor/structureActions';
-import { getDevContext } from '../../../global/globalState';
 
 import { WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 
@@ -14,6 +13,8 @@ export function checkConnectedStructures({
   structure,
   matchUp,
 }) {
+  const connectedStructureIds = [];
+
   // check whether player movement is dependent on win ratio
   if (structure.finishingPosition === WIN_RATIO) {
     const structureIsComplete = isCompletedStructure({
@@ -27,10 +28,12 @@ export function checkConnectedStructures({
         structure,
         matchUp,
       });
+
       if (structureIds?.length) {
-        if (getDevContext()) console.log('affects:', { structureIds });
+        connectedStructureIds.push(...structureIds);
       }
-      return structureIds;
     }
   }
+
+  return { connectedStructureIds };
 }

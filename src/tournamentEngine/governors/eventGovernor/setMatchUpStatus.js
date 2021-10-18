@@ -1,10 +1,8 @@
 import { setMatchUpStatus as drawEngineSetMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpStatus';
 import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
 import { matchUpScore } from '../../../drawEngine/governors/scoreGovernor/matchUpScore';
-import { getDevContext } from '../../../global/globalState';
 import { findPolicy } from '../policyGovernor/findPolicy';
 import { findEvent } from '../../getters/eventGetter';
-import { makeDeepCopy } from '../../../utilities';
 
 import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -73,28 +71,22 @@ export function setMatchUpStatus(params) {
     );
   }
 
-  const { error: setMatchUpStatusError, matchUp } = drawEngineSetMatchUpStatus({
+  return drawEngineSetMatchUpStatus({
     tournamentRecord,
     drawDefinition,
     event,
 
-    matchUpId,
     matchUpStatusCodes: outcome?.matchUpStatusCodes,
     matchUpStatus: outcome?.matchUpStatus,
     matchUpFormat,
+    matchUpId,
 
-    allowChangePropagation,
     winningSide: outcome?.winningSide,
+    allowChangePropagation,
     score: outcome?.score,
     schedule,
     notes,
   });
-
-  if (setMatchUpStatusError) return { error: setMatchUpStatusError };
-
-  return matchUp && getDevContext()
-    ? { ...SUCCESS, matchUp: makeDeepCopy(matchUp) }
-    : SUCCESS;
 }
 
 export function bulkMatchUpStatusUpdate(params) {

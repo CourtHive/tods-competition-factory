@@ -2,6 +2,7 @@ import { findExtension } from '../../../tournamentEngine/governors/queryGovernor
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { getStructureLinks } from '../../getters/linkGetter';
 import { overlap } from '../../../utilities';
+import { getContainedStructures } from '../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 
 /**
  *
@@ -33,27 +34,21 @@ export function getAffectedTargetStructureIds({
     return extension?.value?.groupOrder;
   });
 
+  const { containerStructures } = getContainedStructures({ drawDefinition });
+  const structureId = containerStructures[structure.structureId];
+
   const {
     links: { source: links },
   } = getStructureLinks({
-    structureId: structure.structureId,
     drawDefinition,
+    structureId,
   });
-
-  console.log('getaffected');
-  /*
-  console.log(drawDefinition.links);
-  console.log({
-    links,
-    structureId: structure.structureId,
-    structure,
-  });
-  */
 
   const structureIds = links
     ?.filter((link) => {
       return overlap(finishingPositions, link.source?.finishingPositions || []);
     })
     .map((link) => link.source.structureId);
+
   return { structureIds };
 }

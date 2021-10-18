@@ -42,7 +42,7 @@ it('can complete matchUps in playoff structures', () => {
     outcome,
   });
 
-  console.log(result);
+  expect(result.connectedStructures).toEqual(true);
 });
 
 function generateScenario({ drawSize, structureOptions }) {

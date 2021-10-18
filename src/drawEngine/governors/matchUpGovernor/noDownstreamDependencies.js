@@ -46,10 +46,24 @@ export function noDownstreamDependencies(params) {
   const statusNotTBP = matchUpStatus && matchUpStatus !== TO_BE_PLAYED;
 
   const removeDirected = ({ removeScore } = {}) => {
+    let connectedStructures;
     const { structure, drawDefinition } = params;
-    checkConnectedStructures({ drawDefinition, structure, matchUp }); // only relevant to WIN_RATIO progression
+    const { connectedStructureIds } = checkConnectedStructures({
+      drawDefinition,
+      structure,
+      matchUp,
+    }); // only relevant to WIN_RATIO progression
+
+    if (connectedStructureIds.length) {
+      // TODO: return a message if there are effects in connected structures
+      console.log({ connectedStructureIds });
+      connectedStructures = true;
+    }
+
     Object.assign(params, { removeScore });
-    return removeDirectedParticipants(params);
+    const result = removeDirectedParticipants(params);
+    if (result.error) return result;
+    return { ...SUCCESS, connectedStructures };
   };
 
   return (
