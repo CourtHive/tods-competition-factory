@@ -1,12 +1,13 @@
 import { mocksEngine, tournamentEngine } from '../..';
 
+import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { DOUBLES } from '../../constants/eventConstants';
 import { SINGLES } from '../../constants/matchUpTypes';
+import { JSON2CSV } from '../json';
 import {
   FORMAT_ATP_DOUBLES,
   FORMAT_STANDARD,
 } from '../../fixtures/scoring/matchUpFormats/formatConstants';
-import { JSON2CSV } from '../json';
 
 it('can transform arrays of JSON objects to CSV', () => {
   const jsonObjects = [{ a: 1 }, { b: 2 }];
@@ -104,6 +105,15 @@ it('can transform arrays of JSON objects to CSV and transform multiple target at
         expect(conversion[i]).toEqual(expectation);
       })
     : console.log({ conversion });
+});
+
+it('can recognized bad data', () => {
+  let result = JSON2CSV([{ a: 1 }], { columnTransform: 'bad' });
+  expect(result).toEqual(INVALID_VALUES);
+  result = JSON2CSV([{ a: 1 }], { columnMap: 'bad' });
+  expect(result).toEqual(INVALID_VALUES);
+  result = JSON2CSV([{ a: 1 }], 'string');
+  expect(result).toEqual(INVALID_VALUES);
 });
 
 it('can transform arrays of JSON objects to CSV and transform multiple target attributes and map column header names', () => {
