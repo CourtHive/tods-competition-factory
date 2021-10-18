@@ -5,8 +5,8 @@ import { instanceCount } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngineSync from '../../../sync';
 
-import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
 
 test.each([competitionEngineSync])(
   'correctly enumerates participantProfiles for { eventType: DOUBLES }',
@@ -17,8 +17,8 @@ test.each([competitionEngineSync])(
     const { tournamentRecord } = mocksEngine.generateTournamentRecord({
       startDate: '2021-05-05',
       endDate: '2021-05-07',
-      drawProfiles,
       venueProfiles,
+      drawProfiles,
     });
 
     competitionEngine.setState([tournamentRecord]);
@@ -56,8 +56,8 @@ test.each([competitionEngineSync])(
       policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
       startDate: '2021-05-05',
       endDate: '2021-05-07',
-      drawProfiles,
       venueProfiles,
+      drawProfiles,
     });
 
     competitionEngine.setState([tournamentRecord]);
@@ -92,9 +92,9 @@ test.each([competitionEngineSync])(
       .slice(3, 6)
       .map(({ tournamentId, drawId, matchUpId, schedule }) => ({
         tournamentId,
-        drawId,
         matchUpId,
         schedule,
+        drawId,
       }));
 
     result = competitionEngine.reorderUpcomingMatchUps({
@@ -120,8 +120,8 @@ test.each([competitionEngineSync])(
     const reorderedMatchUpContextIds = result.dateMatchUps
       .slice(3, 6)
       .map(({ matchUpId, schedule }) => ({
-        matchUpId,
         scheduledTime: schedule.scheduledTime,
+        matchUpId,
       }));
 
     // confirm that the first is now the last...

@@ -146,7 +146,6 @@ export function generateDrawDefinition(params) {
       let result = setMatchUpFormat({
         drawDefinition,
         matchUpFormat,
-        matchUpType,
         tieFormat,
       });
 
@@ -155,6 +154,8 @@ export function generateDrawDefinition(params) {
           error: result.error,
           message: 'matchUpFormat or tieFormat error',
         };
+
+      if (matchUpType) drawDefinition.matchUpType = matchUpType;
 
       // update tieFormat if integrity check has added collectionIds
       if (result.tieFormat) tieFormat = result.tieFormat;
