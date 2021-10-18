@@ -262,7 +262,7 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
   // outcome removal should be succesful => now expecting 12 completed matchUps
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
   targetMatchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
-  expect(targetMatchUp.score.scoreStringSide1).toEqual('');
+  expect(targetMatchUp.score.scoreStringSide1).toEqual(undefined);
   ({ completedMatchUps } = tournamentEngine.drawMatchUps({
     drawId,
     inContext: true,

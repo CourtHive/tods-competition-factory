@@ -196,15 +196,15 @@ it('can transform singles and doubles matchUps to extract side1player1', () => {
   const conversion = JSON2CSV(matchUps, config).split('\r\n');
 
   expect(conversion[0]).toEqual(
-    'matchUpType,endDate,matchUpFormat,scoreString,side1Participant1,side2Participant1,side1Participant2,side2Participant2'
+    'endDate,matchUpType,matchUpFormat,scoreString,side1Participant1,side2Participant1,side1Participant2,side2Participant2'
   );
   conversion.slice(1).forEach((row) => {
     const columns = row.split(',');
     expect(columns.length).toEqual(8);
-    expect([SINGLES, DOUBLES].includes(columns[0])).toEqual(true);
-    expect(columns[1]).toEqual(endDate);
+    expect([SINGLES, DOUBLES].includes(columns[1])).toEqual(true);
+    expect(columns[0]).toEqual(endDate);
     expect(columns[2]).toEqual(
-      columns[0] === DOUBLES ? FORMAT_ATP_DOUBLES : FORMAT_STANDARD
+      columns[1] === DOUBLES ? FORMAT_ATP_DOUBLES : FORMAT_STANDARD
     );
   });
 });

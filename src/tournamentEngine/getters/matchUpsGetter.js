@@ -14,6 +14,7 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
+import { definedAttributes } from '../../utilities/objects';
 
 export function allTournamentMatchUps({
   scheduleVisibilityFilters,
@@ -136,15 +137,18 @@ export function allEventMatchUps({
 
   const additionalContext = {
     ...context,
-    eventId,
-    eventName,
-    category,
-    gender,
-    matchUpFormat,
-    endDate: event.endDate || tournamentRecord?.endDate,
-    indoorOutDoor: event.indoorOutDoor || tournamentRecord?.indoorOutDoor,
-    surfaceCategory: event.surfaceCategory || tournamentRecord?.surfaceCategory,
-    tournamentId: tournamentRecord?.tournamentId,
+    ...definedAttributes({
+      indoorOutDoor: event.indoorOutDoor || tournamentRecord?.indoorOutDoor,
+      surfaceCategory:
+        event.surfaceCategory || tournamentRecord?.surfaceCategory,
+      endDate: event.endDate || tournamentRecord?.endDate,
+      tournamentId: tournamentRecord?.tournamentId,
+      matchUpFormat,
+      eventName,
+      category,
+      gender,
+      eventId,
+    }),
   };
   if (endDate) additionalContext.endDate = endDate;
 
@@ -263,12 +267,15 @@ export function eventMatchUps({
 
   const additionalContext = {
     ...context,
-    eventId,
-    eventName,
-    endDate: endDate || tournamentRecord?.endDate,
-    tournamentId: tournamentId || tournamentRecord?.tournamentId,
-    indoorOutDoor: event.indoorOutDoor || tournamentRecord?.indoorOutDoor,
-    surfaceCategory: event.surfaceCategory || tournamentRecord?.surfaceCategory,
+    ...definedAttributes({
+      eventId,
+      eventName,
+      endDate: endDate || tournamentRecord?.endDate,
+      tournamentId: tournamentId || tournamentRecord?.tournamentId,
+      indoorOutDoor: event.indoorOutDoor || tournamentRecord?.indoorOutDoor,
+      surfaceCategory:
+        event.surfaceCategory || tournamentRecord?.surfaceCategory,
+    }),
   };
 
   const tournamentParticipants =
@@ -328,13 +335,15 @@ export function drawMatchUps({
 
   const additionalContext = {
     ...context,
-    eventId,
-    eventName,
-    endDate: endDate || event?.endDate || tournamentRecord?.endDate,
-    tournamentId: tournamentId || tournamentRecord?.tournamentId,
-    indoorOutDoor: event?.indoorOutDoor || tournamentRecord?.indoorOutDoor,
-    surfaceCategory:
-      event?.surfaceCategory || tournamentRecord?.surfaceCategory,
+    ...definedAttributes({
+      eventId,
+      eventName,
+      endDate: endDate || event?.endDate || tournamentRecord?.endDate,
+      tournamentId: tournamentId || tournamentRecord?.tournamentId,
+      indoorOutDoor: event?.indoorOutDoor || tournamentRecord?.indoorOutDoor,
+      surfaceCategory:
+        event?.surfaceCategory || tournamentRecord?.surfaceCategory,
+    }),
   };
 
   const tournamentParticipants =
@@ -389,8 +398,8 @@ export function findMatchUp({
   const { eventId, drawId } = inContextMatchUp;
   const { event, drawDefinition } = findEvent({
     tournamentRecord,
-    drawId,
     eventId,
+    drawId,
   });
 
   const additionalContext = {

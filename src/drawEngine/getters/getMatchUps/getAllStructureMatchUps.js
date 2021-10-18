@@ -268,7 +268,9 @@ export function getAllStructureMatchUps({
     const matchUpFormat =
       matchUp.matchUpFormat || matchUp.collectionId
         ? collectionDefinition && collectionDefinition.matchUpFormat
-        : structure.matchUpFormat || drawDefinition?.matchUpFormat;
+        : structure.matchUpFormat ||
+          drawDefinition?.matchUpFormat ||
+          event?.matchUpFormat;
 
     const matchUpType =
       matchUp.matchUpType ||
@@ -320,6 +322,8 @@ export function getAllStructureMatchUps({
 
     // order is important here as Round Robin matchUps already have inContext structureId
     const matchUpWithContext = Object.assign(
+      {},
+      definedAttributes(context),
       definedAttributes({
         matchUpFormat: matchUp.matchUpType !== TEAM && matchUpFormat,
         tieFormat: matchUp.matchUpType === TEAM && tieFormat,
@@ -341,8 +345,7 @@ export function getAllStructureMatchUps({
         drawId,
         stage,
       }),
-      context,
-      makeDeepCopy(matchUp, true, true)
+      makeDeepCopy(definedAttributes(matchUp), true, true)
     );
 
     if (Array.isArray(drawPositions)) {

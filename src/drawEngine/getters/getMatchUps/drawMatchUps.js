@@ -21,7 +21,6 @@ export function getAllDrawMatchUps(params) {
     upcomingMatchUps,
     pendingMatchUps,
     byeMatchUps,
-
     matchUpsMap,
   } = getDrawMatchUps(params);
   const matchUps = [].concat(
