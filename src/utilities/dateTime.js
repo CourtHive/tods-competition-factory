@@ -203,13 +203,20 @@ export function dateStringDaysChange(dateString, daysChange) {
   return extractDate(date.toISOString());
 }
 
-function splitTime(value) {
+export function splitTime(value) {
   value = typeof value !== 'string' ? '00:00' : value;
   const o = {},
     time = {};
   ({ 0: o.time, 1: o.ampm } = value.split(' ') || []);
   ({ 0: time.hours, 1: time.minutes } = o.time.split(':') || []);
   time.ampm = o.ampm;
+
+  if (
+    isNaN(time.hours) ||
+    isNaN(time.minutes) ||
+    (time.ampm && !['AM', 'PM'].includes(time.ampm.toUpperCase()))
+  )
+    return {};
   return time;
 }
 
@@ -291,13 +298,11 @@ export function subtractWeek(date, dateFormat) {
   return formatDate(now.setDate(now.getDate() - 7), dateFormat);
 }
 
-export function getDateByWeek(week, year, dateFormat) {
-  const d = new Date(year, 0, 1);
-  const dayNum = d.getDay();
-  let requiredDate = --week * 7;
-  if (dayNum !== 0 || dayNum > 4) requiredDate += 7;
-  d.setDate(1 - d.getDay() + ++requiredDate);
-  return formatDate(d, dateFormat);
+export function getDateByWeek(week, year, dateFormat, sunday = false) {
+  let date = new Date(year, 0, 1 + (week - 1) * 7);
+  const startValue = sunday ? 0 : 1;
+  date.setDate(date.getDate() + (startValue - date.getDay()));
+  return formatDate(date, dateFormat);
 }
 
 export function dateFromDay(year, day, dateFormat) {
