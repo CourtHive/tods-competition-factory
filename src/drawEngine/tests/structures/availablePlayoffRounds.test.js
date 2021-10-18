@@ -184,11 +184,11 @@ it('can generate only specified playoff rounds and give them custom names', () =
     '0-2': { name: 'BRONZE', abbreviation: 'B' },
   };
   const result = tournamentEngine.addPlayoffStructures({
-    drawId,
-    structureId,
     exitProfileLimit: true,
     roundNumbers: [2],
     playoffAttributes,
+    structureId,
+    drawId,
   });
   expect(result.success).toEqual(true);
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
@@ -223,10 +223,10 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
 
   // in this case a playoff structure is being added to a consolstion structure
   const result = tournamentEngine.addPlayoffStructures({
-    drawId,
-    structureId,
-    exitProfileLimit: true,
     roundProfiles: [{ 2: 1 }],
+    exitProfileLimit: true,
+    structureId,
+    drawId,
   });
   expect(result.success).toEqual(true);
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
@@ -264,10 +264,10 @@ it('can determine playoff structures available from playoff structures', () => {
   expect(fourthRound.finishingPositionRange).toEqual('5-8');
 
   const result = tournamentEngine.addPlayoffStructures({
-    drawId,
-    structureId,
-    exitProfileLimit: true,
     roundProfiles: [{ 4: 1 }],
+    exitProfileLimit: true,
+    structureId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
@@ -278,8 +278,8 @@ it('can determine playoff structures available from playoff structures', () => {
   ({ structureId } = drawDefinition.structures[1]);
 
   ({ playoffRoundsRanges } = tournamentEngine.getAvailablePlayoffRounds({
-    drawId,
     structureId,
+    drawId,
   }));
 
   expect(playoffRoundsRanges.length).toEqual(1);

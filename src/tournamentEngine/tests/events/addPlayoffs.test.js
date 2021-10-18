@@ -40,11 +40,11 @@ it.each([
     } = tournamentEngine.getEvent({ drawId });
 
     let result = tournamentEngine.addPlayoffStructures({
-      drawId,
-      structureId,
-      roundProfiles,
-      playoffAttributes,
       playoffStructureNameBase: 'Playoff',
+      playoffAttributes,
+      roundProfiles,
+      structureId,
+      drawId,
     });
     if (error) {
       expect(result.error).toEqual(error);
