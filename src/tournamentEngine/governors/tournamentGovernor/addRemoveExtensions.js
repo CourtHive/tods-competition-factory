@@ -1,6 +1,7 @@
 import { validExtension } from '../../../global/validation/validExtension';
 import { findParticipant } from '../../../common/deducers/findParticipant';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
@@ -12,7 +13,6 @@ import {
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function addExtension({ element, extension } = {}) {
   if (!element) return { error: MISSING_VALUE };
@@ -32,7 +32,7 @@ export function addExtension({ element, extension } = {}) {
     element.extensions.push(extension);
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function removeExtension({ element, name } = {}) {
@@ -45,7 +45,7 @@ export function removeExtension({ element, name } = {}) {
     (extension) => extension?.name !== name
   );
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function addTournamentExtension({ tournamentRecord, extension } = {}) {
@@ -104,6 +104,8 @@ export function removeParticipantExtension({
     tournamentParticipants,
     participantId,
   });
+
   if (!participant) return { error: PARTICIPANT_NOT_FOUND };
+
   return removeExtension({ element: participant, name });
 }

@@ -1,16 +1,16 @@
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 
+import { DELEGATED_OUTCOME } from '../../../constants/extensionConstants';
 import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
-  MISSING_MATCHUP,
+  MISSING_MATCHUP_ID,
 } from '../../../constants/errorConditionConstants';
-import { DELEGATED_OUTCOME } from '../../../constants/extensionConstants';
 
 export function removeDelegatedOutcome({ drawDefinition, matchUpId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!matchUpId) return { error: MISSING_MATCHUP };
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
