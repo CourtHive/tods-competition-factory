@@ -29,7 +29,7 @@ const getMatchUp = (id, inContext) => {
   return matchUp;
 };
 
-it('can both assign and remove individualParticipants in SINGLES matchUps that are part of team events', () => {
+it.only('can both assign and remove individualParticipants in SINGLES matchUps that are part of team events', () => {
   const { tournamentRecord, drawId } = generateTeamTournament();
   tournamentEngine.setState(tournamentRecord);
 

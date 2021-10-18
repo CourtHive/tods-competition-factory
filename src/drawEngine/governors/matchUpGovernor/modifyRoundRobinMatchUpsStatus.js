@@ -8,11 +8,13 @@ export function modifyRoundRobinMatchUpsStatus({
   drawDefinition,
   matchUpsMap,
   structure,
+  event,
 }) {
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
     matchUpsMap,
     structure,
+    event,
   });
 
   matchUps.forEach((matchUp) => {

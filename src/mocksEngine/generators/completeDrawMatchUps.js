@@ -35,10 +35,10 @@ export function completeDrawMatchUps({
   for (const structure of sortedStructures) {
     const matchUpsMap = getMatchUpsMap({ drawDefinition });
     const { matchUps } = getAllStructureMatchUps({
+      inContext: true,
       drawDefinition,
       matchUpsMap,
       structure,
-      inContext: true,
       event,
     });
 
@@ -49,10 +49,10 @@ export function completeDrawMatchUps({
 
     for (const matchUpId of sortedMatchUpIds) {
       const { matchUps } = getAllStructureMatchUps({
+        inContext: true,
         drawDefinition,
         matchUpsMap,
         structure,
-        inContext: true,
         event,
       });
 

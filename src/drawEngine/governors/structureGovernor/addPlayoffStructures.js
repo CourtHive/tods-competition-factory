@@ -173,7 +173,8 @@ export function addPlayoffStructures(params) {
     if (tieFormat) {
       addedMatchUps.forEach((matchUp) => {
         const { tieMatchUps } = generateTieMatchUps({ tieFormat });
-        Object.assign(matchUp, { tieMatchUps, matchUpType: TEAM });
+        Object.assign(matchUp, { tieMatchUps, tieFormat, matchUpType: TEAM });
+        // Object.assign(matchUp, { tieMatchUps, matchUpType: TEAM });
       });
     }
   }

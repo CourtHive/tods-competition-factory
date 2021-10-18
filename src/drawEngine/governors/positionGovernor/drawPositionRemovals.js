@@ -30,12 +30,12 @@ import {
  *
  */
 export function drawPositionRemovals({
-  drawDefinition,
-  structureId,
-  drawPosition,
-
-  matchUpsMap,
   inContextDrawMatchUps,
+  drawDefinition,
+  drawPosition,
+  matchUpsMap,
+  structureId,
+  event,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({
@@ -69,6 +69,7 @@ export function drawPositionRemovals({
     matchUpFilters,
     matchUpsMap,
     structure,
+    event,
   });
   const { roundProfile, roundMatchUps } = getRoundMatchUps({
     matchUps: structureMatchUps,

@@ -66,8 +66,9 @@ export function directParticipants(params) {
   if (isCollectionMatchUp) {
     const { matchUpTieId } = params;
     updateTieMatchUpScore({
-      drawDefinition,
       matchUpId: matchUpTieId,
+      drawDefinition,
+      event,
     });
     const matchUpTie = inContextDrawMatchUps.find(
       ({ matchUpId }) => matchUpId === matchUpTieId

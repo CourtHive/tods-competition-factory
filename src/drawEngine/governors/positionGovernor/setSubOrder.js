@@ -69,13 +69,12 @@ export function setSubOrder({
     structure?.matchUpFormat || drawDefinition.matchUpFormat;
 
   result = updateAssignmentParticipantResults({
+    positionAssignments,
     tournamentRecord,
     drawDefinition,
-    event,
-
-    positionAssignments,
-    matchUps,
     matchUpFormat,
+    matchUps,
+    event,
   });
   if (result.error) return result;
 

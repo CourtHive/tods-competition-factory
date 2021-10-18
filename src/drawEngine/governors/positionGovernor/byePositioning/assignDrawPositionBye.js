@@ -60,10 +60,9 @@ import {
 
 export function assignDrawPositionBye({
   drawDefinition,
-  structureId,
   drawPosition,
-
   matchUpsMap,
+  structureId,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const { structure } = findStructure({ drawDefinition, structureId });

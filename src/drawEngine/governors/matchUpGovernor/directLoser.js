@@ -26,6 +26,7 @@ export function directLoser(params) {
     loserMatchUp,
     dualMatchUp,
     matchUpsMap,
+    event,
   } = params;
 
   const loserLinkCondition = loserTargetLink.linkCondition;
@@ -52,6 +53,7 @@ export function directLoser(params) {
     inContext: true,
     drawDefinition,
     structure,
+    event,
   });
 
   const drawPositionMatchUps = sourceMatchUps.filter((matchUp) =>

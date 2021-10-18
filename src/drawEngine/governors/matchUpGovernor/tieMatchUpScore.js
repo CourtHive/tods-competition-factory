@@ -14,7 +14,7 @@ import {
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
 
-export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
+export function updateTieMatchUpScore({ drawDefinition, event, matchUpId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP };
 
@@ -22,8 +22,10 @@ export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
   if (error) return { error };
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
+  const tieFormat =
+    matchUp.tieFormat || drawDefinition?.tieFormat || event?.tieFormat;
   const { winningSide, set, scoreStringSide1, scoreStringSide2 } =
-    generateTieMatchUpScore({ matchUp });
+    generateTieMatchUpScore({ matchUp, tieFormat });
 
   const hasWinner = [1, 2].includes(winningSide);
   const matchUpStatus = hasWinner

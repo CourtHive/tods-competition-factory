@@ -24,6 +24,7 @@ export function removeDirectedParticipants(params) {
     dualMatchUp,
     targetData,
     structure,
+    event,
   } = params;
 
   const isCollectionMatchUp = Boolean(params.matchUp.collectionId);
@@ -67,8 +68,9 @@ export function removeDirectedParticipants(params) {
   if (isCollectionMatchUp) {
     const { matchUpTieId } = params;
     const { removeWinningSide } = updateTieMatchUpScore({
-      drawDefinition,
       matchUpId: matchUpTieId,
+      drawDefinition,
+      event,
     });
     if (!dualWinningSideChange && !removeWinningSide) return { ...SUCCESS };
   }
@@ -145,6 +147,7 @@ export function removeDirectedWinner({
   winnerMatchUp,
   matchUpsMap,
   dualMatchUp,
+  event,
 }) {
   const { structureId, roundNumber } = winnerMatchUp;
 
@@ -160,7 +163,11 @@ export function removeDirectedWinner({
     );
     const winnerDrawPosition = relevantAssignment?.drawPosition;
 
-    const { matchUps } = getAllStructureMatchUps({ drawDefinition, structure });
+    const { matchUps } = getAllStructureMatchUps({
+      drawDefinition,
+      structure,
+      event,
+    });
     const allDrawPositionInstances = matchUps
       .map((matchUp) => matchUp.drawPositions)
       .flat(Infinity)

@@ -28,6 +28,7 @@ export function findMatchUp({
   matchUpId,
   inContext,
   context,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -44,6 +45,7 @@ export function findMatchUp({
       inContext,
       structure,
       context,
+      event,
     });
     const { matchUp } = getMatchUp({ matchUps, matchUpId });
 
