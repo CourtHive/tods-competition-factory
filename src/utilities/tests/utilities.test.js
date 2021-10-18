@@ -17,7 +17,6 @@ import {
   localizeDate,
   subtractWeek,
   timeSort,
-  timeUTC,
   weekDays,
 } from '../dateTime';
 import {
@@ -171,11 +170,6 @@ test('miscellaneous date/time tests', () => {
 
   result = addMinutesToTimeString();
   expect(result).toEqual('00:00');
-
-  result = timeUTC();
-  expect(!isNaN(result)).toEqual(true);
-  result = timeUTC('2020-01-01');
-  expect(!isNaN(result)).toEqual(true);
 
   result = localizeDate();
   expect(result).toEqual(false);

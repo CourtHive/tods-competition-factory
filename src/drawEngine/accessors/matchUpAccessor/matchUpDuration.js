@@ -1,5 +1,5 @@
 import { validTimeString } from '../../../fixtures/validations/regex';
-import { currentUTCDate } from '../../../utilities/dateTime';
+import { getUTCdateString } from '../../../utilities/dateTime';
 
 import {
   MISSING_MATCHUP,
@@ -14,7 +14,7 @@ import {
 
 function timeDate(value) {
   if (validTimeString.test(value)) {
-    const dateString = currentUTCDate();
+    const dateString = getUTCdateString();
     const td = new Date(`${dateString}T${value}`);
     return td;
   } else {
