@@ -9,6 +9,14 @@ import {
   FORMAT_STANDARD,
 } from '../../fixtures/scoring/matchUpFormats/formatConstants';
 
+it('can create CSV from shallow JSON objects', () => {
+  const csv = JSON2CSV([{ a: '1', b: '2' }]);
+  expect(csv).not.toBeUndefined;
+
+  const result = JSON2CSV();
+  expect(result).toEqual(INVALID_VALUES);
+});
+
 it('can transform arrays of JSON objects to CSV', () => {
   const jsonObjects = [{ a: 1 }, { b: 2 }];
   const expectations = ['a,b', '1,', ',2'];

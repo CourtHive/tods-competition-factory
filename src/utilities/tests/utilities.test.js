@@ -2,7 +2,7 @@ import { intersection, makeDeepCopy, noNulls, randomPop } from '..';
 import { isOdd, nextPowerOf2, isPowerOf2 } from '../math';
 import { generateHashCode } from '../objects';
 import { safeUUID, UUIDS } from '../UUID';
-import { JSON2CSV } from '../json';
+import { deepMerge } from '../deepMerge';
 import {
   addMinutesToTimeString,
   addWeek,
@@ -30,7 +30,6 @@ import {
   subSort,
   overlap,
 } from '../arrays';
-import { deepMerge } from '../deepMerge';
 
 it('can count values and determine active drawPositions', () => {
   const drawPositions = [1, 1, 2, 3, 4, 5, 5, 6];
@@ -41,14 +40,6 @@ it('can count values and determine active drawPositions', () => {
     }, [])
     .map((p) => parseInt(p));
   expect(activeDrawPositions).toMatchObject([1, 5]);
-});
-
-it('can create CSV from shallow JSON objects', () => {
-  const csv = JSON2CSV([{ a: '1', b: '2' }]);
-  expect(csv).not.toBeUndefined;
-
-  const result = JSON2CSV();
-  expect(result.error).not.toBeUndefined();
 });
 
 test('isDate recognizes Invalid Date', () => {
