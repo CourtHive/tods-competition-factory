@@ -1,9 +1,10 @@
 import { getParticipantId } from '../../../global/functions/extractors';
+import { generateRange, intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { PAIR } from '../../../constants/participantTypes';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import {
   EXISTING_OUTCOME,
   INVALID_PARTICIPANT_TYPE,
@@ -126,7 +127,7 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
   expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
 });
 
-it('can both assign and remove individualParticipants in DOUBLES matchUps that are part of team events', () => {
+it('An EXISTING_OUTCOME will prevent removal of individualParticipants in DOUBLES matchUps that are part of team events', () => {
   const { tournamentRecord, drawId } = generateTeamTournament();
   tournamentEngine.setState(tournamentRecord);
 
@@ -492,12 +493,12 @@ it('can assign PAIR participants to tieMatchUps', () => {
   const { positionAssignments } = drawDefinition.structures[0];
 
   let participantIndex = 0;
-  // for each first round dualMatchUp assign individualParticipants to singles matchUps
+  // for each first round dualMatchUp assign individualParticipants to doubles matchUps
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
     const doublesMatchUps = dualMatchUp.tieMatchUps.filter(
       ({ matchUpType }) => matchUpType === DOUBLES
     );
-    doublesMatchUps.forEach((doublesMatchUp) => {
+    doublesMatchUps.forEach((doublesMatchUp, m) => {
       const tieMatchUpId = doublesMatchUp.matchUpId;
       doublesMatchUp.sides.forEach((side) => {
         const { drawPosition } = side;
@@ -519,16 +520,198 @@ it('can assign PAIR participants to tieMatchUps', () => {
           drawId,
         });
         expect(result.success).toEqual(true);
-        expect(result.modifiedLineUp.length).toEqual(2);
+        expect(result.modifiedLineUp.length).toEqual(2 * (m + 1));
+        participantIndex += 1;
       });
     });
   });
+});
+
+it('handles pair dependencies across draws', () => {
+  const scenario = {
+    drawProfilesCount: 2,
+    singlesCount: 0,
+    doublesCount: 3,
+    valueGoal: 2,
+    drawSize: 2,
+  };
+
+  const result = generateTeamTournament(scenario);
+  const { tournamentRecord, drawIds, eventId, valueGoal } = result;
+  expect(valueGoal).toEqual(scenario.valueGoal);
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let {
+    event: { drawDefinitions },
+  } = tournamentEngine.getEvent({ eventId });
+
+  expect(drawDefinitions.length).toEqual(2);
+
+  const drawEntries = drawDefinitions.map(({ entries }) =>
+    entries.map(({ participantId }) => participantId)
+  );
+  expect(intersection(drawEntries[0], drawEntries[1]).length).toEqual(2);
+
+  let { tournamentParticipants: individualParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+      inContext: true,
+      withEvents: true,
+    });
+
+  individualParticipants.forEach((individualParticipant) =>
+    expect(individualParticipant.draws.length).toBeGreaterThan(0)
+  );
+
+  let { tournamentParticipants: pairParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [PAIR] },
+      withDraws: true,
+    });
+
+  expect(pairParticipants.length).toEqual(6);
+  pairParticipants.forEach((pairParticipant) =>
+    expect(pairParticipant.draws.length).toEqual(0)
+  );
+
+  let { tournamentParticipants: teamParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [TEAM] },
+    });
+
+  // get positionAssignments to determine drawPositions
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId: drawIds[0] });
+  const { positionAssignments } = drawDefinition.structures[0];
+
+  assignPairParticipants({ drawId: drawIds[0] });
+
+  ({ tournamentParticipants: pairParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [PAIR] },
+      withDraws: true,
+    }));
+
+  // expect no new pairs were created and each pairParticipant is in ONE draw
+  expect(pairParticipants.length).toEqual(6);
+  pairParticipants.forEach((pairParticipant) => {
+    expect(pairParticipant.draws.length).toEqual(1);
+  });
+
+  // assign the same pairs to matchUps in the second draw
+  assignPairParticipants({ drawId: drawIds[1] });
+
+  // remove the pair participants from the first draw
+  removePairParticipants({ drawId: drawIds[0] });
+
+  // expect that the pair participants have not been destroyed
+  // in the process of breaking apart the pair participants
+  ({ tournamentParticipants: pairParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [PAIR] },
+    }));
+
+  expect(pairParticipants.length).toEqual(6);
+
+  function removePairParticipants({ drawId }) {
+    const { matchUps: firstRoundDualMatchUps } =
+      tournamentEngine.allTournamentMatchUps({
+        matchUpFilters: {
+          matchUpTypes: [TEAM],
+          roundNumbers: [1],
+          drawIds: [drawId], // since there are two draws must filter by drawId
+        },
+      });
+
+    let participantIndex = 0;
+    // now remove both individual participants from each DOUBLES matchUp
+    firstRoundDualMatchUps.forEach((dualMatchUp) => {
+      const doublesMatchUps = dualMatchUp.tieMatchUps.filter(
+        ({ matchUpType }) => matchUpType === DOUBLES
+      );
+      doublesMatchUps.forEach((doublesMatchUp) => {
+        const tieMatchUpId = doublesMatchUp.matchUpId;
+        doublesMatchUp.sides.forEach(() => {
+          const individualParticipantIds =
+            pairParticipants[participantIndex].individualParticipantIds;
+
+          individualParticipantIds.forEach((participantId, i) => {
+            const result = tournamentEngine.removeTieMatchUpParticipantId({
+              participantId,
+              tieMatchUpId,
+              drawId,
+            });
+            expect(result.success).toEqual(true);
+
+            // when the first individualParticipantId is removed and the pair can't be destroyed
+            // a new PAIR participant is created with only one individualParticipant
+            if (i === 0) {
+              ({ tournamentParticipants: pairParticipants } =
+                tournamentEngine.getTournamentParticipants({
+                  participantFilters: { participantTypes: [PAIR] },
+                }));
+
+              // so the number of pairParticipants is temporarily 7
+              expect(pairParticipants.length).toEqual(7);
+            }
+          });
+          participantIndex += 1;
+        });
+      });
+    });
+  }
+
+  function assignPairParticipants({ drawId }) {
+    const { matchUps: firstRoundDualMatchUps } =
+      tournamentEngine.allTournamentMatchUps({
+        matchUpFilters: {
+          matchUpTypes: [TEAM],
+          roundNumbers: [1],
+          drawIds: [drawId], // since there are two draws must filter by drawId
+        },
+      });
+
+    let participantIndex = 0;
+    // for each first round dualMatchUp assign individualParticipants to doubles matchUps
+    firstRoundDualMatchUps.forEach((dualMatchUp) => {
+      const doublesMatchUps = dualMatchUp.tieMatchUps.filter(
+        ({ matchUpType }) => matchUpType === DOUBLES
+      );
+      doublesMatchUps.forEach((doublesMatchUp, m) => {
+        const tieMatchUpId = doublesMatchUp.matchUpId;
+        doublesMatchUp.sides.forEach((side) => {
+          const { drawPosition } = side;
+          const teamParticipant = teamParticipants.find((teamParticipant) => {
+            const { participantId } = teamParticipant;
+            const assignment = positionAssignments.find(
+              (assignment) => assignment.participantId === participantId
+            );
+            return assignment.drawPosition === drawPosition;
+          });
+
+          const pairParticipantId =
+            pairParticipants[participantIndex].participantId;
+
+          const result = tournamentEngine.assignTieMatchUpParticipantId({
+            teamParticipantId: teamParticipant.participantId,
+            participantId: pairParticipantId,
+            tieMatchUpId,
+            drawId,
+          });
+          expect(result.success).toEqual(true);
+          expect(result.modifiedLineUp.length).toEqual(2 * (m + 1));
+          participantIndex += 1;
+        });
+      });
+    });
+  }
 });
 
 function generateTeamTournament({
   drawSize = 8,
   doublesCount = 1,
   singlesCount = 2,
+  drawProfilesCount = 1,
 } = {}) {
   const valueGoal = Math.ceil((doublesCount + singlesCount) / 2);
   const tieFormat = {
@@ -553,26 +736,28 @@ function generateTeamTournament({
     ],
   };
 
+  const drawProfiles = generateRange(0, drawProfilesCount).map((i) => ({
+    drawSize,
+    tieFormat,
+    drawName: `Main Draw ${i + 1}`,
+  }));
+
   const eventProfiles = [
     {
-      eventType: TEAM,
       eventName: 'Test Team Event',
+      eventType: TEAM,
+      drawProfiles,
       tieFormat,
-      drawProfiles: [
-        {
-          drawSize,
-          tieFormat,
-          drawName: 'Main Draw',
-        },
-      ],
     },
   ];
 
   const {
+    drawIds,
     eventIds: [eventId],
-    drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ eventProfiles });
 
-  return { tournamentRecord, eventId, drawId, valueGoal };
+  const [drawId] = drawIds;
+
+  return { tournamentRecord, eventId, drawId, drawIds, valueGoal };
 }

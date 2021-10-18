@@ -15,7 +15,7 @@ module.exports = {
         {
           'Data Structures': ['concepts/matchUpFormat', 'concepts/tieFormat'],
         },
-        'concepts/drawGeneration',
+        'concepts/draw-generation',
         'concepts/globalState',
         {
           Policies: [

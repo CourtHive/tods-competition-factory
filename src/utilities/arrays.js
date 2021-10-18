@@ -4,7 +4,7 @@ export function unique(arr) {
 }
 
 export function noNulls(arr) {
-  return arr.map((item) => (item === null ? undefined : item));
+  return arr?.map((item) => (item === null ? undefined : item));
 }
 
 export function shuffleArray(arr) {

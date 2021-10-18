@@ -1,3 +1,8 @@
+import { intersection, makeDeepCopy, noNulls, randomPop } from '..';
+import { isOdd, nextPowerOf2, isPowerOf2 } from '../math';
+import { generateHashCode } from '../objects';
+import { safeUUID, UUIDS } from '../UUID';
+import { JSON2CSV } from '../json';
 import {
   addMinutesToTimeString,
   addWeek,
@@ -15,19 +20,18 @@ import {
   timeUTC,
   weekDays,
 } from '../dateTime';
-import { JSON2CSV } from '../json';
-import { countValues } from '..';
 import {
   arrayIndices,
   chunkByNth,
   chunkSizeProfile,
+  countValues,
   groupConsecutiveNumbers,
   inPlaceSubSort,
   occurrences,
   subSort,
   overlap,
 } from '../arrays';
-import { isOdd, nextPowerOf2, isPowerOf2 } from '../math';
+import { deepMerge } from '../deepMerge';
 
 it('can count values and determine active drawPositions', () => {
   const drawPositions = [1, 1, 2, 3, 4, 5, 5, 6];
@@ -216,6 +220,8 @@ test('miscellaneous math tests', () => {
   result = nextPowerOf2(2);
   expect(result).toEqual(2);
 
+  result = isOdd(0);
+  expect(result).toEqual(false);
   result = isOdd(1);
   expect(result).toEqual(true);
   result = isOdd('1');
@@ -289,4 +295,79 @@ test('overlap detects the presence of an intersection of two arrays', () => {
   expect(hasOverlap).toEqual(true);
   hasOverlap = overlap([1, 2], [3, 4, 6, 7]);
   expect(hasOverlap).toEqual(false);
+});
+
+it('can generate hashCodes and count object keys', () => {
+  let result = generateHashCode();
+  expect(result).toBeUndefined();
+  result = generateHashCode({ a: 1, b: 2 });
+  expect(result).toEqual('d2na');
+  result = generateHashCode({ a: [1, 2, 3], b: 2 });
+  expect(result).toEqual('j5xn');
+});
+
+test('makeDeepCopy turns date objects into strings', () => {
+  let result = makeDeepCopy({ date: new Date() });
+  expect(typeof result.date).toEqual('string');
+});
+
+test('can generate an array of UUIDs', () => {
+  let result = UUIDS();
+  expect(result.length).toEqual(1);
+  result = UUIDS(10);
+  expect(result.length).toEqual(10);
+});
+
+// UUIDs embedded in HTML cannot start with a number
+test('can generate an HTML-safe UUID', () => {
+  let result = safeUUID();
+  expect(typeof result).toEqual('string');
+  expect(parseInt(result[0])).toEqual(NaN);
+});
+
+it('can replace NULLs in an array with undefined', () => {
+  let result = noNulls();
+  expect(result).toEqual(undefined);
+  result = noNulls([1, 2, 3]);
+  expect(result).toEqual([1, 2, 3]);
+  result = noNulls([1, null, 2]);
+  expect(result).toEqual([1, undefined, 2]);
+});
+
+it('can determine intersection and overlap', () => {
+  let result = intersection();
+  expect(result).toEqual(0);
+  result = intersection(1, 2);
+  expect(result).toEqual(0);
+  result = intersection([1], 2);
+  expect(result).toEqual(0);
+  result = intersection(1, [2]);
+  expect(result).toEqual(0);
+
+  result = overlap();
+  expect(result).toEqual(false);
+  result = overlap(1, 2);
+  expect(result).toEqual(false);
+  result = overlap([1], 2);
+  expect(result).toEqual(false);
+  result = overlap(1, [2]);
+  expect(result).toEqual(false);
+});
+
+it('can randomly pop from an array', () => {
+  let result = randomPop();
+  expect(result).toBeUndefined();
+});
+
+it('handles bad data', () => {
+  let result = deepMerge();
+  expect(result).toBeUndefined();
+  result = deepMerge(undefined, {});
+  expect(result).toEqual({});
+  result = deepMerge({}, undefined);
+  expect(result).toEqual({});
+  result = deepMerge({ a: 1 }, { b: 2 });
+  expect(result).toEqual({ a: 1, b: 2 });
+  result = deepMerge({ a: 1 }, { a: '2' });
+  expect(result).toEqual({ a: '2' });
 });

@@ -6,28 +6,29 @@ import { extractDate, sameDay } from '../../../utilities/dateTime';
 
 export function filterMatchUps(params) {
   const {
-    stages,
-    venueIds,
-    courtIds,
     matchUps,
-    matchUpIds,
-    matchUpTypes,
-    roundNumbers,
+
+    isCollectionMatchUp,
+    matchUpStatuses,
+    matchUpFormats,
     matchUpFormat,
     collectionIds,
-    scheduledDate,
-    scheduledDates,
     isMatchUpTie,
-    matchUpFormats,
-    matchUpStatuses,
-    isCollectionMatchUp,
+    matchUpTypes,
+    roundNumbers,
+    matchUpIds,
 
     // only applies to inContext matchUps and only when processContext boolean is true
+    scheduledDates,
+    scheduledDate,
     processContext,
     tournamentIds,
-    eventIds,
-    drawIds,
     structureIds,
+    courtIds,
+    eventIds,
+    venueIds,
+    drawIds,
+    stages,
 
     filterMatchUpIds = true,
     filterMatchUpTypes = true,

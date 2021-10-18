@@ -16,27 +16,29 @@ import {
  * @param {object} tournamentRecord - tournament object (passed automatically from tournamentEngine state)
  * @param {object} participantFilters - attribute arrays with filter value strings
  * @param {boolean} inContext - adds individualParticipants for all individualParticipantIds
- * @param {boolean} withStatistics - adds events: { [eventId]: eventName }, matchUps: { [matchUpId]: score }, statistics: [{ statCode: 'winRatio'}]
- * @param {boolean} withOpponents - include opponent participantIds
+ * @param {boolean} withDraws -  defaults to true when inContext - include all matchUps in which participant appears
+ * @param {boolean} withEvents - defaults to true when inContext - include all events in which participant appears
  * @param {boolean} withMatchUps - include all matchUps in which participant appears
+ * @param {boolean} withStatistics - adds events: { [eventId]: eventName }, matchUps: { [matchUpId]: score }, statistics: [{ statCode: 'winRatio'}]
+ * @param {boolean} withScheduleItems - include schedule items; scheduled matchUps
+ * @param {boolean} scheduleAnalysis - analysis of conflicts
+ * @param {boolean} withGroupings - include teams and groups and pairs in which individual participants appear
+ * @param {boolean} withOpponents - include opponent participantIds
  *
  */
 export function getTournamentParticipants({
-  tournamentRecord,
-
   participantFilters = {},
+  convertExtensions,
   policyDefinitions,
-
   withScheduleItems,
+  tournamentRecord,
+  scheduleAnalysis,
   withStatistics,
   withGroupings,
   withOpponents,
   withMatchUps,
   withEvents,
   withDraws,
-
-  convertExtensions,
-  scheduleAnalysis,
   inContext,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -70,8 +72,7 @@ export function getTournamentParticipants({
       participants: tournamentParticipants,
     });
 
-  let participantIdsWithConflicts;
-  if (
+  const addContext =
     withEvents ||
     withDraws ||
     withMatchUps ||
@@ -79,14 +80,18 @@ export function getTournamentParticipants({
     withOpponents ||
     withStatistics ||
     scheduleAnalysis ||
-    withScheduleItems
-  ) {
+    withScheduleItems ||
+    inContext;
+
+  let participantIdsWithConflicts;
+
+  if (addContext) {
     const result = addParticipantContext({
-      tournamentRecord,
       tournamentEvents: tournamentRecord.events,
       tournamentParticipants,
       participantFilters,
       withScheduleItems,
+      tournamentRecord,
       scheduleAnalysis,
       withStatistics,
       withGroupings,

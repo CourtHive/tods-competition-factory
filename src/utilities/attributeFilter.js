@@ -1,4 +1,6 @@
-export function attributeFilter({ source, template }) {
+export function attributeFilter(params) {
+  if (params === null) return {};
+  const { source, template } = params || {};
   const target = {};
 
   attributeCopy(source, template, target);

@@ -2,6 +2,7 @@ import { findExtension } from '../../../tournamentEngine/governors/queryGovernor
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { getStructureLinks } from '../../getters/linkGetter';
 import { overlap } from '../../../utilities';
+import { getContainedStructures } from '../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 
 /**
  *
@@ -23,23 +24,31 @@ export function getAffectedTargetStructureIds({
     drawDefinition,
     structure,
   });
+
   const relevantAssignments = positionAssignments.filter(({ drawPosition }) =>
     drawPositions.includes(drawPosition)
   );
+
   const finishingPositions = relevantAssignments.map((assignment) => {
     const { extension } = findExtension({ element: assignment, name: 'tally' });
     return extension?.value?.groupOrder;
   });
+
+  const { containerStructures } = getContainedStructures({ drawDefinition });
+  const structureId = containerStructures[structure.structureId];
+
   const {
     links: { source: links },
   } = getStructureLinks({
     drawDefinition,
-    structureId: structure.structureId,
+    structureId,
   });
+
   const structureIds = links
     ?.filter((link) => {
       return overlap(finishingPositions, link.source?.finishingPositions || []);
     })
     .map((link) => link.source.structureId);
+
   return { structureIds };
 }

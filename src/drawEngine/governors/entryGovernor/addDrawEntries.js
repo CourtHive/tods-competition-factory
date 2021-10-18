@@ -109,7 +109,6 @@ export function addDrawEntries({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!Array.isArray(participantIds)) return { error: INVALID_PARTICIPANT_IDS };
   if (!validStage({ stage, drawDefinition })) {
-    console.log('boo');
     return { error: INVALID_STAGE };
   }
 

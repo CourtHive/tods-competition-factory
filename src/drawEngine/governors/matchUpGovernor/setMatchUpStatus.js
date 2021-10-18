@@ -10,6 +10,7 @@ import { isActiveDownstream } from './isActiveDownstream';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { addMatchUpScheduleItems } from './scheduleItems';
 import { swapWinnerLoser } from './swapWinnerLoser';
+import { scoreHasValue } from './scoreHasValue';
 import { addGoesTo } from './addGoesTo';
 import {
   isDirectingMatchUpStatus,
@@ -39,7 +40,6 @@ import {
   INCOMPATIBLE_MATCHUP_STATUS,
   CANNOT_CHANGE_WINNINGSIDE,
 } from '../../../constants/errorConditionConstants';
-import { scoreHasValue } from './scoreHasValue';
 
 /**
  *
