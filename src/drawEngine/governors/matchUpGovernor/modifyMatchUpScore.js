@@ -68,6 +68,7 @@ export function modifyMatchUpScore({
     ({ structure } = findMatchUp({
       drawDefinition,
       matchUpId,
+      event,
     }));
   }
 
@@ -76,7 +77,8 @@ export function modifyMatchUpScore({
       matchUpFormat ||
       matchUp.matchUpFormat ||
       structure?.matchUpFormat ||
-      drawDefinition.matchUpFormat;
+      drawDefinition.matchUpFormat ||
+      event?.matchUpFormat;
 
     const itemStructure = structure.structures.find((itemStructure) => {
       return itemStructure?.matchUps.find(
@@ -91,13 +93,12 @@ export function modifyMatchUpScore({
     });
 
     updateAssignmentParticipantResults({
+      positionAssignments: itemStructure.positionAssignments,
       tournamentRecord,
       drawDefinition,
-      event,
-
-      positionAssignments: itemStructure.positionAssignments,
       matchUpFormat,
       matchUps,
+      event,
     });
   }
 
