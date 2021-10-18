@@ -68,7 +68,10 @@ export function jinnScheduler({
 
   const containedStructureIds = Object.assign(
     {},
-    ...Object.values(tournamentRecords).map(getContainedStructures)
+    ...Object.values(tournamentRecords).map(
+      (tournamentRecord) =>
+        getContainedStructures({ tournamentRecord }).containedStructures
+    )
   );
 
   const validScheduleDates = scheduleDates

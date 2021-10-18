@@ -238,7 +238,9 @@ it('mocksEngine can schedule Round Robin draws', () => {
     startDate,
   });
   tournamentEngine.setState(tournamentRecord);
-  const containedStructureIds = getContainedStructures(tournamentRecord);
+  const containedStructureIds = getContainedStructures({
+    tournamentRecord,
+  }).containedStructures;
 
   const {
     matchUps: [{ structureId }],

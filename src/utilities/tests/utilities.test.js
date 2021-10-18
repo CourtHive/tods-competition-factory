@@ -302,6 +302,8 @@ it('can generate hashCodes and count object keys', () => {
   expect(result).toBeUndefined();
   result = generateHashCode({ a: 1, b: 2 });
   expect(result).toEqual('d2na');
+  result = generateHashCode({ a: [1, 2, 3], b: 2 });
+  expect(result).toEqual('j5xn');
 });
 
 test('makeDeepCopy turns date objects into strings', () => {

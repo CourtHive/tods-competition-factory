@@ -35,16 +35,16 @@ it('able to enter MAIN structure score after manually placing BYE in CONSOLATION
   const consolationStructureId = consolationStructure.structureId;
   const policyDefinitions = POLICY_POSITION_ACTIONS_UNRESTRICTED;
   replaceWithBye({
-    drawId,
     structureId: consolationStructureId,
-    drawPosition: 1,
     policyDefinitions,
+    drawPosition: 1,
+    drawId,
   });
 
   const contextFilters = { structureIds: [mainStructure.structureId] };
   const { matchUps } = tournamentEngine.allDrawMatchUps({
-    drawId,
     contextFilters,
+    drawId,
   });
 
   let targetMatchUp = matchUps.find(
@@ -57,9 +57,9 @@ it('able to enter MAIN structure score after manually placing BYE in CONSOLATION
   });
 
   let result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId: targetMatchUp.matchUpId,
     outcome,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
@@ -67,9 +67,9 @@ it('able to enter MAIN structure score after manually placing BYE in CONSOLATION
     ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 2
   );
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId: targetMatchUp.matchUpId,
     outcome,
+    drawId,
   });
   expect(result.success).toEqual(true);
 

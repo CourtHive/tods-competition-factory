@@ -51,7 +51,10 @@ export function getScheduledRoundsDetails({
     containedStructureIds ||
     Object.assign(
       {},
-      ...Object.values(tournamentRecords).map(getContainedStructures)
+      ...Object.values(tournamentRecords).map(
+        (tournamentRecord) =>
+          getContainedStructures({ tournamentRecord }).containedStructures
+      )
     );
 
   if (!matchUps) {

@@ -11,7 +11,9 @@ export function generateSchedulingProfile({
 }) {
   if (typeof schedulingProfile !== 'object') return { error: INVALID_VALUES };
 
-  const containedStructureIds = getContainedStructures(tournamentRecord);
+  const containedStructures = getContainedStructures({
+    tournamentRecord,
+  }).containedStructures;
   const { matchUps } = allTournamentMatchUps({ tournamentRecord });
 
   const { tournamentId } = tournamentRecord;
@@ -50,11 +52,9 @@ export function generateSchedulingProfile({
           let structureId = targetMatchUp.structureId;
 
           if (roundNumber && !winnerFinishingPositionRange) {
-            structureId = Object.keys(containedStructureIds).find(
+            structureId = Object.keys(containedStructures).find(
               (containingStructureId) =>
-                containedStructureIds[containingStructureId].includes(
-                  structureId
-                )
+                containedStructures[containingStructureId].includes(structureId)
             );
           }
 

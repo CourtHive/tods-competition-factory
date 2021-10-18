@@ -23,19 +23,33 @@ export function getAffectedTargetStructureIds({
     drawDefinition,
     structure,
   });
+
   const relevantAssignments = positionAssignments.filter(({ drawPosition }) =>
     drawPositions.includes(drawPosition)
   );
+
   const finishingPositions = relevantAssignments.map((assignment) => {
     const { extension } = findExtension({ element: assignment, name: 'tally' });
     return extension?.value?.groupOrder;
   });
+
   const {
     links: { source: links },
   } = getStructureLinks({
-    drawDefinition,
     structureId: structure.structureId,
+    drawDefinition,
   });
+
+  console.log('getaffected');
+  /*
+  console.log(drawDefinition.links);
+  console.log({
+    links,
+    structureId: structure.structureId,
+    structure,
+  });
+  */
+
   const structureIds = links
     ?.filter((link) => {
       return overlap(finishingPositions, link.source?.finishingPositions || []);
