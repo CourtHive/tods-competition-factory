@@ -237,9 +237,9 @@ export function addMatchUpOfficial({
 
 export function addMatchUpStartTime({
   drawDefinition,
+  disableNotice,
   matchUpId,
   startTime,
-  disableNotice,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(startTime)) return { error: INVALID_TIME };

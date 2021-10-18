@@ -6,6 +6,7 @@ import { OFFICIAL } from '../../../../constants/participantRoles';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   COURT_NOT_FOUND,
+  MISSING_MATCHUP_ID,
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
@@ -270,6 +271,22 @@ it('can add events, venues, and schedule matchUps', () => {
 
   ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
   expect(upcomingMatchUps[0].timeItems.length).toEqual(15);
+
+  result = competitionEngine.addMatchUpScheduleItems({
+    tournamentId,
+    drawId,
+    schedule: {
+      scheduledDate: startDate,
+    },
+  });
+  expect(result.error).toEqual(MISSING_MATCHUP_ID);
+
+  result = competitionEngine.addMatchUpScheduleItems({
+    tournamentId,
+    matchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_VALUE);
 
   result = competitionEngine.addMatchUpScheduleItems({
     tournamentId,
