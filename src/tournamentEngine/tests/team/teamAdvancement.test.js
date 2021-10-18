@@ -1,13 +1,13 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { TEAM_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
+import { INDIVIDUAL } from '../../../constants/participantTypes';
 import {
   COMPLETED,
   IN_PROGRESS,
 } from '../../../constants/matchUpStatusConstants';
-import { INDIVIDUAL } from '../../../constants/participantTypes';
-import { TEAM_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 // reusable
 const getMatchUp = (id, inContext) => {

@@ -1,6 +1,12 @@
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
+import {
+  INVALID_OBJECT,
+  VENUE_EXISTS,
+  VENUE_NOT_FOUND,
+} from '../../../../constants/errorConditionConstants';
+
 test('competitionEngine can modify venues', () => {
   const startDate = '2020-01-01';
   const { tournamentRecord: firstTournament } =
@@ -16,9 +22,11 @@ test('competitionEngine can modify venues', () => {
     thirdTournament,
   ]);
 
-  const myCourts = { venueName: 'My Courts' };
+  const myCourts = { venueName: 'My Courts', venueId: 'venueId' };
   let result = competitionEngine.addVenue({ venue: myCourts });
   expect(result.success).toEqual(true);
+  result = competitionEngine.addVenue({ venue: myCourts });
+  expect(result.error).toEqual(VENUE_EXISTS);
 
   const { tournamentRecords } = competitionEngine.getState();
   const tournamentsArray = Object.values(tournamentRecords);
@@ -102,4 +110,10 @@ test('competitionEngine can modify venues', () => {
   result = competitionEngine.getVenuesAndCourts();
   expect(result.venues.length).toEqual(0);
   expect(result.courts.length).toEqual(0);
+
+  result = competitionEngine.modifyVenue({ venueId });
+  expect(result.error).toEqual(INVALID_OBJECT);
+
+  result = competitionEngine.modifyVenue({ venueId: 'bogusId', modifications });
+  expect(result.error).toEqual(VENUE_NOT_FOUND);
 });

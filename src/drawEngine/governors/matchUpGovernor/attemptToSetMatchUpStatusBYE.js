@@ -1,21 +1,15 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
+import { INVALID_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  INVALID_MATCHUP_STATUS,
-  MISSING_MATCHUP,
-  MISSING_STRUCTURE,
-} from '../../../constants/errorConditionConstants';
 
 export function attemptToSetMatchUpStatusBYE({
   drawDefinition,
-  matchUp,
   structure,
+  matchUp,
 }) {
-  if (!structure) return { error: MISSING_STRUCTURE };
-  if (!matchUp) return { error: MISSING_MATCHUP };
   if (matchUp?.winningSide) {
     return { error: INVALID_MATCHUP_STATUS, matchUpStatus: BYE };
   }

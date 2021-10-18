@@ -14,8 +14,6 @@ export function deleteVenue({ tournamentRecords, venueId, force }) {
 
   let deleted;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    if (!tournamentRecord.venues) tournamentRecord.venues = [];
-
     const result = venueDelete({ tournamentRecord, venueId, force });
     if (result.error && result.error !== VENUE_NOT_FOUND) return result;
     deleted = true;

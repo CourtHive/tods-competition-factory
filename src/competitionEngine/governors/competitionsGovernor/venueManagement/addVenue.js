@@ -2,15 +2,11 @@ import { addVenue as venueAdd } from '../../../../tournamentEngine/governors/ven
 import { addNotice } from '../../../../global/globalState';
 import { UUID } from '../../../../utilities';
 
-import {
-  INVALID_VALUES,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { ADD_VENUE } from '../../../../constants/topicConstants';
 
 export function addVenue({ tournamentRecords, venue, disableNotice }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (typeof venue !== 'object') return { error: INVALID_VALUES };
 
   if (!venue.venueId) venue.venueId = UUID();

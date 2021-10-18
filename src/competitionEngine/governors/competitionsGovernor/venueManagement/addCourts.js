@@ -3,13 +3,14 @@ import { findVenue } from '../../../../tournamentEngine/getters/venueGetter';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
-  MISSING_TOURNAMENT_RECORDS,
+  MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 
 export function addCourts(params) {
-  const { tournamentRecords, venueId } = params || {};
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  const { tournamentRecords, venueId } = params;
+  if (typeof venueId !== 'string' || !venueId)
+    return { error: MISSING_VENUE_ID };
 
   let success;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
