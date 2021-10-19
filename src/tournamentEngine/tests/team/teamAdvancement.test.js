@@ -82,9 +82,9 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
 
   // generate outcome to be applied to each first round singles matchUp
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    matchUpStatus: COMPLETED,
     scoreString: '6-1 6-1',
     winningSide: 1,
-    matchUpStatus: COMPLETED,
   });
 
   // for all first round dualMatchUps complete all singles/doubles matchUps

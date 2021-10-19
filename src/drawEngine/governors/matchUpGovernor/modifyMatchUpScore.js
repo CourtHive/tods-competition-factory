@@ -1,6 +1,7 @@
 import { addNotes } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveNotes';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
+import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
@@ -8,7 +9,6 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
-import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
 
 /**
  *
@@ -76,7 +76,8 @@ export function modifyMatchUpScore({
     }));
   }
 
-  if (structure?.structureType === CONTAINER) {
+  // if the matchUp has a collectionId it is a tieMatchUp contained in a dual matchUp
+  if (structure?.structureType === CONTAINER && !matchUp.collectionId) {
     matchUpFormat =
       matchUpFormat ||
       matchUp.matchUpFormat ||
