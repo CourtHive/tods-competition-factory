@@ -15,6 +15,7 @@ import {
 } from '../../../utilities';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { TALLY } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ABANDONED,
@@ -111,7 +112,7 @@ export function getDrawData({
             const { drawPosition, participantId } = assignment;
             const { extension } = findExtension({
               element: assignment,
-              name: 'tally',
+              name: TALLY,
             });
             return (
               extension && {

@@ -42,7 +42,9 @@ export function modifyMatchUpScore({
 }) {
   let structure;
 
-  if (matchUp.matchUpType === TEAM) {
+  const isDualMatchUp = matchUp.matchUpType === TEAM;
+
+  if (isDualMatchUp) {
     if (matchUpId && matchUp.matchUpId !== matchUpId) {
       // the modification is to be applied to a tieMatchUp
       ({ matchUp, structure } = findMatchUp({
@@ -78,12 +80,13 @@ export function modifyMatchUpScore({
 
   // if the matchUp has a collectionId it is a tieMatchUp contained in a dual matchUp
   if (structure?.structureType === CONTAINER && !matchUp.collectionId) {
-    matchUpFormat =
-      matchUpFormat ||
-      matchUp.matchUpFormat ||
-      structure?.matchUpFormat ||
-      drawDefinition.matchUpFormat ||
-      event?.matchUpFormat;
+    matchUpFormat = isDualMatchUp
+      ? 'SET1-S:T100'
+      : matchUpFormat ||
+        matchUp.matchUpFormat ||
+        structure?.matchUpFormat ||
+        drawDefinition.matchUpFormat ||
+        event?.matchUpFormat;
 
     const itemStructure = structure.structures.find((itemStructure) => {
       return itemStructure?.matchUps.find(
@@ -91,13 +94,15 @@ export function modifyMatchUpScore({
       );
     });
 
+    const matchUpFilters = isDualMatchUp && { matchUpTypes: [TEAM] };
     const { matchUps } = getAllStructureMatchUps({
       structure: itemStructure,
       inContext: true,
+      matchUpFilters,
       event,
     });
 
-    updateAssignmentParticipantResults({
+    const result = updateAssignmentParticipantResults({
       positionAssignments: itemStructure.positionAssignments,
       tournamentRecord,
       drawDefinition,
@@ -105,6 +110,7 @@ export function modifyMatchUpScore({
       matchUps,
       event,
     });
+    if (result.error) return result;
   }
 
   const winningSideChanged = winningSide !== matchUp.winningSide;

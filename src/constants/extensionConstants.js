@@ -12,6 +12,7 @@ export const SCHEDULE_LIMITS = 'scheduleLimits';
 export const SCHEDULE_TIMING = 'scheduleTiming';
 export const SCHEDULING_PROFILE = 'schedulingProfile';
 export const SUB_ORDER = 'subOrder';
+export const TALLY = 'tally';
 
 export const extensionConstants = {
   APPLIED_POLICIES,
@@ -28,4 +29,5 @@ export const extensionConstants = {
   SCHEDULE_TIMING,
   SCHEDULING_PROFILE,
   SUB_ORDER,
+  TALLY,
 };

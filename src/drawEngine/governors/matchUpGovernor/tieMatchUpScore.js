@@ -57,6 +57,7 @@ export function updateTieMatchUpScore({
     drawDefinition,
     matchUpStatus,
     winningSide,
+    matchUpId,
     matchUp,
     event,
   });

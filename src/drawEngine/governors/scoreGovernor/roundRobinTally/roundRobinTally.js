@@ -47,7 +47,7 @@ export function tallyParticipantResults({
     policyDefinitions && policyDefinitions[POLICY_TYPE_ROUND_ROBIN_TALLY];
 
   const completedMatchUps = matchUps.filter(matchUpIsComplete);
-  const { participantResults, matchUpStatuses } = getParticipantResults({
+  const { participantResults } = getParticipantResults({
     matchUps: completedMatchUps,
     matchUpFormat,
     tallyPolicy,
@@ -58,7 +58,6 @@ export function tallyParticipantResults({
     matchUps: completedMatchUps,
     participantResults,
     participantsCount,
-    matchUpStatuses,
     matchUpFormat,
     tallyPolicy,
     subOrderMap,
