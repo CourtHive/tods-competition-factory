@@ -1,37 +1,40 @@
+import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
+
 export function getSetWinningSide({
+  matchUpScoringFormat,
   isDecidingSet,
   isTiebreakSet,
-  matchUpScoringFormat,
   setObject,
 }) {
   if (!setObject) return undefined;
-  const leadingSide = getLeadingSide({ setObject });
+  const leadingSide = getLeadingSide({ set: setObject });
   const setIsComplete = checkSetIsComplete({
+    matchUpScoringFormat,
     isDecidingSet,
     isTiebreakSet,
-    matchUpScoringFormat,
-    setObject,
+    set: setObject,
   });
   return (setIsComplete && leadingSide) || undefined;
 }
 
 export function checkSetIsComplete({
-  setObject,
-  isDecidingSet,
-  isTiebreakSet,
-  matchUpScoringFormat,
   ignoreTiebreak = false,
+  matchUpScoringFormat,
+  isTiebreakSet,
+  isDecidingSet,
+  set,
 }) {
+  if (!set) return { error: MISSING_VALUE };
   const setFormat =
     (isDecidingSet && matchUpScoringFormat.finalSetFormat) ||
     matchUpScoringFormat?.setFormat ||
     {};
-  const { side1Score, side2Score } = setObject;
+  const { side1Score, side2Score } = set;
 
   const { setTo, tiebreakAt, tiebreakFormat } = setFormat;
   const NoAD = tiebreakFormat?.NoAd;
 
-  const leadingSide = getLeadingSide({ setObject });
+  const leadingSide = getLeadingSide({ set });
   const scoreDiff = Math.abs(side1Score - side2Score);
   const containsSetTo = side1Score >= setTo || side2Score >= setTo;
 
@@ -45,10 +48,9 @@ export function checkSetIsComplete({
   const tiebreakIsValid =
     ignoreTiebreak ||
     (requiresTiebreak &&
-      ((leadingSide === 1 &&
-        setObject.side1TiebreakScore > setObject.side2TiebreakScore) ||
+      ((leadingSide === 1 && set.side1TiebreakScore > set.side2TiebreakScore) ||
         (leadingSide === 2 &&
-          setObject.side2TiebreakScore > setObject.side1TiebreakScore)));
+          set.side2TiebreakScore > set.side1TiebreakScore)));
 
   const winMargin =
     requiresTiebreak &&
@@ -65,13 +67,13 @@ export function checkSetIsComplete({
   );
 }
 
-export function getLeadingSide({ setObject }) {
-  if (setObject.side1Score || setObject.side2Score) {
-    if (setObject.side1Score > setObject.side2Score) return 1;
-    if (setObject.side2Score > setObject.side1Score) return 2;
-  } else if (setObject.side1TiebreakScore || setObject.side2TiebreakScore) {
-    if (setObject.side1TiebreakScore > setObject.side2TiebreakScore) return 1;
-    if (setObject.side2TiebreakScore > setObject.side1TiebreakScore) return 2;
+export function getLeadingSide({ set }) {
+  if (set.side1Score || set.side2Score) {
+    if (set.side1Score > set.side2Score) return 1;
+    if (set.side2Score > set.side1Score) return 2;
+  } else if (set.side1TiebreakScore || set.side2TiebreakScore) {
+    if (set.side1TiebreakScore > set.side2TiebreakScore) return 1;
+    if (set.side2TiebreakScore > set.side1TiebreakScore) return 2;
   }
   return undefined;
 }

@@ -1,3 +1,4 @@
+import { tallyParticipantResults } from '../../governors/scoreGovernor/roundRobinTally/roundRobinTally';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { chunkArray, intersection } from '../../../utilities/arrays';
@@ -5,6 +6,7 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import { findStructure } from '../../getters/findStructure';
 import { setsValues } from './roundRobinSetsValues.js';
 import mocksEngine from '../../../mocksEngine';
+import { scoreGovernor } from '../../..';
 import drawEngine from '../../sync';
 import {
   allPlayoffPositionsFilled,
@@ -292,7 +294,7 @@ it('can advance players in Round Robin with Playoffs', () => {
     const structureMatchUps = eventMatchUps.filter(
       (matchUp) => matchUp.structureId === structureId
     );
-    const { participantResults } = drawEngine.tallyParticipantResults({
+    const { participantResults } = tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });
@@ -535,7 +537,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
     const structureMatchUps = eventMatchUps.filter(
       (matchUp) => matchUp.structureId === structureId
     );
-    const { participantResults } = drawEngine.tallyParticipantResults({
+    const { participantResults } = scoreGovernor.tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });

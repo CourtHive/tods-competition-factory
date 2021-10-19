@@ -12,13 +12,12 @@ import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function updateAssignmentParticipantResults({
+  positionAssignments,
   tournamentRecord,
   drawDefinition,
-  event,
-
-  positionAssignments,
   matchUpFormat,
   matchUps,
+  event,
 }) {
   if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
   if (!positionAssignments) return { error: INVALID_VALUES };

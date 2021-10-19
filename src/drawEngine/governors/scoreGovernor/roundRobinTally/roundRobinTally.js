@@ -4,18 +4,29 @@ import { unique } from '../../../../utilities/arrays';
 import { getGroupOrder } from './getGroupOrder';
 
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../../constants/policyConstants';
-import { MISSING_MATCHUPS } from '../../../../constants/errorConditionConstants';
 import { BYE } from '../../../../constants/matchUpStatusConstants';
+import {
+  INVALID_VALUES,
+  MISSING_MATCHUPS,
+} from '../../../../constants/errorConditionConstants';
 
 export function tallyParticipantResults({
   policyDefinitions,
-
   matchUpFormat,
   matchUps = [],
   subOrderMap,
   perPlayer,
 }) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
+
+  const structureIds = matchUps.reduce(
+    (structureIds, { structureId }) =>
+      structureIds.includes(structureId)
+        ? structureIds
+        : structureIds.concat(structureId),
+    []
+  );
+  if (structureIds.length !== 1) return { error: INVALID_VALUES };
 
   const relevantMatchUps = matchUps.filter(
     (matchUp) => matchUp && matchUp.matchUpStatus !== BYE

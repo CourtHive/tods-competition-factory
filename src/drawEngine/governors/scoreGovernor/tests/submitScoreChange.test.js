@@ -12,18 +12,20 @@ import { FORMAT_STANDARD } from './formatConstants';
 
 test('submitScoreChange smoke test', () => {
   const matchUp = {
-    sets: [
-      { setNumber: 1, side1Score: 6, side2Score: 3, winningSide: 1 },
-      { setNumber: 2, side1Score: 3, side2Score: 6, winningSide: 2 },
-      {
-        setNumber: 3,
-        side1Score: 7,
-        side2Score: 6,
-        side1TiebreakScore: 7,
-        side2TiebreakScore: 3,
-        winningSide: 1,
-      },
-    ],
+    score: {
+      sets: [
+        { setNumber: 1, side1Score: 6, side2Score: 3, winningSide: 1 },
+        { setNumber: 2, side1Score: 3, side2Score: 6, winningSide: 2 },
+        {
+          setNumber: 3,
+          side1Score: 7,
+          side2Score: 6,
+          side1TiebreakScore: 7,
+          side2TiebreakScore: 3,
+          winningSide: 1,
+        },
+      ],
+    },
     winningSide: 1,
     matchUpFormat: FORMAT_STANDARD,
   };

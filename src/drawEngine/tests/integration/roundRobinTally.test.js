@@ -5,7 +5,6 @@ import { getPositionAssignments } from '../../getters/positionsGetter';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import drawEngine from '../../sync';
 
 import { SINGLES } from '../../../constants/eventConstants';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
@@ -45,9 +44,7 @@ it('can recalculate participantResults when outcomes are removed', () => {
     drawId,
     inContext: true,
   });
-  let { participantResults } = tallyParticipantResults({
-    matchUps,
-  });
+  let { participantResults } = tallyParticipantResults({ matchUps });
   expect(Object.keys(participantResults).length).toEqual(2);
 
   let { positionAssignments } = getPositionAssignments({
@@ -143,7 +140,7 @@ it('calculate participantResult values are present for all drawPositions', () =>
       ({ matchUpFormat }) => matchUpFormat
     )?.matchUpFormat;
 
-    const { participantResults } = drawEngine.tallyParticipantResults({
+    const { participantResults } = tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });

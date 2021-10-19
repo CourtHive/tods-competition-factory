@@ -91,7 +91,11 @@ it.each([asyncDrawEngine, drawEngineSync])(
       await drawEngine.reset();
       const result = await drawEngine[method]();
       if (!result) {
-        expect([0, false].includes(result)).toEqual(true);
+        if (
+          !['stringifyMatchUpFormat', 'parseMatchUpFormat'].includes(method)
+        ) {
+          expect([0, false].includes(result)).toEqual(true);
+        }
       } else if (result.success) {
         expect(
           [

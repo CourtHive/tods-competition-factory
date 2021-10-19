@@ -47,13 +47,12 @@ function enterKeyValues({
 
 it('can modify scoreString string', () => {
   const { updated, scoreString: updatedScore } = keyValueScore({
-    value: '0',
-    lowSide: 2,
-
-    sets: [],
-    scoreString: '',
-    matchUpStatus: '',
     matchUpFormat: FORMAT_STANDARD,
+    matchUpStatus: '',
+    scoreString: '',
+    lowSide: 2,
+    value: '0',
+    sets: [],
   });
 
   expect(updated).toEqual(true);
@@ -67,11 +66,11 @@ it('can use valuePairs', () => {
   ];
 
   const result = enterKeyValues({
-    sets: [],
-    scoreString: '',
     matchUpFormat: FORMAT_STANDARD,
-    valuePairs,
     shiftFirst: false,
+    scoreString: '',
+    valuePairs,
+    sets: [],
   });
 
   expect(result.scoreString).toEqual('0-6 0-6 ');
@@ -84,11 +83,11 @@ it('can shiftFirst', () => {
   ];
 
   const result = enterKeyValues({
-    sets: [],
-    scoreString: '',
     matchUpFormat: FORMAT_STANDARD,
-    valuePairs,
     shiftFirst: true,
+    scoreString: '',
+    valuePairs,
+    sets: [],
   });
 
   expect(result.scoreString).toEqual('0-6 0-6 ');
