@@ -8,7 +8,6 @@ import {
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import { RETRIEVAL } from '../../../constants/timeItemConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can add and read timeItems from events', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -51,7 +50,7 @@ it('can add and read timeItems from events', () => {
     itemValue,
   };
   result = tournamentEngine.addEventTimeItem({ eventId, timeItem });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   let { timeItem: retrievedTimeItem, message } =
     tournamentEngine.getEventTimeItem({

@@ -6,6 +6,7 @@ import {
   mainDrawPositions,
 } from '../../tests/primitives/primitives';
 
+import { POLICY_ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
 import {
   SINGLE_ELIMINATION,
   FEED_IN,
@@ -13,9 +14,6 @@ import {
   MAIN,
   OLYMPIC,
 } from '../../../constants/drawDefinitionConstants';
-
-import { POLICY_ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', () => {
   reset();
@@ -28,7 +26,7 @@ it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', (
   const result = drawEngine.attachPolicies({
     policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const { structureId } = structure;
   const { matchUps } = drawEngine.allStructureMatchUps({ structureId });
@@ -72,7 +70,7 @@ it('can return matchUps with roundNames from a FIRST_MATCH_LOSER_CONSOLATION str
   result = drawEngine.attachPolicies({
     policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   let { structureId } = mainStructure;
   let { matchUps } = drawEngine.allStructureMatchUps({ structureId });
@@ -128,7 +126,7 @@ it('can return matchUps with roundNames from a FEED_IN structure and identify fe
   const result = drawEngine.attachPolicies({
     policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const { structureId } = structure;
   const { matchUps } = drawEngine.allStructureMatchUps({ structureId });
@@ -179,7 +177,7 @@ it('can return matchUps with roundNames from a OLYMPIC structure', () => {
   result = drawEngine.attachPolicies({
     policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const { matchUps } = drawEngine.allDrawMatchUps({
     requireParticipants: false,

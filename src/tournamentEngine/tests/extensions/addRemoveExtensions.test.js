@@ -1,4 +1,5 @@
 import { generateTournamentRecord } from '../../../mocksEngine/generators/generateTournamentRecord';
+import { competitionEngine } from '../../..';
 import tournamentEngine from '../../sync';
 import {
   addExtension,
@@ -11,7 +12,6 @@ import {
   removeNotes,
 } from '../../governors/tournamentGovernor/addRemoveNotes';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
@@ -22,7 +22,6 @@ import {
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { competitionEngine } from '../../..';
 
 it('can add and remove extensions from tournamentRecords', () => {
   const drawProfiles = [{ drawSize: 32 }];
@@ -42,7 +41,7 @@ it('can add and remove extensions from tournamentRecords', () => {
 
   // Add extensions to elements
   let result = tournamentEngine.addTournamentExtension({ extension });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.addEventExtension({ extension });
   expect(result.error).toEqual(MISSING_EVENT);
@@ -65,10 +64,10 @@ it('can add and remove extensions from tournamentRecords', () => {
   expect(result.error).toEqual(EVENT_NOT_FOUND);
 
   result = tournamentEngine.addEventExtension({ eventId, extension });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.addDrawDefinitionExtension({ drawId, extension });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   // Check length of extensions for each element
   let { tournamentRecord: updatedTournamentRecord } =
@@ -106,7 +105,7 @@ it('can add and remove extensions from tournamentRecords', () => {
   const newExtension = { name: extensionName, value: newExtensionValue };
 
   result = tournamentEngine.addTournamentExtension({ extension: newExtension });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   ({ tournamentRecord: updatedTournamentRecord } = tournamentEngine.getState());
   expect(updatedTournamentRecord.extensions.length).toEqual(1);
@@ -115,13 +114,13 @@ it('can add and remove extensions from tournamentRecords', () => {
     eventId,
     extension: newExtension,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.addDrawDefinitionExtension({
     drawId,
     extension: newExtension,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   ({ event, drawDefinition } = tournamentEngine.getEvent({ drawId }));
   expect(event.extensions.length).toEqual(2);
@@ -155,13 +154,13 @@ it('can add and remove extensions from tournamentRecords', () => {
   expect(result.message).toEqual(NOT_FOUND);
 
   result = tournamentEngine.removeTournamentExtension({ name: extensionName });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.removeEventExtension({
     name: extensionName,
     eventId,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
   result = tournamentEngine.findEventExtension({
     name: extensionName,
     eventId,
@@ -172,7 +171,7 @@ it('can add and remove extensions from tournamentRecords', () => {
     name: extensionName,
     drawId,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   // test calling with invalid parameter eventId
   result = tournamentEngine.findDrawDefinitionExtension({

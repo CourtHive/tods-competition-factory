@@ -1,8 +1,6 @@
 import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-
 it('can re-schedule matchUp date backwards and forwards in time', () => {
   const drawProfiles = [
     {
@@ -28,7 +26,7 @@ it('can re-schedule matchUp date backwards and forwards in time', () => {
     matchUpId,
     scheduledDate,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   let {
     matchUp: { schedule },
@@ -44,7 +42,7 @@ it('can re-schedule matchUp date backwards and forwards in time', () => {
     matchUpId,
     scheduledDate: newScheduledDate,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   ({
     matchUp: { schedule },
@@ -59,7 +57,7 @@ it('can re-schedule matchUp date backwards and forwards in time', () => {
     matchUpId,
     scheduledDate,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   ({
     matchUp: { schedule },
@@ -74,7 +72,7 @@ it('can re-schedule matchUp date backwards and forwards in time', () => {
     matchUpId,
     scheduledDate: undefined,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   ({
     matchUp: { schedule },

@@ -6,7 +6,6 @@ import mocksEngine from '../../../mocksEngine';
 
 import { FEED_IN_CHAMPIONSHIP_TO_SF } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can add drawPositionsRange to inContext matchUps in a SINGLE_ELIMINATION structure', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -27,7 +26,7 @@ it('can add drawPositionsRange to inContext matchUps in a SINGLE_ELIMINATION str
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const matchUpFormat = 'SET5-S:4/TB7';
   const values = {

@@ -1,13 +1,12 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { MODIFICATION } from '../../../constants/timeItemConstants';
 import {
   INVALID_TIME_ITEM,
   MISSING_TIME_ITEM,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { MODIFICATION } from '../../../constants/timeItemConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can add and read timeItems from events', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -39,7 +38,7 @@ it('can add and read timeItems from events', () => {
     itemValue,
   };
   result = tournamentEngine.addTournamentTimeItem({ timeItem });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   timeItem = {
     itemType: 'MODIFICATION.CONTENT',
@@ -48,7 +47,7 @@ it('can add and read timeItems from events', () => {
   result = tournamentEngine.addTournamentTimeItem({
     timeItem,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   itemValue = '2021-01-02T00:00';
   timeItem = {
@@ -56,7 +55,7 @@ it('can add and read timeItems from events', () => {
     itemValue,
   };
   result = tournamentEngine.addTournamentTimeItem({ timeItem });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   let {
     timeItem: retrievedTimeItem,
@@ -96,7 +95,7 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
     itemValue,
   };
   let result = tournamentEngine.addTournamentTimeItem({ timeItem });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   timeItem = {
     itemType: 'MODIFICATION.CONTENT',
@@ -106,7 +105,7 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
     timeItem,
     duplicateValues: false,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   itemValue = '2021-01-02T00:00';
   timeItem = {
@@ -114,7 +113,7 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
     itemValue,
   };
   result = tournamentEngine.addTournamentTimeItem({ timeItem });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   let {
     timeItem: retrievedTimeItem,
@@ -136,7 +135,7 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
     itemValue,
   };
   result = tournamentEngine.addTournamentTimeItem({ timeItem });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   itemValue = '2021-01-02T00:00';
   timeItem = {
@@ -147,7 +146,7 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
     timeItem,
     duplicateValues: false,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   itemValue = '2021-01-01T00:00';
   timeItem = {
@@ -155,7 +154,7 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
     itemValue,
   };
   result = tournamentEngine.addTournamentTimeItem({ timeItem });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   ({
     timeItem: retrievedTimeItem,

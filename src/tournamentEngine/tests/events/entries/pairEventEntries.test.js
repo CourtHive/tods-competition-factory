@@ -4,7 +4,6 @@ import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../sync';
 
 import { WITHDRAWN } from '../../../../constants/entryStatusConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 import { DOUBLES } from '../../../../constants/eventConstants';
 import { PAIR } from '../../../../constants/participantTypes';
 
@@ -33,7 +32,7 @@ it('can add doubles events to a tournament record', () => {
     .filter((participant) => participant.participantType === PAIR)
     .map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   let { event: updatedEvent } = tournamentEngine.getEvent({ eventId });
   expect(updatedEvent.entries.length).toEqual(32);
@@ -59,7 +58,7 @@ it('can add doubles events to a tournament record', () => {
     participantIds: unpairedParticipantIds,
     entryStatus: WITHDRAWN,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const values = {
     automated: true,
