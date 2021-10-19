@@ -68,6 +68,7 @@ export function directParticipants(params) {
     updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       drawDefinition,
+      structure,
       event,
     });
     const matchUpTie = inContextDrawMatchUps.find(

@@ -5,6 +5,7 @@ export function getProjectedDualWinningSide({
   winningSide,
   dualMatchUp,
   tieFormat,
+  structure,
   matchUp,
   event,
 }) {
@@ -31,6 +32,7 @@ export function getProjectedDualWinningSide({
   tieFormat =
     tieFormat ||
     matchUp?.tieFormat ||
+    structure?.tieFormat ||
     drawDefinition?.tieFormat ||
     event?.tieFormat;
 

@@ -14,17 +14,25 @@ import {
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
 
-export function updateTieMatchUpScore({ drawDefinition, event, matchUpId }) {
+export function updateTieMatchUpScore({
+  drawDefinition,
+  matchUpId,
+  structure,
+  event,
+}) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP };
 
-  if (!event) console.log('noe');
   const { matchUp, error } = findMatchUp({ drawDefinition, event, matchUpId });
   if (error) return { error };
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
   const tieFormat =
-    matchUp.tieFormat || drawDefinition?.tieFormat || event?.tieFormat;
+    matchUp.tieFormat ||
+    structure?.tieFormat ||
+    drawDefinition?.tieFormat ||
+    event?.tieFormat;
+
   const { winningSide, set, scoreStringSide1, scoreStringSide2 } =
     generateTieMatchUpScore({ matchUp, tieFormat });
 

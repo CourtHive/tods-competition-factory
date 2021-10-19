@@ -29,10 +29,11 @@ export function generateTieMatchUpScore({
   }
 
   if (!matchUp) return { error: MISSING_MATCHUP };
+  tieFormat = matchUp.tieFormat || tieFormat;
 
   const sidePoints = [0, 0];
   const tieMatchUps = matchUp?.tieMatchUps || [];
-  const collectionDefinitions = matchUp?.tieFormat?.collectionDefinitions || [];
+  const collectionDefinitions = tieFormat?.collectionDefinitions || [];
 
   collectionDefinitions.forEach((collectionDefinition) => {
     const collectionMatchUps = tieMatchUps.filter(
@@ -82,9 +83,8 @@ export function generateTieMatchUpScore({
 
   // now calculate if there is a winningSide
   let winningSide;
-  const format = matchUp.tieFormat || tieFormat;
-  if (format) {
-    const valueGoal = format.winCriteria?.valueGoal;
+  if (tieFormat) {
+    const valueGoal = tieFormat.winCriteria?.valueGoal;
     if (valueGoal) {
       const sideThatWon = sideScores
         .map((points, sideIndex) => ({ sideNumber: sideIndex + 1, points }))

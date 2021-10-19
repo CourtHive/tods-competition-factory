@@ -42,10 +42,10 @@ export function generateVoluntaryConsolationStructure({
 
   if (automated) {
     automatedPositioning({
+      structureId: structureId || structure.structureId, // either passed in or generated in template
       drawDefinition,
       participants,
       event,
-      structureId: structureId || structure.structureId, // either passed in or generated in template
     });
   }
 

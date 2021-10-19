@@ -11,13 +11,14 @@ import {
   WILDCARD,
 } from '../../constants/entryStatusConstants';
 
-export function getByesData({ drawDefinition, matchUpsMap, structure }) {
+export function getByesData({ drawDefinition, event, matchUpsMap, structure }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps, roundMatchUps } = getAllStructureMatchUps({
     drawDefinition,
     matchUpFilters,
     matchUpsMap,
     structure,
+    event,
   });
   const firstRoundMatchUps = (roundMatchUps && roundMatchUps[1]) || [];
 
