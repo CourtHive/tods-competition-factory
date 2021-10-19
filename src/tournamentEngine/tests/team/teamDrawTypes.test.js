@@ -44,6 +44,7 @@ it.each(scenarios)(
     let {
       tournamentRecord,
       drawIds: [drawId],
+      eventIds: [eventId],
     } = mocksEngine.generateTournamentRecord({
       drawProfiles: [{ eventType: TEAM, drawSize: 8, drawType }],
     });
@@ -63,10 +64,15 @@ it.each(scenarios)(
 
     const valueGoal = event.tieFormat.winCriteria.valueGoal;
 
+    const { eventData } = tournamentEngine.getEventData({ eventId });
+    eventData.drawsData[0].structures[0].roundMatchUps[1].forEach(
+      (dualMatchUp) => expect(dualMatchUp.tieFormat).not.toBeUndefined()
+    );
+
     // generate outcome to be applied to each first round singles matchUp
     const { outcome } = mocksEngine.generateOutcomeFromScoreString({
-      scoreString: '6-1 6-1',
       matchUpStatus: COMPLETED,
+      scoreString: '6-1 6-1',
       winningSide: 1,
     });
 
@@ -74,6 +80,10 @@ it.each(scenarios)(
       tournamentEngine.allTournamentMatchUps({
         matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
       });
+
+    firstRoundDualMatchUps.forEach((dualMatchUp) =>
+      expect(dualMatchUp.tieFormat).not.toBeUndefined()
+    );
 
     // for all first round dualMatchUps complete all singles/doubles matchUps
     firstRoundDualMatchUps.forEach((dualMatchUp) => {
@@ -160,4 +170,10 @@ it('generates playoff structures for TEAM events and propagates tieFormat', () =
   });
   expect(matchUp.tieFormat).not.toBeUndefined();
   expect(matchUp.tieMatchUps.length).toEqual(9);
+
+  const { matchUp: foundMatchUp } = tournamentEngine.findMatchUp({
+    ...matchUp,
+    inContext: true,
+  });
+  expect(foundMatchUp.tieFormat).not.toBeUndefined();
 });

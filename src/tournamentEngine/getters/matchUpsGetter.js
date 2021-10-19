@@ -420,6 +420,7 @@ export function findMatchUp({
     nextMatchUps,
     matchUpId,
     inContext,
+    event,
   });
   return { matchUp, structure, drawDefinition };
 }
