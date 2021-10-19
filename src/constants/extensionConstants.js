@@ -5,6 +5,7 @@ export const DRAW_PROFILE = 'drawProfile';
 export const ENTRY_PROFILE = 'entryProfile';
 export const FLIGHT_PROFILE = 'flightProfile';
 export const GROUPING_ATTRIBUTE = 'groupingAttribute';
+export const LINEUP = 'lineUp';
 export const LINKED_TOURNAMENTS = 'linkedTournamentsIds';
 export const PARTICIPANT_REPRESENTATIVES = 'participantRepresentatives';
 export const PERSON_REQUESTS = 'personRequests';
@@ -22,6 +23,7 @@ export const extensionConstants = {
   ENTRY_PROFILE,
   FLIGHT_PROFILE,
   GROUPING_ATTRIBUTE,
+  LINEUP,
   LINKED_TOURNAMENTS,
   PARTICIPANT_REPRESENTATIVES,
   PERSON_REQUESTS,
