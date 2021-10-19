@@ -198,7 +198,6 @@ export function generateDrawType(params = {}) {
   if (tieFormat) {
     matchUps.forEach((matchUp) => {
       const { tieMatchUps } = generateTieMatchUps({ tieFormat });
-      // Object.assign(matchUp, { tieMatchUps, tieFormat, matchUpType });
       Object.assign(matchUp, { tieMatchUps, matchUpType });
     });
   }
