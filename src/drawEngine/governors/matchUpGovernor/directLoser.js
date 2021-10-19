@@ -168,6 +168,7 @@ export function directLoser(params) {
         matchUpId: loserMatchUp.matchUpId,
         drawDefinition,
         matchUpsMap,
+        event,
       });
       const updatedSides = [1, 2].map((sideNumber) => {
         const existingSide =

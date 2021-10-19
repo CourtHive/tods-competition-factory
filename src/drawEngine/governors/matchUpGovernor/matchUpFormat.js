@@ -18,7 +18,8 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function setMatchUpFormat(params) {
-  const { drawDefinition, matchUpFormat, structureId, matchUpId } = params;
+  const { drawDefinition, event, matchUpFormat, structureId, matchUpId } =
+    params;
   let { tieFormat } = params;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -37,6 +38,7 @@ export function setMatchUpFormat(params) {
     const { matchUp, error } = findMatchUp({
       drawDefinition,
       matchUpId,
+      event,
     });
     if (error) return { error };
 

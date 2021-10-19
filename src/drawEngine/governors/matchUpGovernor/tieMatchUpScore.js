@@ -18,7 +18,8 @@ export function updateTieMatchUpScore({ drawDefinition, event, matchUpId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP };
 
-  const { matchUp, error } = findMatchUp({ drawDefinition, matchUpId });
+  if (!event) console.log('noe');
+  const { matchUp, error } = findMatchUp({ drawDefinition, event, matchUpId });
   if (error) return { error };
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
@@ -49,6 +50,7 @@ export function updateTieMatchUpScore({ drawDefinition, event, matchUpId }) {
     matchUpStatus,
     winningSide,
     matchUp,
+    event,
   });
 
   return { ...SUCCESS, removeWinningSide };

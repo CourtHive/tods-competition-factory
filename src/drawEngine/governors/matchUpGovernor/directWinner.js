@@ -16,6 +16,7 @@ export function directWinner({
   winnerMatchUp,
   dualMatchUp,
   matchUpsMap,
+  event,
 }) {
   if (winnerTargetLink) {
     const targetMatchUpDrawPositions = winnerMatchUp.drawPositions || [];
@@ -123,6 +124,7 @@ export function directWinner({
         matchUpId: winnerMatchUp.matchUpId,
         drawDefinition,
         matchUpsMap,
+        event,
       });
 
       const updatedSides = [1, 2].map((sideNumber) => {

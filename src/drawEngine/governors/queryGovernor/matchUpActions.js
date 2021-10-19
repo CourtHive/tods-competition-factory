@@ -38,11 +38,11 @@ import {
  *
  */
 export function matchUpActions({
-  drawDefinition,
-  matchUpId,
-
-  matchUpsMap,
   inContextDrawMatchUps,
+  drawDefinition,
+  matchUpsMap,
+  matchUpId,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -50,6 +50,7 @@ export function matchUpActions({
   const { matchUp, structure } = findMatchUp({
     drawDefinition,
     matchUpId,
+    event,
   });
 
   const { assignedPositions, allPositionsAssigned } =

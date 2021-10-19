@@ -105,6 +105,7 @@ export function directParticipants(params) {
         winnerMatchUp,
         dualMatchUp,
         matchUpsMap,
+        event,
       });
       if (result.error) return result;
     }
@@ -120,6 +121,7 @@ export function directParticipants(params) {
         loserMatchUp,
         winningSide,
         matchUpsMap,
+        event,
       });
       if (result.error) return result;
     }

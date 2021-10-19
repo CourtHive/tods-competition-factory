@@ -17,10 +17,10 @@ import {
 } from '../../constants/errorConditionConstants';
 
 export function getValidSeedBlocks({
-  structure,
   drawDefinition,
   appliedPolicies,
   allPositions,
+  structure,
 }) {
   let firstRoundSeedsCount,
     fedSeedNumberOffset = 0;

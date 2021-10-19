@@ -20,20 +20,22 @@ import {
   Otherwise a participant may be checked in multiple times
 */
 export function checkInParticipant({
-  drawDefinition,
   tournamentParticipants,
-  matchUpId,
+  drawDefinition,
   participantId,
+  matchUpId,
+  event,
 }) {
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
   if (!matchUpId) return { error: MISSING_MATCHUP };
 
   if (tournamentParticipants && tournamentParticipants.length) {
     const { matchUp } = findMatchUp({
-      drawDefinition,
       tournamentParticipants,
-      matchUpId,
       inContext: true,
+      drawDefinition,
+      matchUpId,
+      event,
     });
     if (!matchUp) return { error: MATCHUP_NOT_FOUND };
     const { error, checkedInParticipantIds, allRelevantParticipantIds } =
@@ -58,10 +60,11 @@ export function checkInParticipant({
 }
 
 export function checkOutParticipant({
-  drawDefinition,
   tournamentParticipants,
-  matchUpId,
+  drawDefinition,
   participantId,
+  matchUpId,
+  event,
 }) {
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -70,10 +73,11 @@ export function checkOutParticipant({
 
   if (tournamentParticipants && tournamentParticipants.length) {
     const { matchUp } = findMatchUp({
-      drawDefinition,
       tournamentParticipants,
-      matchUpId,
       inContext: true,
+      drawDefinition,
+      matchUpId,
+      event,
     });
     const { checkedInParticipantIds, allRelevantParticipantIds } =
       getCheckedInParticipantIds({ matchUp });

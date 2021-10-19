@@ -24,14 +24,15 @@ import {
  */
 export function setMatchUpStatus(params) {
   const {
-    drawDefinition,
-    matchUpId,
-    matchUpFormat,
-    schedule,
     tournamentRecord,
+    drawDefinition,
+    matchUpFormat,
+    matchUpId,
+    schedule,
     event,
     notes,
   } = params;
+
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
@@ -55,6 +56,7 @@ export function setMatchUpStatus(params) {
       drawDefinition,
       matchUpFormat,
       matchUpId,
+      event,
     });
     if (result.error) return result;
   }
