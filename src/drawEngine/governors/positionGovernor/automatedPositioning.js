@@ -16,14 +16,14 @@ import {
 } from '../../../constants/entryStatusConstants';
 
 export function automatedPositioning({
+  inContextDrawMatchUps,
   drawDefinition,
   candidatesCount,
   participants,
   structureId,
-  seedsOnly,
-
-  inContextDrawMatchUps,
   matchUpsMap,
+  seedsOnly,
+  event,
 }) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { error };
@@ -57,10 +57,10 @@ export function automatedPositioning({
     // BYEs must be placed first to ensure lower seeds get BYEs
     let result = positionByes({
       drawDefinition,
+      matchUpsMap,
       structure,
       seedsOnly,
-
-      matchUpsMap,
+      event,
     });
     if (result.error) return result;
 
@@ -87,12 +87,12 @@ export function automatedPositioning({
     if (result.error) return result;
 
     result = positionByes({
+      inContextDrawMatchUps,
       drawDefinition,
+      matchUpsMap,
       structure,
       seedsOnly,
-
-      matchUpsMap,
-      inContextDrawMatchUps,
+      event,
     });
     if (result.error) return result;
   }

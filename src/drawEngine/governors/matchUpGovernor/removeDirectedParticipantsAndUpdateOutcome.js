@@ -70,6 +70,7 @@ export function removeDirectedParticipants(params) {
     const { removeWinningSide } = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       drawDefinition,
+      structure,
       event,
     });
     if (!dualWinningSideChange && !removeWinningSide) return { ...SUCCESS };

@@ -137,6 +137,19 @@ export function setMatchUpStatus(params) {
     drawDefinition,
   });
 
+  const structureId = inContextMatchUp.structureId;
+  const { structure } = findStructure({ drawDefinition, structureId });
+
+  Object.assign(params, {
+    inContextDrawMatchUps,
+    inContextMatchUp,
+    matchUpTieId,
+    matchUpsMap,
+    targetData,
+    structure,
+    matchUp,
+  });
+
   let dualWinningSideChange;
   if (matchUpTieId) {
     const { matchUp: dualMatchUp } = findMatchUp({
@@ -152,6 +165,7 @@ export function setMatchUpStatus(params) {
       winningSide,
       dualMatchUp,
       tieFormat,
+      structure,
       matchUp,
       event,
     });
@@ -169,19 +183,6 @@ export function setMatchUpStatus(params) {
       tieFormat,
     });
   }
-
-  const structureId = inContextMatchUp.structureId;
-  const { structure } = findStructure({ drawDefinition, structureId });
-
-  Object.assign(params, {
-    inContextDrawMatchUps,
-    inContextMatchUp,
-    matchUpTieId,
-    matchUpsMap,
-    targetData,
-    structure,
-    matchUp,
-  });
 
   // with propagating winningSide changes, activeDownstream only applies to eventType: TEAM
   const activeDownstream = isActiveDownstream(params);
@@ -291,10 +292,11 @@ function applyMatchUpValues(params) {
 
   // recalculate dualMatchUp score if isCollectionMatchUp
   if (params.isCollectionMatchUp) {
-    const { matchUpTieId, drawDefinition } = params;
+    const { matchUpTieId, drawDefinition, structure } = params;
     const { removeWinningSide } = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       drawDefinition,
+      structure,
       event,
     });
     console.log('sms', { removeWinningSide });
