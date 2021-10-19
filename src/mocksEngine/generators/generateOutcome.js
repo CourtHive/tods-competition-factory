@@ -154,11 +154,15 @@ export function generateOutcome({
       break;
     }
 
-    const analysis = analyzeMatchUp({ matchUp: { sets, matchUpFormat } });
+    const analysis = analyzeMatchUp({
+      matchUp: { score: { sets }, matchUpFormat },
+    });
     if (analysis.calculatedWinningSide) break;
   }
 
-  const analysis = analyzeMatchUp({ matchUp: { sets, matchUpFormat } });
+  const analysis = analyzeMatchUp({
+    matchUp: { score: { sets }, matchUpFormat },
+  });
 
   const matchUpWinningSide = weightedWinningSide
     ? winningSide || weightedWinningSide
@@ -262,9 +266,9 @@ function generateSet({
       setTo &&
       getSetComplement({
         isSide1: true,
+        tiebreakAt,
         lowValue,
         setTo,
-        tiebreakAt,
       });
     const isTiebreakSet = !scores;
     const specifiedWinningSide =

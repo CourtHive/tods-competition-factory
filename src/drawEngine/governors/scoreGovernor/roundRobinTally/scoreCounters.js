@@ -1,11 +1,11 @@
 import { matchUpFormatCode } from 'tods-matchup-format-code';
 
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats/formatConstants';
 import {
   DEFAULTED,
   RETIRED,
   WALKOVER,
 } from '../../../../constants/matchUpStatusConstants';
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats/formatConstants';
 
 export function countSets({
   score,

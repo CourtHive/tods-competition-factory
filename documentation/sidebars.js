@@ -26,7 +26,7 @@ module.exports = {
             'policies/positionActions',
             'policies/positioningSeeds',
             'policies/scheduling',
-            'policies/tallyPolicy',
+            'policies/tally-policy',
             'policies/feedPolicy',
           ],
         },

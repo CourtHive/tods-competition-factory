@@ -7,6 +7,9 @@ import {
   offsetTime,
   tidyTime,
   timeUTC,
+  timeStringMinutes,
+  splitTime,
+  timeSort,
 } from '../dateTime';
 
 it('extracts time properly', () => {
@@ -51,4 +54,16 @@ test('functions with bad data', () => {
   expect(!isNaN(result)).toEqual(true);
   result = timeUTC(new Date('2020-01-01'));
   expect(!isNaN(result)).toEqual(true);
+});
+
+test('miscellaneous', () => {
+  let result = timeStringMinutes();
+  expect(result).toEqual(0);
+
+  // splitTime is only used internally
+  result = splitTime('aa:bb xx');
+  expect(result).toEqual({});
+
+  result = ['08:45', '08:35'].sort(timeSort);
+  expect(result).toEqual(['08:35', '08:45']);
 });

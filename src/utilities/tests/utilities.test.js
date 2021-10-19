@@ -154,8 +154,10 @@ test('miscellaneous date/time tests', () => {
   result = subtractWeek(date);
   expect(result).toEqual('2019-12-31');
 
-  date = getDateByWeek(45, 2023);
+  date = getDateByWeek(45, 2023, undefined, false);
   expect(date).toEqual('2023-11-06');
+  date = getDateByWeek(45, 2023, undefined, true);
+  expect(date).toEqual('2023-11-05');
   date = dateFromDay(2020, 99);
   expect(date).toEqual('2020-04-08');
 

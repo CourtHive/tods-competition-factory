@@ -5,6 +5,7 @@ import { reset, initialize } from '../primitives/primitives';
 import { findStructure } from '../../getters/findStructure';
 import { setsValues } from './roundRobinSetsValues.js';
 import mocksEngine from '../../../mocksEngine';
+import { scoreGovernor } from '../../..';
 import drawEngine from '../../sync';
 import {
   allPlayoffPositionsFilled,
@@ -178,7 +179,7 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
       (matchUp) => matchUp.structureId === structureId
     );
 
-    const { participantResults } = drawEngine.tallyParticipantResults({
+    const { participantResults } = scoreGovernor.tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });
@@ -415,7 +416,7 @@ it('can advance players in Round Robin with Playoffs', () => {
       (matchUp) => matchUp.structureId === structureId
     );
 
-    const { participantResults } = drawEngine.tallyParticipantResults({
+    const { participantResults } = scoreGovernor.tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });

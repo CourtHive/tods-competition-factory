@@ -1,6 +1,6 @@
-import { analyzeSet } from './analyzeSet';
-import { instanceCount } from '../../../utilities/arrays';
 import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { instanceCount } from '../../../utilities/arrays';
+import { analyzeSet } from './analyzeSet';
 
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
 
@@ -16,15 +16,15 @@ export function analyzeMatchUp(params) {
   const matchUpScoringFormat = matchUpFormatCode?.parse(matchUpFormat);
   const isCompletedMatchUp = !!matchUp?.winningSide;
 
-  const setsCount = matchUp?.sets?.length;
+  const sets = matchUp.score?.sets;
+  const setsCount = sets?.length;
   const setIndex = setNumber && setNumber - 1;
-  const isExistingSet = !!matchUp?.sets?.find(
+  const isExistingSet = !!sets?.find(
     (set, index) => set.setNumber === setNumber && index === setIndex
   );
-  const completedSets = matchUp?.sets?.filter((set) => set?.winningSide) || [];
+  const completedSets = sets?.filter((set) => set?.winningSide) || [];
   const completedSetsCount = completedSets?.length || 0;
-  const setsFollowingCurrent =
-    (setNumber && matchUp?.sets?.slice(setNumber)) || [];
+  const setsFollowingCurrent = (setNumber && sets?.slice(setNumber)) || [];
   const isLastSetWithValues = !!(
     setsCount &&
     setNumber &&
@@ -44,8 +44,7 @@ export function analyzeMatchUp(params) {
   );
 
   const setObject =
-    setNumber <= setsCount &&
-    matchUp?.sets.find((set) => set.setNumber === setNumber);
+    setNumber <= setsCount && sets.find((set) => set.setNumber === setNumber);
   const specifiedSetAnalysis =
     setObject && analyzeSet({ setObject, matchUpScoringFormat });
 
@@ -112,8 +111,11 @@ export function analyzeMatchUp(params) {
   const validMatchUpWinningSide =
     winningSideSetsCount > losingSideSetsCount &&
     matchUpWinningSide === calculatedWinningSide;
+
   const validMatchUpOutcome =
-    completedSetsHaveValidOutcomes && validMatchUpWinningSide;
+    calculatedWinningSide &&
+    completedSetsHaveValidOutcomes &&
+    validMatchUpWinningSide;
 
   return {
     isActiveSet,

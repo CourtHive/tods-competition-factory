@@ -4,7 +4,7 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import { reset, initialize } from '../primitives/primitives';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import drawEngine from '../../sync';
+import { scoreGovernor } from '../../..';
 
 import {
   MAIN,
@@ -160,7 +160,7 @@ export function roundRobinWithPlayoffsTest({
       (matchUp) => matchUp.structureId === structureId
     );
 
-    const { participantResults } = drawEngine.tallyParticipantResults({
+    const { participantResults } = scoreGovernor.tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });

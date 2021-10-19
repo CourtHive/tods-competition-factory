@@ -1,3 +1,271 @@
 ---
 title: Score Governor
 ---
+
+The **scoreGovernor** is a collection of scoring related utilities exported from the Competition Factory;
+these utilities provide analysis/validation or generate values, but do not make any mutations.
+
+Lightweight independent/reusable components such as scoring dialogs can make use of the **scoreGovernor** without having to import any Competition Factory engines.
+
+```js
+import { scoreGovernor } from 'tods-competition-factory';
+// -- or --
+const { scoreGovernor } = require('tods-competition-factory');
+```
+
+---
+
+## API
+
+### analyzeMatchUp
+
+```js
+let analysis = scoreGovernor.analyzeMatchUp({ matchUp });
+
+const {
+  isActiveSet,
+  isExistingSet,
+  existingValue,
+  hasExistingValue,
+  isValidSideNumber,
+  completedSetsCount,
+  isCompletedMatchUp,
+  isLastSetWithValues,
+  validMatchUpOutcome,
+  matchUpScoringFormat: {
+    bestOf,
+    setFormat: { setTo, tiebreakFormat, tiebreakAt },
+  },
+  calculatedWinningSide,
+  validMatchUpWinningSide,
+  completedSetsHaveValidOutcomes,
+  specifiedSetAnalysis: {
+    expectTiebreakSet,
+    expectTimedSet,
+    hasTiebreakCondition,
+    isCompletedSet,
+    isDecidingSet,
+    isTiebreakSet,
+    isValidSet,
+    isValidSetNumber,
+    isValidSetOutcome,
+    setFormat,
+    sideGameScores,
+    sideGameScoresCount,
+    sidePointScores,
+    sidePointScoresCount,
+    sideTiebreakScores,
+    sideTiebreakScoresCount,
+    winningSide,
+  },
+} = analysis;
+```
+
+---
+
+### analyzeSet
+
+```js
+const {
+  expectTiebreakSet,
+  expectTimedSet,
+  hasTiebreakCondition,
+  isCompletedSet,
+  isDecidingSet,
+  isTiebreakSet,
+  isValidSet,
+  isValidSetNumber,
+  isValidSetOutcome,
+  setFormat,
+  sideGameScores,
+  sideGameScoresCount,
+  sidePointScores,
+  sidePointScoresCount,
+  sideTiebreakScores,
+  sideTiebreakScoresCount,
+  winningSide,
+} = scoreGovernor.analyzeSet({
+  matchUpScoringFormat,
+  setObject,
+});
+```
+
+---
+
+### generateScoreString
+
+```js
+const sets = [
+  {
+    side1Score: 6,
+    side2Score: 7,
+    side1TiebreakScore: 3,
+    side2TiebreakScore: 7,
+    winningSide: 2,
+  },
+  {
+    side1Score: 7,
+    side2Score: 6,
+    side1TiebreakScore: 14,
+    side2TiebreakScore: 12,
+    winningSide: 1,
+  },
+  { side1Score: 3 },
+];
+let result = scoreGovernor.generateScoreString({
+    sets, // TODS sets object
+    winningSide, // optional - 1 or 2
+    reversed, // optional - reverse the score
+    winnerFirst = true, // optional - boolean - tranform sets so that winningSide is first (on left)
+    matchUpStatus, // optional - used to annotate scoreString
+    addOutcomeString, // optional - tranform matchUpStatus into outcomeString appended to scoreString
+    autoComplete: true, // optional - complete missing set score
+  });
+```
+
+---
+
+### getSetComplement
+
+Returns complementary sideScore given a `lowValue`, `tieBreakAt` and `setTo` details.
+
+```js
+const [side1Score, side2Score] = scoreGovernor.getSetComplement({
+  tiebreakAt,
+  lowValue,
+  isSide1,
+  setTo,
+});
+```
+
+---
+
+### getTiebreakComplement
+
+Returns complementary sideScore given a `lowValue`, `tieBreakNoAd` and `tiebreakTo` details.
+
+```js
+const [side1Score, side2Score] = scoreGovernor.getSetComplement({
+  tiebreakNoAd, // boolean whether tiebreak is "no advantage"
+  tiebreakTo,
+  lowValue,
+  isSide1,
+});
+```
+
+---
+
+### generateTieMatchUpScore
+
+Returns string representation of current tieMatchUp score.
+
+```js
+const { scoreStringSide1, scoreStringSide2, set, winningSide } =
+  scoreGovernor.generateTieMatchUpScore({
+    matchUp, // must have { matchUpType: 'TEAM' }
+    separator, // optional - defaults to '-'
+  });
+```
+
+---
+
+### isValidMatchUpFormat
+
+Returns boolean indicating whether matchUpFormat code is valid.
+
+```js
+const valid = scoreGovernor.isValidMatchUpFormat(matchUpFormat);
+```
+
+---
+
+### keyValueScore
+
+Utility for generating score strings based on key entry. Please see `keyValueScore.test.js` in the source for more detail.
+
+---
+
+### tallyParticipantResults
+
+Processes `matchUps` of `{ drawType: 'ROUND_ROBIN' }` from a single grouping within a ROUND_ROBIN structure and produces a detailed tally of particpant metrics.
+
+```js
+const { participantResults } = scoreGovernor.tallyParticipantResults({
+  policyDefinitions, // optional - can configure determination of winner when tied values
+  matchUpFormat, // required for accurate calculations
+  matchUps = [], // array of Group matchUps
+  subOrderMap, // map { [participantId]: subOrder } // manual determination of order when ties cannot be broken
+});
+```
+
+#### participantResults
+
+An array of `{ drawPosition, participantId, participantResult }` objects is returned for each group of processed matchUps.
+
+In the example given below 3 of 4 participants were tied with equivalent metrics and final `rankOrder` was determined by **Head to Head** analysis.
+See [Round Robin Tally Policy](policies/tally-policy).
+
+```js
+{
+  drawPosition: 4,
+  participantId: 'uniqueParticipantId1',
+  participantResult: {
+    allDefaults: 0,
+    defaults: 0,
+    retirements: 0,
+    walkovers: 0,
+    matchUpsWon: 3,
+    matchUpsLost: 1,
+    victories: [
+      'uniqueMatchUpId1',
+      'uniqueMatchUpId2',
+      'uniqueMatchUpId3',
+    ],
+    defeats: ['uniqueMatchUpId4'],
+    matchUpsCancelled: 0,
+    setsWon: 6,
+    setsLost: 2,
+    gamesWon: 36,
+    gamesLost: 12,
+    pointsWon: 0,
+    pointsLost: 0,
+    setsRatio: 3,
+    matchUpsRatio: 3,
+    gamesRatio: 0.75,
+    pointsRatio: 0,
+    result: '3/1',
+    games: '36/12',
+    rankOrder: 1,
+    GEMscore: 30003000075000000,
+    groupOrder: 1,
+  },
+};
+```
+
+#### GEMscore
+
+`GEMscore` is a hash of key participant metrics and is used for sorting participants from multiple groups where **Head to Head** does not apply.
+This is used to determine "seedProxies" when ordered participants from each group progress to playoff strutures.
+
+```js
+const GEM =
+  matchUpsRatio * Math.pow(10, 16) +
+  setsRatio * Math.pow(10, 12) +
+  gamesRatio * Math.pow(10, 8) +
+  pointsRatio * Math.pow(10, 3);
+```
+
+---
+
+### validateTieFormat
+
+Provides validation for `tieFormat` objects. See [tieFormats and lineUps](concepts/tieFormat)
+
+```js
+const {
+  valid, // boolean whether valid or not
+  errors, // array of detailed errors
+} = validateTieFormat({ tieFormat });
+```
+
+---

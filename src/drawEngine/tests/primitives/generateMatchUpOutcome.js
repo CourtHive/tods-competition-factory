@@ -1,4 +1,5 @@
-import drawEngine from '../../sync';
+import { generateScoreString } from '../../governors/scoreGovernor/generateScoreString';
+import { analyzeMatchUp } from '../../governors/scoreGovernor/analyzeMatchUp';
 
 function generateSetScores(setValues) {
   return setValues.map(
@@ -26,25 +27,30 @@ export function generateMatchUpOutcome({
   setValues,
   matchUpFormat = 'SET3-S:6/TB7',
 }) {
-  const outcome = {
-    matchUpFormat,
-    sets: generateSetScores(setValues),
-  };
-  const sets = outcome.sets.map((set) => {
+  const generatedSets = generateSetScores(setValues);
+  const sets = generatedSets.map((set) => {
     const { setNumber } = set;
-    const { winningSide } = drawEngine.analyzeMatchUp({
-      matchUp: outcome,
+    const { winningSide } = analyzeMatchUp({
+      matchUp: {
+        score: { sets: generatedSets },
+        matchUpFormat,
+      },
       setNumber,
     });
     return Object.assign(set, { winningSide });
   });
-  Object.assign(outcome, { sets });
-  const analysis = drawEngine.analyzeMatchUp({ matchUp: outcome });
+  const analysis = analyzeMatchUp({
+    matchUp: { score: { sets }, matchUpFormat },
+  });
   const { calculatedWinningSide: winningSide } = analysis;
   let scoreStringSide1;
   let scoreStringSide2;
-  const winnerPerspective = drawEngine.generateScoreString(outcome);
-  const loserPerspective = drawEngine.generateScoreString({
+  const outcome = {
+    matchUpFormat,
+    sets,
+  };
+  const winnerPerspective = generateScoreString(outcome);
+  const loserPerspective = generateScoreString({
     ...outcome,
     reversed: true,
   });

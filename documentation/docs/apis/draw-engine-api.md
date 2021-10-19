@@ -249,83 +249,6 @@ const { matchUps } = drawEngine.allStructureMatchUps({
 
 ---
 
-## analyzeMatchUp
-
-Method used internally by the `scoreGovernor` and `keyValueScore`.
-
-```js
-const {
-  isActiveSet,
-  isExistingSet,
-  existingValue,
-  hasExistingValue,
-  isValidSideNumber,
-  completedSetsCount,
-  isCompletedMatchUp,
-  isLastSetWithValues,
-  validMatchUpOutcome,
-  matchUpScoringFormat,
-  calculatedWinningSide,
-  validMatchUpWinningSide,
-  completedSetsHaveValidOutcomes,
-  specifiedSetAnalysis: {
-    expectTiebreakSet,
-    expectTimedSet,
-    hasTiebreakCondition,
-    isCompletedSet,
-    isDecidingSet,
-    isTiebreakSet,
-    isValidSet,
-    isValidSetNumber,
-    isValidSetOutcome,
-    setFormat,
-    sideGameScores,
-    sideGameScoresCount,
-    sidePointScores,
-    sidePointScoresCount,
-    sideTiebreakScores,
-    sideTiebreakScoresCount,
-    winningSide,
-  },
-} = drawEngine.analyzeMatchUp({
-  matchUp,
-  sideNumber,
-  setNumber,
-  matchUpFormat,
-});
-```
-
----
-
-## analyzeSet
-
-```js
-const {
-  expectTiebreakSet,
-  expectTimedSet,
-  hasTiebreakCondition,
-  isCompletedSet,
-  isDecidingSet,
-  isTiebreakSet,
-  isValidSet,
-  isValidSetNumber,
-  isValidSetOutcome,
-  setFormat,
-  sideGameScores,
-  sideGameScoresCount,
-  sidePointScores,
-  sidePointScoresCount,
-  sideTiebreakScores,
-  sideTiebreakScoresCount,
-  winningSide,
-} = drawEngine.analyzeSet({
-  setObject,
-  matchUpScoringFormat,
-});
-```
-
----
-
 ## assignDrawPosition
 
 ```js
@@ -555,53 +478,6 @@ drawEngine.generateQualifyingLink({
   mainStructureId,
   qualifyingRound,
 });
-```
-
----
-
-## generateScoreString
-
-```js
-const sets = [
-  {
-    side1Score: 6,
-    side2Score: 7,
-    side1TiebreakScore: 3,
-    side2TiebreakScore: 7,
-    winningSide: 2,
-  },
-  {
-    side1Score: 7,
-    side2Score: 6,
-    side1TiebreakScore: 14,
-    side2TiebreakScore: 12,
-    winningSide: 1,
-  },
-  { side1Score: 3 },
-];
-let result = drawEngine.generateScoreString({
-    sets, // TODS sets object
-    winningSide, // optional - 1 or 2
-    reversed, // optional - reverse the score
-    winnerFirst = true, // optional - boolean - tranform sets so that winningSide is first (on left)
-    matchUpStatus, // optional - used to annotate scoreString
-    addOutcomeString, // optional - tranform matchUpStatus into outcomeString appended to scoreString
-    autoComplete: true, // optional - complete missing set score
-  });
-```
-
----
-
-## generateTieMatchUpScore
-
-Returns string representation of current tieMatchUp score.
-
-```js
-const { scoreStringSide1, scoreStringSide2, set, winningSide } =
-  drawEngine.generateTieMatchUpScore({
-    matchUp,
-    separator, // optional - defaults to '-'
-  });
 ```
 
 ---
@@ -874,16 +750,6 @@ Returns boolean whether all matchUps in a given structure have been completed
 const structureIsComplete = drawEngine.isCompletedStructure({
   structureId,
 });
-```
-
----
-
-## isValidMatchUpFormat
-
-Returns boolean indicating whether matchUpFormat code is valid.
-
-```js
-const valid = drawEngine.isValidMatchUpFormat(matchUpFormat);
 ```
 
 ---
@@ -1211,19 +1077,6 @@ const {
   requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
   tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps
   scheduleVisibilityFilters,
-});
-```
-
----
-
-## tallyParticipantResults
-
-Method used to calculate finishing positions within a ROUND_ROBIN group.
-
-```js
-const { participantResults } = drawEngine.tallyParticipantResults({
-  matchUps: structureMatchUps,
-  matchUpFormat,
 });
 ```
 

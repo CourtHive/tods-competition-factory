@@ -4,20 +4,20 @@ export function getWinningSide({ analysis, set }) {
   const leadingSide = getLeadingSide({ set });
   const { isDecidingSet, isTiebreakSet, matchUpScoringFormat } = analysis;
   const setIsComplete = checkSetIsComplete({
+    matchUpScoringFormat,
     isDecidingSet,
     isTiebreakSet,
-    matchUpScoringFormat,
     set,
   });
   return setIsComplete && leadingSide;
 }
 
 export function checkSetIsComplete({
-  set,
-  isDecidingSet,
-  isTiebreakSet,
-  matchUpScoringFormat,
   ignoreTiebreak = false,
+  matchUpScoringFormat,
+  isTiebreakSet,
+  isDecidingSet,
+  set,
 }) {
   if (!set) return { error: MISSING_VALUE };
   const setFormat =

@@ -1,4 +1,6 @@
+import { mocksEngine, tournamentEngine } from '../../../..';
 import { analyzeMatchUp } from '../analyzeMatchUp';
+import scoreGovernor from '..';
 
 import { MISSING_MATCHUP } from '../../../../constants/errorConditionConstants';
 import { FORMAT_STANDARD, FORMAT_ATP_DOUBLES } from './formatConstants';
@@ -11,20 +13,37 @@ test('can handle empty matchUp', () => {
   expect(analysis.error).toEqual(MISSING_MATCHUP);
 });
 
+test('generated completed mock matchUp', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 4 }],
+    completeAllMatchUps: true,
+  });
+  tournamentEngine.setState(tournamentRecord);
+  const {
+    matchUps: [matchUp],
+  } = tournamentEngine.allTournamentMatchUps();
+
+  let analysis = scoreGovernor.analyzeMatchUp({ matchUp });
+  expect(analysis.calculatedWinningSide).toEqual(1);
+  expect(analysis.validMatchUpWinningSide).toEqual(true);
+});
+
 test('can properly analyze completed standard format matchUp', () => {
   const matchUp = {
-    sets: [
-      { setNumber: 1, side1Score: 6, side2Score: 3, winningSide: 1 },
-      { setNumber: 2, side1Score: 3, side2Score: 6, winningSide: 2 },
-      {
-        setNumber: 3,
-        side1Score: 7,
-        side2Score: 6,
-        side1TiebreakScore: 7,
-        side2TiebreakScore: 3,
-        winningSide: 1,
-      },
-    ],
+    score: {
+      sets: [
+        { setNumber: 1, side1Score: 6, side2Score: 3, winningSide: 1 },
+        { setNumber: 2, side1Score: 3, side2Score: 6, winningSide: 2 },
+        {
+          setNumber: 3,
+          side1Score: 7,
+          side2Score: 6,
+          side1TiebreakScore: 7,
+          side2TiebreakScore: 3,
+          winningSide: 1,
+        },
+      ],
+    },
     winningSide: 1,
     matchUpFormat: FORMAT_STANDARD,
   };
@@ -110,16 +129,18 @@ test('can properly analyze completed standard format matchUp', () => {
 
 test('can properly analyze completed standard doubles matchUp', () => {
   const matchUp = {
-    sets: [
-      { setNumber: 1, side1Score: 6, side2Score: 3, winningSide: 1 },
-      { setNumber: 2, side1Score: 3, side2Score: 6, winningSide: 2 },
-      {
-        setNumber: 3,
-        side1TiebreakScore: 10,
-        side2TiebreakScore: 3,
-        winningSide: 1,
-      },
-    ],
+    score: {
+      sets: [
+        { setNumber: 1, side1Score: 6, side2Score: 3, winningSide: 1 },
+        { setNumber: 2, side1Score: 3, side2Score: 6, winningSide: 2 },
+        {
+          setNumber: 3,
+          side1TiebreakScore: 10,
+          side2TiebreakScore: 3,
+          winningSide: 1,
+        },
+      ],
+    },
     winningSide: 1,
     matchUpFormat: FORMAT_ATP_DOUBLES,
   };
@@ -148,26 +169,28 @@ test('can properly analyze completed standard doubles matchUp', () => {
 test('can properly analyze completed Best of 3 tiebreak sets', () => {
   const FORMAT_BEST_OF_3_TB10 = 'SET3-S:TB10';
   const matchUp = {
-    sets: [
-      {
-        setNumber: 1,
-        side1TiebreakScore: 10,
-        side2TiebreakScore: 3,
-        winningSide: 1,
-      },
-      {
-        setNumber: 2,
-        side1TiebreakScore: 7,
-        side2TiebreakScore: 10,
-        winningSide: 2,
-      },
-      {
-        setNumber: 3,
-        side1TiebreakScore: 10,
-        side2TiebreakScore: 3,
-        winningSide: 1,
-      },
-    ],
+    score: {
+      sets: [
+        {
+          setNumber: 1,
+          side1TiebreakScore: 10,
+          side2TiebreakScore: 3,
+          winningSide: 1,
+        },
+        {
+          setNumber: 2,
+          side1TiebreakScore: 7,
+          side2TiebreakScore: 10,
+          winningSide: 2,
+        },
+        {
+          setNumber: 3,
+          side1TiebreakScore: 10,
+          side2TiebreakScore: 3,
+          winningSide: 1,
+        },
+      ],
+    },
     winningSide: 1,
     matchUpFormat: FORMAT_BEST_OF_3_TB10,
   };
@@ -194,16 +217,18 @@ test('can properly analyze completed Best of 3 tiebreak sets', () => {
 test('can recognize when sets do not map to matchUpFormat', () => {
   const FORMAT_BEST_OF_3_TB10 = 'SET3-S:TB10';
   const matchUp = {
-    sets: [
-      { setNumber: 1, side1Score: 6, side2Score: 3, winningSide: 1 },
-      { setNumber: 2, side1Score: 3, side2Score: 6, winningSide: 2 },
-      {
-        setNumber: 3,
-        side1TiebreakScore: 10,
-        side2TiebreakScore: 3,
-        winningSide: 1,
-      },
-    ],
+    score: {
+      sets: [
+        { setNumber: 1, side1Score: 6, side2Score: 3, winningSide: 1 },
+        { setNumber: 2, side1Score: 3, side2Score: 6, winningSide: 2 },
+        {
+          setNumber: 3,
+          side1TiebreakScore: 10,
+          side2TiebreakScore: 3,
+          winningSide: 1,
+        },
+      ],
+    },
     winningSide: 1,
     matchUpFormat: FORMAT_BEST_OF_3_TB10,
   };
