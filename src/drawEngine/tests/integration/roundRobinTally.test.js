@@ -6,13 +6,14 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 
-import { SINGLES } from '../../../constants/eventConstants';
+import { RETIRED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { TALLY } from '../../../constants/extensionConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 import {
   FORMAT_SHORT_SETS,
   FORMAT_STANDARD,
 } from '../../../fixtures/scoring/matchUpFormats/formatConstants';
-import { RETIRED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 it('can recalculate participantResults when outcomes are removed', () => {
   const drawProfiles = [
@@ -369,7 +370,7 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
       extension: { value: participantResult },
     } = findExtension({
       element: assignment,
-      name: 'tally',
+      name: TALLY,
     });
     const eventParticipantResult = participantResults.find(
       (result) => result.drawPosition === drawPosition
@@ -466,7 +467,7 @@ it('RR Format Standard tally test', () => {
 function getDrawPositionTally({ positionAssignments, drawPosition }) {
   return positionAssignments
     .find((assignment) => assignment.drawPosition === drawPosition)
-    .extensions.find(({ name }) => name === 'tally')?.value;
+    .extensions.find(({ name }) => name === TALLY)?.value;
 }
 
 it('recognize when participants are tied with position order', () => {
@@ -562,7 +563,7 @@ it('recognize when participants are tied with position order', () => {
       extension: { value: participantResult },
     } = findExtension({
       element: assignment,
-      name: 'tally',
+      name: TALLY,
     });
 
     const {
@@ -626,7 +627,7 @@ it('recognize when participants are tied with position order', () => {
     extension: { value: tally },
   } = findExtension({
     element: positionAssignments[0],
-    name: 'tally',
+    name: TALLY,
   });
   expect(tally.subOrder).toEqual(
     participantResults[0].participantResult.subOrder
@@ -730,7 +731,7 @@ it('properly handles walkovers in calculating participant positions', () => {
       extension: { value: participantResult },
     } = findExtension({
       element: assignment,
-      name: 'tally',
+      name: TALLY,
     });
 
     expect(assignment.drawPosition).toEqual(i + 1);

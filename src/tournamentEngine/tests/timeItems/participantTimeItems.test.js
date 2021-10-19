@@ -1,13 +1,12 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { RETRIEVAL } from '../../../constants/timeItemConstants';
 import {
   INVALID_TIME_ITEM,
   MISSING_TIME_ITEM,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { RETRIEVAL } from '../../../constants/timeItemConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can add and read timeItems from participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -44,7 +43,7 @@ it('can add and read timeItems from participants', () => {
     itemValue,
   };
   result = tournamentEngine.addParticipantTimeItem({ participantId, timeItem });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   let { timeItem: retrievedTimeItem, message } =
     tournamentEngine.getParticipantTimeItem({

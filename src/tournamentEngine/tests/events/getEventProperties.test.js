@@ -3,7 +3,6 @@ import mocksEngine from '../../../mocksEngine';
 
 import { RATING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can get event properties to determine if there are seeded, ranked, or rated participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -28,7 +27,7 @@ it('can get event properties to determine if there are seeded, ranked, or rated 
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const scaleItemsWithParticipantIds = participants.map((participant) => {
     const { participantId } = participant;

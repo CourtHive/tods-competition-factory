@@ -120,8 +120,8 @@ export function jinnScheduler({
   const { matchUpDailyLimits } = getMatchUpDailyLimits({ tournamentRecords });
 
   const { personRequests } = getPersonRequests({
-    tournamentRecords,
     requestType: DO_NOT_SCHEDULE,
+    tournamentRecords,
   });
 
   const dateSchedulingProfiles = schedulingProfile
@@ -139,11 +139,11 @@ export function jinnScheduler({
   const recoveryTimeDeferredMatchUpIds = {};
   const dependencyDeferredMatchUpIds = {};
   const scheduleDateRequestConflicts = {};
+  const matchUpScheduleTimes = {};
   const scheduledMatchUpIds = {};
   const overLimitMatchUpIds = {};
   const noTimeMatchUpIds = {};
   const requestConflicts = {};
-  const matchUpScheduleTimes = {};
 
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const scheduleDate = extractDate(dateSchedulingProfile?.scheduleDate);

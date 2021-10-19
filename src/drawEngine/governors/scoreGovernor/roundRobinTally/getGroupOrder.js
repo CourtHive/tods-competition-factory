@@ -48,7 +48,7 @@ const defaultTallyDirectives = [
  *
  * @param {object[]} participantResults - calculated results for each participant
  * @param {number} participantsCount - number of participants in round robin group
- * @param {string[]} matchUpStatuses - matchUpStatuses participantIds
+ * @param {object} subOrderMap - { [participantId]: subOrder }
  *
  * @returns {object[]} groupOrder - array of objects [{ participantId, position }]
  */
@@ -153,7 +153,7 @@ function processAttribute({
   matchUps,
   reversed, // reverses default which is greatest to least
 }) {
-  const { participantResults, matchUpStatuses } = getParticipantResults({
+  const { participantResults } = getParticipantResults({
     participantIds: idsFilter && participantIds,
     matchUpFormat,
     tallyPolicy,
@@ -174,7 +174,6 @@ function processAttribute({
         groupSubSort({
           participantResults,
           disableHeadToHead,
-          matchUpStatuses,
           participantIds,
           matchUpFormat,
           tallyPolicy,

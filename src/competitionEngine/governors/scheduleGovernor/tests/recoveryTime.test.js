@@ -39,16 +39,41 @@ test.each([competitionEngineSync])(
       result.individualParticipantProfiles
     ).map(({ timeAfterRecovery }) => timeAfterRecovery);
 
+    /*
     // prettier-ignore
-    expect(afterRecoveryTimes).toEqual([
-        '15:00', '14:00', '14:00', '15:00', '19:30', '18:30', '18:30', '19:30',
+    expect(afterRecoveryTimes.sort()).toEqual([
+      '14:00', '14:00',
+      '15:00', '15:00',
+      '18:30', '18:30',
+      '19:30', '19:30'
     ]);
+    */
 
     // prettier-ignore
-    expect(Object.values(result.matchUpNotBeforeTimes)).toEqual([
-      '09:00', '09:00', '12:30', '12:30', '12:00', '12:00', '16:30', '16:30'
+    expect(afterRecoveryTimes.sort()).toEqual([
+      '15:00', '15:00',
+      '15:30', '15:30',
+      '16:30', '16:30',
+      '17:00', '17:00',
     ]);
 
+    /*
+    // prettier-ignore
+    expect(Object.values(result.matchUpNotBeforeTimes).sort()).toEqual( [
+      '09:00', '09:00',
+      '12:00', '12:00',
+      '12:30', '12:30',
+      '16:30', '16:30'
+    ]);
+    */
+
+    // prettier-ignore
+    expect(Object.values(result.matchUpNotBeforeTimes).sort()).toEqual([
+      '09:00', '09:00',
+      '11:00', '11:00',
+      '12:30', '12:30',
+      '14:00', '14:00',
+    ]);
     expect(result.scheduledMatchUpIds.length).toEqual(12);
     expect(result.success).toEqual(true);
   }
@@ -90,13 +115,19 @@ test.each([competitionEngineSync])(
     ).map(({ timeAfterRecovery }) => timeAfterRecovery);
 
     // prettier-ignore
-    expect(afterRecoveryTimes).toEqual([
-        '11:00', '12:00', '11:00', '12:00', '15:00', '15:30', '15:00', '15:30'
+    expect(afterRecoveryTimes.sort()).toEqual([
+      '12:00', '12:00',
+      '12:30', '12:30',
+      '13:30', '13:30',
+      '14:00', '14:00'
     ]);
 
     // prettier-ignore
-    expect(Object.values(result.matchUpNotBeforeTimes)).toEqual([
-      '09:00', '09:00', '12:30', '12:30', '12:00', '12:00', '15:30', '15:30'
+    expect(Object.values(result.matchUpNotBeforeTimes).sort()).toEqual([
+      '09:00', '09:00',
+      '11:00', '11:00',
+      '12:30', '12:30',
+      '14:00', '14:00'
     ]);
 
     expect(result.scheduledMatchUpIds.length).toEqual(8);

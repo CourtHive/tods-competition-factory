@@ -1,8 +1,10 @@
+import { getContainedStructures } from '../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { getStructureLinks } from '../../getters/linkGetter';
 import { overlap } from '../../../utilities';
-import { getContainedStructures } from '../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
+
+import { TALLY } from '../../../constants/extensionConstants';
 
 /**
  *
@@ -30,7 +32,7 @@ export function getAffectedTargetStructureIds({
   );
 
   const finishingPositions = relevantAssignments.map((assignment) => {
-    const { extension } = findExtension({ element: assignment, name: 'tally' });
+    const { extension } = findExtension({ element: assignment, name: TALLY });
     return extension?.value?.groupOrder;
   });
 

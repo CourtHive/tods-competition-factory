@@ -5,17 +5,14 @@ import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { UNRECOGNIZED_MATCHUP_FORMAT } from '../../../../constants/errorConditionConstants';
 
 export function findMatchUpFormatTiming({
-  tournamentRecords,
-
-  defaultAverageMinutes,
   defaultRecoveryMinutes = 0,
-
+  defaultAverageMinutes,
+  tournamentRecords,
+  tournamentId,
   matchUpFormat,
   categoryName,
   categoryType,
   eventType,
-
-  tournamentId,
   eventId,
 }) {
   if (!matchUpFormatCode.isValidMatchUpFormat(matchUpFormat))

@@ -20,11 +20,14 @@ export function getSetWinningSide({
 export function checkSetIsComplete({
   ignoreTiebreak = false,
   matchUpScoringFormat,
+  matchUpFormat,
   isTiebreakSet,
   isDecidingSet,
   set,
 }) {
   if (!set) return { error: MISSING_VALUE };
+  matchUpScoringFormat = matchUpScoringFormat || matchUpFormat;
+
   const setFormat =
     (isDecidingSet && matchUpScoringFormat.finalSetFormat) ||
     matchUpScoringFormat?.setFormat ||

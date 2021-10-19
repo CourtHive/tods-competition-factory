@@ -8,17 +8,17 @@ import {
 } from '../../../../constants/matchUpStatusConstants';
 
 export function countSets({
-  score,
-  tallyPolicy,
-  matchUpStatus,
-  matchUpFormat = FORMAT_STANDARD,
   winningSide: matchUpWinningSide,
+  matchUpFormat = FORMAT_STANDARD,
+  matchUpStatus,
+  tallyPolicy,
+  score,
 }) {
   const setsTally = [0, 0];
   const { sets } = score || {};
   const matchUpWinnerIndex = matchUpWinningSide - 1;
   const parsedMatchUpFormat = matchUpFormatCode.parse(matchUpFormat);
-  const setsToWin = getSetsToWin(parsedMatchUpFormat?.bestOf || 3);
+  const setsToWin = getSetsToWin(parsedMatchUpFormat?.bestOf || 1);
 
   if (
     (matchUpStatus === DEFAULTED && tallyPolicy?.setsCreditForDefaults) ||
@@ -44,20 +44,20 @@ export function countSets({
 }
 
 export function countGames({
-  score,
-  tallyPolicy,
-  matchUpStatus,
-  matchUpFormat = FORMAT_STANDARD,
   winningSide: matchUpWinningSide,
+  matchUpFormat = FORMAT_STANDARD,
+  matchUpStatus,
+  tallyPolicy,
+  score,
 }) {
   const { sets } = score || {};
   const matchUpWinnerIndex = matchUpWinningSide - 1;
   const parsedMatchUpFormat = matchUpFormatCode.parse(matchUpFormat);
   let side1Score = 0,
     side2Score = 0;
-  const setsToWin = getSetsToWin(parsedMatchUpFormat?.bestOf || 3);
-  const gamesForSet = parsedMatchUpFormat?.setFormat?.setTo || 6;
-  const tiebreakAt = parsedMatchUpFormat?.setFormat?.tiebreakAt || 6;
+  const setsToWin = getSetsToWin(parsedMatchUpFormat?.bestOf || 1);
+  const gamesForSet = parsedMatchUpFormat?.setFormat?.setTo || 0;
+  const tiebreakAt = parsedMatchUpFormat?.setFormat?.tiebreakAt || 0;
   if (!sets) return [side1Score, side2Score];
 
   const minimumGameWins = setsToWin * gamesForSet;
@@ -78,10 +78,10 @@ export function countGames({
   }
   if (matchUpStatus === RETIRED) {
     const setsTally = countSets({
-      sets,
       winningSide: matchUpWinningSide,
       matchUpStatus,
       matchUpFormat,
+      sets,
     });
     const totalSets = setsTally.reduce((a, b) => a + b, 0);
     const loserLeadSet = gamesTally
@@ -110,6 +110,7 @@ export function countGames({
     result[matchUpWinnerIndex] < minimumGameWins
   )
     result[matchUpWinnerIndex] = minimumGameWins;
+
   return result;
 
   function getComplement(value) {

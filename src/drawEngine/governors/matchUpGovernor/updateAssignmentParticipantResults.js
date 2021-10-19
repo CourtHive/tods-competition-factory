@@ -9,6 +9,7 @@ import {
 
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../constants/policyConstants';
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { SUB_ORDER, TALLY } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function updateAssignmentParticipantResults({
@@ -30,12 +31,14 @@ export function updateAssignmentParticipantResults({
   });
   const { subOrderMap } = createSubOrderMap({ positionAssignments });
 
-  const { participantResults } = tallyParticipantResults({
+  const result = tallyParticipantResults({
     policyDefinitions,
     matchUpFormat,
     subOrderMap,
     matchUps,
   });
+  if (result.error) return result;
+  const { participantResults } = result;
 
   const participantIds = Object.keys(participantResults);
 
@@ -43,29 +46,29 @@ export function updateAssignmentParticipantResults({
     const { participantId } = assignment;
     if (participantIds.includes(participantId)) {
       let extension = {
-        name: 'tally',
+        name: TALLY,
         value: participantResults[participantId],
       };
       addExtension({ element: assignment, extension });
       if (!participantResults[participantId].ties) {
         removeExtension({
           element: assignment,
-          name: 'subOrder',
+          name: SUB_ORDER,
         });
       }
     } else {
       removeExtension({
         element: assignment,
-        name: 'tally',
+        name: TALLY,
       });
       removeExtension({
         element: assignment,
-        name: 'subOrder',
+        name: SUB_ORDER,
       });
     }
   });
 
   modifyDrawNotice({ drawDefinition });
 
-  return { ...SUCCESS };
+  return { ...SUCCESS, participantResults };
 }

@@ -4,11 +4,6 @@ import { modifyMatchUpScore } from './modifyMatchUpScore';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
-  MATCHUP_NOT_FOUND,
-  MISSING_DRAW_DEFINITION,
-  MISSING_MATCHUP,
-} from '../../../constants/errorConditionConstants';
-import {
   COMPLETED,
   IN_PROGRESS,
   TO_BE_PLAYED,
@@ -20,12 +15,10 @@ export function updateTieMatchUpScore({
   structure,
   event,
 }) {
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!matchUpId) return { error: MISSING_MATCHUP };
+  const result = findMatchUp({ drawDefinition, event, matchUpId });
+  if (result.error) return result;
 
-  const { matchUp, error } = findMatchUp({ drawDefinition, event, matchUpId });
-  if (error) return { error };
-  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
+  const matchUp = result.matchUp;
 
   const tieFormat =
     matchUp.tieFormat ||
@@ -57,6 +50,7 @@ export function updateTieMatchUpScore({
     drawDefinition,
     matchUpStatus,
     winningSide,
+    matchUpId,
     matchUp,
     event,
   });

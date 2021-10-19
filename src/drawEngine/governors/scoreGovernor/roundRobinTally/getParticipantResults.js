@@ -9,8 +9,8 @@ import {
 } from '../../../../constants/matchUpStatusConstants';
 
 export function getParticipantResults({
-  matchUpFormat,
   participantIds,
+  matchUpFormat,
   tallyPolicy,
   perPlayer,
   matchUps,

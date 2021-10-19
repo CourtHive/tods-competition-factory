@@ -1,10 +1,10 @@
+import { findStructure } from '../../drawEngine/getters/findStructure';
+import { findMatchUp } from './matchUpsGetter';
 import {
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import { findStructure } from '../../drawEngine/getters/findStructure';
-import { findMatchUp } from './matchUpsGetter';
 
 /**
  *
@@ -19,11 +19,11 @@ import { findMatchUp } from './matchUpsGetter';
  */
 export function getMatchUpFormat({
   tournamentRecord,
-  drawId,
   drawDefinition,
-  event,
   structureId,
   matchUpId,
+  drawId,
+  event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId && !event && !structureId && !matchUpId)
@@ -32,8 +32,9 @@ export function getMatchUpFormat({
   const matchUpResult = findMatchUp({
     tournamentRecord,
     drawDefinition,
-    drawId,
     matchUpId,
+    drawId,
+    event,
   });
 
   if (matchUpId && matchUpResult?.error) {

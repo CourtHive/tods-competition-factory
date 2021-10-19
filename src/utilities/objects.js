@@ -1,7 +1,9 @@
-export function definedAttributes(obj) {
+export function definedAttributes(obj, ignoreFalse) {
   if (typeof obj !== 'object' || obj === null) return obj;
+  const ignoreValues = ['', undefined, null];
+  if (ignoreFalse) ignoreValues.push(false);
   const definedKeys = Object.keys(obj).filter(
-    (key) => !['', undefined, null].includes(obj[key])
+    (key) => !ignoreValues.includes(obj[key])
   );
   return Object.assign(
     {},
