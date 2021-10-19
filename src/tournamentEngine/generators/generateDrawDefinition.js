@@ -147,6 +147,7 @@ export function generateDrawDefinition(params) {
         drawDefinition,
         matchUpFormat,
         tieFormat,
+        event,
       });
 
       if (result.error)

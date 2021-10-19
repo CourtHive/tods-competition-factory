@@ -144,6 +144,7 @@ export function setMatchUpStatus(params) {
       inContext: true,
       drawDefinition,
       matchUpsMap,
+      event,
     });
     const tieFormat = dualMatchUp.tieFormat || drawDefinition.tieFormat;
 

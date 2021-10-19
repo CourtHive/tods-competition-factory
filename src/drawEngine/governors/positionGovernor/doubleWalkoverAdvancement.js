@@ -190,9 +190,9 @@ function conditionallyAdvanceDrawPosition(params) {
     const result = modifyMatchUpScore({
       matchUpId: noContextNextWinnerMatchUp.matchUpId,
       matchUp: noContextNextWinnerMatchUp,
+      removeScore: true,
       drawDefinition,
       matchUpStatus,
-      removeScore: true,
     });
     if (result.error) return result;
 

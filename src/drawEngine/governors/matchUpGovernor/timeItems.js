@@ -10,13 +10,14 @@ import { SUCCESS } from '../../../constants/resultConstants';
   must retrieve matchUp WITHOUT CONTEXT so original can be modified
 */
 export function addMatchUpTimeItem({
+  duplicateValues,
   drawDefinition,
+  disableNotice,
   matchUpId,
   timeItem,
-  duplicateValues,
-  disableNotice,
+  event,
 }) {
-  const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
+  const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
   const result = addTimeItem({ element: matchUp, timeItem, duplicateValues });
@@ -26,8 +27,8 @@ export function addMatchUpTimeItem({
   return result;
 }
 
-export function resetMatchUpTimeItems({ drawDefinition, matchUpId }) {
-  const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
+export function resetMatchUpTimeItems({ drawDefinition, event, matchUpId }) {
+  const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
   matchUp.timeItems = [];
   modifyMatchUpNotice({ drawDefinition, matchUp });

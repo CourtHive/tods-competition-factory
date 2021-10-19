@@ -1,15 +1,15 @@
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
-import { structureAssignedDrawPositions } from './positionsGetter';
 import { getStageEntries, getStageQualifiersCount } from './stageGetter';
+import { structureAssignedDrawPositions } from './positionsGetter';
 
-import {
-  DIRECT_ACCEPTANCE,
-  WILDCARD,
-} from '../../constants/entryStatusConstants';
 import {
   CONSOLATION,
   CONTAINER,
 } from '../../constants/drawDefinitionConstants';
+import {
+  DIRECT_ACCEPTANCE,
+  WILDCARD,
+} from '../../constants/entryStatusConstants';
 
 export function getByesData({ drawDefinition, matchUpsMap, structure }) {
   const matchUpFilters = { isCollectionMatchUp: false };

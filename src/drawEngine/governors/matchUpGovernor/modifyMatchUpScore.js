@@ -45,7 +45,11 @@ export function modifyMatchUpScore({
   if (matchUp.matchUpType === TEAM) {
     if (matchUpId && matchUp.matchUpId !== matchUpId) {
       // the modification is to be applied to a tieMatchUp
-      ({ matchUp, structure } = findMatchUp({ drawDefinition, matchUpId }));
+      ({ matchUp, structure } = findMatchUp({
+        drawDefinition,
+        matchUpId,
+        event,
+      }));
     } else {
       // the modification is to be applied to the TEAM matchUp
     }

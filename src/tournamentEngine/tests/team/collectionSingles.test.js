@@ -29,7 +29,7 @@ const getMatchUp = (id, inContext) => {
   return matchUp;
 };
 
-it.only('can both assign and remove individualParticipants in SINGLES matchUps that are part of team events', () => {
+it('can both assign and remove individualParticipants in SINGLES matchUps that are part of team events', () => {
   const { tournamentRecord, drawId } = generateTeamTournament();
   tournamentEngine.setState(tournamentRecord);
 
@@ -78,15 +78,15 @@ it.only('can both assign and remove individualParticipants in SINGLES matchUps t
 
   // score the SINGLES matchUp
   let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    matchUpStatus: COMPLETED,
     scoreString: '6-1 6-1',
     winningSide: 1,
-    matchUpStatus: COMPLETED,
   });
 
   let result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId,
     outcome,
+    drawId,
   });
   expect(result.success).toEqual(true);
 

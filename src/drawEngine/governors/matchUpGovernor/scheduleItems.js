@@ -49,9 +49,10 @@ function validTimeValue(value) {
 export function addMatchUpScheduleItems({
   tournamentRecord,
   drawDefinition,
-  matchUpId,
   disableNotice,
+  matchUpId,
   schedule,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -88,63 +89,69 @@ export function addMatchUpScheduleItems({
   }
   if (startTime !== undefined) {
     const result = addMatchUpStartTime({
+      disableNotice: true,
       drawDefinition,
       matchUpId,
       startTime,
-      disableNotice: true,
+      event,
     });
     if (result?.error) return { error: result.error, startTime };
   }
   if (stopTime !== undefined) {
     const result = addMatchUpStopTime({
+      disableNotice: true,
       drawDefinition,
       matchUpId,
       stopTime,
-      disableNotice: true,
+      event,
     });
     if (result?.error) return { error: result.error, stopTime };
   }
   if (resumeTime !== undefined) {
     const result = addMatchUpResumeTime({
-      drawDefinition,
-      matchUpId,
-      resumeTime,
       disableNotice: true,
+      drawDefinition,
+      resumeTime,
+      matchUpId,
+      event,
     });
     if (result?.error) return { error: result.error, resumeTime };
   }
   if (endTime !== undefined) {
     const result = addMatchUpEndTime({
+      disableNotice: true,
       drawDefinition,
       matchUpId,
       endTime,
-      disableNotice: true,
+      event,
     });
     if (result?.error) return { error: result.error, endTime };
   }
   if (courtId !== undefined && scheduledDate !== undefined) {
     const result = assignMatchUpCourt({
+      courtDayDate: scheduledDate,
+      disableNotice: true,
       tournamentRecord,
       drawDefinition,
       matchUpId,
-      courtDayDate: scheduledDate,
       courtId,
-      disableNotice: true,
+      event,
     });
     if (result?.error) return { error: result.error, courtId };
   } else if (venueId !== undefined) {
     const result = assignMatchUpVenue({
+      disableNotice: true,
       tournamentRecord,
       drawDefinition,
       matchUpId,
       venueId,
-      disableNotice: true,
+      event,
     });
     if (result?.error) return { error: result.error, venueId };
   }
 
   if (!disableNotice) {
-    const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
+    const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
     if (!matchUp) return { error: MATCHUP_NOT_FOUND };
     modifyMatchUpNotice({ drawDefinition, matchUp });
   }
@@ -240,11 +247,12 @@ export function addMatchUpStartTime({
   disableNotice,
   matchUpId,
   startTime,
+  event,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(startTime)) return { error: INVALID_TIME };
 
-  const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
+  const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   const timeItems = matchUp.timeItems || [];
 
   const earliestRelevantTimeValue = timeItems
@@ -284,14 +292,15 @@ export function addMatchUpStartTime({
 
 export function addMatchUpEndTime({
   drawDefinition,
+  disableNotice,
   matchUpId,
   endTime,
-  disableNotice,
+  event,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(endTime)) return { error: INVALID_TIME };
 
-  const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
+  const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   const timeItems = matchUp.timeItems || [];
 
   const latestRelevantTimeValue = timeItems
@@ -328,14 +337,15 @@ export function addMatchUpEndTime({
 
 export function addMatchUpStopTime({
   drawDefinition,
+  disableNotice,
   matchUpId,
   stopTime,
-  disableNotice,
+  event,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(stopTime)) return { error: INVALID_TIME };
 
-  const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
+  const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   const timeItems = matchUp.timeItems || [];
 
   // can't add a STOP_TIME if the matchUp is not STARTED or RESUMED, or has START_TIME
@@ -397,14 +407,15 @@ export function addMatchUpStopTime({
 
 export function addMatchUpResumeTime({
   drawDefinition,
-  matchUpId,
   disableNotice,
   resumeTime,
+  matchUpId,
+  event,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(resumeTime)) return { error: INVALID_TIME };
 
-  const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
+  const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   const timeItems = matchUp.timeItems || [];
 
   // can't add a RESUME_TIME if the matchUp is not STOPPED, or if it has ENDED
