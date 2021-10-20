@@ -1,4 +1,4 @@
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
 
 export function validateLineUp({ lineUp, tieFormat }) {
   let errors = [];

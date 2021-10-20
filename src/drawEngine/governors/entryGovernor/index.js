@@ -7,8 +7,6 @@
 
 import { addDrawEntry, addDrawEntries } from './addDrawEntries';
 import { modifySeedAssignment } from './modifySeedAssignment';
-import { updateTeamLineUp } from './updateTeamLineUp';
-import { getTeamLineUp } from './getTeamLineUp';
 import { assignSeed } from './seedAssignment';
 import { removeEntry } from './removeEntry';
 import {
@@ -29,9 +27,6 @@ const entryGovernor = {
   setStageWildcardsCount,
   setStageQualifiersCount,
   modifySeedAssignment,
-
-  updateTeamLineUp,
-  getTeamLineUp,
 };
 
 export default entryGovernor;

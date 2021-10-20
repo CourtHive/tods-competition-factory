@@ -1,7 +1,7 @@
-import tieFormatDefaults from '../../../../tournamentEngine/generators/tieFormatDefaults';
-import { validateLineUp } from '../validateTeamLineUp';
+import tieFormatDefaults from '../../generators/tieFormatDefaults';
+import { validateLineUp } from '../../governors/eventGovernor/drawDefinitions/validateTeamLineUp';
 
-import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 const tieFormat = tieFormatDefaults();
 const collectionId = tieFormat.collectionDefinitions[0].collectionId;

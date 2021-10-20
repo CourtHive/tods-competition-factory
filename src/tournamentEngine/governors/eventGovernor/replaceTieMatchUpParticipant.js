@@ -1,9 +1,10 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
-import { updateTeamLineUp } from '../../../drawEngine/governors/entryGovernor/updateTeamLineUp';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { addParticipant } from '../participantGovernor/addParticipants';
+import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
+import { intersection } from '../../../utilities';
 
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -14,7 +15,6 @@ import {
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { intersection } from '../../../utilities';
 
 export function replaceTieMatchUpParticipantId(params) {
   const matchUpContext = getTieMatchUpContext(params);

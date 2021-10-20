@@ -1,10 +1,10 @@
-import { updateTeamLineUp } from '../../../drawEngine/governors/entryGovernor/updateTeamLineUp';
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
 import { addParticipant } from '../participantGovernor/addParticipants';
+import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 import { overlap } from '../../../utilities';
 
