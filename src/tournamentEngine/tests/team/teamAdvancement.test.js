@@ -9,6 +9,11 @@ import {
   COMPLETED,
   IN_PROGRESS,
 } from '../../../constants/matchUpStatusConstants';
+import {
+  CONSOLATION,
+  FIRST_MATCH_LOSER_CONSOLATION,
+  MAIN,
+} from '../../../constants/drawDefinitionConstants';
 
 // reusable
 const getMatchUp = (id, inContext) => {
@@ -21,6 +26,7 @@ const getMatchUp = (id, inContext) => {
   return matchUp;
 };
 
+// prettier-ignore
 const scenarios = [
   { drawSize: 2, singlesCount: 1, doublesCount: 0, valueGoal: 1 },
   { drawSize: 2, singlesCount: 0, doublesCount: 1, valueGoal: 1 },
@@ -28,6 +34,7 @@ const scenarios = [
   { drawSize: 4, singlesCount: 3, doublesCount: 0, valueGoal: 2 },
   { drawSize: 8, singlesCount: 3, doublesCount: 0, valueGoal: 2 },
   { drawSize: 8, singlesCount: 6, doublesCount: 3, valueGoal: 5 },
+  { drawType: FIRST_MATCH_LOSER_CONSOLATION, drawSize: 8, singlesCount: 6, doublesCount: 3, valueGoal: 5 },
 ];
 
 it.each(scenarios)('can advance teamParticipants', (scenario) => {
@@ -39,8 +46,16 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
 
   let { matchUps: firstRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
+      contextFilters: {
+        stages: [MAIN],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [1],
+      },
     });
+
+  expect(firstRoundDualMatchUps.length).toBeGreaterThan(0);
 
   // get positionAssignments to determine drawPositions
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
@@ -51,8 +66,7 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
       participantFilters: { participantTypes: [TEAM] },
     });
 
-  // for each first round dualMatchUp assign individualParticipants to singles matchUps
-  firstRoundDualMatchUps.forEach((dualMatchUp) => {
+  const assignParticipants = (dualMatchUp) => {
     const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
       ({ matchUpType }) => matchUpType === SINGLES
     );
@@ -75,11 +89,15 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
             tieMatchUpId,
             drawId,
           });
+          if (!result.success) console.log(result);
           expect(result.success).toEqual(true);
         }
       });
     });
-  });
+  };
+
+  // for each first round dualMatchUp assign individualParticipants to singles matchUps
+  firstRoundDualMatchUps.forEach(assignParticipants);
 
   // generate outcome to be applied to each first round singles matchUp
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
@@ -139,7 +157,13 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
 
   ({ matchUps: firstRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
+      contextFilters: {
+        stages: [MAIN],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [1],
+      },
     }));
 
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
@@ -174,14 +198,34 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
       )
     );
   });
+
+  const { matchUps: firstRoundConsolationDuals } =
+    tournamentEngine.allTournamentMatchUps({
+      contextFilters: {
+        stages: [CONSOLATION],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [1],
+      },
+    });
+
+  if (firstRoundConsolationDuals.length) {
+    firstRoundConsolationDuals.forEach((dualMatchUp) => {
+      expect(dualMatchUp.readyToScore).toEqual(true);
+      expect(dualMatchUp.sides.length).toEqual(2);
+      expect(dualMatchUp.sides[0].lineUp).not.toBeUndefined();
+      expect(dualMatchUp.sides[0].participantId).not.toBeUndefined;
+    });
+  }
 });
 
 test('participants can play for a team even when not part of team', () => {
   const scenario = {
-    drawSize: 4,
     singlesCount: 3,
     doublesCount: 0,
     valueGoal: 2,
+    drawSize: 4,
   };
 
   const { tournamentRecord, drawId, valueGoal } =
@@ -242,10 +286,10 @@ test('participants can play for a team even when not part of team', () => {
 
 test('participants for other teams cannot be assigned without teamParticipantId', () => {
   const scenario = {
-    drawSize: 4,
     singlesCount: 3,
     doublesCount: 0,
     valueGoal: 2,
+    drawSize: 4,
   };
 
   const { tournamentRecord, drawId, valueGoal } =

@@ -1,10 +1,12 @@
 import { generateRange } from '../../../utilities';
 import { mocksEngine } from '../../..';
 
+import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { TEAM } from '../../../constants/eventConstants';
 
 export function generateTeamTournament({
+  drawType = SINGLE_ELIMINATION,
   drawProfilesCount = 1,
   doublesCount = 1,
   singlesCount = 2,
@@ -34,9 +36,10 @@ export function generateTeamTournament({
   };
 
   const drawProfiles = generateRange(0, drawProfilesCount).map((i) => ({
-    drawSize,
-    tieFormat,
     drawName: `Main Draw ${i + 1}`,
+    tieFormat,
+    drawType,
+    drawSize,
   }));
 
   const eventProfiles = [

@@ -122,6 +122,7 @@ export function directParticipants(params) {
         loserMatchUp,
         winningSide,
         matchUpsMap,
+        dualMatchUp,
         event,
       });
       if (result.error) return result;
