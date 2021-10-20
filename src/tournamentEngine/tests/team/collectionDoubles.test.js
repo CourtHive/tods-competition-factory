@@ -1,10 +1,11 @@
 import { getParticipantId } from '../../../global/functions/extractors';
-import { generateRange, intersection } from '../../../utilities';
+import { generateTeamTournament } from './generateTestTeamTournament';
+import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { DOUBLES, TEAM } from '../../../constants/matchUpTypes';
 import {
   EXISTING_OUTCOME,
   INVALID_PARTICIPANT_TYPE,
@@ -706,58 +707,3 @@ it('handles pair dependencies across draws', () => {
     });
   }
 });
-
-function generateTeamTournament({
-  drawSize = 8,
-  doublesCount = 1,
-  singlesCount = 2,
-  drawProfilesCount = 1,
-} = {}) {
-  const valueGoal = Math.ceil((doublesCount + singlesCount) / 2);
-  const tieFormat = {
-    winCriteria: { valueGoal },
-    collectionDefinitions: [
-      {
-        collectionId: 'doublesCollectionId',
-        collectionName: 'Doubles',
-        matchUpType: DOUBLES,
-        matchUpCount: doublesCount,
-        matchUpFormat: 'SET3-S:6/TB7-F:TB10',
-        matchUpValue: 1,
-      },
-      {
-        collectionId: 'singlesCollectionId',
-        collectionName: 'Singles',
-        matchUpType: SINGLES,
-        matchUpCount: singlesCount,
-        matchUpFormat: 'SET3-S:6/TB7',
-        matchUpValue: 1,
-      },
-    ],
-  };
-
-  const drawProfiles = generateRange(0, drawProfilesCount).map((i) => ({
-    drawSize,
-    tieFormat,
-    drawName: `Main Draw ${i + 1}`,
-  }));
-
-  const eventProfiles = [
-    {
-      eventName: 'Test Team Event',
-      eventType: TEAM,
-      drawProfiles,
-      tieFormat,
-    },
-  ];
-
-  const {
-    drawIds,
-    eventIds: [eventId],
-    tournamentRecord,
-  } = mocksEngine.generateTournamentRecord({ eventProfiles });
-
-  const [drawId] = drawIds;
-
-  return { tournamentRecord, eventId, drawId, drawIds, valueGoal };
-}

@@ -1,9 +1,10 @@
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
+import { generateTeamTournament } from './generateTestTeamTournament';
 import { setDevContext } from '../../../global/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
+import { SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import {
   COMPLETED,
   IN_PROGRESS,
@@ -183,56 +184,4 @@ function processOutcome({
       }
     });
   });
-}
-
-function generateTeamTournament({
-  drawSize = 8,
-  doublesCount = 1,
-  singlesCount = 2,
-} = {}) {
-  const valueGoal = Math.ceil((doublesCount + singlesCount) / 2);
-  const tieFormat = {
-    winCriteria: { valueGoal },
-    collectionDefinitions: [
-      {
-        collectionId: 'doublesCollectionId',
-        collectionName: 'Doubles',
-        matchUpType: DOUBLES,
-        matchUpCount: doublesCount,
-        matchUpFormat: 'SET3-S:6/TB7-F:TB10',
-        matchUpValue: 1,
-      },
-      {
-        collectionId: 'singlesCollectionId',
-        collectionName: 'Singles',
-        matchUpType: SINGLES,
-        matchUpCount: singlesCount,
-        matchUpFormat: 'SET3-S:6/TB7',
-        matchUpValue: 1,
-      },
-    ],
-  };
-
-  const eventProfiles = [
-    {
-      eventType: TEAM,
-      eventName: 'Test Team Event',
-      tieFormat,
-      drawProfiles: [
-        {
-          drawSize,
-          tieFormat,
-          drawName: 'Main Draw',
-        },
-      ],
-    },
-  ];
-
-  const {
-    eventIds: [eventId],
-    drawIds: [drawId],
-    tournamentRecord,
-  } = mocksEngine.generateTournamentRecord({ eventProfiles });
-
-  return { drawId, eventId, tournamentRecord, valueGoal };
 }
