@@ -7,8 +7,8 @@
 
 import { addDrawEntry, addDrawEntries } from './addDrawEntries';
 import { modifySeedAssignment } from './modifySeedAssignment';
-import { removeEntry } from './removeEntry';
 import { assignSeed } from './seedAssignment';
+import { removeEntry } from './removeEntry';
 import {
   setStageQualifiersCount,
   setStageWildcardsCount,

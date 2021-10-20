@@ -83,6 +83,10 @@ import {
   setEventStartDate,
 } from './setEventDates';
 
+import { validateLineUp } from './drawDefinitions/validateTeamLineUp';
+import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
+import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
+
 const eventGovernor = {
   addEvent,
   deleteEvents,
@@ -170,6 +174,10 @@ const eventGovernor = {
   assignTieMatchUpParticipantId,
   removeTieMatchUpParticipantId,
   replaceTieMatchUpParticipantId,
+
+  updateTeamLineUp,
+  validateLineUp,
+  getTeamLineUp,
 };
 
 export default eventGovernor;

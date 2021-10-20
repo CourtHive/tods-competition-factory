@@ -4,6 +4,7 @@ import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
 import { addParticipant } from '../participantGovernor/addParticipants';
+import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 import { overlap } from '../../../utilities';
 
@@ -21,16 +22,11 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function assignTieMatchUpParticipantId(params) {
-  const result = getTieMatchUpContext(params);
-  if (result.error) return result;
+  const matchUpContext = getTieMatchUpContext(params);
+  if (matchUpContext.error) return matchUpContext;
 
-  const {
-    teamParticipantId,
-    tournamentRecord,
-    drawDefinition,
-    participantId,
-    event,
-  } = params;
+  const { teamParticipantId, tournamentRecord, drawDefinition, participantId } =
+    params;
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
   const {
@@ -41,8 +37,8 @@ export function assignTieMatchUpParticipantId(params) {
     matchUpType,
     dualMatchUp,
     tieMatchUp,
-    structure,
-  } = result;
+    tieFormat,
+  } = matchUpContext;
 
   const {
     tournamentParticipants: [participantToAssign],
@@ -87,12 +83,6 @@ export function assignTieMatchUpParticipantId(params) {
     ({ drawPosition }) => drawPosition === teamDrawPosition
   );
   const sideNumber = teamSide?.sideNumber;
-
-  const tieFormat =
-    dualMatchUp.tieFormat ||
-    structure.tieFormat ||
-    drawDefinition.tieFormat ||
-    event?.tieFormat;
 
   if (!tieFormat) {
     return { error: MISSING_TIE_FORMAT };
@@ -145,13 +135,17 @@ export function assignTieMatchUpParticipantId(params) {
     for (const participantId of participantIds) {
       updateLineUp({
         collectionPosition,
+        teamParticipantId,
+        drawDefinition,
         modifiedLineUp,
         participantId,
         collectionId,
+        tieFormat,
       });
     }
 
     dualMatchUpSide.lineUp = modifiedLineUp;
+
     return { ...SUCCESS, modifiedLineUp };
   }
 
@@ -165,9 +159,12 @@ export function assignTieMatchUpParticipantId(params) {
 
   updateLineUp({
     collectionPosition,
+    teamParticipantId,
+    drawDefinition,
     modifiedLineUp,
     participantId,
     collectionId,
+    tieFormat,
   });
 
   dualMatchUpSide.lineUp = modifiedLineUp;
@@ -241,9 +238,12 @@ export function assignTieMatchUpParticipantId(params) {
 
 function updateLineUp({
   collectionPosition,
+  teamParticipantId,
+  drawDefinition,
   modifiedLineUp,
   participantId,
   collectionId,
+  tieFormat,
 }) {
   const participantCompetitiorProfile = modifiedLineUp?.find(
     (teamCompetitor) => teamCompetitor?.participantId === participantId
@@ -260,4 +260,12 @@ function updateLineUp({
 
     modifiedLineUp.push(teamCompetitor);
   }
+
+  teamParticipantId &&
+    updateTeamLineUp({
+      participantId: teamParticipantId,
+      lineUp: modifiedLineUp,
+      drawDefinition,
+      tieFormat,
+    });
 }
