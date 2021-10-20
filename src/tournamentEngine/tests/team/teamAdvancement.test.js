@@ -14,6 +14,8 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
+import { findExtension } from '../../governors/queryGovernor/extensionQueries';
+import { LINEUPS } from '../../../constants/extensionConstants';
 
 // reusable
 const getMatchUp = (id, inContext) => {
@@ -28,17 +30,17 @@ const getMatchUp = (id, inContext) => {
 
 // prettier-ignore
 const scenarios = [
-  { drawSize: 2, singlesCount: 1, doublesCount: 0, valueGoal: 1 },
-  { drawSize: 2, singlesCount: 0, doublesCount: 1, valueGoal: 1 },
-  { drawSize: 2, singlesCount: 3, doublesCount: 0, valueGoal: 2 },
-  { drawSize: 4, singlesCount: 3, doublesCount: 0, valueGoal: 2 },
-  { drawSize: 8, singlesCount: 3, doublesCount: 0, valueGoal: 2 },
-  { drawSize: 8, singlesCount: 6, doublesCount: 3, valueGoal: 5 },
+  { drawSize: 2, singlesCount: 1, doublesCount: 0, valueGoal: 1, expectLineUps: true },
+  { drawSize: 2, singlesCount: 0, doublesCount: 1, valueGoal: 1, expectLineUps: false },
+  { drawSize: 2, singlesCount: 3, doublesCount: 0, valueGoal: 2, expectLineUps: true },
+  { drawSize: 4, singlesCount: 3, doublesCount: 0, valueGoal: 2, expectLineUps: true },
+  { drawSize: 8, singlesCount: 3, doublesCount: 0, valueGoal: 2, expectLineUps: true },
+  { drawSize: 8, singlesCount: 6, doublesCount: 3, valueGoal: 5, expectLineUps: true },
   { drawType: FIRST_MATCH_LOSER_CONSOLATION, drawSize: 8, singlesCount: 6, doublesCount: 3, valueGoal: 5 },
 ];
 
-it.each(scenarios)('can advance teamParticipants', (scenario) => {
-  const { tournamentRecord, drawId, eventId, valueGoal } =
+it.only.each(scenarios)('can advance teamParticipants', (scenario) => {
+  const { tournamentRecord, drawId, eventId, valueGoal, expectLineUps } =
     generateTeamTournament(scenario);
   expect(valueGoal).toEqual(scenario.valueGoal);
 
@@ -96,9 +98,26 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
     });
   };
 
-  // for each first round dualMatchUp assign individualParticipants to singles matchUps
   firstRoundDualMatchUps.forEach(assignParticipants);
 
+  if (expectLineUps) {
+    ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+    const { extension } = findExtension({
+      element: drawDefinition,
+      name: LINEUPS,
+    });
+    expect(extension).not.toBeUndefined();
+  }
+
+  teamParticipants.forEach(({ participantId }) => {
+    const { lineUp } = tournamentEngine.getTeamLineUp({
+      participantId,
+      drawId,
+    });
+    if (expectLineUps) expect(lineUp).not.toBeUndefined();
+  });
+
+  // for each first round dualMatchUp assign individualParticipants to singles matchUps
   // generate outcome to be applied to each first round singles matchUp
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     matchUpStatus: COMPLETED,

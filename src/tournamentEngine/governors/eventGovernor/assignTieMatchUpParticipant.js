@@ -25,8 +25,8 @@ export function assignTieMatchUpParticipantId(params) {
   const matchUpContext = getTieMatchUpContext(params);
   if (matchUpContext.error) return matchUpContext;
 
-  const { teamParticipantId, tournamentRecord, drawDefinition, participantId } =
-    params;
+  let teamParticipantId = params.teamParticipantId;
+  const { tournamentRecord, drawDefinition, participantId } = params;
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
   const {
@@ -74,6 +74,8 @@ export function assignTieMatchUpParticipantId(params) {
   if (!participantTeam) {
     return { error: TEAM_NOT_FOUND };
   }
+
+  if (!teamParticipantId) teamParticipantId = participantTeam.participantId;
 
   const teamAssignment = relevantAssignments.find(
     (assignment) => assignment.participantId === participantTeam?.participantId
@@ -145,7 +147,6 @@ export function assignTieMatchUpParticipantId(params) {
     }
 
     dualMatchUpSide.lineUp = modifiedLineUp;
-
     return { ...SUCCESS, modifiedLineUp };
   }
 
