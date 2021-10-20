@@ -9,7 +9,7 @@ import React from 'react';
 import {
   competitionEngine,
   tournamentEngine,
-  scoreGovernnor,
+  scoreGovernor,
   mocksEngine,
   drawEngine,
   utilities,
@@ -27,7 +27,7 @@ const ReactLiveScope = {
   mocksEngine,
   competitionEngine,
   tournamentEngine,
-  scoreGovernnor,
+  scoreGovernor,
   ConstantsViewer,
   Participants,
   Tournament,
