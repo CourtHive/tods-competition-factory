@@ -1707,6 +1707,14 @@ const { tournamentRecord } = tournamentEngine.getState({
 
 ---
 
+## getTeamLineUp
+
+```js
+const { lineUp } = tournamentEngine.getTeamLineUp({ drawId, participantId });
+```
+
+---
+
 ## getTournamentParticipants
 
 Returns **deepCopies** of tournament participants filtered by participantFilters which are arrays of desired participant attribute values.
@@ -2708,18 +2716,42 @@ tournamentEngine.updateDrawIdsOrder({
 
 ---
 
+## updateTeamLineUp
+
+```js
+tournamentEngine.updateTeamLineUp({
+  participantId, // participantId of the team for which lineUp is being updated
+  tieFormat, // valid tieFormat - used to validate collectionIds
+  lineUp, // valid lineUp array - see tournamentEngine.validateTeamLineUp
+  drawId, // required as latest lineUp modification is stored in an extension on drawDefinition
+});
+```
+
+---
+
 ## withdrawParticipantAtDrawPosition
 
 Thin wrapper around [removeDrawPositionAssignment](#removeDrawPositionAssignment). This method is included in `validActions` for [positionActions](../policies/positionActions).
 
 ```js
-withdrawParticipantAtDrawPosition({
-  drawDefinition,
-  structureId,
-  drawPosition,
-  replaceWithBye, // optional
+tournamentEngine.withdrawParticipantAtDrawPosition({
   entryStatus = WITHDRAWN,
+  replaceWithBye, // optional
+  drawDefinition,
+  drawPosition,
+  structureId,
   destroyPair, // optional - decompose PAIR participant into UNPAIRED participants
+});
+```
+
+---
+
+## validateTeamLineUp
+
+```js
+const { valid, error, errors } = tournamentEngine.validateLineUp({
+  tieFormat, // required to validate collectionIds in lineUp
+  lineUp,
 });
 ```
 
