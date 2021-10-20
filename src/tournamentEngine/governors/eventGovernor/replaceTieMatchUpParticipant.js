@@ -1,4 +1,5 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
+import { updateTeamLineUp } from '../../../drawEngine/governors/entryGovernor/updateTeamLineUp';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { addParticipant } from '../participantGovernor/addParticipants';
@@ -13,16 +14,31 @@ import {
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { intersection } from '../../../utilities';
 
 export function replaceTieMatchUpParticipantId(params) {
-  const result = getTieMatchUpContext(params);
-  if (result.error) return result;
+  const matchUpContext = getTieMatchUpContext(params);
+  if (matchUpContext.error) return matchUpContext;
 
-  const { tournamentRecord, existingParticipantId, newParticipantId } = params;
+  const {
+    existingParticipantId,
+    tournamentRecord,
+    newParticipantId,
+    drawDefinition,
+  } = params;
+
   if (!existingParticipantId || !newParticipantId)
     return { error: MISSING_PARTICIPANT_ID };
 
-  const { collectionPosition, collectionId, dualMatchUp, tieMatchUp } = result;
+  const {
+    collectionPosition,
+    teamParticipants,
+    collectionId,
+    dualMatchUp,
+    tieMatchUp,
+    tieFormat,
+  } = matchUpContext;
+
   const { matchUpType } = tieMatchUp;
 
   const side = tieMatchUp.sides.find(
@@ -132,6 +148,22 @@ export function replaceTieMatchUpParticipantId(params) {
       .filter(Boolean);
 
   dualMatchUpSide.lineUp = modifiedLineUp;
+
+  const teamParticipantId = teamParticipants.find(
+    (participant) =>
+      intersection(participant?.individualParticipantIds || [], [
+        existingParticipantId,
+        newParticipantId,
+      ]).length
+  )?.participantId;
+
+  teamParticipantId &&
+    updateTeamLineUp({
+      participantId: teamParticipantId,
+      lineUp: modifiedLineUp,
+      drawDefinition,
+      tieFormat,
+    });
 
   let participantAdded, participantRemoved;
   if (isDoubles) {

@@ -1,4 +1,5 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
+import { updateTeamLineUp } from '../../../drawEngine/governors/entryGovernor/updateTeamLineUp';
 import { scoreHasValue } from '../../../drawEngine/governors/matchUpGovernor/scoreHasValue';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
@@ -20,20 +21,22 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function removeTieMatchUpParticipantId(params) {
-  const { tournamentRecord, participantId } = params;
+  const { tournamentRecord, drawDefinition, participantId } = params;
 
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
-  const result = getTieMatchUpContext(params);
-  if (result.error) return result;
+  const matchUpContext = getTieMatchUpContext(params);
+  if (matchUpContext.error) return matchUpContext;
 
   const {
     collectionPosition,
+    teamParticipants,
     collectionId,
     matchUpType,
     dualMatchUp,
     tieMatchUp,
-  } = result;
+    tieFormat,
+  } = matchUpContext;
 
   if (scoreHasValue({ score: tieMatchUp.score }) || tieMatchUp.winningSide)
     return { error: EXISTING_OUTCOME };
@@ -78,6 +81,18 @@ export function removeTieMatchUpParticipantId(params) {
   });
 
   dualMatchUpSide.lineUp = modifiedLineUp;
+
+  const teamParticipantId = teamParticipants.find((participant) =>
+    (participant?.individualParticipantIds || []).includes(participantId)
+  )?.participantId;
+
+  teamParticipantId &&
+    updateTeamLineUp({
+      participantId: teamParticipantId,
+      lineUp: modifiedLineUp,
+      drawDefinition,
+      tieFormat,
+    });
 
   // if an INDIVIDUAL participant is being removed from a DOUBLES matchUp
   // ...then the PAIR participant may need to be modified
