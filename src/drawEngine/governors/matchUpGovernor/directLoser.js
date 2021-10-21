@@ -189,11 +189,7 @@ export function directLoser(params) {
         targetSide.lineUp = side.lineUp;
         modifyMatchUpNotice({ drawDefinition, matchUp: targetMatchUp });
       }
-    } else {
-      console.log('no lineUp');
     }
-  } else {
-    console.log('foo');
   }
 
   return { ...SUCCESS };

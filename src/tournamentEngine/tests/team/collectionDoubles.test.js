@@ -16,6 +16,8 @@ import {
   COMPLETED,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
+import { findExtension } from '../../governors/queryGovernor/extensionQueries';
+import { LINEUPS } from '../../../constants/extensionConstants';
 
 // reusable
 const getDoublesMatchUp = (id, inContext) => {
@@ -602,6 +604,44 @@ it('handles pair dependencies across draws', () => {
   // assign the same pairs to matchUps in the second draw
   assignPairParticipants({ drawId: drawIds[1] });
 
+  // --------------------------------------------------------
+  // In this scenario the lineUps for each team are composed of participants from both teams
+  // ... in other words, there is no equivalence between
+  //     - teamParticipant.individualParticipantIds
+  //     - teamLineUp.map(p => participantId)
+  ({
+    event: { drawDefinitions },
+  } = tournamentEngine.getEvent({ eventId }));
+
+  const { extension } = findExtension({
+    element: drawDefinitions[0],
+    name: LINEUPS,
+  });
+  const lineUps = extension?.value;
+  const lineUpMap = Object.assign(
+    {},
+    ...Object.keys(lineUps).map((pid) => ({
+      [pid]: lineUps[pid].map((l) => l.participantId),
+    }))
+  );
+  const teamsMap = Object.assign(
+    {},
+    ...teamParticipants.map((t) => ({
+      [t.participantId]: t.individualParticipantIds,
+    }))
+  );
+
+  // because there is no equivalence the intersection.length is not equal to either lineUpMap or teamMap
+  Object.keys(lineUpMap).forEach((teamParticipantId) => {
+    const shared = intersection(
+      lineUpMap[teamParticipantId],
+      teamsMap[teamParticipantId]
+    );
+    expect(shared.length).not.toEqual(lineUpMap[teamParticipantId]);
+    expect(shared.length).not.toEqual(teamsMap[teamParticipantId]);
+  });
+
+  // --------------------------------------------------------
   // remove the pair participants from the first draw
   removePairParticipants({ drawId: drawIds[0] });
 

@@ -1,12 +1,15 @@
 import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
+import { getTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/getTeamLineUp';
 import { getParticipantId } from '../../../global/functions/extractors';
 
 import { DOUBLES } from '../../../constants/matchUpTypes';
 
 export function getDrawPositionCollectionAssignment({
   tournamentParticipants,
+  positionAssignments,
   collectionPosition,
   drawPositions = [],
+  drawDefinition,
   collectionId,
   sideLineUps,
   matchUpType,
@@ -16,12 +19,26 @@ export function getDrawPositionCollectionAssignment({
   const drawPositionCollectionAssignment =
     drawPositions
       ?.map((drawPosition) => {
+        const teamParticipantId = positionAssignments.find(
+          (assignment) => assignment.drawPosition === drawPosition
+        )?.participantId;
+
         const side = sideLineUps?.find(
           (lineUp) => lineUp?.drawPosition === drawPosition
         );
 
-        const lineUp = side?.lineUp;
-        const teamParticipant = side?.teamParticipant;
+        const teamParticipant =
+          side?.teamParticipant ||
+          tournamentParticipants?.find(
+            ({ participantId }) => participantId === teamParticipantId
+          );
+
+        const lineUp =
+          side?.lineUp ||
+          getTeamLineUp({
+            participantId: teamParticipantId,
+            drawDefinition,
+          })?.lineUp;
 
         const relevantCompetitors = lineUp?.filter((teamCompetitor) => {
           return teamCompetitor.collectionAssignments.find(

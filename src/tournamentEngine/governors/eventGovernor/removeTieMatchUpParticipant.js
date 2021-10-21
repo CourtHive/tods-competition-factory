@@ -19,6 +19,7 @@ import {
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { findLineUpWithParticipantIds } from './drawDefinitions/findLineUpWithParticipantIds';
 
 export function removeTieMatchUpParticipantId(params) {
   const { tournamentRecord, drawDefinition, participantId } = params;
@@ -29,6 +30,7 @@ export function removeTieMatchUpParticipantId(params) {
   if (matchUpContext.error) return matchUpContext;
 
   const {
+    relevantAssignments,
     collectionPosition,
     teamParticipants,
     collectionId,
@@ -63,11 +65,41 @@ export function removeTieMatchUpParticipantId(params) {
       ? [participantId]
       : participantToRemove.individualParticipantIds;
 
-  const dualMatchUpSide = dualMatchUp.sides?.find((side) =>
+  let dualMatchUpSide = dualMatchUp.sides?.find((side) =>
     side.lineUp?.find((teamCompetitor) =>
       participantIds.includes(teamCompetitor.participantId)
     )
   );
+
+  const teamParticipantId =
+    findLineUpWithParticipantIds({ drawDefinition, participantIds })
+      ?.teamParticipantId ||
+    teamParticipants.find((participant) =>
+      (participant?.individualParticipantIds || []).includes(participantId)
+    )?.participantId;
+
+  if (!teamParticipantId) return { error: PARTICIPANT_NOT_FOUND };
+
+  if (
+    !dualMatchUpSide &&
+    dualMatchUp.sides?.filter(({ lineUp }) => !lineUp).length < 2
+  ) {
+    const drawPositionMap = teamParticipants.map(
+      ({ participantId: teamParticipantId }) => ({
+        drawPosition: relevantAssignments.find(
+          (assignment) => assignment.participantId === teamParticipantId
+        )?.drawPosition,
+        teamParticipantId,
+      })
+    );
+
+    dualMatchUpSide = dualMatchUp.sides?.find(
+      (side) =>
+        drawPositionMap.find(
+          ({ drawPosition }) => drawPosition === side.drawPosition
+        )?.teamParticipantId === teamParticipantId
+    );
+  }
 
   if (!dualMatchUpSide) {
     return { error: NOT_FOUND, participantId };
@@ -75,16 +107,14 @@ export function removeTieMatchUpParticipantId(params) {
 
   const { modifiedLineUp } = removeCollectionAssignments({
     collectionPosition,
+    teamParticipantId,
     dualMatchUpSide,
     participantIds,
+    drawDefinition,
     collectionId,
   });
 
   dualMatchUpSide.lineUp = modifiedLineUp;
-
-  const teamParticipantId = teamParticipants.find((participant) =>
-    (participant?.individualParticipantIds || []).includes(participantId)
-  )?.participantId;
 
   teamParticipantId &&
     updateTeamLineUp({

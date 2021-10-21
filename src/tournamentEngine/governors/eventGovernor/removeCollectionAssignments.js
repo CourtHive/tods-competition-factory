@@ -1,8 +1,12 @@
+import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
+
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 export function removeCollectionAssignments({
   collectionPosition,
+  teamParticipantId,
   dualMatchUpSide,
+  drawDefinition,
   participantIds,
   collectionId,
 }) {
@@ -17,8 +21,15 @@ export function removeCollectionAssignments({
       modifiedLineUp: dualMatchUpSide?.lineUp || [],
     };
 
+  const lineUp =
+    dualMatchUpSide?.lineUp ||
+    getTeamLineUp({
+      participantId: teamParticipantId,
+      drawDefinition,
+    })?.lineUp;
+
   const modifiedLineUp =
-    dualMatchUpSide?.lineUp
+    lineUp
       ?.map((teamCompetitor) => {
         if (!participantIds.includes(teamCompetitor.participantId)) {
           return teamCompetitor;

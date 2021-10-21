@@ -298,7 +298,9 @@ export function getAllStructureMatchUps({
     const drawPositionCollectionAssignment =
       getDrawPositionCollectionAssignment({
         tournamentParticipants,
+        positionAssignments,
         collectionPosition,
+        drawDefinition,
         drawPositions,
         collectionId,
         sideLineUps,

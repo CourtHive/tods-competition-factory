@@ -129,8 +129,10 @@ export function assignTieMatchUpParticipantId(params) {
     // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/participantId
     const { modifiedLineUp } = removeCollectionAssignments({
       collectionPosition,
-      participantIds,
+      teamParticipantId,
       dualMatchUpSide,
+      drawDefinition,
+      participantIds,
       collectionId,
     });
 
@@ -147,6 +149,7 @@ export function assignTieMatchUpParticipantId(params) {
     }
 
     dualMatchUpSide.lineUp = modifiedLineUp;
+
     return { ...SUCCESS, modifiedLineUp };
   }
 
@@ -154,7 +157,9 @@ export function assignTieMatchUpParticipantId(params) {
   const { modifiedLineUp } = removeCollectionAssignments({
     participantIds: [participantId],
     collectionPosition,
+    teamParticipantId,
     dualMatchUpSide,
+    drawDefinition,
     collectionId,
   });
 
