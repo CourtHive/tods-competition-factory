@@ -96,9 +96,10 @@ export function generateDrawDefinition(params) {
 
   if (matchUpType === TEAM && eventType === TEAM) {
     tieFormat =
-      tieFormat && typeof tieFormat === 'object'
+      tieFormat &&
+      (typeof tieFormat === 'object'
         ? tieFormat
-        : tieFormatDefaults({ namedFormat: tieFormat });
+        : tieFormatDefaults({ namedFormat: tieFormat }));
     matchUpFormat = undefined;
   } else if (!matchUpFormat) {
     tieFormat = undefined;

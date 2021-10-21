@@ -200,7 +200,6 @@ it('can set matchUpFormat', () => {
     tieFormat: tieFormatDefaults(),
     drawDefinition,
   });
-  console.log(result);
   expect(result.success).toEqual(true);
 
   result = setMatchUpFormat({
