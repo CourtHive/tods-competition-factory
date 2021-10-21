@@ -1,4 +1,5 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
+import { findLineUpWithParticipantIds } from './drawDefinitions/findLineUpWithParticipantIds';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { addParticipant } from '../participantGovernor/addParticipants';
@@ -13,6 +14,7 @@ import { DOUBLES } from '../../../constants/matchUpTypes';
 import {
   INVALID_PARTICIPANT_TYPE,
   MISSING_PARTICIPANT_ID,
+  NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
@@ -69,9 +71,37 @@ export function replaceTieMatchUpParticipantId(params) {
     ({ sideNumber }) => sideNumber === side.sideNumber
   );
 
+  if (!dualMatchUpSide) {
+    return { error: NOT_FOUND, existingParticipantId };
+  }
+  const existingParticipant = targetParticipants.find(
+    ({ participantId }) => participantId === existingParticipantId
+  );
+  const participantIds = existingParticipant?.individualParticipantIds || [
+    existingParticipant.participantId,
+  ];
+
+  const templateTeamLineUp = findLineUpWithParticipantIds({
+    drawDefinition,
+    participantIds,
+  });
+
+  const teamParticipantId =
+    templateTeamLineUp?.teamParticipantId ||
+    teamParticipants.find(
+      (participant) =>
+        intersection(
+          participant?.individualParticipantIds || [],
+          participantIds
+        ).length === participantIds.length
+    )?.participantId;
+
   let newParticipantIdInLineUp;
+
+  // if dualMatchUpSide does not currently have a lineUp use a lineUp found in drawDefinition.extention as a template
+  const teamLineUp = dualMatchUpSide.lineUp || templateTeamLineUp;
   const modifiedLineUp =
-    dualMatchUpSide.lineUp?.map((teamCompetitor) => {
+    teamLineUp?.map((teamCompetitor) => {
       if (
         ![existingParticipantId, newParticipantId].includes(
           teamCompetitor.participantId
@@ -122,7 +152,7 @@ export function replaceTieMatchUpParticipantId(params) {
 
   const existingIndividualParticipantIds =
     isDoubles &&
-    dualMatchUpSide.lineUp
+    teamLineUp
       .map((teamCompetitor) => {
         const assignment = teamCompetitor.collectionAssignments?.find(
           (assignment) =>
@@ -148,14 +178,6 @@ export function replaceTieMatchUpParticipantId(params) {
       .filter(Boolean);
 
   dualMatchUpSide.lineUp = modifiedLineUp;
-
-  const teamParticipantId = teamParticipants.find(
-    (participant) =>
-      intersection(participant?.individualParticipantIds || [], [
-        existingParticipantId,
-        newParticipantId,
-      ]).length
-  )?.participantId;
 
   teamParticipantId &&
     updateTeamLineUp({
