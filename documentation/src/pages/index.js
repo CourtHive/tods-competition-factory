@@ -35,7 +35,7 @@ const features = [
     description: (
       <>
         Built following a Test Driven Development process utilizing Jest. With
-        ~300 test suites and ~950 total tests covering greater than 92% of the
+        ~300 test suites and ~1000 total tests covering greater than 92% of the
         code base, quality control is assured.
       </>
     ),
