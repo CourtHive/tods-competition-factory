@@ -31,6 +31,7 @@ export function updateTeamLineUp({
     return { error: MISSING_DRAW_DEFINITION };
   if (typeof participantId !== 'string')
     return { error: MISSING_PARTICIPANT_ID };
+
   const validation = validateLineUp({ lineUp, tieFormat });
   if (!validation.valid) return validation;
 

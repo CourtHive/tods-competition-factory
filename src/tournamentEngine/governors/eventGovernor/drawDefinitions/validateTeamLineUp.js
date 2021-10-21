@@ -1,3 +1,6 @@
+import { getParticipantId } from '../../../../global/functions/extractors';
+import { unique } from '../../../../utilities/arrays';
+
 import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
 
 export function validateLineUp({ lineUp, tieFormat }) {
@@ -11,7 +14,7 @@ export function validateLineUp({ lineUp, tieFormat }) {
     tieFormat?.collectionDefinitions?.map(({ collectionId }) => collectionId) ||
     [];
 
-  const valid = lineUp.every((item) => {
+  const validItems = lineUp.every((item) => {
     if (typeof item !== 'object') {
       errors.push(`lineUp entries must be objects`);
       return false;
@@ -49,6 +52,12 @@ export function validateLineUp({ lineUp, tieFormat }) {
       return true;
     });
   });
+
+  const noDuplicates =
+    unique(lineUp.map(getParticipantId)).length === lineUp.length;
+  if (!noDuplicates) errors.push('Duplicated participantId(s)');
+
+  const valid = validItems && noDuplicates;
 
   return { valid, errors, error: errors.length ? INVALID_VALUES : undefined };
 }

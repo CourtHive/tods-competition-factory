@@ -12,6 +12,7 @@ const scenarios = [
   { lineUp: [], tieFormat, expectation: true },
   { lineUp: [{ participantId: 'someId', collectionAssignments: [] }], tieFormat, expectation: true, },
   { lineUp: [{ participantId: 'someId', collectionAssignments: [ { collectionPosition: 5, collectionId }, ], }], tieFormat, expectation: true },
+
   // invalid
   { lineUp: undefined, tieFormat, expectation: false },
   { lineUp: [''], tieFormat, expectation: false },
@@ -26,6 +27,14 @@ const scenarios = [
   { lineUp: [{ participantId: 'someId', collectionAssignments: [{ collectionPosition: 5 }] }], tieFormat, expectation: false, },
   { lineUp: [{ participantId: 'someId', collectionAssignments: [{ collectionPosition: 5, collectionId: '' }] }], tieFormat, expectation: false, },
   { lineUp: [{ participantId: 'someId', collectionAssignments: [{ collectionPosition: 5, collectionId: 'someId' }] }], tieFormat, expectation: false, },
+  {
+    lineUp: [
+      { participantId: 'someId', collectionAssignments: [{ collectionPosition: 1, collectionId }] },
+      { participantId: 'someId', collectionAssignments: [{ collectionPosition: 2, collectionId }] },
+    ],
+    tieFormat,
+    expectation: false,
+  },
 ];
 
 it.each(scenarios)('can validate a lineUp', (scenario) => {

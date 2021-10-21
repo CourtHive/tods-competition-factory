@@ -10,12 +10,7 @@ export function removeCollectionAssignments({
   participantIds,
   collectionId,
 }) {
-  if (
-    !collectionId ||
-    !collectionPosition ||
-    !dualMatchUpSide ||
-    !Array.isArray(participantIds)
-  )
+  if (!collectionId || !collectionPosition || !Array.isArray(participantIds))
     return {
       error: INVALID_VALUES,
       modifiedLineUp: dualMatchUpSide?.lineUp || [],

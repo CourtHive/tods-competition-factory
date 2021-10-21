@@ -96,12 +96,15 @@ export function replaceTieMatchUpParticipantId(params) {
         ).length === participantIds.length
     )?.participantId;
 
-  let newParticipantIdInLineUp;
-
   // if dualMatchUpSide does not currently have a lineUp use a lineUp found in drawDefinition.extention as a template
   const teamLineUp = dualMatchUpSide.lineUp || templateTeamLineUp;
+  const newParticipantIdInLineUp = teamLineUp.find(
+    ({ participantId }) => newParticipantId === participantId
+  );
+
   const modifiedLineUp =
     teamLineUp?.map((teamCompetitor) => {
+      // if the current competitor is not either id, return as is
       if (
         ![existingParticipantId, newParticipantId].includes(
           teamCompetitor.participantId
@@ -110,12 +113,13 @@ export function replaceTieMatchUpParticipantId(params) {
         return teamCompetitor;
       }
 
+      // if current competitor includes an id then filter out current assignment
       if (
         [existingParticipantId, newParticipantId].includes(
           teamCompetitor.participantId
         )
       ) {
-        const collectionAssignments =
+        teamCompetitor.collectionAssignments =
           teamCompetitor.collectionAssignments?.filter(
             (assignment) =>
               !(
@@ -123,22 +127,19 @@ export function replaceTieMatchUpParticipantId(params) {
                 assignment.collectionPosition === collectionPosition
               )
           );
-        return {
-          participantId: teamCompetitor.participantId,
-          collectionAssignments,
-        };
       }
 
+      // if current competitor is newParticipantId, push the new assignment
       if (teamCompetitor.participantId === newParticipantId) {
-        newParticipantIdInLineUp = true;
         if (!teamCompetitor.collectionAssignments)
           teamCompetitor.collectionAssignments = [];
         teamCompetitor.collectionAssignments.push({
           collectionId,
           collectionPosition,
         });
-        return teamCompetitor;
       }
+
+      return teamCompetitor;
     }) || [];
 
   if (!newParticipantIdInLineUp) {

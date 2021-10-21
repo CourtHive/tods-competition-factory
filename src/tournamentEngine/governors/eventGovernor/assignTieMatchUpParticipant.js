@@ -5,6 +5,7 @@ import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
+import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 import { overlap } from '../../../utilities';
 
@@ -251,9 +252,14 @@ function updateLineUp({
   collectionId,
   tieFormat,
 }) {
-  const participantCompetitiorProfile = modifiedLineUp?.find(
-    (teamCompetitor) => teamCompetitor?.participantId === participantId
-  );
+  const templateTeamLineUp = getTeamLineUp({
+    participantId: teamParticipantId,
+    drawDefinition,
+  })?.lineUp;
+
+  const participantCompetitiorProfile = (
+    modifiedLineUp || templateTeamLineUp
+  )?.find((teamCompetitor) => teamCompetitor?.participantId === participantId);
 
   const newAssignment = { collectionId, collectionPosition };
   if (participantCompetitiorProfile) {
