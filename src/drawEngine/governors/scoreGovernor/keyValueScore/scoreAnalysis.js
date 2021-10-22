@@ -1,7 +1,7 @@
-import { indices } from '../../../../utilities/arrays';
-import { matchUpFormatCode } from 'tods-matchup-format-code';
-import { testTiebreakEntry } from './keyValueUtilities';
 import { checkValidMatchTiebreak } from './keyValueUtilities';
+import { testTiebreakEntry } from './keyValueUtilities';
+import { indices } from '../../../../utilities/arrays';
+import { parse } from '../matchUpFormatCode/parse';
 
 import {
   SCORE_JOINER,
@@ -24,7 +24,7 @@ export function getScoreAnalysis({
   const completedSets = sets?.filter((set) => set?.winningSide)?.length || 0;
   const setNumber = completedSets + (winningSide ? 0 : 1);
 
-  const matchUpScoringFormat = matchUpFormatCode.parse(matchUpFormat);
+  const matchUpScoringFormat = parse(matchUpFormat);
   const isDecidingSet = setNumber === matchUpScoringFormat?.bestOf;
   const setFormat =
     (isDecidingSet && matchUpScoringFormat.finalSetFormat) ||

@@ -1,4 +1,4 @@
-import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { parse } from '../matchUpFormatCode/parse';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import {
@@ -17,7 +17,7 @@ export function countSets({
   const setsTally = [0, 0];
   const { sets } = score || {};
   const matchUpWinnerIndex = matchUpWinningSide - 1;
-  const parsedMatchUpFormat = matchUpFormatCode.parse(matchUpFormat);
+  const parsedMatchUpFormat = parse(matchUpFormat);
   const setsToWin = getSetsToWin(parsedMatchUpFormat?.bestOf || 1);
 
   if (
@@ -52,7 +52,7 @@ export function countGames({
 }) {
   const { sets } = score || {};
   const matchUpWinnerIndex = matchUpWinningSide - 1;
-  const parsedMatchUpFormat = matchUpFormatCode.parse(matchUpFormat);
+  const parsedMatchUpFormat = parse(matchUpFormat);
   let side1Score = 0,
     side2Score = 0;
   const setsToWin = getSetsToWin(parsedMatchUpFormat?.bestOf || 1);
