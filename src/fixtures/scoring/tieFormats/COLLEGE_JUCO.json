@@ -1,7 +1,4 @@
 {
-  "winCriteria": {
-    "valueGoal": 5
-  },
   "collectionDefinitions": [
     {
       "collectionName": "Doubles",
@@ -17,5 +14,9 @@
       "matchUpType": "SINGLES",
       "matchUpValue": 1
     }
-  ]
+  ],
+  "tieFormatName": "COLLEGE_JUCO",
+  "winCriteria": {
+    "valueGoal": 5
+  }
 }
