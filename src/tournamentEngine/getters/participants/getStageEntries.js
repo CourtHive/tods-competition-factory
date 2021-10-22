@@ -10,7 +10,7 @@ export function getStageEntries({
   event,
   stage,
 }) {
-  let entries = event.entries;
+  let entries = event.entries || [];
 
   if (drawId) {
     const { flightProfile } = getFlightProfile({ event });

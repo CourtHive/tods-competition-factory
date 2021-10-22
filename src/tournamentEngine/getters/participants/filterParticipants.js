@@ -142,7 +142,7 @@ export function filterParticipants({
     const participantIds = tournamentEvents
       .filter((event) => eventIds.includes(event.eventId))
       .map((event) => {
-        const enteredParticipantIds = event.entries.map(
+        const enteredParticipantIds = (event.entries || []).map(
           (entry) => entry.participantId
         );
         if (event.eventType === SINGLES) return enteredParticipantIds;
@@ -198,7 +198,7 @@ function getDrawEntries({ drawEntryStatuses, tournamentEvents }) {
 function getEventEntries({ eventEntryStatuses, tournamentEvents }) {
   return unique(
     tournamentEvents.reduce((entries, event) => {
-      const eventEntries = event.entries
+      const eventEntries = (event.entries || [])
         .filter(({ entryStatus }) =>
           !Array.isArray(eventEntryStatuses)
             ? true

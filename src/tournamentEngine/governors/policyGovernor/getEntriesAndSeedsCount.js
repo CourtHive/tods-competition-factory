@@ -16,12 +16,11 @@ import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
  * @returns {object} - { entries, seedsCount, stageEntries } or { error }
  */
 export function getEntriesAndSeedsCount({
+  policyDefinitions,
   drawDefinition,
+  drawSize,
   drawId,
   event,
-
-  policyDefinitions,
-  drawSize,
   stage,
 }) {
   if (!event) return { error: MISSING_EVENT };
@@ -38,9 +37,9 @@ export function getEntriesAndSeedsCount({
     participantCount,
   });
   const { seedsCount, error } = getSeedsCount({
+    drawSize: drawSize || eliminationDrawSize,
     policyDefinitions,
     participantCount,
-    drawSize: drawSize || eliminationDrawSize,
   });
   if (error) return { error };
 

@@ -102,7 +102,7 @@ export function modifyEntriesStatus({
 
   const autoPosition = ({ flight, drawDefinition }) => {
     event.entries = refreshEntryPositions({
-      entries: event.entries,
+      entries: event.entries || [],
     });
     if (flight) {
       flight.drawEntries = refreshEntryPositions({

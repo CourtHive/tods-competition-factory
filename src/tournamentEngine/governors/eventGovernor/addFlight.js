@@ -36,7 +36,7 @@ export function addFlight({
 
   if (drawEntries?.length) {
     // check that all drawEntries are in event.entries
-    const enteredParticipantIds = getParticipantIds(event.entries);
+    const enteredParticipantIds = getParticipantIds(event.entries || []);
     const flightParticipantIds = getParticipantIds(drawEntries);
     if (
       intersection(flightParticipantIds, enteredParticipantIds).length !==
