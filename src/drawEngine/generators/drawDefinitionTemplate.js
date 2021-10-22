@@ -1,9 +1,7 @@
-import { SINGLES } from '../../constants/matchUpTypes';
-
 export const definitionTemplate = () => ({
   drawId: undefined,
   drawName: undefined,
-  matchUpType: SINGLES,
+  matchUpType: undefined,
   entries: [],
   links: [],
   structures: [],
