@@ -3,6 +3,10 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import { unique } from '../../../utilities';
 import mocksEngine from '../..';
 
+import { AGE, DOUBLES, SINGLES } from '../../../constants/eventConstants';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { FEMALE, MALE } from '../../../constants/genderConstants';
+import { CLAY, HARD } from '../../../constants/surfaceConstants';
 import {
   COMPASS,
   FEED_IN_CHAMPIONSHIP,
@@ -11,19 +15,15 @@ import {
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../../constants/drawDefinitionConstants';
-import { AGE, DOUBLES, SINGLES } from '../../../constants/eventConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { CLAY, HARD } from '../../../constants/surfaceConstants';
 
 test('generateTournamentRecord', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-  expect(Object.keys(tournamentRecord)).toEqual([
-    'startDate',
+  expect(Object.keys(tournamentRecord).sort()).toEqual([
     'endDate',
-    'tournamentName',
-    'tournamentId',
     'participants',
+    'startDate',
+    'tournamentId',
+    'tournamentName',
   ]);
 });
 
