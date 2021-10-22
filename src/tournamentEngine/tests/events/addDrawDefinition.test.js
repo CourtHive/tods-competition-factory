@@ -15,7 +15,7 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
   async (tournamentEngine) => {
     const { tournamentRecord } = mocksEngine.generateTournamentRecord();
     const eventName = 'Test Event';
-    const event = { eventName };
+    const event = { eventName, eventId: 'customId' };
 
     await tournamentEngine.setState(tournamentRecord);
     let result = await tournamentEngine.addEvent({ event });
@@ -23,6 +23,7 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
     expect(result.success).toEqual(true);
 
     const { eventId } = eventResult;
+    expect(eventId).toEqual('customId');
 
     const { tournamentParticipants } =
       await tournamentEngine.getTournamentParticipants({
@@ -70,6 +71,9 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
     expect(result.eventId).not.toBeUndefined();
     expect(result.structureId).not.toBeUndefined();
     expect(result.tournamentId).not.toBeUndefined();
+
+    result = await tournamentEngine.getEvent({ eventId });
+    expect(result.event.eventId).toEqual('customId');
 
     result = await tournamentEngine.deleteEvents();
     expect(result.error).toEqual(MISSING_VALUE);

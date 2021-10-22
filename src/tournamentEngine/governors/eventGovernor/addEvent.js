@@ -1,11 +1,10 @@
-import { eventTemplate } from '../../../tournamentEngine/generators/eventTemplate';
-
 import { SUCCESS } from '../../../constants/resultConstants';
 import { UUID } from '../../../utilities';
 import {
   EVENT_EXISTS,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 
 export function addEvent({ tournamentRecord, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -16,10 +15,10 @@ export function addEvent({ tournamentRecord, event }) {
 
   const eventRecord = Object.assign(
     {},
-    eventTemplate(),
-    { startDate, endDate },
+    { startDate, endDate, eventType: SINGLES },
     event
   );
+
   if (!eventRecord.eventId) eventRecord.eventId = UUID();
 
   const eventExists = tournamentRecord.events.reduce((exists, event) => {
