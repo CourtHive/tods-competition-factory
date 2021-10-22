@@ -1,6 +1,6 @@
+import { isValid } from '../../../../drawEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
 import { getModifiedMatchUpFormatTiming } from './getModifiedMatchUpTiming';
 import { modifyMatchUpFormatTiming } from './modifyMatchUpFormatTiming';
-import { matchUpFormatCode } from 'tods-matchup-format-code';
 
 import { DOUBLES } from '../../../../constants/eventConstants';
 import { SINGLES } from '../../../../constants/matchUpTypes';
@@ -20,8 +20,7 @@ export function modifyEventMatchUpFormatTiming({
   recoveryMinutes,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!matchUpFormatCode.isValidMatchUpFormat(matchUpFormat))
-    return { error: INVALID_VALUES };
+  if (!isValid(matchUpFormat)) return { error: INVALID_VALUES };
   if (!event) return { error: MISSING_EVENT };
 
   const { averageTimes = [], recoveryTimes = [] } =

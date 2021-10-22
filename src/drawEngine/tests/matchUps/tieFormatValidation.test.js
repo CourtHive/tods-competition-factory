@@ -1,10 +1,17 @@
 import tieFormatDefaults from '../../../tournamentEngine/generators/tieFormatDefaults';
 import { validateTieFormat } from '../../governors/matchUpGovernor/tieFormatUtilities';
-import { fixtures, scoreGovernor } from '../../..';
+import {
+  fixtures,
+  mocksEngine,
+  scoreGovernor,
+  tournamentEngine,
+} from '../../..';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { TEAM } from '../../../constants/eventConstants';
+import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 
 const matchUpFormat = FORMAT_STANDARD;
 
@@ -129,4 +136,25 @@ it('can validate tieFormat fixtures', () => {
     checkCollectionIds: false,
   });
   expect(result.valid).toEqual(true);
+});
+
+it.only('can use tieFormatName to generate TEAM events', () => {
+  const {
+    eventIds: [eventId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      { drawSize: 2, eventType: TEAM, tieFormatName: 'COLLEGE_D3' },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { event } = tournamentEngine.getEvent({ eventId });
+  expect(event.tieFormat.winCriteria).toEqual(
+    tieFormats.COLLEGE_D3.winCriteria
+  );
+  expect(event.tieFormat.tieFormatName).toEqual(
+    tieFormats.COLLEGE_D3.tieFormatName
+  );
 });

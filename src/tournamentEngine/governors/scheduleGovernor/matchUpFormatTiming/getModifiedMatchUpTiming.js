@@ -1,4 +1,4 @@
-import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { isValid } from '../../../../drawEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
 import {
   findEventExtension,
   findTournamentExtension,
@@ -20,8 +20,7 @@ export function getModifiedMatchUpFormatTiming({
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!matchUpFormatCode.isValidMatchUpFormat(matchUpFormat))
-    return { error: UNRECOGNIZED_MATCHUP_FORMAT };
+  if (!isValid(matchUpFormat)) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
 
   const { extension: eventExtension } = findEventExtension({
     event,

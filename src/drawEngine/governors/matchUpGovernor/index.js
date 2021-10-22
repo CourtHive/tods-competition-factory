@@ -3,12 +3,12 @@ import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
 import { checkInParticipant, checkOutParticipant } from './checkInStatus';
 import { publicFindMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
+import { isValid } from '../scoreGovernor/matchUpFormatCode/isValid';
 import { removeDelegatedOutcome } from './removeDelegatedOutcome';
-import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { drawMatic } from '../../generators/drawMatic/drawMatic';
 import { setDelegatedOutcome } from './setDelegatedOutcome';
 import { validDrawPositions } from './validDrawPositions';
 import { matchUpSort } from '../../getters/matchUpSort';
-import { drawMatic } from '../../generators/drawMatic/drawMatic';
 import { setMatchUpStatus } from './setMatchUpStatus';
 import { setMatchUpFormat } from './matchUpFormat';
 
@@ -26,7 +26,7 @@ import {
 const matchUpGovernor = {
   setMatchUpStatus,
   setMatchUpFormat,
-  isValidMatchUpFormat: matchUpFormatCode.isValidMatchUpFormat,
+  isValidMatchUpFormat: isValid,
 
   addMatchUpTimeItem,
   resetMatchUpTimeItems,

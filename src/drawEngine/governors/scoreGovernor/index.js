@@ -4,14 +4,16 @@ import { getSetComplement, getTiebreakComplement } from './getComplement';
 import { validateTieFormat } from '../matchUpGovernor/tieFormatUtilities';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
 import { generateScoreString } from './generateScoreString';
-import { matchUpFormatCode } from './matchUpFormatCode';
+import { stringify } from './matchUpFormatCode/stringify';
+import { isValid } from './matchUpFormatCode/isValid';
 import { analyzeMatchUp } from './analyzeMatchUp';
+import { parse } from './matchUpFormatCode/parse';
 import { analyzeSet } from './analyzeSet';
 
 export const scoreGovernor = {
-  stringifyMatchUpFormat: matchUpFormatCode.stringify,
-  isValidMatchUpFormat: matchUpFormatCode.isValid,
-  parseMatchUpFormat: matchUpFormatCode.parse,
+  stringifyMatchUpFormat: stringify,
+  isValidMatchUpFormat: isValid,
+  parseMatchUpFormat: parse,
   generateTieMatchUpScore,
   tallyParticipantResults,
   getTiebreakComplement,

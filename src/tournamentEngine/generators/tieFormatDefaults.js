@@ -18,6 +18,7 @@ const namedFormats = {
       matchUpValue: 1,
       matchUpFormat: 'SET3-S:6/TB7',
     },
+    tieFormatName: 'COLLEGE_D3',
     valueGoal: 5,
   },
   COLLEGE_DEFAULT: {
@@ -31,6 +32,7 @@ const namedFormats = {
       matchUpValue: 1,
       matchUpFormat: 'SET3-S:6NOAD/TB7',
     },
+    tieFormatName: 'COLLEGE_DEFAULT',
     valueGoal: 4,
   },
   COLLEGE_JUCO: {
@@ -44,6 +46,7 @@ const namedFormats = {
       matchUpValue: 1,
       matchUpFormat: 'SET3-S:6',
     },
+    tieFormatName: 'COLLEGE_JUCO',
     valueGoal: 5,
   },
 };
@@ -55,7 +58,7 @@ export const tieFormatDefaults = ({ namedFormat, uuids = [] } = {}) => {
 
   const template = namedFormats[namedFormat];
 
-  return {
+  const tieFormat = {
     winCriteria: {
       valueGoal: template.valueGoal,
     },
@@ -76,6 +79,10 @@ export const tieFormatDefaults = ({ namedFormat, uuids = [] } = {}) => {
       },
     ],
   };
+
+  if (template.tieFormatName) tieFormat.tieFormatName = template.tieFormatName;
+
+  return tieFormat;
 };
 
 export default tieFormatDefaults;

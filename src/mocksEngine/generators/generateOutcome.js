@@ -1,8 +1,9 @@
+import { isValid } from '../../drawEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
+import { parse } from '../../drawEngine/governors/scoreGovernor/matchUpFormatCode/parse';
 import { analyzeMatchUp } from '../../drawEngine/governors/scoreGovernor/analyzeMatchUp';
 import { matchUpScore } from '../../drawEngine/governors/scoreGovernor/matchUpScore';
 import { analyzeSet } from '../../drawEngine/governors/scoreGovernor/analyzeSet';
 import { randomInt, weightedRandom } from '../../utilities/math';
-import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { generateRange, randomPop } from '../../utilities';
 import {
   getSetComplement,
@@ -55,8 +56,7 @@ export function generateOutcome({
   winningSide,
   defaultWithScorePercent = 2,
 }) {
-  if (!matchUpFormatCode.isValidMatchUpFormat(matchUpFormat))
-    return { error: INVALID_MATCHUP_FORMAT };
+  if (!isValid(matchUpFormat)) return { error: INVALID_MATCHUP_FORMAT };
   if (typeof matchUpStatusProfile !== 'object')
     return { error: INVALID_VALUES };
   if (defaultWithScorePercent > 100) defaultWithScorePercent = 100;
@@ -111,7 +111,7 @@ export function generateOutcome({
     return { outcome: { score: noScore, matchUpStatus } };
   }
 
-  const parsedFormat = matchUpFormatCode.parse(matchUpFormat);
+  const parsedFormat = parse(matchUpFormat);
 
   const { bestOf, setFormat, finalSetFormat } = parsedFormat;
 
@@ -192,12 +192,12 @@ export function generateOutcome({
  * @returns
  */
 function generateSet({
-  incomplete,
-  matchUpStatus,
+  weightedRange = [0, 1],
   pointsPerMinute,
+  matchUpStatus,
+  incomplete,
   setFormat,
   setNumber,
-  weightedRange = [0, 1],
 }) {
   const set = { setNumber };
   const { setTo, tiebreakFormat, tiebreakAt, tiebreakSet, timed, minutes } =
@@ -287,8 +287,8 @@ function generateSet({
     }
 
     const setAnalysis = analyzeSet({
-      setObject: set,
       matchUpScoringFormat: { setFormat },
+      setObject: set,
     });
 
     let tiebreakWinningSide;
