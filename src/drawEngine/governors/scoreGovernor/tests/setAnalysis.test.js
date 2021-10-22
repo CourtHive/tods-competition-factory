@@ -1,4 +1,4 @@
-import { matchUpFormatCode } from '../matchUpFormatCode';
+import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { analyzeSet } from '../analyzeSet';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
@@ -10,7 +10,7 @@ import {
 
 test('can properly analyze standard advantage sets with tiebreak', () => {
   const matchUpFormat = FORMAT_STANDARD;
-  const matchUpScoringFormat = matchUpFormatCode.parse(matchUpFormat);
+  const matchUpScoringFormat = matchUpFormatCode?.parse(matchUpFormat);
 
   let analysis = analyzeSet({ matchUpScoringFormat });
   let { error, isValidSetOutcome } = analysis;

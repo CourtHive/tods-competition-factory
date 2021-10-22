@@ -1,5 +1,5 @@
-import { matchUpFormatCode } from '../matchUpFormatCode';
 import { indices } from '../../../../utilities/arrays';
+import { matchUpFormatCode } from 'tods-matchup-format-code';
 
 import {
   SET_TIEBREAK_BRACKETS,

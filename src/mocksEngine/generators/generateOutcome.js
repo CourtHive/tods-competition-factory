@@ -2,6 +2,7 @@ import { analyzeMatchUp } from '../../drawEngine/governors/scoreGovernor/analyze
 import { matchUpScore } from '../../drawEngine/governors/scoreGovernor/matchUpScore';
 import { analyzeSet } from '../../drawEngine/governors/scoreGovernor/analyzeSet';
 import { randomInt, weightedRandom } from '../../utilities/math';
+import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { generateRange, randomPop } from '../../utilities';
 import {
   getSetComplement,
@@ -24,7 +25,6 @@ import {
   matchUpStatusConstants,
   completedMatchUpStatuses,
 } from '../../constants/matchUpStatusConstants';
-import { matchUpFormatCode } from '../..';
 
 // percentages rounded to the nearest whole number
 const defaultStatusProfile = {
@@ -55,7 +55,7 @@ export function generateOutcome({
   winningSide,
   defaultWithScorePercent = 2,
 }) {
-  if (!matchUpFormatCode.isValid(matchUpFormat))
+  if (!matchUpFormatCode.isValidMatchUpFormat(matchUpFormat))
     return { error: INVALID_MATCHUP_FORMAT };
   if (typeof matchUpStatusProfile !== 'object')
     return { error: INVALID_VALUES };

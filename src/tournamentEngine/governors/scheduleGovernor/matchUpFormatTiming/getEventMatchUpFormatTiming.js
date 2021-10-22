@@ -1,7 +1,7 @@
 import { findEventExtension } from '../../queryGovernor/extensionQueries';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
+import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { findPolicy } from '../../policyGovernor/findPolicy';
-import { matchUpFormatCode } from '../../../..';
 import { unique } from '../../../../utilities';
 
 import { POLICY_TYPE_SCORING } from '../../../../constants/policyConstants';
@@ -70,7 +70,12 @@ export function getEventMatchUpFormatTiming({
 
         if (uniqueMatchUpFormats.includes(definitionObject?.matchUpFormat))
           return;
-        if (!matchUpFormatCode.isValid(definitionObject?.matchUpFormat)) return;
+        if (
+          !matchUpFormatCode.isValidMatchUpFormat(
+            definitionObject?.matchUpFormat
+          )
+        )
+          return;
         uniqueMatchUpFormats.push(definitionObject.matchUpFormat);
         return definitionObject;
       })

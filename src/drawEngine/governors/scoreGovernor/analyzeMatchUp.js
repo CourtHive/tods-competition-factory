@@ -1,5 +1,5 @@
+import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { instanceCount } from '../../../utilities/arrays';
-import { matchUpFormatCode } from './matchUpFormatCode';
 import { analyzeSet } from './analyzeSet';
 
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
@@ -13,7 +13,7 @@ export function analyzeMatchUp(params) {
   if (!matchUp) return { error: MISSING_MATCHUP };
 
   matchUpFormat = matchUpFormat || matchUp?.matchUpFormat;
-  const matchUpScoringFormat = matchUpFormatCode.parse(matchUpFormat);
+  const matchUpScoringFormat = matchUpFormatCode?.parse(matchUpFormat);
   const isCompletedMatchUp = !!matchUp?.winningSide;
 
   const sets = matchUp.score?.sets;

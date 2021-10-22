@@ -1,11 +1,12 @@
-import { matchUpFormatCode } from '../matchUpFormatCode';
+import { matchUpFormatCode } from 'tods-matchup-format-code';
 
 export function calculateRatios({
   participantResults,
   matchUpFormat,
   perPlayer,
 }) {
-  const parsedGroupMatchUpFormat = matchUpFormatCode.parse(matchUpFormat) || {};
+  const parsedGroupMatchUpFormat =
+    (matchUpFormat && matchUpFormatCode.parse(matchUpFormat)) || {};
   const bestOfGames = parsedGroupMatchUpFormat.bestOf;
   const bracketSetsToWin = (bestOfGames && Math.ceil(bestOfGames / 2)) || 1;
   const bracketGamesForSet = parsedGroupMatchUpFormat.setFormat?.setTo;
