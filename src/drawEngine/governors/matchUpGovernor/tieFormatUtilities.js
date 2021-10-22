@@ -1,4 +1,5 @@
 import { unique, UUID } from '../../../utilities';
+import scoreGovernor from '../scoreGovernor';
 
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
@@ -45,6 +46,7 @@ export function validateTieFormat({
         collectionValue,
         collectionId,
         matchUpCount,
+        matchUpFormat,
         matchUpValue,
         matchUpType,
       } = collectionDefinition;
@@ -119,6 +121,11 @@ export function validateTieFormat({
 
       if (collectionGroupNumber && typeof collectionGroupNumber !== 'number') {
         errors.push(`collectionValue is not type number: ${collectionValue}`);
+        return false;
+      }
+
+      if (matchUpFormat && !scoreGovernor.isValidMatchUpFormat(matchUpFormat)) {
+        errors.push(`Invalid matchUpFormat: ${matchUpFormat}`);
         return false;
       }
 

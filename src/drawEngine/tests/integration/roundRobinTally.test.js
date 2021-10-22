@@ -13,7 +13,7 @@ import { SINGLES } from '../../../constants/eventConstants';
 import {
   FORMAT_SHORT_SETS,
   FORMAT_STANDARD,
-} from '../../../fixtures/scoring/matchUpFormats/formatConstants';
+} from '../../../fixtures/scoring/matchUpFormats';
 
 it('can recalculate participantResults when outcomes are removed', () => {
   const drawProfiles = [

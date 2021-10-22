@@ -7,7 +7,7 @@ import { keyValueScore } from '../index';
 import {
   FORMAT_STANDARD,
   TIMED20,
-} from '../../../../../fixtures/scoring/matchUpFormats/formatConstants';
+} from '../../../../../fixtures/scoring/matchUpFormats';
 
 function enterKeyValues({
   sets,

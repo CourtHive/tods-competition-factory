@@ -2,7 +2,7 @@ import { keyValueMatchUpScore } from '../index';
 import {
   FORMAT_STANDARD,
   FORMAT_ATP_DOUBLES,
-} from '../../../../../fixtures/scoring/matchUpFormats/formatConstants';
+} from '../../../../../fixtures/scoring/matchUpFormats';
 
 function scoreMatchUp({ lowSide, value, matchUp }) {
   let message;

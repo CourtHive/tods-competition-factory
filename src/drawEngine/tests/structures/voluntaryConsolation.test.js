@@ -3,7 +3,7 @@ import { getParticipantIds } from '../../../global/functions/extractors';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats/formatConstants';
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { ENTRY_PROFILE } from '../../../constants/extensionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {

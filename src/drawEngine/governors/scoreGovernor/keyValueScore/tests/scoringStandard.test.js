@@ -1,6 +1,6 @@
 import { keyValueMatchUpScore } from '..';
 import { stressTests } from './standardStress';
-import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats/formatConstants';
+import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
 import { TIEBREAK_CLOSER, scoreMatchUp, enterValues } from './primitives';
 
 /*

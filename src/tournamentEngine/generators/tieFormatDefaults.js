@@ -7,14 +7,43 @@ const namedFormats = {
     singles: { matchUpCount: 6, matchUpValue: 1 },
     valueGoal: 5,
   },
-  COLLEGE7: {
-    doubles: { matchUpCount: 3, collectionValue: 1 },
-    singles: { matchUpCount: 6, matchUpValue: 1 },
+  COLLEGE_D3: {
+    doubles: {
+      matchUpCount: 3,
+      matchUpValue: 1,
+      matchUpFormat: 'SET1-S:8/TB7@7',
+    },
+    singles: {
+      matchUpCount: 6,
+      matchUpValue: 1,
+      matchUpFormat: 'SET3-S:6/TB7',
+    },
+    valueGoal: 5,
+  },
+  COLLEGE_DEFAULT: {
+    doubles: {
+      matchUpCount: 3,
+      collectionValue: 1,
+      matchUpFormat: 'SET1-S:6NOAD/TB7',
+    },
+    singles: {
+      matchUpCount: 6,
+      matchUpValue: 1,
+      matchUpFormat: 'SET3-S:6NOAD/TB7',
+    },
     valueGoal: 4,
   },
-  COLLEGE9: {
-    doubles: { matchUpCount: 3, matchUpValue: 1 },
-    singles: { matchUpCount: 6, matchUpValue: 1 },
+  COLLEGE_JUCO: {
+    doubles: {
+      matchUpCount: 3,
+      matchUpValue: 1,
+      matchUpFormat: 'SET1-S:8/TB7',
+    },
+    singles: {
+      matchUpCount: 6,
+      matchUpValue: 1,
+      matchUpFormat: 'SET3-S:6',
+    },
     valueGoal: 5,
   },
 };

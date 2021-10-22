@@ -2,7 +2,7 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../..';
 
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats/formatConstants';
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {

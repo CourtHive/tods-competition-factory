@@ -1,6 +1,6 @@
 import { enterValues, scoreMatchUp } from './primitives';
 
-import { FORMAT_STANDARD_NOAD } from '../../../../../fixtures/scoring/matchUpFormats/formatConstants';
+import { FORMAT_STANDARD_NOAD } from '../../../../../fixtures/scoring/matchUpFormats';
 
 it('handles set scoring with NoAD', () => {
   const matchUpFormat = FORMAT_STANDARD_NOAD;

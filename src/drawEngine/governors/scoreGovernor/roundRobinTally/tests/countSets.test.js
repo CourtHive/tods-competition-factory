@@ -1,7 +1,7 @@
 import { countSets } from '../scoreCounters';
 
 import { COMPLETED } from '../../../../../constants/matchUpStatusConstants';
-import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats/formatConstants';
+import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
 
 it('can count normal sets', () => {
   const matchUp = {

@@ -10,7 +10,7 @@ import {
   SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats/formatConstants';
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 
 it.each([
   [SINGLE_ELIMINATION, 16],

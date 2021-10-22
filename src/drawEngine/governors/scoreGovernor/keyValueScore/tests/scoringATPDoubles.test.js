@@ -1,4 +1,4 @@
-import { FORMAT_ATP_DOUBLES } from '../../../../../fixtures/scoring/matchUpFormats/formatConstants';
+import { FORMAT_ATP_DOUBLES } from '../../../../../fixtures/scoring/matchUpFormats';
 import { MATCH_TIEBREAK_JOINER } from '../constants';
 import { TIEBREAK_CLOSER, scoreMatchUp, enterValues } from './primitives';
 

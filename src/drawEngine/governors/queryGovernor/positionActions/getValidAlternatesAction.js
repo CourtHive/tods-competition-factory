@@ -1,3 +1,5 @@
+import { getFlightProfile } from '../../../../tournamentEngine/getters/getFlightProfile';
+
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import {
@@ -8,7 +10,6 @@ import {
   ALTERNATE_PARTICIPANT,
   ALTERNATE_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
-import { getFlightProfile } from '../../../../tournamentEngine/getters/getFlightProfile';
 
 export function getValidAlternatesAction({
   tournamentParticipants = [],
