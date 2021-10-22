@@ -53,6 +53,7 @@ export function generateDrawDefinition(params) {
     automated = true,
     qualifyingRound,
     seedingProfile,
+    tieFormatName,
     stage = MAIN,
     drawEntries,
     feedPolicy,
@@ -91,8 +92,16 @@ export function generateDrawDefinition(params) {
   if (typeof drawSize !== 'number') drawSize = parseInt(drawSize);
   if (typeof seedsCount !== 'number') seedsCount = parseInt(seedsCount || 0);
 
-  if (matchUpType === TEAM) {
-    tieFormat = tieFormat || tieFormatDefaults();
+  const eventType = event?.eventType;
+  matchUpType = matchUpType || eventType;
+
+  if (matchUpType === TEAM && eventType === TEAM) {
+    tieFormat =
+      tieFormat &&
+      tieFormatName &&
+      (typeof tieFormat === 'object'
+        ? tieFormat
+        : tieFormatDefaults({ namedFormat: tieFormatName }));
     matchUpFormat = undefined;
   } else if (!matchUpFormat) {
     tieFormat = undefined;
@@ -100,9 +109,6 @@ export function generateDrawDefinition(params) {
   }
 
   const entries = drawEntries || event?.entries || [];
-  const eventType = event?.eventType;
-  matchUpType = matchUpType || eventType;
-
   const stageEntries = entries.filter(
     (entry) =>
       (!entry.entryStage || entry.entryStage === stage) &&

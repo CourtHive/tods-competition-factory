@@ -1,4 +1,5 @@
 import { addExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { getParticipantId } from '../../../../global/functions/extractors';
 import { findExtension } from '../../queryGovernor/extensionQueries';
 import { validateLineUp } from './validateTeamLineUp';
 
@@ -7,6 +8,7 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_PARTICIPANT_ID,
 } from '../../../../constants/errorConditionConstants';
+import { intersection } from '../../../../utilities';
 
 // update an extension on the drawDefinition that keeps track of the latest lineUp for all team participantIds
 // each matchUp in the draw will use this as the template on first load and then write lineUp to the matchUp
@@ -29,6 +31,7 @@ export function updateTeamLineUp({
     return { error: MISSING_DRAW_DEFINITION };
   if (typeof participantId !== 'string')
     return { error: MISSING_PARTICIPANT_ID };
+
   const validation = validateLineUp({ lineUp, tieFormat });
   if (!validation.valid) return validation;
 
@@ -38,6 +41,33 @@ export function updateTeamLineUp({
   });
 
   const value = existingExtension?.value || {};
+
+  const participantIdsInLineUp = lineUp.map(getParticipantId);
+  const conflict = Object.keys(value)
+    .filter((key) => key !== participantId)
+    .find((storedParticipantId) => {
+      const storedLineUp = value[storedParticipantId];
+      const individualParticipantIds = storedLineUp.map(getParticipantId);
+      const overlap = intersection(
+        individualParticipantIds,
+        participantIdsInLineUp
+      );
+      if (overlap.length) {
+        console.log({
+          overlap,
+          submittedParticipantId: participantId,
+          submittedLineUp: lineUp,
+          storedParticipantId,
+          storedLineUp,
+        });
+      }
+      return overlap.length;
+    });
+
+  if (conflict) {
+    return { error: 'lineUp conflict' };
+  }
+
   value[participantId] = lineUp;
 
   const extension = { name: LINEUPS, value };

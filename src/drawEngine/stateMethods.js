@@ -33,9 +33,13 @@ function validDefinitionKeys(definition) {
   return valid;
 }
 
-export function newDrawDefinition({ drawId = UUID(), drawType } = {}) {
+export function newDrawDefinition({
+  drawId = UUID(),
+  matchUpType,
+  drawType,
+} = {}) {
   const drawDefinition = definitionTemplate();
-  return Object.assign(drawDefinition, { drawId, drawType });
+  return Object.assign(drawDefinition, { drawId, drawType, matchUpType });
 }
 
 export function paramsMiddleWare(drawDefinition) {

@@ -1,7 +1,7 @@
 import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { analyzeSet } from '../analyzeSet';
 
-import { FORMAT_STANDARD } from './formatConstants';
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import {
   INVALID_GAME_SCORES,
   INVALID_WINNING_SIDE,

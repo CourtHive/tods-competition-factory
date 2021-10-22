@@ -3,7 +3,10 @@ import { analyzeMatchUp } from '../analyzeMatchUp';
 import scoreGovernor from '..';
 
 import { MISSING_MATCHUP } from '../../../../constants/errorConditionConstants';
-import { FORMAT_STANDARD, FORMAT_ATP_DOUBLES } from './formatConstants';
+import {
+  FORMAT_ATP_DOUBLES,
+  FORMAT_STANDARD,
+} from '../../../../fixtures/scoring/matchUpFormats';
 
 test('can handle empty matchUp', () => {
   let analysis = analyzeMatchUp();

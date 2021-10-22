@@ -1,6 +1,6 @@
 import { enterValues } from './primitives';
 
-import { FORMAT_COLLEGE_PRO_SET } from '../../../../../fixtures/scoring/matchUpFormats/formatConstants';
+import { FORMAT_COLLEGE_PRO_SET } from '../../../../../fixtures/scoring/matchUpFormats';
 
 it('support best of five sets with NO ADVANTAGE in Games', () => {
   const matchUpFormat = FORMAT_COLLEGE_PRO_SET;

@@ -1,6 +1,6 @@
 import { analyzeMatchUp } from '../analyzeMatchUp';
 
-import { FORMAT_STANDARD } from './formatConstants';
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 
 test('can properly analyze completed standard format matchUp', () => {
   const matchUp = {

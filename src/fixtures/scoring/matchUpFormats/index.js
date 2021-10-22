@@ -6,3 +6,14 @@ export const FORMAT_FAST4 = 'SET3-S:4/TB5@3'; // Best of 3 Sets to 4, Tiebreak a
 export const TIMED20 = 'SET1-S:T20'; // Timed 20 minute set
 export const FORMAT_PRO_SET = 'SET1-S:8/TB7'; // One Set to 8 with Advantage with tiebreak at 8-8
 export const FORMAT_COLLEGE_PRO_SET = 'SET1-S:8/TB7@7'; // One Set to 8 with tiebreak at 7-7
+
+export const matchUpFormats = {
+  FORMAT_STANDARD,
+  FORMAT_STANDARD_NOAD,
+  FORMAT_ATP_DOUBLES,
+  FORMAT_SHORT_SETS,
+  FORMAT_FAST4,
+  FORMAT_PRO_SET,
+  FORMAT_COLLEGE_PRO_SET,
+  TIMED20,
+};

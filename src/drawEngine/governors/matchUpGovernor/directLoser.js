@@ -159,10 +159,11 @@ export function directLoser(params) {
       (side) => side.sideNumber === 3 - projectedWinningSide
     );
     if (side?.lineUp) {
-      const { roundNumber, roundPosition } = loserMatchUp;
+      const { roundNumber } = loserMatchUp;
+      const { roundPosition } = dualMatchUp;
       // for matchUps fed to different structures, sideNumber is always 1 when roundNumber > 1 (fed position)
-      // when roundNumber === 1 then it is even/odd calculated as 2 minus the remainder of roundPositon % 2
-      const targetSideNumber = roundNumber === 1 ? 2 - (roundPosition % 2) : 1;
+      // when roundNumber === 1 then it is even/odd calculated as remainder of roundPositon % 2 + 1
+      const targetSideNumber = roundNumber === 1 ? (roundPosition % 2) + 1 : 1;
 
       const { matchUp: targetMatchUp } = findMatchUp({
         matchUpId: loserMatchUp.matchUpId,
@@ -170,6 +171,7 @@ export function directLoser(params) {
         matchUpsMap,
         event,
       });
+
       const updatedSides = [1, 2].map((sideNumber) => {
         const existingSide =
           targetMatchUp.sides?.find((side) => side.sideNumber === sideNumber) ||
@@ -189,6 +191,7 @@ export function directLoser(params) {
       }
     }
   }
+
   return { ...SUCCESS };
 
   function loserLinkFedFMLC() {

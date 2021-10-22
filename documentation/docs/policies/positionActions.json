@@ -1,0 +1,23 @@
+{
+  "positionActions": {
+    "policyName": "positionActionsDefault",
+
+    "enabledStructures": [
+      {
+        "stages": ["QUALIFYING", "MAIN"],
+        "stageSequences": [1],
+        "enabledActions": [],
+        "disabledActions": []
+      },
+      {
+        "stages": [],
+        "stageSequences": [],
+        "enabledActions": ["SEED_VALUE", "ADD_NICKNAME", "ADD_PENALTY"],
+        "disabledActions": []
+      }
+    ],
+
+    "disbledStructures": [],
+    "otherFlightEntries": false
+  }
+}

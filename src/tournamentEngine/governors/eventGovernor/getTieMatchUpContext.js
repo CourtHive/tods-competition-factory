@@ -40,9 +40,9 @@ export function getTieMatchUpContext({
   if (!tieMatchUp) return { error: MATCHUP_NOT_FOUND };
 
   const {
-    collectionId,
     collectionPosition,
     drawPositions,
+    collectionId,
     matchUpTieId,
     matchUpType,
   } = tieMatchUp;

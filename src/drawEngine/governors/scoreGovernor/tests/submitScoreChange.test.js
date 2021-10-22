@@ -1,5 +1,6 @@
 import { submitScoreChange } from '../submitScoreChange';
 
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import {
   MISSING_VALUE,
   MISSING_MATCHUP,
@@ -8,7 +9,6 @@ import {
   MISSING_SIDE_NUMBER,
   INVALID_SIDE_NUMBER,
 } from '../../../../constants/errorConditionConstants';
-import { FORMAT_STANDARD } from './formatConstants';
 
 test('submitScoreChange smoke test', () => {
   const matchUp = {

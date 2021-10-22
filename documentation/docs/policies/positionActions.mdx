@@ -2,6 +2,9 @@
 title: Position Actions
 ---
 
+import RenderJSON from '../components/RenderJSON';
+import PositionActions from './positionActions.json';
+
 See [Actions](/docs/concepts/actions) for context.
 
 `positionActions` returns an array of valid actions for a specified drawPosition. Valid actions can be determined, in part, by
@@ -14,9 +17,19 @@ See [Actions](/docs/concepts/actions) for context.
 
 ```js
 const { positionActions } = tournamentEngine.positionActions({
-  drawId,
-  eventId,
+  policyDefinitions, // optional - can be attached to tournamentRecord, event, or draw
   drawPosition,
-  policyDefinitions: positionActionsPolicy, // optional - policy defining what actions are allowed in client context
+  eventId,
+  drawId,
 });
 ```
+
+### policyDefinitions Example
+
+<RenderJSON
+  data={PositionActions}
+  root={'policyDefinitions'}
+  colorScheme={'summerfruit'}
+  invertTheme={true}
+  expandToLevel={1}
+/>

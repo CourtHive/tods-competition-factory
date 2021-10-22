@@ -1,28 +1,81 @@
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { UUID } from '../../utilities';
 
-export const tieFormatDefaults = ({ uuids } = {}) => ({
-  winCriteria: {
+const namedFormats = {
+  STANDARD: {
+    doubles: { matchUpCount: 3, matchUpValue: 1 },
+    singles: { matchUpCount: 6, matchUpValue: 1 },
     valueGoal: 5,
   },
-  collectionDefinitions: [
-    {
-      collectionId: uuids?.pop() || UUID(),
-      collectionName: 'Doubles',
-      matchUpType: DOUBLES,
+  COLLEGE_D3: {
+    doubles: {
       matchUpCount: 3,
-      matchUpFormat: 'SET3-S:6/TB7-F:TB10',
       matchUpValue: 1,
+      matchUpFormat: 'SET1-S:8/TB7@7',
     },
-    {
-      collectionId: uuids?.pop() || UUID(),
-      collectionName: 'Singles',
-      matchUpType: SINGLES,
+    singles: {
       matchUpCount: 6,
-      matchUpFormat: 'SET3-S:6/TB7',
       matchUpValue: 1,
+      matchUpFormat: 'SET3-S:6/TB7',
     },
-  ],
-});
+    valueGoal: 5,
+  },
+  COLLEGE_DEFAULT: {
+    doubles: {
+      matchUpCount: 3,
+      collectionValue: 1,
+      matchUpFormat: 'SET1-S:6NOAD/TB7',
+    },
+    singles: {
+      matchUpCount: 6,
+      matchUpValue: 1,
+      matchUpFormat: 'SET3-S:6NOAD/TB7',
+    },
+    valueGoal: 4,
+  },
+  COLLEGE_JUCO: {
+    doubles: {
+      matchUpCount: 3,
+      matchUpValue: 1,
+      matchUpFormat: 'SET1-S:8/TB7',
+    },
+    singles: {
+      matchUpCount: 6,
+      matchUpValue: 1,
+      matchUpFormat: 'SET3-S:6',
+    },
+    valueGoal: 5,
+  },
+};
+
+export const tieFormatDefaults = ({ namedFormat, uuids = [] } = {}) => {
+  if (!Object.keys(namedFormats).includes(namedFormat))
+    namedFormat = 'STANDARD';
+  if (!Array.isArray(uuids)) uuids = [];
+
+  const template = namedFormats[namedFormat];
+
+  return {
+    winCriteria: {
+      valueGoal: template.valueGoal,
+    },
+    collectionDefinitions: [
+      {
+        collectionId: uuids?.pop() || UUID(),
+        collectionName: 'Doubles',
+        matchUpType: DOUBLES,
+        matchUpFormat: 'SET3-S:6/TB7-F:TB10',
+        ...template.doubles,
+      },
+      {
+        collectionId: uuids?.pop() || UUID(),
+        collectionName: 'Singles',
+        matchUpType: SINGLES,
+        matchUpFormat: 'SET3-S:6/TB7',
+        ...template.singles,
+      },
+    ],
+  };
+};
 
 export default tieFormatDefaults;

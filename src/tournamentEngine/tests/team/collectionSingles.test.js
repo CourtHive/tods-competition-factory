@@ -8,11 +8,11 @@ import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import {
   EXISTING_OUTCOME,
-  INVALID_PARTICIPANT,
   INVALID_PARTICIPANT_TYPE,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_PARTICIPANT_ID,
+  PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
   COMPLETED,
@@ -164,7 +164,7 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
     participantId,
     drawId,
   });
-  expect(result.error).toEqual(INVALID_PARTICIPANT);
+  expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
 
   // attempt to remove participants from SINGLES matchUp; expect success
   result = removeSinglesParticipants();

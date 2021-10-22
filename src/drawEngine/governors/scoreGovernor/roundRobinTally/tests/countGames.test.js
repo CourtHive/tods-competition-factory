@@ -4,7 +4,7 @@ import { COMPLETED } from '../../../../../constants/matchUpStatusConstants';
 import {
   FORMAT_SHORT_SETS,
   FORMAT_STANDARD,
-} from '../../../../../fixtures/scoring/matchUpFormats/formatConstants';
+} from '../../../../../fixtures/scoring/matchUpFormats';
 
 it('can count games in normal sets', () => {
   let matchUp = {

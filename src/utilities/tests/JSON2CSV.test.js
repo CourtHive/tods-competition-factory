@@ -7,7 +7,7 @@ import { JSON2CSV } from '../json';
 import {
   FORMAT_ATP_DOUBLES,
   FORMAT_STANDARD,
-} from '../../fixtures/scoring/matchUpFormats/formatConstants';
+} from '../../fixtures/scoring/matchUpFormats';
 
 it('can create CSV from shallow JSON objects', () => {
   const csv = JSON2CSV([{ a: '1', b: '2' }]);

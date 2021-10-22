@@ -1,6 +1,6 @@
 import { matchUpFormatCode } from 'tods-matchup-format-code';
 
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats/formatConstants';
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import {
   DEFAULTED,
   RETIRED,

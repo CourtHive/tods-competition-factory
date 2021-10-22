@@ -15,7 +15,7 @@ import {
   FORMAT_SHORT_SETS,
   FORMAT_STANDARD,
   TIMED20,
-} from '../../fixtures/scoring/matchUpFormats/formatConstants';
+} from '../../fixtures/scoring/matchUpFormats';
 
 it('can set and return matchUpFormat codes', () => {
   const matchUpFormat = FORMAT_STANDARD;

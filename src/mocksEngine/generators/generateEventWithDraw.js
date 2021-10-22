@@ -16,7 +16,7 @@ import {
   completeDrawMatchUp,
 } from './completeDrawMatchUps';
 
-import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatConstants';
+import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
@@ -59,7 +59,10 @@ export function generateEventWithDraw({
   } = drawProfile;
 
   const tieFormat =
-    drawProfile.tieFormat || (eventType === TEAM && tieFormatDefaults());
+    typeof drawProfile.tieFormat === 'object'
+      ? drawProfile.tieFormat
+      : eventType === TEAM &&
+        tieFormatDefaults({ namedFormat: drawProfile.tieFormatName });
 
   let eventName = drawProfile.eventName || `Generated ${eventType}`;
   let targetParticipants = tournamentRecord?.participants || [];

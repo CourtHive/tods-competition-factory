@@ -197,15 +197,15 @@ it('can set matchUpFormat', () => {
   expect(result.error).toEqual(INVALID_TIE_FORMAT);
 
   result = setMatchUpFormat({
-    drawDefinition,
     tieFormat: tieFormatDefaults(),
+    drawDefinition,
   });
   expect(result.success).toEqual(true);
 
   result = setMatchUpFormat({
-    drawDefinition,
     structureId: structure.structureId,
     tieFormat: tieFormatDefaults(),
+    drawDefinition,
   });
   expect(result.success).toEqual(true);
 });
