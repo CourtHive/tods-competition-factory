@@ -1,4 +1,4 @@
-import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { parse } from '../matchUpFormatCode/parse';
 import { analyzeSet } from '../analyzeSet';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
@@ -10,7 +10,7 @@ import {
 
 test('can properly analyze standard advantage sets with tiebreak', () => {
   const matchUpFormat = FORMAT_STANDARD;
-  const matchUpScoringFormat = matchUpFormatCode?.parse(matchUpFormat);
+  const matchUpScoringFormat = parse(matchUpFormat);
 
   let analysis = analyzeSet({ matchUpScoringFormat });
   let { error, isValidSetOutcome } = analysis;
@@ -152,7 +152,7 @@ test('can properly analyze standard advantage sets with tiebreak', () => {
 test('can properly analyze final sets with no advantage and no tiebreak', () => {
   const FORMAT_WIMBLEDONE_2018 = 'SET5-S:6/TB7-F:6';
   const matchUpFormat = FORMAT_WIMBLEDONE_2018;
-  const matchUpScoringFormat = matchUpFormatCode?.parse(matchUpFormat);
+  const matchUpScoringFormat = parse(matchUpFormat);
 
   let setObject = {
     setNumber: 5,
@@ -199,7 +199,7 @@ test('can properly analyze final sets with no advantage and no tiebreak', () => 
 test('can recognize when set format does not match expected format', () => {
   const FORMAT_BEST_OF_3_TB10 = 'SET3-S:TB10';
   const matchUpFormat = FORMAT_BEST_OF_3_TB10;
-  const matchUpScoringFormat = matchUpFormatCode?.parse(matchUpFormat);
+  const matchUpScoringFormat = parse(matchUpFormat);
 
   const setObject = {
     setNumber: 5,

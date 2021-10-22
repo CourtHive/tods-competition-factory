@@ -1,5 +1,5 @@
 import { indices } from '../../../../utilities/arrays';
-import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { parse } from '../matchUpFormatCode/parse';
 
 import {
   SET_TIEBREAK_BRACKETS,
@@ -261,12 +261,12 @@ export function getHighTiebreakValue({
 }
 
 export function getMatchUpWinner({
-  sets,
-  winningSide,
-  matchUpStatus,
   matchUpFormat,
+  matchUpStatus,
+  winningSide,
+  sets,
 }) {
-  const matchUpScoringFormat = matchUpFormatCode.parse(matchUpFormat);
+  const matchUpScoringFormat = parse(matchUpFormat);
   const { bestOf } = matchUpScoringFormat;
   const scoreGoal = Math.ceil(bestOf / 2);
   const sideScores =
