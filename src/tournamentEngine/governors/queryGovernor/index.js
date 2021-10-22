@@ -11,7 +11,6 @@ import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getEvent, getEvents } from '../../getters/eventGetter';
 import { getPolicyDefinitions } from './getPolicyDefinitions';
 import { matchUpActions } from '../../getters/matchUpActions';
-import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { bulkUpdatePublishedEventIds } from './publishState';
 import { getParticipantSignInStatus } from './signInStatus';
 import { getEventProperties } from './getEventProperties';
@@ -43,6 +42,7 @@ import {
 } from './timeItems';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import { matchUpFormatCode } from '../../..';
 
 function getDrawDefinition({ tournamentRecord, drawDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -71,7 +71,7 @@ const queryGovernor = {
   getDrawDefinition,
   getEventProperties,
   getPositionAssignments,
-  isValidMatchUpFormat: matchUpFormatCode.isValidMatchUpFormat,
+  isValidMatchUpFormat: matchUpFormatCode.isValid,
 
   getMaxEntryPosition,
 

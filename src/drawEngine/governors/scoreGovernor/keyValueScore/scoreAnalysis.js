@@ -1,7 +1,7 @@
-import { indices } from '../../../../utilities/arrays';
-import { matchUpFormatCode } from 'tods-matchup-format-code';
-import { testTiebreakEntry } from './keyValueUtilities';
 import { checkValidMatchTiebreak } from './keyValueUtilities';
+import { matchUpFormatCode } from '../matchUpFormatCode';
+import { testTiebreakEntry } from './keyValueUtilities';
+import { indices } from '../../../../utilities/arrays';
 
 import {
   SCORE_JOINER,

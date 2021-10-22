@@ -1,4 +1,4 @@
-import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { matchUpFormatCode } from '../matchUpFormatCode';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import {

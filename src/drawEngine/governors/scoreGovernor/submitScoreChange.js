@@ -1,4 +1,4 @@
-import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { matchUpFormatCode } from './matchUpFormatCode';
 import { analyzeMatchUp } from './analyzeMatchUp';
 import { analyzeSet } from './analyzeSet';
 
@@ -89,7 +89,7 @@ function getModifiedSet(params) {
   }
 
   matchUpFormat = matchUpFormat || matchUp?.matchUpFormat;
-  const matchUpScoringFormat = matchUpFormatCode?.parse(matchUpFormat);
+  const matchUpScoringFormat = matchUpFormatCode.parse(matchUpFormat);
   let modifiedSetAnalysis = analyzeSet({
     setObject: modifiedSet,
     matchUpScoringFormat,

@@ -1,4 +1,4 @@
-import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { matchUpFormatCode } from '../../../..';
 import {
   findEventExtension,
   findTournamentExtension,
@@ -20,7 +20,7 @@ export function getModifiedMatchUpFormatTiming({
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!matchUpFormatCode.isValidMatchUpFormat(matchUpFormat))
+  if (!matchUpFormatCode.isValid(matchUpFormat))
     return { error: UNRECOGNIZED_MATCHUP_FORMAT };
 
   const { extension: eventExtension } = findEventExtension({

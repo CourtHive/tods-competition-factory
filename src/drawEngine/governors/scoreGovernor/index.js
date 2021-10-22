@@ -3,13 +3,13 @@ import { generateTieMatchUpScore } from '../../accessors/matchUpAccessor';
 import { getSetComplement, getTiebreakComplement } from './getComplement';
 import { validateTieFormat } from '../matchUpGovernor/tieFormatUtilities';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
-import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { generateScoreString } from './generateScoreString';
+import { matchUpFormatCode } from './matchUpFormatCode';
 import { analyzeMatchUp } from './analyzeMatchUp';
 import { analyzeSet } from './analyzeSet';
 
 export const scoreGovernor = {
-  isValidMatchUpFormat: matchUpFormatCode.isValidMatchUpFormat,
+  isValidMatchUpFormat: matchUpFormatCode.isValid,
   stringifyMatchUpFormat: matchUpFormatCode.stringify,
   parseMatchUpFormat: matchUpFormatCode.parse,
   generateTieMatchUpScore,
