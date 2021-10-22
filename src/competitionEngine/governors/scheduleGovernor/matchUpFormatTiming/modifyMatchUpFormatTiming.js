@@ -10,11 +10,11 @@ import {
 
 export function modifyMatchUpFormatTiming({
   tournamentRecords,
+  matchUpFormat,
+  recoveryTimes,
+  averageTimes,
   tournamentId,
   eventId,
-  matchUpFormat,
-  averageTimes,
-  recoveryTimes,
 }) {
   if (
     typeof tournamentRecords !== 'object' ||

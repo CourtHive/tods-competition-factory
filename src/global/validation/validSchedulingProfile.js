@@ -22,7 +22,7 @@ export function isValidSchedulingProfile({
     tournamentRecords,
   });
 
-  let error;
+  let error, message;
   const isValid = schedulingProfile.every((dateSchedule) => {
     const { scheduleDate, venues } = dateSchedule;
     if (!isValidDateString(scheduleDate)) {
@@ -31,9 +31,11 @@ export function isValidSchedulingProfile({
     const validVenues = venues.every((venueProfile) => {
       const { venueId, rounds } = venueProfile;
       if (typeof venueId !== 'string') {
+        message = 'venueId should be a string';
         return false;
       }
       if (!Array.isArray(rounds)) {
+        message = 'rounds should be an array';
         return false;
       }
       if (!venueIds.includes(venueId)) {
@@ -42,6 +44,7 @@ export function isValidSchedulingProfile({
       }
       const validRounds = rounds.every((round) => {
         if (!round) {
+          message = 'empty round';
           return false;
         }
         const {
@@ -58,7 +61,9 @@ export function isValidSchedulingProfile({
           tournamentsMap[tournamentId][eventId] &&
           tournamentsMap[tournamentId][eventId][drawId] &&
           tournamentsMap[tournamentId][eventId][drawId][structureId];
+
         const validRound = rounds?.includes(roundNumber);
+        if (!validRound) message = 'Invalid rounds';
 
         const { segmentNumber, segmentsCount } = roundSegment || {};
         const validSegment =
@@ -67,6 +72,7 @@ export function isValidSchedulingProfile({
             isPowerOf2(segmentsCount) &&
             segmentNumber <= segmentsCount);
 
+        if (!validSegment) message = 'Invalid segment';
         return validRound && validSegment;
       });
       if (!validRounds) {
@@ -75,11 +81,13 @@ export function isValidSchedulingProfile({
 
       return true;
     });
+
     return validVenues;
   });
 
   if (!isValid && !error) error = INVALID_VALUES;
-  return { valid: !!isValid, error };
+
+  return { valid: !!isValid, error, message };
 }
 
 export function tournamentRelevantSchedulingIds({
