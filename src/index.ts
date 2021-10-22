@@ -1,3 +1,4 @@
+export { matchUpFormatCode } from './drawEngine/governors/scoreGovernor/matchUpFormatCode';
 export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
