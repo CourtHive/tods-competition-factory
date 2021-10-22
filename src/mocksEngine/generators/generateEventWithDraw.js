@@ -62,7 +62,7 @@ export function generateEventWithDraw({
     typeof drawProfile.tieFormat === 'object'
       ? drawProfile.tieFormat
       : eventType === TEAM &&
-        tieFormatDefaults({ namedFormat: drawProfile.tieFormat });
+        tieFormatDefaults({ namedFormat: drawProfile.tieFormatName });
 
   let eventName = drawProfile.eventName || `Generated ${eventType}`;
   let targetParticipants = tournamentRecord?.participants || [];

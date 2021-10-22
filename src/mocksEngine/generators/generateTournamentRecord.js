@@ -81,9 +81,9 @@ export function generateTournamentRecord({
   if (typeof tournamentAttributes !== 'object') tournamentAttributes = {};
   const tournamentRecord = newTournamentRecord({
     ...tournamentAttributes,
+    tournamentName,
     startDate,
     endDate,
-    tournamentName,
   });
 
   // attach any valid tournamentExtensions
@@ -97,8 +97,8 @@ export function generateTournamentRecord({
   if (typeof policyDefinitions === 'object') {
     for (const policyType of Object.keys(policyDefinitions)) {
       attachPolicies({
-        tournamentRecord,
         policyDefinitions: { [policyType]: policyDefinitions[policyType] },
+        tournamentRecord,
       });
     }
   }
@@ -109,8 +109,9 @@ export function generateTournamentRecord({
     largestTeamDraw = 0;
 
   const processDrawProfile = ({
-    drawSize = 0,
     alternatesCount = 0,
+    tieFormatName,
+    drawSize = 0,
     eventType,
     tieFormat,
   }) => {
@@ -122,7 +123,7 @@ export function generateTournamentRecord({
       largestTeamDraw = Math.max(largestTeamDraw, drawSize + alternatesCount);
       typeof tieFormat === 'object'
         ? tieFormat
-        : tieFormatDefaults({ namedFormat: tieFormat });
+        : tieFormatDefaults({ namedFormat: tieFormatName });
       tieFormat?.collectionDefinitions?.forEach((collectionDefinition) => {
         // ensure every collectionDefinition has a collectionId
         if (!collectionDefinition.collectionId)
@@ -160,16 +161,30 @@ export function generateTournamentRecord({
   eventProfiles?.forEach(({ eventType, drawProfiles }) => {
     if (drawProfiles) {
       for (const drawProfile of drawProfiles) {
-        const { drawSize, alternatesCount, tieFormat } = drawProfile;
-        processDrawProfile({ drawSize, alternatesCount, eventType, tieFormat });
+        const { drawSize, alternatesCount, tieFormat, tieFormatName } =
+          drawProfile;
+        processDrawProfile({
+          alternatesCount,
+          tieFormatName,
+          eventType,
+          tieFormat,
+          drawSize,
+        });
       }
     }
   });
 
   if (drawProfiles) {
     for (const drawProfile of drawProfiles) {
-      const { drawSize, alternatesCount, eventType, tieFormat } = drawProfile;
-      processDrawProfile({ drawSize, alternatesCount, eventType, tieFormat });
+      const { drawSize, alternatesCount, eventType, tieFormat, tieFormatName } =
+        drawProfile;
+      processDrawProfile({
+        alternatesCount,
+        tieFormatName,
+        eventType,
+        tieFormat,
+        drawSize,
+      });
     }
   }
   const individualCompetitorsCount = Math.max(

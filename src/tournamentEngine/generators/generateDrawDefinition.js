@@ -53,6 +53,7 @@ export function generateDrawDefinition(params) {
     automated = true,
     qualifyingRound,
     seedingProfile,
+    tieFormatName,
     stage = MAIN,
     drawEntries,
     feedPolicy,
@@ -97,9 +98,10 @@ export function generateDrawDefinition(params) {
   if (matchUpType === TEAM && eventType === TEAM) {
     tieFormat =
       tieFormat &&
+      tieFormatName &&
       (typeof tieFormat === 'object'
         ? tieFormat
-        : tieFormatDefaults({ namedFormat: tieFormat }));
+        : tieFormatDefaults({ namedFormat: tieFormatName }));
     matchUpFormat = undefined;
   } else if (!matchUpFormat) {
     tieFormat = undefined;

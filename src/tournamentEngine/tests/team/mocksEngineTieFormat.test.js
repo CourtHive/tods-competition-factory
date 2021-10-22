@@ -80,7 +80,7 @@ it('can generate draws in TEAM events with tieFormat and assign particiapnts to 
 
   const { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(event.eventType).toEqual(TEAM);
-  expect(drawDefinition.matchUpType).toEqual(TEAM);
+  expect(drawDefinition.matchUpType).toEqual(undefined);
   expect(event.entries.length).toEqual(drawSize);
   expect(drawDefinition.entries.length).toEqual(drawSize);
   expect(event.tieFormat).toEqual(tieFormat);
@@ -159,7 +159,7 @@ it('can generate TEAM draws and use tieFormat and assign particiapnts to collect
 
   const { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(event.eventType).toEqual(TEAM);
-  expect(drawDefinition.matchUpType).toEqual(TEAM);
+  expect(drawDefinition.matchUpType).toEqual(undefined);
   expect(event.entries.length).toEqual(drawSize);
   expect(drawDefinition.entries.length).toEqual(drawSize);
   expect(event.tieFormat).toEqual(tieFormat);
