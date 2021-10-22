@@ -1,4 +1,3 @@
-import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { analyzeMatchUp } from './analyzeMatchUp';
 import { analyzeSet } from './analyzeSet';
 
@@ -10,6 +9,7 @@ import {
   MISSING_VALUE,
   INVALID_SET_NUMBER,
 } from '../../../constants/errorConditionConstants';
+import { parse } from './matchUpFormatCode/parse';
 
 export function submitScoreChange(params) {
   const { matchUp, sideNumber, setNumber, value } = params || {};
@@ -89,7 +89,7 @@ function getModifiedSet(params) {
   }
 
   matchUpFormat = matchUpFormat || matchUp?.matchUpFormat;
-  const matchUpScoringFormat = matchUpFormatCode?.parse(matchUpFormat);
+  const matchUpScoringFormat = parse(matchUpFormat);
   let modifiedSetAnalysis = analyzeSet({
     setObject: modifiedSet,
     matchUpScoringFormat,

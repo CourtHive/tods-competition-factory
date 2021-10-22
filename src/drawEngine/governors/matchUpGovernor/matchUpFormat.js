@@ -1,5 +1,5 @@
+import { isValid } from '../scoreGovernor/matchUpFormatCode/isValid';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { findStructure } from '../../getters/findStructure';
 import { checkTieFormat } from './tieFormatUtilities';
 import {
@@ -25,7 +25,7 @@ export function setMatchUpFormat(params) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat && !tieFormat) return { error: MISSING_MATCHUP_FORMAT };
 
-  if (matchUpFormat && !matchUpFormatCode.isValidMatchUpFormat(matchUpFormat))
+  if (matchUpFormat && !isValid(matchUpFormat))
     return { error: UNRECOGNIZED_MATCHUP_FORMAT };
 
   if (tieFormat) {
