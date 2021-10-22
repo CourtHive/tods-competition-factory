@@ -12,5 +12,19 @@ export function isValid(matchUpFormat) {
   ) {
     return stringify(parsedFormat).slice(7) === matchUpFormat;
   }
+
+  /*
+  const setsParts = '-S6:TB7@6NOAD'.match(
+    /-S(\d+)+:TB(\d+)[@]*(\d*)([A-Za-z]*)/
+  );
+  const [setsTo, tiebreakTo, tiebreakAt, NOAD] = setsParts.slice(1);
+
+  const finalSetParts = '-F6:TB7@6NOAD'.match(
+    /-S(\d+)+:TB(\d+)[@]*(\d*)([A-Za-z]*)/
+  );
+  const [finalSetTo, finalTiebreakTo, finalTiebreakAt, finalNOAD] =
+    finalSetParts.slice(1);
+  */
+
   return stringify(parsedFormat) === matchUpFormat;
 }
