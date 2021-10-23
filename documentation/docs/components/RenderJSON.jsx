@@ -94,7 +94,7 @@ const renderTypeDef = (raw) => {
     const obj = JSON.parse(JSON.parse(raw));
     const required = obj.required === 'true' ? '' : '? ';
     const array = obj.array === 'true' ? '[]' : '';
-    const type = ['string', 'number'].includes(obj.type)
+    const type = ['string', 'number', 'boolean'].includes(obj.type)
       ? obj.type
       : obj.type === 'object'
       ? obj.object || 'Object'
