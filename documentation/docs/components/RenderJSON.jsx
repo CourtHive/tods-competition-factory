@@ -38,19 +38,51 @@ const getItemString = (type, data, itemType) => {
   let customLabel;
   if (isObject) {
     const keys = Object.keys(data);
-    if (utilities.overlap(keys, ['drawId', 'drawName'])) {
+    if (utilities.intersection(keys, ['drawId', 'drawType']).length === 2) {
       customLabel = 'drawDefinition';
     }
-    if (utilities.overlap(keys, ['eventId', 'eventName'])) {
+    if (
+      utilities.intersection(keys, ['entryPosition', 'entryStatus']).length ===
+      2
+    ) {
+      customLabel = 'entry';
+    }
+    if (utilities.intersection(keys, ['eventId', 'eventName']).length === 2) {
       customLabel = 'event';
     }
-    if (utilities.overlap(keys, ['participantId', 'participantName'])) {
+    if (utilities.intersection(keys, ['flightNumber', 'drawId']).length === 2) {
+      customLabel = 'flight';
+    }
+    if (utilities.intersection(keys, ['name', 'value']).length === 2) {
+      customLabel = 'extension';
+    }
+    if (utilities.intersection(keys, ['linkType', 'source']).length === 2) {
+      customLabel = 'link';
+    }
+    if (
+      utilities.intersection(keys, ['matchUpId', 'drawPositions']).length === 2
+    ) {
+      customLabel = 'matchUp';
+    }
+    if (
+      utilities.intersection(keys, ['drawPosition', 'participantId', 'bye'])
+        .length === 2
+    ) {
+      customLabel = 'positionAssignment';
+    }
+    if (
+      utilities.intersection(keys, ['participantId', 'participantName'])
+        .length === 2
+    ) {
       customLabel = 'participant';
     }
-    if (utilities.overlap(keys, ['structureId', 'structureName'])) {
+    if (
+      utilities.intersection(keys, ['structureId', 'structureName']).length ===
+      2
+    ) {
       customLabel = 'structure';
     }
-    if (utilities.overlap(keys, ['venueId', 'courts'])) {
+    if (utilities.intersection(keys, ['venueId', 'courts']).length === 2) {
       customLabel = 'venue';
     }
   }
