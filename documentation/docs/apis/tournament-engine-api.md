@@ -754,8 +754,10 @@ tournamentEngine.checkOutParticipant({
 
 ```js
 tournamentEngine.clearScheduledMatchUps({
-  ignoreMatchUpStatuses, // optionally specify matchUpStatus values to be ignored
-  scheduleAttributes, // optionally specify which attributes should be considered
+  ignoreMatchUpStatuses, // optional - specify matchUpStatus values to be ignored; defaults to all completed matchUpStatuses
+  scheduleAttributes, // optional - specify which attributes should be considered; defaults to ['scheduledDate', 'scheduledTime']
+  scheduleDates, // optional - array of dates to be cleared; only matchUps with specified scheduledDate will be cleared
+  venueIds, // optional - array of venueIds; only matchUps at specified venues will be cleared
 });
 ```
 
