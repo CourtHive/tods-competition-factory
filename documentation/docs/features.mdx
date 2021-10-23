@@ -10,9 +10,9 @@ Draws are the centerpiece of any tournament. While TODS strives to be agnostic a
 ```jsx live
 function DrawDefinitionDemo(props) {
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    drawSize: 32,
     drawName: 'Demo Draw',
     drawType: 'COMPASS',
+    drawSize: 32,
   });
 
   return <Draw data={drawDefinition} />;

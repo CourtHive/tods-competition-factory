@@ -4,7 +4,12 @@ import RenderJSON from './RenderJSON';
 export const DrawDefinition = ({ data }) => {
   return (
     <div>
-      <RenderJSON data={data} root={'drawDefinition'} expandRoot={false} />
+      <RenderJSON
+        root={'drawDefinition'}
+        expandRoot={false}
+        hideRoot={false}
+        data={data}
+      />
     </div>
   );
 };

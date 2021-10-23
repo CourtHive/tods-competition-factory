@@ -3,7 +3,9 @@ name: Competition Engine API
 title: API
 ---
 
-All competitionEngine methods which make a mutation return either `{ success: true }` or `{ error }`
+All **_competitionEngine_** methods which make a mutation return either `{ success: true }` or `{ error }`
+
+---
 
 ## addCourts
 

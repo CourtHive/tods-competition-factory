@@ -97,8 +97,7 @@ export function generateDrawDefinition(params) {
 
   if (matchUpType === TEAM && eventType === TEAM) {
     tieFormat =
-      tieFormat &&
-      tieFormatName &&
+      (tieFormat || tieFormatName) &&
       (typeof tieFormat === 'object'
         ? tieFormat
         : tieFormatDefaults({ namedFormat: tieFormatName }));
@@ -168,7 +167,7 @@ export function generateDrawDefinition(params) {
       // update tieFormat if integrity check has added collectionIds
       if (result.tieFormat) tieFormat = result.tieFormat;
     } else {
-      if (matchUpType) drawDefinition.matchUpType = matchUpType;
+      // if (matchUpType) drawDefinition.matchUpType = matchUpType;
     }
   }
 
