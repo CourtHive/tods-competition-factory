@@ -25,14 +25,16 @@ const getLabelStyle = ({ style }, nodeType, expanded) => ({
 const getBoolStyle = ({ style }, nodeType) => ({
   style: {
     ...style,
-    border: nodeType === 'Boolean' ? '1px solid #DD3333' : style.border,
+    // border: nodeType === 'Boolean' ? '1px solid #DD3333' : style.border,
     borderRadius: nodeType === 'Boolean' ? 3 : style.borderRadius,
   },
 });
 
 const getItemString = (type, data, itemType) => {
-  console.log({ data });
-  return <span>{itemType}</span>;
+  const isObject = typeof data === 'object';
+  const firstValue = isObject && Object.values(data)[0];
+  const isTypeDef = typeof firstValue === 'string' && firstValue[0] === '{';
+  return <span>{isTypeDef ? type : itemType}</span>;
 };
 
 const renderTypeDef = (raw) => {
@@ -43,21 +45,23 @@ const renderTypeDef = (raw) => {
     const type = ['string', 'number'].includes(obj.type)
       ? obj.type
       : obj.type === 'object'
-      ? obj.object
+      ? obj.object || 'Object'
       : obj.type === 'enum'
       ? `enum ${obj.enum}`
       : '';
-    return `${required}: ${type}${array}`;
+    const note = obj.note ? ` \\\\ ${obj.note}` : '';
+    return `${required}: ${type}${array}${note}`;
   } catch (err) {
     return '';
   }
 };
 
 const stringLimit = 40;
+const isJSONstring = (data) =>
+  typeof data === 'string' && data.length > 2 && data[1] === '{';
+
 const renderValue = (raw) => {
-  if (typeof raw === 'string' && raw.length > 2 && raw[1] === '{') {
-    return renderTypeDef(raw);
-  }
+  if (isJSONstring(raw)) return renderTypeDef(raw);
   if (typeof raw === 'string' && raw.length > stringLimit)
     return raw.slice(0, stringLimit) + '...';
   return raw;

@@ -76,7 +76,14 @@ module.exports = {
     {
       type: 'category',
       label: 'Type Definitions',
-      items: ['types/tournament', 'types/event'],
+      items: [
+        'types/tournament',
+        'types/participant',
+        'types/event',
+        'types/drawdefinition',
+        'types/matchup',
+        'types/venue',
+      ],
     },
     {
       type: 'category',

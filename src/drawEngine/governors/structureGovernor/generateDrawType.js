@@ -97,9 +97,9 @@ export function generateDrawType(params = {}) {
   // there can be no existing main structure
   const sequenceLimit = stageSequence === 1 ? 1 : undefined;
   const { structures: stageStructures } = getDrawStructures({
-    stage,
-    stageSequence,
     drawDefinition,
+    stageSequence,
+    stage,
   });
   const structureCount = stageStructures.length;
   if (structureCount >= sequenceLimit) return { error: STAGE_SEQUENCE_LIMIT };
@@ -123,14 +123,14 @@ export function generateDrawType(params = {}) {
       const { matchUps, roundLimit: derivedRoundLimit } = treeMatchUps(params);
       const qualifyingRound = stage === QUALIFYING && derivedRoundLimit;
       const structure = structureTemplate({
-        stage,
-        matchUps,
-        matchUpType,
-        stageSequence,
-        qualifyingRound,
-        structureId: uuids?.pop(),
-        roundLimit: derivedRoundLimit,
         structureName: structureName || stage,
+        roundLimit: derivedRoundLimit,
+        structureId: uuids?.pop(),
+        qualifyingRound,
+        stageSequence,
+        matchUpType,
+        matchUps,
+        stage,
       });
 
       drawDefinition.structures.push(structure);
@@ -209,8 +209,8 @@ export function generateDrawType(params = {}) {
   const result = { ...SUCCESS, matchUps };
 
   Object.assign(result, generatorResult, {
-    matchUpsMap,
     inContextDrawMatchUps,
+    matchUpsMap,
   });
 
   modifyDrawNotice({ drawDefinition });
