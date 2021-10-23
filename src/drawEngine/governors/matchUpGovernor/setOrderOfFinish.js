@@ -6,6 +6,7 @@ import { uniqueValues } from '../../../utilities/arrays';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  INVALID_MATCHUP_STATUS,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
@@ -71,6 +72,7 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
   }
 
   // targetedMatchUps must all be in draws completedMatchUps and orderOfFinish values must be integers
+  let validMatchUpId, validOrderOfFinish;
   const valuesMap = {};
   const targetedMatchUpIds = [];
   const orderOfFinishValues = [];
@@ -78,15 +80,21 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
     targetedMatchUpIds.push(matchUpId);
     if (orderOfFinish) orderOfFinishValues.push(orderOfFinish);
     valuesMap[matchUpId] = orderOfFinish;
-    return (
-      matchUpIds.includes(matchUpId) &&
-      (orderOfFinish === undefined || isConvertableInteger(orderOfFinish))
-    );
+    validMatchUpId = matchUpIds.includes(matchUpId);
+    validOrderOfFinish =
+      orderOfFinish === undefined ||
+      (isConvertableInteger(orderOfFinish) && Math.floor(orderOfFinish) > 0);
+    return validMatchUpId && validOrderOfFinish;
   });
+
   if (!validValues)
     return {
-      error: INVALID_VALUES,
-      message: 'orderOfFinish must be integer or undefined',
+      error: !validMatchUpId ? INVALID_MATCHUP_STATUS : INVALID_VALUES,
+      message: !validMatchUpId
+        ? 'matchUps must be completed'
+        : !validOrderOfFinish
+        ? 'orderOfFinish must be integer > 0 or undefined'
+        : undefined,
     };
 
   // get other matchUps in the same logical grouping

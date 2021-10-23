@@ -30,44 +30,76 @@ const getBoolStyle = ({ style }, nodeType) => ({
   },
 });
 
-const getItemString = (type) => <span>{type}</span>;
+const getItemString = (type, data, itemType) => {
+  console.log({ data });
+  return <span>{itemType}</span>;
+};
+
+const renderTypeDef = (raw) => {
+  try {
+    const obj = JSON.parse(JSON.parse(raw));
+    const required = obj.required === 'true' ? '' : '? ';
+    const array = obj.array === 'true' ? '[]' : '';
+    const type = ['string', 'number'].includes(obj.type)
+      ? obj.type
+      : obj.type === 'object'
+      ? obj.object
+      : obj.type === 'enum'
+      ? `enum ${obj.enum}`
+      : '';
+    return `${required}: ${type}${array}`;
+  } catch (err) {
+    return '';
+  }
+};
 
 const stringLimit = 40;
 const renderValue = (raw) => {
+  if (typeof raw === 'string' && raw.length > 2 && raw[1] === '{') {
+    return renderTypeDef(raw);
+  }
   if (typeof raw === 'string' && raw.length > stringLimit)
     return raw.slice(0, stringLimit) + '...';
   return raw;
 };
 
+const renderLabel = ([key]) => {
+  return <strong>{key}</strong>;
+};
+
 export const RenderJSON = ({
-  data,
-  root = 'root',
   colorScheme = 'summerfruit',
+  sortObjectKeys = true,
   invertTheme = true,
-  hideRoot = false,
   expandRoot = true,
   expandToLevel = 1,
+  hideRoot = false,
+  root = 'root',
+  data,
 }) => {
   const shouldExpandNode = (keyPath, data, level) => {
     if (!expandRoot) return false;
+    if (typeof data === 'object' && data._typeDef) return false;
     if (level < expandToLevel) return true;
   };
   return (
     <div style={{ marginBottom: '1em' }}>
       <JSONTree
         theme={{
-          extend: themes[colorScheme],
-          value: getBoolStyle,
           valueLabel: getValueLabelStyle,
           nestedNodeLabel: getLabelStyle,
+          extend: themes[colorScheme],
+          value: getBoolStyle,
         }}
-        valueRenderer={renderValue}
+        shouldExpandNode={shouldExpandNode}
+        sortObjectKeys={sortObjectKeys}
         getItemString={getItemString}
-        data={data}
-        keyPath={[root]}
+        labelRenderer={renderLabel}
+        valueRenderer={renderValue}
         invertTheme={invertTheme}
         hideRoot={hideRoot}
-        shouldExpandNode={shouldExpandNode}
+        keyPath={[root]}
+        data={data}
       />
     </div>
   );

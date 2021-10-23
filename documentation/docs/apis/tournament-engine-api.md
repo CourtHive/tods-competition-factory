@@ -3,6 +3,10 @@ name: Tournament Engine API
 title: API
 ---
 
+All **_tournamentEngine_** methods which make a mutation return either `{ success: true }` or `{ error }`
+
+---
+
 ## addAdHocMatchUps
 
 Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **DrawMatic**. The only restriction is that a participant may appear once per round.
@@ -2497,6 +2501,26 @@ tournamentEngine.setMatchUpStatus({
     endTime,
   },
   notes, // optional - add note (string) to matchUp object
+});
+```
+
+---
+
+## setOrderOfFinish
+
+Sets the `orderOfFinish` attribute for `matchUps` specified by `matchUpId` in the `finishingOrder` array.
+
+### Validation
+
+Validation is done within a _cohort_ of `matchUps` which have equivalent `structureId`, `matchUpType`, `roundNumber`, and `matchUpTieId` (if applicable).
+
+- `matchUpIds` in `finishingOrder` must be part of the same _cohort_
+- `orderOfFinish` values must be unique positive integers within the _cohort_
+
+```js
+tournamentEngine.setOrderOfFinish({
+  finishingOrder: [{ matchUpId, orderOfFinish: 1 }],
+  drawId,
 });
 ```
 

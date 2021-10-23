@@ -75,6 +75,11 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Type Definitions',
+      items: ['types/tournament', 'types/event'],
+    },
+    {
+      type: 'category',
       label: 'Utilities',
       items: ['utilities/make-deep-copy', 'utilities/json-to-csv'],
     },
