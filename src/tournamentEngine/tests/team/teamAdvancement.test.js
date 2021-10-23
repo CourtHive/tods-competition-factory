@@ -1,3 +1,4 @@
+import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -5,6 +6,7 @@ import tournamentEngine from '../../sync';
 import { TEAM_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { LINEUPS } from '../../../constants/extensionConstants';
 import {
   COMPLETED,
   IN_PROGRESS,
@@ -14,8 +16,6 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
-import { findExtension } from '../../governors/queryGovernor/extensionQueries';
-import { LINEUPS } from '../../../constants/extensionConstants';
 
 // reusable
 const getMatchUp = (id, inContext) => {
@@ -39,7 +39,7 @@ const scenarios = [
   { drawType: FIRST_MATCH_LOSER_CONSOLATION, drawSize: 8, singlesCount: 6, doublesCount: 3, valueGoal: 5 },
 ];
 
-it.only.each(scenarios)('can advance teamParticipants', (scenario) => {
+it.each(scenarios)('can advance teamParticipants', (scenario) => {
   const { tournamentRecord, drawId, eventId, valueGoal, expectLineUps } =
     generateTeamTournament(scenario);
   expect(valueGoal).toEqual(scenario.valueGoal);
@@ -149,6 +149,17 @@ it.only.each(scenarios)('can advance teamParticipants', (scenario) => {
       }
     });
 
+    // attempt to assign orderOfFinish to all singlesMatchUps
+    const finishingOrder = singlesMatchUps.map(({ matchUpId }, index) => ({
+      orderOfFinish: index + 1,
+      matchUpId,
+    }));
+    const result = tournamentEngine.setOrderOfFinish({
+      finishingOrder,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+
     const singlesMatchUpCount = singlesMatchUps.length;
 
     const doublesMatchUps = dualMatchUp.tieMatchUps.filter(
@@ -237,70 +248,6 @@ it.only.each(scenarios)('can advance teamParticipants', (scenario) => {
       expect(dualMatchUp.sides[0].participantId).not.toBeUndefined;
     });
   }
-});
-
-test('participants can play for a team even when not part of team', () => {
-  const scenario = {
-    singlesCount: 3,
-    doublesCount: 0,
-    valueGoal: 2,
-    drawSize: 4,
-  };
-
-  const { tournamentRecord, drawId, valueGoal } =
-    generateTeamTournament(scenario);
-  expect(valueGoal).toEqual(scenario.valueGoal);
-
-  tournamentEngine.setState(tournamentRecord);
-
-  let { matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
-    });
-
-  let { tournamentParticipants: individualParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    });
-
-  let { tournamentParticipants: teamParticipants } =
-    tournamentEngine.getTournamentParticipants({
-      participantFilters: { participantTypes: [TEAM] },
-    });
-
-  // get positionAssignments to determine drawPositions
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const { positionAssignments } = drawDefinition.structures[0];
-
-  let participantIndex = 0;
-  // for each first round dualMatchUp assign individualParticipants to singles matchUps
-  firstRoundDualMatchUps.forEach((dualMatchUp) => {
-    const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
-      ({ matchUpType }) => matchUpType === SINGLES
-    );
-    singlesMatchUps.forEach((singlesMatchUp) => {
-      const tieMatchUpId = singlesMatchUp.matchUpId;
-      singlesMatchUp.sides.forEach((side) => {
-        const { drawPosition } = side;
-        const teamParticipant = teamParticipants.find((teamParticipant) => {
-          const { participantId } = teamParticipant;
-          const assignment = positionAssignments.find(
-            (assignment) => assignment.participantId === participantId
-          );
-          return assignment.drawPosition === drawPosition;
-        });
-        const individualParticipantId =
-          individualParticipants[participantIndex].participantId;
-        const result = tournamentEngine.assignTieMatchUpParticipantId({
-          teamParticipantId: teamParticipant.participantId,
-          participantId: individualParticipantId,
-          tieMatchUpId,
-          drawId,
-        });
-        expect(result.success).toEqual(true);
-      });
-    });
-  });
 });
 
 test('participants for other teams cannot be assigned without teamParticipantId', () => {

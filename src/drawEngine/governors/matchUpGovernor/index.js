@@ -10,6 +10,7 @@ import { setDelegatedOutcome } from './setDelegatedOutcome';
 import { validDrawPositions } from './validDrawPositions';
 import { matchUpSort } from '../../getters/matchUpSort';
 import { setMatchUpStatus } from './setMatchUpStatus';
+import { setOrderOfFinish } from './setOrderOfFinish';
 import { setMatchUpFormat } from './matchUpFormat';
 
 import {
@@ -42,6 +43,7 @@ const matchUpGovernor = {
   addMatchUpStopTime,
   addMatchUpResumeTime,
 
+  setOrderOfFinish,
   setDelegatedOutcome,
   removeDelegatedOutcome,
 
