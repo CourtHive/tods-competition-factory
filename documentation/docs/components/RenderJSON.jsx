@@ -1,4 +1,5 @@
 import React from 'react';
+import { utilities } from 'tods-competition-factory';
 
 import JSONTree from 'react-json-tree';
 import themes from './themes';
@@ -34,7 +35,26 @@ const getItemString = (type, data, itemType) => {
   const isObject = typeof data === 'object';
   const firstValue = isObject && Object.values(data)[0];
   const isTypeDef = typeof firstValue === 'string' && firstValue[0] === '{';
-  return <span>{isTypeDef ? type : itemType}</span>;
+  let customLabel;
+  if (isObject) {
+    const keys = Object.keys(data);
+    if (utilities.overlap(keys, ['drawId', 'drawName'])) {
+      customLabel = 'drawDefinition';
+    }
+    if (utilities.overlap(keys, ['eventId', 'eventName'])) {
+      customLabel = 'event';
+    }
+    if (utilities.overlap(keys, ['participantId', 'participantName'])) {
+      customLabel = 'participant';
+    }
+    if (utilities.overlap(keys, ['structureId', 'structureName'])) {
+      customLabel = 'structure';
+    }
+    if (utilities.overlap(keys, ['venueId', 'courts'])) {
+      customLabel = 'venue';
+    }
+  }
+  return <span>{customLabel || (isTypeDef ? type : itemType)}</span>;
 };
 
 const renderTypeDef = (raw) => {
