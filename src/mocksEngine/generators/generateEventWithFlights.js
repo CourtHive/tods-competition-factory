@@ -56,7 +56,8 @@ export function generateEventWithFlights({
   } = eventProfile;
 
   const tieFormat =
-    eventProfile.tieFormat || (eventType === TEAM && tieFormatDefaults());
+    eventProfile.tieFormat ||
+    (eventType === TEAM ? tieFormatDefaults() : undefined);
   let targetParticipants = tournamentRecord.participants;
   let uniqueDrawParticipants = [];
 

@@ -9,16 +9,29 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
+/**
+ *
+ * @param {string[]} scheduleAttributes - attributes by which it is determined that a matchUp as a schedule
+ * @param {boolean} ignoreMatchUpStatuses - array of matchUpStatuses to ignore; defaults to completed
+ * @param {object} tournamentRecord - provided automatically by tournamentEngine
+ * @param {string[]} scheduleDates - optional - array of schedule dates to be cleared; default is to clear all dates
+ * @param {string[]} venueIds - optional - array of specific venueIds to be cleared
+ * @returns
+ */
 export function clearScheduledMatchUps({
   scheduleAttributes = ['scheduledDate', 'scheduledTime'],
   ignoreMatchUpStatuses = completedMatchUpStatuses,
   tournamentRecord,
   scheduledDates,
+  venueIds = [],
 }) {
   if (typeof tournamentRecord !== 'object')
     return { error: MISSING_TOURNAMENT_RECORD };
 
-  if (!Array.isArray(ignoreMatchUpStatuses)) return { error: INVALID_VALUES };
+  if (!Array.isArray(ignoreMatchUpStatuses) || !Array.isArray(venueIds)) {
+    return { error: INVALID_VALUES };
+  }
+  if (venueIds.length) scheduleAttributes.push('venueId');
 
   const { matchUps } = allTournamentMatchUps({
     matchUpFilters: { scheduledDates },
@@ -29,7 +42,8 @@ export function clearScheduledMatchUps({
     .filter(
       (matchUp) =>
         !ignoreMatchUpStatuses.includes(matchUp.matchUpStatus) &&
-        hasSchedule({ schedule: matchUp.schedule, scheduleAttributes })
+        hasSchedule({ schedule: matchUp.schedule, scheduleAttributes }) &&
+        (!venueIds?.length || venueIds.includes(matchUp.schedule.venueId))
     )
     .map(getMatchUpId);
 

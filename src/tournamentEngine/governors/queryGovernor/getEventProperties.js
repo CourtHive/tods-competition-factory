@@ -1,9 +1,10 @@
+import { participantScaleItem } from '../../accessors/participantScaleItem';
+
+import { RANKING, RATING, SEEDING } from '../../../constants/timeItemConstants';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { RANKING, RATING, SEEDING } from '../../../constants/timeItemConstants';
-import { participantScaleItem } from '../../accessors/participantScaleItem';
 
 export function getEventProperties({ tournamentRecord, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

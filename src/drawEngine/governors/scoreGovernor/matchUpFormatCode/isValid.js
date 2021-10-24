@@ -13,18 +13,19 @@ export function isValid(matchUpFormat) {
     return stringify(parsedFormat).slice(7) === matchUpFormat;
   }
 
-  /*
-  const setsParts = '-S6:TB7@6NOAD'.match(
-    /-S(\d+)+:TB(\d+)[@]*(\d*)([A-Za-z]*)/
-  );
-  const [setsTo, tiebreakTo, tiebreakAt, NOAD] = setsParts.slice(1);
+  const setsParts = matchUpFormat.match(/-S(\d+)+:TB(\d+)@(\d*)([A-Za-z]*)/);
+  const setsTo = setsParts?.[0];
+  const tiebreakAt = setsParts?.[2];
 
-  const finalSetParts = '-F6:TB7@6NOAD'.match(
-    /-S(\d+)+:TB(\d+)[@]*(\d*)([A-Za-z]*)/
+  const finalSetParts = matchUpFormat.match(
+    /-S(\d+)+:TB(\d+)@(\d*)([A-Za-z]*)/
   );
-  const [finalSetTo, finalTiebreakTo, finalTiebreakAt, finalNOAD] =
-    finalSetParts.slice(1);
-  */
+  const finalSetTo = finalSetParts?.[0];
+  const finalTiebreakAt = finalSetParts?.[2];
 
-  return stringify(parsedFormat) === matchUpFormat;
+  const preserveRedundant =
+    (setsParts && setsTo === tiebreakAt) ||
+    (finalSetParts && finalSetTo === finalTiebreakAt);
+
+  return stringify(parsedFormat, preserveRedundant) === matchUpFormat;
 }

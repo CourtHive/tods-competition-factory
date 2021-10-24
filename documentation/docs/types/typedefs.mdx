@@ -1,0 +1,169 @@
+---
+title: Type Definitions
+---
+
+import RenderJSON from '../components/RenderJSON';
+
+import address from './assets/address.js';
+import availability from './assets/availability.js';
+import biographicalInformation from './assets/biographicalInformation.js';
+import booking from './assets/booking.js';
+import category from './assets/category.js';
+import collectionAssignment from './assets/collectionAssignment.js';
+import collectionDefinition from './assets/collectionDefinition.js';
+import collectionGroup from './assets/collectionGroup.js';
+import collectionValueProfile from './assets/collectionValueProfile.js';
+import common from './assets/common.js';
+import contact from './assets/contact.js';
+import court from './assets/court.js';
+import drawDefinition from './assets/drawDefinition.js';
+import entry from './assets/entry.js';
+import event from './assets/event.js';
+import extension from './assets/extension.js';
+import interleave from './assets/interleave.js';
+import link from './assets/link.js';
+import linkSource from './assets/linkSource.js';
+import linkTarget from './assets/linkTarget.js';
+import matchUp from './assets/matchUp.js';
+import onlineResource from './assets/onlineResource.js';
+import participant from './assets/participant.js';
+import penalty from './assets/penalty.js';
+import person from './assets/person.js';
+import positionAssignment from './assets/positionAssignment.js';
+import positionRange from './assets/positionRange.js';
+import registrationProfile from './assets/registrationProfile.js';
+import score from './assets/score.js';
+import seedAssignment from './assets/seedAssignment.js';
+import set from './assets/set.js';
+import side from './assets/side.js';
+import structure from './assets/structure.js';
+import teamCompetitor from './assets/teamCompetitor.js';
+import tieFormat from './assets/tieFormat.js';
+import timeItem from './assets/timeItem.js';
+import tournament from './assets/tournament.js';
+import venue from './assets/venue.js';
+import winCriteria from './assets/winCriteria.js';
+
+## Overview
+
+### Common
+
+Elements that may occur on any TODS object.
+
+<RenderJSON hideRoot={true} data={common} root={'common'} />
+
+Object definitions:
+
+<RenderJSON expandRoot={false} data={extension} root={'extension'} />
+<RenderJSON expandRoot={false} data={timeItem} root={'timeItem'} />
+
+---
+
+### Generic
+
+Elements that occur on several TODS objects.
+
+<RenderJSON expandRoot={false} data={address} root={'address'} />
+<RenderJSON expandRoot={false} data={category} root={'category'} />
+<RenderJSON expandRoot={false} data={entry} root={'entry'} />
+<RenderJSON expandRoot={false} data={onlineResource} root={'onlineResource'} />
+
+---
+
+### tournament
+
+<RenderJSON expandRoot={false} data={tournament} root={'tournament'} />
+<RenderJSON
+  expandRoot={false}
+  data={registrationProfile}
+  root={'registrationProfile'}
+/>
+
+---
+
+### participant
+
+<RenderJSON expandRoot={false} data={participant} root={'participant'} />
+<RenderJSON expandRoot={false} data={penalty} root={'penalty'} />
+<RenderJSON expandRoot={false} data={person} root={'person'} />
+<RenderJSON
+  expandRoot={false}
+  data={biographicalInformation}
+  root={'biographicalInformation'}
+/>
+
+---
+
+### event
+
+<RenderJSON expandRoot={false} data={event} root={'event'} />
+
+---
+
+### drawDefinition
+
+<RenderJSON expandRoot={false} data={drawDefinition} root={'drawDefinition'} />
+<RenderJSON expandRoot={false} data={structure} root={'structure'} />
+<RenderJSON expandRoot={false} data={seedAssignment} root={'seedAssignment'} />
+<RenderJSON
+  expandRoot={false}
+  data={positionAssignment}
+  root={'positionAssignment'}
+/>
+<RenderJSON expandRoot={false} data={link} root={'link'} />
+<RenderJSON expandRoot={false} data={linkSource} root={'linkSource'} />
+<RenderJSON expandRoot={false} data={linkTarget} root={'linkTarget'} />
+<RenderJSON expandRoot={false} data={interleave} root={'interleave'} />
+
+---
+
+### matchUp
+
+A `matchUp` is an object which contains the details of an encounter between two tournament `participants`, which can be INDIVIDUALS, PAIRS, or TEAMS.
+The term `matchUp` was chosen to differentiate from other interpretations, particularly in the context of software development,
+of the more traditional term "match". Other descriptive terms such as "face off" and "throw down" were never seriously considered.
+
+<RenderJSON expandRoot={false} data={matchUp} root={'matchUp'} />
+<RenderJSON expandRoot={false} data={positionRange} root={'positionRange'} />
+<RenderJSON expandRoot={false} data={score} root={'score'} />
+<RenderJSON expandRoot={false} data={set} root={'set'} />
+<RenderJSON expandRoot={false} data={side} root={'side'} />
+<RenderJSON expandRoot={false} data={teamCompetitor} root={'teamCompetitor'} />
+<RenderJSON
+  expandRoot={false}
+  data={collectionAssignment}
+  root={'collectionAssignment'}
+/>
+
+---
+
+### tieFormat
+
+See [tieFormats Explanation](../concepts/tieFormat).
+
+<RenderJSON expandRoot={false} data={tieFormat} root={'tieFormat'} />
+<RenderJSON
+  expandRoot={false}
+  data={collectionDefinition}
+  root={'collectionDefinition'}
+/>
+<RenderJSON
+  expandRoot={false}
+  data={collectionGroup}
+  root={'collectionGroup'}
+/>
+<RenderJSON
+  expandRoot={false}
+  data={collectionValueProfile}
+  root={'collectionValueProfile'}
+/>
+<RenderJSON expandRoot={false} data={winCriteria} root={'winCriteria'} />
+
+---
+
+### venue
+
+<RenderJSON expandRoot={false} data={venue} root={'venue'} />
+<RenderJSON expandRoot={false} data={court} root={'court'} />
+<RenderJSON expandRoot={false} data={availability} root={'availability'} />
+<RenderJSON expandRoot={false} data={booking} root={'booking'} />

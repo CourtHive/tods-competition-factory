@@ -2,6 +2,10 @@ import { getPairedParticipant } from '../../participantGovernor/getPairedPartici
 import { addParticipants } from '../../participantGovernor/addParticipants';
 import { intersection } from '../../../../utilities/arrays';
 
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
+import { COMPETITOR } from '../../../../constants/participantRoles';
+import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
@@ -12,11 +16,6 @@ import {
   DIRECT_ACCEPTANCE,
   UNGROUPED,
 } from '../../../../constants/entryStatusConstants';
-
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
-import { COMPETITOR } from '../../../../constants/participantRoles';
-import { MAIN } from '../../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 // should NOT remove entries that are present in drawDefinition.entries
 // if those entries are assigned positions in any structures...
@@ -108,7 +107,7 @@ export function modifyEventEntries({
   );
 
   // remove all entries matching the stage which has been modified
-  event.entries = event.entries.filter(
+  event.entries = (event.entries || []).filter(
     (entry) => entry.entryStage === entryStage
   );
 

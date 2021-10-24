@@ -118,10 +118,10 @@ export function addEventEntries(params) {
 
   // now remove any unpaired participantIds which exist as part of added paired participants
   if (event.eventType === DOUBLES) {
-    const enteredParticipantIds = event.entries.map(
+    const enteredParticipantIds = (event.entries || []).map(
       (entry) => entry.participantId
     );
-    const unpairedIndividualParticipantIds = event.entries
+    const unpairedIndividualParticipantIds = (event.entries || [])
       .filter((entry) => isUngrouped(entry.entryStatus))
       .map((entry) => entry.participantId);
     const tournamentParticipants = tournamentRecord?.participants || [];
@@ -153,7 +153,7 @@ export function addEventEntries(params) {
 
   if (autoEntryPositions) {
     event.entries = refreshEntryPositions({
-      entries: event.entries,
+      entries: event.entries || [],
     });
   }
 

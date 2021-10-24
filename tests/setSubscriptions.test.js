@@ -46,14 +46,14 @@ it('can set subscriptions in global state outside of engines', () => {
 
   const values = {
     automated: true,
+    matchUpFormat,
     drawSize: 32,
     eventId,
-    matchUpFormat,
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   tournamentEngine.addDrawDefinition({
-    eventId,
     drawDefinition,
+    eventId,
   });
 
   expect(allMatchUps.length).toEqual(31);

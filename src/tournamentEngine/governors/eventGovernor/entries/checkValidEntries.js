@@ -21,7 +21,7 @@ export function checkValidEntries({ event, participants, ignoreGender }) {
 
   const entryStatusMap = Object.assign(
     {},
-    ...event.entries.map((entry) => ({
+    ...(event.entries || []).map((entry) => ({
       [entry.participantId]: entry.entryStatus,
     }))
   );

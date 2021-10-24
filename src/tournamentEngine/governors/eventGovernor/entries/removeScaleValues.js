@@ -39,7 +39,7 @@ export function removeScaleValues({
     }
   }
 
-  const stageEntries = entries.filter(
+  const stageEntries = (entries || []).filter(
     (entry) =>
       (!stage || !entry.entryStage || entry.entryStage === stage) &&
       STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)

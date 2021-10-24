@@ -1,10 +1,8 @@
 ---
-title: tieFormats and lineUps
+title: tieFormats
 ---
 
 ## Overview
-
-### tieFormat
 
 A `tieFormat` both describes collections of singles and doubles `tieMatchUps` which are part of a **_Dual_** or **_Team_** match,
 and defines the target value which must be achieved in order to win the `matchUp`.
@@ -16,10 +14,7 @@ Each `collectionDefinition` defines how many `matchUps` are in the collection, t
 The value may be the same for each `matchUp`; `matchUps` may have a value tied to their `collectionPosition`;
 or a value may be awarded to the winner of the collection.
 
-### lineUps
-
-A `lineUp` is provided by each side of a **_Dual_** or **_Team_** match;
-it is a mapping of team `participants` to their `collectionAssignments` which specify the `matchUps` in which they will compete.
+See [tieFormat type definitions](../types/typedefs#tieformat)
 
 ## tieFormat Use
 
@@ -73,78 +68,6 @@ const tieFormat = {
     {
       groupNumber: 1,
       groupName: 'Day 1', // used to group collections, e.g. Laver Cup
-    },
-  ],
-};
-```
-
-## lineUp Example
-
-In this example, each team member, identified by their `participantId`, is assigned to both a singles and a doubles `tieMatchUp`.
-They are assigned to **different** `collectionPositions` in the singles collection, but the **same** `collectionPosition` in the doubles collection,
-which means they also appear in the `tournamentRecord` as a PAIR.
-
-```js
-[
-  {
-    participantId: 'pId1',
-    collectionAssignments: [
-      {
-        collectionId: 'singlesCollectionId',
-        collectionPosition: 1,
-      },
-      {
-        collectionId: 'doublesCollectionId',
-        collectionPosition: 1,
-      },
-    ],
-  },
-  {
-    participantId: 'pId2',
-    collectionAssignments: [
-      {
-        collectionId: 'singlesCollectionId',
-        collectionPosition: 2,
-      },
-      {
-        collectionId: 'doublesCollectionId',
-        collectionPosition: 1,
-      },
-    ],
-  },
-];
-```
-
-## tieMatchUp Example
-
-`tieMatchUps` occur within a dual/team `matchUp` and need only contain a `collectionId`, `collectionPosition`, and `matchUpId`,
-and potentially a `score` object, `matchUpStatus`, and `winningSide` if completed.
-
-When context is added to `matchUps` the engines of the Competition Factory utilize the `lineUps` and the `tieFormat` to include all relevant information,
-such as `matchUpType` and `sides`, which include `participants`.
-
-```js
-{
-  drawPositions: [1, 2],
-  matchUpId: 'dualMatchUpId',
-  matchUpType: 'TEAM',
-  sides: [
-    { sideNumber: 1, lineUp: [] }, // see lineUp example above
-    { sideNumber: 2, lineUp: [] },
-  ],
-  tieFormat, // see tieFormat example above
-  tieMatchUps: [
-    {
-      collectionId: 'singlesCollectionId',
-      collectionPosition: 1,
-      matchUpId: 'first_tieMatchUpId',
-      matchUpStatus: 'COMPLETED',
-      score: {
-        scoreStringSide1: '3-6 3-6',
-        scoreStringSide2: '6-3 6-3',
-        sets,
-      },
-      winningSide: 2,
     },
   ],
 };
