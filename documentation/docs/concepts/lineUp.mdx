@@ -1,0 +1,45 @@
+---
+title: lineUps
+---
+
+## Overview
+
+A `lineUp` is provided by each side of a **_Dual_** or **_Team_** match;
+it is a mapping of team `participantIds` to their `collectionAssignments` which specify the `matchUps` in which they will compete.
+
+## lineUp Example
+
+In this example, each team member, identified by their `participantId`, is assigned to both a singles and a doubles `tieMatchUp`.
+They are assigned to **different** `collectionPositions` in the singles collection, but the **same** `collectionPosition` in the doubles collection,
+which means they also appear in the `tournamentRecord` as a PAIR.
+
+```js
+[
+  {
+    participantId: 'pId1',
+    collectionAssignments: [
+      {
+        collectionId: 'singlesCollectionId',
+        collectionPosition: 1,
+      },
+      {
+        collectionId: 'doublesCollectionId',
+        collectionPosition: 1,
+      },
+    ],
+  },
+  {
+    participantId: 'pId2',
+    collectionAssignments: [
+      {
+        collectionId: 'singlesCollectionId',
+        collectionPosition: 2,
+      },
+      {
+        collectionId: 'doublesCollectionId',
+        collectionPosition: 1,
+      },
+    ],
+  },
+];
+```

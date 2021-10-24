@@ -4,57 +4,107 @@ title: Type Definitions
 
 import RenderJSON from '../components/RenderJSON';
 
+import address from './assets/address.js';
 import availability from './assets/availability.js';
 import booking from './assets/booking.js';
 import category from './assets/category.js';
+import collectionAssignment from './assets/collectionAssignment.js';
+import common from './assets/common.js';
+import contact from './assets/contact.js';
 import court from './assets/court.js';
 import drawDefinition from './assets/drawDefinition.js';
 import entry from './assets/entry.js';
 import event from './assets/event.js';
+import extension from './assets/extension.js';
 import interleave from './assets/interleave.js';
 import link from './assets/link.js';
 import linkSource from './assets/linkSource.js';
 import linkTarget from './assets/linkTarget.js';
 import matchUp from './assets/matchUp.js';
+import onlineResource from './assets/onlineResource.js';
 import participant from './assets/participant.js';
 import penalty from './assets/penalty.js';
 import person from './assets/person.js';
+import positionAssignment from './assets/positionAssignment.js';
+import score from './assets/score.js';
+import seedAssignment from './assets/seedAssignment.js';
+import set from './assets/set.js';
+import side from './assets/side.js';
+import structure from './assets/structure.js';
+import teamCompetitor from './assets/teamCompetitor.js';
+import timeItem from './assets/timeItem.js';
 import tournament from './assets/tournament.js';
 import venue from './assets/venue.js';
 
+## Overview
+
+### Common
+
+Elements that may occur on any TODS object.
+
+<RenderJSON hideRoot={true} data={common} root={'common'} />
+
+Object definitions:
+
+<RenderJSON expandRoot={false} data={extension} root={'extension'} />
+<RenderJSON expandRoot={false} data={timeItem} root={'timeItem'} />
+
+### Generic
+
+Elements that occur on several TODS objects.
+
+<RenderJSON expandRoot={false} data={address} root={'address'} />
+<RenderJSON expandRoot={false} data={onlineResource} root={'onlineResource'} />
+
 ### tournament
 
-<RenderJSON data={tournament} root={'tournament'} expandRoot={false} />
-<RenderJSON data={category} expandRoot={false} root={'category'} />
+<RenderJSON expandRoot={false} data={tournament} root={'tournament'} />
+<RenderJSON expandRoot={false} data={category} root={'category'} />
 
 ### participant
 
-<RenderJSON expandRoot={false} root={'participant'} data={participant} />
-<RenderJSON expandRoot={false} root={'person'} data={person} />
-<RenderJSON expandRoot={false} root={'penalty'} data={penalty} />
+<RenderJSON expandRoot={false} data={participant} root={'participant'} />
+<RenderJSON expandRoot={false} data={person} root={'person'} />
+<RenderJSON expandRoot={false} data={penalty} root={'penalty'} />
 
 ### event
 
-<RenderJSON data={event} root={'event'} expandRoot={false} />
-<RenderJSON data={category} expandRoot={false} root={'category'} />
-<RenderJSON data={entry} expandRoot={false} root={'entry'} />
+<RenderJSON expandRoot={false} data={event} root={'event'} />
+<RenderJSON expandRoot={false} data={category} root={'category'} />
+<RenderJSON expandRoot={false} data={entry} root={'entry'} />
 
 ### drawDefinition
 
-<RenderJSON root={'drawDefinition'} data={drawDefinition} expandRoot={false} />
-<RenderJSON data={entry} expandRoot={false} root={'entry'} />
-<RenderJSON data={link} expandRoot={false} root={'link'} />
-<RenderJSON data={linkSource} expandRoot={false} root={'linkSource'} />
-<RenderJSON data={linkTarget} expandRoot={false} root={'linkTarget'} />
-<RenderJSON data={interleave} expandRoot={false} root={'interleave'} />
+<RenderJSON expandRoot={false} data={drawDefinition} root={'drawDefinition'} />
+<RenderJSON expandRoot={false} data={entry} root={'entry'} />
+<RenderJSON expandRoot={false} data={structure} root={'structure'} />
+<RenderJSON expandRoot={false} data={seedAssignment} root={'seedAssignment'} />
+<RenderJSON
+  expandRoot={false}
+  data={positionAssignment}
+  root={'positionAssignment'}
+/>
+<RenderJSON expandRoot={false} data={link} root={'link'} />
+<RenderJSON expandRoot={false} data={linkSource} root={'linkSource'} />
+<RenderJSON expandRoot={false} data={linkTarget} root={'linkTarget'} />
+<RenderJSON expandRoot={false} data={interleave} root={'interleave'} />
 
 ### matchUp
 
-<RenderJSON expandRoot={false} root={'matchUp'} data={matchUp} />
+<RenderJSON expandRoot={false} data={matchUp} root={'matchUp'} />
+<RenderJSON expandRoot={false} data={score} root={'score'} />
+<RenderJSON expandRoot={false} data={set} root={'set'} />
+<RenderJSON expandRoot={false} data={side} root={'side'} />
+<RenderJSON expandRoot={false} data={teamCompetitor} root={'teamCompetitor'} />
+<RenderJSON
+  expandRoot={false}
+  data={collectionAssignment}
+  root={'collectionAssignment'}
+/>
 
 ### venue
 
-<RenderJSON expandRoot={false} root={'venue'} data={venue} />
-<RenderJSON expandRoot={false} root={'court'} data={court} />
-<RenderJSON expandRoot={false} root={'availability'} data={availability} />
-<RenderJSON expandRoot={false} root={'booking'} data={booking} />
+<RenderJSON expandRoot={false} data={venue} root={'venue'} />
+<RenderJSON expandRoot={false} data={court} root={'court'} />
+<RenderJSON expandRoot={false} data={availability} root={'availability'} />
+<RenderJSON expandRoot={false} data={booking} root={'booking'} />

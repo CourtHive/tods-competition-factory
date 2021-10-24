@@ -71,8 +71,15 @@ module.exports = {
       items: [
         'constants',
         'types/typedefs',
-        { Enums: ['concepts/matchUpFormat'] },
-        { Examples: ['concepts/tieFormat'] },
+        { Enums: ['enums/matchup-format', 'enums/tournament-level'] },
+        'concepts/extensions',
+        {
+          Explanation: [
+            'concepts/lineUp',
+            'concepts/tieFormat',
+            'concepts/tieMatchUp',
+          ],
+        },
       ],
     },
     {

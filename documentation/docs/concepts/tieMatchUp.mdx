@@ -1,0 +1,40 @@
+---
+title: tieMatchUps
+---
+
+## Overview
+
+`tieMatchUps` occur within a dual/team `matchUp` and need only contain a `collectionId`, `collectionPosition`, and `matchUpId`,
+and potentially a `score` object, `matchUpStatus`, and `winningSide` if completed.
+
+When context is added to `matchUps` the engines of the Competition Factory utilize the `lineUps` and the `tieFormat` to include all relevant information,
+such as `matchUpType` and `sides`, which include `participants`.
+
+## tieMatchUp Example
+
+```js
+{
+  drawPositions: [1, 2],
+  matchUpId: 'dualMatchUpId',
+  matchUpType: 'TEAM',
+  sides: [
+    { sideNumber: 1, lineUp: [] }, // see lineUp explanation
+    { sideNumber: 2, lineUp: [] },
+  ],
+  tieFormat, // see tieFormat explanation
+  tieMatchUps: [
+    {
+      collectionId: 'singlesCollectionId',
+      collectionPosition: 1,
+      matchUpId: 'first_tieMatchUpId',
+      matchUpStatus: 'COMPLETED',
+      score: {
+        scoreStringSide1: '3-6 3-6',
+        scoreStringSide2: '6-3 6-3',
+        sets,
+      },
+      winningSide: 2,
+    },
+  ],
+};
+```
