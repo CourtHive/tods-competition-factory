@@ -4,7 +4,7 @@ title: Examples
 
 ### Simple Example
 
-Generates a tournament record with 32 participants.
+Generates a tournament record with, by default, 32 participants.
 
 ```js
 const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -14,18 +14,11 @@ const { tournamentRecord } = mocksEngine.generateTournamentRecord();
 
 In testing, very specific scenarios are required. Any number of draws can be added to a generated tournament, and scores for specific `matchUps` within the generated draw structures can be added as well.
 
-:::note
-`drawProfiles` may contain any of the parameters normally passed to `tournamentEngine.generateDrawDefinition`,
-with the addition of `{ withPlayoffs }` which may contain any of the parameters passed to `tournamentEngine.addPlayoffStructures()`.
-
-Additionally, the parameter `idPrefix` may be used to define a string value to prepend generated `matchUpIds`, which will then include `roundNumber` and `roundPosition`.
-:::
-
-:::info
 The completed `matchUps` in this example may be found by navigating in the **Result** panel below:
 
 `tournamentRecord => events[0] => drawDefinitions[0] => structures[0]`
-:::
+
+See [Concepts => Context](../concepts/context#matchups) for more direct access to `matchUps`.
 
 ```jsx live
 function MocksEngineDemo(props) {
@@ -41,6 +34,13 @@ function MocksEngineDemo(props) {
   return <Tournament data={tournamentRecord} />;
 }
 ```
+
+:::note
+`drawProfiles` may contain any of the parameters normally passed to `tournamentEngine.generateDrawDefinition`,
+with the addition of `{ withPlayoffs }` which may contain any of the parameters passed to `tournamentEngine.addPlayoffStructures()`.
+
+Additionally, the parameter `idPrefix` may be used to define a string value to prepend generated `matchUpIds`, which will then include `roundNumber` and `roundPosition`.
+:::
 
 ### score completion
 
