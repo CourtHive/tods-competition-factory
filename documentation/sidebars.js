@@ -3,7 +3,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Competition Factory',
-      items: ['introduction', 'features', 'installation'],
+      items: ['introduction', 'state-engines', 'features', 'installation'],
     },
     {
       type: 'category',
@@ -38,7 +38,7 @@ module.exports = {
       label: 'Mocks Engine',
       items: [
         'apis/mocks-engine-overview',
-        'apis/mocks-engine-api',
+        { type: 'doc', label: 'API', id: 'apis/mocks-engine-api' },
         'engines/mocks-engine-examples',
       ],
     },
@@ -46,19 +46,37 @@ module.exports = {
       type: 'category',
       label: 'Competition Engine',
       items: [
-        'apis/competition-engine-overview',
-        'apis/competition-engine-api',
+        {
+          type: 'doc',
+          label: 'Overview',
+          id: 'apis/competition-engine-overview',
+        },
+        { type: 'doc', label: 'API', id: 'apis/competition-engine-api' },
       ],
     },
     {
       type: 'category',
       label: 'Tournament Engine',
-      items: ['apis/tournament-engine-overview', 'apis/tournament-engine-api'],
+      items: [
+        {
+          type: 'doc',
+          label: 'Overview',
+          id: 'apis/tournament-engine-overview',
+        },
+        { type: 'doc', label: 'API', id: 'apis/tournament-engine-api' },
+      ],
     },
     {
       type: 'category',
       label: 'Draw Engine',
-      items: ['engines/draw-engine-overview', 'apis/draw-engine-api'],
+      items: [
+        {
+          type: 'doc',
+          label: 'Overview',
+          id: 'engines/draw-engine-overview',
+        },
+        { type: 'doc', label: 'API', id: 'apis/draw-engine-api' },
+      ],
     },
     {
       type: 'doc',

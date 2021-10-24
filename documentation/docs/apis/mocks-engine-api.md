@@ -1,6 +1,5 @@
 ---
-name: Mocks Engine API
-title: API
+title: mocksEngine API
 ---
 
 ## generateOutcome

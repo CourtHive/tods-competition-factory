@@ -1,6 +1,5 @@
 ---
-name: Tournament Engine API
-title: API
+title: tournamentEngine API
 ---
 
 All **_tournamentEngine_** methods which make a mutation return either `{ success: true }` or `{ error }`
