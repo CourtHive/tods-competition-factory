@@ -38,16 +38,23 @@ const getItemString = (type, data, itemType) => {
   let customLabel;
   if (isObject) {
     const keys = Object.keys(data);
-    if (utilities.intersection(keys, ['drawId', 'drawType']).length === 2) {
+    if (
+      utilities.intersection(keys, ['drawId', 'drawType']).length === 2 &&
+      !keys.includes('drawRepresentativeIds')
+    ) {
       customLabel = 'drawDefinition';
     }
     if (
       utilities.intersection(keys, ['entryPosition', 'entryStatus']).length ===
-      2
+        2 &&
+      !keys.includes('entryStageSequence')
     ) {
       customLabel = 'entry';
     }
-    if (utilities.intersection(keys, ['eventId', 'eventName']).length === 2) {
+    if (
+      utilities.intersection(keys, ['eventId', 'eventName']).length === 2 &&
+      !keys.includes('tennisOfficialIds')
+    ) {
       customLabel = 'event';
     }
     if (utilities.intersection(keys, ['flightNumber', 'drawId']).length === 2) {
@@ -56,11 +63,16 @@ const getItemString = (type, data, itemType) => {
     if (utilities.intersection(keys, ['name', 'value']).length === 2) {
       customLabel = 'extension';
     }
-    if (utilities.intersection(keys, ['linkType', 'source']).length === 2) {
+    if (
+      utilities.intersection(keys, ['linkType', 'source']).length === 2 &&
+      !keys.includes('linkCondition')
+    ) {
       customLabel = 'link';
     }
     if (
-      utilities.intersection(keys, ['matchUpId', 'drawPositions']).length === 2
+      utilities.intersection(keys, ['matchUpId', 'drawPositions']).length ===
+        2 &&
+      !keys.includes('surfaceCategory')
     ) {
       customLabel = 'matchUp';
     }
@@ -71,8 +83,16 @@ const getItemString = (type, data, itemType) => {
       customLabel = 'positionAssignment';
     }
     if (
+      utilities.intersection(keys, ['courtId', 'dateAvailability']).length ===
+        2 &&
+      !keys.includes('altitude')
+    ) {
+      customLabel = 'court';
+    }
+    if (
       utilities.intersection(keys, ['participantId', 'participantName'])
-        .length === 2
+        .length === 2 &&
+      !keys.includes('onlineResources')
     ) {
       customLabel = 'participant';
     }
@@ -82,7 +102,10 @@ const getItemString = (type, data, itemType) => {
     ) {
       customLabel = 'structure';
     }
-    if (utilities.intersection(keys, ['venueId', 'courts']).length === 2) {
+    if (
+      utilities.intersection(keys, ['venueId', 'courts']).length === 2 &&
+      !keys.includes('venueOtherIds')
+    ) {
       customLabel = 'venue';
     }
   }

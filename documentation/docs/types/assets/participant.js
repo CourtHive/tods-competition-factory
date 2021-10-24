@@ -16,7 +16,6 @@ export const participant = {
     '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"false\\"}',
   participantType:
     '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"false\\",\\"note\\":\\"e.g. INDIVIDUAL, PAIR, TEAM, GROUP\\"}',
-  personId: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
   penalties:
     '{\\"type\\":\\"object\\",\\"object\\":\\"penalty\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
   person:

@@ -12,9 +12,6 @@ module.exports = {
         'concepts/actions',
         'concepts/accessors',
         'concepts/context',
-        {
-          'Data Structures': ['concepts/matchUpFormat', 'concepts/tieFormat'],
-        },
         'concepts/draw-generation',
         'concepts/globalState',
         {
@@ -35,11 +32,6 @@ module.exports = {
         'concepts/timeItems',
         'concepts/subscriptions',
       ],
-    },
-    {
-      type: 'doc',
-      label: 'Constants',
-      id: 'constants',
     },
     {
       type: 'category',
@@ -75,14 +67,12 @@ module.exports = {
     },
     {
       type: 'category',
-      label: 'Type Definitions',
+      label: 'Data',
       items: [
-        'types/tournament',
-        'types/participant',
-        'types/event',
-        'types/drawdefinition',
-        'types/matchup',
-        'types/venue',
+        'constants',
+        'types/typedefs',
+        { Enums: ['concepts/matchUpFormat'] },
+        { Examples: ['concepts/tieFormat'] },
       ],
     },
     {

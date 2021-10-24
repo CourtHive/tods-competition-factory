@@ -18,7 +18,7 @@ export const tournament = {
     '{\\"type\\":\\"object\\",\\"object\\":\\"participant\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
   promotionalName: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
   registrationProfile:
-    '{\\"type\\":\\"object\\",\\"required\\":\\"false\\",\\"link\\":\\"true\\"}',
+    '{\\"type\\":\\"object\\",\\"object\\":\\"registrationProfile\\",\\"required\\":\\"false\\",\\"link\\":\\"true\\"}',
   season:
     '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"e.g. \'Fall 2020\'\\"}',
   startDate:

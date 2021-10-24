@@ -1,0 +1,60 @@
+---
+title: Type Definitions
+---
+
+import RenderJSON from '../components/RenderJSON';
+
+import availability from './assets/availability.js';
+import booking from './assets/booking.js';
+import category from './assets/category.js';
+import court from './assets/court.js';
+import drawDefinition from './assets/drawDefinition.js';
+import entry from './assets/entry.js';
+import event from './assets/event.js';
+import interleave from './assets/interleave.js';
+import link from './assets/link.js';
+import linkSource from './assets/linkSource.js';
+import linkTarget from './assets/linkTarget.js';
+import matchUp from './assets/matchUp.js';
+import participant from './assets/participant.js';
+import penalty from './assets/penalty.js';
+import person from './assets/person.js';
+import tournament from './assets/tournament.js';
+import venue from './assets/venue.js';
+
+### tournament
+
+<RenderJSON data={tournament} root={'tournament'} expandRoot={false} />
+<RenderJSON data={category} expandRoot={false} root={'category'} />
+
+### participant
+
+<RenderJSON expandRoot={false} root={'participant'} data={participant} />
+<RenderJSON expandRoot={false} root={'person'} data={person} />
+<RenderJSON expandRoot={false} root={'penalty'} data={penalty} />
+
+### event
+
+<RenderJSON data={event} root={'event'} expandRoot={false} />
+<RenderJSON data={category} expandRoot={false} root={'category'} />
+<RenderJSON data={entry} expandRoot={false} root={'entry'} />
+
+### drawDefinition
+
+<RenderJSON root={'drawDefinition'} data={drawDefinition} expandRoot={false} />
+<RenderJSON data={entry} expandRoot={false} root={'entry'} />
+<RenderJSON data={link} expandRoot={false} root={'link'} />
+<RenderJSON data={linkSource} expandRoot={false} root={'linkSource'} />
+<RenderJSON data={linkTarget} expandRoot={false} root={'linkTarget'} />
+<RenderJSON data={interleave} expandRoot={false} root={'interleave'} />
+
+### matchUp
+
+<RenderJSON expandRoot={false} root={'matchUp'} data={matchUp} />
+
+### venue
+
+<RenderJSON expandRoot={false} root={'venue'} data={venue} />
+<RenderJSON expandRoot={false} root={'court'} data={court} />
+<RenderJSON expandRoot={false} root={'availability'} data={availability} />
+<RenderJSON expandRoot={false} root={'booking'} data={booking} />
