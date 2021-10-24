@@ -4,7 +4,7 @@ export const person = {
   birthDate:
     '{\\"type\\":\\"string\\",\\"required\\":\\"true\\",\\"note\\":\\"\'YYYY-MM-DD\'\\"}',
   biographicalInformation:
-    '{\\"type\\":\\"object\\",\\"object\\":\\"biogrphicalInformation\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
+    '{\\"type\\":\\"object\\",\\"object\\":\\"biographicalInformation\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
   contacts:
     '{\\"type\\":\\"object\\",\\"object\\":\\"contact\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
   nationalityCode:

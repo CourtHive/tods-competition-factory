@@ -6,6 +6,7 @@ import RenderJSON from '../components/RenderJSON';
 
 import address from './assets/address.js';
 import availability from './assets/availability.js';
+import biographicalInformation from './assets/biographicalInformation.js';
 import booking from './assets/booking.js';
 import category from './assets/category.js';
 import collectionAssignment from './assets/collectionAssignment.js';
@@ -30,6 +31,7 @@ import penalty from './assets/penalty.js';
 import person from './assets/person.js';
 import positionAssignment from './assets/positionAssignment.js';
 import positionRange from './assets/positionRange.js';
+import registrationProfile from './assets/registrationProfile.js';
 import score from './assets/score.js';
 import seedAssignment from './assets/seedAssignment.js';
 import set from './assets/set.js';
@@ -71,14 +73,24 @@ Elements that occur on several TODS objects.
 ### tournament
 
 <RenderJSON expandRoot={false} data={tournament} root={'tournament'} />
+<RenderJSON
+  expandRoot={false}
+  data={registrationProfile}
+  root={'registrationProfile'}
+/>
 
 ---
 
 ### participant
 
 <RenderJSON expandRoot={false} data={participant} root={'participant'} />
-<RenderJSON expandRoot={false} data={person} root={'person'} />
 <RenderJSON expandRoot={false} data={penalty} root={'penalty'} />
+<RenderJSON expandRoot={false} data={person} root={'person'} />
+<RenderJSON
+  expandRoot={false}
+  data={biographicalInformation}
+  root={'biographicalInformation'}
+/>
 
 ---
 
@@ -106,6 +118,10 @@ Elements that occur on several TODS objects.
 ---
 
 ### matchUp
+
+A `matchUp` is an object which contains the details of an encounter between two tournament `participants`, which can be INDIVIDUALS, PAIRS, or TEAMS.
+The term `matchUp` was chosen to differentiate from other interpretations, particularly in the context of software development,
+of the more traditional term "match". Other descriptive terms such as "face off" and "throw down" were never seriously considered.
 
 <RenderJSON expandRoot={false} data={matchUp} root={'matchUp'} />
 <RenderJSON expandRoot={false} data={positionRange} root={'positionRange'} />
