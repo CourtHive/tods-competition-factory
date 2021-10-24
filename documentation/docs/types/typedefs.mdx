@@ -9,6 +9,9 @@ import availability from './assets/availability.js';
 import booking from './assets/booking.js';
 import category from './assets/category.js';
 import collectionAssignment from './assets/collectionAssignment.js';
+import collectionDefinition from './assets/collectionDefinition.js';
+import collectionGroup from './assets/collectionGroup.js';
+import collectionValueProfile from './assets/collectionValueProfile.js';
 import common from './assets/common.js';
 import contact from './assets/contact.js';
 import court from './assets/court.js';
@@ -26,15 +29,18 @@ import participant from './assets/participant.js';
 import penalty from './assets/penalty.js';
 import person from './assets/person.js';
 import positionAssignment from './assets/positionAssignment.js';
+import positionRange from './assets/positionRange.js';
 import score from './assets/score.js';
 import seedAssignment from './assets/seedAssignment.js';
 import set from './assets/set.js';
 import side from './assets/side.js';
 import structure from './assets/structure.js';
 import teamCompetitor from './assets/teamCompetitor.js';
+import tieFormat from './assets/tieFormat.js';
 import timeItem from './assets/timeItem.js';
 import tournament from './assets/tournament.js';
 import venue from './assets/venue.js';
+import winCriteria from './assets/winCriteria.js';
 
 ## Overview
 
@@ -49,17 +55,24 @@ Object definitions:
 <RenderJSON expandRoot={false} data={extension} root={'extension'} />
 <RenderJSON expandRoot={false} data={timeItem} root={'timeItem'} />
 
+---
+
 ### Generic
 
 Elements that occur on several TODS objects.
 
 <RenderJSON expandRoot={false} data={address} root={'address'} />
+<RenderJSON expandRoot={false} data={category} root={'category'} />
+<RenderJSON expandRoot={false} data={entry} root={'entry'} />
 <RenderJSON expandRoot={false} data={onlineResource} root={'onlineResource'} />
+
+---
 
 ### tournament
 
 <RenderJSON expandRoot={false} data={tournament} root={'tournament'} />
-<RenderJSON expandRoot={false} data={category} root={'category'} />
+
+---
 
 ### participant
 
@@ -67,16 +80,17 @@ Elements that occur on several TODS objects.
 <RenderJSON expandRoot={false} data={person} root={'person'} />
 <RenderJSON expandRoot={false} data={penalty} root={'penalty'} />
 
+---
+
 ### event
 
 <RenderJSON expandRoot={false} data={event} root={'event'} />
-<RenderJSON expandRoot={false} data={category} root={'category'} />
-<RenderJSON expandRoot={false} data={entry} root={'entry'} />
+
+---
 
 ### drawDefinition
 
 <RenderJSON expandRoot={false} data={drawDefinition} root={'drawDefinition'} />
-<RenderJSON expandRoot={false} data={entry} root={'entry'} />
 <RenderJSON expandRoot={false} data={structure} root={'structure'} />
 <RenderJSON expandRoot={false} data={seedAssignment} root={'seedAssignment'} />
 <RenderJSON
@@ -89,9 +103,12 @@ Elements that occur on several TODS objects.
 <RenderJSON expandRoot={false} data={linkTarget} root={'linkTarget'} />
 <RenderJSON expandRoot={false} data={interleave} root={'interleave'} />
 
+---
+
 ### matchUp
 
 <RenderJSON expandRoot={false} data={matchUp} root={'matchUp'} />
+<RenderJSON expandRoot={false} data={positionRange} root={'positionRange'} />
 <RenderJSON expandRoot={false} data={score} root={'score'} />
 <RenderJSON expandRoot={false} data={set} root={'set'} />
 <RenderJSON expandRoot={false} data={side} root={'side'} />
@@ -101,6 +118,32 @@ Elements that occur on several TODS objects.
   data={collectionAssignment}
   root={'collectionAssignment'}
 />
+
+---
+
+### tieFormat
+
+See [tieFormats Explanation](../concepts/tieFormat).
+
+<RenderJSON expandRoot={false} data={tieFormat} root={'tieFormat'} />
+<RenderJSON
+  expandRoot={false}
+  data={collectionDefinition}
+  root={'collectionDefinition'}
+/>
+<RenderJSON
+  expandRoot={false}
+  data={collectionGroup}
+  root={'collectionGroup'}
+/>
+<RenderJSON
+  expandRoot={false}
+  data={collectionValueProfile}
+  root={'collectionValueProfile'}
+/>
+<RenderJSON expandRoot={false} data={winCriteria} root={'winCriteria'} />
+
+---
 
 ### venue
 
