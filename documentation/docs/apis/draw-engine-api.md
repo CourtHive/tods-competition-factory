@@ -1,6 +1,5 @@
 ---
-name: Draw Engine API
-title: API
+title: drawEngine API
 ---
 
 All **_drawEngine_** methods which make a mutation return either `{ success: true }` or `{ error }`

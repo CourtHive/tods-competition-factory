@@ -1,0 +1,18 @@
+---
+title: State Engines
+---
+
+Competition Factory engines manage different concerns within a tournament and may be used either synchronously or asynchronously.
+
+## Core Engines
+
+1. [**competitionEngine**](./apis/competition-engine-api) - manages resources which may be shared across multiple linked tournaments, such as venues (courts & other locations); includes advanced scheduling and cross-tournament reporting.
+2. [**tournamentEngine**](./apis/tournament-engine-api) - manages tournament metadata, participants, events (including the generation of complex draw types and "flights" within events), and reporting.
+3. [**drawEngine**](./apis/draw-engine-api) - generates drawDefinitions and matchUp results; manages participant seeding and movement within and between draw structures.
+
+## Other Utilities
+
+1. [**mocksEngine**](./apis/mocks-engine-api) - generates complete tournament objects, or tournamentRecords, as well as mock persons, participants and matchUp outcomes.
+   It is used extensively in the ~1000 test suites that are run against the factory methods before every package release.
+2. [**scoreGovernor**](./scoreGovernor) - is a collection of scoring related utilities which provide analysis/validation or generate values, but do not make any mutations.
+3. [**matchUpFormatCode**](./enums/matchup-format) - is an ITF matchUp format code parser, stringifier, and validator.

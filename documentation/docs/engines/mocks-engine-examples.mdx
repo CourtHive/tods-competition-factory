@@ -21,11 +21,17 @@ with the addition of `{ withPlayoffs }` which may contain any of the parameters 
 Additionally, the parameter `idPrefix` may be used to define a string value to prepend generated `matchUpIds`, which will then include `roundNumber` and `roundPosition`.
 :::
 
+:::info
+The completed `matchUps` in this example may be found by navigating in the **Result** panel below:
+
+`tournamentRecord => events[0] => drawDefinitions[0] => structures[0]`
+:::
+
 ```jsx live
 function MocksEngineDemo(props) {
   const drawProfiles = [
-    { drawSize: 16, eventType: 'DOUBLES' },
-    { drawSize: 32, drawType: 'ROUND_ROBIN' },
+    { drawSize: 8, eventType: 'DOUBLES' },
+    { drawSize: 4, drawType: 'ROUND_ROBIN' },
   ];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     completeAllMatchUps: true,
