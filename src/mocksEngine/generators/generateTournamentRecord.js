@@ -121,9 +121,12 @@ export function generateTournamentRecord({
       let teamDoublesCount = 0,
         teamSinglesCount = 0;
       largestTeamDraw = Math.max(largestTeamDraw, drawSize + alternatesCount);
-      typeof tieFormat === 'object'
-        ? tieFormat
-        : tieFormatDefaults({ namedFormat: tieFormatName });
+
+      tieFormat =
+        typeof tieFormat === 'object'
+          ? tieFormat
+          : tieFormatDefaults({ namedFormat: tieFormatName });
+
       tieFormat?.collectionDefinitions?.forEach((collectionDefinition) => {
         // ensure every collectionDefinition has a collectionId
         if (!collectionDefinition.collectionId)
