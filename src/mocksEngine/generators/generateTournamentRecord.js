@@ -161,16 +161,23 @@ export function generateTournamentRecord({
       largestSinglesDraw = drawSize + alternatesCount;
   };
 
-  eventProfiles?.forEach(({ eventType, drawProfiles }) => {
+  eventProfiles?.forEach((eventProfile) => {
+    const {
+      tieFormatName: eventTieFormatName,
+      tieFormat: eventTieFormat,
+      drawProfiles,
+      eventType,
+    } = eventProfile;
+
     if (drawProfiles) {
       for (const drawProfile of drawProfiles) {
         const { drawSize, alternatesCount, tieFormat, tieFormatName } =
           drawProfile;
         processDrawProfile({
+          tieFormatName: tieFormatName || eventTieFormatName,
+          tieFormat: tieFormat || eventTieFormat,
           alternatesCount,
-          tieFormatName,
           eventType,
-          tieFormat,
           drawSize,
         });
       }
