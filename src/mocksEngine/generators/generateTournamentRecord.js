@@ -121,9 +121,12 @@ export function generateTournamentRecord({
       let teamDoublesCount = 0,
         teamSinglesCount = 0;
       largestTeamDraw = Math.max(largestTeamDraw, drawSize + alternatesCount);
-      typeof tieFormat === 'object'
-        ? tieFormat
-        : tieFormatDefaults({ namedFormat: tieFormatName });
+
+      tieFormat =
+        typeof tieFormat === 'object'
+          ? tieFormat
+          : tieFormatDefaults({ namedFormat: tieFormatName });
+
       tieFormat?.collectionDefinitions?.forEach((collectionDefinition) => {
         // ensure every collectionDefinition has a collectionId
         if (!collectionDefinition.collectionId)
@@ -158,16 +161,23 @@ export function generateTournamentRecord({
       largestSinglesDraw = drawSize + alternatesCount;
   };
 
-  eventProfiles?.forEach(({ eventType, drawProfiles }) => {
+  eventProfiles?.forEach((eventProfile) => {
+    const {
+      tieFormatName: eventTieFormatName,
+      tieFormat: eventTieFormat,
+      drawProfiles,
+      eventType,
+    } = eventProfile;
+
     if (drawProfiles) {
       for (const drawProfile of drawProfiles) {
         const { drawSize, alternatesCount, tieFormat, tieFormatName } =
           drawProfile;
         processDrawProfile({
+          tieFormatName: tieFormatName || eventTieFormatName,
+          tieFormat: tieFormat || eventTieFormat,
           alternatesCount,
-          tieFormatName,
           eventType,
-          tieFormat,
           drawSize,
         });
       }

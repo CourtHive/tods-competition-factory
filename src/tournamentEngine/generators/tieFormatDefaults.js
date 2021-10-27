@@ -44,7 +44,7 @@ const namedFormats = {
     singles: {
       matchUpCount: 6,
       matchUpValue: 1,
-      matchUpFormat: 'SET3-S:6',
+      matchUpFormat: 'SET3-S:6/TB7',
     },
     tieFormatName: 'COLLEGE_JUCO',
     valueGoal: 5,

@@ -49,6 +49,7 @@ export function generateEventWithFlights({
     drawProfiles = [],
     eventExtensions,
     surfaceCategory,
+    tieFormatName,
     discipline,
     eventLevel,
     ballType,
@@ -57,7 +58,9 @@ export function generateEventWithFlights({
 
   const tieFormat =
     eventProfile.tieFormat ||
-    (eventType === TEAM ? tieFormatDefaults() : undefined);
+    (eventType === TEAM
+      ? tieFormatDefaults({ namedFormat: tieFormatName })
+      : undefined);
   let targetParticipants = tournamentRecord.participants;
   let uniqueDrawParticipants = [];
 

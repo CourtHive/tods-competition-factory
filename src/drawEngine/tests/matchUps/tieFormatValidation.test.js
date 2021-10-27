@@ -7,11 +7,11 @@ import {
   tournamentEngine,
 } from '../../..';
 
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { TEAM } from '../../../constants/eventConstants';
 import { tieFormats } from '../../../fixtures/scoring/tieFormats';
+import { TEAM } from '../../../constants/eventConstants';
 
 const matchUpFormat = FORMAT_STANDARD;
 

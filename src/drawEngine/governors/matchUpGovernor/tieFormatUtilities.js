@@ -1,5 +1,5 @@
+import { matchUpFormatCode } from '../scoreGovernor/matchUpFormatCode';
 import { unique, UUID } from '../../../utilities';
-import scoreGovernor from '../scoreGovernor';
 
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
@@ -124,7 +124,7 @@ export function validateTieFormat({
         return false;
       }
 
-      if (matchUpFormat && !scoreGovernor.isValidMatchUpFormat(matchUpFormat)) {
+      if (matchUpFormat && !matchUpFormatCode.isValid(matchUpFormat)) {
         errors.push(`Invalid matchUpFormat: ${matchUpFormat}`);
         return false;
       }
