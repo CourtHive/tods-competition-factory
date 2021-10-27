@@ -1,10 +1,11 @@
+import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 import { UUID } from '../../../utilities';
 import {
   EVENT_EXISTS,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { SINGLES } from '../../../constants/eventConstants';
 
 export function addEvent({ tournamentRecord, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -18,6 +19,10 @@ export function addEvent({ tournamentRecord, event }) {
     { startDate, endDate, eventType: SINGLES },
     event
   );
+
+  if (event.tieFormatName && tieFormats[event.tieFormatName]) {
+    eventRecord.tieFormat = tieFormats[event.tieFormatName];
+  }
 
   if (!eventRecord.eventId) eventRecord.eventId = UUID();
 

@@ -99,6 +99,7 @@ export function generateParticipants({
       .flat(Infinity)
   );
 
+  const teamNames = teamMocks({ count: participantsCount }).teams;
   const participants = generateRange(0, participantsCount)
     .map((i) => {
       const sideParticipantsCount = doubles ? 2 : team ? 8 : 1;
@@ -122,7 +123,7 @@ export function generateParticipants({
         participantId: uuids?.pop() || UUID(),
         participantType: doubles ? PAIR : TEAM,
         participantRole: COMPETITOR,
-        participantName: doubles ? pairName : teamMocks().teams[0],
+        participantName: doubles ? pairName : teamNames[i],
         individualParticipantIds,
       };
 

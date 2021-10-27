@@ -22,6 +22,7 @@ import { scaleConstants } from './scaleConstants';
 import { scheduleConstants } from './scheduleConstants';
 import { surfaceConstants } from './surfaceConstants';
 import { timeItemConstants } from './timeItemConstants';
+import { tieFormatConstants } from './tieFormatConstants';
 import { topicConstants } from './topicConstants';
 import { venueConstants } from './venueConstants';
 
@@ -49,6 +50,7 @@ export const factoryConstants = {
   scaleConstants,
   scheduleConstants,
   surfaceConstants,
+  tieFormatConstants,
   timeItemConstants,
   topicConstants,
   venueConstants,
