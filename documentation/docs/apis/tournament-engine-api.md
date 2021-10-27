@@ -1720,6 +1720,28 @@ const { lineUp } = tournamentEngine.getTeamLineUp({ drawId, participantId });
 
 ---
 
+## getTieFormat
+
+Returns `tieFormat` definition objects for specified context(s).
+
+`tieFormat` for each matchUp is determined by traversing the hierarchy: `matchUp => stucture => drawDefinition => event`
+
+```js
+const {
+  tieFormat,
+  structureDefaultTieFormat,
+  drawDefaultTieFormat,
+  eventDefaultTieFormat,
+} = tournamentEngine.getTieFormat({
+  structureId,
+  matchUpId,
+  eventId,
+  drawId,
+});
+```
+
+---
+
 ## getTournamentParticipants
 
 Returns **deepCopies** of tournament participants filtered by participantFilters which are arrays of desired participant attribute values.

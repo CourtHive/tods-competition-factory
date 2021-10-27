@@ -17,7 +17,7 @@ import {
  * @param {string} matchUpId - id of matchUp for which the scoped matchUpFormat(s) are desired
  *
  */
-export function getMatchUpFormat({
+export function getTieFormat({
   tournamentRecord,
   drawDefinition,
   structureId,
@@ -51,19 +51,19 @@ export function getMatchUpFormat({
     structure = structureResult.structure;
   }
 
-  const structureDefaultMatchUpFormat = structure?.matchUpFormat;
-  const drawDefaultMatchUpFormat = drawDefinition?.matchUpFormat;
-  const eventDefaultMatchUpFormat = event?.matchUpFormat;
-  const matchUpFormat =
-    matchUpResult?.matchUp?.matchUpFormat ||
-    structureDefaultMatchUpFormat ||
-    drawDefaultMatchUpFormat ||
-    eventDefaultMatchUpFormat;
+  const structureDefaultTieFormat = structure?.tieFormat;
+  const drawDefaultTieFormat = drawDefinition?.tieFormat;
+  const eventDefaultTieFormat = event?.tieFormat;
+  const tieFormat =
+    matchUpResult?.matchUp?.tieFormat ||
+    structureDefaultTieFormat ||
+    drawDefaultTieFormat ||
+    eventDefaultTieFormat;
 
   return {
-    structureDefaultMatchUpFormat,
-    eventDefaultMatchUpFormat,
-    drawDefaultMatchUpFormat,
-    matchUpFormat,
+    structureDefaultTieFormat,
+    eventDefaultTieFormat,
+    drawDefaultTieFormat,
+    tieFormat,
   };
 }

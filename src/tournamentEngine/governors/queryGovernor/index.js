@@ -14,6 +14,7 @@ import { getPolicyDefinitions } from './getPolicyDefinitions';
 import { matchUpActions } from '../../getters/matchUpActions';
 import { bulkUpdatePublishedEventIds } from './publishState';
 import { getParticipantSignInStatus } from './signInStatus';
+import { getTieFormat } from '../../getters/getTieFormat';
 import { getEventProperties } from './getEventProperties';
 import { getRoundMatchUps } from './getRoundMatchUps';
 import { credits } from '../../../fixtures/credits';
@@ -67,6 +68,7 @@ const queryGovernor = {
   findParticipantExtension,
   findDrawDefinitionExtension,
 
+  getTieFormat,
   getMatchUpFormat,
   getDrawDefinition,
   getEventProperties,
