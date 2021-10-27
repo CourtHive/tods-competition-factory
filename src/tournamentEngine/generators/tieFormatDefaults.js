@@ -1,13 +1,25 @@
-import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { UUID } from '../../utilities';
+
+import DOMINANT_DUO_TIE_FORMAT from '../../fixtures/scoring/tieFormats/DOMINANT_DUO.json';
+import LAVER_CUP_TIE_FORMAT from '../../fixtures/scoring/tieFormats/LAVER_CUP.json';
+import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import {
+  COLLEGE_D3,
+  COLLEGE_DEFAULT,
+  COLLEGE_JUCO,
+  DOMINANT_DUO,
+  LAVER_CUP,
+} from '../../constants/tieFormatConstants';
 
 const namedFormats = {
   STANDARD: {
+    hydrate: true,
     doubles: { matchUpCount: 3, matchUpValue: 1 },
     singles: { matchUpCount: 6, matchUpValue: 1 },
     valueGoal: 5,
   },
-  COLLEGE_D3: {
+  [COLLEGE_D3]: {
+    hydrate: true,
     doubles: {
       matchUpCount: 3,
       matchUpValue: 1,
@@ -21,7 +33,8 @@ const namedFormats = {
     tieFormatName: 'COLLEGE_D3',
     valueGoal: 5,
   },
-  COLLEGE_DEFAULT: {
+  [COLLEGE_DEFAULT]: {
+    hydrate: true,
     doubles: {
       matchUpCount: 3,
       collectionValue: 1,
@@ -35,7 +48,8 @@ const namedFormats = {
     tieFormatName: 'COLLEGE_DEFAULT',
     valueGoal: 4,
   },
-  COLLEGE_JUCO: {
+  [COLLEGE_JUCO]: {
+    hydrate: true,
     doubles: {
       matchUpCount: 3,
       matchUpValue: 1,
@@ -49,6 +63,8 @@ const namedFormats = {
     tieFormatName: 'COLLEGE_JUCO',
     valueGoal: 5,
   },
+  [LAVER_CUP]: LAVER_CUP_TIE_FORMAT,
+  [DOMINANT_DUO]: DOMINANT_DUO_TIE_FORMAT,
 };
 
 export const tieFormatDefaults = ({ namedFormat, uuids = [] } = {}) => {
@@ -57,6 +73,8 @@ export const tieFormatDefaults = ({ namedFormat, uuids = [] } = {}) => {
   if (!Array.isArray(uuids)) uuids = [];
 
   const template = namedFormats[namedFormat];
+
+  if (!template.hydrate) return template;
 
   const tieFormat = {
     winCriteria: {

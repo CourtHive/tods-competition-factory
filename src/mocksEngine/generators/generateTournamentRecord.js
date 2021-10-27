@@ -173,6 +173,7 @@ export function generateTournamentRecord({
       for (const drawProfile of drawProfiles) {
         const { drawSize, alternatesCount, tieFormat, tieFormatName } =
           drawProfile;
+
         processDrawProfile({
           tieFormatName: tieFormatName || eventTieFormatName,
           tieFormat: tieFormat || eventTieFormat,
