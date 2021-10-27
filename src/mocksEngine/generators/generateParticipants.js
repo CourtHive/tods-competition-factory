@@ -123,7 +123,7 @@ export function generateParticipants({
         participantId: uuids?.pop() || UUID(),
         participantType: doubles ? PAIR : TEAM,
         participantRole: COMPETITOR,
-        participantName: doubles ? pairName : teamNames[0],
+        participantName: doubles ? pairName : teamNames[i],
         individualParticipantIds,
       };
 
