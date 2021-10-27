@@ -74,7 +74,12 @@ export const tieFormatDefaults = ({ namedFormat, uuids = [] } = {}) => {
 
   const template = namedFormats[namedFormat];
 
-  if (!template.hydrate) return template;
+  if (!template.hydrate) {
+    template.collectionDefinitions.forEach(
+      (collectionDefinition) => (collectionDefinition.collectionId = UUID())
+    );
+    return template;
+  }
 
   const tieFormat = {
     winCriteria: {

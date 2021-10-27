@@ -22,6 +22,12 @@ test('it will provide default tieFormat for TEAM events', () => {
   expect(result.success).toEqual(true);
   expect(eventResult.tieFormat).toEqual(tieFormats[LAVER_CUP]);
 
+  eventResult.tieFormat.collectionDefinitions.forEach(
+    (collectionDefinition) => {
+      expect(collectionDefinition.collectionId).not.toBeUndefined();
+    }
+  );
+
   const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
     {
       participantFilters: { participantTypes: [TEAM] },
