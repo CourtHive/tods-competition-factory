@@ -58,6 +58,7 @@ export function addPlayoffStructures(params) {
     roundProfiles,
     roundNumbers,
     idPrefix,
+    isMock,
     event,
     uuids,
   } = params;
@@ -130,6 +131,7 @@ export function addPlayoffStructures(params) {
       stageSequence,
       drawSize,
       idPrefix,
+      isMock,
       uuids,
     });
 
@@ -172,7 +174,7 @@ export function addPlayoffStructures(params) {
     const tieFormat = drawDefinition.tieFormat || event?.tieFormat;
     if (tieFormat) {
       addedMatchUps.forEach((matchUp) => {
-        const { tieMatchUps } = generateTieMatchUps({ tieFormat });
+        const { tieMatchUps } = generateTieMatchUps({ tieFormat, isMock });
         Object.assign(matchUp, { tieMatchUps, matchUpType: TEAM });
       });
     }

@@ -239,6 +239,7 @@ export function generateEventWithDraw({
       ...drawProfile.withPlayoffs,
       tournamentRecord,
       drawDefinition,
+      isMock: true,
       structureId,
       idPrefix,
       event,

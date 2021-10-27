@@ -350,6 +350,7 @@ export function generateEventWithFlights({
             ...drawProfile.withPlayoffs,
             tournamentRecord,
             drawDefinition,
+            isMock: true,
             structureId,
             event,
           });

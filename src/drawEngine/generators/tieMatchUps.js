@@ -1,6 +1,6 @@
 import { generateRange, UUID } from '../../utilities';
 
-export function generateTieMatchUps({ tieFormat, uuids }) {
+export function generateTieMatchUps({ tieFormat, uuids, isMock }) {
   const { collectionDefinitions } = tieFormat || {};
 
   const tieMatchUps = (collectionDefinitions || [])
@@ -12,7 +12,7 @@ export function generateTieMatchUps({ tieFormat, uuids }) {
         const collectionPosition = index + 1;
 
         const matchUp = {
-          isMock: true,
+          isMock,
           collectionId,
           matchUpType,
           matchUpFormat,

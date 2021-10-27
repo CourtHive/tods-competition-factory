@@ -56,6 +56,7 @@ export function generateDrawType(params = {}) {
     structureName,
     goesTo = true,
     stage = MAIN,
+    isMock,
     uuids,
     // qualifyingPositions, => passed through in params to treeMatchUps
     // qualifyingRound, => passed through in params to treeMatchUps
@@ -197,7 +198,7 @@ export function generateDrawType(params = {}) {
 
   if (tieFormat) {
     matchUps.forEach((matchUp) => {
-      const { tieMatchUps } = generateTieMatchUps({ tieFormat });
+      const { tieMatchUps } = generateTieMatchUps({ tieFormat, isMock });
       Object.assign(matchUp, { tieMatchUps, matchUpType });
     });
   }
