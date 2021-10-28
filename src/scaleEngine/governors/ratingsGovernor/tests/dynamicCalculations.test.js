@@ -10,6 +10,7 @@ const scenarios = [
   { ratingType: NTRP },
   { asDynamic: true },
 ];
+
 test.each(scenarios)(
   'it can calculate new ratings given matchUp results',
   (scenario) => {
@@ -45,7 +46,11 @@ test.each(scenarios)(
       expect(participant.timeItems.length).toEqual(
         participant.statistics[0].denominator
       );
-      if (asDynamic) console.log(participant.timeItems);
+      if (asDynamic) {
+        participant.timeItems.forEach(({ itemType }) =>
+          expect(itemType.split('.').reverse()[0]).toEqual('DYNAMIC')
+        );
+      }
     }
   }
 );
