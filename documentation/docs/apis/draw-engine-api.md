@@ -600,7 +600,7 @@ const {
     scheduledTime,
   },
 } = drawEngine.getMatchUpScheduleDetails({
-  scheduleVisibilityFilters,
+  scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
   matchUp,
 });
 ```
@@ -1098,7 +1098,7 @@ const {
   tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
   requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
   tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps
-  scheduleVisibilityFilters,
+  scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
 });
 ```
 

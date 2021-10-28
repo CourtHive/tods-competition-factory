@@ -1,6 +1,8 @@
+import tieFormatDefaults from '../../generators/tieFormatDefaults';
+
 import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { SINGLES } from '../../../constants/eventConstants';
+import { SINGLES, TEAM } from '../../../constants/eventConstants';
 import { UUID } from '../../../utilities';
 import {
   EVENT_EXISTS,
@@ -20,8 +22,14 @@ export function addEvent({ tournamentRecord, event }) {
     event
   );
 
-  if (event.tieFormatName && tieFormats[event.tieFormatName]) {
-    eventRecord.tieFormat = tieFormats[event.tieFormatName];
+  if (
+    event.eventType === TEAM &&
+    event.tieFormatName &&
+    tieFormats[event.tieFormatName]
+  ) {
+    eventRecord.tieFormat = tieFormatDefaults({
+      namedFormat: event.tieFormatName,
+    });
   }
 
   if (!eventRecord.eventId) eventRecord.eventId = UUID();
