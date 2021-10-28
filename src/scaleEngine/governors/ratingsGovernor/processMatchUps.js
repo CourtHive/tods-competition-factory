@@ -8,7 +8,7 @@ import { aggregateSets } from './aggregators';
 import { matchUpFormatCode } from '../../..';
 
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { ELO } from '../../../fixtures/ratings/ratingConstants';
+import { ELO } from '../../../constants/ratingConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { RATING } from '../../../constants/scaleConstants';
 import {
@@ -48,7 +48,7 @@ export function processMatchUps({
       scaleName: ratingType,
     };
 
-    const dynamicScaleName = `${ratingType}-dynamic`;
+    const dynamicScaleName = `${ratingType}.DYNAMIC`;
     const dynamicScaleAttributes = {
       scaleType: RATING,
       eventType: matchUpType,
@@ -67,6 +67,7 @@ export function processMatchUps({
       }))
     );
 
+    const outputScaleName = asDynamic ? dynamicScaleName : ratingType;
     const scaleItemMap = Object.assign(
       {},
       ...Object.values(sideParticipantIds)
@@ -86,7 +87,7 @@ export function processMatchUps({
           return {
             [participantId]: dynamicScaleItem ||
               scaleItem || {
-                scaleName: asDynamic ? dynamicScaleName : ratingType,
+                scaleName: outputScaleName,
                 scaleType: RATING,
                 eventType: matchUpType,
                 scaleDate: endDate,
@@ -126,13 +127,19 @@ export function processMatchUps({
         scaleItemMap[winnerParticipantId].scaleValue = newWinnerRating;
         scaleItemMap[loserParticipantId].scaleValue = newLoserRating;
         let result = setParticipantScaleItem({
-          scaleItem: scaleItemMap[winnerParticipantId],
+          scaleItem: {
+            ...scaleItemMap[winnerParticipantId],
+            scaleName: outputScaleName,
+          },
           participantId: winnerParticipantId,
           tournamentRecord,
         });
         if (result.error) return result;
         result = setParticipantScaleItem({
-          scaleItem: scaleItemMap[loserParticipantId],
+          scaleItem: {
+            ...scaleItemMap[loserParticipantId],
+            scaleName: outputScaleName,
+          },
           participantId: loserParticipantId,
           tournamentRecord,
         });

@@ -16,6 +16,7 @@ import { participantTypes } from './participantTypes';
 import { penaltyConstants } from './penaltyConstants';
 import { policyConstants } from './policyConstants';
 import { positionActionConstants } from './positionActionConstants';
+import { ratingConstants } from './ratingConstants';
 import { requestConstants } from './requestConstants';
 import { resultConstants } from './resultConstants';
 import { scaleConstants } from './scaleConstants';
@@ -45,6 +46,7 @@ export const factoryConstants = {
   penaltyConstants,
   policyConstants,
   positionActionConstants,
+  ratingConstants,
   requestConstants,
   resultConstants,
   scaleConstants,

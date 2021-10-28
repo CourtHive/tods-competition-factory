@@ -1,18 +1,19 @@
 import { mocksEngine, scaleEngine, tournamentEngine } from '../../../..';
 
-import { NTRP, UTR, WTN } from '../../../../fixtures/ratings/ratingConstants';
+import { NTRP, UTR, WTN } from '../../../../constants/ratingConstants';
 
 const scenarios = [
-  { considerGames: false },
+  {},
   { considerGames: true },
   { ratingType: UTR },
   { ratingType: WTN },
   { ratingType: NTRP },
+  { asDynamic: true },
 ];
 test.each(scenarios)(
   'it can calculate new ratings given matchUp results',
   (scenario) => {
-    const { considerGames, ratingType } = scenario;
+    const { considerGames, ratingType, asDynamic } = scenario;
     const { tournamentRecord } = mocksEngine.generateTournamentRecord({
       drawProfiles: [{ drawSize: 8 }],
       completeAllMatchUps: true,
@@ -29,6 +30,7 @@ test.each(scenarios)(
       considerGames,
       matchUpIds,
       ratingType,
+      asDynamic,
     });
     expect(result.success).toEqual(true);
     expect(result.processedMatchUpIds.length).toEqual(matchUpIds.length);
@@ -43,6 +45,7 @@ test.each(scenarios)(
       expect(participant.timeItems.length).toEqual(
         participant.statistics[0].denominator
       );
+      if (asDynamic) console.log(participant.timeItems);
     }
   }
 );

@@ -1,7 +1,7 @@
 import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';
 
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
-import { ELO } from '../../../fixtures/ratings/ratingConstants';
+import { ELO } from '../../../constants/ratingConstants';
 
 // see footnote #3 here:
 // http://fivethirtyeight.com/features/serena-williams-and-the-difference-between-all-time-great-and-greatest-of-all-time/

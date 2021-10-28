@@ -1,4 +1,4 @@
-import { ELO, NTRP, UTR, WTN } from './ratingConstants';
+import { ELO, NTRP, UTR, WTN } from '../../constants/ratingConstants';
 
 export const ratingsParameters = {
   [ELO]: { range: [0, 3000], decimalsCount: 0, defaultInitialization: 1500 },
