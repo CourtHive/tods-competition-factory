@@ -1,6 +1,7 @@
 import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps/findMatchUp';
 import { getScheduleTiming } from '../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
+import { definedAttributes } from '../../utilities/objects';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { findEvent } from './eventGetter';
 import {
@@ -14,7 +15,6 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import { definedAttributes } from '../../utilities/objects';
 
 export function allTournamentMatchUps({
   scheduleVisibilityFilters,
