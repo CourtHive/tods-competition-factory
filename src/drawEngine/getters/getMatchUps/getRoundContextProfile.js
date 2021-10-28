@@ -19,7 +19,13 @@ export function getRoundContextProfile({
 
   const roundNamingMap =
     roundNamingPolicy?.roundNamingMap ||
-    defaultRoundNamingPolicy.roundNamingMap;
+    defaultRoundNamingPolicy.roundNamingMap ||
+    {};
+
+  const abbreviatedRoundNamingMap =
+    roundNamingPolicy?.appreviatedRoundNamingMap ||
+    defaultRoundNamingPolicy.abbreviatedRoundNamingMap ||
+    {};
 
   const roundNamePrefix =
     roundNamingPolicy?.affixes || defaultRoundNamingPolicy.affixes;
@@ -34,7 +40,7 @@ export function getRoundContextProfile({
       roundNamingProfile,
       ...Object.keys(roundProfile).map((key) => {
         const profileSize = `R${key}`;
-        return { [key]: profileSize };
+        return { [key]: { roundName: profileSize } };
       })
     );
   } else {
@@ -43,16 +49,33 @@ export function getRoundContextProfile({
       ...Object.keys(roundProfile).map((round) => {
         const { matchUpsCount, preFeedRound } = roundProfile[round];
         const participantsCount = matchUpsCount * 2;
-        const sizeName =
+
+        const sizedRoundName =
           roundNamingMap[matchUpsCount] ||
           `${roundNamePrefix.roundNumber}${participantsCount}`;
-        if (!sizeName) console.log({ roundNamingMap, matchUpsCount });
         const suffix = preFeedRound ? `-${roundNamePrefix.preFeedRound}` : '';
-        const profileSize = `${sizeName}${suffix}`;
-        const roundName = [stageConstant, structureAbbreviation, profileSize]
+        const profileRoundName = `${sizedRoundName}${suffix}`;
+        const roundName = [
+          stageConstant,
+          structureAbbreviation,
+          profileRoundName,
+        ]
           .filter(Boolean)
           .join('-');
-        return { [round]: roundName };
+
+        const sizedAbbreviation =
+          abbreviatedRoundNamingMap[matchUpsCount] ||
+          `${roundNamePrefix.roundNumber}${participantsCount}`;
+        const profileAbbreviation = `${sizedAbbreviation}${suffix}`;
+        const abbreviatedRoundName = [
+          stageConstant,
+          structureAbbreviation,
+          profileAbbreviation,
+        ]
+          .filter(Boolean)
+          .join('-');
+
+        return { [round]: { abbreviatedRoundName, roundName } };
       })
     );
   }

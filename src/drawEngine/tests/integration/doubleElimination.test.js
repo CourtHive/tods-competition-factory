@@ -25,8 +25,10 @@ it('can complete double elimination draw', () => {
   tournamentEngine.setState(tournamentRecord);
   const { upcomingMatchUps } = tournamentEngine.tournamentMatchUps();
   expect(upcomingMatchUps.length).toEqual(1);
-  const { roundName, feedRound, finishingRound } = upcomingMatchUps[0];
-  expect(roundName).toEqual('F');
+  const { abbreviatedRoundName, roundName, feedRound, finishingRound } =
+    upcomingMatchUps[0];
+  expect(abbreviatedRoundName).toEqual('F');
+  expect(roundName).toEqual('Final');
   expect(feedRound).toEqual(true);
   expect(finishingRound).toEqual(1);
 });

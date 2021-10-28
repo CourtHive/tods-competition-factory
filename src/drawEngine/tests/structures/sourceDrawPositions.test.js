@@ -105,6 +105,6 @@ function validateSourceDrawPositionRanges({ matchUps, validations }) {
       console.log(matchUp);
     }
     expect(side.sourceDrawPositionRange).toEqual(range);
-    expect(matchUp.roundName).toEqual(roundName);
+    expect(matchUp.abbreviatedRoundName).toEqual(roundName);
   });
 }
