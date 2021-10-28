@@ -145,11 +145,12 @@ const {
   startDate, // optional - ISO string date
   participantsProfile, // optional - { participantCount, participantType } - see mocksEngine.generateParticipants()
   policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
-  completeAllMatchUps, // optional - boolean (legacy support for scoreString to be applied to all matchUps)
   matchUpStatusProfile, // optional - whole number percent for each target matchUpStatus { [matchUpStatus]: percentLikelihood }
   drawProfiles, // optional - array of profiles for draws to be generated; each draw creates an event
   eventProfiles, // optional - array of profiles for events to be generated; can include drawProfiles
   venueProfiles, // optional - array of profiles for venues to be generated; each venue creates courts
+  completeAllMatchUps, // optional - boolean (legacy support for scoreString to be applied to all matchUps)
+  randomWinningSide, // optional - boolean; defaults to false which results in always { winningSide: 1 }
 });
 
 tournamentEngine.setState(tournamentRecord);

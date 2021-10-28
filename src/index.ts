@@ -52,10 +52,12 @@ export const utilities = {
 // START- Asynchronous and Synchronous engine exports
 export { competitionEngine } from './competitionEngine/sync';
 export { competitionEngineAsync } from './competitionEngine/async';
-export { tournamentEngine } from './tournamentEngine/sync';
-export { tournamentEngineAsync } from './tournamentEngine/async';
 export { drawEngine } from './drawEngine/sync';
 export { drawEngineAsync } from './drawEngine/async';
+export { scaleEngine } from './scaleEngine/sync';
+export { scaleEngineAsync } from './scaleEngine/async';
+export { tournamentEngine } from './tournamentEngine/sync';
+export { tournamentEngineAsync } from './tournamentEngine/async';
 export { mocksEngine } from './mocksEngine';
 // END- Asynchronous and Synchronous engine exports
 
@@ -94,7 +96,9 @@ export { venueConstants } from './constants/venueConstants';
 
 // START- Global State methods
 export {
+  getNotices,
   setDeepCopy,
+  deleteNotices,
   setStateProvider,
   setSubscriptions,
 } from './global/globalState';

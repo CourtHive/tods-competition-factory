@@ -8,8 +8,8 @@ import {
 
 export function getParticipantScaleItem({
   tournamentRecord,
-  participantId,
   scaleAttributes,
+  participantId,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };

@@ -1,35 +1,31 @@
-import { newTournamentRecord } from './generators/newTournamentRecord';
-import { getState, paramsMiddleWare, setState } from './stateMethods';
-import participantGovernor from './governors/participantGovernor';
-import publishingGovernor from './governors/publishingGovernor';
-import tournamentGovernor from './governors/tournamentGovernor';
-import { notifySubscribers } from '../global/notifySubscribers';
-import scheduleGovernor from './governors/scheduleGovernor';
+import { setState, getState, paramsMiddleWare } from './stateMethods';
+import { notifySubscribersAsync } from '../global/notifySubscribers';
+import { createInstanceState } from '../global/globalState';
 import { factoryVersion } from '../global/factoryVersion';
-import policyGovernor from './governors/policyGovernor';
-import eventGovernor from './governors/eventGovernor';
-import queryGovernor from './governors/queryGovernor';
-import venueGovernor from './governors/venueGovernor';
 import { makeDeepCopy } from '../utilities';
 import {
+  deleteNotices,
   setDeepCopy,
   setDevContext,
   getDevContext,
-  deleteNotices,
   getTournamentId,
   getTournamentRecord,
   removeTournamentRecord,
   setTournamentId,
-  setTournamentRecord,
 } from '../global/globalState';
 
-import { SUCCESS } from '../constants/resultConstants';
+import rankingsGovernor from './governors/rankingsGovernor';
+import ratingsGovernor from './governors/ratingsGovernor';
+
 import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
 } from '../constants/errorConditionConstants';
 
-export const tournamentEngine = (function () {
+export function scaleEngineAsync(test) {
+  const result = createInstanceState();
+  if (result.error && !test) return result;
+
   const engine = {
     getState: ({ convertExtensions, removeExtensions } = {}) =>
       getState({
@@ -37,13 +33,6 @@ export const tournamentEngine = (function () {
         removeExtensions,
         tournamentId: getTournamentId(),
       }),
-    newTournamentRecord: (params = {}) => {
-      const result = newTournamentRecord(params);
-      if (result.error) return result;
-      setTournamentRecord(result);
-      setTournamentId(result.tournamentId);
-      return Object.assign({ tournamentId: result.tournamentId }, SUCCESS);
-    },
     setTournamentId: (newTournamentId) => setTournamentId(newTournamentId),
   };
 
@@ -61,10 +50,9 @@ export const tournamentEngine = (function () {
     setDevContext(contextCriteria);
     return engine;
   };
-  engine.getDevContext = (contextCriteria) => getDevContext(contextCriteria);
 
   engine.executionQueue = (directives, rollbackOnError) =>
-    executionQueue(directives, rollbackOnError);
+    executionQueueAsync(directives, rollbackOnError);
 
   function processResult(result) {
     if (result?.error) {
@@ -77,25 +65,17 @@ export const tournamentEngine = (function () {
     return engine;
   }
 
-  importGovernors([
-    queryGovernor,
-    eventGovernor,
-    venueGovernor,
-    policyGovernor,
-    scheduleGovernor,
-    publishingGovernor,
-    tournamentGovernor,
-    participantGovernor,
-  ]);
+  importGovernors([rankingsGovernor, ratingsGovernor]);
 
   return engine;
 
-  function executeFunction(tournamentRecord, method, params) {
+  async function executeFunctionAsync(tournamentRecord, method, params) {
     delete engine.success;
     delete engine.error;
 
     const augmentedParams = paramsMiddleWare(tournamentRecord, params);
-    const result = method({
+
+    const result = await method({
       ...augmentedParams,
       tournamentRecord,
     });
@@ -103,7 +83,7 @@ export const tournamentEngine = (function () {
     return result;
   }
 
-  function engineInvoke(method, params) {
+  async function engineInvoke(method, params) {
     const tournamentRecord =
       params?.sandBoxRecord ||
       params?.sandboxRecord ||
@@ -113,7 +93,7 @@ export const tournamentEngine = (function () {
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
-    const result = executeFunction(tournamentRecord, method, params);
+    const result = await executeFunctionAsync(tournamentRecord, method, params);
 
     if (result?.error && snapshot) setState(snapshot);
 
@@ -121,33 +101,34 @@ export const tournamentEngine = (function () {
       result?.success &&
       params?.delayNotify !== true &&
       params?.doNotNotify !== true;
-    if (notify) notifySubscribers();
+    if (notify) await notifySubscribersAsync();
     if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 
     return result;
   }
 
   function importGovernors(governors) {
-    governors.forEach((governor) => {
-      Object.keys(governor).forEach((method) => {
-        engine[method] = (params) => {
+    for (const governor of governors) {
+      const governorMethods = Object.keys(governor);
+
+      for (const governorMethod of governorMethods) {
+        engine[governorMethod] = async (params) => {
           if (getDevContext()) {
-            return engineInvoke(governor[method], params, method);
+            const result = await engineInvoke(governor[governorMethod], params);
+
+            return result;
           } else {
-            try {
-              return engineInvoke(governor[method], params, method);
-            } catch (err) {
-              console.log('%c ERROR', 'color: orange', { err });
-            }
+            const result = await engineInvoke(governor[governorMethod], params);
+
+            return result;
           }
         };
-      });
-    });
+      }
+    }
   }
 
-  function executionQueue(directives, rollbackOnError) {
+  async function executionQueueAsync(directives, rollbackOnError) {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
-
     const tournamentId = getTournamentId();
     const tournamentRecord = getTournamentRecord(tournamentId);
 
@@ -161,7 +142,11 @@ export const tournamentEngine = (function () {
       const { method, params } = directive;
       if (!engine[method]) return { error: METHOD_NOT_FOUND };
 
-      const result = executeFunction(tournamentRecord, engine[method], params);
+      const result = await executeFunctionAsync(
+        tournamentRecord,
+        engine[method],
+        params
+      );
 
       if (result?.error) {
         if (snapshot) setState(snapshot);
@@ -170,11 +155,11 @@ export const tournamentEngine = (function () {
       results.push(result);
     }
 
-    notifySubscribers();
+    await notifySubscribersAsync();
     deleteNotices();
 
     return { results };
   }
-})();
+}
 
-export default tournamentEngine;
+export default scaleEngineAsync;

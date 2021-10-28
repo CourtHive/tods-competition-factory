@@ -14,15 +14,13 @@ import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusCo
  * @param {boolean} sortDescending - OPTIONL - default sorting method is ASCENDING; only applies to default sorting method
  */
 export function getScaledEntries({
+  sortDescending = false,
   tournamentRecord,
-  event,
-  stage,
-
-  entries,
-
   scaleAttributes,
   scaleSortMethod,
-  sortDescending = false,
+  entries,
+  event,
+  stage,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   entries = entries || event?.entries || [];
@@ -38,8 +36,8 @@ export function getScaledEntries({
       const { participantId } = entry;
       const { scaleItem } = getParticipantScaleItem({
         tournamentRecord,
-        participantId,
         scaleAttributes,
+        participantId,
       });
       // return a new object so original entry is untouched
       return { ...entry, ...scaleItem };

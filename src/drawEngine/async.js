@@ -150,9 +150,12 @@ export function drawEngineAsync(test) {
       return { ...result, rolledBack: !!snapshot };
     }
 
-    const notify = result?.success && params?.delayNotify !== true;
+    const notify =
+      result?.success &&
+      params?.delayNotify !== true &&
+      params?.doNotNotify !== true;
     if (notify) await notifySubscribersAsync();
-    if (notify || !result?.success) deleteNotices();
+    if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 
     return result;
   }

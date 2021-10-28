@@ -1,15 +1,6 @@
-import { newTournamentRecord } from './generators/newTournamentRecord';
 import { getState, paramsMiddleWare, setState } from './stateMethods';
-import participantGovernor from './governors/participantGovernor';
-import publishingGovernor from './governors/publishingGovernor';
-import tournamentGovernor from './governors/tournamentGovernor';
 import { notifySubscribers } from '../global/notifySubscribers';
-import scheduleGovernor from './governors/scheduleGovernor';
 import { factoryVersion } from '../global/factoryVersion';
-import policyGovernor from './governors/policyGovernor';
-import eventGovernor from './governors/eventGovernor';
-import queryGovernor from './governors/queryGovernor';
-import venueGovernor from './governors/venueGovernor';
 import { makeDeepCopy } from '../utilities';
 import {
   setDeepCopy,
@@ -20,16 +11,17 @@ import {
   getTournamentRecord,
   removeTournamentRecord,
   setTournamentId,
-  setTournamentRecord,
 } from '../global/globalState';
 
-import { SUCCESS } from '../constants/resultConstants';
+import rankingsGovernor from './governors/rankingsGovernor';
+import ratingsGovernor from './governors/ratingsGovernor';
+
 import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
 } from '../constants/errorConditionConstants';
 
-export const tournamentEngine = (function () {
+export const scaleEngine = (function () {
   const engine = {
     getState: ({ convertExtensions, removeExtensions } = {}) =>
       getState({
@@ -37,13 +29,6 @@ export const tournamentEngine = (function () {
         removeExtensions,
         tournamentId: getTournamentId(),
       }),
-    newTournamentRecord: (params = {}) => {
-      const result = newTournamentRecord(params);
-      if (result.error) return result;
-      setTournamentRecord(result);
-      setTournamentId(result.tournamentId);
-      return Object.assign({ tournamentId: result.tournamentId }, SUCCESS);
-    },
     setTournamentId: (newTournamentId) => setTournamentId(newTournamentId),
   };
 
@@ -77,16 +62,7 @@ export const tournamentEngine = (function () {
     return engine;
   }
 
-  importGovernors([
-    queryGovernor,
-    eventGovernor,
-    venueGovernor,
-    policyGovernor,
-    scheduleGovernor,
-    publishingGovernor,
-    tournamentGovernor,
-    participantGovernor,
-  ]);
+  importGovernors([rankingsGovernor, ratingsGovernor]);
 
   return engine;
 
@@ -177,4 +153,4 @@ export const tournamentEngine = (function () {
   }
 })();
 
-export default tournamentEngine;
+export default scaleEngine;
