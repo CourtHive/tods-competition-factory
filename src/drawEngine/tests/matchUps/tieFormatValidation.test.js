@@ -138,7 +138,7 @@ it('can validate tieFormat fixtures', () => {
   expect(result.valid).toEqual(true);
 });
 
-it.only('can use tieFormatName to generate TEAM events', () => {
+it('can use tieFormatName to generate TEAM events', () => {
   const {
     eventIds: [eventId],
     tournamentRecord,
