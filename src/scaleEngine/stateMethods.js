@@ -1,4 +1,3 @@
-import { findEvent } from './getters/eventGetter';
 import { makeDeepCopy } from '../utilities';
 import {
   getTournamentRecord,
@@ -45,29 +44,10 @@ export function getState({
 
 export function paramsMiddleWare(tournamentRecord, params) {
   if (params) {
-    const { drawId } = params || (params.matchUp && params.matchUp.drawId);
-
-    if (drawId) {
-      const { event, drawDefinition } = findEvent({
-        tournamentRecord,
-        drawId,
-      });
-
+    if (params.someParam) {
       params = {
         ...params,
-        event,
-        drawDefinition,
       };
-    }
-
-    if (params.eventId && !params.event) {
-      const { event } = findEvent({
-        tournamentRecord,
-        eventId: params.eventId,
-      });
-      if (event) {
-        params = { ...params, event };
-      }
     }
   }
 

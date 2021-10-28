@@ -15,11 +15,11 @@ import {
 } from '../../constants/matchUpStatusConstants';
 
 export function completeDrawMatchUps({
-  matchUpFormat,
-  drawDefinition,
-  randomWinningSide,
-  completeAllMatchUps,
   matchUpStatusProfile,
+  completeAllMatchUps,
+  randomWinningSide,
+  drawDefinition,
+  matchUpFormat,
   event,
 }) {
   const sortedStructures = drawDefinition.structures
@@ -62,13 +62,13 @@ export function completeDrawMatchUps({
       const isWOWO = targetMatchUp.matchUpStatus === DOUBLE_WALKOVER;
       if (targetMatchUp?.readyToScore && !isWOWO) {
         const result = smartComplete({
+          winningSide: !randomWinningSide && 1,
+          matchUpStatusProfile,
           drawDefinition,
           targetMatchUp,
           matchUpFormat,
-          winningSide: !randomWinningSide && 1,
           matchUpStatus,
           scoreString,
-          matchUpStatusProfile,
         });
         if (result.error) return result;
       }
@@ -91,9 +91,9 @@ export function completeDrawMatchUp({
   const { matchUpId } = targetMatchUp || {};
 
   const { outcome } = generateOutcomeFromScoreString({
+    matchUpStatus,
     scoreString,
     winningSide,
-    matchUpStatus,
   });
 
   return setMatchUpStatus({
@@ -107,28 +107,28 @@ export function completeDrawMatchUp({
 // NOTE: matchUpFormat must come from collectionDefinition in TEAM events
 function smartComplete(params) {
   const {
+    matchUpStatusProfile = {},
+    drawDefinition,
+    matchUpStatus,
+    matchUpFormat,
     targetMatchUp,
     scoreString,
     winningSide,
-    matchUpStatus,
-    matchUpFormat,
-    drawDefinition,
-    matchUpStatusProfile = {},
   } = params;
 
   if (scoreString || matchUpStatus) return completeDrawMatchUp(params);
 
   const { matchUpId } = targetMatchUp || {};
   const { outcome } = generateOutcome({
+    matchUpStatusProfile,
     matchUpFormat,
     winningSide,
-    matchUpStatusProfile,
   });
 
   return setMatchUpStatus({
+    matchUpFormat,
     drawDefinition,
     matchUpId,
     outcome,
-    matchUpFormat,
   });
 }

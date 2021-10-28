@@ -14,6 +14,9 @@ import {
   setTournamentId,
 } from '../global/globalState';
 
+import rankingsGovernor from './governors/rankingsGovernor';
+import ratingsGovernor from './governors/ratingsGovernor';
+
 import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
@@ -62,7 +65,7 @@ export function scaleEngineAsync(test) {
     return engine;
   }
 
-  importGovernors([]);
+  importGovernors([rankingsGovernor, ratingsGovernor]);
 
   return engine;
 
@@ -94,9 +97,12 @@ export function scaleEngineAsync(test) {
 
     if (result?.error && snapshot) setState(snapshot);
 
-    const notify = result?.success && params?.delayNotify !== true;
+    const notify =
+      result?.success &&
+      params?.delayNotify !== true &&
+      params?.doNotNotify !== true;
     if (notify) await notifySubscribersAsync();
-    if (notify || !result?.success) deleteNotices();
+    if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 
     return result;
   }
@@ -108,19 +114,11 @@ export function scaleEngineAsync(test) {
       for (const governorMethod of governorMethods) {
         engine[governorMethod] = async (params) => {
           if (getDevContext()) {
-            const result = await engineInvoke(
-              governor[governorMethod],
-              params
-              // governorMethod
-            );
+            const result = await engineInvoke(governor[governorMethod], params);
 
             return result;
           } else {
-            const result = await engineInvoke(
-              governor[governorMethod],
-              params
-              // governorMethod
-            );
+            const result = await engineInvoke(governor[governorMethod], params);
 
             return result;
           }

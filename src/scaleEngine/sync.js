@@ -13,6 +13,9 @@ import {
   setTournamentId,
 } from '../global/globalState';
 
+import rankingsGovernor from './governors/rankingsGovernor';
+import ratingsGovernor from './governors/ratingsGovernor';
+
 import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
@@ -59,7 +62,7 @@ export const scaleEngine = (function () {
     return engine;
   }
 
-  importGovernors([]);
+  importGovernors([rankingsGovernor, ratingsGovernor]);
 
   return engine;
 
@@ -90,9 +93,12 @@ export const scaleEngine = (function () {
 
     if (result?.error && snapshot) setState(snapshot);
 
-    const notify = result?.success && params?.delayNotify !== true;
+    const notify =
+      result?.success &&
+      params?.delayNotify !== true &&
+      params?.doNotNotify !== true;
     if (notify) notifySubscribers();
-    if (notify || !result?.success) deleteNotices();
+    if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 
     return result;
   }

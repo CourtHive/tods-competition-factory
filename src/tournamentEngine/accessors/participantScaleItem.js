@@ -9,9 +9,9 @@ import {
 } from '../../constants/errorConditionConstants';
 
 export function participantScaleItem({
-  participant,
-  scaleAttributes,
   requireTimeStamp,
+  scaleAttributes,
+  participant,
 }) {
   if (!participant) return { error: MISSING_PARTICIPANT };
   if (typeof scaleAttributes !== 'object') return { error: INVALID_VALUES };
