@@ -26,15 +26,22 @@ import { COMPETITOR } from '../../constants/participantRoles';
  *
  * Generate a complete tournamentRecord from the following attributes
  *
+ * @param {object} tournamentAttributes - Object attributes will be applied to generated tournamentRecord
+ * @param {object[]} tournamentExtensions - Array of extensions to be attached to tournamentRecord
+ * @param {object[]} drawProfiles - optional - [{ category, drawSize, drawType, eventType, matchUpFormat, tieFormat, tieFormatName }]
+ * @param {object[]} eventProfiles - optional - [{ category, eventType, matchUpFormat, tieFormat, tieFormatName }]
+ * @param {object[]} venueProfiles - optional - [{ courtsCount, venueName, dateAvailability, startTime, endTime }]
+ * @param {string[]} uuids - array of unique identifiers to be used in entity generators
  * @param {string} startDate - optional - ISO string date
  * @param {string} endDate - optional - ISO string date
  * @param {object} participantsProfile - optional - { participantsCount, participantType }
  * @param {object} policyDefinitions - optional - { [policyType]: policyDefinitions, [policyType2]: policyDefinitions }
- * @param {object[]} drawProfiles - optional - [{ category, drawSize, drawType, eventType, matchUpFormat }]
- * @param {object[]} venueProfiles - optional - [{ courtsCount, venueName, dateAvailability, startTime, endTime }]
- * @param {boolean} completeAllMatchUps - optional - boolean (legacy support for scoreString to apply to all matchUps)
  * @param {object} matchUpStatusProfile - optional - whole number percent for each target matchUpStatus { [matchUpStatus]: percentLikelihood }
+ * @param {object} schedulingProfile
+ * @param {boolean} autoEntryPositions - true by default; if false, { entryPosition } will not be present on entries array
+ * @param {boolean} completeAllMatchUps - optional - boolean (legacy support for scoreString to apply to all matchUps)
  * @param {boolean} randomWinningSide
+ * @param {boolean} autoSchedule
  * @param {boolean} inContext
  *
  */
@@ -161,13 +168,17 @@ export function generateTournamentRecord({
       largestSinglesDraw = drawSize + alternatesCount;
   };
 
+  let categories = []; // use when generating participants
+
   eventProfiles?.forEach((eventProfile) => {
     const {
       tieFormatName: eventTieFormatName,
       tieFormat: eventTieFormat,
       drawProfiles,
       eventType,
+      category,
     } = eventProfile;
+    if (category) categories.push(category);
 
     if (drawProfiles) {
       for (const drawProfile of drawProfiles) {
@@ -187,8 +198,16 @@ export function generateTournamentRecord({
 
   if (drawProfiles) {
     for (const drawProfile of drawProfiles) {
-      const { drawSize, alternatesCount, eventType, tieFormat, tieFormatName } =
-        drawProfile;
+      const {
+        alternatesCount,
+        tieFormatName,
+        eventType,
+        tieFormat,
+        category,
+        drawSize,
+      } = drawProfile;
+      if (category) categories.push(category);
+
       processDrawProfile({
         alternatesCount,
         tieFormatName,
@@ -242,11 +261,11 @@ export function generateTournamentRecord({
     valuesInstanceLimit,
     nationalityCodes,
     personExtensions,
-    teamKey,
     addressProps,
     personData,
     personIds,
     inContext,
+    teamKey,
     sex,
   } = participantsProfile || {};
 
