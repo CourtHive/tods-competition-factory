@@ -308,8 +308,12 @@ export function getAllStructureMatchUps({
       });
 
     const roundName =
-      (roundNamingProfile && roundNamingProfile[roundNumber]) ||
+      (roundNamingProfile && roundNamingProfile[roundNumber]?.roundName) ||
       additionalContext.roundName;
+    const abbreviatedRoundName =
+      (roundNamingProfile &&
+        roundNamingProfile[roundNumber]?.abbreviatedRoundName) ||
+      additionalContext.abbreviatedRoundName;
     const feedRound =
       roundProfile &&
       roundProfile[roundNumber] &&
@@ -330,6 +334,7 @@ export function getAllStructureMatchUps({
         matchUpFormat: matchUp.matchUpType !== TEAM && matchUpFormat,
         tieFormat: matchUp.matchUpType === TEAM && tieFormat,
         endDate: matchUp.endDate || endDate,
+        abbreviatedRoundName,
         drawPositionsRange,
         structureName,
         stageSequence,
@@ -458,7 +463,11 @@ export function getAllStructureMatchUps({
       matchUpWithContext.tieMatchUps = matchUpWithContext.tieMatchUps.map(
         (matchUp) => {
           const matchUpTieId = matchUpWithContext.matchUpId;
-          const additionalContext = { roundName, roundNumber };
+          const additionalContext = {
+            abbreviatedRoundName,
+            roundNumber,
+            roundName,
+          };
 
           return addMatchUpContext({
             tieDrawPositions: drawPositions,
