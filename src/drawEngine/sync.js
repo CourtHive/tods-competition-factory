@@ -141,9 +141,12 @@ export const drawEngine = (function () {
       return { ...result, rolledBack: !!snapshot };
     }
 
-    const notify = result?.success && params?.delayNotify !== true;
+    const notify =
+      result?.success &&
+      params?.delayNotify !== true &&
+      params?.doNotNotify !== true;
     if (notify) notifySubscribers();
-    if (notify || !result?.success) deleteNotices();
+    if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 
     return result;
   }

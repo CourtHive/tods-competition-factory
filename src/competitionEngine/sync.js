@@ -105,9 +105,12 @@ export const competitionEngine = (function () {
 
     if (result?.error && snapshot) setState(snapshot);
 
-    const notify = result?.success && params?.delayNotify !== true;
+    const notify =
+      result?.success &&
+      params?.delayNotify !== true &&
+      params?.doNotNotify !== true;
     if (notify) notifySubscribers();
-    if (notify || !result?.success) deleteNotices();
+    if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 
     return result;
   }
