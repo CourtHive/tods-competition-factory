@@ -67,9 +67,10 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     .filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
 
-  const inactiveDrawPositions = drawPositions.filter(
-    (drawPosition) => !activeDrawPositions.includes(drawPosition)
-  );
+  const inactiveDrawPositions =
+    drawPositions?.filter(
+      (drawPosition) => !activeDrawPositions.includes(drawPosition)
+    ) || [];
 
   return {
     allDrawPositions: drawPositions,

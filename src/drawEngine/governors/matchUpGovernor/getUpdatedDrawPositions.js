@@ -11,7 +11,7 @@ import { numericSort } from '../../../utilities';
  */
 export function getUpdatedDrawPositions({ drawPosition, drawPositions }) {
   let positionAdded;
-  let positionAssigned = drawPositions.includes(drawPosition);
+  let positionAssigned = drawPositions?.includes(drawPosition);
   const updatedDrawPositions = positionAssigned
     ? drawPositions
     : []

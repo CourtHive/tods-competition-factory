@@ -149,7 +149,7 @@ export function assignDrawPositionBye({
 
   setMatchUpStatusBYE({ drawDefinition, matchUp });
 
-  const drawPositionToAdvance = matchUp.drawPositions.find(
+  const drawPositionToAdvance = matchUp.drawPositions?.find(
     (position) => position !== drawPosition
   );
 
@@ -306,9 +306,8 @@ function advanceWinner({
     ({ drawPosition }) => drawPosition === drawPositionToAdvance
   );
   const drawPositionToAdvanceIsBye = drawPositionToAdvanceAssigment.bye;
-  const existingDrawPositions = noContextWinnerMatchUp.drawPositions.filter(
-    (f) => f
-  );
+  const existingDrawPositions =
+    noContextWinnerMatchUp.drawPositions?.filter(Boolean);
   const existingAssignments = positionAssignments.filter((assignment) =>
     existingDrawPositions.includes(assignment.drawPosition)
   );

@@ -57,7 +57,7 @@ export function directLoser(params) {
   });
 
   const drawPositionMatchUps = sourceMatchUps.filter((matchUp) =>
-    matchUp.drawPositions.includes(loserDrawPosition)
+    matchUp.drawPositions?.includes(loserDrawPosition)
   );
 
   // in this calculation BYEs and WALKOVERs are not counted as wins

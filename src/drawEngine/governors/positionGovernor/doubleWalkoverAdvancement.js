@@ -73,7 +73,7 @@ function conditionallyAdvanceDrawPosition(params) {
 
   const sourceDrawPositions = sourceMatchUp?.drawPositions || [];
   let winnerMatchUpDrawPositions =
-    noContextWinnerMatchUp.drawPositions.filter(Boolean);
+    noContextWinnerMatchUp.drawPositions?.filter(Boolean);
 
   // ensure winnerMatchUp.drawPositions does not contain sourceMatchUp.drawPositions
   // this covers the case where a pre-existing advancement was made
@@ -117,7 +117,8 @@ function conditionallyAdvanceDrawPosition(params) {
     if (result.error) return result;
   }
 
-  const drawPositions = noContextWinnerMatchUp.drawPositions.filter(Boolean);
+  const drawPositions =
+    noContextWinnerMatchUp.drawPositions?.filter(Boolean) || [];
 
   const hasDrawPosition = drawPositions.length === 1;
   const walkoverWinningSide =

@@ -73,7 +73,7 @@ export function resolveDrawPositions({
   const getBaseLog = (x, y) => Math.log(y) / Math.log(x);
   const chunkSizes = generateRange(
     1,
-    getBaseLog(2, drawPositions.length) + 1
+    getBaseLog(2, drawPositions?.length || 0) + 1
   ).map((i) => Math.pow(2, i));
 
   const chunkResolution = {};

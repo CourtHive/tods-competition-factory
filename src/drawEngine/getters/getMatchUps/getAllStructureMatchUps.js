@@ -291,7 +291,7 @@ export function getAllStructureMatchUps({
       matchUp,
       event,
     });
-    const drawPositions = matchUp.drawPositions || tieDrawPositions;
+    const drawPositions = tieDrawPositions || matchUp.drawPositions;
     const { collectionPosition, collectionId, roundPosition } = matchUp;
     const roundNumber = matchUp.roundNumber || additionalContext.roundNumber;
 

@@ -77,16 +77,15 @@ export function swapDrawPositionAssignments({
 }
 
 function eliminationSwap({
-  drawDefinition,
-  structure,
-  drawPositions,
-
-  matchUpsMap,
   inContextDrawMatchUps,
+  drawDefinition,
+  drawPositions,
+  matchUpsMap,
+  structure,
 }) {
   // if not a CONTAINER then swap occurs within elimination structure
   const assignments = structure?.positionAssignments.filter((assignment) =>
-    drawPositions.includes(assignment.drawPosition)
+    drawPositions?.includes(assignment.drawPosition)
   );
 
   if (!assignments) {

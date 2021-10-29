@@ -97,7 +97,7 @@ export function assignTieMatchUpParticipantId(params) {
 
   if (!collectionDefinition) return { error: MISSING_COLLECTION_DEFINITION };
 
-  if (!dualMatchUp.sides) {
+  if (!dualMatchUp.sides?.length) {
     const extractSideDetail = ({
       displaySideNumber,
       drawPosition,

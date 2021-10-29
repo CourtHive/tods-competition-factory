@@ -18,7 +18,7 @@ export function getPairedPreviousMatchUpIsWOWO(params) {
     sourceMatchUp = structureMatchUps.find(
       ({ drawPositions, roundNumber }) =>
         roundNumber === previousRoundNumber &&
-        drawPositions.includes(drawPosition)
+        drawPositions?.includes(drawPosition)
     );
   }
 

@@ -8,7 +8,7 @@ export function isActiveDownstream(params) {
   } = targetData;
 
   const winnerDrawPositionsCount =
-    winnerMatchUp?.drawPositions.filter(Boolean).length || 0;
+    winnerMatchUp?.drawPositions?.filter(Boolean).length || 0;
 
   if (
     loserMatchUp?.winningSide ||

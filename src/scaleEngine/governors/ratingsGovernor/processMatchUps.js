@@ -1,16 +1,16 @@
 import { getParticipantScaleItem } from '../../../tournamentEngine/governors/queryGovernor/getParticipantScaleItem';
 import { setParticipantScaleItem } from '../../../tournamentEngine/governors/participantGovernor/addScaleItems';
+import { parse } from '../../../drawEngine/governors/scoreGovernor/matchUpFormatCode/parse';
 import { allTournamentMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter';
 import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';
 import { matchUpSort } from '../../../drawEngine/getters/matchUpSort';
 import { calculateNewRatings } from './calculateNewRatings';
 import { aggregateSets } from './aggregators';
-import { matchUpFormatCode } from '../../..';
 
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { ELO } from '../../../constants/ratingConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { RATING } from '../../../constants/scaleConstants';
+import { ELO } from '../../../constants/ratingConstants';
 import {
   INVALID_VALUES,
   MISSING_MATCHUPS,
@@ -96,7 +96,7 @@ export function processMatchUps({
         })
     );
 
-    const parsedFormat = matchUpFormatCode.parse(matchUpFormat) || {};
+    const parsedFormat = parse(matchUpFormat) || {};
     const bestOf = parsedFormat?.bestOf || 1;
     const setsTo = parsedFormat?.setsTo || 1;
 

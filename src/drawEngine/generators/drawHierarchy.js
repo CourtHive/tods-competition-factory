@@ -137,8 +137,8 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
     );
 
     missingMatchUps = missingPairs.map((drawPositions, index) => {
-      const roundPosition = Math.max(...drawPositions) / 2;
-      const sides = drawPositions.map((drawPosition) => {
+      const roundPosition = Math.max(...(drawPositions || [])) / 2;
+      const sides = drawPositions?.map((drawPosition) => {
         return entrySides[drawPosition] || { bye: true, drawPosition };
       });
       const matchUp = {

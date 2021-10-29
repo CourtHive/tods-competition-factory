@@ -26,7 +26,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
       if (nextRoundNumber && roundMatchUps[nextRoundNumber]) {
         const sidesTo = drawPositions.sort().map((drawPosition, index) => {
           const nextRoundMatchUp = roundMatchUps[nextRoundNumber].find(
-            (matchUp) => matchUp.drawPositions.includes(drawPosition)
+            (matchUp) => matchUp.drawPositions?.includes(drawPosition)
           );
           return {
             matchUpId: nextRoundMatchUp?.matchUpId,
@@ -99,7 +99,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
       }
       Object.assign(inContextMatchUp, { winnerTo, loserTo });
 
-      if (inContextMatchUp.drawPositions.filter(Boolean).length) {
+      if (inContextMatchUp.drawPositions?.filter(Boolean).length) {
         const loserTargetLink = targetData.targetLinks?.loserTargetLink;
         const firstMatchUp = loserTargetLink?.linkCondition === FIRST_MATCHUP;
 
