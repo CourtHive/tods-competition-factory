@@ -11,6 +11,8 @@ import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { validExtension } from '../../global/validation/validExtension';
 import { generateRange, intersection, UUID } from '../../utilities';
 import { generateParticipants } from './generateParticipants';
+import { definedAttributes } from '../../utilities/objects';
+import { processTieFormat } from './processTieFormat';
 import {
   completeDrawMatchUps,
   completeDrawMatchUp,
@@ -51,6 +53,7 @@ export function generateEventWithDraw({
     eventExtensions,
     drawExtensions,
     drawSize = 32,
+    tieFormatName,
     seedsCount,
     category,
     idPrefix,
@@ -62,7 +65,7 @@ export function generateEventWithDraw({
     typeof drawProfile.tieFormat === 'object'
       ? drawProfile.tieFormat
       : eventType === TEAM
-      ? tieFormatDefaults({ namedFormat: drawProfile.tieFormatName })
+      ? tieFormatDefaults({ namedFormat: tieFormatName })
       : undefined;
 
   let eventName = drawProfile.eventName || `Generated ${eventType}`;
@@ -74,7 +77,7 @@ export function generateEventWithDraw({
       : drawProfile.participantsCount;
 
   const eventId = UUID();
-  let event = { eventId, eventName, eventType, category, tieFormat };
+  let event = { eventName, eventType, tieFormat, category, eventId };
 
   let { eventAttributes } = drawProfile;
   if (typeof eventAttributes !== 'object') eventAttributes = {};
@@ -87,7 +90,23 @@ export function generateEventWithDraw({
   }
 
   const uniqueParticipantIds = [];
-  if (drawProfile.uniqueParticipants || !tournamentRecord || gender) {
+  if (
+    drawProfile.uniqueParticipants ||
+    !tournamentRecord ||
+    gender ||
+    category
+  ) {
+    let individualParticipantsCount = participantsCount + alternatesCount;
+    if (eventType === TEAM) {
+      const { teamSize } = processTieFormat({
+        alternatesCount,
+        tieFormatName,
+        tieFormat,
+        drawSize,
+      });
+      individualParticipantsCount = teamSize;
+    }
+
     const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
     const {
       valuesInstanceLimit,
@@ -99,18 +118,16 @@ export function generateEventWithDraw({
       inContext,
     } = participantsProfile || {};
     const { participants: unique } = generateParticipants({
-      participantsCount: participantsCount + alternatesCount,
-      participantType,
-
-      uuids: drawProfile.uuids || uuids,
+      participantsCount: individualParticipantsCount,
       sex: gender || participantsProfile?.sex,
-      valuesInstanceLimit,
+      uuids: drawProfile.uuids || uuids,
       nationalityCodesCount,
       nationalityCodeType,
+      valuesInstanceLimit,
       nationalityCodes,
+      participantType,
       addressProps,
       personIds,
-
       inContext,
     });
 
@@ -349,11 +366,11 @@ export function generateEventWithDraw({
   return {
     ...SUCCESS,
 
+    event: definedAttributes(event),
     uniqueParticipantIds,
     targetParticipants,
     drawDefinition,
     eventId,
     drawId,
-    event,
   };
 }
