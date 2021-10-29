@@ -1,6 +1,6 @@
 import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
+import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
-import { isUngrouped } from '../../../../global/isUngrouped';
 import { removeEventEntries } from './removeEventEntries';
 
 import { DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
