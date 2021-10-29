@@ -1,5 +1,5 @@
 import { intersection } from '../../utilities/arrays';
-import syncGlobalState from '../syncGlobalState';
+import syncGlobalState from './syncGlobalState';
 
 import { MISSING_VALUE } from '../../constants/errorConditionConstants';
 
