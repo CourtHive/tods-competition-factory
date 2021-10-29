@@ -1,7 +1,7 @@
 import competitionGovernor from './governors/competitionsGovernor';
 import { notifySubscribers } from '../global/state/notifySubscribers';
 import scheduleGovernor from './governors/scheduleGovernor';
-import { factoryVersion } from '../global/factoryVersion';
+import { factoryVersion } from '../global/functions/factoryVersion';
 import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
 import { makeDeepCopy } from '../utilities';

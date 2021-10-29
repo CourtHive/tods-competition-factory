@@ -5,7 +5,7 @@ import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
 import { notifySubscribers } from '../global/state/notifySubscribers';
 import scheduleGovernor from './governors/scheduleGovernor';
-import { factoryVersion } from '../global/factoryVersion';
+import { factoryVersion } from '../global/functions/factoryVersion';
 import policyGovernor from './governors/policyGovernor';
 import eventGovernor from './governors/eventGovernor';
 import queryGovernor from './governors/queryGovernor';

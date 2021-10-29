@@ -6,7 +6,7 @@ import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
 import { createInstanceState } from '../global/state/globalState';
-import { factoryVersion } from '../global/factoryVersion';
+import { factoryVersion } from '../global/functions/factoryVersion';
 import policyGovernor from './governors/policyGovernor';
 import eventGovernor from './governors/eventGovernor';
 import queryGovernor from './governors/queryGovernor';

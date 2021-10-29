@@ -1,6 +1,6 @@
 import { getState, paramsMiddleWare, setState } from './stateMethods';
 import { notifySubscribers } from '../global/state/notifySubscribers';
-import { factoryVersion } from '../global/factoryVersion';
+import { factoryVersion } from '../global/functions/factoryVersion';
 import { makeDeepCopy } from '../utilities';
 import {
   setDeepCopy,

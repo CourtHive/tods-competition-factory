@@ -10,7 +10,7 @@ import linkGovernor from './governors/linkGovernor';
 
 import { newDrawDefinition, paramsMiddleWare, setState } from './stateMethods';
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
-import { factoryVersion } from '../global/factoryVersion';
+import { factoryVersion } from '../global/functions/factoryVersion';
 import { makeDeepCopy } from '../utilities';
 import {
   setDeepCopy,
