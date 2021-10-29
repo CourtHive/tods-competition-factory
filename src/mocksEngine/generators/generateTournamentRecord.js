@@ -175,6 +175,7 @@ export function generateTournamentRecord({
           tieFormatName: tieFormatName || eventTieFormatName,
           tieFormat: tieFormat || eventTieFormat,
           eventType,
+          category,
         });
       }
     } else {

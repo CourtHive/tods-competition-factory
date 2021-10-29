@@ -152,7 +152,8 @@ it('can add statistics to tournament participants', () => {
     withMatchUps: true,
   });
   // specified 200 participantType: DOUBLES => 200 PAIR + 400 INDIVIDUAL
-  expect(tournamentParticipants.length).toEqual(600);
+  // specified category on bot DOUBLES (30 + 30 + 30) and SINGLES (30) + 120
+  expect(tournamentParticipants.length).toEqual(720);
 
   const getParticipant = ({ drawPosition }) => {
     const participantId = positionAssignments.find(
@@ -189,10 +190,6 @@ it('can add statistics to tournament participants', () => {
 });
 
 it('can add statistics to tournament participants', () => {
-  const participantsProfile = {
-    participantsCount: 4,
-    participantType: PAIR,
-  };
   const drawProfiles = [
     {
       drawSize: 4,
@@ -207,7 +204,6 @@ it('can add statistics to tournament participants', () => {
   ];
   let { tournamentRecord, eventIds } = mocksEngine.generateTournamentRecord({
     drawProfiles,
-    participantsProfile,
   });
   tournamentEngine.setState(tournamentRecord);
 
@@ -227,7 +223,7 @@ it('can add statistics to tournament participants', () => {
     withOpponents: true,
     withMatchUps: true,
   });
-  expect(tournamentParticipants.length).toEqual(12);
+  expect(tournamentParticipants.length).toEqual(24);
 
   const getParticipant = ({ drawPosition }) => {
     const participantId = positionAssignments.find(
