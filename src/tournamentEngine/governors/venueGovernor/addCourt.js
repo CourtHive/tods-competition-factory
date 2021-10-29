@@ -1,5 +1,5 @@
 import { UUID, generateRange, makeDeepCopy } from '../../../utilities';
-import { addNotice, getDevContext } from '../../../global/globalState';
+import { addNotice, getDevContext } from '../../../global/state/globalState';
 import { extractDate, extractTime } from '../../../utilities/dateTime';
 import { courtTemplate } from '../../generators/courtTemplate';
 import { validDateAvailability } from './dateAvailability';

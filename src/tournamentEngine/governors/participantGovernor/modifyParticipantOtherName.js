@@ -1,5 +1,5 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
-import { addNotice, getTopics } from '../../../global/globalState';
+import { addNotice, getTopics } from '../../../global/state/globalState';
 
 import {
   MISSING_PARTICIPANT_ID,

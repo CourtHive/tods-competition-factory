@@ -1,6 +1,6 @@
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
 import { removeCourtAssignment } from './removeCourtAssignment';
-import { addNotice } from '../../../global/globalState';
+import { addNotice } from '../../../global/state/globalState';
 import { getCourts } from '../../getters/courtGetter';
 import { deletionMessage } from './deletionMessage';
 

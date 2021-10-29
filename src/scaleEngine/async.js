@@ -1,6 +1,6 @@
 import { setState, getState, paramsMiddleWare } from './stateMethods';
 import { notifySubscribersAsync } from '../global/notifySubscribers';
-import { createInstanceState } from '../global/globalState';
+import { createInstanceState } from '../global/state/globalState';
 import { factoryVersion } from '../global/factoryVersion';
 import { makeDeepCopy } from '../utilities';
 import {
@@ -12,7 +12,7 @@ import {
   getTournamentRecord,
   removeTournamentRecord,
   setTournamentId,
-} from '../global/globalState';
+} from '../global/state/globalState';
 
 import rankingsGovernor from './governors/rankingsGovernor';
 import ratingsGovernor from './governors/ratingsGovernor';

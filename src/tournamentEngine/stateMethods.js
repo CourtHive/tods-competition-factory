@@ -6,7 +6,7 @@ import {
   getTournamentRecord,
   setTournamentId,
   setTournamentRecords,
-} from '../global/globalState';
+} from '../global/state/globalState';
 
 import {
   INVALID_OBJECT,

@@ -1,6 +1,6 @@
 import { removeIndividualParticipantIds } from './removeIndividualParticipantIds';
 import { addIndividualParticipantIds } from './addIndividualParticipantIds';
-import { addNotice, getTopics } from '../../../../global/globalState';
+import { addNotice, getTopics } from '../../../../global/state/globalState';
 
 import {
   INVALID_PARTICIPANT_IDS,

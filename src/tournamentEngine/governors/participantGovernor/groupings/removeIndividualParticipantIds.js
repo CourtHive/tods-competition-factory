@@ -1,4 +1,4 @@
-import { addNotice } from '../../../../global/globalState';
+import { addNotice } from '../../../../global/state/globalState';
 
 import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
 import { GROUP, TEAM } from '../../../../constants/participantTypes';

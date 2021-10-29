@@ -1,4 +1,4 @@
-import { setSubscriptions } from '../../../global/globalState';
+import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 

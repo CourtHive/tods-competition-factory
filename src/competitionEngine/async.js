@@ -14,7 +14,7 @@ import {
   removeTournamentRecord,
   setTournamentRecords,
   getTournamentRecords,
-} from '../global/globalState';
+} from '../global/state/globalState';
 import {
   getState,
   removeUnlinkedTournamentRecords,

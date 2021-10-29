@@ -1,5 +1,5 @@
 import { getTournamentParticipants } from '../../../getters/participants/getTournamentParticipants';
-import { addNotice, getTopics } from '../../../../global/globalState';
+import { addNotice, getTopics } from '../../../../global/state/globalState';
 import { definedAttributes } from '../../../../utilities/objects';
 import { makeDeepCopy, UUID } from '../../../../utilities';
 import { addParticipant } from '../addParticipants';

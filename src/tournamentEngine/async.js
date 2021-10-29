@@ -5,7 +5,7 @@ import participantGovernor from './governors/participantGovernor';
 import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
-import { createInstanceState } from '../global/globalState';
+import { createInstanceState } from '../global/state/globalState';
 import { factoryVersion } from '../global/factoryVersion';
 import policyGovernor from './governors/policyGovernor';
 import eventGovernor from './governors/eventGovernor';
@@ -22,7 +22,7 @@ import {
   removeTournamentRecord,
   setTournamentId,
   setTournamentRecord,
-} from '../global/globalState';
+} from '../global/state/globalState';
 
 import { SUCCESS } from '../constants/resultConstants';
 import {

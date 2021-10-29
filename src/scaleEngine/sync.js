@@ -11,7 +11,7 @@ import {
   getTournamentRecord,
   removeTournamentRecord,
   setTournamentId,
-} from '../global/globalState';
+} from '../global/state/globalState';
 
 import rankingsGovernor from './governors/rankingsGovernor';
 import ratingsGovernor from './governors/ratingsGovernor';

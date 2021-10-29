@@ -1,7 +1,7 @@
-import { intersection } from '../utilities/arrays';
-import syncGlobalState from './syncGlobalState';
+import { intersection } from '../../utilities/arrays';
+import syncGlobalState from '../syncGlobalState';
 
-import { MISSING_VALUE } from '../constants/errorConditionConstants';
+import { MISSING_VALUE } from '../../constants/errorConditionConstants';
 
 const globalState = {
   devContext: undefined,

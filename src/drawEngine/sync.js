@@ -17,7 +17,7 @@ import {
   setDevContext,
   getDevContext,
   deleteNotices,
-} from '../global/globalState';
+} from '../global/state/globalState';
 
 import { MISSING_DRAW_DEFINITION } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';

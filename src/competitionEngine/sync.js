@@ -13,7 +13,7 @@ import {
   removeTournamentRecord,
   getTournamentRecords,
   setTournamentRecords,
-} from '../global/globalState';
+} from '../global/state/globalState';
 
 import {
   getState,

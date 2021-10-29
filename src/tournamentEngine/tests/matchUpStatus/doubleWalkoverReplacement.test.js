@@ -1,4 +1,4 @@
-// import { getDevContext, setSubscriptions } from '../../../global/globalState';
+// import { getDevContext, setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 

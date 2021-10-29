@@ -21,7 +21,7 @@ import {
   removeTournamentRecord,
   setTournamentId,
   setTournamentRecord,
-} from '../global/globalState';
+} from '../global/state/globalState';
 
 import { SUCCESS } from '../constants/resultConstants';
 import {

@@ -1,6 +1,6 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import { generateTeamTournament } from './generateTestTeamTournament';
-import { setDevContext } from '../../../global/globalState';
+import { setDevContext } from '../../../global/state/globalState';
 import tournamentEngine from '../../sync';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';

@@ -1,4 +1,4 @@
-import { addNotice, getDevContext } from '../../../global/globalState';
+import { addNotice, getDevContext } from '../../../global/state/globalState';
 import { UUID, makeDeepCopy } from '../../../utilities';
 
 import { ADD_VENUE } from '../../../constants/topicConstants';

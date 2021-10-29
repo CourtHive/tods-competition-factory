@@ -2,7 +2,7 @@ import { getTournamentParticipants } from '../../getters/participants/getTournam
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 import { addIndividualParticipantIds } from './groupings/addIndividualParticipantIds';
 import { getParticipantId } from '../../../global/functions/extractors';
-import { addNotice, getDevContext } from '../../../global/globalState';
+import { addNotice, getDevContext } from '../../../global/state/globalState';
 import { participantRoles } from '../../../constants/participantRoles';
 import { genderConstants } from '../../../constants/genderConstants';
 import { addParticipant } from './addParticipants';

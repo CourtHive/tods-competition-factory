@@ -3,7 +3,7 @@ import mocksEngine from '../../../mocksEngine';
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 
 import { GROUP, INDIVIDUAL } from '../../../constants/participantTypes';
-import { setSubscriptions } from '../../../global/globalState';
+import { setSubscriptions } from '../../../global/state/globalState';
 import { ADD_PARTICIPANTS } from '../../../constants/topicConstants';
 
 it('can create group participants', () => {

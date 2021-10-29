@@ -2,7 +2,7 @@ import { checkSchedulingProfile } from '../../scheduleGovernor/schedulingProfile
 import { addEventTimeItem } from '../../tournamentGovernor/addTimeItem';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 import { getTimeItem } from '../../queryGovernor/timeItems';
-import { addNotice } from '../../../../global/globalState';
+import { addNotice } from '../../../../global/state/globalState';
 import { findEvent } from '../../../getters/eventGetter';
 import {
   deleteDrawNotice,

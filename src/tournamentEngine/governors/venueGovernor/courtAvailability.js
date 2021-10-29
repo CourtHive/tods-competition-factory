@@ -1,5 +1,5 @@
 import { validDateAvailability } from './dateAvailability';
-import { addNotice } from '../../../global/globalState';
+import { addNotice } from '../../../global/state/globalState';
 import { findCourt } from '../../getters/courtGetter';
 
 import { MODIFY_VENUE } from '../../../constants/topicConstants';

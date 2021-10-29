@@ -1,4 +1,4 @@
-import { addNotice } from '../../global/globalState';
+import { addNotice } from '../../global/state/globalState';
 import {
   ADD_DRAW_DEFINITION,
   ADD_MATCHUPS,

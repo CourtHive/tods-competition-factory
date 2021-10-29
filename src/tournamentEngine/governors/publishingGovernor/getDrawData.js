@@ -5,7 +5,7 @@ import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
 import { hasParticipantId } from '../../../global/functions/filters';
 import { findExtension } from '../queryGovernor/extensionQueries';
-import { getDevContext } from '../../../global/globalState';
+import { getDevContext } from '../../../global/state/globalState';
 import {
   generateRange,
   intersection,

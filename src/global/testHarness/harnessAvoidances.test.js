@@ -1,5 +1,5 @@
 import tournamentEngine from '../../tournamentEngine/sync';
-import { timeKeeper } from '../globalState';
+import { timeKeeper } from '../state/globalState';
 import fs from 'fs';
 
 const tournamentRecordJSON = fs.readFileSync(

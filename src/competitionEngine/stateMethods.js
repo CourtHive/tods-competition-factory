@@ -5,7 +5,7 @@ import {
   getTournamentRecords,
   setTournamentRecords,
   setTournamentRecord as globalSetTournamentRecord,
-} from '../global/globalState';
+} from '../global/state/globalState';
 
 import { LINKED_TOURNAMENTS } from '../constants/extensionConstants';
 import {

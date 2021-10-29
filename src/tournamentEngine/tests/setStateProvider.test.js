@@ -1,5 +1,8 @@
 import competitionEngine from '../../competitionEngine/sync';
-import { setStateProvider, setSubscriptions } from '../../global/globalState';
+import {
+  setStateProvider,
+  setSubscriptions,
+} from '../../global/state/globalState';
 import syncGlobalState from '../../global/syncGlobalState';
 import tournamentEngine from '../sync';
 
