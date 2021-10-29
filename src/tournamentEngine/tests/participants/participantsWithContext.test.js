@@ -154,6 +154,10 @@ it('can add statistics to tournament participants', () => {
   // specified 200 participantType: DOUBLES => 200 PAIR + 400 INDIVIDUAL
   // specified category on bot DOUBLES (30 + 30 + 30) and SINGLES (30) + 120
   expect(tournamentParticipants.length).toEqual(720);
+  const categoriesPresent = tournamentParticipants.every((participant) =>
+    participant.events.every(({ category }) => category)
+  );
+  expect(categoriesPresent).toBeTruthy();
 
   const getParticipant = ({ drawPosition }) => {
     const participantId = positionAssignments.find(
