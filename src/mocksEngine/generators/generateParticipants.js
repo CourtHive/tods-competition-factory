@@ -59,6 +59,7 @@ export function generateParticipants({
     count: individualParticipantsCount,
     personExtensions,
     personData,
+    category,
     sex,
   });
   if (error) return { error };
