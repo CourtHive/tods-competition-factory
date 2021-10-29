@@ -9,6 +9,7 @@ import { generateDrawDefinition } from '../../tournamentEngine/generators/genera
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { validExtension } from '../../global/validation/validExtension';
+import { getParticipantId } from '../../global/functions/extractors';
 import { generateRange, intersection, UUID } from '../../utilities';
 import { generateParticipants } from './generateParticipants';
 import { definedAttributes } from '../../utilities/objects';
@@ -23,6 +24,7 @@ import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
+import { COMPETITOR } from '../../constants/participantRoles';
 import { SEEDING } from '../../constants/timeItemConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -97,14 +99,16 @@ export function generateEventWithDraw({
     category
   ) {
     let individualParticipantsCount = participantsCount + alternatesCount;
+    let teamSize;
+
     if (eventType === TEAM) {
-      const { teamSize } = processTieFormat({
+      ({ teamSize } = processTieFormat({
         alternatesCount,
         tieFormatName,
         tieFormat,
         drawSize,
-      });
-      individualParticipantsCount = teamSize;
+      }));
+      individualParticipantsCount = teamSize * drawSize;
     }
 
     const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
@@ -140,6 +144,33 @@ export function generateEventWithDraw({
       uniqueParticipantIds.push(participantId)
     );
     targetParticipants = unique;
+
+    if (eventType === TEAM) {
+      console.log('generate team participants');
+      // generate Team participants
+      const allIndividualParticipantIds = unique
+        .filter(({ participantType }) => participantType === INDIVIDUAL)
+        .map(getParticipantId);
+      const teamParticipants = generateRange(0, drawSize).map((teamIndex) => {
+        const individualParticipantIds = allIndividualParticipantIds.slice(
+          teamIndex * teamSize,
+          (teamIndex + 1) * teamSize
+        );
+        return {
+          participantName: `Team ${teamIndex + 1}`,
+          participantRole: COMPETITOR,
+          participantType: TEAM,
+          participantId: UUID(),
+          individualParticipantIds,
+        };
+      });
+      result = addParticipants({
+        tournamentRecord,
+        participants: teamParticipants,
+      });
+      if (!result.success) return result;
+      targetParticipants = teamParticipants;
+    }
   }
 
   const isEventParticipantType = (participant) => {

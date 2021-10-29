@@ -117,14 +117,17 @@ export function generateTournamentRecord({
 
   const processDrawProfile = ({
     alternatesCount = 0,
+    uniqueParticipants,
     tieFormatName,
     drawSize = 0,
     eventType,
     tieFormat,
+    category,
+    gender,
   }) => {
     const isDoubles = eventType === DOUBLES;
     const isTeam = eventType === TEAM;
-    if (isTeam) {
+    if (isTeam && !category && !uniqueParticipants && !gender) {
       largestTeamDraw = Math.max(largestTeamDraw, drawSize + alternatesCount);
 
       tieFormat =
@@ -165,20 +168,13 @@ export function generateTournamentRecord({
 
     if (drawProfiles) {
       for (const drawProfile of drawProfiles) {
-        const {
-          // uniqueParticipants,
-          alternatesCount,
-          tieFormatName,
-          tieFormat,
-          drawSize,
-        } = drawProfile;
+        const { tieFormatName, tieFormat } = drawProfile;
 
         processDrawProfile({
+          ...drawProfile,
           tieFormatName: tieFormatName || eventTieFormatName,
           tieFormat: tieFormat || eventTieFormat,
-          alternatesCount,
           eventType,
-          drawSize,
         });
       }
     } else {
@@ -188,22 +184,7 @@ export function generateTournamentRecord({
 
   if (drawProfiles) {
     for (const drawProfile of drawProfiles) {
-      const {
-        // uniqueParticipants,
-        alternatesCount,
-        tieFormatName,
-        eventType,
-        tieFormat,
-        drawSize,
-      } = drawProfile;
-
-      processDrawProfile({
-        alternatesCount,
-        tieFormatName,
-        eventType,
-        tieFormat,
-        drawSize,
-      });
+      processDrawProfile(drawProfile);
     }
   }
   const individualCompetitorsCount = Math.max(
