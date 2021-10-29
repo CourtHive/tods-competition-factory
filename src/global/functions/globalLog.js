@@ -1,4 +1,4 @@
-import { getDevContext } from './state/globalState';
+import { getDevContext } from '../state/globalState';
 import { logColors } from './logColors';
 
 const globalLog = [];
