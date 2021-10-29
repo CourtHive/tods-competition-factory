@@ -41,10 +41,15 @@ export function generateParticipants({
   addressProps,
   matchUpType,
   personData,
+  category,
   sex,
 
   inContext,
 }) {
+  if (category) {
+    // generate appropriate scaleItems and participant birthDate
+  }
+
   const doubles = participantType === PAIR || matchUpType === DOUBLES;
   const team = participantType === TEAM || matchUpType === TEAM;
   const individualParticipantsCount =
@@ -54,6 +59,7 @@ export function generateParticipants({
     count: individualParticipantsCount,
     personExtensions,
     personData,
+    category,
     sex,
   });
   if (error) return { error };

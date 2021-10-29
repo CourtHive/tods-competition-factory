@@ -1,6 +1,6 @@
 import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 import { addTournamentTimeItem } from '../tournamentGovernor/addTimeItem';
-import { addNotice } from '../../../global/globalState';
+import { addNotice } from '../../../global/state/globalState';
 
 import { DELETE_EVENTS } from '../../../constants/auditConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

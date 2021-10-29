@@ -6,11 +6,11 @@ import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount
 import { checkDependenciesScheduled } from './checkDependenciesScheduled';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { getMatchUpIds } from '../../../../global/functions/extractors';
+import { getDevContext } from '../../../../global/state/globalState';
 import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
 import { getMatchUpDependencies } from './getMatchUpDependencies';
 import { checkRequestConflicts } from './checkRequestConflicts';
-import { getDevContext } from '../../../../global/globalState';
 import { processNextMatchUps } from './processNextMatchUps';
 import { checkRecoveryTime } from './checkRecoveryTime';
 import { checkDailyLimits } from './checkDailyLimits';

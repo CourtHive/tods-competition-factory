@@ -1,6 +1,6 @@
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { generateTeamTournament } from './generateTestTeamTournament';
-import { setDevContext } from '../../../global/globalState';
+import { setDevContext } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 

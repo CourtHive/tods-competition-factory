@@ -1,4 +1,4 @@
-import { timeKeeper } from '../globalState';
+import { timeKeeper } from '../state/globalState';
 
 async function getAllTimers(delay = 1000) {
   return new Promise((resolve) => {

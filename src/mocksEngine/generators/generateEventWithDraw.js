@@ -9,8 +9,11 @@ import { generateDrawDefinition } from '../../tournamentEngine/generators/genera
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { validExtension } from '../../global/validation/validExtension';
+import { getParticipantId } from '../../global/functions/extractors';
 import { generateRange, intersection, UUID } from '../../utilities';
 import { generateParticipants } from './generateParticipants';
+import { definedAttributes } from '../../utilities/objects';
+import { processTieFormat } from './processTieFormat';
 import {
   completeDrawMatchUps,
   completeDrawMatchUp,
@@ -21,6 +24,7 @@ import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
+import { COMPETITOR } from '../../constants/participantRoles';
 import { SEEDING } from '../../constants/timeItemConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -51,6 +55,7 @@ export function generateEventWithDraw({
     eventExtensions,
     drawExtensions,
     drawSize = 32,
+    tieFormatName,
     seedsCount,
     category,
     idPrefix,
@@ -62,7 +67,7 @@ export function generateEventWithDraw({
     typeof drawProfile.tieFormat === 'object'
       ? drawProfile.tieFormat
       : eventType === TEAM
-      ? tieFormatDefaults({ namedFormat: drawProfile.tieFormatName })
+      ? tieFormatDefaults({ namedFormat: tieFormatName })
       : undefined;
 
   let eventName = drawProfile.eventName || `Generated ${eventType}`;
@@ -74,7 +79,7 @@ export function generateEventWithDraw({
       : drawProfile.participantsCount;
 
   const eventId = UUID();
-  let event = { eventId, eventName, eventType, category, tieFormat };
+  let event = { eventName, eventType, tieFormat, category, eventId };
 
   let { eventAttributes } = drawProfile;
   if (typeof eventAttributes !== 'object') eventAttributes = {};
@@ -87,7 +92,25 @@ export function generateEventWithDraw({
   }
 
   const uniqueParticipantIds = [];
-  if (drawProfile.uniqueParticipants || !tournamentRecord || gender) {
+  if (
+    drawProfile.uniqueParticipants ||
+    !tournamentRecord ||
+    gender ||
+    category
+  ) {
+    let individualParticipantsCount = participantsCount + alternatesCount;
+    let teamSize;
+
+    if (eventType === TEAM) {
+      ({ teamSize } = processTieFormat({
+        alternatesCount,
+        tieFormatName,
+        tieFormat,
+        drawSize,
+      }));
+      individualParticipantsCount = teamSize * drawSize;
+    }
+
     const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
     const {
       valuesInstanceLimit,
@@ -99,18 +122,16 @@ export function generateEventWithDraw({
       inContext,
     } = participantsProfile || {};
     const { participants: unique } = generateParticipants({
-      participantsCount: participantsCount + alternatesCount,
-      participantType,
-
-      uuids: drawProfile.uuids || uuids,
+      participantsCount: individualParticipantsCount,
       sex: gender || participantsProfile?.sex,
-      valuesInstanceLimit,
+      uuids: drawProfile.uuids || uuids,
       nationalityCodesCount,
       nationalityCodeType,
+      valuesInstanceLimit,
       nationalityCodes,
+      participantType,
       addressProps,
       personIds,
-
       inContext,
     });
 
@@ -123,6 +144,31 @@ export function generateEventWithDraw({
       uniqueParticipantIds.push(participantId)
     );
     targetParticipants = unique;
+
+    if (eventType === TEAM) {
+      const allIndividualParticipantIds = unique
+        .filter(({ participantType }) => participantType === INDIVIDUAL)
+        .map(getParticipantId);
+      const teamParticipants = generateRange(0, drawSize).map((teamIndex) => {
+        const individualParticipantIds = allIndividualParticipantIds.slice(
+          teamIndex * teamSize,
+          (teamIndex + 1) * teamSize
+        );
+        return {
+          participantName: `Team ${teamIndex + 1}`,
+          participantRole: COMPETITOR,
+          participantType: TEAM,
+          participantId: UUID(),
+          individualParticipantIds,
+        };
+      });
+      const result = addParticipants({
+        tournamentRecord,
+        participants: teamParticipants,
+      });
+      if (!result.success) return result;
+      targetParticipants = teamParticipants;
+    }
   }
 
   const isEventParticipantType = (participant) => {
@@ -349,11 +395,11 @@ export function generateEventWithDraw({
   return {
     ...SUCCESS,
 
+    event: definedAttributes(event),
     uniqueParticipantIds,
     targetParticipants,
     drawDefinition,
     eventId,
     drawId,
-    event,
   };
 }

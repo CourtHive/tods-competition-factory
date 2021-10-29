@@ -3,9 +3,9 @@ import { getState, paramsMiddleWare, setState } from './stateMethods';
 import participantGovernor from './governors/participantGovernor';
 import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
-import { notifySubscribers } from '../global/notifySubscribers';
+import { notifySubscribers } from '../global/state/notifySubscribers';
 import scheduleGovernor from './governors/scheduleGovernor';
-import { factoryVersion } from '../global/factoryVersion';
+import { factoryVersion } from '../global/functions/factoryVersion';
 import policyGovernor from './governors/policyGovernor';
 import eventGovernor from './governors/eventGovernor';
 import queryGovernor from './governors/queryGovernor';
@@ -21,7 +21,7 @@ import {
   removeTournamentRecord,
   setTournamentId,
   setTournamentRecord,
-} from '../global/globalState';
+} from '../global/state/globalState';
 
 import { SUCCESS } from '../constants/resultConstants';
 import {

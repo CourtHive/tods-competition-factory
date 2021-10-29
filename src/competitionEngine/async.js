@@ -1,7 +1,7 @@
-import { notifySubscribersAsync } from '../global/notifySubscribers';
+import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import competitionGovernor from './governors/competitionsGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
-import { factoryVersion } from '../global/factoryVersion';
+import { factoryVersion } from '../global/functions/factoryVersion';
 import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
 import { makeDeepCopy } from '../utilities';
@@ -14,7 +14,7 @@ import {
   removeTournamentRecord,
   setTournamentRecords,
   getTournamentRecords,
-} from '../global/globalState';
+} from '../global/state/globalState';
 import {
   getState,
   removeUnlinkedTournamentRecords,

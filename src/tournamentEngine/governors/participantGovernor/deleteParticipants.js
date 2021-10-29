@@ -1,7 +1,7 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { removeParticipantIdsFromAllTeams } from './groupings/removeIndividualParticipantIds';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
-import { addNotice } from '../../../global/globalState';
+import { addNotice } from '../../../global/state/globalState';
 import { intersection } from '../../../utilities';
 
 import { DELETE_PARTICIPANTS } from '../../../constants/topicConstants';

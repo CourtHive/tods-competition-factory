@@ -14,9 +14,13 @@ export function personMocks({
   personExtensions,
   personData,
   count = 1,
+  category,
   sex,
 } = {}) {
   if (isNaN(count)) return { error: INVALID_VALUES };
+  if (category) {
+    //
+  }
 
   let validPersonData = defaultPersonData.filter(
     (person) => !sex || person.sex === sex

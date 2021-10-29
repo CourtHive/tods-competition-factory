@@ -9,15 +9,15 @@ import entryGovernor from './governors/entryGovernor';
 import linkGovernor from './governors/linkGovernor';
 
 import { newDrawDefinition, paramsMiddleWare, setState } from './stateMethods';
-import { notifySubscribers } from '../global/notifySubscribers';
-import { factoryVersion } from '../global/factoryVersion';
+import { notifySubscribers } from '../global/state/notifySubscribers';
+import { factoryVersion } from '../global/functions/factoryVersion';
 import { makeDeepCopy } from '../utilities';
 import {
   setDeepCopy,
   setDevContext,
   getDevContext,
   deleteNotices,
-} from '../global/globalState';
+} from '../global/state/globalState';
 
 import { MISSING_DRAW_DEFINITION } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';

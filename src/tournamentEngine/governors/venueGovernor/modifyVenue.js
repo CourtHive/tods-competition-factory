@@ -1,7 +1,7 @@
 import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
 import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 import venueTemplate from '../../generators/venueTemplate';
-import { addNotice } from '../../../global/globalState';
+import { addNotice } from '../../../global/state/globalState';
 import { findVenue } from '../../getters/venueGetter';
 import { deletionMessage } from './deletionMessage';
 import { makeDeepCopy } from '../../../utilities';

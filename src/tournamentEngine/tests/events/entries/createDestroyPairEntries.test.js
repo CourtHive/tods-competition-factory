@@ -1,4 +1,4 @@
-import { isUngrouped } from '../../../../global/isUngrouped';
+import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { chunkArray } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../sync';

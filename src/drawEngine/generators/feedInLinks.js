@@ -1,5 +1,5 @@
 import { generateRange } from '../../utilities';
-import { getDevContext } from '../../global/globalState';
+import { getDevContext } from '../../global/state/globalState';
 
 import {
   BOTTOM_UP,

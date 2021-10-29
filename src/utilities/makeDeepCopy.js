@@ -1,4 +1,4 @@
-import { deepCopyEnabled } from '../global/globalState';
+import { deepCopyEnabled } from '../global/state/globalState';
 import { isDateObject } from './dateTime';
 
 /**

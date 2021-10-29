@@ -7,7 +7,7 @@ import {
   printGlobalLog,
   purgeGlobalLog,
   pushGlobalLog,
-} from '../../../global/globalLog';
+} from '../../../global/functions/globalLog';
 
 import {
   COMPASS,

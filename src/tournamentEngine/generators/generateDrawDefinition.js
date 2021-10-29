@@ -14,7 +14,7 @@ import { getDrawStructures } from '../../drawEngine/getters/structureGetter';
 import { getParticipantId } from '../../global/functions/extractors';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { tieFormatDefaults } from './tieFormatDefaults';
-import { addNotice } from '../../global/globalState';
+import { addNotice } from '../../global/state/globalState';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';

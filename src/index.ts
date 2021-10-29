@@ -101,5 +101,5 @@ export {
   deleteNotices,
   setStateProvider,
   setSubscriptions,
-} from './global/globalState';
+} from './global/state/globalState';
 // END

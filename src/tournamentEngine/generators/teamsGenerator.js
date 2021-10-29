@@ -1,7 +1,7 @@
 import { addExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
 import { findExtension } from '../governors/queryGovernor/extensionQueries';
 import { getAccessorValue } from '../../utilities/getAccessorValue';
-import { addNotice } from '../../global/globalState';
+import { addNotice } from '../../global/state/globalState';
 import { UUID } from '../../utilities';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';

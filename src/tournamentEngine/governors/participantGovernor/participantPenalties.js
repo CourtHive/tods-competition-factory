@@ -1,6 +1,6 @@
 import { addExtension } from '../tournamentGovernor/addRemoveExtensions';
 import penaltyTemplate from '../../generators/penaltyTemplate';
-import { addNotice } from '../../../global/globalState';
+import { addNotice } from '../../../global/state/globalState';
 
 import {
   PENALTY_NOT_FOUND,

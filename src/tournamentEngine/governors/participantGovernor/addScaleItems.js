@@ -1,5 +1,5 @@
 import { participantScaleItem } from '../../accessors/participantScaleItem';
-import { addNotice, getTopics } from '../../../global/globalState';
+import { addNotice, getTopics } from '../../../global/state/globalState';
 
 import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

@@ -1,4 +1,4 @@
-import { isUngrouped } from '../../../../global/isUngrouped';
+import { isUngrouped } from '../../../../global/functions/isUngrouped';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
 import { WITHDRAWN } from '../../../../constants/entryStatusConstants';

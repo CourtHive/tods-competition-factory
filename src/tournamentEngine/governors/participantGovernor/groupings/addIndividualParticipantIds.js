@@ -1,5 +1,5 @@
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
-import { addNotice, getTopics } from '../../../../global/globalState';
+import { addNotice, getTopics } from '../../../../global/state/globalState';
 import { makeDeepCopy } from '../../../../utilities';
 
 import {

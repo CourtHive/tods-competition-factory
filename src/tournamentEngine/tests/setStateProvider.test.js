@@ -1,7 +1,10 @@
+import syncGlobalState from '../../global/state/syncGlobalState';
 import competitionEngine from '../../competitionEngine/sync';
-import { setStateProvider, setSubscriptions } from '../../global/globalState';
-import syncGlobalState from '../../global/syncGlobalState';
 import tournamentEngine from '../sync';
+import {
+  setStateProvider,
+  setSubscriptions,
+} from '../../global/state/globalState';
 
 it('can set state provider', () => {
   let result = setStateProvider(syncGlobalState);

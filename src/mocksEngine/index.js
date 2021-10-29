@@ -1,6 +1,6 @@
-import { deleteNotices, setDevContext } from '../global/globalState';
-import { notifySubscribers } from '../global/notifySubscribers';
-import { factoryVersion } from '../global/factoryVersion';
+import { deleteNotices, setDevContext } from '../global/state/globalState';
+import { notifySubscribers } from '../global/state/notifySubscribers';
+import { factoryVersion } from '../global/functions/factoryVersion';
 import mocksGovernor from './governors/mocksGovernor';
 
 export const mocksEngine = (function () {

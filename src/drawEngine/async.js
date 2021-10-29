@@ -9,8 +9,8 @@ import entryGovernor from './governors/entryGovernor';
 import linkGovernor from './governors/linkGovernor';
 
 import { newDrawDefinition, paramsMiddleWare, setState } from './stateMethods';
-import { notifySubscribersAsync } from '../global/notifySubscribers';
-import { factoryVersion } from '../global/factoryVersion';
+import { notifySubscribersAsync } from '../global/state/notifySubscribers';
+import { factoryVersion } from '../global/functions/factoryVersion';
 import { makeDeepCopy } from '../utilities';
 import {
   setDeepCopy,
@@ -18,7 +18,7 @@ import {
   getDevContext,
   deleteNotices,
   createInstanceState,
-} from '../global/globalState';
+} from '../global/state/globalState';
 
 import { MISSING_DRAW_DEFINITION } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';

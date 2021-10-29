@@ -1,4 +1,4 @@
-import { setSubscriptions } from '../../../global/globalState';
+import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
@@ -125,5 +125,5 @@ test('Replacing an outcome with a DOUBLE_WALKOVER will advance paired position',
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toEqual(1);
-  expect(targetMatchUp.matchUpStatusCodes).toEqual([]);
+  expect(targetMatchUp.matchUpStatusCodes).toEqual(undefined);
 });

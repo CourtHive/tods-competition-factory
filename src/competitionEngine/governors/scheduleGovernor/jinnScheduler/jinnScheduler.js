@@ -19,7 +19,7 @@ import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { checkDailyLimits } from '../scheduleMatchUps/checkDailyLimits';
 import { getPersonRequests } from '../scheduleMatchUps/personRequests';
 import { getMatchUpId } from '../../../../global/functions/extractors';
-import { addNotice, getTopics } from '../../../../global/globalState';
+import { addNotice, getTopics } from '../../../../global/state/globalState';
 import { clearScheduledMatchUps } from '../clearScheduledMatchUps';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 import { generateScheduleTimes } from './generateScheduleTimes';

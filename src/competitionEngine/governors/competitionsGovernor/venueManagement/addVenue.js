@@ -1,5 +1,5 @@
 import { addVenue as venueAdd } from '../../../../tournamentEngine/governors/venueGovernor/addVenue';
-import { addNotice } from '../../../../global/globalState';
+import { addNotice } from '../../../../global/state/globalState';
 import { UUID } from '../../../../utilities';
 
 import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';

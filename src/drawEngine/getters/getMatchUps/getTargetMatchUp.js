@@ -2,7 +2,7 @@ import { findExtension } from '../../../tournamentEngine/governors/queryGovernor
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { chunkArray, generateRange } from '../../../utilities';
 import { getPositionAssignments } from '../positionsGetter';
-import { getDevContext } from '../../../global/globalState';
+import { getDevContext } from '../../../global/state/globalState';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 
 import { MISSING_TARGET_LINK } from '../../../constants/errorConditionConstants';

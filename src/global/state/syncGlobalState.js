@@ -1,10 +1,10 @@
-import { SUCCESS } from '../constants/resultConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_TOURNAMENT_RECORD,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   NOT_FOUND,
-} from '../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 const syncGlobalState = {
   tournamentId: undefined,

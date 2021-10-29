@@ -3,7 +3,7 @@ import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEn
 import { chunkArray, generateRange, chunkByNth, UUID } from '../../utilities';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../getters/getFlightProfile';
-import { getDevContext } from '../../global/globalState';
+import { getDevContext } from '../../global/state/globalState';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';

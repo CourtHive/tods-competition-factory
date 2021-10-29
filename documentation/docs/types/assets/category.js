@@ -10,8 +10,8 @@ export const category = {
   ballType:
     '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"false\\"}',
   categoryName: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
-  raringMax: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
-  raringMin: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
+  ratingMax: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
+  ratingMin: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
   ratingType:
     '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"ratings provider\\"}',
   subType:

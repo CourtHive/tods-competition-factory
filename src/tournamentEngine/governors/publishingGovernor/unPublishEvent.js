@@ -1,5 +1,5 @@
 import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
-import { addNotice } from '../../../global/globalState';
+import { addNotice } from '../../../global/state/globalState';
 
 import { HIDDEN, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { UNPUBLISH_EVENT } from '../../../constants/topicConstants';

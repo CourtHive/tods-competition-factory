@@ -2,7 +2,7 @@ import { getScheduleTimes } from '../../../competitionEngine/governors/scheduleG
 import { removeCourtAssignment } from '../../governors/venueGovernor/removeCourtAssignment';
 import { getMatchUpIds } from '../../../global/functions/extractors';
 import { competitionEngine } from '../../../competitionEngine/sync';
-import { setSubscriptions } from '../../../global/globalState';
+import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 
