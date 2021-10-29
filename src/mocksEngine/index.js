@@ -1,5 +1,5 @@
 import { deleteNotices, setDevContext } from '../global/state/globalState';
-import { notifySubscribers } from '../global/notifySubscribers';
+import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/factoryVersion';
 import mocksGovernor from './governors/mocksGovernor';
 

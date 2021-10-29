@@ -1,4 +1,4 @@
-import { callListener, getNotices, getTopics } from './state/globalState';
+import { callListener, getNotices, getTopics } from './globalState';
 
 export function notifySubscribers() {
   const { topics } = getTopics();

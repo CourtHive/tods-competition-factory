@@ -3,7 +3,7 @@ import { getState, paramsMiddleWare, setState } from './stateMethods';
 import participantGovernor from './governors/participantGovernor';
 import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
-import { notifySubscribers } from '../global/notifySubscribers';
+import { notifySubscribers } from '../global/state/notifySubscribers';
 import scheduleGovernor from './governors/scheduleGovernor';
 import { factoryVersion } from '../global/factoryVersion';
 import policyGovernor from './governors/policyGovernor';

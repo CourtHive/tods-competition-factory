@@ -9,7 +9,7 @@ import entryGovernor from './governors/entryGovernor';
 import linkGovernor from './governors/linkGovernor';
 
 import { newDrawDefinition, paramsMiddleWare, setState } from './stateMethods';
-import { notifySubscribers } from '../global/notifySubscribers';
+import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/factoryVersion';
 import { makeDeepCopy } from '../utilities';
 import {

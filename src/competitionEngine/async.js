@@ -1,4 +1,4 @@
-import { notifySubscribersAsync } from '../global/notifySubscribers';
+import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import competitionGovernor from './governors/competitionsGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
 import { factoryVersion } from '../global/factoryVersion';

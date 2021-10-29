@@ -1,5 +1,5 @@
 import { setState, getState, paramsMiddleWare } from './stateMethods';
-import { notifySubscribersAsync } from '../global/notifySubscribers';
+import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { createInstanceState } from '../global/state/globalState';
 import { factoryVersion } from '../global/factoryVersion';
 import { makeDeepCopy } from '../utilities';

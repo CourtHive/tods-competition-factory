@@ -1,5 +1,5 @@
 import competitionGovernor from './governors/competitionsGovernor';
-import { notifySubscribers } from '../global/notifySubscribers';
+import { notifySubscribers } from '../global/state/notifySubscribers';
 import scheduleGovernor from './governors/scheduleGovernor';
 import { factoryVersion } from '../global/factoryVersion';
 import policyGovernor from './governors/policyGovernor';

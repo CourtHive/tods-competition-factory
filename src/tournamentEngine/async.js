@@ -1,6 +1,6 @@
 import { newTournamentRecord } from './generators/newTournamentRecord';
 import { setState, getState, paramsMiddleWare } from './stateMethods';
-import { notifySubscribersAsync } from '../global/notifySubscribers';
+import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import participantGovernor from './governors/participantGovernor';
 import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
