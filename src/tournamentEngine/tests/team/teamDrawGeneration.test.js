@@ -72,3 +72,18 @@ test('it will provide default tieFormat for TEAM events', () => {
   expect(drawDefinition.tieFormat).not.toBeUndefined();
   expect(drawDefinition.matchUpType).toEqual(TEAM);
 });
+
+it('can generate draws with unique TEAM participants', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 4, eventType: TEAM, uniqueParticipants: true }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      participantFilters: { participantTypes: [TEAM] },
+    }
+  );
+  expect(tournamentParticipants.length).toEqual(4);
+});

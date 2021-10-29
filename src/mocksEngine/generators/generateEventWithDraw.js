@@ -146,8 +146,6 @@ export function generateEventWithDraw({
     targetParticipants = unique;
 
     if (eventType === TEAM) {
-      console.log('generate team participants');
-      // generate Team participants
       const allIndividualParticipantIds = unique
         .filter(({ participantType }) => participantType === INDIVIDUAL)
         .map(getParticipantId);
@@ -164,7 +162,7 @@ export function generateEventWithDraw({
           individualParticipantIds,
         };
       });
-      result = addParticipants({
+      const result = addParticipants({
         tournamentRecord,
         participants: teamParticipants,
       });
