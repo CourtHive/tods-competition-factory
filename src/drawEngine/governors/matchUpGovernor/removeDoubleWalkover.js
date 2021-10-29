@@ -58,7 +58,7 @@ export function removeDoubleWalkover(params) {
       pairedPreviousMatchUp?.matchUpStatus === DOUBLE_WALKOVER;
 
     const pairedPreviousDrawPositions =
-      pairedPreviousMatchUp?.drawPositions.filter(Boolean) || [];
+      pairedPreviousMatchUp?.drawPositions?.filter(Boolean) || [];
     const pairedPreviousMatchUpComplete =
       [...completedMatchUpStatuses, BYE].includes(
         pairedPreviousMatchUp?.matchUpStatus

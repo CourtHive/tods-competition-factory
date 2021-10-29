@@ -12,7 +12,7 @@ export function validDrawPositions({ matchUps }) {
         console.log('drawPositions not an array', matchUp);
         return;
       }
-      matchUp.drawPositions.forEach((drawPosition) => {
+      matchUp.drawPositions?.forEach((drawPosition) => {
         if (!validDrawPosition(drawPosition)) {
           console.log('invalid drawPosition', matchUp);
         }
@@ -20,7 +20,7 @@ export function validDrawPositions({ matchUps }) {
     });
   }
 
-  const allPositionsValid = drawPositions.every(validDrawPosition);
+  const allPositionsValid = drawPositions?.every(validDrawPosition);
 
   const matchUpDrawPositionsNotArray = matchUps.find(
     (matchUp) => !Array.isArray(matchUp.drawPositions)

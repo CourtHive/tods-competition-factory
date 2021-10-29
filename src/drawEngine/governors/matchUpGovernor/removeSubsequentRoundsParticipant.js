@@ -37,7 +37,7 @@ export function removeSubsequentRoundsParticipant({
     (matchUp) =>
       matchUp.roundNumber >= roundNumber &&
       matchUp.roundNumber !== initialRoundNumber &&
-      matchUp.drawPositions.includes(targetDrawPosition)
+      matchUp.drawPositions?.includes(targetDrawPosition)
   );
 
   const { positionAssignments } = getPositionAssignments({

@@ -91,9 +91,10 @@ export function deleteAdHocMatchUps({
 
     // remap remaining matchUp.drawPositions
     const remapDrawPositions = (matchUp) =>
-      (matchUp.drawPositions = matchUp.drawPositions.map(
-        (drawPosition) => newDrawPositionsMap[drawPosition]
-      ));
+      (matchUp.drawPositions =
+        matchUp.drawPositions?.map(
+          (drawPosition) => newDrawPositionsMap[drawPosition]
+        ) || []);
     structure.matchUps.forEach(remapDrawPositions);
 
     deleteMatchUpsNotice({

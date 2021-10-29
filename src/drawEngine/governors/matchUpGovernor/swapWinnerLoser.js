@@ -30,7 +30,7 @@ export function swapWinnerLoser(params) {
   const { matchUps } = getAllStructureMatchUps(params);
   const existingWinnerSubsequentMatchUps = matchUps.filter(
     ({ drawPositions, roundNumber }) =>
-      drawPositions.includes(existingWinnerDrawPosition) &&
+      drawPositions?.includes(existingWinnerDrawPosition) &&
       roundNumber > matchUpRoundNumber
   );
 
@@ -39,11 +39,12 @@ export function swapWinnerLoser(params) {
 
   // replace new winningSide drawPosition in all subsequent matches in structure
   existingWinnerSubsequentMatchUps.forEach((matchUp) => {
-    matchUp.drawPositions = matchUp.drawPositions.map((drawPosition) =>
-      drawPosition === existingWinnerDrawPosition
-        ? existingLoserDrawPosition
-        : drawPosition
-    );
+    matchUp.drawPositions =
+      matchUp.drawPositions?.map((drawPosition) =>
+        drawPosition === existingWinnerDrawPosition
+          ? existingLoserDrawPosition
+          : drawPosition
+      ) || [];
     modifyMatchUpNotice({ drawDefinition, matchUp });
   });
 

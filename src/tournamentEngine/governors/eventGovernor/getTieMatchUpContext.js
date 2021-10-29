@@ -52,7 +52,7 @@ export function getTieMatchUpContext({
 
   const { positionAssignments } = getPositionAssignments({ structure });
   const relevantAssignments = positionAssignments?.filter((assignment) =>
-    drawPositions.includes(assignment.drawPosition)
+    drawPositions?.includes(assignment.drawPosition)
   );
 
   const participantIds = getParticipantIds(relevantAssignments);
