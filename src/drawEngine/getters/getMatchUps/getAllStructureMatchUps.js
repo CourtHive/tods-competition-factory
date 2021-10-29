@@ -352,7 +352,7 @@ export function getAllStructureMatchUps({
         drawId,
         stage,
       }),
-      makeDeepCopy(definedAttributes(matchUp), true, true)
+      makeDeepCopy(definedAttributes(matchUp, undefined, true), true, true)
     );
 
     if (Array.isArray(drawPositions)) {

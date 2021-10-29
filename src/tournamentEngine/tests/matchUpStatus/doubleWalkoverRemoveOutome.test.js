@@ -123,7 +123,7 @@ test('Replacing a DOUBLE_WALKOVER with an outcome including score will remove ad
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1, 3]);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.winningSide).toBeUndefined();
-  expect(targetMatchUp.matchUpStatusCodes).toEqual([]);
+  expect(targetMatchUp.matchUpStatusCodes).toEqual(undefined);
 });
 
 /*
@@ -233,7 +233,7 @@ test('Removing a scored outcome will remove a WALKOVER advanced participant from
   // now check the final matchUp
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
-  expect(targetMatchUp.matchUpStatusCodes).toEqual([]);
+  expect(targetMatchUp.matchUpStatusCodes).toEqual(undefined);
 
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toEqual(undefined);
