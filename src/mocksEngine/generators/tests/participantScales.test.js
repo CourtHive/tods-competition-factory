@@ -45,7 +45,7 @@ test.each(rankingsScenarios)(
       }
     } else {
       // ratingMin and ratingMax are close and there is a chance no random values fall into the range
-      expect(ratingType).toEqual(ELO);
+      expect([ELO, WTN].includes(ratingType)).toEqual(true);
     }
   }
 );
