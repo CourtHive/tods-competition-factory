@@ -99,7 +99,12 @@ export function generateParticipants({
     if (ratingType && ratingsParameters[ratingType]) {
       let { ratingMax, ratingMin } = category;
       const ratingParameter = ratingsParameters[ratingType];
-      const { accessors, range, decimalsCount } = ratingParameter;
+      const {
+        attributes = {},
+        decimalsCount,
+        accessors,
+        range,
+      } = ratingParameter;
 
       const inverted = range[0] > range[1];
       const skew = inverted ? 2 : 0.5;
@@ -118,7 +123,8 @@ export function generateParticipants({
               ? scaleValue
               : Object.assign(
                   {},
-                  ...accessors.map((accessor) => ({ [accessor]: scaleValue }))
+                  ...accessors.map((accessor) => ({ [accessor]: scaleValue })),
+                  attributes
                 )
           );
 
