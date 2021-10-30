@@ -17,8 +17,7 @@ which provide a document-based representation of all of the elements of a tourna
 
 ## Time Capsule
 
-After a tournament has been completed, a **TODS** file can be considered a "time capsule" of all the information related to the constructrion and management of a tournament. This means that complete historical data is available in one cross-platform, database-independent JSON file,
-removing all concerns about maintaining software maintenance contracts to retain access to data, as well as any reliance on applications which make sense of database schemas.
+After a tournament has been completed, a **TODS** file can be considered a "time capsule" of all the information related to the constructrion and management of a tournament. This means that complete historical data is available in one cross-platform, database-independent JSON file, removing all concerns about keeping software maintenance contracts active in order to retain access to data, as well as any reliance on applications which interpret database schemas.
 
 ## Core Engines
 
