@@ -1,8 +1,16 @@
-import { generateRange, randomMember, shuffleArray } from '../../utilities';
-import defaultPersonData from '../data/persons.json';
+import { parseAgeCategoryCode } from '../../global/functions/parseAgeCategoryCode';
+import { definedAttributes } from '../../utilities/objects';
+import { dateFromDay } from '../../utilities/dateTime';
+import {
+  generateRange,
+  randomMember,
+  randomPop,
+  shuffleArray,
+} from '../../utilities';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { MALE, FEMALE } from '../../constants/genderConstants';
+import defaultPersonData from '../data/persons.json';
 
 /**
  * @param {integer} count - number of persons to generate
@@ -12,15 +20,13 @@ import { MALE, FEMALE } from '../../constants/genderConstants';
  */
 export function personMocks({
   personExtensions,
+  consideredDate,
   personData,
   count = 1,
   category,
   sex,
 } = {}) {
   if (isNaN(count)) return { error: INVALID_VALUES };
-  if (category) {
-    //
-  }
 
   let validPersonData = defaultPersonData.filter(
     (person) => !sex || person.sex === sex
@@ -100,11 +106,35 @@ export function personMocks({
     });
   }
 
-  const persons = shuffledPersons.slice(0, count).map((person, i) => {
-    return Object.assign(person, {
-      extensions: personExtensions || [{ name: 'regionCode', value: i + 1 }],
-      isMock: true,
-    });
+  const { ageMinDate, ageMaxDate } = parseAgeCategoryCode({
+    consideredDate,
+    category,
   });
+
+  const rangeStart =
+    parseInt(ageMinDate?.slice(0, 4) || 0) ||
+    parseInt(ageMaxDate?.slice(0, 4) || 0) - 3;
+
+  const rangeEnd =
+    parseInt(ageMaxDate?.slice(0, 4) || 0) ||
+    parseInt(ageMinDate?.slice(0, 4) || 0) + 3;
+
+  const yearRange = (ageMinDate || ageMaxDate) && [rangeStart, rangeEnd];
+
+  const persons = shuffledPersons.slice(0, count).map((person, i) => {
+    const birthYear = yearRange && randomPop(generateRange(...yearRange));
+    const birthDay = randomPop(generateRange(0, 365));
+    const birthDate = birthYear && dateFromDay(birthYear, birthDay);
+
+    return Object.assign(
+      person,
+      definedAttributes({
+        extensions: personExtensions || [{ name: 'regionCode', value: i + 1 }],
+        isMock: true,
+        birthDate,
+      })
+    );
+  });
+
   return { persons: (persons.length && persons) || shuffledPersons[0] };
 }

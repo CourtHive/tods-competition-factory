@@ -17,10 +17,12 @@ import { generateRange, UUID } from '../../utilities';
 import { processTieFormat } from './processTieFormat';
 import { generateVenues } from './generateVenues';
 
+import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { INVALID_DATE } from '../../constants/errorConditionConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DOUBLES, TEAM } from '../../constants/eventConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
+import { QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -46,6 +48,7 @@ import { COMPETITOR } from '../../constants/participantRoles';
  *
  */
 export function generateTournamentRecord({
+  ratingsParameters = defaultRatingsParameters,
   tournamentName = 'Mock Tournament',
   tournamentExtensions,
   tournamentAttributes,
@@ -124,10 +127,14 @@ export function generateTournamentRecord({
     tieFormat,
     category,
     gender,
+    stage,
   }) => {
     const isDoubles = eventType === DOUBLES;
     const isTeam = eventType === TEAM;
-    if (isTeam && !category && !uniqueParticipants && !gender) {
+    const requiresUniqueParticipants =
+      uniqueParticipants || stage === QUALIFYING || category || gender;
+
+    if (isTeam && !requiresUniqueParticipants) {
       largestTeamDraw = Math.max(largestTeamDraw, drawSize + alternatesCount);
 
       tieFormat =
@@ -145,14 +152,18 @@ export function generateTournamentRecord({
       largestDoublesDraw = Math.max(largestDoublesDraw, maxDoublesDraw);
       largestSinglesDraw = Math.max(largestSinglesDraw, maxSinglesDraw);
     }
+
     if (
       isDoubles &&
       drawSize + alternatesCount &&
       drawSize + alternatesCount > largestDoublesDraw
-    )
+    ) {
       largestDoublesDraw = drawSize + alternatesCount;
-    if (!isDoubles && !isTeam && drawSize && drawSize > largestSinglesDraw)
+    }
+
+    if (!isDoubles && !isTeam && drawSize && drawSize > largestSinglesDraw) {
       largestSinglesDraw = drawSize + alternatesCount;
+    }
   };
 
   let categories = []; // use when generating participants
@@ -241,7 +252,9 @@ export function generateTournamentRecord({
   } = participantsProfile || {};
 
   const { participants } = generateParticipants({
+    consideredDate: startDate,
     valuesInstanceLimit,
+
     nationalityCodesCount,
     nationalityCodeType,
     nationalityCodes,
@@ -303,13 +316,14 @@ export function generateTournamentRecord({
     for (const drawProfile of drawProfiles) {
       const { drawId, eventId, event, error, uniqueParticipantIds } =
         generateEventWithDraw({
-          tournamentRecord,
           allUniqueParticipantIds,
-          autoEntryPositions,
+          matchUpStatusProfile,
           participantsProfile,
           completeAllMatchUps,
-          matchUpStatusProfile,
+          autoEntryPositions,
           randomWinningSide,
+          ratingsParameters,
+          tournamentRecord,
           drawProfile,
           startDate,
           goesTo,
@@ -340,6 +354,7 @@ export function generateTournamentRecord({
         completeAllMatchUps,
         autoEntryPositions,
         randomWinningSide,
+        ratingsParameters,
         tournamentRecord,
         eventProfile,
         startDate,

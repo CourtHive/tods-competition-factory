@@ -1,12 +1,17 @@
 import { cityMocks, stateMocks, postalCodeMocks } from '../utilities/address';
+import { randomInt, skewedDistribution } from '../../utilities/math';
 import { generateRange, shuffleArray, UUID } from '../../utilities';
+import { definedAttributes } from '../../utilities/objects';
 import { countries } from '../../fixtures/countryData';
 import { personMocks } from '../utilities/personMocks';
 import { teamMocks } from '../utilities/teamMocks';
 
+import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
+import { RANKING, RATING, SCALE } from '../../constants/scaleConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { DOUBLES } from '../../constants/matchUpTypes';
+import { SINGLES } from '../../constants/eventConstants';
 
 /**
  *
@@ -24,10 +29,18 @@ import { DOUBLES } from '../../constants/matchUpTypes';
  * @param {boolean} inContext - whether to expand PAIR and TEAM individualParticipantIds => individualParticipant objects
  * @param {object[]} personData - optional array of persons to seed generator [{ firstName, lastName, sex, nationalityCode }]
  * @param {object} personExtensions - optional array of extentsions to apply to all persons
+ * @param {string} consideredDate - date from which category ageMaxDate and ageMinDate should be calculated (typically tournament.startDate or .endDate)
+ * @param {object} category - optional - { categoryName, ageCategoryCode, ratingType, ratingMax, ratingMin }
+ * @param {number[]} rankingRankge - optional - range within which ranking numbers should be generated for specified category (non-rating)
+ * @param {number} scaledParticipantsCount - optional - number of participants to assign rankings/ratings - defaults to ~25
  *
  */
 export function generateParticipants({
+  ratingsParameters = defaultRatingsParameters,
   valuesInstanceLimit,
+  consideredDate,
+  category,
+
   nationalityCodesCount,
   nationalityCodeType,
   nationalityCodes,
@@ -41,15 +54,13 @@ export function generateParticipants({
   addressProps,
   matchUpType,
   personData,
-  category,
   sex,
 
   inContext,
-}) {
-  if (category) {
-    // generate appropriate scaleItems and participant birthDate
-  }
 
+  rankingRange = [1, 100], // range of ranking positions to generate
+  scaledParticipantsCount, // number of participants to assign rankings/ratings
+}) {
   const doubles = participantType === PAIR || matchUpType === DOUBLES;
   const team = participantType === TEAM || matchUpType === TEAM;
   const individualParticipantsCount =
@@ -58,11 +69,65 @@ export function generateParticipants({
   const { persons: mockedPersons, error } = personMocks({
     count: individualParticipantsCount,
     personExtensions,
+    consideredDate,
     personData,
     category,
     sex,
   });
   if (error) return { error };
+
+  // generated arrays of rankings and ratings to be attached as scaleItems
+  let doublesRankings = [],
+    singlesRankings = [],
+    singlesRatings = [],
+    doublesRatings = [];
+
+  if (typeof category === 'object') {
+    const { categoryName, ageCategoryCode, ratingType } = category;
+    if ((categoryName || ageCategoryCode) && !ratingType) {
+      singlesRankings = shuffleArray(generateRange(...rankingRange)).slice(
+        0,
+        scaledParticipantsCount || randomInt(20, 30)
+      );
+      if ([PAIR, TEAM].includes(participantType))
+        doublesRankings = shuffleArray(generateRange(...rankingRange)).slice(
+          0,
+          scaledParticipantsCount || randomInt(20, 30)
+        );
+    }
+
+    if (ratingType && ratingsParameters[ratingType]) {
+      let { ratingMax, ratingMin } = category;
+      const ratingParameter = ratingsParameters[ratingType];
+      const { accessors, range, decimalsCount } = ratingParameter;
+
+      const inverted = range[0] > range[1];
+      const skew = inverted ? 2 : 0.5;
+      const [min, max] = range.slice().sort();
+      const generateRatings = () =>
+        generateRange(0, 1000)
+          .map(() => skewedDistribution(min, max, skew, decimalsCount))
+          .filter(
+            (rating) =>
+              (!ratingMax || rating <= ratingMax) &&
+              (!ratingMin || rating >= ratingMin)
+          )
+          .slice(0, scaledParticipantsCount || randomInt(20, 30))
+          .map((scaleValue) =>
+            !accessors
+              ? scaleValue
+              : Object.assign(
+                  {},
+                  ...accessors.map((accessor) => ({ [accessor]: scaleValue }))
+                )
+          );
+
+      singlesRatings = generateRatings();
+      if ([PAIR, TEAM].includes(participantType)) {
+        doublesRatings = generateRatings();
+      }
+    }
+  }
 
   const isoCountries = countries.filter((country) =>
     nationalityCodeType === 'ISO' ? country.iso : country.ioc
@@ -147,18 +212,23 @@ export function generateParticipants({
   function generateIndividualParticipant(participantIndex) {
     const person = mockedPersons[participantIndex];
     const {
-      sex,
-      firstName,
-      lastName,
-      extensions,
       nationalityCode: personNationalityCode,
+      extensions,
+      firstName,
+      birthDate,
+      lastName,
+      sex,
     } = person || {};
     const standardGivenName = firstName || 'GivenName';
     const standardFamilyName = lastName || 'FamilyName';
     const participantName = `${standardGivenName} ${standardFamilyName}`;
     const country = countriesList[participantIndex];
     const nationalityCode =
-      (country && (country.ioc || country.iso)) || personNationalityCode;
+      (country &&
+        (nationalityCodeType === 'ISO'
+          ? country.iso
+          : country.ioc || country.iso)) ||
+      personNationalityCode;
 
     if (countriesList?.length && !nationalityCode && !personNationalityCode) {
       console.log('%c Invalid Nationality Code', { participantIndex, country });
@@ -168,7 +238,7 @@ export function generateParticipants({
       participantIndex,
       nationalityCode,
     });
-    const participant = {
+    const participant = definedAttributes({
       participantId: uuids?.pop() || UUID(),
       participantType: INDIVIDUAL,
       participantRole: COMPETITOR,
@@ -180,11 +250,67 @@ export function generateParticipants({
         standardGivenName,
         nationalityCode,
         extensions,
+        birthDate,
         sex,
       },
-    };
+    });
+
+    if (category) {
+      const singlesRanking = singlesRankings[participantIndex];
+      const doublesRanking = doublesRankings[participantIndex];
+
+      addScaleItem({
+        scaleValue: singlesRanking,
+        eventType: SINGLES,
+        scaleType: RANKING,
+        participant,
+        category,
+      });
+      addScaleItem({
+        scaleValue: doublesRanking,
+        eventType: DOUBLES,
+        scaleType: RANKING,
+        participant,
+        category,
+      });
+
+      const singlesRating = singlesRatings[participantIndex];
+      const doublesRating = doublesRatings[participantIndex];
+
+      addScaleItem({
+        scaleValue: singlesRating,
+        eventType: SINGLES,
+        scaleType: RATING,
+        participant,
+        category,
+      });
+      addScaleItem({
+        scaleValue: doublesRating,
+        eventType: DOUBLES,
+        scaleType: RATING,
+        participant,
+        category,
+      });
+    }
 
     return participant;
+  }
+}
+
+function addScaleItem({
+  scaleValue: itemValue,
+  participant,
+  eventType,
+  scaleType,
+  category,
+}) {
+  const scaleName =
+    category.categoryName || category.ratingType || category.ageCategoryCode;
+  const itemType = [SCALE, scaleType, eventType, scaleName].join('.');
+  const timeItem = { itemValue, itemType };
+  if (scaleName && itemValue) {
+    if (!participant.timeItems) participant.timeItems = [];
+    participant.timeItems.push(timeItem);
   }
 }
 

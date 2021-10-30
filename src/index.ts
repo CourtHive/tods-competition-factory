@@ -3,12 +3,13 @@ export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
+import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
 import { nearestPowerOf2, isPowerOf2, isNumeric } from './utilities/math';
+import { generateHashCode, generateTimeCode } from './utilities';
 import { dateTime, dateRange } from './utilities/dateTime';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
 import { numericSort } from './utilities/sorting';
 import { UUID, UUIDS } from './utilities/UUID';
-import { generateHashCode, generateTimeCode } from './utilities';
 import { JSON2CSV } from './utilities/json';
 import {
   countValues,
@@ -29,18 +30,19 @@ export const utilities = {
   dateRange,
   dateTime,
   garman,
-  generateRange,
   generateHashCode,
+  generateRange,
   generateTimeCode,
   instanceCount,
   intersection,
   isNumeric,
+  isPowerOf2,
   JSON2CSV,
   makeDeepCopy,
   nearestPowerOf2,
   numericSort,
   overlap,
-  isPowerOf2,
+  parseAgeCategoryCode,
   randomMember,
   randomPop,
   shuffleArray,

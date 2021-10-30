@@ -137,14 +137,14 @@ it('can accept a privacy policy to filter tournament participants attributes', (
   expect(participantGenders.length).toEqual(2);
 
   let personAttributes = Object.keys(tournamentParticipants[0].person);
-  expect(personAttributes).toEqual([
+  expect(personAttributes.sort()).toEqual([
     'addresses',
+    'extensions',
+    'nationalityCode',
     'personId',
+    'sex',
     'standardFamilyName',
     'standardGivenName',
-    'nationalityCode',
-    'extensions',
-    'sex',
   ]);
 
   // first filter for only MALE participants and capture the count

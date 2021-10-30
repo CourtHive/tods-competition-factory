@@ -12,58 +12,68 @@ import {
   VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 
-it('can add draw with empty voluntary consolation stage', () => {
-  const eventProfiles = [
-    {
-      eventName: 'Event Flights Test',
-      eventType: SINGLES,
-      category: {
-        categoryName: 'U12',
+const scenarios = [{}, { category: { categoryName: 'U12' } }];
+it.each(scenarios)(
+  'can add draw with empty voluntary consolation stage',
+  (scenario) => {
+    const qualifyingDrawSize = 16;
+    const mainDrawSize = 32;
+    const eventProfiles = [
+      {
+        ...scenario,
+        eventName: 'Event Flights Test',
+        eventType: SINGLES,
+        matchUpFormat: FORMAT_STANDARD,
+        drawProfiles: [
+          {
+            drawSize: qualifyingDrawSize,
+            drawName: 'Qualifying Draw',
+            stage: QUALIFYING,
+          },
+          {
+            drawSize: mainDrawSize,
+            qualifyingPositions: 4,
+            drawName: 'Main Draw',
+            drawType: COMPASS,
+          },
+          {
+            drawName: 'Consolation Draw',
+            stage: VOLUNTARY_CONSOLATION,
+          },
+        ],
       },
-      matchUpFormat: FORMAT_STANDARD,
-      drawProfiles: [
-        {
-          drawSize: 16,
-          drawName: 'Qualifying Draw',
-          stage: QUALIFYING,
-        },
-        {
-          drawSize: 32,
-          qualifyingPositions: 4,
-          drawName: 'Main Draw',
-          drawType: COMPASS,
-        },
-        {
-          drawName: 'Consolation Draw',
-          stage: VOLUNTARY_CONSOLATION,
-        },
-      ],
-    },
-  ];
+    ];
 
-  const {
-    eventIds: [eventId],
-    drawIds,
-    tournamentRecord,
-  } = mocksEngine.generateTournamentRecord({
-    eventProfiles,
-  });
+    const {
+      eventIds: [eventId],
+      drawIds,
+      tournamentRecord,
+    } = mocksEngine.generateTournamentRecord({
+      eventProfiles,
+    });
 
-  const { flightProfile } = tournamentEngine
-    .setState(tournamentRecord)
-    .getFlightProfile({ eventId });
-  expect(flightProfile.flights[0].drawEntries.length).toEqual(16);
-  expect(flightProfile.flights[1].drawEntries.length).toEqual(16);
-  expect(flightProfile.flights[2].drawEntries.length).toEqual(0);
+    tournamentEngine.setState(tournamentRecord);
 
-  expect(drawIds.length).toEqual(3);
-  const { tournamentRecord: updatedTournamentRecord } =
-    tournamentEngine.getState();
-  expect(updatedTournamentRecord.events[0].drawDefinitions.length).toEqual(3);
-  expect(updatedTournamentRecord.events[0].drawDefinitions[1].drawType).toEqual(
-    COMPASS
-  );
-});
+    const { tournamentParticipants } =
+      tournamentEngine.getTournamentParticipants();
+    expect(tournamentParticipants.length).toBeGreaterThanOrEqual(
+      qualifyingDrawSize + mainDrawSize
+    );
+
+    const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
+    expect(flightProfile.flights[0].drawEntries.length).toEqual(16);
+    expect(flightProfile.flights[1].drawEntries.length).toEqual(28);
+    expect(flightProfile.flights[2].drawEntries.length).toEqual(0);
+
+    expect(drawIds.length).toEqual(3);
+    const { tournamentRecord: updatedTournamentRecord } =
+      tournamentEngine.getState();
+    expect(updatedTournamentRecord.events[0].drawDefinitions.length).toEqual(3);
+    expect(
+      updatedTournamentRecord.events[0].drawDefinitions[1].drawType
+    ).toEqual(COMPASS);
+  }
+);
 
 it('can add draw with voluntary consolation stage', () => {
   const drawSize = 8;

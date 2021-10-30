@@ -1,0 +1,29 @@
+---
+title: Age Category Codes
+---
+
+Age category codes may appear on an attribute of a [`category`](../types/typedefs/#generic), which can appear in `event` and `drawDefinition` elements within a tournament record.
+
+See [ITF Standard Codes](https://itftennis.atlassian.net/wiki/spaces/TODS/pages/1272840305/Standard+Codes) for an explanation of the construction of age category codes.
+
+A `consideredDate` is required for calculating `ageMaxDate` and `ageMinDate`, values which can be used to validate a `participant` entry into an event.
+
+```js
+import { parseAgeCategoryCode } from 'tods-competition-factory';
+
+const { ageMax, ageMin, ageMaxDate, ageMinDate } = parseAgeCategoryCode({
+  category: { ageCategoryCode },
+  consideredDate, // required - typically the startDate or endDate of a tournament
+});
+```
+
+```jsx live
+function AgeCategoryDemo(props) {
+  const result = factory.parseAgeCategoryCode({
+    category: { ageCategoryCode: '18U' },
+    consideredDate: '2022-01-01',
+  });
+
+  return <RenderJSON data={result} root={'result'} expandRoot={false} />;
+}
+```

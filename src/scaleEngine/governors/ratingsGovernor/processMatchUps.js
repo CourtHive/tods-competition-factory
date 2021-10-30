@@ -29,12 +29,14 @@ export function processMatchUps({
   if (typeof ratingType !== 'string')
     return { error: INVALID_VALUES, ratingType };
   if (!ratingsParameters[ratingType]) return { error: INVALID_VALUES };
+  const ratingParameter = ratingsParameters[ratingType];
+  const { accessor } = ratingParameter;
 
   const modifiedScaleValues = {};
 
   const { matchUps } = allTournamentMatchUps({
-    tournamentRecord,
     matchUpFilters: { matchUpIds, matchUpStatuses: completedMatchUpStatuses },
+    tournamentRecord,
     inContext: true,
   });
 
@@ -84,6 +86,8 @@ export function processMatchUps({
             participantId,
           });
 
+          const scaleValue = accessor ? { [accessor]: undefined } : undefined;
+
           return {
             [participantId]: dynamicScaleItem ||
               scaleItem || {
@@ -91,6 +95,7 @@ export function processMatchUps({
                 scaleType: RATING,
                 eventType: matchUpType,
                 scaleDate: endDate,
+                scaleValue,
               },
           };
         })
@@ -111,9 +116,19 @@ export function processMatchUps({
     const winningSideParticipantIds = sideParticipantIds[winningSide];
     const losingSideParticipantIds = sideParticipantIds[3 - winningSide];
     for (const winnerParticipantId of winningSideParticipantIds) {
-      const winnerRating = scaleItemMap[winnerParticipantId]?.scaleValue;
+      const winnerScaleValue = scaleItemMap[winnerParticipantId]?.scaleValue;
+      const winnerRating =
+        typeof winnerScaleValue === 'object'
+          ? winnerScaleValue[accessor]
+          : winnerScaleValue;
+
       for (const loserParticipantId of losingSideParticipantIds) {
-        const loserRating = scaleItemMap[loserParticipantId]?.scaleValue;
+        const loserScaleValue = scaleItemMap[loserParticipantId]?.scaleValue;
+        const loserRating =
+          typeof loserScaleValue === 'object'
+            ? loserScaleValue[accessor]
+            : loserScaleValue;
+
         const winnerCountables = countables[winningSide];
         const loserCountables = countables[3 - winningSide];
         const { newWinnerRating, newLoserRating } = calculateNewRatings({
@@ -124,8 +139,16 @@ export function processMatchUps({
           loserRating,
           ratingType,
         });
-        scaleItemMap[winnerParticipantId].scaleValue = newWinnerRating;
-        scaleItemMap[loserParticipantId].scaleValue = newLoserRating;
+
+        const newWinnerScaleValue = accessor
+          ? { ...winnerScaleValue, [accessor]: newWinnerRating }
+          : newWinnerRating;
+        const newLoserScaleValue = accessor
+          ? { ...loserScaleValue, [accessor]: newLoserRating }
+          : newLoserRating;
+        scaleItemMap[winnerParticipantId].scaleValue = newWinnerScaleValue;
+        scaleItemMap[loserParticipantId].scaleValue = newLoserScaleValue;
+
         let result = setParticipantScaleItem({
           scaleItem: {
             ...scaleItemMap[winnerParticipantId],
