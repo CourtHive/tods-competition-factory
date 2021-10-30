@@ -1,5 +1,6 @@
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 import { addNotice, getTopics } from '../../../global/state/globalState';
+import { definedAttributes } from '../../../utilities/objects';
 
 import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -108,8 +109,7 @@ export function setParticipantScaleItems({
     }
   });
 
-  const message = !modificationsApplied && NO_MODIFICATIONS_APPLIED;
-
+  const message = !modificationsApplied ? NO_MODIFICATIONS_APPLIED : undefined;
   const { topics } = getTopics();
   if (topics.includes(MODIFY_PARTICIPANTS) && modificationsApplied) {
     addNotice({
@@ -118,7 +118,7 @@ export function setParticipantScaleItems({
     });
   }
 
-  return { ...SUCCESS, modificationsApplied, message };
+  return definedAttributes({ ...SUCCESS, modificationsApplied, message });
 }
 
 function isValidScaleItem({ scaleItem }) {
