@@ -172,11 +172,11 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
 
   // generate matchUpsPerRound matchUps and add them to the adHoc draw structure
   let result = tournamentEngine.generateAdHocMatchUps({
-    drawId,
-    structureId,
-    newRound: true,
     matchUpsCount: matchUpsPerRound,
     addMatchUps: true,
+    newRound: true,
+    structureId,
+    drawId,
   });
   expect(result.success).toEqual(true);
   expect(result.matchUps.length).toEqual(matchUpsPerRound);
@@ -184,8 +184,8 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
 
   // confirm that drawSize positionAssignments were generated for matchUpsPerRound matchUps
   let { positionAssignments } = tournamentEngine.getPositionAssignments({
-    drawId,
     structureId,
+    drawId,
   });
   expect(positionAssignments.length).toEqual(drawSize);
 
@@ -199,9 +199,9 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
 
   // get the actions for the first drawPosition
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isDrawPosition).toEqual(true);
   expect(result.hasPositionAssigned).toEqual(false);

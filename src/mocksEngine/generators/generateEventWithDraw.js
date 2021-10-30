@@ -40,6 +40,7 @@ export function generateEventWithDraw({
   completeAllMatchUps,
   autoEntryPositions,
   randomWinningSide,
+  ratingsParameters,
   tournamentRecord,
   drawProfile,
   startDate,
@@ -122,18 +123,22 @@ export function generateEventWithDraw({
       inContext,
     } = participantsProfile || {};
     const { participants: unique } = generateParticipants({
+      scaledParticipantsCount: drawProfile.scaledParticipantsCount,
       participantsCount: individualParticipantsCount,
       consideredDate: tournamentRecord?.startDate,
       sex: gender || participantsProfile?.sex,
+      rankingRange: drawProfile.rankingRange,
       uuids: drawProfile.uuids || uuids,
       nationalityCodesCount,
       nationalityCodeType,
       valuesInstanceLimit,
+      ratingsParameters,
       nationalityCodes,
       participantType,
       addressProps,
       personIds,
       inContext,
+      category,
     });
 
     if (tournamentRecord) {
@@ -360,11 +365,11 @@ export function generateEventWithDraw({
 
     if (completeAllMatchUps) {
       const result = completeDrawMatchUps({
+        matchUpStatusProfile,
+        completeAllMatchUps,
+        randomWinningSide,
         drawDefinition,
         matchUpFormat,
-        randomWinningSide,
-        completeAllMatchUps,
-        matchUpStatusProfile,
       });
       if (result.error) return result;
 
@@ -379,11 +384,11 @@ export function generateEventWithDraw({
           event,
         });
         result = completeDrawMatchUps({
+          matchUpStatusProfile,
+          completeAllMatchUps,
+          randomWinningSide,
           drawDefinition,
           matchUpFormat,
-          randomWinningSide,
-          completeAllMatchUps,
-          matchUpStatusProfile,
         });
         if (result.error) return result;
       }

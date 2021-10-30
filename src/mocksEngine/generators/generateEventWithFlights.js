@@ -19,8 +19,8 @@ import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange, UUID } from '../../utilities';
 
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
-import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { SINGLES, DOUBLES, TEAM } from '../../constants/eventConstants';
+import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { SEEDING } from '../../constants/scaleConstants';
 import {
   MAIN,
@@ -36,6 +36,7 @@ export function generateEventWithFlights({
   completeAllMatchUps,
   autoEntryPositions,
   randomWinningSide,
+  ratingsParameters,
   tournamentRecord,
   eventProfile,
   startDate,
@@ -82,9 +83,11 @@ export function generateEventWithFlights({
       if (!Object.keys(stageParticipantsCount).includes(stage))
         stageParticipantsCount[stage] = 0;
 
-      const stageCount = participantsCount || drawSize - qualifyingPositions;
+      const stageCount = (participantsCount || drawSize) - qualifyingPositions;
+      const requiresUniqueParticipants =
+        uniqueParticipants || gender || category || stage === QUALIFYING;
 
-      if (uniqueParticipants || gender) {
+      if (requiresUniqueParticipants) {
         if (!Object.keys(uniqueParticipantsCount).includes(stage))
           uniqueParticipantsCount[stage] = 0;
         uniqueParticipantsCount[stage] += stageCount;
@@ -126,18 +129,24 @@ export function generateEventWithFlights({
     const qualifyingParticipantsCount =
       uniqueParticipantsCount[QUALIFYING] || 0;
 
+    const participantsCount =
+      mainParticipantsCount + qualifyingParticipantsCount;
     const { participants: uniqueFlightParticipants } = generateParticipants({
-      participantsCount: mainParticipantsCount + qualifyingParticipantsCount,
+      scaledParticipantsCount: eventProfile.scaledParticipantsCount,
       consideredDate: tournamentRecord?.startDate,
+      rankingRange: eventProfile.rankingRange,
       participantType: eventParticipantType,
       nationalityCodesCount,
       nationalityCodeType,
       valuesInstanceLimit,
+      participantsCount,
+      ratingsParameters,
       nationalityCodes,
       addressProps,
       sex: gender,
       personIds,
       inContext,
+      category,
       uuids,
     });
 
@@ -226,13 +235,18 @@ export function generateEventWithFlights({
     } = drawProfile;
 
     const entriesCount = drawSize - qualifyingPositions;
+    const requiresUniqueParticipants =
+      uniqueParticipants || gender || category || stage === QUALIFYING;
 
     // if a drawProfile has specified uniqueParticipants...
-    const drawParticipants = uniqueParticipants
-      ? uniqueDrawParticipants.slice(uniqueParticipantsIndex, entriesCount)
+    const drawParticipants = requiresUniqueParticipants
+      ? uniqueDrawParticipants.slice(
+          uniqueParticipantsIndex,
+          uniqueParticipantsIndex + entriesCount
+        )
       : stageParticipants[stage || MAIN] || [];
 
-    if (uniqueParticipants || gender) uniqueParticipantsIndex += entriesCount;
+    if (requiresUniqueParticipants) uniqueParticipantsIndex += entriesCount;
 
     const drawParticipantIds = drawParticipants
       .slice(0, entriesCount)

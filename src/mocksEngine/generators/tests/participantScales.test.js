@@ -1,3 +1,5 @@
+import { getParticipantId } from '../../../global/functions/extractors';
+import { tournamentEngine } from '../../..';
 import mocksEngine from '../..';
 
 // prettier-ignore
@@ -34,5 +36,47 @@ test.each(rankingsScenarios)(
         expect(timeItem.itemValue).toBeGreaterThanOrEqual(ratingMin);
       }
     }
+  }
+);
+
+const ratingType = 'WTN';
+const categoryName = '12U';
+
+// prettier-ignore
+const mockScenarios = [
+   { drawProfiles: [{ drawSize: 4, category: { categoryName }, rankingRange: [1, 15] }], expectation: { itemType: 'SCALE.RANKING.SINGLES.12U' }},
+   { eventProfiles: [{ drawProfiles: [{ drawSize: 4 }], category: { categoryName }, rankingRange: [1, 15] }], expectation: { itemType: 'SCALE.RANKING.SINGLES.12U' }},
+   { drawProfiles: [{ drawSize: 4, category: { ratingType }, rankingRange: [1, 15] }], expectation: { itemType: 'SCALE.RATING.SINGLES.WTN' }},
+   { eventProfiles: [{ drawProfiles: [{ drawSize: 4 }], category: { ratingType }, rankingRange: [1, 15] }], expectation: { itemType: 'SCALE.RATING.SINGLES.WTN' }}
+];
+
+it.each(mockScenarios)(
+  'can generate events with scaled participants',
+  (scenario) => {
+    const {
+      tournamentRecord,
+      drawIds: [drawId],
+    } = mocksEngine.generateTournamentRecord(scenario);
+    tournamentEngine.setState(tournamentRecord);
+
+    const {
+      drawDefinition: {
+        structures: [{ structureId }],
+      },
+    } = tournamentEngine.getEvent({ drawId });
+    const { positionAssignments } = tournamentEngine.getPositionAssignments({
+      structureId,
+      drawId,
+    });
+    const participantIds = positionAssignments.map(getParticipantId);
+    const { tournamentParticipants } =
+      tournamentEngine.getTournamentParticipants({
+        participantFilters: { participantIds },
+      });
+    tournamentParticipants.forEach(({ timeItems }) => {
+      const { itemValue, itemType } = timeItems[0];
+      expect(itemType).toEqual(scenario.expectation.itemType);
+      expect(itemValue).not.toBeUndefined();
+    });
   }
 );

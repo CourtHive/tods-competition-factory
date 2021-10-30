@@ -1,5 +1,4 @@
 import { cityMocks, stateMocks, postalCodeMocks } from '../utilities/address';
-import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { randomInt, skewedDistribution } from '../../utilities/math';
 import { generateRange, shuffleArray, UUID } from '../../utilities';
 import { definedAttributes } from '../../utilities/objects';
@@ -7,6 +6,7 @@ import { countries } from '../../fixtures/countryData';
 import { personMocks } from '../utilities/personMocks';
 import { teamMocks } from '../utilities/teamMocks';
 
+import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import { RANKING, RATING, SCALE } from '../../constants/scaleConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
@@ -36,7 +36,11 @@ import { SINGLES } from '../../constants/eventConstants';
  *
  */
 export function generateParticipants({
+  ratingsParameters = defaultRatingsParameters,
   valuesInstanceLimit,
+  consideredDate,
+  category,
+
   nationalityCodesCount,
   nationalityCodeType,
   nationalityCodes,
@@ -53,9 +57,6 @@ export function generateParticipants({
   sex,
 
   inContext,
-
-  consideredDate,
-  category,
 
   rankingRange = [1, 100], // range of ranking positions to generate
   scaledParticipantsCount, // number of participants to assign rankings/ratings
@@ -94,6 +95,7 @@ export function generateParticipants({
           scaledParticipantsCount || randomInt(20, 30)
         );
     }
+
     if (ratingType && ratingsParameters[ratingType]) {
       let { ratingMax, ratingMin } = category;
       const ratingParameter = ratingsParameters[ratingType];
@@ -298,8 +300,10 @@ function addScaleItem({
     category.categoryName || category.ratingType || category.ageCategoryCode;
   const itemType = [SCALE, scaleType, eventType, scaleName].join('.');
   const timeItem = { itemValue, itemType };
-  if (!participant.timeItems) participant.timeItems = [];
-  if (scaleName && itemValue) participant.timeItems.push(timeItem);
+  if (scaleName && itemValue) {
+    if (!participant.timeItems) participant.timeItems = [];
+    participant.timeItems.push(timeItem);
+  }
 }
 
 function generateAddress(addressAttributes) {
