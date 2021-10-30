@@ -53,6 +53,7 @@ export function generateEventWithDraw({
     drawType = SINGLE_ELIMINATION,
     eventType = SINGLES,
     alternatesCount = 0,
+    generate = true,
     eventExtensions,
     drawExtensions,
     drawSize = 32,
@@ -71,7 +72,11 @@ export function generateEventWithDraw({
       ? tieFormatDefaults({ namedFormat: tieFormatName })
       : undefined;
 
-  let eventName = drawProfile.eventName || `Generated ${eventType}`;
+  const categoryName =
+    category?.categoryName || category?.ageCategoryCode || category?.ratingType;
+
+  let eventName =
+    drawProfile.eventName || categoryName || `Generated ${eventType}`;
   let targetParticipants = tournamentRecord?.participants || [];
 
   const participantsCount =
@@ -242,10 +247,7 @@ export function generateEventWithDraw({
   }
 
   // now add seeding information for seedsCount participants
-  const seedingScaleName =
-    event.category?.ageCategoryCode ||
-    event.category?.categoryName ||
-    eventName;
+  const seedingScaleName = categoryName || eventName;
   if (tournamentRecord && seedsCount && seedsCount <= participantIds.length) {
     const scaleValues = generateRange(1, seedsCount + 1);
     scaleValues.forEach((scaleValue, index) => {
@@ -273,6 +275,7 @@ export function generateEventWithDraw({
   });
 
   if (generationError) return { error: generationError };
+  const drawId = generate ? drawDefinition.drawId : undefined;
 
   if (Array.isArray(drawExtensions)) {
     drawExtensions
@@ -282,108 +285,89 @@ export function generateEventWithDraw({
       );
   }
 
-  result = addDrawDefinition({ drawDefinition, event });
-  const { drawId } = drawDefinition;
+  if (generate) {
+    addDrawDefinition({ drawDefinition, event });
 
-  if (drawProfile.withPlayoffs) {
-    const structureId = drawDefinition.structures[0].structureId;
-    const result = addPlayoffStructures({
-      ...drawProfile.withPlayoffs,
-      tournamentRecord,
-      drawDefinition,
-      isMock: true,
-      structureId,
-      idPrefix,
-      event,
-    });
-    if (result?.error) return result;
-  }
-
-  const manual = drawProfile.automated === false;
-  if (!manual) {
-    if (drawProfile.outcomes) {
-      const { matchUps } = allDrawMatchUps({
+    if (drawProfile.withPlayoffs) {
+      const structureId = drawDefinition.structures[0].structureId;
+      const result = addPlayoffStructures({
+        ...drawProfile.withPlayoffs,
+        tournamentRecord,
         drawDefinition,
-        inContext: true,
+        isMock: true,
+        structureId,
+        idPrefix,
         event,
       });
-      for (const outcomeDef of drawProfile.outcomes) {
-        const {
-          roundNumber,
-          drawPositions,
-          roundPosition,
-          scoreString,
-          winningSide,
-          stage = MAIN,
-          matchUpFormat,
-          stageSequence = 1,
-          matchUpStatus = COMPLETED,
-          matchUpIndex = 0,
-          structureOrder, // like a group number; for RR = the order of the structureType: ITEM within structureType: CONTAINER
-        } = outcomeDef;
-        const structureMatchUpIds = matchUps.reduce((sm, matchUp) => {
-          const { structureId, matchUpId } = matchUp;
-          if (sm[structureId]) {
-            sm[structureId].push(matchUpId);
-          } else {
-            sm[structureId] = [matchUpId];
-          }
-          return sm;
-        }, {});
-        const orderedStructures = Object.assign(
-          {},
-          ...Object.keys(structureMatchUpIds).map((structureId, index) => ({
-            [structureId]: index + 1,
-          }))
-        );
-        const targetMatchUps = matchUps.filter((matchUp) => {
-          return (
-            (!stage || matchUp.stage === stage) &&
-            (!stageSequence || matchUp.stageSequence === stageSequence) &&
-            (!roundNumber || matchUp.roundNumber === roundNumber) &&
-            (!roundPosition || matchUp.roundPosition === roundPosition) &&
-            (!structureOrder ||
-              orderedStructures[matchUp.structureId] === structureOrder) &&
-            (!drawPositions ||
-              intersection(drawPositions, matchUp.drawPositions).length === 2)
-          );
-        });
-        const targetMatchUp = targetMatchUps[matchUpIndex];
-        const result = completeDrawMatchUp({
-          drawDefinition,
-          targetMatchUp,
-          matchUpFormat,
-          matchUpStatus,
-          scoreString,
-          winningSide,
-          drawId,
-        });
-        // will not throw errors for BYE matchUps
-        if (result?.error) return result;
-      }
+      if (result?.error) return result;
     }
 
-    if (completeAllMatchUps) {
-      const result = completeDrawMatchUps({
-        matchUpStatusProfile,
-        completeAllMatchUps,
-        randomWinningSide,
-        drawDefinition,
-        matchUpFormat,
-      });
-      if (result.error) return result;
-
-      if (drawType === ROUND_ROBIN_WITH_PLAYOFF) {
-        const mainStructure = drawDefinition.structures.find(
-          (structure) => structure.stage === MAIN
-        );
-        let result = automatedPlayoffPositioning({
-          structureId: mainStructure.structureId,
-          tournamentRecord,
+    const manual = drawProfile.automated === false;
+    if (!manual) {
+      if (drawProfile.outcomes) {
+        const { matchUps } = allDrawMatchUps({
           drawDefinition,
+          inContext: true,
           event,
         });
-        result = completeDrawMatchUps({
+        for (const outcomeDef of drawProfile.outcomes) {
+          const {
+            roundNumber,
+            drawPositions,
+            roundPosition,
+            scoreString,
+            winningSide,
+            stage = MAIN,
+            matchUpFormat,
+            stageSequence = 1,
+            matchUpStatus = COMPLETED,
+            matchUpIndex = 0,
+            structureOrder, // like a group number; for RR = the order of the structureType: ITEM within structureType: CONTAINER
+          } = outcomeDef;
+          const structureMatchUpIds = matchUps.reduce((sm, matchUp) => {
+            const { structureId, matchUpId } = matchUp;
+            if (sm[structureId]) {
+              sm[structureId].push(matchUpId);
+            } else {
+              sm[structureId] = [matchUpId];
+            }
+            return sm;
+          }, {});
+          const orderedStructures = Object.assign(
+            {},
+            ...Object.keys(structureMatchUpIds).map((structureId, index) => ({
+              [structureId]: index + 1,
+            }))
+          );
+          const targetMatchUps = matchUps.filter((matchUp) => {
+            return (
+              (!stage || matchUp.stage === stage) &&
+              (!stageSequence || matchUp.stageSequence === stageSequence) &&
+              (!roundNumber || matchUp.roundNumber === roundNumber) &&
+              (!roundPosition || matchUp.roundPosition === roundPosition) &&
+              (!structureOrder ||
+                orderedStructures[matchUp.structureId] === structureOrder) &&
+              (!drawPositions ||
+                intersection(drawPositions, matchUp.drawPositions).length === 2)
+            );
+          });
+          const targetMatchUp = targetMatchUps[matchUpIndex];
+          const result = completeDrawMatchUp({
+            drawDefinition,
+            targetMatchUp,
+            matchUpFormat,
+            matchUpStatus,
+            scoreString,
+            winningSide,
+            drawId,
+          });
+          // will not throw errors for BYE matchUps
+          if (result?.error) return result;
+        }
+      }
+
+      if (completeAllMatchUps) {
+        const result = completeDrawMatchUps({
           matchUpStatusProfile,
           completeAllMatchUps,
           randomWinningSide,
@@ -391,8 +375,28 @@ export function generateEventWithDraw({
           matchUpFormat,
         });
         if (result.error) return result;
+
+        if (drawType === ROUND_ROBIN_WITH_PLAYOFF) {
+          const mainStructure = drawDefinition.structures.find(
+            (structure) => structure.stage === MAIN
+          );
+          let result = automatedPlayoffPositioning({
+            structureId: mainStructure.structureId,
+            tournamentRecord,
+            drawDefinition,
+            event,
+          });
+          result = completeDrawMatchUps({
+            matchUpStatusProfile,
+            completeAllMatchUps,
+            randomWinningSide,
+            drawDefinition,
+            matchUpFormat,
+          });
+          if (result.error) return result;
+        }
+        // TODO: check if RRWPO & automate & complete
       }
-      // TODO: check if RRWPO & automate & complete
     }
   }
 

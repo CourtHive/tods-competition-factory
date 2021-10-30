@@ -333,8 +333,9 @@ export function generateTournamentRecord({
       const result = addEvent({ tournamentRecord, event });
       if (result.error) return result;
 
-      drawIds.push(drawId);
+      if (drawId) drawIds.push(drawId);
       eventIds.push(eventId);
+
       if (uniqueParticipantIds?.length)
         allUniqueParticipantIds.push(...uniqueParticipantIds);
     }
@@ -360,8 +361,10 @@ export function generateTournamentRecord({
         startDate,
       });
       if (error) return { error };
+
       if (generatedDrawIds) drawIds.push(...generatedDrawIds);
       eventIds.push(eventId);
+
       if (uniqueParticipantIds?.length)
         allUniqueParticipantIds.push(...uniqueParticipantIds);
     }

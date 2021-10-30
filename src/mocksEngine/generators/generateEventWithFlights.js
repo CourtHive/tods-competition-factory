@@ -43,8 +43,9 @@ export function generateEventWithFlights({
   uuids,
 }) {
   let gender = eventProfile.gender;
+  let eventName = eventProfile.eventName;
+
   const {
-    eventName = 'Generated Event',
     eventType = SINGLES,
     policyDefinitions,
     drawProfiles = [],
@@ -62,6 +63,7 @@ export function generateEventWithFlights({
     (eventType === TEAM
       ? tieFormatDefaults({ namedFormat: tieFormatName })
       : undefined);
+
   let targetParticipants = tournamentRecord.participants;
   let uniqueDrawParticipants = [];
 
@@ -189,7 +191,12 @@ export function generateEventWithFlights({
   let { eventAttributes } = eventProfile;
   if (typeof eventAttributes !== 'object') eventAttributes = {};
 
+  const categoryName =
+    category?.categoryName || category?.ageCategoryCode || category?.ratingType;
   const eventId = eventProfile.eventId || UUID();
+
+  eventName = eventName || categoryName || 'Generated Event';
+
   const newEvent = {
     ...eventAttributes,
     surfaceCategory,
@@ -220,6 +227,7 @@ export function generateEventWithFlights({
   }
   let result = addEvent({ tournamentRecord, event: newEvent });
   if (result.error) return result;
+
   const { event } = result;
 
   let uniqueParticipantsIndex = 0;
@@ -298,10 +306,8 @@ export function generateEventWithFlights({
           .filter(hasParticipantId)
           .map(getParticipantId);
 
-        const seedingScaleName =
-          event.category?.ageCategoryCode ||
-          event.category?.categoryName ||
-          eventName;
+        const seedingScaleName = categoryName || eventName;
+
         if (
           tournamentRecord &&
           seedsCount &&
@@ -316,6 +322,7 @@ export function generateEventWithFlights({
               eventType,
               scaleDate: startDate,
             };
+
             const participantId = drawParticipantIds[index];
             setParticipantScaleItem({
               tournamentRecord,

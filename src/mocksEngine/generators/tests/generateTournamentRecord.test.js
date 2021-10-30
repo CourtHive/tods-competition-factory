@@ -27,7 +27,7 @@ test('generateTournamentRecord', () => {
   ]);
 });
 
-test('drawProfiles and participantsProfile work as expecteed', () => {
+test('drawProfiles and participantsProfile work as expected', () => {
   const { drawIds, eventIds, venueIds, tournamentRecord } =
     mocksEngine.generateTournamentRecord({
       participantsProfile: {
@@ -42,6 +42,40 @@ test('drawProfiles and participantsProfile work as expecteed', () => {
   expect(drawIds.length).toEqual(2);
 
   tournamentEngine.setState(tournamentRecord);
+
+  eventIds.forEach((eventId) => {
+    const { event } = tournamentEngine.getEvent({ eventId });
+    expect(event.drawDefinitions.length).toEqual(1);
+    const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
+    expect(flightProfile.flights.length).toEqual(1);
+  });
+});
+
+test('drawProfiles support generate: false', () => {
+  const { drawIds, eventIds, venueIds, tournamentRecord } =
+    mocksEngine.generateTournamentRecord({
+      participantsProfile: {
+        participantsCount: 100,
+        addressProps: { citiesCount: 10 },
+      },
+      drawProfiles: [
+        { drawSize: 16, eventType: DOUBLES, generate: false },
+        { drawSize: 8, generate: false },
+      ],
+    });
+
+  expect(eventIds.length).toEqual(2);
+  expect(venueIds.length).toEqual(0);
+  expect(drawIds.length).toEqual(0);
+
+  tournamentEngine.setState(tournamentRecord);
+
+  eventIds.forEach((eventId) => {
+    const { event } = tournamentEngine.getEvent({ eventId });
+    expect(event.drawDefinitions).toBeUndefined();
+    const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
+    expect(flightProfile).toBeUndefined();
+  });
 });
 
 test.each([
@@ -209,4 +243,33 @@ test('eventProfiles and participantsProfile work as expected', () => {
       expect(drawDefinition.entries.length).toEqual(eventEntriesCount);
     });
   });
+});
+
+test('eventProfiles will skip drawGeneration when { generate: false }', () => {
+  const categoryName = 'Custom Category';
+  const eventProfiles = [
+    {
+      category: { categoryName },
+      drawProfiles: [
+        { drawSize: 8, generate: false },
+        { drawSize: 8, generate: false },
+      ],
+    },
+  ];
+
+  const { tournamentRecord, eventIds, drawIds } =
+    mocksEngine.generateTournamentRecord({ eventProfiles });
+
+  expect(eventIds.length).toEqual(1);
+  expect(drawIds.length).toEqual(2);
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const [eventId] = eventIds;
+  const { event } = tournamentEngine.getEvent({ eventId });
+  expect(event.eventName).toEqual(categoryName);
+  expect(event.drawDefinitions).toBeUndefined();
+
+  const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
+  expect(flightProfile.flights.length).toEqual(2);
 });

@@ -1,4 +1,5 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
+import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
@@ -150,6 +151,7 @@ export function assignTieMatchUpParticipantId(params) {
     }
 
     dualMatchUpSide.lineUp = modifiedLineUp;
+    modifyMatchUpNotice({ drawDefinition, matchUp: dualMatchUp });
 
     return { ...SUCCESS, modifiedLineUp };
   }
@@ -175,6 +177,7 @@ export function assignTieMatchUpParticipantId(params) {
   });
 
   dualMatchUpSide.lineUp = modifiedLineUp;
+  modifyMatchUpNotice({ drawDefinition, matchUp: dualMatchUp });
 
   if (deleteParticipantId) {
     const result = deleteParticipants({

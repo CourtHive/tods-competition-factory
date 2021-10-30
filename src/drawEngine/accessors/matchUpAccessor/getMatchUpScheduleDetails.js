@@ -153,10 +153,11 @@ export function getMatchUpScheduleDetails({
   const { scheduledDate } = scheduledMatchUpDate({ matchUp });
   const { scheduledTime } = scheduledMatchUpTime({ matchUp });
   const endDate =
-    hasCompletedStatus &&
-    (extractDate(endTime) ||
-      extractDate(scheduledDate) ||
-      extractDate(scheduledTime));
+    (hasCompletedStatus &&
+      (extractDate(endTime) ||
+        extractDate(scheduledDate) ||
+        extractDate(scheduledTime))) ||
+    undefined;
 
   return { schedule, endDate };
 }

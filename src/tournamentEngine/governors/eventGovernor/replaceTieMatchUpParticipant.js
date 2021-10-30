@@ -17,6 +17,7 @@ import {
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { addMatchUpsNotice } from '../../../drawEngine/notifications/drawNotifications';
 
 export function replaceTieMatchUpParticipantId(params) {
   const matchUpContext = getTieMatchUpContext(params);
@@ -225,6 +226,8 @@ export function replaceTieMatchUpParticipantId(params) {
       if (result.success) participantRemoved = existingPairParticipantId;
     }
   }
+
+  addMatchUpsNotice({ drawDefinition, matchUp: dualMatchUp });
 
   return { ...SUCCESS, participantRemoved, participantAdded };
 }

@@ -1,6 +1,7 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { findLineUpWithParticipantIds } from './drawDefinitions/findLineUpWithParticipantIds';
 import { scoreHasValue } from '../../../drawEngine/governors/matchUpGovernor/scoreHasValue';
+import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
@@ -211,6 +212,8 @@ export function removeTieMatchUpParticipantId(params) {
       return { error: PARTICIPANT_NOT_FOUND };
     }
   }
+
+  modifyMatchUpNotice({ drawDefinition, matchUp: dualMatchUp });
 
   return { ...SUCCESS, modifiedLineUp };
 }

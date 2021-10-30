@@ -17,7 +17,7 @@ export const ratingsParameters = {
     defaultInitialization: 23,
     accessor: 'wtnRating',
     accessors: ['wtnRating'],
-    attributes: { confidence: 100 },
+    attributes: { confidence: 90 },
   },
 };
 
