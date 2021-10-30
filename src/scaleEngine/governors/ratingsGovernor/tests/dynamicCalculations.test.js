@@ -1,5 +1,6 @@
 import { mocksEngine, scaleEngine, tournamentEngine } from '../../../..';
 
+import ratingsParameters from '../../../../fixtures/ratings/ratingsParameters';
 import { NTRP, UTR, WTN } from '../../../../constants/ratingConstants';
 
 const scenarios = [
@@ -9,6 +10,9 @@ const scenarios = [
   { ratingType: WTN },
   { ratingType: NTRP },
   { asDynamic: true },
+  { ratingType: UTR, asDynamic: true },
+  { ratingType: WTN, asDynamic: true },
+  { ratingType: NTRP, asDynamic: true },
 ];
 
 test.each(scenarios)(
@@ -47,9 +51,15 @@ test.each(scenarios)(
         participant.statistics[0].denominator
       );
       if (asDynamic) {
-        participant.timeItems.forEach(({ itemType }) =>
-          expect(itemType.split('.').reverse()[0]).toEqual('DYNAMIC')
-        );
+        const accessor = ratingsParameters[ratingType]?.accessor;
+        participant.timeItems.forEach((timeItem) => {
+          const { itemType, itemValue } = timeItem;
+          expect(typeof itemValue).toEqual(accessor ? 'object' : 'string');
+          expect(
+            accessor ? itemValue[accessor] : itemValue
+          ).not.toBeUndefined();
+          expect(itemType.split('.').reverse()[0]).toEqual('DYNAMIC');
+        });
       }
     }
   }

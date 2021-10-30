@@ -99,7 +99,7 @@ export function generateParticipants({
     if (ratingType && ratingsParameters[ratingType]) {
       let { ratingMax, ratingMin } = category;
       const ratingParameter = ratingsParameters[ratingType];
-      const { range, decimalsCount } = ratingParameter;
+      const { accessors, range, decimalsCount } = ratingParameter;
 
       const inverted = range[0] > range[1];
       const skew = inverted ? 2 : 0.5;
@@ -112,7 +112,15 @@ export function generateParticipants({
               (!ratingMax || rating <= ratingMax) &&
               (!ratingMin || rating >= ratingMin)
           )
-          .slice(0, scaledParticipantsCount || randomInt(20, 30));
+          .slice(0, scaledParticipantsCount || randomInt(20, 30))
+          .map((scaleValue) =>
+            !accessors
+              ? scaleValue
+              : Object.assign(
+                  {},
+                  ...accessors.map((accessor) => ({ [accessor]: scaleValue }))
+                )
+          );
 
       singlesRatings = generateRatings();
       if ([PAIR, TEAM].includes(participantType)) {

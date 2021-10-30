@@ -1,18 +1,20 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import { tournamentEngine } from '../../..';
 import mocksEngine from '../..';
+import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';
+import { ELO, NTRP, UTR, WTN } from '../../../constants/ratingConstants';
 
 // prettier-ignore
 const rankingsScenarios = [
   { category: { categoryName: 'U18' }, expectation: { timeItem: { itemType: 'SCALE.RANKING.SINGLES.U18' } }},
   { category: { categoryName: '18U' }, expectation: { timeItem: { itemType: 'SCALE.RANKING.SINGLES.18U' } }},
-  { category: { ratingType: 'WTN' }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.WTN' } }},
-  { category: { ratingType: 'UTR' }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.UTR' } }},
-  { category: { ratingType: 'NTRP' }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.NTRP' } }},
-  { category: { ratingType: 'WTN', ratingMin: 5, ratingMax: 8 }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.WTN' } }},
-  { category: { ratingType: 'WTN', ratingMin: 8, ratingMax: 9 }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.WTN' } }},
-  { category: { ratingType: 'UTR', ratingMin: 9, ratingMax: 13 }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.UTR' } }},
-  { category: { ratingType: 'ELO', ratingMin: 1200, ratingMax: 1400 }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.ELO' } }},
+  { category: { ratingType: WTN }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.WTN' }, accessor: true }},
+  { category: { ratingType: UTR }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.UTR' } }},
+  { category: { ratingType: NTRP }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.NTRP' }, accessor: true }},
+  { category: { ratingType: WTN, ratingMin: 5, ratingMax: 8 }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.WTN' }, accessor: true }},
+  { category: { ratingType: WTN, ratingMin: 8, ratingMax: 9 }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.WTN' }, accessor: true }},
+  { category: { ratingType: UTR, ratingMin: 9, ratingMax: 13 }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.UTR' } }},
+  { category: { ratingType: ELO, ratingMin: 1200, ratingMax: 1400 }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.ELO' } }},
 ];
 
 test.each(rankingsScenarios)(
@@ -27,19 +29,28 @@ test.each(rankingsScenarios)(
       participants: [participant],
     } = mocksEngine.generateParticipants(participantsProfile);
 
-    if (scenario.expectation.timeItem) {
+    if (scenario.expectation.timeItem && participant.timeItems?.length) {
       const timeItem = participant.timeItems[0];
       expect(timeItem.itemType).toEqual(scenario.expectation.timeItem.itemType);
-      const { ratingMin, ratingMax } = scenario.category;
+      const { ratingMin, ratingMax, ratingType } = scenario.category;
+      const accessor = ratingsParameters[ratingType]?.accessor;
+      const itemValue = timeItem.itemValue;
+      const value = accessor ? itemValue[accessor] : itemValue;
+
+      expect(value).not.toBeUndefined();
+
       if (ratingMin && ratingMax) {
-        expect(timeItem.itemValue).toBeLessThanOrEqual(ratingMax);
-        expect(timeItem.itemValue).toBeGreaterThanOrEqual(ratingMin);
+        expect(value).toBeLessThanOrEqual(ratingMax);
+        expect(value).toBeGreaterThanOrEqual(ratingMin);
       }
+    } else {
+      // ratingMin and ratingMax are close and there is a chance no random values fall into the range
+      expect(ratingType).toEqual(ELO);
     }
   }
 );
 
-const ratingType = 'WTN';
+const ratingType = WTN;
 const categoryName = '12U';
 
 // prettier-ignore
