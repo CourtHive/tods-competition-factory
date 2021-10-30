@@ -14,6 +14,38 @@ Use the embedded component to dynamically generate `matchUpFormat` codes:
 
 <Configurator />
 
+## parse and stringify
+
+```js
+import { matchUpFormatCode } from 'tods-competition-factory';
+
+const matchUpFormat = 'SET3-S:6/TB7';
+
+// validate matchUpFormat codes
+const valid = matchUpFormatCode.isValid(matchUpFormat);
+
+// parse matchUpFormat codes into an object representation
+const {
+  bestOf,
+  setFormat: {
+    setTo,
+    tiebreakAt,
+    tiebreakFormat: { tiebreakTo },
+  },
+  finalSetFormat: {
+    setTo,
+    tiebreakAt,
+    tiebreakFormat: { tiebreakTo },
+  },
+} = matchUpFormatCode.parse(matchUpFormat);
+
+// stringify object representation
+const result = matchUpFormatCode.stringify({
+  bestOf: 1,
+  setFormat: { timed: true, minutes: 20 },
+});
+```
+
 ## matchUpFormat discovery
 
 In TODS, a **drawDefinition** is a collection of **structures**. For example, a MAIN **structure** and a CONSOLATION **structure** are considered to be part of the same **drawDefinition** because they have a logical relationship whereby participants move from one **structure** to another.
@@ -51,5 +83,39 @@ tournamentEngine.setMatchUpStatus({
   matchUpId,
   matchUpFormat,
   outcome,
+});
+```
+
+## parse and stringify
+
+The Competition Factory utilizes `matchUpFormatCode` utilities primarily for validation, but also in the calculation of Round Robin results when determining group finishing positions.
+
+```js
+import { matchUpFormatCode } from 'tods-competition-factory';
+
+const matchUpFormat = 'SET3-S:6/TB7';
+
+// validate matchUpFormat codes
+const valid = matchUpFormatCode.isValid(matchUpFormat);
+
+// parse matchUpFormat codes into an object representation
+const {
+  bestOf,
+  setFormat: {
+    setTo,
+    tiebreakAt,
+    tiebreakFormat: { tiebreakTo },
+  },
+  finalSetFormat: {
+    setTo,
+    tiebreakAt,
+    tiebreakFormat: { tiebreakTo },
+  },
+} = matchUpFormatCode.parse(matchUpFormat);
+
+// stringify object representation
+const result = matchUpFormatCode.stringify({
+  bestOf: 1,
+  setFormat: { timed: true, minutes: 20 },
 });
 ```

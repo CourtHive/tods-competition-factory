@@ -7,6 +7,7 @@ import { teamMocks } from '../utilities/teamMocks';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { DOUBLES } from '../../constants/matchUpTypes';
+import { definedAttributes } from '../../utilities/objects';
 
 /**
  *
@@ -27,8 +28,7 @@ import { DOUBLES } from '../../constants/matchUpTypes';
  *
  */
 export function generateParticipants({
-  tournamentStartDate,
-  tournamentEndDate,
+  consideredDate,
 
   valuesInstanceLimit,
   nationalityCodesCount,
@@ -60,9 +60,8 @@ export function generateParticipants({
 
   const { persons: mockedPersons, error } = personMocks({
     count: individualParticipantsCount,
-    tournamentStartDate,
-    tournamentEndDate,
     personExtensions,
+    consideredDate,
     personData,
     category,
     sex,
@@ -152,18 +151,23 @@ export function generateParticipants({
   function generateIndividualParticipant(participantIndex) {
     const person = mockedPersons[participantIndex];
     const {
-      sex,
-      firstName,
-      lastName,
-      extensions,
       nationalityCode: personNationalityCode,
+      extensions,
+      firstName,
+      birthDate,
+      lastName,
+      sex,
     } = person || {};
     const standardGivenName = firstName || 'GivenName';
     const standardFamilyName = lastName || 'FamilyName';
     const participantName = `${standardGivenName} ${standardFamilyName}`;
     const country = countriesList[participantIndex];
     const nationalityCode =
-      (country && (country.ioc || country.iso)) || personNationalityCode;
+      (country &&
+        (nationalityCodeType === 'ISO'
+          ? country.iso
+          : country.ioc || country.iso)) ||
+      personNationalityCode;
 
     if (countriesList?.length && !nationalityCode && !personNationalityCode) {
       console.log('%c Invalid Nationality Code', { participantIndex, country });
@@ -173,7 +177,7 @@ export function generateParticipants({
       participantIndex,
       nationalityCode,
     });
-    const participant = {
+    const participant = definedAttributes({
       participantId: uuids?.pop() || UUID(),
       participantType: INDIVIDUAL,
       participantRole: COMPETITOR,
@@ -185,9 +189,10 @@ export function generateParticipants({
         standardGivenName,
         nationalityCode,
         extensions,
+        birthDate,
         sex,
       },
-    };
+    });
 
     return participant;
   }

@@ -1,31 +1,45 @@
 import { mocksEngine } from '../../..';
+import { parseAgeCategoryCode } from '../../../global/functions/parseAgeCategoryCode';
 
 // prettier-ignore
-const scenarios = [
-  { category: { ageCategoryCode: 'U18' }, expectation: { year: '2003' } },
-  { category: { ageCategoryCode: 'U16' }, expectation: { year: '2005' } },
-  { category: { ageCategoryCode: '18U' }, expectation: { year: '2007' } },
+const ageCategoryScenarios = [
+  { category: { ageCategoryCode: 'U18' }, expectation: { ageMinDate: '2004-01-01', ageMax: 17 }},
+  { category: { ageCategoryCode: 'U16' }, expectation: { ageMinDate: '2006-01-01', ageMax: 15 } },
+  { category: { ageCategoryCode: '18U' }, expectation: { ageMinDate: '2003-01-01', ageMax: 18 } },
+  { category: { ageCategoryCode: '14O' }, expectation: { ageMaxDate: '2007-12-31', ageMin: 14 } },
+  { category: { ageCategoryCode: 'O14' }, expectation: { ageMaxDate: '2006-12-31', ageMin: 15 } },
+  { category: { ageCategoryCode: '8O-U14' }, expectation: { ageMinDate: '2008-01-01', ageMin: 8, ageMaxDate: '2013-12-31', ageMax: 13 } },
+  { category: { ageCategoryCode: 'C50-70' }, expectation: { ageMin: 50, ageMax: 70, combinedAge: true } },
 ];
 
-test.each(scenarios)(
+test.each(ageCategoryScenarios)('it can parse ageCategoryCodes', (scenario) => {
+  const consideredDate = '2022-01-01';
+  const result = parseAgeCategoryCode({
+    category: scenario.category,
+    consideredDate,
+  });
+
+  Object.keys(scenario.expectation).forEach((key) => {
+    expect(result[key]).toEqual(scenario.expectation[key]);
+  });
+});
+
+test.each(ageCategoryScenarios)(
   'can generate partiicpants with category details',
   (scenario) => {
-    const tournamentStartDate = '2022-01-01';
-    const tournamentEndDate = '2022-01-04';
+    const consideredDate = '2022-01-01';
 
     const participantsProfile = {
       category: scenario.category,
       participantsCount: 1,
-      tournamentStartDate,
-      tournamentEndDate,
+      consideredDate,
     };
 
     const {
       participants: [participant],
     } = mocksEngine.generateParticipants(participantsProfile);
 
-    if (participant) {
-      // console.log(participant);
-    }
+    if (!scenario.expectation.combinedAge)
+      expect(participant.person.birthDate).not.toBeUndefined();
   }
 );

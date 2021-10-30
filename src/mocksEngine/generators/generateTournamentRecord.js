@@ -110,9 +110,6 @@ export function generateTournamentRecord({
     }
   }
 
-  const tournamentStartDate = startDate;
-  const tournamentEndDate = endDate;
-
   let largestDoublesDraw = 0,
     largestSinglesDraw = 0,
     largestTeamSize = 0,
@@ -244,13 +241,11 @@ export function generateTournamentRecord({
   } = participantsProfile || {};
 
   const { participants } = generateParticipants({
+    consideredDate: startDate,
     valuesInstanceLimit,
     nationalityCodesCount,
     nationalityCodeType,
     nationalityCodes,
-
-    tournamentStartDate,
-    tournamentEndDate,
 
     personExtensions,
     addressProps,
@@ -313,10 +308,8 @@ export function generateTournamentRecord({
           matchUpStatusProfile,
           participantsProfile,
           completeAllMatchUps,
-          tournamentStartDate,
           autoEntryPositions,
           randomWinningSide,
-          tournamentEndDate,
           tournamentRecord,
           drawProfile,
           startDate,
@@ -344,12 +337,10 @@ export function generateTournamentRecord({
       } = generateEventWithFlights({
         allUniqueParticipantIds,
         matchUpStatusProfile,
-        tournamentStartDate,
         participantsProfile,
         completeAllMatchUps,
         autoEntryPositions,
         randomWinningSide,
-        tournamentEndDate,
         tournamentRecord,
         eventProfile,
         startDate,

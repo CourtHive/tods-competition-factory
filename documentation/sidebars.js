@@ -89,7 +89,13 @@ module.exports = {
       items: [
         'constants',
         'types/typedefs',
-        { Enums: ['enums/matchup-format', 'enums/tournament-level'] },
+        {
+          'Codes and Enums': [
+            'codes/age-category',
+            'codes/matchup-format',
+            'enums/tournament-level',
+          ],
+        },
         'concepts/extensions',
         {
           Explanation: [

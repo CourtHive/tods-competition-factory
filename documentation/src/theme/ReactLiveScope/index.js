@@ -7,7 +7,7 @@ import RenderCSV from '../../../docs/components/RenderCSV';
 import Draw from '../../../docs/components/DrawDefinition';
 import MatchUps from '../../../docs/components/MatchUps';
 import React from 'react';
-import {
+import factory, {
   competitionEngine,
   tournamentEngine,
   scoreGovernor,
@@ -23,6 +23,7 @@ console.log(`%cfactory: ${cfv}`, 'color: lightblue');
 const ReactLiveScope = {
   React,
   ...React,
+  factory,
   utilities,
   drawEngine,
   mocksEngine,
