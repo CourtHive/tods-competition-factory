@@ -8,6 +8,7 @@ import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { DOUBLES } from '../../constants/matchUpTypes';
 import { definedAttributes } from '../../utilities/objects';
+import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 
 /**
  *
@@ -49,7 +50,15 @@ export function generateParticipants({
 
   inContext,
 }) {
-  if (category) {
+  if (typeof category === 'object') {
+    const { categoryName, ageCategoryCode, ratingType } = category;
+    if ((categoryName || ageCategoryCode) && !ratingType) {
+      // generate rankings
+    }
+    if (ratingType && ratingsParameters[ratingType]) {
+      const { ratingMax, ratingMin } = category;
+      console.log('generate rating', { ratingType, ratingMax, ratingMin });
+    }
     // generate appropriate scaleItems and participant birthDate
   }
 

@@ -4,6 +4,8 @@ import { parseAgeCategoryCode } from '../../../global/functions/parseAgeCategory
 // prettier-ignore
 const ageCategoryScenarios = [
   { category: { ageCategoryCode: 'U18' }, expectation: { ageMinDate: '2004-01-01', ageMax: 17 }},
+  { category: { categoryName: 'U18' }, expectation: { ageMinDate: '2004-01-01', ageMax: 17 }},
+  { category: { categoryName: 'No age specification' }, expectation: { }},
   { category: { ageCategoryCode: 'U16' }, expectation: { ageMinDate: '2006-01-01', ageMax: 15 } },
   { category: { ageCategoryCode: '18U' }, expectation: { ageMinDate: '2003-01-01', ageMax: 18 } },
   { category: { ageCategoryCode: '14O' }, expectation: { ageMaxDate: '2007-12-31', ageMin: 14 } },
@@ -39,7 +41,10 @@ test.each(ageCategoryScenarios)(
       participants: [participant],
     } = mocksEngine.generateParticipants(participantsProfile);
 
-    if (!scenario.expectation.combinedAge)
+    if (
+      Object.keys(scenario.expectation).length &&
+      !scenario.expectation.combinedAge
+    )
       expect(participant.person.birthDate).not.toBeUndefined();
   }
 );

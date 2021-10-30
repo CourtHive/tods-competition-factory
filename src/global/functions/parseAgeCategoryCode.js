@@ -1,8 +1,8 @@
 import { isValidDateString } from '../../utilities/dateTime';
+import { definedAttributes } from '../../utilities/objects';
 import { isNumeric } from '../../utilities/math';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
-import { definedAttributes } from '../../utilities/objects';
 
 const typeMatch = (arr, type) =>
   arr.filter(Boolean).every((i) => typeof i === type);
@@ -19,13 +19,25 @@ export function parseAgeCategoryCode({ consideredDate, category } = {}) {
   const errors = [];
 
   let combinedAge;
-  let { ageCategoryCode, ageMax, ageMin, ageMaxDate, ageMinDate } = category;
+  let {
+    ageCategoryCode,
+    categoryName,
+    ageMaxDate,
+    ageMinDate,
+    ageMax,
+    ageMin,
+  } = category;
 
   if (
-    !typeMatch([ageCategoryCode, ageMaxDate, ageMinDate], 'string') ||
+    !typeMatch(
+      [ageCategoryCode, ageMaxDate, ageMinDate, categoryName],
+      'string'
+    ) ||
     !allNumeric([ageMax, ageMin])
   )
     return invalid;
+
+  ageCategoryCode = ageCategoryCode || categoryName;
 
   const prePost = /^([UO]?)(\d{1,2})([UO]?)$/;
   const extractCombined = /^C(\d{1,2})-(\d{1,2})$/;
