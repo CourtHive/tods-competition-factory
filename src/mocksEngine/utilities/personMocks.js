@@ -1,4 +1,5 @@
 import { generateRange, randomMember, shuffleArray } from '../../utilities';
+import { parseAgeCategory } from '../../global/functions/parseAgeCategory';
 import defaultPersonData from '../data/persons.json';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
@@ -11,6 +12,8 @@ import { MALE, FEMALE } from '../../constants/genderConstants';
  * @param {object} personExtensions - optional array of extentsions to apply to all persons
  */
 export function personMocks({
+  tournamentStartDate,
+  tournamentEndDate,
   personExtensions,
   personData,
   count = 1,
@@ -18,8 +21,15 @@ export function personMocks({
   sex,
 } = {}) {
   if (isNaN(count)) return { error: INVALID_VALUES };
-  if (category) {
-    //
+
+  let { ageMinDate, ageMaxDate } = parseAgeCategory({
+    tournamentStartDate,
+    tournamentEndDate,
+    category,
+  });
+
+  if ((ageMinDate, ageMaxDate)) {
+    console.log({ ageMinDate, ageMaxDate });
   }
 
   let validPersonData = defaultPersonData.filter(

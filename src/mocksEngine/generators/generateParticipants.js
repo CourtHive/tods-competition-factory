@@ -27,6 +27,9 @@ import { DOUBLES } from '../../constants/matchUpTypes';
  *
  */
 export function generateParticipants({
+  tournamentStartDate,
+  tournamentEndDate,
+
   valuesInstanceLimit,
   nationalityCodesCount,
   nationalityCodeType,
@@ -57,6 +60,8 @@ export function generateParticipants({
 
   const { persons: mockedPersons, error } = personMocks({
     count: individualParticipantsCount,
+    tournamentStartDate,
+    tournamentEndDate,
     personExtensions,
     personData,
     category,

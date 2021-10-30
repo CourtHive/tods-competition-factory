@@ -34,8 +34,10 @@ export function generateEventWithFlights({
   matchUpStatusProfile,
   participantsProfile,
   completeAllMatchUps,
+  tournamentStartDate,
   autoEntryPositions,
   randomWinningSide,
+  tournamentEndDate,
   tournamentRecord,
   eventProfile,
   startDate,
@@ -129,17 +131,17 @@ export function generateEventWithFlights({
     const { participants: uniqueFlightParticipants } = generateParticipants({
       participantsCount: mainParticipantsCount + qualifyingParticipantsCount,
       participantType: eventParticipantType,
-      sex: gender,
-
-      uuids,
-      valuesInstanceLimit,
       nationalityCodesCount,
       nationalityCodeType,
+      valuesInstanceLimit,
+      tournamentStartDate,
+      tournamentEndDate,
       nationalityCodes,
       addressProps,
+      sex: gender,
       personIds,
-
       inContext,
+      uuids,
     });
 
     let result = addParticipants({
