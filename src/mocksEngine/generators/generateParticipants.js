@@ -1,14 +1,17 @@
 import { cityMocks, stateMocks, postalCodeMocks } from '../utilities/address';
+import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
+import { randomInt, skewedDistribution } from '../../utilities/math';
 import { generateRange, shuffleArray, UUID } from '../../utilities';
+import { definedAttributes } from '../../utilities/objects';
 import { countries } from '../../fixtures/countryData';
 import { personMocks } from '../utilities/personMocks';
 import { teamMocks } from '../utilities/teamMocks';
 
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
+import { RANKING, RATING, SCALE } from '../../constants/scaleConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { DOUBLES } from '../../constants/matchUpTypes';
-import { definedAttributes } from '../../utilities/objects';
-import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
+import { SINGLES } from '../../constants/eventConstants';
 
 /**
  *
@@ -26,11 +29,13 @@ import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
  * @param {boolean} inContext - whether to expand PAIR and TEAM individualParticipantIds => individualParticipant objects
  * @param {object[]} personData - optional array of persons to seed generator [{ firstName, lastName, sex, nationalityCode }]
  * @param {object} personExtensions - optional array of extentsions to apply to all persons
+ * @param {string} consideredDate - date from which category ageMaxDate and ageMinDate should be calculated (typically tournament.startDate or .endDate)
+ * @param {object} category - optional - { categoryName, ageCategoryCode, ratingType, ratingMax, ratingMin }
+ * @param {number[]} rankingRankge - optional - range within which ranking numbers should be generated for specified category (non-rating)
+ * @param {number} scaledParticipantsCount - optional - number of participants to assign rankings/ratings - defaults to ~25
  *
  */
 export function generateParticipants({
-  consideredDate,
-
   valuesInstanceLimit,
   nationalityCodesCount,
   nationalityCodeType,
@@ -45,23 +50,16 @@ export function generateParticipants({
   addressProps,
   matchUpType,
   personData,
-  category,
   sex,
 
   inContext,
-}) {
-  if (typeof category === 'object') {
-    const { categoryName, ageCategoryCode, ratingType } = category;
-    if ((categoryName || ageCategoryCode) && !ratingType) {
-      // generate rankings
-    }
-    if (ratingType && ratingsParameters[ratingType]) {
-      const { ratingMax, ratingMin } = category;
-      console.log('generate rating', { ratingType, ratingMax, ratingMin });
-    }
-    // generate appropriate scaleItems and participant birthDate
-  }
 
+  consideredDate,
+  category,
+
+  rankingRange = [1, 100], // range of ranking positions to generate
+  scaledParticipantsCount, // number of participants to assign rankings/ratings
+}) {
   const doubles = participantType === PAIR || matchUpType === DOUBLES;
   const team = participantType === TEAM || matchUpType === TEAM;
   const individualParticipantsCount =
@@ -76,6 +74,50 @@ export function generateParticipants({
     sex,
   });
   if (error) return { error };
+
+  // generated arrays of rankings and ratings to be attached as scaleItems
+  let doublesRankings = [],
+    singlesRankings = [],
+    singlesRatings = [],
+    doublesRatings = [];
+
+  if (typeof category === 'object') {
+    const { categoryName, ageCategoryCode, ratingType } = category;
+    if ((categoryName || ageCategoryCode) && !ratingType) {
+      singlesRankings = shuffleArray(generateRange(...rankingRange)).slice(
+        0,
+        scaledParticipantsCount || randomInt(20, 30)
+      );
+      if ([PAIR, TEAM].includes(participantType))
+        doublesRankings = shuffleArray(generateRange(...rankingRange)).slice(
+          0,
+          scaledParticipantsCount || randomInt(20, 30)
+        );
+    }
+    if (ratingType && ratingsParameters[ratingType]) {
+      let { ratingMax, ratingMin } = category;
+      const ratingParameter = ratingsParameters[ratingType];
+      const { range, decimalsCount } = ratingParameter;
+
+      const inverted = range[0] > range[1];
+      const skew = inverted ? 2 : 0.5;
+      const [min, max] = range.slice().sort();
+      const generateRatings = () =>
+        generateRange(0, 1000)
+          .map(() => skewedDistribution(min, max, skew, decimalsCount))
+          .filter(
+            (rating) =>
+              (!ratingMax || rating <= ratingMax) &&
+              (!ratingMin || rating >= ratingMin)
+          )
+          .slice(0, scaledParticipantsCount || randomInt(20, 30));
+
+      singlesRatings = generateRatings();
+      if ([PAIR, TEAM].includes(participantType)) {
+        doublesRatings = generateRatings();
+      }
+    }
+  }
 
   const isoCountries = countries.filter((country) =>
     nationalityCodeType === 'ISO' ? country.iso : country.ioc
@@ -203,8 +245,61 @@ export function generateParticipants({
       },
     });
 
+    if (category) {
+      const singlesRanking = singlesRankings[participantIndex];
+      const doublesRanking = doublesRankings[participantIndex];
+
+      addScaleItem({
+        scaleValue: singlesRanking,
+        eventType: SINGLES,
+        scaleType: RANKING,
+        participant,
+        category,
+      });
+      addScaleItem({
+        scaleValue: doublesRanking,
+        eventType: DOUBLES,
+        scaleType: RANKING,
+        participant,
+        category,
+      });
+
+      const singlesRating = singlesRatings[participantIndex];
+      const doublesRating = doublesRatings[participantIndex];
+
+      addScaleItem({
+        scaleValue: singlesRating,
+        eventType: SINGLES,
+        scaleType: RATING,
+        participant,
+        category,
+      });
+      addScaleItem({
+        scaleValue: doublesRating,
+        eventType: DOUBLES,
+        scaleType: RATING,
+        participant,
+        category,
+      });
+    }
+
     return participant;
   }
+}
+
+function addScaleItem({
+  scaleValue: itemValue,
+  participant,
+  eventType,
+  scaleType,
+  category,
+}) {
+  const scaleName =
+    category.categoryName || category.ratingType || category.ageCategoryCode;
+  const itemType = [SCALE, scaleType, eventType, scaleName].join('.');
+  const timeItem = { itemValue, itemType };
+  if (!participant.timeItems) participant.timeItems = [];
+  if (scaleName && itemValue) participant.timeItems.push(timeItem);
 }
 
 function generateAddress(addressAttributes) {

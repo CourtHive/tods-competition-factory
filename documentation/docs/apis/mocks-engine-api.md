@@ -78,6 +78,9 @@ const { participants } = mocksEngine.generateParticipants({
   personIds, // optional array of pre-defined personIds
 
   category, // participant age and category scaleItems will be generated
+  consideredDate, // date from which category ageMaxDate and ageMinDate should be calculated (typically tournament.startDate or .endDate)
+  rankingRankge, // optional - range within which ranking numbers should be generated for specified category (non-rating)
+  scaledParticipantsCount, // optional - number of participants to assign rankings/ratings - defaults to ~25
 
   inContext: true, // optional - whether to expand PAIR and TEAM individualParticipantIds => individualParticipant objects
 });

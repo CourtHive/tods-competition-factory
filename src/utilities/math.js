@@ -46,23 +46,18 @@ export function weightedRandom(max = 1, weight = 3, round = true) {
   return round && max > 1 ? Math.round(num) : num;
 }
 
-/*
-export function boxMueller(min = 0, max = 1, round = true) {
+export function skewedDistribution(min, max, skew, significantDecimals = 2) {
   const u = 1 - Math.random();
   const v = 1 - Math.random();
   let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
-  num = num / 10.0 + 0.5;
-  if (num > 1 || num < 0) return boxMueller(min, max);
-  num *= max - min;
-  num += min;
-  return round && max > 1 ? Math.round(num) : num;
-}
 
-export function normalDistribution(mean, sd) {
-  var u = 1 - Math.random();
-  var v = 1 - Math.random();
-  return Math.abs(
-    mean + Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v) * sd
-  );
+  num = num / 10.0 + 0.5;
+  if (num > 1 || num < 0) num = skewedDistribution(min, max, skew);
+  else {
+    num = Math.pow(num, skew);
+    num *= max - min;
+    num += min;
+  }
+
+  return parseFloat(num.toFixed(significantDecimals));
 }
-*/

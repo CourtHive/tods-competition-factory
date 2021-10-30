@@ -171,6 +171,8 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
       itemDate: scaleItem.scaleDate,
       createdAt,
     };
+
+    // if there is a unique identifier for the scale
     if (scaleItem.scaleId) {
       timeItem.itemSubTypes = [scaleItem.scaleId];
     }
