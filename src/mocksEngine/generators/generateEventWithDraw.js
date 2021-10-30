@@ -275,7 +275,7 @@ export function generateEventWithDraw({
   });
 
   if (generationError) return { error: generationError };
-  const { drawId } = drawDefinition;
+  const drawId = generate ? drawDefinition.drawId : undefined;
 
   if (Array.isArray(drawExtensions)) {
     drawExtensions
