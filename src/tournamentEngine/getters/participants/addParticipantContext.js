@@ -1,5 +1,7 @@
 import { participantScheduledMatchUps } from '../../governors/queryGovernor/participantScheduledMatchUps';
+import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
+import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { extensionConstants } from '../../../constants/extensionConstants';
 import { getParticipantIds } from '../../../global/functions/extractors';
@@ -8,12 +10,14 @@ import { allEventMatchUps } from '../matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities';
 
 import { GROUP, INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { DOUBLES, TEAM } from '../../../constants/matchUpTypes';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 
 export function addParticipantContext(params) {
   const participantIdsWithConflicts = [];
 
+  const drawSizes = {};
   const participantIdMap = {};
   const initializeParticipantId = (participantId) => {
     if (!participantIdMap[participantId])
@@ -168,6 +172,8 @@ export function addParticipantContext(params) {
 
         if (!participantIdMap[relevantParticipantId].draws[drawId]) {
           participantIdMap[relevantParticipantId].draws[drawId] = {
+            qualifyingDrawSize: drawSizes[drawId]?.qualifyingDrawSize,
+            drawSize: drawSizes[drawId]?.drawSize,
             partnerParticipantIds: [],
             entryPosition,
             entryStatus,
@@ -194,6 +200,7 @@ export function addParticipantContext(params) {
       event.drawDefinitions?.map(({ drawId }) => drawId) || [];
     eventInfo._flightProfile?.flights?.forEach((flight) => {
       const { drawId, drawEntries } = flight;
+
       if (!drawIdsWithDefinitions.includes(drawId)) {
         drawEntries?.forEach((drawEntry) => addDrawData({ drawId, drawEntry }));
       }
@@ -219,6 +226,29 @@ export function addParticipantContext(params) {
             .map((entry) => ({ [entry.participantId]: entry }))
         );
         const drawEntries = Object.values(entriesMap);
+        const mainStructure = getDrawStructures({
+          stageSequence: 1,
+          drawDefinition,
+          stage: MAIN,
+        });
+        const drawSize =
+          mainStructure &&
+          getPositionAssignments({
+            structure: mainStructure,
+          })?.positionAssignments?.length;
+        const qualifyingStructure = getDrawStructures({
+          stageSequence: 1,
+          drawDefinition,
+          stage: QUALIFYING,
+        });
+        const qualifyingDrawSize =
+          mainStructure &&
+          getPositionAssignments({
+            structure: qualifyingStructure,
+          })?.positionAssignments?.length;
+
+        drawSizes[drawDefinition.drawId] = { drawSize, qualifyingDrawSize };
+
         return {
           [drawDefinition.drawId]: {
             drawType: drawDefinition.drawType,
@@ -366,6 +396,8 @@ export function addParticipantContext(params) {
 
           if (!participantIdMap[relevantParticipantId].draws[drawId]) {
             participantIdMap[relevantParticipantId].draws[drawId] = {
+              qualifyingDrawSize: drawSizes[drawId]?.qualifyingDrawSize,
+              drawSize: drawSizes[drawId]?.drawSize,
               partnerParticipantIds: [],
               entryPosition,
               entryStatus,
