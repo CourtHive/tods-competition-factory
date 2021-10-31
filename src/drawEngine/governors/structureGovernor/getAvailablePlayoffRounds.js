@@ -1,42 +1,28 @@
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
+import { getDrawStructures } from '../../getters/findStructure';
 import { getStructureLinks } from '../../getters/linkGetter';
-import { findStructure, getDrawStructures } from '../../getters/findStructure';
 import { getSourceRounds } from './getSourceRounds';
 
+import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import {
   CONTAINER,
   FIRST_MATCHUP,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
-import {
-  MISSING_DRAW_DEFINITION,
-  STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
 
 export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   let { structures } = getDrawStructures({
+    stageSeqence: 1,
     drawDefinition,
     stage: MAIN,
-    stageSeqence: 1,
   });
-  // mainStructure is necessary to get the full range of finishingPositions
-  const mainStructure = structures && structures[0];
-  if (!mainStructure) return { error: STRUCTURE_NOT_FOUND };
-
-  const positionAssignments = mainStructure.positionAssignments || [];
-  const drawPositions = positionAssignments?.map(
-    (assignment) => assignment.drawPosition
-  );
 
   // positions which are being played off by existing structure(s)
-  const { positionsPlayedOff } = getPositionsPlayedOff({ drawDefinition });
-
-  // all positions which are NOT currently being played off
-  const playoffPositions = drawPositions.filter(
-    (drawPosition) => !positionsPlayedOff.includes(drawPosition)
-  );
+  const { positionsNotPlayedOff, positionsPlayedOff } = getPositionsPlayedOff({
+    drawDefinition,
+  });
 
   ({ structures } = getDrawStructures({ drawDefinition }));
   const filteredStructures = structures.filter(
@@ -44,23 +30,24 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
   );
 
   const available = {};
+
   for (const structure of filteredStructures) {
     const structureId = structure?.structureId;
     const {
       playoffSourceRounds: playoffRounds,
       playoffRoundsRanges,
       error,
-    } = getavailablePlayoffRounds({
+    } = avaialblePlayoffRounds({
+      playoffPositions: positionsNotPlayedOff,
       drawDefinition,
-      playoffPositions,
-      structureId,
+      structure,
     });
     if (error) return { error };
 
     available[structureId] = {
-      structureId,
-      playoffRounds,
       playoffRoundsRanges,
+      playoffRounds,
+      structureId,
     };
   }
 
@@ -74,18 +61,17 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
   }
 }
 
-function getavailablePlayoffRounds({
-  drawDefinition,
+function avaialblePlayoffRounds({
   playoffPositions,
-  structureId,
+  drawDefinition,
+  structure,
 }) {
-  const { structure } = findStructure({ drawDefinition, structureId });
-  if (!structure) return { error: STRUCTURE_NOT_FOUND };
-
   if (structure.structureType === CONTAINER)
     return { playoffSourceRounds: [], playoffRoundsRanges: [] };
 
+  const structureId = structure?.structureId;
   const { links } = getStructureLinks({ drawDefinition, structureId });
+
   const linkSourceRoundNumbers =
     links?.source
       // TODO: perhaps this should be enabled by a policyDefinitions
@@ -93,9 +79,9 @@ function getavailablePlayoffRounds({
       .map((link) => link.source?.roundNumber) || [];
 
   return getSourceRounds({
+    excludeRoundNumbers: linkSourceRoundNumbers,
+    playoffPositions,
     drawDefinition,
     structureId,
-    playoffPositions,
-    excludeRoundNumbers: linkSourceRoundNumbers,
   });
 }

@@ -6,6 +6,9 @@ import { getRoundRobinGroupMatchUps } from './roundRobinGroups';
 import { feedInChampionship } from './feedInChampionShip';
 import { drawPositionsHash } from './roundRobinGroups';
 
+import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
+import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
   DRAW,
@@ -17,10 +20,6 @@ import {
   SINGLE_ELIMINATION,
   FIRST_MATCH_LOSER_CONSOLATION,
 } from '../../constants/drawDefinitionConstants';
-
-import { SUCCESS } from '../../constants/resultConstants';
-import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
-import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 
 export function generateRoundRobin({
   structureName = MAIN,
@@ -47,6 +46,7 @@ export function generateRoundRobin({
         groupSize: groupSize,
         structureOrder,
         matchUpType,
+        drawSize,
         idPrefix,
       }),
       structureId: uuids?.pop(),
@@ -266,6 +266,7 @@ function roundRobinMatchUps({
   matchUpType,
   groupSize,
   idPrefix,
+  drawSize,
   uuids,
 }) {
   const drawPositionOffset = (structureOrder - 1) * groupSize;
@@ -293,17 +294,10 @@ function roundRobinMatchUps({
   }
 
   // returns a range for array of possible finishing drawPositions
-  function finishingRange(drawPositions) {
-    return [Math.min(...drawPositions), Math.max(...drawPositions)];
-  }
-
   function positionMatchUp(drawPositions) {
     const hash = drawPositionsHash(drawPositions);
     const roundNumber = determineRoundNumber(hash);
-    const loser = finishingRange(drawPositions.slice(1));
-    const winner = finishingRange(
-      drawPositions.slice(0, drawPositions.length - 1)
-    );
+    const range = [1, drawSize];
     const matchUpId = roundRobinMatchUpId({
       structureOrder,
       drawPositions,
@@ -315,7 +309,7 @@ function roundRobinMatchUps({
       matchUpStatus: roundNumber ? TO_BE_PLAYED : BYE,
       matchUpType, // does not (perhaps) need to be included; but because structures[].structure unsure about derivation inContext
       // finishingPositionRange in RR is not very useful, but provided for consistency
-      finishingPositionRange: { winner, loser },
+      finishingPositionRange: { winner: range, loser: range },
       drawPositions,
       roundNumber,
       matchUpId,

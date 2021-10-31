@@ -1,5 +1,5 @@
 import { getStructureRoundProfile } from '../../getters/getMatchUps/getStructureRoundProfile';
-import { numericSort } from '../../../utilities';
+import { generateRange, numericSort } from '../../../utilities';
 import { roundValues } from './structureUtils';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
@@ -24,5 +24,13 @@ export function getPositionsPlayedOff({ drawDefinition }) {
     .sort(numericSort)
     .flat();
 
-  return { positionsPlayedOff };
+  const allRangeValues = allFinishingPositionRanges.flat();
+  const minRangeValue = Math.min(...allRangeValues);
+  const maxRangeValue = Math.max(...allRangeValues);
+  const positionsNotPlayedOff = generateRange(
+    minRangeValue,
+    maxRangeValue + 1
+  ).filter((position) => !positionsPlayedOff.includes(position));
+
+  return { positionsNotPlayedOff, positionsPlayedOff };
 }

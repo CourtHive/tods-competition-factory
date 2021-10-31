@@ -1,15 +1,13 @@
-import fs from 'fs';
-
-import { drawEngine } from '../../sync';
-import { generateRange } from '../../../utilities';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
+import { generateRange } from '../../../utilities';
+import { drawEngine } from '../../sync';
 
+import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 import {
   MAIN,
   ROUND_ROBIN,
   WATERFALL,
 } from '../../../constants/drawDefinitionConstants';
-import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 
 it('can generate and verify round robin structures', () => {
   let { structureId } = generateRoundRobin({
@@ -119,15 +117,6 @@ it('can write to the file system', () => {
     assignSeeds: 0,
     participantsCount: 5,
   });
-
-  const writeFile = process.env.TMX_TEST_FILES;
-  const { drawDefinition } = drawEngine.getState();
-  const drawType = ROUND_ROBIN;
-  const fileName = `${drawType}.json`;
-  const dirPath = './src/drawEngine/generated/';
-  const output = `${dirPath}${fileName}`;
-  if (writeFile)
-    fs.writeFileSync(output, JSON.stringify(drawDefinition, undefined, 2));
 });
 
 function generateRoundRobin({

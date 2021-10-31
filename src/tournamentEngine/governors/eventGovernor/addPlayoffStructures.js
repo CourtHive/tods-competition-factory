@@ -32,6 +32,7 @@ export function addPlayoffStructures({
     event,
     uuids,
   });
+  if (result.error) return result;
 
   const playoffDetails = {
     playoffStructureNameBase,
