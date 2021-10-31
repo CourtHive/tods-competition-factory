@@ -173,7 +173,7 @@ drawEngine.addPlayoffStructures({
   playoffStructureNameBase, // optional - Root word for default playoff naming, e.g. 'Playoff' for 'Playoff 3-4'
 });
 
-// example use of playoffAttributes - will generated playoff structure from 2nd round with structureName: 'bronze'
+// example use of playoffAttributes - will generated playoff structure from 2nd round with structureName: 'BRONZE'
 const playoffAttributes = {
   '0-2': { name: 'BRONZE', abbreviation: 'B' },
 };

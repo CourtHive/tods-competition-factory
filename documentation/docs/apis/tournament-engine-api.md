@@ -408,7 +408,7 @@ tournamentEngine.addPlayoffStructures({
   playoffStructureNameBase, // optional - base word for default playoff naming, e.g. 'Playoff'
 });
 
-// example use of playoffAttributes - will generated playoff structure from 2nd round with structureName: 'bronze'
+// example use of playoffAttributes - will generated playoff structure from 2nd round with structureName: 'BRONZE'
 const playoffAttributes = {
   '0-2': { name: 'BRONZE', abbreviation: 'B' },
 };
