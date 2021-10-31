@@ -1,8 +1,10 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import { tournamentEngine } from '../../..';
 import mocksEngine from '../..';
+
 import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';
 import { ELO, NTRP, UTR, WTN } from '../../../constants/ratingConstants';
+import { mockProfile } from './mockScaleProfile';
 
 // prettier-ignore
 const rankingsScenarios = [
@@ -91,3 +93,39 @@ it.each(mockScenarios)(
     });
   }
 );
+
+// testing that NTRP values can be generated with a "step" of "0.5"
+test('generates participants with rankings and ratings with additional embellishments', () => {
+  const { tournamentRecord } =
+    mocksEngine.generateTournamentRecord(mockProfile);
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { tournamentParticipants } =
+    tournamentEngine.getTournamentParticipants();
+  const scaleItems = tournamentParticipants
+    .map(
+      (p) =>
+        p.timeItems && p.timeItems.filter((i) => i.itemType.startsWith('SCALE'))
+    )
+    .filter(Boolean)
+    .flat();
+
+  let typesCount = 0;
+  expect(scaleItems.length).toEqual(24);
+  scaleItems.forEach(({ itemType, itemValue }) => {
+    if (itemType === 'SCALE.RANKING.SINGLES.U18') {
+      expect(itemValue).toEqual(Math.round(itemValue));
+      typesCount += 1;
+    } else if (itemType === 'SCALE.RATING.SINGLES.WTN') {
+      const decimalValue = itemValue.wtnRating.toString().split('.')[1];
+      expect([1, 2].includes(decimalValue.length)).toEqual(true);
+      typesCount += 1;
+    } else if (itemType === 'SCALE.RATING.SINGLES.NTRP') {
+      const decimalValue = itemValue.ntrpRating.toString().split('.')[1];
+      if (decimalValue) expect(decimalValue).toEqual('5');
+      typesCount += 1;
+    }
+  });
+  expect(typesCount).toEqual(scaleItems.length);
+});
