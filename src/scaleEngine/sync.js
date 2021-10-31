@@ -3,23 +3,17 @@ import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import { makeDeepCopy } from '../utilities';
 import {
-  setDeepCopy,
-  setDevContext,
+  removeTournamentRecord,
+  getTournamentRecord,
+  getTournamentId,
+  setTournamentId,
   getDevContext,
   deleteNotices,
-  getTournamentId,
-  getTournamentRecord,
-  removeTournamentRecord,
-  setTournamentId,
+  setDeepCopy,
 } from '../global/state/globalState';
 
 import rankingsGovernor from './governors/rankingsGovernor';
 import ratingsGovernor from './governors/ratingsGovernor';
-
-import {
-  INVALID_VALUES,
-  METHOD_NOT_FOUND,
-} from '../constants/errorConditionConstants';
 
 export const scaleEngine = (function () {
   const engine = {
@@ -42,14 +36,6 @@ export const scaleEngine = (function () {
     const result = setState(tournament, deepCopyOption);
     return processResult(result);
   };
-  engine.devContext = (contextCriteria) => {
-    setDevContext(contextCriteria);
-    return engine;
-  };
-  engine.getDevContext = (contextCriteria) => getDevContext(contextCriteria);
-
-  engine.executionQueue = (directives, rollbackOnError) =>
-    executionQueue(directives, rollbackOnError);
 
   function processResult(result) {
     if (result?.error) {
@@ -119,37 +105,6 @@ export const scaleEngine = (function () {
         };
       });
     });
-  }
-
-  function executionQueue(directives, rollbackOnError) {
-    if (!Array.isArray(directives)) return { error: INVALID_VALUES };
-
-    const tournamentId = getTournamentId();
-    const tournamentRecord = getTournamentRecord(tournamentId);
-
-    const snapshot =
-      rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
-
-    const results = [];
-    for (const directive of directives) {
-      if (typeof directive !== 'object') return { error: INVALID_VALUES };
-
-      const { method, params } = directive;
-      if (!engine[method]) return { error: METHOD_NOT_FOUND };
-
-      const result = executeFunction(tournamentRecord, engine[method], params);
-
-      if (result?.error) {
-        if (snapshot) setState(snapshot);
-        return { ...result, rolledBack: !!snapshot };
-      }
-      results.push(result);
-    }
-
-    notifySubscribers();
-    deleteNotices();
-
-    return { results };
   }
 })();
 
