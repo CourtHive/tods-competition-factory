@@ -1,4 +1,4 @@
-import { refreshEntryPositions } from '../../../common/producers/refreshEntryPositions';
+import { refreshEntryPositions } from '../../../global/functions/producers/refreshEntryPositions';
 import { getAssignedParticipantIds } from '../../getters/getAssignedParticipantIds';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 

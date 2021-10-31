@@ -1,5 +1,5 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
-import { findParticipant } from '../../../common/deducers/findParticipant';
+import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import {
   addMatchUpScheduleItems as addScheduleItems,
   addMatchUpScheduledDate as addScheduledDate,

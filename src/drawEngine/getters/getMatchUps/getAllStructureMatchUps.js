@@ -7,7 +7,7 @@ import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
 import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
-import { findParticipant } from '../../../common/deducers/findParticipant';
+import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { structureAssignedDrawPositions } from '../positionsGetter';
 import { getOrderedDrawPositions } from './getOrderedDrawPositions';
 import { getRoundContextProfile } from './getRoundContextProfile';

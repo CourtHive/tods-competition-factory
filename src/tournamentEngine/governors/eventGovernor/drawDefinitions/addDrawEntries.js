@@ -1,5 +1,5 @@
 import { addDrawEntries as addEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
-import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
+import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 

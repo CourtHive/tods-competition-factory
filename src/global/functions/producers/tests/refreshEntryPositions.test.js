@@ -4,7 +4,7 @@ import {
   CONSOLATION,
   MAIN,
   QUALIFYING,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../../../constants/drawDefinitionConstants';
 
 it('can add and update entryPositions', () => {
   const entries = [{}, {}, {}, {}, {}, {}];

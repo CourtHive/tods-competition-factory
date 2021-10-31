@@ -1,5 +1,5 @@
 import { getTournamentParticipants } from '../../tournamentEngine/getters/participants/getTournamentParticipants';
-import { findParticipant } from '../../common/deducers/findParticipant';
+import { findParticipant } from '../../global/functions/deducers/findParticipant';
 import { deepMerge } from '../../utilities/deepMerge';
 import { makeDeepCopy } from '../../utilities';
 
