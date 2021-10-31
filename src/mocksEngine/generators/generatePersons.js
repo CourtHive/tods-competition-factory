@@ -10,6 +10,7 @@ import {
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { MALE, FEMALE } from '../../constants/genderConstants';
+import { countries } from '../../fixtures/countryData';
 import defaultPersonData from '../data/persons.json';
 
 /**
@@ -18,9 +19,10 @@ import defaultPersonData from '../data/persons.json';
  * @param {object[]} personData - optional array of persons to seed generator [{ firstName, lastName, sex, nationalityCode }]
  * @param {object} personExtensions - optional array of extentsions to apply to all persons
  */
-export function personMocks({
+export function generatePersons({
   personExtensions,
   consideredDate,
+  isMock = true,
   personData,
   count = 1,
   category,
@@ -37,8 +39,12 @@ export function personMocks({
       if (typeof person.lastName !== 'string') return false;
       if (![MALE, FEMALE].includes(person.sex)) return false;
       if (
-        typeof person.nationalityCode !== 'string' ||
-        person.nationalityCode.length > 3
+        person.nationalityCode &&
+        (typeof person.nationalityCode !== 'string' ||
+          person.nationalityCode.length > 3 ||
+          !countries.find(({ iso, ioc }) =>
+            [iso, ioc].includes(person.nationalityCode)
+          ))
       )
         return false;
       return true;
@@ -85,6 +91,7 @@ export function personMocks({
         nationalityCodes: [],
       }
     );
+
     generateRange(0, count - shuffledPersons.length).forEach(() => {
       const personSex = sex || randomMember([MALE, FEMALE]);
       const nationalityCode = randomMember(nationalityCodes);
@@ -127,12 +134,12 @@ export function personMocks({
     const birthDate = birthYear && dateFromDay(birthYear, birthDay);
 
     return Object.assign(
-      person,
       definedAttributes({
         extensions: personExtensions || [{ name: 'regionCode', value: i + 1 }],
-        isMock: true,
         birthDate,
-      })
+        isMock,
+      }),
+      person
     );
   });
 

@@ -3,7 +3,7 @@ import { randomInt, skewedDistribution } from '../../utilities/math';
 import { generateRange, shuffleArray, UUID } from '../../utilities';
 import { definedAttributes } from '../../utilities/objects';
 import { countries } from '../../fixtures/countryData';
-import { personMocks } from '../utilities/personMocks';
+import { generatePersons } from './generatePersons';
 import { teamMocks } from '../utilities/teamMocks';
 
 import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
@@ -66,7 +66,7 @@ export function generateParticipants({
   const individualParticipantsCount =
     participantsCount * (doubles ? 2 : team ? 8 : 1);
 
-  const { persons: mockedPersons, error } = personMocks({
+  const { persons: mockedPersons, error } = generatePersons({
     count: individualParticipantsCount,
     personExtensions,
     consideredDate,
@@ -227,10 +227,13 @@ export function generateParticipants({
     const person = mockedPersons[participantIndex];
     const {
       nationalityCode: personNationalityCode,
+      participantExtensions,
+      participantTimeItems,
       extensions,
       firstName,
       birthDate,
       lastName,
+      personId,
       sex,
     } = person || {};
     const standardGivenName = firstName || 'GivenName';
@@ -254,12 +257,17 @@ export function generateParticipants({
     });
     const participant = definedAttributes({
       participantId: uuids?.pop() || UUID(),
-      participantType: INDIVIDUAL,
+      extensions: participantExtensions,
+      timeItems: participantTimeItems,
       participantRole: COMPETITOR,
+      participantType: INDIVIDUAL,
       participantName,
       person: {
         addresses: [address],
-        personId: (personIds?.length && personIds[participantIndex]) || UUID(),
+        personId:
+          personId ||
+          (personIds?.length && personIds[participantIndex]) ||
+          UUID(),
         standardFamilyName,
         standardGivenName,
         nationalityCode,
