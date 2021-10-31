@@ -2620,14 +2620,14 @@ tournamentEngine.setsState(tournamentRecord, deepCopy, deepCopyConfig);
 
 ## setSubOrder
 
-Assigns a subOrder value to a participant within a structure by drawPosition where participant has been assigned
+Used to order ROUND_ROBIN participants when finishingPosition ties cannot be broken algorithmically. Assigns a subOrder value to a participant within a structure by drawPosition.
 
 ```js
 tournamentEngine.setSubOrder({
-  drawId,
-  structureId,
   drawPosition: 1,
   subOrder: 2,
+  structureId,
+  drawId,
 });
 ```
 

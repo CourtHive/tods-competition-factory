@@ -14,6 +14,10 @@ import {
   FORMAT_SHORT_SETS,
   FORMAT_STANDARD,
 } from '../../../fixtures/scoring/matchUpFormats';
+import {
+  MISSING_DRAW_POSITION,
+  MISSING_STRUCTURE_ID,
+} from '../../../constants/errorConditionConstants';
 
 it('can recalculate participantResults when outcomes are removed', () => {
   const drawProfiles = [
@@ -543,6 +547,7 @@ it('recognize when participants are tied with position order', () => {
 
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   let structure = drawDefinition.structures[0];
+  const mainStructureId = structure.structureId;
   const { structureId } = structure.structures[0];
   let { positionAssignments } = getPositionAssignments({
     structure,
@@ -593,24 +598,40 @@ it('recognize when participants are tied with position order', () => {
   });
 
   let result = tournamentEngine.setSubOrder({
-    drawId,
-    structureId,
     drawPosition: 1,
     subOrder: 2,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_STRUCTURE_ID);
+
+  result = tournamentEngine.setSubOrder({
+    subOrder: 2,
+    structureId,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_DRAW_POSITION);
+
+  result = tournamentEngine.setSubOrder({
+    structureId: mainStructureId,
+    drawPosition: 1,
+    subOrder: 2,
+    drawId,
   });
   expect(result.success).toEqual(true);
+
   result = tournamentEngine.setSubOrder({
-    drawId,
-    structureId,
     drawPosition: 2,
     subOrder: 3,
+    structureId,
+    drawId,
   });
   expect(result.success).toEqual(true);
+
   result = tournamentEngine.setSubOrder({
-    drawId,
-    structureId,
     drawPosition: 3,
     subOrder: 1,
+    structureId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 

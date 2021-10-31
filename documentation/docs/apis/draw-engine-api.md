@@ -1040,7 +1040,7 @@ drawEngine.setsState(drawDefinition, deepCopy, deepCopyConfig);
 
 ## setSubOrder
 
-Assigns a subOrder value to a participant within a structure by drawPosition where participant has been assigned
+Used to order ROUND_ROBIN participants when finishingPosition ties cannot be broken algorithmically. Assigns a subOrder value to a participant within a structure by drawPosition.
 
 ```js
 drawEngine.setSubOrder({
