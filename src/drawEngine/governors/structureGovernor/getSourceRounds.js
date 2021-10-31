@@ -10,10 +10,10 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function getSourceRounds({
+  excludeRoundNumbers = [],
+  playoffPositions = [],
   drawDefinition,
   structureId,
-  playoffPositions = [],
-  excludeRoundNumbers = [],
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
@@ -34,9 +34,9 @@ export function getSourceRounds({
   // get a map of which rounds produce which finishingPositions for positions
   // which are relevant, e.g. aren't already playedoff positions in current structure
   const playoffPositionSourceRoundsMap = getFinishingPositionSourceRoundsMap({
+    finishingPositions: relevantPlayoffPositions,
     drawDefinition,
     structureId,
-    finishingPositions: relevantPlayoffPositions,
   });
 
   // reduce the sourceRoundsMap to roundNumbers, not including excludedRoundNumbers

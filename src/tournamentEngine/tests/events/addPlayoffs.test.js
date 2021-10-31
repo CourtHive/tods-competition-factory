@@ -46,6 +46,7 @@ it.each([
       structureId,
       drawId,
     });
+
     if (error) {
       expect(result.error).toEqual(error);
     } else {

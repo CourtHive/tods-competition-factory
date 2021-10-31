@@ -78,6 +78,7 @@ export function addPlayoffStructures(params) {
   if (validRoundNumbers) {
     if (!Array.isArray(validRoundNumbers))
       return { error: INVALID_VALUES, validRoundNumbers };
+
     validRoundNumbers.forEach((roundNumber) => {
       if (!availablePlayoffRounds.includes(roundNumber))
         return { error: INVALID_VALUES, roundNumber };
@@ -103,6 +104,7 @@ export function addPlayoffStructures(params) {
 
   const newLinks = [];
   const newStructureIds = [];
+
   for (const roundNumber of sourceRounds) {
     const roundInfo = roundsRanges.find(
       (roundInfo) => roundInfo.roundNumber === roundNumber
@@ -118,7 +120,7 @@ export function addPlayoffStructures(params) {
       roundProfile[roundNumber] &&
       stageSequence + roundProfile[roundNumber] - 1;
 
-    const { structure: targetStructure } = playoff({
+    const result = playoff({
       exitProfile: `0-${roundNumber}`,
       playoffStructureNameBase,
       finishingPositionOffset,
@@ -134,9 +136,10 @@ export function addPlayoffStructures(params) {
       isMock,
       uuids,
     });
+    if (result.error) return result;
 
-    if (targetStructure) {
-      newStructureIds.push(targetStructure.structureId);
+    if (result.structure) {
+      newStructureIds.push(result.structure.structureId);
       const link = {
         linkType: LOSER,
         source: {
@@ -144,7 +147,7 @@ export function addPlayoffStructures(params) {
           roundNumber,
         },
         target: {
-          structureId: targetStructure.structureId,
+          structureId: result.structure.structureId,
           feedProfile: TOP_DOWN,
           roundNumber: 1,
         },
@@ -153,6 +156,8 @@ export function addPlayoffStructures(params) {
       newLinks.push(link);
     }
   }
+
+  if (!newStructureIds.length) return { error: INVALID_VALUES };
 
   drawDefinition.links = (drawDefinition.links || []).concat(...newLinks);
 
