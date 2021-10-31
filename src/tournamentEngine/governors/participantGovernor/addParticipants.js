@@ -1,5 +1,5 @@
-import { intersection } from '../../../utilities/arrays';
 import { addNotice } from '../../../global/state/globalState';
+import { intersection } from '../../../utilities/arrays';
 import { makeDeepCopy, UUID } from '../../../utilities';
 
 import { ADD_PARTICIPANTS } from '../../../constants/topicConstants';

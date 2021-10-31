@@ -2,7 +2,6 @@ import { generateRange, UUID } from '../../../utilities';
 import defaultPersonData from '../../data/persons.json';
 import mocksEngine from '../..';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { PAIR } from '../../../constants/participantTypes';
 
@@ -133,24 +132,6 @@ it('can generate sexed participants', () => {
     `${FEMALE}/${MALE}`,
     `${MALE}/${MALE}`,
   ]);
-});
-
-it('can accept custom personData', () => {
-  const personData = [
-    { firstName: 'Sam', lastName: 'Smith', sex: MALE, nationality: 'SUI' },
-    {
-      firstName: 'Jennifer',
-      lastName: 'Jameson',
-      sex: FEMALE,
-      nationality: 'IRL',
-    },
-  ];
-  const { participants, error } = mocksEngine.generateParticipants({
-    participantsCount: 2,
-    personData,
-  });
-  expect(participants).toBeUndefined();
-  expect(error).toEqual(INVALID_VALUES);
 });
 
 it('can accept custom personData', () => {

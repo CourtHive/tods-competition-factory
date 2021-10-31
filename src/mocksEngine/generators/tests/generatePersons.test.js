@@ -88,7 +88,7 @@ const firstNames = personData.map(({ firstName }) => firstName);
 const lastNames = personData.map(({ lastName }) => lastName);
 
 test.each(scenarios)(
-  'can generate participants with identical persons across tournaments',
+  'can generate participants with identical persons for different draw types',
   (drawProfile) => {
     // create 8 persons to be used across multiple tournaments
     let { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -108,3 +108,8 @@ test.each(scenarios)(
     });
   }
 );
+
+/*
+person.participantExtensions and person.participantTimeItems
+capture the points totals from one tournament, generate rankings, pass participants into another tournament with seeded draws
+*/
