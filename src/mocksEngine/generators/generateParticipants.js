@@ -97,21 +97,29 @@ export function generateParticipants({
     }
 
     if (ratingType && ratingsParameters[ratingType]) {
-      let { ratingMax, ratingMin } = category;
-      const ratingParameter = ratingsParameters[ratingType];
+      // ratingAttributes allows selected attributes of ratingParameters to be overridden
+      let { ratingMax, ratingMin, ratingAttributes } = category;
+
+      const ratingParameters = Object.assign(
+        {},
+        ratingsParameters[ratingType],
+        ratingAttributes || {}
+      );
+
       const {
         attributes = {},
         decimalsCount,
         accessors,
         range,
-      } = ratingParameter;
+        step,
+      } = ratingParameters;
 
       const inverted = range[0] > range[1];
       const skew = inverted ? 2 : 0.5;
       const [min, max] = range.slice().sort();
       const generateRatings = () =>
         generateRange(0, 1000)
-          .map(() => skewedDistribution(min, max, skew, decimalsCount))
+          .map(() => skewedDistribution(min, max, skew, decimalsCount, step))
           .filter(
             (rating) =>
               (!ratingMax || rating <= ratingMax) &&

@@ -1,5 +1,11 @@
-import { intersection, makeDeepCopy, noNulls, randomPop } from '..';
-import { isOdd, nextPowerOf2, isPowerOf2 } from '../math';
+import {
+  generateRange,
+  intersection,
+  makeDeepCopy,
+  noNulls,
+  randomPop,
+} from '..';
+import { isOdd, nextPowerOf2, isPowerOf2, skewedDistribution } from '../math';
 import { generateHashCode } from '../objects';
 import { safeUUID, UUIDS } from '../UUID';
 import { deepMerge } from '../deepMerge';
@@ -219,6 +225,25 @@ test('miscellaneous math tests', () => {
   expect(result).toEqual(false);
   result = isOdd();
   expect(result).toEqual(undefined);
+});
+
+test('skewedDistribution supports step values', () => {
+  let result = generateRange(0, 100).map(() =>
+    skewedDistribution(1, 100, 2, 2, 0.5)
+  );
+  result.forEach((v) => {
+    const finalDigit = v.toString().split('.')[1];
+    if (finalDigit) expect(['0', '5'].includes(finalDigit)).toEqual(true);
+  });
+
+  result = generateRange(0, 100).map(() =>
+    skewedDistribution(1, 100, 2, 2, 0.25)
+  );
+  result.forEach((v) => {
+    const finalDigit = v.toString().split('.')[1];
+    if (finalDigit)
+      expect(['25', '5', '75'].includes(finalDigit)).toEqual(true);
+  });
 });
 
 test('miscellaneous array tests', () => {
