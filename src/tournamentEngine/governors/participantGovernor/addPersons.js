@@ -6,9 +6,13 @@ import { addParticipants } from './addParticipants';
 import { UUID } from '../../../utilities';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
-import { COMPETITOR } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  COMPETITOR,
+  participantRoles,
+} from '../../../constants/participantRoles';
+import {
+  INVALID_PARTICIPANT_ROLE,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
@@ -22,6 +26,8 @@ export function addPersons({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(persons)) return { error: INVALID_VALUES };
+  if (!Object.keys(participantRoles).includes(participantRole))
+    return { error: INVALID_PARTICIPANT_ROLE };
 
   const existingPersonIds = (tournamentRecord.participants || [])
     .map(({ person }) => person?.personId)
@@ -85,31 +91,33 @@ export function addPersons({
       tournamentRecord,
     })?.tournamentParticipants || [];
 
-  persons
-    .filter(({ pairedPersons }) => pairedPersons)
-    .forEach(({ personId, pairedPersons }) => {
-      Array.isArray(pairedPersons) &&
-        pairedPersons.forEach((pairing) => {
-          const individualParticipants = [personId, pairing.personId]
-            .map((id) =>
-              findParticipant({ tournamentParticipants, personId: id })
-            )
-            .filter(Boolean);
-          if (individualParticipants.length === 2) {
-            const individualParticipantIds =
-              individualParticipants.map(getParticipantId);
-            pairParticipants.push(
-              definedAttributes({
-                extensions: pairing.participantExtensions,
-                timeItems: pairing.timeItems,
-                participantRole: COMPETITOR,
-                individualParticipantIds,
-                participantType: PAIR,
-              })
-            );
-          }
-        });
-    });
+  if (participantRole === COMPETITOR) {
+    persons
+      .filter(({ pairedPersons }) => pairedPersons)
+      .forEach(({ personId, pairedPersons }) => {
+        Array.isArray(pairedPersons) &&
+          pairedPersons.forEach((pairing) => {
+            const individualParticipants = [personId, pairing.personId]
+              .map((id) =>
+                findParticipant({ tournamentParticipants, personId: id })
+              )
+              .filter(Boolean);
+            if (individualParticipants.length === 2) {
+              const individualParticipantIds =
+                individualParticipants.map(getParticipantId);
+              pairParticipants.push(
+                definedAttributes({
+                  extensions: pairing.participantExtensions,
+                  timeItems: pairing.timeItems,
+                  participantRole: COMPETITOR,
+                  individualParticipantIds,
+                  participantType: PAIR,
+                })
+              );
+            }
+          });
+      });
+  }
 
   if (pairParticipants.length) {
     result = addParticipants({

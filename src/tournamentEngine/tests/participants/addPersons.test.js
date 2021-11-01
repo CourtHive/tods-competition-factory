@@ -3,6 +3,7 @@ import tournamentEngine from '../../sync';
 import { UUID } from '../../../utilities';
 
 import {
+  INVALID_PARTICIPANT_ROLE,
   INVALID_VALUES,
   MISSING_PERSON_DETAILS,
 } from '../../../constants/errorConditionConstants';
@@ -26,6 +27,12 @@ test('it can addPersons and create INDIVIDUAL and PAIR participants', () => {
     personId: UUID(),
     sex: person.sex,
   }));
+
+  result = tournamentEngine.addPersons({
+    participantRole: 'invalid role',
+    persons,
+  });
+  expect(result.error).toEqual(INVALID_PARTICIPANT_ROLE);
 
   result = tournamentEngine.addPersons({ persons });
   expect(result.success).toEqual(true);
