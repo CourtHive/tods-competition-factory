@@ -1,6 +1,9 @@
+import { validateTieFormat } from '../../governors/matchUpGovernor/tieFormatUtilities';
+
 import {
   INVALID_VALUES,
   MISSING_MATCHUP,
+  MISSING_TIE_FORMAT,
 } from '../../../constants/errorConditionConstants';
 
 /**
@@ -30,12 +33,16 @@ export function generateTieMatchUpScore({
 
   if (!matchUp) return { error: MISSING_MATCHUP };
   tieFormat = matchUp.tieFormat || tieFormat;
+  if (!tieFormat) return { error: MISSING_TIE_FORMAT };
+
+  const result = validateTieFormat({ tieFormat });
+  if (!result.valid) return { error: INVALID_VALUES, errors: result.errors };
 
   const sidePoints = [0, 0];
   const tieMatchUps = matchUp?.tieMatchUps || [];
   const collectionDefinitions = tieFormat?.collectionDefinitions || [];
 
-  collectionDefinitions.forEach((collectionDefinition) => {
+  for (const collectionDefinition of collectionDefinitions) {
     const collectionMatchUps = tieMatchUps.filter(
       (matchUp) => matchUp.collectionId === collectionDefinition.collectionId
     );
@@ -59,7 +66,7 @@ export function generateTieMatchUpScore({
       if (collectionWinningSide)
         sidePoints[collectionWinningSide] +=
           collectionDefinition.collectionValue;
-    } else if (collectionDefinition.collectionValueProfile) {
+    } else if (Array.isArray(collectionDefinition.collectionValueProfile)) {
       collectionMatchUps.forEach((matchUp) => {
         if (matchUp.winningSide) {
           const collectionPosition = matchUp.collectionPosition;
@@ -71,7 +78,7 @@ export function generateTieMatchUpScore({
         }
       });
     }
-  });
+  }
 
   const sideScores = sidePoints.map(
     (sideValue, i) => sideValue + sideAdjustments[i]
@@ -107,7 +114,7 @@ function getCollectionPositionValue({
 }) {
   const collectionValueProfile =
     collectionDefinition.collectionValueProfile || [];
-  const profile = collectionValueProfile.find(
+  const profile = collectionValueProfile?.find(
     (profile) => profile.collectionPosition === collectionPosition
   );
   return profile?.matchUpValue;
