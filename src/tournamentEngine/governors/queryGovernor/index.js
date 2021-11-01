@@ -1,6 +1,6 @@
 import { getMatchUpScheduleDetails as drawEngineGetMatchUpScheduleDetails } from '../../../drawEngine/accessors/matchUpAccessor/getMatchUpScheduleDetails';
 import { isValid } from '../../../drawEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
-import { getMaxEntryPosition } from '../../../common/deducers/getMaxEntryPosition';
+import { getMaxEntryPosition } from '../../../global/functions/deducers/getMaxEntryPosition';
 import { participantScheduledMatchUps } from './participantScheduledMatchUps';
 import { getPositionAssignments } from '../../getters/getPositionAssignments';
 import { participantScaleItem } from '../../accessors/participantScaleItem';

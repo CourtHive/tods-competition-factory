@@ -1,6 +1,6 @@
 import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
-import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
-import { findParticipant } from '../../../../common/deducers/findParticipant';
+import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
+import { findParticipant } from '../../../../global/functions/deducers/findParticipant';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 

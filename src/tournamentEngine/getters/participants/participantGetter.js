@@ -1,4 +1,4 @@
-import { findParticipant } from '../../../common/deducers/findParticipant';
+import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { makeDeepCopy } from '../../../utilities';
 
 import {

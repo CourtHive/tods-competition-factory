@@ -46,18 +46,36 @@ export function weightedRandom(max = 1, weight = 3, round = true) {
   return round && max > 1 ? Math.round(num) : num;
 }
 
-export function skewedDistribution(min, max, skew, significantDecimals = 2) {
+// round to nearest step, e.g. 0.25
+function stepRound(value, step) {
+  step || (step = 1.0);
+  var inv = 1.0 / step;
+  return Math.round(value * inv) / inv;
+}
+
+export function skewedDistribution(
+  min,
+  max,
+  skew,
+  significantDecimals = 2,
+  step
+) {
   const u = 1 - Math.random();
   const v = 1 - Math.random();
   let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
 
   num = num / 10.0 + 0.5;
-  if (num > 1 || num < 0) num = skewedDistribution(min, max, skew);
-  else {
+
+  if (num > 1 || num < 0) {
+    num = skewedDistribution(min, max, skew);
+  } else {
     num = Math.pow(num, skew);
     num *= max - min;
     num += min;
   }
 
-  return parseFloat(num.toFixed(significantDecimals));
+  if (step) num = stepRound(num, step);
+
+  const fixedDecimals = parseFloat(num.toFixed(significantDecimals));
+  return fixedDecimals;
 }

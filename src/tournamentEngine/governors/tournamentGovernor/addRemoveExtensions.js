@@ -1,5 +1,5 @@
 import { validExtension } from '../../../global/validation/validExtension';
-import { findParticipant } from '../../../common/deducers/findParticipant';
+import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

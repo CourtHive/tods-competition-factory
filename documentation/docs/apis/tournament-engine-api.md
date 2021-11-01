@@ -392,6 +392,48 @@ let result = tournamentEngine.addPenalty(penaltyData);
 
 ---
 
+## addPersons
+
+Creates tournament `participants` from an array of defined persons. Useful for adding registered persons to a tournament record.
+See **person** under **participant** in [Type Definitions](../types/typedefs#participant) for additional `person` attributes.
+
+:::note
+
+- `participantIds` are unique within a tournament
+- `personIds` are unique to an individual, and should be identical across tournaments.
+
+:::
+
+```js
+const persons = [
+  {
+    personId, // optional - providing a personId allows person to be tracked across tournaments
+    participantExtensions, // optional - any relevant extensions for created participant
+    participantTimeItems, // optional - any relevant timeItems (e.g. rankings/ratings) for created participant
+    standardFamilyName,
+    standardGivenName,
+    nationalityCode,
+    sex,
+
+    // optional - will create pair participants
+    pairedPersons: [
+      {
+        participantExtensions, // optional - any relevant extensions for created participant
+        participantTimeItems, // optional - any relevant timeItems (e.g. rankings/ratings) for created participant
+        personId,
+      },
+    ],
+  },
+];
+
+tournamentEngine.addPersons({
+  participantRole, // optional - defaults to COMPETITOR
+  persons,
+});
+```
+
+---
+
 ## addPlayoffStructures
 
 Adds playoff structures to an existing drawDefinition.
@@ -408,7 +450,7 @@ tournamentEngine.addPlayoffStructures({
   playoffStructureNameBase, // optional - base word for default playoff naming, e.g. 'Playoff'
 });
 
-// example use of playoffAttributes - will generated playoff structure from 2nd round with structureName: 'bronze'
+// example use of playoffAttributes - will generated playoff structure from 2nd round with structureName: 'BRONZE'
 const playoffAttributes = {
   '0-2': { name: 'BRONZE', abbreviation: 'B' },
 };
@@ -2620,14 +2662,14 @@ tournamentEngine.setsState(tournamentRecord, deepCopy, deepCopyConfig);
 
 ## setSubOrder
 
-Assigns a subOrder value to a participant within a structure by drawPosition where participant has been assigned
+Used to order ROUND_ROBIN participants when finishingPosition ties cannot be broken algorithmically. Assigns a subOrder value to a participant within a structure by drawPosition.
 
 ```js
 tournamentEngine.setSubOrder({
-  drawId,
-  structureId,
   drawPosition: 1,
   subOrder: 2,
+  structureId,
+  drawId,
 });
 ```
 

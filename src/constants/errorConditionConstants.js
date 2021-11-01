@@ -115,6 +115,7 @@ export const CANNOT_CHANGE_WINNINGSIDE = 'Cannot change winningSide';
 export const INVALID_PARTICIPANT = 'Invalid participant';
 export const INVALID_PARTICIPANT_ID = 'Invalid participantId';
 export const INVALID_PARTICIPANT_IDS = 'Invalid participantIds';
+export const INVALID_PARTICIPANT_ROLE = 'Invalid participantRole';
 export const INVALID_PARTICIPANT_TYPE = 'Invalid participantType';
 export const MISSING_PARTICIPANT_ROLE = 'Missing participantRole';
 export const MISSING_PARTICIPANT = 'Missing participant';
@@ -246,6 +247,7 @@ export const errorConditionConstants = {
   INVALID_OBJECT,
   INVALID_PARTICIPANT_ID,
   INVALID_PARTICIPANT_IDS,
+  INVALID_PARTICIPANT_ROLE,
   INVALID_PARTICIPANT_TYPE,
   INVALID_PARTICIPANT,
   INVALID_POLICY_DEFINITION,

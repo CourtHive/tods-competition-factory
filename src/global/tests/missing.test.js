@@ -2,11 +2,14 @@ import competitionEngineAsync from '../../competitionEngine/async';
 import competitionEngineSync from '../../competitionEngine/sync';
 import tournamentEngineAsync from '../../tournamentEngine/async';
 import tournamentEngineSync from '../../tournamentEngine/sync';
+import scaleEngineAsync from '../../scaleEngine/async';
+import scaleEngineSync from '../../scaleEngine/sync';
 import drawEngineAsync from '../../drawEngine/async';
 import drawEngineSync from '../../drawEngine/sync';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 const asyncTournamentEngine = tournamentEngineAsync(true);
+const asyncScaleEngine = scaleEngineAsync(true);
 const asyncDrawEngine = drawEngineAsync(true);
 
 it.each([competitionEngineSync, asyncCompetitionEngine])(
@@ -66,15 +69,16 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
       } else if (method === 'getState') {
         expect(result.tournamentRecord).toBeUndefined();
       } else if (result.success || result.valid) {
-        expect(
-          [
-            'reset',
-            'setTournamentId',
-            'newTournamentRecord',
-            'generateDrawDefinition',
-            'isValidSchedulingProfile',
-          ].includes(method)
-        ).toEqual(true);
+        const onList = [
+          'reset',
+          'devContext',
+          'setTournamentId',
+          'newTournamentRecord',
+          'generateDrawDefinition',
+          'isValidSchedulingProfile',
+        ].includes(method);
+        if (!onList) console.log({ method, result });
+        expect(onList).toEqual(true);
       } else {
         if (!result.error) console.log({ method, result });
         expect(result.error).not.toBeUndefined();
@@ -124,6 +128,36 @@ it.each([asyncDrawEngine, drawEngineSync])(
           expect(result.updated).toEqual(false);
         } else {
           console.log('no error', { method, result });
+        }
+      }
+    }
+  }
+);
+
+it.each([scaleEngineSync, asyncScaleEngine])(
+  'will return MISSING_TOURNAMENT_RECORDS for most methods if no state has been set',
+  async (scaleEngine) => {
+    const scaleEngineMethods = Object.keys(scaleEngine);
+    for (const method of scaleEngineMethods) {
+      await scaleEngine.reset();
+      const result = await scaleEngine[method]();
+      if (!result) {
+        // covers methods which are expected to return boolean
+        expect([false, 0].includes(result)).toEqual(true);
+      } else if (
+        ['credits', 'version', 'calculateNewRatings'].includes(method)
+      ) {
+        expect(result).not.toBeUndefined();
+      } else if (method === 'getState') {
+        expect(result.tournamentRecord).toBeUndefined();
+      } else if (result.success || result.valid) {
+        const successExpected = ['reset', 'devContext'].includes(method);
+        expect(successExpected).toEqual(true);
+      } else {
+        if (['devContext'].includes(method)) {
+          expect(result.version).not.toBeUndefined();
+        } else {
+          expect(result.error).not.toBeUndefined();
         }
       }
     }

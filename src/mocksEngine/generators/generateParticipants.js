@@ -3,7 +3,7 @@ import { randomInt, skewedDistribution } from '../../utilities/math';
 import { generateRange, shuffleArray, UUID } from '../../utilities';
 import { definedAttributes } from '../../utilities/objects';
 import { countries } from '../../fixtures/countryData';
-import { personMocks } from '../utilities/personMocks';
+import { generatePersons } from './generatePersons';
 import { teamMocks } from '../utilities/teamMocks';
 
 import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
@@ -66,7 +66,7 @@ export function generateParticipants({
   const individualParticipantsCount =
     participantsCount * (doubles ? 2 : team ? 8 : 1);
 
-  const { persons: mockedPersons, error } = personMocks({
+  const { persons: mockedPersons, error } = generatePersons({
     count: individualParticipantsCount,
     personExtensions,
     consideredDate,
@@ -97,21 +97,29 @@ export function generateParticipants({
     }
 
     if (ratingType && ratingsParameters[ratingType]) {
-      let { ratingMax, ratingMin } = category;
-      const ratingParameter = ratingsParameters[ratingType];
+      // ratingAttributes allows selected attributes of ratingParameters to be overridden
+      let { ratingMax, ratingMin, ratingAttributes } = category;
+
+      const ratingParameters = Object.assign(
+        {},
+        ratingsParameters[ratingType],
+        ratingAttributes || {}
+      );
+
       const {
         attributes = {},
         decimalsCount,
         accessors,
         range,
-      } = ratingParameter;
+        step,
+      } = ratingParameters;
 
       const inverted = range[0] > range[1];
       const skew = inverted ? 2 : 0.5;
       const [min, max] = range.slice().sort();
       const generateRatings = () =>
         generateRange(0, 1000)
-          .map(() => skewedDistribution(min, max, skew, decimalsCount))
+          .map(() => skewedDistribution(min, max, skew, decimalsCount, step))
           .filter(
             (rating) =>
               (!ratingMax || rating <= ratingMax) &&
@@ -219,10 +227,13 @@ export function generateParticipants({
     const person = mockedPersons[participantIndex];
     const {
       nationalityCode: personNationalityCode,
+      participantExtensions,
+      participantTimeItems,
       extensions,
       firstName,
       birthDate,
       lastName,
+      personId,
       sex,
     } = person || {};
     const standardGivenName = firstName || 'GivenName';
@@ -246,12 +257,17 @@ export function generateParticipants({
     });
     const participant = definedAttributes({
       participantId: uuids?.pop() || UUID(),
-      participantType: INDIVIDUAL,
+      extensions: participantExtensions,
+      timeItems: participantTimeItems,
       participantRole: COMPETITOR,
+      participantType: INDIVIDUAL,
       participantName,
       person: {
         addresses: [address],
-        personId: (personIds?.length && personIds[participantIndex]) || UUID(),
+        personId:
+          personId ||
+          (personIds?.length && personIds[participantIndex]) ||
+          UUID(),
         standardFamilyName,
         standardGivenName,
         nationalityCode,

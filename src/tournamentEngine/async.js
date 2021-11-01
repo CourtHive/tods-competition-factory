@@ -54,7 +54,9 @@ export function tournamentEngineAsync(test) {
 
   engine.version = () => factoryVersion();
   engine.reset = () => {
-    const result = removeTournamentRecord(getTournamentId());
+    const tournamentId = getTournamentId();
+    if (!tournamentId) return processResult();
+    const result = removeTournamentRecord(tournamentId);
     return processResult(result);
   };
   engine.setState = (tournament, deepCopyOption, deepCopyAttributes) => {

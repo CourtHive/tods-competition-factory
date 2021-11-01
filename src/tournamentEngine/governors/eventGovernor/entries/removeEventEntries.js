@@ -1,5 +1,5 @@
 import { getTournamentParticipants } from '../../../getters/participants/getTournamentParticipants';
-import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
+import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import { SUCCESS } from '../../../../constants/resultConstants';

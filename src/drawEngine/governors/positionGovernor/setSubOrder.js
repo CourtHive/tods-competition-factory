@@ -15,7 +15,8 @@ import {
 
 /**
  *
- * Assigns a subOrder value to a participant within a structure by drawPosition where participant has been assigned
+ * Used to order ROUND_ROBIN participants when finishingPosition ties cannot be broken algorithmically.
+ * Assigns a subOrder value to a participant within a structure by drawPosition.
  *
  * @param {object} drawDefinition - added automatically by drawEngine if state is present or by tournamentEngine with drawId
  * @param {string} drawId - used by tournamentEngine to retrieve drawDefinition
@@ -27,11 +28,10 @@ import {
 export function setSubOrder({
   tournamentRecord,
   drawDefinition,
-  event,
-
-  structureId,
   drawPosition,
+  structureId,
   subOrder,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
@@ -58,8 +58,7 @@ export function setSubOrder({
     name: SUB_ORDER,
     value: subOrder,
   };
-  let result = addExtension({ element: assignment, extension });
-  if (result.error) return result;
+  assignment && addExtension({ element: assignment, extension });
 
   const { matchUps } = getAllStructureMatchUps({
     structure: targetStructure,
@@ -68,7 +67,7 @@ export function setSubOrder({
   const matchUpFormat =
     structure?.matchUpFormat || drawDefinition.matchUpFormat;
 
-  result = updateAssignmentParticipantResults({
+  updateAssignmentParticipantResults({
     positionAssignments,
     tournamentRecord,
     drawDefinition,
@@ -76,8 +75,8 @@ export function setSubOrder({
     matchUps,
     event,
   });
-  if (result.error) return result;
 
   modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+
   return { ...SUCCESS };
 }

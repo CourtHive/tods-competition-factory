@@ -4,6 +4,7 @@ import { getParticipantMembership } from '../../getters/participants/getParticip
 import { publicFindParticipant } from '../../getters/participants/participantGetter';
 import { getParticipantIdFinishingPositions } from './finishingPositions';
 import { getPairedParticipant } from './getPairedParticipant';
+import { addPersons } from './addPersons';
 
 import { modifyIndividualParticipantIds } from './groupings/modifyIndividualParticipantIds';
 import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
@@ -11,6 +12,7 @@ import { addIndividualParticipantIds } from './groupings/addIndividualParticipan
 import { modifyParticipantsSignInStatus } from './modifyParticipantsSignInStatus';
 import { createGroupParticipant } from './groupings/createGroupParticipant';
 import { modifyParticipantOtherName } from './modifyParticipantOtherName';
+import { getTournamentPersons } from '../../getters/getTournamentPersons';
 import { addParticipant, addParticipants } from './addParticipants';
 import { modifyParticipantName } from './modifyParticipantName';
 import { setParticipantScaleItems } from './addScaleItems';
@@ -28,7 +30,6 @@ import {
   removePenalty,
   getTournamentPenalties,
 } from './participantPenalties';
-import { getTournamentPersons } from '../../getters/getTournamentPersons';
 
 const participantGovernor = {
   addPenalty,
@@ -36,6 +37,7 @@ const participantGovernor = {
   removePenalty,
   getTournamentPenalties,
 
+  addPersons,
   addParticipant,
   addParticipants,
   deleteParticipants,

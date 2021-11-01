@@ -1,4 +1,4 @@
-import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
+import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
 import { removeEventEntries } from './removeEventEntries';
