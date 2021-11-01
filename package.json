@@ -20,7 +20,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "0.57.0",
+  "version": "0.58.0",
   "license": "MIT",
   "private": false,
   "jest": {
@@ -115,7 +115,7 @@
     "pinst": "2.1.6",
     "prettier": "2.4.1",
     "prettier-eslint": "13.0.0",
-    "rollup": "2.58.3",
+    "rollup": "2.59.0",
     "rollup-plugin-dts": "4.0.0",
     "rollup-plugin-terser": "7.0.2",
     "source-map-resolve": "0.6.0",

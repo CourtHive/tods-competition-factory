@@ -26,7 +26,7 @@ const result = tournamentEngine.addAdHocMatchUps({
 
 ## addCourt
 
-Add a court to a Venue. See [Scheduling](/docs/concepts/scheduling).
+Add a court to a Venue. See **court** under **venue** in [Type Defs](/docs/types/typedefs#venue).
 
 ```js
 const court = {
@@ -38,11 +38,12 @@ const court = {
   latitude, // optional
   longitude, // optional
   onlineResources,  // optional
-  pace, // optional - string;
-  surfaceCategory, SurfaceCategoryEnum;
+  pace, // optional - string; ITF enums
+  surfaceCategory, // optional - surface constant, e.g. CLAY, HARD, GRASS, CARPET, or ARTIFICIAL
   surfaceType, // string; see: https://www.itftennis.com/en/about-us/tennis-tech/recognised-courts/
   surfacedDate?: Date;
 }
+
 tournamentEngine.addCourt({ venueId, court });
 ```
 
@@ -66,10 +67,10 @@ const dateAvailability = [
   },
 ];
 tournamentEngine.addCourts({
-  venueId,
-  courtsCount: 3, // optional, can be added/modified later
   courtNames: ['Court 1', 'Court 2', 'Court 3'], // optional
+  courtsCount: 3, // optional, can be added/modified later; also can be derived from courtNames.length
   dateAvailability, // optional
+  venueId,
 });
 ```
 
