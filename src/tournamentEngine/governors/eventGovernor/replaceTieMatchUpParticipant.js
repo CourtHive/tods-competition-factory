@@ -1,5 +1,6 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { findLineUpWithParticipantIds } from './drawDefinitions/findLineUpWithParticipantIds';
+import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { addParticipant } from '../participantGovernor/addParticipants';
@@ -17,7 +18,6 @@ import {
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { addMatchUpsNotice } from '../../../drawEngine/notifications/drawNotifications';
 
 export function replaceTieMatchUpParticipantId(params) {
   const matchUpContext = getTieMatchUpContext(params);
@@ -227,7 +227,7 @@ export function replaceTieMatchUpParticipantId(params) {
     }
   }
 
-  addMatchUpsNotice({ drawDefinition, matchUp: dualMatchUp });
+  modifyMatchUpNotice({ drawDefinition, matchUp: dualMatchUp });
 
   return { ...SUCCESS, participantRemoved, participantAdded };
 }
