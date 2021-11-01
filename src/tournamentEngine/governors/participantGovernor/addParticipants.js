@@ -108,6 +108,7 @@ export function addParticipant({
       if (!allowDuplicateParticipantIdPairs) {
         return {
           ...SUCCESS,
+          existingParticipant: true,
           participant: makeDeepCopy(existingPairParticipant.participant),
         };
       }
@@ -186,10 +187,9 @@ export function addParticipant({
 }
 
 export function addParticipants({
-  tournamentRecord,
-  participants = [],
-
   allowDuplicateParticipantIdPairs,
+  participants = [],
+  tournamentRecord,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
@@ -223,38 +223,44 @@ export function addParticipants({
     ...groupedParticipants
   );
 
+  const addedParticipants = [];
   if (participantsToAdd.length) {
-    const addedParticipants = [];
-
     for (const participant of participantsToAdd) {
       const result = addParticipant({
+        allowDuplicateParticipantIdPairs,
+        disableNotice: true,
         tournamentRecord,
         participant,
-        disableNotice: true,
-
-        allowDuplicateParticipantIdPairs,
       });
-      const { success, error, participant: addedParticipant } = result;
-      if (success) addedParticipants.push(addedParticipant);
-      if (error) return { error };
+      if (result.error) return result;
+
+      if (result.success && !result.existingParticipant)
+        addedParticipants.push(result.participant);
     }
 
-    addNotice({
-      topic: ADD_PARTICIPANTS,
-      payload: { participants: addedParticipants },
-    });
+    if (addedParticipants.length) {
+      addNotice({
+        topic: ADD_PARTICIPANTS,
+        payload: { participants: addedParticipants },
+      });
+    }
+
     const result = {
-      ...SUCCESS,
       participants: makeDeepCopy(addedParticipants),
+      addedCount: addedParticipants.length,
+      ...SUCCESS,
     };
+
     if (notAdded.length) {
       Object.assign(result, { notAdded, message: EXISTING_PARTICIPANT });
     }
+
     return result;
   } else {
     return {
-      ...SUCCESS,
       message: 'No new participants to add',
+      addedCount: 0,
+      ...SUCCESS,
     };
   }
 }

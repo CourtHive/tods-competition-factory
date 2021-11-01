@@ -1,4 +1,5 @@
 import { attributeFilter, makeDeepCopy } from '../../../utilities';
+
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 
 export function findParticipant({

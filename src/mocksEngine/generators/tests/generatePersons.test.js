@@ -1,12 +1,12 @@
 import { generatePersons } from '../generatePersons';
-
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { MALE } from '../../../constants/genderConstants';
-import defaultPersonData from '../../data/persons.json';
+import { tournamentEngine } from '../../..';
 import { UUID } from '../../../utilities';
 import mocksEngine from '../..';
-import { tournamentEngine } from '../../..';
+
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { MALE } from '../../../constants/genderConstants';
+import defaultPersonData from '../../data/persons.json';
 
 test('basic person generation', () => {
   let result = generatePersons();
@@ -74,18 +74,18 @@ test('basic person generation', () => {
   expect(result.error).toEqual(INVALID_VALUES);
 });
 
-const scenarios = [
-  undefined,
-  { drawSize: 8 },
-  { drawSize: 8, drawType: ROUND_ROBIN },
-];
-
 const personData = defaultPersonData
   .slice(0, 8)
   .map((person) => Object.assign(person, { personId: UUID() }));
 
 const firstNames = personData.map(({ firstName }) => firstName);
 const lastNames = personData.map(({ lastName }) => lastName);
+
+const scenarios = [
+  undefined,
+  { drawSize: 8 },
+  { drawSize: 8, drawType: ROUND_ROBIN },
+];
 
 test.each(scenarios)(
   'can generate participants with identical persons for different draw types',
@@ -109,7 +109,35 @@ test.each(scenarios)(
   }
 );
 
-/*
-person.participantExtensions and person.participantTimeItems
-capture the points totals from one tournament, generate rankings, pass participants into another tournament with seeded draws
-*/
+test('it can attach participant extensions and timeItems from personData', () => {
+  const participantExtensions = [{ name: 'test', value: 1 }];
+  const participantTimeItems = [
+    {
+      itemType: 'SCALE.RATING.SINGLES.WTN',
+      itemName: 'test',
+      itemValue: '10.2',
+    },
+  ];
+
+  const augmentedPersonData = personData.map((data) => ({
+    ...data,
+    participantExtensions,
+    participantTimeItems,
+  }));
+
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: {
+      personData: augmentedPersonData,
+      participantsCount: 8,
+    },
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  const { tournamentParticipants } =
+    tournamentEngine.getTournamentParticipants();
+
+  tournamentParticipants.forEach((participant) => {
+    expect(participant.extensions).toEqual(participantExtensions);
+    expect(participant.timeItems).toEqual(participantTimeItems);
+  });
+});
