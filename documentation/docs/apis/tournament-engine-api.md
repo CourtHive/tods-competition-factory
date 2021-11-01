@@ -392,6 +392,46 @@ let result = tournamentEngine.addPenalty(penaltyData);
 
 ---
 
+## addPersons
+
+Creates tournament `participants` from an array of defined persons. Useful for adding registered persons to a tournament record.
+
+See **person** under **participant** in [Type Definitions](../types/typedefs#participant) for additional `person` attributes.
+
+:::note
+`participantIds` are unique within a tournament; `personIds` are unique to an individual, and should be identical across tournaments.
+:::
+
+```js
+const persons = [
+  {
+    personId, // optional - providing a personId allows person to be tracked across tournaments
+    participantExtensions, // optional - any relevant extensions for created participant
+    participantTimeItems, // optional - any relevant timeItems (e.g. rankings/ratings) for created participant
+    standardFamilyName,
+    standardGivenName,
+    nationalityCode,
+    sex,
+
+    // optional - will create pair participants
+    pairedPersons: [
+      {
+        participantExtensions, // optional - any relevant extensions for created participant
+        participantTimeItems, // optional - any relevant timeItems (e.g. rankings/ratings) for created participant
+        personId,
+      },
+    ],
+  },
+];
+
+tournamentEngine.addPersons({
+  participantRole, // optional - defaults to COMPETITOR
+  persons,
+});
+```
+
+---
+
 ## addPlayoffStructures
 
 Adds playoff structures to an existing drawDefinition.
