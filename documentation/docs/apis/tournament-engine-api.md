@@ -395,11 +395,13 @@ let result = tournamentEngine.addPenalty(penaltyData);
 ## addPersons
 
 Creates tournament `participants` from an array of defined persons. Useful for adding registered persons to a tournament record.
-
 See **person** under **participant** in [Type Definitions](../types/typedefs#participant) for additional `person` attributes.
 
 :::note
-`participantIds` are unique within a tournament; `personIds` are unique to an individual, and should be identical across tournaments.
+
+- `participantIds` are unique within a tournament
+- `personIds` are unique to an individual, and should be identical across tournaments.
+
 :::
 
 ```js
