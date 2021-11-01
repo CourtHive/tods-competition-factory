@@ -1,3 +1,4 @@
+import { generateTieMatchUpScore } from '../../../drawEngine/accessors/matchUpAccessor';
 import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import mocksEngine from '../../../mocksEngine';
@@ -35,7 +36,7 @@ const scenarios = [
   { drawSize: 2, singlesCount: 3, doublesCount: 0, valueGoal: 2, expectLineUps: true },
   { drawSize: 4, singlesCount: 3, doublesCount: 0, valueGoal: 2, expectLineUps: true },
   { drawSize: 8, singlesCount: 3, doublesCount: 0, valueGoal: 2, expectLineUps: true },
-  { drawSize: 8, singlesCount: 6, doublesCount: 3, valueGoal: 5, expectLineUps: true },
+  { drawSize: 8, singlesCount: 6, doublesCount: 3, valueGoal: 5, expectLineUps: true, tieFormatTest: true, scoreStringSide1: '7-0' },
   { drawType: FIRST_MATCH_LOSER_CONSOLATION, drawSize: 8, singlesCount: 6, doublesCount: 3, valueGoal: 5 },
 ];
 
@@ -247,6 +248,18 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
       expect(dualMatchUp.sides[0].lineUp).not.toBeUndefined();
       expect(dualMatchUp.sides[0].participantId).not.toBeUndefined;
     });
+  }
+
+  if (scenario.tieFormatTest) {
+    const matchUp = firstRoundDualMatchUps[0];
+    matchUp.tieFormat.collectionDefinitions.forEach((collectionDefinition) => {
+      if (collectionDefinition.matchUpType === DOUBLES) {
+        delete collectionDefinition.matchUpValue;
+        collectionDefinition.collectionValue = 1;
+      }
+    });
+    const result = generateTieMatchUpScore({ matchUp });
+    expect(result.scoreStringSide1).toEqual(scenario.scoreStringSide1);
   }
 });
 

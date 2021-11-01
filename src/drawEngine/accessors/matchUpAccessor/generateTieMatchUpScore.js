@@ -55,16 +55,18 @@ export function generateTieMatchUpScore({
       });
     } else if (collectionDefinition.collectionValue) {
       const sideWins = [0, 0];
-      const winGoal =
-        Math.floor(collectionDefinition.matchUpCount / 2).floor + 1;
+      const winGoal = Math.floor(collectionDefinition.matchUpCount / 2) + 1;
+
       collectionMatchUps.forEach((matchUp) => {
         if (matchUp.winningSide) sideWins[matchUp.winningSide - 1] += 1;
       });
-      const collectionWinningSide = sideWins.reduce((winningSide, side) => {
-        return side >= winGoal ? side + 1 : winningSide;
+
+      const collectionWinningSide = sideWins.reduce((winningSide, side, i) => {
+        return side >= winGoal ? i + 1 : winningSide;
       }, undefined);
+
       if (collectionWinningSide)
-        sidePoints[collectionWinningSide] +=
+        sidePoints[collectionWinningSide - 1] +=
           collectionDefinition.collectionValue;
     } else if (Array.isArray(collectionDefinition.collectionValueProfile)) {
       collectionMatchUps.forEach((matchUp) => {
