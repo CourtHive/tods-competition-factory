@@ -57,6 +57,7 @@ export function generateParticipants({
   sex,
 
   inContext,
+  withISO,
 
   rankingRange = [1, 100], // range of ranking positions to generate
   scaledParticipantsCount, // number of participants to assign rankings/ratings
@@ -255,6 +256,7 @@ export function generateParticipants({
       participantIndex,
       nationalityCode,
     });
+
     const participant = definedAttributes({
       participantId: uuids?.pop() || UUID(),
       extensions: participantExtensions,
@@ -276,6 +278,12 @@ export function generateParticipants({
         sex,
       },
     });
+
+    if (withISO && nationalityCode) {
+      const country = countries.find(({ ioc }) => ioc === nationalityCode);
+      if (country?.iso) participant.person.iso = country.iso;
+      if (country?.label) participant.person.countryName = country.label;
+    }
 
     if (category) {
       const singlesRanking = singlesRankings[participantIndex];
