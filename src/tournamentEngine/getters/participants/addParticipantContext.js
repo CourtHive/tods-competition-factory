@@ -637,12 +637,15 @@ function annotateParticipant({
     )) {
       const scaleItem = latestScaleItem(scaleType);
       if (scaleItem) {
-        const [, type, format, name] = scaleItem.itemType.split('.');
+        const [, type, format, scaleName] = scaleItem.itemType.split('.');
         const scaleType = type === RANKING ? 'rankings' : 'ratings';
         if (!participant[scaleType]) participant[scaleType] = {};
         if (!participant[scaleType][format])
           participant[scaleType][format] = [];
-        participant[scaleType][format].push({ [name]: scaleItem.itemValue });
+        participant[scaleType][format].push({
+          scaleValue: scaleItem.itemValue,
+          scaleName,
+        });
       }
     }
   }
