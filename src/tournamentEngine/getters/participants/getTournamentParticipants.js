@@ -40,6 +40,7 @@ export function getTournamentParticipants({
   withEvents,
   withDraws,
   inContext,
+  withISO,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
@@ -73,14 +74,15 @@ export function getTournamentParticipants({
     });
 
   const addContext =
-    withEvents ||
-    withDraws ||
-    withMatchUps ||
+    withScheduleItems ||
+    scheduleAnalysis ||
+    withStatistics ||
     withGroupings ||
     withOpponents ||
-    withStatistics ||
-    scheduleAnalysis ||
-    withScheduleItems ||
+    withMatchUps ||
+    withEvents ||
+    withDraws ||
+    withISO ||
     inContext;
 
   let participantIdsWithConflicts;
@@ -99,6 +101,7 @@ export function getTournamentParticipants({
       withMatchUps,
       withEvents,
       withDraws,
+      withISO,
     });
 
     participantIdsWithConflicts = result?.participantIdsWithConflicts;

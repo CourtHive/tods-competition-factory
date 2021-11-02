@@ -5,6 +5,7 @@ import mocksEngine from '../..';
 import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';
 import { ELO, NTRP, UTR, WTN } from '../../../constants/ratingConstants';
 import { mockProfile } from './mockScaleProfile';
+import { SINGLES } from '../../../constants/matchUpTypes';
 
 // prettier-ignore
 const rankingsScenarios = [
@@ -101,8 +102,7 @@ test('generates participants with rankings and ratings with additional embellish
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
+  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
   const scaleItems = tournamentParticipants
     .map(
       (p) =>
@@ -113,13 +113,15 @@ test('generates participants with rankings and ratings with additional embellish
 
   let typesCount = 0;
   expect(scaleItems.length).toEqual(24);
+
   scaleItems.forEach(({ itemType, itemValue }) => {
     if (itemType === 'SCALE.RANKING.SINGLES.U18') {
       expect(itemValue).toEqual(Math.round(itemValue));
       typesCount += 1;
     } else if (itemType === 'SCALE.RATING.SINGLES.WTN') {
       const decimalValue = itemValue.wtnRating.toString().split('.')[1];
-      expect([1, 2].includes(decimalValue.length)).toEqual(true);
+      decimalValue &&
+        expect([1, 2].includes(decimalValue?.length)).toEqual(true);
       typesCount += 1;
     } else if (itemType === 'SCALE.RATING.SINGLES.NTRP') {
       const decimalValue = itemValue.ntrpRating.toString().split('.')[1];
@@ -128,4 +130,24 @@ test('generates participants with rankings and ratings with additional embellish
     }
   });
   expect(typesCount).toEqual(scaleItems.length);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    inContext: true,
+    withISO: true,
+  }));
+
+  let withRatings = 0;
+  let withRankings = 0;
+  tournamentParticipants.forEach((participant) => {
+    if (participant.rankings) {
+      withRankings += 1;
+      expect(participant.rankings[SINGLES].length).toEqual(1);
+    }
+    if (participant.ratings) {
+      withRatings += 1;
+      expect(participant.ratings[SINGLES].length).toEqual(1);
+    }
+  });
+  expect(withRankings).toEqual(8);
+  expect(withRatings).toEqual(16);
 });

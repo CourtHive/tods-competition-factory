@@ -116,15 +116,15 @@ export function drawMatic({
 
 function getScaleValue({ scaleName = 'dynamic', eventType, participant }) {
   const scaleAttributes = {
-    scaleType: RATING,
     eventType: eventType || SINGLES,
+    scaleType: RATING,
     scaleName,
   };
   const result =
     participant &&
     participantScaleItem({
-      participant,
       scaleAttributes,
+      participant,
     });
   return result?.scaleItem?.scaleValue;
 }

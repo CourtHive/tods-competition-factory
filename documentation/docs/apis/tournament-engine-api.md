@@ -1804,12 +1804,13 @@ const {
 } = tournamentEngine.getTournamentParticipants({
   inContext, // optional - adds individualParticipants for all individualParticipantIds
 
+  withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
   withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
   withGroupings, // optional - include membership in group, pair, and team participants
   withOpponents, // optional - include opponent participantIds
   withEvents, // optional - defaults to true if any other context options are specified
   withDraws, // optional - defaults to true if any other context options are specified
-  withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
+  withISO, // optional - will add iso country code and countryName to participant persons
 
   scheduleAnalysis: {
     scheduledMinutesDifference // optional - scheduling conflicts determined by scheduledTime difference between matchUps
