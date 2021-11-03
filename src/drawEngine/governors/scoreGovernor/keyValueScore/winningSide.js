@@ -25,7 +25,8 @@ export function checkSetIsComplete({
 
   const setFormat =
     (isDecidingSet && matchUpScoringFormat.finalSetFormat) ||
-    matchUpScoringFormat?.setFormat;
+    matchUpScoringFormat?.setFormat ||
+    {};
   const { side1Score, side2Score } = set;
 
   const { NoAD, setTo, tiebreakAt, tiebreakFormat } = setFormat;

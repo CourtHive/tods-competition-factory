@@ -26,10 +26,11 @@ export function validateTieFormat({
   }
 
   const validWinCriteria =
-    typeof tieFormat.winCriteria?.valueGoal === 'number' &&
-    tieFormat.winCriteria?.valueGoal > 0;
+    (typeof tieFormat.winCriteria?.valueGoal === 'number' &&
+      tieFormat.winCriteria?.valueGoal > 0) ||
+    tieFormat.winCriteria?.aggregateValue;
 
-  if (!(validWinCriteria || tieFormat.winCriteria.aggregateValue)) {
+  if (!(validWinCriteria || tieFormat.winCriteria?.aggregateValue)) {
     errors.push(
       'Either non-zero valueGoal, or { aggregateValue: true } must be specified in winCriteria'
     );
@@ -154,6 +155,7 @@ export function validateTieFormat({
     collectionIds.length === unique(collectionIds).length;
 
   const valid = validCollections && validWinCriteria && uniqueCollectionIds;
+
   const result = { valid, errors };
   if (!valid) result.error = INVALID_TIE_FORMAT;
   return result;

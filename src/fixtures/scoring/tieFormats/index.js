@@ -3,6 +3,7 @@ import COLLEGE_DEFAULT from './COLLEGE_DEFAULT.json';
 import COLLEGE_JUCO from './COLLEGE_JUCO.json';
 import DOMINANT_DUO from './DOMINANT_DUO.json';
 import LAVER_CUP from './LAVER_CUP.json';
+import TEAM_AGGREGATION from './TEAM_AGGREGATION.json';
 
 export const tieFormats = {
   COLLEGE_D3,
@@ -10,4 +11,5 @@ export const tieFormats = {
   COLLEGE_JUCO,
   DOMINANT_DUO,
   LAVER_CUP,
+  TEAM_AGGREGATION,
 };

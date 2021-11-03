@@ -72,7 +72,23 @@ export function generateTieMatchUpScore({
         if (matchUp.winningSide)
           sideMatchUpValues[matchUp.winningSide - 1] += matchUpValue;
       });
+    } else if (setValue) {
+      collectionMatchUps.forEach((matchUp) => {
+        matchUp.score?.sets?.forEach((set) => {
+          if (set.winningSide)
+            sideMatchUpValues[set.winningSide - 1] += setValue;
+        });
+      });
+    } else if (scoreValue) {
+      collectionMatchUps.forEach((matchUp) => {
+        matchUp.score?.sets?.forEach((set) => {
+          const { side1Score = 0, side2Score = 0 } = set;
+          sideMatchUpValues[0] += side1Score;
+          sideMatchUpValues[1] += side2Score;
+        });
+      });
     } else if (Array.isArray(collectionValueProfile)) {
+      // this must come last because it will be true for []
       collectionMatchUps.forEach((matchUp) => {
         if (matchUp.winningSide) {
           const collectionPosition = matchUp.collectionPosition;
@@ -82,21 +98,6 @@ export function generateTieMatchUpScore({
           });
           sideMatchUpValues[matchUp.winningSide - 1] += matchUpValue;
         }
-      });
-    } else if (setValue) {
-      collectionMatchUps.forEach((matchUp) => {
-        matchUp.score.sets?.forEach((set) => {
-          if (set.winningSide)
-            sideMatchUpValues[set.winningSide - 1] += setValue;
-        });
-      });
-    } else if (scoreValue) {
-      collectionMatchUps.forEach((matchUp) => {
-        matchUp.score.sets?.forEach((set) => {
-          const { scoreSide1 = 0, scoreSide2 = 0 } = set;
-          sideMatchUpValues[0] = scoreSide1;
-          sideMatchUpValues[2] = scoreSide2;
-        });
       });
     }
 

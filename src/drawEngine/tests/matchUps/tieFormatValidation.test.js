@@ -9,6 +9,7 @@ import {
 
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+import { TEAM_AGGREGATION } from '../../../constants/tieFormatConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 import { TEAM } from '../../../constants/eventConstants';
@@ -62,6 +63,15 @@ const successConditions = [
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpType: SINGLES, matchUpValue: 1, collectionGroupNumber: 1 }] }},
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpFormat, matchUpType: SINGLES, matchUpValue: 1 }] }},
 ];
+
+it.only('validates fixture tieFormats', () => {
+  const tieFormat = tieFormatDefaults({
+    namedFormat: TEAM_AGGREGATION,
+  });
+  expect(tieFormat.winCriteria.aggregateValue).toEqual(true);
+  const result = validateTieFormat({ tieFormat });
+  expect(result.valid).toEqual(true);
+});
 
 it.each(successConditions)('can validate tieFormats', (errorCondition) => {
   let result = validateTieFormat(errorCondition);
