@@ -38,7 +38,7 @@ export function generateTieMatchUpScore({
   const result = validateTieFormat({ tieFormat });
   if (!result.valid) return { error: INVALID_VALUES, errors: result.errors };
 
-  const sidePoints = [0, 0];
+  const sideTieValue = [0, 0];
   const tieMatchUps = matchUp?.tieMatchUps || [];
   const collectionDefinitions = tieFormat?.collectionDefinitions || [];
 
@@ -47,28 +47,21 @@ export function generateTieMatchUpScore({
       (matchUp) => matchUp.collectionId === collectionDefinition.collectionId
     );
 
-    if (collectionDefinition.matchUpValue) {
-      const matchUpValue = collectionDefinition.matchUpValue;
+    const sideCollectionValues = [0, 0];
+
+    const {
+      collectionValueProfile,
+      collectionValue,
+      matchUpValue,
+      winCriteria,
+    } = collectionDefinition;
+
+    if (matchUpValue) {
       collectionMatchUps.forEach((matchUp) => {
         if (matchUp.winningSide)
-          sidePoints[matchUp.winningSide - 1] += matchUpValue;
+          sideCollectionValues[matchUp.winningSide - 1] += matchUpValue;
       });
-    } else if (collectionDefinition.collectionValue) {
-      const sideWins = [0, 0];
-      const winGoal = Math.floor(collectionDefinition.matchUpCount / 2) + 1;
-
-      collectionMatchUps.forEach((matchUp) => {
-        if (matchUp.winningSide) sideWins[matchUp.winningSide - 1] += 1;
-      });
-
-      const collectionWinningSide = sideWins.reduce((winningSide, side, i) => {
-        return side >= winGoal ? i + 1 : winningSide;
-      }, undefined);
-
-      if (collectionWinningSide)
-        sidePoints[collectionWinningSide - 1] +=
-          collectionDefinition.collectionValue;
-    } else if (Array.isArray(collectionDefinition.collectionValueProfile)) {
+    } else if (Array.isArray(collectionValueProfile)) {
       collectionMatchUps.forEach((matchUp) => {
         if (matchUp.winningSide) {
           const collectionPosition = matchUp.collectionPosition;
@@ -76,14 +69,43 @@ export function generateTieMatchUpScore({
             collectionDefinition,
             collectionPosition,
           });
-          sidePoints[matchUp.winningSide - 1] += matchUpValue;
+          sideCollectionValues[matchUp.winningSide - 1] += matchUpValue;
         }
       });
     }
+
+    if (collectionValue) {
+      if (winCriteria?.aggregateValue) {
+        //
+      } else if (winCriteria?.valueGoal) {
+        //
+      } else {
+        const sideWins = [0, 0];
+        const winGoal = Math.floor(collectionDefinition.matchUpCount / 2) + 1;
+
+        collectionMatchUps.forEach((matchUp) => {
+          if (matchUp.winningSide) sideWins[matchUp.winningSide - 1] += 1;
+        });
+
+        const collectionWinningSide = sideWins.reduce(
+          (winningSide, side, i) => {
+            return side >= winGoal ? i + 1 : winningSide;
+          },
+          undefined
+        );
+
+        if (collectionWinningSide)
+          sideCollectionValues[collectionWinningSide - 1] += collectionValue;
+      }
+    }
+
+    sideCollectionValues.forEach(
+      (sideCollectionValue, i) => (sideTieValue[i] += sideCollectionValue)
+    );
   }
 
-  const sideScores = sidePoints.map(
-    (sideValue, i) => sideValue + sideAdjustments[i]
+  const sideScores = sideTieValue.map(
+    (sideTieValue, i) => sideTieValue + sideAdjustments[i]
   );
 
   const set = { side1Score: sideScores[0], side2Score: sideScores[1] };
