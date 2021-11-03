@@ -7,6 +7,9 @@ export const POLICY_POSITION_ACTIONS_UNRESTRICTED = {
     // positionActions will be selectively enabled for structures matching { stages: [], stageSequences: [] }
     // enabledStructures: [] => all structures are enabled
     enabledStructures: [],
+
+    // enables entries in other flights to be accessed as alternates
+    otherFlightEntries: true,
   },
 };
 
