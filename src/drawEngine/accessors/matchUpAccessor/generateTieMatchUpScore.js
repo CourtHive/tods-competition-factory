@@ -47,7 +47,11 @@ export function generateTieMatchUpScore({
       (matchUp) => matchUp.collectionId === collectionDefinition.collectionId
     );
 
-    const sideCollectionValues = [0, 0];
+    // keep track of the values derived from matchUps
+    const sideMatchUpValues = [0, 0];
+    // will be equivalent to sideMatchUpValues unless there is a collectionValue,
+    // in which case the sideMatchUpValues are used in comparision with winCriteria
+    let sideCollectionValues = [0, 0];
 
     const {
       collectionValueProfile,
@@ -59,7 +63,7 @@ export function generateTieMatchUpScore({
     if (matchUpValue) {
       collectionMatchUps.forEach((matchUp) => {
         if (matchUp.winningSide)
-          sideCollectionValues[matchUp.winningSide - 1] += matchUpValue;
+          sideMatchUpValues[matchUp.winningSide - 1] += matchUpValue;
       });
     } else if (Array.isArray(collectionValueProfile)) {
       collectionMatchUps.forEach((matchUp) => {
@@ -69,23 +73,23 @@ export function generateTieMatchUpScore({
             collectionDefinition,
             collectionPosition,
           });
-          sideCollectionValues[matchUp.winningSide - 1] += matchUpValue;
+          sideMatchUpValues[matchUp.winningSide - 1] += matchUpValue;
         }
       });
     }
 
     if (collectionValue) {
+      const sideWins = [0, 0];
+      collectionMatchUps.forEach((matchUp) => {
+        if (matchUp.winningSide) sideWins[matchUp.winningSide - 1] += 1;
+      });
+
       if (winCriteria?.aggregateValue) {
         //
       } else if (winCriteria?.valueGoal) {
         //
       } else {
-        const sideWins = [0, 0];
         const winGoal = Math.floor(collectionDefinition.matchUpCount / 2) + 1;
-
-        collectionMatchUps.forEach((matchUp) => {
-          if (matchUp.winningSide) sideWins[matchUp.winningSide - 1] += 1;
-        });
 
         const collectionWinningSide = sideWins.reduce(
           (winningSide, side, i) => {
@@ -94,9 +98,14 @@ export function generateTieMatchUpScore({
           undefined
         );
 
-        if (collectionWinningSide)
+        if (collectionWinningSide) {
           sideCollectionValues[collectionWinningSide - 1] += collectionValue;
+        } else {
+          sideCollectionValues = [0, 0];
+        }
       }
+    } else {
+      sideCollectionValues = sideMatchUpValues;
     }
 
     sideCollectionValues.forEach(
