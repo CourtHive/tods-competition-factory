@@ -1,8 +1,8 @@
-import { getParticipantId } from '../../../global/functions/extractors';
-import mocksEngine from '../..';
+import { getParticipantId } from '../../global/functions/extractors';
+import mocksEngine from '..';
 
-import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
-import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
+import { ROUND_ROBIN } from '../../constants/drawDefinitionConstants';
 
 test('with uniqueParticipants: false draw entries will overlap', () => {
   const drawProfiles = [

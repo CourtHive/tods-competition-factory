@@ -1,4 +1,4 @@
-import { parseScoreString } from '../../utilities/parseScoreString';
+import { parseScoreString } from '../utilities/parseScoreString';
 
 it('can parse match tiebreaks', () => {
   let scoreString = '[10-3]';

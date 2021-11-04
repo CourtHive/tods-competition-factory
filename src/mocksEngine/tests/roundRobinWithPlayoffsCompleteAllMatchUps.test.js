@@ -1,14 +1,14 @@
-import tournamentEngine from '../../../tournamentEngine/sync';
-import { instanceCount } from '../../../utilities';
-import mocksEngine from '../..';
+import tournamentEngine from '../../tournamentEngine/sync';
+import { instanceCount } from '../../utilities';
+import mocksEngine from '..';
 
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { SINGLES } from '../../../constants/eventConstants';
+import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
+import { COMPLETED } from '../../constants/matchUpStatusConstants';
+import { SINGLES } from '../../constants/eventConstants';
 import {
   MAIN,
   ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../constants/drawDefinitionConstants';
 
 it('can complete matchUps in playoff structures', () => {
   const structureOptions = { groupSize: 5 };

@@ -1,9 +1,9 @@
-import { generateRange, UUID } from '../../../utilities';
-import defaultPersonData from '../../data/persons.json';
-import mocksEngine from '../..';
+import { generateRange, UUID } from '../../utilities';
+import defaultPersonData from '../data/persons.json';
+import mocksEngine from '..';
 
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { PAIR } from '../../../constants/participantTypes';
+import { FEMALE, MALE } from '../../constants/genderConstants';
+import { PAIR } from '../../constants/participantTypes';
 
 it('can generate unique participants', () => {
   const participantsCount = defaultPersonData.length + 10;

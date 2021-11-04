@@ -1,4 +1,4 @@
-import mocksEngine from '../..';
+import mocksEngine from '..';
 
 test('mocksEngine supports devContext', () => {
   const { tournamentRecord } = mocksEngine
