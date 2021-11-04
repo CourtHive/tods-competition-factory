@@ -42,7 +42,7 @@ test.each([competitionEngineSync])(
     const { tournamentId, eventId, drawId, structureId, roundNumber } =
       matchUps[0];
 
-    let result = competitionEngine.isValidSchedulingProfile({
+    let result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         {
           scheduleDate: '2022-01-03',
@@ -59,7 +59,7 @@ test.each([competitionEngineSync])(
     });
     expect(result.valid).toEqual(true);
 
-    result = competitionEngine.isValidSchedulingProfile({
+    result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         {
           scheduleDate: '2022-01-03',
@@ -83,7 +83,7 @@ test.each([competitionEngineSync])(
     });
     expect(result.error).toEqual(INVALID_VALUES);
 
-    result = competitionEngine.isValidSchedulingProfile({
+    result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         {
           scheduleDate: '2022-01-03',
@@ -107,7 +107,7 @@ test.each([competitionEngineSync])(
     });
     expect(result.valid).toEqual(true);
 
-    result = competitionEngine.isValidSchedulingProfile({
+    result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         {
           scheduleDate: '2022-01-03',
@@ -131,7 +131,7 @@ test.each([competitionEngineSync])(
     });
     expect(result.error).toEqual(INVALID_VALUES);
 
-    result = competitionEngine.isValidSchedulingProfile({
+    result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         {
           scheduleDate: '2022-01-03',
@@ -197,7 +197,7 @@ test.each([competitionEngineSync])(
     ({ schedulingProfile, modifications, issues } =
       competitionEngine.getSchedulingProfile());
 
-    result = competitionEngine.isValidSchedulingProfile({ schedulingProfile });
+    result = competitionEngine.validateSchedulingProfile({ schedulingProfile });
     expect(result.valid).toEqual(true);
 
     // undefined { schedulingProfile } will remove all relevant extensions
@@ -245,7 +245,7 @@ test.each([competitionEngineSync])(
 );
 
 test.each([competitionEngineSync])(
-  'isValidSchedulingProfile can identify invalid schedulingProfiles',
+  'validateSchedulingProfile can identify invalid schedulingProfiles',
   async (competitionEngine) => {
     const venueProfiles = [
       { venueName: 'venue 1', courtsCount: 4 },
@@ -259,39 +259,39 @@ test.each([competitionEngineSync])(
     competitionEngine.setState(tournamentRecord);
     const { venueIds } = competitionEngine.getCompetitionVenues();
 
-    let result = competitionEngine.isValidSchedulingProfile({
+    let result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: {},
     });
     expect(result.valid).toEqual(false);
 
-    result = competitionEngine.isValidSchedulingProfile({
+    result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [],
     });
     expect(result.valid).toEqual(true);
 
-    result = competitionEngine.isValidSchedulingProfile({
+    result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [[]],
     });
     expect(result.valid).toEqual(false);
 
-    result = competitionEngine.isValidSchedulingProfile({
+    result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [{ scheduleDate: '2022-01-03', venues: [] }],
     });
     expect(result.valid).toEqual(true);
 
-    result = competitionEngine.isValidSchedulingProfile({
+    result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [{ scheduleDate: '2022-01-03', venues: [{}] }],
     });
     expect(result.valid).toEqual(false);
 
-    result = competitionEngine.isValidSchedulingProfile({
+    result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         { scheduleDate: '2022-01-03', venues: [{ rounds: [] }] },
       ],
     });
     expect(result.valid).toEqual(false);
 
-    result = competitionEngine.isValidSchedulingProfile({
+    result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         {
           scheduleDate: '2022-01-03',
@@ -301,7 +301,7 @@ test.each([competitionEngineSync])(
     });
     expect(result.valid).toEqual(true);
 
-    result = competitionEngine.isValidSchedulingProfile({
+    result = competitionEngine.validateSchedulingProfile({
       schedulingProfile: [
         {
           scheduleDate: '2022-01-03',

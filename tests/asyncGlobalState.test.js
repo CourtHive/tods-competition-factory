@@ -5,7 +5,7 @@ import {
   tournamentEngineAsync,
   competitionEngineAsync,
   mocksEngine,
-} from '../dist/tods-competition-factory.esm';
+} from '../dist';
 
 /**
  * Example of how to use asyncGlobalState

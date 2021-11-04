@@ -1,4 +1,4 @@
-import { validExtension } from '../../../global/validation/validExtension';
+import { isValidExtension } from '../../../global/validation/isValidExtension';
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -17,7 +17,7 @@ import {
 export function addExtension({ element, extension } = {}) {
   if (!element) return { error: MISSING_VALUE };
   if (typeof element !== 'object') return { error: INVALID_VALUES };
-  if (!validExtension(extension)) return { error: INVALID_VALUES };
+  if (!isValidExtension(extension)) return { error: INVALID_VALUES };
 
   if (!element.extensions) element.extensions = [];
   const createdAt = new Date().toISOString();

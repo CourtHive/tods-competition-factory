@@ -9,7 +9,7 @@ import {
   VENUE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
 
-export function isValidSchedulingProfile({
+export function validateSchedulingProfile({
   tournamentRecords,
   schedulingProfile,
 }) {

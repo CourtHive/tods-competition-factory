@@ -68,7 +68,7 @@ export default [
     output: [
       ...output('cjs', false),
       ...output('cjs', true),
-      ...output('esm', false),
+      ...output('esm', true),
     ],
   },
   /*

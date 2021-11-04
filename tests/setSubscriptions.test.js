@@ -1,8 +1,4 @@
-import {
-  setSubscriptions,
-  tournamentEngine,
-  utilities,
-} from '../dist/tods-competition-factory.esm';
+import { setSubscriptions, tournamentEngine, utilities } from '../dist';
 
 it('can set subscriptions in global state outside of engines', () => {
   const allMatchUps = [];

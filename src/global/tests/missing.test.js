@@ -33,7 +33,7 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
           'getTournamentIds',
           'setSchedulingProfile',
           'getMatchUpDependencies',
-          'isValidSchedulingProfile',
+          'validateSchedulingProfile',
           'getScheduledRoundsDetails',
           'getSchedulingProfileIssues',
           'removeUnlinkedTournamentRecords',
@@ -75,7 +75,7 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
           'setTournamentId',
           'newTournamentRecord',
           'generateDrawDefinition',
-          'isValidSchedulingProfile',
+          'validateSchedulingProfile',
         ].includes(method);
         if (!onList) console.log({ method, result });
         expect(onList).toEqual(true);

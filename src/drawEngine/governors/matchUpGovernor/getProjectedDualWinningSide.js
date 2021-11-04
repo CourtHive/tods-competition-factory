@@ -1,4 +1,5 @@
 import { generateTieMatchUpScore } from '../../accessors/matchUpAccessor';
+import { makeDeepCopy } from '../../../utilities';
 
 export function getProjectedDualWinningSide({
   drawDefinition,
@@ -8,24 +9,13 @@ export function getProjectedDualWinningSide({
   structure,
   matchUp,
   event,
+  score,
 }) {
-  const existingTieMatchUpWinningSide = matchUp.winningSide;
-  let sideAdjustments = [0, 0];
-  if (winningSide === 1 && existingTieMatchUpWinningSide === 2) {
-    sideAdjustments = [1, -1];
-  } else if (winningSide === 2 && existingTieMatchUpWinningSide === 1) {
-    sideAdjustments = [-1, 1];
-  } else if (winningSide && !existingTieMatchUpWinningSide) {
-    if (winningSide === 1) {
-      sideAdjustments = [1, 0];
-    } else {
-      sideAdjustments = [0, 1];
-    }
-  } else if (existingTieMatchUpWinningSide && !winningSide) {
-    if (existingTieMatchUpWinningSide === 1) {
-      sideAdjustments = [-1, 0];
-    } else {
-      sideAdjustments = [0, -1];
+  const projectedDualMatchUp = makeDeepCopy(dualMatchUp, undefined, true);
+  for (const tieMatchUp of projectedDualMatchUp?.tieMatchUps || []) {
+    if (tieMatchUp.matchUpId === matchUp.matchUpId) {
+      tieMatchUp.winningSide = winningSide;
+      tieMatchUp.score = score;
     }
   }
 
@@ -37,8 +27,7 @@ export function getProjectedDualWinningSide({
     event?.tieFormat;
 
   const { winningSide: projectedWinningSide } = generateTieMatchUpScore({
-    matchUp: dualMatchUp,
-    sideAdjustments,
+    matchUp: projectedDualMatchUp,
     tieFormat,
   });
 

@@ -1,5 +1,5 @@
 import { getUpdatedSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
-import { tournamentRelevantSchedulingIds } from '../../../global/validation/validSchedulingProfile';
+import { tournamentRelevantSchedulingIds } from '../../../global/validation/validateSchedulingProfile';
 import { getEventIdsAndDrawIds } from '../../../competitionEngine/getters/getEventIdsAndDrawIds';
 import { addTournamentExtension } from '../tournamentGovernor/addRemoveExtensions';
 import { findTournamentExtension } from '../queryGovernor/extensionQueries';

@@ -13,7 +13,11 @@ import {
   findMatchUpByRoundNumberAndPosition,
 } from '../../tests/primitives/verifyMatchUps';
 
-import { CANNOT_CHANGE_WINNINGSIDE } from '../../../constants/errorConditionConstants';
+import {
+  CANNOT_CHANGE_WINNINGSIDE,
+  INCOMPATIBLE_MATCHUP_STATUS,
+  INVALID_VALUES,
+} from '../../../constants/errorConditionConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -558,16 +562,20 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     matchUpStatus: RETIRED,
     score: '6-1',
   });
-  expect(result).toMatchObject(SUCCESS);
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = drawEngine.setMatchUpStatus({
+    matchUpId,
+    matchUpStatus: RETIRED,
+  });
+  expect(result.success).toEqual(true);
 
   // Now attempt to change a 1st round matchUpStatus to nonDirecting outcome, same winningSide...
   result = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: SUSPENDED,
     winningSide: 1,
-    score: '6-1',
   });
-  expect(result.error).not.toBeUndefined();
+  expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
 
   // Now attempt to change a 1st round matchUp outcome, including winner...
   // when { allowChangePropagation: false }
@@ -575,7 +583,6 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     matchUpId,
     winningSide: 2,
     matchUpStatus: COMPLETED,
-    score: '6-0 6-0',
     allowChangePropagation: false,
   }));
   expect(error).toEqual(CANNOT_CHANGE_WINNINGSIDE);
@@ -588,6 +595,5 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   }));
   ({ matchUpStatus, score, winningSide } = matchUp);
   expect(matchUpStatus).toEqual(RETIRED);
-  expect(score).toEqual('6-1');
   expect(winningSide).toEqual(1);
 });

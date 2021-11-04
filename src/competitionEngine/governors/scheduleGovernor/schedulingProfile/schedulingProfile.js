@@ -1,4 +1,4 @@
-import { isValidSchedulingProfile } from '../../../../global/validation/validSchedulingProfile';
+import { validateSchedulingProfile } from '../../../../global/validation/validateSchedulingProfile';
 import { getCompetitionDateRange } from '../../queryGovernor/getCompetitionDateRange';
 import { getEventIdsAndDrawIds } from '../../../getters/getEventIdsAndDrawIds';
 import { getCompetitionVenues } from '../../../getters/venuesAndCourtsGetter';
@@ -66,7 +66,7 @@ export function getSchedulingProfile({ tournamentRecords }) {
 }
 
 export function setSchedulingProfile({ tournamentRecords, schedulingProfile }) {
-  const profileValidity = isValidSchedulingProfile({
+  const profileValidity = validateSchedulingProfile({
     tournamentRecords,
     schedulingProfile,
   });
