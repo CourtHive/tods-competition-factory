@@ -40,6 +40,7 @@ import {
   INCOMPATIBLE_MATCHUP_STATUS,
   CANNOT_CHANGE_WINNINGSIDE,
 } from '../../../constants/errorConditionConstants';
+import { validateScore } from '../../../global/validation/validateScore';
 
 /**
  *
@@ -63,6 +64,7 @@ export function setMatchUpStatus(params) {
     winningSide,
     matchUpId,
     event,
+    score,
   } = params;
 
   // Check for missing parameters ---------------------------------------------
@@ -77,6 +79,11 @@ export function setMatchUpStatus(params) {
 
   if (![undefined, ...validMatchUpStatuses].includes(matchUpStatus)) {
     return { error: INVALID_MATCHUP_STATUS };
+  }
+
+  if (score) {
+    const result = validateScore({ score });
+    if (result.error) return result;
   }
 
   // Get map of all drawMatchUps and inContextDrawMatchUPs ---------------------
@@ -168,6 +175,7 @@ export function setMatchUpStatus(params) {
       structure,
       matchUp,
       event,
+      score,
     });
 
     const existingDualMatchUpWinningSide = dualMatchUp.winningSide;

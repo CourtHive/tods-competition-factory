@@ -14,7 +14,7 @@ import {
  * @param {object} matchUp - TODS matchUp: { matchUpType: 'TEAM', tieMatchUps: [] }
  * @param {object} tieFormat - TODS tieFormat which defines the winCriteria for determining a winningSide
  * @param {string} separator - used to separate the two side scores in a scoreString
- * @param {number[]} sideAdjustments - used for projecting the score of a TEAM matchUp
+ * @param {number[]} sideAdjustments - used for projecting the score of a TEAM matchUp; sideAdjustments is only relevant for winCriteria based on matchUp winningSide
  *
  * @returns scoreObject: { sets, winningSide, scoreStringSide1, scoreStringSide 2 }
  */
@@ -161,8 +161,10 @@ export function generateTieMatchUpScore({
         .find(({ points }) => points >= valueGoal);
       winningSide = sideThatWon?.sideNumber;
     } else if (aggregateValue) {
-      const allTieMatchUpsCompleted = tieMatchUps.every((matchUp) =>
-        completedMatchUpStatuses.includes(matchUp.matchUpStatus)
+      const allTieMatchUpsCompleted = tieMatchUps.every(
+        (matchUp) =>
+          completedMatchUpStatuses.includes(matchUp.matchUpStatus) ||
+          matchUp.winningSide
       );
       if (allTieMatchUpsCompleted && sideScores[0] !== sideScores[1]) {
         winningSide = sideScores[0] > sideScores[1] ? 1 : 2;

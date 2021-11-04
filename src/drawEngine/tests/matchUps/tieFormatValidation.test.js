@@ -7,9 +7,9 @@ import {
   tournamentEngine,
 } from '../../..';
 
+import { TEAM_DOUBLES_3_AGGREGATION } from '../../../constants/tieFormatConstants';
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { TEAM_AGGREGATION } from '../../../constants/tieFormatConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 import { TEAM } from '../../../constants/eventConstants';
@@ -66,7 +66,7 @@ const successConditions = [
 
 it.only('validates fixture tieFormats', () => {
   const tieFormat = tieFormatDefaults({
-    namedFormat: TEAM_AGGREGATION,
+    namedFormat: TEAM_DOUBLES_3_AGGREGATION,
   });
   expect(tieFormat.winCriteria.aggregateValue).toEqual(true);
   const result = validateTieFormat({ tieFormat });
