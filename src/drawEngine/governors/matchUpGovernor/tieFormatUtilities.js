@@ -14,6 +14,7 @@ export function validateTieFormat({
     errors.push('tieformat must be an object');
     return { error: INVALID_TIE_FORMAT, errors };
   }
+
   if (typeof tieFormat.winCriteria !== 'object') {
     errors.push('tieFormat.winCriteria must be an object');
     return { error: INVALID_TIE_FORMAT, errors };
@@ -25,11 +26,16 @@ export function validateTieFormat({
   }
 
   const validWinCriteria =
-    typeof tieFormat.winCriteria.valueGoal === 'number' &&
-    tieFormat.winCriteria.valueGoal > 0;
+    (typeof tieFormat.winCriteria?.valueGoal === 'number' &&
+      tieFormat.winCriteria?.valueGoal > 0) ||
+    tieFormat.winCriteria?.aggregateValue;
 
-  if (!validWinCriteria)
-    errors.push('Non-zero valueGoal must be specified in winCriteria');
+  if (!(validWinCriteria || tieFormat.winCriteria?.aggregateValue)) {
+    errors.push(
+      'Either non-zero valueGoal, or { aggregateValue: true } must be specified in winCriteria'
+    );
+    return { error: INVALID_TIE_FORMAT, errors };
+  }
 
   const validCollections = tieFormat.collectionDefinitions.every(
     (collectionDefinition) => {
@@ -49,6 +55,8 @@ export function validateTieFormat({
         matchUpFormat,
         matchUpValue,
         matchUpType,
+        scoreValue,
+        setValue,
       } = collectionDefinition;
 
       if (checkCollectionIds && typeof collectionId !== 'string') {
@@ -64,7 +72,13 @@ export function validateTieFormat({
         return false;
       }
 
-      if (!matchUpValue && !collectionValue && !collectionValueProfile) {
+      if (
+        !matchUpValue &&
+        !collectionValue &&
+        !collectionValueProfile &&
+        !scoreValue &&
+        !setValue
+      ) {
         errors.push(
           'Missing value definition for matchUps: matchUpValue, collectionValue, or collectionValueProfile'
         );
@@ -141,6 +155,7 @@ export function validateTieFormat({
     collectionIds.length === unique(collectionIds).length;
 
   const valid = validCollections && validWinCriteria && uniqueCollectionIds;
+
   const result = { valid, errors };
   if (!valid) result.error = INVALID_TIE_FORMAT;
   return result;

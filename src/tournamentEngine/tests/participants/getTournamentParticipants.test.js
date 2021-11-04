@@ -47,6 +47,34 @@ const privacyPolicy = {
   },
 };
 
+it('can add ISO country codes to persons', () => {
+  const participantsProfile = {
+    participantsCount: 1,
+    participantType: PAIR,
+  };
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    inContext: true,
+    withISO: true,
+  });
+  expect(tournamentParticipants.length).toEqual(3);
+  const persons = tournamentParticipants
+    .map(
+      (participant) =>
+        participant.person ||
+        participant.individualParticipants.map(({ person }) => person)
+    )
+    .flat();
+  persons.forEach((person) => {
+    expect(person.iso).not.toBeUndefined();
+    expect(person.countryName).not.toBeUndefined();
+  });
+});
+
 it('can retrieve tournament participants', () => {
   const participantsProfile = {
     participantsCount: 100,

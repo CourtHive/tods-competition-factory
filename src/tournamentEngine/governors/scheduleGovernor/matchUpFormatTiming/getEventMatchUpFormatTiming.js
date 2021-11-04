@@ -41,8 +41,8 @@ export function getEventMatchUpFormatTiming({
       matchUpFormatDefinitions = policy?.matchUpFormats;
     } else {
       const { extension } = findEventExtension({
-        event,
         name: SCHEDULE_TIMING,
+        event,
       });
       if (extension?.value) {
         matchUpFormatDefinitions = unique(

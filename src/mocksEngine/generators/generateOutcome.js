@@ -293,7 +293,8 @@ function generateSet({
 
     let tiebreakWinningSide;
     if (setAnalysis.hasTiebreakCondition || isTiebreakSet) {
-      const { NoAD: tiebreakNoAd, tiebreakTo } = tiebreakFormat || tiebreakSet;
+      const { NoAD: tiebreakNoAd, tiebreakTo } =
+        tiebreakFormat || tiebreakSet || {};
       const range = generateRange(1, tiebreakTo + 1)
         .map((value) =>
           generateRange(0, tiebreakTo + 2 - value).map(() => value)

@@ -1,5 +1,6 @@
 import { validateTieFormat } from '../../governors/matchUpGovernor/tieFormatUtilities';
 
+import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import {
   INVALID_VALUES,
   MISSING_MATCHUP,
@@ -38,7 +39,7 @@ export function generateTieMatchUpScore({
   const result = validateTieFormat({ tieFormat });
   if (!result.valid) return { error: INVALID_VALUES, errors: result.errors };
 
-  const sidePoints = [0, 0];
+  const sideTieValues = [0, 0];
   const tieMatchUps = matchUp?.tieMatchUps || [];
   const collectionDefinitions = tieFormat?.collectionDefinitions || [];
 
@@ -47,26 +48,47 @@ export function generateTieMatchUpScore({
       (matchUp) => matchUp.collectionId === collectionDefinition.collectionId
     );
 
-    if (collectionDefinition.matchUpValue) {
-      const matchUpValue = collectionDefinition.matchUpValue;
+    // keep track of the values derived from matchUps
+    const sideMatchUpValues = [0, 0];
+    // will be equivalent to sideMatchUpValues unless there is a collectionValue,
+    // in which case the sideMatchUpValues are used in comparision with winCriteria
+    let sideCollectionValues = [0, 0];
+
+    const allCollectionMatchUpsCompleted = collectionMatchUps.every((matchUp) =>
+      completedMatchUpStatuses.includes(matchUp.matchUpStatus)
+    );
+
+    const {
+      collectionValueProfile,
+      collectionValue,
+      matchUpValue,
+      winCriteria,
+      scoreValue,
+      setValue,
+    } = collectionDefinition;
+
+    if (matchUpValue) {
       collectionMatchUps.forEach((matchUp) => {
         if (matchUp.winningSide)
-          sidePoints[matchUp.winningSide - 1] += matchUpValue;
+          sideMatchUpValues[matchUp.winningSide - 1] += matchUpValue;
       });
-    } else if (collectionDefinition.collectionValue) {
-      const sideWins = [0, 0];
-      const winGoal =
-        Math.floor(collectionDefinition.matchUpCount / 2).floor + 1;
+    } else if (setValue) {
       collectionMatchUps.forEach((matchUp) => {
-        if (matchUp.winningSide) sideWins[matchUp.winningSide - 1] += 1;
+        matchUp.score?.sets?.forEach((set) => {
+          if (set.winningSide)
+            sideMatchUpValues[set.winningSide - 1] += setValue;
+        });
       });
-      const collectionWinningSide = sideWins.reduce((winningSide, side) => {
-        return side >= winGoal ? side + 1 : winningSide;
-      }, undefined);
-      if (collectionWinningSide)
-        sidePoints[collectionWinningSide] +=
-          collectionDefinition.collectionValue;
-    } else if (Array.isArray(collectionDefinition.collectionValueProfile)) {
+    } else if (scoreValue) {
+      collectionMatchUps.forEach((matchUp) => {
+        matchUp.score?.sets?.forEach((set) => {
+          const { side1Score = 0, side2Score = 0 } = set;
+          sideMatchUpValues[0] += side1Score;
+          sideMatchUpValues[1] += side2Score;
+        });
+      });
+    } else if (Array.isArray(collectionValueProfile)) {
+      // this must come last because it will be true for []
       collectionMatchUps.forEach((matchUp) => {
         if (matchUp.winningSide) {
           const collectionPosition = matchUp.collectionPosition;
@@ -74,14 +96,55 @@ export function generateTieMatchUpScore({
             collectionDefinition,
             collectionPosition,
           });
-          sidePoints[matchUp.winningSide - 1] += matchUpValue;
+          sideMatchUpValues[matchUp.winningSide - 1] += matchUpValue;
         }
       });
     }
+
+    if (collectionValue) {
+      const sideWins = [0, 0];
+      collectionMatchUps.forEach((matchUp) => {
+        if (matchUp.winningSide) sideWins[matchUp.winningSide - 1] += 1;
+      });
+
+      let collectionWinningSide;
+
+      if (winCriteria?.aggregateValue) {
+        if (
+          allCollectionMatchUpsCompleted &&
+          sideMatchUpValues[0] !== sideMatchUpValues[1]
+        ) {
+          collectionWinningSide =
+            sideMatchUpValues[0] > sideMatchUpValues[1] ? 1 : 2;
+        }
+      } else if (winCriteria?.valueGoal) {
+        collectionWinningSide = sideMatchUpValues.reduce(
+          (winningSide, side, i) => {
+            return side >= winCriteria.valueGoal ? i + 1 : winningSide;
+          },
+          undefined
+        );
+      } else {
+        const winGoal = Math.floor(collectionDefinition.matchUpCount / 2) + 1;
+
+        collectionWinningSide = sideWins.reduce((winningSide, side, i) => {
+          return side >= winGoal ? i + 1 : winningSide;
+        }, undefined);
+      }
+
+      if (collectionWinningSide)
+        sideCollectionValues[collectionWinningSide - 1] += collectionValue;
+    } else {
+      sideCollectionValues = sideMatchUpValues;
+    }
+
+    sideCollectionValues.forEach(
+      (sideCollectionValue, i) => (sideTieValues[i] += sideCollectionValue)
+    );
   }
 
-  const sideScores = sidePoints.map(
-    (sideValue, i) => sideValue + sideAdjustments[i]
+  const sideScores = sideTieValues.map(
+    (sideTieValue, i) => sideTieValue + sideAdjustments[i]
   );
 
   const set = { side1Score: sideScores[0], side2Score: sideScores[1] };
@@ -90,13 +153,20 @@ export function generateTieMatchUpScore({
 
   // now calculate if there is a winningSide
   let winningSide;
-  if (tieFormat) {
-    const valueGoal = tieFormat.winCriteria?.valueGoal;
+  if (tieFormat?.winCriteria) {
+    const { valueGoal, aggregateValue } = tieFormat.winCriteria;
     if (valueGoal) {
       const sideThatWon = sideScores
         .map((points, sideIndex) => ({ sideNumber: sideIndex + 1, points }))
         .find(({ points }) => points >= valueGoal);
       winningSide = sideThatWon?.sideNumber;
+    } else if (aggregateValue) {
+      const allTieMatchUpsCompleted = tieMatchUps.every((matchUp) =>
+        completedMatchUpStatuses.includes(matchUp.matchUpStatus)
+      );
+      if (allTieMatchUpsCompleted && sideScores[0] !== sideScores[1]) {
+        winningSide = sideScores[0] > sideScores[1] ? 1 : 2;
+      }
     }
   }
 

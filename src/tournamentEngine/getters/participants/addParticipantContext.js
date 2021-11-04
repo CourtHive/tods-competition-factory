@@ -6,11 +6,13 @@ import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { extensionConstants } from '../../../constants/extensionConstants';
 import { getParticipantIds } from '../../../global/functions/extractors';
 import { definedAttributes } from '../../../utilities/objects';
+import { countries } from '../../../fixtures/countryData';
 import { allEventMatchUps } from '../matchUpsGetter';
-import { makeDeepCopy } from '../../../utilities';
+import { makeDeepCopy, unique } from '../../../utilities';
 
 import { GROUP, INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { RANKING, RATING, SCALE } from '../../../constants/scaleConstants';
 import { DOUBLES, TEAM } from '../../../constants/matchUpTypes';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 
@@ -578,19 +580,75 @@ export function addParticipantContext(params) {
   return { participantIdsWithConflicts };
 }
 
+function annotatePerson(person) {
+  const { nationalityCode } = person || {};
+  if (nationalityCode) {
+    const country = countries.find(({ ioc }) => ioc === nationalityCode);
+    if (country?.iso && !person.iso) person.iso = country.iso;
+    if (country?.label && !person.countryName)
+      person.countryName = country.label;
+  }
+}
+
 function annotateParticipant({
-  withDraws = true,
   withEvents = true,
+  withDraws = true,
+  participantIdMap,
+  scheduleAnalysis,
+  withStatistics,
   withOpponents,
   withMatchUps,
-  withStatistics,
-  scheduleAnalysis,
-
   participant,
-  participantIdMap,
+  withISO,
 }) {
   const scheduleItems = [];
   const scheduleConflicts = [];
+
+  if (withISO) {
+    const { person, individualParticipants } = participant;
+    const persons = [
+      person,
+      individualParticipants?.map(({ person }) => person),
+    ]
+      .flat()
+      .filter(Boolean);
+
+    persons.forEach(annotatePerson);
+  }
+
+  const scaleItems = participant.timeItems?.filter(
+    ({ itemType }) =>
+      itemType.startsWith(SCALE) &&
+      [RANKING, RATING].includes(itemType.split('.')[1])
+  );
+  if (scaleItems?.length) {
+    const latestScaleItem = (scaleType) =>
+      scaleItems
+        .filter((timeItem) => timeItem?.itemType === scaleType)
+        .sort(
+          (a, b) =>
+            new Date(a.createdAt || undefined) -
+            new Date(b.createdAt || undefined)
+        )
+        .pop();
+
+    for (const scaleType of unique(
+      scaleItems.map(({ itemType }) => itemType)
+    )) {
+      const scaleItem = latestScaleItem(scaleType);
+      if (scaleItem) {
+        const [, type, format, scaleName] = scaleItem.itemType.split('.');
+        const scaleType = type === RANKING ? 'rankings' : 'ratings';
+        if (!participant[scaleType]) participant[scaleType] = {};
+        if (!participant[scaleType][format])
+          participant[scaleType][format] = [];
+        participant[scaleType][format].push({
+          scaleValue: scaleItem.itemValue,
+          scaleName,
+        });
+      }
+    }
+  }
 
   const participantId = participant?.participantId;
   if (!participantId || !participantIdMap[participantId]) return {};
