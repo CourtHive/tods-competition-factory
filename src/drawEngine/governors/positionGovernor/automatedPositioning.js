@@ -65,24 +65,22 @@ export function automatedPositioning({
     if (result.error) return result;
 
     result = positionSeedBlocks({
+      inContextDrawMatchUps,
       drawDefinition,
       participants,
-      structure,
-
       matchUpsMap,
-      inContextDrawMatchUps,
+      structure,
     });
     if (result.error) return result;
   } else {
     // otherwise... seeds need to be placed first so that BYEs
     // can follow the seedValues of placed seeds
     let result = positionSeedBlocks({
+      inContextDrawMatchUps,
       drawDefinition,
       participants,
-      structure,
-
       matchUpsMap,
-      inContextDrawMatchUps,
+      structure,
     });
     if (result.error) return result;
 

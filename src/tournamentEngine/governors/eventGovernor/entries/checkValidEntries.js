@@ -7,12 +7,14 @@ import { FEMALE, MALE } from '../../../../constants/genderConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_ENTRIES,
+  INVALID_VALUES,
   MISSING_EVENT,
   MISSING_PARTICIPANTS,
 } from '../../../../constants/errorConditionConstants';
 
 export function checkValidEntries({ event, participants, ignoreGender }) {
   if (!participants) return { error: MISSING_PARTICIPANTS };
+  if (!Array.isArray(participants)) return { error: INVALID_VALUES };
   if (!event) return { error: MISSING_EVENT };
 
   const { eventType, gender: eventGender } = event;

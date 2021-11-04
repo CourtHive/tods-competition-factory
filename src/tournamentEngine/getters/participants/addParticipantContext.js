@@ -156,9 +156,6 @@ export function addParticipantContext(params) {
         drawEntry;
 
       const relevantParticipantIds = getRelevantParticipantIds(participantId);
-      if (eventType === TEAM) {
-        console.log({ eventType }, relevantParticipantIds);
-      }
 
       relevantParticipantIds?.forEach(({ relevantParticipantId }) => {
         if (!participantIdMap[relevantParticipantId].events[eventId]) {

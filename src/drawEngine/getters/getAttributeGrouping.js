@@ -78,13 +78,12 @@ export function extractAttributeValues({
   }
   const extractedValues = [];
   policyAttributes.forEach((policyAttribute) => {
-    const value = participant;
     const { directive, groupings, key, significantCharacters } =
       policyAttribute || {};
 
     if (key) {
       const keys = key.split('.');
-      processKeys({ value, keys, significantCharacters });
+      processKeys({ value: participant, keys, significantCharacters });
     } else if (directive) {
       // extractedValues are values to be avoided
       // e.g. for { directive: 'pairParticipants' } the extractedValues would be [ 'partnerParticipantId' ]

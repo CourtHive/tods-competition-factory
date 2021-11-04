@@ -51,7 +51,6 @@ export function generateEventWithDraw({
     excessParticipantAlternates = true,
     matchUpFormat = FORMAT_STANDARD,
     drawType = SINGLE_ELIMINATION,
-    eventType = SINGLES,
     alternatesCount = 0,
     generate = true,
     eventExtensions,
@@ -64,6 +63,8 @@ export function generateEventWithDraw({
     gender,
     stage,
   } = drawProfile;
+
+  const eventType = drawProfile.eventType || drawProfile.matchUpType || SINGLES;
 
   const tieFormat =
     typeof drawProfile.tieFormat === 'object'
