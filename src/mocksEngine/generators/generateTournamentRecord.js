@@ -233,7 +233,7 @@ export function generateTournamentRecord({
     }
   }
 
-  if (!participantsCount) participantsCount = 32;
+  if (participantsCount === undefined) participantsCount = 32;
   if (participantsCount < specifiedParicipantsCount)
     participantsCount = specifiedParicipantsCount;
 

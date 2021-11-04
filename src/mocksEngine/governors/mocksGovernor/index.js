@@ -7,14 +7,12 @@ import { generateOutcome } from '../../generators/generateOutcome';
 import { credits } from '../../../fixtures/credits';
 
 const mocksGovernor = {
-  generateTournamentRecord,
-  generateParticipants,
-  generateEventWithDraw,
-
   generateOutcomeFromScoreString,
-  generateOutcome,
-
+  generateTournamentRecord,
+  generateEventWithDraw,
+  generateParticipants,
   parseScoreString,
+  generateOutcome,
   credits,
 };
 
