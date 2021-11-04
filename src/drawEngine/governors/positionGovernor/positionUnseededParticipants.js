@@ -15,14 +15,13 @@ import {
 } from '../../../constants/entryStatusConstants';
 
 export function positionUnseededParticipants({
+  inContextDrawMatchUps,
   drawDefinition,
   candidatesCount,
   participants,
+  matchUpsMap,
   structureId,
   structure,
-
-  matchUpsMap,
-  inContextDrawMatchUps,
 }) {
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
@@ -86,26 +85,24 @@ export function positionUnseededParticipants({
   if (avoidance && participants) {
     const result = randomUnseededSeparation({
       unseededParticipantIds,
+      inContextDrawMatchUps,
       candidatesCount,
       drawDefinition,
       participants,
+      matchUpsMap,
       structureId,
       avoidance,
       entries,
-
-      matchUpsMap,
-      inContextDrawMatchUps,
     });
     return result;
   } else {
     const result = randomUnseededDistribution({
       unseededParticipantIds,
+      inContextDrawMatchUps,
       unfilledDrawPositions,
       drawDefinition,
       structureId,
-
       matchUpsMap,
-      inContextDrawMatchUps,
     });
     return result;
   }
@@ -113,25 +110,23 @@ export function positionUnseededParticipants({
 
 function randomUnseededDistribution({
   unseededParticipantIds,
+  inContextDrawMatchUps,
   unfilledDrawPositions,
   drawDefinition,
-  structureId,
-
   matchUpsMap,
-  inContextDrawMatchUps,
+  structureId,
 }) {
   const shuffledDrawPositions = shuffleArray(unfilledDrawPositions);
   for (const participantId of unseededParticipantIds) {
     const drawPosition = shuffledDrawPositions.pop();
     const result = assignDrawPosition({
-      structureId,
-      drawPosition,
-      participantId,
-      drawDefinition,
       automaticPlacement: true,
-
-      matchUpsMap,
       inContextDrawMatchUps,
+      drawDefinition,
+      participantId,
+      drawPosition,
+      matchUpsMap,
+      structureId,
     });
     if (result && result.error) return result;
   }

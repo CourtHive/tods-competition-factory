@@ -53,9 +53,8 @@ export function randomUnseededSeparation({
     structure,
     event,
   });
-  const { positionAssignments } = structureAssignedDrawPositions({ structure });
 
-  // TODO: trace this use case
+  const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const participantsWithGroupings = addParticipantGroupings({ participants });
 
   const unassignedPositions = positionAssignments.filter(
@@ -123,15 +122,13 @@ export function randomUnseededSeparation({
       participantsWithGroupings,
       unseededParticipantIds,
       opponentsToPlaceCount,
+      pairedPriority: false,
+      participantIdGroups,
       drawPositionChunks,
       drawPositionGroups,
-
-      participantIdGroups,
+      policyAttributes,
       idCollections,
       allGroups,
-
-      policyAttributes,
-      pairedPriority: false,
     })
   );
 
@@ -147,16 +144,14 @@ export function randomUnseededSeparation({
         participantsWithGroupings,
         unseededParticipantIds,
         opponentsToPlaceCount,
+        pairedPriority: true,
+        participantIdGroups,
         drawPositionChunks,
         drawPositionGroups,
-
-        participantIdGroups,
+        policyAttributes,
         idCollections,
         allGroups,
-
         entries,
-        policyAttributes,
-        pairedPriority: true,
       })
     );
 

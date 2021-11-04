@@ -1,6 +1,7 @@
 import { initializeStructureSeedAssignments } from '../../drawEngine/governors/positionGovernor/initializeSeedAssignments';
 import { automatedPositioning } from '../../drawEngine/governors/positionGovernor/automatedPositioning';
 import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
+import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
 import { setStageDrawSize } from '../../drawEngine/governors/entryGovernor/stageEntryCounts';
 import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/matchUpFormat';
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
@@ -65,7 +66,11 @@ export function generateDrawDefinition(params) {
 
   const { tournamentRecord, event } = params;
   let { drawName, matchUpType, structureOptions } = params;
-  const participants = tournamentRecord?.participants;
+
+  const { tournamentParticipants: participants } = getTournamentParticipants({
+    tournamentRecord,
+    inContext: true,
+  });
 
   const validEntriesTest =
     event && participants && checkValidEntries({ event, participants });
@@ -369,13 +374,12 @@ export function generateDrawDefinition(params) {
     const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
     // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
     ({ conflicts } = automatedPositioning({
+      inContextDrawMatchUps,
       drawDefinition,
       participants,
       structureId,
-      seedsOnly,
-
-      inContextDrawMatchUps,
       matchUpsMap,
+      seedsOnly,
     }));
   }
 

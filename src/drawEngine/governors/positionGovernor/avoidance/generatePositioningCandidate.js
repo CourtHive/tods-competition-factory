@@ -35,7 +35,6 @@ export function generatePositioningCandidate(params) {
     opponentsToPlaceCount,
     drawPositionGroups,
     policyAttributes,
-
     idCollections,
     allGroups,
   } = params;
@@ -83,18 +82,18 @@ export function generatePositioningCandidate(params) {
 
   let groupedParticipants = chunkArray(positionedParticipants, groupSize);
   let avoidanceConflicts = getAvoidanceConflicts({
-    isRoundRobin,
     groupedParticipants,
+    isRoundRobin,
   });
 
   let attempts = 0;
   while (attempts < 20 && avoidanceConflicts.length) {
     const swapOptions = getSwapOptions({
-      isRoundRobin,
-      avoidanceConflicts,
-      drawPositionGroups,
       positionedParticipants,
       potentialDrawPositions,
+      avoidanceConflicts,
+      drawPositionGroups,
+      isRoundRobin,
     });
 
     if (swapOptions.length) {
