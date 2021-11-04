@@ -113,31 +113,40 @@ const outcomes = [
 ];
 const drawProfiles = [
   {
-    drawSize: 4,
+    drawType: ROUND_ROBIN, // optional - defaults to SINGLE_ELIMINATION
+    drawSize: 4, // optional - defaults to 32
+    eventType: DOUBLES, // optional - defaults to SINGLES
+
     participantsCount: 4, // optional - ability to specify fewer participants than drawSize to generate BYEs
-    uniqueParticipants, // optional boolean - defaults to false - force generation of unique participants for a draw
     policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
-    drawType: ROUND_ROBIN,
+    uniqueParticipants, // optional boolean - defaults to false - force generation of unique participants for a draw
+
+    matchUpFormat, // optional - applies only to { eventTypes: SINGLES or DOUBLES }
+    tieFormat, // optional - applies only when { eventType: TEAM }
     outcomes,
   },
 ];
+
+// drawProfiles are optional in eventProfiles; if present they can contain all attributes noted above
 const eventProfiles = [
   {
     eventName: 'U18 Boys Doubles',
     policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
+    eventType: TEAM, // optional - defaults to SINGLES
     gender: MALE,
     drawProfiles: [
       {
-        drawSize: 16,
+        drawSize: 16, // required
       },
     ],
   },
 ];
 const venueProfiles = [
   {
-    venueName: 'Venue 1', // optional - will auto-generate names
-    courtsCount: 3,
+    courtsCount: 3, // optional - count can be inferred from length of courtNames array
+    courtNames: [], // optional
     dateAvailability, // optional - will use tournament start and end dates and default times
+    venueName: 'Venue 1', // optional - will auto-generate names
   },
 ];
 
