@@ -938,6 +938,7 @@ drawEngine.setMatchUpStatus({
   matchUpId,
   matchUpTieId, // optional - if part of a TIE matchUp
   matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
+  score, // optional - { sets }
   winningSide,
   schedule: {
     // optional - set schedule items
