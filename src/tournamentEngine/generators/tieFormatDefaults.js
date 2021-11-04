@@ -40,7 +40,7 @@ const namedFormats = {
     doubles: {
       matchUpCount: 3,
       collectionValue: 1,
-      matchUpFormat: 'SET1-S:6NOAD/TB7',
+      matchUpFormat: 'SET1-S:6/TB7',
     },
     singles: {
       matchUpCount: 6,
