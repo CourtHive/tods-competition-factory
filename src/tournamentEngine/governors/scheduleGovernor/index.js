@@ -3,7 +3,7 @@ import { removeEventMatchUpFormatTiming } from './matchUpFormatTiming/removeEven
 import { getEventMatchUpFormatTiming } from './matchUpFormatTiming/getEventMatchUpFormatTiming';
 import { getModifiedMatchUpFormatTiming } from './matchUpFormatTiming/getModifiedMatchUpTiming';
 import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFormatTimingUpdate';
-import { isValidSchedulingProfile } from '../../../global/validation/validSchedulingProfile';
+import { validateSchedulingProfile } from '../../../global/validation/validateSchedulingProfile';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
 import { getMatchUpFormatTiming } from './matchUpFormatTiming/getMatchUpFormatTiming';
 import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
@@ -54,7 +54,7 @@ const scheduleGovernor = {
   getMatchUpDailyLimits, // document
   setMatchUpDailyLimits, // document
   getMatchUpDailyLimitsUpdate, // document
-  isValidSchedulingProfile,
+  validateSchedulingProfile,
 
   setSchedulingProfile,
   getSchedulingProfile,

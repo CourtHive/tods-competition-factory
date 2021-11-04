@@ -6,7 +6,7 @@ import { newTournamentRecord } from '../../tournamentEngine/generators/newTourna
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { formatDate, isValidDateString } from '../../utilities/dateTime';
-import { validExtension } from '../../global/validation/validExtension';
+import { isValidExtension } from '../../global/validation/isValidExtension';
 import { generateSchedulingProfile } from './generateSchedulingProfile';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { getParticipantId } from '../../global/functions/extractors';
@@ -98,7 +98,7 @@ export function generateTournamentRecord({
 
   // attach any valid tournamentExtensions
   if (tournamentExtensions?.length && Array.isArray(tournamentExtensions)) {
-    const extensions = tournamentExtensions.filter(validExtension);
+    const extensions = tournamentExtensions.filter(isValidExtension);
 
     if (extensions?.length)
       Object.assign(tournamentRecord, { extensions, isMock: true });

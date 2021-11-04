@@ -1,5 +1,5 @@
 import { findTournamentExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
-import { validExtension } from '../../../global/validation/validExtension';
+import { isValidExtension } from '../../../global/validation/isValidExtension';
 import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 import {
   addEventExtension as addExtensionToEvent,
@@ -17,7 +17,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function addExtension({ tournamentRecords, extension }) {
-  if (!validExtension(extension)) return { error: INVALID_VALUES };
+  if (!isValidExtension(extension)) return { error: INVALID_VALUES };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const result = addTournamentExtension({ tournamentRecord, extension });
@@ -60,7 +60,7 @@ export function removeExtension({ tournamentRecords, name }) {
 
 export function addEventExtension({ tournamentRecords, eventId, extension }) {
   if (typeof eventId !== 'string') return { error: MISSING_EVENT };
-  if (!validExtension(extension)) return { error: INVALID_VALUES };
+  if (!isValidExtension(extension)) return { error: INVALID_VALUES };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { event } = findEvent({ tournamentRecord, eventId });

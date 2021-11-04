@@ -8,7 +8,7 @@ import { addParticipants } from '../../tournamentEngine/governors/participantGov
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
-import { validExtension } from '../../global/validation/validExtension';
+import { isValidExtension } from '../../global/validation/isValidExtension';
 import { getParticipantId } from '../../global/functions/extractors';
 import { generateRange, intersection, UUID } from '../../utilities';
 import { generateParticipants } from './generateParticipants';
@@ -93,7 +93,7 @@ export function generateEventWithDraw({
 
   // attach any valid eventExtensions
   if (eventExtensions?.length && Array.isArray(eventExtensions)) {
-    const extensions = eventExtensions.filter(validExtension);
+    const extensions = eventExtensions.filter(isValidExtension);
     if (extensions?.length) Object.assign(event, { extensions });
   }
 
@@ -279,7 +279,7 @@ export function generateEventWithDraw({
 
   if (Array.isArray(drawExtensions)) {
     drawExtensions
-      .filter(validExtension)
+      .filter(isValidExtension)
       .forEach((extension) =>
         addExtension({ element: drawDefinition, extension })
       );

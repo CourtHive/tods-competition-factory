@@ -3,7 +3,7 @@ import { isISODateString } from '../../utilities/dateTime';
 
 import { INVALID_DATE } from '../../constants/errorConditionConstants';
 import { UUID } from '../../utilities';
-import { validExtension } from '../../global/validation/validExtension';
+import { isValidExtension } from '../../global/validation/isValidExtension';
 
 export function newTournamentRecord(params = {}) {
   if (!params.tournamentId) Object.assign(params, { tournamentId: UUID() });
@@ -23,7 +23,7 @@ export function newTournamentRecord(params = {}) {
   }
 
   if (params.extensions) {
-    params.extensions = params.filter(validExtension);
+    params.extensions = params.filter(isValidExtension);
   }
 
   return { ...params };

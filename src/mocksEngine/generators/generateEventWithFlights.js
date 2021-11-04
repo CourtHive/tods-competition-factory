@@ -11,7 +11,7 @@ import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFli
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
-import { validExtension } from '../../global/validation/validExtension';
+import { isValidExtension } from '../../global/validation/isValidExtension';
 import { getParticipantId } from '../../global/functions/extractors';
 import { hasParticipantId } from '../../global/functions/filters';
 import { generateParticipants } from './generateParticipants';
@@ -213,7 +213,7 @@ export function generateEventWithFlights({
 
   // attach any valid eventExtensions
   if (eventExtensions?.length && Array.isArray(eventExtensions)) {
-    const extensions = eventExtensions.filter(validExtension);
+    const extensions = eventExtensions.filter(isValidExtension);
     if (extensions?.length) Object.assign(newEvent, { extensions });
   }
 
@@ -351,7 +351,7 @@ export function generateEventWithFlights({
         const drawExtensions = drawProfiles[index]?.drawExtensions;
         if (Array.isArray(drawExtensions)) {
           drawExtensions
-            .filter(validExtension)
+            .filter(isValidExtension)
             .forEach((extension) =>
               addExtension({ element: drawDefinition, extension })
             );
