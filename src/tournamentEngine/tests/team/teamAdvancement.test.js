@@ -1,6 +1,7 @@
 import { generateTieMatchUpScore } from '../../../drawEngine/accessors/matchUpAccessor';
 import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { generateTeamTournament } from './generateTestTeamTournament';
+import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
@@ -313,4 +314,14 @@ test('participants for other teams cannot be assigned without teamParticipantId'
 
   expect(errors.length).toBeGreaterThan(0);
   errors.forEach((error) => expect(error).toEqual(TEAM_NOT_FOUND));
+});
+
+test('tieFormat with scoreValue calculation', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      { eventType: TEAM, tieFormatName: tieFormats.TEAM_AGGREGATION },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
 });
