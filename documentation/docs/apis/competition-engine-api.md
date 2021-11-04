@@ -749,16 +749,6 @@ const {
 
 ---
 
-## isValidSchedulingProfile
-
-```js
-const { valid, error } = competitionEngine.isValidSchedulingProfile({
-  schedulingProfile,
-});
-```
-
----
-
 ## linkTournaments
 
 Links all tournaments currently loaded in `competitionEngine`.
@@ -1139,6 +1129,18 @@ Removes links between all tournaments currently loaded in `competitionEngine`.
 ```js
 competitionEngine.unlinkTournaments();
 ```
+
+---
+
+## validateSchedulingProfile
+
+```js
+const { valid, error } = competitionEngine.validateSchedulingProfile({
+  schedulingProfile,
+});
+```
+
+---
 
 ## version
 
