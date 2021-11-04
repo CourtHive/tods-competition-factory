@@ -1,4 +1,4 @@
-import { mocksEngine, tournamentEngine } from '../..';
+import { mocksEngine } from '../..';
 
 import { DOUBLES, SINGLES } from '../../constants/eventConstants';
 import { PAIR } from '../../constants/participantTypes';
@@ -16,8 +16,6 @@ test('mocksEngine can modify existing tournamentRecords', () => {
   });
 
   expect(tournamentRecord.participants.length).toEqual(0);
-
-  tournamentEngine.setState(tournamentRecord);
 
   const participantsProfile = { participantsCount: 20, participantType: PAIR };
   let result = mocksEngine.modifyTournamentRecord({
