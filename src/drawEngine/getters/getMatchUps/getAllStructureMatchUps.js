@@ -393,9 +393,9 @@ export function getAllStructureMatchUps({
           sourceDrawPositionRoundRanges[columnPosition];
 
         const sideValue = onlyDefined({
-          ...side,
-          ...existingSide,
           sourceDrawPositionRange,
+          ...existingSide,
+          ...side,
         });
 
         return sideValue;
