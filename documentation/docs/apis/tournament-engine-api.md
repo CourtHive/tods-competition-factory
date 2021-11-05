@@ -1750,6 +1750,7 @@ Returns a deep copy of the current tournamentEngine state.
 ```js
 const { tournamentRecord } = tournamentEngine.getState({
   convertExtensions, // optional - convert extensions to '_' prefixed attributes
+  removeExtensions, // optional - strip all extensions out of tournamentRecord
 });
 ```
 
