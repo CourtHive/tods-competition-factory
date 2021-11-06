@@ -68,16 +68,16 @@ export function getAllEventData({ tournamentRecord, policyDefinitions }) {
         upcomingMatchUps,
         abandonedMatchUps,
       } = getDrawMatchUps({
-        event,
-        context: { eventId },
-        inContext: true,
-        drawDefinition,
-        scheduleTiming,
-        policyDefinitions,
-        tournamentRecord,
         includeByeMatchUps: false,
         requireParticipants: true,
         tournamentParticipants,
+        context: { eventId },
+        policyDefinitions,
+        tournamentRecord,
+        inContext: true,
+        drawDefinition,
+        scheduleTiming,
+        event,
       });
 
       return {

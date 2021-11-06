@@ -25,11 +25,11 @@ export function addParticipantGroupings({ participants = [] }) {
   participantsWithGroupings.forEach((participant) => {
     if (participant.participantType === INDIVIDUAL) {
       const { participantId } = participant;
-      participant.teams = [];
-      participant.teamParticipantIds = [];
-      participant.groups = [];
       participant.groupParticipantIds = [];
+      participant.teamParticipantIds = [];
       participant.pairParticipantIds = [];
+      participant.groups = [];
+      participant.teams = [];
 
       teamParticipants.forEach((team) => {
         (team?.individualParticipantIds || []).forEach(

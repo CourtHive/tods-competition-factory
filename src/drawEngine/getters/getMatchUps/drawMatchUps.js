@@ -4,8 +4,8 @@ import { getStructureMatchUps } from './getStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
 import { getMatchUpsMap } from './getMatchUpsMap';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 /*
   return ALL matchUps within a drawDefinition, regardless of state
@@ -39,6 +39,7 @@ export function getDrawMatchUps({
   tournamentAppliedPolicies,
   tournamentParticipants,
   requireParticipants,
+  participantsProfile,
   includeByeMatchUps,
   policyDefinitions,
   tournamentRecord,
@@ -66,7 +67,10 @@ export function getDrawMatchUps({
     (tournamentParticipants?.length && tournamentParticipants) ||
     tournamentRecord?.participants;
 
-  if (inContext && tournamentParticipants?.length) {
+  if (
+    (inContext || participantsProfile?.withGroupings) &&
+    tournamentParticipants?.length
+  ) {
     tournamentParticipants = addParticipantGroupings({
       participants: tournamentParticipants,
     });
@@ -116,13 +120,12 @@ export function getDrawMatchUps({
   });
 
   const matchUpGroups = {
-    matchUpsMap,
-
-    byeMatchUps: allByeMatchUps,
-    pendingMatchUps: allPendingMatchUps,
-    upcomingMatchUps: allUpcomingMatchUps,
     abandonedMatchUps: allAbandonedMatchUps,
     completedMatchUps: allCompletedMatchUps,
+    upcomingMatchUps: allUpcomingMatchUps,
+    pendingMatchUps: allPendingMatchUps,
+    byeMatchUps: allByeMatchUps,
+    matchUpsMap,
     ...SUCCESS,
   };
 

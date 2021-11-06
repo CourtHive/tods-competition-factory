@@ -32,6 +32,8 @@ export function addParticipantContext(params) {
         opponents: {},
         matchUps: {},
         events: {},
+        groups: [],
+        teams: [],
         draws: {},
         losses: 0,
         wins: 0,
@@ -69,10 +71,18 @@ export function addParticipantContext(params) {
           !participantIdMap[participantId].groupParticipantIds.includes(
             groupParticipantId
           )
-        )
+        ) {
           participantIdMap[participantId].groupParticipantIds.push(
             groupParticipantId
           );
+          participantIdMap[participantId].groups.push({
+            participantRoleResponsibilities:
+              participant.participantRoleResponsibilities,
+            participantOtherName: participant.participantOtherName,
+            participantName: participant.participantName,
+            participantId: participant.participantId,
+          });
+        }
       });
     }
 
@@ -83,10 +93,19 @@ export function addParticipantContext(params) {
           !participantIdMap[participantId].teamParticipantIds.includes(
             teamParticipantId
           )
-        )
+        ) {
           participantIdMap[participantId].teamParticipantIds.push(
             teamParticipantId
           );
+          participantIdMap[participantId].teams.push({
+            participantRoleResponsibilities:
+              participant.participantRoleResponsibilities,
+            participantOtherName: participant.participantOtherName,
+            participantName: participant.participantName,
+            participantId: participant.participantId,
+            teamId: participant.teamId,
+          });
+        }
       });
     }
 
@@ -97,10 +116,11 @@ export function addParticipantContext(params) {
           !participantIdMap[participantId].pairParticipantIds.includes(
             pairParticipantId
           )
-        );
-        participantIdMap[participantId].pairParticipantIds.push(
-          pairParticipantId
-        );
+        ) {
+          participantIdMap[participantId].pairParticipantIds.push(
+            pairParticipantId
+          );
+        }
       });
     }
   });
@@ -284,12 +304,13 @@ export function addParticipantContext(params) {
     }
 
     if (params.withGroupings !== false) {
+      const participantAttributes = participantIdMap[participant.participantId];
       participant.groupParticipantIds =
-        participantIdMap[participant.participantId].groupParticipantIds;
-      participant.pairParticipantIds =
-        participantIdMap[participant.participantId].pairParticipantIds;
-      participant.teamParticipantIds =
-        participantIdMap[participant.participantId].teamParticipantIds;
+        participantAttributes.groupParticipantIds;
+      participant.pairParticipantIds = participantAttributes.pairParticipantIds;
+      participant.teamParticipantIds = participantAttributes.teamParticipantIds;
+      participant.groups = participantAttributes.groups;
+      participant.teams = participantAttributes.teams;
     }
   });
 
