@@ -5,6 +5,7 @@ import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
 import { COMPASS } from '../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../constants/participantTypes';
 import { SINGLES } from '../../../constants/matchUpTypes';
+import { DOUBLES } from '../../../constants/eventConstants';
 
 it('returns eventData with expected drawsData', () => {
   const drawProfiles = [{ drawSize: 4, drawType: COMPASS }];
@@ -49,7 +50,7 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
       nationalityCodesCount: 10,
       participantsCount: 32,
     },
-    drawProfiles: [{ drawSize: 32 }],
+    drawProfiles: [{ drawSize: 32 }, { drawSize: 8, eventType: DOUBLES }],
   };
   const {
     eventIds: [eventId],
@@ -80,4 +81,22 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
       expect(side.participant.groups.length).toEqual(0);
     });
   });
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
+    participantsProfile: { withISO: true },
+  });
+
+  matchUps
+    .filter(({ readyToScore }) => readyToScore)
+    .forEach(({ sides }) => {
+      const persons = sides
+        .map(
+          ({ participant }) =>
+            participant?.person ||
+            participant?.individualParticipants.map(({ person }) => person)
+        )
+        .flat()
+        .filter(Boolean);
+      persons.forEach((person) => expect(person.iso).not.toBeUndefined());
+    });
 });
