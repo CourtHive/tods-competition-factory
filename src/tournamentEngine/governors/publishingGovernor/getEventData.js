@@ -26,9 +26,9 @@ export function getEventData({
   const { tournamentId, endDate } = tournamentRecord;
 
   const { tournamentParticipants } = getTournamentParticipants({
-    withMatchUps: false,
     withGroupings: true,
     withEvents: false,
+    withDraws: false,
     ...participantsProfile, // order is important!!
     tournamentRecord,
   });
