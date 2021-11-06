@@ -63,6 +63,9 @@ export function getDrawMatchUps({
   let allPendingMatchUps = [];
   let allByeMatchUps = [];
 
+  // getTournamentParticipants() calls getDrawMatchUps()
+  // ...so participants must be sourced directly from tournamentRecord
+  // ...and groupings must be added independent of that
   tournamentParticipants =
     (tournamentParticipants?.length && tournamentParticipants) ||
     tournamentRecord?.participants;

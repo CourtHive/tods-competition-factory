@@ -64,7 +64,10 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
     });
   expect(teamParticipants.length).toBeGreaterThan(0);
 
-  const { eventData } = tournamentEngine.getEventData({ eventId });
+  const { eventData } = tournamentEngine.getEventData({
+    participantsProfile: { withISO: true },
+    eventId,
+  });
   expect(eventData.drawsData[0].structures.length).toEqual(1);
 
   eventData.drawsData[0].structures[0].roundMatchUps[1].forEach((matchUp) => {
@@ -72,6 +75,7 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
 
     // expect that each individual participant on the team also has team information
     matchUp.sides.forEach((side) => {
+      expect(side.participant.person.iso).not.toBeUndefined();
       expect(side.participant.teams.length).toEqual(1);
       expect(side.participant.groups.length).toEqual(0);
     });
