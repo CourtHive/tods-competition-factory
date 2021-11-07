@@ -38,6 +38,7 @@ export function getRoundMatchUps({ matchUps = [] }) {
 
   // convert roundMatchUpsArray into an object with roundNumber keys
   const roundMatchUps = Object.assign({}, ...roundMatchUpsArray);
+  let maxMatchUpsCount = 0;
 
   // create a profle object with roundNubmer keys
   // provides details for each round, including:
@@ -49,9 +50,9 @@ export function getRoundMatchUps({ matchUps = [] }) {
   const roundProfile = Object.assign(
     {},
     ...Object.keys(roundMatchUps).map((roundNumber) => {
-      return {
-        [roundNumber]: { matchUpsCount: roundMatchUps[roundNumber]?.length },
-      };
+      const matchUpsCount = roundMatchUps[roundNumber]?.length;
+      maxMatchUpsCount = Math.max(maxMatchUpsCount, matchUpsCount);
+      return { [roundNumber]: { matchUpsCount } };
     })
   );
 
@@ -147,5 +148,5 @@ export function getRoundMatchUps({ matchUps = [] }) {
       roundIndex += 1;
     }
   });
-  return { roundMatchUps, roundProfile };
+  return { maxMatchUpsCount, roundMatchUps, roundNumbers, roundProfile };
 }
