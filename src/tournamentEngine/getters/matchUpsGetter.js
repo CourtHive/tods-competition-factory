@@ -1,5 +1,6 @@
 import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps/findMatchUp';
 import { getScheduleTiming } from '../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
+import { getTournamentParticipants } from './participants/getTournamentParticipants';
 import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
 import { definedAttributes } from '../../utilities/objects';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
@@ -18,6 +19,7 @@ import {
 
 export function allTournamentMatchUps({
   scheduleVisibilityFilters,
+  participantsProfile,
   policyDefinitions,
   tournamentRecord,
   inContext = true,
@@ -33,7 +35,10 @@ export function allTournamentMatchUps({
     tournamentRecord.unifiedTournamentId?.tournamentId ||
     tournamentRecord.tournamentId;
   const events = tournamentRecord?.events || [];
-  const participants = getParticipants({ tournamentRecord });
+  const participants = getParticipants({
+    participantsProfile,
+    tournamentRecord,
+  });
   const { appliedPolicies: tournamentAppliedPolicies } = getAppliedPolicies({
     tournamentRecord,
   });
@@ -50,9 +55,10 @@ export function allTournamentMatchUps({
     .map(
       (event) =>
         allEventMatchUps({
+          context: additionalContext,
           scheduleVisibilityFilters,
           tournamentAppliedPolicies,
-          context: additionalContext,
+          participantsProfile,
           policyDefinitions,
           tournamentRecord,
           matchUpFilters,
@@ -72,8 +78,9 @@ export function allTournamentMatchUps({
 export function allDrawMatchUps({
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,
-  tournamentRecord,
+  participantsProfile,
   policyDefinitions,
+  tournamentRecord,
   matchUpFilters,
   contextFilters,
   drawDefinition,
@@ -99,15 +106,18 @@ export function allDrawMatchUps({
   };
   const tournamentParticipants =
     participants ||
-    (tournamentRecord && getParticipants({ tournamentRecord })) ||
+    (tournamentRecord &&
+      getParticipants({ tournamentRecord, participantsProfile })) ||
     [];
+
   return getAllDrawMatchUps({
     context: additionalContext,
     tournamentAppliedPolicies,
     scheduleVisibilityFilters,
     tournamentParticipants,
-    tournamentRecord,
+    participantsProfile,
     policyDefinitions,
+    tournamentRecord,
     drawDefinition,
     matchUpFilters,
     contextFilters,
@@ -121,9 +131,10 @@ export function allDrawMatchUps({
 export function allEventMatchUps({
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,
+  participantsProfile,
   policyDefinitions,
-  tournamentRecord,
   participants = [],
+  tournamentRecord,
   matchUpFilters,
   contextFilters,
   contextProfile,
@@ -154,7 +165,9 @@ export function allEventMatchUps({
   if (endDate) additionalContext.endDate = endDate;
 
   participants =
-    participants || (tournamentRecord && getParticipants({ tournamentRecord }));
+    participants ||
+    (tournamentRecord &&
+      getParticipants({ tournamentRecord, participantsProfile }));
   const drawDefinitions = event.drawDefinitions || [];
   const scheduleTiming = getScheduleTiming({
     tournamentRecord,
@@ -168,6 +181,7 @@ export function allEventMatchUps({
         tournamentAppliedPolicies,
         scheduleVisibilityFilters,
         context: additionalContext,
+        participantsProfile,
         policyDefinitions,
         tournamentRecord,
         drawDefinition,
@@ -188,6 +202,7 @@ export function allEventMatchUps({
 
 export function tournamentMatchUps({
   scheduleVisibilityFilters,
+  participantsProfile,
   policyDefinitions,
   tournamentRecord,
   inContext = true,
@@ -202,7 +217,10 @@ export function tournamentMatchUps({
     tournamentRecord.unifiedTournamentId?.tournamentId ||
     tournamentRecord.tournamentId;
   const events = (tournamentRecord && tournamentRecord.events) || [];
-  const participants = getParticipants({ tournamentRecord });
+  const participants = getParticipants({
+    participantsProfile,
+    tournamentRecord,
+  });
   const { appliedPolicies: tournamentAppliedPolicies } = getAppliedPolicies({
     tournamentRecord,
   });
@@ -213,6 +231,7 @@ export function tournamentMatchUps({
       eventMatchUps({
         tournamentAppliedPolicies,
         scheduleVisibilityFilters,
+        participantsProfile,
         policyDefinitions,
         tournamentRecord,
         matchUpFilters,
@@ -251,6 +270,7 @@ export function tournamentMatchUps({
 export function eventMatchUps({
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
+  participantsProfile,
   policyDefinitions,
   tournamentRecord,
   matchUpFilters,
@@ -280,7 +300,9 @@ export function eventMatchUps({
   };
 
   const tournamentParticipants =
-    participants || (tournamentRecord && getParticipants({ tournamentRecord }));
+    participants ||
+    (tournamentRecord &&
+      getParticipants({ tournamentRecord, participantsProfile }));
 
   const drawDefinitions = event.drawDefinitions || [];
   const matchUpGroupings = drawDefinitions.reduce(
@@ -290,6 +312,7 @@ export function eventMatchUps({
         tournamentAppliedPolicies,
         scheduleVisibilityFilters,
         tournamentParticipants,
+        participantsProfile,
         policyDefinitions,
         tournamentRecord,
         drawDefinition,
@@ -318,6 +341,7 @@ export function eventMatchUps({
 export function drawMatchUps({
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
+  participantsProfile,
   policyDefinitions,
   tournamentRecord,
   matchUpFilters,
@@ -348,12 +372,16 @@ export function drawMatchUps({
   };
 
   const tournamentParticipants =
-    participants || (tournamentRecord && getParticipants({ tournamentRecord }));
+    participants ||
+    (tournamentRecord &&
+      getParticipants({ tournamentRecord, participantsProfile }));
+
   return getDrawMatchUps({
     context: additionalContext,
     tournamentAppliedPolicies,
     scheduleVisibilityFilters,
     tournamentParticipants,
+    participantsProfile,
     policyDefinitions,
     tournamentRecord,
     drawDefinition,
@@ -366,10 +394,14 @@ export function drawMatchUps({
   });
 }
 
-function getParticipants({ tournamentRecord }) {
-  const participants =
-    (tournamentRecord && tournamentRecord.participants) || [];
-  return participants;
+function getParticipants({ tournamentRecord, participantsProfile }) {
+  const { tournamentParticipants } = getTournamentParticipants({
+    withEvents: false, // order is important
+    withDraws: false, // order is important
+    ...participantsProfile,
+    tournamentRecord,
+  });
+  return tournamentParticipants;
 }
 
 export function publicFindMatchUp(params) {
@@ -379,6 +411,7 @@ export function publicFindMatchUp(params) {
 }
 
 export function findMatchUp({
+  participantsProfile,
   tournamentRecord,
   contextProfile,
   nextMatchUps,
@@ -416,6 +449,7 @@ export function findMatchUp({
   const { matchUp, structure } = drawEngineFindMatchUp({
     context: inContext && additionalContext,
     tournamentParticipants,
+    participantsProfile,
     drawDefinition,
     contextProfile,
     nextMatchUps,

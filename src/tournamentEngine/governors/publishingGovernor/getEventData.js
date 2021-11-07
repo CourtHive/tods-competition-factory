@@ -1,4 +1,4 @@
-import { addParticipantGroupings } from '../../../drawEngine/governors/positionGovernor/avoidance/addParticipantGroupings';
+import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { getEventTimeItem } from '../queryGovernor/timeItems';
 import { getTournamentInfo } from './getTournamentInfo';
 import { makeDeepCopy } from '../../../utilities';
@@ -13,14 +13,25 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 // TODO: pass in policyDefinitions for roundNaming and personPrivacy
-export function getEventData({ tournamentRecord, event, policyDefinitions }) {
+export function getEventData({
+  participantsProfile,
+  policyDefinitions,
+  tournamentRecord,
+  event,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
   const { eventId } = event;
-  const { tournamentId, endDate, participants } = tournamentRecord;
+  const { tournamentId, endDate } = tournamentRecord;
 
-  const tournamentParticipants = addParticipantGroupings({ participants });
+  const { tournamentParticipants } = getTournamentParticipants({
+    withGroupings: true,
+    withEvents: false,
+    withDraws: false,
+    ...participantsProfile, // order is important!!
+    tournamentRecord,
+  });
 
   const drawDefinitions = event.drawDefinitions || [];
   const drawsData = drawDefinitions.map((drawDefinition) =>

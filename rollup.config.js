@@ -15,10 +15,10 @@ const distPath = path.resolve(basePath, 'dist');
 const packageName = 'tods-competition-factory';
 
 const output = (format, minified) => {
-  const development = format === 'cjs' && !minified ? '.development' : '';
+  const development = format === 'cjs' && !minified ? 'development.' : '';
 
   const base = {
-    file: `${distPath}/${packageName}.${format}${development}.js`,
+    file: `${distPath}/${packageName}.${development}${format}.js`,
     format,
     sourcemap: true,
     esModule: true,
@@ -45,9 +45,9 @@ function writeCjsIndex() {
   const fileImportRoot = `module.exports = require('./${packageName}`;
   const body = `'use strict'
 if (process.env.NODE_ENV === 'production') {
-  ${fileImportRoot}.cjs.production.min.js')
+  ${fileImportRoot}.production.cjs.min.js')
 } else {
-  ${fileImportRoot}.cjs.development.js')
+  ${fileImportRoot}.development.cjs.js')
 }
 `;
   return fs.outputFile(`${distPath}/index.js`, body);

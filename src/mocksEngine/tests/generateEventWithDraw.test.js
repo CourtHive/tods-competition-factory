@@ -1,7 +1,7 @@
-import { mocksEngine, tournamentEngine } from '../../..';
+import { mocksEngine, tournamentEngine } from '../..';
 
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
+import { DOUBLES, SINGLES } from '../../constants/eventConstants';
+import { FEMALE, MALE } from '../../constants/genderConstants';
 
 it('can generate an event with draw independent of a tournamentRecord', () => {
   const drawSize = 32;

@@ -1,6 +1,7 @@
 import { chunkArray, intersection, numericSort } from '../../../utilities';
 
 import { TEAM } from '../../../constants/matchUpTypes';
+import { definedAttributes } from '../../../utilities/objects';
 
 export function getRoundMatchUps({ matchUps = [] }) {
   // create an array of arrays of matchUps grouped by roundNumber
@@ -32,12 +33,17 @@ export function getRoundMatchUps({ matchUps = [] }) {
   // calculate the finishing Round for each roundNumber
   const finishingRoundMap = matchUps.reduce((mapping, matchUp) => {
     if (!mapping[matchUp.roundNumber])
-      mapping[matchUp.roundNumber] = matchUp.finishingRound;
+      mapping[matchUp.roundNumber] = definedAttributes({
+        finishingRound: matchUp.finishingRound,
+        abbreviatedRoundName: matchUp.abbreviatedRoundName,
+        roundName: matchUp.roundName,
+      });
     return mapping;
   }, {});
 
   // convert roundMatchUpsArray into an object with roundNumber keys
   const roundMatchUps = Object.assign({}, ...roundMatchUpsArray);
+  let maxMatchUpsCount = 0;
 
   // create a profle object with roundNubmer keys
   // provides details for each round, including:
@@ -49,9 +55,9 @@ export function getRoundMatchUps({ matchUps = [] }) {
   const roundProfile = Object.assign(
     {},
     ...Object.keys(roundMatchUps).map((roundNumber) => {
-      return {
-        [roundNumber]: { matchUpsCount: roundMatchUps[roundNumber]?.length },
-      };
+      const matchUpsCount = roundMatchUps[roundNumber]?.length;
+      maxMatchUpsCount = Math.max(maxMatchUpsCount, matchUpsCount);
+      return { [roundNumber]: { matchUpsCount } };
     })
   );
 
@@ -67,6 +73,19 @@ export function getRoundMatchUps({ matchUps = [] }) {
     const currentRoundDrawPositions = currentRoundMatchUps
       .map((matchUp) => matchUp?.drawPositions || [])
       .flat();
+
+    roundProfile[roundNumber].roundNumber = roundNumber; // convenience
+
+    roundProfile[roundNumber].finishingRound =
+      finishingRoundMap[roundNumber].finishingRound;
+    roundProfile[roundNumber].roundName =
+      finishingRoundMap[roundNumber].roundName;
+    roundProfile[roundNumber].abbreviatedRoundName =
+      finishingRoundMap[roundNumber].abbreviatedRoundName;
+
+    roundProfile[roundNumber].finishingPositionRange =
+      roundMatchUps[roundNumber][0].finishingPositionRange;
+
     if (roundNumber === 1 || !roundProfile[roundNumber - 1]) {
       const orderedDrawPositions = currentRoundDrawPositions.sort(numericSort);
       const pairedDrawPositions = chunkArray(orderedDrawPositions, 2);
@@ -129,9 +148,7 @@ export function getRoundMatchUps({ matchUps = [] }) {
       roundProfile[roundNumber].drawPositions = roundDrawPositions?.flat();
       roundProfile[roundNumber].pairedDrawPositions = roundDrawPositions;
     }
-    roundProfile[roundNumber].finishingRound = finishingRoundMap[roundNumber];
-    roundProfile[roundNumber].finishingPositionRange =
-      roundMatchUps[roundNumber][0].finishingPositionRange;
+
     if (
       roundProfile[roundNumber + 1] &&
       roundProfile[roundNumber + 1].matchUpsCount ===
@@ -147,5 +164,5 @@ export function getRoundMatchUps({ matchUps = [] }) {
       roundIndex += 1;
     }
   });
-  return { roundMatchUps, roundProfile };
+  return { maxMatchUpsCount, roundMatchUps, roundNumbers, roundProfile };
 }

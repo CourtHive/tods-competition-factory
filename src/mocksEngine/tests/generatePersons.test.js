@@ -1,12 +1,12 @@
-import { generatePersons } from '../generatePersons';
-import { tournamentEngine } from '../../..';
-import { UUID } from '../../../utilities';
-import mocksEngine from '../..';
+import { generatePersons } from '../generators/generatePersons';
+import { tournamentEngine } from '../..';
+import { UUID } from '../../utilities';
+import mocksEngine from '..';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
-import { MALE } from '../../../constants/genderConstants';
-import defaultPersonData from '../../data/persons.json';
+import { INVALID_VALUES } from '../../constants/errorConditionConstants';
+import { ROUND_ROBIN } from '../../constants/drawDefinitionConstants';
+import { MALE } from '../../constants/genderConstants';
+import defaultPersonData from '../data/persons.json';
 
 test('basic person generation', () => {
   let result = generatePersons();

@@ -1,4 +1,4 @@
-import { generateOutcomeFromScoreString } from '../generateOutcomeFromScoreString';
+import { generateOutcomeFromScoreString } from '../generators/generateOutcomeFromScoreString';
 
 it('can generate outcomes for either winningSide', () => {
   let values = {

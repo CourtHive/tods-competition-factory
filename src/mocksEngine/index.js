@@ -1,6 +1,8 @@
 import { deleteNotices, setDevContext } from '../global/state/globalState';
 import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
+
+import amendsGovernor from './governors/amendsGovernor';
 import mocksGovernor from './governors/mocksGovernor';
 
 export const mocksEngine = (function () {
@@ -12,7 +14,7 @@ export const mocksEngine = (function () {
     },
   };
 
-  importGovernors([mocksGovernor]);
+  importGovernors([amendsGovernor, mocksGovernor]);
 
   return engine;
 

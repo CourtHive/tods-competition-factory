@@ -1,5 +1,5 @@
-import { mocksEngine } from '../../..';
-import { parseAgeCategoryCode } from '../../../global/functions/parseAgeCategoryCode';
+import { mocksEngine } from '../..';
+import { parseAgeCategoryCode } from '../../global/functions/parseAgeCategoryCode';
 
 // prettier-ignore
 const ageCategoryScenarios = [

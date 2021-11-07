@@ -1,5 +1,5 @@
-import { generateRange } from '../../../utilities';
-import mocksEngine from '../..';
+import { generateRange } from '../../utilities';
+import mocksEngine from '..';
 
 import {
   COMPLETED,
@@ -9,11 +9,11 @@ import {
   RETIRED,
   SUSPENDED,
   WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+} from '../../constants/matchUpStatusConstants';
 import {
   INVALID_MATCHUP_FORMAT,
   INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 const iterations = 1;
 

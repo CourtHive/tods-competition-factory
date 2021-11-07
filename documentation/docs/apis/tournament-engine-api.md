@@ -1453,8 +1453,9 @@ See [publishEvent](#publishEvent) for details on `policyDefinition`.
 
 ```js
 const { eventData } = tournamentEngine.getEventData({
-  drawId,
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getTournamentParticipants())
   policyDefinitions, // optional
+  drawId,
 });
 const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
 ```
@@ -1750,6 +1751,7 @@ Returns a deep copy of the current tournamentEngine state.
 ```js
 const { tournamentRecord } = tournamentEngine.getState({
   convertExtensions, // optional - convert extensions to '_' prefixed attributes
+  removeExtensions, // optional - strip all extensions out of tournamentRecord
 });
 ```
 

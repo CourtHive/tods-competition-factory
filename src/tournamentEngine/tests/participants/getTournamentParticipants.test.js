@@ -70,7 +70,7 @@ it('can add ISO country codes to persons', () => {
     )
     .flat();
   persons.forEach((person) => {
-    expect(person.iso).not.toBeUndefined();
+    expect(person.isoNationalityCode).not.toBeUndefined();
     expect(person.countryName).not.toBeUndefined();
   });
 });

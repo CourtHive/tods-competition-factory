@@ -1,6 +1,6 @@
-import tournamentEngine from '../../../tournamentEngine/sync';
-import { instanceCount } from '../../../utilities';
-import mocksEngine from '../..';
+import tournamentEngine from '../../tournamentEngine/sync';
+import { instanceCount } from '../../utilities';
+import mocksEngine from '..';
 
 import {
   FEED_IN_CHAMPIONSHIP,
@@ -8,9 +8,9 @@ import {
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
-} from '../../../constants/drawDefinitionConstants';
-import { SINGLES } from '../../../constants/eventConstants';
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+} from '../../constants/drawDefinitionConstants';
+import { SINGLES } from '../../constants/eventConstants';
+import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 
 it.each([
   [SINGLE_ELIMINATION, 16],

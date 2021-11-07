@@ -652,6 +652,7 @@ Returns a deep copy `tournamentRecords` which have been loaded, along with curre
 ```js
 const { tournamentId, tournaentRecords } = competition.getState({
   convertExtensions, // optional - convert extensions to '_' prefixed attributes
+  removeExtensions, // optional - strip all extensions out of tournamentRecord
 });
 ```
 

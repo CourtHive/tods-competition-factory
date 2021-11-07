@@ -1,11 +1,11 @@
-import { getParticipantId } from '../../../global/functions/extractors';
-import { tournamentEngine } from '../../..';
-import mocksEngine from '../..';
+import { getParticipantId } from '../../global/functions/extractors';
+import { tournamentEngine } from '../..';
+import mocksEngine from '..';
 
-import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';
-import { ELO, NTRP, UTR, WTN } from '../../../constants/ratingConstants';
+import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
+import { ELO, NTRP, UTR, WTN } from '../../constants/ratingConstants';
 import { mockProfile } from './mockScaleProfile';
-import { SINGLES } from '../../../constants/matchUpTypes';
+import { SINGLES } from '../../constants/matchUpTypes';
 
 // prettier-ignore
 const rankingsScenarios = [
