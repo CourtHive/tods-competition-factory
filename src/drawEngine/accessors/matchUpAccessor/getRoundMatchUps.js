@@ -1,6 +1,7 @@
 import { chunkArray, intersection, numericSort } from '../../../utilities';
 
 import { TEAM } from '../../../constants/matchUpTypes';
+import { definedAttributes } from '../../../utilities/objects';
 
 export function getRoundMatchUps({ matchUps = [] }) {
   // create an array of arrays of matchUps grouped by roundNumber
@@ -32,7 +33,11 @@ export function getRoundMatchUps({ matchUps = [] }) {
   // calculate the finishing Round for each roundNumber
   const finishingRoundMap = matchUps.reduce((mapping, matchUp) => {
     if (!mapping[matchUp.roundNumber])
-      mapping[matchUp.roundNumber] = matchUp.finishingRound;
+      mapping[matchUp.roundNumber] = definedAttributes({
+        finishingRound: matchUp.finishingRound,
+        abbreviatedRoundName: matchUp.abbreviatedRoundName,
+        roundName: matchUp.roundName,
+      });
     return mapping;
   }, {});
 
@@ -70,7 +75,14 @@ export function getRoundMatchUps({ matchUps = [] }) {
       .flat();
 
     roundProfile[roundNumber].roundNumber = roundNumber; // convenience
-    roundProfile[roundNumber].finishingRound = finishingRoundMap[roundNumber];
+
+    roundProfile[roundNumber].finishingRound =
+      finishingRoundMap[roundNumber].finishingRound;
+    roundProfile[roundNumber].roundName =
+      finishingRoundMap[roundNumber].roundName;
+    roundProfile[roundNumber].abbreviatedRoundName =
+      finishingRoundMap[roundNumber].abbreviatedRoundName;
+
     roundProfile[roundNumber].finishingPositionRange =
       roundMatchUps[roundNumber][0].finishingPositionRange;
 
