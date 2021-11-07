@@ -602,7 +602,8 @@ function annotatePerson(person) {
   const { nationalityCode } = person || {};
   if (nationalityCode) {
     const country = countries.find(({ ioc }) => ioc === nationalityCode);
-    if (country?.iso && !person.iso) person.iso = country.iso;
+    if (country?.iso && !person.isoNationalityCode)
+      person.isoNationalityCode = country.iso;
     if (country?.label && !person.countryName)
       person.countryName = country.label;
   }

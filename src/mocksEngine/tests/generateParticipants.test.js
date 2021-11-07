@@ -162,6 +162,6 @@ it('can accept custom personData', () => {
   );
   expect([samIndex, jennyIndex].sort()).toEqual([0, 1]);
 
-  expect(participants[0].person.iso).not.toBeUndefined();
+  expect(participants[0].person.isoNationalityCode).not.toBeUndefined();
   expect(participants[0].person.countryName).not.toBeUndefined();
 });

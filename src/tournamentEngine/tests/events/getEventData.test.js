@@ -76,7 +76,7 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
 
     // expect that each individual participant on the team also has team information
     matchUp.sides.forEach((side) => {
-      expect(side.participant.person.iso).not.toBeUndefined();
+      expect(side.participant.person.isoNationalityCode).not.toBeUndefined();
       expect(side.participant.teams.length).toEqual(1);
       expect(side.participant.groups.length).toEqual(0);
     });
@@ -97,6 +97,8 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
         )
         .flat()
         .filter(Boolean);
-      persons.forEach((person) => expect(person.iso).not.toBeUndefined());
+      persons.forEach((person) =>
+        expect(person.isoNationalityCode).not.toBeUndefined()
+      );
     });
 });

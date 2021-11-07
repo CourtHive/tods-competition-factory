@@ -281,7 +281,7 @@ export function generateParticipants({
 
     if (withISO && nationalityCode) {
       const country = countries.find(({ ioc }) => ioc === nationalityCode);
-      if (country?.iso) participant.person.iso = country.iso;
+      if (country?.iso) participant.person.isoNationalityCode = country.iso;
       if (country?.label) participant.person.countryName = country.label;
     }
 

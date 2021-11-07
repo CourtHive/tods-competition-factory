@@ -23,7 +23,7 @@ export function getRoundContextProfile({
     {};
 
   const abbreviatedRoundNamingMap =
-    roundNamingPolicy?.appreviatedRoundNamingMap ||
+    roundNamingPolicy?.abbreviatedRoundNamingMap ||
     defaultRoundNamingPolicy.abbreviatedRoundNamingMap ||
     {};
 
