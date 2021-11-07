@@ -68,6 +68,12 @@ export function getRoundMatchUps({ matchUps = [] }) {
     const currentRoundDrawPositions = currentRoundMatchUps
       .map((matchUp) => matchUp?.drawPositions || [])
       .flat();
+
+    roundProfile[roundNumber].roundNumber = roundNumber; // convenience
+    roundProfile[roundNumber].finishingRound = finishingRoundMap[roundNumber];
+    roundProfile[roundNumber].finishingPositionRange =
+      roundMatchUps[roundNumber][0].finishingPositionRange;
+
     if (roundNumber === 1 || !roundProfile[roundNumber - 1]) {
       const orderedDrawPositions = currentRoundDrawPositions.sort(numericSort);
       const pairedDrawPositions = chunkArray(orderedDrawPositions, 2);
@@ -130,9 +136,7 @@ export function getRoundMatchUps({ matchUps = [] }) {
       roundProfile[roundNumber].drawPositions = roundDrawPositions?.flat();
       roundProfile[roundNumber].pairedDrawPositions = roundDrawPositions;
     }
-    roundProfile[roundNumber].finishingRound = finishingRoundMap[roundNumber];
-    roundProfile[roundNumber].finishingPositionRange =
-      roundMatchUps[roundNumber][0].finishingPositionRange;
+
     if (
       roundProfile[roundNumber + 1] &&
       roundProfile[roundNumber + 1].matchUpsCount ===
