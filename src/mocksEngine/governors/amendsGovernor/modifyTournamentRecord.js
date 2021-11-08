@@ -1,5 +1,6 @@
 import { generateTeamsFromParticipantAttribute } from '../../../tournamentEngine/generators/teamsGenerator';
 import { addParticipants } from '../../../tournamentEngine/governors/participantGovernor/addParticipants';
+import { generateEventParticipants } from '../../generators/generateEventParticipants';
 import { getStageParticipantsCount } from '../../getters/getStageParticipantsCount';
 import { generateParticipants } from '../../generators/generateParticipants';
 
@@ -13,6 +14,7 @@ export function modifyTournamentRecord({
   participantsProfile,
   tournamentRecord,
   eventProfiles,
+  uuids,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
@@ -69,31 +71,43 @@ export function modifyTournamentRecord({
 
   if (eventProfiles) {
     for (const eventProfile of eventProfiles) {
+      let { ratingsParameters } = eventProfile;
+
       const event = tournamentRecord.events.find(
         (event) =>
           (eventProfile.eventName &&
             event.eventName === eventProfile.eventName) ||
           (eventProfile.eventId && event.eventId === eventProfile.eventId)
       );
+
       if (!event) return { error: EVENT_NOT_FOUND };
-      const { gender, category } = event;
+      const { gender, category, eventType } = event;
 
       if (eventProfile.drawProfiles) {
         const {
-          stageParticipantsCount,
+          // stageParticipantsCount,
           uniqueParticipantsCount,
           uniqueParticipantStages,
         } = getStageParticipantsCount({
-          drawProfiles: event.drawProfiles,
+          drawProfiles: eventProfile.drawProfiles,
           category,
           gender,
         });
 
-        if (
-          stageParticipantsCount ||
-          uniqueParticipantStages ||
-          uniqueParticipantsCount
-        ) {
+        const { uniqueDrawParticipants = [], uniqueParticipantIds = [] } =
+          uniqueParticipantStages
+            ? generateEventParticipants({
+                event: { eventType, category, gender },
+                uniqueParticipantsCount,
+                participantsProfile,
+                ratingsParameters,
+                tournamentRecord,
+                eventProfile,
+                uuids,
+              })
+            : {};
+
+        if (uniqueDrawParticipants || uniqueParticipantIds) {
           //
         }
 

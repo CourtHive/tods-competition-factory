@@ -3,7 +3,6 @@ import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/ev
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
 import { addPlayoffStructures } from '../../tournamentEngine/governors/eventGovernor/addPlayoffStructures';
 import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
-import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
@@ -11,9 +10,9 @@ import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfil
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { getStageParticipantsCount } from '../getters/getStageParticipantsCount';
 import { isValidExtension } from '../../global/validation/isValidExtension';
+import { generateEventParticipants } from './generateEventParticipants';
 import { getParticipantId } from '../../global/functions/extractors';
 import { hasParticipantId } from '../../global/functions/filters';
-import { generateParticipants } from './generateParticipants';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange, UUID } from '../../utilities';
 import { generateFlight } from './generateFlight';
@@ -63,7 +62,6 @@ export function generateEventWithFlights({
       : undefined);
 
   let targetParticipants = tournamentRecord.participants;
-  let uniqueDrawParticipants = [];
 
   for (const drawProfile of drawProfiles) {
     if (!gender && drawProfile.gender) gender = drawProfile?.gender;
@@ -86,55 +84,18 @@ export function generateEventWithFlights({
       ? PAIR
       : eventType;
 
-  const uniqueParticipantIds = [];
-  if (uniqueParticipantStages) {
-    const {
-      valuesInstanceLimit,
-      nationalityCodesCount,
-      nationalityCodeType,
-      nationalityCodes,
-      addressProps,
-      personIds,
-      inContext,
-    } = participantsProfile || {};
-    const mainParticipantsCount = uniqueParticipantsCount[MAIN] || 0;
-    const qualifyingParticipantsCount =
-      uniqueParticipantsCount[QUALIFYING] || 0;
-
-    const participantsCount =
-      mainParticipantsCount + qualifyingParticipantsCount;
-    const { participants: uniqueFlightParticipants } = generateParticipants({
-      scaledParticipantsCount: eventProfile.scaledParticipantsCount,
-      consideredDate: tournamentRecord?.startDate,
-      rankingRange: eventProfile.rankingRange,
-      participantType: eventParticipantType,
-      nationalityCodesCount,
-      nationalityCodeType,
-      valuesInstanceLimit,
-      participantsCount,
-      ratingsParameters,
-      nationalityCodes,
-      addressProps,
-      sex: gender,
-      personIds,
-      inContext,
-      category,
-      uuids,
-    });
-
-    let result = addParticipants({
-      tournamentRecord,
-      participants: uniqueFlightParticipants,
-    });
-    if (result.error) return result;
-
-    uniqueDrawParticipants = uniqueFlightParticipants.filter(
-      ({ participantType }) => participantType === eventParticipantType
-    );
-    uniqueFlightParticipants.forEach(({ participantId }) =>
-      uniqueParticipantIds.push(participantId)
-    );
-  }
+  const { uniqueDrawParticipants = [], uniqueParticipantIds = [] } =
+    uniqueParticipantStages
+      ? generateEventParticipants({
+          event: { eventType, category, gender },
+          uniqueParticipantsCount,
+          participantsProfile,
+          ratingsParameters,
+          tournamentRecord,
+          eventProfile,
+          uuids,
+        })
+      : {};
 
   const mainParticipantsCount = stageParticipantsCount[MAIN] || 0;
   const qualifyingParticipantsCount = stageParticipantsCount[QUALIFYING] || 0;
