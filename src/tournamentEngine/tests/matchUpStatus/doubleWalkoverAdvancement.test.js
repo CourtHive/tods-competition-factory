@@ -1,6 +1,7 @@
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { generateRange } from '../../../utilities';
 
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
@@ -8,7 +9,6 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { generateRange } from '../../../utilities';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find(

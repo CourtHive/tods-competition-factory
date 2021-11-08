@@ -1,4 +1,3 @@
-import fs from 'fs';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 
 import { drawEngine } from '../../sync';
@@ -136,18 +135,6 @@ it('can generate and verify curtis structures', () => {
     expectedPositionsAssignedCount: 0,
     expectedRoundMatchUpsCounts: [4, 4, 2, 1],
   });
-});
-
-it('can write to the file system', () => {
-  const writeFile = process.env.TMX_TEST_FILES;
-  const { drawDefinition } = drawEngine.getState();
-
-  const drawType = CURTIS;
-  const fileName = `${drawType}.json`;
-  const dirPath = './src/drawEngine/generated/';
-  const output = `${dirPath}${fileName}`;
-  if (writeFile)
-    fs.writeFileSync(output, JSON.stringify(drawDefinition, undefined, 2));
 });
 
 function generateCurtis({
