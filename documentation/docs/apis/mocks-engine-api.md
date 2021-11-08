@@ -179,6 +179,31 @@ whereas with `eventProfiles` only the number of participants necessary to popula
 
 ---
 
+## modifyTournamentRecord
+
+Modify `events` in an existing tournamentRecord. Accepts the same attributes for `eventProfiles` as `generateTournamentRecord`.
+
+The supplied `tournamentRecord` is directly modified.
+
+```js
+eventProfiles = [
+  {
+    eventId, // optional - either eventId or eventName
+    eventName, // optional - either eventName or eventId
+    drawProfiles: [{ drawSize: 8 }],
+  },
+];
+
+mocksEngine.modifyTournamentRecord({
+  tournamentRecord,
+
+  participantsProfile, // optional - participants for events will be generated automatically
+  eventProfiles, // optional - see example usage for `generateTournamentRecord`
+});
+```
+
+---
+
 ## parseScoreString
 
 Produces TODS sets objects.
