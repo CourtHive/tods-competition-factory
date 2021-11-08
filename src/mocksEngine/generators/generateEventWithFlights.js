@@ -2,12 +2,10 @@ import { addDrawDefinition } from '../../tournamentEngine/governors/eventGoverno
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
 import { addPlayoffStructures } from '../../tournamentEngine/governors/eventGovernor/addPlayoffStructures';
-import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
-import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
@@ -18,8 +16,8 @@ import { hasParticipantId } from '../../global/functions/filters';
 import { generateParticipants } from './generateParticipants';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange, UUID } from '../../utilities';
+import { generateFlight } from './generateFlight';
 
-import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
 import { SINGLES, DOUBLES, TEAM } from '../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { SEEDING } from '../../constants/scaleConstants';
@@ -27,7 +25,6 @@ import {
   MAIN,
   QUALIFYING,
   ROUND_ROBIN_WITH_PLAYOFF,
-  SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
 
 export function generateEventWithFlights({
@@ -206,13 +203,13 @@ export function generateEventWithFlights({
   let uniqueParticipantsIndex = 0;
   for (const drawProfile of drawProfiles) {
     const {
-      drawType = SINGLE_ELIMINATION,
+      // drawType = SINGLE_ELIMINATION,
       qualifyingPositions = 0,
       uniqueParticipants,
       stage = MAIN,
       drawSize = 0,
-      drawName,
-      drawId,
+      // drawName,
+      // drawId,
     } = drawProfile;
 
     const entriesCount = drawSize - qualifyingPositions;
@@ -229,38 +226,14 @@ export function generateEventWithFlights({
 
     if (requiresUniqueParticipants) uniqueParticipantsIndex += entriesCount;
 
-    const drawParticipantIds = drawParticipants
-      .slice(0, entriesCount)
-      .map(getParticipantId);
-
-    if (drawParticipantIds.length) {
-      const result = addEventEntries({
-        participantIds: drawParticipantIds,
-        autoEntryPositions,
-        tournamentRecord,
-        stage,
-        event,
-      });
-      if (result.error) return result;
-    }
-
-    const drawEntries = drawParticipantIds.map((participantId) => ({
-      entryStatus: DIRECT_ACCEPTANCE,
-      entryStage: stage,
-      participantId,
-    }));
-
-    const result = addFlight({
-      drawName: drawName || drawType,
-      qualifyingPositions,
-      drawEntries,
-      drawId,
+    result = generateFlight({
+      tournamentRecord,
+      autoEntryPositions,
+      drawParticipants,
+      drawProfile,
       event,
-      stage,
     });
-    if (result.error) {
-      return result;
-    }
+    if (result.error) return result;
   }
 
   const drawIds = [];
