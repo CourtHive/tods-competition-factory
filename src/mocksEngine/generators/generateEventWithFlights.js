@@ -11,6 +11,7 @@ import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFli
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
+import { getStageParticipantsCount } from '../getters/getStageParticipantsCount';
 import { isValidExtension } from '../../global/validation/isValidExtension';
 import { getParticipantId } from '../../global/functions/extractors';
 import { hasParticipantId } from '../../global/functions/filters';
@@ -71,43 +72,15 @@ export function generateEventWithFlights({
     if (!gender && drawProfile.gender) gender = drawProfile?.gender;
   }
 
-  let uniqueParticipantsCount = {};
-  const stageParticipantsCount = drawProfiles.reduce(
-    (stageParticipantsCount, drawProfile) => {
-      const {
-        qualifyingPositions = 0,
-        participantsCount = 0,
-        uniqueParticipants,
-        stage = MAIN,
-        drawSize = 0,
-      } = drawProfile || {};
-
-      if (!Object.keys(stageParticipantsCount).includes(stage))
-        stageParticipantsCount[stage] = 0;
-
-      const stageCount = (participantsCount || drawSize) - qualifyingPositions;
-      const requiresUniqueParticipants =
-        uniqueParticipants || gender || category || stage === QUALIFYING;
-
-      if (requiresUniqueParticipants) {
-        if (!Object.keys(uniqueParticipantsCount).includes(stage))
-          uniqueParticipantsCount[stage] = 0;
-        uniqueParticipantsCount[stage] += stageCount;
-      } else {
-        stageParticipantsCount[stage] = Math.max(
-          stageCount,
-          stageParticipantsCount[stage]
-        );
-      }
-      return stageParticipantsCount;
-    },
-    {}
-  );
-
-  const uniqueParticipantStages = Object.keys(uniqueParticipantsCount);
-  uniqueParticipantStages.forEach(
-    (stage) => (stageParticipantsCount[stage] += uniqueParticipantsCount[stage])
-  );
+  const {
+    stageParticipantsCount,
+    uniqueParticipantsCount,
+    uniqueParticipantStages,
+  } = getStageParticipantsCount({
+    drawProfiles,
+    category,
+    gender,
+  });
 
   const eventParticipantType =
     eventType === SINGLES

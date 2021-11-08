@@ -39,5 +39,9 @@ export function getStageParticipantsCount({ drawProfiles, category, gender }) {
     (stage) => (stageParticipantsCount[stage] += uniqueParticipantsCount[stage])
   );
 
-  return { stageParticipantsCount, uniqueParticipantsCount };
+  return {
+    stageParticipantsCount,
+    uniqueParticipantsCount,
+    uniqueParticipantStages,
+  };
 }
