@@ -78,10 +78,15 @@ test('mocksEngine can modify existing tournamentRecords', () => {
     eventProfiles,
   });
   expect(result.success).toEqual(true);
+  expect(result.drawIds.length).toEqual(1);
 
   event = tournamentRecord.events[0];
   ({ flightProfile } = getFlightProfile({ event }));
   expect(flightProfile.flights.length).toEqual(2);
 
   expect(tournamentRecord.participants.length).toEqual(256); // 232 + 3 * 8 = 256
+
+  result = mocksEngine.modifyTournamentRecord({ tournamentRecord });
+  expect(result.success).toEqual(true);
+  expect(result.drawIds.length).toEqual(0);
 });
