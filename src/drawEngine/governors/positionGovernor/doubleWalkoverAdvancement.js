@@ -3,6 +3,7 @@ import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawP
 import { getWalkoverWinningSide } from '../matchUpGovernor/getWalkoverWinningSide';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
+import { getPositionAssignments } from '../../getters/positionsGetter';
 import { findStructure } from '../../getters/findStructure';
 import { positionTargets } from './positionTargets';
 import { overlap } from '../../../utilities';
@@ -63,7 +64,7 @@ function conditionallyAdvanceDrawPosition(params) {
     winnerMatchUp,
     matchUpsMap,
     structure,
-    matchUpId,
+    // matchUpId,
   } = params;
 
   const noContextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
@@ -125,8 +126,9 @@ function conditionallyAdvanceDrawPosition(params) {
     (hasDrawPosition &&
       getWalkoverWinningSide({
         drawPosition: drawPositions[0],
+        matchUpId: winnerMatchUp.matchUpId,
         inContextDrawMatchUps,
-        matchUpId,
+        // matchUpId,
       })) ||
     undefined;
 
@@ -155,28 +157,67 @@ function conditionallyAdvanceDrawPosition(params) {
 
   // any remaining drawPosition in winnerMatchUp should be advanced
   const drawPositionToAdvance = winnerMatchUpDrawPositions[0];
+  const { positionAssignments } = getPositionAssignments({ structure });
+  const assignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === drawPositionToAdvance
+  );
+
+  const noContextNextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === nextWinnerMatchUp.matchUpId
+  );
+  const nextWinnerMatchUpDrawPositions =
+    noContextNextWinnerMatchUp?.drawPositions?.filter(Boolean);
+  const nextWinnerMatchUpHasDrawPosition =
+    nextWinnerMatchUpDrawPositions.length === 1;
+
   if (drawPositionToAdvance) {
+    if (assignment.bye) {
+      // WO/WO advanced by BYE
+      if (nextWinnerMatchUpHasDrawPosition) {
+        let result = modifyMatchUpScore({
+          matchUpId: noContextNextWinnerMatchUp.matchUpId,
+          matchUp: noContextNextWinnerMatchUp,
+          matchUpStatus: DOUBLE_WALKOVER,
+          removeScore: true,
+          drawDefinition,
+          winningSide: 1,
+        });
+        if (result.error) return result;
+
+        // get the targets for the nextWinnerMatchUp
+        const targetData = positionTargets({
+          matchUpId: noContextNextWinnerMatchUp.matchUpId,
+          inContextDrawMatchUps,
+          drawDefinition,
+          structure,
+        });
+        if (result.error) return result;
+        result = doubleWalkoverAdvancement({
+          ...params,
+          targetData,
+          matchUpId: noContextNextWinnerMatchUp.matchUpId,
+        });
+        if (result.error) return result;
+      }
+      return { ...SUCCESS };
+    }
+
     return assignMatchUpDrawPosition({
-      drawDefinition,
-      inContextDrawMatchUps,
       matchUpId: nextWinnerMatchUp.matchUpId,
       drawPosition: drawPositionToAdvance,
+      inContextDrawMatchUps,
+      drawDefinition,
     });
   } else if (pairedPreviousMatchUpisWOWO) {
-    const noContextNextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
-      (matchUp) => matchUp.matchUpId === nextWinnerMatchUp.matchUpId
-    );
     if (!noContextNextWinnerMatchUp) return { error: MISSING_MATCHUP };
 
-    const drawPositions =
-      noContextNextWinnerMatchUp.drawPositions.filter(Boolean);
-    const hasDrawPosition = drawPositions.length === 1;
-    if (hasDrawPosition) {
-      const drawPosition = drawPositions[0];
+    if (nextWinnerMatchUpHasDrawPosition) {
+      const drawPosition = nextWinnerMatchUpDrawPositions[0];
       const walkoverWinningSide = getWalkoverWinningSide({
-        matchUpId,
-        drawPosition,
         inContextDrawMatchUps,
+        drawPosition,
+        // matchUpId,
+        matchUpId: winnerMatchUp.matchUpId,
       });
       console.log('existing drawPosition is winningSide', {
         walkoverWinningSide,
@@ -195,13 +236,15 @@ function conditionallyAdvanceDrawPosition(params) {
       drawDefinition,
       matchUpStatus,
     });
+
     if (result.error) return result;
 
     if (matchUpStatus === DOUBLE_WALKOVER) {
       const advancementResult = doubleWalkoverAdvancement({
         ...params,
         targetData,
-        matchUpId,
+        // matchUpId,
+        matchUpId: winnerMatchUp.matchUpId,
       });
       if (advancementResult.error) return advancementResult;
     }
@@ -211,9 +254,9 @@ function conditionallyAdvanceDrawPosition(params) {
 
 function advanceByeToLoserMatchUp(params) {
   const {
-    drawDefinition,
-    loserTargetLink,
     loserTargetDrawPosition,
+    loserTargetLink,
+    drawDefinition,
     matchUpsMap,
   } = params;
   const structureId = loserTargetLink?.target?.structureId;
@@ -221,9 +264,9 @@ function advanceByeToLoserMatchUp(params) {
   if (!structure) return { error: MISSING_STRUCTURE };
 
   return assignDrawPositionBye({
+    drawPosition: loserTargetDrawPosition,
     drawDefinition,
     structureId,
-    drawPosition: loserTargetDrawPosition,
     matchUpsMap,
   });
 }
