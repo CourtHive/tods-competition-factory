@@ -1,3 +1,4 @@
+import { getParticipantId } from '../../../global/functions/extractors';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
@@ -10,7 +11,6 @@ import {
   DOUBLE_WALKOVER,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { getParticipantId } from '../../../global/functions/extractors';
 
 test('Consolation WO/WO advancing fed BYE', () => {
   // prettier-ignore
