@@ -1,4 +1,5 @@
 import { participantScheduledMatchUps } from '../../governors/queryGovernor/participantScheduledMatchUps';
+import { addNationalityCodeISO } from '../../governors/participantGovernor/annotatePerson';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
 import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
@@ -6,9 +7,8 @@ import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { extensionConstants } from '../../../constants/extensionConstants';
 import { getParticipantIds } from '../../../global/functions/extractors';
 import { definedAttributes } from '../../../utilities/objects';
-import { countries } from '../../../fixtures/countryData';
-import { allEventMatchUps } from '../matchUpsGetter';
 import { makeDeepCopy, unique } from '../../../utilities';
+import { allEventMatchUps } from '../matchUpsGetter';
 
 import { GROUP, INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
@@ -598,17 +598,6 @@ export function addParticipantContext(params) {
   return { participantIdsWithConflicts };
 }
 
-function annotatePerson(person) {
-  const { nationalityCode } = person || {};
-  if (nationalityCode) {
-    const country = countries.find(({ ioc }) => ioc === nationalityCode);
-    if (country?.iso && !person.isoNationalityCode)
-      person.isoNationalityCode = country.iso;
-    if (country?.label && !person.countryName)
-      person.countryName = country.label;
-  }
-}
-
 function annotateParticipant({
   withEvents = true,
   withDraws = true,
@@ -623,17 +612,7 @@ function annotateParticipant({
   const scheduleItems = [];
   const scheduleConflicts = [];
 
-  if (withISO) {
-    const { person, individualParticipants } = participant;
-    const persons = [
-      person,
-      individualParticipants?.map(({ person }) => person),
-    ]
-      .flat()
-      .filter(Boolean);
-
-    persons.forEach(annotatePerson);
-  }
+  if (withISO) addNationalityCodeISO({ participant });
 
   const scaleItems = participant.timeItems?.filter(
     ({ itemType }) =>
