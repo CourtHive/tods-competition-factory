@@ -22,7 +22,7 @@ export function makeDeepCopy(
     typeof sourceObject !== 'object' ||
     typeof sourceObject === 'function' ||
     sourceObject === null ||
-    (deepCopy?.threshold && iteration >= deepCopy.threshold)
+    (typeof deepCopy?.threshold === 'number' && iteration >= deepCopy.threshold)
   ) {
     return sourceObject;
   }
