@@ -11,13 +11,13 @@ import { hasParticipantId } from '../../global/functions/filters';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange } from '../../utilities';
 
+import { DRAW_ID_EXISTS } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { SEEDING } from '../../constants/scaleConstants';
 import {
   MAIN,
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../constants/drawDefinitionConstants';
-import { DRAW_ID_EXISTS } from '../../constants/errorConditionConstants';
 
 export function generateFlightDrawDefinitions({
   matchUpStatusProfile,

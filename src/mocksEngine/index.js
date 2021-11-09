@@ -1,6 +1,10 @@
-import { deleteNotices, setDevContext } from '../global/state/globalState';
 import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
+import {
+  deleteNotices,
+  setDevContext,
+  setDeepCopy,
+} from '../global/state/globalState';
 
 import amendsGovernor from './governors/amendsGovernor';
 import mocksGovernor from './governors/mocksGovernor';
@@ -8,6 +12,10 @@ import mocksGovernor from './governors/mocksGovernor';
 export const mocksEngine = (function () {
   const engine = {
     version: () => factoryVersion(),
+    setDeepCopy: (deepCopyOption, deepCopyAttributes) => {
+      setDeepCopy(deepCopyOption, deepCopyAttributes);
+      return engine;
+    },
     devContext: (isDev) => {
       setDevContext(isDev);
       return engine;

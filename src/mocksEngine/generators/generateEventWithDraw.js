@@ -175,8 +175,8 @@ export function generateEventWithDraw({
         };
       });
       const result = addParticipants({
-        tournamentRecord,
         participants: teamParticipants,
+        tournamentRecord,
       });
       if (!result.success) return result;
       targetParticipants = teamParticipants;

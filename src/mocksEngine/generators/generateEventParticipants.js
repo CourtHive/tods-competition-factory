@@ -58,8 +58,8 @@ export function generateEventParticipants({
   });
 
   let result = addParticipants({
-    tournamentRecord,
     participants: uniqueFlightParticipants,
+    tournamentRecord,
   });
   if (result.error) return result;
 
