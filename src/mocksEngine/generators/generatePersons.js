@@ -1,6 +1,8 @@
 import { parseAgeCategoryCode } from '../../global/functions/parseAgeCategoryCode';
 import { definedAttributes } from '../../utilities/objects';
 import { dateFromDay } from '../../utilities/dateTime';
+import { countries } from '../../fixtures/countryData';
+import defaultPersonData from '../data/persons.json';
 import {
   generateRange,
   randomMember,
@@ -10,8 +12,6 @@ import {
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { MALE, FEMALE } from '../../constants/genderConstants';
-import { countries } from '../../fixtures/countryData';
-import defaultPersonData from '../data/persons.json';
 
 /**
  * @param {integer} count - number of persons to generate

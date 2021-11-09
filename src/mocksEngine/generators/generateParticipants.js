@@ -3,6 +3,7 @@ import { randomInt, skewedDistribution } from '../../utilities/math';
 import { generateRange, shuffleArray, UUID } from '../../utilities';
 import { definedAttributes } from '../../utilities/objects';
 import { countries } from '../../fixtures/countryData';
+import { generateAddress } from './generateAddress';
 import { generatePersons } from './generatePersons';
 import { teamMocks } from '../utilities/teamMocks';
 
@@ -342,16 +343,4 @@ function addScaleItem({
     if (!participant.timeItems) participant.timeItems = [];
     participant.timeItems.push(timeItem);
   }
-}
-
-function generateAddress(addressAttributes) {
-  const { cities, states, postalCodes, nationalityCode, participantIndex } =
-    addressAttributes;
-  const address = {
-    city: cities && cities[participantIndex],
-    state: states && states[participantIndex],
-    postalCode: postalCodes && postalCodes[participantIndex],
-    countryCode: nationalityCode,
-  };
-  return address;
 }
