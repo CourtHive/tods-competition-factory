@@ -8,9 +8,10 @@ const globalState = {
   timers: { default: { elapsedTime: 0 } },
   deepCopy: true,
   deepCopyAttributes: {
+    threshold: undefined,
+    stringify: [],
     ignore: [],
     toJSON: [],
-    stringify: [],
   },
 };
 
@@ -72,8 +73,10 @@ export function getDevContext(contextCriteria) {
     return globalState.devContext || false;
   } else {
     if (typeof globalState.devContext !== 'object') return false;
-    return Object.keys(contextCriteria).every(
-      (key) => globalState.devContext[key] === contextCriteria[key]
+    return (
+      Object.keys(contextCriteria).every(
+        (key) => globalState.devContext[key] === contextCriteria[key]
+      ) && globalState.devContext
     );
   }
 }

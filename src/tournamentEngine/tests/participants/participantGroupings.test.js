@@ -59,6 +59,7 @@ it('can add a GROUP participant and add individualParticipantIds', () => {
     .map((participant) => participant.participantId);
 
   result = tournamentEngine.addParticipant({
+    returnParticipant: true,
     participant: {
       participantType: GROUP,
       participantRole: OTHER,
@@ -135,6 +136,7 @@ it('can add a GROUP participant and remove individualParticipantIds', () => {
     .map((participant) => participant.participantId);
 
   let result = tournamentEngine.addParticipant({
+    returnParticipant: true,
     participant: {
       participantType: GROUP,
       participantRole: OTHER,
@@ -205,6 +207,7 @@ it('can modify individualParticipantIds of a grouping participant', () => {
     .map((participant) => participant.participantId);
 
   let result = tournamentEngine.addParticipant({
+    returnParticipant: true,
     participant: {
       participantType: GROUP,
       participantRole: OTHER,
@@ -272,6 +275,7 @@ it('can remove individualParticipantIds from a grouping participant', () => {
   );
 
   let result = tournamentEngine.addParticipant({
+    returnParticipant: true,
     participant: {
       participantType: GROUP,
       participantRole: COMPETITOR,

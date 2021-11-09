@@ -12,6 +12,30 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 test('mocksEngine can modify existing tournamentRecords', () => {
+  // prettier-ignore
+  let eventProfiles = [{ eventName: `Boy's U16 Doubles`, eventType: DOUBLES, gender: MALE }];
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: 0 },
+    eventProfiles,
+  });
+
+  expect(tournamentRecord.participants.length).toEqual(0);
+
+  // prettier-ignore
+  eventProfiles = [{ eventName: `Boy's U16 Doubles`, drawProfiles: [{ drawSize: 4, drawType: ROUND_ROBIN }] }];
+  let result = mocksEngine
+    .setDeepCopy(false)
+    .devContext({ makeDeepCopy: true, iterations: 3 }) // in this case setting { iterations: 2 } will result in logging
+    .modifyTournamentRecord({
+      tournamentRecord,
+      eventProfiles,
+    });
+  expect(result.success).toEqual(true);
+  expect(result.drawIds.length).toEqual(1);
+  expect(tournamentRecord.participants.length).toEqual(12); // 4 * 3 = 12
+});
+
+test('mocksEngine can modify existing tournamentRecords', () => {
   let eventProfiles = [
     { eventName: `Gentlemen's O50 Doubles`, eventType: DOUBLES, gender: MALE },
     { eventName: `Boy's U16 Doubles`, eventType: DOUBLES, gender: MALE },

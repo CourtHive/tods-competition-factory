@@ -191,7 +191,7 @@ export function addParticipant({
 
 export function addParticipants({
   allowDuplicateParticipantIdPairs,
-  returnParticipants,
+  returnParticipants = true,
   participants = [],
   tournamentRecord,
 }) {
@@ -232,6 +232,7 @@ export function addParticipants({
     for (const participant of participantsToAdd) {
       const result = addParticipant({
         allowDuplicateParticipantIdPairs,
+        returnParticipant: true,
         disableNotice: true,
         tournamentRecord,
         participant,

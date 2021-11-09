@@ -126,11 +126,17 @@ it('can add individual and pair participants', () => {
   };
 
   const individualParticipantIds = [];
-  result = tournamentEngine.addParticipant({ participant: participant1 });
+  result = tournamentEngine.addParticipant({
+    participant: participant1,
+    returnParticipant: true,
+  });
   expect(result.success).toEqual(true);
   individualParticipantIds.push(result.participant.participantId);
 
-  result = tournamentEngine.addParticipant({ participant: participant2 });
+  result = tournamentEngine.addParticipant({
+    participant: participant2,
+    returnParticipant: true,
+  });
   expect(result.success).toEqual(true);
   individualParticipantIds.push(result.participant.participantId);
 
@@ -217,6 +223,7 @@ it('will not add invalid PAIR participants', () => {
   };
   result = tournamentEngine.addParticipant({
     participant: pairParticipant,
+    returnParticipant: true,
   });
   expect(result.success).toEqual(true);
   const pairParticipantId = result.participant.participantId;
@@ -274,6 +281,7 @@ it('will not add invalid PAIR participants', () => {
   result = tournamentEngine.addParticipant({
     allowDuplicateParticipantIdPairs: true,
     participant: pairParticipant,
+    returnParticipant: true,
     pairOverride: true,
   });
   expect(result.success).toEqual(true);

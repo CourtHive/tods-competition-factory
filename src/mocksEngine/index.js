@@ -9,6 +9,8 @@ import {
 import amendsGovernor from './governors/amendsGovernor';
 import mocksGovernor from './governors/mocksGovernor';
 
+let devContextSet = false;
+
 export const mocksEngine = (function () {
   const engine = {
     version: () => factoryVersion(),
@@ -18,6 +20,7 @@ export const mocksEngine = (function () {
     },
     devContext: (isDev) => {
       setDevContext(isDev);
+      devContextSet = true;
       return engine;
     },
   };
@@ -31,6 +34,13 @@ export const mocksEngine = (function () {
     const result = method({ ...params });
     if (!result?.error) notifySubscribers();
     deleteNotices();
+
+    // cleanup if set on invocation
+    if (devContextSet) {
+      setDevContext(false);
+      devContextSet = false;
+    }
+
     return result;
   }
 
