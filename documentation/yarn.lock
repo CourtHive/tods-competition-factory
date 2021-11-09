@@ -8592,10 +8592,10 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
-tods-competition-factory@0.63.0:
-  version "0.63.0"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.63.0.tgz#dc321111e9c930bf31248e58b4e5ece518d4f786"
-  integrity sha512-Os7LHUGQuWLuq6rCVDez0VlwK1zVdudGoWJNq8tFIyV4X+n1bpTIrixkxNRayRO5j4tyPzhPEgC9IE5R3lzSsA==
+tods-competition-factory@0.63.1:
+  version "0.63.1"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.63.1.tgz#cd61eeb1e26fe30beb058ceba500f4eaaf4f2477"
+  integrity sha512-G4B+gVBvo7c1mqqgxEM/1DAIlifuuZ0mzOEGscRXZMh3HtziLw92QLiGxfjIHUIxryOC7nuxtzzkbuQcq98Ktg==
 
 toidentifier@1.0.0:
   version "1.0.0"
