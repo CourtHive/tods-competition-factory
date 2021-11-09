@@ -191,7 +191,7 @@ export function addParticipant({
 
 export function addParticipants({
   allowDuplicateParticipantIdPairs,
-  returnParticipants = true,
+  returnParticipants,
   participants = [],
   tournamentRecord,
 }) {

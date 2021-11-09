@@ -189,6 +189,7 @@ it('can account for individuals appearing in multiple doubles pairs', () => {
 
   let result = tournamentEngine.addParticipants({
     participants: crossParticipants,
+    returnParticipants: true,
   });
   expect(result.success).toEqual(true);
   const newPairParticipants = result.participants;
