@@ -25,6 +25,7 @@ import {
 
 export function addParticipant({
   allowDuplicateParticipantIdPairs,
+  returnParticipant,
   tournamentRecord,
   disableNotice,
   pairOverride,
@@ -109,7 +110,9 @@ export function addParticipant({
         return {
           ...SUCCESS,
           existingParticipant: true,
-          participant: makeDeepCopy(existingPairParticipant.participant),
+          participant:
+            returnParticipant &&
+            makeDeepCopy(existingPairParticipant.participant),
         };
       }
     }
@@ -180,14 +183,15 @@ export function addParticipant({
   }
 
   const result = {
+    participant: returnParticipant && makeDeepCopy(participant),
     ...SUCCESS,
-    participant: makeDeepCopy(participant),
   };
   return result;
 }
 
 export function addParticipants({
   allowDuplicateParticipantIdPairs,
+  returnParticipants,
   participants = [],
   tournamentRecord,
 }) {
@@ -246,7 +250,7 @@ export function addParticipants({
     }
 
     const result = {
-      participants: makeDeepCopy(addedParticipants),
+      participants: returnParticipants && makeDeepCopy(addedParticipants),
       addedCount: addedParticipants.length,
       ...SUCCESS,
     };
