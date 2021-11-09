@@ -84,7 +84,7 @@ export function generateScheduleTimes({
     }, undefined);
   }
 
-  const { bookings, relevantMatchUps } = generateBookings({
+  const { bookings, dateScheduledMatchUps } = generateBookings({
     defaultRecoveryMinutes,
     averageMatchUpMinutes,
     tournamentRecords,
@@ -116,7 +116,7 @@ export function generateScheduleTimes({
       ? venues[0].venueId
       : undefined;
 
-  const dateScheduledMatchUpIds = relevantMatchUps.map(getMatchUpId);
+  const dateScheduledMatchUpIds = dateScheduledMatchUps.map(getMatchUpId);
 
   return { venueId, scheduleTimes, dateScheduledMatchUpIds };
 }

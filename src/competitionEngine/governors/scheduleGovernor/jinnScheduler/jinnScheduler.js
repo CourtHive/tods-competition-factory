@@ -186,7 +186,7 @@ export function jinnScheduler({
       }
     });
 
-    // checking that matchUpDependencies is scoped to only those matchUps that are to be scheduled on the same date
+    // checking that matchUpDependencies is scoped to only those matchUps that are already or are to be scheduled on the same date
     const allDateMatchUpIds = [];
 
     // first pass through all venues is to build up an array of all matchUpIds in the schedulingProfile for current scheduleDate
@@ -231,11 +231,13 @@ export function jinnScheduler({
       const clearDate = Array.isArray(clearScheduleDates)
         ? clearScheduleDates.includes(scheduleDate)
         : clearScheduleDates;
+
       const alreadyScheduled = clearDate
         ? []
         : matchUps.filter(({ matchUpId }) =>
             dateScheduledMatchUpIds.includes(matchUpId)
           );
+
       for (const matchUp of alreadyScheduled) {
         modifyParticipantMatchUpsCount({
           matchUpPotentialParticipantIds,
@@ -244,7 +246,9 @@ export function jinnScheduler({
           matchUp,
           value: 1,
         });
+
         const scheduleTime = matchUp.schedule?.scheduledTime;
+
         if (scheduleTime) {
           matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
           const recoveryMinutes =
@@ -510,6 +514,7 @@ export function jinnScheduler({
             });
             if (drawDefinition) {
               const drawMatchUps = matchUpMap[tournamentId][drawId];
+
               drawMatchUps.forEach(({ matchUpId }) => {
                 const scheduleTime = matchUpScheduleTimes[matchUpId];
                 if (scheduleTime) {
@@ -527,8 +532,8 @@ export function jinnScheduler({
                   } else {
                     const result = addMatchUpScheduledTime({
                       drawDefinition,
-                      matchUpId,
                       scheduledTime,
+                      matchUpId,
                     });
                     if (result.success)
                       scheduledMatchUpIds[scheduleDate].push(matchUpId);
