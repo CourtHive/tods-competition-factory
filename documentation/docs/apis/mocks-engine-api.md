@@ -2,6 +2,19 @@
 title: mocksEngine API
 ---
 
+## anonymizeTournamentRecord
+
+```js
+mocksEngine.anonymizeTournamentRecord({
+  tournamentRecord,
+  tournamentName, // optional - new tournamentName
+  personIds = [], // optional - array of UUIDs to be used for mocked person replacements
+  tournamentId, // optional - new tournamentId; default behavior is to generate a new one
+});
+```
+
+---
+
 ## generateOutcome
 
 :::note
