@@ -4,9 +4,9 @@ import { formatDate } from '../../../utilities/dateTime';
 import { teamMocks } from '../../utilities/teamMocks';
 import { UUID } from '../../../utilities';
 import {
-  cityMocks,
   postalCodeMocks,
   stateMocks,
+  cityMocks,
 } from '../../utilities/address';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
@@ -14,11 +14,24 @@ import { FEMALE, MALE, OTHER } from '../../../constants/genderConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 
+// TODO: anonymize VenueNames ... and, eventually, venueIds
 export function anonymizeTournamentRecord({
+  // extensionsToKeep = [], e.g. 'level'
   tournamentRecord,
+  tournamentName,
   personIds = [],
+  tournamentId,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+
+  // change the tournamentId and name
+  tournamentRecord.tournamentId = tournamentId || UUID();
+  tournamentRecord.createdAt = new Date().toISOString();
+  tournamentRecord.tournamentName =
+    tournamentName || `Anonymized Tournament ${formatDate(new Date())}`;
+
+  delete tournamentRecord.parentOrganisation;
+
   const consideredDate = tournamentRecord.startDate || formatDate(new Date());
 
   const individualParticipants = (tournamentRecord.participants || []).filter(
