@@ -198,7 +198,7 @@ function assignRoundRobinBYE({ drawDefinition, matchUps, drawPosition }) {
 
 // Looks to see whether a given matchUp has a winnerMatchup or a loserMatchUp
 // and if so advances the appropriate drawPosition into the targetMatchUp
-function advanceDrawPosition({
+export function advanceDrawPosition({
   drawPositionToAdvance,
   inContextDrawMatchUps,
   sourceDrawPositions,
@@ -322,6 +322,7 @@ function advanceWinner({
     existingAssignments.find(({ drawPosition }) => drawPosition === priorPair);
   const priorPairIsBye = priorPairAssignment?.bye;
   const isByeAdvancedBye = drawPositionToAdvanceIsBye && priorPairIsBye;
+  if (isByeAdvancedBye) console.log({ isByeAdvancedBye });
   /// ????????????????????????????????????????
 
   if (
@@ -344,7 +345,7 @@ function advanceWinner({
       undefined
     )
     .slice(0, 2);
-  // UNDEFINED drawPositions
+
   const drawPositions = twoDrawPositions.map((position) => {
     if (!position && !drawPositionAssigned) {
       drawPositionAssigned = true;

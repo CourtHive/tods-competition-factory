@@ -10,6 +10,7 @@ import {
   DOUBLE_WALKOVER,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import { getParticipantId } from '../../../global/functions/extractors';
 
 test('Consolation WO/WO advancing fed BYE', () => {
   // prettier-ignore
@@ -69,7 +70,6 @@ test('Consolation WO/WO advancing fed BYE', () => {
   expect(matchUps.map(({ matchUpStatus }) => matchUpStatus).sort()).toEqual([
     'BYE',
     'DOUBLE_WALKOVER',
-    'DOUBLE_WALKOVER',
     'WALKOVER',
     'WALKOVER',
   ]);
@@ -80,8 +80,10 @@ test('Consolation WO/WO advancing fed BYE', () => {
   ({ matchUps } = tournamentEngine.allTournamentMatchUps({
     contextFilters: {
       stages: [CONSOLATION],
-      roundNumbers: [3, 4],
+      roundNumbers: [4],
     },
   }));
-  // console.log(matchUps);
+
+  const advancedSide = matchUps[0].sides.find(getParticipantId);
+  expect(advancedSide.drawPosition).toEqual(5);
 });
