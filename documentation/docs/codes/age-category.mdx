@@ -19,11 +19,11 @@ const { ageMax, ageMin, ageMaxDate, ageMinDate } = parseAgeCategoryCode({
 
 ```jsx live
 function AgeCategoryDemo(props) {
-  const result = factory.parseAgeCategoryCode({
+  const result = utilities.parseAgeCategoryCode({
     category: { ageCategoryCode: '18U' },
     consideredDate: '2022-01-01',
   });
 
-  return <RenderJSON data={result} root={'result'} expandRoot={false} />;
+  return <RenderJSON data={result} root={'result'} />;
 }
 ```
