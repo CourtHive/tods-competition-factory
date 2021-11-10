@@ -196,15 +196,18 @@ whereas with `eventProfiles` only the number of participants necessary to popula
 
 ## modifyTournamentRecord
 
-Modify `events` in an existing tournamentRecord. Accepts the same attributes for `eventProfiles` as `generateTournamentRecord`.
+Modify `events` in an existing tournamentRecord, identified by either `eventId`, `eventIndex`, or `eventName`.
+
+Accepts the same attributes for `eventProfiles` as `generateTournamentRecord`.
 
 The supplied `tournamentRecord` is directly modified.
 
 ```js
 eventProfiles = [
   {
-    eventId, // optional - either eventId or eventName
-    eventName, // optional - either eventName or eventId
+    eventId, // optional - see above
+    eventName, // optional - see above
+    eventIndex, // optional - see above - zero based index into events array
     drawProfiles: [
       {
         drawType, // optional
