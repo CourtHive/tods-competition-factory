@@ -5,7 +5,6 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_MATCHUP_IDS,
-  MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
 
 export function bulkRescheduleMatchUps({
@@ -14,7 +13,6 @@ export function bulkRescheduleMatchUps({
   matchUpIds,
   dryRun,
 }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!matchUpIds || !Array.isArray(matchUpIds))
     return { error: MISSING_MATCHUP_IDS };
   if (typeof scheduleChange !== 'object') return { error: INVALID_VALUES };
@@ -30,6 +28,7 @@ export function bulkRescheduleMatchUps({
       dryRun,
     });
     if (result.error) return result;
+
     if (Array.isArray(result.notRescheduled))
       notRescheduled.push(...result.notRescheduled);
 
