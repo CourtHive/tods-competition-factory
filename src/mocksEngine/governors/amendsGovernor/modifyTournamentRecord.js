@@ -86,7 +86,9 @@ export function modifyTournamentRecord({
       let { ratingsParameters } = eventProfile;
 
       const event = tournamentRecord.events.find(
-        (event) =>
+        (event, index) =>
+          (eventProfile.eventIndex !== undefined &&
+            index === eventProfile.eventIndex) ||
           (eventProfile.eventName &&
             event.eventName === eventProfile.eventName) ||
           (eventProfile.eventId && event.eventId === eventProfile.eventId)

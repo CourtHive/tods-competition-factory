@@ -1,5 +1,5 @@
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
-import { mocksEngine } from '../..';
+import { mocksEngine, tournamentEngine } from '../..';
 
 import { DOUBLES, SINGLES } from '../../constants/eventConstants';
 import { FEMALE, MALE } from '../../constants/genderConstants';
@@ -33,6 +33,32 @@ test('mocksEngine can modify existing tournamentRecords', () => {
   expect(result.success).toEqual(true);
   expect(result.drawIds.length).toEqual(1);
   expect(tournamentRecord.participants.length).toEqual(12); // 4 * 3 = 12
+});
+
+test('mocksEngine can modify existing tournamentRecords and complete SOME matchUps', () => {
+  // prettier-ignore
+  let eventProfiles = [{ eventName: `Boy's U16 Doubles`, gender: MALE }];
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: 0 },
+    eventProfiles,
+  });
+
+  expect(tournamentRecord.participants.length).toEqual(0);
+
+  // prettier-ignore
+  eventProfiles = [{ eventIndex: 0, drawProfiles: [{ drawSize: 16, completionGoal: 8 }] }];
+  let result = mocksEngine.modifyTournamentRecord({
+    tournamentRecord,
+    eventProfiles,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.drawIds.length).toEqual(1);
+  expect(tournamentRecord.participants.length).toEqual(16);
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { completedMatchUps } = tournamentEngine.tournamentMatchUps();
+  expect(completedMatchUps.length).toEqual(8);
 });
 
 test('mocksEngine can modify existing tournamentRecords', () => {
