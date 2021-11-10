@@ -5,6 +5,7 @@ import { generateDrawMaticRound } from './generateDrawMaticRound';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
+import { RATING } from '../../../constants/scaleConstants';
 import {
   INVALID_DRAW_DEFINITION,
   INVALID_PARTICIPANT_ID,
@@ -15,7 +16,6 @@ import {
   ORGANISER_ACCEPTANCE,
   WILDCARD,
 } from '../../../constants/entryStatusConstants';
-import { RATING } from '../../../constants/scaleConstants';
 
 /**
  *
