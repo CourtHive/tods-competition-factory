@@ -57,14 +57,17 @@ export function generateBookings({
     recoveryTimes: [{ minutes: { default: defaultRecoveryMinutes } }],
   };
 
-  const relevantMatchUps = matchUps?.filter(
+  const dateScheduledMatchUps = matchUps?.filter(
     (matchUp) =>
       hasSchedule(matchUp) &&
-      (!venueIds.length || venueIds.includes(matchUp.schedule.venueId)) &&
       (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate)
   );
 
-  const bookings = relevantMatchUps
+  const relevantMatchUps = dateScheduledMatchUps?.filter(
+    (matchUp) => !venueIds.length || venueIds.includes(matchUp.schedule.venueId)
+  );
+
+  const bookings = dateScheduledMatchUps
     ?.map(({ eventId, schedule, matchUpFormat }) => {
       const { event, scheduleTiming } = eventDetails[eventId];
       const eventType = event?.eventType;
@@ -93,5 +96,5 @@ export function generateBookings({
     })
     .filter(Boolean);
 
-  return { bookings, relevantMatchUps };
+  return { bookings, relevantMatchUps, dateScheduledMatchUps };
 }

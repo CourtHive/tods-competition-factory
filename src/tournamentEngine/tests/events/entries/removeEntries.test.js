@@ -37,7 +37,10 @@ test('event entries are only removed when not placed in draw structures', () => 
     },
   };
 
-  let result = tournamentEngine.addParticipant({ participant });
+  let result = tournamentEngine.addParticipant({
+    participant,
+    returnParticipant: true,
+  });
   expect(result.success).toEqual(true);
   const participantId = result.participant.participantId;
 

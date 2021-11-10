@@ -5,7 +5,6 @@ import drawEngine from '../../sync';
 import {
   COMPASS,
   CURTIS_CONSOLATION,
-  DOUBLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
 
 test('can recreate an exitProfile for a COMPASS draw', () => {
@@ -55,6 +54,8 @@ test('can recreate an exitProfile for a CURTIS_CONSOLATION draw', () => {
 });
 
 // not yet sorted!
+// TODO
+/*
 test.skip('can recreate an exitProfile for a CURTIS_CONSOLATION draw', () => {
   const {
     tournamentRecord,
@@ -68,3 +69,4 @@ test.skip('can recreate an exitProfile for a CURTIS_CONSOLATION draw', () => {
   const { exitProfiles } = drawEngine.getExitProfiles({ drawDefinition });
   console.log(Object.values(exitProfiles));
 });
+*/

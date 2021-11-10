@@ -11,6 +11,7 @@ export function filterMatchUps(params) {
     isCollectionMatchUp,
     matchUpStatuses,
     matchUpFormats,
+    roundPositions,
     matchUpFormat,
     collectionIds,
     isMatchUpTie,
@@ -44,6 +45,9 @@ export function filterMatchUps(params) {
     : [];
   const targetRoundNumbers = Array.isArray(roundNumbers)
     ? roundNumbers.filter(Boolean)
+    : [];
+  const targetRoundPositions = Array.isArray(roundPositions)
+    ? roundPositions.filter(Boolean)
     : [];
 
   const targetMatchUpIds =
@@ -112,6 +116,12 @@ export function filterMatchUps(params) {
     if (
       targetRoundNumbers.length &&
       !roundNumbers.includes(matchUp.roundNumber)
+    ) {
+      return false;
+    }
+    if (
+      targetRoundPositions.length &&
+      !roundPositions.includes(matchUp.roundPosition)
     ) {
       return false;
     }

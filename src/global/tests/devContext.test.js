@@ -14,7 +14,7 @@ it('handles devContext objects', () => {
   expect(devContext).toEqual({ WOWO: true });
 
   devContext = tournamentEngine.getDevContext({ WOWO: true });
-  expect(devContext).toEqual(true);
+  expect(devContext).toEqual({ WOWO: true });
 
   // providing getDevContext with a object to match produces false when there are not matching properties
   devContext = tournamentEngine.getDevContext({ FOO: true });

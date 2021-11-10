@@ -77,7 +77,11 @@ it('can add events, venues, and schedule matchUps', () => {
     participant,
   });
   expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
-  result = competitionEngine.addParticipant({ tournamentId, participant });
+  result = competitionEngine.addParticipant({
+    returnParticipant: true,
+    tournamentId,
+    participant,
+  });
   expect(result.success).toEqual(true);
   const officialParticipantId = result.participant.participantId;
 

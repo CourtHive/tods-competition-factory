@@ -175,8 +175,8 @@ export function generateEventWithDraw({
         };
       });
       const result = addParticipants({
-        tournamentRecord,
         participants: teamParticipants,
+        tournamentRecord,
       });
       if (!result.success) return result;
       targetParticipants = teamParticipants;
@@ -325,6 +325,7 @@ export function generateEventWithDraw({
             matchUpIndex = 0,
             structureOrder, // like a group number; for RR = the order of the structureType: ITEM within structureType: CONTAINER
           } = outcomeDef;
+
           const structureMatchUpIds = matchUps.reduce((sm, matchUp) => {
             const { structureId, matchUpId } = matchUp;
             if (sm[structureId]) {
@@ -334,12 +335,14 @@ export function generateEventWithDraw({
             }
             return sm;
           }, {});
+
           const orderedStructures = Object.assign(
             {},
             ...Object.keys(structureMatchUpIds).map((structureId, index) => ({
               [structureId]: index + 1,
             }))
           );
+
           const targetMatchUps = matchUps.filter((matchUp) => {
             return (
               (!stage || matchUp.stage === stage) &&
@@ -352,7 +355,10 @@ export function generateEventWithDraw({
                 intersection(drawPositions, matchUp.drawPositions).length === 2)
             );
           });
+
+          // targeting only one matchUp, specified by the index in the array of returned matchUps
           const targetMatchUp = targetMatchUps[matchUpIndex];
+
           const result = completeDrawMatchUp({
             drawDefinition,
             targetMatchUp,

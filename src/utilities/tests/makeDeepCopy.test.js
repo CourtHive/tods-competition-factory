@@ -5,6 +5,7 @@ import { UUID } from '../UUID';
 
 import { COMPETITOR } from '../../constants/participantRoles';
 import { INDIVIDUAL } from '../../constants/participantTypes';
+import { MALE } from '../../constants/genderConstants';
 
 it('can convert extensions during deepCopy', () => {
   let { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -169,4 +170,28 @@ it('can selectively stringify or ignore attributes when used internally', () => 
     bar: '{ "some": "json" }',
     keep: { num: 1, str: 'string', obj: { a: 1, b: 2 } },
   });
+});
+
+test('can throttle makeDeepCopy by setting a threshold', () => {
+  // prettier-ignore
+  let eventProfiles = [{ eventName: `Boy's U16 Doubles`, gender: MALE }];
+  const { tournamentRecord, eventIds } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: 0 },
+    eventProfiles,
+  });
+
+  expect(tournamentRecord.participants.length).toEqual(0);
+
+  // prettier-ignore
+  eventProfiles = [{ eventId: eventIds[0], drawProfiles: [{ drawSize: 4 }] }];
+  let result = mocksEngine
+    .setDeepCopy(false, { threshold: 2 })
+    .devContext({ makeDeepCopy: true, iterations: 3 }) // in this case setting { iterations: 2 } will result in logging
+    .modifyTournamentRecord({
+      tournamentRecord,
+      eventProfiles,
+    });
+  expect(result.success).toEqual(true);
+  expect(result.drawIds.length).toEqual(1);
+  expect(tournamentRecord.participants.length).toEqual(4);
 });

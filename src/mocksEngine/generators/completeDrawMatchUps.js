@@ -19,12 +19,15 @@ export function completeDrawMatchUps({
   completeAllMatchUps,
   randomWinningSide,
   drawDefinition,
+  completionGoal,
   matchUpFormat,
   event,
 }) {
   const sortedStructures = drawDefinition.structures
     .slice()
     .sort(structureSort);
+
+  let completedCount = 0;
 
   // to support legacy tests it is possible to use completeAllMatchUps
   // to pass a score string that will be applied to all matchUps
@@ -48,6 +51,8 @@ export function completeDrawMatchUps({
       .map(getMatchUpId);
 
     for (const matchUpId of sortedMatchUpIds) {
+      if (!isNaN(completionGoal) && completedCount >= completionGoal) break;
+
       const { matchUps } = getAllStructureMatchUps({
         inContext: true,
         drawDefinition,
@@ -59,7 +64,9 @@ export function completeDrawMatchUps({
       const targetMatchUp = matchUps.find(
         (matchUp) => matchUp.matchUpId === matchUpId
       );
+
       const isWOWO = targetMatchUp.matchUpStatus === DOUBLE_WALKOVER;
+
       if (targetMatchUp?.readyToScore && !isWOWO) {
         const result = smartComplete({
           winningSide: !randomWinningSide && 1,
@@ -70,11 +77,14 @@ export function completeDrawMatchUps({
           matchUpStatus,
           scoreString,
         });
+
         if (result.error) return result;
+
+        completedCount += 1;
       }
     }
   }
-  return { ...SUCCESS };
+  return { ...SUCCESS, completedCount };
 }
 
 export function completeDrawMatchUp({

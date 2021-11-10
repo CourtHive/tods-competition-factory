@@ -11,13 +11,13 @@ import { hasParticipantId } from '../../global/functions/filters';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange } from '../../utilities';
 
+import { DRAW_ID_EXISTS } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { SEEDING } from '../../constants/scaleConstants';
 import {
   MAIN,
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../constants/drawDefinitionConstants';
-import { DRAW_ID_EXISTS } from '../../constants/errorConditionConstants';
 
 export function generateFlightDrawDefinitions({
   matchUpStatusProfile,
@@ -125,17 +125,23 @@ export function generateFlightDrawDefinitions({
 
         // TODO: enable { outcomes: [] } in eventProfile: { drawProfiles }
 
+        const completionGoal = drawProfile?.completionGoal;
         const manual = drawProfile?.automated === false;
-        if (!manual && completeAllMatchUps) {
+
+        if (!manual && (completeAllMatchUps || completionGoal)) {
           const matchUpFormat = drawProfile?.matchUpFormat;
+
           const result = completeDrawMatchUps({
             matchUpStatusProfile,
-            completeAllMatchUps,
+            completeAllMatchUps: !completionGoal && completeAllMatchUps,
             randomWinningSide,
+            completionGoal,
             drawDefinition,
             matchUpFormat,
           });
           if (result.error) return result;
+          const completedCount = result.completedCount;
+
           if (drawProfile?.drawType === ROUND_ROBIN_WITH_PLAYOFF) {
             const mainStructure = drawDefinition.structures.find(
               (structure) => structure.stage === MAIN
@@ -148,12 +154,18 @@ export function generateFlightDrawDefinitions({
             });
             if (result.error) return result;
 
+            const playoffCompletionGoal = completionGoal
+              ? completionGoal - completedCount
+              : undefined;
             result = completeDrawMatchUps({
-              completeAllMatchUps,
+              completeAllMatchUps: !completionGoal && completeAllMatchUps,
+              completionGoal: completionGoal
+                ? playoffCompletionGoal
+                : undefined,
               matchUpStatusProfile,
               randomWinningSide,
-              matchUpFormat,
               drawDefinition,
+              matchUpFormat,
             });
             if (result.error) return result;
           }

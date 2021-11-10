@@ -70,7 +70,7 @@ export function modifyTournamentRecord({
     });
 
     let result = addParticipants({ tournamentRecord, participants });
-    if (!result.success) return result;
+    if (result.error) return result;
 
     if (teamKey) {
       const result = generateTeamsFromParticipantAttribute({
@@ -86,7 +86,9 @@ export function modifyTournamentRecord({
       let { ratingsParameters } = eventProfile;
 
       const event = tournamentRecord.events.find(
-        (event) =>
+        (event, index) =>
+          (eventProfile.eventIndex !== undefined &&
+            index === eventProfile.eventIndex) ||
           (eventProfile.eventName &&
             event.eventName === eventProfile.eventName) ||
           (eventProfile.eventId && event.eventId === eventProfile.eventId)
@@ -146,9 +148,7 @@ export function modifyTournamentRecord({
           gender,
           event,
         });
-        if (result.error) {
-          return result;
-        }
+        if (result.error) return result;
 
         result = generateFlightDrawDefinitions({
           matchUpStatusProfile,
@@ -158,10 +158,7 @@ export function modifyTournamentRecord({
           drawProfiles,
           event,
         });
-        if (result.error) {
-          console.log('boo');
-          return result;
-        }
+        if (result.error) return result;
 
         drawIds.push(...result.drawIds);
       }

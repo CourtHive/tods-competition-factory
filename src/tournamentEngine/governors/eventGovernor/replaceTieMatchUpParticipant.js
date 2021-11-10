@@ -204,8 +204,9 @@ export function replaceTieMatchUpParticipantId(params) {
         participantRole: COMPETITOR,
       };
       const result = addParticipant({
-        tournamentRecord,
+        returnParticipant: true,
         pairOverride: true,
+        tournamentRecord,
         participant,
       });
       if (result.error) return result;

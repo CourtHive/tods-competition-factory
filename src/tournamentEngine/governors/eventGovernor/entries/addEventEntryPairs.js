@@ -32,14 +32,14 @@ import {
  *
  */
 export function addEventEntryPairs({
-  event,
-  uuids,
-  drawDefinition,
-  tournamentRecord,
-  entryStage = MAIN,
+  allowDuplicateParticipantIdPairs,
   entryStatus = ALTERNATE,
   participantIdPairs = [],
-  allowDuplicateParticipantIdPairs,
+  entryStage = MAIN,
+  tournamentRecord,
+  drawDefinition,
+  event,
+  uuids,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
@@ -94,10 +94,10 @@ export function addEventEntryPairs({
   let addedParticipants = [];
   if (newParticipants) {
     const result = addParticipants({
-      tournamentRecord,
-      participants: newParticipants,
-
       allowDuplicateParticipantIdPairs,
+      participants: newParticipants,
+      returnParticipants: true,
+      tournamentRecord,
     });
     if (result.error) return result;
     addedParticipants = result.participants || [];

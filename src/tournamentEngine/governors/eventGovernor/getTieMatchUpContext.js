@@ -75,7 +75,8 @@ export function getTieMatchUpContext({
     dualMatchUp.tieFormat ||
     structure.tieFormat ||
     drawDefinition.tieFormat ||
-    event.tieFormat;
+    event.tieFormat ||
+    undefined;
 
   return {
     relevantAssignments,

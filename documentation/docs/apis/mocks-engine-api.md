@@ -2,6 +2,19 @@
 title: mocksEngine API
 ---
 
+## anonymizeTournamentRecord
+
+```js
+mocksEngine.anonymizeTournamentRecord({
+  tournamentRecord,
+  tournamentName, // optional - new tournamentName
+  personIds = [], // optional - array of UUIDs to be used for mocked person replacements
+  tournamentId, // optional - new tournamentId; default behavior is to generate a new one
+});
+```
+
+---
+
 ## generateOutcome
 
 :::note
@@ -136,7 +149,9 @@ const eventProfiles = [
     gender: MALE,
     drawProfiles: [
       {
+        drawType, // optional
         drawSize: 16, // required
+        completionGoal, // optional - number of matchUps within draw structures to complete
       },
     ],
   },
@@ -190,7 +205,13 @@ eventProfiles = [
   {
     eventId, // optional - either eventId or eventName
     eventName, // optional - either eventName or eventId
-    drawProfiles: [{ drawSize: 8 }],
+    drawProfiles: [
+      {
+        drawType, // optional
+        drawSize: 8, // required
+        completionGoal, // optional - number of matchUps within draw structures to complete
+      },
+    ],
   },
 ];
 
@@ -199,6 +220,9 @@ mocksEngine.modifyTournamentRecord({
 
   participantsProfile, // optional - participants for events will be generated automatically
   eventProfiles, // optional - see example usage for `generateTournamentRecord`
+
+  completeAllMatchUps, // optional - boolean (legacy support for scoreString to be applied to all matchUps)
+  randomWinningSide, // optional - boolean; defaults to false which results in always { winningSide: 1 }
 });
 ```
 

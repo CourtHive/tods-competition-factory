@@ -1,6 +1,7 @@
 import { getProjectedDualWinningSide } from './getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { validateScore } from '../../../global/validation/validateScore';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
@@ -17,11 +18,6 @@ import {
   isNonDirectingMatchUpStatus,
 } from './checkStatusType';
 
-import {
-  BYE,
-  COMPLETED,
-  WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   ABANDONED,
@@ -40,7 +36,11 @@ import {
   INCOMPATIBLE_MATCHUP_STATUS,
   CANNOT_CHANGE_WINNINGSIDE,
 } from '../../../constants/errorConditionConstants';
-import { validateScore } from '../../../global/validation/validateScore';
+import {
+  BYE,
+  COMPLETED,
+  WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
 
 /**
  *
@@ -166,7 +166,11 @@ export function setMatchUpStatus(params) {
       matchUpsMap,
       event,
     });
-    const tieFormat = dualMatchUp.tieFormat || drawDefinition.tieFormat;
+    const tieFormat =
+      dualMatchUp?.tieFormat ||
+      drawDefinition?.tieFormat ||
+      event?.tieFormat ||
+      undefined;
 
     const { projectedWinningSide } = getProjectedDualWinningSide({
       winningSide,

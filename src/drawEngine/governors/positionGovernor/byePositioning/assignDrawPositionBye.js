@@ -160,7 +160,6 @@ export function assignDrawPositionBye({
       inContextDrawMatchUps,
       drawPositionToAdvance,
       drawDefinition,
-
       matchUpsMap,
     });
     if (result.error) return result;
@@ -199,14 +198,13 @@ function assignRoundRobinBYE({ drawDefinition, matchUps, drawPosition }) {
 
 // Looks to see whether a given matchUp has a winnerMatchup or a loserMatchUp
 // and if so advances the appropriate drawPosition into the targetMatchUp
-function advanceDrawPosition({
-  sourceDrawPositions,
+export function advanceDrawPosition({
   drawPositionToAdvance,
   inContextDrawMatchUps,
+  sourceDrawPositions,
   drawDefinition,
-  matchUpId,
-
   matchUpsMap,
+  matchUpId,
 }) {
   const matchUp = matchUpsMap.drawMatchUps.find(
     (matchUp) => matchUp.matchUpId === matchUpId
@@ -243,12 +241,11 @@ function advanceDrawPosition({
   // only handling situation where winningMatchUp is in same structure
   if (winnerMatchUp && winnerMatchUp.structureId === structure.structureId) {
     advanceWinner({
+      drawPositionToAdvance,
+      inContextDrawMatchUps,
+      sourceDrawPositions,
       drawDefinition,
       winnerMatchUp,
-      drawPositionToAdvance,
-      sourceDrawPositions,
-      inContextDrawMatchUps,
-
       matchUpsMap,
     });
   }
@@ -285,12 +282,11 @@ function advanceDrawPosition({
 }
 
 function advanceWinner({
+  drawPositionToAdvance,
+  inContextDrawMatchUps,
+  sourceDrawPositions,
   drawDefinition,
   winnerMatchUp,
-  drawPositionToAdvance,
-  sourceDrawPositions,
-  inContextDrawMatchUps,
-
   matchUpsMap,
 }) {
   const noContextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
@@ -326,6 +322,7 @@ function advanceWinner({
     existingAssignments.find(({ drawPosition }) => drawPosition === priorPair);
   const priorPairIsBye = priorPairAssignment?.bye;
   const isByeAdvancedBye = drawPositionToAdvanceIsBye && priorPairIsBye;
+  if (isByeAdvancedBye) console.log({ isByeAdvancedBye });
   /// ????????????????????????????????????????
 
   if (
@@ -348,7 +345,7 @@ function advanceWinner({
       undefined
     )
     .slice(0, 2);
-  // UNDEFINED drawPositions
+
   const drawPositions = twoDrawPositions.map((position) => {
     if (!position && !drawPositionAssigned) {
       drawPositionAssigned = true;

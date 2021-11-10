@@ -1,6 +1,6 @@
 import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps/findMatchUp';
 import { getScheduleTiming } from '../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
-import { getTournamentParticipants } from './participants/getTournamentParticipants';
+import { addNationalityCodeISO } from '../governors/participantGovernor/annotatePerson';
 import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
 import { definedAttributes } from '../../utilities/objects';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
@@ -395,13 +395,11 @@ export function drawMatchUps({
 }
 
 function getParticipants({ tournamentRecord, participantsProfile }) {
-  const { tournamentParticipants } = getTournamentParticipants({
-    withEvents: false, // order is important
-    withDraws: false, // order is important
-    ...participantsProfile,
-    tournamentRecord,
-  });
-  return tournamentParticipants;
+  const tournamentParticipants = tournamentRecord.participants || [];
+  if (participantsProfile?.withISO)
+    tournamentParticipants.forEach((participant) =>
+      addNationalityCodeISO({ participant })
+    );
 }
 
 export function publicFindMatchUp(params) {

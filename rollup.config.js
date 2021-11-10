@@ -43,7 +43,7 @@ const output = (format, minified) => {
 
 function writeCjsIndex() {
   const fileImportRoot = `module.exports = require('./${packageName}`;
-  const body = `'use strict'
+  const body = `'use strict';
 if (process.env.NODE_ENV === 'production') {
   ${fileImportRoot}.production.cjs.min.js')
 } else {

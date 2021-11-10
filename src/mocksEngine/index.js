@@ -1,15 +1,26 @@
-import { deleteNotices, setDevContext } from '../global/state/globalState';
 import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
+import {
+  deleteNotices,
+  setDevContext,
+  setDeepCopy,
+} from '../global/state/globalState';
 
 import amendsGovernor from './governors/amendsGovernor';
 import mocksGovernor from './governors/mocksGovernor';
 
+let devContextSet = false;
+
 export const mocksEngine = (function () {
   const engine = {
     version: () => factoryVersion(),
+    setDeepCopy: (deepCopyOption, deepCopyAttributes) => {
+      setDeepCopy(deepCopyOption, deepCopyAttributes);
+      return engine;
+    },
     devContext: (isDev) => {
       setDevContext(isDev);
+      devContextSet = true;
       return engine;
     },
   };
@@ -23,6 +34,13 @@ export const mocksEngine = (function () {
     const result = method({ ...params });
     if (!result?.error) notifySubscribers();
     deleteNotices();
+
+    // cleanup if set on invocation
+    if (devContextSet) {
+      setDevContext(false);
+      devContextSet = false;
+    }
+
     return result;
   }
 

@@ -52,6 +52,7 @@ setDeepCopy(false, deepCopyOptions);
 
 ```js
 const deepCopyOptions = {
+  threshold, // optional integer to limit the depth of the deep copy
   stringify: [], // any object keys in this array will be stringified (using a .toString() function if present on the object)
   toJSON: [], // any object keys in this array will be converted to JSON if there is a .toJSON() function on the object
   ignore: [], // any object keys in this array will be ignored

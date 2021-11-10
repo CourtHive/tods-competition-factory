@@ -64,7 +64,7 @@ const successConditions = [
   { tieFormat: { winCriteria: { valueGoal: 1 }, collectionDefinitions: [{ collectionId: 'id', matchUpCount: 1, matchUpFormat, matchUpType: SINGLES, matchUpValue: 1 }] }},
 ];
 
-it.only('validates fixture tieFormats', () => {
+it('validates fixture tieFormats', () => {
   const tieFormat = tieFormatDefaults({
     namedFormat: TEAM_DOUBLES_3_AGGREGATION,
   });

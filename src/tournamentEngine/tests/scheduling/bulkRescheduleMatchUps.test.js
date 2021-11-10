@@ -189,6 +189,24 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
     '13:00'
   );
 
+  result = competitionEngine.bulkRescheduleMatchUps({
+    matchUpIds,
+    scheduleChange: { daysChange: 'NaN', minutesChange: 0 },
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = competitionEngine.bulkRescheduleMatchUps({
+    matchUpIds,
+    scheduleChange: 'not an object',
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = competitionEngine.bulkRescheduleMatchUps({
+    matchUpIds: ['bogus matchUpId'],
+    scheduleChange: { minutesChange: 800 },
+  });
+  expect(result.success).toEqual(true);
+
   // nothing should be rescheduled because scheduledTimes would be next day
   result = tournamentEngine.bulkRescheduleMatchUps({
     matchUpIds,

@@ -1,4 +1,4 @@
-import { deepCopyEnabled } from '../global/state/globalState';
+import { deepCopyEnabled, getDevContext } from '../global/state/globalState';
 import { isDateObject } from './dateTime';
 
 /**
@@ -12,7 +12,8 @@ export function makeDeepCopy(
   sourceObject,
   convertExtensions,
   internalUse,
-  removeExtensions
+  removeExtensions,
+  iteration = 0
 ) {
   const deepCopy = deepCopyEnabled();
 
@@ -20,9 +21,16 @@ export function makeDeepCopy(
     (!deepCopy?.enabled && !internalUse) ||
     typeof sourceObject !== 'object' ||
     typeof sourceObject === 'function' ||
-    sourceObject === null
+    sourceObject === null ||
+    (typeof deepCopy?.threshold === 'number' && iteration >= deepCopy.threshold)
   ) {
     return sourceObject;
+  }
+
+  const devContext = getDevContext({ makeDeepCopy: true });
+  if (devContext) {
+    if (iteration > (devContext.iterations || 15))
+      console.log(iteration, sourceObject, { devContext });
   }
 
   const targetObject = Array.isArray(sourceObject) ? [] : {};
@@ -58,7 +66,8 @@ export function makeDeepCopy(
         value,
         convertExtensions,
         internalUse,
-        removeExtensions
+        removeExtensions,
+        iteration + 1
       );
     }
   }
