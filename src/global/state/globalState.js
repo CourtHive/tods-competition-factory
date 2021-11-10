@@ -161,6 +161,8 @@ export function setDeepCopy(value, attributes) {
       globalState.deepCopyAttributes.toJSON = attributes.toJSON;
     if (Array.isArray(attributes.stringify))
       globalState.deepCopyAttributes.stringify = attributes.stringify;
+    if (attributes.threshold)
+      globalState.deepCopyAttributes.threshold = attributes.threshold;
   }
 }
 
