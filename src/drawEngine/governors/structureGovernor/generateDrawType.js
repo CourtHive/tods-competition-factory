@@ -39,6 +39,7 @@ import {
   STAGE_SEQUENCE_LIMIT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
+import { definedAttributes } from '../../../utilities/objects';
 
 /**
  *
@@ -66,11 +67,14 @@ export function generateDrawType(params = {}) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   let { tieFormat, matchUpType } = params;
-  tieFormat = tieFormat || drawDefinition.tieFormat;
+  tieFormat = tieFormat || drawDefinition.tieFormat || undefined;
   matchUpType = matchUpType || drawDefinition.matchUpType || SINGLES;
 
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
-  Object.assign(params, { drawSize, matchUpType, tieFormat });
+  Object.assign(
+    params,
+    definedAttributes({ drawSize, matchUpType, tieFormat })
+  );
 
   const validDoubleEliminationSize = isPowerOf2((drawSize * 2) / 3);
 

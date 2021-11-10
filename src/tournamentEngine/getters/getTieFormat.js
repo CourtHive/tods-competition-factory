@@ -58,7 +58,8 @@ export function getTieFormat({
     matchUpResult?.matchUp?.tieFormat ||
     structureDefaultTieFormat ||
     drawDefaultTieFormat ||
-    eventDefaultTieFormat;
+    eventDefaultTieFormat ||
+    undefined;
 
   return {
     structureDefaultTieFormat,

@@ -24,7 +24,8 @@ export function updateTieMatchUpScore({
     matchUp.tieFormat ||
     structure?.tieFormat ||
     drawDefinition?.tieFormat ||
-    event?.tieFormat;
+    event?.tieFormat ||
+    undefined;
 
   const { winningSide, set, scoreStringSide1, scoreStringSide2 } =
     generateTieMatchUpScore({ matchUp, tieFormat });

@@ -166,7 +166,11 @@ export function setMatchUpStatus(params) {
       matchUpsMap,
       event,
     });
-    const tieFormat = dualMatchUp.tieFormat || drawDefinition.tieFormat;
+    const tieFormat =
+      dualMatchUp?.tieFormat ||
+      drawDefinition?.tieFormat ||
+      event?.tieFormat ||
+      undefined;
 
     const { projectedWinningSide } = getProjectedDualWinningSide({
       winningSide,

@@ -176,7 +176,8 @@ export function addPlayoffStructures(params) {
   );
 
   if (addedMatchUps.length) {
-    const tieFormat = drawDefinition.tieFormat || event?.tieFormat;
+    const tieFormat = drawDefinition.tieFormat || event?.tieFormat || undefined;
+
     if (tieFormat) {
       addedMatchUps.forEach((matchUp) => {
         const { tieMatchUps } = generateTieMatchUps({ tieFormat, isMock });
