@@ -182,6 +182,7 @@ const {
   randomWinningSide, // optional - boolean; defaults to false which results in always { winningSide: 1 }
   tournamentAttributes, // optionsl -object attributes will be applied to generated tournamentRecord
   tournamentExtensions, // optional - array of extensions to be attached to tournamentRecord
+  uuids, // optional - array of uuids to be used in entity generators
 });
 
 tournamentEngine.setState(tournamentRecord);
