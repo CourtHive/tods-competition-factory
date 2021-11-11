@@ -36,8 +36,8 @@ import {
 export function addDrawEntry({
   entryStatus = DIRECT_ACCEPTANCE,
   entryStage = MAIN,
-  entryPosition,
   drawDefinition,
+  entryPosition,
   participantId,
   participant,
 }) {
@@ -55,7 +55,7 @@ export function addDrawEntry({
     return { error: spaceAvailable.error };
   }
 
-  participantId = participantId || (participant && participant.participantId);
+  participantId = participantId || participant?.participantId;
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
   const invalidLuckyLoser =
@@ -84,6 +84,7 @@ export function addDrawEntry({
     entryStatus,
     entryPosition,
   });
+
   drawDefinition.entries.push(entry);
   modifyDrawNotice({ drawDefinition });
 
@@ -149,7 +150,7 @@ export function addDrawEntries({
     return { error: INVALID_ENTRIES, invalidParticipantIds };
   }
 
-  participantIds.forEach((participantId) => {
+  participantIds.filter(Boolean).forEach((participantId) => {
     const entry = Object.assign(
       { participantId },
       { entryStage: stage, entryStatus }

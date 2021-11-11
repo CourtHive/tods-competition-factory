@@ -32,11 +32,14 @@ export function getAvailableAdHocParticipantIds({
     )
     .map(getParticipantId);
 
-  const enteredParticipantIds = drawDefinition.entries
-    .filter(({ entryStatus }) =>
-      [DIRECT_ACCEPTANCE, ORGANISER_ACCEPTANCE, WILDCARD].includes(entryStatus)
-    )
-    .map(getParticipantId);
+  const enteredParticipantIds =
+    drawDefinition?.entries
+      .filter(({ entryStatus }) =>
+        [DIRECT_ACCEPTANCE, ORGANISER_ACCEPTANCE, WILDCARD].includes(
+          entryStatus
+        )
+      )
+      .map(getParticipantId) || [];
 
   // AdHoc available participants are those entered in the draw who are not assigned to the target round
   const availableParticipantIds = enteredParticipantIds.filter(

@@ -201,7 +201,7 @@ export function modifyEntriesStatus({
           error = result.error;
           return false;
         }
-        drawDefinition.entries = drawDefinition.entries.filter(
+        drawDefinition.entries = drawDefinition.entries?.filter(
           ({ participantId }) => !participantIds.includes(participantId)
         );
         return true;

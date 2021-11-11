@@ -6,7 +6,7 @@ import { MAIN } from '../../../constants/drawDefinitionConstants';
  * @returns entries - with updated entryPosition values
  */
 export function refreshEntryPositions({ entries = [] } = {}) {
-  const stagedEntries = entries.reduce((stages, entry) => {
+  const stagedEntries = entries.filter(Boolean).reduce((stages, entry) => {
     const { entryStage, entryStatus } = entry;
     const entryHash = `_${entryStage || MAIN}${entryStatus || ''}`;
     if (!stages[entryHash]) stages[entryHash] = [];
