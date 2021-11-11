@@ -111,6 +111,7 @@
     "husky": "7.0.4",
     "jest-cli": "27.3.1",
     "jest-environment-node": "27.3.1",
+    "lint-staged": "^11.2.6",
     "np": "7.5.0",
     "pinst": "2.1.6",
     "prettier": "2.4.1",
@@ -121,6 +122,10 @@
     "source-map-resolve": "0.6.0",
     "tslib": "2.3.1",
     "typescript": "4.4.4"
+  },
+  "lint-staged": {
+    "*.{js,ts}": "eslint",
+    "*": "prettier --ignore-unknown --write"
   },
   "dependencies": {},
   "resolutions": {
