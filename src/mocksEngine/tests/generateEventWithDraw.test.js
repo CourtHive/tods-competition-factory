@@ -25,7 +25,7 @@ it('can use drawProfiles to generate gendered SINGLES event', () => {
 
   let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
 
-  expect(tournamentParticipants.length).toEqual(64);
+  expect(tournamentParticipants.length).toEqual(32);
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     participantFilters: { eventIds },
@@ -69,7 +69,7 @@ it('can use eventProfiles to generate gendered SINGLES event', () => {
 
   let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
 
-  expect(tournamentParticipants.length).toEqual(64);
+  expect(tournamentParticipants.length).toEqual(32);
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     participantFilters: { eventIds },

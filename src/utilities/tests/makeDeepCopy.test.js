@@ -182,8 +182,9 @@ test('can throttle makeDeepCopy by setting a threshold', () => {
 
   expect(tournamentRecord.participants.length).toEqual(0);
 
+  const drawSize = 4;
   // prettier-ignore
-  eventProfiles = [{ eventId: eventIds[0], drawProfiles: [{ drawSize: 4 }] }];
+  eventProfiles = [{ eventId: eventIds[0], drawProfiles: [{ drawSize }] }];
   let result = mocksEngine
     .setDeepCopy(false, { threshold: 2 })
     .devContext({ makeDeepCopy: true, iterations: 3 }) // in this case setting { iterations: 2 } will result in logging
@@ -193,5 +194,5 @@ test('can throttle makeDeepCopy by setting a threshold', () => {
     });
   expect(result.success).toEqual(true);
   expect(result.drawIds.length).toEqual(1);
-  expect(tournamentRecord.participants.length).toEqual(4);
+  expect(tournamentRecord.participants.length).toEqual(drawSize);
 });

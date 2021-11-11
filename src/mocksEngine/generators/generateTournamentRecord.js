@@ -1,26 +1,18 @@
 import { scheduleProfileRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
-import { generateTeamsFromParticipantAttribute } from '../../tournamentEngine/generators/teamsGenerator';
-import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { attachPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { newTournamentRecord } from '../../tournamentEngine/generators/newTournamentRecord';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
-import { formatDate, isValidDateString } from '../../utilities/dateTime';
 import { isValidExtension } from '../../global/validation/isValidExtension';
+import { formatDate, isValidDateString } from '../../utilities/dateTime';
+import { addTournamentParticipants } from './addTournamentParticipants';
 import { generateSchedulingProfile } from './generateSchedulingProfile';
 import { generateEventWithFlights } from './generateEventWithFlights';
-import { getParticipantId } from '../../global/functions/extractors';
 import { generateEventWithDraw } from './generateEventWithDraw';
-import { generateParticipants } from './generateParticipants';
-import { getParticipantsCount } from './getParticipantsCount';
 import { definedAttributes } from '../../utilities/objects';
-import { generateRange, UUID } from '../../utilities';
 import { generateVenues } from './generateVenues';
 
 import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { INVALID_DATE } from '../../constants/errorConditionConstants';
-import { INDIVIDUAL } from '../../constants/participantTypes';
-import { COMPETITOR } from '../../constants/participantRoles';
-import { TEAM } from '../../constants/eventConstants';
 
 /**
  *
@@ -107,85 +99,13 @@ export function generateTournamentRecord({
     }
   }
 
-  const {
-    participantsCount,
-    participantType,
-    largestTeamDraw,
-    largestTeamSize,
-  } = getParticipantsCount({
+  const result = addTournamentParticipants({
     participantsProfile,
+    tournamentRecord,
     eventProfiles,
     drawProfiles,
-  });
-
-  const {
-    nationalityCodesCount,
-    nationalityCodeType,
-    valuesInstanceLimit,
-    nationalityCodes,
-    personExtensions,
-    addressProps,
-    personData,
-    personIds,
-    inContext,
-    teamKey,
-    sex,
-  } = participantsProfile || {};
-
-  const { participants } = generateParticipants({
-    consideredDate: startDate,
-    valuesInstanceLimit,
-
-    nationalityCodesCount,
-    nationalityCodeType,
-    nationalityCodes,
-
-    personExtensions,
-    addressProps,
-    personData,
-    sex,
-
-    participantsCount,
-    participantType,
-    personIds,
+    startDate,
     uuids,
-
-    inContext,
-  });
-
-  let result = addParticipants({ tournamentRecord, participants });
-  if (!result.success) return result;
-
-  if (teamKey) {
-    const result = generateTeamsFromParticipantAttribute({
-      tournamentRecord,
-      ...teamKey,
-    });
-    if (result.error) return result;
-  }
-
-  // generate Team participants
-  const allIndividualParticipantIds = participants
-    .filter(({ participantType }) => participantType === INDIVIDUAL)
-    .map(getParticipantId);
-  const teamParticipants = generateRange(0, largestTeamDraw).map(
-    (teamIndex) => {
-      const individualParticipantIds = allIndividualParticipantIds.slice(
-        teamIndex * largestTeamSize,
-        (teamIndex + 1) * largestTeamSize
-      );
-      return {
-        participantName: `Team ${teamIndex + 1}`,
-        participantRole: COMPETITOR,
-        participantType: TEAM,
-        participantId: UUID(),
-        individualParticipantIds,
-      };
-    }
-  );
-  result = addParticipants({
-    tournamentRecord,
-    participants: teamParticipants,
   });
   if (!result.success) return result;
 

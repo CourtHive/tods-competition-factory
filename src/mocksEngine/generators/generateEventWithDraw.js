@@ -148,7 +148,10 @@ export function generateEventWithDraw({
     });
 
     if (tournamentRecord) {
-      let result = addParticipants({ tournamentRecord, participants: unique });
+      const result = addParticipants({
+        tournamentRecord,
+        participants: unique,
+      });
       if (result.error) return result;
     }
 
@@ -216,14 +219,16 @@ export function generateEventWithDraw({
     .slice(0, participantsCount)
     .map((p) => p.participantId);
 
-  let result = addEventEntries({
-    entryStage: stage,
-    autoEntryPositions,
-    tournamentRecord,
-    participantIds,
-    event,
-  });
-  if (result.error) return result;
+  if (participantIds?.length) {
+    const result = addEventEntries({
+      autoEntryPositions,
+      entryStage: stage,
+      tournamentRecord,
+      participantIds,
+      event,
+    });
+    if (result.error) return result;
+  }
 
   // alternates can still be taken from existing participants
   // when unique participants are used for DIRECT_ACCEPTANCE entries
@@ -237,7 +242,7 @@ export function generateEventWithDraw({
       .map((p) => p.participantId);
 
   if (alternatesParticipantIds?.length) {
-    result = addEventEntries({
+    const result = addEventEntries({
       participantIds: alternatesParticipantIds,
       autoEntryPositions: false,
       entryStatus: ALTERNATE,
@@ -406,8 +411,6 @@ export function generateEventWithDraw({
       }
     }
   }
-
-  if (result.error) return { error: result.error };
 
   return {
     ...SUCCESS,

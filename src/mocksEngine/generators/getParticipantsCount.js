@@ -17,7 +17,8 @@ export function getParticipantsCount({
   let largestDoublesDraw = 0,
     largestSinglesDraw = 0,
     largestTeamSize = 0,
-    largestTeamDraw = 0;
+    largestTeamDraw = 0,
+    uniqueParticipantsCount = 0;
 
   const processDrawProfile = ({
     alternatesCount = 0,
@@ -35,35 +36,43 @@ export function getParticipantsCount({
     const requiresUniqueParticipants =
       uniqueParticipants || stage === QUALIFYING || category || gender;
 
-    if (isTeam && !requiresUniqueParticipants) {
-      largestTeamDraw = Math.max(largestTeamDraw, drawSize + alternatesCount);
+    if (requiresUniqueParticipants) {
+      if (isDoubles) {
+        uniqueParticipantsCount += (drawSize + alternatesCount) * 2;
+      } else {
+        uniqueParticipantsCount += drawSize + alternatesCount;
+      }
+    } else {
+      if (isTeam) {
+        largestTeamDraw = Math.max(largestTeamDraw, drawSize + alternatesCount);
 
-      tieFormat =
-        typeof tieFormat === 'object'
-          ? tieFormat
-          : tieFormatDefaults({ namedFormat: tieFormatName });
+        tieFormat =
+          typeof tieFormat === 'object'
+            ? tieFormat
+            : tieFormatDefaults({ namedFormat: tieFormatName });
 
-      const { teamSize, maxDoublesDraw, maxSinglesDraw } = processTieFormat({
-        alternatesCount,
-        tieFormatName,
-        tieFormat,
-        drawSize,
-      });
-      largestTeamSize = Math.max(largestTeamSize, teamSize);
-      largestDoublesDraw = Math.max(largestDoublesDraw, maxDoublesDraw);
-      largestSinglesDraw = Math.max(largestSinglesDraw, maxSinglesDraw);
-    }
+        const { teamSize, maxDoublesDraw, maxSinglesDraw } = processTieFormat({
+          alternatesCount,
+          tieFormatName,
+          tieFormat,
+          drawSize,
+        });
+        largestTeamSize = Math.max(largestTeamSize, teamSize);
+        largestDoublesDraw = Math.max(largestDoublesDraw, maxDoublesDraw);
+        largestSinglesDraw = Math.max(largestSinglesDraw, maxSinglesDraw);
+      }
 
-    if (
-      isDoubles &&
-      drawSize + alternatesCount &&
-      drawSize + alternatesCount > largestDoublesDraw
-    ) {
-      largestDoublesDraw = drawSize + alternatesCount;
-    }
+      if (
+        isDoubles &&
+        drawSize + alternatesCount &&
+        drawSize + alternatesCount > largestDoublesDraw
+      ) {
+        largestDoublesDraw = drawSize + alternatesCount;
+      }
 
-    if (!isDoubles && !isTeam && drawSize && drawSize > largestSinglesDraw) {
-      largestSinglesDraw = drawSize + alternatesCount;
+      if (!isDoubles && !isTeam && drawSize && drawSize > largestSinglesDraw) {
+        largestSinglesDraw = drawSize + alternatesCount;
+      }
     }
   };
 
@@ -76,6 +85,7 @@ export function getParticipantsCount({
       drawProfiles,
       eventType,
       category,
+      gender,
     } = eventProfile;
 
     if (drawProfiles) {
@@ -88,6 +98,7 @@ export function getParticipantsCount({
           tieFormat: tieFormat || eventTieFormat,
           eventType,
           category,
+          gender,
         });
       }
     } else {
@@ -134,7 +145,11 @@ export function getParticipantsCount({
     }
   }
 
-  if (participantsCount === undefined) participantsCount = 32;
+  // if (participantsCount === undefined) participantsCount = 32;
+  if (participantsCount === undefined) {
+    participantsCount =
+      !eventProfiles?.length && !drawProfiles?.length ? 32 : 0;
+  }
   if (participantsCount < specifiedParicipantsCount)
     participantsCount = specifiedParicipantsCount;
 
@@ -143,5 +158,6 @@ export function getParticipantsCount({
     largestTeamSize,
     participantsCount,
     participantType,
+    uniqueParticipantsCount,
   };
 }

@@ -17,6 +17,7 @@ it.each(scenarios)(
   'can add draw with empty voluntary consolation stage',
   (scenario) => {
     const qualifyingDrawSize = 16;
+    const qualifyingPositions = 4;
     const mainDrawSize = 32;
     const eventProfiles = [
       {
@@ -32,8 +33,8 @@ it.each(scenarios)(
           },
           {
             drawSize: mainDrawSize,
-            qualifyingPositions: 4,
             drawName: 'Main Draw',
+            qualifyingPositions,
             drawType: COMPASS,
           },
           {
@@ -57,7 +58,7 @@ it.each(scenarios)(
     const { tournamentParticipants } =
       tournamentEngine.getTournamentParticipants();
     expect(tournamentParticipants.length).toBeGreaterThanOrEqual(
-      qualifyingDrawSize + mainDrawSize
+      qualifyingDrawSize + mainDrawSize - qualifyingPositions
     );
 
     const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
