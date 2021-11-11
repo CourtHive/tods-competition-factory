@@ -226,14 +226,12 @@ test('eventProfiles and participantsProfile work as expected', () => {
     );
   });
 
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantTypes: [PAIR] },
-  }));
+  const { tournamentParticipants: pairParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [PAIR] },
+    });
 
-  // because the doubles draw is gendered the participants must be unique
-  // unique participants are generated in addition to the calculated number
-  // of participants that would be required without unique participants
-  expect(tournamentParticipants.length).toEqual(doublesDrawSize * 2);
+  expect(pairParticipants.length).toEqual(doublesDrawSize);
 
   eventIds.forEach((eventId) => {
     const { event } = tournamentEngine.getEvent({ eventId });

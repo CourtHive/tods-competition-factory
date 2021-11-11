@@ -227,7 +227,7 @@ it('can add statistics to tournament participants', () => {
     withOpponents: true,
     withMatchUps: true,
   });
-  expect(tournamentParticipants.length).toEqual(24);
+  expect(tournamentParticipants.length).toEqual(12);
 
   const getParticipant = ({ drawPosition }) => {
     const participantId = positionAssignments.find(

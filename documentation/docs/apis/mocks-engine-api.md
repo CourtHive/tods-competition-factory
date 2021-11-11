@@ -182,6 +182,7 @@ const {
   randomWinningSide, // optional - boolean; defaults to false which results in always { winningSide: 1 }
   tournamentAttributes, // optionsl -object attributes will be applied to generated tournamentRecord
   tournamentExtensions, // optional - array of extensions to be attached to tournamentRecord
+  uuids, // optional - array of uuids to be used in entity generators
 });
 
 tournamentEngine.setState(tournamentRecord);
@@ -196,15 +197,18 @@ whereas with `eventProfiles` only the number of participants necessary to popula
 
 ## modifyTournamentRecord
 
-Modify `events` in an existing tournamentRecord. Accepts the same attributes for `eventProfiles` as `generateTournamentRecord`.
+Modify `events` in an existing tournamentRecord, identified by either `eventId`, `eventIndex`, or `eventName`.
+
+Accepts the same attributes for `eventProfiles` as `generateTournamentRecord`.
 
 The supplied `tournamentRecord` is directly modified.
 
 ```js
 eventProfiles = [
   {
-    eventId, // optional - either eventId or eventName
-    eventName, // optional - either eventName or eventId
+    eventId, // optional - see above
+    eventName, // optional - see above
+    eventIndex, // optional - see above - zero based index into events array
     drawProfiles: [
       {
         drawType, // optional

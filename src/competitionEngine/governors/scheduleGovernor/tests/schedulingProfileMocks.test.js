@@ -116,8 +116,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
     }
   );
 
-  // expect default of 32 + (2 * 32 unique) + (24 unique)
-  expect(tournamentParticipants.length).toEqual(120);
+  expect(tournamentParticipants.length).toEqual(88); // expect (2 * 32 unique) + (24 unique) = 88
 
   const allMatchUpIds = [];
   const nonByeMatchUpsCount = [];

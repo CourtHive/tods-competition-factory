@@ -8,6 +8,7 @@ it('can determine containedStructures for tournamentRecords, events, and drawDef
   const drawProfiles = [
     {
       drawType: ROUND_ROBIN,
+      drawSize: 32,
     },
   ];
   const {

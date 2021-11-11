@@ -1,9 +1,7 @@
-import { generateTeamsFromParticipantAttribute } from '../../../tournamentEngine/generators/teamsGenerator';
-import { addParticipants } from '../../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { generateFlightDrawDefinitions } from '../../generators/generateFlightDrawDefinitions';
+import { addTournamentParticipants } from '../../generators/addTournamentParticipants';
 import { generateEventParticipants } from '../../generators/generateEventParticipants';
 import { getStageParticipantsCount } from '../../getters/getStageParticipantsCount';
-import { generateParticipants } from '../../generators/generateParticipants';
 import { getStageParticipants } from '../../getters/getStageParticipants';
 import { generateFlights } from '../../generators/generateFlights';
 
@@ -30,56 +28,30 @@ export function modifyTournamentRecord({
   const allUniqueParticipantIds = [];
   const drawIds = [];
 
-  if (participantsProfile) {
-    const {
-      nationalityCodesCount,
-      nationalityCodeType,
-      valuesInstanceLimit,
-      participantsCount,
-      nationalityCodes,
-      personExtensions,
-      participantType,
-      addressProps,
-      personData,
-      personIds,
-      inContext,
-      teamKey,
-      uuids,
-      sex,
-    } = participantsProfile || {};
+  eventProfiles?.forEach((eventProfile) => {
+    const event = tournamentRecord.events.find(
+      (event, index) =>
+        (eventProfile.eventIndex !== undefined &&
+          index === eventProfile.eventIndex) ||
+        (eventProfile.eventName &&
+          event.eventName === eventProfile.eventName) ||
+        (eventProfile.eventId && event.eventId === eventProfile.eventId)
+    );
 
-    const { participants } = generateParticipants({
-      consideredDate: tournamentRecord.startDate,
-      valuesInstanceLimit,
-
-      nationalityCodesCount,
-      nationalityCodeType,
-      nationalityCodes,
-
-      personExtensions,
-      addressProps,
-      personData,
-      sex,
-
-      participantsCount,
-      participantType,
-      personIds,
-      uuids,
-
-      inContext,
-    });
-
-    let result = addParticipants({ tournamentRecord, participants });
-    if (result.error) return result;
-
-    if (teamKey) {
-      const result = generateTeamsFromParticipantAttribute({
-        tournamentRecord,
-        ...teamKey,
-      });
-      if (result.error) return result;
+    if (event?.gender) {
+      eventProfile.gender = event.gender;
     }
-  }
+  });
+
+  const result = addTournamentParticipants({
+    startDate: tournamentRecord.startDate,
+    participantsProfile,
+    tournamentRecord,
+    eventProfiles,
+    // drawProfiles,
+    uuids,
+  });
+  if (!result.success) return result;
 
   if (eventProfiles) {
     for (const eventProfile of eventProfiles) {

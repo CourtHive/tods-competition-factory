@@ -1,28 +1,18 @@
 import { scheduleProfileRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
-import { generateTeamsFromParticipantAttribute } from '../../tournamentEngine/generators/teamsGenerator';
-import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { attachPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { newTournamentRecord } from '../../tournamentEngine/generators/newTournamentRecord';
-import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
-import { formatDate, isValidDateString } from '../../utilities/dateTime';
 import { isValidExtension } from '../../global/validation/isValidExtension';
+import { formatDate, isValidDateString } from '../../utilities/dateTime';
+import { addTournamentParticipants } from './addTournamentParticipants';
 import { generateSchedulingProfile } from './generateSchedulingProfile';
 import { generateEventWithFlights } from './generateEventWithFlights';
-import { getParticipantId } from '../../global/functions/extractors';
 import { generateEventWithDraw } from './generateEventWithDraw';
-import { generateParticipants } from './generateParticipants';
 import { definedAttributes } from '../../utilities/objects';
-import { generateRange, UUID } from '../../utilities';
-import { processTieFormat } from './processTieFormat';
 import { generateVenues } from './generateVenues';
 
 import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { INVALID_DATE } from '../../constants/errorConditionConstants';
-import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
-import { DOUBLES, TEAM } from '../../constants/eventConstants';
-import { COMPETITOR } from '../../constants/participantRoles';
-import { QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -68,10 +58,6 @@ export function generateTournamentRecord({
   goesTo,
   uuids,
 } = {}) {
-  let { participantsCount, participantType = INDIVIDUAL } =
-    participantsProfile || {};
-  const specifiedParicipantsCount = participantsCount || 0; // capture this to ensure calculated participantsCount is not below
-
   if (
     (startDate && !isValidDateString(startDate)) ||
     (endDate && !isValidDateString(endDate))
@@ -113,198 +99,13 @@ export function generateTournamentRecord({
     }
   }
 
-  let largestDoublesDraw = 0,
-    largestSinglesDraw = 0,
-    largestTeamSize = 0,
-    largestTeamDraw = 0;
-
-  const processDrawProfile = ({
-    alternatesCount = 0,
-    uniqueParticipants,
-    tieFormatName,
-    drawSize = 0,
-    eventType,
-    tieFormat,
-    category,
-    gender,
-    stage,
-  }) => {
-    const isDoubles = eventType === DOUBLES;
-    const isTeam = eventType === TEAM;
-    const requiresUniqueParticipants =
-      uniqueParticipants || stage === QUALIFYING || category || gender;
-
-    if (isTeam && !requiresUniqueParticipants) {
-      largestTeamDraw = Math.max(largestTeamDraw, drawSize + alternatesCount);
-
-      tieFormat =
-        typeof tieFormat === 'object'
-          ? tieFormat
-          : tieFormatDefaults({ namedFormat: tieFormatName });
-
-      const { teamSize, maxDoublesDraw, maxSinglesDraw } = processTieFormat({
-        alternatesCount,
-        tieFormatName,
-        tieFormat,
-        drawSize,
-      });
-      largestTeamSize = Math.max(largestTeamSize, teamSize);
-      largestDoublesDraw = Math.max(largestDoublesDraw, maxDoublesDraw);
-      largestSinglesDraw = Math.max(largestSinglesDraw, maxSinglesDraw);
-    }
-
-    if (
-      isDoubles &&
-      drawSize + alternatesCount &&
-      drawSize + alternatesCount > largestDoublesDraw
-    ) {
-      largestDoublesDraw = drawSize + alternatesCount;
-    }
-
-    if (!isDoubles && !isTeam && drawSize && drawSize > largestSinglesDraw) {
-      largestSinglesDraw = drawSize + alternatesCount;
-    }
-  };
-
-  let categories = []; // use when generating participants
-
-  eventProfiles?.forEach((eventProfile) => {
-    const {
-      tieFormatName: eventTieFormatName,
-      tieFormat: eventTieFormat,
-      drawProfiles,
-      eventType,
-      category,
-    } = eventProfile;
-
-    if (drawProfiles) {
-      for (const drawProfile of drawProfiles) {
-        const { tieFormatName, tieFormat } = drawProfile;
-
-        processDrawProfile({
-          ...drawProfile,
-          tieFormatName: tieFormatName || eventTieFormatName,
-          tieFormat: tieFormat || eventTieFormat,
-          eventType,
-          category,
-        });
-      }
-    } else {
-      if (category) categories.push(category);
-    }
-  });
-
-  if (drawProfiles) {
-    for (const drawProfile of drawProfiles) {
-      processDrawProfile(drawProfile);
-    }
-  }
-  const individualCompetitorsCount = Math.max(
-    largestTeamDraw * largestTeamSize,
-    largestDoublesDraw * 2,
-    largestSinglesDraw
-  );
-
-  if (largestDoublesDraw) participantType = PAIR;
-  if (
-    (participantsCount || specifiedParicipantsCount) <
-    individualCompetitorsCount
-  )
-    participantsCount = individualCompetitorsCount;
-
-  if (
-    participantsCount &&
-    largestDoublesDraw &&
-    [PAIR, TEAM].includes(participantType)
-  ) {
-    // if we are generating PAIRs or TEAMs...
-    if (
-      largestSinglesDraw &&
-      Math.floor(largestSinglesDraw / 2) > largestDoublesDraw
-    ) {
-      // if the half the singles draw is still larger than doubles draw
-      participantsCount = Math.floor(largestSinglesDraw / 2);
-    } else if (
-      !largestSinglesDraw ||
-      largestDoublesDraw * 2 >= largestSinglesDraw
-    ) {
-      // otherwise participantsCount can be cut in half
-      participantsCount = Math.ceil(participantsCount / 2);
-    }
-  }
-
-  if (participantsCount === undefined) participantsCount = 32;
-  if (participantsCount < specifiedParicipantsCount)
-    participantsCount = specifiedParicipantsCount;
-
-  const {
-    nationalityCodesCount,
-    nationalityCodeType,
-    valuesInstanceLimit,
-    nationalityCodes,
-    personExtensions,
-    addressProps,
-    personData,
-    personIds,
-    inContext,
-    teamKey,
-    sex,
-  } = participantsProfile || {};
-
-  const { participants } = generateParticipants({
-    consideredDate: startDate,
-    valuesInstanceLimit,
-
-    nationalityCodesCount,
-    nationalityCodeType,
-    nationalityCodes,
-
-    personExtensions,
-    addressProps,
-    personData,
-    sex,
-
-    participantsCount,
-    participantType,
-    personIds,
-    uuids,
-
-    inContext,
-  });
-
-  let result = addParticipants({ tournamentRecord, participants });
-  if (!result.success) return result;
-
-  if (teamKey) {
-    const result = generateTeamsFromParticipantAttribute({
-      tournamentRecord,
-      ...teamKey,
-    });
-    if (result.error) return result;
-  }
-
-  // generate Team participants
-  const allIndividualParticipantIds = participants
-    .filter(({ participantType }) => participantType === INDIVIDUAL)
-    .map(getParticipantId);
-  const teamParticipants = generateRange(0, largestTeamDraw).map(
-    (teamIndex) => {
-      const individualParticipantIds = allIndividualParticipantIds.slice(
-        teamIndex * largestTeamSize,
-        (teamIndex + 1) * largestTeamSize
-      );
-      return {
-        participantName: `Team ${teamIndex + 1}`,
-        participantRole: COMPETITOR,
-        participantType: TEAM,
-        participantId: UUID(),
-        individualParticipantIds,
-      };
-    }
-  );
-  result = addParticipants({
+  const result = addTournamentParticipants({
+    participantsProfile,
     tournamentRecord,
-    participants: teamParticipants,
+    eventProfiles,
+    drawProfiles,
+    startDate,
+    uuids,
   });
   if (!result.success) return result;
 
@@ -327,6 +128,7 @@ export function generateTournamentRecord({
           drawProfile,
           startDate,
           goesTo,
+          uuids,
         });
       if (error) return { error };
 
@@ -359,6 +161,7 @@ export function generateTournamentRecord({
         tournamentRecord,
         eventProfile,
         startDate,
+        uuids,
       });
       if (error) return { error };
 

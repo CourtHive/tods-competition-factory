@@ -5,6 +5,7 @@ import { generateParticipants } from './generateParticipants';
 import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
+import { FEMALE, MALE } from '../../constants/genderConstants';
 
 export function generateEventParticipants({
   uniqueParticipantsCount,
@@ -38,6 +39,8 @@ export function generateEventParticipants({
   const qualifyingParticipantsCount = uniqueParticipantsCount[QUALIFYING] || 0;
 
   const participantsCount = mainParticipantsCount + qualifyingParticipantsCount;
+  const sex = [MALE, FEMALE].includes(gender) ? gender : undefined;
+
   const { participants: uniqueFlightParticipants } = generateParticipants({
     scaledParticipantsCount: eventProfile.scaledParticipantsCount,
     consideredDate: tournamentRecord?.startDate,
@@ -50,11 +53,11 @@ export function generateEventParticipants({
     ratingsParameters,
     nationalityCodes,
     addressProps,
-    sex: gender,
     personIds,
     inContext,
     category,
     uuids,
+    sex,
   });
 
   let result = addParticipants({
