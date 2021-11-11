@@ -85,7 +85,7 @@
     "trailingComma": "es5"
   },
   "author": "Charles Allen <charles@CourtHive.com> (CourtHive.com)",
-  "module": "dist/tods-competition-factory.esm.js",
+  "module": "dist/tods-competition-factory.esm.min.js",
   "devDependencies": {
     "@babel/core": "7.16.0",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.16.0",
