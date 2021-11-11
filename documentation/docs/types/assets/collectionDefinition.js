@@ -11,6 +11,10 @@ export const collectionDefinition = {
   matchUpType:
     '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"true\\",\\"note\\":\\"SINGLES, DOUBLES, or TEAM\\"}',
   matchUpValue: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
+  scoreValue: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
+  setValue: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
+  winCriteria:
+    '{\\"type\\":\\"object\\",\\"object\\":\\"winCriteria\\",\\"required\\":\\"true\\"}',
 };
 
 export default collectionDefinition;
