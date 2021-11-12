@@ -76,6 +76,12 @@ export function getRoundMatchUps({ matchUps = [] }) {
 
     roundProfile[roundNumber].roundNumber = roundNumber; // convenience
 
+    // convenience for display calculations
+    roundProfile[roundNumber].roundFactor = roundProfile[roundNumber]
+      .matchUpsCount
+      ? maxMatchUpsCount / roundProfile[roundNumber].matchUpsCount
+      : 1;
+
     roundProfile[roundNumber].finishingRound =
       finishingRoundMap[roundNumber].finishingRound;
     roundProfile[roundNumber].roundName =
@@ -164,5 +170,6 @@ export function getRoundMatchUps({ matchUps = [] }) {
       roundIndex += 1;
     }
   });
+
   return { maxMatchUpsCount, roundMatchUps, roundNumbers, roundProfile };
 }
