@@ -98,6 +98,8 @@ export function generateDrawMaticRound({
       ? getDoublesPairings(params)
       : getSinglesPairings(params);
 
+  console.log(participantIdPairings);
+
   for (const [index, matchUp] of roundMatchUps.entries()) {
     const drawPositions = matchUp.drawPositions;
     const { participantIds } = participantIdPairings[index];

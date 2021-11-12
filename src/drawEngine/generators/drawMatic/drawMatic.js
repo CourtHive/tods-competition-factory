@@ -32,10 +32,12 @@ export function drawMatic({
   structureId,
   matchUpIds,
   scaleName, // custom rating name to seed dynamic ratings
-  eventType,
+  event,
 }) {
   if (typeof drawDefinition !== 'object')
     return { error: INVALID_DRAW_DEFINITION };
+
+  const { eventType } = event || {};
 
   const enteredParticipantIds = drawDefinition.entries
     .filter(
