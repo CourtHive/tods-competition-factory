@@ -88,7 +88,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
         }
         if (loserTo?.schedule?.scheduledTime) {
           const scheduleConflict =
-            timeStringMinutes(winnerTo.schedule.scheduledTime) <
+            timeStringMinutes(loserTo.schedule.scheduledTime) <
             timeStringMinutes(timeAfterRecovery);
           if (scheduleConflict) {
             scheduleConflictMatchUpIds[loserTo.matchUpId] =
