@@ -1,4 +1,5 @@
 export { matchUpFormatCode } from './drawEngine/governors/scoreGovernor/matchUpFormatCode';
+export { factoryVersion as version } from './global/functions/factoryVersion';
 export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
