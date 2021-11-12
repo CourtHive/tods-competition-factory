@@ -314,10 +314,8 @@ export function getAllStructureMatchUps({
       (roundNamingProfile &&
         roundNamingProfile[roundNumber]?.abbreviatedRoundName) ||
       additionalContext.abbreviatedRoundName;
-    const feedRound =
-      roundProfile &&
-      roundProfile[roundNumber] &&
-      roundProfile[roundNumber].feedRound;
+    const feedRound = roundProfile?.[roundNumber]?.feedRound;
+    const preFeedRound = roundProfile?.[roundNumber]?.preFeedRound;
 
     const drawPositionsRoundRanges =
       drawPositionsRanges && drawPositionsRanges[roundNumber];
@@ -342,6 +340,7 @@ export function getAllStructureMatchUps({
         drawPositions,
         matchUpStatus,
         matchUpTieId,
+        preFeedRound,
         matchUpType,
         exitProfile,
         structureId,
