@@ -32,6 +32,10 @@ it('can accurately generate sideNumbers', () => {
     expectedPositionsAssignedCount: 34,
     expectedRoundMatchUpsCounts: [16, 8, 4, 2, 2, 1],
   });
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  expect(matchUps.filter((m) => m.feedRound).length).toEqual(2);
+  expect(matchUps.filter((m) => m.preFeedRound).length).toEqual(2);
 });
 
 it('can generate and verify feed-in structures', () => {

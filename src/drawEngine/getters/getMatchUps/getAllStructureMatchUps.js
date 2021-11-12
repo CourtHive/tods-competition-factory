@@ -316,6 +316,7 @@ export function getAllStructureMatchUps({
       additionalContext.abbreviatedRoundName;
     const feedRound = roundProfile?.[roundNumber]?.feedRound;
     const preFeedRound = roundProfile?.[roundNumber]?.preFeedRound;
+    const roundFactor = roundProfile?.[roundNumber]?.roundFactor;
 
     const drawPositionsRoundRanges =
       drawPositionsRanges && drawPositionsRanges[roundNumber];
@@ -341,6 +342,7 @@ export function getAllStructureMatchUps({
         matchUpStatus,
         matchUpTieId,
         preFeedRound,
+        roundFactor,
         matchUpType,
         exitProfile,
         structureId,

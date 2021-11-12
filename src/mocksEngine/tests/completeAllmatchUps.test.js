@@ -72,13 +72,13 @@ it('can generate an FMLC draw with all results completed', () => {
 
   let {
     drawDefinition: {
-      structures: [mainStructure],
+      structures: [mainStructure, consolationStructure],
     },
   } = tournamentEngine.getEvent({ drawId });
 
-  const { matchUps } = tournamentEngine.allDrawMatchUps({
-    drawId,
+  let { matchUps } = tournamentEngine.allDrawMatchUps({
     matchUpFilters: { structureIds: [mainStructure.structureId] },
+    drawId,
   });
 
   // find the roundPosition of the one first round matchUp that was COMPLETED
@@ -94,6 +94,13 @@ it('can generate an FMLC draw with all results completed', () => {
   const bye = case24 ? 30 : 31;
 
   checkMatchUpsProfile({ completed, bye, profile: fmlc32profile });
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { structureIds: [consolationStructure.structureId] },
+    drawId,
+  }));
+  expect(matchUps.filter((m) => m.preFeedRound).length).toEqual(8);
+  expect(matchUps.filter((m) => m.feedRound).length).toEqual(8);
 });
 
 function checkMatchUpsProfile({ completed, bye, profile }) {
