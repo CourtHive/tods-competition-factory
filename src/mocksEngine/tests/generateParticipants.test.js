@@ -15,6 +15,17 @@ it('can generate unique participants', () => {
   );
 });
 
+it('can use idPrefix when generating participantIds', () => {
+  const { participants } = mocksEngine.generateParticipants({
+    participantsCount: 20,
+    idPrefix: 'P',
+  });
+
+  participants.forEach(({ participantId }, i) =>
+    expect(participantId).toEqual(`P-I-${i}`)
+  );
+});
+
 test('generateTournamentRecord passes participantsProfile.personIds', () => {
   const personIds = generateRange(0, 9).map(() => UUID());
   const participantsProfile = {

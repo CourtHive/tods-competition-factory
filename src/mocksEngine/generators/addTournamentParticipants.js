@@ -9,7 +9,7 @@ import { INDIVIDUAL, TEAM } from '../../constants/participantTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
 
 export function addTournamentParticipants({
-  participantsProfile,
+  participantsProfile = {},
   tournamentRecord,
   eventProfiles,
   drawProfiles,
@@ -27,39 +27,14 @@ export function addTournamentParticipants({
     drawProfiles,
   });
 
-  const {
-    nationalityCodesCount,
-    nationalityCodeType,
-    valuesInstanceLimit,
-    nationalityCodes,
-    personExtensions,
-    addressProps,
-    personData,
-    personIds,
-    inContext,
-    teamKey,
-    sex,
-  } = participantsProfile || {};
+  const { teamKey } = participantsProfile || {};
 
   const { participants } = generateParticipants({
+    uuids,
+    ...participantsProfile,
     consideredDate: startDate,
-    valuesInstanceLimit,
-
-    nationalityCodesCount,
-    nationalityCodeType,
-    nationalityCodes,
-
-    personExtensions,
-    addressProps,
-    personData,
-    sex,
-
     participantsCount,
     participantType,
-    personIds,
-    uuids,
-
-    inContext,
   });
 
   let result = addParticipants({ tournamentRecord, participants });

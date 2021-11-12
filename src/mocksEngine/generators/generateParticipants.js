@@ -8,11 +8,16 @@ import { generatePersons } from './generatePersons';
 import { teamMocks } from '../utilities/teamMocks';
 
 import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
-import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import { RANKING, RATING, SCALE } from '../../constants/scaleConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { DOUBLES } from '../../constants/matchUpTypes';
 import { SINGLES } from '../../constants/eventConstants';
+import {
+  GROUP,
+  INDIVIDUAL,
+  PAIR,
+  TEAM,
+} from '../../constants/participantTypes';
 
 /**
  *
@@ -49,6 +54,7 @@ export function generateParticipants({
   participantsCount = 32,
   participantType,
   personIds,
+  idPrefix,
   uuids,
 
   personExtensions,
@@ -206,12 +212,18 @@ export function generateParticipants({
         .map((i) => i.person.standardFamilyName)
         .join('/');
 
+      const participantType = doubles ? PAIR : TEAM;
       const groupParticipant = {
-        participantId: uuids?.pop() || UUID(),
-        participantType: doubles ? PAIR : TEAM,
+        participantId: genParticipantId({
+          participantType,
+          idPrefix,
+          index: i,
+          uuids,
+        }),
         participantRole: COMPETITOR,
         participantName: doubles ? pairName : teamNames[i],
         individualParticipantIds,
+        participantType,
       };
 
       if (inContext)
@@ -259,7 +271,12 @@ export function generateParticipants({
     });
 
     const participant = definedAttributes({
-      participantId: uuids?.pop() || UUID(),
+      participantId: genParticipantId({
+        participantType: INDIVIDUAL,
+        index: participantIndex,
+        idPrefix,
+        uuids,
+      }),
       extensions: participantExtensions,
       timeItems: participantTimeItems,
       participantRole: COMPETITOR,
@@ -343,4 +360,18 @@ function addScaleItem({
     if (!participant.timeItems) participant.timeItems = [];
     participant.timeItems.push(timeItem);
   }
+}
+
+function genParticipantId({ idPrefix, participantType, index, uuids }) {
+  const type =
+    participantType === INDIVIDUAL
+      ? 'I'
+      : PAIR
+      ? 'P'
+      : TEAM
+      ? 'T'
+      : GROUP
+      ? 'G'
+      : 'X';
+  return idPrefix ? `${idPrefix}-${type}-${index}` : uuids?.pop() || UUID();
 }

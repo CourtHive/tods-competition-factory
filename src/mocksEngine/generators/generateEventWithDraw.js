@@ -35,8 +35,8 @@ import {
 
 export function generateEventWithDraw({
   allUniqueParticipantIds = [],
+  participantsProfile = {},
   matchUpStatusProfile,
-  participantsProfile,
   completeAllMatchUps,
   autoEntryPositions,
   randomWinningSide,
@@ -44,6 +44,7 @@ export function generateEventWithDraw({
   tournamentRecord,
   drawProfile,
   startDate,
+  drawIndex,
   goesTo,
   uuids,
 }) {
@@ -118,32 +119,21 @@ export function generateEventWithDraw({
       individualParticipantsCount = teamSize * drawSize;
     }
 
+    const idPrefix = participantsProfile?.idPrefix
+      ? `D-${drawIndex}-${participantsProfile?.idPrefix}`
+      : undefined;
     const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
-    const {
-      valuesInstanceLimit,
-      nationalityCodesCount,
-      nationalityCodeType,
-      nationalityCodes,
-      addressProps,
-      personIds,
-      inContext,
-    } = participantsProfile || {};
     const { participants: unique } = generateParticipants({
+      ...participantsProfile,
       scaledParticipantsCount: drawProfile.scaledParticipantsCount,
       participantsCount: individualParticipantsCount,
       consideredDate: tournamentRecord?.startDate,
       sex: gender || participantsProfile?.sex,
       rankingRange: drawProfile.rankingRange,
       uuids: drawProfile.uuids || uuids,
-      nationalityCodesCount,
-      nationalityCodeType,
-      valuesInstanceLimit,
       ratingsParameters,
-      nationalityCodes,
       participantType,
-      addressProps,
-      personIds,
-      inContext,
+      idPrefix,
       category,
     });
 

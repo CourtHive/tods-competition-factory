@@ -19,9 +19,9 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function modifyTournamentRecord({
   ratingsParameters = defaultRatingsParameters,
+  participantsProfile = {},
   matchUpStatusProfile,
   completeAllMatchUps,
-  participantsProfile,
   autoEntryPositions,
   randomWinningSide,
   schedulingProfile,
@@ -54,6 +54,10 @@ export function modifyTournamentRecord({
     }
   });
 
+  const participantsCount = tournamentRecord.participants?.length || undefined;
+  if (participantsCount && participantsProfile?.idPrefix)
+    participantsProfile.idPrefix = `${participantsProfile.idPrefix}-${participantsCount}`;
+
   const result = addTournamentParticipants({
     startDate: tournamentRecord.startDate,
     participantsProfile,
@@ -65,6 +69,7 @@ export function modifyTournamentRecord({
   if (!result.success) return result;
 
   if (eventProfiles) {
+    let eventIndex = tournamentRecord.events?.length || 0;
     for (const eventProfile of eventProfiles) {
       let { ratingsParameters } = eventProfile;
 
@@ -94,6 +99,7 @@ export function modifyTournamentRecord({
           ratingsParameters,
           tournamentRecord,
           eventProfile,
+          eventIndex,
           uuids,
         });
         if (error) return { error };
@@ -103,6 +109,8 @@ export function modifyTournamentRecord({
 
         if (uniqueParticipantIds?.length)
           allUniqueParticipantIds.push(...uniqueParticipantIds);
+
+        eventIndex += 1;
       } else {
         const { gender, category, eventType } = event;
         const { drawProfiles } = eventProfile;
@@ -175,6 +183,11 @@ export function modifyTournamentRecord({
   }
 
   if (drawProfiles) {
+    let drawIndex = (tournamentRecord.events || [])
+      .map((event) => event.drawDefinitions?.map(() => 1) || [])
+      .flat()
+      .reduce((a, b) => a + b, 0);
+
     for (const drawProfile of drawProfiles) {
       const { drawId, eventId, event, error, uniqueParticipantIds } =
         generateEventWithDraw({
@@ -188,6 +201,7 @@ export function modifyTournamentRecord({
           ratingsParameters,
           tournamentRecord,
           drawProfile,
+          drawIndex,
           goesTo,
           uuids,
         });
@@ -201,6 +215,8 @@ export function modifyTournamentRecord({
 
       if (uniqueParticipantIds?.length)
         allUniqueParticipantIds.push(...uniqueParticipantIds);
+
+      drawIndex += 1;
     }
   }
 
