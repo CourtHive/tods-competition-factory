@@ -8,25 +8,16 @@ import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { FEMALE, MALE } from '../../constants/genderConstants';
 
 export function generateEventParticipants({
+  participantsProfile = {},
   uniqueParticipantsCount,
-  participantsProfile,
   ratingsParameters,
   tournamentRecord,
   eventProfile,
+  eventIndex,
   event,
   uuids,
 }) {
   const { category, gender, eventType } = event;
-
-  const {
-    valuesInstanceLimit,
-    nationalityCodesCount,
-    nationalityCodeType,
-    nationalityCodes,
-    addressProps,
-    personIds,
-    inContext,
-  } = participantsProfile || {};
 
   const eventParticipantType =
     eventType === SINGLES
@@ -41,22 +32,20 @@ export function generateEventParticipants({
   const participantsCount = mainParticipantsCount + qualifyingParticipantsCount;
   const sex = [MALE, FEMALE].includes(gender) ? gender : undefined;
 
+  const idPrefix = participantsProfile?.idPrefix
+    ? `E-${eventIndex}-${participantsProfile?.idPrefix}`
+    : undefined;
   const { participants: uniqueFlightParticipants } = generateParticipants({
+    uuids: eventProfile.uuids || uuids,
+    ...participantsProfile,
     scaledParticipantsCount: eventProfile.scaledParticipantsCount,
     consideredDate: tournamentRecord?.startDate,
     rankingRange: eventProfile.rankingRange,
     participantType: eventParticipantType,
-    nationalityCodesCount,
-    nationalityCodeType,
-    valuesInstanceLimit,
     participantsCount,
     ratingsParameters,
-    nationalityCodes,
-    addressProps,
-    personIds,
-    inContext,
+    idPrefix,
     category,
-    uuids,
     sex,
   });
 

@@ -114,6 +114,7 @@ export function generateTournamentRecord({
     allUniqueParticipantIds = [];
 
   if (drawProfiles) {
+    let drawIndex = 0;
     for (const drawProfile of drawProfiles) {
       const { drawId, eventId, event, error, uniqueParticipantIds } =
         generateEventWithDraw({
@@ -127,6 +128,7 @@ export function generateTournamentRecord({
           tournamentRecord,
           drawProfile,
           startDate,
+          drawIndex,
           goesTo,
           uuids,
         });
@@ -140,10 +142,13 @@ export function generateTournamentRecord({
 
       if (uniqueParticipantIds?.length)
         allUniqueParticipantIds.push(...uniqueParticipantIds);
+
+      drawIndex += 1;
     }
   }
 
   if (eventProfiles) {
+    let eventIndex = 0;
     for (const eventProfile of eventProfiles) {
       const {
         error,
@@ -160,6 +165,7 @@ export function generateTournamentRecord({
         ratingsParameters,
         tournamentRecord,
         eventProfile,
+        eventIndex,
         startDate,
         uuids,
       });
@@ -170,6 +176,8 @@ export function generateTournamentRecord({
 
       if (uniqueParticipantIds?.length)
         allUniqueParticipantIds.push(...uniqueParticipantIds);
+
+      eventIndex += 1;
     }
   }
 

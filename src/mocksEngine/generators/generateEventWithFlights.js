@@ -22,6 +22,7 @@ export function generateEventWithFlights({
   ratingsParameters,
   tournamentRecord,
   eventProfile,
+  eventIndex,
   uuids,
 }) {
   let gender = eventProfile.gender;
@@ -78,6 +79,7 @@ export function generateEventWithFlights({
           ratingsParameters,
           tournamentRecord,
           eventProfile,
+          eventIndex,
           uuids,
         })
       : {};

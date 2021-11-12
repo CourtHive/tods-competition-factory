@@ -89,6 +89,8 @@ const { participants } = mocksEngine.generateParticipants({
   personExtensions, // optional array of extensions to attach to all generated persons
   personData, //  optional array of persons to seed generator [{ firstName, lastName, sex, nationalityCode }]
   personIds, // optional array of pre-defined personIds
+  idPrefix, // optional prefix used when generating participantids
+  uuids, // optional array of uuids to use as participantIds
 
   category, // participant age and category scaleItems will be generated
   consideredDate, // date from which category ageMaxDate and ageMinDate should be calculated (typically tournament.startDate or .endDate)
@@ -129,6 +131,8 @@ const drawProfiles = [
     drawType: ROUND_ROBIN, // optional - defaults to SINGLE_ELIMINATION
     drawSize: 4, // optional - defaults to 32
     eventType: DOUBLES, // optional - defaults to SINGLES
+    idPrefix, // optional prefix used for generation of matchUpIds
+    completionGoal, // optional - number of matchUps within draw structures to complete
 
     participantsCount: 4, // optional - ability to specify fewer participants than drawSize to generate BYEs
     policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
