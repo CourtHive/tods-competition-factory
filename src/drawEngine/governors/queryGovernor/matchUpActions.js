@@ -4,13 +4,18 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { isActiveDownstream } from '../matchUpGovernor/isActiveDownstream';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { getParticipantId } from '../../../global/functions/extractors';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isCompletedStructure } from './structureActions';
+import { isAdHoc } from './isAdHoc';
 
 import {
   ADD_PENALTY,
   ADD_PENALTY_METHOD,
+  ALTERNATE_PARTICIPANT,
+  ASSIGN_PARTICIPANT,
+  ASSIGN_SIDE_METHOD,
 } from '../../../constants/positionActionConstants';
 import {
   MISSING_DRAW_DEFINITION,
@@ -28,6 +33,11 @@ import {
   START,
   STATUS,
 } from '../../../constants/matchUpActionConstants';
+import {
+  DIRECT_ACCEPTANCE,
+  ORGANISER_ACCEPTANCE,
+  WILDCARD,
+} from '../../../constants/entryStatusConstants';
 
 /**
  *
@@ -38,6 +48,7 @@ import {
  *
  */
 export function matchUpActions({
+  tournamentParticipants = [],
   inContextDrawMatchUps,
   drawDefinition,
   matchUpsMap,
@@ -47,6 +58,7 @@ export function matchUpActions({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
+  const { drawId } = drawDefinition;
   const { matchUp, structure } = findMatchUp({
     drawDefinition,
     matchUpId,
@@ -60,6 +72,52 @@ export function matchUpActions({
 
   const validActions = [];
   if (!structureId) return { validActions };
+
+  if (isAdHoc({ drawDefinition, structure })) {
+    const roundMatchUps = (structure.matchUps || []).filter(
+      ({ roundNumber }) => roundNumber === matchUp.roundNumber
+    );
+    const enteredParticipantIds =
+      drawDefinition?.entries
+        .filter(({ entryStatus }) =>
+          [DIRECT_ACCEPTANCE, ORGANISER_ACCEPTANCE, WILDCARD].includes(
+            entryStatus
+          )
+        )
+        .map(getParticipantId) || [];
+
+    const roundAssignedParticipantIds = roundMatchUps
+      .map((matchUp) => (matchUp.sides || []).map((side) => side.participantId))
+      .flat()
+      .filter(Boolean);
+
+    const availableParticipantIds = enteredParticipantIds.filter(
+      (participantId) => !roundAssignedParticipantIds.includes(participantId)
+    );
+    const participantsAvailable = tournamentParticipants?.filter(
+      (participant) =>
+        availableParticipantIds?.includes(participant.participantId)
+    );
+
+    participantsAvailable?.forEach((participant) => {
+      const entry = (drawDefinition.entries || []).find(
+        (entry) => entry.participantId === participant.participantId
+      );
+      participant.entryPosition = entry?.entryPosition;
+    });
+
+    if (availableParticipantIds.length) {
+      validActions.push({
+        type: ASSIGN_PARTICIPANT,
+        availableParticipantIds,
+        participantsAvailable,
+        method: ASSIGN_SIDE_METHOD,
+        payload: { drawId, matchUpId, structureId /*, sideNumber*/ },
+      });
+    }
+
+    validActions.push({ type: ALTERNATE_PARTICIPANT });
+  }
 
   const structureIsComplete = isCompletedStructure({
     drawDefinition,
@@ -144,7 +202,6 @@ export function matchUpActions({
     (matchUpDrawPositionsAreAssigned || hasParticipants) &&
     !(isDoubleWalkover && activeDownstream);
 
-  const { drawId } = drawDefinition;
   const addPenaltyAction = {
     type: ADD_PENALTY,
     method: ADD_PENALTY_METHOD,
