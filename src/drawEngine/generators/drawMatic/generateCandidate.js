@@ -1,75 +1,115 @@
 export function generateCandidate({
-  rankedPairings,
+  maxIterations = 5000, // cap the processing intensity of the candidate generator
+  valueSortedPairings, // pairings sorted by value from low to high
   pairingValues,
   deltaObjects,
-  candidateGoal = 2000,
-  actorDivisor = 100,
 }) {
   const rankedMatchUpValues = Object.assign(
     {},
-    ...rankedPairings.map((rm) => ({ [rm.matchUp]: rm.value }))
+    ...valueSortedPairings.map((rm) => ({ [rm.pairing]: rm.value }))
   );
 
+  // generate an initial candidate value with no stipulated pairings
   let candidate = roundCandidate({
-    rankedPairings,
     rankedMatchUpValues,
+    valueSortedPairings,
     deltaObjects,
   });
+
   let deltaCandidate = candidate;
 
-  // for each actor generate a roundCandidate using all of their matchUp values
   const actors = Object.keys(pairingValues);
-  const divisor = candidateGoal / (actors.length / actorDivisor);
-  let iterations = Math.floor(divisor / actors.length);
-  if (iterations > candidateGoal) iterations = candidateGoal;
 
+  // iterations is the number of loops over valueSortedPairings
+  let candidatesCount = 0;
+  let iterations;
+
+  // calculate the number of opponents to consider for each participantId
+  let opponentCount = actors.length;
+
+  do {
+    opponentCount -= 1;
+    iterations =
+      (actors.length * opponentCount * valueSortedPairings.length) / 2;
+  } while (iterations > maxIterations && opponentCount > 2);
+
+  let stipulatedPairs = [];
+
+  // for each actor generate a roundCandidate using opponentCount of pairing values
   actors.forEach((actor) => {
     const participantIdPairings = pairingValues[actor];
-    participantIdPairings.slice(0, iterations).forEach((pairing) => {
-      const proposed = roundCandidate({
-        rankedPairings,
-        rankedMatchUpValues,
-        stipulated: [pairing.participantIds],
-        deltaObjects,
-      });
-      if (proposed.maxDelta < deltaCandidate.maxDelta)
-        deltaCandidate = proposed;
-      if (proposed.value < candidate.value) candidate = proposed;
+
+    // opponentCount limits the number of opponents to consider
+    participantIdPairings.slice(0, opponentCount).forEach((pairing) => {
+      const stipulatedPair = pairingHash(actor, pairing.opponent);
+      if (!stipulatedPairs.includes(stipulatedPair)) {
+        const proposed = roundCandidate({
+          // each roundCandidate starts with stipulated pairings
+          stipulated: [[actor, pairing.opponent]],
+          rankedMatchUpValues,
+          valueSortedPairings,
+          deltaObjects,
+        });
+
+        if (proposed.maxDelta < deltaCandidate.maxDelta)
+          deltaCandidate = proposed;
+
+        if (proposed.value < candidate.value) candidate = proposed;
+
+        stipulatedPairs.push(stipulatedPair);
+        candidatesCount += 1;
+      }
     });
   });
 
-  return candidate;
+  return { candidate, deltaCandidate, candidatesCount, iterations };
 }
 
 function roundCandidate({
-  rankedPairings,
   rankedMatchUpValues,
+  valueSortedPairings,
   stipulated = [],
   deltaObjects,
 }) {
+  // roundPlayers starts with the stipulated pairing
+  const roundPlayers = [].concat(...stipulated);
+
+  // aggregates the pairings generated for a roundCandidate
+  const participantIdPairings = [];
+
+  // candidateValue is the sum of all participantIdPairings in a roundCandidate
+  // the winning candidate has the LOWEST total value
   let candidateValue = 0;
-  let participantIdPairings = [];
-  let roundPlayers = [].concat(...stipulated);
+
+  // candidateValue is initialized with any stipulated pairings
   stipulated.filter(Boolean).forEach((participantIds) => {
     const pairing = pairingHash(...participantIds);
     const value = rankedMatchUpValues[pairing];
     participantIdPairings.push({ participantIds, value });
     candidateValue += rankedMatchUpValues[pairing];
   });
-  rankedPairings.forEach((rankedPairing) => {
+
+  // go through the valueSortedPairings (of all possible unique pairings)
+  // this is an array sorted from lowest value to highest value
+  valueSortedPairings.forEach((rankedPairing) => {
     const participantIds = rankedPairing.pairing.split('|');
-    const opponent_exists = participantIds.reduce(
-      (p, c) => roundPlayers.indexOf(c) >= 0 || p,
+    const opponentExists = participantIds.reduce(
+      (p, c) => roundPlayers.includes(c) || p,
       false
     );
-    if (!opponent_exists) {
-      roundPlayers = roundPlayers.concat(...participantIds);
+
+    if (!opponentExists) {
+      roundPlayers.push(...participantIds);
       let value = rankedPairing.value;
       candidateValue += value;
       participantIdPairings.push({ participantIds, value });
     }
   });
+
+  // sort the candidate's proposed pairings by value
   participantIdPairings.sort((a, b) => a.value - b.value);
+
+  // determine the greatest delta in the candidate's pairings
   const maxDelta = participantIdPairings.reduce((p, c) => {
     const hash = pairingHash(...c.participantIds);
     const delta = deltaObjects[hash];
@@ -79,6 +119,6 @@ function roundCandidate({
   return { value: candidateValue, participantIdPairings, maxDelta };
 }
 
-function pairingHash(id1, id2) {
+export function pairingHash(id1, id2) {
   return [id1, id2].sort().join('|');
 }

@@ -1,6 +1,10 @@
-import { addAdHocMatchUps } from '../governors/structureGovernor/addAdHocMatchUps';
 import { isConvertableInteger } from '../../utilities/math';
+import { definedAttributes } from '../../utilities/objects';
 import { generateRange, UUID } from '../../utilities';
+import {
+  addMatchUpsNotice,
+  modifyDrawNotice,
+} from '../notifications/drawNotifications';
 
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
@@ -10,6 +14,7 @@ import {
   INVALID_STRUCTURE,
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
+  STRUCTURE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
 
 /**
@@ -25,21 +30,24 @@ import {
  * @returns
  */
 export function generateAdHocMatchUps({
-  drawDefinition,
-  structureId,
-
-  addMatchUps = false,
-  matchUpsCount = 1,
+  participantIdPairings,
   matchUpIds = [],
-
+  drawDefinition,
+  matchUpsCount,
   roundNumber,
+  structureId,
   newRound,
 }) {
   if (typeof drawDefinition !== 'object')
     return { error: MISSING_DRAW_DEFINITION };
   if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
 
-  if (!isConvertableInteger(matchUpsCount) || !Array.isArray(matchUpIds))
+  if (
+    (participantIdPairings && !Array.isArray(participantIdPairings)) ||
+    (matchUpsCount && !isConvertableInteger(matchUpsCount)) ||
+    (matchUpIds && !Array.isArray(matchUpIds)) ||
+    (!participantIdPairings && !matchUpsCount)
+  )
     return { error: INVALID_VALUES };
 
   // if drawDefinition and structureId are provided it is possible to infer roundNumber
@@ -73,17 +81,64 @@ export function generateAdHocMatchUps({
   const nextRoundNumber =
     roundNumber || (newRound ? lastRoundNumber + 1 : lastRoundNumber || 1);
 
-  const matchUps = generateRange(0, matchUpsCount).map(() => ({
-    matchUpId: matchUpIds.pop() || UUID(),
-    roundNumber: nextRoundNumber,
-    matchUpStatus: TO_BE_PLAYED,
-    drawPositions: [],
-  }));
+  participantIdPairings =
+    participantIdPairings ||
+    generateRange(0, matchUpsCount).map(() => ({ participantIds: [] }));
+  const matchUps = participantIdPairings.map((pairing) => {
+    // ensure there are always 2 sides in generated matchUps
+    const participantIds = (pairing?.participantIds || [])
+      .concat([undefined, undefined])
+      .slice(0, 2);
+    const sides = participantIds.map((participantId, i) =>
+      definedAttributes({
+        sideNumber: i + 1,
+        participantId,
+      })
+    );
 
-  if (addMatchUps) {
-    const result = addAdHocMatchUps({ drawDefinition, structureId, matchUps });
-    if (result.error) return result;
+    return {
+      matchUpId: matchUpIds.pop() || UUID(),
+      roundNumber: nextRoundNumber,
+      matchUpStatus: TO_BE_PLAYED,
+      sides,
+    };
+  });
+
+  const result = addAdHocMatchUps({ drawDefinition, structureId, matchUps });
+  if (result.error) return result;
+
+  return { matchUpsCount: matchUps.length, ...SUCCESS };
+}
+
+function addAdHocMatchUps({ drawDefinition, structureId, matchUps }) {
+  if (typeof drawDefinition !== 'object')
+    return { error: MISSING_DRAW_DEFINITION };
+  if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
+
+  if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
+
+  const structure = drawDefinition.structures?.find(
+    (structure) => structure.structureId === structureId
+  );
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
+
+  const existingMatchUps = structure?.matchUps;
+  const structureHasRoundPositions = existingMatchUps.find(
+    (matchUp) => !!matchUp.roundPosition
+  );
+
+  if (
+    structure.structures ||
+    structureHasRoundPositions ||
+    structure.finishingPosition === ROUND_OUTCOME
+  ) {
+    return { error: INVALID_STRUCTURE };
   }
 
-  return { matchUps, ...SUCCESS };
+  structure.matchUps.push(...matchUps);
+
+  addMatchUpsNotice({ drawDefinition, matchUps });
+  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+
+  return { ...SUCCESS };
 }

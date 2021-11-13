@@ -32,6 +32,7 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
+import { drawMatic } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/drawMatic';
 
 export function generateEventWithDraw({
   allUniqueParticipantIds = [],
@@ -283,6 +284,14 @@ export function generateEventWithDraw({
 
   if (generate) {
     addDrawDefinition({ drawDefinition, event });
+
+    if (drawProfile.drawMatic) {
+      const result = drawMatic({
+        tournamentRecord,
+        drawDefinition,
+      });
+      if (result.error) return result;
+    }
 
     if (drawProfile.withPlayoffs) {
       const structureId = drawDefinition.structures[0].structureId;

@@ -71,7 +71,6 @@ import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
 import { deleteAdHocMatchUps } from './drawDefinitions/deleteAdHocMatchUps';
 import { updateDrawIdsOrder } from './drawDefinitions/updateDrawIdsOrder';
 import { setOrderOfFinish } from './drawDefinitions/setOrderOfFinish';
-import { addAdHocMatchUps } from './drawDefinitions/addAdHocMatchUps';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { modifyEventEntries } from './entries/modifyEventEntries';
@@ -132,7 +131,6 @@ const eventGovernor = {
   getScaledEntries,
   addFlight,
 
-  addAdHocMatchUps,
   generateAdHocMatchUps,
   deleteAdHocMatchUps,
   drawMatic,
