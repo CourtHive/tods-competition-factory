@@ -92,5 +92,7 @@ it.each(scenarios)(
     const matchUpsPerRound = Math.floor(drawSize / 2);
     let { matchUps } = tournamentEngine.allTournamentMatchUps();
     expect(matchUps.length).toEqual(matchUpsPerRound * roundsCount);
+    const roundNames = matchUps.map((m) => m.roundName);
+    roundNames.forEach((roundName) => expect(roundName[0]).toEqual('R'));
   }
 );
