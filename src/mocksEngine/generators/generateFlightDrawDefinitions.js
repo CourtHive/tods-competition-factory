@@ -15,6 +15,7 @@ import { DRAW_ID_EXISTS } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { SEEDING } from '../../constants/scaleConstants';
 import {
+  AD_HOC,
   MAIN,
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../constants/drawDefinitionConstants';
@@ -110,7 +111,7 @@ export function generateFlightDrawDefinitions({
         if (result.error === DRAW_ID_EXISTS) break;
         if (result.error) return result;
 
-        if (drawProfile.drawMatic) {
+        if (drawProfile.drawType === AD_HOC && drawProfile.drawMatic) {
           const roundsCount = drawProfile.roundsCount || 1;
           for (const roundNumber of generateRange(1, roundsCount + 1)) {
             const result = drawMatic({

@@ -28,6 +28,7 @@ import { COMPETITOR } from '../../constants/participantRoles';
 import { SEEDING } from '../../constants/timeItemConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
+  AD_HOC,
   MAIN,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
@@ -285,7 +286,7 @@ export function generateEventWithDraw({
   if (generate) {
     addDrawDefinition({ drawDefinition, event });
 
-    if (drawProfile.drawMatic) {
+    if (drawType === AD_HOC && drawProfile.drawMatic) {
       const roundsCount = drawProfile.roundsCount || 1;
       for (const roundNumber of generateRange(1, roundsCount + 1)) {
         const result = drawMatic({
