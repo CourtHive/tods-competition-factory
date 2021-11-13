@@ -2,6 +2,7 @@ import { participantScaleItem } from '../../../tournamentEngine/accessors/partic
 import { AD_HOC, stageOrder } from '../../../constants/drawDefinitionConstants';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { generateDrawMaticRound } from './generateDrawMaticRound';
+import { isAdHoc } from '../../governors/queryGovernor/isAdHoc';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -75,19 +76,15 @@ export function drawMatic({
     participantIds = enteredParticipantIds;
   }
 
-  // an AD_HOC structure is one that has no child structures and in which no matchUps have roundPosition
-  const isAdHoc = (structure) =>
-    !structure?.structures && // this would be a ROUND_ROBIN
-    !structure?.matchUps.find(({ roundPosition }) => !!roundPosition);
-
   // if no structureId is specified find the latest AD_HOC stage which has matchUps
   if (!structureId) {
     const targetStructure = drawDefinition.structures
       ?.filter((structure) => structure.stageSequence === 1)
       ?.reduce((targetStructure, structure) => {
         const orderNumber = stageOrder[structure.stage];
+        const structureIsAdHoc = isAdHoc({ drawDefinition, structure });
 
-        return isAdHoc(structure) &&
+        return structureIsAdHoc &&
           orderNumber > (stageOrder[targetStructure?.stage] || 1)
           ? structure
           : targetStructure;
@@ -99,7 +96,10 @@ export function drawMatic({
     (structure) => structure.structureId === structureId
   );
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
-  if (!isAdHoc(structure)) return { error: INVALID_DRAW_DEFINITION };
+
+  // an AD_HOC structure is one that has no child structures and in which no matchUps have roundPosition
+  const structureIsAdHoc = isAdHoc({ drawDefinition, structure });
+  if (!structureIsAdHoc) return { error: INVALID_DRAW_DEFINITION };
 
   const adHocRatings = {};
   for (const participantId of participantIds) {
