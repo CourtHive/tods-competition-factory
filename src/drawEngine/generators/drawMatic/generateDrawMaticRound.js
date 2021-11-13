@@ -17,6 +17,7 @@ const MAX_ITERATIONS = 5000;
 export function generateDrawMaticRound({
   maxIterations = MAX_ITERATIONS,
   tournamentParticipants,
+  generateMatchUps,
   drawDefinition,
   participantIds,
   adHocRatings,
@@ -84,16 +85,18 @@ export function generateDrawMaticRound({
 
   if (!candidatesCount) return { error: 'No Candidates' };
 
-  const result = generateAdHocMatchUps({
-    participantIdPairings,
-    drawDefinition,
-    newRound: true,
-    structureId,
-    matchUpIds,
-  });
-  if (result.error) return result;
+  if (generateMatchUps) {
+    const result = generateAdHocMatchUps({
+      participantIdPairings,
+      drawDefinition,
+      newRound: true,
+      structureId,
+      matchUpIds,
+    });
+    if (result.error) return result;
+  }
 
-  return { ...SUCCESS, candidatesCount, iterations };
+  return { ...SUCCESS, participantIdPairings, candidatesCount, iterations };
 }
 
 function getSideRatings({
@@ -229,36 +232,3 @@ function getParticipantPairingValues({ possiblePairings, valueObjects }) {
   }
   return { pairingValues };
 }
-
-/*
-function uniqueDoublesPairings({ pairs, team_ids }) {
-  if (!pairs && team_ids && Array.isArray(team_ids))
-    pairs = team_ids.map((t) => ({ id: t }));
-  if (!Array.isArray(pairs)) return [];
-
-  let pairPairings = {};
-
-  let uniquePairPairings = [];
-  pairs.map(getPairPairings).forEach(attemptPush);
-
-  function attemptPush(pm) {
-    pm.forEach((m) => {
-      if (uniquePairPairings.indexOf(m) < 0) uniquePairPairings.push(m);
-    });
-  }
-
-  let team_value_objects = Object.assign(
-    {},
-    ...uniquePairPairings.map((mu) => ({ [mu]: 0 }))
-  );
-
-  return { uniquePairPairings, pairPairings, team_value_objects };
-
-  function getPairPairings(pair) {
-    let opponents = pairs.filter((p) => p.id !== pair.id);
-    pairPairings[pair.id] = opponents.map((o) => o.id);
-    let matchups = opponents.map((o) => pairingHash(o.id, pair.id));
-    return matchups;
-  }
-}
-*/

@@ -47,6 +47,7 @@ it.each(scenarios)(
     for (const roundNumber of generateRange(2, scenario.roundsCount + 1 || 2)) {
       const result = tournamentEngine.drawMatic({
         restrictEntryStatus: true,
+        generateMatchUps: true, // without this it will only generate { participantIdPairings }
         drawId,
       });
       expect(result.success).toEqual(true);

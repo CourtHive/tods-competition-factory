@@ -290,6 +290,7 @@ export function generateEventWithDraw({
       const roundsCount = drawProfile.roundsCount || 1;
       for (const roundNumber of generateRange(1, roundsCount + 1)) {
         const result = drawMatic({
+          generateMatchUps: true,
           tournamentRecord,
           drawDefinition,
           roundNumber, // this is not a real parameter

@@ -21,14 +21,15 @@ import {
 
 /**
  *
- * @param {object} drawDefinition
- * @param {string} structureId
+ * @param {object} drawDefinition - provided automatically by drawEngine
+ * @param {string} structureId - optional - defaults to the first structure of latest stage
  * @param {string[]} participantIds - optional - allows a subset of drawDefinition.entries to be specified
  *
  */
 export function drawMatic({
   tournamentParticipants,
   restrictEntryStatus,
+  generateMatchUps,
   drawDefinition,
   participantIds,
   maxIterations,
@@ -115,19 +116,21 @@ export function drawMatic({
     if (scaleValue) adHocRatings[participantId] = scaleValue;
   }
 
-  const { candidatesCount, iterations } = generateDrawMaticRound({
-    tournamentParticipants,
-    drawDefinition,
-    participantIds,
-    maxIterations,
-    adHocRatings,
-    matchUpIds,
-    structureId,
-    structure,
-    eventType,
-  });
+  const { candidatesCount, iterations, participantIdPairings } =
+    generateDrawMaticRound({
+      tournamentParticipants,
+      generateMatchUps,
+      drawDefinition,
+      participantIds,
+      maxIterations,
+      adHocRatings,
+      matchUpIds,
+      structureId,
+      structure,
+      eventType,
+    });
 
-  return { ...SUCCESS, candidatesCount, iterations };
+  return { ...SUCCESS, candidatesCount, iterations, participantIdPairings };
 }
 
 function getScaleValue({ scaleName = 'dynamic', eventType, participant }) {
