@@ -1,8 +1,7 @@
-import { assignDrawPosition } from '../../governors/positionGovernor/positionAssignment';
+// import { assignDrawPosition } from '../../governors/positionGovernor/positionAssignment';
 import { getParticipantId } from '../../../global/functions/extractors';
-import { getPositionAssignments } from '../../getters/positionsGetter';
+import { generateCandidate, pairingHash } from './generateCandidate';
 import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
-import { generateCandidate } from './generateCandidate';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
@@ -13,13 +12,10 @@ const ENCOUNTER_VALUE = 50;
 const SAME_TEAM_VALUE = 60;
 const DEFAULT_RATING = 0;
 
-const CANDIDATE_GOAL = 2000;
-const ACTOR_DIVISOR = 100;
-
-// valueObjects provide "weighting" to each possible pairing of participants
-// deltaObjects contain the difference in ratings between two participants
+const MAX_ITERATIONS = 5000;
 
 export function generateDrawMaticRound({
+  maxIterations = MAX_ITERATIONS,
   tournamentParticipants,
   drawDefinition,
   participantIds,
@@ -30,12 +26,14 @@ export function generateDrawMaticRound({
   structure,
 }) {
   // create valueObject for each previous encounter within the structure
-  const { positionAssignments } = getPositionAssignments({ structure });
-  const { encounters } = getEncounters({
-    matchUps: structure.matchUps,
-    positionAssignments,
-  });
+  const { encounters } = getEncounters({ matchUps: structure.matchUps });
   // valueObjects provide "weighting" to each possible pairing of participants
+  // {
+  //  'P-I-0|P-I-1': 1,
+  //  'P-I-0|P-I-2': 1,
+  //  'P-I-0|P-I-3': 1
+  // }
+
   const valueObjects = {};
   for (const pairing of encounters) {
     if (!valueObjects[pairing]) valueObjects[pairing] = 0;
@@ -57,106 +55,125 @@ export function generateDrawMaticRound({
     }
   }
 
+  // deltaObjects contain the difference in ratings between two participants
+  // {
+  //  'P-I-0|P-I-1': 0,
+  //  'P-I-0|P-I-2': 0,
+  //  'P-I-0|P-I-3': 0
+  // }
   const { uniquePairings, possiblePairings, deltaObjects } = getPairingsData({
     participantIds,
   });
 
-  const matchUpsCount = Math.floor(participantIds.length / 2);
-
-  // TODO: for client/server sync...
-  // ... this needs to be called BEFORE drawMatic and the matchUpIds of pre-generated matchUps passed in...
-  // ... and draw position assignments need to be passed in bulk AFTER
-  const result = generateAdHocMatchUps({
-    newRound: true,
-    drawDefinition,
-    matchUpsCount,
-    structureId,
-    matchUpIds,
-    addMatchUps: true,
-  });
-  // OR: the matchUps don't get added here...
-  // ... and the drawPositions to be added are retrieved by query then added ...
-  // ... and then the addAdHocMatchUps method can be called with drawPositions in place ...
-  // ... and it needs to do an integrity check to insure the drawPositions are all valid.
-  // This approach would require drawPositions to be assigned without calling assignDrawPosition
-  if (result.error) return result;
-  const roundMatchUps = result.matchUps;
-
   const params = {
+    tournamentParticipants,
+    possiblePairings,
     drawDefinition,
     participantIds,
-    possiblePairings,
     uniquePairings,
+    maxIterations,
     adHocRatings,
     deltaObjects,
     valueObjects,
+    eventType,
     structure,
   };
 
-  const { participantIdPairings } =
-    eventType === DOUBLES
-      ? getDoublesPairings(params)
-      : getSinglesPairings(params);
+  const { candidatesCount, participantIdPairings, iterations } =
+    getPairings(params);
 
-  console.log(participantIdPairings);
+  if (!candidatesCount) return { error: 'No Candidates' };
 
-  for (const [index, matchUp] of roundMatchUps.entries()) {
-    const drawPositions = matchUp.drawPositions;
-    const { participantIds } = participantIdPairings[index];
-    for (const i of drawPositions.keys()) {
-      const participantId = participantIds[i];
-      const drawPosition = drawPositions[i];
-      const result = assignDrawPosition({
-        drawDefinition,
-        structureId,
-        participantId,
-        drawPosition,
-      });
-      if (result.error) return result;
-    }
-  }
-  return { ...SUCCESS };
+  const result = generateAdHocMatchUps({
+    participantIdPairings,
+    drawDefinition,
+    newRound: true,
+    structureId,
+    matchUpIds,
+  });
+  if (result.error) return result;
+
+  return { ...SUCCESS, candidatesCount, iterations };
 }
 
-function getSinglesPairings({
-  deltaObjects,
-  valueObjects,
-  adHocRatings = {},
-  uniquePairings,
-  possiblePairings,
+function getSideRatings({
+  tournamentParticipants,
+  adHocRatings,
+  eventType,
+  pairing,
 }) {
-  // modify valueObjects by ratings differential squared
+  const ratings = pairing.split('|').map((participantId) => {
+    if (eventType === DOUBLES) {
+      const individualParticipantIds = tournamentParticipants?.find(
+        (participant) => participant.participantId === participantId
+      )?.individualParticipantIds;
+      return !individualParticipantIds
+        ? DEFAULT_RATING * 2
+        : individualParticipantIds.map(
+            (participantId) => adHocRatings[participantId || DEFAULT_RATING]
+          );
+    } else {
+      return adHocRatings[participantId] || DEFAULT_RATING;
+    }
+  });
+  return ratings;
+}
+
+function getPairings({
+  tournamentParticipants,
+  adHocRatings = {},
+  possiblePairings, // participant keyed; provides array of possible opponents
+  uniquePairings, // hashes of all possible participantId pairings
+  maxIterations,
+  deltaObjects, // difference in rating between paired participants
+  valueObjects, // calculated value of a pairing of participants, used for sorting pairings
+  eventType,
+}) {
+  // modify valueObjects by ratings ratingsDifference squared
+  // update deltaObjects to reflect the current difference between participant's ratings
   uniquePairings.forEach((pairing) => {
-    const ratings = pairing
-      .split('|')
-      .map((participantId) => adHocRatings[participantId] || DEFAULT_RATING);
-    const differential = Math.abs(ratings[0] - ratings[1]) + 1;
+    const ratings = getSideRatings({
+      tournamentParticipants,
+      adHocRatings,
+      eventType,
+      pairing,
+    });
+
+    const ratingsDifference = Math.abs(ratings[0] - ratings[1]) + 1;
     deltaObjects[pairing] = Math.abs(ratings[0] - ratings[1]);
+
     if (!valueObjects[pairing]) valueObjects[pairing] = 0;
-    valueObjects[pairing] += Math.pow(differential, 2);
+    valueObjects[pairing] += Math.pow(ratingsDifference, 2);
   });
 
-  const rankedPairings = uniquePairings
+  /**
+   * valueSortedPairings are uniquePairings sorted by the value of the pairings, lowest to highest
+   */
+  const valueSortedPairings = uniquePairings
     .map((pairing) => ({ pairing, value: valueObjects[pairing] }))
     .sort((a, b) => a.value - b.value);
+
+  /**
+   * pairingValues is keyed by participantId and provides a value-sorted array of pairings for each participantId
+   * 'actorId': [
+        { opponent: 'potentialId1', value: 1 },
+        { opponent: 'potentialId2', value: 1 },
+   */
   const { pairingValues } = getParticipantPairingValues({
     possiblePairings,
     valueObjects,
   });
 
-  const { participantIdPairings } = generateCandidate({
-    rankedPairings,
+  const { candidate, candidatesCount, iterations } = generateCandidate({
+    valueSortedPairings,
+    maxIterations,
     pairingValues,
     deltaObjects,
-    candidateGoal: CANDIDATE_GOAL,
-    actorDivisor: ACTOR_DIVISOR,
   });
 
-  return { participantIdPairings };
-}
+  const { participantIdPairings } = candidate;
 
-function getDoublesPairings({ roundMatchUps }) {
-  return { matchUps: roundMatchUps };
+  return { candidatesCount, participantIdPairings, iterations };
 }
 
 function getPairingsData({ participantIds }) {
@@ -168,7 +185,7 @@ function getPairingsData({ participantIds }) {
       (id) => id !== participantId
     );
     possiblePairings[participantId].forEach((id) => {
-      const pairing = matchupHash(id, participantId);
+      const pairing = pairingHash(id, participantId);
       if (!uniquePairings.includes(pairing)) uniquePairings.push(pairing);
     });
   });
@@ -180,18 +197,13 @@ function getPairingsData({ participantIds }) {
   return { uniquePairings, possiblePairings, deltaObjects };
 }
 
-function getEncounters({ matchUps, positionAssignments }) {
+function getEncounters({ matchUps }) {
   let encounters = [];
 
   for (const matchUp of matchUps) {
-    const participantIds = positionAssignments
-      .filter(({ drawPosition }) =>
-        matchUp.drawPositions.includes(drawPosition)
-      )
-      .map(getParticipantId)
-      .filter(Boolean);
+    const participantIds = matchUp.sides.map(getParticipantId);
     if (participantIds.length === 2) {
-      const pairing = matchupHash(...participantIds);
+      const pairing = pairingHash(...participantIds);
       if (!encounters.includes(pairing)) encounters.push(pairing);
     }
   }
@@ -212,12 +224,41 @@ function getParticipantPairingValues({ possiblePairings, valueObjects }) {
   }
 
   function pairingValue(participantId, opponent) {
-    let key = matchupHash(participantId, opponent);
+    let key = pairingHash(participantId, opponent);
     return { opponent, value: valueObjects[key] };
   }
   return { pairingValues };
 }
 
-function matchupHash(id1, id2) {
-  return [id1, id2].sort().join('|');
+/*
+function uniqueDoublesPairings({ pairs, team_ids }) {
+  if (!pairs && team_ids && Array.isArray(team_ids))
+    pairs = team_ids.map((t) => ({ id: t }));
+  if (!Array.isArray(pairs)) return [];
+
+  let pairPairings = {};
+
+  let uniquePairPairings = [];
+  pairs.map(getPairPairings).forEach(attemptPush);
+
+  function attemptPush(pm) {
+    pm.forEach((m) => {
+      if (uniquePairPairings.indexOf(m) < 0) uniquePairPairings.push(m);
+    });
+  }
+
+  let team_value_objects = Object.assign(
+    {},
+    ...uniquePairPairings.map((mu) => ({ [mu]: 0 }))
+  );
+
+  return { uniquePairPairings, pairPairings, team_value_objects };
+
+  function getPairPairings(pair) {
+    let opponents = pairs.filter((p) => p.id !== pair.id);
+    pairPairings[pair.id] = opponents.map((o) => o.id);
+    let matchups = opponents.map((o) => pairingHash(o.id, pair.id));
+    return matchups;
+  }
 }
+*/

@@ -1,4 +1,3 @@
-import { getAvailableAdHocParticipantIds } from '../queryGovernor/positionActions/getAvailableAdHocParticipantIds';
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpGovernor/modifyRoundRobinMatchUpsStatus';
 import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
@@ -16,6 +15,7 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
 import { clearDrawPosition } from './positionClear';
+import { isAdHoc } from '../queryGovernor/isAdHoc';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -25,6 +25,7 @@ import {
   INVALID_DRAW_POSITION_FOR_SEEDING,
   DRAW_POSITION_ACTIVE,
   MISSING_PARTICIPANT_ID,
+  INVALID_MATCHUP,
 } from '../../../constants/errorConditionConstants';
 
 export function assignDrawPosition({
@@ -50,6 +51,8 @@ export function assignDrawPosition({
 
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { error };
+
+  if (isAdHoc({ drawDefinition, structure })) return { error: INVALID_MATCHUP };
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { seedAssignments } = getStructureSeedAssignments({
@@ -79,19 +82,9 @@ export function assignDrawPosition({
   if (!positionAssignment) return { error: INVALID_DRAW_POSITION };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
-  const isAdHoc =
-    !structure?.structures &&
-    !structure?.matchUps.find(({ roundPosition }) => !!roundPosition);
-
-  // in adHoc structures participants may have a drawPosition assigned in each round
-  // whereas in other types of structures they may appear only once in positionAssignments
-  const participantAlreadyAssigned = isAdHoc
-    ? !getAvailableAdHocParticipantIds({
-        drawDefinition,
-        drawPosition,
-        structure,
-      }).includes(participantId)
-    : positionAssignments.map(getParticipantId).includes(participantId);
+  const participantAlreadyAssigned = positionAssignments
+    .map(getParticipantId)
+    .includes(participantId);
 
   if (participantAlreadyAssigned) {
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };

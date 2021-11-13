@@ -1,4 +1,3 @@
-import { getAvailableAdHocParticipantIds } from './getAvailableAdHocParticipantIds';
 import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
 import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getParticipantId } from '../../../../global/functions/extractors';
@@ -114,10 +113,6 @@ export function getValidAssignmentActions({
     return { validAssignmentActions };
   }
 
-  const isAdHoc =
-    !structure?.structures &&
-    !structure?.matchUps.find(({ roundPosition }) => !!roundPosition);
-
   if (unfilledPositions.includes(drawPosition) || isByePosition) {
     let availableParticipantIds;
 
@@ -131,12 +126,6 @@ export function getValidAssignmentActions({
       availableParticipantIds = validToAssign.map(
         (assignment) => assignment.participantId
       );
-    } else if (isAdHoc) {
-      availableParticipantIds = getAvailableAdHocParticipantIds({
-        drawDefinition,
-        drawPosition,
-        structure,
-      });
     } else {
       // otherwise look for any unplaced entries
       // 1) unassigned DIRECT_ACCEPTANCE or WILDCARD structure entries

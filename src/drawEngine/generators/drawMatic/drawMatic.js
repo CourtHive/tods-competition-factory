@@ -1,7 +1,8 @@
 import { participantScaleItem } from '../../../tournamentEngine/accessors/participantScaleItem';
-import { stageOrder } from '../../../constants/drawDefinitionConstants';
+import { AD_HOC, stageOrder } from '../../../constants/drawDefinitionConstants';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { generateDrawMaticRound } from './generateDrawMaticRound';
+import { isAdHoc } from '../../governors/queryGovernor/isAdHoc';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -9,6 +10,7 @@ import { RATING } from '../../../constants/scaleConstants';
 import {
   INVALID_DRAW_DEFINITION,
   INVALID_PARTICIPANT_ID,
+  INVALID_VALUES,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
@@ -29,13 +31,23 @@ export function drawMatic({
   restrictEntryStatus,
   drawDefinition,
   participantIds,
+  maxIterations,
   structureId,
   matchUpIds,
   scaleName, // custom rating name to seed dynamic ratings
   event,
 }) {
-  if (typeof drawDefinition !== 'object')
+  if (
+    typeof drawDefinition !== 'object' ||
+    (drawDefinition.drawType && drawDefinition.drawType !== AD_HOC)
+  )
     return { error: INVALID_DRAW_DEFINITION };
+
+  if (
+    !Array.isArray(drawDefinition.entries) ||
+    (participantIds && !Array.isArray(participantIds))
+  )
+    return { error: INVALID_VALUES };
 
   const { eventType } = event || {};
 
@@ -51,31 +63,29 @@ export function drawMatic({
 
   if (participantIds) {
     // ensure all participantIds are in drawDefinition.entries
-    const invalidParticipantId = !!participantIds.find((participantId) =>
-      enteredParticipantIds.includes(participantId)
+    const invalidParticipantIds = participantIds.filter(
+      (participantId) => !enteredParticipantIds.includes(participantId)
     );
 
-    if (invalidParticipantId)
+    if (invalidParticipantIds?.length)
       return {
         error: INVALID_PARTICIPANT_ID,
-        participantId: invalidParticipantId,
+        invalidParticipantIds,
       };
   } else {
     participantIds = enteredParticipantIds;
   }
 
-  const isAdHoc = (structure) =>
-    !structure?.structures &&
-    !structure?.matchUps.find(({ roundPosition }) => !!roundPosition);
-
-  // if no structureId is specified find the latest stage which has matchUps
+  // if no structureId is specified find the latest AD_HOC stage which has matchUps
   if (!structureId) {
     const targetStructure = drawDefinition.structures
-      ?.find((structure) => structure.stageSequence === 1)
-      .recuce((targetStructure, structure) => {
+      ?.filter((structure) => structure.stageSequence === 1)
+      ?.reduce((targetStructure, structure) => {
         const orderNumber = stageOrder[structure.stage];
-        return isAdHoc(structure) &&
-          orderNumber > stageOrder[targetStructure.stage]
+        const structureIsAdHoc = isAdHoc({ drawDefinition, structure });
+
+        return structureIsAdHoc &&
+          orderNumber > (stageOrder[targetStructure?.stage] || 1)
           ? structure
           : targetStructure;
       }, undefined);
@@ -86,7 +96,10 @@ export function drawMatic({
     (structure) => structure.structureId === structureId
   );
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
-  if (!isAdHoc(structure)) return { error: INVALID_DRAW_DEFINITION };
+
+  // an AD_HOC structure is one that has no child structures and in which no matchUps have roundPosition
+  const structureIsAdHoc = isAdHoc({ drawDefinition, structure });
+  if (!structureIsAdHoc) return { error: INVALID_DRAW_DEFINITION };
 
   const adHocRatings = {};
   for (const participantId of participantIds) {
@@ -102,10 +115,11 @@ export function drawMatic({
     if (scaleValue) adHocRatings[participantId] = scaleValue;
   }
 
-  const { matchUps } = generateDrawMaticRound({
+  const { candidatesCount, iterations } = generateDrawMaticRound({
     tournamentParticipants,
     drawDefinition,
     participantIds,
+    maxIterations,
     adHocRatings,
     matchUpIds,
     structureId,
@@ -113,7 +127,7 @@ export function drawMatic({
     eventType,
   });
 
-  return { ...SUCCESS, matchUps };
+  return { ...SUCCESS, candidatesCount, iterations };
 }
 
 function getScaleValue({ scaleName = 'dynamic', eventType, participant }) {
