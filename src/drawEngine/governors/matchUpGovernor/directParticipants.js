@@ -4,6 +4,7 @@ import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { directWinner } from './directWinner';
 import { directLoser } from './directLoser';
+import { isAdHoc } from '../queryGovernor/isAdHoc';
 
 import { COMPLETED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -34,8 +35,10 @@ export function directParticipants(params) {
   } = params;
 
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
+  const isAdHocMatchUp = isAdHoc({ drawDefinition, structure });
   const validToScore =
     isCollectionMatchUp ||
+    isAdHocMatchUp ||
     drawPositionsAssignedParticipantIds({ structure, matchUp });
 
   if (!validToScore) {
@@ -76,6 +79,10 @@ export function directParticipants(params) {
     );
     drawPositions = matchUpTie?.drawPositions;
     if (!dualWinningSideChange) return { ...SUCCESS };
+  }
+
+  if (isAdHocMatchUp) {
+    return { ...SUCCESS };
   }
 
   if (drawPositions) {
