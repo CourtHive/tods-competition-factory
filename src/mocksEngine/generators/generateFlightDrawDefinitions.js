@@ -18,6 +18,7 @@ import {
   MAIN,
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../constants/drawDefinitionConstants';
+import { drawMatic } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/drawMatic';
 
 export function generateFlightDrawDefinitions({
   matchUpStatusProfile,
@@ -108,6 +109,14 @@ export function generateFlightDrawDefinitions({
         // since this is mock generation, don't throw error for duplicate drawId
         if (result.error === DRAW_ID_EXISTS) break;
         if (result.error) return result;
+
+        if (drawProfile.drawMatic) {
+          const result = drawMatic({
+            tournamentRecord,
+            drawDefinition,
+          });
+          if (result.error) return result;
+        }
 
         if (drawProfile?.withPlayoffs) {
           const structureId = drawDefinition.structures[0].structureId;
