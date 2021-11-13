@@ -11,6 +11,7 @@ import {
 import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { AD_HOC, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 import {
+  CANNOT_REMOVE_PARTICIPANTS,
   // DRAW_POSITION_ACTIVE,
   // EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   INVALID_VALUES,
@@ -21,7 +22,9 @@ import {
   ABANDONED,
   CANCELLED,
   DOUBLE_WALKOVER,
+  TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
+import { SCORE } from '../../../constants/matchUpActionConstants';
 
 it('can generate AD_HOC drawDefinitions, add and delete matchUps', () => {
   const {
@@ -255,8 +258,31 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   const { completedMatchUps } = tournamentEngine.tournamentMatchUps();
   expect(completedMatchUps[0].matchUpId).toEqual(firstRoundMatchUp.matchUpId);
 
+  result = tournamentEngine.matchUpActions(firstRoundMatchUp);
+  const actionTypes = result.validActions.map(({ type }) => type);
+  expect(actionTypes.includes(SCORE)).toEqual(true);
+
   // attempt to remove participantId from one side of a matchUp with outcome
-  payload.participantId = secondParticipantId;
+  payload.participantId = undefined;
   result = tournamentEngine[method](payload);
-  console.log(result);
+  expect(result.error).toEqual(CANNOT_REMOVE_PARTICIPANTS);
+
+  // now remove outcomes
+  ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
+    winningSide: undefined,
+    matchUpStatus: TO_BE_PLAYED,
+  }));
+
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: firstRoundMatchUp.matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  // attempt to remove participantId from one side of a matchUp
+  // expect success as there is no outcome
+  payload.participantId = undefined;
+  result = tournamentEngine[method](payload);
+  expect(result.success).toEqual(true);
 });
