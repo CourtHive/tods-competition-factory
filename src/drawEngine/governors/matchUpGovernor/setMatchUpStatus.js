@@ -122,14 +122,6 @@ export function setMatchUpStatus(params) {
   // Check validity of matchUpStatus considering assigned drawPositions -------
   const assignedDrawPositions = inContextMatchUp.drawPositions?.filter(Boolean);
 
-  if (
-    matchUpStatus &&
-    particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) &&
-    (!assignedDrawPositions || assignedDrawPositions?.length < 2)
-  ) {
-    return { error: INVALID_MATCHUP_STATUS };
-  }
-
   if (matchUp.matchUpType === TEAM) {
     // do not direclty set team score... unless walkover/default/double walkover/Retirement
     return { error: 'DIRECT SCORING of TEAM matchUp not implemented' };
@@ -146,6 +138,18 @@ export function setMatchUpStatus(params) {
 
   const structureId = inContextMatchUp.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
+
+  const bothSideParticipants =
+    matchUp.sides?.map((side) => side.participantId).filter(Boolean).length ===
+      2 || assignedDrawPositions?.length === 2;
+
+  if (
+    matchUpStatus &&
+    particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) &&
+    !bothSideParticipants
+  ) {
+    return { error: INVALID_MATCHUP_STATUS };
+  }
 
   Object.assign(params, {
     inContextDrawMatchUps,
