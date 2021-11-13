@@ -1,15 +1,16 @@
-import { addEvent } from './addEvent';
-import { deleteEvents } from './deleteEvent';
+import { assignMatchUpSideParticipant } from './drawDefinitions/assignMatchUpSideParticipant';
+import { assignDrawPosition } from './drawDefinitions/assignDrawPosition';
+import { addDrawDefinition } from './drawDefinitions/addDrawDefinition';
 import { addDrawEntries } from './drawDefinitions/addDrawEntries';
-import { addEventEntries } from './entries/addEventEntries';
+import { addEventEntryPairs } from './entries/addEventEntryPairs';
+import { removeEventEntries } from './entries/removeEventEntries';
+import { checkValidEntries } from './entries/checkValidEntries';
 import { destroyPairEntry } from './entries/destroyPairEntry';
 import { promoteAlternate } from './entries/promoteAlternate';
-import { addEventEntryPairs } from './entries/addEventEntryPairs';
-import { checkValidEntries } from './entries/checkValidEntries';
-import { addDrawDefinition } from './drawDefinitions/addDrawDefinition';
-import { removeEventEntries } from './entries/removeEventEntries';
-import { assignDrawPosition } from './drawDefinitions/assignDrawPosition';
 import { assignSeedPositions } from './assignSeedPositions';
+import { addEventEntries } from './entries/addEventEntries';
+import { deleteEvents } from './deleteEvent';
+import { addEvent } from './addEvent';
 import {
   automatedPositioning,
   automatedPlayoffPositioning,
@@ -153,6 +154,7 @@ const eventGovernor = {
   assignDrawPosition,
   assignSeedPositions,
   assignDrawPositionBye,
+  assignMatchUpSideParticipant,
   swapDrawPositionAssignments,
   removeDrawPositionAssignment,
   alternateDrawPositionAssignment,
