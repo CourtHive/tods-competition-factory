@@ -340,6 +340,7 @@ export function getAllStructureMatchUps({
         stageSequence,
         drawPositions,
         matchUpStatus,
+        isRoundRobin,
         matchUpTieId,
         preFeedRound,
         roundFactor,
