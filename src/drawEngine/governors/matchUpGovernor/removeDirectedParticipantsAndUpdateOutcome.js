@@ -8,6 +8,7 @@ import { findStructure } from '../../getters/findStructure';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { instanceCount } from '../../../utilities';
+import { isAdHoc } from '../queryGovernor/isAdHoc';
 
 import { MISSING_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
@@ -28,15 +29,45 @@ export function removeDirectedParticipants(params) {
   } = params;
 
   const isCollectionMatchUp = Boolean(params.matchUp.collectionId);
+  const isAdHocMatchUp = isAdHoc({ drawDefinition, structure });
 
   // targetData will have team matchUp when params.matchUp is a collectionMatchUp
   const { drawPositions, winningSide } = targetData.matchUp || {};
-  if (!drawPositions) return { error: MISSING_DRAW_POSITIONS };
+  if (!isAdHocMatchUp && !drawPositions) {
+    return { error: MISSING_DRAW_POSITIONS };
+  }
 
   const {
     targetLinks: { loserTargetLink, winnerTargetLink },
     targetMatchUps: { loserMatchUp, winnerMatchUp },
   } = targetData;
+
+  const result = modifyMatchUpScore({
+    ...params,
+    matchUpStatus: matchUpStatus || TO_BE_PLAYED,
+    removeWinningSide: true,
+  });
+  if (result.error) return result;
+
+  if (isCollectionMatchUp) {
+    const { matchUpTieId } = params;
+    const { removeWinningSide } = updateTieMatchUpScore({
+      matchUpId: matchUpTieId,
+      drawDefinition,
+      structure,
+      event,
+    });
+    if (!dualWinningSideChange && !removeWinningSide) return { ...SUCCESS };
+  }
+
+  if (isAdHocMatchUp) return { ...SUCCESS };
+
+  const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
+    inContext: true,
+    drawDefinition,
+    matchUpsMap,
+    structure,
+  });
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
 
@@ -57,31 +88,6 @@ export function removeDirectedParticipants(params) {
       },
       { winnerParticipantId: undefined, loserParticipantId: undefined }
     );
-
-  const result = modifyMatchUpScore({
-    ...params,
-    matchUpStatus: matchUpStatus || TO_BE_PLAYED,
-    removeWinningSide: true,
-  });
-  if (result.error) return result;
-
-  if (isCollectionMatchUp) {
-    const { matchUpTieId } = params;
-    const { removeWinningSide } = updateTieMatchUpScore({
-      matchUpId: matchUpTieId,
-      drawDefinition,
-      structure,
-      event,
-    });
-    if (!dualWinningSideChange && !removeWinningSide) return { ...SUCCESS };
-  }
-
-  const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
-    inContext: true,
-    drawDefinition,
-    matchUpsMap,
-    structure,
-  });
 
   const drawPositionMatchUps = sourceMatchUps.filter((matchUp) =>
     matchUp.drawPositions.includes(loserDrawPosition)
