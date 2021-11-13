@@ -111,11 +111,15 @@ export function generateFlightDrawDefinitions({
         if (result.error) return result;
 
         if (drawProfile.drawMatic) {
-          const result = drawMatic({
-            tournamentRecord,
-            drawDefinition,
-          });
-          if (result.error) return result;
+          const roundsCount = drawProfile.roundsCount || 1;
+          for (const roundNumber of generateRange(1, roundsCount + 1)) {
+            const result = drawMatic({
+              tournamentRecord,
+              drawDefinition,
+              roundNumber, // this is not a real parameter
+            });
+            if (result.error) return result;
+          }
         }
 
         if (drawProfile?.withPlayoffs) {

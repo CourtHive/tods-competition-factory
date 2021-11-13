@@ -75,13 +75,12 @@ export function generateDrawMaticRound({
     adHocRatings,
     deltaObjects,
     valueObjects,
+    eventType,
     structure,
   };
 
   const { candidatesCount, participantIdPairings, iterations } =
-    eventType === DOUBLES
-      ? getDoublesPairings(params)
-      : getSinglesPairings(params);
+    getPairings(params);
 
   if (!candidatesCount) return { error: 'No Candidates' };
 
@@ -97,20 +96,48 @@ export function generateDrawMaticRound({
   return { ...SUCCESS, candidatesCount, iterations };
 }
 
-function getSinglesPairings({
+function getSideRatings({
+  tournamentParticipants,
+  adHocRatings,
+  eventType,
+  pairing,
+}) {
+  const ratings = pairing.split('|').map((participantId) => {
+    if (eventType === DOUBLES) {
+      const individualParticipantIds = tournamentParticipants?.find(
+        (participant) => participant.participantId === participantId
+      )?.individualParticipantIds;
+      return !individualParticipantIds
+        ? DEFAULT_RATING * 2
+        : individualParticipantIds.map(
+            (participantId) => adHocRatings[participantId || DEFAULT_RATING]
+          );
+    } else {
+      return adHocRatings[participantId] || DEFAULT_RATING;
+    }
+  });
+  return ratings;
+}
+
+function getPairings({
+  tournamentParticipants,
   adHocRatings = {},
   possiblePairings, // participant keyed; provides array of possible opponents
   uniquePairings, // hashes of all possible participantId pairings
   maxIterations,
   deltaObjects, // difference in rating between paired participants
   valueObjects, // calculated value of a pairing of participants, used for sorting pairings
+  eventType,
 }) {
   // modify valueObjects by ratings ratingsDifference squared
   // update deltaObjects to reflect the current difference between participant's ratings
   uniquePairings.forEach((pairing) => {
-    const ratings = pairing
-      .split('|')
-      .map((participantId) => adHocRatings[participantId] || DEFAULT_RATING);
+    const ratings = getSideRatings({
+      tournamentParticipants,
+      adHocRatings,
+      eventType,
+      pairing,
+    });
 
     const ratingsDifference = Math.abs(ratings[0] - ratings[1]) + 1;
     deltaObjects[pairing] = Math.abs(ratings[0] - ratings[1]);
@@ -147,18 +174,6 @@ function getSinglesPairings({
   const { participantIdPairings } = candidate;
 
   return { candidatesCount, participantIdPairings, iterations };
-}
-
-function getDoublesPairings({
-  // adHocRatings = {},
-  // possiblePairings, // participant keyed; provides array of possible opponents
-  uniquePairings, // hashes of all possible participantId pairings
-  // maxIterations,
-  // deltaObjects, // difference in rating between paired participants
-  // valueObjects, // calculated value of a pairing of participants, used for sorting pairings
-}) {
-  console.log({ uniquePairings });
-  return {};
 }
 
 function getPairingsData({ participantIds }) {
