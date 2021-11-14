@@ -10,7 +10,7 @@ export function analyzeDraws(tournamentRecord) {
     noPositionsAssigned: 0, // no positions assigned
     positionsNoOutcomes: 0, // all positions assigned and no outcomes
     matchPlayDraws: 0, // only first round has active matchUps; some unassigned positions
-    canBeTrimmed: 0, // partially assigned positions with outcomes => can be reconfigured
+    canBePruned: 0, // partially assigned positions with outcomes => drawSizes can be reduced
     draws: [],
   };
 
@@ -69,12 +69,12 @@ export function analyzeDraws(tournamentRecord) {
       mainStructure.activeRounds.length === 1 &&
       parseInt(mainStructure.activeRounds[0]) === 1;
 
-    const canBeTrimmed =
+    const canBePruned =
       mainStructure.activeRounds.length &&
       mainStructure.roundProfile[1].inActiveCount;
 
     if (isMatchPlay) drawsAnalysis.matchPlayDraws += 1;
-    if (canBeTrimmed) drawsAnalysis.canBeTrimmed += 1;
+    if (canBePruned) drawsAnalysis.canBePruned += 1;
 
     drawsAnalysis.draws.push({
       drawId: drawDefinition.drawId,
