@@ -1,10 +1,13 @@
-import { chunkArray, intersection, numericSort } from '../../../utilities';
-
-import { TEAM } from '../../../constants/matchUpTypes';
-import { definedAttributes } from '../../../utilities/objects';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { chunkArray, intersection, numericSort } from '../../../utilities';
+import { definedAttributes } from '../../../utilities/objects';
+
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 
 export function getRoundMatchUps({ matchUps = [] }) {
+  if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
+
   // create an array of arrays of matchUps grouped by roundNumber
   const roundMatchUpsArray = matchUps
     .reduce((roundNumbers, matchUp) => {

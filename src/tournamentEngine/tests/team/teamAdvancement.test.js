@@ -49,8 +49,8 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
   tournamentEngine.setState(tournamentRecord);
 
   // check status as dual match (only 2 teams, only one event, only one draw structure)
-  const { analysis } = tournamentEngine.analyzeTournament();
-  expect(analysis.isDual).toEqual(scenario.drawSize === 2);
+  const result = tournamentEngine.analyzeTournament();
+  expect(result.analysis.isDual).toEqual(scenario.drawSize === 2);
 
   let { matchUps: firstRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({

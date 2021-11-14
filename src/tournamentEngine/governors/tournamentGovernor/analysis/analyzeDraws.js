@@ -24,7 +24,7 @@ export function analyzeDraws(tournamentRecord) {
     const structureData = structures.map((structure) => {
       const { stage, stageSequence, structureId } = structure;
       const orderNumber = stageOrder[stage];
-      const inContextStructureMatchUps = structureActiveDrawPositions({
+      const { inContextStructureMatchUps } = structureActiveDrawPositions({
         drawDefinition,
         structure,
       });
