@@ -2,6 +2,7 @@ import { chunkArray, intersection, numericSort } from '../../../utilities';
 
 import { TEAM } from '../../../constants/matchUpTypes';
 import { definedAttributes } from '../../../utilities/objects';
+import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 
 export function getRoundMatchUps({ matchUps = [] }) {
   // create an array of arrays of matchUps grouped by roundNumber
@@ -56,8 +57,15 @@ export function getRoundMatchUps({ matchUps = [] }) {
     {},
     ...Object.keys(roundMatchUps).map((roundNumber) => {
       const matchUpsCount = roundMatchUps[roundNumber]?.length;
+      const inactiveCount = roundMatchUps[roundNumber]?.filter(
+        (matchUp) =>
+          !completedMatchUpStatuses.includes(matchUp.matchUpStatus) &&
+          !matchUp.score?.scoreStringSide1
+      )?.length;
+      const inactiveRound = matchUpsCount && matchUpsCount === inactiveCount;
+
       maxMatchUpsCount = Math.max(maxMatchUpsCount, matchUpsCount);
-      return { [roundNumber]: { matchUpsCount } };
+      return { [roundNumber]: { matchUpsCount, inactiveCount, inactiveRound } };
     })
   );
 
