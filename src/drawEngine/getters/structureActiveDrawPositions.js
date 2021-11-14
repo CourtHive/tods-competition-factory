@@ -7,12 +7,20 @@ import { findStructure } from './findStructure';
 
 // active drawPositions occur in activeMatchUps...
 // ...which have a winningSide, a scoreString, or a completed matchUpStatus
-export function structureActiveDrawPositions({ drawDefinition, structureId }) {
+export function structureActiveDrawPositions({
+  drawDefinition,
+  structureId,
+  structure,
+}) {
   const matchUpFilters = { isCollectionMatchUp: false };
-  const { structure, error } = findStructure({ drawDefinition, structureId });
-  if (error) return { error };
 
-  const { matchUps } = getAllStructureMatchUps({
+  if (!structure) {
+    const result = findStructure({ drawDefinition, structureId });
+    if (result.error) return result;
+    structure = result.structure;
+  }
+
+  const { matchUps: inContextStructureMatchUps } = getAllStructureMatchUps({
     inContext: true,
     drawDefinition,
     matchUpFilters,
@@ -22,19 +30,23 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   // first collect all drawPositions for the structure
   const drawPositions = unique(
     []
-      .concat(...matchUps.map((matchUp) => matchUp.drawPositions || []))
+      .concat(
+        ...inContextStructureMatchUps.map(
+          (matchUp) => matchUp.drawPositions || []
+        )
+      )
       .filter(Boolean)
   ).sort(numericSort);
 
   // get a mapping of all matchUpIds to dependent matchUpIds
   const { matchUpDependencies } = getMatchUpDependencies({
+    matchUps: inContextStructureMatchUps,
     drawIds: [drawDefinition.drawId],
     drawDefinition,
-    matchUps,
   });
 
   // determine which matchUps are active
-  const activeMatchUps = matchUps.filter(isActiveMatchUp);
+  const activeMatchUps = inContextStructureMatchUps.filter(isActiveMatchUp);
 
   // create an array of all matchUpIds active because they are dependent
   const activeDependentMatchUpIds = unique(
@@ -49,7 +61,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   );
 
   const activeDrawPositions = unique(
-    matchUps
+    inContextStructureMatchUps
       .map(({ matchUpId, drawPositions }) =>
         activeDependentMatchUpIds.includes(matchUpId) ? drawPositions : []
       )
@@ -74,6 +86,8 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
 
   return {
     allDrawPositions: drawPositions,
+    inContextStructureMatchUps,
+    activeDependentMatchUpIds,
     inactiveDrawPositions,
     positionAssignments,
     activeDrawPositions,
