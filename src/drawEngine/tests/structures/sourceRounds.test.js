@@ -85,12 +85,11 @@ it('can correctly derive source rounds for final positions in FIRST_MATCH_LOSER_
 
   const { drawDefinition } = drawEngine.getState();
 
-  const {
-    structures: [
-      { structureId: mainStructureId },
-      { structureId: consolationStructureId },
-    ],
-  } = result;
+  const { structures } = result;
+  const [
+    { structureId: mainStructureId },
+    { structureId: consolationStructureId },
+  ] = structures;
 
   let { playoffSourceRounds, playoffPositionsReturned } = getSourceRounds({
     drawDefinition,

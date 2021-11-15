@@ -11,19 +11,19 @@ import { SUCCESS } from '../../constants/resultConstants';
 
 export function feedInChampionship(params = {}) {
   const {
-    uuids,
-    feedRounds,
-    matchUpType,
-    stage = MAIN,
-    structureName,
-    drawDefinition,
-    feedsFromFinal,
-    stageSequence = 1,
     finishingPositionOffset,
+    stageSequence = 1,
+    feedsFromFinal,
     staggeredEntry,
+    drawDefinition,
+    structureName,
+    stage = MAIN,
+    matchUpType,
     feedPolicy,
+    feedRounds,
     idPrefix,
     isMock,
+    uuids,
     fmlc,
   } = params;
 
@@ -54,31 +54,31 @@ export function feedInChampionship(params = {}) {
   const baseDrawSize = drawSize / 2;
   const { matchUps: consolationMatchUps, roundsCount } = feedInMatchUps({
     finishingPositionOffset: baseDrawSize,
+    idPrefix: idPrefix && `${idPrefix}-c`,
     isConsolation: true,
     feedsFromFinal,
     baseDrawSize,
     matchUpType,
     feedRounds,
-    idPrefix: idPrefix && `${idPrefix}-c`,
     isMock,
     uuids,
     fmlc,
   });
 
   const consolationStructure = structureTemplate({
-    matchUpType,
-    stageSequence: 1,
-    stage: CONSOLATION,
+    matchUps: consolationMatchUps,
     structureId: uuids?.pop(),
     structureName: CONSOLATION,
-    matchUps: consolationMatchUps,
+    stage: CONSOLATION,
+    stageSequence: 1,
+    matchUpType,
   });
 
   drawDefinition.structures.push(consolationStructure);
 
   const links = feedInLinks({
-    mainStructure,
     consolationStructure,
+    mainStructure,
     roundsCount,
     feedPolicy,
     fmlc,
@@ -88,7 +88,7 @@ export function feedInChampionship(params = {}) {
 
   return Object.assign(
     {
-      structures: [mainStructure, consolationMatchUps],
+      structures: [mainStructure, consolationStructure],
       links: drawDefinition.links,
     },
     { ...SUCCESS }
