@@ -106,32 +106,6 @@ it('can generate qualifying draw based on desired qualifyingPositions', () => {
   );
 });
 
-it('can generate qualifying draw based on drawType and qualifyingPositions', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({
-    qualifyingStructures: [{ qualifyingPositions: 8 }],
-    drawType: SINGLE_ELIMINATION,
-  });
-  const { matchUps } = structure;
-  const matchUpsCount = matchUps && matchUps.length;
-  expect(matchUpsCount).toEqual(8);
-});
-
-it('can generate qualifying draw based drawType and qualifyingRound', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({
-    qualifyingStructures: [{ qualifyingRound: 1 }],
-    drawType: SINGLE_ELIMINATION,
-  });
-  const { matchUps } = structure;
-  const matchUpsCount = matchUps && matchUps.length;
-  expect(matchUpsCount).toEqual(8);
-});
-
 it('can generate first matchUp loser consolation', () => {
   reset();
   initialize();

@@ -10,7 +10,7 @@ import {
 import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 export function generateEliminationWithQualifying({
-  qualifyingStructures,
+  qualifyingProfiles,
   qualifyingDrawSize,
   qualifyingPositions,
   qualifyingSeedsCount = 0,
@@ -38,7 +38,7 @@ export function generateEliminationWithQualifying({
   drawEngine.generateDrawType({
     stage: QUALIFYING,
     drawType: SINGLE_ELIMINATION,
-    qualifyingStructures,
+    qualifyingProfiles,
     qualifyingPositions,
   });
 

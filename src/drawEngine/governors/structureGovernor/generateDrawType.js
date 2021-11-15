@@ -2,6 +2,7 @@ import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserCons
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { treeMatchUps, feedInMatchUps } from '../../generators/eliminationTree';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
+import { generateQualifyingStructures } from './generateQualifyingStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { feedInChampionship } from '../../generators/feedInChampionShip';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
@@ -21,7 +22,7 @@ import {
 // prettier-ignore
 import {
   MAIN, FICQF, FICSF, MFIC, AD_HOC, CURTIS, FICR16, COMPASS,
-  PLAY_OFF, OLYMPIC, FEED_IN, QUALIFYING, ROUND_ROBIN,
+  PLAY_OFF, OLYMPIC, FEED_IN, ROUND_ROBIN,
   COMPASS_ATTRIBUTES, OLYMPIC_ATTRIBUTES,
   SINGLE_ELIMINATION, DOUBLE_ELIMINATION,
   FIRST_MATCH_LOSER_CONSOLATION,
@@ -53,7 +54,7 @@ export function generateDrawType(params = {}) {
     drawType = SINGLE_ELIMINATION,
     stageSequence = 1,
     drawDefinition,
-    staggeredEntry,
+    staggeredEntry, // optional - specifies main structure FEED_IN for drawTypes CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIPS, FMLC
     structureName,
     goesTo = true,
     stage = MAIN,
@@ -106,6 +107,19 @@ export function generateDrawType(params = {}) {
   const structureCount = stageStructures.length;
   if (structureCount >= sequenceLimit) return { error: STAGE_SEQUENCE_LIMIT };
 
+  const qualifyingResult =
+    params.qualifyingProfiles?.length &&
+    generateQualifyingStructures({
+      qualifyingProfiles: params.qualifyingProfiles,
+      idPrefix: params.idPrefix,
+      matchUpType,
+      isMock,
+      uuids,
+    });
+  if (qualifyingResult?.error) return qualifyingResult;
+  if (qualifyingResult?.structures)
+    drawDefinition.structures.push(...qualifyingResult.structures);
+
   const generators = {
     [AD_HOC]: () => {
       const structure = structureTemplate({
@@ -122,22 +136,27 @@ export function generateDrawType(params = {}) {
       return Object.assign({ structure }, SUCCESS);
     },
     [SINGLE_ELIMINATION]: () => {
-      const qualifyingStructures = params.qualifyingStructures;
+      /*
+      const qualifyingProfiles = params.qualifyingProfiles;
       const { qualifyingRound, qualifyingPositions } =
-        qualifyingStructures?.length ? qualifyingStructures.pop() : {};
+        qualifyingProfiles?.length ? qualifyingProfiles.pop() : {};
+
       const { matchUps, roundLimit: derivedRoundLimit } = treeMatchUps({
         ...params,
         qualifyingRound,
         qualifyingPositions,
       });
       const roundLimit = stage === QUALIFYING && derivedRoundLimit;
+      */
+
+      const { matchUps } = treeMatchUps(params);
       const structure = structureTemplate({
         structureName: structureName || stage,
         structureId: uuids?.pop(),
-        qualifyingRound,
+        // qualifyingRound,
         stageSequence,
         matchUpType,
-        roundLimit,
+        // roundLimit,
         matchUps,
         stage,
       });

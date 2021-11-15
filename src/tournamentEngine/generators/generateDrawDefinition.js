@@ -46,7 +46,7 @@ export function generateDrawDefinition(params) {
     seedAssignmentProfile, // mainly used by mocksEngine for scenario testing
     playoffMatchUpFormat,
     seedByRanking = true,
-    qualifyingStructures,
+    qualifyingProfiles,
     seededParticipants,
     policyDefinitions,
     seedingScaleName,
@@ -183,7 +183,7 @@ export function generateDrawDefinition(params) {
     finishingPositionNaming,
     goesTo: params.goesTo,
     playoffMatchUpFormat,
-    qualifyingStructures,
+    qualifyingProfiles,
     structureOptions,
     drawDefinition,
     seedingProfile,

@@ -97,7 +97,7 @@ function playoffStructures({
     uuids,
   };
   const { matchUps } = staggeredEntry
-    ? feedInMatchUps(mainParams)
+    ? feedInMatchUps(mainParams) // TODO: is this ever valid?
     : treeMatchUps(mainParams);
 
   const structure = structureTemplate({
