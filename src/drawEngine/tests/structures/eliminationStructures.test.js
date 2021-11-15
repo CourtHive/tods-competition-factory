@@ -1,3 +1,4 @@
+import { validDrawPositions } from '../../governors/matchUpGovernor/validDrawPositions';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { treeMatchUps } from '../../generators/eliminationTree';
 import { drawEngine } from '../../sync';
@@ -17,7 +18,6 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 import { ERROR } from '../../../constants/resultConstants';
-import { validDrawPositions } from '../../governors/matchUpGovernor/validDrawPositions';
 
 it('can generate main draw', () => {
   reset();
@@ -111,8 +111,8 @@ it('can generate qualifying draw based on drawType and qualifyingPositions', () 
   initialize();
   mainDrawPositions({ drawSize: 16 });
   const { structure } = drawEngine.generateDrawType({
+    qualifyingStructures: [{ qualifyingPositions: 8 }],
     drawType: SINGLE_ELIMINATION,
-    qualifyingPositions: 8,
   });
   const { matchUps } = structure;
   const matchUpsCount = matchUps && matchUps.length;
@@ -124,8 +124,8 @@ it('can generate qualifying draw based drawType and qualifyingRound', () => {
   initialize();
   mainDrawPositions({ drawSize: 16 });
   const { structure } = drawEngine.generateDrawType({
+    qualifyingStructures: [{ qualifyingRound: 1 }],
     drawType: SINGLE_ELIMINATION,
-    qualifyingRound: 1,
   });
   const { matchUps } = structure;
   const matchUpsCount = matchUps && matchUps.length;
