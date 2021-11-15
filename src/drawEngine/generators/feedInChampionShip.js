@@ -87,7 +87,10 @@ export function feedInChampionship(params = {}) {
   drawDefinition.links = drawDefinition.links.concat(...links);
 
   return Object.assign(
-    { mainStructure, consolationStructure, links: drawDefinition.links },
-    SUCCESS
+    {
+      structures: [mainStructure, consolationMatchUps],
+      links: drawDefinition.links,
+    },
+    { ...SUCCESS }
   );
 }

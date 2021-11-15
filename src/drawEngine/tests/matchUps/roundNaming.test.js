@@ -70,7 +70,9 @@ it('can return matchUps with roundNames from a FIRST_MATCH_LOSER_CONSOLATION str
   let result = drawEngine.generateDrawType({
     drawType: FIRST_MATCH_LOSER_CONSOLATION,
   });
-  const { mainStructure, consolationStructure } = result;
+  const {
+    structures: [mainStructure, consolationStructure],
+  } = result;
   expect(mainStructure.structureName).toEqual(MAIN);
   result = drawEngine.attachPolicies({
     policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
