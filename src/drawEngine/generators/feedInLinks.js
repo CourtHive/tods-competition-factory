@@ -9,10 +9,10 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 export function feedInLinks({
-  mainStructure,
   consolationStructure,
-  roundsCount,
   roundOffset = 0,
+  mainStructure,
+  roundsCount,
   feedPolicy,
   fmlc,
 }) {
