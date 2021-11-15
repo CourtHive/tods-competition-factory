@@ -5,13 +5,13 @@ import {
 } from '../../drawEngine/generators/eliminationTree';
 
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
   CONSOLATION,
   TOP_DOWN,
   LOSER,
 } from '../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
 
 export function firstRoundLoserConsolation(params) {
   let { drawSize, consolationStructureName } = params;
@@ -101,9 +101,7 @@ export function firstRoundLoserConsolation(params) {
 
   return Object.assign(
     {
-      link,
-      mainStructure,
-      consolationStructure,
+      structures: [mainStructure, consolationStructure],
       links: drawDefinition?.links,
     },
     SUCCESS
