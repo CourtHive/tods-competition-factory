@@ -106,7 +106,9 @@ it('can return matchUps from a ROUND_ROBIN structure', () => {
   initialize();
   const drawType = ROUND_ROBIN;
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({ drawType });
+  const {
+    structures: [structure],
+  } = drawEngine.generateDrawType({ drawType });
   const { matchUps } = getAllStructureMatchUps({ structure });
   expect(matchUps.length).toEqual(24);
   const { upcomingMatchUps } = getStructureMatchUps({

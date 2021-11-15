@@ -188,7 +188,9 @@ it('returns positionAssignments for SINGLE_ELIMINATION and ROUND_ROBIN strucures
   initialize();
   const drawType = ROUND_ROBIN;
   mainDrawPositions({ drawSize: 16 });
-  const { structure: roundRobin } = drawEngine.generateDrawType({ drawType });
+  const {
+    structures: [roundRobin],
+  } = drawEngine.generateDrawType({ drawType });
   const { positionAssignments: roundRobinAssignments } =
     structureAssignedDrawPositions({ structure: roundRobin });
   expect(roundRobinAssignments.length).toEqual(16);

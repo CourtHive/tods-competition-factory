@@ -13,6 +13,7 @@ import {
   isCompletedStructure,
 } from '../../governors/queryGovernor/structureActions';
 
+import { SINGLES } from '../../../constants/eventConstants';
 import {
   DRAW,
   MAIN,
@@ -23,8 +24,6 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
-
-import { SINGLES } from '../../../constants/eventConstants';
 
 it('can generate Round Robins 32 with playoffs', () => {
   reset();
@@ -42,8 +41,8 @@ it('can generate Round Robins 32 with playoffs', () => {
     drawType,
     structureOptions,
   });
-  const { mainStructure, playoffStructures, links } = result;
-
+  const { structures: playoffStructures, links } = result;
+  const mainStructure = playoffStructures.shift();
   expect(mainStructure.stage).toEqual(MAIN);
   expect(mainStructure.structures.length).toEqual(8);
 
@@ -79,12 +78,13 @@ it('can generate Round Robins 16 with playoffs', () => {
       { finishingPositions: [2], structureName: 'Silver Flight' },
     ],
   };
-  const { mainStructure, playoffStructures, links } =
-    drawEngine.generateDrawType({
-      drawType,
-      structureOptions,
-    });
+  const result = drawEngine.generateDrawType({
+    drawType,
+    structureOptions,
+  });
 
+  const { structures: playoffStructures, links } = result;
+  const mainStructure = playoffStructures.shift();
   expect(mainStructure.stage).toEqual(MAIN);
   expect(mainStructure.structures.length).toEqual(4);
 

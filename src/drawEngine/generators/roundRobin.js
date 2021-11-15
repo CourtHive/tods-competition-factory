@@ -71,7 +71,10 @@ export function generateRoundRobin({
 
   drawDefinition.structures.push(structure);
 
-  return Object.assign({ structure, groupCount, groupSize }, SUCCESS);
+  return Object.assign(
+    { structures: [structure], groupCount, groupSize },
+    { ...SUCCESS }
+  );
 }
 
 // first iteration only links to a single playoff structure
@@ -94,7 +97,7 @@ export function generateRoundRobinWithPlayOff(params) {
     { stage: MAIN }
   );
   const {
-    structure: mainStructure,
+    structures: [mainStructure],
     groupCount,
     groupSize,
   } = generateRoundRobin(mainDrawProperties);
@@ -203,10 +206,12 @@ export function generateRoundRobinWithPlayOff(params) {
     })
     .filter(Boolean);
 
-  // mainStructure, playoffStructures and links are only returned for tests
   return Object.assign(
-    { mainStructure, playoffStructures, links: drawDefinition.links },
-    SUCCESS
+    {
+      structures: [mainStructure, ...playoffStructures],
+      links: drawDefinition.links,
+    },
+    { ...SUCCESS }
   );
 }
 
