@@ -10,7 +10,7 @@ import {
 import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 export function generateEliminationWithQualifying({
-  qualifyingRound,
+  qualifyingStructures,
   qualifyingDrawSize,
   qualifyingPositions,
   qualifyingSeedsCount = 0,
@@ -38,15 +38,15 @@ export function generateEliminationWithQualifying({
   drawEngine.generateDrawType({
     stage: QUALIFYING,
     drawType: SINGLE_ELIMINATION,
-    qualifyingRound,
+    qualifyingStructures,
     qualifyingPositions,
   });
 
-  const { structures: qualifyingStructures } = drawEngine.getDrawStructures({
+  const { structures: qStructures } = drawEngine.getDrawStructures({
     stage: QUALIFYING,
     stageSequence: 1,
   });
-  const [qualifyingStructure] = qualifyingStructures;
+  const [qualifyingStructure] = qStructures;
   const { roundLimit } = qualifyingStructure;
   const { structureId: qualifyingStructureId } = qualifyingStructure;
   const { qualifiersCount } = drawEngine.getStructureQualifiersCount({

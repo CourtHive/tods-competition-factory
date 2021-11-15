@@ -11,7 +11,7 @@ import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 export function treeMatchUps({
   qualifyingRound, // round at which participants qualify
   finishingPositionOffset,
-  qualifyingPositions,
+  qualifyingPositions, // number of positions which qualify
   matchUpType,
   roundLimit,
   idPrefix,

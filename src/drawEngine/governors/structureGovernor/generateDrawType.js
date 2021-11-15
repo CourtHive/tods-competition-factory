@@ -9,6 +9,7 @@ import { getStageDrawPositionsCount } from '../../getters/stageGetter';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import structureTemplate from '../../generators/structureTemplate';
 import { getDrawStructures } from '../../getters/structureGetter';
+import { definedAttributes } from '../../../utilities/objects';
 import { playoff } from '../../generators/playoffStructures';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 import { isPowerOf2 } from '../../../utilities';
@@ -39,7 +40,6 @@ import {
   STAGE_SEQUENCE_LIMIT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
-import { definedAttributes } from '../../../utilities/objects';
 
 /**
  *
@@ -59,9 +59,6 @@ export function generateDrawType(params = {}) {
     stage = MAIN,
     isMock,
     uuids,
-    // qualifyingPositions, => passed through in params to treeMatchUps
-    // qualifyingRound, => passed through in params to treeMatchUps
-    // TODO: description => is this passed on?
   } = params;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -125,15 +122,22 @@ export function generateDrawType(params = {}) {
       return Object.assign({ structure }, SUCCESS);
     },
     [SINGLE_ELIMINATION]: () => {
-      const { matchUps, roundLimit: derivedRoundLimit } = treeMatchUps(params);
-      const qualifyingRound = stage === QUALIFYING && derivedRoundLimit;
+      const qualifyingStructures = params.qualifyingStructures;
+      const { qualifyingRound, qualifyingPositions } =
+        qualifyingStructures?.length ? qualifyingStructures.pop() : {};
+      const { matchUps, roundLimit: derivedRoundLimit } = treeMatchUps({
+        ...params,
+        qualifyingRound,
+        qualifyingPositions,
+      });
+      const roundLimit = stage === QUALIFYING && derivedRoundLimit;
       const structure = structureTemplate({
         structureName: structureName || stage,
-        roundLimit: derivedRoundLimit,
         structureId: uuids?.pop(),
         qualifyingRound,
         stageSequence,
         matchUpType,
+        roundLimit,
         matchUps,
         stage,
       });

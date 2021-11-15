@@ -13,9 +13,9 @@ it('can generate and verify qualifying structures', () => {
       drawSize: 32,
       seedsCount: 8,
       stage: QUALIFYING,
-      qualifyingRound: 2,
       participantsCount: 17,
       drawType: SINGLE_ELIMINATION,
+      qualifyingStructures: [{ qualifyingRound: 2 }],
     },
   ];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -42,10 +42,10 @@ it('can generate qualifying and linked elimination structure', () => {
   const { qualifyingStructureId, mainStructureId, drawDefinition } =
     generateEliminationWithQualifying({
       qualifyingDrawSize: 16,
-      qualifyingPositions: 8,
       qualifyingSeedsCount: 4,
       qualifyingParticipantsCount: 15,
       qualifyingSeedAssignmentProfile: {},
+      qualifyingStructures: [{ qualifyingPositions: 8 }],
 
       alternatesCount: 5,
 
