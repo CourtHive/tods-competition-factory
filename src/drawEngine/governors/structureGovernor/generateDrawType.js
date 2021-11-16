@@ -8,14 +8,16 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { feedInChampionship } from '../../generators/feedInChampionShip';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getStageDrawPositionsCount } from '../../getters/stageGetter';
-import { setStageDrawSize } from '../entryGovernor/stageEntryCounts';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import structureTemplate from '../../generators/structureTemplate';
-import { getDrawStructures } from '../../getters/structureGetter';
 import { definedAttributes } from '../../../utilities/objects';
 import { playoff } from '../../generators/playoffStructures';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 import { isPowerOf2 } from '../../../utilities';
+import {
+  setStageDrawSize,
+  setStageQualifiersCount,
+} from '../entryGovernor/stageEntryCounts';
 import {
   generateRoundRobin,
   generateRoundRobinWithPlayOff,
@@ -44,6 +46,7 @@ import {
   STAGE_SEQUENCE_LIMIT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
+import { getDrawStructures } from '../../getters/findStructure';
 
 /**
  *
@@ -70,6 +73,18 @@ export function generateDrawType(params = {}) {
   tieFormat = tieFormat || drawDefinition.tieFormat || undefined;
   matchUpType = matchUpType || drawDefinition.matchUpType || SINGLES;
 
+  const mainStageDrawPositionsCount = getStageDrawPositionsCount({
+    drawDefinition,
+    stage: MAIN,
+  });
+
+  if (!mainStageDrawPositionsCount) {
+    setStageDrawSize({
+      drawSize: params.drawSize,
+      drawDefinition,
+      stage: MAIN,
+    });
+  }
   // first generate any qualifying structures
   const qualifyingResult =
     params.qualifyingProfiles?.length &&
@@ -81,34 +96,35 @@ export function generateDrawType(params = {}) {
       isMock,
       uuids,
     });
-  if (qualifyingResult?.error) return qualifyingResult;
-  const qualifyingDrawPositions = qualifyingResult?.totalQualifyingPositions;
 
-  if (qualifyingDrawPositions) {
+  if (qualifyingResult?.error) return qualifyingResult;
+  const { qualifiersCount = 0, qualifyingDrawPositionsCount } =
+    qualifyingResult || {};
+
+  if (qualifyingDrawPositionsCount) {
+    drawDefinition.structures.push(...qualifyingResult.structures);
     const qualifyingStageDrawPositionsCount = getStageDrawPositionsCount({
       stage: QUALIFYING,
       drawDefinition,
     });
 
     if (!qualifyingStageDrawPositionsCount) {
-      setStageDrawSize({
-        drawSize: qualifyingDrawPositions,
+      const result = setStageDrawSize({
+        drawSize: qualifyingDrawPositionsCount,
         stage: QUALIFYING,
         drawDefinition,
       });
+      if (result.error) return result;
     }
+    const result = setStageQualifiersCount({
+      drawDefinition,
+      qualifiersCount,
+      stage: MAIN,
+    });
+    if (result.error) return result;
   }
-
-  const mainStageDrawPositionsCount = getStageDrawPositionsCount({
-    drawDefinition,
-    stage: MAIN,
-  });
 
   const drawSize = params.drawSize || mainStageDrawPositionsCount;
-
-  if (!mainStageDrawPositionsCount) {
-    setStageDrawSize({ drawDefinition, stage: MAIN, drawSize });
-  }
 
   Object.assign(
     params,
@@ -235,9 +251,8 @@ export function generateDrawType(params = {}) {
   }
 
   if (qualifyingResult?.structures?.length) {
-    drawDefinition.structures.push(...qualifyingResult.structures);
     const {
-      finalQualifyingRound: qualifyingRoundNumber,
+      finalyQualifyingRoundNumber: qualifyingRoundNumber,
       qualifyingStructureId,
     } = qualifyingResult;
 

@@ -10,11 +10,11 @@ import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEn
 import { getPolicyDefinitions } from '../governors/queryGovernor/getPolicyDefinitions';
 import { assignSeed } from '../../drawEngine/governors/entryGovernor/seedAssignment';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
-import { getDrawStructures } from '../../drawEngine/getters/structureGetter';
+import { getDrawStructures } from '../../drawEngine/getters/findStructure';
 import { getParticipantId } from '../../global/functions/extractors';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
-import { tieFormatDefaults } from './tieFormatDefaults';
 import { addNotice } from '../../global/state/globalState';
+import { tieFormatDefaults } from './tieFormatDefaults';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
@@ -126,24 +126,6 @@ export function generateDrawDefinition(params) {
 
   const drawDefinition = newDrawDefinition({ drawType, drawId });
 
-  /*
-  // this is for setting the entryProfile for stages other than MAIN
-  if (drawEntries) {
-    const drawEntryStages = drawEntries
-      .reduce(
-        (stages, entry) =>
-          stages.includes(entry.entryStage)
-            ? stages
-            : stages.concat(entry.entryStage),
-        []
-      )
-      .filter((entryStage) => entryStage !== MAIN)
-      .filter(Boolean);
-
-    if (drawEntryStages.length) console.log('drawEntryStages');
-  }
-  */
-
   if (matchUpFormat || tieFormat) {
     let equivalentInScope =
       (matchUpFormat && event?.matchUpFormat === matchUpFormat) ||
@@ -172,8 +154,6 @@ export function generateDrawDefinition(params) {
 
       // update tieFormat if integrity check has added collectionIds
       if (result.tieFormat) tieFormat = result.tieFormat;
-    } else {
-      // if (matchUpType) drawDefinition.matchUpType = matchUpType;
     }
   }
 

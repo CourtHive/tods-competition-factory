@@ -1,11 +1,11 @@
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import structureTemplate from '../../generators/structureTemplate';
+import { isConvertableInteger } from '../../../utilities/math';
 import { treeMatchUps } from '../../generators/eliminationTree';
 
+import { MISSING_DRAW_SIZE } from '../../../constants/errorConditionConstants';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { isConvertableInteger } from '../../../utilities/math';
-import { MISSING_DRAW_SIZE } from '../../../constants/errorConditionConstants';
 
 export function generateQualifyingStructures({
   qualifyingProfiles,
@@ -18,10 +18,10 @@ export function generateQualifyingStructures({
   const structures = [];
 
   const sequenceSort = (a, b) => a.stageSequence - b.stageSequence;
-  let totalQualifyingPositions = 0,
-    finalQualifierPositions = 0,
+  let qualifyingDrawPositionsCount = 0,
+    finalyQualifyingRoundNumber,
     finalQualifyingStructureId,
-    finalQualifyingRound,
+    qualifiersCount = 0,
     stageSequence = 0;
 
   for (const qualifyingProfile of qualifyingProfiles.sort(sequenceSort)) {
@@ -55,9 +55,9 @@ export function generateQualifyingStructures({
         drawDefinition,
       });
       // if more than one qualifying stageSequence, remove last stageSequence qualifier positions from count
-      totalQualifyingPositions += drawSize - finalQualifierPositions;
+      qualifyingDrawPositionsCount += drawSize - qualifiersCount;
     } else {
-      totalQualifyingPositions += drawSize;
+      qualifyingDrawPositionsCount += drawSize;
     }
 
     const structure = structureTemplate({
@@ -71,20 +71,20 @@ export function generateQualifyingStructures({
       matchUps,
     });
 
-    finalQualifierPositions = matchUps.filter(
+    qualifiersCount = matchUps.filter(
       (matchUp) => matchUp.roundNumber === roundLimit
-    );
+    )?.length;
     finalQualifyingStructureId = structure.structureId;
-    finalQualifyingRound = roundLimit;
+    finalyQualifyingRoundNumber = roundLimit;
 
     structures.push(structure);
   }
 
   return {
+    qualifyingDrawPositionsCount,
+    finalyQualifyingRoundNumber,
     finalQualifyingStructureId,
-    totalQualifyingPositions,
-    finalQualifierPositions,
-    finalQualifyingRound,
+    qualifiersCount,
     structures,
     ...SUCCESS,
   };
