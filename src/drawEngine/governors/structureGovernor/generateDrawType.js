@@ -10,9 +10,11 @@ import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getStageDrawPositionsCount } from '../../getters/stageGetter';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import structureTemplate from '../../generators/structureTemplate';
+import { getDrawStructures } from '../../getters/findStructure';
 import { definedAttributes } from '../../../utilities/objects';
 import { playoff } from '../../generators/playoffStructures';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
+import { luckyDraw } from '../../generators/luckyDraw';
 import { isPowerOf2 } from '../../../utilities';
 import {
   setStageDrawSize,
@@ -36,6 +38,7 @@ import {
   FEED_IN_CHAMPIONSHIP,
   WIN_RATIO,
   QUALIFYING,
+  LUCKY_DRAW,
 } from '../../../constants/drawDefinitionConstants';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
@@ -46,7 +49,6 @@ import {
   STAGE_SEQUENCE_LIMIT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
-import { getDrawStructures } from '../../getters/findStructure';
 
 /**
  *
@@ -174,6 +176,20 @@ export function generateDrawType(params = {}) {
         matchUps: [],
         matchUpType,
         stage: MAIN,
+      });
+
+      drawDefinition.structures.push(structure);
+      return Object.assign({ structures: [structure] }, SUCCESS);
+    },
+    [LUCKY_DRAW]: () => {
+      const { matchUps } = luckyDraw(params);
+      const structure = structureTemplate({
+        structureName: structureName || MAIN,
+        structureId: uuids?.pop(),
+        stageSequence,
+        matchUpType,
+        stage: MAIN,
+        matchUps,
       });
 
       drawDefinition.structures.push(structure);
