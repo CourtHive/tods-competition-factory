@@ -2,34 +2,32 @@ import { unique, UUID } from '../../utilities';
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
 
 export const structureTemplate = ({
-  stage,
-  structureId,
-  matchUps = [],
-  structures,
-  stageOrder,
-  roundLimit,
-  roundOffset,
-  exitProfile,
-  // matchUpType, // unnecessary; factory propagates to this point in case it is ever necessary
+  finishingPosition = ROUND_OUTCOME,
+  structureAbbreviation,
+  seedAssignments = [],
+  stageSequence = 1,
+  qualifyingRound,
+  seedingProfile,
   matchUpFormat,
   structureType,
-  structureAbbreviation,
   structureName,
-  seedingProfile,
-  qualifyingRound,
-  stageSequence = 1,
-  seedAssignments = [],
-  finishingPosition = ROUND_OUTCOME,
+  matchUps = [],
+  structureId,
+  exitProfile,
+  roundOffset,
+  roundLimit,
+  stageOrder,
+  structures,
+  stage,
 }) => {
   const structure = {
+    structureId: structureId || UUID(),
     structureAbbreviation,
-    structureName,
-    // matchUpType,
-    matchUpFormat,
-    stageSequence,
     finishingPosition,
     seedAssignments,
-    structureId: structureId || UUID(),
+    matchUpFormat,
+    stageSequence,
+    structureName,
   };
 
   if (stage) structure.stage = stage;

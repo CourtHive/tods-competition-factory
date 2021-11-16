@@ -25,7 +25,7 @@ it('can correctly determine positions playedOff for STANDARD_ELIMINATION', () =>
   const { drawDefinition } = drawEngine.getState();
 
   const {
-    structure: { structureId },
+    structures: [{ structureId }],
   } = result;
 
   const { playoffRounds, playoffRoundsRanges } = getAvailablePlayoffRounds({

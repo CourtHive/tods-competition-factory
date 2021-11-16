@@ -14,7 +14,7 @@ it('can correctly derive source rounds for final positions in SINGLE_ELIMINATION
   const { drawDefinition } = drawEngine.getState();
 
   const {
-    structure: { structureId },
+    structures: [{ structureId }],
   } = result;
 
   let {

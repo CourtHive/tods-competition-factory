@@ -19,7 +19,9 @@ it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', (
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({
+  const {
+    structures: [structure],
+  } = drawEngine.generateDrawType({
     drawType: SINGLE_ELIMINATION,
   });
   expect(structure.structureName).toEqual(MAIN);
@@ -130,7 +132,9 @@ it('can return matchUps with roundNames from a FEED_IN structure and identify fe
   reset();
   initialize();
   mainDrawPositions({ drawSize: 12 });
-  const { structure } = drawEngine.generateDrawType({ drawType: FEED_IN });
+  const {
+    structures: [structure],
+  } = drawEngine.generateDrawType({ drawType: FEED_IN });
   expect(structure.structureName).toEqual(MAIN);
   const result = drawEngine.attachPolicies({
     policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
@@ -182,9 +186,7 @@ it('can return matchUps with roundNames from a OLYMPIC structure', () => {
     drawType: OLYMPIC,
   });
   expect(result.success).toEqual(true);
-
-  const { childStructures } = result;
-  expect(childStructures.length).toEqual(2);
+  expect(result.structures.length).toEqual(4);
 
   const { drawDefinition } = drawEngine.getState();
   const { structures } = drawDefinition;

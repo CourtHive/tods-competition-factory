@@ -23,7 +23,9 @@ it('can generate main draw', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType();
+  const {
+    structures: [structure],
+  } = drawEngine.generateDrawType();
   const { matchUps } = structure;
   const matchUpsCount = matchUps && matchUps.length;
   expect(matchUpsCount).toEqual(15);
@@ -63,7 +65,9 @@ it('generates main draw with expected finishing drawPositions', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType();
+  const {
+    structures: [structure],
+  } = drawEngine.generateDrawType();
   const { matchUps } = structure;
   const matchesCount = matchUps && matchUps.length;
   expect(matchesCount).toEqual(15);

@@ -1,20 +1,39 @@
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
-test('drawProfiles which include qualifying structures', () => {
-  const drawProfiles = [
-    {
-      drawSize: 32,
-      qualifyingProfiles: [{ drawSize: 16, qualifyingPositions: 4 }],
-    },
-  ];
+import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
-  });
+// prettier-ignore
+const scenarios = [
+  { drawSize: 16, qualifyingProfiles: [{ drawSize: 16, qualifyingPositions: 4 }], expectation: { qualifyingRound: 2, qualifyingMatchUps: 12 } },
+];
 
-  tournamentEngine.setState(tournamentRecord);
-});
+it.each(scenarios)(
+  'drawProfiles which include qualifying structures',
+  (scenario) => {
+    const drawProfiles = [scenario];
+
+    const {
+      tournamentRecord,
+      drawIds: [drawId],
+    } = mocksEngine.generateTournamentRecord({
+      drawProfiles,
+    });
+
+    tournamentEngine.setState(tournamentRecord);
+
+    const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+    expect(drawDefinition.structures.length).toEqual(2);
+    expect(drawDefinition.links.length).toEqual(1);
+
+    const { matchUps } = tournamentEngine.allTournamentMatchUps({
+      contextFilters: { stages: [QUALIFYING] },
+    });
+    expect(matchUps.length).toEqual(scenario.expectation.qualifyingMatchUps);
+
+    // console.log(drawDefinition.entries);
+  }
+);
 
 /*
 it.skip('can generate qualifying draw based on drawType and qualifyingPositions', () => {

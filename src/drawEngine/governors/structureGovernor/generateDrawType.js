@@ -1,6 +1,7 @@
 import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserConsolation';
-import { generateDoubleElimination } from '../../generators/doubleEliminattion';
+import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { treeMatchUps, feedInMatchUps } from '../../generators/eliminationTree';
+import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
 import { generateQualifyingStructures } from './generateQualifyingStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
@@ -107,19 +108,6 @@ export function generateDrawType(params = {}) {
   const structureCount = stageStructures.length;
   if (structureCount >= sequenceLimit) return { error: STAGE_SEQUENCE_LIMIT };
 
-  const qualifyingResult =
-    params.qualifyingProfiles?.length &&
-    generateQualifyingStructures({
-      qualifyingProfiles: params.qualifyingProfiles,
-      idPrefix: params.idPrefix,
-      matchUpType,
-      isMock,
-      uuids,
-    });
-  if (qualifyingResult?.error) return qualifyingResult;
-  if (qualifyingResult?.structures)
-    drawDefinition.structures.push(...qualifyingResult.structures);
-
   const generators = {
     [AD_HOC]: () => {
       const structure = structureTemplate({
@@ -133,36 +121,21 @@ export function generateDrawType(params = {}) {
       });
 
       drawDefinition.structures.push(structure);
-      return Object.assign({ structure }, SUCCESS);
+      return Object.assign({ structures: [structure] }, SUCCESS);
     },
     [SINGLE_ELIMINATION]: () => {
-      /*
-      const qualifyingProfiles = params.qualifyingProfiles;
-      const { qualifyingRound, qualifyingPositions } =
-        qualifyingProfiles?.length ? qualifyingProfiles.pop() : {};
-
-      const { matchUps, roundLimit: derivedRoundLimit } = treeMatchUps({
-        ...params,
-        qualifyingRound,
-        qualifyingPositions,
-      });
-      const roundLimit = stage === QUALIFYING && derivedRoundLimit;
-      */
-
       const { matchUps } = treeMatchUps(params);
       const structure = structureTemplate({
         structureName: structureName || stage,
         structureId: uuids?.pop(),
-        // qualifyingRound,
         stageSequence,
         matchUpType,
-        // roundLimit,
         matchUps,
         stage,
       });
 
       drawDefinition.structures.push(structure);
-      return Object.assign({ structure }, SUCCESS);
+      return Object.assign({ structures: [structure] }, SUCCESS);
     },
     [DOUBLE_ELIMINATION]: () => generateDoubleElimination(params),
     [COMPASS]: () =>
@@ -194,7 +167,7 @@ export function generateDrawType(params = {}) {
       });
 
       drawDefinition.structures.push(structure);
-      return Object.assign({ structure }, SUCCESS);
+      return Object.assign({ structures: [structure] }, SUCCESS);
     },
 
     [FIRST_ROUND_LOSER_CONSOLATION]: () => firstRoundLoserConsolation(params),
@@ -221,6 +194,35 @@ export function generateDrawType(params = {}) {
     return { error: UNRECOGNIZED_DRAW_TYPE };
   }
 
+  const qualifyingResult =
+    params.qualifyingProfiles?.length &&
+    generateQualifyingStructures({
+      qualifyingProfiles: params.qualifyingProfiles,
+      idPrefix: params.idPrefix,
+      drawDefinition,
+      matchUpType,
+      isMock,
+      uuids,
+    });
+  if (qualifyingResult?.error) return qualifyingResult;
+
+  if (qualifyingResult?.structures?.length) {
+    drawDefinition.structures.push(...qualifyingResult.structures);
+    const { finalQualifyingRound: qualifyingRound, qualifyingStructureId } =
+      qualifyingResult;
+
+    const mainStructureId = generatorResult.structures.find(
+      ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
+    );
+
+    generateQualifyingLink({
+      sourceStructureId: qualifyingStructureId,
+      sourceRoundNumber: qualifyingRound,
+      targetStructureId: mainStructureId,
+      drawDefinition,
+    });
+  }
+
   const { matchUps, matchUpsMap } = getAllDrawMatchUps({ drawDefinition });
 
   if (tieFormat) {
@@ -234,14 +236,14 @@ export function generateDrawType(params = {}) {
   if (goesTo)
     ({ inContextDrawMatchUps } = addGoesTo({ drawDefinition, matchUpsMap }));
 
-  const result = { ...SUCCESS, matchUps };
-
-  Object.assign(result, generatorResult, {
-    inContextDrawMatchUps,
-    matchUpsMap,
-  });
-
   modifyDrawNotice({ drawDefinition });
 
-  return result;
+  return {
+    structures: drawDefinition.structures,
+    links: drawDefinition.links,
+    inContextDrawMatchUps,
+    matchUpsMap,
+    ...SUCCESS,
+    matchUps,
+  };
 }

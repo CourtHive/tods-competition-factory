@@ -1,4 +1,5 @@
 import { generateVoluntaryConsolationStructure } from '../../generators/voluntaryConsolation';
+import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { generateAdHocMatchUps } from '../../generators/generateAdHocMatchUps';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
 import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
@@ -25,6 +26,7 @@ const structureGovernor = {
   addPlayoffStructures,
   removeStructure,
 
+  generateQualifyingLink,
   generateAdHocMatchUps,
   deleteAdHocMatchUps,
 

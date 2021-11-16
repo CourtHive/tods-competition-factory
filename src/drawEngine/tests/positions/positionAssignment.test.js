@@ -179,7 +179,9 @@ it('returns positionAssignments for SINGLE_ELIMINATION and ROUND_ROBIN strucures
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure: elimination } = drawEngine.generateDrawType();
+  const {
+    structures: [elimination],
+  } = drawEngine.generateDrawType();
   const { positionAssignments: eliminationAssignments } =
     structureAssignedDrawPositions({ structure: elimination });
   expect(eliminationAssignments.length).toEqual(16);

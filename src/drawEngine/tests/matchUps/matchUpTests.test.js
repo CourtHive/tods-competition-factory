@@ -30,14 +30,16 @@ it('can return matchUps from an SINGLE_ELIMINATION structure', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({
+  const {
+    structures: [structure],
+  } = drawEngine.generateDrawType({
     drawType: SINGLE_ELIMINATION,
   });
   const { matchUps } = getAllStructureMatchUps({ structure, inContext: true });
   expect(matchUps.length).toEqual(15);
   const { upcomingMatchUps } = getStructureMatchUps({
-    structure,
     requireParticipants: false,
+    structure,
   });
   expect(upcomingMatchUps.length).toEqual(8);
 
@@ -135,7 +137,9 @@ it('can set matchUpFormat', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({
+  const {
+    structures: [structure],
+  } = drawEngine.generateDrawType({
     drawType: SINGLE_ELIMINATION,
   });
   const { matchUps } = getAllStructureMatchUps({ structure });
