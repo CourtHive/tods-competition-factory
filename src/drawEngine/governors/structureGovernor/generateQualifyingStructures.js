@@ -46,6 +46,17 @@ export function generateQualifyingStructures({
 
     stageSequence += 1;
 
+    const structure = structureTemplate({
+      structureName: structureName || QUALIFYING,
+      qualifyingRoundNumber: roundLimit,
+      structureId: uuids?.pop(),
+      stage: QUALIFYING,
+      stageSequence,
+      matchUpType,
+      roundLimit, // redundant
+      matchUps,
+    });
+
     // order of operations is important here!! finalyQualifier positions is not yet updated when this step occurs
     if (stageSequence > 1) {
       generateQualifyingLink({
@@ -59,17 +70,6 @@ export function generateQualifyingStructures({
     } else {
       qualifyingDrawPositionsCount += drawSize;
     }
-
-    const structure = structureTemplate({
-      structureName: structureName || QUALIFYING,
-      qualifyingRoundNumber: roundLimit,
-      structureId: uuids?.pop(),
-      stage: QUALIFYING,
-      stageSequence,
-      matchUpType,
-      roundLimit, // redundant
-      matchUps,
-    });
 
     qualifiersCount = matchUps.filter(
       (matchUp) => matchUp.roundNumber === roundLimit
