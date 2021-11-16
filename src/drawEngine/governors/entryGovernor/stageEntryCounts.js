@@ -125,9 +125,9 @@ export function setStageWildcardsCount({
 }
 
 export function setStageQualifiersCount({
+  qualifiersCount = 0,
   drawDefinition,
   stage,
-  qualifiersCount = 0,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!stageExists({ drawDefinition, stage })) {
@@ -162,5 +162,6 @@ export function setStageQualifiersCount({
   });
 
   modifyDrawNotice({ drawDefinition });
+
   return { ...SUCCESS };
 }

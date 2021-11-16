@@ -1,9 +1,8 @@
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
-import { getDrawStructures } from '../../getters/structureGetter';
+import { findStructure, getDrawStructures } from '../../getters/findStructure';
 import { getValidSeedBlocks } from '../../getters/seedGetter';
 import { getStageEntries } from '../../getters/stageGetter';
-import { findStructure } from '../../getters/findStructure';
 import { mocksEngine, setSubscriptions } from '../../..';
 import { numericSort } from '../../../utilities';
 import { drawEngine } from '../../sync';
