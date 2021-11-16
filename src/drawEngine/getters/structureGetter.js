@@ -1,27 +1,7 @@
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { findStructure } from './findStructure';
 
-import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { QUALIFYING } from '../../constants/drawDefinitionConstants';
-
-export function getDrawStructures({
-  stage,
-  stageSequence,
-  drawDefinition,
-} = {}) {
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  const stageStructures = drawDefinition.structures
-    .filter(isStage)
-    .filter(isStageSequence);
-  return { structures: stageStructures };
-
-  function isStage(structure) {
-    return structure.stage === stage;
-  }
-  function isStageSequence(structure) {
-    return !stageSequence || structure.stageSequence === stageSequence;
-  }
-}
 
 export function getStructureQualifiersCount({
   drawDefinition,
