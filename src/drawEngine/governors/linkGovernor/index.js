@@ -6,7 +6,7 @@ import { WINNER, DRAW } from '../../../constants/drawDefinitionConstants';
 function generateQualifyingLink({
   qualifyingStructureId,
   mainStructureId,
-  qualifyingRound,
+  qualifyingRoundNumber,
   mainEntryRound = 1,
   drawDefinition,
 }) {
@@ -14,7 +14,7 @@ function generateQualifyingLink({
   const link = {
     linkType: WINNER,
     source: {
-      roundNumber: qualifyingRound,
+      roundNumber: qualifyingRoundNumber,
       structureId: qualifyingStructureId,
     },
     target: {

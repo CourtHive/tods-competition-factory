@@ -1,20 +1,18 @@
-import { getStageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
+import structureTemplate from '../../drawEngine/generators/structureTemplate';
 import {
   feedInMatchUps,
   treeMatchUps,
 } from '../../drawEngine/generators/eliminationTree';
 
-import structureTemplate from '../../drawEngine/generators/structureTemplate';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
   CONSOLATION,
   TOP_DOWN,
   LOSER,
 } from '../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
 
 export function firstRoundLoserConsolation(params) {
-  let { drawSize, consolationStructureName } = params;
   const {
     finishingPositionOffset = 0,
     stageSequence = 1,
@@ -24,11 +22,10 @@ export function firstRoundLoserConsolation(params) {
     stage = MAIN,
     matchUpType,
     idPrefix,
+    drawSize,
     isMock,
     uuids,
   } = params;
-
-  drawSize = drawSize || getStageDrawPositionsCount({ stage, drawDefinition });
 
   const mainParams = {
     finishingPositionOffset,
@@ -43,12 +40,12 @@ export function firstRoundLoserConsolation(params) {
     : treeMatchUps(mainParams);
 
   const mainStructure = structureTemplate({
-    stage,
-    matchUps,
-    matchUpType,
-    stageSequence,
-    structureId: uuids?.pop(),
     structureName: structureName || MAIN,
+    structureId: uuids?.pop(),
+    stageSequence,
+    matchUpType,
+    matchUps,
+    stage,
   });
 
   if (drawDefinition) {
@@ -59,23 +56,23 @@ export function firstRoundLoserConsolation(params) {
 
   const { matchUps: consolationMatchUps } = treeMatchUps({
     finishingPositionOffset: finishingPositionOffset + consolationDrawPositions,
-    drawSize: consolationDrawPositions,
     idPrefix: idPrefix && `${idPrefix}-c`,
+    drawSize: consolationDrawPositions,
     matchUpType,
     isMock,
   });
 
-  consolationStructureName =
-    consolationStructureName ||
+  const consolationStructureName =
+    params.consolationStructureName ||
     (structureName ? `${structureName} ${CONSOLATION}` : CONSOLATION);
 
   const consolationStructure = structureTemplate({
-    matchUpType,
-    stageSequence: 1,
-    stage: CONSOLATION,
-    structureId: uuids?.pop(),
-    matchUps: consolationMatchUps,
     structureName: consolationStructureName,
+    matchUps: consolationMatchUps,
+    structureId: uuids?.pop(),
+    stage: CONSOLATION,
+    stageSequence: 1,
+    matchUpType,
   });
 
   if (drawDefinition) {
@@ -101,9 +98,7 @@ export function firstRoundLoserConsolation(params) {
 
   return Object.assign(
     {
-      link,
-      mainStructure,
-      consolationStructure,
+      structures: [mainStructure, consolationStructure],
       links: drawDefinition?.links,
     },
     SUCCESS

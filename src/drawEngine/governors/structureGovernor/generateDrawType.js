@@ -1,17 +1,23 @@
 import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserConsolation';
-import { generateDoubleElimination } from '../../generators/doubleEliminattion';
+import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { treeMatchUps, feedInMatchUps } from '../../generators/eliminationTree';
+import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
+import { generateQualifyingStructures } from './generateQualifyingStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { feedInChampionship } from '../../generators/feedInChampionShip';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getStageDrawPositionsCount } from '../../getters/stageGetter';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import structureTemplate from '../../generators/structureTemplate';
-import { getDrawStructures } from '../../getters/structureGetter';
+import { definedAttributes } from '../../../utilities/objects';
 import { playoff } from '../../generators/playoffStructures';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 import { isPowerOf2 } from '../../../utilities';
+import {
+  setStageDrawSize,
+  setStageQualifiersCount,
+} from '../entryGovernor/stageEntryCounts';
 import {
   generateRoundRobin,
   generateRoundRobinWithPlayOff,
@@ -20,7 +26,7 @@ import {
 // prettier-ignore
 import {
   MAIN, FICQF, FICSF, MFIC, AD_HOC, CURTIS, FICR16, COMPASS,
-  PLAY_OFF, OLYMPIC, FEED_IN, QUALIFYING, ROUND_ROBIN,
+  PLAY_OFF, OLYMPIC, FEED_IN, ROUND_ROBIN,
   COMPASS_ATTRIBUTES, OLYMPIC_ATTRIBUTES,
   SINGLE_ELIMINATION, DOUBLE_ELIMINATION,
   FIRST_MATCH_LOSER_CONSOLATION,
@@ -29,6 +35,7 @@ import {
   MULTI_STRUCTURE_DRAWS,
   FEED_IN_CHAMPIONSHIP,
   WIN_RATIO,
+  QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
@@ -39,7 +46,7 @@ import {
   STAGE_SEQUENCE_LIMIT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
-import { definedAttributes } from '../../../utilities/objects';
+import { getDrawStructures } from '../../getters/findStructure';
 
 /**
  *
@@ -53,15 +60,11 @@ export function generateDrawType(params = {}) {
     drawType = SINGLE_ELIMINATION,
     stageSequence = 1,
     drawDefinition,
-    staggeredEntry,
+    staggeredEntry, // optional - specifies main structure FEED_IN for drawTypes CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIPS, FMLC
     structureName,
     goesTo = true,
-    stage = MAIN,
     isMock,
     uuids,
-    // qualifyingPositions, => passed through in params to treeMatchUps
-    // qualifyingRound, => passed through in params to treeMatchUps
-    // TODO: description => is this passed on?
   } = params;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -70,7 +73,59 @@ export function generateDrawType(params = {}) {
   tieFormat = tieFormat || drawDefinition.tieFormat || undefined;
   matchUpType = matchUpType || drawDefinition.matchUpType || SINGLES;
 
-  const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
+  const mainStageDrawPositionsCount = getStageDrawPositionsCount({
+    drawDefinition,
+    stage: MAIN,
+  });
+
+  if (!mainStageDrawPositionsCount) {
+    setStageDrawSize({
+      drawSize: params.drawSize,
+      drawDefinition,
+      stage: MAIN,
+    });
+  }
+  // first generate any qualifying structures
+  const qualifyingResult =
+    params.qualifyingProfiles?.length &&
+    generateQualifyingStructures({
+      qualifyingProfiles: params.qualifyingProfiles,
+      idPrefix: params.idPrefix,
+      drawDefinition,
+      matchUpType,
+      isMock,
+      uuids,
+    });
+
+  if (qualifyingResult?.error) return qualifyingResult;
+  const { qualifiersCount = 0, qualifyingDrawPositionsCount } =
+    qualifyingResult || {};
+
+  if (qualifyingDrawPositionsCount) {
+    drawDefinition.structures.push(...qualifyingResult.structures);
+    const qualifyingStageDrawPositionsCount = getStageDrawPositionsCount({
+      stage: QUALIFYING,
+      drawDefinition,
+    });
+
+    if (!qualifyingStageDrawPositionsCount) {
+      const result = setStageDrawSize({
+        drawSize: qualifyingDrawPositionsCount,
+        stage: QUALIFYING,
+        drawDefinition,
+      });
+      if (result.error) return result;
+    }
+    const result = setStageQualifiersCount({
+      drawDefinition,
+      qualifiersCount,
+      stage: MAIN,
+    });
+    if (result.error) return result;
+  }
+
+  const drawSize = params.drawSize || mainStageDrawPositionsCount;
+
   Object.assign(
     params,
     definedAttributes({ drawSize, matchUpType, tieFormat })
@@ -104,7 +159,7 @@ export function generateDrawType(params = {}) {
   const { structures: stageStructures } = getDrawStructures({
     drawDefinition,
     stageSequence,
-    stage,
+    stage: MAIN,
   });
   const structureCount = stageStructures.length;
   if (structureCount >= sequenceLimit) return { error: STAGE_SEQUENCE_LIMIT };
@@ -112,34 +167,31 @@ export function generateDrawType(params = {}) {
   const generators = {
     [AD_HOC]: () => {
       const structure = structureTemplate({
-        structureName: structureName || stage,
+        structureName: structureName || MAIN,
         finishingPosition: WIN_RATIO,
         structureId: uuids?.pop(),
         stageSequence,
         matchUps: [],
         matchUpType,
-        stage,
+        stage: MAIN,
       });
 
       drawDefinition.structures.push(structure);
-      return Object.assign({ structure }, SUCCESS);
+      return Object.assign({ structures: [structure] }, SUCCESS);
     },
     [SINGLE_ELIMINATION]: () => {
-      const { matchUps, roundLimit: derivedRoundLimit } = treeMatchUps(params);
-      const qualifyingRound = stage === QUALIFYING && derivedRoundLimit;
+      const { matchUps } = treeMatchUps(params);
       const structure = structureTemplate({
-        structureName: structureName || stage,
-        roundLimit: derivedRoundLimit,
+        structureName: structureName || MAIN,
         structureId: uuids?.pop(),
-        qualifyingRound,
         stageSequence,
         matchUpType,
+        stage: MAIN,
         matchUps,
-        stage,
       });
 
       drawDefinition.structures.push(structure);
-      return Object.assign({ structure }, SUCCESS);
+      return Object.assign({ structures: [structure] }, SUCCESS);
     },
     [DOUBLE_ELIMINATION]: () => generateDoubleElimination(params),
     [COMPASS]: () =>
@@ -162,16 +214,16 @@ export function generateDrawType(params = {}) {
       const { matchUps } = feedInMatchUps({ drawSize, uuids, matchUpType });
 
       const structure = structureTemplate({
-        structureName: structureName || stage,
+        structureName: structureName || MAIN,
         structureId: uuids?.pop(),
         stageSequence,
         matchUpType,
+        stage: MAIN,
         matchUps,
-        stage,
       });
 
       drawDefinition.structures.push(structure);
-      return Object.assign({ structure }, SUCCESS);
+      return Object.assign({ structures: [structure] }, SUCCESS);
     },
 
     [FIRST_ROUND_LOSER_CONSOLATION]: () => firstRoundLoserConsolation(params),
@@ -198,6 +250,24 @@ export function generateDrawType(params = {}) {
     return { error: UNRECOGNIZED_DRAW_TYPE };
   }
 
+  if (qualifyingResult?.structures?.length) {
+    const {
+      finalyQualifyingRoundNumber: qualifyingRoundNumber,
+      qualifyingStructureId,
+    } = qualifyingResult;
+
+    const mainStructureId = generatorResult.structures.find(
+      ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
+    );
+
+    generateQualifyingLink({
+      sourceStructureId: qualifyingStructureId,
+      sourceRoundNumber: qualifyingRoundNumber,
+      targetStructureId: mainStructureId,
+      drawDefinition,
+    });
+  }
+
   const { matchUps, matchUpsMap } = getAllDrawMatchUps({ drawDefinition });
 
   if (tieFormat) {
@@ -211,14 +281,14 @@ export function generateDrawType(params = {}) {
   if (goesTo)
     ({ inContextDrawMatchUps } = addGoesTo({ drawDefinition, matchUpsMap }));
 
-  const result = { ...SUCCESS, matchUps };
-
-  Object.assign(result, generatorResult, {
-    inContextDrawMatchUps,
-    matchUpsMap,
-  });
-
   modifyDrawNotice({ drawDefinition });
 
-  return result;
+  return {
+    structures: drawDefinition.structures,
+    links: drawDefinition.links,
+    inContextDrawMatchUps,
+    matchUpsMap,
+    ...SUCCESS,
+    matchUps,
+  };
 }

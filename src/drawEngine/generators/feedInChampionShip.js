@@ -1,4 +1,3 @@
-import { getStageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
 import { feedInLinks } from '../../drawEngine/generators/feedInLinks';
 import {
@@ -11,23 +10,22 @@ import { SUCCESS } from '../../constants/resultConstants';
 
 export function feedInChampionship(params = {}) {
   const {
-    uuids,
-    feedRounds,
-    matchUpType,
-    stage = MAIN,
-    structureName,
-    drawDefinition,
-    feedsFromFinal,
-    stageSequence = 1,
     finishingPositionOffset,
+    stageSequence = 1,
+    feedsFromFinal,
     staggeredEntry,
+    drawDefinition,
+    structureName,
+    matchUpType,
     feedPolicy,
+    feedRounds,
     idPrefix,
+    drawSize,
     isMock,
+    uuids,
     fmlc,
   } = params;
 
-  const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
   const mainParams = {
     finishingPositionOffset,
     matchUpType,
@@ -54,31 +52,31 @@ export function feedInChampionship(params = {}) {
   const baseDrawSize = drawSize / 2;
   const { matchUps: consolationMatchUps, roundsCount } = feedInMatchUps({
     finishingPositionOffset: baseDrawSize,
+    idPrefix: idPrefix && `${idPrefix}-c`,
     isConsolation: true,
     feedsFromFinal,
     baseDrawSize,
     matchUpType,
     feedRounds,
-    idPrefix: idPrefix && `${idPrefix}-c`,
     isMock,
     uuids,
     fmlc,
   });
 
   const consolationStructure = structureTemplate({
-    matchUpType,
-    stageSequence: 1,
-    stage: CONSOLATION,
+    matchUps: consolationMatchUps,
     structureId: uuids?.pop(),
     structureName: CONSOLATION,
-    matchUps: consolationMatchUps,
+    stage: CONSOLATION,
+    stageSequence: 1,
+    matchUpType,
   });
 
   drawDefinition.structures.push(consolationStructure);
 
   const links = feedInLinks({
-    mainStructure,
     consolationStructure,
+    mainStructure,
     roundsCount,
     feedPolicy,
     fmlc,
@@ -87,7 +85,10 @@ export function feedInChampionship(params = {}) {
   drawDefinition.links = drawDefinition.links.concat(...links);
 
   return Object.assign(
-    { mainStructure, consolationStructure, links: drawDefinition.links },
-    SUCCESS
+    {
+      structures: [mainStructure, consolationStructure],
+      links: drawDefinition.links,
+    },
+    { ...SUCCESS }
   );
 }

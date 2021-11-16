@@ -1,3 +1,4 @@
+import { validDrawPositions } from '../../governors/matchUpGovernor/validDrawPositions';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { treeMatchUps } from '../../generators/eliminationTree';
 import { drawEngine } from '../../sync';
@@ -17,13 +18,14 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 import { ERROR } from '../../../constants/resultConstants';
-import { validDrawPositions } from '../../governors/matchUpGovernor/validDrawPositions';
 
 it('can generate main draw', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType();
+  const {
+    structures: [structure],
+  } = drawEngine.generateDrawType();
   const { matchUps } = structure;
   const matchUpsCount = matchUps && matchUps.length;
   expect(matchUpsCount).toEqual(15);
@@ -63,7 +65,9 @@ it('generates main draw with expected finishing drawPositions', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType();
+  const {
+    structures: [structure],
+  } = drawEngine.generateDrawType();
   const { matchUps } = structure;
   const matchesCount = matchUps && matchUps.length;
   expect(matchesCount).toEqual(15);
@@ -104,32 +108,6 @@ it('can generate qualifying draw based on desired qualifyingPositions', () => {
   matchUps.forEach((matchUp, i) =>
     expect(matchUp.finishingRound).toEqual(finishingRounds[i])
   );
-});
-
-it('can generate qualifying draw based on drawType and qualifyingPositions', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({
-    drawType: SINGLE_ELIMINATION,
-    qualifyingPositions: 8,
-  });
-  const { matchUps } = structure;
-  const matchUpsCount = matchUps && matchUps.length;
-  expect(matchUpsCount).toEqual(8);
-});
-
-it('can generate qualifying draw based drawType and qualifyingRound', () => {
-  reset();
-  initialize();
-  mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({
-    drawType: SINGLE_ELIMINATION,
-    qualifyingRound: 1,
-  });
-  const { matchUps } = structure;
-  const matchUpsCount = matchUps && matchUps.length;
-  expect(matchUpsCount).toEqual(8);
 });
 
 it('can generate first matchUp loser consolation', () => {

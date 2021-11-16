@@ -1,6 +1,5 @@
-import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
-import { getStageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
+import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 import { generateRange, nextPowerOf2, UUID } from '../../utilities';
 import { getRoundRobinGroupMatchUps } from './roundRobinGroups';
 import { feedInChampionship } from './feedInChampionShip';
@@ -29,15 +28,16 @@ export function generateRoundRobin({
   drawDefinition,
   stage = MAIN,
   matchUpType,
+  drawSize,
   idPrefix,
   uuids,
 }) {
-  const finishingPosition = WIN_RATIO;
-  const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
   const { groupCount, groupSize } = deriveGroups({
     structureOptions,
     drawSize,
   });
+
+  const finishingPosition = WIN_RATIO;
 
   const structures = generateRange(1, groupCount + 1).map((structureOrder) =>
     structureTemplate({
@@ -71,7 +71,10 @@ export function generateRoundRobin({
 
   drawDefinition.structures.push(structure);
 
-  return Object.assign({ structure, groupCount, groupSize }, SUCCESS);
+  return Object.assign(
+    { structures: [structure], groupCount, groupSize },
+    { ...SUCCESS }
+  );
 }
 
 // first iteration only links to a single playoff structure
@@ -94,7 +97,7 @@ export function generateRoundRobinWithPlayOff(params) {
     { stage: MAIN }
   );
   const {
-    structure: mainStructure,
+    structures: [mainStructure],
     groupCount,
     groupSize,
   } = generateRoundRobin(mainDrawProperties);
@@ -203,10 +206,12 @@ export function generateRoundRobinWithPlayOff(params) {
     })
     .filter(Boolean);
 
-  // mainStructure, playoffStructures and links are only returned for tests
   return Object.assign(
-    { mainStructure, playoffStructures, links: drawDefinition.links },
-    SUCCESS
+    {
+      structures: [mainStructure, ...playoffStructures],
+      links: drawDefinition.links,
+    },
+    { ...SUCCESS }
   );
 }
 

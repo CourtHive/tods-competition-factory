@@ -447,7 +447,6 @@ drawEngine.generateDrawType({
   goesTo, // optional - generate winnerMatchUpId and loserMatchUpId attributes
   uuids, // optional - array of UUIDs to be used for structureIds and matchUpIds
 
-  stage, // optional - defaults to MAIN
   structureName, // optional - defaults to stage
 });
 ```

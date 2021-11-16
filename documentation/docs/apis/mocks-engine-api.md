@@ -141,6 +141,16 @@ const drawProfiles = [
     matchUpFormat, // optional - applies only to { eventTypes: SINGLES or DOUBLES }
     tieFormat, // optional - applies only when { eventType: TEAM }
     outcomes,
+
+    // specify playoff structures from specific rounds to specific "depths"
+    withPlayoffs: {
+      roundProfiles: [{ 3: 1 }, { 4: 1 }], // create playoff structures from rounds 3 and 4
+      playoffPositions: [3, 4], // specific playoff positions for which structures must be generated
+      playoffAttributes: {
+        '0-3': { name: 'Silver', abbreviation: 'S' }, // specify name and abbreviation by "structure exit profile"
+        '0-4': { name: 'Gold', abbreviation: 'G' },
+      },
+    },
   },
 ];
 

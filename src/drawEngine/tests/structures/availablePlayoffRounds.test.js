@@ -25,7 +25,7 @@ it('can correctly determine positions playedOff for STANDARD_ELIMINATION', () =>
   const { drawDefinition } = drawEngine.getState();
 
   const {
-    structure: { structureId },
+    structures: [{ structureId }],
   } = result;
 
   const { playoffRounds, playoffRoundsRanges } = getAvailablePlayoffRounds({
@@ -60,7 +60,7 @@ it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATIO
   expect(result.success).toEqual(true);
 
   const {
-    mainStructure: { structureId },
+    structures: [{ structureId }],
   } = result;
 
   const { drawDefinition } = drawEngine.getState();

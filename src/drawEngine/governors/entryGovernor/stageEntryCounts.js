@@ -39,8 +39,8 @@ export function setStageDrawSize({ drawDefinition, stage, drawSize }) {
   }
 
   const { entryProfile } = modifyEntryProfile({
-    drawDefinition,
     attributes: [{ [stage]: { drawSize } }],
+    drawDefinition,
   });
 
   modifyDrawNotice({ drawDefinition });
@@ -58,8 +58,8 @@ export function setStageAlternatesCount({
   }
 
   modifyEntryProfile({
-    drawDefinition,
     attributes: [{ [stage]: { alternates: alternatesCount } }],
+    drawDefinition,
   });
 
   if (!alternatesCount) {
@@ -116,8 +116,8 @@ export function setStageWildcardsCount({
   }
 
   modifyEntryProfile({
-    drawDefinition,
     attributes: [{ [stage]: { wildcardsCount } }],
+    drawDefinition,
   });
 
   modifyDrawNotice({ drawDefinition });
@@ -125,9 +125,9 @@ export function setStageWildcardsCount({
 }
 
 export function setStageQualifiersCount({
+  qualifiersCount = 0,
   drawDefinition,
   stage,
-  qualifiersCount = 0,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!stageExists({ drawDefinition, stage })) {
@@ -157,10 +157,11 @@ export function setStageQualifiersCount({
     };
 
   modifyEntryProfile({
-    drawDefinition,
     attributes: [{ [stage]: { qualifiersCount } }],
+    drawDefinition,
   });
 
   modifyDrawNotice({ drawDefinition });
+
   return { ...SUCCESS };
 }

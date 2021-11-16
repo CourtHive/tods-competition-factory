@@ -5,12 +5,12 @@ import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import drawEngine from '../../sync';
 
+import { BYE } from '../../../constants/matchUpStatusConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 import {
   ELIMINATION,
   FIRST_ROUND_LOSER_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
-import { SINGLES } from '../../../constants/eventConstants';
-import { BYE } from '../../../constants/matchUpStatusConstants';
 
 it('correctly assigns positions for Elimination structure', () => {
   const drawSize = 32;
@@ -33,10 +33,10 @@ it('correctly assigns positions for Elimination structure', () => {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    eventId,
-    drawSize,
     matchUpFormat: 'SET3-S:6/TB7',
     drawType: ELIMINATION,
+    drawSize,
+    eventId,
   });
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
@@ -75,10 +75,10 @@ it('correctly assigns BYE positions in consolation structure', () => {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    eventId,
-    drawSize,
-    matchUpFormat: 'SET3-S:6/TB7',
     drawType: FIRST_ROUND_LOSER_CONSOLATION,
+    matchUpFormat: 'SET3-S:6/TB7',
+    drawSize,
+    eventId,
   });
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
@@ -90,16 +90,16 @@ it('correctly assigns BYE positions in consolation structure', () => {
   } = getDrawStructures({ drawDefinition });
 
   result = structureAssignedDrawPositions({
-    drawDefinition,
     structure: mainStructure,
+    drawDefinition,
   });
   expect(result.assignedPositions.length).toEqual(32);
   expect(result.allPositionsAssigned).toEqual(true);
   expect(result.byePositions.length).toEqual(15);
 
   result = structureAssignedDrawPositions({
-    drawDefinition,
     structure: consolationStructure,
+    drawDefinition,
   });
   expect(result.assignedPositions.length).toEqual(15);
   expect(result.allPositionsAssigned).toEqual(false);
@@ -140,10 +140,10 @@ it('correctly assigns BYE positions in consolation structure', () => {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    eventId,
-    drawSize,
     matchUpFormat: 'SET3-S:6/TB7',
     drawType: FIRST_ROUND_LOSER_CONSOLATION,
+    drawSize,
+    eventId,
   });
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
@@ -155,8 +155,8 @@ it('correctly assigns BYE positions in consolation structure', () => {
   } = getDrawStructures({ drawDefinition });
 
   result = structureAssignedDrawPositions({
-    drawDefinition,
     structure: mainStructure,
+    drawDefinition,
   });
   expect(result.assignedPositions.length).toEqual(8);
   expect(result.allPositionsAssigned).toEqual(true);
@@ -171,8 +171,8 @@ it('correctly assigns BYE positions in consolation structure', () => {
   expect(finalMatchUp.matchUpStatus).toEqual(BYE);
 
   result = structureAssignedDrawPositions({
-    drawDefinition,
     structure: consolationStructure,
+    drawDefinition,
   });
   expect(result.assignedPositions.length).toEqual(3);
   expect(result.allPositionsAssigned).toEqual(false);

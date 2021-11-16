@@ -256,7 +256,8 @@ export function getAllStructureMatchUps({
       matchUp.tieFormat ||
       structure.tieFormat ||
       drawDefinition?.tieFormat ||
-      event?.tieFormat;
+      event?.tieFormat ||
+      undefined;
 
     const collectionDefinitions = tieFormat?.collectionDefinitions;
     const collectionDefinition =
