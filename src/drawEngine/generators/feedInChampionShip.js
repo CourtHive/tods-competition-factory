@@ -1,4 +1,3 @@
-// import { getStageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
 import { feedInLinks } from '../../drawEngine/generators/feedInLinks';
 import {
