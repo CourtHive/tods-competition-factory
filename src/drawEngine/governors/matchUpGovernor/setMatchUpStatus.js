@@ -81,11 +81,6 @@ export function setMatchUpStatus(params) {
     return { error: INVALID_MATCHUP_STATUS };
   }
 
-  if (score) {
-    const result = validateScore({ score });
-    if (result.error) return result;
-  }
-
   // Get map of all drawMatchUps and inContextDrawMatchUPs ---------------------
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
   let { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
@@ -108,6 +103,11 @@ export function setMatchUpStatus(params) {
   const matchUp = matchUpsMap.drawMatchUps.find(
     (matchUp) => matchUp.matchUpId === matchUpId
   );
+
+  if (score) {
+    const result = validateScore({ score, matchUp, winningSide });
+    if (result.error) return result;
+  }
 
   const inContextMatchUp = inContextDrawMatchUps.find(
     (matchUp) => matchUp.matchUpId === matchUpId
