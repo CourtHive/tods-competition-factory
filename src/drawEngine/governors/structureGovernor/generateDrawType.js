@@ -8,6 +8,7 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { feedInChampionship } from '../../generators/feedInChampionShip';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getStageDrawPositionsCount } from '../../getters/stageGetter';
+import { setStageDrawSize } from '../entryGovernor/stageEntryCounts';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import structureTemplate from '../../generators/structureTemplate';
 import { getDrawStructures } from '../../getters/structureGetter';
@@ -58,7 +59,6 @@ export function generateDrawType(params = {}) {
     staggeredEntry, // optional - specifies main structure FEED_IN for drawTypes CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIPS, FMLC
     structureName,
     goesTo = true,
-    stage = MAIN,
     isMock,
     uuids,
   } = params;
@@ -69,7 +69,17 @@ export function generateDrawType(params = {}) {
   tieFormat = tieFormat || drawDefinition.tieFormat || undefined;
   matchUpType = matchUpType || drawDefinition.matchUpType || SINGLES;
 
-  const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
+  const stageDrawPositionsCount = getStageDrawPositionsCount({
+    drawDefinition,
+    stage: MAIN,
+  });
+
+  const drawSize = params.drawSize || stageDrawPositionsCount;
+
+  if (!stageDrawPositionsCount) {
+    setStageDrawSize({ drawDefinition, stage: MAIN, drawSize });
+  }
+
   Object.assign(
     params,
     definedAttributes({ drawSize, matchUpType, tieFormat })
@@ -103,7 +113,7 @@ export function generateDrawType(params = {}) {
   const { structures: stageStructures } = getDrawStructures({
     drawDefinition,
     stageSequence,
-    stage,
+    stage: MAIN,
   });
   const structureCount = stageStructures.length;
   if (structureCount >= sequenceLimit) return { error: STAGE_SEQUENCE_LIMIT };
@@ -111,13 +121,13 @@ export function generateDrawType(params = {}) {
   const generators = {
     [AD_HOC]: () => {
       const structure = structureTemplate({
-        structureName: structureName || stage,
+        structureName: structureName || MAIN,
         finishingPosition: WIN_RATIO,
         structureId: uuids?.pop(),
         stageSequence,
         matchUps: [],
         matchUpType,
-        stage,
+        stage: MAIN,
       });
 
       drawDefinition.structures.push(structure);
@@ -126,12 +136,12 @@ export function generateDrawType(params = {}) {
     [SINGLE_ELIMINATION]: () => {
       const { matchUps } = treeMatchUps(params);
       const structure = structureTemplate({
-        structureName: structureName || stage,
+        structureName: structureName || MAIN,
         structureId: uuids?.pop(),
         stageSequence,
         matchUpType,
+        stage: MAIN,
         matchUps,
-        stage,
       });
 
       drawDefinition.structures.push(structure);
@@ -158,12 +168,12 @@ export function generateDrawType(params = {}) {
       const { matchUps } = feedInMatchUps({ drawSize, uuids, matchUpType });
 
       const structure = structureTemplate({
-        structureName: structureName || stage,
+        structureName: structureName || MAIN,
         structureId: uuids?.pop(),
         stageSequence,
         matchUpType,
+        stage: MAIN,
         matchUps,
-        stage,
       });
 
       drawDefinition.structures.push(structure);
