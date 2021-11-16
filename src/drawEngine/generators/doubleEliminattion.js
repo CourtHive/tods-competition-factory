@@ -1,9 +1,7 @@
 import { doubleEliminationLinks } from '../../drawEngine/generators/doubleEliminationLinks';
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
-import {
-  treeMatchUps,
-  feedInMatchUps,
-} from '../../drawEngine/generators/eliminationTree';
+import { feedInMatchUps } from './feedInMatchUps';
+import { treeMatchUps } from './eliminationTree';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import {

@@ -1,9 +1,7 @@
-import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
-import { feedInLinks } from '../../drawEngine/generators/feedInLinks';
-import {
-  treeMatchUps,
-  feedInMatchUps,
-} from '../../drawEngine/generators/eliminationTree';
+import { structureTemplate } from './structureTemplate';
+import { feedInMatchUps } from './feedInMatchUps';
+import { treeMatchUps } from './eliminationTree';
+import { feedInLinks } from './feedInLinks';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import {

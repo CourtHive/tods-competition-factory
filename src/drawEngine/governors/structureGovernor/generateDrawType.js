@@ -1,6 +1,5 @@
 import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserConsolation';
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
-import { treeMatchUps, feedInMatchUps } from '../../generators/eliminationTree';
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
 import { generateQualifyingStructures } from './generateQualifyingStructures';
@@ -10,6 +9,8 @@ import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getStageDrawPositionsCount } from '../../getters/stageGetter';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import structureTemplate from '../../generators/structureTemplate';
+import { feedInMatchUps } from '../../generators/feedInMatchUps';
+import { treeMatchUps } from '../../generators/eliminationTree';
 import { getDrawStructures } from '../../getters/findStructure';
 import { definedAttributes } from '../../../utilities/objects';
 import { playoff } from '../../generators/playoffStructures';
@@ -139,7 +140,7 @@ export function generateDrawType(params = {}) {
   const invalidDrawSize =
     drawSize < 2 ||
     (!staggeredEntry &&
-      ![FEED_IN, AD_HOC].includes(drawType) &&
+      ![FEED_IN, AD_HOC, LUCKY_DRAW].includes(drawType) &&
       ((drawType === ROUND_ROBIN && drawSize < 3) ||
         (drawType === DOUBLE_ELIMINATION && !validDoubleEliminationSize) ||
         (![ROUND_ROBIN, DOUBLE_ELIMINATION, ROUND_ROBIN_WITH_PLAYOFF].includes(

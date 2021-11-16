@@ -17,6 +17,7 @@ export function buildRound({
   let roundPosition = 1;
   const matchRoundNumber = roundNumber - 1;
   const roundMatchUpsCount = nodes.length;
+
   while (index < roundMatchUpsCount) {
     const child1 = nodes[index];
     const child2 = nodes[index + 1];
@@ -37,6 +38,7 @@ export function buildRound({
       matchUpId,
     };
     roundNodes.push(node);
+
     const matchUp = {
       matchUpId: node.matchUpId,
       roundNumber,

@@ -43,6 +43,7 @@ export function luckyDraw({
   while (roundNodes.length > 1) {
     if (qualifyingPositions && roundNodes.length === qualifyingPositions)
       roundLimit = roundNumber - 1;
+
     ({ roundNodes, matchUps } = buildRound({
       nodes: roundNodes,
       roundNumber,
