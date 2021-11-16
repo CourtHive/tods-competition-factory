@@ -50,10 +50,10 @@ export function getAllStructureMatchUps({
 
   if (!structure) {
     return {
-      matchUps: [],
       collectionPositionMatchUps,
-      roundMatchUps,
       error: MISSING_STRUCTURE,
+      roundMatchUps,
+      matchUps: [],
     };
   }
 
