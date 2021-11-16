@@ -66,6 +66,10 @@ export function generateDrawType(params = {}) {
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
+  let { tieFormat, matchUpType } = params;
+  tieFormat = tieFormat || drawDefinition.tieFormat || undefined;
+  matchUpType = matchUpType || drawDefinition.matchUpType || SINGLES;
+
   // first generate any qualifying structures
   const qualifyingResult =
     params.qualifyingProfiles?.length &&
@@ -79,10 +83,6 @@ export function generateDrawType(params = {}) {
     });
   if (qualifyingResult?.error) return qualifyingResult;
   const qualifyingDrawPositions = qualifyingResult?.totalQualifyingPositions;
-
-  let { tieFormat, matchUpType } = params;
-  tieFormat = tieFormat || drawDefinition.tieFormat || undefined;
-  matchUpType = matchUpType || drawDefinition.matchUpType || SINGLES;
 
   if (qualifyingDrawPositions) {
     const qualifyingStageDrawPositionsCount = getStageDrawPositionsCount({
