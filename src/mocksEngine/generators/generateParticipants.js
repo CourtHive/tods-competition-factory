@@ -18,6 +18,7 @@ import {
   PAIR,
   TEAM,
 } from '../../constants/participantTypes';
+import { isValidDateString } from '../../utilities/dateTime';
 
 /**
  *
@@ -255,11 +256,11 @@ export function generateParticipants({
     const participantName = `${standardGivenName} ${standardFamilyName}`;
     const country = countriesList[participantIndex];
     const nationalityCode =
+      personNationalityCode ||
       (country &&
         (nationalityCodeType === 'ISO'
           ? country.iso
-          : country.ioc || country.iso)) ||
-      personNationalityCode;
+          : country.ioc || country.iso));
 
     if (countriesList?.length && !nationalityCode && !personNationalityCode) {
       console.log('%c Invalid Nationality Code', { participantIndex, country });
@@ -292,7 +293,7 @@ export function generateParticipants({
         standardGivenName,
         nationalityCode,
         extensions,
-        birthDate,
+        birthDate: isValidDateString(birthDate) ? birthDate : undefined,
         sex,
       },
     });

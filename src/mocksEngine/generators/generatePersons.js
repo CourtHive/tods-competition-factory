@@ -56,6 +56,7 @@ export function generatePersons({
       return { error: INVALID_VALUES };
     }
   }
+
   const shuffledPersons = shuffleArray(validPersonData);
 
   if (shuffledPersons.length < count) {
