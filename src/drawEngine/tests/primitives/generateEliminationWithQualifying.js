@@ -105,7 +105,7 @@ export function generateEliminationWithQualifying({
   drawEngine.generateQualifyingLink({
     qualifyingStructureId,
     mainStructureId,
-    qualifyingRound: roundLimit,
+    qualifyingRoundNumber: roundLimit,
   });
   drawEngine.initializeStructureSeedAssignments({
     structureId: qualifyingStructureId,

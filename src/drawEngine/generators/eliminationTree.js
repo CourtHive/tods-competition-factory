@@ -9,7 +9,7 @@ import {
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 
 export function treeMatchUps({
-  qualifyingRound, // round at which participants qualify
+  qualifyingRoundNumber, // round at which participants qualify
   finishingPositionOffset,
   qualifyingPositions, // number of positions which qualify
   matchUpType,
@@ -44,7 +44,7 @@ export function treeMatchUps({
   }));
   roundNumber++;
 
-  roundLimit = roundLimit || qualifyingRound;
+  roundLimit = roundLimit || qualifyingRoundNumber;
   while (roundNodes.length > 1) {
     if (qualifyingPositions && roundNodes.length === qualifyingPositions)
       roundLimit = roundNumber - 1;

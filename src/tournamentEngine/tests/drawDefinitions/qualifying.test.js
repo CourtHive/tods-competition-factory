@@ -5,7 +5,8 @@ import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
 // prettier-ignore
 const scenarios = [
-  { drawSize: 16, qualifyingProfiles: [{ drawSize: 16, qualifyingPositions: 4 }], expectation: { qualifyingRound: 2, qualifyingMatchUps: 12 } },
+  { drawSize: 16, qualifyingProfiles: [{ drawSize: 16, qualifyingPositions: 4 }], expectation: { qualifyingRoundNumber: 2, qualifyingMatchUps: 12 } },
+  { drawSize: 16, qualifyingProfiles: [{ drawSize: 16, qualifyingRound: 3 }], expectation: { qualifyingRoundNumber: 2, qualifyingMatchUps: 12 } },
 ];
 
 it.each(scenarios)(
@@ -49,12 +50,12 @@ it.skip('can generate qualifying draw based on drawType and qualifyingPositions'
   expect(matchUpsCount).toEqual(8);
 });
 
-it.skip('can generate qualifying draw based drawType and qualifyingRound', () => {
+it.skip('can generate qualifying draw based drawType and qualifyingRoundNumber', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
   const { structure } = drawEngine.generateDrawType({
-    qualifyingProfiles: [{ qualifyingRound: 1 }],
+    qualifyingProfiles: [{ qualifyingRoundNumber: 1 }],
     drawType: SINGLE_ELIMINATION,
   });
   const { matchUps } = structure;
@@ -72,7 +73,7 @@ it('can generate and verify qualifying structures', () => {
       stage: QUALIFYING,
       participantsCount: 17,
       drawType: SINGLE_ELIMINATION,
-      qualifyingProfiles: [{ drawSize: 16, qualifyingRound: 2 }],
+      qualifyingProfiles: [{ drawSize: 16, qualifyingRoundNumber: 2 }],
     },
   ];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

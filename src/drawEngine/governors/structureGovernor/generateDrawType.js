@@ -236,8 +236,10 @@ export function generateDrawType(params = {}) {
 
   if (qualifyingResult?.structures?.length) {
     drawDefinition.structures.push(...qualifyingResult.structures);
-    const { finalQualifyingRound: qualifyingRound, qualifyingStructureId } =
-      qualifyingResult;
+    const {
+      finalQualifyingRound: qualifyingRoundNumber,
+      qualifyingStructureId,
+    } = qualifyingResult;
 
     const mainStructureId = generatorResult.structures.find(
       ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
@@ -245,7 +247,7 @@ export function generateDrawType(params = {}) {
 
     generateQualifyingLink({
       sourceStructureId: qualifyingStructureId,
-      sourceRoundNumber: qualifyingRound,
+      sourceRoundNumber: qualifyingRoundNumber,
       targetStructureId: mainStructureId,
       drawDefinition,
     });

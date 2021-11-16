@@ -6,7 +6,7 @@ export const structureTemplate = ({
   structureAbbreviation,
   seedAssignments = [],
   stageSequence = 1,
-  qualifyingRound,
+  qualifyingRoundNumber,
   seedingProfile,
   matchUpFormat,
   structureType,
@@ -36,7 +36,8 @@ export const structureTemplate = ({
   if (roundOffset) structure.roundOffset = roundOffset;
   if (structureType) structure.structureType = structureType;
   if (seedingProfile) structure.seedingProfile = seedingProfile;
-  if (qualifyingRound) structure.qualifyingRound = qualifyingRound;
+  if (qualifyingRoundNumber)
+    structure.qualifyingRoundNumber = qualifyingRoundNumber;
   if (exitProfile) structure.exitProfile = exitProfile;
 
   const positionAssignments = []

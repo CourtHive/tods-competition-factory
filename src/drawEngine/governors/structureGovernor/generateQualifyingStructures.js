@@ -25,15 +25,19 @@ export function generateQualifyingStructures({
     stageSequence = 0;
 
   for (const qualifyingProfile of qualifyingProfiles.sort(sequenceSort)) {
-    const { drawSize, qualifyingRound, qualifyingPositions, structureName } =
-      qualifyingProfile;
+    const {
+      drawSize,
+      qualifyingRoundNumber,
+      qualifyingPositions,
+      structureName,
+    } = qualifyingProfile;
 
     if (!drawSize || !isConvertableInteger(drawSize))
       return { error: MISSING_DRAW_SIZE };
 
     const { matchUps, roundLimit } = treeMatchUps({
       qualifyingPositions,
-      qualifyingRound,
+      qualifyingRoundNumber,
       idPrefix,
       drawSize,
       isMock,
@@ -47,7 +51,7 @@ export function generateQualifyingStructures({
       generateQualifyingLink({
         sourceStructureId: finalQualifyingStructureId,
         targetStructureId: structure.structureId,
-        sourceRoundNumber: qualifyingRound,
+        sourceRoundNumber: qualifyingRoundNumber,
         drawDefinition,
       });
       // if more than one qualifying stageSequence, remove last stageSequence qualifier positions from count
@@ -58,7 +62,7 @@ export function generateQualifyingStructures({
 
     const structure = structureTemplate({
       structureName: structureName || QUALIFYING,
-      qualifyingRound: roundLimit,
+      qualifyingRoundNumber: roundLimit,
       structureId: uuids?.pop(),
       stage: QUALIFYING,
       stageSequence,
