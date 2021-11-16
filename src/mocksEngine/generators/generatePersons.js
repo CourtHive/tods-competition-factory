@@ -33,6 +33,9 @@ export function generatePersons({
   let validPersonData = defaultPersonData.filter(
     (person) => !sex || person.sex === sex
   );
+
+  let nationalityCodes;
+
   if (Array.isArray(personData)) {
     const validatedPersonData = personData.filter((person) => {
       if (typeof person.firstName !== 'string') return false;
@@ -47,6 +50,9 @@ export function generatePersons({
           ))
       )
         return false;
+
+      if (person.nationalityCode) nationalityCodes.push(person.nationalityCode);
+
       return true;
     });
 
@@ -144,5 +150,8 @@ export function generatePersons({
     );
   });
 
-  return { persons: (persons.length && persons) || shuffledPersons[0] };
+  return {
+    persons: (persons.length && persons) || shuffledPersons[0],
+    nationalityCodes,
+  };
 }
