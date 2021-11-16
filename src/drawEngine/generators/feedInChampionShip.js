@@ -1,4 +1,4 @@
-import { getStageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
+// import { getStageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
 import { feedInLinks } from '../../drawEngine/generators/feedInLinks';
 import {
@@ -17,17 +17,16 @@ export function feedInChampionship(params = {}) {
     staggeredEntry,
     drawDefinition,
     structureName,
-    stage = MAIN,
     matchUpType,
     feedPolicy,
     feedRounds,
     idPrefix,
+    drawSize,
     isMock,
     uuids,
     fmlc,
   } = params;
 
-  const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
   const mainParams = {
     finishingPositionOffset,
     matchUpType,
