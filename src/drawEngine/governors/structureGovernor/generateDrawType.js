@@ -252,18 +252,18 @@ export function generateDrawType(params = {}) {
 
   if (qualifyingResult?.structures?.length) {
     const {
-      finalyQualifyingRoundNumber: qualifyingRoundNumber,
-      qualifyingStructureId,
+      finalQualifyingRoundNumber: qualifyingRoundNumber,
+      finalQualifyingStructureId: qualifyingStructureId,
     } = qualifyingResult;
 
-    const mainStructureId = generatorResult.structures.find(
+    const mainStructure = generatorResult.structures.find(
       ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
     );
 
     generateQualifyingLink({
       sourceStructureId: qualifyingStructureId,
       sourceRoundNumber: qualifyingRoundNumber,
-      targetStructureId: mainStructureId,
+      targetStructureId: mainStructure.structureId,
       drawDefinition,
     });
   }
