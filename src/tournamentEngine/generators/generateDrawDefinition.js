@@ -2,7 +2,7 @@ import { initializeStructureSeedAssignments } from '../../drawEngine/governors/p
 import { automatedPositioning } from '../../drawEngine/governors/positionGovernor/automatedPositioning';
 import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
-import { setStageDrawSize } from '../../drawEngine/governors/entryGovernor/stageEntryCounts';
+// import { setStageDrawSize } from '../../drawEngine/governors/entryGovernor/stageEntryCounts';
 import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/matchUpFormat';
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
 import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attachPolicies';
@@ -54,7 +54,6 @@ export function generateDrawDefinition(params) {
     automated = true,
     seedingProfile,
     tieFormatName,
-    stage = MAIN,
     drawEntries,
     feedPolicy,
     idPrefix,
@@ -117,7 +116,7 @@ export function generateDrawDefinition(params) {
   const entries = drawEntries || event?.entries || [];
   const stageEntries = entries.filter(
     (entry) =>
-      (!entry.entryStage || entry.entryStage === stage) &&
+      (!entry.entryStage || entry.entryStage === MAIN) &&
       STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
   );
 
@@ -127,8 +126,10 @@ export function generateDrawDefinition(params) {
   }
 
   const drawDefinition = newDrawDefinition({ drawType, drawId });
-  setStageDrawSize({ drawDefinition, stage, drawSize });
+  // setStageDrawSize({ drawDefinition, stage: MAIN, drawSize });
 
+  /*
+  // this is for setting the entryProfile for stages other than MAIN
   if (drawEntries) {
     const drawEntryStages = drawEntries
       .reduce(
@@ -138,12 +139,12 @@ export function generateDrawDefinition(params) {
             : stages.concat(entry.entryStage),
         []
       )
-      .filter((entryStage) => entryStage !== stage)
+      .filter((entryStage) => entryStage !== MAIN)
       .filter(Boolean);
 
-    // if (drawEntryStages.length) console.log({ drawEntryStages, drawEntries });
     if (drawEntryStages.length) console.log('drawEntryStages');
   }
+  */
 
   if (matchUpFormat || tieFormat) {
     let equivalentInScope =
@@ -191,10 +192,10 @@ export function generateDrawDefinition(params) {
     matchUpType,
     feedPolicy,
     tieFormat,
+    drawSize,
     drawType,
     idPrefix,
     isMock,
-    stage,
     uuids,
   });
   if (result.error) return result;
@@ -204,7 +205,7 @@ export function generateDrawDefinition(params) {
   const { structures } = getDrawStructures({
     drawDefinition,
     stageSequence: 1,
-    stage,
+    stage: MAIN,
   });
   const [structure] = structures;
   const { structureId } = structure || {};
@@ -324,8 +325,8 @@ export function generateDrawDefinition(params) {
     let { scaledEntries } = getScaledEntries({
       scaleAttributes: seedingScaleAttributes,
       tournamentRecord,
+      stage: MAIN,
       entries,
-      stage,
     });
 
     if (!scaledEntries?.length && seedByRanking) {
@@ -338,8 +339,8 @@ export function generateDrawDefinition(params) {
       ({ scaledEntries } = getScaledEntries({
         scaleAttributes: rankingScaleAttributes,
         tournamentRecord,
+        stage: MAIN,
         entries,
-        stage,
       }));
     }
 
