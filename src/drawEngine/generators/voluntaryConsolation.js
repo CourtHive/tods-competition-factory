@@ -1,6 +1,5 @@
 import { automatedPositioning } from '../governors/positionGovernor/automatedPositioning';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
-import { getStageDrawPositionsCount } from '../getters/stageGetter';
 import structureTemplate from './structureTemplate';
 import { treeMatchUps } from './eliminationTree';
 
@@ -9,21 +8,20 @@ import { VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function generateVoluntaryConsolationStructure({
+  structureName = VOLUNTARY_CONSOLATION,
+  structureAbbreviation,
   drawDefinition,
   participants,
   matchUpType,
-  event,
-
-  structureName = VOLUNTARY_CONSOLATION,
-  structureAbbreviation,
   structureId,
   automated,
+  drawSize,
+  event,
 }) {
   const stage = VOLUNTARY_CONSOLATION;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   matchUpType = matchUpType || drawDefinition.matchUpType;
-  const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
   const { matchUps } = treeMatchUps({
     matchUpType,
     drawSize,
