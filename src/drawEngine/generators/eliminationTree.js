@@ -1,12 +1,12 @@
+import { addFinishingRounds } from './addFinishingRounds';
+import { generateMatchUpId } from './generateMachUpId';
+import { buildRound } from './buildRound';
 import {
   nearestPowerOf2,
   generateRange,
   instanceCount,
   isPowerOf2,
-  UUID,
 } from '../../utilities';
-
-import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 
 export function treeMatchUps({
   qualifyingRoundNumber, // round at which participants qualify
@@ -74,120 +74,6 @@ export function treeMatchUps({
   }
 
   return { matchUps, roundsCount, roundLimit };
-}
-
-function addFinishingRounds({
-  finishingPositionOffset = 0,
-  positionsFed,
-  roundsCount,
-  roundLimit,
-  matchUps,
-  fmlc,
-}) {
-  // object containing # of matchUps (value) for each round (attribute)
-  const roundMatchCounts = matchUps.reduce((p, matchUp) => {
-    p[matchUp.roundNumber] = (p[matchUp.roundNumber] || 0) + 1;
-    return p;
-  }, {});
-
-  // array of # of matchUps (value) for eaach round (index)
-  const roundMatchCountArray = Object.values(roundMatchCounts);
-
-  // returns a range for array of possible finishing drawPositions
-  const finishingRange = (drawPositions) => [
-    Math.min(...drawPositions),
-    Math.max(...drawPositions),
-  ];
-
-  // for qualifying, offset the final round so that qualifyinground is finishingRound
-  const finishingRoundOffset = roundLimit ? roundsCount - roundLimit : 0;
-
-  matchUps.forEach((matchUp) => {
-    matchUp.finishingRound =
-      roundsCount + 1 - matchUp.roundNumber - finishingRoundOffset;
-
-    // in the case of FMLC the finishingPositionRange in consolation is not modified after first fed round
-    const fmlcException = fmlc && matchUp.roundNumber !== 1;
-    const rangeOffset =
-      1 + finishingPositionOffset + (fmlcException ? positionsFed : 0);
-
-    const currentMatchUps = roundMatchCounts[matchUp.roundNumber];
-
-    const upcomingMatchUps = roundMatchCountArray
-      .slice(matchUp.roundNumber - 1)
-      .reduce((a, b) => a + b, 0);
-
-    const finalPosition = 1;
-    const finishingPositionRange = generateRange(
-      rangeOffset,
-      upcomingMatchUps + rangeOffset + finalPosition
-    );
-
-    const slicer = upcomingMatchUps + finalPosition - currentMatchUps;
-    const loser = finishingRange(finishingPositionRange.slice(slicer));
-    const winner = finishingRange(finishingPositionRange.slice(0, slicer));
-    matchUp.finishingPositionRange = { loser, winner };
-  });
-
-  return matchUps;
-}
-
-function buildRound({
-  includeMatchUpType,
-  matchUpType,
-  roundNumber,
-  matchUps,
-  idPrefix,
-  isMock,
-  uuids,
-  nodes,
-}) {
-  let index = 0;
-  const roundNodes = [];
-  let roundPosition = 1;
-  const matchRoundNumber = roundNumber - 1;
-  const roundMatchUpsCount = nodes.length;
-  while (index < roundMatchUpsCount) {
-    const child1 = nodes[index];
-    const child2 = nodes[index + 1];
-
-    if (matchRoundNumber) child1.roundNumber = matchRoundNumber;
-    if (child2 && matchRoundNumber) child2.roundNumber = matchRoundNumber;
-
-    const matchUpId = getMatchUpId({
-      roundPosition,
-      roundNumber,
-      idPrefix,
-      uuids,
-    });
-
-    const node = {
-      roundPosition,
-      children: [child1, child2],
-      matchUpId,
-    };
-    roundNodes.push(node);
-    const matchUp = {
-      matchUpId: node.matchUpId,
-      roundNumber,
-      roundPosition,
-      matchUpStatus: TO_BE_PLAYED,
-      // TODO: undefined drawPositions can be filtered; several tests will have to be updated
-      // UNDEFINED drawPositions
-      // drawPositions: node.children.map((c) => c.drawPosition).filter(Boolean),
-      drawPositions: node.children.map((c) => c.drawPosition),
-    };
-
-    // matchUpType is derived for inContext matchUps from structure or drawDefinition
-    if (includeMatchUpType) matchUp.matchUpType = matchUpType;
-    if (isMock) matchUp.isMock = true;
-
-    matchUps.push(matchUp);
-    index += 2;
-    roundPosition++;
-  }
-
-  return { roundNodes, matchUps };
 }
 
 export function feedDrawSize({ opponentCount }) {
@@ -420,7 +306,7 @@ function buildFeedRound({
 
     const position = nodes[nodeIndex];
     position.roundNumber = roundNumber - 1;
-    const matchUpId = getMatchUpId({
+    const matchUpId = generateMatchUpId({
       roundPosition: position.roundPosition,
       roundNumber,
       idPrefix,
@@ -447,10 +333,4 @@ function buildFeedRound({
     : undefined;
 
   return { roundNodes, matchUps, drawPosition: nextDrawPosition };
-}
-
-function getMatchUpId({ idPrefix, roundNumber, roundPosition, uuids }) {
-  return idPrefix
-    ? `${idPrefix}-${roundNumber}-${roundPosition}`
-    : uuids?.pop() || UUID();
 }
