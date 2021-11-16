@@ -23,24 +23,25 @@ it('can generate team events using personData', () => {
     { firstName: 'Female', lastName: 'Three Team 2', sex: 'FEMALE', birthDate: '2222-02-02' },
   ];
 
-  const {
-    tournamentRecord,
-    drawIds: [drawId],
-  } = mocksEngine.generateTournamentRecord({
+  const mockProfile = {
     drawProfiles: [
       {
         tieFormatName: TEAM_DOUBLES_3_AGGREGATION,
         tournamentAlternates: 2,
         eventType: TEAM,
         drawSize: 2,
-        personData,
       },
     ],
     participantsProfile: {
       teamKey: { personAttribute: 'birthDate' },
       personData,
     },
-  });
+  };
+
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord(mockProfile);
 
   tournamentEngine.setState(tournamentRecord);
 
