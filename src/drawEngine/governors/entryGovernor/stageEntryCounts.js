@@ -39,8 +39,8 @@ export function setStageDrawSize({ drawDefinition, stage, drawSize }) {
   }
 
   const { entryProfile } = modifyEntryProfile({
-    drawDefinition,
     attributes: [{ [stage]: { drawSize } }],
+    drawDefinition,
   });
 
   modifyDrawNotice({ drawDefinition });
@@ -58,8 +58,8 @@ export function setStageAlternatesCount({
   }
 
   modifyEntryProfile({
-    drawDefinition,
     attributes: [{ [stage]: { alternates: alternatesCount } }],
+    drawDefinition,
   });
 
   if (!alternatesCount) {
@@ -116,8 +116,8 @@ export function setStageWildcardsCount({
   }
 
   modifyEntryProfile({
-    drawDefinition,
     attributes: [{ [stage]: { wildcardsCount } }],
+    drawDefinition,
   });
 
   modifyDrawNotice({ drawDefinition });
@@ -157,8 +157,8 @@ export function setStageQualifiersCount({
     };
 
   modifyEntryProfile({
-    drawDefinition,
     attributes: [{ [stage]: { qualifiersCount } }],
+    drawDefinition,
   });
 
   modifyDrawNotice({ drawDefinition });
