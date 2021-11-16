@@ -2,22 +2,22 @@ import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
 import { getEventTimeItem } from '../queryGovernor/timeItems';
 import { addNotice } from '../../../global/state/globalState';
 import { getEventData } from './getEventData';
+import { unique } from '../../../utilities';
 
+import { PUBLISH, PUBLIC, STATUS } from '../../../constants/timeItemConstants';
+import { PUBLISH_EVENT } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { PUBLISH, PUBLIC, STATUS } from '../../../constants/timeItemConstants';
-import { PUBLISH_EVENT } from '../../../constants/topicConstants';
-import { unique } from '../../../utilities';
 
 export function publishEvent({
-  tournamentRecord,
   policyDefinitions,
-  status = PUBLIC,
   structureIds = [],
+  tournamentRecord,
   drawIdsToRemove,
+  status = PUBLIC,
   drawIdsToAdd,
   drawIds,
   event,

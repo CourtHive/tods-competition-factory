@@ -7,6 +7,7 @@ import { addExtension } from '../../tournamentEngine/governors/tournamentGoverno
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { drawMatic } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/drawMatic';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
+import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { isValidExtension } from '../../global/validation/isValidExtension';
@@ -64,6 +65,7 @@ export function generateEventWithDraw({
     seedsCount,
     category,
     idPrefix,
+    publish,
     gender,
     stage,
   } = drawProfile;
@@ -418,6 +420,10 @@ export function generateEventWithDraw({
         }
         // TODO: check if RRWPO & automate & complete
       }
+    }
+
+    if (publish) {
+      publishEvent({ tournamentRecord, event });
     }
   }
 

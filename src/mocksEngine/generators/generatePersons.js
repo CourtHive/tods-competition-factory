@@ -34,7 +34,7 @@ export function generatePersons({
     (person) => !sex || person.sex === sex
   );
 
-  let nationalityCodes;
+  let nationalityCodes = [];
 
   if (Array.isArray(personData)) {
     const validatedPersonData = personData.filter((person) => {
