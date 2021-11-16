@@ -5,8 +5,8 @@ import { ENTRY_PROFILE } from '../../../constants/extensionConstants';
 
 export function modifyEntryProfile({ drawDefinition, attributes }) {
   let { extension } = findDrawDefinitionExtension({
-    drawDefinition,
     name: ENTRY_PROFILE,
+    drawDefinition,
   });
   const entryProfile = extension?.value || drawDefinition.entryProfile || {};
 
