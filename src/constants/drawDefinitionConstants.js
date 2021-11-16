@@ -191,6 +191,8 @@ export const drawDefinitionConstants = {
 
   MULTI_STRUCTURE_DRAWS,
   generatedDrawTypes,
+
+  stageOrder,
 };
 
 export default drawDefinitionConstants;
