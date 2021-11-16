@@ -2,7 +2,6 @@ import { initializeStructureSeedAssignments } from '../../drawEngine/governors/p
 import { automatedPositioning } from '../../drawEngine/governors/positionGovernor/automatedPositioning';
 import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
-// import { setStageDrawSize } from '../../drawEngine/governors/entryGovernor/stageEntryCounts';
 import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/matchUpFormat';
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
 import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attachPolicies';
@@ -126,7 +125,6 @@ export function generateDrawDefinition(params) {
   }
 
   const drawDefinition = newDrawDefinition({ drawType, drawId });
-  // setStageDrawSize({ drawDefinition, stage: MAIN, drawSize });
 
   /*
   // this is for setting the entryProfile for stages other than MAIN

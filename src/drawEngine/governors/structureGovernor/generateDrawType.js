@@ -33,6 +33,7 @@ import {
   MULTI_STRUCTURE_DRAWS,
   FEED_IN_CHAMPIONSHIP,
   WIN_RATIO,
+  QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
@@ -65,18 +66,47 @@ export function generateDrawType(params = {}) {
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
+  // first generate any qualifying structures
+  const qualifyingResult =
+    params.qualifyingProfiles?.length &&
+    generateQualifyingStructures({
+      qualifyingProfiles: params.qualifyingProfiles,
+      idPrefix: params.idPrefix,
+      drawDefinition,
+      matchUpType,
+      isMock,
+      uuids,
+    });
+  if (qualifyingResult?.error) return qualifyingResult;
+  const qualifyingDrawPositions = qualifyingResult?.totalQualifyingPositions;
+
   let { tieFormat, matchUpType } = params;
   tieFormat = tieFormat || drawDefinition.tieFormat || undefined;
   matchUpType = matchUpType || drawDefinition.matchUpType || SINGLES;
 
-  const stageDrawPositionsCount = getStageDrawPositionsCount({
+  if (qualifyingDrawPositions) {
+    const qualifyingStageDrawPositionsCount = getStageDrawPositionsCount({
+      stage: QUALIFYING,
+      drawDefinition,
+    });
+
+    if (!qualifyingStageDrawPositionsCount) {
+      setStageDrawSize({
+        drawSize: qualifyingDrawPositions,
+        stage: QUALIFYING,
+        drawDefinition,
+      });
+    }
+  }
+
+  const mainStageDrawPositionsCount = getStageDrawPositionsCount({
     drawDefinition,
     stage: MAIN,
   });
 
-  const drawSize = params.drawSize || stageDrawPositionsCount;
+  const drawSize = params.drawSize || mainStageDrawPositionsCount;
 
-  if (!stageDrawPositionsCount) {
+  if (!mainStageDrawPositionsCount) {
     setStageDrawSize({ drawDefinition, stage: MAIN, drawSize });
   }
 
@@ -203,18 +233,6 @@ export function generateDrawType(params = {}) {
   if (!generatorResult?.success) {
     return { error: UNRECOGNIZED_DRAW_TYPE };
   }
-
-  const qualifyingResult =
-    params.qualifyingProfiles?.length &&
-    generateQualifyingStructures({
-      qualifyingProfiles: params.qualifyingProfiles,
-      idPrefix: params.idPrefix,
-      drawDefinition,
-      matchUpType,
-      isMock,
-      uuids,
-    });
-  if (qualifyingResult?.error) return qualifyingResult;
 
   if (qualifyingResult?.structures?.length) {
     drawDefinition.structures.push(...qualifyingResult.structures);
