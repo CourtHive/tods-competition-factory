@@ -33,7 +33,10 @@ it('can generate team events using personData', () => {
       },
     ],
     participantsProfile: {
-      teamKey: { personAttribute: 'birthDate' },
+      teamKey: {
+        personAttribute: 'birthDate',
+        teamNames: [`Queen's Club`, 'United'],
+      },
       personData,
     },
   };
@@ -60,12 +63,7 @@ it('can generate team events using personData', () => {
     (participant) => participant.participantName
   );
   expect(names.length).toEqual(4);
-  expect(names.sort()).toEqual([
-    '1111-01-01',
-    '2222-02-02',
-    'Team 1',
-    'Team 2',
-  ]);
+  expect(names.sort()).toEqual([`Queen's Club`, 'Team 1', 'Team 2', 'United']);
 
   const { tournamentPersons } = tournamentEngine.getTournamentPersons();
   tournamentPersons.forEach((person) =>
