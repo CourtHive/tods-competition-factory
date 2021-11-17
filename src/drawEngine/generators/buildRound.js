@@ -55,8 +55,8 @@ export function buildRound({
     if (isMock) matchUp.isMock = true;
 
     matchUps.push(matchUp);
-    index += 2;
     roundPosition++;
+    index += 2;
   }
 
   return { roundNodes, matchUps };
