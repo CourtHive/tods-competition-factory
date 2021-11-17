@@ -1,4 +1,5 @@
 import { mocksEngine, tournamentEngine } from '../../..';
+import drawEngine from '../../sync';
 
 import { LUCKY_DRAW } from '../../../constants/drawDefinitionConstants';
 
@@ -9,17 +10,27 @@ const drawSizes = [
 ];
 */
 
-const drawSizes = [32];
+const scenarios = [{ drawSize: 22, expectation: [11, 6, 3, 2, 1] }];
 
-test.each(drawSizes)(
+test.each(scenarios)(
   'it can generate luckyDraw structures for any drawSize',
-  (drawSize) => {
+  ({ drawSize, expectation }) => {
     const drawProfiles = [{ drawSize, drawType: LUCKY_DRAW }];
     const { tournamentRecord } = mocksEngine.generateTournamentRecord({
       drawProfiles,
     });
 
     tournamentEngine.setState(tournamentRecord);
-    expect(true);
+
+    const { matchUps } = tournamentEngine.allTournamentMatchUps();
+
+    const { roundProfile } = drawEngine.getRoundMatchUps({
+      matchUps,
+    });
+    const matchUpCounts = Object.values(roundProfile).map(
+      ({ matchUpsCount }) => matchUpsCount
+    );
+    expect(matchUpCounts).toEqual(expectation);
+    // console.log(Object.values(roundProfile));
   }
 );
