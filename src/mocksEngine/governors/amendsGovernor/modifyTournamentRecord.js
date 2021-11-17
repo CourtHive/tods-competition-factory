@@ -1,5 +1,6 @@
 import { scheduleProfileRounds } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
 import { generateScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/jinnScheduler/generateScheduleTimes';
+import { publishEvent } from '../../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import { generateFlightDrawDefinitions } from '../../generators/generateFlightDrawDefinitions';
 import { addTournamentParticipants } from '../../generators/addTournamentParticipants';
 import { generateEventParticipants } from '../../generators/generateEventParticipants';
@@ -113,7 +114,8 @@ export function modifyTournamentRecord({
         eventIndex += 1;
       } else {
         const { gender, category, eventType } = event;
-        const { drawProfiles } = eventProfile;
+        const { drawProfiles, publish } = eventProfile;
+
         const eventParticipantType =
           eventType === SINGLES
             ? INDIVIDUAL
@@ -177,6 +179,10 @@ export function modifyTournamentRecord({
           if (result.error) return result;
 
           drawIds.push(...result.drawIds);
+        }
+
+        if (publish) {
+          publishEvent({ tournamentRecord, event });
         }
       }
     }
