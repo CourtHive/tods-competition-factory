@@ -40,8 +40,10 @@ export function treeMatchUps({
 
   roundLimit = roundLimit || qualifyingRoundNumber;
   while (roundNodes.length > 1) {
-    if (qualifyingPositions && roundNodes.length === qualifyingPositions)
+    if (qualifyingPositions && roundNodes.length === qualifyingPositions) {
       roundLimit = roundNumber - 1;
+    }
+
     ({ roundNodes, matchUps } = buildRound({
       nodes: roundNodes,
       roundNumber,

@@ -10,11 +10,11 @@ export function isLucky({ drawDefinition, structure }) {
     matchUps: structure.matchUps || [],
   });
 
-  const hasFirstRoundDrawPositions = !!roundMatchUps[1].find(
+  const hasFirstRoundDrawPositions = !!roundMatchUps?.[1]?.find(
     ({ drawPositions }) => drawPositions
   );
 
-  const noSecondRoundDrawPositions = !roundMatchUps[2].find(
+  const noSecondRoundDrawPositions = !roundMatchUps?.[2]?.find(
     ({ drawPositions }) => drawPositions
   );
 
