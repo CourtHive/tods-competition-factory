@@ -80,6 +80,7 @@ export function luckyDraw(params) {
 
   matchUps = addFinishingRounds({
     finishingPositionOffset,
+    lucky: true,
     roundsCount,
     roundLimit,
     matchUps,

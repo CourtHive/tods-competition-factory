@@ -3,14 +3,47 @@ import drawEngine from '../../sync';
 
 import { LUCKY_DRAW } from '../../../constants/drawDefinitionConstants';
 
-/*
-const drawSizes = [
-  7, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28,
-  29, 30, 31,
+// prettier-ignore
+const scenarios = [
+  {
+    drawSize: 11,
+    expectation: {
+      matchUpCounts: [6, 3, 2, 1],
+      finishingPositionRanges: [
+        [ [8, 12], [1, 7], ],
+        [ [5, 6], [1, 4], ],
+        [ [3, 4], [1, 2], ],
+        [ [2, 2], [1, 1], ],
+      ],
+    },
+  },
+  {
+    drawSize: 18,
+    expectation: {
+      matchUpCounts: [9, 5, 3, 2, 1],
+      finishingPositionRanges: [
+      [ [ 13, 18 ], [ 1, 12 ] ],
+      [ [ 8, 10 ], [ 1, 7 ] ],
+      [ [ 5, 6 ], [ 1, 4 ] ],
+      [ [ 3, 4 ], [ 1, 2 ] ],
+      [ [ 2, 2 ], [ 1, 1 ] ]
+      ],
+    },
+  },
+  {
+    drawSize: 22,
+    expectation: {
+      matchUpCounts: [11, 6, 3, 2, 1],
+      finishingPositionRanges: [
+        [ [14, 22], [1, 13], ],
+        [ [8, 12], [1, 7], ],
+        [ [5, 6], [1, 4], ],
+        [ [3, 4], [1, 2], ],
+        [ [2, 2], [1, 1], ],
+      ],
+    },
+  },
 ];
-*/
-
-const scenarios = [{ drawSize: 22, expectation: [11, 6, 3, 2, 1] }];
 
 test.each(scenarios)(
   'it can generate luckyDraw structures for any drawSize',
@@ -27,10 +60,23 @@ test.each(scenarios)(
     const { roundProfile } = drawEngine.getRoundMatchUps({
       matchUps,
     });
-    const matchUpCounts = Object.values(roundProfile).map(
-      ({ matchUpsCount }) => matchUpsCount
+
+    if (expectation.matchUpCounts) {
+      const matchUpCounts = Object.values(roundProfile).map(
+        ({ matchUpsCount }) => matchUpsCount
+      );
+      expect(matchUpCounts).toEqual(expectation.matchUpCounts);
+    }
+
+    const finishingPositionRanges = Object.values(roundProfile).map(
+      ({ finishingPositionRange }) => Object.values(finishingPositionRange)
     );
-    expect(matchUpCounts).toEqual(expectation);
-    // console.log(Object.values(roundProfile));
+    if (expectation.finishingPositionRanges) {
+      expect(finishingPositionRanges).toEqual(
+        expectation.finishingPositionRanges
+      );
+    } else {
+      console.log(finishingPositionRanges);
+    }
   }
 );
