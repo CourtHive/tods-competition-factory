@@ -60,6 +60,7 @@ export function generateEventWithDraw({
     generate = true,
     eventExtensions,
     drawExtensions,
+    completionGoal,
     drawSize = 32,
     tieFormatName,
     seedsCount,
@@ -389,15 +390,17 @@ export function generateEventWithDraw({
         }
       }
 
-      if (completeAllMatchUps) {
+      if (completeAllMatchUps || completionGoal) {
         const result = completeDrawMatchUps({
           matchUpStatusProfile,
           completeAllMatchUps,
           randomWinningSide,
+          completionGoal,
           drawDefinition,
           matchUpFormat,
         });
         if (result.error) return result;
+        const completedCount = result.completedCount;
 
         if (drawType === ROUND_ROBIN_WITH_PLAYOFF) {
           const mainStructure = drawDefinition.structures.find(
@@ -409,7 +412,11 @@ export function generateEventWithDraw({
             drawDefinition,
             event,
           });
+          const playoffCompletionGoal = completionGoal
+            ? completionGoal - completedCount
+            : undefined;
           result = completeDrawMatchUps({
+            completionGoal: completionGoal ? playoffCompletionGoal : undefined,
             matchUpStatusProfile,
             completeAllMatchUps,
             randomWinningSide,
