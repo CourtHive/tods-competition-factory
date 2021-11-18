@@ -76,7 +76,7 @@ test('competitionEngine can setMatchUpStatus', () => {
 
   const { matchUpId, drawId, tournamentId } = upcomingMatchUps[0];
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
-    scoreString: '2-6 7-5 6-7(3)',
+    scoreString: '6-2 5-7 7-6(3)',
     winningSide: 2,
   });
 
@@ -108,7 +108,7 @@ test('competitionEngine can setMatchUpStatus', () => {
       schedule: {
         scheduledDate: startDate,
       },
-      winningSide: 1,
+      winningSide: 2,
       score: outcome.score,
     };
   });

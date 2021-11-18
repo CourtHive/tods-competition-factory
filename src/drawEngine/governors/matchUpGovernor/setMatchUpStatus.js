@@ -104,11 +104,6 @@ export function setMatchUpStatus(params) {
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
-  if (score) {
-    const result = validateScore({ score, matchUp, winningSide });
-    if (result.error) return result;
-  }
-
   const inContextMatchUp = inContextDrawMatchUps.find(
     (matchUp) => matchUp.matchUpId === matchUpId
   );
@@ -138,6 +133,27 @@ export function setMatchUpStatus(params) {
 
   const structureId = inContextMatchUp.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
+
+  // not yet validating tieMatchUps
+  if (score && matchUp.matchUpType !== TEAM && !matchUp.collectionId) {
+    const matchUpFormat =
+      matchUp.matchUpFormat ||
+      structure?.matchUpFormat ||
+      drawDefinition?.matchUpFormat ||
+      event?.matchUpFormat;
+
+    const result = validateScore({
+      existingMatchUpStatus: matchUp.matchUpStatus,
+      matchUpFormat,
+      matchUpStatus,
+      winningSide,
+      score,
+    });
+    if (result.error) {
+      // console.log({ matchUp, result, winningSide }, score);
+      return result;
+    }
+  }
 
   const bothSideParticipants =
     matchUp.sides?.map((side) => side.participantId).filter(Boolean).length ===

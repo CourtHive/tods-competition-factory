@@ -12,7 +12,7 @@ export function analyzeSet(params) {
 
   const { setNumber } = setObject || {};
   const { bestOf } = matchUpScoringFormat || {};
-  const isDecidingSet = !!(setNumber && setNumber === bestOf);
+  const isDecidingSet = !!(setNumber && bestOf && setNumber === bestOf);
   const setFormat =
     (isDecidingSet && matchUpScoringFormat?.finalSetFormat) ||
     matchUpScoringFormat?.setFormat;

@@ -23,7 +23,7 @@ it('can generate a tournament with all results completed', () => {
   expect(matchUpStatuses.COMPLETED).toEqual(31);
 });
 
-it.only('can generate a tournament with all partial completed', () => {
+it('can generate a tournament with all partial completed', () => {
   const drawProfiles = [{ drawSize: 32, completionGoal: 20 }];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles,
