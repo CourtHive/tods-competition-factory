@@ -280,9 +280,6 @@ export function getAllStructureMatchUps({
       drawDefinition?.matchUpType ||
       (event?.eventType !== TEAM && event?.eventType);
 
-    // if (!tieFormat && !['SINGLES', 'DOUBLES'].includes(matchUpType))
-    //   console.log({ matchUpType, event });
-
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
     const { schedule, endDate } = getMatchUpScheduleDetails({
       scheduleVisibilityFilters,
@@ -332,8 +329,8 @@ export function getAllStructureMatchUps({
       {},
       onlyDefined(context),
       onlyDefined({
-        matchUpFormat: matchUp.matchUpType !== TEAM && matchUpFormat,
-        tieFormat: matchUp.matchUpType === TEAM && tieFormat,
+        matchUpFormat: matchUp.matchUpType === TEAM ? undefined : matchUpFormat,
+        tieFormat: matchUp.matchUpType !== TEAM ? undefined : tieFormat,
         endDate: matchUp.endDate || endDate,
         abbreviatedRoundName,
         drawPositionsRange,
