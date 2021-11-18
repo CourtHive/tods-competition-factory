@@ -245,7 +245,6 @@ function removeDirectedLoser({
       );
     if (targetSide) {
       delete targetSide.lineUp;
-      console.log('remove loser lineUp', { targetSide });
       modifyMatchUpNotice({ drawDefinition, matchUp: targetMatchUp });
     }
   }
