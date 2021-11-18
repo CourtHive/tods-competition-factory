@@ -45,13 +45,14 @@ export function modifyParticipant({
     return addParticipant({ tournamentRecord, participant });
 
   const {
+    participantRoleResponsibilties,
     individualParticipantIds,
     participantOtherName,
     participantName,
     participantRole,
     participantType,
     onlineProfiles, // TODO: validate onlineProfiles
-    contacts,
+    contacts, // TODO: validate contacts
     person,
   } = participant;
 
@@ -60,6 +61,7 @@ export function modifyParticipant({
   // validate participant attributes
   if (contacts) newValues.contacts = contacts;
   if (onlineProfiles) newValues.onlineProfiles = onlineProfiles;
+
   if (participantName && typeof participantName === 'string')
     newValues.participantName = participantName;
   if (participantOtherName && typeof participantOtherName === 'string')
@@ -106,6 +108,9 @@ export function modifyParticipant({
     newValues.participantRole = participantRole;
   if (Object.keys(participantTypes).includes(participantType))
     newValues.participantType = participantType;
+
+  if (Array.isArray(participantRoleResponsibilties))
+    newValues.participantRoleResponsibilties = participantRoleResponsibilties;
 
   if (
     existingParticipant.participantType === participantTypes.INDIVIDUAL &&
