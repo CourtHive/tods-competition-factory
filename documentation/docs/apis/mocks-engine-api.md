@@ -48,7 +48,7 @@ Generates `outcome` object from parseable score string.
 
 ```js
 const { outcome } = mocksEngine.generateOutcomeFromScoreString({
-  scoreString: '6-1 6-1', // parseable score string
+  scoreString: '6-1 6-1', // parseable score string, always from the winner perspective
   winningSide: 1, // optional - valid values are [1, 2, undefined]
   matchUpStatus: COMPLETED,
 });
