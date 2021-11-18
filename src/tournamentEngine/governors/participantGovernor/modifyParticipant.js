@@ -5,6 +5,7 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import { addNotice, getDevContext } from '../../../global/state/globalState';
 import { participantRoles } from '../../../constants/participantRoles';
 import { genderConstants } from '../../../constants/genderConstants';
+import { definedAttributes } from '../../../utilities/objects';
 import { addParticipant } from './addParticipants';
 import { makeDeepCopy } from '../../../utilities';
 
@@ -45,18 +46,24 @@ export function modifyParticipant({
 
   const {
     individualParticipantIds,
+    participantOtherName,
     participantName,
     participantRole,
     participantType,
     onlineProfiles, // TODO: validate onlineProfiles
+    contacts,
     person,
   } = participant;
 
   const newValues = {};
+
   // validate participant attributes
+  if (contacts) newValues.contacts = contacts;
   if (onlineProfiles) newValues.onlineProfiles = onlineProfiles;
   if (participantName && typeof participantName === 'string')
     newValues.participantName = participantName;
+  if (participantOtherName && typeof participantOtherName === 'string')
+    newValues.participantOtherName = participantOtherName;
 
   if (Array.isArray(individualParticipantIds)) {
     const { tournamentParticipants: individualParticipants } =
@@ -112,7 +119,7 @@ export function modifyParticipant({
     });
   }
 
-  Object.assign(existingParticipant, newValues);
+  Object.assign(existingParticipant, definedAttributes(newValues));
 
   if (groupingParticipantId) {
     addIndividualParticipantIds({

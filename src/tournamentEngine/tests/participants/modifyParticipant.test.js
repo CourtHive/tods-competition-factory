@@ -24,6 +24,7 @@ it('can retrieve tournament participants', () => {
       participantFilters: { participantTypes: [INDIVIDUAL] },
     });
   expect(individualParticipants.length).toEqual(20);
+
   const individualParticipant = individualParticipants[0];
   const person = {
     standardFamilyName: 'Sampras',
@@ -42,6 +43,16 @@ it('can retrieve tournament participants', () => {
   expect(result.participant.participantName).toEqual(
     `${person.standardGivenName} ${person.standardFamilyName}`
   );
+
+  const secondIndividual = individualParticipants[0];
+  const updatedSecondIndividual = Object.assign({}, secondIndividual, {
+    participantOtherName: 'Other',
+  });
+  result = tournamentEngine.modifyParticipant({
+    participant: updatedSecondIndividual,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.participant.participantOtherName).toEqual('Other');
 
   const { tournamentParticipants: pairParticipants } =
     tournamentEngine.getTournamentParticipants({
