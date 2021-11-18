@@ -187,7 +187,7 @@ export function getRoundMatchUps({ matchUps = [] }) {
     }
   });
 
-  const hasOddMatchUpsCount = Object.values(roundProfile).find(
+  const hasOddMatchUpsCount = !!Object.values(roundProfile).find(
     ({ matchUpsCount }) => !isPowerOf2(matchUpsCount)
   );
 
