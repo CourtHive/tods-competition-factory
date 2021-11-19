@@ -1438,7 +1438,7 @@ See [publishEvent](#publishEvent) for details on `policyDefinition`.
 const { eventData } = tournamentEngine.getEventData({
   participantsProfile, // optional - ability to specify additions to context (see parameters of getTournamentParticipants())
   policyDefinitions, // optional
-  drawId,
+  eventId,
 });
 const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
 ```
