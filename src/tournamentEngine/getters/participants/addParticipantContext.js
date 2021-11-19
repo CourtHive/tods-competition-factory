@@ -66,7 +66,7 @@ export function addParticipantContext(params) {
   allTournamentParticipants.forEach((participant) => {
     if (participant.participantType === GROUP) {
       const groupParticipantId = participant.participantId;
-      participant.individualParticipantIds.forEach((participantId) => {
+      participant.individualParticipantIds?.forEach((participantId) => {
         if (
           !participantIdMap[participantId].groupParticipantIds.includes(
             groupParticipantId
@@ -88,7 +88,7 @@ export function addParticipantContext(params) {
 
     if (participant.participantType === TEAM) {
       const teamParticipantId = participant.participantId;
-      participant.individualParticipantIds.forEach((participantId) => {
+      participant.individualParticipantIds?.forEach((participantId) => {
         if (
           !participantIdMap[participantId].teamParticipantIds.includes(
             teamParticipantId
@@ -111,7 +111,7 @@ export function addParticipantContext(params) {
 
     if (participant.participantType === PAIR) {
       const pairParticipantId = participant.participantId;
-      participant.individualParticipantIds.forEach((participantId) => {
+      participant.individualParticipantIds?.forEach((participantId) => {
         if (
           !participantIdMap[participantId].pairParticipantIds.includes(
             pairParticipantId
