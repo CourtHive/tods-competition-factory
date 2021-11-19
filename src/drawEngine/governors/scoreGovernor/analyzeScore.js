@@ -48,16 +48,6 @@ export function analyzeScore({
       setsWinCounts.indexOf(maxSetsCount) + 1) ||
     undefined;
 
-  /*
-  console.log({
-    matchUpFormat,
-    winningSide,
-    calculatedWinningSide,
-    sets,
-    setsToWin,
-  });
-  */
-
   const validMatchUpWinningSide =
     (winningSide &&
       winningSideSetsCount > losingSideSetsCount &&
