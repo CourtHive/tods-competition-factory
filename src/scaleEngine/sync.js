@@ -100,7 +100,7 @@ export const scaleEngine = (function () {
               return engineInvoke(governor[method], params, method);
             } catch (err) {
               const error = typeof err === 'object' ? JSON.stringify(err) : err;
-              console.log('ERROR', { error, params });
+              console.log('ERROR', { error, method, params });
             }
           }
         };

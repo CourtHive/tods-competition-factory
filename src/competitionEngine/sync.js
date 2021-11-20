@@ -117,16 +117,16 @@ export const competitionEngine = (function () {
 
   function importGovernors(governors) {
     governors.forEach((governor) => {
-      Object.keys(governor).forEach((key) => {
-        engine[key] = (params) => {
+      Object.keys(governor).forEach((method) => {
+        engine[method] = (params) => {
           if (getDevContext()) {
-            return engineInvoke(governor[key], params);
+            return engineInvoke(governor[method], params);
           } else {
             try {
-              return engineInvoke(governor[key], params);
+              return engineInvoke(governor[method], params);
             } catch (err) {
               const error = typeof err === 'object' ? JSON.stringify(err) : err;
-              console.log('ERROR', { error, params });
+              console.log('ERROR', { error, method, params });
             }
           }
         };

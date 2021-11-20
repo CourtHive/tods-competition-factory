@@ -120,7 +120,7 @@ export function drawEngineAsync(test) {
               return result;
             } catch (err) {
               const error = typeof err === 'object' ? JSON.stringify(err) : err;
-              console.log('ERROR', { error, params });
+              console.log('ERROR', { error, method: governorMethod, params });
             }
           }
         };
