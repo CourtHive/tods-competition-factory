@@ -108,7 +108,9 @@ export function getValidSeedBlocks({
     // fedSeedNumberOffset is used to calculate seedNumber
     // should be equal fo firstRoundDrawPositionOffset
     fedSeedNumberOffset = fedSeedBlockPositions.length;
-  } else if (!isPowerOf2(baseDrawSize)) {
+  } else if (firstRoundDrawPositions && !isPowerOf2(baseDrawSize)) {
+    // if there are first round draw positions it is not AdHoc
+    // if the baseDrawSize is not a power of 2 then it isLucky
     firstRoundSeedsCount = 0;
     isLucky = true;
   } else {
