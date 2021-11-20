@@ -3,16 +3,17 @@ import { getValidSeedBlocks } from '../../../getters/seedGetter';
 import { shuffleArray, unique } from '../../../../utilities';
 
 export function getSeedOrderByePositions({
-  structure,
-  drawDefinition,
-  appliedPolicies,
   relevantMatchUps,
+  appliedPolicies,
+  drawDefinition,
+  structure,
 }) {
-  const { validSeedBlocks, isFeedIn, isContainer } = getValidSeedBlocks({
-    appliedPolicies,
-    drawDefinition,
-    structure,
-  });
+  const { validSeedBlocks, isFeedIn, isLucky, isContainer } =
+    getValidSeedBlocks({
+      appliedPolicies,
+      drawDefinition,
+      structure,
+    });
   const positionedSeeds = getStructurePositionedSeeds({
     drawDefinition,
     structure,
@@ -72,8 +73,9 @@ export function getSeedOrderByePositions({
   return {
     strictSeedOrderByePositions,
     blockSeedOrderByePositions,
-    isFeedIn,
     isContainer,
+    isFeedIn,
+    isLucky,
   };
 }
 

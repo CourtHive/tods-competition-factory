@@ -31,13 +31,17 @@ export function positionByes({
   if (byesToPlace <= 0) return SUCCESS;
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  const { isFeedIn, strictSeedOrderByePositions, blockSeedOrderByePositions } =
-    getSeedOrderByePositions({
-      structure,
-      drawDefinition,
-      appliedPolicies,
-      relevantMatchUps,
-    });
+  const {
+    strictSeedOrderByePositions,
+    blockSeedOrderByePositions,
+    isFeedIn,
+    isLucky,
+  } = getSeedOrderByePositions({
+    relevantMatchUps,
+    appliedPolicies,
+    drawDefinition,
+    structure,
+  });
 
   const seedOrderByePositions = blockOrdered
     ? blockSeedOrderByePositions
@@ -47,9 +51,10 @@ export function positionByes({
     appliedPolicies,
     structure,
     isFeedIn,
+    isLucky,
   });
   // first add all drawPositions paired with sorted seeds drawPositions
-  // then add quarter separated dnd evenly distributed drawPositions
+  // then add quarter separated and evenly distributed drawPositions
   // derived from theoretical seeding of firstRoundParticipants/2
   const byePositions = [].concat(
     ...seedOrderByePositions,

@@ -8,8 +8,11 @@ import { getStageEntries } from '../../getters/stageGetter';
 import { positionQualifiers } from './positionQualifiers';
 import { positionSeedBlocks } from './positionSeeds';
 
-import { WATERFALL } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  LUCKY_DRAW,
+  WATERFALL,
+} from '../../../constants/drawDefinitionConstants';
 import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
@@ -23,6 +26,7 @@ export function automatedPositioning({
   structureId,
   matchUpsMap,
   seedsOnly,
+  drawType,
   event,
 }) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
@@ -75,16 +79,18 @@ export function automatedPositioning({
   } else {
     // otherwise... seeds need to be placed first so that BYEs
     // can follow the seedValues of placed seeds
-    let result = positionSeedBlocks({
-      inContextDrawMatchUps,
-      drawDefinition,
-      participants,
-      matchUpsMap,
-      structure,
-    });
-    if (result.error) return result;
+    if (drawType !== LUCKY_DRAW) {
+      let result = positionSeedBlocks({
+        inContextDrawMatchUps,
+        drawDefinition,
+        participants,
+        matchUpsMap,
+        structure,
+      });
+      if (result.error) return result;
+    }
 
-    result = positionByes({
+    const result = positionByes({
       inContextDrawMatchUps,
       drawDefinition,
       matchUpsMap,
@@ -99,13 +105,12 @@ export function automatedPositioning({
 
   if (!seedsOnly) {
     let result = positionUnseededParticipants({
+      inContextDrawMatchUps,
       candidatesCount,
       drawDefinition,
       participants,
-      structure,
-
       matchUpsMap,
-      inContextDrawMatchUps,
+      structure,
     });
     if (result.error) return result;
     if (result.conflicts) conflicts.unseededConflicts = result.conflicts;

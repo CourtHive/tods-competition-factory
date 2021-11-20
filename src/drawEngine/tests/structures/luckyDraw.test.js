@@ -3,6 +3,7 @@ import drawEngine from '../../sync';
 
 import { LUCKY_DRAW } from '../../../constants/drawDefinitionConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
+import { getPositionAssignments } from '../../getters/positionsGetter';
 
 // prettier-ignore
 const scenarios = [
@@ -85,12 +86,9 @@ test.each(scenarios)(
 test('drawProfile scenario coverage', () => {
   const drawProfiles = [
     {
-      completionGoal: 2,
-      drawSize: 7,
       drawType: LUCKY_DRAW,
       eventType: DOUBLES,
-      matchUpFormat: 'SET3-S:6/TB7',
-      seedsCount: 8,
+      drawSize: 7,
     },
   ];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -98,4 +96,35 @@ test('drawProfile scenario coverage', () => {
   });
 
   tournamentEngine.setState(tournamentRecord);
+});
+
+test('drawProfile participant generation', () => {
+  const drawSize = 9;
+  const drawProfiles = [
+    {
+      drawType: LUCKY_DRAW,
+      drawSize,
+    },
+  ];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const structureId = drawDefinition.structures[0].structureId;
+
+  const { positionAssignments } = getPositionAssignments({
+    drawDefinition,
+    structureId,
+  });
+  const allPositionsFilled = positionAssignments.every(
+    (assignment) => assignment.bye || assignment.participantId
+  );
+  expect(allPositionsFilled).toEqual(true);
+  expect(tournamentRecord.participants.length).toEqual(drawSize);
 });
