@@ -82,7 +82,7 @@ test.each(scenarios)(
   }
 );
 
-test.only('drawProfile scenario', () => {
+test('drawProfile scenario coverage', () => {
   const drawProfiles = [
     {
       completionGoal: 2,
