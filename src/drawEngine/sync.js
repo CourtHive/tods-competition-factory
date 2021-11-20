@@ -109,8 +109,13 @@ export const drawEngine = (function () {
             try {
               return invoke({ params, governor, governorMethod });
             } catch (err) {
-              const error = typeof err === 'object' ? JSON.stringify(err) : err;
-              console.log('ERROR', { error, method: governorMethod, params });
+              const error = err.toString();
+              console.log('ERROR', {
+                error,
+                method: governorMethod,
+                params: JSON.stringify(params),
+              });
+              console.log(err);
             }
           }
         };

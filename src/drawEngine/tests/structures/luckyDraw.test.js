@@ -2,6 +2,7 @@ import { mocksEngine, tournamentEngine } from '../../..';
 import drawEngine from '../../sync';
 
 import { LUCKY_DRAW } from '../../../constants/drawDefinitionConstants';
+import { DOUBLES } from '../../../constants/eventConstants';
 
 // prettier-ignore
 const scenarios = [
@@ -80,3 +81,21 @@ test.each(scenarios)(
     }
   }
 );
+
+test.only('drawProfile scenario', () => {
+  const drawProfiles = [
+    {
+      completionGoal: 2,
+      drawSize: 7,
+      drawType: LUCKY_DRAW,
+      eventType: DOUBLES,
+      matchUpFormat: 'SET3-S:6/TB7',
+      seedsCount: 8,
+    },
+  ];
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+});

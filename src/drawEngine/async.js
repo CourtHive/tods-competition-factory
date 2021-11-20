@@ -119,8 +119,13 @@ export function drawEngineAsync(test) {
 
               return result;
             } catch (err) {
-              const error = typeof err === 'object' ? JSON.stringify(err) : err;
-              console.log('ERROR', { error, method: governorMethod, params });
+              const error = err.toString();
+              console.log('ERROR', {
+                error,
+                method: governorMethod,
+                params: JSON.stringify(params),
+              });
+              console.log(err);
             }
           }
         };

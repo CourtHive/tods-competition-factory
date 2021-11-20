@@ -129,8 +129,13 @@ export function competitionEngineAsync(test) {
               const engineResult = await engineInvoke(governor[method], params);
               return engineResult;
             } catch (err) {
-              const error = typeof err === 'object' ? JSON.stringify(err) : err;
-              console.log('ERROR', { error, method, params });
+              const error = err.toString();
+              console.log('ERROR', {
+                error,
+                method,
+                params: JSON.stringify(params),
+              });
+              console.log(err);
             }
           }
         };
