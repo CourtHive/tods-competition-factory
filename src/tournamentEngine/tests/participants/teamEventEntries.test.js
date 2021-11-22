@@ -1,10 +1,13 @@
+import { getParticipantId } from '../../../global/functions/extractors';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
-import { TEAM } from '../../../constants/eventConstants';
-import { UNGROUPED } from '../../../constants/entryStatusConstants';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { TEAM } from '../../../constants/eventConstants';
+import {
+  DIRECT_ACCEPTANCE,
+  UNGROUPED,
+} from '../../../constants/entryStatusConstants';
 
 test('adding individualParticipantids to TEAM participants removes them from team event entries', () => {
   const eventProfiles = [
@@ -51,7 +54,7 @@ test('adding individualParticipantids to TEAM participants removes them from tea
   const participantIds =
     individualsParticipantsNotInTeams.map(getParticipantId);
 
-  const result = tournamentEngine.addEventEntries({
+  let result = tournamentEngine.addEventEntries({
     entryStatus: UNGROUPED,
     tournamentRecord,
     participantIds,
@@ -66,4 +69,18 @@ test('adding individualParticipantids to TEAM participants removes them from tea
     ({ entryStatus }) => entryStatus === UNGROUPED
   );
   expect(ungroupedEntries.length).toEqual(participantIds.length);
+
+  const teamEntries = event.entries.filter(
+    ({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE
+  );
+
+  result = tournamentEngine.addIndividualParticipantIds({
+    groupingParticipantId: teamEntries[0].participantId,
+    individualParticipantIds: participantIds,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.added).toEqual(participantIds.length);
+
+  ({ event } = tournamentEngine.getEvent({ eventId }));
+  expect(event.entries.length).toEqual(2);
 });
