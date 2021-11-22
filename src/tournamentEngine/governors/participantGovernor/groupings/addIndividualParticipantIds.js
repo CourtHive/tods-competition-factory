@@ -1,7 +1,10 @@
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
 import { addNotice, getTopics } from '../../../../global/state/globalState';
+import { updateTeamEventEntries } from './updateTeamEventEntries';
 import { makeDeepCopy } from '../../../../utilities';
 
+import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,
@@ -14,8 +17,6 @@ import {
   INDIVIDUAL,
   TEAM,
 } from '../../../../constants/participantTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
 
 /**
  *
@@ -26,10 +27,10 @@ import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
  *
  */
 export function addIndividualParticipantIds({
-  tournamentRecord,
-  groupingParticipantId,
   individualParticipantIds,
+  groupingParticipantId,
   removeFromOtherTeams,
+  tournamentRecord,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!groupingParticipantId || !individualParticipantIds)
@@ -58,6 +59,7 @@ export function addIndividualParticipantIds({
       return participant?.participantType !== INDIVIDUAL;
     }
   );
+
   if (invalidParticipantIds.length)
     return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIds };
 
@@ -99,9 +101,15 @@ export function addIndividualParticipantIds({
     });
   }
 
+  updateTeamEventEntries({
+    individualParticipantIds,
+    groupingParticipantId,
+    tournamentRecord,
+  });
+
   return {
-    ...SUCCESS,
     groupingParticipant: makeDeepCopy(groupingParticipant),
     added: participantIdsToAdd.length,
+    ...SUCCESS,
   };
 }

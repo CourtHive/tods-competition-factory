@@ -3,7 +3,11 @@ import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
 import { removeEventEntries } from './removeEventEntries';
 
-import { DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
+import {
+  DIRECT_ACCEPTANCE,
+  UNGROUPED,
+  UNPAIRED,
+} from '../../../../constants/entryStatusConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
@@ -29,16 +33,14 @@ import {
  */
 export function addEventEntries(params) {
   const {
+    entryStatus = DIRECT_ACCEPTANCE,
+    autoEntryPositions = true,
+    participantIds = [],
+    entryStage = MAIN,
     tournamentRecord,
     drawDefinition,
     drawId,
     event,
-
-    participantIds = [],
-    entryStatus = DIRECT_ACCEPTANCE,
-    entryStage = MAIN,
-
-    autoEntryPositions = true,
   } = params;
 
   if (!event) return { error: MISSING_EVENT };
@@ -70,7 +72,12 @@ export function addEventEntries(params) {
         ) {
           return true;
         }
-        if (event.eventType === TEAM && participant.participantType === TEAM) {
+        if (
+          event.eventType === TEAM &&
+          (participant.participantType === TEAM ||
+            (entryStatus === UNGROUPED &&
+              participant.participantType === INDIVIDUAL))
+        ) {
           return true;
         }
         return false;
@@ -98,7 +105,7 @@ export function addEventEntries(params) {
   });
 
   let message;
-  if (drawId) {
+  if (drawId && ![UNGROUPED, UNPAIRED].includes(entryStatus)) {
     const result = addDrawEntries({
       participantIds: validParticipantIds,
       autoEntryPositions,
