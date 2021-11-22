@@ -418,7 +418,7 @@ export function getAllStructureMatchUps({
           }
         }
 
-        if (side.participant && side.participant.individualParticipantIds) {
+        if (side?.participant?.individualParticipantIds) {
           const individualParticipants =
             side.participant.individualParticipantIds.map((participantId) => {
               return findParticipant({
