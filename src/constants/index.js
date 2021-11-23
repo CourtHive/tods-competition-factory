@@ -32,7 +32,7 @@ import {
   nonDirectingMatchUpStatuses,
   directingMatchUpStatuses,
   validMatchUpStatuses,
-  participantsRequiredMatchUpStatuses,
+  particicipantsRequiredMatchUpStatuses,
   recoveryTimeRequiredMatchUpStatuses,
   matchUpStatusConstants,
 } from './matchUpStatusConstants';
@@ -55,7 +55,7 @@ export const factoryConstants = {
   nonDirectingMatchUpStatuses,
   participantConstants,
   participantRoles,
-  participantsRequiredMatchUpStatuses,
+  particicipantsRequiredMatchUpStatuses,
   participantTypes,
   penaltyConstants,
   policyConstants,
