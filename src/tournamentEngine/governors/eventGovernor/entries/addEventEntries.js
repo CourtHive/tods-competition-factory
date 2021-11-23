@@ -6,7 +6,6 @@ import { removeEventEntries } from './removeEventEntries';
 import {
   DIRECT_ACCEPTANCE,
   UNGROUPED,
-  UNPAIRED,
 } from '../../../../constants/entryStatusConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
@@ -105,7 +104,7 @@ export function addEventEntries(params) {
   });
 
   let message;
-  if (drawId && ![UNGROUPED, UNPAIRED].includes(entryStatus)) {
+  if (drawId && !isUngrouped(entryStage)) {
     const result = addDrawEntries({
       participantIds: validParticipantIds,
       autoEntryPositions,
