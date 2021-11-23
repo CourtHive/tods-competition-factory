@@ -1,15 +1,16 @@
-import { tournamentEngine, mocksEngine } from 'tods-competition-factory';
+import {
+  tournamentEngine,
+  mocksEngine,
+  utilities,
+} from 'tods-competition-factory';
 import { ScoreGrid } from 'tods-score-grid';
 import React from 'react';
 
 const DrawType = ({ drawType }) => {
   const drawProfile = {
-    drawSize: 16,
-    // drawType,
-    // completionGoal: complete,
-    seedsCount: 8,
-    // matchUpFormat,
-    // eventType,
+    drawType: 'COMPASS',
+    seedsCount: 2,
+    drawSize: 8,
   };
   if (drawType === 'AD_HOC')
     Object.assign(drawProfile, { drawMatic: true, roundsCount: 3 });
@@ -26,12 +27,23 @@ const DrawType = ({ drawType }) => {
   const { eventData } =
     tournamentEngine.setState(tournamentRecord).getEventData({ eventId }) || {};
 
+  const compositionName = utilities.randomMember([
+    'Australian',
+    'Wimbledon',
+    'National',
+    'US Open',
+    'French',
+    'ITF',
+  ]);
+
   return (
-    <ScoreGrid
-      compositionName={'Australian'}
-      eventData={eventData}
-      events={{}}
-    />
+    <div style={{ zoom: 0.9 }}>
+      <ScoreGrid
+        compositionName={compositionName}
+        eventData={eventData}
+        events={{}}
+      />
+    </div>
   );
 };
 
