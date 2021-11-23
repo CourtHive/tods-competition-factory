@@ -1,9 +1,9 @@
 import { getMappedStructureMatchUps } from '../../getters/getMatchUps/getMatchUpsMap';
 
 export function getPairedPreviousMatchUp({
-  matchUp,
   structureId,
   matchUpsMap,
+  matchUp,
 }) {
   const sourceRoundPosition = matchUp?.roundPosition;
   const offset = sourceRoundPosition % 2 ? 1 : -1;

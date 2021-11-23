@@ -51,7 +51,7 @@ export function getCheckedInParticipantIds({ matchUp }) {
   );
 
   // if all individuals on one side are checked in then side is checked in
-  nestedIndividualParticipantIds.forEach(
+  nestedIndividualParticipantIds?.forEach(
     (sideIndividualParticipantIds, sideIndex) => {
       const sideParticipantId = sideParticipantIds[sideIndex];
       const allIndividualsCheckedIn =

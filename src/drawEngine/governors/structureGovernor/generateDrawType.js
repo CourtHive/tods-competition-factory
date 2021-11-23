@@ -1,6 +1,5 @@
 import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserConsolation';
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
-import { treeMatchUps, feedInMatchUps } from '../../generators/eliminationTree';
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
 import { generateQualifyingStructures } from './generateQualifyingStructures';
@@ -10,9 +9,13 @@ import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getStageDrawPositionsCount } from '../../getters/stageGetter';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import structureTemplate from '../../generators/structureTemplate';
+import { feedInMatchUps } from '../../generators/feedInMatchUps';
+import { treeMatchUps } from '../../generators/eliminationTree';
+import { getDrawStructures } from '../../getters/findStructure';
 import { definedAttributes } from '../../../utilities/objects';
 import { playoff } from '../../generators/playoffStructures';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
+import { luckyDraw } from '../../generators/luckyDraw';
 import { isPowerOf2 } from '../../../utilities';
 import {
   setStageDrawSize,
@@ -36,6 +39,7 @@ import {
   FEED_IN_CHAMPIONSHIP,
   WIN_RATIO,
   QUALIFYING,
+  LUCKY_DRAW,
 } from '../../../constants/drawDefinitionConstants';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
@@ -46,7 +50,6 @@ import {
   STAGE_SEQUENCE_LIMIT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
-import { getDrawStructures } from '../../getters/findStructure';
 
 /**
  *
@@ -137,7 +140,7 @@ export function generateDrawType(params = {}) {
   const invalidDrawSize =
     drawSize < 2 ||
     (!staggeredEntry &&
-      ![FEED_IN, AD_HOC].includes(drawType) &&
+      ![FEED_IN, AD_HOC, LUCKY_DRAW].includes(drawType) &&
       ((drawType === ROUND_ROBIN && drawSize < 3) ||
         (drawType === DOUBLE_ELIMINATION && !validDoubleEliminationSize) ||
         (![ROUND_ROBIN, DOUBLE_ELIMINATION, ROUND_ROBIN_WITH_PLAYOFF].includes(
@@ -174,6 +177,20 @@ export function generateDrawType(params = {}) {
         matchUps: [],
         matchUpType,
         stage: MAIN,
+      });
+
+      drawDefinition.structures.push(structure);
+      return Object.assign({ structures: [structure] }, SUCCESS);
+    },
+    [LUCKY_DRAW]: () => {
+      const { matchUps } = luckyDraw(params);
+      const structure = structureTemplate({
+        structureName: structureName || MAIN,
+        structureId: uuids?.pop(),
+        stageSequence,
+        matchUpType,
+        stage: MAIN,
+        matchUps,
       });
 
       drawDefinition.structures.push(structure);
@@ -252,18 +269,18 @@ export function generateDrawType(params = {}) {
 
   if (qualifyingResult?.structures?.length) {
     const {
-      finalyQualifyingRoundNumber: qualifyingRoundNumber,
-      qualifyingStructureId,
+      finalQualifyingRoundNumber: qualifyingRoundNumber,
+      finalQualifyingStructureId: qualifyingStructureId,
     } = qualifyingResult;
 
-    const mainStructureId = generatorResult.structures.find(
+    const mainStructure = generatorResult.structures.find(
       ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
     );
 
     generateQualifyingLink({
       sourceStructureId: qualifyingStructureId,
       sourceRoundNumber: qualifyingRoundNumber,
-      targetStructureId: mainStructureId,
+      targetStructureId: mainStructure.structureId,
       drawDefinition,
     });
   }

@@ -1,6 +1,6 @@
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
-import { feedInMatchUps } from '../../generators/eliminationTree';
+import { feedInMatchUps } from '../../generators/feedInMatchUps';
 import { generateRange } from '../../../utilities';
 import { drawEngine } from '../../sync';
 import {

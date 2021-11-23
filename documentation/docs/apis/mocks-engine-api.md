@@ -48,7 +48,7 @@ Generates `outcome` object from parseable score string.
 
 ```js
 const { outcome } = mocksEngine.generateOutcomeFromScoreString({
-  scoreString: '6-1 6-1', // parseable score string
+  scoreString: '6-1 6-1', // parseable score string, always from the winner perspective
   winningSide: 1, // optional - valid values are [1, 2, undefined]
   matchUpStatus: COMPLETED,
 });
@@ -118,7 +118,7 @@ See `tournamentEngine.generateTeamsFromParticipantAttribute()` for more informat
 :::
 
 ```js
-// Optional values
+// Optional values -- see below
 const outcomes = [
   {
     drawPositions: [1, 2],
@@ -206,6 +206,26 @@ tournamentEngine.setState(tournamentRecord);
 When using `drawProfiles` participants in excess of `drawSize` will be added with `{ entryStatus: ALTERNATE }`,
 whereas with `eventProfiles` only the number of participants necessary to populate the draw are added with `{ entryStatus: DIRECT_ACCEPTANCE }`.
 :::
+
+### Completing matchUps with outcomes
+
+The `outcomes` attribute of `drawProfiles` enables targeting specific `matchUps` for completion. Once a `structure` is targeted a `matchUp` may be targeted by either roundNumber/roundPosition or drawPositions.
+
+```js
+const outcomes = {
+  drawPositions,
+  matchUpFormat,
+  matchUpIndex = 0,
+  matchUpStatus = COMPLETED,
+  roundNumber,
+  roundPosition,
+  scoreString,
+  stage = MAIN,
+  stageSequence = 1,
+  structureOrder, // group number for RR
+  winningSide,
+}
+```
 
 ---
 

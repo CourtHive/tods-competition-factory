@@ -1,6 +1,7 @@
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 import { mocksEngine, tournamentEngine } from '../..';
 
+import { PUBLISH, STATUS } from '../../constants/timeItemConstants';
 import { DOUBLES, SINGLES } from '../../constants/eventConstants';
 import { FEMALE, MALE } from '../../constants/genderConstants';
 import { PAIR } from '../../constants/participantTypes';
@@ -38,7 +39,10 @@ test('mocksEngine can modify existing tournamentRecords', () => {
 test('mocksEngine can modify existing tournamentRecords and complete SOME matchUps', () => {
   // prettier-ignore
   let eventProfiles = [{ eventName: `Boy's U16 Doubles`, gender: MALE }];
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  const {
+    tournamentRecord,
+    eventIds: [eventId],
+  } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantsCount: 0 },
     eventProfiles,
   });
@@ -59,6 +63,23 @@ test('mocksEngine can modify existing tournamentRecords and complete SOME matchU
 
   const { completedMatchUps } = tournamentEngine.tournamentMatchUps();
   expect(completedMatchUps.length).toEqual(8);
+
+  eventProfiles = [{ eventIndex: 0, publish: true }];
+  result = mocksEngine.modifyTournamentRecord({
+    tournamentRecord,
+    eventProfiles,
+  });
+  expect(result.success).toEqual(true);
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { event } = tournamentEngine.getEvent({ eventId });
+
+  const publishStatus = event.timeItems.find(
+    (timeItem) => timeItem.itemType === `${PUBLISH}.${STATUS}`
+  );
+
+  expect(publishStatus).not.toBeUndefined();
 });
 
 test('mocksEngine can modify existing tournamentRecords', () => {

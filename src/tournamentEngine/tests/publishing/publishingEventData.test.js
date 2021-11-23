@@ -156,8 +156,8 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   expect(result.error).toEqual(MISSING_EVENT);
 
   const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    eventId,
     policyDefinitions,
+    eventId,
   });
   expect(publishSuccess).toEqual(true);
   expect(eventData.eventInfo.publish.state[PUBLIC].drawIds).toEqual([drawId]);

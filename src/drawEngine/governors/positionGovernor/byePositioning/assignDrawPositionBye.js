@@ -305,7 +305,7 @@ function advanceWinner({
   const existingDrawPositions =
     noContextWinnerMatchUp.drawPositions?.filter(Boolean);
   const existingAssignments = positionAssignments.filter((assignment) =>
-    existingDrawPositions.includes(assignment.drawPosition)
+    existingDrawPositions?.includes(assignment.drawPosition)
   );
 
   const advancingAssignmentIsBye = positionAssignments.find(
@@ -326,13 +326,13 @@ function advanceWinner({
   /// ????????????????????????????????????????
 
   if (
-    existingDrawPositions.length > 1 &&
+    existingDrawPositions?.length > 1 &&
     drawPositionToAdvanceIsBye &&
     !priorPairIsBye
   ) {
     return { error: DRAW_POSITION_ASSIGNED };
   }
-  const pairedDrawPosition = existingDrawPositions.find(
+  const pairedDrawPosition = existingDrawPositions?.find(
     (drawPosition) => drawPosition !== drawPositionToAdvance
   );
 

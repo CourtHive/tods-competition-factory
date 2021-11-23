@@ -1,4 +1,5 @@
 import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
+import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { getStageParticipantsCount } from '../getters/getStageParticipantsCount';
@@ -23,6 +24,7 @@ export function generateEventWithFlights({
   tournamentRecord,
   eventProfile,
   eventIndex,
+  publish,
   uuids,
 }) {
   let gender = eventProfile.gender;
@@ -157,6 +159,10 @@ export function generateEventWithFlights({
   if (result.error) return result;
 
   const drawIds = result.drawIds;
+
+  if (publish) {
+    publishEvent({ tournamentRecord, event });
+  }
 
   return { drawIds, eventId, uniqueParticipantIds };
 }

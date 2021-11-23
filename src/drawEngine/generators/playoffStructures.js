@@ -1,6 +1,7 @@
-import { feedInMatchUps, treeMatchUps } from './eliminationTree';
 import { structureSort } from '../getters/structureSort';
 import structureTemplate from './structureTemplate';
+import { feedInMatchUps } from './feedInMatchUps';
+import { treeMatchUps } from './eliminationTree';
 import { generateRange } from '../../utilities';
 import {
   addMatchUpsNotice,

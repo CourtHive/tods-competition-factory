@@ -1,20 +1,26 @@
-import { setSubscriptions } from '../../../global/state/globalState';
+import {
+  setDevContext,
+  setSubscriptions,
+} from '../../../global/state/globalState';
+import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
-import { generateRange } from '../../../utilities';
 
+import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
+  COMPLETED,
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
-const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
+const getTarget = ({ matchUps, roundNumber, roundPosition, stage }) =>
   matchUps.find(
     (matchUp) =>
       matchUp.roundNumber === roundNumber &&
-      matchUp.roundPosition === roundPosition
+      matchUp.roundPosition === roundPosition &&
+      (!stage || matchUp.stage === stage)
   );
 
 // to turn on WOWO specific logging
@@ -267,4 +273,95 @@ test('A produced WALKOVER encountering a produced WALKOVER winningSide will not 
     const drawPositions = matchUp.drawPositions.filter(Boolean);
     expect(drawPositions.length).toEqual(matchUp.roundNumber === 1 ? 2 : 0);
   });
+});
+
+test('DOUBLE_WALKOVER in feedRound does not inappropriately advance drawPositions for other roundPositions', () => {
+  let completionGoal = 6;
+  let drawProfiles = [
+    {
+      drawSize: 8,
+      drawType: 'FEED_IN_CHAMPIONSHIP_TO_SF',
+      completionGoal,
+      outcomes: [
+        {
+          stage: 'CONSOLATION',
+          roundNumber: 1,
+          roundPosition: 1,
+          matchUpStatus: 'DOUBLE_WALKOVER',
+          matchUpStatusCodes: ['WOWO'],
+        },
+      ],
+    },
+  ];
+  let mockProfile = { drawProfiles };
+
+  const { tournamentRecord } =
+    mocksEngine.generateTournamentRecord(mockProfile);
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let matchUps = tournamentEngine.tournamentMatchUps();
+
+  // DOUBLE_WALKOVER produces 2 additional completed matchUps
+  expect(matchUps.completedMatchUps.length).toEqual(completionGoal + 2);
+
+  let targetMatchUp = getTarget({
+    matchUps: matchUps.pendingMatchUps,
+    stage: CONSOLATION,
+    roundPosition: 1,
+    roundNumber: 3,
+  });
+
+  // The consolation final should have a WALKOVER advanced drawPosition
+  expect(targetMatchUp.drawPositions.includes(1)).toEqual(true);
+  expect(targetMatchUp.finishingRound).toEqual(1);
+
+  targetMatchUp = getTarget({
+    matchUps: matchUps.completedMatchUps,
+    stage: CONSOLATION,
+    roundPosition: 1,
+    roundNumber: 2,
+  });
+
+  // expect the consolation semifinal to be a produced WALKOVER
+  expect(targetMatchUp.drawPositions.includes(1)).toEqual(true);
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+
+  targetMatchUp = getTarget({
+    matchUps: matchUps.upcomingMatchUps,
+    stage: CONSOLATION,
+    roundPosition: 2,
+    roundNumber: 1,
+  });
+
+  setDevContext({ WOWO: true });
+  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '6-1 6-1',
+    winningSide: 1,
+  });
+  let result = tournamentEngine.setMatchUpStatus({
+    matchUpId: targetMatchUp.matchUpId,
+    drawId: targetMatchUp.drawId,
+    outcome,
+  });
+
+  expect(result.success).toEqual(true);
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+
+  targetMatchUp = getTarget({
+    stage: CONSOLATION,
+    roundPosition: 2,
+    roundNumber: 1,
+    matchUps,
+  });
+  expect(targetMatchUp.matchUpStatus).toEqual(COMPLETED);
+
+  targetMatchUp = getTarget({
+    stage: CONSOLATION,
+    roundPosition: 1,
+    roundNumber: 3,
+    matchUps,
+  });
+
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
 });

@@ -2,11 +2,11 @@ import { MISSING_VALUE } from '../../../../constants/errorConditionConstants';
 import { SEEDING } from '../../../../constants/scaleConstants';
 
 export function generateSeedingScaleItems({
-  scaledEntries,
-  seedsCount,
   scaleAttributes,
-  scaleName,
+  scaledEntries,
   stageEntries,
+  seedsCount,
+  scaleName,
 }) {
   if (!scaleAttributes) return { error: MISSING_VALUE };
 

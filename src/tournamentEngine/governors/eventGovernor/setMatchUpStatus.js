@@ -74,19 +74,17 @@ export function setMatchUpStatus(params) {
   }
 
   return drawEngineSetMatchUpStatus({
-    tournamentRecord,
-    drawDefinition,
-    event,
-
     matchUpStatusCodes: outcome?.matchUpStatusCodes,
     matchUpStatus: outcome?.matchUpStatus,
-    matchUpFormat,
-    matchUpId,
-
     winningSide: outcome?.winningSide,
     allowChangePropagation,
     score: outcome?.score,
+    tournamentRecord,
+    drawDefinition,
+    matchUpFormat,
+    matchUpId,
     schedule,
+    event,
     notes,
   });
 }

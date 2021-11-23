@@ -12,7 +12,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-// TODO: pass in policyDefinitions for roundNaming and personPrivacy
 export function getEventData({
   participantsProfile,
   policyDefinitions,
@@ -29,6 +28,7 @@ export function getEventData({
     withGroupings: true,
     withEvents: false,
     withDraws: false,
+    withISO: true,
     ...participantsProfile, // order is important!!
     tournamentRecord,
   });

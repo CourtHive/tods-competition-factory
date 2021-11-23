@@ -15,9 +15,10 @@ import {
 } from '../../../../constants/drawDefinitionConstants';
 
 export function getUnseededByePositions({
-  structure,
   appliedPolicies,
+  structure,
   isFeedIn,
+  isLucky,
 }) {
   const seedingProfile = appliedPolicies?.seeding?.seedingProfile;
 
@@ -105,9 +106,9 @@ export function getUnseededByePositions({
   // setting allPositions: true returns seedBlocks for all positions
   // overriding the default which returns only seedBlocks for seedsCount
   const { validSeedBlocks } = getValidSeedBlocks({
-    structure,
-    appliedPolicies,
     allPositions: true,
+    appliedPolicies,
+    structure,
   });
 
   const validBlockDrawPositions = validSeedBlocks.map((block) =>
@@ -135,6 +136,8 @@ export function getUnseededByePositions({
     unfilledSeedBlocks = blockDrawPositions
       .map(quarterSeparateBlock)
       .filter((block) => block.length);
+  } else if (isLucky) {
+    // console.log({ isLucky });
   }
 
   // for Round Robins pairs need to be reduced to pairs in drawPosition order

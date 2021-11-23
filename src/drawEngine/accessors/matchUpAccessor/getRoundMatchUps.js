@@ -1,6 +1,11 @@
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { chunkArray, intersection, numericSort } from '../../../utilities';
 import { definedAttributes } from '../../../utilities/objects';
+import {
+  chunkArray,
+  intersection,
+  isPowerOf2,
+  numericSort,
+} from '../../../utilities';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
@@ -182,5 +187,15 @@ export function getRoundMatchUps({ matchUps = [] }) {
     }
   });
 
-  return { maxMatchUpsCount, roundMatchUps, roundNumbers, roundProfile };
+  const hasOddMatchUpsCount = !!Object.values(roundProfile).find(
+    ({ matchUpsCount }) => !isPowerOf2(matchUpsCount)
+  );
+
+  return {
+    hasOddMatchUpsCount,
+    maxMatchUpsCount,
+    roundMatchUps,
+    roundNumbers,
+    roundProfile,
+  };
 }

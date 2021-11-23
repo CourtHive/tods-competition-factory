@@ -106,7 +106,7 @@ export function getParticipantsCount({
     }
   });
 
-  if (drawProfiles) {
+  if (Array.isArray(drawProfiles)) {
     for (const drawProfile of drawProfiles) {
       processDrawProfile(drawProfile);
     }

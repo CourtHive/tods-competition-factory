@@ -3,6 +3,7 @@ import tournamentEngine from '../../tournamentEngine/sync';
 import { unique } from '../../utilities';
 import mocksEngine from '..';
 
+import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
 import { AGE, DOUBLES, SINGLES } from '../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { FEMALE, MALE } from '../../constants/genderConstants';
@@ -49,6 +50,11 @@ test('drawProfiles and participantsProfile work as expected', () => {
     const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
     expect(flightProfile.flights.length).toEqual(1);
   });
+
+  const result = tournamentEngine.tournamentMatchUps();
+  expect(result.upcomingMatchUps[0].sides[0].entryStatus).toEqual(
+    DIRECT_ACCEPTANCE
+  );
 });
 
 test('drawProfiles support generate: false', () => {

@@ -5,6 +5,7 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import { addNotice, getDevContext } from '../../../global/state/globalState';
 import { participantRoles } from '../../../constants/participantRoles';
 import { genderConstants } from '../../../constants/genderConstants';
+import { definedAttributes } from '../../../utilities/objects';
 import { addParticipant } from './addParticipants';
 import { makeDeepCopy } from '../../../utilities';
 
@@ -44,19 +45,27 @@ export function modifyParticipant({
     return addParticipant({ tournamentRecord, participant });
 
   const {
+    participantRoleResponsibilties,
     individualParticipantIds,
+    participantOtherName,
     participantName,
     participantRole,
     participantType,
     onlineProfiles, // TODO: validate onlineProfiles
+    contacts, // TODO: validate contacts
     person,
   } = participant;
 
   const newValues = {};
+
   // validate participant attributes
+  if (contacts) newValues.contacts = contacts;
   if (onlineProfiles) newValues.onlineProfiles = onlineProfiles;
+
   if (participantName && typeof participantName === 'string')
     newValues.participantName = participantName;
+  if (participantOtherName && typeof participantOtherName === 'string')
+    newValues.participantOtherName = participantOtherName;
 
   if (Array.isArray(individualParticipantIds)) {
     const { tournamentParticipants: individualParticipants } =
@@ -100,6 +109,9 @@ export function modifyParticipant({
   if (Object.keys(participantTypes).includes(participantType))
     newValues.participantType = participantType;
 
+  if (Array.isArray(participantRoleResponsibilties))
+    newValues.participantRoleResponsibilties = participantRoleResponsibilties;
+
   if (
     existingParticipant.participantType === participantTypes.INDIVIDUAL &&
     person
@@ -112,7 +124,7 @@ export function modifyParticipant({
     });
   }
 
-  Object.assign(existingParticipant, newValues);
+  Object.assign(existingParticipant, definedAttributes(newValues));
 
   if (groupingParticipantId) {
     addIndividualParticipantIds({

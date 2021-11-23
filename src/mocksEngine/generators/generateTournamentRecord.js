@@ -12,7 +12,10 @@ import { definedAttributes } from '../../utilities/objects';
 import { generateVenues } from './generateVenues';
 
 import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
-import { INVALID_DATE } from '../../constants/errorConditionConstants';
+import {
+  INVALID_DATE,
+  INVALID_VALUES,
+} from '../../constants/errorConditionConstants';
 
 /**
  *
@@ -64,6 +67,9 @@ export function generateTournamentRecord({
   )
     return { error: INVALID_DATE };
 
+  if (eventProfiles && !Array.isArray(eventProfiles))
+    return { error: INVALID_VALUES };
+
   if (!startDate) {
     const tournamentDate = new Date();
     startDate = formatDate(endDate || tournamentDate);
@@ -113,7 +119,7 @@ export function generateTournamentRecord({
     eventIds = [],
     allUniqueParticipantIds = [];
 
-  if (drawProfiles) {
+  if (Array.isArray(drawProfiles)) {
     let drawIndex = 0;
     for (const drawProfile of drawProfiles) {
       const { drawId, eventId, event, error, uniqueParticipantIds } =

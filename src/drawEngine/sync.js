@@ -109,7 +109,13 @@ export const drawEngine = (function () {
             try {
               return invoke({ params, governor, governorMethod });
             } catch (err) {
-              console.log('%c ERROR', 'color: orange', { err });
+              const error = err.toString();
+              console.log('ERROR', {
+                error,
+                method: governorMethod,
+                params: JSON.stringify(params),
+              });
+              console.log(err);
             }
           }
         };

@@ -320,7 +320,7 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
       drawPosition: 2,
       expectation: {
         groupOrder: 2,
-        setsWon: 5,
+        setsWon: 6,
         setsLost: 3,
         gamesWon: 24,
         gamesLost: 17,
@@ -331,7 +331,7 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
       expectation: {
         groupOrder: 3,
         setsWon: 5,
-        setsLost: 3,
+        setsLost: 4,
         gamesWon: 24,
         gamesLost: 21,
       },
@@ -676,12 +676,12 @@ it('properly handles walkovers in calculating participant positions', () => {
       outcomes: [
         {
           drawPositions: [1, 2],
-          scoreString: '1-4 1-4',
+          scoreString: '4-1 4-1',
           winningSide: 2,
         },
         {
           drawPositions: [1, 3],
-          scoreString: '3-4 1-4',
+          scoreString: '4-3 4-1',
           winningSide: 2,
         },
         {
@@ -691,7 +691,7 @@ it('properly handles walkovers in calculating participant positions', () => {
         },
         {
           drawPositions: [1, 5],
-          scoreString: '3-4 1-4',
+          scoreString: '4-3 4-1',
           winningSide: 2,
         },
         {
@@ -707,7 +707,7 @@ it('properly handles walkovers in calculating participant positions', () => {
         },
         {
           drawPositions: [2, 5],
-          scoreString: '1-4 0-4',
+          scoreString: '4-1 4-0',
           winningSide: 2,
         },
         {
@@ -723,7 +723,7 @@ it('properly handles walkovers in calculating participant positions', () => {
         },
         {
           drawPositions: [4, 5],
-          scoreString: '3-4 0-4',
+          scoreString: '4-3 4-0',
           winningSide: 2,
         },
       ],
@@ -784,12 +784,12 @@ it('properly handles DEFAULTS in calculating participant positions', () => {
       outcomes: [
         {
           drawPositions: [1, 2],
-          scoreString: '1-4 1-4',
+          scoreString: '4-1 4-1',
           winningSide: 2,
         },
         {
           drawPositions: [1, 3],
-          scoreString: '3-4 1-4',
+          scoreString: '4-3 4-1',
           winningSide: 2,
         },
         {
@@ -799,7 +799,7 @@ it('properly handles DEFAULTS in calculating participant positions', () => {
         },
         {
           drawPositions: [1, 5],
-          scoreString: '3-4 1-4',
+          scoreString: '4-3 4-1',
           winningSide: 2,
         },
         {
@@ -814,7 +814,7 @@ it('properly handles DEFAULTS in calculating participant positions', () => {
         },
         {
           drawPositions: [2, 5],
-          scoreString: '1-4 0-4',
+          scoreString: '4-1 4-0',
           winningSide: 2,
         },
         {
@@ -829,7 +829,7 @@ it('properly handles DEFAULTS in calculating participant positions', () => {
         },
         {
           drawPositions: [4, 5],
-          scoreString: '3-4 0-4',
+          scoreString: '4-3 4-0',
           winningSide: 2,
         },
       ],

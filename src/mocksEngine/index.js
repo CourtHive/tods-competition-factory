@@ -46,12 +46,18 @@ export const mocksEngine = (function () {
 
   function importGovernors(governors) {
     governors.forEach((governor) => {
-      Object.keys(governor).forEach((key) => {
-        engine[key] = (params) => {
+      Object.keys(governor).forEach((method) => {
+        engine[method] = (params) => {
           try {
-            return engineInvoke(governor[key], params);
+            return engineInvoke(governor[method], params);
           } catch (err) {
-            console.log('%c ERROR', 'color: orange', { err });
+            const error = err.toString();
+            console.log('ERROR', {
+              error,
+              method,
+              params: JSON.stringify(params),
+            });
+            console.log(err);
           }
         };
       });

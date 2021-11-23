@@ -198,8 +198,8 @@ export function jinnScheduler({
         orderedMatchUpIds,
         minutesMap,
       } = getScheduledRoundsDetails({
-        tournamentRecords,
         containedStructureIds,
+        tournamentRecords,
         periodLength,
         matchUps,
         rounds,

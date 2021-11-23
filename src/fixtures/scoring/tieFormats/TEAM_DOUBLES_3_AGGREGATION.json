@@ -23,6 +23,7 @@
     }
   ],
   "tieFormatName": "Doubles Shuffle",
+  "unrestrictedSelections": true,
   "winCriteria": {
     "aggregateValue": true
   }

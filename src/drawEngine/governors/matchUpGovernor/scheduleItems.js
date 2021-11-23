@@ -71,19 +71,19 @@ export function addMatchUpScheduleItems({
 
   if (scheduledDate !== undefined) {
     const result = addMatchUpScheduledDate({
-      drawDefinition,
-      matchUpId,
-      scheduledDate,
       disableNotice: true,
+      drawDefinition,
+      scheduledDate,
+      matchUpId,
     });
     if (result?.error) return { error: result.error, scheduledDate };
   }
   if (scheduledTime !== undefined) {
     const result = addMatchUpScheduledTime({
-      drawDefinition,
-      matchUpId,
-      scheduledTime,
       disableNotice: true,
+      drawDefinition,
+      scheduledTime,
+      matchUpId,
     });
     if (result?.error) return { error: result.error, scheduledTime };
   }
@@ -160,9 +160,9 @@ export function addMatchUpScheduleItems({
 
 export function addMatchUpScheduledDate({
   drawDefinition,
-  matchUpId,
   disableNotice,
   scheduledDate,
+  matchUpId,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
@@ -180,19 +180,19 @@ export function addMatchUpScheduledDate({
   };
 
   return addMatchUpTimeItem({
+    duplicateValues: false,
     drawDefinition,
+    disableNotice,
     matchUpId,
     timeItem,
-    disableNotice,
-    duplicateValues: false,
   });
 }
 
 export function addMatchUpScheduledTime({
   drawDefinition,
-  matchUpId,
   disableNotice,
   scheduledTime,
+  matchUpId,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
@@ -208,20 +208,20 @@ export function addMatchUpScheduledTime({
   };
 
   return addMatchUpTimeItem({
+    duplicateValues: false,
     drawDefinition,
+    disableNotice,
     matchUpId,
     timeItem,
-    disableNotice,
-    duplicateValues: false,
   });
 }
 
 export function addMatchUpOfficial({
   drawDefinition,
-  matchUpId,
   disableNotice,
   participantId,
   officialType,
+  matchUpId,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
@@ -234,11 +234,11 @@ export function addMatchUpOfficial({
   };
 
   return addMatchUpTimeItem({
+    duplicateValues: false,
     drawDefinition,
+    disableNotice,
     matchUpId,
     timeItem,
-    disableNotice,
-    duplicateValues: false,
   });
 }
 
@@ -279,11 +279,11 @@ export function addMatchUpStartTime({
     }
     const timeItem = { itemType: START_TIME, itemValue: startTime };
     return addMatchUpTimeItem({
+      duplicateValues: false,
       drawDefinition,
+      disableNotice,
       matchUpId,
       timeItem,
-      disableNotice,
-      duplicateValues: false,
     });
   } else {
     return { error: INVALID_START_TIME };
@@ -324,11 +324,11 @@ export function addMatchUpEndTime({
     }
     const timeItem = { itemType: END_TIME, itemValue: endTime };
     return addMatchUpTimeItem({
+      duplicateValues: false,
       drawDefinition,
+      disableNotice,
       matchUpId,
       timeItem,
-      disableNotice,
-      duplicateValues: false,
     });
   } else {
     return { error: INVALID_END_TIME };
@@ -394,11 +394,11 @@ export function addMatchUpStopTime({
     };
 
     return addMatchUpTimeItem({
+      duplicateValues: true,
       drawDefinition,
+      disableNotice,
       matchUpId,
       timeItem,
-      disableNotice,
-      duplicateValues: true,
     });
   } else {
     return { error: INVALID_STOP_TIME };
@@ -464,11 +464,11 @@ export function addMatchUpResumeTime({
     };
 
     return addMatchUpTimeItem({
+      duplicateValues: true,
       drawDefinition,
+      disableNotice,
       matchUpId,
       timeItem,
-      disableNotice,
-      duplicateValues: true,
     });
   } else {
     return { error: INVALID_RESUME_TIME };

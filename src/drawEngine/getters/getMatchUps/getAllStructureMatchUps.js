@@ -20,6 +20,7 @@ import { getSide } from './getSide';
 
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
+import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { TEAM } from '../../../constants/eventConstants';
 
@@ -50,10 +51,10 @@ export function getAllStructureMatchUps({
 
   if (!structure) {
     return {
-      matchUps: [],
       collectionPositionMatchUps,
-      roundMatchUps,
       error: MISSING_STRUCTURE,
+      roundMatchUps,
+      matchUps: [],
     };
   }
 
@@ -280,9 +281,6 @@ export function getAllStructureMatchUps({
       drawDefinition?.matchUpType ||
       (event?.eventType !== TEAM && event?.eventType);
 
-    // if (!tieFormat && !['SINGLES', 'DOUBLES'].includes(matchUpType))
-    //   console.log({ matchUpType, event });
-
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
     const { schedule, endDate } = getMatchUpScheduleDetails({
       scheduleVisibilityFilters,
@@ -332,8 +330,8 @@ export function getAllStructureMatchUps({
       {},
       onlyDefined(context),
       onlyDefined({
-        matchUpFormat: matchUp.matchUpType !== TEAM && matchUpFormat,
-        tieFormat: matchUp.matchUpType === TEAM && tieFormat,
+        matchUpFormat: matchUp.matchUpType === TEAM ? undefined : matchUpFormat,
+        tieFormat: matchUp.matchUpType !== TEAM ? undefined : tieFormat,
         endDate: matchUp.endDate || endDate,
         abbreviatedRoundName,
         drawPositionsRange,
@@ -420,7 +418,7 @@ export function getAllStructureMatchUps({
           }
         }
 
-        if (side.participant && side.participant.individualParticipantIds) {
+        if (side?.participant?.individualParticipantIds) {
           const individualParticipants =
             side.participant.individualParticipantIds.map((participantId) => {
               return findParticipant({
@@ -436,6 +434,20 @@ export function getAllStructureMatchUps({
       if (!matchUpWithContext.matchUpType) {
         const { matchUpType } = getMatchUpType({ matchUp: matchUpWithContext });
         if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
+      }
+
+      if (drawDefinition?.entries) {
+        matchUpWithContext.sides.filter(Boolean).forEach((side) => {
+          if (side.participantId) {
+            const entry = drawDefinition.entries.find(
+              (entry) => entry.participantId === side.participantId
+            );
+            if (entry?.entryStatus)
+              Object.assign(side, {
+                entryStatus: entry.entryStatus || ALTERNATE,
+              });
+          }
+        });
       }
     }
 

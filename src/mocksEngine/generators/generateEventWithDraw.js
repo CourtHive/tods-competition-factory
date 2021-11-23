@@ -5,7 +5,9 @@ import { addPlayoffStructures } from '../../tournamentEngine/governors/eventGove
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
+import { drawMatic } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/drawMatic';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
+import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { isValidExtension } from '../../global/validation/isValidExtension';
@@ -33,7 +35,6 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
-import { drawMatic } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/drawMatic';
 
 export function generateEventWithDraw({
   allUniqueParticipantIds = [],
@@ -54,15 +55,18 @@ export function generateEventWithDraw({
     excessParticipantAlternates = true,
     matchUpFormat = FORMAT_STANDARD,
     drawType = SINGLE_ELIMINATION,
+    tournamentAlternates = 0,
     alternatesCount = 0,
     generate = true,
     eventExtensions,
     drawExtensions,
+    completionGoal,
     drawSize = 32,
     tieFormatName,
     seedsCount,
     category,
     idPrefix,
+    publish,
     gender,
     stage,
   } = drawProfile;
@@ -230,7 +234,10 @@ export function generateEventWithDraw({
       ?.filter(({ participantId }) => !participantIds.includes(participantId))
       .filter(isEventParticipantType)
       .filter(isEventGender)
-      .slice(0, alternatesCount || drawSize - participantsCount)
+      .slice(
+        0,
+        alternatesCount || drawSize - participantsCount || tournamentAlternates
+      )
       .map((p) => p.participantId);
 
   if (alternatesParticipantIds?.length) {
@@ -332,6 +339,7 @@ export function generateEventWithDraw({
             matchUpFormat,
             stageSequence = 1,
             matchUpStatus = COMPLETED,
+            matchUpStatusCodes,
             matchUpIndex = 0,
             structureOrder, // like a group number; for RR = the order of the structureType: ITEM within structureType: CONTAINER
           } = outcomeDef;
@@ -370,6 +378,7 @@ export function generateEventWithDraw({
           const targetMatchUp = targetMatchUps[matchUpIndex];
 
           const result = completeDrawMatchUp({
+            matchUpStatusCodes,
             drawDefinition,
             targetMatchUp,
             matchUpFormat,
@@ -383,15 +392,17 @@ export function generateEventWithDraw({
         }
       }
 
-      if (completeAllMatchUps) {
+      if (completeAllMatchUps || completionGoal) {
         const result = completeDrawMatchUps({
           matchUpStatusProfile,
           completeAllMatchUps,
           randomWinningSide,
+          completionGoal,
           drawDefinition,
           matchUpFormat,
         });
         if (result.error) return result;
+        const completedCount = result.completedCount;
 
         if (drawType === ROUND_ROBIN_WITH_PLAYOFF) {
           const mainStructure = drawDefinition.structures.find(
@@ -403,7 +414,11 @@ export function generateEventWithDraw({
             drawDefinition,
             event,
           });
+          const playoffCompletionGoal = completionGoal
+            ? completionGoal - completedCount
+            : undefined;
           result = completeDrawMatchUps({
+            completionGoal: completionGoal ? playoffCompletionGoal : undefined,
             matchUpStatusProfile,
             completeAllMatchUps,
             randomWinningSide,
@@ -414,6 +429,10 @@ export function generateEventWithDraw({
         }
         // TODO: check if RRWPO & automate & complete
       }
+    }
+
+    if (publish) {
+      publishEvent({ tournamentRecord, event });
     }
   }
 

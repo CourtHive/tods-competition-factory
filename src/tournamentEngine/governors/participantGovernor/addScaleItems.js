@@ -71,8 +71,8 @@ export function setParticipantScaleItem({
 }
 
 export function setParticipantScaleItems({
-  tournamentRecord,
   scaleItemsWithParticipantIds = [],
+  tournamentRecord,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };

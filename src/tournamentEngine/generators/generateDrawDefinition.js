@@ -24,6 +24,7 @@ import { SUCCESS } from '../../constants/resultConstants';
 import { AUDIT } from '../../constants/topicConstants';
 import { TEAM } from '../../constants/matchUpTypes';
 import {
+  LUCKY_DRAW,
   MAIN,
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
@@ -264,6 +265,9 @@ export function generateDrawDefinition(params) {
 
   if (seedLimit && seedLimit < seedsCount) seedsCount = seedLimit;
 
+  // temporary until seeding is supported in LUCKY_DRAW
+  if (drawType === LUCKY_DRAW) seedsCount = 0;
+
   if (seededParticipants) {
     seededParticipants
       .filter(({ participantId }) =>
@@ -357,6 +361,8 @@ export function generateDrawDefinition(params) {
       structureId,
       matchUpsMap,
       seedsOnly,
+      drawType,
+      event,
     }));
   }
 

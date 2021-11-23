@@ -1,4 +1,5 @@
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { isLucky } from '../../governors/queryGovernor/isLucky';
 import { isAdHoc } from '../../governors/queryGovernor/isAdHoc';
 
 import { POLICY_ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
@@ -13,6 +14,7 @@ export function getRoundContextProfile({
   const roundNamingProfile = {};
   const isRoundRobin = structure.structures;
   const isAdHocStructure = isAdHoc({ structure });
+  const isLuckyStructure = isLucky({ structure });
 
   const { roundProfile } = getRoundMatchUps({ matchUps });
   const { structureAbbreviation, stage } = structure;
@@ -38,12 +40,13 @@ export function getRoundContextProfile({
   const stageConstant =
     (stageConstants && stageConstants[stage]) || stageInitial;
 
-  if (isRoundRobin || isAdHocStructure) {
+  if (isRoundRobin || isAdHocStructure || isLuckyStructure) {
     Object.assign(
       roundNamingProfile,
       ...Object.keys(roundProfile).map((key) => {
-        const profileSize = `R${key}`;
-        return { [key]: { roundName: profileSize } };
+        const roundName = `Round ${key}`;
+        const abbreviatedRoundName = `R${key}`;
+        return { [key]: { roundName, abbreviatedRoundName } };
       })
     );
   } else {

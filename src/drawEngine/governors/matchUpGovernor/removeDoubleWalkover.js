@@ -18,13 +18,12 @@ import {
 
 export function removeDoubleWalkover(params) {
   const {
+    inContextDrawMatchUps,
     drawDefinition,
+    matchUpsMap,
     targetData,
     structure,
     matchUp,
-
-    matchUpsMap,
-    inContextDrawMatchUps,
   } = params;
 
   const {
@@ -46,33 +45,45 @@ export function removeDoubleWalkover(params) {
 
   // only handles winnerMatchUps in the same structure
   if (winnerMatchUp) {
-    const noContextWinnerMatchUp = matchUpsMap?.drawMatchUps.find(
-      (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
-    );
-    const { pairedPreviousMatchUp } = getPairedPreviousMatchUp({
-      matchUp,
-      structureId: structure.structureId,
-      matchUpsMap,
-    });
-    const pairedPreviousWOWO =
-      pairedPreviousMatchUp?.matchUpStatus === DOUBLE_WALKOVER;
-
-    const pairedPreviousDrawPositions =
-      pairedPreviousMatchUp?.drawPositions?.filter(Boolean) || [];
-    const pairedPreviousMatchUpComplete =
-      [...completedMatchUpStatuses, BYE].includes(
-        pairedPreviousMatchUp?.matchUpStatus
-      ) || pairedPreviousMatchUp?.winningSide;
-
     const nextTargetData = positionTargets({
       matchUpId: winnerMatchUp.matchUpId,
-      drawDefinition,
       inContextDrawMatchUps,
+      drawDefinition,
     });
 
     const {
       targetMatchUps: { winnerMatchUp: nextWinnerMatchUp },
     } = nextTargetData;
+
+    const noContextWinnerMatchUp = matchUpsMap?.drawMatchUps.find(
+      (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
+    );
+
+    let pairedPreviousDrawPositions = [];
+    let pairedPreviousMatchUpComplete;
+    let pairedPreviousWOWO;
+
+    // winnerMatchUp has context
+    if (winnerMatchUp.feedRound) {
+      pairedPreviousDrawPositions =
+        nextWinnerMatchUp?.drawPositions?.filter(Boolean);
+      pairedPreviousMatchUpComplete = true;
+    } else {
+      const { pairedPreviousMatchUp } = getPairedPreviousMatchUp({
+        structureId: structure.structureId,
+        matchUpsMap,
+        matchUp,
+      });
+      pairedPreviousWOWO =
+        pairedPreviousMatchUp?.matchUpStatus === DOUBLE_WALKOVER;
+
+      pairedPreviousDrawPositions =
+        pairedPreviousMatchUp?.drawPositions?.filter(Boolean) || [];
+      pairedPreviousMatchUpComplete =
+        [...completedMatchUpStatuses, BYE].includes(
+          pairedPreviousMatchUp?.matchUpStatus
+        ) || pairedPreviousMatchUp?.winningSide;
+    }
 
     if (pairedPreviousMatchUpComplete) {
       const sourceDrawPositions = matchUp.drawPositions || [];
@@ -92,24 +103,23 @@ export function removeDoubleWalkover(params) {
 
       if (nextWinnerMatchUp && drawPositionToRemove) {
         const result = removeDirectedWinner({
-          winnerMatchUp: nextWinnerMatchUp,
-          drawDefinition,
           winningDrawPosition: drawPositionToRemove,
-
-          matchUpsMap,
+          winnerMatchUp: nextWinnerMatchUp,
           inContextDrawMatchUps,
+          drawDefinition,
+          matchUpsMap,
         });
         if (result.error) return result;
       }
     }
 
     removeDoubleWalkover({
-      drawDefinition,
       targetData: nextTargetData,
-      structure,
       matchUp: winnerMatchUp,
-      matchUpsMap,
       inContextDrawMatchUps,
+      drawDefinition,
+      matchUpsMap,
+      structure,
     });
 
     let matchUpStatus =
@@ -133,6 +143,7 @@ export function removeDoubleWalkover(params) {
       matchUp: noContextWinnerMatchUp,
       matchUpId: winnerMatchUp.matchUpId,
     });
+
     if (result.error) return result;
   }
 

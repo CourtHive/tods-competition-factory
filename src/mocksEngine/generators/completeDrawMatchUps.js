@@ -88,6 +88,7 @@ export function completeDrawMatchUps({
 }
 
 export function completeDrawMatchUp({
+  matchUpStatusCodes,
   drawDefinition,
   targetMatchUp,
   matchUpStatus,
@@ -105,6 +106,8 @@ export function completeDrawMatchUp({
     scoreString,
     winningSide,
   });
+
+  if (matchUpStatusCodes) outcome.matchUpStatusCodes = matchUpStatusCodes;
 
   return setMatchUpStatus({
     drawDefinition,

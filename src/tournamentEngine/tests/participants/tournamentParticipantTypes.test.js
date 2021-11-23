@@ -23,8 +23,8 @@ it('can generate TEAM events', () => {
   };
 
   let result = mocksEngine.generateTournamentRecord({
-    participantsProfile,
     drawProfiles: [{ drawSize: participantsCount, eventType: DOUBLES }],
+    participantsProfile,
   });
 
   tournamentEngine.setState(result.tournamentRecord);

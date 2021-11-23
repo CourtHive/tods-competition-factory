@@ -85,7 +85,9 @@ export function validateSchedulingProfile({
     return validVenues;
   });
 
-  if (!isValid && !error) error = INVALID_VALUES;
+  if (!isValid && !error) {
+    error = INVALID_VALUES;
+  }
 
   return { valid: !!isValid, error, message };
 }
@@ -103,6 +105,7 @@ export function tournamentRelevantSchedulingIds({
     ({ venueId, courts }) => (!requireCourts || courts?.length) && venueId
   );
   const tournamentId = tournamentRecord?.tournamentId;
+
   if (tournamentId) {
     tournamentIds.push(tournamentId);
     tournamentMap[tournamentId] = {};
@@ -118,7 +121,6 @@ export function tournamentRelevantSchedulingIds({
         const { structures } = getDrawStructures({ drawDefinition });
         (structures || []).forEach((structure) => {
           const structureId = structure.structureId;
-          structureIds.push(structureId);
           const { matchUps } = getAllStructureMatchUps({ structure });
           const { roundMatchUps } = getRoundMatchUps({ matchUps });
           const rounds =
@@ -126,7 +128,18 @@ export function tournamentRelevantSchedulingIds({
             Object.keys(roundMatchUps).map((roundNumber) =>
               parseInt(roundNumber)
             );
+
           tournamentMap[tournamentId][eventId][drawId][structureId] = rounds;
+
+          structureIds.push(structureId);
+          if (structure.structures?.length) {
+            structure.structures.forEach((itemStructure) => {
+              structureIds.push(itemStructure.structureId);
+              tournamentMap[tournamentId][eventId][drawId][
+                itemStructure.structureId
+              ] = rounds;
+            });
+          }
         });
       });
     });

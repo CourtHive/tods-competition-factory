@@ -119,7 +119,13 @@ export function drawEngineAsync(test) {
 
               return result;
             } catch (err) {
-              console.log('%c ERROR', 'color: orange', { err });
+              const error = err.toString();
+              console.log('ERROR', {
+                error,
+                method: governorMethod,
+                params: JSON.stringify(params),
+              });
+              console.log(err);
             }
           }
         };

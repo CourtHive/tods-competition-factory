@@ -25,13 +25,12 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 export function assignMatchUpDrawPosition({
+  inContextDrawMatchUps,
   drawDefinition,
-  matchUpId,
   matchUpStatus,
   drawPosition,
-
   matchUpsMap,
-  inContextDrawMatchUps,
+  matchUpId,
 }) {
   if (!matchUpsMap) {
     matchUpsMap = getMatchUpsMap({ drawDefinition });
@@ -113,10 +112,10 @@ export function assignMatchUpDrawPosition({
   }
 
   const targetData = positionTargets({
-    matchUpId,
-    drawDefinition,
     inContextDrawMatchUps,
     inContextMatchUp,
+    drawDefinition,
+    matchUpId,
   });
   const {
     targetMatchUps: { winnerMatchUp, loserMatchUp, loserTargetDrawPosition },
@@ -132,13 +131,12 @@ export function assignMatchUpDrawPosition({
     if (winnerMatchUp) {
       if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
         const result = assignMatchUpDrawPosition({
-          drawDefinition,
-          drawPosition,
           matchUpId: winnerMatchUp.matchUpId,
           iterative: 'brightmagenta',
-
-          matchUpsMap,
           inContextDrawMatchUps,
+          drawDefinition,
+          drawPosition,
+          matchUpsMap,
         });
         if (result.error) return result;
       } else {
@@ -150,23 +148,22 @@ export function assignMatchUpDrawPosition({
         }
       }
     }
-  } else {
+  } else if (winnerMatchUp && !inContextMatchUp.feedRound) {
     const { pairedPreviousMatchUpisWOWO } = getPairedPreviousMatchUpIsWOWO({
       winnerMatchUp: matchUp,
       drawPosition,
-      structure,
       matchUpsMap,
+      structure,
     });
 
-    if (pairedPreviousMatchUpisWOWO && winnerMatchUp) {
+    if (pairedPreviousMatchUpisWOWO) {
       const result = assignMatchUpDrawPosition({
-        drawDefinition,
-        drawPosition,
         matchUpId: winnerMatchUp.matchUpId,
         iterative: 'brightred',
-
-        matchUpsMap,
         inContextDrawMatchUps,
+        drawDefinition,
+        drawPosition,
+        matchUpsMap,
       });
       if (result.error) return result;
     }

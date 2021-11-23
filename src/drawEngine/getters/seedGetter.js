@@ -2,9 +2,14 @@ import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolici
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { getSeedBlocks } from '../governors/positionGovernor/getSeedBlocks';
 import { getStructureSeedAssignments } from './getStructureSeedAssignments';
-import { generateRange, isPowerOf2, shuffleArray } from '../../utilities';
 import { structureAssignedDrawPositions } from './positionsGetter';
 import { findStructure } from './findStructure';
+import {
+  chunkArray,
+  generateRange,
+  isPowerOf2,
+  shuffleArray,
+} from '../../utilities';
 
 import {
   CLUSTER,
@@ -16,18 +21,28 @@ import {
   MISSING_STRUCTURE,
 } from '../../constants/errorConditionConstants';
 
+/**
+ * A seedBlock is an object pairing an array of drawPositions with an array of seedNumbers { drawPositions: [], seedNumbers: []}
+ * In an elimination structure The first seedBlock is { drawPositions: [1], seedNumbers: [1] }
+ * In an elimination structure The second seedBlock is{ drawPositions: [drawSize], seedNumbers: [2] }
+ * In an elimination structure the third seedBlock is { drawPositions: [a, b], seedNumbers: [3, 4] }
+ * In an elimination structure the fourth seedBlock is { drawPositions: [w, x, y, z], seedNumbers: [5, 6, 7, 8] }
+ * The calculations for the positioning of [a, b] and [w, x, y, z] are specific to seeding policies
+ */
+
 export function getValidSeedBlocks({
-  drawDefinition,
   appliedPolicies,
+  drawDefinition,
   allPositions,
   structure,
 }) {
-  let firstRoundSeedsCount,
-    fedSeedNumberOffset = 0;
-  let error,
-    isFeedIn,
+  let fedSeedNumberOffset = 0,
+    firstRoundSeedsCount,
+    validSeedBlocks = [],
     isContainer,
-    validSeedBlocks = [];
+    isFeedIn,
+    isLucky,
+    error;
 
   if (!structure) return { error: MISSING_STRUCTURE };
 
@@ -102,26 +117,39 @@ export function getValidSeedBlocks({
     // fedSeedNumberOffset is used to calculate seedNumber
     // should be equal fo firstRoundDrawPositionOffset
     fedSeedNumberOffset = fedSeedBlockPositions.length;
+  } else if (firstRoundDrawPositions && !isPowerOf2(baseDrawSize)) {
+    // if there are first round draw positions it is not AdHoc
+    // if the baseDrawSize is not a power of 2 then it isLucky
+    firstRoundSeedsCount = 0;
+    isLucky = true;
   } else {
     firstRoundSeedsCount = countLimit;
   }
 
-  if (!isContainer) {
+  if (!isContainer && !isLucky) {
     const { blocks, error } = constructPower2Blocks({
-      baseDrawSize,
-      seedingProfile,
-      seedCountGoal: firstRoundSeedsCount,
-      seedNumberOffset: fedSeedNumberOffset,
       drawPositionOffset: firstRoundDrawPositionOffset,
+      seedNumberOffset: fedSeedNumberOffset,
+      seedCountGoal: firstRoundSeedsCount,
+      seedingProfile,
+      baseDrawSize,
     });
     if (error) {
       return {
-        error,
         validSeedBlocks: [],
         isContainer,
         isFeedIn,
+        error,
       };
     }
+    blocks.forEach((block) => validSeedBlocks.push(block));
+  }
+
+  if (isLucky) {
+    const blocks = chunkArray(firstRoundDrawPositions, 2).map((block, i) => ({
+      drawPositions: [block[0]],
+      seedNumbers: [i + 1],
+    }));
     blocks.forEach((block) => validSeedBlocks.push(block));
   }
 
@@ -135,7 +163,7 @@ export function getValidSeedBlocks({
     true
   );
 
-  if (!isFeedIn && !isContainer && !validSeedPositions) {
+  if (!isLucky && !isFeedIn && !isContainer && !validSeedPositions) {
     return {
       error: INVALID_SEED_POSITION,
       validSeedBlocks: [],
@@ -146,8 +174,9 @@ export function getValidSeedBlocks({
 
   return {
     validSeedBlocks,
-    isFeedIn,
     isContainer,
+    isFeedIn,
+    isLucky,
   };
 }
 
@@ -245,11 +274,11 @@ function constructContainerBlocks({ seedingProfile, structure, seedBlocks }) {
 }
 
 function constructPower2Blocks({
-  baseDrawSize,
-  seedCountGoal,
-  seedingProfile,
   drawPositionOffset = 0,
   seedNumberOffset = 0,
+  seedingProfile,
+  seedCountGoal,
+  baseDrawSize,
 }) {
   let count = 1;
   const blocks = [];

@@ -1,6 +1,7 @@
 import { cityMocks, stateMocks, postalCodeMocks } from '../utilities/address';
 import { randomInt, skewedDistribution } from '../../utilities/math';
 import { generateRange, shuffleArray, UUID } from '../../utilities';
+import { isValidDateString } from '../../utilities/dateTime';
 import { definedAttributes } from '../../utilities/objects';
 import { countries } from '../../fixtures/countryData';
 import { generateAddress } from './generateAddress';
@@ -74,7 +75,11 @@ export function generateParticipants({
   const individualParticipantsCount =
     participantsCount * (doubles ? 2 : team ? 8 : 1);
 
-  const { persons: mockedPersons, error } = generatePersons({
+  const {
+    nationalityCodes: personNationalityCodes,
+    persons: mockedPersons,
+    error,
+  } = generatePersons({
     count: individualParticipantsCount,
     personExtensions,
     consideredDate,
@@ -255,6 +260,7 @@ export function generateParticipants({
     const participantName = `${standardGivenName} ${standardFamilyName}`;
     const country = countriesList[participantIndex];
     const nationalityCode =
+      (personNationalityCodes?.length && personNationalityCode) ||
       (country &&
         (nationalityCodeType === 'ISO'
           ? country.iso
@@ -292,7 +298,7 @@ export function generateParticipants({
         standardGivenName,
         nationalityCode,
         extensions,
-        birthDate,
+        birthDate: isValidDateString(birthDate) ? birthDate : undefined,
         sex,
       },
     });

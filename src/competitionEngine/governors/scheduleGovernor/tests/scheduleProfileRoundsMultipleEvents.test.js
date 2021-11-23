@@ -68,8 +68,8 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
     .slice(0, 32)
     .map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({
-    eventId: eventIds[0],
     participantIds: firstEventParticipantIds,
+    eventId: eventIds[0],
   });
   expect(result.success).toEqual(true);
 

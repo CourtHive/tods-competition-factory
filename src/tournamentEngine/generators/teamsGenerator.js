@@ -21,9 +21,10 @@ import { INDIVIDUAL, TEAM } from '../../constants/participantTypes';
  * @returns { success: true } or { error }
  */
 export function generateTeamsFromParticipantAttribute({
-  tournamentRecord,
   participantAttribute,
+  tournamentRecord,
   personAttribute,
+  teamNames,
   accessor,
   uuids,
 }) {
@@ -34,6 +35,8 @@ export function generateTeamsFromParticipantAttribute({
     ({ participantType, participantRole }) =>
       participantType === INDIVIDUAL && participantRole === COMPETITOR
   );
+
+  let teamIndex = 0;
 
   for (const individualParticipant of individualParticipants) {
     const { value: accessorValue } = getAccessorValue({
@@ -49,7 +52,7 @@ export function generateTeamsFromParticipantAttribute({
     if (attributeValue) {
       if (!Object.keys(teams).includes(attributeValue)) {
         teams[attributeValue] = {
-          participantName: attributeValue,
+          participantName: teamNames?.[teamIndex] || attributeValue,
           participantId: uuids?.pop() || UUID(),
           participantType: TEAM,
           participantRole: COMPETITOR,
@@ -61,6 +64,8 @@ export function generateTeamsFromParticipantAttribute({
           value: personAttribute || participantAttribute,
         };
         addExtension({ element: teams[attributeValue], extension });
+
+        teamIndex += 1;
       }
 
       teams[attributeValue].individualParticipantIds.push(

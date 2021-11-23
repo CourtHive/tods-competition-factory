@@ -118,18 +118,24 @@ export function competitionEngineAsync(test) {
   async function importGovernors(governors) {
     for (const governor of governors) {
       const govKeys = Object.keys(governor);
-      for (const govKey of govKeys) {
-        engine[govKey] = async function (params) {
+      for (const method of govKeys) {
+        engine[method] = async function (params) {
           // if devContext is true then don't trap errors
           if (getDevContext()) {
-            const engineResult = await engineInvoke(governor[govKey], params);
+            const engineResult = await engineInvoke(governor[method], params);
             return engineResult;
           } else {
             try {
-              const engineResult = await engineInvoke(governor[govKey], params);
+              const engineResult = await engineInvoke(governor[method], params);
               return engineResult;
             } catch (err) {
-              console.log('%c ERROR', 'color: orange', { err });
+              const error = err.toString();
+              console.log('ERROR', {
+                error,
+                method,
+                params: JSON.stringify(params),
+              });
+              console.log(err);
             }
           }
         };

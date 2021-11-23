@@ -99,7 +99,13 @@ export const scaleEngine = (function () {
             try {
               return engineInvoke(governor[method], params, method);
             } catch (err) {
-              console.log('%c ERROR', 'color: orange', { err });
+              const error = err.toString();
+              console.log('ERROR', {
+                error,
+                method,
+                params: JSON.stringify(params),
+              });
+              console.log(err);
             }
           }
         };

@@ -23,6 +23,18 @@ it('can generate a tournament with all results completed', () => {
   expect(matchUpStatuses.COMPLETED).toEqual(31);
 });
 
+it('can generate a tournament with all partial completed', () => {
+  const drawProfiles = [{ drawSize: 32, completionGoal: 20 }];
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+  tournamentEngine.setState(tournamentRecord);
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const matchUpStatuses = instanceCount(matchUps.map((m) => m.matchUpStatus));
+  expect(matchUps.length).toEqual(31);
+  expect(matchUpStatuses.COMPLETED).toEqual(20);
+});
+
 it('can generate a ROUND_ROBIN draw with all results completed', () => {
   const drawProfiles = [{ drawSize: 32, drawType: ROUND_ROBIN }];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

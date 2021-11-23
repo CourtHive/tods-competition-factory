@@ -62,7 +62,6 @@ export default [
       json(),
       babel({ babelHelpers: 'bundled' }),
     ],
-    external: ['react', 'react-dom'],
 
     input: 'src/index.ts',
     output: [
