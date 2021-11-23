@@ -6,11 +6,11 @@ import {
 import { ScoreGrid } from 'tods-score-grid';
 import React from 'react';
 
-const DrawType = ({ drawType }) => {
+const DrawType = ({ drawType, drawSize = 8 }) => {
   const drawProfile = {
-    drawType: 'COMPASS',
-    seedsCount: 2,
-    drawSize: 8,
+    seedsCount: 4,
+    drawType,
+    drawSize,
   };
   if (drawType === 'AD_HOC')
     Object.assign(drawProfile, { drawMatic: true, roundsCount: 3 });
