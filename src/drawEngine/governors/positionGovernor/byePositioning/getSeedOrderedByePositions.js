@@ -92,8 +92,8 @@ function getOrderedByePositions({
     (matchUp) => matchUp.drawPositions
   );
   const consideredDrawPositionPairs = matchUpDrawPositionPairs
-    .map((pair) => pair.sort((a, b) => a - b))
-    .filter((pair) => pair[0] + 1 === pair[1]);
+    .map((pair) => pair?.sort((a, b) => a - b))
+    .filter((pair) => pair?.[0] + 1 === pair?.[1]);
 
   // sort seededMatchUps so that pairedPositions represent seed order
   const seedOrderSortedDrawPositionPairs = orderedSeedDrawPositions

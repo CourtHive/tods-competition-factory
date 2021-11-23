@@ -143,8 +143,8 @@ export function getUnseededByePositions({
   // for Round Robins pairs need to be reduced to pairs in drawPosition order
   const matchUpPairedDrawPositions = relevantMatchUps
     .map((matchUp) => matchUp.drawPositions)
-    .map((pair) => pair.sort((a, b) => a - b))
-    .filter((pair) => pair[0] + 1 === pair[1]);
+    .map((pair) => pair?.sort((a, b) => a - b))
+    .filter((pair) => pair?.[0] + 1 === pair?.[1]);
 
   const findDrawPositionPair = (drawPosition) => {
     return matchUpPairedDrawPositions.reduce((pair, candidate) => {
