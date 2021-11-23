@@ -339,6 +339,7 @@ export function generateEventWithDraw({
             matchUpFormat,
             stageSequence = 1,
             matchUpStatus = COMPLETED,
+            matchUpStatusCodes,
             matchUpIndex = 0,
             structureOrder, // like a group number; for RR = the order of the structureType: ITEM within structureType: CONTAINER
           } = outcomeDef;
@@ -377,6 +378,7 @@ export function generateEventWithDraw({
           const targetMatchUp = targetMatchUps[matchUpIndex];
 
           const result = completeDrawMatchUp({
+            matchUpStatusCodes,
             drawDefinition,
             targetMatchUp,
             matchUpFormat,
