@@ -9,7 +9,6 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function positionByes({
   blockOrdered = false,
-  applyPositioning,
   drawDefinition,
   matchUpsMap,
   structureId,
@@ -67,7 +66,6 @@ export function positionByes({
 
   for (const drawPosition of byeDrawPositions) {
     const result = assignDrawPositionBye({
-      applyPositioning,
       drawDefinition,
       drawPosition,
       matchUpsMap,

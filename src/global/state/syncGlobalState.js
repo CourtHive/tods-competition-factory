@@ -15,19 +15,21 @@ const syncGlobalState = {
 };
 
 export default {
-  setSubscriptions,
   addNotice,
-  getNotices,
-  deleteNotices,
-  getTopics,
   callListener,
+  deleteNotices,
+  disableNotifications,
+  enableNotifications,
+  getNotices,
+  getTopics,
   getTournamentId,
   getTournamentRecord,
   getTournamentRecords,
+  removeTournamentRecord,
+  setSubscriptions,
   setTournamentId,
   setTournamentRecord,
   setTournamentRecords,
-  removeTournamentRecord,
 };
 
 export function disableNotifications() {

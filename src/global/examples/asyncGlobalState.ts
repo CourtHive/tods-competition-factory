@@ -54,6 +54,8 @@ export default {
   callListener,
   createInstanceState,
   deleteNotices,
+  disableNotifications,
+  enableNotifications,
   getNotices,
   getTopics,
   getTournamentId,

@@ -155,7 +155,7 @@ export function disableNotifications() {
 }
 
 export function enableNotifications() {
-  _globalStateProvider.disableNotifications();
+  _globalStateProvider.enableNotifications();
 }
 
 export function setDeepCopy(value, attributes) {

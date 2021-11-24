@@ -9,6 +9,10 @@ import { getStageEntries } from '../../getters/stageGetter';
 import { positionQualifiers } from './positionQualifiers';
 import { positionSeedBlocks } from './positionSeeds';
 import { makeDeepCopy } from '../../../utilities';
+import {
+  disableNotifications,
+  enableNotifications,
+} from '../../../global/state/globalState';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -33,12 +37,26 @@ export function automatedPositioning({
   drawType,
   event,
 }) {
+  //-----------------------------------------------------------
+  // handle notification state for all exit conditions
   if (!applyPositioning) {
+    disableNotifications();
     drawDefinition = makeDeepCopy(drawDefinition, false, true);
   }
 
+  const handleErrorCondition = (result) => {
+    if (!applyPositioning) enableNotifications();
+    return result;
+  };
+
+  const handleSuccessCondition = (result) => {
+    if (!applyPositioning) enableNotifications();
+    return result;
+  };
+  //-----------------------------------------------------------
+
   const { structure, error } = findStructure({ drawDefinition, structureId });
-  if (error) return { error };
+  if (error) return handleErrorCondition({ error });
 
   const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = getStageEntries({
@@ -49,7 +67,7 @@ export function automatedPositioning({
     structureId,
   });
 
-  if (!entries?.length) return SUCCESS;
+  if (!entries?.length) return handleSuccessCondition({ ...SUCCESS });
 
   const { seedingProfile } = structure;
 
@@ -68,49 +86,45 @@ export function automatedPositioning({
     // since WATERFALL attempts to place ALL participants
     // BYEs must be placed first to ensure lower seeds get BYEs
     let result = positionByes({
-      applyPositioning,
       drawDefinition,
       matchUpsMap,
       structure,
       seedsOnly,
       event,
     });
-    if (result.error) return result;
+    if (result.error) return handleErrorCondition(result);
 
     result = positionSeedBlocks({
       inContextDrawMatchUps,
-      applyPositioning,
       drawDefinition,
       participants,
       matchUpsMap,
       structure,
     });
-    if (result.error) return result;
+    if (result.error) return handleErrorCondition(result);
   } else {
     // otherwise... seeds need to be placed first so that BYEs
     // can follow the seedValues of placed seeds
     if (drawType !== LUCKY_DRAW) {
       let result = positionSeedBlocks({
         inContextDrawMatchUps,
-        applyPositioning,
         drawDefinition,
         participants,
         matchUpsMap,
         structure,
       });
-      if (result.error) return result;
+      if (result.error) return handleErrorCondition(result);
     }
 
     const result = positionByes({
       inContextDrawMatchUps,
-      applyPositioning,
       drawDefinition,
       matchUpsMap,
       structure,
       seedsOnly,
       event,
     });
-    if (result.error) return result;
+    if (result.error) return handleErrorCondition(result);
   }
 
   const conflicts = {};
@@ -118,25 +132,23 @@ export function automatedPositioning({
   if (!seedsOnly) {
     let result = positionUnseededParticipants({
       inContextDrawMatchUps,
-      applyPositioning,
       candidatesCount,
       drawDefinition,
       participants,
       matchUpsMap,
       structure,
     });
-    if (result.error) return result;
+    if (result.error) return handleErrorCondition(result);
     if (result.conflicts) conflicts.unseededConflicts = result.conflicts;
 
     result = positionQualifiers({
       inContextDrawMatchUps,
-      applyPositioning,
       drawDefinition,
       participants,
       matchUpsMap,
       structure,
     });
-    if (result.error) return result;
+    if (result.error) return handleErrorCondition(result);
     if (result.conflicts) conflicts.qualifierConflicts = result.conflicts;
   }
 
@@ -145,9 +157,12 @@ export function automatedPositioning({
     structure,
   });
 
-  if (applyPositioning) {
-    modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
-  }
+  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+
+  //-----------------------------------------------------------
+  // re-enable notifications, if they have been disabled
+  if (!applyPositioning) enableNotifications();
+  //-----------------------------------------------------------
 
   return { positionAssignments, conflicts, ...SUCCESS };
 }

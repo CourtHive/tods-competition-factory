@@ -1,4 +1,5 @@
 import { automatedPositioning as drawEngineAutomatedPositioning } from '../../../drawEngine/governors/positionGovernor/automatedPositioning';
+import { isCompletedStructure } from '../../../drawEngine/governors/queryGovernor/structureActions';
 import { getPlayoffStructures } from '../../getters/structureGetter';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -7,7 +8,6 @@ import {
   EVENT_NOT_FOUND,
   INCOMPLETE_SOURCE_STRUCTURE,
 } from '../../../constants/errorConditionConstants';
-import { isCompletedStructure } from '../../../drawEngine/governors/queryGovernor/structureActions';
 
 /**
  *
