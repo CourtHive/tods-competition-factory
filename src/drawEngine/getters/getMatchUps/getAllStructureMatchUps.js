@@ -418,6 +418,20 @@ export function getAllStructureMatchUps({
           }
         }
 
+        if (side.participant && drawDefinition?.entries) {
+          matchUpWithContext.sides.filter(Boolean).forEach((side) => {
+            if (side.participantId) {
+              const entry = drawDefinition.entries.find(
+                (entry) => entry.participantId === side.participantId
+              );
+              if (entry?.entryStatus)
+                Object.assign(side.participant, {
+                  entryStatus: entry.entryStatus || ALTERNATE,
+                });
+            }
+          });
+        }
+
         if (side?.participant?.individualParticipantIds) {
           const individualParticipants =
             side.participant.individualParticipantIds.map((participantId) => {
@@ -434,20 +448,6 @@ export function getAllStructureMatchUps({
       if (!matchUpWithContext.matchUpType) {
         const { matchUpType } = getMatchUpType({ matchUp: matchUpWithContext });
         if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
-      }
-
-      if (drawDefinition?.entries) {
-        matchUpWithContext.sides.filter(Boolean).forEach((side) => {
-          if (side.participantId) {
-            const entry = drawDefinition.entries.find(
-              (entry) => entry.participantId === side.participantId
-            );
-            if (entry?.entryStatus)
-              Object.assign(side, {
-                entryStatus: entry.entryStatus || ALTERNATE,
-              });
-          }
-        });
       }
     }
 
