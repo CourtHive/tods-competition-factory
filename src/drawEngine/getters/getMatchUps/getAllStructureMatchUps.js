@@ -414,22 +414,15 @@ export function getAllStructureMatchUps({
             tournamentParticipants,
           });
           if (participant) {
-            Object.assign(side, { participant });
-          }
-        }
-
-        if (side.participant && drawDefinition?.entries) {
-          matchUpWithContext.sides.filter(Boolean).forEach((side) => {
-            if (side.participantId) {
+            if (drawDefinition?.entries) {
               const entry = drawDefinition.entries.find(
                 (entry) => entry.participantId === side.participantId
               );
               if (entry?.entryStatus)
-                Object.assign(side.participant, {
-                  entryStatus: entry.entryStatus || ALTERNATE,
-                });
+                participant.entryStatus = entry.entryStatus || ALTERNATE;
             }
-          });
+            Object.assign(side, { participant });
+          }
         }
 
         if (side?.participant?.individualParticipantIds) {
