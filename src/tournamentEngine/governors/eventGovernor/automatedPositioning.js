@@ -60,8 +60,6 @@ export function automatedPlayoffPositioning({
   });
   const structurePositionAssignments = [];
 
-  console.log({ playoffStructures, structureIsComplete });
-
   const participants = tournamentRecord?.participants;
 
   if (playoffStructures) {
@@ -75,8 +73,6 @@ export function automatedPlayoffPositioning({
         participants,
         seedsOnly,
       });
-
-      console.log({ result });
 
       if (result.error) return result;
 
