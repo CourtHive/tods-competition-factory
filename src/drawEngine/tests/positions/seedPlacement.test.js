@@ -459,7 +459,7 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   }));
 
   expect(seedAssignments.length).toEqual(17);
-  expect(seedAssignments[16].seedValue).toEqual('99');
+  expect(seedAssignments[16].seedValue).toEqual(99);
   expect(drawModifications).toEqual(16);
 });
 

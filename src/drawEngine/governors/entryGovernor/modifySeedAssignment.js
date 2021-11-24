@@ -39,7 +39,8 @@ export function modifySeedAssignment({
     !validation ||
     isNumeric(seedValue) ||
     [undefined, ''].includes(seedValue) ||
-    (typeof seedValue === 'string' && seedValue.split('-').every(isNumeric));
+    (typeof seedValue === 'string' &&
+      seedValue.split('-').every((v) => isNumeric(v) && v > 0));
 
   if (!validValue) return { error: INVALID_VALUES };
 
@@ -56,15 +57,20 @@ export function modifySeedAssignment({
   );
 
   if (existingAssginment) {
-    existingAssginment.seedValue =
+    const newValue =
       typeof seedValue === 'string'
-        ? seedValue > 0
+        ? seedValue.includes('-')
           ? seedValue
               .split('-')
               .map((v) => parseInt(v))
               .join('-')
+          : seedValue > 0
+          ? parseInt(seedValue)
           : ''
-        : seedValue || '';
+        : seedValue > 0
+        ? parseInt(seedValue)
+        : '';
+    existingAssginment.seedValue = newValue;
   } else {
     const seedNumber = Math.max(0, ...seedNumbers) + 1;
     structure.seedAssignments.push({ seedNumber, seedValue, participantId });

@@ -29,7 +29,7 @@ test('basic engine methods', () => {
   expect(result.tournamentRecord).not.toBeUndefined();
 });
 
-test.only('scaleEngine can set tournamentId', () => {
+test('scaleEngine can set tournamentId', () => {
   const { tournamentRecord: t1 } = mocksEngine.generateTournamentRecord();
   const { tournamentRecord: t2 } = mocksEngine.generateTournamentRecord();
 
