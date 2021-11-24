@@ -52,7 +52,7 @@ test('drawProfiles and participantsProfile work as expected', () => {
   });
 
   const result = tournamentEngine.tournamentMatchUps();
-  expect(result.upcomingMatchUps[0].sides[0].entryStatus).toEqual(
+  expect(result.upcomingMatchUps[0].sides[0].participant.entryStatus).toEqual(
     DIRECT_ACCEPTANCE
   );
 });
