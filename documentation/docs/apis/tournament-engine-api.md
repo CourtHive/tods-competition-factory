@@ -2617,6 +2617,26 @@ tournamentEngine.setParticipantScaleItems({ scaleItemsWithParticipantIds });
 
 ---
 
+## setPositionAssignments
+
+Intended to be used in conjunction with `automatedPlayoffPositioning` in deployments where a client instance gets the positioning which is then set on both the client and the server, to ensure that both client and server are identical. If `automatedPlayoffPositioning` is invoked on both client and server independently then it is likely that the positioning on client and server will be different.
+
+```js
+// executed only on the client
+const { structurePositionAssignments } =
+  tournamentEngine.automatedPlayoffPositioning({
+    applyPositioning: false, // instructs tournamentEngine to only return values, not apply them
+    structureId,
+    drawId,
+  });
+
+// executed on both client and server
+result = tournamentEngine.setPositionAssignments({
+  structurePositionAssignments,
+  drawId,
+});
+```
+
 ## setStructureDefaultMatchUpFormat
 
 ```js
