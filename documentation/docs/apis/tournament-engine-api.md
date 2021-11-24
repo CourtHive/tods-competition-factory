@@ -2637,6 +2637,8 @@ result = tournamentEngine.setPositionAssignments({
 });
 ```
 
+---
+
 ## setStructureDefaultMatchUpFormat
 
 ```js
