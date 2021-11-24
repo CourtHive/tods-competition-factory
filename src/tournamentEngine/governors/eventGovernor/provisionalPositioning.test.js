@@ -123,7 +123,6 @@ test('setPositionAssignments', () => {
   // set positionAssignments from values generated previously
   result = tournamentEngine.setPositionAssignments({
     structurePositionAssignments: result.structurePositionAssignments,
-    structureId: playoffStructureId,
     drawId,
   });
   expect(result.success).toEqual(true);
