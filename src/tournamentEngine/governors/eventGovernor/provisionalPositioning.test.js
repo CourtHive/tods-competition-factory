@@ -122,8 +122,7 @@ test('setPositionAssignments', () => {
 
   // set positionAssignments from values generated previously
   result = tournamentEngine.setPositionAssignments({
-    positionAssignments:
-      result.structurePositionAssignments[0].positionAssignments,
+    structurePositionAssignments: result.structurePositionAssignments,
     structureId: playoffStructureId,
     drawId,
   });
