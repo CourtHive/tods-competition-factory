@@ -20,7 +20,6 @@ test('provisional positioning', () => {
   const matchUps = tournamentEngine.tournamentMatchUps();
   const upcomingMatchUps = matchUps.upcomingMatchUps;
   expect(upcomingMatchUps.length).toEqual(1);
-  console.log(upcomingMatchUps[0]);
   const { matchUpId, containerStructureId } = upcomingMatchUps[0];
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '7-5 7-5',
@@ -33,14 +32,42 @@ test('provisional positioning', () => {
   });
   expect(result.success).toEqual(true);
 
+  // applyPositioning: false
   result = tournamentEngine.automatedPlayoffPositioning({
-    // applyPositioning: false,
+    structureId: containerStructureId,
+    applyPositioning: false,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  // structurePositionAssignments contains values to be applied
+  expect(result.structurePositionAssignments.length).toEqual(1);
+
+  const playoffStructureId = result.structurePositionAssignments[0].structureId;
+
+  let { positionAssignments } = tournamentEngine.getPositionAssignments({
+    structureId: playoffStructureId,
+    drawId,
+  });
+  let assignedPositionsCount = positionAssignments.filter(
+    (assignment) => assignment.participantId || assignment.bye
+  ).length;
+  expect(assignedPositionsCount).toEqual(0);
+
+  // applyPositioning: true - by default
+  result = tournamentEngine.automatedPlayoffPositioning({
     structureId: containerStructureId,
     drawId,
   });
   expect(result.success).toEqual(true);
+  positionAssignments = tournamentEngine.getPositionAssignments({
+    structureId: playoffStructureId,
+    drawId,
+  }).positionAssignments;
 
-  console.log(result);
+  assignedPositionsCount = positionAssignments.filter(
+    (assignment) => assignment.participantId || assignment.bye
+  ).length;
+  expect(assignedPositionsCount).toEqual(4);
 });
 
 test.skip.each([
