@@ -7,6 +7,7 @@ import {
 } from '../../constants/errorConditionConstants';
 
 const syncGlobalState = {
+  disableNotifications: false,
   tournamentId: undefined,
   tournamentRecords: {},
   subscriptions: {},
@@ -28,6 +29,14 @@ export default {
   setTournamentRecords,
   removeTournamentRecord,
 };
+
+export function disableNotifications() {
+  syncGlobalState.disableNotifications = true;
+}
+
+export function enableNotifications() {
+  syncGlobalState.disableNotifications = false;
+}
 
 export function getTournamentId() {
   return syncGlobalState.tournamentId;
@@ -98,7 +107,11 @@ export function addNotice({ topic, payload, key }) {
     return;
   }
 
-  if (!syncGlobalState.subscriptions[topic]) return;
+  if (
+    syncGlobalState.disableNotifications ||
+    !syncGlobalState.subscriptions[topic]
+  )
+    return;
 
   if (key) {
     syncGlobalState.notices = syncGlobalState.notices.filter(

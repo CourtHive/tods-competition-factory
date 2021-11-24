@@ -59,6 +59,7 @@ import {
  */
 
 export function assignDrawPositionBye({
+  applyPositioning,
   drawDefinition,
   drawPosition,
   matchUpsMap,
@@ -169,7 +170,9 @@ export function assignDrawPositionBye({
     if (result.error) return result;
   }
 
-  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+  if (applyPositioning) {
+    modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+  }
 
   return { ...SUCCESS };
 }

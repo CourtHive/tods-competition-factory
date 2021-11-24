@@ -20,6 +20,7 @@ import {
   DIRECT_ACCEPTANCE,
 } from '../../../constants/entryStatusConstants';
 
+// TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 export function automatedPositioning({
   applyPositioning = true,
   inContextDrawMatchUps,
@@ -32,12 +33,12 @@ export function automatedPositioning({
   drawType,
   event,
 }) {
-  const { structure, error } = findStructure({ drawDefinition, structureId });
-  if (error) return { error };
-
   if (!applyPositioning) {
     drawDefinition = makeDeepCopy(drawDefinition, false, true);
   }
+
+  const { structure, error } = findStructure({ drawDefinition, structureId });
+  if (error) return { error };
 
   const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = getStageEntries({
@@ -67,6 +68,7 @@ export function automatedPositioning({
     // since WATERFALL attempts to place ALL participants
     // BYEs must be placed first to ensure lower seeds get BYEs
     let result = positionByes({
+      applyPositioning,
       drawDefinition,
       matchUpsMap,
       structure,
@@ -77,6 +79,7 @@ export function automatedPositioning({
 
     result = positionSeedBlocks({
       inContextDrawMatchUps,
+      applyPositioning,
       drawDefinition,
       participants,
       matchUpsMap,
@@ -89,6 +92,7 @@ export function automatedPositioning({
     if (drawType !== LUCKY_DRAW) {
       let result = positionSeedBlocks({
         inContextDrawMatchUps,
+        applyPositioning,
         drawDefinition,
         participants,
         matchUpsMap,
@@ -99,6 +103,7 @@ export function automatedPositioning({
 
     const result = positionByes({
       inContextDrawMatchUps,
+      applyPositioning,
       drawDefinition,
       matchUpsMap,
       structure,
@@ -113,6 +118,7 @@ export function automatedPositioning({
   if (!seedsOnly) {
     let result = positionUnseededParticipants({
       inContextDrawMatchUps,
+      applyPositioning,
       candidatesCount,
       drawDefinition,
       participants,
@@ -124,6 +130,7 @@ export function automatedPositioning({
 
     result = positionQualifiers({
       inContextDrawMatchUps,
+      applyPositioning,
       drawDefinition,
       participants,
       matchUpsMap,
@@ -134,11 +141,13 @@ export function automatedPositioning({
   }
 
   const { positionAssignments } = getPositionAssignments({
-    structure,
     drawDefinition,
+    structure,
   });
 
-  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+  if (applyPositioning) {
+    modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+  }
 
   return { positionAssignments, conflicts, ...SUCCESS };
 }
