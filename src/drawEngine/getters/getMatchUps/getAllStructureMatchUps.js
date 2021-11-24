@@ -138,7 +138,7 @@ export function getAllStructureMatchUps({
     structure;
   const { drawId, drawName } = drawDefinition || {};
 
-  const isRoundRobin = structure.structures;
+  const isRoundRobin = !!structure.structures;
 
   let matchUps = getMappedStructureMatchUps({
     matchUpsMap,

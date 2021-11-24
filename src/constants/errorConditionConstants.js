@@ -10,6 +10,7 @@ export const MISSING_DRAW_DEFINITION = 'Missing drawDefinition';
 export const EXISTING_DRAW_DEFINITIONS = 'Existing drawDefinition(s)';
 export const DRAW_DEFINITION_NOT_FOUND = 'drawDefinition not found';
 export const INVALID_STRUCTURE = 'Invalid structure';
+export const INCOMPLETE_SOURCE_STRUCTURE = 'Incomplete source structure';
 
 export const INVALID_DRAW_POSITION_FOR_SEEDING =
   'Invalid drawPosition for seedAssignment';
@@ -229,6 +230,7 @@ export const errorConditionConstants = {
   EXISTING_PROFILE,
   EXISTING_ROUND,
   INCOMPATIBLE_MATCHUP_STATUS,
+  INCOMPLETE_SOURCE_STRUCTURE,
   INVALID_BOOKINGS,
   INVALID_CONFIGURATION,
   INVALID_DATE_AVAILABILITY,

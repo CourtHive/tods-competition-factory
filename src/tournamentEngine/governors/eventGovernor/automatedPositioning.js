@@ -5,7 +5,9 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
+  INCOMPLETE_SOURCE_STRUCTURE,
 } from '../../../constants/errorConditionConstants';
+import { isCompletedStructure } from '../../../drawEngine/governors/queryGovernor/structureActions';
 
 /**
  *
@@ -13,6 +15,7 @@ import {
  * @param {string} structureId - structure within which positioning should occur
  */
 export function automatedPositioning({
+  applyPositioning = true,
   tournamentRecord,
   drawDefinition,
   structureId,
@@ -21,9 +24,11 @@ export function automatedPositioning({
 }) {
   if (!event) return { error: EVENT_NOT_FOUND };
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
+
   const participants = tournamentRecord?.participants;
 
   return drawEngineAutomatedPositioning({
+    applyPositioning,
     drawDefinition,
     participants,
     structureId,
@@ -43,13 +48,21 @@ export function automatedPlayoffPositioning({
   if (!event) return { error: EVENT_NOT_FOUND };
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
 
-  const participants = tournamentRecord?.participants;
+  const structureIsComplete = isCompletedStructure({
+    drawDefinition,
+    structureId,
+  });
+  if (!structureIsComplete) return { error: INCOMPLETE_SOURCE_STRUCTURE };
+
   const { playoffStructures } = getPlayoffStructures({
     drawDefinition,
     structureId,
   });
-
   const structurePositionAssignments = [];
+
+  console.log({ playoffStructures, structureIsComplete });
+
+  const participants = tournamentRecord?.participants;
 
   if (playoffStructures) {
     for (const structure of playoffStructures) {
@@ -62,6 +75,8 @@ export function automatedPlayoffPositioning({
         participants,
         seedsOnly,
       });
+
+      console.log({ result });
 
       if (result.error) return result;
 

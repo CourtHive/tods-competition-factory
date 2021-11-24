@@ -414,6 +414,8 @@ export function generateEventWithDraw({
             drawDefinition,
             event,
           });
+          // ignore when positioning cannot occur because of incomplete source structure
+
           const playoffCompletionGoal = completionGoal
             ? completionGoal - completedCount
             : undefined;
