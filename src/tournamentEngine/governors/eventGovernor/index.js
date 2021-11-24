@@ -39,6 +39,7 @@ import {
   setEntryPosition,
   setEntryPositions,
 } from './entries/setEntryPositions';
+import { setPositionAssignments } from './drawDefinitions/setPositionAssignments';
 import { addDrawDefinitionTimeItem } from './drawDefinitions/addDrawDefinitionTimeItem';
 import { swapDrawPositionAssignments } from './drawDefinitions/swapDrawPositionAssignments';
 import { withdrawParticipantAtDrawPosition } from './drawDefinitions/withdrawParticipantAtDrawPosition';
@@ -162,6 +163,7 @@ const eventGovernor = {
   setDrawParticipantRepresentativeIds,
   getDrawParticipantRepresentativeIds,
   luckyLoserDrawPositionAssignment,
+  setPositionAssignments,
 
   automatedPositioning,
   automatedPlayoffPositioning,
