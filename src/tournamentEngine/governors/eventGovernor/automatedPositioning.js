@@ -23,21 +23,16 @@ export function automatedPositioning({
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
   const participants = tournamentRecord?.participants;
 
-  const result = drawEngineAutomatedPositioning({
+  return drawEngineAutomatedPositioning({
     drawDefinition,
     participants,
     structureId,
     seedsOnly,
   });
-
-  return result.error
-    ? result
-    : result?.errors?.length
-    ? { error: result.errors }
-    : SUCCESS;
 }
 
 export function automatedPlayoffPositioning({
+  applyPositioning = true,
   candidatesCount = 1,
   tournamentRecord,
   drawDefinition,
@@ -54,19 +49,28 @@ export function automatedPlayoffPositioning({
     structureId,
   });
 
+  const structurePositionAssignments = [];
+
   if (playoffStructures) {
     for (const structure of playoffStructures) {
       const { structureId: playoffStructureId } = structure;
       const result = drawEngineAutomatedPositioning({
         structureId: playoffStructureId,
+        applyPositioning,
         candidatesCount,
         drawDefinition,
         participants,
         seedsOnly,
       });
+
       if (result.error) return result;
+
+      structurePositionAssignments.push({
+        positionAssignments: result.positionAssignments,
+        structureId: playoffStructureId,
+      });
     }
   }
 
-  return { ...SUCCESS };
+  return { ...SUCCESS, structurePositionAssignments };
 }

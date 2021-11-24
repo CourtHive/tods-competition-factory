@@ -2,11 +2,13 @@ import { positionUnseededParticipants } from './positionUnseededParticipants';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionByes } from './byePositioning/positionByes';
 import { findStructure } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
 import { positionQualifiers } from './positionQualifiers';
 import { positionSeedBlocks } from './positionSeeds';
+import { makeDeepCopy } from '../../../utilities';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -19,6 +21,7 @@ import {
 } from '../../../constants/entryStatusConstants';
 
 export function automatedPositioning({
+  applyPositioning = true,
   inContextDrawMatchUps,
   drawDefinition,
   candidatesCount,
@@ -31,6 +34,10 @@ export function automatedPositioning({
 }) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { error };
+
+  if (!applyPositioning) {
+    drawDefinition = makeDeepCopy(drawDefinition, false, true);
+  }
 
   const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = getStageEntries({
@@ -116,18 +123,22 @@ export function automatedPositioning({
     if (result.conflicts) conflicts.unseededConflicts = result.conflicts;
 
     result = positionQualifiers({
+      inContextDrawMatchUps,
       drawDefinition,
       participants,
-      structure,
-
       matchUpsMap,
-      inContextDrawMatchUps,
+      structure,
     });
     if (result.error) return result;
     if (result.conflicts) conflicts.qualifierConflicts = result.conflicts;
   }
 
+  const { positionAssignments } = getPositionAssignments({
+    structure,
+    drawDefinition,
+  });
+
   modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 
-  return { conflicts };
+  return { positionAssignments, conflicts, ...SUCCESS };
 }

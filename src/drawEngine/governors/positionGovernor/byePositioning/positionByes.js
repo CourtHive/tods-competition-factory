@@ -67,10 +67,10 @@ export function positionByes({
   for (const drawPosition of byeDrawPositions) {
     const result = assignDrawPositionBye({
       drawDefinition,
-      structureId,
       drawPosition,
-
       matchUpsMap,
+      structureId,
+      structure,
     });
     if (result?.error) return result;
   }

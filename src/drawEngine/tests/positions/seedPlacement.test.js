@@ -204,7 +204,7 @@ it('generates valild seedBlocks given different policies', () => {
   });
 });
 
-it('can assign seedNumbers and drawPositions to seeded participants', () => {
+it.only('can assign seedNumbers and drawPositions to seeded participants', () => {
   let updatedAt = 0;
   let drawModifications = 0;
   let result = setSubscriptions({
