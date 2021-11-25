@@ -5,8 +5,8 @@ import { QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 export function getStructureQualifiersCount({
   drawDefinition,
-  structure,
   structureId,
+  structure,
 }) {
   let error, qualifiersCount;
   if (!structure) {

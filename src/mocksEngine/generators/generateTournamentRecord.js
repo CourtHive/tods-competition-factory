@@ -188,7 +188,7 @@ export function generateTournamentRecord({
   }
 
   const venueIds = venueProfiles?.length
-    ? generateVenues({ tournamentRecord, venueProfiles })
+    ? generateVenues({ tournamentRecord, venueProfiles, uuids })
     : [];
 
   let scheduledRounds;

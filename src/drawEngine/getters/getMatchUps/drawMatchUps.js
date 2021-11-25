@@ -103,6 +103,7 @@ export function getDrawMatchUps({
       requireParticipants,
       includeByeMatchUps,
       policyDefinitions,
+      tournamentRecord,
       drawDefinition,
       matchUpFilters, //
       contextFilters, //

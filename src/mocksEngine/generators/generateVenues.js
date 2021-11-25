@@ -9,17 +9,21 @@ export function generateVenues({ tournamentRecord, venueProfiles }) {
 
   for (const [index, venueProfile] of venueProfiles.entries()) {
     let {
+      venueAbbreviation,
       venueId = UUID(),
-      venueName,
-      courtsCount,
       dateAvailability,
       startTime = '07:00',
       endTime = '19:00',
+      courtsCount,
+      courtNames,
+      venueName,
+      uuids,
     } = venueProfile;
 
     const newVenue = {
-      venueId,
       venueName: venueName || `Venue ${index + 1}`,
+      venueAbbreviation,
+      venueId,
     };
     let result = addVenue({ tournamentRecord, venue: newVenue });
     if (result.error) return result;
@@ -38,9 +42,11 @@ export function generateVenues({ tournamentRecord, venueProfiles }) {
 
     result = addCourts({
       tournamentRecord,
-      venueId,
-      courtsCount,
       dateAvailability,
+      courtsCount,
+      courtNames,
+      venueId,
+      uuids,
     });
     if (result.error) return result;
   }

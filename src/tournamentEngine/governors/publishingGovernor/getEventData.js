@@ -40,10 +40,11 @@ export function getEventData({
       structures,
     }))(
       getDrawData({
+        context: { eventId, tournamentId, endDate },
         tournamentParticipants,
         policyDefinitions,
+        tournamentRecord,
         drawDefinition,
-        context: { eventId, tournamentId, endDate },
         event,
       })
     )
