@@ -69,16 +69,16 @@ export function generateSchedulingProfile({
 
           let result = addSchedulingProfileRound({
             tournamentRecords: { [tournamentId]: tournamentRecord },
+            round: roundToSchedule,
             scheduleDate,
             venueId,
-            round: roundToSchedule,
           });
           if (result.error) return result;
 
           scheduledRounds.push({
-            drawName,
             structureName,
             roundName,
+            drawName,
             ...roundToSchedule,
           });
         }

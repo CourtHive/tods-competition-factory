@@ -209,12 +209,14 @@ const {
   drawProfiles, // optional - array of profiles for draws to be generated; each draw creates an event
   eventProfiles, // optional - array of profiles for events to be generated; can include drawProfiles
   venueProfiles, // optional - array of profiles for venues to be generated; each venue creates courts
-  schedulingProfile, // optional - array of scheduling directives { scheduleDate, venues : [{ venue, rounds }]}
   completeAllMatchUps, // optional - boolean (legacy support for scoreString to be applied to all matchUps)
   randomWinningSide, // optional - boolean; defaults to false which results in always { winningSide: 1 }
   tournamentAttributes, // optionsl -object attributes will be applied to generated tournamentRecord
   tournamentExtensions, // optional - array of extensions to be attached to tournamentRecord
   uuids, // optional - array of uuids to be used in entity generators
+
+  autoSchedule, // optional - Boolean to call scheduleProfileRounds using the schedulingProfile
+  schedulingProfile, // optional - array of scheduling directives { scheduleDate, venues : [{ venue, rounds }]}
 });
 
 tournamentEngine.setState(tournamentRecord);
