@@ -3,6 +3,7 @@ import { jinnScheduler } from '../jinnScheduler/jinnScheduler';
 // abstraction layer to allow other schedulers to be defined at a later time
 export function scheduleProfileRounds({
   checkPotentialRequestConflicts = true,
+  scheduleCompletedMatchUps,
   clearScheduleDates,
   scheduleDates = [],
   tournamentRecords,
@@ -11,6 +12,7 @@ export function scheduleProfileRounds({
 }) {
   return jinnScheduler({
     checkPotentialRequestConflicts,
+    scheduleCompletedMatchUps,
     clearScheduleDates,
     tournamentRecords,
     scheduleDates,

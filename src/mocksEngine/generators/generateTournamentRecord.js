@@ -41,6 +41,7 @@ import {
  *
  */
 export function generateTournamentRecord({
+  scheduleCompletedMatchUps, // explicit override for scheduler
   ratingsParameters = defaultRatingsParameters,
   tournamentName = 'Mock Tournament',
   tournamentExtensions,
@@ -205,7 +206,10 @@ export function generateTournamentRecord({
       const { tournamentId } = tournamentRecord;
       const tournamentRecords = { [tournamentId]: tournamentRecord };
 
-      schedulerResult = scheduleProfileRounds({ tournamentRecords });
+      schedulerResult = scheduleProfileRounds({
+        scheduleCompletedMatchUps,
+        tournamentRecords,
+      });
     }
   }
 
