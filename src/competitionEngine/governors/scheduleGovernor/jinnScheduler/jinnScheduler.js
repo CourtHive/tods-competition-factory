@@ -600,6 +600,7 @@ export function jinnScheduler({
     schedulingProfileModifications,
     schedulingProfileIssues,
     scheduleTimesRemaining,
+    dateSchedulingProfiles,
     skippedScheduleTimes,
 
     recoveryTimeDeferredMatchUpIds,

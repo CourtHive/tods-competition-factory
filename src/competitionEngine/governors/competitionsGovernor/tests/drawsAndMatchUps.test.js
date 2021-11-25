@@ -81,11 +81,11 @@ test('competitionEngine can setMatchUpStatus', () => {
   });
 
   let result = competitionEngine.setMatchUpStatus({
+    schedule: { scheduledDate: startDate },
     tournamentId,
     matchUpId,
-    drawId,
     outcome,
-    schedule: { scheduledDate: startDate },
+    drawId,
   });
   expect(result.success).toEqual(true);
 
