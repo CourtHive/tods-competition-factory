@@ -11,7 +11,7 @@ export function visualizeScheduledMatchUps({
   showGlobalLog,
 }) {
   purgeGlobalLog();
-  const structureIds = scheduledMatchUps.reduce(
+  const structureIds = scheduledMatchUps?.reduce(
     (structureIds, { structureId }) =>
       structureIds.includes(structureId)
         ? structureIds
@@ -21,7 +21,7 @@ export function visualizeScheduledMatchUps({
 
   const structureNames = Object.assign(
     {},
-    ...structureIds.map((structureId) => {
+    ...(structureIds || []).map((structureId) => {
       const { structureName, matchUpType } = scheduledMatchUps.find(
         (matchUp) => matchUp.structureId === structureId
       );
@@ -31,7 +31,7 @@ export function visualizeScheduledMatchUps({
     })
   );
 
-  structureIds.forEach((structureId) => {
+  structureIds?.forEach((structureId) => {
     pushGlobalLog(
       {
         color: 'blue',
