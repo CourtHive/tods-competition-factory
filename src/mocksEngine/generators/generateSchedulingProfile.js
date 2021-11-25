@@ -52,19 +52,19 @@ export function generateSchedulingProfile({
           let structureId = targetMatchUp.structureId;
 
           if (roundNumber && !winnerFinishingPositionRange) {
-            structureId = Object.keys(containedStructures).find(
-              (containingStructureId) =>
+            structureId =
+              Object.keys(containedStructures).find((containingStructureId) =>
                 containedStructures[containingStructureId].includes(structureId)
-            );
+              ) || structureId;
           }
 
           const roundToSchedule = {
             tournamentId,
-            eventId,
-            drawId,
             structureId,
             roundNumber,
             roundSegment,
+            eventId,
+            drawId,
           };
 
           let result = addSchedulingProfileRound({
