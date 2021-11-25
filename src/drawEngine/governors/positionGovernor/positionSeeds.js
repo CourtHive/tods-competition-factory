@@ -76,14 +76,13 @@ function positionSeedBlock({
     const drawPosition = unfilledPositions.pop();
     if (!drawPosition) return { error: MISSING_DRAW_POSITION };
     const result = assignDrawPosition({
-      drawDefinition,
-      structureId,
-      drawPosition,
-      participantId,
       automaticPlacement: true,
-
-      matchUpsMap,
       inContextDrawMatchUps,
+      drawDefinition,
+      participantId,
+      drawPosition,
+      matchUpsMap,
+      structureId,
     });
 
     if (!result.success) return result;

@@ -1,4 +1,9 @@
+import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
+import { assignDrawPosition } from './positionAssignment';
 import { intersection } from '../../../utilities';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -23,6 +28,7 @@ export function setPositionAssignments({
     const result = findStructure({ drawDefinition, structureId });
     if (result.error) return result;
     const structure = result.structure;
+
     if (!structure) return { error: STRUCTURE_NOT_FOUND };
     if (structure.structures)
       return {
@@ -43,8 +49,53 @@ export function setPositionAssignments({
     )
       return { error: INVALID_VALUES, message: 'drawPositions do not match' };
 
-    structure.positionAssignments = positionAssignments;
+    const matchUpsMap = getMatchUpsMap({ drawDefinition });
+    const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+      includeByeMatchUps: true,
+      inContext: true,
+      drawDefinition,
+      matchUpsMap,
+    });
+
+    for (const assignment of positionAssignments) {
+      const { drawPosition, participantId, bye, qualifier } = assignment;
+
+      if (bye) {
+        const result = assignDrawPositionBye({
+          drawDefinition,
+          drawPosition,
+          matchUpsMap,
+          structureId,
+          structure,
+        });
+        if (result?.error) return result;
+      } else if (qualifier) {
+        positionAssignments.forEach((assignment) => {
+          if (assignment.drawPosition === drawPosition) {
+            assignment.qualifier = true;
+            delete assignment.participantId;
+            delete assignment.bye;
+          }
+        });
+      } else if (participantId) {
+        const result = assignDrawPosition({
+          automaticPlacement: true,
+          inContextDrawMatchUps,
+          drawDefinition,
+          participantId,
+          drawPosition,
+          matchUpsMap,
+          structureId,
+        });
+        if (result?.error) return result;
+      }
+    }
   }
+
+  const structureIds = structurePositionAssignments.map(
+    ({ structureId }) => structureId
+  );
+  modifyDrawNotice({ drawDefinition, structureIds });
 
   return { ...SUCCESS };
 }
