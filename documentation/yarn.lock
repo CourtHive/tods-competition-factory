@@ -8962,10 +8962,10 @@ tods-competition-factory@0.73.0:
   resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.73.0.tgz#5f2c294cd91958ed8a4aa95ac94227cc41248ef5"
   integrity sha512-ZtIPBXHfwcQ4JKiIOrKNcsznpeq8FBHyKxACllXAYEXalVMDFYJ8JyipD7RAPXX/XW1kK0yS3uqhUe8ZAvp4XA==
 
-tods-score-grid@0.4.4:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/tods-score-grid/-/tods-score-grid-0.4.4.tgz#f2796d78c8454adf09005e6203d571099d14a474"
-  integrity sha512-lD7JmrJQqjQdf4b6kF2jvzlGIAeXqgJkN2SE14/YtxdUKu3RIWtNcijrZ4ejBe3y6K2rKGk/b1wil1U1rAyEYw==
+tods-score-grid@0.4.5:
+  version "0.4.5"
+  resolved "https://registry.yarnpkg.com/tods-score-grid/-/tods-score-grid-0.4.5.tgz#14f2c8a1610a02f594e0d924262465fc550ffbda"
+  integrity sha512-pxtY9lDIFiqHpSL7imz2sYkip/kN0pE0kUOMyjlF52oq/ktpXEO/+EfbiikfIjp9JoKMwD2JBxsTsJgMAR/fBw==
   dependencies:
     "@radix-ui/colors" "^0.1.7"
     "@radix-ui/react-dropdown-menu" "^0.1.1"
