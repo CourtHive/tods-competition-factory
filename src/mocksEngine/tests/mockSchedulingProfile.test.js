@@ -13,7 +13,18 @@ it('can schedule all matchUps in first round with only drawId', () => {
   const endTime = '20:00';
   const startDate = extractDate(new Date().toISOString());
   const drawProfiles = [{ idPrefix: 'm', drawId, drawSize: 32 }];
-  const venueProfiles = [{ venueId, courtsCount: 8, startTime, endTime }];
+  const venueProfiles = [
+    {
+      venueId,
+      venueName: 'Venue',
+      venueAbbreviation: 'VNU',
+      courtNames: ['One', 'Two', 'Three'],
+      courtIds: ['c1', 'c2', 'c3'],
+      courtsCount: 8,
+      startTime,
+      endTime,
+    },
+  ];
   const schedulingProfile = [
     {
       scheduleDate: startDate,
@@ -46,6 +57,8 @@ it('can schedule all matchUps in first round with only drawId', () => {
   const { matchUps } = competitionEngine.allCompetitionMatchUps();
   const scheduledMatchUps = matchUps?.filter(hasSchedule);
   expect(scheduledMatchUps.length).toEqual(24);
+  const schedule = scheduledMatchUps[0].schedule;
+  expect(schedule.venueAbbreviation).toEqual('VNU');
 
   visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog: false });
 });

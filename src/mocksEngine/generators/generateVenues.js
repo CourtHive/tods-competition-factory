@@ -17,7 +17,7 @@ export function generateVenues({ tournamentRecord, venueProfiles }) {
       courtsCount,
       courtNames,
       venueName,
-      uuids,
+      courtIds,
     } = venueProfile;
 
     const newVenue = {
@@ -45,8 +45,8 @@ export function generateVenues({ tournamentRecord, venueProfiles }) {
       dateAvailability,
       courtsCount,
       courtNames,
+      courtIds,
       venueId,
-      uuids,
     });
     if (result.error) return result;
   }

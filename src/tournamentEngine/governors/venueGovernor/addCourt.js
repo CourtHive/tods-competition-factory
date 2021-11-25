@@ -109,8 +109,8 @@ export function addCourts({
   tournamentRecord,
   courtNames = [],
   courtsCount,
+  courtIds,
   venueId,
-  uuids,
 }) {
   if (!venueId) return { error: MISSING_VENUE_ID };
   if (!isNumeric(courtsCount) || !courtNames)
@@ -126,7 +126,7 @@ export function addCourts({
   });
 
   const result = courts.map((court) => {
-    const courtId = uuids?.pop();
+    const courtId = courtIds?.pop();
     return addCourt({
       disableNotice: true,
       returnDetails: true,
