@@ -117,6 +117,16 @@ An additional attribute, `teamKey` is available for `participantsProfile`.
 See `tournamentEngine.generateTeamsFromParticipantAttribute()` for more information.
 :::
 
+:::note
+See [Scheduling](/docs/concepts/scheduling#schedulingprofile) for more information on schedulingProfiles.
+
+In the **mocksEngine** only:
+
+- rounds can be targeted by providing only `roundNumber` (defaults to first structure)
+- rounds can be targeted by `winnerFinishingPositionRange`. E.g. '1-2' will target the final round.
+
+:::
+
 ```js
 // Optional values -- see below
 const outcomes = [
@@ -182,7 +192,7 @@ const venueProfiles = [
 const schedulingProfile = [
   {
     scheduleDate,
-    venues: [{ drawId, rounds: [] }],
+    venues: [{ drawId, rounds: [] }], // see Concepts => Scheduling for more details
   },
 ];
 
