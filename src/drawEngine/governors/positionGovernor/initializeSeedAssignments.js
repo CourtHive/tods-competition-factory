@@ -10,16 +10,15 @@ import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function initializeStructureSeedAssignments({
-  tournamentRecord,
-  drawDefinition,
-  event,
-
   requireParticipantCount = true,
   enforcePolicyLimits = true,
   drawSizeProgression,
+  tournamentRecord,
   participantCount,
+  drawDefinition,
   structureId,
   seedsCount,
+  event,
 }) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { error };
