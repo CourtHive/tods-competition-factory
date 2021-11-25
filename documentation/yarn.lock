@@ -3753,6 +3753,11 @@ csstype@^3.0.9:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.9.tgz#6410af31b26bd0520933d02cbc64fce9ce3fbf0b"
   integrity sha512-rpw6JPxK6Rfg1zLOYCSwle2GFOOsnjmDYDaBwEcwoOg4qlsIVCN789VkBZDJAGi4T07gI4YSutR43t9Zz4Lzuw==
 
+dayjs@^1.10.7:
+  version "1.10.7"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.7.tgz#2cf5f91add28116748440866a0a1d26f3a6ce468"
+  integrity sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==
+
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -8962,10 +8967,15 @@ tods-competition-factory@0.73.0:
   resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.73.0.tgz#5f2c294cd91958ed8a4aa95ac94227cc41248ef5"
   integrity sha512-ZtIPBXHfwcQ4JKiIOrKNcsznpeq8FBHyKxACllXAYEXalVMDFYJ8JyipD7RAPXX/XW1kK0yS3uqhUe8ZAvp4XA==
 
-tods-score-grid@0.4.5:
-  version "0.4.5"
-  resolved "https://registry.yarnpkg.com/tods-score-grid/-/tods-score-grid-0.4.5.tgz#14f2c8a1610a02f594e0d924262465fc550ffbda"
-  integrity sha512-pxtY9lDIFiqHpSL7imz2sYkip/kN0pE0kUOMyjlF52oq/ktpXEO/+EfbiikfIjp9JoKMwD2JBxsTsJgMAR/fBw==
+tods-competition-factory@0.74.1:
+  version "0.74.1"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.74.1.tgz#87eeeef018c347f48295690304ff1177c55cdbd7"
+  integrity sha512-r/sw2BDyCBPHL3QziVVlPA02G5G+EH320WwZgwPvLVa0YgilhAVQzVax1Yd+E56veyK9bAGT6VeVLj6H3O3mxg==
+
+tods-score-grid@0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/tods-score-grid/-/tods-score-grid-0.5.0.tgz#0dd4e6654f1a975c55047d6aa9e1404ed1423fd7"
+  integrity sha512-EPurBHd4uBG0WRmCTftnJDwAD8Mj+80dq4w+Env3n9SPDQkQ+Zqv5HbV8jqFXWD4mmvOxNh0r13vnurn0iWuKA==
   dependencies:
     "@radix-ui/colors" "^0.1.7"
     "@radix-ui/react-dropdown-menu" "^0.1.1"
@@ -8973,9 +8983,11 @@ tods-score-grid@0.4.5:
     "@radix-ui/react-popover" "^0.1.1"
     "@stitches/react" "^1.2.5"
     classnames "^2.3.1"
+    dayjs "^1.10.7"
     react "^17.0.2"
     react-country-flag "3.0.2"
     react-dom "^17.0.2"
+    tods-competition-factory "0.74.1"
 
 toidentifier@1.0.0:
   version "1.0.0"
