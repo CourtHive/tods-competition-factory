@@ -3,12 +3,12 @@ import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
+import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import {
   DRAW,
   MAIN,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
-import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 
 const scenarios = [
   {

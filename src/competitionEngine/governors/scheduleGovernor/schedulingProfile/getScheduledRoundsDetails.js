@@ -29,8 +29,9 @@ import {
  * @returns
  */
 export function getScheduledRoundsDetails({
-  tournamentRecords,
+  scheduleCompletedMatchUps,
   containedStructureIds, // optional to support calling method outside of scheduleProfileRounds
+  tournamentRecords,
   periodLength = 30,
   matchUps, // optional to support calling method outside of scheduleProfileRounds
   rounds,
@@ -140,11 +141,13 @@ export function getScheduledRoundsDetails({
     const matchUpIds = roundMatchUps
       .filter(
         ({ matchUpStatus }) =>
-          // don't attempt to scheduled completed matchUpstatuses
-          !completedMatchUpStatuses.includes(matchUpStatus) &&
+          // don't attempt to scheduled completed matchUpstatuses unless explicit override
+          (scheduleCompletedMatchUps ||
+            !completedMatchUpStatuses.includes(matchUpStatus)) &&
           matchUpStatus !== BYE
       )
       .map(getMatchUpId);
+
     matchUpIds.forEach((matchUpId) => {
       minutesMap[matchUpId] = {
         typeChangeRecoveryMinutes,

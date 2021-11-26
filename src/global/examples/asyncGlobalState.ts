@@ -29,6 +29,7 @@ asyncHook.enable();
 
 function createInstanceState() {
   const instanceState = {
+    disableNotifications: false,
     tournamentId: undefined,
     tournamentRecords: {},
     subscriptions: {},
@@ -53,6 +54,8 @@ export default {
   callListener,
   createInstanceState,
   deleteNotices,
+  disableNotifications,
+  enableNotifications,
   getNotices,
   getTopics,
   getTournamentId,
@@ -64,6 +67,16 @@ export default {
   setTournamentRecord,
   setTournamentRecords,
 };
+
+export function disableNotifications() {
+  const instanceState = getInstanceState();
+  instanceState.disableNotifications = true;
+}
+
+export function enableNotifications() {
+  const instanceState = getInstanceState();
+  instanceState.disableNotifications = false;
+}
 
 export function getTournamentId() {
   const instanceState = getInstanceState();
@@ -141,7 +154,8 @@ function addNotice({ topic, payload, key }) {
   }
 
   const instanceState = getInstanceState();
-  if (!instanceState.subscriptions[topic]) return;
+  if (instanceState.disableNotifications || !instanceState.subscriptions[topic])
+    return;
 
   if (key) {
     instanceState.notices = instanceState.notices.filter(

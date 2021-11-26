@@ -26,6 +26,7 @@ export function addCourt({
   disableNotice,
   returnDetails,
   venueId,
+  courtId,
   court,
 }) {
   const { venue } = findVenue({ tournamentRecord, venueId });
@@ -33,7 +34,7 @@ export function addCourt({
 
   if (!venue.courts) venue.courts = [];
 
-  const courtRecord = { ...courtTemplate(), venueId };
+  const courtRecord = { ...courtTemplate(), venueId, courtId };
   if (!courtRecord.courtId) {
     courtRecord.courtId = UUID();
   }
@@ -108,6 +109,7 @@ export function addCourts({
   tournamentRecord,
   courtNames = [],
   courtsCount,
+  courtIds,
   venueId,
 }) {
   if (!venueId) return { error: MISSING_VENUE_ID };
@@ -123,15 +125,17 @@ export function addCourts({
     return court;
   });
 
-  const result = courts.map((court) =>
-    addCourt({
-      tournamentRecord,
-      venueId,
-      court,
+  const result = courts.map((court) => {
+    const courtId = courtIds?.pop();
+    return addCourt({
       disableNotice: true,
       returnDetails: true,
-    })
-  );
+      tournamentRecord,
+      courtId,
+      venueId,
+      court,
+    });
+  });
   const courtRecords = result.map((outcome) => outcome.court).filter(Boolean);
 
   if (courtRecords.length === courtsCount) {

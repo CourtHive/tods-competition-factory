@@ -63,10 +63,14 @@ export function assignDrawPositionBye({
   drawPosition,
   matchUpsMap,
   structureId,
+  structure,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  const { structure } = findStructure({ drawDefinition, structureId });
+  if (!structure)
+    ({ structure } = findStructure({ drawDefinition, structureId }));
+
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
+  if (!structureId) ({ structureId } = structure);
 
   if (!matchUpsMap) {
     matchUpsMap = getMatchUpsMap({ drawDefinition });
@@ -232,10 +236,10 @@ export function advanceDrawPosition({
     targetLinks: { loserTargetLink },
     targetMatchUps: { loserMatchUp, winnerMatchUp, loserTargetDrawPosition },
   } = positionTargets({
+    inContextDrawMatchUps,
+    drawDefinition,
     matchUpId,
     structure,
-    drawDefinition,
-    inContextDrawMatchUps,
   });
 
   // only handling situation where winningMatchUp is in same structure
@@ -268,11 +272,10 @@ export function advanceDrawPosition({
       if (result.error) return result;
     } else {
       assignFedDrawPositionBye({
+        loserTargetDrawPosition,
+        loserTargetLink,
         drawDefinition,
         loserMatchUp,
-        loserTargetLink,
-        loserTargetDrawPosition,
-
         matchUpsMap,
       });
     }

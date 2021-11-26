@@ -184,8 +184,8 @@ export function roundRobinWithPlayoffsTest({
   });
 
   result = tournamentEngine.automatedPlayoffPositioning({
-    drawId,
     structureId: mainStructure.structureId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 

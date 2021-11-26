@@ -52,33 +52,33 @@ export function generateSchedulingProfile({
           let structureId = targetMatchUp.structureId;
 
           if (roundNumber && !winnerFinishingPositionRange) {
-            structureId = Object.keys(containedStructures).find(
-              (containingStructureId) =>
+            structureId =
+              Object.keys(containedStructures).find((containingStructureId) =>
                 containedStructures[containingStructureId].includes(structureId)
-            );
+              ) || structureId;
           }
 
           const roundToSchedule = {
             tournamentId,
-            eventId,
-            drawId,
             structureId,
             roundNumber,
             roundSegment,
+            eventId,
+            drawId,
           };
 
           let result = addSchedulingProfileRound({
             tournamentRecords: { [tournamentId]: tournamentRecord },
+            round: roundToSchedule,
             scheduleDate,
             venueId,
-            round: roundToSchedule,
           });
           if (result.error) return result;
 
           scheduledRounds.push({
-            drawName,
             structureName,
             roundName,
+            drawName,
             ...roundToSchedule,
           });
         }

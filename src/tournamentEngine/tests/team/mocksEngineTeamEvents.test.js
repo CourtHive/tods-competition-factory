@@ -69,8 +69,8 @@ it('can generate TEAM events', () => {
 
   const structureId = drawDefinition.structures[0].structureId;
   let result = tournamentEngine.automatedPositioning({
-    drawId,
     structureId,
+    drawId,
   });
 
   const { matchUps: teamMatchUps } = tournamentEngine.allTournamentMatchUps({

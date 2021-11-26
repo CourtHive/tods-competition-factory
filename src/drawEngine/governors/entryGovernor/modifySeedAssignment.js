@@ -1,6 +1,7 @@
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
+import { isNumeric } from '../../../utilities/math';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -9,7 +10,6 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { isNumeric } from '../../../utilities/math';
 
 /**
  * method is made available to clients via positionActions
@@ -38,7 +38,10 @@ export function modifySeedAssignment({
   const validValue =
     !validation ||
     isNumeric(seedValue) ||
-    (typeof seedValue === 'string' && seedValue.split('-').every(isNumeric));
+    [undefined, ''].includes(seedValue) ||
+    (typeof seedValue === 'string' &&
+      seedValue.split('-').every((v) => isNumeric(v) && v > 0));
+
   if (!validValue) return { error: INVALID_VALUES };
 
   const { seedAssignments } = getStructureSeedAssignments({
@@ -54,7 +57,20 @@ export function modifySeedAssignment({
   );
 
   if (existingAssginment) {
-    existingAssginment.seedValue = seedValue;
+    const newValue =
+      typeof seedValue === 'string'
+        ? seedValue.includes('-')
+          ? seedValue
+              .split('-')
+              .map((v) => parseInt(v))
+              .join('-')
+          : seedValue > 0
+          ? parseInt(seedValue)
+          : ''
+        : seedValue > 0
+        ? parseInt(seedValue)
+        : '';
+    existingAssginment.seedValue = newValue;
   } else {
     const seedNumber = Math.max(0, ...seedNumbers) + 1;
     structure.seedAssignments.push({ seedNumber, seedValue, participantId });

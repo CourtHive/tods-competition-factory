@@ -52,11 +52,18 @@ const getItemString = (type, data, itemType) => {
       customLabel = 'entry';
     }
     if (
+      utilities.intersection(keys, ['eventId', 'sortOrder', 'notBeforeTime'])
+        .length === 3 &&
+      !keys.includes('tennisOfficialIds')
+    ) {
+      customLabel = 'round';
+    } else if (
       utilities.intersection(keys, ['eventId', 'eventName']).length === 2 &&
       !keys.includes('tennisOfficialIds')
     ) {
       customLabel = 'event';
     }
+
     if (utilities.intersection(keys, ['flightNumber', 'drawId']).length === 2) {
       customLabel = 'flight';
     }

@@ -17,9 +17,9 @@ export function getAllPositionedParticipantIds({ drawDefinition }) {
 }
 
 export function getPositionAssignments({
-  structure,
   drawDefinition,
   structureId,
+  structure,
 }) {
   let error,
     positionAssignments = [];
@@ -51,9 +51,9 @@ export function structureAssignedDrawPositions({
   structureId,
 }) {
   const { positionAssignments } = getPositionAssignments({
-    structure,
     drawDefinition,
     structureId,
+    structure,
   });
   const assignedPositions = positionAssignments.filter((drawPosition) => {
     return (

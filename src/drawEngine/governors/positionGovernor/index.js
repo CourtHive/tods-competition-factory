@@ -1,8 +1,8 @@
-// import { assignCollectionPosition, assignDrawPosition } from './positionAssignment';
 import { initializeStructureSeedAssignments } from './initializeSeedAssignments';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { resolveDrawPositions } from '../../generators/drawPositionsResolver';
 import { alternateDrawPositionAssignment } from './positionAlternate';
+import { setPositionAssignments } from './setPositionAssignments';
 import { automatedPositioning } from './automatedPositioning';
 import { swapDrawPositionAssignments } from './positionSwap';
 import { getNextSeedBlock } from '../../getters/seedGetter';
@@ -14,7 +14,7 @@ const positionGovernor = {
   setSubOrder,
   clearDrawPosition,
   assignDrawPosition,
-  //  assignCollectionPosition,
+  setPositionAssignments,
 
   automatedPositioning,
   assignDrawPositionBye,

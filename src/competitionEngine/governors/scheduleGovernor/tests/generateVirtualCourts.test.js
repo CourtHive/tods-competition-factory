@@ -1,7 +1,7 @@
 import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { extractDate, timeStringMinutes } from '../../../../utilities/dateTime';
-import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { mocksEngine, competitionEngine, tournamentEngine } from '../../../..';
+import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 
@@ -14,7 +14,9 @@ it('can create virtual courts with overlapping bookings', () => {
   const endTime = '20:00';
   const startDate = extractDate(new Date().toISOString());
   const drawProfiles = [{ idPrefix: 'm', drawId, drawSize: 32 }];
-  const venueProfiles = [{ venueId, courtsCount: 8, startTime, endTime }];
+  const venueProfiles = [
+    { venueId, venueAbbreviation: 'VNU', courtsCount: 8, startTime, endTime },
+  ];
   const schedulingProfile = [
     {
       scheduleDate: startDate,

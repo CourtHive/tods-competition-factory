@@ -2,11 +2,17 @@ import { positionUnseededParticipants } from './positionUnseededParticipants';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionByes } from './byePositioning/positionByes';
 import { findStructure } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
 import { positionQualifiers } from './positionQualifiers';
 import { positionSeedBlocks } from './positionSeeds';
+import { makeDeepCopy } from '../../../utilities';
+import {
+  disableNotifications,
+  enableNotifications,
+} from '../../../global/state/globalState';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -18,7 +24,9 @@ import {
   DIRECT_ACCEPTANCE,
 } from '../../../constants/entryStatusConstants';
 
+// TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 export function automatedPositioning({
+  applyPositioning = true,
   inContextDrawMatchUps,
   drawDefinition,
   candidatesCount,
@@ -29,8 +37,26 @@ export function automatedPositioning({
   drawType,
   event,
 }) {
+  //-----------------------------------------------------------
+  // handle notification state for all exit conditions
+  if (!applyPositioning) {
+    disableNotifications();
+    drawDefinition = makeDeepCopy(drawDefinition, false, true);
+  }
+
+  const handleErrorCondition = (result) => {
+    if (!applyPositioning) enableNotifications();
+    return result;
+  };
+
+  const handleSuccessCondition = (result) => {
+    if (!applyPositioning) enableNotifications();
+    return result;
+  };
+  //-----------------------------------------------------------
+
   const { structure, error } = findStructure({ drawDefinition, structureId });
-  if (error) return { error };
+  if (error) return handleErrorCondition({ error });
 
   const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = getStageEntries({
@@ -41,7 +67,7 @@ export function automatedPositioning({
     structureId,
   });
 
-  if (!entries?.length) return SUCCESS;
+  if (!entries?.length) return handleSuccessCondition({ ...SUCCESS });
 
   const { seedingProfile } = structure;
 
@@ -66,7 +92,7 @@ export function automatedPositioning({
       seedsOnly,
       event,
     });
-    if (result.error) return result;
+    if (result.error) return handleErrorCondition(result);
 
     result = positionSeedBlocks({
       inContextDrawMatchUps,
@@ -75,7 +101,7 @@ export function automatedPositioning({
       matchUpsMap,
       structure,
     });
-    if (result.error) return result;
+    if (result.error) return handleErrorCondition(result);
   } else {
     // otherwise... seeds need to be placed first so that BYEs
     // can follow the seedValues of placed seeds
@@ -87,7 +113,7 @@ export function automatedPositioning({
         matchUpsMap,
         structure,
       });
-      if (result.error) return result;
+      if (result.error) return handleErrorCondition(result);
     }
 
     const result = positionByes({
@@ -98,7 +124,7 @@ export function automatedPositioning({
       seedsOnly,
       event,
     });
-    if (result.error) return result;
+    if (result.error) return handleErrorCondition(result);
   }
 
   const conflicts = {};
@@ -112,22 +138,31 @@ export function automatedPositioning({
       matchUpsMap,
       structure,
     });
-    if (result.error) return result;
+    if (result.error) return handleErrorCondition(result);
     if (result.conflicts) conflicts.unseededConflicts = result.conflicts;
 
     result = positionQualifiers({
+      inContextDrawMatchUps,
       drawDefinition,
       participants,
-      structure,
-
       matchUpsMap,
-      inContextDrawMatchUps,
+      structure,
     });
-    if (result.error) return result;
+    if (result.error) return handleErrorCondition(result);
     if (result.conflicts) conflicts.qualifierConflicts = result.conflicts;
   }
 
+  const { positionAssignments } = getPositionAssignments({
+    drawDefinition,
+    structure,
+  });
+
   modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 
-  return { conflicts };
+  //-----------------------------------------------------------
+  // re-enable notifications, if they have been disabled
+  if (!applyPositioning) enableNotifications();
+  //-----------------------------------------------------------
+
+  return { positionAssignments, conflicts, ...SUCCESS };
 }

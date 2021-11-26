@@ -313,10 +313,11 @@ it('can advance players in Round Robin with Playoffs', () => {
   playoffStructures.forEach((structure) => {
     const { structureId } = structure;
     // position participants
-    tournamentEngine.automatedPositioning({
-      drawId,
+    let result = tournamentEngine.automatedPositioning({
       structureId,
+      drawId,
     });
+    expect(result.success).toEqual(true);
 
     // verify that positioning participants are expected
     const { drawDefinition: updatedDrawDefinition } = tournamentEngine.getEvent(

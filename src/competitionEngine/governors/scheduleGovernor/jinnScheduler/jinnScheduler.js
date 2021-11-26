@@ -51,6 +51,7 @@ import {
 
 export function jinnScheduler({
   checkPotentialRequestConflicts = true, // passed to checkRequestConflicts
+  scheduleCompletedMatchUps, // override which can be used by mocksEngine
   clearScheduleDates,
   scheduleDates = [],
   tournamentRecords,
@@ -179,9 +180,9 @@ export function jinnScheduler({
         sameDay(scheduleDate, extractDate(matchUp.schedule.scheduledDate))
       ) {
         processNextMatchUps({
-          matchUp,
-          matchUpNotBeforeTimes,
           matchUpPotentialParticipantIds,
+          matchUpNotBeforeTimes,
+          matchUp,
         });
       }
     });
@@ -198,6 +199,7 @@ export function jinnScheduler({
         orderedMatchUpIds,
         minutesMap,
       } = getScheduledRoundsDetails({
+        scheduleCompletedMatchUps,
         containedStructureIds,
         tournamentRecords,
         periodLength,
@@ -289,7 +291,11 @@ export function jinnScheduler({
             RETIRED,
             WALKOVER,
           ].includes(matchUp?.matchUpStatus);
-          return !alreadyScheduled && !matchUp.winningSide && !doNotSchedule;
+
+          return (
+            scheduleCompletedMatchUps || // override for mocksEngine
+            (!alreadyScheduled && !matchUp.winningSide && !doNotSchedule)
+          );
         });
 
       // for optimization, build up an object for each tournament and an array for each draw with target matchUps
@@ -600,6 +606,7 @@ export function jinnScheduler({
     schedulingProfileModifications,
     schedulingProfileIssues,
     scheduleTimesRemaining,
+    dateSchedulingProfiles,
     skippedScheduleTimes,
 
     recoveryTimeDeferredMatchUpIds,

@@ -1,8 +1,8 @@
-import { findStructure } from '../../getters/findStructure';
-import { getStageQualifiersCount } from '../../getters/stageGetter';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-
+import { getStageQualifiersCount } from '../../getters/stageGetter';
+import { findStructure } from '../../getters/findStructure';
 import { generateRange } from '../../../utilities';
+
 import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
@@ -34,6 +34,8 @@ export function positionQualifiers(params) {
     positionAssignments.forEach((assignment) => {
       if (assignment.drawPosition === drawPosition) {
         assignment.qualifier = true;
+        delete assignment.participantId;
+        delete assignment.bye;
       }
     });
   });
@@ -54,17 +56,17 @@ export function getQualifiersData({ drawDefinition, structure, structureId }) {
   const { stage, stageSequence } = structure;
   const qualifiersCount = getStageQualifiersCount({
     drawDefinition,
-    stage,
     stageSequence,
+    stage,
   });
   const unplacedQualifiersCount =
     qualifiersCount - assignedQualifierPositions.length;
   const placedQualifiersCount = assignedQualifierPositions.length;
 
   return {
+    unplacedQualifiersCount,
+    placedQualifiersCount,
     positionAssignments,
     qualifiersCount,
-    placedQualifiersCount,
-    unplacedQualifiersCount,
   };
 }

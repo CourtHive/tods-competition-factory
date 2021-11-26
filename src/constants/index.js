@@ -8,7 +8,6 @@ import { extensionConstants } from './extensionConstants';
 import { flightConstants } from './flightConstants';
 import { genderConstants } from './genderConstants';
 import { matchUpActionConstants } from './matchUpActionConstants';
-import { matchUpStatusConstants } from './matchUpStatusConstants';
 import { matchUpTypes } from './matchUpTypes';
 import { participantConstants } from './participantConstants';
 import { participantRoles } from './participantRoles';
@@ -27,8 +26,21 @@ import { tieFormatConstants } from './tieFormatConstants';
 import { topicConstants } from './topicConstants';
 import { venueConstants } from './venueConstants';
 
+import {
+  activeMatchUpStatuses,
+  upcomingMatchUpStatuses,
+  nonDirectingMatchUpStatuses,
+  directingMatchUpStatuses,
+  validMatchUpStatuses,
+  particicipantsRequiredMatchUpStatuses,
+  recoveryTimeRequiredMatchUpStatuses,
+  matchUpStatusConstants,
+} from './matchUpStatusConstants';
+
 export const factoryConstants = {
+  activeMatchUpStatuses,
   auditConstants,
+  directingMatchUpStatuses,
   drawDefinitionConstants,
   entryStatusConstants,
   errorConditionConstants,
@@ -40,13 +52,16 @@ export const factoryConstants = {
   matchUpActionConstants,
   matchUpStatusConstants,
   matchUpTypes,
+  nonDirectingMatchUpStatuses,
   participantConstants,
   participantRoles,
+  particicipantsRequiredMatchUpStatuses,
   participantTypes,
   penaltyConstants,
   policyConstants,
   positionActionConstants,
   ratingConstants,
+  recoveryTimeRequiredMatchUpStatuses,
   requestConstants,
   resultConstants,
   scaleConstants,
@@ -55,6 +70,8 @@ export const factoryConstants = {
   tieFormatConstants,
   timeItemConstants,
   topicConstants,
+  upcomingMatchUpStatuses,
+  validMatchUpStatuses,
   venueConstants,
 };
 

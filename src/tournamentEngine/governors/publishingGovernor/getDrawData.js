@@ -38,6 +38,7 @@ import {
 export function getDrawData({
   tournamentParticipants = [],
   policyDefinitions,
+  tournamentRecord,
   inContext = true,
   drawDefinition,
   context,
@@ -94,6 +95,7 @@ export function getDrawData({
           context: { drawId: drawInfo.drawId, ...context },
           tournamentParticipants,
           policyDefinitions,
+          tournamentRecord,
           seedAssignments,
           drawDefinition,
           structure,

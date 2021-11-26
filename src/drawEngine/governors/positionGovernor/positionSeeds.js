@@ -8,14 +8,13 @@ import { MISSING_DRAW_POSITION } from '../../../constants/errorConditionConstant
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function positionSeedBlocks({
+  inContextDrawMatchUps,
   drawDefinition,
   participants,
   groupsCount,
   structureId,
-  structure,
-
   matchUpsMap,
-  inContextDrawMatchUps,
+  structure,
 }) {
   const errors = [];
   let placedSeedBlocks = 0;
@@ -37,12 +36,11 @@ export function positionSeedBlocks({
   generateRange(0, groupsCount).forEach(() => {
     if (placedSeedBlocks < groupsCount) {
       const result = positionSeedBlock({
+        inContextDrawMatchUps,
         drawDefinition,
         participants,
         structureId,
-
         matchUpsMap,
-        inContextDrawMatchUps,
       });
       if (result && result.success) placedSeedBlocks++;
       if (result.error) {
@@ -78,14 +76,13 @@ function positionSeedBlock({
     const drawPosition = unfilledPositions.pop();
     if (!drawPosition) return { error: MISSING_DRAW_POSITION };
     const result = assignDrawPosition({
-      drawDefinition,
-      structureId,
-      drawPosition,
-      participantId,
       automaticPlacement: true,
-
-      matchUpsMap,
       inContextDrawMatchUps,
+      drawDefinition,
+      participantId,
+      drawPosition,
+      matchUpsMap,
+      structureId,
     });
 
     if (!result.success) return result;

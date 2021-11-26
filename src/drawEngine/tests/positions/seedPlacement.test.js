@@ -204,7 +204,7 @@ it('generates valild seedBlocks given different policies', () => {
   });
 });
 
-it('can assign seedNumbers and drawPositions to seeded participants', () => {
+it.only('can assign seedNumbers and drawPositions to seeded participants', () => {
   let updatedAt = 0;
   let drawModifications = 0;
   let result = setSubscriptions({
@@ -378,8 +378,8 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
 
   result = drawEngine.modifySeedAssignment({
     participantId: participantId3,
-    structureId,
     seedValue: '5-8',
+    structureId,
   });
   expect(result.success).toEqual(true);
 
@@ -390,6 +390,27 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
     structureId,
   });
   expect(seedAssignments[3].seedValue).toEqual('5-8');
+
+  result = drawEngine.modifySeedAssignment({
+    participantId: participantId3,
+    seedValue: 0,
+    structureId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = drawEngine.modifySeedAssignment({
+    participantId: participantId3,
+    seedValue: undefined,
+    structureId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = drawEngine.modifySeedAssignment({
+    participantId: participantId3,
+    seedValue: '',
+    structureId,
+  });
+  expect(result.success).toEqual(true);
 
   drawPosition = unfilledPositions.pop();
   expect(drawPosition).toEqual(48);
@@ -419,8 +440,8 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   result = drawEngine.modifySeedAssignment({
     participantId: 'additional participant',
     validation: false,
-    structureId,
     seedValue: 'yyy',
+    structureId,
   });
   expect(result.success).toEqual(true);
 
@@ -428,8 +449,8 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   // drawEngine does not have access to participants and cannot verify validity of participantId
   result = drawEngine.modifySeedAssignment({
     participantId: 'additional participant',
-    structureId,
     seedValue: '99',
+    structureId,
   });
   expect(result.success).toEqual(true);
 
@@ -438,8 +459,8 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   }));
 
   expect(seedAssignments.length).toEqual(17);
-  expect(seedAssignments[16].seedValue).toEqual('99');
-  expect(drawModifications).toEqual(13);
+  expect(seedAssignments[16].seedValue).toEqual(99);
+  expect(drawModifications).toEqual(16);
 });
 
 function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {

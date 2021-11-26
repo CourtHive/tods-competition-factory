@@ -4,15 +4,15 @@ import syncGlobalState from './syncGlobalState';
 import { MISSING_VALUE } from '../../constants/errorConditionConstants';
 
 const globalState = {
-  devContext: undefined,
   timers: { default: { elapsedTime: 0 } },
-  deepCopy: true,
+  devContext: undefined,
   deepCopyAttributes: {
     threshold: undefined,
     stringify: [],
     ignore: [],
     toJSON: [],
   },
+  deepCopy: true,
 };
 
 let _globalStateProvider = syncGlobalState;
@@ -148,6 +148,14 @@ export function timeKeeper(action = 'reset', timer = 'default') {
 
 export function setDevContext(value) {
   globalState.devContext = value;
+}
+
+export function disableNotifications() {
+  _globalStateProvider.disableNotifications();
+}
+
+export function enableNotifications() {
+  _globalStateProvider.enableNotifications();
 }
 
 export function setDeepCopy(value, attributes) {

@@ -17,6 +17,7 @@ import {
 
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
 import { TEAM } from '../../../constants/eventConstants';
+import { getVenueData } from '../../../tournamentEngine/governors/publishingGovernor/getVenueData';
 
 export function getMatchUpScheduleDetails({
   scheduleVisibilityFilters,
@@ -121,13 +122,35 @@ export function getMatchUpScheduleDetails({
     if (!scheduledDate && scheduledTime)
       scheduledDate = extractDate(scheduledTime);
 
+    const extractedTime = extractTime(scheduledTime);
+    let isoDateString = extractDate(scheduledDate);
+    if (isoDateString && extractedTime) isoDateString += `T${extractedTime}`;
+
+    const venueData =
+      (
+        tournamentRecord &&
+        venueId &&
+        getVenueData({ tournamentRecord, venueId })
+      )?.venueData || {};
+
+    const { venueName, venueAbbreviation, courtsInfo } = venueData;
+
+    const courtInfo =
+      courtId && courtsInfo?.find((courtInfo) => courtInfo.courtId === courtId);
+    const courtName = courtInfo?.courtName;
+
     schedule = definedAttributes({
-      venueId,
-      courtId,
       typeChangeTimeAfterRecovery,
       timeAfterRecovery,
       scheduledDate,
       scheduledTime,
+      isoDateString,
+
+      venueAbbreviation,
+      venueName,
+      venueId,
+      courtName,
+      courtId,
 
       typeChangeRecoveryMinutes,
       recoveryMinutes,

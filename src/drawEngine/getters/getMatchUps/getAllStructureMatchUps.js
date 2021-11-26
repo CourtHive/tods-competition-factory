@@ -33,6 +33,7 @@ export function getAllStructureMatchUps({
   tournamentAppliedPolicies,
   tournamentParticipants,
   policyDefinitions,
+  tournamentRecord,
   seedAssignments,
   drawDefinition,
   contextFilters,
@@ -138,7 +139,7 @@ export function getAllStructureMatchUps({
     structure;
   const { drawId, drawName } = drawDefinition || {};
 
-  const isRoundRobin = structure.structures;
+  const isRoundRobin = !!structure.structures;
 
   let matchUps = getMappedStructureMatchUps({
     matchUpsMap,
@@ -284,6 +285,7 @@ export function getAllStructureMatchUps({
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
     const { schedule, endDate } = getMatchUpScheduleDetails({
       scheduleVisibilityFilters,
+      tournamentRecord,
       scheduleTiming,
       matchUpFormat,
       matchUpType,
@@ -414,6 +416,13 @@ export function getAllStructureMatchUps({
             tournamentParticipants,
           });
           if (participant) {
+            if (drawDefinition?.entries) {
+              const entry = drawDefinition.entries.find(
+                (entry) => entry.participantId === side.participantId
+              );
+              if (entry?.entryStatus)
+                participant.entryStatus = entry.entryStatus || ALTERNATE;
+            }
             Object.assign(side, { participant });
           }
         }
@@ -434,20 +443,6 @@ export function getAllStructureMatchUps({
       if (!matchUpWithContext.matchUpType) {
         const { matchUpType } = getMatchUpType({ matchUp: matchUpWithContext });
         if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
-      }
-
-      if (drawDefinition?.entries) {
-        matchUpWithContext.sides.filter(Boolean).forEach((side) => {
-          if (side.participantId) {
-            const entry = drawDefinition.entries.find(
-              (entry) => entry.participantId === side.participantId
-            );
-            if (entry?.entryStatus)
-              Object.assign(side, {
-                entryStatus: entry.entryStatus || ALTERNATE,
-              });
-          }
-        });
       }
     }
 
