@@ -2,12 +2,12 @@
 title: Round Robin Tally Policy
 ---
 
-A `tallyPolicy` controls how order is determined for Round Robin groups.
+A **Tally Policy** controls how order is determined for Round Robin groups.
 
-Policy Definitions can be attached to a [tournament record](../apis/tournament-engine-api#attachpolicy), or an [event](../apis/tournament-engine-api#attacheventpolicy).
+Policy Definitions can be attached to a [tournament record](../apis/tournament-engine-api#attachpolicies), or an [event](../apis/tournament-engine-api#attacheventpolicies).
 
 ```js
-const tallyPolicy = {
+const roundRobinTally = {
   headToHead: {
     disabled: false,
   },
@@ -33,6 +33,8 @@ const tallyPolicy = {
     { attribute: 'pointsRatio', idsFilter: true, disbleHeadToHead: false },
   ],
 };
+
+tournamentEngine.attachPolicies({ policyDefinitions: { roundRobinTally } });
 ```
 
 ## Default Behavior
@@ -57,7 +59,7 @@ If three or more players are tied, tie are broken as follows:
 ## Implementation Details
 
 After initial separation of participants by `matchUpsWon`,
-the implementation is configurable by supplying an array of `tallyDirectives` in the `tallyPolicy`.
+the implementation is configurable by supplying an array of `tallyDirectives` in the **Tally Policy**.
 
 The algorithm relies on the values availble in the calculated `participantResults` and works as follows:
 
