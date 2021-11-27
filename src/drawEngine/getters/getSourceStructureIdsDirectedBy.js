@@ -2,9 +2,9 @@ import { findStructure } from './findStructure';
 import { getStructureLinks } from './linkGetter';
 
 export function getSourceStructureIdsDirectedBy({
+  finishingPosition,
   drawDefinition,
   structureId,
-  finishingPosition,
   linkType,
 }) {
   const { links } =
@@ -12,6 +12,7 @@ export function getSourceStructureIdsDirectedBy({
       drawDefinition,
       structureId,
     }) || {};
+
   const sourceStructureIds = (links?.target || [])
     .filter(({ linkType: structureLinkType }) => structureLinkType === linkType)
     .map(({ source }) => source.structureId)

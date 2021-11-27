@@ -177,10 +177,10 @@ export function generateRoundRobinWithPlayOff(params) {
 
         return playoffStructure;
       } else if ([COMPASS, OLYMPIC, PLAY_OFF].includes(playoffDrawType)) {
-        const { playoffStructureNameBase } = playoffGroup;
+        const { structureName } = playoffGroup;
 
         const params = {
-          playoffStructureNameBase,
+          playoffStructureNameBase: structureName,
           finishingPositionOffset,
           stage: PLAY_OFF,
           drawDefinition,

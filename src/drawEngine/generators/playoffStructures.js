@@ -83,8 +83,8 @@ function playoffStructures({
   const customNaming =
     finishingPositionNaming && finishingPositionNaming[finishingPositionRange];
   const structureName =
-    customNaming?.name ||
-    attributeProfile?.name ||
+    (customNaming?.name && `${base}${customNaming?.name}`) ||
+    (attributeProfile?.name && `${base}${attributeProfile?.name}`) ||
     `${base}${finishingPositionRange}`;
   const structureAbbreviation =
     customNaming?.abbreviation || attributeProfile?.abbreviation;
