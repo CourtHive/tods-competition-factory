@@ -4,6 +4,7 @@ import { generateRange, nextPowerOf2, UUID } from '../../utilities';
 import { getRoundRobinGroupMatchUps } from './roundRobinGroups';
 import { feedInChampionship } from './feedInChampionShip';
 import { drawPositionsHash } from './roundRobinGroups';
+import { playoff } from './playoffStructures';
 
 import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
@@ -18,6 +19,10 @@ import {
   CONTAINER,
   SINGLE_ELIMINATION,
   FIRST_MATCH_LOSER_CONSOLATION,
+  COMPASS,
+  OLYMPIC,
+  COMPASS_ATTRIBUTES,
+  OLYMPIC_ATTRIBUTES,
 } from '../../constants/drawDefinitionConstants';
 
 export function generateRoundRobin({
@@ -30,6 +35,7 @@ export function generateRoundRobin({
   matchUpType,
   drawSize,
   idPrefix,
+  isMock,
   uuids,
 }) {
   const { groupCount, groupSize } = deriveGroups({
@@ -48,6 +54,7 @@ export function generateRoundRobin({
         matchUpType,
         drawSize,
         idPrefix,
+        isMock,
       }),
       structureId: uuids?.pop(),
       structureType: ITEM,
@@ -88,6 +95,7 @@ export function generateRoundRobinWithPlayOff(params) {
     drawDefinition,
     matchUpType,
     idPrefix,
+    isMock,
     uuids,
   } = params;
 
@@ -147,27 +155,64 @@ export function generateRoundRobinWithPlayOff(params) {
         });
 
         const playoffStructure = structureTemplate({
-          matchUps,
-          stageOrder,
-          matchUpType,
-          stageSequence,
-          stage: PLAY_OFF,
-          structureId: uuids?.pop(),
           structureName: playoffGroup.structureName,
           matchUpFormat: playoffMatchUpFormat,
+          structureId: uuids?.pop(),
+          stage: PLAY_OFF,
+          stageSequence,
+          matchUpType,
+          stageOrder,
+          matchUps,
         });
 
         drawDefinition.structures.push(playoffStructure);
         const playoffLink = generatePlayoffLink({
-          mainStructure,
-          playoffStructure,
           finishingPositions,
+          playoffStructure,
+          mainStructure,
         });
         drawDefinition.links.push(playoffLink);
         // update *after* value has been passed into current playoff structure generator
         finishingPositionOffset += participantsInDraw;
 
         return playoffStructure;
+      } else if ([COMPASS, OLYMPIC, PLAY_OFF].includes(playoffDrawType)) {
+        const { playoffStructureNameBase } = playoffGroup;
+
+        const params = {
+          playoffStructureNameBase,
+          finishingPositionOffset,
+          stage: PLAY_OFF,
+          drawDefinition,
+          roundOffset: 0,
+          stageSequence,
+          drawSize,
+          idPrefix,
+          isMock,
+          uuids,
+        };
+        if (playoffDrawType === COMPASS) {
+          Object.assign(params, {
+            roundOffsetLimit: 3,
+            playoffAttributes: COMPASS_ATTRIBUTES,
+          });
+        } else if (playoffDrawType === OLYMPIC) {
+          Object.assign(params, {
+            roundOffsetLimit: 2,
+            playoffAttributes: OLYMPIC_ATTRIBUTES,
+          });
+        }
+        const result = playoff(params);
+        if (result.error) return result;
+
+        if (result.structure) {
+          const playoffLink = generatePlayoffLink({
+            playoffStructure: result.structure,
+            finishingPositions,
+            mainStructure,
+          });
+          drawDefinition.links.push(playoffLink);
+        }
       } else if (playoffDrawType === FIRST_MATCH_LOSER_CONSOLATION) {
         // TODO: test this
         console.log('RRw/PO FIRST_MATCH_LOSER_CONSOLATION');
@@ -188,9 +233,9 @@ export function generateRoundRobinWithPlayOff(params) {
           drawSize,
         });
         const playoffLink = generatePlayoffLink({
-          mainStructure,
-          playoffStructure,
           finishingPositions,
+          playoffStructure,
+          mainStructure,
         });
         drawDefinition.links.push(playoffLink);
         drawDefinition.structures.push(playoffStructure);
@@ -272,6 +317,7 @@ function roundRobinMatchUps({
   groupSize,
   idPrefix,
   drawSize,
+  isMock,
   uuids,
 }) {
   const drawPositionOffset = (structureOrder - 1) * groupSize;
@@ -310,6 +356,7 @@ function roundRobinMatchUps({
       idPrefix,
       uuids,
     });
+
     const matchUp = {
       matchUpStatus: roundNumber ? TO_BE_PLAYED : BYE,
       matchUpType, // does not (perhaps) need to be included; but because structures[].structure unsure about derivation inContext
@@ -319,6 +366,8 @@ function roundRobinMatchUps({
       roundNumber,
       matchUpId,
     };
+    if (isMock) matchUp.isMock = true;
+
     return matchUp;
   }
 }

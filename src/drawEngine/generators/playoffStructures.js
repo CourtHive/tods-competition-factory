@@ -51,7 +51,7 @@ function playoffStructures({
   roundOffsetLimit,
   roundOffset = 0,
   drawDefinition,
-  staggeredEntry,
+  staggeredEntry, // not propagated to child structurs
   sequenceLimit,
   stage = MAIN,
   matchUpType,
@@ -98,7 +98,7 @@ function playoffStructures({
     uuids,
   };
   const { matchUps } = staggeredEntry
-    ? feedInMatchUps(mainParams) // TODO: is this ever valid?
+    ? feedInMatchUps(mainParams) // should only every apply to initial structure
     : treeMatchUps(mainParams);
 
   const structure = structureTemplate({
