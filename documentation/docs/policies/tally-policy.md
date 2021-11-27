@@ -8,8 +8,24 @@ Policy Definitions can be attached to a [tournament record](../apis/tournament-e
 
 ```js
 const roundRobinTally = {
+  groupOrderKey: 'matchUpsWon', // possible to group by matchUpsWon, setsWon, gamesWon, or pointsWon
   headToHead: {
     disabled: false,
+    tallyDirectives: [
+      // these are the default values if no tallyDirectives provided; edit to suit
+      // idsFilter scopes the tally calculations to only tied participants
+      // with { idsFilter: false } the ratio is calculated from all group matchUps
+      // with { idsFilter: true } the ratio is calculated from matchUps including tied participants
+      // any attribute/idsFilter combination can be selectively disabled for Head to Head calculations
+      { attribute: 'matchUpsRatio', idsFilter: false, disbleHeadToHead: false },
+      { attribute: 'setsRatio', idsFilter: false, disbleHeadToHead: false },
+      { attribute: 'gamesRatio', idsFilter: false, disbleHeadToHead: false },
+      { attribute: 'pointsRatio', idsFilter: false, disbleHeadToHead: false },
+      { attribute: 'matchUpsRatio', idsFilter: true, disbleHeadToHead: false },
+      { attribute: 'setsRatio', idsFilter: true, disbleHeadToHead: false },
+      { attribute: 'gamesRatio', idsFilter: true, disbleHeadToHead: false },
+      { attribute: 'pointsRatio', idsFilter: true, disbleHeadToHead: false },
+    ],
   },
   disqualifyDefaults: true, // disqualified participants are pushed to the bottom of the group order
   disqualifyWalkovers: true, // disqualified participants are pushed to the bottom of the group order
@@ -17,21 +33,7 @@ const roundRobinTally = {
   setsCreditForWalkovers: true, // whether or not to award e.g. 2 sets won for player who wins by opponent WALKOVER
   gamesCreditForDefaults: true, // whether or not to award e.g. 12 games won for player who wins by opponent DEFAULT
   gamesCreditForWalkovers: true, // whether or not to award e.g. 12 games won for player who wins by opponent WALKOVER
-  tallyDirectives: [
-    // these are the default values if no tallyDirectives provided; edit to suit
-    // idsFilter scopes the tally calculations to only tied participants
-    // with { idsFilter: false } the ratio is calculated from all group matchUps
-    // with { idsFilter: true } the ratio is calculated from matchUps including tied participants
-    // any attribute/idsFilter combination can be selectively disabled for Head to Head calculations
-    { attribute: 'matchUpsRatio', idsFilter: false, disbleHeadToHead: false },
-    { attribute: 'setsRatio', idsFilter: false, disbleHeadToHead: false },
-    { attribute: 'gamesRatio', idsFilter: false, disbleHeadToHead: false },
-    { attribute: 'pointsRatio', idsFilter: false, disbleHeadToHead: false },
-    { attribute: 'matchUpsRatio', idsFilter: true, disbleHeadToHead: false },
-    { attribute: 'setsRatio', idsFilter: true, disbleHeadToHead: false },
-    { attribute: 'gamesRatio', idsFilter: true, disbleHeadToHead: false },
-    { attribute: 'pointsRatio', idsFilter: true, disbleHeadToHead: false },
-  ],
+  GEMScore: ['matchUpsRatio', 'setsRatio', 'gamesRatio', 'pointsRatio'],
 };
 
 tournamentEngine.attachPolicies({ policyDefinitions: { roundRobinTally } });
