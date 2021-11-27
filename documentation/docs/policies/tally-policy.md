@@ -33,7 +33,7 @@ const roundRobinTally = {
   setsCreditForWalkovers: true, // whether or not to award e.g. 2 sets won for player who wins by opponent WALKOVER
   gamesCreditForDefaults: true, // whether or not to award e.g. 12 games won for player who wins by opponent DEFAULT
   gamesCreditForWalkovers: true, // whether or not to award e.g. 12 games won for player who wins by opponent WALKOVER
-  GEMScore: ['matchUpsRatio', 'setsRatio', 'gamesRatio', 'pointsRatio'],
+  GEMscore: ['matchUpsRatio', 'setsRatio', 'gamesRatio', 'pointsRatio'],
 };
 
 tournamentEngine.attachPolicies({ policyDefinitions: { roundRobinTally } });

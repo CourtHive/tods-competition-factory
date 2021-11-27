@@ -66,9 +66,22 @@ export function getGroupOrder(params) {
   // if not all opponents have completed their matchUps, no orders are assigned
   if (!isComplete(params)) return;
 
+  const attribute = [
+    'matchUpsWon',
+    'pointsWon',
+    'gamesWon',
+    'setsWon',
+    'gamesRatio',
+    'setsRatio',
+    'pointsRatio',
+    'matchUpsRatio',
+  ].includes(tallyPolicy?.groupOrderKey)
+    ? tallyPolicy.groupOrderKey
+    : 'matchUpsWon';
+
   const orderedTallyGroups = getGroups({
-    attribute: 'matchUpsWon',
     participantResults,
+    attribute,
   });
 
   const groupOrder = Object.keys(orderedTallyGroups)
@@ -128,9 +141,9 @@ export function getGroupOrder(params) {
 
   return groupOrder;
   function getRatioHash(result) {
-    const attributes = Array.isArray(tallyPolicy?.GEMScore)
+    const attributes = Array.isArray(tallyPolicy?.GEMscore)
       ? Object.keys(GEMScoreValueMap).filter((attribute) =>
-          tallyPolicy.GEMScore.includes(attribute)
+          tallyPolicy.GEMscore.includes(attribute)
         )
       : Object.keys(GEMScoreValueMap);
 

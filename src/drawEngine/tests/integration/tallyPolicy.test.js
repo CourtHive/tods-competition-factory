@@ -4,10 +4,9 @@ test('roundRobinTally policy can specify tally by games only', () => {
   // prettier-ignore
   const mockProfile = {
     tournamentName: 'Round Robin Points',
-    completeAllMatchUps: true,
     policyDefinitions: {
       roundRobinTally: {
-	groupOrderKey: 'gamesCount',
+	groupOrderKey: 'gamesRatio',
         headToHead: { disabled: false },
         disqualifyDefaults: true,
         disqualifyWalkovers: true,
@@ -15,23 +14,23 @@ test('roundRobinTally policy can specify tally by games only', () => {
         setsCreditForWalkovers: true,
         gamesCreditForDefaults: true,
         gamesCreditForWalkovers: true,
-	tallyDirectives: [
-	  { attribute: 'gamesRatio' },
-	  { attribute: 'pointsRatio' },
-	],
+	GEMscore: [ 'gamesRatio', 'pointsRatio' ],
       },
     },
 
     drawProfiles: [
       {
         drawType: 'ROUND_ROBIN',
-        matchUpFormat: 'SET3-S:T20',
+        matchUpFormat: 'SET1-S:T20',
         drawSize: 4,
       },
     ],
   };
 
-  let { tournamentRecord } = mocksEngine.generateTournamentRecord(mockProfile);
+  let { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    ...mockProfile,
+  });
 
   tournamentEngine.setState(tournamentRecord);
 
@@ -42,5 +41,11 @@ test('roundRobinTally policy can specify tally by games only', () => {
     matchUpFormat: mockProfile.matchUpFormat,
     matchUps,
   });
-  console.log({ participantResults });
+
+  Object.values(participantResults).forEach((result) => {
+    const { GEMscore, gamesRatio = 0 } = result;
+    expect(GEMscore?.toString()?.slice(0, 3)).toEqual(
+      (gamesRatio * 1000).toString()
+    );
+  });
 });
