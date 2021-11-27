@@ -44,8 +44,8 @@ test('roundRobinTally policy can specify tally by games only', () => {
 
   Object.values(participantResults).forEach((result) => {
     const { GEMscore, gamesRatio = 0 } = result;
-    expect(GEMscore?.toString()?.slice(0, 3)).toEqual(
-      (gamesRatio * 1000).toString()
+    expect(GEMscore?.toString()?.slice(0, 2)).toEqual(
+      (gamesRatio * 1000).toString().slice(0, 2)
     );
   });
 });
