@@ -1,33 +1,54 @@
 import { initializeStructureSeedAssignments } from '../../drawEngine/governors/positionGovernor/initializeSeedAssignments';
+import { automatedPositioning } from '../../drawEngine/governors/positionGovernor/automatedPositioning';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
 import { assignSeed } from '../../drawEngine/governors/entryGovernor/seedAssignment';
+import { getDrawStructures } from '../../drawEngine/getters/findStructure';
+import { getParticipantId } from '../../global/functions/extractors';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
 
-export function seedStructure({
+export function prepareStage({
+  inContextDrawMatchUps,
+  matchUpsMap,
+  participants,
+
   tournamentRecord,
   drawDefinition,
-  structureId,
-  eventType,
+  automated,
+  drawType,
+  drawSize,
   entries,
   event,
 
-  enteredParticipantIds,
-  seedAssignmentProfile,
-  enforcePolicyLimits,
+  enforcePolicyLimits = true,
+  seedAssignmentProfile, // mainly used by mocksEngine for scenario testing
+  seedByRanking = true,
   seededParticipants,
-  assignSeedsCount,
+  assignSeedsCount, // used for testing bye placement next to seeds
   seedingScaleName,
-  seedByRanking,
   seedsCount,
   stage,
 }) {
+  const eventType = event?.eventType;
   const stageEntries = entries.filter(
     (entry) =>
       (!entry.entryStage || entry.entryStage === stage) &&
       STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
   );
+
+  if (seededParticipants) seedsCount = seededParticipants.length;
+  if (seedsCount > drawSize) seedsCount = drawSize;
+  if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
+
+  const { structures } = getDrawStructures({
+    drawDefinition,
+    stageSequence: 1,
+    stage,
+  });
+  const [structure] = structures;
+  const { structureId } = structure || {};
+
   const { seedLimit } = initializeStructureSeedAssignments({
     participantCount: stageEntries.length,
     enforcePolicyLimits,
@@ -39,6 +60,8 @@ export function seedStructure({
   });
 
   if (seedLimit && seedLimit < seedsCount) seedsCount = seedLimit;
+
+  const enteredParticipantIds = entries.map(getParticipantId);
 
   if (seededParticipants) {
     seededParticipants
@@ -121,4 +144,22 @@ export function seedStructure({
           });
         });
   }
+
+  let conflicts = [];
+  if (automated !== false) {
+    const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
+    // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
+    ({ conflicts } = automatedPositioning({
+      inContextDrawMatchUps,
+      drawDefinition,
+      participants,
+      structureId,
+      matchUpsMap,
+      seedsOnly,
+      drawType,
+      event,
+    }));
+  }
+
+  return { conflicts, structureId, seedsCount };
 }

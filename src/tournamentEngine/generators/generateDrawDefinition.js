@@ -1,4 +1,3 @@
-import { automatedPositioning } from '../../drawEngine/governors/positionGovernor/automatedPositioning';
 import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
 import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/matchUpFormat';
@@ -7,18 +6,14 @@ import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attach
 import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEntries';
 import { getPolicyDefinitions } from '../governors/queryGovernor/getPolicyDefinitions';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
-import { getDrawStructures } from '../../drawEngine/getters/findStructure';
-import { getParticipantId } from '../../global/functions/extractors';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
-import { addNotice } from '../../global/state/globalState';
 import { tieFormatDefaults } from './tieFormatDefaults';
-import { seedStructure } from './seedStructure';
+import { prepareStage } from './prepareStage';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { AUDIT } from '../../constants/topicConstants';
 import { TEAM } from '../../constants/matchUpTypes';
 import {
   LUCKY_DRAW,
@@ -37,18 +32,11 @@ import {
 export function generateDrawDefinition(params) {
   const {
     drawType = SINGLE_ELIMINATION,
-    enforcePolicyLimits = true,
     finishingPositionNaming,
     ignoreAllowedDrawTypes,
-    seedAssignmentProfile, // mainly used by mocksEngine for scenario testing
     playoffMatchUpFormat,
-    seedByRanking = true,
     qualifyingProfiles,
-    seededParticipants,
     policyDefinitions,
-    seedingScaleName,
-    assignSeedsCount, // used for testing bye placement next to seeds
-    automated = true,
     seedingProfile,
     tieFormatName,
     drawEntries,
@@ -236,84 +224,32 @@ export function generateDrawDefinition(params) {
     }
   }
 
-  const enteredParticipantIds = entries.map(getParticipantId);
-
-  if (seededParticipants) seedsCount = seededParticipants.length;
-  if (seedsCount > drawSize) seedsCount = drawSize;
-  if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
-
   // temporary until seeding is supported in LUCKY_DRAW
   if (drawType === LUCKY_DRAW) seedsCount = 0;
 
-  const { structures } = getDrawStructures({
+  const structureResult = prepareStage({
+    ...params,
+    inContextDrawMatchUps,
     drawDefinition,
-    stageSequence: 1,
+    participants,
+    matchUpsMap,
     stage: MAIN,
-  });
-  const [structure] = structures;
-  const { structureId } = structure || {};
-
-  seedStructure({
-    tournamentRecord,
-    drawDefinition,
-    structureId,
-    eventType,
-    entries,
-    event,
-
-    enteredParticipantIds,
-    seedAssignmentProfile,
-    enforcePolicyLimits,
-    seededParticipants,
-    assignSeedsCount,
-    seedingScaleName,
-    seedByRanking,
     seedsCount,
-    stage: MAIN,
+    drawSize,
+    entries,
   });
 
-  let conflicts = [];
-  if (automated !== false) {
-    const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
-    // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
-    ({ conflicts } = automatedPositioning({
-      inContextDrawMatchUps,
-      drawDefinition,
-      participants,
-      structureId,
-      matchUpsMap,
-      seedsOnly,
-      drawType,
-      event,
-    }));
-  }
+  const conflicts = structureResult.conflicts;
+  const structureId = structureResult.structureId;
+  seedsCount = structureResult.seedsCount;
 
   drawName = drawName || drawType;
   if (drawDefinition) Object.assign(drawDefinition, { drawName });
 
-  const drawDetails = {
-    drawId: drawDefinition.drawId,
-    category: event?.category,
-    eventId: event?.eventId,
-    seedingScaleName,
-    matchUpType,
-    seedsCount,
-    automated,
-    tieFormat,
-    drawSize,
-    drawType,
-    drawName,
-  };
-
-  addNotice({
-    topic: AUDIT,
-    payload: { action: 'generateDrawDefinition', payload: drawDetails },
-  });
-
   return {
-    ...SUCCESS,
-    structureId,
     drawDefinition,
+    structureId,
+    ...SUCCESS,
     conflicts,
   };
 }
