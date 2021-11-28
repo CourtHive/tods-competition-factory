@@ -1,7 +1,6 @@
 import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
-import { addPlayoffStructures } from '../../tournamentEngine/governors/eventGovernor/addPlayoffStructures';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
@@ -35,6 +34,7 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
+import { newAddPlayoffStructures } from '../../drawEngine/governors/structureGovernor/newAddPlayoffStructures';
 
 export function generateEventWithDraw({
   allUniqueParticipantIds = [],
@@ -308,7 +308,7 @@ export function generateEventWithDraw({
 
     if (drawProfile.withPlayoffs) {
       const structureId = drawDefinition.structures[0].structureId;
-      const result = addPlayoffStructures({
+      const result = newAddPlayoffStructures({
         ...drawProfile.withPlayoffs,
         tournamentRecord,
         drawDefinition,

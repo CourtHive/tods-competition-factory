@@ -1,4 +1,4 @@
-import { addPlayoffStructures as addPlayoffs } from '../../../drawEngine/governors/structureGovernor/addPlayoffStructures';
+import { newAddPlayoffStructures as addPlayoffs } from '../../../drawEngine/governors/structureGovernor/newAddPlayoffStructures';
 import { addTournamentTimeItem } from '../tournamentGovernor/addTimeItem';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
