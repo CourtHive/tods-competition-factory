@@ -442,6 +442,10 @@ drawEngine.generateDrawType({
   structureOptions: {
     groupSize, // e.g. 4 participants per group
     groupSizeLimit: 8,
+    playoffGroups: [
+      { finishingPositions: [1], structureName: 'Gold Flight', drawType }, // drawype defaults to SINGLE_ELIMINATION
+      { finishingPositions: [2], structureName: 'Silver Flight', drawType }, // drawType can also be COMPASS or FIRST_MATCH_LOSER_CONSOLATION
+    ],
   },
 
   goesTo, // optional - generate winnerMatchUpId and loserMatchUpId attributes

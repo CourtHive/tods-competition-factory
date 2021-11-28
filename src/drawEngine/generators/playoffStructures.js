@@ -41,6 +41,7 @@ export function playoff(params) {
  */
 function playoffStructures({
   finishingPositionOffset = 0,
+  addNameBaseToAttributeName,
   playoffStructureNameBase,
   finishingPositionNaming,
   finishingPositionLimit,
@@ -51,7 +52,7 @@ function playoffStructures({
   roundOffsetLimit,
   roundOffset = 0,
   drawDefinition,
-  staggeredEntry,
+  staggeredEntry, // not propagated to child structurs
   sequenceLimit,
   stage = MAIN,
   matchUpType,
@@ -82,10 +83,15 @@ function playoffStructures({
     (playoffStructureNameBase && `${playoffStructureNameBase} `) || '';
   const customNaming =
     finishingPositionNaming && finishingPositionNaming[finishingPositionRange];
+
   const structureName =
     customNaming?.name ||
-    attributeProfile?.name ||
+    (attributeProfile?.name &&
+      (addNameBaseToAttributeName
+        ? `${base}${attributeProfile?.name}`
+        : attributeProfile.name)) ||
     `${base}${finishingPositionRange}`;
+
   const structureAbbreviation =
     customNaming?.abbreviation || attributeProfile?.abbreviation;
 
@@ -98,7 +104,7 @@ function playoffStructures({
     uuids,
   };
   const { matchUps } = staggeredEntry
-    ? feedInMatchUps(mainParams) // TODO: is this ever valid?
+    ? feedInMatchUps(mainParams) // should only every apply to initial structure
     : treeMatchUps(mainParams);
 
   const structure = structureTemplate({
@@ -147,6 +153,7 @@ function playoffStructures({
       roundOffset: roundOffset + roundNumber,
       stageSequence: stageSequence + 1,
       drawSize: playoffDrawPositions,
+      addNameBaseToAttributeName,
       playoffStructureNameBase,
       finishingPositionNaming,
       finishingPositionLimit,

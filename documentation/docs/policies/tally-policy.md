@@ -2,14 +2,30 @@
 title: Round Robin Tally Policy
 ---
 
-A `tallyPolicy` controls how order is determined for Round Robin groups.
+A **Tally Policy** controls how order is determined for Round Robin groups.
 
-Policy Definitions can be attached to a [tournament record](../apis/tournament-engine-api#attachpolicy), or an [event](../apis/tournament-engine-api#attacheventpolicy).
+Policy Definitions can be attached to a [tournament record](../apis/tournament-engine-api#attachpolicies), or an [event](../apis/tournament-engine-api#attacheventpolicies).
 
 ```js
-const tallyPolicy = {
+const roundRobinTally = {
+  groupOrderKey: 'matchUpsWon', // possible to group by matchUpsWon, setsWon, gamesWon, or pointsWon
   headToHead: {
     disabled: false,
+    tallyDirectives: [
+      // these are the default values if no tallyDirectives provided; edit to suit
+      // idsFilter scopes the tally calculations to only tied participants
+      // with { idsFilter: false } the ratio is calculated from all group matchUps
+      // with { idsFilter: true } the ratio is calculated from matchUps including tied participants
+      // any attribute/idsFilter combination can be selectively disabled for Head to Head calculations
+      { attribute: 'matchUpsRatio', idsFilter: false, disbleHeadToHead: false },
+      { attribute: 'setsRatio', idsFilter: false, disbleHeadToHead: false },
+      { attribute: 'gamesRatio', idsFilter: false, disbleHeadToHead: false },
+      { attribute: 'pointsRatio', idsFilter: false, disbleHeadToHead: false },
+      { attribute: 'matchUpsRatio', idsFilter: true, disbleHeadToHead: false },
+      { attribute: 'setsRatio', idsFilter: true, disbleHeadToHead: false },
+      { attribute: 'gamesRatio', idsFilter: true, disbleHeadToHead: false },
+      { attribute: 'pointsRatio', idsFilter: true, disbleHeadToHead: false },
+    ],
   },
   disqualifyDefaults: true, // disqualified participants are pushed to the bottom of the group order
   disqualifyWalkovers: true, // disqualified participants are pushed to the bottom of the group order
@@ -17,22 +33,10 @@ const tallyPolicy = {
   setsCreditForWalkovers: true, // whether or not to award e.g. 2 sets won for player who wins by opponent WALKOVER
   gamesCreditForDefaults: true, // whether or not to award e.g. 12 games won for player who wins by opponent DEFAULT
   gamesCreditForWalkovers: true, // whether or not to award e.g. 12 games won for player who wins by opponent WALKOVER
-  tallyDirectives: [
-    // these are the default values if no tallyDirectives provided; edit to suit
-    // idsFilter scopes the tally calculations to only tied participants
-    // with { idsFilter: false } the ratio is calculated from all group matchUps
-    // with { idsFilter: true } the ratio is calculated from matchUps including tied participants
-    // any attribute/idsFilter combination can be selectively disabled for Head to Head calculations
-    { attribute: 'matchUpsRatio', idsFilter: false, disbleHeadToHead: false },
-    { attribute: 'setsRatio', idsFilter: false, disbleHeadToHead: false },
-    { attribute: 'gamesRatio', idsFilter: false, disbleHeadToHead: false },
-    { attribute: 'pointsRatio', idsFilter: false, disbleHeadToHead: false },
-    { attribute: 'matchUpsRatio', idsFilter: true, disbleHeadToHead: false },
-    { attribute: 'setsRatio', idsFilter: true, disbleHeadToHead: false },
-    { attribute: 'gamesRatio', idsFilter: true, disbleHeadToHead: false },
-    { attribute: 'pointsRatio', idsFilter: true, disbleHeadToHead: false },
-  ],
+  GEMscore: ['matchUpsRatio', 'setsRatio', 'gamesRatio', 'pointsRatio'],
 };
+
+tournamentEngine.attachPolicies({ policyDefinitions: { roundRobinTally } });
 ```
 
 ## Default Behavior
@@ -57,7 +61,7 @@ If three or more players are tied, tie are broken as follows:
 ## Implementation Details
 
 After initial separation of participants by `matchUpsWon`,
-the implementation is configurable by supplying an array of `tallyDirectives` in the `tallyPolicy`.
+the implementation is configurable by supplying an array of `tallyDirectives` in the **Tally Policy**.
 
 The algorithm relies on the values availble in the calculated `participantResults` and works as follows:
 

@@ -76,8 +76,8 @@ it('can set and remove policies from tournamentRecords and events', () => {
   expect(result.error).toEqual(POLICY_NOT_ATTACHED);
 
   result = tournamentEngine.attachEventPolicies({
-    eventId,
     policyDefinitions: AVOIDANCE_COUNTRY,
+    eventId,
   });
   expect(result.success).toEqual(true);
 

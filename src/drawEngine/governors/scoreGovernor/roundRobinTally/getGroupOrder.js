@@ -29,7 +29,7 @@ The algorithm relies on the values avaialble in the calculated `participantResul
 • participantResults scoped to the members of a group and recalculated when `{ idsFilter: true }`
 */
 
-const defaultTallyDirectives = [
+const headToHeadTallyDirectives = [
   { attribute: 'matchUpsRatio', idsFilter: false },
   { attribute: 'allDefaults', reversed: true, idsFilter: false },
   { attribute: 'defaults', reversed: true, idsFilter: false },
@@ -44,6 +44,13 @@ const defaultTallyDirectives = [
   { attribute: 'pointsRatio', idsFilter: true },
 ];
 
+const GEMScoreValueMap = {
+  matchUpsRatio: 16,
+  setsRatio: 12,
+  gamesRatio: 8,
+  pointsRatio: 4,
+};
+
 /**
  *
  * @param {object[]} participantResults - calculated results for each participant
@@ -54,20 +61,33 @@ const defaultTallyDirectives = [
  */
 
 export function getGroupOrder(params) {
-  const { participantResults, subOrderMap } = params;
+  const { participantResults, subOrderMap, tallyPolicy } = params;
 
   // if not all opponents have completed their matchUps, no orders are assigned
   if (!isComplete(params)) return;
 
-  const matchUpsWonGroups = getGroups({
-    attribute: 'matchUpsWon',
+  const attribute = [
+    'matchUpsWon',
+    'pointsWon',
+    'gamesWon',
+    'setsWon',
+    'gamesRatio',
+    'setsRatio',
+    'pointsRatio',
+    'matchUpsRatio',
+  ].includes(tallyPolicy?.groupOrderKey)
+    ? tallyPolicy.groupOrderKey
+    : 'matchUpsWon';
+
+  const orderedTallyGroups = getGroups({
     participantResults,
+    attribute,
   });
 
-  const groupOrder = Object.keys(matchUpsWonGroups)
+  const groupOrder = Object.keys(orderedTallyGroups)
     .map((key) => parseFloat(key))
     .sort((a, b) => b - a)
-    .map((key) => matchUpsWonGroups[key])
+    .map((key) => orderedTallyGroups[key])
     .map((participantIds) => groupSubSort({ participantIds, ...params }))
     .flat(Infinity);
 
@@ -120,15 +140,20 @@ export function getGroupOrder(params) {
   });
 
   return groupOrder;
-}
+  function getRatioHash(result) {
+    const attributes = Array.isArray(tallyPolicy?.GEMscore)
+      ? Object.keys(GEMScoreValueMap).filter((attribute) =>
+          tallyPolicy.GEMscore.includes(attribute)
+        )
+      : Object.keys(GEMScoreValueMap);
 
-function getRatioHash(result) {
-  const rh =
-    result.matchUpsRatio * Math.pow(10, 16) +
-    result.setsRatio * Math.pow(10, 12) +
-    result.gamesRatio * Math.pow(10, 8) +
-    result.pointsRatio * Math.pow(10, 3);
-  return rh;
+    return attributes
+      .map(
+        (attribute) =>
+          (result[attribute] || 0) * Math.pow(10, GEMScoreValueMap[attribute])
+      )
+      .reduce((a, b) => a + b, 0);
+  }
 }
 
 function isComplete({ participantResults, participantsCount }) {
@@ -207,7 +232,7 @@ function groupSubSort({
   }
 
   let result;
-  (tallyPolicy?.tallyDirectives || defaultTallyDirectives).every(
+  (tallyPolicy?.tallyDirectives || headToHeadTallyDirectives).every(
     ({ attribute, reversed, idsFilter, disableHeadToHead }) => {
       result = processAttribute({
         disableHeadToHead,
