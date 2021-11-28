@@ -50,6 +50,7 @@ export function addPlayoffStructures(params) {
 
   const {
     structureId: sourceStructureId,
+    addNameBaseToAttributeName,
     playoffStructureNameBase,
     playoffAttributes,
     playoffPositions,
@@ -122,6 +123,7 @@ export function addPlayoffStructures(params) {
 
     const result = playoff({
       exitProfile: `0-${roundNumber}`,
+      addNameBaseToAttributeName,
       playoffStructureNameBase,
       finishingPositionOffset,
       playoffAttributes,

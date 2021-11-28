@@ -1,7 +1,7 @@
+import { structureSort } from '../../../drawEngine/getters/structureSort';
 import { overlap, unique } from '../../../utilities';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
-import { structureSort } from '../../../drawEngine/getters/structureSort';
 
 import {
   COMPASS,
