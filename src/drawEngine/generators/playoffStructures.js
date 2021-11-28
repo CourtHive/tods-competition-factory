@@ -12,16 +12,18 @@ import { MAIN, TOP_DOWN, LOSER } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function playoff(params) {
-  const { structure, childStructures } = playoffStructures(params);
+  const { matchUps, structures, structureId, links } =
+    generatePlayoffStructures(params);
 
-  const structureIds = [
-    structure.structureId,
-    ...childStructures.map(({ structureId }) => structureId),
-  ];
+  if (links?.length) params.drawDefinition.links.push(...links);
+  if (structures?.length) params.drawDefinition.structures.push(...structures);
+  const structureIds = structures?.map(({ structureId }) => structureId) || [];
   params.drawDefinition.structures.sort(structureSort);
+
+  addMatchUpsNotice({ drawDefinition: params.drawDefinition, matchUps });
   modifyDrawNotice({ drawDefinition: params.drawDefinition, structureIds });
 
-  return Object.assign({ structure, childStructures }, SUCCESS);
+  return Object.assign({ structureId }, SUCCESS);
 }
 
 /**
@@ -39,7 +41,7 @@ export function playoff(params) {
  * @param {string} stage - [QUALIFYING, MAIN, CONSOLATION, PLAY-OFF]
  *
  */
-function playoffStructures({
+export function generatePlayoffStructures({
   finishingPositionOffset = 0,
   addNameBaseToAttributeName,
   playoffStructureNameBase,
@@ -72,6 +74,10 @@ function playoffStructures({
     (sequenceLimit && stageSequence > sequenceLimit)
   )
     return {};
+
+  const allMatchUps = [];
+  const structures = [];
+  const links = [];
 
   matchUpType = matchUpType || drawDefinition?.matchUpType;
 
@@ -119,8 +125,8 @@ function playoffStructures({
     stage,
   });
 
-  drawDefinition.structures.push(structure);
-  addMatchUpsNotice({ drawDefinition, matchUps });
+  allMatchUps.push(...matchUps);
+  structures.push(structure);
 
   const rounds = Math.ceil(Math.log(drawSize) / Math.log(2));
   const roundsToPlayOff = roundOffsetLimit
@@ -129,11 +135,17 @@ function playoffStructures({
     ? rounds
     : 0;
 
-  const childStructures = generateRange(1, roundsToPlayOff + 1)
-    .map(generateChildStructures)
-    .filter(Boolean);
+  generateRange(1, roundsToPlayOff + 1).forEach((roundNumber) =>
+    generateChildStructures(roundNumber)
+  );
 
-  return { structure, structureName, childStructures };
+  return {
+    structureId: structure.structureId,
+    matchUps: allMatchUps,
+    structureName,
+    structures,
+    links,
+  };
 
   function generateChildStructures(roundNumber) {
     const playoffDrawPositions = drawSize / Math.pow(2, roundNumber);
@@ -144,10 +156,12 @@ function playoffStructures({
     if (childFinishingPositionOffset + 1 > finishingPositionLimit) return;
 
     const {
-      structure: targetStructure,
+      structures: childStructures,
+      structureId: targetStructureId,
       structureName: targetName,
-      childStructures,
-    } = playoffStructures({
+      matchUps: childMatchUps,
+      links: childLinks,
+    } = generatePlayoffStructures({
       finishingPositionOffset: childFinishingPositionOffset,
       exitProfile: `${exitProfile}-${roundNumber}`,
       roundOffset: roundOffset + roundNumber,
@@ -179,12 +193,19 @@ function playoffStructures({
         roundNumber: 1,
         feedProfile: TOP_DOWN,
         structureName: targetName,
-        structureId: targetStructure?.structureId,
+        structureId: targetStructureId,
       },
     };
 
-    if (structure && targetStructure) drawDefinition.links.push(link);
+    if (structure && targetStructureId) childLinks.push(link);
+    if (childLinks?.length) links.push(...childLinks);
+    if (childStructures?.length) structures.push(...childStructures);
+    if (childMatchUps?.length) allMatchUps.push(...childMatchUps);
 
-    return { structure: targetStructure, childStructures };
+    return {
+      structureId: targetStructureId,
+      childLinks,
+      structures,
+    };
   }
 }

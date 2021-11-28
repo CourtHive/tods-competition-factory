@@ -1,8 +1,9 @@
 import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
+import { addPlayoffStructures } from '../../drawEngine/governors/structureGovernor/addPlayoffStructures';
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
-import { addPlayoffStructures } from '../../tournamentEngine/governors/eventGovernor/addPlayoffStructures';
 import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { drawMatic } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/drawMatic';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 import { isValidExtension } from '../../global/validation/isValidExtension';
@@ -19,7 +20,6 @@ import {
   MAIN,
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../constants/drawDefinitionConstants';
-import { drawMatic } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/drawMatic';
 
 export function generateFlightDrawDefinitions({
   matchUpStatusProfile,
