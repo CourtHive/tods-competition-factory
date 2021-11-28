@@ -13,7 +13,7 @@ import { SUCCESS } from '../../constants/resultConstants';
 
 export function playoff(params) {
   const { matchUps, structures, structureId, links } =
-    playoffStructures(params);
+    generatePlayoffStructures(params);
 
   if (links?.length) params.drawDefinition.links.push(...links);
   if (structures?.length) params.drawDefinition.structures.push(...structures);
@@ -41,7 +41,7 @@ export function playoff(params) {
  * @param {string} stage - [QUALIFYING, MAIN, CONSOLATION, PLAY-OFF]
  *
  */
-function playoffStructures({
+export function generatePlayoffStructures({
   finishingPositionOffset = 0,
   addNameBaseToAttributeName,
   playoffStructureNameBase,
@@ -161,7 +161,7 @@ function playoffStructures({
       structureName: targetName,
       matchUps: childMatchUps,
       links: childLinks,
-    } = playoffStructures({
+    } = generatePlayoffStructures({
       finishingPositionOffset: childFinishingPositionOffset,
       exitProfile: `${exitProfile}-${roundNumber}`,
       roundOffset: roundOffset + roundNumber,
