@@ -32,24 +32,17 @@ import {
 export function generateDrawDefinition(params) {
   const {
     drawType = SINGLE_ELIMINATION,
-    finishingPositionNaming,
     ignoreAllowedDrawTypes,
-    playoffMatchUpFormat,
-    qualifyingProfiles,
     policyDefinitions,
-    seedingProfile,
+    tournamentRecord,
     tieFormatName,
     drawEntries,
-    feedPolicy,
-    idPrefix,
     drawId,
-    isMock,
-    uuids,
+    event,
   } = params;
 
-  const { tournamentRecord, event } = params;
-  let { drawName, matchUpType, structureOptions } = params;
-
+  // get participants both for entry validation and for automated placement
+  // automated placement requires them to be "inContext" for avoidance policies to work
   const { tournamentParticipants: participants } = getTournamentParticipants({
     tournamentRecord,
     inContext: true,
@@ -81,7 +74,7 @@ export function generateDrawDefinition(params) {
   if (typeof seedsCount !== 'number') seedsCount = parseInt(seedsCount || 0);
 
   const eventType = event?.eventType;
-  matchUpType = matchUpType || eventType;
+  const matchUpType = params.matchUpType || eventType;
 
   if (matchUpType === TEAM && eventType === TEAM) {
     tieFormat =
@@ -144,27 +137,15 @@ export function generateDrawDefinition(params) {
   }
 
   tieFormat = tieFormat || event?.tieFormat;
-  let result = generateDrawType({
-    finishingPositionNaming,
-    goesTo: params.goesTo,
-    playoffMatchUpFormat,
-    qualifyingProfiles,
-    structureOptions,
+  let drawTypeResult = generateDrawType({
+    ...params,
     drawDefinition,
-    seedingProfile,
     matchUpFormat,
     matchUpType,
-    feedPolicy,
     tieFormat,
     drawSize,
-    drawType,
-    idPrefix,
-    isMock,
-    uuids,
   });
-  if (result.error) return result;
-
-  const { matchUpsMap, inContextDrawMatchUps } = result;
+  if (drawTypeResult.error) return drawTypeResult;
 
   if (typeof policyDefinitions === 'object') {
     for (const policyType of Object.keys(policyDefinitions)) {
@@ -228,23 +209,24 @@ export function generateDrawDefinition(params) {
   if (drawType === LUCKY_DRAW) seedsCount = 0;
 
   const structureResult = prepareStage({
+    ...drawTypeResult,
     ...params,
-    inContextDrawMatchUps,
     drawDefinition,
     participants,
-    matchUpsMap,
     stage: MAIN,
     seedsCount,
     drawSize,
     entries,
   });
 
+  if (params.qualifyingProfiles) {
+    console.log(params.qualifyingProfiles);
+  }
+
   const conflicts = structureResult.conflicts;
   const structureId = structureResult.structureId;
-  seedsCount = structureResult.seedsCount;
 
-  drawName = drawName || drawType;
-  if (drawDefinition) Object.assign(drawDefinition, { drawName });
+  drawDefinition.drawName = params.drawName || drawType;
 
   return {
     drawDefinition,
