@@ -41,6 +41,7 @@ export function playoff(params) {
  */
 function playoffStructures({
   finishingPositionOffset = 0,
+  addNameBaseToAttributeName,
   playoffStructureNameBase,
   finishingPositionNaming,
   finishingPositionLimit,
@@ -82,10 +83,15 @@ function playoffStructures({
     (playoffStructureNameBase && `${playoffStructureNameBase} `) || '';
   const customNaming =
     finishingPositionNaming && finishingPositionNaming[finishingPositionRange];
+
   const structureName =
-    (customNaming?.name && `${base}${customNaming?.name}`) ||
-    (attributeProfile?.name && `${base}${attributeProfile?.name}`) ||
+    customNaming?.name ||
+    (attributeProfile?.name &&
+      (addNameBaseToAttributeName
+        ? `${base}${attributeProfile?.name}`
+        : attributeProfile.name)) ||
     `${base}${finishingPositionRange}`;
+
   const structureAbbreviation =
     customNaming?.abbreviation || attributeProfile?.abbreviation;
 
@@ -147,6 +153,7 @@ function playoffStructures({
       roundOffset: roundOffset + roundNumber,
       stageSequence: stageSequence + 1,
       drawSize: playoffDrawPositions,
+      addNameBaseToAttributeName,
       playoffStructureNameBase,
       finishingPositionNaming,
       finishingPositionLimit,

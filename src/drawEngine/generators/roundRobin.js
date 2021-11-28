@@ -181,6 +181,7 @@ export function generateRoundRobinWithPlayOff(params) {
 
         const params = {
           playoffStructureNameBase: structureName,
+          addNameBaseToAttributeName: true,
           finishingPositionOffset,
           stage: PLAY_OFF,
           drawDefinition,
