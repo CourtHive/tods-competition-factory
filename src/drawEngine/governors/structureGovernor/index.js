@@ -9,13 +9,12 @@ import { attachPlayoffStructures } from './attachPlayoffStructures';
 import { buildDrawHierarchy } from '../../generators/drawHierarchy';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { getDrawStructures } from '../../getters/findStructure';
+import { addPlayoffStructures } from './addPlayoffStructures';
 import { structureSort } from '../../getters/structureSort';
 import { deleteAdHocMatchUps } from './deleteAdHocMatchUps';
 import { generateDrawType } from './generateDrawType';
 import { removeStructure } from './removeStructure';
 import { getSourceRounds } from './getSourceRounds';
-
-import { newAddPlayoffStructures as addPlayoffStructures } from './newAddPlayoffStructures';
 
 const structureGovernor = {
   generateAndPopulatePlayoffStructures,

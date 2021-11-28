@@ -1,6 +1,6 @@
 import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
-import { newAddPlayoffStructures } from '../../drawEngine/governors/structureGovernor/newAddPlayoffStructures';
+import { addPlayoffStructures } from '../../drawEngine/governors/structureGovernor/addPlayoffStructures';
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
 import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { drawMatic } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/drawMatic';
@@ -126,7 +126,7 @@ export function generateFlightDrawDefinitions({
 
         if (drawProfile?.withPlayoffs) {
           const structureId = drawDefinition.structures[0].structureId;
-          const result = newAddPlayoffStructures({
+          const result = addPlayoffStructures({
             idPrefix: drawProfile.idPrefix,
             ...drawProfile.withPlayoffs,
             tournamentRecord,
