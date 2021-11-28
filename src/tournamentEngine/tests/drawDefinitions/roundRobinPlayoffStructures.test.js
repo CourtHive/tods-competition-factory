@@ -88,13 +88,13 @@ it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
     'Gold Flight WEST',
   ]);
   expect(groupedNames[1].sort()).toEqual([
-    'Silver Flight 1-16',
-    'Silver Flight 11-12',
-    'Silver Flight 13-16',
-    'Silver Flight 15-16',
-    'Silver Flight 3-4',
-    'Silver Flight 5-8',
-    'Silver Flight 7-8',
-    'Silver Flight 9-16',
+    'Silver Flight 17-32',
+    'Silver Flight 19-20',
+    'Silver Flight 21-24',
+    'Silver Flight 23-24',
+    'Silver Flight 25-32',
+    'Silver Flight 27-28',
+    'Silver Flight 29-32',
+    'Silver Flight 31-32',
   ]);
 });
