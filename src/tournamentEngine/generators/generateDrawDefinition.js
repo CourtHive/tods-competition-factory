@@ -1,4 +1,3 @@
-import { initializeStructureSeedAssignments } from '../../drawEngine/governors/positionGovernor/initializeSeedAssignments';
 import { automatedPositioning } from '../../drawEngine/governors/positionGovernor/automatedPositioning';
 import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
@@ -6,20 +5,18 @@ import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/mat
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
 import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attachPolicies';
 import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEntries';
-import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
 import { getPolicyDefinitions } from '../governors/queryGovernor/getPolicyDefinitions';
-import { assignSeed } from '../../drawEngine/governors/entryGovernor/seedAssignment';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { getDrawStructures } from '../../drawEngine/getters/findStructure';
 import { getParticipantId } from '../../global/functions/extractors';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { addNotice } from '../../global/state/globalState';
 import { tieFormatDefaults } from './tieFormatDefaults';
+import { seedStructure } from './seedStructure';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
-import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { AUDIT } from '../../constants/topicConstants';
 import { TEAM } from '../../constants/matchUpTypes';
@@ -181,14 +178,6 @@ export function generateDrawDefinition(params) {
 
   const { matchUpsMap, inContextDrawMatchUps } = result;
 
-  const { structures } = getDrawStructures({
-    drawDefinition,
-    stageSequence: 1,
-    stage: MAIN,
-  });
-  const [structure] = structures;
-  const { structureId } = structure || {};
-
   if (typeof policyDefinitions === 'object') {
     for (const policyType of Object.keys(policyDefinitions)) {
       attachPolicies({
@@ -253,102 +242,35 @@ export function generateDrawDefinition(params) {
   if (seedsCount > drawSize) seedsCount = drawSize;
   if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
 
-  const { seedLimit } = initializeStructureSeedAssignments({
-    participantCount: stageEntries.length,
-    enforcePolicyLimits,
-    tournamentRecord,
-    drawDefinition,
-    structureId,
-    seedsCount,
-    event,
-  });
-
-  if (seedLimit && seedLimit < seedsCount) seedsCount = seedLimit;
-
   // temporary until seeding is supported in LUCKY_DRAW
   if (drawType === LUCKY_DRAW) seedsCount = 0;
 
-  if (seededParticipants) {
-    seededParticipants
-      .filter(({ participantId }) =>
-        enteredParticipantIds.includes(participantId)
-      )
-      .filter(
-        (seededParticipant) =>
-          !seededParticipant.seedNumber ||
-          seededParticipant.seedNumber <= seededParticipants.length
-      )
-      .sort((a, b) => {
-        if (a.seedNumber < b.seedNumber) return -1;
-        if (a.seedNumber < b.seedNumber) return 1;
-        return 0;
-      })
-      .forEach((seededParticipant) => {
-        const { participantId, seedNumber, seedValue } = seededParticipant;
-        assignSeed({
-          drawDefinition,
-          participantId,
-          structureId,
-          seedNumber,
-          seedValue,
-        });
-      });
-  } else if (event?.category || seedingScaleName) {
-    // if no seededParticipants have been defined, seed by seeding scale or ranking scale, if present
+  const { structures } = getDrawStructures({
+    drawDefinition,
+    stageSequence: 1,
+    stage: MAIN,
+  });
+  const [structure] = structures;
+  const { structureId } = structure || {};
 
-    const { categoryName, ageCategoryCode } = event?.category || {};
+  seedStructure({
+    tournamentRecord,
+    drawDefinition,
+    structureId,
+    eventType,
+    entries,
+    event,
 
-    const seedingScaleAttributes = {
-      scaleType: SEEDING,
-      scaleName: seedingScaleName || categoryName || ageCategoryCode,
-      eventType,
-    };
-
-    let { scaledEntries } = getScaledEntries({
-      scaleAttributes: seedingScaleAttributes,
-      tournamentRecord,
-      stage: MAIN,
-      entries,
-    });
-
-    if (!scaledEntries?.length && seedByRanking) {
-      const rankingScaleAttributes = {
-        scaleType: RANKING,
-        scaleName: categoryName || ageCategoryCode,
-        eventType,
-      };
-
-      ({ scaledEntries } = getScaledEntries({
-        scaleAttributes: rankingScaleAttributes,
-        tournamentRecord,
-        stage: MAIN,
-        entries,
-      }));
-    }
-
-    const scaledEntriesCount = scaledEntries?.length || 0;
-    if (scaledEntriesCount < seedsCount) seedsCount = scaledEntriesCount;
-
-    scaledEntries &&
-      scaledEntries
-        .filter(({ participantId }) =>
-          enteredParticipantIds.includes(participantId)
-        )
-        .slice(0, assignSeedsCount || seedsCount)
-        .forEach((scaledEntry, index) => {
-          const seedNumber = index + 1;
-          const seedValue = seedAssignmentProfile?.[seedNumber] || seedNumber;
-          // ?? attach basis of seeding information to seedAssignment ??
-          const { participantId } = scaledEntry;
-          assignSeed({
-            drawDefinition,
-            participantId,
-            structureId,
-            seedNumber,
-            seedValue,
-          });
-        });
-  }
+    enteredParticipantIds,
+    seedAssignmentProfile,
+    enforcePolicyLimits,
+    seededParticipants,
+    assignSeedsCount,
+    seedingScaleName,
+    seedByRanking,
+    seedsCount,
+    stage: MAIN,
+  });
 
   let conflicts = [];
   if (automated !== false) {
