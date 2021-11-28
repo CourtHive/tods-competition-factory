@@ -1,3 +1,4 @@
+import { generateAndPopulatePlayoffStructures } from '../../../drawEngine/governors/structureGovernor/generateAndPopulatePlayoffStructures';
 import { assignMatchUpSideParticipant } from './drawDefinitions/assignMatchUpSideParticipant';
 import { assignDrawPosition } from './drawDefinitions/assignDrawPosition';
 import { addDrawDefinition } from './drawDefinitions/addDrawDefinition';
@@ -88,6 +89,7 @@ import {
 import { validateLineUp } from './drawDefinitions/validateTeamLineUp';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
+import { attachPlayoffStructures } from './attachPlayoffStructures';
 
 const eventGovernor = {
   addEvent,
@@ -108,6 +110,9 @@ const eventGovernor = {
   deleteDrawDefinitions,
   getAvailablePlayoffRounds,
   removeStructure,
+
+  generateAndPopulatePlayoffStructures,
+  attachPlayoffStructures,
 
   generateSeedingScaleItems,
 

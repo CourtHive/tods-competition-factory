@@ -11,7 +11,10 @@ import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 import { getSourceRounds } from './getSourceRounds';
 import { makeDeepCopy } from '../../../utilities';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import {
+  INVALID_VALUES,
+  MISSING_DRAW_DEFINITION,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
@@ -33,6 +36,8 @@ import {
  *
  */
 export function generateAndPopulatePlayoffStructures(params) {
+  if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+
   const {
     playoffRoundsRanges: availablePlayoffRoundsRanges,
     playoffRounds: availablePlayoffRounds,
