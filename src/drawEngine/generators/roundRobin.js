@@ -167,9 +167,9 @@ export function generateRoundRobinWithPlayOff(params) {
 
         drawDefinition.structures.push(playoffStructure);
         const playoffLink = generatePlayoffLink({
+          playoffStructureId: playoffStructure.structureId,
+          mainStructureId: mainStructure.structureId,
           finishingPositions,
-          playoffStructure,
-          mainStructure,
         });
         drawDefinition.links.push(playoffLink);
         // update *after* value has been passed into current playoff structure generator
@@ -208,9 +208,9 @@ export function generateRoundRobinWithPlayOff(params) {
 
         if (result.structure) {
           const playoffLink = generatePlayoffLink({
-            playoffStructure: result.structure,
+            mainStructureId: mainStructure.structureId,
+            playoffStructureId: result.structureId,
             finishingPositions,
-            mainStructure,
           });
           drawDefinition.links.push(playoffLink);
         }
@@ -234,9 +234,9 @@ export function generateRoundRobinWithPlayOff(params) {
           drawSize,
         });
         const playoffLink = generatePlayoffLink({
+          playoffStructureId: playoffStructure.structureId,
+          mainStructureId: mainStructure.structureId,
           finishingPositions,
-          playoffStructure,
-          mainStructure,
         });
         drawDefinition.links.push(playoffLink);
         drawDefinition.structures.push(playoffStructure);
@@ -262,20 +262,20 @@ export function generateRoundRobinWithPlayOff(params) {
 }
 
 function generatePlayoffLink({
+  playoffStructureId,
+  mainStructureId,
   finishingPositions,
-  playoffStructure,
-  mainStructure,
 }) {
   return {
     linkType: POSITION,
     source: {
       finishingPositions,
-      structureId: mainStructure.structureId,
+      structureId: mainStructureId,
     },
     target: {
       roundNumber: 1,
       feedProfile: DRAW,
-      structureId: playoffStructure.structureId,
+      structureId: playoffStructureId,
     },
   };
 }

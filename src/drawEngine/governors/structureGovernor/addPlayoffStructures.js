@@ -140,8 +140,8 @@ export function addPlayoffStructures(params) {
     });
     if (result.error) return result;
 
-    if (result.structure) {
-      newStructureIds.push(result.structure.structureId);
+    if (result.structureId) {
+      newStructureIds.push(result.structureId);
       const link = {
         linkType: LOSER,
         source: {
@@ -149,7 +149,7 @@ export function addPlayoffStructures(params) {
           roundNumber,
         },
         target: {
-          structureId: result.structure.structureId,
+          structureId: result.structureId,
           feedProfile: TOP_DOWN,
           roundNumber: 1,
         },
