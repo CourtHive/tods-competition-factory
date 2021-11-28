@@ -28,6 +28,8 @@ export function prepareStage({
   assignSeedsCount, // used for testing bye placement next to seeds
   seedingScaleName,
   seedsCount,
+
+  stageSequence = 1,
   stage,
 }) {
   const eventType = event?.eventType;
@@ -43,7 +45,7 @@ export function prepareStage({
 
   const { structures } = getDrawStructures({
     drawDefinition,
-    stageSequence: 1,
+    stageSequence,
     stage,
   });
   const [structure] = structures;
@@ -161,5 +163,5 @@ export function prepareStage({
     }));
   }
 
-  return { conflicts, structureId, seedsCount };
+  return { conflicts, structureId, seedsCount, stageEntries };
 }

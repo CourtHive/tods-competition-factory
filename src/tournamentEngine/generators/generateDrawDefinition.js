@@ -10,7 +10,6 @@ import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { prepareStage } from './prepareStage';
 
-import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -18,7 +17,7 @@ import { TEAM } from '../../constants/matchUpTypes';
 import {
   LUCKY_DRAW,
   MAIN,
-  ROUND_ROBIN,
+  QUALIFYING,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
 import {
@@ -48,13 +47,15 @@ export function generateDrawDefinition(params) {
     inContext: true,
   });
 
-  const validEntriesTest =
+  // entries participantTypes must correspond with eventType
+  // this is only possible if the event is provided
+  const validEntriesResult =
     event && participants && checkValidEntries({ event, participants });
 
-  if (validEntriesTest?.error) {
-    return validEntriesTest;
-  }
+  if (validEntriesResult?.error) return validEntriesResult;
 
+  // if tournamentRecord is provided, and unless instructed to ignore valid types,
+  // check for restrictions on allowed drawTypes
   const allowedDrawTypes =
     !ignoreAllowedDrawTypes &&
     tournamentRecord &&
@@ -67,15 +68,21 @@ export function generateDrawDefinition(params) {
     return { error: INVALID_DRAW_TYPE };
   }
 
-  let { seedsCount, drawSize = 32, tieFormat, matchUpFormat } = params;
-
-  // coersion
-  if (typeof drawSize !== 'number') drawSize = parseInt(drawSize);
-  if (typeof seedsCount !== 'number') seedsCount = parseInt(seedsCount || 0);
+  // coersion of drawSize and seedsCount to integers
+  let drawSize =
+    typeof params.drawSize !== 'number'
+      ? parseInt(params.drawSize || 32)
+      : params.drawSize || 32;
+  let seedsCount =
+    typeof params.seedsCount !== 'number'
+      ? parseInt(params.seedsCount || 0)
+      : params.seedsCount || 0;
 
   const eventType = event?.eventType;
   const matchUpType = params.matchUpType || eventType;
 
+  // drawDefinition cannot have both tieFormat and matchUpFormat
+  let { tieFormat, matchUpFormat } = params;
   if (matchUpType === TEAM && eventType === TEAM) {
     tieFormat =
       tieFormat || event?.tieFormat || tieFormatName
@@ -91,20 +98,12 @@ export function generateDrawDefinition(params) {
     matchUpFormat = 'SET3-S:6/TB7';
   }
 
-  const entries = drawEntries || event?.entries || [];
-  const stageEntries = entries.filter(
-    (entry) =>
-      (!entry.entryStage || entry.entryStage === MAIN) &&
-      STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
-  );
-
-  // the reason for this needs to be clarified
-  if ([ROUND_ROBIN].includes(drawType)) {
-    drawSize = stageEntries.length || drawSize;
-  }
-
+  // ---------------------------------------------------------------------------
+  // Begin construction of drawDefinition
   const drawDefinition = newDrawDefinition({ drawType, drawId });
 
+  // if there is a defined matchUpFormat/tieFormat only attach to drawDefinition...
+  // ...when there is not an equivalent definition on the parent event
   if (matchUpFormat || tieFormat) {
     let equivalentInScope =
       (matchUpFormat && event?.matchUpFormat === matchUpFormat) ||
@@ -136,7 +135,6 @@ export function generateDrawDefinition(params) {
     }
   }
 
-  tieFormat = tieFormat || event?.tieFormat;
   let drawTypeResult = generateDrawType({
     ...params,
     drawDefinition,
@@ -147,15 +145,12 @@ export function generateDrawDefinition(params) {
   });
   if (drawTypeResult.error) return drawTypeResult;
 
+  // first attach any policyDefinitions which have been provided
   if (typeof policyDefinitions === 'object') {
-    for (const policyType of Object.keys(policyDefinitions)) {
-      attachPolicies({
-        policyDefinitions: { [policyType]: policyDefinitions[policyType] },
-        drawDefinition,
-      });
-    }
+    attachPolicies({ policyDefinitions, drawDefinition });
   }
 
+  // then check for a seedingPolicy at all levels
   const { policyDefinitions: seedingPolicy } =
     getPolicyDefinitions({
       policyTypes: [POLICY_TYPE_SEEDING],
@@ -164,10 +159,9 @@ export function generateDrawDefinition(params) {
       event,
     }) || {};
 
-  if (
-    !policyDefinitions?.[POLICY_TYPE_SEEDING] &&
-    !seedingPolicy?.[POLICY_TYPE_SEEDING]
-  ) {
+  // if no seeding policy provided and none present at any other level, attach default
+  // this needs to be attached for prepareStage => initializeSeedAssignments
+  if (!seedingPolicy?.[POLICY_TYPE_SEEDING]) {
     // if there is no seeding policy then use default seeing policy
     attachPolicies({ drawDefinition, policyDefinitions: POLICY_SEEDING_USTA });
   }
@@ -190,6 +184,9 @@ export function generateDrawDefinition(params) {
     attachPolicies({ drawDefinition, policyDefinitions: eventAvoidancePolicy });
   }
 
+  // add all entries to the draw
+  // TODO: if there are no qualifyingProfiles, skip adding qualifying entries
+  const entries = drawEntries || event?.entries || [];
   for (const entry of entries) {
     // convenience: assume MAIN as entryStage if none provided
     const entryData = {
@@ -221,6 +218,26 @@ export function generateDrawDefinition(params) {
 
   if (params.qualifyingProfiles) {
     console.log(params.qualifyingProfiles);
+    let stageSequence = 1;
+    for (const qualifyingProfile of params.qualifyingProfiles) {
+      const { drawSize, qualifyingRoundNumber, qualifyingPositions } =
+        qualifyingProfile;
+      const qualifyingResult = prepareStage({
+        ...drawTypeResult,
+        ...params,
+        qualifyingRoundNumber,
+        qualifyingPositions,
+        stage: QUALIFYING,
+        drawDefinition,
+        stageSequence,
+        seedsCount: 0,
+        participants,
+        drawSize,
+        entries,
+      });
+      stageSequence += 1;
+      console.log({ qualifyingResult });
+    }
   }
 
   const conflicts = structureResult.conflicts;
