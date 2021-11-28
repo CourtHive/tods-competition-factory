@@ -1,10 +1,11 @@
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
 import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 import { generateRange, nextPowerOf2, UUID } from '../../utilities';
+import { generatePlayoffStructures } from './playoffStructures';
 import { getRoundRobinGroupMatchUps } from './roundRobinGroups';
 import { feedInChampionship } from './feedInChampionShip';
+import { structureSort } from '../getters/structureSort';
 import { drawPositionsHash } from './roundRobinGroups';
-import { playoff } from './playoffStructures';
 
 import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
@@ -175,7 +176,7 @@ export function generateRoundRobinWithPlayOff(params) {
         // update *after* value has been passed into current playoff structure generator
         finishingPositionOffset += participantsInDraw;
 
-        return playoffStructure;
+        return [playoffStructure];
       } else if ([COMPASS, OLYMPIC, PLAY_OFF].includes(playoffDrawType)) {
         const { structureName } = playoffGroup;
 
@@ -203,8 +204,14 @@ export function generateRoundRobinWithPlayOff(params) {
             playoffAttributes: OLYMPIC_ATTRIBUTES,
           });
         }
-        const result = playoff(params);
+
+        const result = generatePlayoffStructures(params);
         if (result.error) return result;
+        const { structures, links } = result;
+
+        if (links?.length) drawDefinition.links.push(...links);
+        if (structures?.length) drawDefinition.structures.push(...structures);
+        drawDefinition.structures.sort(structureSort);
 
         if (result.structure) {
           const playoffLink = generatePlayoffLink({
@@ -214,6 +221,10 @@ export function generateRoundRobinWithPlayOff(params) {
           });
           drawDefinition.links.push(playoffLink);
         }
+        // update *after* value has been passed into current playoff structure generator
+        finishingPositionOffset += participantsInDraw;
+
+        return structures;
       } else if (playoffDrawType === FIRST_MATCH_LOSER_CONSOLATION) {
         // TODO: test this
         console.log('RRw/PO FIRST_MATCH_LOSER_CONSOLATION');
@@ -245,7 +256,7 @@ export function generateRoundRobinWithPlayOff(params) {
         // update *after* value has been passed into current playoff structure generator
         finishingPositionOffset += participantsInDraw;
 
-        return playoffStructure;
+        return [playoffStructure, consolationStructure];
       }
 
       return undefined;
@@ -254,7 +265,7 @@ export function generateRoundRobinWithPlayOff(params) {
 
   return Object.assign(
     {
-      structures: [mainStructure, ...playoffStructures],
+      structures: [mainStructure, ...playoffStructures?.flat()],
       links: drawDefinition.links,
     },
     { ...SUCCESS }
