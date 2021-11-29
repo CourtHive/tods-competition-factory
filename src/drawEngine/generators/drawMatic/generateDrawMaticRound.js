@@ -112,7 +112,7 @@ function getSideRatings({
       )?.individualParticipantIds;
       return !individualParticipantIds
         ? DEFAULT_RATING * 2
-        : individualParticipantIds.map(
+        : individualParticipantIds?.map(
             (participantId) => adHocRatings[participantId || DEFAULT_RATING]
           );
     } else {
