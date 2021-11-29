@@ -46,7 +46,7 @@ export function getTournamentParticipants({
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
 
   let tournamentParticipants = tournamentRecord.participants.map(
-    (participant) => makeDeepCopy(participant, convertExtensions)
+    (participant) => makeDeepCopy(participant, convertExtensions, true)
   );
 
   if (typeof participantFilters !== 'object')
