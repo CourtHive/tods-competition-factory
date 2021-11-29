@@ -120,7 +120,6 @@ it('can setStateProvier', async () => {
     participantsProfile: { participantsCount },
   }));
 
-  expect(auditNotices.length).toEqual(1);
   expect(allMatchUps.length).toEqual(drawSize - 1);
   expect(allParticipants.length).toEqual(participantsCount);
 
@@ -150,7 +149,7 @@ it('can setStateProvier', async () => {
     drawIds: [drawId],
   });
   expect(result.success).toEqual(true);
-  expect(auditNotices.length).toEqual(2);
+  expect(auditNotices.length).toEqual(1);
 
   // expect 7 matchUps to have been deleted
   expect(allDeletedMatchUpIds.length).toEqual(drawSize - 1);
