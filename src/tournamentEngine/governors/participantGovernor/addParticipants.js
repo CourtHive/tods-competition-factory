@@ -5,9 +5,11 @@ import { makeDeepCopy, UUID } from '../../../utilities';
 import { ADD_PARTICIPANTS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  GROUP,
   INDIVIDUAL,
   PAIR,
   participantTypes,
+  TEAM,
 } from '../../../constants/participantTypes';
 import {
   INVALID_PARTICIPANT_IDS,
@@ -36,7 +38,7 @@ export function addParticipant({
   if (!participant.participantId) participant.participantId = UUID();
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
 
-  const { participantId } = participant;
+  const { participantId, individualParticipantIds } = participant;
 
   const idExists = tournamentRecord.participants.reduce(
     (p, c) => c.participantId === participantId || p,
@@ -57,6 +59,12 @@ export function addParticipant({
         tournamentParticipant.participantType === INDIVIDUAL
     )
     .map((individualParticipant) => individualParticipant.participantId);
+
+  if (participantType !== INDIVIDUAL && participant.person)
+    return { error: INVALID_VALUES, person: participant.person };
+
+  if (individualParticipantIds && !Array.isArray(individualParticipantIds))
+    return { error: INVALID_VALUES, individualParticipantIds };
 
   if (participantType === PAIR) {
     if (participant.person)
@@ -148,12 +156,9 @@ export function addParticipant({
       participant.participantName = participantName;
       participant.name = participantName; // backwards compatabilty
     }
-  } else {
-    if (participant.person)
-      return { error: INVALID_VALUES, person: participant.person };
-
-    const { individualParticipantIds } = participant;
-    if (individualParticipantIds?.length) {
+  } else if ([TEAM, GROUP].includes(participantType)) {
+    if (!individualParticipantIds) participant.individualParticipantIds = [];
+    if (individualParticipantIds.length) {
       for (const individualParticipantId of individualParticipantIds) {
         if (typeof individualParticipantId !== 'string') {
           return {
@@ -171,6 +176,8 @@ export function addParticipant({
         }
       }
     }
+  } else {
+    return { error: INVALID_PARTICIPANT_TYPE };
   }
 
   tournamentRecord.participants.push(participant);
