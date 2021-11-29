@@ -56,7 +56,7 @@ export function getTournamentParticipants({
     tournamentParticipants?.forEach((participant) => {
       if ([PAIR, TEAM, GROUP].includes(participant.participantType)) {
         participant.individualParticipants =
-          participant.individualParticipantIds.map((participantId) => {
+          participant.individualParticipantIds?.map((participantId) => {
             const individualParticipant = tournamentRecord.participants.find(
               (p) => p.participantId === participantId
             );
