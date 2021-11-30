@@ -98,8 +98,8 @@ export function addParticipant({
     const existingPairParticipants = tournamentParticipants
       .filter((participant) => participant.participantType === PAIR)
       .map((participant) => ({
-        participant,
         individualParticipantIds: participant.individualParticipantIds,
+        participant,
       }));
 
     // determine whether a PAIR participant already exists
@@ -158,8 +158,8 @@ export function addParticipant({
     }
   } else if ([TEAM, GROUP].includes(participantType)) {
     if (!individualParticipantIds) participant.individualParticipantIds = [];
-    if (individualParticipantIds.length) {
-      for (const individualParticipantId of individualParticipantIds) {
+    if (participant.individualParticipantIds.length) {
+      for (const individualParticipantId of participant.individualParticipantIds) {
         if (typeof individualParticipantId !== 'string') {
           return {
             error: INVALID_VALUES,
