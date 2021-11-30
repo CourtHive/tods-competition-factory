@@ -49,7 +49,7 @@ export function setTournamentRecord(record, deepCopyOption = true) {
   if (typeof record !== 'object' || Array.isArray(record))
     return { error: INVALID_OBJECT };
 
-  if (!record.tournamentId) return { error: INVALID_VALUES };
+  if (!record?.tournamentId) return { error: INVALID_VALUES };
 
   return globalSetTournamentRecord(
     deepCopyOption ? makeDeepCopy(record) : record
@@ -66,9 +66,11 @@ export function setState(records, deepCopyOption = true) {
     if (!validRecordsArray) return { error: INVALID_RECORDS };
     records = Object.assign(
       {},
-      ...records.map((record) => ({ [record.tournamentId]: record }))
+      ...records
+        .filter(Boolean)
+        .map((record) => ({ [record.tournamentId]: record }))
     );
-  } else if (records.tournamentId) {
+  } else if (records?.tournamentId) {
     records = { [records.tournamentId]: records };
   } else {
     const validRecordsObject = Object.keys(records).every(
