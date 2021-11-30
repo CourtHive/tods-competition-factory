@@ -61,14 +61,14 @@ export function setState(records, deepCopyOption = true) {
 
   if (Array.isArray(records)) {
     const validRecordsArray =
-      records.filter(({ tournamentId }) => tournamentId).length ===
+      records.filter((record) => record?.tournamentId).length ===
       records.length;
+
     if (!validRecordsArray) return { error: INVALID_RECORDS };
+
     records = Object.assign(
       {},
-      ...records
-        .filter(Boolean)
-        .map((record) => ({ [record.tournamentId]: record }))
+      ...records.map((record) => ({ [record.tournamentId]: record }))
     );
   } else if (records?.tournamentId) {
     records = { [records.tournamentId]: records };
