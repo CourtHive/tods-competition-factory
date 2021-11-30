@@ -133,10 +133,10 @@ export function getMatchUpDependencies({
             ({ tournamentId }) => tournamentId
           );
           const { drawDefinition } = findEvent({
-            tournamentRecord: tournamentRecords[hasTournamentId.tournamentId],
+            tournamentRecord: tournamentRecords[hasTournamentId?.tournamentId],
             drawId,
           });
-          addGoesTo({ drawDefinition });
+          if (drawDefinition) addGoesTo({ drawDefinition });
         }
       }
 
