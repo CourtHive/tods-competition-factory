@@ -2,6 +2,7 @@ import { getAvailablePlayoffRounds } from '../../governors/structureGovernor/get
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
+import { setSubscriptions } from '../../..';
 import { drawEngine } from '../../sync';
 
 import {
@@ -157,6 +158,22 @@ it('can accurately determine available playoff rounds for CONSOLATION draw of FI
 });
 
 it('can generate only specified playoff rounds and give them custom names', () => {
+  const allMatchUps = [];
+  let matchUpAddNotices = [];
+
+  const subscriptions = {
+    addMatchUps: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUps }) => {
+          matchUpAddNotices.push(matchUps.length);
+          allMatchUps.push(...matchUps);
+        });
+      }
+    },
+  };
+
+  setSubscriptions({ subscriptions });
+
   const drawProfiles = [
     {
       drawSize: 64,
@@ -195,9 +212,27 @@ it('can generate only specified playoff rounds and give them custom names', () =
   const structureNames = drawDefinition.structures.map((s) => s.structureName);
   expect(structureNames).toEqual(['MAIN', 'CONSOLATION', 'BRONZE']);
   expect(drawDefinition.links.length).toEqual(7);
+
+  expect(matchUpAddNotices).toEqual([125, 15]);
 });
 
 it('can use roundProfiles to specify depth of playoff structures', () => {
+  const allMatchUps = [];
+  let matchUpAddNotices = [];
+
+  const subscriptions = {
+    addMatchUps: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUps }) => {
+          matchUpAddNotices.push(matchUps.length);
+          allMatchUps.push(...matchUps);
+        });
+      }
+    },
+  };
+
+  setSubscriptions({ subscriptions });
+
   const drawProfiles = [
     {
       drawSize: 64,
@@ -232,9 +267,27 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
   expect(drawDefinition.structures.length).toEqual(3);
   expect(drawDefinition.links.length).toEqual(7);
+
+  expect(matchUpAddNotices).toEqual([125, 15]);
 });
 
 it('can determine playoff structures available from playoff structures', () => {
+  const allMatchUps = [];
+  let matchUpAddNotices = [];
+
+  const subscriptions = {
+    addMatchUps: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUps }) => {
+          matchUpAddNotices.push(matchUps.length);
+          allMatchUps.push(...matchUps);
+        });
+      }
+    },
+  };
+
+  setSubscriptions({ subscriptions });
+
   // generate a standard elimination draw
   const drawProfiles = [
     {
@@ -284,6 +337,8 @@ it('can determine playoff structures available from playoff structures', () => {
 
   expect(playoffRoundsRanges.length).toEqual(1);
   expect(playoffRoundsRanges[0].finishingPositionRange).toEqual('7-8');
+
+  expect(matchUpAddNotices).toEqual([63, 3]);
 });
 
 it('can determine available playoff rounds for CONSOLATION draw of FEED_IN', () => {

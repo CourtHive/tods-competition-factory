@@ -1,10 +1,27 @@
 import { getParticipantIds } from '../../../global/functions/extractors';
 import mocksEngine from '../../../mocksEngine';
+import { setSubscriptions } from '../../..';
 import tournamentEngine from '../../sync';
 
 tournamentEngine.devContext(true);
 
 it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
+  const allMatchUps = [];
+  let matchUpAddNotices = [];
+
+  const subscriptions = {
+    addMatchUps: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUps }) => {
+          matchUpAddNotices.push(matchUps.length);
+          allMatchUps.push(...matchUps);
+        });
+      }
+    },
+  };
+
+  setSubscriptions({ subscriptions });
+
   const drawProfiles = [
     {
       drawSize: 8,
@@ -64,6 +81,9 @@ it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
     structures[1].positionAssignments
   );
   expect(consolationAssignedParticipantIds.length).toEqual(2);
+
+  expect(allMatchUps.length).toEqual(8);
+  expect(matchUpAddNotices).toEqual([7, 1]);
 });
 
 function tournamentEngineAddPlayoffsTest({

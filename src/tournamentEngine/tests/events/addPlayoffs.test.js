@@ -1,5 +1,6 @@
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
+import { setSubscriptions } from '../../..';
 import tournamentEngine from '../../sync';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
@@ -157,6 +158,22 @@ it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure', () => {
 });
 
 it('can add playoff structures to a FIRST_MATCH_LOSER_CONSOLATION structure', () => {
+  const allMatchUps = [];
+  let matchUpAddNotices = 0;
+
+  const subscriptions = {
+    addMatchUps: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUps }) => {
+          matchUpAddNotices += 1;
+          allMatchUps.push(...matchUps);
+        });
+      }
+    },
+  };
+
+  setSubscriptions({ subscriptions });
+
   const { success, drawDefinition } = tournamentEngineAddPlayoffsTest({
     drawSize: 16,
     playoffPositions: [3, 4],
@@ -166,6 +183,9 @@ it('can add playoff structures to a FIRST_MATCH_LOSER_CONSOLATION structure', ()
   const { links, structures } = drawDefinition;
   expect(links.length).toEqual(3);
   expect(structures.length).toEqual(3);
+
+  expect(allMatchUps.length).toEqual(27);
+  expect(matchUpAddNotices).toEqual(2);
 });
 
 function tournamentEngineAddPlayoffsTest({

@@ -1,6 +1,6 @@
-import tournamentEngine from '../../sync';
-import mocksEngine from '../../../mocksEngine';
 import { setSubscriptions } from '../../../global/state/globalState';
+import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
 
 it('can notify subscriber when matchUps are modified', () => {
   const drawProfiles = [

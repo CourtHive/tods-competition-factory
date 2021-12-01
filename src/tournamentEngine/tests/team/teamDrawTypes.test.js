@@ -1,3 +1,4 @@
+import { setSubscriptions } from '../../../global/state/syncGlobalState';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
@@ -138,6 +139,22 @@ it.each(scenarios)(
 );
 
 it('generates playoff structures for TEAM events and propagates tieFormat', () => {
+  const allMatchUps = [];
+  let matchUpAddNotices = [];
+
+  const subscriptions = {
+    addMatchUps: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUps }) => {
+          matchUpAddNotices.push(matchUps.length);
+          allMatchUps.push(...matchUps);
+        });
+      }
+    },
+  };
+
+  setSubscriptions({ subscriptions });
+
   const {
     tournamentRecord,
     drawIds: [drawId],
@@ -186,6 +203,11 @@ it('generates playoff structures for TEAM events and propagates tieFormat', () =
   });
   expect(rrMatchUp.tieFormat).not.toBeUndefined();
   expect(rrMatchUp.tieMatchUps.length).toEqual(9);
+
+  expect(allMatchUps.length).toEqual(80);
+  // 7 team matchUps with 9 tieMatchUps = 70
+  // adding 3-4 playoff team matchUp adds 10
+  expect(matchUpAddNotices).toEqual([70, 10]);
 });
 
 it('handles TEAM ROUND_ROBIN tallyParticipants', () => {

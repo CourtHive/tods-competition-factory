@@ -1,4 +1,8 @@
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import {
+  addMatchUpsNotice,
+  modifyDrawNotice,
+} from '../../notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -15,6 +19,11 @@ export function attachPlayoffStructures({ drawDefinition, structures, links }) {
   drawDefinition.structures.push(...structures);
   drawDefinition.links.push(...links);
 
+  const matchUps = structures
+    .map((structure) => getAllStructureMatchUps({ structure })?.matchUps || [])
+    .flat();
+
+  addMatchUpsNotice({ drawDefinition, matchUps });
   modifyDrawNotice({ drawDefinition, structureIds });
 
   return { ...SUCCESS };
