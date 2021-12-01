@@ -25,17 +25,20 @@ const matchUpFormat = 'SET3-S:6/TB7';
 const valid = matchUpFormatCode.isValid(matchUpFormat);
 
 // parse matchUpFormat codes into an object representation
+// tiebreakFormat and tiebreakSet are mutually exclusive
 const {
   bestOf,
   setFormat: {
     setTo,
     tiebreakAt,
     tiebreakFormat: { tiebreakTo },
+    tiebreakSet: { tiebreakTo },
   },
   finalSetFormat: {
     setTo,
     tiebreakAt,
     tiebreakFormat: { tiebreakTo },
+    tiebreakSet: { tiebreakTo },
   },
 } = matchUpFormatCode.parse(matchUpFormat);
 
