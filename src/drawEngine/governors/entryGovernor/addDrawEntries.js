@@ -138,7 +138,7 @@ export function addDrawEntries({
         participantInEntries({ drawDefinition, participantId });
 
       if (invalidEntry || invalidLuckyLoser || invalidVoluntaryConsolation) {
-        return notAdded.push(participantId);
+        return notAdded.concat(participantId);
       }
       return notAdded;
     },
