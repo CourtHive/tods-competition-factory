@@ -12,13 +12,13 @@ export function generateTieMatchUps({ tieFormat, uuids, isMock }) {
         const collectionPosition = index + 1;
 
         const matchUp = {
-          isMock,
+          sides: [{ sideNumber: 1 }, { sideNumber: 2 }],
+          matchUpId: uuids?.pop() || UUID(),
+          collectionPosition,
+          matchUpFormat,
           collectionId,
           matchUpType,
-          matchUpFormat,
-          collectionPosition,
-          matchUpId: uuids?.pop() || UUID(),
-          sides: [{ sideNumber: 1 }, { sideNumber: 2 }],
+          isMock,
         };
 
         return matchUp;
@@ -28,5 +28,6 @@ export function generateTieMatchUps({ tieFormat, uuids, isMock }) {
     })
     .filter(Boolean)
     .flat();
+
   return { tieMatchUps };
 }

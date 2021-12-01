@@ -72,6 +72,7 @@ export function allTournamentMatchUps({
     )
     .flat(Infinity)
     .concat(...(tournamentRecord.matchUps || []));
+
   return { matchUps };
 }
 

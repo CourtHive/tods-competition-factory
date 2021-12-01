@@ -373,10 +373,10 @@ export function getAllStructureMatchUps({
           .map((set, i) => {
             const setNumber = i + 1;
             if (setNumber === bestOf) {
-              if (finalSetFormat.tiebreakSet || finalSetFormat.timed)
+              if (finalSetFormat?.tiebreakSet || finalSetFormat?.timed)
                 set.tiebreakSet = true;
             } else {
-              if (setFormat.tiebreakSet || setFormat.timed)
+              if (setFormat?.tiebreakSet || setFormat?.timed)
                 set.tiebreakSet = true;
             }
             return set;
