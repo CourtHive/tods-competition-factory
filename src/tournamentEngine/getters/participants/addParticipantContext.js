@@ -630,10 +630,12 @@ function annotateParticipant({
         )
         .pop();
 
-    for (const scaleType of unique(
-      scaleItems.map(({ itemType }) => itemType)
-    )) {
-      const scaleItem = latestScaleItem(scaleType);
+    const itemTypes = unique(scaleItems.map(({ itemType }) => itemType));
+    participant.rankings = undefined; // ensure no server-side persisted context
+    participant.ratings = undefined; // ensure no server-side persisted context
+
+    for (const itemType of itemTypes) {
+      const scaleItem = latestScaleItem(itemType);
       if (scaleItem) {
         const [, type, format, scaleName] = scaleItem.itemType.split('.');
         const scaleType = type === RANKING ? 'rankings' : 'ratings';
