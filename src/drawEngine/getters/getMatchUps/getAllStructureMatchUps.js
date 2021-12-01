@@ -2,12 +2,13 @@ import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/getMa
 import { getDrawPositionCollectionAssignment } from './getDrawPositionCollectionAssignment';
 import { getCollectionPositionMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
+import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
+import { parse } from '../../governors/scoreGovernor/matchUpFormatCode/parse';
 import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
-import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { structureAssignedDrawPositions } from '../positionsGetter';
 import { getOrderedDrawPositions } from './getOrderedDrawPositions';
 import { getRoundContextProfile } from './getRoundContextProfile';
@@ -268,12 +269,12 @@ export function getAllStructureMatchUps({
         (definition) => definition.collectionId === matchUp.collectionId
       );
 
-    const matchUpFormat =
-      matchUp.matchUpFormat || matchUp.collectionId
-        ? collectionDefinition && collectionDefinition.matchUpFormat
-        : structure.matchUpFormat ||
-          drawDefinition?.matchUpFormat ||
-          event?.matchUpFormat;
+    const matchUpFormat = matchUp.collectionId
+      ? collectionDefinition && collectionDefinition.matchUpFormat
+      : matchUp.matchUpFormat ||
+        structure.matchUpFormat ||
+        drawDefinition?.matchUpFormat ||
+        event?.matchUpFormat;
 
     const matchUpType =
       matchUp.matchUpType ||
@@ -358,6 +359,30 @@ export function getAllStructureMatchUps({
       }),
       makeDeepCopy(onlyDefined(matchUp), true, true)
     );
+
+    if (matchUpFormat && matchUp.score?.scoreStringSide1) {
+      const parsedFormat = parse(matchUpFormat);
+      const { bestOf, finalSetFormat, setFormat } = parsedFormat || {};
+      if (
+        finalSetFormat?.tiebreakSet ||
+        setFormat?.tiebreakSet ||
+        setFormat?.timed
+      ) {
+        matchUpWithContext.score.sets = matchUpWithContext.score.sets
+          .sort((a, b) => a.setNumber - b.setNumber)
+          .map((set, i) => {
+            const setNumber = i + 1;
+            if (setNumber === bestOf) {
+              if (finalSetFormat.tiebreakSet || finalSetFormat.timed)
+                set.tiebreakSet = true;
+            } else {
+              if (setFormat.tiebreakSet || setFormat.timed)
+                set.tiebreakSet = true;
+            }
+            return set;
+          });
+      }
+    }
 
     if (Array.isArray(drawPositions)) {
       const { orderedDrawPositions, displayOrder } = getOrderedDrawPositions({
