@@ -7,11 +7,11 @@ export function alternateDrawPositionAssignment({
   structureId,
 }) {
   return positionParticipantAction({
+    positionActionName: 'alternateDrawPositionAssignment',
+    participantIdAttributeName: 'alternateParticipantid',
     participantId: alternateParticipantId,
     drawDefinition,
     drawPosition,
     structureId,
-    participantIdAttributeName: 'alternateParticipantid',
-    positionActionName: 'alternateDrawPositionAssignment',
   });
 }
