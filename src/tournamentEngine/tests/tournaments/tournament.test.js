@@ -6,7 +6,6 @@ import { tournamentEngine } from '../../sync';
 
 import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
 import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-
 import { eventConstants } from '../../../constants/eventConstants';
 
 const { SINGLES } = eventConstants;
@@ -133,12 +132,6 @@ it('can generate a tournament with events and draws', () => {
     (matchUp) => matchUp.matchUpId === matchUpId
   );
   expect(targetMatchUp.matchUpFormat).toEqual(secondMatchUpFormat);
-  const expectedScore = {
-    ...score,
-    scoreStringSide1: '6-3',
-    scoreStringSide2: '3-6',
-  };
-  expect(targetMatchUp.score).toEqual(expectedScore);
   expect(targetMatchUp.winningSide).toBeUndefined();
 });
 
