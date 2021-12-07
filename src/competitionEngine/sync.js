@@ -89,19 +89,33 @@ export const competitionEngine = (function () {
     return engine;
   }
 
-  function engineInvoke(method, params) {
+  function executeFunction(tournamentRecords, method, params, methodName) {
     delete engine.success;
     delete engine.error;
 
+    const start = Date.now();
+    const result = method({
+      tournamentRecords,
+      ...params,
+    });
+    const elapsed = Date.now() - start;
+    if (getDevContext({ perf: true })) console.log({ methodName, elapsed });
+
+    return result;
+  }
+
+  function engineInvoke(method, params, methodName) {
     const tournamentRecords = getTournamentRecords();
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
 
-    const result = method({
-      ...params,
+    const result = executeFunction(
       tournamentRecords,
-    });
+      method,
+      params,
+      methodName
+    );
 
     if (result?.error && snapshot) setState(snapshot);
 
@@ -117,18 +131,18 @@ export const competitionEngine = (function () {
 
   function importGovernors(governors) {
     governors.forEach((governor) => {
-      Object.keys(governor).forEach((method) => {
-        engine[method] = (params) => {
+      Object.keys(governor).forEach((methodName) => {
+        engine[methodName] = (params) => {
           if (getDevContext()) {
-            return engineInvoke(governor[method], params);
+            return engineInvoke(governor[methodName], params, methodName);
           } else {
             try {
-              return engineInvoke(governor[method], params);
+              return engineInvoke(governor[methodName], params, methodName);
             } catch (err) {
               const error = err.toString();
               console.log('ERROR', {
                 error,
-                method,
+                methodName,
                 params: JSON.stringify(params),
               });
               console.log(err);
@@ -150,13 +164,15 @@ export const competitionEngine = (function () {
     for (const directive of directives) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
 
-      const { method, params } = directive;
-      if (!engine[method]) return { error: METHOD_NOT_FOUND };
+      const { method: methodName, params } = directive;
+      if (!engine[methodName]) return { error: METHOD_NOT_FOUND };
 
-      const result = engine[method]({
-        ...params,
+      const result = executeFunction(
         tournamentRecords,
-      });
+        engine[methodName],
+        params,
+        methodName
+      );
 
       if (result?.error) {
         if (snapshot) setState(snapshot);

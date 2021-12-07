@@ -1,12 +1,12 @@
+import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { newTournamentRecord } from './generators/newTournamentRecord';
 import { setState, getState, paramsMiddleWare } from './stateMethods';
-import { notifySubscribersAsync } from '../global/state/notifySubscribers';
+import { factoryVersion } from '../global/functions/factoryVersion';
+import { createInstanceState } from '../global/state/globalState';
 import participantGovernor from './governors/participantGovernor';
 import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
-import { createInstanceState } from '../global/state/globalState';
-import { factoryVersion } from '../global/functions/factoryVersion';
 import policyGovernor from './governors/policyGovernor';
 import eventGovernor from './governors/eventGovernor';
 import queryGovernor from './governors/queryGovernor';
@@ -110,7 +110,7 @@ export function tournamentEngineAsync(test) {
     return result;
   }
 
-  async function engineInvoke(method, params) {
+  async function engineInvoke(method, params, methodName) {
     const tournamentRecord =
       params?.sandBoxRecord ||
       params?.sandboxRecord ||
@@ -120,7 +120,12 @@ export function tournamentEngineAsync(test) {
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
-    const result = await executeFunctionAsync(tournamentRecord, method, params);
+    const result = await executeFunctionAsync(
+      tournamentRecord,
+      method,
+      params,
+      methodName
+    );
 
     if (result?.error && snapshot) setState(snapshot);
 
@@ -138,21 +143,21 @@ export function tournamentEngineAsync(test) {
     for (const governor of governors) {
       const governorMethods = Object.keys(governor);
 
-      for (const governorMethod of governorMethods) {
-        engine[governorMethod] = async (params) => {
+      for (const methodName of governorMethods) {
+        engine[methodName] = async (params) => {
           if (getDevContext()) {
             const result = await engineInvoke(
-              governor[governorMethod],
-              params
-              // governorMethod
+              governor[methodName],
+              params,
+              methodName
             );
 
             return result;
           } else {
             const result = await engineInvoke(
-              governor[governorMethod],
-              params
-              // governorMethod
+              governor[methodName],
+              params,
+              methodName
             );
 
             return result;
@@ -180,7 +185,8 @@ export function tournamentEngineAsync(test) {
       const result = await executeFunctionAsync(
         tournamentRecord,
         engine[method],
-        params
+        params,
+        method
       );
 
       if (result?.error) {
