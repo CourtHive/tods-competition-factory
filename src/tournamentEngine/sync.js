@@ -101,7 +101,12 @@ export const tournamentEngine = (function () {
       tournamentRecord,
     });
     const elapsed = Date.now() - start;
-    if (getDevContext({ perf: true })) console.log({ methodName, elapsed });
+    const devContext = getDevContext();
+    if (
+      devContext.perf &&
+      (isNaN(devContext.perf) || elapsed > devContext.perf)
+    )
+      console.log('te:', { methodName, elapsed });
 
     return result;
   }
