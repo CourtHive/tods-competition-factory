@@ -82,8 +82,7 @@ export function getTournamentParticipants({
     withMatchUps ||
     withEvents ||
     withDraws ||
-    withISO ||
-    inContext;
+    withISO;
 
   let participantIdsWithConflicts;
 
