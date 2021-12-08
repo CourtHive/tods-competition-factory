@@ -46,7 +46,8 @@ export function getTournamentParticipants({
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
 
   let tournamentParticipants = tournamentRecord.participants.map(
-    (participant) => makeDeepCopy(participant, convertExtensions, true)
+    // (participant) => makeDeepCopy(participant, convertExtensions, true)
+    (participant) => makeDeepCopy(participant, convertExtensions) // removed until Mongo/Mongoose issues resolved
   );
 
   if (typeof participantFilters !== 'object')
