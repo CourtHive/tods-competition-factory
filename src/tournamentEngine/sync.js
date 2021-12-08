@@ -90,20 +90,28 @@ export const tournamentEngine = (function () {
 
   return engine;
 
-  function executeFunction(tournamentRecord, method, params) {
+  function executeFunction(tournamentRecord, method, params, methodName) {
     delete engine.success;
     delete engine.error;
 
+    const start = Date.now();
     const augmentedParams = paramsMiddleWare(tournamentRecord, params);
     const result = method({
       ...augmentedParams,
       tournamentRecord,
     });
+    const elapsed = Date.now() - start;
+    const devContext = getDevContext();
+    if (
+      devContext.perf &&
+      (isNaN(devContext.perf) || elapsed > devContext.perf)
+    )
+      console.log('te:', { methodName, elapsed });
 
     return result;
   }
 
-  function engineInvoke(method, params) {
+  function engineInvoke(method, params, methodName) {
     const tournamentRecord =
       params?.sandBoxRecord ||
       params?.sandboxRecord ||
@@ -113,7 +121,12 @@ export const tournamentEngine = (function () {
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
-    const result = executeFunction(tournamentRecord, method, params);
+    const result = executeFunction(
+      tournamentRecord,
+      method,
+      params,
+      methodName
+    );
 
     if (result?.error && snapshot) setState(snapshot);
 
@@ -129,18 +142,18 @@ export const tournamentEngine = (function () {
 
   function importGovernors(governors) {
     governors.forEach((governor) => {
-      Object.keys(governor).forEach((method) => {
-        engine[method] = (params) => {
+      Object.keys(governor).forEach((methodName) => {
+        engine[methodName] = (params) => {
           if (getDevContext()) {
-            return engineInvoke(governor[method], params, method);
+            return engineInvoke(governor[methodName], params, methodName);
           } else {
             try {
-              return engineInvoke(governor[method], params, method);
+              return engineInvoke(governor[methodName], params, methodName);
             } catch (err) {
               const error = err.toString();
               console.log('ERROR', {
                 error,
-                method,
+                methodName,
                 params: JSON.stringify(params),
               });
               console.log(err);
@@ -164,10 +177,15 @@ export const tournamentEngine = (function () {
     for (const directive of directives) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
 
-      const { method, params } = directive;
-      if (!engine[method]) return { error: METHOD_NOT_FOUND };
+      const { method: methodName, params } = directive;
+      if (!engine[methodName]) return { error: METHOD_NOT_FOUND };
 
-      const result = executeFunction(tournamentRecord, engine[method], params);
+      const result = executeFunction(
+        tournamentRecord,
+        engine[methodName],
+        params,
+        methodName
+      );
 
       if (result?.error) {
         if (snapshot) setState(snapshot);

@@ -39,6 +39,7 @@ export function getStructureMatchUps({
   if (!structure && structureId) {
     ({ structure } = findStructure({ drawDefinition, structureId }));
   }
+
   const { matchUps, error } = getAllStructureMatchUps({
     tournamentAppliedPolicies,
     scheduleVisibilityFilters,

@@ -3,11 +3,8 @@ import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
 import { removeEventEntries } from './removeEventEntries';
 
-import {
-  DIRECT_ACCEPTANCE,
-  UNGROUPED,
-} from '../../../../constants/entryStatusConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantTypes';
+import { DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -74,7 +71,7 @@ export function addEventEntries(params) {
         if (
           event.eventType === TEAM &&
           (participant.participantType === TEAM ||
-            (entryStatus === UNGROUPED &&
+            (isUngrouped(entryStatus) &&
               participant.participantType === INDIVIDUAL))
         ) {
           return true;

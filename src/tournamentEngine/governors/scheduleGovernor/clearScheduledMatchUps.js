@@ -2,16 +2,22 @@ import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovern
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
 import { getMatchUpId } from '../../../global/functions/extractors';
-import { bulkScheduleMatchUps } from './bulkScheduleMatchUps';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import {
+  ASSIGN_COURT,
+  ASSIGN_VENUE,
+  SCHEDULED_DATE,
+  SCHEDULED_TIME,
+} from '../../../constants/timeItemConstants';
 
 /**
  *
- * @param {string[]} scheduleAttributes - attributes by which it is determined that a matchUp as a schedule
+ * @param {string[]} scheduleAttributes - attributes by which it is determined that a matchUp has a schedule
  * @param {boolean} ignoreMatchUpStatuses - array of matchUpStatuses to ignore; defaults to completed
  * @param {object} tournamentRecord - provided automatically by tournamentEngine
  * @param {string[]} scheduleDates - optional - array of schedule dates to be cleared; default is to clear all dates
@@ -33,12 +39,12 @@ export function clearScheduledMatchUps({
   }
   if (venueIds.length) scheduleAttributes.push('venueId');
 
-  const { matchUps } = allTournamentMatchUps({
+  const { matchUps: inContextMatchUps } = allTournamentMatchUps({
     matchUpFilters: { scheduledDates },
     tournamentRecord,
   });
 
-  const relevantMatchUpIds = matchUps
+  const relevantMatchUpIds = inContextMatchUps
     .filter(
       (matchUp) =>
         !ignoreMatchUpStatuses.includes(matchUp.matchUpStatus) &&
@@ -47,15 +53,24 @@ export function clearScheduledMatchUps({
     )
     .map(getMatchUpId);
 
-  const clearedScheduleValues = {
-    venueId: '',
-    scheduledDate: '',
-    scheduledTime: '',
-  };
-
-  return bulkScheduleMatchUps({
-    schedule: clearedScheduleValues,
-    matchUpIds: relevantMatchUpIds,
+  const { matchUps } = allTournamentMatchUps({
     tournamentRecord,
+    inContext: false,
   });
+
+  for (const matchUp of matchUps) {
+    if (relevantMatchUpIds.includes(matchUp.matchUpId)) {
+      matchUp.timeItems = (matchUp.timeItems || []).filter(
+        (timeItem) =>
+          ![
+            ASSIGN_COURT,
+            ASSIGN_VENUE,
+            SCHEDULED_DATE,
+            SCHEDULED_TIME,
+          ].includes(timeItem?.itemType)
+      );
+    }
+  }
+
+  return { ...SUCCESS };
 }

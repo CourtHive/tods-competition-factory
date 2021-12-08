@@ -1,4 +1,5 @@
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
+import { setSubscriptions } from '../../..';
 import { drawEngine } from '../../sync';
 
 drawEngine.devContext(true);
@@ -20,14 +21,19 @@ it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
 });
 
 it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure by playoffPositions', () => {
-  const { success, drawDefinition } = drawEngineAddStructuresTest({
-    drawSize: 16,
-    playoffPositions: [5, 6, 7, 8],
-  });
+  const { success, drawDefinition, matchUpAddNotices, allMatchUps } =
+    drawEngineAddStructuresTest({
+      drawSize: 16,
+      playoffPositions: [5, 6, 7, 8],
+    });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
   expect(links.length).toEqual(2);
   expect(structures.length).toEqual(3);
+  expect(matchUpAddNotices).toEqual([4]);
+
+  // because this is drawEngine there is no attachment of drawDefinition to a tournamentRecord
+  expect(allMatchUps.length).toEqual(4);
 });
 
 it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure by a single playoff position', () => {
@@ -92,6 +98,22 @@ function drawEngineAddStructuresTest({
   playoffPositions,
   roundNumbers,
 }) {
+  const allMatchUps = [];
+  let matchUpAddNotices = [];
+
+  const subscriptions = {
+    addMatchUps: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUps }) => {
+          matchUpAddNotices.push(matchUps.length);
+          allMatchUps.push(...matchUps);
+        });
+      }
+    },
+  };
+
+  setSubscriptions({ subscriptions });
+
   reset();
   initialize();
   mainDrawPositions({ drawSize, drawType });
@@ -108,5 +130,6 @@ function drawEngineAddStructuresTest({
     roundNumbers,
   });
   ({ drawDefinition } = drawEngine.getState());
-  return { ...result, drawDefinition };
+
+  return { ...result, drawDefinition, allMatchUps, matchUpAddNotices };
 }

@@ -1,7 +1,7 @@
 import { getFlightProfile } from '../../../../tournamentEngine/getters/getFlightProfile';
+import { unique } from '../../../../utilities';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
-import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import {
   CONSOLATION,
   MAIN,
@@ -10,6 +10,12 @@ import {
   ALTERNATE_PARTICIPANT,
   ALTERNATE_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
+import {
+  ALTERNATE,
+  UNGROUPED,
+  UNPAIRED,
+  WITHDRAWN,
+} from '../../../../constants/entryStatusConstants';
 
 export function getValidAlternatesAction({
   tournamentParticipants = [],
@@ -30,15 +36,20 @@ export function getValidAlternatesAction({
     policyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS]?.otherFlightEntries;
 
   const drawEnteredParticpantIds = (drawDefinition.entries || [])
+    .sort((a, b) => (a.entryPosition || 9999) - (b.entryPosition || 9999))
     .map(({ participantId }) => participantId)
     .filter(Boolean);
 
   const assignedParticipantIds = positionAssignments
     .map((assignment) => assignment.participantId)
     .filter(Boolean);
-  const eventEntries = event.entries || [];
 
-  const availableAlternatesParticipantIds = eventEntries
+  const availableDrawEnteredParticipantIds = drawEnteredParticpantIds.filter(
+    (participantId) => !assignedParticipantIds.includes(participantId)
+  );
+
+  const eventEntries = event.entries || [];
+  const availableEventAlternatesParticipantIds = eventEntries
     .filter(
       (entry) =>
         entry.entryStatus === ALTERNATE &&
@@ -47,6 +58,12 @@ export function getValidAlternatesAction({
     )
     .sort((a, b) => (a.entryPosition || 9999) - (b.entryPosition || 9999))
     .map((entry) => entry.participantId);
+
+  const availableAlternatesParticipantIds = unique(
+    availableDrawEnteredParticipantIds.concat(
+      availableEventAlternatesParticipantIds
+    )
+  );
 
   if (otherFlightEntries) {
     const { flightProfile } = getFlightProfile({ event });
@@ -57,6 +74,7 @@ export function getValidAlternatesAction({
           .filter(
             (entry) =>
               entry.participantId &&
+              ![WITHDRAWN, UNGROUPED, UNPAIRED].includes(entry.entryStatus) &&
               !drawEnteredParticpantIds.includes(entry.participantId)
           )
           .map(({ participantId }) => participantId)

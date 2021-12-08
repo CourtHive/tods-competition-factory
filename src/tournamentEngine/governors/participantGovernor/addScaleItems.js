@@ -149,8 +149,8 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
   if (!participant.timeItems) participant.timeItems = [];
 
   const { scaleItem: existingScaleItem } = participantScaleItem({
-    participant,
     scaleAttributes: scaleItem,
+    participant,
   });
 
   const isUndefined = (value) => [undefined, null, ''].includes(value);
@@ -166,10 +166,10 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
     const itemType = [SCALE, scaleType, eventType, scaleName].join('.');
 
     const timeItem = {
-      itemType,
       itemValue: scaleItem.scaleValue,
       itemDate: scaleItem.scaleDate,
       createdAt,
+      itemType,
     };
 
     // if there is a unique identifier for the scale

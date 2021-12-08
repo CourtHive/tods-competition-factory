@@ -1,5 +1,5 @@
-import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenue';
 import { addCourts } from '../../tournamentEngine/governors/venueGovernor/addCourt';
+import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenue';
 import { dateRange, formatDate } from '../../utilities/dateTime';
 import { UUID } from '../../utilities';
 
@@ -14,6 +14,7 @@ export function generateVenues({ tournamentRecord, venueProfiles }) {
       dateAvailability,
       startTime = '07:00',
       endTime = '19:00',
+      courtTimings,
       courtsCount,
       courtNames,
       venueName,
@@ -43,10 +44,14 @@ export function generateVenues({ tournamentRecord, venueProfiles }) {
     result = addCourts({
       tournamentRecord,
       dateAvailability,
+      courtTimings,
       courtsCount,
       courtNames,
+      startTime,
       courtIds,
+      endTime,
       venueId,
+      dates,
     });
     if (result.error) return result;
   }

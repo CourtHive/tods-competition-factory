@@ -1,21 +1,13 @@
+import { minutesDifference, timeToDate } from '../../../../utilities/dateTime';
 import { generateTimeSlots } from './generateTimeSlots';
-import {
-  minutesDifference,
-  sameDay,
-  timeToDate,
-} from '../../../../utilities/dateTime';
 
-export function getCourtDateFilters({
+export function getEnoughTime({
   includeBookingTypes,
   averageMatchUpMinutes,
   periodStartTime,
   periodEndTime,
   periodLength,
-  date,
 }) {
-  const sameDate = (courtDate) =>
-    !courtDate.date || sameDay(courtDate.date, date);
-
   const enoughTime = (courtDate) => {
     const timeSlots = generateTimeSlots({
       courtDate,
@@ -37,5 +29,5 @@ export function getCourtDateFilters({
     return timeSlotMinutes >= averageMatchUpMinutes;
   }
 
-  return { sameDate, enoughTime };
+  return { enoughTime };
 }

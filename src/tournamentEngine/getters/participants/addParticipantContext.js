@@ -125,162 +125,178 @@ export function addParticipantContext(params) {
     }
   });
 
-  // loop through all filtered events and capture events played
-  params.tournamentEvents?.forEach((rawEvent) => {
-    const event = makeDeepCopy(rawEvent, true, true);
-    const { eventId, eventName, eventType, category } = event;
-    const eventInfo = { eventId, eventName, eventType, category };
-    const extensionKeys =
-      event && Object.keys(event).filter((key) => key[0] === '_');
-    extensionKeys?.forEach(
-      (extensionKey) => (eventInfo[extensionKey] = event[extensionKey])
-    );
-    const eventEntries = event.entries || [];
+  if (
+    params.withScheduleItems ||
+    params.scheduleAnalysis ||
+    params.withStatistics ||
+    params.withOpponents ||
+    params.withMatchUps ||
+    params.withEvents ||
+    params.withDraws
+  ) {
+    // loop through all filtered events and capture events played
+    params.tournamentEvents?.forEach((rawEvent) => {
+      const event = makeDeepCopy(rawEvent, true, true);
+      const { eventId, eventName, eventType, category } = event;
+      const eventInfo = { eventId, eventName, eventType, category };
+      const extensionKeys =
+        event && Object.keys(event).filter((key) => key[0] === '_');
+      extensionKeys?.forEach(
+        (extensionKey) => (eventInfo[extensionKey] = event[extensionKey])
+      );
+      const eventEntries = event.entries || [];
 
-    // don't allow system extensions to be copied to participants
-    const disallowedConstants = [].concat(...Object.values(extensionConstants));
-    const disallowedKeys = disallowedConstants.map(
-      (constant) => `_${constant}`
-    );
-    const filteredEventInfo =
-      eventInfo &&
-      Object.keys(eventInfo)
-        .filter((key) => !disallowedKeys.includes(key))
-        .reduce((obj, key) => {
-          obj[key] = eventInfo[key];
-          return obj;
-        }, {});
+      // don't allow system extensions to be copied to participants
+      const disallowedConstants = [].concat(
+        ...Object.values(extensionConstants)
+      );
+      const disallowedKeys = disallowedConstants.map(
+        (constant) => `_${constant}`
+      );
+      const filteredEventInfo =
+        eventInfo &&
+        Object.keys(eventInfo)
+          .filter((key) => !disallowedKeys.includes(key))
+          .reduce((obj, key) => {
+            obj[key] = eventInfo[key];
+            return obj;
+          }, {});
 
-    eventEntries
-      ?.filter((entry) => entry?.participantId)
-      .forEach((entry) => {
-        const { participantId, entryStage, entryStatus, entryPosition } = entry;
+      eventEntries
+        ?.filter((entry) => entry?.participantId)
+        .forEach((entry) => {
+          const { participantId, entryStage, entryStatus, entryPosition } =
+            entry;
 
-        // include all individual participants that are part of teams & pairs
-        // relevantParticipantId is a reference to an individual
-        const relevantParticipantIds = getRelevantParticipantIds(participantId);
-        relevantParticipantIds?.forEach(({ relevantParticipantId }) => {
-          participantIdMap[relevantParticipantId].events[eventId] = {
-            ...filteredEventInfo,
-            partnerParticipantIds: [],
-            entryPosition,
-            entryStatus,
-            entryStage,
-            drawIds: [],
-          };
+          // include all individual participants that are part of teams & pairs
+          // relevantParticipantId is a reference to an individual
+          const relevantParticipantIds =
+            getRelevantParticipantIds(participantId);
+          relevantParticipantIds?.forEach(({ relevantParticipantId }) => {
+            participantIdMap[relevantParticipantId].events[eventId] = {
+              ...filteredEventInfo,
+              partnerParticipantIds: [],
+              entryPosition,
+              entryStatus,
+              entryStage,
+              drawIds: [],
+            };
+          });
         });
-      });
 
-    const addDrawData = ({ drawId, drawEntry, drawName, drawType }) => {
-      const { participantId, entryStage, entryStatus, entryPosition } =
-        drawEntry;
+      const addDrawData = ({ drawId, drawEntry, drawName, drawType }) => {
+        const { participantId, entryStage, entryStatus, entryPosition } =
+          drawEntry;
 
-      const relevantParticipantIds = getRelevantParticipantIds(participantId);
+        const relevantParticipantIds = getRelevantParticipantIds(participantId);
 
-      relevantParticipantIds?.forEach(({ relevantParticipantId }) => {
-        if (!participantIdMap[relevantParticipantId].events[eventId]) {
-          participantIdMap[relevantParticipantId].events[eventId] = {
-            ...filteredEventInfo,
-            partnerParticipantIds: [],
-            entryPosition,
-            entryStatus,
-            entryStage,
-            drawIds: [],
-          };
-        }
+        relevantParticipantIds?.forEach(({ relevantParticipantId }) => {
+          if (!participantIdMap[relevantParticipantId].events[eventId]) {
+            participantIdMap[relevantParticipantId].events[eventId] = {
+              ...filteredEventInfo,
+              partnerParticipantIds: [],
+              entryPosition,
+              entryStatus,
+              entryStage,
+              drawIds: [],
+            };
+          }
 
-        if (!participantIdMap[relevantParticipantId].draws[drawId]) {
-          participantIdMap[relevantParticipantId].draws[drawId] = {
-            qualifyingDrawSize: drawSizes[drawId]?.qualifyingDrawSize,
-            drawSize: drawSizes[drawId]?.drawSize,
-            partnerParticipantIds: [],
-            entryPosition,
-            entryStatus,
-            entryStage,
-            drawName,
-            drawType,
-            eventId,
-            drawId,
-          };
-        }
-        const eventDrawIds =
-          participantIdMap[relevantParticipantId].events[eventId].drawIds;
+          if (!participantIdMap[relevantParticipantId].draws[drawId]) {
+            participantIdMap[relevantParticipantId].draws[drawId] = {
+              qualifyingDrawSize: drawSizes[drawId]?.qualifyingDrawSize,
+              drawSize: drawSizes[drawId]?.drawSize,
+              partnerParticipantIds: [],
+              entryPosition,
+              entryStatus,
+              entryStage,
+              drawName,
+              drawType,
+              eventId,
+              drawId,
+            };
+          }
+          const eventDrawIds =
+            participantIdMap[relevantParticipantId].events[eventId].drawIds;
 
-        if (eventDrawIds && !eventDrawIds?.includes(drawId)) {
-          participantIdMap[relevantParticipantId].events[eventId].drawIds.push(
-            drawId
+          if (eventDrawIds && !eventDrawIds?.includes(drawId)) {
+            participantIdMap[relevantParticipantId].events[
+              eventId
+            ].drawIds.push(drawId);
+          }
+        });
+      };
+
+      // iterate through flights to ensure that draw entries are captured if drawDefinitions have not yet been generated
+      const drawIdsWithDefinitions =
+        event.drawDefinitions?.map(({ drawId }) => drawId) || [];
+      eventInfo._flightProfile?.flights?.forEach((flight) => {
+        const { drawId, drawEntries } = flight;
+
+        if (!drawIdsWithDefinitions.includes(drawId)) {
+          drawEntries?.forEach((drawEntry) =>
+            addDrawData({ drawId, drawEntry })
           );
         }
       });
-    };
 
-    // iterate through flights to ensure that draw entries are captured if drawDefinitions have not yet been generated
-    const drawIdsWithDefinitions =
-      event.drawDefinitions?.map(({ drawId }) => drawId) || [];
-    eventInfo._flightProfile?.flights?.forEach((flight) => {
-      const { drawId, drawEntries } = flight;
+      const { matchUps } = allEventMatchUps({
+        tournamentRecord,
+        nextMatchUps: true,
+        inContext: true,
+        event,
+      });
 
-      if (!drawIdsWithDefinitions.includes(drawId)) {
-        drawEntries?.forEach((drawEntry) => addDrawData({ drawId, drawEntry }));
-      }
+      const drawDetails = Object.assign(
+        {},
+        ...(event.drawDefinitions || []).map((drawDefinition) => {
+          const entriesMap = Object.assign(
+            {},
+            ...eventEntries
+              .filter((entry) => entry.participantId)
+              .map((entry) => ({ [entry.participantId]: entry })),
+            ...drawDefinition.entries
+              .filter((entry) => entry.participantId)
+              .map((entry) => ({ [entry.participantId]: entry }))
+          );
+          const drawEntries = Object.values(entriesMap);
+          const mainStructure = getDrawStructures({
+            stageSequence: 1,
+            drawDefinition,
+            stage: MAIN,
+          });
+          const drawSize =
+            mainStructure &&
+            getPositionAssignments({
+              structure: mainStructure,
+            })?.positionAssignments?.length;
+          const qualifyingStructure = getDrawStructures({
+            stageSequence: 1,
+            drawDefinition,
+            stage: QUALIFYING,
+          });
+          const qualifyingDrawSize =
+            mainStructure &&
+            getPositionAssignments({
+              structure: qualifyingStructure,
+            })?.positionAssignments?.length;
+
+          drawSizes[drawDefinition.drawId] = { drawSize, qualifyingDrawSize };
+
+          return {
+            [drawDefinition.drawId]: {
+              drawType: drawDefinition.drawType,
+              drawEntries,
+            },
+          };
+        })
+      );
+
+      matchUps?.forEach((matchUp) =>
+        processMatchUp({ matchUp, drawDetails, eventType })
+      );
     });
-
-    const { matchUps } = allEventMatchUps({
-      tournamentRecord,
-      nextMatchUps: true,
-      inContext: true,
-      event,
-    });
-
-    const drawDetails = Object.assign(
-      {},
-      ...(event.drawDefinitions || []).map((drawDefinition) => {
-        const entriesMap = Object.assign(
-          {},
-          ...eventEntries
-            .filter((entry) => entry.participantId)
-            .map((entry) => ({ [entry.participantId]: entry })),
-          ...drawDefinition.entries
-            .filter((entry) => entry.participantId)
-            .map((entry) => ({ [entry.participantId]: entry }))
-        );
-        const drawEntries = Object.values(entriesMap);
-        const mainStructure = getDrawStructures({
-          stageSequence: 1,
-          drawDefinition,
-          stage: MAIN,
-        });
-        const drawSize =
-          mainStructure &&
-          getPositionAssignments({
-            structure: mainStructure,
-          })?.positionAssignments?.length;
-        const qualifyingStructure = getDrawStructures({
-          stageSequence: 1,
-          drawDefinition,
-          stage: QUALIFYING,
-        });
-        const qualifyingDrawSize =
-          mainStructure &&
-          getPositionAssignments({
-            structure: qualifyingStructure,
-          })?.positionAssignments?.length;
-
-        drawSizes[drawDefinition.drawId] = { drawSize, qualifyingDrawSize };
-
-        return {
-          [drawDefinition.drawId]: {
-            drawType: drawDefinition.drawType,
-            drawEntries,
-          },
-        };
-      })
-    );
-
-    matchUps?.forEach((matchUp) =>
-      processMatchUp({ matchUp, drawDetails, eventType })
-    );
-  });
+  }
 
   // tournamentParticipants is an array of FILTERED participants
   // whereas allTournamentParticipants = params.tournamentRecord.participants
@@ -630,10 +646,12 @@ function annotateParticipant({
         )
         .pop();
 
-    for (const scaleType of unique(
-      scaleItems.map(({ itemType }) => itemType)
-    )) {
-      const scaleItem = latestScaleItem(scaleType);
+    const itemTypes = unique(scaleItems.map(({ itemType }) => itemType));
+    participant.rankings = undefined; // ensure no server-side persisted context
+    participant.ratings = undefined; // ensure no server-side persisted context
+
+    for (const itemType of itemTypes) {
+      const scaleItem = latestScaleItem(itemType);
       if (scaleItem) {
         const [, type, format, scaleName] = scaleItem.itemType.split('.');
         const scaleType = type === RANKING ? 'rankings' : 'ratings';

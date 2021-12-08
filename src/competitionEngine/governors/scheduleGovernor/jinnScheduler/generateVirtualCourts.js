@@ -1,4 +1,4 @@
-import { getCourtDateFilters } from '../garman/courtDateFilters';
+import { getCourtDateAvailability } from '../garman/getCourtDateAvailability';
 import { generateTimeSlots } from '../garman/generateTimeSlots';
 import { makeDeepCopy } from '../../../../utilities';
 import {
@@ -50,16 +50,17 @@ export function generateVirtualCourts({
     { courtBookings: {}, unassignedBookings: [] }
   );
 
-  const { sameDate } = getCourtDateFilters({ date: scheduleDate });
-  const inProcessCourts = courts.map(({ courtId, dateAvailability }, index) => {
+  const inProcessCourts = courts.map((court, index) => {
+    const { courtId } = court;
     const bookingsThisCourt = courtBookings[courtId] || [];
-    const availabillity = dateAvailability.find(sameDate) || {};
+    const availability =
+      getCourtDateAvailability({ date: scheduleDate, court }) || {};
     const {
       date,
       startTime,
       endTime,
       bookings: existingBookings = [],
-    } = availabillity;
+    } = availability;
 
     const allocatedTimeBooking = remainingScheduleTimes[index] && {
       startTime,

@@ -27,7 +27,7 @@ export function validateScore({
     return { error: INVALID_VALUES, message: 'sets must be an array' };
 
   if (sets?.length) {
-    const setNumbers = sets.map((set) => set?.setNumber);
+    const setNumbers = sets.map((set) => set?.setNumber).filter(Boolean);
     if (setNumbers.length !== unique(setNumbers).length)
       return { error: INVALID_VALUES, message: 'setNumbers not unique' };
 

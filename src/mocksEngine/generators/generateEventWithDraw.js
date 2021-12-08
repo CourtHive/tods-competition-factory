@@ -1,6 +1,7 @@
 import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
+import { addPlayoffStructures } from '../../drawEngine/governors/structureGovernor/addPlayoffStructures';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
@@ -34,7 +35,6 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
-import { addPlayoffStructures } from '../../drawEngine/governors/structureGovernor/addPlayoffStructures';
 
 export function generateEventWithDraw({
   allUniqueParticipantIds = [],
@@ -72,6 +72,7 @@ export function generateEventWithDraw({
   } = drawProfile;
 
   const eventType = drawProfile.eventType || drawProfile.matchUpType || SINGLES;
+  const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
 
   const tieFormat =
     typeof drawProfile.tieFormat === 'object'
@@ -86,6 +87,15 @@ export function generateEventWithDraw({
   let eventName =
     drawProfile.eventName || categoryName || `Generated ${eventType}`;
   let targetParticipants = tournamentRecord?.participants || [];
+
+  /*
+  const qualifyingIndividualParticipantsCount =
+    (params.qualifyingProfiles?.reduce(
+      (count, profile) => count + profile.drawSize,
+      0
+    ) || 0) * (participantType === DOUBLES ? 2 : 1);
+  console.log({ qualifyingIndividualParticipantsCount });
+  */
 
   const participantsCount =
     !drawProfile.participantsCount || drawProfile.participantsCount > drawSize
@@ -128,7 +138,6 @@ export function generateEventWithDraw({
     const idPrefix = participantsProfile?.idPrefix
       ? `D-${drawIndex}-${participantsProfile?.idPrefix}`
       : undefined;
-    const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
     const { participants: unique } = generateParticipants({
       ...participantsProfile,
       scaledParticipantsCount: drawProfile.scaledParticipantsCount,

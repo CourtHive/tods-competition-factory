@@ -1,10 +1,14 @@
 import { UUID, generateRange, makeDeepCopy } from '../../../utilities';
 import { addNotice, getDevContext } from '../../../global/state/globalState';
-import { extractDate, extractTime } from '../../../utilities/dateTime';
 import { courtTemplate } from '../../generators/courtTemplate';
 import { validDateAvailability } from './dateAvailability';
 import { findVenue } from '../../getters/venueGetter';
 import { isNumeric } from '../../../utilities/math';
+import {
+  extractDate,
+  extractTime,
+  formatDate,
+} from '../../../utilities/dateTime';
 
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -108,9 +112,13 @@ export function addCourts({
   dateAvailability = [],
   tournamentRecord,
   courtNames = [],
+  courtTimings,
   courtsCount,
+  startTime,
   courtIds,
+  endTime,
   venueId,
+  dates,
 }) {
   if (!venueId) return { error: MISSING_VENUE_ID };
   if (!isNumeric(courtsCount) || !courtNames)
@@ -118,9 +126,23 @@ export function addCourts({
 
   courtsCount = courtsCount || courtNames.length;
   const courts = generateRange(0, courtsCount).map((i) => {
+    const courtTiming = courtTimings?.[i];
+    const courtAvailability = courtTiming
+      ? dates.map((date) => ({
+          date: formatDate(date),
+          startTime,
+          endTime,
+          ...courtTiming,
+        }))
+      : dateAvailability;
+
+    // when courtTiming is provided, also add default availability
+    if (courtTiming && startTime && endTime)
+      courtAvailability.push({ startTime, endTime });
+
     const court = {
       courtName: courtNames[i] || `Court ${i + 1}`,
-      dateAvailability,
+      dateAvailability: courtAvailability,
     };
     return court;
   });

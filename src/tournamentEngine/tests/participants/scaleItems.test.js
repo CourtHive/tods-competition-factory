@@ -144,9 +144,21 @@ it('can set participant scaleItems in bulk', () => {
     scaleItemsWithParticipantIds,
   });
 
-  const {
+  let {
     tournamentRecord: { participants: modifiedParticipants },
   } = tournamentEngine.getState();
+
+  modifiedParticipants.forEach((participant) => {
+    expect(participant.timeItems.length).toEqual(2);
+  });
+
+  tournamentEngine.setParticipantScaleItems({
+    scaleItemsWithParticipantIds,
+  });
+
+  ({
+    tournamentRecord: { participants: modifiedParticipants },
+  } = tournamentEngine.getState());
 
   modifiedParticipants.forEach((participant) => {
     expect(participant.timeItems.length).toEqual(2);

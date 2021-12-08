@@ -12,7 +12,6 @@ import {
 import {
   INVALID_STAGE,
   MISSING_STAGE,
-  INVALID_ENTRIES,
   EXISTING_PARTICIPANT,
   MISSING_DRAW_DEFINITION,
   INVALID_PARTICIPANT_IDS,
@@ -121,8 +120,8 @@ export function addDrawEntries({
   if (positionsAvailable < participantIds.length)
     return { error: MORE_PARTICIPANTS_THAN_DRAW_POSITIONS };
 
-  const invalidParticipantIds = participantIds.reduce(
-    (invalid, participantId) => {
+  const participantIdsNotAdded = participantIds.reduce(
+    (notAdded, participantId) => {
       const invalidLuckyLoser =
         entryStatus === LUCKY_LOSER &&
         participantInEntries({ participantId, drawDefinition, entryStatus });
@@ -139,24 +138,25 @@ export function addDrawEntries({
         participantInEntries({ drawDefinition, participantId });
 
       if (invalidEntry || invalidLuckyLoser || invalidVoluntaryConsolation) {
-        return invalid.concat({ participantId, error: EXISTING_PARTICIPANT });
+        return notAdded.concat(participantId);
       }
-      return invalid;
+      return notAdded;
     },
     []
   );
 
-  if (invalidParticipantIds.length) {
-    return { error: INVALID_ENTRIES, invalidParticipantIds };
-  }
-
-  participantIds.filter(Boolean).forEach((participantId) => {
-    const entry = Object.assign(
-      { participantId },
-      { entryStage: stage, entryStatus }
-    );
-    drawDefinition.entries.push(entry);
-  });
+  participantIds
+    .filter(
+      (participantId) =>
+        participantId && !participantIdsNotAdded.includes(participantId)
+    )
+    .forEach((participantId) => {
+      const entry = Object.assign(
+        { participantId },
+        { entryStage: stage, entryStatus }
+      );
+      drawDefinition.entries.push(entry);
+    });
 
   if (autoEntryPositions) {
     drawDefinition.entries = refreshEntryPositions({
@@ -166,5 +166,11 @@ export function addDrawEntries({
 
   modifyDrawNotice({ drawDefinition });
 
-  return { ...SUCCESS };
+  return participantIdsNotAdded?.length
+    ? {
+        message: 'some participantIds could not be added',
+        participantIdsNotAdded,
+        ...SUCCESS,
+      }
+    : { ...SUCCESS };
 }

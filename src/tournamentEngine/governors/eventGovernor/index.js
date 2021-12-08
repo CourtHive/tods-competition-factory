@@ -34,7 +34,7 @@ import {
   setEventDefaultMatchUpFormat,
   setStructureDefaultMatchUpFormat,
   setCollectionDefaultMatchUpFormat,
-} from './setDefaultmatchUpFormat';
+} from './setDefaultMatchUpFormat';
 
 import {
   setEntryPosition,

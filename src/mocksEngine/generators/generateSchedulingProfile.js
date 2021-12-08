@@ -1,7 +1,7 @@
 import { addSchedulingProfileRound } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { getContainedStructures } from '../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
-import { intersection } from '../../utilities';
+import { intersection, unique } from '../../utilities';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 
@@ -39,7 +39,10 @@ export function generateSchedulingProfile({
             (!round.roundNumber || matchUp.roundNumber === round.roundNumber) &&
             (!range ||
               !targetRange ||
-              intersection(range, targetRange).length === 2);
+              intersection(range, targetRange).length === 2 ||
+              (unique(range).length === unique(targetRange).length &&
+                intersection(range, targetRange).length ===
+                  unique(range).length));
 
           return target;
         });

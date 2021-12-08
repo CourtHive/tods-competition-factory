@@ -183,7 +183,8 @@ const eventProfiles = [
 const venueProfiles = [
   {
     courtsCount: 3, // optional - count can be inferred from length of courtNames array
-    courtNames: [], // optional
+    courtNames: [], // optional - unique names for courts to be applied by index
+    courtTimings: [], // optional [{ startTime, endTime }] to be applied by index
     dateAvailability, // optional - will use tournament start and end dates and default times
     venueName: 'Venue 1', // optional - will auto-generate names
   },

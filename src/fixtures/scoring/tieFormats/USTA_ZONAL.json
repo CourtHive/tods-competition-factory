@@ -1,0 +1,43 @@
+{
+  "collectionDefinitions": [
+    {
+      "collectionName": "Boys Singles",
+      "matchUpCount": 6,
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+      "matchUpType": "SINGLES",
+      "matchUpValue": 1
+    },
+    {
+      "collectionName": "Girls Singles",
+      "matchUpCount": 6,
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+      "matchUpType": "SINGLES",
+      "matchUpValue": 1
+    },
+    {
+      "collectionName": "Boys Doubles",
+      "matchUpCount": 3,
+      "matchUpFormat": "SET1-S:8/TB7",
+      "matchUpType": "DOUBLES",
+      "matchUpValue": 1
+    },
+    {
+      "collectionName": "Girls Doubles",
+      "matchUpCount": 3,
+      "matchUpFormat": "SET1-S:8/TB7",
+      "matchUpType": "DOUBLES",
+      "matchUpValue": 1
+    },
+    {
+      "collectionName": "Mixed Doubles",
+      "matchUpCount": 1,
+      "matchUpFormat": "SET1-S:8/TB7",
+      "matchUpType": "DOUBLES",
+      "matchUpValue": 1
+    }
+  ],
+  "tieFormatName": "USTA_ZONAL",
+  "winCriteria": {
+    "valueGoal": 10
+  }
+}

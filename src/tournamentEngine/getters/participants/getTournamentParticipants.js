@@ -46,7 +46,7 @@ export function getTournamentParticipants({
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
 
   let tournamentParticipants = tournamentRecord.participants.map(
-    (participant) => makeDeepCopy(participant, convertExtensions)
+    (participant) => makeDeepCopy(participant, convertExtensions, true)
   );
 
   if (typeof participantFilters !== 'object')
@@ -56,7 +56,7 @@ export function getTournamentParticipants({
     tournamentParticipants?.forEach((participant) => {
       if ([PAIR, TEAM, GROUP].includes(participant.participantType)) {
         participant.individualParticipants =
-          participant.individualParticipantIds.map((participantId) => {
+          participant.individualParticipantIds?.map((participantId) => {
             const individualParticipant = tournamentRecord.participants.find(
               (p) => p.participantId === participantId
             );
@@ -82,8 +82,7 @@ export function getTournamentParticipants({
     withMatchUps ||
     withEvents ||
     withDraws ||
-    withISO ||
-    inContext;
+    withISO;
 
   let participantIdsWithConflicts;
 

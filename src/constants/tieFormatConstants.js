@@ -4,6 +4,10 @@ export const COLLEGE_D3 = 'COLLEGE_D3';
 export const DOMINANT_DUO = 'DOMINANT_DUO';
 export const LAVER_CUP = 'LAVER_CUP';
 export const TEAM_DOUBLES_3_AGGREGATION = 'TEAM_DOUBLES_3_AGGREGATION';
+export const USTA_LEVEL_1 = 'USTA_LEVEL_1';
+export const USTA_ZONAL = 'USTA_ZONAL';
+export const USTA_INTERSECTIONAL = 'USTA_INTERSECTIONAL';
+export const USTA_SOUTHERN_LEVEL_5 = 'USTA_SOUTHERN_LEVEL_5';
 
 export const tieFormatConstants = {
   COLLEGE_D3,
@@ -12,6 +16,10 @@ export const tieFormatConstants = {
   DOMINANT_DUO,
   LAVER_CUP,
   TEAM_DOUBLES_3_AGGREGATION,
+  USTA_LEVEL_1,
+  USTA_ZONAL,
+  USTA_INTERSECTIONAL,
+  USTA_SOUTHERN_LEVEL_5,
 };
 
 export default tieFormatConstants;
