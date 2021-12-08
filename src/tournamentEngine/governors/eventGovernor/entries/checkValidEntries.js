@@ -35,13 +35,12 @@ export function checkValidEntries({ event, participants, ignoreGender }) {
 
   const invalidEntries = enteredParticipants.filter((participant) => {
     const entryStatus = entryStatusMap[participant.participantId];
-    const unpairedDoublesParticipant =
-      eventType === DOUBLES &&
+    const ungroupedParticipant =
+      [DOUBLES, TEAM].includes(eventType) &&
       participant.participantType === INDIVIDUAL &&
       (isUngrouped(entryStatus) || entryStatus === WITHDRAWN);
     const mismatch =
-      participant.participantType !== participantType &&
-      !unpairedDoublesParticipant;
+      participant.participantType !== participantType && !ungroupedParticipant;
 
     // TODO: implement gender checking for teams & pairs
     const wrongGender =
