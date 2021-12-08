@@ -135,6 +135,11 @@ export function addCourts({
           ...courtTiming,
         }))
       : dateAvailability;
+
+    // when courtTiming is provided, also add default availability
+    if (courtTiming && startTime && endTime)
+      courtAvailability.push({ startTime, endTime });
+
     const court = {
       courtName: courtNames[i] || `Court ${i + 1}`,
       dateAvailability: courtAvailability,
