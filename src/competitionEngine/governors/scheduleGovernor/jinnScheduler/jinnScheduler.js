@@ -67,6 +67,8 @@ export function jinnScheduler({
     modifications: schedulingProfileModifications,
   } = getSchedulingProfile({ tournamentRecords });
 
+  // round robin structures contain other structures and the scheduler
+  // needs to reference the containing structure by contained structureIds
   const containedStructureIds = Object.assign(
     {},
     ...Object.values(tournamentRecords).map(
@@ -75,6 +77,7 @@ export function jinnScheduler({
     )
   );
 
+  // ensure all scheduleDates are valid date strings
   const validScheduleDates = scheduleDates
     .map((scheduleDate) => {
       if (!isValidDateString(scheduleDate)) return;
@@ -82,6 +85,7 @@ export function jinnScheduler({
     })
     .filter(Boolean);
 
+  // filter out any invalid scheduleDates in schedulingProfile
   const profileDates = schedulingProfile
     .map((dateSchedulingProfile) => dateSchedulingProfile.scheduleDate)
     .map(
@@ -94,10 +98,12 @@ export function jinnScheduler({
         (!scheduleDates.length || validScheduleDates.includes(scheduleDate))
     );
 
+  // if no valid profileDates remain throw an error
   if (!profileDates.length) {
     return { error: NO_VALID_DATES };
   }
 
+  // if array of clearScheduleDates, clear all matchUps on scheduledDates
   if (clearScheduleDates && !dryRun) {
     const scheduledDates = Array.isArray(clearScheduleDates)
       ? clearScheduleDates
@@ -108,10 +114,11 @@ export function jinnScheduler({
   const { courts } = getVenuesAndCourts({ tournamentRecords });
 
   const { matchUps } = allCompetitionMatchUps({
-    tournamentRecords,
     nextMatchUps: true,
+    tournamentRecords,
   });
 
+  // build up a map of all matchUp dependencies
   const { matchUpDependencies } = getMatchUpDependencies({
     includeParticipantDependencies: true,
     tournamentRecords,
@@ -125,6 +132,7 @@ export function jinnScheduler({
     tournamentRecords,
   });
 
+  // filter out any dates in schedulingProfile which have been excluded and sort
   const dateSchedulingProfiles = schedulingProfile
     .filter((dateschedulingProfile) => {
       const scheduleDate = extractDate(dateschedulingProfile?.scheduleDate);

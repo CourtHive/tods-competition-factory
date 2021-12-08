@@ -175,3 +175,129 @@ it.each([
     expect(competitionParticipants.length).toEqual(8);
   }
 );
+
+it.each([
+  {
+    startTime: '08:00',
+    endTime: '19:00',
+    courtsCount: 4,
+    iterations: 1,
+  },
+])(
+  'can schedule multiple venues iteratively fill first venue before second',
+  ({ startTime, endTime, courtsCount, iterations }) => {
+    const startDate = '2022-01-01';
+    const endDate = '2022-01-07';
+    const venueProfiles = [
+      {
+        venueId: 'venue1',
+        courtsCount,
+        startTime,
+        endTime,
+      },
+      {
+        venueId: 'venue2',
+        courtsCount,
+        startTime,
+        endTime,
+      },
+    ];
+
+    const drawProfiles = [
+      {
+        drawSize: 32,
+        drawName: 'A',
+        idPrefix: 'A',
+        drawId: 'firstDraw',
+        uniqueParticipants: true,
+      },
+      {
+        drawSize: 32,
+        drawName: 'B',
+        idPrefix: 'B',
+        drawId: 'secondDraw',
+        uniqueParticipants: true,
+      },
+    ];
+    const schedulingProfile = [
+      {
+        scheduleDate: startDate,
+        venues: [
+          {
+            venueId: 'venue1',
+            rounds: [
+              { drawId: 'firstDraw', winnerFinishingPositionRange: '1-16' },
+              { drawId: 'firstDraw', winnerFinishingPositionRange: '1-8' },
+            ],
+          },
+        ],
+      },
+    ];
+
+    const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+      policyDefinitions: POLICY_SCHEDULING_USTA,
+      autoSchedule: true,
+      schedulingProfile,
+      venueProfiles,
+      drawProfiles,
+      startDate,
+      endDate,
+    });
+
+    competitionEngine.setState(tournamentRecord);
+    const { tournamentId } = tournamentRecord;
+
+    let { matchUps } = competitionEngine.allCompetitionMatchUps();
+    let scheduledMatchUps = matchUps.filter(hasSchedule);
+    visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
+
+    // add second round of each draw to scheduling profile
+    const {
+      event: { eventId },
+      drawDefinition: {
+        structures: [{ structureId }],
+      },
+    } = tournamentEngine.getEvent({ drawId: 'secondDraw' });
+    let result = competitionEngine.addSchedulingProfileRound({
+      scheduleDate: startDate,
+      venueId: 'venue2',
+      round: {
+        tournamentId,
+        eventId,
+        drawId: 'secondDraw',
+        structureId,
+        roundNumber: 1,
+      },
+    });
+    expect(result.success).toEqual(true);
+    result = competitionEngine.addSchedulingProfileRound({
+      scheduleDate: startDate,
+      venueId: 'venue2',
+      round: {
+        tournamentId,
+        eventId,
+        drawId: 'secondDraw',
+        structureId,
+        roundNumber: 2,
+      },
+    });
+    expect(result.success).toEqual(true);
+
+    competitionEngine.devContext({ virtual: true });
+    // Scheduled Profile Rounds ##############################
+    result = competitionEngine.scheduleProfileRounds({
+      scheduleDates: [startDate],
+      garmanSinglePass: false,
+    });
+    expect(result.success).toEqual(true);
+    if (result.iterations) expect(result.iterations).toEqual(iterations);
+    expect(result.scheduledDates).toEqual([startDate]);
+    // #######################################################
+
+    ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+    scheduledMatchUps = matchUps.filter(hasSchedule);
+    visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
+
+    expect(Object.values(result.matchUpScheduleTimes).length).toEqual(48);
+  }
+);

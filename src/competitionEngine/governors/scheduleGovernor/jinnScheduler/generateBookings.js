@@ -67,7 +67,7 @@ export function generateBookings({
     (matchUp) => !venueIds.length || venueIds.includes(matchUp.schedule.venueId)
   );
 
-  const bookings = dateScheduledMatchUps
+  const bookings = relevantMatchUps
     ?.map(({ eventId, schedule, matchUpFormat }) => {
       const { event, scheduleTiming } = eventDetails[eventId];
       const eventType = event?.eventType;
