@@ -28,6 +28,7 @@ import {
  */
 export function getTournamentParticipants({
   participantFilters = {},
+  withSignInStatus,
   convertExtensions,
   policyDefinitions,
   withScheduleItems,
@@ -75,6 +76,7 @@ export function getTournamentParticipants({
     });
 
   const addContext =
+    withSignInStatus ||
     withScheduleItems ||
     scheduleAnalysis ||
     withStatistics ||
@@ -93,6 +95,7 @@ export function getTournamentParticipants({
       tournamentParticipants,
       participantFilters,
       withScheduleItems,
+      withSignInStatus,
       tournamentRecord,
       scheduleAnalysis,
       withStatistics,
