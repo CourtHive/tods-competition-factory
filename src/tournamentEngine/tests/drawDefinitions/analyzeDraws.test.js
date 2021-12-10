@@ -93,4 +93,7 @@ test('draw analysis can determine when draws are able to be pruned', () => {
   expect(structureData.unassignedPositionsCount).toEqual(12);
   expect(structureData.inactiveRounds.length).toEqual(4);
   expect(structureData.activeRounds.length).toEqual(1);
+
+  result = tournamentEngine.analyzeTournament();
+  expect(result.analysis.isDual).toEqual(false);
 });
