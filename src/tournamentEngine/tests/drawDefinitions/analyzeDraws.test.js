@@ -1,11 +1,24 @@
 import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
+import { drawEngine, mocksEngine, setSubscriptions } from '../../..';
 import tournamentEngine from '../../sync';
-import { drawEngine, mocksEngine } from '../../..';
 
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
+import { DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
 
 test('draw analysis can determine when draws are able to be pruned', () => {
+  const deletedMatchUpIds = [];
+  setSubscriptions({
+    subscriptions: {
+      [DELETED_MATCHUP_IDS]: (notices) => {
+        notices.forEach(({ matchUpIds }) =>
+          deletedMatchUpIds.push(...matchUpIds)
+        );
+      },
+    },
+  });
+
+  const drawSize = 32;
   const {
     drawIds: [drawId],
     tournamentRecord,
@@ -13,9 +26,9 @@ test('draw analysis can determine when draws are able to be pruned', () => {
     // automated false: don't place the participantIds
     drawProfiles: [
       {
-        drawSize: 32,
         participantsCount: 20,
         automated: false,
+        drawSize,
       },
     ],
   });
@@ -108,4 +121,7 @@ test('draw analysis can determine when draws are able to be pruned', () => {
   expect(result.success).toEqual(true);
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(matchUps.length).toEqual(2);
+
+  // drawSize 32 has 31 matches and two have outcomes
+  expect(deletedMatchUpIds.length).toEqual(drawSize - 1 - 2);
 });

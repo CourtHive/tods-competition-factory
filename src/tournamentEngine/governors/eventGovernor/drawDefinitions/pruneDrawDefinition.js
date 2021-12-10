@@ -1,5 +1,10 @@
+import {
+  deleteMatchUpsNotice,
+  modifyDrawNotice,
+} from '../../../../drawEngine/notifications/drawNotifications';
 import { getDrawStructures } from '../../../../drawEngine/getters/findStructure';
 import { analyzeDraws } from '../../tournamentGovernor/analysis/analyzeDraws';
+import { getMatchUpId } from '../../../../global/functions/extractors';
 
 import { MISSING_DRAW_DEFINITION } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -28,9 +33,20 @@ export function pruneDrawDefinition({
       ({ structureId }) => mainStructure.structureId === structureId
     );
 
+    const matchUps = mainStructure.matchUps || [];
+    const relevantMatchUps = matchUps
+      .sort((a, b) => a.roundPosition - b.roundPosition)
+      .filter(
+        ({ roundNumber }) => !structureData.inactiveRounds.includes(roundNumber)
+      );
+    const relevantMatchUpIds = relevantMatchUps.map(getMatchUpId);
+    const deletedMatchUpIds = matchUps
+      .map(getMatchUpId)
+      .filter((matchUpId) => !relevantMatchUpIds.includes(matchUpId));
+
     // only ifMatchPlay can the positionAssignments be reallocated
     if (isMatchPlay) {
-      const relevantMatchUps = (mainStructure.matchUps || [])
+      const matchPlayMatchUps = relevantMatchUps
         .sort((a, b) => a.roundPosition - b.roundPosition)
         .filter(
           ({ roundNumber }) =>
@@ -38,7 +54,13 @@ export function pruneDrawDefinition({
         )
         .filter(({ winningSide }) => !isMatchPlay || winningSide);
 
-      const existingDrawPositionPairings = relevantMatchUps.map(
+      const matchPlayMatchUpIds = matchPlayMatchUps.map(getMatchUpId);
+      const matchUpIdsToDelete = relevantMatchUpIds.filter(
+        (matchUpId) => !matchPlayMatchUpIds.includes(matchUpId)
+      );
+      deletedMatchUpIds.push(...matchUpIdsToDelete);
+
+      const existingDrawPositionPairings = matchPlayMatchUps.map(
         ({ drawPositions }) => drawPositions
       );
       const existingDrawPositions = existingDrawPositionPairings.flat();
@@ -49,7 +71,7 @@ export function pruneDrawDefinition({
         }))
       );
 
-      relevantMatchUps.forEach(
+      matchPlayMatchUps.forEach(
         (matchUp) =>
           (matchUp.drawPositions = matchUp.drawPositions.map(
             (drawPosition) => drawPositionsMap[drawPosition]
@@ -66,8 +88,11 @@ export function pruneDrawDefinition({
         });
 
       mainStructure.positionAssignments = updatedPositionAssignments;
-      mainStructure.matchUps = relevantMatchUps;
+      mainStructure.matchUps = matchPlayMatchUps;
     }
+
+    deleteMatchUpsNotice({ drawDefinition, matchUpIds: deletedMatchUpIds });
+    modifyDrawNotice({ drawDefinition });
   }
 
   return { ...SUCCESS };
