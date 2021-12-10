@@ -60,6 +60,7 @@ export function resetDrawDefinition({ drawDefinition, removeScheduling }) {
 
       if (matchUp.matchUpStatus !== BYE) {
         matchUp.matchUpStatus = TO_BE_PLAYED;
+        delete matchUp.matchUpStatusCodes;
         delete matchUp.matchUpFormat;
         delete matchUp.winningSide;
         delete matchUp.score;
