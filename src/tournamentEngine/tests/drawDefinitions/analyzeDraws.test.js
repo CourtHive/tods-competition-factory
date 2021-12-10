@@ -64,13 +64,20 @@ test('draw analysis can determine when draws are able to be pruned', () => {
   expect(result.drawsAnalysis.canBePruned).toEqual([]);
   expect(result.drawsAnalysis.matchPlay).toEqual([]);
 
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
-
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
   const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
 
   let { outcome } = mocksEngine.generateOutcome();
   result = tournamentEngine.setMatchUpStatus({
     matchUpId: roundMatchUps[1][0].matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  outcome = mocksEngine.generateOutcome().outcome;
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: roundMatchUps[1][3].matchUpId,
     outcome,
     drawId,
   });
@@ -86,7 +93,7 @@ test('draw analysis can determine when draws are able to be pruned', () => {
   expect(result.drawsAnalysis.drawAnalysis[drawId].isMatchPlay).toEqual(true);
   expect(
     result.drawsAnalysis.drawAnalysis[drawId].matchUpsWithWinningSideCount
-  ).toEqual(1);
+  ).toEqual(2);
 
   const structureData =
     result.drawsAnalysis.drawAnalysis[drawId].structuresData[0];
@@ -96,4 +103,9 @@ test('draw analysis can determine when draws are able to be pruned', () => {
 
   result = tournamentEngine.analyzeTournament();
   expect(result.analysis.isDual).toEqual(false);
+
+  result = tournamentEngine.pruneDrawDefinition({ drawId });
+  expect(result.success).toEqual(true);
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual(2);
 });

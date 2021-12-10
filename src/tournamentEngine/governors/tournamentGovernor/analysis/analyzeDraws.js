@@ -1,10 +1,10 @@
 import { structureActiveDrawPositions } from '../../../../drawEngine/getters/structureActiveDrawPositions';
 import { getRoundMatchUps } from '../../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionAssignments } from '../../../../drawEngine/getters/positionsGetter';
+import { getStructureLinks } from '../../../../drawEngine/getters/linkGetter';
 import { stageOrder } from '../../../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { getStructureLinks } from '../../../../drawEngine/getters/linkGetter';
 
 export function analyzeDraws({ tournamentRecord }) {
   const drawsAnalysis = {
@@ -32,12 +32,20 @@ export function analyzeDraws({ tournamentRecord }) {
         drawDefinition,
         structure,
       });
+      const matchUpsWithWinningSide = inContextStructureMatchUps?.filter(
+        ({ winningSide }) => winningSide
+      );
+
       const winningSideCount =
-        inContextStructureMatchUps
-          ?.filter(({ winningSide }) => winningSide)
-          .filter(Boolean).length || 0;
+        matchUpsWithWinningSide.filter(Boolean).length || 0;
 
       matchUpsWithWinningSideCount += winningSideCount;
+
+      const maxWinningSideFirstRoundPosition = Math.max(
+        matchUpsWithWinningSide
+          .filter(({ roundNumber }) => roundNumber === 1)
+          .map(({ roundPosition }) => roundPosition)
+      );
 
       const { positionAssignments } = getPositionAssignments({ structure });
       const positionsAssigned = positionAssignments?.filter(
@@ -51,18 +59,19 @@ export function analyzeDraws({ tournamentRecord }) {
       const { roundMatchUps, roundProfile, roundNumbers, maxMatchUpsCount } =
         getRoundMatchUps({ matchUps: inContextStructureMatchUps });
 
-      const activeRounds = Object.keys(roundProfile).filter(
-        (roundNumber) => !roundProfile[roundNumber].inactiveRound
-      );
-      const inactiveRounds = Object.keys(roundProfile).filter(
-        (roundNumber) => roundProfile[roundNumber].inactiveRound
-      );
+      const activeRounds = Object.keys(roundProfile)
+        .filter((roundNumber) => !roundProfile[roundNumber].inactiveRound)
+        .map((roundNumber) => parseInt(roundNumber));
+      const inactiveRounds = Object.keys(roundProfile)
+        .filter((roundNumber) => roundProfile[roundNumber].inactiveRound)
+        .map((roundNumber) => parseInt(roundNumber));
       const inactiveStructure = Object.values(roundProfile).every(
         (profile) => profile.inactiveRound
       );
 
       return {
         positionsAssignedCount: positionsAssigned?.length || 0,
+        maxWinningSideFirstRoundPosition,
         unassignedPositionsCount,
         inactiveStructure,
         maxMatchUpsCount,
