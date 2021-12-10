@@ -1,5 +1,9 @@
 import { getAllStructureMatchUps } from '../../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { getMatchUpsMap } from '../../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
+import {
+  modifyDrawNotice,
+  modifyMatchUpNotice,
+} from '../../../../drawEngine/notifications/drawNotifications';
 
 import { MISSING_DRAW_DEFINITION } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -12,9 +16,12 @@ import {
   QUALIFYING,
 } from '../../../../constants/drawDefinitionConstants';
 import {
-  modifyDrawNotice,
-  modifyMatchUpNotice,
-} from '../../../../drawEngine/notifications/drawNotifications';
+  ASSIGN_COURT,
+  ASSIGN_VENUE,
+  ASSIGN_OFFICIAL,
+  SCHEDULED_DATE,
+  SCHEDULED_TIME,
+} from '../../../../constants/timeItemConstants';
 
 export function resetDrawDefinition({ drawDefinition, removeScheduling }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -86,7 +93,14 @@ export function resetDrawDefinition({ drawDefinition, removeScheduling }) {
         delete matchUp.timeItems;
       } else if (matchUp.timeItems?.length) {
         matchUp.timeItems = matchUp.timeItems.filter(
-          (timeItem) => ![].includes(timeItem.itemType)
+          (timeItem) =>
+            ![
+              ASSIGN_COURT,
+              ASSIGN_VENUE,
+              ASSIGN_OFFICIAL,
+              SCHEDULED_DATE,
+              SCHEDULED_TIME,
+            ].includes(timeItem.itemType)
         );
       }
 

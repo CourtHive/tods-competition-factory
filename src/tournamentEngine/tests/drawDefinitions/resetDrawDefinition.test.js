@@ -33,5 +33,11 @@ test.each(scenarios)(
 
     completedMatchUps = tournamentEngine.tournamentMatchUps().completedMatchUps;
     expect(completedMatchUps.length).toEqual(0);
+
+    const { matchUps } = tournamentEngine.allTournamentMatchUps();
+    matchUps.forEach((matchUp) => {
+      expect(matchUp.score).toBeUndefined();
+      expect(matchUp.matchUpFormatCodes).toBeUndefined();
+    });
   }
 );
