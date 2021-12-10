@@ -11,6 +11,10 @@ import {
   MAIN,
   QUALIFYING,
 } from '../../../../constants/drawDefinitionConstants';
+import {
+  modifyDrawNotice,
+  modifyMatchUpNotice,
+} from '../../../../drawEngine/notifications/drawNotifications';
 
 export function resetDrawDefinition({ drawDefinition, removeScheduling }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -85,8 +89,16 @@ export function resetDrawDefinition({ drawDefinition, removeScheduling }) {
           (timeItem) => ![].includes(timeItem.itemType)
         );
       }
+
+      modifyMatchUpNotice({ drawDefinition, matchUp });
     }
   }
+
+  const structureIds = (drawDefinition.structures || []).map(
+    ({ structureId }) => structureId
+  );
+
+  modifyDrawNotice({ drawDefinition, structureIds });
 
   return { ...SUCCESS };
 }
