@@ -1,7 +1,7 @@
-import tournamentEngine from '../../sync';
-import { mocksEngine } from '../../..';
+import tournamentEngine from '../sync';
+import { mocksEngine } from '../..';
 
-import { ROUND_ROBIN_WITH_PLAYOFF } from '../../../constants/drawDefinitionConstants';
+import { ROUND_ROBIN_WITH_PLAYOFF } from '../../constants/drawDefinitionConstants';
 
 test('provisional positioning is possible', () => {
   const mockProfile = {
