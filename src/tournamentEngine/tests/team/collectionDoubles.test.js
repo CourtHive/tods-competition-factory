@@ -1,3 +1,4 @@
+import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { intersection } from '../../../utilities';
@@ -16,7 +17,6 @@ import {
   COMPLETED,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { LINEUPS } from '../../../constants/extensionConstants';
 
 // reusable
@@ -559,8 +559,9 @@ it('handles pair dependencies across draws', () => {
   let { tournamentParticipants: individualParticipants } =
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
-      inContext: true,
       withEvents: true,
+      withDraws: true,
+      inContext: true,
     });
 
   individualParticipants.forEach((individualParticipant) =>

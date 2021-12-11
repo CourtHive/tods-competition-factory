@@ -1,5 +1,6 @@
 import { addNotes, removeNotes } from './addRemoveNotes';
 import { analyzeTournament } from './analyzeTournament';
+import { analyzeDraws } from './analysis/analyzeDraws';
 
 import {
   setTournamentName,
@@ -30,6 +31,7 @@ const tournamentGovernor = {
   addNotes,
   removeNotes,
   analyzeTournament,
+  analyzeDraws,
 
   setTournamentName,
   setTournamentNotes,

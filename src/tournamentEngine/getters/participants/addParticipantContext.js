@@ -6,6 +6,7 @@ import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { extensionConstants } from '../../../constants/extensionConstants';
 import { getParticipantIds } from '../../../global/functions/extractors';
+import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 import { definedAttributes } from '../../../utilities/objects';
 import { makeDeepCopy, unique } from '../../../utilities';
 import { allEventMatchUps } from '../matchUpsGetter';
@@ -15,6 +16,10 @@ import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { RANKING, RATING, SCALE } from '../../../constants/scaleConstants';
 import { DOUBLES, TEAM } from '../../../constants/matchUpTypes';
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import {
+  SIGNED_IN,
+  SIGN_IN_STATUS,
+} from '../../../constants/participantConstants';
 
 export function addParticipantContext(params) {
   const participantIdsWithConflicts = [];
@@ -63,67 +68,68 @@ export function addParticipantContext(params) {
       : [];
   };
 
-  allTournamentParticipants.forEach((participant) => {
-    if (participant.participantType === GROUP) {
-      const groupParticipantId = participant.participantId;
-      participant?.individualParticipantIds?.forEach((participantId) => {
-        if (
-          !participantIdMap[participantId].groupParticipantIds.includes(
-            groupParticipantId
-          )
-        ) {
-          participantIdMap[participantId].groupParticipantIds.push(
-            groupParticipantId
-          );
-          participantIdMap[participantId].groups.push({
-            participantRoleResponsibilities:
-              participant.participantRoleResponsibilities,
-            participantOtherName: participant.participantOtherName,
-            participantName: participant.participantName,
-            participantId: participant.participantId,
-          });
-        }
-      });
-    }
+  params.withGroupings &&
+    allTournamentParticipants.forEach((participant) => {
+      if (participant.participantType === GROUP) {
+        const groupParticipantId = participant.participantId;
+        participant?.individualParticipantIds?.forEach((participantId) => {
+          if (
+            !participantIdMap[participantId].groupParticipantIds.includes(
+              groupParticipantId
+            )
+          ) {
+            participantIdMap[participantId].groupParticipantIds.push(
+              groupParticipantId
+            );
+            participantIdMap[participantId].groups.push({
+              participantRoleResponsibilities:
+                participant.participantRoleResponsibilities,
+              participantOtherName: participant.participantOtherName,
+              participantName: participant.participantName,
+              participantId: participant.participantId,
+            });
+          }
+        });
+      }
 
-    if (participant.participantType === TEAM) {
-      const teamParticipantId = participant.participantId;
-      participant?.individualParticipantIds?.forEach((participantId) => {
-        if (
-          !participantIdMap[participantId].teamParticipantIds.includes(
-            teamParticipantId
-          )
-        ) {
-          participantIdMap[participantId].teamParticipantIds.push(
-            teamParticipantId
-          );
-          participantIdMap[participantId].teams.push({
-            participantRoleResponsibilities:
-              participant.participantRoleResponsibilities,
-            participantOtherName: participant.participantOtherName,
-            participantName: participant.participantName,
-            participantId: participant.participantId,
-            teamId: participant.teamId,
-          });
-        }
-      });
-    }
+      if (participant.participantType === TEAM) {
+        const teamParticipantId = participant.participantId;
+        participant?.individualParticipantIds?.forEach((participantId) => {
+          if (
+            !participantIdMap[participantId].teamParticipantIds.includes(
+              teamParticipantId
+            )
+          ) {
+            participantIdMap[participantId].teamParticipantIds.push(
+              teamParticipantId
+            );
+            participantIdMap[participantId].teams.push({
+              participantRoleResponsibilities:
+                participant.participantRoleResponsibilities,
+              participantOtherName: participant.participantOtherName,
+              participantName: participant.participantName,
+              participantId: participant.participantId,
+              teamId: participant.teamId,
+            });
+          }
+        });
+      }
 
-    if (participant.participantType === PAIR) {
-      const pairParticipantId = participant.participantId;
-      participant?.individualParticipantIds?.forEach((participantId) => {
-        if (
-          !participantIdMap[participantId].pairParticipantIds.includes(
-            pairParticipantId
-          )
-        ) {
-          participantIdMap[participantId].pairParticipantIds.push(
-            pairParticipantId
-          );
-        }
-      });
-    }
-  });
+      if (participant.participantType === PAIR) {
+        const pairParticipantId = participant.participantId;
+        participant?.individualParticipantIds?.forEach((participantId) => {
+          if (
+            !participantIdMap[participantId].pairParticipantIds.includes(
+              pairParticipantId
+            )
+          ) {
+            participantIdMap[participantId].pairParticipantIds.push(
+              pairParticipantId
+            );
+          }
+        });
+      }
+    });
 
   if (
     params.withScheduleItems ||
@@ -240,13 +246,6 @@ export function addParticipantContext(params) {
         }
       });
 
-      const { matchUps } = allEventMatchUps({
-        tournamentRecord,
-        nextMatchUps: true,
-        inContext: true,
-        event,
-      });
-
       const drawDetails = Object.assign(
         {},
         ...(event.drawDefinitions || []).map((drawDefinition) => {
@@ -292,9 +291,25 @@ export function addParticipantContext(params) {
         })
       );
 
-      matchUps?.forEach((matchUp) =>
-        processMatchUp({ matchUp, drawDetails, eventType })
-      );
+      if (
+        event.eventType === TEAM || // for TEAM events some individual attributes can only be derived by processing
+        params.withScheduleItems ||
+        params.scheduleAnalysis ||
+        params.withStatistics ||
+        params.withOpponents ||
+        params.withMatchUps
+      ) {
+        const { matchUps } = allEventMatchUps({
+          nextMatchUps: true,
+          tournamentRecord,
+          inContext: true,
+          event,
+        });
+
+        matchUps?.forEach((matchUp) =>
+          processMatchUp({ matchUp, drawDetails, eventType })
+        );
+      }
     });
   }
 
@@ -306,6 +321,15 @@ export function addParticipantContext(params) {
       participant,
       participantIdMap,
     });
+
+    if (params.withSignInStatus) {
+      const { timeItem } = getTimeItem({
+        itemType: SIGN_IN_STATUS,
+        element: participant,
+      });
+
+      participant.signedIn = !!(timeItem?.itemValue === SIGNED_IN);
+    }
 
     if (params.withScheduleItems) {
       participant.scheduleItems = scheduleItems;

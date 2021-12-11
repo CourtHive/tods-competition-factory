@@ -97,6 +97,7 @@ it('can generate TEAM events', () => {
       withDraws: false,
       withEvents: false,
       withMatchUps: true,
+      withGroupings: true,
       withStatistics: true,
     }));
 

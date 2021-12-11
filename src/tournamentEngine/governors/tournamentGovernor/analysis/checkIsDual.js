@@ -13,5 +13,5 @@ export function checkIsDual(tournamentRecord) {
     drawDefinition?.structures?.length === 1 && drawDefinition.structures[0];
   const twoDrawPositions = structure?.positionAssignments?.length === 2;
 
-  return event.tieFormat && twoTeams && twoDrawPositions;
+  return !!(event.tieFormat && twoTeams && twoDrawPositions);
 }

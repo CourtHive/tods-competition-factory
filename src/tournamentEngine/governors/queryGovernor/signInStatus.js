@@ -1,4 +1,6 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
+import { getTimeItem } from './timeItems';
+
 import {
   SIGNED_IN,
   SIGN_IN_STATUS,
@@ -8,7 +10,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { getTimeItem } from './timeItems';
 
 export function getParticipantSignInStatus({
   tournamentRecord,
@@ -25,8 +26,8 @@ export function getParticipantSignInStatus({
   if (!participant) return { error: PARTICIPANT_NOT_FOUND };
 
   const { timeItem } = getTimeItem({
-    element: participant,
     itemType: SIGN_IN_STATUS,
+    element: participant,
   });
 
   return timeItem && timeItem.itemValue === SIGNED_IN && SIGNED_IN;
