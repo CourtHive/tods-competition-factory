@@ -26,6 +26,8 @@ export function analyzeDraws({ tournamentRecord }) {
   drawDefinitions.forEach((drawDefinition) => {
     let positionsAssignedCount = 0;
     let matchUpsWithWinningSideCount = 0;
+    let matchUpsNoOutcomeCount = 0;
+
     const structures = drawDefinition?.structures || [];
     const structuresData = structures.map((structure) => {
       const { stage, stageSequence, structureId } = structure;
@@ -42,6 +44,8 @@ export function analyzeDraws({ tournamentRecord }) {
         matchUpsWithWinningSide.filter(Boolean).length || 0;
 
       matchUpsWithWinningSideCount += winningSideCount;
+      matchUpsNoOutcomeCount +=
+        inContextStructureMatchUps.length - matchUpsWithWinningSideCount;
 
       const maxWinningSideFirstRoundPosition = Math.max(
         matchUpsWithWinningSide
@@ -128,6 +132,7 @@ export function analyzeDraws({ tournamentRecord }) {
 
     const drawAnalysis = {
       matchUpsWithWinningSideCount,
+      matchUpsNoOutcomeCount,
       positionsAssignedCount,
       structuresData,
       inactiveDraw,
