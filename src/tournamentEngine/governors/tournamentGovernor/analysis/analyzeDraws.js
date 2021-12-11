@@ -4,9 +4,11 @@ import { getPositionAssignments } from '../../../../drawEngine/getters/positions
 import { getStructureLinks } from '../../../../drawEngine/getters/linkGetter';
 import { stageOrder } from '../../../../constants/drawDefinitionConstants';
 
+import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function analyzeDraws({ tournamentRecord }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const drawsAnalysis = {
     positionsNoOutcomes: [], // all positions assigned and no outcomes
     canBePruned: [], // partially assigned positions with outcomes => drawSizes can be reduced

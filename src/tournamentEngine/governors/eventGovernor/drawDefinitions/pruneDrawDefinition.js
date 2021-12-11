@@ -1,20 +1,24 @@
+import { getDrawStructures } from '../../../../drawEngine/getters/findStructure';
+import { analyzeDraws } from '../../tournamentGovernor/analysis/analyzeDraws';
+import { getMatchUpId } from '../../../../global/functions/extractors';
 import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
 } from '../../../../drawEngine/notifications/drawNotifications';
-import { getDrawStructures } from '../../../../drawEngine/getters/findStructure';
-import { analyzeDraws } from '../../tournamentGovernor/analysis/analyzeDraws';
-import { getMatchUpId } from '../../../../global/functions/extractors';
 
-import { MISSING_DRAW_DEFINITION } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
+import {
+  MISSING_DRAW_DEFINITION,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../../constants/errorConditionConstants';
 
 export function pruneDrawDefinition({
   tournamentRecord,
   drawDefinition,
   drawId,
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const { drawsAnalysis } = analyzeDraws({ tournamentRecord });
