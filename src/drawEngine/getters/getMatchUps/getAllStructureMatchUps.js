@@ -89,9 +89,9 @@ export function getAllStructureMatchUps({
   // don't process this structure if filters and filters don't include eventId, drawId or structureId
   if (!targetEvent || !targetStructure || !targetDraw) {
     return {
-      matchUps: [],
       collectionPositionMatchUps,
       roundMatchUps,
+      matchUps: [],
     };
   }
 
@@ -229,10 +229,15 @@ export function getAllStructureMatchUps({
     });
   }
 
-  ({ roundMatchUps } = getRoundMatchUps({ matchUps }));
-  ({ collectionPositionMatchUps } = getCollectionPositionMatchUps({
-    matchUps,
-  }));
+  if (matchUpFilters?.matchUpTypes || matchUpFilters?.matchUpIds || inContext) {
+    ({ roundMatchUps } = getRoundMatchUps({ matchUps }));
+  }
+
+  if (structure.tieFormat || drawDefinition?.tieFormat || event?.tieFormat) {
+    ({ collectionPositionMatchUps } = getCollectionPositionMatchUps({
+      matchUps,
+    }));
+  }
 
   if (roundFilter)
     matchUps = matchUps?.filter(

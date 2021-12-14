@@ -93,5 +93,5 @@ export function getRoundContextProfile({
     );
   }
 
-  return { roundNamingProfile, roundProfile };
+  return { roundNamingProfile, roundProfile, roundMatchUps };
 }
