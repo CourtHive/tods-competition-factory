@@ -332,27 +332,23 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
     },
   } = tournamentEngine.getEvent({ drawId });
 
-  const mainStructureOrderedPairs = [
-    [1, 2],
-    [3, 4],
-    [5, 6],
-    [7, 8],
-    [1],
-    [],
-    [],
-  ];
+  const mainStructureOrderedPairs = [[1, 2], [3, 4], [5, 6], [7, 8], [1]];
 
-  const consolationStructureOrderedPairs = [[3, 4], [5, 6], [1], [2], []];
+  const consolationStructureOrderedPairs = [[3, 4], [5, 6], [1], [2]];
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   });
-  expect(filteredOrderedPairs).toEqual(mainStructureOrderedPairs);
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
+    mainStructureOrderedPairs
+  );
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,
   }));
-  expect(filteredOrderedPairs).toEqual(consolationStructureOrderedPairs);
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
+    consolationStructureOrderedPairs
+  );
 
   let result = tournamentEngine.setMatchUpStatus({
     drawId,
@@ -384,13 +380,12 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1],
-    [],
     [1],
   ]);
 
@@ -416,12 +411,16 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
     structureId: mainStructure.structureId,
   }));
 
-  expect(filteredOrderedPairs).toEqual(mainStructureOrderedPairs);
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
+    mainStructureOrderedPairs
+  );
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,
   }));
-  expect(filteredOrderedPairs).toEqual(consolationStructureOrderedPairs);
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
+    consolationStructureOrderedPairs
+  );
 });
 
 /*
@@ -459,7 +458,7 @@ it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
   } = tournamentEngine.getEvent({ drawId });
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -469,12 +468,6 @@ it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
     [13, 14],
     [15, 16],
     [1],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
   ]);
 
   let result = tournamentEngine.setMatchUpStatus({
@@ -486,7 +479,7 @@ it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
 
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -496,12 +489,7 @@ it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
     [13, 14],
     [15, 16],
     [1],
-    [],
-    [],
-    [],
     [1],
-    [],
-    [],
   ]);
 });
 
@@ -551,16 +539,12 @@ it('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', () =>
     [13, 14],
     [15, 16],
     [1, 3],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
   ];
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs).toEqual(preWalkover);
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
+    preWalkover
+  );
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
   const targetMatchUp = matchUps.find(
@@ -574,7 +558,9 @@ it('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', () =>
   expect(result.success).toEqual(true);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  expect(filteredOrderedPairs).toEqual(preWalkover);
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
+    preWalkover
+  );
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
 
@@ -639,7 +625,7 @@ it('handles DOUBLE DOUBLE_WALKOVER advancement', () => {
   } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -649,12 +635,6 @@ it('handles DOUBLE DOUBLE_WALKOVER advancement', () => {
     [13, 14],
     [15, 16],
     [1, 3],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
   ]);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
@@ -673,7 +653,7 @@ it('handles DOUBLE DOUBLE_WALKOVER advancement', () => {
   expect(result.success).toEqual(true);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -683,11 +663,7 @@ it('handles DOUBLE DOUBLE_WALKOVER advancement', () => {
     [13, 14],
     [15, 16],
     [1, 3],
-    [],
-    [],
-    [],
     [1],
-    [],
     [1],
   ]);
 });
@@ -734,7 +710,7 @@ it('handles advances when encountring consecutive DOUBLE_WALKOVERs', () => {
   } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -744,12 +720,6 @@ it('handles advances when encountring consecutive DOUBLE_WALKOVERs', () => {
     [13, 14],
     [15, 16],
     [1, 3],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
   ]);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
@@ -768,7 +738,7 @@ it('handles advances when encountring consecutive DOUBLE_WALKOVERs', () => {
   expect(result.success).toEqual(true);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -779,10 +749,7 @@ it('handles advances when encountring consecutive DOUBLE_WALKOVERs', () => {
     [15, 16],
     [1, 3],
     [7],
-    [],
-    [],
     [7],
-    [],
     [7],
   ]);
 });

@@ -61,13 +61,12 @@ it('DISALLOWS entry of incomplete result if active downsream', () => {
   expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
 
   const { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1, 3],
-    [],
     [1],
   ]);
 });
@@ -119,14 +118,12 @@ it('removes advanced participant when completed score changes to incomplete resu
   expect(result.success).toEqual(true);
 
   const { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [3],
-    [],
-    [],
   ]);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());

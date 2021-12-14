@@ -72,14 +72,13 @@ it('can advance participants when double BYEs are created removing 3-4', () => {
     ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
   );
   expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1], // drawPosition 1 is BYE-advanced
     [8], // drawPosition 8 is BYE-advanced
-    [],
   ]);
 
   removeAssignment({
@@ -91,14 +90,13 @@ it('can advance participants when double BYEs are created removing 3-4', () => {
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1, 4], // drawPositions 1 and 4 are both BYE-advanced
     [8], // drawPosition 8 is BYE-advanced
-    [],
   ]);
 
   ({
@@ -188,14 +186,13 @@ it('can advance participants when double BYEs are created removing 5-6', () => {
     ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
   );
   expect(finalMatchUp.drawPositions).toEqual([1, undefined]);
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1], // drawPosition 1 is BYE-advanced
     [8], // drawPosition 8 is BYE-advanced
-    [],
   ]);
 
   removeAssignment({
@@ -207,14 +204,13 @@ it('can advance participants when double BYEs are created removing 5-6', () => {
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1], // drawPosition 1 is BYE-advanced
     [6, 8], // drawPositions 6, 8 are BYE-advanced
-    [],
   ]);
 
   ({
@@ -301,15 +297,16 @@ it('does not remove CONSOLATION BYE if at least one source position is a BYE', (
   let finalMatchUp = structureMatchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1
   );
-  expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([]);
-  expect(filteredOrderedPairs).toEqual([
+  if (finalMatchUp.drawPositions) {
+    expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  }
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1], // drawPosition 1 is BYE-advanced
     [8], // drawPosition 8 is BYE-advanced
-    [],
   ]);
 
   removeAssignment({
@@ -321,14 +318,13 @@ it('does not remove CONSOLATION BYE if at least one source position is a BYE', (
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1, 4], // drawPositions 1 and 4 are both BYE-advanced
     [8], // drawPosition 8 is BYE-advanced
-    [],
   ]);
 
   // now check the consolation structure
@@ -346,14 +342,13 @@ it('does not remove CONSOLATION BYE if at least one source position is a BYE', (
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1],
     [8],
-    [], // drawPosition 4 is now a BYE, advancing 1
   ]);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({

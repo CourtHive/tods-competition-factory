@@ -44,8 +44,7 @@ export function buildRound({
       roundNumber,
       roundPosition,
       matchUpStatus: TO_BE_PLAYED,
-      // drawPositions: node.children.map((c) => c.drawPosition).filter(Boolean),
-      drawPositions: node.children.map((c) => c.drawPosition),
+      drawPositions: node.children.map((c) => c.drawPosition).filter(Boolean),
     };
 
     // matchUpType is derived for inContext matchUps from structure or drawDefinition
