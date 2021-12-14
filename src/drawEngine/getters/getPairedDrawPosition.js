@@ -5,6 +5,7 @@ import { getInitialRoundNumber } from './getInitialRoundNumber';
 // for feed-in rounds fed drawPositions will not initially have a paired drawPosition
 export function getPairedDrawPosition({ matchUps, drawPosition, roundNumber }) {
   if (!matchUps) return {};
+
   const { roundProfile } = getRoundMatchUps({ matchUps }) || {};
   const { initialRoundNumber } = getInitialRoundNumber({
     matchUps,
