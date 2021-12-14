@@ -150,12 +150,14 @@ export function getAllStructureMatchUps({
 
   const roundNamingPolicy =
     appliedPolicies && appliedPolicies[POLICY_TYPE_ROUND_NAMING];
-  const { roundNamingProfile, roundProfile } = getRoundContextProfile({
+  const result = getRoundContextProfile({
     roundNamingPolicy,
     drawDefinition,
     structure,
     matchUps,
   });
+  const { roundNamingProfile, roundProfile } = result;
+  roundMatchUps = result.roundMatchUps;
 
   if (matchUpFilters) {
     matchUps = filterMatchUps({
@@ -174,6 +176,7 @@ export function getAllStructureMatchUps({
     });
     const { drawPositionsRanges } = getDrawPositionsRanges({
       drawDefinition,
+      roundProfile,
       matchUpsMap,
       structureId,
     });

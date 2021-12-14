@@ -55,13 +55,18 @@ export function getMappedStructureMatchUps({
     .map((itemStructureId) => {
       const { matchUps, structureName } = mappedMatchUps[itemStructureId];
       if (inContext) {
-        return matchUps.map((matchUp) =>
-          Object.assign(makeDeepCopy(matchUp, true, true), {
-            containerStructureId: structureId,
-            structureId: itemStructureId,
-            structureName,
-          })
-        );
+        const inContextMatchUps = matchUps.map((matchUp) => {
+          const inContextMatchUp = Object.assign(
+            makeDeepCopy(matchUp, true, true),
+            {
+              containerStructureId: structureId,
+              structureId: itemStructureId,
+              structureName,
+            }
+          );
+          return inContextMatchUp;
+        });
+        return inContextMatchUps;
       } else {
         return matchUps;
       }

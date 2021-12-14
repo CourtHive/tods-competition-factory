@@ -11,19 +11,22 @@ import {
 
 export function getDrawPositionsRanges({
   drawDefinition,
+  roundProfile,
   structureId,
   matchUpsMap,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
-  const structureMatchUps = getMappedStructureMatchUps({
-    matchUpsMap,
-    structureId,
-  });
-  const { roundProfile } = getRoundMatchUps({
-    matchUps: structureMatchUps,
-  });
+  if (!roundProfile) {
+    const structureMatchUps = getMappedStructureMatchUps({
+      matchUpsMap,
+      structureId,
+    });
+    ({ roundProfile } = getRoundMatchUps({
+      matchUps: structureMatchUps,
+    }));
+  }
 
   const firstRoundFirstDrawPosition = Math.min(
     ...(roundProfile[1]?.drawPositions || [])
