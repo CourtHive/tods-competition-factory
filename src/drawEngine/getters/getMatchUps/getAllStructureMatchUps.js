@@ -89,9 +89,9 @@ export function getAllStructureMatchUps({
   // don't process this structure if filters and filters don't include eventId, drawId or structureId
   if (!targetEvent || !targetStructure || !targetDraw) {
     return {
-      matchUps: [],
       collectionPositionMatchUps,
       roundMatchUps,
+      matchUps: [],
     };
   }
 
@@ -150,12 +150,14 @@ export function getAllStructureMatchUps({
 
   const roundNamingPolicy =
     appliedPolicies && appliedPolicies[POLICY_TYPE_ROUND_NAMING];
-  const { roundNamingProfile, roundProfile } = getRoundContextProfile({
+  const result = getRoundContextProfile({
     roundNamingPolicy,
     drawDefinition,
     structure,
     matchUps,
   });
+  const { roundNamingProfile, roundProfile } = result;
+  roundMatchUps = result.roundMatchUps;
 
   if (matchUpFilters) {
     matchUps = filterMatchUps({
@@ -174,6 +176,7 @@ export function getAllStructureMatchUps({
     });
     const { drawPositionsRanges } = getDrawPositionsRanges({
       drawDefinition,
+      roundProfile,
       matchUpsMap,
       structureId,
     });
@@ -226,10 +229,15 @@ export function getAllStructureMatchUps({
     });
   }
 
-  ({ roundMatchUps } = getRoundMatchUps({ matchUps }));
-  ({ collectionPositionMatchUps } = getCollectionPositionMatchUps({
-    matchUps,
-  }));
+  if (matchUpFilters?.matchUpTypes || matchUpFilters?.matchUpIds || inContext) {
+    ({ roundMatchUps } = getRoundMatchUps({ matchUps }));
+  }
+
+  if (structure.tieFormat || drawDefinition?.tieFormat || event?.tieFormat) {
+    ({ collectionPositionMatchUps } = getCollectionPositionMatchUps({
+      matchUps,
+    }));
+  }
 
   if (roundFilter)
     matchUps = matchUps?.filter(

@@ -11,13 +11,20 @@ export function getRoundContextProfile({
   structure,
   matchUps,
 }) {
-  const roundNamingProfile = {};
-  const isRoundRobin = structure.structures;
-  const isAdHocStructure = isAdHoc({ structure });
-  const isLuckyStructure = isLucky({ structure });
-
-  const { roundProfile } = getRoundMatchUps({ matchUps });
+  const { hasOddMatchUpsCount, roundProfile, roundMatchUps } = getRoundMatchUps(
+    { matchUps }
+  );
   const { structureAbbreviation, stage } = structure;
+
+  const isAdHocStructure = isAdHoc({ structure });
+  const isLuckyStructure = isLucky({
+    hasOddMatchUpsCount,
+    roundMatchUps,
+    structure,
+  });
+
+  const isRoundRobin = structure.structures;
+  const roundNamingProfile = {};
 
   const defaultRoundNamingPolicy =
     POLICY_ROUND_NAMING_DEFAULT[POLICY_TYPE_ROUND_NAMING];
@@ -86,5 +93,5 @@ export function getRoundContextProfile({
     );
   }
 
-  return { roundNamingProfile, roundProfile };
+  return { roundNamingProfile, roundProfile, roundMatchUps };
 }

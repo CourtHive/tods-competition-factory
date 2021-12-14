@@ -2,12 +2,19 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 
 import { LUCKY_DRAW } from '../../../constants/drawDefinitionConstants';
 
-export function isLucky({ drawDefinition, structure }) {
+export function isLucky({
+  hasOddMatchUpsCount,
+  drawDefinition,
+  roundMatchUps,
+  structure,
+}) {
   if (!structure) return false;
 
-  const { hasOddMatchUpsCount, roundMatchUps } = getRoundMatchUps({
-    matchUps: structure.matchUps || [],
-  });
+  if (!roundMatchUps) {
+    ({ hasOddMatchUpsCount, roundMatchUps } = getRoundMatchUps({
+      matchUps: structure.matchUps || [],
+    }));
+  }
 
   const hasFirstRoundDrawPositions = !!roundMatchUps?.[1]?.find(
     ({ drawPositions }) => drawPositions

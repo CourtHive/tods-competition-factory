@@ -14,12 +14,15 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 export function pruneDrawDefinition({
+  matchPlayDrawPositions = true, // when simply extracting matchUps for aggregation, drawPositions are unnecessary
   tournamentRecord,
   drawDefinition,
   drawId,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+
+  let relevantMatchUps = [];
 
   const { drawsAnalysis } = analyzeDraws({ tournamentRecord });
   if (drawsAnalysis.canBePruned.includes(drawId)) {
@@ -28,9 +31,9 @@ export function pruneDrawDefinition({
     const {
       structures: [mainStructure],
     } = getDrawStructures({
+      stageSequence: 1,
       drawDefinition,
       stage: MAIN,
-      stageSequence: 1,
     });
 
     const structureData = drawAnalysis.structuresData.find(
@@ -38,7 +41,7 @@ export function pruneDrawDefinition({
     );
 
     const matchUps = mainStructure.matchUps || [];
-    const relevantMatchUps = matchUps
+    relevantMatchUps = matchUps
       .sort((a, b) => a.roundPosition - b.roundPosition)
       .filter(
         ({ roundNumber }) => !structureData.inactiveRounds.includes(roundNumber)
@@ -75,29 +78,37 @@ export function pruneDrawDefinition({
         }))
       );
 
-      matchPlayMatchUps.forEach(
-        (matchUp) =>
-          (matchUp.drawPositions = matchUp.drawPositions.map(
+      matchPlayMatchUps.forEach((matchUp) => {
+        if (matchPlayDrawPositions) {
+          matchUp.drawPositions = matchUp.drawPositions.map(
             (drawPosition) => drawPositionsMap[drawPosition]
-          ))
-      );
+          );
+        } else {
+          delete matchUp.drawPositions;
+        }
+      });
 
-      const updatedPositionAssignments = mainStructure.positionAssignments
-        .filter((assignment) =>
-          existingDrawPositions.includes(assignment.drawPosition)
-        )
-        .map((assignment) => {
-          assignment.drawPosition = drawPositionsMap[assignment.drawPosition];
-          return assignment;
-        });
+      if (matchPlayDrawPositions) {
+        const updatedPositionAssignments = mainStructure.positionAssignments
+          .filter((assignment) =>
+            existingDrawPositions.includes(assignment.drawPosition)
+          )
+          .map((assignment) => {
+            assignment.drawPosition = drawPositionsMap[assignment.drawPosition];
+            return assignment;
+          });
 
-      mainStructure.positionAssignments = updatedPositionAssignments;
+        mainStructure.positionAssignments = updatedPositionAssignments;
+      } else {
+        mainStructure.positionAssignments = [];
+      }
       mainStructure.matchUps = matchPlayMatchUps;
+      relevantMatchUps = matchPlayMatchUps;
     }
 
     deleteMatchUpsNotice({ drawDefinition, matchUpIds: deletedMatchUpIds });
     modifyDrawNotice({ drawDefinition });
   }
 
-  return { ...SUCCESS };
+  return { ...SUCCESS, matchUps: relevantMatchUps };
 }
