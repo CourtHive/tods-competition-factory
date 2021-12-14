@@ -21,7 +21,7 @@ export function getWalkoverWinningSide({
   return feedRound
     ? 1
     : sourceMatchUps.reduce((sideNumber, sourceMatchUp, index) => {
-        if (sourceMatchUp.drawPositions.includes(drawPosition))
+        if (sourceMatchUp.drawPositions?.includes(drawPosition))
           return index + 1;
         return sideNumber;
       }, undefined);

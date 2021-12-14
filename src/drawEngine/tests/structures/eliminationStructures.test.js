@@ -39,18 +39,20 @@ it('can generate main draw', () => {
     [11, 12],
     [13, 14],
     [15, 16],
-    [undefined, undefined],
-    [undefined, undefined],
-    [undefined, undefined],
-    [undefined, undefined],
-    [undefined, undefined],
-    [undefined, undefined],
-    [undefined, undefined],
-    [undefined, undefined],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
   ];
 
   matchUps.forEach((matchUp, i) =>
-    expect(matchUp.drawPositions).toMatchObject(drawPositions[i])
+    expect(matchUp.drawPositions.filter(Boolean)).toMatchObject(
+      drawPositions[i]
+    )
   );
 
   const finishingRounds = [4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 2, 2, 1];

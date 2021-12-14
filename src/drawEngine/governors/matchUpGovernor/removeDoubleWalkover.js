@@ -87,9 +87,9 @@ export function removeDoubleWalkover(params) {
 
     if (pairedPreviousMatchUpComplete) {
       const sourceDrawPositions = matchUp.drawPositions || [];
-      let targetDrawPositions = winnerMatchUp.drawPositions.filter(Boolean);
+      let targetDrawPositions = winnerMatchUp.drawPositions?.filter(Boolean);
       if (overlap(sourceDrawPositions, targetDrawPositions)) {
-        targetDrawPositions = targetDrawPositions.filter(
+        targetDrawPositions = targetDrawPositions?.filter(
           (drawPosition) => !sourceDrawPositions.includes(drawPosition)
         );
       }
@@ -98,7 +98,7 @@ export function removeDoubleWalkover(params) {
         pairedPreviousDrawPositions
       );
       const drawPositionToRemove = possibleBranchDrawPositions.find(
-        (drawPosition) => targetDrawPositions.includes(drawPosition)
+        (drawPosition) => targetDrawPositions?.includes(drawPosition)
       );
 
       if (nextWinnerMatchUp && drawPositionToRemove) {

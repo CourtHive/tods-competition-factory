@@ -90,7 +90,7 @@ export function removeDirectedParticipants(params) {
     );
 
   const drawPositionMatchUps = sourceMatchUps.filter((matchUp) =>
-    matchUp.drawPositions.includes(loserDrawPosition)
+    matchUp.drawPositions?.includes(loserDrawPosition)
   );
 
   if (winnerMatchUp) {

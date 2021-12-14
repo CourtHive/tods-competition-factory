@@ -42,7 +42,9 @@ export function generatePositioningCandidate(params) {
   const errors = [];
   let groupKey;
 
-  const groupSize = Math.min(...drawPositionGroups.map((dpg) => dpg.length));
+  const groupSize = Math.min(
+    ...drawPositionGroups?.map((dpg) => dpg?.length).filter(Boolean)
+  );
   const isRoundRobin = groupSize > 2;
 
   const candidatePositionAssignments = makeDeepCopy(

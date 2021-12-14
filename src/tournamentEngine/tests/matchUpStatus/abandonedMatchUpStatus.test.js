@@ -50,14 +50,12 @@ it('can set matchUp score and advance winningSide when changing from ABANDONED m
   const { completedMatchUps } = tournamentEngine.drawMatchUps({ drawId });
   expect(completedMatchUps[0].matchUpId).toEqual(matchUpId);
 
-  const { orderedPairs } = getOrderedDrawPositionPairs();
-  expect(orderedPairs).toEqual([
+  const { filteredOrderedPairs } = getOrderedDrawPositionPairs();
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
-    [1, undefined],
-    [undefined, undefined],
-    [undefined, undefined],
+    [1],
   ]);
 });

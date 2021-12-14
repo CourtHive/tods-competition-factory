@@ -1,7 +1,7 @@
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
-test.skip('bye propagated double walkover hydration', () => {
+test('bye propagated double walkover hydration', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
       {
