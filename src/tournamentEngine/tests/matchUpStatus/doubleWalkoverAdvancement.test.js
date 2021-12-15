@@ -109,7 +109,9 @@ test('A produced WALKOVER encountering a produced WALKOVER winningSide will not 
 
   // expect R4P1 to have no drawPositions and matchUpStatus: TO_BE_PLAYED
   targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  if (targetMatchUp.drawPositions) {
+    expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  }
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.winningSide).toEqual(undefined);
 

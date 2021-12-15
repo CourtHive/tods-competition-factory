@@ -47,16 +47,17 @@ it('supports transitive BYE removal in large structures', () => {
   let finalMatchUp = matchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1
   );
-  expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([]);
-  let { orderedPairs } = getOrderedDrawPositionPairs();
-  expect(orderedPairs).toEqual([
+  if (finalMatchUp.drawPositions) {
+    expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  }
+  let { filteredOrderedPairs } = getOrderedDrawPositionPairs();
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
-    [1, undefined], // drawPosition 1 is BYE-advanced
-    [8, undefined], // drawPosition 8 is BYE-advanced
-    [undefined, undefined],
+    [1], // drawPosition 1 is BYE-advanced
+    [8], // drawPosition 8 is BYE-advanced
   ]);
 
   generateRange(5, 9).forEach((drawPosition) => {
@@ -73,15 +74,15 @@ it('supports transitive BYE removal in large structures', () => {
     }
   });
 
-  ({ orderedPairs } = getOrderedDrawPositionPairs());
-  expect(orderedPairs).toEqual([
+  ({ filteredOrderedPairs } = getOrderedDrawPositionPairs());
+  expect(filteredOrderedPairs).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
-    [1, undefined], // drawPosition 1 is BYE-advanced
+    [1], // drawPosition 1 is BYE-advanced
     [5, 7], // drawPositions 5, 6, 7, 8 are BYEs and 5, 7 are BYE-advanced
-    [7, undefined], // drawPosition 7 is BYE-advanced
+    [7], // drawPosition 7 is BYE-advanced
   ]);
 
   removeAssignment({
@@ -89,15 +90,14 @@ it('supports transitive BYE removal in large structures', () => {
     structureId,
     drawPosition: 8,
   });
-  ({ orderedPairs } = getOrderedDrawPositionPairs());
-  expect(orderedPairs).toEqual([
+  ({ filteredOrderedPairs } = getOrderedDrawPositionPairs());
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
-    [1, undefined], // drawPosition 1 is BYE-advanced
-    [5, undefined], // drawPositions 5, 6 are BYEs and 5 is BYE-advanced
-    [undefined, undefined],
+    [1], // drawPosition 1 is BYE-advanced
+    [5], // drawPositions 5, 6 are BYEs and 5 is BYE-advanced
   ]);
 
   const participantId = originalPositionAssignments.find(
@@ -111,15 +111,15 @@ it('supports transitive BYE removal in large structures', () => {
     participantId,
   });
   expect(result.success).toEqual(true);
-  ({ orderedPairs } = getOrderedDrawPositionPairs());
-  expect(orderedPairs).toEqual([
+  ({ filteredOrderedPairs } = getOrderedDrawPositionPairs());
+  expect(filteredOrderedPairs).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
-    [1, undefined], // drawPosition 1 is BYE-advanced
+    [1], // drawPosition 1 is BYE-advanced
     [5, 8], // drawPositions 5, 6 are BYEs and 5 is BYE-advanced
-    [8, undefined],
+    [8],
   ]);
 
   const {
@@ -161,15 +161,14 @@ function swapTest({ swapPosition }) {
     ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
   );
   expect(finalMatchUp.drawPositions).toEqual([1, undefined]);
-  let { orderedPairs } = getOrderedDrawPositionPairs();
-  expect(orderedPairs).toEqual([
+  let { filteredOrderedPairs } = getOrderedDrawPositionPairs();
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
-    [1, undefined], // drawPosition 1 is BYE-advanced
-    [8, undefined], // drawPosition 8 is BYE-advanced
-    [undefined, undefined],
+    [1], // drawPosition 1 is BYE-advanced
+    [8], // drawPosition 8 is BYE-advanced
   ]);
 
   removeAssignment({
@@ -178,15 +177,14 @@ function swapTest({ swapPosition }) {
     drawPosition: 3,
     replaceWithBye: true,
   });
-  ({ orderedPairs } = getOrderedDrawPositionPairs());
-  expect(orderedPairs).toEqual([
+  ({ filteredOrderedPairs } = getOrderedDrawPositionPairs());
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1, 4], // drawPositions 1 and 4 are both BYE-advanced
-    [8, undefined], // drawPosition 8 is BYE-advanced
-    [undefined, undefined],
+    [8], // drawPosition 8 is BYE-advanced
   ]);
 
   removeAssignment({
@@ -196,15 +194,15 @@ function swapTest({ swapPosition }) {
     replaceWithBye: true,
   });
 
-  ({ orderedPairs } = getOrderedDrawPositionPairs());
-  expect(orderedPairs).toEqual([
+  ({ filteredOrderedPairs } = getOrderedDrawPositionPairs());
+  expect(filteredOrderedPairs).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1, 3],
-    [8, undefined],
-    [1, undefined], // drawPosition 4 is now a BYE, advancing 1
+    [8],
+    [1], // drawPosition 4 is now a BYE, advancing 1
   ]);
 
   ({
@@ -231,15 +229,14 @@ function swapTest({ swapPosition }) {
 
   swapPositions({ drawPosition: 5, swapPosition, drawId, structureId });
 
-  ({ orderedPairs } = getOrderedDrawPositionPairs());
-  expect(orderedPairs).toEqual([
+  ({ filteredOrderedPairs } = getOrderedDrawPositionPairs());
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4], // should be drawPosition 5's previous participantId and a bye
     [5, 6],
     [7, 8],
     [1, swapPosition], // should be drawPosition 5's previousy participantId paired with drawPosition: 1
     [6, 8],
-    [undefined, undefined],
   ]);
 }
 

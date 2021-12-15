@@ -65,13 +65,15 @@ it('can add drawPositionsRange to inContext matchUps in a SINGLE_ELIMINATION str
       );
     }
 
-    const filteredDrawPositions = drawPositions.filter(Boolean);
-    const overlap = intersection(
-      filteredDrawPositions,
-      drawPositionsRange.possibleDrawPositions
-    );
-    if (filteredDrawPositions.length) {
-      expect(overlap.length).toBeGreaterThan(0);
+    if (drawPositions) {
+      const filteredDrawPositions = drawPositions.filter(Boolean);
+      const overlap = intersection(
+        filteredDrawPositions,
+        drawPositionsRange.possibleDrawPositions
+      );
+      if (filteredDrawPositions.length) {
+        expect(overlap.length).toBeGreaterThan(0);
+      }
     }
   });
 });
@@ -121,13 +123,15 @@ it('can add drawPositionsRange to inContext matchUps in a FEED_IN_CHAMPIONSHIP_T
       );
     }
 
-    const filteredDrawPositions = drawPositions.filter(Boolean);
-    const overlap = intersection(
-      filteredDrawPositions,
-      drawPositionsRange.possibleDrawPositions
-    );
-    if (filteredDrawPositions.length) {
-      expect(overlap.length).toBeGreaterThan(0);
+    if (drawPositions) {
+      const filteredDrawPositions = drawPositions.filter(Boolean);
+      const overlap = intersection(
+        filteredDrawPositions,
+        drawPositionsRange.possibleDrawPositions
+      );
+      if (filteredDrawPositions.length) {
+        expect(overlap.length).toBeGreaterThan(0);
+      }
     }
   });
 });

@@ -1,8 +1,8 @@
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
-test.skip('bye propagated double walkover hydration', () => {
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+test('bye propagated double walkover hydration', () => {
+  let result = mocksEngine.generateTournamentRecord({
     drawProfiles: [
       {
         drawSize: 8,
@@ -18,13 +18,15 @@ test.skip('bye propagated double walkover hydration', () => {
     ],
   });
 
-  tournamentEngine.setState(tournamentRecord);
+  tournamentEngine.setState(result.tournamentRecord);
 
-  let matchUps = tournamentEngine
+  result = tournamentEngine
     .devContext({ WOWO: true })
-    .allTournamentMatchUps().matchUps;
-  const matchUp = matchUps.find(
+    .allTournamentMatchUps({ inContext: true });
+
+  const matchUp = result.matchUps.find(
     (m) => m.roundNumber === 3 && m.roundPosition === 1
   );
-  console.log(matchUp);
+  expect(matchUp.sides[1].sideNumber).toEqual(2);
+  expect(matchUp.sides.length).toEqual(2);
 });

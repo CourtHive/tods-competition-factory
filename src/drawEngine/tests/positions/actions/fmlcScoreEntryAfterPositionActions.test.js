@@ -76,13 +76,11 @@ it('able to enter MAIN structure score after manually placing BYE in CONSOLATION
   const { filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   });
-  expect(filteredOrderedPairs).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1, 3],
-    [],
-    [],
   ]);
 });

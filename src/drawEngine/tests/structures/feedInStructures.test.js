@@ -40,32 +40,34 @@ it('can generate structured entry draw', () => {
     [26, 27],
     [28, 29],
     [30, 31],
-    [undefined, 8],
-    [undefined, 9],
-    [undefined, 10],
-    [undefined, 11],
-    [undefined, 12],
-    [undefined, 13],
-    [undefined, 14],
-    [undefined, 15],
-    [undefined, undefined],
-    [undefined, undefined],
-    [undefined, undefined],
-    [undefined, undefined],
-    [undefined, 4],
-    [undefined, 5],
-    [undefined, 6],
-    [undefined, 7],
-    [undefined, undefined],
-    [undefined, undefined],
-    [undefined, 2],
-    [undefined, 3],
-    [undefined, undefined],
-    [undefined, 1],
+    [8],
+    [9],
+    [10],
+    [11],
+    [12],
+    [13],
+    [14],
+    [15],
+    [],
+    [],
+    [],
+    [],
+    [4],
+    [5],
+    [6],
+    [7],
+    [],
+    [],
+    [2],
+    [3],
+    [],
+    [1],
   ];
 
   matchUps.forEach((matchUp, i) => {
-    expect(matchUp.drawPositions).toMatchObject(drawPositions[i]);
+    expect(matchUp.drawPositions.filter(Boolean)).toMatchObject(
+      drawPositions[i]
+    );
   });
 });
 

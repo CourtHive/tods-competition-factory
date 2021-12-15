@@ -14,7 +14,7 @@ test('collection matchUps appear in participant reports', () => {
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
-  const getTeamParticipants = (drawPositions) => {
+  const getTeamParticipants = (drawPositions = []) => {
     const teamParticipantIds = positionAssignments
       .filter(({ drawPosition }) => drawPositions.includes(drawPosition))
       .map(getParticipantId);

@@ -80,7 +80,9 @@ test('drawSize: 4 - Removing a DOUBLE_WALKOVER will remove produced WALKOVER in 
   // R2P1 should now be a produced WALKOVER
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  if (targetMatchUp.drawPositions) {
+    expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  }
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toBeUndefined();
 
@@ -195,7 +197,9 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   // R2P1 should now be a produced WALKOVER
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  if (targetMatchUp.drawPositions) {
+    expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  }
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toBeUndefined();
 
@@ -287,7 +291,9 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   // R2P2 should now be a produced WALKOVER
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 2 });
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  if (targetMatchUp.drawPositions) {
+    expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  }
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toBeUndefined();
 

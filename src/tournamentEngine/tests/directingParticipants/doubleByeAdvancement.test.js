@@ -230,7 +230,7 @@ it('can create double bye and replace bye with alternate', () => {
   const finalMatchUp = matchUps.find(
     (matchUp) => matchUp.roundNumber === 3 && matchUp.roundPosition === 1
   );
-  expect(finalMatchUp.drawPositions).toEqual([4, undefined]);
+  expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([4]);
   ({ validActions } = tournamentEngine.matchUpActions(matchUp));
   scoreAction = validActions.find(({ type }) => type === SCORE);
   ({ method, payload } = scoreAction);

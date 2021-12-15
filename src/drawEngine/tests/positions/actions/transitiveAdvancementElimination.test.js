@@ -26,35 +26,14 @@ it('can advance participants when double BYEs are created', () => {
   } = tournamentEngine.getEvent({ drawId });
   const structureId = structures[0].structureId;
 
-  let { orderedPairs, matchUps } = getOrderedDrawPositionPairs({ structureId });
-  let structureMatchUps = matchUps.filter(
-    (matchUp) => matchUp.structureId === structureId
-  );
-  let finalMatchUp = structureMatchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1
-  );
-  expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([]);
-  ({ orderedPairs, matchUps } = getOrderedDrawPositionPairs({ structureId }));
-
-  /*
-  expect(orderedPairs.map((op) => op.filter(Boolean))).toEqual([
+  let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1], // drawPosition 1 is BYE-advanced
     [8], // drawPosition 8 is BYE-advanced
-    [],
-  ]);
-  */
-  expect(orderedPairs).toEqual([
-    [1, 2],
-    [3, 4],
-    [5, 6],
-    [7, 8],
-    [1, undefined], // drawPosition 1 is BYE-advanced
-    [8, undefined], // drawPosition 8 is BYE-advanced
-    [undefined, undefined],
   ]);
 
   removeAssignment({
@@ -63,27 +42,15 @@ it('can advance participants when double BYEs are created', () => {
     drawPosition: 3,
     replaceWithBye: true,
   });
-  ({ orderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  /*
-  expect(orderedPairs.map((op) => op.filter(Boolean))).toEqual([
+  ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
+
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1, 4], // drawPositions 1 and 4 are both BYE-advanced
     [8], // drawPosition 8 is BYE-advanced
-    [],
-  ]);
-  */
-
-  expect(orderedPairs).toEqual([
-    [1, 2],
-    [3, 4],
-    [5, 6],
-    [7, 8],
-    [1, 4], // drawPositions 1 and 4 are both BYE-advanced
-    [8, undefined], // drawPosition 8 is BYE-advanced
-    [undefined, undefined],
   ]);
 
   removeAssignment({
@@ -93,15 +60,15 @@ it('can advance participants when double BYEs are created', () => {
     replaceWithBye: true,
   });
 
-  ({ orderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  expect(orderedPairs).toEqual([
+  ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
+  expect(filteredOrderedPairs).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
     [1, 3],
-    [8, undefined],
-    [1, undefined], // drawPosition 4 is now a BYE, advancing 1
+    [8],
+    [1], // drawPosition 4 is now a BYE, advancing 1
   ]);
 
   // now remove assignment for { drawPosition: 2 }
@@ -112,14 +79,13 @@ it('can advance participants when double BYEs are created', () => {
     structureId,
   });
   expect(result.success).toEqual(true);
-  ({ orderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  expect(orderedPairs).toEqual([
+  ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
     [7, 8],
-    [3, undefined],
-    [8, undefined],
-    [undefined, undefined],
+    [3],
+    [8],
   ]);
 });
