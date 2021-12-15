@@ -1,4 +1,5 @@
 import { analyzeMatchUp } from './analyzeMatchUp';
+import { parse } from './matchUpFormatCode/parse';
 import { analyzeSet } from './analyzeSet';
 
 import {
@@ -9,7 +10,6 @@ import {
   MISSING_VALUE,
   INVALID_SET_NUMBER,
 } from '../../../constants/errorConditionConstants';
-import { parse } from './matchUpFormatCode/parse';
 
 export function submitScoreChange(params) {
   const { matchUp, sideNumber, setNumber, value } = params || {};
