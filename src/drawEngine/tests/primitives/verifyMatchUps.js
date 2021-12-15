@@ -132,7 +132,7 @@ export function verifySideNumbers({
     roundNumbers.forEach((roundNumber) => {
       const profile = roundMatchUps[roundNumber].map((matchUp) => [
         matchUp.drawPositions,
-        matchUp.sides?.map((side) => side?.sideNumber),
+        matchUp.sides?.map((side) => side?.sideNumber).filter(Boolean),
       ]);
       expect(profile).toMatchObject(expectedDrawPositions[roundNumber]);
     });

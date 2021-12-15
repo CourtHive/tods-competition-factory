@@ -356,22 +356,10 @@ it('can reliably generate sideNumbers', () => {
 
   let expectedDrawPositions = {
     2: [
-      [
-        [3, undefined],
-        [undefined, 2],
-      ],
-      [
-        [7, undefined],
-        [undefined, 2],
-      ],
-      [
-        [10, undefined],
-        [1, undefined],
-      ],
-      [
-        [15, undefined],
-        [undefined, 2],
-      ],
+      [[3], [2]], // for matchUp [drawPositions, sideNumbers]
+      [[7], [2]],
+      [[10], [1]],
+      [[15], [2]],
     ],
   };
   verifySideNumbers({ structureId, drawDefinition, expectedDrawPositions });

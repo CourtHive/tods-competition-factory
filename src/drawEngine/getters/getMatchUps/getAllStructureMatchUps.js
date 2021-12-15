@@ -395,18 +395,26 @@ export function getAllStructureMatchUps({
     if (Array.isArray(drawPositions)) {
       const { orderedDrawPositions, displayOrder } = getOrderedDrawPositions({
         drawPositions,
-        roundProfile,
         roundPosition,
+        roundProfile,
         roundNumber,
       });
+
       const isFeedRound =
         roundProfile[roundNumber] && roundProfile[roundNumber].feedRound;
       const reversedDisplayOrder = displayOrder[0] !== orderedDrawPositions[0];
-      const sides = orderedDrawPositions.map((drawPosition, index) => {
+
+      // ensure there are two sides generated
+      const sideDrawPositions = orderedDrawPositions
+        .concat(undefined, undefined)
+        .slice(0, 2);
+
+      const sides = sideDrawPositions.map((drawPosition, index) => {
         const sideNumber = index + 1;
         const displaySideNumber = reversedDisplayOrder
           ? 3 - sideNumber
           : sideNumber;
+
         const side = getSide({
           drawPositionCollectionAssignment,
           positionAssignments,

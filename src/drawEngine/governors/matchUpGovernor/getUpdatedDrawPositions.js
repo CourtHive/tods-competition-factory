@@ -13,7 +13,7 @@ export function getUpdatedDrawPositions({ drawPosition, drawPositions }) {
   let positionAdded;
   let positionAssigned = drawPositions?.includes(drawPosition);
   const updatedDrawPositions = positionAssigned
-    ? drawPositions
+    ? drawPositions || []
     : []
         .concat(...drawPositions, undefined, undefined)
         .slice(0, 2) // accounts for empty array, should always have length 2
@@ -26,7 +26,8 @@ export function getUpdatedDrawPositions({ drawPosition, drawPositions }) {
             return position;
           }
         })
-        .sort(numericSort);
+        .sort(numericSort)
+        .filter(Boolean);
 
   return { updatedDrawPositions, positionAdded, positionAssigned };
 }

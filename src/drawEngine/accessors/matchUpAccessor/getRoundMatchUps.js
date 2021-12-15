@@ -114,10 +114,10 @@ export function getRoundMatchUps({ matchUps = [] }) {
       roundProfile[roundNumber].drawPositions = orderedDrawPositions;
       roundProfile[roundNumber].pairedDrawPositions = pairedDrawPositions;
     } else {
-      const priorRoundDrawPositions =
-        roundProfile[roundNumber - 1].drawPositions;
+      const priorRound = roundProfile[roundNumber - 1];
+      const priorRoundDrawPositions = priorRound.drawPositions;
       const chunkFactor =
-        priorRoundDrawPositions.length / currentRoundDrawPositions.length;
+        priorRound.matchUpsCount / roundProfile[roundNumber].matchUpsCount;
       const priorRoundDrawPositionChunks = chunkArray(
         priorRoundDrawPositions,
         chunkFactor
@@ -125,10 +125,14 @@ export function getRoundMatchUps({ matchUps = [] }) {
 
       // ensures that drawPositions are returned in top to bottom order
       const roundDrawPositions = currentRoundMatchUps.map((matchUp) => {
-        const { roundPosition, drawPositions } = matchUp;
-        if (!roundPosition) return drawPositions;
-        const filteredDrawPositions = drawPositions?.filter(Boolean) || [];
+        const { roundPosition } = matchUp;
+        const drawPositions = []
+          .concat(...(matchUp.drawPositions || []), undefined, undefined)
+          .slice(0, 2); // accounts for empty array, should always have length 2
 
+        if (!roundPosition) return drawPositions;
+
+        const filteredDrawPositions = drawPositions?.filter(Boolean) || [];
         if (!filteredDrawPositions?.length) return [undefined, undefined];
 
         // { roundNumber: 2 } is the first possible feed round and the last time that a numeric sort is guaranteed to work
@@ -136,13 +140,13 @@ export function getRoundMatchUps({ matchUps = [] }) {
           return drawPositions?.slice().sort(numericSort);
         }
 
+        const isFeedRound =
+          intersection(priorRoundDrawPositions, filteredDrawPositions)
+            .length !== filteredDrawPositions?.length;
+
         // if the prior round does NOT include the one existing drawPosition then it is a feed round
         // ... and fed positions are always { sideNumber: 1 }
-        if (
-          filteredDrawPositions?.length &&
-          intersection(priorRoundDrawPositions, filteredDrawPositions)
-            .length !== filteredDrawPositions?.length
-        ) {
+        if (filteredDrawPositions?.length && isFeedRound) {
           if (filteredDrawPositions?.length === 1) {
             return [filteredDrawPositions[0], undefined];
           } else {
@@ -154,19 +158,23 @@ export function getRoundMatchUps({ matchUps = [] }) {
         // this accounts for ADVANCED fed positions which are NOT guaranteed to be in numeric order
         // ... because a lower number fed position may be in { sideNumber: 2 } while an drawPosition advanced
         // from the first round may be in { sideNumber: 1 }
+        // const targetChunkIndex = (roundPosition - 1) * 2;
         const targetChunkIndex = (roundPosition - 1) * 2;
         const targetChunks = priorRoundDrawPositionChunks.slice(
           targetChunkIndex,
           targetChunkIndex + 2
         );
+
         const orderedPositions = targetChunks.map((chunk) => {
-          const drawPositionInChunk = drawPositions?.find((drawPosition) =>
-            chunk.includes(drawPosition)
+          const drawPositionInChunk = filteredDrawPositions?.find(
+            (drawPosition) => chunk.includes(drawPosition)
           );
           return drawPositionInChunk;
         });
+
         return orderedPositions;
       });
+
       roundProfile[roundNumber].drawPositions = roundDrawPositions?.flat();
       roundProfile[roundNumber].pairedDrawPositions = roundDrawPositions;
     }
