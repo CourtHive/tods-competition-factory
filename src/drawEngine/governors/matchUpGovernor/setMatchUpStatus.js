@@ -188,6 +188,7 @@ export function setMatchUpStatus(params) {
     });
     const tieFormat =
       dualMatchUp?.tieFormat ||
+      structure?.tieFormat ||
       drawDefinition?.tieFormat ||
       event?.tieFormat ||
       undefined;
