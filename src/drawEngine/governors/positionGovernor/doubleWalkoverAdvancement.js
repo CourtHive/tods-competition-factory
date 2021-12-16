@@ -1,15 +1,15 @@
 import { getPairedPreviousMatchUpIsWOWO } from './getPairedPreviousMatchUpisWOWO';
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
 import { getWalkoverWinningSide } from '../matchUpGovernor/getWalkoverWinningSide';
-import {
-  advanceDrawPosition,
-  assignDrawPositionBye,
-} from './byePositioning/assignDrawPositionBye';
 import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { findStructure } from '../../getters/findStructure';
 import { positionTargets } from './positionTargets';
 import { overlap } from '../../../utilities';
+import {
+  advanceDrawPosition,
+  assignDrawPositionBye,
+} from './byePositioning/assignDrawPositionBye';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
