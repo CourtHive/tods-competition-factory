@@ -16,7 +16,10 @@ export function getWalkoverWinningSide({
     // sourceMatchUps MUST be sorted by roundPosition
     .sort((a, b) => a.roundPosition - b.roundPosition);
 
-  const feedRound = sourceMatchUps.find(({ feedRound }) => feedRound);
+  const matchUp = inContextDrawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+  const feedRound = matchUp.feedRound;
 
   return feedRound
     ? 1

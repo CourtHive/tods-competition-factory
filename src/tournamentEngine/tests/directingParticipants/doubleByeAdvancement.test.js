@@ -3,13 +3,13 @@ import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { ALTERNATE } from '../../../constants/entryStatusConstants';
+import { SCORE } from '../../../constants/matchUpActionConstants';
 import {
   BYE,
   COMPLETED,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
-import { SCORE } from '../../../constants/matchUpActionConstants';
 
 it('can create double bye and remove advanced participant when outcome is reset', () => {
   const participantsProfile = {

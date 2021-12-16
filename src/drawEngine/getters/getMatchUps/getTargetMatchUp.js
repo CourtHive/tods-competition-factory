@@ -1,8 +1,8 @@
 import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { getDevContext } from '../../../global/state/globalState';
 import { chunkArray, generateRange } from '../../../utilities';
 import { getPositionAssignments } from '../positionsGetter';
-import { getDevContext } from '../../../global/state/globalState';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 
 import { MISSING_TARGET_LINK } from '../../../constants/errorConditionConstants';
@@ -15,12 +15,11 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 export function getTargetMatchUp({
-  drawDefinition,
-  inContextDrawMatchUps,
-
-  targetLink,
-  sourceRoundPosition,
   sourceRoundMatchUpCount,
+  inContextDrawMatchUps,
+  sourceRoundPosition,
+  drawDefinition,
+  targetLink,
 }) {
   if (!targetLink) return { error: MISSING_TARGET_LINK };
 
@@ -33,6 +32,7 @@ export function getTargetMatchUp({
       positionInterleave,
     },
   } = targetLink;
+
   const { structure: targetStructure } = findStructure({
     drawDefinition,
     structureId,
