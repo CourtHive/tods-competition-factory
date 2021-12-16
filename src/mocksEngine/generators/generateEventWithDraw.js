@@ -176,6 +176,7 @@ export function generateEventWithDraw({
         );
         return {
           participantName: `Team ${teamIndex + 1}`,
+          participantOtherName: `TM${teamIndex + 1}`,
           participantRole: COMPETITOR,
           participantType: TEAM,
           participantId: UUID(),
