@@ -28,25 +28,27 @@ export function isActiveDownstream(params) {
     winnerMatchUp &&
     positionTargets({
       matchUpId: winnerMatchUp.matchUpId,
-      drawDefinition,
       inContextDrawMatchUps,
+      drawDefinition,
     });
 
   const loserActive =
     loserTargetData &&
     isActiveDownstream({
       inContextDrawMatchUps,
-      drawDefinition,
       targetData: loserTargetData,
+      drawDefinition,
     });
 
   const winnerActive =
     winnerTargetData &&
     isActiveDownstream({
       inContextDrawMatchUps,
-      drawDefinition,
       targetData: winnerTargetData,
+      drawDefinition,
     });
 
-  return !!(winnerActive || loserActive);
+  const isActive = !!(winnerActive || loserActive);
+
+  return isActive;
 }

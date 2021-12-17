@@ -909,13 +909,12 @@ test('consolation fed player advanced by WO/WO will be removed when WO/WO cleare
   ];
   let mockProfile = { drawProfiles };
 
-  const { tournamentRecord } =
-    mocksEngine.generateTournamentRecord(mockProfile);
+  let result = mocksEngine.generateTournamentRecord(mockProfile);
+  const { tournamentRecord } = result;
 
   tournamentEngine.setState(tournamentRecord);
 
   let matchUps = tournamentEngine.tournamentMatchUps();
-
   // DOUBLE_WALKOVER produces 2 additional completed matchUps
   expect(matchUps.completedMatchUps.length).toEqual(completionGoal + 2);
 
@@ -949,7 +948,7 @@ test('consolation fed player advanced by WO/WO will be removed when WO/WO cleare
   });
 
   setDevContext({ WOWO: true });
-  let result = tournamentEngine.setMatchUpStatus({
+  result = tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
     drawId: targetMatchUp.drawId,
     outcome: toBePlayed,

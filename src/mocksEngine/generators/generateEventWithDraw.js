@@ -176,6 +176,7 @@ export function generateEventWithDraw({
         );
         return {
           participantName: `Team ${teamIndex + 1}`,
+          participantOtherName: `TM${teamIndex + 1}`,
           participantRole: COMPETITOR,
           participantType: TEAM,
           participantId: UUID(),
@@ -331,6 +332,46 @@ export function generateEventWithDraw({
 
     const manual = drawProfile.automated === false;
     if (!manual) {
+      if (completeAllMatchUps || completionGoal) {
+        const result = completeDrawMatchUps({
+          matchUpStatusProfile,
+          completeAllMatchUps,
+          randomWinningSide,
+          completionGoal,
+          drawDefinition,
+          matchUpFormat,
+        });
+        if (result.error) return result;
+        const completedCount = result.completedCount;
+
+        if (drawType === ROUND_ROBIN_WITH_PLAYOFF) {
+          const mainStructure = drawDefinition.structures.find(
+            (structure) => structure.stage === MAIN
+          );
+          let result = automatedPlayoffPositioning({
+            structureId: mainStructure.structureId,
+            tournamentRecord,
+            drawDefinition,
+            event,
+          });
+          // ignore when positioning cannot occur because of incomplete source structure
+
+          const playoffCompletionGoal = completionGoal
+            ? completionGoal - completedCount
+            : undefined;
+          result = completeDrawMatchUps({
+            completionGoal: completionGoal ? playoffCompletionGoal : undefined,
+            matchUpStatusProfile,
+            completeAllMatchUps,
+            randomWinningSide,
+            drawDefinition,
+            matchUpFormat,
+          });
+          if (result.error) return result;
+        }
+        // TODO: check if RRWPO & automate & complete
+      }
+
       if (drawProfile.outcomes) {
         const { matchUps } = allDrawMatchUps({
           drawDefinition,
@@ -399,46 +440,6 @@ export function generateEventWithDraw({
           // will not throw errors for BYE matchUps
           if (result?.error) return result;
         }
-      }
-
-      if (completeAllMatchUps || completionGoal) {
-        const result = completeDrawMatchUps({
-          matchUpStatusProfile,
-          completeAllMatchUps,
-          randomWinningSide,
-          completionGoal,
-          drawDefinition,
-          matchUpFormat,
-        });
-        if (result.error) return result;
-        const completedCount = result.completedCount;
-
-        if (drawType === ROUND_ROBIN_WITH_PLAYOFF) {
-          const mainStructure = drawDefinition.structures.find(
-            (structure) => structure.stage === MAIN
-          );
-          let result = automatedPlayoffPositioning({
-            structureId: mainStructure.structureId,
-            tournamentRecord,
-            drawDefinition,
-            event,
-          });
-          // ignore when positioning cannot occur because of incomplete source structure
-
-          const playoffCompletionGoal = completionGoal
-            ? completionGoal - completedCount
-            : undefined;
-          result = completeDrawMatchUps({
-            completionGoal: completionGoal ? playoffCompletionGoal : undefined,
-            matchUpStatusProfile,
-            completeAllMatchUps,
-            randomWinningSide,
-            drawDefinition,
-            matchUpFormat,
-          });
-          if (result.error) return result;
-        }
-        // TODO: check if RRWPO & automate & complete
       }
     }
 

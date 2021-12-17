@@ -399,8 +399,6 @@ function advanceWinner({
         matchUpId: winnerMatchUp.matchUpId,
         inContextDrawMatchUps,
         drawDefinition,
-        iterative: 'brightmagenta',
-
         matchUpsMap,
       });
     } else if (drawPositionIsBye) {
