@@ -7,6 +7,7 @@ import tournamentEngine from '../../sync';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES, TEAM } from '../../../constants/matchUpTypes';
+import { LINEUPS } from '../../../constants/extensionConstants';
 import {
   EXISTING_OUTCOME,
   INVALID_PARTICIPANT_TYPE,
@@ -17,7 +18,6 @@ import {
   COMPLETED,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import { LINEUPS } from '../../../constants/extensionConstants';
 
 // reusable
 const getDoublesMatchUp = (id, inContext) => {
