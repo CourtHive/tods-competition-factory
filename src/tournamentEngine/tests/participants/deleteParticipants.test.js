@@ -1,6 +1,10 @@
-import { PARTICIPANT_ASSIGNED_DRAW_POSITION } from '../../../constants/errorConditionConstants';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+
+import { PARTICIPANT_ASSIGNED_DRAW_POSITION } from '../../../constants/errorConditionConstants';
+import { DOMINANT_DUO } from '../../../constants/tieFormatConstants';
+import { TEAM } from '../../../constants/eventConstants';
+import { PAIR } from '../../../constants/participantTypes';
 
 it('can delete participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -43,4 +47,31 @@ it('will not delete participants in draws', () => {
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
   expect(tournamentParticipants.length).toEqual(32);
+});
+
+it('will not delete pair participants in team draws', () => {
+  let result = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      { drawSize: 2, eventType: TEAM, tieFormatName: DOMINANT_DUO },
+    ],
+    completeAllMatchUps: true,
+  });
+
+  tournamentEngine.setState(result.tournamentRecord);
+
+  const { tournamentParticipants: pairParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [PAIR] },
+    });
+
+  const pairParticipantIds = pairParticipants.map(
+    ({ participantId }) => participantId
+  );
+  expect(pairParticipantIds.length).toBeGreaterThan(0);
+
+  result = tournamentEngine.deleteParticipants({
+    participantIds: pairParticipantIds,
+  });
+
+  expect(result.error).toEqual(PARTICIPANT_ASSIGNED_DRAW_POSITION);
 });
