@@ -182,7 +182,6 @@ export function assignTieMatchUpParticipantId(params) {
   if (deleteParticipantId) {
     const result = deleteParticipants({
       participantIds: [deleteParticipantId],
-      teamDrawIds: [drawDefinition.drawId],
       tournamentRecord,
     });
     if (result.error) console.log('cleanup', { result });

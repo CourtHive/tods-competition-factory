@@ -7,6 +7,7 @@ import { intersection } from '../../../utilities';
 import { DELETE_PARTICIPANTS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/matchUpTypes';
+import { TEAM } from '../../../constants/eventConstants';
 import {
   CANNOT_REMOVE_PARTICIPANTS,
   MISSING_PARTICIPANT_IDS,
@@ -14,16 +15,17 @@ import {
   PARTICIPANT_ASSIGNED_DRAW_POSITION,
 } from '../../../constants/errorConditionConstants';
 
-export function deleteParticipants({
-  teamDrawIds = [],
-  tournamentRecord,
-  participantIds,
-}) {
+export function deleteParticipants({ tournamentRecord, participantIds }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
 
   const participantsCount = tournamentRecord.participants?.length || 0;
   if (!participantsCount) return SUCCESS;
+
+  const teamDrawIds = tournamentRecord.events
+    ?.filter(({ eventType }) => eventType === TEAM)
+    .map((event) => event?.drawDefinitions?.map(({ drawId }) => drawId))
+    .flat(Infinity);
 
   const { tournamentParticipants } = getTournamentParticipants({
     participantFilters: { participantIds },
@@ -31,28 +33,30 @@ export function deleteParticipants({
     tournamentRecord,
   });
 
-  const getPlacedParticipantIds = () => {
+  const getPlacedPairParticipantIds = () => {
     const { matchUps } = allTournamentMatchUps({
-      tournamentRecord,
       matchUpFilters: { drawIds: teamDrawIds, matchUpTypes: [DOUBLES] },
+      tournamentRecord,
     });
-    const placedParticipantIds = matchUps
+    const placedPairParticipantIds = matchUps
       .map(({ sides }) => sides.map(({ participantId }) => participantId))
       .flat()
       .filter(Boolean);
-    return intersection(placedParticipantIds, participantIds);
+    return intersection(placedPairParticipantIds, participantIds);
   };
 
   // for team draws it is necessary to check matchUps for pair participantIds "discovered" in collectionAssignments
-  const placedParticipantIds = teamDrawIds.length && getPlacedParticipantIds();
+  const placedPairParticipantIds =
+    teamDrawIds?.length && getPlacedPairParticipantIds();
 
   const participantsInDraws = tournamentParticipants.filter(
     (participant) =>
       participant.draws?.filter(
-        ({ drawId }) => !teamDrawIds.length || !teamDrawIds.includes(drawId)
+        ({ drawId }) => !teamDrawIds?.length || !teamDrawIds?.includes(drawId)
       ).length
   );
-  if (placedParticipantIds.length || participantsInDraws.length)
+
+  if (placedPairParticipantIds?.length || participantsInDraws.length)
     return { error: PARTICIPANT_ASSIGNED_DRAW_POSITION };
 
   // If not active in draws, remove participantIds from all entries
