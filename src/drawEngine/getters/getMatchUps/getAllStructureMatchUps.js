@@ -51,6 +51,9 @@ export function getAllStructureMatchUps({
   let collectionPositionMatchUps = {},
     roundMatchUps = {};
 
+  tournamentParticipants =
+    tournamentParticipants || tournamentRecord?.participants;
+
   if (!structure) {
     return {
       collectionPositionMatchUps,

@@ -147,12 +147,14 @@ export function generateFlightDrawDefinitions({
           const matchUpFormat = drawProfile?.matchUpFormat;
 
           const result = completeDrawMatchUps({
-            matchUpStatusProfile,
             completeAllMatchUps: !completionGoal && completeAllMatchUps,
+            matchUpStatusProfile,
             randomWinningSide,
+            tournamentRecord,
             completionGoal,
             drawDefinition,
             matchUpFormat,
+            event,
           });
           if (result.error) return result;
           const completedCount = result.completedCount;
@@ -179,8 +181,10 @@ export function generateFlightDrawDefinitions({
                 : undefined,
               matchUpStatusProfile,
               randomWinningSide,
+              tournamentRecord,
               drawDefinition,
               matchUpFormat,
+              event,
             });
             if (result.error) return result;
           }

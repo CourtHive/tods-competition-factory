@@ -337,9 +337,11 @@ export function generateEventWithDraw({
           matchUpStatusProfile,
           completeAllMatchUps,
           randomWinningSide,
+          tournamentRecord,
           completionGoal,
           drawDefinition,
           matchUpFormat,
+          event,
         });
         if (result.error) return result;
         const completedCount = result.completedCount;
@@ -364,8 +366,10 @@ export function generateEventWithDraw({
             matchUpStatusProfile,
             completeAllMatchUps,
             randomWinningSide,
+            tournamentRecord,
             drawDefinition,
             matchUpFormat,
+            event,
           });
           if (result.error) return result;
         }
