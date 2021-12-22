@@ -1821,6 +1821,7 @@ const participantFilters = {
 const {
   tournamentParticipants,
   participantIdsWithConflicts //  returns array of participantIds which have scheduling conflicts
+  eventsPublishStatuses: { publishedDrawIds, publishedSeeding }, // useful for presenting tournament participants on public sites
 } = tournamentEngine.getTournamentParticipants({
   inContext, // optional - adds individualParticipants for all individualParticipantIds
 
