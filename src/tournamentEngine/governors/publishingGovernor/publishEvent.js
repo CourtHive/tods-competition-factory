@@ -82,6 +82,7 @@ export function publishEvent({
   addEventTimeItem({ event, timeItem: updatedTimeItem });
 
   const { eventData } = getEventData({
+    usePublishState: true,
     policyDefinitions,
     tournamentRecord,
     event,
