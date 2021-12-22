@@ -18,14 +18,14 @@ import {
 import { GROUP, INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { DOUBLES, TEAM } from '../../../constants/matchUpTypes';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 import {
   RANKING,
   RATING,
   SCALE,
   SEEDING,
 } from '../../../constants/scaleConstants';
-import { DOUBLES, TEAM } from '../../../constants/matchUpTypes';
-import { BYE } from '../../../constants/matchUpStatusConstants';
 import {
   SIGNED_IN,
   SIGN_IN_STATUS,
