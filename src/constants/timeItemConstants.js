@@ -25,7 +25,6 @@ export const SEEDING = 'SEEDING'; // 'SCALE.SEEDING'
 
 export const PUBLISH = 'PUBLISH';
 export const PUBLIC = 'PUBLIC';
-export const HIDDEN = 'HIDDEN';
 export const STATUS = 'STATUS';
 
 export const MODIFICATION = 'MODIFICATION';
@@ -39,7 +38,6 @@ export const timeItemConstants = {
   CHECK_IN,
   CHECK_OUT,
   END_TIME,
-  HIDDEN,
   MEDICAL,
   OTHER,
   PENALTY,

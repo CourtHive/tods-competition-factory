@@ -87,7 +87,7 @@ it('can autoSeed by Rankings', () => {
     withEvents: true,
   }));
 
-  const seedingScaleValues = tournamentParticipants
+  let seedingScaleValues = tournamentParticipants
     .map((participant) => {
       const { scaleItem } = participantScaleItem({
         scaleAttributes: seedingScaleAttributes,
@@ -108,6 +108,49 @@ it('can autoSeed by Rankings', () => {
   // check that a timeItem was added
   expect(tournamentParticipants[0].timeItems.length).toEqual(4);
   expect(scaledEntries.length).toEqual(8);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    usePublishState: true,
+    withEvents: true,
+  }));
+
+  seedingScaleValues = tournamentParticipants
+    .map((participant) => participant.events[0].seedValue)
+    .filter(Boolean);
+
+  // when { usePublishState: true } seedValues are not added if eventSeeding not published
+  expect(seedingScaleValues.length).toEqual(0);
+
+  result = tournamentEngine.publishEventSeeding({ eventId });
+  expect(result.success).toEqual(true);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    usePublishState: true,
+    withEvents: true,
+  }));
+
+  seedingScaleValues = tournamentParticipants
+    .map((participant) => participant.events[0].seedValue)
+    .filter(Boolean);
+
+  // when { usePublishState: true } seedValues are added when eventSeeding is published
+  expect(seedingScaleValues.length).toEqual(8);
+
+  // now unpublish and test again
+  result = tournamentEngine.unPublishEventSeeding({ eventId });
+  expect(result.success).toEqual(true);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    usePublishState: true,
+    withEvents: true,
+  }));
+
+  seedingScaleValues = tournamentParticipants
+    .map((participant) => participant.events[0].seedValue)
+    .filter(Boolean);
+
+  // when { usePublishState: true } seedValues are not added if eventSeeding not published
+  expect(seedingScaleValues.length).toEqual(0);
 
   // now test that { sortDescending: false } sorts the other way
   result = tournamentEngine.autoSeeding({

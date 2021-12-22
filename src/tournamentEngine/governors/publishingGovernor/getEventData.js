@@ -5,7 +5,7 @@ import { makeDeepCopy } from '../../../utilities';
 import { getVenueData } from './getVenueData';
 import { getDrawData } from './getDrawData';
 
-import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_EVENT,
@@ -16,6 +16,8 @@ export function getEventData({
   participantsProfile,
   policyDefinitions,
   tournamentRecord,
+  usePublishState,
+  status = PUBLIC,
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -23,6 +25,13 @@ export function getEventData({
 
   const { eventId } = event;
   const { tournamentId, endDate } = tournamentRecord;
+
+  const { timeItem } = getEventTimeItem({
+    itemType: `${PUBLISH}.${STATUS}`,
+    event,
+  });
+
+  const publishStatus = timeItem?.itemValue?.[status];
 
   const { tournamentParticipants } = getTournamentParticipants({
     withGroupings: true,
@@ -34,21 +43,28 @@ export function getEventData({
   });
 
   const drawDefinitions = event.drawDefinitions || [];
-  const drawsData = drawDefinitions.map((drawDefinition) =>
-    (({ drawInfo, structures }) => ({
-      ...drawInfo,
-      structures,
-    }))(
-      getDrawData({
-        context: { eventId, tournamentId, endDate },
-        tournamentParticipants,
-        policyDefinitions,
-        tournamentRecord,
-        drawDefinition,
-        event,
-      })
+  const drawsData = drawDefinitions
+    .filter(
+      (drawDefinition) =>
+        !usePublishState ||
+        publishStatus?.drawIds?.length === 0 ||
+        publishStatus?.drawIds?.includes(drawDefinition.drawId)
     )
-  );
+    .map((drawDefinition) =>
+      (({ drawInfo, structures }) => ({
+        ...drawInfo,
+        structures,
+      }))(
+        getDrawData({
+          context: { eventId, tournamentId, endDate },
+          tournamentParticipants,
+          policyDefinitions,
+          tournamentRecord,
+          drawDefinition,
+          event,
+        })
+      )
+    );
 
   const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
   const venues = tournamentRecord.venues || [];
@@ -97,11 +113,6 @@ export function getEventData({
     venuesData,
     tournamentInfo,
   };
-
-  const { timeItem } = getEventTimeItem({
-    event,
-    itemType: `${PUBLISH}.${STATUS}`,
-  });
 
   eventData.eventInfo.publish = {
     state: timeItem?.itemValue,

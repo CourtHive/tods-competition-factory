@@ -1,12 +1,13 @@
-import { getCourtInfo } from './getCourtInfo';
-import { getDrawData } from './getDrawData';
+import { unPublishEventSeeding } from './unPublishEventSeeding';
+import { publishEventSeeding } from './publishEventSeeding';
+import { getTournamentInfo } from './getTournamentInfo';
+import { getAllEventData } from './getAllEventData';
+import { unPublishEvent } from './unPublishEvent';
 import { getEventData } from './getEventData';
 import { getVenueData } from './getVenueData';
-import { getTournamentInfo } from './getTournamentInfo';
-
+import { getCourtInfo } from './getCourtInfo';
 import { publishEvent } from './publishEvent';
-import { unPublishEvent } from './unPublishEvent';
-import { getAllEventData } from './getAllEventData';
+import { getDrawData } from './getDrawData';
 
 const publishingGovernor = {
   getTournamentInfo,
@@ -17,8 +18,10 @@ const publishingGovernor = {
   getEventData,
   getDrawData,
 
-  publishEvent,
+  unPublishEventSeeding,
+  publishEventSeeding,
   unPublishEvent,
+  publishEvent,
 };
 
 export default publishingGovernor;

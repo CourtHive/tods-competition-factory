@@ -14,12 +14,17 @@ import {
 
 export function publishEvent({
   policyDefinitions,
-  structureIds = [],
   tournamentRecord,
-  drawIdsToRemove,
   status = PUBLIC,
+
+  drawIdsToRemove,
   drawIdsToAdd,
   drawIds,
+
+  structureIdsToRemove,
+  structureIdsToAdd,
+  structureIds,
+
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -28,34 +33,56 @@ export function publishEvent({
   const itemType = `${PUBLISH}.${STATUS}`;
   const eventDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId) || [];
 
+  const { timeItem } = getEventTimeItem({
+    itemType,
+    event,
+  });
+
   if (!drawIds && !drawIdsToAdd && !drawIdsToRemove) {
+    // by default publish all drawIds in an event
     drawIds = eventDrawIds;
   } else if (!drawIds && (drawIdsToAdd?.length || drawIdsToRemove?.length)) {
-    const { timeItem } = getEventTimeItem({
-      itemType,
-      event,
-    });
     drawIds = timeItem?.itemValue?.PUBLIC?.drawIds || [];
   }
 
   drawIds = (drawIds || []).filter(
     (drawId) => !drawIdsToRemove?.length || !drawIdsToRemove.includes(drawId)
   );
+
   if (drawIdsToAdd?.length) {
     drawIds = unique(
       drawIds.concat(
+        // ensure that only drawIds which are part of event are included
         ...drawIdsToAdd.filter((drawId) => eventDrawIds.includes(drawId))
       )
     );
   }
 
-  const timeItem = {
-    itemType,
+  if (
+    !structureIds &&
+    (structureIdsToAdd?.length || structureIdsToRemove?.length)
+  ) {
+    structureIds = timeItem?.itemValue?.PUBLIC?.drawIds || [];
+  }
+
+  structureIds = (structureIds || []).filter(
+    (structureId) =>
+      !structureIdsToRemove?.length ||
+      !structureIdsToRemove.includes(structureId)
+  );
+
+  if (structureIdsToAdd?.length) {
+    structureIds = unique(structureIds.push(...structureIdsToAdd));
+  }
+
+  const updatedTimeItem = {
     itemValue: { [status]: { drawIds, structureIds } },
+    itemType,
   };
-  addEventTimeItem({ event, timeItem });
+  addEventTimeItem({ event, timeItem: updatedTimeItem });
 
   const { eventData } = getEventData({
+    usePublishState: true,
     policyDefinitions,
     tournamentRecord,
     event,

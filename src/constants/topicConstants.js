@@ -13,6 +13,8 @@ export const MODIFY_PARTICIPANTS = 'modifyParticipants';
 export const MODIFY_VENUE = 'modifyVenue';
 export const PUBLISH_EVENT = 'publishEvent';
 export const UNPUBLISH_EVENT = 'unPublishEvent';
+export const PUBLISH_EVENT_SEEDING = 'publishEventSeeding';
+export const UNPUBLISH_EVENT_SEEDING = 'unPublishEventSeeding';
 
 export const topicConstants = {
   ADD_DRAW_DEFINITION,
@@ -29,4 +31,7 @@ export const topicConstants = {
   MODIFY_PARTICIPANTS,
   MODIFY_VENUE,
   PUBLISH_EVENT,
+  UNPUBLISH_EVENT,
+  PUBLISH_EVENT_SEEDING,
+  UNPUBLISH_EVENT_SEEDING,
 };

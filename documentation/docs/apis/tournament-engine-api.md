@@ -1473,6 +1473,7 @@ See [publishEvent](#publishEvent) for details on `policyDefinition`.
 const { eventData } = tournamentEngine.getEventData({
   participantsProfile, // optional - ability to specify additions to context (see parameters of getTournamentParticipants())
   policyDefinitions, // optional
+  usePublishState, // optional - filter out draws which are not published
   eventId,
 });
 const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
@@ -1840,6 +1841,7 @@ const {
   convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
   policyDefinitions, // optional - can accept a privacy policy to filter participant attributes
   participantFilters, // optional - filters
+  usePublishState, // optional - BOOLEAN - don't add seeding information when not published
 });
 ```
 
@@ -2286,6 +2288,17 @@ const { eventData } = tournamentEngine.publishEvent({
   structureIds = [], // optional - specify structureIds
   drawIdsToRemove, // optional - add these drawIds to drawIds already published
   drawIdsToAdd, // optional - remove these drawIds from drawIds published
+});
+```
+
+---
+
+## publishEventSeeding
+
+```js
+tournamentEngine.publishEventSeeding({
+  eventId,
+  drawIds, // optional - publish specific drawIds (flights) within the event
 });
 ```
 
@@ -2830,6 +2843,14 @@ Modifies the `publishState` of an event. `Subscriptions` or middleware can be us
 
 ```js
 tournamentEngine.unPublishEvent({ eventId });
+```
+
+---
+
+## unPublishEventSeeding
+
+```js
+tournamentEngine.unPublishEventSeeding({ eventId });
 ```
 
 ---

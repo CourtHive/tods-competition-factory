@@ -518,6 +518,7 @@ const {
     convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
     policyDefinitions, // optional - can accept a privacy policy to filter participant attributes
     participantFilters, // optional - filters
+    usePublishState, // optional - BOOLEAN - don't add seeding information when not published
   });
 ```
 
