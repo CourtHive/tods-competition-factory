@@ -19,17 +19,15 @@ import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
-  const event = { eventName };
+  const event = { eventName, category: { categoryName: 'U18' } };
   let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
+  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
   const participantIds = tournamentParticipants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
@@ -123,6 +121,17 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     });
     expect(result.error).toEqual(MISSING_DRAW_SIZE);
   });
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    withDraws: true,
+  }));
+
+  const seedValues = tournamentParticipants
+    .map((participant) => participant.draws && participant.draws[0].seedValue)
+    .filter(Boolean)
+    .sort();
+
+  expect(seedValues).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
 });
 
 it('can constrain seedsCount by policyDefinitions', () => {
