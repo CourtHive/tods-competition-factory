@@ -16,6 +16,7 @@ export function getEventData({
   participantsProfile,
   policyDefinitions,
   tournamentRecord,
+  // usePublishState,
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -99,8 +100,8 @@ export function getEventData({
   };
 
   const { timeItem } = getEventTimeItem({
-    event,
     itemType: `${PUBLISH}.${STATUS}`,
+    event,
   });
 
   eventData.eventInfo.publish = {

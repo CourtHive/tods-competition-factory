@@ -2292,6 +2292,17 @@ const { eventData } = tournamentEngine.publishEvent({
 
 ---
 
+## publishEventSeeding
+
+```js
+tournamentEngine.publishEventSeeding({
+  eventId,
+  drawIds, // optional - publish specific drawIds (flights) within the event
+});
+```
+
+---
+
 ## removeDrawDefinitionExtension
 
 ```js
@@ -2831,6 +2842,14 @@ Modifies the `publishState` of an event. `Subscriptions` or middleware can be us
 
 ```js
 tournamentEngine.unPublishEvent({ eventId });
+```
+
+---
+
+## unPublishEventSeeding
+
+```js
+tournamentEngine.unPublishEventSeeding({ eventId });
 ```
 
 ---
