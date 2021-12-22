@@ -24,6 +24,7 @@ import {
  * @param {boolean} scheduleAnalysis - analysis of conflicts
  * @param {boolean} withGroupings - include teams and groups and pairs in which individual participants appear
  * @param {boolean} withOpponents - include opponent participantIds
+ * @param {boolean} usePublishState - when hydrating participants consider publish state (currently applies to seeding)
  *
  */
 export function getTournamentParticipants({
@@ -34,6 +35,7 @@ export function getTournamentParticipants({
   withScheduleItems,
   tournamentRecord,
   scheduleAnalysis,
+  usePublishState,
   withStatistics,
   withGroupings,
   withOpponents,
@@ -98,6 +100,7 @@ export function getTournamentParticipants({
       withSignInStatus,
       tournamentRecord,
       scheduleAnalysis,
+      usePublishState,
       withStatistics,
       withGroupings,
       withOpponents,

@@ -1,16 +1,10 @@
 import { getEventTimeItem } from './timeItems';
 
+import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-
-import {
-  PUBLIC,
-  HIDDEN,
-  PUBLISH,
-  STATUS,
-} from '../../../constants/timeItemConstants';
 
 /**
  *
@@ -44,8 +38,8 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
   const publishedEventIds = relevantEvents
     .filter((event) => {
       const { timeItem } = getEventTimeItem({
-        event,
         itemType: `${PUBLISH}.${STATUS}`,
+        event,
       });
       const pubState = timeItem?.itemValue;
 
@@ -54,8 +48,7 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
         return (
           pubState &&
           pubState[PUBLIC] &&
-          pubState[PUBLIC].drawIds?.includes(drawId) &&
-          pubState !== HIDDEN
+          pubState[PUBLIC].drawIds?.includes(drawId)
         );
       });
 
