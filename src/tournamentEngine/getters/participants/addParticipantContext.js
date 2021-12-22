@@ -6,23 +6,34 @@ import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { extensionConstants } from '../../../constants/extensionConstants';
 import { getParticipantIds } from '../../../global/functions/extractors';
-import { getTimeItem } from '../../governors/queryGovernor/timeItems';
+import {
+  getEventTimeItem,
+  getTimeItem,
+} from '../../governors/queryGovernor/timeItems';
 import { definedAttributes } from '../../../utilities/objects';
 import { makeDeepCopy, unique } from '../../../utilities';
 import { allEventMatchUps } from '../matchUpsGetter';
 
 import { GROUP, INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { RANKING, RATING, SCALE } from '../../../constants/scaleConstants';
+import {
+  RANKING,
+  RATING,
+  SCALE,
+  SEEDING,
+} from '../../../constants/scaleConstants';
 import { DOUBLES, TEAM } from '../../../constants/matchUpTypes';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import {
   SIGNED_IN,
   SIGN_IN_STATUS,
 } from '../../../constants/participantConstants';
+import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { participantScaleItem } from '../../accessors/participantScaleItem';
 
 export function addParticipantContext(params) {
   const participantIdsWithConflicts = [];
+  const eventsPublishStatuses = {};
 
   const drawSizes = {};
   const participantIdMap = {};
@@ -151,6 +162,31 @@ export function addParticipantContext(params) {
         (extensionKey) => (eventInfo[extensionKey] = event[extensionKey])
       );
       const eventEntries = event.entries || [];
+
+      const itemType = `${PUBLISH}.${STATUS}`;
+      const { timeItem } = getEventTimeItem({
+        itemType,
+        event,
+      });
+
+      if (timeItem?.itemValue?.PUBLIC) {
+        const { drawIds: publishedDrawIds = [], seeding } =
+          timeItem?.itemValue?.PUBLIC || {};
+
+        const publishedSeeding = {
+          event: undefined, // seeding can be present for all entries in an event when no flights have been defined
+          drawIds: [], // seeding can be specific to drawIds
+          stages: [], // seeding can be specific to { stageSequence: 1 } for each stage
+        };
+
+        if (seeding)
+          Object.assign(publishedSeeding, timeItem.itemValue.PUBLIC.seeding);
+
+        eventsPublishStatuses[eventId] = {
+          publishedDrawIds,
+          publishedSeeding,
+        };
+      }
 
       // don't allow system extensions to be copied to participants
       const disallowedConstants = [].concat(
@@ -635,7 +671,7 @@ export function addParticipantContext(params) {
     }
   }
 
-  return { participantIdsWithConflicts };
+  return { participantIdsWithConflicts, eventsPublishStatuses };
 }
 
 function annotateParticipant({
@@ -717,8 +753,64 @@ function annotateParticipant({
   const participantDraws = Object.values(draws);
   const participantEvents = Object.values(events);
 
-  withDraws && participantDraws && (participant.draws = participantDraws);
-  withEvents && participantEvents && (participant.events = participantEvents);
+  if (withDraws && participantDraws) {
+    participant.draws = participantDraws;
+    for (const participantDraw of participantDraws) {
+      const event = participantEvents?.find(
+        (e) => e.eventId === participantDraw.eventId
+      );
+      const { categoryName, ageCategoryCode } = event?.category || {};
+
+      let result = participantScaleItem({
+        scaleAttributes: {
+          scaleType: SEEDING,
+          scaleName: participantDraw.drawId,
+          eventType: event?.eventType,
+        },
+        participant,
+      });
+
+      if (result?.scaleItem) {
+        participantDraw.seedValue = result.scaleItem.scaleValue;
+      } else {
+        result = participantScaleItem({
+          scaleAttributes: {
+            scaleType: SEEDING,
+            scaleName: categoryName || ageCategoryCode,
+            eventType: event?.eventType,
+          },
+          participant,
+        });
+
+        if (result?.scaleItem) {
+          participantDraw.seedValue = result.scaleItem.scaleValue;
+        }
+      }
+    }
+  }
+
+  if (withEvents && participantEvents) {
+    participant.events = participantEvents;
+
+    for (const participantEvent of participantEvents) {
+      const { categoryName, ageCategoryCode } = participantEvent.category || {};
+      const scaleAttributes = {
+        scaleType: SEEDING,
+        scaleName: categoryName || ageCategoryCode,
+        eventType: participantEvent.eventType,
+      };
+
+      const result = participantScaleItem({
+        scaleAttributes,
+        participant,
+      });
+      const { scaleItem } = result;
+
+      if (scaleItem) {
+        participantEvent.seedValue = scaleItem.scaleValue;
+      }
+    }
+  }
 
   const participantOpponents = Object.values(opponents).flat();
   if (withOpponents && participantOpponents?.length) {

@@ -132,7 +132,6 @@ export function getAllStructureMatchUps({
   const { seedAssignments: structureSeedAssignments } =
     getStructureSeedAssignments({
       drawDefinition,
-      matchUpsMap,
       structure,
     });
 

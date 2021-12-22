@@ -4,8 +4,8 @@ import mocksEngine from '..';
 
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { ELO, NTRP, UTR, WTN } from '../../constants/ratingConstants';
-import { mockProfile } from './mockScaleProfile';
 import { SINGLES } from '../../constants/matchUpTypes';
+import { mockProfile } from './mockScaleProfile';
 
 // prettier-ignore
 const rankingsScenarios = [
@@ -97,12 +97,14 @@ it.each(mockScenarios)(
 
 // testing that NTRP values can be generated with a "step" of "0.5"
 test('generates participants with rankings and ratings with additional embellishments', () => {
-  const { tournamentRecord } =
+  const { tournamentRecord, eventIds } =
     mocksEngine.generateTournamentRecord(mockProfile);
 
   tournamentEngine.setState(tournamentRecord);
 
   let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
+  const tournamentParticipantsCount = tournamentParticipants.length;
+
   const scaleItems = tournamentParticipants
     .map(
       (p) =>
@@ -112,7 +114,7 @@ test('generates participants with rankings and ratings with additional embellish
     .flat();
 
   let typesCount = 0;
-  expect(scaleItems.length).toEqual(24);
+  expect(scaleItems.length).toEqual(tournamentParticipantsCount);
 
   scaleItems.forEach(({ itemType, itemValue }) => {
     if (itemType === 'SCALE.RANKING.SINGLES.U18') {
@@ -150,4 +152,12 @@ test('generates participants with rankings and ratings with additional embellish
   });
   expect(withRankings).toEqual(8);
   expect(withRatings).toEqual(16);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { eventIds: [eventIds[0]] },
+    inContext: true,
+    withISO: true,
+  }));
+
+  expect(tournamentParticipants.length).toEqual(8);
 });

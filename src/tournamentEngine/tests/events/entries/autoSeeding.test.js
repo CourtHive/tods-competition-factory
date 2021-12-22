@@ -1,3 +1,4 @@
+import { participantScaleItem } from '../../../accessors/participantScaleItem';
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
@@ -12,7 +13,7 @@ it('can autoSeed by Rankings', () => {
     eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 32 }],
+    drawProfiles: [{ drawSize: 32, category: { categoryName: 'U18' } }],
     participantCount: 32,
   });
 
@@ -78,13 +79,34 @@ it('can autoSeed by Rankings', () => {
     eventType: SINGLES,
   };
   let { scaledEntries } = tournamentEngine.getScaledEntries({
-    eventId,
     scaleAttributes: seedingScaleAttributes,
+    eventId,
   });
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    withEvents: true,
+  }));
+
+  const seedingScaleValues = tournamentParticipants
+    .map((participant) => {
+      const { scaleItem } = participantScaleItem({
+        scaleAttributes: seedingScaleAttributes,
+        participant,
+      });
+      const seedValue = participant.events[0].seedValue;
+      const scaleValue = scaleItem ? scaleItem.scaleValue : undefined;
+      return seedValue || scaleValue ? { seedValue, scaleValue } : undefined;
+    })
+    .filter(Boolean);
+
+  expect(seedingScaleValues.length).toEqual(8);
+
+  seedingScaleValues.forEach((value) =>
+    expect(value.seedValue).toEqual(value.scaleValue)
+  );
 
   // check that a timeItem was added
-  expect(tournamentParticipants[0].timeItems.length).toEqual(3);
+  expect(tournamentParticipants[0].timeItems.length).toEqual(4);
   expect(scaledEntries.length).toEqual(8);
 
   // now test that { sortDescending: false } sorts the other way
@@ -139,7 +161,7 @@ it('can autoSeed by Rankings', () => {
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
 
   // check that a timeItem was added
-  expect(tournamentParticipants[0].timeItems.length).toEqual(5);
+  expect(tournamentParticipants[0].timeItems.length).toEqual(6);
 
   result = tournamentEngine.removeSeeding({
     scaleName: 'U18',
@@ -154,7 +176,7 @@ it('can autoSeed by Rankings', () => {
 
   // check that all seeding timeItems were removed
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
-  expect(tournamentParticipants[0].timeItems.length).toEqual(2);
+  expect(tournamentParticipants[0].timeItems.length).toEqual(3);
 
   result = tournamentEngine.removeSeeding({
     scaleName: 'U18',

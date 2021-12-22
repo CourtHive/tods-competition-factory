@@ -87,7 +87,7 @@ export function getTournamentParticipants({
     withDraws ||
     withISO;
 
-  let participantIdsWithConflicts;
+  let participantIdsWithConflicts, eventsPublishStatuses;
 
   if (addContext) {
     const result = addParticipantContext({
@@ -108,6 +108,7 @@ export function getTournamentParticipants({
     });
 
     participantIdsWithConflicts = result?.participantIdsWithConflicts;
+    eventsPublishStatuses = result?.eventsPublishStatuses;
   }
 
   const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
@@ -120,5 +121,9 @@ export function getTournamentParticipants({
     );
   }
 
-  return { tournamentParticipants, participantIdsWithConflicts };
+  return {
+    participantIdsWithConflicts,
+    tournamentParticipants,
+    eventsPublishStatuses,
+  };
 }
