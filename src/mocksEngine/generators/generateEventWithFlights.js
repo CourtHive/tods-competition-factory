@@ -1,4 +1,5 @@
 import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
+import { addEventTimeItem } from '../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
@@ -39,6 +40,7 @@ export function generateEventWithFlights({
     tieFormatName,
     discipline,
     eventLevel,
+    timeItems,
     ballType,
     category,
   } = eventProfile;
@@ -92,6 +94,8 @@ export function generateEventWithFlights({
 
   const categoryName =
     category?.categoryName || category?.ageCategoryCode || category?.ratingType;
+  if (category) category.categoryName = categoryName;
+
   const eventId = eventProfile.eventId || UUID();
 
   eventName = eventName || categoryName || 'Generated Event';
@@ -114,6 +118,10 @@ export function generateEventWithFlights({
   if (eventExtensions?.length && Array.isArray(eventExtensions)) {
     const extensions = eventExtensions.filter(isValidExtension);
     if (extensions?.length) Object.assign(newEvent, { extensions });
+  }
+
+  if (Array.isArray(timeItems)) {
+    timeItems.forEach((timeItem) => addEventTimeItem({ event, timeItem }));
   }
 
   if (typeof policyDefinitions === 'object') {
