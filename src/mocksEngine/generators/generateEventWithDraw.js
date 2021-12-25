@@ -6,6 +6,7 @@ import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/
 import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { drawMatic } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/drawMatic';
+import { addEventTimeItem } from '../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
@@ -59,6 +60,7 @@ export function generateEventWithDraw({
     alternatesCount = 0,
     generate = true,
     eventExtensions,
+    timeItems,
     drawExtensions,
     completionGoal,
     drawSize = 32,
@@ -104,6 +106,10 @@ export function generateEventWithDraw({
 
   const eventId = UUID();
   let event = { eventName, eventType, tieFormat, category, eventId };
+
+  if (Array.isArray(timeItems)) {
+    timeItems.forEach((timeItem) => addEventTimeItem({ event, timeItem }));
+  }
 
   let { eventAttributes } = drawProfile;
   if (typeof eventAttributes !== 'object') eventAttributes = {};
@@ -151,6 +157,9 @@ export function generateEventWithDraw({
       idPrefix,
       category,
     });
+
+    // update categoryName **after** generating participants
+    if (event.category) event.category.categoryName = categoryName;
 
     if (tournamentRecord) {
       const result = addParticipants({

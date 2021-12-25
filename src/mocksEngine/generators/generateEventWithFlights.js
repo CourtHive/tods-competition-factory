@@ -1,4 +1,5 @@
 import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
+import { addEventTimeItem } from '../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
@@ -39,6 +40,7 @@ export function generateEventWithFlights({
     tieFormatName,
     discipline,
     eventLevel,
+    timeItems,
     ballType,
     category,
   } = eventProfile;
@@ -92,6 +94,7 @@ export function generateEventWithFlights({
 
   const categoryName =
     category?.categoryName || category?.ageCategoryCode || category?.ratingType;
+
   const eventId = eventProfile.eventId || UUID();
 
   eventName = eventName || categoryName || 'Generated Event';
@@ -116,6 +119,10 @@ export function generateEventWithFlights({
     if (extensions?.length) Object.assign(newEvent, { extensions });
   }
 
+  if (Array.isArray(timeItems)) {
+    timeItems.forEach((timeItem) => addEventTimeItem({ event, timeItem }));
+  }
+
   if (typeof policyDefinitions === 'object') {
     for (const policyType of Object.keys(policyDefinitions)) {
       attachEventPolicies({
@@ -124,6 +131,10 @@ export function generateEventWithFlights({
       });
     }
   }
+
+  // only update on event since category is used in participant generation
+  if (newEvent.category) newEvent.category.categoryName = categoryName;
+
   let result = addEvent({ tournamentRecord, event: newEvent });
   if (result.error) return result;
   const { event } = result;

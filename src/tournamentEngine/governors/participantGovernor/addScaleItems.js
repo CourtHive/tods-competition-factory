@@ -139,8 +139,9 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
   const scaleItemAttributes = scaleItem && Object.keys(scaleItem);
   const requiredAttributes = ['scaleType', 'eventType', 'scaleName'];
   const validScaleItem =
-    requiredAttributes.filter((attribute) =>
-      scaleItemAttributes.includes(attribute)
+    requiredAttributes.filter(
+      (attribute) =>
+        scaleItemAttributes.includes(attribute) && scaleItem[attribute]
     ).length === requiredAttributes.length;
 
   if (!validScaleItem) return { error: INVALID_SCALE_ITEM };
