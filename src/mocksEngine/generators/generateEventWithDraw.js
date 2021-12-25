@@ -85,7 +85,6 @@ export function generateEventWithDraw({
 
   const categoryName =
     category?.categoryName || category?.ageCategoryCode || category?.ratingType;
-  if (category) category.categoryName = categoryName;
 
   let eventName =
     drawProfile.eventName || categoryName || `Generated ${eventType}`;
@@ -158,6 +157,9 @@ export function generateEventWithDraw({
       idPrefix,
       category,
     });
+
+    // update categoryName **after** generating participants
+    if (event.category) event.category.categoryName = categoryName;
 
     if (tournamentRecord) {
       const result = addParticipants({

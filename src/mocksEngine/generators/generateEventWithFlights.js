@@ -94,7 +94,6 @@ export function generateEventWithFlights({
 
   const categoryName =
     category?.categoryName || category?.ageCategoryCode || category?.ratingType;
-  if (category) category.categoryName = categoryName;
 
   const eventId = eventProfile.eventId || UUID();
 
@@ -132,6 +131,10 @@ export function generateEventWithFlights({
       });
     }
   }
+
+  // only update on event since category is used in participant generation
+  if (newEvent.category) newEvent.category.categoryName = categoryName;
+
   let result = addEvent({ tournamentRecord, event: newEvent });
   if (result.error) return result;
   const { event } = result;
