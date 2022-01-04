@@ -48,7 +48,7 @@ export function getExitProfiles({ drawDefinition }) {
   ) {
     if (!exitProfiles[structureId]) exitProfiles[structureId] = [];
 
-    // initialStructure of CONSOLATION and PLAYOFF do not need to be captured
+    // initialStructure of CONSOLATION and PLAY_OFF do not need to be captured
     if (!(exitProfile === '0' && [CONSOLATION, PLAY_OFF].includes(stage)))
       exitProfiles[structureId].push(exitProfile);
     const relevantLinks = links.filter(
