@@ -2,9 +2,13 @@ import { UUID } from '../../utilities';
 
 import TEAM_AGGREGATION_TIE_FORMAT from '../../fixtures/scoring/tieFormats/TEAM_DOUBLES_3_AGGREGATION.json';
 import DOMINANT_DUO_TIE_FORMAT from '../../fixtures/scoring/tieFormats/DOMINANT_DUO.json';
+import DOMINANT_DUO_MIXED_TIE_FORMAT from '../../fixtures/scoring/tieFormats/DOMINANT_DUO_MIXED.json';
+import USTA_BREWER_CUP_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_BREWER_CUP.json';
+import USTA_COLLEGE_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_COLLEGE.json';
 import USTA_INTERSECTIONAL_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_INTERSECTIONAL.json';
 import USTA_LEVEL_1_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_LEVEL_1.json';
 import USTA_SOUTHERN_LEVEL_5_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_SOUTHERN_LEVEL_5.json';
+import USTA_WTT_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_WTT.json';
 import USTA_ZONAL_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_ZONAL.json';
 import LAVER_CUP_TIE_FORMAT from '../../fixtures/scoring/tieFormats/LAVER_CUP.json';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
@@ -13,11 +17,15 @@ import {
   COLLEGE_DEFAULT,
   COLLEGE_JUCO,
   DOMINANT_DUO,
+  DOMINANT_DUO_MIXED,
   LAVER_CUP,
   TEAM_DOUBLES_3_AGGREGATION,
+  USTA_BREWER_CUP,
+  USTA_COLLEGE,
   USTA_INTERSECTIONAL,
   USTA_LEVEL_1,
   USTA_SOUTHERN_LEVEL_5,
+  USTA_WTT,
   USTA_ZONAL,
 } from '../../constants/tieFormatConstants';
 
@@ -75,10 +83,14 @@ const namedFormats = {
   },
   [LAVER_CUP]: LAVER_CUP_TIE_FORMAT,
   [DOMINANT_DUO]: DOMINANT_DUO_TIE_FORMAT,
+  [DOMINANT_DUO_MIXED]: DOMINANT_DUO_MIXED_TIE_FORMAT,
   [TEAM_DOUBLES_3_AGGREGATION]: TEAM_AGGREGATION_TIE_FORMAT,
+  [USTA_BREWER_CUP]: USTA_BREWER_CUP_TIE_FORMAT,
+  [USTA_COLLEGE]: USTA_COLLEGE_TIE_FORMAT,
   [USTA_INTERSECTIONAL]: USTA_INTERSECTIONAL_TIE_FORMAT,
   [USTA_LEVEL_1]: USTA_LEVEL_1_TIE_FORMAT,
   [USTA_SOUTHERN_LEVEL_5]: USTA_SOUTHERN_LEVEL_5_TIE_FORMAT,
+  [USTA_WTT]: USTA_WTT_TIE_FORMAT,
   [USTA_ZONAL]: USTA_ZONAL_TIE_FORMAT,
 };
 
