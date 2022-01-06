@@ -2,21 +2,21 @@
   "collectionDefinitions": [
     {
       "collectionName": "Doubles",
-      "matchUpCount": 1,
-      "matchUpFormat": "SET1-S:8/TB7",
+      "matchUpCount": 3,
+      "matchUpFormat": "SET1-S:8/TB7@7",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
     },
     {
       "collectionName": "Singles",
-      "matchUpCount": 2,
-      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+      "matchUpCount": 6,
+      "matchUpFormat": "SET1-S:8",
       "matchUpType": "SINGLES",
       "matchUpValue": 1
     }
   ],
-  "tieFormatName": "DOMINANT_DUO",
+  "tieFormatName": "USTA_COLLEGE",
   "winCriteria": {
-    "valueGoal": 2
+    "valueGoal": 5
   }
 }

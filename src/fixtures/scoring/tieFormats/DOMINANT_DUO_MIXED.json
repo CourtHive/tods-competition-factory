@@ -1,0 +1,31 @@
+{
+  "collectionDefinitions": [
+    {
+      "collectionName": "Mixed Doubles",
+      "matchUpCount": 1,
+      "matchUpFormat": "SET1-S:8/TB7",
+      "matchUpType": "DOUBLES",
+      "matchUpValue": 1
+    },
+    {
+      "collectionName": "Boys Singles",
+      "matchUpCount": 1,
+      "gender": "MALE",
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+      "matchUpType": "SINGLES",
+      "matchUpValue": 1
+    },
+    {
+      "collectionName": "Girls Singles",
+      "gender": "FEMALE",
+      "matchUpCount": 1,
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+      "matchUpType": "SINGLES",
+      "matchUpValue": 1
+    }
+  ],
+  "tieFormatName": "DOMINANT_DUO_MIXED",
+  "winCriteria": {
+    "valueGoal": 2
+  }
+}
