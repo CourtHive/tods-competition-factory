@@ -1,6 +1,6 @@
 export const hasSchedule = ({
   scheduleAttributes = ['scheduledDate', 'scheduledTime'],
-  schedule,
+  schedule = {},
 }) => {
   const matchUpScheduleKeys = Object.keys(schedule)
     .filter((key) => scheduleAttributes.includes(key))
