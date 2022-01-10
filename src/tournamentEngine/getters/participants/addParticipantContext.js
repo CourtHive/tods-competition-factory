@@ -873,7 +873,7 @@ function annotateParticipant({
   const { scheduledMinutesDifference } = scheduleAnalysis || {};
 
   Object.keys(scheduledMatchUps).forEach((date) => {
-    scheduledMatchUps[date].forEach((matchUp, i) => {
+    scheduledMatchUps[date].filter(Boolean).forEach((matchUp, i) => {
       const {
         schedule: {
           scheduledTime,
