@@ -897,7 +897,7 @@ function annotateParticipant({
         roundNumber,
         roundPosition,
         ...matchUp.schedule,
-        scheduledTime: extractTime(matchUp.schedule.scheduledTime),
+        scheduledTime: extractTime(matchUp.schedule?.scheduledTime),
       });
 
       // matchUps with { matchUpStatus: BYE } are ignored
@@ -924,7 +924,7 @@ function annotateParticipant({
               matchUp.potential && consideredMatchUp.potential;
 
             const nextMinutes = timeStringMinutes(
-              consideredMatchUp.schedule.scheduledTime
+              consideredMatchUp.schedule?.scheduledTime
             );
             const minutesDifference = nextMinutes - scheduledMinutes;
 
@@ -935,7 +935,7 @@ function annotateParticipant({
               scheduledMinutesDifference && !isNaN(scheduledMinutesDifference)
                 ? minutesDifference <= scheduledMinutesDifference
                 : timeStringMinutes(notBeforeTime) >
-                  timeStringMinutes(consideredMatchUp.schedule.scheduledTime);
+                  timeStringMinutes(consideredMatchUp.schedule?.scheduledTime);
 
             // if there is a time overlap capture both the prior matchUpId and the conflicted matchUpId
             if (timeOverlap && !(bothPotential && sameDraw)) {
