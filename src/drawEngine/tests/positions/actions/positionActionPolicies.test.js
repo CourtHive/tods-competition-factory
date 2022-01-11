@@ -98,6 +98,7 @@ it('supports policyDefinitions in positionActions', () => {
   policyDefinitions = POLICY_POSITION_ACTIONS_NO_MOVEMENT;
   result = tournamentEngine.positionActions({
     structureId: mainStructure.structureId,
+    overrideAttachedPolicies: true,
     policyDefinitions,
     drawPosition,
     drawId,
