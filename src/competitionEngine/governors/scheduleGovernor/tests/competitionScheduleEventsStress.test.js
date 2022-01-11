@@ -4,7 +4,7 @@ import competitionEngine from '../../../sync';
 /*
 used for benchmarking when optimizing competitionMatchUps
 */
-test('competitionSchedule performance 30 events', () => {
+test.skip('competitionSchedule performance 30 events', () => {
   const venueId = 'venueId';
   const venueProfiles = [{ venueId, courtsCount: 40 }];
   // prettier-ignore
@@ -91,7 +91,7 @@ test('competitionSchedule performance 30 events', () => {
   expect(result.dateMatchUps.length).toEqual(240);
 });
 
-test('competitionSchedule performance 4 events', () => {
+test.skip('competitionSchedule performance 4 events', () => {
   const venueId = 'venueId';
   const venueProfiles = [{ venueId, courtsCount: 40 }];
   // prettier-ignore
