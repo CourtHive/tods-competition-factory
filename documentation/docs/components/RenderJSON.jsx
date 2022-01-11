@@ -1,7 +1,7 @@
 import React from 'react';
 import { utilities } from 'tods-competition-factory';
 
-import JSONTree from 'react-json-tree';
+import { JSONTree } from 'react-json-tree';
 import themes from './themes';
 
 // https://github.com/reduxjs/redux-devtools/tree/75322b15ee7ba03fddf10ac3399881e302848874/src/react/themes
