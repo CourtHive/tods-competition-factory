@@ -1,7 +1,4 @@
 {
-  "winCriteria": {
-    "valueGoal": 13
-  },
   "collectionDefinitions": [
     {
       "collectionGroupNumber": 1,
@@ -59,5 +56,9 @@
       "groupNumber": 3,
       "groupName": "Day 3"
     }
-  ]
+  ],
+  "tieFormatName": "LAVER_CUP",
+  "winCriteria": {
+    "valueGoal": 13
+  }
 }

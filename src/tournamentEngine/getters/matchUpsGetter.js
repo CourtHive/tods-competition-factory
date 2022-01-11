@@ -165,10 +165,12 @@ export function allEventMatchUps({
   };
   if (endDate) additionalContext.endDate = endDate;
 
-  participants =
-    participants ||
-    (tournamentRecord &&
-      getParticipants({ tournamentRecord, participantsProfile }));
+  if (!participants) {
+    participants =
+      tournamentRecord &&
+      getParticipants({ tournamentRecord, participantsProfile });
+  }
+
   const drawDefinitions = event.drawDefinitions || [];
   const scheduleTiming = getScheduleTiming({
     tournamentRecord,

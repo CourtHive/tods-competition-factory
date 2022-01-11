@@ -1,7 +1,10 @@
 import { mocksEngine, tournamentEngine } from '../../../..';
 import competitionEngine from '../../../sync';
 
-test('competitionSchedule performance 30 events', () => {
+/*
+used for benchmarking when optimizing competitionMatchUps
+*/
+test.skip('competitionSchedule performance 30 events', () => {
   const venueId = 'venueId';
   const venueProfiles = [{ venueId, courtsCount: 40 }];
   // prettier-ignore
@@ -67,7 +70,6 @@ test('competitionSchedule performance 30 events', () => {
     },
   ];
 
-  const genStart = Date.now();
   const { scheduledRounds, tournamentRecord } =
     mocksEngine.generateTournamentRecord({
       autoSchedule: true,
@@ -76,24 +78,20 @@ test('competitionSchedule performance 30 events', () => {
       drawProfiles,
       startDate,
     });
-  const genTime = Date.now() - genStart;
 
   let result = tournamentEngine.setState(tournamentRecord);
   expect(result).not.toBeUndefined();
 
   expect(scheduledRounds.length).toEqual(30);
 
-  const queryStart = Date.now();
   const matchUpFilters = { scheduledDate: startDate };
   result = competitionEngine.competitionScheduleMatchUps({
     matchUpFilters,
   });
-  const elapsed = Date.now() - queryStart;
-  console.log({ genTime, elapsed });
   expect(result.dateMatchUps.length).toEqual(240);
 });
 
-test('competitionSchedule performance 4 events', () => {
+test.skip('competitionSchedule performance 4 events', () => {
   const venueId = 'venueId';
   const venueProfiles = [{ venueId, courtsCount: 40 }];
   // prettier-ignore
@@ -120,7 +118,6 @@ test('competitionSchedule performance 4 events', () => {
     },
   ];
 
-  const genStart = Date.now();
   const { scheduledRounds, tournamentRecord } =
     mocksEngine.generateTournamentRecord({
       autoSchedule: true,
@@ -129,19 +126,15 @@ test('competitionSchedule performance 4 events', () => {
       drawProfiles,
       startDate,
     });
-  const genTime = Date.now() - genStart;
 
   let result = tournamentEngine.setState(tournamentRecord);
   expect(result).not.toBeUndefined();
 
   expect(scheduledRounds.length).toEqual(4);
 
-  const queryStart = Date.now();
   const matchUpFilters = { scheduledDate: startDate };
   result = competitionEngine.competitionScheduleMatchUps({
     matchUpFilters,
   });
-  const elapsed = Date.now() - queryStart;
-  console.log({ genTime, elapsed });
   expect(result.dateMatchUps.length).toEqual(256);
 });
