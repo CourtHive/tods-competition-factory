@@ -109,6 +109,7 @@ it('supports policyDefinitions in positionActions', () => {
   // now check the available positionActions for the consolation structure
   result = tournamentEngine.positionActions({
     structureId: consolationStructure.structureId,
+    overrideAttachedPolicies: true,
     drawPosition,
     drawId,
   });
@@ -163,8 +164,8 @@ it('supports policyDefinitions in positionActions', () => {
 
   // now check the available positionActions for the consolation structure when participants are present
   result = tournamentEngine.positionActions({
-    structureId: consolationStructure.structureId,
     drawPosition: firstRoundConsolationDrawPositions[0],
+    structureId: consolationStructure.structureId,
     drawId,
   });
   expect(result.hasPositionAssigned).toEqual(true);
