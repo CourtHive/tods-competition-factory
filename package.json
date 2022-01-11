@@ -128,8 +128,5 @@
     "*": "prettier --ignore-unknown --write"
   },
   "dependencies": {},
-  "resolutions": {
-    "marked": "^3.0.0"
-  },
   "browserslist": "last 2 versions, not dead, not ie >= 0"
 }
