@@ -1,22 +1,7 @@
 {
   "collectionDefinitions": [
     {
-      "collectionName": "Boys Singles",
-      "matchUpCount": 1,
-      "gender": "MALE",
-      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
-      "matchUpType": "SINGLES",
-      "matchUpValue": 1
-    },
-    {
-      "collectionName": "Girls Singles",
-      "gender": "FEMALE",
-      "matchUpCount": 1,
-      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
-      "matchUpType": "SINGLES",
-      "matchUpValue": 1
-    },
-    {
+      "collectionGroupNumber": 1,
       "collectionName": "Boys Doubles",
       "gender": "MALE",
       "matchUpCount": 1,
@@ -25,6 +10,7 @@
       "matchUpValue": 1
     },
     {
+      "collectionGroupNumber": 1,
       "collectionName": "Girls Doubles",
       "gender": "FEMALE",
       "matchUpCount": 1,
@@ -33,11 +19,44 @@
       "matchUpValue": 1
     },
     {
+      "collectionGroupNumber": 2,
+      "collectionName": "Boys Singles",
+      "matchUpCount": 1,
+      "gender": "MALE",
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+      "matchUpType": "SINGLES",
+      "matchUpValue": 1
+    },
+    {
+      "collectionGroupNumber": 2,
+      "collectionName": "Girls Singles",
+      "gender": "FEMALE",
+      "matchUpCount": 1,
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+      "matchUpType": "SINGLES",
+      "matchUpValue": 1
+    },
+    {
+      "collectionGroupNumber": 3,
       "collectionName": "Mixed Doubles",
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:8/TB7",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
+    }
+  ],
+  "collectionGroups": [
+    {
+      "groupNumber": 1,
+      "groupName": "Doubles"
+    },
+    {
+      "groupNumber": 2,
+      "groupName": "Singles"
+    },
+    {
+      "groupNumber": 3,
+      "groupName": "Mixed Doubles"
     }
   ],
   "tieFormatName": "USTA_WTT",
