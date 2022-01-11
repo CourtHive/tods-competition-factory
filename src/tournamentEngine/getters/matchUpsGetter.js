@@ -1,3 +1,4 @@
+import { addParticipantGroupings } from '../../drawEngine/governors/positionGovernor/avoidance/addParticipantGroupings';
 import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps/findMatchUp';
 import { getScheduleTiming } from '../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { addNationalityCodeISO } from '../governors/participantGovernor/annotatePerson';
@@ -38,6 +39,7 @@ export function allTournamentMatchUps({
   const participants = getParticipants({
     participantsProfile,
     tournamentRecord,
+    inContext,
   });
   const { appliedPolicies: tournamentAppliedPolicies } = getAppliedPolicies({
     tournamentRecord,
@@ -77,6 +79,7 @@ export function allTournamentMatchUps({
 }
 
 export function allDrawMatchUps({
+  participants: tournamentParticipants,
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,
   participantsProfile,
@@ -86,7 +89,6 @@ export function allDrawMatchUps({
   contextFilters,
   drawDefinition,
   contextProfile,
-  participants,
   nextMatchUps,
   inContext,
   context,
@@ -105,11 +107,12 @@ export function allDrawMatchUps({
       event?.surfaceCategory || tournamentRecord?.surfaceCategory,
     endDate: event?.endDate,
   };
-  const tournamentParticipants =
-    participants ||
-    (tournamentRecord &&
-      getParticipants({ tournamentRecord, participantsProfile })) ||
-    [];
+
+  if (!tournamentParticipants?.length && tournamentRecord) {
+    tournamentParticipants =
+      getParticipants({ inContext, tournamentRecord, participantsProfile }) ||
+      [];
+  }
 
   return getAllDrawMatchUps({
     context: additionalContext,
@@ -165,10 +168,12 @@ export function allEventMatchUps({
   };
   if (endDate) additionalContext.endDate = endDate;
 
-  if (!participants) {
-    participants =
-      tournamentRecord &&
-      getParticipants({ tournamentRecord, participantsProfile });
+  if (!participants?.length && tournamentRecord) {
+    participants = getParticipants({
+      participantsProfile,
+      tournamentRecord,
+      inContext,
+    });
   }
 
   const drawDefinitions = event.drawDefinitions || [];
@@ -220,10 +225,13 @@ export function tournamentMatchUps({
     tournamentRecord.unifiedTournamentId?.tournamentId ||
     tournamentRecord.tournamentId;
   const events = (tournamentRecord && tournamentRecord.events) || [];
+
   const participants = getParticipants({
     participantsProfile,
     tournamentRecord,
+    inContext,
   });
+
   const { appliedPolicies: tournamentAppliedPolicies } = getAppliedPolicies({
     tournamentRecord,
   });
@@ -271,6 +279,7 @@ export function tournamentMatchUps({
 }
 
 export function eventMatchUps({
+  participants: tournamentParticipants,
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
   participantsProfile,
@@ -280,7 +289,6 @@ export function eventMatchUps({
   contextFilters,
   contextProfile,
   nextMatchUps,
-  participants,
   tournamentId,
   inContext,
   context,
@@ -302,10 +310,13 @@ export function eventMatchUps({
     }),
   };
 
-  const tournamentParticipants =
-    participants ||
-    (tournamentRecord &&
-      getParticipants({ tournamentRecord, participantsProfile }));
+  if (!tournamentParticipants && tournamentRecord) {
+    tournamentParticipants = getParticipants({
+      participantsProfile,
+      tournamentRecord,
+      inContext,
+    });
+  }
 
   const drawDefinitions = event.drawDefinitions || [];
   const matchUpGroupings = drawDefinitions.reduce(
@@ -342,6 +353,7 @@ export function eventMatchUps({
 }
 
 export function drawMatchUps({
+  participants: tournamentParticipants,
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
   participantsProfile,
@@ -352,7 +364,6 @@ export function drawMatchUps({
   contextProfile,
   drawDefinition,
   nextMatchUps,
-  participants,
   tournamentId,
   inContext,
   context,
@@ -374,10 +385,13 @@ export function drawMatchUps({
     }),
   };
 
-  const tournamentParticipants =
-    participants ||
-    (tournamentRecord &&
-      getParticipants({ tournamentRecord, participantsProfile }));
+  if (!tournamentParticipants?.length && tournamentRecord) {
+    tournamentParticipants = getParticipants({
+      participantsProfile,
+      tournamentRecord,
+      inContext,
+    });
+  }
 
   return getDrawMatchUps({
     context: additionalContext,
@@ -397,12 +411,21 @@ export function drawMatchUps({
   });
 }
 
-function getParticipants({ tournamentRecord, participantsProfile }) {
-  const tournamentParticipants = tournamentRecord.participants || [];
+function getParticipants({ inContext, tournamentRecord, participantsProfile }) {
+  let participants = tournamentRecord.participants || [];
+
   if (participantsProfile?.withISO)
-    tournamentParticipants.forEach((participant) =>
+    participants.forEach((participant) =>
       addNationalityCodeISO({ participant })
     );
+
+  if (
+    (inContext || participantsProfile?.withGroupings) &&
+    participants?.length
+  ) {
+    participants = addParticipantGroupings({ participants });
+  }
+  return participants;
 }
 
 export function publicFindMatchUp(params) {
