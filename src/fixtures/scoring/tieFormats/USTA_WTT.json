@@ -5,7 +5,7 @@
       "collectionName": "Boys Doubles",
       "gender": "MALE",
       "matchUpCount": 1,
-      "matchUpFormat": "SET1-S:8/TB7",
+      "matchUpFormat": "SET1-S:6/TB9@5",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
     },
@@ -14,7 +14,7 @@
       "collectionName": "Girls Doubles",
       "gender": "FEMALE",
       "matchUpCount": 1,
-      "matchUpFormat": "SET1-S:8/TB7",
+      "matchUpFormat": "SET1-S:6/TB9@5",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
     },
@@ -23,7 +23,7 @@
       "collectionName": "Boys Singles",
       "matchUpCount": 1,
       "gender": "MALE",
-      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+      "matchUpFormat": "SET1-S:6/TB9@5",
       "matchUpType": "SINGLES",
       "matchUpValue": 1
     },
@@ -32,7 +32,7 @@
       "collectionName": "Girls Singles",
       "gender": "FEMALE",
       "matchUpCount": 1,
-      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+      "matchUpFormat": "SET1-S:6/TB9@5",
       "matchUpType": "SINGLES",
       "matchUpValue": 1
     },
@@ -40,7 +40,7 @@
       "collectionGroupNumber": 3,
       "collectionName": "Mixed Doubles",
       "matchUpCount": 1,
-      "matchUpFormat": "SET1-S:8/TB7",
+      "matchUpFormat": "SET1-S:6/TB9@5",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
     }
