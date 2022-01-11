@@ -66,6 +66,7 @@ import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConsta
 export function positionActions({
   policyDefinitions: specifiedPolicyDefinitions,
   tournamentParticipants = [],
+  overrideAttachedPolicies,
   tournamentRecord,
   drawDefinition,
   drawPosition,
@@ -100,8 +101,11 @@ export function positionActions({
     }
   );
 
-  const policyDefinitions =
-    specifiedPolicyDefinitions || attachedPolicyDefinitions;
+  const policyDefinitions = overrideAttachedPolicies
+    ? specifiedPolicyDefinitions
+    : attachedPolicyDefinitions
+    ? Object.assign(attachedPolicyDefinitions, specifiedPolicyDefinitions || {})
+    : specifiedPolicyDefinitions;
 
   const { enabledStructures, actionsDisabled } = getEnabledStructures({
     policyDefinitions,

@@ -18,6 +18,7 @@ export function participantScheduledMatchUps({
   if (!Array.isArray(scheduleAttributes)) return { error: INVALID_VALUES };
 
   const scheduledMatchUps = matchUps
+    .filter(Boolean)
     .filter(({ schedule }) => hasSchedule({ schedule, scheduleAttributes }))
     .reduce((dateMatchUps, matchUp) => {
       const { schedule } = matchUp;
