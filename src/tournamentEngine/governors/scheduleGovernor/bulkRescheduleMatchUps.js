@@ -40,8 +40,8 @@ export function bulkRescheduleMatchUps({
     return { error: MISSING_MATCHUP_IDS };
   if (typeof scheduleChange !== 'object') return { error: INVALID_VALUES };
 
-  const rescheduled = [];
-  const notRescheduled = [];
+  const rescheduledMatchUpIds = [];
+  const notRescheduledMatchUpIds = [];
   const { minutesChange, daysChange } = scheduleChange;
   if (!minutesChange && !daysChange) return { ...SUCCESS };
 
@@ -49,8 +49,8 @@ export function bulkRescheduleMatchUps({
   if (daysChange && isNaN(daysChange)) return { error: INVALID_VALUES };
 
   const { matchUps } = allTournamentMatchUps({
-    tournamentRecord,
     matchUpFilters: { matchUpIds },
+    tournamentRecord,
   });
 
   const notCompleted = ({ matchUpStatus }) =>
@@ -128,32 +128,45 @@ export function bulkRescheduleMatchUps({
         }
 
         if (doNotReschedule) {
-          notRescheduled.push(inContextMatchUp);
+          notRescheduledMatchUpIds.push(matchUpId);
         } else {
           if (!dryRun) {
             if (newScheduledTime) {
               const result = addMatchUpScheduledTime({
+                scheduledTime: newScheduledTime,
                 drawDefinition,
                 matchUpId,
-                scheduledTime: newScheduledTime,
               });
               if (result.error) return result;
             }
             if (newScheduledDate) {
               const result = addMatchUpScheduledDate({
+                scheduledDate: newScheduledDate,
                 drawDefinition,
                 matchUpId,
-                scheduledDate: newScheduledDate,
               });
               if (result.error) return result;
             }
           }
-          if (newScheduledTime || newScheduledDate)
-            rescheduled.push(inContextMatchUp);
+          if (newScheduledTime || newScheduledDate) {
+            rescheduledMatchUpIds.push(matchUpId);
+          }
         }
       }
     }
   }
+
+  const { matchUps: updatedInContext } = allTournamentMatchUps({
+    matchUpFilters: { matchUpIds },
+    tournamentRecord,
+  });
+
+  const rescheduled = updatedInContext.filter(({ matchUpId }) =>
+    rescheduledMatchUpIds.includes(matchUpId)
+  );
+  const notRescheduled = updatedInContext.filter(({ matchUpId }) =>
+    notRescheduledMatchUpIds.includes(matchUpId)
+  );
 
   const allRescheduled = rescheduled.length && !notRescheduled.length;
 
