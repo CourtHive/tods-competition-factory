@@ -1,10 +1,21 @@
 import { positionTargets } from '../positionGovernor/positionTargets';
 
+import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
+import { BYE } from '../../../constants/matchUpStatusConstants';
+
 export function isActiveDownstream(params) {
-  const { inContextDrawMatchUps, targetData, drawDefinition } = params;
+  const { inContextDrawMatchUps, targetData, drawDefinition, relevantLink } =
+    params;
+
+  const fmlcBYE =
+    relevantLink?.linkCondition === FIRST_MATCHUP &&
+    targetData?.matchUp?.matchUpStatus === BYE;
+
+  if (fmlcBYE) return false;
 
   const {
     targetMatchUps: { loserMatchUp, winnerMatchUp },
+    targetLinks,
   } = targetData;
 
   const winnerDrawPositionsCount =
@@ -13,8 +24,9 @@ export function isActiveDownstream(params) {
   if (
     loserMatchUp?.winningSide ||
     (winnerDrawPositionsCount === 2 && winnerMatchUp?.winningSide)
-  )
+  ) {
     return true;
+  }
 
   let loserTargetData =
     loserMatchUp &&
@@ -35,8 +47,9 @@ export function isActiveDownstream(params) {
   const loserActive =
     loserTargetData &&
     isActiveDownstream({
-      inContextDrawMatchUps,
+      relevantLink: targetLinks?.loserTargetLink,
       targetData: loserTargetData,
+      inContextDrawMatchUps,
       drawDefinition,
     });
 

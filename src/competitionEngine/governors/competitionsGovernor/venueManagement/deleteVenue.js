@@ -21,5 +21,7 @@ export function deleteVenue({ tournamentRecords, venueId, force }) {
 
   checkSchedulingProfile({ tournamentRecords });
 
+  // NOTE: Consider what to do with references to venueId that are in matchUp timeItems
+
   return deleted ? SUCCESS : { error: VENUE_NOT_FOUND };
 }
