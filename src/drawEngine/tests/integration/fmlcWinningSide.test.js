@@ -87,7 +87,7 @@ it('can complete FMLC consolation with WOWO before main', () => {
 
   const { completedMatchUps, upcomingMatchUps } =
     tournamentEngine.tournamentMatchUps();
-  expect(completedMatchUps.length).toEqual(15);
+  expect(completedMatchUps.length).toEqual(8);
   expect(upcomingMatchUps.length).toEqual(8);
 
   const matchUpIds = upcomingMatchUps.map(({ matchUpId }) => matchUpId);
