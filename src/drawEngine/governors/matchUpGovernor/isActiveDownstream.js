@@ -1,7 +1,7 @@
 import { positionTargets } from '../positionGovernor/positionTargets';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import { BYE } from '../../../constants/matchUpStatusConstants';
+import { BYE, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 export function isActiveDownstream(params) {
   const { inContextDrawMatchUps, targetData, drawDefinition, relevantLink } =
@@ -18,11 +18,13 @@ export function isActiveDownstream(params) {
     targetLinks,
   } = targetData;
 
+  const loserMatchUpWalkover = [WALKOVER].includes(loserMatchUp?.matchUpStatus);
+
   const winnerDrawPositionsCount =
     winnerMatchUp?.drawPositions?.filter(Boolean).length || 0;
 
   if (
-    loserMatchUp?.winningSide ||
+    (loserMatchUp?.winningSide && !loserMatchUpWalkover) ||
     (winnerDrawPositionsCount === 2 && winnerMatchUp?.winningSide)
   ) {
     return true;
