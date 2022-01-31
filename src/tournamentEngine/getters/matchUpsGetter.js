@@ -94,10 +94,12 @@ export function allDrawMatchUps({
   context,
   event,
 }) {
-  const { eventId, eventName, category, gender, matchUpFormat } = event || {};
+  const { eventId, eventName, eventType, category, gender, matchUpFormat } =
+    event || {};
   const additionalContext = {
     ...context,
     eventId,
+    eventType,
     eventName,
     category,
     gender,
