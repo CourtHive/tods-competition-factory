@@ -1350,7 +1350,7 @@ const {
 
 ## getCourts
 
-Returns courts associated with a tournaments; optionall filter by venue(s).
+Returns courts associated with a tournaments; optionally filter by venue(s).
 
 ```js
 const { courts } = tournamentEngine.getCourts({
