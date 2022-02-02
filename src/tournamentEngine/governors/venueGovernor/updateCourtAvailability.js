@@ -1,5 +1,4 @@
 import { dateRange, timeStringMinutes } from '../../../utilities/dateTime';
-import { getCourts } from '../../getters/courtGetter';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -11,7 +10,10 @@ export function updateCourtAvailability({ tournamentRecord }) {
 
   const tournamentDates = dateRange(startDate, endDate);
 
-  const { courts } = getCourts({ tournamentRecord });
+  const courts = [];
+  for (const venue of tournamentRecord.venues || []) {
+    if (venue?.courts?.length) courts.push(...venue.courts);
+  }
 
   for (const court of courts) {
     const { startTime, endTime } = court.dateAvailability.reduce(
