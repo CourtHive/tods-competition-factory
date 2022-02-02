@@ -9,7 +9,48 @@ import {
   PLAY_OFF,
 } from '../../../constants/drawDefinitionConstants';
 
-tournamentEngine.devContext(true);
+it('errors if attempting generation of existing playoff structure', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 32 }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const roundProfiles = [{ 3: 1 }, { 4: 1 }];
+  const playoffAttributes = {
+    '0-3': { name: 'Silver', abbreviation: 'S' },
+    '0-4': { name: 'Gold', abbreviation: 'G' },
+  };
+  const {
+    drawDefinition: {
+      structures: [{ structureId }],
+    },
+  } = tournamentEngine.getEvent({ drawId });
+
+  let result = tournamentEngine.addPlayoffStructures({
+    playoffStructureNameBase: 'Playoff',
+    playoffAttributes,
+    roundProfiles,
+    structureId,
+    drawId,
+  });
+
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.addPlayoffStructures({
+    playoffStructureNameBase: 'Playoff',
+    playoffAttributes,
+    roundProfiles,
+    structureId,
+    drawId,
+  });
+
+  // cannot add the same playoff structures multiple times
+  expect(result.error).toEqual(INVALID_VALUES);
+});
 
 it.each([
   [32, INVALID_VALUES, undefined],
