@@ -40,6 +40,7 @@ export function generateFlightProfile({
   deleteExisting,
   sortDescending,
   drawNames = [],
+  scaledEntries,
   flightsCount,
   flightValues,
   splitMethod,
@@ -55,14 +56,16 @@ export function generateFlightProfile({
     return { error: EXISTING_PROFILE };
   }
 
-  const { scaledEntries } = getScaledEntries({
-    tournamentRecord,
-    scaleAttributes,
-    scaleSortMethod,
-    sortDescending,
-    event,
-    stage,
-  });
+  if (!scaledEntries) {
+    ({ scaledEntries } = getScaledEntries({
+      tournamentRecord,
+      scaleAttributes,
+      scaleSortMethod,
+      sortDescending,
+      event,
+      stage,
+    }));
+  }
 
   const scaledEntryParticipantIds = scaledEntries.map(getParticipantId);
   const unscaledEntries = eventEntries

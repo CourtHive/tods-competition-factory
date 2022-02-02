@@ -27,6 +27,7 @@
     {
       "category": { "ageCategoryCode": "14U" },
       "collectionName": "14U Doubles",
+      "collectionGroupNumber": 1,
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:8/TB7",
       "matchUpType": "DOUBLES",
@@ -35,6 +36,7 @@
     {
       "category": { "ageCategoryCode": "16U" },
       "collectionName": "16U Doubles",
+      "collectionGroupNumber": 1,
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:8/TB7",
       "matchUpType": "DOUBLES",
@@ -43,10 +45,21 @@
     {
       "category": { "ageCategoryCode": "18U" },
       "collectionName": "18U Doubles",
+      "collectionGroupNumber": 1,
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:8/TB7",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
+    }
+  ],
+  "collectionGroups": [
+    {
+      "groupNumber": 1,
+      "groupName": "Doubles",
+      "groupValue": 1,
+      "winCriteria": {
+        "valueGoal": 2
+      }
     }
   ],
   "tieFormatName": "USTA_BREWER_CUP",
