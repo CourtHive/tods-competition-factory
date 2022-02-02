@@ -1178,6 +1178,7 @@ const scaleAttributes = {
 const { flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
   eventId, // event for which entries will be split
   attachFlightProfile, // boolean - also attach to event after generation
+  scaledEntries, // optional - overrides the use of scaleAttributes, scaleSortMethod, and sortDescending
   scaleAttributes, // defines participant sort method prior to split
   scaleSortMethod, // optional - function(a, b) {} sort method, useful when scaleValue is an object or further proessing is required
   sortDescending, // optional - default sorting is ASCENDING; only applies to default sorting method.
