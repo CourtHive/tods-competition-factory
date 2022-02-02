@@ -5,10 +5,14 @@ import { analyzeDraws } from './analysis/analyzeDraws';
 import {
   setTournamentName,
   setTournamentNotes,
-  setTournamentEndDate,
-  setTournamentStartDate,
   setTournamentCategories,
 } from './tournamentDetails';
+
+import {
+  setTournamentDates,
+  setTournamentEndDate,
+  setTournamentStartDate,
+} from './tournamentDates';
 
 import {
   addEventTimeItem,
@@ -35,6 +39,7 @@ const tournamentGovernor = {
 
   setTournamentName,
   setTournamentNotes,
+  setTournamentDates,
   setTournamentEndDate,
   setTournamentStartDate,
   setTournamentCategories,
