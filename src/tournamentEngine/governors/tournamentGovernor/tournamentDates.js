@@ -24,7 +24,8 @@ export function setTournamentDates({ tournamentRecord, startDate, endDate }) {
 
   if (!startDate && !endDate) return { error: MISSING_DATE };
 
-  if (new Date(endDate) > new Date(startDate)) return { error: INVALID_VALUES };
+  if (endDate && startDate && new Date(endDate) < new Date(startDate))
+    return { error: INVALID_VALUES };
 
   let checkScheduling;
   // if start has moved closer to end or end has moved closer to start, check for scheduling issues
