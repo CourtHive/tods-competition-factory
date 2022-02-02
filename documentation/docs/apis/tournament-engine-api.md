@@ -2758,6 +2758,16 @@ tournamentEngine.setTournamentCategories({ categories });
 
 ---
 
+## setTournamentDates
+
+Set tournament `startDate` and `endDate` in one method call. Also cleans up `matchUp` schedules that are invalid due to date changes, and updates court `dateAvailability`.
+
+```js
+tournamentEngine.setTournamentDates({ startDate, endDate });
+```
+
+---
+
 ## setTournamentEndDate
 
 Accepts an ISO String Date;
