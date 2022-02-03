@@ -4,36 +4,51 @@ import { UUID } from '../../utilities';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 
 export function processTieFormat({
-  tieFormat,
-  tieFormatName,
-  drawSize,
   alternatesCount = 0,
+  tieFormatName,
+  tieFormat,
+  drawSize,
 }) {
   let maxDoublesCount = 0,
     maxSinglesCount = 0;
+
+  let singlesMatchUpTotal = 0,
+    doublesMatchUpTotal = 0;
+
+  let categories = 0;
 
   tieFormat =
     typeof tieFormat === 'object'
       ? tieFormat
       : tieFormatDefaults({ namedFormat: tieFormatName });
 
-  tieFormat?.collectionDefinitions?.forEach((collectionDefinition) => {
-    // ensure every collectionDefinition has a collectionId
-    if (!collectionDefinition.collectionId)
-      collectionDefinition.collectionId = UUID();
+  tieFormat?.collectionDefinitions
+    ?.filter(Boolean)
+    .forEach((collectionDefinition) => {
+      const { category, collectionId, matchUpType, matchUpCount } =
+        collectionDefinition;
 
-    if (collectionDefinition?.matchUpType === DOUBLES) {
-      const doublesCount = collectionDefinition.matchUpCount;
-      maxDoublesCount = Math.max(maxDoublesCount, doublesCount);
-    }
+      if (category) categories += 1;
 
-    if (collectionDefinition?.matchUpType === SINGLES) {
-      const singlescount = collectionDefinition.matchUpCount;
-      maxSinglesCount = Math.max(maxSinglesCount, singlescount);
-    }
-  });
+      // ensure every collectionDefinition has a collectionId
+      if (!collectionId) collectionDefinition.collectionId = UUID();
 
-  const teamSize = Math.max(maxSinglesCount, maxDoublesCount * 2);
+      if (matchUpType === DOUBLES) {
+        const doublesCount = matchUpCount;
+        doublesMatchUpTotal += matchUpCount;
+        maxDoublesCount = Math.max(maxDoublesCount, doublesCount);
+      }
+
+      if (matchUpType === SINGLES) {
+        const singlescount = matchUpCount;
+        singlesMatchUpTotal += matchUpCount;
+        maxSinglesCount = Math.max(maxSinglesCount, singlescount);
+      }
+    });
+
+  const teamSize = categories
+    ? Math.max(singlesMatchUpTotal, doublesMatchUpTotal * 2)
+    : Math.max(maxSinglesCount, maxDoublesCount * 2);
   const maxDoublesDraw = maxDoublesCount * (drawSize + alternatesCount);
   const maxSinglesDraw = maxSinglesCount * (drawSize + alternatesCount);
 
