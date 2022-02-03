@@ -59,7 +59,11 @@ export function generateTieMatchUpScore({
         },
       }))
   );
-  const groupValueNumbers = Object.keys(groupValueGroups);
+
+  // must be coerced to numbers
+  const groupValueNumbers = Object.keys(groupValueGroups).map((num) =>
+    parseInt(num)
+  );
 
   for (const collectionDefinition of collectionDefinitions) {
     const collectionMatchUps = tieMatchUps.filter(
