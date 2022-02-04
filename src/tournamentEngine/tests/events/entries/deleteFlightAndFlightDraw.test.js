@@ -98,3 +98,32 @@ it('can delete drawDefinition when there is no flight', () => {
   ({ event: eventResult } = tournamentEngine.getEvent({ eventId }));
   expect(eventResult.drawDefinitions.length).toEqual(0);
 });
+
+test('deleted flights will trigger refresh of drawOrder', () => {
+  const mockProfile = {
+    eventProfiles: [
+      { drawProfiles: [{ drawSize: 4 }, { drawSize: 4 }, { drawSize: 4 }] },
+    ],
+  };
+
+  const {
+    tournamentRecord,
+    eventIds: [eventId],
+  } = mocksEngine.generateTournamentRecord(mockProfile);
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
+  const drawId = flightProfile.flights.find(
+    (flight) => flight.flightNumber === 2
+  ).drawId;
+
+  let result = tournamentEngine.deleteFlightAndFlightDraw({ eventId, drawId });
+  expect(result.success).toEqual(true);
+
+  ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
+  const flightNumbers = flightProfile.flights.map(
+    ({ flightNumber }) => flightNumber
+  );
+  expect(flightNumbers).toEqual([1, 2]);
+});

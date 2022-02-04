@@ -1,5 +1,6 @@
 import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
+import { refreshEventDrawOrder } from './refreshEventDrawOrder';
 import { deleteDrawDefinitions } from './deleteDrawDefinitions';
 
 import {
@@ -8,7 +9,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
 import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function deleteFlightAndFlightDraw({
   tournamentRecord,
@@ -51,5 +51,5 @@ export function deleteFlightAndFlightDraw({
     auditData,
   });
 
-  return SUCCESS;
+  return refreshEventDrawOrder({ tournamentRecord, event });
 }
