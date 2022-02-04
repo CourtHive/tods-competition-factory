@@ -7,6 +7,7 @@ import {
   offsetTime,
   tidyTime,
   timeUTC,
+  dateRange,
   timeStringMinutes,
   splitTime,
   timeSort,
@@ -19,6 +20,16 @@ it('extracts time properly', () => {
   expect(time).toEqual('10:00');
   time = extractTime('2001-01-01');
   expect(time).toBeUndefined();
+});
+
+test('dateRange reliably generates a range', () => {
+  let result = dateRange('2020-01-01', '2020-01-04');
+  expect(result).toEqual([
+    '2020-01-01',
+    '2020-01-02',
+    '2020-01-03',
+    '2020-01-04',
+  ]);
 });
 
 test('functions with bad data', () => {

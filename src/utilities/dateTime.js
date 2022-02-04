@@ -1,10 +1,4 @@
 import { dateValidation, validDateString } from '../fixtures/validations/regex';
-/*
-import {
-  INVALID_DATE,
-  INVALID_TIME_ZONE,
-} from '../constants/errorConditionConstants';
-*/
 
 export function isDateObject(value) {
   if (typeof value !== 'object' || Array.isArray(value)) {
@@ -117,8 +111,12 @@ export function isDate(dateArg) {
 }
 
 export function dateRange(startDt, endDt) {
-  const startDate = new Date(startDt);
-  const endDate = new Date(endDt);
+  if (!isValidDateString(startDt) || !isValidDateString(endDt)) return [];
+
+  const startDateString = extractDate(startDt) + 'T00:00';
+  const endDateString = extractDate(endDt) + 'T00:00';
+  const startDate = new Date(startDateString);
+  const endDate = new Date(endDateString);
   const error =
     isDate(endDate) && isDate(startDate) && isValidDateRange(startDate, endDate)
       ? false
@@ -127,8 +125,8 @@ export function dateRange(startDt, endDt) {
   let iterations = 0;
 
   if (!error) {
-    const currentDate = offsetDate(startDate);
-    const end = offsetDate(endDate);
+    const currentDate = startDate;
+    const end = endDate;
     while (currentDate <= end && iterations < 300) {
       iterations += 1;
       // must be a *new* Date otherwise it is an array of the same object
@@ -137,10 +135,10 @@ export function dateRange(startDt, endDt) {
     }
   }
 
-  return between;
+  return between.map((date) => formatDate(date));
 
   function isValidDateRange(minDate, maxDate) {
-    return offsetDate(minDate) <= offsetDate(maxDate);
+    return minDate <= maxDate;
   }
 }
 

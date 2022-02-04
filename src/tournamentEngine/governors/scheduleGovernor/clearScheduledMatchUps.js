@@ -58,6 +58,7 @@ export function clearScheduledMatchUps({
     inContext: false,
   });
 
+  let clearedScheduleCount = 0;
   for (const matchUp of matchUps) {
     if (relevantMatchUpIds.includes(matchUp.matchUpId)) {
       matchUp.timeItems = (matchUp.timeItems || []).filter(
@@ -69,8 +70,9 @@ export function clearScheduledMatchUps({
             SCHEDULED_TIME,
           ].includes(timeItem?.itemType)
       );
+      clearedScheduleCount += 1;
     }
   }
 
-  return { ...SUCCESS };
+  return { ...SUCCESS, clearedScheduleCount };
 }

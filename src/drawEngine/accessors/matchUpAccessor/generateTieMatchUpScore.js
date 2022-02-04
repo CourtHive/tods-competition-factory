@@ -1,6 +1,6 @@
 import { validateTieFormat } from '../../governors/matchUpGovernor/tieFormatUtilities';
-
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+
 import {
   INVALID_VALUES,
   MISSING_MATCHUP,
@@ -43,6 +43,28 @@ export function generateTieMatchUpScore({
   const tieMatchUps = matchUp?.tieMatchUps || [];
   const collectionDefinitions = tieFormat?.collectionDefinitions || [];
 
+  // set up to handle groupValue
+  const collectionGroups = tieFormat?.collectionGroups || [];
+  const groupValueGroups = Object.assign(
+    {},
+    ...collectionGroups
+      .filter((group) => group?.groupValue && group?.groupNumber)
+      .map((group) => ({
+        [group.groupNumber]: {
+          ...group,
+          allGroupMatchUpsCompleted: true,
+          matchUpsCount: 0,
+          sideWins: [0, 0],
+          values: [0, 0],
+        },
+      }))
+  );
+
+  // must be coerced to numbers
+  const groupValueNumbers = Object.keys(groupValueGroups).map((num) =>
+    parseInt(num)
+  );
+
   for (const collectionDefinition of collectionDefinitions) {
     const collectionMatchUps = tieMatchUps.filter(
       (matchUp) => matchUp.collectionId === collectionDefinition.collectionId
@@ -60,12 +82,17 @@ export function generateTieMatchUpScore({
 
     const {
       collectionValueProfile,
+      collectionGroupNumber,
       collectionValue,
       matchUpValue,
       winCriteria,
       scoreValue,
       setValue,
     } = collectionDefinition;
+
+    const belongsToValueGroup =
+      collectionGroupNumber &&
+      groupValueNumbers.includes(collectionGroupNumber);
 
     if (matchUpValue) {
       collectionMatchUps.forEach((matchUp) => {
@@ -101,12 +128,12 @@ export function generateTieMatchUpScore({
       });
     }
 
-    if (collectionValue) {
-      const sideWins = [0, 0];
-      collectionMatchUps.forEach((matchUp) => {
-        if (matchUp.winningSide) sideWins[matchUp.winningSide - 1] += 1;
-      });
+    const sideWins = [0, 0];
+    collectionMatchUps.forEach((matchUp) => {
+      if (matchUp.winningSide) sideWins[matchUp.winningSide - 1] += 1;
+    });
 
+    if (collectionValue) {
       let collectionWinningSide;
 
       if (winCriteria?.aggregateValue) {
@@ -132,15 +159,73 @@ export function generateTieMatchUpScore({
         }, undefined);
       }
 
-      if (collectionWinningSide)
-        sideCollectionValues[collectionWinningSide - 1] += collectionValue;
+      if (collectionWinningSide) {
+        if (belongsToValueGroup) {
+          groupValueGroups[collectionGroupNumber].values[
+            collectionWinningSide - 1
+          ] += collectionValue;
+        } else {
+          sideCollectionValues[collectionWinningSide - 1] += collectionValue;
+        }
+      }
     } else {
-      sideCollectionValues = sideMatchUpValues;
+      if (belongsToValueGroup) {
+        groupValueGroups[collectionGroupNumber].values[0] +=
+          sideMatchUpValues[0] || 0;
+        groupValueGroups[collectionGroupNumber].values[1] +=
+          sideMatchUpValues[1] || 0;
+      } else {
+        sideCollectionValues = sideMatchUpValues;
+      }
     }
 
-    sideCollectionValues.forEach(
-      (sideCollectionValue, i) => (sideTieValues[i] += sideCollectionValue)
-    );
+    if (!belongsToValueGroup) {
+      sideCollectionValues.forEach(
+        (sideCollectionValue, i) => (sideTieValues[i] += sideCollectionValue)
+      );
+    } else {
+      groupValueGroups[collectionGroupNumber].sideWins[0] += sideWins[0] || 0;
+      groupValueGroups[collectionGroupNumber].sideWins[1] += sideWins[1] || 0;
+      groupValueGroups[collectionGroupNumber].allGroupMatchUpsCompleted =
+        groupValueGroups[collectionGroupNumber].allGroupMatchUpsCompleted &&
+        allCollectionMatchUpsCompleted;
+      groupValueGroups[collectionGroupNumber].matchUpsCount +=
+        collectionMatchUps.length;
+    }
+  }
+
+  // process each relevant group for groupValue
+  for (const groupNumber of groupValueNumbers) {
+    const group = groupValueGroups[groupNumber];
+    let {
+      allGroupMatchUpsCompleted,
+      groupValue,
+      matchUpCount,
+      sideWins,
+      winCriteria,
+      values,
+    } = group;
+
+    let groupWinningSide;
+
+    if (winCriteria?.aggregateValue) {
+      if (allGroupMatchUpsCompleted && values[0] !== values[1]) {
+        groupWinningSide = values[0] > values[1] ? 1 : 2;
+      }
+    } else if (winCriteria?.valueGoal) {
+      groupWinningSide = values.reduce((winningSide, side, i) => {
+        return side >= winCriteria.valueGoal ? i + 1 : winningSide;
+      }, undefined);
+    } else {
+      const winGoal = Math.floor(matchUpCount / 2) + 1;
+      groupWinningSide = sideWins.reduce((winningSide, side, i) => {
+        return side >= winGoal ? i + 1 : winningSide;
+      }, undefined);
+    }
+
+    if (groupWinningSide) {
+      sideTieValues[groupWinningSide - 1] += groupValue;
+    }
   }
 
   const sideScores = sideTieValues.map(

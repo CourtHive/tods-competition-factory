@@ -20,7 +20,7 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 it('can add events, venues, and schedule matchUps', () => {
-  const startDate = '2020-01-01';
+  let startDate = '2020-01-01';
   const endDate = '2020-01-06';
 
   const drawProfiles = [{ drawSize: 32 }];
@@ -296,6 +296,12 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
   });
   expect(result.error).toEqual(MISSING_VALUE);
+
+  startDate = '2020-01-02';
+  result = tournamentEngine.setTournamentStartDate({ startDate });
+  expect(result.unscheduledMatchUpIds.length).toEqual(1);
+  result = tournamentEngine.getTournamentInfo();
+  expect(result.tournamentInfo.startDate).toEqual(startDate);
 });
 
 it('can schedule many attributes at once', () => {

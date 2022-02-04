@@ -651,7 +651,10 @@ Attaches a policy to a tournamentRecord.
 See [Policies](../concepts/policies).
 
 ```js
-tournamentEngine.attachPolicies({ policyDefinitions: SEEDING_POLICY });
+tournamentEngine.attachPolicies({
+  policyDefinitions: SEEDING_POLICY,
+  allowReplacement, // optional boolean
+});
 ```
 
 ---
@@ -1178,6 +1181,7 @@ const scaleAttributes = {
 const { flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
   eventId, // event for which entries will be split
   attachFlightProfile, // boolean - also attach to event after generation
+  scaledEntries, // optional - overrides the use of scaleAttributes, scaleSortMethod, and sortDescending
   scaleAttributes, // defines participant sort method prior to split
   scaleSortMethod, // optional - function(a, b) {} sort method, useful when scaleValue is an object or further proessing is required
   sortDescending, // optional - default sorting is ASCENDING; only applies to default sorting method.
@@ -1349,7 +1353,7 @@ const {
 
 ## getCourts
 
-Returns courts associated with a tournaments; optionall filter by venue(s).
+Returns courts associated with a tournaments; optionally filter by venue(s).
 
 ```js
 const { courts } = tournamentEngine.getCourts({
@@ -2753,6 +2757,16 @@ const categories = [
   },
 ];
 tournamentEngine.setTournamentCategories({ categories });
+```
+
+---
+
+## setTournamentDates
+
+Set tournament `startDate` and `endDate` in one method call. Also cleans up `matchUp` schedules that are invalid due to date changes, and updates court `dateAvailability`.
+
+```js
+tournamentEngine.setTournamentDates({ startDate, endDate });
 ```
 
 ---
