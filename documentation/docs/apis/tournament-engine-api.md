@@ -651,7 +651,10 @@ Attaches a policy to a tournamentRecord.
 See [Policies](../concepts/policies).
 
 ```js
-tournamentEngine.attachPolicies({ policyDefinitions: SEEDING_POLICY });
+tournamentEngine.attachPolicies({
+  policyDefinitions: SEEDING_POLICY,
+  allowReplacement, // optional boolean
+});
 ```
 
 ---
