@@ -139,8 +139,15 @@ it('can modify the drawOrder of flightProfile.flights', () => {
   expect(result.success).toEqual(true);
 
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
-  const flightNumbers = flightProfile.flights.map(
+  let flightNumbers = flightProfile.flights.map(
     ({ flightNumber }) => flightNumber
   );
   expect(flightNumbers).toEqual(newOrder);
+
+  result = tournamentEngine.refreshEventDrawOrder({ eventId });
+  expect(result.success).toEqual(true);
+
+  ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
+  flightNumbers = flightProfile.flights.map(({ flightNumber }) => flightNumber);
+  expect(flightNumbers).toEqual([1, 2, 3]);
 });

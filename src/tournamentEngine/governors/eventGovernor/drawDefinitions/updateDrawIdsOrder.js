@@ -1,5 +1,6 @@
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { intersection, unique } from '../../../../utilities';
+
 import {
   INVALID_VALUES,
   MISSING_EVENT,
