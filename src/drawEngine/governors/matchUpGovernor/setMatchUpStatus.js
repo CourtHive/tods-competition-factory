@@ -26,6 +26,7 @@ import {
   TO_BE_PLAYED,
   particicipantsRequiredMatchUpStatuses,
   validMatchUpStatuses,
+  DOUBLE_WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 import {
   INVALID_MATCHUP_STATUS,
@@ -64,8 +65,9 @@ export function setMatchUpStatus(params) {
     winningSide,
     matchUpId,
     event,
-    score,
   } = params;
+
+  let { score } = params;
 
   // Check for missing parameters ---------------------------------------------
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -166,6 +168,9 @@ export function setMatchUpStatus(params) {
   ) {
     return { error: INVALID_MATCHUP_STATUS };
   }
+
+  // always clear score if DOUBLE_WALKOVER or WALKOVER
+  if ([WALKOVER, DOUBLE_WALKOVER].includes(matchUpStatus)) score = undefined;
 
   Object.assign(params, {
     inContextDrawMatchUps,
