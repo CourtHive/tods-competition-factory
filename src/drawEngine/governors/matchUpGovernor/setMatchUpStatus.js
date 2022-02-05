@@ -55,8 +55,13 @@ import {
 
 // WOULDBENICE: return object containing all modified { matchUpIds, structureIds, drawIds }
 export function setMatchUpStatus(params) {
+  // always clear score if DOUBLE_WALKOVER or WALKOVER
+  if ([WALKOVER, DOUBLE_WALKOVER].includes(params.matchUpStatus))
+    params.score = undefined;
+
   // matchUpStatus in params is the new status
   // winningSide in params is new winningSide
+
   const {
     allowChangePropagation = undefined, // factory default
     tournamentRecord,
@@ -65,9 +70,8 @@ export function setMatchUpStatus(params) {
     winningSide,
     matchUpId,
     event,
+    score,
   } = params;
-
-  let { score } = params;
 
   // Check for missing parameters ---------------------------------------------
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -168,9 +172,6 @@ export function setMatchUpStatus(params) {
   ) {
     return { error: INVALID_MATCHUP_STATUS };
   }
-
-  // always clear score if DOUBLE_WALKOVER or WALKOVER
-  if ([WALKOVER, DOUBLE_WALKOVER].includes(matchUpStatus)) score = undefined;
 
   Object.assign(params, {
     inContextDrawMatchUps,
