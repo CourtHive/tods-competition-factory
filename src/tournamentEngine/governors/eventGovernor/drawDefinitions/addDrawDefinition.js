@@ -15,9 +15,11 @@ import {
   DRAW_ID_EXISTS,
   INVALID_DRAW_DEFINITION,
   INVALID_VALUES,
+  MISSING_DRAW_DEFINITION,
   MISSING_DRAW_ID,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
+import { VOLUNTARY_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 
 export function addDrawDefinition({
   flight: flightDefinition,
@@ -54,9 +56,24 @@ export function addDrawDefinition({
       (flight) => flight.flightNumber === flightDefinition.flightNumber
     );
 
+  // if there is a source drawId specified, the source draw must exist
+  const sourceDrawId = flightProfile?.links?.find(
+    (link) => link?.target?.drawId === drawId
+  )?.source?.drawId;
+  const sourceDrawIdError =
+    sourceDrawId &&
+    !event.drawDefinitions.find(
+      (drawDefinition) => drawDefinition.drawId === sourceDrawId
+    );
+
+  if (sourceDrawIdError)
+    return { error: MISSING_DRAW_DEFINITION, sourceDrawId };
+
   const flightConflict =
     relevantFlight && relevantFlight.drawId !== drawDefinition.drawId;
-  if (flightConflict) return { error: INVALID_DRAW_DEFINITION, relevantFlight };
+  if (flightConflict) {
+    return { error: INVALID_DRAW_DEFINITION, relevantFlight };
+  }
 
   // check relevantFlight.drawEntries are equivalent to drawEntries
   const matchingFlighEntries = relevantFlight?.drawEntries.every(
@@ -64,7 +81,7 @@ export function addDrawDefinition({
       const drawEntry = drawEntries.find(
         (drawEntry) => drawEntry && drawEntry.participantId === participantId
       );
-      return drawEntry?.entryStatus === entryStatus;
+      return !entryStatus || drawEntry?.entryStatus === entryStatus;
     }
   );
 
@@ -72,19 +89,25 @@ export function addDrawDefinition({
   const matchingEventEntries =
     !checkEntryStatus ||
     (eventEntries &&
-      drawEntries?.every(({ participantId, entryStatus }) => {
+      drawEntries?.every(({ participantId, entryStatus, entryStage }) => {
         const eventEntry = eventEntries.find(
           (eventEntry) => eventEntry.participantId === participantId
         );
-        return eventEntry?.entryStatus === entryStatus;
+        const isVoluntaryConsolation =
+          relevantFlight?.stage === VOLUNTARY_CONSOLATION &&
+          entryStage === VOLUNTARY_CONSOLATION;
+        return (
+          isVoluntaryConsolation || eventEntry?.entryStatus === entryStatus
+        );
       }));
 
-  if (relevantFlight && !matchingFlighEntries)
+  if (relevantFlight && !matchingFlighEntries) {
     return {
       error: INVALID_DRAW_DEFINITION,
       relevantFlight,
       matchingEventEntries,
     };
+  }
 
   if (modifyEventEntries) {
     drawEntries.filter(Boolean).forEach((drawEntry) => {

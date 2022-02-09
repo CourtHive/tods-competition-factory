@@ -43,6 +43,7 @@ export function addDrawEntry({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!entryStage) return { error: MISSING_STAGE };
   if (!validStage({ stage: entryStage, drawDefinition })) {
+    console.log(drawDefinition.extensions[0]);
     return { error: INVALID_STAGE };
   }
   const spaceAvailable = stageSpace({

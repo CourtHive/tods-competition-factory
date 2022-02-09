@@ -7,9 +7,14 @@ import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';
 import {
   EXISTING_FLIGHT,
   INVALID_VALUES,
+  MISSING_DRAW_ID,
   MISSING_EVENT,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
+import {
+  LOSER,
+  VOLUNTARY_CONSOLATION,
+} from '../../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -26,6 +31,7 @@ export function addFlight({
   qualifyingPositions,
   drawEntries = [],
   matchUpValue,
+  sourceDrawId,
   drawName,
   drawId,
   event,
@@ -46,7 +52,18 @@ export function addFlight({
     }
   }
 
-  const { flightProfile } = getFlightProfile({ event });
+  const flightProfile = getFlightProfile({ event })?.flightProfile;
+
+  // VOLUNTARY_CONSOLATION stage requires a link be established from source draw
+  if (stage === VOLUNTARY_CONSOLATION && !sourceDrawId)
+    return { error: MISSING_VALUE };
+
+  // sourceDrawId must exist in flightProfile
+  if (
+    sourceDrawId &&
+    !flightProfile?.flights?.find(({ drawId }) => drawId === sourceDrawId)
+  )
+    return { error: MISSING_DRAW_ID };
 
   const flightNumbers =
     flightProfile?.flights
@@ -57,8 +74,9 @@ export function addFlight({
 
   const flightNumber = Math.max(0, ...flightNumbers) + 1;
 
+  const flightDrawId = drawId || UUID();
   const flight = {
-    drawId: drawId || UUID(),
+    drawId: flightDrawId,
     flightNumber,
     matchUpValue,
     drawEntries,
@@ -82,6 +100,21 @@ export function addFlight({
       flights,
     },
   };
+
+  if (sourceDrawId) {
+    // if there is a sourceDrawId construct a link
+    const links = flightProfile?.links || [];
+
+    if (stage === VOLUNTARY_CONSOLATION) {
+      links.push({
+        linkType: LOSER,
+        source: { drawId: sourceDrawId },
+        target: { drawId: flightDrawId },
+      });
+    }
+
+    extension.value.links = links;
+  }
 
   return addEventExtension({ event, extension });
 }
