@@ -40,6 +40,7 @@ import {
   WIN_RATIO,
   QUALIFYING,
   LUCKY_DRAW,
+  VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
@@ -66,6 +67,7 @@ export function generateDrawType(params = {}) {
     staggeredEntry, // optional - specifies main structure FEED_IN for drawTypes CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIPS, FMLC
     structureName,
     goesTo = true,
+    stage = MAIN,
     isMock,
     uuids,
   } = params;
@@ -81,13 +83,22 @@ export function generateDrawType(params = {}) {
     stage: MAIN,
   });
 
-  if (!mainStageDrawPositionsCount) {
+  if (stage === VOLUNTARY_CONSOLATION) {
     setStageDrawSize({
       drawSize: params.drawSize,
       drawDefinition,
-      stage: MAIN,
+      stage,
     });
+  } else {
+    if (!mainStageDrawPositionsCount) {
+      setStageDrawSize({
+        drawSize: params.drawSize,
+        drawDefinition,
+        stage: MAIN,
+      });
+    }
   }
+
   // first generate any qualifying structures
   const qualifyingResult =
     params.qualifyingProfiles?.length &&
@@ -162,7 +173,7 @@ export function generateDrawType(params = {}) {
   const { structures: stageStructures } = getDrawStructures({
     drawDefinition,
     stageSequence,
-    stage: MAIN,
+    stage,
   });
   const structureCount = stageStructures.length;
   if (structureCount >= sequenceLimit) return { error: STAGE_SEQUENCE_LIMIT };
@@ -176,7 +187,7 @@ export function generateDrawType(params = {}) {
         stageSequence,
         matchUps: [],
         matchUpType,
-        stage: MAIN,
+        stage,
       });
 
       drawDefinition.structures.push(structure);
@@ -189,8 +200,8 @@ export function generateDrawType(params = {}) {
         structureId: uuids?.pop(),
         stageSequence,
         matchUpType,
-        stage: MAIN,
         matchUps,
+        stage,
       });
 
       drawDefinition.structures.push(structure);
@@ -203,8 +214,8 @@ export function generateDrawType(params = {}) {
         structureId: uuids?.pop(),
         stageSequence,
         matchUpType,
-        stage: MAIN,
         matchUps,
+        stage,
       });
 
       drawDefinition.structures.push(structure);

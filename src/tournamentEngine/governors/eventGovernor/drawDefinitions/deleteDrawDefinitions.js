@@ -112,7 +112,10 @@ export function deleteDrawDefinitions({
   if (matchUpIds.length) {
     deleteMatchUpsNotice({ matchUpIds });
   }
-  deleteDrawNotice({ drawId });
+
+  drawIds.forEach((drawId) => {
+    deleteDrawNotice({ drawId });
+  });
 
   return SUCCESS;
 }

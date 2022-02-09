@@ -26,6 +26,7 @@ import {
   TO_BE_PLAYED,
   particicipantsRequiredMatchUpStatuses,
   validMatchUpStatuses,
+  DOUBLE_WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 import {
   INVALID_MATCHUP_STATUS,
@@ -54,8 +55,13 @@ import {
 
 // WOULDBENICE: return object containing all modified { matchUpIds, structureIds, drawIds }
 export function setMatchUpStatus(params) {
+  // always clear score if DOUBLE_WALKOVER or WALKOVER
+  if ([WALKOVER, DOUBLE_WALKOVER].includes(params.matchUpStatus))
+    params.score = undefined;
+
   // matchUpStatus in params is the new status
   // winningSide in params is new winningSide
+
   const {
     allowChangePropagation = undefined, // factory default
     tournamentRecord,

@@ -18,7 +18,6 @@ export function generateVoluntaryConsolationStructure({
   drawSize,
   event,
 }) {
-  const stage = VOLUNTARY_CONSOLATION;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   matchUpType = matchUpType || drawDefinition.matchUpType;
@@ -27,13 +26,14 @@ export function generateVoluntaryConsolationStructure({
     drawSize,
   });
 
+  const stage = VOLUNTARY_CONSOLATION;
   const structure = structureTemplate({
-    stage,
-    matchUps,
-    matchUpType,
-    structureName,
     structureAbbreviation,
+    structureName,
     structureId,
+    matchUpType,
+    matchUps,
+    stage,
   });
 
   drawDefinition.structures.push(structure);
