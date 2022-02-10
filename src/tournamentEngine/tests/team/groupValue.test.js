@@ -3,6 +3,11 @@ import { mocksEngine } from '../../..';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
+import {
+  INVALID_MATCHUP,
+  INVALID_VALUES,
+  VALUE_UNCHANGED,
+} from '../../../constants/errorConditionConstants';
 
 test('groupValue can be used in tieFormats', () => {
   const mockProfile = {
@@ -38,9 +43,9 @@ test('groupValue can be used in tieFormats', () => {
     scoreString: '6-1 6-1',
     winningSide: 1,
   });
-  let { matchUpId } = singlesMatchUps[0];
+  const singlesMatchUpId = singlesMatchUps[0].matchUpId;
   let result = tournamentEngine.setMatchUpStatus({
-    matchUpId,
+    matchUpId: singlesMatchUpId,
     outcome,
     drawId,
   });
@@ -51,9 +56,9 @@ test('groupValue can be used in tieFormats', () => {
   });
   expect(teamMatchUps[0].score.sets[0].side1Score).toEqual(1);
 
-  matchUpId = doublesMatchUps[0].matchUpId;
+  const doublesMatchUpId = doublesMatchUps[0].matchUpId;
   result = tournamentEngine.setMatchUpStatus({
-    matchUpId,
+    matchUpId: doublesMatchUpId,
     outcome,
     drawId,
   });
@@ -107,5 +112,44 @@ test('groupValue can be used in tieFormats', () => {
     expect(matchUp.score.scoreStringSide1).toEqual('7-0');
   });
 
+  const teamMatchUp = teamMatchUps[0];
+  const teamMatchUpId = teamMatchUp.matchUpId;
+
   // now apply lineUp to the sides of each matchUp
+  result = tournamentEngine.applyLineUps({
+    matchUpId: teamMatchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.applyLineUps({
+    matchUpId: teamMatchUpId,
+    lineUps: {},
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.applyLineUps({
+    matchUpId: { foo: 'nonStringId' },
+    lineUps: [],
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_MATCHUP);
+
+  result = tournamentEngine.applyLineUps({
+    matchUpId: singlesMatchUpId,
+    lineUps: [],
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_MATCHUP);
+
+  result = tournamentEngine.applyLineUps({
+    matchUpId: teamMatchUpId,
+    lineUps: [],
+    drawId,
+  });
+  expect(result.error).toEqual(VALUE_UNCHANGED);
+
+  // now construct lineUp to apply
+  // const { tieFormat } = tournamentEngine.getTieFormat({ drawId });
 });

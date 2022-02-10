@@ -93,6 +93,7 @@ import { validateLineUp } from './drawDefinitions/validateTeamLineUp';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 import { attachPlayoffStructures } from './attachPlayoffStructures';
+import { applyLineUps } from './drawDefinitions/applyLineUps';
 
 const eventGovernor = {
   addEvent,
@@ -186,6 +187,7 @@ const eventGovernor = {
   generateDrawDefinition,
   addDrawDefinitionTimeItem,
 
+  applyLineUps,
   assignTieMatchUpParticipantId,
   removeTieMatchUpParticipantId,
   replaceTieMatchUpParticipantId,
