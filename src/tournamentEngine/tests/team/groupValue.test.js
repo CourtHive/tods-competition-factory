@@ -86,4 +86,26 @@ test('groupValue can be used in tieFormats', () => {
 
   // expect that second team matchUp now has awarded 1 for winning doubles group
   expect(teamMatchUps[1].score.sets[0].side1Score).toEqual(1);
+
+  // complete all first round singlesMatchUps
+  singlesMatchUps
+    .filter(({ roundNumber }) => roundNumber === 1)
+    .forEach(({ matchUpId }) => {
+      result = tournamentEngine.setMatchUpStatus({
+        matchUpId,
+        outcome,
+        drawId,
+      });
+      expect(result.success).toEqual(true);
+    });
+
+  teamMatchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
+  }).matchUps;
+
+  teamMatchUps.forEach((matchUp) => {
+    expect(matchUp.score.scoreStringSide1).toEqual('7-0');
+  });
+
+  // now apply lineUp to the sides of each matchUp
 });
