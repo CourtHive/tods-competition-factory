@@ -8991,15 +8991,15 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
+tods-competition-factory@0.100.0:
+  version "0.100.0"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.100.0.tgz#9b8f8c15ca5c421d10b743cabe7e12dd5d0e9f3a"
+  integrity sha512-GYkarvDwYUb+MhobzkVJtEhZHKmCabllo8XPHw9nG63NXp4/t+d0xVFgeiWU1l+KJda54+geyze4A8e/m0X20w==
+
 tods-competition-factory@0.74.1:
   version "0.74.1"
   resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.74.1.tgz#87eeeef018c347f48295690304ff1177c55cdbd7"
   integrity sha512-r/sw2BDyCBPHL3QziVVlPA02G5G+EH320WwZgwPvLVa0YgilhAVQzVax1Yd+E56veyK9bAGT6VeVLj6H3O3mxg==
-
-tods-competition-factory@0.99.1:
-  version "0.99.1"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.99.1.tgz#4942d9dbdf787a8b6250417675e8f779e3a9cf1c"
-  integrity sha512-z79Fs1KlYNd19yPP8pkVQ1HZzGKQJJUI9AMquMWWTOZ/+MKQzdFus4SrYniqb+75+xuMWMurnr3UjS1nhPCqNA==
 
 tods-score-grid@0.5.2:
   version "0.5.2"
