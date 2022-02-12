@@ -522,6 +522,20 @@ tournamentEngine.alternateDrawPositionAssignment({
 
 ---
 
+## applyLinueUps
+
+Applies `lineUps` to the `sides` of a _TEAM_ matchUp. Order is not important as team side is determined automatically. Does not check to ensure that participants in `lineUps` are part of teams; this is assumed. It is possible to have **_some_** participants assigned to a team side who are not part of a team.
+
+```js
+result = tournamentEngine.applyLineUps({
+  matchUpId, // must be { matchUpType: TEAM }
+  lineUps, // array of at most two lineUps (see TODS)
+  drawId, // reference to draw in which matchUp occurs
+});
+```
+
+---
+
 ## assignDrawPosition
 
 Low level function normally called by higher order convenience functions.
