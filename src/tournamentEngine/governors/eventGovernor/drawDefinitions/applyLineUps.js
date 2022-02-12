@@ -100,9 +100,10 @@ export function applyLineUps({
         if (!collectionDefinition)
           return { error: INVALID_VALUES, collectionId };
 
-        const aggregator = `${collectionId}|${collectionPosition}`;
-        if (!collectionParticipantIds[aggregator])
+        const aggregator = `${collectionId}-${collectionPosition}`;
+        if (!collectionParticipantIds[aggregator]) {
           collectionParticipantIds[aggregator] = [];
+        }
 
         const participantCount = collectionParticipantIds[aggregator].length;
 
@@ -119,7 +120,7 @@ export function applyLineUps({
     }
 
     // ensure that doubles pair participants exist, otherwise create
-    for (const participantIds of collectionParticipantIds.values) {
+    for (const participantIds of Object.values(collectionParticipantIds)) {
       if (participantIds.length === 2) {
         const { pairedParticipant } = getPairedParticipant({
           tournamentParticipants,
@@ -143,11 +144,12 @@ export function applyLineUps({
     }
 
     // determine sideNumber based on instances of participants appearing in team participants assigned to sides
+    // allows for some team members to be "borrowed"
     const instances = instanceCount(sideNumbers);
     const sideNumber =
-      instances[1] > instances[2]
+      (instances[1] || 0) > (instances[2] || 0)
         ? 1
-        : instances[2] > instances[1]
+        : (instances[2] || 0) > (instances[1] || 0)
         ? 2
         : undefined;
 

@@ -1,3 +1,4 @@
+import { generateRange, shuffleArray } from '../../../utilities';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
@@ -8,8 +9,9 @@ import {
   INVALID_VALUES,
   VALUE_UNCHANGED,
 } from '../../../constants/errorConditionConstants';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 
-test('groupValue can be used in tieFormats', () => {
+test('groupValue can be used in tieFormats and lineUps can be applied after scoring is completed', () => {
   const mockProfile = {
     tournamentName: 'Brewer',
     drawProfiles: [
@@ -24,8 +26,7 @@ test('groupValue can be used in tieFormats', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
+  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
   expect(tournamentParticipants.length).toEqual(40);
 
   let { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
@@ -112,7 +113,7 @@ test('groupValue can be used in tieFormats', () => {
     expect(matchUp.score.scoreStringSide1).toEqual('7-0');
   });
 
-  const teamMatchUp = teamMatchUps[0];
+  let teamMatchUp = teamMatchUps[0];
   const teamMatchUpId = teamMatchUp.matchUpId;
 
   // now apply lineUp to the sides of each matchUp
@@ -151,5 +152,94 @@ test('groupValue can be used in tieFormats', () => {
   expect(result.error).toEqual(VALUE_UNCHANGED);
 
   // now construct lineUp to apply
-  // const { tieFormat } = tournamentEngine.getTieFormat({ drawId });
+  const individualParticipantIds = teamMatchUp.sides.map(
+    (side) => side.participant.individualParticipantIds
+  );
+  const { tieFormat } = tournamentEngine.getTieFormat({ drawId });
+
+  const lineUpSides = [{}, {}];
+  for (const collectionDefinition of tieFormat.collectionDefinitions) {
+    const { collectionId, matchUpType, matchUpCount } = collectionDefinition;
+    for (const side of [0, 1]) {
+      const collectionPositions = generateRange(1, matchUpCount + 1);
+      const multiplier = matchUpType === DOUBLES ? 2 : 1;
+      const candidateParticipantIds = shuffleArray(
+        individualParticipantIds[side]
+      ).slice(0, collectionPositions.length * multiplier);
+
+      for (const collectionPosition of collectionPositions) {
+        const index = (collectionPosition - 1) * multiplier;
+        const participantIds = candidateParticipantIds.slice(
+          index,
+          index + multiplier
+        );
+        for (const participantId of participantIds) {
+          const assignment = {
+            collectionId,
+            collectionPosition,
+            matchUpType,
+          };
+          if (!lineUpSides[side][participantId])
+            lineUpSides[side][participantId] = {
+              collectionAssignments: [],
+              participantId,
+            };
+
+          lineUpSides[side][participantId].collectionAssignments.push(
+            assignment
+          );
+        }
+      }
+    }
+  }
+
+  const lineUps = lineUpSides.map((side) => Object.values(side));
+
+  const doublesCount = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  }).tournamentParticipants.length;
+  expect(doublesCount).toEqual(12);
+
+  result = tournamentEngine.applyLineUps({
+    matchUpId: teamMatchUpId,
+    lineUps,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  const newDoublesCount = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  }).tournamentParticipants.length;
+
+  // expect that some new doubles pairs have been created
+  expect(newDoublesCount).toBeGreaterThan(doublesCount);
+
+  teamMatchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM] },
+  }).matchUps;
+
+  teamMatchUp = teamMatchUps.find(
+    (matchUp) => matchUp.matchUpId === teamMatchUpId
+  );
+  teamMatchUp.sides.forEach((side) => expect(side.lineUp).not.toBeUndefined());
+
+  const tieMatchUps = teamMatchUp.tieMatchUps;
+  const singlesTieMatchUps = tieMatchUps.filter(
+    (matchUp) => matchUp.matchUpType === SINGLES
+  );
+
+  singlesTieMatchUps.forEach((matchUp) => {
+    matchUp.sides.forEach((side) =>
+      expect(side.participant.participantType).toEqual(INDIVIDUAL)
+    );
+  });
+
+  const doublesTieMatchUps = tieMatchUps.filter(
+    (matchUp) => matchUp.matchUpType === DOUBLES
+  );
+  doublesTieMatchUps.forEach((matchUp) => {
+    matchUp.sides.forEach((side) =>
+      expect(side.participant.participantType).toEqual(PAIR)
+    );
+  });
 });
