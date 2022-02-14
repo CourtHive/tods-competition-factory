@@ -1516,6 +1516,18 @@ const { eventMatchUpFormatTiming } =
 
 ---
 
+## getFlightProfile
+
+A `flightProfile` is an extension on an `event` detailing the parameters that will be used to generate `drawDefinitions` within the `event`. There is an array of `flights` which specify attributes of a draw such as `drawEntries, drawName, drawId, flightNumber` as well as `stage`, which is significant for flights which are only intended to reflect VOLUNTARY_CONSOLATION structures. A Voluntary Consolation flight is "linked" to the flight from which competitors originate and will be automatically deleted if the source flight is deleted.
+
+If a `flight` has already been used to generate a draw, the `drawDefinition` will be returned with the profile.
+
+```js
+const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
+```
+
+---
+
 ## getMatchUpFormat
 
 Returns `matchUpFormat` codes for specified context(s). Refer to `getMatchUpFormat.test.js` for specfic use cases.
