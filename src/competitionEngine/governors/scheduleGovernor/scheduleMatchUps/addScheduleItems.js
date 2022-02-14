@@ -148,8 +148,8 @@ export function assignMatchUpCourt(params) {
 
   return assignCourt({
     tournamentRecord,
-    disableNotice,
     drawDefinition,
+    disableNotice,
     courtDayDate,
     matchUpId,
     courtId,

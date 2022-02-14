@@ -23,96 +23,108 @@ export function addMatchUpScheduleItems(params) {
 }
 
 export function addMatchUpScheduledDate({
+  tournamentRecord,
   drawDefinition,
-  matchUpId,
   disableNotice,
   scheduledDate,
+  matchUpId,
 }) {
   // TODO: check that scheduledDate is within range of event dates / tournament dates
 
   const result = addScheduledDate({
+    tournamentRecord,
     drawDefinition,
-    matchUpId,
     disableNotice,
     scheduledDate,
+    matchUpId,
   });
 
   return result;
 }
 
 export function addMatchUpScheduledTime({
+  tournamentRecord,
   drawDefinition,
   scheduledTime,
-  matchUpId,
   disableNotice,
+  matchUpId,
 }) {
   // TODO: check that scheduledTime is within range of event dates / tournament dates
 
   const result = addScheduledTime({
+    tournamentRecord,
     drawDefinition,
-    matchUpId,
     scheduledTime,
     disableNotice,
+    matchUpId,
   });
   return result;
 }
 
 export function addMatchUpStartTime({
+  tournamentRecord,
   drawDefinition,
+  disableNotice,
   matchUpId,
   startTime,
-  disableNotice,
 }) {
   const result = addStartTime({
+    tournamentRecord,
     drawDefinition,
+    disableNotice,
     matchUpId,
     startTime,
-    disableNotice,
   });
   return result;
 }
 
 export function addMatchUpEndTime({
+  tournamentRecord,
   drawDefinition,
+  disableNotice,
   matchUpId,
   endTime,
-  disableNotice,
 }) {
   const result = addEndTime({
+    tournamentRecord,
     drawDefinition,
+    disableNotice,
     matchUpId,
     endTime,
-    disableNotice,
   });
   return result;
 }
 
 export function addMatchUpStopTime({
+  tournamentRecord,
   drawDefinition,
+  disableNotice,
   matchUpId,
   stopTime,
-  disableNotice,
 }) {
   const result = addStopTime({
+    tournamentRecord,
     drawDefinition,
+    disableNotice,
     matchUpId,
     stopTime,
-    disableNotice,
   });
   return result;
 }
 
 export function addMatchUpResumeTime({
+  tournamentRecord,
   drawDefinition,
-  matchUpId,
-  resumeTime,
   disableNotice,
+  resumeTime,
+  matchUpId,
 }) {
   const result = addResumeTime({
+    tournamentRecord,
     drawDefinition,
-    matchUpId,
-    resumeTime,
     disableNotice,
+    resumeTime,
+    matchUpId,
   });
   return result;
 }
