@@ -21,6 +21,7 @@ import {
 */
 export function checkInParticipant({
   tournamentParticipants,
+  tournamentRecord,
   drawDefinition,
   participantId,
   matchUpId,
@@ -56,11 +57,17 @@ export function checkInParticipant({
     itemValue: participantId,
   };
 
-  return addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
+  return addMatchUpTimeItem({
+    tournamentRecord,
+    drawDefinition,
+    matchUpId,
+    timeItem,
+  });
 }
 
 export function checkOutParticipant({
   tournamentParticipants,
+  tournamentRecord,
   drawDefinition,
   participantId,
   matchUpId,
@@ -108,5 +115,10 @@ export function checkOutParticipant({
     itemValue: participantId,
   };
 
-  return addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
+  return addMatchUpTimeItem({
+    tournamentRecord,
+    drawDefinition,
+    matchUpId,
+    timeItem,
+  });
 }

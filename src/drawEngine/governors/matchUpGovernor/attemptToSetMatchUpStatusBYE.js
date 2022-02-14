@@ -6,6 +6,7 @@ import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function attemptToSetMatchUpStatusBYE({
+  tournamentRecord,
   drawDefinition,
   structure,
   matchUp,
@@ -30,7 +31,11 @@ export function attemptToSetMatchUpStatusBYE({
   if (matchUpIncludesBye) {
     matchUp.matchUpStatus = BYE;
     matchUp.matchUpStatusCodes = [];
-    modifyMatchUpNotice({ drawDefinition, matchUp });
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      drawDefinition,
+      matchUp,
+    });
     return SUCCESS;
   } else {
     return {

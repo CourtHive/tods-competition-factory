@@ -39,10 +39,11 @@ export function assignMatchUpCourt({
   };
 
   return addMatchUpTimeItem({
+    duplicateValues: false,
+    tournamentRecord,
     drawDefinition,
+    disableNotice,
     matchUpId,
     timeItem,
-    disableNotice,
-    duplicateValues: false,
   });
 }

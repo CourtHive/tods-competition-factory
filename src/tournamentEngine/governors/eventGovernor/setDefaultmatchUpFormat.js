@@ -37,7 +37,7 @@ export function setDrawDefaultMatchUpFormat({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
 
-  return setMatchUpFormat({ drawDefinition, matchUpFormat });
+  return setMatchUpFormat({ tournamentRecord, drawDefinition, matchUpFormat });
 }
 
 /**
@@ -62,6 +62,7 @@ export function setStructureDefaultMatchUpFormat({
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
   return setMatchUpFormat({
+    tournamentRecord,
     drawDefinition,
     matchUpFormat,
     structureId,

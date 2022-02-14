@@ -9,6 +9,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function positionSeedBlocks({
   inContextDrawMatchUps,
+  tournamentRecord,
   drawDefinition,
   participants,
   groupsCount,
@@ -37,6 +38,7 @@ export function positionSeedBlocks({
     if (placedSeedBlocks < groupsCount) {
       const result = positionSeedBlock({
         inContextDrawMatchUps,
+        tournamentRecord,
         drawDefinition,
         participants,
         structureId,
@@ -53,12 +55,12 @@ export function positionSeedBlocks({
 }
 
 function positionSeedBlock({
+  inContextDrawMatchUps,
+  tournamentRecord,
   drawDefinition,
   structureId,
   participants,
-
   matchUpsMap,
-  inContextDrawMatchUps,
 }) {
   const { unplacedSeedParticipantIds, unfilledPositions } = getNextSeedBlock({
     drawDefinition,
@@ -78,6 +80,7 @@ function positionSeedBlock({
     const result = assignDrawPosition({
       automaticPlacement: true,
       inContextDrawMatchUps,
+      tournamentRecord,
       drawDefinition,
       participantId,
       drawPosition,

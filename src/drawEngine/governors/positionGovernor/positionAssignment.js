@@ -31,6 +31,7 @@ import {
 export function assignDrawPosition({
   inContextDrawMatchUps,
   automaticPlacement, // internal use to override public behaviors
+  tournamentRecord,
   drawDefinition,
   participantId,
   drawPosition,
@@ -67,10 +68,10 @@ export function assignDrawPosition({
 
   if (participantSeedNumber) {
     const isValidDrawPosition = isValidSeedPosition({
+      seedNumber: participantSeedNumber,
+      drawDefinition,
       structureId,
       drawPosition,
-      drawDefinition,
-      seedNumber: participantSeedNumber,
     });
     if (!isValidDrawPosition)
       return { error: INVALID_DRAW_POSITION_FOR_SEEDING };
@@ -109,12 +110,12 @@ export function assignDrawPosition({
 
   if (containsBye) {
     let result = clearDrawPosition({
+      inContextDrawMatchUps,
+      tournamentRecord,
       drawDefinition,
       drawPosition,
       structureId,
-
       matchUpsMap,
-      inContextDrawMatchUps,
     });
     if (result.error) return result;
   }
@@ -126,6 +127,7 @@ export function assignDrawPosition({
       inContextDrawMatchUps,
       positionAssignments,
       automaticPlacement,
+      tournamentRecord,
       drawDefinition,
       matchUpsMap,
       drawPosition,
@@ -136,6 +138,7 @@ export function assignDrawPosition({
     modifyRoundRobinMatchUpsStatus({
       inContextDrawMatchUps,
       positionAssignments,
+      tournamentRecord,
       drawDefinition,
       matchUpsMap,
       structure,
@@ -144,8 +147,8 @@ export function assignDrawPosition({
 
   if (!automaticPlacement) {
     conditionallyDisableLinkPositioning({
-      structure,
       drawPositions: [drawPosition],
+      structure,
     });
     const positionAction = {
       name: 'positionAssignment',
@@ -172,6 +175,7 @@ export function assignDrawPosition({
 function addDrawPositionToMatchUps({
   inContextDrawMatchUps,
   automaticPlacement,
+  tournamentRecord,
   drawDefinition,
   drawPosition,
   matchUpsMap,
@@ -200,13 +204,13 @@ function addDrawPositionToMatchUps({
 
   if (matchUp) {
     const result = assignMatchUpDrawPosition({
+      matchUpId: matchUp.matchUpId,
+      inContextDrawMatchUps,
+      automaticPlacement,
+      tournamentRecord,
       drawDefinition,
       drawPosition,
-      automaticPlacement,
-      matchUpId: matchUp.matchUpId,
-
       matchUpsMap,
-      inContextDrawMatchUps,
     });
     if (result.error) return result;
   }

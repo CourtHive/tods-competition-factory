@@ -25,12 +25,13 @@ import {
  */
 export function removeDrawPositionAssignment(params) {
   const {
-    drawId,
+    tournamentRecord,
     replaceWithBye,
+    drawDefinition,
     destroyPair,
     entryStatus,
-    drawDefinition,
     matchUpsMap,
+    drawId,
   } = params;
 
   const result = clearDrawPosition(params);
@@ -57,19 +58,19 @@ export function removeDrawPositionAssignment(params) {
         });
         if (result.error) return result;
         modifyEntriesStatus({
-          tournamentRecord,
           participantIds: individualParticipantIds,
-          entryStatus,
+          tournamentRecord,
           drawDefinition,
+          entryStatus,
           drawId,
           event,
         });
       } else {
         modifyEntriesStatus({
-          tournamentRecord,
           participantIds: [participantId],
-          entryStatus,
+          tournamentRecord,
           drawDefinition,
+          entryStatus,
           drawId,
           event,
         });
@@ -79,10 +80,10 @@ export function removeDrawPositionAssignment(params) {
 
   if (replaceWithBye) {
     const result = assignDrawPositionBye({
+      tournamentRecord,
       drawDefinition,
-      structureId,
       drawPosition,
-
+      structureId,
       matchUpsMap,
     });
     if (result.error) return result;

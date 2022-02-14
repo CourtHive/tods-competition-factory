@@ -53,6 +53,7 @@ export function setMatchUpStatus(params) {
 
   if (matchUpFormat) {
     const result = setMatchUpFormat({
+      tournamentRecord,
       drawDefinition,
       matchUpFormat,
       matchUpId,
@@ -112,14 +113,14 @@ export function bulkMatchUpStatusUpdate(params) {
       if (drawDefinition) {
         const { matchUpFormat, matchUpId } = outcome;
         const result = setMatchUpStatus({
+          schedule: outcome?.schedule,
           tournamentRecord,
           drawDefinition,
-          event,
-          drawId,
           matchUpFormat,
           matchUpId,
-          schedule: outcome?.schedule,
           outcome,
+          drawId,
+          event,
         });
         if (result.error) {
           return result;
@@ -128,5 +129,5 @@ export function bulkMatchUpStatusUpdate(params) {
     }
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

@@ -10,10 +10,11 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 export function assignDrawPosition({
+  tournamentRecord,
   drawDefinition,
+  participantId,
   drawPosition,
   structureId,
-  participantId,
   qualifier,
   bye,
 }) {
@@ -23,6 +24,7 @@ export function assignDrawPosition({
 
   if (bye) {
     const result = assignPositionBye({
+      tournamentRecord,
       drawDefinition,
       drawPosition,
       structureId,
@@ -32,10 +34,11 @@ export function assignDrawPosition({
     return { error: NOT_IMPLEMENTED };
   } else {
     const result = assignPosition({
+      tournamentRecord,
       drawDefinition,
+      participantId,
       structureId,
       drawPosition,
-      participantId,
     });
     if (result.error) return result;
   }

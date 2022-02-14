@@ -5,6 +5,7 @@ import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 
 export function modifyRoundRobinMatchUpsStatus({
   positionAssignments,
+  tournamentRecord,
   drawDefinition,
   matchUpsMap,
   structure,
@@ -29,7 +30,11 @@ export function modifyRoundRobinMatchUpsStatus({
       const matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;
 
       Object.assign(matchUp, { matchUpStatus });
-      modifyMatchUpNotice({ drawDefinition, matchUp });
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        drawDefinition,
+        matchUp,
+      });
     }
   });
 }

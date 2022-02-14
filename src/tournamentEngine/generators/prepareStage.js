@@ -153,6 +153,7 @@ export function prepareStage({
     // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
     ({ conflicts } = automatedPositioning({
       inContextDrawMatchUps,
+      tournamentRecord,
       drawDefinition,
       participants,
       structureId,

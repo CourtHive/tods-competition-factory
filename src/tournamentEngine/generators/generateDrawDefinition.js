@@ -115,6 +115,7 @@ export function generateDrawDefinition(params) {
     // there is no need to attach to the drawDefinition
     if (!equivalentInScope) {
       let result = setMatchUpFormat({
+        tournamentRecord,
         drawDefinition,
         matchUpFormat,
         tieFormat,
@@ -137,6 +138,7 @@ export function generateDrawDefinition(params) {
 
   let drawTypeResult = generateDrawType({
     ...params,
+    tournamentRecord,
     drawDefinition,
     matchUpFormat,
     matchUpType,

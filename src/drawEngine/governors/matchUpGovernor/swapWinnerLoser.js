@@ -8,7 +8,8 @@ import { modifyMatchUpScore } from './modifyMatchUpScore';
  * for FMLC 2nd round matchUps test whether it if a first loss for both participants
  */
 export function swapWinnerLoser(params) {
-  const { inContextMatchUp, structure, drawDefinition } = params;
+  const { tournamentRecord, inContextMatchUp, structure, drawDefinition } =
+    params;
   const matchUpRoundNumber = inContextMatchUp.roundNumber;
 
   const existingWinnerSide = inContextMatchUp.sides.find(
@@ -45,7 +46,11 @@ export function swapWinnerLoser(params) {
           ? existingLoserDrawPosition
           : drawPosition
       ) || [];
-    modifyMatchUpNotice({ drawDefinition, matchUp });
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      drawDefinition,
+      matchUp,
+    });
   });
 
   const { stage: currentStage, stageSequence: currentStageSequence } =

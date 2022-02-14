@@ -213,7 +213,11 @@ export function removeTieMatchUpParticipantId(params) {
     }
   }
 
-  modifyMatchUpNotice({ drawDefinition, matchUp: dualMatchUp });
+  modifyMatchUpNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    matchUp: dualMatchUp,
+    drawDefinition,
+  });
 
   return { ...SUCCESS, modifiedLineUp };
 }

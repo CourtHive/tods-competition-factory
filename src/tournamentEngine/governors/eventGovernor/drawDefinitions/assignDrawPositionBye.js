@@ -1,9 +1,15 @@
 import { assignDrawPositionBye as assignBye } from '../../../../drawEngine/governors/positionGovernor/byePositioning/assignDrawPositionBye';
 
 export function assignDrawPositionBye({
+  tournamentRecord,
   drawDefinition,
-  structureId,
   drawPosition,
+  structureId,
 }) {
-  return assignBye({ drawDefinition, structureId, drawPosition });
+  return assignBye({
+    tournamentRecord,
+    drawDefinition,
+    drawPosition,
+    structureId,
+  });
 }

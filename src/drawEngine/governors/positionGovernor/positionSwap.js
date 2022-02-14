@@ -19,6 +19,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function swapDrawPositionAssignments({
+  tournamentRecord,
   drawDefinition,
   drawPositions,
   structureId,
@@ -44,21 +45,22 @@ export function swapDrawPositionAssignments({
   if (structure.structureType === CONTAINER) {
     // { structureType: CONTAINER } indicates that the swap is within a ROUND ROBIN structure
     result = roundRobinSwap({
-      drawDefinition,
-      structure,
-      drawPositions,
-
-      matchUpsMap,
       inContextDrawMatchUps,
+      tournamentRecord,
+      drawDefinition,
+      drawPositions,
+      matchUpsMap,
+      structure,
     });
   } else {
     // if not a CONTAINER then swap occurs within elimination structure
     result = eliminationSwap({
+      inContextDrawMatchUps,
+      tournamentRecord,
       drawDefinition,
-      structure,
       drawPositions,
       matchUpsMap,
-      inContextDrawMatchUps,
+      structure,
     });
   }
 
@@ -78,6 +80,7 @@ export function swapDrawPositionAssignments({
 
 function eliminationSwap({
   inContextDrawMatchUps,
+  tournamentRecord,
   drawDefinition,
   drawPositions,
   matchUpsMap,
@@ -102,31 +105,31 @@ function eliminationSwap({
 
   if (isByeSwap) {
     return swapParticipantIdWithBYE({
-      drawDefinition,
-      structure,
-      assignments,
-
-      matchUpsMap,
       inContextDrawMatchUps,
+      tournamentRecord,
+      drawDefinition,
+      assignments,
+      matchUpsMap,
+      structure,
     });
   } else {
     return eliminationParticipantSwap({
-      structure,
-      assignments,
-
-      matchUpsMap,
       inContextDrawMatchUps,
+      tournamentRecord,
+      assignments,
+      matchUpsMap,
+      structure,
     });
   }
 }
 
 function swapParticipantIdWithBYE({
-  drawDefinition,
-  structure,
-  assignments,
-
-  matchUpsMap,
   inContextDrawMatchUps,
+  tournamentRecord,
+  drawDefinition,
+  assignments,
+  matchUpsMap,
+  structure,
 }) {
   // remove the assignment that has a participantId
   const originalByeAssignment = assignments.find(({ bye }) => bye);
@@ -140,43 +143,43 @@ function swapParticipantIdWithBYE({
 
   // remove both drawPosition assignments
   let result = removeDrawPositionAssignment({
+    drawPosition: originalByeDrawPosition,
+    inContextDrawMatchUps,
+    tournamentRecord,
     drawDefinition,
     structureId,
-    drawPosition: originalByeDrawPosition,
-
     matchUpsMap,
-    inContextDrawMatchUps,
   });
   if (result.error) return result;
 
   result = removeDrawPositionAssignment({
+    drawPosition: originalParticipantIdDrawPosition,
+    inContextDrawMatchUps,
+    tournamentRecord,
     drawDefinition,
     structureId,
-    drawPosition: originalParticipantIdDrawPosition,
-
     matchUpsMap,
-    inContextDrawMatchUps,
   });
   if (result.error) return result;
 
   result = assignDrawPositionBye({
+    drawPosition: originalParticipantIdDrawPosition,
+    inContextDrawMatchUps,
+    tournamentRecord,
     drawDefinition,
     structureId,
-    drawPosition: originalParticipantIdDrawPosition,
-
     matchUpsMap,
-    inContextDrawMatchUps,
   });
 
   // replace the original byeAssignment with participantId
   result = assignDrawPosition({
+    drawPosition: originalByeDrawPosition,
+    inContextDrawMatchUps,
+    tournamentRecord,
     drawDefinition,
     structureId,
-    drawPosition: originalByeDrawPosition,
     participantId,
-
     matchUpsMap,
-    inContextDrawMatchUps,
   });
   if (result.error) return result;
 
@@ -202,12 +205,12 @@ function eliminationParticipantSwap({ structure, assignments }) {
 }
 
 function roundRobinSwap({
+  inContextDrawMatchUps,
+  tournamentRecord,
   drawDefinition,
   drawPositions,
-  structure,
-
   matchUpsMap,
-  inContextDrawMatchUps,
+  structure,
 }) {
   const assignments = structure.structures?.reduce((assignments, structure) => {
     const structureAssignments = structure?.positionAssignments.filter(
@@ -223,12 +226,12 @@ function roundRobinSwap({
 
   if (isByeSwap) {
     swapParticipantIdWithBYE({
+      inContextDrawMatchUps,
+      tournamentRecord,
       drawDefinition,
       assignments,
-      structure,
-
       matchUpsMap,
-      inContextDrawMatchUps,
+      structure,
     });
   } else {
     const participantIds = assignments.map(getParticipantId);

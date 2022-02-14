@@ -129,7 +129,11 @@ export function modifyMatchUpScore({
     if (result.error) return result;
   }
 
-  modifyMatchUpNotice({ drawDefinition, matchUp });
+  modifyMatchUpNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    drawDefinition,
+    matchUp,
+  });
 
   return SUCCESS;
 }

@@ -23,7 +23,11 @@ import {
   SCHEDULED_TIME,
 } from '../../../../constants/timeItemConstants';
 
-export function resetDrawDefinition({ drawDefinition, removeScheduling }) {
+export function resetDrawDefinition({
+  tournamentRecord,
+  removeScheduling,
+  drawDefinition,
+}) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   // for matchups in all structures:
@@ -104,7 +108,11 @@ export function resetDrawDefinition({ drawDefinition, removeScheduling }) {
         );
       }
 
-      modifyMatchUpNotice({ drawDefinition, matchUp });
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        drawDefinition,
+        matchUp,
+      });
     }
   }
 

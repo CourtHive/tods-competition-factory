@@ -57,6 +57,7 @@ export function generateAndPopulatePlayoffStructures(params) {
     structureId: sourceStructureId,
     addNameBaseToAttributeName,
     playoffStructureNameBase,
+    tournamentRecord,
     playoffAttributes,
     playoffPositions,
     exitProfileLimit,
@@ -219,6 +220,7 @@ export function generateAndPopulatePlayoffStructures(params) {
     });
     const result = directParticipants({
       inContextDrawMatchUps,
+      tournamentRecord,
       drawDefinition,
       matchUpsMap,
       winningSide,

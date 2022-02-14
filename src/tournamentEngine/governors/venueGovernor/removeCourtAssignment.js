@@ -53,7 +53,11 @@ export function removeCourtAssignment({
       };
       matchUp.timeItems.push(timeItem);
 
-      modifyMatchUpNotice({ drawDefinition, matchUp });
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        drawDefinition,
+        matchUp,
+      });
     }
   }
 

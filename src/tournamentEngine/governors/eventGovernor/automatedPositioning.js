@@ -28,6 +28,7 @@ export function automatedPositioning({
   const participants = tournamentRecord?.participants;
 
   return drawEngineAutomatedPositioning({
+    tournamentRecord,
     applyPositioning,
     drawDefinition,
     participants,
