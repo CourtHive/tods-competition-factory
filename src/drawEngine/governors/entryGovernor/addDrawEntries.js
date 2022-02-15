@@ -158,7 +158,6 @@ export function addDrawEntries({
         { participantId },
         { entryStage: stage, entryStatus, entryStageSequence: stageSequence }
       );
-      console.log({ entry });
       drawDefinition.entries.push(entry);
     });
 
