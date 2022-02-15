@@ -5,8 +5,11 @@ import { chunkArray, generateRange } from '../../../utilities';
 import { getPositionAssignments } from '../positionsGetter';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 
-import { MISSING_TARGET_LINK } from '../../../constants/errorConditionConstants';
 import { DISABLE_LINKS } from '../../../constants/extensionConstants';
+import {
+  MISSING_TARGET_LINK,
+  NOT_IMPLEMENTED,
+} from '../../../constants/errorConditionConstants';
 import {
   DRAW,
   BOTTOM_UP,
@@ -114,12 +117,11 @@ export function getTargetMatchUp({
     /*
       RANDOM feed profile selects a random position from available
     */
-    if (getDevContext()) console.log('not implemented:', { feedProfile });
+    if (getDevContext()) console.log(NOT_IMPLEMENTED, { feedProfile });
   } else if (feedProfile === DRAW) {
     /*
       calculatedRoundPosition is undetermined for DRAW feedProfile
     */
-    if (getDevContext()) console.log('not implemented:', { feedProfile });
   }
 
   const matchUp =

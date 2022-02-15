@@ -1,3 +1,4 @@
+import { getPolicyDefinitions } from '../../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
 import { getSourceStructureIdsDirectedBy } from '../../../getters/getSourceStructureIdsDirectedBy';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
@@ -16,6 +17,7 @@ import {
   isAvailableAction,
 } from './actionPolicyUtils';
 
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
@@ -51,8 +53,6 @@ import {
   QUALIFYING,
   WIN_RATIO,
 } from '../../../../constants/drawDefinitionConstants';
-import { getPolicyDefinitions } from '../../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 
 /**
  *
@@ -117,10 +117,10 @@ export function positionActions({
 
   const { sourceStructureIds: positionSourceStructureIds } =
     getSourceStructureIdsDirectedBy({
-      drawDefinition,
-      structureId,
       finishingPosition: WIN_RATIO,
       linkType: POSITION,
+      drawDefinition,
+      structureId,
     }) || {};
 
   let sourceStructuresCompleted;

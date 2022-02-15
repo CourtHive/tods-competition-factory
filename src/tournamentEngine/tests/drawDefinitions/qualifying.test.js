@@ -9,6 +9,8 @@ import {
   MAIN,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import { setDevContext } from '../../../global/state/globalState';
 
 const scenarios = [
   {
@@ -169,6 +171,21 @@ it('supports multi-sequence qualifying structures', () => {
   expect(secondLink.target.roundNumber).toEqual(1);
   expect(firstLink.target.feedProfile).toEqual(DRAW);
   expect(secondLink.target.feedProfile).toEqual(DRAW);
+
+  const qualifyingStructure = drawDefinition.structures.find(
+    (structure) =>
+      structure.stage === QUALIFYING && structure.stageSequence === 1
+  );
+
+  setDevContext({ feedProfile: true });
+  let drawPosition = 1;
+  let result = tournamentEngine.positionActions({
+    policyDefinition: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    structureId: qualifyingStructure.structureId,
+    drawPosition,
+    drawId,
+  });
+  console.log(result);
 });
 
 /*

@@ -7,22 +7,20 @@ import {
 } from '../../../../constants/positionActionConstants';
 
 export function getValidSwapAction({
+  onlyAssignedPositions = true,
+  possiblyDisablingAction,
+  tournamentParticipants,
+  inactiveDrawPositions,
+  activeDrawPositions,
+  positionAssignments,
+  byeDrawPositions,
   drawDefinition,
+  isByePosition,
   drawPosition,
   structureId,
   structure,
   drawId,
   event,
-
-  isByePosition,
-  byeDrawPositions,
-  positionAssignments,
-  tournamentParticipants,
-
-  onlyAssignedPositions = true,
-  activeDrawPositions,
-  inactiveDrawPositions,
-  possiblyDisablingAction,
 }) {
   if (activeDrawPositions.includes(drawPosition)) return {};
 
