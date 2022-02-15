@@ -31,6 +31,7 @@ import {
  */
 export function generateAdHocMatchUps({
   participantIdPairings,
+  tournamentRecord,
   matchUpIds = [],
   drawDefinition,
   matchUpsCount,
@@ -104,13 +105,23 @@ export function generateAdHocMatchUps({
     };
   });
 
-  const result = addAdHocMatchUps({ drawDefinition, structureId, matchUps });
+  const result = addAdHocMatchUps({
+    tournamentRecord,
+    drawDefinition,
+    structureId,
+    matchUps,
+  });
   if (result.error) return result;
 
   return { matchUpsCount: matchUps.length, ...SUCCESS };
 }
 
-function addAdHocMatchUps({ drawDefinition, structureId, matchUps }) {
+function addAdHocMatchUps({
+  tournamentRecord,
+  drawDefinition,
+  structureId,
+  matchUps,
+}) {
   if (typeof drawDefinition !== 'object')
     return { error: MISSING_DRAW_DEFINITION };
   if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
@@ -137,7 +148,11 @@ function addAdHocMatchUps({ drawDefinition, structureId, matchUps }) {
 
   structure.matchUps.push(...matchUps);
 
-  addMatchUpsNotice({ drawDefinition, matchUps });
+  addMatchUpsNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    drawDefinition,
+    matchUps,
+  });
   modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 
   return { ...SUCCESS };

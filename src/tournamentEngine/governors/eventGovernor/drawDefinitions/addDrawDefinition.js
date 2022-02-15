@@ -8,6 +8,7 @@ import {
 } from '../../../../drawEngine/notifications/drawNotifications';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
+import { VOLUNTARY_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
 import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -19,13 +20,13 @@ import {
   MISSING_DRAW_ID,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
-import { VOLUNTARY_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 
 export function addDrawDefinition({
   flight: flightDefinition,
   checkEntryStatus = true,
   modifyEventEntries, // event.entries[{entryStatus}] are modified to match draw.entries[{entryStatus}]
   existingDrawCount,
+  tournamentRecord,
   drawDefinition,
   event,
 }) {
@@ -197,7 +198,11 @@ export function addDrawDefinition({
   const { topics } = getTopics();
   if (topics.includes(ADD_MATCHUPS)) {
     const { matchUps } = allDrawMatchUps({ drawDefinition, event });
-    addMatchUpsNotice({ drawDefinition, matchUps });
+    addMatchUpsNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      drawDefinition,
+      matchUps,
+    });
   }
 
   addDrawNotice({ drawDefinition });

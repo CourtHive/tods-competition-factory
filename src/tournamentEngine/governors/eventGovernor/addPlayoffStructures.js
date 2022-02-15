@@ -24,6 +24,7 @@ export function addPlayoffStructures({
     playoffAttributes,
     playoffPositions,
     exitProfileLimit,
+    tournamentRecord,
     drawDefinition,
     roundProfiles,
     roundNumbers,

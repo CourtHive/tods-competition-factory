@@ -20,7 +20,11 @@ export function playoff(params) {
   const structureIds = structures?.map(({ structureId }) => structureId) || [];
   params.drawDefinition.structures.sort(structureSort);
 
-  addMatchUpsNotice({ drawDefinition: params.drawDefinition, matchUps });
+  addMatchUpsNotice({
+    tournamentId: params.tournamentRecord?.tournamentId,
+    drawDefinition: params.drawDefinition,
+    matchUps,
+  });
   modifyDrawNotice({ drawDefinition: params.drawDefinition, structureIds });
 
   return Object.assign({ structureId }, SUCCESS);

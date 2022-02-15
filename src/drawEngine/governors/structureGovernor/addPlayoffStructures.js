@@ -5,5 +5,10 @@ export function addPlayoffStructures(params) {
   const { structures, links } = generateAndPopulatePlayoffStructures(params);
   const drawDefinition = params.drawDefinition;
 
-  return attachPlayoffStructures({ drawDefinition, structures, links });
+  return attachPlayoffStructures({
+    tournamentId: params.tournamentRecord?.tournamentId,
+    drawDefinition,
+    structures,
+    links,
+  });
 }
