@@ -18,6 +18,7 @@ export function getScaledEntries({
   tournamentRecord,
   scaleAttributes,
   scaleSortMethod,
+  stageSequence,
   entries,
   event,
   stage,
@@ -28,6 +29,9 @@ export function getScaledEntries({
   const stageEntries = entries.filter(
     (entry) =>
       (!stage || !entry.entryStage || entry.entryStage === stage) &&
+      (!stageSequence ||
+        !entry.stageSequence ||
+        entry.stageSequence === stageSequence) &&
       STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
   );
 

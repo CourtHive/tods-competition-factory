@@ -219,11 +219,14 @@ export function generateDrawDefinition(params) {
   });
 
   if (params.qualifyingProfiles) {
-    console.log(params.qualifyingProfiles);
     let stageSequence = 1;
     for (const qualifyingProfile of params.qualifyingProfiles) {
-      const { drawSize, qualifyingRoundNumber, qualifyingPositions } =
-        qualifyingProfile;
+      const {
+        qualifyingRoundNumber,
+        qualifyingPositions,
+        seedsCount = 0,
+        drawSize,
+      } = qualifyingProfile;
       const qualifyingResult = prepareStage({
         ...drawTypeResult,
         ...params,
@@ -232,8 +235,8 @@ export function generateDrawDefinition(params) {
         stage: QUALIFYING,
         drawDefinition,
         stageSequence,
-        seedsCount: 0,
         participants,
+        seedsCount,
         drawSize,
         entries,
       });

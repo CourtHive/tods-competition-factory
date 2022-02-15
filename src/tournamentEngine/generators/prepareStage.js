@@ -36,6 +36,9 @@ export function prepareStage({
   const stageEntries = entries.filter(
     (entry) =>
       (!entry.entryStage || entry.entryStage === stage) &&
+      (!stageSequence ||
+        !entry.stageSequence ||
+        entry.stageSequence === stageSequence) &&
       STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
   );
 
@@ -104,6 +107,7 @@ export function prepareStage({
     let { scaledEntries } = getScaledEntries({
       scaleAttributes: seedingScaleAttributes,
       tournamentRecord,
+      stageSequence,
       entries,
       stage,
     });
@@ -118,6 +122,7 @@ export function prepareStage({
       ({ scaledEntries } = getScaledEntries({
         scaleAttributes: rankingScaleAttributes,
         tournamentRecord,
+        stageSequence,
         entries,
         stage,
       }));
