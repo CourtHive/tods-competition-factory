@@ -153,10 +153,11 @@ export function prepareStage({
   }
 
   let conflicts = [];
+  let positionAssignments;
   if (automated !== false) {
     const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
     // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
-    ({ conflicts } = automatedPositioning({
+    ({ conflicts, positionAssignments } = automatedPositioning({
       inContextDrawMatchUps,
       tournamentRecord,
       drawDefinition,
@@ -169,5 +170,11 @@ export function prepareStage({
     }));
   }
 
-  return { conflicts, structureId, seedsCount, stageEntries };
+  return {
+    positionAssignments,
+    stageEntries,
+    structureId,
+    seedsCount,
+    conflicts,
+  };
 }

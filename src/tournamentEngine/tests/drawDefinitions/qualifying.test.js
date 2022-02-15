@@ -83,7 +83,7 @@ it.each(scenarios)(
   }
 );
 
-it('supports multi-sequence qualifying structures', () => {
+it.only('supports multi-sequence qualifying structures', () => {
   const drawProfiles = [
     {
       drawSize: 32,
@@ -139,6 +139,9 @@ it('supports multi-sequence qualifying structures', () => {
   });
   expect(q1pa.length).toEqual(32);
 
+  const q1positioned = q1pa.filter((q) => q.participantId);
+  expect(q1positioned.length).toEqual(32);
+
   const {
     structures: [q2],
   } = getDrawStructures({
@@ -150,6 +153,8 @@ it('supports multi-sequence qualifying structures', () => {
     structure: q2,
   });
   expect(q2pa.length).toEqual(16);
+  const q2positioned = q2pa.filter((q) => q.participantId);
+  expect(q2positioned.length).toEqual(12);
 
   expect(q1.structureName).toEqual('QUALIFYING 1');
   expect(q2.structureName).toEqual('QUALIFYING 2');
@@ -172,16 +177,11 @@ it('supports multi-sequence qualifying structures', () => {
   expect(firstLink.target.feedProfile).toEqual(DRAW);
   expect(secondLink.target.feedProfile).toEqual(DRAW);
 
-  const qualifyingStructure = drawDefinition.structures.find(
-    (structure) =>
-      structure.stage === QUALIFYING && structure.stageSequence === 1
-  );
-
-  setDevContext({ feedProfile: true });
   let drawPosition = 1;
+  setDevContext({ feedProfile: true });
   let result = tournamentEngine.positionActions({
     policyDefinition: POLICY_POSITION_ACTIONS_UNRESTRICTED,
-    structureId: qualifyingStructure.structureId,
+    structureId: q1.structureId,
     drawPosition,
     drawId,
   });

@@ -34,6 +34,7 @@ import {
  */
 export function addDrawEntry({
   entryStatus = DIRECT_ACCEPTANCE,
+  entryStageSequence,
   entryStage = MAIN,
   drawDefinition,
   entryPosition,
@@ -78,10 +79,11 @@ export function addDrawEntry({
 
   const entry = definedAttributes({
     ...participant,
+    entryStageSequence,
     participantId,
-    entryStage,
-    entryStatus,
     entryPosition,
+    entryStatus,
+    entryStage,
   });
 
   drawDefinition.entries.push(entry);
@@ -156,6 +158,7 @@ export function addDrawEntries({
         { participantId },
         { entryStage: stage, entryStatus, entryStageSequence: stageSequence }
       );
+      console.log({ entry });
       drawDefinition.entries.push(entry);
     });
 
