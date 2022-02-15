@@ -106,7 +106,11 @@ export function pruneDrawDefinition({
       relevantMatchUps = matchPlayMatchUps;
     }
 
-    deleteMatchUpsNotice({ drawDefinition, matchUpIds: deletedMatchUpIds });
+    deleteMatchUpsNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      matchUpIds: deletedMatchUpIds,
+      drawDefinition,
+    });
     modifyDrawNotice({ drawDefinition });
   }
 

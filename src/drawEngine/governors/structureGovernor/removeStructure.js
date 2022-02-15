@@ -13,7 +13,11 @@ import {
   MISSING_STRUCTURE_ID,
 } from '../../../constants/errorConditionConstants';
 
-export function removeStructure({ drawDefinition, structureId }) {
+export function removeStructure({
+  tournamentRecord,
+  drawDefinition,
+  structureId,
+}) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
@@ -71,9 +75,10 @@ export function removeStructure({ drawDefinition, structureId }) {
   });
 
   deleteMatchUpsNotice({
-    drawDefinition,
+    tournamentId: tournamentRecord?.tournamentId,
     matchUpIds: removedMatchUpIds,
     action: 'removeStructure',
+    drawDefinition,
   });
   modifyDrawNotice({ drawDefinition });
 
