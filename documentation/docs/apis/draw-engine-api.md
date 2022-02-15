@@ -13,6 +13,7 @@ drawEngine.addDrawEntries({
   participantIds, // an array of participantIds, should all be of the same participantType
   entryStatus, // optional - defaults to DIRECT_ACCEPTANCE
   stage, // optional - stage into which participantIds have been entered; defaults to MAIN
+  stageSequence, // optional - applies to qualifying
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
 });
 ```

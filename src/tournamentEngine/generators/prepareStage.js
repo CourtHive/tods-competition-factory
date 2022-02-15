@@ -37,8 +37,8 @@ export function prepareStage({
     (entry) =>
       (!entry.entryStage || entry.entryStage === stage) &&
       (!stageSequence ||
-        !entry.stageSequence ||
-        entry.stageSequence === stageSequence) &&
+        !entry.entryStageSequence ||
+        entry.entryStageSequence === stageSequence) &&
       STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
   );
 

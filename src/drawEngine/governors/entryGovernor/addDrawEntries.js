@@ -43,7 +43,6 @@ export function addDrawEntry({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!entryStage) return { error: MISSING_STAGE };
   if (!validStage({ stage: entryStage, drawDefinition })) {
-    console.log(drawDefinition.extensions[0]);
     return { error: INVALID_STAGE };
   }
   const spaceAvailable = stageSpace({
@@ -104,6 +103,7 @@ export function addDrawEntries({
   autoEntryPositions = true,
   drawDefinition,
   participantIds,
+  stageSequence,
   stage = MAIN,
 }) {
   if (!stage) return { error: MISSING_STAGE };
@@ -129,9 +129,9 @@ export function addDrawEntries({
       const invalidVoluntaryConsolation =
         stage === VOLUNTARY_CONSOLATION &&
         participantInEntries({
-          participantId,
-          drawDefinition,
           entryStage: stage,
+          drawDefinition,
+          participantId,
         });
       const invalidEntry =
         entryStatus !== LUCKY_LOSER &&
@@ -154,7 +154,7 @@ export function addDrawEntries({
     .forEach((participantId) => {
       const entry = Object.assign(
         { participantId },
-        { entryStage: stage, entryStatus }
+        { entryStage: stage, entryStatus, entryStageSequence: stageSequence }
       );
       drawDefinition.entries.push(entry);
     });

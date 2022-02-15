@@ -32,6 +32,7 @@ export function addEventEntries(params) {
     entryStatus = DIRECT_ACCEPTANCE,
     autoEntryPositions = true,
     participantIds = [],
+    entryStageSequence,
     entryStage = MAIN,
     tournamentRecord,
     drawDefinition,
@@ -92,11 +93,13 @@ export function addEventEntries(params) {
 
   validParticipantIds.forEach((participantId) => {
     if (!existingIds.includes(participantId)) {
-      event.entries.push({
+      const entry = {
         participantId,
         entryStatus,
         entryStage,
-      });
+      };
+      if (entryStageSequence) entry.entryStageSequence = entryStageSequence;
+      event.entries.push(entry);
     }
   });
 
@@ -105,6 +108,7 @@ export function addEventEntries(params) {
     const result = addDrawEntries({
       participantIds: validParticipantIds,
       autoEntryPositions,
+      entryStageSequence,
       drawDefinition,
       entryStatus,
       entryStage,

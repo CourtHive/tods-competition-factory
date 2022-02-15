@@ -17,7 +17,7 @@ const scenarios = [
     expectation: {
       qualifyingRoundNumber: 2,
       qualifyingMatchUps: 12,
-      directAcceptance: 12,
+      directAcceptance: 28,
       qualifiersCount: 4,
     },
   },
@@ -27,7 +27,7 @@ const scenarios = [
     expectation: {
       qualifyingRoundNumber: 2,
       qualifyingMatchUps: 12,
-      directAcceptance: 12,
+      directAcceptance: 28,
       qualifiersCount: 4,
     },
   },
@@ -38,13 +38,15 @@ it.each(scenarios)(
   (scenario) => {
     const drawProfiles = [scenario];
 
-    const {
-      tournamentRecord,
-      drawIds: [drawId],
-    } = mocksEngine.generateTournamentRecord({
+    const result = mocksEngine.generateTournamentRecord({
       completeAllMatchUps: true,
       drawProfiles,
     });
+
+    const {
+      tournamentRecord,
+      drawIds: [drawId],
+    } = result;
 
     tournamentEngine.setState(tournamentRecord);
 
@@ -98,6 +100,13 @@ it('supports multi-sequence qualifying structures', () => {
   });
 
   tournamentEngine.setState(tournamentRecord);
+
+  const { tournamentParticipants } =
+    tournamentEngine.getTournamentParticipants();
+
+  // if there are qualifiers then all participants are unique
+  // 32 + 32 unique + 32 qualifying + 16 qualifying = 112
+  expect(tournamentParticipants.length).toEqual(112);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(3);

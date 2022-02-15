@@ -33,6 +33,7 @@ import { SUCCESS } from '../../constants/resultConstants';
 import {
   AD_HOC,
   MAIN,
+  QUALIFYING,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
@@ -58,14 +59,15 @@ export function generateEventWithDraw({
     drawType = SINGLE_ELIMINATION,
     tournamentAlternates = 0,
     alternatesCount = 0,
+    qualifyingProfiles,
     generate = true,
     eventExtensions,
-    timeItems,
     drawExtensions,
     completionGoal,
     drawSize = 32,
     tieFormatName,
     seedsCount,
+    timeItems,
     category,
     idPrefix,
     publish,
@@ -90,14 +92,11 @@ export function generateEventWithDraw({
     drawProfile.eventName || categoryName || `Generated ${eventType}`;
   let targetParticipants = tournamentRecord?.participants || [];
 
-  /*
-  const qualifyingIndividualParticipantsCount =
-    (params.qualifyingProfiles?.reduce(
+  const qualifyingParticipantsCount =
+    (qualifyingProfiles?.reduce(
       (count, profile) => count + profile.drawSize,
       0
     ) || 0) * (participantType === DOUBLES ? 2 : 1);
-  console.log({ qualifyingIndividualParticipantsCount });
-  */
 
   const participantsCount =
     !drawProfile.participantsCount || drawProfile.participantsCount > drawSize
@@ -123,12 +122,14 @@ export function generateEventWithDraw({
 
   const uniqueParticipantIds = [];
   if (
+    qualifyingParticipantsCount ||
     drawProfile.uniqueParticipants ||
     !tournamentRecord ||
     gender ||
     category
   ) {
-    let individualParticipantsCount = participantsCount + alternatesCount;
+    let drawParticipantsCount =
+      participantsCount + alternatesCount + qualifyingParticipantsCount;
     let teamSize;
 
     if (eventType === TEAM) {
@@ -138,7 +139,8 @@ export function generateEventWithDraw({
         tieFormat,
         drawSize,
       }));
-      individualParticipantsCount = teamSize * drawSize;
+      drawParticipantsCount =
+        teamSize * (drawSize + qualifyingParticipantsCount);
     }
 
     const idPrefix = participantsProfile?.idPrefix
@@ -147,7 +149,7 @@ export function generateEventWithDraw({
     const { participants: unique } = generateParticipants({
       ...participantsProfile,
       scaledParticipantsCount: drawProfile.scaledParticipantsCount,
-      participantsCount: individualParticipantsCount,
+      participantsCount: drawParticipantsCount,
       consideredDate: tournamentRecord?.startDate,
       sex: gender || participantsProfile?.sex,
       rankingRange: drawProfile.rankingRange,
@@ -243,6 +245,41 @@ export function generateEventWithDraw({
       event,
     });
     if (result.error) return result;
+  }
+
+  const qualifyingParticipantIds = qualifyingParticipantsCount
+    ? consideredParticipants
+        .slice(
+          participantsCount,
+          participantsCount + qualifyingParticipantsCount
+        )
+        .map((p) => p.participantId)
+    : 0;
+
+  if (qualifyingParticipantIds?.length) {
+    let qualifyingIndex = 0;
+    let entryStageSequence = 1;
+
+    for (const profile of qualifyingProfiles) {
+      const drawSize = profile.drawSize;
+      const participantIds = qualifyingParticipantIds.slice(
+        qualifyingIndex,
+        qualifyingIndex + drawSize
+      );
+      const result = addEventEntries({
+        entryStage: QUALIFYING,
+        autoEntryPositions,
+        tournamentRecord,
+        participantIds,
+        entryStageSequence,
+        event,
+      });
+      if (result.error) {
+        return result;
+      }
+      qualifyingIndex += drawSize;
+      entryStageSequence += 1;
+    }
   }
 
   // alternates can still be taken from existing participants

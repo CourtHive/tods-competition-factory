@@ -218,6 +218,10 @@ export function generateDrawDefinition(params) {
     entries,
   });
 
+  const structureId = structureResult.structureId;
+  const conflicts = structureResult.conflicts;
+  const qualifyingConflicts = [];
+
   if (params.qualifyingProfiles) {
     let stageSequence = 1;
     for (const qualifyingProfile of params.qualifyingProfiles) {
@@ -241,16 +245,16 @@ export function generateDrawDefinition(params) {
         entries,
       });
       stageSequence += 1;
-      console.log({ qualifyingResult });
+
+      if (qualifyingResult.conflicts?.length)
+        qualifyingConflicts.push(...qualifyingResult.conflicts);
     }
   }
-
-  const conflicts = structureResult.conflicts;
-  const structureId = structureResult.structureId;
 
   drawDefinition.drawName = params.drawName || drawType;
 
   return {
+    qualifyingConflicts,
     drawDefinition,
     structureId,
     ...SUCCESS,

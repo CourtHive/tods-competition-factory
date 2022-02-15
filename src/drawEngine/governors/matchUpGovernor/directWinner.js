@@ -3,7 +3,9 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findStructure } from '../../getters/findStructure';
 
+import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function directWinner({
@@ -96,9 +98,18 @@ export function directWinner({
       });
       if (result.error) return result;
     } else {
-      const error = 'winner target position unavaiallble';
-      console.log(error);
-      return { error };
+      const { structure, error } = findStructure({
+        structureId: sourceStructureId,
+        drawDefinition,
+      });
+      if (error) return { error };
+
+      // qualifiers do not get automatically directed
+      if (structure.stage !== QUALIFYING) {
+        const error = 'winner target position unavaiallble';
+        console.log(error);
+        return { error };
+      }
     }
   } else {
     const result = assignMatchUpDrawPosition({

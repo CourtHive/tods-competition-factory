@@ -14,6 +14,7 @@ import {
 
 export function addDrawEntries({
   autoEntryPositions = true,
+  entryStageSequence,
   drawDefinition,
   participantIds,
   entryStatus,
@@ -34,11 +35,12 @@ export function addDrawEntries({
 
   if (drawDefinition) {
     const result = addEntries({
+      stageSequence: entryStageSequence,
+      autoEntryPositions,
+      stage: entryStage,
       drawDefinition,
       participantIds,
       entryStatus,
-      stage: entryStage,
-      autoEntryPositions,
     });
     if (result.error) return result;
   }

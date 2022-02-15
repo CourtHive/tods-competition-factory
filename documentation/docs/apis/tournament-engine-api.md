@@ -97,12 +97,13 @@ Bulk add an array of `participantIds` to a specific **stage** of a draw with a s
 
 ```js
 tournamentEngine.addDrawEntries({
-  drawId,
-  eventId,
-  participantIds,
   entryStage: MAIN, // optional
   entryStatus: ALTERNATE, // optional
+  entryStageSequence, // optional - applies to qualifying
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
+  participantIds,
+  eventId,
+  drawId,
 });
 ```
 
