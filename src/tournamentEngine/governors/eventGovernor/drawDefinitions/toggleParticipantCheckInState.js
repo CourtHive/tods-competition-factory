@@ -28,17 +28,19 @@ export function toggleParticipantCheckInState(params) {
 
   if (checkedInParticipantIds.includes(participantId)) {
     return checkOutParticipant({
-      drawDefinition,
       tournamentParticipants,
-      matchUpId,
+      tournamentRecord,
+      drawDefinition,
       participantId,
+      matchUpId,
     });
   } else {
     return checkInParticipant({
-      drawDefinition,
       tournamentParticipants,
-      matchUpId,
+      tournamentRecord,
+      drawDefinition,
       participantId,
+      matchUpId,
     });
   }
 }

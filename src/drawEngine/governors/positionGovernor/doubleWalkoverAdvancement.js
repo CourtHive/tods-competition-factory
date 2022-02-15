@@ -24,7 +24,13 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 export function doubleWalkoverAdvancement(params) {
-  const { drawDefinition, matchUpsMap, targetData, structure } = params;
+  const {
+    tournamentRecord,
+    drawDefinition,
+    matchUpsMap,
+    targetData,
+    structure,
+  } = params;
   if (structure.structureType === CONTAINER) return SUCCESS;
 
   const { matchUp: sourceMatchUp, targetMatchUps, targetLinks } = targetData;
@@ -35,6 +41,7 @@ export function doubleWalkoverAdvancement(params) {
     const { loserTargetLink } = targetLinks;
     const result = advanceByeToLoserMatchUp({
       loserTargetDrawPosition,
+      tournamentRecord,
       loserTargetLink,
       drawDefinition,
       loserMatchUp,
@@ -47,6 +54,7 @@ export function doubleWalkoverAdvancement(params) {
     const result = conditionallyAdvanceDrawPosition({
       ...params,
       matchUpId: winnerMatchUp.matchUpId,
+      tournamentRecord,
       sourceMatchUp,
       winnerMatchUp,
     });
@@ -61,6 +69,7 @@ export function doubleWalkoverAdvancement(params) {
 function conditionallyAdvanceDrawPosition(params) {
   const {
     inContextDrawMatchUps,
+    tournamentRecord,
     drawDefinition,
     sourceMatchUp,
     winnerMatchUp,
@@ -112,6 +121,7 @@ function conditionallyAdvanceDrawPosition(params) {
     const result = advanceByeToLoserMatchUp({
       loserTargetDrawPosition: nextLoserTargetDrawPosition,
       loserMatchUp: nextLoserMatchUp,
+      tournamentRecord,
       loserTargetLink,
       drawDefinition,
       matchUpsMap,
@@ -273,6 +283,7 @@ function conditionallyAdvanceDrawPosition(params) {
 function advanceByeToLoserMatchUp(params) {
   const {
     loserTargetDrawPosition,
+    tournamentRecord,
     loserTargetLink,
     drawDefinition,
     matchUpsMap,
@@ -283,6 +294,7 @@ function advanceByeToLoserMatchUp(params) {
 
   return assignDrawPositionBye({
     drawPosition: loserTargetDrawPosition,
+    tournamentRecord,
     drawDefinition,
     structureId,
     matchUpsMap,

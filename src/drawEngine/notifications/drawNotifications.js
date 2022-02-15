@@ -27,26 +27,32 @@ function drawUpdatedAt(drawDefinition, structureIds) {
     }
   });
 }
-export function addMatchUpsNotice({ drawDefinition, matchUps }) {
+export function addMatchUpsNotice({ drawDefinition, matchUps, tournamentId }) {
   drawUpdatedAt(drawDefinition);
-  addNotice({ topic: ADD_MATCHUPS, payload: { matchUps } });
+  addNotice({ topic: ADD_MATCHUPS, payload: { matchUps, tournamentId } });
 }
-export function deleteMatchUpsNotice({ drawDefinition, matchUpIds, action }) {
+export function deleteMatchUpsNotice({
+  drawDefinition,
+  tournamentId,
+  matchUpIds,
+  action,
+}) {
   drawUpdatedAt(drawDefinition);
   addNotice({
     topic: DELETED_MATCHUP_IDS,
     payload: {
-      action,
+      tournamentId,
       matchUpIds,
+      action,
     },
   });
 }
-export function modifyMatchUpNotice({ drawDefinition, matchUp }) {
+export function modifyMatchUpNotice({ drawDefinition, matchUp, tournamentId }) {
   const structureId = matchUp.structureId;
   modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
   addNotice({
     topic: MODIFY_MATCHUP,
-    payload: { matchUp },
+    payload: { matchUp, tournamentId },
     key: matchUp.matchUpId,
   });
 }

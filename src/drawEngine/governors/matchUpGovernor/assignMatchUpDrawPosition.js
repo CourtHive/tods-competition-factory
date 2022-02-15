@@ -26,6 +26,7 @@ import {
 
 export function assignMatchUpDrawPosition({
   inContextDrawMatchUps,
+  tournamentRecord,
   drawDefinition,
   matchUpStatus,
   drawPosition,
@@ -108,7 +109,11 @@ export function assignMatchUpDrawPosition({
       matchUpStatus,
     });
 
-    modifyMatchUpNotice({ drawDefinition, matchUp });
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      drawDefinition,
+      matchUp,
+    });
   }
 
   const targetData = positionTargets({
@@ -134,6 +139,7 @@ export function assignMatchUpDrawPosition({
           matchUpId: winnerMatchUp.matchUpId,
           iterative: 'brightmagenta',
           inContextDrawMatchUps,
+          tournamentRecord,
           drawDefinition,
           drawPosition,
           matchUpsMap,
@@ -161,6 +167,7 @@ export function assignMatchUpDrawPosition({
         matchUpId: winnerMatchUp.matchUpId,
         iterative: 'brightred',
         inContextDrawMatchUps,
+        tournamentRecord,
         drawDefinition,
         drawPosition,
         matchUpsMap,
@@ -185,10 +192,10 @@ export function assignMatchUpDrawPosition({
     if (byePropagation && loserMatchUp) {
       const { structureId } = loserMatchUp;
       const result = assignDrawPositionBye({
+        drawPosition: loserTargetDrawPosition,
+        tournamentRecord,
         drawDefinition,
         structureId,
-        drawPosition: loserTargetDrawPosition,
-
         matchUpsMap,
       });
       if (result.error) return result;

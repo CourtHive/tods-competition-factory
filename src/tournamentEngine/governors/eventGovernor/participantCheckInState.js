@@ -46,10 +46,10 @@ export function checkInParticipant({
 
 export function checkOutParticipant({
   tournamentRecord,
-  drawId,
-  matchUpId,
   participantId,
+  matchUpId,
   matchUp,
+  drawId,
 }) {
   if (matchUp && !drawId) {
     ({ drawId } = matchUp);

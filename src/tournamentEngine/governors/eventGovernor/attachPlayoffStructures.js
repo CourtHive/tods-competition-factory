@@ -15,7 +15,12 @@ export function attachPlayoffStructures({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const result = attachPlayoffs({ drawDefinition, structures, links });
+  const result = attachPlayoffs({
+    tournamentRecord,
+    drawDefinition,
+    structures,
+    links,
+  });
   if (result.error) return result;
 
   const structureIds = structures?.map(({ structureId }) => structureId);

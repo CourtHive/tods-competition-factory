@@ -110,7 +110,10 @@ export function deleteDrawDefinitions({
     if (result.error) return result;
   }
   if (matchUpIds.length) {
-    deleteMatchUpsNotice({ matchUpIds });
+    deleteMatchUpsNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      matchUpIds,
+    });
   }
 
   drawIds.forEach((drawId) => {

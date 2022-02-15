@@ -19,6 +19,7 @@ export function removeDirectedParticipants(params) {
   const {
     dualWinningSideChange,
     inContextDrawMatchUps,
+    tournamentRecord,
     drawDefinition,
     matchUpStatus,
     matchUpsMap,
@@ -98,6 +99,7 @@ export function removeDirectedParticipants(params) {
       inContextDrawMatchUps,
       winningDrawPosition,
       winnerParticipantId,
+      tournamentRecord,
       winnerTargetLink,
       drawDefinition,
       winnerMatchUp,
@@ -133,6 +135,7 @@ export function removeDirectedParticipants(params) {
     const removeLoserResult = removeDirectedLoser({
       inContextDrawMatchUps,
       loserParticipantId,
+      tournamentRecord,
       loserTargetLink,
       drawDefinition,
       loserMatchUp,
@@ -149,6 +152,7 @@ export function removeDirectedWinner({
   inContextDrawMatchUps,
   winningDrawPosition,
   winnerParticipantId,
+  tournamentRecord,
   winnerTargetLink,
   drawDefinition,
   winnerMatchUp,
@@ -200,6 +204,7 @@ export function removeDirectedWinner({
   const result = removeSubsequentRoundsParticipant({
     targetDrawPosition: winningDrawPosition,
     inContextDrawMatchUps,
+    tournamentRecord,
     drawDefinition,
     dualMatchUp,
     matchUpsMap,
@@ -215,6 +220,7 @@ export function removeDirectedWinner({
 function removeDirectedLoser({
   inContextDrawMatchUps,
   loserParticipantId,
+  tournamentRecord,
   loserTargetLink,
   drawDefinition,
   loserMatchUp,
@@ -245,7 +251,11 @@ function removeDirectedLoser({
       );
     if (targetSide) {
       delete targetSide.lineUp;
-      modifyMatchUpNotice({ drawDefinition, matchUp: targetMatchUp });
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        matchUp: targetMatchUp,
+        drawDefinition,
+      });
     }
   }
 
@@ -254,6 +264,7 @@ function removeDirectedLoser({
 
 export function removeDirectedBye({
   inContextDrawMatchUps,
+  tournamentRecord,
   drawDefinition,
   drawPosition,
   matchUpsMap,
@@ -263,6 +274,7 @@ export function removeDirectedBye({
 
   clearDrawPosition({
     inContextDrawMatchUps,
+    tournamentRecord,
     drawDefinition,
     matchUpsMap,
     drawPosition,

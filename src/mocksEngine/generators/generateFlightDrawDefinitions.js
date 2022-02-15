@@ -104,6 +104,7 @@ export function generateFlightDrawDefinitions({
         }
 
         result = addDrawDefinition({
+          tournamentRecord,
           drawDefinition,
           event,
         });

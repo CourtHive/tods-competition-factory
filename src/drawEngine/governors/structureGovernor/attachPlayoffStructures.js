@@ -10,7 +10,12 @@ import {
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
 
-export function attachPlayoffStructures({ drawDefinition, structures, links }) {
+export function attachPlayoffStructures({
+  tournamentRecord,
+  drawDefinition,
+  structures,
+  links,
+}) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!Array.isArray(structures) || !Array.isArray(links))
     return { error: INVALID_VALUES };
@@ -23,7 +28,11 @@ export function attachPlayoffStructures({ drawDefinition, structures, links }) {
     .map((structure) => getAllStructureMatchUps({ structure })?.matchUps || [])
     .flat();
 
-  addMatchUpsNotice({ drawDefinition, matchUps });
+  addMatchUpsNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    drawDefinition,
+    matchUps,
+  });
   modifyDrawNotice({ drawDefinition, structureIds });
 
   return { ...SUCCESS };

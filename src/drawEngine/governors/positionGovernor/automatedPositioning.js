@@ -28,8 +28,9 @@ import {
 export function automatedPositioning({
   applyPositioning = true,
   inContextDrawMatchUps,
-  drawDefinition,
+  tournamentRecord,
   candidatesCount,
+  drawDefinition,
   participants,
   structureId,
   matchUpsMap,
@@ -86,6 +87,7 @@ export function automatedPositioning({
     // since WATERFALL attempts to place ALL participants
     // BYEs must be placed first to ensure lower seeds get BYEs
     let result = positionByes({
+      tournamentRecord,
       drawDefinition,
       matchUpsMap,
       structure,
@@ -96,6 +98,7 @@ export function automatedPositioning({
 
     result = positionSeedBlocks({
       inContextDrawMatchUps,
+      tournamentRecord,
       drawDefinition,
       participants,
       matchUpsMap,
@@ -108,6 +111,7 @@ export function automatedPositioning({
     if (drawType !== LUCKY_DRAW) {
       let result = positionSeedBlocks({
         inContextDrawMatchUps,
+        tournamentRecord,
         drawDefinition,
         participants,
         matchUpsMap,
@@ -118,6 +122,7 @@ export function automatedPositioning({
 
     const result = positionByes({
       inContextDrawMatchUps,
+      tournamentRecord,
       drawDefinition,
       matchUpsMap,
       structure,
@@ -132,6 +137,7 @@ export function automatedPositioning({
   if (!seedsOnly) {
     let result = positionUnseededParticipants({
       inContextDrawMatchUps,
+      tournamentRecord,
       candidatesCount,
       drawDefinition,
       participants,
@@ -143,6 +149,7 @@ export function automatedPositioning({
 
     result = positionQualifiers({
       inContextDrawMatchUps,
+      tournamentRecord,
       drawDefinition,
       participants,
       matchUpsMap,

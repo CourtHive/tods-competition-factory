@@ -16,6 +16,7 @@ import {
 
 export function setPositionAssignments({
   structurePositionAssignments,
+  tournamentRecord,
   drawDefinition,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -62,6 +63,7 @@ export function setPositionAssignments({
 
       if (bye) {
         const result = assignDrawPositionBye({
+          tournamentRecord,
           drawDefinition,
           drawPosition,
           matchUpsMap,
@@ -81,6 +83,7 @@ export function setPositionAssignments({
         const result = assignDrawPosition({
           automaticPlacement: true,
           inContextDrawMatchUps,
+          tournamentRecord,
           drawDefinition,
           participantId,
           drawPosition,

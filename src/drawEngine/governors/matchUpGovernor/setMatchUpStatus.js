@@ -258,8 +258,8 @@ export function setMatchUpStatus(params) {
   const { schedule } = params;
   if (schedule) {
     const result = addMatchUpScheduleItems({
-      tournamentRecord,
       disableNotice: true,
+      tournamentRecord,
       drawDefinition,
       matchUpId,
       schedule,

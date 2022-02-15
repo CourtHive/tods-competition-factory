@@ -10,6 +10,7 @@ import { SUCCESS } from '../../constants/resultConstants';
 export function generateVoluntaryConsolationStructure({
   structureName = VOLUNTARY_CONSOLATION,
   structureAbbreviation,
+  tournamentRecord,
   drawDefinition,
   participants,
   matchUpType,
@@ -41,6 +42,7 @@ export function generateVoluntaryConsolationStructure({
   if (automated) {
     automatedPositioning({
       structureId: structureId || structure.structureId, // either passed in or generated in template
+      tournamentRecord,
       drawDefinition,
       participants,
       event,

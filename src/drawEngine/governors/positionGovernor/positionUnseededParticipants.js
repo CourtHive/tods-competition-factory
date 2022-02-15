@@ -16,8 +16,9 @@ import {
 
 export function positionUnseededParticipants({
   inContextDrawMatchUps,
-  drawDefinition,
+  tournamentRecord,
   candidatesCount,
+  drawDefinition,
   participants,
   matchUpsMap,
   structureId,
@@ -86,6 +87,7 @@ export function positionUnseededParticipants({
     const result = randomUnseededSeparation({
       unseededParticipantIds,
       inContextDrawMatchUps,
+      tournamentRecord,
       candidatesCount,
       drawDefinition,
       participants,
@@ -100,6 +102,7 @@ export function positionUnseededParticipants({
       unseededParticipantIds,
       inContextDrawMatchUps,
       unfilledDrawPositions,
+      tournamentRecord,
       drawDefinition,
       structureId,
       matchUpsMap,
@@ -112,6 +115,7 @@ function randomUnseededDistribution({
   unseededParticipantIds,
   inContextDrawMatchUps,
   unfilledDrawPositions,
+  tournamentRecord,
   drawDefinition,
   matchUpsMap,
   structureId,
@@ -122,6 +126,7 @@ function randomUnseededDistribution({
     const result = assignDrawPosition({
       automaticPlacement: true,
       inContextDrawMatchUps,
+      tournamentRecord,
       drawDefinition,
       participantId,
       drawPosition,

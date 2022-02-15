@@ -29,6 +29,7 @@ import {
 export function drawMatic({
   tournamentParticipants,
   restrictEntryStatus,
+  tournamentRecord,
   generateMatchUps,
   drawDefinition,
   participantIds,
@@ -119,6 +120,7 @@ export function drawMatic({
   const { candidatesCount, iterations, participantIdPairings } =
     generateDrawMaticRound({
       tournamentParticipants,
+      tournamentRecord,
       generateMatchUps,
       drawDefinition,
       participantIds,

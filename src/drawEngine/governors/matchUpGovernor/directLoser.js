@@ -21,6 +21,7 @@ export function directLoser(params) {
     inContextDrawMatchUps,
     projectedWinningSide,
     loserDrawPosition,
+    tournamentRecord,
     loserTargetLink,
     drawDefinition,
     loserMatchUp,
@@ -145,6 +146,7 @@ export function directLoser(params) {
       drawPosition: fedDrawPosition,
       automaticPlacement: true,
       inContextDrawMatchUps,
+      tournamentRecord,
       drawDefinition,
       matchUpsMap,
     });
@@ -187,7 +189,11 @@ export function directLoser(params) {
       // attach to appropriate side of winnerMatchUp
       if (targetSide) {
         targetSide.lineUp = side.lineUp;
-        modifyMatchUpNotice({ drawDefinition, matchUp: targetMatchUp });
+        modifyMatchUpNotice({
+          tournamentId: tournamentRecord?.tournamentId,
+          matchUp: targetMatchUp,
+          drawDefinition,
+        });
       }
     }
   }
@@ -204,21 +210,23 @@ export function directLoser(params) {
 
   function assignWinnerPositionBye() {
     return assignDrawPositionBye({
-      drawDefinition,
-      structureId: targetStructureId,
       drawPosition: winnerBackdrawPosition,
+      structureId: targetStructureId,
+      tournamentRecord,
+      drawDefinition,
     });
   }
 
   function asssignLoserDrawPosition() {
     return assignDrawPosition({
-      drawDefinition,
+      drawPosition: targetMatchUpDrawPosition,
       participantId: loserParticipantId,
       structureId: targetStructureId,
-      drawPosition: targetMatchUpDrawPosition,
       automaticPlacement: true,
-      matchUpsMap,
       inContextDrawMatchUps,
+      tournamentRecord,
+      drawDefinition,
+      matchUpsMap,
     });
   }
 }

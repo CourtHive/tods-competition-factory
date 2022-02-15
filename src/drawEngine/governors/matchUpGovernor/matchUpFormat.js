@@ -18,8 +18,14 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function setMatchUpFormat(params) {
-  const { drawDefinition, event, matchUpFormat, structureId, matchUpId } =
-    params;
+  const {
+    tournamentRecord,
+    drawDefinition,
+    matchUpFormat,
+    structureId,
+    matchUpId,
+    event,
+  } = params;
   let { tieFormat } = params;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -49,7 +55,11 @@ export function setMatchUpFormat(params) {
     } else {
       return { error: INVALID_VALUES };
     }
-    modifyMatchUpNotice({ drawDefinition, matchUp });
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      drawDefinition,
+      matchUp,
+    });
   } else if (structureId) {
     const { structure, error } = findStructure({ drawDefinition, structureId });
     if (error) return { error };

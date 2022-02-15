@@ -1,12 +1,12 @@
-import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 import { assignMatchUpCourt as assignCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
+import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
   NO_MODIFICATIONS_APPLIED,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function matchUpScheduleChange(params) {
   const { tournamentRecords } = params;
@@ -43,10 +43,10 @@ export function matchUpScheduleChange(params) {
   if (targetCourtId && sourceMatchUpId && !targetMatchUpId) {
     const result = assignMatchUpCourt({
       tournamentId: sourceTournamentId,
-      drawId: sourceDrawId,
-      courtDayDate,
       matchUpId: sourceMatchUpId,
       courtId: targetCourtId,
+      drawId: sourceDrawId,
+      courtDayDate,
     });
     if (result?.success) matchUpsModified++;
     if (result.error) return result;
@@ -58,20 +58,20 @@ export function matchUpScheduleChange(params) {
   ) {
     const sourceResult = assignMatchUpCourt({
       tournamentId: sourceTournamentId,
-      drawId: sourceDrawId,
-      courtDayDate,
       matchUpId: sourceMatchUpId,
       courtId: targetCourtId,
+      drawId: sourceDrawId,
+      courtDayDate,
     });
     if (sourceResult.success) matchUpsModified++;
     if (sourceResult.error) return sourceResult;
 
     const targetResult = assignMatchUpCourt({
       tournamentId: targetTournamentId,
-      drawId: targetDrawId,
-      courtDayDate,
       matchUpId: targetMatchUpId,
       courtId: sourceCourtId,
+      drawId: targetDrawId,
+      courtDayDate,
     });
     if (targetResult.success) matchUpsModified++;
     if (targetResult.error) return targetResult;
@@ -84,10 +84,10 @@ export function matchUpScheduleChange(params) {
 
   function assignMatchUpCourt({
     tournamentId,
-    drawId,
-    matchUpId,
     courtDayDate,
+    matchUpId,
     courtId,
+    drawId,
   }) {
     const tournamentRecord = tournamentRecords[tournamentId];
     const { drawDefinition } = getDrawDefinition({
@@ -98,9 +98,9 @@ export function matchUpScheduleChange(params) {
     return assignCourt({
       tournamentRecord,
       drawDefinition,
+      courtDayDate,
       matchUpId,
       courtId,
-      courtDayDate,
     });
   }
 }

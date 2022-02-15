@@ -14,6 +14,7 @@ export function positionParticipantAction(params) {
   const {
     participantIdAttributeName = 'participantId',
     positionActionName,
+    tournamentRecord,
     drawDefinition,
     participantId,
     drawPosition,
@@ -50,6 +51,7 @@ export function positionParticipantAction(params) {
   if (positionAssignment?.participantId) {
     let result = assignDrawPosition({
       inContextDrawMatchUps,
+      tournamentRecord,
       drawDefinition,
       participantId,
       drawPosition,
@@ -65,6 +67,7 @@ export function positionParticipantAction(params) {
   }
   let result = clearDrawPosition({
     inContextDrawMatchUps,
+    tournamentRecord,
     drawDefinition,
     drawPosition,
     structureId,
@@ -75,6 +78,7 @@ export function positionParticipantAction(params) {
 
   result = assignDrawPosition({
     inContextDrawMatchUps,
+    tournamentRecord,
     drawDefinition,
     participantId,
     drawPosition,

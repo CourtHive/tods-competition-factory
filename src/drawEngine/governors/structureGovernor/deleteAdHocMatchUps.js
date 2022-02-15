@@ -1,3 +1,4 @@
+import { getMatchUpIds } from '../../../global/functions/extractors';
 import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
@@ -12,7 +13,6 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { getMatchUpIds } from '../../../global/functions/extractors';
 
 /**
  *
@@ -23,6 +23,7 @@ import { getMatchUpIds } from '../../../global/functions/extractors';
  *
  */
 export function deleteAdHocMatchUps({
+  tournamentRecord,
   drawDefinition,
   structureId,
   matchUpIds = [],
@@ -98,9 +99,10 @@ export function deleteAdHocMatchUps({
     structure.matchUps.forEach(remapDrawPositions);
 
     deleteMatchUpsNotice({
-      drawDefinition,
+      tournamentId: tournamentRecord?.tournamentId,
       matchUpIds: matchUpIdsToDelete,
       action: 'deleteAdHocMatchUps',
+      drawDefinition,
     });
     modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
   }

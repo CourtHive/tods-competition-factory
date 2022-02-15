@@ -10,9 +10,9 @@ import { ASSIGN_VENUE } from '../../../constants/timeItemConstants';
 export function assignMatchUpVenue({
   tournamentRecord,
   drawDefinition,
+  disableNotice,
   matchUpId,
   venueId,
-  disableNotice,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -28,10 +28,11 @@ export function assignMatchUpVenue({
   };
 
   return addMatchUpTimeItem({
+    duplicateValues: false,
+    tournamentRecord,
     drawDefinition,
+    disableNotice,
     matchUpId,
     timeItem,
-    disableNotice,
-    duplicateValues: false,
   });
 }

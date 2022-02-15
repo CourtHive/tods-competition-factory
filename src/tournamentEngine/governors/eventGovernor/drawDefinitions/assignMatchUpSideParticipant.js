@@ -18,6 +18,7 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 export function assignMatchUpSideParticipant({
+  tournamentRecord,
   drawDefinition,
   participantId,
   sideNumber,
@@ -68,7 +69,11 @@ export function assignMatchUpSideParticipant({
       : existingSide;
   });
 
-  addMatchUpsNotice({ drawDefinition, matchUps: [matchUp] });
+  addMatchUpsNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    drawDefinition,
+    matchUps: [matchUp],
+  });
 
   return { ...SUCCESS };
 }

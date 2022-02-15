@@ -151,7 +151,11 @@ export function assignTieMatchUpParticipantId(params) {
     }
 
     dualMatchUpSide.lineUp = modifiedLineUp;
-    modifyMatchUpNotice({ drawDefinition, matchUp: dualMatchUp });
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      drawDefinition,
+      matchUp: dualMatchUp,
+    });
 
     return { ...SUCCESS, modifiedLineUp };
   }
@@ -177,7 +181,11 @@ export function assignTieMatchUpParticipantId(params) {
   });
 
   dualMatchUpSide.lineUp = modifiedLineUp;
-  modifyMatchUpNotice({ drawDefinition, matchUp: dualMatchUp });
+  modifyMatchUpNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    matchUp: dualMatchUp,
+    drawDefinition,
+  });
 
   if (deleteParticipantId) {
     const result = deleteParticipants({

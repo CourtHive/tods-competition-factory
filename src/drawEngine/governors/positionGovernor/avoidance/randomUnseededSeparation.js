@@ -31,6 +31,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 export function randomUnseededSeparation({
   unseededParticipantIds,
   inContextDrawMatchUps,
+  tournamentRecord,
   drawDefinition,
   participants,
   matchUpsMap,
@@ -180,12 +181,11 @@ export function randomUnseededSeparation({
       if (assignment.participantId && !assignment.bye) {
         const result = assignDrawPosition({
           automaticPlacement: true,
+          inContextDrawMatchUps,
+          tournamentRecord,
           drawDefinition,
           structureId,
-
           matchUpsMap,
-          inContextDrawMatchUps,
-
           ...assignment,
         });
         if (!result?.success) {

@@ -15,6 +15,7 @@ import {
 export function removeSubsequentRoundsParticipant({
   inContextDrawMatchUps,
   targetDrawPosition,
+  tournamentRecord,
   drawDefinition,
   structureId,
   dualMatchUp,
@@ -50,6 +51,7 @@ export function removeSubsequentRoundsParticipant({
       inContextDrawMatchUps,
       positionAssignments,
       targetDrawPosition,
+      tournamentRecord,
       drawDefinition,
       dualMatchUp,
       matchUpsMap,
@@ -65,6 +67,7 @@ function removeDrawPosition({
   inContextDrawMatchUps,
   positionAssignments,
   targetDrawPosition,
+  tournamentRecord,
   drawDefinition,
   dualMatchUp,
   matchUp,
@@ -106,7 +109,11 @@ function removeDrawPosition({
   // ... and the winningSide must be removed
   if (matchUp.matchUpStatus === WALKOVER) matchUp.winningSide = undefined;
 
-  modifyMatchUpNotice({ drawDefinition, matchUp });
+  modifyMatchUpNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    drawDefinition,
+    matchUp,
+  });
 
   return { ...SUCCESS };
 }

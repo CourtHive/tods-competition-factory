@@ -11,6 +11,7 @@ export function directWinner({
   inContextDrawMatchUps,
   projectedWinningSide,
   winningDrawPosition,
+  tournamentRecord,
   winnerTargetLink,
   drawDefinition,
   winnerMatchUp,
@@ -69,6 +70,7 @@ export function directWinner({
         participantId: winnerParticipantId,
         structureId: targetStructureId,
         inContextDrawMatchUps,
+        tournamentRecord,
         drawDefinition,
         matchUpsMap,
       });
@@ -78,6 +80,7 @@ export function directWinner({
         participantId: winnerParticipantId,
         structureId: targetStructureId,
         inContextDrawMatchUps,
+        tournamentRecord,
         drawDefinition,
         drawPosition,
         matchUpsMap,
@@ -87,6 +90,7 @@ export function directWinner({
         drawPosition: winnerExistingDrawPosition,
         matchUpId: winnerMatchUp.matchUpId,
         inContextDrawMatchUps,
+        tournamentRecord,
         drawDefinition,
         matchUpsMap,
       });
@@ -101,6 +105,7 @@ export function directWinner({
       matchUpId: winnerMatchUp.matchUpId,
       drawPosition: winningDrawPosition,
       inContextDrawMatchUps,
+      tournamentRecord,
       drawDefinition,
       matchUpsMap,
     });
@@ -142,7 +147,11 @@ export function directWinner({
       // attach to appropriate side of winnerMatchUp
       if (targetSide) {
         targetSide.lineUp = side.lineUp;
-        modifyMatchUpNotice({ drawDefinition, matchUp: targetMatchUp });
+        modifyMatchUpNotice({
+          tournamentId: tournamentRecord?.tournamentId,
+          matchUp: targetMatchUp,
+          drawDefinition,
+        });
       }
     }
   }

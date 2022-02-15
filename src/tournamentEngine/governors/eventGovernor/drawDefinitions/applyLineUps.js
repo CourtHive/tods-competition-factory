@@ -181,7 +181,11 @@ export function applyLineUps({
     }
   }
 
-  modifyMatchUpNotice({ drawDefinition, matchUp });
+  modifyMatchUpNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    drawDefinition,
+    matchUp,
+  });
 
   return { ...SUCCESS };
 }

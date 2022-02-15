@@ -31,6 +31,7 @@ import {
  */
 export function drawPositionRemovals({
   inContextDrawMatchUps,
+  tournamentRecord,
   drawDefinition,
   drawPosition,
   matchUpsMap,
@@ -55,10 +56,10 @@ export function drawPositionRemovals({
   if (structure.structureType === CONTAINER) {
     modifyRoundRobinMatchUpsStatus({
       positionAssignments,
+      tournamentRecord,
       drawDefinition,
-      structure,
-
       matchUpsMap,
+      structure,
     });
     return { drawPositionCleared };
   }
@@ -156,13 +157,13 @@ export function drawPositionRemovals({
       return;
     }
     removeSubsequentRoundsParticipant({
+      inContextDrawMatchUps,
+      targetDrawPosition,
+      tournamentRecord,
       drawDefinition,
       structureId,
       roundNumber,
-      targetDrawPosition,
-
       matchUpsMap,
-      inContextDrawMatchUps,
     });
     removeDrawPosition({
       drawDefinition,
@@ -182,6 +183,7 @@ export function drawPositionRemovals({
 function removeSubsequentRoundsParticipant({
   inContextDrawMatchUps,
   targetDrawPosition,
+  tournamentRecord,
   drawDefinition,
   matchUpsMap,
   roundNumber,
@@ -217,6 +219,7 @@ function removeSubsequentRoundsParticipant({
       targetMatchUp: matchUp,
       inContextDrawMatchUps,
       positionAssignments,
+      tournamentRecord,
       drawDefinition,
       matchUpsMap,
       structure,
@@ -227,6 +230,7 @@ function removeSubsequentRoundsParticipant({
 function removeDrawPosition({
   inContextDrawMatchUps,
   positionAssignments,
+  tournamentRecord,
   drawDefinition,
   targetMatchUp,
   drawPosition,
@@ -284,7 +288,11 @@ function removeDrawPosition({
   if (targetMatchUp.matchUpStatus === WALKOVER)
     targetMatchUp.winningSide = undefined;
 
-  modifyMatchUpNotice({ drawDefinition, matchUp: targetMatchUp });
+  modifyMatchUpNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    matchUp: targetMatchUp,
+    drawDefinition,
+  });
 
   if (
     loserMatchUp &&
@@ -298,12 +306,12 @@ function removeDrawPosition({
         const loserMatchUpDrawPosition =
           drawPositions[loserMatchUpDrawPositionIndex];
         drawPositionRemovals({
-          drawDefinition,
           structureId: loserMatchUp.structureId,
           drawPosition: loserMatchUpDrawPosition,
-
-          matchUpsMap,
           inContextDrawMatchUps,
+          tournamentRecord,
+          drawDefinition,
+          matchUpsMap,
         });
       } else {
         // for fed rounds the loserMatchUpDrawPosiiton is always the fed drawPosition
@@ -323,12 +331,12 @@ function removeDrawPosition({
         // if clearing a drawPosition from a feed round the initialRoundNumber for the drawPosition must equal the roundNumber
         if (initialRoundNumber === roundNumber) {
           drawPositionRemovals({
-            drawDefinition,
             structureId: loserMatchUp.structureId,
             drawPosition: loserMatchUpDrawPosition,
-
-            matchUpsMap,
             inContextDrawMatchUps,
+            tournamentRecord,
+            drawDefinition,
+            matchUpsMap,
           });
         }
       }

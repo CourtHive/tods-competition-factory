@@ -17,6 +17,7 @@ const MAX_ITERATIONS = 5000;
 export function generateDrawMaticRound({
   maxIterations = MAX_ITERATIONS,
   tournamentParticipants,
+  tournamentRecord,
   generateMatchUps,
   drawDefinition,
   participantIds,
@@ -88,6 +89,7 @@ export function generateDrawMaticRound({
   if (generateMatchUps) {
     const result = generateAdHocMatchUps({
       participantIdPairings,
+      tournamentRecord,
       drawDefinition,
       newRound: true,
       structureId,
