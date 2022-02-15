@@ -1,4 +1,5 @@
 import { matchUpFormatTimes } from '../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
+import { getVenueData } from '../../../tournamentEngine/governors/publishingGovernor/getVenueData';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 import { definedAttributes } from '../../../utilities/objects';
@@ -17,7 +18,6 @@ import {
 
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
 import { TEAM } from '../../../constants/eventConstants';
-import { getVenueData } from '../../../tournamentEngine/governors/publishingGovernor/getVenueData';
 
 export function getMatchUpScheduleDetails({
   scheduleVisibilityFilters,
