@@ -42,7 +42,11 @@ export function getByesData({ drawDefinition, event, matchUpsMap, structure }) {
     structureId,
     stage,
   });
-  const qualifiersCount = getStageQualifiersCount({ drawDefinition, stage });
+  const qualifiersCount = getStageQualifiersCount({
+    drawDefinition,
+    stageSequence,
+    stage,
+  });
   const entriesCount = entries.length + qualifiersCount;
 
   // # Byes = drawSize (positionAssignments) - total entries

@@ -76,16 +76,29 @@ export function getStageDrawPositionsCount({ stage, drawDefinition }) {
   return (entryProfile && entryProfile[stage]?.drawSize) || 0;
 }
 
-export function getStageQualifiersCount({ stage, drawDefinition }) {
+export function getStageQualifiersCount({
+  drawDefinition,
+  stageSequence,
+  stage,
+}) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
-  return (entryProfile && entryProfile[stage]?.qualifiersCount) || 0;
+  return (
+    entryProfile?.[stage]?.stageSequence?.[stageSequence]?.qualifiersCount ||
+    entryProfile?.[stage]?.qualifiersCount ||
+    0
+  );
 }
 
 // drawSize - qualifyingPositions
-export function getStageDrawPositionsAvailable({ stage, drawDefinition }) {
+export function getStageDrawPositionsAvailable({
+  drawDefinition,
+  stageSequence,
+  stage,
+}) {
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
   const qualifyingPositions = getStageQualifiersCount({
     drawDefinition,
+    stageSequence,
     stage,
   });
   return drawSize && drawSize - qualifyingPositions;

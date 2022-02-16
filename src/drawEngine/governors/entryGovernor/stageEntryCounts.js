@@ -16,7 +16,12 @@ import {
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
 
-export function setStageDrawSize({ drawDefinition, stage, drawSize }) {
+export function setStageDrawSize({
+  stageSequence = 1,
+  drawDefinition,
+  drawSize,
+  stage,
+}) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!stageExists({ drawDefinition, stage })) {
     return { error: INVALID_STAGE };
@@ -28,6 +33,7 @@ export function setStageDrawSize({ drawDefinition, stage, drawSize }) {
   });
   const qualifyingPositions = getStageQualifiersCount({
     drawDefinition,
+    stageSequence,
     stage,
   });
   const totalStageDrawPositions = directAcceptanceEntries + qualifyingPositions;
@@ -74,9 +80,9 @@ export function setStageAlternatesCount({
 }
 
 export function setStageWildcardsCount({
+  wildcardsCount = 0,
   drawDefinition,
   stage,
-  wildcardsCount = 0,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!stageExists({ drawDefinition, stage })) {
