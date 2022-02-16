@@ -159,6 +159,9 @@ it.only('supports multi-sequence qualifying structures', () => {
   expect(q1.structureName).toEqual('QUALIFYING 1');
   expect(q2.structureName).toEqual('QUALIFYING 2');
 
+  const q2qualifiers = q2.positionAssignments.filter((a) => a.qualifier);
+  expect(q2qualifiers.length).toEqual(4);
+
   const firstLink = drawDefinition.links.find(
     (link) => link.source.structureId === q1.structureId
   );

@@ -23,6 +23,7 @@ import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
 } from '../../constants/entryStatusConstants';
+import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 
 function getEntryProfile({ drawDefinition }) {
   let { extension } = findDrawDefinitionExtension({
@@ -76,11 +77,35 @@ export function getStageDrawPositionsCount({ stage, drawDefinition }) {
   return (entryProfile && entryProfile[stage]?.drawSize) || 0;
 }
 
-export function getStageQualifiersCount({
+export function getQualifiersCount({
   drawDefinition,
   stageSequence,
+  structureId,
   stage,
 }) {
+  const { structure } = findStructure({ drawDefinition, structureId });
+  const relevantLink = drawDefinition.links?.find(
+    (link) =>
+      link?.target?.structureId === structure?.structureId &&
+      link?.target?.roundNumber === 1
+  );
+
+  // if structureId is provided and there is a relevant link...
+  // return source structure qualifying round matchUps count
+  if (relevantLink) {
+    const sourceStructure = findStructure({
+      structureId: relevantLink.source.structureId,
+      drawDefinition,
+    })?.structure;
+    const sourceRoundNumber = relevantLink.source.roundNumber;
+    const matchUps = getAllStructureMatchUps({
+      roundFilter: sourceRoundNumber,
+      structure: sourceStructure,
+      inContext: false,
+    }).matchUps;
+    if (matchUps?.length) return matchUps.length;
+  }
+
   const { entryProfile } = getEntryProfile({ drawDefinition });
   return (
     entryProfile?.[stage]?.stageSequence?.[stageSequence]?.qualifiersCount ||
@@ -96,7 +121,8 @@ export function getStageDrawPositionsAvailable({
   stage,
 }) {
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
-  const qualifyingPositions = getStageQualifiersCount({
+
+  const qualifyingPositions = getQualifiersCount({
     drawDefinition,
     stageSequence,
     stage,
@@ -260,6 +286,7 @@ export function stageAlternateEntries({ stage, drawDefinition }) {
 export function stageSpace({
   entryStatus = DIRECT_ACCEPTANCE,
   drawDefinition,
+  stageSequence,
   stage,
 }) {
   if (entryStatus === ALTERNATE) {
@@ -272,17 +299,24 @@ export function stageSpace({
 
   const stageDrawPositionsAvailable = getStageDrawPositionsAvailable({
     drawDefinition,
+    stageSequence,
     stage,
   });
-  const wildcardPositions = getStageWildcardsCount({ stage, drawDefinition });
+  const wildcardPositions = getStageWildcardsCount({
+    drawDefinition,
+    stageSequence,
+    stage,
+  });
   const wildcardEntriesCount = getStageEntryTypeCount({
     entryStatus: WILDCARD,
     drawDefinition,
+    stageSequence,
     stage,
   });
   const directEntriesCount = getStageEntryTypeCount({
     entryStatus: DIRECT_ACCEPTANCE,
     drawDefinition,
+    stageSequence,
     stage,
   });
   const totalEntriesCount = wildcardEntriesCount + directEntriesCount;

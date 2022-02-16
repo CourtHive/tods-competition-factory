@@ -3,11 +3,7 @@ import { findStructure } from './findStructure';
 
 import { QUALIFYING } from '../../constants/drawDefinitionConstants';
 
-export function getStructureQualifiersCount({
-  drawDefinition,
-  structureId,
-  structure,
-}) {
+export function getQualifiersCount({ drawDefinition, structureId, structure }) {
   let error, qualifiersCount;
   if (!structure) {
     ({ structure, error } = findStructure({ drawDefinition, structureId }));

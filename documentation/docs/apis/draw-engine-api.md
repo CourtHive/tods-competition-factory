@@ -1020,7 +1020,7 @@ drawEngine.setStageAlternatesCount({ alternatesCount: 8 });
 Modifies the 'entryProfile' of a drawDefinition before the structures have been generated.
 
 ```js
-drawEngine.setStageDrawSize({ stage: QUALIFYING, drawSize: 8 });
+drawEngine.setStageDrawSize({ stage: QUALIFYING, stageSequence, drawSize: 8 });
 drawEngine.setStageDrawSize({ stage: MAIN, drawSize: 16 });
 ```
 
@@ -1029,7 +1029,11 @@ drawEngine.setStageDrawSize({ stage: MAIN, drawSize: 16 });
 ## setStageQualifiersCount
 
 ```js
-drawEngine.setStageQualifiersCount({ qualifiersCount: 4 });
+drawEngine.setStageQualifiersCount({
+  qualifiersCount: 4,
+  stageSequence,
+  stage,
+});
 ```
 
 ---
@@ -1037,7 +1041,7 @@ drawEngine.setStageQualifiersCount({ qualifiersCount: 4 });
 ## setStageWildcardsCount
 
 ```js
-drawEngine.setStageWildcardsCount({ wildcardsCount: 2 });
+drawEngine.setStageWildcardsCount({ stage, stageSequence, wildcardsCount: 2 });
 ```
 
 ---

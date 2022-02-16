@@ -3,7 +3,7 @@ import { modifyEntryProfile } from './modifyEntryProfile';
 import {
   stageExists,
   getStageDrawPositionsCount,
-  getStageQualifiersCount,
+  getQualifiersCount,
   getStageDirectEntriesCount,
   getStageWildcardEntriesCount,
 } from '../../getters/stageGetter';
@@ -31,7 +31,8 @@ export function setStageDrawSize({
     drawDefinition,
     stage,
   });
-  const qualifyingPositions = getStageQualifiersCount({
+
+  const qualifyingPositions = getQualifiersCount({
     drawDefinition,
     stageSequence,
     stage,
@@ -82,6 +83,7 @@ export function setStageAlternatesCount({
 export function setStageWildcardsCount({
   wildcardsCount = 0,
   drawDefinition,
+  stageSequence,
   stage,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -93,8 +95,11 @@ export function setStageWildcardsCount({
     drawDefinition,
     stage,
   });
-  const qualifyingPositions = getStageQualifiersCount({
+
+  // REMOVE dependency... use link to derive... requires structureId
+  const qualifyingPositions = getQualifiersCount({
     drawDefinition,
+    stageSequence,
     stage,
   });
   const wildcardEntriesCount = getStageWildcardEntriesCount({

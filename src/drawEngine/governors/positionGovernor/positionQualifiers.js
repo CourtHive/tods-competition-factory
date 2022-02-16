@@ -1,5 +1,5 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { getStageQualifiersCount } from '../../getters/stageGetter';
+import { getQualifiersCount } from '../../getters/stageGetter';
 import { findStructure } from '../../getters/findStructure';
 import { generateRange } from '../../../utilities';
 
@@ -54,9 +54,11 @@ export function getQualifiersData({ drawDefinition, structure, structureId }) {
     .map((assignment) => assignment.drawPosition);
 
   const { stage, stageSequence } = structure;
-  const qualifiersCount = getStageQualifiersCount({
+
+  const qualifiersCount = getQualifiersCount({
     drawDefinition,
     stageSequence,
+    structureId,
     stage,
   });
   const unplacedQualifiersCount =
