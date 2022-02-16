@@ -1,4 +1,5 @@
 import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfile';
+import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { findStructure } from './findStructure';
 import {
   findDrawDefinitionExtension,
@@ -16,6 +17,7 @@ import {
   CONTAINER,
   PLAY_OFF,
   validStages,
+  QUALIFYING,
 } from '../../constants/drawDefinitionConstants';
 import {
   ALTERNATE,
@@ -23,7 +25,6 @@ import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
 } from '../../constants/entryStatusConstants';
-import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 
 function getEntryProfile({ drawDefinition }) {
   let { extension } = findDrawDefinitionExtension({
@@ -86,13 +87,14 @@ export function getQualifiersCount({
   const { structure } = findStructure({ drawDefinition, structureId });
   const relevantLink = drawDefinition.links?.find(
     (link) =>
+      link?.linkType !== POSITION &&
       link?.target?.structureId === structure?.structureId &&
       link?.target?.roundNumber === 1
   );
 
   // if structureId is provided and there is a relevant link...
   // return source structure qualifying round matchUps count
-  if (relevantLink) {
+  if (relevantLink && structure.stage === QUALIFYING) {
     const sourceStructure = findStructure({
       structureId: relevantLink.source.structureId,
       drawDefinition,
