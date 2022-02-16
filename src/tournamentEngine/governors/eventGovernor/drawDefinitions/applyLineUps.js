@@ -72,7 +72,7 @@ export function applyLineUps({
 
       const { participantId, collectionAssignments = [] } = lineUpAssignment;
       if (!Array.isArray(collectionAssignments))
-        return { error: INVALID_VALUES };
+        return { error: INVALID_VALUES, collectionAssignments };
 
       const participant = tournamentParticipants.find(
         (participant) => participant.participantId === participantId
@@ -112,7 +112,10 @@ export function applyLineUps({
           (collectionDefinition.matchUpType === DOUBLES && participantCount > 1)
         ) {
           // cannot have more than one assignment for singles or two for doubles
-          return { error: INVALID_VALUES };
+          return {
+            message: 'Excessive collectionPosition assignments',
+            error: INVALID_VALUES,
+          };
         }
 
         collectionParticipantIds[aggregator].push(participantId);
