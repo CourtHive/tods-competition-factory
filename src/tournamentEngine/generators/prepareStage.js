@@ -36,6 +36,9 @@ export function prepareStage({
   const stageEntries = entries.filter(
     (entry) =>
       (!entry.entryStage || entry.entryStage === stage) &&
+      (!stageSequence ||
+        !entry.entryStageSequence ||
+        entry.entryStageSequence === stageSequence) &&
       STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
   );
 
@@ -104,6 +107,7 @@ export function prepareStage({
     let { scaledEntries } = getScaledEntries({
       scaleAttributes: seedingScaleAttributes,
       tournamentRecord,
+      stageSequence,
       entries,
       stage,
     });
@@ -118,6 +122,7 @@ export function prepareStage({
       ({ scaledEntries } = getScaledEntries({
         scaleAttributes: rankingScaleAttributes,
         tournamentRecord,
+        stageSequence,
         entries,
         stage,
       }));
@@ -148,10 +153,11 @@ export function prepareStage({
   }
 
   let conflicts = [];
+  let positionAssignments;
   if (automated !== false) {
     const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
     // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
-    ({ conflicts } = automatedPositioning({
+    ({ conflicts, positionAssignments } = automatedPositioning({
       inContextDrawMatchUps,
       tournamentRecord,
       drawDefinition,
@@ -164,5 +170,11 @@ export function prepareStage({
     }));
   }
 
-  return { conflicts, structureId, seedsCount, stageEntries };
+  return {
+    positionAssignments,
+    stageEntries,
+    structureId,
+    seedsCount,
+    conflicts,
+  };
 }

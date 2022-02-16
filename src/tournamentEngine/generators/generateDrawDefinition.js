@@ -218,12 +218,19 @@ export function generateDrawDefinition(params) {
     entries,
   });
 
+  const structureId = structureResult.structureId;
+  const conflicts = structureResult.conflicts;
+  const qualifyingConflicts = [];
+
   if (params.qualifyingProfiles) {
-    console.log(params.qualifyingProfiles);
     let stageSequence = 1;
     for (const qualifyingProfile of params.qualifyingProfiles) {
-      const { drawSize, qualifyingRoundNumber, qualifyingPositions } =
-        qualifyingProfile;
+      const {
+        qualifyingRoundNumber,
+        qualifyingPositions,
+        seedsCount = 0,
+        drawSize,
+      } = qualifyingProfile;
       const qualifyingResult = prepareStage({
         ...drawTypeResult,
         ...params,
@@ -232,22 +239,22 @@ export function generateDrawDefinition(params) {
         stage: QUALIFYING,
         drawDefinition,
         stageSequence,
-        seedsCount: 0,
         participants,
+        seedsCount,
         drawSize,
         entries,
       });
       stageSequence += 1;
-      console.log({ qualifyingResult });
+
+      if (qualifyingResult.conflicts?.length)
+        qualifyingConflicts.push(...qualifyingResult.conflicts);
     }
   }
-
-  const conflicts = structureResult.conflicts;
-  const structureId = structureResult.structureId;
 
   drawDefinition.drawName = params.drawName || drawType;
 
   return {
+    qualifyingConflicts,
     drawDefinition,
     structureId,
     ...SUCCESS,

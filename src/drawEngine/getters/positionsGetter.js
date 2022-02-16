@@ -46,9 +46,9 @@ export function getPositionAssignments({
 }
 
 export function structureAssignedDrawPositions({
-  structure,
   drawDefinition,
   structureId,
+  structure,
 }) {
   const { positionAssignments } = getPositionAssignments({
     drawDefinition,

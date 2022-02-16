@@ -137,7 +137,7 @@ export function getStageEntries({
         (stages?.length && stages.includes(c.entryStage));
       const matchesEntryType =
         !entryStatuses || entryStatuses.includes(c.entryStatus);
-      const entryStageSequence = c.stageSequence || 1; // default to 1 if not present
+      const entryStageSequence = c.entryStageSequence || 1; // default to 1 if not present
       const sameStageSequence =
         !stageSequence || entryStageSequence === stageSequence;
       return stageTarget && sameStageSequence && matchesEntryType

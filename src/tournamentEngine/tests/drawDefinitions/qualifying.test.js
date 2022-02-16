@@ -9,6 +9,8 @@ import {
   MAIN,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import { setDevContext } from '../../../global/state/globalState';
 
 const scenarios = [
   {
@@ -17,7 +19,7 @@ const scenarios = [
     expectation: {
       qualifyingRoundNumber: 2,
       qualifyingMatchUps: 12,
-      directAcceptance: 12,
+      directAcceptance: 28,
       qualifiersCount: 4,
     },
   },
@@ -27,7 +29,7 @@ const scenarios = [
     expectation: {
       qualifyingRoundNumber: 2,
       qualifyingMatchUps: 12,
-      directAcceptance: 12,
+      directAcceptance: 28,
       qualifiersCount: 4,
     },
   },
@@ -38,13 +40,15 @@ it.each(scenarios)(
   (scenario) => {
     const drawProfiles = [scenario];
 
-    const {
-      tournamentRecord,
-      drawIds: [drawId],
-    } = mocksEngine.generateTournamentRecord({
+    const result = mocksEngine.generateTournamentRecord({
       completeAllMatchUps: true,
       drawProfiles,
     });
+
+    const {
+      tournamentRecord,
+      drawIds: [drawId],
+    } = result;
 
     tournamentEngine.setState(tournamentRecord);
 
@@ -79,7 +83,7 @@ it.each(scenarios)(
   }
 );
 
-it('supports multi-sequence qualifying structures', () => {
+it.only('supports multi-sequence qualifying structures', () => {
   const drawProfiles = [
     {
       drawSize: 32,
@@ -98,6 +102,13 @@ it('supports multi-sequence qualifying structures', () => {
   });
 
   tournamentEngine.setState(tournamentRecord);
+
+  const { tournamentParticipants } =
+    tournamentEngine.getTournamentParticipants();
+
+  // if there are qualifiers then all participants are unique
+  // 32 + 32 unique + 32 qualifying + 16 qualifying = 112
+  expect(tournamentParticipants.length).toEqual(112);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(3);
@@ -128,6 +139,9 @@ it('supports multi-sequence qualifying structures', () => {
   });
   expect(q1pa.length).toEqual(32);
 
+  const q1positioned = q1pa.filter((q) => q.participantId);
+  expect(q1positioned.length).toEqual(32);
+
   const {
     structures: [q2],
   } = getDrawStructures({
@@ -139,6 +153,8 @@ it('supports multi-sequence qualifying structures', () => {
     structure: q2,
   });
   expect(q2pa.length).toEqual(16);
+  const q2positioned = q2pa.filter((q) => q.participantId);
+  expect(q2positioned.length).toEqual(12);
 
   expect(q1.structureName).toEqual('QUALIFYING 1');
   expect(q2.structureName).toEqual('QUALIFYING 2');
@@ -160,6 +176,16 @@ it('supports multi-sequence qualifying structures', () => {
   expect(secondLink.target.roundNumber).toEqual(1);
   expect(firstLink.target.feedProfile).toEqual(DRAW);
   expect(secondLink.target.feedProfile).toEqual(DRAW);
+
+  let drawPosition = 1;
+  setDevContext({ feedProfile: true });
+  let result = tournamentEngine.positionActions({
+    policyDefinition: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    structureId: q1.structureId,
+    drawPosition,
+    drawId,
+  });
+  console.log(result);
 });
 
 /*

@@ -34,8 +34,8 @@ export function isActiveDownstream(params) {
     loserMatchUp &&
     positionTargets({
       matchUpId: loserMatchUp.matchUpId,
-      drawDefinition,
       inContextDrawMatchUps,
+      drawDefinition,
     });
 
   let winnerTargetData =
@@ -58,8 +58,8 @@ export function isActiveDownstream(params) {
   const winnerActive =
     winnerTargetData &&
     isActiveDownstream({
-      inContextDrawMatchUps,
       targetData: winnerTargetData,
+      inContextDrawMatchUps,
       drawDefinition,
     });
 
