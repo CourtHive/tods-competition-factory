@@ -47,6 +47,7 @@ export function addDrawEntry({
     return { error: INVALID_STAGE };
   }
   const spaceAvailable = stageSpace({
+    stageSequence: entryStageSequence,
     stage: entryStage,
     drawDefinition,
     entryStatus,
@@ -115,7 +116,12 @@ export function addDrawEntries({
     return { error: INVALID_STAGE };
   }
 
-  const spaceAvailable = stageSpace({ stage, drawDefinition, entryStatus });
+  const spaceAvailable = stageSpace({
+    stageSequence,
+    drawDefinition,
+    entryStatus,
+    stage,
+  });
   if (!spaceAvailable.success) {
     return { error: spaceAvailable.error };
   }

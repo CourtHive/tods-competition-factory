@@ -8,8 +8,9 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function addVoluntaryConsolationStage({ drawDefinition, drawSize }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const result = setStageDrawSize({
-    drawDefinition,
     stage: VOLUNTARY_CONSOLATION,
+    stageSequence: 1,
+    drawDefinition,
     drawSize,
   });
   if (result.error) return result;

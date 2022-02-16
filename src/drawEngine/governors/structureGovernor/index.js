@@ -3,7 +3,7 @@ import { generateVoluntaryConsolationStructure } from '../../generators/voluntar
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { generateAdHocMatchUps } from '../../generators/generateAdHocMatchUps';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
-import { getStructureQualifiersCount } from '../../getters/structureGetter';
+import { getQualifiersCount } from '../../getters/structureGetter';
 import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
 import { attachPlayoffStructures } from './attachPlayoffStructures';
 import { buildDrawHierarchy } from '../../generators/drawHierarchy';
@@ -23,7 +23,7 @@ const structureGovernor = {
   getSourceRounds,
   getDrawStructures,
   getPositionsPlayedOff,
-  getStructureQualifiersCount,
+  getQualifiersCount,
   getAvailablePlayoffRounds,
   addPlayoffStructures,
   removeStructure,

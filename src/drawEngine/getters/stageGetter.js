@@ -1,4 +1,5 @@
 import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfile';
+import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { findStructure } from './findStructure';
 import {
   findDrawDefinitionExtension,
@@ -16,6 +17,7 @@ import {
   CONTAINER,
   PLAY_OFF,
   validStages,
+  QUALIFYING,
 } from '../../constants/drawDefinitionConstants';
 import {
   ALTERNATE,
@@ -76,16 +78,58 @@ export function getStageDrawPositionsCount({ stage, drawDefinition }) {
   return (entryProfile && entryProfile[stage]?.drawSize) || 0;
 }
 
-export function getStageQualifiersCount({ stage, drawDefinition }) {
+export function getQualifiersCount({
+  drawDefinition,
+  stageSequence,
+  structureId,
+  stage,
+}) {
+  const { structure } = findStructure({ drawDefinition, structureId });
+  const relevantLink = drawDefinition.links?.find(
+    (link) =>
+      link?.linkType !== POSITION &&
+      link?.target?.structureId === structure?.structureId &&
+      link?.target?.roundNumber === 1
+  );
+
+  // TODO: for Round Robin qualifying the number of qualifiers needs to be derived
+  // from the number of groups (substructures) * the length of source.finishingPositions[]
+
+  // if structureId is provided and there is a relevant link...
+  // return source structure qualifying round matchUps count
+  if (relevantLink && structure.stage === QUALIFYING) {
+    const sourceStructure = findStructure({
+      structureId: relevantLink.source.structureId,
+      drawDefinition,
+    })?.structure;
+    const sourceRoundNumber = relevantLink.source.roundNumber;
+    const matchUps = getAllStructureMatchUps({
+      roundFilter: sourceRoundNumber,
+      structure: sourceStructure,
+      inContext: false,
+    }).matchUps;
+    if (matchUps?.length) return matchUps.length;
+  }
+
   const { entryProfile } = getEntryProfile({ drawDefinition });
-  return (entryProfile && entryProfile[stage]?.qualifiersCount) || 0;
+  return (
+    entryProfile?.[stage]?.stageSequence?.[stageSequence]?.qualifiersCount ||
+    entryProfile?.[stage]?.qualifiersCount ||
+    0
+  );
 }
 
 // drawSize - qualifyingPositions
-export function getStageDrawPositionsAvailable({ stage, drawDefinition }) {
+export function getStageDrawPositionsAvailable({
+  drawDefinition,
+  stageSequence,
+  stage,
+}) {
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
-  const qualifyingPositions = getStageQualifiersCount({
+
+  const qualifyingPositions = getQualifiersCount({
     drawDefinition,
+    stageSequence,
     stage,
   });
   return drawSize && drawSize - qualifyingPositions;
@@ -247,6 +291,7 @@ export function stageAlternateEntries({ stage, drawDefinition }) {
 export function stageSpace({
   entryStatus = DIRECT_ACCEPTANCE,
   drawDefinition,
+  stageSequence,
   stage,
 }) {
   if (entryStatus === ALTERNATE) {
@@ -259,17 +304,24 @@ export function stageSpace({
 
   const stageDrawPositionsAvailable = getStageDrawPositionsAvailable({
     drawDefinition,
+    stageSequence,
     stage,
   });
-  const wildcardPositions = getStageWildcardsCount({ stage, drawDefinition });
+  const wildcardPositions = getStageWildcardsCount({
+    drawDefinition,
+    stageSequence,
+    stage,
+  });
   const wildcardEntriesCount = getStageEntryTypeCount({
     entryStatus: WILDCARD,
     drawDefinition,
+    stageSequence,
     stage,
   });
   const directEntriesCount = getStageEntryTypeCount({
     entryStatus: DIRECT_ACCEPTANCE,
     drawDefinition,
+    stageSequence,
     stage,
   });
   const totalEntriesCount = wildcardEntriesCount + directEntriesCount;

@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
-import { getStageEntries, getStageQualifiersCount } from './stageGetter';
+import { getStageEntries, getQualifiersCount } from './stageGetter';
 import { structureAssignedDrawPositions } from './positionsGetter';
 
 import {
@@ -42,7 +42,13 @@ export function getByesData({ drawDefinition, event, matchUpsMap, structure }) {
     structureId,
     stage,
   });
-  const qualifiersCount = getStageQualifiersCount({ drawDefinition, stage });
+
+  const qualifiersCount = getQualifiersCount({
+    drawDefinition,
+    stageSequence,
+    structureId,
+    stage,
+  });
   const entriesCount = entries.length + qualifiersCount;
 
   // # Byes = drawSize (positionAssignments) - total entries

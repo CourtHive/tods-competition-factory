@@ -87,6 +87,7 @@ export function generateDrawType(params = {}) {
     setStageDrawSize({
       drawSize: params.drawSize,
       drawDefinition,
+      stageSequence,
       stage,
     });
   } else {
@@ -94,6 +95,7 @@ export function generateDrawType(params = {}) {
       setStageDrawSize({
         drawSize: params.drawSize,
         drawDefinition,
+        stageSequence,
         stage: MAIN,
       });
     }

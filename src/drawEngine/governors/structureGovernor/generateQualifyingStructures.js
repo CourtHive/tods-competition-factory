@@ -26,18 +26,18 @@ export function generateQualifyingStructures({
 
   for (const qualifyingProfile of qualifyingProfiles.sort(sequenceSort)) {
     const {
-      drawSize,
       qualifyingRoundNumber,
       qualifyingPositions,
       structureName,
+      drawSize,
     } = qualifyingProfile;
 
     if (!drawSize || !isConvertableInteger(drawSize))
       return { error: MISSING_DRAW_SIZE };
 
     const { matchUps, roundLimit } = treeMatchUps({
-      qualifyingPositions,
       qualifyingRoundNumber,
+      qualifyingPositions,
       idPrefix,
       drawSize,
       isMock,
