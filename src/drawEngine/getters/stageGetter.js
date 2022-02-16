@@ -92,6 +92,9 @@ export function getQualifiersCount({
       link?.target?.roundNumber === 1
   );
 
+  // TODO: for Round Robin qualifying the number of qualifiers needs to be derived
+  // from the number of groups (substructures) * the length of source.finishingPositions[]
+
   // if structureId is provided and there is a relevant link...
   // return source structure qualifying round matchUps count
   if (relevantLink && structure.stage === QUALIFYING) {
