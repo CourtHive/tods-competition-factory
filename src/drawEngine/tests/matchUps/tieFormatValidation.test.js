@@ -1,5 +1,5 @@
 import tieFormatDefaults from '../../../tournamentEngine/generators/tieFormatDefaults';
-import { validateTieFormat } from '../../governors/matchUpGovernor/tieFormatUtilities';
+import { validateTieFormat } from '../../governors/scoreGovernor/tieFormats/tieFormatUtilities';
 import {
   fixtures,
   mocksEngine,

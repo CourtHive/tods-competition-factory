@@ -1,7 +1,7 @@
+import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
 import { tallyParticipantResults } from './roundRobinTally/roundRobinTally';
-import { generateTieMatchUpScore } from '../../accessors/matchUpAccessor';
 import { getSetComplement, getTiebreakComplement } from './getComplement';
-import { validateTieFormat } from '../matchUpGovernor/tieFormatUtilities';
+import { validateTieFormat } from './tieFormats/tieFormatUtilities';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
 import { generateScoreString } from './generateScoreString';
 import { stringify } from './matchUpFormatCode/stringify';

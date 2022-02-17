@@ -2,6 +2,7 @@ import { getNextUnfilledDrawPositions } from './positionActions/getNextUnfilledD
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
+import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 import { getEliminationDrawSize } from '../../getters/getEliminationDrawSize';
 import { getParticipantIdFinishingPositions } from './finishingPositions';
@@ -16,7 +17,6 @@ import {
   getDrawMatchUps,
 } from '../../getters/getMatchUps/drawMatchUps';
 import {
-  generateTieMatchUpScore,
   matchUpDuration,
   getMatchUpScheduleDetails,
   getMatchUpContextIds,
@@ -70,8 +70,8 @@ const queryGovernor = {
   getMatchUpContextIds,
   getMatchUpParticipantIds,
   getMatchUpScheduleDetails,
-
   generateTieMatchUpScore,
+
   matchUpDuration,
   credits,
 };

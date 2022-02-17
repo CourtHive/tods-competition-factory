@@ -1,11 +1,11 @@
-import { validateTieFormat } from '../../governors/matchUpGovernor/tieFormatUtilities';
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { validateTieFormat } from '../governors/scoreGovernor/tieFormats/tieFormatUtilities';
+import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
 
 import {
   INVALID_VALUES,
   MISSING_MATCHUP,
   MISSING_TIE_FORMAT,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 /**
  * Calculates the number of wins per side and winningSide. When provided with `sideAdjustments`

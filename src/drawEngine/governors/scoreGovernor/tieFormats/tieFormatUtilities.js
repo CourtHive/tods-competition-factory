@@ -1,8 +1,8 @@
-import { matchUpFormatCode } from '../scoreGovernor/matchUpFormatCode';
-import { unique, UUID } from '../../../utilities';
+import { matchUpFormatCode } from '../matchUpFormatCode';
+import { unique, UUID } from '../../../../utilities';
 
-import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { INVALID_TIE_FORMAT } from '../../../../constants/errorConditionConstants';
+import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 
 export function validateTieFormat({
   checkCollectionIds = true,

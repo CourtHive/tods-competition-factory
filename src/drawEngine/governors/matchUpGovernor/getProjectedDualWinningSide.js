@@ -1,4 +1,4 @@
-import { generateTieMatchUpScore } from '../../accessors/matchUpAccessor';
+import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
 import { makeDeepCopy } from '../../../utilities';
 
 export function getProjectedDualWinningSide({

@@ -1,4 +1,4 @@
-import { generateTieMatchUpScore } from '../../accessors/matchUpAccessor';
+import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
