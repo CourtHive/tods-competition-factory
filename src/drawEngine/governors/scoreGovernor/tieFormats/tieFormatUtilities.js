@@ -39,111 +39,17 @@ export function validateTieFormat({
 
   const validCollections = tieFormat.collectionDefinitions.every(
     (collectionDefinition) => {
-      if (typeof collectionDefinition !== 'object') {
-        errors.push(
-          `collectionDefinition must be an object: ${collectionDefinition}`
-        );
+      const { valid, errors: collectionDefinitionErrors } =
+        validateCollectionDefinition({
+          collectionDefinition,
+          checkCollectionIds,
+        });
+      if (valid) {
+        return true;
+      } else {
+        errors.push(...collectionDefinitionErrors);
         return false;
       }
-
-      const {
-        collectionValueProfile,
-        collectionGroupNumber,
-        collectionValue,
-        collectionId,
-        matchUpCount,
-        matchUpFormat,
-        matchUpValue,
-        matchUpType,
-        scoreValue,
-        setValue,
-      } = collectionDefinition;
-
-      if (checkCollectionIds && typeof collectionId !== 'string') {
-        errors.push(`collectionId is not type string: ${collectionId}`);
-        return false;
-      }
-      if (typeof matchUpCount !== 'number') {
-        errors.push(`matchUpCount is not type number: ${matchUpCount}`);
-        return false;
-      }
-      if (![SINGLES, DOUBLES].includes(matchUpType)) {
-        errors.push(`matchUpType must be SINGLES or DOUBLES: ${matchUpType}`);
-        return false;
-      }
-
-      if (
-        !matchUpValue &&
-        !collectionValue &&
-        !collectionValueProfile &&
-        !scoreValue &&
-        !setValue
-      ) {
-        errors.push(
-          'Missing value definition for matchUps: matchUpValue, collectionValue, or collectionValueProfile'
-        );
-        return false;
-      }
-
-      if (matchUpValue && typeof matchUpValue !== 'number') {
-        errors.push(`matchUpValue is not type number: ${matchUpValue}`);
-        return false;
-      }
-      if (collectionValue && typeof collectionValue !== 'number') {
-        errors.push(`collectionValue is not type number: ${collectionValue}`);
-        return false;
-      }
-      if (collectionValueProfile) {
-        if (!Array.isArray(collectionValueProfile)) {
-          errors.push(
-            `collectionValueProfile is not an array: ${collectionValueProfile}`
-          );
-          return false;
-        }
-        if (collectionValueProfile.length !== matchUpCount) {
-          errors.push(
-            `collectionValueProfile does not align with matchUpsCount`
-          );
-          return false;
-        }
-        for (const valueProfile of collectionValueProfile) {
-          if (typeof valueProfile !== 'object') {
-            errors.push(`valueProfile is not type object: ${valueProfile}`);
-            return false;
-          }
-          const { value, collectionPosition } = valueProfile;
-          if (
-            typeof value !== 'number' ||
-            typeof collectionPosition !== 'number' ||
-            collectionPosition > matchUpCount ||
-            collectionPosition < 1
-          ) {
-            errors.push(
-              `Invalid value profile: value and collectionPosition must be numeric. collectionPosition cannot be greater than matchUpCount`
-            );
-            return false;
-          }
-        }
-        const collectionPositions = collectionValueProfile.map(
-          (valueProfile) => valueProfile.collectionPosition
-        );
-        if (collectionPositions.length !== unique(collectionPositions).length) {
-          errors.push('collectionPositions are not unique');
-          return false;
-        }
-      }
-
-      if (collectionGroupNumber && typeof collectionGroupNumber !== 'number') {
-        errors.push(`collectionValue is not type number: ${collectionValue}`);
-        return false;
-      }
-
-      if (matchUpFormat && !matchUpFormatCode.isValid(matchUpFormat)) {
-        errors.push(`Invalid matchUpFormat: ${matchUpFormat}`);
-        return false;
-      }
-
-      return true;
     }
   );
 
@@ -159,6 +65,117 @@ export function validateTieFormat({
   const result = { valid, errors };
   if (!valid) result.error = INVALID_TIE_FORMAT;
   return result;
+}
+
+export function validateCollectionDefinition({
+  collectionDefinition,
+  checkCollectionIds,
+}) {
+  const errors = [];
+
+  if (typeof collectionDefinition !== 'object') {
+    errors.push(
+      `collectionDefinition must be an object: ${collectionDefinition}`
+    );
+    return { errors };
+  }
+
+  const {
+    collectionValueProfile,
+    collectionGroupNumber,
+    collectionValue,
+    collectionId,
+    matchUpCount,
+    matchUpFormat,
+    matchUpValue,
+    matchUpType,
+    scoreValue,
+    setValue,
+  } = collectionDefinition;
+
+  if (checkCollectionIds && typeof collectionId !== 'string') {
+    errors.push(`collectionId is not type string: ${collectionId}`);
+    return { errors };
+  }
+  if (typeof matchUpCount !== 'number') {
+    errors.push(`matchUpCount is not type number: ${matchUpCount}`);
+    return { errors };
+  }
+  if (![SINGLES, DOUBLES].includes(matchUpType)) {
+    errors.push(`matchUpType must be SINGLES or DOUBLES: ${matchUpType}`);
+    return { errors };
+  }
+
+  if (
+    !matchUpValue &&
+    !collectionValue &&
+    !collectionValueProfile &&
+    !scoreValue &&
+    !setValue
+  ) {
+    errors.push(
+      'Missing value definition for matchUps: matchUpValue, collectionValue, or collectionValueProfile'
+    );
+    return { errors };
+  }
+
+  if (matchUpValue && typeof matchUpValue !== 'number') {
+    errors.push(`matchUpValue is not type number: ${matchUpValue}`);
+    return { errors };
+  }
+  if (collectionValue && typeof collectionValue !== 'number') {
+    errors.push(`collectionValue is not type number: ${collectionValue}`);
+    return { errors };
+  }
+  if (collectionValueProfile) {
+    if (!Array.isArray(collectionValueProfile)) {
+      errors.push(
+        `collectionValueProfile is not an array: ${collectionValueProfile}`
+      );
+      return { errors };
+    }
+    if (collectionValueProfile.length !== matchUpCount) {
+      errors.push(`collectionValueProfile does not align with matchUpsCount`);
+      return { errors };
+    }
+    for (const valueProfile of collectionValueProfile) {
+      if (typeof valueProfile !== 'object') {
+        errors.push(`valueProfile is not type object: ${valueProfile}`);
+        return { errors };
+      }
+      const { value, collectionPosition } = valueProfile;
+      if (
+        typeof value !== 'number' ||
+        typeof collectionPosition !== 'number' ||
+        collectionPosition > matchUpCount ||
+        collectionPosition < 1
+      ) {
+        errors.push(
+          `Invalid value profile: value and collectionPosition must be numeric. collectionPosition cannot be greater than matchUpCount`
+        );
+        return { errors };
+      }
+    }
+    const collectionPositions = collectionValueProfile.map(
+      (valueProfile) => valueProfile.collectionPosition
+    );
+    if (collectionPositions.length !== unique(collectionPositions).length) {
+      errors.push('collectionPositions are not unique');
+      return { errors };
+    }
+  }
+
+  if (collectionGroupNumber && typeof collectionGroupNumber !== 'number') {
+    errors.push(`collectionValue is not type number: ${collectionValue}`);
+    return { errors };
+  }
+
+  if (matchUpFormat && !matchUpFormatCode.isValid(matchUpFormat)) {
+    errors.push(`Invalid matchUpFormat: ${matchUpFormat}`);
+    return { errors };
+  }
+
+  return { valid: true };
 }
 
 // add collectionIds if missing
