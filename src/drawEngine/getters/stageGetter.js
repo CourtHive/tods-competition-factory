@@ -1,12 +1,10 @@
+import { findExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfile';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
+import { getEntryProfile } from './getEntryProfile';
 import { findStructure } from './findStructure';
-import {
-  findDrawDefinitionExtension,
-  findExtension,
-} from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
 
-import { ENTRY_PROFILE, TALLY } from '../../constants/extensionConstants';
+import { TALLY } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   ENTRY_STATUS_NOT_ALLOWED_IN_STAGE,
@@ -25,15 +23,6 @@ import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
 } from '../../constants/entryStatusConstants';
-
-function getEntryProfile({ drawDefinition }) {
-  let { extension } = findDrawDefinitionExtension({
-    name: ENTRY_PROFILE,
-    drawDefinition,
-  });
-  const entryProfile = extension?.value || drawDefinition.entryProfile || {};
-  return { entryProfile };
-}
 
 export function validStage({ stage, drawDefinition }) {
   return Boolean(
