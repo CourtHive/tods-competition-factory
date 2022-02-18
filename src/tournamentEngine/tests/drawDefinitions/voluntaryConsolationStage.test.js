@@ -83,8 +83,15 @@ it('can generate a draw with only voluntary consolation stage', () => {
     eventId,
     flight,
   });
-
   expect(result.success).toEqual(true);
+
+  const voluntaryStructure = drawDefinition.structures.find(
+    (structure) => structure.stage === VOLUNTARY_CONSOLATION
+  );
+  const positionedAssigned = voluntaryStructure.positionAssignments.every(
+    (participantId) => participantId
+  );
+  expect(positionedAssigned).toEqual(true);
 
   let notificationsCounter = 0;
   const subscriptions = {

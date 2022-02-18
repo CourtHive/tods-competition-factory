@@ -35,6 +35,7 @@ export function generateDrawDefinition(params) {
     policyDefinitions,
     tournamentRecord,
     tieFormatName,
+    stage = MAIN,
     drawEntries,
     drawId,
     event,
@@ -212,11 +213,12 @@ export function generateDrawDefinition(params) {
     ...params,
     drawDefinition,
     participants,
-    stage: MAIN,
     seedsCount,
     drawSize,
     entries,
+    stage,
   });
+  // if (structureResult.error) return structureResult;
 
   const structureId = structureResult.structureId;
   const conflicts = structureResult.conflicts;
@@ -244,6 +246,7 @@ export function generateDrawDefinition(params) {
         drawSize,
         entries,
       });
+      // if (qualifyingResult.error) return qualifyingResult;
       stageSequence += 1;
 
       if (qualifyingResult.conflicts?.length)
