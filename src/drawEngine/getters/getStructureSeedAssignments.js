@@ -9,6 +9,7 @@ import {
 
 export function getStructureSeedAssignments({
   drawDefinition,
+  matchUpsMap,
   structureId,
   structure,
 }) {
@@ -28,6 +29,7 @@ export function getStructureSeedAssignments({
       const entries = getStageEntries({
         drawDefinition,
         stageSequence,
+        matchUpsMap,
         structureId,
         stage,
       });

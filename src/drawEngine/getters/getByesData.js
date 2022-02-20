@@ -1,6 +1,7 @@
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
-import { getStageEntries, getQualifiersCount } from './stageGetter';
 import { structureAssignedDrawPositions } from './positionsGetter';
+import { getQualifiersCount } from './getQualifiersCount';
+import { getStageEntries } from './stageGetter';
 
 import {
   CONSOLATION,

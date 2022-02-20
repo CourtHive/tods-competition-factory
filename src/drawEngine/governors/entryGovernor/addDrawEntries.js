@@ -1,8 +1,9 @@
 import { refreshEntryPositions } from '../../../global/functions/producers/refreshEntryPositions';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
-import { validStage, stageSpace } from '../../getters/stageGetter';
 import { participantInEntries } from '../../getters/entryGetter';
 import { definedAttributes } from '../../../utilities/objects';
+import { getValidStage } from '../../getters/getValidStage';
+import { getStageSpace } from '../../getters/getStageSpace';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -43,10 +44,10 @@ export function addDrawEntry({
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!entryStage) return { error: MISSING_STAGE };
-  if (!validStage({ stage: entryStage, drawDefinition })) {
+  if (!getValidStage({ stage: entryStage, drawDefinition })) {
     return { error: INVALID_STAGE };
   }
-  const spaceAvailable = stageSpace({
+  const spaceAvailable = getStageSpace({
     stageSequence: entryStageSequence,
     stage: entryStage,
     drawDefinition,
@@ -112,11 +113,11 @@ export function addDrawEntries({
   if (!stage) return { error: MISSING_STAGE };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!Array.isArray(participantIds)) return { error: INVALID_PARTICIPANT_IDS };
-  if (!validStage({ stage, drawDefinition })) {
+  if (!getValidStage({ stage, drawDefinition })) {
     return { error: INVALID_STAGE };
   }
 
-  const spaceAvailable = stageSpace({
+  const spaceAvailable = getStageSpace({
     stageSequence,
     drawDefinition,
     entryStatus,

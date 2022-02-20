@@ -15,9 +15,11 @@ import {
 
 import { MISSING_AVOIDANCE_POLICY } from '../../../../constants/errorConditionConstants';
 import { GROUP, PAIR, TEAM } from '../../../../constants/participantTypes';
-import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { getDevContext } from '../../../../global/state/globalState';
+import {
+  CONTAINER,
+  PLAY_OFF,
+} from '../../../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -45,7 +47,6 @@ export function randomUnseededSeparation({
     return { error: MISSING_AVOIDANCE_POLICY };
   }
   const { policyAttributes, roundsToSeparate, candidatesCount = 1 } = avoidance;
-  if (getDevContext({ avoidance: true })) console.log({ avoidance });
 
   // policyAttributes determines participant attributes which are to be used for avoidance
   // roundsToSeparate determines desired degree of separation between players with matching attribute values
@@ -56,6 +57,7 @@ export function randomUnseededSeparation({
     structure,
     event,
   });
+  if (structure.stage === PLAY_OFF) console.log({ avoidance });
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const participantsWithGroupings = addParticipantGroupings({ participants });

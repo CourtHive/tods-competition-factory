@@ -2,6 +2,7 @@ import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { getEntryProfile } from './getEntryProfile';
 import { findStructure } from './findStructure';
 
+import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { POSITION, QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 export function getQualifiersCount({
@@ -10,6 +11,8 @@ export function getQualifiersCount({
   structureId,
   stage,
 }) {
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+
   const { structure } = findStructure({ drawDefinition, structureId });
   const relevantLink = drawDefinition.links?.find(
     (link) =>
@@ -38,6 +41,7 @@ export function getQualifiersCount({
   }
 
   const { entryProfile } = getEntryProfile({ drawDefinition });
+
   return (
     entryProfile?.[stage]?.stageSequence?.[stageSequence]?.qualifiersCount ||
     entryProfile?.[stage]?.qualifiersCount ||
