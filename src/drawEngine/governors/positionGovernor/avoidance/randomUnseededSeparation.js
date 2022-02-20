@@ -15,11 +15,8 @@ import {
 
 import { MISSING_AVOIDANCE_POLICY } from '../../../../constants/errorConditionConstants';
 import { GROUP, PAIR, TEAM } from '../../../../constants/participantTypes';
+import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import {
-  CONTAINER,
-  PLAY_OFF,
-} from '../../../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -57,7 +54,6 @@ export function randomUnseededSeparation({
     structure,
     event,
   });
-  if (structure.stage === PLAY_OFF) console.log({ avoidance });
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const participantsWithGroupings = addParticipantGroupings({ participants });
