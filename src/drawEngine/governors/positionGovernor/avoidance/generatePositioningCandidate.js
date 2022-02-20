@@ -43,7 +43,7 @@ export function generatePositioningCandidate(params) {
   let groupKey;
 
   const groupSize = Math.min(
-    ...drawPositionGroups?.map((dpg) => dpg?.length).filter(Boolean)
+    ...(drawPositionGroups || []).map((dpg) => dpg?.length).filter(Boolean)
   );
   const isRoundRobin = groupSize > 2;
 
