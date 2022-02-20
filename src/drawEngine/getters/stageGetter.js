@@ -179,8 +179,9 @@ export function getStageEntries({
     }, []) || [];
 
   // handle POSITION entries
-  if (structureId && !entries.length) {
-    return playoffEntries({ drawDefinition, structureId });
+  if (structureId && stage === PLAY_OFF) {
+    const playoffEntries = getPlayoffEntries({ drawDefinition, structureId });
+    return playoffEntries?.length ? playoffEntries : entries;
   }
   return entries;
 }
@@ -191,7 +192,7 @@ export function getStageEntries({
  * @param {string} structureId - id of structure within drawDefinition
  *
  */
-export function playoffEntries({ drawDefinition, structureId }) {
+function getPlayoffEntries({ drawDefinition, structureId }) {
   const entries = [];
   const inboundLink = (drawDefinition.links || []).find(
     (link) =>

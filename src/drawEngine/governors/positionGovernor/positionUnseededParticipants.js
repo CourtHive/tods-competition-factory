@@ -105,7 +105,6 @@ export function positionUnseededParticipants({
       drawDefinition,
       structureId,
       matchUpsMap,
-      avoidance,
     });
     return result;
   }
