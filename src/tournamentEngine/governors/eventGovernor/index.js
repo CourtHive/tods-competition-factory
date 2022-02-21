@@ -95,7 +95,11 @@ import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 import { attachPlayoffStructures } from './attachPlayoffStructures';
 import { applyLineUps } from './drawDefinitions/applyLineUps';
 
+import { addCollectionDefinition } from '../../../drawEngine/governors/scoreGovernor/tieFormats/addCollectionDefinition';
+
 const eventGovernor = {
+  addCollectionDefinition,
+
   addEvent,
   deleteEvents,
   setEventDates,

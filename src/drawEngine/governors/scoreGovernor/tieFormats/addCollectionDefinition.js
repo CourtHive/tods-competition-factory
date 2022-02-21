@@ -24,6 +24,7 @@ export function addCollectionDefinition({
   drawDefinition,
   structureId,
   matchUpId,
+  eventId,
   event,
 }) {
   const { valid, errors } = validateCollectionDefinition({
@@ -31,24 +32,24 @@ export function addCollectionDefinition({
   });
   if (!valid) return { error: INVALID_VALUES, errors };
 
-  let tieFormat;
+  let error, matchUp, structure, tieFormat;
 
-  if (event?.tieFormat) {
+  if (eventId && event?.tieFormat) {
     tieFormat = event.tieFormat;
   } else if (matchUpId) {
-    const { error, matchUp, structure } = findMatchUp({
+    ({ error, matchUp, structure } = findMatchUp({
       drawDefinition,
       matchUpId,
-    });
+    }));
     if (error) return { error };
 
     tieFormat =
-      matchUp.tieFormat ||
-      (structureId && structure.tieFormat) ||
-      drawDefinition.tieFormat;
+      matchUp.tieFormat || structure?.tieFormat || drawDefinition.tieFormat;
   } else if (structureId) {
-    const { structure } = findStructure({ drawDefinition, structureId });
-    tieFormat = structure.tieFormat || drawDefinition.tieFormat;
+    structure = findStructure({ drawDefinition, structureId })?.structure;
+    tieFormat = structure?.tieFormat || drawDefinition.tieFormat;
+  } else {
+    tieFormat = drawDefinition.tieFormat;
   }
 
   const result = validateTieFormat({ tieFormat });
@@ -90,5 +91,15 @@ export function addCollectionDefinition({
 
   tieFormat.winCriteria = { aggregateValue, valueGoal };
 
-  return { ...SUCCESS };
+  if (eventId) {
+    event.tieFormat = tieFormat;
+  } else if (matchUp) {
+    matchUp.tieFormat = tieFormat;
+  } else if (structure) {
+    structure.tieFormat = tieFormat;
+  } else {
+    drawDefinition.tieFormat = tieFormat;
+  }
+
+  return { ...SUCCESS, tieFormat };
 }
