@@ -113,7 +113,7 @@
     "jest-environment-node": "27.5.1",
     "lint-staged": "12.3.4",
     "np": "7.6.0",
-    "pinst": "2.1.6",
+    "pinst": "3.0.0",
     "prettier": "2.5.1",
     "prettier-eslint": "13.0.0",
     "rollup": "2.67.3",
