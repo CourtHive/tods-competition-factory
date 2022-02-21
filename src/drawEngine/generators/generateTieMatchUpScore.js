@@ -81,7 +81,7 @@ export function generateTieMatchUpScore({
     );
 
     const {
-      collectionValueProfile,
+      collectionValueProfiles,
       collectionGroupNumber,
       collectionValue,
       matchUpValue,
@@ -114,7 +114,7 @@ export function generateTieMatchUpScore({
           sideMatchUpValues[1] += side2Score;
         });
       });
-    } else if (Array.isArray(collectionValueProfile)) {
+    } else if (Array.isArray(collectionValueProfiles)) {
       // this must come last because it will be true for []
       collectionMatchUps.forEach((matchUp) => {
         if (matchUp.winningSide) {
@@ -269,9 +269,9 @@ function getCollectionPositionValue({
   collectionDefinition,
   collectionPosition,
 }) {
-  const collectionValueProfile =
-    collectionDefinition.collectionValueProfile || [];
-  const profile = collectionValueProfile?.find(
+  const collectionValueProfiles =
+    collectionDefinition.collectionValueProfiles || [];
+  const profile = collectionValueProfiles?.find(
     (profile) => profile.collectionPosition === collectionPosition
   );
   return profile?.matchUpValue;

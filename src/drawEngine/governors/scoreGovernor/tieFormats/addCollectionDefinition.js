@@ -1,11 +1,13 @@
 import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../../getters/findStructure';
+import { calculateWinCriteria } from './calculateWinCriteria';
 import { UUID } from '../../../../utilities';
 import {
   validateCollectionDefinition,
   validateTieFormat,
 } from './tieFormatUtilities';
 
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   DUPLICATE_VALUE,
   INVALID_VALUES,
@@ -46,7 +48,7 @@ export function addCollectionDefinition({
       drawDefinition.tieFormat;
   } else if (structureId) {
     const { structure } = findStructure({ drawDefinition, structureId });
-    tieFormat = structure.tieFormat;
+    tieFormat = structure.tieFormat || drawDefinition.tieFormat;
   }
 
   const result = validateTieFormat({ tieFormat });
@@ -64,4 +66,29 @@ export function addCollectionDefinition({
         collectionId: collectionDefinition.collectionId,
       };
   }
+
+  // if there are existing collectionOrder values, add collectionOrder
+  const collectionOrders =
+    tieFormat.collectionDefinitions
+      .map(
+        ({ collectionOrder }) =>
+          !isNaN(collectionOrder) && parseInt(collectionOrder)
+      )
+      ?.filter(Boolean) || [];
+
+  if (collectionOrders.length) {
+    collectionDefinition.collectionOrder = Math.max(0, ...collectionOrders) + 1;
+  }
+
+  tieFormat.collectionDefinitions.push(collectionDefinition);
+
+  // calculate new winCriteria for tieFormat
+  // if existing winCriteria is aggregateValue, retain
+  const { aggregateValue, valueGoal } = calculateWinCriteria({
+    collectionDefinitions: tieFormat.collectionDefinitions,
+  });
+
+  tieFormat.winCriteria = { aggregateValue, valueGoal };
+
+  return { ...SUCCESS };
 }
