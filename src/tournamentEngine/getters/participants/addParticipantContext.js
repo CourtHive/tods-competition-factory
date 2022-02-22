@@ -392,6 +392,7 @@ export function addParticipantContext(params) {
 
   function processMatchUp({ matchUp, drawDetails, eventType }) {
     const {
+      collectionId,
       drawId,
       drawName,
       eventId,
@@ -587,6 +588,7 @@ export function addParticipantContext(params) {
           );
           participantIdMap[relevantParticipantId].matchUps[matchUpId] =
             definedAttributes({
+              collectionId,
               drawId,
               eventId,
               eventType,
