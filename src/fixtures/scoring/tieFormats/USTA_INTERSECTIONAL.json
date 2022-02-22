@@ -2,6 +2,7 @@
   "collectionDefinitions": [
     {
       "collectionName": "Boys Singles",
+      "gender": "MALE",
       "matchUpCount": 6,
       "matchUpFormat": "SET3-S:6/TB7-F:TB10",
       "matchUpType": "SINGLES",
@@ -9,6 +10,7 @@
     },
     {
       "collectionName": "Girls Singles",
+      "gender": "FEMALE",
       "matchUpCount": 6,
       "matchUpFormat": "SET3-S:6/TB7-F:TB10",
       "matchUpType": "SINGLES",
@@ -16,6 +18,7 @@
     },
     {
       "collectionName": "Boys Doubles",
+      "gender": "MALE",
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:8/TB7",
       "matchUpType": "DOUBLES",
@@ -23,6 +26,7 @@
     },
     {
       "collectionName": "Girls Doubles",
+      "gender": "FEMALE",
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:8/TB7",
       "matchUpType": "DOUBLES",
@@ -30,6 +34,7 @@
     },
     {
       "collectionName": "Mixed Doubles",
+      "gender": "MIXED",
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:8/TB7",
       "matchUpType": "DOUBLES",

@@ -2,6 +2,7 @@
   "collectionDefinitions": [
     {
       "collectionName": "Mixed Doubles",
+      "gender": "MIXED",
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:8/TB7",
       "matchUpType": "DOUBLES",
