@@ -67,8 +67,8 @@ export function removeCollectionDefinition({
     })?.matchUps;
   }
 
-  // remove any collectionAssignments from LineUps that include collectionId
   for (const matchUp of matchUps) {
+    // remove any collectionAssignments from LineUps that include collectionId
     for (const side of matchUp?.sides || []) {
       side.lineUp = (side.lineUp || []).map((assignment) =>
         (assignment?.collectionAssignments || []).filter(
@@ -77,6 +77,7 @@ export function removeCollectionDefinition({
         )
       );
     }
+    // remove any matchUps which contain collectionId
   }
 
   tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.filter(
