@@ -10,11 +10,13 @@ import { analyzeMatchUp } from './analyzeMatchUp';
 import { parse } from './matchUpFormatCode/parse';
 import { analyzeSet } from './analyzeSet';
 
+import { removeCollectionDefinition } from './tieFormats/removeCollectionDefinition';
 import { addCollectionDefinition } from './tieFormats/addCollectionDefinition';
 
 export const scoreGovernor = {
   stringifyMatchUpFormat: stringify,
   isValidMatchUpFormat: isValid,
+  removeCollectionDefinition,
   parseMatchUpFormat: parse,
   generateTieMatchUpScore,
   tallyParticipantResults,

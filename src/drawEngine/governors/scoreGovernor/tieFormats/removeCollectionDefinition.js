@@ -1,10 +1,18 @@
 // all child matchUps need to be checked for collectionAssignments which need to be removed when collectionDefinition.collectionIds are removed
 
-import { NOT_FOUND } from '../../../../constants/errorConditionConstants';
-import { TEAM } from '../../../../constants/matchUpTypes';
-import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
+import { calculateWinCriteria } from './calculateWinCriteria';
+import { validateTieFormat } from './tieFormatUtilities';
 import { getTieFormat } from './getTieFormat';
+
+import { SUCCESS } from '../../../../constants/resultConstants';
+import { TEAM } from '../../../../constants/matchUpTypes';
+import {
+  INVALID_VALUES,
+  MISSING_DRAW_DEFINITION,
+  NOT_FOUND,
+} from '../../../../constants/errorConditionConstants';
 
 /*
  * collectionDefinition will be added to an event tieFormat (if present)
@@ -14,6 +22,7 @@ import { getTieFormat } from './getTieFormat';
  */
 export function removeCollectionDefinition({
   drawDefinition,
+  tieFormatName,
   collectionId,
   structureId,
   matchUpId,
@@ -30,6 +39,12 @@ export function removeCollectionDefinition({
   if (result.error) return result;
 
   const { matchUp, structure, tieFormat } = result;
+
+  result = validateTieFormat({ tieFormat });
+  if (!result.valid) return { error: INVALID_VALUES, errors: result.errors };
+
+  const originalValueGoal = tieFormat.winCriteria.valueGoal;
+
   const collectionExists = tieFormat?.collectionDefinitions?.find(
     (collectionDefinition) => collectionDefinition.collectionId === collectionId
   );
@@ -63,4 +78,39 @@ export function removeCollectionDefinition({
       );
     }
   }
+
+  tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.filter(
+    (collectionDefinition) => collectionDefinition.collectionId !== collectionId
+  );
+
+  // calculate new winCriteria for tieFormat
+  // if existing winCriteria is aggregateValue, retain
+  const { aggregateValue, valueGoal } = calculateWinCriteria({
+    collectionDefinitions: tieFormat.collectionDefinitions,
+  });
+
+  tieFormat.winCriteria = { aggregateValue, valueGoal };
+
+  // if valueGoal has changed, force renaming of the tieFormat
+  if (originalValueGoal && originalValueGoal !== valueGoal) {
+    if (tieFormatName) {
+      tieFormat.tieFormatName = tieFormatName;
+    } else {
+      delete tieFormat.tieFormatName;
+    }
+  }
+
+  if (eventId) {
+    event.tieFormat = tieFormat;
+  } else if (matchUp) {
+    matchUp.tieFormat = tieFormat;
+  } else if (structure) {
+    structure.tieFormat = tieFormat;
+  } else if (drawDefinition) {
+    drawDefinition.tieFormat = tieFormat;
+  } else {
+    return { error: MISSING_DRAW_DEFINITION };
+  }
+
+  return { ...SUCCESS, tieFormat };
 }

@@ -10,6 +10,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   DUPLICATE_VALUE,
   INVALID_VALUES,
+  MISSING_DRAW_DEFINITION,
 } from '../../../../constants/errorConditionConstants';
 
 /*
@@ -21,6 +22,7 @@ import {
 export function addCollectionDefinition({
   collectionDefinition,
   drawDefinition,
+  tieFormatName,
   structureId,
   matchUpId,
   eventId,
@@ -44,6 +46,8 @@ export function addCollectionDefinition({
 
   result = validateTieFormat({ tieFormat });
   if (!result.valid) return { error: INVALID_VALUES, errors: result.errors };
+
+  const originalValueGoal = tieFormat.winCriteria.valueGoal;
 
   if (!collectionDefinition.collectionId) {
     collectionDefinition.collectionId = UUID();
@@ -74,14 +78,25 @@ export function addCollectionDefinition({
 
   tieFormat.winCriteria = { aggregateValue, valueGoal };
 
+  // if valueGoal has changed, force renaming of the tieFormat
+  if (originalValueGoal && originalValueGoal !== valueGoal) {
+    if (tieFormatName) {
+      tieFormat.tieFormatName = tieFormatName;
+    } else {
+      delete tieFormat.tieFormatName;
+    }
+  }
+
   if (eventId) {
     event.tieFormat = tieFormat;
   } else if (matchUp) {
     matchUp.tieFormat = tieFormat;
   } else if (structure) {
     structure.tieFormat = tieFormat;
-  } else {
+  } else if (drawDefinition) {
     drawDefinition.tieFormat = tieFormat;
+  } else {
+    return { error: MISSING_DRAW_DEFINITION };
   }
 
   return { ...SUCCESS, tieFormat };

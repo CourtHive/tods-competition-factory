@@ -91,13 +91,15 @@ import {
 
 import { validateLineUp } from './drawDefinitions/validateTeamLineUp';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
-import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 import { attachPlayoffStructures } from './attachPlayoffStructures';
+import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 import { applyLineUps } from './drawDefinitions/applyLineUps';
 
+import { removeCollectionDefinition } from '../../../drawEngine/governors/scoreGovernor/tieFormats/removeCollectionDefinition';
 import { addCollectionDefinition } from '../../../drawEngine/governors/scoreGovernor/tieFormats/addCollectionDefinition';
 
 const eventGovernor = {
+  removeCollectionDefinition,
   addCollectionDefinition,
 
   addEvent,

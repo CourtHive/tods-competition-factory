@@ -68,6 +68,7 @@ export function validateTieFormat({
 }
 
 export function validateCollectionDefinition({
+  checkValueDefinition = true, // disabling allows collection to be added with no value, e.g. "Exhibition Matches"
   collectionDefinition,
   checkCollectionIds,
 }) {
@@ -107,6 +108,7 @@ export function validateCollectionDefinition({
   }
 
   if (
+    checkValueDefinition &&
     !matchUpValue &&
     !collectionValue &&
     !collectionValueProfile &&
