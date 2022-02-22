@@ -43,6 +43,12 @@ it('can add collectionDefinitions to tieFormats', () => {
 
   expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
 
+  const collectionOrders = result.tieFormat.collectionDefinitions.map(
+    ({ collectionOrder }) => collectionOrder
+  );
+
+  expect(collectionOrders).toEqual([1, 2, 3]);
+
   // test adding to tieFormat on structure
   // test adding to tieFormat on matchUp
 });

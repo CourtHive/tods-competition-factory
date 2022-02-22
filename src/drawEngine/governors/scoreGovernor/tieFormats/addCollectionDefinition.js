@@ -1,6 +1,5 @@
-import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
-import { findStructure } from '../../../getters/findStructure';
 import { calculateWinCriteria } from './calculateWinCriteria';
+import { getTieFormat } from './getTieFormat';
 import { UUID } from '../../../../utilities';
 import {
   validateCollectionDefinition,
@@ -32,27 +31,18 @@ export function addCollectionDefinition({
   });
   if (!valid) return { error: INVALID_VALUES, errors };
 
-  let error, matchUp, structure, tieFormat;
+  let result = getTieFormat({
+    drawDefinition,
+    structureId,
+    matchUpId,
+    eventId,
+    event,
+  });
+  if (result.error) return result;
 
-  if (eventId && event?.tieFormat) {
-    tieFormat = event.tieFormat;
-  } else if (matchUpId) {
-    ({ error, matchUp, structure } = findMatchUp({
-      drawDefinition,
-      matchUpId,
-    }));
-    if (error) return { error };
+  const { matchUp, structure, tieFormat } = result;
 
-    tieFormat =
-      matchUp.tieFormat || structure?.tieFormat || drawDefinition.tieFormat;
-  } else if (structureId) {
-    structure = findStructure({ drawDefinition, structureId })?.structure;
-    tieFormat = structure?.tieFormat || drawDefinition.tieFormat;
-  } else {
-    tieFormat = drawDefinition.tieFormat;
-  }
-
-  const result = validateTieFormat({ tieFormat });
+  result = validateTieFormat({ tieFormat });
   if (!result.valid) return { error: INVALID_VALUES, errors: result.errors };
 
   if (!collectionDefinition.collectionId) {
@@ -68,20 +58,13 @@ export function addCollectionDefinition({
       };
   }
 
-  // if there are existing collectionOrder values, add collectionOrder
-  const collectionOrders =
-    tieFormat.collectionDefinitions
-      .map(
-        ({ collectionOrder }) =>
-          !isNaN(collectionOrder) && parseInt(collectionOrder)
-      )
-      ?.filter(Boolean) || [];
-
-  if (collectionOrders.length) {
-    collectionDefinition.collectionOrder = Math.max(0, ...collectionOrders) + 1;
-  }
-
   tieFormat.collectionDefinitions.push(collectionDefinition);
+  tieFormat.collectionDefinitions
+    .sort((a, b) => (a.collectionOrder || 0) - (b.collectionOrder || 0))
+    .forEach(
+      (collectionDefinition, i) =>
+        (collectionDefinition.collectionOrder = i + 1)
+    );
 
   // calculate new winCriteria for tieFormat
   // if existing winCriteria is aggregateValue, retain
