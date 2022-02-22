@@ -1,6 +1,8 @@
 import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../../getters/findStructure';
 
+import { MISSING_DRAW_DEFINITION } from '../../../../constants/errorConditionConstants';
+
 export function getTieFormat({
   drawDefinition,
   structureId,
@@ -8,6 +10,9 @@ export function getTieFormat({
   eventId,
   event,
 }) {
+  if ((matchUpId || structureId) && !drawDefinition)
+    return { error: MISSING_DRAW_DEFINITION };
+
   let error, matchUp, structure, tieFormat;
 
   if (eventId && event?.tieFormat) {
@@ -20,12 +25,12 @@ export function getTieFormat({
     if (error) return { error };
 
     tieFormat =
-      matchUp.tieFormat || structure?.tieFormat || drawDefinition.tieFormat;
-  } else if (structureId) {
+      matchUp.tieFormat || structure?.tieFormat || drawDefinition?.tieFormat;
+  } else if (drawDefinition && structureId) {
     structure = findStructure({ drawDefinition, structureId })?.structure;
     tieFormat = structure?.tieFormat || drawDefinition.tieFormat;
   } else {
-    tieFormat = drawDefinition.tieFormat;
+    tieFormat = drawDefinition?.tieFormat;
   }
 
   return { tieFormat, matchUp, structure };
