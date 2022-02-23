@@ -78,6 +78,7 @@ export function assignTieMatchUpParticipantId(params) {
   }
 
   if (!teamParticipantId) teamParticipantId = participantTeam.participantId;
+  if (!teamParticipantId) return { error: PARTICIPANT_NOT_FOUND };
 
   const teamAssignment = relevantAssignments.find(
     (assignment) => assignment.participantId === participantTeam?.participantId
@@ -120,44 +121,47 @@ export function assignTieMatchUpParticipantId(params) {
   );
 
   let deleteParticipantId;
-  if (matchUpType === DOUBLES && participantType !== PAIR) {
-    const result = addParticipantId2Pair({
-      side: tieMatchUpSide,
-    });
-    if (result.error) return result;
-    deleteParticipantId = result.deleteParticipantId;
-  } else if (matchUpType === DOUBLES && participantType === PAIR) {
-    const participantIds = participantToAssign.individualParticipantIds || [];
-    // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/participantId
-    const { modifiedLineUp } = removeCollectionAssignments({
-      collectionPosition,
-      teamParticipantId,
-      dualMatchUpSide,
-      drawDefinition,
-      participantIds,
-      collectionId,
-    });
 
-    for (const participantId of participantIds) {
-      updateLineUp({
+  if (matchUpType === DOUBLES) {
+    if (participantType !== PAIR) {
+      const result = addParticipantId2Pair({
+        side: tieMatchUpSide,
+      });
+      if (result.error) return result;
+      deleteParticipantId = result.deleteParticipantId;
+    } else if (participantType === PAIR) {
+      const participantIds = participantToAssign.individualParticipantIds || [];
+      // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/participantId
+      const { modifiedLineUp } = removeCollectionAssignments({
         collectionPosition,
         teamParticipantId,
+        dualMatchUpSide,
         drawDefinition,
-        modifiedLineUp,
-        participantId,
+        participantIds,
         collectionId,
-        tieFormat,
       });
+
+      for (const participantId of participantIds) {
+        updateLineUp({
+          collectionPosition,
+          teamParticipantId,
+          drawDefinition,
+          modifiedLineUp,
+          participantId,
+          collectionId,
+          tieFormat,
+        });
+      }
+
+      dualMatchUpSide.lineUp = modifiedLineUp;
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        drawDefinition,
+        matchUp: dualMatchUp,
+      });
+
+      return { ...SUCCESS, modifiedLineUp };
     }
-
-    dualMatchUpSide.lineUp = modifiedLineUp;
-    modifyMatchUpNotice({
-      tournamentId: tournamentRecord?.tournamentId,
-      drawDefinition,
-      matchUp: dualMatchUp,
-    });
-
-    return { ...SUCCESS, modifiedLineUp };
   }
 
   // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/participantId
@@ -170,7 +174,7 @@ export function assignTieMatchUpParticipantId(params) {
     collectionId,
   });
 
-  updateLineUp({
+  const result = updateLineUp({
     collectionPosition,
     teamParticipantId,
     drawDefinition,
@@ -179,6 +183,7 @@ export function assignTieMatchUpParticipantId(params) {
     collectionId,
     tieFormat,
   });
+  if (result?.error) return result;
 
   dualMatchUpSide.lineUp = modifiedLineUp;
   modifyMatchUpNotice({
@@ -272,6 +277,7 @@ function updateLineUp({
   )?.find((teamCompetitor) => teamCompetitor?.participantId === participantId);
 
   const newAssignment = { collectionId, collectionPosition };
+
   if (participantCompetitiorProfile) {
     participantCompetitiorProfile.collectionAssignments.push(newAssignment);
   } else {
@@ -283,11 +289,10 @@ function updateLineUp({
     modifiedLineUp.push(teamCompetitor);
   }
 
-  teamParticipantId &&
-    updateTeamLineUp({
-      participantId: teamParticipantId,
-      lineUp: modifiedLineUp,
-      drawDefinition,
-      tieFormat,
-    });
+  return updateTeamLineUp({
+    participantId: teamParticipantId,
+    lineUp: modifiedLineUp,
+    drawDefinition,
+    tieFormat,
+  });
 }
