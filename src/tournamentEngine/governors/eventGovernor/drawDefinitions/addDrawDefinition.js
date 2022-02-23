@@ -105,8 +105,8 @@ export function addDrawDefinition({
   if (relevantFlight && !matchingFlighEntries) {
     return {
       error: INVALID_DRAW_DEFINITION,
-      relevantFlight,
       matchingEventEntries,
+      relevantFlight,
     };
   }
 
@@ -132,8 +132,8 @@ export function addDrawDefinition({
   if (eventEntries && !matchingEventEntries)
     return {
       error: INVALID_DRAW_DEFINITION,
-      eventEntries,
       matchingEventEntries,
+      eventEntries,
     };
 
   const flightNumbers =
