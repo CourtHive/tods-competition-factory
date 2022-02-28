@@ -250,10 +250,9 @@ export function assignTieMatchUpParticipantId(params) {
           // if there is, use that and delete the PAIR participant with only one [individualParticipantId]
           deleteParticipantId = participant.participantId;
         }
-      } else {
-        console.log('###');
       }
     }
+
     return { ...SUCCESS, deleteParticipantId };
   }
 }
