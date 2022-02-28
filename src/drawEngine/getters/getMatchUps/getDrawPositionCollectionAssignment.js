@@ -49,7 +49,7 @@ export function getDrawPositionCollectionAssignment({
         });
 
         if (matchUpType === DOUBLES) {
-          if (relevantCompetitors?.length === 2) {
+          if (relevantCompetitors?.length <= 2) {
             const participantIds = relevantCompetitors?.map(getParticipantId);
             const { participant } = getPairedParticipant({
               tournamentParticipants,

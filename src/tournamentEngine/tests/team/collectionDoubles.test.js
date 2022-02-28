@@ -65,9 +65,11 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
       participantFilters: { participantIds: teamParticipantIds },
     });
 
+  // get the participantId for the first team
   const [firstParticipant] = teamParticipants;
   const firstParticipantId = firstParticipant.participantId;
 
+  // utility function
   const getSide = (id) => {
     const drawPosition = positionAssignments.find(
       (assignment) => assignment.participantId === id
@@ -76,8 +78,11 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
       (side) => side.drawPosition === drawPosition
     );
   };
+
+  // get the side for the first team participant
   const firstParticipantSide = getSide(firstParticipantId);
 
+  // assign the first team member of the first team participant to a doubles matchUp
   let result = tournamentEngine.assignTieMatchUpParticipantId({
     participantId: firstParticipant.individualParticipantIds[0],
     tieMatchUpId: doublesMatchUpId,
