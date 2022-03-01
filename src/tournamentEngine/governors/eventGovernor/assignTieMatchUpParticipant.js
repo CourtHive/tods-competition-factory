@@ -142,7 +142,9 @@ export function assignTieMatchUpParticipantId(params) {
         ?.map((assignment) => assignment?.participantId);
 
       const participantIds =
-        assignedParticipantIds > 1 ? assignedParticipantIds : [participantId];
+        assignedParticipantIds?.length > 1
+          ? assignedParticipantIds
+          : [participantId];
 
       const modifiedLineUp = removeCollectionAssignments({
         participantIds,
