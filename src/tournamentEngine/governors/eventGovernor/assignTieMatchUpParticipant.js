@@ -124,11 +124,66 @@ export function assignTieMatchUpParticipantId(params) {
 
   if (matchUpType === DOUBLES) {
     if (participantType !== PAIR) {
-      const result = addParticipantId2Pair({
+      const lineUp =
+        dualMatchUpSide?.lineUp ||
+        getTeamLineUp({
+          participantId: teamParticipantId,
+          drawDefinition,
+        })?.lineUp;
+
+      const assignedParticipantIds = lineUp
+        ?.filter((participantAssignment) =>
+          participantAssignment.collectionAssignments.find(
+            (assignment) =>
+              assignment.collectionId === collectionId &&
+              assignment.collectionPosition === collectionPosition
+          )
+        )
+        ?.map((assignment) => assignment?.participantId);
+
+      const participantIds =
+        assignedParticipantIds > 1 ? assignedParticipantIds : [participantId];
+
+      const modifiedLineUp = removeCollectionAssignments({
+        participantIds,
+        collectionPosition,
+        teamParticipantId,
+        dualMatchUpSide,
+        drawDefinition,
+        collectionId,
+      })?.modifiedLineUp;
+
+      let result = updateLineUp({
+        collectionPosition,
+        teamParticipantId,
+        drawDefinition,
+        modifiedLineUp,
+        participantId,
+        collectionId,
+        tieFormat,
+      });
+      if (result?.error) return result;
+
+      result = addParticipantId2Pair({
         side: tieMatchUpSide,
       });
       if (result.error) return result;
-      deleteParticipantId = result.deleteParticipantId;
+
+      dualMatchUpSide.lineUp = modifiedLineUp;
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        matchUp: dualMatchUp,
+        drawDefinition,
+      });
+
+      if (result.deleteParticipantId) {
+        const { error } = deleteParticipants({
+          participantIds: [result.deleteParticipantId],
+          tournamentRecord,
+        });
+        if (error) console.log('cleanup', { result });
+      }
+      return { ...SUCCESS, modifiedLineUp };
     } else if (participantType === PAIR) {
       const participantIds = participantToAssign.individualParticipantIds || [];
       // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/participantId
@@ -156,8 +211,8 @@ export function assignTieMatchUpParticipantId(params) {
       dualMatchUpSide.lineUp = modifiedLineUp;
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
-        drawDefinition,
         matchUp: dualMatchUp,
+        drawDefinition,
       });
 
       return { ...SUCCESS, modifiedLineUp };
