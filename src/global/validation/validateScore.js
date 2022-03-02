@@ -54,8 +54,6 @@ export function validateScore({
           pair.every((numericValue) => isConvertableInteger(numericValue))
         );
 
-      console.log({ numericValuePairs });
-
       if (!numericValuePairs) {
         return { error: INVALID_VALUES, message: 'non-numeric values' };
       }
