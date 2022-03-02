@@ -6,10 +6,11 @@ const scenarios = [
   { score: { sets: [], scoreStringSide1: {}, scoreStringSide2: '' }, valid: false },
   { score: { sets: [], scoreStringSide1: '', scoreStringSide2: {} }, valid: false },
   { score: { sets: '', scoreStringSide1: '', scoreStringSide2: '' }, valid: false },
-  { score: { sets: [{ scoreSide1: 6, scoreSide2: 4, winningSide: 2 }], scoreStringSide1: '', scoreStringSide2: '' }, valid: false },
-  { score: { sets: [{ scoreSide1: 6, scoreSide2: 4, winningSide: 1 }], scoreStringSide1: '', scoreStringSide2: '' }, valid: false },
-  { score: { sets: [{ scoreSide1: 6, scoreSide2: 4, winningSide: 1 }], scoreStringSide1: '', scoreStringSide2: '' }, winningSide: 1, valid: true },
-  { score: { sets: [{ scoreSide1: 6, scoreSide2: 4, winningSide: 1 }], scoreStringSide1: '', scoreStringSide2: '' }, winningSide: 2, valid: false },
+  { score: { sets: [{ side1Score: 6, side2Score: 4, winningSide: 2 }], scoreStringSide1: '', scoreStringSide2: '' }, valid: false },
+  { score: { sets: [{ side1Score: 6, side2Score: 4, winningSide: 1 }], scoreStringSide1: '', scoreStringSide2: '' }, valid: false },
+  { score: { sets: [{ side1Score: 6, winningSide: 1 }], scoreStringSide1: '', scoreStringSide2: '' }, winningSide: 1, valid: false },
+  { score: { sets: [{ side1Score: 6, side2Score: 4, winningSide: 1 }], scoreStringSide1: '', scoreStringSide2: '' }, winningSide: 1, valid: true },
+  { score: { sets: [{ side1Score: 6, side2Score: 4, winningSide: 1 }], scoreStringSide1: '', scoreStringSide2: '' }, winningSide: 2, valid: false },
 ];
 
 test.each(scenarios)(
