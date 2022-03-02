@@ -93,14 +93,15 @@ export function prepareStage({
           seedValue,
         });
       });
-  } else if (event?.category || seedingScaleName) {
+  } else if (event || seedingScaleName) {
     // if no seededParticipants have been defined, seed by seeding scale or ranking scale, if present
 
     const { categoryName, ageCategoryCode } = event?.category || {};
 
     const seedingScaleAttributes = {
       scaleType: SEEDING,
-      scaleName: seedingScaleName || categoryName || ageCategoryCode,
+      scaleName:
+        seedingScaleName || categoryName || ageCategoryCode || event.eventId,
       eventType,
     };
 

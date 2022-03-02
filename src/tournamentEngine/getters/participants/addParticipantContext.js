@@ -30,6 +30,7 @@ import {
   SIGNED_IN,
   SIGN_IN_STATUS,
 } from '../../../constants/participantConstants';
+import { getSeedValue } from '../getSeedValue';
 
 export function addParticipantContext(params) {
   const participantIdsWithConflicts = [];
@@ -765,35 +766,12 @@ function annotateParticipant({
       const event = participantEvents?.find(
         (e) => e.eventId === participantDraw.eventId
       );
-      const { categoryName, ageCategoryCode } = event?.category || {};
 
-      let seedValue;
-
-      let result = participantScaleItem({
-        scaleAttributes: {
-          scaleType: SEEDING,
-          scaleName: participantDraw.drawId,
-          eventType: event?.eventType,
-        },
+      const { seedValue } = getSeedValue({
+        drawId: participantDraw.drawId,
         participant,
+        event,
       });
-
-      if (result?.scaleItem) {
-        seedValue = result.scaleItem.scaleValue;
-      } else {
-        result = participantScaleItem({
-          scaleAttributes: {
-            scaleType: SEEDING,
-            scaleName: categoryName || ageCategoryCode,
-            eventType: event?.eventType,
-          },
-          participant,
-        });
-
-        if (result?.scaleItem) {
-          seedValue = result.scaleItem.scaleValue;
-        }
-      }
 
       if (seedValue) {
         const publishedSeeding =
