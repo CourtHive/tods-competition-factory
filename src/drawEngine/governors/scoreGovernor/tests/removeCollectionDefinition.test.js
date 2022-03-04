@@ -1,8 +1,22 @@
+import { setSubscriptions } from '../../../../global/state/globalState';
 import { mocksEngine, tournamentEngine } from '../../../..';
 
 import { TEAM } from '../../../../constants/eventConstants';
+import { DELETED_MATCHUP_IDS } from '../../../../constants/topicConstants';
 
 it('can remove a collectionDefinition from a tieFormat', () => {
+  const deletedMatchUpIds = [];
+  let result = setSubscriptions({
+    subscriptions: {
+      [DELETED_MATCHUP_IDS]: (notices) => {
+        notices.forEach(({ matchUpIds }) =>
+          deletedMatchUpIds.push(...matchUpIds)
+        );
+      },
+    },
+  });
+  expect(result.success).toEqual(true);
+
   const {
     drawIds: [drawId],
     eventIds: [eventId],
@@ -15,25 +29,28 @@ it('can remove a collectionDefinition from a tieFormat', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
+  let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  const originalMatchUpsCount = matchUps.length;
+
   let { drawDefaultTieFormat } = tournamentEngine.getTieFormat({ drawId });
   let { eventDefaultTieFormat } = tournamentEngine.getTieFormat({ eventId });
-
-  console.log({
-    eventDefaultTieFormat,
-    drawDefaultTieFormat,
-  });
+  expect(eventDefaultTieFormat.winCriteria.valueGoal).toEqual(5);
 
   const collectionId =
     drawDefaultTieFormat.collectionDefinitions[0].collectionId;
-  let result = tournamentEngine.removeCollectionDefinition({
-    drawId,
+  result = tournamentEngine.removeCollectionDefinition({
     collectionId,
+    drawId,
   });
   expect(result.success).toEqual(true);
   expect(result.tieFormat.winCriteria.valueGoal).toEqual(4);
   expect(result.tieFormat.tieFormatName).toBeUndefined();
-});
 
-it('can cleanup after removing collectionDefinitions', () => {
-  expect('true');
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  const prunedMatchUpsCount = matchUps.length;
+
+  expect(deletedMatchUpIds.length).toEqual(3);
+  expect(prunedMatchUpsCount).toEqual(
+    originalMatchUpsCount - deletedMatchUpIds.length
+  );
 });

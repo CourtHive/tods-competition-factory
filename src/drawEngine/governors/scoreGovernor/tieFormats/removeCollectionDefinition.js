@@ -5,6 +5,11 @@ import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGe
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { validateTieFormat } from './tieFormatUtilities';
 import { getTieFormat } from './getTieFormat';
+import {
+  deleteMatchUpsNotice,
+  modifyDrawNotice,
+  modifyMatchUpNotice,
+} from '../../../notifications/drawNotifications';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
@@ -21,6 +26,7 @@ import {
  * TODO: determine whether all contained instances of tieFormat should be updated
  */
 export function removeCollectionDefinition({
+  tournamentRecord,
   drawDefinition,
   tieFormatName,
   collectionId,
@@ -56,17 +62,18 @@ export function removeCollectionDefinition({
   if (matchUpId && matchUp) {
     matchUps = [matchUp];
   } else if (structureId && structure) {
-    matchUps = allDrawMatchUps({
-      drawDefinition,
+    matchUps = getAllStructureMatchUps({
       matchUpFilters: { matchUpTypes: [TEAM] },
+      structure,
     })?.matchUps;
   } else {
-    matchUps = getAllStructureMatchUps({
-      structure,
+    matchUps = allDrawMatchUps({
       matchUpFilters: { matchUpTypes: [TEAM] },
+      drawDefinition,
     })?.matchUps;
   }
 
+  const deletedMatchUpIds = [];
   for (const matchUp of matchUps) {
     // remove any collectionAssignments from LineUps that include collectionId
     for (const side of matchUp?.sides || []) {
@@ -77,7 +84,23 @@ export function removeCollectionDefinition({
         )
       );
     }
-    // remove any matchUps which contain collectionId
+
+    // delete any tieMatchUps that contain collectionId
+    matchUp.tieMatchUps = (matchUp.tieMatchUps || []).filter((matchUp) => {
+      const deleteTarget = matchUp.collectionId === collectionId;
+      if (deleteTarget) deletedMatchUpIds.push(matchUp.matchUpId);
+      return !deleteTarget;
+    });
+  }
+
+  // remove any matchUps which contain collectionId
+  if (deletedMatchUpIds.length) {
+    // notify subscribers that matchUps have been deleted
+    deleteMatchUpsNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      matchUpIds: deletedMatchUpIds,
+      drawDefinition,
+    });
   }
 
   tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.filter(
@@ -103,8 +126,14 @@ export function removeCollectionDefinition({
 
   if (eventId) {
     event.tieFormat = tieFormat;
+    // NOTE: there is not a modifyEventNotice
   } else if (matchUp) {
     matchUp.tieFormat = tieFormat;
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      drawDefinition,
+      matchUp,
+    });
   } else if (structure) {
     structure.tieFormat = tieFormat;
   } else if (drawDefinition) {
@@ -112,6 +141,8 @@ export function removeCollectionDefinition({
   } else {
     return { error: MISSING_DRAW_DEFINITION };
   }
+
+  modifyDrawNotice({ drawDefinition });
 
   return { ...SUCCESS, tieFormat };
 }
