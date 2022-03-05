@@ -315,6 +315,7 @@ export function addMatchUpStartTime({
 }
 
 export function addMatchUpEndTime({
+  validateTimeSeries = true,
   tournamentRecord,
   drawDefinition,
   disableNotice,
@@ -342,6 +343,7 @@ export function addMatchUpEndTime({
 
   // END_TIME must be after any START_TIMEs, STOP_TIMEs, RESUME_TIMEs
   if (
+    !validateTimeSeries ||
     !latestRelevantTimeValue ||
     timeDate(endTime, scheduledDate) > latestRelevantTimeValue
   ) {
