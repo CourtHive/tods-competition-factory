@@ -191,6 +191,8 @@ export function replaceTieMatchUpParticipantId(params) {
     if (result.error) {
       console.log(result.error, { templateTeamLineUp });
     }
+  } else {
+    console.log('team participantId not found');
   }
 
   let participantAdded, participantRemoved;
