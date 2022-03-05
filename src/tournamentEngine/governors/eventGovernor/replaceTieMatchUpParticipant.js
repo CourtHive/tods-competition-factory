@@ -94,7 +94,7 @@ export function replaceTieMatchUpParticipantId(params) {
         intersection(
           participant?.individualParticipantIds || [],
           participantIds
-        ).length === participantIds.length
+        ).length
     )?.participantId;
 
   // if dualMatchUpSide does not currently have a lineUp use a lineUp found in drawDefinition.extention as a template
@@ -181,13 +181,17 @@ export function replaceTieMatchUpParticipantId(params) {
 
   dualMatchUpSide.lineUp = modifiedLineUp;
 
-  teamParticipantId &&
-    updateTeamLineUp({
+  if (teamParticipantId) {
+    const result = updateTeamLineUp({
       participantId: teamParticipantId,
       lineUp: modifiedLineUp,
       drawDefinition,
       tieFormat,
     });
+    if (result.error) {
+      console.log(result.error, { templateTeamLineUp });
+    }
+  }
 
   let participantAdded, participantRemoved;
   if (isDoubles) {

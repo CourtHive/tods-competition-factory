@@ -6,11 +6,11 @@ import { validateLineUp } from './validateTeamLineUp';
 import { intersection } from '../../../../utilities';
 
 import { LINEUPS } from '../../../../constants/extensionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_PARTICIPANT_ID,
 } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 // update an extension on the drawDefinition that keeps track of the latest lineUp for all team participantIds
 // each matchUp in the draw will use this as the template on first load and then write lineUp to the matchUp
@@ -46,21 +46,23 @@ export function updateTeamLineUp({
 
   const participantIdsInLineUp = lineUp.map(getParticipantId);
   const conflict = Object.keys(value)
+    // filter out the lineUp of the team participant whose lineUp is being updated
     .filter((key) => key !== participantId)
-    .find((storedParticipantId) => {
-      const storedLineUp = value[storedParticipantId];
-      const individualParticipantIds = storedLineUp.map(getParticipantId);
+    .find((opponentParticipantId) => {
+      const opponentLineUp = value[opponentParticipantId];
+      const opponentIndividualParticipantIds =
+        opponentLineUp.map(getParticipantId);
       const overlap = intersection(
-        individualParticipantIds,
+        opponentIndividualParticipantIds,
         participantIdsInLineUp
       );
       if (overlap.length) {
         console.log({
-          overlap,
-          submittedParticipantId: participantId,
-          submittedLineUp: lineUp,
-          storedParticipantId,
-          storedLineUp,
+          conflicts: overlap.length,
+          lineUp,
+          opponentLineUp,
+          participantIdsInLineUp,
+          opponentIndividualParticipantIds,
         });
       }
       return overlap.length;
