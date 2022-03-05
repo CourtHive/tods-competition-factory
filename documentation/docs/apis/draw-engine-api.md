@@ -38,9 +38,10 @@ drawEngine.addDrawEntry({
 ```js
 const endTime = '2020-01-01T09:05:00Z';
 drawEngine.addMatchUpEndTime({
+  validateTimeSeries, // optional - true by default - when false does not verify endTime is later than startTime
+  disableNotice, // when disabled subscribers will not be notified
   matchUpId,
   endTime,
-  disableNotice, // when disabled subscribers will not be notified
 });
 ```
 
