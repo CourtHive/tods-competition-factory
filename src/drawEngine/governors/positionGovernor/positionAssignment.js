@@ -172,6 +172,7 @@ export function assignDrawPosition({
   }
 }
 
+// used for matchUps which are NOT in a ROUNd_ROBIN { structureType: CONTAINER }
 function addDrawPositionToMatchUps({
   inContextDrawMatchUps,
   automaticPlacement,

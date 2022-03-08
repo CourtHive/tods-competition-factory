@@ -5,12 +5,12 @@ import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { drawPositionRemovals } from './drawPositionRemovals';
 import { findStructure } from '../../getters/findStructure';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DRAW_POSITION_ACTIVE,
   MISSING_DRAW_POSITION,
   DRAW_POSITION_NOT_CLEARED,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 /**
  *
