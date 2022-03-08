@@ -10,6 +10,7 @@ import { getParticipantIds } from '../../../global/functions/extractors';
 import { definedAttributes } from '../../../utilities/objects';
 import { makeDeepCopy, unique } from '../../../utilities';
 import { allEventMatchUps } from '../matchUpsGetter';
+import { getSeedValue } from '../getSeedValue';
 import {
   getEventTimeItem,
   getTimeItem,
@@ -30,7 +31,6 @@ import {
   SIGNED_IN,
   SIGN_IN_STATUS,
 } from '../../../constants/participantConstants';
-import { getSeedValue } from '../getSeedValue';
 
 export function addParticipantContext(params) {
   const participantIdsWithConflicts = [];
@@ -336,6 +336,7 @@ export function addParticipantContext(params) {
         params.withMatchUps
       ) {
         const { matchUps } = allEventMatchUps({
+          participants: allTournamentParticipants,
           nextMatchUps: true,
           tournamentRecord,
           inContext: true,
