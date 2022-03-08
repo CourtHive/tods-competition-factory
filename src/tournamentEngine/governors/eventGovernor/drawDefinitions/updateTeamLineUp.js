@@ -1,9 +1,9 @@
 import { addDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { addExtension } from '../../tournamentGovernor/addRemoveExtensions';
-import { getParticipantId } from '../../../../global/functions/extractors';
+// import { getParticipantId } from '../../../../global/functions/extractors';
 import { findExtension } from '../../queryGovernor/extensionQueries';
 import { validateLineUp } from './validateTeamLineUp';
-import { intersection } from '../../../../utilities';
+// import { intersection } from '../../../../utilities';
 
 import { LINEUPS } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -44,6 +44,7 @@ export function updateTeamLineUp({
 
   const value = existingExtension?.value || {};
 
+  /*
   const participantIdsInLineUp = lineUp.map(getParticipantId);
   const conflict = Object.keys(value)
     // filter out the lineUp of the team participant whose lineUp is being updated
@@ -71,6 +72,7 @@ export function updateTeamLineUp({
   if (conflict) {
     return { error: 'lineUp conflict' };
   }
+  */
 
   value[participantId] = lineUp;
 
