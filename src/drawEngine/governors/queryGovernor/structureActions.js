@@ -36,6 +36,9 @@ export function isCompletedStructure(params) {
   } = structureMatchUps || {};
 
   if (includesTeamMatchUps) {
+    completedMatchUps = completedMatchUps.filter(
+      ({ matchUpType }) => matchUpType === TEAM
+    );
     pendingMatchUps = pendingMatchUps.filter(
       ({ matchUpType }) => matchUpType === TEAM
     );
