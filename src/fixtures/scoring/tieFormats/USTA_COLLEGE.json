@@ -5,18 +5,18 @@
       "matchUpCount": 3,
       "matchUpFormat": "SET1-S:8/TB7@7",
       "matchUpType": "DOUBLES",
-      "matchUpValue": 1
+      "collectionValue": 1
     },
     {
       "collectionName": "Singles",
       "matchUpCount": 6,
-      "matchUpFormat": "SET1-S:8",
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
       "matchUpType": "SINGLES",
       "matchUpValue": 1
     }
   ],
   "tieFormatName": "USTA_COLLEGE",
   "winCriteria": {
-    "valueGoal": 5
+    "valueGoal": 4
   }
 }
