@@ -160,14 +160,16 @@ export function addParticipantContext(params) {
     params.tournamentEvents?.forEach((rawEvent) => {
       const event = makeDeepCopy(rawEvent, true, true);
 
-      // add back lineUps extension for team resolution when { matchUpType: TEAM } is missing side.lineUps
-      (event.drawDefinitions || []).forEach((drawDefinition, i) => {
-        const { extension } = findExtension({
-          element: rawEvent.drawDefinitions[i],
-          name: LINEUPS,
+      if (event?.eventType === TEAM) {
+        // add back lineUps extension for team resolution when { matchUpType: TEAM } is missing side.lineUps
+        (event.drawDefinitions || []).forEach((drawDefinition, i) => {
+          const { extension } = findExtension({
+            element: rawEvent.drawDefinitions[i],
+            name: LINEUPS,
+          });
+          if (extension) drawDefinition.extensions = [extension];
         });
-        drawDefinition.extensions = [extension];
-      });
+      }
 
       const { eventId, eventName, eventType, category } = event;
       const eventInfo = { eventId, eventName, eventType, category };
