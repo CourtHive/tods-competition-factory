@@ -8,6 +8,7 @@ import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
+import { intersection } from '../../../utilities';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -187,7 +188,12 @@ function swapParticipantIdWithBYE({
   return { ...SUCCESS };
 }
 
-function eliminationParticipantSwap({ structure, assignments }) {
+function eliminationParticipantSwap({
+  inContextDrawMatchUps,
+  assignments,
+  matchUpsMap,
+  structure,
+}) {
   // preserves order of drawPositions in original positionAssignments array
   // while insuring that all attributes are faithfully copied over and only drawPosition is swapped
   const newAssignments = Object.assign(
@@ -198,9 +204,37 @@ function eliminationParticipantSwap({ structure, assignments }) {
       return { [drawPosition]: newAssignment };
     })
   );
+
   structure.positionAssignments = structure.positionAssignments.map(
     (assignment) => newAssignments[assignment.drawPosition] || assignment
   );
+
+  const drawPositions = assignments.map(({ drawPosition }) => drawPosition);
+
+  // find all matchUps in the specified structure which contain the target drawPositions
+  const targetMatchUps = inContextDrawMatchUps.filter(
+    (matchUp) =>
+      matchUp.structureId === structure.structureId &&
+      intersection(matchUp.drawPositions || [], drawPositions).length
+  );
+
+  const targetMatchUpIds = targetMatchUps.map(({ matchUpId }) => matchUpId);
+  const matchUps = matchUpsMap?.drawMatchUps?.filter((matchUp) =>
+    targetMatchUpIds.includes(matchUp.matchUpId)
+  );
+
+  // remove all lineUps on appropriate sides of matchUps which include drawPositions
+  // this will cause all lineUps to revert back to the team default lineUps (last modification) stored in LINEUPS extension
+  for (const inContextMatchUp of targetMatchUps) {
+    (inContextMatchUp.sides || []).forEach((side, i) => {
+      if (side?.drawPosition && drawPositions.includes(side.drawPosition)) {
+        const matchUp = matchUps.find(
+          ({ matchUpId }) => matchUpId === inContextMatchUp.matchUpId
+        );
+        if (matchUp.sides?.[i]) delete matchUp.sides[i].lineUp;
+      }
+    });
+  }
 
   return { ...SUCCESS };
 }
