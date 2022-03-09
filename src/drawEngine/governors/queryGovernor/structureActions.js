@@ -3,6 +3,7 @@ import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatc
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 
 /**
  *
@@ -27,8 +28,24 @@ export function isCompletedStructure(params) {
   if (!params?.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const structureMatchUps = getStructureMatchUps(params);
 
-  const { completedMatchUps, pendingMatchUps, upcomingMatchUps } =
-    structureMatchUps || {};
+  let {
+    includesTeamMatchUps,
+    completedMatchUps,
+    pendingMatchUps,
+    upcomingMatchUps,
+  } = structureMatchUps || {};
+
+  if (includesTeamMatchUps) {
+    completedMatchUps = completedMatchUps.filter(
+      ({ matchUpType }) => matchUpType === TEAM
+    );
+    pendingMatchUps = pendingMatchUps.filter(
+      ({ matchUpType }) => matchUpType === TEAM
+    );
+    upcomingMatchUps = upcomingMatchUps.filter(
+      ({ matchUpType }) => matchUpType === TEAM
+    );
+  }
 
   const isComplete =
     completedMatchUps?.length &&

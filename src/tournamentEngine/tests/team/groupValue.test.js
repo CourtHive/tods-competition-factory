@@ -3,13 +3,13 @@ import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import {
   INVALID_MATCHUP,
   INVALID_VALUES,
   VALUE_UNCHANGED,
 } from '../../../constants/errorConditionConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 
 test('groupValue can be used in tieFormats and lineUps can be applied after scoring is completed', () => {
   const mockProfile = {

@@ -1,7 +1,7 @@
+import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
 import { tallyParticipantResults } from './roundRobinTally/roundRobinTally';
-import { generateTieMatchUpScore } from '../../accessors/matchUpAccessor';
 import { getSetComplement, getTiebreakComplement } from './getComplement';
-import { validateTieFormat } from '../matchUpGovernor/tieFormatUtilities';
+import { validateTieFormat } from './tieFormats/tieFormatUtilities';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
 import { generateScoreString } from './generateScoreString';
 import { stringify } from './matchUpFormatCode/stringify';
@@ -10,12 +10,17 @@ import { analyzeMatchUp } from './analyzeMatchUp';
 import { parse } from './matchUpFormatCode/parse';
 import { analyzeSet } from './analyzeSet';
 
+import { removeCollectionDefinition } from './tieFormats/removeCollectionDefinition';
+import { addCollectionDefinition } from './tieFormats/addCollectionDefinition';
+
 export const scoreGovernor = {
   stringifyMatchUpFormat: stringify,
   isValidMatchUpFormat: isValid,
+  removeCollectionDefinition,
   parseMatchUpFormat: parse,
   generateTieMatchUpScore,
   tallyParticipantResults,
+  addCollectionDefinition,
   getTiebreakComplement,
   generateScoreString,
   checkSetIsComplete,

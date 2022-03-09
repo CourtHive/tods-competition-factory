@@ -1,4 +1,4 @@
-import { generateTieMatchUpScore } from '../../accessors/matchUpAccessor';
+import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
@@ -27,8 +27,10 @@ export function updateTieMatchUpScore({
     event?.tieFormat ||
     undefined;
 
+  matchUp.tieFormat = tieFormat;
+
   const { winningSide, set, scoreStringSide1, scoreStringSide2 } =
-    generateTieMatchUpScore({ matchUp, tieFormat });
+    generateTieMatchUpScore({ matchUp });
 
   const hasWinner = [1, 2].includes(winningSide);
   const matchUpStatus = hasWinner

@@ -97,7 +97,6 @@ it.only('supports multi-sequence qualifying structures', () => {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    completeAllMatchUps: true,
     drawProfiles,
   });
 

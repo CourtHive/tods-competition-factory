@@ -132,6 +132,7 @@ export function getAllStructureMatchUps({
   const { seedAssignments: structureSeedAssignments } =
     getStructureSeedAssignments({
       drawDefinition,
+      matchUpsMap,
       structure,
     });
 
@@ -337,6 +338,15 @@ export function getAllStructureMatchUps({
     const sourceDrawPositionRoundRanges =
       sourceDrawPositionRanges && sourceDrawPositionRanges[roundNumber];
 
+    // if part of a tie matchUp and collectionDefinition has a category definition, prioritize
+    const matchUpCategory = collectionDefinition?.category
+      ? Object.assign(
+          {},
+          context?.category || {},
+          collectionDefinition.category
+        )
+      : context?.category;
+
     // order is important here as Round Robin matchUps already have inContext structureId
     const onlyDefined = (obj) => definedAttributes(obj, undefined, true);
     const matchUpWithContext = Object.assign(
@@ -346,6 +356,7 @@ export function getAllStructureMatchUps({
         matchUpFormat: matchUp.matchUpType === TEAM ? undefined : matchUpFormat,
         tieFormat: matchUp.matchUpType !== TEAM ? undefined : tieFormat,
         endDate: matchUp.endDate || endDate,
+        category: matchUpCategory,
         abbreviatedRoundName,
         drawPositionsRange,
         structureName,

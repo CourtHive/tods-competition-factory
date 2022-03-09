@@ -64,6 +64,6 @@
   ],
   "tieFormatName": "USTA_BREWER_CUP",
   "winCriteria": {
-    "valueGoal": 5
+    "valueGoal": 4
   }
 }

@@ -23,6 +23,8 @@ export function removeCollectionAssignments({
       drawDefinition,
     })?.lineUp;
 
+  const assignmentsRemoved = [];
+
   const modifiedLineUp =
     lineUp
       ?.map((teamCompetitor) => {
@@ -34,6 +36,11 @@ export function removeCollectionAssignments({
             const target =
               assignment.collectionId === collectionId &&
               assignment.collectionPosition === collectionPosition;
+            if (target)
+              assignmentsRemoved.push({
+                participantId: teamCompetitor.participantId,
+                ...assignment,
+              });
             return !target;
           });
         return {
@@ -43,5 +50,5 @@ export function removeCollectionAssignments({
       })
       .filter(Boolean) || [];
 
-  return { modifiedLineUp };
+  return { modifiedLineUp, assignmentsRemoved };
 }

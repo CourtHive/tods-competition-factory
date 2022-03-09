@@ -1,4 +1,5 @@
 import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserConsolation';
+import { getStageDrawPositionsCount } from '../../getters/getStageDrawPositions';
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
@@ -6,7 +7,6 @@ import { generateQualifyingStructures } from './generateQualifyingStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { feedInChampionship } from '../../generators/feedInChampionShip';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
-import { getStageDrawPositionsCount } from '../../getters/stageGetter';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import structureTemplate from '../../generators/structureTemplate';
 import { feedInMatchUps } from '../../generators/feedInMatchUps';

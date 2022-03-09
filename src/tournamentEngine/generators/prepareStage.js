@@ -93,14 +93,15 @@ export function prepareStage({
           seedValue,
         });
       });
-  } else if (event?.category || seedingScaleName) {
+  } else if (event || seedingScaleName) {
     // if no seededParticipants have been defined, seed by seeding scale or ranking scale, if present
 
     const { categoryName, ageCategoryCode } = event?.category || {};
 
     const seedingScaleAttributes = {
       scaleType: SEEDING,
-      scaleName: seedingScaleName || categoryName || ageCategoryCode,
+      scaleName:
+        seedingScaleName || categoryName || ageCategoryCode || event.eventId,
       eventType,
     };
 
@@ -157,7 +158,7 @@ export function prepareStage({
   if (automated !== false) {
     const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
     // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
-    ({ conflicts, positionAssignments } = automatedPositioning({
+    const result = automatedPositioning({
       inContextDrawMatchUps,
       tournamentRecord,
       drawDefinition,
@@ -167,7 +168,10 @@ export function prepareStage({
       seedsOnly,
       drawType,
       event,
-    }));
+    });
+    conflicts = result?.conflicts;
+    positionAssignments = result?.positionAssignments;
+    if (result.error) return result;
   }
 
   return {

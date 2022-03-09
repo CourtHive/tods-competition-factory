@@ -189,6 +189,7 @@ export const NO_MODIFICATIONS_APPLIED = 'No modifications applied';
 export const INVALID_CONFIGURATION = 'Invalid configuration';
 export const INVALID_OBJECT = 'Invalid object';
 export const INVALID_VALUES = 'Invalid values';
+export const DUPLICATE_VALUE = 'Duplicate value';
 
 export const TEAM_NOT_FOUND = 'Team not found';
 
@@ -216,6 +217,7 @@ export const errorConditionConstants = {
   DRAW_POSITION_ASSIGNED,
   DRAW_POSITION_NOT_CLEARED,
   DRAW_POSITION_NOT_FOUND,
+  DUPLICATE_VALUE,
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
   ENTRY_STATUS_NOT_ALLOWED_IN_STAGE,
   EVENT_EXISTS,

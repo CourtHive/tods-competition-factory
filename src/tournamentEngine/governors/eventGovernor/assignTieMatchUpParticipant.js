@@ -78,6 +78,7 @@ export function assignTieMatchUpParticipantId(params) {
   }
 
   if (!teamParticipantId) teamParticipantId = participantTeam.participantId;
+  if (!teamParticipantId) return { error: PARTICIPANT_NOT_FOUND };
 
   const teamAssignment = relevantAssignments.find(
     (assignment) => assignment.participantId === participantTeam?.participantId
@@ -119,27 +120,45 @@ export function assignTieMatchUpParticipantId(params) {
     (side) => side.sideNumber === sideNumber
   );
 
-  let deleteParticipantId;
-  if (matchUpType === DOUBLES && participantType !== PAIR) {
-    const result = addParticipantId2Pair({
-      side: tieMatchUpSide,
-    });
-    if (result.error) return result;
-    deleteParticipantId = result.deleteParticipantId;
-  } else if (matchUpType === DOUBLES && participantType === PAIR) {
-    const participantIds = participantToAssign.individualParticipantIds || [];
-    // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/participantId
-    const { modifiedLineUp } = removeCollectionAssignments({
-      collectionPosition,
-      teamParticipantId,
-      dualMatchUpSide,
+  const lineUp =
+    dualMatchUpSide?.lineUp ||
+    getTeamLineUp({
+      participantId: teamParticipantId,
       drawDefinition,
-      participantIds,
-      collectionId,
-    });
+    })?.lineUp;
 
-    for (const participantId of participantIds) {
-      updateLineUp({
+  const assignedParticipantIds = lineUp
+    ?.filter((participantAssignment) =>
+      participantAssignment.collectionAssignments.find(
+        (assignment) =>
+          assignment.collectionId === collectionId &&
+          assignment.collectionPosition === collectionPosition
+      )
+    )
+    ?.map((assignment) => assignment?.participantId);
+
+  const participantIds =
+    assignedParticipantIds?.length > 1
+      ? assignedParticipantIds
+      : participantType === PAIR
+      ? participantToAssign.individualParticipantIds
+      : [participantId];
+
+  // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/participantId
+  const modifiedLineUp = removeCollectionAssignments({
+    participantIds,
+    collectionPosition,
+    teamParticipantId,
+    dualMatchUpSide,
+    drawDefinition,
+    collectionId,
+  })?.modifiedLineUp;
+
+  let deleteParticipantId;
+
+  if (matchUpType === DOUBLES) {
+    if (participantType !== PAIR) {
+      let result = updateLineUp({
         collectionPosition,
         teamParticipantId,
         drawDefinition,
@@ -148,37 +167,45 @@ export function assignTieMatchUpParticipantId(params) {
         collectionId,
         tieFormat,
       });
+      if (result?.error) return result;
+
+      result = addParticipantId2Pair({
+        side: tieMatchUpSide,
+      });
+      if (result.error) return result;
+      deleteParticipantId = result.deleteParticipantId;
+
+      dualMatchUpSide.lineUp = modifiedLineUp;
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        matchUp: dualMatchUp,
+        drawDefinition,
+      });
+    } else if (participantType === PAIR) {
+      for (const participantId of participantIds) {
+        updateLineUp({
+          collectionPosition,
+          teamParticipantId,
+          drawDefinition,
+          modifiedLineUp,
+          participantId,
+          collectionId,
+          tieFormat,
+        });
+      }
     }
-
-    dualMatchUpSide.lineUp = modifiedLineUp;
-    modifyMatchUpNotice({
-      tournamentId: tournamentRecord?.tournamentId,
+  } else {
+    const result = updateLineUp({
+      collectionPosition,
+      teamParticipantId,
       drawDefinition,
-      matchUp: dualMatchUp,
+      modifiedLineUp,
+      participantId,
+      collectionId,
+      tieFormat,
     });
-
-    return { ...SUCCESS, modifiedLineUp };
+    if (result?.error) return result;
   }
-
-  // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/participantId
-  const { modifiedLineUp } = removeCollectionAssignments({
-    participantIds: [participantId],
-    collectionPosition,
-    teamParticipantId,
-    dualMatchUpSide,
-    drawDefinition,
-    collectionId,
-  });
-
-  updateLineUp({
-    collectionPosition,
-    teamParticipantId,
-    drawDefinition,
-    modifiedLineUp,
-    participantId,
-    collectionId,
-    tieFormat,
-  });
 
   dualMatchUpSide.lineUp = modifiedLineUp;
   modifyMatchUpNotice({
@@ -188,11 +215,11 @@ export function assignTieMatchUpParticipantId(params) {
   });
 
   if (deleteParticipantId) {
-    const result = deleteParticipants({
+    const { error } = deleteParticipants({
       participantIds: [deleteParticipantId],
       tournamentRecord,
     });
-    if (result.error) console.log('cleanup', { result });
+    if (error) console.log('cleanup');
   }
   return { ...SUCCESS, modifiedLineUp };
 
@@ -245,10 +272,9 @@ export function assignTieMatchUpParticipantId(params) {
           // if there is, use that and delete the PAIR participant with only one [individualParticipantId]
           deleteParticipantId = participant.participantId;
         }
-      } else {
-        console.log('###');
       }
     }
+
     return { ...SUCCESS, deleteParticipantId };
   }
 }
@@ -272,6 +298,7 @@ function updateLineUp({
   )?.find((teamCompetitor) => teamCompetitor?.participantId === participantId);
 
   const newAssignment = { collectionId, collectionPosition };
+
   if (participantCompetitiorProfile) {
     participantCompetitiorProfile.collectionAssignments.push(newAssignment);
   } else {
@@ -283,11 +310,10 @@ function updateLineUp({
     modifiedLineUp.push(teamCompetitor);
   }
 
-  teamParticipantId &&
-    updateTeamLineUp({
-      participantId: teamParticipantId,
-      lineUp: modifiedLineUp,
-      drawDefinition,
-      tieFormat,
-    });
+  return updateTeamLineUp({
+    participantId: teamParticipantId,
+    lineUp: modifiedLineUp,
+    drawDefinition,
+    tieFormat,
+  });
 }

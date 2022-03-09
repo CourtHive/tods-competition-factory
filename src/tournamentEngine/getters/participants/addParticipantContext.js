@@ -1,15 +1,16 @@
 import { participantScheduledMatchUps } from '../../governors/queryGovernor/participantScheduledMatchUps';
 import { addNationalityCodeISO } from '../../governors/participantGovernor/annotatePerson';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
 import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
-import { extensionConstants } from '../../../constants/extensionConstants';
 import { getParticipantIds } from '../../../global/functions/extractors';
 import { definedAttributes } from '../../../utilities/objects';
 import { makeDeepCopy, unique } from '../../../utilities';
 import { allEventMatchUps } from '../matchUpsGetter';
+import { getSeedValue } from '../getSeedValue';
 import {
   getEventTimeItem,
   getTimeItem,
@@ -21,15 +22,19 @@ import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { DOUBLES, TEAM } from '../../../constants/matchUpTypes';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import {
+  SIGNED_IN,
+  SIGN_IN_STATUS,
+} from '../../../constants/participantConstants';
+import {
   RANKING,
   RATING,
   SCALE,
   SEEDING,
 } from '../../../constants/scaleConstants';
 import {
-  SIGNED_IN,
-  SIGN_IN_STATUS,
-} from '../../../constants/participantConstants';
+  extensionConstants,
+  LINEUPS,
+} from '../../../constants/extensionConstants';
 
 export function addParticipantContext(params) {
   const participantIdsWithConflicts = [];
@@ -154,6 +159,18 @@ export function addParticipantContext(params) {
     // loop through all filtered events and capture events played
     params.tournamentEvents?.forEach((rawEvent) => {
       const event = makeDeepCopy(rawEvent, true, true);
+
+      if (event?.eventType === TEAM) {
+        // add back lineUps extension for team resolution when { matchUpType: TEAM } is missing side.lineUps
+        (event.drawDefinitions || []).forEach((drawDefinition, i) => {
+          const { extension } = findExtension({
+            element: rawEvent.drawDefinitions[i],
+            name: LINEUPS,
+          });
+          if (extension) drawDefinition.extensions = [extension];
+        });
+      }
+
       const { eventId, eventName, eventType, category } = event;
       const eventInfo = { eventId, eventName, eventType, category };
       const extensionKeys =
@@ -335,6 +352,7 @@ export function addParticipantContext(params) {
         params.withMatchUps
       ) {
         const { matchUps } = allEventMatchUps({
+          participants: allTournamentParticipants,
           nextMatchUps: true,
           tournamentRecord,
           inContext: true,
@@ -392,6 +410,8 @@ export function addParticipantContext(params) {
 
   function processMatchUp({ matchUp, drawDetails, eventType }) {
     const {
+      collectionId,
+      collectionPosition,
       drawId,
       drawName,
       eventId,
@@ -587,6 +607,8 @@ export function addParticipantContext(params) {
           );
           participantIdMap[relevantParticipantId].matchUps[matchUpId] =
             definedAttributes({
+              collectionId,
+              collectionPosition,
               drawId,
               eventId,
               eventType,
@@ -761,35 +783,12 @@ function annotateParticipant({
       const event = participantEvents?.find(
         (e) => e.eventId === participantDraw.eventId
       );
-      const { categoryName, ageCategoryCode } = event?.category || {};
 
-      let seedValue;
-
-      let result = participantScaleItem({
-        scaleAttributes: {
-          scaleType: SEEDING,
-          scaleName: participantDraw.drawId,
-          eventType: event?.eventType,
-        },
+      const { seedValue } = getSeedValue({
+        drawId: participantDraw.drawId,
         participant,
+        event,
       });
-
-      if (result?.scaleItem) {
-        seedValue = result.scaleItem.scaleValue;
-      } else {
-        result = participantScaleItem({
-          scaleAttributes: {
-            scaleType: SEEDING,
-            scaleName: categoryName || ageCategoryCode,
-            eventType: event?.eventType,
-          },
-          participant,
-        });
-
-        if (result?.scaleItem) {
-          seedValue = result.scaleItem.scaleValue;
-        }
-      }
 
       if (seedValue) {
         const publishedSeeding =

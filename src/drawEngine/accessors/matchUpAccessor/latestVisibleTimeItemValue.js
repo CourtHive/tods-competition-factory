@@ -5,6 +5,8 @@ export function latestVisibleTimeItemValue(
 ) {
   const getTimeStamp = (item) =>
     !item.createdAt ? 0 : new Date(item.createdAt).getTime();
+  // TODO: should visibilityThreshold be combination of scheduled date/time
+
   const latestVisible = timeItems
     .filter(
       (timeItem) =>

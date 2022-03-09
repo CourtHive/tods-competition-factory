@@ -1,23 +1,14 @@
+import { findExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfile';
-import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
+import { getEntryProfile } from './getEntryProfile';
 import { findStructure } from './findStructure';
-import {
-  findDrawDefinitionExtension,
-  findExtension,
-} from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
 
-import { ENTRY_PROFILE, TALLY } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import {
-  ENTRY_STATUS_NOT_ALLOWED_IN_STAGE,
-  NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS,
-} from '../../constants/errorConditionConstants';
+import { TALLY } from '../../constants/extensionConstants';
 import {
   POSITION,
   CONTAINER,
   PLAY_OFF,
   validStages,
-  QUALIFYING,
 } from '../../constants/drawDefinitionConstants';
 import {
   ALTERNATE,
@@ -25,22 +16,6 @@ import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
 } from '../../constants/entryStatusConstants';
-
-function getEntryProfile({ drawDefinition }) {
-  let { extension } = findDrawDefinitionExtension({
-    name: ENTRY_PROFILE,
-    drawDefinition,
-  });
-  const entryProfile = extension?.value || drawDefinition.entryProfile || {};
-  return { entryProfile };
-}
-
-export function validStage({ stage, drawDefinition }) {
-  return Boolean(
-    stageExists({ stage, drawDefinition }) &&
-      getStageDrawPositionsCount({ stage, drawDefinition })
-  );
-}
 
 export function stageExists({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
@@ -73,67 +48,6 @@ export function stageStructures({ stage, drawDefinition, stageSequence }) {
   );
 }
 
-export function getStageDrawPositionsCount({ stage, drawDefinition }) {
-  const { entryProfile } = getEntryProfile({ drawDefinition });
-  return (entryProfile && entryProfile[stage]?.drawSize) || 0;
-}
-
-export function getQualifiersCount({
-  drawDefinition,
-  stageSequence,
-  structureId,
-  stage,
-}) {
-  const { structure } = findStructure({ drawDefinition, structureId });
-  const relevantLink = drawDefinition.links?.find(
-    (link) =>
-      link?.linkType !== POSITION &&
-      link?.target?.structureId === structure?.structureId &&
-      link?.target?.roundNumber === 1
-  );
-
-  // TODO: for Round Robin qualifying the number of qualifiers needs to be derived
-  // from the number of groups (substructures) * the length of source.finishingPositions[]
-
-  // if structureId is provided and there is a relevant link...
-  // return source structure qualifying round matchUps count
-  if (relevantLink && structure.stage === QUALIFYING) {
-    const sourceStructure = findStructure({
-      structureId: relevantLink.source.structureId,
-      drawDefinition,
-    })?.structure;
-    const sourceRoundNumber = relevantLink.source.roundNumber;
-    const matchUps = getAllStructureMatchUps({
-      roundFilter: sourceRoundNumber,
-      structure: sourceStructure,
-      inContext: false,
-    }).matchUps;
-    if (matchUps?.length) return matchUps.length;
-  }
-
-  const { entryProfile } = getEntryProfile({ drawDefinition });
-  return (
-    entryProfile?.[stage]?.stageSequence?.[stageSequence]?.qualifiersCount ||
-    entryProfile?.[stage]?.qualifiersCount ||
-    0
-  );
-}
-
-// drawSize - qualifyingPositions
-export function getStageDrawPositionsAvailable({
-  drawDefinition,
-  stageSequence,
-  stage,
-}) {
-  const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
-
-  const qualifyingPositions = getQualifiersCount({
-    drawDefinition,
-    stageSequence,
-    stage,
-  });
-  return drawSize && drawSize - qualifyingPositions;
-}
 export function stageAlternatesCount({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
   return entryProfile[stage]?.alternates || 0;
@@ -190,8 +104,9 @@ export function getStageEntries({
     }, []) || [];
 
   // handle POSITION entries
-  if (structureId && !entries.length) {
-    return playoffEntries({ drawDefinition, structureId });
+  if (structureId && stage === PLAY_OFF) {
+    const playoffEntries = getPlayoffEntries({ drawDefinition, structureId });
+    return playoffEntries?.length ? playoffEntries : entries;
   }
   return entries;
 }
@@ -202,7 +117,7 @@ export function getStageEntries({
  * @param {string} structureId - id of structure within drawDefinition
  *
  */
-export function playoffEntries({ drawDefinition, structureId }) {
+function getPlayoffEntries({ drawDefinition, structureId }) {
   const entries = [];
   const inboundLink = (drawDefinition.links || []).find(
     (link) =>
@@ -287,55 +202,4 @@ export function stageAlternateEntries({ stage, drawDefinition }) {
     drawDefinition,
     stage,
   });
-}
-export function stageSpace({
-  entryStatus = DIRECT_ACCEPTANCE,
-  drawDefinition,
-  stageSequence,
-  stage,
-}) {
-  if (entryStatus === ALTERNATE) {
-    if (stageAlternatesCount({ stage, drawDefinition })) {
-      return Object.assign({ positionsAvailable: Infinity }, SUCCESS);
-    } else {
-      return { error: ENTRY_STATUS_NOT_ALLOWED_IN_STAGE };
-    }
-  }
-
-  const stageDrawPositionsAvailable = getStageDrawPositionsAvailable({
-    drawDefinition,
-    stageSequence,
-    stage,
-  });
-  const wildcardPositions = getStageWildcardsCount({
-    drawDefinition,
-    stageSequence,
-    stage,
-  });
-  const wildcardEntriesCount = getStageEntryTypeCount({
-    entryStatus: WILDCARD,
-    drawDefinition,
-    stageSequence,
-    stage,
-  });
-  const directEntriesCount = getStageEntryTypeCount({
-    entryStatus: DIRECT_ACCEPTANCE,
-    drawDefinition,
-    stageSequence,
-    stage,
-  });
-  const totalEntriesCount = wildcardEntriesCount + directEntriesCount;
-  const stageFull = totalEntriesCount >= stageDrawPositionsAvailable;
-  const positionsAvailable = stageDrawPositionsAvailable - totalEntriesCount;
-
-  if (stageFull) {
-    return { error: NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS };
-  }
-
-  if (entryStatus === WILDCARD) {
-    if (wildcardEntriesCount < wildcardPositions) return SUCCESS;
-    return { error: NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS };
-  }
-
-  return Object.assign({ positionsAvailable }, SUCCESS);
 }

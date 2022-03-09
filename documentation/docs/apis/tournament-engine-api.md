@@ -6,6 +6,23 @@ All **_tournamentEngine_** methods which make a mutation return either `{ succes
 
 ---
 
+## addCollectionDefinition
+
+Adds a `collectionDefinition` to the specified target, either `matchUp`, `structure`, `drawDefinition` or `event`.
+
+```js
+let result = tournamentEngine.addCollectionDefinition({
+  collectionDefinition, // will be validated
+  tieFormatName, // if not provided, existing tieFormatName will be deleted
+  structureId, // optional - if provided only tieFormat on structure will be modified
+  matchUpId, // optional - if provided only tieFormat on matchUp will be modified
+  eventId, // optional - if provided only tieFormat on event will be modified
+  drawId, // optional - if provided only tieFormat on drawDefinition will be modified
+});
+```
+
+---
+
 ## addCourt
 
 Add a court to a Venue. See **court** under **venue** in [Type Defs](/docs/types/typedefs#venue).
@@ -207,10 +224,11 @@ tournamentEngine.addIndividualParticipantIds({
 ```js
 const endTime = '2020-01-01T09:05:00Z';
 tournamentEngine.addMatchUpEndTime({
-  drawId,
+  validateTimeSeries, // optional - true by default - when false does not verify endTime is later than startTime
+  disableNotice, // when disabled subscribers will not be notified
   matchUpId,
   endTime,
-  disableNotice, // when disabled subscribers will not be notified
+  drawId,
 });
 ```
 

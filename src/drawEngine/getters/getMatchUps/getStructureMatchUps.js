@@ -70,6 +70,8 @@ export function getStructureMatchUps({
   const abandonedMatchUps = [];
   const completedMatchUps = [];
 
+  let includesTeamMatchUps;
+
   matchUps
     .filter((matchUp) => {
       const teamsMatchUpsOnly =
@@ -82,6 +84,8 @@ export function getStructureMatchUps({
         abandonedMatchUps.push(matchUp);
         return;
       }
+
+      if (matchUp.matchUpType === TEAM) includesTeamMatchUps = true;
 
       const isCollectionMatchUp = matchUp.collectionId;
       const collectionSidesAssigned =
@@ -126,10 +130,11 @@ export function getStructureMatchUps({
     });
 
   return {
+    includesTeamMatchUps,
+    abandonedMatchUps,
     completedMatchUps,
     upcomingMatchUps,
     pendingMatchUps,
-    abandonedMatchUps,
     byeMatchUps,
     structure,
   };

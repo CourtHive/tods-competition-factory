@@ -1,10 +1,10 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { getQualifiersCount } from '../../getters/stageGetter';
 import { findStructure } from '../../getters/findStructure';
 import { generateRange } from '../../../utilities';
 
 import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { getQualifiersCount } from '../../getters/getQualifiersCount';
 
 export function positionQualifiers(params) {
   let { structure, structureId } = params; // participants is being passed in

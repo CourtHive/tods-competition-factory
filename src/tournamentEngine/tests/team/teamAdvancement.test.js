@@ -1,4 +1,4 @@
-import { generateTieMatchUpScore } from '../../../drawEngine/accessors/matchUpAccessor';
+import { generateTieMatchUpScore } from '../../../drawEngine/generators/generateTieMatchUpScore';
 import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import mocksEngine from '../../../mocksEngine';

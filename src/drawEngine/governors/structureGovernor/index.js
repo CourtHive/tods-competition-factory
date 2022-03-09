@@ -3,8 +3,8 @@ import { generateVoluntaryConsolationStructure } from '../../generators/voluntar
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { generateAdHocMatchUps } from '../../generators/generateAdHocMatchUps';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
-import { getQualifiersCount } from '../../getters/structureGetter';
 import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
+import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { attachPlayoffStructures } from './attachPlayoffStructures';
 import { buildDrawHierarchy } from '../../generators/drawHierarchy';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';

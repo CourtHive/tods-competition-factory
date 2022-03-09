@@ -48,23 +48,32 @@ export function getDrawPositionCollectionAssignment({
           );
         });
 
-        if (matchUpType === DOUBLES || relevantCompetitors?.length === 2) {
-          const participantIds = relevantCompetitors?.map(getParticipantId);
-          const { participant } = getPairedParticipant({
-            tournamentParticipants,
-            participantIds,
-          });
-          const participantId = participant?.participantId;
-          return { [drawPosition]: { participantId, teamParticipant } };
-        }
-
-        const participantId = relevantCompetitors?.[0]?.participantId;
-
-        return (
-          participantId && {
-            [drawPosition]: { participantId, teamParticipant },
+        if (matchUpType === DOUBLES) {
+          if (relevantCompetitors?.length <= 2) {
+            const participantIds = relevantCompetitors?.map(getParticipantId);
+            const { participant } = getPairedParticipant({
+              tournamentParticipants,
+              participantIds,
+            });
+            const participantId = participant?.participantId;
+            return { [drawPosition]: { participantId, teamParticipant } };
+          } else if (relevantCompetitors?.length > 2) {
+            console.log('ERROR: Too many assignments for', {
+              collectionId,
+              collectionPosition,
+              assignmentsCount: relevantCompetitors.length,
+            });
+            return { [drawPosition]: { teamParticipant } };
           }
-        );
+        } else {
+          const participantId = relevantCompetitors?.[0]?.participantId;
+
+          return (
+            participantId && {
+              [drawPosition]: { participantId, teamParticipant },
+            }
+          );
+        }
       })
       .filter(Boolean) || {};
 

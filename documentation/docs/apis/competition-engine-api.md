@@ -53,11 +53,12 @@ competitionEngine.addExtension({ extension });
 ```js
 const endTime = '2020-01-01T09:05:00Z';
 competitionEngine.addMatchUpEndTime({
-  drawId,
-  matchUpId,
-  tournamentId,
-  endTime,
+  validateTimeSeries, // optional - true by default - when false does not verify endTime is later than startTime
   disableNotice, // when disabled subscribers will not be notified
+  tournamentId,
+  matchUpId,
+  endTime,
+  drawId,
 });
 ```
 

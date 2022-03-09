@@ -1,9 +1,9 @@
+import { getStageDrawPositionsCount } from '../../getters/getStageDrawPositions';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { modifyEntryProfile } from './modifyEntryProfile';
 import {
   stageExists,
-  getStageDrawPositionsCount,
-  getQualifiersCount,
   getStageDirectEntriesCount,
   getStageWildcardEntriesCount,
 } from '../../getters/stageGetter';

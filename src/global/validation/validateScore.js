@@ -43,16 +43,22 @@ export function validateScore({
         setNumber,
       } = set;
 
-      const numericValues = [
-        side1Score,
-        side2Score,
-        side1TiebreakScore,
-        side2TiebreakScore,
-        side1PointScore,
-        side2PointScore,
-        setNumber,
-        winningSide,
+      // ensure that if one side has a numeric value then both sides should have a numeric value
+      const numericValuePairs = [
+        [side1Score, side2Score],
+        [side1TiebreakScore, side2TiebreakScore],
+        [side1PointScore, side2PointScore],
       ]
+        .filter((pair) => pair.some((value) => value !== undefined))
+        .every((pair) =>
+          pair.every((numericValue) => isConvertableInteger(numericValue))
+        );
+
+      if (!numericValuePairs) {
+        return { error: INVALID_VALUES, message: 'non-numeric values' };
+      }
+
+      const numericValues = [setNumber, winningSide]
         .filter((value) => value !== undefined)
         .every((numericValue) => isConvertableInteger(numericValue));
 

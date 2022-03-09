@@ -13,6 +13,7 @@ import {
 } from '../../getters/positionsGetter';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   BYE,
   TO_BE_PLAYED,
@@ -166,14 +167,13 @@ export function drawPositionRemovals({
       matchUpsMap,
     });
     removeDrawPosition({
-      drawDefinition,
-      structure,
+      inContextDrawMatchUps,
       positionAssignments,
+      drawDefinition,
       targetMatchUp,
       drawPosition,
-
       matchUpsMap,
-      inContextDrawMatchUps,
+      structure,
     });
   });
 
@@ -253,11 +253,28 @@ function removeDrawPosition({
     );
   }
 
+  if (targetMatchUp.matchUpType === TEAM) {
+    const inContextTargetMatchUp = inContextDrawMatchUps?.find(
+      (matchUp) => matchUp.matchUpId === targetMatchUp.matchUpId
+    );
+    const drawPositionSideIndex = inContextTargetMatchUp?.sides?.reduce(
+      (index, side, i) => (side.drawPosition === drawPosition ? i : index),
+      undefined
+    );
+
+    if (
+      drawPositionSideIndex !== undefined &&
+      targetMatchUp.sides?.[drawPositionSideIndex]?.lineUp
+    ) {
+      delete targetMatchUp.sides?.[drawPositionSideIndex].lineUp;
+    }
+  }
+
   const targetData = positionTargets({
     matchUpId: targetMatchUp.matchUpId,
-    structure,
-    drawDefinition,
     inContextDrawMatchUps,
+    drawDefinition,
+    structure,
   });
   const {
     targetLinks: { winnerTargetLink },
@@ -269,7 +286,6 @@ function removeDrawPosition({
     },
   } = targetData;
 
-  // const { positionAssignments } = getPositionAssignments({ structure });
   const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
     targetMatchUp.drawPositions.includes(drawPosition)
   );
