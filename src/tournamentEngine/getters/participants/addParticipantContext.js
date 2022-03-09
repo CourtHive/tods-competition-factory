@@ -1,11 +1,11 @@
 import { participantScheduledMatchUps } from '../../governors/queryGovernor/participantScheduledMatchUps';
 import { addNationalityCodeISO } from '../../governors/participantGovernor/annotatePerson';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
 import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
-import { extensionConstants } from '../../../constants/extensionConstants';
 import { getParticipantIds } from '../../../global/functions/extractors';
 import { definedAttributes } from '../../../utilities/objects';
 import { makeDeepCopy, unique } from '../../../utilities';
@@ -22,15 +22,19 @@ import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { DOUBLES, TEAM } from '../../../constants/matchUpTypes';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import {
+  SIGNED_IN,
+  SIGN_IN_STATUS,
+} from '../../../constants/participantConstants';
+import {
   RANKING,
   RATING,
   SCALE,
   SEEDING,
 } from '../../../constants/scaleConstants';
 import {
-  SIGNED_IN,
-  SIGN_IN_STATUS,
-} from '../../../constants/participantConstants';
+  extensionConstants,
+  LINEUPS,
+} from '../../../constants/extensionConstants';
 
 export function addParticipantContext(params) {
   const participantIdsWithConflicts = [];
@@ -155,6 +159,16 @@ export function addParticipantContext(params) {
     // loop through all filtered events and capture events played
     params.tournamentEvents?.forEach((rawEvent) => {
       const event = makeDeepCopy(rawEvent, true, true);
+
+      // add back lineUps extension for team resolution when { matchUpType: TEAM } is missing side.lineUps
+      (event.drawDefinitions || []).forEach((drawDefinition, i) => {
+        const { extension } = findExtension({
+          element: rawEvent.drawDefinitions[i],
+          name: LINEUPS,
+        });
+        drawDefinition.extensions = [extension];
+      });
+
       const { eventId, eventName, eventType, category } = event;
       const eventInfo = { eventId, eventName, eventType, category };
       const extensionKeys =

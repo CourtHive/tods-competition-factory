@@ -3,7 +3,6 @@ import { getTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor
 import { getParticipantId } from '../../../global/functions/extractors';
 
 import { DOUBLES } from '../../../constants/matchUpTypes';
-import { getDevContext } from '../../../global/state/globalState';
 
 export function getDrawPositionCollectionAssignment({
   tournamentParticipants,
@@ -40,14 +39,6 @@ export function getDrawPositionCollectionAssignment({
             participantId: teamParticipantId,
             drawDefinition,
           })?.lineUp;
-
-        if (getDevContext({ lineUps: true }) && !lineUp) {
-          console.log({
-            teamParticipantId,
-            drawDefinition,
-            tournamentParticipants,
-          });
-        }
 
         const relevantCompetitors = lineUp?.filter((teamCompetitor) => {
           return teamCompetitor.collectionAssignments.find(
