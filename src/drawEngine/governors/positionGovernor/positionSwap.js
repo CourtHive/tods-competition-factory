@@ -8,7 +8,7 @@ import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
-import { intersection } from '../../../utilities';
+import { cleanUpLineUps } from './cleanupLineUps';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -118,6 +118,7 @@ function eliminationSwap({
     return eliminationParticipantSwap({
       inContextDrawMatchUps,
       tournamentRecord,
+      drawDefinition,
       assignments,
       matchUpsMap,
       structure,
@@ -190,6 +191,8 @@ function swapParticipantIdWithBYE({
 
 function eliminationParticipantSwap({
   inContextDrawMatchUps,
+  tournamentRecord,
+  drawDefinition,
   assignments,
   matchUpsMap,
   structure,
@@ -209,32 +212,14 @@ function eliminationParticipantSwap({
     (assignment) => newAssignments[assignment.drawPosition] || assignment
   );
 
-  const drawPositions = assignments.map(({ drawPosition }) => drawPosition);
-
-  // find all matchUps in the specified structure which contain the target drawPositions
-  const targetMatchUps = inContextDrawMatchUps.filter(
-    (matchUp) =>
-      matchUp.structureId === structure.structureId &&
-      intersection(matchUp.drawPositions || [], drawPositions).length
-  );
-
-  const targetMatchUpIds = targetMatchUps.map(({ matchUpId }) => matchUpId);
-  const matchUps = matchUpsMap?.drawMatchUps?.filter((matchUp) =>
-    targetMatchUpIds.includes(matchUp.matchUpId)
-  );
-
-  // remove all lineUps on appropriate sides of matchUps which include drawPositions
-  // this will cause all lineUps to revert back to the team default lineUps (last modification) stored in LINEUPS extension
-  for (const inContextMatchUp of targetMatchUps) {
-    (inContextMatchUp.sides || []).forEach((side, i) => {
-      if (side?.drawPosition && drawPositions.includes(side.drawPosition)) {
-        const matchUp = matchUps.find(
-          ({ matchUpId }) => matchUpId === inContextMatchUp.matchUpId
-        );
-        if (matchUp.sides?.[i]) delete matchUp.sides[i].lineUp;
-      }
-    });
-  }
+  cleanUpLineUps({
+    inContextDrawMatchUps,
+    tournamentRecord,
+    drawDefinition,
+    matchUpsMap,
+    assignments,
+    structure,
+  });
 
   return { ...SUCCESS };
 }
@@ -257,6 +242,16 @@ function roundRobinSwap({
 
   // if both positions are BYE no need to do anything
   if (assignments.filter(({ bye }) => bye).length === 2) return { ...SUCCESS };
+
+  cleanUpLineUps({
+    inContextDrawMatchUps,
+    tournamentRecord,
+    drawDefinition,
+    matchUpsMap,
+    assignments,
+    structure,
+  });
+
   const isByeSwap = assignments.some(({ bye }) => bye);
 
   if (isByeSwap) {
