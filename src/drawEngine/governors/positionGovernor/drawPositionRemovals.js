@@ -19,6 +19,7 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import { getDevContext } from '../../../global/state/globalState';
 
 /**
  *
@@ -254,6 +255,8 @@ function removeDrawPosition({
   }
 
   if (targetMatchUp.matchUpType === TEAM) {
+    if (getDevContext({ team: true })) console.log('removeDrawPosition lineUp');
+
     const inContextTargetMatchUp = inContextDrawMatchUps?.find(
       (matchUp) => matchUp.matchUpId === targetMatchUp.matchUpId
     );
@@ -267,6 +270,12 @@ function removeDrawPosition({
       targetMatchUp.sides?.[drawPositionSideIndex]?.lineUp
     ) {
       delete targetMatchUp.sides?.[drawPositionSideIndex].lineUp;
+
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        matchUp: targetMatchUp,
+        drawDefinition,
+      });
     }
   }
 
