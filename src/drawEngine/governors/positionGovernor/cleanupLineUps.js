@@ -1,7 +1,7 @@
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { intersection } from '../../../utilities';
 
-export function cleanUpLineUps({
+export function cleanupLineUps({
   inContextDrawMatchUps,
   tournamentRecord,
   drawDefinition,
