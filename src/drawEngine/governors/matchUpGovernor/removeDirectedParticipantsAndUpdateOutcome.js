@@ -54,6 +54,7 @@ export function removeDirectedParticipants(params) {
     const { matchUpTieId } = params;
     const { removeWinningSide } = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
+      tournamentRecord,
       drawDefinition,
       structure,
       event,

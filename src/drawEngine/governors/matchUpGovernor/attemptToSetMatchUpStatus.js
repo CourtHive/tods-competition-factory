@@ -91,6 +91,7 @@ function scoreModification(params) {
   if (isCollectionMatchUp) {
     const { matchUpTieId, drawDefinition } = params;
     const { removeWinningSide } = updateTieMatchUpScore({
+      tournamentRecord: params.tournamentRecord,
       matchUpId: matchUpTieId,
       drawDefinition,
     });

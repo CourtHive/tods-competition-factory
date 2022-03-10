@@ -70,6 +70,7 @@ export function directParticipants(params) {
     const { matchUpTieId } = params;
     updateTieMatchUpScore({
       matchUpId: matchUpTieId,
+      tournamentRecord,
       drawDefinition,
       structure,
       event,

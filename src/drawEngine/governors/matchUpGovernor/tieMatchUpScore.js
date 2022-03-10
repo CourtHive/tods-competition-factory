@@ -10,6 +10,7 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 export function updateTieMatchUpScore({
+  tournamentRecord,
   drawDefinition,
   matchUpId,
   structure,
@@ -48,6 +49,7 @@ export function updateTieMatchUpScore({
   };
 
   modifyMatchUpScore({
+    tournamentRecord,
     score: scoreObject,
     removeWinningSide,
     drawDefinition,
