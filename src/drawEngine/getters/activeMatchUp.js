@@ -29,8 +29,6 @@ export function isActiveMatchUp({
 
   const activeTieMatchUps = tieMatchUps?.filter(isActiveMatchUp)?.length;
 
-  if (scoreExists) console.log({ scoreExists }, score.scoreStringSide1);
-
   return (
     scoreExists ||
     winningSide ||
