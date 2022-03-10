@@ -26,7 +26,6 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { getDevContext } from '../../../global/state/globalState';
 
 export function assignMatchUpDrawPosition({
   inContextDrawMatchUps,
@@ -89,6 +88,9 @@ export function assignMatchUpDrawPosition({
     ? DOUBLE_WALKOVER
     : TO_BE_PLAYED;
 
+  if (matchUp.matchUpType === TEAM)
+    console.log('assign draw position lineUp', { matchUp, positionAdded });
+
   if (positionAdded) {
     // necessary to update inContextDrawMatchUps
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
@@ -115,9 +117,6 @@ export function assignMatchUpDrawPosition({
 
     // if { matchUpType: TEAM } then also assign the default lineUp to the appopriate side
     if (matchUp.matchUpType === TEAM) {
-      if (getDevContext({ team: true }))
-        console.log('assign draw position lineUp');
-
       const inContextTargetMatchUp = inContextDrawMatchUps?.find(
         (matchUp) => matchUp.matchUpId === matchUp.matchUpId
       );
