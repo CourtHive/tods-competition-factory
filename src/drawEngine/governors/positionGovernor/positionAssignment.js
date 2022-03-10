@@ -16,6 +16,7 @@ import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
 import { clearDrawPosition } from './positionClear';
 import { isAdHoc } from '../queryGovernor/isAdHoc';
+import { cleanupLineUps } from './cleanupLineUps';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -94,6 +95,18 @@ export function assignDrawPosition({
   const { containsParticipant, containsBye } =
     drawPositionFilled(positionAssignment);
 
+  if (containsBye) {
+    let result = clearDrawPosition({
+      inContextDrawMatchUps,
+      tournamentRecord,
+      drawDefinition,
+      drawPosition,
+      structureId,
+      matchUpsMap,
+    });
+    if (result.error) return result;
+  }
+
   if (
     containsParticipant &&
     positionAssignment.participantId !== participantId
@@ -106,18 +119,16 @@ export function assignDrawPosition({
     if (drawPositionIsActive) {
       return { error: DRAW_POSITION_ACTIVE };
     }
-  }
 
-  if (containsBye) {
-    let result = clearDrawPosition({
+    // cleanup side[].lineUps of previous participantId in TEAM matchUps
+    cleanupLineUps({
+      assignments: [positionAssignment],
       inContextDrawMatchUps,
       tournamentRecord,
       drawDefinition,
-      drawPosition,
-      structureId,
       matchUpsMap,
+      structure,
     });
-    if (result.error) return result;
   }
 
   positionAssignment.participantId = participantId;
