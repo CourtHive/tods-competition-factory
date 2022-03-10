@@ -8,7 +8,7 @@ import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
-import { cleanUpLineUps } from './cleanupLineUps';
+import { cleanupLineUps } from './cleanupLineUps';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -212,7 +212,7 @@ function eliminationParticipantSwap({
     (assignment) => newAssignments[assignment.drawPosition] || assignment
   );
 
-  cleanUpLineUps({
+  cleanupLineUps({
     inContextDrawMatchUps,
     tournamentRecord,
     drawDefinition,
@@ -243,7 +243,7 @@ function roundRobinSwap({
   // if both positions are BYE no need to do anything
   if (assignments.filter(({ bye }) => bye).length === 2) return { ...SUCCESS };
 
-  cleanUpLineUps({
+  cleanupLineUps({
     inContextDrawMatchUps,
     tournamentRecord,
     drawDefinition,
