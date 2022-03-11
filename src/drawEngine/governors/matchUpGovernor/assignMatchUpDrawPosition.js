@@ -88,9 +88,6 @@ export function assignMatchUpDrawPosition({
     ? DOUBLE_WALKOVER
     : TO_BE_PLAYED;
 
-  if (matchUp.matchUpType === TEAM)
-    console.log('assign draw position lineUp', { matchUp, positionAdded });
-
   if (positionAdded) {
     // necessary to update inContextDrawMatchUps
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
@@ -115,60 +112,60 @@ export function assignMatchUpDrawPosition({
       matchUpStatus,
     });
 
-    // if { matchUpType: TEAM } then also assign the default lineUp to the appopriate side
-    if (matchUp.matchUpType === TEAM) {
-      const inContextTargetMatchUp = inContextDrawMatchUps?.find(
-        (matchUp) => matchUp.matchUpId === matchUp.matchUpId
-      );
-      const drawPositionSideIndex = inContextTargetMatchUp?.sides?.reduce(
-        (index, side, i) => (side.drawPosition === drawPosition ? i : index),
-        undefined
-      );
-      const teamParticipantId = positionAssignments.find(
-        (assignment) => assignment.drawPosition === drawPosition
-      )?.participantId;
-
-      if (teamParticipantId && drawPositionSideIndex !== undefined) {
-        // now update matchUp.sides to include
-        const drawPositionSideNumber =
-          inContextDrawMatchUps.sides?.[drawPositionSideIndex]?.sideNumber;
-        const sideExists = matchUp.sides?.find(
-          (side) => side.sideNumber === drawPositionSideNumber
-        );
-
-        const { extension: existingExtension } = findExtension({
-          element: drawDefinition,
-          name: LINEUPS,
-        });
-
-        const value = existingExtension?.value || {};
-        const lineUp = value[teamParticipantId];
-
-        if (sideExists) {
-          matchUp.sides.forEach((side) => {
-            if (side.sideNumber === drawPositionSideNumber) {
-              side.lineUp = lineUp;
-            }
-          });
-        } else {
-          // create side with lineUp and push
-          if (!matchUp.sides) matchUp.sides = [];
-          matchUp.sides.push({ sideNumber: drawPositionSideNumber, lineUp });
-        }
-
-        modifyMatchUpNotice({
-          tournamentId: tournamentRecord?.tournamentId,
-          drawDefinition,
-          matchUp,
-        });
-      }
-    }
-
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       drawDefinition,
       matchUp,
     });
+  }
+
+  // if { matchUpType: TEAM } then also assign the default lineUp to the appopriate side
+  if (matchUp.matchUpType === TEAM) {
+    const inContextTargetMatchUp = inContextDrawMatchUps?.find(
+      (matchUp) => matchUp.matchUpId === matchUp.matchUpId
+    );
+    const drawPositionSideIndex = inContextTargetMatchUp?.sides?.reduce(
+      (index, side, i) => (side.drawPosition === drawPosition ? i : index),
+      undefined
+    );
+    const teamParticipantId = positionAssignments.find(
+      (assignment) => assignment.drawPosition === drawPosition
+    )?.participantId;
+
+    if (teamParticipantId && drawPositionSideIndex !== undefined) {
+      // now update matchUp.sides to include
+      const drawPositionSideNumber =
+        inContextDrawMatchUps.sides?.[drawPositionSideIndex]?.sideNumber;
+      const sideExists = matchUp.sides?.find(
+        (side) => side.sideNumber === drawPositionSideNumber
+      );
+
+      const { extension: existingExtension } = findExtension({
+        element: drawDefinition,
+        name: LINEUPS,
+      });
+
+      const value = existingExtension?.value || {};
+      const lineUp = value[teamParticipantId];
+
+      if (sideExists) {
+        matchUp.sides.forEach((side) => {
+          if (side.sideNumber === drawPositionSideNumber) {
+            side.lineUp = lineUp;
+          }
+        });
+      } else {
+        // create side with lineUp and push
+        if (!matchUp.sides) matchUp.sides = [];
+        matchUp.sides.push({ sideNumber: drawPositionSideNumber, lineUp });
+      }
+
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        drawDefinition,
+        matchUp,
+      });
+    }
   }
 
   const targetData = positionTargets({
