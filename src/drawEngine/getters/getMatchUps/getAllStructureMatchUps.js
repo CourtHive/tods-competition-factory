@@ -355,6 +355,7 @@ export function getAllStructureMatchUps({
       onlyDefined({
         matchUpFormat: matchUp.matchUpType === TEAM ? undefined : matchUpFormat,
         tieFormat: matchUp.matchUpType !== TEAM ? undefined : tieFormat,
+        processCodes: collectionDefinition?.processCodes,
         endDate: matchUp.endDate || endDate,
         category: matchUpCategory,
         abbreviatedRoundName,
