@@ -135,10 +135,13 @@ export function assignMatchUpDrawPosition({
     if (teamParticipantId && drawPositionSideIndex !== undefined) {
       // now update matchUp.sides to include
       const drawPositionSideNumber =
-        inContextDrawMatchUps.sides?.[drawPositionSideIndex]?.sideNumber;
-      const sideExists = matchUp.sides?.find(
-        (side) => side.sideNumber === drawPositionSideNumber
-      );
+        inContextTargetMatchUp?.sides?.[drawPositionSideIndex]?.sideNumber;
+
+      const sideExists =
+        drawPositionSideNumber &&
+        matchUp.sides?.find(
+          (side) => side.sideNumber === drawPositionSideNumber
+        );
 
       const { extension: existingExtension } = findExtension({
         element: drawDefinition,
@@ -158,6 +161,7 @@ export function assignMatchUpDrawPosition({
         // create side with lineUp and push
         if (!matchUp.sides) matchUp.sides = [];
         matchUp.sides.push({ sideNumber: drawPositionSideNumber, lineUp });
+        matchUp.sides.push({ sideNumber: 3 - drawPositionSideNumber });
       }
 
       modifyMatchUpNotice({
