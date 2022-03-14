@@ -1,8 +1,8 @@
 import { getPairedPreviousMatchUpIsWOWO } from '../positionGovernor/getPairedPreviousMatchUpisWOWO';
-import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { updateSideLineUp } from '../positionGovernor/updateSideLineUp';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { getUpdatedDrawPositions } from './getUpdatedDrawPositions';
@@ -15,7 +15,6 @@ import {
 
 import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import { LINEUPS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
@@ -133,39 +132,11 @@ export function assignMatchUpDrawPosition({
     )?.participantId;
 
     if (teamParticipantId && drawPositionSideIndex !== undefined) {
-      // now update matchUp.sides to include
-      const drawPositionSideNumber =
-        inContextTargetMatchUp?.sides?.[drawPositionSideIndex]?.sideNumber;
-
-      const sideExists =
-        drawPositionSideNumber &&
-        matchUp.sides?.find(
-          (side) => side.sideNumber === drawPositionSideNumber
-        );
-
-      const { extension: existingExtension } = findExtension({
-        element: drawDefinition,
-        name: LINEUPS,
-      });
-
-      const value = existingExtension?.value || {};
-      const lineUp = value[teamParticipantId];
-
-      if (sideExists) {
-        matchUp.sides.forEach((side) => {
-          if (side.sideNumber === drawPositionSideNumber) {
-            side.lineUp = lineUp;
-          }
-        });
-      } else {
-        // create side with lineUp and push
-        if (!matchUp.sides) matchUp.sides = [];
-        matchUp.sides.push({ sideNumber: drawPositionSideNumber, lineUp });
-        matchUp.sides.push({ sideNumber: 3 - drawPositionSideNumber });
-      }
-
-      modifyMatchUpNotice({
-        tournamentId: tournamentRecord?.tournamentId,
+      updateSideLineUp({
+        inContextTargetMatchUp,
+        drawPositionSideIndex,
+        teamParticipantId,
+        tournamentRecord,
         drawDefinition,
         matchUp,
       });
