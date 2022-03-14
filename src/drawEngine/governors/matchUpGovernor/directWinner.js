@@ -135,7 +135,7 @@ export function directWinner({
       const targetSideNumber =
         (source === target && source !== 1) || Math.floor(source / 2) === target
           ? 2
-          : 1;
+          : 1; // this may need to take roundNumber into consideration for cross structure propagation of lineUps
 
       const { matchUp: targetMatchUp } = findMatchUp({
         matchUpId: winnerMatchUp.matchUpId,
@@ -160,7 +160,15 @@ export function directWinner({
       if (targetSide) {
         targetSide.lineUp = side.lineUp;
 
-        if (getDevContext()) console.log('directWinner', { targetSide });
+        if (getDevContext())
+          console.log('directWinner', {
+            side,
+            targetSide,
+            targetMatchUp,
+            winnerMatchUp,
+            projectedWinningSide,
+            targetSideNumber,
+          });
 
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,

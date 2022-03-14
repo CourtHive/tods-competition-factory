@@ -191,7 +191,17 @@ export function directLoser(params) {
       if (targetSide) {
         targetSide.lineUp = side.lineUp;
 
-        if (getDevContext()) console.log('directLoser', { targetSide });
+        if (getDevContext())
+          console.log('directLoser', {
+            side,
+            targetSide,
+            targetMatchUp,
+            loserMatchUp,
+            projectedWinningSide,
+            targetSideNumber,
+            roundNumber,
+            roundPosition,
+          });
 
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,
