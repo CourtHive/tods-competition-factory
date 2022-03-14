@@ -166,7 +166,7 @@ export function directLoser(params) {
       const { roundPosition } = dualMatchUp;
       // for matchUps fed to different structures, sideNumber is always 1 when roundNumber > 1 (fed position)
       // when roundNumber === 1 then it is even/odd calculated as remainder of roundPositon % 2 + 1
-      const targetSideNumber = roundNumber === 1 ? (roundPosition % 2) + 1 : 1;
+      const targetSideNumber = roundNumber === 1 ? 2 - (roundPosition % 2) : 1;
 
       const { matchUp: targetMatchUp } = findMatchUp({
         matchUpId: loserMatchUp.matchUpId,
