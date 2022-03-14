@@ -7,6 +7,7 @@ import { findStructure } from '../../getters/findStructure';
 
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { getDevContext } from '../../../global/state/globalState';
 
 export function directWinner({
   winnerMatchUpDrawPositionIndex,
@@ -158,6 +159,9 @@ export function directWinner({
       // attach to appropriate side of winnerMatchUp
       if (targetSide) {
         targetSide.lineUp = side.lineUp;
+
+        if (getDevContext()) console.log('directWinner', { targetSide });
+
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,
           matchUp: targetMatchUp,

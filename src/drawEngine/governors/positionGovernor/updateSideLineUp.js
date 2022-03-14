@@ -2,6 +2,7 @@ import { findExtension } from '../../../tournamentEngine/governors/queryGovernor
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
 import { LINEUPS } from '../../../constants/extensionConstants';
+import { getDevContext } from '../../../global/state/globalState';
 
 export function updateSideLineUp({
   inContextTargetMatchUp,
@@ -34,10 +35,19 @@ export function updateSideLineUp({
       }
     });
   } else {
-    // create side with lineUp and push
-    if (!matchUp.sides) matchUp.sides = [];
-    matchUp.sides.push({ sideNumber: drawPositionSideNumber, lineUp });
-    matchUp.sides.push({ sideNumber: 3 - drawPositionSideNumber });
+    matchUp.sides = [1, 2].map((sideNumber) => {
+      const existingSide =
+        matchUp.sides?.find((side) => side.sideNumber === sideNumber) || {};
+      return { ...existingSide, sideNumber };
+    });
+
+    const targetSide = matchUp.sides.find(
+      (side) => side.sideNumber === drawPositionSideNumber
+    );
+    if (targetSide) {
+      targetSide.lineUp = lineUp;
+      if (getDevContext()) console.log('updateSideLineUp', { targetSide });
+    }
   }
 
   modifyMatchUpNotice({
