@@ -14,12 +14,15 @@ import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
+import { getTargetMatchUps } from './getTargetMatchUps';
+import { updateSideLineUp } from './updateSideLineUp';
 import { clearDrawPosition } from './positionClear';
 import { isAdHoc } from '../queryGovernor/isAdHoc';
 import { cleanupLineUps } from './cleanupLineUps';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   INVALID_DRAW_POSITION,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
@@ -154,6 +157,33 @@ export function assignDrawPosition({
       matchUpsMap,
       structure,
     });
+
+    // for ROUND_ROBIN events with TEAM matchUps, attach default lineUp
+    const { drawPositions, matchUps, targetMatchUps } = getTargetMatchUps({
+      assignments: [positionAssignment],
+      inContextDrawMatchUps,
+      drawDefinition,
+      matchUpsMap,
+      structure,
+    });
+
+    // if this a team participant is being assigned and there is a default lineUp, attach to side
+    if (matchUps?.length === 1 && matchUps[0].matchUpType === TEAM) {
+      const drawPositionSideIndex = targetMatchUps?.[0]?.sides.reduce(
+        (sideIndex, side, i) =>
+          drawPositions.includes(side.drawPosition) ? i : sideIndex,
+        undefined
+      );
+
+      updateSideLineUp({
+        inContextTargetMatchUp: targetMatchUps[0],
+        teamParticipantId: participantId,
+        matchUp: matchUps[0],
+        drawPositionSideIndex,
+        tournamentRecord,
+        drawDefinition,
+      });
+    }
   }
 
   if (!automaticPlacement) {
@@ -183,7 +213,7 @@ export function assignDrawPosition({
   }
 }
 
-// used for matchUps which are NOT in a ROUNd_ROBIN { structureType: CONTAINER }
+// used for matchUps which are NOT in a ROUND_ROBIN { structureType: CONTAINER }
 function addDrawPositionToMatchUps({
   inContextDrawMatchUps,
   automaticPlacement,
