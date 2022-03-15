@@ -246,11 +246,11 @@ function removeDirectedLoser({
     const targetMatchUp = matchUpsMap?.drawMatchUps?.find(
       ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
     );
-    const targetSide = targetMatchUp?.sides?.find(
+    const targetSide = loserMatchUp?.sides?.find(
       (side) => side.drawPosition === relevantDrawPosition
     );
 
-    if (getDevContext())
+    if (getDevContext({ lineUp: true }))
       console.log('removedDirectedLoser', {
         targetSide,
         dualMatchUp,
