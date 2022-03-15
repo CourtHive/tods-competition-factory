@@ -25,6 +25,7 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import { getDevContext } from '../../../global/state/globalState';
 
 export function assignMatchUpDrawPosition({
   inContextDrawMatchUps,
@@ -191,6 +192,12 @@ export function assignMatchUpDrawPosition({
       (assignment) => assignment.drawPosition === drawPosition
     )?.participantId;
 
+    if (getDevContext())
+      console.log('assignMatchUpDrawPosition', {
+        inContextTargetMatchUp,
+        drawPositionSideIndex,
+        teamParticipantId,
+      });
     if (teamParticipantId && drawPositionSideIndex !== undefined) {
       updateSideLineUp({
         inContextTargetMatchUp,

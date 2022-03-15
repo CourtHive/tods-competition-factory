@@ -247,6 +247,7 @@ function addDrawPositionToMatchUps({
     matchUp.drawPositions.includes(drawPosition)
   );
 
+  if (getDevContext()) console.log('assignDrawPositionToMatchUps', { matchUp });
   if (matchUp) {
     const result = assignMatchUpDrawPosition({
       matchUpId: matchUp.matchUpId,
