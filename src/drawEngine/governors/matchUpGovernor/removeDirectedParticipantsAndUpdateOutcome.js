@@ -243,12 +243,15 @@ function removeDirectedLoser({
   if (getDevContext()) console.log('removedDirectedLoser', { dualMatchUp });
   if (dualMatchUp) {
     // remove propagated lineUp
+    const drawPositionSideIndex = loserMatchUp?.sides.reduce(
+      (sideIndex, side, i) =>
+        side.drawPosition === relevantDrawPosition ? i : sideIndex,
+      undefined
+    );
     const targetMatchUp = matchUpsMap?.drawMatchUps?.find(
       ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
     );
-    const targetSide = loserMatchUp?.sides?.find(
-      (side) => side.drawPosition === relevantDrawPosition
-    );
+    const targetSide = targetMatchUp?.sides?.[drawPositionSideIndex];
 
     if (getDevContext({ lineUp: true }))
       console.log('removedDirectedLoser', {
@@ -257,6 +260,7 @@ function removeDirectedLoser({
         loserMatchUp,
         targetMatchUp,
         relevantDrawPosition,
+        drawPositionSideIndex,
       });
 
     if (targetSide) {
