@@ -118,31 +118,6 @@ export function assignMatchUpDrawPosition({
     });
   }
 
-  // if { matchUpType: TEAM } then also assign the default lineUp to the appopriate side
-  if (matchUp.matchUpType === TEAM) {
-    const inContextTargetMatchUp = inContextDrawMatchUps?.find(
-      (matchUp) => matchUp.matchUpId === matchUp.matchUpId
-    );
-    const drawPositionSideIndex = inContextTargetMatchUp?.sides?.reduce(
-      (index, side, i) => (side.drawPosition === drawPosition ? i : index),
-      undefined
-    );
-    const teamParticipantId = positionAssignments.find(
-      (assignment) => assignment.drawPosition === drawPosition
-    )?.participantId;
-
-    if (teamParticipantId && drawPositionSideIndex !== undefined) {
-      updateSideLineUp({
-        inContextTargetMatchUp,
-        drawPositionSideIndex,
-        teamParticipantId,
-        tournamentRecord,
-        drawDefinition,
-        matchUp,
-      });
-    }
-  }
-
   const targetData = positionTargets({
     inContextDrawMatchUps,
     inContextMatchUp,
@@ -200,6 +175,31 @@ export function assignMatchUpDrawPosition({
         matchUpsMap,
       });
       if (result.error) return result;
+    }
+  }
+
+  // if { matchUpType: TEAM } then also assign the default lineUp to the appopriate side
+  if (matchUp.matchUpType === TEAM) {
+    const inContextTargetMatchUp = inContextDrawMatchUps?.find(
+      (matchUp) => matchUp.matchUpId === matchUp.matchUpId
+    );
+    const drawPositionSideIndex = inContextTargetMatchUp?.sides?.reduce(
+      (index, side, i) => (side.drawPosition === drawPosition ? i : index),
+      undefined
+    );
+    const teamParticipantId = positionAssignments.find(
+      (assignment) => assignment.drawPosition === drawPosition
+    )?.participantId;
+
+    if (teamParticipantId && drawPositionSideIndex !== undefined) {
+      updateSideLineUp({
+        inContextTargetMatchUp,
+        drawPositionSideIndex,
+        teamParticipantId,
+        tournamentRecord,
+        drawDefinition,
+        matchUp,
+      });
     }
   }
 
