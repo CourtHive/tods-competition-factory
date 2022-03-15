@@ -2,7 +2,6 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';
 
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
@@ -20,7 +19,6 @@ export function directWinner({
   winnerMatchUp,
   dualMatchUp,
   matchUpsMap,
-  event,
 }) {
   if (winnerTargetLink) {
     const targetMatchUpDrawPositions = winnerMatchUp.drawPositions || [];
@@ -137,12 +135,9 @@ export function directWinner({
           ? 2
           : 1; // this may need to take roundNumber into consideration for cross structure propagation of lineUps
 
-      const { matchUp: targetMatchUp } = findMatchUp({
-        matchUpId: winnerMatchUp.matchUpId,
-        drawDefinition,
-        matchUpsMap,
-        event,
-      });
+      const targetMatchUp = matchUpsMap?.drawMatchUps?.find(
+        ({ matchUpId }) => matchUpId === winnerMatchUp.matchUpId
+      );
 
       const updatedSides = [1, 2].map((sideNumber) => {
         const existingSide =

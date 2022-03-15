@@ -3,7 +3,6 @@ import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assign
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import { numericSort } from '../../../utilities';
 
@@ -168,12 +167,9 @@ export function directLoser(params) {
       // when roundNumber === 1 then it is even/odd calculated as remainder of roundPositon % 2 + 1
       const targetSideNumber = roundNumber === 1 ? 2 - (roundPosition % 2) : 1;
 
-      const { matchUp: targetMatchUp } = findMatchUp({
-        matchUpId: loserMatchUp.matchUpId,
-        drawDefinition,
-        matchUpsMap,
-        event,
-      });
+      const targetMatchUp = matchUpsMap?.drawMatchUps?.find(
+        ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
+      );
 
       const updatedSides = [1, 2].map((sideNumber) => {
         const existingSide =

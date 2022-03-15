@@ -220,12 +220,12 @@ export function removeDirectedWinner({
 }
 
 function removeDirectedLoser({
-  inContextDrawMatchUps,
   loserParticipantId,
   tournamentRecord,
   loserTargetLink,
   drawDefinition,
   loserMatchUp,
+  matchUpsMap,
   dualMatchUp,
 }) {
   const structureId = loserTargetLink.target.structureId;
@@ -243,7 +243,7 @@ function removeDirectedLoser({
   if (getDevContext()) console.log('removedDirectedLoser', { dualMatchUp });
   if (dualMatchUp) {
     // remove propagated lineUp
-    const targetMatchUp = inContextDrawMatchUps.find(
+    const targetMatchUp = matchUpsMap?.drawMatchUps?.find(
       ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
     );
     const targetSide = targetMatchUp?.sides?.find(
