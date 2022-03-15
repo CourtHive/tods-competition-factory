@@ -243,7 +243,7 @@ function removeDirectedLoser({
     const drawPositions = dualMatchUp.drawPositions;
     const targetSideNumber = loserMatchUp?.sides?.find((side) =>
       drawPositions.includes(side.drawPosition)
-    );
+    )?.sideNumber;
     const targetMatchUp = inContextDrawMatchUps.find(
       ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
     );
@@ -252,7 +252,13 @@ function removeDirectedLoser({
       targetMatchUp?.sides?.find(
         (side) => side.sideNumber === targetSideNumber
       );
-    if (getDevContext()) console.log('removedDirectedLoser', { targetSide });
+    if (getDevContext())
+      console.log('removedDirectedLoser', {
+        targetSide,
+        drawPositions,
+        loserMatchUp,
+        targetSideNumber,
+      });
 
     if (targetSide) {
       delete targetSide.lineUp;
