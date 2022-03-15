@@ -105,7 +105,7 @@ export const competitionEngine = (function () {
       (isNaN(devContext.perf) || elapsed > devContext.perf)
     )
       console.log('ce:', { methodName, elapsed });
-    if (devContext.params) console.log({ params });
+    if (devContext.params) console.log({ methodName, params });
 
     return result;
   }
