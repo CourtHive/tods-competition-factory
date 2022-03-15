@@ -267,6 +267,12 @@ function removeDrawPosition({
       targetMatchUp.sides?.[drawPositionSideIndex]?.lineUp
     ) {
       delete targetMatchUp.sides?.[drawPositionSideIndex].lineUp;
+
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        matchUp: targetMatchUp,
+        drawDefinition,
+      });
     }
   }
 

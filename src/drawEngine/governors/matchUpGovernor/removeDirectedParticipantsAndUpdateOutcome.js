@@ -54,6 +54,7 @@ export function removeDirectedParticipants(params) {
     const { matchUpTieId } = params;
     const { removeWinningSide } = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
+      tournamentRecord,
       drawDefinition,
       structure,
       event,
@@ -218,17 +219,20 @@ export function removeDirectedWinner({
 }
 
 function removeDirectedLoser({
-  inContextDrawMatchUps,
   loserParticipantId,
   tournamentRecord,
   loserTargetLink,
   drawDefinition,
   loserMatchUp,
+  matchUpsMap,
   dualMatchUp,
 }) {
   const structureId = loserTargetLink.target.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
+  const relevantDrawPosition = positionAssignments.find(
+    (assignment) => assignment.participantId === loserParticipantId
+  )?.drawPosition;
   positionAssignments.forEach((assignment) => {
     if (assignment.participantId === loserParticipantId) {
       delete assignment.participantId;
@@ -237,20 +241,19 @@ function removeDirectedLoser({
 
   if (dualMatchUp) {
     // remove propagated lineUp
-    const drawPositions = dualMatchUp.drawPositions;
-    const targetSideNumber = loserMatchUp?.sides?.find((side) =>
-      drawPositions.includes(side.drawPosition)
+    const drawPositionSideIndex = loserMatchUp?.sides.reduce(
+      (sideIndex, side, i) =>
+        side.drawPosition === relevantDrawPosition ? i : sideIndex,
+      undefined
     );
-    const targetMatchUp = inContextDrawMatchUps.find(
+    const targetMatchUp = matchUpsMap?.drawMatchUps?.find(
       ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
     );
-    const targetSide =
-      targetSideNumber &&
-      targetMatchUp?.sides?.find(
-        (side) => side.sideNumber === targetSideNumber
-      );
+    const targetSide = targetMatchUp?.sides?.[drawPositionSideIndex];
+
     if (targetSide) {
       delete targetSide.lineUp;
+
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
         matchUp: targetMatchUp,

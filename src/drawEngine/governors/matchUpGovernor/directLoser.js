@@ -3,7 +3,6 @@ import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assign
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import { numericSort } from '../../../utilities';
 
@@ -47,8 +46,8 @@ export function directLoser(params) {
 
   const sourceStructureId = loserTargetLink.source.structureId;
   const { structure } = findStructure({
-    drawDefinition,
     structureId: sourceStructureId,
+    drawDefinition,
   });
   const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
     inContext: true,
@@ -165,14 +164,11 @@ export function directLoser(params) {
       const { roundPosition } = dualMatchUp;
       // for matchUps fed to different structures, sideNumber is always 1 when roundNumber > 1 (fed position)
       // when roundNumber === 1 then it is even/odd calculated as remainder of roundPositon % 2 + 1
-      const targetSideNumber = roundNumber === 1 ? (roundPosition % 2) + 1 : 1;
+      const targetSideNumber = roundNumber === 1 ? 2 - (roundPosition % 2) : 1;
 
-      const { matchUp: targetMatchUp } = findMatchUp({
-        matchUpId: loserMatchUp.matchUpId,
-        drawDefinition,
-        matchUpsMap,
-        event,
-      });
+      const targetMatchUp = matchUpsMap?.drawMatchUps?.find(
+        ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
+      );
 
       const updatedSides = [1, 2].map((sideNumber) => {
         const existingSide =
@@ -189,6 +185,7 @@ export function directLoser(params) {
       // attach to appropriate side of winnerMatchUp
       if (targetSide) {
         targetSide.lineUp = side.lineUp;
+
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,
           matchUp: targetMatchUp,

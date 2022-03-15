@@ -1,8 +1,8 @@
 import { getPairedPreviousMatchUpIsWOWO } from '../positionGovernor/getPairedPreviousMatchUpisWOWO';
-import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { updateSideLineUp } from '../positionGovernor/updateSideLineUp';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { getUpdatedDrawPositions } from './getUpdatedDrawPositions';
@@ -15,7 +15,6 @@ import {
 
 import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import { LINEUPS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
@@ -112,49 +111,6 @@ export function assignMatchUpDrawPosition({
       matchUpStatus,
     });
 
-    // if { matchUpType: TEAM } then also assign the default lineUp to the appopriate side
-    if (matchUp.matchUpType === TEAM) {
-      const inContextTargetMatchUp = inContextDrawMatchUps?.find(
-        (matchUp) => matchUp.matchUpId === matchUp.matchUpId
-      );
-      const drawPositionSideIndex = inContextTargetMatchUp?.sides?.reduce(
-        (index, side, i) => (side.drawPosition === drawPosition ? i : index),
-        undefined
-      );
-      const teamParticipantId = positionAssignments.find(
-        (assignment) => assignment.drawPosition === drawPosition
-      )?.participantId;
-
-      if (teamParticipantId && drawPositionSideIndex !== undefined) {
-        // now update matchUp.sides to include
-        const drawPositionSideNumber =
-          inContextDrawMatchUps.sides?.[drawPositionSideIndex]?.sideNumber;
-        const sideExists = matchUp.sides?.find(
-          (side) => side.sideNumber === drawPositionSideNumber
-        );
-
-        const { extension: existingExtension } = findExtension({
-          element: drawDefinition,
-          name: LINEUPS,
-        });
-
-        const value = existingExtension?.value || {};
-        const lineUp = value[teamParticipantId];
-
-        if (sideExists) {
-          matchUp.sides.forEach((side) => {
-            if (side.sideNumber === drawPositionSideNumber) {
-              side.lineUp = lineUp;
-            }
-          });
-        } else {
-          // create side with lineUp and push
-          if (!matchUp.sides) matchUp.sides = [];
-          matchUp.sides.push({ sideNumber: drawPositionSideNumber, lineUp });
-        }
-      }
-    }
-
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       drawDefinition,
@@ -219,6 +175,31 @@ export function assignMatchUpDrawPosition({
         matchUpsMap,
       });
       if (result.error) return result;
+    }
+  }
+
+  // if { matchUpType: TEAM } then also assign the default lineUp to the appopriate side
+  if (matchUp.matchUpType === TEAM) {
+    const inContextTargetMatchUp = inContextDrawMatchUps?.find(
+      ({ matchUpId }) => matchUpId === matchUp.matchUpId
+    );
+    const drawPositionSideIndex = inContextTargetMatchUp?.sides?.reduce(
+      (index, side, i) => (side.drawPosition === drawPosition ? i : index),
+      undefined
+    );
+    const teamParticipantId = positionAssignments.find(
+      (assignment) => assignment.drawPosition === drawPosition
+    )?.participantId;
+
+    if (teamParticipantId && drawPositionSideIndex !== undefined) {
+      updateSideLineUp({
+        inContextTargetMatchUp,
+        drawPositionSideIndex,
+        teamParticipantId,
+        tournamentRecord,
+        drawDefinition,
+        matchUp,
+      });
     }
   }
 

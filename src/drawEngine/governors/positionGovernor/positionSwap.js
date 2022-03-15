@@ -8,6 +8,7 @@ import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
+import { cleanupLineUps } from './cleanupLineUps';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -117,6 +118,7 @@ function eliminationSwap({
     return eliminationParticipantSwap({
       inContextDrawMatchUps,
       tournamentRecord,
+      drawDefinition,
       assignments,
       matchUpsMap,
       structure,
@@ -187,7 +189,14 @@ function swapParticipantIdWithBYE({
   return { ...SUCCESS };
 }
 
-function eliminationParticipantSwap({ structure, assignments }) {
+function eliminationParticipantSwap({
+  inContextDrawMatchUps,
+  tournamentRecord,
+  drawDefinition,
+  assignments,
+  matchUpsMap,
+  structure,
+}) {
   // preserves order of drawPositions in original positionAssignments array
   // while insuring that all attributes are faithfully copied over and only drawPosition is swapped
   const newAssignments = Object.assign(
@@ -198,9 +207,19 @@ function eliminationParticipantSwap({ structure, assignments }) {
       return { [drawPosition]: newAssignment };
     })
   );
+
   structure.positionAssignments = structure.positionAssignments.map(
     (assignment) => newAssignments[assignment.drawPosition] || assignment
   );
+
+  cleanupLineUps({
+    inContextDrawMatchUps,
+    tournamentRecord,
+    drawDefinition,
+    matchUpsMap,
+    assignments,
+    structure,
+  });
 
   return { ...SUCCESS };
 }
@@ -223,6 +242,16 @@ function roundRobinSwap({
 
   // if both positions are BYE no need to do anything
   if (assignments.filter(({ bye }) => bye).length === 2) return { ...SUCCESS };
+
+  cleanupLineUps({
+    inContextDrawMatchUps,
+    tournamentRecord,
+    drawDefinition,
+    matchUpsMap,
+    assignments,
+    structure,
+  });
+
   const isByeSwap = assignments.some(({ bye }) => bye);
 
   if (isByeSwap) {

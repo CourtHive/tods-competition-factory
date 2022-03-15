@@ -309,7 +309,7 @@ function winningSideWithDownstreamDependencies(params) {
 }
 
 function applyMatchUpValues(params) {
-  const { matchUp, event } = params;
+  const { tournamentRecord, matchUp, event } = params;
   const removeWinningSide =
     params.isCollectionMatchUp &&
     matchUp.winningSide &&
@@ -334,6 +334,7 @@ function applyMatchUpValues(params) {
     const { matchUpTieId, drawDefinition, structure } = params;
     const { removeWinningSide } = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
+      tournamentRecord,
       drawDefinition,
       structure,
       event,

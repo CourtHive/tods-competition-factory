@@ -347,6 +347,13 @@ export function getAllStructureMatchUps({
         )
       : context?.category;
 
+    const processCodes =
+      matchUp.processCodes ||
+      collectionDefinition?.processCodes ||
+      structure.processCodes ||
+      drawDefinition?.processCodes ||
+      event?.processCodes;
+
     // order is important here as Round Robin matchUps already have inContext structureId
     const onlyDefined = (obj) => definedAttributes(obj, undefined, true);
     const matchUpWithContext = Object.assign(
@@ -363,6 +370,7 @@ export function getAllStructureMatchUps({
         stageSequence,
         drawPositions,
         matchUpStatus,
+        processCodes,
         isRoundRobin,
         matchUpTieId,
         preFeedRound,

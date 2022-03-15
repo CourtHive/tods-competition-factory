@@ -107,6 +107,13 @@ export const tournamentEngine = (function () {
       (isNaN(devContext.perf) || elapsed > devContext.perf)
     )
       console.log('te:', { methodName, elapsed });
+    if (
+      (devContext.params && !Array.isArray(devContext.params)) ||
+      (Array.isArray(devContext.params) &&
+        devContext.params?.includes(methodName))
+    ) {
+      console.log({ methodName, params });
+    }
 
     return result;
   }

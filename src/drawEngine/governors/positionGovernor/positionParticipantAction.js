@@ -65,6 +65,7 @@ export function positionParticipantAction(params) {
       removedParticipantId: positionAssignment.participantId,
     });
   }
+
   let result = clearDrawPosition({
     inContextDrawMatchUps,
     tournamentRecord,
