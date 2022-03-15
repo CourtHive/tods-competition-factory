@@ -28,6 +28,13 @@ export function updateSideLineUp({
   const value = existingExtension?.value || {};
   const lineUp = value[teamParticipantId];
 
+  if (getDevContext())
+    console.log('updateSideLineUp', {
+      sideExists,
+      drawPositionSideIndex,
+      drawPositionSideNumber,
+    });
+
   if (sideExists) {
     matchUp.sides.forEach((side) => {
       if (side.sideNumber === drawPositionSideNumber) {
@@ -46,7 +53,12 @@ export function updateSideLineUp({
     );
     if (targetSide) {
       targetSide.lineUp = lineUp;
-      if (getDevContext()) console.log('updateSideLineUp', { targetSide });
+      if (getDevContext())
+        console.log('updateSideLineUp', {
+          teamParticipantId,
+          targetSide,
+          matchUp,
+        });
     }
   }
 

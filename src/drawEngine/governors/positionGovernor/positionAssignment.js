@@ -31,6 +31,7 @@ import {
   MISSING_PARTICIPANT_ID,
   INVALID_MATCHUP,
 } from '../../../constants/errorConditionConstants';
+import { getDevContext } from '../../../global/state/globalState';
 
 export function assignDrawPosition({
   inContextDrawMatchUps,
@@ -224,6 +225,8 @@ function addDrawPositionToMatchUps({
   structure,
   event,
 }) {
+  if (getDevContext())
+    console.log('assignDrawPositionToMatchUps', { drawPosition });
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     inContextDrawMatchUps,

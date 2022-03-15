@@ -14,6 +14,7 @@ import { MISSING_DRAW_POSITIONS } from '../../../constants/errorConditionConstan
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { getDevContext } from '../../../global/state/globalState';
 
 export function removeDirectedParticipants(params) {
   const {
@@ -236,6 +237,7 @@ function removeDirectedLoser({
     }
   });
 
+  if (getDevContext()) console.log('removedDirectedLoser', { dualMatchUp });
   if (dualMatchUp) {
     // remove propagated lineUp
     const drawPositions = dualMatchUp.drawPositions;
@@ -250,8 +252,11 @@ function removeDirectedLoser({
       targetMatchUp?.sides?.find(
         (side) => side.sideNumber === targetSideNumber
       );
+    if (getDevContext()) console.log('removedDirectedLoser', { targetSide });
+
     if (targetSide) {
       delete targetSide.lineUp;
+
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
         matchUp: targetMatchUp,

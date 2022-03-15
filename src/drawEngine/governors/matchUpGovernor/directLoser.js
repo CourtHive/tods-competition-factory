@@ -48,8 +48,8 @@ export function directLoser(params) {
 
   const sourceStructureId = loserTargetLink.source.structureId;
   const { structure } = findStructure({
-    drawDefinition,
     structureId: sourceStructureId,
+    drawDefinition,
   });
   const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
     inContext: true,
