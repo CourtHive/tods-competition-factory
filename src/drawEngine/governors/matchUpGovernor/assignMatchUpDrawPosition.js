@@ -192,7 +192,7 @@ export function assignMatchUpDrawPosition({
       (assignment) => assignment.drawPosition === drawPosition
     )?.participantId;
 
-    if (getDevContext())
+    if (getDevContext({ lineUp: true }))
       console.log('assignMatchUpDrawPosition', {
         inContextTargetMatchUp,
         drawPositionSideIndex,

@@ -225,7 +225,7 @@ function addDrawPositionToMatchUps({
   structure,
   event,
 }) {
-  if (getDevContext())
+  if (getDevContext({ lineUp: true }))
     console.log('assignDrawPositionToMatchUps', { drawPosition });
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
@@ -247,7 +247,8 @@ function addDrawPositionToMatchUps({
     matchUp.drawPositions.includes(drawPosition)
   );
 
-  if (getDevContext()) console.log('assignDrawPositionToMatchUps', { matchUp });
+  if (getDevContext({ lineUp: true }))
+    console.log('assignDrawPositionToMatchUps', { matchUp });
   if (matchUp) {
     const result = assignMatchUpDrawPosition({
       matchUpId: matchUp.matchUpId,

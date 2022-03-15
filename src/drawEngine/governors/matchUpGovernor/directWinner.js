@@ -155,7 +155,7 @@ export function directWinner({
       if (targetSide) {
         targetSide.lineUp = side.lineUp;
 
-        if (getDevContext())
+        if (getDevContext({ lineUp: true }))
           console.log('directWinner', {
             side,
             targetSide,

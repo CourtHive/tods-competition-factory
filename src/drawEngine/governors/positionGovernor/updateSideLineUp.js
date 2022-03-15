@@ -53,7 +53,7 @@ export function updateSideLineUp({
     );
     if (targetSide) {
       targetSide.lineUp = lineUp;
-      if (getDevContext())
+      if (getDevContext({ lineUp: true }))
         console.log('updateSideLineUp', {
           teamParticipantId,
           targetSide,
