@@ -187,7 +187,7 @@ export function directLoser(params) {
       if (targetSide) {
         targetSide.lineUp = side.lineUp;
 
-        if (getDevContext())
+        if (getDevContext({ lineUp: true }))
           console.log('directLoser', {
             side,
             targetSide,

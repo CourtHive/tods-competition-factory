@@ -28,7 +28,7 @@ export function updateSideLineUp({
   const value = existingExtension?.value || {};
   const lineUp = value[teamParticipantId];
 
-  if (getDevContext())
+  if (getDevContext({ lineUp: true }))
     console.log('updateSideLineUp', {
       sideExists,
       drawPositionSideIndex,
