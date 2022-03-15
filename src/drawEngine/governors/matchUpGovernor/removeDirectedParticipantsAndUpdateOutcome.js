@@ -240,7 +240,8 @@ function removeDirectedLoser({
     }
   });
 
-  if (getDevContext()) console.log('removedDirectedLoser', { dualMatchUp });
+  if (getDevContext({ lineUp: true }))
+    console.log('removedDirectedLoser', { dualMatchUp });
   if (dualMatchUp) {
     // remove propagated lineUp
     const drawPositionSideIndex = loserMatchUp?.sides.reduce(
