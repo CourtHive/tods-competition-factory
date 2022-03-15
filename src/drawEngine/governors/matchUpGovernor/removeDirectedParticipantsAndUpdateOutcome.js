@@ -15,7 +15,6 @@ import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { getDevContext } from '../../../global/state/globalState';
-import { TEAM } from '../../../constants/matchUpTypes';
 
 export function removeDirectedParticipants(params) {
   const {
@@ -245,8 +244,7 @@ function removeDirectedLoser({
   if (dualMatchUp) {
     // remove propagated lineUp
     const targetMatchUp = inContextDrawMatchUps.find(
-      ({ drawPositions, matchUpType }) =>
-        matchUpType === TEAM && drawPositions.includes(relevantDrawPosition)
+      ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
     );
     const targetSide = targetMatchUp?.sides?.find(
       (side) => side.drawPosition === relevantDrawPosition
