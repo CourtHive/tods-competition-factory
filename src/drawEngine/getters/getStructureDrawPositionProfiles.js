@@ -7,7 +7,7 @@ import { findStructure } from './findStructure';
 
 // active drawPositions occur in activeMatchUps...
 // ...which have a winningSide, a scoreString, or a completed matchUpStatus
-export function structureActiveDrawPositions({
+export function getStructureDrawPositionProfiles({
   drawDefinition,
   structureId,
   structure,
@@ -26,6 +26,8 @@ export function structureActiveDrawPositions({
     matchUpFilters,
     structure,
   });
+
+  // TODO: collect the lowest roundNumber at which each drawPosition occurs
 
   // first collect all drawPositions for the structure
   const drawPositions = unique(
@@ -79,6 +81,11 @@ export function structureActiveDrawPositions({
     .filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
 
+  // determine which positions are Qualifiers
+  const qualifyingDrawPositions = positionAssignments
+    .filter((assignment) => assignment.qualifier)
+    .map((assignment) => assignment.drawPosition);
+
   const inactiveDrawPositions =
     drawPositions?.filter(
       (drawPosition) => !activeDrawPositions.includes(drawPosition)
@@ -88,6 +95,7 @@ export function structureActiveDrawPositions({
     allDrawPositions: drawPositions,
     inContextStructureMatchUps,
     activeDependentMatchUpIds,
+    qualifyingDrawPositions,
     inactiveDrawPositions,
     positionAssignments,
     activeDrawPositions,

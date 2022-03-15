@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
-import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
+import { getStructureDrawPositionProfiles } from '../../../getters/getStructureDrawPositionProfiles';
 import { getRoundMatchUps } from '../../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
@@ -78,7 +78,7 @@ export function assignDrawPositionBye({
   }
 
   const { positionAssignments } = getPositionAssignments({ structure });
-  const { activeDrawPositions } = structureActiveDrawPositions({
+  const { activeDrawPositions } = getStructureDrawPositionProfiles({
     drawDefinition,
     structureId,
   });

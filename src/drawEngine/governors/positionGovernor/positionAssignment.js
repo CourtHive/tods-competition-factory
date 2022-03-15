@@ -1,7 +1,7 @@
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpGovernor/modifyRoundRobinMatchUpsStatus';
 import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
+import { getStructureDrawPositionProfiles } from '../../getters/getStructureDrawPositionProfiles';
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
@@ -114,7 +114,7 @@ export function assignDrawPosition({
     containsParticipant &&
     positionAssignment.participantId !== participantId
   ) {
-    const { activeDrawPositions } = structureActiveDrawPositions({
+    const { activeDrawPositions } = getStructureDrawPositionProfiles({
       drawDefinition,
       structureId,
     });

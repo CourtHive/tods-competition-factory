@@ -1,5 +1,5 @@
 import { generateOutcomeFromScoreString } from '../../../mocksEngine/generators/generateOutcomeFromScoreString';
-import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
+import { getStructureDrawPositionProfiles } from '../../getters/getStructureDrawPositionProfiles';
 import { getDrawPosition } from '../../../global/functions/extractors';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
@@ -109,7 +109,7 @@ it('can create double bye and remove advanced participant when outcome is reset'
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
   const { activeDrawPositions, inactiveDrawPositions, byeDrawPositions } =
-    structureActiveDrawPositions({ drawDefinition, structureId });
+    getStructureDrawPositionProfiles({ drawDefinition, structureId });
   expect(activeDrawPositions.length).toEqual(8);
   expect(inactiveDrawPositions.length).toEqual(0);
   expect(byeDrawPositions.length).toEqual(6);
