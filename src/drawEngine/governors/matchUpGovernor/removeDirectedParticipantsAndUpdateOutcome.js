@@ -15,6 +15,7 @@ import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { getDevContext } from '../../../global/state/globalState';
+import { TEAM } from '../../../constants/matchUpTypes';
 
 export function removeDirectedParticipants(params) {
   const {
@@ -231,6 +232,9 @@ function removeDirectedLoser({
   const structureId = loserTargetLink.target.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
+  const relevantDrawPosition = positionAssignments.find(
+    (assignment) => assignment.participantId === loserParticipantId
+  )?.drawPosition;
   positionAssignments.forEach((assignment) => {
     if (assignment.participantId === loserParticipantId) {
       delete assignment.participantId;
@@ -240,24 +244,21 @@ function removeDirectedLoser({
   if (getDevContext()) console.log('removedDirectedLoser', { dualMatchUp });
   if (dualMatchUp) {
     // remove propagated lineUp
-    const drawPositions = dualMatchUp.drawPositions;
-    const targetSideNumber = loserMatchUp?.sides?.find((side) =>
-      drawPositions.includes(side.drawPosition)
-    )?.sideNumber;
     const targetMatchUp = inContextDrawMatchUps.find(
-      ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
+      ({ drawPositions, matchUpType }) =>
+        matchUpType === TEAM && drawPositions.includes(relevantDrawPosition)
     );
-    const targetSide =
-      targetSideNumber &&
-      targetMatchUp?.sides?.find(
-        (side) => side.sideNumber === targetSideNumber
-      );
+    const targetSide = targetMatchUp?.sides?.find(
+      (side) => side.drawPosition === relevantDrawPosition
+    );
+
     if (getDevContext())
       console.log('removedDirectedLoser', {
         targetSide,
-        drawPositions,
+        dualMatchUp,
         loserMatchUp,
-        targetSideNumber,
+        targetMatchUp,
+        relevantDrawPosition,
       });
 
     if (targetSide) {
