@@ -1504,7 +1504,7 @@ const {
 
 Returns event information optimized for publishing: `matchUps` have context and separated into rounds for consumption by visualization libraries such as `tods-react-draws`.
 
-See [publishEvent](#publishEvent) for details on `policyDefinition`.
+See [publishEvent](#publishEvent) for details on `policyDefinitions`.
 
 ```js
 const { eventData } = tournamentEngine.getEventData({
@@ -2890,6 +2890,7 @@ const {
   upcomingMatchUps,
 } = tournamentEngine.tournamentMatchUps({
   matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  policyDefinitions, // optional - seeding or avoidance policies to be used when placing participants
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
 });
 ```
