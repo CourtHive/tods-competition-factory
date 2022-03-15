@@ -182,7 +182,7 @@ export function assignMatchUpDrawPosition({
   // if { matchUpType: TEAM } then also assign the default lineUp to the appopriate side
   if (matchUp.matchUpType === TEAM) {
     const inContextTargetMatchUp = inContextDrawMatchUps?.find(
-      (matchUp) => matchUp.matchUpId === matchUp.matchUpId
+      ({ matchUpId }) => matchUpId === matchUp.matchUpId
     );
     const drawPositionSideIndex = inContextTargetMatchUp?.sides?.reduce(
       (index, side, i) => (side.drawPosition === drawPosition ? i : index),
