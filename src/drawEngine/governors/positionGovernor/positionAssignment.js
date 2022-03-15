@@ -31,7 +31,6 @@ import {
   MISSING_PARTICIPANT_ID,
   INVALID_MATCHUP,
 } from '../../../constants/errorConditionConstants';
-import { getDevContext } from '../../../global/state/globalState';
 
 export function assignDrawPosition({
   inContextDrawMatchUps,
@@ -225,8 +224,6 @@ function addDrawPositionToMatchUps({
   structure,
   event,
 }) {
-  if (getDevContext({ lineUp: true }))
-    console.log('assignDrawPositionToMatchUps', { drawPosition });
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     inContextDrawMatchUps,
@@ -247,8 +244,6 @@ function addDrawPositionToMatchUps({
     matchUp.drawPositions.includes(drawPosition)
   );
 
-  if (getDevContext({ lineUp: true }))
-    console.log('assignDrawPositionToMatchUps', { matchUp });
   if (matchUp) {
     const result = assignMatchUpDrawPosition({
       matchUpId: matchUp.matchUpId,

@@ -2,7 +2,6 @@ import { findExtension } from '../../../tournamentEngine/governors/queryGovernor
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
 import { LINEUPS } from '../../../constants/extensionConstants';
-import { getDevContext } from '../../../global/state/globalState';
 
 export function updateSideLineUp({
   inContextTargetMatchUp,
@@ -28,13 +27,6 @@ export function updateSideLineUp({
   const value = existingExtension?.value || {};
   const lineUp = value[teamParticipantId];
 
-  if (getDevContext({ lineUp: true }))
-    console.log('updateSideLineUp', {
-      sideExists,
-      drawPositionSideIndex,
-      drawPositionSideNumber,
-    });
-
   if (sideExists) {
     matchUp.sides.forEach((side) => {
       if (side.sideNumber === drawPositionSideNumber) {
@@ -53,12 +45,6 @@ export function updateSideLineUp({
     );
     if (targetSide) {
       targetSide.lineUp = lineUp;
-      if (getDevContext({ lineUp: true }))
-        console.log('updateSideLineUp', {
-          teamParticipantId,
-          targetSide,
-          matchUp,
-        });
     }
   }
 

@@ -10,7 +10,6 @@ import { INVALID_DRAW_POSITION } from '../../../constants/errorConditionConstant
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { getDevContext } from '../../../global/state/globalState';
 
 /*
   FIRST_MATCH_LOSER_CONSOLATION linkCondition... check whether it is a participant's first 
@@ -186,18 +185,6 @@ export function directLoser(params) {
       // attach to appropriate side of winnerMatchUp
       if (targetSide) {
         targetSide.lineUp = side.lineUp;
-
-        if (getDevContext({ lineUp: true }))
-          console.log('directLoser', {
-            side,
-            targetSide,
-            targetMatchUp,
-            loserMatchUp,
-            projectedWinningSide,
-            targetSideNumber,
-            roundNumber,
-            roundPosition,
-          });
 
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,
