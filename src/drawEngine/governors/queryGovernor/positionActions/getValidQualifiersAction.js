@@ -1,6 +1,10 @@
-export function getValidQualifiersAction() {
+import {
+  QUALIFYING_PARTICIPANT,
+  QUALIFYING_PARTICIPANT_METHOD,
+} from '../../../../constants/positionActionConstants';
+
+export function getValidQualifiersAction({
   /*
-  {
   positionSourceStructureIds,
   isWinRatioFedStructure,
   tournamentParticipants,
@@ -9,12 +13,20 @@ export function getValidQualifiersAction() {
   activeDrawPositions,
   policyDefinitions,
   drawDefinition,
+  */
   drawPosition,
   structureId,
-  structure,
-  }
-  */
-  const validAssignmentActions = [];
+  drawId,
+}) {
+  const validAssignmentActions = [
+    {
+      type: QUALIFYING_PARTICIPANT,
+      method: QUALIFYING_PARTICIPANT_METHOD,
+      qualifyingParticipantIds: [],
+      qualifyingParticipants: [],
+      payload: { drawId, structureId, drawPosition },
+    },
+  ];
 
   return { validAssignmentActions };
 }
