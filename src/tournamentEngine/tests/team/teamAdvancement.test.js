@@ -6,7 +6,10 @@ import tournamentEngine from '../../sync';
 
 import { TEAM_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { TEAM_DOUBLES_3_AGGREGATION } from '../../../constants/tieFormatConstants';
+import {
+  TEAM_DOUBLES_3_AGGREGATION,
+  USTA_GOLD_TEAM_CHALLENGE,
+} from '../../../constants/tieFormatConstants';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import {
@@ -405,4 +408,108 @@ test('tieFormat with scoreValue calculation', () => {
     },
   });
   expect(secondRoundDualMatchUp.drawPositions).toEqual([1, 3]);
+});
+
+test('properly removes advanced team at 9-8 in USTA_GOLD', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        tieFormatName: USTA_GOLD_TEAM_CHALLENGE,
+        eventType: TEAM,
+        drawSize: 4,
+      },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let outcome = { winningSide: 1 };
+
+  let { matchUps: firstRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      contextFilters: {
+        stages: [MAIN],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [1],
+      },
+    });
+
+  expect(firstRoundDualMatchUps.length).toEqual(2);
+
+  // for all first round dualMatchUps complete all doubles matchUps
+  firstRoundDualMatchUps.forEach((dualMatchUp) => {
+    dualMatchUp.tieMatchUps.slice(0, 9).forEach((matchUp) => {
+      const { matchUpId } = matchUp;
+      let result = tournamentEngine.setMatchUpStatus({
+        matchUpId,
+        outcome,
+        drawId,
+      });
+      expect(result.success).toEqual(true);
+    });
+  });
+
+  ({ matchUps: firstRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      contextFilters: {
+        stages: [MAIN],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [1],
+      },
+    }));
+
+  firstRoundDualMatchUps.forEach((dualMatchUp) => {
+    const { winningSide, matchUpStatus, score } = dualMatchUp;
+    expect(matchUpStatus).toEqual(COMPLETED);
+    expect(winningSide).toEqual(1);
+    expect(score).toEqual({
+      scoreStringSide1: '9-0',
+      scoreStringSide2: '0-9',
+      sets: [{ side1Score: 9, side2Score: 0 }],
+    });
+  });
+
+  let {
+    matchUps: [secondRoundDualMatchUp],
+  } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [2],
+    },
+  });
+  expect(secondRoundDualMatchUp.drawPositions).toEqual([1, 3]);
+
+  const matchUpId = firstRoundDualMatchUps[0].tieMatchUps[0].matchUpId;
+
+  const result = tournamentEngine.setMatchUpStatus({
+    outcome: { winningSide: 2 },
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  let matchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM] },
+  }).matchUps;
+
+  let firstRoundFirst = matchUps.find(
+    ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 1
+  );
+  let secondRoundFirst = matchUps.find(
+    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
+  );
+
+  expect(firstRoundFirst.winningSide).toBeUndefined();
+  expect(firstRoundFirst.score.scoreStringSide1).toEqual('8-1');
+  expect(secondRoundFirst.drawPositions.filter(Boolean)).toEqual([3]);
 });

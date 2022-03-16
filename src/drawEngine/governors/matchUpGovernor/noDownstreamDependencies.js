@@ -14,6 +14,7 @@ import {
   INCOMPLETE,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
+import { getDevContext } from '../../../global/state/globalState';
 
 export function noDownstreamDependencies(params) {
   const { matchUp, matchUpStatus, score, winningSide } = params;
@@ -66,6 +67,12 @@ export function noDownstreamDependencies(params) {
     return { ...SUCCESS, connectedStructures };
   };
 
+  if (removeWinningSide && winningSide) {
+    // this is only possible if a TEAM dualMatchUp has an SINGLES/DOUBLES matchUp winningSide change
+    removeDirected();
+    return scoreModification(params);
+  }
+
   return (
     (winningSide && attemptToSetWinningSide(params)) ||
     (scoreWithNoWinningSide && removeDirected({ removeScore })) ||
@@ -94,7 +101,8 @@ function scoreModification(params) {
       structure,
       event,
     });
-    console.log('ndd', { removeWinningSide, removeDirected });
+    if (getDevContext({ advancement: true }))
+      console.log('ndd', { removeWinningSide, removeDirected });
   }
 
   return result;
