@@ -1,44 +1,23 @@
 {
   "collectionDefinitions": [
     {
-      "category": { "ageCategoryCode": "16U" },
-      "collectionName": "16U Singles",
+      "collectionName": "Boys Singles",
       "gender": "MALE",
-      "matchUpCount": 2,
+      "matchUpCount": 4,
       "matchUpFormat": "SET3-S:6/TB7",
       "matchUpType": "SINGLES",
       "matchUpValue": 1
     },
     {
-      "category": { "ageCategoryCode": "18U" },
-      "collectionName": "18U Singles",
-      "gender": "MALE",
-      "matchUpCount": 2,
-      "matchUpFormat": "SET3-S:6/TB7",
-      "matchUpType": "SINGLES",
-      "matchUpValue": 1
-    },
-    {
-      "category": { "ageCategoryCode": "16U" },
-      "collectionName": "16U Singles",
+      "collectionName": "Girls Singles",
       "gender": "FEMALE",
-      "matchUpCount": 2,
+      "matchUpCount": 4,
       "matchUpFormat": "SET3-S:6/TB7",
       "matchUpType": "SINGLES",
       "matchUpValue": 1
     },
     {
-      "category": { "ageCategoryCode": "18U" },
-      "collectionName": "18U Singles",
-      "gender": "FEMALE",
-      "matchUpCount": 2,
-      "matchUpFormat": "SET3-S:6/TB7",
-      "matchUpType": "SINGLES",
-      "matchUpValue": 1
-    },
-    {
-      "category": { "ageCategoryCode": "16U" },
-      "collectionName": "16U Doubles",
+      "collectionName": "Boys Doubles",
       "gender": "MALE",
       "matchUpCount": 2,
       "matchUpFormat": "SET1-S:8NOAD/TB7@7",
@@ -46,26 +25,7 @@
       "matchUpValue": 1
     },
     {
-      "category": { "ageCategoryCode": "18U" },
-      "collectionName": "18U Doubles",
-      "gender": "MALE",
-      "matchUpCount": 2,
-      "matchUpFormat": "SET1-S:8NOAD/TB7@7",
-      "matchUpType": "DOUBLES",
-      "matchUpValue": 1
-    },
-    {
-      "category": { "ageCategoryCode": "16U" },
-      "collectionName": "16U Doubles",
-      "gender": "FEMALE",
-      "matchUpCount": 2,
-      "matchUpFormat": "SET1-S:8NOAD/TB7@7",
-      "matchUpType": "DOUBLES",
-      "matchUpValue": 1
-    },
-    {
-      "category": { "ageCategoryCode": "18U" },
-      "collectionName": "18U Doubles",
+      "collectionName": "Girls Doubles",
       "gender": "FEMALE",
       "matchUpCount": 2,
       "matchUpFormat": "SET1-S:8NOAD/TB7@7",
@@ -74,6 +34,15 @@
     },
     {
       "collectionName": "Mixed Doubles",
+      "gender": "MIXED",
+      "matchUpCount": 4,
+      "matchUpFormat": "SET1-S:TB10",
+      "matchUpType": "DOUBLES",
+      "matchUpValue": 1,
+      "processCodes": ["RANKING.IGNORE"]
+    },
+    {
+      "collectionName": "Mixed Doubles Tiebreak",
       "gender": "MIXED",
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:TB10",

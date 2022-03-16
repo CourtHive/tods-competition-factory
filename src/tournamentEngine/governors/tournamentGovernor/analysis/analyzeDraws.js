@@ -1,4 +1,4 @@
-import { structureActiveDrawPositions } from '../../../../drawEngine/getters/structureActiveDrawPositions';
+import { getStructureDrawPositionProfiles } from '../../../../drawEngine/getters/getStructureDrawPositionProfiles';
 import { getRoundMatchUps } from '../../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionAssignments } from '../../../../drawEngine/getters/positionsGetter';
 import { getStructureLinks } from '../../../../drawEngine/getters/linkGetter';
@@ -32,7 +32,7 @@ export function analyzeDraws({ tournamentRecord }) {
     const structuresData = structures.map((structure) => {
       const { stage, stageSequence, structureId } = structure;
       const orderNumber = stageOrder[stage];
-      const { inContextStructureMatchUps } = structureActiveDrawPositions({
+      const { inContextStructureMatchUps } = getStructureDrawPositionProfiles({
         drawDefinition,
         structure,
       });

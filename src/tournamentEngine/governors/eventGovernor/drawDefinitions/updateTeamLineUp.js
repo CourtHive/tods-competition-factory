@@ -43,37 +43,6 @@ export function updateTeamLineUp({
   });
 
   const value = existingExtension?.value || {};
-
-  /*
-  const participantIdsInLineUp = lineUp.map(getParticipantId);
-  const conflict = Object.keys(value)
-    // filter out the lineUp of the team participant whose lineUp is being updated
-    .filter((key) => key !== participantId)
-    .find((opponentParticipantId) => {
-      const opponentLineUp = value[opponentParticipantId];
-      const opponentIndividualParticipantIds =
-        opponentLineUp.map(getParticipantId);
-      const overlap = intersection(
-        opponentIndividualParticipantIds,
-        participantIdsInLineUp
-      );
-      if (overlap.length) {
-        console.log({
-          conflicts: overlap.length,
-          lineUp,
-          opponentLineUp,
-          participantIdsInLineUp,
-          opponentIndividualParticipantIds,
-        });
-      }
-      return overlap.length;
-    });
-
-  if (conflict) {
-    return { error: 'lineUp conflict' };
-  }
-  */
-
   value[participantId] = lineUp;
 
   const extension = { name: LINEUPS, value };

@@ -1,11 +1,12 @@
 import { getPolicyDefinitions } from '../../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
 import { getSourceStructureIdsDirectedBy } from '../../../getters/getSourceStructureIdsDirectedBy';
-import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
+import { getStructureDrawPositionProfiles } from '../../../getters/getStructureDrawPositionProfiles';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
 import { getAssignedParticipantIds } from '../../../getters/getAssignedParticipantIds';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getValidLuckyLosersAction } from './getValidLuckyLoserAction';
 import { getValidAlternatesAction } from './getValidAlternatesAction';
+import { getValidQualifiersAction } from './getValidQualifiersAction';
 import { getValidAssignmentActions } from './participantAssignments';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
 import { getStageEntries } from '../../../getters/stageGetter';
@@ -45,6 +46,7 @@ import {
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT_METHOD,
   WITHDRAW_PARTICIPANT,
+  QUALIFYING_PARTICIPANT,
 } from '../../../../constants/positionActionConstants';
 import {
   CONSOLATION,
@@ -79,12 +81,14 @@ export function positionActions({
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
   const {
+    drawPositionInitialRounds,
+    qualifyingDrawPositions,
+    inactiveDrawPositions,
     activeDrawPositions,
     byeDrawPositions,
-    inactiveDrawPositions,
     structure,
     error,
-  } = structureActiveDrawPositions({
+  } = getStructureDrawPositionProfiles({
     tournamentRecord,
     drawDefinition,
     structureId,
@@ -115,9 +119,12 @@ export function positionActions({
     event,
   });
 
+  // targetRoundNumber will be > 1 for fed positions
+  // TODO: so it is necessary to determine the first round in which a drawPosition occurs
   const { sourceStructureIds: positionSourceStructureIds } =
     getSourceStructureIdsDirectedBy({
       finishingPosition: WIN_RATIO,
+      targetRoundNumber: 1,
       linkType: POSITION,
       drawDefinition,
       structureId,
@@ -129,8 +136,8 @@ export function positionActions({
     sourceStructuresCompleted = positionSourceStructureIds.reduce(
       (ready, sourceStructureId) => {
         const completed = isCompletedStructure({
-          drawDefinition,
           structureId: sourceStructureId,
+          drawDefinition,
         });
         return completed && ready;
       },
@@ -193,6 +200,7 @@ export function positionActions({
     .map((entry) => entry.participantId);
 
   const isByePosition = byeDrawPositions.includes(drawPosition);
+  const isQualifierPosition = qualifyingDrawPositions.includes(drawPosition);
   const isActiveDrawPosition = activeDrawPositions.includes(drawPosition);
 
   if (actionsDisabled)
@@ -222,6 +230,24 @@ export function positionActions({
       policyDefinitions,
       drawDefinition,
       isByePosition,
+      drawPosition,
+      structureId,
+      structure,
+    });
+    validAssignmentActions?.forEach((action) => validActions.push(action));
+  }
+
+  if (isAvailableAction({ policyActions, action: QUALIFYING_PARTICIPANT })) {
+    const { validAssignmentActions } = getValidQualifiersAction({
+      positionSourceStructureIds,
+      drawPositionInitialRounds,
+      isWinRatioFedStructure,
+      tournamentParticipants,
+      isQualifierPosition,
+      positionAssignments,
+      activeDrawPositions,
+      policyDefinitions,
+      drawDefinition,
       drawPosition,
       structureId,
       structure,

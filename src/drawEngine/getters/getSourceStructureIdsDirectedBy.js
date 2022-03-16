@@ -3,6 +3,7 @@ import { getStructureLinks } from './linkGetter';
 
 export function getSourceStructureIdsDirectedBy({
   finishingPosition,
+  targetRoundNumber,
   drawDefinition,
   structureId,
   linkType,
@@ -15,15 +16,20 @@ export function getSourceStructureIdsDirectedBy({
 
   const sourceStructureIds = (links?.target || [])
     .filter(({ linkType: structureLinkType }) => structureLinkType === linkType)
+    // if a target roundNumber is provided, only consider structures with link target matching roundNumber
+    .filter(
+      ({ target }) =>
+        !targetRoundNumber || targetRoundNumber === target.roundNumber
+    )
     .map(({ source }) => source.structureId)
     .map((sourceStructureId) => {
       const { structure: sourceStructure } = findStructure({
-        drawDefinition,
         structureId: sourceStructureId,
+        drawDefinition,
       });
       return {
-        sourceStructureId,
         sourceFinishingPosition: sourceStructure.finishingPosition,
+        sourceStructureId,
       };
     })
     .filter(

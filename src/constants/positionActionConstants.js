@@ -1,3 +1,4 @@
+export const QUALIFYING_PARTICIPANT_METHOD = 'qualifierDrawPositionAssignment';
 export const WITHDRAW_PARTICIPANT_METHOD = 'withdrawParticipantAtDrawPosition';
 export const ALTERNATE_PARTICIPANT_METHOD = 'alternateDrawPositionAssignment';
 export const LUCKY_PARTICIPANT_METHOD = 'luckyLoserDrawPositionAssignment';
@@ -10,6 +11,7 @@ export const ASSIGN_BYE_METHOD = 'assignDrawPositionBye';
 export const SEED_VALUE_METHOD = 'modifySeedAssignment';
 export const ADD_PENALTY_METHOD = 'addPenalty';
 
+export const QUALIFYING_PARTICIPANT = 'QUALIFIER';
 export const ALTERNATE_PARTICIPANT = 'ALTERNATE';
 export const WITHDRAW_PARTICIPANT = 'WITHDRAW';
 export const ASSIGN_PARTICIPANT = 'ASSIGN';
@@ -22,6 +24,7 @@ export const ADD_PENALTY = 'PENALTY';
 export const ASSIGN_BYE = 'BYE';
 
 export const positionActionConstants = {
+  QUALIFYING_PARTICIPANT,
   ALTERNATE_PARTICIPANT,
   WITHDRAW_PARTICIPANT,
   ASSIGN_PARTICIPANT,

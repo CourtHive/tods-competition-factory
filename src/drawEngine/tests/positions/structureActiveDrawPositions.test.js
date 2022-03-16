@@ -1,7 +1,7 @@
-import mocksEngine from '../../../mocksEngine';
-import { numericSort } from '../../../utilities';
+import { getStructureDrawPositionProfiles } from '../../getters/getStructureDrawPositionProfiles';
 import tournamentEngine from '../../../tournamentEngine/sync';
-import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
+import { numericSort } from '../../../utilities';
+import mocksEngine from '../../../mocksEngine';
 
 import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
 
@@ -45,7 +45,7 @@ it('correctly identifies active drawPositions', () => {
   expect(targetMatchUp.matchUpStatus).toEqual(COMPLETED);
 
   const { activeDrawPositions, byeDrawPositions } =
-    structureActiveDrawPositions({ drawDefinition, structureId });
+    getStructureDrawPositionProfiles({ drawDefinition, structureId });
   expect(activeDrawPositions).toEqual([3, 4]);
   expect(byeDrawPositions).toEqual([2, 31]);
 
@@ -103,7 +103,7 @@ it('correctly identifies active BYE drawPositions', () => {
   expect(targetMatchUp.matchUpStatus).toEqual(COMPLETED);
 
   const { activeDrawPositions, byeDrawPositions } =
-    structureActiveDrawPositions({ drawDefinition, structureId });
+    getStructureDrawPositionProfiles({ drawDefinition, structureId });
   expect(activeDrawPositions.sort(numericSort)).toEqual([1, 2, 3, 4]);
   expect(byeDrawPositions).toEqual([2, 31]);
 

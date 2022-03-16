@@ -1,4 +1,4 @@
-import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
+import { getStructureDrawPositionProfiles } from '../../getters/getStructureDrawPositionProfiles';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
@@ -47,7 +47,7 @@ export function clearDrawPosition({
   if (!drawPosition) return { error: MISSING_DRAW_POSITION };
   if (!participantId) participantId = existingAssignment?.participantId;
 
-  const { activeDrawPositions } = structureActiveDrawPositions({
+  const { activeDrawPositions } = getStructureDrawPositionProfiles({
     drawDefinition,
     structureId,
   });
