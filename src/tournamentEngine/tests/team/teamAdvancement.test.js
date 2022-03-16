@@ -410,7 +410,7 @@ test('tieFormat with scoreValue calculation', () => {
   expect(secondRoundDualMatchUp.drawPositions).toEqual([1, 3]);
 });
 
-test('properly removes advanced team at 9-8 in USTA_GOLD', () => {
+test('properly removes advanced team at 9-0 in USTA_GOLD', () => {
   const {
     tournamentRecord,
     drawIds: [drawId],
@@ -426,7 +426,21 @@ test('properly removes advanced team at 9-8 in USTA_GOLD', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let outcome = { winningSide: 1 };
+  let outcome = {
+    winningSide: 1,
+    score: {
+      scoreStringSide1: '8-1',
+      scoreStringSide2: '1-8',
+      sets: [
+        {
+          setNumber: 1,
+          side1Score: 8,
+          side2Score: 1,
+          winningSide: 1,
+        },
+      ],
+    },
+  };
 
   let { matchUps: firstRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
@@ -491,25 +505,47 @@ test('properly removes advanced team at 9-8 in USTA_GOLD', () => {
 
   const matchUpId = firstRoundDualMatchUps[0].tieMatchUps[0].matchUpId;
 
+  outcome = {
+    winningSide: 2,
+    score: {
+      scoreStringSide1: '1-8',
+      scoreStringSide2: '8-1',
+      sets: [
+        {
+          setNumber: 1,
+          side1Score: 1,
+          side2Score: 1,
+          winningSide: 8,
+        },
+      ],
+    },
+  };
+
   const result = tournamentEngine.setMatchUpStatus({
-    outcome: { winningSide: 2 },
     matchUpId,
+    outcome,
     drawId,
   });
   expect(result.success).toEqual(true);
 
-  let matchUps = tournamentEngine.allTournamentMatchUps({
-    matchUpFilters: { matchUpTypes: [TEAM] },
-  }).matchUps;
+  const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  const teamMatchUps = matchUps.filter(
+    ({ matchUpType }) => matchUpType === TEAM
+  );
 
-  let firstRoundFirst = matchUps.find(
+  let firstRoundFirst = teamMatchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 1
   );
-  let secondRoundFirst = matchUps.find(
+  let secondRoundFirst = teamMatchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
   );
 
   expect(firstRoundFirst.winningSide).toBeUndefined();
   expect(firstRoundFirst.score.scoreStringSide1).toEqual('8-1');
   expect(secondRoundFirst.drawPositions.filter(Boolean)).toEqual([3]);
+
+  const changedMatchUp = matchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+  expect(changedMatchUp.score.scoreStringSide1).toEqual('1-8');
 });

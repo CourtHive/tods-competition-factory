@@ -14,7 +14,6 @@ import {
   INCOMPLETE,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import { getDevContext } from '../../../global/state/globalState';
 
 export function noDownstreamDependencies(params) {
   const { matchUp, matchUpStatus, score, winningSide } = params;
@@ -67,9 +66,8 @@ export function noDownstreamDependencies(params) {
     return { ...SUCCESS, connectedStructures };
   };
 
-  if (removeWinningSide && winningSide) {
+  if (removeWinningSide && winningSide && params.isCollectionMatchUp) {
     // this is only possible if a TEAM dualMatchUp has an SINGLES/DOUBLES matchUp winningSide change
-    removeDirected();
     return scoreModification(params);
   }
 
@@ -84,15 +82,20 @@ export function noDownstreamDependencies(params) {
 }
 
 function scoreModification(params) {
-  const isCollectionMatchUp = Boolean(params.matchUp.collectionId);
   const removeDirected =
     params.isCollectionMatchUp &&
     params.dualMatchUp?.winningSide &&
-    params.projectedWinningSide;
-  const result = modifyMatchUpScore({ ...params, removeScore: true });
+    !params.projectedWinningSide;
+
+  if (removeDirected) {
+    const result = removeDirectedParticipants(params);
+    if (result.error) return result;
+  }
+  // const result = modifyMatchUpScore({ ...params, removeScore: true });
+  const result = modifyMatchUpScore({ ...params });
 
   // recalculate dualMatchUp score if isCollectionMatchUp
-  if (isCollectionMatchUp) {
+  if (params.isCollectionMatchUp) {
     const { matchUpTieId, drawDefinition, structure, event } = params;
     const { removeWinningSide } = updateTieMatchUpScore({
       tournamentRecord: params.tournamentRecord,
@@ -101,8 +104,8 @@ function scoreModification(params) {
       structure,
       event,
     });
-    if (getDevContext({ advancement: true }))
-      console.log('ndd', { removeWinningSide, removeDirected });
+
+    if (removeWinningSide) console.log('REMOVE WINNING SIDE');
   }
 
   return result;
