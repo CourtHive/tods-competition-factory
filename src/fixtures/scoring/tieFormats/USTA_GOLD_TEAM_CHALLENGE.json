@@ -38,8 +38,7 @@
       "matchUpCount": 4,
       "matchUpFormat": "SET3-S:6/TB7",
       "matchUpType": "DOUBLES",
-      "matchUpValue": 1,
-      "processCodes": ["RANKING.IGNORE"]
+      "matchUpValue": 1
     },
     {
       "collectionName": "Mixed Doubles Tiebreak",
