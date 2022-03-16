@@ -27,19 +27,6 @@ export function getStructureDrawPositionProfiles({
     structure,
   });
 
-  // TODO: collect the lowest roundNumber at which each drawPosition occurs
-
-  // first collect all drawPositions for the structure
-  const drawPositions = unique(
-    []
-      .concat(
-        ...inContextStructureMatchUps.map(
-          (matchUp) => matchUp.drawPositions || []
-        )
-      )
-      .filter(Boolean)
-  ).sort(numericSort);
-
   // get a mapping of all matchUpIds to dependent matchUpIds
   const { matchUpDependencies } = getMatchUpDependencies({
     matchUps: inContextStructureMatchUps,
@@ -47,20 +34,37 @@ export function getStructureDrawPositionProfiles({
     drawDefinition,
   });
 
-  // determine which matchUps are active
-  const activeMatchUps = inContextStructureMatchUps.filter(isActiveMatchUp);
+  const activeDependentMatchUpIdsCollection = [];
+  const drawPositionInitialRounds = {};
+  const drawPositionsCollection = [];
+  const activeMatchUps = [];
 
-  // create an array of all matchUpIds active because they are dependent
-  const activeDependentMatchUpIds = unique(
-    activeMatchUps
-      .map((matchUp) =>
-        [].concat(
-          ...(matchUpDependencies[matchUp.matchUpId]?.matchUpIds || []),
-          matchUp.matchUpId
-        )
-      )
-      .flat()
+  for (const matchUp of inContextStructureMatchUps) {
+    drawPositionsCollection.push(...(matchUp.drawPositions || []));
+    if (isActiveMatchUp(matchUp)) {
+      activeMatchUps.push(matchUp);
+      activeDependentMatchUpIdsCollection.push(
+        matchUp.matchUpId,
+        ...(matchUpDependencies[matchUp.matchUpId]?.matchUpIds || [])
+      );
+    }
+    const roundNumber = matchUp.roundNumber;
+    for (const drawPosition of (matchUp.drawPositions || []).filter(Boolean)) {
+      if (
+        !drawPositionInitialRounds[drawPosition] ||
+        drawPositionInitialRounds[drawPosition] > roundNumber
+      ) {
+        drawPositionInitialRounds[drawPosition] = roundNumber;
+      }
+    }
+  }
+
+  // sorted drawPositions for the structure
+  const drawPositions = unique(drawPositionsCollection.filter(Boolean)).sort(
+    numericSort
   );
+
+  const activeDependentMatchUpIds = unique(activeDependentMatchUpIdsCollection);
 
   const activeDrawPositions = unique(
     inContextStructureMatchUps
@@ -94,6 +98,7 @@ export function getStructureDrawPositionProfiles({
   return {
     allDrawPositions: drawPositions,
     inContextStructureMatchUps,
+    drawPositionInitialRounds,
     activeDependentMatchUpIds,
     qualifyingDrawPositions,
     inactiveDrawPositions,
