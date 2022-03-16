@@ -233,6 +233,7 @@ export function positionActions({
       drawPosition,
       structureId,
       structure,
+      event,
     });
     validAssignmentActions?.forEach((action) => validActions.push(action));
   }

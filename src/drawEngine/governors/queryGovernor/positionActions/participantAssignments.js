@@ -11,6 +11,7 @@ import {
   ASSIGN_PARTICIPANT,
   ASSIGN_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
+import { TEAM } from '../../../../constants/eventConstants';
 
 export function getValidAssignmentActions({
   positionSourceStructureIds,
@@ -25,6 +26,7 @@ export function getValidAssignmentActions({
   drawPosition,
   structureId,
   structure,
+  event,
 }) {
   const { drawId } = drawDefinition;
   const validAssignmentActions = [];
@@ -82,6 +84,10 @@ export function getValidAssignmentActions({
 
     const availableParticipantIds = unique(
       (completedMatchUps || [])
+        // filter completedMatchUps to exclude SINGLES/DOUBLES for TEAM events
+        .filter(
+          ({ matchUpType }) => event?.eventType !== TEAM || matchUpType === TEAM
+        )
         ?.map(({ sides }) => sides.map(getParticipantId))
         .flat()
         .filter(
