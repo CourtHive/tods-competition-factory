@@ -36,7 +36,7 @@
       "collectionName": "Mixed Doubles",
       "gender": "MIXED",
       "matchUpCount": 4,
-      "matchUpFormat": "SET1-S:TB10",
+      "matchUpFormat": "SET3-S:6/TB7",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1,
       "processCodes": ["RANKING.IGNORE"]
@@ -45,7 +45,7 @@
       "collectionName": "Mixed Doubles Tiebreak",
       "gender": "MIXED",
       "matchUpCount": 1,
-      "matchUpFormat": "SET1-S:TB10",
+      "matchUpFormat": "SET3-S:6/TB7",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1,
       "processCodes": ["RANKING.IGNORE"]
