@@ -6,27 +6,31 @@ import {
 export function getValidQualifiersAction({
   /*
   positionSourceStructureIds,
+  drawPositionInitialRounds,
   isWinRatioFedStructure,
   tournamentParticipants,
-  isQualifierPosition,
   positionAssignments,
   activeDrawPositions,
   policyDefinitions,
   drawDefinition,
   */
+  isQualifierPosition,
   drawPosition,
   structureId,
   drawId,
 }) {
-  const validAssignmentActions = [
-    {
+  const validAssignmentActions = [];
+
+  if (isQualifierPosition) {
+    // this should be "if qualifiers are available"
+    validAssignmentActions.push({
       type: QUALIFYING_PARTICIPANT,
       method: QUALIFYING_PARTICIPANT_METHOD,
       qualifyingParticipantIds: [],
       qualifyingParticipants: [],
       payload: { drawId, structureId, drawPosition },
-    },
-  ];
+    });
+  }
 
   return { validAssignmentActions };
 }

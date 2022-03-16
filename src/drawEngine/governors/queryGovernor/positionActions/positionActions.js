@@ -81,6 +81,7 @@ export function positionActions({
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
   const {
+    drawPositionInitialRounds,
     qualifyingDrawPositions,
     inactiveDrawPositions,
     activeDrawPositions,
@@ -239,6 +240,7 @@ export function positionActions({
   if (isAvailableAction({ policyActions, action: QUALIFYING_PARTICIPANT })) {
     const { validAssignmentActions } = getValidQualifiersAction({
       positionSourceStructureIds,
+      drawPositionInitialRounds,
       isWinRatioFedStructure,
       tournamentParticipants,
       isQualifierPosition,
