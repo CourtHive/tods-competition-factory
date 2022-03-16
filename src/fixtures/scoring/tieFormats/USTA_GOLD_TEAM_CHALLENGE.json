@@ -20,7 +20,7 @@
       "collectionName": "Boys Doubles",
       "gender": "MALE",
       "matchUpCount": 2,
-      "matchUpFormat": "SET1-S:8NOAD/TB7@7",
+      "matchUpFormat": "SET1-S:8/TB7@7",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
     },
@@ -28,7 +28,7 @@
       "collectionName": "Girls Doubles",
       "gender": "FEMALE",
       "matchUpCount": 2,
-      "matchUpFormat": "SET1-S:8NOAD/TB7@7",
+      "matchUpFormat": "SET1-S:8/TB7@7",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
     },
@@ -36,7 +36,7 @@
       "collectionName": "Mixed Doubles",
       "gender": "MIXED",
       "matchUpCount": 4,
-      "matchUpFormat": "SET3-S:6/TB7",
+      "matchUpFormat": "SET1-S:8/TB7@7",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
     },
@@ -44,7 +44,7 @@
       "collectionName": "Mixed Doubles Tiebreak",
       "gender": "MIXED",
       "matchUpCount": 1,
-      "matchUpFormat": "SET3-S:6/TB7",
+      "matchUpFormat": "SET1-S:8/TB7@7",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1,
       "processCodes": ["RANKING.IGNORE"]
