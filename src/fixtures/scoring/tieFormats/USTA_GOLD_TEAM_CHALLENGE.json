@@ -44,7 +44,7 @@
       "collectionName": "Mixed Doubles Tiebreak",
       "gender": "MIXED",
       "matchUpCount": 1,
-      "matchUpFormat": "SET1-S:8/TB7@7",
+      "matchUpFormat": "SET1-S:TB10",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1,
       "processCodes": ["RANKING.IGNORE"]
