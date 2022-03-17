@@ -27,7 +27,7 @@ export function getTargetMatchUps({
   const targetMatchUps =
     inContextDrawMatchUps?.filter(
       (matchUp) =>
-        targetStructureIds.includes(matchUp.strucuteId) &&
+        targetStructureIds.includes(matchUp.structureId) &&
         intersection(matchUp.drawPositions || [], drawPositions).length
     ) || [];
 
