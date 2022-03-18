@@ -1,10 +1,19 @@
 export function scoreHasValue({ score } = {}) {
-  const { sets, scoreStringSide1, scoreStringSide2 } = score || {};
-  return !score
-    ? false
-    : scoreStringSide1 || scoreStringSide2
-    ? true
-    : sets?.length
-    ? Object.values(sets[0]).some((value) => value)
-    : false;
+  const firstSet = score?.sets?.[0];
+  const {
+    side1Score,
+    side2Score,
+    side1TiebreakScore,
+    side2TiebreakScore,
+    side1PointScore,
+    side2PointScore,
+  } = firstSet || {};
+  const firstSetScore =
+    side1Score ||
+    side2Score ||
+    side1TiebreakScore ||
+    side2TiebreakScore ||
+    side1PointScore ||
+    side2PointScore;
+  return score?.sets?.length > 1 || firstSetScore;
 }
