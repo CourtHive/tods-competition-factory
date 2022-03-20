@@ -5,13 +5,13 @@ import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { unique } from '../../../../utilities';
 
 import { POLICY_TYPE_SEEDING } from '../../../../constants/policyConstants';
+import { TEAM } from '../../../../constants/eventConstants';
 import {
   ASSIGN_BYE,
   ASSIGN_BYE_METHOD,
   ASSIGN_PARTICIPANT,
   ASSIGN_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
-import { TEAM } from '../../../../constants/eventConstants';
 
 export function getValidAssignmentActions({
   positionSourceStructureIds,
