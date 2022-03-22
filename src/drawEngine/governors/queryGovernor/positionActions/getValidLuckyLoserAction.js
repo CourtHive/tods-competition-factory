@@ -97,7 +97,10 @@ export function getValidLuckyLosersAction({
   const availableLuckyLoserParticipantIds = completedMatchUps
     ?.map(({ winningSide, sides }) => sides[1 - (winningSide - 1)])
     .map(getParticipantId)
-    .filter((participantId) => !assignedParticipantIds.includes(participantId));
+    .filter(
+      (participantId) =>
+        participantId && !assignedParticipantIds.includes(participantId)
+    );
 
   const availableLuckyLosers = tournamentParticipants?.filter((participant) =>
     availableLuckyLoserParticipantIds?.includes(participant.participantId)

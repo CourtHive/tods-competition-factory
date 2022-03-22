@@ -91,7 +91,8 @@ export function getValidAssignmentActions({
         ?.map(({ sides }) => sides.map(getParticipantId))
         .flat()
         .filter(
-          (participantId) => !assignedParticipantIds.includes(participantId)
+          (participantId) =>
+            participantId && !assignedParticipantIds.includes(participantId)
         )
     );
 
