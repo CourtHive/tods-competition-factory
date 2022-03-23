@@ -15,5 +15,6 @@ export function scoreHasValue({ score } = {}) {
     side2TiebreakScore ||
     side1PointScore ||
     side2PointScore;
-  return score?.sets?.length > 1 || firstSetScore;
+  const hasValue = score?.sets?.length > 1 || firstSetScore;
+  return hasValue;
 }
