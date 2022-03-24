@@ -159,6 +159,7 @@ export function addParticipantContext(params) {
     // loop through all filtered events and capture events played
     params.tournamentEvents?.forEach((rawEvent) => {
       const event = makeDeepCopy(rawEvent, true, true);
+      const eventDrawsCount = event.drawDefinitions?.length;
 
       if (event?.eventType === TEAM) {
         // add back lineUps extension for team resolution when { matchUpType: TEAM } is missing side.lineUps
@@ -242,7 +243,7 @@ export function addParticipantContext(params) {
           });
         });
 
-      const addDrawData = ({ drawId, drawEntry, drawName, drawType }) => {
+      const addDrawData = ({ drawEntry, drawId }) => {
         const { participantId, entryStage, entryStatus, entryPosition } =
           drawEntry;
 
@@ -267,9 +268,8 @@ export function addParticipantContext(params) {
               partnerParticipantIds: [],
               entryPosition,
               entryStatus,
+              eventDrawsCount,
               entryStage,
-              drawName,
-              drawType,
               eventId,
               drawId,
             };
@@ -293,7 +293,7 @@ export function addParticipantContext(params) {
 
         if (!drawIdsWithDefinitions.includes(drawId)) {
           drawEntries?.forEach((drawEntry) =>
-            addDrawData({ drawId, drawEntry })
+            addDrawData({ drawEntry, drawId })
           );
         }
       });
@@ -360,7 +360,7 @@ export function addParticipantContext(params) {
         });
 
         matchUps?.forEach((matchUp) =>
-          processMatchUp({ matchUp, drawDetails, eventType })
+          processMatchUp({ matchUp, drawDetails, eventType, eventDrawsCount })
         );
       }
     });
@@ -408,7 +408,12 @@ export function addParticipantContext(params) {
     }
   });
 
-  function processMatchUp({ matchUp, drawDetails, eventType }) {
+  function processMatchUp({
+    eventDrawsCount,
+    drawDetails,
+    eventType,
+    matchUp,
+  }) {
     const {
       collectionId,
       collectionPosition,
@@ -613,6 +618,7 @@ export function addParticipantContext(params) {
               drawId,
               eventId,
               eventType,
+              eventDrawsCount,
               finishingPositionRange,
               loserTo,
               matchUpId,
