@@ -54,24 +54,25 @@ export function allTournamentMatchUps({
   };
 
   const matchUps = events
-    .map(
-      (event) =>
-        allEventMatchUps({
-          context: additionalContext,
-          scheduleVisibilityFilters,
-          tournamentAppliedPolicies,
-          participantsProfile,
-          policyDefinitions,
-          tournamentRecord,
-          matchUpFilters,
-          contextFilters,
-          contextProfile,
-          nextMatchUps,
-          participants,
-          inContext,
-          event,
-        }).matchUps
-    )
+    .map((event) => {
+      additionalContext.eventDrawsCount = event.drawDefinitions?.length || 0;
+
+      return allEventMatchUps({
+        context: additionalContext,
+        scheduleVisibilityFilters,
+        tournamentAppliedPolicies,
+        participantsProfile,
+        policyDefinitions,
+        tournamentRecord,
+        matchUpFilters,
+        contextFilters,
+        contextProfile,
+        nextMatchUps,
+        participants,
+        inContext,
+        event,
+      }).matchUps;
+    })
     .flat(Infinity)
     .concat(...(tournamentRecord.matchUps || []));
 
