@@ -20,9 +20,9 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 /*
- * collectionDefinition will be added to an event tieFormat (if present)
- * if a matchUpId is provided, will be added to matchUp.tieFormat
- * if a structureId is provided, will be added to structure.tieFormat
+ * collectionDefinition will be removed from an event tieFormat (if present)
+ * if a matchUpId is provided, will be removed from matchUp.tieFormat
+ * if a structureId is provided, will be removed from structure.tieFormat
  * TODO: determine whether all contained instances of tieFormat should be updated
  */
 export function removeCollectionDefinition({
