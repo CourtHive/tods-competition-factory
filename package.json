@@ -114,7 +114,7 @@
     "lint-staged": "12.3.7",
     "np": "7.6.1",
     "pinst": "3.0.0",
-    "prettier": "2.6.0",
+    "prettier": "2.6.1",
     "prettier-eslint": "13.0.0",
     "rollup": "2.70.1",
     "rollup-plugin-dts": "4.2.0",
