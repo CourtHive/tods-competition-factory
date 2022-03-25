@@ -29,6 +29,7 @@ it('can add collectionDefinitions to tieFormats', () => {
     drawId,
   });
   expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
+  expect(result.addedMatchUps.length).toEqual(3);
 
   const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.tieFormat.winCriteria.valueGoal).toEqual(7);
@@ -41,6 +42,7 @@ it('can add collectionDefinitions to tieFormats', () => {
     eventId,
   });
 
+  expect(result.addedMatchUps.length).toEqual(0);
   expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
 
   const collectionOrders = result.tieFormat.collectionDefinitions.map(

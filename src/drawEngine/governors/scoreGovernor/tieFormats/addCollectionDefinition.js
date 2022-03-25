@@ -1,12 +1,19 @@
+import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { generateCollectionMatchUps } from '../../../generators/tieMatchUps';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { getTieFormat } from './getTieFormat';
 import { UUID } from '../../../../utilities';
+import {
+  addMatchUpsNotice,
+  modifyDrawNotice,
+} from '../../../notifications/drawNotifications';
 import {
   validateCollectionDefinition,
   validateTieFormat,
 } from './tieFormatUtilities';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { TEAM } from '../../../../constants/matchUpTypes';
 import {
   DUPLICATE_VALUE,
   INVALID_VALUES,
@@ -21,11 +28,13 @@ import {
  */
 export function addCollectionDefinition({
   collectionDefinition,
+  tournamentRecord,
   drawDefinition,
   tieFormatName,
   structureId,
   matchUpId,
   eventId,
+  uuids,
   event,
 }) {
   const { valid, errors } = validateCollectionDefinition({
@@ -87,17 +96,101 @@ export function addCollectionDefinition({
     }
   }
 
+  const addedMatchUps = [];
+
   if (eventId) {
     event.tieFormat = tieFormat;
-  } else if (matchUp) {
+    // all team matchUps in the event which do not have tieFormats and where draws/strucures do not have tieFormats should have matchUps added
+    // TODO: implement
+    console.log('support for modifying event.tieFormat not yet implemented');
+  } else if (matchUpId && matchUp) {
     matchUp.tieFormat = tieFormat;
-  } else if (structure) {
+    const { matchUps: newMatchUps = [] } = generateCollectionMatchUps({
+      collectionDefinition,
+      uuids,
+    });
+
+    if (!Array.isArray(matchUp.tieMatchUps)) matchUp.tieMatchUps = [];
+    matchUp.tieMatchUps.push(...newMatchUps);
+    queueNoficiations({
+      matchUps: addedMatchUps,
+      tournamentRecord,
+      drawDefinition,
+    });
+  } else if (structureId && structure) {
     structure.tieFormat = tieFormat;
+    // all team matchUps in the structure which do not have tieFormats should have matchUps added
+    const { newMatchUps } = updateStructureMatchUps({
+      collectionDefinition,
+      structure,
+      uuids,
+    });
+    addedMatchUps.push(...newMatchUps);
+
+    queueNoficiations({
+      structureIds: [structureId],
+      matchUps: addedMatchUps,
+      tournamentRecord,
+      drawDefinition,
+    });
   } else if (drawDefinition) {
+    // all team matchUps in the drawDefinition which do not have tieFormats and where strucures do not have tieFormats should have matchUps added
     drawDefinition.tieFormat = tieFormat;
+    const modifiedStructureIds = [];
+
+    for (const structure of drawDefinition.structures || []) {
+      const { newMatchUps } = updateStructureMatchUps({
+        collectionDefinition,
+        structure,
+        uuids,
+      });
+      modifiedStructureIds.push(structureId);
+      addedMatchUps.push(...newMatchUps);
+    }
+
+    queueNoficiations({
+      structureIds: modifiedStructureIds,
+      matchUps: addedMatchUps,
+      tournamentRecord,
+      drawDefinition,
+    });
   } else {
     return { error: MISSING_DRAW_DEFINITION };
   }
 
-  return { ...SUCCESS, tieFormat };
+  return { ...SUCCESS, tieFormat, addedMatchUps };
+}
+
+function updateStructureMatchUps({ structure, collectionDefinition, uuids }) {
+  const newMatchUps = [];
+  const matchUps = getAllStructureMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM] },
+    structure,
+  })?.matchUps;
+  for (const matchUp of matchUps) {
+    const tieMatchUps = generateCollectionMatchUps({
+      collectionDefinition,
+      uuids,
+    });
+
+    if (!Array.isArray(matchUp.tieMatchUps)) matchUp.tieMatchUps = [];
+    matchUp.tieMatchUps.push(...tieMatchUps);
+    newMatchUps.push(...tieMatchUps);
+
+    return { newMatchUps };
+  }
+}
+
+function queueNoficiations({
+  tournamentRecord,
+  addedMatchUps,
+  drawDefinition,
+  modifiedStructureIds,
+}) {
+  addMatchUpsNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    matchUps: addedMatchUps,
+    drawDefinition,
+  });
+  modifyDrawNotice({ drawDefinition, structureIds: modifiedStructureIds });
 }
