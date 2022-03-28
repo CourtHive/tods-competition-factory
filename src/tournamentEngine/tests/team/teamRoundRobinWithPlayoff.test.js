@@ -94,8 +94,6 @@ test('changing scores after playoffs generated in team round robin with playoffs
 
   const doublesMatchUp = matchUps.find((m) => m.matchUpId === doublesMatchUpId);
 
-  console.log(doublesMatchUp);
-
   expect(doublesMatchUp.matchUpStatus).toEqual(COMPLETED);
 
   /*
