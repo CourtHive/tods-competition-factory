@@ -17,7 +17,7 @@ let result = tournamentEngine.addCollectionDefinition({
   structureId, // optional - if provided only tieFormat on structure will be modified
   matchUpId, // optional - if provided only tieFormat on matchUp will be modified
   eventId, // optional - if provided only tieFormat on event will be modified
-  drawId, // optional - if provided only tieFormat on drawDefinition will be modified
+  drawId, // required if structureId is specified; if provided without structureId only tieFormat on drawDefinition will be modified
 });
 ```
 
@@ -2349,6 +2349,21 @@ const { eventData } = tournamentEngine.publishEvent({
 tournamentEngine.publishEventSeeding({
   eventId,
   drawIds, // optional - publish specific drawIds (flights) within the event
+});
+```
+
+---
+
+## removeCollectionDefinition
+
+```js
+tournamentEngine.removeCollectionDefinition({
+  tieFormatName, // any time a collectionDefinition is modified a new name must be provided
+  collectionId, // required - id of collectionDefinition to be removed
+  structureId, // optional - if removing from tieFormat associated with a specific structure
+  matchUpId, // optional - if removing from tieFormat asscoiated with a specific matchUp
+  eventId, // optional - if removing from tieFormat asscoiated with an event
+  drawId, // required if structureId is specified or if tieFormat associated with drawDefinition is to be modified
 });
 ```
 
