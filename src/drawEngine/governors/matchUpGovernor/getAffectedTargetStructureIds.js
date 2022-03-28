@@ -28,7 +28,7 @@ export function getAffectedTargetStructureIds({
   });
 
   const relevantAssignments = positionAssignments.filter(({ drawPosition }) =>
-    drawPositions.includes(drawPosition)
+    drawPositions?.includes(drawPosition)
   );
 
   const finishingPositions = relevantAssignments.map((assignment) => {
