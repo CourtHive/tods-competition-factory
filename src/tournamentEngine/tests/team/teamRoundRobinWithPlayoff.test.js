@@ -96,6 +96,9 @@ test('changing scores after playoffs generated in team round robin with playoffs
 
   console.log(doublesMatchUp);
 
+  expect(doublesMatchUp.matchUpStatus).toEqual(COMPLETED);
+
+  /*
   outcome = mocksEngine.generateOutcomeFromScoreString({
     matchUpStatus: COMPLETED,
     scoreString: '6-1 6-1',
@@ -109,4 +112,5 @@ test('changing scores after playoffs generated in team round robin with playoffs
   });
 
   console.log(result);
+  */
 });
