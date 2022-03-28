@@ -105,6 +105,7 @@ export function addDrawEntry({
 export function addDrawEntries({
   entryStatus = DIRECT_ACCEPTANCE,
   autoEntryPositions = true,
+  ignoreStageSpace,
   drawDefinition,
   participantIds,
   stageSequence,
@@ -127,7 +128,7 @@ export function addDrawEntries({
     return { error: spaceAvailable.error };
   }
   const positionsAvailable = spaceAvailable.positionsAvailable || 0;
-  if (positionsAvailable < participantIds.length)
+  if (positionsAvailable < participantIds.length && !ignoreStageSpace)
     return { error: MORE_PARTICIPANTS_THAN_DRAW_POSITIONS };
 
   const participantIdsNotAdded = participantIds.reduce(

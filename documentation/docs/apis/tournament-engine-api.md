@@ -116,6 +116,7 @@ Bulk add an array of `participantIds` to a specific **stage** of a draw with a s
 tournamentEngine.addDrawEntries({
   entryStage: MAIN, // optional
   entryStatus: ALTERNATE, // optional
+  ignoreStageSpace, // optional boolean to disable checking available positions
   entryStageSequence, // optional - applies to qualifying
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
   participantIds,
