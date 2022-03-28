@@ -5,13 +5,15 @@ import { directParticipants } from './directParticipants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function attemptToSetWinningSide(params) {
-  const { drawDefinition, winningSide, structure, matchUp } = params;
+  const { drawDefinition, winningSide, structure, matchUp, matchUpsMap } =
+    params;
   let connectedStructures;
 
   if (matchUp.winningSide && matchUp.winningSide !== winningSide) {
     // only applies when progression is based on WIN_RATIO, e.g. ROUND_ROBIN_WITH_PLAYOFF
     const { connectedStructureIds } = checkConnectedStructures({
       drawDefinition,
+      matchUpsMap,
       structure,
       matchUp,
     });

@@ -10,6 +10,7 @@ import { WIN_RATIO } from '../../../constants/drawDefinitionConstants';
  */
 export function checkConnectedStructures({
   drawDefinition,
+  matchUpsMap,
   structure,
   matchUp,
 }) {
@@ -25,6 +26,7 @@ export function checkConnectedStructures({
       // if structure is complete then a changed outcome will have downstream effects
       const { structureIds } = getAffectedTargetStructureIds({
         drawDefinition,
+        matchUpsMap,
         structure,
         matchUp,
       });
