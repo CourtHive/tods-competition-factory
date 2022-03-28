@@ -37,6 +37,7 @@ export function addDrawEntry({
   entryStatus = DIRECT_ACCEPTANCE,
   entryStageSequence,
   entryStage = MAIN,
+  ignoreStageSpace,
   drawDefinition,
   entryPosition,
   participantId,
@@ -53,7 +54,7 @@ export function addDrawEntry({
     drawDefinition,
     entryStatus,
   });
-  if (!spaceAvailable.success) {
+  if (!ignoreStageSpace && !spaceAvailable.success) {
     return { error: spaceAvailable.error };
   }
 
@@ -124,11 +125,11 @@ export function addDrawEntries({
     entryStatus,
     stage,
   });
-  if (!spaceAvailable.success) {
+  if (!ignoreStageSpace && !spaceAvailable.success) {
     return { error: spaceAvailable.error };
   }
   const positionsAvailable = spaceAvailable.positionsAvailable || 0;
-  if (positionsAvailable < participantIds.length && !ignoreStageSpace)
+  if (!ignoreStageSpace && positionsAvailable < participantIds.length)
     return { error: MORE_PARTICIPANTS_THAN_DRAW_POSITIONS };
 
   const participantIdsNotAdded = participantIds.reduce(

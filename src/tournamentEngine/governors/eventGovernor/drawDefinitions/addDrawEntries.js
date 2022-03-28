@@ -38,8 +38,8 @@ export function addDrawEntries({
     const result = addEntries({
       stageSequence: entryStageSequence,
       autoEntryPositions,
-      ignoreStageSpace,
       stage: entryStage,
+      ignoreStageSpace,
       drawDefinition,
       participantIds,
       entryStatus,
