@@ -35,6 +35,7 @@ import {
   extensionConstants,
   LINEUPS,
 } from '../../../constants/extensionConstants';
+import { getFlightProfile } from '../getFlightProfile';
 
 export function addParticipantContext(params) {
   const participantIdsWithConflicts = [];
@@ -159,7 +160,9 @@ export function addParticipantContext(params) {
     // loop through all filtered events and capture events played
     params.tournamentEvents?.forEach((rawEvent) => {
       const event = makeDeepCopy(rawEvent, true, true);
-      const eventDrawsCount = event.drawDefinitions?.length || 0;
+      const flightProfile = getFlightProfile({ event }).flightProfile;
+      const eventDrawsCount =
+        flightProfile?.flights?.length || event.drawDefinitions?.length || 0;
 
       if (event?.eventType === TEAM) {
         // add back lineUps extension for team resolution when { matchUpType: TEAM } is missing side.lineUps
