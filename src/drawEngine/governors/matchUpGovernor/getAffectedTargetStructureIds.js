@@ -42,7 +42,7 @@ export function getAffectedTargetStructureIds({
   const links = getStructureLinks({
     drawDefinition,
     structureId,
-  })?.source?.links;
+  })?.links?.source;
 
   const structureIds = links
     ?.filter((link) => {
