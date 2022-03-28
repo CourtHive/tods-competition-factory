@@ -88,15 +88,20 @@ test('changing scores after playoffs generated in team round robin with playoffs
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  const doublesMatchUpId = mainStageMatchUps[0].tieMatchUps.find(
+  const dualMatchUp = mainStageMatchUps[0];
+  const doublesMatchUpId = dualMatchUp.tieMatchUps.find(
     (m) => m.matchUpType === DOUBLES
+  ).matchUpId;
+  const singlesMatchUpId = dualMatchUp.tieMatchUps.find(
+    (m) => m.matchUpType === SINGLES
   ).matchUpId;
 
   const doublesMatchUp = matchUps.find((m) => m.matchUpId === doublesMatchUpId);
+  const singlesMatchUp = matchUps.find((m) => m.matchUpId === singlesMatchUpId);
 
   expect(doublesMatchUp.matchUpStatus).toEqual(COMPLETED);
+  expect(singlesMatchUp.matchUpStatus).toEqual(COMPLETED);
 
-  /*
   outcome = mocksEngine.generateOutcomeFromScoreString({
     matchUpStatus: COMPLETED,
     scoreString: '6-1 6-1',
@@ -109,6 +114,14 @@ test('changing scores after playoffs generated in team round robin with playoffs
     drawId,
   });
 
-  console.log(result);
-  */
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: singlesMatchUp.matchUpId,
+    outcome,
+    drawId,
+  });
+
+  // no errors are thrown
+  expect(result.success).toEqual(true);
 });

@@ -39,12 +39,10 @@ export function getAffectedTargetStructureIds({
   const { containerStructures } = getContainedStructures({ drawDefinition });
   const structureId = containerStructures[structure.structureId];
 
-  const {
-    links: { source: links },
-  } = getStructureLinks({
+  const links = getStructureLinks({
     drawDefinition,
     structureId,
-  });
+  })?.source?.links;
 
   const structureIds = links
     ?.filter((link) => {
