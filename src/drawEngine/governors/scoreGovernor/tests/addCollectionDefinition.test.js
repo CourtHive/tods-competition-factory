@@ -27,9 +27,13 @@ it('can add collectionDefinitions to tieFormats', () => {
   let result = tournamentEngine.addCollectionDefinition({
     collectionDefinition,
     drawId,
+    uuids: ['a01', 'a02', 'a03'],
   });
   expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
   expect(result.addedMatchUps.length).toEqual(3);
+
+  const matchUpIds = result.addedMatchUps.map(({ matchUpId }) => matchUpId);
+  expect(matchUpIds).toEqual(['a03', 'a02', 'a01']);
 
   const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.tieFormat.winCriteria.valueGoal).toEqual(7);
