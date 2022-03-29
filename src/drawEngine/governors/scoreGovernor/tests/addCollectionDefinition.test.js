@@ -1,3 +1,4 @@
+import { setSubscriptions } from '../../../../global/state/globalState';
 import { mocksEngine, tournamentEngine } from '../../../..';
 
 import { TEAM } from '../../../../constants/eventConstants';
@@ -36,6 +37,7 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   expect(matchUpIds).toEqual(['a03', 'a02', 'a01']);
 
   const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+  expect(drawDefinition.tieFormat.collectionDefinitions.length).toEqual(3);
   expect(drawDefinition.tieFormat.winCriteria.valueGoal).toEqual(7);
   expect(event.tieFormat.winCriteria.valueGoal).toEqual(5);
 
@@ -56,10 +58,23 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   expect(collectionOrders).toEqual([1, 2, 3]);
 });
 
-it.only('can add collectionDefinitions to tieFormat in a structure', () => {
+it('can add collectionDefinitions to tieFormat in a structure', () => {
+  let matchUpAddNotices = [];
+
+  const subscriptions = {
+    addMatchUps: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUps }) => {
+          matchUpAddNotices.push(matchUps.length);
+        });
+      }
+    },
+  };
+
+  setSubscriptions({ subscriptions });
+
   const {
     drawIds: [drawId],
-    eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
@@ -69,7 +84,10 @@ it.only('can add collectionDefinitions to tieFormat in a structure', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
+  expect(matchUpAddNotices).toEqual([30]);
+
   let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+  expect(drawDefinition.tieFormat.collectionDefinitions.length).toEqual(2);
   const structureId = drawDefinition.structures[0].structureId;
 
   // 3 team matchUps
@@ -102,22 +120,15 @@ it.only('can add collectionDefinitions to tieFormat in a structure', () => {
   expect(matchUpIds).toEqual(['a09', 'a08', 'a07', 'a06', 'a05', 'a04', 'a03', 'a02', 'a01']);
 
   ({ drawDefinition, event } = tournamentEngine.getEvent({ drawId }));
-  expect(drawDefinition.tieFormat.winCriteria.valueGoal).toEqual(7);
+  expect(drawDefinition.tieFormat.collectionDefinitions.length).toEqual(2);
   expect(event.tieFormat.winCriteria.valueGoal).toEqual(5);
 
-  // test errors for invalid collectionDefinitions
-  // test adding to tieFormat on event
-  result = tournamentEngine.addCollectionDefinition({
-    collectionDefinition,
-    eventId,
-  });
-
-  expect(result.addedMatchUps.length).toEqual(0);
-  expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
-
-  const collectionOrders = result.tieFormat.collectionDefinitions.map(
-    ({ collectionOrder }) => collectionOrder
+  expect(
+    drawDefinition.structures[0].tieFormat.collectionDefinitions.length
+  ).toEqual(3);
+  expect(drawDefinition.structures[0].tieFormat.winCriteria.valueGoal).toEqual(
+    7
   );
 
-  expect(collectionOrders).toEqual([1, 2, 3]);
+  expect(matchUpAddNotices).toEqual([30, 9]);
 });

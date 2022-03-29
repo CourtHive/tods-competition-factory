@@ -1,8 +1,8 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { generateCollectionMatchUps } from '../../../generators/tieMatchUps';
 import { calculateWinCriteria } from './calculateWinCriteria';
+import { makeDeepCopy, UUID } from '../../../../utilities';
 import { getTieFormat } from './getTieFormat';
-import { UUID } from '../../../../utilities';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
@@ -52,7 +52,8 @@ export function addCollectionDefinition({
   });
   if (result.error) return result;
 
-  const { matchUp, structure, tieFormat } = result;
+  const { matchUp, structure, tieFormat: existingTieFormat } = result;
+  const tieFormat = makeDeepCopy(existingTieFormat, false, true);
 
   result = validateTieFormat({ tieFormat });
   if (!result.valid)
@@ -119,7 +120,7 @@ export function addCollectionDefinition({
     matchUp.tieMatchUps.push(...newMatchUps);
 
     queueNoficiations({
-      matchUps: addedMatchUps,
+      addedMatchUps,
       tournamentRecord,
       drawDefinition,
     });
@@ -134,7 +135,7 @@ export function addCollectionDefinition({
 
     queueNoficiations({
       structureIds: [structureId],
-      matchUps: addedMatchUps,
+      addedMatchUps,
       tournamentRecord,
       drawDefinition,
     });
@@ -155,7 +156,7 @@ export function addCollectionDefinition({
 
     queueNoficiations({
       structureIds: modifiedStructureIds,
-      matchUps: addedMatchUps,
+      addedMatchUps,
       tournamentRecord,
       drawDefinition,
     });

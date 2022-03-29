@@ -4,6 +4,7 @@ import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStru
 import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { validateTieFormat } from './tieFormatUtilities';
+import { makeDeepCopy } from '../../../../utilities';
 import { getTieFormat } from './getTieFormat';
 import {
   deleteMatchUpsNotice,
@@ -44,7 +45,8 @@ export function removeCollectionDefinition({
   });
   if (result.error) return result;
 
-  const { matchUp, structure, tieFormat } = result;
+  const { matchUp, structure, tieFormat: existingTieFormat } = result;
+  const tieFormat = makeDeepCopy(existingTieFormat, false, true);
 
   result = validateTieFormat({ tieFormat });
   if (!result.valid) return { error: INVALID_VALUES, errors: result.errors };
