@@ -1,7 +1,10 @@
 import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../../getters/findStructure';
 
-import { MISSING_DRAW_DEFINITION } from '../../../../constants/errorConditionConstants';
+import {
+  MISSING_DRAW_DEFINITION,
+  MISSING_TIE_FORMAT,
+} from '../../../../constants/errorConditionConstants';
 
 export function getTieFormat({
   drawDefinition,
@@ -27,11 +30,14 @@ export function getTieFormat({
     tieFormat =
       matchUp.tieFormat || structure?.tieFormat || drawDefinition?.tieFormat;
   } else if (drawDefinition && structureId) {
-    structure = findStructure({ drawDefinition, structureId })?.structure;
+    const result = findStructure({ drawDefinition, structureId });
+    structure = result?.structure;
     tieFormat = structure?.tieFormat || drawDefinition.tieFormat;
   } else {
     tieFormat = drawDefinition?.tieFormat;
   }
+
+  if (!tieFormat) return { error: MISSING_TIE_FORMAT };
 
   return { tieFormat, matchUp, structure };
 }

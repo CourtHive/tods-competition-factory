@@ -12,6 +12,7 @@ import {
   validateTieFormat,
 } from './tieFormatUtilities';
 
+import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 import {
@@ -54,7 +55,8 @@ export function addCollectionDefinition({
   const { matchUp, structure, tieFormat } = result;
 
   result = validateTieFormat({ tieFormat });
-  if (!result.valid) return { error: INVALID_VALUES, errors: result.errors };
+  if (!result.valid)
+    return { error: INVALID_VALUES, errors: result.errors, tieFormat };
 
   const originalValueGoal = tieFormat.winCriteria.valueGoal;
 
@@ -104,6 +106,9 @@ export function addCollectionDefinition({
     // TODO: implement
     console.log('support for modifying event.tieFormat not yet implemented');
   } else if (matchUpId && matchUp) {
+    if (matchUp.matchUpStatus === COMPLETED)
+      return { error: 'cannot modify tieFormat for completed matchUps' };
+
     matchUp.tieFormat = tieFormat;
     const { matchUps: newMatchUps = [] } = generateCollectionMatchUps({
       collectionDefinition,
@@ -112,6 +117,7 @@ export function addCollectionDefinition({
 
     if (!Array.isArray(matchUp.tieMatchUps)) matchUp.tieMatchUps = [];
     matchUp.tieMatchUps.push(...newMatchUps);
+
     queueNoficiations({
       matchUps: addedMatchUps,
       tournamentRecord,
@@ -119,7 +125,6 @@ export function addCollectionDefinition({
     });
   } else if (structureId && structure) {
     structure.tieFormat = tieFormat;
-    // all team matchUps in the structure which do not have tieFormats should have matchUps added
     const { newMatchUps } = updateStructureMatchUps({
       collectionDefinition,
       structure,
@@ -167,7 +172,13 @@ function updateStructureMatchUps({ structure, collectionDefinition, uuids }) {
     matchUpFilters: { matchUpTypes: [TEAM] },
     structure,
   })?.matchUps;
-  for (const matchUp of matchUps) {
+  // all team matchUps in the structure which do not have tieFormats should have matchUps added
+
+  const targetMatchUps = matchUps.filter(
+    (matchUp) => matchUp.matchUpStatus !== COMPLETED
+  );
+  for (const matchUp of targetMatchUps) {
+    // don't update matchUps which are already COMPLETED
     const tieMatchUps = generateCollectionMatchUps({
       collectionDefinition,
       uuids,
@@ -176,9 +187,8 @@ function updateStructureMatchUps({ structure, collectionDefinition, uuids }) {
     if (!Array.isArray(matchUp.tieMatchUps)) matchUp.tieMatchUps = [];
     matchUp.tieMatchUps.push(...tieMatchUps);
     newMatchUps.push(...tieMatchUps);
-
-    return { newMatchUps };
   }
+  return { newMatchUps };
 }
 
 function queueNoficiations({
