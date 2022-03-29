@@ -18,6 +18,7 @@ let result = tournamentEngine.addCollectionDefinition({
   matchUpId, // optional - if provided only tieFormat on matchUp will be modified
   eventId, // optional - if provided only tieFormat on event will be modified
   drawId, // required if structureId is specified; if provided without structureId only tieFormat on drawDefinition will be modified
+  uuids, // optional - array of UUIDs to use for newly created matchUps
 });
 ```
 
