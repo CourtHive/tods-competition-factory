@@ -12,7 +12,6 @@ import {
   validateTieFormat,
 } from './tieFormatUtilities';
 
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 import {
@@ -20,6 +19,10 @@ import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../../constants/errorConditionConstants';
+import {
+  COMPLETED,
+  IN_PROGRESS,
+} from '../../../../constants/matchUpStatusConstants';
 
 /*
  * collectionDefinition will be added to an event tieFormat (if present)
@@ -28,6 +31,7 @@ import {
  * TODO: determine whether all contained instances of tieFormat should be updated
  */
 export function addCollectionDefinition({
+  updateInProgressMatchUps = true,
   collectionDefinition,
   tournamentRecord,
   drawDefinition,
@@ -120,13 +124,14 @@ export function addCollectionDefinition({
     matchUp.tieMatchUps.push(...newMatchUps);
 
     queueNoficiations({
-      addedMatchUps,
       tournamentRecord,
       drawDefinition,
+      addedMatchUps,
     });
   } else if (structureId && structure) {
     structure.tieFormat = tieFormat;
     const { newMatchUps } = updateStructureMatchUps({
+      updateInProgressMatchUps,
       collectionDefinition,
       structure,
       tieFormat,
@@ -136,9 +141,9 @@ export function addCollectionDefinition({
 
     queueNoficiations({
       structureIds: [structureId],
-      addedMatchUps,
       tournamentRecord,
       drawDefinition,
+      addedMatchUps,
     });
   } else if (drawDefinition) {
     // all team matchUps in the drawDefinition which do not have tieFormats and where strucures do not have tieFormats should have matchUps added
@@ -147,6 +152,7 @@ export function addCollectionDefinition({
 
     for (const structure of drawDefinition.structures || []) {
       const { newMatchUps } = updateStructureMatchUps({
+        updateInProgressMatchUps,
         collectionDefinition,
         structure,
         tieFormat,
@@ -170,6 +176,7 @@ export function addCollectionDefinition({
 }
 
 function updateStructureMatchUps({
+  updateInProgressMatchUps,
   collectionDefinition,
   structure,
   tieFormat,
@@ -185,7 +192,11 @@ function updateStructureMatchUps({
   const targetMatchUps = matchUps.filter(
     (matchUp) => matchUp.matchUpStatus !== COMPLETED
   );
+
   for (const matchUp of targetMatchUps) {
+    if (!updateInProgressMatchUps && matchUp.matchUpStatus === IN_PROGRESS)
+      continue;
+
     // don't update matchUps which are already COMPLETED
     const tieMatchUps = generateCollectionMatchUps({
       collectionDefinition,

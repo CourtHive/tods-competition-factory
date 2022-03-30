@@ -12,6 +12,7 @@ Adds a `collectionDefinition` to the specified target, either `matchUp`, `struct
 
 ```js
 let result = tournamentEngine.addCollectionDefinition({
+  updateInProgressMatchUps, // defaults to true; in progress matchUps have matchUpStatus: IN_PROGRESS
   collectionDefinition, // will be validated
   tieFormatName, // if not provided, existing tieFormatName will be deleted
   structureId, // optional - if provided only tieFormat on structure will be modified
