@@ -129,6 +129,7 @@ export function addCollectionDefinition({
     const { newMatchUps } = updateStructureMatchUps({
       collectionDefinition,
       structure,
+      tieFormat,
       uuids,
     });
     addedMatchUps.push(...newMatchUps);
@@ -148,6 +149,7 @@ export function addCollectionDefinition({
       const { newMatchUps } = updateStructureMatchUps({
         collectionDefinition,
         structure,
+        tieFormat,
         uuids,
       });
       modifiedStructureIds.push(structureId);
@@ -167,7 +169,12 @@ export function addCollectionDefinition({
   return { ...SUCCESS, tieFormat, addedMatchUps };
 }
 
-function updateStructureMatchUps({ structure, collectionDefinition, uuids }) {
+function updateStructureMatchUps({
+  collectionDefinition,
+  structure,
+  tieFormat,
+  uuids,
+}) {
   const newMatchUps = [];
   const matchUps = getAllStructureMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM] },
@@ -187,6 +194,10 @@ function updateStructureMatchUps({ structure, collectionDefinition, uuids }) {
 
     if (!Array.isArray(matchUp.tieMatchUps)) matchUp.tieMatchUps = [];
     matchUp.tieMatchUps.push(...tieMatchUps);
+
+    // if a tieFormat is already present on matchUp, update
+    if (matchUp.tieFormat) matchUp.tieFormat = tieFormat;
+
     newMatchUps.push(...tieMatchUps);
   }
   return { newMatchUps };
