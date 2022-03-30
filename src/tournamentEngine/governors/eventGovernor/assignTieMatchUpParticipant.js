@@ -80,11 +80,11 @@ export function assignTieMatchUpParticipantId(params) {
   if (!teamParticipantId) teamParticipantId = participantTeam.participantId;
   if (!teamParticipantId) return { error: PARTICIPANT_NOT_FOUND };
 
-  const teamAssignment = relevantAssignments.find(
+  const teamAssignment = relevantAssignments?.find(
     (assignment) => assignment.participantId === participantTeam?.participantId
   );
   const teamDrawPosition = teamAssignment?.drawPosition;
-  const teamSide = tieMatchUp.sides.find(
+  const teamSide = tieMatchUp.sides?.find(
     ({ drawPosition }) => drawPosition === teamDrawPosition
   );
   const sideNumber = teamSide?.sideNumber;
@@ -129,7 +129,7 @@ export function assignTieMatchUpParticipantId(params) {
 
   const assignedParticipantIds = lineUp
     ?.filter((participantAssignment) =>
-      participantAssignment.collectionAssignments.find(
+      participantAssignment.collectionAssignments?.find(
         (assignment) =>
           assignment.collectionId === collectionId &&
           assignment.collectionPosition === collectionPosition
