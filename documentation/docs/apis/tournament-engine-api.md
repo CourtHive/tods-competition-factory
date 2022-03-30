@@ -2043,6 +2043,22 @@ tournamentEngine.mergeParticipants({ participants });
 
 ---
 
+## modifyCollectionDefinition
+
+```js
+tournamentEngine.modifyCollectionDefinition({
+  collectionName, // optional
+  matchUpFormat, // optional
+  collectionId, // required
+  structureId, // required if modifying tieFormat for a structure
+  matchUpId, // required if modifying tieFormat for a matchUp
+  eventId, // required if modifying tieFormat for a event
+  drawId, // required if modifying tieFormat for a drawDefinition
+});
+```
+
+---
+
 ## modifyCourtAvailability
 
 Modifies the `dateAvailability` attribute of a specified court. Warns if existing scheduled matchUps would be affected. See [Scheduling](/docs/concepts/scheduling).
