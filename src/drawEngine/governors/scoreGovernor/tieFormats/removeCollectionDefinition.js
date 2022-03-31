@@ -12,6 +12,7 @@ import {
   modifyMatchUpNotice,
 } from '../../../notifications/drawNotifications';
 
+import { IN_PROGRESS } from '../../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 import {
@@ -27,6 +28,7 @@ import {
  * TODO: determine whether all contained instances of tieFormat should be updated
  */
 export function removeCollectionDefinition({
+  updateInProgressMatchUps = true,
   tournamentRecord,
   drawDefinition,
   tieFormatName,
@@ -77,6 +79,9 @@ export function removeCollectionDefinition({
 
   const deletedMatchUpIds = [];
   for (const matchUp of matchUps) {
+    if (!updateInProgressMatchUps && matchUp.matchUpStatus === IN_PROGRESS)
+      continue;
+
     // remove any collectionAssignments from LineUps that include collectionId
     for (const side of matchUp?.sides || []) {
       side.lineUp = (side.lineUp || []).map((assignment) =>
@@ -93,6 +98,8 @@ export function removeCollectionDefinition({
       if (deleteTarget) deletedMatchUpIds.push(matchUp.matchUpId);
       return !deleteTarget;
     });
+
+    matchUp.tieFormat = tieFormat;
   }
 
   // remove any matchUps which contain collectionId
