@@ -5,7 +5,7 @@ import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { removeDoubleWalkover } from './removeDoubleWalkover';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
-import { scoreHasValue } from './scoreHasValue';
+import { scoreHasValue } from '../scoreGovernor/scoreHasValue';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

@@ -13,6 +13,7 @@ import { analyzeSet } from './analyzeSet';
 import { removeCollectionDefinition } from './tieFormats/removeCollectionDefinition';
 import { modifyCollectionDefinition } from './tieFormats/modifyCollectionDefinition';
 import { addCollectionDefinition } from './tieFormats/addCollectionDefinition';
+import { scoreHasValue } from './scoreHasValue';
 
 export const scoreGovernor = {
   stringifyMatchUpFormat: stringify,
@@ -30,6 +31,7 @@ export const scoreGovernor = {
   getSetComplement,
   analyzeMatchUp,
   keyValueScore,
+  scoreHasValue,
   analyzeSet,
 };
 

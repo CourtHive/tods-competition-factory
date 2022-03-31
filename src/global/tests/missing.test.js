@@ -96,7 +96,11 @@ it.each([asyncDrawEngine, drawEngineSync])(
       const result = await drawEngine[method]();
       if (!result) {
         if (
-          !['stringifyMatchUpFormat', 'parseMatchUpFormat'].includes(method)
+          ![
+            'stringifyMatchUpFormat',
+            'parseMatchUpFormat',
+            'scoreHasValue',
+          ].includes(method)
         ) {
           expect([0, false].includes(result)).toEqual(true);
         }
