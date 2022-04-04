@@ -5,6 +5,7 @@ import { getParticipantId } from '../../../../global/functions/extractors';
 import { findStructure } from '../../../getters/findStructure';
 
 import { ROUND_OUTCOME } from '../../../../constants/drawDefinitionConstants';
+import { TEAM } from '../../../../constants/eventConstants';
 import {
   LUCKY_PARTICIPANT,
   LUCKY_PARTICIPANT_METHOD,
@@ -95,9 +96,15 @@ export function getValidLuckyLosersAction({
     .filter(Boolean);
 
   const availableLuckyLoserParticipantIds = completedMatchUps
-    ?.map(({ winningSide, sides }) => sides[1 - (winningSide - 1)])
+    ?.filter(
+      ({ matchUpType }) => event?.eventType !== TEAM || matchUpType === TEAM
+    )
+    .map(({ winningSide, sides }) => sides[1 - (winningSide - 1)])
     .map(getParticipantId)
-    .filter((participantId) => !assignedParticipantIds.includes(participantId));
+    .filter(
+      (participantId) =>
+        participantId && !assignedParticipantIds.includes(participantId)
+    );
 
   const availableLuckyLosers = tournamentParticipants?.filter((participant) =>
     availableLuckyLoserParticipantIds?.includes(participant.participantId)

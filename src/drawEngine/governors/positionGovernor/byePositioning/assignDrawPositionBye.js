@@ -90,7 +90,7 @@ export function assignDrawPositionBye({
   if (currentAssignment.bye) return { ...SUCCESS };
 
   // ################### Check error conditions ######################
-  const drawPositionIsActive = activeDrawPositions.includes(drawPosition);
+  const drawPositionIsActive = activeDrawPositions?.includes(drawPosition);
   if (drawPositionIsActive) {
     return { error: DRAW_POSITION_ACTIVE };
   }
@@ -149,12 +149,12 @@ export function assignDrawPositionBye({
     .map((roundNumber) => parseInt(roundNumber))
     .reverse();
   const roundNumber = roundNumbers.find((roundNumber) => {
-    return roundProfile[roundNumber].drawPositions.includes(drawPosition);
+    return roundProfile[roundNumber].drawPositions?.includes(drawPosition);
   });
 
   // matchUp where BYE-advancement needs to occur
   const matchUp = roundMatchUps[roundNumber].find(({ drawPositions }) =>
-    drawPositions.includes(drawPosition)
+    drawPositions?.includes(drawPosition)
   );
 
   setMatchUpStatusBYE({ drawDefinition, matchUp });
@@ -210,7 +210,7 @@ function assignRoundRobinBYE({
   matchUps,
 }) {
   matchUps.forEach((matchUp) => {
-    if (matchUp.drawPositions.includes(drawPosition)) {
+    if (matchUp.drawPositions?.includes(drawPosition)) {
       setMatchUpStatusBYE({
         tournamentId: tournamentRecord?.tournamentId,
         drawDefinition,
@@ -251,7 +251,7 @@ export function advanceDrawPosition({
     (drawPosition) => drawPosition !== drawPositionToAdvance
   );
   const losingDrawPosiitonIsBye =
-    byeAssignedDrawPositions.includes(losingDrawPosition);
+    byeAssignedDrawPositions?.includes(losingDrawPosition);
 
   const {
     targetLinks: { loserTargetLink },

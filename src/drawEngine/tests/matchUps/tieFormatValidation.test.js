@@ -90,11 +90,15 @@ test('various tieFormat defaults', () => {
   );
   expect(doubles.collectionValue).toEqual(1);
   expect(doubles.matchUpValue).toBeUndefined();
-  expect(scoreGovernor.isValidMatchUpFormat(doubles.matchUpFormat));
+  expect(scoreGovernor.isValidMatchUpFormat(doubles.matchUpFormat)).toEqual(
+    true
+  );
   let singles = format.collectionDefinitions.find(
     ({ matchUpType }) => matchUpType === DOUBLES
   );
-  expect(scoreGovernor.isValidMatchUpFormat(singles.matchUpFormat));
+  expect(scoreGovernor.isValidMatchUpFormat(singles.matchUpFormat)).toEqual(
+    true
+  );
 
   format = tieFormatDefaults({ namedFormat: 'COLLEGE_JUCO' });
   expect(format.winCriteria.valueGoal).toEqual(5);
@@ -105,11 +109,15 @@ test('various tieFormat defaults', () => {
     ({ matchUpType }) => matchUpType === DOUBLES
   );
   expect(doubles.matchUpValue).toEqual(1);
-  expect(scoreGovernor.isValidMatchUpFormat(doubles.matchUpFormat));
+  expect(scoreGovernor.isValidMatchUpFormat(doubles.matchUpFormat)).toEqual(
+    true
+  );
   singles = format.collectionDefinitions.find(
     ({ matchUpType }) => matchUpType === DOUBLES
   );
-  expect(scoreGovernor.isValidMatchUpFormat(singles.matchUpFormat));
+  expect(scoreGovernor.isValidMatchUpFormat(singles.matchUpFormat)).toEqual(
+    true
+  );
 
   format = tieFormatDefaults({ namedFormat: 'COLLEGE_D3' });
   expect(format.winCriteria.valueGoal).toEqual(5);
@@ -121,11 +129,15 @@ test('various tieFormat defaults', () => {
   );
   expect(doubles.matchUpValue).toEqual(1);
   expect(doubles.collectionValue).toBeUndefined();
-  expect(scoreGovernor.isValidMatchUpFormat(doubles.matchUpFormat));
+  expect(scoreGovernor.isValidMatchUpFormat(doubles.matchUpFormat)).toEqual(
+    true
+  );
   singles = format.collectionDefinitions.find(
     ({ matchUpType }) => matchUpType === DOUBLES
   );
-  expect(scoreGovernor.isValidMatchUpFormat(singles.matchUpFormat));
+  expect(scoreGovernor.isValidMatchUpFormat(singles.matchUpFormat)).toEqual(
+    true
+  );
 });
 
 it('can validate tieFormat fixtures', () => {

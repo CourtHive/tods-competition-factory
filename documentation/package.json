@@ -17,15 +17,15 @@
     "@docusaurus/core": "2.0.0-beta@next",
     "@docusaurus/preset-classic": "2.0.0-beta@next",
     "@docusaurus/theme-live-codeblock": "2.0.0-beta@next",
-    "@material-ui/core": "4.12.3",
+    "@material-ui/core": "4.12.4",
     "@mdx-js/react": "1.6.22",
-    "@types/react": "17.0.40",
+    "@types/react": "17.0.43",
     "clsx": "1.1.1",
     "material-ui": "0.20.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-json-tree": "0.16.1",
-    "tods-competition-factory": "0.118.0",
+    "tods-competition-factory": "0.141.0",
     "tods-score-grid": "0.5.2"
   },
   "browserslist": {

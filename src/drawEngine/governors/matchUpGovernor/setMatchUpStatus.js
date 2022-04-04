@@ -11,7 +11,7 @@ import { isActiveDownstream } from './isActiveDownstream';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { addMatchUpScheduleItems } from './scheduleItems';
 import { swapWinnerLoser } from './swapWinnerLoser';
-import { scoreHasValue } from './scoreHasValue';
+import { scoreHasValue } from '../scoreGovernor/scoreHasValue';
 import { addGoesTo } from './addGoesTo';
 import {
   isDirectingMatchUpStatus,

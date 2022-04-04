@@ -4,15 +4,25 @@ title: tieFormats
 
 ## Overview
 
-A `tieFormat` both describes collections of singles and doubles `tieMatchUps` which are part of a **_Dual_** or **_Team_** match,
-and defines the target value which must be achieved in order to win the `matchUp`.
+A `tieFormat` both describes collections of singles and doubles `tieMatchUps` which are part of a `{ matchUpType: TEAM }` `matchUp`, and defines the target value which must be achieved in order to win the `matchUp`.
 
 There can be any number of `collectionDefinitions` in a `tieMatchUp`.
 For instance, there can be "Men's Singles", "Men's Doubles", "Womens's Singles", "Women's Doubles", and "Mixed Doubles".
 
-Each `collectionDefinition` defines how many `matchUps` are in the collection, the `matchUpType` (SINGLES or DOUBLES), the `matchUpFormat` to be used for scoring, and what value should be assigned to `matchUps` or entire collections.
-The value may be the same for each `matchUp`; `matchUps` may have a value tied to their `collectionPosition`;
-or a value may be awarded to the winner of the collection.
+Each `collectionDefinition` defines how many `matchUps` are in the collection, the `matchUpType` (SINGLES or DOUBLES), the `matchUpFormat` to be used for scoring, and how value is assigned to each `matchUp`.
+`collectionDefinitions` can optionally define `category` and `gender`.
+
+## Value Considerations
+
+The score of a TEAM `matchUp` is the summation of the value assigned for the wins on each side. Value can be assigned in numerous ways.
+When there is no `winCriteria` specified, the `valueGoal` defaults to one more than half of the potential value within scope (which can be the `tieFormat`, a `collectionDefinition`, or a `collectionGroup`).
+
+- **matchUpValue** - specified value is awarded for each `matchUp` win
+- **setValue** - specified value is awarded for each set win
+- **collectionValue** - specified value is awarded for winning a collection
+- **collecitonValueProfile** - unique values are specified for each `collectionPosition` within a collection
+- **groupValue** - specified value is awarded for reaching a `valueGoal` by accumulating value across collections in the group
+- **scoreValue** - specified value is awarded for each sideScore (typically 1, typically used with `aggregateValue` formats)
 
 See [tieFormat type definitions](../types/typedefs#tieformat)
 
@@ -24,17 +34,13 @@ The generation of `drawDefinitions` requires a `tieFormat` to determine how many
 When `tieMatchUps` are generated they are assigned a `collectionId` and a `collectionPosition`.
 If there are six `tieMatchUps` in a collection, they will be assigned `collectionPositions` **1-6**.
 
-### Determining Winners
-
-As results of singles and/or doubles `matchUps` are recorded, the `tieFormat` is used to calculate the score for each side and determine when a side has achieved the score neessary to win.
-
 ### Mapping lineUps
 
 A `tieFormat` determines the relationship between a team's `lineUp` and the `tieMatchUps` within a `matchUp` by defining the mapping between `collectionIds`, `collectionPositions` and participant `collectionAssignments`.
 
 ## tieFormat Example
 
-- each **SINGLES match** has a value of **1**
+- each **SINGLES matchUp** has a value of **1**
 - the entire **DOUBLES Collection** has a value of **1**
 - the `valueGoal` is **4**
 
@@ -48,27 +54,39 @@ const tieFormat = {
       collectionId: 'singlesCollectionId',
       collectionGroupNumber: 1, // optional, if there are groups
       collectionName: 'Singles',
+      matchUpFormat: 'SET3-S:6/TB7',
       matchUpType: SINGLES,
       matchUpCount: 6,
-      matchUpFormat: 'SET3-S:6/TB7',
-      matchUpValue: 1,
+      matchUpValue: 1, // value awarded for each matchUp win
     },
     {
       collectionId: 'doublesCollectionId',
       collectionGroupNumber: 1, // optional, if there are groups
       collectionName: 'Doubles',
+      collectionValue: 1, // value awarded for winning one more than half of the matchUps in the collection
+      matchUpFormat: 'SET3-S:6/TB7-F:TB10',
       matchUpType: DOUBLES,
       matchUpCount: 3,
-      matchUpFormat: 'SET3-S:6/TB7-F:TB10',
-      collectionValue: 1,
     },
   ],
   // optional group details
   collectionGroups: [
     {
-      groupNumber: 1,
       groupName: 'Day 1', // used to group collections, e.g. Laver Cup
+      groupNumber: 1,
     },
   ],
 };
 ```
+
+## tieFormat and lineUp propagation
+
+`tieFormats` can be attached to a tournament record at multiple levels wthin the hierarchy `event` > `drawDefinition` > `structure` > `matchUp`.
+This means that when a `tieFormat` is not present on a `matchUp` the definition is resolved by walking the hierarchy.
+When a `matchUp` is scored, the appropriate `tieFormat` is attached to the `matchUp`.
+This is necessary because at any point in a `structure` or `drawDefinition` the scoped `tieFormat` may be edite/changed;
+for instance, if there is a rain delay, the format may be shortened for `matchUps` which have not yet been played.
+The mapping between `participants` in a `lineUp` must be preserved for `matchUps` which are IN_PROGRESS or COMPLETED.
+
+As TEAM `participants` progress through draw `structures` the most recent `lineUp` is saved (via an `extension` on the `drawDefinition`) such that it can be propagated to subsequent `matchUps`.
+When a `matchUp` is scored or the `lineUp` changes, the `lineUp` is saved directly to the target `matchUp`.

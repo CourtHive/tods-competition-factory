@@ -41,7 +41,7 @@ export function getDrawPositionCollectionAssignment({
           })?.lineUp;
 
         const relevantCompetitors = lineUp?.filter((teamCompetitor) => {
-          return teamCompetitor.collectionAssignments.find(
+          return teamCompetitor.collectionAssignments?.find(
             (assignment) =>
               assignment.collectionId === collectionId &&
               assignment.collectionPosition === collectionPosition

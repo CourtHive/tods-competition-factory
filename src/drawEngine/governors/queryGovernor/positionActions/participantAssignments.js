@@ -5,6 +5,7 @@ import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { unique } from '../../../../utilities';
 
 import { POLICY_TYPE_SEEDING } from '../../../../constants/policyConstants';
+import { TEAM } from '../../../../constants/eventConstants';
 import {
   ASSIGN_BYE,
   ASSIGN_BYE_METHOD,
@@ -25,6 +26,7 @@ export function getValidAssignmentActions({
   drawPosition,
   structureId,
   structure,
+  event,
 }) {
   const { drawId } = drawDefinition;
   const validAssignmentActions = [];
@@ -82,10 +84,15 @@ export function getValidAssignmentActions({
 
     const availableParticipantIds = unique(
       (completedMatchUps || [])
+        // filter completedMatchUps to exclude SINGLES/DOUBLES for TEAM events
+        .filter(
+          ({ matchUpType }) => event?.eventType !== TEAM || matchUpType === TEAM
+        )
         ?.map(({ sides }) => sides.map(getParticipantId))
         .flat()
         .filter(
-          (participantId) => !assignedParticipantIds.includes(participantId)
+          (participantId) =>
+            participantId && !assignedParticipantIds.includes(participantId)
         )
     );
 

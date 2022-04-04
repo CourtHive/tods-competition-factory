@@ -1,5 +1,6 @@
 import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { isActiveMatchUp } from '../../getters/activeMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -33,20 +34,21 @@ export function updateTieMatchUpScore({
   const { winningSide, set, scoreStringSide1, scoreStringSide2 } =
     generateTieMatchUpScore({ matchUp });
 
-  const hasWinner = [1, 2].includes(winningSide);
-  const matchUpStatus = hasWinner
-    ? COMPLETED
-    : scoreStringSide1
-    ? IN_PROGRESS
-    : TO_BE_PLAYED;
-
-  const removeWinningSide = matchUp.winningSide && !hasWinner;
-
   const scoreObject = {
     scoreStringSide1,
     scoreStringSide2,
     sets: [set],
   };
+  matchUp.score = scoreObject;
+
+  const hasWinner = [1, 2].includes(winningSide);
+  const matchUpStatus = hasWinner
+    ? COMPLETED
+    : isActiveMatchUp(matchUp)
+    ? IN_PROGRESS
+    : TO_BE_PLAYED;
+
+  const removeWinningSide = matchUp.winningSide && !hasWinner;
 
   modifyMatchUpScore({
     tournamentRecord,

@@ -1,6 +1,6 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { findLineUpWithParticipantIds } from './drawDefinitions/findLineUpWithParticipantIds';
-import { scoreHasValue } from '../../../drawEngine/governors/matchUpGovernor/scoreHasValue';
+import { scoreHasValue } from '../../../drawEngine/governors/scoreGovernor/scoreHasValue';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';

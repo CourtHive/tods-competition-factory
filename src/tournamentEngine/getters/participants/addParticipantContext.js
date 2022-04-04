@@ -35,6 +35,7 @@ import {
   extensionConstants,
   LINEUPS,
 } from '../../../constants/extensionConstants';
+import { getFlightProfile } from '../getFlightProfile';
 
 export function addParticipantContext(params) {
   const participantIdsWithConflicts = [];
@@ -159,6 +160,9 @@ export function addParticipantContext(params) {
     // loop through all filtered events and capture events played
     params.tournamentEvents?.forEach((rawEvent) => {
       const event = makeDeepCopy(rawEvent, true, true);
+      const flightProfile = getFlightProfile({ event }).flightProfile;
+      const eventDrawsCount =
+        flightProfile?.flights?.length || event.drawDefinitions?.length || 0;
 
       if (event?.eventType === TEAM) {
         // add back lineUps extension for team resolution when { matchUpType: TEAM } is missing side.lineUps
@@ -242,7 +246,7 @@ export function addParticipantContext(params) {
           });
         });
 
-      const addDrawData = ({ drawId, drawEntry, drawName, drawType }) => {
+      const addDrawData = ({ drawEntry, drawId }) => {
         const { participantId, entryStage, entryStatus, entryPosition } =
           drawEntry;
 
@@ -267,9 +271,8 @@ export function addParticipantContext(params) {
               partnerParticipantIds: [],
               entryPosition,
               entryStatus,
+              eventDrawsCount,
               entryStage,
-              drawName,
-              drawType,
               eventId,
               drawId,
             };
@@ -293,7 +296,7 @@ export function addParticipantContext(params) {
 
         if (!drawIdsWithDefinitions.includes(drawId)) {
           drawEntries?.forEach((drawEntry) =>
-            addDrawData({ drawId, drawEntry })
+            addDrawData({ drawEntry, drawId })
           );
         }
       });
@@ -360,7 +363,7 @@ export function addParticipantContext(params) {
         });
 
         matchUps?.forEach((matchUp) =>
-          processMatchUp({ matchUp, drawDetails, eventType })
+          processMatchUp({ matchUp, drawDetails, eventType, eventDrawsCount })
         );
       }
     });
@@ -408,7 +411,12 @@ export function addParticipantContext(params) {
     }
   });
 
-  function processMatchUp({ matchUp, drawDetails, eventType }) {
+  function processMatchUp({
+    eventDrawsCount,
+    drawDetails,
+    eventType,
+    matchUp,
+  }) {
     const {
       collectionId,
       collectionPosition,
@@ -417,6 +425,7 @@ export function addParticipantContext(params) {
       eventId,
       eventName,
       finishingPositionRange,
+      processCodes,
       loserTo,
       matchUpId,
       matchUpType,
@@ -612,6 +621,7 @@ export function addParticipantContext(params) {
               drawId,
               eventId,
               eventType,
+              eventDrawsCount,
               finishingPositionRange,
               loserTo,
               matchUpId,
@@ -622,6 +632,7 @@ export function addParticipantContext(params) {
               participantWon,
               partnerParticipantId,
               perspectiveScoreString: participantScore,
+              processCodes,
               roundName,
               roundNumber,
               roundPosition,

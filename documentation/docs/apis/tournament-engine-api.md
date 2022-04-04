@@ -12,12 +12,14 @@ Adds a `collectionDefinition` to the specified target, either `matchUp`, `struct
 
 ```js
 let result = tournamentEngine.addCollectionDefinition({
+  updateInProgressMatchUps, // defaults to true; in progress matchUps have matchUpStatus: IN_PROGRESS
   collectionDefinition, // will be validated
   tieFormatName, // if not provided, existing tieFormatName will be deleted
   structureId, // optional - if provided only tieFormat on structure will be modified
   matchUpId, // optional - if provided only tieFormat on matchUp will be modified
   eventId, // optional - if provided only tieFormat on event will be modified
-  drawId, // optional - if provided only tieFormat on drawDefinition will be modified
+  drawId, // required if structureId is specified; if provided without structureId only tieFormat on drawDefinition will be modified
+  uuids, // optional - array of UUIDs to use for newly created matchUps
 });
 ```
 
@@ -116,6 +118,7 @@ Bulk add an array of `participantIds` to a specific **stage** of a draw with a s
 tournamentEngine.addDrawEntries({
   entryStage: MAIN, // optional
   entryStatus: ALTERNATE, // optional
+  ignoreStageSpace, // optional boolean to disable checking available positions
   entryStageSequence, // optional - applies to qualifying
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
   participantIds,
@@ -2041,6 +2044,22 @@ tournamentEngine.mergeParticipants({ participants });
 
 ---
 
+## modifyCollectionDefinition
+
+```js
+tournamentEngine.modifyCollectionDefinition({
+  collectionName, // optional
+  matchUpFormat, // optional
+  collectionId, // required
+  structureId, // required if modifying tieFormat for a structure
+  matchUpId, // required if modifying tieFormat for a matchUp
+  eventId, // required if modifying tieFormat for a event
+  drawId, // required if modifying tieFormat for a drawDefinition
+});
+```
+
+---
+
 ## modifyCourtAvailability
 
 Modifies the `dateAvailability` attribute of a specified court. Warns if existing scheduled matchUps would be affected. See [Scheduling](/docs/concepts/scheduling).
@@ -2348,6 +2367,21 @@ const { eventData } = tournamentEngine.publishEvent({
 tournamentEngine.publishEventSeeding({
   eventId,
   drawIds, // optional - publish specific drawIds (flights) within the event
+});
+```
+
+---
+
+## removeCollectionDefinition
+
+```js
+tournamentEngine.removeCollectionDefinition({
+  tieFormatName, // any time a collectionDefinition is modified a new name must be provided
+  collectionId, // required - id of collectionDefinition to be removed
+  structureId, // optional - if removing from tieFormat associated with a specific structure
+  matchUpId, // optional - if removing from tieFormat asscoiated with a specific matchUp
+  eventId, // optional - if removing from tieFormat asscoiated with an event
+  drawId, // required if structureId is specified or if tieFormat associated with drawDefinition is to be modified
 });
 ```
 

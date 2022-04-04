@@ -4,6 +4,7 @@ import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStru
 import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { validateTieFormat } from './tieFormatUtilities';
+import { makeDeepCopy } from '../../../../utilities';
 import { getTieFormat } from './getTieFormat';
 import {
   deleteMatchUpsNotice,
@@ -11,6 +12,7 @@ import {
   modifyMatchUpNotice,
 } from '../../../notifications/drawNotifications';
 
+import { IN_PROGRESS } from '../../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 import {
@@ -20,12 +22,13 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 /*
- * collectionDefinition will be added to an event tieFormat (if present)
- * if a matchUpId is provided, will be added to matchUp.tieFormat
- * if a structureId is provided, will be added to structure.tieFormat
+ * collectionDefinition will be removed from an event tieFormat (if present)
+ * if a matchUpId is provided, will be removed from matchUp.tieFormat
+ * if a structureId is provided, will be removed from structure.tieFormat
  * TODO: determine whether all contained instances of tieFormat should be updated
  */
 export function removeCollectionDefinition({
+  updateInProgressMatchUps = true,
   tournamentRecord,
   drawDefinition,
   tieFormatName,
@@ -44,7 +47,8 @@ export function removeCollectionDefinition({
   });
   if (result.error) return result;
 
-  const { matchUp, structure, tieFormat } = result;
+  const { matchUp, structure, tieFormat: existingTieFormat } = result;
+  const tieFormat = makeDeepCopy(existingTieFormat, false, true);
 
   result = validateTieFormat({ tieFormat });
   if (!result.valid) return { error: INVALID_VALUES, errors: result.errors };
@@ -75,6 +79,9 @@ export function removeCollectionDefinition({
 
   const deletedMatchUpIds = [];
   for (const matchUp of matchUps) {
+    if (!updateInProgressMatchUps && matchUp.matchUpStatus === IN_PROGRESS)
+      continue;
+
     // remove any collectionAssignments from LineUps that include collectionId
     for (const side of matchUp?.sides || []) {
       side.lineUp = (side.lineUp || []).map((assignment) =>
@@ -91,6 +98,8 @@ export function removeCollectionDefinition({
       if (deleteTarget) deletedMatchUpIds.push(matchUp.matchUpId);
       return !deleteTarget;
     });
+
+    matchUp.tieFormat = tieFormat;
   }
 
   // remove any matchUps which contain collectionId

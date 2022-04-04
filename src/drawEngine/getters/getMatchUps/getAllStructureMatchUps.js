@@ -162,6 +162,7 @@ export function getAllStructureMatchUps({
   const { roundNamingProfile, roundProfile } = result;
   roundMatchUps = result.roundMatchUps;
 
+  // must make a pass before hydration and addition of tieMatchUps
   if (matchUpFilters) {
     matchUps = filterMatchUps({
       matchUps,
@@ -223,6 +224,15 @@ export function getAllStructureMatchUps({
     });
   }
 
+  // must make a pass after tieMatchUps have been added
+  if (matchUpFilters) {
+    matchUps = filterMatchUps({
+      matchUps,
+      ...matchUpFilters,
+      filterMatchUpTypes: false,
+      filterMatchUpIds: false,
+    });
+  }
   // now filter again if there are any matchUpTypes or matchUpIds
   if (matchUpFilters?.matchUpTypes || matchUpFilters?.matchUpIds) {
     matchUps = filterMatchUps({

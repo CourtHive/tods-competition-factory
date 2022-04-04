@@ -15,6 +15,7 @@ drawEngine.addDrawEntries({
   stage, // optional - stage into which participantIds have been entered; defaults to MAIN
   stageSequence, // optional - applies to qualifying
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
+  ignoreStageSpace, // optional boolean to disable checking available positions
 });
 ```
 

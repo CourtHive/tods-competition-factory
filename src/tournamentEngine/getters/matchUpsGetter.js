@@ -17,6 +17,7 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
+import { getFlightProfile } from './getFlightProfile';
 
 export function allTournamentMatchUps({
   scheduleVisibilityFilters,
@@ -54,24 +55,25 @@ export function allTournamentMatchUps({
   };
 
   const matchUps = events
-    .map(
-      (event) =>
-        allEventMatchUps({
-          context: additionalContext,
-          scheduleVisibilityFilters,
-          tournamentAppliedPolicies,
-          participantsProfile,
-          policyDefinitions,
-          tournamentRecord,
-          matchUpFilters,
-          contextFilters,
-          contextProfile,
-          nextMatchUps,
-          participants,
-          inContext,
-          event,
-        }).matchUps
-    )
+    .map((event) => {
+      additionalContext.eventDrawsCount = event.drawDefinitions?.length || 0;
+
+      return allEventMatchUps({
+        context: additionalContext,
+        scheduleVisibilityFilters,
+        tournamentAppliedPolicies,
+        participantsProfile,
+        policyDefinitions,
+        tournamentRecord,
+        matchUpFilters,
+        contextFilters,
+        contextProfile,
+        nextMatchUps,
+        participants,
+        inContext,
+        event,
+      }).matchUps;
+    })
     .flat(Infinity)
     .concat(...(tournamentRecord.matchUps || []));
 
@@ -240,8 +242,16 @@ export function tournamentMatchUps({
   const filteredEventIds = (contextFilters && contextFilters.eventIds) || [];
   const eventsDrawsMatchUps = events
     .filter((event) => !filteredEventIds.includes(event.eventId))
-    .map((event) =>
-      eventMatchUps({
+    .map((event) => {
+      const flightProfile = getFlightProfile({ event }).flightProfile;
+      const additionalContext = {
+        eventDrawsCount:
+          flightProfile?.flights?.length || event.drawDefinitions?.length || 0,
+        ...context,
+      };
+
+      return eventMatchUps({
+        context: additionalContext,
         tournamentAppliedPolicies,
         scheduleVisibilityFilters,
         participantsProfile,
@@ -254,10 +264,9 @@ export function tournamentMatchUps({
         tournamentId,
         nextMatchUps,
         inContext,
-        context,
         event,
-      })
-    );
+      });
+    });
 
   const matchUpGroupings = eventsDrawsMatchUps.reduce(
     (matchUps, eventMatchUps) => {

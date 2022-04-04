@@ -28,7 +28,7 @@ export function getAffectedTargetStructureIds({
   });
 
   const relevantAssignments = positionAssignments.filter(({ drawPosition }) =>
-    drawPositions.includes(drawPosition)
+    drawPositions?.includes(drawPosition)
   );
 
   const finishingPositions = relevantAssignments.map((assignment) => {
@@ -39,12 +39,10 @@ export function getAffectedTargetStructureIds({
   const { containerStructures } = getContainedStructures({ drawDefinition });
   const structureId = containerStructures[structure.structureId];
 
-  const {
-    links: { source: links },
-  } = getStructureLinks({
+  const links = getStructureLinks({
     drawDefinition,
     structureId,
-  });
+  })?.links?.source;
 
   const structureIds = links
     ?.filter((link) => {

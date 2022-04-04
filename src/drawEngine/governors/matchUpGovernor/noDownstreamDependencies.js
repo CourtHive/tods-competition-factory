@@ -5,7 +5,7 @@ import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { removeDoubleWalkover } from './removeDoubleWalkover';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
-import { scoreHasValue } from './scoreHasValue';
+import { scoreHasValue } from '../scoreGovernor/scoreHasValue';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -66,6 +66,11 @@ export function noDownstreamDependencies(params) {
     return { ...SUCCESS, connectedStructures };
   };
 
+  if (removeWinningSide && winningSide && params.isCollectionMatchUp) {
+    // this is only possible if a TEAM dualMatchUp has an SINGLES/DOUBLES matchUp winningSide change
+    return scoreModification(params);
+  }
+
   return (
     (winningSide && attemptToSetWinningSide(params)) ||
     (scoreWithNoWinningSide && removeDirected({ removeScore })) ||
@@ -77,15 +82,20 @@ export function noDownstreamDependencies(params) {
 }
 
 function scoreModification(params) {
-  const isCollectionMatchUp = Boolean(params.matchUp.collectionId);
   const removeDirected =
     params.isCollectionMatchUp &&
     params.dualMatchUp?.winningSide &&
-    params.projectedWinningSide;
-  const result = modifyMatchUpScore({ ...params, removeScore: true });
+    !params.projectedWinningSide;
+
+  if (removeDirected) {
+    const result = removeDirectedParticipants(params);
+    if (result.error) return result;
+  }
+  // const result = modifyMatchUpScore({ ...params, removeScore: true });
+  const result = modifyMatchUpScore({ ...params });
 
   // recalculate dualMatchUp score if isCollectionMatchUp
-  if (isCollectionMatchUp) {
+  if (params.isCollectionMatchUp) {
     const { matchUpTieId, drawDefinition, structure, event } = params;
     const { removeWinningSide } = updateTieMatchUpScore({
       tournamentRecord: params.tournamentRecord,
@@ -94,7 +104,8 @@ function scoreModification(params) {
       structure,
       event,
     });
-    console.log('ndd', { removeWinningSide, removeDirected });
+
+    if (removeWinningSide) console.log('REMOVE WINNING SIDE');
   }
 
   return result;

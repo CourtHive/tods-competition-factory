@@ -6,7 +6,10 @@ import tournamentEngine from '../../sync';
 
 import { TEAM_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { TEAM_DOUBLES_3_AGGREGATION } from '../../../constants/tieFormatConstants';
+import {
+  TEAM_DOUBLES_3_AGGREGATION,
+  USTA_GOLD_TEAM_CHALLENGE,
+} from '../../../constants/tieFormatConstants';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import {
@@ -18,6 +21,7 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
+import { SWAP_PARTICIPANTS } from '../../../constants/positionActionConstants';
 
 // reusable
 const getMatchUp = (id, inContext) => {
@@ -405,4 +409,264 @@ test('tieFormat with scoreValue calculation', () => {
     },
   });
   expect(secondRoundDualMatchUp.drawPositions).toEqual([1, 3]);
+});
+
+test('properly removes advanced team at 9-0 in USTA_GOLD', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        tieFormatName: USTA_GOLD_TEAM_CHALLENGE,
+        eventType: TEAM,
+        drawSize: 4,
+      },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let outcome = {
+    winningSide: 1,
+    score: {
+      scoreStringSide1: '8-1',
+      scoreStringSide2: '1-8',
+      sets: [
+        {
+          setNumber: 1,
+          side1Score: 8,
+          side2Score: 1,
+          winningSide: 1,
+        },
+      ],
+    },
+  };
+
+  let { matchUps: firstRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      contextFilters: {
+        stages: [MAIN],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [1],
+      },
+    });
+
+  expect(firstRoundDualMatchUps.length).toEqual(2);
+
+  // for all first round dualMatchUps complete all doubles matchUps
+  firstRoundDualMatchUps.forEach((dualMatchUp) => {
+    dualMatchUp.tieMatchUps.slice(0, 9).forEach((matchUp) => {
+      const { matchUpId } = matchUp;
+      let result = tournamentEngine.setMatchUpStatus({
+        matchUpId,
+        outcome,
+        drawId,
+      });
+      expect(result.success).toEqual(true);
+    });
+  });
+
+  ({ matchUps: firstRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      contextFilters: {
+        stages: [MAIN],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [1],
+      },
+    }));
+
+  firstRoundDualMatchUps.forEach((dualMatchUp) => {
+    const { winningSide, matchUpStatus, score } = dualMatchUp;
+    expect(matchUpStatus).toEqual(COMPLETED);
+    expect(winningSide).toEqual(1);
+    expect(score).toEqual({
+      scoreStringSide1: '9-0',
+      scoreStringSide2: '0-9',
+      sets: [{ side1Score: 9, side2Score: 0 }],
+    });
+  });
+
+  let {
+    matchUps: [secondRoundDualMatchUp],
+  } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [2],
+    },
+  });
+  expect(secondRoundDualMatchUp.drawPositions).toEqual([1, 3]);
+
+  const matchUpId = firstRoundDualMatchUps[0].tieMatchUps[0].matchUpId;
+
+  outcome = {
+    winningSide: 2,
+    score: {
+      scoreStringSide1: '1-8',
+      scoreStringSide2: '8-1',
+      sets: [
+        {
+          setNumber: 1,
+          side1Score: 1,
+          side2Score: 1,
+          winningSide: 8,
+        },
+      ],
+    },
+  };
+
+  const result = tournamentEngine.setMatchUpStatus({
+    matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  const teamMatchUps = matchUps.filter(
+    ({ matchUpType }) => matchUpType === TEAM
+  );
+
+  let firstRoundFirst = teamMatchUps.find(
+    ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 1
+  );
+  let secondRoundFirst = teamMatchUps.find(
+    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
+  );
+
+  expect(firstRoundFirst.winningSide).toBeUndefined();
+  expect(firstRoundFirst.score.scoreStringSide1).toEqual('8-1');
+  expect(secondRoundFirst.drawPositions.filter(Boolean)).toEqual([3]);
+
+  const changedMatchUp = matchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+  expect(changedMatchUp.score.scoreStringSide1).toEqual('1-8');
+});
+
+test('properly removes lineUps when team drawPositions are swapped', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        tieFormatName: USTA_GOLD_TEAM_CHALLENGE,
+        eventType: TEAM,
+        drawSize: 4,
+      },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let { matchUps: firstRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      contextFilters: {
+        stages: [MAIN],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [1],
+      },
+    });
+
+  expect(firstRoundDualMatchUps.length).toEqual(2);
+
+  // get positionAssignments to determine drawPositions
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { positionAssignments } = drawDefinition.structures[0];
+
+  let { tournamentParticipants: teamParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [TEAM] },
+    });
+
+  const assignParticipants = (dualMatchUp) => {
+    const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
+      ({ matchUpType }) => matchUpType === SINGLES
+    );
+    singlesMatchUps.forEach((singlesMatchUp, i) => {
+      const tieMatchUpId = singlesMatchUp.matchUpId;
+      singlesMatchUp.sides.forEach((side) => {
+        const { drawPosition } = side;
+        const teamParticipant = teamParticipants.find((teamParticipant) => {
+          const { participantId } = teamParticipant;
+          const assignment = positionAssignments.find(
+            (assignment) => assignment.participantId === participantId
+          );
+          return assignment.drawPosition === drawPosition;
+        });
+        if (teamParticipant) {
+          const individualParticipantId =
+            teamParticipant.individualParticipantIds[i];
+          const result = tournamentEngine.assignTieMatchUpParticipantId({
+            participantId: individualParticipantId,
+            tieMatchUpId,
+            drawId,
+          });
+          if (!result.success) console.log(result);
+          expect(result.success).toEqual(true);
+        }
+      });
+    });
+  };
+
+  firstRoundDualMatchUps.forEach(assignParticipants);
+
+  firstRoundDualMatchUps = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  }).matchUps;
+
+  let targetMatchUp = firstRoundDualMatchUps[0];
+  targetMatchUp.sides.forEach((side) => expect(side.lineUp.length).toEqual(8));
+
+  let drawPosition = 1;
+  const { structureId } = firstRoundDualMatchUps[0];
+  let result = tournamentEngine.positionActions({
+    drawPosition,
+    structureId,
+    drawId,
+  });
+  let options = result.validActions?.map((validAction) => validAction.type);
+  expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
+  let option = result.validActions.find(
+    (action) => action.type === SWAP_PARTICIPANTS
+  );
+  expect(option.availableAssignments[1].drawPosition).toEqual(3);
+  expect(option.availableAssignments.length).toEqual(3);
+
+  const payload = option.payload;
+  payload.drawPositions.push(option.availableAssignments[1].drawPosition);
+  result = tournamentEngine[option.method](payload);
+  expect(result.success).toEqual(true);
+
+  // after the swap, expect that side 1 no longer has a lineUp
+  firstRoundDualMatchUps = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  }).matchUps;
+
+  targetMatchUp = firstRoundDualMatchUps[0];
+
+  expect(targetMatchUp.sides[0].lineUp).toBeUndefined();
+  expect(targetMatchUp.sides[1].lineUp.length).toEqual(8);
 });

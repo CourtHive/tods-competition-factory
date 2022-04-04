@@ -153,4 +153,12 @@ it('rejects bulk entries if there is insufficient space', () => {
   const participantIds = participants.map((p) => p.participantId);
   result = drawEngine.addDrawEntries({ participantIds, stage: MAIN });
   expect(result).toHaveProperty(ERROR);
+
+  // attribute ignoreStageSpace allows addition when insufficient space
+  result = drawEngine.addDrawEntries({
+    ignoreStageSpace: true,
+    participantIds,
+    stage: MAIN,
+  });
+  expect(result.success).toEqual(true);
 });
