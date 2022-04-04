@@ -109,7 +109,7 @@ export function drawPositionRemovals({
         pairedDrawPositionIsBye &&
         pairedDrawPositionInNextRound &&
         nextRoundProfile &&
-        nextRoundProfile.drawPositions.includes(pairedDrawPosition);
+        nextRoundProfile.drawPositions?.includes(pairedDrawPosition);
       const pairedDrawPositionByeAdvancedPair =
         !isTransitiveBye && pairedDrawPositionInNextRound;
 
@@ -205,7 +205,7 @@ function removeSubsequentRoundsParticipant({
     (matchUp) =>
       matchUp.roundNumber >= roundNumber &&
       matchUp.roundNumber !== initialRoundNumber &&
-      matchUp.drawPositions.includes(targetDrawPosition)
+      matchUp.drawPositions?.includes(targetDrawPosition)
   );
 
   const { positionAssignments } = getPositionAssignments({
@@ -293,7 +293,7 @@ function removeDrawPosition({
   } = targetData;
 
   const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
-    targetMatchUp.drawPositions.includes(drawPosition)
+    targetMatchUp.drawPositions?.includes(drawPosition)
   );
   const matchUpContainsBye = matchUpAssignments.filter(
     (assignment) => assignment.bye

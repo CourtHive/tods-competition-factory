@@ -1,11 +1,11 @@
 import { getAvoidanceConflicts } from './getAvoidanceConflicts';
 
 export function getSwapOptions({
-  isRoundRobin,
-  avoidanceConflicts,
-  drawPositionGroups,
   positionedParticipants,
   potentialDrawPositions,
+  avoidanceConflicts,
+  drawPositionGroups,
+  isRoundRobin,
 }) {
   return avoidanceConflicts
     .map((conflict) => {
@@ -16,7 +16,7 @@ export function getSwapOptions({
       const swapOptions = moveableParticipants
         .map((moveableParticipant) => {
           const possibleDrawPositions = potentialDrawPositions.filter(
-            (position) => !drawPositions.includes(position)
+            (position) => !drawPositions?.includes(position)
           );
 
           const possibleDrawPositionsNoConflict = possibleDrawPositions.filter(

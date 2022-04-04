@@ -234,7 +234,7 @@ function roundRobinSwap({
 }) {
   const assignments = structure.structures?.reduce((assignments, structure) => {
     const structureAssignments = structure?.positionAssignments.filter(
-      (assignment) => drawPositions.includes(assignment.drawPosition)
+      (assignment) => drawPositions?.includes(assignment.drawPosition)
     );
     if (structureAssignments) assignments.push(...structureAssignments);
     return assignments;

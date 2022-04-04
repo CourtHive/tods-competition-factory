@@ -171,7 +171,7 @@ export function assignDrawPosition({
     if (matchUps?.length === 1 && matchUps[0].matchUpType === TEAM) {
       const drawPositionSideIndex = targetMatchUps?.[0]?.sides.reduce(
         (sideIndex, side, i) =>
-          drawPositions.includes(side.drawPosition) ? i : sideIndex,
+          drawPositions?.includes(side.drawPosition) ? i : sideIndex,
         undefined
       );
 
@@ -241,7 +241,7 @@ function addDrawPositionToMatchUps({
   });
 
   const matchUp = roundMatchUps[initialRoundNumber].find((matchUp) =>
-    matchUp.drawPositions.includes(drawPosition)
+    matchUp.drawPositions?.includes(drawPosition)
   );
 
   if (matchUp) {

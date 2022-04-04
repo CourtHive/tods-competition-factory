@@ -20,7 +20,7 @@ export function conditionallyDisableLinkPositioning({
   }
   const { positionAssignments } = getPositionAssignments({ structure });
   const relevantAssignments = positionAssignments.filter(({ drawPosition }) =>
-    drawPositions.includes(drawPosition)
+    drawPositions?.includes(drawPosition)
   );
   relevantAssignments.forEach((assignment) => {
     const extension = {

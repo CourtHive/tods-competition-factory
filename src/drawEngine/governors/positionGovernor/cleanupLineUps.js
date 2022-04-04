@@ -22,7 +22,7 @@ export function cleanupLineUps({
   // this will cause all lineUps to revert back to the team default lineUps (last modification) stored in LINEUPS extension
   for (const inContextMatchUp of targetMatchUps) {
     (inContextMatchUp.sides || []).forEach((side, sideIndex) => {
-      if (side?.drawPosition && drawPositions.includes(side.drawPosition)) {
+      if (side?.drawPosition && drawPositions?.includes(side.drawPosition)) {
         const matchUp = matchUps.find(
           ({ matchUpId }) => matchUpId === inContextMatchUp.matchUpId
         );

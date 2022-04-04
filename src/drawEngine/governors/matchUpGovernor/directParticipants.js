@@ -149,7 +149,7 @@ function drawPositionsAssignedParticipantIds({ structure, matchUp }) {
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const assignedParticipantIds = positionAssignments.filter((assignment) => {
     return (
-      drawPositions.includes(assignment.drawPosition) &&
+      drawPositions?.includes(assignment.drawPosition) &&
       assignment.participantId
     );
   });
