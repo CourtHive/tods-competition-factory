@@ -79,17 +79,21 @@ export function removeCollectionDefinition({
 
   const deletedMatchUpIds = [];
   for (const matchUp of matchUps) {
-    if (!updateInProgressMatchUps && matchUp.matchUpStatus === IN_PROGRESS)
+    if (
+      (!updateInProgressMatchUps && matchUp.matchUpStatus === IN_PROGRESS) ||
+      matchUp.winningSide
+    )
       continue;
 
     // remove any collectionAssignments from LineUps that include collectionId
     for (const side of matchUp?.sides || []) {
-      side.lineUp = (side.lineUp || []).map((assignment) =>
-        (assignment?.collectionAssignments || []).filter(
+      side.lineUp = (side.lineUp || []).map((assignment) => ({
+        participantId: assignment.participantId,
+        collectionAssignments: (assignment?.collectionAssignments || []).filter(
           (collectionAssignment) =>
             collectionAssignment.collectionId !== collectionId
-        )
-      );
+        ),
+      }));
     }
 
     // delete any tieMatchUps that contain collectionId
