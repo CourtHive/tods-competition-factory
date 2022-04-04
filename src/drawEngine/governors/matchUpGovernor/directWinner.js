@@ -152,7 +152,9 @@ export function directWinner({
 
       // attach to appropriate side of winnerMatchUp
       if (targetSide) {
-        targetSide.lineUp = side.lineUp;
+        targetSide.lineUp = side.lineUp?.filter(
+          (assignment) => assignment?.participantId
+        );
 
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,
