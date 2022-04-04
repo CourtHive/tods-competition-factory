@@ -8,6 +8,7 @@ import { SINGLES, TEAM } from '../../../constants/matchUpTypes';
 
 import { setDevContext } from '../../../global/state/globalState';
 import { REMOVE_ASSIGNMENT } from '../../../constants/positionActionConstants';
+import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 
 const getMatchUp = (id, inContext) => {
   const {
@@ -108,7 +109,7 @@ function processOutcome({ dualMatchUp, outcome, expectedScore }) {
 
 test('BYEs can be placed in TEAM RR', () => {
   const mockProfile = {
-    drawProfiles: [{ eventType: TEAM, drawSize: 8 }],
+    drawProfiles: [{ eventType: TEAM, drawSize: 8, drawType: ROUND_ROBIN }],
   };
   const {
     tournamentRecord,
@@ -121,7 +122,7 @@ test('BYEs can be placed in TEAM RR', () => {
     matchUpFilters: { matchUpTypes: [TEAM] },
   }).matchUps;
 
-  expect(matchUps.length).toEqual(7);
+  expect(matchUps.length).toEqual(12);
 
   let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   const structureId = drawDefinition.structures[0].structureId;
@@ -163,4 +164,39 @@ test('BYEs can be placed in TEAM RR', () => {
     (assignemnt) => assignemnt.bye
   ).drawPosition;
   expect(drawPosition).toEqual(2);
+});
+
+test('Can generate TEAM RR with BYE', () => {
+  const mockProfile = {
+    drawProfiles: [
+      {
+        eventType: TEAM,
+        drawSize: 8,
+        participantsCount: 7,
+        drawType: ROUND_ROBIN,
+      },
+    ],
+  };
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord(mockProfile);
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let matchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM] },
+  }).matchUps;
+
+  expect(matchUps.length).toEqual(12);
+
+  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const structureId = drawDefinition.structures[0].structureId;
+  let { positionAssignments } = tournamentEngine.getPositionAssignments({
+    structureId,
+    drawId,
+  });
+
+  const hasBye = positionAssignments.find((assignment) => assignment.bye).bye;
+  expect(hasBye).toEqual(true);
 });

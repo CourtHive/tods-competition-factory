@@ -27,7 +27,6 @@ export function positionByes({
     structure,
     event,
   });
-
   const byesToPlace = byesCount - placedByes;
   if (byesToPlace <= 0) return SUCCESS;
 
