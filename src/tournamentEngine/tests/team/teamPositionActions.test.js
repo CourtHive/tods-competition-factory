@@ -3,10 +3,11 @@ import { generateTeamTournament } from './generateTestTeamTournament';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-import { COMPLETED } from '../../../constants/matchUpStatusConstants';
+import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { SINGLES, TEAM } from '../../../constants/matchUpTypes';
 
 import { setDevContext } from '../../../global/state/globalState';
+import { REMOVE_ASSIGNMENT } from '../../../constants/positionActionConstants';
 
 const getMatchUp = (id, inContext) => {
   const {
@@ -104,3 +105,62 @@ function processOutcome({ dualMatchUp, outcome, expectedScore }) {
 
   expect(scoreStringSide1).toEqual(expectedScore);
 }
+
+test('BYEs can be placed in TEAM RR', () => {
+  const mockProfile = {
+    drawProfiles: [{ eventType: TEAM, drawSize: 8 }],
+  };
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord(mockProfile);
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let matchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM] },
+  }).matchUps;
+
+  expect(matchUps.length).toEqual(7);
+
+  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const structureId = drawDefinition.structures[0].structureId;
+
+  let validActions = tournamentEngine.positionActions({
+    drawPosition: 2,
+    structureId,
+    drawId,
+  }).validActions;
+  let option = validActions.find((action) => action.type === REMOVE_ASSIGNMENT);
+  let result = tournamentEngine[option.method](option.payload);
+  expect(result.success).toEqual(true);
+
+  let { positionAssignments } = tournamentEngine.getPositionAssignments({
+    structureId,
+    drawId,
+  });
+
+  let drawPosition = positionAssignments.find(
+    (assignemnt) => !assignemnt.participantId
+  ).drawPosition;
+  expect(drawPosition).toEqual(2);
+
+  validActions = tournamentEngine.positionActions({
+    drawPosition: 2,
+    structureId,
+    drawId,
+  }).validActions;
+  option = validActions.find((action) => action.type === BYE);
+  result = tournamentEngine[option.method](option.payload);
+  expect(result.success).toEqual(true);
+
+  positionAssignments = tournamentEngine.getPositionAssignments({
+    structureId,
+    drawId,
+  }).positionAssignments;
+
+  drawPosition = positionAssignments.find(
+    (assignemnt) => assignemnt.bye
+  ).drawPosition;
+  expect(drawPosition).toEqual(2);
+});
