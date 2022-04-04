@@ -194,7 +194,10 @@ function updateStructureMatchUps({
   );
 
   for (const matchUp of targetMatchUps) {
-    if (!updateInProgressMatchUps && matchUp.matchUpStatus === IN_PROGRESS)
+    if (
+      (!updateInProgressMatchUps && matchUp.matchUpStatus === IN_PROGRESS) ||
+      matchUp.winningSide
+    )
       continue;
 
     // don't update matchUps which are already COMPLETED
