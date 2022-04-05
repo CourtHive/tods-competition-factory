@@ -47,6 +47,7 @@ import {
  *
  * @param {string} drawDefinition - required to collect all draw matchUps for scenario analysis
  * @param {string} matchUpId - id of the matchUp to be modified
+ * @param {object} score - score object { sets: [] }
  * @param {string} matchUpStatus - optional - new matchUpStatus
  * @param {number} winningSide - optional - new winningSide; 1 or 2
  * @param {object} tournamentRecord - optional - used to discover relevant policyDefinitions or to modify scheduling information (integrity checks)
