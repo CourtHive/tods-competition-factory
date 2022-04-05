@@ -2582,6 +2582,19 @@ tournamentEngine.replaceTieMatchUpParticipantId({
 
 ---
 
+## resetScorecard
+
+Removes all scores from `tieMatchUps` within a TEAM `matchUp`; preserves `lineUps`.
+
+```js
+tournamentEngine.resetScorecard({
+  matchUpId,
+  drawId,
+});
+```
+
+---
+
 ## setDrawDefaultMatchUpFormat
 
 ```js

@@ -109,7 +109,7 @@ test('can clear TEAM matchUp "scorecards"', () => {
     matchUpId,
     drawId,
   });
-  console.log({ result });
+  expect(result.success).toEqual(true);
 
   firstRoundDualMatchUps = tournamentEngine.allTournamentMatchUps({
     contextFilters: {
