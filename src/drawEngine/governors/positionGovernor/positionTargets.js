@@ -22,11 +22,11 @@ import {
  * targetDrawPositions are necessary for participant movement logic
  */
 export function positionTargets({
-  matchUpId,
-  drawDefinition,
+  useTargetMatchUpIds = false,
   inContextDrawMatchUps = [],
   inContextMatchUp,
-  useTargetMatchUpIds = false,
+  drawDefinition,
+  matchUpId,
 }) {
   let matchUp = inContextMatchUp;
   if (inContextDrawMatchUps.length && !matchUp) {
@@ -41,11 +41,11 @@ export function positionTargets({
   const { finishingPosition } = structure;
   if (finishingPosition === ROUND_OUTCOME) {
     return targetByRoundOutcome({
-      drawDefinition,
       inContextDrawMatchUps,
+      useTargetMatchUpIds,
+      drawDefinition,
       structure,
       matchUp,
-      useTargetMatchUpIds,
     });
   } else {
     return targetByWinRatio({ drawDefinition, matchUp, structure });
@@ -53,11 +53,11 @@ export function positionTargets({
 }
 
 function targetByRoundOutcome({
-  matchUp,
-  structure,
-  drawDefinition,
   inContextDrawMatchUps,
   useTargetMatchUpIds,
+  drawDefinition,
+  structure,
+  matchUp,
 }) {
   const {
     links: { source },
@@ -99,7 +99,8 @@ function targetByRoundOutcome({
       );
     const sourceRoundMatchUpCount = structureMatchUps.reduce(
       (count, currentMatchUp) => {
-        return currentMatchUp.roundNumber === matchUp.roundNumber
+        return currentMatchUp.roundNumber === matchUp.roundNumber &&
+          !currentMatchUp.matchUpTieId // exclude tieMatchUps
           ? count + 1
           : count;
       },
@@ -112,11 +113,11 @@ function targetByRoundOutcome({
         matchUpDrawPositionIndex: loserMatchUpDrawPositionIndex,
         targetDrawPosition: loserTargetDrawPosition,
       } = getTargetMatchUp({
-        drawDefinition,
+        targetLink: loserTargetLink,
+        sourceRoundMatchUpCount,
         inContextDrawMatchUps,
         sourceRoundPosition,
-        sourceRoundMatchUpCount,
-        targetLink: loserTargetLink,
+        drawDefinition,
       }));
     }
 

@@ -49,7 +49,7 @@ export function getTargetMatchUp({
     (matchUp) => matchUp.structureId === targetStructure.structureId
   );
   const targetRoundMatchUps = structureMatchUps.filter(
-    (matchUp) => matchUp.roundNumber === roundNumber
+    (matchUp) => matchUp.roundNumber === roundNumber && !matchUp.matchUpTieId // exclude tieMatchUps
   );
   const targetRoundMatchUpCount = targetRoundMatchUps.length;
   const roundPositions = generateRange(1, targetRoundMatchUpCount + 1);
