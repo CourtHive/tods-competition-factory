@@ -9,7 +9,7 @@
       "matchUpValue": 1
     },
     {
-      "collectionName": "Boys Singles",
+      "collectionName": "Male Singles",
       "matchUpCount": 1,
       "gender": "MALE",
       "matchUpFormat": "SET3-S:6/TB7-F:TB10",
@@ -17,7 +17,7 @@
       "matchUpValue": 1
     },
     {
-      "collectionName": "Girls Singles",
+      "collectionName": "Female Singles",
       "gender": "FEMALE",
       "matchUpCount": 1,
       "matchUpFormat": "SET3-S:6/TB7-F:TB10",
