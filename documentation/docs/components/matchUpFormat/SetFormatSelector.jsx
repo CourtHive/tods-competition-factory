@@ -8,12 +8,25 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import { getTiebreakOptions, hasTiebreakObjectBuilder } from './utils';
 
-const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinalSet, onChange }) => {
-  const setFormat = isFinalSet ? matchUpFormatParsed?.finalSetFormat : matchUpFormatParsed?.setFormat;
+const SetFormatSelector = ({
+  disabled,
+  matchUpFormatParsed,
+  isFinalSet,
+  hasFinalSet,
+  onChange,
+}) => {
+  const setFormat = isFinalSet
+    ? matchUpFormatParsed?.finalSetFormat
+    : matchUpFormatParsed?.setFormat;
   const setsAreTiebreakSets = setFormat?.tiebreakSet;
-  const setTiebreakTo = setFormat?.tiebreakFormat?.tiebreakTo || setFormat?.tiebreakSet?.tiebreakTo;
-  const tiebreakExistsRegular = matchUpFormatParsed?.setFormat && matchUpFormatParsed?.setFormat?.noTiebreak;
-  const tiebreakExistsFinal = matchUpFormatParsed?.finalSetFormat && matchUpFormatParsed?.finalSetFormat?.noTiebreak;
+  const setTiebreakTo =
+    setFormat?.tiebreakFormat?.tiebreakTo || setFormat?.tiebreakSet?.tiebreakTo;
+  const tiebreakExistsRegular =
+    matchUpFormatParsed?.setFormat &&
+    matchUpFormatParsed?.setFormat?.noTiebreak;
+  const tiebreakExistsFinal =
+    matchUpFormatParsed?.finalSetFormat &&
+    matchUpFormatParsed?.finalSetFormat?.noTiebreak;
 
   const [commonState, setCommonState] = useState({
     exact: matchUpFormatParsed?.bestOf === 1 ? 'exact' : 'bestof',
@@ -23,27 +36,27 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
       ? 'S'
       : matchUpFormatParsed?.timed || matchUpFormatParsed?.setFormat?.timed
       ? 'T'
-      : 'S'
+      : 'S',
   });
 
   const counts =
     ['S', 'TB'].indexOf(commonState.what) >= 0
-      ? [1, 3, 5].map(key => ({ key, name: key }))
-      : [1, 3, 5].map(key => ({ key, name: key }));
+      ? [1, 3, 5].map((key) => ({ key, name: key }))
+      : [1, 3, 5].map((key) => ({ key, name: key }));
   const whatTo =
     commonState.what === 'T'
-      ? [10, 15, 20, 25, 30, 45, 60, 90].map(key => ({
+      ? [10, 15, 20, 25, 30, 45, 60, 90].map((key) => ({
           key,
-          name: `${key} Minutes`
+          name: `${key} Minutes`,
         }))
       : commonState.what === 'TB'
-      ? [5, 7, 9, 10, 12].map(key => ({
+      ? [5, 7, 9, 10, 12].map((key) => ({
           key,
-          name: `to ${key}`
+          name: `to ${key}`,
         }))
-      : [1, 2, 3, 4, 5, 6, 7, 8, 9].map(key => ({
+      : [1, 2, 3, 4, 5, 6, 7, 8, 9].map((key) => ({
           key,
-          name: `to ${key}`
+          name: `to ${key}`,
         }));
 
   const finalFixed = 'final';
@@ -54,17 +67,17 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
       ? [{ key: 'exact', name: 'Exactly' }]
       : [
           { key: 'bestof', name: 'Best Of' },
-          { key: 'exact', name: 'Exactly' }
+          { key: 'exact', name: 'Exactly' },
         ];
-  const isDisabled = what => (disabled || []).indexOf(what) >= 0;
+  const isDisabled = (what) => (disabled || []).indexOf(what) >= 0;
   const bestOfSingular = [
     { key: 'S', name: 'Set' },
     { key: 'TB', name: 'Tiebreak' },
     {
       key: 'T',
       name: 'Timed Set',
-      disabled: isDisabled('timed') || isFinalSet
-    }
+      disabled: isDisabled('timed') || isFinalSet,
+    },
   ];
   const bestOfPlural = [
     { key: 'S', name: 'Sets' },
@@ -72,33 +85,37 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
     {
       key: 'T',
       name: 'Timed Sets',
-      disabled: isDisabled('timed') || isFinalSet
-    }
+      disabled: isDisabled('timed') || isFinalSet,
+    },
   ];
   const bestOfWhat =
-    !matchUpFormatParsed?.bestOf || matchUpFormatParsed?.bestOf === 1 || isFinalSet ? bestOfSingular : bestOfPlural;
+    !matchUpFormatParsed?.bestOf ||
+    matchUpFormatParsed?.bestOf === 1 ||
+    isFinalSet
+      ? bestOfSingular
+      : bestOfPlural;
   const adnoad = [
     { key: false, name: 'Ad' },
-    { key: true, name: 'No Ad' }
+    { key: true, name: 'No Ad' },
   ];
-  const winbywhat = [1, 2].map(key => ({
+  const winbywhat = [1, 2].map((key) => ({
     key,
-    name: `Win by ${key}`
+    name: `Win by ${key}`,
   }));
 
   // bestOf value
   const bestOfValue = matchUpFormatParsed?.bestOf || counts[0].key;
 
   // populates the tiebreak to selector
-  const tiebreakTo = [5, 7, 9, 10, 12].map(key => ({
+  const tiebreakTo = [5, 7, 9, 10, 12].map((key) => ({
     key,
-    name: `TB to: ${key}`
+    name: `TB to: ${key}`,
   }));
 
   // populates the tiebreak at selector
-  const tiebreakAt = getTiebreakOptions(setFormat?.setTo).map(key => ({
+  const tiebreakAt = getTiebreakOptions(setFormat?.setTo).map((key) => ({
     key,
-    name: `@ ${key}`
+    name: `@ ${key}`,
   }));
 
   // ad / no ad in regular set value
@@ -110,74 +127,82 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
     !!(setFormat?.tiebreakSet && setFormat?.tiebreakSet.NoAD);
 
   // determines if set is noTiebreak
-  const hasTiebreak = event => {
+  const hasTiebreak = (event) => {
     const set = isFinalSet
       ? {
-          finalSetFormat: hasTiebreakObjectBuilder(event, setFormat, setTiebreakTo)
+          finalSetFormat: hasTiebreakObjectBuilder(
+            event,
+            setFormat,
+            setTiebreakTo
+          ),
         }
       : {
-          setFormat: hasTiebreakObjectBuilder(event, setFormat, setTiebreakTo)
+          setFormat: hasTiebreakObjectBuilder(event, setFormat, setTiebreakTo),
         };
 
     const updatedFormat = { ...matchUpFormatParsed, ...set };
     onChange(updatedFormat);
   };
-  const handleChangeExact = event => {
+  const handleChangeExact = (event) => {
     setCommonState({ ...commonState, exact: event.target.value });
   };
-  const handleChangeBestOf = event => {
+  const handleChangeBestOf = (event) => {
     onChange({ ...matchUpFormatParsed, bestOf: event.target.value });
   };
-  const handleChangeDefaultAd = event => {
+  const handleChangeDefaultAd = (event) => {
     onChange({
       ...matchUpFormatParsed,
       [isFinalSet ? 'finalSetFormat' : 'setFormat']: {
         ...setFormat,
-        NoAD: event.target.value
-      }
+        NoAD: event.target.value,
+      },
     });
   };
-  const handleChangeTiebreakTo = event => {
+  const handleChangeTiebreakTo = (event) => {
     onChange({
       ...matchUpFormatParsed,
       [isFinalSet ? 'finalSetFormat' : 'setFormat']: {
         ...setFormat,
         [setFormat?.tiebreakFormat ? 'tiebreakFormat' : 'tiebreakSet']: {
-          ...(setFormat?.tiebreakFormat ? setFormat?.tiebreakFormat : setFormat?.tiebreakSet),
-          tiebreakTo: event.target.value
-        }
-      }
+          ...(setFormat?.tiebreakFormat
+            ? setFormat?.tiebreakFormat
+            : setFormat?.tiebreakSet),
+          tiebreakTo: event.target.value,
+        },
+      },
     });
   };
-  const handleChangeTiebreakAt = event => {
+  const handleChangeTiebreakAt = (event) => {
     onChange({
       ...matchUpFormatParsed,
       [isFinalSet ? 'finalSetFormat' : 'setFormat']: {
         ...setFormat,
-        tiebreakAt: event.target.value
-      }
+        tiebreakAt: event.target.value,
+      },
     });
   };
-  const handleChangeTiebreakAd = event => {
+  const handleChangeTiebreakAd = (event) => {
     const adNoAd = event.target.value === 1 ? true : false;
     onChange({
       ...matchUpFormatParsed,
       [isFinalSet ? 'finalSetFormat' : 'setFormat']: {
         ...setFormat,
         [setFormat?.tiebreakFormat ? 'tiebreakFormat' : 'tiebreakSet']: {
-          ...(setFormat?.tiebreakFormat ? setFormat?.tiebreakFormat : setFormat?.tiebreakSet),
-          NoAD: adNoAd
-        }
-      }
+          ...(setFormat?.tiebreakFormat
+            ? setFormat?.tiebreakFormat
+            : setFormat?.tiebreakSet),
+          NoAD: adNoAd,
+        },
+      },
     });
   };
-  const handleChangeWhatTo = event => {
+  const handleChangeWhatTo = (event) => {
     const eventValue = event.target.value;
     const tiebreakAt = getTiebreakOptions(eventValue).reverse()[0];
     if (matchUpFormatParsed?.timed) {
       onChange({
         ...matchUpFormatParsed,
-        minutes: eventValue
+        minutes: eventValue,
       });
     } else if (isFinalSet) {
       const existingSetFormat = matchUpFormatParsed?.finalSetFormat || {};
@@ -187,7 +212,7 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
         : { ...existingSetFormat, setTo: eventValue, tiebreakAt };
       onChange({
         ...matchUpFormatParsed,
-        finalSetFormat: finalSetFormat
+        finalSetFormat: finalSetFormat,
       });
     } else {
       const existingSetFormat = matchUpFormatParsed?.setFormat || {};
@@ -197,37 +222,39 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
         : { ...existingSetFormat, setTo: eventValue, tiebreakAt };
       onChange({
         ...matchUpFormatParsed,
-        setFormat
+        setFormat,
       });
     }
   };
-  const handleChangeBestOfWhat = event => {
+  const handleChangeBestOfWhat = (event) => {
     const value = event.target.value;
     setCommonState({ ...commonState, what: value });
 
     if (value === 'T') {
       const setFormatUndefined = {
         tiebreakAt: undefined,
-        setTo: undefined
+        setTo: undefined,
       };
       onChange({
         bestOf: undefined,
         setFormat: setFormatUndefined,
         finalSetFormat: setFormatUndefined,
         timed: true,
-        minutes: 10
+        minutes: 10,
       });
     } else if (value === 'TB') {
-      const newSetFormat = !isFinalSet ? { tiebreakSet: { tiebreakTo: setTiebreakTo || 7 } } : { ...setFormat };
+      const newSetFormat = !isFinalSet
+        ? { tiebreakSet: { tiebreakTo: setTiebreakTo || 7 } }
+        : { ...setFormat };
       const newFinalSetFormat = isFinalSet && {
-        tiebreakSet: { tiebreakTo: setTiebreakTo || 7 }
+        tiebreakSet: { tiebreakTo: setTiebreakTo || 7 },
       };
       onChange({
         bestOf: bestOfValue,
         setFormat: newSetFormat,
         finalSetFormat: newFinalSetFormat,
         timed: false,
-        minutes: undefined
+        minutes: undefined,
       });
     } else if (value === 'S') {
       const newSetFormat = !isFinalSet
@@ -236,22 +263,22 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
       const newFinalSetFormat = isFinalSet && {
         setTo: 6,
         tiebreakAt: 6,
-        tiebreakFormat: { tiebreakTo: 7 }
+        tiebreakFormat: { tiebreakTo: 7 },
       };
       onChange({
         bestOf: bestOfValue,
         setFormat: newSetFormat,
         finalSetFormat: newFinalSetFormat,
         timed: false,
-        minutes: undefined
+        minutes: undefined,
       });
     }
   };
 
-  const changeFinalSet = event => {
+  const changeFinalSet = (event) => {
     onChange({
       ...matchUpFormatParsed,
-      finalSetFormat: event.target.checked ? { ...setFormat } : undefined
+      finalSetFormat: event.target.checked ? { ...setFormat } : undefined,
     });
   };
 
@@ -259,7 +286,9 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
   // used for values from common state and to determine what type of set is it
   const activeWhatTo = () => {
     if (matchUpFormatParsed?.timed) {
-      return whatTo.reduce((p, c) => (c.key === matchUpFormatParsed?.minutes ? c : p)).key;
+      return whatTo.reduce((p, c) =>
+        c.key === matchUpFormatParsed?.minutes ? c : p
+      ).key;
     } else if (commonState.what === 'TB') {
       return whatTo.reduce((p, c) => (c.key === setTiebreakTo ? c : p)).key;
     } else {
@@ -267,18 +296,22 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
     }
   };
   const activeBestOfWhat = () => {
-    const activeBestOfWhatObject = bestOfWhat.reduce((p, c) => (c.key === commonState.what ? c : p));
+    const activeBestOfWhatObject = bestOfWhat.reduce((p, c) =>
+      c.key === commonState.what ? c : p
+    );
     return activeBestOfWhatObject.key;
   };
   const activeExact = () => {
-    const activeExactObject = exactly.reduce((p, c) => (c.key === commonState.exact ? c : p));
+    const activeExactObject = exactly.reduce((p, c) =>
+      c.key === commonState.exact ? c : p
+    );
     return activeExactObject.key;
   };
 
   const finalSelector = () => {
     return (
       <Select id="ut-final-selector" value={finalFixed}>
-        {finals.map(item => renderItem(item))}
+        {finals.map((item) => renderItem(item))}
       </Select>
     );
   };
@@ -286,8 +319,12 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
   const exactSelector = () => {
     if (!isFinalSet) {
       return (
-        <Select id="ut-exact-selector" value={activeExact()} onChange={handleChangeExact}>
-          {exactly.map(item => renderItem(item))}
+        <Select
+          id="ut-exact-selector"
+          value={activeExact()}
+          onChange={handleChangeExact}
+        >
+          {exactly.map((item) => renderItem(item))}
         </Select>
       );
     }
@@ -297,8 +334,12 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
   const bestOfSelector = () => {
     if (!isFinalSet) {
       return (
-        <Select id="ut-best-of-selector" value={bestOfValue} onChange={handleChangeBestOf}>
-          {counts.map(item => renderItem(item))}
+        <Select
+          id="ut-best-of-selector"
+          value={bestOfValue}
+          onChange={handleChangeBestOf}
+        >
+          {counts.map((item) => renderItem(item))}
         </Select>
       );
     }
@@ -306,14 +347,14 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
   const bestOfWhatSelector = () => {
     return (
       <Select value={activeBestOfWhat()} onChange={handleChangeBestOfWhat}>
-        {bestOfWhat.map(item => renderItem(item))}
+        {bestOfWhat.map((item) => renderItem(item))}
       </Select>
     );
   };
   const whatToSelector = () => {
     return (
       <Select value={activeWhatTo()} onChange={handleChangeWhatTo}>
-        {whatTo.map(item => renderItem(item))}
+        {whatTo.map((item) => renderItem(item))}
       </Select>
     );
   };
@@ -321,16 +362,19 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
     if (commonState.what === 'S') {
       return (
         <Select value={!!NoAD} onChange={handleChangeDefaultAd}>
-          {adnoad.map(item => renderItem(item))}
+          {adnoad.map((item) => renderItem(item))}
         </Select>
       );
     }
   };
   const tiebreakToSelector = () => {
-    if (commonState.what === 'S' && (isFinalSet ? !tiebreakExistsFinal : !tiebreakExistsRegular)) {
+    if (
+      commonState.what === 'S' &&
+      (isFinalSet ? !tiebreakExistsFinal : !tiebreakExistsRegular)
+    ) {
       return (
         <Select value={setTiebreakTo} onChange={handleChangeTiebreakTo}>
-          {tiebreakTo.map(item => renderItem(item))}
+          {tiebreakTo.map((item) => renderItem(item))}
         </Select>
       );
     }
@@ -343,24 +387,32 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
     ) {
       return (
         <Select value={setFormat?.tiebreakAt} onChange={handleChangeTiebreakAt}>
-          {tiebreakAt.map(item => renderItem(item))}
+          {tiebreakAt.map((item) => renderItem(item))}
         </Select>
       );
     }
   };
   const tiebreakAdSelector = () => {
-    if (commonState.what !== 'T' && (isFinalSet ? !tiebreakExistsFinal : !tiebreakExistsRegular)) {
+    if (
+      commonState.what !== 'T' &&
+      (isFinalSet ? !tiebreakExistsFinal : !tiebreakExistsRegular)
+    ) {
       return (
         <Select value={NoADTiebreak ? 1 : 2} onChange={handleChangeTiebreakAd}>
-          {winbywhat.map(item => renderItem(item))}
+          {winbywhat.map((item) => renderItem(item))}
         </Select>
       );
     }
   };
 
-  const renderItem = item => {
+  const renderItem = (item) => {
     return (
-      <MenuItem data-test-id={item.key} key={item.key} disabled={item.disabled} value={item.key}>
+      <MenuItem
+        data-test-id={item.key}
+        key={item.key}
+        disabled={item.disabled}
+        value={item.key}
+      >
         {item.name}
       </MenuItem>
     );
@@ -387,7 +439,9 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
             <FormControlLabel
               control={
                 <Switch
-                  checked={isFinalSet ? !tiebreakExistsFinal : !tiebreakExistsRegular}
+                  checked={
+                    isFinalSet ? !tiebreakExistsFinal : !tiebreakExistsRegular
+                  }
                   onChange={hasTiebreak}
                   name="scoring-format-tiebreak"
                 />
@@ -398,11 +452,19 @@ const SetFormatSelector = ({ disabled, matchUpFormatParsed, isFinalSet, hasFinal
         </Grid>
 
         <Grid item>
-          {commonState.what === 'T' || isFinalSet || matchUpFormatParsed?.bestOf < 2 ? (
+          {commonState.what === 'T' ||
+          isFinalSet ||
+          matchUpFormatParsed?.bestOf < 2 ? (
             ''
           ) : (
             <FormControlLabel
-              control={<Switch checked={hasFinalSet} onChange={changeFinalSet} name="scoring-format-tiebreak" />}
+              control={
+                <Switch
+                  checked={hasFinalSet}
+                  onChange={changeFinalSet}
+                  name="scoring-format-tiebreak"
+                />
+              }
               label={'Final Set'}
             />
           )}
