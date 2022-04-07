@@ -40,11 +40,11 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
       }
     } else {
       const targetData = positionTargets({
-        matchUpId,
-        drawDefinition,
-        inContextMatchUp,
-        inContextDrawMatchUps,
         useTargetMatchUpIds: true,
+        inContextDrawMatchUps,
+        inContextMatchUp,
+        drawDefinition,
+        matchUpId,
       });
       const { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
 
@@ -178,9 +178,9 @@ function getNextToBePlayedMatchUp({
       );
     } else {
       const targetData = positionTargets({
-        matchUpId,
-        drawDefinition,
         inContextDrawMatchUps,
+        drawDefinition,
+        matchUpId,
       });
       ({ winnerMatchUp } = targetData?.targetMatchUps || {});
     }

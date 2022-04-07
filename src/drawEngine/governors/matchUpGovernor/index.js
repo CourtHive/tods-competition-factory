@@ -12,6 +12,7 @@ import { matchUpSort } from '../../getters/matchUpSort';
 import { setMatchUpStatus } from './setMatchUpStatus';
 import { setOrderOfFinish } from './setOrderOfFinish';
 import { setMatchUpFormat } from './matchUpFormat';
+import { resetScorecard } from './resetScorecard';
 
 import {
   addMatchUpScheduledDate,
@@ -25,6 +26,7 @@ import {
 } from './scheduleItems';
 
 const matchUpGovernor = {
+  resetScorecard,
   setMatchUpStatus,
   setMatchUpFormat,
   isValidMatchUpFormat: isValid,

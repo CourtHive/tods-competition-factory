@@ -1,12 +1,12 @@
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { intersection, unique } from '../../../../utilities';
 
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_VALUE,
 } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 /**
  *
@@ -37,7 +37,10 @@ export function updateDrawIdsOrder({ event, orderedDrawIdsMap }) {
   if (event.drawDefinitions?.length) {
     const drawIds = (event.drawDefinitions || []).map(({ drawId }) => drawId);
     const orderedDrawIds = Object.keys(orderedDrawIdsMap);
-    if (intersection(drawIds, orderedDrawIds).length !== drawIds.length)
+    if (
+      orderedDrawIds?.length &&
+      intersection(drawIds, orderedDrawIds).length !== drawIds.length
+    )
       return { error: INVALID_VALUES, message: 'Missing drawIds' };
 
     event.drawDefinitions.forEach((drawDefinition) => {

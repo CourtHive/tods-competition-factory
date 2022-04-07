@@ -1,6 +1,7 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import { mocksEngine, tournamentEngine } from '../../../..';
 
+import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../../constants/eventConstants';
 
 it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
@@ -97,6 +98,70 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
     9
   );
 
+  let { matchUps: firstRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      contextFilters: {
+        stages: [MAIN],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [1],
+      },
+    });
+
+  let { matchUps: secondRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      contextFilters: {
+        stages: [MAIN],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [2],
+      },
+    });
+  expect(secondRoundDualMatchUps[0].drawPositions).toEqual(undefined);
+
+  expect(firstRoundDualMatchUps.length).toEqual(2);
+
+  let outcome = {
+    winningSide: 1,
+    score: {
+      scoreStringSide1: '8-1',
+      scoreStringSide2: '1-8',
+      sets: [
+        {
+          setNumber: 1,
+          side1Score: 8,
+          side2Score: 1,
+          winningSide: 1,
+        },
+      ],
+    },
+  };
+
+  firstRoundDualMatchUps[0].tieMatchUps.forEach((matchUp) => {
+    const { matchUpId } = matchUp;
+    let result = tournamentEngine.setMatchUpStatus({
+      matchUpId,
+      outcome,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+  });
+
+  // confirm that team participant's drawPosition has advanced
+  ({ matchUps: secondRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      contextFilters: {
+        stages: [MAIN],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [2],
+      },
+    }));
+  expect(secondRoundDualMatchUps[0].drawPositions).toEqual([1]);
+
   const collectionDefinition = {
     collectionName: 'Mixed Doubles',
     matchUpCount: 3,
@@ -110,14 +175,14 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
     collectionDefinition,
     structureId,
     drawId,
-    uuids: ['a01', 'a02', 'a03', 'a04', 'a05', 'a06', 'a07', 'a08', 'a09'],
+    uuids: ['a01', 'a02', 'a03', 'a04', 'a05', 'a06'],
   });
   expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
-  expect(result.addedMatchUps.length).toEqual(9);
+  expect(result.addedMatchUps.length).toEqual(6); // because one matchUp was completed already
 
   const matchUpIds = result.addedMatchUps.map(({ matchUpId }) => matchUpId);
   // prettier-ignore
-  expect(matchUpIds).toEqual(['a09', 'a08', 'a07', 'a06', 'a05', 'a04', 'a03', 'a02', 'a01']);
+  expect(matchUpIds).toEqual(['a06', 'a05', 'a04', 'a03', 'a02', 'a01']);
 
   ({ drawDefinition, event } = tournamentEngine.getEvent({ drawId }));
   expect(drawDefinition.tieFormat.collectionDefinitions.length).toEqual(2);
@@ -130,5 +195,28 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
     7
   );
 
-  expect(matchUpAddNotices).toEqual([30, 9]);
+  expect(matchUpAddNotices).toEqual([30, 6]);
+
+  firstRoundDualMatchUps[1].tieMatchUps.forEach((matchUp) => {
+    const { matchUpId } = matchUp;
+    let result = tournamentEngine.setMatchUpStatus({
+      matchUpId,
+      outcome,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+  });
+
+  // confirm that team participant's drawPosition has advanced
+  ({ matchUps: secondRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      contextFilters: {
+        stages: [MAIN],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [2],
+      },
+    }));
+  expect(secondRoundDualMatchUps[0].drawPositions).toEqual([1, 3]);
 });

@@ -9,6 +9,7 @@ import { participantScaleItem } from '../../accessors/participantScaleItem';
 import { getParticipantIds } from '../../../global/functions/extractors';
 import { definedAttributes } from '../../../utilities/objects';
 import { makeDeepCopy, unique } from '../../../utilities';
+import { getFlightProfile } from '../getFlightProfile';
 import { allEventMatchUps } from '../matchUpsGetter';
 import { getSeedValue } from '../getSeedValue';
 import {
@@ -35,7 +36,6 @@ import {
   extensionConstants,
   LINEUPS,
 } from '../../../constants/extensionConstants';
-import { getFlightProfile } from '../getFlightProfile';
 
 export function addParticipantContext(params) {
   const participantIdsWithConflicts = [];

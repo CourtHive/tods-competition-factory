@@ -1128,6 +1128,13 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
+"@babel/runtime@^7.17.8":
+  version "7.17.8"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.17.8.tgz#3e56e4aff81befa55ac3ac6a0967349fd1c5bca2"
+  integrity sha512-dQpEpK0O9o6lj6oPu0gRDbbnk+4LeHlNcBpspf6Olzt3GIX4P1lWF1gS+pHLDFlaJvbR6q7jCfQ08zA4QJBnmA==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
 "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.3", "@babel/runtime@^7.8.7":
   version "7.15.4"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.15.4.tgz#fd17d16bfdf878e6dd02d19753a39fa8a8d9c84a"
@@ -6446,9 +6453,9 @@ minimatch@3.0.4, minimatch@^3.0.4:
     brace-expansion "^1.1.7"
 
 minimist@^1.2.0, minimist@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
-  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
+  integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
 
 mixin-deep@^1.2.0:
   version "1.3.2"
@@ -7656,12 +7663,12 @@ react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-json-tree@0.16.1:
-  version "0.16.1"
-  resolved "https://registry.yarnpkg.com/react-json-tree/-/react-json-tree-0.16.1.tgz#dd40a4f759c173873d28e51316c29150e2473de5"
-  integrity sha512-VYvU/tgekJUrPhEVR6ZC789b3x9QPO7LmRX1YMZfWpqbC8pvXb7D74S0+CE6RVk55bXOS2VH1+8ZWA2PioEyqg==
+react-json-tree@0.16.2:
+  version "0.16.2"
+  resolved "https://registry.yarnpkg.com/react-json-tree/-/react-json-tree-0.16.2.tgz#697bd9413407d2448ddff3c8891cd4395342539e"
+  integrity sha512-80F7ZTqeOl1YaS/sDce4tYBcSe69/d0mlUmcIhyXezPFctWrtvyN56EMExX9jWsq3XMdvsUKKPUeNo8QCBy2jg==
   dependencies:
-    "@babel/runtime" "^7.16.7"
+    "@babel/runtime" "^7.17.8"
     "@types/prop-types" "^15.7.4"
     prop-types "^15.8.1"
     react-base16-styling "^0.9.1"
@@ -8991,10 +8998,10 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
-tods-competition-factory@0.141.0:
-  version "0.141.0"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.141.0.tgz#ac1956db8fa6f06ca5c94dfb11ada161784c20f9"
-  integrity sha512-FMYRLpb/XkenGnxpLeycVH3owy6H/WJsINx9R2UhCUrUZs2ajZV14lFWlZ+e78MlA6leSEe4t+R7jJAwMOOjiA==
+tods-competition-factory@0.144.1:
+  version "0.144.1"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.144.1.tgz#cf74536fa11dfe89db28702071c9216750fff1b1"
+  integrity sha512-VbAyKbHvxnoXNUJpoT4ChyARPwp9nl7AbKMm/aKYa+enZNGhll8J03WdEB9qb1bCK88RO0sasXF+/LhsLj3lHw==
 
 tods-competition-factory@0.74.1:
   version "0.74.1"
