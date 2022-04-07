@@ -1,16 +1,68 @@
-export const INVALID_RECORDS =
-  'records must be an object with tournamentId keys';
-export const MISSING_TOURNAMENT_RECORDS = 'Missing tournamentRecords';
-export const MISSING_TOURNAMENT_RECORD = 'Missing tournamentRecord';
-export const INVALID_TOURNAMENT_RECORD = 'Invalid tournamentRecord';
-export const MISSING_TOURNAMENT_ID = 'Missing tournamentId';
+/*
+ error codes are 3 or more digits where:
+  - first digit:
+    1: INVALID
+    2: MISSING
+    3: NOT_FOUND
+    4: EXISTS/EXISTING
+    5: UNRECOGNIZED
+    6: NO ACTION
+    7: UNCHANGED
+    8: FAILURE (e.g. notifications)
+    9: INCOMPLETE
+  - second digit (scope):
+    0: OTHER
+    1: tournament
+    2: event
+    3: drawDefinition
+    4: structure
+    5: matchUp
+    6: participant
+    7: venue
+    8: policy
+    9: timeItem
+  - third digit:
+    0: filler/no additional info
+    1: UUID
+    2: date string
+    3: time string
+    4: enum string
+    5: value (number/string)
+    6: object
+*/
+export const INVALID_RECORDS = {
+  t: 'records must be an object with tournamentId keys',
+  c: 1160,
+};
+export const MISSING_TOURNAMENT_RECORDS = {
+  t: 'Missing tournamentRecords',
+  c: 2160,
+};
+export const MISSING_TOURNAMENT_RECORD = {
+  t: 'Missing tournamentRecord',
+  c: 2161,
+};
+export const INVALID_TOURNAMENT_RECORD = {
+  t: 'Invalid tournamentRecord',
+  c: 1161,
+};
+export const MISSING_TOURNAMENT_ID = { t: 'Missing tournamentId', c: 2110 };
 
-export const INVALID_DRAW_DEFINITION = 'Invalid drawDefinition';
-export const MISSING_DRAW_DEFINITION = 'Missing drawDefinition';
-export const EXISTING_DRAW_DEFINITIONS = 'Existing drawDefinition(s)';
-export const DRAW_DEFINITION_NOT_FOUND = 'drawDefinition not found';
-export const INVALID_STRUCTURE = 'Invalid structure';
-export const INCOMPLETE_SOURCE_STRUCTURE = 'Incomplete source structure';
+export const INVALID_DRAW_DEFINITION = { t: 'Invalid drawDefinition', c: 1360 };
+export const MISSING_DRAW_DEFINITION = { t: 'Missing drawDefinition', c: 2360 };
+export const EXISTING_DRAW_DEFINITIONS = {
+  t: 'Existing drawDefinition(s)',
+  c: 4360,
+};
+export const DRAW_DEFINITION_NOT_FOUND = {
+  t: 'drawDefinition not found',
+  c: 3360,
+};
+export const INVALID_STRUCTURE = { t: 'Invalid structure', c: 1460 };
+export const INCOMPLETE_SOURCE_STRUCTURE = {
+  t: 'Incomplete source structure',
+  c: 9461,
+};
 
 export const INVALID_DRAW_POSITION_FOR_SEEDING =
   'Invalid drawPosition for seedAssignment';
@@ -197,14 +249,14 @@ export const NO_VALID_ACTIONS = 'No valid actions';
 export const NO_VALID_ATTRIBUTES = 'No valid attributes';
 
 export const VALUE_UNCHANGED = 'Value unchanged';
-export const NOT_FOUND = 'Not found';
-export const NOT_IMPLEMENTED = 'Not implemented';
+export const NOT_FOUND = { t: 'Not found', c: 3000 };
+export const NOT_IMPLEMENTED = { t: 'Not implemented', c: 9000 };
 
-export const EXISTING_FLIGHT = 'Existing flight';
-export const EXISTING_PROFILE = 'Existing profile';
-export const EXISTING_OUTCOME = 'Existing outcome';
+export const EXISTING_FLIGHT = { t: 'Existing flight', c: 4260 };
+export const EXISTING_PROFILE = { t: 'Existing flight profile', c: 4261 };
+export const EXISTING_OUTCOME = { t: 'Existing outcome', c: 4560 };
 
-export const METHOD_NOT_FOUND = 'Method not found';
+export const METHOD_NOT_FOUND = { t: 'Method not found', c: 3001 };
 
 export const errorConditionConstants = {
   CANNOT_CHANGE_WINNINGSIDE,
