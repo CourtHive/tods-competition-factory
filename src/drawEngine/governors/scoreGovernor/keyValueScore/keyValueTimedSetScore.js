@@ -10,7 +10,7 @@ export function keyValueTimedSetScore({
   sets,
   winningSide,
   matchUpStatus,
-  message,
+  info,
   value,
 }) {
   let updated, outcomeRemoved;
@@ -21,11 +21,11 @@ export function keyValueTimedSetScore({
     const lastSet = sets[sets.length - 1] || {};
     const { side1Score, side2Score } = lastSet;
     if (side1Score && !side2Score) {
-      message = 'missing side2Score';
+      info = 'missing side2Score';
     } else if (analysis.finalSetIsComplete || winningSide) {
-      message = 'final set is already complete';
+      info = 'final set is already complete';
     } else if (analysis.isIncompleteSetScore) {
-      message = 'incomplete set scoreString';
+      info = 'incomplete set scoreString';
     } else if (!analysis.isIncompleteSetScore) {
       ({ sets, scoreString, winningSide, matchUpStatus, updated } =
         processOutcome({
@@ -64,7 +64,7 @@ export function keyValueTimedSetScore({
     winningSide = undefined;
     updated = true;
   } else if (analysis.hasOutcome) {
-    message = 'has outcome';
+    info = 'has outcome';
   } else if (winningSide) {
     return {
       sets,
@@ -144,5 +144,5 @@ export function keyValueTimedSetScore({
     }
   }
 
-  return { sets, scoreString, winningSide, matchUpStatus, message, updated };
+  return { sets, scoreString, winningSide, matchUpStatus, info, updated };
 }

@@ -82,10 +82,10 @@ export function modifyVenue({
         courtIdsToModify.includes(court.courtId)
       );
     } else {
-      const message = deletionMessage({
+      const info = deletionMessage({
         matchUpsCount: scheduleDeletionsCount,
       });
-      return { error: message };
+      return { error: info };
     }
   }
 
