@@ -77,7 +77,7 @@ export function addParticipant({
     ) {
       return {
         error: INVALID_PARTICIPANT_IDS,
-        message: 'PAIR must be 2 individualParticipantIds',
+        info: 'PAIR must be 2 individualParticipantIds',
       };
     } else {
       const individualParticipantIds = tournamentParticipants
@@ -264,13 +264,13 @@ export function addParticipants({
     };
 
     if (notAdded.length) {
-      Object.assign(result, { notAdded, message: EXISTING_PARTICIPANT });
+      Object.assign(result, { notAdded, info: EXISTING_PARTICIPANT });
     }
 
     return result;
   } else {
     return {
-      message: 'No new participants to add',
+      info: 'No new participants to add',
       addedCount: 0,
       ...SUCCESS,
     };

@@ -28,7 +28,7 @@ export function addExtension({ tournamentRecords, extension }) {
 }
 
 export function findExtension({ tournamentRecords, name }) {
-  if (!name) return { error: MISSING_VALUE, message: 'Missing name' };
+  if (!name) return { error: MISSING_VALUE, info: 'Missing name' };
 
   let foundExtension;
   const tournamentId = Object.keys(tournamentRecords).find((tournamentId) => {
@@ -45,14 +45,14 @@ export function findExtension({ tournamentRecords, name }) {
 }
 
 export function removeExtension({ tournamentRecords, name }) {
-  if (!name) return { error: MISSING_VALUE, message: 'Missing name' };
+  if (!name) return { error: MISSING_VALUE, info: 'Missing name' };
 
   let removed = 0;
   for (const tournamentId of Object.keys(tournamentRecords)) {
     const tournamentRecord = tournamentRecords[tournamentId];
     const result = removeTournamentExtension({ tournamentRecord, name });
     if (result.error) return result;
-    if (result.message !== NOT_FOUND) removed++;
+    if (result.info !== NOT_FOUND) removed++;
   }
 
   return { ...SUCCESS, removed };

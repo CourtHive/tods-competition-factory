@@ -205,7 +205,7 @@ export function positionActions({
 
   if (actionsDisabled)
     return {
-      message: 'Actions Disabled for structure',
+      info: 'Actions Disabled for structure',
       isByePosition,
       isActiveDrawPosition,
       isDrawPosition: true,

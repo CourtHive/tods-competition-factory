@@ -60,24 +60,24 @@ it('can add and read timeItems from events', () => {
   let {
     timeItem: retrievedTimeItem,
     previousItems,
-    message,
+    info,
   } = tournamentEngine.getTournamentTimeItem({
     itemType: 'MODIFICATION.CONTENT',
     returnPreviousValues: true,
   });
   expect(retrievedTimeItem.itemValue).toEqual(itemValue);
   expect(previousItems.length).toEqual(2);
-  expect(message).toEqual(undefined);
+  expect(info).toEqual(undefined);
 
   ({
     timeItem: retrievedTimeItem,
-    message,
+    info,
     previousItems,
   } = tournamentEngine.getTournamentTimeItem({
     itemType: 'MODIFICATION.OTHER',
   }));
   expect(retrievedTimeItem).toEqual(undefined);
-  expect(message).toEqual(NOT_FOUND);
+  expect(info).toEqual(NOT_FOUND);
 });
 
 it('can prevent duplicates when equialent to existing itemValue', () => {
@@ -118,14 +118,14 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
   let {
     timeItem: retrievedTimeItem,
     previousItems,
-    message,
+    info,
   } = tournamentEngine.getTournamentTimeItem({
     itemType: 'MODIFICATION.CONTENT',
     returnPreviousValues: true,
   });
   expect(retrievedTimeItem.itemValue).toEqual(itemValue);
   expect(previousItems.length).toEqual(1);
-  expect(message).toEqual(undefined);
+  expect(info).toEqual(undefined);
 
   // now test where the duplicate values are not sequential
   // should add the duplicate value because it is not the "current" value at the time of addition
@@ -159,14 +159,14 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
   ({
     timeItem: retrievedTimeItem,
     previousItems,
-    message,
+    info,
   } = tournamentEngine.getTournamentTimeItem({
     itemType: 'MODIFICATION.OTHER',
     returnPreviousValues: true,
   }));
   expect(retrievedTimeItem.itemValue).toEqual(itemValue);
   expect(previousItems.length).toEqual(2);
-  expect(message).toEqual(undefined);
+  expect(info).toEqual(undefined);
 
   // expect the retrieved itemValue to equal the initial itemValue
   expect(retrievedTimeItem.itemValue).toEqual(previousItems[0].itemValue);

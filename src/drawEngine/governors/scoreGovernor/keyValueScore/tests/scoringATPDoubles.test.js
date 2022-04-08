@@ -3,7 +3,7 @@ import { MATCH_TIEBREAK_JOINER } from '../constants';
 import { TIEBREAK_CLOSER, scoreMatchUp, enterValues } from './primitives';
 
 it('recognizes incomplete matchUp tiebreaks', () => {
-  let message;
+  let info;
   const matchUpFormat = FORMAT_ATP_DOUBLES;
   let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
@@ -24,8 +24,8 @@ it('recognizes incomplete matchUp tiebreaks', () => {
   expect(matchUp.score?.sets.length).toEqual(3);
 
   // not valid to complete scoreString
-  ({ matchUp, message } = scoreMatchUp({ value: ']', matchUp }));
-  expect(message).not.toBeUndefined();
+  ({ matchUp, info } = scoreMatchUp({ value: ']', matchUp }));
+  expect(info).not.toBeUndefined();
   expect(matchUp.scoreString.trim()).toEqual(`6-3 3-6 [10`);
 
   ({ matchUp } = scoreMatchUp({ value: 'backspace', matchUp }));
@@ -33,16 +33,16 @@ it('recognizes incomplete matchUp tiebreaks', () => {
   expect(matchUp.score?.sets.length).toEqual(3);
 
   // not valid to complete scoreString
-  ({ matchUp, message } = scoreMatchUp({ value: ']', matchUp }));
-  expect(message).not.toBeUndefined();
+  ({ matchUp, info } = scoreMatchUp({ value: ']', matchUp }));
+  expect(info).not.toBeUndefined();
   expect(matchUp.scoreString.trim()).toEqual(`6-3 3-6 [1`);
 
-  ({ matchUp, message } = scoreMatchUp({ value: '1', lowSide: 1, matchUp }));
+  ({ matchUp, info } = scoreMatchUp({ value: '1', lowSide: 1, matchUp }));
   expect(matchUp.scoreString.trim()).toEqual(
     `6-3 3-6 [11${MATCH_TIEBREAK_JOINER}13`
   );
 
-  ({ matchUp, message } = scoreMatchUp({ value: ']', matchUp }));
+  ({ matchUp, info } = scoreMatchUp({ value: ']', matchUp }));
   expect(matchUp.winningSide).toEqual(2);
 });
 

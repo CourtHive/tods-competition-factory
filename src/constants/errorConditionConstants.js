@@ -31,37 +31,49 @@
     6: object
 */
 export const INVALID_RECORDS = {
-  t: 'records must be an object with tournamentId keys',
-  c: 1160,
+  message: 'records must be an object with tournamentId keys',
+  code: 'ERR_INVALID_TOURNAMENTS',
 };
 export const MISSING_TOURNAMENT_RECORDS = {
-  t: 'Missing tournamentRecords',
-  c: 2160,
+  message: 'Missing tournamentRecords',
+  code: 'ERR_MISSING_TOURNAMENTS',
 };
 export const MISSING_TOURNAMENT_RECORD = {
-  t: 'Missing tournamentRecord',
-  c: 2161,
+  message: 'Missing tournamentRecord',
+  code: 'ERR_MISSING_TOURNAMENT',
 };
 export const INVALID_TOURNAMENT_RECORD = {
-  t: 'Invalid tournamentRecord',
-  c: 1161,
+  message: 'Invalid tournamentRecord',
+  code: 'ERR_INVALID_TOURNAMENT',
 };
-export const MISSING_TOURNAMENT_ID = { t: 'Missing tournamentId', c: 2110 };
+export const MISSING_TOURNAMENT_ID = {
+  message: 'Missing tournamentId',
+  code: 'ERR_MISSING_TOURNAMENT_ID',
+};
 
-export const INVALID_DRAW_DEFINITION = { t: 'Invalid drawDefinition', c: 1360 };
-export const MISSING_DRAW_DEFINITION = { t: 'Missing drawDefinition', c: 2360 };
+export const INVALID_DRAW_DEFINITION = {
+  message: 'Invalid drawDefinition',
+  code: 'ERR_INVALID_DRAWDEF',
+};
+export const MISSING_DRAW_DEFINITION = {
+  message: 'Missing drawDefinition',
+  code: 'ERR_MISSING_DRAWDEF',
+};
 export const EXISTING_DRAW_DEFINITIONS = {
-  t: 'Existing drawDefinition(s)',
-  c: 4360,
+  message: 'Existing drawDefinition(s)',
+  code: 'ERR_EXISTING_DRAWDEFS',
 };
 export const DRAW_DEFINITION_NOT_FOUND = {
-  t: 'drawDefinition not found',
-  c: 3360,
+  message: 'drawDefinition not found',
+  code: 'ERR_NOT_FOUND_DRAWDEF',
 };
-export const INVALID_STRUCTURE = { t: 'Invalid structure', c: 1460 };
+export const INVALID_STRUCTURE = {
+  message: 'Invalid structure',
+  code: 'ERR_INVALID_STRUCTURE',
+};
 export const INCOMPLETE_SOURCE_STRUCTURE = {
-  t: 'Incomplete source structure',
-  c: 9461,
+  message: 'Incomplete source structure',
+  code: 'ERR_INCOMPLETE_STRUCTURE',
 };
 
 export const INVALID_DRAW_POSITION_FOR_SEEDING =
@@ -238,25 +250,64 @@ export const SCALE_ITEM_NOT_FOUND = 'No scaleItem found';
 export const MODIFICATIONS_FAILED = 'Modifications failed';
 export const NO_MODIFICATIONS_APPLIED = 'No modifications applied';
 
-export const INVALID_CONFIGURATION = 'Invalid configuration';
-export const INVALID_OBJECT = 'Invalid object';
-export const INVALID_VALUES = 'Invalid values';
-export const DUPLICATE_VALUE = 'Duplicate value';
+export const INVALID_CONFIGURATION = {
+  message: 'Invalid configuration',
+  code: 'ERR_INVALID_CONFIG',
+};
+export const INVALID_OBJECT = {
+  message: 'Invalid object',
+  code: 'ERR_INVALID_OBJECT',
+};
+export const INVALID_VALUES = {
+  message: 'Invalid values',
+  code: 'ERR_INVALID_VALES',
+};
+export const DUPLICATE_VALUE = {
+  message: 'Duplicate value',
+  code: 'ERR_DUPLICATE_VALUE',
+};
 
-export const TEAM_NOT_FOUND = 'Team not found';
+export const TEAM_NOT_FOUND = {
+  message: 'Team not found',
+  code: 'ERR_NOT_FOUND_TEAM',
+};
 
-export const NO_VALID_ACTIONS = 'No valid actions';
-export const NO_VALID_ATTRIBUTES = 'No valid attributes';
+export const NO_VALID_ACTIONS = {
+  message: 'No valid actions',
+  code: 'ERR_NO_VALID_ACTIONS',
+};
+export const NO_VALID_ATTRIBUTES = {
+  message: 'No valid attributes',
+  code: 'ERR_NO_VALID_ATTRIBUTES',
+};
 
-export const VALUE_UNCHANGED = 'Value unchanged';
-export const NOT_FOUND = { t: 'Not found', c: 3000 };
-export const NOT_IMPLEMENTED = { t: 'Not implemented', c: 9000 };
+export const VALUE_UNCHANGED = {
+  message: 'Value unchanged',
+  code: 'ABORT_UNCHANGED',
+};
+export const NOT_FOUND = { message: 'Not found', code: 'ERR_NOT_FOUND' };
+export const NOT_IMPLEMENTED = {
+  message: 'Not implemented',
+  code: 'ERR_NOT_IMPLEMENTED',
+};
 
-export const EXISTING_FLIGHT = { t: 'Existing flight', c: 4260 };
-export const EXISTING_PROFILE = { t: 'Existing flight profile', c: 4261 };
-export const EXISTING_OUTCOME = { t: 'Existing outcome', c: 4560 };
+export const EXISTING_FLIGHT = {
+  message: 'Existing flight',
+  code: 'ERR_EXISTING_FLIGHT',
+};
+export const EXISTING_PROFILE = {
+  message: 'Existing flight profile',
+  code: 'ERR_EXISTING_FLIGHT_PROFILE',
+};
+export const EXISTING_OUTCOME = {
+  message: 'Existing outcome',
+  code: 'ERR_EXISTING_OUTCOME',
+};
 
-export const METHOD_NOT_FOUND = { t: 'Method not found', c: 3001 };
+export const METHOD_NOT_FOUND = {
+  message: 'Method not found',
+  code: 'ERR_NOT_FOUND_METHOD',
+};
 
 export const errorConditionConstants = {
   CANNOT_CHANGE_WINNINGSIDE,

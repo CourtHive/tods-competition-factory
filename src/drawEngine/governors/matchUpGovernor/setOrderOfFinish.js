@@ -22,7 +22,7 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
   if (!Array.isArray(finishingOrder))
     return {
       error: INVALID_VALUES,
-      message: 'finishingOrder must be an array',
+      info: 'finishingOrder must be an array',
     };
 
   const { completedMatchUps, matchUpsMap } = getDrawMatchUps({
@@ -67,7 +67,7 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
   ) {
     return {
       error: INVALID_VALUES,
-      message: 'matchUpType, structureId and roundNumber must be equivalent',
+      info: 'matchUpType, structureId and roundNumber must be equivalent',
     };
   }
 
@@ -90,7 +90,7 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
   if (!validValues)
     return {
       error: !validMatchUpId ? INVALID_MATCHUP_STATUS : INVALID_VALUES,
-      message: !validMatchUpId
+      info: !validMatchUpId
         ? 'matchUps must be completed'
         : !validOrderOfFinish
         ? 'orderOfFinish must be integer > 0 or undefined'
@@ -112,7 +112,7 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
     const { orderOfFinish } = matchUp || {};
     if (orderOfFinish) {
       if (!isConvertableInteger(orderOfFinish))
-        return { error: INVALID_VALUES, message: 'Existing value', matchUp };
+        return { error: INVALID_VALUES, info: 'Existing value', matchUp };
       orderOfFinishValues.push(orderOfFinish);
     }
   }
@@ -124,7 +124,7 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
   ) {
     return {
       error: INVALID_VALUES,
-      message: 'Values not unique or greater than expected number of values',
+      info: 'Values not unique or greater than expected number of values',
     };
   }
 

@@ -368,7 +368,7 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   result = tournamentEngine.getVenuesAndCourts();
   result = tournamentEngine.deleteCourt({ courtId });
   expect(result.error).not.toBeUndefined();
-  expect(result.message).not.toBeUndefined();
+  expect(result.info).not.toBeUndefined();
 
   let { venues } = tournamentEngine.getVenuesAndCourts();
   expect(venues.length).toEqual(1);
@@ -384,7 +384,7 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
 
   result = tournamentEngine.deleteVenue({ venueId });
   expect(result.success).toBeUndefined();
-  expect(result.message).not.toBeUndefined();
+  expect(result.info).not.toBeUndefined();
 
   await forceDelay();
 

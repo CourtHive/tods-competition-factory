@@ -107,9 +107,7 @@ export function modifyVenue({
           disableNotice: true,
         });
       }
-      if (result.error) {
-        return result;
-      }
+      if (result.error) return result;
     }
   }
 

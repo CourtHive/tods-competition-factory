@@ -62,7 +62,7 @@ export function setParticipantScaleItem({
   return equivalentValue
     ? {
         ...SUCCESS,
-        message: VALUE_UNCHANGED,
+        info: VALUE_UNCHANGED,
         existingValue: scaleItem.scaleValue,
       }
     : participant
@@ -109,7 +109,7 @@ export function setParticipantScaleItems({
     }
   });
 
-  const message = !modificationsApplied ? NO_MODIFICATIONS_APPLIED : undefined;
+  const info = !modificationsApplied ? NO_MODIFICATIONS_APPLIED : undefined;
   const { topics } = getTopics();
   if (topics.includes(MODIFY_PARTICIPANTS) && modificationsApplied) {
     addNotice({
@@ -118,7 +118,7 @@ export function setParticipantScaleItems({
     });
   }
 
-  return definedAttributes({ ...SUCCESS, modificationsApplied, message });
+  return definedAttributes({ ...SUCCESS, modificationsApplied, info });
 }
 
 function isValidScaleItem({ scaleItem }) {

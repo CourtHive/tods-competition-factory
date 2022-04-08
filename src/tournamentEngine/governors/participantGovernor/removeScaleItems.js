@@ -21,7 +21,7 @@ export function removeParticipantsScaleItems({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantIds) return { error: MISSING_PARTICIPANT_IDS };
   if (!scaleAttributes)
-    return { error: MISSING_VALUE, message: 'scaleAttributes required' };
+    return { error: MISSING_VALUE, info: 'scaleAttributes required' };
 
   const { scaleType, eventType, scaleName } = scaleAttributes;
   const itemType = [SCALE, scaleType, eventType, scaleName].join('.');

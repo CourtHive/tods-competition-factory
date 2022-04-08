@@ -113,7 +113,7 @@ export function applyLineUps({
         ) {
           // cannot have more than one assignment for singles or two for doubles
           return {
-            message: 'Excessive collectionPosition assignments',
+            info: 'Excessive collectionPosition assignments',
             error: INVALID_VALUES,
           };
         }

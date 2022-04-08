@@ -180,7 +180,7 @@ export function addDrawEntries({
 
   return participantIdsNotAdded?.length
     ? {
-        message: 'some participantIds could not be added',
+        info: 'some participantIds could not be added',
         participantIdsNotAdded,
         ...SUCCESS,
       }

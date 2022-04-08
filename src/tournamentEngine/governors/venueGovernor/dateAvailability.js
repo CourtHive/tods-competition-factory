@@ -34,35 +34,35 @@ export function validDateAvailability({ dateAvailability }) {
       return {
         error: INVALID_DATE,
         dateAvailability: { date },
-        message: dateNote,
+        info: dateNote,
       };
     }
     if (!timeValidation.test(startTime)) {
       return {
         error: INVALID_TIME,
         dateAvailability: { startTime },
-        message: timeNote,
+        info: timeNote,
       };
     }
     if (!timeValidation.test(endTime)) {
       return {
         error: INVALID_TIME,
         dateAvailability: { endTime },
-        message: timeNote,
+        info: timeNote,
       };
     }
     if (startTime === endTime) {
       return {
         error: INVALID_TIME,
         dateAvailability: { startTime, endTime },
-        message: 'startTime and endTime are equivalent',
+        info: 'startTime and endTime are equivalent',
       };
     }
     if (!validTimePeriod({ startTime, endTime })) {
       return {
         error: INVALID_TIME,
         dateAvailability: { startTime, endTime },
-        message: 'endTime must be after startTime',
+        info: 'endTime must be after startTime',
       };
     }
 
@@ -80,28 +80,28 @@ export function validDateAvailability({ dateAvailability }) {
           return {
             error: INVALID_TIME,
             booking: { startTime },
-            message: timeNote,
+            info: timeNote,
           };
         }
         if (!timeValidation.test(endTime)) {
           return {
             error: INVALID_TIME,
             booking: { endTime },
-            message: timeNote,
+            info: timeNote,
           };
         }
         if (startTime === endTime) {
           return {
             error: INVALID_TIME,
             dateAvailability: { startTime, endTime },
-            message: 'startTime and endTime are equivalent',
+            info: 'startTime and endTime are equivalent',
           };
         }
         if (!validTimePeriod({ startTime, endTime })) {
           return {
             error: INVALID_TIME,
             dateAvailability: { startTime, endTime },
-            message: 'endTime must be after startTime',
+            info: 'endTime must be after startTime',
           };
         }
       }

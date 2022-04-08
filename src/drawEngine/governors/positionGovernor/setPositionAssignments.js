@@ -34,7 +34,7 @@ export function setPositionAssignments({
     if (structure.structures)
       return {
         error: INVALID_STRUCTURE,
-        message: 'cannot be Round Robin group container',
+        info: 'cannot be Round Robin group container',
       };
 
     const structureDrawPositions = structure.positionAssignments?.map(
@@ -48,7 +48,7 @@ export function setPositionAssignments({
       intersection(structureDrawPositions, submittedDrawPositions).length !==
       structureDrawPositions.length
     )
-      return { error: INVALID_VALUES, message: 'drawPositions do not match' };
+      return { error: INVALID_VALUES, info: 'drawPositions do not match' };
 
     const matchUpsMap = getMatchUpsMap({ drawDefinition });
     const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({

@@ -37,6 +37,7 @@ import {
   SCHEDULED_TIME,
   SCHEDULED_DATE,
 } from '../../../constants/timeItemConstants';
+import { decorateResult } from '../../../global/functions/decorateResult';
 
 function timeDate(value, scheduledDate) {
   const time = validTimeString.test(value) ? value : extractTime(value);
@@ -62,6 +63,7 @@ export function addMatchUpScheduleItems({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!schedule) return { error: MISSING_VALUE };
+  const callChain = 'addMatchUpScheduleItems';
 
   const {
     endTime,
@@ -82,7 +84,9 @@ export function addMatchUpScheduleItems({
       scheduledDate,
       matchUpId,
     });
-    if (result?.error) return { error: result.error, scheduledDate };
+    // if (result?.error) return { error: result.error, scheduledDate };
+    if (result?.error)
+      return decorateResult({ result, callChain, context: { scheduledDate } });
   }
   if (scheduledTime !== undefined) {
     const result = addMatchUpScheduledTime({

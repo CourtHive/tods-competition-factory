@@ -72,7 +72,7 @@ export function keyValueTimedSetScore({
       winningSide,
       matchUpStatus,
       updated: false,
-      message: 'matchUp is complete',
+      info: 'matchUp is complete',
     };
 
     // SPACE_KEY indicates moving on to next set

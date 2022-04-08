@@ -5,18 +5,18 @@ import {
 } from '../../../../../fixtures/scoring/matchUpFormats';
 
 function scoreMatchUp({ lowSide, value, matchUp }) {
-  let message;
-  ({ matchUp, message } = keyValueMatchUpScore({ lowSide, value, matchUp }));
-  return { matchUp, message };
+  let info;
+  ({ matchUp, info } = keyValueMatchUpScore({ lowSide, value, matchUp }));
+  return { matchUp, info };
 }
 
 function enterValues({ values, matchUp }) {
-  let message;
+  let info;
   const messages = [];
   values.forEach((item) => {
     const { lowSide, value } = item;
-    ({ matchUp, message } = scoreMatchUp({ lowSide, value, matchUp }));
-    if (message) messages.push(message);
+    ({ matchUp, info } = scoreMatchUp({ lowSide, value, matchUp }));
+    if (info) messages.push(info);
   });
   return { matchUp, messages };
 }
@@ -236,7 +236,7 @@ it('can handle scoreString deletions', () => {
 });
 
 it('recognizes incomplete matchUp tiebreaks', () => {
-  let message;
+  let info;
   const matchUpFormat = FORMAT_ATP_DOUBLES;
   let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
@@ -255,8 +255,8 @@ it('recognizes incomplete matchUp tiebreaks', () => {
   expect(matchUp.score?.sets.length).toEqual(3);
 
   // not valid to complete scoreString
-  ({ matchUp, message } = scoreMatchUp({ value: ']', matchUp }));
-  expect(message).not.toBeUndefined();
+  ({ matchUp, info } = scoreMatchUp({ value: ']', matchUp }));
+  expect(info).not.toBeUndefined();
   expect(matchUp.scoreString.trim()).toEqual('6-3 3-6 [10');
 
   ({ matchUp } = scoreMatchUp({ value: 'backspace', matchUp }));
@@ -264,14 +264,14 @@ it('recognizes incomplete matchUp tiebreaks', () => {
   expect(matchUp.score?.sets.length).toEqual(3);
 
   // not valid to complete scoreString
-  ({ matchUp, message } = scoreMatchUp({ value: ']', matchUp }));
-  expect(message).not.toBeUndefined();
+  ({ matchUp, info } = scoreMatchUp({ value: ']', matchUp }));
+  expect(info).not.toBeUndefined();
   expect(matchUp.scoreString.trim()).toEqual('6-3 3-6 [1');
 
-  ({ matchUp, message } = scoreMatchUp({ value: '1', lowSide: 1, matchUp }));
+  ({ matchUp, info } = scoreMatchUp({ value: '1', lowSide: 1, matchUp }));
   expect(matchUp.scoreString.trim()).toEqual('6-3 3-6 [11-13');
 
-  ({ matchUp, message } = scoreMatchUp({ value: ']', matchUp }));
+  ({ matchUp, info } = scoreMatchUp({ value: ']', matchUp }));
   expect(matchUp.winningSide).toEqual(2);
 });
 

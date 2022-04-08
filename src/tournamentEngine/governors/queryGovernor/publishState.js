@@ -15,7 +15,7 @@ import {
 export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!outcomes?.length)
-    return { error: MISSING_VALUE, message: 'Missing outcomes' };
+    return { error: MISSING_VALUE, info: 'Missing outcomes' };
 
   const eventIdsMap = outcomes.reduce((eventIdsMap, outcome) => {
     const { drawId, eventId } = outcome;

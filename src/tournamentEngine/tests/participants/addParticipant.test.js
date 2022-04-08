@@ -167,7 +167,7 @@ it('will not add invalid PAIR participants', () => {
     participant: pairParticipant,
   });
   expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
-  expect(result.message).not.toBeUndefined();
+  expect(result.info).not.toBeUndefined();
 
   pairParticipant = {
     participantType: PAIR,
@@ -178,7 +178,7 @@ it('will not add invalid PAIR participants', () => {
     participant: pairParticipant,
   });
   expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
-  expect(result.message).toBeUndefined();
+  expect(result.info).toBeUndefined();
 
   const { tournamentParticipants: individualParticipants } =
     tournamentEngine.getTournamentParticipants({
@@ -198,7 +198,7 @@ it('will not add invalid PAIR participants', () => {
     participant: pairParticipant,
   });
   expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
-  expect(result.message).not.toBeUndefined();
+  expect(result.info).not.toBeUndefined();
 
   // individualParticipants instead of individualParticipantIds
   const participants = individualParticipants.slice(0, 2);

@@ -10,15 +10,15 @@ import {
 
 export function findExtension({ element, name }) {
   if (!element || !name) return { error: MISSING_VALUE };
-  if (!Array.isArray(element.extensions)) return { message: NOT_FOUND };
+  if (!Array.isArray(element.extensions)) return { info: NOT_FOUND };
 
   const extension = element.extensions.find(
     (extension) => extension?.name === name
   );
 
-  const message = !extension ? NOT_FOUND : undefined;
+  const info = !extension ? NOT_FOUND : undefined;
 
-  return { extension, message };
+  return { extension, info };
 }
 
 export function findTournamentExtension({ tournamentRecord, name }) {

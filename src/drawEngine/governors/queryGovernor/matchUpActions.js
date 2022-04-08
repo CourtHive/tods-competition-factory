@@ -233,7 +233,7 @@ export function matchUpActions({
     validActions.push({
       type: SCORE,
       method: 'setMatchUpStatus',
-      message: 'set outcome and winningSide',
+      info: 'set outcome and winningSide',
       payload,
     });
     validActions.push({ type: START });
