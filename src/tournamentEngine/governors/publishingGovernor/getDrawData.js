@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStructureSeedAssignments';
+// import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStructureSeedAssignments';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
@@ -28,12 +28,6 @@ import {
   RETIRED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import {
-  CONSOLATION,
-  MAIN,
-  PLAY_OFF,
-  QUALIFYING,
-} from '../../../constants/drawDefinitionConstants';
 
 export function getDrawData({
   tournamentParticipants = [],
@@ -53,7 +47,6 @@ export function getDrawData({
     drawId,
   }))(drawDefinition);
 
-  let mainStageSeedAssignments, qualificationStageSeedAssignments;
   const { structureGroups } = getStructureGroups({ drawDefinition });
 
   let drawActive = false;
@@ -62,41 +55,18 @@ export function getDrawData({
     const structures = structureIds
       .map((structureId) => {
         const { structure } = findStructure({ drawDefinition, structureId });
-        const { seedAssignments } = getStructureSeedAssignments({
-          drawDefinition,
-          structure,
-        });
-
-        // capture the seedAssignments for MAIN/QUALIFYING { stageSequence: 1 }
-        if (structure.stage === MAIN && structure.stageSequence === 1) {
-          mainStageSeedAssignments = seedAssignments;
-        }
-        if (structure.stage === QUALIFYING && structure.stageSequence === 1) {
-          qualificationStageSeedAssignments = seedAssignments;
-        }
 
         return structure;
       })
       .sort(structureSort)
       .map((structure) => {
         const { structureId } = structure;
-        let seedAssignments = [];
-
-        // pass seedAssignments from { stageSequence: 1 } to other stages
-        if ([MAIN, CONSOLATION, PLAY_OFF].includes(structure.stage)) {
-          seedAssignments = mainStageSeedAssignments;
-        }
-
-        if (structure.stage === QUALIFYING) {
-          seedAssignments = qualificationStageSeedAssignments;
-        }
 
         const { matchUps, roundMatchUps } = getAllStructureMatchUps({
           context: { drawId: drawInfo.drawId, ...context },
           tournamentParticipants,
           policyDefinitions,
           tournamentRecord,
-          seedAssignments,
           drawDefinition,
           structure,
           inContext,
@@ -183,7 +153,6 @@ export function getDrawData({
           ...structureInfo,
           structureId,
           roundMatchUps,
-          seedAssignments,
           participantResults,
         };
       });

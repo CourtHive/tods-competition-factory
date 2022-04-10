@@ -3,6 +3,7 @@ import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assign
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
+import { assignSeed } from '../entryGovernor/seedAssignment';
 import { findStructure } from '../../getters/findStructure';
 import { numericSort } from '../../../utilities';
 
@@ -152,6 +153,22 @@ export function directLoser(params) {
     if (result.error) return result;
   } else {
     return { error: INVALID_DRAW_POSITION };
+  }
+
+  if (
+    structure?.seedAssignments &&
+    structure.structureId !== targetStructureId
+  ) {
+    const seedAssignment = structure.seedAssignments.find(
+      ({ participantId }) => participantId === loserParticipantId
+    );
+    if (seedAssignment) {
+      assignSeed({
+        drawDefinition,
+        structureId: targetStructureId,
+        ...seedAssignment,
+      });
+    }
   }
 
   if (dualMatchUp && projectedWinningSide) {

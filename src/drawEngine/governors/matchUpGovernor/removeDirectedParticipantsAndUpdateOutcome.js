@@ -170,6 +170,11 @@ export function removeDirectedWinner({
       structure,
     });
 
+    // remove participant from seedAssignments
+    structure.seedAssignments = (structure.seedAssignments || []).filter(
+      (assignment) => assignment.participantId !== winnerParticipantId
+    );
+
     const relevantAssignment = positionAssignments.find(
       (assignment) => assignment.participantId === winnerParticipantId
     );
@@ -238,6 +243,11 @@ function removeDirectedLoser({
       delete assignment.participantId;
     }
   });
+
+  // remove participant from seedAssignments
+  structure.seedAssignments = (structure.seedAssignments || []).filter(
+    (assignment) => assignment.participantId !== loserParticipantId
+  );
 
   if (dualMatchUp) {
     // remove propagated lineUp

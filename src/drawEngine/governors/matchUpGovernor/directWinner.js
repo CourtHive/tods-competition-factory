@@ -6,6 +6,7 @@ import { findStructure } from '../../getters/findStructure';
 
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { assignSeed } from '../entryGovernor/seedAssignment';
 
 export function directWinner({
   winnerMatchUpDrawPositionIndex,
@@ -25,6 +26,12 @@ export function directWinner({
       targetMatchUpDrawPositions[winnerMatchUpDrawPositionIndex];
 
     const sourceStructureId = winnerTargetLink.source.structureId;
+    const { structure, error } = findStructure({
+      structureId: sourceStructureId,
+      drawDefinition,
+    });
+    if (error) return { error };
+
     const { positionAssignments: sourcePositionAssignments } =
       structureAssignedDrawPositions({
         structureId: sourceStructureId,
@@ -96,17 +103,28 @@ export function directWinner({
       });
       if (result.error) return result;
     } else {
-      const { structure, error } = findStructure({
-        structureId: sourceStructureId,
-        drawDefinition,
-      });
-      if (error) return { error };
-
       // qualifiers do not get automatically directed
       if (structure.stage !== QUALIFYING) {
         const error = 'winner target position unavaiallble';
         console.log(error);
         return { error };
+      }
+    }
+
+    // propagate seedAssignments
+    if (
+      structure?.seedAssignments &&
+      structure.structureId !== targetStructureId
+    ) {
+      const seedAssignment = structure.seedAssignments.find(
+        ({ participantId }) => participantId === winnerParticipantId
+      );
+      if (seedAssignment) {
+        assignSeed({
+          drawDefinition,
+          structureId: targetStructureId,
+          ...seedAssignment,
+        });
       }
     }
   } else {

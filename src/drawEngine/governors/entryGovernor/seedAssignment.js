@@ -11,6 +11,10 @@ import {
   INVALID_PARTICIPANT_ID,
   INVALID_SEED_NUMBER,
 } from '../../../constants/errorConditionConstants';
+import {
+  CONSOLATION,
+  PLAY_OFF,
+} from '../../../constants/drawDefinitionConstants';
 
 export function assignSeed({
   drawDefinition,
@@ -56,7 +60,16 @@ export function assignSeed({
     if (!positionIsValid) return { error: INVALID_DRAW_POSITION_FOR_SEEDING };
   }
 
-  if (seedNumbers.includes(seedNumber)) {
+  if (
+    seedNumbers.includes(seedNumber) ||
+    [CONSOLATION, PLAY_OFF].includes(structure?.stage)
+  ) {
+    const seedNumbers = seedAssignments.map(({ seedNumber }) => seedNumber);
+
+    if (!seedNumbers.includes(seedNumber)) {
+      seedAssignments.push({ seedNumber, seedValue });
+    }
+
     let success;
     seedAssignments.forEach((assignment) => {
       // ensure that this participantId is not assigned to any other seedNumber
