@@ -141,6 +141,7 @@ const drawProfiles = [
     drawType: ROUND_ROBIN, // optional - defaults to SINGLE_ELIMINATION
     drawSize: 4, // optional - defaults to 32
     eventType: DOUBLES, // optional - defaults to SINGLES
+    seedsCount, // optional - number of particpants to be seeded
     idPrefix, // optional prefix used for generation of matchUpIds
     completionGoal, // optional - number of matchUps within draw structures to complete
 

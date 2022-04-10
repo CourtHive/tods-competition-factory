@@ -92,11 +92,14 @@ export function getDrawData({
         }
 
         const { matchUps, roundMatchUps } = getAllStructureMatchUps({
+          // only propagate seedAssignments where none are present
+          seedAssignments: !structure?.seedAssignments?.length
+            ? seedAssignments
+            : undefined,
           context: { drawId: drawInfo.drawId, ...context },
           tournamentParticipants,
           policyDefinitions,
           tournamentRecord,
-          seedAssignments,
           drawDefinition,
           structure,
           inContext,

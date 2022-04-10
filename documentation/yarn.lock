@@ -2254,10 +2254,10 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/react@17.0.43":
-  version "17.0.43"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.43.tgz#4adc142887dd4a2601ce730bc56c3436fdb07a55"
-  integrity sha512-8Q+LNpdxf057brvPu1lMtC5Vn7J119xrP1aq4qiaefNioQUYANF/CYeK4NsKorSZyUGJ66g0IM+4bbjwx45o2A==
+"@types/react@18.0.1":
+  version "18.0.1"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.1.tgz#1b2e02fb7613212518733946e49fb963dfc66e19"
+  integrity sha512-VnWlrVgG0dYt+NqlfMI0yUYb8Rdl4XUROyH+c6gq/iFCiZ805Vi//26UW38DHnxQkbDhnrIWTBiy6oKZqL11cw==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -8998,10 +8998,10 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
-tods-competition-factory@0.144.1:
-  version "0.144.1"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.144.1.tgz#cf74536fa11dfe89db28702071c9216750fff1b1"
-  integrity sha512-VbAyKbHvxnoXNUJpoT4ChyARPwp9nl7AbKMm/aKYa+enZNGhll8J03WdEB9qb1bCK88RO0sasXF+/LhsLj3lHw==
+tods-competition-factory@0.146.0:
+  version "0.146.0"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.146.0.tgz#76b4530cf97aaa56441c9b06e187148fb3cb0144"
+  integrity sha512-zGW3pX3ljUpt8hiFHluouPonP9ALvSoZQ9qkdF2K53hhmerEuC5cgAbZN14n9Me5H+w9tEhH6Nx0g1HSfuE8zQ==
 
 tods-competition-factory@0.74.1:
   version "0.74.1"

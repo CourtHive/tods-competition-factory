@@ -101,7 +101,7 @@ export const competitionEngine = (function () {
     const elapsed = Date.now() - start;
     const devContext = getDevContext();
     if (
-      devContext.perf &&
+      devContext.perf !== undefined &&
       (isNaN(devContext.perf) || elapsed > devContext.perf)
     )
       console.log('ce:', { methodName, elapsed });

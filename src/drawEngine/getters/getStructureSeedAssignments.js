@@ -48,7 +48,10 @@ export function getStructureSeedAssignments({
             seedProxy: true, // flag so that proxy seeding information doesn't get used externally
           };
         });
-      seedAssignments = seedProxies;
+      // seedProxies are only found in PLAY_OFF when ROUND_ROBIN is MAIN stage
+      seedAssignments = seedProxies.length
+        ? seedProxies
+        : structure.seedAssignments;
     } else if (structure.seedAssignments) {
       seedAssignments = structure.seedAssignments;
     } else {
