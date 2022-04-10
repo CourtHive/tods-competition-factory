@@ -13,6 +13,7 @@ import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { isValidSeedPosition } from '../../getters/seedGetter';
+import { assignSeed } from '../entryGovernor/seedAssignment';
 import { findStructure } from '../../getters/findStructure';
 import { getTargetMatchUps } from './getTargetMatchUps';
 import { updateSideLineUp } from './updateSideLineUp';
@@ -20,7 +21,6 @@ import { clearDrawPosition } from './positionClear';
 import { isAdHoc } from '../queryGovernor/isAdHoc';
 import { cleanupLineUps } from './cleanupLineUps';
 
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
@@ -31,6 +31,11 @@ import {
   MISSING_PARTICIPANT_ID,
   INVALID_MATCHUP,
 } from '../../../constants/errorConditionConstants';
+import {
+  CONTAINER,
+  MAIN,
+  QUALIFYING,
+} from '../../../constants/drawDefinitionConstants';
 
 export function assignDrawPosition({
   inContextDrawMatchUps,
@@ -57,9 +62,9 @@ export function assignDrawPosition({
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { error };
 
+  // there are no drawPositions assigned for ADHOC structures
   if (isAdHoc({ drawDefinition, structure })) return { error: INVALID_MATCHUP };
 
-  const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { seedAssignments } = getStructureSeedAssignments({
     drawDefinition,
     structure,
@@ -81,6 +86,7 @@ export function assignDrawPosition({
       return { error: INVALID_DRAW_POSITION_FOR_SEEDING };
   }
 
+  const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const positionAssignment = positionAssignments.find(
     (assignment) => assignment.drawPosition === drawPosition
   );
@@ -135,6 +141,20 @@ export function assignDrawPosition({
   }
 
   positionAssignment.participantId = participantId;
+
+  // if not stageSequence 1 propagate seedAssignments
+  if (structure?.stageSequence !== 1) {
+    const targetStage = structure.stage === QUALIFYING ? QUALIFYING : MAIN;
+    const seedAssignments =
+      drawDefinition.structures.find(
+        (structure) =>
+          structure.stage === targetStage && structure.stageSequence === 1
+      ).seedAssignments || [];
+    const assignment = seedAssignments.find(
+      (assignment) => assignment.participantId === participantId
+    );
+    if (assignment) assignSeed({ drawDefinition, structureId, ...assignment });
+  }
 
   if (structure.structureType !== CONTAINER) {
     addDrawPositionToMatchUps({
