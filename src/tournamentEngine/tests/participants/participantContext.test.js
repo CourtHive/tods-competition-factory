@@ -1,13 +1,15 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import {
   CONSOLATION,
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
+import { ALTERNATE } from '../../../constants/entryStatusConstants';
 
-test('hydrated consolation matchUps include seeding', () => {
+test('hydrated consolation matchUps include seeding when participants advance', () => {
   const {
     tournamentRecord,
     drawIds: [drawId],
@@ -31,6 +33,43 @@ test('hydrated consolation matchUps include seeding', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
+  let structures = tournamentEngine.getEvent({ drawId }).drawDefinition
+    .structures;
+
+  // get seeded participants from MAIN structure
+  const seedAssignments = structures.find(
+    ({ stage }) => stage === MAIN
+  ).seedAssignments;
+  const seededParticipantIds = seedAssignments.map(
+    ({ participantId }) => participantId
+  );
+  const consolationStructureId = structures.find(
+    ({ stage }) => stage === CONSOLATION
+  ).structureId;
+
+  // get positionActions for empty drawPosition in CONSOLATION
+  let result = tournamentEngine.positionActions({
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    structureId: consolationStructureId,
+    drawPosition: 3,
+    drawId,
+  });
+
+  let alternateOption = result.validActions.find(
+    ({ type }) => type === ALTERNATE
+  );
+  const { method, payload, availableAlternatesParticipantIds } =
+    alternateOption;
+  const alternateParticipantId = availableAlternatesParticipantIds.find(
+    (participantId) => seededParticipantIds.includes(participantId)
+  );
+  Object.assign(payload, { alternateParticipantId });
+
+  // assign seeded participant to CONSOLATION drawPosition
+  result = tournamentEngine[method](payload);
+
+  expect(result.success).toEqual(true);
+
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   const firstRoundFirstPositionMain = matchUps.find(
     ({ roundNumber, roundPosition, stage }) =>
@@ -51,9 +90,7 @@ test('hydrated consolation matchUps include seeding', () => {
     firstSeedParticipantId
   );
 
-  const {
-    drawDefinition: { structures },
-  } = tournamentEngine.getEvent({ drawId });
+  structures = tournamentEngine.getEvent({ drawId }).drawDefinition.structures;
 
   const consolationStructure = structures.find(
     (structure) => structure.stage === CONSOLATION
@@ -61,11 +98,13 @@ test('hydrated consolation matchUps include seeding', () => {
 
   expect(consolationStructure.seedAssignments[0].seedValue).toEqual(1);
 
-  const result = tournamentEngine.getEventData({ eventId });
+  result = tournamentEngine.getEventData({ eventId });
   expect(
     result.eventData.drawsData[0].structures[1].roundMatchUps[1][0].sides[0]
       .seedValue
   ).toEqual(1);
+
+  expect(consolationStructure.seedAssignments.length).toEqual(2);
 
   /*
   TODO: check finishingPositionRange for FMLC consolation structure

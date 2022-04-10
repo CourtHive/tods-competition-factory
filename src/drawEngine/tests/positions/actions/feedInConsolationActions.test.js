@@ -1,13 +1,13 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 
+import { PENALTY, SCORE } from '../../../../constants/matchUpActionConstants';
+import { DOUBLES } from '../../../../constants/eventConstants';
+import { PAIR } from '../../../../constants/participantTypes';
 import {
   CONSOLATION,
   FEED_IN_CHAMPIONSHIP,
 } from '../../../../constants/drawDefinitionConstants';
-import { DOUBLES } from '../../../../constants/eventConstants';
-import { PAIR } from '../../../../constants/participantTypes';
-import { PENALTY, SCORE } from '../../../../constants/matchUpActionConstants';
 
 it('can modify score for main draw match after loser directed to consolation', () => {
   const participantsProfile = {

@@ -182,7 +182,7 @@ it.only('supports multi-sequence qualifying structures', () => {
   let drawPosition = 1;
   setDevContext({ feedProfile: true });
   let result = tournamentEngine.positionActions({
-    policyDefinition: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
     structureId: q1.structureId,
     drawPosition,
     drawId,

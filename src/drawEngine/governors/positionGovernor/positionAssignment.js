@@ -32,8 +32,10 @@ import {
   INVALID_MATCHUP,
 } from '../../../constants/errorConditionConstants';
 import {
+  CONSOLATION,
   CONTAINER,
   MAIN,
+  PLAY_OFF,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
 
@@ -142,8 +144,10 @@ export function assignDrawPosition({
 
   positionAssignment.participantId = participantId;
 
-  // if not stageSequence 1 propagate seedAssignments
-  if (structure?.stageSequence !== 1) {
+  if (
+    structure?.stageSequence > 1 ||
+    [CONSOLATION, PLAY_OFF].includes(structure.stage)
+  ) {
     const targetStage = structure.stage === QUALIFYING ? QUALIFYING : MAIN;
     const seedAssignments =
       drawDefinition.structures.find(
