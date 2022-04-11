@@ -11,6 +11,7 @@ const scenarios = [
   // valid
   { lineUp: [], tieFormat, expectation: true },
   { lineUp: [{ participantId: 'someId', collectionAssignments: [] }], tieFormat, expectation: true, },
+  { lineUp: [{ participantId: 'someId', collectionAssignments: [{ collectionPosition: 5 }] }], tieFormat, expectation: true, },
   { lineUp: [{ participantId: 'someId', collectionAssignments: [ { collectionPosition: 5, collectionId }, ], }], tieFormat, expectation: true },
 
   // invalid
@@ -24,9 +25,6 @@ const scenarios = [
   { lineUp: [{ participantId: 'someId', collectionAssignments: [''] }], tieFormat, expectation: false, },
   { lineUp: [{ participantId: 'someId', collectionAssignments: [{}] }], tieFormat, expectation: false, },
   { lineUp: [{ participantId: 'someId', collectionAssignments: [{ collectionPosition: '5' }] }], tieFormat, expectation: false, },
-  { lineUp: [{ participantId: 'someId', collectionAssignments: [{ collectionPosition: 5 }] }], tieFormat, expectation: false, },
-  { lineUp: [{ participantId: 'someId', collectionAssignments: [{ collectionPosition: 5, collectionId: '' }] }], tieFormat, expectation: false, },
-  { lineUp: [{ participantId: 'someId', collectionAssignments: [{ collectionPosition: 5, collectionId: 'someId' }] }], tieFormat, expectation: false, },
   {
     lineUp: [
       { participantId: 'someId', collectionAssignments: [{ collectionPosition: 1, collectionId }] },
