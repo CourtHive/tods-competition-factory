@@ -3,16 +3,12 @@ import { unique } from '../../../../utilities/arrays';
 
 import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
 
-export function validateLineUp({ lineUp, tieFormat }) {
+export function validateLineUp({ lineUp }) {
   let errors = [];
   if (!Array.isArray(lineUp)) {
     errors.push('lineUp must be an array of objects');
     return { valid: false, errors, error: INVALID_VALUES };
   }
-
-  const collectionIds =
-    tieFormat?.collectionDefinitions?.map(({ collectionId }) => collectionId) ||
-    [];
 
   const validItems = lineUp.every((item) => {
     if (typeof item !== 'object') {
@@ -39,13 +35,9 @@ export function validateLineUp({ lineUp, tieFormat }) {
         return false;
       }
 
-      const { collectionPosition, collectionId } = collectionAssignment;
+      const { collectionPosition } = collectionAssignment;
       if (typeof collectionPosition !== 'number') {
         errors.push('collectionPosition must be a number');
-        return false;
-      }
-      if (!collectionIds.includes(collectionId)) {
-        errors.push('Invalid collectionId');
         return false;
       }
 
