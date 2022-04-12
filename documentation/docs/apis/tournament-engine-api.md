@@ -2054,7 +2054,7 @@ tournamentEngine.modifyCollectionDefinition({
   structureId, // required if modifying tieFormat for a structure
   matchUpId, // required if modifying tieFormat for a matchUp
   eventId, // required if modifying tieFormat for a event
-  drawId, // required if modifying tieFormat for a drawDefinition
+  drawId, // required if modifying tieFormat for a drawDefinition or a structure
 });
 ```
 
@@ -2269,6 +2269,22 @@ tournamentEngine.newTournamentRecord({
 });
 
 const { tournamentRecord } = tournamentEngine.getState();
+```
+
+---
+
+## orderCollectionDefinitions
+
+Modify the array order of `tieFormat.collectionDefinitions` for an `event`, a `drawDefinition`, `structure`, or `matchUp`.
+
+```js
+tournamentEngine.orderCollectionDefinitions({
+  orderMap: { collectionId1: 1, collectionId2: 2 },
+  structureId, // required if modifying tieFormat for a structure
+  matchUpId, // required if modifying tieFormat for a matchUp
+  eventId, // required if modifying tieFormat for a event
+  drawId, // required if modifying tieFormat for a drawDefinition or a structure
+});
 ```
 
 ---
