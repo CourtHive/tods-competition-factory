@@ -1,5 +1,4 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
-import { findLineUpWithParticipantIds } from './drawDefinitions/findLineUpWithParticipantIds';
 import { scoreHasValue } from '../../../drawEngine/governors/scoreGovernor/scoreHasValue';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
@@ -8,12 +7,13 @@ import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
+import { findExtension } from '../queryGovernor/extensionQueries';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
-import { intersection } from '../../../utilities';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
+import { LINEUPS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EXISTING_OUTCOME,
@@ -32,6 +32,7 @@ export function removeTieMatchUpParticipantId(params) {
   if (matchUpContext.error) return matchUpContext;
 
   const {
+    inContextDualMatchUp,
     relevantAssignments,
     collectionPosition,
     teamParticipants,
@@ -51,6 +52,12 @@ export function removeTieMatchUpParticipantId(params) {
       side.participant?.individualParticipantIds?.includes(participantId)
   );
   if (!side) return { error: PARTICIPANT_NOT_FOUND };
+
+  const teamParticipantId = inContextDualMatchUp.sides?.find(
+    ({ sideNumber }) => sideNumber === side.sideNumber
+  )?.participantId;
+
+  if (!teamParticipantId) return { error: PARTICIPANT_NOT_FOUND };
 
   const {
     tournamentParticipants: [participantToRemove],
@@ -74,28 +81,32 @@ export function removeTieMatchUpParticipantId(params) {
       ? [participantId]
       : participantToRemove.individualParticipantIds;
 
-  if (!dualMatchUp.sides)
-    dualMatchUp.sides = [{ sideNumber: 1 }, { sideNumber: 2 }];
+  if (!dualMatchUp.sides) {
+    const { extension } = findExtension({
+      element: drawDefinition,
+      name: LINEUPS,
+    });
+
+    const lineUps = extension?.value || {};
+
+    const extractSideDetail = ({
+      displaySideNumber,
+      drawPosition,
+      sideNumber,
+    }) => ({ drawPosition, sideNumber, displaySideNumber });
+
+    dualMatchUp.sides = inContextDualMatchUp.sides.map((side) => {
+      const participantId = side.participantId;
+      return {
+        ...extractSideDetail(side),
+        lineUp: (participantId && lineUps[participantId]) || [],
+      };
+    });
+  }
 
   let dualMatchUpSide = dualMatchUp.sides?.find(
     ({ sideNumber }) => sideNumber === side.sideNumber
   );
-
-  const templateTeamLineUp = findLineUpWithParticipantIds({
-    drawDefinition,
-    participantIds,
-  });
-  const teamParticipantId =
-    templateTeamLineUp?.teamParticipantId ||
-    teamParticipants?.find(
-      (participant) =>
-        intersection(
-          participant?.individualParticipantIds || [],
-          participantIds
-        ).length === participantIds.length
-    )?.participantId;
-
-  if (!teamParticipantId) return { error: PARTICIPANT_NOT_FOUND };
 
   if (
     !dualMatchUpSide &&

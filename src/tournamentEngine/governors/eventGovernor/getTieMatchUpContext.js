@@ -71,6 +71,13 @@ export function getTieMatchUpContext({
     matchUpsMap,
   });
 
+  const { matchUp: inContextDualMatchUp } = findMatchUp({
+    matchUpId: matchUpTieId,
+    inContext: true,
+    drawDefinition,
+    matchUpsMap,
+  });
+
   const tieFormat =
     dualMatchUp.tieFormat ||
     structure.tieFormat ||
@@ -79,6 +86,7 @@ export function getTieMatchUpContext({
     undefined;
 
   return {
+    inContextDualMatchUp,
     relevantAssignments,
     collectionPosition,
     teamParticipants,

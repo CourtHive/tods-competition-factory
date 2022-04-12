@@ -1,14 +1,14 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
-import { findLineUpWithParticipantIds } from './drawDefinitions/findLineUpWithParticipantIds';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
+import { findExtension } from '../queryGovernor/extensionQueries';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
-import { intersection } from '../../../utilities';
 
 import { COMPETITOR } from '../../../constants/participantRoles';
+import { LINEUPS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { PAIR } from '../../../constants/participantTypes';
 import { DOUBLES } from '../../../constants/matchUpTypes';
@@ -34,8 +34,8 @@ export function replaceTieMatchUpParticipantId(params) {
     return { error: MISSING_PARTICIPANT_ID };
 
   const {
+    inContextDualMatchUp,
     collectionPosition,
-    teamParticipants,
     collectionId,
     dualMatchUp,
     tieMatchUp,
@@ -68,6 +68,13 @@ export function replaceTieMatchUpParticipantId(params) {
   )
     return { error: INVALID_PARTICIPANT_TYPE };
 
+  const { extension } = findExtension({
+    element: drawDefinition,
+    name: LINEUPS,
+  });
+
+  const lineUps = extension?.value || {};
+
   if (!dualMatchUp.sides?.length) {
     const extractSideDetail = ({
       displaySideNumber,
@@ -75,10 +82,13 @@ export function replaceTieMatchUpParticipantId(params) {
       sideNumber,
     }) => ({ drawPosition, sideNumber, displaySideNumber });
 
-    dualMatchUp.sides = [
-      { ...extractSideDetail(tieMatchUp.sides[0]), lineUp: [] },
-      { ...extractSideDetail(tieMatchUp.sides[1]), lineUp: [] },
-    ];
+    dualMatchUp.sides = inContextDualMatchUp.sides.map((side) => {
+      const participantId = side.participantId;
+      return {
+        ...extractSideDetail(side),
+        lineUp: (participantId && lineUps[participantId]) || [],
+      };
+    });
   }
 
   const dualMatchUpSide = dualMatchUp.sides.find(
@@ -86,32 +96,18 @@ export function replaceTieMatchUpParticipantId(params) {
   );
 
   if (!dualMatchUpSide) {
-    return { error: NOT_FOUND, existingParticipantId, side, dualMatchUp };
+    return {
+      error: NOT_FOUND,
+      existingParticipantId,
+      sideNumber: side.sideNumber,
+    };
   }
-  const existingParticipant = targetParticipants.find(
-    ({ participantId }) => participantId === existingParticipantId
-  );
-  const participantIds = existingParticipant?.individualParticipantIds || [
-    existingParticipant.participantId,
-  ];
 
-  const templateTeamLineUp = findLineUpWithParticipantIds({
-    drawDefinition,
-    participantIds,
-  });
+  const teamParticipantId = inContextDualMatchUp.sides?.find(
+    ({ sideNumber }) => sideNumber === side.sideNumber
+  )?.participantId;
 
-  const teamParticipantId =
-    templateTeamLineUp?.teamParticipantId ||
-    teamParticipants?.find(
-      (participant) =>
-        intersection(
-          participant?.individualParticipantIds || [],
-          participantIds
-        ).length
-    )?.participantId;
-
-  // if dualMatchUpSide does not currently have a lineUp use a lineUp found in drawDefinition.extention as a template
-  const teamLineUp = dualMatchUpSide.lineUp || templateTeamLineUp;
+  const teamLineUp = dualMatchUpSide.lineUp;
   const newParticipantIdInLineUp = teamLineUp?.find(
     ({ participantId }) => newParticipantId === participantId
   );
@@ -201,9 +197,7 @@ export function replaceTieMatchUpParticipantId(params) {
       drawDefinition,
       tieFormat,
     });
-    if (result.error) {
-      console.log(result.error, { templateTeamLineUp });
-    }
+    if (result.error) return result;
   } else {
     console.log('team participantId not found');
   }
