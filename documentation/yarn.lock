@@ -8998,10 +8998,10 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
-tods-competition-factory@0.148.0:
-  version "0.148.0"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.148.0.tgz#164a3b2e87e09212257023c60d60b1b258ca6d38"
-  integrity sha512-pUqsqeA5NaIzxc8hxsj6PtOOXn5nDnZsJ8cOBojkXnt8pbGTllvTyEnRgb0kc0FpjnRbVxriTAhR0YxEGmdkRw==
+tods-competition-factory@0.150.0:
+  version "0.150.0"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.150.0.tgz#464dbd3896e0ac3c588f4682c839595b18a3e7fc"
+  integrity sha512-fNfMk5x/oUDB81CdGYgJCVSg0a7kw2gyo+98fQZpYoRspUEEr0z9ldGYz4Gf4lIfACK/OHforCqS4hGS1ovcPA==
 
 tods-competition-factory@0.74.1:
   version "0.74.1"
