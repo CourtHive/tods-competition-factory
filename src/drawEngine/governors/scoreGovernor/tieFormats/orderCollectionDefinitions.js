@@ -2,6 +2,8 @@ import { makeDeepCopy } from '../../../../utilities';
 import { updateTieFormat } from './updateTieFormat';
 import { getTieFormat } from './getTieFormat';
 
+import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
+
 export function orderCollectionDefinitions({
   tournamentRecord,
   drawDefinition,
@@ -11,6 +13,8 @@ export function orderCollectionDefinitions({
   eventId,
   event,
 }) {
+  if (typeof orderMap !== 'object') return { error: INVALID_VALUES, orderMap };
+
   let result = getTieFormat({
     drawDefinition,
     structureId,
