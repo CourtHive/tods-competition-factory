@@ -44,7 +44,7 @@ export function replaceTieMatchUpParticipantId(params) {
 
   const { matchUpType } = tieMatchUp;
 
-  const side = tieMatchUp.sides.find(
+  const side = tieMatchUp.sides?.find(
     (side) =>
       side.participant?.participantId === existingParticipantId ||
       side.participant?.individualParticipantIds?.includes(
@@ -68,7 +68,7 @@ export function replaceTieMatchUpParticipantId(params) {
   )
     return { error: INVALID_PARTICIPANT_TYPE };
 
-  const dualMatchUpSide = dualMatchUp.sides.find(
+  const dualMatchUpSide = dualMatchUp.sides?.find(
     ({ sideNumber }) => sideNumber === side.sideNumber
   );
 
@@ -89,7 +89,7 @@ export function replaceTieMatchUpParticipantId(params) {
 
   const teamParticipantId =
     templateTeamLineUp?.teamParticipantId ||
-    teamParticipants.find(
+    teamParticipants?.find(
       (participant) =>
         intersection(
           participant?.individualParticipantIds || [],
@@ -99,7 +99,7 @@ export function replaceTieMatchUpParticipantId(params) {
 
   // if dualMatchUpSide does not currently have a lineUp use a lineUp found in drawDefinition.extention as a template
   const teamLineUp = dualMatchUpSide.lineUp || templateTeamLineUp;
-  const newParticipantIdInLineUp = teamLineUp.find(
+  const newParticipantIdInLineUp = teamLineUp?.find(
     ({ participantId }) => newParticipantId === participantId
   );
 

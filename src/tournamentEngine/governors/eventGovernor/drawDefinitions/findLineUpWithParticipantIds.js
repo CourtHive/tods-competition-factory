@@ -21,7 +21,8 @@ export function findLineUpWithParticipantIds({
   });
 
   const lineUps = extension?.value || {};
-  const teamParticipantId = Object.keys(lineUps).find((teamParticipantId) =>
+  const keys = Object.keys(lineUps);
+  const teamParticipantId = keys?.find((teamParticipantId) =>
     lineUps[teamParticipantId]
       .map(getParticipantId)
       .some((id) => participantIds.includes(id))
