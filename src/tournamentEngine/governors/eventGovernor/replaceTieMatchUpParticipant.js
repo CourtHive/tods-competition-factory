@@ -68,12 +68,25 @@ export function replaceTieMatchUpParticipantId(params) {
   )
     return { error: INVALID_PARTICIPANT_TYPE };
 
-  const dualMatchUpSide = dualMatchUp.sides?.find(
+  if (!dualMatchUp.sides?.length) {
+    const extractSideDetail = ({
+      displaySideNumber,
+      drawPosition,
+      sideNumber,
+    }) => ({ drawPosition, sideNumber, displaySideNumber });
+
+    dualMatchUp.sides = [
+      { ...extractSideDetail(tieMatchUp.sides[0]), lineUp: [] },
+      { ...extractSideDetail(tieMatchUp.sides[1]), lineUp: [] },
+    ];
+  }
+
+  const dualMatchUpSide = dualMatchUp.sides.find(
     ({ sideNumber }) => sideNumber === side.sideNumber
   );
 
   if (!dualMatchUpSide) {
-    return { error: NOT_FOUND, existingParticipantId };
+    return { error: NOT_FOUND, existingParticipantId, side, dualMatchUp };
   }
   const existingParticipant = targetParticipants.find(
     ({ participantId }) => participantId === existingParticipantId
