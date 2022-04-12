@@ -1,17 +1,20 @@
-import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+// import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { isValid } from '../matchUpFormatCode/isValid';
 import { makeDeepCopy } from '../../../../utilities';
+import { updateTieFormat } from './updateTieFormat';
 import { getTieFormat } from './getTieFormat';
+/*
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,
 } from '../../../notifications/drawNotifications';
+*/
 
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
-import { TEAM } from '../../../../constants/matchUpTypes';
+// import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
+// import { TEAM } from '../../../../constants/matchUpTypes';
 import {
   INVALID_VALUES,
-  MISSING_DRAW_DEFINITION,
+  // MISSING_DRAW_DEFINITION,
   MISSING_VALUE,
   NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
@@ -19,6 +22,7 @@ import {
 // all child matchUps need to be checked for collectionAssignments / collectionPositions which need to be removed when collectionDefinition.collectionIds are removed
 export function modifyCollectionDefinition({
   tournamentRecord,
+  collectionOrder,
   collectionName,
   drawDefinition,
   matchUpFormat,
@@ -28,7 +32,8 @@ export function modifyCollectionDefinition({
   eventId,
   event,
 }) {
-  if (!matchUpFormat && !collectionName) return { error: MISSING_VALUE };
+  if (!matchUpFormat && !collectionName && !collectionOrder)
+    return { error: MISSING_VALUE };
   if (matchUpFormat && !isValid(matchUpFormat))
     return { error: INVALID_VALUES };
   if (collectionName && typeof collectionName !== 'string')
@@ -53,9 +58,21 @@ export function modifyCollectionDefinition({
 
   if (collectionName) collectionDefinition.collectionName = collectionName;
   if (matchUpFormat) collectionDefinition.matchUpFormat = matchUpFormat;
+  if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
 
+  return updateTieFormat({
+    tournamentRecord,
+    drawDefinition,
+    structure,
+    tieFormat,
+    eventId,
+    matchUp,
+    event,
+  });
+
+  /*
   if (event && eventId) {
-    event.tieFormatt = tieFormat;
+    event.tieFormat = tieFormat;
   } else if (matchUp) {
     matchUp.tieFormat = tieFormat;
     modifyMatchUpNotice({
@@ -88,8 +105,10 @@ export function modifyCollectionDefinition({
   } else {
     return { error: MISSING_DRAW_DEFINITION };
   }
+  */
 }
 
+/*
 function updateStructureMatchUps({
   tournamentRecord,
   drawDefinition,
@@ -115,3 +134,4 @@ function updateStructureMatchUps({
     });
   }
 }
+*/
