@@ -150,6 +150,7 @@ export function generateRoundRobinWithPlayOff(params) {
       if (playoffDrawType === SINGLE_ELIMINATION) {
         const { matchUps } = treeMatchUps({
           idPrefix: idPrefix && `${idPrefix}-po`,
+          finishingPositionLimit: finishingPositionOffset + participantsInDraw,
           finishingPositionOffset,
           matchUpType,
           drawSize,
@@ -265,7 +266,7 @@ export function generateRoundRobinWithPlayOff(params) {
 
   return Object.assign(
     {
-      structures: [mainStructure, ...playoffStructures?.flat()],
+      structures: [mainStructure, ...(playoffStructures || []).flat()],
       links: drawDefinition.links,
     },
     { ...SUCCESS }
