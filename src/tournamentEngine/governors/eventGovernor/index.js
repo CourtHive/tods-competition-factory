@@ -95,14 +95,16 @@ import { attachPlayoffStructures } from './attachPlayoffStructures';
 import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 import { applyLineUps } from './drawDefinitions/applyLineUps';
 
+import { orderCollectionDefinitions } from '../../../drawEngine/governors/scoreGovernor/tieFormats/orderCollectionDefinitions';
 import { removeCollectionDefinition } from '../../../drawEngine/governors/scoreGovernor/tieFormats/removeCollectionDefinition';
 import { modifyCollectionDefinition } from '../../../drawEngine/governors/scoreGovernor/tieFormats/modifyCollectionDefinition';
 import { addCollectionDefinition } from '../../../drawEngine/governors/scoreGovernor/tieFormats/addCollectionDefinition';
 import { resetScorecard } from './resetScorecard';
 
 const eventGovernor = {
-  removeCollectionDefinition,
   modifyCollectionDefinition,
+  orderCollectionDefinitions,
+  removeCollectionDefinition,
   addCollectionDefinition,
   resetScorecard,
 
