@@ -109,7 +109,6 @@ export function removeTieMatchUpParticipantId(params) {
         teamParticipantId,
       })
     );
-    console.log({ drawPositionMap });
 
     dualMatchUpSide = dualMatchUp.sides?.find(
       (side) =>
