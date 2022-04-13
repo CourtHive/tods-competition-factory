@@ -5,6 +5,7 @@ import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGe
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { validateTieFormat } from './tieFormatUtilities';
 import { makeDeepCopy } from '../../../../utilities';
+import { scoreHasValue } from '../scoreHasValue';
 import { getTieFormat } from './getTieFormat';
 import {
   deleteMatchUpsNotice,
@@ -12,7 +13,6 @@ import {
   modifyMatchUpNotice,
 } from '../../../notifications/drawNotifications';
 
-import { IN_PROGRESS } from '../../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 import {
@@ -80,7 +80,7 @@ export function removeCollectionDefinition({
   const deletedMatchUpIds = [];
   for (const matchUp of matchUps) {
     if (
-      (!updateInProgressMatchUps && matchUp.matchUpStatus === IN_PROGRESS) ||
+      (!updateInProgressMatchUps && scoreHasValue(matchUp)) ||
       matchUp.winningSide
     )
       continue;
