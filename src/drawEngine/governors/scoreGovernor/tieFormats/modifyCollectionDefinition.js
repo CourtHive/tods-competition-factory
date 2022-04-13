@@ -53,6 +53,7 @@ export function modifyCollectionDefinition({
   return updateTieFormat({
     tournamentRecord,
     drawDefinition,
+    structureId,
     structure,
     tieFormat,
     eventId,

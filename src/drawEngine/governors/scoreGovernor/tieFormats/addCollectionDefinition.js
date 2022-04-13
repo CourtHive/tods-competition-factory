@@ -2,6 +2,7 @@ import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStru
 import { generateCollectionMatchUps } from '../../../generators/tieMatchUps';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { makeDeepCopy, UUID } from '../../../../utilities';
+import { scoreHasValue } from '../scoreHasValue';
 import { getTieFormat } from './getTieFormat';
 import {
   addMatchUpsNotice,
@@ -187,10 +188,10 @@ function updateStructureMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM] },
     structure,
   })?.matchUps;
-  // all team matchUps in the structure which do not have tieFormats should have matchUps added
 
+  // all team matchUps in the structure which are not completed and which have no score value should have matchUps added
   const targetMatchUps = matchUps.filter(
-    (matchUp) => matchUp.matchUpStatus !== COMPLETED
+    (matchUp) => matchUp.matchUpStatus !== COMPLETED && !scoreHasValue(matchUp)
   );
 
   for (const matchUp of targetMatchUps) {

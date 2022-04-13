@@ -34,7 +34,7 @@ export function getTieFormat({
     structure = result?.structure;
     tieFormat = structure?.tieFormat || drawDefinition.tieFormat;
   } else {
-    tieFormat = drawDefinition?.tieFormat;
+    tieFormat = drawDefinition?.tieFormat || event?.tieFormat;
   }
 
   if (!tieFormat) return { error: MISSING_TIE_FORMAT };
