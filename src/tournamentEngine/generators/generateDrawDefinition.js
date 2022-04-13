@@ -1,3 +1,4 @@
+import { addVoluntaryConsolationStructure } from '../governors/eventGovernor/generateVoluntaryConsolationStructure';
 import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
 import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/matchUpFormat';
@@ -32,6 +33,7 @@ export function generateDrawDefinition(params) {
   const {
     drawType = SINGLE_ELIMINATION,
     ignoreAllowedDrawTypes,
+    voluntaryConsolation,
     policyDefinitions,
     tournamentRecord,
     tieFormatName,
@@ -255,6 +257,13 @@ export function generateDrawDefinition(params) {
   }
 
   drawDefinition.drawName = params.drawName || drawType;
+
+  if (typeof voluntaryConsolation === 'object')
+    addVoluntaryConsolationStructure({
+      ...voluntaryConsolation,
+      drawDefinition,
+      matchUpType,
+    });
 
   return {
     qualifyingConflicts,
