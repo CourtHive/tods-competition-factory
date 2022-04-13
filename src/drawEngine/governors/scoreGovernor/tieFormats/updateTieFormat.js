@@ -28,6 +28,7 @@ export function updateTieFormat({
       matchUp,
     });
   } else if (structure) {
+    structure.tieFormat = tieFormat;
     updateStructureMatchUps({
       tournamentRecord,
       drawDefinition,
@@ -66,13 +67,13 @@ function updateStructureMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM] },
     structure,
   })?.matchUps;
-  // all team matchUps in the structure which do not have tieFormats should have matchUps added
 
+  // all team matchUps in the structure which do not have tieFormats should have matchUps added
+  // don't update matchUps which are already COMPLETED
   const targetMatchUps = matchUps.filter(
-    (matchUp) => matchUp.matchUpStatus !== COMPLETED
+    (matchUp) => matchUp.matchUpStatus !== COMPLETED && matchUp.tieFormat
   );
   for (const matchUp of targetMatchUps) {
-    // don't update matchUps which are already COMPLETED
     matchUp.tieFormat = tieFormat;
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
