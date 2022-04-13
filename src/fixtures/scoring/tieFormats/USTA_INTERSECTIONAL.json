@@ -17,7 +17,7 @@
       "matchUpValue": 1
     },
     {
-      "collectionName": "Boys Doubles",
+      "collectionName": "Male Doubles",
       "gender": "MALE",
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:8/TB7",
@@ -25,7 +25,7 @@
       "matchUpValue": 1
     },
     {
-      "collectionName": "Girls Doubles",
+      "collectionName": "Female Doubles",
       "gender": "FEMALE",
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:8/TB7",

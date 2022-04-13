@@ -130,7 +130,7 @@
           "participantId": "18C4F9E9-3041-4EF3-BD2A-5E82AB8B3B4F"
         }
       ],
-      "eventName": "Boys' 12 & under doubles",
+      "eventName": "Male' 12 & under doubles",
       "eventId": "5DBDD45A-1634-4AF2-B05A-F7C124A7A3BE",
       "category": {
         "ageCategoryCode": "U12",
@@ -148,7 +148,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U12"
             },
-            "gender": "BOYS",
+            "gender": "MALE",
             "eventType": "DOUBLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -3309,7 +3309,7 @@
           "participantId": "BD6D3D02-DAD0-46A0-9736-B3BBB1BDEC80"
         }
       ],
-      "eventName": "Boys' 14 & under doubles",
+      "eventName": "Male' 14 & under doubles",
       "eventId": "6F8C1C9D-1BA1-4E02-AC03-22A6DA0B14D5",
       "category": {
         "ageCategoryCode": "U14",
@@ -3327,7 +3327,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U14"
             },
-            "gender": "BOYS",
+            "gender": "MALE",
             "eventType": "DOUBLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -4422,7 +4422,7 @@
           "participantId": "37B0AFD7-08A8-4914-9CD4-49C68FC96EAE"
         }
       ],
-      "eventName": "Boys' 16 & under doubles",
+      "eventName": "Male' 16 & under doubles",
       "eventId": "CA3C1537-7542-4A47-9BD6-75EC8A67CE91",
       "category": {
         "ageCategoryCode": "U16",
@@ -4440,7 +4440,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U16"
             },
-            "gender": "BOYS",
+            "gender": "MALE",
             "eventType": "DOUBLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -5523,7 +5523,7 @@
           "participantId": "F95A957E-EDD5-47F2-8640-0D235950EFB8"
         }
       ],
-      "eventName": "Boys' 18 & under doubles",
+      "eventName": "Male' 18 & under doubles",
       "eventId": "0E0A3DA0-7ABA-46FB-81E6-E64ABC93D08B",
       "category": {
         "ageCategoryCode": "U18",
@@ -5541,7 +5541,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U18"
             },
-            "gender": "BOYS",
+            "gender": "MALE",
             "eventType": "DOUBLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -6738,7 +6738,7 @@
           "participantId": "9E86D67D-BE2F-491E-B514-5A9BD9466D16"
         }
       ],
-      "eventName": "Boys' 12 & under singles",
+      "eventName": "Male' 12 & under singles",
       "eventId": "179B23F7-F889-4D31-964E-FA8996BF2365",
       "category": {
         "ageCategoryCode": "U12",
@@ -6756,7 +6756,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U12"
             },
-            "gender": "BOYS",
+            "gender": "MALE",
             "eventType": "SINGLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -11573,7 +11573,7 @@
           "participantId": "B382BB34-E1AA-407E-BCAB-44968ACDCDC9"
         }
       ],
-      "eventName": "Boys' 14 & under singles",
+      "eventName": "Male' 14 & under singles",
       "eventId": "47CD2A60-5F4D-42D8-B030-C5C4B275BDA8",
       "category": {
         "ageCategoryCode": "U14",
@@ -11591,7 +11591,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U14"
             },
-            "gender": "BOYS",
+            "gender": "MALE",
             "eventType": "SINGLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -13375,7 +13375,7 @@
           "participantId": "B382BB34-E1AA-407E-BCAB-44968ACDCDC9"
         }
       ],
-      "eventName": "Boys' 16 & under singles",
+      "eventName": "Male' 16 & under singles",
       "eventId": "EFE58A5E-5E95-4CE8-81C5-1168EA5D88B9",
       "category": {
         "ageCategoryCode": "U16",
@@ -13393,7 +13393,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U16"
             },
-            "gender": "BOYS",
+            "gender": "MALE",
             "eventType": "SINGLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -15197,7 +15197,7 @@
           "participantId": "9BB90808-5B2C-497E-B015-DAB1990F4942"
         }
       ],
-      "eventName": "Boys' 18 & under singles",
+      "eventName": "Male' 18 & under singles",
       "eventId": "53AD3EA1-4EF1-4582-9DD3-1A2C327F7D81",
       "category": {
         "ageCategoryCode": "U18",
@@ -15215,7 +15215,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U18"
             },
-            "gender": "BOYS",
+            "gender": "MALE",
             "eventType": "SINGLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -16859,7 +16859,7 @@
           "participantId": "CBB7AA14-1CCA-448A-909F-1FBD1E818DFC"
         }
       ],
-      "eventName": "Girls' 12 & under doubles",
+      "eventName": "Female' 12 & under doubles",
       "eventId": "1A62CC41-4308-46AE-BAAD-BC9D2AEE3903",
       "category": {
         "ageCategoryCode": "U12",
@@ -16877,7 +16877,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U12"
             },
-            "gender": "GIRLS",
+            "gender": "FEMALE",
             "eventType": "DOUBLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -17123,7 +17123,7 @@
           "participantId": "B80F77A3-8E89-4837-8C05-AE2B77D5AA49"
         }
       ],
-      "eventName": "Girls' 14 & under doubles",
+      "eventName": "Female' 14 & under doubles",
       "eventId": "FE47A086-510A-4968-AC22-7FB9ACD02A53",
       "category": {
         "ageCategoryCode": "U14",
@@ -17141,7 +17141,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U14"
             },
-            "gender": "GIRLS",
+            "gender": "FEMALE",
             "eventType": "DOUBLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -17357,7 +17357,7 @@
           "participantId": "C33E69F4-4B6C-4C9F-B9D2-847F0CC9F5B3"
         }
       ],
-      "eventName": "Girls' 16 & under doubles",
+      "eventName": "Female' 16 & under doubles",
       "eventId": "A34AA05E-CFCD-4A7E-9490-93F65DF8C861",
       "category": {
         "ageCategoryCode": "U16",
@@ -17375,7 +17375,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U16"
             },
-            "gender": "GIRLS",
+            "gender": "FEMALE",
             "eventType": "DOUBLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -17603,7 +17603,7 @@
           "participantId": "8D175D2C-5601-48F7-8786-38C0F2104B94"
         }
       ],
-      "eventName": "Girls' 18 & under doubles",
+      "eventName": "Female' 18 & under doubles",
       "eventId": "E3CD77E0-D485-404C-8563-618A578FE349",
       "category": {
         "ageCategoryCode": "U18",
@@ -17621,7 +17621,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U18"
             },
-            "gender": "GIRLS",
+            "gender": "FEMALE",
             "eventType": "DOUBLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -17903,7 +17903,7 @@
           "participantId": "F21C52B2-F4C9-443C-8599-C07F2295359F"
         }
       ],
-      "eventName": "Girls' 12 & under singles",
+      "eventName": "Female' 12 & under singles",
       "eventId": "6DF62A95-660E-4EB9-BA8B-9B6FDCD5A735",
       "category": {
         "ageCategoryCode": "U12",
@@ -17921,7 +17921,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U12"
             },
-            "gender": "GIRLS",
+            "gender": "FEMALE",
             "eventType": "SINGLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -18279,7 +18279,7 @@
           "participantId": "B80F77A3-8E89-4837-8C05-AE2B77D5AA49"
         }
       ],
-      "eventName": "Girls' 14 & under singles",
+      "eventName": "Female' 14 & under singles",
       "eventId": "9EE29E90-C432-496B-8D2B-4AFA8F74F55B",
       "category": {
         "ageCategoryCode": "U14",
@@ -18297,7 +18297,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U14"
             },
-            "gender": "GIRLS",
+            "gender": "FEMALE",
             "eventType": "SINGLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -18651,7 +18651,7 @@
           "participantId": "BF3AD5EC-F05F-436A-BA7F-43C2F10AE33D"
         }
       ],
-      "eventName": "Girls' 16 & under singles",
+      "eventName": "Female' 16 & under singles",
       "eventId": "7B8F4B43-7CBC-4895-A228-1EF9C7A27786",
       "category": {
         "ageCategoryCode": "U16",
@@ -18669,7 +18669,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U16"
             },
-            "gender": "GIRLS",
+            "gender": "FEMALE",
             "eventType": "SINGLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -18993,7 +18993,7 @@
           "participantId": "394DBF1C-3712-4BAE-A302-9FDA667C2DE3"
         }
       ],
-      "eventName": "Girls' 18 & under singles",
+      "eventName": "Female' 18 & under singles",
       "eventId": "1C688735-ED98-4392-BACD-7E936E0DDDEE",
       "category": {
         "ageCategoryCode": "U18",
@@ -19011,7 +19011,7 @@
               "__typename": "AgeCategory",
               "todsCode": "U18"
             },
-            "gender": "GIRLS",
+            "gender": "FEMALE",
             "eventType": "SINGLES",
             "ballColour": "YELLOW",
             "__typename": "Division"
@@ -26349,7 +26349,7 @@
               "__typename": "EventLengthRange"
             },
             "eventTypes": ["TEAM", "SINGLES", "DOUBLES"],
-            "genders": ["COED", "BOYS", "GIRLS", "MIXED"],
+            "genders": ["COED", "MALE", "FEMALE", "MIXED"],
             "goldSilverBronzeDrawsEnabled": false,
             "allowSplitDraws": false,
             "headTax": {
@@ -26730,7 +26730,7 @@
                   "id": "a4c3e4f2-1b1e-487a-a696-3cfbca76e8e4-951878c9-739b-48bf-8c10-b23037610414",
                   "drawId": "8600a799-c0b8-438b-ba94-ac4f108629cc",
                   "eventId": "179B23F7-F889-4D31-964E-FA8996BF2365",
-                  "eventName": "Boys' 12 & under singles",
+                  "eventName": "Male' 12 & under singles",
                   "roundName": "R32",
                   "roundNumber": 1,
                   "structureId": "a4c3e4f2-1b1e-487a-a696-3cfbca76e8e4",
@@ -26741,7 +26741,7 @@
                   "id": "93985214-675a-4d7e-b2e7-50930515e06e-eaf1ebbe-a904-4bd7-b837-14b541fc9d42",
                   "drawId": "ec371fad-ce03-4706-b993-6a779932eb3c",
                   "eventId": "5DBDD45A-1634-4AF2-B05A-F7C124A7A3BE",
-                  "eventName": "Boys' 12 & under doubles",
+                  "eventName": "Male' 12 & under doubles",
                   "roundName": "R32",
                   "roundNumber": 1,
                   "structureId": "93985214-675a-4d7e-b2e7-50930515e06e",
@@ -26752,7 +26752,7 @@
                   "id": "93985214-675a-4d7e-b2e7-50930515e06e-f31f5259-da62-4cc3-af97-cc6da645e97d",
                   "drawId": "ec371fad-ce03-4706-b993-6a779932eb3c",
                   "eventId": "5DBDD45A-1634-4AF2-B05A-F7C124A7A3BE",
-                  "eventName": "Boys' 12 & under doubles",
+                  "eventName": "Male' 12 & under doubles",
                   "roundName": "R16",
                   "roundNumber": 2,
                   "structureId": "93985214-675a-4d7e-b2e7-50930515e06e",
@@ -26773,7 +26773,7 @@
                   "id": "a4c3e4f2-1b1e-487a-a696-3cfbca76e8e4-5dad5d0f-03f0-4652-ae80-8a4a0e986d1f",
                   "drawId": "8600a799-c0b8-438b-ba94-ac4f108629cc",
                   "eventId": "179B23F7-F889-4D31-964E-FA8996BF2365",
-                  "eventName": "Boys' 12 & under singles",
+                  "eventName": "Male' 12 & under singles",
                   "roundName": "R16",
                   "roundNumber": 2,
                   "structureId": "a4c3e4f2-1b1e-487a-a696-3cfbca76e8e4",
