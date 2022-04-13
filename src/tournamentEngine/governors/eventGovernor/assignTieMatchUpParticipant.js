@@ -6,6 +6,7 @@ import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
+import { findExtension } from '../queryGovernor/extensionQueries';
 import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 import { overlap } from '../../../utilities';
@@ -13,6 +14,7 @@ import { overlap } from '../../../utilities';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
+import { LINEUPS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_PARTICIPANT_TYPE,
@@ -32,6 +34,7 @@ export function assignTieMatchUpParticipantId(params) {
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
   const {
+    inContextDualMatchUp,
     relevantAssignments,
     collectionPosition,
     teamParticipants,
@@ -100,16 +103,26 @@ export function assignTieMatchUpParticipantId(params) {
   if (!collectionDefinition) return { error: MISSING_COLLECTION_DEFINITION };
 
   if (!dualMatchUp.sides?.length) {
+    const { extension } = findExtension({
+      element: drawDefinition,
+      name: LINEUPS,
+    });
+
+    const lineUps = extension?.value || {};
+
     const extractSideDetail = ({
       displaySideNumber,
       drawPosition,
       sideNumber,
     }) => ({ drawPosition, sideNumber, displaySideNumber });
 
-    dualMatchUp.sides = [
-      { ...extractSideDetail(tieMatchUp.sides[0]), lineUp: [] },
-      { ...extractSideDetail(tieMatchUp.sides[1]), lineUp: [] },
-    ];
+    dualMatchUp.sides = inContextDualMatchUp.sides.map((side) => {
+      const participantId = side.participantId;
+      return {
+        ...extractSideDetail(side),
+        lineUp: (participantId && lineUps[participantId]) || [],
+      };
+    });
   }
 
   const dualMatchUpSide = dualMatchUp.sides.find(

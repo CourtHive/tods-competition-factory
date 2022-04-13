@@ -10,6 +10,7 @@ import { analyzeMatchUp } from './analyzeMatchUp';
 import { parse } from './matchUpFormatCode/parse';
 import { analyzeSet } from './analyzeSet';
 
+import { orderCollectionDefinitions } from './tieFormats/orderCollectionDefinitions';
 import { removeCollectionDefinition } from './tieFormats/removeCollectionDefinition';
 import { modifyCollectionDefinition } from './tieFormats/modifyCollectionDefinition';
 import { addCollectionDefinition } from './tieFormats/addCollectionDefinition';
@@ -18,8 +19,9 @@ import { scoreHasValue } from './scoreHasValue';
 export const scoreGovernor = {
   stringifyMatchUpFormat: stringify,
   isValidMatchUpFormat: isValid,
-  removeCollectionDefinition,
   modifyCollectionDefinition,
+  orderCollectionDefinitions,
+  removeCollectionDefinition,
   parseMatchUpFormat: parse,
   generateTieMatchUpScore,
   tallyParticipantResults,

@@ -5,6 +5,7 @@ import { buildRound } from './buildRound';
 export function treeMatchUps({
   qualifyingRoundNumber, // round at which participants qualify
   finishingPositionOffset,
+  finishingPositionLimit, // optional - limit finishingPositionRanges
   qualifyingPositions, // number of positions which qualify
   matchUpType,
   roundLimit,
@@ -60,6 +61,7 @@ export function treeMatchUps({
 
   matchUps = addFinishingRounds({
     finishingPositionOffset,
+    finishingPositionLimit,
     roundsCount,
     roundLimit,
     matchUps,

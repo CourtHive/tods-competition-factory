@@ -615,35 +615,33 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   });
   expect(allPositionsFilled).toEqual(true);
 
-  // These finishing positions may not seem intuitive because there is overlap from one sructure to the next
-  // HOWEVER, since there are playoff structures which in this instance are only receiving 5 participants,
-  // there are 3 finishing positions which will not be claimed in each playoff structure...
-  // so these values are CORRECT!
+  // these loser finishingPositions are the result of finishingPositionLimit
+  // there can be playoff structures with BYEs which means there are more drawPositions than there are finishingPositions
   expect(
     playoffStructures[0].matchUps[0].finishingPositionRange.winner
   ).toEqual([1, 4]);
   expect(playoffStructures[0].matchUps[0].finishingPositionRange.loser).toEqual(
-    [5, 8]
+    [5, 5]
   );
 
   expect(
     playoffStructures[1].matchUps[0].finishingPositionRange.winner
   ).toEqual([6, 9]);
   expect(playoffStructures[1].matchUps[0].finishingPositionRange.loser).toEqual(
-    [10, 13]
+    [10, 10]
   );
 
   expect(
     playoffStructures[2].matchUps[0].finishingPositionRange.winner
   ).toEqual([11, 14]);
   expect(playoffStructures[2].matchUps[0].finishingPositionRange.loser).toEqual(
-    [15, 18]
+    [15, 15]
   );
 
   expect(
     playoffStructures[3].matchUps[0].finishingPositionRange.winner
   ).toEqual([16, 19]);
   expect(playoffStructures[3].matchUps[0].finishingPositionRange.loser).toEqual(
-    [20, 23]
+    [20, 20]
   );
 });

@@ -3,6 +3,7 @@ import { generateRange } from '../../utilities';
 
 export function addFinishingRounds({
   finishingPositionOffset = 0,
+  finishingPositionLimit,
   positionsFed,
   roundsCount,
   roundLimit,
@@ -18,10 +19,12 @@ export function addFinishingRounds({
   );
 
   // returns a range for array of possible finishing drawPositions
-  const finishingRange = (drawPositions) => [
-    Math.min(...drawPositions),
-    Math.max(...drawPositions),
-  ];
+  const finishingRange = (positionRange) => {
+    let maxFinishingPosition = Math.max(...positionRange);
+    if (maxFinishingPosition > finishingPositionLimit)
+      maxFinishingPosition = finishingPositionLimit;
+    return [Math.min(...positionRange), maxFinishingPosition];
+  };
 
   // for qualifying, offset the final round so that qualifyinground is finishingRound
   const finishingRoundOffset = roundLimit ? roundsCount - roundLimit : 0;
@@ -48,7 +51,6 @@ export function addFinishingRounds({
           ? rangeOffset + matchUpsCount * 2
           : upcomingMatchUps + rangeOffset + finalPosition
       );
-
       const slicer = upcomingMatchUps + finalPosition - matchUpsCount;
       const loser = finishingRange(positionRange.slice(slicer));
       const winner = finishingRange(positionRange.slice(0, slicer));

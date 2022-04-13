@@ -12,6 +12,8 @@ import {
   FEED_IN_CHAMPIONSHIP_TO_R16,
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
+  PLAY_OFF,
+  ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../../constants/drawDefinitionConstants';
 
 tournamentEngine.devContext(true);
@@ -394,4 +396,53 @@ it('can determine playoff structures available from playoff structures', () => {
   expect(availablePlayoffRounds.length).toEqual(2);
   expect(availablePlayoffRounds[0].playoffRounds).toEqual([4, 5]);
   expect(availablePlayoffRounds[1].playoffRounds).toEqual([1, 2, 3, 4, 5, 6]);
+});
+
+it('can determine playoff structures available from Round Robin playoff structures', () => {
+  const structureOptions = {
+    playoffGroups: [
+      { finishingPositions: [1], structureName: 'Gold Flight' },
+      { finishingPositions: [2], structureName: 'Silver Flight' },
+      { finishingPositions: [3], structureName: 'Bronze Flight' },
+      { finishingPositions: [4], structureName: 'Green Flight' },
+      { finishingPositions: [5], structureName: 'Red Flight' },
+    ],
+    groupSize: 5,
+  };
+  const drawProfiles = [
+    {
+      drawType: ROUND_ROBIN_WITH_PLAYOFF,
+      structureOptions,
+      drawSize: 15,
+    },
+  ];
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let { positionsPlayedOff, availablePlayoffRounds } =
+    tournamentEngine.getAvailablePlayoffRounds({
+      drawId,
+    });
+
+  expect(positionsPlayedOff).toEqual([
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+  ]);
+  availablePlayoffRounds.forEach((round) =>
+    expect(round.playoffRoundsRanges).toEqual([])
+  );
+  const finishingPositionRanges = tournamentEngine
+    .allTournamentMatchUps({
+      contextFilters: { stages: [PLAY_OFF], roundNumber: 1 },
+    })
+    .matchUps.map(({ finishingPositionRange }) => finishingPositionRange);
+
+  // expect that the loser range is an equivalent number for both loser[0] and loser[1]
+  // this is testing the condition where there are only 3 positions to be played off for each playoff structure
+  finishingPositionRanges.forEach(({ loser }) =>
+    expect(loser[0]).toEqual(loser[1])
+  );
 });
