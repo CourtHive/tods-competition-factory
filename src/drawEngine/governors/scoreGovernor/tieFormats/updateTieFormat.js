@@ -6,6 +6,7 @@ import {
 
 import { MISSING_DRAW_DEFINITION } from '../../../../constants/errorConditionConstants';
 import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 
 export function updateTieFormat({
@@ -51,6 +52,8 @@ export function updateTieFormat({
   } else {
     return { error: MISSING_DRAW_DEFINITION };
   }
+
+  return { ...SUCCESS };
 }
 
 function updateStructureMatchUps({
