@@ -1,7 +1,7 @@
-import { generateVoluntaryConsolationStructure as generateVoluntary } from '../../../drawEngine/generators/voluntaryConsolation';
+import { addVoluntaryConsolationStructure as generateVoluntary } from '../../../drawEngine/generators/voluntaryConsolation';
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
-export function generateVoluntaryConsolationStructure(params) {
+export function addVoluntaryConsolationStructure(params) {
   const { tournamentRecord } = params;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 

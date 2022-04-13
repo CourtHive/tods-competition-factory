@@ -107,7 +107,7 @@ it.each([asyncDrawEngine, drawEngineSync])(
       } else if (result.success) {
         expect(
           [
-            'generateVoluntaryConsolationStructure',
+            'addVoluntaryConsolationStructure',
             'addVoluntaryConsolationStage',
             'newDrawDefinition',
             'reset',

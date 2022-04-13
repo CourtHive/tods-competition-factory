@@ -194,6 +194,16 @@ drawEngine.addVoluntaryConsolationStage({
 
 ---
 
+### addVoluntaryConsolationStructure
+
+Generates a new structure within a `drawDefinition` if any draw entries are present for `{ entryStage: VOLUNTARY_CONSOLATION }`.
+
+````js
+drawEngine.addVoluntaryConsolationStructure();
+```
+
+---
+
 ## allDrawMatchUps
 
 Returns all matchUps from all structures within a draw.
@@ -507,18 +517,6 @@ drawEngine.generateQualifyingLink({
 
 ---
 
-### generateVoluntaryConsolationStructure
-
-Generates a new structure within a `drawDefinition` if any draw entries are present for `{ entryStage: VOLUNTARY_CONSOLATION }`.
-
-```js
-drawEngine.generateVoluntaryConsolationStructure({
-  automated: true, // optional
-});
-```
-
----
-
 ## getAvailablePlayoffRounds
 
 If provided a `structureId`, returns rounds of the selected structure which are available for adding playoff structures.
@@ -528,7 +526,7 @@ const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } =
   drawEngine.getAvailablePlayoffRounds({
     structureId,
   });
-```
+````
 
 ...For a SINGLE_ELIMINATION struture with drawSize: 16 this would return:
 

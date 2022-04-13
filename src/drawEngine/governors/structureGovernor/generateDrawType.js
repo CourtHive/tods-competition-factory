@@ -40,7 +40,6 @@ import {
   WIN_RATIO,
   QUALIFYING,
   LUCKY_DRAW,
-  VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
@@ -83,22 +82,13 @@ export function generateDrawType(params = {}) {
     stage: MAIN,
   });
 
-  if (stage === VOLUNTARY_CONSOLATION) {
+  if (!mainStageDrawPositionsCount) {
     setStageDrawSize({
       drawSize: params.drawSize,
       drawDefinition,
       stageSequence,
-      stage,
+      stage: MAIN,
     });
-  } else {
-    if (!mainStageDrawPositionsCount) {
-      setStageDrawSize({
-        drawSize: params.drawSize,
-        drawDefinition,
-        stageSequence,
-        stage: MAIN,
-      });
-    }
   }
 
   // first generate any qualifying structures
