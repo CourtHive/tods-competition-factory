@@ -1,13 +1,13 @@
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
-
-import { drawEngine } from '../../sync';
 import { generateRange } from '../../../utilities';
+import { drawEngine } from '../../sync';
+
+import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import {
   MAIN,
   CONSOLATION,
   CURTIS,
 } from '../../../constants/drawDefinitionConstants';
-import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 it('can generate and verify curtis structures', () => {
   let mainStructureId,

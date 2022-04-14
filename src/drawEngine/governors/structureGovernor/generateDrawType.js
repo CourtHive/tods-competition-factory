@@ -324,13 +324,10 @@ export function generateDrawType(params = {}) {
     },
 
     [CURTIS]: () => {
-      return generateCurtisConsolation(params);
-      /*
       const { structures, links } = generateCurtisConsolation(params);
       if (links?.length) drawDefinition.links.push(...links);
       if (structures?.length) drawDefinition.structures.push(...structures);
       return Object.assign({ structures, links }, SUCCESS);
-      */
     },
 
     [ROUND_ROBIN]: () => {
