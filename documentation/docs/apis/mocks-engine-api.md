@@ -168,7 +168,7 @@ const drawProfiles = [
 // drawProfiles are optional in eventProfiles; if present they can contain all attributes noted above
 const eventProfiles = [
   {
-    eventName: 'U18 Boys Doubles',
+    eventName: 'U18 Male Doubles',
     policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
     eventType: TEAM, // optional - defaults to SINGLES
     gender: MALE,
