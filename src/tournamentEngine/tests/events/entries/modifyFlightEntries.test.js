@@ -102,7 +102,7 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
   const maxEntryPosition = tournamentEngine.getMaxEntryPosition({
     entries: firstFlightEntries,
   });
-  expect(maxEntryPosition).toEqual(11);
+  expect(maxEntryPosition).toEqual(12);
 
   flightProfile.flights?.forEach((flight) => {
     const { drawDefinition } = tournamentEngine.generateDrawDefinition({
