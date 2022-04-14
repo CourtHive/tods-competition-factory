@@ -25,7 +25,7 @@ export function refreshEntryPositions({ entries = [] } = {}) {
             validEntryPosition(b.entryPosition)
         )
         .map((entry, index) => {
-          const entryPosition = index;
+          const entryPosition = index + 1;
           return Object.assign(entry, { entryPosition });
         });
     })

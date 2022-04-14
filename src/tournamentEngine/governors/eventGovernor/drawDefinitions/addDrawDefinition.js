@@ -8,7 +8,6 @@ import {
 } from '../../../../drawEngine/notifications/drawNotifications';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
-import { VOLUNTARY_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
 import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -92,14 +91,11 @@ export function addDrawDefinition({
     (eventEntries &&
       drawEntries?.every(({ participantId, entryStatus, entryStage }) => {
         const eventEntry = eventEntries.find(
-          (eventEntry) => eventEntry.participantId === participantId
+          (eventEntry) =>
+            eventEntry.participantId === participantId &&
+            (!eventEntry.entryStage || eventEntry.entryStage === entryStage)
         );
-        const isVoluntaryConsolation =
-          relevantFlight?.stage === VOLUNTARY_CONSOLATION &&
-          entryStage === VOLUNTARY_CONSOLATION;
-        return (
-          isVoluntaryConsolation || eventEntry?.entryStatus === entryStatus
-        );
+        return eventEntry?.entryStatus === entryStatus;
       }));
 
   if (relevantFlight && !matchingFlighEntries) {

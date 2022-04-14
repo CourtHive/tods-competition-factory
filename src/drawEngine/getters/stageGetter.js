@@ -54,7 +54,7 @@ export function stageAlternatesCount({ stage, drawDefinition }) {
 }
 export function getStageWildcardsCount({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
-  return entryProfile[stage].wildcardsCount || 0;
+  return entryProfile[stage]?.wildcardsCount || 0;
 }
 export function getStageEntryTypeCount({ stage, drawDefinition, entryStatus }) {
   return drawDefinition.entries.reduce(

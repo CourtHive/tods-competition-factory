@@ -711,6 +711,7 @@ export function addParticipantContext(params) {
 
 function annotateParticipant({
   eventsPublishStatuses,
+  withScaleItems = true,
   withEvents = true,
   withDraws = true,
   participantIdMap,
@@ -727,38 +728,40 @@ function annotateParticipant({
 
   if (withISO) addNationalityCodeISO({ participant });
 
-  const scaleItems = participant.timeItems?.filter(
-    ({ itemType }) =>
-      itemType.startsWith(SCALE) &&
-      [RANKING, RATING].includes(itemType.split('.')[1])
-  );
-  if (scaleItems?.length) {
-    const latestScaleItem = (scaleType) =>
-      scaleItems
-        .filter((timeItem) => timeItem?.itemType === scaleType)
-        .sort(
-          (a, b) =>
-            new Date(a.createdAt || undefined) -
-            new Date(b.createdAt || undefined)
-        )
-        .pop();
+  if (withScaleItems) {
+    const scaleItems = participant.timeItems?.filter(
+      ({ itemType }) =>
+        itemType.startsWith(SCALE) &&
+        [RANKING, RATING].includes(itemType.split('.')[1])
+    );
+    if (scaleItems?.length) {
+      const latestScaleItem = (scaleType) =>
+        scaleItems
+          .filter((timeItem) => timeItem?.itemType === scaleType)
+          .sort(
+            (a, b) =>
+              new Date(a.createdAt || undefined) -
+              new Date(b.createdAt || undefined)
+          )
+          .pop();
 
-    const itemTypes = unique(scaleItems.map(({ itemType }) => itemType));
-    participant.rankings = undefined; // ensure no server-side persisted context
-    participant.ratings = undefined; // ensure no server-side persisted context
+      const itemTypes = unique(scaleItems.map(({ itemType }) => itemType));
+      participant.rankings = undefined; // ensure no server-side persisted context
+      participant.ratings = undefined; // ensure no server-side persisted context
 
-    for (const itemType of itemTypes) {
-      const scaleItem = latestScaleItem(itemType);
-      if (scaleItem) {
-        const [, type, format, scaleName] = scaleItem.itemType.split('.');
-        const scaleType = type === RANKING ? 'rankings' : 'ratings';
-        if (!participant[scaleType]) participant[scaleType] = {};
-        if (!participant[scaleType][format])
-          participant[scaleType][format] = [];
-        participant[scaleType][format].push({
-          scaleValue: scaleItem.itemValue,
-          scaleName,
-        });
+      for (const itemType of itemTypes) {
+        const scaleItem = latestScaleItem(itemType);
+        if (scaleItem) {
+          const [, type, format, scaleName] = scaleItem.itemType.split('.');
+          const scaleType = type === RANKING ? 'rankings' : 'ratings';
+          if (!participant[scaleType]) participant[scaleType] = {};
+          if (!participant[scaleType][format])
+            participant[scaleType][format] = [];
+          participant[scaleType][format].push({
+            scaleValue: scaleItem.itemValue,
+            scaleName,
+          });
+        }
       }
     }
   }
