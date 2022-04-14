@@ -64,7 +64,7 @@ import { removeSeeding } from './entries/removeSeeding';
 import { autoSeeding } from './entries/autoSeeding';
 
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
-import { addVoluntaryConsolationStructure } from '../../../drawEngine/generators/voluntaryConsolation';
+import { addVoluntaryConsolationStructure } from '../../../drawEngine/generators/addVoluntaryConsolationStructure';
 import { removeStructure } from '../../../drawEngine/governors/structureGovernor/removeStructure';
 import { toggleParticipantCheckInState } from './drawDefinitions/toggleParticipantCheckInState';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';

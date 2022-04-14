@@ -1,4 +1,4 @@
-import { addMatchUpsNotice } from '../../../../drawEngine/notifications/drawNotifications';
+import { modifyMatchUpNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findMatchUp';
 
 import {
@@ -17,6 +17,7 @@ import {
   MISSING_SIDE_NUMBER,
 } from '../../../../constants/errorConditionConstants';
 
+// method only currently used for AD_HOC matchUps where there are no drawPositions
 export function assignMatchUpSideParticipant({
   tournamentRecord,
   drawDefinition,
@@ -69,10 +70,10 @@ export function assignMatchUpSideParticipant({
       : existingSide;
   });
 
-  addMatchUpsNotice({
+  modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
     drawDefinition,
-    matchUps: [matchUp],
+    matchUp,
   });
 
   return { ...SUCCESS };

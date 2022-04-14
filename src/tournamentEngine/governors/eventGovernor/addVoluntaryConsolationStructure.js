@@ -1,4 +1,4 @@
-import { addVoluntaryConsolationStructure as generateVoluntary } from '../../../drawEngine/generators/voluntaryConsolation';
+import { addVoluntaryConsolationStructure as generateVoluntary } from '../../../drawEngine/generators/addVoluntaryConsolationStructure';
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
 export function addVoluntaryConsolationStructure(params) {

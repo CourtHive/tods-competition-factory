@@ -22,14 +22,13 @@ export function addVoluntaryConsolationStructure({
   });
   */
 
-  const stage = VOLUNTARY_CONSOLATION;
   const structure = structureTemplate({
+    stage: VOLUNTARY_CONSOLATION,
     structureAbbreviation,
     structureName,
     matchUps: [],
     structureId,
     matchUpType,
-    stage,
   });
 
   drawDefinition.structures.push(structure);

@@ -3,7 +3,7 @@ import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 import { generateRange, nextPowerOf2, UUID } from '../../utilities';
 import { generatePlayoffStructures } from './playoffStructures';
 import { getRoundRobinGroupMatchUps } from './roundRobinGroups';
-import { feedInChampionship } from './feedInChampionShip';
+import { feedInChampionship } from './feedInChampionship';
 import { structureSort } from '../getters/structureSort';
 import { drawPositionsHash } from './roundRobinGroups';
 
@@ -230,11 +230,7 @@ export function generateRoundRobinWithPlayOff(params) {
         // TODO: test this
         console.log('RRw/PO FIRST_MATCH_LOSER_CONSOLATION');
         const uuidsFMLC = [uuids?.pop(), uuids?.pop()];
-        const {
-          mainStructure: playoffStructure,
-          consolationStructure,
-          link: consolationLink,
-        } = feedInChampionship({
+        const { structures, links } = feedInChampionship({
           structureName: playoffGroup.structureName,
           idPrefix: idPrefix && `${idPrefix}-po`,
           finishingPositionOffset,
@@ -245,15 +241,15 @@ export function generateRoundRobinWithPlayOff(params) {
           fmlc: true,
           drawSize,
         });
+        const [playoffStructure, consolationStructure] = structures;
         const playoffLink = generatePlayoffLink({
           playoffStructureId: playoffStructure.structureId,
           mainStructureId: mainStructure.structureId,
           finishingPositions,
         });
         drawDefinition.links.push(playoffLink);
-        drawDefinition.structures.push(playoffStructure);
-        drawDefinition.structures.push(consolationStructure);
-        drawDefinition.links.push(consolationLink);
+        drawDefinition.structures.push(...structures);
+        drawDefinition.links.push(...links);
         // update *after* value has been passed into current playoff structure generator
         finishingPositionOffset += participantsInDraw;
 

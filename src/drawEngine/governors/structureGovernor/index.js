@@ -1,5 +1,5 @@
 import { generateAndPopulatePlayoffStructures } from './generateAndPopulatePlayoffStructures';
-import { addVoluntaryConsolationStructure } from '../../generators/voluntaryConsolation';
+import { addVoluntaryConsolationStructure } from '../../generators/addVoluntaryConsolationStructure';
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { generateAdHocMatchUps } from '../../generators/generateAdHocMatchUps';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';

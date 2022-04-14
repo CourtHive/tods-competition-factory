@@ -4,7 +4,6 @@ import { treeMatchUps } from './eliminationTree';
 import { feedInLinks } from './feedInLinks';
 
 import { MAIN, CONSOLATION } from '../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
 
 export function feedInChampionship(params = {}) {
   const {
@@ -12,7 +11,6 @@ export function feedInChampionship(params = {}) {
     stageSequence = 1,
     feedsFromFinal,
     staggeredEntry,
-    drawDefinition,
     structureName,
     matchUpType,
     feedPolicy,
@@ -45,8 +43,6 @@ export function feedInChampionship(params = {}) {
     matchUps,
   });
 
-  drawDefinition.structures.push(mainStructure);
-
   const baseDrawSize = drawSize / 2;
   const { matchUps: consolationMatchUps, roundsCount } = feedInMatchUps({
     finishingPositionOffset: baseDrawSize,
@@ -70,8 +66,6 @@ export function feedInChampionship(params = {}) {
     matchUpType,
   });
 
-  drawDefinition.structures.push(consolationStructure);
-
   const links = feedInLinks({
     consolationStructure,
     mainStructure,
@@ -80,13 +74,8 @@ export function feedInChampionship(params = {}) {
     fmlc,
   });
 
-  drawDefinition.links = drawDefinition.links.concat(...links);
-
-  return Object.assign(
-    {
-      structures: [mainStructure, consolationStructure],
-      links: drawDefinition.links,
-    },
-    { ...SUCCESS }
-  );
+  return {
+    structures: [mainStructure, consolationStructure],
+    links,
+  };
 }

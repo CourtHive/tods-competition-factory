@@ -3,9 +3,10 @@ import { getStageDrawPositionsCount } from '../../getters/getStageDrawPositions'
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
+import { generatePlayoffStructures } from '../../generators/playoffStructures';
 import { generateQualifyingStructures } from './generateQualifyingStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { feedInChampionship } from '../../generators/feedInChampionShip';
+import { feedInChampionship } from '../../generators/feedInChampionship';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import structureTemplate from '../../generators/structureTemplate';
@@ -13,7 +14,6 @@ import { feedInMatchUps } from '../../generators/feedInMatchUps';
 import { treeMatchUps } from '../../generators/eliminationTree';
 import { getDrawStructures } from '../../getters/findStructure';
 import { definedAttributes } from '../../../utilities/objects';
-import { playoff } from '../../generators/playoffStructures';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 import { luckyDraw } from '../../generators/luckyDraw';
 import { isPowerOf2 } from '../../../utilities';
@@ -50,6 +50,7 @@ import {
   STAGE_SEQUENCE_LIMIT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
+import { structureSort } from '../../getters/structureSort';
 
 /**
  *
@@ -214,21 +215,44 @@ export function generateDrawType(params = {}) {
       return Object.assign({ structures: [structure] }, SUCCESS);
     },
     [DOUBLE_ELIMINATION]: () => generateDoubleElimination(params),
-    [COMPASS]: () =>
-      playoff(
-        Object.assign(params, {
-          roundOffsetLimit: 3,
-          playoffAttributes: COMPASS_ATTRIBUTES,
-        })
-      ),
-    [OLYMPIC]: () =>
-      playoff(
-        Object.assign(params, {
-          roundOffsetLimit: 2,
-          playoffAttributes: OLYMPIC_ATTRIBUTES,
-        })
-      ),
-    [PLAY_OFF]: () => playoff(params),
+    [COMPASS]: () => {
+      Object.assign(params, {
+        roundOffsetLimit: 3,
+        playoffAttributes: COMPASS_ATTRIBUTES,
+      });
+      const { structures, structureId, links } =
+        generatePlayoffStructures(params);
+
+      if (links?.length) drawDefinition.links.push(...links);
+      if (structures?.length) drawDefinition.structures.push(...structures);
+      drawDefinition.structures.sort(structureSort);
+
+      return Object.assign({ structureId }, SUCCESS);
+    },
+    [OLYMPIC]: () => {
+      Object.assign(params, {
+        roundOffsetLimit: 2,
+        playoffAttributes: OLYMPIC_ATTRIBUTES,
+      });
+      const { structures, structureId, links } =
+        generatePlayoffStructures(params);
+
+      if (links?.length) drawDefinition.links.push(...links);
+      if (structures?.length) drawDefinition.structures.push(...structures);
+      drawDefinition.structures.sort(structureSort);
+
+      return Object.assign({ structureId }, SUCCESS);
+    },
+    [PLAY_OFF]: () => {
+      const { structures, structureId, links } =
+        generatePlayoffStructures(params);
+
+      if (links?.length) drawDefinition.links.push(...links);
+      if (structures?.length) drawDefinition.structures.push(...structures);
+      drawDefinition.structures.sort(structureSort);
+
+      return Object.assign({ structureId }, SUCCESS);
+    },
 
     [FEED_IN]: () => {
       const { matchUps } = feedInMatchUps({ drawSize, uuids, matchUpType });
@@ -246,22 +270,75 @@ export function generateDrawType(params = {}) {
       return Object.assign({ structures: [structure] }, SUCCESS);
     },
 
-    [FIRST_ROUND_LOSER_CONSOLATION]: () => firstRoundLoserConsolation(params),
-    [FIRST_MATCH_LOSER_CONSOLATION]: () =>
-      feedInChampionship(Object.assign(params, { feedRounds: 1, fmlc: true })),
-    [MFIC]: () => feedInChampionship(Object.assign(params, { feedRounds: 1 })),
-    [FICQF]: () =>
-      feedInChampionship(Object.assign(params, { feedsFromFinal: 2 })),
-    [FICSF]: () =>
-      feedInChampionship(Object.assign(params, { feedsFromFinal: 1 })),
-    [FICR16]: () =>
-      feedInChampionship(Object.assign(params, { feedsFromFinal: 3 })),
-    [FEED_IN_CHAMPIONSHIP]: () => feedInChampionship(params),
+    [FIRST_ROUND_LOSER_CONSOLATION]: () => {
+      const { structures, links } = firstRoundLoserConsolation(params);
+      if (links?.length) drawDefinition.links.push(...links);
+      if (structures?.length) drawDefinition.structures.push(...structures);
+      return Object.assign({ structures, links }, SUCCESS);
+    },
+    [FIRST_MATCH_LOSER_CONSOLATION]: () => {
+      const { structures, links } = feedInChampionship(
+        Object.assign(params, { feedRounds: 1, fmlc: true })
+      );
+      if (links?.length) drawDefinition.links.push(...links);
+      if (structures?.length) drawDefinition.structures.push(...structures);
+      return Object.assign({ structures, links }, SUCCESS);
+    },
+    [MFIC]: () => {
+      const { structures, links } = feedInChampionship(
+        Object.assign(params, { feedRounds: 1 })
+      );
+      if (links?.length) drawDefinition.links.push(...links);
+      if (structures?.length) drawDefinition.structures.push(...structures);
+      return Object.assign({ structures, links }, SUCCESS);
+    },
+    [FICQF]: () => {
+      const { structures, links } = feedInChampionship(
+        Object.assign(params, { feedsFromFinal: 2 })
+      );
+      if (links?.length) drawDefinition.links.push(...links);
+      if (structures?.length) drawDefinition.structures.push(...structures);
+      return Object.assign({ structures, links }, SUCCESS);
+    },
+    [FICSF]: () => {
+      const { structures, links } = feedInChampionship(
+        Object.assign(params, { feedsFromFinal: 1 })
+      );
+      if (links?.length) drawDefinition.links.push(...links);
+      if (structures?.length) drawDefinition.structures.push(...structures);
+      return Object.assign({ structures, links }, SUCCESS);
+    },
+    [FICR16]: () => {
+      const { structures, links } = feedInChampionship(
+        Object.assign(params, { feedsFromFinal: 3 })
+      );
+      if (links?.length) drawDefinition.links.push(...links);
+      if (structures?.length) drawDefinition.structures.push(...structures);
+      return Object.assign({ structures, links }, SUCCESS);
+    },
+    [FEED_IN_CHAMPIONSHIP]: () => {
+      const { structures, links } = feedInChampionship(params);
+      if (links?.length) drawDefinition.links.push(...links);
+      if (structures?.length) drawDefinition.structures.push(...structures);
+      return Object.assign({ structures, links }, SUCCESS);
+    },
 
-    [CURTIS]: () => generateCurtisConsolation(params),
+    [CURTIS]: () => {
+      return generateCurtisConsolation(params);
+      /*
+      const { structures, links } = generateCurtisConsolation(params);
+      if (links?.length) drawDefinition.links.push(...links);
+      if (structures?.length) drawDefinition.structures.push(...structures);
+      return Object.assign({ structures, links }, SUCCESS);
+      */
+    },
 
-    [ROUND_ROBIN]: () => generateRoundRobin(params),
-    [ROUND_ROBIN_WITH_PLAYOFF]: () => generateRoundRobinWithPlayOff(params),
+    [ROUND_ROBIN]: () => {
+      return generateRoundRobin(params);
+    },
+    [ROUND_ROBIN_WITH_PLAYOFF]: () => {
+      return generateRoundRobinWithPlayOff(params);
+    },
   };
 
   const generator = generators[drawType];
