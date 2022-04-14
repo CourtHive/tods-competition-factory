@@ -9,7 +9,6 @@ import { drawPositionsHash } from './roundRobinGroups';
 
 import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
   DRAW,
@@ -31,7 +30,6 @@ export function generateRoundRobin({
   stageSequence = 1,
   structureOptions,
   seedingProfile,
-  drawDefinition,
   stage = MAIN,
   matchUpType,
   drawSize,
@@ -77,12 +75,7 @@ export function generateRoundRobin({
     stage,
   });
 
-  drawDefinition.structures.push(structure);
-
-  return Object.assign(
-    { structures: [structure], groupCount, groupSize },
-    { ...SUCCESS }
-  );
+  return { structures: [structure], groupCount, groupSize };
 }
 
 // first iteration only links to a single playoff structure
@@ -93,7 +86,6 @@ export function generateRoundRobinWithPlayOff(params) {
     playoffMatchUpFormat,
     stageSequence = 1,
     structureOptions,
-    drawDefinition,
     matchUpType,
     idPrefix,
     isMock,
@@ -105,11 +97,11 @@ export function generateRoundRobinWithPlayOff(params) {
     params,
     { stage: MAIN }
   );
-  const {
-    structures: [mainStructure],
-    groupCount,
-    groupSize,
-  } = generateRoundRobin(mainDrawProperties);
+  const { structures, groupCount, groupSize } =
+    generateRoundRobin(mainDrawProperties);
+
+  const [mainStructure] = structures;
+  const links = [];
 
   // TODO: test for and handle this situation
   if (groupCount < 1) {
@@ -125,148 +117,141 @@ export function generateRoundRobinWithPlayOff(params) {
   // keep track of how many playoff positions have been allocated to playoff structures
   let finishingPositionOffset = 0;
 
-  const playoffStructures = playoffGroups
-    .map((playoffGroup, order) => {
-      const stageOrder = order + 1;
-      const validFinishingPositions = generateRange(1, groupSize + 1);
-      const finishingPositions = playoffGroup.finishingPositions;
+  playoffGroups.forEach((playoffGroup, order) => {
+    const stageOrder = order + 1;
+    const validFinishingPositions = generateRange(1, groupSize + 1);
+    const finishingPositions = playoffGroup.finishingPositions;
 
-      const finishingPositionsAreValid = finishingPositions.reduce(
-        (p, finishingPosition) => {
-          return validFinishingPositions.includes(finishingPosition) && p;
-        },
-        true
-      );
+    const finishingPositionsAreValid = finishingPositions.reduce(
+      (p, finishingPosition) => {
+        return validFinishingPositions.includes(finishingPosition) && p;
+      },
+      true
+    );
 
-      // playoffGroup finishingPositions are not valid if not present in GroupSize
-      if (!finishingPositionsAreValid) {
-        return undefined;
-      }
-
-      const playoffDrawType = playoffGroup.drawType || SINGLE_ELIMINATION;
-      const participantsInDraw = groupCount * finishingPositions.length;
-      const drawSize = nextPowerOf2(participantsInDraw);
-
-      if (playoffDrawType === SINGLE_ELIMINATION) {
-        const { matchUps } = treeMatchUps({
-          idPrefix: idPrefix && `${idPrefix}-po`,
-          finishingPositionLimit: finishingPositionOffset + participantsInDraw,
-          finishingPositionOffset,
-          matchUpType,
-          drawSize,
-        });
-
-        const playoffStructure = structureTemplate({
-          structureName: playoffGroup.structureName,
-          matchUpFormat: playoffMatchUpFormat,
-          structureId: uuids?.pop(),
-          stage: PLAY_OFF,
-          stageSequence,
-          matchUpType,
-          stageOrder,
-          matchUps,
-        });
-
-        drawDefinition.structures.push(playoffStructure);
-        const playoffLink = generatePlayoffLink({
-          playoffStructureId: playoffStructure.structureId,
-          mainStructureId: mainStructure.structureId,
-          finishingPositions,
-        });
-        drawDefinition.links.push(playoffLink);
-        // update *after* value has been passed into current playoff structure generator
-        finishingPositionOffset += participantsInDraw;
-
-        return [playoffStructure];
-      } else if ([COMPASS, OLYMPIC, PLAY_OFF].includes(playoffDrawType)) {
-        const { structureName } = playoffGroup;
-
-        const params = {
-          playoffStructureNameBase: structureName,
-          addNameBaseToAttributeName: true,
-          finishingPositionOffset,
-          stage: PLAY_OFF,
-          drawDefinition,
-          roundOffset: 0,
-          stageSequence,
-          drawSize,
-          idPrefix,
-          isMock,
-          uuids,
-        };
-        if (playoffDrawType === COMPASS) {
-          Object.assign(params, {
-            roundOffsetLimit: 3,
-            playoffAttributes: COMPASS_ATTRIBUTES,
-          });
-        } else if (playoffDrawType === OLYMPIC) {
-          Object.assign(params, {
-            roundOffsetLimit: 2,
-            playoffAttributes: OLYMPIC_ATTRIBUTES,
-          });
-        }
-
-        const result = generatePlayoffStructures(params);
-        if (result.error) return result;
-        const { structures, links } = result;
-
-        if (links?.length) drawDefinition.links.push(...links);
-        if (structures?.length) drawDefinition.structures.push(...structures);
-        drawDefinition.structures.sort(structureSort);
-
-        if (result.structure) {
-          const playoffLink = generatePlayoffLink({
-            mainStructureId: mainStructure.structureId,
-            playoffStructureId: result.structureId,
-            finishingPositions,
-          });
-          drawDefinition.links.push(playoffLink);
-        }
-        // update *after* value has been passed into current playoff structure generator
-        finishingPositionOffset += participantsInDraw;
-
-        return structures;
-      } else if (playoffDrawType === FIRST_MATCH_LOSER_CONSOLATION) {
-        // TODO: test this
-        console.log('RRw/PO FIRST_MATCH_LOSER_CONSOLATION');
-        const uuidsFMLC = [uuids?.pop(), uuids?.pop()];
-        const { structures, links } = feedInChampionship({
-          structureName: playoffGroup.structureName,
-          idPrefix: idPrefix && `${idPrefix}-po`,
-          finishingPositionOffset,
-          uuids: uuidsFMLC,
-          stage: PLAY_OFF,
-          feedRounds: 1,
-          matchUpType,
-          fmlc: true,
-          drawSize,
-        });
-        const [playoffStructure, consolationStructure] = structures;
-        const playoffLink = generatePlayoffLink({
-          playoffStructureId: playoffStructure.structureId,
-          mainStructureId: mainStructure.structureId,
-          finishingPositions,
-        });
-        drawDefinition.links.push(playoffLink);
-        drawDefinition.structures.push(...structures);
-        drawDefinition.links.push(...links);
-        // update *after* value has been passed into current playoff structure generator
-        finishingPositionOffset += participantsInDraw;
-
-        return [playoffStructure, consolationStructure];
-      }
-
+    // playoffGroup finishingPositions are not valid if not present in GroupSize
+    if (!finishingPositionsAreValid) {
       return undefined;
-    })
-    .filter(Boolean);
+    }
 
-  return Object.assign(
-    {
-      structures: [mainStructure, ...(playoffStructures || []).flat()],
-      links: drawDefinition.links,
-    },
-    { ...SUCCESS }
-  );
+    const playoffDrawType = playoffGroup.drawType || SINGLE_ELIMINATION;
+    const participantsInDraw = groupCount * finishingPositions.length;
+    const drawSize = nextPowerOf2(participantsInDraw);
+
+    if (playoffDrawType === SINGLE_ELIMINATION) {
+      const { matchUps } = treeMatchUps({
+        idPrefix: idPrefix && `${idPrefix}-po`,
+        finishingPositionLimit: finishingPositionOffset + participantsInDraw,
+        finishingPositionOffset,
+        matchUpType,
+        drawSize,
+      });
+
+      const playoffStructure = structureTemplate({
+        structureName: playoffGroup.structureName,
+        matchUpFormat: playoffMatchUpFormat,
+        structureId: uuids?.pop(),
+        stage: PLAY_OFF,
+        stageSequence,
+        matchUpType,
+        stageOrder,
+        matchUps,
+      });
+
+      structures.push(playoffStructure);
+      const playoffLink = generatePlayoffLink({
+        playoffStructureId: playoffStructure.structureId,
+        mainStructureId: mainStructure.structureId,
+        finishingPositions,
+      });
+      links.push(playoffLink);
+      // update *after* value has been passed into current playoff structure generator
+      finishingPositionOffset += participantsInDraw;
+
+      return [playoffStructure];
+    } else if ([COMPASS, OLYMPIC, PLAY_OFF].includes(playoffDrawType)) {
+      const { structureName } = playoffGroup;
+
+      const params = {
+        playoffStructureNameBase: structureName,
+        addNameBaseToAttributeName: true,
+        finishingPositionOffset,
+        stage: PLAY_OFF,
+        roundOffset: 0,
+        stageSequence,
+        drawSize,
+        idPrefix,
+        isMock,
+        uuids,
+      };
+      if (playoffDrawType === COMPASS) {
+        Object.assign(params, {
+          roundOffsetLimit: 3,
+          playoffAttributes: COMPASS_ATTRIBUTES,
+        });
+      } else if (playoffDrawType === OLYMPIC) {
+        Object.assign(params, {
+          roundOffsetLimit: 2,
+          playoffAttributes: OLYMPIC_ATTRIBUTES,
+        });
+      }
+
+      const result = generatePlayoffStructures(params);
+      if (result.error) return result;
+
+      if (result.links?.length) links.push(...result.links);
+      if (result.structures?.length) structures.push(...result.structures);
+      structures.sort(structureSort);
+
+      if (result.structure) {
+        const playoffLink = generatePlayoffLink({
+          mainStructureId: mainStructure.structureId,
+          playoffStructureId: result.structureId,
+          finishingPositions,
+        });
+        links.push(playoffLink);
+      }
+      // update *after* value has been passed into current playoff structure generator
+      finishingPositionOffset += participantsInDraw;
+
+      return structures;
+    } else if (playoffDrawType === FIRST_MATCH_LOSER_CONSOLATION) {
+      // TODO: test this
+      console.log('RRw/PO FIRST_MATCH_LOSER_CONSOLATION');
+      const uuidsFMLC = [uuids?.pop(), uuids?.pop()];
+      const { structures, links } = feedInChampionship({
+        structureName: playoffGroup.structureName,
+        idPrefix: idPrefix && `${idPrefix}-po`,
+        finishingPositionOffset,
+        uuids: uuidsFMLC,
+        stage: PLAY_OFF,
+        feedRounds: 1,
+        matchUpType,
+        fmlc: true,
+        drawSize,
+      });
+      const [playoffStructure, consolationStructure] = structures;
+      const playoffLink = generatePlayoffLink({
+        playoffStructureId: playoffStructure.structureId,
+        mainStructureId: mainStructure.structureId,
+        finishingPositions,
+      });
+      links.push(playoffLink);
+      structures.push(...structures);
+      links.push(...links);
+      // update *after* value has been passed into current playoff structure generator
+      finishingPositionOffset += participantsInDraw;
+
+      return [playoffStructure, consolationStructure];
+    }
+
+    return undefined;
+  });
+
+  return {
+    structures,
+    links,
+  };
 }
 
 function generatePlayoffLink({

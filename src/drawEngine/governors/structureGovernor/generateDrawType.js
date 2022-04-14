@@ -271,70 +271,87 @@ export function generateDrawType(params = {}) {
     },
 
     [FIRST_ROUND_LOSER_CONSOLATION]: () => {
-      const { structures, links } = firstRoundLoserConsolation(params);
+      const { structures, links, error } = firstRoundLoserConsolation(params);
+      if (error) return { error };
       if (links?.length) drawDefinition.links.push(...links);
       if (structures?.length) drawDefinition.structures.push(...structures);
       return Object.assign({ structures, links }, SUCCESS);
     },
     [FIRST_MATCH_LOSER_CONSOLATION]: () => {
-      const { structures, links } = feedInChampionship(
+      const { structures, links, error } = feedInChampionship(
         Object.assign(params, { feedRounds: 1, fmlc: true })
       );
+      if (error) return { error };
       if (links?.length) drawDefinition.links.push(...links);
       if (structures?.length) drawDefinition.structures.push(...structures);
       return Object.assign({ structures, links }, SUCCESS);
     },
     [MFIC]: () => {
-      const { structures, links } = feedInChampionship(
+      const { structures, links, error } = feedInChampionship(
         Object.assign(params, { feedRounds: 1 })
       );
+      if (error) return { error };
       if (links?.length) drawDefinition.links.push(...links);
       if (structures?.length) drawDefinition.structures.push(...structures);
       return Object.assign({ structures, links }, SUCCESS);
     },
     [FICQF]: () => {
-      const { structures, links } = feedInChampionship(
+      const { structures, links, error } = feedInChampionship(
         Object.assign(params, { feedsFromFinal: 2 })
       );
+      if (error) return { error };
       if (links?.length) drawDefinition.links.push(...links);
       if (structures?.length) drawDefinition.structures.push(...structures);
       return Object.assign({ structures, links }, SUCCESS);
     },
     [FICSF]: () => {
-      const { structures, links } = feedInChampionship(
+      const { structures, links, error } = feedInChampionship(
         Object.assign(params, { feedsFromFinal: 1 })
       );
+      if (error) return { error };
       if (links?.length) drawDefinition.links.push(...links);
       if (structures?.length) drawDefinition.structures.push(...structures);
       return Object.assign({ structures, links }, SUCCESS);
     },
     [FICR16]: () => {
-      const { structures, links } = feedInChampionship(
+      const { structures, links, error } = feedInChampionship(
         Object.assign(params, { feedsFromFinal: 3 })
       );
+      if (error) return { error };
       if (links?.length) drawDefinition.links.push(...links);
       if (structures?.length) drawDefinition.structures.push(...structures);
       return Object.assign({ structures, links }, SUCCESS);
     },
     [FEED_IN_CHAMPIONSHIP]: () => {
-      const { structures, links } = feedInChampionship(params);
+      const { structures, links, error } = feedInChampionship(params);
+      if (error) return { error };
       if (links?.length) drawDefinition.links.push(...links);
       if (structures?.length) drawDefinition.structures.push(...structures);
       return Object.assign({ structures, links }, SUCCESS);
     },
 
     [CURTIS]: () => {
-      const { structures, links } = generateCurtisConsolation(params);
+      const { structures, links, error } = generateCurtisConsolation(params);
+      if (error) return { error };
       if (links?.length) drawDefinition.links.push(...links);
       if (structures?.length) drawDefinition.structures.push(...structures);
       return Object.assign({ structures, links }, SUCCESS);
     },
 
     [ROUND_ROBIN]: () => {
-      return generateRoundRobin(params);
+      const { structures, links, error } = generateRoundRobin(params);
+      if (error) return { error };
+      if (links?.length) drawDefinition.links.push(...links);
+      if (structures?.length) drawDefinition.structures.push(...structures);
+      return Object.assign({ structures, links }, SUCCESS);
     },
     [ROUND_ROBIN_WITH_PLAYOFF]: () => {
-      return generateRoundRobinWithPlayOff(params);
+      const { structures, links, error } =
+        generateRoundRobinWithPlayOff(params);
+      if (error) return { error };
+      if (links?.length) drawDefinition.links.push(...links);
+      if (structures?.length) drawDefinition.structures.push(...structures);
+      return Object.assign({ structures, links }, SUCCESS);
     },
   };
 
