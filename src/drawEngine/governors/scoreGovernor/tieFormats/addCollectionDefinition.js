@@ -13,6 +13,7 @@ import {
   validateTieFormat,
 } from './tieFormatUtilities';
 
+import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 import {
@@ -20,10 +21,6 @@ import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../../constants/errorConditionConstants';
-import {
-  COMPLETED,
-  IN_PROGRESS,
-} from '../../../../constants/matchUpStatusConstants';
 
 /*
  * collectionDefinition will be added to an event tieFormat (if present)
@@ -191,17 +188,13 @@ function updateStructureMatchUps({
 
   // all team matchUps in the structure which are not completed and which have no score value should have matchUps added
   const targetMatchUps = matchUps.filter(
-    (matchUp) => matchUp.matchUpStatus !== COMPLETED && !scoreHasValue(matchUp)
+    (matchUp) =>
+      matchUp.matchUpStatus !== COMPLETED &&
+      !matchUp.winningSide &&
+      !(!updateInProgressMatchUps && scoreHasValue(matchUp))
   );
 
   for (const matchUp of targetMatchUps) {
-    if (
-      (!updateInProgressMatchUps && matchUp.matchUpStatus === IN_PROGRESS) ||
-      matchUp.winningSide
-    )
-      continue;
-
-    // don't update matchUps which are already COMPLETED
     const tieMatchUps = generateCollectionMatchUps({
       collectionDefinition,
       uuids,

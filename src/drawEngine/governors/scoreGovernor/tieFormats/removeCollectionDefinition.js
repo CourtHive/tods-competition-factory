@@ -13,6 +13,7 @@ import {
   modifyMatchUpNotice,
 } from '../../../notifications/drawNotifications';
 
+import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 import {
@@ -77,14 +78,16 @@ export function removeCollectionDefinition({
     })?.matchUps;
   }
 
-  const deletedMatchUpIds = [];
-  for (const matchUp of matchUps) {
-    if (
-      (!updateInProgressMatchUps && scoreHasValue(matchUp)) ||
-      matchUp.winningSide
-    )
-      continue;
+  // all team matchUps in the structure which are completed should not be modified
+  const targetMatchUps = matchUps.filter(
+    (matchUp) =>
+      matchUp.matchUpStatus !== COMPLETED &&
+      !matchUp.winningSide &&
+      !(!updateInProgressMatchUps && scoreHasValue(matchUp))
+  );
 
+  const deletedMatchUpIds = [];
+  for (const matchUp of targetMatchUps) {
     // remove any collectionAssignments from LineUps that include collectionId
     for (const side of matchUp?.sides || []) {
       side.lineUp = (side.lineUp || []).map((assignment) => ({
