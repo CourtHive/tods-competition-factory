@@ -116,24 +116,6 @@ export function addCollectionDefinition({
     // all team matchUps in the event which do not have tieFormats and where draws/strucures do not have tieFormats should have matchUps added
     // TODO: implement
     console.log('support for modifying event.tieFormat not yet implemented');
-  } else if (matchUpId && matchUp) {
-    if (!validUpdate({ matchUp, updateInProgressMatchUps }))
-      return { error: 'cannot modify tieFormat for completed matchUps' };
-
-    matchUp.tieFormat = tieFormat;
-    const { matchUps: newMatchUps = [] } = generateCollectionMatchUps({
-      collectionDefinition,
-      uuids,
-    });
-
-    if (!Array.isArray(matchUp.tieMatchUps)) matchUp.tieMatchUps = [];
-    matchUp.tieMatchUps.push(...newMatchUps);
-
-    queueNoficiations({
-      tournamentRecord,
-      drawDefinition,
-      addedMatchUps,
-    });
   } else if (structureId && structure) {
     structure.tieFormat = tieFormat;
     const result = updateStructureMatchUps({
@@ -148,6 +130,24 @@ export function addCollectionDefinition({
 
     queueNoficiations({
       structureIds: [structureId],
+      tournamentRecord,
+      drawDefinition,
+      addedMatchUps,
+    });
+  } else if (matchUpId && matchUp) {
+    if (!validUpdate({ matchUp, updateInProgressMatchUps }))
+      return { error: 'cannot modify tieFormat for completed matchUps' };
+
+    matchUp.tieFormat = tieFormat;
+    const { matchUps: newMatchUps = [] } = generateCollectionMatchUps({
+      collectionDefinition,
+      uuids,
+    });
+
+    if (!Array.isArray(matchUp.tieMatchUps)) matchUp.tieMatchUps = [];
+    matchUp.tieMatchUps.push(...newMatchUps);
+
+    queueNoficiations({
       tournamentRecord,
       drawDefinition,
       addedMatchUps,

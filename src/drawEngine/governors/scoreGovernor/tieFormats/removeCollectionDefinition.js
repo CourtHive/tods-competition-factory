@@ -133,7 +133,7 @@ export function removeCollectionDefinition({
       return !deleteTarget;
     });
 
-    matchUp.tieFormat = copyTieFormat(tieFormat);
+    if (matchUp.tieFormat) matchUp.tieFormat = copyTieFormat(tieFormat);
 
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
