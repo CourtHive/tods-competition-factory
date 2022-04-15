@@ -13,7 +13,10 @@ import {
   modifyMatchUpNotice,
 } from '../../../notifications/drawNotifications';
 
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
+import {
+  COMPLETED,
+  IN_PROGRESS,
+} from '../../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 import {
@@ -21,6 +24,10 @@ import {
   MISSING_DRAW_DEFINITION,
   NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
+
+function copyTieFormat(tieFormat) {
+  return makeDeepCopy(tieFormat, false, true);
+}
 
 /*
  * collectionDefinition will be removed from an event tieFormat (if present)
@@ -49,17 +56,37 @@ export function removeCollectionDefinition({
   if (result.error) return result;
 
   const { matchUp, structure, tieFormat: existingTieFormat } = result;
-  const tieFormat = makeDeepCopy(existingTieFormat, false, true);
+  const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
+  const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
   if (!result.valid) return { error: INVALID_VALUES, errors: result.errors };
-
-  const originalValueGoal = tieFormat.winCriteria.valueGoal;
 
   const collectionExists = tieFormat?.collectionDefinitions?.find(
     (collectionDefinition) => collectionDefinition.collectionId === collectionId
   );
   if (!collectionExists) return { error: NOT_FOUND, collectionId };
+
+  tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.filter(
+    (collectionDefinition) => collectionDefinition.collectionId !== collectionId
+  );
+
+  // calculate new winCriteria for tieFormat
+  // if existing winCriteria is aggregateValue, retain
+  const { aggregateValue, valueGoal } = calculateWinCriteria({
+    collectionDefinitions: tieFormat.collectionDefinitions,
+  });
+
+  tieFormat.winCriteria = { aggregateValue, valueGoal };
+
+  // if valueGoal has changed, force renaming of the tieFormat
+  if (originalValueGoal && originalValueGoal !== valueGoal) {
+    if (tieFormatName) {
+      tieFormat.tieFormatName = tieFormatName;
+    } else {
+      delete tieFormat.tieFormatName;
+    }
+  }
 
   // check all scoped lineUps in the drawDefinition to identify collectionAssignments
   let matchUps = [];
@@ -71,7 +98,7 @@ export function removeCollectionDefinition({
       matchUpFilters: { matchUpTypes: [TEAM] },
       structure,
     })?.matchUps;
-  } else {
+  } else if (drawDefinition) {
     matchUps = allDrawMatchUps({
       matchUpFilters: { matchUpTypes: [TEAM] },
       drawDefinition,
@@ -81,7 +108,7 @@ export function removeCollectionDefinition({
   // all team matchUps in the structure which are completed should not be modified
   const targetMatchUps = matchUps.filter(
     (matchUp) =>
-      matchUp.matchUpStatus !== COMPLETED &&
+      ![COMPLETED, IN_PROGRESS].includes(matchUp.matchUpStatus) &&
       !matchUp.winningSide &&
       !(!updateInProgressMatchUps && scoreHasValue(matchUp))
   );
@@ -106,7 +133,13 @@ export function removeCollectionDefinition({
       return !deleteTarget;
     });
 
-    matchUp.tieFormat = tieFormat;
+    matchUp.tieFormat = copyTieFormat(tieFormat);
+
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      drawDefinition,
+      matchUp,
+    });
   }
 
   // remove any matchUps which contain collectionId
@@ -119,46 +152,18 @@ export function removeCollectionDefinition({
     });
   }
 
-  tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.filter(
-    (collectionDefinition) => collectionDefinition.collectionId !== collectionId
-  );
-
-  // calculate new winCriteria for tieFormat
-  // if existing winCriteria is aggregateValue, retain
-  const { aggregateValue, valueGoal } = calculateWinCriteria({
-    collectionDefinitions: tieFormat.collectionDefinitions,
-  });
-
-  tieFormat.winCriteria = { aggregateValue, valueGoal };
-
-  // if valueGoal has changed, force renaming of the tieFormat
-  if (originalValueGoal && originalValueGoal !== valueGoal) {
-    if (tieFormatName) {
-      tieFormat.tieFormatName = tieFormatName;
-    } else {
-      delete tieFormat.tieFormatName;
-    }
-  }
-
   if (eventId) {
     event.tieFormat = tieFormat;
     // NOTE: there is not a modifyEventNotice
-  } else if (matchUp) {
-    matchUp.tieFormat = tieFormat;
-    modifyMatchUpNotice({
-      tournamentId: tournamentRecord?.tournamentId,
-      drawDefinition,
-      matchUp,
-    });
   } else if (structure) {
     structure.tieFormat = tieFormat;
   } else if (drawDefinition) {
     drawDefinition.tieFormat = tieFormat;
-  } else {
+  } else if (!matchUp || !drawDefinition) {
     return { error: MISSING_DRAW_DEFINITION };
   }
 
   modifyDrawNotice({ drawDefinition });
 
-  return { ...SUCCESS, tieFormat };
+  return { ...SUCCESS, tieFormat, targetMatchUps, deletedMatchUpIds };
 }

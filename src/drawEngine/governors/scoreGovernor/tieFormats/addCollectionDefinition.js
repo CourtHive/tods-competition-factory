@@ -13,7 +13,10 @@ import {
   validateTieFormat,
 } from './tieFormatUtilities';
 
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
+import {
+  COMPLETED,
+  IN_PROGRESS,
+} from '../../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 import {
@@ -21,6 +24,10 @@ import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../../constants/errorConditionConstants';
+
+function copyTieFormat(tieFormat) {
+  return makeDeepCopy(tieFormat, false, true);
+}
 
 /*
  * collectionDefinition will be added to an event tieFormat (if present)
@@ -55,7 +62,7 @@ export function addCollectionDefinition({
   if (result.error) return result;
 
   const { matchUp, structure, tieFormat: existingTieFormat } = result;
-  const tieFormat = makeDeepCopy(existingTieFormat, false, true);
+  const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
   if (!result.valid)
@@ -102,6 +109,7 @@ export function addCollectionDefinition({
   }
 
   const addedMatchUps = [];
+  let targetMatchUps = [];
 
   if (eventId) {
     event.tieFormat = tieFormat;
@@ -109,7 +117,7 @@ export function addCollectionDefinition({
     // TODO: implement
     console.log('support for modifying event.tieFormat not yet implemented');
   } else if (matchUpId && matchUp) {
-    if (matchUp.matchUpStatus === COMPLETED)
+    if (!validUpdate({ matchUp, updateInProgressMatchUps }))
       return { error: 'cannot modify tieFormat for completed matchUps' };
 
     matchUp.tieFormat = tieFormat;
@@ -128,14 +136,15 @@ export function addCollectionDefinition({
     });
   } else if (structureId && structure) {
     structure.tieFormat = tieFormat;
-    const { newMatchUps } = updateStructureMatchUps({
+    const result = updateStructureMatchUps({
       updateInProgressMatchUps,
       collectionDefinition,
       structure,
       tieFormat,
       uuids,
     });
-    addedMatchUps.push(...newMatchUps);
+    addedMatchUps.push(...result.newMatchUps);
+    targetMatchUps = result.targetMatchUps;
 
     queueNoficiations({
       structureIds: [structureId],
@@ -149,7 +158,7 @@ export function addCollectionDefinition({
     const modifiedStructureIds = [];
 
     for (const structure of drawDefinition.structures || []) {
-      const { newMatchUps } = updateStructureMatchUps({
+      const result = updateStructureMatchUps({
         updateInProgressMatchUps,
         collectionDefinition,
         structure,
@@ -157,7 +166,8 @@ export function addCollectionDefinition({
         uuids,
       });
       modifiedStructureIds.push(structureId);
-      addedMatchUps.push(...newMatchUps);
+      addedMatchUps.push(...result.newMatchUps);
+      targetMatchUps = result.targetMatchUps;
     }
 
     queueNoficiations({
@@ -170,7 +180,15 @@ export function addCollectionDefinition({
     return { error: MISSING_DRAW_DEFINITION };
   }
 
-  return { ...SUCCESS, tieFormat, addedMatchUps };
+  return { ...SUCCESS, tieFormat, addedMatchUps, targetMatchUps };
+}
+
+function validUpdate({ matchUp, updateInProgressMatchUps }) {
+  return (
+    ![COMPLETED, IN_PROGRESS].includes(matchUp.matchUpStatus) &&
+    !matchUp.winningSide &&
+    !(!updateInProgressMatchUps && scoreHasValue(matchUp))
+  );
 }
 
 function updateStructureMatchUps({
@@ -187,11 +205,8 @@ function updateStructureMatchUps({
   })?.matchUps;
 
   // all team matchUps in the structure which are not completed and which have no score value should have matchUps added
-  const targetMatchUps = matchUps.filter(
-    (matchUp) =>
-      matchUp.matchUpStatus !== COMPLETED &&
-      !matchUp.winningSide &&
-      !(!updateInProgressMatchUps && scoreHasValue(matchUp))
+  const targetMatchUps = matchUps.filter((matchUp) =>
+    validUpdate({ matchUp, updateInProgressMatchUps })
   );
 
   for (const matchUp of targetMatchUps) {
@@ -202,13 +217,12 @@ function updateStructureMatchUps({
 
     if (!Array.isArray(matchUp.tieMatchUps)) matchUp.tieMatchUps = [];
     matchUp.tieMatchUps.push(...tieMatchUps);
+    newMatchUps.push(...tieMatchUps);
 
     // if a tieFormat is already present on matchUp, update
-    if (matchUp.tieFormat) matchUp.tieFormat = tieFormat;
-
-    newMatchUps.push(...tieMatchUps);
+    if (matchUp.tieFormat) matchUp.tieFormat = copyTieFormat(tieFormat);
   }
-  return { newMatchUps };
+  return { newMatchUps, targetMatchUps };
 }
 
 function queueNoficiations({
