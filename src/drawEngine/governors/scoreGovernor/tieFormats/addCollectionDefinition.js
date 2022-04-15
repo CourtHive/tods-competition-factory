@@ -2,8 +2,8 @@ import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStru
 import { generateCollectionMatchUps } from '../../../generators/tieMatchUps';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { makeDeepCopy, UUID } from '../../../../utilities';
-import { scoreHasValue } from '../scoreHasValue';
 import { getTieFormat } from './getTieFormat';
+import { validUpdate } from './validUpdate';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
@@ -13,10 +13,6 @@ import {
   validateTieFormat,
 } from './tieFormatUtilities';
 
-import {
-  COMPLETED,
-  IN_PROGRESS,
-} from '../../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 import {
@@ -181,14 +177,6 @@ export function addCollectionDefinition({
   }
 
   return { ...SUCCESS, tieFormat, addedMatchUps, targetMatchUps };
-}
-
-function validUpdate({ matchUp, updateInProgressMatchUps }) {
-  return (
-    ![COMPLETED, IN_PROGRESS].includes(matchUp.matchUpStatus) &&
-    !matchUp.winningSide &&
-    !(!updateInProgressMatchUps && scoreHasValue(matchUp))
-  );
 }
 
 function updateStructureMatchUps({

@@ -1,8 +1,36 @@
+import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
+import { findStructure } from '../../../getters/findStructure';
 import { makeDeepCopy } from '../../../../utilities';
-import { updateTieFormat } from './updateTieFormat';
-import { getTieFormat } from './getTieFormat';
+import {
+  modifyDrawNotice,
+  modifyMatchUpNotice,
+} from '../../../notifications/drawNotifications';
 
-import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
+import { TEAM } from '../../../../constants/matchUpTypes';
+import {
+  INVALID_VALUES,
+  NOT_FOUND,
+} from '../../../../constants/errorConditionConstants';
+
+function copyTieFormat(tieFormat) {
+  return makeDeepCopy(tieFormat, false, true);
+}
+
+function getOrderedTieFormat({ tieFormat, orderMap }) {
+  const orderedTieFormat = copyTieFormat(tieFormat);
+  tieFormat.collectionDefinitions.forEach((collectionDefinition) => {
+    const collectionOrder = orderMap[collectionDefinition.collectionId];
+    if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
+  });
+
+  tieFormat.collectionDefinitions.sort(
+    (a, b) => a.collectionOrder - b.collectionOrder
+  );
+
+  return { tieFormat: orderedTieFormat };
+}
 
 export function orderCollectionDefinitions({
   tournamentRecord,
@@ -15,34 +43,87 @@ export function orderCollectionDefinitions({
 }) {
   if (typeof orderMap !== 'object') return { error: INVALID_VALUES, orderMap };
 
-  let result = getTieFormat({
-    drawDefinition,
-    structureId,
-    matchUpId,
-    eventId,
-    event,
-  });
-  if (result.error) return result;
+  if (eventId && event?.tieFormat) {
+    event.tieFormat = getOrderedTieFormat({ tieFormat: event.tieFormat });
+  } else if (matchUpId) {
+    const { matchUp, error } = findMatchUp({
+      drawDefinition,
+      matchUpId,
+    });
+    if (error) return { error };
 
-  const { matchUp, structure, tieFormat: existingTieFormat } = result;
-  const tieFormat = makeDeepCopy(existingTieFormat, false, true);
+    if (matchUp?.tieFormat) {
+      matchUp.tieFormat = getOrderedTieFormat({
+        tieFormat: matchUp.tieFormat,
+      });
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        drawDefinition,
+        matchUp,
+      });
+    }
+  } else if (structureId) {
+    const { error, structure } = findStructure({ drawDefinition, structureId });
+    if (error) return { error };
 
-  tieFormat.collectionDefinitions.forEach((collectionDefinition) => {
-    const collectionOrder = orderMap[collectionDefinition.collectionId];
-    if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
-  });
+    if (structure?.tieFormat) {
+      structure.tieFormat = getOrderedTieFormat({
+        tieFormat: structure.tieFormat,
+      });
+      updateStructureMatchUps({
+        tournamentRecord,
+        drawDefinition,
+        structure,
+      });
+      modifyDrawNotice({
+        drawDefinition,
+        structureIds: [structure.structureId],
+      });
+    }
+  } else if (drawDefinition?.tieFormat) {
+    drawDefinition.tieFormat = getOrderedTieFormat({
+      tieFormat: drawDefinition.tieFormat,
+    });
+    const modifiedStructureIds = [];
 
-  tieFormat.collectionDefinitions.sort(
-    (a, b) => a.collectionOrder - b.collectionOrder
-  );
+    for (const structure of drawDefinition.structures || []) {
+      if (structure.tieFormat)
+        structure.tieFormat = getOrderedTieFormat({
+          tieFormat: structure.tieFormat,
+        });
+      updateStructureMatchUps({
+        tournamentRecord,
+        drawDefinition,
+        structure,
+      });
+      modifiedStructureIds.push(structure.structureId);
+    }
+    modifyDrawNotice({ drawDefinition, structureIds: modifiedStructureIds });
+  } else {
+    return { error: NOT_FOUND };
+  }
 
-  return updateTieFormat({
-    tournamentRecord,
-    drawDefinition,
+  return { ...SUCCESS };
+}
+
+function updateStructureMatchUps({
+  tournamentRecord,
+  drawDefinition,
+  structure,
+}) {
+  const matchUps = getAllStructureMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM] },
     structure,
-    tieFormat,
-    eventId,
-    matchUp,
-    event,
-  });
+  })?.matchUps;
+
+  for (const matchUp of matchUps) {
+    if (matchUp.tieFormat) {
+      matchUp.tieFormat = getOrderedTieFormat({ tieFormat: matchUp.tieFormat });
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        drawDefinition,
+        matchUp,
+      });
+    }
+  }
 }
