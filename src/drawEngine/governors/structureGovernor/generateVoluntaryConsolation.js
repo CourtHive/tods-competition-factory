@@ -78,9 +78,15 @@ export function generateVoluntaryConsolation(params = {}) {
     drawDefinition,
     stage,
   });
+
+  // invalid to have more than one existing VOLUNTARY_CONSOLATION structure
   const structureCount = stageStructures.length;
-  if (structureCount !== 1) return { error: INVALID_STRUCTURE };
-  const structureId = stageStructures[0].structureId;
+  if (structureCount > 1) return { error: INVALID_STRUCTURE };
+
+  // invalid to already have matchUps generated for any existing structure
+  if (stageStructures?.[0]?.matchUps?.length)
+    return { error: INVALID_STRUCTURE };
+  const structureId = stageStructures?.[0]?.structureId;
 
   Object.assign(
     params,
@@ -129,6 +135,7 @@ export function generateVoluntaryConsolation(params = {}) {
   );
 
   // replace any existing structures with newly generated structures
+  // this is done because it is possible that a consolation structure exists without matchUps
   drawDefinition.structures = drawDefinition.structures.map((structure) => {
     return generatedStructureIds.includes(structure.structureId)
       ? structures.find(

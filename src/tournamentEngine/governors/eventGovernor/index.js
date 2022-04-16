@@ -73,6 +73,7 @@ import { generateAdHocMatchUps } from './drawDefinitions/generateAdHocMatchUps';
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
 import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
+import { attachConsolationStructures } from './attachConsolationStructures';
 import { deleteAdHocMatchUps } from './drawDefinitions/deleteAdHocMatchUps';
 import { resetDrawDefinition } from './drawDefinitions/resetDrawDefinition';
 import { pruneDrawDefinition } from './drawDefinitions/pruneDrawDefinition';
@@ -169,6 +170,7 @@ const eventGovernor = {
   addVoluntaryConsolationStructure,
   addVoluntaryConsolationStage,
   generateVoluntaryConsolation,
+  attachConsolationStructures,
 
   setMatchUpStatus,
   bulkMatchUpStatusUpdate,
