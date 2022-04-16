@@ -18,7 +18,7 @@ export function generateCollectionMatchUps({
   isMock,
   uuids,
 }) {
-  const { matchUpCount, matchUpFormat, matchUpType, collectionId } =
+  const { matchUpCount, matchUpType, collectionId } =
     collectionDefinition || {};
 
   const matchUps = generateRange(0, matchUpCount || 0).map((index) => {
@@ -28,7 +28,6 @@ export function generateCollectionMatchUps({
       sides: [{ sideNumber: 1 }, { sideNumber: 2 }],
       matchUpId: uuids?.pop() || UUID(),
       collectionPosition,
-      matchUpFormat,
       collectionId,
       matchUpType,
       isMock,
