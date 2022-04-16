@@ -37,6 +37,7 @@ export function generatePlayoffStructures({
   staggeredEntry, // not propagated to child structurs
   sequenceLimit,
   stage = MAIN,
+  structureId,
   matchUpType,
   idPrefix,
   drawSize,
@@ -94,7 +95,7 @@ export function generatePlayoffStructures({
     : treeMatchUps(mainParams);
 
   const structure = structureTemplate({
-    structureId: uuids?.pop(),
+    structureId: structureId || uuids?.pop(),
     structureAbbreviation,
     stageSequence,
     structureName,

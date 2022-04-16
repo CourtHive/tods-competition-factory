@@ -33,6 +33,7 @@ export function generateRoundRobin({
   seedingProfile,
   stage = MAIN,
   matchUpType,
+  structureId,
   drawSize,
   idPrefix,
   isMock,
@@ -65,7 +66,7 @@ export function generateRoundRobin({
   );
 
   const structure = structureTemplate({
-    structureId: uuids?.pop(),
+    structureId: structureId || uuids?.pop(),
     structureType: CONTAINER,
     finishingPosition,
     seedingProfile,

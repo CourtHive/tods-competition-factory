@@ -18,6 +18,7 @@ export function generateCurtisConsolation({
   stageSequence = 1,
   staggeredEntry,
   matchUpType,
+  structureId,
   idPrefix,
   drawSize,
   isMock,
@@ -36,12 +37,12 @@ export function generateCurtisConsolation({
     : treeMatchUps(mainParams);
 
   const mainStructure = structureTemplate({
+    structureId: structureId || uuids?.pop(),
     matchUps,
     matchUpType,
     stage: MAIN,
     structureName,
     stageSequence,
-    structureId: uuids?.pop(),
   });
 
   const structures = [mainStructure];

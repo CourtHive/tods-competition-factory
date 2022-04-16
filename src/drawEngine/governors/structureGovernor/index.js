@@ -3,6 +3,7 @@ import { addVoluntaryConsolationStructure } from '../../generators/addVoluntaryC
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { generateAdHocMatchUps } from '../../generators/generateAdHocMatchUps';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
+import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
 import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
 import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { attachPlayoffStructures } from './attachPlayoffStructures';
@@ -36,6 +37,7 @@ const structureGovernor = {
   generateDrawType,
   addVoluntaryConsolationStage,
   addVoluntaryConsolationStructure,
+  generateVoluntaryConsolation,
 
   buildDrawHierarchy, // obsolete
 };

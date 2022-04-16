@@ -13,6 +13,7 @@ export function feedInChampionship(params = {}) {
     feedsFromFinal,
     staggeredEntry,
     structureName,
+    structureId,
     matchUpType,
     feedPolicy,
     feedRounds,
@@ -36,8 +37,8 @@ export function feedInChampionship(params = {}) {
     : treeMatchUps(mainParams);
 
   const mainStructure = structureTemplate({
+    structureId: structureId || uuids?.pop(),
     structureName: structureName || MAIN,
-    structureId: uuids?.pop(),
     stageSequence,
     stage: MAIN,
     matchUpType,

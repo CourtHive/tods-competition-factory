@@ -151,7 +151,8 @@ export function generateDrawType(params = {}) {
     stage,
   });
   const structureCount = stageStructures.length;
-  if (structureCount >= sequenceLimit) return { error: STAGE_SEQUENCE_LIMIT };
+  if (sequenceLimit && structureCount >= sequenceLimit)
+    return { error: STAGE_SEQUENCE_LIMIT };
 
   const { generators, error } = getGenerators(params);
   if (error) return { error };
@@ -160,7 +161,6 @@ export function generateDrawType(params = {}) {
   if (!generator) return { error: UNRECOGNIZED_DRAW_TYPE };
 
   const generatorResult = generator && generator();
-
   if (generatorResult.error) return generatorResult;
 
   const { structures, links } = generatorResult;

@@ -63,14 +63,15 @@ import { getScaledEntries } from './entries/getScaledEntries';
 import { removeSeeding } from './entries/removeSeeding';
 import { autoSeeding } from './entries/autoSeeding';
 
-import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
 import { addVoluntaryConsolationStructure } from '../../../drawEngine/generators/addVoluntaryConsolationStructure';
+import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
 import { removeStructure } from '../../../drawEngine/governors/structureGovernor/removeStructure';
 import { toggleParticipantCheckInState } from './drawDefinitions/toggleParticipantCheckInState';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { refreshEventDrawOrder } from './drawDefinitions/refreshEventDrawOrder';
 import { generateAdHocMatchUps } from './drawDefinitions/generateAdHocMatchUps';
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
+import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
 import { deleteAdHocMatchUps } from './drawDefinitions/deleteAdHocMatchUps';
 import { resetDrawDefinition } from './drawDefinitions/resetDrawDefinition';
@@ -165,8 +166,9 @@ const eventGovernor = {
   setDelegatedOutcome,
   removeDelegatedOutcome,
 
-  addVoluntaryConsolationStage,
   addVoluntaryConsolationStructure,
+  addVoluntaryConsolationStage,
+  generateVoluntaryConsolation,
 
   setMatchUpStatus,
   bulkMatchUpStatusUpdate,

@@ -1,4 +1,5 @@
-import { addVoluntaryConsolationStructure as generateVoluntary } from '../../../drawEngine/generators/addVoluntaryConsolationStructure';
+import { addVoluntaryConsolationStructure as addVoluntary } from '../../../drawEngine/generators/addVoluntaryConsolationStructure';
+
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
 export function addVoluntaryConsolationStructure(params) {
@@ -7,5 +8,5 @@ export function addVoluntaryConsolationStructure(params) {
 
   const tournamentParticipants = tournamentRecord.participants;
 
-  return generateVoluntary({ participants: tournamentParticipants, ...params });
+  return addVoluntary({ participants: tournamentParticipants, ...params });
 }

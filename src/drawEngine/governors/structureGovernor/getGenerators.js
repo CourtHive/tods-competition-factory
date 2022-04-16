@@ -31,6 +31,7 @@ export function getGenerators(params) {
   const {
     stageSequence = 1,
     structureName,
+    structureId,
     stage = MAIN,
     matchUpType,
     drawSize,
@@ -41,8 +42,8 @@ export function getGenerators(params) {
     [AD_HOC]: () => {
       const structure = structureTemplate({
         structureName: structureName || MAIN,
+        structureId: structureId || uuids?.pop(),
         finishingPosition: WIN_RATIO,
-        structureId: uuids?.pop(),
         stageSequence,
         matchUps: [],
         matchUpType,
@@ -55,7 +56,7 @@ export function getGenerators(params) {
       const { matchUps } = luckyDraw(params);
       const structure = structureTemplate({
         structureName: structureName || MAIN,
-        structureId: uuids?.pop(),
+        structureId: structureId || uuids?.pop(),
         stageSequence,
         matchUpType,
         matchUps,
@@ -68,7 +69,7 @@ export function getGenerators(params) {
       const { matchUps } = treeMatchUps(params);
       const structure = structureTemplate({
         structureName: structureName || MAIN,
-        structureId: uuids?.pop(),
+        structureId: structureId || uuids?.pop(),
         stageSequence,
         matchUpType,
         matchUps,
@@ -101,7 +102,7 @@ export function getGenerators(params) {
 
       const structure = structureTemplate({
         structureName: structureName || MAIN,
-        structureId: uuids?.pop(),
+        structureId: structureId || uuids?.pop(),
         stageSequence,
         matchUpType,
         stage: MAIN,

@@ -18,6 +18,7 @@ export function firstRoundLoserConsolation(params) {
     structureName,
     stage = MAIN,
     matchUpType,
+    structureId,
     idPrefix,
     drawSize,
     isMock,
@@ -37,8 +38,8 @@ export function firstRoundLoserConsolation(params) {
     : treeMatchUps(mainParams);
 
   const mainStructure = structureTemplate({
+    structureId: structureId || uuids?.pop(),
     structureName: structureName || MAIN,
-    structureId: uuids?.pop(),
     stageSequence,
     matchUpType,
     matchUps,

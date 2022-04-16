@@ -14,14 +14,6 @@ export function addVoluntaryConsolationStructure({
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  /*
-  matchUpType = matchUpType || drawDefinition.matchUpType;
-  const { matchUps } = treeMatchUps({
-    matchUpType,
-    drawSize,
-  });
-  */
-
   const structure = structureTemplate({
     stage: VOLUNTARY_CONSOLATION,
     structureAbbreviation,
@@ -32,18 +24,6 @@ export function addVoluntaryConsolationStructure({
   });
 
   drawDefinition.structures.push(structure);
-
-  /*
-  if (automated) {
-    automatedPositioning({
-      structureId: structureId || structure.structureId, // either passed in or generated in template
-      tournamentRecord,
-      drawDefinition,
-      participants,
-      event,
-    });
-  }
-  */
 
   modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 
