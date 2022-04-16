@@ -1,13 +1,18 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { makeDeepCopy } from '../../../../utilities';
+import { validUpdate } from './validUpdate';
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,
 } from '../../../notifications/drawNotifications';
 
 import { MISSING_DRAW_DEFINITION } from '../../../../constants/errorConditionConstants';
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
+
+function copyTieFormat(tieFormat) {
+  return makeDeepCopy(tieFormat, false, true);
+}
 
 export function updateTieFormat({
   tournamentRecord,
@@ -28,6 +33,7 @@ export function updateTieFormat({
       matchUp,
     });
   } else if (structure) {
+    structure.tieFormat = tieFormat;
     updateStructureMatchUps({
       tournamentRecord,
       drawDefinition,
@@ -66,14 +72,14 @@ function updateStructureMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM] },
     structure,
   })?.matchUps;
-  // all team matchUps in the structure which do not have tieFormats should have matchUps added
 
+  // all team matchUps in the structure which are not completed and which have no score value should have matchUps added
   const targetMatchUps = matchUps.filter(
-    (matchUp) => matchUp.matchUpStatus !== COMPLETED
+    (matchUp) => validUpdate({ matchUp }) && matchUp.tieFormat
   );
+
   for (const matchUp of targetMatchUps) {
-    // don't update matchUps which are already COMPLETED
-    matchUp.tieFormat = tieFormat;
+    matchUp.tieFormat = copyTieFormat(tieFormat);
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       drawDefinition,

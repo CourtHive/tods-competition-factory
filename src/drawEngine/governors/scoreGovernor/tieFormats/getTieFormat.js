@@ -28,13 +28,19 @@ export function getTieFormat({
     if (error) return { error };
 
     tieFormat =
-      matchUp.tieFormat || structure?.tieFormat || drawDefinition?.tieFormat;
+      matchUp.tieFormat ||
+      structure?.tieFormat ||
+      drawDefinition?.tieFormat ||
+      event?.tieFormat;
   } else if (drawDefinition && structureId) {
     const result = findStructure({ drawDefinition, structureId });
+    if (result.error) return result;
+
     structure = result?.structure;
-    tieFormat = structure?.tieFormat || drawDefinition.tieFormat;
+    tieFormat =
+      structure?.tieFormat || drawDefinition.tieFormat || event?.tieFormat;
   } else {
-    tieFormat = drawDefinition?.tieFormat;
+    tieFormat = drawDefinition?.tieFormat || event?.tieFormat;
   }
 
   if (!tieFormat) return { error: MISSING_TIE_FORMAT };

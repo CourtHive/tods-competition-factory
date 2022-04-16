@@ -11,7 +11,6 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 export function generateDoubleElimination({
-  drawDefinition,
   structureName,
   matchUpType,
   idPrefix,
@@ -19,6 +18,8 @@ export function generateDoubleElimination({
   isMock,
   uuids,
 }) {
+  const structures = [];
+
   // feedIn MAIN structure needs 1st round feed and final round feed
   const { matchUps } = feedInMatchUps({
     linkFedFinishingRoundNumbers: [1],
@@ -36,7 +37,7 @@ export function generateDoubleElimination({
     matchUps,
   });
 
-  drawDefinition.structures.push(mainStructure);
+  structures.push(mainStructure);
 
   const consolationDrawPositions = drawSize / 2;
 
@@ -59,7 +60,7 @@ export function generateDoubleElimination({
     stage: MAIN,
   });
 
-  drawDefinition.structures.push(consolationStructure);
+  structures.push(consolationStructure);
 
   const { matchUps: deciderMatchUps } = treeMatchUps({
     idPrefix: idPrefix && `${idPrefix}-p1t2`,
@@ -76,7 +77,7 @@ export function generateDoubleElimination({
     matchUpType,
   });
 
-  drawDefinition.structures.push(deciderStructure);
+  structures.push(deciderStructure);
 
   const links = doubleEliminationLinks({
     mainStructure,
@@ -84,13 +85,9 @@ export function generateDoubleElimination({
     deciderStructure,
   });
 
-  drawDefinition.links = drawDefinition.links.concat(...links);
-
-  return Object.assign(
-    {
-      structures: drawDefinition.structures,
-      links: drawDefinition.links,
-    },
-    SUCCESS
-  );
+  return {
+    structures,
+    links: links,
+    ...SUCCESS,
+  };
 }

@@ -17,6 +17,12 @@ export function makeDeepCopy(
 ) {
   const deepCopy = deepCopyEnabled();
 
+  const devContext = getDevContext({ makeDeepCopy: true });
+  if (devContext) {
+    if (iteration > (devContext.iterations || 15))
+      console.log({ devContext, iteration, internalUse }, sourceObject);
+  }
+
   if (
     (!deepCopy?.enabled && !internalUse) ||
     typeof sourceObject !== 'object' ||
@@ -25,12 +31,6 @@ export function makeDeepCopy(
     (typeof deepCopy?.threshold === 'number' && iteration >= deepCopy.threshold)
   ) {
     return sourceObject;
-  }
-
-  const devContext = getDevContext({ makeDeepCopy: true });
-  if (devContext) {
-    if (iteration > (devContext.iterations || 15))
-      console.log(iteration, sourceObject, { devContext });
   }
 
   const targetObject = Array.isArray(sourceObject) ? [] : {};

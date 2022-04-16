@@ -12,8 +12,8 @@ export function feedInChampionship(params = {}) {
     stageSequence = 1,
     feedsFromFinal,
     staggeredEntry,
-    drawDefinition,
     structureName,
+    structureId,
     matchUpType,
     feedPolicy,
     feedRounds,
@@ -37,15 +37,13 @@ export function feedInChampionship(params = {}) {
     : treeMatchUps(mainParams);
 
   const mainStructure = structureTemplate({
+    structureId: structureId || uuids?.pop(),
     structureName: structureName || MAIN,
-    structureId: uuids?.pop(),
     stageSequence,
     stage: MAIN,
     matchUpType,
     matchUps,
   });
-
-  drawDefinition.structures.push(mainStructure);
 
   const baseDrawSize = drawSize / 2;
   const { matchUps: consolationMatchUps, roundsCount } = feedInMatchUps({
@@ -70,8 +68,6 @@ export function feedInChampionship(params = {}) {
     matchUpType,
   });
 
-  drawDefinition.structures.push(consolationStructure);
-
   const links = feedInLinks({
     consolationStructure,
     mainStructure,
@@ -80,13 +76,9 @@ export function feedInChampionship(params = {}) {
     fmlc,
   });
 
-  drawDefinition.links = drawDefinition.links.concat(...links);
-
-  return Object.assign(
-    {
-      structures: [mainStructure, consolationStructure],
-      links: drawDefinition.links,
-    },
-    { ...SUCCESS }
-  );
+  return {
+    structures: [mainStructure, consolationStructure],
+    ...SUCCESS,
+    links,
+  };
 }

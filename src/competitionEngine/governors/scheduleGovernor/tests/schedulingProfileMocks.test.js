@@ -26,7 +26,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
   const drawProfiles = [
     {
       drawType: FEED_IN_CHAMPIONSHIP_TO_R16,
-      drawName: 'U16 Boys Doubles',
+      drawName: 'U16 Male Doubles',
       uniqueParticipants: true,
       participantsCount: 32,
       eventType: DOUBLES,
@@ -38,7 +38,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
     },
     {
       drawType: FEED_IN_CHAMPIONSHIP_TO_R16,
-      drawName: 'U16 Girls Doubles',
+      drawName: 'U16 Female Doubles',
       uniqueParticipants: true,
       participantsCount: 32,
       eventType: DOUBLES,
@@ -50,7 +50,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
     },
     {
       drawType: FEED_IN_CHAMPIONSHIP_TO_R16,
-      drawName: 'U18 Boys Doubles',
+      drawName: 'U18 Male Doubles',
       uniqueParticipants: true,
       participantsCount: 24,
       eventType: DOUBLES,

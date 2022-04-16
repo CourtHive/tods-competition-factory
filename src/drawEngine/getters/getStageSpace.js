@@ -5,6 +5,7 @@ import {
   stageAlternatesCount,
 } from './stageGetter';
 
+import { VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   ENTRY_STATUS_NOT_ALLOWED_IN_STAGE,
@@ -56,7 +57,7 @@ export function getStageSpace({
   const stageFull = totalEntriesCount >= stageDrawPositionsAvailable;
   const positionsAvailable = stageDrawPositionsAvailable - totalEntriesCount;
 
-  if (stageFull) {
+  if (stage !== VOLUNTARY_CONSOLATION && stageFull) {
     return { error: NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS };
   }
 

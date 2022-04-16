@@ -234,7 +234,7 @@ it('can filter by entries', () => {
   const drawSize = 16;
   const eventProfiles = [
     {
-      eventName: 'U18 Boys Doubles',
+      eventName: 'U18 Male Doubles',
       gender: MALE,
       drawProfiles: [{ drawSize }],
     },

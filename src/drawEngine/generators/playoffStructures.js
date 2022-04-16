@@ -1,34 +1,10 @@
-import { structureSort } from '../getters/structureSort';
 import structureTemplate from './structureTemplate';
 import { feedInMatchUps } from './feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 import { generateRange } from '../../utilities';
-import {
-  addMatchUpsNotice,
-  modifyDrawNotice,
-} from '../notifications/drawNotifications';
 
 import { MAIN, TOP_DOWN, LOSER } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-
-export function playoff(params) {
-  const { matchUps, structures, structureId, links } =
-    generatePlayoffStructures(params);
-
-  if (links?.length) params.drawDefinition.links.push(...links);
-  if (structures?.length) params.drawDefinition.structures.push(...structures);
-  const structureIds = structures?.map(({ structureId }) => structureId) || [];
-  params.drawDefinition.structures.sort(structureSort);
-
-  addMatchUpsNotice({
-    tournamentId: params.tournamentRecord?.tournamentId,
-    drawDefinition: params.drawDefinition,
-    matchUps,
-  });
-  modifyDrawNotice({ drawDefinition: params.drawDefinition, structureIds });
-
-  return Object.assign({ structureId }, SUCCESS);
-}
 
 /**
  *
@@ -61,6 +37,7 @@ export function generatePlayoffStructures({
   staggeredEntry, // not propagated to child structurs
   sequenceLimit,
   stage = MAIN,
+  structureId,
   matchUpType,
   idPrefix,
   drawSize,
@@ -118,7 +95,7 @@ export function generatePlayoffStructures({
     : treeMatchUps(mainParams);
 
   const structure = structureTemplate({
-    structureId: uuids?.pop(),
+    structureId: structureId || uuids?.pop(),
     structureAbbreviation,
     stageSequence,
     structureName,
@@ -149,6 +126,7 @@ export function generatePlayoffStructures({
     structureName,
     structures,
     links,
+    ...SUCCESS,
   };
 
   function generateChildStructures(roundNumber) {

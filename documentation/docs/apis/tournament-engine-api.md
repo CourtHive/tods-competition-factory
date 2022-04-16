@@ -499,6 +499,16 @@ tournamentEngine.addVoluntaryConsolationStage({
 
 ---
 
+## addVoluntaryConsolationStructure
+
+Generates a new structure within a `drawDefinition` if any draw entries are present for `{ entryStage: VOLUNTARY_CONSOLATION }`.
+
+```js
+tournamentEngine.addVoluntaryConsolationStructure({ drawId });
+```
+
+---
+
 ## allEventMatchUps
 
 Returns all matchUps for an event.
@@ -1281,19 +1291,6 @@ const { participantsAdded } =
     accessor, // optional - use accessor string to retrieve nested value (even from person address arrays)
     uuids, // optional - uuids to assign to generated participants
   });
-```
-
----
-
-## generateVoluntaryConsolationStructure
-
-Generates a new structure within a `drawDefinition` if any draw entries are present for `{ entryStage: VOLUNTARY_CONSOLATION }`.
-
-```js
-tournamentEngine.generateVoluntaryConsolationStructure({
-  drawId,
-  automated: true, // optional
-});
 ```
 
 ---

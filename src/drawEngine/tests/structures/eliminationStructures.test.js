@@ -153,22 +153,22 @@ it('can generate a Curtis Consolation draw', () => {
     expect(link.target.feedProfile).toEqual(feedProfiles[i]);
   });
 
-  const stageSequences = [1, 1, 2, 2];
-  const matchUps = [63, 47, 11, 1];
-  const stages = [MAIN, CONSOLATION, CONSOLATION, MAIN];
+  const stageSequences = [1, 2, 1, 2];
+  const matchUps = [63, 1, 47, 11];
+  const stages = [MAIN, MAIN, CONSOLATION, CONSOLATION];
 
   const firstRoundFinishingPositions = [
     { winner: [1, 32], loser: [33, 64] },
+    { winner: [3, 3], loser: [4, 4] },
     { winner: [17, 48], loser: [49, 64] },
     { winner: [5, 12], loser: [13, 16] },
-    { winner: [3, 3], loser: [4, 4] },
   ];
 
   const finalRoundFinishingPositions = [
     { winner: [1, 1], loser: [2, 2] },
+    { winner: [3, 3], loser: [4, 4] },
     { winner: [17, 17], loser: [18, 18] },
     { winner: [5, 5], loser: [6, 6] },
-    { winner: [3, 3], loser: [4, 4] },
   ];
 
   state.structures.forEach((structure, i) => {

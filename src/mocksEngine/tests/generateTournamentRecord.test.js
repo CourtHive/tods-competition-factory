@@ -95,7 +95,7 @@ test.each([
   const eventIdPrefix = 'Bar';
   const eventProfiles = [
     {
-      eventName: 'U18 Boys Doubles',
+      eventName: 'U18 Male Doubles',
       eventType: DOUBLES,
       drawProfiles: [{ drawSize: 32, idPrefix: eventIdPrefix, drawType }],
     },
@@ -134,7 +134,7 @@ test('eventProfiles and participantsProfile work as expected', () => {
   const eventProfiles = [
     {
       category,
-      eventName: 'U18 Boys Doubles',
+      eventName: 'U18 Male Doubles',
       eventType: DOUBLES,
       gender: MALE,
       surfaceCategory: HARD,
@@ -146,7 +146,7 @@ test('eventProfiles and participantsProfile work as expected', () => {
     },
     {
       category,
-      eventName: 'U18 Girls Singles',
+      eventName: 'U18 Female Singles',
       eventType: SINGLES,
       gender: FEMALE,
       surfaceCategory: CLAY,

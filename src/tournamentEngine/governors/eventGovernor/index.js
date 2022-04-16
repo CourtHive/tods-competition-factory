@@ -63,15 +63,17 @@ import { getScaledEntries } from './entries/getScaledEntries';
 import { removeSeeding } from './entries/removeSeeding';
 import { autoSeeding } from './entries/autoSeeding';
 
+import { addVoluntaryConsolationStructure } from '../../../drawEngine/generators/addVoluntaryConsolationStructure';
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
 import { removeStructure } from '../../../drawEngine/governors/structureGovernor/removeStructure';
-import { generateVoluntaryConsolationStructure } from './generateVoluntaryConsolationStructure';
 import { toggleParticipantCheckInState } from './drawDefinitions/toggleParticipantCheckInState';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { refreshEventDrawOrder } from './drawDefinitions/refreshEventDrawOrder';
 import { generateAdHocMatchUps } from './drawDefinitions/generateAdHocMatchUps';
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
+import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
+import { attachConsolationStructures } from './attachConsolationStructures';
 import { deleteAdHocMatchUps } from './drawDefinitions/deleteAdHocMatchUps';
 import { resetDrawDefinition } from './drawDefinitions/resetDrawDefinition';
 import { pruneDrawDefinition } from './drawDefinitions/pruneDrawDefinition';
@@ -165,8 +167,10 @@ const eventGovernor = {
   setDelegatedOutcome,
   removeDelegatedOutcome,
 
+  addVoluntaryConsolationStructure,
   addVoluntaryConsolationStage,
-  generateVoluntaryConsolationStructure,
+  generateVoluntaryConsolation,
+  attachConsolationStructures,
 
   setMatchUpStatus,
   bulkMatchUpStatusUpdate,

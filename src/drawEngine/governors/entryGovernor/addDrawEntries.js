@@ -129,7 +129,11 @@ export function addDrawEntries({
     return { error: spaceAvailable.error };
   }
   const positionsAvailable = spaceAvailable.positionsAvailable || 0;
-  if (!ignoreStageSpace && positionsAvailable < participantIds.length)
+  if (
+    !ignoreStageSpace &&
+    stage !== VOLUNTARY_CONSOLATION &&
+    positionsAvailable < participantIds.length
+  )
     return { error: MORE_PARTICIPANTS_THAN_DRAW_POSITIONS };
 
   const participantIdsNotAdded = participantIds.reduce(

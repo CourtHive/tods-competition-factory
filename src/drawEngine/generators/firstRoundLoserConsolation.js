@@ -14,11 +14,11 @@ export function firstRoundLoserConsolation(params) {
   const {
     finishingPositionOffset = 0,
     stageSequence = 1,
-    drawDefinition,
     staggeredEntry,
     structureName,
     stage = MAIN,
     matchUpType,
+    structureId,
     idPrefix,
     drawSize,
     isMock,
@@ -38,17 +38,13 @@ export function firstRoundLoserConsolation(params) {
     : treeMatchUps(mainParams);
 
   const mainStructure = structureTemplate({
+    structureId: structureId || uuids?.pop(),
     structureName: structureName || MAIN,
-    structureId: uuids?.pop(),
     stageSequence,
     matchUpType,
     matchUps,
     stage,
   });
-
-  if (drawDefinition) {
-    drawDefinition.structures.push(mainStructure);
-  }
 
   const consolationDrawPositions = drawSize / 2;
 
@@ -73,10 +69,6 @@ export function firstRoundLoserConsolation(params) {
     matchUpType,
   });
 
-  if (drawDefinition) {
-    drawDefinition.structures.push(consolationStructure);
-  }
-
   const link = {
     linkType: LOSER,
     source: {
@@ -90,15 +82,9 @@ export function firstRoundLoserConsolation(params) {
     },
   };
 
-  if (drawDefinition) {
-    drawDefinition.links.push(link);
-  }
-
-  return Object.assign(
-    {
-      structures: [mainStructure, consolationStructure],
-      links: drawDefinition?.links,
-    },
-    SUCCESS
-  );
+  return {
+    structures: [mainStructure, consolationStructure],
+    links: [link],
+    ...SUCCESS,
+  };
 }

@@ -34,8 +34,8 @@ export function positionTargets({
   }
 
   const { structure } = findStructure({
-    drawDefinition,
     structureId: matchUp.structureId,
+    drawDefinition,
   });
 
   const { finishingPosition } = structure;

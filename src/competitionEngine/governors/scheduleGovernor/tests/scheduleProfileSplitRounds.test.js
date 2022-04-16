@@ -34,7 +34,7 @@ it('Can split rounds across multiple venues', () => {
 
   const drawProfiles = [
     {
-      drawName: 'U16 Boys Singles',
+      drawName: 'U16 Male Singles',
       participantsCount: 32,
       idPrefix: 'M16',
       drawId: 'idM16',
@@ -142,7 +142,7 @@ it('Can split rounds across multiple venues', () => {
 
   const drawProfiles = [
     {
-      drawName: 'U16 Boys Singles',
+      drawName: 'U16 Male Singles',
       participantsCount: 32,
       idPrefix: 'M16',
       drawId: 'idM16',
@@ -230,7 +230,7 @@ it('Can split rounds with multiple BYEs', () => {
 
   const drawProfiles = [
     {
-      drawName: 'U16 Boys Singles',
+      drawName: 'U16 Male Singles',
       participantsCount: 18,
       idPrefix: 'M16',
       drawId: 'idM16',

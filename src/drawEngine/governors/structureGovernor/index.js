@@ -1,8 +1,9 @@
 import { generateAndPopulatePlayoffStructures } from './generateAndPopulatePlayoffStructures';
-import { generateVoluntaryConsolationStructure } from '../../generators/voluntaryConsolation';
+import { addVoluntaryConsolationStructure } from '../../generators/addVoluntaryConsolationStructure';
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { generateAdHocMatchUps } from '../../generators/generateAdHocMatchUps';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
+import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
 import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
 import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { attachPlayoffStructures } from './attachPlayoffStructures';
@@ -35,7 +36,8 @@ const structureGovernor = {
   structureSort,
   generateDrawType,
   addVoluntaryConsolationStage,
-  generateVoluntaryConsolationStructure,
+  addVoluntaryConsolationStructure,
+  generateVoluntaryConsolation,
 
   buildDrawHierarchy, // obsolete
 };
