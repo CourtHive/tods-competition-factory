@@ -9,6 +9,7 @@ import { drawPositionsHash } from './roundRobinGroups';
 
 import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
   DRAW,
@@ -75,7 +76,13 @@ export function generateRoundRobin({
     stage,
   });
 
-  return { structures: [structure], groupCount, groupSize };
+  return {
+    structures: [structure],
+    groupCount,
+    links: [],
+    groupSize,
+    ...SUCCESS,
+  };
 }
 
 // first iteration only links to a single playoff structure
@@ -249,6 +256,7 @@ export function generateRoundRobinWithPlayOff(params) {
   });
 
   return {
+    ...SUCCESS,
     structures,
     links,
   };

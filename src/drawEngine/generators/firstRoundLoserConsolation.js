@@ -2,6 +2,7 @@ import structureTemplate from './structureTemplate';
 import { feedInMatchUps } from './feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
   CONSOLATION,
@@ -80,5 +81,9 @@ export function firstRoundLoserConsolation(params) {
     },
   };
 
-  return { structures: [mainStructure, consolationStructure], links: [link] };
+  return {
+    structures: [mainStructure, consolationStructure],
+    links: [link],
+    ...SUCCESS,
+  };
 }

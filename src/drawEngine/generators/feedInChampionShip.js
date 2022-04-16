@@ -4,6 +4,7 @@ import { treeMatchUps } from './eliminationTree';
 import { feedInLinks } from './feedInLinks';
 
 import { MAIN, CONSOLATION } from '../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 export function feedInChampionship(params = {}) {
   const {
@@ -76,6 +77,7 @@ export function feedInChampionship(params = {}) {
 
   return {
     structures: [mainStructure, consolationStructure],
+    ...SUCCESS,
     links,
   };
 }

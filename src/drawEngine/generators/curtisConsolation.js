@@ -3,6 +3,7 @@ import { feedInMatchUps } from './feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 import { feedInLinks } from './feedInLinks';
 
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
   CONSOLATION,
@@ -112,7 +113,7 @@ export function generateCurtisConsolation({
     links.push(playoffLink);
   }
 
-  return { structures, links };
+  return { structures, links, ...SUCCESS };
 }
 
 function consolationFeedStructure({

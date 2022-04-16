@@ -30,13 +30,6 @@ export function makeDeepCopy(
     sourceObject === null ||
     (typeof deepCopy?.threshold === 'number' && iteration >= deepCopy.threshold)
   ) {
-    if (devContext)
-      console.log({
-        type: typeof sourceObject,
-        internalUse,
-        iteration,
-        deepCopy,
-      });
     return sourceObject;
   }
 

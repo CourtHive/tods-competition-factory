@@ -4,6 +4,7 @@ import { treeMatchUps } from './eliminationTree';
 import { generateRange } from '../../utilities';
 
 import { MAIN, TOP_DOWN, LOSER } from '../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 /**
  *
@@ -124,6 +125,7 @@ export function generatePlayoffStructures({
     structureName,
     structures,
     links,
+    ...SUCCESS,
   };
 
   function generateChildStructures(roundNumber) {

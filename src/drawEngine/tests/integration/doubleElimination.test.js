@@ -19,11 +19,12 @@ import {
 it('can complete double elimination draw', () => {
   const drawProfiles = [{ drawSize: 12, drawType: DOUBLE_ELIMINATION }];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     completeAllMatchUps: true,
+    drawProfiles,
   });
   tournamentEngine.setState(tournamentRecord);
-  const { upcomingMatchUps } = tournamentEngine.tournamentMatchUps();
+  const result = tournamentEngine.tournamentMatchUps();
+  const { upcomingMatchUps } = result;
   expect(upcomingMatchUps.length).toEqual(1);
   const { abbreviatedRoundName, roundName, feedRound, finishingRound } =
     upcomingMatchUps[0];

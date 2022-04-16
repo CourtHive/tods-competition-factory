@@ -1,46 +1,19 @@
-import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserConsolation';
 import { getStageDrawPositionsCount } from '../../getters/getStageDrawPositions';
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
-import { generateDoubleElimination } from '../../generators/doubleEliminattion';
-import { generateCurtisConsolation } from '../../generators/curtisConsolation';
-import { generatePlayoffStructures } from '../../generators/playoffStructures';
 import { generateQualifyingStructures } from './generateQualifyingStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { feedInChampionship } from '../../generators/feedInChampionship';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
-import structureTemplate from '../../generators/structureTemplate';
-import { feedInMatchUps } from '../../generators/feedInMatchUps';
-import { treeMatchUps } from '../../generators/eliminationTree';
 import { getDrawStructures } from '../../getters/findStructure';
 import { definedAttributes } from '../../../utilities/objects';
+import { structureSort } from '../../getters/structureSort';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
-import { luckyDraw } from '../../generators/luckyDraw';
 import { isPowerOf2 } from '../../../utilities';
+import { getGenerators } from './getGenerators';
 import {
   setStageDrawSize,
   setStageQualifiersCount,
 } from '../entryGovernor/stageEntryCounts';
-import {
-  generateRoundRobin,
-  generateRoundRobinWithPlayOff,
-} from '../../generators/roundRobin';
-
-// prettier-ignore
-import {
-  MAIN, FICQF, FICSF, MFIC, AD_HOC, CURTIS, FICR16, COMPASS,
-  PLAY_OFF, OLYMPIC, FEED_IN, ROUND_ROBIN,
-  COMPASS_ATTRIBUTES, OLYMPIC_ATTRIBUTES,
-  SINGLE_ELIMINATION, DOUBLE_ELIMINATION,
-  FIRST_MATCH_LOSER_CONSOLATION,
-  FIRST_ROUND_LOSER_CONSOLATION,
-  ROUND_ROBIN_WITH_PLAYOFF,
-  MULTI_STRUCTURE_DRAWS,
-  FEED_IN_CHAMPIONSHIP,
-  WIN_RATIO,
-  QUALIFYING,
-  LUCKY_DRAW,
-} from '../../../constants/drawDefinitionConstants';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -50,7 +23,18 @@ import {
   STAGE_SEQUENCE_LIMIT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
-import { structureSort } from '../../getters/structureSort';
+import {
+  MAIN,
+  AD_HOC,
+  FEED_IN,
+  ROUND_ROBIN,
+  SINGLE_ELIMINATION,
+  DOUBLE_ELIMINATION,
+  ROUND_ROBIN_WITH_PLAYOFF,
+  MULTI_STRUCTURE_DRAWS,
+  QUALIFYING,
+  LUCKY_DRAW,
+} from '../../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -58,14 +42,12 @@ import { structureSort } from '../../getters/structureSort';
  *
  * @param {object} drawDefinition
  */
-// TODO: consider refactoring to return structures rather than pushing them into drawDefinition
 export function generateDrawType(params = {}) {
   const {
     drawType = SINGLE_ELIMINATION,
     stageSequence = 1,
     drawDefinition,
     staggeredEntry, // optional - specifies main structure FEED_IN for drawTypes CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIPS, FMLC
-    structureName,
     goesTo = true,
     stage = MAIN,
     isMock,
@@ -171,195 +153,20 @@ export function generateDrawType(params = {}) {
   const structureCount = stageStructures.length;
   if (structureCount >= sequenceLimit) return { error: STAGE_SEQUENCE_LIMIT };
 
-  const generators = {
-    [AD_HOC]: () => {
-      const structure = structureTemplate({
-        structureName: structureName || MAIN,
-        finishingPosition: WIN_RATIO,
-        structureId: uuids?.pop(),
-        stageSequence,
-        matchUps: [],
-        matchUpType,
-        stage,
-      });
-
-      drawDefinition.structures.push(structure);
-      return Object.assign({ structures: [structure] }, SUCCESS);
-    },
-    [LUCKY_DRAW]: () => {
-      const { matchUps } = luckyDraw(params);
-      const structure = structureTemplate({
-        structureName: structureName || MAIN,
-        structureId: uuids?.pop(),
-        stageSequence,
-        matchUpType,
-        matchUps,
-        stage,
-      });
-
-      drawDefinition.structures.push(structure);
-      return Object.assign({ structures: [structure] }, SUCCESS);
-    },
-    [SINGLE_ELIMINATION]: () => {
-      const { matchUps } = treeMatchUps(params);
-      const structure = structureTemplate({
-        structureName: structureName || MAIN,
-        structureId: uuids?.pop(),
-        stageSequence,
-        matchUpType,
-        matchUps,
-        stage,
-      });
-
-      drawDefinition.structures.push(structure);
-      return Object.assign({ structures: [structure] }, SUCCESS);
-    },
-    [DOUBLE_ELIMINATION]: () => generateDoubleElimination(params),
-    [COMPASS]: () => {
-      Object.assign(params, {
-        roundOffsetLimit: 3,
-        playoffAttributes: COMPASS_ATTRIBUTES,
-      });
-      const { structures, structureId, links } =
-        generatePlayoffStructures(params);
-
-      if (links?.length) drawDefinition.links.push(...links);
-      if (structures?.length) drawDefinition.structures.push(...structures);
-      drawDefinition.structures.sort(structureSort);
-
-      return Object.assign({ structureId }, SUCCESS);
-    },
-    [OLYMPIC]: () => {
-      Object.assign(params, {
-        roundOffsetLimit: 2,
-        playoffAttributes: OLYMPIC_ATTRIBUTES,
-      });
-      const { structures, structureId, links } =
-        generatePlayoffStructures(params);
-
-      if (links?.length) drawDefinition.links.push(...links);
-      if (structures?.length) drawDefinition.structures.push(...structures);
-      drawDefinition.structures.sort(structureSort);
-
-      return Object.assign({ structureId }, SUCCESS);
-    },
-    [PLAY_OFF]: () => {
-      const { structures, structureId, links } =
-        generatePlayoffStructures(params);
-
-      if (links?.length) drawDefinition.links.push(...links);
-      if (structures?.length) drawDefinition.structures.push(...structures);
-      drawDefinition.structures.sort(structureSort);
-
-      return Object.assign({ structureId }, SUCCESS);
-    },
-
-    [FEED_IN]: () => {
-      const { matchUps } = feedInMatchUps({ drawSize, uuids, matchUpType });
-
-      const structure = structureTemplate({
-        structureName: structureName || MAIN,
-        structureId: uuids?.pop(),
-        stageSequence,
-        matchUpType,
-        stage: MAIN,
-        matchUps,
-      });
-
-      drawDefinition.structures.push(structure);
-      return Object.assign({ structures: [structure] }, SUCCESS);
-    },
-
-    [FIRST_ROUND_LOSER_CONSOLATION]: () => {
-      const { structures, links, error } = firstRoundLoserConsolation(params);
-      if (error) return { error };
-      if (links?.length) drawDefinition.links.push(...links);
-      if (structures?.length) drawDefinition.structures.push(...structures);
-      return Object.assign({ structures, links }, SUCCESS);
-    },
-    [FIRST_MATCH_LOSER_CONSOLATION]: () => {
-      const { structures, links, error } = feedInChampionship(
-        Object.assign(params, { feedRounds: 1, fmlc: true })
-      );
-      if (error) return { error };
-      if (links?.length) drawDefinition.links.push(...links);
-      if (structures?.length) drawDefinition.structures.push(...structures);
-      return Object.assign({ structures, links }, SUCCESS);
-    },
-    [MFIC]: () => {
-      const { structures, links, error } = feedInChampionship(
-        Object.assign(params, { feedRounds: 1 })
-      );
-      if (error) return { error };
-      if (links?.length) drawDefinition.links.push(...links);
-      if (structures?.length) drawDefinition.structures.push(...structures);
-      return Object.assign({ structures, links }, SUCCESS);
-    },
-    [FICQF]: () => {
-      const { structures, links, error } = feedInChampionship(
-        Object.assign(params, { feedsFromFinal: 2 })
-      );
-      if (error) return { error };
-      if (links?.length) drawDefinition.links.push(...links);
-      if (structures?.length) drawDefinition.structures.push(...structures);
-      return Object.assign({ structures, links }, SUCCESS);
-    },
-    [FICSF]: () => {
-      const { structures, links, error } = feedInChampionship(
-        Object.assign(params, { feedsFromFinal: 1 })
-      );
-      if (error) return { error };
-      if (links?.length) drawDefinition.links.push(...links);
-      if (structures?.length) drawDefinition.structures.push(...structures);
-      return Object.assign({ structures, links }, SUCCESS);
-    },
-    [FICR16]: () => {
-      const { structures, links, error } = feedInChampionship(
-        Object.assign(params, { feedsFromFinal: 3 })
-      );
-      if (error) return { error };
-      if (links?.length) drawDefinition.links.push(...links);
-      if (structures?.length) drawDefinition.structures.push(...structures);
-      return Object.assign({ structures, links }, SUCCESS);
-    },
-    [FEED_IN_CHAMPIONSHIP]: () => {
-      const { structures, links, error } = feedInChampionship(params);
-      if (error) return { error };
-      if (links?.length) drawDefinition.links.push(...links);
-      if (structures?.length) drawDefinition.structures.push(...structures);
-      return Object.assign({ structures, links }, SUCCESS);
-    },
-
-    [CURTIS]: () => {
-      const { structures, links, error } = generateCurtisConsolation(params);
-      if (error) return { error };
-      if (links?.length) drawDefinition.links.push(...links);
-      if (structures?.length) drawDefinition.structures.push(...structures);
-      return Object.assign({ structures, links }, SUCCESS);
-    },
-
-    [ROUND_ROBIN]: () => {
-      const { structures, links, error } = generateRoundRobin(params);
-      if (error) return { error };
-      if (links?.length) drawDefinition.links.push(...links);
-      if (structures?.length) drawDefinition.structures.push(...structures);
-      return Object.assign({ structures, links }, SUCCESS);
-    },
-    [ROUND_ROBIN_WITH_PLAYOFF]: () => {
-      const { structures, links, error } =
-        generateRoundRobinWithPlayOff(params);
-      if (error) return { error };
-      if (links?.length) drawDefinition.links.push(...links);
-      if (structures?.length) drawDefinition.structures.push(...structures);
-      return Object.assign({ structures, links }, SUCCESS);
-    },
-  };
+  const { generators, error } = getGenerators(params);
+  if (error) return { error };
 
   const generator = generators[drawType];
+  if (!generator) return { error: UNRECOGNIZED_DRAW_TYPE };
+
   const generatorResult = generator && generator();
-  if (!generatorResult?.success) {
-    return { error: UNRECOGNIZED_DRAW_TYPE };
-  }
+
+  if (generatorResult.error) return generatorResult;
+
+  const { structures, links } = generatorResult;
+  if (links?.length) drawDefinition.links.push(...links);
+  if (structures?.length) drawDefinition.structures.push(...structures);
+  drawDefinition.structures.sort(structureSort);
 
   if (qualifyingResult?.structures?.length) {
     const {
