@@ -110,7 +110,7 @@ export const competitionEngine = (function () {
       (Array.isArray(devContext.params) &&
         devContext.params?.includes(methodName))
     ) {
-      console.log({ methodName, params });
+      console.log('ce: ', { methodName, params });
     }
 
     return result;

@@ -1,4 +1,5 @@
 import { addNotice } from '../../global/state/globalState';
+
 import {
   ADD_DRAW_DEFINITION,
   ADD_MATCHUPS,
@@ -7,6 +8,10 @@ import {
   MODIFY_DRAW_DEFINITION,
   MODIFY_MATCHUP,
 } from '../../constants/topicConstants';
+import {
+  MISSING_DRAW_DEFINITION,
+  MISSING_MATCHUP,
+} from '../../constants/errorConditionConstants';
 
 function drawUpdatedAt(drawDefinition, structureIds) {
   if (!drawDefinition) return;
@@ -18,7 +23,7 @@ function drawUpdatedAt(drawDefinition, structureIds) {
   const relevantStructureIds = structureIds?.filter(Boolean);
 
   drawDefinition.updatedAt = updatedAt;
-  drawDefinition.structures?.forEach((structure) => {
+  drawDefinition.structures?.filter(Boolean).forEach((structure) => {
     if (
       !relevantStructureIds?.length ||
       relevantStructureIds?.includes(structure.structureId)
@@ -48,6 +53,10 @@ export function deleteMatchUpsNotice({
   });
 }
 export function modifyMatchUpNotice({ drawDefinition, matchUp, tournamentId }) {
+  if (!matchUp) {
+    console.log(MISSING_MATCHUP);
+    return { error: MISSING_MATCHUP };
+  }
   const structureId = matchUp.structureId;
   modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
   addNotice({
@@ -58,6 +67,10 @@ export function modifyMatchUpNotice({ drawDefinition, matchUp, tournamentId }) {
 }
 
 export function addDrawNotice({ drawDefinition }) {
+  if (!drawDefinition) {
+    console.log(MISSING_DRAW_DEFINITION);
+    return { error: MISSING_DRAW_DEFINITION };
+  }
   drawUpdatedAt(drawDefinition);
   addNotice({
     topic: ADD_DRAW_DEFINITION,
@@ -73,6 +86,10 @@ export function deleteDrawNotice({ drawId }) {
   });
 }
 export function modifyDrawNotice({ drawDefinition, structureIds }) {
+  if (!drawDefinition) {
+    console.log(MISSING_DRAW_DEFINITION);
+    return { error: MISSING_DRAW_DEFINITION };
+  }
   drawUpdatedAt(drawDefinition, structureIds);
   addNotice({
     topic: MODIFY_DRAW_DEFINITION,
