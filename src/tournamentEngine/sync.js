@@ -112,7 +112,7 @@ export const tournamentEngine = (function () {
       (Array.isArray(devContext.params) &&
         devContext.params?.includes(methodName))
     ) {
-      console.log({ methodName, params });
+      console.log('te:', { methodName, params });
     }
 
     return result;
