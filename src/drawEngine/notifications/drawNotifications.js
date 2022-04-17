@@ -14,10 +14,7 @@ import {
 } from '../../constants/errorConditionConstants';
 
 function drawUpdatedAt(drawDefinition, structureIds) {
-  if (!drawDefinition) {
-    console.log(MISSING_DRAW_DEFINITION);
-    return { error: MISSING_DRAW_DEFINITION };
-  }
+  if (!drawDefinition) return;
   let updatedAt = Date.now();
   if (updatedAt === drawDefinition.updatedAt) {
     updatedAt += 1;
