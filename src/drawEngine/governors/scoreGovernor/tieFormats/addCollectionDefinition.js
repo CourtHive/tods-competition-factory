@@ -7,6 +7,7 @@ import { validUpdate } from './validUpdate';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
+  modifyMatchUpNotice,
 } from '../../../notifications/drawNotifications';
 import {
   validateCollectionDefinition,
@@ -125,6 +126,7 @@ export function addCollectionDefinition({
     targetMatchUps = result.targetMatchUps;
 
     queueNoficiations({
+      modifiedMatchUps: targetMatchUps,
       structureIds: [structureId],
       tournamentRecord,
       drawDefinition,
@@ -144,6 +146,7 @@ export function addCollectionDefinition({
     matchUp.tieMatchUps.push(...newMatchUps);
 
     queueNoficiations({
+      modifiedMatchUps: [matchUp],
       tournamentRecord,
       drawDefinition,
       addedMatchUps,
@@ -152,6 +155,7 @@ export function addCollectionDefinition({
     // all team matchUps in the drawDefinition which do not have tieFormats and where strucures do not have tieFormats should have matchUps added
     drawDefinition.tieFormat = tieFormat;
     const modifiedStructureIds = [];
+    const modifiedMatchUps = [];
 
     for (const structure of drawDefinition.structures || []) {
       const result = updateStructureMatchUps({
@@ -164,13 +168,15 @@ export function addCollectionDefinition({
       modifiedStructureIds.push(structureId);
       addedMatchUps.push(...result.newMatchUps);
       targetMatchUps = result.targetMatchUps;
+      modifiedMatchUps.push(...result.targetMatchUps);
     }
 
     queueNoficiations({
       structureIds: modifiedStructureIds,
-      addedMatchUps,
+      modifiedMatchUps,
       tournamentRecord,
       drawDefinition,
+      addedMatchUps,
     });
   } else {
     return { error: MISSING_DRAW_DEFINITION };
@@ -214,11 +220,19 @@ function updateStructureMatchUps({
 }
 
 function queueNoficiations({
-  tournamentRecord,
-  addedMatchUps,
-  drawDefinition,
   modifiedStructureIds,
+  tournamentRecord,
+  modifiedMatchUps,
+  drawDefinition,
+  addedMatchUps,
 }) {
+  modifiedMatchUps?.forEach((matchUp) => {
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      drawDefinition,
+      matchUp,
+    });
+  });
   addMatchUpsNotice({
     tournamentId: tournamentRecord?.tournamentId,
     matchUps: addedMatchUps,
