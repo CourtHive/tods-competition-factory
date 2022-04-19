@@ -37,7 +37,7 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   const matchUpIds = result.addedMatchUps.map(({ matchUpId }) => matchUpId);
   expect(matchUpIds).toEqual(['a03', 'a02', 'a01']);
 
-  const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+  let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.tieFormat.collectionDefinitions.length).toEqual(3);
   expect(drawDefinition.tieFormat.winCriteria.valueGoal).toEqual(7);
   expect(event.tieFormat.winCriteria.valueGoal).toEqual(5);
@@ -55,8 +55,30 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   const collectionOrders = result.tieFormat.collectionDefinitions.map(
     ({ collectionOrder }) => collectionOrder
   );
-
   expect(collectionOrders).toEqual([1, 2, 3]);
+
+  const collectionIds = result.tieFormat.collectionDefinitions.map(
+    ({ collectionId }) => collectionId
+  );
+
+  const newOrder = [3, 1, 2];
+  const orderMap = Object.assign(
+    {},
+    ...collectionIds.map((collectionId, i) => ({
+      [collectionId]: newOrder[i],
+    }))
+  );
+
+  result = tournamentEngine.orderCollectionDefinitions({ drawId, orderMap });
+  expect(result.success).toEqual(true);
+
+  /*
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  console.log(drawDefinition.tieFormat, {
+    collectionIds,
+    orderMap,
+  });
+  */
 });
 
 it('can add collectionDefinitions to tieFormat in a structure', () => {
@@ -219,6 +241,25 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
       },
     }));
   expect(secondRoundDualMatchUps[0].drawPositions).toEqual([1, 3]);
+
+  const collectionIds = result.tieFormat.collectionDefinitions.map(
+    ({ collectionId }) => collectionId
+  );
+
+  const newOrder = [3, 1, 2];
+  const orderMap = Object.assign(
+    {},
+    ...collectionIds.map((collectionId, i) => ({
+      [collectionId]: newOrder[i],
+    }))
+  );
+
+  result = tournamentEngine.orderCollectionDefinitions({
+    drawId,
+    structureId,
+    orderMap,
+  });
+  expect(result.success).toEqual(true);
 });
 
 it('added collectionDefinitions do not appear in inProgress matchUps', () => {

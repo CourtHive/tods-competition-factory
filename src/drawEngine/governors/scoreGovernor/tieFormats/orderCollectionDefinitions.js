@@ -29,7 +29,7 @@ function getOrderedTieFormat({ tieFormat, orderMap }) {
     (a, b) => a.collectionOrder - b.collectionOrder
   );
 
-  return { tieFormat: orderedTieFormat };
+  return orderedTieFormat;
 }
 
 export function orderCollectionDefinitions({
