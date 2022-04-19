@@ -20,12 +20,12 @@ function copyTieFormat(tieFormat) {
 
 function getOrderedTieFormat({ tieFormat, orderMap }) {
   const orderedTieFormat = copyTieFormat(tieFormat);
-  tieFormat.collectionDefinitions.forEach((collectionDefinition) => {
+  orderedTieFormat.collectionDefinitions.forEach((collectionDefinition) => {
     const collectionOrder = orderMap[collectionDefinition.collectionId];
     if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
   });
 
-  tieFormat.collectionDefinitions.sort(
+  orderedTieFormat.collectionDefinitions.sort(
     (a, b) => a.collectionOrder - b.collectionOrder
   );
 
@@ -87,10 +87,11 @@ export function orderCollectionDefinitions({
       });
     }
   } else if (drawDefinition?.tieFormat) {
-    drawDefinition.tieFormat = getOrderedTieFormat({
+    const updatedFormat = getOrderedTieFormat({
       tieFormat: drawDefinition.tieFormat,
       orderMap,
     });
+    drawDefinition.tieFormat = updatedFormat;
     const modifiedStructureIds = [];
 
     for (const structure of drawDefinition.structures || []) {
