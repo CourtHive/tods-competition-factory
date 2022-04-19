@@ -44,7 +44,8 @@ export function deleteVenue({ tournamentRecord, venueId, force }) {
     deleted = true;
   });
 
-  if (deleted) addNotice({ topic: DELETE_VENUE, payload: { venueId } });
+  if (deleted)
+    addNotice({ topic: DELETE_VENUE, payload: { venueId }, key: venueId });
 
   return SUCCESS;
 }

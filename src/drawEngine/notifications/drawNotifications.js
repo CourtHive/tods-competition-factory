@@ -83,6 +83,7 @@ export function deleteDrawNotice({ drawId }) {
   addNotice({
     topic: DELETED_DRAW_IDS,
     payload: { drawId },
+    key: drawId,
   });
 }
 export function modifyDrawNotice({ drawDefinition, structureIds }) {
