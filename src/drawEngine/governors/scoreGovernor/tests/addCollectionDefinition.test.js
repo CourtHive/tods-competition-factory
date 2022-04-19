@@ -83,12 +83,20 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
 
 it('can add collectionDefinitions to tieFormat in a structure', () => {
   let matchUpAddNotices = [];
+  let matchUpModifyNotices = [];
 
   const subscriptions = {
     addMatchUps: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
+        });
+      }
+    },
+    modifyMatchUp: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUp }) => {
+          matchUpModifyNotices.push(matchUp);
         });
       }
     },
@@ -192,6 +200,8 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
     matchUpValue: 1,
   };
 
+  let modifiedCount = matchUpModifyNotices.length;
+
   // test adding to tieFormat on drawDefinition
   let result = tournamentEngine.addCollectionDefinition({
     collectionDefinition,
@@ -218,6 +228,8 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   );
 
   expect(matchUpAddNotices).toEqual([30, 6]);
+  // 2 of the three TEAM matchUps have been modified
+  expect(matchUpModifyNotices.length - modifiedCount).toEqual(2);
 
   firstRoundDualMatchUps[1].tieMatchUps.forEach((matchUp) => {
     const { matchUpId } = matchUp;
@@ -263,13 +275,21 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
 });
 
 it('added collectionDefinitions do not appear in inProgress matchUps', () => {
-  let matchUpAddNotices = [];
+  const matchUpAddNotices = [];
+  const matchUpModifyNotices = [];
 
   const subscriptions = {
     addMatchUps: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
+        });
+      }
+    },
+    modifyMatchUp: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUp }) => {
+          matchUpModifyNotices.push(matchUp);
         });
       }
     },
@@ -359,6 +379,8 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
     matchUpValue: 1,
   };
 
+  const modifiedCount = matchUpModifyNotices.length;
+
   // test adding to tieFormat on drawDefinition
   result = tournamentEngine.addCollectionDefinition({
     updateInProgressMatchUps: false,
@@ -386,6 +408,8 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
   );
 
   expect(matchUpAddNotices).toEqual([30, 6]);
+  // 2 of the 3 TEAM matchUps have been modified
+  expect(matchUpModifyNotices.length - modifiedCount).toEqual(2);
 
   // confirm that team participant's drawPosition has advanced
   ({ matchUps: firstRoundDualMatchUps } =
