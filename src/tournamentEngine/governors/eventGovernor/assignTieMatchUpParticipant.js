@@ -9,7 +9,7 @@ import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { findExtension } from '../queryGovernor/extensionQueries';
 import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
-import { overlap } from '../../../utilities';
+import { makeDeepCopy, overlap } from '../../../utilities';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
@@ -108,7 +108,7 @@ export function assignTieMatchUpParticipantId(params) {
       name: LINEUPS,
     });
 
-    const lineUps = extension?.value || {};
+    const lineUps = makeDeepCopy(extension?.value || {}, false, true);
 
     const extractSideDetail = ({
       displaySideNumber,
