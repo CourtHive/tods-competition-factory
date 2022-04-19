@@ -44,7 +44,10 @@ export function orderCollectionDefinitions({
   if (typeof orderMap !== 'object') return { error: INVALID_VALUES, orderMap };
 
   if (eventId && event?.tieFormat) {
-    event.tieFormat = getOrderedTieFormat({ tieFormat: event.tieFormat });
+    event.tieFormat = getOrderedTieFormat({
+      tieFormat: event.tieFormat,
+      orderMap,
+    });
   } else if (matchUpId) {
     const { matchUp, error } = findMatchUp({
       drawDefinition,
@@ -55,6 +58,7 @@ export function orderCollectionDefinitions({
     if (matchUp?.tieFormat) {
       matchUp.tieFormat = getOrderedTieFormat({
         tieFormat: matchUp.tieFormat,
+        orderMap,
       });
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
@@ -69,11 +73,13 @@ export function orderCollectionDefinitions({
     if (structure?.tieFormat) {
       structure.tieFormat = getOrderedTieFormat({
         tieFormat: structure.tieFormat,
+        orderMap,
       });
       updateStructureMatchUps({
         tournamentRecord,
         drawDefinition,
         structure,
+        orderMap,
       });
       modifyDrawNotice({
         drawDefinition,
@@ -83,6 +89,7 @@ export function orderCollectionDefinitions({
   } else if (drawDefinition?.tieFormat) {
     drawDefinition.tieFormat = getOrderedTieFormat({
       tieFormat: drawDefinition.tieFormat,
+      orderMap,
     });
     const modifiedStructureIds = [];
 
@@ -90,11 +97,13 @@ export function orderCollectionDefinitions({
       if (structure.tieFormat)
         structure.tieFormat = getOrderedTieFormat({
           tieFormat: structure.tieFormat,
+          orderMap,
         });
       updateStructureMatchUps({
         tournamentRecord,
         drawDefinition,
         structure,
+        orderMap,
       });
       modifiedStructureIds.push(structure.structureId);
     }
@@ -110,6 +119,7 @@ function updateStructureMatchUps({
   tournamentRecord,
   drawDefinition,
   structure,
+  orderMap,
 }) {
   const matchUps = getAllStructureMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM] },
@@ -118,7 +128,10 @@ function updateStructureMatchUps({
 
   for (const matchUp of matchUps) {
     if (matchUp.tieFormat) {
-      matchUp.tieFormat = getOrderedTieFormat({ tieFormat: matchUp.tieFormat });
+      matchUp.tieFormat = getOrderedTieFormat({
+        tieFormat: matchUp.tieFormat,
+        orderMap,
+      });
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
         drawDefinition,
