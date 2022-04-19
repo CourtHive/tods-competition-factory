@@ -73,7 +73,12 @@ it('can generate a draw with voluntary consolation stage and delay attachment', 
     drawIds: [drawId],
     eventIds: [eventId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 32, voluntaryConsolation: {} }],
+    drawProfiles: [
+      {
+        drawSize: 32,
+        voluntaryConsolation: { structureName: 'Voluntary Consolation' },
+      },
+    ],
   });
 
   tournamentEngine.setState(tournamentRecord);
