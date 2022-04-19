@@ -226,17 +226,17 @@ function queueNoficiations({
   drawDefinition,
   addedMatchUps,
 }) {
+  addMatchUpsNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    matchUps: addedMatchUps,
+    drawDefinition,
+  });
   modifiedMatchUps?.forEach((matchUp) => {
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       drawDefinition,
       matchUp,
     });
-  });
-  addMatchUpsNotice({
-    tournamentId: tournamentRecord?.tournamentId,
-    matchUps: addedMatchUps,
-    drawDefinition,
   });
   modifyDrawNotice({ drawDefinition, structureIds: modifiedStructureIds });
 }
