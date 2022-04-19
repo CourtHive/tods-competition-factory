@@ -19,20 +19,24 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
 
   const collectionDefinition = {
     collectionName: 'Mixed Doubles',
-    matchUpCount: 3,
     matchUpFormat: 'SET1-S:8/TB7@7',
     matchUpType: 'DOUBLES',
+    matchUpCount: 3,
     matchUpValue: 1,
   };
 
   // test adding to tieFormat on drawDefinition
   let result = tournamentEngine.addCollectionDefinition({
+    uuids: ['a01', 'a02', 'a03'],
     collectionDefinition,
     drawId,
-    uuids: ['a01', 'a02', 'a03'],
   });
   expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
   expect(result.addedMatchUps.length).toEqual(3);
+  const collectionOrders = result.tieFormat.collectionDefinitions.map(
+    ({ collectionOrder }) => collectionOrder
+  );
+  expect(collectionOrders).toEqual([1, 2, 3]);
 
   const matchUpIds = result.addedMatchUps.map(({ matchUpId }) => matchUpId);
   expect(matchUpIds).toEqual(['a03', 'a02', 'a01']);
@@ -52,16 +56,11 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   expect(result.addedMatchUps.length).toEqual(0);
   expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
 
-  const collectionOrders = result.tieFormat.collectionDefinitions.map(
-    ({ collectionOrder }) => collectionOrder
-  );
-  expect(collectionOrders).toEqual([1, 2, 3]);
-
-  const collectionIds = result.tieFormat.collectionDefinitions.map(
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const collectionIds = drawDefinition.tieFormat.collectionDefinitions.map(
     ({ collectionId }) => collectionId
   );
-
-  const newOrder = [3, 1, 2];
+  const newOrder = [2, 3, 1];
   const orderMap = Object.assign(
     {},
     ...collectionIds.map((collectionId, i) => ({
@@ -72,13 +71,10 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   result = tournamentEngine.orderCollectionDefinitions({ drawId, orderMap });
   expect(result.success).toEqual(true);
 
-  /*
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  console.log(drawDefinition.tieFormat, {
-    collectionIds,
-    orderMap,
-  });
-  */
+  drawDefinition.tieFormat.collectionDefinitions.forEach(
+    ({ collectionId }, i) => expect(orderMap[collectionId]).toEqual(i + 1)
+  );
 });
 
 it('can add collectionDefinitions to tieFormat in a structure', () => {
@@ -254,11 +250,14 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
     }));
   expect(secondRoundDualMatchUps[0].drawPositions).toEqual([1, 3]);
 
-  const collectionIds = result.tieFormat.collectionDefinitions.map(
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  let structure = drawDefinition.structures.find(
+    (structure) => structure.structureId === structureId
+  );
+  const collectionIds = structure.tieFormat.collectionDefinitions.map(
     ({ collectionId }) => collectionId
   );
-
-  const newOrder = [3, 1, 2];
+  const newOrder = [2, 3, 1];
   const orderMap = Object.assign(
     {},
     ...collectionIds.map((collectionId, i) => ({
@@ -267,11 +266,19 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   );
 
   result = tournamentEngine.orderCollectionDefinitions({
-    drawId,
     structureId,
     orderMap,
+    drawId,
   });
   expect(result.success).toEqual(true);
+
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  structure = drawDefinition.structures.find(
+    (structure) => structure.structureId === structureId
+  );
+  structure.tieFormat.collectionDefinitions.forEach(({ collectionId }, i) => {
+    expect(orderMap[collectionId]).toEqual(i + 1);
+  });
 });
 
 it('added collectionDefinitions do not appear in inProgress matchUps', () => {
