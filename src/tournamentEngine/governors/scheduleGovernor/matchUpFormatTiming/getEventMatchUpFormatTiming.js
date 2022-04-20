@@ -77,7 +77,8 @@ export function getEventMatchUpFormatTiming({
       .filter(Boolean);
   }
   const { eventType, eventId, category } = event;
-  const categoryName = category?.categoryName;
+  const categoryName =
+    category?.categoryName || category?.ageCategoryCode || eventId;
 
   if (!eventId) return { error: MISSING_EVENT };
 
