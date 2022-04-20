@@ -5,7 +5,6 @@ import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
 import { hasParticipantId } from '../../../global/functions/filters';
 import { findExtension } from '../queryGovernor/extensionQueries';
-import { getDevContext } from '../../../global/state/globalState';
 import {
   generateRange,
   intersection,
@@ -14,7 +13,10 @@ import {
   unique,
 } from '../../../utilities';
 
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import {
+  MISSING_DRAW_DEFINITION,
+  UNLINKED_STRUCTURES,
+} from '../../../constants/errorConditionConstants';
 import { TALLY } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -33,6 +35,7 @@ import {
   MAIN,
   PLAY_OFF,
   QUALIFYING,
+  VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 
 export function getDrawData({
@@ -198,9 +201,8 @@ export function getDrawData({
   });
 
   if (groupedStructures.length > 1) {
-    const error = { error: 'drawDefinition contains unlinked structures' };
-    if (getDevContext()) console.log(error);
-    return error;
+    const error = { error: UNLINKED_STRUCTURES };
+    return { error };
   }
 
   const structures = groupedStructures.flat();
@@ -269,15 +271,17 @@ export function getStructureGroups({ drawDefinition }) {
 
   // iterate through all structures to add missing structureIds
   const structures = drawDefinition.structures || [];
-  structures.forEach((structure) => {
-    const { structureId } = structure;
-    const existingGroup = structureGroups.find((group) => {
-      return group.includes(structureId);
+  structures
+    .filter(({ stage }) => stage !== VOLUNTARY_CONSOLATION)
+    .forEach((structure) => {
+      const { structureId } = structure;
+      const existingGroup = structureGroups.find((group) => {
+        return group.includes(structureId);
+      });
+      if (!existingGroup) {
+        structureGroups.push([structureId]);
+      }
     });
-    if (!existingGroup) {
-      structureGroups.push([structureId]);
-    }
-  });
 
   const allStructuresLinked =
     allLinkStructuresLinked && structureGroups.length === 1;

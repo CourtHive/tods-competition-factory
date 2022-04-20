@@ -145,4 +145,7 @@ it('can generate a draw with voluntary consolation stage and delay attachment', 
     ({ participantId }) => participantId
   );
   expect(assignedPositions.length).toEqual(32);
+
+  result = tournamentEngine.getDrawData({ drawId });
+  expect(result.success).toEqual(true);
 });

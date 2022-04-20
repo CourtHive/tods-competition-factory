@@ -44,6 +44,8 @@ export const MISSING_STRUCTURE_ID = 'Missing structureId';
 export const STRUCTURE_NOT_FOUND = 'structure not found';
 export const MISSING_STRUCTURES = 'Missing structures';
 export const MISSING_STRUCTURE = 'Missing structure';
+export const UNLINKED_STRUCTURES =
+  'drawDefinition contains unlinked structures';
 
 export const INVALID_EVENT_TYPE = 'Invalie eventType';
 export const UNRECOGNIZED_EVENT_TYPE = 'Unrecognized eventType';
@@ -354,6 +356,7 @@ export const errorConditionConstants = {
   STAGE_SEQUENCE_LIMIT,
   STRUCTURE_NOT_FOUND,
   TEAM_NOT_FOUND,
+  UNLINKED_STRUCTURES,
   UNRECOGNIZED_DRAW_TYPE,
   UNRECOGNIZED_MATCHUP_FORMAT,
   UNRECOGNIZED_MATCHUP_STATUS,
