@@ -13,12 +13,12 @@ import {
   unique,
 } from '../../../utilities';
 
+import { SUCCESS } from '../../../constants/resultConstants';
+import { TALLY } from '../../../constants/extensionConstants';
 import {
   MISSING_DRAW_DEFINITION,
   UNLINKED_STRUCTURES,
 } from '../../../constants/errorConditionConstants';
-import { TALLY } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ABANDONED,
   BYE,
@@ -57,7 +57,14 @@ export function getDrawData({
   }))(drawDefinition);
 
   let mainStageSeedAssignments, qualificationStageSeedAssignments;
-  const { structureGroups } = getStructureGroups({ drawDefinition });
+  const { structureGroups, allStructuresLinked } = getStructureGroups({
+    drawDefinition,
+  });
+
+  if (!allStructuresLinked) {
+    const error = { error: UNLINKED_STRUCTURES };
+    return { error };
+  }
 
   let drawActive = false;
   let participantPlacements = false; // if any positionAssignments include a participantId
@@ -200,11 +207,6 @@ export function getDrawData({
     return structures;
   });
 
-  if (groupedStructures.length > 1) {
-    const error = { error: UNLINKED_STRUCTURES };
-    return { error };
-  }
-
   const structures = groupedStructures.flat();
 
   drawInfo.drawActive = drawActive;
@@ -253,7 +255,7 @@ export function getStructureGroups({ drawDefinition }) {
 
   // at this point all linkedStructureIds arrays should be equivalent
   // use the first of these as the identity array
-  const groupedStructures = linkedStructureIds[0];
+  const groupedStructureIds = linkedStructureIds[0];
 
   // utility method to recognize equivalent arrays of structureIds
   const identityLink = (a, b) => intersection(a, b).length === a.length;
@@ -262,29 +264,30 @@ export function getStructureGroups({ drawDefinition }) {
   const allLinkStructuresLinked = linkedStructureIds
     .slice(1)
     .reduce((allLinkStructuresLinked, ids) => {
-      return allLinkStructuresLinked && identityLink(ids, groupedStructures);
+      return allLinkStructuresLinked && identityLink(ids, groupedStructureIds);
     }, true);
 
-  // if a drawDefinition contains no links the no structure groups will exist
+  // if a drawDefinition contains no links then no structure groups will exist
   // filter out undefined when there are no links in a drawDefinition
-  const structureGroups = [groupedStructures].filter(Boolean);
+  const structureGroups = [groupedStructureIds].filter(Boolean);
+
+  // this is the same as structureGroups, but excludes VOLUNTARY_CONSOLATION
+  const linkCheck = [groupedStructureIds].filter(Boolean);
 
   // iterate through all structures to add missing structureIds
   const structures = drawDefinition.structures || [];
-  structures
-    .filter(({ stage }) => stage !== VOLUNTARY_CONSOLATION)
-    .forEach((structure) => {
-      const { structureId } = structure;
-      const existingGroup = structureGroups.find((group) => {
-        return group.includes(structureId);
-      });
-      if (!existingGroup) {
-        structureGroups.push([structureId]);
-      }
+  structures.forEach((structure) => {
+    const { structureId, stage } = structure;
+    const existingGroup = structureGroups.find((group) => {
+      return group.includes(structureId);
     });
+    if (!existingGroup) {
+      structureGroups.push([structureId]);
+      if (stage !== VOLUNTARY_CONSOLATION) linkCheck.push(structureId);
+    }
+  });
 
-  const allStructuresLinked =
-    allLinkStructuresLinked && structureGroups.length === 1;
+  const allStructuresLinked = allLinkStructuresLinked && linkCheck.length === 1;
 
   return { structureGroups, allStructuresLinked };
 }
