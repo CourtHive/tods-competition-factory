@@ -106,6 +106,7 @@ export function resetScorecard(params) {
   }
   const result = updateTieMatchUpScore({
     matchUpStatus: TO_BE_PLAYED,
+    removeScore: true,
     tournamentRecord,
     drawDefinition,
     matchUpId,

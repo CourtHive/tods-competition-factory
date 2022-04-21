@@ -118,11 +118,12 @@ it('removes scores for CANCELLED and WALKOVER outcomes', () => {
   const walkover = matchUps.find(
     ({ matchUpStatus }) => matchUpStatus === WALKOVER
   );
-  expect(walkover.score.scoreStringSide1).toEqual(undefined);
+  expect(walkover.score).toEqual(undefined);
+
   const cancelled = matchUps.find(
     ({ matchUpStatus }) => matchUpStatus === CANCELLED
   );
-  expect(cancelled.score.scoreStringSide1).toEqual(undefined);
+  expect(cancelled.score).toEqual(undefined);
 });
 
 it('allows AWAITING_RESULT status with no outcome', () => {

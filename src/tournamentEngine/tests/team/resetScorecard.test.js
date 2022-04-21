@@ -125,5 +125,5 @@ test('can clear TEAM matchUp "scorecards"', () => {
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
-  expect(targetMatchUp.score.sets[0].side1Score).toEqual(0);
+  expect(targetMatchUp.score).toBeUndefined();
 });
