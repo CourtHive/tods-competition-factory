@@ -81,8 +81,8 @@ export function directLoser(params) {
 
   const { positionAssignments: sourcePositionAssignments } =
     structureAssignedDrawPositions({
-      drawDefinition,
       structureId: sourceStructureId,
+      drawDefinition,
     });
 
   const relevantAssignment = sourcePositionAssignments.find(

@@ -87,7 +87,7 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
   }
 );
 
-it.each([asyncDrawEngine, drawEngineSync])(
+it.only.each([asyncDrawEngine, drawEngineSync])(
   'will return MISSING_DRAW_DEFINITION for most methods if no state has been set',
   async (drawEngine) => {
     const drawEngineMethods = Object.keys(drawEngine);
@@ -110,6 +110,7 @@ it.each([asyncDrawEngine, drawEngineSync])(
             'addVoluntaryConsolationStructure',
             'addVoluntaryConsolationStage',
             'newDrawDefinition',
+            'assignSeed',
             'reset',
           ].includes(method)
         ).toEqual(true);
