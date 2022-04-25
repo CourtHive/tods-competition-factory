@@ -126,4 +126,17 @@ test('can clear TEAM matchUp "scorecards"', () => {
   );
 
   expect(targetMatchUp.score).toBeUndefined();
+
+  ({
+    matchUps: [secondRoundDualMatchUp],
+  } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [2],
+    },
+  }));
+  expect(secondRoundDualMatchUp.drawPositions).toEqual([undefined, 3]);
 });
