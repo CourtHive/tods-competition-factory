@@ -76,15 +76,38 @@ export const INCOMPLETE_SOURCE_STRUCTURE = {
   code: 'ERR_INCOMPLETE_STRUCTURE',
 };
 
-export const INVALID_DRAW_POSITION_FOR_SEEDING =
-  'Invalid drawPosition for seedAssignment';
-export const DRAW_POSITION_ASSIGNED = 'drawPosition already assigned';
-export const DRAW_POSITION_NOT_CLEARED = 'drawPosition not cleared';
-export const DRAW_POSITION_NOT_FOUND = 'drawPosition not found';
-export const UNRECOGNIZED_DRAW_TYPE = 'Unrecognized drawType';
-export const MISSING_DRAW_POSITIONS = 'Missing drawPositions';
-export const DRAW_POSITION_ACTIVE = 'drawPosition is active';
-export const INVALID_DRAW_POSITION = 'Invlid drawPosition';
+export const INVALID_DRAW_POSITION_FOR_SEEDING = {
+  message: 'Invalid drawPosition for seedAssignment',
+  code: 'ERR_INVALID_SEEDING_POSITION',
+};
+export const DRAW_POSITION_ASSIGNED = {
+  message: 'drawPosition already assigned',
+  code: 'ERR_EXISTING_POSITION_ASSIGNMENT',
+};
+export const DRAW_POSITION_NOT_CLEARED = {
+  message: 'drawPosition not cleared',
+  code: 'ERR_FAILURE_POSITION_NOT_CLEARED',
+};
+export const DRAW_POSITION_NOT_FOUND = {
+  message: 'drawPosition not found',
+  code: 'ERR_NOT_FOUND_DRAW_POSITION',
+};
+export const UNRECOGNIZED_DRAW_TYPE = {
+  message: 'Unrecognized drawType',
+  code: 'ERR_UNRECOGNIZED_DRAW_TYPE',
+};
+export const MISSING_DRAW_POSITIONS = {
+  message: 'Missing drawPositions',
+  code: 'ERR_MISSING_DRAW_POSITIONS',
+};
+export const DRAW_POSITION_ACTIVE = {
+  message: 'drawPosition is active',
+  code: 'ERR_ACTIVE_DRAW_POSITION',
+};
+export const INVALID_DRAW_POSITION = {
+  message: 'Invlid drawPosition',
+  code: 'ERR_INVALID_DRAW_POSITION',
+};
 export const MISSING_DRAW_POSITION = 'Missing drawPosition';
 export const INVALID_DRAW_TYPE = 'Invalid drawType';
 export const INVALID_DRAW_SIZE = 'Invalid drawSize';
