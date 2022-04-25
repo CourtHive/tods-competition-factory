@@ -88,7 +88,6 @@ export function deleteDrawNotice({ drawId }) {
 }
 export function modifyDrawNotice({ drawDefinition, structureIds }) {
   if (!drawDefinition) {
-    console.log(MISSING_DRAW_DEFINITION);
     return { error: MISSING_DRAW_DEFINITION };
   }
   drawUpdatedAt(drawDefinition, structureIds);
