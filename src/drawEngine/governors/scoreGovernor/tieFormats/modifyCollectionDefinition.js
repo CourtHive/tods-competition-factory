@@ -11,6 +11,7 @@ import {
 
 // all child matchUps need to be checked for collectionAssignments / collectionPositions which need to be removed when collectionDefinition.collectionIds are removed
 export function modifyCollectionDefinition({
+  updateInProgressMatchUps = false,
   tournamentRecord,
   collectionOrder,
   collectionName,
@@ -51,6 +52,7 @@ export function modifyCollectionDefinition({
   if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
 
   return updateTieFormat({
+    updateInProgressMatchUps,
     tournamentRecord,
     drawDefinition,
     structureId,

@@ -2073,6 +2073,8 @@ tournamentEngine.mergeParticipants({ participants });
 
 ## modifyCollectionDefinition
 
+Modifies the `collectionName` and/or `matchUpFormat` for targeted `tieFormat`.
+
 ```js
 tournamentEngine.modifyCollectionDefinition({
   collectionName, // optional
