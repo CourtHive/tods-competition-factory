@@ -320,8 +320,9 @@ function applyMatchUpValues(params) {
     ? params.machUpStatus || (removeWinningSide && TO_BE_PLAYED)
     : params.matchUpStatus || COMPLETED;
   const removeScore =
-    [CANCELLED, WALKOVER].includes(newMatchUpStatus) &&
-    ![INCOMPLETE, ABANDONED].includes(newMatchUpStatus);
+    params.removeScore ||
+    ([CANCELLED, WALKOVER].includes(newMatchUpStatus) &&
+      ![INCOMPLETE, ABANDONED].includes(newMatchUpStatus));
 
   const result = modifyMatchUpScore({
     ...params,

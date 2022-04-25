@@ -4,7 +4,7 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 import { findStructure } from '../../getters/findStructure';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { isActiveDownstream } from './isActiveDownstream';
-import { modifyMatchUpScore } from './modifyMatchUpScore';
+import { setMatchUpStatus } from './setMatchUpStatus';
 import { addGoesTo } from './addGoesTo';
 
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
@@ -95,15 +95,17 @@ export function resetScorecard(params) {
   if (activeDownstream) return { error: CANNOT_CHANGE_WINNINGSIDE };
 
   for (const tieMatchUp of matchUp.tieMatchUps) {
-    const result = modifyMatchUpScore({
+    const result = setMatchUpStatus({
       matchUpId: tieMatchUp.matchUpId,
-      matchUp: tieMatchUp,
-      removeWinningSide: true,
+      matchUpTieId: matchUpId,
+      winningSide: undefined,
       removeScore: true,
+      tournamentRecord,
       drawDefinition,
     });
     if (result.error) return result;
   }
+
   const result = updateTieMatchUpScore({
     matchUpStatus: TO_BE_PLAYED,
     removeScore: true,
