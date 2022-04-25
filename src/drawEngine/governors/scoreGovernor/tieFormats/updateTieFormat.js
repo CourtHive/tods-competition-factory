@@ -1,13 +1,41 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { allEventMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
+import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
+import { instanceCount, makeDeepCopy } from '../../../../utilities';
 import { validUpdate } from './validUpdate';
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,
 } from '../../../notifications/drawNotifications';
 
-import { MISSING_DRAW_DEFINITION } from '../../../../constants/errorConditionConstants';
+import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { TEAM } from '../../../../constants/matchUpTypes';
+import {
+  INVALID_TIE_FORMAT,
+  MISSING_DRAW_DEFINITION,
+} from '../../../../constants/errorConditionConstants';
+
+function copyTieFormat(tieFormat) {
+  return makeDeepCopy(tieFormat, false, true);
+}
+
+function updateCollectionDefinitions(element, tieFormat) {
+  element.tieFormat.collectionDefinitions.forEach((collectionDefinition) => {
+    const updatedDefinition = tieFormat.collectionDefinitions.find(
+      ({ collectionId }) => collectionId === collectionDefinition.collectionId
+    );
+    if (updatedDefinition?.collectionName) {
+      collectionDefinition.collectionName = updatedDefinition.collectionName;
+    }
+    if (updatedDefinition?.matchUpFormat) {
+      collectionDefinition.matchUpFormat = updatedDefinition.matchUpFormat;
+    }
+  });
+}
+
+function mapsCheck(map1, map2) {
+  return Object.keys(map1).every((key) => map1[key] === map2[key]);
+}
 
 // only allows update to collectionName and matchUpFormat
 export function updateTieFormat({
@@ -20,17 +48,70 @@ export function updateTieFormat({
   matchUp,
   event,
 }) {
+  const collectionMap = tieFormat?.collectionDefinitions.reduce(
+    (instanceMap, def) => {
+      instanceMap[def.collectionId] =
+        (instanceMap[def.collectionId] || 0) + def.matchUpCount;
+      return instanceMap;
+    },
+    {}
+  );
+
   if (event && eventId) {
-    event.tieFormat = tieFormat;
+    if (event.tieFormat) {
+      updateCollectionDefinitions(event, tieFormat);
+    } else {
+      // ensure that all matchUps in the event contain tieMatchUps referenced by tieFormat
+      const { matchUps } = allEventMatchUps({
+        matchUpFilters: { matchUpTypes: [SINGLES, DOUBLES] },
+        structure,
+      });
+      const matchUpMap = instanceCount(
+        matchUps.map(({ collectionId }) => collectionId)
+      );
+      if (mapsCheck(collectionMap, matchUpMap)) {
+        event.tieFormat = copyTieFormat(tieFormat);
+      } else {
+        return { error: INVALID_TIE_FORMAT };
+      }
+    }
   } else if (matchUp) {
-    matchUp.tieFormat = tieFormat;
+    if (matchUp.tieFormat) {
+      updateCollectionDefinitions(matchUp, tieFormat);
+    } else {
+      // ensure that all tieMatchUps are referenced by tieFormat
+      const matchUpMap = instanceCount(
+        matchUp.tieMatchUps.map(({ collectionId }) => collectionId)
+      );
+      if (mapsCheck(collectionMap, matchUpMap)) {
+        matchUp.tieFormat = copyTieFormat(tieFormat);
+      } else {
+        return { error: INVALID_TIE_FORMAT };
+      }
+    }
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       drawDefinition,
       matchUp,
     });
   } else if (structure) {
-    structure.tieFormat = tieFormat;
+    if (structure.tieFormat) {
+      updateCollectionDefinitions(structure, tieFormat);
+    } else {
+      // ensure that all matchUps in the structure contain tieMatchUps referenced by tieFormat
+      const { matchUps } = getAllStructureMatchUps({
+        matchUpFilters: { matchUpTypes: [SINGLES, DOUBLES] },
+        structure,
+      });
+      const matchUpMap = instanceCount(
+        matchUps.map(({ collectionId }) => collectionId)
+      );
+      if (mapsCheck(collectionMap, matchUpMap)) {
+        structure.tieFormat = copyTieFormat(tieFormat);
+      } else {
+        return { error: INVALID_TIE_FORMAT };
+      }
+    }
     updateStructureMatchUps({
       updateInProgressMatchUps,
       tournamentRecord,
@@ -40,7 +121,21 @@ export function updateTieFormat({
     });
     modifyDrawNotice({ drawDefinition, structureIds: [structure.structureId] });
   } else if (drawDefinition) {
-    drawDefinition.tieFormat = tieFormat;
+    if (drawDefinition.tieFormat) {
+      updateCollectionDefinitions(drawDefinition, tieFormat);
+    } else {
+      // ensure that all matchUps in the draw contain tieMatchUps referenced by tieFormat
+      const { matchUps } = getAllDrawMatchUps({
+        matchUpFilters: { matchUpTypes: [SINGLES, DOUBLES] },
+        structure,
+      });
+      const matchUpMap = instanceCount(
+        matchUps.map(({ collectionId }) => collectionId)
+      );
+      if (mapsCheck(collectionMap, matchUpMap)) {
+        drawDefinition.tieFormat = copyTieFormat(tieFormat);
+      }
+    }
     const modifiedStructureIds = [];
 
     for (const structure of drawDefinition.structures || []) {
@@ -81,22 +176,7 @@ function updateStructureMatchUps({
 
   for (const matchUp of targetMatchUps) {
     if (matchUp.tieFormat?.collectionDefinitions) {
-      matchUp.tieFormat.collectionDefinitions.forEach(
-        (collectionDefinition) => {
-          const updatedDefinition = tieFormat.collectionDefinitions.find(
-            ({ collectionId }) =>
-              collectionId === collectionDefinition.collectionId
-          );
-          if (updatedDefinition?.collectionName) {
-            collectionDefinition.collectionName =
-              updatedDefinition.collectionName;
-          }
-          if (updatedDefinition?.matchUpFormat) {
-            collectionDefinition.matchUpFormat =
-              updatedDefinition.matchUpFormat;
-          }
-        }
-      );
+      updateCollectionDefinitions(matchUp, tieFormat);
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
         drawDefinition,
