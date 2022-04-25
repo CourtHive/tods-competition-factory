@@ -259,12 +259,15 @@ it.only('can assign seedNumbers and drawPositions to seeded participants', () =>
   const participantId3 = participants[2].participantId;
 
   // attempt to assign a seedNumber higher than seedCount for structure
+  // NOTE: this boundary was abandoned
+  /*
   result = drawEngine.assignSeed({
-    structureId,
     seedNumber: 17,
     participantId,
+    structureId,
   });
   expect(result).toHaveProperty(ERROR);
+  */
 
   let { unplacedSeedNumbers, unfilledPositions } = drawEngine.getNextSeedBlock({
     structureId,

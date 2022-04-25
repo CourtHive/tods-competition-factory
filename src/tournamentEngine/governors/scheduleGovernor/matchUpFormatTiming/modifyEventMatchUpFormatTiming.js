@@ -2,7 +2,6 @@ import { isValid } from '../../../../drawEngine/governors/scoreGovernor/matchUpF
 import { getModifiedMatchUpFormatTiming } from './getModifiedMatchUpTiming';
 import { modifyMatchUpFormatTiming } from './modifyMatchUpFormatTiming';
 
-import { DOUBLES } from '../../../../constants/eventConstants';
 import { SINGLES } from '../../../../constants/matchUpTypes';
 import {
   INVALID_VALUES,
@@ -12,12 +11,11 @@ import {
 
 export function modifyEventMatchUpFormatTiming({
   tournamentRecord,
-  event,
-
-  categoryType,
-  matchUpFormat,
-  averageMinutes,
   recoveryMinutes,
+  averageMinutes,
+  matchUpFormat,
+  categoryType,
+  event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!isValid(matchUpFormat)) return { error: INVALID_VALUES };
@@ -31,8 +29,8 @@ export function modifyEventMatchUpFormatTiming({
     });
 
   const category = event.category;
-  const categoryName = category?.categoryName || category?.ageCategoryCode;
-  const isDoubles = event.eventType === 'DOUBLES';
+  const categoryName =
+    category?.categoryName || category?.ageCategoryCode || event?.eventId;
 
   let currentAverageTime = { categoryNames: [categoryName], minutes: {} };
   let currentRecoveryTime = { categoryNames: [categoryName], minutes: {} };
@@ -67,14 +65,14 @@ export function modifyEventMatchUpFormatTiming({
 
   if (validAverageMinutes) {
     Object.assign(currentAverageTime.minutes, {
-      [isDoubles ? DOUBLES : SINGLES]: averageMinutes,
+      [event?.eventType || SINGLES]: averageMinutes,
     });
     newAverageTimes.push(currentAverageTime);
   }
 
   if (validRecoveryMinutes) {
     Object.assign(currentRecoveryTime.minutes, {
-      [isDoubles ? DOUBLES : SINGLES]: recoveryMinutes,
+      [event?.eventType || SINGLES]: recoveryMinutes,
     });
     newRecoveryTimes.push(currentRecoveryTime);
   }

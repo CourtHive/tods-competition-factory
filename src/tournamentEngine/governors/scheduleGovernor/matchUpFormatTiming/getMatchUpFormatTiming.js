@@ -1,6 +1,7 @@
 import { getMatchUpFormatRecoveryTimes } from './getMatchUpFormatRecoveryTimes';
 import { getMatchUpFormatAverageTimes } from './getMatchUpFormatAverageTimes';
 import { getScheduleTiming } from './getScheduleTiming';
+
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { SINGLES } from '../../../../constants/matchUpTypes';
 import {
@@ -31,7 +32,7 @@ export function getMatchUpFormatTiming({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   // event is optional, so eventType can also be passed in directly
-  eventType = eventType || event?.eventType;
+  eventType = eventType || event?.eventType || SINGLES;
   const defaultTiming = {
     averageTimes: [{ minutes: { default: defaultAverageMinutes } }],
     recoveryTimes: [{ minutes: { default: defaultRecoveryMinutes } }],

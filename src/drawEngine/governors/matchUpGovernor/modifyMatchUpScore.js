@@ -61,6 +61,7 @@ export function modifyMatchUpScore({
 
   if (removeScore) {
     Object.assign(matchUp, toBePlayed);
+    delete matchUp.score;
   } else if (score) {
     matchUp.score = score;
   }

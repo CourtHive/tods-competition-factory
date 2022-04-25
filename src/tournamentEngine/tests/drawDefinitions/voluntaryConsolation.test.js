@@ -73,7 +73,12 @@ it('can generate a draw with voluntary consolation stage and delay attachment', 
     drawIds: [drawId],
     eventIds: [eventId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 32, voluntaryConsolation: {} }],
+    drawProfiles: [
+      {
+        drawSize: 32,
+        voluntaryConsolation: { structureName: 'Voluntary Consolation' },
+      },
+    ],
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -140,4 +145,10 @@ it('can generate a draw with voluntary consolation stage and delay attachment', 
     ({ participantId }) => participantId
   );
   expect(assignedPositions.length).toEqual(32);
+
+  result = tournamentEngine.getDrawData({ drawId });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.getEventData({ eventId });
+  expect(result.eventData.drawsData[0].structures.length).toEqual(2);
 });

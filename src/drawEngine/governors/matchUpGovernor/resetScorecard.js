@@ -7,6 +7,7 @@ import { isActiveDownstream } from './isActiveDownstream';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { addGoesTo } from './addGoesTo';
 
+import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
@@ -104,6 +105,8 @@ export function resetScorecard(params) {
     if (result.error) return result;
   }
   const result = updateTieMatchUpScore({
+    matchUpStatus: TO_BE_PLAYED,
+    removeScore: true,
     tournamentRecord,
     drawDefinition,
     matchUpId,
