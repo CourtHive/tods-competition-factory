@@ -1,5 +1,4 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
-import { makeDeepCopy } from '../../../../utilities';
 import { validUpdate } from './validUpdate';
 import {
   modifyDrawNotice,
@@ -10,11 +9,9 @@ import { MISSING_DRAW_DEFINITION } from '../../../../constants/errorConditionCon
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 
-function copyTieFormat(tieFormat) {
-  return makeDeepCopy(tieFormat, false, true);
-}
-
+// only allows update to collectionName and matchUpFormat
 export function updateTieFormat({
+  updateInProgressMatchUps,
   tournamentRecord,
   drawDefinition,
   structure,
@@ -35,6 +32,7 @@ export function updateTieFormat({
   } else if (structure) {
     structure.tieFormat = tieFormat;
     updateStructureMatchUps({
+      updateInProgressMatchUps,
       tournamentRecord,
       drawDefinition,
       structure,
@@ -47,6 +45,7 @@ export function updateTieFormat({
 
     for (const structure of drawDefinition.structures || []) {
       updateStructureMatchUps({
+        updateInProgressMatchUps,
         tournamentRecord,
         drawDefinition,
         structure,
@@ -63,6 +62,7 @@ export function updateTieFormat({
 }
 
 function updateStructureMatchUps({
+  updateInProgressMatchUps,
   tournamentRecord,
   drawDefinition,
   structure,
@@ -75,15 +75,33 @@ function updateStructureMatchUps({
 
   // all team matchUps in the structure which are not completed and which have no score value should have matchUps added
   const targetMatchUps = matchUps.filter(
-    (matchUp) => validUpdate({ matchUp }) && matchUp.tieFormat
+    (matchUp) =>
+      validUpdate({ matchUp, updateInProgressMatchUps }) && matchUp.tieFormat
   );
 
   for (const matchUp of targetMatchUps) {
-    matchUp.tieFormat = copyTieFormat(tieFormat);
-    modifyMatchUpNotice({
-      tournamentId: tournamentRecord?.tournamentId,
-      drawDefinition,
-      matchUp,
-    });
+    if (matchUp.tieFormat?.collectionDefinitions) {
+      matchUp.tieFormat.collectionDefinitions.forEach(
+        (collectionDefinition) => {
+          const updatedDefinition = tieFormat.collectionDefinitions.find(
+            ({ collectionId }) =>
+              collectionId === collectionDefinition.collectionId
+          );
+          if (updatedDefinition?.collectionName) {
+            collectionDefinition.collectionName =
+              updatedDefinition.collectionName;
+          }
+          if (updatedDefinition?.matchUpFormat) {
+            collectionDefinition.matchUpFormat =
+              updatedDefinition.matchUpFormat;
+          }
+        }
+      );
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        drawDefinition,
+        matchUp,
+      });
+    }
   }
 }
