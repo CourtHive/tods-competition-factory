@@ -1,7 +1,7 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-import { PARTICIPANT_ASSIGNED_DRAW_POSITION } from '../../../constants/errorConditionConstants';
+import { EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT } from '../../../constants/errorConditionConstants';
 import { DOMINANT_DUO } from '../../../constants/tieFormatConstants';
 import { TEAM } from '../../../constants/eventConstants';
 import { PAIR } from '../../../constants/participantTypes';
@@ -43,7 +43,7 @@ it('will not delete participants in draws', () => {
   let result = tournamentEngine.deleteParticipants({
     participantIds: participantIdsToDelete,
   });
-  expect(result.error).toEqual(PARTICIPANT_ASSIGNED_DRAW_POSITION);
+  expect(result.error).toEqual(EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT);
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
   expect(tournamentParticipants.length).toEqual(32);
@@ -73,5 +73,5 @@ it('will not delete pair participants in team draws', () => {
     participantIds: pairParticipantIds,
   });
 
-  expect(result.error).toEqual(PARTICIPANT_ASSIGNED_DRAW_POSITION);
+  expect(result.error).toEqual(EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT);
 });

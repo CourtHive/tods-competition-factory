@@ -84,7 +84,6 @@ export function addMatchUpScheduleItems({
       scheduledDate,
       matchUpId,
     });
-    // if (result?.error) return { error: result.error, scheduledDate };
     if (result?.error)
       return decorateResult({ result, callChain, context: { scheduledDate } });
   }

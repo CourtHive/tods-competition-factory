@@ -11,6 +11,7 @@ import {
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP,
+  MISSING_STRUCTURE,
 } from '../../constants/errorConditionConstants';
 
 function drawUpdatedAt(drawDefinition, structureIds) {
@@ -96,4 +97,14 @@ export function modifyDrawNotice({ drawDefinition, structureIds }) {
     payload: { drawDefinition },
     key: drawDefinition.drawId,
   });
+}
+
+export function modifySeedAssignments({ drawDefinition, structure }) {
+  if (!drawDefinition) {
+    return { error: MISSING_DRAW_DEFINITION };
+  }
+  if (!structure) {
+    return { error: MISSING_STRUCTURE };
+  }
+  modifyDrawNotice({ drawDefinition, sructureIds: [structure.structureId] });
 }
