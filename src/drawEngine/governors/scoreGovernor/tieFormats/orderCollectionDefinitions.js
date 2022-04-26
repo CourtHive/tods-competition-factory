@@ -44,10 +44,7 @@ export function orderCollectionDefinitions({
   if (typeof orderMap !== 'object') return { error: INVALID_VALUES, orderMap };
 
   if (eventId && event?.tieFormat) {
-    event.tieFormat = getOrderedTieFormat({
-      tieFormat: event.tieFormat,
-      orderMap,
-    });
+    updateEventTieFormat({ tournamentRecord, event, orderMap });
   } else if (matchUpId) {
     const { matchUp, error } = findMatchUp({
       drawDefinition,
@@ -85,35 +82,89 @@ export function orderCollectionDefinitions({
         drawDefinition,
         structureIds: [structure.structureId],
       });
-    }
-  } else if (drawDefinition?.tieFormat) {
-    const updatedFormat = getOrderedTieFormat({
-      tieFormat: drawDefinition.tieFormat,
-      orderMap,
-    });
-    drawDefinition.tieFormat = updatedFormat;
-    const modifiedStructureIds = [];
-
-    for (const structure of drawDefinition.structures || []) {
-      if (structure.tieFormat)
-        structure.tieFormat = getOrderedTieFormat({
-          tieFormat: structure.tieFormat,
-          orderMap,
-        });
-      updateStructureMatchUps({
+    } else if (drawDefinition.tieFormat) {
+      updateDrawTieFormat({
+        structureIds: [structureId],
         tournamentRecord,
         drawDefinition,
-        structure,
         orderMap,
       });
-      modifiedStructureIds.push(structure.structureId);
+    } else if (event?.tieFormat) {
+      updateEventTieFormat({
+        structureIds: [structureId],
+        tournamentRecord,
+        event,
+        orderMap,
+      });
+    } else {
+      return { error: NOT_FOUND };
     }
-    modifyDrawNotice({ drawDefinition, structureIds: modifiedStructureIds });
+  } else if (drawDefinition?.tieFormat) {
+    updateDrawTieFormat({ tournamentRecord, drawDefinition, orderMap });
   } else {
     return { error: NOT_FOUND };
   }
 
   return { ...SUCCESS };
+}
+
+function updateEventTieFormat({
+  tournamentRecord,
+  structureIds, // allow scoping to only specific structureIds
+  orderMap,
+  event,
+}) {
+  const updatedFormat = getOrderedTieFormat({
+    tieFormat: event.tieFormat,
+    orderMap,
+  });
+  if (!structureIds?.length) event.tieFormat = updatedFormat;
+
+  for (const drawDefinition of event.drawDefinitions || []) {
+    updateDrawTieFormat({
+      tournamentRecord,
+      drawDefinition,
+      structureIds,
+      orderMap,
+      event,
+    });
+  }
+}
+
+function updateDrawTieFormat({
+  tournamentRecord,
+  drawDefinition,
+  structureIds,
+  orderMap,
+  event,
+}) {
+  const updatedFormat = getOrderedTieFormat({
+    tieFormat: drawDefinition.tieFormat,
+    orderMap,
+  });
+  if (!structureIds?.length) drawDefinition.tieFormat = updatedFormat;
+  const modifiedStructureIds = [];
+
+  for (const structure of drawDefinition.structures || []) {
+    // if structureIds is present, only modify referenced structures
+    if (structureIds?.length && !structureIds.includes(structure.structureId))
+      continue;
+
+    if (structure.tieFormat || structureIds?.includes(structure.structureId))
+      structure.tieFormat = getOrderedTieFormat({
+        tieFormat:
+          structure.tieFormat || drawDefinition.tieFormat || event.tieFormat,
+        orderMap,
+      });
+    updateStructureMatchUps({
+      tournamentRecord,
+      drawDefinition,
+      structure,
+      orderMap,
+    });
+    modifiedStructureIds.push(structure.structureId);
+  }
+  modifyDrawNotice({ drawDefinition, structureIds: modifiedStructureIds });
 }
 
 function updateStructureMatchUps({
