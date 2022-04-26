@@ -12,6 +12,7 @@ import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  DRAW_SIZE_MISMATCH,
   INVALID_STAGE,
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
@@ -41,7 +42,7 @@ export function setStageDrawSize({
 
   if (drawSize < totalStageDrawPositions) {
     return {
-      error: 'Cannot set drawSize to be less than existing entries',
+      error: DRAW_SIZE_MISMATCH,
     };
   }
 
@@ -112,18 +113,20 @@ export function setStageWildcardsCount({
   });
 
   if (wildcardsCount < wildcardEntriesCount) {
-    return {
-      error:
+    const error = Object.assign(DRAW_SIZE_MISMATCH, {
+      message:
         'Number of Wildcards cannot be less than number of Wildcards already entered',
-    };
+    });
+    return { error };
   }
 
   const totalStageEntriesCount =
     directAcceptanceEntriesCount + wildcardsCount + qualifyingPositions;
   if (totalStageEntriesCount > stageDrawPositions) {
-    return {
-      error: 'Total stage Entries cannot be greater than drawPositions',
-    };
+    const error = Object.assign(DRAW_SIZE_MISMATCH, {
+      message: 'Total stage Entries cannot be greater than drawPositions',
+    });
+    return { error };
   }
 
   modifyEntryProfile({
@@ -144,8 +147,12 @@ export function setStageQualifiersCount({
   if (!stageExists({ drawDefinition, stage })) {
     return { error: INVALID_STAGE };
   }
-  if (stage !== MAIN)
-    return { error: 'qualifiersCount can only be set for main stage' };
+  if (stage !== MAIN) {
+    const error = Object.assign(DRAW_SIZE_MISMATCH, {
+      message: 'qualifiersCount can only be set for main stage',
+    });
+    return { error };
+  }
 
   const stageDrawPositions = getStageDrawPositionsCount({
     drawDefinition,
@@ -162,10 +169,12 @@ export function setStageQualifiersCount({
   const totalStageDrawPositions =
     directAcceptanceEntriesCount + wildcardEntriesCount + qualifiersCount;
 
-  if (totalStageDrawPositions > stageDrawPositions)
-    return {
-      error: 'Total stage Entries cannot be greater than drawPositions',
-    };
+  if (totalStageDrawPositions > stageDrawPositions) {
+    const error = Object.assign(DRAW_SIZE_MISMATCH, {
+      message: 'Total stage Entries cannot be greater than drawPositions',
+    });
+    return { error };
+  }
 
   modifyEntryProfile({
     attributes: [{ [stage]: { qualifiersCount } }],

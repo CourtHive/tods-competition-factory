@@ -3,6 +3,7 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import { generateCandidate, pairingHash } from './generateCandidate';
 import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
 
+import { NO_CANDIDATES } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
 import { TEAM } from '../../../constants/participantTypes';
@@ -84,7 +85,7 @@ export function generateDrawMaticRound({
   const { candidatesCount, participantIdPairings, iterations } =
     getPairings(params);
 
-  if (!candidatesCount) return { error: 'No Candidates' };
+  if (!candidatesCount) return { error: NO_CANDIDATES };
 
   if (generateMatchUps) {
     const result = generateAdHocMatchUps({

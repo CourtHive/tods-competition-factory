@@ -88,6 +88,10 @@ export const INVALID_DRAW_SIZE = {
   message: 'Invalid drawSize',
   code: 'ERR_INVALID_DRAW_SIZE',
 };
+export const DRAW_SIZE_MISMATCH = {
+  message: 'Cannot set drawSize to be less than existing entries',
+  code: 'ERR_INVALID_DRAW_SIZE_MISMATCH',
+};
 export const MISSING_DRAW_SIZE = {
   message: 'Missing drawSize',
   code: 'ERR_MISSING_DRAW_SIZE',
@@ -613,6 +617,16 @@ export const NO_MODIFICATIONS_APPLIED = {
   code: 'ERR_UNCHANGED_NO_MODIFICATIONS_APPLIED',
 };
 
+export const UNABLE_TO_ASSIGN_COURT = {
+  message: 'Unable to assign court',
+  code: 'ERR_UNCHANGED_COURT_NOT_ASSIGNED',
+};
+
+export const NO_CANDIDATES = {
+  message: 'No Candidates',
+  code: 'ERR_UNCHANGED_NO_CANDIDATES',
+};
+
 export const INVALID_CONFIGURATION = {
   message: 'Invalid configuration',
   code: 'ERR_INVALID_CONFIG',
@@ -683,6 +697,7 @@ export const errorConditionConstants = {
   DRAW_POSITION_ASSIGNED,
   DRAW_POSITION_NOT_CLEARED,
   DRAW_POSITION_NOT_FOUND,
+  DRAW_SIZE_MISMATCH,
   DUPLICATE_VALUE,
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
   ENTRY_STATUS_NOT_ALLOWED_IN_STAGE,
@@ -795,6 +810,7 @@ export const errorConditionConstants = {
   MISSING_VALUE,
   MISSING_VENUE_ID,
   MODIFICATIONS_FAILED,
+  NO_CANDIDATES,
   NO_MODIFICATIONS_APPLIED,
   NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS,
   NO_PARTICIPANT_REMOVED,
@@ -817,6 +833,7 @@ export const errorConditionConstants = {
   STAGE_SEQUENCE_LIMIT,
   STRUCTURE_NOT_FOUND,
   TEAM_NOT_FOUND,
+  UNABLE_TO_ASSIGN_COURT,
   UNLINKED_STRUCTURES,
   UNRECOGNIZED_DRAW_TYPE,
   UNRECOGNIZED_MATCHUP_FORMAT,
