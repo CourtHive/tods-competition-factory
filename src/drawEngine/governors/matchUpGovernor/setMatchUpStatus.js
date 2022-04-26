@@ -35,7 +35,7 @@ import {
   NO_VALID_ACTIONS,
   INVALID_VALUES,
   INCOMPATIBLE_MATCHUP_STATUS,
-  CANNOT_CHANGE_WINNINGSIDE,
+  CANNOT_CHANGE_WINNING_SIDE,
   NOT_IMPLEMENTED,
 } from '../../../constants/errorConditionConstants';
 import {
@@ -309,7 +309,7 @@ function winningSideWithDownstreamDependencies(params) {
   ) {
     return applyMatchUpValues(params);
   } else {
-    return { error: CANNOT_CHANGE_WINNINGSIDE };
+    return { error: CANNOT_CHANGE_WINNING_SIDE };
   }
 }
 

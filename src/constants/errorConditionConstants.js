@@ -416,7 +416,7 @@ export const CANNOT_REMOVE_PARTICIPANTS = {
   message: 'Cannot remove participants',
   code: 'ERR_UNCHANGED_CANNOT_REMOVE_PARTICIPANTS',
 };
-export const CANNOT_CHANGE_WINNINGSIDE = {
+export const CANNOT_CHANGE_WINNING_SIDE = {
   message: 'Cannot change winningSide',
   code: 'ERR_UNCHANGED_CANNOT_CHANGE_WINNING_SIDE',
 };
@@ -716,7 +716,7 @@ export const METHOD_NOT_FOUND = {
 };
 
 export const errorConditionConstants = {
-  CANNOT_CHANGE_WINNINGSIDE,
+  CANNOT_CHANGE_WINNING_SIDE,
   CANNOT_MODIFY_TIEFORMAT,
   CANNOT_REMOVE_PARTICIPANTS,
   COURT_EXISTS,

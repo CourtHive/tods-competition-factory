@@ -22,6 +22,7 @@ import {
   DOUBLE_WALKOVER,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import { decorateResult } from '../../../global/functions/decorateResult';
 
 export function doubleWalkoverAdvancement(params) {
   const {
@@ -77,6 +78,8 @@ function conditionallyAdvanceDrawPosition(params) {
     structure,
   } = params;
 
+  const stack = 'conditionallyAdvanceDrawPosition';
+
   const noContextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
     (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
   );
@@ -96,7 +99,7 @@ function conditionallyAdvanceDrawPosition(params) {
 
   // if there are 2 drawPositions in winnerMatchUp, something is wrong
   if (winnerMatchUpDrawPositions.length > 1)
-    return { error: DRAW_POSITION_ASSIGNED };
+    return decorateResult({ result: { error: DRAW_POSITION_ASSIGNED }, stack });
 
   const { pairedPreviousMatchUpisWOWO } =
     getPairedPreviousMatchUpIsWOWO(params);
