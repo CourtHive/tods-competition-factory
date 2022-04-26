@@ -119,7 +119,6 @@ export function addCollectionDefinition({
       updateInProgressMatchUps,
       collectionDefinition,
       structure,
-      tieFormat,
       uuids,
     });
     addedMatchUps.push(...result.newMatchUps);
@@ -135,6 +134,9 @@ export function addCollectionDefinition({
   } else if (matchUpId && matchUp) {
     if (!validUpdate({ matchUp, updateInProgressMatchUps }))
       return { error: 'cannot modify tieFormat for completed matchUps' };
+
+    if (matchUp.tieFormat)
+      return { error: 'cannot add collections when tieFormat present' };
 
     matchUp.tieFormat = tieFormat;
     const { matchUps: newMatchUps = [] } = generateCollectionMatchUps({
@@ -162,7 +164,6 @@ export function addCollectionDefinition({
         updateInProgressMatchUps,
         collectionDefinition,
         structure,
-        tieFormat,
         uuids,
       });
       modifiedStructureIds.push(structureId);
@@ -189,7 +190,6 @@ function updateStructureMatchUps({
   updateInProgressMatchUps,
   collectionDefinition,
   structure,
-  tieFormat,
   uuids,
 }) {
   const newMatchUps = [];
@@ -199,8 +199,9 @@ function updateStructureMatchUps({
   })?.matchUps;
 
   // all team matchUps in the structure which are not completed and which have no score value should have matchUps added
-  const targetMatchUps = matchUps.filter((matchUp) =>
-    validUpdate({ matchUp, updateInProgressMatchUps })
+  const targetMatchUps = matchUps.filter(
+    (matchUp) =>
+      validUpdate({ matchUp, updateInProgressMatchUps }) && !matchUp.tieFormat
   );
 
   for (const matchUp of targetMatchUps) {
@@ -212,9 +213,6 @@ function updateStructureMatchUps({
     if (!Array.isArray(matchUp.tieMatchUps)) matchUp.tieMatchUps = [];
     matchUp.tieMatchUps.push(...tieMatchUps);
     newMatchUps.push(...tieMatchUps);
-
-    // if a tieFormat is already present on matchUp, update
-    if (matchUp.tieFormat) matchUp.tieFormat = copyTieFormat(tieFormat);
   }
   return { newMatchUps, targetMatchUps };
 }
