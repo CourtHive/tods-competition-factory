@@ -36,6 +36,7 @@ import {
   INVALID_VALUES,
   INCOMPATIBLE_MATCHUP_STATUS,
   CANNOT_CHANGE_WINNINGSIDE,
+  NOT_IMPLEMENTED,
 } from '../../../constants/errorConditionConstants';
 import {
   BYE,
@@ -126,7 +127,10 @@ export function setMatchUpStatus(params) {
 
   if (matchUp.matchUpType === TEAM) {
     // do not direclty set team score... unless walkover/default/double walkover/Retirement
-    return { error: 'DIRECT SCORING of TEAM matchUp not implemented' };
+    return {
+      error: NOT_IMPLEMENTED,
+      info: 'DIRECT SCORING of TEAM matchUp not implemented',
+    };
   }
 
   const matchUpTieId = inContextMatchUp.matchUpTieId;

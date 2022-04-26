@@ -52,6 +52,10 @@ export const DRAW_POSITION_ASSIGNED = {
   message: 'drawPosition already assigned',
   code: 'ERR_EXISTING_POSITION_ASSIGNMENT',
 };
+export const SCHEDULE_NOT_CLEARED = {
+  message: 'Schedule not cleared',
+  code: 'ERR_UNCHANGED_SCHEDULE_NOT_CLEARED',
+};
 export const DRAW_POSITION_NOT_CLEARED = {
   message: 'drawPosition not cleared',
   code: 'ERR_FAILURE_POSITION_NOT_CLEARED',
@@ -104,7 +108,10 @@ export const DRAW_ID_EXISTS = {
   message: 'drawId exists',
   code: 'ERR_EXISTING_DRAW_ID',
 };
-
+export const INVALID_PARTICIPANT_SEEDING = {
+  message: 'participantId cannot be assigned to multiple seedNumbers',
+  code: 'INVALID_PARTICIPANT_SEEDING',
+};
 export const SEEDSCOUNT_GREATER_THAN_DRAW_SIZE = {
   message: 'seedsCount greater than drawSize',
   code: 'ERR_INVALID_SEED_COUNT',
@@ -112,6 +119,10 @@ export const SEEDSCOUNT_GREATER_THAN_DRAW_SIZE = {
 export const MISSING_SEEDCOUNT_THRESHOLDS = {
   message: 'Missing seedCountThresholds',
   code: 'ERR_MISSING_SEED_COUNT_THRESHOLD',
+};
+export const INVALID_ASSIGNMENT = {
+  message: 'Invalid assignment',
+  code: 'ERR_INVALID_ASSIGNMENT',
 };
 export const MISSING_SEED_ASSIGNMENTS = {
   message: 'Missing seedAssignments',
@@ -210,7 +221,10 @@ export const MISSING_POSITION_ASSIGNMENTS = {
   message: 'Missing positionAssignments',
   code: 'ERR_MISSING_POSITION_ASSIGNMENTS',
 };
-
+export const INVALID_MATCHUP_STATUS_BYE = {
+  message: 'Cannot Assign BYE status if no assignment: { bye: true }',
+  code: 'ERR_UNCHANGED_CANNOT_ASSIGN_BYE',
+};
 export const UNRECOGNIZED_MATCHUP_STATUS = {
   message: 'Unrecognized matchUpStatus',
   code: 'ERR_UNRECOGNIZED_MATCHUP_STATUS',
@@ -394,6 +408,10 @@ export const NO_PARTICIPANTS = {
   message: 'Tournament has no participants',
   code: 'ERR_NO_TOURNAMENT_PARTICIPANTS',
 };
+export const CANNOT_MODIFY_TIEFORMAT = {
+  message: 'Cannot modify tieFormat',
+  code: 'ERR_UNCHANGED_CANNOT_MODIFY_TIEFORMAT',
+};
 export const CANNOT_REMOVE_PARTICIPANTS = {
   message: 'Cannot remove participants',
   code: 'ERR_UNCHANGED_CANNOT_REMOVE_PARTICIPANTS',
@@ -518,6 +536,15 @@ export const NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS = {
   code: 'ERR_UNCHANGED_NO_AVAILABLE_STAGE_SPACE',
 };
 
+export const NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS = {
+  message: 'Insufficient drawPositions to accommodate qualifiers',
+  code: 'ERR_UNCHANGED_NO_DRAW_POSITIONS_FOR_QUALIFIERS',
+};
+export const INSUFFICIENT_DRAW_POSITIONS = {
+  message: 'Insufficient drawPositions to accommodate entries',
+  code: 'ERR_INSUFFICIENT_DRAW_POSITIONS',
+};
+
 export const MISSING_PENALTY_TYPE = {
   message: 'Missing penaltyType',
   code: 'ERR_MISSING_PENALTY_TYPE',
@@ -577,10 +604,13 @@ export const INVALID_RESUME_TIME = {
   message: 'Invalid resumeTime',
   code: 'ERR_INVALID_RESUME_TIME',
 };
-
 export const INVALID_TIME_ITEM = {
   message: 'Invalid timeItem',
   code: 'ERR_INVALID_TIME_ITEMS',
+};
+export const MISSING_ASYNC_STATE_PROVIDER = {
+  message: 'Missing async state provider',
+  code: 'ERR_MISSING_ASYNC_STATE_PROVIDER',
 };
 export const MISSING_TIME_ITEM = {
   message: 'Missing timeItem',
@@ -648,7 +678,6 @@ export const TEAM_NOT_FOUND = {
   message: 'Team not found',
   code: 'ERR_NOT_FOUND_TEAM',
 };
-
 export const NO_VALID_ACTIONS = {
   message: 'No valid actions',
   code: 'ERR_NO_VALID_ACTIONS',
@@ -688,6 +717,7 @@ export const METHOD_NOT_FOUND = {
 
 export const errorConditionConstants = {
   CANNOT_CHANGE_WINNINGSIDE,
+  CANNOT_MODIFY_TIEFORMAT,
   CANNOT_REMOVE_PARTICIPANTS,
   COURT_EXISTS,
   COURT_NOT_FOUND,
@@ -714,6 +744,8 @@ export const errorConditionConstants = {
   EXISTING_ROUND,
   INCOMPATIBLE_MATCHUP_STATUS,
   INCOMPLETE_SOURCE_STRUCTURE,
+  INSUFFICIENT_DRAW_POSITIONS,
+  INVALID_ASSIGNMENT,
   INVALID_BOOKINGS,
   INVALID_CONFIGURATION,
   INVALID_DATE_AVAILABILITY,
@@ -728,11 +760,13 @@ export const errorConditionConstants = {
   INVALID_GAME_SCORES,
   INVALID_MATCHUP_FORMAT,
   INVALID_MATCHUP_STATUS,
+  INVALID_MATCHUP_STATUS_BYE,
   INVALID_MATCHUP,
   INVALID_OBJECT,
   INVALID_PARTICIPANT_ID,
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_ROLE,
+  INVALID_PARTICIPANT_SEEDING,
   INVALID_PARTICIPANT_TYPE,
   INVALID_PARTICIPANT,
   INVALID_POLICY_DEFINITION,
@@ -756,6 +790,7 @@ export const errorConditionConstants = {
   MATCHUP_NOT_FOUND,
   METHOD_NOT_FOUND,
   MISSING_ASSIGNMENTS,
+  MISSING_ASYNC_STATE_PROVIDER,
   MISSING_AVOIDANCE_POLICY,
   MISSING_COLLECTION_DEFINITION,
   MISSING_COURT_ID,
@@ -811,6 +846,7 @@ export const errorConditionConstants = {
   MISSING_VENUE_ID,
   MODIFICATIONS_FAILED,
   NO_CANDIDATES,
+  NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS,
   NO_MODIFICATIONS_APPLIED,
   NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS,
   NO_PARTICIPANT_REMOVED,
@@ -829,6 +865,7 @@ export const errorConditionConstants = {
   POLICY_NOT_ATTACHED,
   POLICY_NOT_FOUND,
   SCALE_ITEM_NOT_FOUND,
+  SCHEDULE_NOT_CLEARED,
   SEEDSCOUNT_GREATER_THAN_DRAW_SIZE,
   STAGE_SEQUENCE_LIMIT,
   STRUCTURE_NOT_FOUND,

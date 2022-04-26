@@ -7,6 +7,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_DATE,
   INVALID_VALUES,
+  SCHEDULE_NOT_CLEARED,
 } from '../../../constants/errorConditionConstants';
 import {
   MISSING_DATE,
@@ -112,7 +113,7 @@ export function removeInvalidScheduling({ tournamentRecord }) {
       scheduledDates: invalidScheduledDates,
       tournamentRecord,
     });
-    if (!result.clearedScheduleCount) return { error: 'schedule not cleared' };
+    if (!result.clearedScheduleCount) return { error: SCHEDULE_NOT_CLEARED };
   }
 
   return { unscheduledMatchUpIds: invalidSchedulingMatchUpIds };

@@ -4,12 +4,15 @@ import { getAccessorValue } from '../../utilities/getAccessorValue';
 import { addNotice } from '../../global/state/globalState';
 import { UUID } from '../../utilities';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { GROUPING_ATTRIBUTE } from '../../constants/extensionConstants';
+import { INDIVIDUAL, TEAM } from '../../constants/participantTypes';
 import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { SUCCESS } from '../../constants/resultConstants';
-import { INDIVIDUAL, TEAM } from '../../constants/participantTypes';
+import {
+  MISSING_TOURNAMENT_RECORD,
+  PARTICIPANT_NOT_FOUND,
+} from '../../constants/errorConditionConstants';
 
 /**
  *
@@ -116,6 +119,6 @@ export function generateTeamsFromParticipantAttribute({
   if (participantsAdded) {
     return { ...SUCCESS, participantsAdded };
   } else {
-    return { error: 'No matching participants found' };
+    return { error: PARTICIPANT_NOT_FOUND };
   }
 }

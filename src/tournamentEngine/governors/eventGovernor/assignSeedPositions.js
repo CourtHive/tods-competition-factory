@@ -8,6 +8,7 @@ import {
   MISSING_DRAW_ID,
   MISSING_ASSIGNMENTS,
   NO_MODIFICATIONS_APPLIED,
+  INVALID_PARTICIPANT_SEEDING,
 } from '../../../constants/errorConditionConstants';
 
 /*
@@ -66,7 +67,7 @@ export function assignSeedPositions(params) {
 
   if (participantIds.length !== uniqueValues(participantIds).length) {
     return {
-      error: 'participantId cannot be assigned to multiple seedNumbers',
+      error: INVALID_PARTICIPANT_SEEDING,
     };
   }
 

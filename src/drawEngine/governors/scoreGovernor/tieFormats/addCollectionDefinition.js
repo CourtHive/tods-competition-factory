@@ -17,6 +17,7 @@ import {
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 import {
+  CANNOT_MODIFY_TIEFORMAT,
   DUPLICATE_VALUE,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
@@ -132,11 +133,11 @@ export function addCollectionDefinition({
       addedMatchUps,
     });
   } else if (matchUpId && matchUp) {
-    if (!validUpdate({ matchUp, updateInProgressMatchUps }))
-      return { error: 'cannot modify tieFormat for completed matchUps' };
-
-    if (matchUp.tieFormat)
-      return { error: 'cannot add collections when tieFormat present' };
+    if (
+      !validUpdate({ matchUp, updateInProgressMatchUps }) ||
+      matchUp.tieFormat
+    )
+      return { error: CANNOT_MODIFY_TIEFORMAT };
 
     matchUp.tieFormat = tieFormat;
     const { matchUps: newMatchUps = [] } = generateCollectionMatchUps({

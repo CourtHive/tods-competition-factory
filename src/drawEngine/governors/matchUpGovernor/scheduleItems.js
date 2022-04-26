@@ -63,7 +63,7 @@ export function addMatchUpScheduleItems({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!schedule) return { error: MISSING_VALUE };
-  const callChain = 'addMatchUpScheduleItems';
+  const stack = 'addMatchUpScheduleItems';
 
   const {
     endTime,
@@ -85,7 +85,7 @@ export function addMatchUpScheduleItems({
       matchUpId,
     });
     if (result?.error)
-      return decorateResult({ result, callChain, context: { scheduledDate } });
+      return decorateResult({ result, stack, context: { scheduledDate } });
   }
   if (scheduledTime !== undefined) {
     const result = addMatchUpScheduledTime({

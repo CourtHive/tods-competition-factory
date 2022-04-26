@@ -1,7 +1,10 @@
 import { intersection } from '../../utilities/arrays';
 import syncGlobalState from './syncGlobalState';
 
-import { MISSING_VALUE } from '../../constants/errorConditionConstants';
+import {
+  MISSING_ASYNC_STATE_PROVIDER,
+  MISSING_VALUE,
+} from '../../constants/errorConditionConstants';
 
 const globalState = {
   timers: { default: { elapsedTime: 0 } },
@@ -61,7 +64,7 @@ export function createInstanceState() {
     }
     return { success: true };
   } else {
-    return { error: 'Missing async state provider' };
+    return { error: MISSING_ASYNC_STATE_PROVIDER };
   }
 }
 

@@ -4,6 +4,7 @@ import { analyzeSet } from '../analyzeSet';
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import {
   INVALID_GAME_SCORES,
+  INVALID_VALUES,
   INVALID_WINNING_SIDE,
   MISSING_SET_OBJECT,
 } from '../../../../constants/errorConditionConstants';
@@ -35,7 +36,7 @@ test('can properly analyze standard advantage sets with tiebreak', () => {
   ({ standardSetError: error, isValidSetOutcome } = analysis);
   expect(analysis.isValidSet).toEqual(false);
   expect(isValidSetOutcome).toEqual(false);
-  expect(error).toEqual('not standard set');
+  expect(error.code).toEqual(INVALID_VALUES.code);
 
   setObject = { setNumber: 1, side2Score: 3, winningSide: 1 };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
@@ -71,31 +72,31 @@ test('can properly analyze standard advantage sets with tiebreak', () => {
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
   ({ standardSetError: error, isValidSetOutcome } = analysis);
   expect(isValidSetOutcome).toEqual(false);
-  expect(error).toEqual('winningSide game scoreString is not high');
+  expect(error.message).toEqual('winningSide game scoreString is not high');
 
   setObject = { setNumber: 1, side1Score: 7, side2Score: 3, winningSide: 1 };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
   ({ standardSetError: error, isValidSetOutcome } = analysis);
   expect(isValidSetOutcome).toEqual(false);
-  expect(error).toEqual('invalid winning game scoreString (2)');
+  expect(error.message).toEqual('invalid winning game scoreString (2)');
 
   setObject = { setNumber: 1, side1Score: 8, side2Score: 3, winningSide: 1 };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
   ({ standardSetError: error, isValidSetOutcome } = analysis);
   expect(isValidSetOutcome).toEqual(false);
-  expect(error).toEqual('invalid winning game scoreString (2)');
+  expect(error.message).toEqual('invalid winning game scoreString (2)');
 
   setObject = { setNumber: 1, side1Score: 6, side2Score: 5, winningSide: 1 };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
   ({ standardSetError: error, isValidSetOutcome } = analysis);
   expect(isValidSetOutcome).toEqual(false);
-  expect(error).toEqual('invalid winning game scoreString (3)');
+  expect(error.message).toEqual('invalid winning game scoreString (3)');
 
   setObject = { setNumber: 1, side1Score: 8, side2Score: 6, winningSide: 1 };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
   ({ standardSetError: error, isValidSetOutcome } = analysis);
   expect(isValidSetOutcome).toEqual(false);
-  expect(error).toEqual('invalid winning game scoreString (5)');
+  expect(error.message).toEqual('invalid winning game scoreString (5)');
 
   setObject = {
     setNumber: 1,
@@ -108,7 +109,7 @@ test('can properly analyze standard advantage sets with tiebreak', () => {
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
   ({ standardSetError: error, isValidSetOutcome } = analysis);
   expect(isValidSetOutcome).toEqual(false);
-  expect(error).toEqual('invalid winning game scoreString (5)');
+  expect(error.message).toEqual('invalid winning game scoreString (5)');
 
   setObject = {
     setNumber: 1,
@@ -119,7 +120,7 @@ test('can properly analyze standard advantage sets with tiebreak', () => {
   };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
   ({ standardSetError: error, isValidSetOutcome } = analysis);
-  expect(error).toEqual('invalid tiebreak scores (1)');
+  expect(error.message).toEqual('invalid tiebreak scores (1)');
   expect(isValidSetOutcome).toEqual(false);
 
   setObject = {
@@ -132,7 +133,7 @@ test('can properly analyze standard advantage sets with tiebreak', () => {
   };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
   ({ standardSetError: error, isValidSetOutcome } = analysis);
-  expect(error).toEqual('invalid tiebreak scores (2)');
+  expect(error.message).toEqual('invalid tiebreak scores (2)');
   expect(isValidSetOutcome).toEqual(false);
 
   setObject = {
@@ -145,7 +146,7 @@ test('can properly analyze standard advantage sets with tiebreak', () => {
   };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
   ({ standardSetError: error, isValidSetOutcome } = analysis);
-  expect(error).toEqual('invalid tiebreak scores (3)');
+  expect(error.message).toEqual('invalid tiebreak scores (3)');
   expect(isValidSetOutcome).toEqual(false);
 });
 
@@ -175,7 +176,7 @@ test('can properly analyze final sets with no advantage and no tiebreak', () => 
   setObject = { setNumber: 5, side1Score: 12, side2Score: 9, winningSide: 1 };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
   ({ standardSetError: error, isValidSetOutcome } = analysis);
-  expect(error).toEqual('invalid winning game scoreString (4)');
+  expect(error.message).toEqual('invalid winning game scoreString (4)');
   expect(analysis.isValidSetNumber).toEqual(true);
   expect(analysis.isValidSet).toEqual(false);
   expect(isValidSetOutcome).toEqual(false);
@@ -183,14 +184,14 @@ test('can properly analyze final sets with no advantage and no tiebreak', () => 
   setObject = { setNumber: 5, side1Score: 7, side2Score: 3, winningSide: 1 };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
   ({ standardSetError: error, isValidSetOutcome } = analysis);
-  expect(error).toEqual('invalid winning game scoreString (4)');
+  expect(error.message).toEqual('invalid winning game scoreString (4)');
   expect(analysis.isValidSet).toEqual(false);
   expect(isValidSetOutcome).toEqual(false);
 
   setObject = { setNumber: 5, side1Score: 7, side2Score: 6, winningSide: 1 };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });
   ({ standardSetError: error, isValidSetOutcome } = analysis);
-  expect(error).toEqual('invalid winning game scoreString (3)');
+  expect(error.message).toEqual('invalid winning game scoreString (3)');
   expect(analysis.isValidSet).toEqual(false);
   expect(isValidSetOutcome).toEqual(false);
   expect(analysis.isValidSet).toEqual(false);

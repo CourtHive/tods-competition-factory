@@ -1,18 +1,21 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { findStructure } from '../../getters/findStructure';
 import { generateRange } from '../../../utilities';
 
 import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { getQualifiersCount } from '../../getters/getQualifiersCount';
+import {
+  INVALID_STAGE,
+  NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS,
+} from '../../../constants/errorConditionConstants';
 
 export function positionQualifiers(params) {
   let { structure, structureId } = params; // participants is being passed in
   if (!structure) ({ structure } = findStructure(params));
   if (!structureId) ({ structureId } = structure);
   if (structure.stage === CONSOLATION) {
-    console.log('Consolation Stage: No Qualifiers');
-    return { error: 'Consolation Stage: No Qualifiters' };
+    return { error: INVALID_STAGE };
   }
 
   const { positionAssignments, unplacedQualifiersCount } =
@@ -26,7 +29,7 @@ export function positionQualifiers(params) {
     .map((assignment) => assignment.drawPosition);
 
   if (unplacedQualifiersCount > unfilledDrawPositions.length) {
-    return { error: 'Insufficient drawPositions to accommodate qualifiers' };
+    return { error: NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS };
   }
 
   generateRange(0, unplacedQualifiersCount).forEach(() => {

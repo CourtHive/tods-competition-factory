@@ -7,6 +7,7 @@ import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { shuffleArray } from '../../../utilities';
 
+import { INSUFFICIENT_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
 import { PLAY_OFF } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -62,7 +63,7 @@ export function positionUnseededParticipants({
     .map((assignment) => assignment.drawPosition);
 
   if (unseededParticipantIds.length > unfilledDrawPositions.length) {
-    return { error: 'Insufficient drawPositions to accommodate entries' };
+    return { error: INSUFFICIENT_DRAW_POSITIONS };
   }
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });

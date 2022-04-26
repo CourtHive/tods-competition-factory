@@ -123,10 +123,10 @@ export function setStageWildcardsCount({
   const totalStageEntriesCount =
     directAcceptanceEntriesCount + wildcardsCount + qualifyingPositions;
   if (totalStageEntriesCount > stageDrawPositions) {
-    const error = Object.assign(DRAW_SIZE_MISMATCH, {
-      message: 'Total stage Entries cannot be greater than drawPositions',
-    });
-    return { error };
+    return {
+      error: DRAW_SIZE_MISMATCH,
+      info: 'Total stage Entries cannot be greater than drawPositions',
+    };
   }
 
   modifyEntryProfile({
@@ -148,10 +148,10 @@ export function setStageQualifiersCount({
     return { error: INVALID_STAGE };
   }
   if (stage !== MAIN) {
-    const error = Object.assign(DRAW_SIZE_MISMATCH, {
-      message: 'qualifiersCount can only be set for main stage',
-    });
-    return { error };
+    return {
+      error: DRAW_SIZE_MISMATCH,
+      info: 'qualifiersCount can only be set for main stage',
+    };
   }
 
   const stageDrawPositions = getStageDrawPositionsCount({
@@ -170,10 +170,10 @@ export function setStageQualifiersCount({
     directAcceptanceEntriesCount + wildcardEntriesCount + qualifiersCount;
 
   if (totalStageDrawPositions > stageDrawPositions) {
-    const error = Object.assign(DRAW_SIZE_MISMATCH, {
-      message: 'Total stage Entries cannot be greater than drawPositions',
-    });
-    return { error };
+    return {
+      error: DRAW_SIZE_MISMATCH,
+      info: 'Total stage Entries cannot be greater than drawPositions',
+    };
   }
 
   modifyEntryProfile({

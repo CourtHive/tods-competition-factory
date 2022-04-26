@@ -78,8 +78,7 @@ function removeParticipantIdsFromGroupingParticipant({
       if (removeParticipant) removed++;
       return !removeParticipant;
     });
-  if (notRemoved.length)
-    return { error: 'Participants not removed', notRemoved };
+  if (notRemoved.length) return { error: NO_PARTICIPANT_REMOVED, notRemoved };
 
   return { groupingParticipant, removed };
 }
