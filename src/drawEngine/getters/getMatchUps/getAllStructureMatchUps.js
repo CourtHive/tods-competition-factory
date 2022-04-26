@@ -15,7 +15,7 @@ import { getRoundContextProfile } from './getRoundContextProfile';
 import { getDrawPositionsRanges } from './getDrawPositionsRanges';
 import { getCheckedInParticipantIds } from '../matchUpTimeItems';
 import { definedAttributes } from '../../../utilities/objects';
-import { makeDeepCopy } from '../../../utilities';
+import { makeDeepCopy, unique } from '../../../utilities';
 import { filterMatchUps } from './filterMatchUps';
 import { getSide } from './getSide';
 
@@ -24,6 +24,7 @@ import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { TEAM } from '../../../constants/eventConstants';
+import { SINGLES } from '../../../constants/matchUpTypes';
 
 /*
   return all matchUps within a structure and its child structures
@@ -516,6 +517,31 @@ export function getAllStructureMatchUps({
         const { matchUpType } = getMatchUpType({ matchUp: matchUpWithContext });
         if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
       }
+
+      if (
+        contextProfile?.inferGender &&
+        !matchUpWithContext.gender &&
+        matchUpWithContext.sides?.length === 2 &&
+        matchUpWithContext.matchUpType !== TEAM
+      ) {
+        const sideGenders = matchUpWithContext.sides.map((side) => {
+          if (matchUpWithContext.matchUpType === SINGLES)
+            return side.participant?.person?.sex;
+          if (side.individualParticipants?.length === 2) {
+            const pairGenders = unique(
+              side.individualParticipants.map(({ sex }) => sex)
+            ).filter(Boolean);
+            if (pairGenders.length === 1) return pairGenders[0];
+          }
+        });
+        if (
+          sideGenders.filter(Boolean).length === 2 &&
+          unique(sideGenders).length === 1
+        ) {
+          const inferredGender = sideGenders[0];
+          matchUpWithContext.inferredGender = inferredGender;
+        }
+      }
     }
 
     if (matchUpWithContext.tieMatchUps) {
@@ -592,6 +618,9 @@ export function getAllStructureMatchUps({
 
     if (Array.isArray(contextProfile?.exclude)) {
       // loop through all attributes and delete them from matchUpWithContext
+      contextProfile.exclude.forEach(
+        (attribute) => delete matchUpWithContext[attribute]
+      );
     }
 
     return matchUpWithContext;

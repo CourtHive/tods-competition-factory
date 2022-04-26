@@ -5,6 +5,7 @@ import { addNationalityCodeISO } from '../governors/participantGovernor/annotate
 import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
 import { definedAttributes } from '../../utilities/objects';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { getFlightProfile } from './getFlightProfile';
 import { findEvent } from './eventGetter';
 import {
   getAllDrawMatchUps,
@@ -17,7 +18,6 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import { getFlightProfile } from './getFlightProfile';
 
 export function allTournamentMatchUps({
   scheduleVisibilityFilters,

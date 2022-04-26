@@ -245,6 +245,7 @@ const { matchUps } = competitionEngine.allCompetitionMatchUps({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
   matchUpFilters, // optional; [ scheduledDate, scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   nextMatchUps, // include winnerTo and loserTo matchUps
+  contextProfile, // optional: { inferGender: true }
 });
 ```
 

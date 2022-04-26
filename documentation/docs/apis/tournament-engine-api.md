@@ -538,6 +538,7 @@ const { matchUps } = tournamentEngine.allTournamentMatchUps({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
   matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   nextMatchUps, // include winnerTo and loserTo matchUps
+  contextProfile, // optional: { inferGender: true }
 });
 ```
 
