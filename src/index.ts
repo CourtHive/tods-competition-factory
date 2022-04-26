@@ -4,6 +4,7 @@ export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
+import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
 import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
 import { nearestPowerOf2, isPowerOf2, isNumeric } from './utilities/math';
 import { generateHashCode, generateTimeCode } from './utilities';
@@ -31,6 +32,7 @@ export const utilities = {
   dateRange,
   dateTime,
   garman,
+  getTimeItem,
   generateHashCode,
   generateRange,
   generateTimeCode,
