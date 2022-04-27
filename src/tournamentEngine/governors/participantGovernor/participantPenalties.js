@@ -2,6 +2,8 @@ import { addExtension } from '../tournamentGovernor/addRemoveExtensions';
 import penaltyTemplate from '../../generators/penaltyTemplate';
 import { addNotice } from '../../../global/state/globalState';
 
+import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   PENALTY_NOT_FOUND,
   MISSING_PENALTY_ID,
@@ -12,8 +14,6 @@ import {
   NO_VALID_ATTRIBUTES,
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 
 /**
  *
@@ -23,18 +23,16 @@ import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
  *
  */
 export function addPenalty({
+  refereeParticipantId,
   tournamentRecord,
   participantIds,
   penaltyCode,
   penaltyType,
+  extensions,
   penaltyId,
   matchUpId,
-  notes,
-
-  extensions,
   issuedAt,
-
-  refereeParticipantId,
+  notes,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantIds) return { error: MISSING_PARTICIPANT_ID };
