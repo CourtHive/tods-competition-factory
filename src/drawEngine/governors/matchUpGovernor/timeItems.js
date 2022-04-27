@@ -25,6 +25,7 @@ export function addMatchUpTimeItem({
   if (!disableNotice) {
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
+      eventId: event?.eventId,
       drawDefinition,
       matchUp,
     });
@@ -43,6 +44,7 @@ export function resetMatchUpTimeItems({
   matchUp.timeItems = [];
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    eventId: event?.eventId,
     drawDefinition,
     matchUp,
   });

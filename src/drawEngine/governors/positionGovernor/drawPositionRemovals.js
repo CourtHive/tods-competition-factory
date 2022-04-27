@@ -165,6 +165,7 @@ export function drawPositionRemovals({
       structureId,
       roundNumber,
       matchUpsMap,
+      event,
     });
     removeDrawPosition({
       inContextDrawMatchUps,
@@ -174,6 +175,7 @@ export function drawPositionRemovals({
       drawPosition,
       matchUpsMap,
       structure,
+      event,
     });
   });
 
@@ -236,6 +238,7 @@ function removeDrawPosition({
   drawPosition,
   matchUpsMap,
   structure,
+  event,
 }) {
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
   const mappedMatchUps = matchUpsMap.mappedMatchUps;
@@ -270,6 +273,7 @@ function removeDrawPosition({
 
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
+        eventId: event?.eventId,
         matchUp: targetMatchUp,
         drawDefinition,
       });
@@ -312,6 +316,7 @@ function removeDrawPosition({
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    eventId: event?.eventId,
     matchUp: targetMatchUp,
     drawDefinition,
   });

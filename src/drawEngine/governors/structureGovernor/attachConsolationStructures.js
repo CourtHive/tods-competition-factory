@@ -15,6 +15,7 @@ export function attachConsolationStructures({
   drawDefinition,
   structures,
   links = [],
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!Array.isArray(structures) || !Array.isArray(links))
@@ -49,6 +50,7 @@ export function attachConsolationStructures({
 
   addMatchUpsNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    eventId: event?.eventId,
     drawDefinition,
     matchUps,
   });

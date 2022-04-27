@@ -137,6 +137,7 @@ export function removeCollectionDefinition({
 
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
+      eventId: event?.eventId,
       drawDefinition,
       matchUp,
     });
@@ -148,6 +149,7 @@ export function removeCollectionDefinition({
     deleteMatchUpsNotice({
       tournamentId: tournamentRecord?.tournamentId,
       matchUpIds: deletedMatchUpIds,
+      eventId: event?.eventId,
       drawDefinition,
     });
   }
@@ -163,7 +165,7 @@ export function removeCollectionDefinition({
     return { error: MISSING_DRAW_DEFINITION };
   }
 
-  modifyDrawNotice({ drawDefinition });
+  modifyDrawNotice({ drawDefinition, eventId: event?.eventId });
 
   return { ...SUCCESS, tieFormat, targetMatchUps, deletedMatchUpIds };
 }

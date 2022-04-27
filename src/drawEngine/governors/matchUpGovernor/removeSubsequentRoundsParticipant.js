@@ -21,6 +21,7 @@ export function removeSubsequentRoundsParticipant({
   dualMatchUp,
   roundNumber,
   matchUpsMap,
+  event,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   if (structure.structureType === CONTAINER) return;
@@ -56,6 +57,7 @@ export function removeSubsequentRoundsParticipant({
       dualMatchUp,
       matchUpsMap,
       matchUp,
+      event,
     });
     if (result.error) return result;
   }
@@ -71,6 +73,7 @@ function removeDrawPosition({
   drawDefinition,
   dualMatchUp,
   matchUp,
+  event,
 }) {
   if (dualMatchUp) {
     // remove propagated lineUp
@@ -111,6 +114,7 @@ function removeDrawPosition({
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    eventId: event?.eventId,
     drawDefinition,
     matchUp,
   });

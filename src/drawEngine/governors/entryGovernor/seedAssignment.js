@@ -1,6 +1,6 @@
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { modifySeedAssignmentsNotice } from '../../notifications/drawNotifications';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { participantInEntries } from '../../getters/entryGetter';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
@@ -13,11 +13,13 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function assignSeed({
+  tournamentRecord,
   drawDefinition,
   participantId,
   structureId,
   seedNumber,
   seedValue,
+  eventId,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -37,8 +39,8 @@ export function assignSeed({
   if (participantId && !validParticipantId)
     return {
       error: INVALID_PARTICIPANT_ID,
-      participantId,
       method: 'assignSeed',
+      participantId,
     };
 
   const relevantAssignment = positionAssignments.find(
@@ -48,10 +50,10 @@ export function assignSeed({
 
   if (assignedDrawPosition) {
     const positionIsValid = isValidSeedPosition({
-      seedNumber,
+      drawPosition: assignedDrawPosition,
       drawDefinition,
       structureId,
-      drawPosition: assignedDrawPosition,
+      seedNumber,
     });
     if (!positionIsValid) return { error: INVALID_DRAW_POSITION_FOR_SEEDING };
   }
@@ -78,7 +80,13 @@ export function assignSeed({
   });
 
   if (success) {
-    modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+    modifySeedAssignmentsNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      structureIds: [structureId],
+      drawDefinition,
+      structure,
+      eventId,
+    });
     return { ...SUCCESS };
   }
 

@@ -10,6 +10,7 @@ export function updateSideLineUp({
   tournamentRecord,
   drawDefinition,
   matchUp,
+  event,
 }) {
   // update matchUp.sides to include lineUps
   const drawPositionSideNumber =
@@ -50,6 +51,7 @@ export function updateSideLineUp({
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    eventId: event?.eventId,
     drawDefinition,
     matchUp,
   });

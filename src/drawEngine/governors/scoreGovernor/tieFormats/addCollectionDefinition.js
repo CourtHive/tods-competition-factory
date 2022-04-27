@@ -128,6 +128,7 @@ export function addCollectionDefinition({
     queueNoficiations({
       modifiedMatchUps: targetMatchUps,
       structureIds: [structureId],
+      eventId: event?.eventId,
       tournamentRecord,
       drawDefinition,
       addedMatchUps,
@@ -150,6 +151,7 @@ export function addCollectionDefinition({
 
     queueNoficiations({
       modifiedMatchUps: [matchUp],
+      eventId: event?.eventId,
       tournamentRecord,
       drawDefinition,
       addedMatchUps,
@@ -175,6 +177,7 @@ export function addCollectionDefinition({
 
     queueNoficiations({
       structureIds: modifiedStructureIds,
+      eventId: event?.eventId,
       modifiedMatchUps,
       tournamentRecord,
       drawDefinition,
@@ -224,18 +227,25 @@ function queueNoficiations({
   modifiedMatchUps,
   drawDefinition,
   addedMatchUps,
+  eventId,
 }) {
   addMatchUpsNotice({
     tournamentId: tournamentRecord?.tournamentId,
     matchUps: addedMatchUps,
     drawDefinition,
+    eventId,
   });
   modifiedMatchUps?.forEach((matchUp) => {
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       drawDefinition,
       matchUp,
+      eventId,
     });
   });
-  modifyDrawNotice({ drawDefinition, structureIds: modifiedStructureIds });
+  modifyDrawNotice({
+    structureIds: modifiedStructureIds,
+    drawDefinition,
+    eventId,
+  });
 }

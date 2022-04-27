@@ -164,9 +164,11 @@ export function directLoser(params) {
     );
     if (seedAssignment) {
       assignSeed({
-        drawDefinition,
+        eventId: loserMatchUp?.eventId,
         structureId: targetStructureId,
         ...seedAssignment,
+        tournamentRecord,
+        drawDefinition,
       });
     }
   }
@@ -177,7 +179,7 @@ export function directLoser(params) {
       (side) => side.sideNumber === 3 - projectedWinningSide
     );
     if (side?.lineUp) {
-      const { roundNumber } = loserMatchUp;
+      const { roundNumber, eventId } = loserMatchUp;
       const { roundPosition } = dualMatchUp;
       // for matchUps fed to different structures, sideNumber is always 1 when roundNumber > 1 (fed position)
       // when roundNumber === 1 then it is even/odd calculated as remainder of roundPositon % 2 + 1
@@ -207,6 +209,7 @@ export function directLoser(params) {
           tournamentId: tournamentRecord?.tournamentId,
           matchUp: targetMatchUp,
           drawDefinition,
+          eventId,
         });
       }
     }

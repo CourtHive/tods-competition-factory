@@ -66,6 +66,7 @@ export function assignDrawPositionBye({
   matchUpsMap,
   structureId,
   structure,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structure)
@@ -159,7 +160,7 @@ export function assignDrawPositionBye({
     drawPositions?.includes(drawPosition)
   );
 
-  setMatchUpStatusBYE({ drawDefinition, matchUp });
+  setMatchUpStatusBYE({ drawDefinition, matchUp, event });
 
   const drawPositionToAdvance = matchUp.drawPositions?.find(
     (position) => position !== drawPosition
@@ -191,7 +192,12 @@ function drawPositionFilled(positionAssignment) {
   return { containsBye, containsQualifier, containsParticipant, filled };
 }
 
-function setMatchUpStatusBYE({ tournamentRecord, drawDefinition, matchUp }) {
+function setMatchUpStatusBYE({
+  tournamentRecord,
+  drawDefinition,
+  matchUp,
+  event,
+}) {
   Object.assign(matchUp, {
     matchUpStatus: BYE,
     score: undefined,
@@ -200,6 +206,7 @@ function setMatchUpStatusBYE({ tournamentRecord, drawDefinition, matchUp }) {
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    eventId: event?.eventId,
     drawDefinition,
     matchUp,
   });
@@ -210,11 +217,13 @@ function assignRoundRobinBYE({
   drawDefinition,
   drawPosition,
   matchUps,
+  event,
 }) {
   matchUps.forEach((matchUp) => {
     if (matchUp.drawPositions?.includes(drawPosition)) {
       setMatchUpStatusBYE({
         tournamentId: tournamentRecord?.tournamentId,
+        eventId: event?.eventId,
         drawDefinition,
         matchUp,
       });
@@ -232,6 +241,7 @@ export function advanceDrawPosition({
   drawDefinition,
   matchUpsMap,
   matchUpId,
+  event,
 }) {
   const matchUp = matchUpsMap.drawMatchUps.find(
     (matchUp) => matchUp.matchUpId === matchUpId
@@ -276,6 +286,7 @@ export function advanceDrawPosition({
       drawDefinition,
       winnerMatchUp,
       matchUpsMap,
+      event,
     });
   }
 
@@ -319,6 +330,7 @@ function advanceWinner({
   drawDefinition,
   winnerMatchUp,
   matchUpsMap,
+  event,
 }) {
   const stack = 'advanceWinner';
   const noContextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
@@ -418,6 +430,7 @@ function advanceWinner({
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
     matchUp: noContextWinnerMatchUp,
+    eventId: event?.eventId,
     drawDefinition,
   });
 

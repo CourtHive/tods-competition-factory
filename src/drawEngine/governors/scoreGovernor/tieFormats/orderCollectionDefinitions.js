@@ -59,6 +59,7 @@ export function orderCollectionDefinitions({
       });
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
+        eventId: event?.eventId,
         drawDefinition,
         matchUp,
       });
@@ -73,6 +74,7 @@ export function orderCollectionDefinitions({
         orderMap,
       });
       updateStructureMatchUps({
+        eventId: event?.eventId,
         tournamentRecord,
         drawDefinition,
         structure,
@@ -88,19 +90,20 @@ export function orderCollectionDefinitions({
         tournamentRecord,
         drawDefinition,
         orderMap,
+        event,
       });
     } else if (event?.tieFormat) {
       updateEventTieFormat({
         structureIds: [structureId],
         tournamentRecord,
-        event,
         orderMap,
+        event,
       });
     } else {
       return { error: NOT_FOUND };
     }
   } else if (drawDefinition?.tieFormat) {
-    updateDrawTieFormat({ tournamentRecord, drawDefinition, orderMap });
+    updateDrawTieFormat({ tournamentRecord, drawDefinition, orderMap, event });
   } else {
     return { error: NOT_FOUND };
   }
@@ -157,6 +160,7 @@ function updateDrawTieFormat({
         orderMap,
       });
     updateStructureMatchUps({
+      eventId: event?.eventId,
       tournamentRecord,
       drawDefinition,
       structure,
@@ -172,6 +176,7 @@ function updateStructureMatchUps({
   drawDefinition,
   structure,
   orderMap,
+  eventId,
 }) {
   const matchUps = getAllStructureMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM] },
@@ -187,6 +192,7 @@ function updateStructureMatchUps({
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
         drawDefinition,
+        eventId,
         matchUp,
       });
     }

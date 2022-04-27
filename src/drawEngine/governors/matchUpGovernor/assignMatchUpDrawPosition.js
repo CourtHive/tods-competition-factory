@@ -116,6 +116,7 @@ export function assignMatchUpDrawPosition({
 
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
+      eventId: inContextMatchUp?.eventId,
       drawDefinition,
       matchUp,
     });

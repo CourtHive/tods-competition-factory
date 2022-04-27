@@ -142,6 +142,7 @@ export function removeDirectedParticipants(params) {
       loserMatchUp,
       dualMatchUp,
       matchUpsMap,
+      event,
     });
     if (removeLoserResult) return removeLoserResult;
   }
@@ -204,6 +205,17 @@ export function removeDirectedWinner({
     } else {
       console.log('not removing from position assignments since instances > 1');
     }
+
+    const targetMatchUp = matchUpsMap?.drawMatchUps?.find(
+      ({ matchUpId }) => matchUpId === winnerMatchUp.matchUpId
+    );
+
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      eventId: event?.eventId,
+      matchUp: targetMatchUp,
+      drawDefinition,
+    });
   }
 
   // Remove participant's drawPosition from current and subsequent round matchUps
@@ -231,6 +243,7 @@ function removeDirectedLoser({
   loserMatchUp,
   matchUpsMap,
   dualMatchUp,
+  event,
 }) {
   const structureId = loserTargetLink.target.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
@@ -266,6 +279,7 @@ function removeDirectedLoser({
 
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
+        eventId: event?.eventId,
         matchUp: targetMatchUp,
         drawDefinition,
       });

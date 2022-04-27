@@ -17,6 +17,7 @@ export function removeStructure({
   tournamentRecord,
   drawDefinition,
   structureId,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
@@ -78,9 +79,10 @@ export function removeStructure({
     tournamentId: tournamentRecord?.tournamentId,
     matchUpIds: removedMatchUpIds,
     action: 'removeStructure',
+    eventId: event?.eventId,
     drawDefinition,
   });
-  modifyDrawNotice({ drawDefinition });
+  modifyDrawNotice({ drawDefinition, eventId: event?.eventId });
 
   return { ...SUCCESS, removedMatchUpIds };
 }

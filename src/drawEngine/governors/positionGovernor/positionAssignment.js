@@ -157,7 +157,14 @@ export function assignDrawPosition({
     const assignment = seedAssignments.find(
       (assignment) => assignment.participantId === participantId
     );
-    if (assignment) assignSeed({ drawDefinition, structureId, ...assignment });
+    if (assignment)
+      assignSeed({
+        eventId: event?.eventId,
+        tournamentRecord,
+        drawDefinition,
+        ...assignment,
+        structureId,
+      });
   }
 
   if (structure.structureType !== CONTAINER) {
