@@ -1464,7 +1464,10 @@ const { representativeParticipantIds } =
 ```js
 const { eligibleParticipants } =
   tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-    finishingPositionLimit, // optional - limits considered matchUps by finishingRound, e.g. 3 doesn't consider past QF
+    excludedMatchUpStatuses, // optional - array of matchUpStatuses which are excluded from matchUpsLimit
+    finishingRoundLimit, // optional - limits considered matchUps by finishingRound, e.g. 3 doesn't consider past QF
+    roundNumberLimit, // optional - limits matchUps by roundNumber
+    matchUpsLimit, // optional - limits the number of considered matchUps; works in tandem with excludedMatchUpStatuses
     winsLimit, // defaults to 0, meaning only participants with no wins are eligible
     drawId,
   });

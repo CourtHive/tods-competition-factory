@@ -10,10 +10,10 @@ export function getEligibleVoluntaryConsolationParticipants({
   excludedMatchUpStatuses = [],
   finishingRoundLimit,
   policyDefinitions,
+  roundNumberLimit,
   tournamentRecord,
   drawDefinition,
   matchUpsLimit,
-  roundLimit,
   winsLimit,
   event,
 }) {
@@ -47,7 +47,7 @@ export function getEligibleVoluntaryConsolationParticipants({
 
   finishingRoundLimit = finishingRoundLimit || policy?.finishingRoundLimit;
   matchUpsLimit = matchUpsLimit || policy?.matchUpsLimit;
-  roundLimit = roundLimit || policy?.roundLimit;
+  roundNumberLimit = roundNumberLimit || policy?.roundNumberLimit;
 
   winsLimit = winsLimit || policy?.winsLimit;
   if (isNaN(winsLimit)) winsLimit = 0;
@@ -59,7 +59,8 @@ export function getEligibleVoluntaryConsolationParticipants({
       matchUp.finishingRound >= finishingRoundLimit
     )
       continue;
-    if (!isNaN(roundLimit) && matchUp.finishingRound <= roundLimit) continue;
+    if (!isNaN(roundNumberLimit) && matchUp.finishingRound <= roundNumberLimit)
+      continue;
 
     const losingSide = matchUp.sides?.find(
       ({ sideNumber }) => sideNumber !== matchUp.winningSide
