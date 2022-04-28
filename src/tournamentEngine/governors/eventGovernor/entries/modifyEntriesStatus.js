@@ -48,7 +48,10 @@ export function modifyEntriesStatus({
   // build up an array of participantIds which are assigned positions in structures
   const assignedParticipantIds = [];
   event.drawDefinitions?.forEach((drawDefinition) => {
-    const participantIds = getAssignedParticipantIds({ drawDefinition });
+    const participantIds = getAssignedParticipantIds({
+      drawDefinition,
+      stages: [stage],
+    });
     assignedParticipantIds.push(...participantIds);
   });
 
