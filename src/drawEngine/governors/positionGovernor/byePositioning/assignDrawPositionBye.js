@@ -9,8 +9,8 @@ import { getPositionAssignments } from '../../../getters/positionsGetter';
 import { findStructure } from '../../../getters/findStructure';
 import { positionTargets } from '../positionTargets';
 import {
-  modifyDrawNotice,
   modifyMatchUpNotice,
+  modifyPositionAssignmentsNotice,
 } from '../../../notifications/drawNotifications';
 
 import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
@@ -141,6 +141,16 @@ export function assignDrawPositionBye({
       drawPosition,
       matchUps,
     });
+
+    modifyPositionAssignmentsNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      structureIds: [structureId],
+      eventId: event?.eventId,
+      positionAssignments,
+      drawDefinition,
+      structure,
+    });
+
     return { ...SUCCESS };
   }
 
@@ -179,7 +189,14 @@ export function assignDrawPositionBye({
     if (result.error) return result;
   }
 
-  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+  modifyPositionAssignmentsNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    structureIds: [structureId],
+    eventId: event?.eventId,
+    positionAssignments,
+    drawDefinition,
+    structure,
+  });
 
   return { ...SUCCESS };
 }

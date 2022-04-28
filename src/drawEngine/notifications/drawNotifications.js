@@ -130,7 +130,7 @@ export function modifySeedAssignmentsNotice({
   drawDefinition,
   tournamentId,
   structure,
-  event,
+  eventId,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structure) return { error: MISSING_STRUCTURE };
@@ -138,7 +138,6 @@ export function modifySeedAssignmentsNotice({
   const seedAssignments = structure.seedAssignments;
   const structureId = structure.structureId;
   const drawId = drawDefinition.drawId;
-  const eventId = event?.eventId;
 
   addNotice({
     payload: { tournamentId, eventId, drawId, structureId, seedAssignments },

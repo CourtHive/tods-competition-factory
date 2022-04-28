@@ -1,7 +1,7 @@
 import { getStructureDrawPositionProfiles } from '../../getters/getStructureDrawPositionProfiles';
+import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { drawPositionRemovals } from './drawPositionRemovals';
 import { findStructure } from '../../getters/findStructure';
 
@@ -28,6 +28,7 @@ export function clearDrawPosition({
   participantId,
   structureId,
   matchUpsMap,
+  event,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({
@@ -69,19 +70,31 @@ export function clearDrawPosition({
     }));
   }
 
-  const { drawPositionCleared, error } = drawPositionRemovals({
+  const {
+    positionAssignments: updatedPositionAssignments,
+    drawPositionCleared,
+    error,
+  } = drawPositionRemovals({
     inContextDrawMatchUps,
     tournamentRecord,
     drawDefinition,
     structureId,
     drawPosition,
     matchUpsMap,
+    event,
   });
   if (error) return { error };
 
   if (!drawPositionCleared) return { error: DRAW_POSITION_NOT_CLEARED };
 
-  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+  modifyPositionAssignmentsNotice({
+    positionAssignments: updatedPositionAssignments,
+    tournamentId: tournamentRecord?.tournamentId,
+    structureIds: [structureId],
+    eventId: event?.eventId,
+    drawDefinition,
+    structure,
+  });
 
   return { ...SUCCESS, participantId };
 }

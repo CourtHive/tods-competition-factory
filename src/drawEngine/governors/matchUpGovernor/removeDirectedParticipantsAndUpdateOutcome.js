@@ -129,6 +129,7 @@ export function removeDirectedParticipants(params) {
         drawDefinition,
         drawPosition,
         matchUpsMap,
+        event,
       });
       if (removeByeResult.error) return removeByeResult;
     }
@@ -296,6 +297,7 @@ export function removeDirectedBye({
   drawPosition,
   matchUpsMap,
   targetLink,
+  event,
 }) {
   const structureId = targetLink.target.structureId;
 
@@ -306,6 +308,7 @@ export function removeDirectedBye({
     matchUpsMap,
     drawPosition,
     structureId,
+    event,
   });
 
   return { ...SUCCESS };

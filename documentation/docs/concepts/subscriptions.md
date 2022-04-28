@@ -29,6 +29,9 @@ const subscriptions = {
   modifyParticipants: (payload) => () // payload [{ participants }]
   deleteParticipants: (payload) => () // payload [{ participantIds }]
 
+  modifyPositionAssignments: (payload) => () // pauload [{ positionAssignments, tournamentId, eventId, drawId, structureId}]
+  modifySeedAssignments: (payload) => () // pauload [{ seedAssignments, tournamentId, eventId, drawId, structureId}]
+
   addDrawDefinitions: (payload) => (), // payload = [{ drawDefinition }]
   modifyDrawDefinitions: (payload) => (), // payload = [{ drawDefinition }]
   deletedDrawIds: (payload) => (), // payload = [{ drawId }]

@@ -179,7 +179,7 @@ export function drawPositionRemovals({
     });
   });
 
-  return { tasks, drawPositionCleared };
+  return { tasks, drawPositionCleared, positionAssignments };
 }
 
 function removeSubsequentRoundsParticipant({

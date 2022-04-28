@@ -19,6 +19,7 @@ export function positionParticipantAction(params) {
     participantId,
     drawPosition,
     structureId,
+    event,
   } = params;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -73,6 +74,7 @@ export function positionParticipantAction(params) {
     drawPosition,
     structureId,
     matchUpsMap,
+    event,
   });
   if (result.error) return result;
   const removedParticipantId = result.participantId;
@@ -85,6 +87,7 @@ export function positionParticipantAction(params) {
     drawPosition,
     structureId,
     matchUpsMap,
+    event,
   });
   if (!result.success) return result;
 
