@@ -8,6 +8,7 @@ import {
   CONTAINER,
   FIRST_MATCHUP,
   MAIN,
+  VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 
 export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
@@ -26,7 +27,9 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
 
   ({ structures } = getDrawStructures({ drawDefinition }));
   const filteredStructures = structures.filter(
-    (structure) => !structureId || structure.structureId === structureId
+    (structure) =>
+      (!structureId && structure.stage !== VOLUNTARY_CONSOLATION) ||
+      structure.structureId === structureId
   );
 
   const available = {};
