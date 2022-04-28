@@ -1469,6 +1469,7 @@ const { eligibleParticipants } =
     roundNumberLimit, // optional - limits matchUps by roundNumber
     matchUpsLimit, // optional - limits the number of considered matchUps; works in tandem with excludedMatchUpStatuses
     winsLimit, // defaults to 0, meaning only participants with no wins are eligible
+    requireLoss, // optional - defaults to true; if false then all participants who appear in MAIN draw are considered
     drawId,
   });
 ```
