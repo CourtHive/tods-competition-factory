@@ -76,3 +76,86 @@ test('can return participants eligible for voluntary consolation when play is no
   expect(losingParticipantIds.length).toEqual(0);
   expect(eligibleParticipants.length).toEqual(32);
 });
+
+test('can consider event.entries as eligible for voluntary consolation', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    eventProfiles: [
+      {
+        drawProfiles: [{ drawSize: 4 }, { drawSize: 32 }],
+      },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+  expect(drawDefinition.entries.length).toEqual(4);
+  expect(event.entries.length).toEqual(32);
+
+  let { eligibleParticipants } =
+    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+      includeEventParticipants: true,
+      requirePlay: false,
+      drawId,
+    });
+
+  expect(eligibleParticipants.length).toEqual(32);
+
+  ({ eligibleParticipants } =
+    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+      includeEventParticipants: true,
+      drawId,
+    }));
+
+  expect(eligibleParticipants.length).toEqual(0);
+});
+
+test.only('can consider participants from other event draws as eligible for voluntary consolation', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    eventProfiles: [
+      {
+        drawProfiles: [{ drawSize: 4 }, { drawSize: 32, completionGoal: 31 }],
+      },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+  expect(drawDefinition.entries.length).toEqual(4);
+  expect(event.entries.length).toEqual(32);
+
+  let { eligibleParticipants } =
+    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+      includeEventParticipants: true,
+      requirePlay: false,
+      drawId, // first draw with draawSize; 4
+    });
+
+  expect(eligibleParticipants.length).toEqual(32);
+
+  // if includeEventParticipants, participants losing in 2nd draw are eligible
+  ({ eligibleParticipants } =
+    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+      includeEventParticipants: true,
+      drawId, // first draw with draawSize; 4
+    }));
+
+  expect(eligibleParticipants.length).toEqual(16);
+
+  // if loss is not required the all participants which have played in the 2nd draw are eligible
+  ({ eligibleParticipants } =
+    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+      includeEventParticipants: true,
+      requireLoss: false,
+      drawId, // first draw with draawSize; 4
+    }));
+
+  expect(eligibleParticipants.length).toEqual(32);
+});

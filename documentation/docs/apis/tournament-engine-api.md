@@ -1472,7 +1472,7 @@ const { eligibleParticipants } =
     requireLoss, // optional boolean - defaults to true; if false then all participants who have played and appear in MAIN draw are considered
     requirePlay, // optional boolean - defaults to true; if false then all participants who appear in MAIN draw are considered
     allEntries, // optional boolean - consider all entries, regardless of whether placed in draw
-    includeEventEntries, // optional boolean - consider event entries rather than draw entries (if event is present)
+    includeEventParticipants, // optional boolean - consider event entries rather than draw entries (if event is present)
     drawId,
   });
 ```
