@@ -35,3 +35,28 @@ test('can return participants eligible for voluntary consolation', () => {
   expect(losingParticipantIds.length).toEqual(31);
   expect(eligibleParticipants.length).toEqual(32);
 });
+
+test('can return participants eligible for voluntary consolation when play is not required', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 32 }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let { eligibleParticipants, losingParticipantIds } =
+    tournamentEngine.getEligibleVoluntaryConsolationParticipants({ drawId });
+  expect(losingParticipantIds.length).toEqual(0);
+  expect(eligibleParticipants.length).toEqual(0);
+
+  ({ eligibleParticipants, losingParticipantIds } =
+    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+      requirePlay: false,
+      drawId,
+    }));
+
+  expect(losingParticipantIds.length).toEqual(0);
+  expect(eligibleParticipants.length).toEqual(32);
+});
