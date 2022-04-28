@@ -65,6 +65,17 @@ it('can generate a draw with voluntary consolation stage', () => {
     ({ participantId }) => participantId
   );
   expect(assignedPositions.length).toEqual(32);
+
+  result = tournamentEngine.resetVoluntaryConsolationStructure({ drawId });
+  expect(result.success).toEqual(true);
+
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const voluntaryStructure = drawDefinition.structures.find(
+    ({ stage }) => stage === VOLUNTARY_CONSOLATION
+  );
+  expect(voluntaryStructure.matchUps.length).toEqual(0);
+  expect(voluntaryStructure.seedAssignments.length).toEqual(0);
+  expect(voluntaryStructure.positionAssignments.length).toEqual(0);
 });
 
 it('can generate a draw with voluntary consolation stage and delay attachment', () => {
