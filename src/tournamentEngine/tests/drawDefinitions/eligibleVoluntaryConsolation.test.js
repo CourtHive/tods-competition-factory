@@ -113,7 +113,7 @@ test('can consider event.entries as eligible for voluntary consolation', () => {
   expect(eligibleParticipants.length).toEqual(0);
 });
 
-test.only('can consider participants from other event draws as eligible for voluntary consolation', () => {
+test('can consider participants from other event draws as eligible for voluntary consolation', () => {
   const {
     tournamentRecord,
     drawIds: [drawId],
