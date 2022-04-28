@@ -20,7 +20,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "0.174.0",
+  "version": "0.179.1",
   "license": "MIT",
   "private": false,
   "jest": {
@@ -121,7 +121,7 @@
     "rollup-plugin-terser": "7.0.2",
     "source-map-resolve": "0.6.0",
     "tslib": "2.4.0",
-    "typescript": "4.6.3"
+    "typescript": "4.6.4"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint",

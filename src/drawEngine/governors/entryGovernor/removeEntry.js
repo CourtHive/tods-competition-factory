@@ -13,11 +13,15 @@ export function removeEntry({
   autoEntryPositions = true,
   drawDefinition,
   participantId,
+  stages,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
-  const assignedParticipantIds = getAssignedParticipantIds({ drawDefinition });
+  const assignedParticipantIds = getAssignedParticipantIds({
+    drawDefinition,
+    stages,
+  });
   const isAssignedParticipant = assignedParticipantIds.includes(participantId);
 
   if (isAssignedParticipant)

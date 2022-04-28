@@ -1464,8 +1464,15 @@ const { representativeParticipantIds } =
 ```js
 const { eligibleParticipants } =
   tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-    finishingPositionLimit, // optional - limits considered matchUps by finishingRound, e.g. 3 doesn't consider past QF
+    excludedMatchUpStatuses, // optional - array of matchUpStatuses which are excluded from matchUpsLimit
+    finishingRoundLimit, // optional number - limits considered matchUps by finishingRound, e.g. 3 doesn't consider past QF
+    roundNumberLimit, // optional number - limits matchUps by roundNumber
+    matchUpsLimit, // optional number - limits the number of considered matchUps; works in tandem with excludedMatchUpStatuses
     winsLimit, // defaults to 0, meaning only participants with no wins are eligible
+    requireLoss, // optional boolean - defaults to true; if false then all participants who have played and appear in MAIN draw are considered
+    requirePlay, // optional boolean - defaults to true; if false then all participants who appear in MAIN draw are considered
+    allEntries, // optional boolean - consider all entries, regardless of whether placed in draw
+    includeEventParticipants, // optional boolean - consider event entries rather than draw entries (if event is present)
     drawId,
   });
 ```
@@ -2477,10 +2484,11 @@ Removes participantIds from `drawDefinition.entries` (if generated) as well as a
 
 ```js
 tournamentEngine.removeDrawEntries({
-  drawId,
-  eventId,
-  participantIds
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
+  participantIds
+  eventId,
+  stages, // optional array of stages to consider, e.g. [VOLUNTARY_CONSOLATION]
+  drawId,
   });
 ```
 

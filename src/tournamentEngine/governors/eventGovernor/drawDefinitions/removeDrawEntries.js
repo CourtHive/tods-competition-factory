@@ -3,30 +3,34 @@ import { refreshEntryPositions } from '../../../../global/functions/producers/re
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { overlap } from '../../../../utilities';
 
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
   MISSING_DRAW_ID,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
 } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function removeDrawEntries({
+  autoEntryPositions = true,
   participantIds,
   drawDefinition,
   drawId,
+  stages,
   event,
-  autoEntryPositions = true,
 }) {
   if (!event) return { error: MISSING_EVENT };
   if (!drawId) return { error: MISSING_DRAW_ID };
   if (!participantIds || !participantIds.length)
     return { error: MISSING_PARTICIPANT_IDS };
 
-  const assignedParticipantIds = getAssignedParticipantIds({ drawDefinition });
+  const assignedParticipantIds = getAssignedParticipantIds({
+    drawDefinition,
+    stages,
+  });
   const someAssignedParticipantIds = overlap(
-    participantIds,
-    assignedParticipantIds
+    assignedParticipantIds,
+    participantIds
   );
 
   if (someAssignedParticipantIds)
