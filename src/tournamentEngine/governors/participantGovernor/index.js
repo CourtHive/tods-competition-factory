@@ -1,5 +1,6 @@
-import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
+import { getEligibleVoluntaryConsolationParticipants } from '../../getters/participants/getEligibleVoluntaryConsolationParticipants';
 import { getParticipantEventDetails } from '../../getters/participants/getParticipantEventDetails';
+import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { getParticipantMembership } from '../../getters/participants/getParticipantMembership';
 import { publicFindParticipant } from '../../getters/participants/participantGetter';
 import { getParticipantIdFinishingPositions } from './finishingPositions';
@@ -64,6 +65,7 @@ const participantGovernor = {
   modifyParticipantsSignInStatus,
 
   getParticipantEventDetails,
+  getEligibleVoluntaryConsolationParticipants,
   findParticipant: publicFindParticipant,
   getTournamentParticipants,
   getTournamentPersons,

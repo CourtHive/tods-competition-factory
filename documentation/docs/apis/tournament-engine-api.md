@@ -1459,6 +1459,19 @@ const { representativeParticipantIds } =
 
 ---
 
+## getEligibleVoluntaryConsolationParticipants
+
+```js
+const { eligibleParticipants } =
+  tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    finishingPositionLimit, // optional - limits considered matchUps by finishingRound, e.g. 3 doesn't consider past QF
+    winsLimit, // defaults to 0, meaning only participants with no wins are eligible
+    drawId,
+  });
+```
+
+---
+
 ## getEntriesAndSeedsCount
 
 ```js
@@ -2650,6 +2663,13 @@ tournamentEngine.resetScorecard({
 ---
 
 ## resetVoluntaryConsolationStructure
+
+```js
+tournamentEngine.resetVoluntaryConsolationStructure({
+  resetEntries, // optional - remove all { entryStage: VOLUNTARY_CONSOLATION }
+  drawId,
+});
+```
 
 --
 

@@ -13,6 +13,7 @@ import {
 export function resetVoluntaryConsolationStructure({
   tournamentRecord,
   drawDefinition,
+  resetEntries,
   event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -38,6 +39,12 @@ export function resetVoluntaryConsolationStructure({
   });
 
   // TODO: add modifyPositionAssignmentsNotice, modifySeedAssignmentsNotice
+
+  if (resetEntries) {
+    drawDefinition.entries = drawDefinition.entries.filter(
+      (entry) => entry.entryStage !== VOLUNTARY_CONSOLATION
+    );
+  }
 
   modifyDrawNotice({
     tournamentId: tournamentRecord?.tournamentId,
