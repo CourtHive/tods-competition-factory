@@ -11,7 +11,7 @@ export function getEligibleVoluntaryConsolationParticipants({
   policyDefinitions,
   tournamentRecord,
   drawDefinition,
-  winsLimit = 0,
+  winsLimit,
   event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -36,8 +36,9 @@ export function getEligibleVoluntaryConsolationParticipants({
     });
 
   const policy = policyDefinitions[POLICY_TYPE_VOLUNTARY_CONSOLATION];
-  finishingRoundLimit = finishingRoundLimit || policy.finishingRoundLimit;
-  winsLimit = winsLimit || policy.winsLimit;
+  finishingRoundLimit = finishingRoundLimit || policy?.finishingRoundLimit;
+  winsLimit = winsLimit || policy?.winsLimit;
+  if (isNaN(winsLimit)) winsLimit = 0;
 
   for (const matchUp of matchUps) {
     if (![1, 2].includes(matchUp.winningSide)) continue;
@@ -66,7 +67,8 @@ export function getEligibleVoluntaryConsolationParticipants({
   }
 
   const eligibleParticipants = Object.values(losingParticipants).filter(
-    ({ participantId }) => (participantWins[participantId] || 0) <= winsLimit
+    ({ participantId }) =>
+      (participantWins[participantId] || 0) <= (winsLimit || 0)
   );
 
   const losingParticipantIds = Object.keys(losingParticipants);
