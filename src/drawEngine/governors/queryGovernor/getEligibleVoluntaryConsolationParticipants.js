@@ -97,7 +97,7 @@ export function getEligibleVoluntaryConsolationParticipants({
     );
     if (winningSide?.participant) {
       const participantId = winningSide.participant.participantId;
-      allParticipants[participantId] = losingSide.participant;
+      allParticipants[participantId] = winningSide.participant;
 
       if (!participantWins[participantId]) participantWins[participantId] = 0;
       participantWins[participantId] += 1;
@@ -110,11 +110,14 @@ export function getEligibleVoluntaryConsolationParticipants({
     }
   }
 
-  const eligibleParticipants = Object.values(
+  const consideredParticipants = Object.values(
     requireLoss ? losingParticipants : allParticipants
-  ).filter(
+  );
+
+  const eligibleParticipants = consideredParticipants.filter(
     ({ participantId }) =>
-      (participantWins[participantId] || 0) <= (winsLimit || 0) &&
+      ((participantWins[participantId] || 0) <= winsLimit ||
+        (!requireLoss && !winsLimit)) &&
       (!matchUpsLimit || participantMatchUps[participantId] < matchUpsLimit) &&
       !voluntaryConsolationEntryIds.includes(participantId)
   );

@@ -2,17 +2,7 @@ import { getEligibleVoluntaryConsolationParticipants as getEligible } from '../.
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
-export function getEligibleVoluntaryConsolationParticipants({
-  finishingRoundLimit,
-  tournamentRecord,
-  drawDefinition,
-  winsLimit,
-}) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  return getEligible({
-    finishingRoundLimit,
-    tournamentRecord,
-    drawDefinition,
-    winsLimit,
-  });
+export function getEligibleVoluntaryConsolationParticipants(params) {
+  if (!params.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  return getEligible(params);
 }
