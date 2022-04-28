@@ -1,9 +1,13 @@
 import { getPolicyDefinitions } from '../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
-import { allDrawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter';
 import { getStageEntries } from '../../getters/stageGetter';
+import {
+  allDrawMatchUps,
+  allEventMatchUps,
+} from '../../../tournamentEngine/getters/matchUpsGetter';
 
 import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../../constants/policyConstants';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { WITHDRAWN } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MAIN,
@@ -13,6 +17,7 @@ import {
 
 export function getEligibleVoluntaryConsolationParticipants({
   excludedMatchUpStatuses = [],
+  includeEventEntries, // boolean - consider event entries rather than draw entries (if event is present)
   finishingRoundLimit,
   requirePlay = true,
   requireLoss = true,
@@ -21,17 +26,25 @@ export function getEligibleVoluntaryConsolationParticipants({
   tournamentRecord,
   drawDefinition,
   matchUpsLimit,
+  allEntries, // boolean - consider all entries, regardless of whether placed in draw
   winsLimit,
   event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const { matchUps } = allDrawMatchUps({
-    contextFilters: { stages: [MAIN, PLAY_OFF] },
-    tournamentRecord,
-    inContext: true,
-    drawDefinition,
-  });
+  const matchUps = includeEventEntries
+    ? allEventMatchUps({
+        contextFilters: { stages: [MAIN, PLAY_OFF] },
+        tournamentRecord,
+        inContext: true,
+        drawDefinition,
+      })
+    : allDrawMatchUps({
+        contextFilters: { stages: [MAIN, PLAY_OFF] },
+        tournamentRecord,
+        inContext: true,
+        drawDefinition,
+      })?.matchUps || [];
 
   const voluntaryConsolationEntries = getStageEntries({
     stage: VOLUNTARY_CONSOLATION,
@@ -43,7 +56,7 @@ export function getEligibleVoluntaryConsolationParticipants({
 
   const participantMatchUps = {};
   const losingParticipants = {};
-  const allParticipants = {};
+  const matchUpParticipants = {};
   const participantWins = {};
 
   policyDefinitions =
@@ -87,7 +100,7 @@ export function getEligibleVoluntaryConsolationParticipants({
 
     matchUp.sides.forEach((side) => {
       const participantId = side?.participant?.participantId;
-      if (participantId) allParticipants[participantId] = side.participant;
+      if (participantId) matchUpParticipants[participantId] = side.participant;
     });
 
     if (losingSide?.participant) {
@@ -115,9 +128,25 @@ export function getEligibleVoluntaryConsolationParticipants({
     }
   }
 
-  const consideredParticipants = Object.values(
-    requirePlay && requireLoss ? losingParticipants : allParticipants
-  );
+  const considerEntered =
+    tournamentRecord?.participants &&
+    !requirePlay &&
+    !requireLoss &&
+    allEntries;
+
+  const enteredParticipantIds =
+    considerEntered &&
+    (includeEventEntries && event ? event.entries : drawDefinition.entries)
+      .filter((entry) => entry.entryStatus !== WITHDRAWN)
+      .map(({ participantId }) => participantId);
+
+  const consideredParticipants = considerEntered
+    ? tournamentRecord?.participants.filter(({ participantId }) =>
+        enteredParticipantIds.includes(participantId)
+      )
+    : Object.values(
+        requirePlay && requireLoss ? losingParticipants : matchUpParticipants
+      );
 
   const eligibleParticipants = consideredParticipants.filter(
     ({ participantId }) =>

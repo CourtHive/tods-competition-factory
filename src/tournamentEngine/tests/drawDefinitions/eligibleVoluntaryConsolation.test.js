@@ -28,6 +28,22 @@ test('can return participants eligible for voluntary consolation', () => {
 
   ({ eligibleParticipants, losingParticipantIds } =
     tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+      winsLimit: 2,
+      drawId,
+    }));
+
+  expect(eligibleParticipants.length).toEqual(28);
+
+  ({ eligibleParticipants, losingParticipantIds } =
+    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+      winsLimit: 3,
+      drawId,
+    }));
+
+  expect(eligibleParticipants.length).toEqual(30);
+
+  ({ eligibleParticipants, losingParticipantIds } =
+    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
       requireLoss: false,
       drawId,
     }));
