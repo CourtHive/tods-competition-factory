@@ -2480,10 +2480,11 @@ Removes participantIds from `drawDefinition.entries` (if generated) as well as a
 
 ```js
 tournamentEngine.removeDrawEntries({
-  drawId,
-  eventId,
-  participantIds
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
+  participantIds
+  eventId,
+  stages, // optional array of stages to consider, e.g. [VOLUNTARY_CONSOLATION]
+  drawId,
   });
 ```
 
