@@ -1,3 +1,4 @@
+import { getEligibleVoluntaryConsolationParticipants } from './getEligibleVoluntaryConsolationParticipants';
 import { getNextUnfilledDrawPositions } from './positionActions/getNextUnfilledDrawPositions';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
@@ -59,6 +60,7 @@ const queryGovernor = {
   getEliminationDrawSize,
   getParticipantIdMatchUps,
   getParticipantIdFinishingPositions,
+  getEligibleVoluntaryConsolationParticipants,
 
   structureActions,
   matchUpActions,

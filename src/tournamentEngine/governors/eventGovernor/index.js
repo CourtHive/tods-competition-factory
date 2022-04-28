@@ -64,6 +64,7 @@ import { removeSeeding } from './entries/removeSeeding';
 import { autoSeeding } from './entries/autoSeeding';
 
 import { addVoluntaryConsolationStructure } from '../../../drawEngine/generators/addVoluntaryConsolationStructure';
+import { resetVoluntaryConsolationStructure } from './drawDefinitions/resetVoluntaryConsolationStructure';
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
 import { removeStructure } from '../../../drawEngine/governors/structureGovernor/removeStructure';
 import { toggleParticipantCheckInState } from './drawDefinitions/toggleParticipantCheckInState';
@@ -147,6 +148,7 @@ const eventGovernor = {
   modifyEntriesStatus,
   modifySeedAssignment,
 
+  resetVoluntaryConsolationStructure,
   deleteFlightProfileAndFlightDraws,
   deleteFlightAndFlightDraw,
   generateFlightProfile,

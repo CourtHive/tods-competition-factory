@@ -30,6 +30,7 @@ The structure of a **_policyDefinitions_** object is as follows:
 - Round Naming Policy: Specifies how rounds of draw structures should be named
 - Participant Policy: Enables participant details to be filtered to respect privacy concerns
 - Scoring Policy: Restricts available matchUpFormats, defines a default and conditions for "ready to score"
+- Voluntary Consolation Policy: Specifies { winsLimit, finishingRoundLimit } for voluntary consolation eligibility
 
 ## Relevant Methods
 

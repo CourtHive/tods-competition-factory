@@ -3,7 +3,7 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { automatedPositioning } from '../positionGovernor/automatedPositioning';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
-import { makeDeepCopy, nearestPowerOf2 } from '../../../utilities';
+import { makeDeepCopy, nextPowerOf2 } from '../../../utilities';
 import { getDrawStructures } from '../../getters/findStructure';
 import { definedAttributes } from '../../../utilities/objects';
 import { getStageEntries } from '../../getters/stageGetter';
@@ -60,7 +60,7 @@ export function generateVoluntaryConsolation(params = {}) {
     DOUBLE_ELIMINATION,
     ROUND_ROBIN_WITH_PLAYOFF,
   ].includes(drawType)
-    ? nearestPowerOf2(entries.length)
+    ? nextPowerOf2(entries.length)
     : entries.length;
 
   if (

@@ -1459,6 +1459,19 @@ const { representativeParticipantIds } =
 
 ---
 
+## getEligibleVoluntaryConsolationParticipants
+
+```js
+const { eligibleParticipants } =
+  tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    finishingPositionLimit, // optional - limits considered matchUps by finishingRound, e.g. 3 doesn't consider past QF
+    winsLimit, // defaults to 0, meaning only participants with no wins are eligible
+    drawId,
+  });
+```
+
+---
+
 ## getEntriesAndSeedsCount
 
 ```js
@@ -2628,6 +2641,14 @@ tournamentEngine.replaceTieMatchUpParticipantId({
 
 ---
 
+## resetDrawDefinition
+
+````js
+tournamentEngine.resetDrawDefinition({ drawId });
+```
+
+---
+
 ## resetScorecard
 
 Removes all scores from `tieMatchUps` within a TEAM `matchUp`; preserves `lineUps`.
@@ -2637,9 +2658,20 @@ tournamentEngine.resetScorecard({
   matchUpId,
   drawId,
 });
-```
+````
 
 ---
+
+## resetVoluntaryConsolationStructure
+
+```js
+tournamentEngine.resetVoluntaryConsolationStructure({
+  resetEntries, // optional - remove all { entryStage: VOLUNTARY_CONSOLATION }
+  drawId,
+});
+```
+
+--
 
 ## setDrawDefaultMatchUpFormat
 
