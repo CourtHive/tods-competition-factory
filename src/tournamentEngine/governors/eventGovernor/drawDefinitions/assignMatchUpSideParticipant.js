@@ -57,7 +57,7 @@ export function assignMatchUpSideParticipant({
   )
     return {
       error: CANNOT_REMOVE_PARTICIPANTS,
-      message: 'matchUp has completed status or score',
+      info: 'matchUp has completed status or score',
     };
 
   matchUp.sides = [1, 2].map((currentSideNumber) => {

@@ -3,6 +3,7 @@ import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkP
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructureDrawPositionProfiles } from '../../getters/getStructureDrawPositionProfiles';
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
+import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
@@ -10,7 +11,6 @@ import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { assignSeed } from '../entryGovernor/seedAssignment';
@@ -114,6 +114,7 @@ export function assignDrawPosition({
       drawPosition,
       structureId,
       matchUpsMap,
+      event,
     });
     if (result.error) return result;
   }
@@ -157,7 +158,14 @@ export function assignDrawPosition({
     const assignment = seedAssignments.find(
       (assignment) => assignment.participantId === participantId
     );
-    if (assignment) assignSeed({ drawDefinition, structureId, ...assignment });
+    if (assignment)
+      assignSeed({
+        eventId: event?.eventId,
+        tournamentRecord,
+        drawDefinition,
+        ...assignment,
+        structureId,
+      });
   }
 
   if (structure.structureType !== CONTAINER) {
@@ -224,7 +232,14 @@ export function assignDrawPosition({
     addPositionActionTelemetry({ drawDefinition, positionAction });
   }
 
-  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+  modifyPositionAssignmentsNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    structureIds: [structureId],
+    eventId: event?.eventId,
+    positionAssignments,
+    drawDefinition,
+    structure,
+  });
 
   return Object.assign({ positionAssignments }, SUCCESS);
 

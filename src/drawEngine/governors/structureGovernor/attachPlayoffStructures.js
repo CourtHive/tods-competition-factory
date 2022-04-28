@@ -14,6 +14,7 @@ export function attachPlayoffStructures({
   tournamentRecord,
   drawDefinition,
   structures,
+  event,
   links,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -30,6 +31,7 @@ export function attachPlayoffStructures({
 
   addMatchUpsNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    eventId: event?.eventId,
     drawDefinition,
     matchUps,
   });

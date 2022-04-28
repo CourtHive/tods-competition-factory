@@ -132,6 +132,7 @@ export function modifyMatchUpScore({
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    eventId: event?.eventId,
     drawDefinition,
     matchUp,
   });

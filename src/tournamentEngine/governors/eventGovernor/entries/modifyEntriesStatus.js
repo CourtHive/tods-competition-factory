@@ -11,7 +11,7 @@ import {
   INVALID_ENTRY_STATUS,
   INVALID_PARTICIPANT_ID,
   MISSING_EVENT,
-  PARTICIPANT_ASSIGNED_DRAW_POSITION,
+  EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
 } from '../../../../constants/errorConditionConstants';
 import {
   DRAW_SPECIFIC_STATUSES,
@@ -97,7 +97,9 @@ export function modifyEntriesStatus({
       return true;
     });
 
-    return success ? SUCCESS : { error: PARTICIPANT_ASSIGNED_DRAW_POSITION };
+    return success
+      ? { ...SUCCESS }
+      : { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
   };
 
   const autoPosition = ({ flight, drawDefinition }) => {

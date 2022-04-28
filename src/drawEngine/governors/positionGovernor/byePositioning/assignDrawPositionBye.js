@@ -4,12 +4,13 @@ import { getRoundMatchUps } from '../../../accessors/matchUpAccessor/getRoundMat
 import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
 import { findStructure } from '../../../getters/findStructure';
 import { positionTargets } from '../positionTargets';
 import {
-  modifyDrawNotice,
   modifyMatchUpNotice,
+  modifyPositionAssignmentsNotice,
 } from '../../../notifications/drawNotifications';
 
 import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
@@ -65,6 +66,7 @@ export function assignDrawPositionBye({
   matchUpsMap,
   structureId,
   structure,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structure)
@@ -72,6 +74,7 @@ export function assignDrawPositionBye({
 
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
   if (!structureId) ({ structureId } = structure);
+  const stack = 'assignDrawPositionBye';
 
   if (!matchUpsMap) {
     matchUpsMap = getMatchUpsMap({ drawDefinition });
@@ -104,7 +107,7 @@ export function assignDrawPositionBye({
   if (containsBye) return { ...SUCCESS }; // nothing to be done
 
   if (filled && !containsBye) {
-    return { error: DRAW_POSITION_ASSIGNED };
+    return decorateResult({ result: { error: DRAW_POSITION_ASSIGNED }, stack });
   }
 
   // ########## gather reusable data for performance optimization ###########
@@ -138,6 +141,16 @@ export function assignDrawPositionBye({
       drawPosition,
       matchUps,
     });
+
+    modifyPositionAssignmentsNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      structureIds: [structureId],
+      eventId: event?.eventId,
+      positionAssignments,
+      drawDefinition,
+      structure,
+    });
+
     return { ...SUCCESS };
   }
 
@@ -157,7 +170,7 @@ export function assignDrawPositionBye({
     drawPositions?.includes(drawPosition)
   );
 
-  setMatchUpStatusBYE({ drawDefinition, matchUp });
+  setMatchUpStatusBYE({ drawDefinition, matchUp, event });
 
   const drawPositionToAdvance = matchUp.drawPositions?.find(
     (position) => position !== drawPosition
@@ -176,7 +189,14 @@ export function assignDrawPositionBye({
     if (result.error) return result;
   }
 
-  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+  modifyPositionAssignmentsNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    structureIds: [structureId],
+    eventId: event?.eventId,
+    positionAssignments,
+    drawDefinition,
+    structure,
+  });
 
   return { ...SUCCESS };
 }
@@ -189,7 +209,12 @@ function drawPositionFilled(positionAssignment) {
   return { containsBye, containsQualifier, containsParticipant, filled };
 }
 
-function setMatchUpStatusBYE({ tournamentRecord, drawDefinition, matchUp }) {
+function setMatchUpStatusBYE({
+  tournamentRecord,
+  drawDefinition,
+  matchUp,
+  event,
+}) {
   Object.assign(matchUp, {
     matchUpStatus: BYE,
     score: undefined,
@@ -198,6 +223,7 @@ function setMatchUpStatusBYE({ tournamentRecord, drawDefinition, matchUp }) {
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    eventId: event?.eventId,
     drawDefinition,
     matchUp,
   });
@@ -208,11 +234,13 @@ function assignRoundRobinBYE({
   drawDefinition,
   drawPosition,
   matchUps,
+  event,
 }) {
   matchUps.forEach((matchUp) => {
     if (matchUp.drawPositions?.includes(drawPosition)) {
       setMatchUpStatusBYE({
         tournamentId: tournamentRecord?.tournamentId,
+        eventId: event?.eventId,
         drawDefinition,
         matchUp,
       });
@@ -230,6 +258,7 @@ export function advanceDrawPosition({
   drawDefinition,
   matchUpsMap,
   matchUpId,
+  event,
 }) {
   const matchUp = matchUpsMap.drawMatchUps.find(
     (matchUp) => matchUp.matchUpId === matchUpId
@@ -265,6 +294,7 @@ export function advanceDrawPosition({
 
   // only handling situation where winningMatchUp is in same structure
   if (winnerMatchUp && winnerMatchUp.structureId === structure.structureId) {
+    // NOTE: error conditions are ignored
     advanceWinner({
       drawPositionToAdvance,
       inContextDrawMatchUps,
@@ -273,6 +303,7 @@ export function advanceDrawPosition({
       drawDefinition,
       winnerMatchUp,
       matchUpsMap,
+      event,
     });
   }
 
@@ -316,7 +347,9 @@ function advanceWinner({
   drawDefinition,
   winnerMatchUp,
   matchUpsMap,
+  event,
 }) {
+  const stack = 'advanceWinner';
   const noContextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
     (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
   );
@@ -358,7 +391,7 @@ function advanceWinner({
     drawPositionToAdvanceIsBye &&
     !priorPairIsBye
   ) {
-    return { error: DRAW_POSITION_ASSIGNED };
+    return decorateResult({ result: { error: DRAW_POSITION_ASSIGNED }, stack });
   }
   const pairedDrawPosition = existingDrawPositions?.find(
     (drawPosition) => drawPosition !== drawPositionToAdvance
@@ -392,7 +425,7 @@ function advanceWinner({
       drawPositionToAdvance,
       existingAssignments,
     });
-    return { error: DRAW_POSITION_ASSIGNED };
+    return decorateResult({ result: { error: DRAW_POSITION_ASSIGNED }, stack });
   }
 
   const pairedDrawPositionIsBye = positionAssignments.find(
@@ -414,6 +447,7 @@ function advanceWinner({
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
     matchUp: noContextWinnerMatchUp,
+    eventId: event?.eventId,
     drawDefinition,
   });
 

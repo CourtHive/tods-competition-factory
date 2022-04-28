@@ -22,7 +22,7 @@ export function validateSchedulingProfile({
     tournamentRecords,
   });
 
-  let error, message;
+  let error, info;
   const isValid = schedulingProfile.every((dateSchedule) => {
     const { scheduleDate, venues } = dateSchedule;
     if (!isValidDateString(scheduleDate)) {
@@ -31,11 +31,11 @@ export function validateSchedulingProfile({
     const validVenues = venues.every((venueProfile) => {
       const { venueId, rounds } = venueProfile;
       if (typeof venueId !== 'string') {
-        message = 'venueId should be a string';
+        info = 'venueId should be a string';
         return false;
       }
       if (!Array.isArray(rounds)) {
-        message = 'rounds should be an array';
+        info = 'rounds should be an array';
         return false;
       }
       if (!venueIds.includes(venueId)) {
@@ -44,7 +44,7 @@ export function validateSchedulingProfile({
       }
       const validRounds = rounds.every((round) => {
         if (!round) {
-          message = 'empty round';
+          info = 'empty round';
           return false;
         }
         const {
@@ -63,7 +63,7 @@ export function validateSchedulingProfile({
           tournamentsMap[tournamentId][eventId][drawId][structureId];
 
         const validRound = rounds?.includes(roundNumber);
-        if (!validRound) message = 'Invalid rounds';
+        if (!validRound) info = 'Invalid rounds';
 
         const { segmentNumber, segmentsCount } = roundSegment || {};
         const validSegment =
@@ -72,7 +72,7 @@ export function validateSchedulingProfile({
             isPowerOf2(segmentsCount) &&
             segmentNumber <= segmentsCount);
 
-        if (!validSegment) message = 'Invalid segment';
+        if (!validSegment) info = 'Invalid segment';
         return validRound && validSegment;
       });
       if (!validRounds) {
@@ -89,7 +89,7 @@ export function validateSchedulingProfile({
     error = INVALID_VALUES;
   }
 
-  return { valid: !!isValid, error, message };
+  return { valid: !!isValid, error, info };
 }
 
 export function tournamentRelevantSchedulingIds({

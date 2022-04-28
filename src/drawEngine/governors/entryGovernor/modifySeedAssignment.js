@@ -1,5 +1,5 @@
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { modifySeedAssignmentsNotice } from '../../notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
 import { isNumeric } from '../../../utilities/math';
 
@@ -24,10 +24,12 @@ import {
  */
 export function modifySeedAssignment({
   validation = true,
+  tournamentRecord,
   drawDefinition,
   participantId,
   structureId,
   seedValue,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
@@ -76,7 +78,13 @@ export function modifySeedAssignment({
     structure.seedAssignments.push({ seedNumber, seedValue, participantId });
   }
 
-  modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+  modifySeedAssignmentsNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    structureIds: [structureId],
+    eventId: event?.eventId,
+    drawDefinition,
+    structure,
+  });
 
   return SUCCESS;
 }

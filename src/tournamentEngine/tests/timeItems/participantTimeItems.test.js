@@ -45,19 +45,19 @@ it('can add and read timeItems from participants', () => {
   result = tournamentEngine.addParticipantTimeItem({ participantId, timeItem });
   expect(result.success).toEqual(true);
 
-  let { timeItem: retrievedTimeItem, message } =
+  let { timeItem: retrievedTimeItem, info } =
     tournamentEngine.getParticipantTimeItem({
       participantId,
       itemType: 'TESTING.1',
     });
   expect(retrievedTimeItem.itemValue).toEqual(itemValue);
-  expect(message).toEqual(undefined);
+  expect(info).toEqual(undefined);
 
-  ({ timeItem: retrievedTimeItem, message } =
+  ({ timeItem: retrievedTimeItem, info } =
     tournamentEngine.getParticipantTimeItem({
       participantId,
       itemType: 'TESTING.2',
     }));
   expect(retrievedTimeItem).toEqual(undefined);
-  expect(message).toEqual(NOT_FOUND);
+  expect(info).toEqual(NOT_FOUND);
 });

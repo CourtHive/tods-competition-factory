@@ -20,6 +20,7 @@ export function modifySeedAssignment({
   participantId,
   structureId,
   seedValue,
+  event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const participant = (tournamentRecord.participants || []).find(
@@ -32,5 +33,6 @@ export function modifySeedAssignment({
     participantId,
     structureId,
     seedValue,
+    event,
   });
 }

@@ -14,7 +14,7 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   INVALID_VALUES,
-  CANNOT_CHANGE_WINNINGSIDE,
+  CANNOT_CHANGE_WINNING_SIDE,
   MISSING_MATCHUP_ID,
   INVALID_MATCHUP,
 } from '../../../constants/errorConditionConstants';
@@ -92,7 +92,7 @@ export function resetScorecard(params) {
 
   // with propagating winningSide changes, activeDownstream only applies to eventType: TEAM
   const activeDownstream = isActiveDownstream(params);
-  if (activeDownstream) return { error: CANNOT_CHANGE_WINNINGSIDE };
+  if (activeDownstream) return { error: CANNOT_CHANGE_WINNING_SIDE };
 
   for (const tieMatchUp of matchUp.tieMatchUps) {
     const result = setMatchUpStatus({

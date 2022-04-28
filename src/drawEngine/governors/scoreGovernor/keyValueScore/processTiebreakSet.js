@@ -10,7 +10,7 @@ export function processTiebreakSet({
   sets,
   value,
 }) {
-  let updated, message;
+  let updated, info;
   const {
     tiebreakSet: { tiebreakTo, NoAD },
   } = analysis.setFormat;
@@ -52,7 +52,7 @@ export function processTiebreakSet({
 
     if (lowSideLength >= 2) {
       // don't allow tiebreak scores to have more than two digits
-      message = 'tiebreak digit limit';
+      info = 'tiebreak digit limit';
     } else if (auto) {
       if (lowSide === 1)
         matchTiebreakScores[0] = (matchTiebreakScores[0] || '') + value;
@@ -88,5 +88,5 @@ export function processTiebreakSet({
     }
   }
 
-  return { message, scoreString, sets, updated };
+  return { info, scoreString, sets, updated };
 }

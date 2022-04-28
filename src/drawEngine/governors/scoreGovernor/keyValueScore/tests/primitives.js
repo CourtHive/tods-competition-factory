@@ -3,22 +3,22 @@ import { keyValueMatchUpScore } from '..';
 export const TIEBREAK_CLOSER = { value: 'space' };
 
 export function scoreMatchUp({ lowSide, value, matchUp }) {
-  let message, updated;
-  ({ matchUp, message, updated } = keyValueMatchUpScore({
+  let info, updated;
+  ({ matchUp, info, updated } = keyValueMatchUpScore({
     lowSide,
     value,
     matchUp,
   }));
-  return { matchUp, message, updated };
+  return { matchUp, info, updated };
 }
 
 export function enterValues({ values, matchUp }) {
-  let message;
+  let info;
   const messages = [];
   values.forEach((item) => {
     const { lowSide, value } = item;
-    ({ matchUp, message } = scoreMatchUp({ lowSide, value, matchUp }));
-    if (message) messages.push(message);
+    ({ matchUp, info } = scoreMatchUp({ lowSide, value, matchUp }));
+    if (info) messages.push(info);
   });
   return { matchUp, messages };
 }

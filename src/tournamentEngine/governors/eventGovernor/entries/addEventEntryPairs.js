@@ -90,7 +90,7 @@ export function addEventEntryPairs({
         );
       });
 
-  let message;
+  let info;
   let addedParticipants = [];
   if (newParticipants) {
     const result = addParticipants({
@@ -101,7 +101,7 @@ export function addEventEntryPairs({
     });
     if (result.error) return result;
     addedParticipants = result.participants || [];
-    message = result.message;
+    info = result.info;
   }
 
   const pairParticipantIds = participantIdPairs
@@ -136,5 +136,5 @@ export function addEventEntryPairs({
 
   const newParticipantIds = newParticipants.map(getParticipantId);
 
-  return { ...result, message, newParticipantIds };
+  return { ...result, info, newParticipantIds };
 }

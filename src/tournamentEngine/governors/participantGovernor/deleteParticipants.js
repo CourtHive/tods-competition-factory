@@ -12,7 +12,7 @@ import {
   CANNOT_REMOVE_PARTICIPANTS,
   MISSING_PARTICIPANT_IDS,
   MISSING_TOURNAMENT_RECORD,
-  PARTICIPANT_ASSIGNED_DRAW_POSITION,
+  EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
 } from '../../../constants/errorConditionConstants';
 
 export function deleteParticipants({ tournamentRecord, participantIds }) {
@@ -57,7 +57,7 @@ export function deleteParticipants({ tournamentRecord, participantIds }) {
   );
 
   if (placedPairParticipantIds?.length || participantsInDraws.length)
-    return { error: PARTICIPANT_ASSIGNED_DRAW_POSITION };
+    return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
 
   // If not active in draws, remove participantIds from all entries
 

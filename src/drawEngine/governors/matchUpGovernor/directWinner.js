@@ -2,11 +2,11 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
+import { assignSeed } from '../entryGovernor/seedAssignment';
 import { findStructure } from '../../getters/findStructure';
 
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { assignSeed } from '../entryGovernor/seedAssignment';
 
 export function directWinner({
   winnerMatchUpDrawPositionIndex,
@@ -121,9 +121,11 @@ export function directWinner({
       );
       if (seedAssignment) {
         assignSeed({
-          drawDefinition,
+          eventId: winnerMatchUp?.eventId,
           structureId: targetStructureId,
           ...seedAssignment,
+          tournamentRecord,
+          drawDefinition,
         });
       }
     }
@@ -176,6 +178,7 @@ export function directWinner({
 
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,
+          eventId: winnerMatchUp?.eventId,
           matchUp: targetMatchUp,
           drawDefinition,
         });

@@ -15,23 +15,23 @@ import {
 export function updateDrawIdsOrder({ event, orderedDrawIdsMap }) {
   if (typeof event !== 'object') return { error: MISSING_EVENT };
   if (!orderedDrawIdsMap)
-    return { error: MISSING_VALUE, message: 'Missing drawIdsOrderMap' };
+    return { error: MISSING_VALUE, info: 'Missing drawIdsOrderMap' };
   if (typeof orderedDrawIdsMap !== 'object')
     return {
       error: INVALID_VALUES,
-      message: 'orderedDrawIdsMap must be an object',
+      info: 'orderedDrawIdsMap must be an object',
     };
 
   const drawOrders = Object.values(orderedDrawIdsMap);
 
   const validDrawOrders = drawOrders.every((drawOrder) => !isNaN(drawOrder));
   if (!validDrawOrders)
-    return { error: INVALID_VALUES, message: 'drawOrder must be numeric' };
+    return { error: INVALID_VALUES, info: 'drawOrder must be numeric' };
 
   if (unique(drawOrders).length !== drawOrders.length)
     return {
       error: INVALID_VALUES,
-      message: 'drawOrder values must be unique',
+      info: 'drawOrder values must be unique',
     };
 
   if (event.drawDefinitions?.length) {
@@ -41,7 +41,7 @@ export function updateDrawIdsOrder({ event, orderedDrawIdsMap }) {
       orderedDrawIds?.length &&
       intersection(drawIds, orderedDrawIds).length !== drawIds.length
     )
-      return { error: INVALID_VALUES, message: 'Missing drawIds' };
+      return { error: INVALID_VALUES, info: 'Missing drawIds' };
 
     event.drawDefinitions.forEach((drawDefinition) => {
       drawDefinition.drawOrder = orderedDrawIdsMap[drawDefinition.drawId];

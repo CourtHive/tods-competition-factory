@@ -19,7 +19,7 @@ export function modifyParticipantName({
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
   if (!participantName)
-    return { error: MISSING_VALUE, message: 'Missing participantName' };
+    return { error: MISSING_VALUE, info: 'Missing participantName' };
 
   const { participant } = findTournamentParticipant({
     tournamentRecord,

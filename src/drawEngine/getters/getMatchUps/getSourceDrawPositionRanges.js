@@ -10,6 +10,7 @@ import {
   CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 import {
+  INVALID_STAGE,
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
 } from '../../../constants/errorConditionConstants';
@@ -24,7 +25,7 @@ export function getSourceDrawPositionRanges({
 
   const { structure } = findStructure({ drawDefinition, structureId });
   if (structure.stage !== CONSOLATION)
-    return { message: 'Structure is not CONSOLATION stage' };
+    return { error: INVALID_STAGE, info: 'Structure is not CONSOLATION stage' };
 
   const { links } = drawDefinition;
   const relevantLinks =

@@ -71,7 +71,7 @@ export function keyValueMatchUpScore(params) {
   }
   return {
     updated: result.updated,
-    message: result.message,
+    info: result.info,
     matchUp: updatedMatchUp || matchUp,
   };
 }
@@ -82,12 +82,12 @@ export function keyValueScore(params) {
   let { scoreString, sets, winningSide, matchUpStatus } = params;
   const { matchUpFormat, shiftFirst, auto = true } = params;
 
-  let updated, message;
+  let updated, info;
   const isShifted =
     (shiftFirst && lowSide === 2) || (!shiftFirst && lowSide === 1);
 
   if (!VALID_VALUE_KEYS.includes(value)) {
-    return { updated: false, message: 'invalid key' };
+    return { updated: false, info: 'invalid key' };
   }
 
   if (shiftFirst) lowSide = 3 - lowSide;
@@ -137,7 +137,7 @@ export function keyValueScore(params) {
   }
 
   if (analysis.isTimedSet) {
-    ({ message, sets, scoreString, updated, matchUpStatus, winningSide } =
+    ({ info, sets, scoreString, updated, matchUpStatus, winningSide } =
       keyValueTimedSetScore({
         analysis,
         lowSide,
@@ -149,7 +149,7 @@ export function keyValueScore(params) {
       }));
   } else if (OUTCOMEKEYS.includes(value)) {
     if (analysis.finalSetIsComplete || winningSide) {
-      message = 'final set is already complete';
+      info = 'final set is already complete';
     } else if (!analysis.isTiebreakEntry && !analysis.isIncompleteSetScore) {
       ({ sets, scoreString, matchUpStatus, winningSide, updated } =
         processOutcome({
@@ -161,7 +161,7 @@ export function keyValueScore(params) {
           value,
         }));
     } else if (analysis.isTiebreakEntry || analysis.isIncompleteSetScore) {
-      message = 'incomplete set scoreString or tiebreak entry';
+      info = 'incomplete set scoreString or tiebreak entry';
     } else {
       console.log('handle case', { value });
     }
@@ -178,7 +178,7 @@ export function keyValueScore(params) {
     matchUpStatus = undefined;
     winningSide = undefined;
   } else if (analysis.hasOutcome) {
-    message = 'has outcome';
+    info = 'has outcome';
   } else if (value === SCORE_JOINER && !analysis.isMatchTiebreakEntry) {
     if (
       !analysis.isSetTiebreakEntry ||
@@ -200,15 +200,15 @@ export function keyValueScore(params) {
     !analysis.isSetTiebreakEntry
   ) {
     if (analysis.matchTiebreakHasJoiner) {
-      message = 'existing joiner';
+      info = 'existing joiner';
     } else if (analysis.isNumericEnding) {
       updated = true;
       scoreString += MATCH_TIEBREAK_JOINER;
     }
   } else if ([SCORE_JOINER, MATCH_TIEBREAK_JOINER].includes(value)) {
-    message = 'invalid location for joiner';
+    info = 'invalid location for joiner';
   } else if (winningSide) {
-    return { updated: false, message: 'matchUp is complete' };
+    return { updated: false, info: 'matchUp is complete' };
   } else if (analysis.isIncompleteSetScore) {
     if (analysis.isNumericValue) {
       ({ sets, scoreString, updated } = processIncompleteSetScore({
@@ -219,9 +219,9 @@ export function keyValueScore(params) {
       }));
     }
   } else if (analysis.isInvalidMatchTiebreakValue) {
-    message = 'invalid matchUp tiebreak character';
+    info = 'invalid matchUp tiebreak character';
   } else if (analysis.isInvalidSetTiebreakValue) {
-    message = 'invalid set tiebreak character';
+    info = 'invalid set tiebreak character';
   } else if (analysis.isTiebreakCloser) {
     const brackets = analysis.isSetTiebreakEntry
       ? SET_TIEBREAK_BRACKETS
@@ -258,7 +258,7 @@ export function keyValueScore(params) {
 
     updated = true;
   } else if (analysis.isTiebreakSetValue) {
-    ({ message, scoreString, sets, updated } = processTiebreakSet({
+    ({ info, scoreString, sets, updated } = processTiebreakSet({
       analysis,
       auto,
       lowSide,
@@ -282,20 +282,20 @@ export function keyValueScore(params) {
 
     if (!hasZeroStart && tiebreakValue.length < 2) {
       if (NoAD && newTiebreakValue > tiebreakTo - 1) {
-        message = 'invalid low value for NoAD tiebreak';
+        info = 'invalid low value for NoAD tiebreak';
       } else {
         updated = true;
         scoreString = (scoreString || '') + value;
       }
     } else {
-      message = hasZeroStart
+      info = hasZeroStart
         ? 'tiebreak begins with zero'
         : 'tiebreak digit limit';
     }
   } else if (analysis.isCloser) {
-    message = `invalid key: ${value}`;
+    info = `invalid key: ${value}`;
   } else if (analysis.isGameScoreEntry) {
-    message = 'game scoreString entry';
+    info = 'game scoreString entry';
   } else {
     if (analysis.lastSetIsComplete || !sets.length) {
       updated = true;
@@ -347,8 +347,8 @@ export function keyValueScore(params) {
     ) {
       matchUpStatus = undefined;
     }
-    return { updated, scoreString, sets, winningSide, matchUpStatus, message };
+    return { updated, scoreString, sets, winningSide, matchUpStatus, info };
   }
 
-  return { updated, scoreString, sets, winningSide, matchUpStatus, message };
+  return { updated, scoreString, sets, winningSide, matchUpStatus, info };
 }

@@ -6,6 +6,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
+  UNABLE_TO_ASSIGN_COURT,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
@@ -60,7 +61,7 @@ export function bulkUpdateCourtAssignments({
         if (result.success) {
           return result?.success;
         } else {
-          error = { error: 'Unable to assign court' };
+          error = { error: UNABLE_TO_ASSIGN_COURT };
         }
       });
 

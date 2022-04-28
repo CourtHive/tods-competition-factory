@@ -10,6 +10,7 @@ export function cleanupLineUps({
   matchUpsMap,
   assignments,
   structure,
+  event,
 }) {
   const { drawPositions, matchUps, targetMatchUps } = getTargetMatchUps({
     inContextDrawMatchUps,
@@ -31,6 +32,7 @@ export function cleanupLineUps({
 
           modifyMatchUpNotice({
             tournamentId: tournamentRecord?.tournamentId,
+            eventId: event?.eventId,
             drawDefinition,
             matchUp,
           });

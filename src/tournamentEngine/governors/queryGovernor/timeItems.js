@@ -1,5 +1,6 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_ID,
   MISSING_EVENT,
@@ -9,13 +10,12 @@ import {
   MISSING_VALUE,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function getTimeItem({
-  element,
-  itemType,
-  itemSubTypes,
   returnPreviousValues,
+  itemSubTypes,
+  itemType,
+  element,
 }) {
   if (!element) return { error: MISSING_VALUE };
   if (!Array.isArray(element.timeItems)) return { error: MISSING_TIME_ITEMS };
@@ -39,70 +39,70 @@ export function getTimeItem({
       Object.assign(result, { previousItems: filteredSorted });
     return result;
   } else {
-    return { message: NOT_FOUND };
+    return { info: NOT_FOUND };
   }
 }
 
 export function getDrawDefinitionTimeItem({
-  drawDefinition,
-  itemType,
-  itemSubTypes,
   returnPreviousValues,
+  drawDefinition,
+  itemSubTypes,
+  itemType,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
-  if (!drawDefinition.timeItems) return { message: NOT_FOUND };
+  if (!drawDefinition.timeItems) return { info: NOT_FOUND };
 
-  const { timeItem, previousItems, message } = getTimeItem({
+  const { timeItem, previousItems, info } = getTimeItem({
     element: drawDefinition,
-    itemType,
-    itemSubTypes,
     returnPreviousValues,
+    itemSubTypes,
+    itemType,
   });
-  return (timeItem && { timeItem, previousItems }) || { message };
+  return (timeItem && { timeItem, previousItems }) || { info };
 }
 
 export function getEventTimeItem({
-  event,
-  itemType,
-  itemSubTypes,
   returnPreviousValues,
+  itemSubTypes,
+  itemType,
+  event,
 }) {
   if (!event) return { error: MISSING_EVENT };
-  if (!event.timeItems) return { message: NOT_FOUND };
+  if (!event.timeItems) return { info: NOT_FOUND };
 
-  const { timeItem, previousItems, message } = getTimeItem({
-    element: event,
-    itemType,
-    itemSubTypes,
+  const { timeItem, previousItems, info } = getTimeItem({
     returnPreviousValues,
+    element: event,
+    itemSubTypes,
+    itemType,
   });
-  return (timeItem && { timeItem, previousItems }) || { message };
+  return (timeItem && { timeItem, previousItems }) || { info };
 }
 
 export function getTournamentTimeItem({
-  tournamentRecord,
-  itemType,
-  itemSubTypes,
   returnPreviousValues,
+  tournamentRecord,
+  itemSubTypes,
+  itemType,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!tournamentRecord.timeItems) return { message: NOT_FOUND };
+  if (!tournamentRecord.timeItems) return { info: NOT_FOUND };
 
-  const { timeItem, previousItems, message } = getTimeItem({
+  const { timeItem, previousItems, info } = getTimeItem({
     element: tournamentRecord,
-    itemType,
-    itemSubTypes,
     returnPreviousValues,
+    itemSubTypes,
+    itemType,
   });
-  return (timeItem && { timeItem, previousItems }) || { message };
+  return (timeItem && { timeItem, previousItems }) || { info };
 }
 
 export function getParticipantTimeItem({
+  returnPreviousValues,
   tournamentRecord,
   participantId,
-  itemType,
   itemSubTypes,
-  returnPreviousValues,
+  itemType,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
@@ -111,14 +111,14 @@ export function getParticipantTimeItem({
   if (result.error) return result;
 
   const { participant } = result;
-  if (!participant?.timeItems) return { message: NOT_FOUND };
+  if (!participant?.timeItems) return { info: NOT_FOUND };
 
-  const { timeItem, previousItems, message } = getTimeItem({
+  const { timeItem, previousItems, info } = getTimeItem({
     element: result.participant,
-    itemType,
-    itemSubTypes,
     returnPreviousValues,
+    itemSubTypes,
+    itemType,
   });
 
-  return (timeItem && { timeItem, previousItems }) || { message };
+  return (timeItem && { timeItem, previousItems }) || { info };
 }

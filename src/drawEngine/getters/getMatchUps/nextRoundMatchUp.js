@@ -26,5 +26,5 @@ export function nextRoundMatchUp({ structureMatchUps, matchUp }) {
 
     return { matchUp: nextMatchUp };
   }
-  return { error: 'no progression found' };
+  return { message: 'no progression found' };
 }

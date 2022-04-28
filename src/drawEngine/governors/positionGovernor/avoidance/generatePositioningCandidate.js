@@ -10,6 +10,7 @@ import {
 } from '../../../../utilities';
 
 // import { GROUP, PAIR, TEAM } from '../../../../constants/participantTypes';
+import { INVALID_ASSIGNMENT } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 /**
@@ -99,10 +100,11 @@ export function generatePositioningCandidate(params) {
     });
 
     if (swapOptions.length) {
-      swapAssignedPositions({
+      const result = swapAssignedPositions({
         candidatePositionAssignments,
         swapOptions,
       });
+      if (result.error) console.log(result);
 
       positionedParticipants = getPositionedParticipants({
         candidatePositionAssignments,
@@ -124,8 +126,10 @@ export function generatePositioningCandidate(params) {
 
   candidatePositionAssignments.forEach((assignment) => {
     // TODO: Investigate this scenario
-    if (assignment.bye && assignment.participantId)
-      errors.push({ error: 'Invalid Assignment', assignment });
+    if (assignment.bye && assignment.participantId) {
+      const error = INVALID_ASSIGNMENT;
+      errors.push(error);
+    }
   });
 
   return {
@@ -141,7 +145,7 @@ export function swapAssignedPositions({
   swapOptions,
 }) {
   const swapOption = randomPop(swapOptions);
-  if (!swapOption) return { error: 'No swap options' };
+  if (!swapOption) return { error: { message: 'No swap options' } };
 
   const firstPosition = swapOption.drawPosition;
   const secondPosition = randomPop(swapOption.possibleDrawPositions);
@@ -159,5 +163,5 @@ export function swapAssignedPositions({
       assignment.participantId = firstParticipantId;
     }
   });
-  return SUCCESS;
+  return { ...SUCCESS };
 }

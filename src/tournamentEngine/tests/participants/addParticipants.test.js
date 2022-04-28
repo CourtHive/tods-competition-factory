@@ -84,7 +84,7 @@ it('can add multiple participants at once', () => {
     participants: [participant],
   });
   expect(result.success).toEqual(true);
-  expect(result.message).not.toBeUndefined();
+  expect(result.info).not.toBeUndefined();
 
   const participant2 = {
     participantType: INDIVIDUAL,
@@ -100,7 +100,7 @@ it('can add multiple participants at once', () => {
   });
   expect(result.success).toEqual(true);
   expect(result.notAdded.length).toEqual(1);
-  expect(result.message).not.toBeUndefined();
+  expect(result.info).not.toBeUndefined();
 
   let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
   expect(tournamentParticipants.length).toEqual(2);

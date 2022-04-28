@@ -1,10 +1,13 @@
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { intersection } from '../../../utilities';
+import {
+  modifyDrawNotice,
+  modifyPositionAssignmentsNotice,
+} from '../../notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -18,6 +21,7 @@ export function setPositionAssignments({
   structurePositionAssignments,
   tournamentRecord,
   drawDefinition,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!Array.isArray(structurePositionAssignments))
@@ -34,7 +38,7 @@ export function setPositionAssignments({
     if (structure.structures)
       return {
         error: INVALID_STRUCTURE,
-        message: 'cannot be Round Robin group container',
+        info: 'cannot be Round Robin group container',
       };
 
     const structureDrawPositions = structure.positionAssignments?.map(
@@ -48,7 +52,7 @@ export function setPositionAssignments({
       intersection(structureDrawPositions, submittedDrawPositions).length !==
       structureDrawPositions.length
     )
-      return { error: INVALID_VALUES, message: 'drawPositions do not match' };
+      return { error: INVALID_VALUES, info: 'drawPositions do not match' };
 
     const matchUpsMap = getMatchUpsMap({ drawDefinition });
     const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
@@ -93,12 +97,25 @@ export function setPositionAssignments({
         if (result?.error) return result;
       }
     }
+    modifyPositionAssignmentsNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      structureIds: [structureId],
+      eventId: event?.eventId,
+      positionAssignments,
+      drawDefinition,
+      structure,
+    });
   }
 
   const structureIds = structurePositionAssignments.map(
     ({ structureId }) => structureId
   );
-  modifyDrawNotice({ drawDefinition, structureIds });
+  modifyDrawNotice({
+    eventId: event?.eventId,
+    tournamentRecord,
+    drawDefinition,
+    structureIds,
+  });
 
   return { ...SUCCESS };
 }

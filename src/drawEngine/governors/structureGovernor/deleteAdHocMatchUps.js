@@ -24,9 +24,10 @@ import {
  */
 export function deleteAdHocMatchUps({
   tournamentRecord,
+  matchUpIds = [],
   drawDefinition,
   structureId,
-  matchUpIds = [],
+  event,
 }) {
   if (typeof drawDefinition !== 'object')
     return { error: MISSING_DRAW_DEFINITION };
@@ -102,9 +103,14 @@ export function deleteAdHocMatchUps({
       tournamentId: tournamentRecord?.tournamentId,
       matchUpIds: matchUpIdsToDelete,
       action: 'deleteAdHocMatchUps',
+      eventId: event?.eventId,
       drawDefinition,
     });
-    modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+    modifyDrawNotice({
+      structureIds: [structureId],
+      eventId: event?.eventId,
+      drawDefinition,
+    });
   }
 
   return { ...SUCCESS };

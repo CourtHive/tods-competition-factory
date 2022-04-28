@@ -40,14 +40,14 @@ it('can enter a straight set win for side 1', () => {
   expect(matchUp?.winningSide).toEqual(1);
 
   // entering a value after winningSide is determined does nothing
-  const { message, updated } = keyValueMatchUpScore({
+  const { info, updated } = keyValueMatchUpScore({
     lowSide: 2,
     value: 2,
     matchUp,
     matchUpFormat,
   });
   expect(updated).toEqual(false);
-  expect(message).toEqual('matchUp is complete');
+  expect(info).toEqual('matchUp is complete');
 });
 
 it('can enter a straight set win for side 2', () => {
@@ -79,14 +79,14 @@ it('can enter a straight set win for side 2', () => {
   expect(matchUp?.winningSide).toEqual(2);
 
   // entering a value after winningSide is determined does nothing
-  const { message, updated } = keyValueMatchUpScore({
+  const { info, updated } = keyValueMatchUpScore({
     lowSide: 1,
     value: 2,
     matchUp,
     matchUpFormat,
   });
   expect(updated).toEqual(false);
-  expect(message).toEqual('matchUp is complete');
+  expect(info).toEqual('matchUp is complete');
 });
 
 it('can enter a three set win for side 1', () => {
@@ -309,13 +309,13 @@ it('does not allow leading zero in tiebreak scores', () => {
   expect(matchUp.scoreString.trim()).toEqual('5-4(0');
   expect(matchUp?.sets?.length).toEqual(1);
 
-  const { matchUp: scoredMatchUp, message } = scoreMatchUp({
+  const { matchUp: scoredMatchUp, info } = scoreMatchUp({
     value: '1',
     lowSide: 1,
     matchUp,
   });
   expect(scoredMatchUp.scoreString.trim()).toEqual('5-4(0');
-  expect(message).toEqual('tiebreak begins with zero');
+  expect(info).toEqual('tiebreak begins with zero');
 });
 
 it('does not allow more than two digits for set tiebreaks', () => {
@@ -332,11 +332,11 @@ it('does not allow more than two digits for set tiebreaks', () => {
   expect(matchUp.scoreString.trim()).toEqual('5-4(11');
   expect(matchUp?.sets?.length).toEqual(1);
 
-  const { matchUp: scoredMatchUp, message } = scoreMatchUp({
+  const { matchUp: scoredMatchUp, info } = scoreMatchUp({
     value: '1',
     lowSide: 1,
     matchUp,
   });
   expect(scoredMatchUp.scoreString.trim()).toEqual('5-4(11');
-  expect(message).toEqual('tiebreak digit limit');
+  expect(info).toEqual('tiebreak digit limit');
 });

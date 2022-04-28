@@ -17,7 +17,7 @@ import {
   MISSING_DRAW_DEFINITION,
   INVALID_PARTICIPANT_IDS,
   MISSING_PARTICIPANT_ID,
-  MORE_PARTICIPANTS_THAN_DRAW_POSITIONS,
+  PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
 } from '../../../constants/errorConditionConstants';
 import {
   MAIN,
@@ -134,7 +134,7 @@ export function addDrawEntries({
     stage !== VOLUNTARY_CONSOLATION &&
     positionsAvailable < participantIds.length
   )
-    return { error: MORE_PARTICIPANTS_THAN_DRAW_POSITIONS };
+    return { error: PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE };
 
   const participantIdsNotAdded = participantIds.reduce(
     (notAdded, participantId) => {
@@ -184,7 +184,7 @@ export function addDrawEntries({
 
   return participantIdsNotAdded?.length
     ? {
-        message: 'some participantIds could not be added',
+        info: 'some participantIds could not be added',
         participantIdsNotAdded,
         ...SUCCESS,
       }

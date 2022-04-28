@@ -151,7 +151,7 @@ it('can add and remove extensions from tournamentRecords', () => {
   result = tournamentEngine.findTournamentExtension({
     name: extensionName,
   });
-  expect(result.message).toEqual(NOT_FOUND);
+  expect(result.info).toEqual(NOT_FOUND);
 
   result = tournamentEngine.removeTournamentExtension({ name: extensionName });
   expect(result.success).toEqual(true);
@@ -165,7 +165,7 @@ it('can add and remove extensions from tournamentRecords', () => {
     name: extensionName,
     eventId,
   });
-  expect(result.message).toEqual(NOT_FOUND);
+  expect(result.info).toEqual(NOT_FOUND);
 
   result = tournamentEngine.removeDrawDefinitionExtension({
     name: extensionName,
@@ -184,7 +184,7 @@ it('can add and remove extensions from tournamentRecords', () => {
     name: extensionName,
     drawId,
   });
-  expect(result.message).toEqual(NOT_FOUND);
+  expect(result.info).toEqual(NOT_FOUND);
 });
 
 test('add and remove primitives throw appropriate errors', () => {

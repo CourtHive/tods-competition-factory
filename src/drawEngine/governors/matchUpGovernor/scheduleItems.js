@@ -1,6 +1,7 @@
 import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { addMatchUpTimeItem } from './timeItems';
@@ -62,6 +63,7 @@ export function addMatchUpScheduleItems({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!schedule) return { error: MISSING_VALUE };
+  const stack = 'addMatchUpScheduleItems';
 
   const {
     endTime,
@@ -82,7 +84,8 @@ export function addMatchUpScheduleItems({
       scheduledDate,
       matchUpId,
     });
-    if (result?.error) return { error: result.error, scheduledDate };
+    if (result?.error)
+      return decorateResult({ result, stack, context: { scheduledDate } });
   }
   if (scheduledTime !== undefined) {
     const result = addMatchUpScheduledTime({
@@ -166,6 +169,7 @@ export function addMatchUpScheduleItems({
     if (!matchUp) return { error: MATCHUP_NOT_FOUND };
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
+      eventId: event?.eventId,
       drawDefinition,
       matchUp,
     });

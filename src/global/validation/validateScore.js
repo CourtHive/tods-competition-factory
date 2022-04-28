@@ -18,18 +18,18 @@ export function validateScore({
   const { sets, scoreStringSide1, scoreStringSide2 } = score;
 
   if (scoreStringSide1 !== undefined && typeof scoreStringSide1 !== 'string')
-    return { error: INVALID_VALUES, message: 'scoreString must be a string!' };
+    return { error: INVALID_VALUES, info: 'scoreString must be a string!' };
 
   if (scoreStringSide2 !== undefined && typeof scoreStringSide2 !== 'string')
-    return { error: INVALID_VALUES, message: 'scoreString must be a string!' };
+    return { error: INVALID_VALUES, info: 'scoreString must be a string!' };
 
   if (sets !== undefined && !Array.isArray(sets))
-    return { error: INVALID_VALUES, message: 'sets must be an array' };
+    return { error: INVALID_VALUES, info: 'sets must be an array' };
 
   if (sets?.length) {
     const setNumbers = sets.map((set) => set?.setNumber).filter(Boolean);
     if (setNumbers.length !== unique(setNumbers).length)
-      return { error: INVALID_VALUES, message: 'setNumbers not unique' };
+      return { error: INVALID_VALUES, info: 'setNumbers not unique' };
 
     for (const set of sets) {
       const {
@@ -55,7 +55,7 @@ export function validateScore({
         );
 
       if (!numericValuePairs) {
-        return { error: INVALID_VALUES, message: 'non-numeric values' };
+        return { error: INVALID_VALUES, info: 'non-numeric values' };
       }
 
       const numericValues = [setNumber, winningSide]
@@ -63,11 +63,11 @@ export function validateScore({
         .every((numericValue) => isConvertableInteger(numericValue));
 
       if (!numericValues) {
-        return { error: INVALID_VALUES, message: 'non-numeric values' };
+        return { error: INVALID_VALUES, info: 'non-numeric values' };
       }
 
       if (winningSide && ![1, 2].includes(winningSide))
-        return { error: INVALID_VALUES, message: 'winningSide must be 1 or 2' };
+        return { error: INVALID_VALUES, info: 'winningSide must be 1 or 2' };
     }
     const isValidScore = analyzeScore({
       existingMatchUpStatus,
@@ -79,7 +79,7 @@ export function validateScore({
     if (!isValidScore) {
       return {
         error: INVALID_WINNING_SIDE,
-        message: 'winningSide does not match analyzed score',
+        info: 'winningSide does not match analyzed score',
       };
     }
   }

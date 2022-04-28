@@ -14,7 +14,7 @@ import {
 } from '../../tests/primitives/verifyMatchUps';
 
 import {
-  CANNOT_CHANGE_WINNINGSIDE,
+  CANNOT_CHANGE_WINNING_SIDE,
   INCOMPATIBLE_MATCHUP_STATUS,
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
@@ -585,7 +585,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     matchUpStatus: COMPLETED,
     allowChangePropagation: false,
   }));
-  expect(error).toEqual(CANNOT_CHANGE_WINNINGSIDE);
+  expect(error).toEqual(CANNOT_CHANGE_WINNING_SIDE);
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId: mainStructureId,

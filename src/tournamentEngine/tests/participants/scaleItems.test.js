@@ -79,7 +79,7 @@ it('can set participant scaleItems', () => {
     scaleItem,
   });
   expect(result).toMatchObject(SUCCESS);
-  expect(result.message).toEqual(VALUE_UNCHANGED);
+  expect(result.info).toEqual(VALUE_UNCHANGED);
 
   scaleItem = {
     scaleValue: undefined,
@@ -108,7 +108,7 @@ it('can set participant scaleItems', () => {
     scaleItem,
   });
   expect(result).toMatchObject(SUCCESS);
-  expect(result.message).toEqual(VALUE_UNCHANGED);
+  expect(result.info).toEqual(VALUE_UNCHANGED);
 });
 
 it('can set participant scaleItems in bulk', () => {

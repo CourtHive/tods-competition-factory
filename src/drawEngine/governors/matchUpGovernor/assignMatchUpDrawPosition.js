@@ -2,6 +2,7 @@ import { getPairedPreviousMatchUpIsWOWO } from '../positionGovernor/getPairedPre
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { updateSideLineUp } from '../positionGovernor/updateSideLineUp';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
@@ -35,6 +36,8 @@ export function assignMatchUpDrawPosition({
   matchUpsMap,
   matchUpId,
 }) {
+  const stack = 'assignMatchUpDrawPosition';
+
   if (!matchUpsMap) {
     matchUpsMap = getMatchUpsMap({ drawDefinition });
   }
@@ -113,6 +116,7 @@ export function assignMatchUpDrawPosition({
 
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
+      eventId: inContextMatchUp?.eventId,
       drawDefinition,
       matchUp,
     });
@@ -232,6 +236,12 @@ export function assignMatchUpDrawPosition({
   if (positionAssigned) {
     return SUCCESS;
   } else {
-    return { error: DRAW_POSITION_ASSIGNED, drawPosition };
+    return decorateResult({
+      result: {
+        error: DRAW_POSITION_ASSIGNED,
+        context: { drawPosition },
+        stack,
+      },
+    });
   }
 }

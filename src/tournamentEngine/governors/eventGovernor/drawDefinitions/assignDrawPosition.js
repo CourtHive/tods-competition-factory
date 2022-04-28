@@ -16,6 +16,7 @@ export function assignDrawPosition({
   drawPosition,
   structureId,
   qualifier,
+  event,
   bye,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -39,6 +40,7 @@ export function assignDrawPosition({
       participantId,
       structureId,
       drawPosition,
+      event,
     });
     if (result.error) return result;
   }

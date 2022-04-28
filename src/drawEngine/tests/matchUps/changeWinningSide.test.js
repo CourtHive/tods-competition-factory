@@ -1,7 +1,7 @@
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 
-import { CANNOT_CHANGE_WINNINGSIDE } from '../../../constants/errorConditionConstants';
+import { CANNOT_CHANGE_WINNING_SIDE } from '../../../constants/errorConditionConstants';
 import {
   COMPASS,
   FIRST_MATCH_LOSER_CONSOLATION,
@@ -55,7 +55,7 @@ test('changing winningSide can propagate changes through multiple structures', (
       outcome: { winningSide: 2 },
       drawId,
     });
-  expect(result.error).toEqual(CANNOT_CHANGE_WINNINGSIDE);
+  expect(result.error).toEqual(CANNOT_CHANGE_WINNING_SIDE);
 
   result = tournamentEngine
     .devContext({ winningSideChange: true })
@@ -130,7 +130,7 @@ test('changing winningSide can propagate changes through FMLC', () => {
       outcome: { winningSide: 2 },
       drawId,
     });
-  expect(result.error).toEqual(CANNOT_CHANGE_WINNINGSIDE);
+  expect(result.error).toEqual(CANNOT_CHANGE_WINNING_SIDE);
 
   result = tournamentEngine
     .devContext({ winningSideChange: true })

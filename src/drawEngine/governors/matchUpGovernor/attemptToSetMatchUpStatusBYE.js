@@ -1,9 +1,12 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
-import { INVALID_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  INVALID_MATCHUP_STATUS,
+  INVALID_MATCHUP_STATUS_BYE,
+} from '../../../constants/errorConditionConstants';
 
 export function attemptToSetMatchUpStatusBYE({
   tournamentRecord,
@@ -38,8 +41,6 @@ export function attemptToSetMatchUpStatusBYE({
     });
     return SUCCESS;
   } else {
-    return {
-      error: 'Cannot Assign BYE status if no assignment: { bye: true }',
-    };
+    return { error: INVALID_MATCHUP_STATUS_BYE };
   }
 }

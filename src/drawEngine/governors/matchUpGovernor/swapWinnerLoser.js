@@ -48,6 +48,7 @@ export function swapWinnerLoser(params) {
       ) || [];
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
+      eventId: params.event?.eventId,
       drawDefinition,
       matchUp,
     });

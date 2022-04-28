@@ -11,8 +11,8 @@ import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
 import { COMPETITOR } from '../../../../constants/participantRoles';
 import {
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
+  EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   INVALID_ENTRY_STATUS,
-  PARTICIPANT_ASSIGNED_DRAW_POSITION,
 } from '../../../../constants/errorConditionConstants';
 import {
   ALTERNATE,
@@ -69,7 +69,7 @@ it('can modify entryStatus within event.entries', () => {
     entryStatus: WITHDRAWN,
     eventId,
   });
-  expect(result.error).toEqual(PARTICIPANT_ASSIGNED_DRAW_POSITION);
+  expect(result.error).toEqual(EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT);
 
   // when passing eventId and NOT drawId only the event.entries are mofidied
   result = tournamentEngine.modifyEntriesStatus({
@@ -234,7 +234,7 @@ it('can account for individuals appearing in multiple doubles pairs', () => {
     entryStatus: ALTERNATE,
     eventId,
   });
-  expect(result.error).toEqual(PARTICIPANT_ASSIGNED_DRAW_POSITION);
+  expect(result.error).toEqual(EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT);
 
   const secondFlightParticipantIds = getParticipantIds(
     secondFlight.drawEntries
@@ -267,7 +267,7 @@ it('can account for individuals appearing in multiple doubles pairs', () => {
     entryStatus: WITHDRAWN,
     eventId,
   });
-  expect(result.error).toEqual(PARTICIPANT_ASSIGNED_DRAW_POSITION);
+  expect(result.error).toEqual(EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT);
 
   result = tournamentEngine.modifyEntriesStatus({
     participantIds: secondFlightParticipantIds,

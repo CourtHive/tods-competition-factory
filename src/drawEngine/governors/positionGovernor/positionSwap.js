@@ -97,7 +97,7 @@ function eliminationSwap({
     return {
       error: INVALID_VALUES,
       structure,
-      message: 'Missing positionAssignments',
+      info: 'Missing positionAssignments',
     };
   }
 

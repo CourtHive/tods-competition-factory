@@ -52,20 +52,19 @@ it('can add and read timeItems from events', () => {
   result = tournamentEngine.addEventTimeItem({ eventId, timeItem });
   expect(result.success).toEqual(true);
 
-  let { timeItem: retrievedTimeItem, message } =
-    tournamentEngine.getEventTimeItem({
-      eventId,
-      itemType: 'RETRIEVAL.RATING.SINGLES.U18',
-    });
-  expect(retrievedTimeItem.itemValue).toEqual(itemValue);
-  expect(message).toEqual(undefined);
-
-  ({ timeItem: retrievedTimeItem, message } = tournamentEngine.getEventTimeItem(
+  let { timeItem: retrievedTimeItem, info } = tournamentEngine.getEventTimeItem(
     {
       eventId,
-      itemType: 'RETRIEVAL.RATING.SINGLES.U16',
+      itemType: 'RETRIEVAL.RATING.SINGLES.U18',
     }
-  ));
+  );
+  expect(retrievedTimeItem.itemValue).toEqual(itemValue);
+  expect(info).toEqual(undefined);
+
+  ({ timeItem: retrievedTimeItem, info } = tournamentEngine.getEventTimeItem({
+    eventId,
+    itemType: 'RETRIEVAL.RATING.SINGLES.U16',
+  }));
   expect(retrievedTimeItem).toEqual(undefined);
-  expect(message).toEqual(NOT_FOUND);
+  expect(info).toEqual(NOT_FOUND);
 });

@@ -7,6 +7,7 @@ export function addPlayoffStructures(params) {
 
   return attachPlayoffStructures({
     tournamentId: params.tournamentRecord?.tournamentId,
+    eventId: params.event?.eventId || params.eventId,
     drawDefinition,
     structures,
     links,

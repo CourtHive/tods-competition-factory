@@ -16,9 +16,7 @@ export function attachPolicies({ tournamentRecords, policyDefinitions }) {
       policyDefinitions,
       allowReplacement: true,
     });
-    if (result.error) {
-      return result;
-    }
+    if (result.error) return result;
   }
 
   return SUCCESS;

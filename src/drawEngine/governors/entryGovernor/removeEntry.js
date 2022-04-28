@@ -10,9 +10,9 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function removeEntry({
-  participantId,
-  drawDefinition,
   autoEntryPositions = true,
+  drawDefinition,
+  participantId,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };

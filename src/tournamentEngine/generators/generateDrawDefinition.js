@@ -128,7 +128,7 @@ export function generateDrawDefinition(params) {
       if (result.error)
         return {
           error: result.error,
-          message: 'matchUpFormat or tieFormat error',
+          info: 'matchUpFormat or tieFormat error',
         };
 
       if (matchUpType) drawDefinition.matchUpType = matchUpType;

@@ -57,6 +57,7 @@ export function setMatchUpFormat(params) {
     }
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
+      eventId: event?.eventId,
       drawDefinition,
       matchUp,
     });

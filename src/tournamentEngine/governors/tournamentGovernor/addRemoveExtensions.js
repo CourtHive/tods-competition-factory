@@ -38,8 +38,8 @@ export function addExtension({ element, extension } = {}) {
 export function removeExtension({ element, name } = {}) {
   if (!element) return { error: MISSING_VALUE };
   if (typeof element !== 'object') return { error: INVALID_VALUES };
-  if (!name) return { error: MISSING_VALUE, message: 'Missing name' };
-  if (!element.extensions) return { ...SUCCESS, message: NOT_FOUND };
+  if (!name) return { error: MISSING_VALUE, info: 'Missing name' };
+  if (!element.extensions) return { ...SUCCESS, info: NOT_FOUND };
 
   element.extensions = element.extensions.filter(
     (extension) => extension?.name !== name

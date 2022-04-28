@@ -120,7 +120,7 @@ export function generateAndPopulatePlayoffStructures(params) {
     const roundInfo = roundsRanges.find(
       (roundInfo) => roundInfo.roundNumber === roundNumber
     );
-    if (!roundInfo) return { error: INVALID_VALUES, message: { roundNumber } };
+    if (!roundInfo) return { error: INVALID_VALUES, context: { roundNumber } };
     const drawSize = roundInfo.finishingPositions.length;
     const finishingPositionOffset =
       Math.min(...roundInfo.finishingPositions) - 1;

@@ -13,10 +13,14 @@ import {
   numericSort,
 } from '../../../../utilities';
 
-import { MISSING_AVOIDANCE_POLICY } from '../../../../constants/errorConditionConstants';
 import { GROUP, PAIR, TEAM } from '../../../../constants/participantTypes';
 import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import {
+  INSUFFICIENT_DRAW_POSITIONS,
+  MISSING_AVOIDANCE_POLICY,
+  NO_CANDIDATES,
+} from '../../../../constants/errorConditionConstants';
 
 /**
  *
@@ -110,7 +114,7 @@ export function randomUnseededSeparation({
   });
 
   if (unplacedParticipantIds.length > unassignedPositions.length) {
-    return { error: 'More participantIds than unpaired positions' };
+    return { error: INSUFFICIENT_DRAW_POSITIONS };
   }
 
   let candidate;
@@ -166,7 +170,7 @@ export function randomUnseededSeparation({
     );
   }
 
-  if (!candidate) return { error: 'Could not produce candidate' };
+  if (!candidate) return { error: NO_CANDIDATES };
 
   const alreadyAssignedParticipantIds = (structure.positionAssignments || [])
     .filter((assignment) => assignment.participantId)

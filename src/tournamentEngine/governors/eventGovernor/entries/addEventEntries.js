@@ -104,7 +104,7 @@ export function addEventEntries(params) {
     }
   });
 
-  let message;
+  let info;
   if (drawId && !isUngrouped(entryStage)) {
     const result = addDrawEntries({
       participantIds: validParticipantIds,
@@ -119,9 +119,9 @@ export function addEventEntries(params) {
     });
 
     // Ignore error if drawId is included but entry can't be added to drawDefinition/flightProfile
-    // return error as message to client
+    // return error as info to client
     if (result.error) {
-      message = result.error;
+      info = result.error;
     }
   }
 
@@ -167,6 +167,6 @@ export function addEventEntries(params) {
   }
 
   return !invalidParticipantIds
-    ? Object.assign({ message }, SUCCESS)
+    ? Object.assign({ info }, SUCCESS)
     : { error: INVALID_PARTICIPANT_IDS };
 }

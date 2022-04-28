@@ -27,11 +27,11 @@ export function createGroupParticipant({
   groupName,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!groupName) return { error: MISSING_VALUE, message: 'Missing groupName' };
+  if (!groupName) return { error: MISSING_VALUE, info: 'Missing groupName' };
   if (!Array.isArray(individualParticipantIds))
     return {
       error: INVALID_VALUES,
-      message: 'Invalid individualParticipantIds',
+      info: 'Invalid individualParticipantIds',
     };
 
   const { tournamentParticipants } = getTournamentParticipants({
