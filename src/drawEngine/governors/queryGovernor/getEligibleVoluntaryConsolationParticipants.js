@@ -7,10 +7,13 @@ import { MAIN, PLAY_OFF } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function getEligibleVoluntaryConsolationParticipants({
+  excludedMatchUpStatuses = [],
   finishingRoundLimit,
   policyDefinitions,
   tournamentRecord,
   drawDefinition,
+  matchUpsLimit,
+  roundLimit,
   winsLimit,
   event,
 }) {
@@ -23,6 +26,7 @@ export function getEligibleVoluntaryConsolationParticipants({
     drawDefinition,
   });
 
+  const participantMatchUps = {};
   const losingParticipants = {};
   const participantWins = {};
 
@@ -36,7 +40,15 @@ export function getEligibleVoluntaryConsolationParticipants({
     });
 
   const policy = policyDefinitions[POLICY_TYPE_VOLUNTARY_CONSOLATION];
+  excludedMatchUpStatuses =
+    (excludedMatchUpStatuses.length && excludedMatchUpStatuses) ||
+    policy?.excludedMatchUpStatuses ||
+    [];
+
   finishingRoundLimit = finishingRoundLimit || policy?.finishingRoundLimit;
+  matchUpsLimit = matchUpsLimit || policy?.matchUpsLimit;
+  roundLimit = roundLimit || policy?.roundLimit;
+
   winsLimit = winsLimit || policy?.winsLimit;
   if (isNaN(winsLimit)) winsLimit = 0;
 
@@ -47,13 +59,20 @@ export function getEligibleVoluntaryConsolationParticipants({
       matchUp.finishingRound >= finishingRoundLimit
     )
       continue;
+    if (!isNaN(roundLimit) && matchUp.finishingRound <= roundLimit) continue;
 
     const losingSide = matchUp.sides?.find(
       ({ sideNumber }) => sideNumber !== matchUp.winningSide
     );
     if (losingSide?.participant) {
-      losingParticipants[losingSide.participant.participantId] =
-        losingSide.participant;
+      const participantId = losingSide.participant.participantId;
+      losingParticipants[participantId] = losingSide.participant;
+
+      if (!participantMatchUps[participantId])
+        participantMatchUps[participantId] = 0;
+
+      if (!excludedMatchUpStatuses.includes(matchUp.matchUpStatus))
+        participantMatchUps[participantId] += 1;
     }
 
     const winningSide = matchUp.sides?.find(
@@ -63,12 +82,19 @@ export function getEligibleVoluntaryConsolationParticipants({
       const participantId = winningSide.participant.participantId;
       if (!participantWins[participantId]) participantWins[participantId] = 0;
       participantWins[participantId] += 1;
+
+      if (!participantMatchUps[participantId])
+        participantMatchUps[participantId] = 0;
+
+      if (!excludedMatchUpStatuses.includes(matchUp.matchUpStatus))
+        participantMatchUps[participantId] += 1;
     }
   }
 
   const eligibleParticipants = Object.values(losingParticipants).filter(
     ({ participantId }) =>
-      (participantWins[participantId] || 0) <= (winsLimit || 0)
+      (participantWins[participantId] || 0) <= (winsLimit || 0) &&
+      (!matchUpsLimit || participantMatchUps[participantId] < matchUpsLimit)
   );
 
   const losingParticipantIds = Object.keys(losingParticipants);
