@@ -1,14 +1,18 @@
+import { getPolicyDefinitions } from '../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
 import { allDrawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter';
 
+import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../../constants/policyConstants';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { MAIN, PLAY_OFF } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function getEligibleVoluntaryConsolationParticipants({
   finishingRoundLimit,
+  policyDefinitions,
   tournamentRecord,
   drawDefinition,
   winsLimit = 0,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
@@ -21,6 +25,19 @@ export function getEligibleVoluntaryConsolationParticipants({
 
   const losingParticipants = {};
   const participantWins = {};
+
+  policyDefinitions =
+    policyDefinitions ||
+    getPolicyDefinitions({
+      policyTypes: [POLICY_TYPE_VOLUNTARY_CONSOLATION],
+      tournamentRecord,
+      drawDefinition,
+      event,
+    });
+
+  const policy = policyDefinitions[POLICY_TYPE_VOLUNTARY_CONSOLATION];
+  finishingRoundLimit = finishingRoundLimit || policy.finishingRoundLimit;
+  winsLimit = winsLimit || policy.winsLimit;
 
   for (const matchUp of matchUps) {
     if (![1, 2].includes(matchUp.winningSide)) continue;
