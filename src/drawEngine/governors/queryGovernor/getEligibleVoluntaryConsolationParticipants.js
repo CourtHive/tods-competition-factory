@@ -19,14 +19,14 @@ export function getEligibleVoluntaryConsolationParticipants({
   excludedMatchUpStatuses = [],
   includeEventParticipants, // boolean - consider event entries rather than draw entries (if event is present)
   finishingRoundLimit,
-  requirePlay = true,
-  requireLoss = true,
   policyDefinitions,
   roundNumberLimit,
   tournamentRecord,
   drawDefinition,
   matchUpsLimit,
   allEntries, // boolean - consider all entries, regardless of whether placed in draw
+  requirePlay,
+  requireLoss,
   winsLimit,
   event,
 }) {
@@ -68,15 +68,36 @@ export function getEligibleVoluntaryConsolationParticipants({
       event,
     });
 
+  // support POLICY_TYPE_VOLUNTARY_CONSOLATION
   const policy = policyDefinitions[POLICY_TYPE_VOLUNTARY_CONSOLATION];
   excludedMatchUpStatuses =
     (excludedMatchUpStatuses.length && excludedMatchUpStatuses) ||
     policy?.excludedMatchUpStatuses ||
     [];
 
+  includeEventParticipants =
+    includeEventParticipants !== undefined
+      ? includeEventParticipants
+      : policy?.includeEventParticipants;
+  allEntries = allEntries !== undefined ? allEntries : policy?.allEntries;
   finishingRoundLimit = finishingRoundLimit || policy?.finishingRoundLimit;
-  matchUpsLimit = matchUpsLimit || policy?.matchUpsLimit;
   roundNumberLimit = roundNumberLimit || policy?.roundNumberLimit;
+  matchUpsLimit = matchUpsLimit || policy?.matchUpsLimit;
+
+  requirePlay =
+    requirePlay === false
+      ? false
+      : policy?.requirePlay !== undefined
+      ? policy.requirePlay
+      : true;
+
+  requireLoss =
+    requireLoss === false
+      ? false
+      : policy?.requireLoss !== undefined
+      ? policy.requireLoss
+      : true;
+  // end policy support
 
   winsLimit = winsLimit || policy?.winsLimit;
   if (isNaN(winsLimit)) winsLimit = 0;
