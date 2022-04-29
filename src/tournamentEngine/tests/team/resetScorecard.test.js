@@ -1,8 +1,10 @@
+import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { USTA_GOLD_TEAM_CHALLENGE } from '../../../constants/tieFormatConstants';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 
@@ -82,8 +84,9 @@ test('can clear TEAM matchUp "scorecards"', () => {
   expect(targetMatchUp.score.sets[0].side1Score).toEqual(9);
 
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
-    const { winningSide, matchUpStatus, score } = dualMatchUp;
+    const { winningSide, matchUpStatus, score, tieMatchUps } = dualMatchUp;
     expect(matchUpStatus).toEqual(COMPLETED);
+    expect(tieMatchUps.length).toEqual(17);
     expect(winningSide).toEqual(1);
     expect(score).toEqual({
       scoreStringSide1: '9-0',
@@ -105,11 +108,31 @@ test('can clear TEAM matchUp "scorecards"', () => {
   });
   expect(secondRoundDualMatchUp.drawPositions).toEqual([1, 3]);
 
-  let result = tournamentEngine.resetScorecard({
+  let modifiedMatchUpLog = [];
+  let result = setSubscriptions({
+    subscriptions: {
+      [MODIFY_MATCHUP]: (matchUps) => {
+        matchUps.forEach(({ matchUp }) =>
+          modifiedMatchUpLog.push({ [matchUp.matchUpId]: matchUp.score })
+        );
+      },
+    },
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.resetScorecard({
     matchUpId,
     drawId,
   });
   expect(result.success).toEqual(true);
+
+  modifiedMatchUpLog.forEach((log) => {
+    const values = Object.values(log).filter(Boolean);
+    if (values.length) {
+      expect(values.length).toEqual(1);
+      expect(values[0].scoreStringSide1).toEqual('0-0');
+    }
+  });
 
   firstRoundDualMatchUps = tournamentEngine.allTournamentMatchUps({
     contextFilters: {
@@ -125,7 +148,7 @@ test('can clear TEAM matchUp "scorecards"', () => {
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
-  expect(targetMatchUp.score).toBeUndefined();
+  expect(targetMatchUp.score.scoreStringSide1).toEqual('0-0');
 
   ({
     matchUps: [secondRoundDualMatchUp],

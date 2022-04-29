@@ -7,12 +7,5 @@ import { resetScorecard as drawEngineResetScorecard } from '../../../drawEngine/
  *
  */
 export function resetScorecard(params) {
-  const { tournamentRecord, drawDefinition, matchUpId, event } = params;
-
-  return drawEngineResetScorecard({
-    tournamentRecord,
-    drawDefinition,
-    matchUpId,
-    event,
-  });
+  return drawEngineResetScorecard(params);
 }
