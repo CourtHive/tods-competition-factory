@@ -13,12 +13,12 @@ import {
   modifyMatchUpNotice,
 } from '../../../notifications/drawNotifications';
 
+import { SUCCESS } from '../../../../constants/resultConstants';
+import { TEAM } from '../../../../constants/matchUpTypes';
 import {
   COMPLETED,
   IN_PROGRESS,
 } from '../../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { TEAM } from '../../../../constants/matchUpTypes';
 import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
@@ -105,9 +105,10 @@ export function removeCollectionDefinition({
     })?.matchUps;
   }
 
-  // all team matchUps in the structure which are completed should not be modified
+  // all team matchUps in the structure which are completed or which have a tieFormat should not be modified
   const targetMatchUps = matchUps.filter(
     (matchUp) =>
+      !matchUp.tieFormat &&
       ![COMPLETED, IN_PROGRESS].includes(matchUp.matchUpStatus) &&
       !matchUp.winningSide &&
       !(!updateInProgressMatchUps && scoreHasValue(matchUp))
