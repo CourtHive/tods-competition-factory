@@ -2,12 +2,10 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { findStructure } from '../../getters/findStructure';
-import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { isActiveDownstream } from './isActiveDownstream';
 import { setMatchUpStatus } from './setMatchUpStatus';
 import { addGoesTo } from './addGoesTo';
 
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
@@ -102,20 +100,23 @@ export function resetScorecard(params) {
       removeScore: true,
       tournamentRecord,
       drawDefinition,
+      event,
     });
     if (result.error) return result;
   }
 
-  const result = updateTieMatchUpScore({
-    matchUpStatus: TO_BE_PLAYED,
-    removeScore: true,
-    tournamentRecord,
-    drawDefinition,
-    matchUpId,
-    structure,
-    event,
-  });
-  if (result.error) return result;
+  for (const tieMatchUp of matchUp.tieMatchUps) {
+    const result = setMatchUpStatus({
+      matchUpId: tieMatchUp.matchUpId,
+      matchUpTieId: matchUpId,
+      winningSide: undefined,
+      removeScore: true,
+      tournamentRecord,
+      drawDefinition,
+      event,
+    });
+    if (result.error) return result;
+  }
 
   return { ...SUCCESS };
 }

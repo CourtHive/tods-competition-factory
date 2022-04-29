@@ -1,8 +1,9 @@
-import { mocksEngine } from '../../..';
 import tournamentEngine from '../../sync';
+import { mocksEngine } from '../../..';
 
 import { VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
+import { setSubscriptions } from '../../../global/state/globalState';
 
 it('can generate a draw with voluntary consolation stage', () => {
   const {
@@ -97,6 +98,15 @@ it('can generate a draw with voluntary consolation stage', () => {
 });
 
 it('can generate a draw with voluntary consolation stage and delay attachment', () => {
+  let notificationsCounter = 0;
+  const subscriptions = {
+    modifyDrawDefinition: () => {
+      notificationsCounter += 1;
+    },
+  };
+  let result = setSubscriptions({ subscriptions });
+  expect(result.success).toEqual(true);
+
   const {
     tournamentRecord,
     drawIds: [drawId],
@@ -124,7 +134,7 @@ it('can generate a draw with voluntary consolation stage and delay attachment', 
     ({ participantId }) => participantId
   );
 
-  let result = tournamentEngine.addDrawEntries({
+  result = tournamentEngine.addDrawEntries({
     participantIds: consolationParticipantIds,
     entryStage: VOLUNTARY_CONSOLATION,
     entryStatus: DIRECT_ACCEPTANCE,
@@ -154,11 +164,13 @@ it('can generate a draw with voluntary consolation stage and delay attachment', 
   });
   expect(matchUps.length).toEqual(0);
 
+  expect(notificationsCounter).toEqual(3);
   result = tournamentEngine.attachConsolationStructures({
     structures: result.structures,
     links: result.links,
     drawId,
   });
+  expect(notificationsCounter).toEqual(4);
 
   matchUps = tournamentEngine.allTournamentMatchUps({
     contextFilters: { stages: [VOLUNTARY_CONSOLATION] },
