@@ -249,7 +249,7 @@ it('can remove matchUps properly in FIRST_MATCH_LOSER_CONSOLATION', () => {
   expect(result.success).toEqual(true);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
-  expect(matchUp.score.scoreStringSide1).toEqual(undefined);
+  expect(matchUp.score).toBeUndefined();
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
 

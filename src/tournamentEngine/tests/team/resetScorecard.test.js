@@ -4,12 +4,47 @@ import tournamentEngine from '../../sync';
 
 import { USTA_GOLD_TEAM_CHALLENGE } from '../../../constants/tieFormatConstants';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
+import {
+  MODIFY_DRAW_DEFINITION,
+  MODIFY_MATCHUP,
+} from '../../../constants/topicConstants';
 
 // reusable
 test('can clear TEAM matchUp "scorecards"', () => {
+  let firstMatchUpTieMatchUpScoringLog = [];
+  let firstMatchUpScoringLog = [];
+  let modifiedMatchUpLog = [];
+
+  let trackMatchUpModifications;
+  let matchUpId;
+
+  let result = setSubscriptions({
+    subscriptions: {
+      [MODIFY_MATCHUP]: (matchUps) => {
+        if (trackMatchUpModifications) {
+          matchUps.forEach(({ matchUp }) =>
+            modifiedMatchUpLog.push({ [matchUp.matchUpId]: matchUp.score })
+          );
+        }
+      },
+      [MODIFY_DRAW_DEFINITION]: (result) => {
+        const targetMatchUp =
+          result[0].drawDefinition.structures[0].matchUps.find(
+            (m) => m.matchUpId === matchUpId
+          );
+        if (targetMatchUp) {
+          firstMatchUpScoringLog.push(targetMatchUp.score.scoreStringSide1);
+          firstMatchUpTieMatchUpScoringLog.push(
+            targetMatchUp.tieMatchUps.map((t) => t.score)
+          );
+        }
+      },
+    },
+  });
+  expect(result.success).toEqual(true);
+
   const {
     tournamentRecord,
     drawIds: [drawId],
@@ -53,6 +88,7 @@ test('can clear TEAM matchUp "scorecards"', () => {
     });
 
   expect(firstRoundDualMatchUps.length).toEqual(2);
+  matchUpId = firstRoundDualMatchUps[0].matchUpId;
 
   // for all first round dualMatchUps complete all doubles matchUps
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
@@ -67,7 +103,6 @@ test('can clear TEAM matchUp "scorecards"', () => {
     });
   });
 
-  const matchUpId = firstRoundDualMatchUps[0].matchUpId;
   ({ matchUps: firstRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
       contextFilters: {
@@ -108,22 +143,13 @@ test('can clear TEAM matchUp "scorecards"', () => {
   });
   expect(secondRoundDualMatchUp.drawPositions).toEqual([1, 3]);
 
-  let modifiedMatchUpLog = [];
-  let result = setSubscriptions({
-    subscriptions: {
-      [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push({ [matchUp.matchUpId]: matchUp.score })
-        );
-      },
-    },
-  });
-  expect(result.success).toEqual(true);
-
-  result = tournamentEngine.resetScorecard({
-    matchUpId,
-    drawId,
-  });
+  trackMatchUpModifications = true;
+  result = tournamentEngine
+    .devContext({ resetScorecard: true })
+    .resetScorecard({
+      matchUpId,
+      drawId,
+    });
   expect(result.success).toEqual(true);
 
   modifiedMatchUpLog.forEach((log) => {
@@ -133,6 +159,20 @@ test('can clear TEAM matchUp "scorecards"', () => {
       expect(values[0].scoreStringSide1).toEqual('0-0');
     }
   });
+
+  // prettier-ignore
+  expect(firstMatchUpScoringLog).toEqual([
+    // result of iteratively scoring tieMatchUps for roundNumber: 1, roundPosition: 1
+    '1-0', '2-0', '3-0', '4-0', '5-0', '6-0', '7-0', '8-0', '9-0',
+    // result of iteratively scoring tieMatchUps for roundNumber: 1, roundPosition: 2
+    '9-0', '9-0', '9-0', '9-0', '9-0', '9-0', '9-0', '9-0', '9-0',
+    // result of resetScoreCard
+    '0-0',
+  ]);
+
+  // check that after the calling resetScorecard all tieMatchUps have no score
+  const finalTieMatchUpScores = firstMatchUpTieMatchUpScoringLog.pop();
+  expect(finalTieMatchUpScores.filter(Boolean)).toEqual([]);
 
   firstRoundDualMatchUps = tournamentEngine.allTournamentMatchUps({
     contextFilters: {
