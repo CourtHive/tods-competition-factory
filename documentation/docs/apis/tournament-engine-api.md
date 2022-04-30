@@ -2049,10 +2049,10 @@ Replaces an existing drawPosition assignment with a luckyLoserParticipantId. Thi
 
 ```js
 tournamentEngine.luckyLoserDrawPositionAssignment({
-  drawId,
-  structureId,
-  drawPosition,
   luckyLoserParticipantId,
+  drawPosition,
+  structureId,
+  drawId,
 });
 ```
 
@@ -2433,6 +2433,21 @@ const { eventData } = tournamentEngine.publishEvent({
 tournamentEngine.publishEventSeeding({
   eventId,
   drawIds, // optional - publish specific drawIds (flights) within the event
+});
+```
+
+---
+
+## qualifierDrawPositionAssignment
+
+Replaces an existing drawPosition assignment with a qualifierParticipantId. This method is included in `validActions` for [positionActions](../policies/positionActions)
+
+```js
+tournamentEngine.qualifierDrawPositionAssignment({
+  qualifierParticipantId,
+  drawPosition,
+  structureId,
+  drawId,
 });
 ```
 

@@ -77,6 +77,7 @@ export function generateQualifyingStructures({
       qualifyingDrawPositionsCount += drawSize;
     }
 
+    // always set to the final round of the last generated qualifying structure
     qualifiersCount = matchUps.filter(
       (matchUp) => matchUp.roundNumber === roundLimit
     )?.length;

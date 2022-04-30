@@ -190,7 +190,6 @@ export function generateDrawDefinition(params) {
   }
 
   // add all entries to the draw
-  // TODO: if there are no qualifyingProfiles, skip adding qualifying entries
   const entries = drawEntries || event?.entries || [];
   for (const entry of entries) {
     // convenience: assume MAIN as entryStage if none provided

@@ -87,11 +87,16 @@ export function generateDrawType(params = {}) {
     });
 
   if (qualifyingResult?.error) return qualifyingResult;
-  const { qualifiersCount = 0, qualifyingDrawPositionsCount } =
-    qualifyingResult || {};
+  const {
+    qualifiersCount = params.qualifiersCount || 0,
+    qualifyingDrawPositionsCount,
+  } = qualifyingResult || {};
 
   if (qualifyingDrawPositionsCount) {
-    drawDefinition.structures.push(...qualifyingResult.structures);
+    if (qualifyingResult?.structures) {
+      drawDefinition.structures.push(...qualifyingResult.structures);
+    }
+
     const qualifyingStageDrawPositionsCount = getStageDrawPositionsCount({
       stage: QUALIFYING,
       drawDefinition,
@@ -105,6 +110,9 @@ export function generateDrawType(params = {}) {
       });
       if (result.error) return result;
     }
+  }
+
+  if (qualifiersCount) {
     const result = setStageQualifiersCount({
       drawDefinition,
       qualifiersCount,
