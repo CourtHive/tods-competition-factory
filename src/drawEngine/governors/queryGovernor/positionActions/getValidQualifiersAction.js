@@ -7,6 +7,7 @@ import {
 } from '../../../../constants/positionActionConstants';
 import {
   POSITION,
+  QUALIFYING,
   WINNER,
 } from '../../../../constants/drawDefinitionConstants';
 // import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
@@ -64,6 +65,8 @@ export function getValidQualifiersAction({
     const structure = drawDefinition.structures?.find(
       (structure) => structure.structureId === sourceLink.source.structureId
     );
+    if (structure?.stage !== QUALIFYING) continue;
+
     const qualifyingRoundNumber = structure.qualifyingRoundNumber;
     const { matchUps } = getAllStructureMatchUps({
       matchUpFilters: { roundNumbers: [qualifyingRoundNumber] },
@@ -86,6 +89,8 @@ export function getValidQualifiersAction({
     const structure = drawDefinition.structures?.find(
       (structure) => structure.structureId === sourceLink.source.structureId
     );
+    if (structure?.stage !== QUALIFYING) continue;
+
     // ensure structure is completed and get the participants who have finishingPosition in sourceLink.source.finishingPositions
     console.log('roundRobin', { structure });
   }

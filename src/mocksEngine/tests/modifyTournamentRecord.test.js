@@ -26,7 +26,7 @@ test('mocksEngine can modify existing tournamentRecords', () => {
   eventProfiles = [{ eventName: `Boy's U16 Doubles`, drawProfiles: [{ drawSize: 4, drawType: ROUND_ROBIN }] }];
   let result = mocksEngine
     .setDeepCopy(false)
-    .devContext({ makeDeepCopy: true, iterations: 3 }) // in this case setting { iterations: 2 } will result in logging
+    .devContext({ makeDeepCopy: true, iterations: 4 }) // in this case setting { iterations: 3 } will result in logging
     .modifyTournamentRecord({
       tournamentRecord,
       eventProfiles,
