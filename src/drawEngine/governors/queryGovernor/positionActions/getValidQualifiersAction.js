@@ -2,13 +2,13 @@ import { getSourceStructureIdsAndRelevantLinks } from '../../../getters/getSourc
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 
 import {
-  POSITION,
-  WINNER,
-} from '../../../../constants/drawDefinitionConstants';
-import {
   QUALIFYING_PARTICIPANT,
   QUALIFYING_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
+import {
+  POSITION,
+  WINNER,
+} from '../../../../constants/drawDefinitionConstants';
 // import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
 // import { decorateResult } from '../../../../global/functions/decorateResult';
 
