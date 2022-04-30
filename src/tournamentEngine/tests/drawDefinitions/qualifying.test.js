@@ -101,6 +101,7 @@ it.each(scenarios)(
       ({ type }) => type === QUALIFIER
     );
     expect(qualifierAssingmentAction).not.toBeUndefined();
+    // console.log(qualifierAssingmentAction);
   }
 );
 

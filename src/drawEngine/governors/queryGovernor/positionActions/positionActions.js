@@ -1,5 +1,5 @@
 import { getPolicyDefinitions } from '../../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
-import { getSourceStructureIdsDirectedBy } from '../../../getters/getSourceStructureIdsDirectedBy';
+import { getSourceStructureIdsAndRelevantLinks } from '../../../getters/getSourceStructureIdsAndRelevantLinks';
 import { getStructureDrawPositionProfiles } from '../../../getters/getStructureDrawPositionProfiles';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
 import { getAssignedParticipantIds } from '../../../getters/getAssignedParticipantIds';
@@ -120,9 +120,8 @@ export function positionActions({
   });
 
   // targetRoundNumber will be > 1 for fed positions
-  // TODO: so it is necessary to determine the first round in which a drawPosition occurs
   const { sourceStructureIds: positionSourceStructureIds } =
-    getSourceStructureIdsDirectedBy({
+    getSourceStructureIdsAndRelevantLinks({
       finishingPosition: WIN_RATIO,
       targetRoundNumber: 1,
       linkType: POSITION,
@@ -240,7 +239,6 @@ export function positionActions({
 
   if (isAvailableAction({ policyActions, action: QUALIFYING_PARTICIPANT })) {
     const { validAssignmentActions } = getValidQualifiersAction({
-      positionSourceStructureIds,
       drawPositionInitialRounds,
       isWinRatioFedStructure,
       tournamentParticipants,
