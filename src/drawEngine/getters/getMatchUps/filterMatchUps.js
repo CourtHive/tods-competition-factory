@@ -10,6 +10,7 @@ export function filterMatchUps(params) {
 
     isCollectionMatchUp,
     matchUpStatuses,
+    hasWinningSide,
     matchUpFormats,
     roundPositions,
     matchUpFormat,
@@ -87,6 +88,7 @@ export function filterMatchUps(params) {
     : [];
 
   const filteredMatchUps = matchUps.filter((matchUp) => {
+    if (hasWinningSide && ![1, 2].includes(matchUp.winningSide)) return false;
     if (isMatchUpTie !== undefined) {
       if (isMatchUpTie && !matchUp.tieMatchUps) {
         return false;
