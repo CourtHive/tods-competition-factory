@@ -93,10 +93,10 @@ export function generateEventWithDraw({
   let targetParticipants = tournamentRecord?.participants || [];
 
   const qualifyingParticipantsCount =
-    (qualifyingProfiles?.reduce(
-      (count, profile) => count + profile.drawSize,
-      0
-    ) || 0) * (participantType === DOUBLES ? 2 : 1);
+    (qualifyingProfiles
+      ?.flat() // in case each profile contains an array of stageSequences
+      .reduce((count, profile) => count + profile.drawSize, 0) || 0) *
+    (participantType === DOUBLES ? 2 : 1);
 
   const participantsCount =
     !drawProfile.participantsCount || drawProfile.participantsCount > drawSize
