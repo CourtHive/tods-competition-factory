@@ -94,7 +94,7 @@ export function getValidQualifiersAction({
   if (qualifyingParticipantIds.length) {
     validAssignmentActions.push({
       payload: {
-        qualifyingParticipantIds: undefined, // to be provided by client
+        qualifyingParticipantId: undefined, // to be provided by client
         drawPosition,
         structureId,
         drawId,

@@ -44,25 +44,5 @@ export function getSourceStructureIdsAndRelevantLinks({
     ({ source }) => source.structureId
   );
 
-  /*
-  const sourceStructureIds = sourceLinks
-    .map(({ source }) => source.structureId)
-    .map((sourceStructureId) => {
-      const { structure: sourceStructure } = findStructure({
-        structureId: sourceStructureId,
-        drawDefinition,
-      });
-      return {
-        sourceFinishingPosition: sourceStructure.finishingPosition,
-        sourceStructureId,
-      };
-    })
-    .filter(
-      ({ sourceFinishingPosition }) =>
-        !finishingPosition || sourceFinishingPosition === finishingPosition
-    )
-    .map(({ sourceStructureId }) => sourceStructureId);
-    */
-
   return { sourceStructureIds, relevantLinks };
 }
