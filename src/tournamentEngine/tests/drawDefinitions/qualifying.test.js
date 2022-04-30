@@ -3,14 +3,16 @@ import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
-import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import {
+  DIRECT_ACCEPTANCE,
+  QUALIFIER,
+} from '../../../constants/entryStatusConstants';
 import {
   DRAW,
   MAIN,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
-import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
-import { setDevContext } from '../../../global/state/globalState';
 
 const scenarios = [
   {
@@ -40,7 +42,7 @@ it.each(scenarios)(
   (scenario) => {
     const drawProfiles = [scenario];
 
-    const result = mocksEngine.generateTournamentRecord({
+    let result = mocksEngine.generateTournamentRecord({
       completeAllMatchUps: true,
       drawProfiles,
     });
@@ -80,10 +82,29 @@ it.each(scenarios)(
       (assignment) => assignment.qualifier
     ).length;
     expect(qualifiersCount).toEqual(scenario.expectation.qualifiersCount);
+
+    const qualifierDrawPosition = positionAssignments.find(
+      ({ qualifier }) => qualifier
+    ).drawPosition;
+    const mainStructureId = drawDefinition.structures.find(
+      ({ stage }) => stage === MAIN
+    ).structureId;
+
+    result = tournamentEngine.positionActions({
+      policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+      drawPosition: qualifierDrawPosition,
+      structureId: mainStructureId,
+      drawId,
+    });
+
+    const qualifierAssingmentAction = result.validActions.find(
+      ({ type }) => type === QUALIFIER
+    );
+    expect(qualifierAssingmentAction).not.toBeUndefined();
   }
 );
 
-it.only('supports multi-sequence qualifying structures', () => {
+it('supports multi-sequence qualifying structures', () => {
   const drawProfiles = [
     {
       drawSize: 32,
@@ -180,14 +201,18 @@ it.only('supports multi-sequence qualifying structures', () => {
   expect(secondLink.target.feedProfile).toEqual(DRAW);
 
   let drawPosition = 1;
-  setDevContext({ feedProfile: true });
   let result = tournamentEngine.positionActions({
     policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
     structureId: q1.structureId,
     drawPosition,
     drawId,
   });
-  console.log(result);
+
+  // prettier-ignore
+  expect(result.validActions.map(({ type }) => type)).toEqual([
+    'REMOVE', 'WITHDRAW', 'BYE', 'SEED_VALUE',
+    'PENALTY', 'NICKNAME', 'SWAP', 'ALTERNATE',
+  ]);
 });
 
 /*
