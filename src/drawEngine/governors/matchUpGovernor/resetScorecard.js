@@ -105,18 +105,5 @@ export function resetScorecard(params) {
     if (result.error) return result;
   }
 
-  for (const tieMatchUp of matchUp.tieMatchUps) {
-    const result = setMatchUpStatus({
-      matchUpId: tieMatchUp.matchUpId,
-      matchUpTieId: matchUpId,
-      winningSide: undefined,
-      removeScore: true,
-      tournamentRecord,
-      drawDefinition,
-      event,
-    });
-    if (result.error) return result;
-  }
-
   return { ...SUCCESS };
 }

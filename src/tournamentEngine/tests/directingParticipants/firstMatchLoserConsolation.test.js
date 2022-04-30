@@ -2,11 +2,6 @@ import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-import {
-  CONSOLATION,
-  FIRST_MATCH_LOSER_CONSOLATION,
-  MAIN,
-} from '../../../constants/drawDefinitionConstants';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
@@ -15,6 +10,11 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import {
+  CONSOLATION,
+  FIRST_MATCH_LOSER_CONSOLATION,
+  MAIN,
+} from '../../../constants/drawDefinitionConstants';
 
 tournamentEngine.devContext(true);
 
@@ -446,7 +446,7 @@ it('correctly places DEFAULTED loser of 2nd round match who had BYE into consola
     ({ matchUpId }) => matchUp.matchUpId === matchUpId
   );
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
-  expect(targetMatchUp.score.scoreStringSide1).toEqual(undefined);
+  expect(targetMatchUp.score).toBeUndefined();
   expect(targetMatchUp.winningSide).toBeUndefined();
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));

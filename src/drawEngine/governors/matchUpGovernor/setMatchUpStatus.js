@@ -43,7 +43,6 @@ import {
   COMPLETED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { getDevContext } from '../../../global/state/globalState';
 
 /**
  *
@@ -227,10 +226,6 @@ export function setMatchUpStatus(params) {
       dualMatchUp,
       tieFormat,
     });
-  }
-
-  if (getDevContext({ removeScore: true })) {
-    //
   }
 
   // with propagating winningSide changes, activeDownstream only applies to eventType: TEAM

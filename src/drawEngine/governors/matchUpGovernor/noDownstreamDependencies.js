@@ -33,9 +33,9 @@ export function noDownstreamDependencies(params) {
     ((params.isCollectionMatchUp && !params.projectedWinningSide) ||
       !winningSide);
 
-  const removeScore = ![INCOMPLETE, ABANDONED].includes(
-    matchUpStatus || INCOMPLETE
-  );
+  const removeScore =
+    params.removeScore ||
+    ![INCOMPLETE, ABANDONED].includes(matchUpStatus || INCOMPLETE);
 
   const removeWinningSide =
     (params.isCollectionMatchUp &&
@@ -75,7 +75,7 @@ export function noDownstreamDependencies(params) {
     (winningSide && attemptToSetWinningSide(params)) ||
     (scoreWithNoWinningSide && removeDirected({ removeScore })) ||
     (statusNotTBP && attemptToSetMatchUpStatus(params)) ||
-    (removeWinningSide && removeDirected()) ||
+    (removeWinningSide && removeDirected({ removeScore })) ||
     (matchUp && scoreModification({ ...params, removeScore: true })) ||
     (console.log('unknown condition') && { ...SUCCESS })
   );
