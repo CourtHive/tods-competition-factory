@@ -114,8 +114,8 @@ export function generateDrawType(params = {}) {
 
   if (qualifiersCount) {
     const result = setStageQualifiersCount({
-      drawDefinition,
       qualifiersCount,
+      drawDefinition,
       stage: MAIN,
     });
     if (result.error) return result;
@@ -176,20 +176,22 @@ export function generateDrawType(params = {}) {
   if (structures?.length) drawDefinition.structures.push(...structures);
   drawDefinition.structures.sort(structureSort);
 
-  if (qualifyingResult?.structures?.length) {
+  for (const qualifyingDetail of qualifyingResult?.qualifyingDetails || []) {
     const {
       finalQualifyingRoundNumber: qualifyingRoundNumber,
       finalQualifyingStructureId: qualifyingStructureId,
-    } = qualifyingResult;
+      roundTrget: targetEntryRound,
+    } = qualifyingDetail;
 
     const mainStructure = generatorResult.structures.find(
       ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
     );
 
     generateQualifyingLink({
+      targetStructureId: mainStructure.structureId,
       sourceStructureId: qualifyingStructureId,
       sourceRoundNumber: qualifyingRoundNumber,
-      targetStructureId: mainStructure.structureId,
+      targetEntryRound,
       drawDefinition,
     });
   }

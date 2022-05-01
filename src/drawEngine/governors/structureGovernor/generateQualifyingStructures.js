@@ -15,20 +15,21 @@ export function generateQualifyingStructures({
   isMock,
   uuids,
 }) {
+  const qualifyingDetails = [];
   const structures = [];
 
   const sequenceSort = (a, b) => a.stageSequence - b.stageSequence;
   const roundTargetSort = (a, b) => a.roundTarget - b.roundTarget;
 
   let qualifyingDrawPositionsCount = 0,
-    finalQualifyingRoundNumber,
-    finalQualifyingStructureId,
     qualifiersCount = 0,
     roundTarget = 1;
 
   for (const roundTargetProfile of qualifyingProfiles.sort(roundTargetSort)) {
     const structureProfiles = roundTargetProfile.structureProfiles || [];
-    let stageSequence = 1;
+    let stageSequence = 1,
+      finalQualifyingRoundNumber,
+      finalQualifyingStructureId;
 
     for (const structureProfile of structureProfiles.sort(sequenceSort)) {
       const {
@@ -96,13 +97,18 @@ export function generateQualifyingStructures({
       structures.push(structure);
       stageSequence += 1;
     }
+    qualifyingDetails.push({
+      finalQualifyingRoundNumber,
+      finalQualifyingStructureId,
+      roundTarget,
+    });
+
     roundTarget += 1;
   }
 
   return {
     qualifyingDrawPositionsCount,
-    finalQualifyingRoundNumber,
-    finalQualifyingStructureId,
+    qualifyingDetails,
     qualifiersCount,
     structures,
     ...SUCCESS,
