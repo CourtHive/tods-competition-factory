@@ -94,6 +94,7 @@ export function generateEventWithDraw({
 
   const qualifyingParticipantsCount =
     (qualifyingProfiles
+      .map((profile) => profile.structureProfiles || [])
       ?.flat() // in case each profile contains an array of stageSequences
       .reduce((count, profile) => count + profile.drawSize, 0) || 0) *
     (participantType === DOUBLES ? 2 : 1);
@@ -257,28 +258,35 @@ export function generateEventWithDraw({
     : 0;
 
   if (qualifyingParticipantIds?.length) {
-    let qualifyingIndex = 0;
-    let entryStageSequence = 1;
+    let qualifyingIndex = 0; // used to take slices of participants array
 
-    for (const profile of qualifyingProfiles) {
-      const drawSize = profile.drawSize;
-      const participantIds = qualifyingParticipantIds.slice(
-        qualifyingIndex,
-        qualifyingIndex + drawSize
-      );
-      const result = addEventEntries({
-        entryStage: QUALIFYING,
-        autoEntryPositions,
-        tournamentRecord,
-        participantIds,
-        entryStageSequence,
-        event,
-      });
-      if (result.error) {
-        return result;
+    const sequenceSort = (a, b) => a.stageSequence - b.stageSequence;
+    const roundTargetSort = (a, b) => a.roundTarget - b.roundTarget;
+
+    for (const roundTargetProfile of qualifyingProfiles.sort(roundTargetSort)) {
+      let entryStageSequence = 1;
+      for (const structureProfile of roundTargetProfile.structureProfiles.sort(
+        sequenceSort
+      )) {
+        const drawSize = structureProfile.drawSize;
+        const participantIds = qualifyingParticipantIds.slice(
+          qualifyingIndex,
+          qualifyingIndex + drawSize
+        );
+        const result = addEventEntries({
+          entryStage: QUALIFYING,
+          entryStageSequence,
+          autoEntryPositions,
+          tournamentRecord,
+          participantIds,
+          event,
+        });
+        if (result.error) {
+          return result;
+        }
+        qualifyingIndex += drawSize;
+        entryStageSequence += 1;
       }
-      qualifyingIndex += drawSize;
-      entryStageSequence += 1;
     }
   }
 
