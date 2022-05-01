@@ -250,6 +250,7 @@ export function positionActions({
       drawPosition,
       structureId,
       structure,
+      drawId,
     });
     validAssignmentActions?.forEach((action) => validActions.push(action));
   }

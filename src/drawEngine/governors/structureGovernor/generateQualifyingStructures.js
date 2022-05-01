@@ -67,7 +67,7 @@ export function generateQualifyingStructures({
 
       if (drawType === ROUND_ROBIN) {
         const { structures, groupCount /*, groupSize*/ } = generateRoundRobin({
-          structureName: QUALIFYING,
+          structureName: qualifyingStructureName,
           stage: QUALIFYING,
           idPrefix,
           drawSize,

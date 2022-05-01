@@ -12,6 +12,7 @@ import {
 import {
   DRAW,
   MAIN,
+  POSITION,
   QUALIFYING,
   ROUND_ROBIN,
 } from '../../../constants/drawDefinitionConstants';
@@ -372,4 +373,114 @@ it('supports round robin qualifying structures', () => {
   );
   expect(qualifierAssingmentAction).not.toBeUndefined();
   // console.log(qualifierAssingmentAction);
+});
+
+it.only('supports multi-sequence qualifying structures with multiple roundTargets', () => {
+  const drawProfiles = [
+    {
+      drawSize: 32,
+      qualifyingProfiles: [
+        {
+          roundTarget: 1,
+          structureProfiles: [
+            { stageSequence: 1, drawSize: 32, qualifyingRoundNumber: 3 },
+            { stageSequence: 2, drawSize: 16, qualifyingPositions: 4 },
+          ],
+        },
+        {
+          roundTarget: 2,
+          structureProfiles: [
+            {
+              qualifyingPositions: 4,
+              drawType: ROUND_ROBIN,
+              stageSequence: 2,
+              drawSize: 16,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    drawProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { tournamentParticipants } =
+    tournamentEngine.getTournamentParticipants();
+
+  // if there are qualifiers then all participants are unique
+  // 32 + 32 unique + 32 qualifying + 16 qualifying + 16 qualifying RR = 128
+  expect(tournamentParticipants.length).toEqual(128);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  expect(drawDefinition.structures.length).toEqual(4);
+  expect(drawDefinition.links.length).toEqual(3);
+
+  const rrQLink = drawDefinition.links.find(
+    ({ linkType }) => linkType === POSITION
+  );
+  expect(rrQLink.source.finishingPositions).toEqual([1]);
+  expect(rrQLink.target.roundNumber).toEqual(2);
+
+  const rrQstructureId = rrQLink.source.structureId;
+  const rrQstructure = drawDefinition.structures.find(
+    ({ structureId }) => structureId === rrQstructureId
+  );
+  expect(rrQstructure.structureName).toEqual('QUALIFYING 2-1');
+
+  const {
+    structures: [mainStructure],
+  } = getDrawStructures({ stage: MAIN, drawDefinition });
+  const mainStructureId = mainStructure.structureId;
+
+  const { positionAssignments } = getPositionAssignments({
+    structure: mainStructure,
+  });
+
+  const qualifiersCount = positionAssignments.filter(
+    (assignment) => assignment.qualifier
+  ).length;
+  expect(qualifiersCount).toEqual(8);
+
+  const qualifierDrawPosition = positionAssignments.find(
+    (assignment) => assignment.qualifier
+  ).drawPosition;
+
+  let result = tournamentEngine.positionActions({
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    drawPosition: qualifierDrawPosition,
+    structureId: mainStructureId,
+    drawId,
+  });
+
+  // prettier-ignore
+  expect(result.validActions.map(({ type }) => type).sort()).toEqual([
+    'ALTERNATE', 'BYE', 'LUCKY', 'QUALIFIER',
+    'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
+  ]);
+
+  const assignedDrawPosition = positionAssignments.find(
+    ({ participantId }) => participantId
+  ).drawPosition;
+  result = tournamentEngine.positionActions({
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    drawPosition: assignedDrawPosition,
+    structureId: mainStructureId,
+    drawId,
+  });
+
+  // prettier-ignore
+  expect(result.validActions.map(({ type }) => type).sort()).toEqual([
+    'NICKNAME', 'PENALTY', 'QUALIFIER', 'SEED_VALUE',
+  ]);
+  const qualifierAssingmentAction = result.validActions.find(
+    ({ type }) => type === QUALIFIER
+  );
+  expect(qualifierAssingmentAction).not.toBeUndefined();
 });

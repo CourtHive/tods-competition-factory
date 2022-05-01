@@ -1,8 +1,8 @@
 import { modifyDrawNotice } from '../notifications/drawNotifications';
+import { definedAttributes } from '../../utilities/objects';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { DRAW, WINNER } from '../../constants/drawDefinitionConstants';
-import { definedAttributes } from '../../utilities/objects';
 
 export function generateQualifyingLink({
   targetEntryRound = 1,

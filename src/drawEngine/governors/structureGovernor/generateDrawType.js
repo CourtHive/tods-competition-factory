@@ -180,7 +180,7 @@ export function generateDrawType(params = {}) {
     const {
       finalQualifyingRoundNumber: qualifyingRoundNumber,
       finalQualifyingStructureId: qualifyingStructureId,
-      roundTrget: targetEntryRound,
+      roundTarget: targetEntryRound,
       finishingPositions,
       linkType,
     } = qualifyingDetail;
