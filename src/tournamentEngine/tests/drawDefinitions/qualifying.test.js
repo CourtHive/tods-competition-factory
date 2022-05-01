@@ -13,11 +13,19 @@ import {
   MAIN,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
+import { getRoundMatchUps } from '../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 
 const scenarios = [
   {
     drawSize: 16,
-    qualifyingProfiles: [{ drawSize: 16, qualifyingPositions: 4 }],
+    qualifyingProfiles: [
+      {
+        roundTarget: 1,
+        structureProfiles: [
+          { stageSequence: 1, drawSize: 16, qualifyingPositions: 4 },
+        ],
+      },
+    ],
     expectation: {
       qualifyingRoundNumber: 2,
       qualifyingMatchUps: 12,
@@ -27,12 +35,19 @@ const scenarios = [
   },
   {
     drawSize: 16,
-    qualifyingProfiles: [{ drawSize: 16, qualifyingRoundNumber: 2 }],
+    qualifyingProfiles: [
+      {
+        roundTarget: 1,
+        structureProfiles: [
+          { stageSequence: 1, drawSize: 16, qualifyingPositions: 2 },
+        ],
+      },
+    ],
     expectation: {
-      qualifyingRoundNumber: 2,
-      qualifyingMatchUps: 12,
-      directAcceptance: 28,
-      qualifiersCount: 4,
+      qualifyingRoundNumber: 3,
+      qualifyingMatchUps: 14,
+      directAcceptance: 30,
+      qualifiersCount: 2,
     },
   },
 ];
@@ -62,6 +77,13 @@ it.each(scenarios)(
       contextFilters: { stages: [QUALIFYING] },
     });
     expect(matchUps.length).toEqual(scenario.expectation.qualifyingMatchUps);
+
+    const { roundMatchUps } = getRoundMatchUps({ matchUps });
+    const roundNumbers = Object.keys(roundMatchUps);
+    const qualifyingRoundNumber = Math.max(...roundNumbers);
+    expect(qualifyingRoundNumber).toEqual(
+      scenario.expectation.qualifyingRoundNumber
+    );
 
     const directAcceptance = drawDefinition.entries.filter(
       (entry) => entry.entryStatus === DIRECT_ACCEPTANCE
@@ -110,8 +132,13 @@ it('supports multi-sequence qualifying structures', () => {
     {
       drawSize: 32,
       qualifyingProfiles: [
-        { drawSize: 32, qualifyingRoundNumber: 3 },
-        { drawSize: 16, qualifyingPositions: 4 },
+        {
+          roundTarget: 1,
+          structureProfiles: [
+            { stageSequence: 1, drawSize: 32, qualifyingRoundNumber: 3 },
+            { stageSequence: 2, drawSize: 16, qualifyingPositions: 4 },
+          ],
+        },
       ],
     },
   ];
@@ -163,6 +190,11 @@ it('supports multi-sequence qualifying structures', () => {
   const q1positioned = q1pa.filter((q) => q.participantId);
   expect(q1positioned.length).toEqual(32);
 
+  let { roundMatchUps } = getRoundMatchUps({ matchUps: q1.matchUps });
+  let roundNumbers = Object.keys(roundMatchUps);
+  let qualifyingRoundNumber = Math.max(...roundNumbers);
+  expect(qualifyingRoundNumber).toEqual(3);
+
   const {
     structures: [q2],
   } = getDrawStructures({
@@ -176,6 +208,11 @@ it('supports multi-sequence qualifying structures', () => {
   expect(q2pa.length).toEqual(16);
   const q2positioned = q2pa.filter((q) => q.participantId);
   expect(q2positioned.length).toEqual(12);
+
+  ({ roundMatchUps } = getRoundMatchUps({ matchUps: q2.matchUps }));
+  roundNumbers = Object.keys(roundMatchUps);
+  qualifyingRoundNumber = Math.max(...roundNumbers);
+  expect(qualifyingRoundNumber).toEqual(2);
 
   expect(q1.structureName).toEqual('QUALIFYING 1');
   expect(q2.structureName).toEqual('QUALIFYING 2');

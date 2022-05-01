@@ -225,33 +225,42 @@ export function generateDrawDefinition(params) {
   const conflicts = structureResult.conflicts;
   const qualifyingConflicts = [];
 
-  if (params.qualifyingProfiles) {
-    let stageSequence = 1;
-    for (const qualifyingProfile of params.qualifyingProfiles) {
-      const {
-        qualifyingRoundNumber,
-        qualifyingPositions,
-        seedsCount = 0,
-        drawSize,
-      } = qualifyingProfile;
-      const qualifyingResult = prepareStage({
-        ...drawTypeResult,
-        ...params,
-        qualifyingRoundNumber,
-        qualifyingPositions,
-        stage: QUALIFYING,
-        drawDefinition,
-        stageSequence,
-        participants,
-        seedsCount,
-        drawSize,
-        entries,
-      });
-      // if (qualifyingResult.error) return qualifyingResult;
-      stageSequence += 1;
+  const sequenceSort = (a, b) => a.stageSequence - b.stageSequence;
+  const roundTargetSort = (a, b) => a.roundTarget - b.roundTarget;
 
-      if (qualifyingResult.conflicts?.length)
-        qualifyingConflicts.push(...qualifyingResult.conflicts);
+  if (params.qualifyingProfiles) {
+    for (const roundTargetProfile of params.qualifyingProfiles.sort(
+      roundTargetSort
+    )) {
+      let stageSequence = 1;
+      for (const structureProfile of roundTargetProfile.structureProfiles.sort(
+        sequenceSort
+      )) {
+        const {
+          qualifyingRoundNumber,
+          qualifyingPositions,
+          seedsCount = 0,
+          drawSize,
+        } = structureProfile;
+        const qualifyingResult = prepareStage({
+          ...drawTypeResult,
+          ...params,
+          qualifyingRoundNumber,
+          qualifyingPositions,
+          stage: QUALIFYING,
+          drawDefinition,
+          stageSequence,
+          participants,
+          seedsCount,
+          drawSize,
+          entries,
+        });
+        // if (qualifyingResult.error) return qualifyingResult;
+        stageSequence += 1;
+
+        if (qualifyingResult.conflicts?.length)
+          qualifyingConflicts.push(...qualifyingResult.conflicts);
+      }
     }
   }
 
