@@ -1,8 +1,8 @@
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import structureTemplate from '../../generators/structureTemplate';
 import { generateRoundRobin } from '../../generators/roundRobin';
-import { isConvertableInteger } from '../../../utilities/math';
 import { treeMatchUps } from '../../generators/eliminationTree';
+import { isConvertableInteger } from '../../../utilities/math';
 
 import { MISSING_DRAW_SIZE } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -28,7 +28,7 @@ export function generateQualifyingStructures({
   const roundTargetSort = (a, b) => a.roundTarget - b.roundTarget;
 
   let qualifyingDrawPositionsCount = 0,
-    qualifiersCount = 0,
+    totalQualifiersCount = 0,
     finishingPositions,
     roundTarget = 1;
 
@@ -49,19 +49,10 @@ export function generateQualifyingStructures({
         drawType,
       } = structureProfile;
 
-      if (!drawSize || !isConvertableInteger(drawSize))
-        return { error: MISSING_DRAW_SIZE };
-
       let roundLimit, structure, matchUps;
 
-      ({ matchUps, roundLimit } = treeMatchUps({
-        qualifyingRoundNumber,
-        qualifyingPositions,
-        idPrefix,
-        drawSize,
-        isMock,
-        uuids,
-      }));
+      if (!drawSize || !isConvertableInteger(drawSize))
+        return { error: MISSING_DRAW_SIZE };
 
       const roundTargetName =
         qualifyingProfiles.length > 1 ? `${roundTarget}-` : '';
@@ -113,7 +104,7 @@ export function generateQualifyingStructures({
         )?.length;
       }
 
-      // order of operations is important here!! finalyQualifier positions is not yet updated when this step occurs
+      // order of operations is important here!! finalQualifier positions is not yet updated when this step occurs
       if (stageSequence > 1) {
         generateQualifyingLink({
           sourceStructureId: finalQualifyingStructureId,
@@ -122,26 +113,23 @@ export function generateQualifyingStructures({
           drawDefinition,
         });
         // if more than one qualifying stageSequence, remove last stageSequence qualifier positions from count
-        qualifyingDrawPositionsCount += drawSize - qualifiersCount;
+        qualifyingDrawPositionsCount += drawSize - targetRoundQualifiersCount;
       } else {
         qualifyingDrawPositionsCount += drawSize;
       }
 
       // always set to the final round of the last generated qualifying structure
-      qualifiersCount = matchUps.filter(
-        (matchUp) => matchUp.roundNumber === roundLimit
-      )?.length;
       linkType = drawType === ROUND_ROBIN ? POSITION : WINNER;
       finalQualifyingStructureId = structure.structureId;
       finalQualifyingRoundNumber = roundLimit;
 
       structures.push(structure);
       stageSequence += 1;
-
-      console.log(targetRoundQualifiersCount);
     }
 
+    totalQualifiersCount += targetRoundQualifiersCount;
     qualifyingDetails.push({
+      qualifiersCount: targetRoundQualifiersCount,
       finalQualifyingRoundNumber,
       finalQualifyingStructureId,
       finishingPositions,
@@ -149,13 +137,14 @@ export function generateQualifyingStructures({
       linkType,
     });
 
+    targetRoundQualifiersCount = 0;
     roundTarget += 1;
   }
 
   return {
+    qualifiersCount: totalQualifiersCount,
     qualifyingDrawPositionsCount,
     qualifyingDetails,
-    qualifiersCount,
     structures,
     ...SUCCESS,
   };

@@ -1,3 +1,4 @@
+import { getRoundMatchUps } from '../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import tournamentEngine from '../../sync';
@@ -12,8 +13,8 @@ import {
   DRAW,
   MAIN,
   QUALIFYING,
+  ROUND_ROBIN,
 } from '../../../constants/drawDefinitionConstants';
-import { getRoundMatchUps } from '../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 
 const scenarios = [
   {
@@ -279,3 +280,96 @@ TODO in generateDrawDefinition:
   automatedPositioning({ drawDefinition, structureId: qualifyingStructureId });
 
 */
+
+it('supports round robin qualifying structures', () => {
+  const drawProfiles = [
+    {
+      drawSize: 16,
+      qualifyingProfiles: [
+        {
+          roundTarget: 1,
+          structureProfiles: [
+            {
+              drawType: ROUND_ROBIN,
+              qualifyingPositions: 4,
+              stageSequence: 1,
+              drawSize: 16,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  const expectation = {
+    qualifyingRoundNumber: 3,
+    qualifyingMatchUps: 24,
+    directAcceptance: 28,
+    qualifiersCount: 4,
+  };
+
+  let result = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    drawProfiles,
+  });
+
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = result;
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  expect(drawDefinition.structures.length).toEqual(2);
+  expect(drawDefinition.links.length).toEqual(1);
+  // console.log(drawDefinition.structures[1]);
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: { stages: [QUALIFYING] },
+  });
+  expect(matchUps.length).toEqual(expectation.qualifyingMatchUps);
+
+  const { roundMatchUps } = getRoundMatchUps({ matchUps });
+  const roundNumbers = Object.keys(roundMatchUps);
+  const qualifyingRoundNumber = Math.max(...roundNumbers);
+  expect(qualifyingRoundNumber).toEqual(expectation.qualifyingRoundNumber);
+
+  const directAcceptance = drawDefinition.entries.filter(
+    (entry) => entry.entryStatus === DIRECT_ACCEPTANCE
+  );
+  expect(directAcceptance.length).toEqual(expectation.directAcceptance);
+
+  const {
+    structures: [mainStructure],
+  } = getDrawStructures({ stage: MAIN, drawDefinition });
+
+  const { positionAssignments } = getPositionAssignments({
+    structure: mainStructure,
+  });
+
+  const qualifiersCount = positionAssignments.filter(
+    (assignment) => assignment.qualifier
+  ).length;
+  expect(qualifiersCount).toEqual(expectation.qualifiersCount);
+
+  const qualifierDrawPosition = positionAssignments.find(
+    ({ qualifier }) => qualifier
+  ).drawPosition;
+  const mainStructureId = drawDefinition.structures.find(
+    ({ stage }) => stage === MAIN
+  ).structureId;
+
+  result = tournamentEngine.positionActions({
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    drawPosition: qualifierDrawPosition,
+    structureId: mainStructureId,
+    drawId,
+  });
+
+  const qualifierAssingmentAction = result.validActions.find(
+    ({ type }) => type === QUALIFIER
+  );
+  expect(qualifierAssingmentAction).not.toBeUndefined();
+  // console.log(qualifierAssingmentAction);
+});
