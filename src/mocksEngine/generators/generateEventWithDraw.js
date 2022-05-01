@@ -94,8 +94,8 @@ export function generateEventWithDraw({
 
   const qualifyingParticipantsCount =
     (qualifyingProfiles
-      .map((profile) => profile.structureProfiles || [])
-      ?.flat() // in case each profile contains an array of stageSequences
+      ?.map((profile) => profile.structureProfiles || [])
+      .flat() // in case each profile contains an array of stageSequences
       .reduce((count, profile) => count + profile.drawSize, 0) || 0) *
     (participantType === DOUBLES ? 2 : 1);
 
