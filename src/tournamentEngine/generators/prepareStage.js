@@ -10,11 +10,10 @@ import { RANKING, SEEDING } from '../../constants/scaleConstants';
 
 export function prepareStage({
   inContextDrawMatchUps,
-  matchUpsMap,
-  participants,
-
   tournamentRecord,
   drawDefinition,
+  participants,
+  matchUpsMap,
   automated,
   drawType,
   drawSize,
