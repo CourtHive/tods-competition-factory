@@ -1,6 +1,11 @@
 import { getSourceStructureIdsAndRelevantLinks } from '../../../getters/getSourceStructureIdsAndRelevantLinks';
+import { findExtension } from '../../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { getPositionAssignments } from '../../../getters/positionsGetter';
+import { isCompletedStructure } from '../structureActions';
 
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
+import { TALLY } from '../../../../constants/extensionConstants';
 import {
   QUALIFYING_PARTICIPANT,
   QUALIFYING_PARTICIPANT_METHOD,
@@ -10,18 +15,16 @@ import {
   QUALIFYING,
   WINNER,
 } from '../../../../constants/drawDefinitionConstants';
-// import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
-// import { decorateResult } from '../../../../global/functions/decorateResult';
 
 export function getValidQualifiersAction({
   /*
-  positionAssignments,
   activeDrawPositions,
-  policyDefinitions,
+  isQualifierPosition, // restrict based on policyDefinition
   */
   drawPositionInitialRounds,
   tournamentParticipants,
-  // isQualifierPosition, // restrict based on policyDefinition
+  positionAssignments,
+  policyDefinitions,
   drawDefinition,
   drawPosition,
   structureId,
@@ -32,8 +35,17 @@ export function getValidQualifiersAction({
   const validAssignmentActions = [];
   const sourceStructureIds = [];
 
+  const assignedParticipantIds = positionAssignments
+    .map((assignment) => assignment.participantId)
+    .filter(Boolean);
+
   // get the round number in which the drawPosition initially occurs
   const targetRoundNumber = drawPositionInitialRounds[drawPosition];
+
+  const policy = policyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS];
+
+  // disallow placing qualifiers until source structure is completed
+  const requireCompletedStructures = policy?.requireCompletedStructures;
 
   const {
     sourceStructureIds: eliminationSoureStructureIds,
@@ -67,21 +79,31 @@ export function getValidQualifiersAction({
     );
     if (structure?.stage !== QUALIFYING) continue;
 
-    const qualifyingRoundNumber = structure.qualifyingRoundNumber;
-    const { matchUps } = getAllStructureMatchUps({
-      matchUpFilters: { roundNumbers: [qualifyingRoundNumber] },
-      tournamentParticipants,
-      hasWinningSide: true,
-      inContext: true,
-      structure,
+    const structureCompleted = isCompletedStructure({
+      structureId: sourceLink.source.structureId,
+      drawDefinition,
     });
-    for (const matchUp of matchUps) {
-      const winningSide = matchUp.sides.find(
-        (side) => side?.sideNumber === matchUp.winningSide
-      );
-      const { participantId, participant } = winningSide || {};
-      if (participantId) qualifyingParticipantIds.push(participantId);
-      if (participant) qualifyingParticipants.push(participant);
+
+    if (!requireCompletedStructures || structureCompleted) {
+      const qualifyingRoundNumber = structure.qualifyingRoundNumber;
+      const { matchUps } = getAllStructureMatchUps({
+        matchUpFilters: { roundNumbers: [qualifyingRoundNumber] },
+        tournamentParticipants,
+        hasWinningSide: true,
+        inContext: true,
+        structure,
+      });
+
+      for (const matchUp of matchUps) {
+        const winningSide = matchUp.sides.find(
+          (side) => side?.sideNumber === matchUp.winningSide
+        );
+        const { participantId, participant } = winningSide || {};
+        if (participantId && !assignedParticipantIds.includes(participantId)) {
+          if (participant) qualifyingParticipants.push(participant);
+          qualifyingParticipantIds.push(participantId);
+        }
+      }
     }
   }
 
@@ -91,8 +113,38 @@ export function getValidQualifiersAction({
     );
     if (structure?.stage !== QUALIFYING) continue;
 
-    // ensure structure is completed and get the participants who have finishingPosition in sourceLink.source.finishingPositions
-    console.log('roundRobin', { structure });
+    const structureCompleted = isCompletedStructure({
+      structureId: sourceLink.source.structureId,
+      drawDefinition,
+    });
+
+    if (!requireCompletedStructures || structureCompleted) {
+      const { positionAssignments } = getPositionAssignments({ structure });
+      const relevantParticipantIds = positionAssignments
+        .map((assignment) => {
+          const participantId = assignment.participantId;
+          const results = findExtension({
+            element: assignment,
+            name: TALLY,
+          }).extension?.value;
+
+          return results
+            ? { participantId, groupOrder: results?.groupOrder }
+            : undefined;
+        })
+        .filter(
+          ({ groupOrder, participantId }) =>
+            groupOrder === 1 && !assignedParticipantIds.includes(participantId)
+        )
+        .map(({ participantId }) => participantId);
+
+      qualifyingParticipantIds.push(...relevantParticipantIds);
+
+      const relevantParticipants = tournamentParticipants.filter(
+        ({ participantId }) => relevantParticipantIds.includes(participantId)
+      );
+      qualifyingParticipants.push(...relevantParticipants);
+    }
   }
 
   // this should be "if qualifiers are available"
