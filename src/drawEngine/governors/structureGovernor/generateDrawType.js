@@ -181,6 +181,8 @@ export function generateDrawType(params = {}) {
       finalQualifyingRoundNumber: qualifyingRoundNumber,
       finalQualifyingStructureId: qualifyingStructureId,
       roundTrget: targetEntryRound,
+      finishingPositions,
+      linkType,
     } = qualifyingDetail;
 
     const mainStructure = generatorResult.structures.find(
@@ -191,8 +193,10 @@ export function generateDrawType(params = {}) {
       targetStructureId: mainStructure.structureId,
       sourceStructureId: qualifyingStructureId,
       sourceRoundNumber: qualifyingRoundNumber,
+      finishingPositions,
       targetEntryRound,
       drawDefinition,
+      linkType,
     });
   }
 
