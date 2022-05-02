@@ -132,7 +132,7 @@ export function getValidQualifiersAction({
 
           return results
             ? { participantId, groupOrder: results?.groupOrder }
-            : undefined;
+            : {};
         })
         .filter(
           ({ groupOrder, participantId }) =>

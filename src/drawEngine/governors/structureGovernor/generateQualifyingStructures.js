@@ -127,14 +127,12 @@ export function generateQualifyingStructures({
         )?.length;
       }
 
-      // order of operations is important here!! finalQualifier positions is not yet updated when this step occurs
-      linkType = drawType === ROUND_ROBIN ? POSITION : WINNER;
-
       if (stageSequence > 1) {
         const { link } = generateQualifyingLink({
           sourceStructureId: finalQualifyingStructureId,
           sourceRoundNumber: finalQualifyingRoundNumber,
           targetStructureId: structure.structureId,
+          finishingPositions: linkType === POSITION ? [1] : undefined,
           linkType,
         });
         links.push(link);
@@ -143,6 +141,9 @@ export function generateQualifyingStructures({
       } else {
         qualifyingDrawPositionsCount += drawSize;
       }
+
+      // IMPORTANT: order of operations is important here!!
+      linkType = drawType === ROUND_ROBIN ? POSITION : WINNER;
 
       // always set to the final round of the last generated qualifying structure
       finalQualifyingStructureId = structure.structureId;

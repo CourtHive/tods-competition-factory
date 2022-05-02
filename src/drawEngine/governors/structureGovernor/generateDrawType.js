@@ -87,12 +87,12 @@ export function generateDrawType(params = {}) {
 
   if (qualifyingResult?.error) return qualifyingResult;
 
-  const {
-    qualifiersCount = params.qualifiersCount || 0,
-    qualifyingDrawPositionsCount,
-  } = qualifyingResult || {};
+  const qualifiersCount = Math.max(
+    params.qualifiersCount || 0,
+    qualifyingResult?.qualifiersCount || 0
+  );
 
-  if (qualifyingDrawPositionsCount) {
+  if (qualifyingResult?.qualifyingDrawPositionsCount) {
     if (qualifyingResult?.structures) {
       drawDefinition.structures.push(...qualifyingResult.structures);
     }
@@ -107,7 +107,7 @@ export function generateDrawType(params = {}) {
 
     if (!qualifyingStageDrawPositionsCount) {
       const result = setStageDrawSize({
-        drawSize: qualifyingDrawPositionsCount,
+        drawSize: qualifyingResult.qualifyingDrawPositionsCount,
         stage: QUALIFYING,
         drawDefinition,
       });

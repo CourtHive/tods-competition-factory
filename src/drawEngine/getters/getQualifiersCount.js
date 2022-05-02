@@ -3,7 +3,7 @@ import { getEntryProfile } from './getEntryProfile';
 import { findStructure } from './findStructure';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
-import { POSITION, QUALIFYING } from '../../constants/drawDefinitionConstants';
+import { CONTAINER, QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 export function getQualifiersCount({
   drawDefinition,
@@ -13,38 +13,47 @@ export function getQualifiersCount({
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
+  const { entryProfile } = getEntryProfile({ drawDefinition });
+  const profileQualifiersCount =
+    entryProfile?.[stage]?.stageSequence?.[stageSequence]?.qualifiersCount ||
+    entryProfile?.[stage]?.qualifiersCount ||
+    0;
+  if (!structureId) return profileQualifiersCount;
+
   const { structure } = findStructure({ drawDefinition, structureId });
   const relevantLink = drawDefinition.links?.find(
     (link) =>
-      link?.linkType !== POSITION &&
       link?.target?.structureId === structure?.structureId &&
       link?.target?.roundNumber === 1
   );
 
-  // TODO: for Round Robin qualifying the number of qualifiers needs to be derived
-  // from the number of groups (substructures) * the length of source.finishingPositions[]
-
   // if structureId is provided and there is a relevant link...
-  // return source structure qualifying round matchUps count
-  if (relevantLink && structure.stage === QUALIFYING) {
+  if (relevantLink && structure?.stage === QUALIFYING) {
     const sourceStructure = findStructure({
       structureId: relevantLink.source.structureId,
       drawDefinition,
     })?.structure;
     const sourceRoundNumber = relevantLink.source.roundNumber;
-    const matchUps = getAllStructureMatchUps({
-      roundFilter: sourceRoundNumber,
-      structure: sourceStructure,
-      inContext: false,
-    }).matchUps;
-    if (matchUps?.length) return matchUps.length;
+
+    if (sourceStructure.structureType === CONTAINER) {
+      // for Round Robin qualifying the number of qualifiers needs to be derived from:
+      // the number of groups (substructures) * the length of source.finishingPositions[]
+      const groupCount = sourceStructure.structures?.length || 0;
+      const finishingPositionsCount =
+        relevantLink.source.finishingPositions?.length || 0;
+
+      return groupCount * finishingPositionsCount;
+    } else {
+      // return source structure qualifying round matchUps count
+      const matchUps = getAllStructureMatchUps({
+        roundFilter: sourceRoundNumber,
+        structure: sourceStructure,
+        inContext: false,
+      }).matchUps;
+
+      if (matchUps?.length) return matchUps.length;
+    }
   }
 
-  const { entryProfile } = getEntryProfile({ drawDefinition });
-
-  return (
-    entryProfile?.[stage]?.stageSequence?.[stageSequence]?.qualifiersCount ||
-    entryProfile?.[stage]?.qualifiersCount ||
-    0
-  );
+  return profileQualifiersCount;
 }

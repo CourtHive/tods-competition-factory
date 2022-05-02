@@ -32,7 +32,6 @@ export function generateQualifyingStructure(params) {
     structureOptions,
     drawDefinition,
     structureName,
-    matchUpType,
     structureId,
     roundTarget,
     drawSize,
@@ -64,6 +63,8 @@ export function generateQualifyingStructure(params) {
   }
 
   const targetStructure = result.structure;
+  const matchUpType = targetStructure.matchUpType;
+
   if (targetStructure.stage === QUALIFYING) {
     if (targetStructure.stageSequence > 1) {
       stageSequence = targetStructure.stageSequence - 1;

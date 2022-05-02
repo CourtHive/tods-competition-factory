@@ -463,6 +463,23 @@ const playoffAttributes = {
 
 ---
 
+## addQualifyingStructure
+
+```js
+tournamentEngine.addQualifyingStructure({
+  targetStructureId, // required: structure for which participants will qualify
+  qualifyingPositions, // optional: specify the # of qualifyingPositions
+  qualifyingRound, // optional: determine qualifyingPositions by # of matchUps in specified round; does not apply to ROUND_ROBIN
+  structureOptions, // optional: specific to ROUND_ROBIN generation
+  structureName, // optional
+  drawSize,
+  drawType, // optional: defaults to SINGLE_ELIMINATION
+  drawId, // required: draw within which target structure appears
+});
+```
+
+---
+
 ## addTournamentExtension
 
 ```js
@@ -715,6 +732,18 @@ See [Policies](../concepts/policies).
 tournamentEngine.attachPolicies({
   policyDefinitions: SEEDING_POLICY,
   allowReplacement, // optional boolean
+});
+```
+
+---
+
+## attachQualifyingStructure
+
+```js
+tournamentEngine.attachQualifyingStructure({
+  structure, // required: structure object; see `generateQualifyingStructure`
+  drawId, // required: id of drawDedfinition to which structure will be attached
+  link, // required
 });
 ```
 
@@ -1208,7 +1237,7 @@ const drawDefinitionValues = {
   seededParticipants, // optional - { participantId, seedNumber, seedValue }
   seedingScaleName, // optional - custom scale for determining seeded participants
   seedingProfile, // optional - WATERFALL seeding for ROUND_ROBIN structures, CLUSTER or SEPARATE seeding for elimination structures
-  qualifyingRound, // optional - used to derive roundLimit
+  qualifiersCount, // optional - how many positionsAssignments will have { qualifier: true }
   structureOptions, // optional - for ROUND_ROBIN - { groupSize, playoffGroups }
   staggeredEntry, // optional - accepts non-base-2 drawSizes and generates feed arms for "extra" drawPositions
   policyDefinitions, // optional - seeding or avoidance policies to be used when placing participants
@@ -1272,6 +1301,23 @@ const {
 Object.assign(drawDefinitionValues, flight);
 const { drawDefinition } =
   tournamentEngine.generateDrawDefinition(drawDefinitionValues);
+```
+
+---
+
+## generateQualifyingStructure
+
+```js
+let { structure, link } = tournamentEngine.generateQualifyingStructure({
+  targetStructureId, // required: structure for which participants will qualify
+  qualifyingPositions, // optional: specify the # of qualifyingPositions
+  qualifyingRound, // optional: determine qualifyingPositions by # of matchUps in specified round; does not apply to ROUND_ROBIN
+  structureOptions, // optional: specific to ROUND_ROBIN generation
+  structureName, // optional
+  drawSize,
+  drawType, // optional: defaults to SINGLE_ELIMINATION
+  drawId, // required: draw within which target structure appears
+});
 ```
 
 ---
