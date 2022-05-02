@@ -1,3 +1,4 @@
+import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { refreshEntryPositions } from '../../../global/functions/producers/refreshEntryPositions';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { participantInEntries } from '../../getters/entryGetter';
@@ -5,6 +6,7 @@ import { definedAttributes } from '../../../utilities/objects';
 import { getValidStage } from '../../getters/getValidStage';
 import { getStageSpace } from '../../getters/getStageSpace';
 
+import { ROUND_TARGET } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DIRECT_ACCEPTANCE,
@@ -42,6 +44,8 @@ export function addDrawEntry({
   entryPosition,
   participantId,
   participant,
+  roundTarget,
+  extensions,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!entryStage) return { error: MISSING_STAGE };
@@ -87,7 +91,15 @@ export function addDrawEntry({
     entryPosition,
     entryStatus,
     entryStage,
+    extensions,
   });
+
+  if (roundTarget) {
+    addExtension({
+      extension: { name: 'roundEntry', value: roundTarget },
+      element: entry,
+    });
+  }
 
   drawDefinition.entries.push(entry);
   modifyDrawNotice({ drawDefinition });
@@ -111,6 +123,7 @@ export function addDrawEntries({
   participantIds,
   stageSequence,
   stage = MAIN,
+  roundTarget,
 }) {
   if (!stage) return { error: MISSING_STAGE };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -120,8 +133,8 @@ export function addDrawEntries({
   }
 
   const spaceAvailable = getStageSpace({
-    stageSequence,
     drawDefinition,
+    stageSequence,
     entryStatus,
     stage,
   });
@@ -171,6 +184,12 @@ export function addDrawEntries({
         { participantId },
         { entryStage: stage, entryStatus, entryStageSequence: stageSequence }
       );
+      if (roundTarget) {
+        addExtension({
+          element: entry,
+          extension: { name: ROUND_TARGET, value: roundTarget },
+        });
+      }
       drawDefinition.entries.push(entry);
     });
 

@@ -481,7 +481,6 @@ drawEngine.generateDrawType({
   seedingProfile, // optional - WATERFALL seeding for ROUND_ROBIN structures, CLUSTER or SEPARATE seeding for elimination structures
   feedPolicy, // optional - provides fine-grain control for FEED_IN_CONSOLATION feed links
 
-  qualifyingRound, // optional - for qualifying draw structures, roundNumber to win to qualify
   qualifyingPositions, // optional - number of drawPositions to be filled by qualifiers
   finishingPositionLimit, // optional - for playoff structures, limit to the number of positions to be played off
 
@@ -511,7 +510,6 @@ Generates and adds a `link` to `drawDefinition.links`.
 drawEngine.generateQualifyingLink({
   qualifyingStructureId,
   mainStructureId,
-  qualifyingRound,
 });
 ```
 

@@ -1,10 +1,12 @@
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
+import { addExtension } from '../../tournamentGovernor/addRemoveExtensions';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
 import { removeEventEntries } from './removeEventEntries';
 
 import { INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantTypes';
 import { DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
+import { ROUND_TARGET } from '../../../../constants/extensionConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -37,6 +39,7 @@ export function addEventEntries(params) {
     tournamentRecord,
     ignoreStageSpace,
     drawDefinition,
+    roundTarget,
     drawId,
     event,
   } = params;
@@ -99,6 +102,12 @@ export function addEventEntries(params) {
         entryStatus,
         entryStage,
       };
+      if (roundTarget) {
+        addExtension({
+          element: entry,
+          extension: { name: ROUND_TARGET, value: roundTarget },
+        });
+      }
       if (entryStageSequence) entry.entryStageSequence = entryStageSequence;
       event.entries.push(entry);
     }
@@ -113,6 +122,7 @@ export function addEventEntries(params) {
       ignoreStageSpace,
       drawDefinition,
       entryStatus,
+      roundTarget,
       entryStage,
       drawId,
       event,

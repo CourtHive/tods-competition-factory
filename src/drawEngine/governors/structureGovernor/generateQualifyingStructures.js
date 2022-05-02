@@ -1,3 +1,4 @@
+import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import structureTemplate from '../../generators/structureTemplate';
 import { generateRoundRobin } from '../../generators/roundRobin';
@@ -5,6 +6,7 @@ import { treeMatchUps } from '../../generators/eliminationTree';
 import { isConvertableInteger } from '../../../utilities/math';
 
 import { MISSING_DRAW_SIZE } from '../../../constants/errorConditionConstants';
+import { ROUND_TARGET } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   POSITION,
@@ -15,14 +17,13 @@ import {
 
 export function generateQualifyingStructures({
   qualifyingProfiles,
-  drawDefinition,
-  matchUpType,
   idPrefix,
   isMock,
   uuids,
 }) {
   const qualifyingDetails = [];
   const structures = [];
+  const links = [];
 
   const sequenceSort = (a, b) => a.stageSequence - b.stageSequence;
   const roundTargetSort = (a, b) => a.roundTarget - b.roundTarget;
@@ -34,6 +35,8 @@ export function generateQualifyingStructures({
 
   for (const roundTargetProfile of qualifyingProfiles.sort(roundTargetSort)) {
     const structureProfiles = roundTargetProfile.structureProfiles || [];
+    roundTarget = roundTargetProfile.roundTarget || roundTarget;
+
     let stageSequence = 1,
       targetRoundQualifiersCount = 0,
       finalQualifyingRoundNumber,
@@ -44,7 +47,10 @@ export function generateQualifyingStructures({
       const {
         qualifyingRoundNumber,
         qualifyingPositions,
+        structureOptions,
         structureName,
+        matchUpType,
+        structureId,
         drawSize,
         drawType,
       } = structureProfile;
@@ -66,21 +72,30 @@ export function generateQualifyingStructures({
           : QUALIFYING);
 
       if (drawType === ROUND_ROBIN) {
-        const { structures, groupCount /*, groupSize*/ } = generateRoundRobin({
-          structureName: QUALIFYING,
-          stage: QUALIFYING,
-          idPrefix,
-          drawSize,
-          isMock,
-          uuids,
-        });
+        const { structures, groupCount, maxRoundNumber /*, groupSize*/ } =
+          generateRoundRobin({
+            structureName:
+              structureProfile.structureName || qualifyingStructureName,
+            structureId: structureId || uuids?.pop(),
+            stage: QUALIFYING,
+            structureOptions,
+            stageSequence,
+            matchUpType,
+            roundTarget,
+            idPrefix,
+            drawSize,
+            isMock,
+            uuids,
+          });
         targetRoundQualifiersCount = groupCount;
+        roundLimit = maxRoundNumber;
         structure = structures[0];
         finishingPositions = [1];
       } else {
         ({ matchUps, roundLimit } = treeMatchUps({
           qualifyingRoundNumber,
           qualifyingPositions,
+          matchUpType,
           idPrefix,
           drawSize,
           isMock,
@@ -88,9 +103,10 @@ export function generateQualifyingStructures({
         }));
 
         structure = structureTemplate({
-          structureName: qualifyingStructureName,
+          structureName:
+            structureProfile.structureName || qualifyingStructureName,
+          structureId: structureId || uuids?.pop(),
           qualifyingRoundNumber: roundLimit,
-          structureId: uuids?.pop(),
           stage: QUALIFYING,
           stageSequence,
           matchUpType,
@@ -98,28 +114,38 @@ export function generateQualifyingStructures({
           matchUps,
         });
 
+        if (roundTarget) {
+          addExtension({
+            element: structure,
+            extension: { name: ROUND_TARGET, value: roundTarget },
+          });
+        }
+
         // always set to the final round of the last generated qualifying structure
         targetRoundQualifiersCount = matchUps?.filter(
           (matchUp) => matchUp.roundNumber === roundLimit
         )?.length;
       }
 
-      // order of operations is important here!! finalQualifier positions is not yet updated when this step occurs
       if (stageSequence > 1) {
-        generateQualifyingLink({
+        const { link } = generateQualifyingLink({
           sourceStructureId: finalQualifyingStructureId,
           sourceRoundNumber: finalQualifyingRoundNumber,
           targetStructureId: structure.structureId,
-          drawDefinition,
+          finishingPositions: linkType === POSITION ? [1] : undefined,
+          linkType,
         });
+        links.push(link);
         // if more than one qualifying stageSequence, remove last stageSequence qualifier positions from count
         qualifyingDrawPositionsCount += drawSize - targetRoundQualifiersCount;
       } else {
         qualifyingDrawPositionsCount += drawSize;
       }
 
-      // always set to the final round of the last generated qualifying structure
+      // IMPORTANT: order of operations is important here!!
       linkType = drawType === ROUND_ROBIN ? POSITION : WINNER;
+
+      // always set to the final round of the last generated qualifying structure
       finalQualifyingStructureId = structure.structureId;
       finalQualifyingRoundNumber = roundLimit;
 
@@ -146,6 +172,7 @@ export function generateQualifyingStructures({
     qualifyingDrawPositionsCount,
     qualifyingDetails,
     structures,
+    links,
     ...SUCCESS,
   };
 }

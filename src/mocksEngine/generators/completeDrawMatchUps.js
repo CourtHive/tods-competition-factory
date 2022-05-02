@@ -10,8 +10,8 @@ import { matchUpSort } from '../../drawEngine/getters/matchUpSort';
 import { getMatchUpId } from '../../global/functions/extractors';
 import { generateOutcome } from './generateOutcome';
 
+import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../constants/matchUpTypes';
-import { MAIN } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   BYE,
@@ -22,6 +22,7 @@ import {
 export function completeDrawMatchUps({
   matchUpStatusProfile,
   completeAllMatchUps,
+  // qualifyingProfiles, // CONSIDER: allowing completionGoal per structureProfile
   randomWinningSide,
   tournamentRecord,
   drawDefinition,
@@ -37,7 +38,7 @@ export function completeDrawMatchUps({
 
   let { matchUps: firstRoundDualMatchUps, matchUpsMap } = getAllDrawMatchUps({
     contextFilters: {
-      stages: [MAIN],
+      stages: [MAIN, QUALIFYING],
     },
     matchUpFilters: {
       matchUpTypes: [TEAM],
@@ -139,6 +140,8 @@ export function completeDrawMatchUps({
   const matchUpStatus = scoreString && COMPLETED;
 
   for (const structure of sortedStructures) {
+    if (completedCount >= completionGoal) break;
+
     const { matchUps } = getAllStructureMatchUps({
       matchUpFilters: { matchUpTypes: [DOUBLES, SINGLES] },
       tournamentRecord,

@@ -250,6 +250,7 @@ export function positionActions({
       drawPosition,
       structureId,
       structure,
+      drawId,
     });
     validAssignmentActions?.forEach((action) => validActions.push(action));
   }
@@ -362,18 +363,18 @@ export function positionActions({
 
     if (isAvailableAction({ policyActions, action: SWAP_PARTICIPANTS })) {
       const { validSwapAction } = getValidSwapAction({
-        drawId,
-        structure,
-        structureId,
-        drawPosition,
-        isByePosition,
-        drawDefinition,
-        byeDrawPositions,
-        positionAssignments,
-        activeDrawPositions,
-        inactiveDrawPositions,
-        tournamentParticipants,
         possiblyDisablingAction,
+        tournamentParticipants,
+        inactiveDrawPositions,
+        activeDrawPositions,
+        positionAssignments,
+        byeDrawPositions,
+        drawDefinition,
+        isByePosition,
+        drawPosition,
+        structureId,
+        structure,
+        drawId,
       });
       if (validSwapAction) validActions.push(validSwapAction);
     }
@@ -398,30 +399,32 @@ export function positionActions({
     });
     if (validAlternatesAction) validActions.push(validAlternatesAction);
   }
+
   if (
     isAvailableAction({ policyActions, action: LUCKY_PARTICIPANT }) &&
     !disablePlacementActions
   ) {
     const { validLuckyLosersAction } = getValidLuckyLosersAction({
-      drawId,
-      structure,
-      structureId,
-      drawPosition,
-      drawDefinition,
-      activeDrawPositions,
-      positionAssignments,
+      sourceStructuresCompleted,
+      possiblyDisablingAction,
       isWinRatioFedStructure,
       tournamentParticipants,
-      possiblyDisablingAction,
+      activeDrawPositions,
+      positionAssignments,
+      drawDefinition,
+      drawPosition,
+      structureId,
+      structure,
+      drawId,
     });
     if (validLuckyLosersAction) validActions.push(validLuckyLosersAction);
   }
 
   return {
-    isByePosition,
+    hasPositionAssigned: !!positionAssignment,
     isActiveDrawPosition,
     isDrawPosition: true,
-    hasPositionAssigned: !!positionAssignment,
+    isByePosition,
     validActions,
   };
 }

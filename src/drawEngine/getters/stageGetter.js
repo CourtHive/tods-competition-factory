@@ -3,7 +3,7 @@ import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfil
 import { getEntryProfile } from './getEntryProfile';
 import { findStructure } from './findStructure';
 
-import { TALLY } from '../../constants/extensionConstants';
+import { ROUND_TARGET, TALLY } from '../../constants/extensionConstants';
 import {
   POSITION,
   CONTAINER,
@@ -85,22 +85,29 @@ export function getStageEntries({
   stageSequence,
   entryStatuses,
   structureId,
+  roundTarget,
   stages,
   stage,
 }) {
   const entries =
-    drawDefinition.entries?.reduce((p, c) => {
+    drawDefinition.entries?.reduce((entries, entry) => {
+      const entryRoundTarget = findExtension({
+        name: ROUND_TARGET,
+        element: entry,
+      })?.extension?.value;
       const stageTarget =
-        (stage && c.entryStage === stage) ||
-        (stages?.length && stages.includes(c.entryStage));
+        (stage && entry.entryStage === stage) ||
+        (stages?.length && stages.includes(entry.entryStage));
       const matchesEntryType =
-        !entryStatuses || entryStatuses.includes(c.entryStatus);
-      const entryStageSequence = c.entryStageSequence || 1; // default to 1 if not present
+        !entryStatuses || entryStatuses.includes(entry.entryStatus);
+      const entryStageSequence = entry.entryStageSequence || 1; // default to 1 if not present
       const sameStageSequence =
         !stageSequence || entryStageSequence === stageSequence;
-      return stageTarget && sameStageSequence && matchesEntryType
-        ? p.concat(c)
-        : p;
+      const targetMatch = !roundTarget || roundTarget === entryRoundTarget;
+
+      return stageTarget && sameStageSequence && matchesEntryType && targetMatch
+        ? entries.concat(entry)
+        : entries;
     }, []) || [];
 
   // handle POSITION entries

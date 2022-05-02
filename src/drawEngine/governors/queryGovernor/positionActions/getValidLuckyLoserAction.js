@@ -13,6 +13,7 @@ import {
 
 export function getValidLuckyLosersAction({
   tournamentParticipants = [],
+  sourceStructuresCompleted,
   possiblyDisablingAction,
   isWinRatioFedStructure,
   activeDrawPositions,
@@ -24,8 +25,13 @@ export function getValidLuckyLosersAction({
   drawId,
   event,
 }) {
-  if (activeDrawPositions.includes(drawPosition) || isWinRatioFedStructure)
+  if (
+    activeDrawPositions.includes(drawPosition) ||
+    // can't be a lucky loser if still have matches to play in a round robin structure!!
+    (isWinRatioFedStructure && !sourceStructuresCompleted)
+  ) {
     return {};
+  }
 
   /*
   Available Lucky Losers are those participants who are assigned drawPositions
@@ -50,61 +56,72 @@ export function getValidLuckyLosersAction({
       { sourceStructureIds: [], targetStructureIds: [] }
     ) || {};
 
-  let relevantLink = drawDefinition.links?.find(
+  const availableLuckyLoserParticipantIds = [];
+
+  let relevantLinks = drawDefinition.links?.filter(
     (link) => link.target?.structureId === structure.structureId
   );
-  const sourceStructureId = relevantLink?.source?.structureId;
 
-  const { structure: sourceStructure } = findStructure({
-    drawDefinition,
-    structureId: sourceStructureId,
-  });
+  for (const relevantLink of relevantLinks) {
+    const sourceStructureId = relevantLink?.source?.structureId;
 
-  const restrictBySourceRound =
-    sourceStructure?.finishingPosition === ROUND_OUTCOME &&
-    (sourceStructureIds?.length !== 1 || targetStructureIds?.length !== 1);
-
-  const matchUpFilters = {};
-  if (restrictBySourceRound) {
-    const { matchUps } = getAllStructureMatchUps({
+    const { structure: sourceStructure } = findStructure({
+      structureId: sourceStructureId,
       drawDefinition,
-      structure,
-      event,
     });
-    const { initialRoundNumber } = getInitialRoundNumber({
-      drawPosition,
-      matchUps,
+
+    const restrictBySourceRound =
+      sourceStructure?.finishingPosition === ROUND_OUTCOME &&
+      (sourceStructureIds?.length !== 1 || targetStructureIds?.length !== 1);
+
+    const matchUpFilters = {};
+    if (restrictBySourceRound) {
+      const { matchUps } = getAllStructureMatchUps({
+        drawDefinition,
+        structure,
+        event,
+      });
+      const { initialRoundNumber } = getInitialRoundNumber({
+        drawPosition,
+        matchUps,
+      });
+      const relevantLink = drawDefinition.links?.find(
+        (link) =>
+          link.target?.structureId === structure?.structureId &&
+          link.target.roundNumber === initialRoundNumber
+      );
+      const sourceRoundNumber = relevantLink?.source?.roundNumber;
+      matchUpFilters.roundNumbers = [sourceRoundNumber];
+    }
+
+    const { completedMatchUps } = getStructureMatchUps({
+      structureId: sourceStructureId,
+      inContext: true,
+      matchUpFilters,
+      drawDefinition,
     });
-    relevantLink = drawDefinition.links?.find(
-      (link) =>
-        link.target?.structureId === structure?.structureId &&
-        link.target.roundNumber === initialRoundNumber
-    );
-    const sourceRoundNumber = relevantLink?.source?.roundNumber;
-    matchUpFilters.roundNumbers = [sourceRoundNumber];
+
+    const assignedParticipantIds = positionAssignments
+      .map((assignment) => assignment.participantId)
+      .filter(Boolean);
+
+    const availableParticipantIds = completedMatchUps
+      ?.filter(
+        ({ matchUpType }) => event?.eventType !== TEAM || matchUpType === TEAM
+      )
+      .map(({ winningSide, sides }) => sides[1 - (winningSide - 1)])
+      .map(getParticipantId)
+      .filter(
+        (participantId) =>
+          participantId && !assignedParticipantIds.includes(participantId)
+      );
+
+    availableParticipantIds.forEach((participantId) => {
+      // ensure if 'restrictBySourceRound' is false and there are multiple links that participants aren't added multiple times
+      if (!availableLuckyLoserParticipantIds.includes(participantId))
+        availableLuckyLoserParticipantIds.push(participantId);
+    });
   }
-
-  const { completedMatchUps } = getStructureMatchUps({
-    structureId: sourceStructureId,
-    inContext: true,
-    matchUpFilters,
-    drawDefinition,
-  });
-
-  const assignedParticipantIds = positionAssignments
-    .map((assignment) => assignment.participantId)
-    .filter(Boolean);
-
-  const availableLuckyLoserParticipantIds = completedMatchUps
-    ?.filter(
-      ({ matchUpType }) => event?.eventType !== TEAM || matchUpType === TEAM
-    )
-    .map(({ winningSide, sides }) => sides[1 - (winningSide - 1)])
-    .map(getParticipantId)
-    .filter(
-      (participantId) =>
-        participantId && !assignedParticipantIds.includes(participantId)
-    );
 
   const availableLuckyLosers = tournamentParticipants?.filter((participant) =>
     availableLuckyLoserParticipantIds?.includes(participant.participantId)

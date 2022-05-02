@@ -19,6 +19,7 @@ export function addDrawEntries({
   drawDefinition,
   participantIds,
   entryStatus,
+  roundTarget,
   entryStage,
   drawId,
   event,
@@ -43,6 +44,7 @@ export function addDrawEntries({
       drawDefinition,
       participantIds,
       entryStatus,
+      roundTarget,
     });
     if (result.error) return result;
   }

@@ -81,8 +81,8 @@ export function assignDrawPosition({
     const isValidDrawPosition = isValidSeedPosition({
       seedNumber: participantSeedNumber,
       drawDefinition,
-      structureId,
       drawPosition,
+      structureId,
     });
     if (!isValidDrawPosition)
       return { error: INVALID_DRAW_POSITION_FOR_SEEDING };

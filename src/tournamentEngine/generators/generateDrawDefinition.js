@@ -229,10 +229,16 @@ export function generateDrawDefinition(params) {
   const roundTargetSort = (a, b) => a.roundTarget - b.roundTarget;
 
   if (params.qualifyingProfiles) {
+    // keep track of structures already prepared in case of multiple matching structures
+    const preparedStructureIds = [];
+    let roundTarget = 1;
+
     for (const roundTargetProfile of params.qualifyingProfiles.sort(
       roundTargetSort
     )) {
+      roundTarget = roundTargetProfile.roundTarget || roundTarget;
       let stageSequence = 1;
+
       for (const structureProfile of roundTargetProfile.structureProfiles.sort(
         sequenceSort
       )) {
@@ -242,25 +248,35 @@ export function generateDrawDefinition(params) {
           seedsCount = 0,
           drawSize,
         } = structureProfile;
+
         const qualifyingResult = prepareStage({
           ...drawTypeResult,
           ...params,
           qualifyingRoundNumber,
+          preparedStructureIds,
           qualifyingPositions,
           stage: QUALIFYING,
           drawDefinition,
           stageSequence,
           participants,
+          roundTarget,
           seedsCount,
           drawSize,
           entries,
         });
+
+        if (qualifyingResult.structureId) {
+          preparedStructureIds.push(qualifyingResult.structureId);
+        }
+
         // if (qualifyingResult.error) return qualifyingResult;
         stageSequence += 1;
 
         if (qualifyingResult.conflicts?.length)
           qualifyingConflicts.push(...qualifyingResult.conflicts);
       }
+
+      roundTarget += 1;
     }
   }
 

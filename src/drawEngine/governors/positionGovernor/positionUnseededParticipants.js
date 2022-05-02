@@ -1,3 +1,4 @@
+import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { randomUnseededSeparation } from './avoidance/randomUnseededSeparation';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
@@ -8,8 +9,12 @@ import { assignDrawPosition } from './positionAssignment';
 import { shuffleArray } from '../../../utilities';
 
 import { INSUFFICIENT_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
-import { PLAY_OFF } from '../../../constants/drawDefinitionConstants';
+import { ROUND_TARGET } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  PLAY_OFF,
+  QUALIFYING,
+} from '../../../constants/drawDefinitionConstants';
 import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
@@ -17,6 +22,7 @@ import {
 
 export function positionUnseededParticipants({
   inContextDrawMatchUps,
+  multipleStructures,
   tournamentRecord,
   candidatesCount,
   drawDefinition,
@@ -40,12 +46,20 @@ export function positionUnseededParticipants({
     .filter(Boolean);
 
   const { stage, stageSequence } = structure;
+
+  const roundTarget =
+    stage === QUALIFYING
+      ? findExtension({ element: structure, name: ROUND_TARGET })?.extension
+          ?.value
+      : undefined;
+
   const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = getStageEntries({
     drawDefinition,
     stageSequence,
     entryStatuses,
     structureId,
+    roundTarget,
     stage,
   });
   const unseededEntries = entries.filter(
@@ -62,7 +76,10 @@ export function positionUnseededParticipants({
     })
     .map((assignment) => assignment.drawPosition);
 
-  if (unseededParticipantIds.length > unfilledDrawPositions.length) {
+  if (
+    !multipleStructures &&
+    unseededParticipantIds.length > unfilledDrawPositions.length
+  ) {
     return { error: INSUFFICIENT_DRAW_POSITIONS };
   }
 
@@ -102,6 +119,7 @@ export function positionUnseededParticipants({
       unseededParticipantIds,
       inContextDrawMatchUps,
       unfilledDrawPositions,
+      multipleStructures,
       tournamentRecord,
       drawDefinition,
       structureId,
@@ -115,25 +133,30 @@ function randomUnseededDistribution({
   unseededParticipantIds,
   inContextDrawMatchUps,
   unfilledDrawPositions,
+  multipleStructures,
   tournamentRecord,
   drawDefinition,
   matchUpsMap,
   structureId,
 }) {
   const shuffledDrawPositions = shuffleArray(unfilledDrawPositions);
+
   for (const participantId of unseededParticipantIds) {
     const drawPosition = shuffledDrawPositions.pop();
-    const result = assignDrawPosition({
-      automaticPlacement: true,
-      inContextDrawMatchUps,
-      tournamentRecord,
-      drawDefinition,
-      participantId,
-      drawPosition,
-      matchUpsMap,
-      structureId,
-    });
-    if (result && result.error) return result;
+    if (!multipleStructures || drawPosition) {
+      const result = assignDrawPosition({
+        automaticPlacement: true,
+        inContextDrawMatchUps,
+        tournamentRecord,
+        drawDefinition,
+        participantId,
+        drawPosition,
+        matchUpsMap,
+        structureId,
+      });
+      if (result?.error) console.log({ result });
+      if (result?.error) return result;
+    }
   }
   return SUCCESS;
 }

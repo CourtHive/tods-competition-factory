@@ -10,6 +10,9 @@ export const POLICY_POSITION_ACTIONS_UNRESTRICTED = {
 
     // enables entries in other flights to be accessed as alternates
     otherFlightEntries: true,
+
+    // enables entries with multiple qualifying roundTargets to be placed in any round
+    disableRoundRestrictions: true,
   },
 };
 

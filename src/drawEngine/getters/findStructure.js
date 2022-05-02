@@ -1,5 +1,7 @@
+import { findExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { structureSort } from './structureSort';
 
+import { ROUND_TARGET } from '../../constants/extensionConstants';
 import {
   MISSING_STRUCTURES,
   STRUCTURE_NOT_FOUND,
@@ -34,7 +36,12 @@ export function findStructure({ drawDefinition, structureId }) {
 /*
   TESTS: structureGetter.test.js
 */
-export function getDrawStructures({ stage, stageSequence, drawDefinition }) {
+export function getDrawStructures({
+  drawDefinition,
+  stageSequence,
+  roundTarget,
+  stage,
+}) {
   const error = !drawDefinition
     ? MISSING_DRAW_DEFINITION
     : !drawDefinition.structures
@@ -43,9 +50,18 @@ export function getDrawStructures({ stage, stageSequence, drawDefinition }) {
 
   if (error) return { error };
 
+  const isRoundTarget = (structure) => {
+    const value = findExtension({
+      element: structure,
+      name: ROUND_TARGET,
+    })?.extension?.value;
+    return !roundTarget || roundTarget === value;
+  };
+
   const structures = drawDefinition.structures
     ?.filter(isStage)
     .filter(isStageSequence)
+    .filter(isRoundTarget)
     .sort(structureSort);
   return { structures };
 

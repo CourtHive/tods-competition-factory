@@ -259,12 +259,15 @@ export function generateEventWithDraw({
 
   if (qualifyingParticipantIds?.length) {
     let qualifyingIndex = 0; // used to take slices of participants array
+    let roundTarget = 1;
 
     const sequenceSort = (a, b) => a.stageSequence - b.stageSequence;
     const roundTargetSort = (a, b) => a.roundTarget - b.roundTarget;
 
     for (const roundTargetProfile of qualifyingProfiles.sort(roundTargetSort)) {
+      roundTarget = roundTargetProfile.roundTarget || roundTarget;
       let entryStageSequence = 1;
+
       for (const structureProfile of roundTargetProfile.structureProfiles.sort(
         sequenceSort
       )) {
@@ -279,6 +282,7 @@ export function generateEventWithDraw({
           autoEntryPositions,
           tournamentRecord,
           participantIds,
+          roundTarget,
           event,
         });
         if (result.error) {
@@ -287,6 +291,8 @@ export function generateEventWithDraw({
         qualifyingIndex += drawSize;
         entryStageSequence += 1;
       }
+
+      roundTarget += 1;
     }
   }
 
@@ -390,6 +396,7 @@ export function generateEventWithDraw({
         const result = completeDrawMatchUps({
           matchUpStatusProfile,
           completeAllMatchUps,
+          qualifyingProfiles,
           randomWinningSide,
           tournamentRecord,
           completionGoal,

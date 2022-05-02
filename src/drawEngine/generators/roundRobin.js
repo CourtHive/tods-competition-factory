@@ -1,3 +1,4 @@
+import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
 import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 import { generateRange, nextPowerOf2, UUID } from '../../utilities';
@@ -9,6 +10,7 @@ import { drawPositionsHash } from './roundRobinGroups';
 
 import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+import { ROUND_TARGET } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
@@ -33,6 +35,7 @@ export function generateRoundRobin({
   seedingProfile,
   stage = MAIN,
   matchUpType,
+  roundTarget,
   structureId,
   drawSize,
   idPrefix,
@@ -46,24 +49,31 @@ export function generateRoundRobin({
 
   const finishingPosition = WIN_RATIO;
 
-  const structures = generateRange(1, groupCount + 1).map((structureOrder) =>
-    structureTemplate({
+  let maxRoundNumber;
+
+  const structures = generateRange(1, groupCount + 1).map((structureOrder) => {
+    const matchUps = roundRobinMatchUps({
+      groupSize: groupSize,
+      structureOrder,
+      matchUpType,
+      drawSize,
+      idPrefix,
+      isMock,
+    });
+    maxRoundNumber = Math.max(
+      ...matchUps.map(({ roundNumber }) => roundNumber)
+    );
+
+    return structureTemplate({
       structureName: `Group ${structureOrder}`,
-      matchUps: roundRobinMatchUps({
-        groupSize: groupSize,
-        structureOrder,
-        matchUpType,
-        drawSize,
-        idPrefix,
-        isMock,
-      }),
       structureId: uuids?.pop(),
       structureType: ITEM,
       finishingPosition,
       structureOrder,
       matchUpType,
-    })
-  );
+      matchUps,
+    });
+  });
 
   const structure = structureTemplate({
     structureId: structureId || uuids?.pop(),
@@ -77,8 +87,15 @@ export function generateRoundRobin({
     stage,
   });
 
+  if (roundTarget)
+    addExtension({
+      extension: { name: ROUND_TARGET, value: roundTarget },
+      element: structure,
+    });
+
   return {
     structures: [structure],
+    maxRoundNumber,
     groupCount,
     links: [],
     groupSize,

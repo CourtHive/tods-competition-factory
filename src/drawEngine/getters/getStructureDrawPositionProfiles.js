@@ -105,6 +105,7 @@ export function getStructureDrawPositionProfiles({
     positionAssignments,
     activeDrawPositions,
     byeDrawPositions,
+    activeMatchUps,
     structure,
   };
 }
