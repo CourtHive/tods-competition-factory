@@ -22,6 +22,7 @@ import {
 
 export function positionUnseededParticipants({
   inContextDrawMatchUps,
+  multipleStructures,
   tournamentRecord,
   candidatesCount,
   drawDefinition,
@@ -75,7 +76,10 @@ export function positionUnseededParticipants({
     })
     .map((assignment) => assignment.drawPosition);
 
-  if (unseededParticipantIds.length > unfilledDrawPositions.length) {
+  if (
+    !multipleStructures &&
+    unseededParticipantIds.length > unfilledDrawPositions.length
+  ) {
     return { error: INSUFFICIENT_DRAW_POSITIONS };
   }
 
@@ -115,6 +119,7 @@ export function positionUnseededParticipants({
       unseededParticipantIds,
       inContextDrawMatchUps,
       unfilledDrawPositions,
+      multipleStructures,
       tournamentRecord,
       drawDefinition,
       structureId,
@@ -128,25 +133,30 @@ function randomUnseededDistribution({
   unseededParticipantIds,
   inContextDrawMatchUps,
   unfilledDrawPositions,
+  multipleStructures,
   tournamentRecord,
   drawDefinition,
   matchUpsMap,
   structureId,
 }) {
   const shuffledDrawPositions = shuffleArray(unfilledDrawPositions);
+
   for (const participantId of unseededParticipantIds) {
     const drawPosition = shuffledDrawPositions.pop();
-    const result = assignDrawPosition({
-      automaticPlacement: true,
-      inContextDrawMatchUps,
-      tournamentRecord,
-      drawDefinition,
-      participantId,
-      drawPosition,
-      matchUpsMap,
-      structureId,
-    });
-    if (result && result.error) return result;
+    if (!multipleStructures || drawPosition) {
+      const result = assignDrawPosition({
+        automaticPlacement: true,
+        inContextDrawMatchUps,
+        tournamentRecord,
+        drawDefinition,
+        participantId,
+        drawPosition,
+        matchUpsMap,
+        structureId,
+      });
+      if (result?.error) console.log({ result });
+      if (result?.error) return result;
+    }
   }
   return SUCCESS;
 }

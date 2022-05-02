@@ -494,7 +494,7 @@ it('supports qualifying structures with multiple roundTargets', () => {
   validTypes = result.validActions.map(({ type }) => type).sort();
 
   // prettier-ignore
-  expect(result.validActions.map(({ type }) => type).sort()).toEqual([
+  expect(validTypes).toEqual([
     'ALTERNATE', 'BYE', 'LUCKY', 'QUALIFIER',
     'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
   ]);
@@ -517,4 +517,147 @@ it('supports qualifying structures with multiple roundTargets', () => {
   );
   expect(qualifierAssingmentAction).not.toBeUndefined();
   expect(qualifierAssingmentAction.qualifyingParticipantIds.length).toEqual(4);
+});
+
+it('qualifying structures with multiple chains can share the same roundTarget', () => {
+  const completionGoal = 52;
+  const drawProfiles = [
+    {
+      drawSize: 32,
+      completionGoal,
+      qualifyingProfiles: [
+        {
+          roundTarget: 1,
+          structureProfiles: [
+            {
+              qualifyingRoundNumber: 3,
+              stageSequence: 1,
+              drawSize: 32,
+            },
+          ],
+        },
+        {
+          roundTarget: 1,
+          structureProfiles: [
+            {
+              qualifyingPositions: 4,
+              drawType: ROUND_ROBIN,
+              stageSequence: 2,
+              drawSize: 16,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { tournamentParticipants } =
+    tournamentEngine.getTournamentParticipants();
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpStatuses: [COMPLETED] },
+  });
+  const completedQualifying = matchUps.filter(
+    (matchUp) => matchUp.stage === QUALIFYING
+  );
+  expect(completedQualifying.length).toEqual(completionGoal);
+
+  const completedMain = matchUps.filter((matchUp) => matchUp.stage === MAIN);
+  expect(completedMain.length).toEqual(0);
+
+  // if there are qualifiers then all participants are unique
+  // 32 + 32 unique + 32 qualifying + 16 qualifying RR = 128
+  expect(tournamentParticipants.length).toEqual(112);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  expect(drawDefinition.structures.length).toEqual(3);
+  expect(drawDefinition.links.length).toEqual(2);
+
+  const rrQLink = drawDefinition.links.find(
+    ({ linkType }) => linkType === POSITION
+  );
+  expect(rrQLink.source.finishingPositions).toEqual([1]);
+  expect(rrQLink.target.roundNumber).toEqual(1);
+
+  const rrQstructureId = rrQLink.source.structureId;
+  const rrQstructure = drawDefinition.structures.find(
+    ({ structureId }) => structureId === rrQstructureId
+  );
+  expect(rrQstructure.structureName).toEqual('QUALIFYING 1-1');
+
+  const {
+    structures: [mainStructure],
+  } = getDrawStructures({ stage: MAIN, drawDefinition });
+  const mainStructureId = mainStructure.structureId;
+
+  const { positionAssignments } = getPositionAssignments({
+    structure: mainStructure,
+  });
+
+  const qualifiersCount = positionAssignments.filter(
+    (assignment) => assignment.qualifier
+  ).length;
+  expect(qualifiersCount).toEqual(8);
+
+  const assignment = positionAssignments.find(
+    ({ participantId }) => participantId
+  );
+  let result = tournamentEngine.positionActions({
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    drawPosition: assignment.drawPosition,
+    structureId: mainStructureId,
+    drawId,
+  });
+
+  let validTypes = result.validActions.map(({ type }) => type).sort();
+
+  // prettier-ignore
+  expect(validTypes).toEqual([
+    'ALTERNATE', 'BYE', 'LUCKY', 'NICKNAME', 'PENALTY',
+    'QUALIFIER', 'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
+  ]);
+
+  const qualifierDrawPosition = positionAssignments.find(
+    (assignment) => assignment.qualifier
+  ).drawPosition;
+
+  result = tournamentEngine.positionActions({
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    drawPosition: qualifierDrawPosition,
+    structureId: mainStructureId,
+    drawId,
+  });
+
+  validTypes = result.validActions.map(({ type }) => type).sort();
+
+  // prettier-ignore
+  expect(validTypes).toEqual([
+    'ALTERNATE', 'BYE', 'LUCKY', 'QUALIFIER',
+    'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
+  ]);
+
+  let qualifierAssingmentAction = result.validActions.find(
+    ({ type }) => type === QUALIFIER
+  );
+  expect(qualifierAssingmentAction).not.toBeUndefined();
+  expect(qualifierAssingmentAction.qualifyingParticipantIds.length).toEqual(8);
+
+  // now test without unrestricted policy: since both qualifying chains have { roundTarget: 1 } expect same number
+  result = tournamentEngine.positionActions({
+    drawPosition: assignment.drawPosition,
+    structureId: mainStructureId,
+    drawId,
+  });
+
+  qualifierAssingmentAction = result.validActions.find(
+    ({ type }) => type === QUALIFIER
+  );
+  expect(qualifierAssingmentAction).not.toBeUndefined();
+  expect(qualifierAssingmentAction.qualifyingParticipantIds.length).toEqual(8);
 });

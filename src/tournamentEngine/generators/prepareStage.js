@@ -2,13 +2,16 @@ import { initializeStructureSeedAssignments } from '../../drawEngine/governors/p
 import { automatedPositioning } from '../../drawEngine/governors/positionGovernor/automatedPositioning';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
 import { assignSeed } from '../../drawEngine/governors/entryGovernor/seedAssignment';
+import { findExtension } from '../governors/queryGovernor/extensionQueries';
 import { getDrawStructures } from '../../drawEngine/getters/findStructure';
 import { getParticipantId } from '../../global/functions/extractors';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
+import { ROUND_TARGET } from '../../constants/extensionConstants';
 
 export function prepareStage({
+  preparedStructureIds = [],
   inContextDrawMatchUps,
   tournamentRecord,
   drawDefinition,
@@ -33,14 +36,21 @@ export function prepareStage({
   stage,
 }) {
   const eventType = event?.eventType;
-  const stageEntries = entries.filter(
-    (entry) =>
+  const stageEntries = entries.filter((entry) => {
+    const entryRoundTarget = findExtension({
+      element: entry,
+      name: ROUND_TARGET,
+    })?.extension?.value;
+
+    return (
       (!entry.entryStage || entry.entryStage === stage) &&
       (!stageSequence ||
         !entry.entryStageSequence ||
         entry.entryStageSequence === stageSequence) &&
+      (!roundTarget || entryRoundTarget === roundTarget) &&
       STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
-  );
+    );
+  });
 
   if (seededParticipants) seedsCount = seededParticipants.length;
   if (seedsCount > drawSize) seedsCount = drawSize;
@@ -52,7 +62,11 @@ export function prepareStage({
     roundTarget,
     stage,
   });
-  const [structure] = structures;
+  const multipleStructures = structures.length > 1;
+
+  const structure = structures.find(
+    ({ structureId }) => !preparedStructureIds.includes(structureId)
+  );
   const { structureId } = structure || {};
 
   const { seedLimit } = initializeStructureSeedAssignments({
@@ -161,6 +175,7 @@ export function prepareStage({
     // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
     const result = automatedPositioning({
       inContextDrawMatchUps,
+      multipleStructures,
       tournamentRecord,
       drawDefinition,
       participants,

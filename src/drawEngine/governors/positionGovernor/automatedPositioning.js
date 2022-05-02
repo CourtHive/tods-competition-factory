@@ -28,6 +28,7 @@ import {
 export function automatedPositioning({
   applyPositioning = true,
   inContextDrawMatchUps,
+  multipleStructures,
   tournamentRecord,
   candidatesCount,
   drawDefinition,
@@ -137,6 +138,7 @@ export function automatedPositioning({
   if (!seedsOnly) {
     let result = positionUnseededParticipants({
       inContextDrawMatchUps,
+      multipleStructures,
       tournamentRecord,
       candidatesCount,
       drawDefinition,

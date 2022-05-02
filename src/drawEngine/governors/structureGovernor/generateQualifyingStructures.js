@@ -35,6 +35,8 @@ export function generateQualifyingStructures({
 
   for (const roundTargetProfile of qualifyingProfiles.sort(roundTargetSort)) {
     const structureProfiles = roundTargetProfile.structureProfiles || [];
+    roundTarget = roundTargetProfile.roundTarget || roundTarget;
+
     let stageSequence = 1,
       targetRoundQualifiersCount = 0,
       finalQualifyingRoundNumber,

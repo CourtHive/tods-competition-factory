@@ -265,7 +265,9 @@ export function generateEventWithDraw({
     const roundTargetSort = (a, b) => a.roundTarget - b.roundTarget;
 
     for (const roundTargetProfile of qualifyingProfiles.sort(roundTargetSort)) {
+      roundTarget = roundTargetProfile.roundTarget || roundTarget;
       let entryStageSequence = 1;
+
       for (const structureProfile of roundTargetProfile.structureProfiles.sort(
         sequenceSort
       )) {
