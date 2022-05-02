@@ -23,6 +23,7 @@ import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
 } from '../../../constants/entryStatusConstants';
+import { getQualifiersCount } from '../../getters/getQualifiersCount';
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 export function automatedPositioning({
@@ -60,16 +61,22 @@ export function automatedPositioning({
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return handleErrorCondition({ error });
 
+  const qualifiersCount = getQualifiersCount({
+    stageSequence: structure.stageSequence,
+    stage: structure.stage,
+    drawDefinition,
+    structureId,
+  });
   const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = getStageEntries({
-    stageSequence: structure.stageSequence,
     stage: structure.stage,
     drawDefinition,
     entryStatuses,
     structureId,
   });
 
-  if (!entries?.length) return handleSuccessCondition({ ...SUCCESS });
+  if (!entries?.length && !qualifiersCount)
+    return handleSuccessCondition({ ...SUCCESS });
 
   const { seedingProfile } = structure;
 
