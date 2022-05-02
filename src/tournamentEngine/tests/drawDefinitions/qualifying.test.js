@@ -527,7 +527,7 @@ it('supports round robin qualifying structures', () => {
 });
 
 // to test qualifiers from different roundTargets: no multi-sequence qualifying
-it('supports qualifying structures with multiple roundTargets', () => {
+it.only('supports qualifying structures with multiple roundTargets', () => {
   const completionGoal = 52;
   const drawProfiles = [
     {
@@ -586,6 +586,12 @@ it('supports qualifying structures with multiple roundTargets', () => {
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(3);
   expect(drawDefinition.links.length).toEqual(2);
+
+  // test that structureSort handled roundTargets
+  const structureNames = drawDefinition.structures.map(
+    ({ structureName }) => structureName
+  );
+  expect(structureNames).toEqual(['QUALIFYING 1-1', 'QUALIFYING 2-1', 'MAIN']);
 
   const rrQLink = drawDefinition.links.find(
     ({ linkType }) => linkType === POSITION
