@@ -262,6 +262,8 @@ export function positionActions({
       (participant) => participant.participantId === participantId
     );
 
+  console.log({ isActiveDrawPosition });
+
   if (positionAssignment) {
     if (
       isAvailableAction({ policyActions, action: REMOVE_ASSIGNMENT }) &&

@@ -16,7 +16,6 @@ import {
 export function generateQualifyingStructures({
   qualifyingProfiles,
   drawDefinition,
-  matchUpType,
   idPrefix,
   isMock,
   uuids,
@@ -44,7 +43,10 @@ export function generateQualifyingStructures({
       const {
         qualifyingRoundNumber,
         qualifyingPositions,
+        structureOptions,
         structureName,
+        matchUpType,
+        structureId,
         drawSize,
         drawType,
       } = structureProfile;
@@ -67,8 +69,13 @@ export function generateQualifyingStructures({
 
       if (drawType === ROUND_ROBIN) {
         const { structures, groupCount /*, groupSize*/ } = generateRoundRobin({
-          structureName: qualifyingStructureName,
+          structureName:
+            structureProfile.stuctureName || qualifyingStructureName,
+          structureId: structureId || uuids?.pop(),
           stage: QUALIFYING,
+          structureOptions,
+          stageSequence,
+          matchUpType,
           idPrefix,
           drawSize,
           isMock,
@@ -81,6 +88,7 @@ export function generateQualifyingStructures({
         ({ matchUps, roundLimit } = treeMatchUps({
           qualifyingRoundNumber,
           qualifyingPositions,
+          matchUpType,
           idPrefix,
           drawSize,
           isMock,
@@ -88,9 +96,10 @@ export function generateQualifyingStructures({
         }));
 
         structure = structureTemplate({
-          structureName: qualifyingStructureName,
+          structureName:
+            structureProfile.stuctureName || qualifyingStructureName,
+          structureId: structureId || uuids?.pop(),
           qualifyingRoundNumber: roundLimit,
-          structureId: uuids?.pop(),
           stage: QUALIFYING,
           stageSequence,
           matchUpType,

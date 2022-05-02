@@ -390,6 +390,7 @@ export function generateEventWithDraw({
         const result = completeDrawMatchUps({
           matchUpStatusProfile,
           completeAllMatchUps,
+          qualifyingProfiles,
           randomWinningSide,
           tournamentRecord,
           completionGoal,
