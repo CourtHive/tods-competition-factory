@@ -29,6 +29,7 @@ export function prepareStage({
   seedsCount,
 
   stageSequence = 1,
+  roundTarget,
   stage,
 }) {
   const eventType = event?.eventType;
@@ -48,6 +49,7 @@ export function prepareStage({
   const { structures } = getDrawStructures({
     drawDefinition,
     stageSequence,
+    roundTarget,
     stage,
   });
   const [structure] = structures;
@@ -170,7 +172,10 @@ export function prepareStage({
     });
     conflicts = result?.conflicts;
     positionAssignments = result?.positionAssignments;
-    if (result.error) return result;
+    if (result.error) {
+      console.log(result.error);
+      return result;
+    }
   }
 
   return {

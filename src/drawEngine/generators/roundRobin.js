@@ -1,3 +1,4 @@
+import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
 import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 import { generateRange, nextPowerOf2, UUID } from '../../utilities';
@@ -9,6 +10,7 @@ import { drawPositionsHash } from './roundRobinGroups';
 
 import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+import { ROUND_TARGET } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
@@ -33,6 +35,7 @@ export function generateRoundRobin({
   seedingProfile,
   stage = MAIN,
   matchUpType,
+  roundTarget,
   structureId,
   drawSize,
   idPrefix,
@@ -76,6 +79,12 @@ export function generateRoundRobin({
     structures,
     stage,
   });
+
+  if (roundTarget)
+    addExtension({
+      extension: { name: ROUND_TARGET, value: roundTarget },
+      element: structure,
+    });
 
   return {
     structures: [structure],

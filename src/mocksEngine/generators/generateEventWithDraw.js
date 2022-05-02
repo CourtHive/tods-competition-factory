@@ -259,6 +259,7 @@ export function generateEventWithDraw({
 
   if (qualifyingParticipantIds?.length) {
     let qualifyingIndex = 0; // used to take slices of participants array
+    let roundTarget = 1;
 
     const sequenceSort = (a, b) => a.stageSequence - b.stageSequence;
     const roundTargetSort = (a, b) => a.roundTarget - b.roundTarget;
@@ -279,6 +280,7 @@ export function generateEventWithDraw({
           autoEntryPositions,
           tournamentRecord,
           participantIds,
+          roundTarget,
           event,
         });
         if (result.error) {
@@ -287,6 +289,8 @@ export function generateEventWithDraw({
         qualifyingIndex += drawSize;
         entryStageSequence += 1;
       }
+
+      roundTarget += 1;
     }
   }
 

@@ -229,6 +229,8 @@ export function generateDrawDefinition(params) {
   const roundTargetSort = (a, b) => a.roundTarget - b.roundTarget;
 
   if (params.qualifyingProfiles) {
+    let roundTarget = 1;
+
     for (const roundTargetProfile of params.qualifyingProfiles.sort(
       roundTargetSort
     )) {
@@ -242,6 +244,7 @@ export function generateDrawDefinition(params) {
           seedsCount = 0,
           drawSize,
         } = structureProfile;
+
         const qualifyingResult = prepareStage({
           ...drawTypeResult,
           ...params,
@@ -251,6 +254,7 @@ export function generateDrawDefinition(params) {
           drawDefinition,
           stageSequence,
           participants,
+          roundTarget,
           seedsCount,
           drawSize,
           entries,
@@ -261,6 +265,8 @@ export function generateDrawDefinition(params) {
         if (qualifyingResult.conflicts?.length)
           qualifyingConflicts.push(...qualifyingResult.conflicts);
       }
+
+      roundTarget += 1;
     }
   }
 

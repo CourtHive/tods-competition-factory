@@ -1,3 +1,4 @@
+import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { randomUnseededSeparation } from './avoidance/randomUnseededSeparation';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
@@ -8,8 +9,12 @@ import { assignDrawPosition } from './positionAssignment';
 import { shuffleArray } from '../../../utilities';
 
 import { INSUFFICIENT_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
-import { PLAY_OFF } from '../../../constants/drawDefinitionConstants';
+import { ROUND_TARGET } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  PLAY_OFF,
+  QUALIFYING,
+} from '../../../constants/drawDefinitionConstants';
 import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
@@ -40,12 +45,20 @@ export function positionUnseededParticipants({
     .filter(Boolean);
 
   const { stage, stageSequence } = structure;
+
+  const roundTarget =
+    stage === QUALIFYING
+      ? findExtension({ element: structure, name: ROUND_TARGET })?.extension
+          ?.value
+      : undefined;
+
   const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = getStageEntries({
     drawDefinition,
     stageSequence,
     entryStatuses,
     structureId,
+    roundTarget,
     stage,
   });
   const unseededEntries = entries.filter(

@@ -377,7 +377,7 @@ it('supports round robin qualifying structures', () => {
 });
 
 // to test qualifiers from different roundTargets: no multi-sequence qualifying
-it.only('supports qualifying structures with multiple roundTargets', () => {
+it('supports qualifying structures with multiple roundTargets', () => {
   const completionGoal = 52;
   const drawProfiles = [
     {
@@ -424,12 +424,10 @@ it.only('supports qualifying structures with multiple roundTargets', () => {
   const completedQualifying = matchUps.filter(
     (matchUp) => matchUp.stage === QUALIFYING
   );
-  // expect(completedQualifying.length).toEqual(completionGoal);
-  console.log('qualifying', completedQualifying.length);
+  expect(completedQualifying.length).toEqual(completionGoal);
 
   const completedMain = matchUps.filter((matchUp) => matchUp.stage === MAIN);
-  // expect(completedMain.length).toEqual(0);
-  console.log('main', completedMain.length);
+  expect(completedMain.length).toEqual(0);
 
   // if there are qualifiers then all participants are unique
   // 32 + 32 unique + 32 qualifying + 16 qualifying RR = 128
@@ -476,15 +474,11 @@ it.only('supports qualifying structures with multiple roundTargets', () => {
   });
 
   let validTypes = result.validActions.map(({ type }) => type).sort();
-  console.log('participant', { validTypes });
-
-  /*
   // prettier-ignore
   expect(validTypes).toEqual([
     'ALTERNATE', 'BYE', 'LUCKY', 'NICKNAME', 'PENALTY',
     'QUALIFIER', 'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
   ]);
-  */
 
   const qualifierDrawPosition = positionAssignments.find(
     (assignment) => assignment.qualifier
@@ -498,15 +492,14 @@ it.only('supports qualifying structures with multiple roundTargets', () => {
   });
 
   validTypes = result.validActions.map(({ type }) => type).sort();
-  console.log('qualifier', { validTypes });
 
-  /*
   // prettier-ignore
   expect(result.validActions.map(({ type }) => type).sort()).toEqual([
     'ALTERNATE', 'BYE', 'LUCKY', 'QUALIFIER',
     'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
   ]);
 
+  /*
   const qualifierAssingmentAction = result.validActions.find(
     ({ type }) => type === QUALIFIER
   );

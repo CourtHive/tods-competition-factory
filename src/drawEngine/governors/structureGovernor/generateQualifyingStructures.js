@@ -1,3 +1,4 @@
+import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import structureTemplate from '../../generators/structureTemplate';
 import { generateRoundRobin } from '../../generators/roundRobin';
@@ -5,6 +6,7 @@ import { treeMatchUps } from '../../generators/eliminationTree';
 import { isConvertableInteger } from '../../../utilities/math';
 
 import { MISSING_DRAW_SIZE } from '../../../constants/errorConditionConstants';
+import { ROUND_TARGET } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   POSITION,
@@ -76,6 +78,7 @@ export function generateQualifyingStructures({
           structureOptions,
           stageSequence,
           matchUpType,
+          roundTarget,
           idPrefix,
           drawSize,
           isMock,
@@ -106,6 +109,13 @@ export function generateQualifyingStructures({
           roundLimit, // redundant
           matchUps,
         });
+
+        if (roundTarget) {
+          addExtension({
+            element: structure,
+            extension: { name: ROUND_TARGET, value: roundTarget },
+          });
+        }
 
         // always set to the final round of the last generated qualifying structure
         targetRoundQualifiersCount = matchUps?.filter(
