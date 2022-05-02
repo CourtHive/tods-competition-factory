@@ -74,19 +74,19 @@ export function generateDrawType(params = {}) {
     });
   }
 
-  // first generate any qualifying structures
+  // first generate any qualifying structures and links
   const qualifyingResult =
     params.qualifyingProfiles?.length &&
     generateQualifyingStructures({
       qualifyingProfiles: params.qualifyingProfiles,
       idPrefix: params.idPrefix,
-      drawDefinition,
       matchUpType,
       isMock,
       uuids,
     });
 
   if (qualifyingResult?.error) return qualifyingResult;
+
   const {
     qualifiersCount = params.qualifiersCount || 0,
     qualifyingDrawPositionsCount,
@@ -95,6 +95,9 @@ export function generateDrawType(params = {}) {
   if (qualifyingDrawPositionsCount) {
     if (qualifyingResult?.structures) {
       drawDefinition.structures.push(...qualifyingResult.structures);
+    }
+    if (qualifyingResult?.links) {
+      drawDefinition.links.push(...qualifyingResult.links);
     }
 
     const qualifyingStageDrawPositionsCount = getStageDrawPositionsCount({
@@ -189,15 +192,15 @@ export function generateDrawType(params = {}) {
       ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
     );
 
-    generateQualifyingLink({
+    const { link } = generateQualifyingLink({
       targetStructureId: mainStructure.structureId,
       sourceStructureId: qualifyingStructureId,
       sourceRoundNumber: qualifyingRoundNumber,
       finishingPositions,
       targetEntryRound,
-      drawDefinition,
       linkType,
     });
+    drawDefinition.links.push(link);
   }
 
   const { matchUps, matchUpsMap } = getAllDrawMatchUps({ drawDefinition });

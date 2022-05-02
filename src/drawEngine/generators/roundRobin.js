@@ -49,24 +49,31 @@ export function generateRoundRobin({
 
   const finishingPosition = WIN_RATIO;
 
-  const structures = generateRange(1, groupCount + 1).map((structureOrder) =>
-    structureTemplate({
+  let maxRoundNumber;
+
+  const structures = generateRange(1, groupCount + 1).map((structureOrder) => {
+    const matchUps = roundRobinMatchUps({
+      groupSize: groupSize,
+      structureOrder,
+      matchUpType,
+      drawSize,
+      idPrefix,
+      isMock,
+    });
+    maxRoundNumber = Math.max(
+      ...matchUps.map(({ roundNumber }) => roundNumber)
+    );
+
+    return structureTemplate({
       structureName: `Group ${structureOrder}`,
-      matchUps: roundRobinMatchUps({
-        groupSize: groupSize,
-        structureOrder,
-        matchUpType,
-        drawSize,
-        idPrefix,
-        isMock,
-      }),
       structureId: uuids?.pop(),
       structureType: ITEM,
       finishingPosition,
       structureOrder,
       matchUpType,
-    })
-  );
+      matchUps,
+    });
+  });
 
   const structure = structureTemplate({
     structureId: structureId || uuids?.pop(),
@@ -88,6 +95,7 @@ export function generateRoundRobin({
 
   return {
     structures: [structure],
+    maxRoundNumber,
     groupCount,
     links: [],
     groupSize,

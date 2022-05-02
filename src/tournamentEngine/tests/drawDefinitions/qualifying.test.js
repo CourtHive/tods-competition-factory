@@ -5,6 +5,7 @@ import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import {
   DIRECT_ACCEPTANCE,
   QUALIFIER,
@@ -16,7 +17,26 @@ import {
   QUALIFYING,
   ROUND_ROBIN,
 } from '../../../constants/drawDefinitionConstants';
-import { COMPLETED } from '../../../constants/matchUpStatusConstants';
+
+// TODO: in generateDrawDefinition:
+/*
+  initializeStructureSeedAssignments({
+    structureId: qualifyingStructureId,
+    seedsCount: qualifyingSeedsCount,
+    drawDefinition,
+  });
+  assignQualifyingSeeds = assignQualifyingSeeds || qualifyingSeedsCount;
+  generateRange(1, assignQualifyingSeeds + 1).forEach((seedNumber) => {
+    const participantId = qualifyingParticipants[seedNumber - 1].participantId;
+    const seedValue = qualifyingSeedAssignmentProfile[seedNumber] || seedNumber;
+    assignSeed({
+      structureId: qualifyingStructureId,
+      seedNumber,
+      seedValue,
+      participantId,
+    });
+  });
+*/
 
 const scenarios = [
   {
@@ -256,33 +276,6 @@ it('supports multi-sequence qualifying structures', () => {
   ]);
 });
 
-/*
-TODO in generateDrawDefinition: 
-  addDrawEntries({
-    participantIds: qualifyingParticipantIds,
-    stage: QUALIFYING,
-    drawDefinition,
-  });
-  initializeStructureSeedAssignments({
-    structureId: qualifyingStructureId,
-    seedsCount: qualifyingSeedsCount,
-    drawDefinition,
-  });
-  assignQualifyingSeeds = assignQualifyingSeeds || qualifyingSeedsCount;
-  generateRange(1, assignQualifyingSeeds + 1).forEach((seedNumber) => {
-    const participantId = qualifyingParticipants[seedNumber - 1].participantId;
-    const seedValue = qualifyingSeedAssignmentProfile[seedNumber] || seedNumber;
-    assignSeed({
-      structureId: qualifyingStructureId,
-      seedNumber,
-      seedValue,
-      participantId,
-    });
-  });
-  automatedPositioning({ drawDefinition, structureId: qualifyingStructureId });
-
-*/
-
 it('supports round robin qualifying structures', () => {
   const drawProfiles = [
     {
@@ -325,7 +318,8 @@ it('supports round robin qualifying structures', () => {
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(2);
   expect(drawDefinition.links.length).toEqual(1);
-  // console.log(drawDefinition.structures[1]);
+  // because the source structure is a ROUND_ROBIN the qualifiers are only present after all rounds played
+  expect(drawDefinition.links[0].source.roundNumber).toEqual(3);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     contextFilters: { stages: [QUALIFYING] },

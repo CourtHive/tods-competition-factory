@@ -1,7 +1,5 @@
-import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { definedAttributes } from '../../utilities/objects';
 
-import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { DRAW, WINNER } from '../../constants/drawDefinitionConstants';
 
 export function generateQualifyingLink({
@@ -11,10 +9,7 @@ export function generateQualifyingLink({
   sourceStructureId,
   targetStructureId,
   linkType = WINNER,
-  drawDefinition,
 }) {
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-
   const link = definedAttributes({
     linkType,
     source: {
@@ -29,7 +24,5 @@ export function generateQualifyingLink({
     },
   });
 
-  drawDefinition.links.push(link);
-
-  modifyDrawNotice({ drawDefinition });
+  return { link };
 }
