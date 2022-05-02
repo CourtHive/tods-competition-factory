@@ -499,10 +499,22 @@ it('supports qualifying structures with multiple roundTargets', () => {
     'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
   ]);
 
-  /*
-  const qualifierAssingmentAction = result.validActions.find(
+  let qualifierAssingmentAction = result.validActions.find(
     ({ type }) => type === QUALIFIER
   );
   expect(qualifierAssingmentAction).not.toBeUndefined();
-  */
+  expect(qualifierAssingmentAction.qualifyingParticipantIds.length).toEqual(8);
+
+  // now test without unrestricted policy; expect fewer qualifiers because of roundTargets
+  result = tournamentEngine.positionActions({
+    drawPosition: assignment.drawPosition,
+    structureId: mainStructureId,
+    drawId,
+  });
+
+  qualifierAssingmentAction = result.validActions.find(
+    ({ type }) => type === QUALIFIER
+  );
+  expect(qualifierAssingmentAction).not.toBeUndefined();
+  expect(qualifierAssingmentAction.qualifyingParticipantIds.length).toEqual(4);
 });

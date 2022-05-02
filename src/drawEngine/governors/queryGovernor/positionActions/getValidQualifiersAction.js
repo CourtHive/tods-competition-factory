@@ -39,10 +39,12 @@ export function getValidQualifiersAction({
     .map((assignment) => assignment.participantId)
     .filter(Boolean);
 
-  // get the round number in which the drawPosition initially occurs
-  const targetRoundNumber = drawPositionInitialRounds[drawPosition];
-
   const policy = policyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS];
+
+  // get the round number in which the drawPosition initially occurs
+  const targetRoundNumber =
+    !policy?.disableRoundRestrictions &&
+    drawPositionInitialRounds[drawPosition];
 
   // disallow placing qualifiers until source structure is completed
   const requireCompletedStructures = policy?.requireCompletedStructures;
