@@ -1,3 +1,5 @@
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { findStructure } from '../../getters/findStructure';
@@ -18,8 +20,17 @@ export function positionQualifiers(params) {
     return { error: INVALID_STAGE };
   }
 
-  const { positionAssignments, unplacedQualifiersCount } =
-    getQualifiersData(params);
+  const {
+    positionAssignments,
+    unplacedQualifiersCount,
+    unplacedRoundQualifierCounts,
+  } = getQualifiersData(params);
+
+  if (unplacedRoundQualifierCounts) {
+    // TODO: no if necessary here... just a placeholder to use the variable
+  }
+
+  // unvilldDrawPositions need to be segregated by roundNumber
   const unfilledDrawPositions = positionAssignments
     .filter((assignment) => {
       return (
@@ -50,28 +61,61 @@ export function getQualifiersData({ drawDefinition, structure, structureId }) {
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
   if (!structureId) ({ structureId } = structure);
-  const { positionAssignments } = structureAssignedDrawPositions({ structure });
 
-  const assignedQualifierPositions = positionAssignments
-    .filter((assignment) => assignment.qualifier)
-    .map((assignment) => assignment.drawPosition);
+  const { positionAssignments } = structureAssignedDrawPositions({ structure });
 
   const { stage, stageSequence } = structure;
 
-  const { qualifiersCount } = getQualifiersCount({
+  const { qualifiersCount, roundQualifiersCounts } = getQualifiersCount({
     drawDefinition,
     stageSequence,
     structureId,
     stage,
   });
+
+  // now figure out which drawPositions are in which rounds
+  const targetRoundNumbers = Object.keys(roundQualifiersCounts);
+  const { matchUps } = getAllStructureMatchUps({ structure });
+  const { roundProfile } = getRoundMatchUps({ matchUps });
+  const roundDrawPositions = targetRoundNumbers.map((roundNumber) => ({
+    [roundNumber]: roundProfile[roundNumber].drawPositions.filter(Boolean),
+  }));
+
+  const assignedQualifierPositions = positionAssignments
+    .filter((assignment) => assignment.qualifier)
+    .map((assignment) => assignment.drawPosition);
+
   const unplacedQualifiersCount =
     qualifiersCount - assignedQualifierPositions.length;
   const placedQualifiersCount = assignedQualifierPositions.length;
 
+  const unplacedRoundQualifierCounts = Object.assign(
+    {},
+    ...targetRoundNumbers.map((roundNumber) => {
+      const assignedQualifierPositions = positionAssignments
+        .filter(
+          (assignment) =>
+            assignment.qualifier &&
+            roundDrawPositions[roundNumber].drawPositions.includes(
+              assignment.drawPosition
+            )
+        )
+        .map((assignment) => assignment.drawPosition);
+      return {
+        [roundNumber]:
+          roundQualifiersCounts[roundNumber] -
+          assignedQualifierPositions.length,
+      };
+    })
+  );
+
   return {
+    unplacedRoundQualifierCounts,
     unplacedQualifiersCount,
     placedQualifiersCount,
+    roundQualifiersCounts,
     positionAssignments,
+    roundDrawPositions,
     qualifiersCount,
   };
 }
