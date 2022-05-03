@@ -190,7 +190,7 @@ export function prepareStage({
     conflicts = result?.conflicts;
     positionAssignments = result?.positionAssignments;
     if (result.error) {
-      console.log(result.error);
+      // console.log(result.error);
       return result;
     }
   }
