@@ -39,6 +39,7 @@ export function generateDrawDefinition(params) {
     tieFormatName,
     stage = MAIN,
     drawEntries,
+    placeByes,
     drawId,
     event,
   } = params;
@@ -215,6 +216,7 @@ export function generateDrawDefinition(params) {
     drawDefinition,
     participants,
     seedsCount,
+    placeByes,
     drawSize,
     entries,
     stage,
@@ -261,6 +263,7 @@ export function generateDrawDefinition(params) {
           participants,
           roundTarget,
           seedsCount,
+          placeByes,
           drawSize,
           entries,
         });
