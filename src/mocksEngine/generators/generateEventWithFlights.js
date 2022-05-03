@@ -135,7 +135,11 @@ export function generateEventWithFlights({
   // only update on event since category is used in participant generation
   if (newEvent.category) newEvent.category.categoryName = categoryName;
 
-  let result = addEvent({ tournamentRecord, event: newEvent });
+  let result = addEvent({
+    supressNotices: true,
+    tournamentRecord,
+    event: newEvent,
+  });
   if (result.error) return result;
   const { event } = result;
 

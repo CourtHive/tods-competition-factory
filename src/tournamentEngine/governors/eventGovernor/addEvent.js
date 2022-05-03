@@ -16,7 +16,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-export function addEvent({ tournamentRecord, event }) {
+export function addEvent({ tournamentRecord, event, supressNotices }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.events) tournamentRecord.events = [];
 
@@ -47,20 +47,21 @@ export function addEvent({ tournamentRecord, event }) {
 
   if (!eventExists) {
     tournamentRecord.events.push(eventRecord);
-    const eventId = event.eventId;
 
-    const { topics } = getTopics();
-    if (topics.includes(ADD_MATCHUPS)) {
-      const { matchUps } = allEventMatchUps({ event });
-      addMatchUpsNotice({
-        tournamentId: tournamentRecord?.tournamentId,
-        matchUps,
-        eventId,
-      });
-    }
+    if (!supressNotices) {
+      const { topics } = getTopics();
+      if (topics.includes(ADD_MATCHUPS)) {
+        const { matchUps } = allEventMatchUps({ event });
+        addMatchUpsNotice({
+          tournamentId: tournamentRecord?.tournamentId,
+          eventId: event.eventId,
+          matchUps,
+        });
+      }
 
-    for (const drawDefinition of event.drawDefinitions || []) {
-      addDrawNotice({ drawDefinition });
+      for (const drawDefinition of event.drawDefinitions || []) {
+        addDrawNotice({ drawDefinition });
+      }
     }
 
     return { ...SUCCESS, event: eventRecord };

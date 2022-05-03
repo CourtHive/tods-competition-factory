@@ -47,11 +47,11 @@ export function generateEventWithDraw({
   randomWinningSide,
   ratingsParameters,
   tournamentRecord,
+  isMock = true,
   drawProfile,
   startDate,
   drawIndex,
   goesTo,
-  isMock,
   uuids,
 }) {
   const {
