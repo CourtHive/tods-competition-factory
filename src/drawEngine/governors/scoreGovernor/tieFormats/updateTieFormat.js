@@ -14,6 +14,7 @@ import {
   INVALID_TIE_FORMAT,
   MISSING_DRAW_DEFINITION,
 } from '../../../../constants/errorConditionConstants';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 
 function copyTieFormat(tieFormat) {
   return makeDeepCopy(tieFormat, false, true);
@@ -48,6 +49,8 @@ export function updateTieFormat({
   matchUp,
   event,
 }) {
+  const stack = 'updateTieFormat';
+
   const collectionMap = tieFormat?.collectionDefinitions.reduce(
     (instanceMap, def) => {
       instanceMap[def.collectionId] =
@@ -72,7 +75,12 @@ export function updateTieFormat({
       if (mapsCheck(collectionMap, matchUpMap)) {
         event.tieFormat = copyTieFormat(tieFormat);
       } else {
-        return { error: INVALID_TIE_FORMAT };
+        return decorateResult({
+          context: { collectionMap, matchUpMap },
+          result: { error: INVALID_TIE_FORMAT },
+          info: 'on event',
+          stack,
+        });
       }
     }
   } else if (matchUp) {
@@ -86,7 +94,12 @@ export function updateTieFormat({
       if (mapsCheck(collectionMap, matchUpMap)) {
         matchUp.tieFormat = copyTieFormat(tieFormat);
       } else {
-        return { error: INVALID_TIE_FORMAT };
+        return decorateResult({
+          context: { collectionMap, matchUpMap },
+          result: { error: INVALID_TIE_FORMAT },
+          info: 'on matchUp',
+          stack,
+        });
       }
     }
     modifyMatchUpNotice({
@@ -110,7 +123,12 @@ export function updateTieFormat({
       if (mapsCheck(collectionMap, matchUpMap)) {
         structure.tieFormat = copyTieFormat(tieFormat);
       } else {
-        return { error: INVALID_TIE_FORMAT };
+        return decorateResult({
+          context: { collectionMap, matchUpMap },
+          result: { error: INVALID_TIE_FORMAT },
+          info: 'on structure',
+          stack,
+        });
       }
     }
     updateStructureMatchUps({
