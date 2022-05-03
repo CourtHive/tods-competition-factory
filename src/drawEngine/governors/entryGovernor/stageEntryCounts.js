@@ -33,12 +33,12 @@ export function setStageDrawSize({
     stage,
   });
 
-  const qualifyingPositions = getQualifiersCount({
+  const { qualifiersCount } = getQualifiersCount({
     drawDefinition,
     stageSequence,
     stage,
   });
-  const totalStageDrawPositions = directAcceptanceEntries + qualifyingPositions;
+  const totalStageDrawPositions = directAcceptanceEntries + qualifiersCount;
 
   if (drawSize < totalStageDrawPositions) {
     return {
@@ -98,7 +98,7 @@ export function setStageWildcardsCount({
   });
 
   // REMOVE dependency... use link to derive... requires structureId
-  const qualifyingPositions = getQualifiersCount({
+  const { qualifiersCount } = getQualifiersCount({
     drawDefinition,
     stageSequence,
     stage,
@@ -121,7 +121,7 @@ export function setStageWildcardsCount({
   }
 
   const totalStageEntriesCount =
-    directAcceptanceEntriesCount + wildcardsCount + qualifyingPositions;
+    directAcceptanceEntriesCount + wildcardsCount + qualifiersCount;
   if (totalStageEntriesCount > stageDrawPositions) {
     return {
       error: DRAW_SIZE_MISMATCH,
