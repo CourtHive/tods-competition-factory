@@ -1,12 +1,17 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { allEventMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
-import { instanceCount, makeDeepCopy } from '../../../../utilities';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { validUpdate } from './validUpdate';
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,
 } from '../../../notifications/drawNotifications';
+import {
+  instanceCount,
+  intersection,
+  makeDeepCopy,
+} from '../../../../utilities';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -14,7 +19,6 @@ import {
   INVALID_TIE_FORMAT,
   MISSING_DRAW_DEFINITION,
 } from '../../../../constants/errorConditionConstants';
-import { decorateResult } from '../../../../global/functions/decorateResult';
 
 function copyTieFormat(tieFormat) {
   return makeDeepCopy(tieFormat, false, true);
@@ -35,7 +39,11 @@ function updateCollectionDefinitions(element, tieFormat) {
 }
 
 function mapsCheck(map1, map2) {
-  return Object.keys(map1).every((key) => map1[key] === map2[key]);
+  const referenceKeys = Object.keys(map1);
+  return (
+    intersection(referenceKeys, Object.keys(map2)).length ===
+    referenceKeys.length
+  );
 }
 
 // only allows update to collectionName and matchUpFormat
