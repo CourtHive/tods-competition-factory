@@ -1,3 +1,4 @@
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { matchUpFormatCode } from '../matchUpFormatCode';
 import { unique, UUID } from '../../../../utilities';
 
@@ -8,21 +9,40 @@ export function validateTieFormat({
   checkCollectionIds = true,
   tieFormat,
 } = {}) {
+  const stack = 'validateTieFormat';
   const errors = [];
 
   if (typeof tieFormat !== 'object') {
     errors.push('tieformat must be an object');
-    return { error: INVALID_TIE_FORMAT, errors };
+    return decorateResult({
+      result: {
+        error: INVALID_TIE_FORMAT,
+        stack,
+        context: { tieFormat, errors },
+      },
+    });
   }
 
   if (typeof tieFormat.winCriteria !== 'object') {
     errors.push('tieFormat.winCriteria must be an object');
-    return { error: INVALID_TIE_FORMAT, errors };
+    return decorateResult({
+      result: {
+        error: INVALID_TIE_FORMAT,
+        stack,
+        context: { tieFormat, errors },
+      },
+    });
   }
 
   if (!Array.isArray(tieFormat.collectionDefinitions)) {
     errors.push('tieFormat.collectionDefinitiosn must be an array of objects');
-    return { error: INVALID_TIE_FORMAT, errors };
+    return decorateResult({
+      result: {
+        error: INVALID_TIE_FORMAT,
+        stack,
+        context: { tieFormat, errors },
+      },
+    });
   }
 
   const validWinCriteria =
@@ -34,7 +54,13 @@ export function validateTieFormat({
     errors.push(
       'Either non-zero valueGoal, or { aggregateValue: true } must be specified in winCriteria'
     );
-    return { error: INVALID_TIE_FORMAT, errors };
+    return decorateResult({
+      result: {
+        error: INVALID_TIE_FORMAT,
+        stack,
+        context: { tieFormat, errors },
+      },
+    });
   }
 
   const validCollections = tieFormat.collectionDefinitions.every(
@@ -63,8 +89,17 @@ export function validateTieFormat({
   const valid = validCollections && validWinCriteria && uniqueCollectionIds;
 
   const result = { valid, errors };
-  if (!valid) result.error = INVALID_TIE_FORMAT;
-  return result;
+  if (!valid) {
+    return decorateResult({
+      result: {
+        error: INVALID_TIE_FORMAT,
+        stack,
+        context: { tieFormat, errors },
+      },
+    });
+  } else {
+    return result;
+  }
 }
 
 export function validateCollectionDefinition({

@@ -51,7 +51,7 @@ const errorConditions = [
 it.each(errorConditions)('can validate tieFormats', (errorCondition) => {
   let result = validateTieFormat(errorCondition);
   expect(result.error).toEqual(INVALID_TIE_FORMAT);
-  expect(result.errors.length).toEqual(1);
+  expect(result.context.errors.length).toEqual(1);
 });
 
 // prettier-ignore

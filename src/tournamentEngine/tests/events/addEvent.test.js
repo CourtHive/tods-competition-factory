@@ -64,7 +64,7 @@ it('can generate an event with a draw and attach it to a tournamentRecord', () =
   expect(result.success).toEqual(true);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  // expect(matchUpAddNotices).toEqual([123]);
+  expect(matchUpAddNotices).toEqual([123]);
   expect(matchUps.length).toEqual(123);
 
   const mainStageMatchUps = matchUps.filter(({ stage }) => stage === MAIN);

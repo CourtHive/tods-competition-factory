@@ -70,7 +70,7 @@ test('provisional positioning is possible', () => {
   expect(assignedPositionsCount).toEqual(4);
 });
 
-test('setPositionAssignments', () => {
+test.only('setPositionAssignments', () => {
   const mockProfile = {
     drawProfiles: [
       { drawType: ROUND_ROBIN_WITH_PLAYOFF, drawSize: 16, completionGoal: 23 },

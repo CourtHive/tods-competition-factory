@@ -23,6 +23,7 @@ import {
 export function addDrawDefinition({
   flight: flightDefinition,
   checkEntryStatus = true,
+  suppressNotifications,
   modifyEventEntries, // event.entries[{entryStatus}] are modified to match draw.entries[{entryStatus}]
   existingDrawCount,
   tournamentRecord,
@@ -191,17 +192,19 @@ export function addDrawDefinition({
   Object.assign(drawDefinition, { drawOrder });
   event.drawDefinitions.push(drawDefinition);
 
-  const { topics } = getTopics();
-  if (topics.includes(ADD_MATCHUPS)) {
-    const { matchUps } = allDrawMatchUps({ drawDefinition, event });
-    addMatchUpsNotice({
-      tournamentId: tournamentRecord?.tournamentId,
-      drawDefinition,
-      matchUps,
-    });
-  }
+  if (!suppressNotifications) {
+    const { topics } = getTopics();
+    if (topics.includes(ADD_MATCHUPS)) {
+      const { matchUps } = allDrawMatchUps({ drawDefinition, event });
+      addMatchUpsNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        drawDefinition,
+        matchUps,
+      });
+    }
 
-  addDrawNotice({ drawDefinition });
+    addDrawNotice({ drawDefinition });
+  }
 
   return { ...SUCCESS, modifiedEventEntryStatusCount };
 }

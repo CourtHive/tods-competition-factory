@@ -136,7 +136,7 @@ export function generateEventWithFlights({
   if (newEvent.category) newEvent.category.categoryName = categoryName;
 
   let result = addEvent({
-    supressNotices: true,
+    suppressNotifications: false,
     tournamentRecord,
     event: newEvent,
   });

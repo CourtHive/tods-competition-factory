@@ -143,7 +143,7 @@ export function generateTournamentRecord({
       if (error) return { error };
 
       const result = addEvent({
-        supressNotices: true,
+        suppressNotifications: false,
         tournamentRecord,
         event,
       });
