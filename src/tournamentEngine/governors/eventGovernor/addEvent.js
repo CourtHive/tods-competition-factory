@@ -1,14 +1,16 @@
 import tieFormatDefaults from '../../generators/tieFormatDefaults';
+/*
 import { allEventMatchUps } from '../../getters/matchUpsGetter';
 import { getTopics } from '../../../global/state/globalState';
 import {
   addDrawNotice,
   addMatchUpsNotice,
 } from '../../../drawEngine/notifications/drawNotifications';
+*/
 
 import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 import { SINGLES, TEAM } from '../../../constants/eventConstants';
-import { ADD_MATCHUPS } from '../../../constants/topicConstants';
+// import { ADD_MATCHUPS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { UUID } from '../../../utilities';
 import {
@@ -49,6 +51,7 @@ export function addEvent({ tournamentRecord, event, supressNotices }) {
     tournamentRecord.events.push(eventRecord);
 
     if (!supressNotices) {
+      /*
       const { topics } = getTopics();
       if (topics.includes(ADD_MATCHUPS)) {
         const { matchUps } = allEventMatchUps({ event });
@@ -62,6 +65,7 @@ export function addEvent({ tournamentRecord, event, supressNotices }) {
       for (const drawDefinition of event.drawDefinitions || []) {
         addDrawNotice({ drawDefinition });
       }
+      */
     }
 
     return { ...SUCCESS, event: eventRecord };

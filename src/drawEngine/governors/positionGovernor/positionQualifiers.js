@@ -58,7 +58,7 @@ export function getQualifiersData({ drawDefinition, structure, structureId }) {
 
   const { stage, stageSequence } = structure;
 
-  const qualifiersCount = getQualifiersCount({
+  const { qualifiersCount } = getQualifiersCount({
     drawDefinition,
     stageSequence,
     structureId,

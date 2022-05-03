@@ -44,7 +44,7 @@ export function getByesData({ drawDefinition, event, matchUpsMap, structure }) {
     stage,
   });
 
-  const qualifiersCount = getQualifiersCount({
+  const { qualifiersCount } = getQualifiersCount({
     drawDefinition,
     stageSequence,
     structureId,

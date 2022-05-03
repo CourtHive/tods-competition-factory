@@ -18,7 +18,7 @@ export function getQualifiersCount({
     entryProfile?.[stage]?.stageSequence?.[stageSequence]?.qualifiersCount ||
     entryProfile?.[stage]?.qualifiersCount ||
     0;
-  if (!structureId) return profileQualifiersCount;
+  if (!structureId) return { qualifiersCount: profileQualifiersCount };
 
   const { structure } = findStructure({ drawDefinition, structureId });
   const relevantLink = drawDefinition.links?.find(
@@ -42,7 +42,7 @@ export function getQualifiersCount({
       const finishingPositionsCount =
         relevantLink.source.finishingPositions?.length || 0;
 
-      return groupCount * finishingPositionsCount;
+      return { qualifiersCount: groupCount * finishingPositionsCount };
     } else {
       // return source structure qualifying round matchUps count
       const matchUps = getAllStructureMatchUps({
@@ -51,9 +51,9 @@ export function getQualifiersCount({
         inContext: false,
       }).matchUps;
 
-      if (matchUps?.length) return matchUps.length;
+      if (matchUps?.length) return { qualifiersCount: matchUps.length };
     }
   }
 
-  return profileQualifiersCount;
+  return { qualifiersCount: profileQualifiersCount };
 }
