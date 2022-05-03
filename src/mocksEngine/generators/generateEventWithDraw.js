@@ -362,7 +362,7 @@ export function generateEventWithDraw({
   }
 
   if (generate) {
-    addDrawDefinition({ drawDefinition, event });
+    addDrawDefinition({ drawDefinition, event, suppressNotifications: true });
 
     if (drawType === AD_HOC && drawProfile.drawMatic) {
       const roundsCount = drawProfile.roundsCount || 1;
