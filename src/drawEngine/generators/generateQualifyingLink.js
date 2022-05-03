@@ -1,5 +1,6 @@
 import { definedAttributes } from '../../utilities/objects';
 
+import { MISSING_STRUCTURE_ID } from '../../constants/errorConditionConstants';
 import { DRAW, WINNER } from '../../constants/drawDefinitionConstants';
 
 export function generateQualifyingLink({
@@ -10,6 +11,9 @@ export function generateQualifyingLink({
   targetStructureId,
   linkType = WINNER,
 }) {
+  if (!sourceStructureId || !targetStructureId)
+    return { error: MISSING_STRUCTURE_ID };
+
   const link = definedAttributes({
     linkType,
     source: {
