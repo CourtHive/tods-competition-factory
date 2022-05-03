@@ -133,6 +133,7 @@ export function generateTournamentRecord({
           randomWinningSide,
           ratingsParameters,
           tournamentRecord,
+          isMock: true,
           drawProfile,
           startDate,
           drawIndex,
