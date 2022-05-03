@@ -3,6 +3,7 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getPositionAssignments } from '../../getters/positionsGetter';
+import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { positionByes } from './byePositioning/positionByes';
 import { findStructure } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
@@ -29,6 +30,7 @@ export function automatedPositioning({
   applyPositioning = true,
   inContextDrawMatchUps,
   multipleStructures,
+  placeByes = true,
   tournamentRecord,
   candidatesCount,
   drawDefinition,
@@ -60,16 +62,22 @@ export function automatedPositioning({
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return handleErrorCondition({ error });
 
+  const { qualifiersCount } = getQualifiersCount({
+    stageSequence: structure.stageSequence,
+    stage: structure.stage,
+    drawDefinition,
+    structureId,
+  });
   const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = getStageEntries({
-    stageSequence: structure.stageSequence,
     stage: structure.stage,
     drawDefinition,
     entryStatuses,
     structureId,
   });
 
-  if (!entries?.length) return handleSuccessCondition({ ...SUCCESS });
+  if (!entries?.length && !qualifiersCount)
+    return handleSuccessCondition({ ...SUCCESS });
 
   const { seedingProfile } = structure;
 
@@ -87,15 +95,17 @@ export function automatedPositioning({
   if (seedingProfile === WATERFALL) {
     // since WATERFALL attempts to place ALL participants
     // BYEs must be placed first to ensure lower seeds get BYEs
-    let result = positionByes({
-      tournamentRecord,
-      drawDefinition,
-      matchUpsMap,
-      structure,
-      seedsOnly,
-      event,
-    });
-    if (result.error) return handleErrorCondition(result);
+    let result =
+      placeByes &&
+      positionByes({
+        tournamentRecord,
+        drawDefinition,
+        matchUpsMap,
+        structure,
+        seedsOnly,
+        event,
+      });
+    if (result?.error) return handleErrorCondition(result);
 
     result = positionSeedBlocks({
       inContextDrawMatchUps,
@@ -121,16 +131,18 @@ export function automatedPositioning({
       if (result.error) return handleErrorCondition(result);
     }
 
-    const result = positionByes({
-      inContextDrawMatchUps,
-      tournamentRecord,
-      drawDefinition,
-      matchUpsMap,
-      structure,
-      seedsOnly,
-      event,
-    });
-    if (result.error) return handleErrorCondition(result);
+    const result =
+      placeByes &&
+      positionByes({
+        inContextDrawMatchUps,
+        tournamentRecord,
+        drawDefinition,
+        matchUpsMap,
+        structure,
+        seedsOnly,
+        event,
+      });
+    if (result?.error) return handleErrorCondition(result);
   }
 
   const conflicts = {};

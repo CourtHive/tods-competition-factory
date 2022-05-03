@@ -34,6 +34,7 @@ export function generateVoluntaryConsolation(params = {}) {
     tournamentRecord,
     staggeredEntry, // optional - specifies main structure FEED_IN for drawTypes CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIPS, FMLC
     automated,
+    placeByes,
     isMock,
     event,
   } = params;
@@ -156,6 +157,7 @@ export function generateVoluntaryConsolation(params = {}) {
       tournamentRecord,
       drawDefinition,
       structureId,
+      placeByes,
       event,
     });
   }

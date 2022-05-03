@@ -14,10 +14,10 @@ export function getStageDrawPositionsAvailable({
 }) {
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
 
-  const qualifyingPositions = getQualifiersCount({
+  const { qualifiersCount } = getQualifiersCount({
     drawDefinition,
     stageSequence,
     stage,
   });
-  return drawSize && drawSize - qualifyingPositions;
+  return drawSize && drawSize - qualifiersCount;
 }

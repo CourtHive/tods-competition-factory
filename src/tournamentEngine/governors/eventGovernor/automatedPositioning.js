@@ -19,6 +19,7 @@ export function automatedPositioning({
   tournamentRecord,
   drawDefinition,
   structureId,
+  placeByes,
   seedsOnly,
   event,
 }) {
@@ -33,6 +34,7 @@ export function automatedPositioning({
     drawDefinition,
     participants,
     structureId,
+    placeByes,
     seedsOnly,
   });
 }
@@ -43,6 +45,7 @@ export function automatedPlayoffPositioning({
   tournamentRecord,
   drawDefinition,
   structureId,
+  placeByes,
   seedsOnly,
   event,
 }) {
@@ -72,6 +75,7 @@ export function automatedPlayoffPositioning({
         candidatesCount,
         drawDefinition,
         participants,
+        placeByes,
         seedsOnly,
       });
 

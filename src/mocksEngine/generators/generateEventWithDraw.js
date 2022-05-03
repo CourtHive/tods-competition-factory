@@ -22,8 +22,8 @@ import {
   completeDrawMatchUp,
 } from './completeDrawMatchUps';
 
-import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
+import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
@@ -47,6 +47,7 @@ export function generateEventWithDraw({
   randomWinningSide,
   ratingsParameters,
   tournamentRecord,
+  isMock = true,
   drawProfile,
   startDate,
   drawIndex,
@@ -237,7 +238,7 @@ export function generateEventWithDraw({
     .slice(0, participantsCount)
     .map((p) => p.participantId);
 
-  if (participantIds?.length) {
+  if (isMock && participantIds?.length) {
     const result = addEventEntries({
       autoEntryPositions,
       entryStage: stage,
@@ -257,7 +258,7 @@ export function generateEventWithDraw({
         .map((p) => p.participantId)
     : 0;
 
-  if (qualifyingParticipantIds?.length) {
+  if (isMock && qualifyingParticipantIds?.length) {
     let qualifyingIndex = 0; // used to take slices of participants array
     let roundTarget = 1;
 
@@ -310,7 +311,7 @@ export function generateEventWithDraw({
       )
       .map((p) => p.participantId);
 
-  if (alternatesParticipantIds?.length) {
+  if (isMock && alternatesParticipantIds?.length) {
     const result = addEventEntries({
       participantIds: alternatesParticipantIds,
       autoEntryPositions: false,
@@ -327,11 +328,11 @@ export function generateEventWithDraw({
     const scaleValues = generateRange(1, seedsCount + 1);
     scaleValues.forEach((scaleValue, index) => {
       let scaleItem = {
-        scaleValue,
         scaleName: seedingScaleName,
-        scaleType: SEEDING,
-        eventType,
         scaleDate: startDate,
+        scaleType: SEEDING,
+        scaleValue,
+        eventType,
       };
       const participantId = participantIds[index];
       setParticipantScaleItem({ tournamentRecord, participantId, scaleItem });
@@ -343,9 +344,9 @@ export function generateEventWithDraw({
     tournamentRecord,
     seedingScaleName,
     matchUpFormat,
-    isMock: true,
     eventId,
     goesTo,
+    isMock,
     event,
   });
 
@@ -382,16 +383,16 @@ export function generateEventWithDraw({
         ...drawProfile.withPlayoffs,
         tournamentRecord,
         drawDefinition,
-        isMock: true,
         structureId,
         idPrefix,
+        isMock,
         event,
       });
       if (result?.error) return result;
     }
 
     const manual = drawProfile.automated === false;
-    if (!manual) {
+    if (isMock && !manual) {
       if (completeAllMatchUps || completionGoal) {
         const result = completeDrawMatchUps({
           matchUpStatusProfile,
@@ -515,7 +516,6 @@ export function generateEventWithDraw({
 
   return {
     ...SUCCESS,
-
     event: definedAttributes(event),
     uniqueParticipantIds,
     targetParticipants,

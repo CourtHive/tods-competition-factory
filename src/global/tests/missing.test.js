@@ -87,7 +87,7 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
   }
 );
 
-it.only.each([asyncDrawEngine, drawEngineSync])(
+it.each([asyncDrawEngine, drawEngineSync])(
   'will return MISSING_DRAW_DEFINITION for most methods if no state has been set',
   async (drawEngine) => {
     const drawEngineMethods = Object.keys(drawEngine);

@@ -12,8 +12,7 @@ import {
   MISSING_STRUCTURE,
 } from '../../../constants/errorConditionConstants';
 
-it.each([2, 3, 4, 5, 6, 7, 8, 31])(
-  // it.each([32])(
+it.each([2, 3, 4, 5, 6, 7, 8, 31, 32])(
   'can specify qualifiersCount when no qualifying draws are generated',
   (qualifiersCount) => {
     const {

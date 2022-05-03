@@ -587,6 +587,12 @@ it('supports qualifying structures with multiple roundTargets', () => {
   expect(drawDefinition.structures.length).toEqual(3);
   expect(drawDefinition.links.length).toEqual(2);
 
+  // test that structureSort handled roundTargets
+  const structureNames = drawDefinition.structures.map(
+    ({ structureName }) => structureName
+  );
+  expect(structureNames).toEqual(['QUALIFYING 1-1', 'QUALIFYING 2-1', 'MAIN']);
+
   const rrQLink = drawDefinition.links.find(
     ({ linkType }) => linkType === POSITION
   );

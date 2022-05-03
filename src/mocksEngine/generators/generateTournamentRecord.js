@@ -133,6 +133,7 @@ export function generateTournamentRecord({
           randomWinningSide,
           ratingsParameters,
           tournamentRecord,
+          isMock: true,
           drawProfile,
           startDate,
           drawIndex,
@@ -141,7 +142,11 @@ export function generateTournamentRecord({
         });
       if (error) return { error };
 
-      const result = addEvent({ tournamentRecord, event });
+      const result = addEvent({
+        supressNotices: true,
+        tournamentRecord,
+        event,
+      });
       if (result.error) return result;
 
       if (drawId) drawIds.push(drawId);
