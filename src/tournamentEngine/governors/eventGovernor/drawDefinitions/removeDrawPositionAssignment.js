@@ -3,6 +3,7 @@ import { assignDrawPositionBye } from '../../../../drawEngine/governors/position
 import { addPositionActionTelemetry } from '../../../../drawEngine/governors/positionGovernor/addPositionActionTelemetry';
 import { clearDrawPosition } from '../../../../drawEngine/governors/positionGovernor/positionClear';
 import { findTournamentParticipant } from '../../../getters/participants/participantGetter';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { findStructure } from '../../../../drawEngine/getters/findStructure';
 import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';
 import { destroyPairEntry } from '../entries/destroyPairEntry';
@@ -34,8 +35,10 @@ export function removeDrawPositionAssignment(params) {
     drawId,
   } = params;
 
+  const stack = 'removeDrawPositionAssignment';
+
   const result = clearDrawPosition(params);
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
 
   const { participantId } = result;
   const { drawPosition, event, structureId } = params;
@@ -56,7 +59,7 @@ export function removeDrawPositionAssignment(params) {
           participantId,
           event,
         });
-        if (result.error) return result;
+        if (result.error) return decorateResult({ result, stack });
         modifyEntriesStatus({
           participantIds: individualParticipantIds,
           tournamentRecord,
@@ -86,7 +89,7 @@ export function removeDrawPositionAssignment(params) {
       structureId,
       matchUpsMap,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
   const { structure } = findStructure({ drawDefinition, structureId });

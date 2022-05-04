@@ -4,24 +4,27 @@ import { generateTeamTournament } from './generateTestTeamTournament';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { SWAP_PARTICIPANTS } from '../../../constants/positionActionConstants';
 import { TEAM_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
+import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { LINEUPS } from '../../../constants/extensionConstants';
 import {
   TEAM_DOUBLES_3_AGGREGATION,
   USTA_GOLD_TEAM_CHALLENGE,
 } from '../../../constants/tieFormatConstants';
-import { INDIVIDUAL } from '../../../constants/participantTypes';
-import { LINEUPS } from '../../../constants/extensionConstants';
 import {
   COMPLETED,
+  DOUBLE_WALKOVER,
   IN_PROGRESS,
+  TO_BE_PLAYED,
+  WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 import {
   CONSOLATION,
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
-import { SWAP_PARTICIPANTS } from '../../../constants/positionActionConstants';
 
 // reusable
 const getMatchUp = (id, inContext) => {
@@ -669,4 +672,86 @@ test('properly removes lineUps when team drawPositions are swapped', () => {
 
   expect(targetMatchUp.sides[0].lineUp).toBeUndefined();
   expect(targetMatchUp.sides[1].lineUp.length).toEqual(8);
+});
+
+test('does not propagate matchUpStatusCodes from SINGLE/DOUBLES to TEAM matchUps on DOUBLE_WALKOVER', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        eventType: TEAM,
+        drawSize: 4,
+      },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { matchUps: firstRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      contextFilters: {
+        stages: [MAIN],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [1],
+      },
+    });
+
+  expect(firstRoundDualMatchUps.length).toEqual(2);
+
+  const targetMatchUp = firstRoundDualMatchUps[0];
+  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+  expect(targetMatchUp.matchUpStatusCodes).toBeUndefined();
+
+  const singlesMatchUps = targetMatchUp.tieMatchUps.filter(
+    ({ matchUpType }) => matchUpType === SINGLES
+  );
+
+  const outcome = {
+    score: {
+      scoreStringSide1: '',
+      scoreStringSide2: '',
+    },
+    matchUpStatus: DOUBLE_WALKOVER,
+    matchUpStatusCodes: ['WOWO', 'WOWO'],
+  };
+  let result = tournamentEngine.setMatchUpStatus({
+    matchUpId: singlesMatchUps[0].matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  const {
+    matchUps: [matchUp],
+  } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpIds: [targetMatchUp.matchUpId],
+    },
+  });
+
+  expect(matchUp.matchUpStatus).toEqual(IN_PROGRESS);
+  expect(matchUp.matchUpStatusCodes).toBeUndefined();
+  const targetTieMatchUp = matchUp.tieMatchUps.find(
+    ({ matchUpStatus }) => matchUpStatus === DOUBLE_WALKOVER
+  );
+  expect(targetTieMatchUp.matchUpStatusCodes).toEqual(['WOWO', 'WOWO']);
+
+  const {
+    matchUps: [finalMatchUp],
+  } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [2],
+    },
+  });
+
+  expect(finalMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(finalMatchUp.matchUpStatusCodes).toBeUndefined();
 });

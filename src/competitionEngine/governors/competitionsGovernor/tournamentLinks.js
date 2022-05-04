@@ -1,5 +1,6 @@
 import { findTournamentExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { addExtension, removeExtension } from './competitionExtentions';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import {
   addTournamentExtension,
   removeTournamentExtension,
@@ -78,14 +79,14 @@ export function unlinkTournaments({ tournamentRecords }) {
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const result = removeExtension({
-    tournamentRecords,
     name: LINKED_TOURNAMENTS,
+    tournamentRecords,
   });
 
   // TODO: check the integrity of the venues attached to each tournment...
   // get all competitionScheduleMatchUps and ensure that each tournamentRecord has all venues for scheduled matchUps
 
-  return result;
+  return decorateResult({ result, stack: 'unlinkTournaments' });
 }
 
 export function unlinkTournament({ tournamentRecords, tournamentId }) {

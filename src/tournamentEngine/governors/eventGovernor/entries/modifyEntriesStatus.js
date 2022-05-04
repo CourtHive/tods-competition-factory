@@ -1,6 +1,7 @@
 import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
 import { findParticipant } from '../../../../global/functions/deducers/findParticipant';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
@@ -44,6 +45,8 @@ export function modifyEntriesStatus({
     return { error: INVALID_ENTRY_STATUS };
 
   if (!drawDefinition && !event) return { error: MISSING_EVENT };
+
+  const stack = 'modifyEntriesStatus';
 
   // build up an array of participantIds which are assigned positions in structures
   const assignedParticipantIds = [];
@@ -121,13 +124,14 @@ export function modifyEntriesStatus({
     }
   };
   const updateDrawEntries = ({ flight, drawDefinition }) => {
+    const stack = 'updateDrawEntries';
     if (flight) {
       const result = updateEntryStatus(flight.drawEntries);
-      if (result.error) return result;
+      if (result.error) return decorateResult({ result, stack });
     }
     if (drawDefinition) {
       const result = updateEntryStatus(drawDefinition.entries);
-      if (result.error) return result;
+      if (result.error) return decorateResult({ result, stack });
     }
     return { ...SUCCESS };
   };
@@ -146,7 +150,7 @@ export function modifyEntriesStatus({
   // if flight or drawDefinition scope modifications
   if (flight || drawDefinition) {
     const result = updateDrawEntries({ flight, drawDefinition });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
   // ------------------------------------------------------------------------
@@ -160,7 +164,7 @@ export function modifyEntriesStatus({
 
   for (const flight of flightsNoDraw) {
     const result = updateDrawEntries({ flight });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
   // ------------------------------------------------------------------------
@@ -184,7 +188,7 @@ export function modifyEntriesStatus({
     // if entryStatus is WITHDRAWN then participantIds appearing in ANY flight or drawDefinition must be removed
 
     const result = updateEntryStatus(event.entries);
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
 
     let error;
     if (entryStatus === WITHDRAWN) {
