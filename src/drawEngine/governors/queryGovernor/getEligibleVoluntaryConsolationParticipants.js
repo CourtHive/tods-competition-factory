@@ -7,6 +7,7 @@ import {
 
 import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../../constants/policyConstants';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { WITHDRAWN } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -92,7 +93,7 @@ export function getEligibleVoluntaryConsolationParticipants({
       : true;
 
   requireLoss =
-    requireLoss === false
+    requirePlay === false || requireLoss === false
       ? false
       : policy?.requireLoss !== undefined
       ? policy.requireLoss
@@ -103,7 +104,12 @@ export function getEligibleVoluntaryConsolationParticipants({
   if (isNaN(winsLimit)) winsLimit = 0;
 
   for (const matchUp of matchUps) {
-    if (requirePlay && ![1, 2].includes(matchUp.winningSide)) continue;
+    if (
+      requirePlay &&
+      ![1, 2].includes(matchUp.winningSide) &&
+      !matchUp.matchUpStatus === DOUBLE_WALKOVER
+    )
+      continue;
     if (
       !isNaN(finishingRoundLimit) &&
       matchUp.finishingRound >= finishingRoundLimit
@@ -121,7 +127,16 @@ export function getEligibleVoluntaryConsolationParticipants({
 
     matchUp.sides.forEach((side) => {
       const participantId = side?.participant?.participantId;
-      if (participantId) matchUpParticipants[participantId] = side.participant;
+      if (participantId) {
+        matchUpParticipants[participantId] = side.participant;
+        if (matchUp.matchUpStatus === DOUBLE_WALKOVER && !requirePlay) {
+          losingParticipants[participantId] = side.participant;
+          if (!participantMatchUps[participantId])
+            participantMatchUps[participantId] = 0;
+          if (!excludedMatchUpStatuses.includes(matchUp.matchUpStatus))
+            participantMatchUps[participantId] += 1;
+        }
+      }
     });
 
     if (losingSide?.participant) {
@@ -151,7 +166,8 @@ export function getEligibleVoluntaryConsolationParticipants({
 
   const considerEntered =
     tournamentRecord?.participants &&
-    (!requirePlay || !requireLoss) &&
+    !requirePlay &&
+    !requireLoss &&
     allEntries;
 
   const enteredParticipantIds =
@@ -160,23 +176,32 @@ export function getEligibleVoluntaryConsolationParticipants({
       .filter((entry) => entry.entryStatus !== WITHDRAWN)
       .map(({ participantId }) => participantId);
 
+  const losingParticipantIds = Object.keys(losingParticipants);
   const consideredParticipants = considerEntered
     ? tournamentRecord?.participants.filter(({ participantId }) =>
         enteredParticipantIds.includes(participantId)
       )
-    : Object.values(
-        requirePlay && requireLoss ? losingParticipants : matchUpParticipants
-      );
+    : Object.values(requireLoss ? losingParticipants : matchUpParticipants);
+
+  const satisfiesLoss = (participantId) =>
+    !requireLoss || losingParticipantIds.includes(participantId);
+  const satisfiesPlay = (participantId) =>
+    !requirePlay || (participantMatchUps[participantId] || 0) >= 0;
+  const satisfiesWinsLimit = (participantId) =>
+    !winsLimit || (participantWins[participantId] || 0) <= winsLimit;
+  const satisfiesMatchUpsLimit = (participantId) =>
+    !matchUpsLimit || participantMatchUps[participantId] <= matchUpsLimit;
+  const notPreviouslySelected = (participantId) =>
+    !voluntaryConsolationEntryIds.includes(participantId);
 
   const eligibleParticipants = consideredParticipants.filter(
     ({ participantId }) =>
-      ((participantWins[participantId] || 0) <= winsLimit ||
-        ((!requireLoss || !requirePlay) && !winsLimit)) &&
-      (!matchUpsLimit || participantMatchUps[participantId] <= matchUpsLimit) &&
-      !voluntaryConsolationEntryIds.includes(participantId)
+      satisfiesLoss(participantId) &&
+      satisfiesPlay(participantId) &&
+      satisfiesWinsLimit(participantId) &&
+      satisfiesMatchUpsLimit(participantId) &&
+      notPreviouslySelected(participantId)
   );
-
-  const losingParticipantIds = Object.keys(losingParticipants);
 
   return { eligibleParticipants, losingParticipantIds, ...SUCCESS };
 }
