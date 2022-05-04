@@ -1,9 +1,9 @@
+import { setSubscriptions } from '../../../global/state/globalState';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
 import { VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
-import { setSubscriptions } from '../../../global/state/globalState';
 
 it('can generate a draw with voluntary consolation stage', () => {
   const {
@@ -20,7 +20,10 @@ it('can generate a draw with voluntary consolation stage', () => {
   expect(drawDefinition.structures.length).toEqual(2);
 
   let { eligibleParticipants } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({ drawId });
+    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+      matchUpsLimit: 1,
+      drawId,
+    });
   expect(eligibleParticipants.length).toEqual(16);
 
   const eligileParticipantIds = eligibleParticipants.map(
@@ -209,7 +212,10 @@ it('can generate a draw with voluntary consolation stage with 5 entries', () => 
   expect(drawDefinition.structures.length).toEqual(2);
 
   let { eligibleParticipants } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({ drawId });
+    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+      matchUpsLimit: 1,
+      drawId,
+    });
   expect(eligibleParticipants.length).toEqual(16);
 
   const eligileParticipantIds = eligibleParticipants
