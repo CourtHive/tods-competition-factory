@@ -60,8 +60,7 @@ export function modifyMatchUpScore({
   }
 
   if (removeScore) {
-    Object.assign(matchUp, toBePlayed);
-    delete matchUp.score;
+    Object.assign(matchUp, { ...toBePlayed });
   } else if (score) {
     matchUp.score = score;
   }

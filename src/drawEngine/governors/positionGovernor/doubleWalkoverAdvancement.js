@@ -2,6 +2,7 @@ import { getPairedPreviousMatchUpIsWOWO } from './getPairedPreviousMatchUpisWOWO
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
 import { getWalkoverWinningSide } from '../matchUpGovernor/getWalkoverWinningSide';
 import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { findStructure } from '../../getters/findStructure';
 import { positionTargets } from './positionTargets';
@@ -22,7 +23,6 @@ import {
   DOUBLE_WALKOVER,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { decorateResult } from '../../../global/functions/decorateResult';
 
 export function doubleWalkoverAdvancement(params) {
   const {
@@ -33,6 +33,8 @@ export function doubleWalkoverAdvancement(params) {
     structure,
   } = params;
   if (structure.structureType === CONTAINER) return SUCCESS;
+
+  const stack = 'doubleWalkoverAdvancement';
 
   const { matchUp: sourceMatchUp, targetMatchUps, targetLinks } = targetData;
   const { loserMatchUp, winnerMatchUp, loserTargetDrawPosition } =
@@ -48,7 +50,7 @@ export function doubleWalkoverAdvancement(params) {
       loserMatchUp,
       matchUpsMap,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
   if (winnerMatchUp) {
@@ -59,10 +61,10 @@ export function doubleWalkoverAdvancement(params) {
       sourceMatchUp,
       winnerMatchUp,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 // 1. Assigns a WALKOVER status to the winnerMatchUp
@@ -129,7 +131,7 @@ function conditionallyAdvanceDrawPosition(params) {
       drawDefinition,
       matchUpsMap,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
   const drawPositions =
@@ -157,14 +159,19 @@ function conditionallyAdvanceDrawPosition(params) {
     ...params,
     matchUp: noContextWinnerMatchUp,
     winningSide: walkoverWinningSide,
+    matchUpStatusCodes: [],
     matchUpStatus,
   });
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
 
   // when there is an existing WO/WO created WALKOVER it is replaced
   // with a DOUBLE_WALKOVER and move on to advancing from this position
   if (existingWalkover) {
-    return doubleWalkoverAdvancement({ ...params, targetData });
+    return doubleWalkoverAdvancement({
+      ...params,
+      matchUpStatusCodes: [],
+      targetData,
+    });
   }
 
   if (!nextWinnerMatchUp) return { ...SUCCESS };
@@ -213,7 +220,7 @@ function conditionallyAdvanceDrawPosition(params) {
           drawDefinition,
           winningSide,
         });
-        if (result.error) return result;
+        if (result.error) return decorateResult({ result, stack });
 
         return advanceDrawPosition({
           drawPositionToAdvance: nextDrawPositionToAdvance,
@@ -226,10 +233,11 @@ function conditionallyAdvanceDrawPosition(params) {
         // if the next winnerMatchUp is a doubleWalkover
         const result = doubleWalkoverAdvancement({
           ...params,
-          targetData,
           matchUpId: noContextNextWinnerMatchUp.matchUpId,
+          matchUpStatusCodes: [], // don't propagate matchUpStatusCodes
+          targetData,
         });
-        if (result.error) return result;
+        if (result.error) return decorateResult({ result, stack });
       }
 
       return { ...SUCCESS };
@@ -269,13 +277,14 @@ function conditionallyAdvanceDrawPosition(params) {
       matchUpStatus,
     });
 
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
 
     if (matchUpStatus === DOUBLE_WALKOVER) {
       const advancementResult = doubleWalkoverAdvancement({
         ...params,
-        targetData,
+        matchUpStatusCodes: [], // don't propagate matchUpStatusCodes
         matchUpId: winnerMatchUp.matchUpId,
+        targetData,
       });
       if (advancementResult.error) return advancementResult;
     }

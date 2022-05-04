@@ -91,7 +91,6 @@ function scoreModification(params) {
     const result = removeDirectedParticipants(params);
     if (result.error) return result;
   }
-  // const result = modifyMatchUpScore({ ...params, removeScore: true });
   const result = modifyMatchUpScore({ ...params });
 
   // recalculate dualMatchUp score if isCollectionMatchUp

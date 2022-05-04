@@ -144,19 +144,17 @@ test('can clear TEAM matchUp "scorecards"', () => {
   expect(secondRoundDualMatchUp.drawPositions).toEqual([1, 3]);
 
   trackMatchUpModifications = true;
-  result = tournamentEngine
-    .devContext({ resetScorecard: true })
-    .resetScorecard({
-      matchUpId,
-      drawId,
-    });
+  result = tournamentEngine.resetScorecard({
+    matchUpId,
+    drawId,
+  });
   expect(result.success).toEqual(true);
 
   modifiedMatchUpLog.forEach((log) => {
     const values = Object.values(log).filter(Boolean);
     if (values.length) {
       expect(values.length).toEqual(1);
-      expect(values[0].scoreStringSide1).toEqual('0-0');
+      expect(values[0].scoreStringSide1).toEqual('');
     }
   });
 
@@ -167,12 +165,12 @@ test('can clear TEAM matchUp "scorecards"', () => {
     // result of iteratively scoring tieMatchUps for roundNumber: 1, roundPosition: 2
     '9-0', '9-0', '9-0', '9-0', '9-0', '9-0', '9-0', '9-0', '9-0',
     // result of resetScoreCard
-    '0-0',
+    '',
   ]);
 
   // check that after the calling resetScorecard all tieMatchUps have no score
   const finalTieMatchUpScores = firstMatchUpTieMatchUpScoringLog.pop();
-  expect(finalTieMatchUpScores.filter(Boolean)).toEqual([]);
+  expect(finalTieMatchUpScores.filter(({ sets }) => sets)).toEqual([]);
 
   firstRoundDualMatchUps = tournamentEngine.allTournamentMatchUps({
     contextFilters: {
@@ -188,7 +186,7 @@ test('can clear TEAM matchUp "scorecards"', () => {
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
-  expect(targetMatchUp.score.scoreStringSide1).toEqual('0-0');
+  expect(targetMatchUp.score.scoreStringSide1).toEqual();
 
   ({
     matchUps: [secondRoundDualMatchUp],

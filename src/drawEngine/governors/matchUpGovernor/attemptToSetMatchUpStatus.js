@@ -19,6 +19,7 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import { decorateResult } from '../../../global/functions/decorateResult';
 
 export function attemptToSetMatchUpStatus(params) {
   const {
@@ -80,23 +81,30 @@ function modifyScoreAndAdvanceWOWO(params) {
 }
 
 function scoreModification(params) {
+  const stack = 'scoreModification';
+
   const removeDirected =
     params.isCollectionMatchUp &&
     params.dualMatchUp?.winningSide &&
-    params.projectedWinningSide;
+    !params.projectedWinningSide;
+
+  if (removeDirected) {
+    const result = removeDirectedParticipants(params);
+    if (result.error) return decorateResult({ result, stack });
+  }
   const isCollectionMatchUp = Boolean(params.matchUp.collectionId);
   const result = modifyMatchUpScore(params);
 
   // recalculate dualMatchUp score if isCollectionMatchUp
   if (isCollectionMatchUp) {
     const { matchUpTieId, drawDefinition } = params;
-    const { removeWinningSide } = updateTieMatchUpScore({
+    const result = updateTieMatchUpScore({
       tournamentRecord: params.tournamentRecord,
       matchUpId: matchUpTieId,
       drawDefinition,
     });
-    console.log('atsms', { removeWinningSide, removeDirected });
+    if (result.error) return decorateResult({ result, stack });
   }
 
-  return result;
+  return decorateResult({ result, stack });
 }

@@ -446,7 +446,7 @@ it('correctly places DEFAULTED loser of 2nd round match who had BYE into consola
     ({ matchUpId }) => matchUp.matchUpId === matchUpId
   );
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
-  expect(targetMatchUp.score).toBeUndefined();
+  expect(targetMatchUp.score).toEqual({});
   expect(targetMatchUp.winningSide).toBeUndefined();
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
