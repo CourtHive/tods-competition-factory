@@ -72,8 +72,8 @@ export function getQualifiersCount({
 
   qualifiersCount = Math.max(qualifiersCount, profileQualifiersCount);
 
+  /*
   if (qualifiersCount !== profileQualifiersCount) {
-    /*
     console.log(
       {
         qualifiersCount,
@@ -82,9 +82,9 @@ export function getQualifiersCount({
       },
       relevantLinks.map((link) => link.source.finishingPositions)
     );
-    */
     return { qualifiersCount: profileQualifiersCount, roundQualifiersCounts };
   }
+  */
 
   return { qualifiersCount, roundQualifiersCounts };
 }
