@@ -9,12 +9,12 @@ import {
   replaceWithBye,
 } from '../testingUtilities';
 
+import { SINGLES } from '../../../constants/eventConstants';
 import {
   CONSOLATION,
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
-import { SINGLES } from '../../../constants/eventConstants';
 
 tournamentEngine.devContext(true);
 
@@ -262,7 +262,7 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
   // outcome removal should be succesful => now expecting 12 completed matchUps
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
   targetMatchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
-  expect(targetMatchUp.score).toBeUndefined();
+  expect(targetMatchUp.score).toEqual({});
   ({ completedMatchUps } = tournamentEngine.drawMatchUps({
     drawId,
     inContext: true,

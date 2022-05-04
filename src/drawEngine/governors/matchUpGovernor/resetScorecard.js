@@ -1,8 +1,10 @@
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { findStructure } from '../../getters/findStructure';
 import { isActiveDownstream } from './isActiveDownstream';
+import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { setMatchUpStatus } from './setMatchUpStatus';
 import { addGoesTo } from './addGoesTo';
 
@@ -30,12 +32,21 @@ import {
 
 export function resetScorecard(params) {
   const { tournamentRecord, drawDefinition, matchUpId, event } = params;
+  const stack = 'resetScorecard';
 
   // Check for missing parameters ---------------------------------------------
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+  if (!drawDefinition)
+    return decorateResult({
+      result: { error: MISSING_DRAW_DEFINITION },
+      stack,
+    });
+  if (!matchUpId)
+    return decorateResult({ result: { error: MISSING_MATCHUP_ID }, stack });
   if (typeof matchUpId !== 'string')
-    return { error: INVALID_VALUES, matchUpId };
+    return decorateResult({
+      result: { error: INVALID_VALUES, matchUpId },
+      stack,
+    });
 
   // Get map of all drawMatchUps and inContextDrawMatchUPs ---------------------
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
@@ -102,8 +113,16 @@ export function resetScorecard(params) {
       drawDefinition,
       event,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
+
+  const result = updateTieMatchUpScore({
+    removeScore: true,
+    tournamentRecord,
+    drawDefinition,
+    matchUpId,
+  });
+  if (result.error) return decorateResult({ result, stack });
 
   return { ...SUCCESS };
 }
