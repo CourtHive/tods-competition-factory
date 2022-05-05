@@ -2,6 +2,10 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
+import {
+  MAIN,
+  VOLUNTARY_CONSOLATION,
+} from '../../../constants/drawDefinitionConstants';
 
 test('can return participants eligible for voluntary consolation', () => {
   const {
@@ -74,6 +78,7 @@ test('can return participants eligible for voluntary consolation when play is no
   ({ eligibleParticipants, losingParticipantIds } =
     tournamentEngine.getEligibleVoluntaryConsolationParticipants({
       requirePlay: false,
+      requireLoss: false,
       drawId,
     }));
 
@@ -102,6 +107,7 @@ test('can consider event.entries as eligible for voluntary consolation', () => {
   let { eligibleParticipants } =
     tournamentEngine.getEligibleVoluntaryConsolationParticipants({
       includeEventParticipants: true,
+      requireLoss: false,
       requirePlay: false,
       drawId,
     });
@@ -138,6 +144,7 @@ test('can consider participants from other event draws as eligible for voluntary
   let { eligibleParticipants } =
     tournamentEngine.getEligibleVoluntaryConsolationParticipants({
       includeEventParticipants: true,
+      requireLoss: false,
       requirePlay: false,
       drawId, // first draw with drawSize; 4
     });
@@ -174,16 +181,37 @@ test('DOUBLE_WALKOVER produceds participants eligible for voluntary consolation 
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { matchUps } = tournamentEngine.allTournamentMatchUps({
-    matchUpFilters: { roundNumbers: [1] },
+  let result = tournamentEngine.generateVoluntaryConsolation({
+    attachConsolation: false,
+    automated: true,
+    drawId,
   });
-  const matchUpId = matchUps[0].matchUpId;
+  expect(result.success).toEqual(true);
+  expect(result.links.length).toEqual(0);
+  expect(result.structures.length).toEqual(1);
 
-  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
+  let { matchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: { stages: [VOLUNTARY_CONSOLATION] },
+  });
+  expect(matchUps.length).toEqual(0);
+
+  result = tournamentEngine.attachConsolationStructures({
+    structures: result.structures,
+    links: result.links,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  matchUps = tournamentEngine.allTournamentMatchUps({
+    constextFilters: { stages: [MAIN] },
+    matchUpFilters: { roundNumbers: [1] },
+  }).matchUps;
+
+  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
     matchUpStatus: DOUBLE_WALKOVER,
   });
-  let result = tournamentEngine.setMatchUpStatus({
-    matchUpId: matchUpId,
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: matchUps[0].matchUpId,
     outcome,
     drawId,
   });
@@ -203,4 +231,25 @@ test('DOUBLE_WALKOVER produceds participants eligible for voluntary consolation 
 
   expect(losingParticipantIds.length).toEqual(2);
   expect(eligibleParticipants.length).toEqual(2);
+
+  ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '6-1 6-2',
+    winningSide: 1,
+  }));
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: matchUps[1].matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ eligibleParticipants, losingParticipantIds } =
+    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+      requirePlay: false,
+      matchUpsLimit: 1,
+      drawId,
+    }));
+
+  expect(losingParticipantIds.length).toEqual(3);
+  expect(eligibleParticipants.length).toEqual(3);
 });

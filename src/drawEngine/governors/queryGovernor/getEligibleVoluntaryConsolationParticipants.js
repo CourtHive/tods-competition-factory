@@ -13,12 +13,14 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MAIN,
   PLAY_OFF,
+  QUALIFYING,
   VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 
 export function getEligibleVoluntaryConsolationParticipants({
   excludedMatchUpStatuses = [],
   includeEventParticipants, // boolean - consider event entries rather than draw entries (if event is present)
+  includeQualifyingStage,
   finishingRoundLimit,
   policyDefinitions,
   roundNumberLimit,
@@ -33,15 +35,18 @@ export function getEligibleVoluntaryConsolationParticipants({
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
+  const stages = [MAIN, PLAY_OFF];
+  if (includeQualifyingStage) stages.push(QUALIFYING);
+
   const matchUps = includeEventParticipants
     ? allEventMatchUps({
-        contextFilters: { stages: [MAIN, PLAY_OFF] },
+        contextFilters: { stages },
         tournamentRecord,
         inContext: true,
         event,
       })?.matchUps || []
     : allDrawMatchUps({
-        contextFilters: { stages: [MAIN, PLAY_OFF] },
+        contextFilters: { stages },
         tournamentRecord,
         inContext: true,
         drawDefinition,
@@ -93,7 +98,7 @@ export function getEligibleVoluntaryConsolationParticipants({
       : true;
 
   requireLoss =
-    requirePlay === false || requireLoss === false
+    requireLoss === false
       ? false
       : policy?.requireLoss !== undefined
       ? policy.requireLoss
@@ -101,7 +106,6 @@ export function getEligibleVoluntaryConsolationParticipants({
   // end policy support
 
   winsLimit = winsLimit || policy?.winsLimit;
-  if (isNaN(winsLimit)) winsLimit = 0;
 
   for (const matchUp of matchUps) {
     if (
@@ -188,7 +192,7 @@ export function getEligibleVoluntaryConsolationParticipants({
   const satisfiesPlay = (participantId) =>
     !requirePlay || (participantMatchUps[participantId] || 0) >= 0;
   const satisfiesWinsLimit = (participantId) =>
-    !winsLimit || (participantWins[participantId] || 0) <= winsLimit;
+    isNaN(winsLimit) || (participantWins[participantId] || 0) <= winsLimit;
   const satisfiesMatchUpsLimit = (participantId) =>
     !matchUpsLimit || participantMatchUps[participantId] <= matchUpsLimit;
   const notPreviouslySelected = (participantId) =>
@@ -202,6 +206,36 @@ export function getEligibleVoluntaryConsolationParticipants({
       satisfiesMatchUpsLimit(participantId) &&
       notPreviouslySelected(participantId)
   );
+
+  // PRESERVED for debugging
+  /*
+  const lossCheck = consideredParticipants.map(({ participantId }) =>
+    satisfiesLoss(participantId)
+  );
+  const playCheck = consideredParticipants.map(({ participantId }) =>
+    satisfiesPlay(participantId)
+  );
+  const winsCheck = consideredParticipants.map(({ participantId }) =>
+    satisfiesWinsLimit(participantId)
+  );
+  const limitCheck = consideredParticipants.map(({ participantId }) =>
+    satisfiesMatchUpsLimit(participantId)
+  );
+  const selectCheck = consideredParticipants.map(({ participantId }) =>
+    notPreviouslySelected(participantId)
+  );
+  console.log(
+    lossCheck.length,
+    playCheck.length,
+    winsCheck.length,
+    limitCheck.length,
+    selectCheck.length,
+    { requireLoss, requirePlay },
+    consideredParticipants.length,
+    losingParticipantIds.length,
+    eligibleParticipants.length
+  );
+  */
 
   return { eligibleParticipants, losingParticipantIds, ...SUCCESS };
 }
