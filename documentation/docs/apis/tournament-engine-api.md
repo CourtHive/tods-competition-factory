@@ -1511,6 +1511,7 @@ const { representativeParticipantIds } =
 const { eligibleParticipants } =
   tournamentEngine.getEligibleVoluntaryConsolationParticipants({
     excludedMatchUpStatuses, // optional - array of matchUpStatuses which are excluded from matchUpsLimit
+    includeQualifyingStage, // optional - allow losers in qualifying
     finishingRoundLimit, // optional number - limits considered matchUps by finishingRound, e.g. 3 doesn't consider past QF
     roundNumberLimit, // optional number - limits matchUps by roundNumber
     matchUpsLimit, // optional number - limits the number of considered matchUps; works in tandem with excludedMatchUpStatuses
