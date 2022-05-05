@@ -86,5 +86,14 @@ it('can generate an event with a draw and attach it to a tournamentRecord', () =
   const mainStructure = event.drawDefinitions[0].structures.find(
     ({ stage }) => stage === MAIN
   );
-  console.log(mainStructure.positionAssignments);
+
+  const firstRoundQualifiersCount = mainStructure.positionAssignments
+    .filter((assignment) => assignment.drawPosition > 16)
+    .filter(({ qualifier }) => qualifier).length;
+  const secondRoundQualifiersCount = mainStructure.positionAssignments
+    .filter((assignment) => assignment.drawPosition < 17)
+    .filter(({ qualifier }) => qualifier).length;
+
+  expect(firstRoundQualifiersCount).toEqual(4);
+  expect(secondRoundQualifiersCount).toEqual(4);
 });

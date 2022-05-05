@@ -72,6 +72,16 @@ export function getQualifiersCount({
     }
   }
 
+  // allow profileQualifiersCount to override if and only if there is only one qualifying roundTarget
+  const qualifyingRounds = Object.keys(roundQualifiersCounts);
+  if (qualifyingRounds.length <= 1) {
+    const qualifyingRound = qualifyingRounds[0] || 1;
+    roundQualifiersCounts[qualifyingRound] = Math.max(
+      roundQualifiersCounts[qualifyingRound] || 0,
+      profileQualifiersCount
+    );
+  }
+
   qualifiersCount = Math.max(qualifiersCount, profileQualifiersCount);
 
   return { qualifiersCount, roundQualifiersCounts };

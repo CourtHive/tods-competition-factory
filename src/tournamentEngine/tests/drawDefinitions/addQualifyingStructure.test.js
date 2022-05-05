@@ -35,6 +35,39 @@ it.each([2, 3, 4, 5, 6, 7, 8, 31, 32])(
   }
 );
 
+it('drawProfile qualifiersCount will override qualifyingProfile if greater', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawSize: 32,
+        qualifiersCount: 8,
+        qualifyingProfiles: [
+          {
+            roundTarget: 1,
+            structureProfiles: [
+              { stageSequence: 1, drawSize: 16, drawType: ROUND_ROBIN },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const mainStructure = drawDefinition.structures.find(
+    ({ stage }) => stage === MAIN
+  );
+  const mainStructureQualifiers = mainStructure.positionAssignments.filter(
+    ({ qualifier }) => qualifier
+  );
+  expect(mainStructureQualifiers.length).toEqual(8);
+});
+
 it('can add a qualifying structure to an existing drawDefinition', () => {
   const {
     tournamentRecord,
@@ -158,39 +191,6 @@ it('will ignore drawProfile qualifiersCount if qualifyingProfile.qualifiersCount
     ({ qualifier }) => qualifier
   );
   expect(mainStructureQualifiers.length).toEqual(4);
-});
-
-it('drawProfile qualifiersCount will override qualifyingProfile if greater', () => {
-  const {
-    tournamentRecord,
-    drawIds: [drawId],
-  } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      {
-        drawSize: 32,
-        qualifiersCount: 8,
-        qualifyingProfiles: [
-          {
-            roundTarget: 1,
-            structureProfiles: [
-              { stageSequence: 1, drawSize: 16, drawType: ROUND_ROBIN },
-            ],
-          },
-        ],
-      },
-    ],
-  });
-
-  tournamentEngine.setState(tournamentRecord);
-
-  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const mainStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  );
-  const mainStructureQualifiers = mainStructure.positionAssignments.filter(
-    ({ qualifier }) => qualifier
-  );
-  expect(mainStructureQualifiers.length).toEqual(8);
 });
 
 it('can add a qualifying structure to an existing draw which has existing qualifying structure', () => {

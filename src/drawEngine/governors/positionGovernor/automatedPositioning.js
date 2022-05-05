@@ -148,7 +148,21 @@ export function automatedPositioning({
   const conflicts = {};
 
   if (!seedsOnly) {
-    let result = positionUnseededParticipants({
+    // qualifiers are randomly placed BEFORE unseeded because in FEED_IN draws they may have roundTargets
+    // this can be modified ONLY if a check is place for round targeting and qualifiers are placed first
+    // in this specific circumstance
+    let result = positionQualifiers({
+      inContextDrawMatchUps,
+      tournamentRecord,
+      drawDefinition,
+      participants,
+      matchUpsMap,
+      structure,
+    });
+    if (result.error) return handleErrorCondition(result);
+    if (result.conflicts) conflicts.qualifierConflicts = result.conflicts;
+
+    result = positionUnseededParticipants({
       inContextDrawMatchUps,
       multipleStructures,
       tournamentRecord,
@@ -160,17 +174,6 @@ export function automatedPositioning({
     });
     if (result.error) return handleErrorCondition(result);
     if (result.conflicts) conflicts.unseededConflicts = result.conflicts;
-
-    result = positionQualifiers({
-      inContextDrawMatchUps,
-      tournamentRecord,
-      drawDefinition,
-      participants,
-      matchUpsMap,
-      structure,
-    });
-    if (result.error) return handleErrorCondition(result);
-    if (result.conflicts) conflicts.qualifierConflicts = result.conflicts;
   }
 
   const { positionAssignments } = getPositionAssignments({
