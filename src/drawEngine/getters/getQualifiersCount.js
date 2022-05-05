@@ -3,7 +3,7 @@ import { getEntryProfile } from './getEntryProfile';
 import { findStructure } from './findStructure';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
-import { CONTAINER } from '../../constants/drawDefinitionConstants';
+import { CONTAINER, QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 export function getQualifiersCount({
   drawDefinition,
@@ -39,52 +39,40 @@ export function getQualifiersCount({
         drawDefinition,
       })?.structure;
 
-      const sourceRoundNumber = relevantLink.source.roundNumber;
-      const roundTarget = relevantLink.target.roundNumber;
-      let count = 0;
+      if (sourceStructure.stage === QUALIFYING) {
+        const sourceRoundNumber = relevantLink.source.roundNumber;
+        const roundTarget = relevantLink.target.roundNumber;
+        let count = 0;
 
-      if (sourceStructure.structureType === CONTAINER) {
-        // for Round Robin qualifying the number of qualifiers needs to be derived from:
-        // the number of groups (substructures) * the length of source.finishingPositions[]
-        const groupCount = sourceStructure.structures?.length || 0;
-        const finishingPositionsCount =
-          relevantLink.source.finishingPositions?.length || 0;
+        if (sourceStructure.structureType === CONTAINER) {
+          // for Round Robin qualifying the number of qualifiers needs to be derived from:
+          // the number of groups (substructures) * the length of source.finishingPositions[]
+          const groupCount = sourceStructure.structures?.length || 0;
+          const finishingPositionsCount =
+            relevantLink.source.finishingPositions?.length || 0;
 
-        count = groupCount * finishingPositionsCount;
-      } else {
-        // return source structure qualifying round matchUps count
-        const matchUps = getAllStructureMatchUps({
-          roundFilter: sourceRoundNumber,
-          structure: sourceStructure,
-          inContext: false,
-        }).matchUps;
+          count = groupCount * finishingPositionsCount;
+        } else {
+          // return source structure qualifying round matchUps count
+          const matchUps = getAllStructureMatchUps({
+            roundFilter: sourceRoundNumber,
+            structure: sourceStructure,
+            inContext: false,
+          }).matchUps;
 
-        count = matchUps?.length || 0;
+          count = matchUps?.length || 0;
+        }
+
+        if (!roundQualifiersCounts[roundTarget])
+          roundQualifiersCounts[roundTarget] = 0;
+        roundQualifiersCounts[roundTarget] += count;
+
+        qualifiersCount += count;
       }
-
-      if (!roundQualifiersCounts[roundTarget])
-        roundQualifiersCounts[roundTarget] = 0;
-      roundQualifiersCounts[roundTarget] += count;
-
-      qualifiersCount += count;
     }
   }
 
   qualifiersCount = Math.max(qualifiersCount, profileQualifiersCount);
-
-  if (qualifiersCount !== profileQualifiersCount) {
-    /*
-    console.log(
-      {
-        qualifiersCount,
-        profileQualifiersCount,
-        roundQualifiersCounts,
-      },
-      relevantLinks.map((link) => link.source.finishingPositions)
-    );
-    */
-    return { qualifiersCount: profileQualifiersCount, roundQualifiersCounts };
-  }
 
   return { qualifiersCount, roundQualifiersCounts };
 }
