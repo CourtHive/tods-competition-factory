@@ -1,9 +1,15 @@
 import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
+import { modifyDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { findParticipant } from '../../../../global/functions/deducers/findParticipant';
+import { isValidExtension } from '../../../../global/validation/isValidExtension';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
+import {
+  addExtension,
+  removeExtension,
+} from '../../tournamentGovernor/addRemoveExtensions';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { PAIR } from '../../../../constants/participantTypes';
@@ -13,6 +19,8 @@ import {
   INVALID_PARTICIPANT_ID,
   MISSING_EVENT,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
+  MISSING_VALUE,
+  INVALID_VALUES,
 } from '../../../../constants/errorConditionConstants';
 import {
   DRAW_SPECIFIC_STATUSES,
@@ -29,6 +37,7 @@ export function modifyEntriesStatus({
   drawDefinition,
   participantIds,
   entryStatus,
+  extension, // modify the specified extension (remove if value undefined)
   eventSync,
   drawId,
   stage,
@@ -41,12 +50,27 @@ export function modifyEntriesStatus({
       participantIds,
     };
 
-  if (!VALID_ENTRY_STATUSES.includes(entryStatus))
+  if (!drawDefinition && !event) return { error: MISSING_EVENT };
+  if (entryStatus && !VALID_ENTRY_STATUSES.includes(entryStatus))
     return { error: INVALID_ENTRY_STATUS };
 
-  if (!drawDefinition && !event) return { error: MISSING_EVENT };
-
   const stack = 'modifyEntriesStatus';
+  const modifiedDrawIds = [];
+
+  if (!entryStatus && !extension)
+    return decorateResult({
+      result: { error: MISSING_VALUE },
+      info: 'Missing entryStatus',
+      stack,
+    });
+
+  if (extension && !isValidExtension(extension))
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      info: 'Invalid extension',
+      context: { extension },
+      stack,
+    });
 
   // build up an array of participantIds which are assigned positions in structures
   const assignedParticipantIds = [];
@@ -98,8 +122,17 @@ export function modifyEntriesStatus({
 
     const success = filteredEntries.every((entry) => {
       if (isAssigned(entry)) return false;
-      entry.entryStatus = entryStatus;
-      delete entry.entryPosition;
+      if (entryStatus) {
+        entry.entryStatus = entryStatus;
+        // since entryStatus has changed remove current entryPosition
+        delete entry.entryPosition;
+      } else {
+        if (extension.value) {
+          addExtension({ element: entry, extension });
+        } else {
+          removeExtension({ element: entry, name: extension.name });
+        }
+      }
       return true;
     });
 
@@ -132,6 +165,9 @@ export function modifyEntriesStatus({
     if (drawDefinition) {
       const result = updateEntryStatus(drawDefinition.entries);
       if (result.error) return decorateResult({ result, stack });
+
+      if (!modifiedDrawIds.includes(drawDefinition.drawId))
+        modifiedDrawIds.push(drawDefinition.drawId);
     }
     return { ...SUCCESS };
   };
@@ -221,5 +257,19 @@ export function modifyEntriesStatus({
 
   if (autoEntryPositions) autoPosition({ flight, drawDefinition });
 
-  return SUCCESS;
+  for (const drawDefinition of event.drawDefinitions || []) {
+    if (
+      modifiedDrawIds.length &&
+      !modifiedDrawIds.includes(drawDefinition.drawId)
+    )
+      continue;
+
+    modifyDrawNotice({
+      tournamentId: tournamentRecord.tournamentId,
+      eventId: event.eventId,
+      drawDefinition,
+    });
+  }
+
+  return { ...SUCCESS };
 }
