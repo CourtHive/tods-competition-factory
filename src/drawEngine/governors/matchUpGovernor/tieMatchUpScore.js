@@ -39,7 +39,7 @@ export function updateTieMatchUpScore({
   const scoreObject = {
     scoreStringSide1,
     scoreStringSide2,
-    sets: [set],
+    sets: set ? [set] : [],
   };
   matchUp.score = scoreObject;
 
