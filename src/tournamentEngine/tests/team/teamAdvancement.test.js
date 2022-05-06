@@ -675,7 +675,7 @@ test('properly removes lineUps when team drawPositions are swapped', () => {
   expect(targetMatchUp.sides[1].lineUp.length).toEqual(8);
 });
 
-test.only('does not propagate matchUpStatusCodes from SINGLE/DOUBLES to TEAM matchUps on DOUBLE_WALKOVER', () => {
+test('does not propagate matchUpStatusCodes from SINGLE/DOUBLES to TEAM matchUps on DOUBLE_WALKOVER', () => {
   let matchUpModifyNotices = [];
 
   const subscriptions = {
