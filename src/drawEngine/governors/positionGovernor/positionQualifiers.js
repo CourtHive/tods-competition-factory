@@ -100,7 +100,7 @@ export function getQualifiersData({ drawDefinition, structure, structureId }) {
         .filter(
           (assignment) =>
             assignment.qualifier &&
-            roundDrawPositions[roundNumber].drawPositions.includes(
+            roundDrawPositions[roundNumber]?.drawPositions?.includes(
               assignment.drawPosition
             )
         )
