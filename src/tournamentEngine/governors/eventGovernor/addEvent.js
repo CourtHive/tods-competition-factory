@@ -27,7 +27,7 @@ export function addEvent({ tournamentRecord, event, suppressNotifications }) {
 
   const eventRecord = Object.assign(
     {},
-    { startDate, endDate, eventType: SINGLES },
+    { startDate, endDate, eventType: SINGLES, entries: [] },
     event
   );
 
