@@ -1,6 +1,6 @@
+import { extractDate, formatDate } from '../../../utilities/dateTime';
 import { generatePersons } from '../../generators/generatePersons';
 import { generateAddress } from '../../generators/generateAddress';
-import { formatDate } from '../../../utilities/dateTime';
 import { teamMocks } from '../../utilities/teamMocks';
 import { UUID } from '../../../utilities';
 import {
@@ -105,7 +105,7 @@ export function anonymizeTournamentRecord({
   individualParticipants.forEach((individualParticipant, participantIndex) => {
     const person = individualParticipant?.person;
     const gender = person?.sex || OTHER;
-    const birthYear = person?.birthDate?.split('-').reverse()[0];
+    const birthYear = extractDate(person?.birthDate)?.split('-').reverse()[0];
 
     const genderedIndex = genderedIndices[gender];
     const generatedPerson = genderedPersons[gender][genderedIndex];
