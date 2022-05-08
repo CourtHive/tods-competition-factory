@@ -102,17 +102,29 @@ export const tournamentEngine = (function () {
     });
     const elapsed = Date.now() - start;
     const devContext = getDevContext();
-    if (
-      devContext.perf !== undefined &&
-      (isNaN(devContext.perf) || elapsed > devContext.perf)
-    )
-      console.log('te:', { methodName, elapsed });
-    if (
-      (devContext.params && !Array.isArray(devContext.params)) ||
-      (Array.isArray(devContext.params) &&
-        devContext.params?.includes(methodName))
-    ) {
-      console.log('te:', { methodName, params });
+
+    if (methodName !== 'executionQueue') {
+      const log = { methodName };
+      if (
+        devContext.perf !== undefined &&
+        (isNaN(devContext.perf) || elapsed > devContext.perf)
+      )
+        log.elapsed = elapsed;
+      if (
+        (devContext.params && !Array.isArray(devContext.params)) ||
+        (Array.isArray(devContext.params) &&
+          devContext.params?.includes(methodName))
+      ) {
+        log.params = params;
+      }
+      if (
+        (devContext.result && !Array.isArray(devContext.result)) ||
+        (Array.isArray(devContext.result) &&
+          devContext.result?.includes(methodName))
+      ) {
+        log.result = result;
+      }
+      if (Object.keys(log).length > 1) console.log('te:', log);
     }
 
     return result;
