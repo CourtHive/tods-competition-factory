@@ -10,13 +10,14 @@ import {
 } from '../../utilities/address';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { FEMALE, MALE, OTHER } from '../../../constants/genderConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantTypes';
+import { FEMALE, MALE, OTHER } from '../../../constants/genderConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 // TODO: anonymize VenueNames ... and, eventually, venueIds
 export function anonymizeTournamentRecord({
   // extensionsToKeep = [], e.g. 'level'
+  anonymizeParticipantNames = true,
   tournamentRecord,
   tournamentName,
   personIds = [],
@@ -28,7 +29,7 @@ export function anonymizeTournamentRecord({
   tournamentRecord.tournamentId = tournamentId || UUID();
   tournamentRecord.createdAt = new Date().toISOString();
   tournamentRecord.tournamentName =
-    tournamentName || `Anonymized Tournament ${formatDate(new Date())}`;
+    tournamentName || `Anonymized: ${formatDate(new Date())}`;
 
   delete tournamentRecord.parentOrganisation;
 
@@ -127,13 +128,17 @@ export function anonymizeTournamentRecord({
     }
 
     generatedPerson.personId = personIds?.[participantIndex] || UUID();
-    generatedPerson.standardFamilyName = generatedPerson.lastName;
-    generatedPerson.standardGivenName = generatedPerson.firstName;
+
+    if (anonymizeParticipantNames) {
+      generatedPerson.standardFamilyName = generatedPerson.lastName;
+      generatedPerson.standardGivenName = generatedPerson.firstName;
+      individualParticipant.participantName = `${generatedPerson.standardGivenName} ${generatedPerson.standardFamilyName}`;
+    }
+
     delete generatedPerson.firstName;
     delete generatedPerson.lastName;
 
     individualParticipant.person = generatedPerson;
-    individualParticipant.participantName = `${generatedPerson.standardGivenName} ${generatedPerson.standardFamilyName}`;
   });
 
   const pairParticipants = (tournamentRecord.participants || []).filter(
@@ -159,7 +164,7 @@ export function anonymizeTournamentRecord({
     teamParticipant.participantName = teamNames[i];
   });
 
-  // TODO: remove specific extensions... e.g. deleted drawDefinitions?
+  // TODO: remove specific extensions...
   // what other places in a tournament might contain PII?
 
   return { ...SUCCESS };
