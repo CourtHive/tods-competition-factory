@@ -6,11 +6,9 @@ import {
 } from '../../../../drawEngine/notifications/drawNotifications';
 
 import { MISSING_DRAW_DEFINITION } from '../../../../constants/errorConditionConstants';
+import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
+import { BYE } from '../../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import {
-  BYE,
-  TO_BE_PLAYED,
-} from '../../../../constants/matchUpStatusConstants';
 import {
   MAIN,
   QUALIFYING,
@@ -74,11 +72,7 @@ export function resetDrawDefinition({
       delete matchUp.notes;
 
       if (matchUp.matchUpStatus !== BYE) {
-        matchUp.matchUpStatus = TO_BE_PLAYED;
-        delete matchUp.matchUpStatusCodes;
-        delete matchUp.matchUpFormat;
-        delete matchUp.winningSide;
-        delete matchUp.score;
+        Object.assign(matchUp, toBePlayed);
       }
 
       if (roundNumber && roundNumber > 1 && matchUp.drawPositions) {

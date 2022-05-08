@@ -9,7 +9,7 @@ const typeMatch = (arr, type) =>
 const allNumeric = (arr) => arr.filter(Boolean).every(isNumeric);
 
 export function parseAgeCategoryCode({ consideredDate, category } = {}) {
-  const invalid = { error: INVALID_VALUES };
+  const invalid = { error: INVALID_VALUES, ageMin: 8, ageMax: 99 };
   if (typeof category !== 'object' || !isValidDateString(consideredDate))
     return invalid;
 
@@ -112,7 +112,7 @@ export function parseAgeCategoryCode({ consideredDate, category } = {}) {
     processCode(ageCategoryCode);
   }
 
-  if (errors.length) return { error: errors };
+  if (errors.length) return { error: errors, ageMin: 8, ageMax: 99 };
 
   return definedAttributes({
     combinedAge,

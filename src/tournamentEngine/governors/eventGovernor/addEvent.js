@@ -13,12 +13,14 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { UUID } from '../../../utilities';
 import {
   EVENT_EXISTS,
+  MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
 export function addEvent({ tournamentRecord, event, suppressNotifications }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.events) tournamentRecord.events = [];
+  if (!event) return { error: MISSING_EVENT };
 
   // set default startDate, endDate based on tournamentRecord
   const { startDate, endDate } = tournamentRecord;

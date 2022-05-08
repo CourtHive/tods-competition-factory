@@ -100,18 +100,28 @@ export const competitionEngine = (function () {
     });
     const elapsed = Date.now() - start;
     const devContext = getDevContext();
+
+    const log = { methodName };
     if (
       devContext.perf !== undefined &&
       (isNaN(devContext.perf) || elapsed > devContext.perf)
     )
-      console.log('ce:', { methodName, elapsed });
+      log.elapsed = elapsed;
     if (
       (devContext.params && !Array.isArray(devContext.params)) ||
       (Array.isArray(devContext.params) &&
         devContext.params?.includes(methodName))
     ) {
-      console.log('ce: ', { methodName, params });
+      log.params = params;
     }
+    if (
+      (devContext.result && !Array.isArray(devContext.result)) ||
+      (Array.isArray(devContext.result) &&
+        devContext.result?.includes(methodName))
+    ) {
+      log.result = result;
+    }
+    if (Object.keys(log).length > 1) console.log('ce:', log);
 
     return result;
   }
@@ -177,7 +187,18 @@ export const competitionEngine = (function () {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
 
       const { method: methodName, params } = directive;
-      if (!engine[methodName]) return { error: METHOD_NOT_FOUND };
+      if (!engine[methodName]) {
+        const result = { error: METHOD_NOT_FOUND, methodName };
+        const devContext = getDevContext();
+        if (
+          (devContext.result && !Array.isArray(devContext.result)) ||
+          (Array.isArray(devContext.result) &&
+            devContext.result?.includes(methodName))
+        ) {
+          console.log('ce:', result);
+        }
+        return result;
+      }
 
       const result = executeFunction(
         tournamentRecords,

@@ -3,7 +3,7 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { findStructure } from '../../getters/findStructure';
-import { generateRange } from '../../../utilities';
+import { generateRange, randomPop } from '../../../utilities';
 
 import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -21,40 +21,39 @@ export function positionQualifiers(params) {
   }
 
   const {
-    positionAssignments,
-    unplacedQualifiersCount,
     unplacedRoundQualifierCounts,
+    positionAssignments,
+    roundDrawPositions,
   } = getQualifiersData(params);
 
-  if (unplacedRoundQualifierCounts) {
-    // TODO: no if necessary here... just a placeholder to use the variable
-  }
+  for (const roundNumber of Object.keys(unplacedRoundQualifierCounts)) {
+    const unfilledDrawPositions = positionAssignments
+      .filter((assignment) => {
+        return (
+          roundDrawPositions[roundNumber].includes(assignment.drawPosition) &&
+          !assignment.participantId &&
+          !assignment.qualifier &&
+          !assignment.bye
+        );
+      })
+      .map((assignment) => assignment.drawPosition);
 
-  // unvilldDrawPositions need to be segregated by roundNumber
-  const unfilledDrawPositions = positionAssignments
-    .filter((assignment) => {
-      return (
-        !assignment.participantId && !assignment.bye && !assignment.qualifier
-      );
-    })
-    .map((assignment) => assignment.drawPosition);
+    if (unplacedRoundQualifierCounts[roundNumber] > unfilledDrawPositions)
+      return { error: NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS };
 
-  if (unplacedQualifiersCount > unfilledDrawPositions.length) {
-    return { error: NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS };
-  }
-
-  generateRange(0, unplacedQualifiersCount).forEach(() => {
-    const drawPosition = unfilledDrawPositions.pop();
-    positionAssignments.forEach((assignment) => {
-      if (assignment.drawPosition === drawPosition) {
-        assignment.qualifier = true;
-        delete assignment.participantId;
-        delete assignment.bye;
-      }
+    generateRange(0, unplacedRoundQualifierCounts[roundNumber]).forEach(() => {
+      const drawPosition = randomPop(unfilledDrawPositions);
+      positionAssignments.forEach((assignment) => {
+        if (assignment.drawPosition === drawPosition) {
+          assignment.qualifier = true;
+          delete assignment.participantId;
+          delete assignment.bye;
+        }
+      });
     });
-  });
+  }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function getQualifiersData({ drawDefinition, structure, structureId }) {
@@ -77,9 +76,14 @@ export function getQualifiersData({ drawDefinition, structure, structureId }) {
   const targetRoundNumbers = Object.keys(roundQualifiersCounts);
   const { matchUps } = getAllStructureMatchUps({ structure });
   const { roundProfile } = getRoundMatchUps({ matchUps });
-  const roundDrawPositions = targetRoundNumbers.map((roundNumber) => ({
-    [roundNumber]: roundProfile[roundNumber].drawPositions.filter(Boolean),
-  }));
+  const roundDrawPositions = Object.assign(
+    {},
+    ...targetRoundNumbers
+      .filter((roundNumber) => roundProfile[roundNumber])
+      .map((roundNumber) => ({
+        [roundNumber]: roundProfile[roundNumber]?.drawPositions.filter(Boolean),
+      }))
+  );
 
   const assignedQualifierPositions = positionAssignments
     .filter((assignment) => assignment.qualifier)
@@ -96,7 +100,7 @@ export function getQualifiersData({ drawDefinition, structure, structureId }) {
         .filter(
           (assignment) =>
             assignment.qualifier &&
-            roundDrawPositions[roundNumber].drawPositions.includes(
+            roundDrawPositions[roundNumber]?.drawPositions?.includes(
               assignment.drawPosition
             )
         )

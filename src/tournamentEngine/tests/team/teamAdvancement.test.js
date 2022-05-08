@@ -1,6 +1,7 @@
 import { generateTieMatchUpScore } from '../../../drawEngine/generators/generateTieMatchUpScore';
 import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { generateTeamTournament } from './generateTestTeamTournament';
+import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
@@ -11,6 +12,7 @@ import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import {
   TEAM_DOUBLES_3_AGGREGATION,
+  USTA_BREWER_CUP,
   USTA_GOLD_TEAM_CHALLENGE,
 } from '../../../constants/tieFormatConstants';
 import {
@@ -18,7 +20,6 @@ import {
   DOUBLE_WALKOVER,
   IN_PROGRESS,
   TO_BE_PLAYED,
-  WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 import {
   CONSOLATION,
@@ -675,15 +676,30 @@ test('properly removes lineUps when team drawPositions are swapped', () => {
 });
 
 test('does not propagate matchUpStatusCodes from SINGLE/DOUBLES to TEAM matchUps on DOUBLE_WALKOVER', () => {
+  let matchUpModifyNotices = [];
+
+  const subscriptions = {
+    modifyMatchUp: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUp }) => {
+          const { matchUpType, matchUpStatusCodes, score } = matchUp;
+          if (matchUpStatusCodes || score)
+            matchUpModifyNotices.push(
+              [matchUpType, matchUpStatusCodes, score].filter(Boolean)
+            );
+        });
+      }
+    },
+  };
+
+  setSubscriptions({ subscriptions });
+
   const {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
-      {
-        eventType: TEAM,
-        drawSize: 4,
-      },
+      { drawSize: 8, tieFormatName: USTA_BREWER_CUP, eventType: TEAM },
     ],
   });
 
@@ -700,7 +716,7 @@ test('does not propagate matchUpStatusCodes from SINGLE/DOUBLES to TEAM matchUps
       },
     });
 
-  expect(firstRoundDualMatchUps.length).toEqual(2);
+  expect(firstRoundDualMatchUps.length).toEqual(4);
 
   const targetMatchUp = firstRoundDualMatchUps[0];
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
@@ -740,9 +756,7 @@ test('does not propagate matchUpStatusCodes from SINGLE/DOUBLES to TEAM matchUps
   );
   expect(targetTieMatchUp.matchUpStatusCodes).toEqual(['WOWO', 'WOWO']);
 
-  const {
-    matchUps: [finalMatchUp],
-  } = tournamentEngine.allTournamentMatchUps({
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
     contextFilters: {
       stages: [MAIN],
     },
@@ -752,6 +766,23 @@ test('does not propagate matchUpStatusCodes from SINGLE/DOUBLES to TEAM matchUps
     },
   });
 
-  expect(finalMatchUp.matchUpStatus).toEqual(WALKOVER);
-  expect(finalMatchUp.matchUpStatusCodes).toBeUndefined();
+  expect(
+    matchUps.map(({ matchUpStatusCodes }) => matchUpStatusCodes).filter(Boolean)
+  ).toEqual([]);
+  expect(matchUps.map(({ matchUpStatus }) => matchUpStatus)).toEqual([
+    'TO_BE_PLAYED',
+    'TO_BE_PLAYED',
+  ]);
+
+  expect(matchUpModifyNotices).toEqual([
+    ['SINGLES', ['WOWO', 'WOWO']],
+    [
+      'TEAM',
+      {
+        scoreStringSide1: undefined,
+        scoreStringSide2: undefined,
+        sets: [],
+      },
+    ],
+  ]);
 });

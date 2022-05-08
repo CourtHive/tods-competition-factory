@@ -216,6 +216,7 @@ function conditionallyAdvanceDrawPosition(params) {
           matchUpId: noContextNextWinnerMatchUp.matchUpId,
           matchUp: noContextNextWinnerMatchUp,
           matchUpStatus: WALKOVER,
+          matchUpStatusCodes: [],
           removeScore: true,
           drawDefinition,
           winningSide,
@@ -272,6 +273,7 @@ function conditionallyAdvanceDrawPosition(params) {
     const result = modifyMatchUpScore({
       matchUpId: noContextNextWinnerMatchUp.matchUpId,
       matchUp: noContextNextWinnerMatchUp,
+      matchUpStatusCodes: [],
       removeScore: true,
       drawDefinition,
       matchUpStatus,

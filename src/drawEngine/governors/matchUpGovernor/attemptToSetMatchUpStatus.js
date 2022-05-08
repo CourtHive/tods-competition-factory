@@ -38,7 +38,11 @@ export function attemptToSetMatchUpStatus(params) {
   const nonDirecting = isNonDirectingMatchUpStatus({ matchUpStatus });
   const unrecognized = !directing && !nonDirecting;
 
-  const onlyModifyScore = existingWinningSide && directing && !setWOWO;
+  // if matchUpTieId present a TEAM matchUp is being modified...
+  // at present TEAM matchUps cannot be scored directly
+  const onlyModifyScore =
+    params.matchUpTieId || (existingWinningSide && directing && !setWOWO);
+
   const changeCompletedToWOWO = existingWinningSide && setWOWO;
 
   const clearScore = () =>
