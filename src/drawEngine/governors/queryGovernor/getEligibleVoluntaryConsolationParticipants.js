@@ -7,8 +7,8 @@ import {
 
 import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../../constants/policyConstants';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { UNGROUPED, WITHDRAWN } from '../../../constants/entryStatusConstants';
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { WITHDRAWN } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MAIN,
@@ -177,7 +177,7 @@ export function getEligibleVoluntaryConsolationParticipants({
   const enteredParticipantIds =
     considerEntered &&
     (includeEventParticipants && event ? event.entries : drawDefinition.entries)
-      .filter((entry) => entry.entryStatus !== WITHDRAWN)
+      .filter((entry) => ![WITHDRAWN, UNGROUPED].includes(entry.entryStatus))
       .map(({ participantId }) => participantId);
 
   const losingParticipantIds = Object.keys(losingParticipants);
