@@ -41,12 +41,14 @@ export function getEligibleVoluntaryConsolationParticipants({
   const matchUps = includeEventParticipants
     ? allEventMatchUps({
         contextFilters: { stages },
+        matchUpFilters: { matchUpTypes: [event.eventType] },
         tournamentRecord,
         inContext: true,
         event,
       })?.matchUps || []
     : allDrawMatchUps({
         contextFilters: { stages },
+        matchUpFilters: { matchUpTypes: [event.eventType] },
         tournamentRecord,
         inContext: true,
         drawDefinition,
