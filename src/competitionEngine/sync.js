@@ -103,7 +103,7 @@ export const competitionEngine = (function () {
 
     const log = { methodName };
     if (
-      devContext.perf !== undefined &&
+      ![undefined, false].includes(devContext.perf) &&
       (isNaN(devContext.perf) || elapsed > devContext.perf)
     )
       log.elapsed = elapsed;
