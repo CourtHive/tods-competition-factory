@@ -117,7 +117,7 @@ export function anonymizeTournamentRecord({
       generatedPerson.birthDate = birthDate;
     }
 
-    if (person.addresses) {
+    if (person?.addresses) {
       const address = generateAddress({
         ...addressValues,
         participantIndex,
