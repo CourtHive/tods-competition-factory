@@ -90,7 +90,7 @@ export function getStructureMatchUps({
       const isCollectionMatchUp = matchUp.collectionId;
       const collectionSidesAssigned =
         isCollectionMatchUp &&
-        matchUp.sides.every((side) => side.participantId);
+        matchUp.sides?.every((side) => side.participantId);
 
       const roundFilterEquality = matchUp.roundNumber === roundFilter;
 
