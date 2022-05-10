@@ -530,7 +530,7 @@ it('supports round robin qualifying structures', () => {
 });
 
 // to test qualifiers from different roundTargets: no multi-sequence qualifying
-it('supports qualifying structures with multiple roundTargets', () => {
+it('Fish Farm: supports qualifying structures with multiple roundTargets', () => {
   const completionGoal = 52;
   const drawProfiles = [
     {
