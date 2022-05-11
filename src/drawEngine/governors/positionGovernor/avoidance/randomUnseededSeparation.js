@@ -21,6 +21,7 @@ import {
   MISSING_AVOIDANCE_POLICY,
   NO_CANDIDATES,
 } from '../../../../constants/errorConditionConstants';
+import { assignDrawPositionBye } from '../byePositioning/assignDrawPositionBye';
 
 /**
  *
@@ -182,7 +183,18 @@ export function randomUnseededSeparation({
         !alreadyAssignedParticipantIds.includes(assignment.participantId)
     )
     .forEach((assignment) => {
-      if (assignment.participantId && !assignment.bye) {
+      if (assignment.bye) {
+        const result = assignDrawPositionBye({
+          tournamentRecord,
+          drawDefinition,
+          structureId,
+          matchUpsMap,
+          ...assignment,
+        });
+        if (!result?.success) {
+          errors.push(result);
+        }
+      } else {
         const result = assignDrawPosition({
           automaticPlacement: true,
           inContextDrawMatchUps,
