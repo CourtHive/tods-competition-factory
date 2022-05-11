@@ -105,7 +105,7 @@ export function anonymizeTournamentRecord({
   individualParticipants.forEach((individualParticipant, participantIndex) => {
     const person = individualParticipant?.person;
     const gender = person?.sex || OTHER;
-    const birthYear = extractDate(person?.birthDate)?.split('-').reverse()[0];
+    const birthYear = extractDate(person?.birthDate)?.split('-')[0];
 
     const genderedIndex = genderedIndices[gender];
     const generatedPerson = genderedPersons[gender][genderedIndex];
