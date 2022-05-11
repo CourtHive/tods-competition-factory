@@ -41,6 +41,7 @@ import {
 
 export function assignDrawPosition({
   inContextDrawMatchUps,
+  isQualifierPosition, // internal use
   automaticPlacement, // internal use to override public behaviors
   tournamentRecord,
   drawDefinition,
@@ -50,6 +51,9 @@ export function assignDrawPosition({
   structureId,
   event,
 }) {
+  if (!participantId && !isQualifierPosition)
+    return { error: MISSING_PARTICIPANT_ID };
+
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
 
   if (!inContextDrawMatchUps) {
@@ -93,7 +97,6 @@ export function assignDrawPosition({
     (assignment) => assignment.drawPosition === drawPosition
   );
   if (!positionAssignment) return { error: INVALID_DRAW_POSITION };
-  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
   const participantAlreadyAssigned = positionAssignments
     .map(getParticipantId)
@@ -144,6 +147,7 @@ export function assignDrawPosition({
   }
 
   positionAssignment.participantId = participantId;
+  if (isQualifierPosition) positionAssignment.qualifier = true;
 
   if (
     structure?.stageSequence > 1 ||
@@ -225,9 +229,9 @@ export function assignDrawPosition({
     });
     const positionAction = {
       name: 'positionAssignment',
+      participantId,
       drawPosition,
       structureId,
-      participantId,
     };
     addPositionActionTelemetry({ drawDefinition, positionAction });
   }

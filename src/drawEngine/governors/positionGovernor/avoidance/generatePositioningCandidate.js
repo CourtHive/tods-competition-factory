@@ -75,7 +75,6 @@ export function generatePositioningCandidate(params) {
       }
     });
   });
-
   let positionedParticipants = getPositionedParticipants({
     candidatePositionAssignments,
     participantsWithGroupings,
@@ -98,13 +97,12 @@ export function generatePositioningCandidate(params) {
       drawPositionGroups,
       isRoundRobin,
     });
-
     if (swapOptions.length) {
       const result = swapAssignedPositions({
         candidatePositionAssignments,
         swapOptions,
       });
-      if (result.error) console.log(result);
+      if (result.error) console.log({ result });
 
       positionedParticipants = getPositionedParticipants({
         candidatePositionAssignments,
@@ -115,8 +113,8 @@ export function generatePositioningCandidate(params) {
 
       groupedParticipants = chunkArray(positionedParticipants, groupSize);
       avoidanceConflicts = getAvoidanceConflicts({
-        isRoundRobin,
         groupedParticipants,
+        isRoundRobin,
       });
       attempts++;
     } else {
@@ -149,19 +147,26 @@ export function swapAssignedPositions({
 
   const firstPosition = swapOption.drawPosition;
   const secondPosition = randomPop(swapOption.possibleDrawPositions);
-  const firstParticipantId = candidatePositionAssignments.find(
+  const firstAssignment = candidatePositionAssignments.find(
     (assignment) => assignment.drawPosition === firstPosition
-  ).participantId;
-  const secondParticipantId = candidatePositionAssignments.find(
+  );
+  const secondAssignment = candidatePositionAssignments.find(
     (assignment) => assignment.drawPosition === secondPosition
-  ).participantId;
-  candidatePositionAssignments.forEach((assignment) => {
-    if (assignment.drawPosition === firstPosition) {
-      assignment.participantId = secondParticipantId;
-    }
-    if (assignment.drawPosition === secondPosition) {
-      assignment.participantId = firstParticipantId;
-    }
-  });
+  );
+
+  const updatedFirstAssignmentAttributes = {
+    participantId: secondAssignment.participantId,
+    qualifier: secondAssignment.qualifier,
+    bye: secondAssignment.bye,
+  };
+  const updatedSecondAssignmentAttributes = {
+    participantId: firstAssignment.participantId,
+    qualifier: firstAssignment.qualifier,
+    bye: firstAssignment.bye,
+  };
+
+  Object.assign(firstAssignment, updatedFirstAssignmentAttributes);
+  Object.assign(secondAssignment, updatedSecondAssignmentAttributes);
+
   return { ...SUCCESS };
 }

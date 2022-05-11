@@ -13,6 +13,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function positionParticipantAction(params) {
   const {
     participantIdAttributeName = 'participantId',
+    isQualifierPosition,
     positionActionName,
     tournamentRecord,
     drawDefinition,
@@ -81,6 +82,7 @@ export function positionParticipantAction(params) {
 
   result = assignDrawPosition({
     inContextDrawMatchUps,
+    isQualifierPosition,
     tournamentRecord,
     drawDefinition,
     participantId,
