@@ -1,0 +1,2400 @@
+{
+  "matchUps": [],
+  "tournamentGroups": [],
+  "deleted": false,
+  "tournamentId": "06616eb4-35c9-4349-bde0-7ba32e49197d",
+  "tournamentName": "Anonymized: 2022-05-12",
+  "startDate": "2022-02-20T19:00:00.000Z",
+  "endDate": "2022-02-21T05:00:00.000Z",
+  "participants": [
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "3845147B-5FDE-4EF8-BAC1-81C005580AD8",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Jordan Thompson",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "cf67fe35-2762-451c-966b-fbfc596f657a",
+      "person": {
+        "extensions": [],
+        "birthDate": "2002-06-12",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "AUS",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "AUS"
+          }
+        ],
+        "personId": "18742331-c9ec-428d-91c6-6bf5f0078a80",
+        "standardFamilyName": "Thompson",
+        "standardGivenName": "Jordan"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "9678B4CB-F814-40F3-81F5-8CE1A4F7B928",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Shunsuke Mitsui",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "fee5317b-1a8e-47c2-826e-4c5e07a0543d",
+      "person": {
+        "extensions": [],
+        "birthDate": "2000-05-05",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "JPN",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "JPN"
+          }
+        ],
+        "personId": "7cc67c4b-9889-4e07-9c43-f2a2942fbf6f",
+        "standardFamilyName": "Mitsui",
+        "standardGivenName": "Shunsuke"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "EF596649-BFB2-4C51-AF4F-CA944C533904",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Stefanos Tsitsipas",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "cb126896-6180-40de-803e-4d3640127449",
+      "person": {
+        "extensions": [],
+        "birthDate": "2000-02-02",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "GRE",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "GRE"
+          }
+        ],
+        "personId": "3b8fff50-d53a-4155-ad8f-2292d837ae2b",
+        "standardFamilyName": "Tsitsipas",
+        "standardGivenName": "Stefanos"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "0CCFC3D1-6CD1-4228-A0F0-FB3730F37693",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Hubert Hurkacz",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "46426009-ad72-4571-814c-83e1048ad166",
+      "person": {
+        "extensions": [],
+        "birthDate": "2000-03-08",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "POL",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "POL"
+          }
+        ],
+        "personId": "f3753740-9f94-4c3b-9f1e-1f3487b3ddcb",
+        "standardFamilyName": "Hurkacz",
+        "standardGivenName": "Hubert"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "C2E97CEC-C1EF-49FD-B125-AE197C104EA2",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Arthur Fery",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "817303eb-30b6-4b30-aa15-d22a801e3974",
+      "person": {
+        "extensions": [],
+        "birthDate": "2001-01-30",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "GBR",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "GBR"
+          }
+        ],
+        "personId": "cba9131a-46ea-48f2-90a0-eec00b5b39b7",
+        "standardFamilyName": "Fery",
+        "standardGivenName": "Arthur"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "701A0691-4FF7-49FF-8740-81D557050952",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Holger Vitus Nodskov Rune",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "6015a3eb-3ea6-4dd2-916d-ff4c83f5019f",
+      "person": {
+        "extensions": [],
+        "birthDate": "2000-10-06",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "DEN",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "DEN"
+          }
+        ],
+        "personId": "50d30edf-0ae0-426d-937a-a198b6fb622e",
+        "standardFamilyName": "Vitus Nodskov Rune",
+        "standardGivenName": "Holger"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "398D27B1-3CF4-46B5-9A28-5C50D3E43EFA",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Pierre-Hugues Herbert",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "40290b20-0bd7-4215-95fb-2e8540d948ba",
+      "person": {
+        "extensions": [],
+        "birthDate": "2001-02-14",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "FRA",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "FRA"
+          }
+        ],
+        "personId": "d76c8eda-0786-47f0-b9ac-9f165c0e55c8",
+        "standardFamilyName": "Herbert",
+        "standardGivenName": "Pierre-Hugues"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "743A7849-FAC0-49D6-B1C1-3E15F7D828FB",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Max Alcala Gurri",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "40d75cb4-e42f-4593-903c-c1e6829be738",
+      "person": {
+        "extensions": [],
+        "birthDate": "1999-09-22",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "ESP",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "ESP"
+          }
+        ],
+        "personId": "bcb45580-c236-4e29-a7fb-185dd12ccc1c",
+        "standardFamilyName": "Alcala Gurri",
+        "standardGivenName": "Max"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "4206F348-20E7-4762-BD64-80316F6207F4",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Pedro Martinez",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "195942fc-ad28-4fc0-a1d3-9443bc42a536",
+      "person": {
+        "extensions": [],
+        "birthDate": "2001-11-30",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "ESP",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "ESP"
+          }
+        ],
+        "personId": "86b17c82-2d12-4089-a0f9-a09b0ee88b00",
+        "standardFamilyName": "Martinez",
+        "standardGivenName": "Pedro"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "35657100-CC1D-4F72-A98F-9F553B300D80",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Jack Anthrop",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "6cb67721-18a6-4c64-b9c7-481f042d4837",
+      "person": {
+        "extensions": [],
+        "birthDate": "2001-07-21",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "USA",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "USA"
+          }
+        ],
+        "personId": "875eca4d-b2f8-4914-b1e3-bbc0b83a7488",
+        "standardFamilyName": "Anthrop",
+        "standardGivenName": "Jack"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "F52A0E08-93CA-4933-BF8C-3C920F38000D",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Evgeny Philippov",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "88e3ecd1-c804-42e2-af90-51e9ccfd76e5",
+      "person": {
+        "extensions": [],
+        "birthDate": "2001-08-08",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "RUS",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "RUS"
+          }
+        ],
+        "personId": "8cab518e-1b7b-4688-8445-dbc4cb7e0729",
+        "standardFamilyName": "Philippov",
+        "standardGivenName": "Evgeny"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "ABA829A0-8D5A-429E-9F3A-8C9DFFEE2E14",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Juan Bautista Torres",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "19995d29-6b7b-4741-980e-c0d9ea2d388e",
+      "person": {
+        "extensions": [],
+        "birthDate": "2002-06-16",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "ARG",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "ARG"
+          }
+        ],
+        "personId": "d1783285-2e84-48bb-bb69-65a05eb8a834",
+        "standardFamilyName": "Bautista Torres",
+        "standardGivenName": "Juan"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "3F54BA6A-50FE-44E4-827F-BE4B542686A4",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Pablo Llamas Ruiz",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "90f40ab3-bee3-4750-b0d1-0028dd0b003e",
+      "person": {
+        "extensions": [],
+        "birthDate": "2002-12-10",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "ESP",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "ESP"
+          }
+        ],
+        "personId": "13dcdb9e-7940-4597-8da5-a4ce751eef62",
+        "standardFamilyName": "Llamas Ruiz",
+        "standardGivenName": "Pablo"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "A84C3E42-C60C-4772-BEAF-135E313CB90B",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Petr Nesterov",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "ee1ffaab-303d-49be-9281-d173be6cd306",
+      "person": {
+        "extensions": [],
+        "birthDate": "2000-11-05",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "BUL",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "BUL"
+          }
+        ],
+        "personId": "0895c628-34cb-4ad0-8fe5-c25f32ad6d16",
+        "standardFamilyName": "Nesterov",
+        "standardGivenName": "Petr"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "24641B6A-6EFB-4599-8052-802576F8F332",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Timo Legout",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "e39ee95e-4143-410c-89ca-f320a9335f10",
+      "person": {
+        "extensions": [],
+        "birthDate": "2000-06-28",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "FRA",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "FRA"
+          }
+        ],
+        "personId": "4c7142ef-0683-487a-bffe-15caef4abbc8",
+        "standardFamilyName": "Legout",
+        "standardGivenName": "Timo"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "51FC341B-506B-4598-9880-AF7A9F4B8243",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Bruno Kuzuhara",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "5af62c11-e0a6-4f45-86ad-492f9a55f094",
+      "person": {
+        "extensions": [],
+        "birthDate": "2003-05-24",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "USA",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "USA"
+          }
+        ],
+        "personId": "ee7f34f5-8078-447d-890d-c14c8f2d99f9",
+        "standardFamilyName": "Kuzuhara",
+        "standardGivenName": "Bruno"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "7812E748-BCD9-4810-85B7-F243AECBBC6B",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Gustavo Heide",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "2a64002f-e6c6-4889-a73c-a33d884fa2cd",
+      "person": {
+        "extensions": [],
+        "birthDate": "2002-10-30",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "BRA",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "BRA"
+          }
+        ],
+        "personId": "70b3540d-379a-49e8-9b74-baabe95912b6",
+        "standardFamilyName": "Heide",
+        "standardGivenName": "Gustavo"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "154620FE-5DAD-49FD-8D4D-FEBA3E50CF90",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Laslo Djere",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "90d87226-15cc-417e-a21c-47fd66562ad2",
+      "person": {
+        "extensions": [],
+        "birthDate": "2003-09-06",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "SRB",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "SRB"
+          }
+        ],
+        "personId": "88720a59-096b-4c6b-a953-b8a7527ad8e5",
+        "standardFamilyName": "Djere",
+        "standardGivenName": "Laslo"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "181AA9FB-7787-4BD5-9A70-F8EC902B4236",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Marco Cecchinato",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "8eee5bf2-1178-4c8c-93fb-c8c669df5807",
+      "person": {
+        "extensions": [],
+        "birthDate": "2000-06-30",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "ITA",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "ITA"
+          }
+        ],
+        "personId": "bfacc01d-1286-44f1-82a2-8a8d1a6bf9f1",
+        "standardFamilyName": "Cecchinato",
+        "standardGivenName": "Marco"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "BB1BB094-986E-4302-9B36-D99F6F45DDA5",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Albert Ramos-Vinolas",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "4c5cae6c-9fab-4cc2-83b2-fd811dbf3f60",
+      "person": {
+        "extensions": [],
+        "birthDate": "2002-12-25",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "ESP",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "ESP"
+          }
+        ],
+        "personId": "5ca2f452-d4dd-4a49-85aa-463991232eb9",
+        "standardFamilyName": "Ramos-Vinolas",
+        "standardGivenName": "Albert"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "E1A0531A-439D-430B-A929-CF13C9629FA6",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Mehdi Sadaoui",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "8a98d823-804d-45a5-8b8f-16c98ae2289a",
+      "person": {
+        "extensions": [],
+        "birthDate": "2002-06-27",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "FRA",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "FRA"
+          }
+        ],
+        "personId": "d28afae9-08fb-4ed4-9c42-fc33bda34939",
+        "standardFamilyName": "Sadaoui",
+        "standardGivenName": "Mehdi"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "872CBDD3-455E-4245-9703-E649251AE183",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Kokoro Isomura",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "d459a428-91bd-4fa8-b69f-f1cc45a0333f",
+      "person": {
+        "extensions": [],
+        "birthDate": "2001-12-28",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "JPN",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "JPN"
+          }
+        ],
+        "personId": "a6a95cd9-8d42-4fa7-b2c7-d487fbeefa5e",
+        "standardFamilyName": "Isomura",
+        "standardGivenName": "Kokoro"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "16C4318E-2B77-47EA-9276-301B797833A0",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Jeffrey Von Der Schulenburg",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "33b2b761-6a64-489f-91b5-001f681cf170",
+      "person": {
+        "extensions": [],
+        "birthDate": "1999-09-05",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "SUI",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "SUI"
+          }
+        ],
+        "personId": "b393f400-f6ff-4ea5-9b28-38eb668afe7d",
+        "standardFamilyName": "Von Der Schulenburg",
+        "standardGivenName": "Jeffrey"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "E2943C59-1E89-4E90-A7CF-35505D3F84B0",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Romain Faucon",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "9c540156-00c4-4e3f-8877-7b2a238cb35c",
+      "person": {
+        "extensions": [],
+        "birthDate": "2000-08-24",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "BEL",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "BEL"
+          }
+        ],
+        "personId": "6df51020-dad4-4530-9e30-337f96cf0884",
+        "standardFamilyName": "Faucon",
+        "standardGivenName": "Romain"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "3845147B-5FDE-4EF8-BAC1-81C005580AD8",
+        "9678B4CB-F814-40F3-81F5-8CE1A4F7B928",
+        "EF596649-BFB2-4C51-AF4F-CA944C533904",
+        "0CCFC3D1-6CD1-4228-A0F0-FB3730F37693",
+        "C2E97CEC-C1EF-49FD-B125-AE197C104EA2",
+        "701A0691-4FF7-49FF-8740-81D557050952",
+        "398D27B1-3CF4-46B5-9A28-5C50D3E43EFA",
+        "743A7849-FAC0-49D6-B1C1-3E15F7D828FB",
+        "4206F348-20E7-4762-BD64-80316F6207F4",
+        "35657100-CC1D-4F72-A98F-9F553B300D80"
+      ],
+      "participantRoleResponsibilities": ["Home"],
+      "participantRoleResponsabilities": [],
+      "participantId": "35E17EEB-6EB1-4563-8AC2-E94CCA2E44B1",
+      "participantType": "TEAM",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "participantName": "Sandeaters",
+      "teamId": "2FF66ECB-960E-4991-9B1E-00A2BF43760B",
+      "participantOtherName": "LU",
+      "onlineResources": [
+        {
+          "name": "logo",
+          "identifier": "https://colleges.wearecollegetennis.com/Library/LehighUniversityM?command=Proxy&lang=en&type=Images&currentFolder=%2F&hash=b3f6c4b9304ef939ae547c24bfee316c0dee76ca&fileName=Lehigh-logo.png",
+          "resourceType": "URL",
+          "resourceSubType": "IMAGE",
+          "extensions": [
+            {
+              "name": "logoWidth",
+              "value": 80
+            }
+          ]
+        }
+      ],
+      "contacts": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "F52A0E08-93CA-4933-BF8C-3C920F38000D",
+        "ABA829A0-8D5A-429E-9F3A-8C9DFFEE2E14",
+        "3F54BA6A-50FE-44E4-827F-BE4B542686A4",
+        "A84C3E42-C60C-4772-BEAF-135E313CB90B",
+        "24641B6A-6EFB-4599-8052-802576F8F332",
+        "51FC341B-506B-4598-9880-AF7A9F4B8243",
+        "7812E748-BCD9-4810-85B7-F243AECBBC6B",
+        "154620FE-5DAD-49FD-8D4D-FEBA3E50CF90",
+        "181AA9FB-7787-4BD5-9A70-F8EC902B4236",
+        "BB1BB094-986E-4302-9B36-D99F6F45DDA5",
+        "E1A0531A-439D-430B-A929-CF13C9629FA6",
+        "872CBDD3-455E-4245-9703-E649251AE183",
+        "16C4318E-2B77-47EA-9276-301B797833A0",
+        "E2943C59-1E89-4E90-A7CF-35505D3F84B0",
+        "A66E3787-68F9-48C7-A55F-EB35269C40AD"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "17CF81CC-80C5-44AF-AC92-32564881C94E",
+      "participantType": "TEAM",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "participantName": "Civil Disobedients",
+      "teamId": "C773C087-0EEA-41BF-B6C0-CDE71BD7FDED",
+      "participantOtherName": "HU",
+      "onlineResources": [
+        {
+          "name": "logo",
+          "identifier": "https://colleges.wearecollegetennis.com/Library/HofstraUniversityM?command=Proxy&lang=en&type=Images&currentFolder=%2F&hash=331f13ffdd28482824ce3507719d86f1065c8b98&fileName=Hofstra-logo.png",
+          "resourceType": "URL",
+          "resourceSubType": "IMAGE",
+          "extensions": [
+            {
+              "name": "logoWidth",
+              "value": 80
+            }
+          ]
+        }
+      ],
+      "contacts": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "F52A0E08-93CA-4933-BF8C-3C920F38000D",
+        "A66E3787-68F9-48C7-A55F-EB35269C40AD"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "a581c8c9-7ce8-4689-8cfc-a7267d8de410",
+      "participantName": "Edmund/Philippov",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "A66E3787-68F9-48C7-A55F-EB35269C40AD",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Kyle Edmund",
+      "participantRole": "COMPETITOR",
+      "participantStatus": "ACTIVE",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "2e40d498-f1a3-47e6-8d5c-ee170a8a3254",
+      "person": {
+        "extensions": [],
+        "birthDate": "2001-06-13",
+        "isMock": true,
+        "sex": "MALE",
+        "nationalityCode": "GBR",
+        "addresses": [
+          {
+            "city": "Central Garage",
+            "state": "MD",
+            "postalCode": "95364",
+            "countryCode": "GBR"
+          }
+        ],
+        "personId": "42f30d5a-06a0-48dd-a628-ebf49bd1c711",
+        "standardFamilyName": "Edmund",
+        "standardGivenName": "Kyle"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "EF596649-BFB2-4C51-AF4F-CA944C533904",
+        "3845147B-5FDE-4EF8-BAC1-81C005580AD8"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "37e573ac-7dfc-4da6-9c0e-2e042a64e3b7",
+      "participantName": "Thompson/Tsitsipas",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "16C4318E-2B77-47EA-9276-301B797833A0",
+        "A84C3E42-C60C-4772-BEAF-135E313CB90B"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "731bbc85-cb32-40e2-9155-cbeee20f43fd",
+      "participantName": "Nesterov/Von Der Schulenburg",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "0CCFC3D1-6CD1-4228-A0F0-FB3730F37693",
+        "4206F348-20E7-4762-BD64-80316F6207F4"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "7b8457e6-061d-462f-9833-6f05575c9201",
+      "participantName": "Hurkacz/Martinez",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "3F54BA6A-50FE-44E4-827F-BE4B542686A4",
+        "E1A0531A-439D-430B-A929-CF13C9629FA6"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "3fc14144-7e93-4c82-882f-06716230f062",
+      "participantName": "Llamas Ruiz/Sadaoui",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "C2E97CEC-C1EF-49FD-B125-AE197C104EA2",
+        "701A0691-4FF7-49FF-8740-81D557050952"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "f9c3f20f-da3c-45dd-b284-d28bb63f1b8d",
+      "participantName": "Fery/Vitus Nodskov Rune",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["16C4318E-2B77-47EA-9276-301B797833A0"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "979d3b40-b596-48b7-9bed-083a1ee5ad02",
+      "participantName": "Von Der Schulenburg/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["A84C3E42-C60C-4772-BEAF-135E313CB90B"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "febbe64f-0ff7-49ca-b2ce-c29c0348a154",
+      "participantName": "Nesterov/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["16C4318E-2B77-47EA-9276-301B797833A0"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "cf32857f-8fc9-4a88-9f3a-42986360a921",
+      "participantName": "Von Der Schulenburg/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["3F54BA6A-50FE-44E4-827F-BE4B542686A4"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "2e6f5b39-162a-4bfb-93d5-794b23644ea1",
+      "participantName": "Llamas Ruiz/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["E1A0531A-439D-430B-A929-CF13C9629FA6"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "40f4896c-2417-41a7-9167-8043b12868bd",
+      "participantName": "Sadaoui/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["16C4318E-2B77-47EA-9276-301B797833A0"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "6f7426e5-e0cb-43cc-b670-e15232f56e07",
+      "participantName": "Von Der Schulenburg/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["A84C3E42-C60C-4772-BEAF-135E313CB90B"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "03902968-d22d-484f-b4af-8bfd583a769e",
+      "participantName": "Nesterov/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["16C4318E-2B77-47EA-9276-301B797833A0"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "96461ae7-6b61-4b72-aa24-71e02fcd7705",
+      "participantName": "Von Der Schulenburg/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["A84C3E42-C60C-4772-BEAF-135E313CB90B"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "08c9c582-f0cb-4636-9f4b-a01ba2e2b47c",
+      "participantName": "Nesterov/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["3F54BA6A-50FE-44E4-827F-BE4B542686A4"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "746f0eec-ca5c-4364-8efb-736fdd716ce4",
+      "participantName": "Llamas Ruiz/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["E1A0531A-439D-430B-A929-CF13C9629FA6"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "9c6c125f-9fa0-4cdb-98cf-4568ad80b9e4",
+      "participantName": "Sadaoui/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["3F54BA6A-50FE-44E4-827F-BE4B542686A4"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "c1056a04-0afd-4680-9222-f9adcb1eb14b",
+      "participantName": "Llamas Ruiz/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["3F54BA6A-50FE-44E4-827F-BE4B542686A4"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "00630e1e-af16-4694-b079-9a32166c4aad",
+      "participantName": "Llamas Ruiz/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["16C4318E-2B77-47EA-9276-301B797833A0"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "ee08fd43-af75-4d28-b786-1330b9732dc5",
+      "participantName": "Von Der Schulenburg/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["16C4318E-2B77-47EA-9276-301B797833A0"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "ff220395-a669-4b3d-9a23-0d65826c1419",
+      "participantName": "Von Der Schulenburg/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["A84C3E42-C60C-4772-BEAF-135E313CB90B"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "047545c2-b7a8-4068-afa6-c6f2692241af",
+      "participantName": "Nesterov/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["ABA829A0-8D5A-429E-9F3A-8C9DFFEE2E14"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "82fef398-d13c-4504-98e9-26701cc1d5fa",
+      "participantName": "Bautista Torres/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["ABA829A0-8D5A-429E-9F3A-8C9DFFEE2E14"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "67c682b1-323a-4975-b777-451f5f7d45da",
+      "participantName": "Bautista Torres/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["ABA829A0-8D5A-429E-9F3A-8C9DFFEE2E14"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "e23c3bbc-5f01-45b1-9648-0846694ea8c3",
+      "participantName": "Bautista Torres/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": ["24641B6A-6EFB-4599-8052-802576F8F332"],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantId": "f31ecd90-6567-4712-a367-4553b470771b",
+      "participantName": "Legout/Unknown",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "individualParticipantIds": ["872CBDD3-455E-4245-9703-E649251AE183"],
+      "participantId": "f50771bc-a6bf-4fbe-a69e-723135cbc715",
+      "participantName": "Isomura/Unknown"
+    },
+    {
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "individualParticipantIds": ["181AA9FB-7787-4BD5-9A70-F8EC902B4236"],
+      "participantId": "273743b7-b289-407b-8971-cf08f1d3c88a",
+      "participantName": "Cecchinato/Unknown"
+    },
+    {
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "individualParticipantIds": ["A84C3E42-C60C-4772-BEAF-135E313CB90B"],
+      "participantId": "bd542edd-c561-45b4-99bd-d2e406abd2d3",
+      "participantName": "Nesterov/Unknown"
+    },
+    {
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "individualParticipantIds": ["24641B6A-6EFB-4599-8052-802576F8F332"],
+      "participantId": "d71149db-02f6-4e09-ade0-f3e5f5ea3b97",
+      "participantName": "Legout/Unknown"
+    }
+  ],
+  "events": [
+    {
+      "allowedDrawTypes": [],
+      "tennisOfficialIds": [],
+      "startDate": "2022-02-20T19:00:00.000Z",
+      "endDate": "2022-02-21T05:00:00.000Z",
+      "eventType": "TEAM",
+      "eventId": "EE318426-C189-4E95-8523-1E87FD9194F9",
+      "eventName": "Dual Match",
+      "tieFormat": {
+        "winCriteria": {
+          "valueGoal": 4
+        },
+        "collectionDefinitions": [
+          {
+            "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+            "collectionName": "Doubles",
+            "matchUpType": "DOUBLES",
+            "matchUpFormat": "SET1-S:6/TB7",
+            "matchUpCount": 3,
+            "collectionValue": 1,
+            "collectionValueProfiles": []
+          },
+          {
+            "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+            "collectionName": "Singles",
+            "matchUpType": "SINGLES",
+            "matchUpFormat": "SET3-S:6/TB7",
+            "matchUpCount": 6,
+            "matchUpValue": 1,
+            "collectionValueProfiles": []
+          }
+        ]
+      },
+      "entries": [
+        {
+          "participantId": "35E17EEB-6EB1-4563-8AC2-E94CCA2E44B1",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 0
+        },
+        {
+          "participantId": "17CF81CC-80C5-44AF-AC92-32564881C94E",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 1
+        }
+      ],
+      "drawDefinitions": [
+        {
+          "automated": true,
+          "drawRepresentativeIds": [],
+          "matchUps": [],
+          "drawId": "b64103e5-7e63-4a9f-a62c-8569b0a2fcae",
+          "drawName": "Draw",
+          "entries": [
+            {
+              "participantId": "35E17EEB-6EB1-4563-8AC2-E94CCA2E44B1",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 0
+            },
+            {
+              "participantId": "17CF81CC-80C5-44AF-AC92-32564881C94E",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 1
+            }
+          ],
+          "links": [],
+          "structures": [
+            {
+              "matchUps": [
+                {
+                  "drawPositions": [1, 2],
+                  "matchUpStatusCodes": [],
+                  "tieMatchUps": [
+                    {
+                      "drawPositions": [],
+                      "matchUpStatusCodes": [],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                      "matchUpType": "DOUBLES",
+                      "matchUpFormat": "SET1-S:6/TB7",
+                      "collectionPosition": 1,
+                      "matchUpId": "238502d2-8688-4a1c-b4fc-fbb4e250d5d9",
+                      "sides": [
+                        {
+                          "sideNumber": 1,
+                          "lineUp": []
+                        },
+                        {
+                          "sideNumber": 2,
+                          "lineUp": []
+                        }
+                      ],
+                      "createdAt": "2022-02-01T20:32:11.804Z",
+                      "updatedAt": "2022-02-21T15:34:04.754Z",
+                      "matchUpStatus": "COMPLETED",
+                      "score": {
+                        "scoreStringSide1": "2-6",
+                        "scoreStringSide2": "6-2",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 2,
+                            "side2Score": 6,
+                            "winningSide": 2
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "drawPositions": [],
+                      "matchUpStatusCodes": [],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                      "matchUpType": "DOUBLES",
+                      "matchUpFormat": "SET1-S:6/TB7",
+                      "collectionPosition": 2,
+                      "matchUpId": "9e3b56a2-69a5-45ce-b363-c3d67c5a5d26",
+                      "sides": [
+                        {
+                          "sideNumber": 1,
+                          "lineUp": []
+                        },
+                        {
+                          "sideNumber": 2,
+                          "lineUp": []
+                        }
+                      ],
+                      "createdAt": "2022-02-01T20:32:11.805Z",
+                      "updatedAt": "2022-02-21T15:34:58.057Z",
+                      "matchUpStatus": "COMPLETED",
+                      "score": {
+                        "scoreStringSide1": "3-6",
+                        "scoreStringSide2": "6-3",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 3,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "drawPositions": [],
+                      "matchUpStatusCodes": [],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                      "matchUpType": "DOUBLES",
+                      "matchUpFormat": "SET1-S:6/TB7",
+                      "collectionPosition": 3,
+                      "matchUpId": "062226f3-055b-4256-8fa7-614d11112b92",
+                      "sides": [
+                        {
+                          "sideNumber": 1,
+                          "lineUp": []
+                        },
+                        {
+                          "sideNumber": 2,
+                          "lineUp": []
+                        }
+                      ],
+                      "createdAt": "2022-02-01T20:32:11.805Z",
+                      "updatedAt": "2022-02-21T15:35:22.390Z",
+                      "matchUpStatus": "COMPLETED",
+                      "score": {
+                        "scoreStringSide1": "3-6",
+                        "scoreStringSide2": "6-3",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 3,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "drawPositions": [],
+                      "matchUpStatusCodes": [],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                      "matchUpType": "SINGLES",
+                      "matchUpFormat": "SET3-S:6/TB7",
+                      "collectionPosition": 1,
+                      "matchUpId": "ae470008-3747-4101-843e-114b5f615de5",
+                      "sides": [
+                        {
+                          "sideNumber": 1,
+                          "lineUp": []
+                        },
+                        {
+                          "sideNumber": 2,
+                          "lineUp": []
+                        }
+                      ],
+                      "createdAt": "2022-02-01T20:32:11.805Z",
+                      "updatedAt": "2022-02-21T15:36:47.905Z",
+                      "matchUpStatus": "COMPLETED",
+                      "score": {
+                        "scoreStringSide1": "7-5 6-4",
+                        "scoreStringSide2": "5-7 4-6",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 7,
+                            "side2Score": 5,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 6,
+                            "side2Score": 4,
+                            "winningSide": 1,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 1
+                    },
+                    {
+                      "drawPositions": [],
+                      "matchUpStatusCodes": [],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                      "matchUpType": "SINGLES",
+                      "matchUpFormat": "SET3-S:6/TB7",
+                      "collectionPosition": 2,
+                      "matchUpId": "f5d9872e-5ed8-4ad2-81a0-8c9d9c7cb001",
+                      "sides": [
+                        {
+                          "sideNumber": 1,
+                          "lineUp": []
+                        },
+                        {
+                          "sideNumber": 2,
+                          "lineUp": []
+                        }
+                      ],
+                      "createdAt": "2022-02-01T20:32:11.806Z",
+                      "updatedAt": "2022-02-21T15:36:59.571Z",
+                      "matchUpStatus": "COMPLETED",
+                      "score": {
+                        "scoreStringSide1": "2-6 2-6",
+                        "scoreStringSide2": "6-2 6-2",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 2,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 2,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "drawPositions": [],
+                      "matchUpStatusCodes": [],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                      "matchUpType": "SINGLES",
+                      "matchUpFormat": "SET3-S:6/TB7",
+                      "collectionPosition": 3,
+                      "matchUpId": "3eb12003-e8a0-4d76-b49f-20efe7fca0ed",
+                      "sides": [
+                        {
+                          "sideNumber": 1,
+                          "lineUp": []
+                        },
+                        {
+                          "sideNumber": 2,
+                          "lineUp": []
+                        }
+                      ],
+                      "createdAt": "2022-02-01T20:32:11.806Z",
+                      "updatedAt": "2022-02-21T15:37:10.212Z",
+                      "matchUpStatus": "COMPLETED",
+                      "score": {
+                        "scoreStringSide1": "6-3 6-1",
+                        "scoreStringSide2": "3-6 1-6",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 6,
+                            "side2Score": 3,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 6,
+                            "side2Score": 1,
+                            "winningSide": 1,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 1
+                    },
+                    {
+                      "drawPositions": [],
+                      "matchUpStatusCodes": [],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                      "matchUpType": "SINGLES",
+                      "matchUpFormat": "SET3-S:6/TB7",
+                      "collectionPosition": 4,
+                      "matchUpId": "5d2f7cac-9968-420d-ba90-af9c0d985197",
+                      "sides": [
+                        {
+                          "sideNumber": 1,
+                          "lineUp": []
+                        },
+                        {
+                          "sideNumber": 2,
+                          "lineUp": []
+                        }
+                      ],
+                      "createdAt": "2022-02-01T20:32:11.806Z",
+                      "updatedAt": "2022-02-21T15:37:21.815Z",
+                      "matchUpStatus": "COMPLETED",
+                      "score": {
+                        "scoreStringSide1": "6-2 6-3",
+                        "scoreStringSide2": "2-6 3-6",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 6,
+                            "side2Score": 2,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 6,
+                            "side2Score": 3,
+                            "winningSide": 1,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 1
+                    },
+                    {
+                      "drawPositions": [],
+                      "matchUpStatusCodes": [],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                      "matchUpType": "SINGLES",
+                      "matchUpFormat": "SET3-S:6/TB7",
+                      "collectionPosition": 5,
+                      "matchUpId": "92ba9442-535b-4e7f-8a4f-e3b8b806b69b",
+                      "sides": [
+                        {
+                          "sideNumber": 1,
+                          "lineUp": []
+                        },
+                        {
+                          "sideNumber": 2,
+                          "lineUp": []
+                        }
+                      ],
+                      "createdAt": "2022-02-01T20:32:11.806Z",
+                      "updatedAt": "2022-02-21T15:37:31.424Z",
+                      "matchUpStatus": "COMPLETED",
+                      "score": {
+                        "scoreStringSide1": "6-3 6-4",
+                        "scoreStringSide2": "3-6 4-6",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 6,
+                            "side2Score": 3,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 6,
+                            "side2Score": 4,
+                            "winningSide": 1,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 1
+                    },
+                    {
+                      "drawPositions": [],
+                      "matchUpStatusCodes": [],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                      "matchUpType": "SINGLES",
+                      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                      "collectionPosition": 6,
+                      "matchUpId": "49d6a107-a465-454e-b6cb-5a927fb6099c",
+                      "sides": [
+                        {
+                          "sideNumber": 1,
+                          "lineUp": []
+                        },
+                        {
+                          "sideNumber": 2,
+                          "lineUp": []
+                        }
+                      ],
+                      "createdAt": "2022-02-01T20:32:11.806Z",
+                      "updatedAt": "2022-02-21T15:37:57.360Z",
+                      "matchUpStatus": "COMPLETED",
+                      "score": {
+                        "scoreStringSide1": "6-3 2-6 [10-5]",
+                        "scoreStringSide2": "3-6 6-2 [5-10]",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 6,
+                            "side2Score": 3,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 2,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 3,
+                            "side1TiebreakScore": 10,
+                            "side2TiebreakScore": 5,
+                            "winningSide": 1,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 1
+                    }
+                  ],
+                  "winners": [],
+                  "losers": [],
+                  "matchUpId": "025cc7c6-5ae1-4ec5-8b0b-80a6182bafef",
+                  "roundNumber": 1,
+                  "roundPosition": 1,
+                  "matchUpStatus": "COMPLETED",
+                  "finishingRound": 1,
+                  "finishingPositionRange": {
+                    "loser": [2, 2],
+                    "winner": [1, 1]
+                  },
+                  "matchUpType": "TEAM",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "2022-02-20",
+                      "createdAt": "2022-02-01T20:32:11.778Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "14:00",
+                      "createdAt": "2022-02-01T20:32:11.779Z"
+                    }
+                  ],
+                  "sides": [
+                    {
+                      "sideNumber": 1,
+                      "lineUp": [
+                        {
+                          "participantId": "EF596649-BFB2-4C51-AF4F-CA944C533904",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 1
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "3845147B-5FDE-4EF8-BAC1-81C005580AD8",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                              "collectionPosition": 2
+                            },
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 1
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "0CCFC3D1-6CD1-4228-A0F0-FB3730F37693",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                              "collectionPosition": 5
+                            },
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 2
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "4206F348-20E7-4762-BD64-80316F6207F4",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 2
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "C2E97CEC-C1EF-49FD-B125-AE197C104EA2",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                              "collectionPosition": 4
+                            },
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 3
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "701A0691-4FF7-49FF-8740-81D557050952",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                              "collectionPosition": 3
+                            },
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 3
+                            }
+                          ]
+                        },
+                        {
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                              "collectionPosition": 6
+                            }
+                          ],
+                          "participantId": "35657100-CC1D-4F72-A98F-9F553B300D80"
+                        }
+                      ]
+                    },
+                    {
+                      "sideNumber": 2,
+                      "lineUp": [
+                        {
+                          "participantId": "F52A0E08-93CA-4933-BF8C-3C920F38000D",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                              "collectionPosition": 1
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "A66E3787-68F9-48C7-A55F-EB35269C40AD",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                              "collectionPosition": 2
+                            },
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 1
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "16C4318E-2B77-47EA-9276-301B797833A0",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 2
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "A84C3E42-C60C-4772-BEAF-135E313CB90B",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                              "collectionPosition": 3
+                            },
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 3
+                            },
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 2
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "3F54BA6A-50FE-44E4-827F-BE4B542686A4",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                              "collectionPosition": 4
+                            },
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 2
+                            },
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 3
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "E1A0531A-439D-430B-A929-CF13C9629FA6",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                              "collectionPosition": 5
+                            },
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 3
+                            }
+                          ]
+                        },
+                        {
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                              "collectionPosition": 6
+                            }
+                          ],
+                          "participantId": "BB1BB094-986E-4302-9B36-D99F6F45DDA5"
+                        },
+                        {
+                          "participantId": "ABA829A0-8D5A-429E-9F3A-8C9DFFEE2E14",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 2
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "24641B6A-6EFB-4599-8052-802576F8F332",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 2
+                            }
+                          ]
+                        },
+                        {
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 2
+                            }
+                          ],
+                          "participantId": "872CBDD3-455E-4245-9703-E649251AE183"
+                        },
+                        {
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                              "collectionPosition": 2
+                            }
+                          ],
+                          "participantId": "181AA9FB-7787-4BD5-9A70-F8EC902B4236"
+                        }
+                      ]
+                    }
+                  ],
+                  "createdAt": "2022-02-01T20:32:11.804Z",
+                  "updatedAt": "2022-02-23T08:21:06.574Z",
+                  "score": {
+                    "scoreStringSide1": "5-2",
+                    "scoreStringSide2": "2-5",
+                    "sets": [
+                      {
+                        "side1Score": 5,
+                        "side2Score": 2
+                      }
+                    ]
+                  },
+                  "winningSide": 1
+                }
+              ],
+              "structureId": "119977c0-510e-4807-94b8-c8cd8d62cd8d",
+              "finishingPosition": "ROUND_OUTCOME",
+              "seedAssignments": [],
+              "stageSequence": 1,
+              "structureName": "MAIN",
+              "stage": "MAIN",
+              "positionAssignments": [
+                {
+                  "drawPosition": 1,
+                  "participantId": "35E17EEB-6EB1-4563-8AC2-E94CCA2E44B1"
+                },
+                {
+                  "drawPosition": 2,
+                  "participantId": "17CF81CC-80C5-44AF-AC92-32564881C94E"
+                }
+              ],
+              "updatedAt": 1645624122368,
+              "seedLimit": 0
+            }
+          ],
+          "drawType": "SINGLE_ELIMINATION",
+          "extensions": [
+            {
+              "name": "entryProfile",
+              "value": {
+                "MAIN": {
+                  "drawSize": 2,
+                  "alternates": true
+                }
+              }
+            },
+            {
+              "name": "appliedPolicies",
+              "value": {
+                "seeding": {
+                  "policyName": "USTA",
+                  "seedingProfile": "SEPARATE",
+                  "duplicateSeedNumbers": true,
+                  "drawSizeProgression": true,
+                  "validSeedPositions": {
+                    "ignore": true
+                  },
+                  "seedsCountThresholds": [
+                    {
+                      "drawSize": 4,
+                      "minimumParticipantCount": 3,
+                      "seedsCount": 2
+                    },
+                    {
+                      "drawSize": 16,
+                      "minimumParticipantCount": 12,
+                      "seedsCount": 4
+                    },
+                    {
+                      "drawSize": 32,
+                      "minimumParticipantCount": 24,
+                      "seedsCount": 8
+                    },
+                    {
+                      "drawSize": 64,
+                      "minimumParticipantCount": 48,
+                      "seedsCount": 16
+                    },
+                    {
+                      "drawSize": 128,
+                      "minimumParticipantCount": 96,
+                      "seedsCount": 32
+                    },
+                    {
+                      "drawSize": 256,
+                      "minimumParticipantCount": 192,
+                      "seedsCount": 64
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "lineUps",
+              "value": {
+                "17CF81CC-80C5-44AF-AC92-32564881C94E": [
+                  {
+                    "participantId": "F52A0E08-93CA-4933-BF8C-3C920F38000D",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "A66E3787-68F9-48C7-A55F-EB35269C40AD",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                        "collectionPosition": 2
+                      },
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "16C4318E-2B77-47EA-9276-301B797833A0",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "A84C3E42-C60C-4772-BEAF-135E313CB90B",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                        "collectionPosition": 3
+                      },
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 3
+                      },
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "3F54BA6A-50FE-44E4-827F-BE4B542686A4",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                        "collectionPosition": 4
+                      },
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 2
+                      },
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 3
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "E1A0531A-439D-430B-A929-CF13C9629FA6",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                        "collectionPosition": 5
+                      },
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 3
+                      }
+                    ]
+                  },
+                  {
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                        "collectionPosition": 6
+                      }
+                    ],
+                    "participantId": "BB1BB094-986E-4302-9B36-D99F6F45DDA5"
+                  },
+                  {
+                    "participantId": "ABA829A0-8D5A-429E-9F3A-8C9DFFEE2E14",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "24641B6A-6EFB-4599-8052-802576F8F332",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  },
+                  {
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 2
+                      }
+                    ],
+                    "participantId": "872CBDD3-455E-4245-9703-E649251AE183"
+                  },
+                  {
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 2
+                      }
+                    ],
+                    "participantId": "181AA9FB-7787-4BD5-9A70-F8EC902B4236"
+                  }
+                ],
+                "35E17EEB-6EB1-4563-8AC2-E94CCA2E44B1": [
+                  {
+                    "participantId": "EF596649-BFB2-4C51-AF4F-CA944C533904",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "3845147B-5FDE-4EF8-BAC1-81C005580AD8",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                        "collectionPosition": 2
+                      },
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "0CCFC3D1-6CD1-4228-A0F0-FB3730F37693",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                        "collectionPosition": 5
+                      },
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "4206F348-20E7-4762-BD64-80316F6207F4",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "C2E97CEC-C1EF-49FD-B125-AE197C104EA2",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                        "collectionPosition": 4
+                      },
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 3
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "701A0691-4FF7-49FF-8740-81D557050952",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                        "collectionPosition": 3
+                      },
+                      {
+                        "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
+                        "collectionPosition": 3
+                      }
+                    ]
+                  },
+                  {
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
+                        "collectionPosition": 6
+                      }
+                    ],
+                    "participantId": "35657100-CC1D-4F72-A98F-9F553B300D80"
+                  }
+                ]
+              }
+            }
+          ],
+          "updatedAt": 1645624122368,
+          "drawOrder": 1
+        }
+      ],
+      "extensions": [
+        {
+          "name": "flightProfile",
+          "value": {
+            "flights": [
+              {
+                "manuallyAdded": true,
+                "flightNumber": 1,
+                "drawEntries": [
+                  {
+                    "participantId": "35E17EEB-6EB1-4563-8AC2-E94CCA2E44B1",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 0
+                  },
+                  {
+                    "participantId": "17CF81CC-80C5-44AF-AC92-32564881C94E",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 1
+                  }
+                ],
+                "drawName": "Draw",
+                "drawId": "b64103e5-7e63-4a9f-a62c-8569b0a2fcae"
+              }
+            ]
+          }
+        }
+      ],
+      "links": []
+    }
+  ],
+  "localTimeZone": "America/New_York",
+  "dualMatchMetadata": {
+    "scoringFormat": "COLLEGE_DEFAULT",
+    "opponent": "61be04398fcfc94c23950678",
+    "teamOrgIds": [
+      "2FF66ECB-960E-4991-9B1E-00A2BF43760B",
+      "C773C087-0EEA-41BF-B6C0-CDE71BD7FDED"
+    ],
+    "homeTeamOrgId": "2FF66ECB-960E-4991-9B1E-00A2BF43760B",
+    "neutralLocation": false,
+    "isConference": false,
+    "noScheduledTime": false
+  },
+  "onlineResources": [],
+  "registrationProfile": [],
+  "totalPrizeMoney": [],
+  "tournamentCategories": [],
+  "tournamentOtherIds": [],
+  "createdAt": "2022-05-12T14:03:43.732Z",
+  "updatedAt": "2022-02-23T08:21:06.598Z",
+  "venueIds": [],
+  "venues": []
+}

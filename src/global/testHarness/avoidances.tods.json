@@ -1,0 +1,3409 @@
+{
+  "matchUps": [],
+  "tournamentGroups": [],
+  "endDate": "2021-10-17T00:00:00.000Z",
+  "tournamentId": "49093102-647f-417e-be4d-1e83f9ba7c80",
+  "registrationProfile": [
+    {
+      "entriesClose": "2021-10-07T00:00:00.000Z"
+    }
+  ],
+  "tournamentName": "Anonymized: 2022-05-12",
+  "localTimeZone": "America/New_York",
+  "startDate": "2021-10-16T00:00:00.000Z",
+  "events": [
+    {
+      "allowedDrawTypes": ["FEED_IN_CHAMPIONSHIP_TO_QF"],
+      "tennisOfficialIds": [],
+      "gender": "FEMALE",
+      "endDate": "2021-10-17T00:00:00.000Z",
+      "eventType": "SINGLES",
+      "startDate": "2021-10-16T00:00:00.000Z",
+      "entries": [
+        {
+          "entryId": "94562BE4-3BFA-448F-AF7F-B741A74F38B0",
+          "entryPosition": 0,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "017CC4EF-EBF1-4F18-B4D0-D167F671DAB6"
+        },
+        {
+          "entryId": "14C3E9E0-469A-4379-B732-A5435A031143",
+          "entryPosition": 1,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "4AC482AA-DFE2-4662-B7ED-5D1631A815F4"
+        },
+        {
+          "entryId": "8F951531-B38E-4BBF-A356-CAE8AE072092",
+          "entryPosition": 2,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "A854440D-70DF-4EEC-8E6B-5235DF6E98E8"
+        },
+        {
+          "entryId": "89447B42-1DBE-457C-B247-9563575364F8",
+          "entryPosition": 3,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "BAA9E4C9-A789-4F2E-BC5D-CF0FF72F32A5"
+        },
+        {
+          "entryId": "EF18D508-BE72-4598-84F4-70F53C528701",
+          "entryPosition": 4,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "D1973154-4CBD-4A6A-8DE4-2D9F980987C3"
+        },
+        {
+          "entryId": "916B0CF1-7862-4FD0-9C33-015ECEFC26DF",
+          "entryPosition": 5,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "65C5CB08-C86D-4775-9C5B-CF054FF6A2D7"
+        },
+        {
+          "entryId": "F9EBBFF3-39D7-44CE-B6A6-5C907E5AC115",
+          "entryPosition": 6,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "B697EB6F-6055-4558-9E76-6791CD40C5F2"
+        },
+        {
+          "entryId": "24F2EF92-5363-4102-81E4-DA45CACA096E",
+          "entryPosition": 7,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "B899AE15-9099-40C8-9785-D548E6189000"
+        },
+        {
+          "entryId": "8271625D-2B1A-41A9-8729-A1BB930A6973",
+          "entryPosition": 8,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "B01DC022-4B56-40F3-AD56-9FE71FC366BA"
+        },
+        {
+          "entryId": "5CC97F7A-EB3E-4473-A390-768BAF4E4FA3",
+          "entryPosition": 9,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "09CB7198-7B8A-4080-8435-749E314A29BC"
+        },
+        {
+          "entryId": "DB2350D3-5EBF-46D5-85C1-25B46278C10C",
+          "entryPosition": 10,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "364425AE-9A3F-40E5-9885-BCFA5D0517EF"
+        },
+        {
+          "entryId": "8F3B0559-0917-4F1D-B63E-2C190CBD4351",
+          "entryPosition": 11,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "0B6250EC-9B81-4601-A161-038E63919217"
+        },
+        {
+          "entryId": "FD276FB5-7224-4647-8440-A1D8F7868F98",
+          "entryPosition": 12,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "B11A73B7-1306-4075-8AEC-72071CCE678F"
+        },
+        {
+          "entryId": "0C99E906-1550-4F70-8CED-5C6A35306225",
+          "entryPosition": 13,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "20401D83-A15B-405D-B860-C9373D826DB5"
+        },
+        {
+          "entryId": "032439A9-F791-4B6C-BED6-8853ECD5866C",
+          "entryPosition": 14,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "53AED986-677F-44FF-8E58-3507EE311B38"
+        },
+        {
+          "entryId": "2E0F0DEA-189D-43D9-88E4-DFA50B207EEC",
+          "entryPosition": 15,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "5C9292F6-8C23-42B6-9D41-44761BBCF169"
+        },
+        {
+          "entryId": "B25F8864-5C34-4C7D-84B1-C5DE44FA39EB",
+          "entryPosition": 16,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "9E6966C7-43A4-4280-945F-5D7BC66DF486"
+        },
+        {
+          "entryId": "A66D0CF0-3513-4D32-ACD9-AA1E54853EA7",
+          "entryPosition": 17,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "7B29062A-7A02-4197-B36E-3B49EE0F5096"
+        },
+        {
+          "entryId": "090DDCDF-DD74-48C3-896A-F6EA91C57FE2",
+          "entryPosition": 18,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "0D94A463-18F6-4D83-AF6C-B18DC70B5A12"
+        },
+        {
+          "entryId": "CEF59468-67AA-47D5-B672-3CCC81D781AA",
+          "entryPosition": 19,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "8B2AD08F-6DF6-493D-941B-692D4CFFA183"
+        },
+        {
+          "entryId": "355E22BC-9F03-4287-BEFC-B33005692A34",
+          "entryPosition": 20,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "D0219C5C-D25B-4BA7-B25C-A67224876DA4"
+        },
+        {
+          "entryId": "3A8C8CA7-D7AB-40B9-B923-20C348EA6397",
+          "entryPosition": 21,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "249C13BC-DAD0-48A0-9927-472B8949248B"
+        },
+        {
+          "entryId": "E95E6565-C65F-463A-BFAE-D04F9551954E",
+          "entryPosition": 22,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "DBB0E725-C040-4B04-9F2A-17636E63ACB7"
+        },
+        {
+          "entryId": "75A2BA41-76A4-40BF-9976-4982AC430362",
+          "entryPosition": 23,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "D0520932-083C-4831-B5E6-51A63DBCDF80"
+        },
+        {
+          "entryId": "BA9A51A3-C9B4-4518-A191-3B4B63CDFA6A",
+          "entryPosition": 24,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "FD55575C-6377-4D31-8341-9EF454007700"
+        },
+        {
+          "entryId": "9492F8DD-77FC-486D-8645-F4EFF85837C8",
+          "entryPosition": 25,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "CD44B364-5EDF-4B50-B089-835B2504D17F"
+        },
+        {
+          "entryId": "18DB9917-69F2-4A23-BBEA-FB6BA6D88824",
+          "entryPosition": 0,
+          "entryStatus": "WITHDRAWN",
+          "participantId": "DBBA22F4-4794-4AB4-BE5B-693229EEE50F"
+        },
+        {
+          "entryId": "7B1BB05C-DDFA-4CFA-B94F-1FF3E1E05D29",
+          "entryPosition": 1,
+          "entryStatus": "WITHDRAWN",
+          "participantId": "9917491B-AC8C-4521-9FBF-AAC54E472264"
+        },
+        {
+          "entryId": "1E773D7A-39B2-49C9-96F1-A786A8EDC137",
+          "entryPosition": 2,
+          "entryStatus": "WITHDRAWN",
+          "participantId": "6F201F31-11FB-46B4-874A-8EC0DD6624D5"
+        },
+        {
+          "entryId": "63CA0296-D212-4357-AA64-01EE6901FC16",
+          "entryStatus": "WITHDRAWN",
+          "participantId": "A60F5317-024F-4676-B7CC-CEB6AEC810DD",
+          "entryPosition": 3
+        }
+      ],
+      "eventName": "Girls' 12 & under singles",
+      "eventId": "04DB9D8E-BC00-471F-9474-F2AD9FFA64E9",
+      "category": {
+        "ageCategoryCode": "U12",
+        "type": "AGE",
+        "ballType": "T2STANDARD_PRESSURISED",
+        "subType": "JUNIOR"
+      },
+      "extensions": [
+        {
+          "name": "division",
+          "value": {
+            "ageCategory": {
+              "maximumAge": 12,
+              "type": "INDIVIDUAL",
+              "__typename": "AgeCategory",
+              "todsCode": "U12"
+            },
+            "gender": "GIRLS",
+            "eventType": "SINGLES",
+            "__typename": "Division"
+          }
+        },
+        {
+          "name": "appliedPolicies",
+          "value": {
+            "avoidance": {
+              "policyAttributes": [
+                {
+                  "key": "person.addresses.city"
+                },
+                {
+                  "key": "individualParticipants.person.addresses.city"
+                },
+                {
+                  "key": "person._ustaDistrict.code"
+                },
+                {
+                  "key": "individualParticipants.person._ustaDistrict.code"
+                }
+              ]
+            }
+          },
+          "createdAt": "2021-10-12T15:32:27.028Z"
+        },
+        {
+          "name": "flightProfile",
+          "value": {
+            "flights": [
+              {
+                "manuallyAdded": true,
+                "flightNumber": 1,
+                "drawEntries": [
+                  {
+                    "participantId": "017CC4EF-EBF1-4F18-B4D0-D167F671DAB6",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 0
+                  },
+                  {
+                    "participantId": "4AC482AA-DFE2-4662-B7ED-5D1631A815F4",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 1
+                  },
+                  {
+                    "participantId": "A854440D-70DF-4EEC-8E6B-5235DF6E98E8",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 2
+                  },
+                  {
+                    "participantId": "BAA9E4C9-A789-4F2E-BC5D-CF0FF72F32A5",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 3
+                  },
+                  {
+                    "participantId": "D1973154-4CBD-4A6A-8DE4-2D9F980987C3",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 4
+                  },
+                  {
+                    "participantId": "65C5CB08-C86D-4775-9C5B-CF054FF6A2D7",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 5
+                  },
+                  {
+                    "participantId": "B697EB6F-6055-4558-9E76-6791CD40C5F2",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 6
+                  },
+                  {
+                    "participantId": "B899AE15-9099-40C8-9785-D548E6189000",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 7
+                  },
+                  {
+                    "participantId": "B01DC022-4B56-40F3-AD56-9FE71FC366BA",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 8
+                  },
+                  {
+                    "participantId": "09CB7198-7B8A-4080-8435-749E314A29BC",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 9
+                  },
+                  {
+                    "participantId": "364425AE-9A3F-40E5-9885-BCFA5D0517EF",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 10
+                  },
+                  {
+                    "participantId": "0B6250EC-9B81-4601-A161-038E63919217",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 11
+                  },
+                  {
+                    "participantId": "B11A73B7-1306-4075-8AEC-72071CCE678F",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 12
+                  },
+                  {
+                    "participantId": "20401D83-A15B-405D-B860-C9373D826DB5",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 13
+                  },
+                  {
+                    "participantId": "53AED986-677F-44FF-8E58-3507EE311B38",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 14
+                  },
+                  {
+                    "participantId": "5C9292F6-8C23-42B6-9D41-44761BBCF169",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 15
+                  },
+                  {
+                    "participantId": "9E6966C7-43A4-4280-945F-5D7BC66DF486",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 16
+                  },
+                  {
+                    "participantId": "7B29062A-7A02-4197-B36E-3B49EE0F5096",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 17
+                  },
+                  {
+                    "participantId": "0D94A463-18F6-4D83-AF6C-B18DC70B5A12",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 18
+                  },
+                  {
+                    "participantId": "8B2AD08F-6DF6-493D-941B-692D4CFFA183",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 19
+                  },
+                  {
+                    "participantId": "D0219C5C-D25B-4BA7-B25C-A67224876DA4",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 20
+                  },
+                  {
+                    "participantId": "249C13BC-DAD0-48A0-9927-472B8949248B",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 21
+                  },
+                  {
+                    "participantId": "DBB0E725-C040-4B04-9F2A-17636E63ACB7",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 22
+                  },
+                  {
+                    "participantId": "D0520932-083C-4831-B5E6-51A63DBCDF80",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 23
+                  },
+                  {
+                    "participantId": "FD55575C-6377-4D31-8341-9EF454007700",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 24
+                  },
+                  {
+                    "participantId": "CD44B364-5EDF-4B50-B089-835B2504D17F",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 25
+                  }
+                ],
+                "drawName": "Draw",
+                "drawId": "7ff6a1e0-9a7f-4d9f-96d1-7cb45ba83d06"
+              }
+            ]
+          },
+          "createdAt": "2021-10-12T15:32:35.743Z"
+        }
+      ],
+      "drawDefinitions": [
+        {
+          "drawId": "7ff6a1e0-9a7f-4d9f-96d1-7cb45ba83d06",
+          "drawName": "Draw",
+          "matchUpType": "SINGLES",
+          "entries": [
+            {
+              "participantId": "017CC4EF-EBF1-4F18-B4D0-D167F671DAB6",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 0
+            },
+            {
+              "participantId": "4AC482AA-DFE2-4662-B7ED-5D1631A815F4",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 1
+            },
+            {
+              "participantId": "A854440D-70DF-4EEC-8E6B-5235DF6E98E8",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 2
+            },
+            {
+              "participantId": "BAA9E4C9-A789-4F2E-BC5D-CF0FF72F32A5",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 3
+            },
+            {
+              "participantId": "D1973154-4CBD-4A6A-8DE4-2D9F980987C3",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 4
+            },
+            {
+              "participantId": "65C5CB08-C86D-4775-9C5B-CF054FF6A2D7",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 5
+            },
+            {
+              "participantId": "B697EB6F-6055-4558-9E76-6791CD40C5F2",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 6
+            },
+            {
+              "participantId": "B899AE15-9099-40C8-9785-D548E6189000",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 7
+            },
+            {
+              "participantId": "B01DC022-4B56-40F3-AD56-9FE71FC366BA",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 8
+            },
+            {
+              "participantId": "09CB7198-7B8A-4080-8435-749E314A29BC",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 9
+            },
+            {
+              "participantId": "364425AE-9A3F-40E5-9885-BCFA5D0517EF",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 10
+            },
+            {
+              "participantId": "0B6250EC-9B81-4601-A161-038E63919217",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 11
+            },
+            {
+              "participantId": "B11A73B7-1306-4075-8AEC-72071CCE678F",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 12
+            },
+            {
+              "participantId": "20401D83-A15B-405D-B860-C9373D826DB5",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 13
+            },
+            {
+              "participantId": "53AED986-677F-44FF-8E58-3507EE311B38",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 14
+            },
+            {
+              "participantId": "5C9292F6-8C23-42B6-9D41-44761BBCF169",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 15
+            },
+            {
+              "participantId": "9E6966C7-43A4-4280-945F-5D7BC66DF486",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 16
+            },
+            {
+              "participantId": "7B29062A-7A02-4197-B36E-3B49EE0F5096",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 17
+            },
+            {
+              "participantId": "0D94A463-18F6-4D83-AF6C-B18DC70B5A12",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 18
+            },
+            {
+              "participantId": "8B2AD08F-6DF6-493D-941B-692D4CFFA183",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 19
+            },
+            {
+              "participantId": "D0219C5C-D25B-4BA7-B25C-A67224876DA4",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 20
+            },
+            {
+              "participantId": "249C13BC-DAD0-48A0-9927-472B8949248B",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 21
+            },
+            {
+              "participantId": "DBB0E725-C040-4B04-9F2A-17636E63ACB7",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 22
+            },
+            {
+              "participantId": "D0520932-083C-4831-B5E6-51A63DBCDF80",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 23
+            },
+            {
+              "participantId": "FD55575C-6377-4D31-8341-9EF454007700",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 24
+            },
+            {
+              "participantId": "CD44B364-5EDF-4B50-B089-835B2504D17F",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 25
+            }
+          ],
+          "links": [
+            {
+              "linkType": "LOSER",
+              "source": {
+                "roundNumber": 1,
+                "structureId": "16f2912a-559c-46bc-b001-9f4eb2b289ab"
+              },
+              "target": {
+                "feedProfile": "TOP_DOWN",
+                "roundNumber": 1,
+                "structureId": "e54f9b50-903e-4a6f-8c42-0e593672e12d",
+                "groupedOrder": [1]
+              }
+            },
+            {
+              "linkType": "LOSER",
+              "source": {
+                "roundNumber": 2,
+                "structureId": "16f2912a-559c-46bc-b001-9f4eb2b289ab"
+              },
+              "target": {
+                "feedProfile": "BOTTOM_UP",
+                "roundNumber": 2,
+                "structureId": "e54f9b50-903e-4a6f-8c42-0e593672e12d",
+                "groupedOrder": [1]
+              }
+            },
+            {
+              "linkType": "LOSER",
+              "source": {
+                "roundNumber": 3,
+                "structureId": "16f2912a-559c-46bc-b001-9f4eb2b289ab"
+              },
+              "target": {
+                "feedProfile": "BOTTOM_UP",
+                "roundNumber": 4,
+                "structureId": "e54f9b50-903e-4a6f-8c42-0e593672e12d",
+                "groupedOrder": [1, 2]
+              }
+            }
+          ],
+          "structures": [
+            {
+              "structureName": "MAIN",
+              "stageSequence": 1,
+              "finishingPosition": "ROUND_OUTCOME",
+              "seedAssignments": [
+                {
+                  "seedNumber": 1,
+                  "seedValue": 1,
+                  "participantId": "017CC4EF-EBF1-4F18-B4D0-D167F671DAB6"
+                },
+                {
+                  "seedNumber": 2,
+                  "seedValue": 2,
+                  "participantId": "4AC482AA-DFE2-4662-B7ED-5D1631A815F4"
+                },
+                {
+                  "seedNumber": 3,
+                  "seedValue": 3,
+                  "participantId": "D1973154-4CBD-4A6A-8DE4-2D9F980987C3"
+                },
+                {
+                  "seedNumber": 4,
+                  "seedValue": 4,
+                  "participantId": "65C5CB08-C86D-4775-9C5B-CF054FF6A2D7"
+                },
+                {
+                  "seedNumber": 5,
+                  "seedValue": 5,
+                  "participantId": "A854440D-70DF-4EEC-8E6B-5235DF6E98E8"
+                },
+                {
+                  "seedNumber": 6,
+                  "seedValue": 6,
+                  "participantId": "364425AE-9A3F-40E5-9885-BCFA5D0517EF"
+                },
+                {
+                  "seedNumber": 7,
+                  "seedValue": 7,
+                  "participantId": "B899AE15-9099-40C8-9785-D548E6189000"
+                },
+                {
+                  "seedNumber": 8,
+                  "seedValue": 8,
+                  "participantId": "BAA9E4C9-A789-4F2E-BC5D-CF0FF72F32A5"
+                }
+              ],
+              "structureId": "16f2912a-559c-46bc-b001-9f4eb2b289ab",
+              "stage": "MAIN",
+              "matchUps": [
+                {
+                  "matchUpId": "505ace9a-5b4b-4731-bbde-f6f5a1ef2c14",
+                  "roundNumber": 1,
+                  "roundPosition": 1,
+                  "matchUpStatus": "BYE",
+                  "drawPositions": [1, 2],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "2c093702-8e9a-4ab8-a057-576a32f0c8cb",
+                  "loserMatchUpId": "87adf226-6016-43bd-92ed-c0120ad6f5aa"
+                },
+                {
+                  "matchUpId": "27a33e72-d575-4b8d-bdbb-bf41b9792b10",
+                  "roundNumber": 1,
+                  "roundPosition": 2,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [3, 4],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "2c093702-8e9a-4ab8-a057-576a32f0c8cb",
+                  "loserMatchUpId": "87adf226-6016-43bd-92ed-c0120ad6f5aa"
+                },
+                {
+                  "matchUpId": "c5443b33-d805-47cf-8604-79dfd68e917b",
+                  "roundNumber": 1,
+                  "roundPosition": 3,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [5, 6],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "ce7fa246-4e8c-41aa-b1df-4c754e513478",
+                  "loserMatchUpId": "56369b93-4c82-421f-889f-2768a0439ca7"
+                },
+                {
+                  "matchUpId": "e02b9554-908b-4ae7-afcd-0e04fff17be3",
+                  "roundNumber": 1,
+                  "roundPosition": 4,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [7, 8],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "ce7fa246-4e8c-41aa-b1df-4c754e513478",
+                  "loserMatchUpId": "56369b93-4c82-421f-889f-2768a0439ca7"
+                },
+                {
+                  "matchUpId": "5038e4cf-94a1-48e6-8f52-0c4ea01d9f78",
+                  "roundNumber": 1,
+                  "roundPosition": 5,
+                  "matchUpStatus": "BYE",
+                  "drawPositions": [9, 10],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "6e82443a-f9c0-4f3f-8143-46e48cb24f9d",
+                  "loserMatchUpId": "d09cd9a7-abb0-4b55-88be-88f6c90fe547"
+                },
+                {
+                  "matchUpId": "fd5c5f48-3a8b-42ad-9baa-88eb2248be57",
+                  "roundNumber": 1,
+                  "roundPosition": 6,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [11, 12],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "6e82443a-f9c0-4f3f-8143-46e48cb24f9d",
+                  "loserMatchUpId": "d09cd9a7-abb0-4b55-88be-88f6c90fe547"
+                },
+                {
+                  "matchUpId": "4c7ca99a-d887-4f21-9c42-5795fcf7844a",
+                  "roundNumber": 1,
+                  "roundPosition": 7,
+                  "matchUpStatus": "BYE",
+                  "drawPositions": [13, 14],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "019ff4f9-49f9-44c1-9443-f4d2bfe2b84c",
+                  "loserMatchUpId": "d92a5ddc-e9e0-45ee-a7f1-6ea1528a0c66"
+                },
+                {
+                  "matchUpId": "011eb4de-1978-4b99-a0c3-47d740fdcdee",
+                  "roundNumber": 1,
+                  "roundPosition": 8,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [15, 16],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "019ff4f9-49f9-44c1-9443-f4d2bfe2b84c",
+                  "loserMatchUpId": "d92a5ddc-e9e0-45ee-a7f1-6ea1528a0c66"
+                },
+                {
+                  "matchUpId": "0a5d24bc-2798-4a46-9390-26b3d505331f",
+                  "roundNumber": 1,
+                  "roundPosition": 9,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [17, 18],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "c28d147f-0ab8-4236-bcea-c617012ca021",
+                  "loserMatchUpId": "9da07588-1599-4e64-9c53-ef2214fffacc"
+                },
+                {
+                  "matchUpId": "53aeea85-5f1b-4f35-ac42-4b862ed62aa4",
+                  "roundNumber": 1,
+                  "roundPosition": 10,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [19, 20],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "c28d147f-0ab8-4236-bcea-c617012ca021",
+                  "loserMatchUpId": "9da07588-1599-4e64-9c53-ef2214fffacc"
+                },
+                {
+                  "matchUpId": "8c303764-826e-4f81-b1fc-0ffcf924cf01",
+                  "roundNumber": 1,
+                  "roundPosition": 11,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [21, 22],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "3faca129-2023-4498-b1ef-ef490a5b3854",
+                  "loserMatchUpId": "b56227b5-a67a-432a-88ea-26bbf9e5846c"
+                },
+                {
+                  "matchUpId": "35d0c5e6-469f-4244-aeb1-61158872ae15",
+                  "roundNumber": 1,
+                  "roundPosition": 12,
+                  "matchUpStatus": "BYE",
+                  "drawPositions": [23, 24],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "3faca129-2023-4498-b1ef-ef490a5b3854",
+                  "loserMatchUpId": "b56227b5-a67a-432a-88ea-26bbf9e5846c"
+                },
+                {
+                  "matchUpId": "baf7b7dd-e89d-4a3c-b06d-7079b1b38f83",
+                  "roundNumber": 1,
+                  "roundPosition": 13,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [25, 26],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "3af7bb80-989e-4598-87eb-1dbc1fae5e2b",
+                  "loserMatchUpId": "fb2678aa-aece-4f91-9918-c877ddfd0f08"
+                },
+                {
+                  "matchUpId": "7c915bf8-6824-4d4f-b259-c46e1abfe1ac",
+                  "roundNumber": 1,
+                  "roundPosition": 14,
+                  "matchUpStatus": "BYE",
+                  "drawPositions": [27, 28],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "3af7bb80-989e-4598-87eb-1dbc1fae5e2b",
+                  "loserMatchUpId": "fb2678aa-aece-4f91-9918-c877ddfd0f08"
+                },
+                {
+                  "matchUpId": "70b1927a-b504-498d-afb9-38009080e9c5",
+                  "roundNumber": 1,
+                  "roundPosition": 15,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [29, 30],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "66a37424-c003-40ef-87f4-bccf39f4be3c",
+                  "loserMatchUpId": "993928b3-b39b-4562-93eb-e73bda7ea334"
+                },
+                {
+                  "matchUpId": "eace7bb0-ae44-4922-b507-e1696c0b94fd",
+                  "roundNumber": 1,
+                  "roundPosition": 16,
+                  "matchUpStatus": "BYE",
+                  "drawPositions": [31, 32],
+                  "isMock": true,
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 32],
+                    "winner": [1, 16]
+                  },
+                  "winnerMatchUpId": "66a37424-c003-40ef-87f4-bccf39f4be3c",
+                  "loserMatchUpId": "993928b3-b39b-4562-93eb-e73bda7ea334"
+                },
+                {
+                  "matchUpId": "2c093702-8e9a-4ab8-a057-576a32f0c8cb",
+                  "roundNumber": 2,
+                  "roundPosition": 1,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [1, null],
+                  "isMock": true,
+                  "finishingRound": 4,
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "winnerMatchUpId": "6aea6fc6-f2dc-4983-9955-80c8f50b7cb0",
+                  "loserMatchUpId": "252c4047-df52-4ed5-b14b-734a40abb63f"
+                },
+                {
+                  "matchUpId": "ce7fa246-4e8c-41aa-b1df-4c754e513478",
+                  "roundNumber": 2,
+                  "roundPosition": 2,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 4,
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "winnerMatchUpId": "6aea6fc6-f2dc-4983-9955-80c8f50b7cb0",
+                  "loserMatchUpId": "845131b3-fa4b-4ea2-8d77-eab6ec65a8e2"
+                },
+                {
+                  "matchUpId": "6e82443a-f9c0-4f3f-8143-46e48cb24f9d",
+                  "roundNumber": 2,
+                  "roundPosition": 3,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [9, null],
+                  "isMock": true,
+                  "finishingRound": 4,
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "winnerMatchUpId": "bb2a1325-f79d-4669-8366-674e151ce42d",
+                  "loserMatchUpId": "497dd053-9cf3-4eee-8012-669d3e27c2ec"
+                },
+                {
+                  "matchUpId": "019ff4f9-49f9-44c1-9443-f4d2bfe2b84c",
+                  "roundNumber": 2,
+                  "roundPosition": 4,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [13, null],
+                  "isMock": true,
+                  "finishingRound": 4,
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "winnerMatchUpId": "bb2a1325-f79d-4669-8366-674e151ce42d",
+                  "loserMatchUpId": "382fc46c-dbd0-409f-ab1e-7dc52ff61e73"
+                },
+                {
+                  "matchUpId": "c28d147f-0ab8-4236-bcea-c617012ca021",
+                  "roundNumber": 2,
+                  "roundPosition": 5,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 4,
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "winnerMatchUpId": "88fdffa7-66b7-4239-b95b-0e228e098adc",
+                  "loserMatchUpId": "65462022-ac73-4d52-bb44-946d449d2d9d"
+                },
+                {
+                  "matchUpId": "3faca129-2023-4498-b1ef-ef490a5b3854",
+                  "roundNumber": 2,
+                  "roundPosition": 6,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [24, null],
+                  "isMock": true,
+                  "finishingRound": 4,
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "winnerMatchUpId": "88fdffa7-66b7-4239-b95b-0e228e098adc",
+                  "loserMatchUpId": "da639e20-0722-4bda-97a2-e0b6949d16a6"
+                },
+                {
+                  "matchUpId": "3af7bb80-989e-4598-87eb-1dbc1fae5e2b",
+                  "roundNumber": 2,
+                  "roundPosition": 7,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [28, null],
+                  "isMock": true,
+                  "finishingRound": 4,
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "winnerMatchUpId": "bb7acca0-6b73-46ca-a3b6-b458f8f3546e",
+                  "loserMatchUpId": "24c7151c-aa1d-4f2f-80b0-0133c477affe"
+                },
+                {
+                  "matchUpId": "66a37424-c003-40ef-87f4-bccf39f4be3c",
+                  "roundNumber": 2,
+                  "roundPosition": 8,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [32, null],
+                  "isMock": true,
+                  "finishingRound": 4,
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "winnerMatchUpId": "bb7acca0-6b73-46ca-a3b6-b458f8f3546e",
+                  "loserMatchUpId": "55568125-b4e9-48cb-8bf5-c768891e89e6"
+                },
+                {
+                  "matchUpId": "6aea6fc6-f2dc-4983-9955-80c8f50b7cb0",
+                  "roundNumber": 3,
+                  "roundPosition": 1,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 3,
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "winnerMatchUpId": "7688f80d-c3a4-4702-9039-12a7fcf4137a",
+                  "loserMatchUpId": "77cca06e-2e37-48d8-9dbf-f15881979740"
+                },
+                {
+                  "matchUpId": "bb2a1325-f79d-4669-8366-674e151ce42d",
+                  "roundNumber": 3,
+                  "roundPosition": 2,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 3,
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "winnerMatchUpId": "7688f80d-c3a4-4702-9039-12a7fcf4137a",
+                  "loserMatchUpId": "c87f0737-e293-4cb9-b5bb-eb74d81ba321"
+                },
+                {
+                  "matchUpId": "88fdffa7-66b7-4239-b95b-0e228e098adc",
+                  "roundNumber": 3,
+                  "roundPosition": 3,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 3,
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "winnerMatchUpId": "ab88056c-985d-42da-8020-0dd6e95992f9",
+                  "loserMatchUpId": "42b099aa-c1f2-43b7-9a71-11b09b2901c9"
+                },
+                {
+                  "matchUpId": "bb7acca0-6b73-46ca-a3b6-b458f8f3546e",
+                  "roundNumber": 3,
+                  "roundPosition": 4,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 3,
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "winnerMatchUpId": "ab88056c-985d-42da-8020-0dd6e95992f9",
+                  "loserMatchUpId": "a7099fcb-0b6c-4d8d-a047-3cf60c9c6a7d"
+                },
+                {
+                  "matchUpId": "7688f80d-c3a4-4702-9039-12a7fcf4137a",
+                  "roundNumber": 4,
+                  "roundPosition": 1,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 2,
+                  "finishingPositionRange": {
+                    "loser": [3, 4],
+                    "winner": [1, 2]
+                  },
+                  "winnerMatchUpId": "1e9ff1a0-c0d1-4bb9-8b69-e59c30c953bd"
+                },
+                {
+                  "matchUpId": "ab88056c-985d-42da-8020-0dd6e95992f9",
+                  "roundNumber": 4,
+                  "roundPosition": 2,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 2,
+                  "finishingPositionRange": {
+                    "loser": [3, 4],
+                    "winner": [1, 2]
+                  },
+                  "winnerMatchUpId": "1e9ff1a0-c0d1-4bb9-8b69-e59c30c953bd"
+                },
+                {
+                  "matchUpId": "1e9ff1a0-c0d1-4bb9-8b69-e59c30c953bd",
+                  "roundNumber": 5,
+                  "roundPosition": 1,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 1,
+                  "finishingPositionRange": {
+                    "loser": [2, 2],
+                    "winner": [1, 1]
+                  }
+                }
+              ],
+              "positionAssignments": [
+                {
+                  "drawPosition": 1,
+                  "participantId": "017CC4EF-EBF1-4F18-B4D0-D167F671DAB6"
+                },
+                {
+                  "drawPosition": 2,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 3,
+                  "participantId": "5C9292F6-8C23-42B6-9D41-44761BBCF169"
+                },
+                {
+                  "drawPosition": 4,
+                  "participantId": "FD55575C-6377-4D31-8341-9EF454007700"
+                },
+                {
+                  "drawPosition": 5,
+                  "participantId": "BAA9E4C9-A789-4F2E-BC5D-CF0FF72F32A5"
+                },
+                {
+                  "drawPosition": 6,
+                  "participantId": "53AED986-677F-44FF-8E58-3507EE311B38"
+                },
+                {
+                  "drawPosition": 7,
+                  "participantId": "DBB0E725-C040-4B04-9F2A-17636E63ACB7"
+                },
+                {
+                  "drawPosition": 8,
+                  "participantId": "0B6250EC-9B81-4601-A161-038E63919217"
+                },
+                {
+                  "drawPosition": 9,
+                  "participantId": "D1973154-4CBD-4A6A-8DE4-2D9F980987C3"
+                },
+                {
+                  "drawPosition": 10,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 11,
+                  "participantId": "249C13BC-DAD0-48A0-9927-472B8949248B"
+                },
+                {
+                  "drawPosition": 12,
+                  "participantId": "7B29062A-7A02-4197-B36E-3B49EE0F5096"
+                },
+                {
+                  "drawPosition": 13,
+                  "participantId": "A854440D-70DF-4EEC-8E6B-5235DF6E98E8"
+                },
+                {
+                  "drawPosition": 14,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 15,
+                  "participantId": "09CB7198-7B8A-4080-8435-749E314A29BC"
+                },
+                {
+                  "drawPosition": 16,
+                  "participantId": "0D94A463-18F6-4D83-AF6C-B18DC70B5A12"
+                },
+                {
+                  "drawPosition": 17,
+                  "participantId": "D0520932-083C-4831-B5E6-51A63DBCDF80"
+                },
+                {
+                  "drawPosition": 18,
+                  "participantId": "B01DC022-4B56-40F3-AD56-9FE71FC366BA"
+                },
+                {
+                  "drawPosition": 19,
+                  "participantId": "CD44B364-5EDF-4B50-B089-835B2504D17F"
+                },
+                {
+                  "drawPosition": 20,
+                  "participantId": "B899AE15-9099-40C8-9785-D548E6189000"
+                },
+                {
+                  "drawPosition": 21,
+                  "participantId": "B697EB6F-6055-4558-9E76-6791CD40C5F2"
+                },
+                {
+                  "drawPosition": 22,
+                  "participantId": "8B2AD08F-6DF6-493D-941B-692D4CFFA183"
+                },
+                {
+                  "drawPosition": 23,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 24,
+                  "participantId": "65C5CB08-C86D-4775-9C5B-CF054FF6A2D7"
+                },
+                {
+                  "drawPosition": 25,
+                  "participantId": "9E6966C7-43A4-4280-945F-5D7BC66DF486"
+                },
+                {
+                  "drawPosition": 26,
+                  "participantId": "D0219C5C-D25B-4BA7-B25C-A67224876DA4"
+                },
+                {
+                  "drawPosition": 27,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 28,
+                  "participantId": "364425AE-9A3F-40E5-9885-BCFA5D0517EF"
+                },
+                {
+                  "drawPosition": 29
+                },
+                {
+                  "drawPosition": 30,
+                  "participantId": "20401D83-A15B-405D-B860-C9373D826DB5"
+                },
+                {
+                  "drawPosition": 31,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 32,
+                  "participantId": "4AC482AA-DFE2-4662-B7ED-5D1631A815F4"
+                }
+              ],
+              "updatedAt": 1634052755745,
+              "seedLimit": 8
+            },
+            {
+              "structureName": "CONSOLATION",
+              "stageSequence": 1,
+              "finishingPosition": "ROUND_OUTCOME",
+              "seedAssignments": [],
+              "structureId": "e54f9b50-903e-4a6f-8c42-0e593672e12d",
+              "stage": "CONSOLATION",
+              "matchUps": [
+                {
+                  "matchUpId": "87adf226-6016-43bd-92ed-c0120ad6f5aa",
+                  "roundNumber": 1,
+                  "roundPosition": 1,
+                  "matchUpStatus": "BYE",
+                  "drawPositions": [13, 14],
+                  "isMock": true,
+                  "finishingRound": 6,
+                  "finishingPositionRange": {
+                    "loser": [25, 32],
+                    "winner": [5, 24]
+                  },
+                  "winnerMatchUpId": "55568125-b4e9-48cb-8bf5-c768891e89e6"
+                },
+                {
+                  "matchUpId": "56369b93-4c82-421f-889f-2768a0439ca7",
+                  "roundNumber": 1,
+                  "roundPosition": 2,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [15, 16],
+                  "isMock": true,
+                  "finishingRound": 6,
+                  "finishingPositionRange": {
+                    "loser": [25, 32],
+                    "winner": [5, 24]
+                  },
+                  "winnerMatchUpId": "24c7151c-aa1d-4f2f-80b0-0133c477affe"
+                },
+                {
+                  "matchUpId": "d09cd9a7-abb0-4b55-88be-88f6c90fe547",
+                  "roundNumber": 1,
+                  "roundPosition": 3,
+                  "matchUpStatus": "BYE",
+                  "drawPositions": [17, 18],
+                  "isMock": true,
+                  "finishingRound": 6,
+                  "finishingPositionRange": {
+                    "loser": [25, 32],
+                    "winner": [5, 24]
+                  },
+                  "winnerMatchUpId": "da639e20-0722-4bda-97a2-e0b6949d16a6"
+                },
+                {
+                  "matchUpId": "d92a5ddc-e9e0-45ee-a7f1-6ea1528a0c66",
+                  "roundNumber": 1,
+                  "roundPosition": 4,
+                  "matchUpStatus": "BYE",
+                  "drawPositions": [19, 20],
+                  "isMock": true,
+                  "finishingRound": 6,
+                  "finishingPositionRange": {
+                    "loser": [25, 32],
+                    "winner": [5, 24]
+                  },
+                  "winnerMatchUpId": "65462022-ac73-4d52-bb44-946d449d2d9d"
+                },
+                {
+                  "matchUpId": "9da07588-1599-4e64-9c53-ef2214fffacc",
+                  "roundNumber": 1,
+                  "roundPosition": 5,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [21, 22],
+                  "isMock": true,
+                  "finishingRound": 6,
+                  "finishingPositionRange": {
+                    "loser": [25, 32],
+                    "winner": [5, 24]
+                  },
+                  "winnerMatchUpId": "382fc46c-dbd0-409f-ab1e-7dc52ff61e73"
+                },
+                {
+                  "matchUpId": "b56227b5-a67a-432a-88ea-26bbf9e5846c",
+                  "roundNumber": 1,
+                  "roundPosition": 6,
+                  "matchUpStatus": "BYE",
+                  "drawPositions": [23, 24],
+                  "isMock": true,
+                  "finishingRound": 6,
+                  "finishingPositionRange": {
+                    "loser": [25, 32],
+                    "winner": [5, 24]
+                  },
+                  "winnerMatchUpId": "497dd053-9cf3-4eee-8012-669d3e27c2ec"
+                },
+                {
+                  "matchUpId": "fb2678aa-aece-4f91-9918-c877ddfd0f08",
+                  "roundNumber": 1,
+                  "roundPosition": 7,
+                  "matchUpStatus": "BYE",
+                  "drawPositions": [25, 26],
+                  "isMock": true,
+                  "finishingRound": 6,
+                  "finishingPositionRange": {
+                    "loser": [25, 32],
+                    "winner": [5, 24]
+                  },
+                  "winnerMatchUpId": "845131b3-fa4b-4ea2-8d77-eab6ec65a8e2"
+                },
+                {
+                  "matchUpId": "993928b3-b39b-4562-93eb-e73bda7ea334",
+                  "roundNumber": 1,
+                  "roundPosition": 8,
+                  "matchUpStatus": "BYE",
+                  "drawPositions": [27, 28],
+                  "isMock": true,
+                  "finishingRound": 6,
+                  "finishingPositionRange": {
+                    "loser": [25, 32],
+                    "winner": [5, 24]
+                  },
+                  "winnerMatchUpId": "252c4047-df52-4ed5-b14b-734a40abb63f"
+                },
+                {
+                  "roundNumber": 2,
+                  "matchUpId": "55568125-b4e9-48cb-8bf5-c768891e89e6",
+                  "roundPosition": 1,
+                  "drawPositions": [5, 14],
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 24],
+                    "winner": [5, 16]
+                  },
+                  "winnerMatchUpId": "968910be-8c17-4d47-a981-eb6dc310124b",
+                  "matchUpStatus": "TO_BE_PLAYED"
+                },
+                {
+                  "roundNumber": 2,
+                  "matchUpId": "24c7151c-aa1d-4f2f-80b0-0133c477affe",
+                  "roundPosition": 2,
+                  "drawPositions": [null, 6],
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 24],
+                    "winner": [5, 16]
+                  },
+                  "winnerMatchUpId": "968910be-8c17-4d47-a981-eb6dc310124b"
+                },
+                {
+                  "roundNumber": 2,
+                  "matchUpId": "da639e20-0722-4bda-97a2-e0b6949d16a6",
+                  "roundPosition": 3,
+                  "drawPositions": [7, 18],
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 24],
+                    "winner": [5, 16]
+                  },
+                  "winnerMatchUpId": "3e9156b9-44d6-4ed0-9b2a-c504f9fc18a8",
+                  "matchUpStatus": "TO_BE_PLAYED"
+                },
+                {
+                  "roundNumber": 2,
+                  "matchUpId": "65462022-ac73-4d52-bb44-946d449d2d9d",
+                  "roundPosition": 4,
+                  "drawPositions": [8, 20],
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 24],
+                    "winner": [5, 16]
+                  },
+                  "winnerMatchUpId": "3e9156b9-44d6-4ed0-9b2a-c504f9fc18a8",
+                  "matchUpStatus": "TO_BE_PLAYED"
+                },
+                {
+                  "roundNumber": 2,
+                  "matchUpId": "382fc46c-dbd0-409f-ab1e-7dc52ff61e73",
+                  "roundPosition": 5,
+                  "drawPositions": [null, 9],
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 24],
+                    "winner": [5, 16]
+                  },
+                  "winnerMatchUpId": "55f50b06-3516-4ab5-aab2-b1a690e511db"
+                },
+                {
+                  "roundNumber": 2,
+                  "matchUpId": "497dd053-9cf3-4eee-8012-669d3e27c2ec",
+                  "roundPosition": 6,
+                  "drawPositions": [10, 23],
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 24],
+                    "winner": [5, 16]
+                  },
+                  "winnerMatchUpId": "55f50b06-3516-4ab5-aab2-b1a690e511db",
+                  "matchUpStatus": "TO_BE_PLAYED"
+                },
+                {
+                  "roundNumber": 2,
+                  "matchUpId": "845131b3-fa4b-4ea2-8d77-eab6ec65a8e2",
+                  "roundPosition": 7,
+                  "drawPositions": [11, 25],
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 24],
+                    "winner": [5, 16]
+                  },
+                  "winnerMatchUpId": "4242f35c-7462-48bd-999a-7dacdb82f87f",
+                  "matchUpStatus": "TO_BE_PLAYED"
+                },
+                {
+                  "roundNumber": 2,
+                  "matchUpId": "252c4047-df52-4ed5-b14b-734a40abb63f",
+                  "roundPosition": 8,
+                  "drawPositions": [12, 27],
+                  "finishingRound": 5,
+                  "finishingPositionRange": {
+                    "loser": [17, 24],
+                    "winner": [5, 16]
+                  },
+                  "winnerMatchUpId": "4242f35c-7462-48bd-999a-7dacdb82f87f",
+                  "matchUpStatus": "TO_BE_PLAYED"
+                },
+                {
+                  "matchUpId": "968910be-8c17-4d47-a981-eb6dc310124b",
+                  "roundNumber": 3,
+                  "roundPosition": 1,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 4,
+                  "finishingPositionRange": {
+                    "loser": [13, 16],
+                    "winner": [5, 12]
+                  },
+                  "winnerMatchUpId": "c87f0737-e293-4cb9-b5bb-eb74d81ba321"
+                },
+                {
+                  "matchUpId": "3e9156b9-44d6-4ed0-9b2a-c504f9fc18a8",
+                  "roundNumber": 3,
+                  "roundPosition": 2,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 4,
+                  "finishingPositionRange": {
+                    "loser": [13, 16],
+                    "winner": [5, 12]
+                  },
+                  "winnerMatchUpId": "77cca06e-2e37-48d8-9dbf-f15881979740"
+                },
+                {
+                  "matchUpId": "55f50b06-3516-4ab5-aab2-b1a690e511db",
+                  "roundNumber": 3,
+                  "roundPosition": 3,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 4,
+                  "finishingPositionRange": {
+                    "loser": [13, 16],
+                    "winner": [5, 12]
+                  },
+                  "winnerMatchUpId": "a7099fcb-0b6c-4d8d-a047-3cf60c9c6a7d"
+                },
+                {
+                  "matchUpId": "4242f35c-7462-48bd-999a-7dacdb82f87f",
+                  "roundNumber": 3,
+                  "roundPosition": 4,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 4,
+                  "finishingPositionRange": {
+                    "loser": [13, 16],
+                    "winner": [5, 12]
+                  },
+                  "winnerMatchUpId": "42b099aa-c1f2-43b7-9a71-11b09b2901c9"
+                },
+                {
+                  "roundNumber": 4,
+                  "matchUpId": "c87f0737-e293-4cb9-b5bb-eb74d81ba321",
+                  "roundPosition": 1,
+                  "drawPositions": [null, 1],
+                  "finishingRound": 3,
+                  "finishingPositionRange": {
+                    "loser": [9, 12],
+                    "winner": [5, 8]
+                  },
+                  "winnerMatchUpId": "83ca153b-3f63-466d-b06f-69ce6e9aee94"
+                },
+                {
+                  "roundNumber": 4,
+                  "matchUpId": "77cca06e-2e37-48d8-9dbf-f15881979740",
+                  "roundPosition": 2,
+                  "drawPositions": [null, 2],
+                  "finishingRound": 3,
+                  "finishingPositionRange": {
+                    "loser": [9, 12],
+                    "winner": [5, 8]
+                  },
+                  "winnerMatchUpId": "83ca153b-3f63-466d-b06f-69ce6e9aee94"
+                },
+                {
+                  "roundNumber": 4,
+                  "matchUpId": "a7099fcb-0b6c-4d8d-a047-3cf60c9c6a7d",
+                  "roundPosition": 3,
+                  "drawPositions": [null, 3],
+                  "finishingRound": 3,
+                  "finishingPositionRange": {
+                    "loser": [9, 12],
+                    "winner": [5, 8]
+                  },
+                  "winnerMatchUpId": "3fafe4fa-7ee2-4051-abf7-967ef8c16bd3"
+                },
+                {
+                  "roundNumber": 4,
+                  "matchUpId": "42b099aa-c1f2-43b7-9a71-11b09b2901c9",
+                  "roundPosition": 4,
+                  "drawPositions": [null, 4],
+                  "finishingRound": 3,
+                  "finishingPositionRange": {
+                    "loser": [9, 12],
+                    "winner": [5, 8]
+                  },
+                  "winnerMatchUpId": "3fafe4fa-7ee2-4051-abf7-967ef8c16bd3"
+                },
+                {
+                  "matchUpId": "83ca153b-3f63-466d-b06f-69ce6e9aee94",
+                  "roundNumber": 5,
+                  "roundPosition": 1,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 2,
+                  "finishingPositionRange": {
+                    "loser": [7, 8],
+                    "winner": [5, 6]
+                  },
+                  "winnerMatchUpId": "70d23e95-313a-445f-bd6a-25d5f9d57777"
+                },
+                {
+                  "matchUpId": "3fafe4fa-7ee2-4051-abf7-967ef8c16bd3",
+                  "roundNumber": 5,
+                  "roundPosition": 2,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 2,
+                  "finishingPositionRange": {
+                    "loser": [7, 8],
+                    "winner": [5, 6]
+                  },
+                  "winnerMatchUpId": "70d23e95-313a-445f-bd6a-25d5f9d57777"
+                },
+                {
+                  "matchUpId": "70d23e95-313a-445f-bd6a-25d5f9d57777",
+                  "roundNumber": 6,
+                  "roundPosition": 1,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [null, null],
+                  "isMock": true,
+                  "finishingRound": 1,
+                  "finishingPositionRange": {
+                    "loser": [6, 6],
+                    "winner": [5, 5]
+                  }
+                }
+              ],
+              "positionAssignments": [
+                {
+                  "drawPosition": 1
+                },
+                {
+                  "drawPosition": 2
+                },
+                {
+                  "drawPosition": 3
+                },
+                {
+                  "drawPosition": 4
+                },
+                {
+                  "drawPosition": 5
+                },
+                {
+                  "drawPosition": 6
+                },
+                {
+                  "drawPosition": 7
+                },
+                {
+                  "drawPosition": 8
+                },
+                {
+                  "drawPosition": 9
+                },
+                {
+                  "drawPosition": 10
+                },
+                {
+                  "drawPosition": 11
+                },
+                {
+                  "drawPosition": 12
+                },
+                {
+                  "drawPosition": 13,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 14
+                },
+                {
+                  "drawPosition": 15
+                },
+                {
+                  "drawPosition": 16
+                },
+                {
+                  "drawPosition": 17,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 18
+                },
+                {
+                  "drawPosition": 19,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 20
+                },
+                {
+                  "drawPosition": 21
+                },
+                {
+                  "drawPosition": 22
+                },
+                {
+                  "drawPosition": 23
+                },
+                {
+                  "drawPosition": 24,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 25
+                },
+                {
+                  "drawPosition": 26,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 27
+                },
+                {
+                  "drawPosition": 28,
+                  "bye": true
+                }
+              ],
+              "updatedAt": 1634052755745
+            }
+          ],
+          "drawType": "FEED_IN_CHAMPIONSHIP_TO_QF",
+          "extensions": [
+            {
+              "name": "entryProfile",
+              "value": {
+                "MAIN": {
+                  "drawSize": 32,
+                  "alternates": true
+                }
+              },
+              "createdAt": "2021-10-12T15:32:35.466Z"
+            },
+            {
+              "name": "appliedPolicies",
+              "value": {
+                "seeding": {
+                  "policyName": "USTA",
+                  "duplicateSeedNumbers": true,
+                  "drawSizeProgression": true,
+                  "validSeedPositions": {
+                    "ignore": true
+                  },
+                  "seedsCountThresholds": [
+                    {
+                      "drawSize": 4,
+                      "minimumParticipantCount": 3,
+                      "seedsCount": 2
+                    },
+                    {
+                      "drawSize": 16,
+                      "minimumParticipantCount": 12,
+                      "seedsCount": 4
+                    },
+                    {
+                      "drawSize": 32,
+                      "minimumParticipantCount": 24,
+                      "seedsCount": 8
+                    },
+                    {
+                      "drawSize": 64,
+                      "minimumParticipantCount": 48,
+                      "seedsCount": 16
+                    },
+                    {
+                      "drawSize": 128,
+                      "minimumParticipantCount": 96,
+                      "seedsCount": 32
+                    },
+                    {
+                      "drawSize": 256,
+                      "minimumParticipantCount": 192,
+                      "seedsCount": 64
+                    }
+                  ]
+                },
+                "avoidance": {
+                  "policyAttributes": [
+                    {
+                      "key": "person.addresses.city"
+                    },
+                    {
+                      "key": "individualParticipants.person.addresses.city"
+                    },
+                    {
+                      "key": "person._ustaDistrict.code"
+                    },
+                    {
+                      "key": "individualParticipants.person._ustaDistrict.code"
+                    }
+                  ]
+                }
+              },
+              "createdAt": "2021-10-12T15:32:35.482Z"
+            }
+          ],
+          "updatedAt": 1634052755745,
+          "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+          "drawOrder": 1
+        }
+      ],
+      "links": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "RETRIEVAL.RANKING.SINGLES.U12",
+          "itemValue": "2021-10-06T15:02",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ]
+    }
+  ],
+  "participants": [
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Nastasja Schunk",
+      "participantStatus": "ACTIVE",
+      "participantId": "FD55575C-6377-4D31-8341-9EF454007700",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 1901,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.520Z"
+        },
+        {
+          "itemType": "SIGN_IN_STATUS",
+          "itemValue": "SIGNED_IN",
+          "createdAt": "2021-10-12T16:19:23.218Z"
+        },
+        {
+          "itemType": "SIGN_IN_STATUS",
+          "itemValue": "SIGNED_OUT",
+          "createdAt": "2021-10-12T16:19:29.971Z"
+        }
+      ],
+      "personId": "FD55575C-6377-4D31-8341-9EF454007700",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-09-21",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "GER",
+        "addresses": [
+          {
+            "city": "Elmsford",
+            "state": "AR",
+            "postalCode": "91389",
+            "countryCode": "GER"
+          }
+        ],
+        "personId": "92941eba-5bac-42ec-84f7-8bb4d51f9ab3",
+        "standardFamilyName": "Schunk",
+        "standardGivenName": "Nastasja"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Madison Brengle",
+      "participantStatus": "ACTIVE",
+      "participantId": "9917491B-AC8C-4521-9FBF-AAC54E472264",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 659,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "9917491B-AC8C-4521-9FBF-AAC54E472264",
+      "person": {
+        "extensions": [],
+        "birthDate": "2011-11-09",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "USA",
+        "addresses": [
+          {
+            "city": "Edgefield",
+            "state": "ND",
+            "postalCode": "56824",
+            "countryCode": "USA"
+          }
+        ],
+        "personId": "92c981ce-1ee5-45f2-bcc7-c282c6e86613",
+        "standardFamilyName": "Brengle",
+        "standardGivenName": "Madison"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Karolina Muchova",
+      "participantStatus": "ACTIVE",
+      "participantId": "B11A73B7-1306-4075-8AEC-72071CCE678F",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 641,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "B11A73B7-1306-4075-8AEC-72071CCE678F",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-06-19",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "CZE",
+        "addresses": [
+          {
+            "city": "Cohoe",
+            "state": "NE",
+            "postalCode": "77008",
+            "countryCode": "CZE"
+          }
+        ],
+        "personId": "5326f1bb-5430-4b82-8972-5a1d27bfa70c",
+        "standardFamilyName": "Muchova",
+        "standardGivenName": "Karolina"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Saisai Zheng",
+      "participantStatus": "ACTIVE",
+      "participantId": "A60F5317-024F-4676-B7CC-CEB6AEC810DD",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 1040,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        },
+        {
+          "itemSubTypes": [],
+          "itemType": "SIGN_IN_STATUS",
+          "itemValue": "SIGNED_IN",
+          "createdAt": "2021-10-11T15:57:32.064Z"
+        },
+        {
+          "itemSubTypes": [],
+          "itemType": "SIGN_IN_STATUS",
+          "itemValue": "SIGNED_OUT",
+          "createdAt": "2021-10-11T15:57:34.311Z"
+        }
+      ],
+      "personId": "A60F5317-024F-4676-B7CC-CEB6AEC810DD",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-03-08",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "CHN",
+        "addresses": [
+          {
+            "city": "Canutillo",
+            "state": "GA",
+            "postalCode": "85889",
+            "countryCode": "CHN"
+          }
+        ],
+        "personId": "ae1c7e46-a553-4598-bfc6-59fe3254ca7f",
+        "standardFamilyName": "Zheng",
+        "standardGivenName": "Saisai"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Aryna Sabalenka",
+      "participantStatus": "ACTIVE",
+      "participantId": "B01DC022-4B56-40F3-AD56-9FE71FC366BA",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 500,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "B01DC022-4B56-40F3-AD56-9FE71FC366BA",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-02-25",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "BLR",
+        "addresses": [
+          {
+            "city": "Saint Anthony",
+            "state": "IN",
+            "postalCode": "70330",
+            "countryCode": "BLR"
+          }
+        ],
+        "personId": "e9257a75-f3f6-46cf-bae2-e7cdf7eb01fe",
+        "standardFamilyName": "Sabalenka",
+        "standardGivenName": "Aryna"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Matilde Paoletti",
+      "participantStatus": "ACTIVE",
+      "participantId": "0D94A463-18F6-4D83-AF6C-B18DC70B5A12",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 1164,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "0D94A463-18F6-4D83-AF6C-B18DC70B5A12",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-05-22",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "ITA",
+        "addresses": [
+          {
+            "city": "Porter",
+            "state": "TX",
+            "postalCode": "28908",
+            "countryCode": "ITA"
+          }
+        ],
+        "personId": "bf27c5d3-6b0c-4418-9777-3d007e441d27",
+        "standardFamilyName": "Paoletti",
+        "standardGivenName": "Matilde"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Dana Guzman",
+      "participantStatus": "ACTIVE",
+      "participantId": "8B2AD08F-6DF6-493D-941B-692D4CFFA183",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 1314,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "8B2AD08F-6DF6-493D-941B-692D4CFFA183",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-11-10",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "PER",
+        "addresses": [
+          {
+            "city": "Glasgow Village",
+            "state": "NH",
+            "postalCode": "15582",
+            "countryCode": "PER"
+          }
+        ],
+        "personId": "a2de4676-c77f-45b2-a7d1-29175431960f",
+        "standardFamilyName": "Guzman",
+        "standardGivenName": "Dana"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Elina Svitolina",
+      "participantStatus": "ACTIVE",
+      "participantId": "65C5CB08-C86D-4775-9C5B-CF054FF6A2D7",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 390,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        },
+        {
+          "itemType": "SCALE.SEEDING.SINGLES.U12",
+          "itemValue": 4,
+          "createdAt": "2021-10-12T15:32:20.267Z"
+        }
+      ],
+      "personId": "65C5CB08-C86D-4775-9C5B-CF054FF6A2D7",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-08-30",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "UKR",
+        "addresses": [
+          {
+            "city": "Homerville",
+            "state": "CA",
+            "postalCode": "74139",
+            "countryCode": "UKR"
+          }
+        ],
+        "personId": "015e6b18-799b-4bab-849a-fa9151ae0812",
+        "standardFamilyName": "Svitolina",
+        "standardGivenName": "Elina"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Savannah Broadus",
+      "participantStatus": "ACTIVE",
+      "participantId": "D0219C5C-D25B-4BA7-B25C-A67224876DA4",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 1352,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "D0219C5C-D25B-4BA7-B25C-A67224876DA4",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-04-28",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "USA",
+        "addresses": [
+          {
+            "city": "Port Hadlock-Irondale",
+            "state": "CA",
+            "postalCode": "85520",
+            "countryCode": "USA"
+          }
+        ],
+        "personId": "e96eb7f6-7480-4ade-b238-2d51c8eee2eb",
+        "standardFamilyName": "Broadus",
+        "standardGivenName": "Savannah"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Petra Kvitova",
+      "participantStatus": "ACTIVE",
+      "participantId": "CD44B364-5EDF-4B50-B089-835B2504D17F",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 2053,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "CD44B364-5EDF-4B50-B089-835B2504D17F",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-12-14",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "CZE",
+        "addresses": [
+          {
+            "city": "South Waverly",
+            "state": "TX",
+            "postalCode": "40589",
+            "countryCode": "CZE"
+          }
+        ],
+        "personId": "951c9cf1-f9ad-48e7-822f-1197b52eb02a",
+        "standardFamilyName": "Kvitova",
+        "standardGivenName": "Petra"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Alessandra Simone",
+      "participantStatus": "ACTIVE",
+      "participantId": "53AED986-677F-44FF-8E58-3507EE311B38",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 703,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "53AED986-677F-44FF-8E58-3507EE311B38",
+      "person": {
+        "extensions": [],
+        "birthDate": "2012-01-16",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "ITA",
+        "addresses": [
+          {
+            "city": "Cairo",
+            "state": "NH",
+            "postalCode": "18136",
+            "countryCode": "ITA"
+          }
+        ],
+        "personId": "d44007d7-dd90-4593-bc9c-751a466a49aa",
+        "standardFamilyName": "Simone",
+        "standardGivenName": "Alessandra"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Lyubov Kostenko",
+      "participantStatus": "ACTIVE",
+      "participantId": "20401D83-A15B-405D-B860-C9373D826DB5",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 662,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "20401D83-A15B-405D-B860-C9373D826DB5",
+      "person": {
+        "extensions": [],
+        "birthDate": "2011-07-17",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "UKR",
+        "addresses": [
+          {
+            "city": "Spring Valley",
+            "state": "TX",
+            "postalCode": "47502",
+            "countryCode": "UKR"
+          }
+        ],
+        "personId": "177c1cbc-7934-4a2a-8afa-93b376451922",
+        "standardFamilyName": "Kostenko",
+        "standardGivenName": "Lyubov"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Ashleigh Barty",
+      "participantStatus": "ACTIVE",
+      "participantId": "D0520932-083C-4831-B5E6-51A63DBCDF80",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 1753,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "D0520932-083C-4831-B5E6-51A63DBCDF80",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-08-25",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "AUS",
+        "addresses": [
+          {
+            "city": "Highgrove",
+            "state": "GA",
+            "postalCode": "72455",
+            "countryCode": "AUS"
+          }
+        ],
+        "personId": "addd6847-cc00-4303-acc2-4b12c69da8f2",
+        "standardFamilyName": "Barty",
+        "standardGivenName": "Ashleigh"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Jelena Ostapenko",
+      "participantStatus": "ACTIVE",
+      "participantId": "BAA9E4C9-A789-4F2E-BC5D-CF0FF72F32A5",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 384,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        },
+        {
+          "itemType": "SCALE.SEEDING.SINGLES.U12",
+          "itemValue": 8,
+          "createdAt": "2021-10-12T15:32:20.267Z"
+        }
+      ],
+      "personId": "BAA9E4C9-A789-4F2E-BC5D-CF0FF72F32A5",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-09-13",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "LAT",
+        "addresses": [
+          {
+            "city": "Lake Placid",
+            "state": "TX",
+            "postalCode": "12356",
+            "countryCode": "LAT"
+          }
+        ],
+        "personId": "ce9fcb07-d842-4899-8242-4eff6d56c250",
+        "standardFamilyName": "Ostapenko",
+        "standardGivenName": "Jelena"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Dayana Yastremska",
+      "participantStatus": "ACTIVE",
+      "participantId": "DBBA22F4-4794-4AB4-BE5B-693229EEE50F",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 1661,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "DBBA22F4-4794-4AB4-BE5B-693229EEE50F",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-03-08",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "UKR",
+        "addresses": [
+          {
+            "city": "Terryville",
+            "state": "IN",
+            "postalCode": "49368",
+            "countryCode": "UKR"
+          }
+        ],
+        "personId": "49a3290b-3bdd-4fc5-954a-0a84e7327932",
+        "standardFamilyName": "Yastremska",
+        "standardGivenName": "Dayana"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Anastasia Pavlyuchenkova",
+      "participantStatus": "ACTIVE",
+      "participantId": "09CB7198-7B8A-4080-8435-749E314A29BC",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 511,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "09CB7198-7B8A-4080-8435-749E314A29BC",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-06-16",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "RUS",
+        "addresses": [
+          {
+            "city": "Pearl River",
+            "state": "IN",
+            "postalCode": "55595",
+            "countryCode": "RUS"
+          }
+        ],
+        "personId": "de82d1d9-1ea7-4c64-aaff-25089571f2a7",
+        "standardFamilyName": "Pavlyuchenkova",
+        "standardGivenName": "Anastasia"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Mara Guth",
+      "participantStatus": "ACTIVE",
+      "participantId": "249C13BC-DAD0-48A0-9927-472B8949248B",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 1560,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "249C13BC-DAD0-48A0-9927-472B8949248B",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-05-13",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "GER",
+        "addresses": [
+          {
+            "city": "Bay Minette",
+            "state": "GA",
+            "postalCode": "46725",
+            "countryCode": "GER"
+          }
+        ],
+        "personId": "31436837-f04e-4be8-b6f5-2164f9c056f1",
+        "standardFamilyName": "Guth",
+        "standardGivenName": "Mara"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Alina Shcherbinina",
+      "participantStatus": "ACTIVE",
+      "participantId": "364425AE-9A3F-40E5-9885-BCFA5D0517EF",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 558,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        },
+        {
+          "itemType": "SCALE.SEEDING.SINGLES.U12",
+          "itemValue": 6,
+          "createdAt": "2021-10-12T15:32:20.267Z"
+        }
+      ],
+      "personId": "364425AE-9A3F-40E5-9885-BCFA5D0517EF",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-03-21",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "RUS",
+        "addresses": [
+          {
+            "city": "Rockwell City",
+            "state": "TX",
+            "postalCode": "74728",
+            "countryCode": "RUS"
+          }
+        ],
+        "personId": "bd4fce4b-6c50-418c-a767-4634fe112d47",
+        "standardFamilyName": "Shcherbinina",
+        "standardGivenName": "Alina"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Hanne Vandewinkel",
+      "participantStatus": "ACTIVE",
+      "participantId": "7B29062A-7A02-4197-B36E-3B49EE0F5096",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 927,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "7B29062A-7A02-4197-B36E-3B49EE0F5096",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-08-27",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "BEL",
+        "addresses": [
+          {
+            "city": "Windsor",
+            "state": "GA",
+            "postalCode": "95838",
+            "countryCode": "BEL"
+          }
+        ],
+        "personId": "4063f6d3-8b1b-4751-90fc-67ea43576319",
+        "standardFamilyName": "Vandewinkel",
+        "standardGivenName": "Hanne"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Katrina Scott",
+      "participantStatus": "ACTIVE",
+      "participantId": "017CC4EF-EBF1-4F18-B4D0-D167F671DAB6",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 162,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        },
+        {
+          "itemType": "SCALE.SEEDING.SINGLES.U12",
+          "itemValue": 1,
+          "createdAt": "2021-10-12T15:32:20.266Z"
+        }
+      ],
+      "personId": "017CC4EF-EBF1-4F18-B4D0-D167F671DAB6",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-04-13",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "USA",
+        "addresses": [
+          {
+            "city": "Falmouth",
+            "state": "NH",
+            "postalCode": "10962",
+            "countryCode": "USA"
+          }
+        ],
+        "personId": "5bd42add-a092-4894-8d8f-35af7501df80",
+        "standardFamilyName": "Scott",
+        "standardGivenName": "Katrina"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Mai Nirundorn",
+      "participantStatus": "ACTIVE",
+      "participantId": "0B6250EC-9B81-4601-A161-038E63919217",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 564,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "0B6250EC-9B81-4601-A161-038E63919217",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-04-22",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "THA",
+        "addresses": [
+          {
+            "city": "Guilford Siding",
+            "state": "GA",
+            "postalCode": "59531",
+            "countryCode": "THA"
+          }
+        ],
+        "personId": "ce4e7848-5ff6-45a3-8472-aa67a0107694",
+        "standardFamilyName": "Nirundorn",
+        "standardGivenName": "Mai"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Beatrice Ricci",
+      "participantStatus": "ACTIVE",
+      "participantId": "A854440D-70DF-4EEC-8E6B-5235DF6E98E8",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 378,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        },
+        {
+          "itemType": "SCALE.SEEDING.SINGLES.U12",
+          "itemValue": 5,
+          "createdAt": "2021-10-12T15:32:20.266Z"
+        }
+      ],
+      "personId": "A854440D-70DF-4EEC-8E6B-5235DF6E98E8",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-02-20",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "ITA",
+        "addresses": [
+          {
+            "city": "Woodbridge",
+            "state": "CA",
+            "postalCode": "95740",
+            "countryCode": "ITA"
+          }
+        ],
+        "personId": "90f3a93b-f260-46d6-8d3b-d02a7a219a41",
+        "standardFamilyName": "Ricci",
+        "standardGivenName": "Beatrice"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Amanda Anisimova",
+      "participantStatus": "ACTIVE",
+      "participantId": "DBB0E725-C040-4B04-9F2A-17636E63ACB7",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 1581,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "DBB0E725-C040-4B04-9F2A-17636E63ACB7",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-09-24",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "USA",
+        "addresses": [
+          {
+            "city": "Martin",
+            "state": "NH",
+            "postalCode": "49709",
+            "countryCode": "USA"
+          }
+        ],
+        "personId": "416118ca-6731-493f-8fcf-a57d9369ca8b",
+        "standardFamilyName": "Anisimova",
+        "standardGivenName": "Amanda"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Aliaksandra Sasnovich",
+      "participantStatus": "ACTIVE",
+      "participantId": "4AC482AA-DFE2-4662-B7ED-5D1631A815F4",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 177,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        },
+        {
+          "itemType": "SCALE.SEEDING.SINGLES.U12",
+          "itemValue": 2,
+          "createdAt": "2021-10-12T15:32:20.266Z"
+        }
+      ],
+      "personId": "4AC482AA-DFE2-4662-B7ED-5D1631A815F4",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-03-12",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "BLR",
+        "addresses": [
+          {
+            "city": "Freeport",
+            "state": "TX",
+            "postalCode": "41645",
+            "countryCode": "BLR"
+          }
+        ],
+        "personId": "14a68dfc-0c0b-48f1-a787-38f9dcebc4e6",
+        "standardFamilyName": "Sasnovich",
+        "standardGivenName": "Aliaksandra"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Mell Reasco Gonzalez",
+      "participantStatus": "ACTIVE",
+      "participantId": "D1973154-4CBD-4A6A-8DE4-2D9F980987C3",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 387,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        },
+        {
+          "itemType": "SCALE.SEEDING.SINGLES.U12",
+          "itemValue": 3,
+          "createdAt": "2021-10-12T15:32:20.267Z"
+        }
+      ],
+      "personId": "D1973154-4CBD-4A6A-8DE4-2D9F980987C3",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-06-29",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "ECU",
+        "addresses": [
+          {
+            "city": "Woodbridge",
+            "state": "IN",
+            "postalCode": "44195",
+            "countryCode": "ECU"
+          }
+        ],
+        "personId": "5c8d38b1-ca45-4cb2-88e5-efc799e8bc38",
+        "standardFamilyName": "Reasco Gonzalez",
+        "standardGivenName": "Mell"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Jennifer Brady",
+      "participantStatus": "ACTIVE",
+      "participantId": "9E6966C7-43A4-4280-945F-5D7BC66DF486",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 767,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "9E6966C7-43A4-4280-945F-5D7BC66DF486",
+      "person": {
+        "extensions": [],
+        "birthDate": "2011-12-05",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "USA",
+        "addresses": [
+          {
+            "city": "Martin",
+            "state": "ND",
+            "postalCode": "89487",
+            "countryCode": "USA"
+          }
+        ],
+        "personId": "305ccfe7-d626-4fb4-b2ae-964a1a4c3bf3",
+        "standardFamilyName": "Brady",
+        "standardGivenName": "Jennifer"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Alina Charaeva",
+      "participantStatus": "ACTIVE",
+      "participantId": "5C9292F6-8C23-42B6-9D41-44761BBCF169",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 740,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "5C9292F6-8C23-42B6-9D41-44761BBCF169",
+      "person": {
+        "extensions": [],
+        "birthDate": "2012-05-15",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "RUS",
+        "addresses": [
+          {
+            "city": "Highgrove",
+            "state": "IN",
+            "postalCode": "16340",
+            "countryCode": "RUS"
+          }
+        ],
+        "personId": "0721463a-c882-41ad-999f-f03b8582d7d5",
+        "standardFamilyName": "Charaeva",
+        "standardGivenName": "Alina"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Madison Sieg",
+      "participantStatus": "ACTIVE",
+      "participantId": "B899AE15-9099-40C8-9785-D548E6189000",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 441,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        },
+        {
+          "itemType": "SCALE.SEEDING.SINGLES.U12",
+          "itemValue": 7,
+          "createdAt": "2021-10-12T15:32:20.267Z"
+        }
+      ],
+      "personId": "B899AE15-9099-40C8-9785-D548E6189000",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-12-30",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "USA",
+        "addresses": [
+          {
+            "city": "Rockwell City",
+            "state": "NH",
+            "postalCode": "62259",
+            "countryCode": "USA"
+          }
+        ],
+        "personId": "aec76539-5e2d-4c43-b348-784363b06931",
+        "standardFamilyName": "Sieg",
+        "standardGivenName": "Madison"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Tatiana Barkova",
+      "participantStatus": "ACTIVE",
+      "participantId": "6F201F31-11FB-46B4-874A-8EC0DD6624D5",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 533,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "6F201F31-11FB-46B4-874A-8EC0DD6624D5",
+      "person": {
+        "extensions": [],
+        "birthDate": "2011-12-25",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "RUS",
+        "addresses": [
+          {
+            "city": "Edgefield",
+            "state": "IN",
+            "postalCode": "22441",
+            "countryCode": "RUS"
+          }
+        ],
+        "personId": "f378f00b-b841-43e6-8774-fbaeb6565c13",
+        "standardFamilyName": "Barkova",
+        "standardGivenName": "Tatiana"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Leyre Romero Gormaz",
+      "participantStatus": "ACTIVE",
+      "participantId": "B697EB6F-6055-4558-9E76-6791CD40C5F2",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.SINGLES.U12",
+          "itemValue": 420,
+          "itemDate": "2021-10-08T00:00:00.000Z",
+          "createdAt": "2021-10-08T13:59:48.521Z"
+        }
+      ],
+      "personId": "B697EB6F-6055-4558-9E76-6791CD40C5F2",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-04-13",
+        "isMock": true,
+        "sex": "FEMALE",
+        "nationalityCode": "ESP",
+        "addresses": [
+          {
+            "city": "Woodbridge",
+            "state": "AR",
+            "postalCode": "47502",
+            "countryCode": "ESP"
+          }
+        ],
+        "personId": "6eb3950a-d958-4a74-9f40-905134a8383f",
+        "standardFamilyName": "Romero Gormaz",
+        "standardGivenName": "Leyre"
+      }
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": ["TournamentDirector"],
+      "participantRoleResponsabilities": [],
+      "participantRole": "OFFICIAL",
+      "participantName": "Lisa Pigato",
+      "participantStatus": "ACTIVE",
+      "participantId": "65B2CB06-64D2-4430-A9A0-977AC691A717",
+      "participantType": "INDIVIDUAL",
+      "contacts": [
+        {
+          "emailAddress": "faberm10s@aol.com",
+          "telephone": "4198415455"
+        }
+      ],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "B2850CF9-A813-4127-918F-4246E89A7861",
+      "person": {
+        "extensions": [],
+        "birthDate": "1999-11-05",
+        "isMock": true,
+        "sex": "OTHER",
+        "nationalityCode": "POR",
+        "addresses": [
+          {
+            "city": "Cairo",
+            "state": "AR",
+            "postalCode": "55595",
+            "countryCode": "POR"
+          }
+        ],
+        "personId": "d9306e02-18dc-4531-aaa1-3c866bcb9602",
+        "standardFamilyName": "Pigato",
+        "standardGivenName": "Lisa"
+      },
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": ["TournamentDirector"],
+      "participantRoleResponsabilities": [],
+      "participantRole": "OFFICIAL",
+      "participantName": "Ekaterina Baszak",
+      "participantStatus": "ACTIVE",
+      "participantId": "F81C829B-7AD9-46A0-805D-F4516195A1ED",
+      "participantType": "INDIVIDUAL",
+      "contacts": [
+        {
+          "emailAddress": "faberm10s@aol.com",
+          "telephone": "4198415455"
+        }
+      ],
+      "timeItems": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "B2850CF9-A813-4127-918F-4246E89A7861",
+      "person": {
+        "extensions": [],
+        "birthDate": "2000-06-09",
+        "isMock": true,
+        "sex": "OTHER",
+        "nationalityCode": "CRO",
+        "addresses": [
+          {
+            "city": "Cohoe",
+            "state": "IN",
+            "postalCode": "12356",
+            "countryCode": "CRO"
+          }
+        ],
+        "personId": "9e1d384b-9da5-4886-8410-57cff17dd2b0",
+        "standardFamilyName": "Baszak",
+        "standardGivenName": "Ekaterina"
+      }
+    }
+  ],
+  "extensions": [
+    {
+      "name": "sectionCode",
+      "value": "085"
+    },
+    {
+      "name": "districtCode",
+      "value": "066"
+    },
+    {
+      "name": "level",
+      "value": {
+        "currentOrgLevelConfiguration": {
+          "scoreFormats": [
+            "SET3-S:4/TB7-F:TB7",
+            "SET3-S:6/TB7",
+            "SET3-S:6/TB7-F:TB10"
+          ],
+          "doublesScoreFormats": [
+            "SET3-S:4/TB7-F:TB7",
+            "SET3-S:6/TB7",
+            "SET3-S:6/TB7-F:TB10",
+            "SET1-S:8/TB7"
+          ],
+          "eventFormats": [
+            "RR",
+            "FMLC",
+            "RRPO",
+            "COMP",
+            "FIC16",
+            "FICQ",
+            "MFIC"
+          ],
+          "doublesEventFormats": [
+            "COMP",
+            "FMLC",
+            "KO",
+            "FICQ",
+            "RRPO",
+            "RR",
+            "FIC16"
+          ],
+          "goldSilverBronzeDrawsEnabled": false,
+          "allowSplitDraws": true,
+          "__typename": "LevelConfiguration"
+        },
+        "level": {
+          "id": "00000000-0000-0000-0000-000000000005",
+          "category": "JUNIOR",
+          "isRanking": false,
+          "locked": true,
+          "name": "Level 5 Open",
+          "onlineRegistrationMandatory": false,
+          "orderIndex": 5,
+          "shortName": "5 Open",
+          "features": ["wtnEnabled"],
+          "__typename": "Level",
+          "configuration": {
+            "ageCategories": [
+              {
+                "maximumAge": 12,
+                "todsCode": "U12",
+                "type": "INDIVIDUAL",
+                "__typename": "AgeCategory"
+              },
+              {
+                "maximumAge": 14,
+                "todsCode": "U14",
+                "type": "INDIVIDUAL",
+                "__typename": "AgeCategory"
+              },
+              {
+                "maximumAge": 16,
+                "todsCode": "U16",
+                "type": "INDIVIDUAL",
+                "__typename": "AgeCategory"
+              },
+              {
+                "maximumAge": 18,
+                "todsCode": "U18",
+                "type": "INDIVIDUAL",
+                "__typename": "AgeCategory"
+              }
+            ],
+            "allowCustomAgeCategories": false,
+            "allowWildcards": false,
+            "allowsNonConsecutiveDays": false,
+            "ballColours": ["YELLOW"],
+            "checkInRequired": "OPTIONAL",
+            "closeTimeDefaults": {
+              "isEditable": false,
+              "time": 1079,
+              "timeZone": "America/New_York",
+              "__typename": "TimeDefaults"
+            },
+            "description": "Up to 3 days, Boys/Girls, 12s-18s, Singles, Doubles",
+            "doublesEventFormats": [
+              "FIC16",
+              "FICQ",
+              "COMP",
+              "RRPO",
+              "KO",
+              "FMLC",
+              "RR"
+            ],
+            "doublesScoreFormats": [
+              "SET1-S:8/TB7@8",
+              "SET3-S:6/TB7",
+              "SET3-S:6/TB7-F:TB10",
+              "SET3-S:4/TB7-F:TB7"
+            ],
+            "doublesSelectionProcessConstraints": [
+              "TOP_DOWN_BY_RANKING",
+              "TOP_DOWN_BY_RATING",
+              "MANUAL"
+            ],
+            "enabled": true,
+            "eventFormats": ["COMP", "FMLC", "FIC16", "FICQ"],
+            "eventLengthRange": {
+              "maximumDays": 3,
+              "__typename": "EventLengthRange"
+            },
+            "eventTypes": ["SINGLES", "DOUBLES"],
+            "genders": ["GIRLS", "MIXED", "BOYS"],
+            "goldSilverBronzeDrawsEnabled": false,
+            "allowSplitDraws": false,
+            "headTax": {
+              "fixedFee": 600,
+              "percentageFee": 0,
+              "__typename": "HeadTax"
+            },
+            "id": 0,
+            "lockedProperties": [
+              "SKILL_LEVEL",
+              "EVENT_LENGTH_RANGE",
+              "BALL_COLOURS",
+              "CHECKIN_REQUIRED",
+              "DOUBLES_SELECTION_PROCESS_CONSTRAINTS",
+              "ALLOW_WILDCARDS",
+              "DOUBLES_EVENT_FORMATS",
+              "DESCRIPTION",
+              "HEAD_TAX",
+              "ENABLED",
+              "SCORE_FORMATS",
+              "EVENT_TYPES",
+              "ALLOWS_NONCONSECUTIVE_DAYS",
+              "EVENT_FORMATS",
+              "SUBMISSION_WINDOW",
+              "DOUBLES_SCORE_FORMATS",
+              "TOURNAMENT_FEE",
+              "GENDERS",
+              "SANCTION_TYPE",
+              "SELECTION_PROCESS_CONSTRAINTS"
+            ],
+            "maximumDays": 3,
+            "sanctionType": "SECTION",
+            "scoreFormats": [
+              "SET3-S:4/TB7-F:TB7",
+              "SET3-S:6/TB7-F:TB10",
+              "SET3-S:6/TB7"
+            ],
+            "selectionProcessConstraints": ["MANUAL"],
+            "skillLevel": "HIGH_INTERMEDIATE",
+            "submissionWindow": {
+              "from": "2020-09-15T04:00:00.000Z",
+              "timeZone": "America/New_York",
+              "__typename": "DateRangeWithTimeZone"
+            },
+            "teamEventFormats": ["COMP", "FMLC", "FIC16", "FICQ"],
+            "teamSelectionProcessConstraints": ["MANUAL"],
+            "tournamentFee": 5300,
+            "__typename": "LevelConfiguration"
+          }
+        }
+      }
+    }
+  ],
+  "tournamentOtherIds": [],
+  "onlineResources": [],
+  "totalPrizeMoney": [],
+  "tournamentCategories": [],
+  "createdAt": "2022-05-12T14:12:28.018Z",
+  "updatedAt": "2021-10-12T15:32:35.789Z",
+  "venueIds": ["CA509E51-E75F-4C67-A13B-1EA01C9801C7"],
+  "venues": [
+    {
+      "roles": [],
+      "subVenues": [],
+      "venueName": "Twos Athletic Club",
+      "venueAbbreviation": "TAC",
+      "venueId": "CA509E51-E75F-4C67-A13B-1EA01C9801C7",
+      "addresses": [
+        {
+          "state": "OH",
+          "latitude": "41.59907",
+          "longitude": "-83.65689",
+          "postalCode": "43614",
+          "addressLine1": "2222 CASS RD",
+          "addressLine2": "",
+          "timeZone": "America/New_York",
+          "city": "TOLEDO",
+          "createdAt": "2021-01-12T13:12:37.952Z",
+          "updatedAt": "2021-01-12T13:12:37.952Z"
+        }
+      ],
+      "venueOtherIds": [],
+      "contacts": [],
+      "courts": [],
+      "onlineResources": [],
+      "createdAt": "2021-01-12T13:12:37.952Z",
+      "updatedAt": "2021-04-18T22:00:44.354Z",
+      "parentOrganisation": "5ffda043cbb2d33708e06d13",
+      "parentOrganisationId": "B57716A8-3F07-499A-9B8B-C22CE7D40809"
+    }
+  ]
+}
