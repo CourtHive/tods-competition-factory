@@ -13,6 +13,7 @@ import {
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   INVALID_ENTRY_STATUS,
+  INVALID_VALUES,
 } from '../../../../constants/errorConditionConstants';
 import {
   ALTERNATE,
@@ -128,6 +129,74 @@ it('can modify entryStatus within event.entries', () => {
   ).toEqual(2);
   expect(drawEntryStatuses).toEqual([ORGANISER_ACCEPTANCE]);
   expect(flightEntryStatuses).toEqual([ORGANISER_ACCEPTANCE]);
+});
+
+it('can add and remove extensions from entries', () => {
+  const drawProfiles = [{ drawSize: 8, alternatesCount: 2 }];
+  const participantsProfile = {
+    participantsCount: 16,
+  };
+  const {
+    eventIds: [eventId],
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    participantsProfile,
+    drawProfiles,
+  });
+
+  const { tournamentParticipants } = tournamentEngine
+    .setState(tournamentRecord)
+    .getTournamentParticipants();
+  const participantIds = getParticipantIds(tournamentParticipants);
+
+  let result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result.success).toEqual(true);
+
+  let { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { structureId } = drawDefinition.structures[0];
+  const { positionAssignments } = tournamentEngine.getPositionAssignments({
+    structureId,
+    drawId,
+  });
+  const assignedParticipantIds = positionAssignments.map(getParticipantId);
+  const unassignedParticipantIds = participantIds.filter(
+    (participantId) => !assignedParticipantIds.includes(participantId)
+  );
+
+  result = tournamentEngine.modifyEntriesStatus({
+    participantIds: unassignedParticipantIds,
+    extension: { name: 'statusDetail', value: 'available' },
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ event, drawDefinition } = tournamentEngine.getEvent({ drawId }));
+
+  let entriesWithExtensions = event.entries.filter(
+    ({ extensions }) => extensions && extensions.length
+  );
+  expect(entriesWithExtensions.length).toEqual(unassignedParticipantIds.length);
+
+  result = tournamentEngine.modifyEntriesStatus({
+    participantIds: unassignedParticipantIds,
+    extension: { name: 'statusDetail', value: undefined },
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ event, drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  entriesWithExtensions = event.entries.filter(
+    ({ extensions }) => extensions && extensions.length
+  );
+  expect(entriesWithExtensions.length).toEqual(0);
+
+  result = tournamentEngine.modifyEntriesStatus({
+    participantIds: unassignedParticipantIds,
+    extension: { name: 'statusDetail', invalidAttribute: 'invalid' },
+    eventId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
 });
 
 it('can account for individuals appearing in multiple doubles pairs', () => {
