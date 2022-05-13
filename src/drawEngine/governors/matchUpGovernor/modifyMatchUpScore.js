@@ -9,6 +9,10 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
+import {
+  DOUBLE_WALKOVER,
+  WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
 
 /**
  *
@@ -59,7 +63,10 @@ export function modifyMatchUpScore({
     if (matchUp.matchUpId !== matchUpId) console.log('!!!!!');
   }
 
-  if (removeScore) {
+  if (
+    (matchUpStatus && [WALKOVER, DOUBLE_WALKOVER].includes(matchUpStatus)) ||
+    removeScore
+  ) {
     Object.assign(matchUp, { ...toBePlayed });
   } else if (score) {
     matchUp.score = score;
