@@ -9044,10 +9044,10 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
-tods-competition-factory@0.193.1:
-  version "0.193.1"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.193.1.tgz#ecc92ec59b16028d04ca328e153ed966c15e1620"
-  integrity sha512-KY4P02Ys5hGtU6wR2WWxKJEm1dD2nPSktsq/L7y4SrAOfRZ/XmpiJj+TA3DuqjUvvVaui0vlul0z+eAqzaSaPg==
+tods-competition-factory@0.194.0:
+  version "0.194.0"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.194.0.tgz#579b9e08df3f8c49f830bd443cbc67b5942bd76c"
+  integrity sha512-WgTgbKjL5nkm365ktYtMGmX+KiWjoUFQxuXQdEVGq06B6igEjX541luG6Jgzh3IQosF2i8O+N0u64Fza73c/tA==
 
 tods-competition-factory@0.74.1:
   version "0.74.1"
