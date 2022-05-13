@@ -1,7 +1,8 @@
+import { findTournamentExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { extractDate, formatDate } from '../../../utilities/dateTime';
 import { generatePersons } from '../../generators/generatePersons';
 import { generateAddress } from '../../generators/generateAddress';
-import { teamMocks } from '../../utilities/teamMocks';
+import { nameMocks } from '../../utilities/nameMocks';
 import { UUID } from '../../../utilities';
 import {
   postalCodeMocks,
@@ -10,13 +11,30 @@ import {
 } from '../../utilities/address';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantTypes';
 import { FEMALE, MALE, OTHER } from '../../../constants/genderConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  GROUP,
+  INDIVIDUAL,
+  PAIR,
+  TEAM,
+} from '../../../constants/participantTypes';
+import {
+  DELEGATED_OUTCOME,
+  DISABLE_LINKS,
+  FLIGHT_PROFILE,
+  PARTICIPANT_REPRESENTATIVES,
+  PERSON_REQUESTS,
+  ROUND_TARGET,
+  SCHEDULE_LIMITS,
+  SCHEDULE_TIMING,
+  SCHEDULING_PROFILE,
+  SUB_ORDER,
+  TALLY,
+} from '../../../constants/extensionConstants';
 
-// TODO: anonymize VenueNames ... and, eventually, venueIds
 export function anonymizeTournamentRecord({
-  // extensionsToKeep = [], e.g. 'level'
+  keepExtensions = [], // e.g. ['level']
   anonymizeParticipantNames = true,
   tournamentRecord,
   tournamentName,
@@ -25,13 +43,167 @@ export function anonymizeTournamentRecord({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
+  // if keepExtensions is boolean true then keep all extensions
+  // otherwise, keep any specified extensions along with internal extensions
+  const internalExtensions = [
+    DELEGATED_OUTCOME,
+    DISABLE_LINKS,
+    FLIGHT_PROFILE,
+    PARTICIPANT_REPRESENTATIVES,
+    PERSON_REQUESTS,
+    ROUND_TARGET,
+    SCHEDULE_LIMITS,
+    SCHEDULING_PROFILE,
+    SCHEDULE_TIMING,
+    SUB_ORDER,
+    TALLY,
+  ];
+  const extensionsToKeep = Array.isArray(keepExtensions)
+    ? internalExtensions.concat(...keepExtensions)
+    : internalExtensions;
+
+  const filterExtensions = (element) => {
+    if (Array.isArray(keepExtensions)) {
+      return element?.extensions?.filter((extension) =>
+        extensionsToKeep.includes(extension.name)
+      );
+    } else {
+      return element.extensions;
+    }
+  };
+
+  // create mapping from original element IDs to newly generated UUIDs
+  const idMap = {};
+
   // change the tournamentId and name
-  tournamentRecord.tournamentId = tournamentId || UUID();
+  tournamentRecord.extensions = filterExtensions(tournamentRecord);
+
+  const newTournamentId = tournamentId || UUID();
+  idMap[tournamentRecord.tournamentId] = newTournamentId;
+  tournamentRecord.tournamentId = newTournamentId;
+
   tournamentRecord.createdAt = new Date().toISOString();
   tournamentRecord.tournamentName =
     tournamentName || `Anonymized: ${formatDate(new Date())}`;
 
   delete tournamentRecord.parentOrganisation;
+
+  for (const participant of tournamentRecord.participants || []) {
+    const newParticipantId = UUID();
+    idMap[participant.participantId] = newParticipantId;
+    participant.participantId = newParticipantId;
+  }
+
+  // update all PAIR, GROUP and TEAM participant individualParticipantIds
+  for (const participant of tournamentRecord.participants || []) {
+    if (Array.isArray(participant.individualParticipantIds)) {
+      participant.individualParticipantIds =
+        participant.individualParticipantIds.map(
+          (individualParticipantId) => idMap[individualParticipantId]
+        );
+    }
+  }
+
+  let venueIndex = 0;
+  for (const venue of tournamentRecord.venues || []) {
+    venue.extensions = filterExtensions(venue);
+    venue.venueName = `Venue #${venueIndex}`;
+    venue.venueAbbreviation = `V${venueIndex}`;
+    const newVenueId = UUID();
+    idMap[venue.venueId] = newVenueId;
+    // venue.eventId = UUID(); eventIds can't be anonymized without updating schedulingProfiles
+  }
+
+  let eventCount = 1;
+  for (const event of tournamentRecord.events || []) {
+    event.extensions = filterExtensions(event);
+
+    const newEventId = UUID();
+    idMap[event.eventId] = newEventId;
+    event.eventId = newEventId;
+    const categoryName =
+      event.category?.categoryName ||
+      event.category?.ageCategoryCode ||
+      event.category?.ratingType ||
+      event.gender;
+    event.eventName = `Event ${eventCount} ${categoryName}`;
+
+    // update all event entries
+    if (Array.isArray(event.entries)) {
+      for (const entry of event.entries) {
+        entry.participantId = idMap[entry.participantId];
+      }
+    }
+
+    /*
+    // no need to remove entry extensions
+    for (const entry of event.entries || []) { entry.extensions = filterExtensions(entry); }
+    */
+
+    for (const drawDefinition of event.drawDefinitions || []) {
+      drawDefinition.extensions = filterExtensions(drawDefinition);
+      const newDrawId = UUID();
+      idMap[drawDefinition.drawId] = newDrawId;
+      drawDefinition.drawId = newDrawId;
+
+      // update all drawDefinition entries
+      if (Array.isArray(drawDefinition.entries)) {
+        for (const entry of drawDefinition.entries) {
+          entry.participantId = idMap[entry.participantId];
+        }
+      }
+
+      const updateStructure = (structure) => {
+        structure.extensions = filterExtensions(structure);
+        const newStructureId = UUID();
+        idMap[structure.structureId] = newStructureId;
+        structure.structureId = newStructureId;
+
+        // update positionAssignments for all structures
+        for (const assignment of structure.positionAssignments || []) {
+          if (assignment.participantId)
+            assignment.participantId = idMap[assignment.participantId];
+        }
+
+        // update seedAssignments for all structures
+        for (const assignment of structure.seedAssignments || []) {
+          if (assignment.participantId)
+            assignment.participantId = idMap[assignment.participantId];
+        }
+      };
+
+      for (const structure of drawDefinition.structures || []) {
+        updateStructure(structure);
+
+        // account for structureType CONTAINER
+        if (Array.isArray(structure.structures)) {
+          for (const childStructure of structure.structures) {
+            updateStructure(childStructure);
+          }
+        }
+      }
+
+      // use idMap to update all link IDs
+      for (const link of drawDefinition.links || []) {
+        link.source.structureId = idMap[link.source.structureId];
+        link.target.structureId = idMap[link.target.structureId];
+      }
+    }
+
+    const { extension: flightProfile } = findTournamentExtension({
+      name: FLIGHT_PROFILE,
+      tournamentRecord,
+    });
+
+    // use idMap to update all IDs in flightProfiles
+    if (Array.isArray(flightProfile?.value)) {
+      flightProfile.value.flights?.forEach((flight) => {
+        flight.drawId = idMap[flight.drawId];
+      });
+    }
+
+    eventCount += 1;
+  }
 
   const consideredDate = tournamentRecord.startDate || formatDate(new Date());
 
@@ -138,7 +310,9 @@ export function anonymizeTournamentRecord({
     delete generatedPerson.firstName;
     delete generatedPerson.lastName;
 
+    generatedPerson.extensions = filterExtensions(person);
     individualParticipant.person = generatedPerson;
+    idMap[person.personId] = generatedPerson.personId;
   });
 
   const pairParticipants = (tournamentRecord.participants || []).filter(
@@ -157,15 +331,49 @@ export function anonymizeTournamentRecord({
     ({ participantType }) => participantType === TEAM
   );
   const teamParticipantsCount = teamParticipants.length;
-
-  const teamNames = teamMocks({ count: teamParticipantsCount }).teams;
-
+  const teamNames = nameMocks({ count: teamParticipantsCount }).names;
   teamParticipants.forEach((teamParticipant, i) => {
     teamParticipant.participantName = teamNames[i];
   });
 
-  // TODO: remove specific extensions...
-  // what other places in a tournament might contain PII?
+  const groupParticipants = (tournamentRecord.participants || []).filter(
+    ({ participantType }) => participantType === GROUP
+  );
+  const groupParticipantsCount = groupParticipants.length;
+  const groupNames = nameMocks({
+    count: groupParticipantsCount,
+    nameRood: 'Group',
+  }).names;
+  groupParticipants.forEach((teamParticipant, i) => {
+    teamParticipant.participantName = groupNames[i];
+  });
+
+  const { extension: schedulingProfile } = findTournamentExtension({
+    name: SCHEDULING_PROFILE,
+    tournamentRecord,
+  });
+
+  // use idMap to update all IDs in schedulingProfile
+  if (Array.isArray(schedulingProfile?.value)) {
+    schedulingProfile.value.forEach((round) => {
+      round.tournamentId = idMap[round.tournamentId];
+      round.structureId = idMap[round.structureId];
+      round.eventId = idMap[round.eventId];
+      round.drawId = idMap[round.drawId];
+    });
+  }
+
+  const { extension: personRequests } = findTournamentExtension({
+    name: PERSON_REQUESTS,
+    tournamentRecord,
+  });
+
+  // use idMap to update all IDs in personRequests
+  if (Array.isArray(personRequests?.value)) {
+    personRequests.value.forEach((request) => {
+      request.personId = idMap[request.personId];
+    });
+  }
 
   return { ...SUCCESS };
 }

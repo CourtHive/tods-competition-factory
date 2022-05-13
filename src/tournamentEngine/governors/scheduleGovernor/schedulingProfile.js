@@ -29,8 +29,8 @@ export function getSchedulingProfile({ tournamentRecord }) {
   const tournamentId = tournamentRecord.tournamentId;
 
   const { extension } = findTournamentExtension({
-    tournamentRecord,
     name: SCHEDULING_PROFILE,
+    tournamentRecord,
   });
 
   let schedulingProfile = extension?.value || [];

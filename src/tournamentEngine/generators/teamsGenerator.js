@@ -85,8 +85,8 @@ export function generateTeamsFromParticipantAttribute({
       if (participant.participantRole !== COMPETITOR) return undefined;
 
       const { extension } = findExtension({
-        element: participant,
         name: GROUPING_ATTRIBUTE,
+        element: participant,
       });
       const groupingAttribute = extension?.value;
 
@@ -111,8 +111,8 @@ export function generateTeamsFromParticipantAttribute({
 
   if (participantsAdded) {
     addNotice({
-      topic: ADD_PARTICIPANTS,
       payload: { participants: newParticipants },
+      topic: ADD_PARTICIPANTS,
     });
   }
 
