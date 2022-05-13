@@ -136,7 +136,8 @@ it('can add and remove extensions from entries', () => {
   const participantsProfile = {
     participantsCount: 16,
   };
-  const {
+
+  let {
     eventIds: [eventId],
     drawIds: [drawId],
     tournamentRecord,
