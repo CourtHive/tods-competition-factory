@@ -15,28 +15,25 @@ import {
   MISSING_VALUE,
 } from '../../../../constants/errorConditionConstants';
 
-// TODO: integrity check to ensure that participantIds to add are participantType: INDIVIDUAL
-// would require that tournamentRecord be loaded in tournamentEngine
-
 export function createGroupParticipant({
-  tournamentRecord,
-  participantId,
   individualParticipantIds = [],
   participantRoleResponsibilities,
   participantRole = OTHER,
+  tournamentRecord,
+  participantId,
   groupName,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!groupName) return { error: MISSING_VALUE, info: 'Missing groupName' };
   if (!Array.isArray(individualParticipantIds))
     return {
-      error: INVALID_VALUES,
       info: 'Invalid individualParticipantIds',
+      error: INVALID_VALUES,
     };
 
   const { tournamentParticipants } = getTournamentParticipants({
-    tournamentRecord,
     participantFilters: { participantTypes: [INDIVIDUAL] },
+    tournamentRecord,
   });
   const tournamentIndividualParticipantIds = tournamentParticipants.map(
     (participant) => participant.participantId
