@@ -1,6 +1,5 @@
-import mocksEngine from '..';
 import { intersection } from '../../utilities';
-import { extractDate } from '../../utilities/dateTime';
+import mocksEngine from '..';
 
 test('it can anonymize tournamentRecords', () => {
   const tournamentName = 'Demo Tournament';
@@ -18,8 +17,7 @@ test('it can anonymize tournamentRecords', () => {
   let result = mocksEngine.anonymizeTournamentRecord({ tournamentRecord });
   expect(result.success).toEqual(true);
 
-  const currentDate = extractDate(new Date().toISOString());
-  expect(tournamentRecord.tournamentName).toEqual(`Anonymized: ${currentDate}`);
+  expect(tournamentRecord.tournamentName.split(':')[0]).toEqual(`Anonymized`);
 
   const generatedPersons = tournamentRecord.participants.map(
     (participant) => participant.person
