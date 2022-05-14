@@ -26,8 +26,8 @@ export function getPersonRequests({ tournamentRecords, requestType }) {
   // ... possible for a person to be in multiple linked tournamentRecords
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { extension } = findTournamentExtension({
-      tournamentRecord,
       name: PERSON_REQUESTS,
+      tournamentRecord,
     });
 
     const requestObjects = extension?.value || [];

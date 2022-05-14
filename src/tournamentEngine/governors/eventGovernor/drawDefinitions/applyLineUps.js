@@ -4,8 +4,8 @@ import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findMatc
 import { addParticipant } from '../../participantGovernor/addParticipants';
 import { instanceCount } from '../../../../utilities';
 
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
 import { COMPETITOR } from '../../../../constants/participantRoles';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {

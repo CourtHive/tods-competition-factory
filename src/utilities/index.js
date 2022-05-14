@@ -5,6 +5,7 @@ export { makeDeepCopy } from './makeDeepCopy';
 export { generateHashCode } from './objects';
 export { numericSort } from './sorting';
 export { UUID } from './UUID';
+
 export {
   allNumeric,
   chunkArray,

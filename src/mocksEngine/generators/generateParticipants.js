@@ -6,7 +6,7 @@ import { definedAttributes } from '../../utilities/objects';
 import { countries } from '../../fixtures/countryData';
 import { generateAddress } from './generateAddress';
 import { generatePersons } from './generatePersons';
-import { teamMocks } from '../utilities/teamMocks';
+import { nameMocks } from '../utilities/nameMocks';
 
 import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { RANKING, RATING, SCALE } from '../../constants/scaleConstants';
@@ -197,7 +197,7 @@ export function generateParticipants({
       .flat(Infinity)
   );
 
-  const teamNames = teamMocks({ count: participantsCount }).teams;
+  const teamNames = nameMocks({ count: participantsCount }).names;
   const participants = generateRange(0, participantsCount)
     .map((i) => {
       const sideParticipantsCount = doubles ? 2 : team ? 8 : 1;

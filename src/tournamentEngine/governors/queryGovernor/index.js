@@ -7,8 +7,9 @@ import { participantScaleItem } from '../../accessors/participantScaleItem';
 import { getVenuesAndCourts, findVenue } from '../../getters/venueGetter';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { getParticipantScaleItem } from './getParticipantScaleItem';
-import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
 import { publicFindMatchUp } from '../../getters/matchUpsGetter';
+import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
+import { getMatchUpsStats } from '../../getters/getMatchUpStats';
 import { getEvent, getEvents } from '../../getters/eventGetter';
 import { getPolicyDefinitions } from './getPolicyDefinitions';
 import { matchUpActions } from '../../getters/matchUpActions';
@@ -93,6 +94,7 @@ const queryGovernor = {
   positionActions,
   findMatchUp: publicFindMatchUp,
   participantScheduledMatchUps,
+  getMatchUpsStats,
 
   participantScaleItem,
   getParticipantScaleItem,

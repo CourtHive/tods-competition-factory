@@ -22,15 +22,14 @@ import {
  * @param {string} drawId - allows drawDefinition and event to be retrieved by tournamentEngine from tournament record
  */
 export function getSeedsCount({
-  tournamentRecord,
-  drawDefinition,
-  event,
-
   requireParticipantCount = true,
   drawSizeProgression = false,
   policyDefinitions,
   participantCount,
+  tournamentRecord,
+  drawDefinition,
   drawSize,
+  event,
 } = {}) {
   if (!policyDefinitions) {
     const result = getPolicyDefinitions({

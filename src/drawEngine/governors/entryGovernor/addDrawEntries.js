@@ -1,5 +1,7 @@
 import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { refreshEntryPositions } from '../../../global/functions/producers/refreshEntryPositions';
+import { isValidExtension } from '../../../global/validation/isValidExtension';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { participantInEntries } from '../../getters/entryGetter';
 import { definedAttributes } from '../../../utilities/objects';
@@ -20,6 +22,7 @@ import {
   INVALID_PARTICIPANT_IDS,
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
+  INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
 import {
   MAIN,
@@ -46,6 +49,7 @@ export function addDrawEntry({
   participant,
   roundTarget,
   extensions,
+  extension,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!entryStage) return { error: MISSING_STAGE };
@@ -61,6 +65,16 @@ export function addDrawEntry({
   if (!ignoreStageSpace && !spaceAvailable.success) {
     return { error: spaceAvailable.error };
   }
+
+  const stack = 'addDrawEntry';
+
+  if (extension && !isValidExtension(extension))
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      info: 'Invalid extension',
+      context: { extension },
+      stack,
+    });
 
   participantId = participantId || participant?.participantId;
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
@@ -93,6 +107,10 @@ export function addDrawEntry({
     entryStage,
     extensions,
   });
+
+  if (extension) {
+    addExtension({ element: entry, extension });
+  }
 
   if (roundTarget) {
     addExtension({

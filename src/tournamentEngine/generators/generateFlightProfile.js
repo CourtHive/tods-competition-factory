@@ -30,7 +30,6 @@ import {
  * @param {string} stage - OPTIONAL - only consider event entries matching stage
  *
  */
-// TODO: add matchUpValue to each flight...
 export function generateFlightProfile({
   drawNameRoot = 'Flight',
   attachFlightProfile,
@@ -112,6 +111,7 @@ export function generateFlightProfile({
       (value) => value.flightNumber === flightNumber
     )?.matchUpValue;
 
+    // UNUSED: flight.matchUpValue is currently unused
     if (matchUpValue) flight.matchUpValue = matchUpValue;
 
     return flight;

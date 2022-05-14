@@ -1,0 +1,1699 @@
+{
+  "tournamentRecord": {
+    "matchUps": [],
+    "tournamentGroups": [],
+    "tournamentId": "32A7CD3E-5E72-4C2A-9E8E-EF14FE01116B",
+    "tournamentName": "Amrita New Testing Club vs Kentucky",
+    "startDate": "2021-11-21T08:30:00.000Z",
+    "endDate": "2021-11-22T00:00:00.000Z",
+    "participants": [
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "0E029787-D1AA-4DFD-802A-BBAB565F032B",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Jeffxxx Owxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "2B73AAAA-1023-4F03-ACF0-FF3B9BC3F517",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1975-04-30T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "2B73AAAA-1023-4F03-ACF0-FF3B9BC3F517",
+          "standardFamilyName": "Owxxx",
+          "standardGivenName": "Jeffxxx",
+          "personOtherIds": [
+            {
+              "personId": "11679414"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Simi Valley",
+              "state": "CA",
+              "postalCode": "93065-2051",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "65",
+                "name": "Southern California"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "17",
+                "name": "Southern California",
+                "sectionCode": "65"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.396Z",
+          "updatedAt": "2021-03-11T14:58:49.396Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "C20CE661-857C-44E2-8EBD-0667A6D7A0B4",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Denxxx Geronixxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "170D2CBB-B306-4DD8-B763-5BDDB6F8829D",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1972-06-25T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "170D2CBB-B306-4DD8-B763-5BDDB6F8829D",
+          "standardFamilyName": "Geronixxx",
+          "standardGivenName": "Denxxx",
+          "personOtherIds": [
+            {
+              "personId": "919890005"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "New York",
+              "state": "NY",
+              "postalCode": "10012-1703",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "10",
+                "name": "Eastern"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "02",
+                "name": "Metropolitan Region",
+                "sectionCode": "10"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.388Z",
+          "updatedAt": "2021-03-11T14:58:49.388Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "8CCC19B0-C499-4D13-A9A4-1E4FC74C7DAF",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Jaxxx Spenxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "A36618E5-7E7C-4EAE-B554-46B06C5DF5E2",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1974-11-14T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "A36618E5-7E7C-4EAE-B554-46B06C5DF5E2",
+          "standardFamilyName": "Spenxxx",
+          "standardGivenName": "Jaxxx",
+          "personOtherIds": [
+            {
+              "personId": "2018256427"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Watkinsville",
+              "state": "GA",
+              "postalCode": "30677-7560",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "70",
+                "name": "Southern"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "34",
+                "name": "Georgia",
+                "sectionCode": "70"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.369Z",
+          "updatedAt": "2021-03-11T14:58:49.369Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "8C8D3297-0703-4DB2-90E3-E370B6811A3E",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Robxxx Dixxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "7BDD3763-B859-470C-9A99-C2409D532BBD",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1966-09-06T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "7BDD3763-B859-470C-9A99-C2409D532BBD",
+          "standardFamilyName": "Dixxx",
+          "standardGivenName": "Robxxx",
+          "personOtherIds": [
+            {
+              "personId": "919270539"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Waterville",
+              "state": "ME",
+              "postalCode": "04901-4613",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "45",
+                "name": "New England"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "10",
+                "name": "Maine",
+                "sectionCode": "45"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.352Z",
+          "updatedAt": "2021-03-11T14:58:49.352Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "DB02AFB2-45EA-4EB5-81D4-3309E5AA7F42",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Kexxx Sprinxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "A2B6CD54-7B24-42A8-B896-2C8CA2D952FE",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1971-11-24T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "A2B6CD54-7B24-42A8-B896-2C8CA2D952FE",
+          "standardFamilyName": "Sprinxxx",
+          "standardGivenName": "Kexxx",
+          "personOtherIds": [
+            {
+              "personId": "11244802"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Fountain Valley",
+              "state": "CA",
+              "postalCode": "92708-1240",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "65",
+                "name": "Southern California"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "17",
+                "name": "Southern California",
+                "sectionCode": "65"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.298Z",
+          "updatedAt": "2021-03-11T14:58:49.298Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "D25081E9-D7CB-42AE-960F-2D3D7AA5AA75",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Mattxxx Johansxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "9DB94047-158E-42C7-BD9F-5B0B40D8E833",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1970-01-15T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "9DB94047-158E-42C7-BD9F-5B0B40D8E833",
+          "standardFamilyName": "Johansxxx",
+          "standardGivenName": "Mattxxx",
+          "personOtherIds": [
+            {
+              "personId": "1180162972"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Huntingtn Bch",
+              "state": "CA",
+              "postalCode": "92646-4854",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "65",
+                "name": "Southern California"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "17",
+                "name": "Southern California",
+                "sectionCode": "65"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.287Z",
+          "updatedAt": "2021-03-11T14:58:49.287Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "E7F485BF-8141-442B-B7C7-189DC61784FE",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Michxxx Chxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "744CE474-8443-4A9F-A09A-ACD38671D3E6",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1972-07-15T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "744CE474-8443-4A9F-A09A-ACD38671D3E6",
+          "standardFamilyName": "Chxxx",
+          "standardGivenName": "Michxxx",
+          "personOtherIds": [
+            {
+              "personId": "11516419"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Anaheim",
+              "state": "CA",
+              "postalCode": "92807-3510",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "65",
+                "name": "Southern California"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "17",
+                "name": "Southern California",
+                "sectionCode": "65"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.271Z",
+          "updatedAt": "2021-03-11T14:58:49.271Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "D98B09BD-A00D-442C-BEC7-B58524F2AA62",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Carxxx Caxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "74ACEE2D-2C7C-43CF-B4A3-784F96647AE0",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1973-02-03T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "74ACEE2D-2C7C-43CF-B4A3-784F96647AE0",
+          "standardFamilyName": "Caxxx",
+          "standardGivenName": "Carxxx",
+          "personOtherIds": [
+            {
+              "personId": "2018200681"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Rehoboth Beach",
+              "state": "DE",
+              "postalCode": "19971-4135",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "35",
+                "name": "Middle States"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "06",
+                "name": "Delaware",
+                "sectionCode": "35"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.257Z",
+          "updatedAt": "2021-03-11T14:58:49.257Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "6321281E-2FC5-4C5F-ACBF-7C5F9238A759",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Trexxx Peterxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "3725A71B-450B-4384-91C8-362D7E4684AD",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1973-11-16T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "3725A71B-450B-4384-91C8-362D7E4684AD",
+          "standardFamilyName": "Peterxxx",
+          "standardGivenName": "Trexxx",
+          "personOtherIds": [
+            {
+              "personId": "2010939298"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "West Fargo",
+              "state": "ND",
+              "postalCode": "58078-3416",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "55",
+                "name": "Northern"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "51",
+                "name": "Member",
+                "sectionCode": "55"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.244Z",
+          "updatedAt": "2021-03-11T14:58:49.244Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "5E53A21E-27C5-4B82-AA67-5736616A16BA",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Mxxx Walxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "2F84E8F1-F95E-4B38-92E3-B31449485886",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1970-02-08T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "2F84E8F1-F95E-4B38-92E3-B31449485886",
+          "standardFamilyName": "Walxxx",
+          "standardGivenName": "Mxxx",
+          "personOtherIds": [
+            {
+              "personId": "1183779"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Bothell",
+              "state": "WA",
+              "postalCode": "98011-7121",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "60",
+                "name": "Pacific NW"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "08",
+                "name": "Northwest Washington",
+                "sectionCode": "60"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.236Z",
+          "updatedAt": "2021-03-11T14:58:49.236Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "E1207202-2B19-4065-BA00-88231EB096C8",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Artxxx Goldsmxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "750C07BD-E9BB-422B-8A88-BD78AA3816DE",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1949-06-15T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "750C07BD-E9BB-422B-8A88-BD78AA3816DE",
+          "standardFamilyName": "Goldsmxxx",
+          "standardGivenName": "Artxxx",
+          "personOtherIds": [
+            {
+              "personId": "11028912"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Denmark",
+              "state": "ME",
+              "postalCode": "04022-5457",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "45",
+                "name": "New England"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "10",
+                "name": "Maine",
+                "sectionCode": "45"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.223Z",
+          "updatedAt": "2021-03-11T14:58:49.223Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "39212F94-DDBD-45A8-AB73-F411FE40C0AA",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Artxxx Boxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "B2608E63-E33C-487C-A7FE-15CB1F390C92",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1969-08-13T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "B2608E63-E33C-487C-A7FE-15CB1F390C92",
+          "standardFamilyName": "Boxxx",
+          "standardGivenName": "Artxxx",
+          "personOtherIds": [
+            {
+              "personId": "919277519"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Bronx",
+              "state": "NY",
+              "postalCode": "10463-1249",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "10",
+                "name": "Eastern"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "02",
+                "name": "Metropolitan Region",
+                "sectionCode": "10"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.216Z",
+          "updatedAt": "2021-03-11T14:58:49.216Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "6B215DA8-2E0D-4BA1-B7A1-2240CA5E3327",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Jaxxx Kanetxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "49D9B2C7-9007-4497-8750-C5022966DFAC",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1967-04-22T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "49D9B2C7-9007-4497-8750-C5022966DFAC",
+          "standardFamilyName": "Kanetxxx",
+          "standardGivenName": "Jaxxx",
+          "personOtherIds": [
+            {
+              "personId": "10183213"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "North Brunswick",
+              "state": "NJ",
+              "postalCode": "08902-4730",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "10",
+                "name": "Eastern"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "06",
+                "name": "New Jersey Region",
+                "sectionCode": "10"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.202Z",
+          "updatedAt": "2021-03-11T14:58:49.202Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "7BA0DD90-B686-4F67-A95D-27CE69058378",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Phixxx Ansdxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "CA33876D-71B4-4A57-963C-12A13E72CC01",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1964-11-22T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "CA33876D-71B4-4A57-963C-12A13E72CC01",
+          "standardFamilyName": "Ansdxxx",
+          "standardGivenName": "Phixxx",
+          "personOtherIds": [
+            {
+              "personId": "10731874"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Kirkland",
+              "state": "WA",
+              "postalCode": "98034-4245",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "60",
+                "name": "Pacific NW"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "08",
+                "name": "Northwest Washington",
+                "sectionCode": "60"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.195Z",
+          "updatedAt": "2021-03-11T14:58:49.195Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "76B46CD2-4171-4CE1-8862-DF6A0063CC52",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Sebastxxx Szyxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "2EAFF090-FCCF-48DA-BC14-58D7364EEC2B",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1970-02-22T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "2EAFF090-FCCF-48DA-BC14-58D7364EEC2B",
+          "standardFamilyName": "Szyxxx",
+          "standardGivenName": "Sebastxxx",
+          "personOtherIds": [
+            {
+              "personId": "2010373118"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Kirkland",
+              "state": "WA",
+              "postalCode": "98033-7146",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "60",
+                "name": "Pacific NW"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "08",
+                "name": "Northwest Washington",
+                "sectionCode": "60"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.183Z",
+          "updatedAt": "2021-03-11T14:58:49.183Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "5DE69E84-BF82-4962-AC20-6DDE7A0CC03E",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Christopxxx Chixxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "E6CCA5DB-B7A1-42AF-85C2-BABAA8F5421B",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1973-10-12T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "E6CCA5DB-B7A1-42AF-85C2-BABAA8F5421B",
+          "standardFamilyName": "Chixxx",
+          "standardGivenName": "Christopxxx",
+          "personOtherIds": [
+            {
+              "personId": "10125009"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Methuen",
+              "state": "MA",
+              "postalCode": "01844-6566",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "45",
+                "name": "New England"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "04",
+                "name": "Eastern Massachusetts",
+                "sectionCode": "45"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.175Z",
+          "updatedAt": "2021-03-11T14:58:49.175Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "A87BEFE4-5B5F-4DD3-8681-C78403BEB7B0",
+        "participantType": "INDIVIDUAL",
+        "participantName": "xxx Vaswxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "5FB9304D-C4B0-4818-9723-CEB8CEA73183",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1972-09-11T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "5FB9304D-C4B0-4818-9723-CEB8CEA73183",
+          "standardFamilyName": "Vaswxxx",
+          "standardGivenName": "xxx",
+          "personOtherIds": [
+            {
+              "personId": "10307731"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "New York",
+              "state": "NY",
+              "postalCode": "10016-6008",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "10",
+                "name": "Eastern"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "02",
+                "name": "Metropolitan Region",
+                "sectionCode": "10"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.162Z",
+          "updatedAt": "2021-03-11T14:58:49.162Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "804F11CC-2B6D-4316-8E0E-491C60D45BFF",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Patrxxx Vicxxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "056226F4-76F1-442D-A3BC-22665A9C9F9E",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1972-05-07T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "056226F4-76F1-442D-A3BC-22665A9C9F9E",
+          "standardFamilyName": "Vicxxx",
+          "standardGivenName": "Patrxxx",
+          "personOtherIds": [
+            {
+              "personId": "11313461"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Seattle",
+              "state": "WA",
+              "postalCode": "98118-3887",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "60",
+                "name": "Pacific NW"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "08",
+                "name": "Northwest Washington",
+                "sectionCode": "60"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.155Z",
+          "updatedAt": "2021-03-11T14:58:49.155Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "C0377A8F-9E67-4449-97D1-C4A5ABDEB9AF",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Amrita Bhayana",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "1E072581-9D73-4BD9-9922-FE2A0EE7A92C",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1981-10-12T00:00:00.000Z",
+          "sex": "FEMALE",
+          "personId": "1E072581-9D73-4BD9-9922-FE2A0EE7A92C",
+          "standardFamilyName": "Bhayana",
+          "standardGivenName": "Amrita",
+          "personOtherIds": [
+            {
+              "personId": "2018427644"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Winter Garden",
+              "state": "FL",
+              "postalCode": "34787-4790",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "15",
+                "name": "Florida"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "34",
+                "name": "Georgia",
+                "sectionCode": "15"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.131Z",
+          "updatedAt": "2021-03-11T14:58:49.131Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "8CDDBF01-245E-48E5-80AF-51B21C700D9F",
+        "participantType": "INDIVIDUAL",
+        "participantName": "Quxxx Txxx",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "personId": "0DDAFABC-A7A8-4C91-B6B9-5056BF664E4F",
+        "person": {
+          "otherNames": [],
+          "previousNames": [],
+          "birthDate": "1975-10-17T00:00:00.000Z",
+          "sex": "MALE",
+          "personId": "0DDAFABC-A7A8-4C91-B6B9-5056BF664E4F",
+          "standardFamilyName": "Txxx",
+          "standardGivenName": "Quxxx",
+          "personOtherIds": [
+            {
+              "personId": "922720350"
+            }
+          ],
+          "addresses": [
+            {
+              "city": "Newport Beach",
+              "state": "CA",
+              "postalCode": "92660-7130",
+              "countryCode": "USA"
+            }
+          ],
+          "wheelchair": false,
+          "extensions": [
+            {
+              "name": "ustaSection",
+              "value": {
+                "code": "65",
+                "name": "Southern California"
+              }
+            },
+            {
+              "name": "ustaDistrict",
+              "value": {
+                "code": "17",
+                "name": "Southern California",
+                "sectionCode": "65"
+              }
+            }
+          ],
+          "contacts": [],
+          "onlineResources": [],
+          "createdAt": "2021-03-11T14:58:49.116Z",
+          "updatedAt": "2021-03-11T14:58:49.116Z"
+        },
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [
+          "E1207202-2B19-4065-BA00-88231EB096C8",
+          "39212F94-DDBD-45A8-AB73-F411FE40C0AA",
+          "6B215DA8-2E0D-4BA1-B7A1-2240CA5E3327",
+          "7BA0DD90-B686-4F67-A95D-27CE69058378",
+          "76B46CD2-4171-4CE1-8862-DF6A0063CC52",
+          "5DE69E84-BF82-4962-AC20-6DDE7A0CC03E",
+          "A87BEFE4-5B5F-4DD3-8681-C78403BEB7B0",
+          "804F11CC-2B6D-4316-8E0E-491C60D45BFF",
+          "C0377A8F-9E67-4449-97D1-C4A5ABDEB9AF",
+          "8CDDBF01-245E-48E5-80AF-51B21C700D9F"
+        ],
+        "participantRoleResponsibilities": [],
+        "participantRoleResponsabilities": [],
+        "participantId": "E63E3883-5458-44D6-9370-59A16FF69719",
+        "participantType": "TEAM",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "participantName": "Amrita New Testing Club",
+        "teamId": "76D542E0-CF8B-4395-B468-E8F6EC04754C",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "timeItems": []
+      },
+      {
+        "individualParticipantIds": [
+          "0E029787-D1AA-4DFD-802A-BBAB565F032B",
+          "C20CE661-857C-44E2-8EBD-0667A6D7A0B4",
+          "8CCC19B0-C499-4D13-A9A4-1E4FC74C7DAF",
+          "8C8D3297-0703-4DB2-90E3-E370B6811A3E",
+          "DB02AFB2-45EA-4EB5-81D4-3309E5AA7F42",
+          "D25081E9-D7CB-42AE-960F-2D3D7AA5AA75",
+          "E7F485BF-8141-442B-B7C7-189DC61784FE",
+          "D98B09BD-A00D-442C-BEC7-B58524F2AA62",
+          "6321281E-2FC5-4C5F-ACBF-7C5F9238A759",
+          "5E53A21E-27C5-4B82-AA67-5736616A16BA"
+        ],
+        "participantRoleResponsibilities": ["Home"],
+        "participantRoleResponsabilities": [],
+        "participantId": "BFEE3B81-08F2-4921-BC89-9683ADF9982A",
+        "participantType": "TEAM",
+        "participantRole": "COMPETITOR",
+        "participantStatus": "ACTIVE",
+        "participantName": "Kentucky",
+        "teamId": "6F8A4FCA-A2BE-4120-926B-F18F8BDE7702",
+        "contacts": [],
+        "onlineResources": [],
+        "penalties": [],
+        "timeItems": []
+      }
+    ],
+    "events": [
+      {
+        "allowedDrawTypes": [],
+        "tennisOfficialIds": [],
+        "startDate": "2021-11-21T08:30:00.000Z",
+        "endDate": "2021-11-22T00:00:00.000Z",
+        "eventType": "TEAM",
+        "eventId": "F3D0F89E-EA38-43CC-9351-F4C2D9FFA2A3",
+        "eventName": "Dual Match",
+        "tieFormat": {
+          "winCriteria": {
+            "valueGoal": 5
+          },
+          "collectionDefinitions": [
+            {
+              "collectionId": "fb112c34-75fe-40b1-9a1a-46e8589cee75",
+              "collectionName": "Doubles",
+              "matchUpType": "DOUBLES",
+              "matchUpFormat": "SET1-S:8/TB7",
+              "matchUpCount": 3,
+              "matchUpValue": 1,
+              "collectionValueProfiles": []
+            },
+            {
+              "collectionId": "e56ae5ee-f620-48e0-91e9-bcc74ed54780",
+              "collectionName": "Singles",
+              "matchUpType": "SINGLES",
+              "matchUpFormat": "SET3-S:6/TB7",
+              "matchUpCount": 6,
+              "matchUpValue": 1,
+              "collectionValueProfiles": []
+            }
+          ]
+        },
+        "entries": [
+          {
+            "participantId": "E63E3883-5458-44D6-9370-59A16FF69719",
+            "entryStatus": "DIRECT_ACCEPTANCE",
+            "entryStage": "MAIN",
+            "entryPosition": 0
+          },
+          {
+            "participantId": "BFEE3B81-08F2-4921-BC89-9683ADF9982A",
+            "entryStatus": "DIRECT_ACCEPTANCE",
+            "entryStage": "MAIN",
+            "entryPosition": 1
+          }
+        ],
+        "drawDefinitions": [
+          {
+            "automated": true,
+            "drawRepresentativeIds": [],
+            "matchUps": [],
+            "drawId": "934e510e-469e-40ad-a902-eab6746b32a1",
+            "drawName": "Draw",
+            "entries": [
+              {
+                "participantId": "E63E3883-5458-44D6-9370-59A16FF69719",
+                "entryStage": "MAIN",
+                "entryStatus": "DIRECT_ACCEPTANCE",
+                "entryPosition": 0
+              },
+              {
+                "participantId": "BFEE3B81-08F2-4921-BC89-9683ADF9982A",
+                "entryStage": "MAIN",
+                "entryStatus": "DIRECT_ACCEPTANCE",
+                "entryPosition": 1
+              }
+            ],
+            "links": [],
+            "structures": [
+              {
+                "matchUps": [
+                  {
+                    "drawPositions": [1, 2],
+                    "matchUpStatusCodes": [],
+                    "tieMatchUps": [
+                      {
+                        "drawPositions": [],
+                        "matchUpStatusCodes": [],
+                        "winners": [],
+                        "losers": [],
+                        "collectionId": "fb112c34-75fe-40b1-9a1a-46e8589cee75",
+                        "matchUpType": "DOUBLES",
+                        "matchUpFormat": "SET1-S:8/TB7",
+                        "collectionPosition": 1,
+                        "matchUpId": "0222499b-e6b3-4d38-a919-3377e21f70be",
+                        "sides": [
+                          {
+                            "sideNumber": 1,
+                            "lineUp": []
+                          },
+                          {
+                            "sideNumber": 2,
+                            "lineUp": []
+                          }
+                        ],
+                        "createdAt": "2021-10-29T09:08:33.761Z",
+                        "updatedAt": "2021-10-29T09:08:33.761Z"
+                      },
+                      {
+                        "drawPositions": [],
+                        "matchUpStatusCodes": [],
+                        "winners": [],
+                        "losers": [],
+                        "collectionId": "fb112c34-75fe-40b1-9a1a-46e8589cee75",
+                        "matchUpType": "DOUBLES",
+                        "matchUpFormat": "SET1-S:8/TB7",
+                        "collectionPosition": 2,
+                        "matchUpId": "e19ba439-46c6-4ba4-ad8b-240bb563b375",
+                        "sides": [
+                          {
+                            "sideNumber": 1,
+                            "lineUp": []
+                          },
+                          {
+                            "sideNumber": 2,
+                            "lineUp": []
+                          }
+                        ],
+                        "createdAt": "2021-10-29T09:08:33.761Z",
+                        "updatedAt": "2021-10-29T09:08:33.761Z"
+                      },
+                      {
+                        "drawPositions": [],
+                        "matchUpStatusCodes": [],
+                        "winners": [],
+                        "losers": [],
+                        "collectionId": "fb112c34-75fe-40b1-9a1a-46e8589cee75",
+                        "matchUpType": "DOUBLES",
+                        "matchUpFormat": "SET1-S:8/TB7",
+                        "collectionPosition": 3,
+                        "matchUpId": "2da963e8-63a4-49af-b7eb-9bdb657f22c7",
+                        "sides": [
+                          {
+                            "sideNumber": 1,
+                            "lineUp": []
+                          },
+                          {
+                            "sideNumber": 2,
+                            "lineUp": []
+                          }
+                        ],
+                        "createdAt": "2021-10-29T09:08:33.762Z",
+                        "updatedAt": "2021-10-29T09:08:33.762Z"
+                      },
+                      {
+                        "drawPositions": [],
+                        "matchUpStatusCodes": [],
+                        "winners": [],
+                        "losers": [],
+                        "collectionId": "e56ae5ee-f620-48e0-91e9-bcc74ed54780",
+                        "matchUpType": "SINGLES",
+                        "matchUpFormat": "SET3-S:6/TB7",
+                        "collectionPosition": 1,
+                        "matchUpId": "9456df56-034b-4d10-ad03-7b90e21fa671",
+                        "sides": [
+                          {
+                            "sideNumber": 1,
+                            "lineUp": []
+                          },
+                          {
+                            "sideNumber": 2,
+                            "lineUp": []
+                          }
+                        ],
+                        "createdAt": "2021-10-29T09:08:33.762Z",
+                        "updatedAt": "2021-10-29T09:08:33.762Z"
+                      },
+                      {
+                        "drawPositions": [],
+                        "matchUpStatusCodes": [],
+                        "winners": [],
+                        "losers": [],
+                        "collectionId": "e56ae5ee-f620-48e0-91e9-bcc74ed54780",
+                        "matchUpType": "SINGLES",
+                        "matchUpFormat": "SET3-S:6/TB7",
+                        "collectionPosition": 2,
+                        "matchUpId": "4daa95c6-b40b-486d-9587-60fc122ca439",
+                        "sides": [
+                          {
+                            "sideNumber": 1,
+                            "lineUp": []
+                          },
+                          {
+                            "sideNumber": 2,
+                            "lineUp": []
+                          }
+                        ],
+                        "createdAt": "2021-10-29T09:08:33.762Z",
+                        "updatedAt": "2021-10-29T09:08:33.762Z"
+                      },
+                      {
+                        "drawPositions": [],
+                        "matchUpStatusCodes": [],
+                        "winners": [],
+                        "losers": [],
+                        "collectionId": "e56ae5ee-f620-48e0-91e9-bcc74ed54780",
+                        "matchUpType": "SINGLES",
+                        "matchUpFormat": "SET3-S:6/TB7",
+                        "collectionPosition": 3,
+                        "matchUpId": "df4894b5-3906-4390-93c8-966c543b2a56",
+                        "sides": [
+                          {
+                            "sideNumber": 1,
+                            "lineUp": []
+                          },
+                          {
+                            "sideNumber": 2,
+                            "lineUp": []
+                          }
+                        ],
+                        "createdAt": "2021-10-29T09:08:33.762Z",
+                        "updatedAt": "2021-10-29T09:08:33.762Z"
+                      },
+                      {
+                        "drawPositions": [],
+                        "matchUpStatusCodes": [],
+                        "winners": [],
+                        "losers": [],
+                        "collectionId": "e56ae5ee-f620-48e0-91e9-bcc74ed54780",
+                        "matchUpType": "SINGLES",
+                        "matchUpFormat": "SET3-S:6/TB7",
+                        "collectionPosition": 4,
+                        "matchUpId": "cb95b3dc-1b91-4607-80bd-c51b17400317",
+                        "sides": [
+                          {
+                            "sideNumber": 1,
+                            "lineUp": []
+                          },
+                          {
+                            "sideNumber": 2,
+                            "lineUp": []
+                          }
+                        ],
+                        "createdAt": "2021-10-29T09:08:33.762Z",
+                        "updatedAt": "2021-10-29T09:08:33.762Z"
+                      },
+                      {
+                        "drawPositions": [],
+                        "matchUpStatusCodes": [],
+                        "winners": [],
+                        "losers": [],
+                        "collectionId": "e56ae5ee-f620-48e0-91e9-bcc74ed54780",
+                        "matchUpType": "SINGLES",
+                        "matchUpFormat": "SET3-S:6/TB7",
+                        "collectionPosition": 5,
+                        "matchUpId": "e2d93dfd-0122-4feb-8842-3c7213c1d510",
+                        "sides": [
+                          {
+                            "sideNumber": 1,
+                            "lineUp": []
+                          },
+                          {
+                            "sideNumber": 2,
+                            "lineUp": []
+                          }
+                        ],
+                        "createdAt": "2021-10-29T09:08:33.762Z",
+                        "updatedAt": "2021-10-29T09:08:33.762Z"
+                      },
+                      {
+                        "drawPositions": [],
+                        "matchUpStatusCodes": [],
+                        "winners": [],
+                        "losers": [],
+                        "collectionId": "e56ae5ee-f620-48e0-91e9-bcc74ed54780",
+                        "matchUpType": "SINGLES",
+                        "matchUpFormat": "SET3-S:6/TB7",
+                        "collectionPosition": 6,
+                        "matchUpId": "0fffc4ea-54f0-4dd0-b54f-35c1826b4cd0",
+                        "sides": [
+                          {
+                            "sideNumber": 1,
+                            "lineUp": []
+                          },
+                          {
+                            "sideNumber": 2,
+                            "lineUp": []
+                          }
+                        ],
+                        "createdAt": "2021-10-29T09:08:33.762Z",
+                        "updatedAt": "2021-10-29T09:08:33.762Z"
+                      }
+                    ],
+                    "winners": [],
+                    "losers": [],
+                    "matchUpId": "e5b0c164-083b-4f41-84be-050798f0da0a",
+                    "roundNumber": 1,
+                    "roundPosition": 1,
+                    "matchUpStatus": "TO_BE_PLAYED",
+                    "finishingRound": 1,
+                    "finishingPositionRange": {
+                      "loser": [2, 2],
+                      "winner": [1, 1]
+                    },
+                    "matchUpType": "TEAM",
+                    "sides": [],
+                    "createdAt": "2021-10-29T09:08:33.781Z",
+                    "updatedAt": "2021-10-29T09:08:33.781Z"
+                  }
+                ],
+                "structureName": "MAIN",
+                "stageSequence": 1,
+                "finishingPosition": "ROUND_OUTCOME",
+                "seedAssignments": [],
+                "structureId": "e5abe8fe-7a97-4049-baf4-13caa73def50",
+                "stage": "MAIN",
+                "positionAssignments": [
+                  {
+                    "drawPosition": 1,
+                    "participantId": "E63E3883-5458-44D6-9370-59A16FF69719"
+                  },
+                  {
+                    "drawPosition": 2,
+                    "participantId": "BFEE3B81-08F2-4921-BC89-9683ADF9982A"
+                  }
+                ],
+                "updatedAt": "2021-10-29T09:08:33.740Z",
+                "seedLimit": 0
+              }
+            ],
+            "drawType": "SINGLE_ELIMINATION",
+            "extensions": [
+              {
+                "name": "entryProfile",
+                "value": {
+                  "MAIN": {
+                    "drawSize": 2,
+                    "alternates": true
+                  }
+                }
+              },
+              {
+                "name": "appliedPolicies",
+                "value": {
+                  "seeding": {
+                    "policyName": "USTA",
+                    "seedingProfile": "SEPARATE",
+                    "duplicateSeedNumbers": true,
+                    "drawSizeProgression": true,
+                    "validSeedPositions": {
+                      "ignore": true
+                    },
+                    "seedsCountThresholds": [
+                      {
+                        "drawSize": 4,
+                        "minimumParticipantCount": 3,
+                        "seedsCount": 2
+                      },
+                      {
+                        "drawSize": 16,
+                        "minimumParticipantCount": 12,
+                        "seedsCount": 4
+                      },
+                      {
+                        "drawSize": 32,
+                        "minimumParticipantCount": 24,
+                        "seedsCount": 8
+                      },
+                      {
+                        "drawSize": 64,
+                        "minimumParticipantCount": 48,
+                        "seedsCount": 16
+                      },
+                      {
+                        "drawSize": 128,
+                        "minimumParticipantCount": 96,
+                        "seedsCount": 32
+                      },
+                      {
+                        "drawSize": 256,
+                        "minimumParticipantCount": 192,
+                        "seedsCount": 64
+                      }
+                    ]
+                  }
+                }
+              }
+            ],
+            "updatedAt": "2021-10-29T09:08:33.740Z",
+            "drawOrder": 1
+          }
+        ],
+        "extensions": [
+          {
+            "name": "flightProfile",
+            "value": {
+              "flights": [
+                {
+                  "manuallyAdded": true,
+                  "flightNumber": 1,
+                  "drawEntries": [
+                    {
+                      "participantId": "E63E3883-5458-44D6-9370-59A16FF69719",
+                      "entryStage": "MAIN",
+                      "entryStatus": "DIRECT_ACCEPTANCE",
+                      "entryPosition": 0
+                    },
+                    {
+                      "participantId": "BFEE3B81-08F2-4921-BC89-9683ADF9982A",
+                      "entryStage": "MAIN",
+                      "entryStatus": "DIRECT_ACCEPTANCE",
+                      "entryPosition": 1
+                    }
+                  ],
+                  "drawName": "Draw",
+                  "drawId": "934e510e-469e-40ad-a902-eab6746b32a1"
+                }
+              ]
+            }
+          }
+        ],
+        "links": []
+      }
+    ],
+    "parentOrganisation": {
+      "organisationName": "Amrita New Testing Club",
+      "extensions": [
+        {
+          "name": "category",
+          "value": "ORGANISATION"
+        }
+      ],
+      "organisationId": "76D542E0-CF8B-4395-B468-E8F6EC04754C",
+      "parentOrganisation": "6038c19b2a02944e653d0d5e",
+      "addresses": [],
+      "contacts": [],
+      "onlineResources": [],
+      "createdAt": "2021-10-27T12:00:19.416Z",
+      "updatedAt": "2021-10-27T12:00:19.416Z"
+    },
+    "dualMatchMetadata": {
+      "scoringFormat": "COLLEGE_JUCO",
+      "opponent": "6176ec9d44d1257b6562ef95",
+      "teamOrgIds": [
+        "76D542E0-CF8B-4395-B468-E8F6EC04754C",
+        "6F8A4FCA-A2BE-4120-926B-F18F8BDE7702"
+      ],
+      "homeTeamOrgId": "6F8A4FCA-A2BE-4120-926B-F18F8BDE7702",
+      "neutralLocation": false,
+      "isConference": true
+    },
+    "onlineResources": [],
+    "registrationProfile": [],
+    "totalPrizeMoney": [],
+    "tournamentCategories": [],
+    "tournamentOtherIds": [],
+    "createdAt": "2021-10-29T09:08:33.809Z",
+    "updatedAt": "2021-10-29T09:08:33.809Z",
+    "venueIds": [],
+    "venues": []
+  },
+  "tournamentId": "b94872b6-8fed-4c98-8a0e-716b20c2e1e3",
+  "createdAt": "2022-05-12T14:25:05.329Z",
+  "tournamentName": "Anonymized: 2022-05-12"
+}

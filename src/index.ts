@@ -3,6 +3,7 @@ export { factoryVersion as version } from './global/functions/factoryVersion';
 export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
+import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
 import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
@@ -31,6 +32,7 @@ export const utilities = {
   countValues,
   dateRange,
   dateTime,
+  dehydrateMatchUps,
   garman,
   getTimeItem,
   generateHashCode,

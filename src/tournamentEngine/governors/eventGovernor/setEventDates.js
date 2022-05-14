@@ -1,3 +1,4 @@
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { dateValidation } from '../../../fixtures/validations/regex';
 import { extractDate } from '../../../utilities/dateTime';
 
@@ -97,7 +98,10 @@ export function setEventDates({ tournamentRecord, event, startDate, endDate }) {
 function getTournamentDates(tournamentRecord) {
   const { startDate, endDate } = tournamentRecord;
   if (!dateValidation.test(startDate) || !dateValidation.test(endDate)) {
-    return { error: INVALID_TOURNAMENT_DATES };
+    return decorateResult({
+      result: { error: INVALID_TOURNAMENT_DATES },
+      context: { startDate, endDate },
+    });
   }
 
   // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison

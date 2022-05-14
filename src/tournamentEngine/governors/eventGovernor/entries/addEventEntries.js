@@ -1,7 +1,10 @@
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
+import { isValidExtension } from '../../../../global/validation/isValidExtension';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { addExtension } from '../../tournamentGovernor/addRemoveExtensions';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
+import { definedAttributes } from '../../../../utilities/objects';
 import { removeEventEntries } from './removeEventEntries';
 
 import { INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantTypes';
@@ -13,6 +16,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
   INVALID_PARTICIPANT_IDS,
+  INVALID_VALUES,
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '../../../../constants/errorConditionConstants';
@@ -40,6 +44,8 @@ export function addEventEntries(params) {
     ignoreStageSpace,
     drawDefinition,
     roundTarget,
+    extensions,
+    extension,
     drawId,
     event,
   } = params;
@@ -50,6 +56,21 @@ export function addEventEntries(params) {
   }
 
   if (!event || !event.eventId) return { error: EVENT_NOT_FOUND };
+
+  const stack = 'addDrawEntry';
+
+  if (
+    (extensions &&
+      (!Array.isArray(extensions) || !extensions.every(isValidExtension))) ||
+    (extension && !isValidExtension(extension))
+  ) {
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      context: definedAttributes({ extension, extensions }),
+      info: 'Invalid extension(s)',
+      stack,
+    });
+  }
 
   const typedParticipantIds =
     tournamentRecord?.participants
@@ -97,15 +118,21 @@ export function addEventEntries(params) {
 
   validParticipantIds.forEach((participantId) => {
     if (!existingIds.includes(participantId)) {
-      const entry = {
+      const entry = definedAttributes({
         participantId,
         entryStatus,
         entryStage,
-      };
+        extensions,
+      });
+
+      if (extension) {
+        addExtension({ element: entry, extension });
+      }
+
       if (roundTarget) {
         addExtension({
-          element: entry,
           extension: { name: ROUND_TARGET, value: roundTarget },
+          element: entry,
         });
       }
       if (entryStageSequence) entry.entryStageSequence = entryStageSequence;
@@ -124,6 +151,7 @@ export function addEventEntries(params) {
       entryStatus,
       roundTarget,
       entryStage,
+      extension,
       drawId,
       event,
     });
