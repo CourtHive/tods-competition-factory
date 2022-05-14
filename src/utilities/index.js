@@ -1,4 +1,3 @@
-export { dehydrateMatchUps } from '../tournamentEngine/governors/tournamentGovernor/dehydrate';
 export { nearestPowerOf2, nextPowerOf2, isPowerOf2, isOdd } from './math';
 export { attributeFilter } from './attributeFilter';
 export { generateTimeCode } from './timeCode';
