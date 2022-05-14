@@ -7,12 +7,16 @@ import { garman } from './competitionEngine/governors/scheduleGovernor/garman/ga
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
 import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
 import { nearestPowerOf2, isPowerOf2, isNumeric } from './utilities/math';
-import { generateHashCode, generateTimeCode } from './utilities';
 import { dateTime, dateRange } from './utilities/dateTime';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
 import { numericSort } from './utilities/sorting';
 import { UUID, UUIDS } from './utilities/UUID';
 import { JSON2CSV } from './utilities/json';
+import {
+  dehydrateMatchUps,
+  generateHashCode,
+  generateTimeCode,
+} from './utilities';
 import {
   countValues,
   chunkArray,
@@ -31,6 +35,7 @@ export const utilities = {
   countValues,
   dateRange,
   dateTime,
+  dehydrateMatchUps,
   garman,
   getTimeItem,
   generateHashCode,
