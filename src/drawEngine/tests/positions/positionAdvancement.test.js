@@ -278,6 +278,13 @@ it('can direct participants in COMPASS', () => {
     matchUpId,
   });
 
+  const structureNameMap = Object.assign(
+    {},
+    ...drawDefinition.structures.map(({ structureId, structureName }) => ({
+      [structureName]: structureId,
+    }))
+  );
+
   expect(matchUp.roundNumber).toEqual(1);
   expect(winnerMatchUp.roundNumber).toEqual(2);
   expect(loserMatchUp.roundNumber).toEqual(1);
@@ -286,8 +293,8 @@ it('can direct participants in COMPASS', () => {
   expect(winnerMatchUp.roundPosition).toEqual(1);
   expect(loserMatchUp.roundPosition).toEqual(1);
 
-  expect(loserTargetLink.source.structureName).toEqual('EAST');
-  expect(loserTargetLink.target.structureName).toEqual('WEST');
+  expect(loserTargetLink.source.structureId).toEqual(structureNameMap['EAST']);
+  expect(loserTargetLink.target.structureId).toEqual(structureNameMap['WEST']);
 
   expect(matchUp.structureId).toEqual(winnerMatchUp.structureId);
   expect(matchUp.structureId).not.toEqual(loserMatchUp.structureId);
@@ -315,8 +322,12 @@ it('can direct participants in COMPASS', () => {
   expect(winnerMatchUp.roundPosition).toEqual(1);
   expect(loserMatchUp.roundPosition).toEqual(1);
 
-  expect(round2loserTargetLink.source.structureName).toEqual('EAST');
-  expect(round2loserTargetLink.target.structureName).toEqual('NORTH');
+  expect(round2loserTargetLink.source.structureId).toEqual(
+    structureNameMap['EAST']
+  );
+  expect(round2loserTargetLink.target.structureId).toEqual(
+    structureNameMap['NORTH']
+  );
 
   expect(matchUp2ndRound.structureId).toEqual(
     winnerMatchUp2ndRound.structureId
