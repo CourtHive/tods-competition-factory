@@ -19623,13 +19623,13 @@
         "birthDate": "2009-11-10",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "EST",
+        "nationalityCode": "ESE",
         "addresses": [
           {
             "city": "Gardnertown",
             "state": "VA",
             "postalCode": "71011",
-            "countryCode": "EST"
+            "countryCode": "ESE"
           }
         ],
         "personId": "19c4b99d-b1a3-49eb-94d2-691cdde1f618",
@@ -20402,13 +20402,13 @@
         "birthDate": "2010-11-25",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "BUL",
+        "nationalityCode": "BGR",
         "addresses": [
           {
             "city": "Gretna",
             "state": "NY",
             "postalCode": "40803",
-            "countryCode": "BUL"
+            "countryCode": "BGR"
           }
         ],
         "personId": "0d48738d-9e50-4942-9153-bb075328b66f",
@@ -21106,13 +21106,13 @@
         "birthDate": "2010-08-05",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "POR",
+        "nationalityCode": "PRT",
         "addresses": [
           {
             "city": "East Valley",
             "state": "MI",
             "postalCode": "73895",
-            "countryCode": "POR"
+            "countryCode": "PRT"
           }
         ],
         "personId": "4006e6d1-5d18-4d30-835f-0fb30b28ce85",
@@ -21522,13 +21522,13 @@
         "birthDate": "2011-04-30",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "RSA",
+        "nationalityCode": "ZAF",
         "addresses": [
           {
             "city": "Freeport",
             "state": "LA",
             "postalCode": "68539",
-            "countryCode": "RSA"
+            "countryCode": "ZAF"
           }
         ],
         "personId": "15b3e81c-bca3-4a6a-8bb3-08b39ca48f97",
@@ -22066,13 +22066,13 @@
         "birthDate": "2009-09-15",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "TPE",
+        "nationalityCode": "TWN",
         "addresses": [
           {
             "city": "Pine",
             "state": "LA",
             "postalCode": "38919",
-            "countryCode": "TPE"
+            "countryCode": "TWN"
           }
         ],
         "personId": "45cb05d5-cd94-4926-b39f-3669c7c95cab",
@@ -22898,13 +22898,13 @@
         "birthDate": "2009-03-19",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "TPE",
+        "nationalityCode": "TWN",
         "addresses": [
           {
             "city": "Paoli",
             "state": "AR",
             "postalCode": "49807",
-            "countryCode": "TPE"
+            "countryCode": "TWN"
           }
         ],
         "personId": "cb9fbe26-97d0-4a24-8f40-8945f308d718",
@@ -23218,13 +23218,13 @@
         "birthDate": "2011-10-12",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "URU",
+        "nationalityCode": "URY",
         "addresses": [
           {
             "city": "Hart",
             "state": "CT",
             "postalCode": "42066",
-            "countryCode": "URU"
+            "countryCode": "URY"
           }
         ],
         "personId": "5bea817f-9d88-4410-8151-74ae948c4df4",
@@ -23954,13 +23954,13 @@
         "birthDate": "2010-12-21",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "NED",
+        "nationalityCode": "NLD",
         "addresses": [
           {
             "city": "Saint Robert",
             "state": "CT",
             "postalCode": "75614",
-            "countryCode": "NED"
+            "countryCode": "NLD"
           }
         ],
         "personId": "712dddb3-3f4a-4bf7-9a95-d7a946adf5fd",
@@ -24338,13 +24338,13 @@
         "birthDate": "2011-02-06",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "BUL",
+        "nationalityCode": "BGR",
         "addresses": [
           {
             "city": "Nurillo",
             "state": "MS",
             "postalCode": "62598",
-            "countryCode": "BUL"
+            "countryCode": "BGR"
           }
         ],
         "personId": "a032b5a8-2e7f-45d8-8bad-d0967bdd79f3",
@@ -24658,13 +24658,13 @@
         "birthDate": "2010-09-24",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "NED",
+        "nationalityCode": "NLD",
         "addresses": [
           {
             "city": "Corcoran",
             "state": "NC",
             "postalCode": "92898",
-            "countryCode": "NED"
+            "countryCode": "NLD"
           }
         ],
         "personId": "fca7dd26-4190-4471-9516-9e3d57ab40e0",

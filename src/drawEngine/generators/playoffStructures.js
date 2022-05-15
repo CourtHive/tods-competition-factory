@@ -101,7 +101,6 @@ export function generatePlayoffStructures({
     structureName,
     matchUpType,
     roundOffset,
-    exitProfile,
     matchUps,
     stage,
   });

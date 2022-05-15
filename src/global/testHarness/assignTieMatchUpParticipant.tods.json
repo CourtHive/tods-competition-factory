@@ -90,13 +90,13 @@
         "birthDate": "2000-02-02",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "GRE",
+        "nationalityCode": "GRC",
         "addresses": [
           {
             "city": "Central Garage",
             "state": "MD",
             "postalCode": "95364",
-            "countryCode": "GRE"
+            "countryCode": "GRC"
           }
         ],
         "personId": "3b8fff50-d53a-4155-ad8f-2292d837ae2b",
@@ -189,13 +189,13 @@
         "birthDate": "2000-10-06",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "DEN",
+        "nationalityCode": "DNK",
         "addresses": [
           {
             "city": "Central Garage",
             "state": "MD",
             "postalCode": "95364",
-            "countryCode": "DEN"
+            "countryCode": "DNK"
           }
         ],
         "personId": "50d30edf-0ae0-426d-937a-a198b6fb622e",
@@ -453,13 +453,13 @@
         "birthDate": "2000-11-05",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "BUL",
+        "nationalityCode": "BGR",
         "addresses": [
           {
             "city": "Central Garage",
             "state": "MD",
             "postalCode": "95364",
-            "countryCode": "BUL"
+            "countryCode": "BGR"
           }
         ],
         "personId": "0895c628-34cb-4ad0-8fe5-c25f32ad6d16",

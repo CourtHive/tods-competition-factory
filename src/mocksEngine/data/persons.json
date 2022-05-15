@@ -27,7 +27,7 @@
     "firstName": "Stefanos",
     "lastName": "Tsitsipas",
     "sex": "MALE",
-    "nationalityCode": "GRE"
+    "nationalityCode": "GRC"
   },
   {
     "firstName": "Daniil",
@@ -117,7 +117,7 @@
     "firstName": "Grigor",
     "lastName": "Dimitrov",
     "sex": "MALE",
-    "nationalityCode": "BUL"
+    "nationalityCode": "BGR"
   },
   {
     "firstName": "Felix",
@@ -129,7 +129,7 @@
     "firstName": "Cristian",
     "lastName": "Garin",
     "sex": "MALE",
-    "nationalityCode": "CHI"
+    "nationalityCode": "CHL"
   },
   {
     "firstName": "John",
@@ -399,7 +399,7 @@
     "firstName": "Pablo",
     "lastName": "Cuevas",
     "sex": "MALE",
-    "nationalityCode": "URU"
+    "nationalityCode": "URY"
   },
   {
     "firstName": "Ricardas",
@@ -477,7 +477,7 @@
     "firstName": "Lloyd",
     "lastName": "Harris",
     "sex": "MALE",
-    "nationalityCode": "RSA"
+    "nationalityCode": "ZAF"
   },
   {
     "firstName": "Vasek",
@@ -501,7 +501,7 @@
     "firstName": "Joao",
     "lastName": "Sousa",
     "sex": "MALE",
-    "nationalityCode": "POR"
+    "nationalityCode": "PRT"
   },
   {
     "firstName": "Radu",
@@ -651,7 +651,7 @@
     "firstName": "Kiki",
     "lastName": "Bertens",
     "sex": "FEMALE",
-    "nationalityCode": "NED"
+    "nationalityCode": "NLD"
   },
   {
     "firstName": "Serena",
@@ -729,13 +729,13 @@
     "firstName": "Maria",
     "lastName": "Sakkari",
     "sex": "FEMALE",
-    "nationalityCode": "GRE"
+    "nationalityCode": "GRC"
   },
   {
     "firstName": "Anett",
     "lastName": "Kontaveit",
     "sex": "FEMALE",
-    "nationalityCode": "EST"
+    "nationalityCode": "ESE"
   },
   {
     "firstName": "Jennifer",
@@ -993,7 +993,7 @@
     "firstName": "Su-Wei",
     "lastName": "Hsieh",
     "sex": "FEMALE",
-    "nationalityCode": "TPE"
+    "nationalityCode": "TWN"
   },
   {
     "firstName": "Ajla",
@@ -1029,7 +1029,7 @@
     "firstName": "Arantxa",
     "lastName": "Rus",
     "sex": "FEMALE",
-    "nationalityCode": "NED"
+    "nationalityCode": "NLD"
   },
   {
     "firstName": "Lauren",
@@ -1377,7 +1377,7 @@
     "firstName": "Guillermina",
     "lastName": "Grant",
     "sex": "FEMALE",
-    "nationalityCode": "URU"
+    "nationalityCode": "URY"
   },
   {
     "firstName": "Darja",
@@ -1569,7 +1569,7 @@
     "firstName": "Julie",
     "lastName": "Belgraver",
     "sex": "FEMALE",
-    "nationalityCode": "NED"
+    "nationalityCode": "NLD"
   },
   {
     "firstName": "Lisa",
@@ -1581,7 +1581,7 @@
     "firstName": "Ya",
     "lastName": "Yi Yang",
     "sex": "FEMALE",
-    "nationalityCode": "TPE"
+    "nationalityCode": "TWN"
   },
   {
     "firstName": "Eva",
@@ -1653,7 +1653,7 @@
     "firstName": "Lauren",
     "lastName": "Anzalotta Kynoch",
     "sex": "FEMALE",
-    "nationalityCode": "PUR"
+    "nationalityCode": "PRI"
   },
   {
     "firstName": "Savannah",
@@ -1803,7 +1803,7 @@
     "firstName": "Holger",
     "lastName": "Vitus Nodskov Rune",
     "sex": "MALE",
-    "nationalityCode": "DEN"
+    "nationalityCode": "DNK"
   },
   {
     "firstName": "Dominic",
@@ -1875,7 +1875,7 @@
     "firstName": "Khololwam",
     "lastName": "Montsi",
     "sex": "MALE",
-    "nationalityCode": "RSA"
+    "nationalityCode": "ZAF"
   },
   {
     "firstName": "Jeffrey",
@@ -1905,7 +1905,7 @@
     "firstName": "Guy",
     "lastName": "Den Ouden",
     "sex": "MALE",
-    "nationalityCode": "NED"
+    "nationalityCode": "NLD"
   },
   {
     "firstName": "Martin",
@@ -2121,7 +2121,7 @@
     "firstName": "Elmer",
     "lastName": "Moller",
     "sex": "MALE",
-    "nationalityCode": "DEN"
+    "nationalityCode": "DNK"
   },
   {
     "firstName": "Mario",
@@ -2283,7 +2283,7 @@
     "firstName": "Petr",
     "lastName": "Nesterov",
     "sex": "MALE",
-    "nationalityCode": "BUL"
+    "nationalityCode": "BGR"
   },
   {
     "firstName": "Mehdi",
@@ -2385,7 +2385,7 @@
     "firstName": "Simeon",
     "lastName": "Terziev",
     "sex": "MALE",
-    "nationalityCode": "BUL"
+    "nationalityCode": "BGR"
   },
   {
     "firstName": "Benjamin",

@@ -1,5 +1,5 @@
 import { participantScheduledMatchUps } from '../../governors/queryGovernor/participantScheduledMatchUps';
-import { addNationalityCodeIOC } from '../../governors/participantGovernor/annotatePerson';
+import { addNationalityCode } from '../../governors/participantGovernor/addNationalityCode';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
@@ -721,12 +721,14 @@ function annotateParticipant({
   withOpponents,
   withMatchUps,
   participant,
+  withISO2,
   withIOC,
 }) {
   const scheduleItems = [];
   const scheduleConflicts = [];
 
-  if (withIOC) addNationalityCodeIOC({ participant });
+  if (withIOC || withISO2)
+    addNationalityCode({ participant, withIOC, withISO2 });
 
   if (withScaleItems) {
     const scaleItems = participant.timeItems?.filter(

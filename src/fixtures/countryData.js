@@ -1306,7 +1306,7 @@ export const countries = [
     phone: '351',
   },
   {
-    ioc: 'PlW',
+    ioc: 'PLW',
     iso2: 'PW',
     iso: 'PLW',
     label: 'Palau',

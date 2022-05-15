@@ -511,6 +511,7 @@ const {
     withOpponents, // optional - include opponent participantIds
     withEvents, // optional - defaults to true if any other context options are specified
     withDraws, // optional - defaults to true if any other context options are specified
+    withISO2, // optional - will add ISO2 country code and countryName to participant persons
     withIOC, // optional - will add IOC country code and countryName to participant persons
 
     scheduleAnalysis: {

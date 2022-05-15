@@ -13,7 +13,6 @@ export const structureTemplate = ({
   structureName,
   matchUps = [],
   structureId,
-  exitProfile,
   roundOffset,
   roundLimit,
   stageOrder,
@@ -38,7 +37,6 @@ export const structureTemplate = ({
   if (seedingProfile) structure.seedingProfile = seedingProfile;
   if (qualifyingRoundNumber)
     structure.qualifyingRoundNumber = qualifyingRoundNumber;
-  if (exitProfile) structure.exitProfile = exitProfile;
 
   const positionAssignments = []
     .concat(...matchUps.map((matchUp) => matchUp.drawPositions))

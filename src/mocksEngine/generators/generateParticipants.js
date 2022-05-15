@@ -65,6 +65,7 @@ export function generateParticipants({
   sex,
 
   inContext,
+  withISO2,
   withIOC,
 
   rankingRange = [1, 100], // range of ranking positions to generate
@@ -306,6 +307,11 @@ export function generateParticipants({
     if (withIOC && nationalityCode) {
       const country = countries.find(({ iso }) => iso === nationalityCode);
       if (country?.ioc) participant.person.iocNationalityCode = country.ioc;
+      if (country?.label) participant.person.countryName = country.label;
+    }
+    if (withISO2 && nationalityCode) {
+      const country = countries.find(({ iso }) => iso === nationalityCode);
+      if (country?.iso2) participant.person.iso2NationalityCode = country.iso2;
       if (country?.label) participant.person.countryName = country.label;
     }
 

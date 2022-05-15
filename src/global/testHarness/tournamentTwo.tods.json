@@ -434,58 +434,50 @@
               "linkType": "LOSER",
               "source": {
                 "roundNumber": 1,
-                "structureId": "434330a2-71a6-4c97-9961-8f9987bde7ca",
-                "structureName": "MAIN"
+                "structureId": "434330a2-71a6-4c97-9961-8f9987bde7ca"
               },
               "target": {
                 "feedProfile": "TOP_DOWN",
                 "roundNumber": 1,
                 "structureId": "5f4fad84-2f38-4443-8453-ea65a7556ef2",
-                "groupedOrder": [1],
-                "structureName": "CONSOLATION"
+                "groupedOrder": [1]
               }
             },
             {
               "linkType": "LOSER",
               "source": {
                 "roundNumber": 2,
-                "structureId": "434330a2-71a6-4c97-9961-8f9987bde7ca",
-                "structureName": "MAIN"
+                "structureId": "434330a2-71a6-4c97-9961-8f9987bde7ca"
               },
               "target": {
                 "feedProfile": "BOTTOM_UP",
                 "roundNumber": 2,
                 "structureId": "5f4fad84-2f38-4443-8453-ea65a7556ef2",
-                "groupedOrder": [1],
-                "structureName": "CONSOLATION"
+                "groupedOrder": [1]
               }
             },
             {
               "linkType": "LOSER",
               "source": {
                 "roundNumber": 3,
-                "structureId": "434330a2-71a6-4c97-9961-8f9987bde7ca",
-                "structureName": "MAIN"
+                "structureId": "434330a2-71a6-4c97-9961-8f9987bde7ca"
               },
               "target": {
                 "roundNumber": 1,
                 "feedProfile": "TOP_DOWN",
-                "structureId": "f4d6995a-2367-467d-aa15-09f261739b3f",
-                "structureName": "Gold"
+                "structureId": "f4d6995a-2367-467d-aa15-09f261739b3f"
               }
             },
             {
               "linkType": "LOSER",
               "source": {
                 "roundNumber": 4,
-                "structureId": "434330a2-71a6-4c97-9961-8f9987bde7ca",
-                "structureName": "MAIN"
+                "structureId": "434330a2-71a6-4c97-9961-8f9987bde7ca"
               },
               "target": {
                 "roundNumber": 1,
                 "feedProfile": "TOP_DOWN",
-                "structureId": "17934d46-5704-4897-98a5-a93de2e8e2db",
-                "structureName": "Playoff 3-4"
+                "structureId": "17934d46-5704-4897-98a5-a93de2e8e2db"
               }
             }
           ],
@@ -1891,7 +1883,7 @@
                   "roundNumber": 5,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [1, null],
+                  "drawPositions": [1],
                   "isMock": true,
                   "finishingRound": 1,
                   "finishingPositionRange": {
@@ -2008,7 +2000,6 @@
               "seedAssignments": [],
               "structureId": "f4d6995a-2367-467d-aa15-09f261739b3f",
               "stage": "PLAY_OFF",
-              "exitProfile": "0-3",
               "matchUps": [
                 {
                   "matchUpId": "46eab988-4a38-4706-b098-3bf6ffba978f",
@@ -2116,7 +2107,6 @@
               "seedAssignments": [],
               "structureId": "17934d46-5704-4897-98a5-a93de2e8e2db",
               "stage": "PLAY_OFF",
-              "exitProfile": "0-4",
               "matchUps": [
                 {
                   "matchUpId": "192f856a-2063-4c21-bcb7-1e9503d4e2b5",
@@ -7328,13 +7318,13 @@
         "birthDate": "2010-10-10",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "POR",
+        "nationalityCode": "PRT",
         "addresses": [
           {
             "city": "Cuba",
             "state": "RI",
             "postalCode": "23792",
-            "countryCode": "POR"
+            "countryCode": "PRT"
           }
         ],
         "personId": "112b7bd8-ea5e-4416-9162-d6a7c56871d2",
@@ -7554,13 +7544,13 @@
         "birthDate": "2006-02-28",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "NED",
+        "nationalityCode": "NLD",
         "addresses": [
           {
             "city": "Northern Cambria",
             "state": "RI",
             "postalCode": "99264",
-            "countryCode": "NED"
+            "countryCode": "NLD"
           }
         ],
         "personId": "46ee123b-a5fa-4120-b77c-79003d115ebe",
@@ -7896,13 +7886,13 @@
         "birthDate": "2009-10-23",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "NED",
+        "nationalityCode": "NLD",
         "addresses": [
           {
             "city": "Bremen",
             "state": "ND",
             "postalCode": "06122",
-            "countryCode": "NED"
+            "countryCode": "NLD"
           }
         ],
         "personId": "3ab789bc-67bc-4091-bd7f-5bb29836fa6f",
@@ -8502,13 +8492,13 @@
         "birthDate": "2011-02-25",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "BUL",
+        "nationalityCode": "BGR",
         "addresses": [
           {
             "city": "Grant-Valkaria",
             "state": "NM",
             "postalCode": "87887",
-            "countryCode": "BUL"
+            "countryCode": "BGR"
           }
         ],
         "personId": "783e963f-ca99-4dd9-b088-fa9e434905e5",

@@ -3135,13 +3135,13 @@
         "birthDate": "1999-11-05",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "POR",
+        "nationalityCode": "PRT",
         "addresses": [
           {
             "city": "Cairo",
             "state": "AR",
             "postalCode": "55595",
-            "countryCode": "POR"
+            "countryCode": "PRT"
           }
         ],
         "personId": "d9306e02-18dc-4531-aaa1-3c866bcb9602",

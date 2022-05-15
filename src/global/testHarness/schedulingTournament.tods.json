@@ -20925,13 +20925,13 @@
         "birthDate": "2001-12-09",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "DEN",
+        "nationalityCode": "DNK",
         "addresses": [
           {
             "city": "Woodbridge",
             "state": "PA",
             "postalCode": "84266",
-            "countryCode": "DEN"
+            "countryCode": "DNK"
           }
         ],
         "personId": "7302d748-9bd4-46ad-a3ce-41d72908326e",
@@ -21473,13 +21473,13 @@
         "birthDate": "2001-08-18",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "RSA",
+        "nationalityCode": "ZAF",
         "addresses": [
           {
             "city": "Woodbridge",
             "state": "PA",
             "postalCode": "84266",
-            "countryCode": "RSA"
+            "countryCode": "ZAF"
           }
         ],
         "personId": "184c5075-1912-4922-af72-ba508beccecb",
@@ -22501,13 +22501,13 @@
         "birthDate": "2001-01-09",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "BUL",
+        "nationalityCode": "BGR",
         "addresses": [
           {
             "city": "Woodbridge",
             "state": "PA",
             "postalCode": "84266",
-            "countryCode": "BUL"
+            "countryCode": "BGR"
           }
         ],
         "personId": "69fcdda0-13f4-48bd-b799-e0e166ff6def",
@@ -22534,13 +22534,13 @@
         "birthDate": "2002-11-27",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "CHI",
+        "nationalityCode": "CHL",
         "addresses": [
           {
             "city": "Woodbridge",
             "state": "PA",
             "postalCode": "84266",
-            "countryCode": "CHI"
+            "countryCode": "CHL"
           }
         ],
         "personId": "0a85078b-093e-4b61-bc72-d5b4a411df07",
@@ -22633,13 +22633,13 @@
         "birthDate": "2003-03-25",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "POR",
+        "nationalityCode": "PRT",
         "addresses": [
           {
             "city": "Woodbridge",
             "state": "PA",
             "postalCode": "84266",
-            "countryCode": "POR"
+            "countryCode": "PRT"
           }
         ],
         "personId": "e5e40ed3-7321-4cb6-a6af-66b67997a5bd",
@@ -22799,13 +22799,13 @@
         "birthDate": "2001-03-09",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "RSA",
+        "nationalityCode": "ZAF",
         "addresses": [
           {
             "city": "Woodbridge",
             "state": "PA",
             "postalCode": "84266",
-            "countryCode": "RSA"
+            "countryCode": "ZAF"
           }
         ],
         "personId": "1ba07949-d9a1-483e-91a1-d2bf27536d12",

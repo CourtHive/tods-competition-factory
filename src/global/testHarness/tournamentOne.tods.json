@@ -3604,13 +3604,13 @@
         "birthDate": "2011-03-25",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "DEN",
+        "nationalityCode": "DNK",
         "addresses": [
           {
             "city": "Union City",
             "state": "MN",
             "postalCode": "46237",
-            "countryCode": "DEN"
+            "countryCode": "DNK"
           }
         ],
         "personId": "48eb6ed1-2b52-4c7c-aa58-c7983d6d867b",
@@ -4840,13 +4840,13 @@
         "birthDate": "2011-02-14",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "URU",
+        "nationalityCode": "URY",
         "addresses": [
           {
             "city": "Highgrove",
             "state": "UT",
             "postalCode": "77593",
-            "countryCode": "URU"
+            "countryCode": "URY"
           }
         ],
         "personId": "9450f2d5-5510-4ed3-9917-d6cb355db183",
@@ -6911,13 +6911,13 @@
         "birthDate": "2009-08-13",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "EST",
+        "nationalityCode": "ESE",
         "addresses": [
           {
             "city": "Goldsboro",
             "state": "NY",
             "postalCode": "38439",
-            "countryCode": "EST"
+            "countryCode": "ESE"
           }
         ],
         "personId": "3cac9c73-7147-4927-a929-c8a0db2f946a",
@@ -7401,13 +7401,13 @@
         "birthDate": "2007-08-20",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "POR",
+        "nationalityCode": "PRT",
         "addresses": [
           {
             "city": "Bolivar",
             "state": "OK",
             "postalCode": "50139",
-            "countryCode": "POR"
+            "countryCode": "PRT"
           }
         ],
         "personId": "1b09e7ef-ab52-4a19-b299-444ff74e112d",
@@ -8400,13 +8400,13 @@
         "birthDate": "2004-06-14",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "BUL",
+        "nationalityCode": "BGR",
         "addresses": [
           {
             "city": "Saint Anthony",
             "state": "NJ",
             "postalCode": "82806",
-            "countryCode": "BUL"
+            "countryCode": "BGR"
           }
         ],
         "personId": "10f9996a-afef-4b01-9678-000023815790",
@@ -11123,13 +11123,13 @@
         "birthDate": "2011-10-11",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "DEN",
+        "nationalityCode": "DNK",
         "addresses": [
           {
             "city": "Porter",
             "state": "NJ",
             "postalCode": "12127",
-            "countryCode": "DEN"
+            "countryCode": "DNK"
           }
         ],
         "personId": "fc3cca5e-45f0-474d-adb9-c0c414404d83",
@@ -11205,13 +11205,13 @@
         "birthDate": "2011-07-11",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "CHI",
+        "nationalityCode": "CHL",
         "addresses": [
           {
             "city": "Wyoming",
             "state": "OK",
             "postalCode": "50139",
-            "countryCode": "CHI"
+            "countryCode": "CHL"
           }
         ],
         "personId": "a77708bd-baf6-4769-9fa8-31a49960fc81",
@@ -11342,13 +11342,13 @@
         "birthDate": "2009-09-03",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "NED",
+        "nationalityCode": "NLD",
         "addresses": [
           {
             "city": "Glasgow Village",
             "state": "IL",
             "postalCode": "53061",
-            "countryCode": "NED"
+            "countryCode": "NLD"
           }
         ],
         "personId": "75e0fd53-c056-4410-8a77-b0a63fea4b96",
@@ -11383,13 +11383,13 @@
         "birthDate": "2010-09-22",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "RSA",
+        "nationalityCode": "ZAF",
         "addresses": [
           {
             "city": "Mexico Beach",
             "state": "IL",
             "postalCode": "78658",
-            "countryCode": "RSA"
+            "countryCode": "ZAF"
           }
         ],
         "personId": "e8bc7944-0009-4952-9323-5d9c4b0661e8",
@@ -11431,13 +11431,13 @@
         "birthDate": "2007-12-21",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "GRE",
+        "nationalityCode": "GRC",
         "addresses": [
           {
             "city": "Highgrove",
             "state": "PR",
             "postalCode": "11362",
-            "countryCode": "GRE"
+            "countryCode": "GRC"
           }
         ],
         "personId": "38f67268-7c15-4c3e-9b09-f498b61689fd",
