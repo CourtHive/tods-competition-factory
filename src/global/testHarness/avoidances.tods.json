@@ -3,11 +3,9 @@
   "tournamentGroups": [],
   "endDate": "2021-10-17T00:00:00.000Z",
   "tournamentId": "49093102-647f-417e-be4d-1e83f9ba7c80",
-  "registrationProfile": [
-    {
-      "entriesClose": "2021-10-07T00:00:00.000Z"
-    }
-  ],
+  "registrationProfile": {
+    "entriesClose": "2021-10-07T00:00:00.000Z"
+  },
   "tournamentName": "Anonymized: 2022-05-12",
   "localTimeZone": "America/New_York",
   "startDate": "2021-10-16T00:00:00.000Z",
@@ -1859,13 +1857,13 @@
         "birthDate": "2009-09-21",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "GER",
+        "nationalityCode": "DEU",
         "addresses": [
           {
             "city": "Elmsford",
             "state": "AR",
             "postalCode": "91389",
-            "countryCode": "GER"
+            "countryCode": "DEU"
           }
         ],
         "personId": "92941eba-5bac-42ec-84f7-8bb4d51f9ab3",
@@ -2414,13 +2412,13 @@
         "birthDate": "2009-09-13",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "LAT",
+        "nationalityCode": "LVA",
         "addresses": [
           {
             "city": "Lake Placid",
             "state": "TX",
             "postalCode": "12356",
-            "countryCode": "LAT"
+            "countryCode": "LVA"
           }
         ],
         "personId": "ce9fcb07-d842-4899-8242-4eff6d56c250",
@@ -2537,13 +2535,13 @@
         "birthDate": "2009-05-13",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "GER",
+        "nationalityCode": "DEU",
         "addresses": [
           {
             "city": "Bay Minette",
             "state": "GA",
             "postalCode": "46725",
-            "countryCode": "GER"
+            "countryCode": "DEU"
           }
         ],
         "personId": "31436837-f04e-4be8-b6f5-2164f9c056f1",
@@ -3136,7 +3134,7 @@
         "extensions": [],
         "birthDate": "1999-11-05",
         "isMock": true,
-        "sex": "OTHER",
+        "sex": "MALE",
         "nationalityCode": "POR",
         "addresses": [
           {
@@ -3175,14 +3173,14 @@
         "extensions": [],
         "birthDate": "2000-06-09",
         "isMock": true,
-        "sex": "OTHER",
-        "nationalityCode": "CRO",
+        "sex": "MALE",
+        "nationalityCode": "HRV",
         "addresses": [
           {
             "city": "Cohoe",
             "state": "IN",
             "postalCode": "12356",
-            "countryCode": "CRO"
+            "countryCode": "HRV"
           }
         ],
         "personId": "9e1d384b-9da5-4886-8410-57cff17dd2b0",

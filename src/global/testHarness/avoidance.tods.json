@@ -3,11 +3,9 @@
   "tournamentGroups": [],
   "endDate": "2021-10-17T00:00:00.000Z",
   "tournamentId": "d25ab2f6-4386-40ac-9177-86f3701f43e7",
-  "registrationProfile": [
-    {
-      "entriesClose": "2021-10-07T00:00:00.000Z"
-    }
-  ],
+  "registrationProfile": {
+    "entriesClose": "2021-10-07T00:00:00.000Z"
+  },
   "tournamentName": "Anonymized: 2022-05-12",
   "localTimeZone": "America/Chicago",
   "startDate": "2021-10-16T00:00:00.000Z",
@@ -870,7 +868,7 @@
                   "roundNumber": 2,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [1, null],
+                  "drawPositions": [1],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -885,7 +883,7 @@
                   "roundNumber": 2,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [5, null],
+                  "drawPositions": [5],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -900,7 +898,7 @@
                   "roundNumber": 2,
                   "roundPosition": 3,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [9, null],
+                  "drawPositions": [9],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -915,7 +913,7 @@
                   "roundNumber": 2,
                   "roundPosition": 4,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [13, null],
+                  "drawPositions": [13],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -930,7 +928,7 @@
                   "roundNumber": 2,
                   "roundPosition": 5,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [20, null],
+                  "drawPositions": [20],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -945,7 +943,7 @@
                   "roundNumber": 2,
                   "roundPosition": 6,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [24, null],
+                  "drawPositions": [24],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -960,7 +958,7 @@
                   "roundNumber": 2,
                   "roundPosition": 7,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [28, null],
+                  "drawPositions": [28],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -975,7 +973,7 @@
                   "roundNumber": 2,
                   "roundPosition": 8,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [32, null],
+                  "drawPositions": [32],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -990,7 +988,7 @@
                   "roundNumber": 3,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -1005,7 +1003,7 @@
                   "roundNumber": 3,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -1020,7 +1018,7 @@
                   "roundNumber": 3,
                   "roundPosition": 3,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -1035,7 +1033,7 @@
                   "roundNumber": 3,
                   "roundPosition": 4,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -1050,7 +1048,7 @@
                   "roundNumber": 4,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 2,
                   "finishingPositionRange": {
@@ -1064,7 +1062,7 @@
                   "roundNumber": 4,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 2,
                   "finishingPositionRange": {
@@ -1078,7 +1076,7 @@
                   "roundNumber": 5,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 1,
                   "finishingPositionRange": {
@@ -1214,7 +1212,7 @@
                   "participantId": "46D34044-ED9F-4BE2-A719-7D194F4E7D07"
                 }
               ],
-              "updatedAt": 1634052953538,
+              "updatedAt": "2021-10-12T15:35:53.588Z",
               "seedLimit": 8
             },
             {
@@ -1446,7 +1444,7 @@
                   "roundNumber": 3,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -1460,7 +1458,7 @@
                   "roundNumber": 3,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -1474,7 +1472,7 @@
                   "roundNumber": 3,
                   "roundPosition": 3,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -1488,7 +1486,7 @@
                   "roundNumber": 3,
                   "roundPosition": 4,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -1501,7 +1499,7 @@
                   "roundNumber": 4,
                   "matchUpId": "8bef8090-8c53-427b-b523-ea518b9a656c",
                   "roundPosition": 1,
-                  "drawPositions": [null, 1],
+                  "drawPositions": [1],
                   "finishingRound": 3,
                   "finishingPositionRange": {
                     "loser": [9, 12],
@@ -1513,7 +1511,7 @@
                   "roundNumber": 4,
                   "matchUpId": "8cc8e37b-7307-42ad-966b-103d2d074506",
                   "roundPosition": 2,
-                  "drawPositions": [null, 2],
+                  "drawPositions": [2],
                   "finishingRound": 3,
                   "finishingPositionRange": {
                     "loser": [9, 12],
@@ -1525,7 +1523,7 @@
                   "roundNumber": 4,
                   "matchUpId": "4fa94293-90fc-4edd-90cb-5de6fcb4f545",
                   "roundPosition": 3,
-                  "drawPositions": [null, 3],
+                  "drawPositions": [3],
                   "finishingRound": 3,
                   "finishingPositionRange": {
                     "loser": [9, 12],
@@ -1537,7 +1535,7 @@
                   "roundNumber": 4,
                   "matchUpId": "db25614e-999a-4c47-8a1a-0d0cd1239ca3",
                   "roundPosition": 4,
-                  "drawPositions": [null, 4],
+                  "drawPositions": [4],
                   "finishingRound": 3,
                   "finishingPositionRange": {
                     "loser": [9, 12],
@@ -1550,7 +1548,7 @@
                   "roundNumber": 5,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 2,
                   "finishingPositionRange": {
@@ -1564,7 +1562,7 @@
                   "roundNumber": 5,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 2,
                   "finishingPositionRange": {
@@ -1578,7 +1576,7 @@
                   "roundNumber": 6,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 1,
                   "finishingPositionRange": {
@@ -1681,7 +1679,7 @@
                   "bye": true
                 }
               ],
-              "updatedAt": 1634052953538
+              "updatedAt": "2021-10-12T15:35:53.588Z"
             }
           ],
           "drawType": "FEED_IN_CHAMPIONSHIP_TO_QF",
@@ -1759,7 +1757,7 @@
               "createdAt": "2021-10-12T15:35:53.168Z"
             }
           ],
-          "updatedAt": 1634052953538,
+          "updatedAt": "2021-10-12T15:35:53.588Z",
           "matchUpFormat": "SET3-S:6/TB7-F:TB10",
           "drawOrder": 1
         }
@@ -1779,7 +1777,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Aubane Droguet",
       "participantStatus": "ACTIVE",
@@ -1835,7 +1832,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Giulia Morlet",
       "participantStatus": "ACTIVE",
@@ -1876,7 +1872,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Annabelle Xu",
       "participantStatus": "ACTIVE",
@@ -1917,7 +1912,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Ashleigh Barty",
       "participantStatus": "ACTIVE",
@@ -1958,7 +1952,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Hong Yi Cody Wong",
       "participantStatus": "ACTIVE",
@@ -1999,7 +1992,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Angelique Kerber",
       "participantStatus": "ACTIVE",
@@ -2023,13 +2015,13 @@
         "birthDate": "2008-04-26",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "GER",
+        "nationalityCode": "DEU",
         "addresses": [
           {
             "city": "Koloa",
             "state": "GA",
             "postalCode": "19605",
-            "countryCode": "GER"
+            "countryCode": "DEU"
           }
         ],
         "personId": "7704236e-b612-4752-a809-85c8a7642bc9",
@@ -2040,7 +2032,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Misaki Doi",
       "participantStatus": "ACTIVE",
@@ -2081,7 +2072,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Magda Linette",
       "participantStatus": "ACTIVE",
@@ -2122,7 +2112,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Julia Garcia",
       "participantStatus": "ACTIVE",
@@ -2163,7 +2152,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Julia Avdeeva",
       "participantStatus": "ACTIVE",
@@ -2204,7 +2192,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Polina Kudermetova",
       "participantStatus": "ACTIVE",
@@ -2245,7 +2232,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Hanne Vandewinkel",
       "participantStatus": "ACTIVE",
@@ -2286,7 +2272,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Ajla Tomljanovic",
       "participantStatus": "ACTIVE",
@@ -2332,7 +2317,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Sebastianna Scilipoti",
       "participantStatus": "ACTIVE",
@@ -2361,13 +2345,13 @@
         "birthDate": "2009-08-21",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "SUI",
+        "nationalityCode": "CHE",
         "addresses": [
           {
             "city": "Corcoran",
             "state": "MT",
             "postalCode": "37559",
-            "countryCode": "SUI"
+            "countryCode": "CHE"
           }
         ],
         "personId": "4804aa01-886d-454d-97c7-40e0aca3a17b",
@@ -2378,7 +2362,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Ekaterina Alexandrova",
       "participantStatus": "ACTIVE",
@@ -2424,7 +2407,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Mai Nirundorn",
       "participantStatus": "ACTIVE",
@@ -2470,7 +2452,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Karolina Muchova",
       "participantStatus": "ACTIVE",
@@ -2511,7 +2492,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Serena Williams",
       "participantStatus": "ACTIVE",
@@ -2552,7 +2532,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Tara Wurth",
       "participantStatus": "ACTIVE",
@@ -2576,13 +2555,13 @@
         "birthDate": "2008-10-08",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "CRO",
+        "nationalityCode": "HRV",
         "addresses": [
           {
             "city": "Woodbridge",
             "state": "KS",
             "postalCode": "76101",
-            "countryCode": "CRO"
+            "countryCode": "HRV"
           }
         ],
         "personId": "212d1210-1806-4a26-abe6-d4433d10517b",
@@ -2593,7 +2572,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Jelena Ostapenko",
       "participantStatus": "ACTIVE",
@@ -2617,13 +2595,13 @@
         "birthDate": "2009-04-22",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "LAT",
+        "nationalityCode": "LVA",
         "addresses": [
           {
             "city": "Homerville",
             "state": "MT",
             "postalCode": "19187",
-            "countryCode": "LAT"
+            "countryCode": "LVA"
           }
         ],
         "personId": "c27ebd59-f0a1-4bda-9fdd-402ce8ab3102",
@@ -2634,7 +2612,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Jasmine Paolini",
       "participantStatus": "ACTIVE",
@@ -2680,7 +2657,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Aliaksandra Sasnovich",
       "participantStatus": "ACTIVE",
@@ -2721,7 +2697,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Laura Siegemund",
       "participantStatus": "ACTIVE",
@@ -2750,13 +2725,13 @@
         "birthDate": "2007-01-15",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "GER",
+        "nationalityCode": "DEU",
         "addresses": [
           {
             "city": "Gretna",
             "state": "VT",
             "postalCode": "60601",
-            "countryCode": "GER"
+            "countryCode": "DEU"
           }
         ],
         "personId": "4577ab9e-6953-4fa8-847d-5994e7400f48",
@@ -2767,7 +2742,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Anna Blinkova",
       "participantStatus": "ACTIVE",
@@ -2808,7 +2782,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Danka Kovinic",
       "participantStatus": "ACTIVE",
@@ -2854,7 +2827,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantRole": "COMPETITOR",
       "participantName": "Jil Teichmann",
       "participantStatus": "ACTIVE",
@@ -2878,13 +2850,13 @@
         "birthDate": "2008-11-13",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "SUI",
+        "nationalityCode": "CHE",
         "addresses": [
           {
             "city": "Mechanicsville",
             "state": "OK",
             "postalCode": "32212",
-            "countryCode": "SUI"
+            "countryCode": "CHE"
           }
         ],
         "personId": "ea410558-a8c4-4039-ab39-95d76021e45e",
@@ -2895,7 +2867,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": ["TournamentDirector"],
-      "participantRoleResponsabilities": [],
       "participantRole": "OFFICIAL",
       "participantName": "Romana Trevisan",
       "participantStatus": "ACTIVE",
@@ -2914,7 +2885,7 @@
         "extensions": [],
         "birthDate": "2000-01-25",
         "isMock": true,
-        "sex": "OTHER",
+        "sex": "MALE",
         "nationalityCode": "NOR",
         "addresses": [
           {
@@ -3142,7 +3113,6 @@
       "onlineResources": [],
       "createdAt": "2020-12-31T20:25:25.676Z",
       "updatedAt": "2021-05-13T20:32:53.479Z",
-      "parentOrganisation": "5fee33b459850eac2d212508",
       "parentOrganisationId": "894EB8DC-DE64-4860-AD6D-AA3B324B9992"
     }
   ]

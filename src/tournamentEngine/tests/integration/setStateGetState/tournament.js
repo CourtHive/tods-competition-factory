@@ -66,14 +66,12 @@ export const tournament = {
   ],
   endDate: '2021-01-04T00:00:00.000Z',
   tournamentId: '36EA9520-9153-4487-8574-D0472DDD1C32',
-  registrationProfile: [
-    {
-      _id: '5fd36b6c6b5f8f65c7776509',
-      entriesClose: '2020-11-02T00:00:00.000Z',
-      createdAt: '2020-12-11T13:37:23.949Z',
-      updatedAt: '2020-12-11T13:37:23.949Z',
-    },
-  ],
+  registrationProfile: {
+    _id: '5fd36b6c6b5f8f65c7776509',
+    entriesClose: '2020-11-02T00:00:00.000Z',
+    createdAt: '2020-12-11T13:37:23.949Z',
+    updatedAt: '2020-12-11T13:37:23.949Z',
+  },
   tournamentName: 'CS Junior Championship',
   localTimeZone: 'America/New_York',
   startDate: '2021-01-01T00:00:00.000Z',

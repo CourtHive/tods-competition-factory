@@ -885,13 +885,13 @@
             "city": "Terryville",
             "state": "PR",
             "postalCode": "78769",
-            "countryCode": "CRO"
+            "countryCode": "HRV"
           }
         ],
         "personId": "15142a3d-08dd-438c-ad07-a2276ddc919c",
         "standardFamilyName": "Sonego",
         "standardGivenName": "Lorenzo",
-        "nationalityCode": "CRO",
+        "nationalityCode": "HRV",
         "extensions": [
           {
             "name": "regionCode",
@@ -1043,13 +1043,13 @@
             "city": "Williamsport",
             "state": "AZ",
             "postalCode": "33966",
-            "countryCode": "GER"
+            "countryCode": "DEU"
           }
         ],
         "personId": "b1048cd6-6972-4be2-bb4a-c069adbc0bdc",
         "standardFamilyName": "Gasquet",
         "standardGivenName": "Richard",
-        "nationalityCode": "GER",
+        "nationalityCode": "DEU",
         "extensions": [
           {
             "name": "regionCode",
@@ -2770,13 +2770,13 @@
             "city": "Kaukauna",
             "state": "NH",
             "postalCode": "74526",
-            "countryCode": "SUI"
+            "countryCode": "CHE"
           }
         ],
         "personId": "3a54d9b2-90e0-4623-b581-064bdade0305",
         "standardFamilyName": "Kontaveit",
         "standardGivenName": "Anett",
-        "nationalityCode": "SUI",
+        "nationalityCode": "CHE",
         "extensions": [
           {
             "name": "regionCode",
@@ -2842,13 +2842,13 @@
             "city": "Grant-Valkaria",
             "state": "AK",
             "postalCode": "11293",
-            "countryCode": "GER"
+            "countryCode": "DEU"
           }
         ],
         "personId": "7224fbbf-070e-44bd-9ad9-a9af6660aa21",
         "standardFamilyName": "Djere",
         "standardGivenName": "Laslo",
-        "nationalityCode": "GER",
+        "nationalityCode": "DEU",
         "extensions": [
           {
             "name": "regionCode",

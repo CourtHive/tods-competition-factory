@@ -751,13 +751,13 @@
         "birthDate": "1999-09-05",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "SUI",
+        "nationalityCode": "CHE",
         "addresses": [
           {
             "city": "Central Garage",
             "state": "MD",
             "postalCode": "95364",
-            "countryCode": "SUI"
+            "countryCode": "CHE"
           }
         ],
         "personId": "b393f400-f6ff-4ea5-9b28-38eb668afe7d",
@@ -2389,7 +2389,7 @@
     "noScheduledTime": false
   },
   "onlineResources": [],
-  "registrationProfile": [],
+  "registrationProfile": {},
   "totalPrizeMoney": [],
   "tournamentCategories": [],
   "tournamentOtherIds": [],

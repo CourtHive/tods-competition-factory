@@ -84,8 +84,8 @@ export function getSourceDrawPositionRanges({
     let orderedPositions = firstRoundDrawPositions.slice();
 
     const sizedGroupOrder = reduceGroupedOrder({
-      groupedOrder,
       roundPositionsCount: orderedPositions.length,
+      groupedOrder,
     });
     const groupsCount = sizedGroupOrder?.length || 1;
     if (groupsCount <= targetRoundMatchUpsCount) {

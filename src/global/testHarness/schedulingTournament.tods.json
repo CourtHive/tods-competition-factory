@@ -3,11 +3,9 @@
   "tournamentGroups": [],
   "endDate": "2021-10-25T00:00:00.000Z",
   "tournamentId": "354bc520-49b4-4469-87d4-644d3cf2c03a",
-  "registrationProfile": [
-    {
-      "entriesClose": "2021-09-10T00:00:00.000Z"
-    }
-  ],
+  "registrationProfile": {
+    "entriesClose": "2021-09-10T00:00:00.000Z"
+  },
   "tournamentName": "Anonymized: 2022-05-12",
   "localTimeZone": "America/New_York",
   "startDate": "2021-10-21T00:00:00.000Z",
@@ -20231,13 +20229,13 @@
         "birthDate": "2001-10-28",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "GER",
+        "nationalityCode": "DEU",
         "addresses": [
           {
             "city": "Woodbridge",
             "state": "PA",
             "postalCode": "84266",
-            "countryCode": "GER"
+            "countryCode": "DEU"
           }
         ],
         "personId": "40fb2cec-7725-49fc-9495-e7fa5d2914a8",
@@ -21044,13 +21042,13 @@
         "birthDate": "2000-12-25",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "SUI",
+        "nationalityCode": "CHE",
         "addresses": [
           {
             "city": "Woodbridge",
             "state": "PA",
             "postalCode": "84266",
-            "countryCode": "SUI"
+            "countryCode": "CHE"
           }
         ],
         "personId": "d588bb0a-f7f0-4965-9ee2-55407a07a198",
@@ -21773,13 +21771,13 @@
         "birthDate": "2000-01-31",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "CRO",
+        "nationalityCode": "HRV",
         "addresses": [
           {
             "city": "Woodbridge",
             "state": "PA",
             "postalCode": "84266",
-            "countryCode": "CRO"
+            "countryCode": "HRV"
           }
         ],
         "personId": "4f6d5c16-43f0-432a-88dc-0e18d8b2b65e",
@@ -22071,13 +22069,13 @@
         "birthDate": "2001-02-06",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "SUI",
+        "nationalityCode": "CHE",
         "addresses": [
           {
             "city": "Woodbridge",
             "state": "PA",
             "postalCode": "84266",
-            "countryCode": "SUI"
+            "countryCode": "CHE"
           }
         ],
         "personId": "45e46a7c-8b97-403e-b1a0-6d5431c1c4d3",
@@ -23430,13 +23428,13 @@
         "birthDate": "2001-02-24",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "GER",
+        "nationalityCode": "DEU",
         "addresses": [
           {
             "city": "Woodbridge",
             "state": "PA",
             "postalCode": "84266",
-            "countryCode": "GER"
+            "countryCode": "DEU"
           }
         ],
         "personId": "8e62bf3a-b2d5-42fe-8965-86006bb5ed4b",
@@ -23648,13 +23646,13 @@
         "birthDate": "1999-09-02",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "CRO",
+        "nationalityCode": "HRV",
         "addresses": [
           {
             "city": "Woodbridge",
             "state": "PA",
             "postalCode": "84266",
-            "countryCode": "CRO"
+            "countryCode": "HRV"
           }
         ],
         "personId": "124e97ff-0fe8-4cda-b834-f9590b59fb06",

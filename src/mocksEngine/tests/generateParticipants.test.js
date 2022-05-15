@@ -147,7 +147,7 @@ it('can generate sexed participants', () => {
 
 it('can accept custom personData', () => {
   const personData = [
-    { firstName: 'Sam', lastName: 'Smith', sex: MALE, nationalityCode: 'SUI' },
+    { firstName: 'Sam', lastName: 'Smith', sex: MALE, nationalityCode: 'CHE' },
     {
       firstName: 'Jennifer',
       lastName: 'Jameson',
