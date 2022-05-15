@@ -353,7 +353,7 @@
                 {
                   "matchUpId": "MD-2-2",
                   "createdAt": "2021-09-08T17:03:10.820Z",
-                  "drawPositions": [8, null],
+                  "drawPositions": [8],
                   "finishingPositionRange": {
                     "loser": [3, 4],
                     "winner": [1, 2]
@@ -428,7 +428,7 @@
                 {
                   "matchUpId": "MD-3-1",
                   "createdAt": "2021-09-08T17:03:10.820Z",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "finishingPositionRange": {
                     "loser": [2, 2],
                     "winner": [1, 1]
@@ -641,7 +641,7 @@
                 {
                   "matchUpId": "CD-3-1",
                   "createdAt": "2021-09-08T17:03:10.820Z",
-                  "drawPositions": [1, null],
+                  "drawPositions": [1],
                   "finishingPositionRange": {
                     "loser": [6, 6],
                     "winner": [5, 5]
@@ -790,7 +790,7 @@
               }
             }
           ],
-          "updatedAt": 1631203336756,
+          "updatedAt": "2021-09-08T17:03:10.820Z",
           "matchUpFormat": "SET3-S:6/TB7",
           "drawOrder": 1
         }
@@ -1318,7 +1318,7 @@
                 {
                   "matchUpId": "MS-2-2",
                   "createdAt": "2021-09-09T09:14:10.708Z",
-                  "drawPositions": [5, null],
+                  "drawPositions": [5],
                   "finishingPositionRange": {
                     "loser": [5, 8],
                     "winner": [1, 4]
@@ -1381,7 +1381,7 @@
                 {
                   "matchUpId": "MS-2-3",
                   "createdAt": "2021-09-09T09:14:10.708Z",
-                  "drawPositions": [12, null],
+                  "drawPositions": [12],
                   "finishingPositionRange": {
                     "loser": [5, 8],
                     "winner": [1, 4]
@@ -1507,7 +1507,7 @@
                 {
                   "matchUpId": "MS-3-1",
                   "createdAt": "2021-09-09T09:14:10.708Z",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "finishingPositionRange": {
                     "loser": [3, 4],
                     "winner": [1, 2]
@@ -1570,7 +1570,7 @@
                 {
                   "matchUpId": "MS-3-2",
                   "createdAt": "2021-09-09T09:14:10.708Z",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "finishingPositionRange": {
                     "loser": [3, 4],
                     "winner": [1, 2]
@@ -1633,7 +1633,7 @@
                 {
                   "matchUpId": "MS-4-1",
                   "createdAt": "2021-09-09T09:14:10.708Z",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "finishingPositionRange": {
                     "loser": [2, 2],
                     "winner": [1, 1]
@@ -1804,7 +1804,7 @@
               }
             }
           ],
-          "updatedAt": 1631203336764,
+          "updatedAt": "2021-09-08T17:03:10.820Z",
           "matchUpFormat": "SET3-S:6/TB7",
           "drawOrder": 1
         }
@@ -1849,7 +1849,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Michxxx Mironchexxx",
       "participantStatus": "ACTIVE",
@@ -1863,7 +1863,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Exxx Kranjcexxx",
       "participantStatus": "ACTIVE",
@@ -1878,7 +1878,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Mxxx Alexanxxx",
       "participantStatus": "ACTIVE",
@@ -1893,7 +1893,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Josxxx Corxxx",
       "participantStatus": "ACTIVE",
@@ -1908,7 +1908,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Kamxxx Kanxxx",
       "participantStatus": "ACTIVE",
@@ -1923,7 +1923,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Richxxx Roccxxx",
       "participantStatus": "ACTIVE",
@@ -1938,7 +1938,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Jxxx Wxxx",
       "participantStatus": "ACTIVE",
@@ -1953,7 +1953,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Mxxx Lofdxxx",
       "participantStatus": "ACTIVE",
@@ -1968,7 +1968,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Lxxx Gutierxxx",
       "participantStatus": "ACTIVE",
@@ -1983,7 +1983,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Oxxx Motevasxxx",
       "participantStatus": "ACTIVE",
@@ -1998,7 +1998,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": ["TournamentDirector"],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "OFFICIAL",
       "participantName": "ASR TD National",
       "participantStatus": "ACTIVE",
@@ -2021,7 +2021,7 @@
         "6255DEAC-AC7A-4BF2-A98F-B099A10B5E50"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "ae59d1aa-9d88-494c-8bf8-16c33c9d6d11",
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
@@ -2037,7 +2037,7 @@
         "DDBE6B1B-CD96-4D27-9F0D-49B61D8A172F"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "bba34c8a-f855-4ac6-b18b-41d575a13ca8",
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
@@ -2053,7 +2053,7 @@
         "2FE3EF8B-2909-49F0-8E5B-146B0E01A4EB"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "e6ced178-29e8-4eae-8526-f3d52ab4d46e",
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
@@ -2069,7 +2069,7 @@
         "0C51FFC6-A3AB-419F-AA87-670EDC851BB8"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "a50d6ba6-a25a-4c25-bdd9-b27ca2b07b08",
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
@@ -2085,7 +2085,7 @@
         "21F1094A-32F1-46D8-9961-BA28F8F4590C"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "e5a44989-0d31-4301-a763-c73b19085236",
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
@@ -2101,7 +2101,7 @@
         "21F1094A-32F1-46D8-9961-BA28F8F4590C"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "10e0224b-c32c-4882-86bb-2a2a1ace0ba5",
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
@@ -2117,7 +2117,7 @@
         "2FE3EF8B-2909-49F0-8E5B-146B0E01A4EB"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "69b91286-8d56-4411-acf9-4f61a3a77ca2",
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
@@ -2133,7 +2133,7 @@
         "D60E3155-3067-47DD-80B7-1AAA7E86A201"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "5ecb54aa-7ddd-422a-b81c-e29c1d61f138",
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
@@ -2149,7 +2149,7 @@
         "73463D79-412E-47E3-A50E-302F9DFC3479"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "937adc96-bd7b-44f5-97a7-4dcf1c0303b4",
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
@@ -2165,7 +2165,7 @@
         "73463D79-412E-47E3-A50E-302F9DFC3479"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "70d224a4-479e-4c12-8353-bf17a4567b57",
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
@@ -2181,7 +2181,7 @@
         "0C51FFC6-A3AB-419F-AA87-670EDC851BB8"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "04626e44-3578-4bd0-a3c3-3706399261cb",
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
@@ -2197,7 +2197,7 @@
         "A46C30A3-0C92-4FBC-8259-2BFEED9B7CB6"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "a6f27588-ff38-4976-a5a1-1b0c9ab8ef37",
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
@@ -2213,7 +2213,7 @@
         "2FE3EF8B-2909-49F0-8E5B-146B0E01A4EB"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "8bd2e5f3-b194-494f-9a8a-46d1aacebecb",
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
@@ -2229,7 +2229,7 @@
         "73463D79-412E-47E3-A50E-302F9DFC3479"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "af8678e5-01da-4e67-a637-8251a38b66e4",
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",

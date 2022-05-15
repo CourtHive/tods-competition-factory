@@ -4652,7 +4652,7 @@
                   "participantId": "b6f0d3ac-6f96-43af-9f66-f8535b456151"
                 }
               ],
-              "updatedAt": 1651790133141,
+              "updatedAt": "2022-05-05T22:21:37.443Z",
               "seedLimit": 0
             },
             {
@@ -4664,12 +4664,12 @@
               "stage": "VOLUNTARY_CONSOLATION",
               "matchUps": [],
               "positionAssignments": [],
-              "updatedAt": 1651790133141
+              "updatedAt": "2022-05-05T22:21:37.443Z"
             }
           ],
           "drawType": "SINGLE_ELIMINATION",
           "matchUpFormat": "SET3-S:6/TB7",
-          "updatedAt": 1651790133141,
+          "updatedAt": "2022-05-05T22:21:37.443Z",
           "extensions": [
             {
               "name": "entryProfile",

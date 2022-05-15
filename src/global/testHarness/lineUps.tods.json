@@ -8269,7 +8269,7 @@
                   "participantId": "9899111C-4744-4DA3-A2A0-C9C770A2EE59"
                 }
               ],
-              "updatedAt": 1646750601041
+              "updatedAt": "2022-03-05T03:46:02.853Z"
             },
             {
               "matchUps": [
@@ -8478,7 +8478,7 @@
                   "participantId": "9F9EAFB0-E482-470B-81FF-29F994B2C2B4"
                 }
               ],
-              "updatedAt": 1646750601041
+              "updatedAt": "2022-03-05T03:46:02.853Z"
             },
             {
               "matchUps": [
@@ -8687,7 +8687,7 @@
                   "participantId": "56ADD47D-0947-4F51-93D0-7EE35BAFEC48"
                 }
               ],
-              "updatedAt": 1646750601041
+              "updatedAt": "2022-03-05T03:46:02.853Z"
             },
             {
               "matchUps": [
@@ -8896,7 +8896,7 @@
                   "participantId": "1C6A9EDD-CCEF-40F4-8467-ED54B22A617D"
                 }
               ],
-              "updatedAt": 1646750601041
+              "updatedAt": "2022-03-05T03:46:02.853Z"
             }
           ],
           "drawType": "ROUND_ROBIN_WITH_PLAYOFF",
@@ -8926,7 +8926,7 @@
             },
             "collectionGroups": []
           },
-          "updatedAt": 1646750601041,
+          "updatedAt": "2022-03-05T03:46:02.853Z",
           "extensions": [
             {
               "name": "entryProfile",
@@ -17920,7 +17920,7 @@
                   ]
                 }
               ],
-              "updatedAt": 1646751218798,
+              "updatedAt": "2022-03-05T03:46:02.853Z",
               "seedLimit": 0,
               "matchUpFormat": "SET3-S:6/TB7-F:TB10",
               "positionAssignments": []
@@ -18132,7 +18132,7 @@
                   "participantId": "E366C53D-D571-4A7D-A8A4-46BBFB69A6A8"
                 }
               ],
-              "updatedAt": 1646759164806
+              "updatedAt": "2022-03-05T03:46:02.853Z"
             },
             {
               "matchUps": [
@@ -18341,7 +18341,7 @@
                   "participantId": "8BEF4F1B-86C6-4D98-947B-671A5BD43A12"
                 }
               ],
-              "updatedAt": 1646759164806
+              "updatedAt": "2022-03-05T03:50:57.701Z"
             },
             {
               "matchUps": [
@@ -18550,7 +18550,7 @@
                   "participantId": "B3B35878-E924-4E02-9DE4-4C95DDAE1DBC"
                 }
               ],
-              "updatedAt": 1646759164806
+              "updatedAt": "2022-03-05T03:50:57.701Z"
             },
             {
               "matchUps": [
@@ -18759,7 +18759,7 @@
                   "participantId": "9D642026-D304-439B-97EF-155AB0731932"
                 }
               ],
-              "updatedAt": 1646759164806
+              "updatedAt": "2022-03-05T03:50:57.701Z"
             }
           ],
           "drawType": "ROUND_ROBIN_WITH_PLAYOFF",
@@ -18789,7 +18789,7 @@
             },
             "collectionGroups": []
           },
-          "updatedAt": 1646759164806,
+          "updatedAt": "2022-03-05T03:50:57.701Z",
           "extensions": [
             {
               "name": "entryProfile",

@@ -2652,7 +2652,7 @@
                   "roundNumber": 2,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [5, null],
+                  "drawPositions": [5],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -2974,7 +2974,7 @@
                   "roundNumber": 2,
                   "roundPosition": 4,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [13, null],
+                  "drawPositions": [13],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -3135,7 +3135,7 @@
                   "roundNumber": 2,
                   "roundPosition": 5,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [17, null],
+                  "drawPositions": [17],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -3618,7 +3618,7 @@
                   "roundNumber": 2,
                   "roundPosition": 8,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [29, null],
+                  "drawPositions": [29],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -3779,7 +3779,7 @@
                   "roundNumber": 2,
                   "roundPosition": 9,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [36, null],
+                  "drawPositions": [36],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -4101,7 +4101,7 @@
                   "roundNumber": 2,
                   "roundPosition": 11,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [44, null],
+                  "drawPositions": [44],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -4584,7 +4584,7 @@
                   "roundNumber": 2,
                   "roundPosition": 14,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [56, null],
+                  "drawPositions": [56],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -4906,7 +4906,7 @@
                   "roundNumber": 2,
                   "roundPosition": 16,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [64, null],
+                  "drawPositions": [64],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -5067,7 +5067,7 @@
                   "roundNumber": 3,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -5081,7 +5081,7 @@
                   "roundNumber": 3,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -5095,7 +5095,7 @@
                   "roundNumber": 3,
                   "roundPosition": 3,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -5109,7 +5109,7 @@
                   "roundNumber": 3,
                   "roundPosition": 4,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -5123,7 +5123,7 @@
                   "roundNumber": 3,
                   "roundPosition": 5,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -5137,7 +5137,7 @@
                   "roundNumber": 3,
                   "roundPosition": 6,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -5151,7 +5151,7 @@
                   "roundNumber": 3,
                   "roundPosition": 7,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -5165,7 +5165,7 @@
                   "roundNumber": 3,
                   "roundPosition": 8,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -5179,7 +5179,7 @@
                   "roundNumber": 4,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -5193,7 +5193,7 @@
                   "roundNumber": 4,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -5207,7 +5207,7 @@
                   "roundNumber": 4,
                   "roundPosition": 3,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -5221,7 +5221,7 @@
                   "roundNumber": 4,
                   "roundPosition": 4,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -5235,7 +5235,7 @@
                   "roundNumber": 5,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 2,
                   "finishingPositionRange": {
@@ -5249,7 +5249,7 @@
                   "roundNumber": 5,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 2,
                   "finishingPositionRange": {
@@ -5263,7 +5263,7 @@
                   "roundNumber": 6,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 1,
                   "finishingPositionRange": {
@@ -5530,7 +5530,7 @@
                   "participantId": "F895CC51-F14A-420B-A0D9-FB9DAF801C0C"
                 }
               ],
-              "updatedAt": 1634657775868,
+              "updatedAt": "2021-10-19T14:17:13.178Z",
               "seedLimit": 0
             }
           ],
@@ -5593,7 +5593,7 @@
               "createdAt": "2021-10-19T14:13:43.989Z"
             }
           ],
-          "updatedAt": 1634657775868,
+          "updatedAt": "2021-10-19T14:17:13.178Z",
           "matchUpFormat": "SET1-S:8/TB7",
           "drawOrder": 1
         }
@@ -12173,7 +12173,7 @@
                   "roundNumber": 2,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [1, null],
+                  "drawPositions": [1],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -12335,7 +12335,7 @@
                   "roundNumber": 2,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [5, null],
+                  "drawPositions": [5],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -12497,7 +12497,7 @@
                   "roundNumber": 2,
                   "roundPosition": 3,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [9, null],
+                  "drawPositions": [9],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -12659,7 +12659,7 @@
                   "roundNumber": 2,
                   "roundPosition": 4,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [13, null],
+                  "drawPositions": [13],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -12821,7 +12821,7 @@
                   "roundNumber": 2,
                   "roundPosition": 5,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [17, null],
+                  "drawPositions": [17],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -13145,7 +13145,7 @@
                   "roundNumber": 2,
                   "roundPosition": 7,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [25, null],
+                  "drawPositions": [25],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -13469,7 +13469,7 @@
                   "roundNumber": 2,
                   "roundPosition": 9,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [33, null],
+                  "drawPositions": [33],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -13631,7 +13631,7 @@
                   "roundNumber": 2,
                   "roundPosition": 10,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [37, null],
+                  "drawPositions": [37],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -13955,7 +13955,7 @@
                   "roundNumber": 2,
                   "roundPosition": 12,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [45, null],
+                  "drawPositions": [45],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -14117,7 +14117,7 @@
                   "roundNumber": 2,
                   "roundPosition": 13,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [49, null],
+                  "drawPositions": [49],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -14279,7 +14279,7 @@
                   "roundNumber": 2,
                   "roundPosition": 14,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [53, null],
+                  "drawPositions": [53],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -14441,7 +14441,7 @@
                   "roundNumber": 2,
                   "roundPosition": 15,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [57, null],
+                  "drawPositions": [57],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -14603,7 +14603,7 @@
                   "roundNumber": 2,
                   "roundPosition": 16,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [61, null],
+                  "drawPositions": [61],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -14765,7 +14765,7 @@
                   "roundNumber": 2,
                   "roundPosition": 17,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [68, null],
+                  "drawPositions": [68],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -14927,7 +14927,7 @@
                   "roundNumber": 2,
                   "roundPosition": 18,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [72, null],
+                  "drawPositions": [72],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -15089,7 +15089,7 @@
                   "roundNumber": 2,
                   "roundPosition": 19,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [76, null],
+                  "drawPositions": [76],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -15413,7 +15413,7 @@
                   "roundNumber": 2,
                   "roundPosition": 21,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [84, null],
+                  "drawPositions": [84],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -15575,7 +15575,7 @@
                   "roundNumber": 2,
                   "roundPosition": 22,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [88, null],
+                  "drawPositions": [88],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -15737,7 +15737,7 @@
                   "roundNumber": 2,
                   "roundPosition": 23,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [92, null],
+                  "drawPositions": [92],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -16061,7 +16061,7 @@
                   "roundNumber": 2,
                   "roundPosition": 25,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [100, null],
+                  "drawPositions": [100],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -16385,7 +16385,7 @@
                   "roundNumber": 2,
                   "roundPosition": 27,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [108, null],
+                  "drawPositions": [108],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -16547,7 +16547,7 @@
                   "roundNumber": 2,
                   "roundPosition": 28,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [112, null],
+                  "drawPositions": [112],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -16709,7 +16709,7 @@
                   "roundNumber": 2,
                   "roundPosition": 29,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [116, null],
+                  "drawPositions": [116],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -16871,7 +16871,7 @@
                   "roundNumber": 2,
                   "roundPosition": 30,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [120, null],
+                  "drawPositions": [120],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -17033,7 +17033,7 @@
                   "roundNumber": 2,
                   "roundPosition": 31,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [124, null],
+                  "drawPositions": [124],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -17195,7 +17195,7 @@
                   "roundNumber": 2,
                   "roundPosition": 32,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [128, null],
+                  "drawPositions": [128],
                   "isMock": true,
                   "finishingRound": 6,
                   "finishingPositionRange": {
@@ -17357,7 +17357,7 @@
                   "roundNumber": 3,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17371,7 +17371,7 @@
                   "roundNumber": 3,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17385,7 +17385,7 @@
                   "roundNumber": 3,
                   "roundPosition": 3,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17399,7 +17399,7 @@
                   "roundNumber": 3,
                   "roundPosition": 4,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17413,7 +17413,7 @@
                   "roundNumber": 3,
                   "roundPosition": 5,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17427,7 +17427,7 @@
                   "roundNumber": 3,
                   "roundPosition": 6,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17441,7 +17441,7 @@
                   "roundNumber": 3,
                   "roundPosition": 7,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17455,7 +17455,7 @@
                   "roundNumber": 3,
                   "roundPosition": 8,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17469,7 +17469,7 @@
                   "roundNumber": 3,
                   "roundPosition": 9,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17483,7 +17483,7 @@
                   "roundNumber": 3,
                   "roundPosition": 10,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17497,7 +17497,7 @@
                   "roundNumber": 3,
                   "roundPosition": 11,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17511,7 +17511,7 @@
                   "roundNumber": 3,
                   "roundPosition": 12,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17525,7 +17525,7 @@
                   "roundNumber": 3,
                   "roundPosition": 13,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17539,7 +17539,7 @@
                   "roundNumber": 3,
                   "roundPosition": 14,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17553,7 +17553,7 @@
                   "roundNumber": 3,
                   "roundPosition": 15,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17567,7 +17567,7 @@
                   "roundNumber": 3,
                   "roundPosition": 16,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -17581,7 +17581,7 @@
                   "roundNumber": 4,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -17595,7 +17595,7 @@
                   "roundNumber": 4,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -17609,7 +17609,7 @@
                   "roundNumber": 4,
                   "roundPosition": 3,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -17623,7 +17623,7 @@
                   "roundNumber": 4,
                   "roundPosition": 4,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -17637,7 +17637,7 @@
                   "roundNumber": 4,
                   "roundPosition": 5,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -17651,7 +17651,7 @@
                   "roundNumber": 4,
                   "roundPosition": 6,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -17665,7 +17665,7 @@
                   "roundNumber": 4,
                   "roundPosition": 7,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -17679,7 +17679,7 @@
                   "roundNumber": 4,
                   "roundPosition": 8,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -17693,7 +17693,7 @@
                   "roundNumber": 5,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -17707,7 +17707,7 @@
                   "roundNumber": 5,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -17721,7 +17721,7 @@
                   "roundNumber": 5,
                   "roundPosition": 3,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -17735,7 +17735,7 @@
                   "roundNumber": 5,
                   "roundPosition": 4,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -17749,7 +17749,7 @@
                   "roundNumber": 6,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 2,
                   "finishingPositionRange": {
@@ -17763,7 +17763,7 @@
                   "roundNumber": 6,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 2,
                   "finishingPositionRange": {
@@ -17777,7 +17777,7 @@
                   "roundNumber": 7,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 1,
                   "finishingPositionRange": {
@@ -18300,7 +18300,7 @@
                   "participantId": "4b6e394a-429a-4aa6-8ab4-d4875a26ec5d"
                 }
               ],
-              "updatedAt": 1634657776045,
+              "updatedAt": "2021-10-19T14:17:13.178Z",
               "seedLimit": 0
             },
             {
@@ -19274,7 +19274,7 @@
                   "roundNumber": 3,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19288,7 +19288,7 @@
                   "roundNumber": 3,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19302,7 +19302,7 @@
                   "roundNumber": 3,
                   "roundPosition": 3,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [6, null],
+                  "drawPositions": [6],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19316,7 +19316,7 @@
                   "roundNumber": 3,
                   "roundPosition": 4,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [8, null],
+                  "drawPositions": [8],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19330,7 +19330,7 @@
                   "roundNumber": 3,
                   "roundPosition": 5,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19344,7 +19344,7 @@
                   "roundNumber": 3,
                   "roundPosition": 6,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [11, null],
+                  "drawPositions": [11],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19358,7 +19358,7 @@
                   "roundNumber": 3,
                   "roundPosition": 7,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19372,7 +19372,7 @@
                   "roundNumber": 3,
                   "roundPosition": 8,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19386,7 +19386,7 @@
                   "roundNumber": 3,
                   "roundPosition": 9,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19400,7 +19400,7 @@
                   "roundNumber": 3,
                   "roundPosition": 10,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [20, null],
+                  "drawPositions": [20],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19414,7 +19414,7 @@
                   "roundNumber": 3,
                   "roundPosition": 11,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19428,7 +19428,7 @@
                   "roundNumber": 3,
                   "roundPosition": 12,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [24, null],
+                  "drawPositions": [24],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19442,7 +19442,7 @@
                   "roundNumber": 3,
                   "roundPosition": 13,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [26, null],
+                  "drawPositions": [26],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19456,7 +19456,7 @@
                   "roundNumber": 3,
                   "roundPosition": 14,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19470,7 +19470,7 @@
                   "roundNumber": 3,
                   "roundPosition": 15,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19484,7 +19484,7 @@
                   "roundNumber": 3,
                   "roundPosition": 16,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 5,
                   "finishingPositionRange": {
@@ -19498,7 +19498,7 @@
                   "roundNumber": 4,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -19512,7 +19512,7 @@
                   "roundNumber": 4,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -19526,7 +19526,7 @@
                   "roundNumber": 4,
                   "roundPosition": 3,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -19540,7 +19540,7 @@
                   "roundNumber": 4,
                   "roundPosition": 4,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -19554,7 +19554,7 @@
                   "roundNumber": 4,
                   "roundPosition": 5,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -19568,7 +19568,7 @@
                   "roundNumber": 4,
                   "roundPosition": 6,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -19582,7 +19582,7 @@
                   "roundNumber": 4,
                   "roundPosition": 7,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -19596,7 +19596,7 @@
                   "roundNumber": 4,
                   "roundPosition": 8,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 4,
                   "finishingPositionRange": {
@@ -19610,7 +19610,7 @@
                   "roundNumber": 5,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -19624,7 +19624,7 @@
                   "roundNumber": 5,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -19638,7 +19638,7 @@
                   "roundNumber": 5,
                   "roundPosition": 3,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -19652,7 +19652,7 @@
                   "roundNumber": 5,
                   "roundPosition": 4,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 3,
                   "finishingPositionRange": {
@@ -19666,7 +19666,7 @@
                   "roundNumber": 6,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 2,
                   "finishingPositionRange": {
@@ -19680,7 +19680,7 @@
                   "roundNumber": 6,
                   "roundPosition": 2,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 2,
                   "finishingPositionRange": {
@@ -19694,7 +19694,7 @@
                   "roundNumber": 7,
                   "roundPosition": 1,
                   "matchUpStatus": "TO_BE_PLAYED",
-                  "drawPositions": [null, null],
+                  "drawPositions": [],
                   "isMock": true,
                   "finishingRound": 1,
                   "finishingPositionRange": {
@@ -20031,7 +20031,7 @@
                   "bye": true
                 }
               ],
-              "updatedAt": 1634657776045,
+              "updatedAt": "2021-10-19T14:17:13.178Z",
               "matchUpFormat": "SET3-S:6/TB7-F:TB10"
             }
           ],
@@ -20094,7 +20094,7 @@
               "createdAt": "2021-10-19T14:12:20.749Z"
             }
           ],
-          "updatedAt": 1634657776045,
+          "updatedAt": "2021-10-19T14:17:13.178Z",
           "matchUpFormat": "SET3-S:6/TB7",
           "drawOrder": 1
         }
@@ -20137,7 +20137,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Arthur Cazaux",
       "participantStatus": "ACTIVE",
@@ -20181,7 +20181,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Diego Augusto Barreto Sanchez",
       "participantStatus": "ACTIVE",
@@ -20214,7 +20214,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Alexander Zverev",
       "participantStatus": "ACTIVE",
@@ -20247,7 +20247,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Dali Blanch",
       "participantStatus": "ACTIVE",
@@ -20280,7 +20280,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Mikhail Kukushkin",
       "participantStatus": "ACTIVE",
@@ -20313,7 +20313,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Francesco Maestrelli",
       "participantStatus": "ACTIVE",
@@ -20346,7 +20346,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Yoshihito Nishioka",
       "participantStatus": "ACTIVE",
@@ -20379,7 +20379,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Karen Khachanov",
       "participantStatus": "ACTIVE",
@@ -20412,7 +20412,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Bu Yunchaokete",
       "participantStatus": "ACTIVE",
@@ -20445,7 +20445,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Damien Salvestre",
       "participantStatus": "ACTIVE",
@@ -20481,7 +20481,7 @@
         "8ad6f748-25ec-4bc6-a2d8-3ddbf8440b4d"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Fery/Gasquet",
       "participantStatus": "ACTIVE",
@@ -20498,7 +20498,7 @@
         "4b6e394a-429a-4aa6-8ab4-d4875a26ec5d"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Kasnikowski/Shapovalov",
       "participantStatus": "ACTIVE",
@@ -20512,7 +20512,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Mehdi Sadaoui",
       "participantStatus": "ACTIVE",
@@ -20548,7 +20548,7 @@
         "657dc459-91b0-453c-a962-9c6f23b26a12"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Kukushkin/Kyrgios",
       "participantStatus": "ACTIVE",
@@ -20565,7 +20565,7 @@
         "0a4fdb6b-8c96-4336-bd1a-7bbfa83c0a8d"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Pospisil/Shang",
       "participantStatus": "ACTIVE",
@@ -20582,7 +20582,7 @@
         "1f4c4f70-864a-483c-9cc2-833346096ae4"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Alcaraz/Boscardin Dias",
       "participantStatus": "ACTIVE",
@@ -20596,7 +20596,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Gianluca Mager",
       "participantStatus": "ACTIVE",
@@ -20629,7 +20629,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Luciano Darderi",
       "participantStatus": "ACTIVE",
@@ -20662,7 +20662,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Luca Nardi",
       "participantStatus": "ACTIVE",
@@ -20695,7 +20695,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Emil Ruusuvuori",
       "participantStatus": "ACTIVE",
@@ -20728,7 +20728,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Juncheng Shang",
       "participantStatus": "ACTIVE",
@@ -20761,7 +20761,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Roman Andres Burruchaga",
       "participantStatus": "ACTIVE",
@@ -20794,7 +20794,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Roberto Bautista Agut",
       "participantStatus": "ACTIVE",
@@ -20827,7 +20827,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Yasutaka Uchiyama",
       "participantStatus": "ACTIVE",
@@ -20860,7 +20860,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Reilly Opelka",
       "participantStatus": "ACTIVE",
@@ -20896,7 +20896,7 @@
         "73fe14ae-1e1e-4f0f-8e50-d27d986a400f"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Bernard/Rodrigues",
       "participantStatus": "ACTIVE",
@@ -20910,7 +20910,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Elmer Moller",
       "participantStatus": "ACTIVE",
@@ -20946,7 +20946,7 @@
         "14014216-7e48-43a0-8630-d34e68a72a82"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Bautista Agut/Schwartzman",
       "participantStatus": "ACTIVE",
@@ -20963,7 +20963,7 @@
         "05d33499-9cf5-4b82-b158-34025e071382"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Krumich/Sadaoui",
       "participantStatus": "ACTIVE",
@@ -20980,7 +20980,7 @@
         "3e6798d4-fcfc-4c8a-9402-d9c0c7cee65e"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Nardi/Vesely",
       "participantStatus": "ACTIVE",
@@ -20994,7 +20994,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Andrey Rublev",
       "participantStatus": "ACTIVE",
@@ -21027,7 +21027,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Dominic Stephan Stricker",
       "participantStatus": "ACTIVE",
@@ -21060,7 +21060,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Matteo Berrettini",
       "participantStatus": "ACTIVE",
@@ -21093,7 +21093,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Santiago De La Fuente",
       "participantStatus": "ACTIVE",
@@ -21129,7 +21129,7 @@
         "367d9182-a458-4b5c-ac0e-070024038a74"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Andres Burruchaga/Querrey",
       "participantStatus": "ACTIVE",
@@ -21146,7 +21146,7 @@
         "1e5e03eb-fc5b-4b35-839e-c9104067e9f9"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Cobolli/Stephan Stricker",
       "participantStatus": "ACTIVE",
@@ -21163,7 +21163,7 @@
         "37825b4f-9a6c-49c9-b5fa-6b73fe171bc4"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Barrena/Kwon",
       "participantStatus": "ACTIVE",
@@ -21177,7 +21177,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Sam Querrey",
       "participantStatus": "ACTIVE",
@@ -21210,7 +21210,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Laslo Djere",
       "participantStatus": "ACTIVE",
@@ -21243,7 +21243,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Gael Monfils",
       "participantStatus": "ACTIVE",
@@ -21276,7 +21276,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Sebastian Gima",
       "participantStatus": "ACTIVE",
@@ -21309,7 +21309,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Martin Breysach",
       "participantStatus": "ACTIVE",
@@ -21342,7 +21342,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Natan Rodrigues",
       "participantStatus": "ACTIVE",
@@ -21378,7 +21378,7 @@
         "ce002b89-5f1a-4d65-88b2-a22b02fb5dac"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Krajinovic/Paire",
       "participantStatus": "ACTIVE",
@@ -21392,7 +21392,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Alexander Bublik",
       "participantStatus": "ACTIVE",
@@ -21425,7 +21425,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Michal Novansky",
       "participantStatus": "ACTIVE",
@@ -21458,7 +21458,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Khololwam Montsi",
       "participantStatus": "ACTIVE",
@@ -21491,7 +21491,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Toby Samuel",
       "participantStatus": "ACTIVE",
@@ -21524,7 +21524,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Alex Barrena",
       "participantStatus": "ACTIVE",
@@ -21557,7 +21557,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Gilles Simon",
       "participantStatus": "ACTIVE",
@@ -21590,7 +21590,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Biagio Gramaticopolo",
       "participantStatus": "ACTIVE",
@@ -21626,7 +21626,7 @@
         "fe494dd8-d4c8-4d83-8549-b74d6c8fbaf7"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Carballes Baena/Zverev",
       "participantStatus": "ACTIVE",
@@ -21640,7 +21640,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Giovanni Mpetshi Perricard",
       "participantStatus": "ACTIVE",
@@ -21673,7 +21673,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Ugo Humbert",
       "participantStatus": "ACTIVE",
@@ -21709,7 +21709,7 @@
         "87c63fed-87ed-42f6-b647-06333b626cb9"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Albot/Kashirin",
       "participantStatus": "ACTIVE",
@@ -21723,7 +21723,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Marcos Giron",
       "participantStatus": "ACTIVE",
@@ -21756,7 +21756,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Marin Cilic",
       "participantStatus": "ACTIVE",
@@ -21789,7 +21789,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Roberto Carballes Baena",
       "participantStatus": "ACTIVE",
@@ -21822,7 +21822,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Felix Auger-Aliassime",
       "participantStatus": "ACTIVE",
@@ -21858,7 +21858,7 @@
         "abdc3e97-e6da-477a-9f69-cd2006ee2c6b"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Bielinskyi/Mpetshi Perricard",
       "participantStatus": "ACTIVE",
@@ -21875,7 +21875,7 @@
         "cae3f74d-d174-4091-9742-cf6f4ea8318a"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Bublik/Johnson",
       "participantStatus": "ACTIVE",
@@ -21889,7 +21889,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Diego Schwartzman",
       "participantStatus": "ACTIVE",
@@ -21922,7 +21922,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Martin Krumich",
       "participantStatus": "ACTIVE",
@@ -21955,7 +21955,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Pablo Andujar",
       "participantStatus": "ACTIVE",
@@ -21988,7 +21988,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Kokoro Isomura",
       "participantStatus": "ACTIVE",
@@ -22021,7 +22021,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Vasek Pospisil",
       "participantStatus": "ACTIVE",
@@ -22054,7 +22054,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Jeffrey Von Der Schulenburg",
       "participantStatus": "ACTIVE",
@@ -22090,7 +22090,7 @@
         "e5b9b083-e15a-4a83-87af-aa934c1dd4c0"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Blanch/Harris",
       "participantStatus": "ACTIVE",
@@ -22104,7 +22104,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Matteo Gigante",
       "participantStatus": "ACTIVE",
@@ -22137,7 +22137,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Taylor Fritz",
       "participantStatus": "ACTIVE",
@@ -22170,7 +22170,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Denis Shapovalov",
       "participantStatus": "ACTIVE",
@@ -22203,7 +22203,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Arthur Fery",
       "participantStatus": "ACTIVE",
@@ -22239,7 +22239,7 @@
         "9a723888-0773-45a4-8ab8-12073edb82c0"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "De La Fuente/Hurkacz",
       "participantStatus": "ACTIVE",
@@ -22253,7 +22253,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Alexander Bernard",
       "participantStatus": "ACTIVE",
@@ -22286,7 +22286,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Hanwen Li",
       "participantStatus": "ACTIVE",
@@ -22322,7 +22322,7 @@
         "c243d4aa-09f1-4288-aecf-f381671637d5"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Moller/Monfils",
       "participantStatus": "ACTIVE",
@@ -22336,7 +22336,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Chen Dong",
       "participantStatus": "ACTIVE",
@@ -22369,7 +22369,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Lukas Neumayer",
       "participantStatus": "ACTIVE",
@@ -22405,7 +22405,7 @@
         "9aed1e3a-0fe9-496c-b0ba-412aa24904ad"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Ruusuvuori/Sousa",
       "participantStatus": "ACTIVE",
@@ -22422,7 +22422,7 @@
         "89d02464-6ec1-4c1b-bfbe-ef6d3b9ef366"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Sharipov/Von Der Schulenburg",
       "participantStatus": "ACTIVE",
@@ -22436,7 +22436,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Soonwoo Kwon",
       "participantStatus": "ACTIVE",
@@ -22472,7 +22472,7 @@
         "973901f7-9205-4862-a81c-5434211bd311"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Gramaticopolo/Hanfmann",
       "participantStatus": "ACTIVE",
@@ -22486,7 +22486,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Simeon Terziev",
       "participantStatus": "ACTIVE",
@@ -22519,7 +22519,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Cristian Garin",
       "participantStatus": "ACTIVE",
@@ -22552,7 +22552,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Dennis Novak",
       "participantStatus": "ACTIVE",
@@ -22585,7 +22585,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Maks Kasnikowski",
       "participantStatus": "ACTIVE",
@@ -22618,7 +22618,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Joao Sousa",
       "participantStatus": "ACTIVE",
@@ -22651,7 +22651,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Peter Fajta",
       "participantStatus": "ACTIVE",
@@ -22684,7 +22684,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Pedro Boscardin Dias",
       "participantStatus": "ACTIVE",
@@ -22720,7 +22720,7 @@
         "4ca02583-49d0-41cb-8bfe-2ca026966514"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Li/Yunchaokete",
       "participantStatus": "ACTIVE",
@@ -22734,7 +22734,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Benoit Paire",
       "participantStatus": "ACTIVE",
@@ -22770,7 +22770,7 @@
         "2d2a2e20-aeab-4ef6-b75b-2443685927b9"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Coric/Gigante",
       "participantStatus": "ACTIVE",
@@ -22784,7 +22784,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Lloyd Harris",
       "participantStatus": "ACTIVE",
@@ -22820,7 +22820,7 @@
         "e2118f08-5bf1-4a13-89f5-133d312ba9e0"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Giron/Neumayer",
       "participantStatus": "ACTIVE",
@@ -22834,7 +22834,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Hubert Hurkacz",
       "participantStatus": "ACTIVE",
@@ -22867,7 +22867,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Milos Raonic",
       "participantStatus": "ACTIVE",
@@ -22900,7 +22900,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Steve Johnson",
       "participantStatus": "ACTIVE",
@@ -22933,7 +22933,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Filip Krajinovic",
       "participantStatus": "ACTIVE",
@@ -22969,7 +22969,7 @@
         "f5e8a444-87c7-4748-99e1-a2dd21b8341e"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Heide/Uchiyama",
       "participantStatus": "ACTIVE",
@@ -22983,7 +22983,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Nicholas David Ionel",
       "participantStatus": "ACTIVE",
@@ -23016,7 +23016,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Novak Djokovic",
       "participantStatus": "ACTIVE",
@@ -23049,7 +23049,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Salvatore Caruso",
       "participantStatus": "ACTIVE",
@@ -23082,7 +23082,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Marat Sharipov",
       "participantStatus": "ACTIVE",
@@ -23115,7 +23115,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Raphael Collignon",
       "participantStatus": "ACTIVE",
@@ -23148,7 +23148,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "David Goffin",
       "participantStatus": "ACTIVE",
@@ -23184,7 +23184,7 @@
         "9cde5148-871b-4b87-b62e-fe46a698a985"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Pella/Raonic",
       "participantStatus": "ACTIVE",
@@ -23198,7 +23198,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Viacheslav Bielinskyi",
       "participantStatus": "ACTIVE",
@@ -23231,7 +23231,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Marko Topo",
       "participantStatus": "ACTIVE",
@@ -23264,7 +23264,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Maxwell Mckennon",
       "participantStatus": "ACTIVE",
@@ -23297,7 +23297,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Radu Albot",
       "participantStatus": "ACTIVE",
@@ -23330,7 +23330,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Lorenzo Sonego",
       "participantStatus": "ACTIVE",
@@ -23366,7 +23366,7 @@
         "b8c26f9d-f9df-401b-a966-706d12d75bf8"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Augusto Barreto Sanchez/Salvestre",
       "participantStatus": "ACTIVE",
@@ -23380,7 +23380,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Nikita Kashirin",
       "participantStatus": "ACTIVE",
@@ -23413,7 +23413,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Yannick Hanfmann",
       "participantStatus": "ACTIVE",
@@ -23449,7 +23449,7 @@
         "30dde8b8-8db7-48c2-806c-f900173e5b18"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Berrettini/Isomura",
       "participantStatus": "ACTIVE",
@@ -23463,7 +23463,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Jiri Vesely",
       "participantStatus": "ACTIVE",
@@ -23499,7 +23499,7 @@
         "9971902b-aea2-4dbf-bb19-a9246f19d259"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Samuel/Sonego",
       "participantStatus": "ACTIVE",
@@ -23516,7 +23516,7 @@
         "197d1cd1-ccea-440f-a034-24935c47bdc5"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Novansky/Topo",
       "participantStatus": "ACTIVE",
@@ -23533,7 +23533,7 @@
         "d0d0c6c7-8f59-442e-bfce-c541ad8a8b51"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Cazaux/Humbert",
       "participantStatus": "ACTIVE",
@@ -23550,7 +23550,7 @@
         "6489a33b-58d1-44c4-a4fc-230b6afa29e8"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Garin/Mckennon",
       "participantStatus": "ACTIVE",
@@ -23564,7 +23564,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Carlos Alcaraz",
       "participantStatus": "ACTIVE",
@@ -23600,7 +23600,7 @@
         "433de470-2372-4c15-aa0f-a78121b9a2d2"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Auger-Aliassime/Caruso",
       "participantStatus": "ACTIVE",
@@ -23617,7 +23617,7 @@
         "efde3ef9-5386-42f3-b5ec-d72e2c84baa3"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Gima/Opelka",
       "participantStatus": "ACTIVE",
@@ -23631,7 +23631,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Borna Coric",
       "participantStatus": "ACTIVE",
@@ -23664,7 +23664,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Nick Kyrgios",
       "participantStatus": "ACTIVE",
@@ -23697,7 +23697,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Flavio Cobolli",
       "participantStatus": "ACTIVE",
@@ -23730,7 +23730,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Gustavo Heide",
       "participantStatus": "ACTIVE",
@@ -23766,7 +23766,7 @@
         "d3b30e80-800e-457f-9419-82d9d7cc2591"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Nishioka/Novak",
       "participantStatus": "ACTIVE",
@@ -23780,7 +23780,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Guido Pella",
       "participantStatus": "ACTIVE",
@@ -23813,7 +23813,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Richard Gasquet",
       "participantStatus": "ACTIVE",
@@ -23849,7 +23849,7 @@
         "3f5a55eb-3639-4f34-91e8-54e65850d6b2"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Dong/Fajta",
       "participantStatus": "ACTIVE",
@@ -23866,7 +23866,7 @@
         "a46d7263-e28b-4d7c-8f6f-349d99f1370e"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "David Ionel/Mager",
       "participantStatus": "ACTIVE",
@@ -23883,7 +23883,7 @@
         "9dc83edb-f3bb-42f6-80e3-e7c367b3c659"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Fritz/Goffin",
       "participantStatus": "ACTIVE",
@@ -23904,7 +23904,7 @@
         "1e5e03eb-fc5b-4b35-839e-c9104067e9f9"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Touch and Go",
       "participantStatus": "ACTIVE",
@@ -23930,7 +23930,7 @@
         "93e8457e-0521-4944-9941-4c184f823de9"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Captivators",
       "participantStatus": "ACTIVE",
@@ -23951,7 +23951,7 @@
         "1f4c4f70-864a-483c-9cc2-833346096ae4"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Sandeaters",
       "participantStatus": "ACTIVE",
@@ -23979,7 +23979,7 @@
         "b4e11c9e-68c1-49b4-88ea-ca182254b440"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Sun Seekers",
       "participantStatus": "ACTIVE",
@@ -24002,7 +24002,7 @@
         "196d0be7-2570-45fd-a02f-479ba2373373"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Masters of Mayhem",
       "participantStatus": "ACTIVE",
@@ -24026,7 +24026,7 @@
         "7f5caddf-9962-4907-a6d6-51993e6ae7e7"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Line Toers",
       "participantStatus": "ACTIVE",
@@ -24051,7 +24051,7 @@
         "0570186b-3feb-4d6e-ab6d-5012b0e24896"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Mindspace Invaders",
       "participantStatus": "ACTIVE",
@@ -24076,7 +24076,7 @@
         "14014216-7e48-43a0-8630-d34e68a72a82"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Good Volley",
       "participantStatus": "ACTIVE",
@@ -24102,7 +24102,7 @@
         "b4ec1e70-07f2-42af-bd0f-9cecfa6d7bb1"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Slice Happy",
       "participantStatus": "ACTIVE",
@@ -24130,7 +24130,7 @@
         "de99e1f5-374c-485d-8584-5d3206713ba6"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Court Royal",
       "participantStatus": "ACTIVE",
@@ -24156,7 +24156,7 @@
         "3943c163-1a11-4a78-acaf-fb4d0a471066"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "Cheap Shot",
       "participantStatus": "ACTIVE",
@@ -24178,7 +24178,7 @@
         "6205fc4b-bd15-40e0-82e2-1b3c2196e61d"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantRole": "COMPETITOR",
       "participantName": "The Emergence",
       "participantStatus": "ACTIVE",

@@ -312,6 +312,9 @@
             "type": "string"
           }
         },
+        "tieFormat": {
+          "$ref": "#/definitions/TieFormat"
+        },
         "wheelchairClass": {
           "$ref": "#/definitions/WheelchairClassEnum"
         }
@@ -1541,7 +1544,7 @@
           "type": "string"
         },
         "winCriteria": {
-          "$ref": "#/definitions/TieWinCriteria"
+          "$ref": "#/definitions/WinCriteria"
         }
       },
       "required": ["collectionDefinitions", "winCriteria"],
@@ -1628,7 +1631,7 @@
           "type": "number"
         },
         "winCriteria": {
-          "$ref": "#/definitions/TieWinCriteria"
+          "$ref": "#/definitions/WinCriteria"
         }
       },
       "required": ["collectionId"],
@@ -1677,7 +1680,7 @@
       "type": "string",
       "enum": ["ANY", "FEMALE", "MALE", "MIXED"]
     },
-    "TieWinCriteria": {
+    "WinCriteria": {
       "type": "object",
       "properties": {
         "createdAt": {
@@ -1713,7 +1716,7 @@
           "type": "number"
         }
       },
-      "required": ["aggregateValue", "valueGoal"],
+      "required": ["valueGoal"],
       "additionalProperties": false
     },
     "CollectionGroup": {
@@ -1755,7 +1758,7 @@
           "type": "number"
         },
         "winCriteria": {
-          "$ref": "#/definitions/TieWinCriteria"
+          "$ref": "#/definitions/WinCriteria"
         }
       },
       "required": ["groupNumber"],

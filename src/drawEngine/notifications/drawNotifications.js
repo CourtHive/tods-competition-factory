@@ -18,10 +18,11 @@ import {
 
 function drawUpdatedAt(drawDefinition, structureIds) {
   if (!drawDefinition) return;
-  let updatedAt = Date.now();
-  if (updatedAt === drawDefinition.updatedAt) {
-    updatedAt += 1;
-  }
+
+  let timeStamp = Date.now();
+  if (timeStamp === new Date(drawDefinition.updatedAt).getTime())
+    timeStamp += 1;
+  const updatedAt = new Date(timeStamp).toISOString();
 
   const relevantStructureIds = structureIds?.filter(Boolean);
 
