@@ -4322,13 +4322,13 @@
         "birthDate": "2006-05-11",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "INA",
+        "nationalityCode": "IDN",
         "addresses": [
           {
             "city": "Otis",
             "state": "AK",
             "postalCode": "11877",
-            "countryCode": "INA"
+            "countryCode": "IDN"
           }
         ],
         "personId": "c41f4138-97a8-4a99-a0bd-8c71a66b1c3b",
@@ -10415,13 +10415,13 @@
         "birthDate": "2004-04-30",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "SLO",
+        "nationalityCode": "SVN",
         "addresses": [
           {
             "city": "Bossier City",
             "state": "LA",
             "postalCode": "77775",
-            "countryCode": "SLO"
+            "countryCode": "SVN"
           }
         ],
         "personId": "a9d2d5e7-1378-43d9-af2b-37e644bd719d",

@@ -1,7 +1,7 @@
 import { addParticipantGroupings } from '../../drawEngine/governors/positionGovernor/avoidance/addParticipantGroupings';
 import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps/findMatchUp';
 import { getScheduleTiming } from '../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
-import { addNationalityCodeISO } from '../governors/participantGovernor/annotatePerson';
+import { addNationalityCodeIOC } from '../governors/participantGovernor/annotatePerson';
 import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
 import { definedAttributes } from '../../utilities/objects';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
@@ -425,9 +425,9 @@ export function drawMatchUps({
 function getParticipants({ inContext, tournamentRecord, participantsProfile }) {
   let participants = tournamentRecord.participants || [];
 
-  if (participantsProfile?.withISO)
+  if (participantsProfile?.withIOC)
     participants.forEach((participant) =>
-      addNationalityCodeISO({ participant })
+      addNationalityCodeIOC({ participant })
     );
 
   if (

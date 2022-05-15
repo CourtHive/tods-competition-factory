@@ -44,7 +44,7 @@ export function getTournamentParticipants({
   withEvents,
   withDraws,
   inContext,
-  withISO,
+  withIOC,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
@@ -88,7 +88,7 @@ export function getTournamentParticipants({
     withMatchUps ||
     withEvents ||
     withDraws ||
-    withISO;
+    withIOC;
 
   let participantIdsWithConflicts, eventsPublishStatuses;
 
@@ -109,7 +109,7 @@ export function getTournamentParticipants({
       withMatchUps,
       withEvents,
       withDraws,
-      withISO,
+      withIOC,
     });
 
     participantIdsWithConflicts = result?.participantIdsWithConflicts;

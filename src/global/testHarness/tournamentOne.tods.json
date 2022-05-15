@@ -7572,13 +7572,13 @@
         "birthDate": "2007-04-21",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "SLO",
+        "nationalityCode": "SVN",
         "addresses": [
           {
             "city": "Eagar",
             "state": "AK",
             "postalCode": "38222",
-            "countryCode": "SLO"
+            "countryCode": "SVN"
           }
         ],
         "personId": "ea04c82d-fb47-4072-b4a7-6ba5268b6144",
@@ -9228,13 +9228,13 @@
         "birthDate": "2007-11-15",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "SLO",
+        "nationalityCode": "SVN",
         "addresses": [
           {
             "city": "Wyoming",
             "state": "OR",
             "postalCode": "70391",
-            "countryCode": "SLO"
+            "countryCode": "SVN"
           }
         ],
         "personId": "e0cf6fd7-d95b-4aee-8677-45fabdcb38ca",
@@ -11294,13 +11294,13 @@
         "birthDate": "2005-07-06",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "SLO",
+        "nationalityCode": "SVN",
         "addresses": [
           {
             "city": "Gates Mills",
             "state": "OR",
             "postalCode": "07093",
-            "countryCode": "SLO"
+            "countryCode": "SVN"
           }
         ],
         "personId": "cad16cd0-f684-403a-82f9-e24ba4b40023",

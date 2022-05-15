@@ -79,7 +79,7 @@ const { participants } = mocksEngine.generateParticipants({
 
   valuesInstanceLimit, // optional - maximum number of values which can be the same
   nationalityCodesCount: 10, // optional - number of nationality codes to use when generating participants
-  nationalityCodeType: 'ISO', // optional - 'IOC' or 'ISO', defaults to IOC
+  nationalityCodeType: 'IOC', // optional - 'IOC' or 'ISO', defaults to ISO
   nationalityCodes: [], // optional - an array of ISO codes to randomly assign to participants
   addressProps: {
     citiesCount: 10,

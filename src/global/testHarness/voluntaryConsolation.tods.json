@@ -1433,13 +1433,13 @@
             "city": "Flower Hill",
             "state": "SC",
             "postalCode": "06714",
-            "countryCode": "MYA"
+            "countryCode": "MMR"
           }
         ],
         "personId": "ac7b9e0e-29aa-4ce6-ac83-803ef028aba0",
         "standardFamilyName": "Avdeeva",
         "standardGivenName": "Julia",
-        "nationalityCode": "MYA",
+        "nationalityCode": "MMR",
         "extensions": [
           {
             "name": "regionCode",
@@ -1739,13 +1739,13 @@
             "city": "Ashburn",
             "state": "KS",
             "postalCode": "20994",
-            "countryCode": "TKS"
+            "countryCode": "TCA"
           }
         ],
         "personId": "d4f8f3db-d538-48dc-a869-41d3c1f1a42d",
         "standardFamilyName": "Snigur",
         "standardGivenName": "Daria",
-        "nationalityCode": "TKS",
+        "nationalityCode": "TCA",
         "extensions": [
           {
             "name": "regionCode",
@@ -2229,13 +2229,13 @@
             "city": "Eliot",
             "state": "FL",
             "postalCode": "12400",
-            "countryCode": "PHI"
+            "countryCode": "PHL"
           }
         ],
         "personId": "b4af5250-b65b-4c9e-ad5c-20f989c579a2",
         "standardFamilyName": "Sasnovich",
         "standardGivenName": "Aliaksandra",
-        "nationalityCode": "PHI",
+        "nationalityCode": "PHL",
         "extensions": [
           {
             "name": "regionCode",
@@ -2374,13 +2374,13 @@
             "city": "Caledonia",
             "state": "TX",
             "postalCode": "11655",
-            "countryCode": "GUA"
+            "countryCode": "GTM"
           }
         ],
         "personId": "ee28bc2d-1d0f-437b-8083-7e0332344261",
         "standardFamilyName": "Kalieva",
         "standardGivenName": "Elvina",
-        "nationalityCode": "GUA",
+        "nationalityCode": "GTM",
         "extensions": [
           {
             "name": "regionCode",
@@ -3130,13 +3130,13 @@
             "city": "Brownsville",
             "state": "NY",
             "postalCode": "50734",
-            "countryCode": "SIN"
+            "countryCode": "SGP"
           }
         ],
         "personId": "c279d9f1-8e54-414a-a243-566adff0b84f",
         "standardFamilyName": "Strycova",
         "standardGivenName": "Barbora",
-        "nationalityCode": "SIN",
+        "nationalityCode": "SGP",
         "extensions": [
           {
             "name": "regionCode",

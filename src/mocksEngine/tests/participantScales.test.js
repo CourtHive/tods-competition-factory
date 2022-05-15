@@ -135,7 +135,7 @@ test('generates participants with rankings and ratings with additional embellish
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     inContext: true,
-    withISO: true,
+    withIOC: true,
   }));
 
   let withRatings = 0;
@@ -156,7 +156,7 @@ test('generates participants with rankings and ratings with additional embellish
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     participantFilters: { eventIds: [eventIds[0]] },
     inContext: true,
-    withISO: true,
+    withIOC: true,
   }));
 
   expect(tournamentParticipants.length).toEqual(8);

@@ -1979,7 +1979,7 @@ const {
   withOpponents, // optional - include opponent participantIds
   withEvents, // optional - defaults to true if any other context options are specified
   withDraws, // optional - defaults to true if any other context options are specified
-  withISO, // optional - will add iso country code and countryName to participant persons
+  withIOC, // optional - will add IOC country code and countryName to participant persons
 
   scheduleAnalysis: {
     scheduledMinutesDifference // optional - scheduling conflicts determined by scheduledTime difference between matchUps

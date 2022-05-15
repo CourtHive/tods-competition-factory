@@ -22450,13 +22450,13 @@
         "birthDate": "2009-06-03",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "SLO",
+        "nationalityCode": "SVN",
         "addresses": [
           {
             "city": "Homewood",
             "state": "MI",
             "postalCode": "81615",
-            "countryCode": "SLO"
+            "countryCode": "SVN"
           }
         ],
         "personId": "1012e75a-f0ae-4cfc-b752-9dfab89b1fda",
@@ -23794,13 +23794,13 @@
         "birthDate": "2010-02-12",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "INA",
+        "nationalityCode": "IDN",
         "addresses": [
           {
             "city": "Shawnee",
             "state": "NE",
             "postalCode": "40975",
-            "countryCode": "INA"
+            "countryCode": "IDN"
           }
         ],
         "personId": "bf703747-74cd-4468-9e6a-1820b57b5093",
@@ -25234,13 +25234,13 @@
         "birthDate": "2011-05-31",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "SLO",
+        "nationalityCode": "SVN",
         "addresses": [
           {
             "city": "Port Hadlock-Irondale",
             "state": "NE",
             "postalCode": "44333",
-            "countryCode": "SLO"
+            "countryCode": "SVN"
           }
         ],
         "personId": "84b6eb4c-95ab-4911-8b16-8d18d2bfade0",
