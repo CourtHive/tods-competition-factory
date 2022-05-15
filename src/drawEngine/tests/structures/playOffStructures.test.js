@@ -275,6 +275,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
   expect(drawDefinition.links.length).toEqual(7);
   expect(drawDefinition.structures.length).toEqual(8);
 
+  structures = drawDefinition.structures;
   structureNameMap = Object.assign(
     {},
     ...structures.map(({ structureId, structureName }) => ({
@@ -282,7 +283,6 @@ it('generates compass draws with correct finishing drawPositions', () => {
     }))
   );
 
-  structures = drawDefinition.structures;
   matchUp = findMatchInStructures({
     structures,
     structureId: structureNameMap['EAST'],
@@ -466,6 +466,7 @@ function findMatchInStructures({
     (p, c) => (c.structureId === structureId ? c : p),
     undefined
   );
+
   return structure.matchUps.reduce(
     (p, c) =>
       c.roundNumber === roundNumber && c.roundPosition === roundPosition
