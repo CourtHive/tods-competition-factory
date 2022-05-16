@@ -39,7 +39,10 @@ export function getSeedOrderByePositions({
   // randomly assigned to different seedBlocks
   // Example: more than one 4th seed, but only one of them placed in the 3-4 seed block
   // 3rd seed must get 3rd Bye, and 4th seed placed in the 3-4 seed block must get 4th bye
-  const seedValueSort = (a, b) => a.seedValue - b.seedValue;
+  const getNumericSeedValue = (seedValue) =>
+    typeof seedValue === 'string' ? parseInt(seedValue.split('-')) : seedValue;
+  const seedValueSort = (a, b) =>
+    getNumericSeedValue(a.seedValue) - getNumericSeedValue(b.seedValue);
   const valueOrderedBlockSortedPositionedSeeds = validSeedBlocks.reduce(
     (result, seedBlock) => {
       const positionedSeedsInBlock = relevantPositionedSeeds

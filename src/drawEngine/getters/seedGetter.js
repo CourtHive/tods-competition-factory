@@ -497,8 +497,14 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
     const filteredAssignments = assignments.filter(
       (assignment) => !selectedParticipantIds.includes(assignment.participantId)
     );
+    const getNumericSeedValue = (seedValue) =>
+      typeof seedValue === 'string'
+        ? parseInt(seedValue.split('-'))
+        : seedValue;
     const lowestSeedValue = Math.min(
-      ...filteredAssignments.map((assignment) => assignment.seedValue)
+      ...filteredAssignments.map((assignment) =>
+        getNumericSeedValue(assignment.seedValue)
+      )
     );
     const assignmentsWithLowestSeedValue = filteredAssignments.filter(
       (assignment) => assignment.seedValue === lowestSeedValue

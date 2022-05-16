@@ -166,8 +166,18 @@ export function getValidAssignmentActions({
   return { validAssignmentActions };
 }
 
+function getNumericSeedValue(seedValue) {
+  return typeof seedValue === 'string'
+    ? parseInt(seedValue.split('-'))
+    : seedValue;
+}
+
 function validAssignmentsSort(a, b) {
   if (a.bye) return -1;
-  if (a.seedValue < b.seedValue || (a.seedValue && !b.seedValue)) return -1;
+  if (
+    getNumericSeedValue(a.seedValue) < getNumericSeedValue(b.seedValue) ||
+    (a.seedValue && !b.seedValue)
+  )
+    return -1;
   return (a.seedNumber || 0) - (b.seedNumber || 0);
 }

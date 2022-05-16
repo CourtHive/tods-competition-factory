@@ -127,11 +127,17 @@ export function verifyStructure({
       return pairedDrawPosition;
     }
   );
+  function getNumericSeedValue(seedValue) {
+    return typeof seedValue === 'string'
+      ? parseInt(seedValue.split('-'))
+      : seedValue;
+  }
+
   const seedValuesOfSeedsWithBye = positionedSeeds
     .filter((assignment) =>
       seedDrawPositionsWithBye.includes(assignment.drawPosition)
     )
-    .map((assignment) => assignment.seedValue)
+    .map((assignment) => getNumericSeedValue(assignment.seedValue))
     .sort((a, b) => a - b);
 
   if (expectedSeedValuesWithBye !== undefined) {
