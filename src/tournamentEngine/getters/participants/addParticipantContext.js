@@ -843,7 +843,7 @@ function annotateParticipant({
       const { scaleItem } = result;
 
       if (scaleItem) {
-        const seedValue = scaleItem.scaleValue?.toString();
+        const seedValue = scaleItem.scaleValue;
         const publishedSeeding =
           eventsPublishStatuses[participantEvent.eventId]?.publishedSeeding;
 

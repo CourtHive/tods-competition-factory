@@ -73,8 +73,8 @@ export function assignSeed({
     }
     // assign participantId to target seedNumber
     if (assignment.seedNumber === seedNumber) {
-      assignment.seedValue = (seedValue || seedNumber)?.toString();
       assignment.participantId = participantId;
+      assignment.seedValue = seedValue || seedNumber;
       success = true;
     }
   });

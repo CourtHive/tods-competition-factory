@@ -56,9 +56,9 @@ export function initializeStructureSeedAssignments({
   structure.seedLimit = seedsCount;
   structure.seedAssignments = generateRange(1, seedsCount + 1).map(
     (seedNumber) => ({
-      seedValue: seedNumber?.toString(),
-      participantId: undefined,
       seedNumber,
+      seedValue: seedNumber,
+      participantId: undefined,
     })
   );
 
