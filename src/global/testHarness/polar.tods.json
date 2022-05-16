@@ -48172,7 +48172,7 @@
       "personId": "9845C928-A04C-422A-AB16-959BFFC37FB8",
       "person": {
         "extensions": [],
-        "birthDate": "1979-02-29",
+        "birthDate": "1979-02-28",
         "isMock": true,
         "sex": "MALE",
         "nationalityCode": "ESP",

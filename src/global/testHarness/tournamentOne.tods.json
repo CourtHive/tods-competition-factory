@@ -8219,7 +8219,7 @@
       "personId": "4F59D7F3-D07D-4CF4-85E7-5BF861DA3CAD",
       "person": {
         "extensions": [],
-        "birthDate": "2006-02-29",
+        "birthDate": "2006-02-28",
         "isMock": true,
         "sex": "FEMALE",
         "nationalityCode": "JPN",
