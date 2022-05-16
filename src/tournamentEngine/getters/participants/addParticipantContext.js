@@ -154,6 +154,7 @@ export function addParticipantContext(params) {
     params.withStatistics ||
     params.withOpponents ||
     params.withMatchUps ||
+    params.withSeeding ||
     params.withEvents ||
     params.withDraws
   ) {
@@ -242,6 +243,7 @@ export function addParticipantContext(params) {
               entryStatus,
               entryStage,
               drawIds: [],
+              eventId,
             };
           });
         });
@@ -261,6 +263,7 @@ export function addParticipantContext(params) {
               entryStatus,
               entryStage,
               drawIds: [],
+              eventId,
             };
           }
 
@@ -720,6 +723,7 @@ function annotateParticipant({
   withStatistics,
   withOpponents,
   withMatchUps,
+  withSeeding,
   participant,
   withISO2,
   withIOC,
@@ -827,34 +831,79 @@ function annotateParticipant({
 
   if (withEvents && participantEvents) {
     participant.events = participantEvents;
+    let foundScaleName;
 
-    for (const participantEvent of participantEvents) {
-      const { categoryName, ageCategoryCode } = participantEvent.category || {};
-      const scaleAttributes = {
-        scaleType: SEEDING,
-        scaleName: categoryName || ageCategoryCode,
-        eventType: participantEvent.eventType,
-      };
+    if (withSeeding) {
+      for (const participantEvent of participantEvents) {
+        const { categoryName, ageCategoryCode } =
+          participantEvent.category || {};
 
-      const result = participantScaleItem({
-        scaleAttributes,
-        participant,
-      });
-      const { scaleItem } = result;
+        let scaleItem;
+        if (foundScaleName) {
+          const scaleAttributes = {
+            eventType: participantEvent.eventType,
+            scaleName: foundScaleName,
+            scaleType: SEEDING,
+          };
 
-      if (scaleItem) {
-        const seedValue = scaleItem.scaleValue;
-        const publishedSeeding =
-          eventsPublishStatuses[participantEvent.eventId]?.publishedSeeding;
+          const result = participantScaleItem({
+            scaleAttributes,
+            participant,
+          });
+          scaleItem = result.scaleItem;
+        } else {
+          for (const scaleName of [
+            participantEvent.eventId,
+            ageCategoryCode,
+            categoryName,
+          ]) {
+            const scaleAttributes = {
+              eventType: participantEvent.eventType,
+              scaleType: SEEDING,
+              scaleName,
+            };
+            const result = participantScaleItem({
+              scaleAttributes,
+              participant,
+            });
+            if (result.scaleItem) {
+              scaleItem = result.scaleItem;
+              foundScaleName = scaleName;
+              break;
+            }
+          }
+        }
 
-        const seedingPublished =
-          !usePublishState ||
-          (publishedSeeding?.published &&
-            (publishedSeeding?.drawIds?.length === 0 ||
-              publishedSeeding?.drawIds?.includes(participantEvent.drawId)));
+        if (participantEvent.drawIds?.length > 1) {
+          for (const flightDrawId of participantEvent.drawIds || []) {
+            const scaleAttributes = {
+              eventType: participantEvent.eventType,
+              scaleName: flightDrawId,
+              scaleType: SEEDING,
+            };
+            const result = participantScaleItem({
+              scaleAttributes,
+              participant,
+            });
 
-        if (seedingPublished) {
-          participantEvent.seedValue = seedValue;
+            if (result.scaleItem?.seedValue) scaleItem = result.scaleItem;
+          }
+        }
+
+        if (scaleItem) {
+          const seedValue = scaleItem.scaleValue;
+          const publishedSeeding =
+            eventsPublishStatuses[participantEvent.eventId]?.publishedSeeding;
+
+          const seedingPublished =
+            !usePublishState ||
+            (publishedSeeding?.published &&
+              (publishedSeeding?.drawIds?.length === 0 ||
+                publishedSeeding?.drawIds?.includes(participantEvent.drawId)));
+
+          if (seedingPublished) {
+            participantEvent.seedValue = seedValue;
+          }
         }
       }
     }

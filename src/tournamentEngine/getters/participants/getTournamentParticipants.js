@@ -41,6 +41,7 @@ export function getTournamentParticipants({
   withGroupings,
   withOpponents,
   withMatchUps,
+  withSeeding,
   withEvents,
   withDraws,
   inContext,
@@ -87,6 +88,7 @@ export function getTournamentParticipants({
     withGroupings ||
     withOpponents ||
     withMatchUps ||
+    withSeeding ||
     withEvents ||
     withDraws ||
     withISO2 ||
@@ -109,6 +111,7 @@ export function getTournamentParticipants({
       withGroupings,
       withOpponents,
       withMatchUps,
+      withSeeding,
       withEvents,
       withDraws,
       withISO2,
