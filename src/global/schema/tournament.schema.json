@@ -3035,12 +3035,6 @@
             "type": "string"
           }
         },
-        "subVenueIds": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
         "subVenues": {
           "type": "array",
           "items": {
