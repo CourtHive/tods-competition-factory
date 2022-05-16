@@ -4935,13 +4935,13 @@
         "birthDate": "2005-01-05",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "RSA",
+        "nationalityCode": "ZAF",
         "addresses": [
           {
             "city": "Palm Beach Gardens",
             "state": "RI",
             "postalCode": "20814",
-            "countryCode": "RSA"
+            "countryCode": "ZAF"
           }
         ],
         "personId": "b5b1b99d-237b-46a9-bf54-384bd680d989",
@@ -5896,13 +5896,13 @@
         "birthDate": "2009-01-17",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "URU",
+        "nationalityCode": "URY",
         "addresses": [
           {
             "city": "Sayreville Junction",
             "state": "WV",
             "postalCode": "17643",
-            "countryCode": "URU"
+            "countryCode": "URY"
           }
         ],
         "personId": "57a08274-5232-4097-a7f0-5bf733be0179",
@@ -6873,13 +6873,13 @@
         "birthDate": "2006-08-26",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "TPE",
+        "nationalityCode": "TWN",
         "addresses": [
           {
             "city": "Palm Beach Gardens",
             "state": "WV",
             "postalCode": "08186",
-            "countryCode": "TPE"
+            "countryCode": "TWN"
           }
         ],
         "personId": "f0007c87-d23e-4c90-8d8c-9d117d74f8be",
@@ -10547,13 +10547,13 @@
         "birthDate": "1956-10-26",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "RSA",
+        "nationalityCode": "ZAF",
         "addresses": [
           {
             "city": "Falmouth",
             "state": "CO",
             "postalCode": "10813",
-            "countryCode": "RSA"
+            "countryCode": "ZAF"
           }
         ],
         "personId": "d6e1be73-62c0-43b1-bb02-04bfbc340b50",

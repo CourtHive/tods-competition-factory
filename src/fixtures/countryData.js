@@ -965,7 +965,7 @@ export const countries = [
   {
     ioc: 'LBA',
     iso2: 'LY',
-    iso: 'LBA',
+    iso: 'LBY',
     label: 'Libya',
     phone: '218',
   },

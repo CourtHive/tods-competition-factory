@@ -10,13 +10,13 @@
           "city": "Koloa",
           "state": "MN",
           "postalCode": "06246",
-          "countryCode": "ISV"
+          "countryCode": "VIR"
         }
       ],
       "personId": "fd49533c-fcce-48d7-9ee3-b904b143ef0b",
       "standardFamilyName": "Nirundorn",
       "standardGivenName": "Mai",
-      "nationalityCode": "ISV",
+      "nationalityCode": "VIR",
       "extensions": [
         {
           "name": "regionCode",
