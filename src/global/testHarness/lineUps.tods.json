@@ -4,11 +4,9 @@
   "deleted": false,
   "endDate": "2022-03-08T00:00:00.000Z",
   "tournamentId": "bbaf8f70-bd20-4046-894a-7d73c6b13ed6",
-  "registrationProfile": [
-    {
-      "entriesClose": "2022-02-10T00:00:00.000Z"
-    }
-  ],
+  "registrationProfile": {
+    "entriesClose": "2022-02-10T00:00:00.000Z"
+  },
   "tournamentName": "Anonymized: 2022-05-12",
   "localTimeZone": "America/Phoenix",
   "startDate": "2022-03-05T00:00:00.000Z",
@@ -8271,7 +8269,7 @@
                   "participantId": "9899111C-4744-4DA3-A2A0-C9C770A2EE59"
                 }
               ],
-              "updatedAt": 1646750601041
+              "updatedAt": "2022-03-05T03:46:02.853Z"
             },
             {
               "matchUps": [
@@ -8480,7 +8478,7 @@
                   "participantId": "9F9EAFB0-E482-470B-81FF-29F994B2C2B4"
                 }
               ],
-              "updatedAt": 1646750601041
+              "updatedAt": "2022-03-05T03:46:02.853Z"
             },
             {
               "matchUps": [
@@ -8689,7 +8687,7 @@
                   "participantId": "56ADD47D-0947-4F51-93D0-7EE35BAFEC48"
                 }
               ],
-              "updatedAt": 1646750601041
+              "updatedAt": "2022-03-05T03:46:02.853Z"
             },
             {
               "matchUps": [
@@ -8898,7 +8896,7 @@
                   "participantId": "1C6A9EDD-CCEF-40F4-8467-ED54B22A617D"
                 }
               ],
-              "updatedAt": 1646750601041
+              "updatedAt": "2022-03-05T03:46:02.853Z"
             }
           ],
           "drawType": "ROUND_ROBIN_WITH_PLAYOFF",
@@ -8928,7 +8926,7 @@
             },
             "collectionGroups": []
           },
-          "updatedAt": 1646750601041,
+          "updatedAt": "2022-03-05T03:46:02.853Z",
           "extensions": [
             {
               "name": "entryProfile",
@@ -17922,7 +17920,7 @@
                   ]
                 }
               ],
-              "updatedAt": 1646751218798,
+              "updatedAt": "2022-03-05T03:46:02.853Z",
               "seedLimit": 0,
               "matchUpFormat": "SET3-S:6/TB7-F:TB10",
               "positionAssignments": []
@@ -18134,7 +18132,7 @@
                   "participantId": "E366C53D-D571-4A7D-A8A4-46BBFB69A6A8"
                 }
               ],
-              "updatedAt": 1646759164806
+              "updatedAt": "2022-03-05T03:46:02.853Z"
             },
             {
               "matchUps": [
@@ -18343,7 +18341,7 @@
                   "participantId": "8BEF4F1B-86C6-4D98-947B-671A5BD43A12"
                 }
               ],
-              "updatedAt": 1646759164806
+              "updatedAt": "2022-03-05T03:50:57.701Z"
             },
             {
               "matchUps": [
@@ -18552,7 +18550,7 @@
                   "participantId": "B3B35878-E924-4E02-9DE4-4C95DDAE1DBC"
                 }
               ],
-              "updatedAt": 1646759164806
+              "updatedAt": "2022-03-05T03:50:57.701Z"
             },
             {
               "matchUps": [
@@ -18761,7 +18759,7 @@
                   "participantId": "9D642026-D304-439B-97EF-155AB0731932"
                 }
               ],
-              "updatedAt": 1646759164806
+              "updatedAt": "2022-03-05T03:50:57.701Z"
             }
           ],
           "drawType": "ROUND_ROBIN_WITH_PLAYOFF",
@@ -18791,7 +18789,7 @@
             },
             "collectionGroups": []
           },
-          "updatedAt": 1646759164806,
+          "updatedAt": "2022-03-05T03:50:57.701Z",
           "extensions": [
             {
               "name": "entryProfile",
@@ -19625,13 +19623,13 @@
         "birthDate": "2009-11-10",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "EST",
+        "nationalityCode": "ESE",
         "addresses": [
           {
             "city": "Gardnertown",
             "state": "VA",
             "postalCode": "71011",
-            "countryCode": "EST"
+            "countryCode": "ESE"
           }
         ],
         "personId": "19c4b99d-b1a3-49eb-94d2-691cdde1f618",
@@ -19817,13 +19815,13 @@
         "birthDate": "2009-09-12",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "SUI",
+        "nationalityCode": "CHE",
         "addresses": [
           {
             "city": "Rochester",
             "state": "CT",
             "postalCode": "00540",
-            "countryCode": "SUI"
+            "countryCode": "CHE"
           }
         ],
         "personId": "84788918-284a-4760-9526-8a12691ea946",
@@ -20404,13 +20402,13 @@
         "birthDate": "2010-11-25",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "BUL",
+        "nationalityCode": "BGR",
         "addresses": [
           {
             "city": "Gretna",
             "state": "NY",
             "postalCode": "40803",
-            "countryCode": "BUL"
+            "countryCode": "BGR"
           }
         ],
         "personId": "0d48738d-9e50-4942-9153-bb075328b66f",
@@ -21108,13 +21106,13 @@
         "birthDate": "2010-08-05",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "POR",
+        "nationalityCode": "PRT",
         "addresses": [
           {
             "city": "East Valley",
             "state": "MI",
             "postalCode": "73895",
-            "countryCode": "POR"
+            "countryCode": "PRT"
           }
         ],
         "personId": "4006e6d1-5d18-4d30-835f-0fb30b28ce85",
@@ -21524,13 +21522,13 @@
         "birthDate": "2011-04-30",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "RSA",
+        "nationalityCode": "ZAF",
         "addresses": [
           {
             "city": "Freeport",
             "state": "LA",
             "postalCode": "68539",
-            "countryCode": "RSA"
+            "countryCode": "ZAF"
           }
         ],
         "personId": "15b3e81c-bca3-4a6a-8bb3-08b39ca48f97",
@@ -21684,13 +21682,13 @@
         "birthDate": "2009-09-19",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "SUI",
+        "nationalityCode": "CHE",
         "addresses": [
           {
             "city": "Douglas",
             "state": "AK",
             "postalCode": "71961",
-            "countryCode": "SUI"
+            "countryCode": "CHE"
           }
         ],
         "personId": "92886e6f-f2d0-4107-8f2e-492f4bd5b28e",
@@ -21780,13 +21778,13 @@
         "birthDate": "2011-10-25",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "GER",
+        "nationalityCode": "DEU",
         "addresses": [
           {
             "city": "Bay Minette",
             "state": "SC",
             "postalCode": "61587",
-            "countryCode": "GER"
+            "countryCode": "DEU"
           }
         ],
         "personId": "90fd106b-a967-493d-a8cc-4f027f8f9880",
@@ -21844,13 +21842,13 @@
         "birthDate": "2009-05-31",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "SUI",
+        "nationalityCode": "CHE",
         "addresses": [
           {
             "city": "Patton Village",
             "state": "TX",
             "postalCode": "39492",
-            "countryCode": "SUI"
+            "countryCode": "CHE"
           }
         ],
         "personId": "ec20cb5c-359a-44d7-bc84-cbf5edb33ed5",
@@ -22068,13 +22066,13 @@
         "birthDate": "2009-09-15",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "TPE",
+        "nationalityCode": "TWN",
         "addresses": [
           {
             "city": "Pine",
             "state": "LA",
             "postalCode": "38919",
-            "countryCode": "TPE"
+            "countryCode": "TWN"
           }
         ],
         "personId": "45cb05d5-cd94-4926-b39f-3669c7c95cab",
@@ -22100,13 +22098,13 @@
         "birthDate": "2011-02-19",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "GER",
+        "nationalityCode": "DEU",
         "addresses": [
           {
             "city": "Fort Valley",
             "state": "WI",
             "postalCode": "06730",
-            "countryCode": "GER"
+            "countryCode": "DEU"
           }
         ],
         "personId": "824a1683-2595-48bb-97c3-7094e12ef75f",
@@ -22452,13 +22450,13 @@
         "birthDate": "2009-06-03",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "SLO",
+        "nationalityCode": "SVN",
         "addresses": [
           {
             "city": "Homewood",
             "state": "MI",
             "postalCode": "81615",
-            "countryCode": "SLO"
+            "countryCode": "SVN"
           }
         ],
         "personId": "1012e75a-f0ae-4cfc-b752-9dfab89b1fda",
@@ -22868,13 +22866,13 @@
         "birthDate": "2010-03-21",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "CRO",
+        "nationalityCode": "HRV",
         "addresses": [
           {
             "city": "Cohoe",
             "state": "WY",
             "postalCode": "70856",
-            "countryCode": "CRO"
+            "countryCode": "HRV"
           }
         ],
         "personId": "2b01d6af-12fb-4ae7-8403-848a4896dd49",
@@ -22900,13 +22898,13 @@
         "birthDate": "2009-03-19",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "TPE",
+        "nationalityCode": "TWN",
         "addresses": [
           {
             "city": "Paoli",
             "state": "AR",
             "postalCode": "49807",
-            "countryCode": "TPE"
+            "countryCode": "TWN"
           }
         ],
         "personId": "cb9fbe26-97d0-4a24-8f40-8945f308d718",
@@ -23188,13 +23186,13 @@
         "birthDate": "2009-02-19",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "SUI",
+        "nationalityCode": "CHE",
         "addresses": [
           {
             "city": "Port Hadlock-Irondale",
             "state": "SC",
             "postalCode": "93723",
-            "countryCode": "SUI"
+            "countryCode": "CHE"
           }
         ],
         "personId": "7aca7ee1-c820-402d-bd41-db73ff509121",
@@ -23220,13 +23218,13 @@
         "birthDate": "2011-10-12",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "URU",
+        "nationalityCode": "URY",
         "addresses": [
           {
             "city": "Hart",
             "state": "CT",
             "postalCode": "42066",
-            "countryCode": "URU"
+            "countryCode": "URY"
           }
         ],
         "personId": "5bea817f-9d88-4410-8151-74ae948c4df4",
@@ -23444,13 +23442,13 @@
         "birthDate": "2010-06-22",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "GER",
+        "nationalityCode": "DEU",
         "addresses": [
           {
             "city": "Cambridge",
             "state": "NY",
             "postalCode": "57263",
-            "countryCode": "GER"
+            "countryCode": "DEU"
           }
         ],
         "personId": "faf4c671-7a2e-4743-a325-c5c39032f1c8",
@@ -23700,13 +23698,13 @@
         "birthDate": "2009-08-29",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "GER",
+        "nationalityCode": "DEU",
         "addresses": [
           {
             "city": "Winnsboro",
             "state": "TN",
             "postalCode": "54753",
-            "countryCode": "GER"
+            "countryCode": "DEU"
           }
         ],
         "personId": "80c38e52-a430-44ef-b206-59a4408ea76b",
@@ -23796,13 +23794,13 @@
         "birthDate": "2010-02-12",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "INA",
+        "nationalityCode": "IDN",
         "addresses": [
           {
             "city": "Shawnee",
             "state": "NE",
             "postalCode": "40975",
-            "countryCode": "INA"
+            "countryCode": "IDN"
           }
         ],
         "personId": "bf703747-74cd-4468-9e6a-1820b57b5093",
@@ -23956,13 +23954,13 @@
         "birthDate": "2010-12-21",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "NED",
+        "nationalityCode": "NLD",
         "addresses": [
           {
             "city": "Saint Robert",
             "state": "CT",
             "postalCode": "75614",
-            "countryCode": "NED"
+            "countryCode": "NLD"
           }
         ],
         "personId": "712dddb3-3f4a-4bf7-9a95-d7a946adf5fd",
@@ -23988,13 +23986,13 @@
         "birthDate": "2009-07-01",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "CRO",
+        "nationalityCode": "HRV",
         "addresses": [
           {
             "city": "Emerald Isle",
             "state": "MI",
             "postalCode": "58602",
-            "countryCode": "CRO"
+            "countryCode": "HRV"
           }
         ],
         "personId": "b7868a0f-d5b8-4b98-8bcf-eb727c251d54",
@@ -24116,13 +24114,13 @@
         "birthDate": "2009-08-17",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "LAT",
+        "nationalityCode": "LVA",
         "addresses": [
           {
             "city": "Bean Station",
             "state": "SC",
             "postalCode": "02983",
-            "countryCode": "LAT"
+            "countryCode": "LVA"
           }
         ],
         "personId": "cc87f168-0a56-467c-82f3-00f5b0493a51",
@@ -24340,13 +24338,13 @@
         "birthDate": "2011-02-06",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "BUL",
+        "nationalityCode": "BGR",
         "addresses": [
           {
             "city": "Nurillo",
             "state": "MS",
             "postalCode": "62598",
-            "countryCode": "BUL"
+            "countryCode": "BGR"
           }
         ],
         "personId": "a032b5a8-2e7f-45d8-8bad-d0967bdd79f3",
@@ -24532,13 +24530,13 @@
         "birthDate": "2010-04-20",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "GER",
+        "nationalityCode": "DEU",
         "addresses": [
           {
             "city": "Boaz",
             "state": "WI",
             "postalCode": "59093",
-            "countryCode": "GER"
+            "countryCode": "DEU"
           }
         ],
         "personId": "e1691169-6084-4c69-b0c1-55f87428deab",
@@ -24564,13 +24562,13 @@
         "birthDate": "2009-02-13",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "GER",
+        "nationalityCode": "DEU",
         "addresses": [
           {
             "city": "Fillmore",
             "state": "CT",
             "postalCode": "48232",
-            "countryCode": "GER"
+            "countryCode": "DEU"
           }
         ],
         "personId": "d5563039-80b8-42d2-94ad-3741cd81c575",
@@ -24660,13 +24658,13 @@
         "birthDate": "2010-09-24",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "NED",
+        "nationalityCode": "NLD",
         "addresses": [
           {
             "city": "Corcoran",
             "state": "NC",
             "postalCode": "92898",
-            "countryCode": "NED"
+            "countryCode": "NLD"
           }
         ],
         "personId": "fca7dd26-4190-4471-9516-9e3d57ab40e0",
@@ -24916,13 +24914,13 @@
         "birthDate": "2011-06-29",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "LAT",
+        "nationalityCode": "LVA",
         "addresses": [
           {
             "city": "Emerald Isle",
             "state": "CT",
             "postalCode": "36708",
-            "countryCode": "LAT"
+            "countryCode": "LVA"
           }
         ],
         "personId": "d03ae43b-40bd-4e5f-b363-14fdee5a63d5",
@@ -25236,13 +25234,13 @@
         "birthDate": "2011-05-31",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "SLO",
+        "nationalityCode": "SVN",
         "addresses": [
           {
             "city": "Port Hadlock-Irondale",
             "state": "NE",
             "postalCode": "44333",
-            "countryCode": "SLO"
+            "countryCode": "SVN"
           }
         ],
         "personId": "84b6eb4c-95ab-4911-8b16-8d18d2bfade0",
@@ -25428,13 +25426,13 @@
         "birthDate": "2012-05-19",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "CRO",
+        "nationalityCode": "HRV",
         "addresses": [
           {
             "city": "Fort Valley",
             "state": "ND",
             "postalCode": "34828",
-            "countryCode": "CRO"
+            "countryCode": "HRV"
           }
         ],
         "personId": "9f71f031-052c-4553-893a-6626fb94c308",
@@ -25556,13 +25554,13 @@
         "birthDate": "2010-01-20",
         "isMock": true,
         "sex": "FEMALE",
-        "nationalityCode": "SUI",
+        "nationalityCode": "CHE",
         "addresses": [
           {
             "city": "Hebron",
             "state": "PA",
             "postalCode": "03355",
-            "countryCode": "SUI"
+            "countryCode": "CHE"
           }
         ],
         "personId": "73480d3a-7665-42f9-aa63-e476eb83b279",
@@ -25684,13 +25682,13 @@
         "birthDate": "2010-11-16",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "CRO",
+        "nationalityCode": "HRV",
         "addresses": [
           {
             "city": "Paw Paw Lake",
             "state": "WI",
             "postalCode": "18935",
-            "countryCode": "CRO"
+            "countryCode": "HRV"
           }
         ],
         "personId": "947dc1be-8d3c-452f-8ff2-b7f931be32ce",
@@ -25716,13 +25714,13 @@
         "birthDate": "2009-07-22",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "SUI",
+        "nationalityCode": "CHE",
         "addresses": [
           {
             "city": "Boaz",
             "state": "NC",
             "postalCode": "42509",
-            "countryCode": "SUI"
+            "countryCode": "CHE"
           }
         ],
         "personId": "cce4ee51-6728-426c-8df7-c64ef894245e",
@@ -25844,13 +25842,13 @@
         "birthDate": "2011-04-15",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "LAT",
+        "nationalityCode": "LVA",
         "addresses": [
           {
             "city": "Falmouth",
             "state": "ND",
             "postalCode": "61587",
-            "countryCode": "LAT"
+            "countryCode": "LVA"
           }
         ],
         "personId": "33e862c0-ffe4-49df-bf53-51ff33ad99b9",
@@ -26072,7 +26070,7 @@
         "extensions": [],
         "birthDate": "1999-04-05",
         "isMock": true,
-        "sex": "OTHER",
+        "sex": "MALE",
         "nationalityCode": "SWE",
         "addresses": [
           {

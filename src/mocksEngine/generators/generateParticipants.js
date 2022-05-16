@@ -65,7 +65,8 @@ export function generateParticipants({
   sex,
 
   inContext,
-  withISO,
+  withISO2,
+  withIOC,
 
   rankingRange = [1, 100], // range of ranking positions to generate
   scaledParticipantsCount, // number of participants to assign rankings/ratings
@@ -156,8 +157,8 @@ export function generateParticipants({
     }
   }
 
-  const isoCountries = countries.filter((country) =>
-    nationalityCodeType === 'ISO' ? country.iso : country.ioc
+  const countryCodes = countries.filter((country) =>
+    nationalityCodeType === 'IOC' ? country.ioc || country.iso : country.iso
   );
   const { citiesCount, statesCount, postalCodesCount } = addressProps || {};
 
@@ -184,12 +185,12 @@ export function generateParticipants({
 
   const isoMin = getMin(nationalityCodesCount);
   const isoList = isoMin
-    ? shuffleArray(isoCountries).slice(0, nationalityCodesCount)
+    ? shuffleArray(countryCodes).slice(0, nationalityCodesCount)
     : nationalityCodes
-    ? isoCountries.filter((isoCountry) =>
+    ? countryCodes.filter((isoCountry) =>
         nationalityCodes.includes(isoCountry.key)
       )
-    : isoCountries;
+    : countryCodes;
 
   const countriesList = shuffleArray(
     generateRange(0, Math.ceil(individualParticipantsCount / (isoMin || 1)))
@@ -262,9 +263,9 @@ export function generateParticipants({
     const nationalityCode =
       (personNationalityCodes?.length && personNationalityCode) ||
       (country &&
-        (nationalityCodeType === 'ISO'
-          ? country.iso
-          : country.ioc || country.iso)) ||
+        (nationalityCodeType === 'IOC'
+          ? country.ioc || country.iso
+          : country.iso || country.ioc)) ||
       personNationalityCode;
 
     if (countriesList?.length && !nationalityCode && !personNationalityCode) {
@@ -303,9 +304,14 @@ export function generateParticipants({
       },
     });
 
-    if (withISO && nationalityCode) {
-      const country = countries.find(({ ioc }) => ioc === nationalityCode);
-      if (country?.iso) participant.person.isoNationalityCode = country.iso;
+    if (withIOC && nationalityCode) {
+      const country = countries.find(({ iso }) => iso === nationalityCode);
+      if (country?.ioc) participant.person.iocNationalityCode = country.ioc;
+      if (country?.label) participant.person.countryName = country.label;
+    }
+    if (withISO2 && nationalityCode) {
+      const country = countries.find(({ iso }) => iso === nationalityCode);
+      if (country?.iso2) participant.person.iso2NationalityCode = country.iso2;
       if (country?.label) participant.person.countryName = country.label;
     }
 

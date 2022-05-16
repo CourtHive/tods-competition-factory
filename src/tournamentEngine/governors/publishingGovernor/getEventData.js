@@ -37,7 +37,8 @@ export function getEventData({
     withGroupings: true,
     withEvents: false,
     withDraws: false,
-    withISO: true,
+    withIOC: true,
+    withISO2: true,
     ...participantsProfile, // order is important!!
     tournamentRecord,
   });

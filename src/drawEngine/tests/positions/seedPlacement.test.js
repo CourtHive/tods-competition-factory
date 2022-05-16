@@ -214,7 +214,9 @@ it.only('can assign seedNumbers and drawPositions to seeded participants', () =>
         if (drawDefinition.updatedAt < updatedAt) {
           // processing order
         } else {
-          expect(drawDefinition.updatedAt).toBeGreaterThan(updatedAt);
+          expect(new Date(drawDefinition.updatedAt).getTime()).toBeGreaterThan(
+            new Date(updatedAt).getTime()
+          );
         }
         updatedAt = drawDefinition.updatedAt;
       },
@@ -387,7 +389,9 @@ it.only('can assign seedNumbers and drawPositions to seeded participants', () =>
   expect(result.success).toEqual(true);
 
   const { drawDefinition: snapShotAfter } = drawEngine.getState();
-  expect(snapShotAfter.updatedAt).toBeGreaterThan(snapShotBefore.updatedAt);
+  expect(new Date(snapShotAfter.updatedAt).getTime()).toBeGreaterThan(
+    new Date(snapShotBefore.updatedAt).getTime()
+  );
 
   let { seedAssignments } = drawEngine.getStructureSeedAssignments({
     structureId,

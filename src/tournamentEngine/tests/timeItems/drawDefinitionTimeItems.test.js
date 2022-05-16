@@ -100,5 +100,7 @@ it('can add and read timeItems from events', async () => {
     },
   } = tournamentEngine.getEvent({ eventId });
   expect(updatedDrawDefinition.timeItems.length).toEqual(1);
-  expect(updatedDrawDefinition.updatedAt).toBeGreaterThan(createdAt);
+  expect(new Date(updatedDrawDefinition.updatedAt).getTime()).toBeGreaterThan(
+    new Date(createdAt).getTime()
+  );
 });

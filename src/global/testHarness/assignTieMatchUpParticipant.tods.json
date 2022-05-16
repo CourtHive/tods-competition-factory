@@ -10,7 +10,6 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
       "participantId": "3845147B-5FDE-4EF8-BAC1-81C005580AD8",
       "participantType": "INDIVIDUAL",
       "participantName": "Jordan Thompson",
@@ -43,7 +42,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "9678B4CB-F814-40F3-81F5-8CE1A4F7B928",
       "participantType": "INDIVIDUAL",
       "participantName": "Shunsuke Mitsui",
@@ -76,7 +75,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "EF596649-BFB2-4C51-AF4F-CA944C533904",
       "participantType": "INDIVIDUAL",
       "participantName": "Stefanos Tsitsipas",
@@ -91,13 +90,13 @@
         "birthDate": "2000-02-02",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "GRE",
+        "nationalityCode": "GRC",
         "addresses": [
           {
             "city": "Central Garage",
             "state": "MD",
             "postalCode": "95364",
-            "countryCode": "GRE"
+            "countryCode": "GRC"
           }
         ],
         "personId": "3b8fff50-d53a-4155-ad8f-2292d837ae2b",
@@ -109,7 +108,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "0CCFC3D1-6CD1-4228-A0F0-FB3730F37693",
       "participantType": "INDIVIDUAL",
       "participantName": "Hubert Hurkacz",
@@ -142,7 +141,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "C2E97CEC-C1EF-49FD-B125-AE197C104EA2",
       "participantType": "INDIVIDUAL",
       "participantName": "Arthur Fery",
@@ -175,7 +174,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "701A0691-4FF7-49FF-8740-81D557050952",
       "participantType": "INDIVIDUAL",
       "participantName": "Holger Vitus Nodskov Rune",
@@ -190,13 +189,13 @@
         "birthDate": "2000-10-06",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "DEN",
+        "nationalityCode": "DNK",
         "addresses": [
           {
             "city": "Central Garage",
             "state": "MD",
             "postalCode": "95364",
-            "countryCode": "DEN"
+            "countryCode": "DNK"
           }
         ],
         "personId": "50d30edf-0ae0-426d-937a-a198b6fb622e",
@@ -208,7 +207,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "398D27B1-3CF4-46B5-9A28-5C50D3E43EFA",
       "participantType": "INDIVIDUAL",
       "participantName": "Pierre-Hugues Herbert",
@@ -241,7 +240,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "743A7849-FAC0-49D6-B1C1-3E15F7D828FB",
       "participantType": "INDIVIDUAL",
       "participantName": "Max Alcala Gurri",
@@ -274,7 +273,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "4206F348-20E7-4762-BD64-80316F6207F4",
       "participantType": "INDIVIDUAL",
       "participantName": "Pedro Martinez",
@@ -307,7 +306,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "35657100-CC1D-4F72-A98F-9F553B300D80",
       "participantType": "INDIVIDUAL",
       "participantName": "Jack Anthrop",
@@ -340,7 +339,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "F52A0E08-93CA-4933-BF8C-3C920F38000D",
       "participantType": "INDIVIDUAL",
       "participantName": "Evgeny Philippov",
@@ -373,7 +372,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "ABA829A0-8D5A-429E-9F3A-8C9DFFEE2E14",
       "participantType": "INDIVIDUAL",
       "participantName": "Juan Bautista Torres",
@@ -406,7 +405,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "3F54BA6A-50FE-44E4-827F-BE4B542686A4",
       "participantType": "INDIVIDUAL",
       "participantName": "Pablo Llamas Ruiz",
@@ -439,7 +438,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "A84C3E42-C60C-4772-BEAF-135E313CB90B",
       "participantType": "INDIVIDUAL",
       "participantName": "Petr Nesterov",
@@ -454,13 +453,13 @@
         "birthDate": "2000-11-05",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "BUL",
+        "nationalityCode": "BGR",
         "addresses": [
           {
             "city": "Central Garage",
             "state": "MD",
             "postalCode": "95364",
-            "countryCode": "BUL"
+            "countryCode": "BGR"
           }
         ],
         "personId": "0895c628-34cb-4ad0-8fe5-c25f32ad6d16",
@@ -472,7 +471,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "24641B6A-6EFB-4599-8052-802576F8F332",
       "participantType": "INDIVIDUAL",
       "participantName": "Timo Legout",
@@ -505,7 +504,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "51FC341B-506B-4598-9880-AF7A9F4B8243",
       "participantType": "INDIVIDUAL",
       "participantName": "Bruno Kuzuhara",
@@ -538,7 +537,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "7812E748-BCD9-4810-85B7-F243AECBBC6B",
       "participantType": "INDIVIDUAL",
       "participantName": "Gustavo Heide",
@@ -571,7 +570,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "154620FE-5DAD-49FD-8D4D-FEBA3E50CF90",
       "participantType": "INDIVIDUAL",
       "participantName": "Laslo Djere",
@@ -604,7 +603,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "181AA9FB-7787-4BD5-9A70-F8EC902B4236",
       "participantType": "INDIVIDUAL",
       "participantName": "Marco Cecchinato",
@@ -637,7 +636,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "BB1BB094-986E-4302-9B36-D99F6F45DDA5",
       "participantType": "INDIVIDUAL",
       "participantName": "Albert Ramos-Vinolas",
@@ -670,7 +669,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "E1A0531A-439D-430B-A929-CF13C9629FA6",
       "participantType": "INDIVIDUAL",
       "participantName": "Mehdi Sadaoui",
@@ -703,7 +702,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "872CBDD3-455E-4245-9703-E649251AE183",
       "participantType": "INDIVIDUAL",
       "participantName": "Kokoro Isomura",
@@ -736,7 +735,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "16C4318E-2B77-47EA-9276-301B797833A0",
       "participantType": "INDIVIDUAL",
       "participantName": "Jeffrey Von Der Schulenburg",
@@ -751,13 +750,13 @@
         "birthDate": "1999-09-05",
         "isMock": true,
         "sex": "MALE",
-        "nationalityCode": "SUI",
+        "nationalityCode": "CHE",
         "addresses": [
           {
             "city": "Central Garage",
             "state": "MD",
             "postalCode": "95364",
-            "countryCode": "SUI"
+            "countryCode": "CHE"
           }
         ],
         "personId": "b393f400-f6ff-4ea5-9b28-38eb668afe7d",
@@ -769,7 +768,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "E2943C59-1E89-4E90-A7CF-35505D3F84B0",
       "participantType": "INDIVIDUAL",
       "participantName": "Romain Faucon",
@@ -813,7 +812,7 @@
         "35657100-CC1D-4F72-A98F-9F553B300D80"
       ],
       "participantRoleResponsibilities": ["Home"],
-      "participantRoleResponsabilities": [],
+
       "participantId": "35E17EEB-6EB1-4563-8AC2-E94CCA2E44B1",
       "participantType": "TEAM",
       "participantRole": "COMPETITOR",
@@ -858,7 +857,7 @@
         "A66E3787-68F9-48C7-A55F-EB35269C40AD"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "17CF81CC-80C5-44AF-AC92-32564881C94E",
       "participantType": "TEAM",
       "participantRole": "COMPETITOR",
@@ -890,7 +889,7 @@
         "A66E3787-68F9-48C7-A55F-EB35269C40AD"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "a581c8c9-7ce8-4689-8cfc-a7267d8de410",
@@ -903,7 +902,7 @@
     {
       "individualParticipantIds": [],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantId": "A66E3787-68F9-48C7-A55F-EB35269C40AD",
       "participantType": "INDIVIDUAL",
       "participantName": "Kyle Edmund",
@@ -939,7 +938,7 @@
         "3845147B-5FDE-4EF8-BAC1-81C005580AD8"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "37e573ac-7dfc-4da6-9c0e-2e042a64e3b7",
@@ -955,7 +954,7 @@
         "A84C3E42-C60C-4772-BEAF-135E313CB90B"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "731bbc85-cb32-40e2-9155-cbeee20f43fd",
@@ -971,7 +970,7 @@
         "4206F348-20E7-4762-BD64-80316F6207F4"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "7b8457e6-061d-462f-9833-6f05575c9201",
@@ -987,7 +986,7 @@
         "E1A0531A-439D-430B-A929-CF13C9629FA6"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "3fc14144-7e93-4c82-882f-06716230f062",
@@ -1003,7 +1002,7 @@
         "701A0691-4FF7-49FF-8740-81D557050952"
       ],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "f9c3f20f-da3c-45dd-b284-d28bb63f1b8d",
@@ -1016,7 +1015,7 @@
     {
       "individualParticipantIds": ["16C4318E-2B77-47EA-9276-301B797833A0"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "979d3b40-b596-48b7-9bed-083a1ee5ad02",
@@ -1029,7 +1028,7 @@
     {
       "individualParticipantIds": ["A84C3E42-C60C-4772-BEAF-135E313CB90B"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "febbe64f-0ff7-49ca-b2ce-c29c0348a154",
@@ -1042,7 +1041,7 @@
     {
       "individualParticipantIds": ["16C4318E-2B77-47EA-9276-301B797833A0"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "cf32857f-8fc9-4a88-9f3a-42986360a921",
@@ -1055,7 +1054,7 @@
     {
       "individualParticipantIds": ["3F54BA6A-50FE-44E4-827F-BE4B542686A4"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "2e6f5b39-162a-4bfb-93d5-794b23644ea1",
@@ -1068,7 +1067,7 @@
     {
       "individualParticipantIds": ["E1A0531A-439D-430B-A929-CF13C9629FA6"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "40f4896c-2417-41a7-9167-8043b12868bd",
@@ -1081,7 +1080,7 @@
     {
       "individualParticipantIds": ["16C4318E-2B77-47EA-9276-301B797833A0"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "6f7426e5-e0cb-43cc-b670-e15232f56e07",
@@ -1094,7 +1093,7 @@
     {
       "individualParticipantIds": ["A84C3E42-C60C-4772-BEAF-135E313CB90B"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "03902968-d22d-484f-b4af-8bfd583a769e",
@@ -1107,7 +1106,7 @@
     {
       "individualParticipantIds": ["16C4318E-2B77-47EA-9276-301B797833A0"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "96461ae7-6b61-4b72-aa24-71e02fcd7705",
@@ -1120,7 +1119,7 @@
     {
       "individualParticipantIds": ["A84C3E42-C60C-4772-BEAF-135E313CB90B"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "08c9c582-f0cb-4636-9f4b-a01ba2e2b47c",
@@ -1133,7 +1132,7 @@
     {
       "individualParticipantIds": ["3F54BA6A-50FE-44E4-827F-BE4B542686A4"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "746f0eec-ca5c-4364-8efb-736fdd716ce4",
@@ -1146,7 +1145,7 @@
     {
       "individualParticipantIds": ["E1A0531A-439D-430B-A929-CF13C9629FA6"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "9c6c125f-9fa0-4cdb-98cf-4568ad80b9e4",
@@ -1159,7 +1158,7 @@
     {
       "individualParticipantIds": ["3F54BA6A-50FE-44E4-827F-BE4B542686A4"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "c1056a04-0afd-4680-9222-f9adcb1eb14b",
@@ -1172,7 +1171,7 @@
     {
       "individualParticipantIds": ["3F54BA6A-50FE-44E4-827F-BE4B542686A4"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "00630e1e-af16-4694-b079-9a32166c4aad",
@@ -1185,7 +1184,7 @@
     {
       "individualParticipantIds": ["16C4318E-2B77-47EA-9276-301B797833A0"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "ee08fd43-af75-4d28-b786-1330b9732dc5",
@@ -1198,7 +1197,7 @@
     {
       "individualParticipantIds": ["16C4318E-2B77-47EA-9276-301B797833A0"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "ff220395-a669-4b3d-9a23-0d65826c1419",
@@ -1211,7 +1210,7 @@
     {
       "individualParticipantIds": ["A84C3E42-C60C-4772-BEAF-135E313CB90B"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "047545c2-b7a8-4068-afa6-c6f2692241af",
@@ -1224,7 +1223,7 @@
     {
       "individualParticipantIds": ["ABA829A0-8D5A-429E-9F3A-8C9DFFEE2E14"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "82fef398-d13c-4504-98e9-26701cc1d5fa",
@@ -1237,7 +1236,7 @@
     {
       "individualParticipantIds": ["ABA829A0-8D5A-429E-9F3A-8C9DFFEE2E14"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "67c682b1-323a-4975-b777-451f5f7d45da",
@@ -1250,7 +1249,7 @@
     {
       "individualParticipantIds": ["ABA829A0-8D5A-429E-9F3A-8C9DFFEE2E14"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "e23c3bbc-5f01-45b1-9648-0846694ea8c3",
@@ -1263,7 +1262,7 @@
     {
       "individualParticipantIds": ["24641B6A-6EFB-4599-8052-802576F8F332"],
       "participantRoleResponsibilities": [],
-      "participantRoleResponsabilities": [],
+
       "participantType": "PAIR",
       "participantRole": "COMPETITOR",
       "participantId": "f31ecd90-6567-4712-a367-4553b470771b",
@@ -1322,8 +1321,7 @@
             "matchUpType": "DOUBLES",
             "matchUpFormat": "SET1-S:6/TB7",
             "matchUpCount": 3,
-            "collectionValue": 1,
-            "collectionValueProfiles": []
+            "collectionValue": 1
           },
           {
             "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
@@ -1331,8 +1329,7 @@
             "matchUpType": "SINGLES",
             "matchUpFormat": "SET3-S:6/TB7",
             "matchUpCount": 6,
-            "matchUpValue": 1,
-            "collectionValueProfiles": []
+            "matchUpValue": 1
           }
         ]
       },
@@ -1383,8 +1380,6 @@
                       "drawPositions": [],
                       "matchUpStatusCodes": [],
                       "tieMatchUps": [],
-                      "winners": [],
-                      "losers": [],
                       "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
                       "matchUpType": "DOUBLES",
                       "matchUpFormat": "SET1-S:6/TB7",
@@ -1421,8 +1416,6 @@
                       "drawPositions": [],
                       "matchUpStatusCodes": [],
                       "tieMatchUps": [],
-                      "winners": [],
-                      "losers": [],
                       "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
                       "matchUpType": "DOUBLES",
                       "matchUpFormat": "SET1-S:6/TB7",
@@ -1460,8 +1453,6 @@
                       "drawPositions": [],
                       "matchUpStatusCodes": [],
                       "tieMatchUps": [],
-                      "winners": [],
-                      "losers": [],
                       "collectionId": "e09ea7ca-33be-4e17-9920-e7b0f7d57f5c",
                       "matchUpType": "DOUBLES",
                       "matchUpFormat": "SET1-S:6/TB7",
@@ -1499,8 +1490,6 @@
                       "drawPositions": [],
                       "matchUpStatusCodes": [],
                       "tieMatchUps": [],
-                      "winners": [],
-                      "losers": [],
                       "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
                       "matchUpType": "SINGLES",
                       "matchUpFormat": "SET3-S:6/TB7",
@@ -1545,8 +1534,6 @@
                       "drawPositions": [],
                       "matchUpStatusCodes": [],
                       "tieMatchUps": [],
-                      "winners": [],
-                      "losers": [],
                       "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
                       "matchUpType": "SINGLES",
                       "matchUpFormat": "SET3-S:6/TB7",
@@ -1591,8 +1578,6 @@
                       "drawPositions": [],
                       "matchUpStatusCodes": [],
                       "tieMatchUps": [],
-                      "winners": [],
-                      "losers": [],
                       "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
                       "matchUpType": "SINGLES",
                       "matchUpFormat": "SET3-S:6/TB7",
@@ -1637,8 +1622,6 @@
                       "drawPositions": [],
                       "matchUpStatusCodes": [],
                       "tieMatchUps": [],
-                      "winners": [],
-                      "losers": [],
                       "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
                       "matchUpType": "SINGLES",
                       "matchUpFormat": "SET3-S:6/TB7",
@@ -1683,8 +1666,6 @@
                       "drawPositions": [],
                       "matchUpStatusCodes": [],
                       "tieMatchUps": [],
-                      "winners": [],
-                      "losers": [],
                       "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
                       "matchUpType": "SINGLES",
                       "matchUpFormat": "SET3-S:6/TB7",
@@ -1729,8 +1710,6 @@
                       "drawPositions": [],
                       "matchUpStatusCodes": [],
                       "tieMatchUps": [],
-                      "winners": [],
-                      "losers": [],
                       "collectionId": "6bd2bcda-3f64-46a6-8eb3-8dfb2fa941c5",
                       "matchUpType": "SINGLES",
                       "matchUpFormat": "SET3-S:6/TB7-F:TB10",
@@ -1779,8 +1758,6 @@
                       "winningSide": 1
                     }
                   ],
-                  "winners": [],
-                  "losers": [],
                   "matchUpId": "025cc7c6-5ae1-4ec5-8b0b-80a6182bafef",
                   "roundNumber": 1,
                   "roundPosition": 1,
@@ -2058,7 +2035,7 @@
                   "participantId": "17CF81CC-80C5-44AF-AC92-32564881C94E"
                 }
               ],
-              "updatedAt": 1645624122368,
+              "updatedAt": "2022-02-21T15:34:04.754Z",
               "seedLimit": 0
             }
           ],
@@ -2339,7 +2316,7 @@
               }
             }
           ],
-          "updatedAt": 1645624122368,
+          "updatedAt": "2022-02-23T08:21:06.598Z",
           "drawOrder": 1
         }
       ],
@@ -2389,7 +2366,7 @@
     "noScheduledTime": false
   },
   "onlineResources": [],
-  "registrationProfile": [],
+  "registrationProfile": {},
   "totalPrizeMoney": [],
   "tournamentCategories": [],
   "tournamentOtherIds": [],

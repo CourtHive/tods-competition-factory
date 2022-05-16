@@ -101,7 +101,6 @@ export function generatePlayoffStructures({
     structureName,
     matchUpType,
     roundOffset,
-    exitProfile,
     matchUps,
     stage,
   });
@@ -140,7 +139,6 @@ export function generatePlayoffStructures({
     const {
       structures: childStructures,
       structureId: targetStructureId,
-      structureName: targetName,
       matchUps: childMatchUps,
       links: childLinks,
     } = generatePlayoffStructures({
@@ -168,13 +166,11 @@ export function generatePlayoffStructures({
       linkType: LOSER,
       source: {
         roundNumber,
-        structureName,
         structureId: structure?.structureId,
       },
       target: {
         roundNumber: 1,
         feedProfile: TOP_DOWN,
-        structureName: targetName,
         structureId: targetStructureId,
       },
     };

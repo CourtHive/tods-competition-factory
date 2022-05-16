@@ -6,6 +6,7 @@ import { COMPASS } from '../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../constants/participantTypes';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { DOUBLES } from '../../../constants/eventConstants';
+import { countries } from '../../../fixtures/countryData';
 
 it('returns eventData with expected drawsData', () => {
   const drawProfiles = [{ drawSize: 4, drawType: COMPASS }];
@@ -44,6 +45,7 @@ it('returns eventData when there is no drawsData', () => {
 });
 
 it('returns team information for participants in SINGLES and DOUBLES matchUps in non-TEAM events', () => {
+  const isoWithIOC = countries.filter(({ ioc }) => ioc).map(({ iso }) => iso);
   const mockProfile = {
     participantsProfile: {
       teamKey: { personAttribute: 'nationalityCode' },
@@ -66,26 +68,32 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
   expect(teamParticipants.length).toBeGreaterThan(0);
 
   const { eventData } = tournamentEngine.getEventData({
-    participantsProfile: { withISO: true },
+    participantsProfile: { withIOC: true },
     eventId,
   });
   expect(eventData.drawsData[0].structures.length).toEqual(1);
 
+  let iocCount = 0;
   eventData.drawsData[0].structures[0].roundMatchUps[1].forEach((matchUp) => {
     expect(matchUp.matchUpType).toEqual(SINGLES);
 
     // expect that each individual participant on the team also has team information
     matchUp.sides.forEach((side) => {
-      expect(side.participant.person.isoNationalityCode).not.toBeUndefined();
+      if (isoWithIOC.includes(side.participant.person.nationalityCode)) {
+        expect(side.participant.person.iocNationalityCode).not.toBeUndefined();
+        iocCount += 1;
+      }
       expect(side.participant.teams.length).toEqual(1);
       expect(side.participant.groups.length).toEqual(0);
     });
   });
+  expect(iocCount).toBeGreaterThan(0);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
-    participantsProfile: { withISO: true },
+    participantsProfile: { withIOC: true },
   });
 
+  iocCount = 0;
   matchUps
     .filter(({ readyToScore }) => readyToScore)
     .forEach(({ sides }) => {
@@ -97,8 +105,12 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
         )
         .flat()
         .filter(Boolean);
-      persons.forEach((person) =>
-        expect(person.isoNationalityCode).not.toBeUndefined()
-      );
+      persons.forEach((person) => {
+        if (isoWithIOC.includes(person.nationalityCode)) {
+          expect(person.iocNationalityCode).not.toBeUndefined();
+          iocCount += 1;
+        }
+      });
     });
+  expect(iocCount).toBeGreaterThan(0);
 });

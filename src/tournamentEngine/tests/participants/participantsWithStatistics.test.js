@@ -15,8 +15,8 @@ it('will return participant events including all entryStatuses', () => {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile: { participantsCount: 32 },
+    drawProfiles,
   });
   tournamentEngine.setState(tournamentRecord);
 
@@ -63,7 +63,9 @@ it('will return participant events including all entryStatuses', () => {
   const structure = drawDefinition.structures.find(
     (structure) => structure.structureId === structureId
   );
-  expect(structure.updatedAt).toBeGreaterThan(updatedAt);
+  expect(new Date(structure.updatedAt).getTime()).toBeGreaterThan(
+    new Date(updatedAt).getTime()
+  );
 
   ({ positionAssignments } = tournamentEngine.getPositionAssignments({
     structureId,

@@ -7,6 +7,7 @@ import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { SINGLES } from '../../../constants/eventConstants';
+import { countries } from '../../../fixtures/countryData';
 
 const privacyPolicy = {
   [POLICY_TYPE_PARTICIPANT]: {
@@ -48,6 +49,7 @@ const privacyPolicy = {
 };
 
 it('can add ISO country codes to persons', () => {
+  const isoWithIOC = countries.filter(({ ioc }) => ioc).map(({ iso }) => iso);
   const participantsProfile = {
     participantsCount: 1,
     participantType: PAIR,
@@ -59,7 +61,7 @@ it('can add ISO country codes to persons', () => {
 
   let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     inContext: true,
-    withISO: true,
+    withIOC: true,
   });
   expect(tournamentParticipants.length).toEqual(3);
   const persons = tournamentParticipants
@@ -70,7 +72,8 @@ it('can add ISO country codes to persons', () => {
     )
     .flat();
   persons.forEach((person) => {
-    expect(person.isoNationalityCode).not.toBeUndefined();
+    if (isoWithIOC.includes(person.nationalityCode))
+      expect(person.iocNationalityCode).not.toBeUndefined();
     expect(person.countryName).not.toBeUndefined();
   });
 });

@@ -58,11 +58,13 @@ export function getDrawPositionCollectionAssignment({
             const participantId = participant?.participantId;
             return { [drawPosition]: { participantId, teamParticipant } };
           } else if (relevantCompetitors?.length > 2) {
+            /*
             console.log('ERROR: Too many assignments for', {
               collectionId,
               collectionPosition,
               assignmentsCount: relevantCompetitors.length,
             });
+            */
             return { [drawPosition]: { teamParticipant } };
           }
         } else {

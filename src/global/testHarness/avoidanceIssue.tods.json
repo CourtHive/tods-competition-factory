@@ -5,11 +5,9 @@
   "deleted": false,
   "endDate": "2022-05-15T00:00:00.000Z",
   "tournamentId": "320F450F-D518-45B3-893F-B7868ADF1393",
-  "registrationProfile": [
-    {
-      "entriesClose": "2022-05-06T00:00:00.000Z"
-    }
-  ],
+  "registrationProfile": {
+    "entriesClose": "2022-05-06T00:00:00.000Z"
+  },
   "tournamentName": "$$$ Upper Dublin Philadelphia Championships presented by Graham Partners",
   "localTimeZone": "America/New_York",
   "startDate": "2022-05-09T00:00:00.000Z",
@@ -5085,7 +5083,6 @@
       }
     ],
     "organisationName": "Upper Dublin Sports Center",
-    "parentOrganisation": "5fefd08859850eac2d5c5e9e",
     "updatedAt": "2021-01-02T01:46:48.185Z"
   },
   "tournamentOtherIds": [],

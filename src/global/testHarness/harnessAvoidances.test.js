@@ -2,12 +2,12 @@ import tournamentEngine from '../../tournamentEngine/sync';
 import { timeKeeper } from '../state/globalState';
 import fs from 'fs';
 
-const tournamentRecordJSON = fs.readFileSync(
-  './src/global/testHarness/avoidancesTournament.tods.json',
-  'utf-8'
-);
-
 test.skip('benchmark drawGeneration times', () => {
+  const tournamentRecordJSON = fs.readFileSync(
+    './src/global/testHarness/avoidancesTournament.tods.json',
+    'utf-8'
+  );
+
   const tournamentRecord = JSON.parse(tournamentRecordJSON);
   tournamentEngine.setState(tournamentRecord);
 

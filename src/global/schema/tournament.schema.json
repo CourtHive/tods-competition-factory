@@ -1,0 +1,3294 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/Tournament",
+  "definitions": {
+    "Tournament": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "endDate": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date-time"
+            },
+            {
+              "format": "date"
+            }
+          ]
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Event"
+          }
+        },
+        "formalName": {
+          "type": "string"
+        },
+        "hostCountryCode": {
+          "$ref": "#/definitions/CountryCodeEnum"
+        },
+        "indoorOutdoor": {
+          "$ref": "#/definitions/IndoorOutdoorEnum"
+        },
+        "localTimeZone": {
+          "type": "string"
+        },
+        "matchUps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MatchUp"
+          }
+        },
+        "onlineResources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OnlineResource"
+          }
+        },
+        "parentOrganisationId": {
+          "type": "string"
+        },
+        "participants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Participant"
+          }
+        },
+        "processCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "promotionalName": {
+          "type": "string"
+        },
+        "registrationProfile": {
+          "$ref": "#/definitions/RegistrationProfile"
+        },
+        "season": {
+          "type": "string"
+        },
+        "startDate": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date-time"
+            },
+            {
+              "format": "date"
+            }
+          ]
+        },
+        "surfaceCategory": {
+          "$ref": "#/definitions/SurfaceCategoryEnum"
+        },
+        "totalPrizeMoney": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PrizeMoney"
+          }
+        },
+        "tournamentCategories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Category"
+          }
+        },
+        "tournamentRank": {
+          "type": "string"
+        },
+        "tournamentGroups": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tournamentId": {
+          "type": "string"
+        },
+        "tournamentLevel": {
+          "$ref": "#/definitions/TournamentLevelEnum"
+        },
+        "tournamentName": {
+          "type": "string"
+        },
+        "tournamentOtherIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UnifiedTournamentId"
+          }
+        },
+        "venues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Venue"
+          }
+        }
+      },
+      "required": ["tournamentId"],
+      "additionalProperties": true
+    },
+    "Extension": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "value": {}
+      },
+      "required": ["name", "value"],
+      "additionalProperties": true
+    },
+    "TimeItem": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "itemDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "itemSubTypes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "itemType": {
+          "type": "string"
+        },
+        "itemValue": {}
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "Event": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "allowedDrawTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DrawStructureEnum"
+          }
+        },
+        "category": {
+          "$ref": "#/definitions/Category"
+        },
+        "discipline": {
+          "$ref": "#/definitions/DisciplineEnum"
+        },
+        "drawDefinitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DrawDefinition"
+          }
+        },
+        "endDate": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date-time"
+            },
+            {
+              "format": "date"
+            }
+          ]
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Entry"
+          }
+        },
+        "eventId": {
+          "type": "string"
+        },
+        "eventLevel": {
+          "$ref": "#/definitions/TournamentLevelEnum"
+        },
+        "eventType": {
+          "$ref": "#/definitions/EventTypeEnum"
+        },
+        "eventName": {
+          "type": "string"
+        },
+        "eventRank": {
+          "type": "string"
+        },
+        "indoorOutdoor": {
+          "$ref": "#/definitions/IndoorOutdoorEnum"
+        },
+        "gender": {
+          "$ref": "#/definitions/GenderEnum"
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DrawLink"
+          }
+        },
+        "processCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "startDate": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date-time"
+            },
+            {
+              "format": "date"
+            }
+          ]
+        },
+        "surfaceCategory": {
+          "$ref": "#/definitions/SurfaceCategoryEnum"
+        },
+        "tennisOfficialIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tieFormat": {
+          "$ref": "#/definitions/TieFormat"
+        },
+        "wheelchairClass": {
+          "$ref": "#/definitions/WheelchairClassEnum"
+        }
+      },
+      "required": ["eventId"],
+      "additionalProperties": false
+    },
+    "DrawStructureEnum": {
+      "type": "string",
+      "enum": [
+        "COMPASS",
+        "CURTIS_CONSOLATION",
+        "DOUBLE_ELIMINATION",
+        "SINGLE_ELIMINATION",
+        "FEED_IN",
+        "FEED_IN_CHAMPIONSHIP",
+        "FEED_IN_CHAMPIONSHIP_TO_SF",
+        "FEED_IN_CHAMPIONSHIP_TO_QF",
+        "FEED_IN_CHAMPIONSHIP_TO_R16",
+        "FIRST_MATCH_LOSER_CONSOLATION",
+        "MODIFIED_FEED_IN_CHAMPIONSHIP",
+        "OLYMPIC",
+        "OTHER",
+        "PLAYOFF",
+        "ROUND_ROBIN",
+        "ROUND_ROBIN_WITH_PLAYOFF",
+        "FIRST_ROUND_LOSER_CONSOLATION",
+        "AD_HOC"
+      ]
+    },
+    "Category": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "ageCategoryCode": {
+          "type": "string"
+        },
+        "ageMax": {
+          "type": "number"
+        },
+        "ageMaxDate": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date-time"
+            },
+            {
+              "format": "date"
+            }
+          ]
+        },
+        "ageMin": {
+          "type": "number"
+        },
+        "ageMinDate": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date-time"
+            },
+            {
+              "format": "date"
+            }
+          ]
+        },
+        "ballType": {
+          "$ref": "#/definitions/BallTypeEnum"
+        },
+        "categoryName": {
+          "type": "string"
+        },
+        "ratingMax": {
+          "type": "number"
+        },
+        "ratingMin": {
+          "type": "number"
+        },
+        "ratingType": {
+          "type": "string"
+        },
+        "subType": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/CategoryEnum"
+        }
+      },
+      "additionalProperties": false
+    },
+    "BallTypeEnum": {
+      "type": "string",
+      "enum": [
+        "HIGH_ALTITUDE",
+        "STAGE1GREEN",
+        "STAGE2ORANGE",
+        "STAGE3RED",
+        "T2STANDARD_PRESSURELESS",
+        "T2STANDARD_PRESSURISED",
+        "TYPE1FAST",
+        "TYPE3SLOW"
+      ]
+    },
+    "CategoryEnum": {
+      "type": "string",
+      "enum": ["AGE", "BOTH", "LEVEL"]
+    },
+    "DisciplineEnum": {
+      "type": "string",
+      "enum": ["BEACH_TENNIS", "TENNIS", "WHEELCHAIR_TENNIS"]
+    },
+    "DrawDefinition": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "automated": {
+          "type": "boolean"
+        },
+        "drawId": {
+          "type": "string"
+        },
+        "drawName": {
+          "type": "string"
+        },
+        "drawOrder": {
+          "type": "number"
+        },
+        "drawRepresentativeIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "drawStatus": {
+          "$ref": "#/definitions/DrawStatusEnum"
+        },
+        "drawType": {
+          "$ref": "#/definitions/DrawStructureEnum"
+        },
+        "endDate": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date-time"
+            },
+            {
+              "format": "date"
+            }
+          ]
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Entry"
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DrawLink"
+          }
+        },
+        "matchUpFormat": {
+          "type": "string"
+        },
+        "matchUpType": {
+          "$ref": "#/definitions/MatchUpTypeEnum"
+        },
+        "matchUps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MatchUp"
+          }
+        },
+        "processCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "startDate": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date-time"
+            },
+            {
+              "format": "date"
+            }
+          ]
+        },
+        "structures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DrawStructure"
+          }
+        },
+        "tieFormat": {
+          "$ref": "#/definitions/TieFormat"
+        }
+      },
+      "required": ["drawId"],
+      "additionalProperties": false
+    },
+    "DrawStatusEnum": {
+      "type": "string",
+      "enum": ["COMPLETE", "IN_PROGRESS", "TO_BE_PLAYED"]
+    },
+    "Entry": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "entryId": {
+          "type": "string"
+        },
+        "entryPosition": {
+          "type": "number"
+        },
+        "entryStage": {
+          "$ref": "#/definitions/StageTypeEnum"
+        },
+        "entryStageSequence": {
+          "type": "number"
+        },
+        "entryStatus": {
+          "$ref": "#/definitions/EntryStatusEnum"
+        },
+        "participantId": {
+          "type": "string"
+        }
+      },
+      "required": ["participantId"],
+      "additionalProperties": false
+    },
+    "StageTypeEnum": {
+      "type": "string",
+      "enum": [
+        "CONSOLATION",
+        "MAIN",
+        "PLAY_OFF",
+        "QUALIFYING",
+        "VOLUNTARY_CONSOLATION"
+      ]
+    },
+    "EntryStatusEnum": {
+      "type": "string",
+      "enum": [
+        "ALTERNATE",
+        "CONFIRMED",
+        "DIRECT_ACCEPTANCE",
+        "FEED_IN",
+        "LUCKY_LOSER",
+        "ORGANISER_ACCEPTANCE",
+        "QUALIFIER",
+        "WILDCARD",
+        "WITHDRAWN",
+        "UNPAIRED",
+        "UNGROUPED"
+      ]
+    },
+    "DrawLink": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "linkCondition": {
+          "$ref": "#/definitions/LinkConditionEnum"
+        },
+        "linkType": {
+          "$ref": "#/definitions/LinkTypeEnum"
+        },
+        "source": {
+          "$ref": "#/definitions/DrawLinkSource"
+        },
+        "target": {
+          "$ref": "#/definitions/DrawLinkTarget"
+        }
+      },
+      "required": ["linkType", "source", "target"],
+      "additionalProperties": false
+    },
+    "LinkConditionEnum": {
+      "type": "string",
+      "const": "FIRST_MATCHUP"
+    },
+    "LinkTypeEnum": {
+      "type": "string",
+      "enum": ["LOSER", "WINNER", "POSITION"]
+    },
+    "DrawLinkSource": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "drawId": {
+          "type": "string"
+        },
+        "roundNumber": {
+          "type": "number"
+        },
+        "finishingPositions": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "structureId": {
+          "type": "string"
+        }
+      },
+      "required": ["structureId"],
+      "additionalProperties": false
+    },
+    "DrawLinkTarget": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "drawId": {
+          "type": "string"
+        },
+        "feedProfile": {
+          "$ref": "#/definitions/PositioningProfileEnum"
+        },
+        "groupedOrder": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 1
+        },
+        "positionInterleave": {
+          "$ref": "#/definitions/Interleave"
+        },
+        "roundNumber": {
+          "type": "number"
+        },
+        "structureId": {
+          "type": "string"
+        }
+      },
+      "required": ["feedProfile", "roundNumber", "structureId"],
+      "additionalProperties": false
+    },
+    "PositioningProfileEnum": {
+      "type": "string",
+      "enum": [
+        "BOTTOM_UP",
+        "DRAW",
+        "LOSS_POSITION",
+        "RANDOM",
+        "TOP_DOWN",
+        "WATERFALL"
+      ]
+    },
+    "Interleave": {
+      "type": "object",
+      "properties": {
+        "offset": {
+          "type": "number"
+        },
+        "interleave": {
+          "type": "number"
+        }
+      },
+      "required": ["offset", "interleave"],
+      "additionalProperties": false
+    },
+    "MatchUp": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "collectionId": {
+          "type": "string"
+        },
+        "collectionPosition": {
+          "type": "number"
+        },
+        "drawPositions": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "endDate": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date-time"
+            },
+            {
+              "format": "date"
+            }
+          ]
+        },
+        "indoorOutdoor": {
+          "$ref": "#/definitions/IndoorOutdoorEnum"
+        },
+        "finishingRound": {
+          "type": "number"
+        },
+        "finishingPositionRange": {
+          "$ref": "#/definitions/MatchUpFinishingPositionRange"
+        },
+        "loserMatchUpId": {
+          "type": "string"
+        },
+        "matchUpDuration": {
+          "type": "string"
+        },
+        "matchUpFormat": {
+          "type": "string"
+        },
+        "matchUpId": {
+          "type": "string"
+        },
+        "matchUpStatus": {
+          "$ref": "#/definitions/MatchUpStatusEnum"
+        },
+        "matchUpStatusCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "matchUpType": {
+          "$ref": "#/definitions/MatchUpTypeEnum"
+        },
+        "orderOfFinish": {
+          "type": "number"
+        },
+        "processCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "roundName": {
+          "type": "string"
+        },
+        "roundNumber": {
+          "type": "number"
+        },
+        "roundPosition": {
+          "type": "number"
+        },
+        "score": {
+          "$ref": "#/definitions/Score"
+        },
+        "sides": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Side"
+          }
+        },
+        "startDate": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date-time"
+            },
+            {
+              "format": "date"
+            }
+          ]
+        },
+        "surfaceCategory": {
+          "$ref": "#/definitions/SurfaceCategoryEnum"
+        },
+        "tieFormat": {
+          "$ref": "#/definitions/TieFormat"
+        },
+        "tieMatchUps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MatchUp"
+          }
+        },
+        "winnerMatchUpId": {
+          "type": "string"
+        },
+        "winningSide": {
+          "type": "number"
+        }
+      },
+      "required": ["matchUpId"],
+      "additionalProperties": false
+    },
+    "IndoorOutdoorEnum": {
+      "type": "string",
+      "enum": ["INDOOR", "OUTDOOR", "MIXED"]
+    },
+    "MatchUpFinishingPositionRange": {
+      "type": "object",
+      "properties": {
+        "loser": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "winner": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      },
+      "required": ["loser", "winner"],
+      "additionalProperties": false
+    },
+    "MatchUpStatusEnum": {
+      "type": "string",
+      "enum": [
+        "ABANDONED",
+        "BYE",
+        "COMPLETED",
+        "DEAD_RUBBER",
+        "DEFAULTED",
+        "INCOMPLETE",
+        "IN_PROGRESS",
+        "NOT_PLAYED",
+        "RETIRED",
+        "SUSPENDED",
+        "TO_BE_PLAYED",
+        "WALKOVER",
+        "DOUBLE_WALKOVER",
+        "CANCELLED",
+        "AWAITING_RESULT"
+      ]
+    },
+    "MatchUpTypeEnum": {
+      "type": "string",
+      "enum": ["DOUBLES", "SINGLES", "TEAM"]
+    },
+    "Score": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "scoreStringSide1": {
+          "type": "string"
+        },
+        "scoreStringSide2": {
+          "type": "string"
+        },
+        "sets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Set"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "Set": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "games": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Game"
+          }
+        },
+        "setDuration": {
+          "type": "string"
+        },
+        "setFormat": {
+          "type": "string"
+        },
+        "setNumber": {
+          "type": "number"
+        },
+        "side1Score": {
+          "type": "number"
+        },
+        "side1TiebreakScore": {
+          "type": "number"
+        },
+        "side1PointScore": {
+          "type": "number"
+        },
+        "side2Score": {
+          "type": "number"
+        },
+        "side2TiebreakScore": {
+          "type": "number"
+        },
+        "side2PointScore": {
+          "type": "number"
+        },
+        "winningSide": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Game": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "gameDuration": {
+          "type": "string"
+        },
+        "gameFormat": {
+          "type": "string"
+        },
+        "gameNumber": {
+          "type": "number"
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Point"
+          }
+        },
+        "winReason": {
+          "$ref": "#/definitions/WinReasonEnum"
+        },
+        "winningSide": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Point": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "pointDuration": {
+          "type": "string"
+        },
+        "pointNumber": {
+          "type": "number"
+        },
+        "shots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Shot"
+          }
+        },
+        "side1Score": {
+          "type": "string"
+        },
+        "side2Score": {
+          "type": "string"
+        },
+        "winReason": {
+          "$ref": "#/definitions/WinReasonEnum"
+        },
+        "winningSide": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Shot": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "bounceAt": {
+          "$ref": "#/definitions/CourtPosition"
+        },
+        "participantId": {
+          "type": "string"
+        },
+        "shotDetail": {
+          "$ref": "#/definitions/ShotDetailEnum"
+        },
+        "shotMadeFrom": {
+          "$ref": "#/definitions/CourtPosition"
+        },
+        "shotNumber": {
+          "type": "number"
+        },
+        "shotOutcome": {
+          "$ref": "#/definitions/ShotOutcomeEnum"
+        },
+        "shotType": {
+          "$ref": "#/definitions/ShotTypeEnum"
+        },
+        "sideNumber": {
+          "type": "number"
+        },
+        "speed": {
+          "type": "number"
+        },
+        "spin": {
+          "type": "string"
+        }
+      },
+      "required": ["participantId"],
+      "additionalProperties": false
+    },
+    "CourtPosition": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "positionName": {
+          "$ref": "#/definitions/CourtPositionEnum"
+        },
+        "timeAtPosition": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "CourtPositionEnum": {
+      "type": "string",
+      "enum": [
+        "BASELINE",
+        "LEFT_SERVICE_COURT",
+        "NET",
+        "RIGHT_SERVICE_COURT",
+        "SERVICELINE"
+      ]
+    },
+    "ShotDetailEnum": {
+      "type": "string",
+      "enum": [
+        "DRIVE",
+        "DRIVE_VOLLEY",
+        "DROP_SHOT",
+        "GROUND_STROKE",
+        "HALF_VOLLEY",
+        "LOB",
+        "PASSING_SHOT",
+        "SMASH",
+        "TRICK",
+        "VOLLEY"
+      ]
+    },
+    "ShotOutcomeEnum": {
+      "type": "string",
+      "enum": ["IN", "LET", "OUT"]
+    },
+    "ShotTypeEnum": {
+      "type": "string",
+      "enum": ["BACKHAND", "FOREHAND", "SERVE"]
+    },
+    "WinReasonEnum": {
+      "type": "string",
+      "enum": [
+        "ACE",
+        "DOUBLE_FAULT",
+        "ERROR",
+        "FORCED",
+        "NET_CORD",
+        "PENALTY",
+        "UNFORCED",
+        "WINNER"
+      ]
+    },
+    "Side": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "participantId": {
+          "type": "string"
+        },
+        "lineUp": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TeamCompetitor"
+          }
+        },
+        "sideNumber": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "TeamCompetitor": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "collectionAssignments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CollectionAssignment"
+          }
+        },
+        "participantId": {
+          "type": "string"
+        }
+      },
+      "required": ["participantId"],
+      "additionalProperties": false
+    },
+    "CollectionAssignment": {
+      "type": "object",
+      "properties": {
+        "collectionId": {
+          "type": "string"
+        },
+        "collectionPosition": {
+          "type": "number"
+        }
+      },
+      "required": ["collectionId", "collectionPosition"],
+      "additionalProperties": false
+    },
+    "SurfaceCategoryEnum": {
+      "type": "string",
+      "enum": ["ARTIFICIAL", "CARPET", "CLAY", "GRASS", "HARD"]
+    },
+    "TieFormat": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "collectionDefinitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CollectionDefinition"
+          }
+        },
+        "collectionGroups": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CollectionGroup"
+          }
+        },
+        "tieFormatName": {
+          "type": "string"
+        },
+        "winCriteria": {
+          "$ref": "#/definitions/WinCriteria"
+        }
+      },
+      "required": ["collectionDefinitions", "winCriteria"],
+      "additionalProperties": false
+    },
+    "CollectionDefinition": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "category": {
+          "$ref": "#/definitions/Category"
+        },
+        "collectionId": {
+          "type": "string"
+        },
+        "collectionName": {
+          "type": "string"
+        },
+        "collectionGroupNumber": {
+          "type": "number"
+        },
+        "collectionOrder": {
+          "type": "number"
+        },
+        "collectionValue": {
+          "type": "number"
+        },
+        "collectionValueProfiles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/CollectionValueProfile"
+          }
+        },
+        "gender": {
+          "$ref": "#/definitions/GenderEnum"
+        },
+        "matchUpCount": {
+          "type": "number"
+        },
+        "matchUpFormat": {
+          "type": "string"
+        },
+        "matchUpType": {
+          "$ref": "#/definitions/MatchUpTypeEnum"
+        },
+        "matchUpValue": {
+          "type": "number"
+        },
+        "processCodes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "setValue": {
+          "type": "number"
+        },
+        "scoreValue": {
+          "type": "number"
+        },
+        "winCriteria": {
+          "$ref": "#/definitions/WinCriteria"
+        }
+      },
+      "required": ["collectionId"],
+      "additionalProperties": false
+    },
+    "CollectionValueProfile": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "collectionPosition": {
+          "type": "number"
+        },
+        "matchUpValue": {
+          "type": "number"
+        }
+      },
+      "required": ["collectionPosition", "matchUpValue"],
+      "additionalProperties": false
+    },
+    "GenderEnum": {
+      "type": "string",
+      "enum": ["ANY", "FEMALE", "MALE", "MIXED"]
+    },
+    "WinCriteria": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "aggregateValue": {
+          "type": "boolean"
+        },
+        "valueGoal": {
+          "type": "number"
+        }
+      },
+      "required": ["valueGoal"],
+      "additionalProperties": false
+    },
+    "CollectionGroup": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "groupNumber": {
+          "type": "number"
+        },
+        "groupName": {
+          "type": "string"
+        },
+        "groupValue": {
+          "type": "number"
+        },
+        "winCriteria": {
+          "$ref": "#/definitions/WinCriteria"
+        }
+      },
+      "required": ["groupNumber"],
+      "additionalProperties": false
+    },
+    "DrawStructure": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "finishingPosition": {
+          "$ref": "#/definitions/FinishingPositionEnum"
+        },
+        "matchUps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MatchUp"
+          }
+        },
+        "matchUpFormat": {
+          "type": "string"
+        },
+        "positionAssignments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PositionAssignment"
+          }
+        },
+        "seedAssignments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SeedAssignment"
+          }
+        },
+        "seedingProfile": {
+          "$ref": "#/definitions/PositioningProfileEnum"
+        },
+        "seedLimit": {
+          "type": "number"
+        },
+        "stage": {
+          "$ref": "#/definitions/StageTypeEnum"
+        },
+        "stageSequence": {
+          "type": "number"
+        },
+        "structures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DrawStructure"
+          }
+        },
+        "structureId": {
+          "type": "string"
+        },
+        "structureName": {
+          "type": "string"
+        },
+        "structureAbbreviation": {
+          "type": "string"
+        },
+        "structureType": {
+          "$ref": "#/definitions/StructureTypeEnum"
+        },
+        "tieFormat": {
+          "$ref": "#/definitions/TieFormat"
+        }
+      },
+      "required": ["structureId"],
+      "additionalProperties": false
+    },
+    "FinishingPositionEnum": {
+      "type": "string",
+      "enum": ["ROUND_OUTCOME", "WIN_RATIO"]
+    },
+    "PositionAssignment": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "bye": {
+          "type": "boolean"
+        },
+        "drawPosition": {
+          "type": "number"
+        },
+        "participantId": {
+          "type": "string"
+        },
+        "qualifier": {
+          "type": "boolean"
+        }
+      },
+      "required": ["drawPosition"],
+      "additionalProperties": false
+    },
+    "SeedAssignment": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "seedNumber": {
+          "type": "number"
+        },
+        "seedValue": {
+          "type": ["integer", "string"]
+        },
+        "participantId": {
+          "type": "string"
+        }
+      },
+      "required": ["seedNumber", "seedValue"],
+      "additionalProperties": false
+    },
+    "StructureTypeEnum": {
+      "type": "string",
+      "enum": ["CONTAINER", "ITEM"]
+    },
+    "TournamentLevelEnum": {
+      "type": "string",
+      "enum": [
+        "INTERNATIONAL",
+        "ZONAL",
+        "LOCAL",
+        "NATIONAL",
+        "REGIONAL",
+        "DISTRICT",
+        "CLUB",
+        "RECREATIONAL"
+      ]
+    },
+    "EventTypeEnum": {
+      "type": "string",
+      "enum": ["DOUBLES", "SINGLES", "TEAM"]
+    },
+    "WheelchairClassEnum": {
+      "type": "string",
+      "enum": ["STANDARD", "QUAD"]
+    },
+    "CountryCodeEnum": {
+      "type": "string",
+      "enum": [
+        "AFG",
+        "ALA",
+        "ALB",
+        "DZA",
+        "ASM",
+        "AND",
+        "AGO",
+        "AIA",
+        "ATA",
+        "ATG",
+        "ANT",
+        "ARG",
+        "ARM",
+        "ABW",
+        "AUS",
+        "AUT",
+        "AZE",
+        "BHS",
+        "BHR",
+        "BGD",
+        "BRB",
+        "BLR",
+        "BEL",
+        "BLZ",
+        "BEN",
+        "BMU",
+        "BTN",
+        "BOL",
+        "BIH",
+        "BWA",
+        "BVT",
+        "BRA",
+        "IOT",
+        "BRN",
+        "BGR",
+        "BFA",
+        "BDI",
+        "KHM",
+        "CMR",
+        "CAN",
+        "CPV",
+        "CYM",
+        "CAF",
+        "TCD",
+        "CHL",
+        "CHN",
+        "CXR",
+        "CCK",
+        "COL",
+        "COM",
+        "COG",
+        "COD",
+        "COK",
+        "CRI",
+        "CIV",
+        "HRV",
+        "CUB",
+        "CYP",
+        "CZE",
+        "DNK",
+        "DJI",
+        "DMA",
+        "DOM",
+        "ECU",
+        "EGY",
+        "SLV",
+        "GNQ",
+        "ERI",
+        "ESE",
+        "ETH",
+        "FLK",
+        "FRO",
+        "FJI",
+        "FIN",
+        "FRA",
+        "GUF",
+        "PYF",
+        "ATF",
+        "GAB",
+        "GMB",
+        "GEO",
+        "DEU",
+        "GHA",
+        "GIB",
+        "GRC",
+        "GRL",
+        "GRD",
+        "GLP",
+        "GUM",
+        "GTM",
+        "GGY",
+        "GIN",
+        "GNB",
+        "GUY",
+        "HTI",
+        "HMD",
+        "VAT",
+        "HND",
+        "HKG",
+        "HUN",
+        "ISL",
+        "IND",
+        "IDN",
+        "IRN",
+        "IRQ",
+        "IRL",
+        "IMN",
+        "ISR",
+        "ITA",
+        "JAM",
+        "JPN",
+        "JEY",
+        "JOR",
+        "KAZ",
+        "KEN",
+        "KIR",
+        "KOR",
+        "PRK",
+        "KWT",
+        "KGZ",
+        "LAO",
+        "LVA",
+        "LBN",
+        "LSO",
+        "LBR",
+        "LBY",
+        "LIE",
+        "LTU",
+        "LUX",
+        "MAC",
+        "MDG",
+        "MWI",
+        "MYS",
+        "MDV",
+        "MLI",
+        "MLT",
+        "MHL",
+        "MTQ",
+        "MRT",
+        "MUS",
+        "MYT",
+        "MEX",
+        "FSM",
+        "MDA",
+        "MCO",
+        "MNG",
+        "MNE",
+        "MSR",
+        "MAR",
+        "MOZ",
+        "MMR",
+        "NAM",
+        "NRU",
+        "NPL",
+        "NLD",
+        "NCL",
+        "NZL",
+        "NIC",
+        "NER",
+        "NGA",
+        "NIU",
+        "NFK",
+        "MNP",
+        "NOR",
+        "OMN",
+        "PAK",
+        "PLW",
+        "PSE",
+        "PAN",
+        "PNG",
+        "PRY",
+        "PER",
+        "PHL",
+        "PCN",
+        "POL",
+        "PRT",
+        "PRI",
+        "QAT",
+        "MKD",
+        "REU",
+        "ROU",
+        "RUS",
+        "RWA",
+        "BLM",
+        "SHN",
+        "KNA",
+        "LCA",
+        "MAF",
+        "SPM",
+        "VCT",
+        "WSM",
+        "SMR",
+        "STP",
+        "SAU",
+        "SEN",
+        "SRB",
+        "SYC",
+        "SLE",
+        "SGP",
+        "SMX",
+        "SVK",
+        "SVN",
+        "SLB",
+        "SOM",
+        "ZAF",
+        "SGS",
+        "SSD",
+        "ESP",
+        "LKA",
+        "SDN",
+        "SUR",
+        "SJM",
+        "SWZ",
+        "SWE",
+        "CHE",
+        "SYR",
+        "TWN",
+        "TJK",
+        "TZA",
+        "THA",
+        "TLS",
+        "TGO",
+        "TKL",
+        "TON",
+        "TTO",
+        "TUN",
+        "TUR",
+        "TKM",
+        "TCA",
+        "TUV",
+        "UGA",
+        "UKR",
+        "ARE",
+        "GBR",
+        "UMI",
+        "USA",
+        "URY",
+        "UZB",
+        "VUT",
+        "VEN",
+        "VNM",
+        "VGB",
+        "VIR",
+        "WLF",
+        "ESH",
+        "YEM",
+        "ZMB",
+        "ZWE"
+      ]
+    },
+    "OnlineResource": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "resourceSubType": {
+          "type": "string"
+        },
+        "resourceType": {
+          "$ref": "#/definitions/OnlineResourceTypeEnum"
+        }
+      },
+      "additionalProperties": false
+    },
+    "OnlineResourceTypeEnum": {
+      "type": "string",
+      "enum": ["SOCIAL_MEDIA", "URL", "EMAIL", "OTHER"]
+    },
+    "Participant": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Contact"
+          }
+        },
+        "individualParticipantIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "onlineResources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OnlineResource"
+          }
+        },
+        "participantName": {
+          "type": "string"
+        },
+        "participantOtherName": {
+          "type": "string"
+        },
+        "participantId": {
+          "type": "string"
+        },
+        "participantRole": {
+          "$ref": "#/definitions/ParticipantRoleEnum"
+        },
+        "participantStatus": {
+          "$ref": "#/definitions/ParticipantStatusEnum"
+        },
+        "penalties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Penalty"
+          }
+        },
+        "personId": {
+          "type": "string"
+        },
+        "person": {
+          "$ref": "#/definitions/Person"
+        },
+        "representing": {
+          "$ref": "#/definitions/CountryCodeEnum"
+        },
+        "participantRoleResponsibilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "teamId": {
+          "type": "string"
+        },
+        "participantType": {
+          "$ref": "#/definitions/ParticipantTypeEnum"
+        }
+      },
+      "required": ["participantId"],
+      "additionalProperties": false
+    },
+    "Contact": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "emailAddress": {
+          "type": "string"
+        },
+        "fax": {
+          "type": "string"
+        },
+        "isPublic": {
+          "type": "boolean"
+        },
+        "mobileTelephone": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "telephone": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ParticipantRoleEnum": {
+      "type": "string",
+      "enum": [
+        "ADMINISTRATION",
+        "CAPTAIN",
+        "COACH",
+        "COMPETITOR",
+        "MEDIA",
+        "MEDICAL",
+        "OFFICIAL",
+        "OTHER",
+        "SECURITY"
+      ]
+    },
+    "ParticipantStatusEnum": {
+      "type": "string",
+      "enum": ["ACTIVE", "WITHDRAWN"]
+    },
+    "Penalty": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "issuedAt": {
+          "type": "string"
+        },
+        "matchUpId": {
+          "type": "string"
+        },
+        "penaltyCode": {
+          "type": "string"
+        },
+        "penaltyId": {
+          "type": "string"
+        },
+        "penaltyType": {
+          "$ref": "#/definitions/PenaltyTypeEnum"
+        },
+        "refereeParticipantId": {
+          "type": "string"
+        }
+      },
+      "required": ["penaltyId", "penaltyType"],
+      "additionalProperties": false
+    },
+    "PenaltyTypeEnum": {
+      "type": "string",
+      "enum": [
+        "BALL_ABUSE",
+        "COACHING",
+        "DRESS_CODE_VIOLATION",
+        "EQUIMENT_VIOLATION",
+        "FAILUIRE_TO_SIGN_IN",
+        "FAILURE_TO_COMPLETE",
+        "INELIGIBILITY",
+        "LEAVING_THE_COURT",
+        "NO_SHOW",
+        "PHYSICAL_ABUSE",
+        "PROHIBITED_SUBSTANCE",
+        "PUNCTUALITY",
+        "RACKET_ABUSE",
+        "REFUSAL_TO_PLAY",
+        "UNSPORTSMANLIKE_CONDUCT",
+        "VERBAL_ABUSE",
+        "OTHER"
+      ]
+    },
+    "Person": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "addresses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Address"
+          }
+        },
+        "biographicalInformation": {
+          "$ref": "#/definitions/BiographicalInformation"
+        },
+        "birthDate": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date-time"
+            },
+            {
+              "format": "date"
+            }
+          ]
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Contact"
+          }
+        },
+        "nationalityCode": {
+          "type": "string"
+        },
+        "nativeFamilyName": {
+          "type": "string"
+        },
+        "nativeGivenName": {
+          "type": "string"
+        },
+        "onlineResources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OnlineResource"
+          }
+        },
+        "otherNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parentOrganisationId": {
+          "type": "string"
+        },
+        "passportFamilyName": {
+          "type": "string"
+        },
+        "passportGivenName": {
+          "type": "string"
+        },
+        "personId": {
+          "type": "string"
+        },
+        "personOtherIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UnifiedPersonId"
+          }
+        },
+        "previousNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sectionId": {
+          "type": "string"
+        },
+        "sex": {
+          "$ref": "#/definitions/SexEnum"
+        },
+        "standardFamilyName": {
+          "type": "string"
+        },
+        "standardGivenName": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "tennisId": {
+          "type": "string"
+        },
+        "wheelchair": {
+          "type": "boolean"
+        }
+      },
+      "required": ["personId"],
+      "additionalProperties": false
+    },
+    "Address": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "addressLine1": {
+          "type": "string"
+        },
+        "addressLine2": {
+          "type": "string"
+        },
+        "addressLine3": {
+          "type": "string"
+        },
+        "addressName": {
+          "type": "string"
+        },
+        "addressType": {
+          "$ref": "#/definitions/AddressTypeEnum"
+        },
+        "city": {
+          "type": "string"
+        },
+        "countryCode": {
+          "$ref": "#/definitions/CountryCodeEnum"
+        },
+        "latitude": {
+          "type": "string"
+        },
+        "longitude": {
+          "type": "string"
+        },
+        "postalCode": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "timeZone": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AddressTypeEnum": {
+      "type": "string",
+      "enum": ["HOME", "MAIL", "RESIDENTIAL", "VENUE", "WORK", "PRIMARY"]
+    },
+    "BiographicalInformation": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "ageBeganTennis": {
+          "type": "number"
+        },
+        "ageTurnedPro": {
+          "type": "number"
+        },
+        "birthCountryCode": {
+          "$ref": "#/definitions/CountryCodeEnum"
+        },
+        "coachId": {
+          "type": "string"
+        },
+        "doublePlayingHand": {
+          "$ref": "#/definitions/PlayingDoubleHandCodeEnum"
+        },
+        "height": {
+          "type": "number"
+        },
+        "heightUnit": {
+          "$ref": "#/definitions/LengthUnitEnum"
+        },
+        "organisationIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "placeOfResidence": {
+          "type": "string"
+        },
+        "playingHand": {
+          "$ref": "#/definitions/PlayingHandCodeEnum"
+        },
+        "residenceCountryCode": {
+          "$ref": "#/definitions/CountryCodeEnum"
+        },
+        "weight": {
+          "type": "number"
+        },
+        "weightUnit": {
+          "$ref": "#/definitions/WeightUnitEnum"
+        }
+      },
+      "additionalProperties": false
+    },
+    "PlayingDoubleHandCodeEnum": {
+      "type": "string",
+      "enum": ["BACKHAND", "BOTH", "FOREHAND", "NONE"]
+    },
+    "LengthUnitEnum": {
+      "type": "string",
+      "enum": ["CENTIMETER", "METER", "MILLIMETER"]
+    },
+    "PlayingHandCodeEnum": {
+      "type": "string",
+      "enum": ["AMBIDEXTROUS", "LEFT", "RIGHT"]
+    },
+    "WeightUnitEnum": {
+      "type": "string",
+      "enum": ["GRAM", "KILOGRAM"]
+    },
+    "UnifiedPersonId": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "organisationId": {
+          "type": "string"
+        },
+        "uniqueOrganisationName": {
+          "type": "string"
+        },
+        "personId": {
+          "type": "string"
+        }
+      },
+      "required": ["organisationId", "personId"],
+      "additionalProperties": false
+    },
+    "SexEnum": {
+      "type": "string",
+      "enum": ["FEMALE", "MALE"]
+    },
+    "ParticipantTypeEnum": {
+      "type": "string",
+      "enum": ["INDIVIDUAL", "PAIR", "TEAM", "GROUP"]
+    },
+    "RegistrationProfile": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "entriesClose": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "entriesOpen": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "withdrawalDeadline": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "PrizeMoney": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "currencyCode": {
+          "type": "string"
+        }
+      },
+      "required": ["amount", "currencyCode"],
+      "additionalProperties": false
+    },
+    "UnifiedTournamentId": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "organisationId": {
+          "type": "string"
+        },
+        "uniqueOrganisationName": {
+          "type": "string"
+        },
+        "tournamentId": {
+          "type": "string"
+        }
+      },
+      "required": ["organisationId", "tournamentId"],
+      "additionalProperties": false
+    },
+    "Venue": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "addresses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Address"
+          }
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Contact"
+          }
+        },
+        "courts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Court"
+          }
+        },
+        "venueAbbreviation": {
+          "type": "string"
+        },
+        "onlineResources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OnlineResource"
+          }
+        },
+        "parentOrganisationId": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subVenueIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subVenues": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Venue"
+          }
+        },
+        "venueId": {
+          "type": "string"
+        },
+        "venueName": {
+          "type": "string"
+        },
+        "venueOtherIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/UnifiedVenueId"
+          }
+        },
+        "venueType": {
+          "type": "string"
+        }
+      },
+      "required": ["venueId"],
+      "additionalProperties": true
+    },
+    "Court": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "altitude": {
+          "type": "number"
+        },
+        "courtDimensions": {
+          "type": "string"
+        },
+        "courtId": {
+          "type": "string"
+        },
+        "courtName": {
+          "type": "string"
+        },
+        "dateAvailability": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Availability"
+          }
+        },
+        "latitude": {
+          "type": "string"
+        },
+        "longitude": {
+          "type": "string"
+        },
+        "onlineResources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OnlineResource"
+          }
+        },
+        "pace": {
+          "type": "string"
+        },
+        "surfaceCategory": {
+          "$ref": "#/definitions/SurfaceCategoryEnum"
+        },
+        "surfaceType": {
+          "type": "string"
+        },
+        "surfacedDate": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date-time"
+            },
+            {
+              "format": "date"
+            }
+          ]
+        },
+        "indoorOutdoor": {
+          "$ref": "#/definitions/IndoorOutdoorEnum"
+        },
+        "floodlit": {
+          "type": "boolean"
+        }
+      },
+      "required": ["courtId"],
+      "additionalProperties": false
+    },
+    "Availability": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "bookings": {
+          "$ref": "#/definitions/Booking"
+        },
+        "date": {
+          "type": "string",
+          "anyOf": [
+            {
+              "format": "date-time"
+            },
+            {
+              "format": "date"
+            }
+          ]
+        },
+        "startTime": {
+          "type": "string"
+        },
+        "endTime": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Booking": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "bookingType": {
+          "type": "string"
+        },
+        "startTime": {
+          "type": "string"
+        },
+        "endTime": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "UnifiedVenueId": {
+      "type": "object",
+      "properties": {
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "timeItems": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TimeItem"
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "isMock": {
+          "type": "boolean"
+        },
+        "organisationId": {
+          "type": "string"
+        },
+        "uniqueOrganisationName": {
+          "type": "string"
+        },
+        "venueId": {
+          "type": "string"
+        }
+      },
+      "required": ["organisationId", "venueId"],
+      "additionalProperties": false
+    }
+  }
+}

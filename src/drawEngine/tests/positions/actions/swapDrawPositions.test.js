@@ -91,7 +91,9 @@ it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () 
     subscriptions: {
       [MODIFY_DRAW_DEFINITION]: ([{ drawDefinition }]) => {
         drawModifications += 1;
-        expect(drawDefinition.updatedAt).toBeGreaterThan(updatedAt);
+        expect(new Date(drawDefinition.updatedAt).getTime()).toBeGreaterThan(
+          new Date(updatedAt).getTime()
+        );
         updatedAt = drawDefinition.updatedAt;
       },
     },

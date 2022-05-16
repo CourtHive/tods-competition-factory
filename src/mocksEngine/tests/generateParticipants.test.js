@@ -147,7 +147,7 @@ it('can generate sexed participants', () => {
 
 it('can accept custom personData', () => {
   const personData = [
-    { firstName: 'Sam', lastName: 'Smith', sex: MALE, nationalityCode: 'SUI' },
+    { firstName: 'Sam', lastName: 'Smith', sex: MALE, nationalityCode: 'CHE' },
     {
       firstName: 'Jennifer',
       lastName: 'Jameson',
@@ -157,7 +157,7 @@ it('can accept custom personData', () => {
   ];
   const { participants, error } = mocksEngine.generateParticipants({
     participantsCount: 4,
-    withISO: true,
+    withIOC: true,
     personData,
   });
   expect(error).toBeUndefined();
@@ -173,6 +173,6 @@ it('can accept custom personData', () => {
   );
   expect([samIndex, jennyIndex].sort()).toEqual([0, 1]);
 
-  expect(participants[0].person.isoNationalityCode).not.toBeUndefined();
+  expect(participants[0].person.iocNationalityCode).not.toBeUndefined();
   expect(participants[0].person.countryName).not.toBeUndefined();
 });

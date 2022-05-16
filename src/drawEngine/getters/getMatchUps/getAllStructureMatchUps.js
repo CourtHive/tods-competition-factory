@@ -140,8 +140,7 @@ export function getAllStructureMatchUps({
   // enables passing in seedAssignments rather than using structureSeedAssignments
   seedAssignments = seedAssignments || structureSeedAssignments;
 
-  const { structureId, structureName, stage, stageSequence, exitProfile } =
-    structure;
+  const { structureId, structureName, stage, stageSequence } = structure;
   const { drawId, drawName } = drawDefinition || {};
 
   const isRoundRobin = !!structure.structures;
@@ -387,7 +386,6 @@ export function getAllStructureMatchUps({
         preFeedRound,
         roundFactor,
         matchUpType,
-        exitProfile,
         structureId,
         roundNumber,
         feedRound,
