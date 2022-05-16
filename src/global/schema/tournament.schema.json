@@ -1945,7 +1945,7 @@
           "type": "number"
         },
         "seedValue": {
-          "type": "string"
+          "type": ["integer", "string"]
         },
         "participantId": {
           "type": "string"
