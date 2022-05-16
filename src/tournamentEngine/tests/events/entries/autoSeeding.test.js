@@ -68,7 +68,6 @@ it('can autoSeed by Rankings', () => {
     .filter(Boolean);
   expect(scaleValues).toEqual([8, 7, 6, 5, 4, 3, 1, 2]);
 
-  console.log(result.scaleItemsWithParticipantIds[0]);
   result = tournamentEngine.setParticipantScaleItems({
     scaleItemsWithParticipantIds: result.scaleItemsWithParticipantIds,
   });
@@ -85,8 +84,8 @@ it('can autoSeed by Rankings', () => {
   });
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    withEvents: true,
     withSeeding: true,
+    withEvents: true,
   }));
 
   let seedingScaleValues = tournamentParticipants
@@ -113,6 +112,7 @@ it('can autoSeed by Rankings', () => {
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     usePublishState: true,
+    withSeeding: true,
     withEvents: true,
   }));
 
@@ -128,6 +128,7 @@ it('can autoSeed by Rankings', () => {
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     usePublishState: true,
+    withSeeding: true,
     withEvents: true,
   }));
 
@@ -144,6 +145,7 @@ it('can autoSeed by Rankings', () => {
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     usePublishState: true,
+    withSeeding: true,
     withEvents: true,
   }));
 
