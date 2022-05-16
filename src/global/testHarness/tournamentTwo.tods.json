@@ -489,22 +489,22 @@
               "seedAssignments": [
                 {
                   "seedNumber": 1,
-                  "seedValue": "1",
+                  "seedValue": 1,
                   "participantId": "B069F05E-BD81-4368-94BE-6CA20AF369B8"
                 },
                 {
                   "seedNumber": 2,
-                  "seedValue": "2",
+                  "seedValue": 2,
                   "participantId": "64463925-941E-4972-A008-419F32558437"
                 },
                 {
                   "seedNumber": 3,
-                  "seedValue": "3",
+                  "seedValue": 3,
                   "participantId": "8AA81531-D2B9-40D5-BF2B-54E034E72E90"
                 },
                 {
                   "seedNumber": 4,
-                  "seedValue": "4",
+                  "seedValue": 4,
                   "participantId": "8F6EDA06-4C2D-427E-AF5B-2AD8198CEE99"
                 }
               ],

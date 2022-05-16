@@ -581,42 +581,42 @@
               "seedAssignments": [
                 {
                   "seedNumber": 1,
-                  "seedValue": "1",
+                  "seedValue": 1,
                   "participantId": "C75C26D4-23E5-4DE7-BEF4-BFA0652E0E89"
                 },
                 {
                   "seedNumber": 2,
-                  "seedValue": "2",
+                  "seedValue": 2,
                   "participantId": "46D34044-ED9F-4BE2-A719-7D194F4E7D07"
                 },
                 {
                   "seedNumber": 3,
-                  "seedValue": "3",
+                  "seedValue": 3,
                   "participantId": "42546260-F108-413C-A692-A44102AAD90A"
                 },
                 {
                   "seedNumber": 4,
-                  "seedValue": "4",
+                  "seedValue": 4,
                   "participantId": "B4FD185E-9A1B-4E98-901A-02651F1EA7AD"
                 },
                 {
                   "seedNumber": 5,
-                  "seedValue": "5",
+                  "seedValue": 5,
                   "participantId": "76D6EC98-6A41-49E0-8F6C-A1F69A2E252F"
                 },
                 {
                   "seedNumber": 6,
-                  "seedValue": "6",
+                  "seedValue": 6,
                   "participantId": "537071C0-8187-4D41-9AB9-489EC06066C2"
                 },
                 {
                   "seedNumber": 7,
-                  "seedValue": "7",
+                  "seedValue": 7,
                   "participantId": "F0D17B53-F88D-4DDE-9D98-7BF5AE7E8894"
                 },
                 {
                   "seedNumber": 8,
-                  "seedValue": "8",
+                  "seedValue": 8,
                   "participantId": "7987EAB6-86FC-4970-B7A3-C9771B6D3E78"
                 }
               ],

@@ -721,7 +721,7 @@ The structure of an **_assignment object_** is as follows:
 ```json
 {
   "seedNumber": 1,
-  "seedValue": "1",
+  "seedValue": 1,
   "participantId": "uuid-of-participant"
 }
 ```
