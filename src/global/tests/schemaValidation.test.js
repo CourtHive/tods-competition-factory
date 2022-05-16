@@ -22,8 +22,6 @@ it.each(filenames)(
     const data = JSON.parse(
       fs.readFileSync(`./src/global/testHarness/${filename}`, 'UTF-8')
     );
-    validate(data);
-    console.log({ filename }, validate.errors);
-    expect(true);
+    expect(validate(data)).toEqual(true);
   }
 );
