@@ -209,6 +209,20 @@ export function getEligibleVoluntaryConsolationParticipants({
       notPreviouslySelected(participantId)
   );
 
+  const hydrateIndividualParticipants = (eligibleParticipants) =>
+    eligibleParticipants?.forEach((participant) => {
+      if (participant.individualParticipantIds) {
+        participant.individualParticipants =
+          participant.individualParticipantIds.map((participantId) =>
+            tournamentRecord?.participants?.find(
+              (participant) => participant.participantId === participantId
+            )
+          );
+      }
+    });
+
+  hydrateIndividualParticipants(eligibleParticipants);
+
   // PRESERVED for debugging
   /*
   const lossCheck = consideredParticipants.map(({ participantId }) =>
