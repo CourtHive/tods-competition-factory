@@ -25,12 +25,14 @@ import {
   SUSPENDED,
   matchUpStatusConstants,
   completedMatchUpStatuses,
+  DOUBLE_DEFAULT,
 } from '../../constants/matchUpStatusConstants';
 
 // percentages rounded to the nearest whole number
 const defaultStatusProfile = {
   [WALKOVER]: 2,
   [DOUBLE_WALKOVER]: 1,
+  [DOUBLE_DEFAULT]: 1,
   [RETIRED]: 1,
   [DEFAULTED]: 4,
 };
@@ -107,7 +109,7 @@ export function generateOutcome({
       matchUpStatus === DEFAULTED &&
       randomInt(1, 100) > 100 - defaultWithScorePercent;
     if (!scoreDefaulted) return { outcome };
-  } else if (matchUpStatus === DOUBLE_WALKOVER) {
+  } else if ([DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUpStatus)) {
     return { outcome: { score: noScore, matchUpStatus } };
   }
 

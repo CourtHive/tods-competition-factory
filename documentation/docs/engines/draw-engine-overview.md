@@ -28,6 +28,7 @@ Any attempt to change from a **_directing_** to a **_non-directing_** `matchUpSt
 | DEFAULTED       |     x     |     x     |        |          |
 | COMPLETED       |     x     |     x     |        |          |
 | WALKOVER        |     x     |     x     |        |          |
+| DOUBLE_DEFAULT  |     x     |     -     |        |          |
 | DOUBLE_WALKOVER |     x     |     -     |        |          |
 | INCOMPLETE      |           |           |   x    |          |
 | IN_PROGRESS     |           |           |   x    |          |

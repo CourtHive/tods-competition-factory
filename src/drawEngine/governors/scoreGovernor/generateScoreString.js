@@ -1,14 +1,16 @@
+import { isNumeric } from '../../../utilities/math';
+
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import {
   ABANDONED,
   DEAD_RUBBER,
   DEFAULTED,
+  DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   RETIRED,
   SUSPENDED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { isNumeric } from '../../../utilities/math';
 
 /**
  *
@@ -92,6 +94,7 @@ function getOutcomeString({ matchUpStatus }) {
   const outcomeStrings = {
     [RETIRED]: 'RET',
     [WALKOVER]: 'WO',
+    [DOUBLE_DEFAULT]: 'DF/DF',
     [DOUBLE_WALKOVER]: 'WO/WO',
     [SUSPENDED]: 'SUS',
     [ABANDONED]: 'ABN',

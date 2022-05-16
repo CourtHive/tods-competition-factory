@@ -21,6 +21,7 @@ import { TEAM } from '../../../constants/matchUpTypes';
 import {
   BYE,
   COMPLETED,
+  DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   RETIRED,
   TO_BE_PLAYED,
@@ -76,7 +77,7 @@ export function assignMatchUpDrawPosition({
     updatedDrawPositions.includes(assignment.drawPosition)
   );
   const isByeMatchUp = matchUpAssignments.find(({ bye }) => bye);
-  const isWOWOWalkover =
+  const isDoubleExitExit =
     matchUp.matchUpStatus === WALKOVER &&
     updatedDrawPositions.filter(Boolean).length < 2;
 
@@ -84,10 +85,12 @@ export function assignMatchUpDrawPosition({
     ? BYE
     : matchUpStatus
     ? matchUpStatus
-    : isWOWOWalkover
+    : isDoubleExitExit
     ? WALKOVER
     : matchUp.matchUpStatus === DOUBLE_WALKOVER
     ? DOUBLE_WALKOVER
+    : matchUp.matchUpStatus === DOUBLE_DEFAULT
+    ? DOUBLE_DEFAULT
     : TO_BE_PLAYED;
 
   if (positionAdded) {
@@ -99,7 +102,7 @@ export function assignMatchUpDrawPosition({
       matchUpsMap,
     }));
     const walkoverWinningSide =
-      (isWOWOWalkover &&
+      (isDoubleExitExit &&
         getWalkoverWinningSide({
           inContextDrawMatchUps,
           drawPosition,
@@ -140,7 +143,7 @@ export function assignMatchUpDrawPosition({
 
   if (positionAssigned && isByeMatchUp) {
     if (winnerMatchUp) {
-      if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
+      if ([BYE, DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUpStatus)) {
         const result = assignMatchUpDrawPosition({
           matchUpId: winnerMatchUp.matchUpId,
           iterative: 'brightmagenta',

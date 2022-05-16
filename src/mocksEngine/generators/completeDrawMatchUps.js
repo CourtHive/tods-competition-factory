@@ -16,6 +16,7 @@ import { SUCCESS } from '../../constants/resultConstants';
 import {
   BYE,
   COMPLETED,
+  DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
 } from '../../constants/matchUpStatusConstants';
 
@@ -174,9 +175,11 @@ export function completeDrawMatchUps({
         (matchUp) => matchUp.matchUpId === matchUpId
       );
 
-      const isWOWO = targetMatchUp.matchUpStatus === DOUBLE_WALKOVER;
+      const isDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(
+        targetMatchUp.matchUpStatus
+      );
 
-      if (targetMatchUp?.readyToScore && !isWOWO) {
+      if (targetMatchUp?.readyToScore && !isDoubleExit) {
         const result = smartComplete({
           winningSide: !randomWinningSide && 1,
           matchUpStatusProfile,

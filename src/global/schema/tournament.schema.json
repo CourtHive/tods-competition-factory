@@ -1021,6 +1021,7 @@
         "SUSPENDED",
         "TO_BE_PLAYED",
         "WALKOVER",
+        "DOUBLE_DEFAULT",
         "DOUBLE_WALKOVER",
         "CANCELLED",
         "AWAITING_RESULT"

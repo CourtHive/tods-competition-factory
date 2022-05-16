@@ -23,6 +23,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import {
   BYE,
+  DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 import {
@@ -173,8 +174,11 @@ export function matchUpActions({
     matchUp.sides.filter((side) => side && side.participantId).length === 2;
 
   let activeDownstream;
-  const isDoubleWalkover = matchUp.matchUpStatus === DOUBLE_WALKOVER;
-  if (isDoubleWalkover) {
+  const isDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(
+    matchUp.matchUpStatus
+  );
+
+  if (isDoubleExit) {
     matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
 
     if (!inContextDrawMatchUps) {
@@ -200,7 +204,7 @@ export function matchUpActions({
 
   const readyToScore =
     (matchUpDrawPositionsAreAssigned || hasParticipants) &&
-    !(isDoubleWalkover && activeDownstream);
+    !(isDoubleExit && activeDownstream);
 
   const addPenaltyAction = {
     type: ADD_PENALTY,
@@ -242,7 +246,7 @@ export function matchUpActions({
 
   return {
     validActions,
-    isDoubleWalkover,
+    isDoubleExit,
     structureIsComplete,
   };
 }

@@ -1,6 +1,7 @@
 import { removeDirectedParticipants } from './removeDirectedParticipantsAndUpdateOutcome';
 import { doubleWalkoverAdvancement } from '../positionGovernor/doubleWalkoverAdvancement';
 import { attemptToSetMatchUpStatusBYE } from './attemptToSetMatchUpStatusBYE';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import {
@@ -15,11 +16,11 @@ import {
 import {
   BYE,
   CANCELLED,
+  DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { decorateResult } from '../../../global/functions/decorateResult';
 
 export function attemptToSetMatchUpStatus(params) {
   const {
@@ -32,7 +33,7 @@ export function attemptToSetMatchUpStatus(params) {
 
   const isBYE = matchUpStatus === BYE;
   const existingWinningSide = matchUp.winningSide;
-  const setWOWO = matchUpStatus === DOUBLE_WALKOVER;
+  const setWOWO = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUpStatus);
 
   const directing = isDirectingMatchUpStatus({ matchUpStatus });
   const nonDirecting = isNonDirectingMatchUpStatus({ matchUpStatus });
