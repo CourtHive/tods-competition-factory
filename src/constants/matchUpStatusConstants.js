@@ -5,6 +5,7 @@ export const CANCELLED = 'CANCELLED';
 export const COMPLETED = 'COMPLETED';
 export const DEAD_RUBBER = 'DEAD_RUBBER';
 export const DEFAULTED = 'DEFAULTED';
+export const DOUBLE_DEFAULT = 'DOUBLE_DEFAULT';
 export const DOUBLE_WALKOVER = 'DOUBLE_WALKOVER';
 export const IN_PROGRESS = 'IN_PROGRESS';
 export const INCOMPLETE = 'INCOMPLETE';
@@ -29,6 +30,7 @@ export const particicipantsRequiredMatchUpStatuses = [
   COMPLETED,
   DEFAULTED,
   DOUBLE_WALKOVER,
+  DOUBLE_DEFAULT,
   IN_PROGRESS,
   INCOMPLETE,
   RETIRED,
@@ -45,6 +47,7 @@ export const validMatchUpStatuses = [
   DEAD_RUBBER,
   DEFAULTED,
   DOUBLE_WALKOVER,
+  DOUBLE_DEFAULT,
   IN_PROGRESS,
   INCOMPLETE,
   NOT_PLAYED,
@@ -59,6 +62,7 @@ export const directingMatchUpStatuses = [
   COMPLETED,
   DEFAULTED,
   DOUBLE_WALKOVER,
+  DOUBLE_DEFAULT,
   RETIRED,
   WALKOVER,
 ];
@@ -83,6 +87,7 @@ export const completedMatchUpStatuses = [
   DEAD_RUBBER,
   DEFAULTED,
   DOUBLE_WALKOVER,
+  DOUBLE_DEFAULT,
   RETIRED,
   WALKOVER,
 ];
@@ -92,6 +97,7 @@ export const activeMatchUpStatuses = [
   COMPLETED,
   DEFAULTED,
   DOUBLE_WALKOVER,
+  DOUBLE_DEFAULT,
   IN_PROGRESS,
   RETIRED,
   WALKOVER,
@@ -113,6 +119,7 @@ export const matchUpStatusConstants = {
   DEAD_RUBBER,
   DEFAULTED,
   DOUBLE_WALKOVER,
+  DOUBLE_DEFAULT,
   IN_PROGRESS,
   INCOMPLETE,
   NOT_PLAYED,
