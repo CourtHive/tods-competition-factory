@@ -121,35 +121,35 @@ export const mutation = {
               seedAssignments: [
                 {
                   seedNumber: 1,
-                  seedValue: 1,
+                  seedValue: '1',
                 },
                 {
                   seedNumber: 2,
-                  seedValue: 2,
+                  seedValue: '2',
                 },
                 {
                   seedNumber: 3,
-                  seedValue: 3,
+                  seedValue: '3',
                 },
                 {
                   seedNumber: 4,
-                  seedValue: 4,
+                  seedValue: '4',
                 },
                 {
                   seedNumber: 5,
-                  seedValue: 5,
+                  seedValue: '5',
                 },
                 {
                   seedNumber: 6,
-                  seedValue: 6,
+                  seedValue: '6',
                 },
                 {
                   seedNumber: 7,
-                  seedValue: 7,
+                  seedValue: '7',
                 },
                 {
                   seedNumber: 8,
-                  seedValue: 8,
+                  seedValue: '8',
                 },
               ],
               structureId: '24fe0a92-e7c1-423c-a296-ca9f5fe4ae8c',

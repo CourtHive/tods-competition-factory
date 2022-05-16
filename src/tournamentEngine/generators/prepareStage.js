@@ -156,7 +156,9 @@ export function prepareStage({
         .slice(0, assignSeedsCount || seedsCount)
         .forEach((scaledEntry, index) => {
           const seedNumber = index + 1;
-          const seedValue = seedAssignmentProfile?.[seedNumber] || seedNumber;
+          const seedValue = (
+            seedAssignmentProfile?.[seedNumber] || seedNumber
+          )?.toString();
           // ?? attach basis of seeding information to seedAssignment ??
           const { participantId } = scaledEntry;
           assignSeed({

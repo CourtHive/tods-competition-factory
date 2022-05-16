@@ -24,7 +24,7 @@ export function getSeedValue({ participant, drawId, event }) {
     });
 
     if (result?.scaleItem) {
-      seedValue = result.scaleItem.scaleValue;
+      seedValue = result.scaleItem.scaleValue?.toString();
       break;
     }
   }
