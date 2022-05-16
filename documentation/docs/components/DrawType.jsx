@@ -25,7 +25,10 @@ const DrawType = ({ drawType, drawSize = 8 }) => {
   const eventId = eventIds?.[0];
 
   const { eventData } =
-    tournamentEngine.setState(tournamentRecord).getEventData({ eventId }) || {};
+    tournamentEngine.setState(tournamentRecord).getEventData({
+      participantsProfile: { withIOC: true, withISO2: true },
+      eventId,
+    }) || {};
 
   const compositionName = utilities.randomMember([
     'Australian',
