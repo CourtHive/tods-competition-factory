@@ -1,5 +1,6 @@
 import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
 import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
+import { getNumericSeedValue } from '../../../getters/getNumericSeedValue';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { unique } from '../../../../utilities';
@@ -164,12 +165,6 @@ export function getValidAssignmentActions({
   }
 
   return { validAssignmentActions };
-}
-
-function getNumericSeedValue(seedValue) {
-  return typeof seedValue === 'string'
-    ? parseInt(seedValue.split('-'))
-    : seedValue;
 }
 
 function validAssignmentsSort(a, b) {

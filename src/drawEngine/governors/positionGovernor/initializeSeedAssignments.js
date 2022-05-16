@@ -57,7 +57,7 @@ export function initializeStructureSeedAssignments({
   structure.seedAssignments = generateRange(1, seedsCount + 1).map(
     (seedNumber) => ({
       seedNumber,
-      seedValue: seedNumber,
+      seedValue: seedNumber?.toString(),
       participantId: undefined,
     })
   );

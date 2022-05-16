@@ -224,7 +224,7 @@ it('can disable actions for a specified structure', () => {
   expect(seedParticipantIds.length).toEqual(2);
 
   let result = tournamentEngine.assignSeedPositions({
-    assignments: [{ seedNumber: 1, seedValue: 1, participantId: undefined }],
+    assignments: [{ seedNumber: 1, seedValue: '1', participantId: undefined }],
     structureId: mainStructure.structureId,
     eventId,
     drawId,

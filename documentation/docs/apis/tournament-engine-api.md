@@ -642,7 +642,7 @@ Assign **seedNumbers** to **participantIds** within a target draw structure.
 **seedNumber** is unique while **seedValue** can be any string representation, e.g `"5-8"`
 
 ```js
-let assignments = [{ seedNumber: 1, seedValue: 1, participantId }];
+let assignments = [{ seedNumber: 1, seedValue: '1', participantId }];
 tournamentEngine.assignSeedPositions({
   eventId,
   drawId,

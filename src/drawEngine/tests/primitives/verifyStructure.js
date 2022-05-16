@@ -4,6 +4,7 @@ import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssig
 import { verifyDrawHierarchy } from '../../tests/primitives/verifyDrawHierarchy';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
+import { getNumericSeedValue } from '../../getters/getNumericSeedValue';
 import { chunkArray, generateRange } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
 
@@ -127,11 +128,6 @@ export function verifyStructure({
       return pairedDrawPosition;
     }
   );
-  function getNumericSeedValue(seedValue) {
-    return typeof seedValue === 'string'
-      ? parseInt(seedValue.split('-'))
-      : seedValue;
-  }
 
   const seedValuesOfSeedsWithBye = positionedSeeds
     .filter((assignment) =>
