@@ -3,7 +3,7 @@ import fs from 'fs';
 
 import addFormats from 'ajv-formats';
 
-const ajv = new Ajv({ allowUnionTypes: true });
+const ajv = new Ajv({ allowUnionTypes: true, verbose: true });
 addFormats(ajv);
 
 const schema = JSON.parse(
