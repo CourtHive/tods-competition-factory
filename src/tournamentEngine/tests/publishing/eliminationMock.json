@@ -520,19 +520,19 @@
           "seedAssignments": [
             {
               "seedNumber": 1,
-              "seedValue": 1
+              "seedValue": "1"
             },
             {
               "seedNumber": 2,
-              "seedValue": 2
+              "seedValue": "2"
             },
             {
               "seedNumber": 3,
-              "seedValue": 3
+              "seedValue": "3"
             },
             {
               "seedNumber": 4,
-              "seedValue": 4
+              "seedValue": "4"
             }
           ],
           "structureId": "68b12099-e663-47b0-aac6-693ccfd2f6e4",
