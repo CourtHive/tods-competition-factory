@@ -521,35 +521,35 @@
           "seedAssignments": [
             {
               "seedNumber": 1,
-              "seedValue": 1
+              "seedValue": "1"
             },
             {
               "seedNumber": 2,
-              "seedValue": 2
+              "seedValue": "2"
             },
             {
               "seedNumber": 3,
-              "seedValue": 3
+              "seedValue": "3"
             },
             {
               "seedNumber": 4,
-              "seedValue": 4
+              "seedValue": "4"
             },
             {
               "seedNumber": 5,
-              "seedValue": 5
+              "seedValue": "5"
             },
             {
               "seedNumber": 6,
-              "seedValue": 6
+              "seedValue": "6"
             },
             {
               "seedNumber": 7,
-              "seedValue": 7
+              "seedValue": "7"
             },
             {
               "seedNumber": 8,
-              "seedValue": 8
+              "seedValue": "8"
             }
           ],
           "structureId": "fe22278b-4c8d-4886-90e6-2b45acf0dc95",

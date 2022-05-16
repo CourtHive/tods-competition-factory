@@ -1,5 +1,6 @@
 import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
 import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
+import { getNumericSeedValue } from '../../../getters/getNumericSeedValue';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { unique } from '../../../../utilities';
@@ -168,6 +169,10 @@ export function getValidAssignmentActions({
 
 function validAssignmentsSort(a, b) {
   if (a.bye) return -1;
-  if (a.seedValue < b.seedValue || (a.seedValue && !b.seedValue)) return -1;
+  if (
+    getNumericSeedValue(a.seedValue) < getNumericSeedValue(b.seedValue) ||
+    (a.seedValue && !b.seedValue)
+  )
+    return -1;
   return (a.seedNumber || 0) - (b.seedNumber || 0);
 }

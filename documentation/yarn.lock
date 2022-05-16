@@ -9044,20 +9044,20 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
-tods-competition-factory@0.195.1:
-  version "0.195.1"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.195.1.tgz#f086a297aae8e8420820cab369c215b5163c01e2"
-  integrity sha512-oxEshN0ZxagSfcEOW0O5+ITozjTdW4ViNqC8RzNC2zwjGlfOFQhkHpxYC4z5PGBGxr0/FAXrAcYSqEQTKLg3iQ==
+tods-competition-factory@0.196.2:
+  version "0.196.2"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.196.2.tgz#a5691afaedd5e4e5975c7a1ffe4d61dd20ecbc79"
+  integrity sha512-ftFsFVQOtvLI3a16htOUCg8oLZvFAKpl4pOz9Dvm2jhBD/xY5/oOIIXLrAkb0sW0J9JowEun3HIn+X9w/NZIRA==
 
-tods-competition-factory@0.74.1:
-  version "0.74.1"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.74.1.tgz#87eeeef018c347f48295690304ff1177c55cdbd7"
-  integrity sha512-r/sw2BDyCBPHL3QziVVlPA02G5G+EH320WwZgwPvLVa0YgilhAVQzVax1Yd+E56veyK9bAGT6VeVLj6H3O3mxg==
+tods-competition-factory@0.197.0:
+  version "0.197.0"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.197.0.tgz#9192d0f70e52200f8ba5a1eb470dd70307ba3b07"
+  integrity sha512-nsRQtscLkToaetVmzoOoPRPg2Z/lWSs34pIw5EYyOaq7z5gVlSxwISKYKSk1ms3pOGXPDLarnSodQOcyK+6mIA==
 
-tods-score-grid@0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/tods-score-grid/-/tods-score-grid-0.5.2.tgz#8ced14f389749148708ef5828cf543b447ec9795"
-  integrity sha512-n6J9QXnHWsbejQDW/ArxhkreBcmNaxABKrc5IMFTzamLGk96fQEzqBoC18TK8VcCZWKbn9Y2Md+2Y23+ad7Bjw==
+tods-score-grid@0.6.4:
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/tods-score-grid/-/tods-score-grid-0.6.4.tgz#840a673517a613e1281334bf2a247c00c54f7cce"
+  integrity sha512-44y8FMmxxfYdaOD2uARoeg0h+DlKHw+T83taMxPW3GdjK2qkZo6RjdxnVSAk8OgC7VgenjIlhmcm/TP2uebHbw==
   dependencies:
     "@radix-ui/colors" "^0.1.7"
     "@radix-ui/react-dropdown-menu" "^0.1.1"
@@ -9069,7 +9069,7 @@ tods-score-grid@0.5.2:
     react "^17.0.2"
     react-country-flag "3.0.2"
     react-dom "^17.0.2"
-    tods-competition-factory "0.74.1"
+    tods-competition-factory "0.196.2"
 
 toidentifier@1.0.0:
   version "1.0.0"

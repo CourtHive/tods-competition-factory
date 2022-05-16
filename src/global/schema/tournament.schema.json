@@ -33,6 +33,7 @@
         },
         "endDate": {
           "type": "string",
+          "description": "Date on which the tournament ends",
           "anyOf": [
             {
               "format": "date-time"
@@ -98,6 +99,7 @@
         },
         "startDate": {
           "type": "string",
+          "description": "Date on which the tournament starts",
           "anyOf": [
             {
               "format": "date-time"
@@ -227,7 +229,7 @@
         "allowedDrawTypes": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/DrawStructureEnum"
+            "$ref": "#/definitions/DrawTypeEnum"
           }
         },
         "category": {
@@ -244,6 +246,7 @@
         },
         "endDate": {
           "type": "string",
+          "description": "Date on which the event ends",
           "anyOf": [
             {
               "format": "date-time"
@@ -294,6 +297,7 @@
         },
         "startDate": {
           "type": "string",
+          "description": "Date on which the event starts",
           "anyOf": [
             {
               "format": "date-time"
@@ -322,7 +326,7 @@
       "required": ["eventId"],
       "additionalProperties": false
     },
-    "DrawStructureEnum": {
+    "DrawTypeEnum": {
       "type": "string",
       "enum": [
         "COMPASS",
@@ -501,10 +505,11 @@
           "$ref": "#/definitions/DrawStatusEnum"
         },
         "drawType": {
-          "$ref": "#/definitions/DrawStructureEnum"
+          "$ref": "#/definitions/DrawTypeEnum"
         },
         "endDate": {
           "type": "string",
+          "description": "Date on which the draw ends",
           "anyOf": [
             {
               "format": "date-time"
@@ -546,6 +551,7 @@
         },
         "startDate": {
           "type": "string",
+          "description": "Date on which the draw begins",
           "anyOf": [
             {
               "format": "date-time"
@@ -868,10 +874,12 @@
           "type": "array",
           "items": {
             "type": "number"
-          }
+          },
+          "maxItems": 2
         },
         "endDate": {
           "type": "string",
+          "description": "Date on which the machUp ends",
           "anyOf": [
             {
               "format": "date-time"
@@ -943,6 +951,7 @@
         },
         "startDate": {
           "type": "string",
+          "description": "Date on which matchUp begins",
           "anyOf": [
             {
               "format": "date-time"
@@ -3030,12 +3039,6 @@
           "type": "string"
         },
         "roles": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "subVenueIds": {
           "type": "array",
           "items": {
             "type": "string"

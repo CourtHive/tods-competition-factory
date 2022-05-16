@@ -41,10 +41,11 @@ export function getStructureSeedAssignments({
           return a.GEMscore < b.GEMscore ? 1 : a.GEMscore > b.GEMscore ? -1 : 0;
         })
         .map((entry, index) => {
+          const seedNumber = index + 1;
           return {
             participantId: entry.participantId,
-            seedNumber: index + 1,
-            seedValue: index + 1,
+            seedValue: seedNumber,
+            seedNumber,
             seedProxy: true, // flag so that proxy seeding information doesn't get used externally
           };
         });

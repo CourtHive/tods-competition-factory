@@ -3,6 +3,7 @@ import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { getSeedBlocks } from '../governors/positionGovernor/getSeedBlocks';
 import { getStructureSeedAssignments } from './getStructureSeedAssignments';
 import { structureAssignedDrawPositions } from './positionsGetter';
+import { getNumericSeedValue } from './getNumericSeedValue';
 import { findStructure } from './findStructure';
 import {
   chunkArray,
@@ -498,7 +499,9 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
       (assignment) => !selectedParticipantIds.includes(assignment.participantId)
     );
     const lowestSeedValue = Math.min(
-      ...filteredAssignments.map((assignment) => assignment.seedValue)
+      ...filteredAssignments.map((assignment) =>
+        getNumericSeedValue(assignment.seedValue)
+      )
     );
     const assignmentsWithLowestSeedValue = filteredAssignments.filter(
       (assignment) => assignment.seedValue === lowestSeedValue

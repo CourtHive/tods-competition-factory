@@ -12,7 +12,7 @@ export function addNationalityCode({ participant, withISO2, withIOC }) {
       const country = countries.find(({ iso }) => iso === nationalityCode);
       if (withIOC && country?.ioc && !person.iocNationalityCode)
         person.iocNationalityCode = country.ioc;
-      if (withISO2 && country?.iso2 && !person.iocNationalityCode)
+      if (withISO2 && country?.iso2 && !person.iso2NationalityCode)
         person.iso2NationalityCode = country.iso2;
 
       if (country?.label && !person.countryName)

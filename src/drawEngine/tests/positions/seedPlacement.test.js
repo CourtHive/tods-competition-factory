@@ -400,7 +400,7 @@ it.only('can assign seedNumbers and drawPositions to seeded participants', () =>
 
   result = drawEngine.modifySeedAssignment({
     participantId: participantId3,
-    seedValue: 0,
+    seedValue: '0',
     structureId,
   });
   expect(result.success).toEqual(true);

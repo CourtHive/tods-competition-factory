@@ -78,7 +78,11 @@ it('can generate a tournament with events and draws', () => {
   }
 
   let assignments = [
-    { seedNumber: 1, seedValue: 1, participantId: getPositionParticipantId(1) },
+    {
+      seedNumber: 1,
+      seedValue: '1',
+      participantId: getPositionParticipantId(1),
+    },
   ];
   result = tournamentEngine.assignSeedPositions({
     structureId: mainStructureId,
@@ -90,7 +94,11 @@ it('can generate a tournament with events and draws', () => {
 
   // drawPositions are already assigned, so drawPosition 2 is not valid for 1st seed
   assignments = [
-    { seedNumber: 1, seedValue: 1, participantId: getPositionParticipantId(2) },
+    {
+      seedNumber: 1,
+      seedValue: '1',
+      participantId: getPositionParticipantId(2),
+    },
   ];
   result = tournamentEngine.assignSeedPositions({
     structureId: mainStructureId,

@@ -68,7 +68,7 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
   expect(teamParticipants.length).toBeGreaterThan(0);
 
   const { eventData } = tournamentEngine.getEventData({
-    participantsProfile: { withIOC: true },
+    participantsProfile: { withIOC: true, withISO2: true },
     eventId,
   });
   expect(eventData.drawsData[0].structures.length).toEqual(1);
@@ -79,6 +79,7 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
 
     // expect that each individual participant on the team also has team information
     matchUp.sides.forEach((side) => {
+      expect(side.participant.person.iso2NationalityCode).not.toBeUndefined();
       if (isoWithIOC.includes(side.participant.person.nationalityCode)) {
         expect(side.participant.person.iocNationalityCode).not.toBeUndefined();
         iocCount += 1;
@@ -90,7 +91,7 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
   expect(iocCount).toBeGreaterThan(0);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
-    participantsProfile: { withIOC: true },
+    participantsProfile: { withIOC: true, withISO2: true },
   });
 
   iocCount = 0;
@@ -106,6 +107,7 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
         .flat()
         .filter(Boolean);
       persons.forEach((person) => {
+        expect(person.iso2NationalityCode).not.toBeUndefined();
         if (isoWithIOC.includes(person.nationalityCode)) {
           expect(person.iocNationalityCode).not.toBeUndefined();
           iocCount += 1;

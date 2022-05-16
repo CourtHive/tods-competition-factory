@@ -84,6 +84,7 @@ it('can autoSeed by Rankings', () => {
   });
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    withSeeding: true,
     withEvents: true,
   }));
 
@@ -111,6 +112,7 @@ it('can autoSeed by Rankings', () => {
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     usePublishState: true,
+    withSeeding: true,
     withEvents: true,
   }));
 
@@ -126,6 +128,7 @@ it('can autoSeed by Rankings', () => {
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     usePublishState: true,
+    withSeeding: true,
     withEvents: true,
   }));
 
@@ -142,6 +145,7 @@ it('can autoSeed by Rankings', () => {
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     usePublishState: true,
+    withSeeding: true,
     withEvents: true,
   }));
 

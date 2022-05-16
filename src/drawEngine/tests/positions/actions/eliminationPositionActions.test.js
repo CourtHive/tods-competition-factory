@@ -67,7 +67,7 @@ it('can return accurate position details when requesting positionActions', () =>
   );
   expect(seedAssignmentAction.method).toEqual(SEED_VALUE_METHOD);
   const { method, payload } = seedAssignmentAction;
-  payload.seedValue = 3;
+  payload.seedValue = '3';
   result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
 
@@ -81,7 +81,7 @@ it('can return accurate position details when requesting positionActions', () =>
     structureId,
   });
   expect(seedAssignments.length).toEqual(1);
-  expect(seedAssignments[0].seedValue).toEqual(3);
+  expect(seedAssignments[0].seedValue).toEqual('3');
 
   drawPosition = 2;
   result = tournamentEngine.positionActions({
