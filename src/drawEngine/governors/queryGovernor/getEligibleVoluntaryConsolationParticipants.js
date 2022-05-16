@@ -200,28 +200,26 @@ export function getEligibleVoluntaryConsolationParticipants({
   const notPreviouslySelected = (participantId) =>
     !voluntaryConsolationEntryIds.includes(participantId);
 
-  const eligibleParticipants = consideredParticipants.filter(
-    ({ participantId }) =>
-      satisfiesLoss(participantId) &&
-      satisfiesPlay(participantId) &&
-      satisfiesWinsLimit(participantId) &&
-      satisfiesMatchUpsLimit(participantId) &&
-      notPreviouslySelected(participantId)
-  );
-
-  const hydrateIndividualParticipants = (eligibleParticipants) =>
-    eligibleParticipants?.forEach((participant) => {
-      if (participant.individualParticipantIds) {
-        participant.individualParticipants =
-          participant.individualParticipantIds.map((participantId) =>
-            tournamentRecord?.participants?.find(
-              (participant) => participant.participantId === participantId
+  const eligibleParticipants = consideredParticipants
+    .filter(
+      ({ participantId }) =>
+        satisfiesLoss(participantId) &&
+        satisfiesPlay(participantId) &&
+        satisfiesWinsLimit(participantId) &&
+        satisfiesMatchUpsLimit(participantId) &&
+        notPreviouslySelected(participantId)
+    )
+    .map((participant) => {
+      return {
+        ...participant,
+        individualParticipants: participant.individualParticipantIds?.map(
+          (participantId) =>
+            tournamentRecord.participants?.find(
+              (individual) => individual.participantId === participantId
             )
-          );
-      }
+        ),
+      };
     });
-
-  hydrateIndividualParticipants(eligibleParticipants);
 
   // PRESERVED for debugging
   /*
