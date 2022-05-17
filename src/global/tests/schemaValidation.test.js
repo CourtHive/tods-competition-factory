@@ -3,7 +3,7 @@ import fs from 'fs';
 
 import addFormats from 'ajv-formats';
 
-const ajv = new Ajv({ allowUnionTypes: true, verbose: true });
+const ajv = new Ajv({ allowUnionTypes: true, verbose: true, allErrors: true });
 addFormats(ajv);
 
 const schema = JSON.parse(
@@ -22,6 +22,16 @@ it.each(filenames)(
     const data = JSON.parse(
       fs.readFileSync(`./src/global/testHarness/${filename}`, 'UTF-8')
     );
-    expect(validate(data)).toEqual(true);
+    const result = validate(data);
+
+    // to document pattern of use
+    if (validate.errors) {
+      const errors = ajv.errorsText(validate.errors, {
+        dataVar: 'config',
+      });
+      console.log({ errors });
+    }
+
+    expect(result).toEqual(true);
   }
 );

@@ -25,6 +25,7 @@ import {
   CANCELLED,
   COMPLETED,
   DEFAULTED,
+  DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   IN_PROGRESS,
   RETIRED,
@@ -163,6 +164,7 @@ export function getDrawData({
             RETIRED,
             WALKOVER,
             IN_PROGRESS,
+            DOUBLE_DEFAULT,
             DOUBLE_WALKOVER,
           ].includes(matchUp.matchUpStatus);
           return (

@@ -1,4 +1,4 @@
-import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
+// import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
 import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getNumericSeedValue } from '../../../getters/getNumericSeedValue';
 import { getParticipantId } from '../../../../global/functions/extractors';
@@ -26,7 +26,7 @@ export function getValidAssignmentActions({
   isByePosition,
   drawPosition,
   structureId,
-  structure,
+  // structure,
   event,
 }) {
   const { drawId } = drawDefinition;
@@ -138,6 +138,7 @@ export function getValidAssignmentActions({
       // otherwise look for any unplaced entries
       // 1) unassigned DIRECT_ACCEPTANCE or WILDCARD structure entries
       availableParticipantIds = unassignedParticipantIds;
+      /*
       // 2) unassigned qualifer entries
       const { unplacedQualifiersCount } = getQualifiersData({
         drawDefinition,
@@ -145,6 +146,7 @@ export function getValidAssignmentActions({
         structure,
       });
       if (unplacedQualifiersCount) console.log({ unplacedQualifiersCount });
+      */
     }
 
     // add structureId and drawPosition to the payload so the client doesn't need to discover

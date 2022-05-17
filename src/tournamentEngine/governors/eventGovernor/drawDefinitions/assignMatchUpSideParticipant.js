@@ -1,10 +1,6 @@
 import { modifyMatchUpNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findMatchUp';
 
-import {
-  completedMatchUpStatuses,
-  DOUBLE_WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
 import { AD_HOC } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
@@ -16,6 +12,11 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_SIDE_NUMBER,
 } from '../../../../constants/errorConditionConstants';
+import {
+  completedMatchUpStatuses,
+  DOUBLE_DEFAULT,
+  DOUBLE_WALKOVER,
+} from '../../../../constants/matchUpStatusConstants';
 
 // method only currently used for AD_HOC matchUps where there are no drawPositions
 export function assignMatchUpSideParticipant({
@@ -53,7 +54,7 @@ export function assignMatchUpSideParticipant({
     !participantId &&
     (matchUp.score?.scoreStringSide1 ||
       completedMatchUpStatuses.includes(matchUp.matchUpstatus) ||
-      matchUp.matchUpStatus === DOUBLE_WALKOVER)
+      [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus))
   )
     return {
       error: CANNOT_REMOVE_PARTICIPANTS,
