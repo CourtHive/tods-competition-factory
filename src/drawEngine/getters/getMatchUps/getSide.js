@@ -80,7 +80,7 @@ function getSideValue({
 }
 
 function getSeeding({ seedAssignments, participantId }) {
-  return seedAssignments.find(
+  return seedAssignments?.find(
     (assignment) =>
       !assignment.seedProxy && assignment.participantId === participantId
   );
