@@ -1,15 +1,19 @@
 import { checkSchedulingProfile } from '../../scheduleGovernor/schedulingProfile';
+import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
 import { addEventTimeItem } from '../../tournamentGovernor/addTimeItem';
+import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
-import { getTimeItem } from '../../queryGovernor/timeItems';
 import { addNotice } from '../../../../global/state/globalState';
+import { getTimeItem } from '../../queryGovernor/timeItems';
 import { findEvent } from '../../../getters/eventGetter';
 import {
   deleteDrawNotice,
   deleteMatchUpsNotice,
 } from '../../../../drawEngine/notifications/drawNotifications';
 
+import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
 import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
+import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { AUDIT } from '../../../../constants/topicConstants';
 import {
@@ -48,8 +52,19 @@ export function deleteDrawDefinitions({
     drawIds.length && drawIds.every((drawId) => eventDrawIds.includes(drawId));
   if (!drawDefinitionsExist) return { error: DRAW_DEFINITION_NOT_FOUND };
 
+  const { flightProfile } = getFlightProfile({ event });
   event.drawDefinitions = event.drawDefinitions.filter((drawDefinition) => {
     if (drawIds.includes(drawDefinition.drawId)) {
+      const flight = flightProfile?.flights?.find(
+        (flight) => flight.drawId === drawDefinition.drawId
+      );
+
+      if (flight) {
+        flight.drawEntries = flight.drawEntries?.filter((entry) =>
+          STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
+        );
+      }
+
       const audit = {
         action: DELETE_DRAW_DEFINITIONS,
         payload: {
@@ -72,6 +87,15 @@ export function deleteDrawDefinitions({
     }
     return !drawIds.includes(drawDefinition.drawId);
   });
+
+  if (flightProfile) {
+    const extension = {
+      name: FLIGHT_PROFILE,
+      value: flightProfile,
+    };
+
+    addEventExtension({ event, extension });
+  }
 
   // cleanup references to drawId in schedulingProfile extension
   checkSchedulingProfile({ tournamentRecord });

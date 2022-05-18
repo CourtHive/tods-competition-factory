@@ -60,9 +60,9 @@ export function deleteFlightAndFlightDraw({
   }
 
   deleteDrawDefinitions({
-    tournamentRecord,
-    eventId: event.eventId,
     drawIds: [drawId, ...dependentDrawIds],
+    eventId: event.eventId,
+    tournamentRecord,
     auditData,
   });
 
