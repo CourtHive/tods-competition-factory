@@ -56,7 +56,7 @@ export function generatePositioningCandidate(params) {
 
   // all drawPositions which are available for placement
   const potentialDrawPositions = initialPositionAssignments
-    .filter((assignment) => !assignment.participantId)
+    .filter((assignment) => !assignment.participantId && !assignment.bye)
     .map((assignment) => assignment.drawPosition);
 
   generateRange(0, opponentsToPlaceCount).forEach(() => {

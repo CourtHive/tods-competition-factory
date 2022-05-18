@@ -1,5 +1,6 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
+import { assignDrawPositionBye } from '../byePositioning/assignDrawPositionBye';
 import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
 import { generatePositioningCandidate } from './generatePositioningCandidate';
 import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
@@ -21,7 +22,6 @@ import {
   MISSING_AVOIDANCE_POLICY,
   NO_CANDIDATES,
 } from '../../../../constants/errorConditionConstants';
-import { assignDrawPositionBye } from '../byePositioning/assignDrawPositionBye';
 
 /**
  *
@@ -180,7 +180,8 @@ export function randomUnseededSeparation({
   candidate.positionAssignments
     .filter(
       (assignment) =>
-        !alreadyAssignedParticipantIds.includes(assignment.participantId)
+        !alreadyAssignedParticipantIds.includes(assignment.participantId) &&
+        !assignment.bye
     )
     .forEach((assignment) => {
       if (assignment.bye) {
