@@ -36,6 +36,7 @@ import {
 export function randomUnseededSeparation({
   unseededParticipantIds,
   inContextDrawMatchUps,
+  unseededByePositions,
   tournamentRecord,
   drawDefinition,
   participants,
@@ -129,6 +130,7 @@ export function randomUnseededSeparation({
       unseededParticipantIds,
       opponentsToPlaceCount,
       pairedPriority: false,
+      unseededByePositions,
       participantIdGroups,
       drawPositionChunks,
       drawPositionGroups,
@@ -151,6 +153,7 @@ export function randomUnseededSeparation({
         unseededParticipantIds,
         opponentsToPlaceCount,
         pairedPriority: true,
+        unseededByePositions,
         participantIdGroups,
         drawPositionChunks,
         drawPositionGroups,
@@ -180,8 +183,8 @@ export function randomUnseededSeparation({
   candidate.positionAssignments
     .filter(
       (assignment) =>
-        !alreadyAssignedParticipantIds.includes(assignment.participantId) &&
-        !assignment.bye
+        !alreadyAssignedParticipantIds.includes(assignment.participantId)
+      // && !assignment.bye
     )
     .forEach((assignment) => {
       if (assignment.bye) {
