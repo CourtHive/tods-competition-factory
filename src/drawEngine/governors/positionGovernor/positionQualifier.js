@@ -1,7 +1,7 @@
 import { positionParticipantAction } from './positionParticipantAction';
 
 export function qualifierDrawPositionAssignment({
-  qualifierParticipantId,
+  qualifyingParticipantId,
   tournamentRecord,
   drawDefinition,
   drawPosition,
@@ -9,7 +9,7 @@ export function qualifierDrawPositionAssignment({
 }) {
   return positionParticipantAction({
     positionActionName: 'qualifierDrawPositionAssignment',
-    participantId: qualifierParticipantId,
+    participantId: qualifyingParticipantId,
     isQualifierPoasition: true,
     tournamentRecord,
     drawDefinition,

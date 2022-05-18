@@ -433,6 +433,30 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
     'ALTERNATE', 'BYE', 'LUCKY', 'NICKNAME', 'PENALTY',
     'QUALIFIER', 'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
   ]);
+
+  let qualifyingAction = result.validActions.find(
+    ({ type }) => type === QUALIFIER
+  );
+  let qualifyingParticipantId = qualifyingAction.qualifyingParticipantIds[0];
+  let payload = { ...qualifyingAction.payload, qualifyingParticipantId };
+  result = tournamentEngine[qualifyingAction.method](payload);
+  expect(result.success).toEqual(true);
+
+  const qualifyingDrawPositions = positionAssignments
+    .filter(({ qualifier }) => qualifier)
+    .map(({ drawPosition }) => drawPosition);
+  result = tournamentEngine.positionActions({
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    drawPosition: qualifyingDrawPositions[0],
+    structureId: q2.structureId,
+    drawId,
+  });
+
+  qualifyingAction = result.validActions.find(({ type }) => type === QUALIFIER);
+  qualifyingParticipantId = qualifyingAction.qualifyingParticipantIds[0];
+  payload = { ...qualifyingAction.payload, qualifyingParticipantId };
+  result = tournamentEngine[qualifyingAction.method](payload);
+  expect(result.success).toEqual(true);
 });
 
 it('supports round robin qualifying structures', () => {
