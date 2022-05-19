@@ -95,7 +95,7 @@ export function positionParticipantAction(params) {
     matchUpsMap,
     event,
   });
-  if (!result.success) return result;
+  if (!result.success) return decorateResult({ result, stack });
 
   return successNotice({ removedParticipantId });
 
@@ -114,6 +114,8 @@ export function positionParticipantAction(params) {
 
     addPositionActionTelemetry({ drawDefinition, positionAction });
 
-    return { ...SUCCESS, removedParticipantId };
+    return decorateResult({
+      result: { ...SUCCESS, context: { removedParticipantId }, stack },
+    });
   }
 }
