@@ -6,14 +6,21 @@ import { getMatchUpsMap } from './getMatchUpsMap';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { decorateResult } from '../../../global/functions/decorateResult';
 
 /*
   return ALL matchUps within a drawDefinition, regardless of state
 */
 export function getAllDrawMatchUps(params) {
-  if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-
+  const stack = 'getAllDrawMatchUps';
   Object.assign(params, { requireParticipants: false });
+
+  const result = getDrawMatchUps({
+    ...params,
+    contextProfile: params.contextProfile,
+  });
+
+  if (result.error) return decorateResult({ result, stack });
 
   const {
     abandonedMatchUps,
@@ -22,7 +29,8 @@ export function getAllDrawMatchUps(params) {
     pendingMatchUps,
     byeMatchUps,
     matchUpsMap,
-  } = getDrawMatchUps(params);
+  } = result;
+
   const matchUps = [].concat(
     ...abandonedMatchUps,
     ...completedMatchUps,

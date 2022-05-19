@@ -516,12 +516,15 @@ export function getAllStructureMatchUps({
         if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
       }
 
-      if (
+      const inferGender =
         contextProfile?.inferGender &&
         !matchUpWithContext.gender &&
         matchUpWithContext.sides?.length === 2 &&
-        matchUpWithContext.matchUpType !== TEAM
-      ) {
+        matchUpWithContext.matchUpType !== TEAM;
+
+      // if (contextProfile) console.log({ contextProfile, inferGender });
+
+      if (inferGender) {
         const sideGenders = matchUpWithContext.sides.map((side) => {
           if (matchUpWithContext.matchUpType === SINGLES)
             return side.participant?.person?.sex;
