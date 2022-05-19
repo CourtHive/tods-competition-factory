@@ -108,7 +108,7 @@
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-jest": "26.2.2",
     "eslint-plugin-prettier": "4.0.0",
-    "eslint-plugin-react": "7.29.4",
+    "eslint-plugin-react": "7.30.0",
     "esm": "^3.2.25",
     "fs-extra": "10.1.0",
     "husky": "8.0.1",
