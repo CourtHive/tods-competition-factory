@@ -1,5 +1,6 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
+import { assignDrawPositionBye } from '../byePositioning/assignDrawPositionBye';
 import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
 import { generatePositioningCandidate } from './generatePositioningCandidate';
 import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
@@ -21,7 +22,6 @@ import {
   MISSING_AVOIDANCE_POLICY,
   NO_CANDIDATES,
 } from '../../../../constants/errorConditionConstants';
-import { assignDrawPositionBye } from '../byePositioning/assignDrawPositionBye';
 
 /**
  *
@@ -36,6 +36,7 @@ import { assignDrawPositionBye } from '../byePositioning/assignDrawPositionBye';
 export function randomUnseededSeparation({
   unseededParticipantIds,
   inContextDrawMatchUps,
+  unseededByePositions,
   tournamentRecord,
   drawDefinition,
   participants,
@@ -129,6 +130,7 @@ export function randomUnseededSeparation({
       unseededParticipantIds,
       opponentsToPlaceCount,
       pairedPriority: false,
+      unseededByePositions,
       participantIdGroups,
       drawPositionChunks,
       drawPositionGroups,
@@ -151,6 +153,7 @@ export function randomUnseededSeparation({
         unseededParticipantIds,
         opponentsToPlaceCount,
         pairedPriority: true,
+        unseededByePositions,
         participantIdGroups,
         drawPositionChunks,
         drawPositionGroups,
@@ -181,6 +184,7 @@ export function randomUnseededSeparation({
     .filter(
       (assignment) =>
         !alreadyAssignedParticipantIds.includes(assignment.participantId)
+      // && !assignment.bye
     )
     .forEach((assignment) => {
       if (assignment.bye) {

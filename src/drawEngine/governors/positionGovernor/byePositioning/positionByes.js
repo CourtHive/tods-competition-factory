@@ -76,5 +76,5 @@ export function positionByes({
     if (result?.error) return result;
   }
 
-  return SUCCESS;
+  return { ...SUCCESS, unseededByePositions };
 }

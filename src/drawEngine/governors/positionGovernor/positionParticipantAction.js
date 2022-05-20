@@ -1,5 +1,6 @@
 import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { getPositionAssignments } from '../../getters/positionsGetter';
@@ -22,6 +23,8 @@ export function positionParticipantAction(params) {
     structureId,
     event,
   } = params;
+
+  const stack = 'positionParticipantAction';
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
@@ -51,6 +54,7 @@ export function positionParticipantAction(params) {
   );
 
   if (positionAssignment?.participantId) {
+    const removedParticipantId = positionAssignment.participantId;
     let result = assignDrawPosition({
       inContextDrawMatchUps,
       tournamentRecord,
@@ -61,10 +65,10 @@ export function positionParticipantAction(params) {
       matchUpsMap,
     });
     if (!result.success) {
-      console.log({ result });
+      return decorateResult({ result, stack });
     }
     return successNotice({
-      removedParticipantId: positionAssignment.participantId,
+      removedParticipantId,
     });
   }
 
@@ -77,7 +81,7 @@ export function positionParticipantAction(params) {
     matchUpsMap,
     event,
   });
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
   const removedParticipantId = result.participantId;
 
   result = assignDrawPosition({
@@ -91,7 +95,7 @@ export function positionParticipantAction(params) {
     matchUpsMap,
     event,
   });
-  if (!result.success) return result;
+  if (!result.success) return decorateResult({ result, stack });
 
   return successNotice({ removedParticipantId });
 
@@ -110,6 +114,8 @@ export function positionParticipantAction(params) {
 
     addPositionActionTelemetry({ drawDefinition, positionAction });
 
-    return { ...SUCCESS, removedParticipantId };
+    return decorateResult({
+      result: { ...SUCCESS, context: { removedParticipantId }, stack },
+    });
   }
 }

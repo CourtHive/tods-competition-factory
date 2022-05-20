@@ -32,18 +32,19 @@ export function generateVenues({ tournamentRecord, venueProfiles }) {
     venueIds.push(venueId);
 
     const dates = dateRange(startDate, endDate);
-    dateAvailability =
-      (!Array.isArray(dateAvailability) &&
+    const generatedDateAvailability =
+      !Array.isArray(dateAvailability) &&
+      [{ startTime, endTime }].concat(
         dates.map((date) => ({
           date: formatDate(date),
           startTime,
           endTime,
-        }))) ||
-      dateAvailability;
+        }))
+      );
 
     result = addCourts({
+      dateAvailability: dateAvailability || generatedDateAvailability,
       tournamentRecord,
-      dateAvailability,
       courtTimings,
       courtsCount,
       courtNames,

@@ -1,4 +1,5 @@
 import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 import { getTopics } from '../../../../global/state/globalState';
@@ -76,13 +77,12 @@ export function addDrawDefinition({
     return { error: INVALID_DRAW_DEFINITION, relevantFlight };
   }
 
-  // check relevantFlight.drawEntries are equivalent to drawEntries
-  const matchingFlighEntries = relevantFlight?.drawEntries.every(
+  const drawEntriesPresentInFlight = drawEntries.every(
     ({ participantId, entryStatus }) => {
-      const drawEntry = drawEntries.find(
-        (drawEntry) => drawEntry && drawEntry.participantId === participantId
+      const flightEntry = relevantFlight?.drawEntries.find(
+        (entry) => entry.participantId === participantId
       );
-      return !entryStatus || drawEntry?.entryStatus === entryStatus;
+      return !entryStatus || flightEntry?.entryStatus === entryStatus;
     }
   );
 
@@ -99,12 +99,18 @@ export function addDrawDefinition({
         return eventEntry?.entryStatus === entryStatus;
       }));
 
-  if (relevantFlight && !matchingFlighEntries) {
-    return {
-      error: INVALID_DRAW_DEFINITION,
-      matchingEventEntries,
-      relevantFlight,
-    };
+  if (relevantFlight && !drawEntriesPresentInFlight) {
+    return decorateResult({
+      result: {
+        error: INVALID_DRAW_DEFINITION,
+        context: {
+          drawEntriesPresentInFlight,
+          matchingEventEntries,
+          relevantFlight,
+        },
+        info: 'Draw entries are not present in flight or do not match entryStatuses',
+      },
+    });
   }
 
   if (modifyEventEntries) {
@@ -127,11 +133,13 @@ export function addDrawDefinition({
   }
 
   if (eventEntries && !matchingEventEntries)
-    return {
-      error: INVALID_DRAW_DEFINITION,
-      matchingEventEntries,
-      eventEntries,
-    };
+    return decorateResult({
+      result: {
+        error: INVALID_DRAW_DEFINITION,
+        context: { matchingEventEntries, eventEntries },
+        info: 'Draw entries do not match event entryStatuses',
+      },
+    });
 
   const flightNumbers =
     flightProfile?.flights

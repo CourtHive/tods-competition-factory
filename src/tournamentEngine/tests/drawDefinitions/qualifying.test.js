@@ -312,7 +312,7 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
   // 32 + 32 unique + 16 qualifying + 16 qualifying = 112
   expect(tournamentParticipants.length).toEqual(96);
 
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(3);
   expect(drawDefinition.links.length).toEqual(2);
 
@@ -474,7 +474,7 @@ it('supports round robin qualifying structures', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(2);
   expect(drawDefinition.links.length).toEqual(1);
   // because the source structure is a ROUND_ROBIN the qualifiers are only present after all rounds played
@@ -515,6 +515,10 @@ it('supports round robin qualifying structures', () => {
     ({ stage }) => stage === MAIN
   ).structureId;
 
+  const qualifierAssignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === qualifierDrawPosition
+  );
+
   result = tournamentEngine.positionActions({
     policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
     drawPosition: qualifierDrawPosition,
@@ -522,11 +526,34 @@ it('supports round robin qualifying structures', () => {
     drawId,
   });
 
-  const qualifierAssingmentAction = result.validActions.find(
+  let qualifyingAction = result.validActions.find(
     ({ type }) => type === QUALIFIER
   );
-  expect(qualifierAssingmentAction).not.toBeUndefined();
-  // console.log(qualifierAssingmentAction);
+  expect(qualifyingAction).not.toBeUndefined();
+
+  let qualifyingParticipantId = qualifyingAction.qualifyingParticipantIds[0];
+  let payload = { ...qualifyingAction.payload, qualifyingParticipantId };
+  result = tournamentEngine[qualifyingAction.method](payload);
+  expect(result.success).toEqual(true);
+  expect(result.context.removedParticipantId).toBeUndefined();
+
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const {
+    structures: [main],
+  } = getDrawStructures({
+    stage: MAIN,
+    stageSequence: 1,
+    drawDefinition,
+  });
+  const { positionAssignments: mainPa } = getPositionAssignments({
+    structure: main,
+  });
+
+  const assignment = mainPa.find(
+    (assignment) => assignment.drawPosition === qualifierDrawPosition
+  );
+  expect(assignment.participantId).toEqual(qualifyingParticipantId);
+  expect(qualifierAssignment.drawPosition).toEqual(assignment.drawPosition);
 });
 
 // to test qualifiers from different roundTargets: no multi-sequence qualifying

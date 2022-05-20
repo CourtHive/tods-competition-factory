@@ -22,6 +22,7 @@ import {
 
 export function positionUnseededParticipants({
   inContextDrawMatchUps,
+  unseededByePositions,
   multipleStructures,
   tournamentRecord,
   candidatesCount,
@@ -104,6 +105,7 @@ export function positionUnseededParticipants({
     const result = randomUnseededSeparation({
       unseededParticipantIds,
       inContextDrawMatchUps,
+      unseededByePositions,
       tournamentRecord,
       candidatesCount,
       drawDefinition,

@@ -92,6 +92,8 @@ export function automatedPositioning({
     }));
   }
 
+  let unseededByePositions = [];
+
   if (seedingProfile === WATERFALL) {
     // since WATERFALL attempts to place ALL participants
     // BYEs must be placed first to ensure lower seeds get BYEs
@@ -106,6 +108,7 @@ export function automatedPositioning({
         event,
       });
     if (result?.error) return handleErrorCondition(result);
+    unseededByePositions = result.unseededByePositions;
 
     result = positionSeedBlocks({
       inContextDrawMatchUps,
@@ -143,6 +146,7 @@ export function automatedPositioning({
         event,
       });
     if (result?.error) return handleErrorCondition(result);
+    unseededByePositions = result.unseededByePositions;
   }
 
   const conflicts = {};
@@ -164,6 +168,7 @@ export function automatedPositioning({
 
     result = positionUnseededParticipants({
       inContextDrawMatchUps,
+      unseededByePositions,
       multipleStructures,
       tournamentRecord,
       candidatesCount,
