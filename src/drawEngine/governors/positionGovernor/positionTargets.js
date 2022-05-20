@@ -8,6 +8,7 @@ import {
   WINNER,
   ROUND_OUTCOME,
 } from '../../../constants/drawDefinitionConstants';
+import { getDevContext } from '../../../global/state/globalState';
 
 /**
  * @param {string} matchUpId - matchUp identifier for sourceMatchUp
@@ -62,9 +63,9 @@ function targetByRoundOutcome({
   const {
     links: { source },
   } = getRoundLinks({
-    drawDefinition,
     roundNumber: matchUp.roundNumber,
     structureId: structure.structureId,
+    drawDefinition,
   });
   const winnerTargetLink = getTargetLink({ source, linkType: WINNER });
   const loserTargetLink = getTargetLink({ source, linkType: LOSER });
@@ -91,6 +92,9 @@ function targetByRoundOutcome({
     (winnerTargetLink && !winnerMatchUp) || (loserTargetLink && !loserMatchUp);
 
   if (useBruteForce) {
+    if (getDevContext({ qualifying: true })) {
+      console.log({ useBruteForce });
+    }
     const { roundPosition: sourceRoundPosition } = matchUp;
     structureMatchUps =
       structureMatchUps ||
@@ -134,6 +138,15 @@ function targetByRoundOutcome({
         targetLink: winnerTargetLink,
       }));
     }
+
+    if (getDevContext({ qualifying: true })) {
+      console.log(
+        sourceRoundPosition,
+        sourceRoundMatchUpCount,
+        winnerTargetLink,
+        winnerMatchUp
+      );
+    }
   }
 
   if (!winnerMatchUp) {
@@ -143,6 +156,9 @@ function targetByRoundOutcome({
       inContextDrawMatchUps.filter(
         (matchUp) => matchUp.structureId === structure.structureId
       );
+    if (getDevContext({ qualifying: true })) {
+      console.log('no winner matcnUp', { structureMatchUps });
+    }
     ({ matchUp: winnerMatchUp } = nextRoundMatchUp({
       structureMatchUps,
       matchUp,

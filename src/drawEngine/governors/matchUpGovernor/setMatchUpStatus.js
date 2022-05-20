@@ -44,6 +44,7 @@ import {
   COMPLETED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import { getDevContext } from '../../../global/state/globalState';
 
 /**
  *
@@ -139,6 +140,7 @@ export function setMatchUpStatus(params) {
   // Get winner/loser position targets ----------------------------------------
   const targetData = positionTargets({
     matchUpId: matchUpTieId || matchUpId, // get targets for TEAM matchUp if tieMatchUp
+    useTargetMatchUpIds: getDevContext({ useTargetMatchUpIds: true }),
     inContextDrawMatchUps,
     drawDefinition,
   });
