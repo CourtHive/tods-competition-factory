@@ -535,7 +535,7 @@ it('supports round robin qualifying structures', () => {
   let payload = { ...qualifyingAction.payload, qualifyingParticipantId };
   result = tournamentEngine[qualifyingAction.method](payload);
   expect(result.success).toEqual(true);
-  console.log({ result });
+  expect(result.context.removedParticipantId).toBeUndefined();
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   const {
