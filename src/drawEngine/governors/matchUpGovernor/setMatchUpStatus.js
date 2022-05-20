@@ -1,17 +1,18 @@
 import { getProjectedDualWinningSide } from './getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { validateScore } from '../../../global/validation/validateScore';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { scoreHasValue } from '../scoreGovernor/scoreHasValue';
 import { findStructure } from '../../getters/findStructure';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { isActiveDownstream } from './isActiveDownstream';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { addMatchUpScheduleItems } from './scheduleItems';
 import { swapWinnerLoser } from './swapWinnerLoser';
-import { scoreHasValue } from '../scoreGovernor/scoreHasValue';
 import { addGoesTo } from './addGoesTo';
 import {
   isDirectingMatchUpStatus,
@@ -309,7 +310,11 @@ function winningSideWithDownstreamDependencies(params) {
   ) {
     return applyMatchUpValues(params);
   } else {
-    return { error: CANNOT_CHANGE_WINNING_SIDE };
+    return decorateResult({
+      result: { error: CANNOT_CHANGE_WINNING_SIDE },
+      stack: 'winningSideWithDownstreamDependencies',
+      context: { winningSide, matchUp },
+    });
   }
 }
 
