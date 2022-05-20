@@ -123,26 +123,26 @@ export function generateTournamentRecord({
   if (Array.isArray(drawProfiles)) {
     let drawIndex = 0;
     for (const drawProfile of drawProfiles) {
-      const { drawId, eventId, event, error, uniqueParticipantIds } =
-        generateEventWithDraw({
-          allUniqueParticipantIds,
-          matchUpStatusProfile,
-          participantsProfile,
-          completeAllMatchUps,
-          autoEntryPositions,
-          randomWinningSide,
-          ratingsParameters,
-          tournamentRecord,
-          isMock: true,
-          drawProfile,
-          startDate,
-          drawIndex,
-          goesTo,
-          uuids,
-        });
-      if (error) return { error };
+      let result = generateEventWithDraw({
+        allUniqueParticipantIds,
+        matchUpStatusProfile,
+        participantsProfile,
+        completeAllMatchUps,
+        autoEntryPositions,
+        randomWinningSide,
+        ratingsParameters,
+        tournamentRecord,
+        isMock: true,
+        drawProfile,
+        startDate,
+        drawIndex,
+        goesTo,
+        uuids,
+      });
+      if (result.error) return result;
+      const { drawId, eventId, event, uniqueParticipantIds } = result;
 
-      const result = addEvent({
+      result = addEvent({
         suppressNotifications: false,
         tournamentRecord,
         event,

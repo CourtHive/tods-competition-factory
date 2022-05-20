@@ -38,6 +38,7 @@ import {
   PLAY_OFF,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
+import { decorateResult } from '../../../global/functions/decorateResult';
 
 export function assignDrawPosition({
   inContextDrawMatchUps,
@@ -51,6 +52,8 @@ export function assignDrawPosition({
   structureId,
   event,
 }) {
+  const stack = 'assignDrawPosition';
+
   if (!participantId && !isQualifierPosition)
     return { error: MISSING_PARTICIPANT_ID };
 
@@ -65,11 +68,13 @@ export function assignDrawPosition({
     }));
   }
 
-  const { structure, error } = findStructure({ drawDefinition, structureId });
-  if (error) return { error };
+  const result = findStructure({ drawDefinition, structureId });
+  if (result.error) return decorateResult({ result, stack });
+  const { structure } = result;
 
   // there are no drawPositions assigned for ADHOC structures
-  if (isAdHoc({ drawDefinition, structure })) return { error: INVALID_MATCHUP };
+  if (isAdHoc({ drawDefinition, structure }))
+    return decorateResult({ result: { error: INVALID_MATCHUP }, stack });
 
   const { seedAssignments } = getStructureSeedAssignments({
     drawDefinition,
@@ -89,21 +94,34 @@ export function assignDrawPosition({
       structureId,
     });
     if (!isValidDrawPosition)
-      return { error: INVALID_DRAW_POSITION_FOR_SEEDING };
+      return decorateResult({
+        result: { error: INVALID_DRAW_POSITION_FOR_SEEDING },
+        context: { drawPosition },
+        stack,
+      });
   }
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const positionAssignment = positionAssignments.find(
     (assignment) => assignment.drawPosition === drawPosition
   );
-  if (!positionAssignment) return { error: INVALID_DRAW_POSITION };
+  if (!positionAssignment)
+    return decorateResult({
+      result: { error: INVALID_DRAW_POSITION },
+      context: { drawPosition },
+      stack,
+    });
 
   const participantAlreadyAssigned = positionAssignments
     .map(getParticipantId)
     .includes(participantId);
 
   if (participantAlreadyAssigned) {
-    return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
+    return decorateResult({
+      result: { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT },
+      context: { drawPosition },
+      stack,
+    });
   }
 
   const { containsParticipant, containsBye } =
@@ -119,7 +137,7 @@ export function assignDrawPosition({
       matchUpsMap,
       event,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
   if (
@@ -132,7 +150,7 @@ export function assignDrawPosition({
     });
     const drawPositionIsActive = activeDrawPositions.includes(drawPosition);
     if (drawPositionIsActive) {
-      return { error: DRAW_POSITION_ACTIVE };
+      return decorateResult({ result: { error: DRAW_POSITION_ACTIVE }, stack });
     }
 
     // cleanup side[].lineUps of previous participantId in TEAM matchUps
@@ -297,6 +315,11 @@ function addDrawPositionToMatchUps({
       drawPosition,
       matchUpsMap,
     });
-    if (result.error) return result;
+    if (result.error)
+      return decorateResult({
+        stack: 'assignDrawPositionToMatchUps',
+        context: { drawPosition },
+        result,
+      });
   }
 }

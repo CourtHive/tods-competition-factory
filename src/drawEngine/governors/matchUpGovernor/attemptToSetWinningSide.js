@@ -1,10 +1,12 @@
 import { removeDirectedParticipants } from './removeDirectedParticipantsAndUpdateOutcome';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { directParticipants } from './directParticipants';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function attemptToSetWinningSide(params) {
+  const stack = 'attemptToSetWinningSide';
   const { drawDefinition, winningSide, structure, matchUp, matchUpsMap } =
     params;
   let connectedStructures;
@@ -29,7 +31,7 @@ export function attemptToSetWinningSide(params) {
   }
 
   const result = directParticipants(params);
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
 
   return { ...SUCCESS, connectedStructures };
 }

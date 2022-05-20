@@ -1,6 +1,7 @@
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { modifySeedAssignmentsNotice } from '../../notifications/drawNotifications';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { participantInEntries } from '../../getters/entryGetter';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
@@ -21,6 +22,7 @@ export function assignSeed({
   seedValue,
   eventId,
 }) {
+  const stack = 'assignSeed';
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { seedAssignments } = getStructureSeedAssignments({
@@ -37,11 +39,11 @@ export function assignSeed({
   });
 
   if (participantId && !validParticipantId)
-    return {
-      error: INVALID_PARTICIPANT_ID,
-      method: 'assignSeed',
-      participantId,
-    };
+    return decorateResult({
+      result: { error: INVALID_PARTICIPANT_ID },
+      context: { participantId },
+      stack,
+    });
 
   const relevantAssignment = positionAssignments.find(
     (assignment) => assignment.participantId === participantId
@@ -55,7 +57,13 @@ export function assignSeed({
       structureId,
       seedNumber,
     });
-    if (!positionIsValid) return { error: INVALID_DRAW_POSITION_FOR_SEEDING };
+    if (!positionIsValid)
+      return decorateResult({
+        result: { error: INVALID_DRAW_POSITION_FOR_SEEDING },
+        context: { assignedDrawPosition },
+        info: 'invalid seed position',
+        stack,
+      });
   }
 
   if (!seedNumbers.includes(seedNumber)) {
@@ -91,5 +99,5 @@ export function assignSeed({
     return { ...SUCCESS };
   }
 
-  return { error: INVALID_SEED_NUMBER };
+  return decorateResult({ result: { error: INVALID_SEED_NUMBER }, stack });
 }

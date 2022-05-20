@@ -23,7 +23,8 @@ import { getDevContext } from '../../../global/state/globalState';
  * targetDrawPositions are necessary for participant movement logic
  */
 export function positionTargets({
-  useTargetMatchUpIds = false,
+  useTargetMatchUpIds = getDevContext({ useTargetMatchUpIds: true }),
+  // useTargetMatchUpIds = true,
   inContextDrawMatchUps = [],
   inContextMatchUp,
   drawDefinition,
@@ -75,17 +76,25 @@ function targetByRoundOutcome({
   let winnerMatchUp, winnerTargetDrawPosition, winnerMatchUpDrawPositionIndex;
   let structureMatchUps;
 
-  if (useTargetMatchUpIds) {
-    winnerMatchUp =
+  let targetedLoserMatchUp, targetedWinnerMatchUp;
+
+  if (useTargetMatchUpIds || getDevContext({ useTargetMatchUpIds: true })) {
+    targetedWinnerMatchUp =
       winnerMatchUpId &&
       inContextDrawMatchUps.find(
         ({ matchUpId }) => matchUpId === winnerMatchUpId
       );
-    loserMatchUp =
+    targetedLoserMatchUp =
       loserMatchUpId &&
       inContextDrawMatchUps.find(
         ({ matchUpId }) => matchUpId === loserMatchUpId
       );
+  }
+
+  if (useTargetMatchUpIds) {
+    console.log('boo');
+    winnerMatchUp = targetedWinnerMatchUp;
+    loserMatchUp = targetedLoserMatchUp;
   }
 
   const useBruteForce =
@@ -157,7 +166,7 @@ function targetByRoundOutcome({
         (matchUp) => matchUp.structureId === structure.structureId
       );
     if (getDevContext({ qualifying: true })) {
-      console.log('no winner matcnUp', { structureMatchUps });
+      console.log('no winner matcnUp', { matchUp, structureMatchUps });
     }
     ({ matchUp: winnerMatchUp } = nextRoundMatchUp({
       structureMatchUps,

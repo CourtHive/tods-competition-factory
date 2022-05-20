@@ -3,6 +3,7 @@ import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assign
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { assignSeed } from '../entryGovernor/seedAssignment';
 import { findStructure } from '../../getters/findStructure';
 import { numericSort } from '../../../utilities';
@@ -30,6 +31,7 @@ export function directLoser(params) {
     event,
   } = params;
 
+  const stack = 'directLoser';
   const loserLinkCondition = loserTargetLink.linkCondition;
   const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];
 
@@ -106,7 +108,7 @@ export function directLoser(params) {
   );
 
   if (loserAlreadyDirected) {
-    return SUCCESS;
+    return { ...SUCCESS };
   }
 
   const unfilledTargetMatchUpDrawPositions = targetMatchUpPositionAssignments
@@ -132,10 +134,10 @@ export function directLoser(params) {
 
   if (fedDrawPositionFMLC) {
     const result = loserLinkFedFMLC();
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   } else if (isFirstRoundValidDrawPosition) {
     const result = asssignLoserDrawPosition();
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   } else if (isFeedRound) {
     // if target.roundNumber > 1 then it is a feed round and should always take the lower drawPosition
     const fedDrawPosition =
@@ -150,9 +152,13 @@ export function directLoser(params) {
       drawDefinition,
       matchUpsMap,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   } else {
-    return { error: INVALID_DRAW_POSITION };
+    return decorateResult({
+      result: { error: INVALID_DRAW_POSITION },
+      context: { loserDrawPosition },
+      stack,
+    });
   }
 
   if (
@@ -218,24 +224,26 @@ export function directLoser(params) {
   return { ...SUCCESS };
 
   function loserLinkFedFMLC() {
+    const stack = 'loserLinkFedFMLC';
     if (validForConsolation) {
-      return asssignLoserDrawPosition();
+      return decorateResult({ result: asssignLoserDrawPosition(), stack });
     } else {
-      return assignWinnerPositionBye();
+      return decorateResult({ result: assignWinnerPositionBye(), stack });
     }
   }
 
   function assignWinnerPositionBye() {
-    return assignDrawPositionBye({
+    const result = assignDrawPositionBye({
       drawPosition: winnerBackdrawPosition,
       structureId: targetStructureId,
       tournamentRecord,
       drawDefinition,
     });
+    return decorateResult({ result, stack: 'assignWinnerPositionBye' });
   }
 
   function asssignLoserDrawPosition() {
-    return assignDrawPosition({
+    const result = assignDrawPosition({
       drawPosition: targetMatchUpDrawPosition,
       participantId: loserParticipantId,
       structureId: targetStructureId,
@@ -245,5 +253,6 @@ export function directLoser(params) {
       drawDefinition,
       matchUpsMap,
     });
+    return decorateResult({ result, stack: 'assignLoserDrawPosition' });
   }
 }

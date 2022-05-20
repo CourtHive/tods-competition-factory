@@ -59,6 +59,8 @@ import { getDevContext } from '../../../global/state/globalState';
 
 // WOULDBENICE: return object containing all modified { matchUpIds, structureIds, drawIds }
 export function setMatchUpStatus(params) {
+  const stack = 'setMatchUpStatus';
+
   // always clear score if DOUBLE_WALKOVER or WALKOVER
   if ([WALKOVER, DOUBLE_WALKOVER].includes(params.matchUpStatus))
     params.score = undefined;
@@ -102,12 +104,14 @@ export function setMatchUpStatus(params) {
   const hasGoesTo = !!inContextDrawMatchUps.find(
     ({ winnerMatchUpId, loserMatchUpId }) => winnerMatchUpId || loserMatchUpId
   );
-  if (!hasGoesTo)
+  if (!hasGoesTo) {
+    if (getDevContext({ qualifying: true })) console.log('addGoesTo');
     ({ inContextDrawMatchUps } = addGoesTo({
       inContextDrawMatchUps,
       drawDefinition,
       matchUpsMap,
     }));
+  }
 
   // Find target matchUp ------------------------------------------------------
   const matchUp = matchUpsMap.drawMatchUps.find(
@@ -140,7 +144,6 @@ export function setMatchUpStatus(params) {
   // Get winner/loser position targets ----------------------------------------
   const targetData = positionTargets({
     matchUpId: matchUpTieId || matchUpId, // get targets for TEAM matchUp if tieMatchUp
-    useTargetMatchUpIds: getDevContext({ useTargetMatchUpIds: true }),
     inContextDrawMatchUps,
     drawDefinition,
   });
@@ -301,7 +304,7 @@ export function setMatchUpStatus(params) {
       error: NO_VALID_ACTIONS,
     };
 
-  return result;
+  return decorateResult({ result, stack });
 }
 
 function winningSideWithDownstreamDependencies(params) {

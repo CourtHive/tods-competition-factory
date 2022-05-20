@@ -1,10 +1,11 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { isDirectingMatchUpStatus } from './checkStatusType';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
+import { isAdHoc } from '../queryGovernor/isAdHoc';
 import { directWinner } from './directWinner';
 import { directLoser } from './directLoser';
-import { isAdHoc } from '../queryGovernor/isAdHoc';
 
 import { COMPLETED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -34,6 +35,7 @@ export function directParticipants(params) {
     score,
   } = params;
 
+  const stack = 'directParticipants';
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
   const isAdHocMatchUp = isAdHoc({ drawDefinition, structure });
   const validToScore =
@@ -135,7 +137,7 @@ export function directParticipants(params) {
         dualMatchUp,
         event,
       });
-      if (result.error) return result;
+      if (result.error) return decorateResult({ result, stack });
     }
   } else {
     return { error: MISSING_DRAW_POSITIONS };
