@@ -8,7 +8,6 @@ import {
   WINNER,
   ROUND_OUTCOME,
 } from '../../../constants/drawDefinitionConstants';
-import { getDevContext } from '../../../global/state/globalState';
 
 /**
  * @param {string} matchUpId - matchUp identifier for sourceMatchUp
@@ -23,9 +22,8 @@ import { getDevContext } from '../../../global/state/globalState';
  * targetDrawPositions are necessary for participant movement logic
  */
 export function positionTargets({
-  useTargetMatchUpIds = getDevContext({ useTargetMatchUpIds: true }),
-  // useTargetMatchUpIds = true,
   inContextDrawMatchUps = [],
+  useTargetMatchUpIds,
   inContextMatchUp,
   drawDefinition,
   matchUpId,
@@ -76,86 +74,69 @@ function targetByRoundOutcome({
   let winnerMatchUp, winnerTargetDrawPosition, winnerMatchUpDrawPositionIndex;
   let structureMatchUps;
 
-  let targetedLoserMatchUp, targetedWinnerMatchUp;
-
-  if (useTargetMatchUpIds || getDevContext({ useTargetMatchUpIds: true })) {
-    targetedWinnerMatchUp =
+  if (useTargetMatchUpIds && (winnerMatchUpId || loserMatchUpId)) {
+    winnerMatchUp =
       winnerMatchUpId &&
       inContextDrawMatchUps.find(
         ({ matchUpId }) => matchUpId === winnerMatchUpId
       );
-    targetedLoserMatchUp =
+    loserMatchUp =
       loserMatchUpId &&
       inContextDrawMatchUps.find(
         ({ matchUpId }) => matchUpId === loserMatchUpId
       );
-  }
 
-  if (useTargetMatchUpIds) {
-    console.log('boo');
-    winnerMatchUp = targetedWinnerMatchUp;
-    loserMatchUp = targetedLoserMatchUp;
-  }
-
-  const useBruteForce =
-    (winnerTargetLink && !winnerMatchUp) || (loserTargetLink && !loserMatchUp);
-
-  if (useBruteForce) {
-    if (getDevContext({ qualifying: true })) {
-      console.log({ useBruteForce });
+    if (winnerMatchUp || loserMatchUp) {
+      return {
+        matchUp,
+        targetLinks: { loserTargetLink, winnerTargetLink },
+        targetMatchUps: { loserMatchUp, winnerMatchUp },
+      };
     }
-    const { roundPosition: sourceRoundPosition } = matchUp;
-    structureMatchUps =
-      structureMatchUps ||
-      inContextDrawMatchUps.filter(
-        (matchUp) => matchUp.structureId === structure.structureId
-      );
-    const sourceRoundMatchUpCount = structureMatchUps.reduce(
-      (count, currentMatchUp) => {
-        return currentMatchUp.roundNumber === matchUp.roundNumber &&
-          !currentMatchUp.matchUpTieId // exclude tieMatchUps
-          ? count + 1
-          : count;
-      },
-      0
+  }
+
+  const { roundPosition: sourceRoundPosition } = matchUp;
+  structureMatchUps =
+    structureMatchUps ||
+    inContextDrawMatchUps.filter(
+      (matchUp) => matchUp.structureId === structure.structureId
     );
+  const sourceRoundMatchUpCount = structureMatchUps.reduce(
+    (count, currentMatchUp) => {
+      return currentMatchUp.roundNumber === matchUp.roundNumber &&
+        !currentMatchUp.matchUpTieId // exclude tieMatchUps
+        ? count + 1
+        : count;
+    },
+    0
+  );
 
-    if (loserTargetLink) {
-      ({
-        matchUp: loserMatchUp,
-        matchUpDrawPositionIndex: loserMatchUpDrawPositionIndex,
-        targetDrawPosition: loserTargetDrawPosition,
-      } = getTargetMatchUp({
-        targetLink: loserTargetLink,
-        sourceRoundMatchUpCount,
-        inContextDrawMatchUps,
-        sourceRoundPosition,
-        drawDefinition,
-      }));
-    }
+  if (loserTargetLink && !loserMatchUp) {
+    ({
+      matchUp: loserMatchUp,
+      matchUpDrawPositionIndex: loserMatchUpDrawPositionIndex,
+      targetDrawPosition: loserTargetDrawPosition,
+    } = getTargetMatchUp({
+      targetLink: loserTargetLink,
+      sourceRoundMatchUpCount,
+      inContextDrawMatchUps,
+      sourceRoundPosition,
+      drawDefinition,
+    }));
+  }
 
-    if (winnerTargetLink) {
-      ({
-        matchUp: winnerMatchUp,
-        matchUpDrawPositionIndex: winnerMatchUpDrawPositionIndex,
-        targetDrawPosition: winnerTargetDrawPosition,
-      } = getTargetMatchUp({
-        drawDefinition,
-        inContextDrawMatchUps,
-        sourceRoundPosition,
-        sourceRoundMatchUpCount,
-        targetLink: winnerTargetLink,
-      }));
-    }
-
-    if (getDevContext({ qualifying: true })) {
-      console.log(
-        sourceRoundPosition,
-        sourceRoundMatchUpCount,
-        winnerTargetLink,
-        winnerMatchUp
-      );
-    }
+  if (winnerTargetLink && !winnerMatchUp) {
+    ({
+      matchUp: winnerMatchUp,
+      matchUpDrawPositionIndex: winnerMatchUpDrawPositionIndex,
+      targetDrawPosition: winnerTargetDrawPosition,
+    } = getTargetMatchUp({
+      drawDefinition,
+      inContextDrawMatchUps,
+      sourceRoundPosition,
+      sourceRoundMatchUpCount,
+      targetLink: winnerTargetLink,
+    }));
   }
 
   if (!winnerMatchUp) {
@@ -165,9 +146,6 @@ function targetByRoundOutcome({
       inContextDrawMatchUps.filter(
         (matchUp) => matchUp.structureId === structure.structureId
       );
-    if (getDevContext({ qualifying: true })) {
-      console.log('no winner matcnUp', { matchUp, structureMatchUps });
-    }
     ({ matchUp: winnerMatchUp } = nextRoundMatchUp({
       structureMatchUps,
       matchUp,
