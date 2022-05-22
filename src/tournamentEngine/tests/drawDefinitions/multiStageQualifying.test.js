@@ -267,15 +267,6 @@ it('can advance participants through multi-stage qualifying structures', () => {
     matchUpFilters: { matchUpStatuses: [COMPLETED] },
   }).matchUps;
 
-  if (matchUps.length !== 2) {
-    console.log('matchUpsCountFail');
-    const { tournamentRecord } = tournamentEngine.getState();
-    fs.writeFileSync(
-      'matchUpsCountFail.tods.json',
-      JSON.stringify(tournamentRecord),
-      'UTF-8'
-    );
-  }
   expect(matchUps.length).toEqual(2);
 });
 
