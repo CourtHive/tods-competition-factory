@@ -1,0 +1,1135 @@
+{
+  "tournamentName": "Mock Tournament",
+  "startDate": "2022-05-22",
+  "endDate": "2022-05-29",
+  "tournamentId": "5a8d86c7-efe5-465a-aae4-4ee8421f0113",
+  "participants": [
+    {
+      "participantId": "41854bd0-6452-45de-8410-a76c0e0ca6b5",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Mikael Ymer",
+      "person": {
+        "addresses": [
+          {
+            "city": "Hampton Falls",
+            "state": "TX",
+            "postalCode": "45594",
+            "countryCode": "BHS"
+          }
+        ],
+        "personId": "717fbb61-12f4-43dd-b887-4040bdc808c2",
+        "standardFamilyName": "Ymer",
+        "standardGivenName": "Mikael",
+        "nationalityCode": "BHS",
+        "extensions": [{ "name": "regionCode", "value": 1 }],
+        "sex": "MALE"
+      }
+    },
+    {
+      "participantId": "140f6c78-bed4-4a19-aff1-fc00fcdd80b5",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Anett Kontaveit",
+      "person": {
+        "addresses": [
+          {
+            "city": "West Orange",
+            "state": "OK",
+            "postalCode": "57775",
+            "countryCode": "GNB"
+          }
+        ],
+        "personId": "79427988-7e9d-4582-a4d1-65f8092fcbff",
+        "standardFamilyName": "Kontaveit",
+        "standardGivenName": "Anett",
+        "nationalityCode": "GNB",
+        "extensions": [{ "name": "regionCode", "value": 2 }],
+        "sex": "FEMALE"
+      }
+    },
+    {
+      "participantId": "80007a21-c271-4d15-81d5-77d4761246fa",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Alina Shcherbinina",
+      "person": {
+        "addresses": [
+          {
+            "city": "Pearl River",
+            "state": "AR",
+            "postalCode": "18368",
+            "countryCode": "IDN"
+          }
+        ],
+        "personId": "9ede7961-92b9-4152-bb80-140ea6ef338f",
+        "standardFamilyName": "Shcherbinina",
+        "standardGivenName": "Alina",
+        "nationalityCode": "IDN",
+        "extensions": [{ "name": "regionCode", "value": 3 }],
+        "sex": "FEMALE"
+      }
+    },
+    {
+      "participantId": "7135d10f-9cd2-4504-9726-7120c2618cc5",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Natalia Szabanin",
+      "person": {
+        "addresses": [
+          {
+            "city": "Druid Hills",
+            "state": "WY",
+            "postalCode": "67294",
+            "countryCode": "KOR"
+          }
+        ],
+        "personId": "d7ecdc89-562c-4767-84aa-82eca37e52d9",
+        "standardFamilyName": "Szabanin",
+        "standardGivenName": "Natalia",
+        "nationalityCode": "KOR",
+        "extensions": [{ "name": "regionCode", "value": 4 }],
+        "sex": "FEMALE"
+      }
+    },
+    {
+      "participantId": "47a3bd7c-3e84-4b82-b741-ae450a8f5a42",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Juan Bautista Torres",
+      "person": {
+        "addresses": [
+          {
+            "city": "Bayville",
+            "state": "GA",
+            "postalCode": "39526",
+            "countryCode": "REU"
+          }
+        ],
+        "personId": "7d115a8a-936c-4e0a-82cd-4b61a42ea839",
+        "standardFamilyName": "Bautista Torres",
+        "standardGivenName": "Juan",
+        "nationalityCode": "REU",
+        "extensions": [{ "name": "regionCode", "value": 1 }],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "0ba922e0-07a7-4ad1-9e65-11be9a20e222",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Egor Agafonov",
+      "person": {
+        "addresses": [
+          {
+            "city": "Dyker Heights",
+            "state": "RI",
+            "postalCode": "78405",
+            "countryCode": "SEN"
+          }
+        ],
+        "personId": "5b14a7b2-96e6-44db-864c-c04abdebc84f",
+        "standardFamilyName": "Agafonov",
+        "standardGivenName": "Egor",
+        "nationalityCode": "SEN",
+        "extensions": [{ "name": "regionCode", "value": 2 }],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "418813aa-1c71-4b86-847b-36ce151c5742",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Kaja Juvan",
+      "person": {
+        "addresses": [
+          {
+            "city": "Martin",
+            "state": "DC",
+            "postalCode": "90442",
+            "countryCode": "GRD"
+          }
+        ],
+        "personId": "0518b78e-ed1a-48bb-9bc2-575bfbee589d",
+        "standardFamilyName": "Juvan",
+        "standardGivenName": "Kaja",
+        "nationalityCode": "GRD",
+        "extensions": [{ "name": "regionCode", "value": 3 }],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "34d4d886-a0e1-4cf0-b426-252c7d60b4e3",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Kei Nishikori",
+      "person": {
+        "addresses": [
+          {
+            "city": "LaVerkin",
+            "state": "NJ",
+            "postalCode": "53959",
+            "countryCode": "BEL"
+          }
+        ],
+        "personId": "9d02b880-1e68-4a6c-ab73-fa3a89517c92",
+        "standardFamilyName": "Nishikori",
+        "standardGivenName": "Kei",
+        "nationalityCode": "BEL",
+        "extensions": [{ "name": "regionCode", "value": 4 }],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "7521ba73-e0d2-4a9b-89e7-552caaecdfe2",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Savannah Broadus",
+      "person": {
+        "addresses": [
+          {
+            "city": "Hebron",
+            "state": "AK",
+            "postalCode": "17593",
+            "countryCode": "MAC"
+          }
+        ],
+        "personId": "1be4ddc0-844e-4c60-a850-4a94a7af8b27",
+        "standardFamilyName": "Broadus",
+        "standardGivenName": "Savannah",
+        "nationalityCode": "MAC",
+        "extensions": [{ "name": "regionCode", "value": 5 }],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "0966f92c-41a3-49e3-909f-d0272a4a7ed1",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Matilda Mutavdzic",
+      "person": {
+        "addresses": [
+          {
+            "city": "Thomson",
+            "state": "PR",
+            "postalCode": "49686",
+            "countryCode": "KEN"
+          }
+        ],
+        "personId": "5ae867db-ebda-437f-ba1d-c879a49762d4",
+        "standardFamilyName": "Mutavdzic",
+        "standardGivenName": "Matilda",
+        "nationalityCode": "KEN",
+        "extensions": [{ "name": "regionCode", "value": 6 }],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "3b6f01de-61ae-4765-82b4-d8fa892d7d5b",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Petr Nesterov",
+      "person": {
+        "addresses": [
+          {
+            "city": "Richfield",
+            "state": "WY",
+            "postalCode": "04278",
+            "countryCode": "SRB"
+          }
+        ],
+        "personId": "300f3339-79e8-415e-867b-32e4899cc8ff",
+        "standardFamilyName": "Nesterov",
+        "standardGivenName": "Petr",
+        "nationalityCode": "SRB",
+        "extensions": [{ "name": "regionCode", "value": 7 }],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "4bbf68d7-a779-49ef-9d27-70f7d348fb71",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Ricardas Berankis",
+      "person": {
+        "addresses": [
+          {
+            "city": "Marana",
+            "state": "ND",
+            "postalCode": "35684",
+            "countryCode": "NAM"
+          }
+        ],
+        "personId": "a8a7df52-0924-4027-bda3-06eae5c8e3be",
+        "standardFamilyName": "Berankis",
+        "standardGivenName": "Ricardas",
+        "nationalityCode": "NAM",
+        "extensions": [{ "name": "regionCode", "value": 8 }],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "12f8c1d5-9b74-40e9-8c38-197a3bf7d90e",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Darja Vidmanova",
+      "person": {
+        "addresses": [
+          {
+            "city": "Gretna",
+            "state": "SC",
+            "postalCode": "15542",
+            "countryCode": "AFG"
+          }
+        ],
+        "personId": "ad666322-107a-4b24-a13a-f1164e70f115",
+        "standardFamilyName": "Vidmanova",
+        "standardGivenName": "Darja",
+        "nationalityCode": "AFG",
+        "extensions": [{ "name": "regionCode", "value": 9 }],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "0edbf00d-bc5c-4ec4-ada0-b1de63639ca8",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Belinda Bencic",
+      "person": {
+        "addresses": [
+          {
+            "city": "Mazomanie",
+            "state": "WI",
+            "postalCode": "61972",
+            "countryCode": "WLF"
+          }
+        ],
+        "personId": "5638785d-89c1-4530-8e92-e50a0912cd3e",
+        "standardFamilyName": "Bencic",
+        "standardGivenName": "Belinda",
+        "nationalityCode": "WLF",
+        "extensions": [{ "name": "regionCode", "value": 10 }],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "4a2f5407-316e-48cc-91dc-12c2f4662474",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Melania Delai",
+      "person": {
+        "addresses": [
+          {
+            "city": "Chester Center",
+            "state": "NY",
+            "postalCode": "99495",
+            "countryCode": "SAU"
+          }
+        ],
+        "personId": "05be7bb5-a55f-4c13-97f2-eeaae1059c49",
+        "standardFamilyName": "Delai",
+        "standardGivenName": "Melania",
+        "nationalityCode": "SAU",
+        "extensions": [{ "name": "regionCode", "value": 11 }],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "1f994f8c-90ab-4ba2-9df1-5ee18075c683",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Yeon Ku",
+      "person": {
+        "addresses": [
+          {
+            "city": "Dolgeville",
+            "state": "AL",
+            "postalCode": "42176",
+            "countryCode": "PER"
+          }
+        ],
+        "personId": "13bdc1e8-e247-479a-bd6d-4ced5300a75d",
+        "standardFamilyName": "Ku",
+        "standardGivenName": "Yeon",
+        "nationalityCode": "PER",
+        "extensions": [{ "name": "regionCode", "value": 12 }],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    }
+  ],
+  "events": [
+    {
+      "startDate": "2022-05-22",
+      "endDate": "2022-05-29",
+      "eventType": "SINGLES",
+      "entries": [
+        {
+          "participantId": "47a3bd7c-3e84-4b82-b741-ae450a8f5a42",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 1
+        },
+        {
+          "participantId": "0ba922e0-07a7-4ad1-9e65-11be9a20e222",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 2
+        },
+        {
+          "participantId": "418813aa-1c71-4b86-847b-36ce151c5742",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 3
+        },
+        {
+          "participantId": "34d4d886-a0e1-4cf0-b426-252c7d60b4e3",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 4
+        },
+        {
+          "participantId": "7521ba73-e0d2-4a9b-89e7-552caaecdfe2",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "QUALIFYING",
+          "extensions": [
+            {
+              "name": "roundTarget",
+              "value": 1,
+              "createdAt": "2022-05-22T22:28:29.253Z"
+            }
+          ],
+          "entryStageSequence": 1,
+          "entryPosition": 1
+        },
+        {
+          "participantId": "0966f92c-41a3-49e3-909f-d0272a4a7ed1",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "QUALIFYING",
+          "extensions": [
+            {
+              "name": "roundTarget",
+              "value": 1,
+              "createdAt": "2022-05-22T22:28:29.253Z"
+            }
+          ],
+          "entryStageSequence": 1,
+          "entryPosition": 2
+        },
+        {
+          "participantId": "3b6f01de-61ae-4765-82b4-d8fa892d7d5b",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "QUALIFYING",
+          "extensions": [
+            {
+              "name": "roundTarget",
+              "value": 1,
+              "createdAt": "2022-05-22T22:28:29.253Z"
+            }
+          ],
+          "entryStageSequence": 1,
+          "entryPosition": 3
+        },
+        {
+          "participantId": "4bbf68d7-a779-49ef-9d27-70f7d348fb71",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "QUALIFYING",
+          "extensions": [
+            {
+              "name": "roundTarget",
+              "value": 1,
+              "createdAt": "2022-05-22T22:28:29.253Z"
+            }
+          ],
+          "entryStageSequence": 1,
+          "entryPosition": 4
+        },
+        {
+          "participantId": "12f8c1d5-9b74-40e9-8c38-197a3bf7d90e",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "QUALIFYING",
+          "extensions": [
+            {
+              "name": "roundTarget",
+              "value": 1,
+              "createdAt": "2022-05-22T22:28:29.253Z"
+            }
+          ],
+          "entryStageSequence": 2,
+          "entryPosition": 5
+        },
+        {
+          "participantId": "0edbf00d-bc5c-4ec4-ada0-b1de63639ca8",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "QUALIFYING",
+          "extensions": [
+            {
+              "name": "roundTarget",
+              "value": 1,
+              "createdAt": "2022-05-22T22:28:29.253Z"
+            }
+          ],
+          "entryStageSequence": 2,
+          "entryPosition": 6
+        },
+        {
+          "participantId": "4a2f5407-316e-48cc-91dc-12c2f4662474",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "QUALIFYING",
+          "extensions": [
+            {
+              "name": "roundTarget",
+              "value": 1,
+              "createdAt": "2022-05-22T22:28:29.253Z"
+            }
+          ],
+          "entryStageSequence": 2,
+          "entryPosition": 7
+        },
+        {
+          "participantId": "1f994f8c-90ab-4ba2-9df1-5ee18075c683",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "QUALIFYING",
+          "extensions": [
+            {
+              "name": "roundTarget",
+              "value": 1,
+              "createdAt": "2022-05-22T22:28:29.253Z"
+            }
+          ],
+          "entryStageSequence": 2,
+          "entryPosition": 8
+        }
+      ],
+      "eventName": "Generated SINGLES",
+      "eventId": "ac52a7f4-564e-4c6d-bb22-a7c4c6faf0ca",
+      "drawDefinitions": [
+        {
+          "drawId": "838d0d26-eeb9-4511-8a67-1d92bf7e66dc",
+          "drawName": "SINGLE_ELIMINATION",
+          "matchUpType": "SINGLES",
+          "entries": [
+            {
+              "participantId": "47a3bd7c-3e84-4b82-b741-ae450a8f5a42",
+              "entryPosition": 1,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "0ba922e0-07a7-4ad1-9e65-11be9a20e222",
+              "entryPosition": 2,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "entryStageSequence": 1,
+              "participantId": "7521ba73-e0d2-4a9b-89e7-552caaecdfe2",
+              "entryPosition": 1,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "QUALIFYING",
+              "extensions": [
+                {
+                  "name": "roundTarget",
+                  "value": 1,
+                  "createdAt": "2022-05-22T22:28:29.253Z"
+                }
+              ]
+            },
+            {
+              "entryStageSequence": 1,
+              "participantId": "0966f92c-41a3-49e3-909f-d0272a4a7ed1",
+              "entryPosition": 2,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "QUALIFYING",
+              "extensions": [
+                {
+                  "name": "roundTarget",
+                  "value": 1,
+                  "createdAt": "2022-05-22T22:28:29.253Z"
+                }
+              ]
+            },
+            {
+              "entryStageSequence": 1,
+              "participantId": "3b6f01de-61ae-4765-82b4-d8fa892d7d5b",
+              "entryPosition": 3,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "QUALIFYING",
+              "extensions": [
+                {
+                  "name": "roundTarget",
+                  "value": 1,
+                  "createdAt": "2022-05-22T22:28:29.253Z"
+                }
+              ]
+            },
+            {
+              "entryStageSequence": 1,
+              "participantId": "4bbf68d7-a779-49ef-9d27-70f7d348fb71",
+              "entryPosition": 4,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "QUALIFYING",
+              "extensions": [
+                {
+                  "name": "roundTarget",
+                  "value": 1,
+                  "createdAt": "2022-05-22T22:28:29.253Z"
+                }
+              ]
+            },
+            {
+              "entryStageSequence": 2,
+              "participantId": "12f8c1d5-9b74-40e9-8c38-197a3bf7d90e",
+              "entryPosition": 5,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "QUALIFYING",
+              "extensions": [
+                {
+                  "name": "roundTarget",
+                  "value": 1,
+                  "createdAt": "2022-05-22T22:28:29.253Z"
+                }
+              ]
+            },
+            {
+              "entryStageSequence": 2,
+              "participantId": "0edbf00d-bc5c-4ec4-ada0-b1de63639ca8",
+              "entryPosition": 6,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "QUALIFYING",
+              "extensions": [
+                {
+                  "name": "roundTarget",
+                  "value": 1,
+                  "createdAt": "2022-05-22T22:28:29.253Z"
+                }
+              ]
+            }
+          ],
+          "links": [
+            {
+              "linkType": "WINNER",
+              "source": {
+                "roundNumber": 1,
+                "structureId": "abb2e83c-4acb-41e8-beef-a70b870bae27"
+              },
+              "target": {
+                "feedProfile": "DRAW",
+                "roundNumber": 1,
+                "structureId": "a88dc0a0-f50a-4e03-85cf-7b4059d8fd6e"
+              }
+            },
+            {
+              "linkType": "WINNER",
+              "source": {
+                "roundNumber": 1,
+                "structureId": "a88dc0a0-f50a-4e03-85cf-7b4059d8fd6e"
+              },
+              "target": {
+                "feedProfile": "DRAW",
+                "roundNumber": 1,
+                "structureId": "512dd688-12fb-47f7-a6e1-dbcc91388673"
+              }
+            }
+          ],
+          "structures": [
+            {
+              "structureId": "abb2e83c-4acb-41e8-beef-a70b870bae27",
+              "finishingPosition": "ROUND_OUTCOME",
+              "seedAssignments": [],
+              "stageSequence": 1,
+              "structureName": "QUALIFYING 1",
+              "stage": "QUALIFYING",
+              "roundLimit": 1,
+              "qualifyingRoundNumber": 1,
+              "matchUps": [
+                {
+                  "matchUpId": "a967809a-fede-4639-a4fc-e691d17eb5c0",
+                  "roundNumber": 1,
+                  "roundPosition": 1,
+                  "matchUpStatus": "COMPLETED",
+                  "drawPositions": [1, 2],
+                  "isMock": true,
+                  "finishingRound": 1,
+                  "finishingPositionRange": {
+                    "loser": [3, 4],
+                    "winner": [1, 2]
+                  },
+                  "winnerMatchUpId": "10dfbba4-f913-457e-9806-4ab6371e0dd4",
+                  "matchUpFormat": "SET3-S:6/TB7",
+                  "score": {
+                    "sets": [
+                      {
+                        "setNumber": 1,
+                        "side1Score": 6,
+                        "side2Score": 3,
+                        "winningSide": 1
+                      },
+                      {
+                        "setNumber": 2,
+                        "side1Score": 6,
+                        "side2Score": 2,
+                        "winningSide": 1
+                      }
+                    ],
+                    "scoreStringSide1": "6-3 6-2",
+                    "scoreStringSide2": "3-6 2-6"
+                  },
+                  "matchUpStatusCodes": [],
+                  "winningSide": 1
+                },
+                {
+                  "matchUpId": "72d26b68-36c7-4d33-a9ad-d1ce08ef2179",
+                  "roundNumber": 1,
+                  "roundPosition": 2,
+                  "matchUpStatus": "COMPLETED",
+                  "drawPositions": [3, 4],
+                  "isMock": true,
+                  "finishingRound": 1,
+                  "finishingPositionRange": {
+                    "loser": [3, 4],
+                    "winner": [1, 2]
+                  },
+                  "winnerMatchUpId": "ac7fdab4-a453-47b2-b40b-18dcf10a9016",
+                  "matchUpFormat": "SET3-S:6/TB7",
+                  "score": {
+                    "sets": [
+                      {
+                        "setNumber": 1,
+                        "side1Score": 6,
+                        "side2Score": 2,
+                        "winningSide": 1
+                      },
+                      {
+                        "setNumber": 2,
+                        "side1Score": 6,
+                        "side2Score": 4,
+                        "winningSide": 1
+                      }
+                    ],
+                    "scoreStringSide1": "6-2 6-4",
+                    "scoreStringSide2": "2-6 4-6"
+                  },
+                  "matchUpStatusCodes": [],
+                  "winningSide": 1
+                }
+              ],
+              "positionAssignments": [
+                {
+                  "drawPosition": 1,
+                  "participantId": "4bbf68d7-a779-49ef-9d27-70f7d348fb71"
+                },
+                {
+                  "drawPosition": 2,
+                  "participantId": "7521ba73-e0d2-4a9b-89e7-552caaecdfe2"
+                },
+                {
+                  "drawPosition": 3,
+                  "participantId": "3b6f01de-61ae-4765-82b4-d8fa892d7d5b"
+                },
+                {
+                  "drawPosition": 4,
+                  "participantId": "0966f92c-41a3-49e3-909f-d0272a4a7ed1"
+                }
+              ],
+              "extensions": [
+                {
+                  "name": "roundTarget",
+                  "value": 1,
+                  "createdAt": "2022-05-22T22:28:29.258Z"
+                }
+              ],
+              "updatedAt": "2022-05-22T22:28:29.326Z",
+              "seedLimit": 0
+            },
+            {
+              "structureId": "a88dc0a0-f50a-4e03-85cf-7b4059d8fd6e",
+              "finishingPosition": "ROUND_OUTCOME",
+              "seedAssignments": [],
+              "stageSequence": 2,
+              "structureName": "QUALIFYING 2",
+              "stage": "QUALIFYING",
+              "roundLimit": 1,
+              "qualifyingRoundNumber": 1,
+              "matchUps": [
+                {
+                  "matchUpId": "10dfbba4-f913-457e-9806-4ab6371e0dd4",
+                  "roundNumber": 1,
+                  "roundPosition": 1,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [1, 2],
+                  "isMock": true,
+                  "finishingRound": 1,
+                  "finishingPositionRange": {
+                    "loser": [3, 4],
+                    "winner": [1, 2]
+                  },
+                  "winnerMatchUpId": "40effe8e-e807-4514-b312-93a032e9ca2d"
+                },
+                {
+                  "matchUpId": "ac7fdab4-a453-47b2-b40b-18dcf10a9016",
+                  "roundNumber": 1,
+                  "roundPosition": 2,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [3, 4],
+                  "isMock": true,
+                  "finishingRound": 1,
+                  "finishingPositionRange": {
+                    "loser": [3, 4],
+                    "winner": [1, 2]
+                  },
+                  "winnerMatchUpId": "df09b162-8926-440b-b573-97d3a464ee8a"
+                }
+              ],
+              "positionAssignments": [
+                {
+                  "drawPosition": 1,
+                  "participantId": "4bbf68d7-a779-49ef-9d27-70f7d348fb71",
+                  "extensions": [
+                    {
+                      "name": "disableLinks",
+                      "value": true,
+                      "createdAt": "2022-05-22T22:28:29.319Z"
+                    }
+                  ]
+                },
+                {
+                  "drawPosition": 2,
+                  "participantId": "0edbf00d-bc5c-4ec4-ada0-b1de63639ca8"
+                },
+                {
+                  "drawPosition": 3,
+                  "participantId": "3b6f01de-61ae-4765-82b4-d8fa892d7d5b",
+                  "extensions": [
+                    {
+                      "name": "disableLinks",
+                      "value": true,
+                      "createdAt": "2022-05-22T22:28:29.326Z"
+                    }
+                  ]
+                },
+                {
+                  "drawPosition": 4,
+                  "participantId": "12f8c1d5-9b74-40e9-8c38-197a3bf7d90e"
+                }
+              ],
+              "extensions": [
+                {
+                  "name": "roundTarget",
+                  "value": 1,
+                  "createdAt": "2022-05-22T22:28:29.258Z"
+                }
+              ],
+              "updatedAt": "2022-05-22T22:28:29.326Z",
+              "seedLimit": 0
+            },
+            {
+              "structureId": "512dd688-12fb-47f7-a6e1-dbcc91388673",
+              "finishingPosition": "ROUND_OUTCOME",
+              "seedAssignments": [],
+              "stageSequence": 1,
+              "structureName": "MAIN",
+              "stage": "MAIN",
+              "matchUps": [
+                {
+                  "matchUpId": "40effe8e-e807-4514-b312-93a032e9ca2d",
+                  "roundNumber": 1,
+                  "roundPosition": 1,
+                  "matchUpStatus": "COMPLETED",
+                  "drawPositions": [1, 2],
+                  "isMock": true,
+                  "finishingRound": 2,
+                  "finishingPositionRange": {
+                    "loser": [3, 4],
+                    "winner": [1, 2]
+                  },
+                  "winnerMatchUpId": "a311af88-8860-4b46-b290-57d7cede94f6",
+                  "matchUpFormat": "SET3-S:6/TB7",
+                  "score": {
+                    "sets": [
+                      {
+                        "setNumber": 1,
+                        "side1Score": 6,
+                        "side2Score": 1,
+                        "winningSide": 1
+                      },
+                      {
+                        "setNumber": 2,
+                        "side1Score": 6,
+                        "side2Score": 2,
+                        "winningSide": 1
+                      }
+                    ],
+                    "scoreStringSide1": "6-1 6-2",
+                    "scoreStringSide2": "1-6 2-6"
+                  },
+                  "matchUpStatusCodes": [],
+                  "winningSide": 1
+                },
+                {
+                  "matchUpId": "df09b162-8926-440b-b573-97d3a464ee8a",
+                  "roundNumber": 1,
+                  "roundPosition": 2,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [3, 4],
+                  "isMock": true,
+                  "finishingRound": 2,
+                  "finishingPositionRange": {
+                    "loser": [3, 4],
+                    "winner": [1, 2]
+                  },
+                  "winnerMatchUpId": "a311af88-8860-4b46-b290-57d7cede94f6"
+                },
+                {
+                  "matchUpId": "a311af88-8860-4b46-b290-57d7cede94f6",
+                  "roundNumber": 2,
+                  "roundPosition": 1,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "drawPositions": [1],
+                  "isMock": true,
+                  "finishingRound": 1,
+                  "finishingPositionRange": {
+                    "loser": [2, 2],
+                    "winner": [1, 1]
+                  }
+                }
+              ],
+              "positionAssignments": [
+                {
+                  "drawPosition": 1,
+                  "participantId": "47a3bd7c-3e84-4b82-b741-ae450a8f5a42"
+                },
+                {
+                  "drawPosition": 2,
+                  "participantId": "0ba922e0-07a7-4ad1-9e65-11be9a20e222"
+                },
+                { "drawPosition": 3, "qualifier": true },
+                { "drawPosition": 4, "qualifier": true }
+              ],
+              "updatedAt": "2022-05-22T22:28:29.326Z",
+              "seedLimit": 0
+            }
+          ],
+          "drawType": "SINGLE_ELIMINATION",
+          "matchUpFormat": "SET3-S:6/TB7",
+          "updatedAt": "2022-05-22T22:28:29.326Z",
+          "extensions": [
+            {
+              "name": "entryProfile",
+              "value": {
+                "MAIN": {
+                  "drawSize": 4,
+                  "alternates": true,
+                  "qualifiersCount": 2
+                },
+                "QUALIFYING": { "drawSize": 6, "alternates": true }
+              },
+              "createdAt": "2022-05-22T22:28:29.256Z"
+            },
+            {
+              "name": "appliedPolicies",
+              "value": {
+                "seeding": {
+                  "policyName": "USTA",
+                  "seedingProfile": "SEPARATE",
+                  "duplicateSeedNumbers": true,
+                  "drawSizeProgression": true,
+                  "validSeedPositions": { "ignore": true },
+                  "seedsCountThresholds": [
+                    {
+                      "drawSize": 4,
+                      "minimumParticipantCount": 3,
+                      "seedsCount": 2
+                    },
+                    {
+                      "drawSize": 16,
+                      "minimumParticipantCount": 12,
+                      "seedsCount": 4
+                    },
+                    {
+                      "drawSize": 32,
+                      "minimumParticipantCount": 24,
+                      "seedsCount": 8
+                    },
+                    {
+                      "drawSize": 64,
+                      "minimumParticipantCount": 48,
+                      "seedsCount": 16
+                    },
+                    {
+                      "drawSize": 128,
+                      "minimumParticipantCount": 96,
+                      "seedsCount": 32
+                    },
+                    {
+                      "drawSize": 256,
+                      "minimumParticipantCount": 192,
+                      "seedsCount": 64
+                    }
+                  ]
+                }
+              },
+              "createdAt": "2022-05-22T22:28:29.269Z"
+            },
+            {
+              "name": "positionActions",
+              "value": [
+                {
+                  "name": "positionAssignment",
+                  "participantId": "4bbf68d7-a779-49ef-9d27-70f7d348fb71",
+                  "drawPosition": 1,
+                  "structureId": "a88dc0a0-f50a-4e03-85cf-7b4059d8fd6e"
+                },
+                {
+                  "participantId": "4bbf68d7-a779-49ef-9d27-70f7d348fb71",
+                  "name": "qualifierDrawPositionAssignment",
+                  "drawPosition": 1,
+                  "structureId": "a88dc0a0-f50a-4e03-85cf-7b4059d8fd6e"
+                },
+                {
+                  "name": "positionAssignment",
+                  "participantId": "3b6f01de-61ae-4765-82b4-d8fa892d7d5b",
+                  "drawPosition": 3,
+                  "structureId": "a88dc0a0-f50a-4e03-85cf-7b4059d8fd6e"
+                },
+                {
+                  "participantId": "3b6f01de-61ae-4765-82b4-d8fa892d7d5b",
+                  "name": "qualifierDrawPositionAssignment",
+                  "drawPosition": 3,
+                  "structureId": "a88dc0a0-f50a-4e03-85cf-7b4059d8fd6e"
+                }
+              ],
+              "createdAt": "2022-05-22T22:28:29.319Z"
+            }
+          ],
+          "drawOrder": 1
+        }
+      ],
+      "extensions": [
+        {
+          "name": "flightProfile",
+          "value": {
+            "flights": [
+              {
+                "manuallyAdded": true,
+                "flightNumber": 1,
+                "drawEntries": [
+                  {
+                    "participantId": "47a3bd7c-3e84-4b82-b741-ae450a8f5a42",
+                    "entryPosition": 1,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "0ba922e0-07a7-4ad1-9e65-11be9a20e222",
+                    "entryPosition": 2,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "entryStageSequence": 1,
+                    "participantId": "7521ba73-e0d2-4a9b-89e7-552caaecdfe2",
+                    "entryPosition": 1,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "QUALIFYING",
+                    "extensions": [
+                      {
+                        "name": "roundTarget",
+                        "value": 1,
+                        "createdAt": "2022-05-22T22:28:29.253Z"
+                      }
+                    ]
+                  },
+                  {
+                    "entryStageSequence": 1,
+                    "participantId": "0966f92c-41a3-49e3-909f-d0272a4a7ed1",
+                    "entryPosition": 2,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "QUALIFYING",
+                    "extensions": [
+                      {
+                        "name": "roundTarget",
+                        "value": 1,
+                        "createdAt": "2022-05-22T22:28:29.253Z"
+                      }
+                    ]
+                  },
+                  {
+                    "entryStageSequence": 1,
+                    "participantId": "3b6f01de-61ae-4765-82b4-d8fa892d7d5b",
+                    "entryPosition": 3,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "QUALIFYING",
+                    "extensions": [
+                      {
+                        "name": "roundTarget",
+                        "value": 1,
+                        "createdAt": "2022-05-22T22:28:29.253Z"
+                      }
+                    ]
+                  },
+                  {
+                    "entryStageSequence": 1,
+                    "participantId": "4bbf68d7-a779-49ef-9d27-70f7d348fb71",
+                    "entryPosition": 4,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "QUALIFYING",
+                    "extensions": [
+                      {
+                        "name": "roundTarget",
+                        "value": 1,
+                        "createdAt": "2022-05-22T22:28:29.253Z"
+                      }
+                    ]
+                  },
+                  {
+                    "entryStageSequence": 2,
+                    "participantId": "12f8c1d5-9b74-40e9-8c38-197a3bf7d90e",
+                    "entryPosition": 5,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "QUALIFYING",
+                    "extensions": [
+                      {
+                        "name": "roundTarget",
+                        "value": 1,
+                        "createdAt": "2022-05-22T22:28:29.253Z"
+                      }
+                    ]
+                  },
+                  {
+                    "entryStageSequence": 2,
+                    "participantId": "0edbf00d-bc5c-4ec4-ada0-b1de63639ca8",
+                    "entryPosition": 6,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "QUALIFYING",
+                    "extensions": [
+                      {
+                        "name": "roundTarget",
+                        "value": 1,
+                        "createdAt": "2022-05-22T22:28:29.253Z"
+                      }
+                    ]
+                  }
+                ],
+                "drawName": "SINGLE_ELIMINATION",
+                "drawId": "838d0d26-eeb9-4511-8a67-1d92bf7e66dc"
+              }
+            ]
+          },
+          "createdAt": "2022-05-22T22:28:29.280Z"
+        }
+      ]
+    }
+  ]
+}

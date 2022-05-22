@@ -99,7 +99,7 @@ it('will return participant events including all entryStatuses', () => {
     bye: true,
   });
   expect(result.error).toEqual(DRAW_POSITION_ASSIGNED);
-  expect(result.error.stack).toEqual(['assignDrawPositionBye']);
+  expect(result.stack).toEqual(['assignDrawPositionBye']);
 
   result = tournamentEngine.assignDrawPosition({
     drawId,

@@ -29,7 +29,7 @@ it.each(filenames)(
       const errors = ajv.errorsText(validate.errors, {
         dataVar: 'config',
       });
-      console.log({ errors });
+      console.log({ filename }, errors);
     }
 
     expect(result).toEqual(true);

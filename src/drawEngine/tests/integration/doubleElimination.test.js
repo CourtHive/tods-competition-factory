@@ -23,15 +23,13 @@ it('can complete double elimination draw', () => {
     drawProfiles,
   });
   tournamentEngine.setState(tournamentRecord);
+
+  const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual(23);
+
   const result = tournamentEngine.tournamentMatchUps();
   const { upcomingMatchUps } = result;
   expect(upcomingMatchUps.length).toEqual(1);
-  const { abbreviatedRoundName, roundName, feedRound, finishingRound } =
-    upcomingMatchUps[0];
-  expect(abbreviatedRoundName).toEqual('F');
-  expect(roundName).toEqual('Final');
-  expect(feedRound).toEqual(true);
-  expect(finishingRound).toEqual(1);
 });
 
 it('can generate and verify double elimination', () => {

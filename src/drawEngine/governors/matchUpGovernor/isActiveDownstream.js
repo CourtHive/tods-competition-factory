@@ -1,10 +1,10 @@
 import { positionTargets } from '../positionGovernor/positionTargets';
-import { getDevContext } from '../../../global/state/globalState';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { BYE, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 export function isActiveDownstream(params) {
+  // relevantLink is passed in iterative calls (see below)
   const { inContextDrawMatchUps, targetData, drawDefinition, relevantLink } =
     params;
 
@@ -18,8 +18,6 @@ export function isActiveDownstream(params) {
     targetMatchUps: { loserMatchUp, winnerMatchUp },
     targetLinks,
   } = targetData;
-
-  if (getDevContext({ qualifying: true })) console.log({ targetData });
 
   const loserMatchUpWalkover = [WALKOVER].includes(loserMatchUp?.matchUpStatus);
 

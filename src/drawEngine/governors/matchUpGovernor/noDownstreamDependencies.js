@@ -14,6 +14,7 @@ import {
   INCOMPLETE,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
+import { decorateResult } from '../../../global/functions/decorateResult';
 
 export function noDownstreamDependencies(params) {
   const { matchUp, matchUpStatus, score, winningSide } = params;
@@ -71,14 +72,14 @@ export function noDownstreamDependencies(params) {
     return scoreModification(params);
   }
 
-  return (
+  const result =
     (winningSide && attemptToSetWinningSide(params)) ||
     (scoreWithNoWinningSide && removeDirected({ removeScore })) ||
     (statusNotTBP && attemptToSetMatchUpStatus(params)) ||
     (removeWinningSide && removeDirected({ removeScore })) ||
     (matchUp && scoreModification({ ...params, removeScore: true })) ||
-    (console.log('unknown condition') && { ...SUCCESS })
-  );
+    (console.log('unknown condition') && { ...SUCCESS });
+  return decorateResult({ result, stack: 'noDownStreamDependencies' });
 }
 
 function scoreModification(params) {

@@ -1,7 +1,7 @@
 export function decorateResult({ result, stack, context, info }) {
-  if (stack && result.error) {
-    if (!result.error.stack) result.error.stack = [];
-    result.error.stack.push(stack);
+  if (!result.stack) result.stack = [];
+  if (stack) {
+    result.stack.push(stack);
   }
   if (info && result.error) {
     result.error.info = info;

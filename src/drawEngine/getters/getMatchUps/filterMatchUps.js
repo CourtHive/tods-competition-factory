@@ -21,6 +21,7 @@ export function filterMatchUps(params) {
     matchUpIds,
 
     // only applies to inContext matchUps and only when processContext boolean is true
+    stageSequences,
     scheduledDates,
     scheduledDate,
     processContext,
@@ -41,6 +42,9 @@ export function filterMatchUps(params) {
     : [];
 
   const targetStages = Array.isArray(stages) ? stages.filter(Boolean) : [];
+  const targetStageSequences = Array.isArray(stageSequences)
+    ? stageSequences.filter(Boolean)
+    : [];
   const targetCollectionIds = Array.isArray(collectionIds)
     ? collectionIds.filter(Boolean)
     : [];
@@ -107,6 +111,12 @@ export function filterMatchUps(params) {
     }
 
     if (targetStages.length && !targetStages.includes(matchUp.stage)) {
+      return false;
+    }
+    if (
+      targetStageSequences.length &&
+      !targetStageSequences.includes(matchUp.stageSequence)
+    ) {
       return false;
     }
     if (

@@ -68,7 +68,7 @@ export function anonymizeTournamentRecord({
         extensionsToKeep.includes(extension.name)
       );
     } else {
-      return element.extensions;
+      return element?.extensions;
     }
   };
 
@@ -312,7 +312,7 @@ export function anonymizeTournamentRecord({
 
     generatedPerson.extensions = filterExtensions(person);
     individualParticipant.person = generatedPerson;
-    idMap[person.personId] = generatedPerson.personId;
+    idMap[person?.personId] = generatedPerson.personId;
   });
 
   const pairParticipants = (tournamentRecord.participants || []).filter(

@@ -74,14 +74,16 @@ function compassByesTest({
       drawType: COMPASS,
     },
   ];
+  const result = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    inContext: true,
+    drawProfiles,
+  });
+
   const {
     drawIds: [drawId],
     tournamentRecord,
-  } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
-    inContext: true,
-    completeAllMatchUps: true,
-  });
+  } = result;
 
   tournamentEngine.setState(tournamentRecord);
 
