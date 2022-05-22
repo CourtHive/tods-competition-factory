@@ -12,7 +12,11 @@ import {
   structureAssignedDrawPositions,
 } from '../../getters/positionsGetter';
 
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import {
+  CONTAINER,
+  DRAW,
+  QUALIFYING,
+} from '../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   BYE,
@@ -286,6 +290,7 @@ function removeDrawPosition({
     drawDefinition,
     structure,
   });
+
   const {
     targetLinks: { winnerTargetLink },
     targetMatchUps: {
@@ -372,11 +377,19 @@ function removeDrawPosition({
 
   if (
     winnerMatchUp &&
-    winnerMatchUp.structureId !== targetData.matchUp.structureId
+    winnerMatchUp.structureId !== targetData.matchUp.structureId &&
+    // does not apply to traversals that are based on QUALIFYING
+    winnerTargetLink.target.feedProfile !== DRAW
   ) {
-    console.log('linked structure winnerMatchUp removal', {
-      winnerTargetLink,
-      winnerMatchUpDrawPositionIndex,
+    const { structure } = findStructure({
+      drawDefinition,
+      structureId: targetData.matchUp.structureId,
     });
+
+    if (structure.structureType !== QUALIFYING)
+      console.log('linked structure winnerMatchUp removal', {
+        winnerMatchUpDrawPositionIndex,
+        winnerTargetLink,
+      });
   }
 }
