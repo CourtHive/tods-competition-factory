@@ -7,6 +7,7 @@ import {
   LOSER,
   WINNER,
   ROUND_OUTCOME,
+  DRAW,
 } from '../../../constants/drawDefinitionConstants';
 
 /**
@@ -59,16 +60,18 @@ function targetByRoundOutcome({
   structure,
   matchUp,
 }) {
-  const {
-    links: { source },
-  } = getRoundLinks({
+  const { links } = getRoundLinks({
     roundNumber: matchUp.roundNumber,
     structureId: structure.structureId,
     drawDefinition,
   });
+  const source = links?.source;
   const winnerTargetLink = getTargetLink({ source, linkType: WINNER });
   const loserTargetLink = getTargetLink({ source, linkType: LOSER });
   const { winnerMatchUpId, loserMatchUpId } = matchUp;
+
+  const winnerFeedProfile = winnerTargetLink?.target?.feedProfile;
+  const loserFeedProfile = loserTargetLink?.target?.feedProfile;
 
   let loserMatchUp, loserTargetDrawPosition, loserMatchUpDrawPositionIndex;
   let winnerMatchUp, winnerTargetDrawPosition, winnerMatchUpDrawPositionIndex;
@@ -77,11 +80,13 @@ function targetByRoundOutcome({
   if (useTargetMatchUpIds && (winnerMatchUpId || loserMatchUpId)) {
     winnerMatchUp =
       winnerMatchUpId &&
+      winnerFeedProfile !== DRAW &&
       inContextDrawMatchUps.find(
         ({ matchUpId }) => matchUpId === winnerMatchUpId
       );
     loserMatchUp =
       loserMatchUpId &&
+      loserFeedProfile !== DRAW &&
       inContextDrawMatchUps.find(
         ({ matchUpId }) => matchUpId === loserMatchUpId
       );
@@ -111,7 +116,7 @@ function targetByRoundOutcome({
     0
   );
 
-  if (loserTargetLink && !loserMatchUp) {
+  if (loserTargetLink && !loserMatchUp && loserFeedProfile !== DRAW) {
     ({
       matchUp: loserMatchUp,
       matchUpDrawPositionIndex: loserMatchUpDrawPositionIndex,
@@ -125,7 +130,7 @@ function targetByRoundOutcome({
     }));
   }
 
-  if (winnerTargetLink && !winnerMatchUp) {
+  if (winnerTargetLink && !winnerMatchUp && winnerFeedProfile !== DRAW) {
     ({
       matchUp: winnerMatchUp,
       matchUpDrawPositionIndex: winnerMatchUpDrawPositionIndex,

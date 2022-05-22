@@ -44,7 +44,6 @@ import {
   COMPLETED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { getDevContext } from '../../../global/state/globalState';
 
 /**
  *
@@ -105,7 +104,6 @@ export function setMatchUpStatus(params) {
     ({ winnerMatchUpId, loserMatchUpId }) => winnerMatchUpId || loserMatchUpId
   );
   if (!hasGoesTo) {
-    if (getDevContext({ qualifying: true })) console.log('addGoesTo');
     ({ inContextDrawMatchUps } = addGoesTo({
       inContextDrawMatchUps,
       drawDefinition,
