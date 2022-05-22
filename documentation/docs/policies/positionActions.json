@@ -12,7 +12,12 @@
       {
         "stages": [],
         "stageSequences": [],
-        "enabledActions": ["SEED_VALUE", "ADD_NICKNAME", "ADD_PENALTY"],
+        "enabledActions": [
+          "SEED_VALUE",
+          "ADD_NICKNAME",
+          "ADD_PENALTY",
+          "QUALIFIER"
+        ],
         "disabledActions": []
       }
     ],
