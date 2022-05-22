@@ -1821,6 +1821,12 @@
             "$ref": "#/definitions/PositionAssignment"
           }
         },
+        "qualifyingRoundNumber": {
+          "type": "number"
+        },
+        "roundLimit": {
+          "type": "number"
+        },
         "seedAssignments": {
           "type": "array",
           "items": {
