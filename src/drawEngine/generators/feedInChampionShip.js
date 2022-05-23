@@ -45,6 +45,9 @@ export function feedInChampionship(params = {}) {
     matchUps,
   });
 
+  const structures = [mainStructure];
+  const links = [];
+
   const baseDrawSize = drawSize / 2;
   const { matchUps: consolationMatchUps, roundsCount } = feedInMatchUps({
     finishingPositionOffset: baseDrawSize,
@@ -59,26 +62,31 @@ export function feedInChampionship(params = {}) {
     fmlc,
   });
 
-  const consolationStructure = structureTemplate({
-    matchUps: consolationMatchUps,
-    structureId: uuids?.pop(),
-    structureName: CONSOLATION,
-    stage: CONSOLATION,
-    stageSequence: 1,
-    matchUpType,
-  });
+  if (drawSize > 2) {
+    const consolationStructure = structureTemplate({
+      matchUps: consolationMatchUps,
+      structureId: uuids?.pop(),
+      structureName: CONSOLATION,
+      stage: CONSOLATION,
+      stageSequence: 1,
+      matchUpType,
+    });
+    structures.push(consolationStructure);
 
-  const links = feedInLinks({
-    consolationStructure,
-    mainStructure,
-    roundsCount,
-    feedPolicy,
-    fmlc,
-  });
+    const feedLinks = feedInLinks({
+      consolationStructure,
+      mainStructure,
+      roundsCount,
+      feedPolicy,
+      fmlc,
+    });
+
+    links.push(...feedLinks);
+  }
 
   return {
-    structures: [mainStructure, consolationStructure],
     ...SUCCESS,
+    structures,
     links,
   };
 }
