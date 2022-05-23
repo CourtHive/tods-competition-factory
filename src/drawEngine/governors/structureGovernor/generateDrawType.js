@@ -44,8 +44,9 @@ import {
  */
 export function generateDrawType(params = {}) {
   const {
-    drawType = SINGLE_ELIMINATION,
+    enforceMinimumDrawSize = true,
     stageSequence = 1,
+    drawTypeCoercion, // coerce to SINGLE_ELIMINATION for drawSize: 2
     drawDefinition,
     staggeredEntry, // optional - specifies main structure FEED_IN for drawTypes CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIPS, FMLC
     goesTo = true,
@@ -53,6 +54,8 @@ export function generateDrawType(params = {}) {
     isMock,
     uuids,
   } = params;
+
+  let drawType = params.drawType || SINGLE_ELIMINATION;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
@@ -151,7 +154,11 @@ export function generateDrawType(params = {}) {
 
   const multiStructure = MULTI_STRUCTURE_DRAWS.includes(drawType);
   if (parseInt(drawSize) < 4 && multiStructure) {
-    return { error: INVALID_DRAW_SIZE };
+    if (drawTypeCoercion) {
+      drawType = SINGLE_ELIMINATION;
+    } else if (enforceMinimumDrawSize) {
+      return { error: INVALID_DRAW_SIZE };
+    }
   }
 
   // there can be no existing main structure
