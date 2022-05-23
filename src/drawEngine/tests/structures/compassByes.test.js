@@ -98,8 +98,8 @@ function compassByesTest({
     'NORTH',
     'SOUTH',
     'NORTHEAST',
-    'SOUTHWEST',
     'NORTHWEST',
+    'SOUTHWEST',
     'SOUTHEAST',
   ]);
 
