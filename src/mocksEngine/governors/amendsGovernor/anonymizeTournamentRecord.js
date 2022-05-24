@@ -199,6 +199,11 @@ export function anonymizeTournamentRecord({
     if (Array.isArray(flightProfile?.value)) {
       flightProfile.value.flights?.forEach((flight) => {
         flight.drawId = idMap[flight.drawId];
+        if (Array.isArray(flight.drawEntries)) {
+          for (const entry of flight.drawEntries) {
+            entry.participantId = idMap[entry.participantId];
+          }
+        }
       });
     }
 
