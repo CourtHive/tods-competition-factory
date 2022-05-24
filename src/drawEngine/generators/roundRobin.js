@@ -142,8 +142,7 @@ export function generateRoundRobinWithPlayOff(params) {
   // keep track of how many playoff positions have been allocated to playoff structures
   let finishingPositionOffset = 0;
 
-  playoffGroups.forEach((playoffGroup, order) => {
-    const stageOrder = order + 1;
+  playoffGroups.forEach((playoffGroup) => {
     const validFinishingPositions = generateRange(1, groupSize + 1);
     const finishingPositions = playoffGroup.finishingPositions;
 
@@ -179,7 +178,6 @@ export function generateRoundRobinWithPlayOff(params) {
         stage: PLAY_OFF,
         stageSequence,
         matchUpType,
-        stageOrder,
         matchUps,
       });
 

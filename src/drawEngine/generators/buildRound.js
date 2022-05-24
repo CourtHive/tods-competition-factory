@@ -40,11 +40,11 @@ export function buildRound({
     roundNodes.push(node);
 
     const matchUp = {
-      matchUpId: node.matchUpId,
-      roundNumber,
-      roundPosition,
-      matchUpStatus: TO_BE_PLAYED,
       drawPositions: node.children.map((c) => c.drawPosition).filter(Boolean),
+      matchUpStatus: TO_BE_PLAYED,
+      matchUpId: node.matchUpId,
+      roundPosition,
+      roundNumber,
     };
 
     // matchUpType is derived for inContext matchUps from structure or drawDefinition

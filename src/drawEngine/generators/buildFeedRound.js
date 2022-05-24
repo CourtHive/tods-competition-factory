@@ -4,10 +4,11 @@ import { generateRange } from '../../utilities';
 export function buildFeedRound({
   includeMatchUpType,
   drawPosition,
-  matchUpType,
   roundNumber,
+  matchUpType,
   idPrefix,
   matchUps,
+  isMock,
   uuids,
   nodes,
   fed,
@@ -26,9 +27,9 @@ export function buildFeedRound({
     const feedDrawPosition = drawPositionGroup.shift();
 
     const feedArm = {
-      feed: true,
-      fed: fed + 1,
       drawPosition: feedDrawPosition,
+      fed: fed + 1,
+      feed: true,
     };
 
     const position = nodes[nodeIndex];
@@ -41,14 +42,16 @@ export function buildFeedRound({
     });
 
     const newMatchUp = {
+      roundPosition: position.roundPosition,
+      drawPositions: [feedDrawPosition],
       roundNumber,
       matchUpId,
-      roundPosition: position.roundPosition,
-      drawPositions: [undefined, feedDrawPosition],
     };
 
     // matchUpType is derived for inContext matchUps from structure or drawDefinition
     if (includeMatchUpType) newMatchUp.matchUpType = matchUpType;
+    if (isMock) newMatchUp.isMock = true;
+
     matchUps.push(newMatchUp);
 
     const roundNode = { children: [position, feedArm] };
