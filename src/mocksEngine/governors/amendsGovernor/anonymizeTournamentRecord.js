@@ -1,9 +1,12 @@
-import { findTournamentExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { extractDate, formatDate } from '../../../utilities/dateTime';
 import { generatePersons } from '../../generators/generatePersons';
 import { generateAddress } from '../../generators/generateAddress';
 import { nameMocks } from '../../utilities/nameMocks';
 import { UUID } from '../../../utilities';
+import {
+  findEventExtension,
+  findTournamentExtension,
+} from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import {
   postalCodeMocks,
   stateMocks,
@@ -190,13 +193,13 @@ export function anonymizeTournamentRecord({
       }
     }
 
-    const { extension: flightProfile } = findTournamentExtension({
+    const { extension: flightProfile } = findEventExtension({
       name: FLIGHT_PROFILE,
-      tournamentRecord,
+      event,
     });
 
     // use idMap to update all IDs in flightProfiles
-    if (Array.isArray(flightProfile?.value)) {
+    if (Array.isArray(flightProfile?.value?.flights)) {
       flightProfile.value.flights?.forEach((flight) => {
         flight.drawId = idMap[flight.drawId];
         if (Array.isArray(flight.drawEntries)) {
