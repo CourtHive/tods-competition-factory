@@ -224,7 +224,11 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
 
   if (secondRoundDualMatchUps.length) {
     secondRoundDualMatchUps.forEach((dualMatchUp) => {
-      expect(dualMatchUp.drawPositions.length).toEqual(2);
+      if (dualMatchUp.drawPositions.length === 1) {
+        expect(dualMatchUp.drawPositions.length).toEqual(1);
+      } else {
+        expect(dualMatchUp.drawPositions.length).toEqual(2);
+      }
     });
   }
 

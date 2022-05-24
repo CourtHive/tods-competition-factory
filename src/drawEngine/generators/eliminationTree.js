@@ -29,8 +29,8 @@ export function treeMatchUps({
   let roundNumber = 1;
 
   ({ roundNodes, matchUps } = buildRound({
-    roundNumber,
     matchUpType,
+    roundNumber,
     idPrefix,
     matchUps,
     isMock,
@@ -47,8 +47,8 @@ export function treeMatchUps({
 
     ({ roundNodes, matchUps } = buildRound({
       nodes: roundNodes,
-      roundNumber,
       matchUpType,
+      roundNumber,
       idPrefix,
       matchUps,
       isMock,

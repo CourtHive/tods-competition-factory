@@ -1243,8 +1243,10 @@ const drawDefinitionValues = {
   policyDefinitions, // optional - seeding or avoidance policies to be used when placing participants
   qualifyingPositions, // optional - number of positions in draw structure to be filled by qualifiers
   finishingPositionNaming, // optional - map of { [finishingPositionRange]: { name: 'customName', abbreviation: 'A' } }
-  enforcePolicyLimits, // optional - defaults to true - constrains seedsCount to policyDefinition limits
+  enforcePolicyLimits, // optional boolean - defaults to true - constrains seedsCount to policyDefinition limits
   voluntaryConsolation, // optional { structureName, structureAbbreviation } - causes voluntary consolation structure to be added
+  enforceMinimumDrawSize, // optional boolean - defaults to true - false will allow generation of multi-structure drawTypes with only 2 participants
+  drawTypeCoercion, // optional boolean - coerce multi-structure drawTypes to SINGLE_ELIMINATION for drawSize: 2
 };
 
 const { drawDefinition } =

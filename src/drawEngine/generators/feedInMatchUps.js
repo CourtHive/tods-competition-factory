@@ -106,8 +106,8 @@ export function feedInMatchUps({
 
   for (const baseDrawRound of baseDrawRounds) {
     ({ roundNodes, matchUps } = buildRound({
-      roundNumber,
       matchUpType,
+      roundNumber,
       idPrefix,
       matchUps,
       isMock,
@@ -130,10 +130,11 @@ export function feedInMatchUps({
           drawPosition: iterationDrawPosition,
           nodes: roundNodes,
           roundIteration, // meaningless; avoids eslint value never used
-          roundNumber,
           matchUpType,
+          roundNumber,
           idPrefix,
           matchUps,
+          isMock,
           uuids,
           fed,
         }));

@@ -6,13 +6,14 @@ import {
   initialize,
   mainDrawPositions,
 } from '../../tests/primitives/primitives';
+
+import { ERROR } from '../../../constants/resultConstants';
 import {
   COMPASS,
   FEED_IN_CHAMPIONSHIP,
   MAIN,
   CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
-import { ERROR } from '../../../constants/resultConstants';
 
 it('can find structures by structureId', () => {
   reset();
@@ -58,7 +59,7 @@ it('can find structures by stage and stageSequence', () => {
   expect(stage3Structures.length).toEqual(3);
   expect(
     stage3Structures.map((structure) => structure.structureName)
-  ).toMatchObject(['SOUTH', 'SOUTHWEST', 'NORTHWEST']);
+  ).toMatchObject(['SOUTH', 'NORTHWEST', 'SOUTHWEST']);
 
   const { structures: stage4Structures } = getDrawStructures({
     drawDefinition,

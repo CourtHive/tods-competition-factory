@@ -115,9 +115,11 @@ export function generatePlayoffStructures({
     ? rounds
     : 0;
 
-  generateRange(1, roundsToPlayOff + 1).forEach((roundNumber) =>
-    generateChildStructures(roundNumber)
-  );
+  if (drawSize > 2) {
+    generateRange(1, roundsToPlayOff + 1).forEach((roundNumber) =>
+      generateChildStructures(roundNumber)
+    );
+  }
 
   return {
     structureId: structure.structureId,

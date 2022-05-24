@@ -46,45 +46,54 @@ export function firstRoundLoserConsolation(params) {
     stage,
   });
 
-  const consolationDrawPositions = drawSize / 2;
+  const structures = [mainStructure];
+  const links = [];
 
-  const { matchUps: consolationMatchUps } = treeMatchUps({
-    finishingPositionOffset: finishingPositionOffset + consolationDrawPositions,
-    idPrefix: idPrefix && `${idPrefix}-c`,
-    drawSize: consolationDrawPositions,
-    matchUpType,
-    isMock,
-  });
+  if (drawSize > 2) {
+    const consolationDrawPositions = drawSize / 2;
 
-  const consolationStructureName =
-    params.consolationStructureName ||
-    (structureName ? `${structureName} ${CONSOLATION}` : CONSOLATION);
+    const { matchUps: consolationMatchUps } = treeMatchUps({
+      finishingPositionOffset:
+        finishingPositionOffset + consolationDrawPositions,
+      idPrefix: idPrefix && `${idPrefix}-c`,
+      drawSize: consolationDrawPositions,
+      matchUpType,
+      isMock,
+    });
 
-  const consolationStructure = structureTemplate({
-    structureName: consolationStructureName,
-    matchUps: consolationMatchUps,
-    structureId: uuids?.pop(),
-    stage: CONSOLATION,
-    stageSequence: 1,
-    matchUpType,
-  });
+    const consolationStructureName =
+      params.consolationStructureName ||
+      (structureName ? `${structureName} ${CONSOLATION}` : CONSOLATION);
 
-  const link = {
-    linkType: LOSER,
-    source: {
-      roundNumber: 1,
-      structureId: mainStructure.structureId,
-    },
-    target: {
-      roundNumber: 1,
-      feedProfile: TOP_DOWN,
-      structureId: consolationStructure.structureId,
-    },
-  };
+    const consolationStructure = structureTemplate({
+      structureName: consolationStructureName,
+      matchUps: consolationMatchUps,
+      structureId: uuids?.pop(),
+      stage: CONSOLATION,
+      stageSequence: 1,
+      matchUpType,
+    });
+    structures.push(consolationStructure);
+
+    const link = {
+      linkType: LOSER,
+      source: {
+        roundNumber: 1,
+        structureId: mainStructure.structureId,
+      },
+      target: {
+        roundNumber: 1,
+        feedProfile: TOP_DOWN,
+        structureId: consolationStructure.structureId,
+      },
+    };
+
+    links.push(link);
+  }
 
   return {
-    structures: [mainStructure, consolationStructure],
-    links: [link],
     ...SUCCESS,
+    structures,
+    links,
   };
 }

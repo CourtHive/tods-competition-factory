@@ -135,7 +135,6 @@ it('can generate a Curtis Consolation draw', () => {
   mainDrawPositions({ drawSize: 64 });
   drawEngine.generateDrawType({
     drawType: CURTIS,
-    description: CURTIS,
   });
 
   const { drawDefinition: state } = drawEngine.getState();
@@ -203,7 +202,7 @@ it('reasonably handles Curtis Consolation draw sizes less than 64', () => {
     reset();
     initialize();
     mainDrawPositions({ drawSize: drawSizes[i] });
-    drawEngine.generateDrawType({ drawType: CURTIS, description: CURTIS });
+    drawEngine.generateDrawType({ drawType: CURTIS });
     const { drawDefinition } = drawEngine.getState();
     expect(drawDefinition.structures.length).toEqual(structures[i]);
     expect(drawDefinition.links.length).toEqual(links[i]);
@@ -214,12 +213,12 @@ it('does not generate multi-structure draws with fewer than 4 participants', () 
   reset();
   initialize();
   mainDrawPositions({ drawSize: 2 });
-  drawEngine.generateDrawType({ drawType: CURTIS, description: CURTIS });
+  drawEngine.generateDrawType({ drawType: CURTIS });
   let { drawDefinition } = drawEngine.getState();
   expect(drawDefinition.structures.length).toEqual(0);
   expect(drawDefinition.links.length).toEqual(0);
 
-  drawEngine.generateDrawType({ drawType: COMPASS, description: COMPASS });
+  drawEngine.generateDrawType({ drawType: COMPASS });
   ({ drawDefinition } = drawEngine.getState());
   expect(drawDefinition.structures.length).toEqual(0);
   expect(drawDefinition.links.length).toEqual(0);
@@ -228,4 +227,26 @@ it('does not generate multi-structure draws with fewer than 4 participants', () 
   ({ drawDefinition } = drawEngine.getState());
   expect(drawDefinition.structures.length).toEqual(1);
   expect(drawDefinition.links.length).toEqual(0);
+});
+
+it('can coerce multi-structure draws to SINGLE_ELIMINATION for drawSize: 2', () => {
+  reset();
+  initialize();
+  mainDrawPositions({ drawSize: 2 });
+  drawEngine.generateDrawType({
+    drawType: CURTIS,
+    drawTypeCoercion: true,
+  });
+  let { drawDefinition } = drawEngine.getState();
+  expect(drawDefinition.structures.length).toEqual(1);
+
+  drawEngine.generateDrawType({ drawType: COMPASS });
+  ({ drawDefinition } = drawEngine.getState());
+  expect(drawDefinition.structures.length).toEqual(1);
+
+  drawEngine.generateDrawType({
+    drawType: FIRST_MATCH_LOSER_CONSOLATION,
+  });
+  ({ drawDefinition } = drawEngine.getState());
+  expect(drawDefinition.structures.length).toEqual(1);
 });

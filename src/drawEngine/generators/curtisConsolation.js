@@ -46,72 +46,76 @@ export function generateCurtisConsolation({
   });
 
   const structures = [mainStructure];
+  const links = [];
 
-  const feedRoundOffsets = [0, 2].slice(0, drawSize / 16);
-  const consolationItems = feedRoundOffsets.map((roundOffset, index) => {
-    const stageSequence = index + 1;
-    const { consolationStructure } = consolationFeedStructure({
-      structureId: uuids?.pop(),
-      idPrefix: idPrefix && `${idPrefix}-c${index}`,
-      stageSequence,
-      roundOffset,
-      matchUpType,
-      drawSize,
-      isMock,
-      index,
-      uuids,
+  if (drawSize > 2) {
+    const feedRoundOffsets = [0, 2].slice(0, drawSize / 16);
+    const consolationItems = feedRoundOffsets.map((roundOffset, index) => {
+      const stageSequence = index + 1;
+      const { consolationStructure } = consolationFeedStructure({
+        structureId: uuids?.pop(),
+        idPrefix: idPrefix && `${idPrefix}-c${index}`,
+        stageSequence,
+        roundOffset,
+        matchUpType,
+        drawSize,
+        isMock,
+        index,
+        uuids,
+      });
+
+      structures.push(consolationStructure);
+
+      const links = feedInLinks({
+        mainStructure,
+        consolationStructure,
+        roundsCount: 2,
+        roundOffset,
+      });
+
+      return { consolationStructure, links };
     });
 
-    structures.push(consolationStructure);
+    const consolationLinks = consolationItems.map((item) => item.links).flat();
+    links.push(...consolationLinks);
 
-    const links = feedInLinks({
-      mainStructure,
-      consolationStructure,
-      roundsCount: 2,
-      roundOffset,
-    });
+    // only add 3-4 playoff structure
+    // 1. if there is one consolation round, drawSize === 16
+    // 2. if drawSize > 32
+    // when drawSize === 32 then all rounds feed into the two consolation structures
+    if ((drawSize >= 4 && drawSize <= 16) || drawSize > 32) {
+      const { matchUps: playoffMatchUps } = treeMatchUps({
+        finishingPositionOffset: 2,
+        idPrefix: idPrefix && `${idPrefix}-p3t4`,
+        drawSize: 2,
+        matchUpType,
+        isMock,
+      });
+      const playoffStructure = structureTemplate({
+        structureId: uuids?.pop(),
+        matchUps: playoffMatchUps,
+        structureName: PLAY_OFF,
+        stageSequence: 2,
+        matchUpType,
+        stage: MAIN,
+      });
 
-    return { consolationStructure, links };
-  });
+      const playoffLink = {
+        linkType: LOSER,
+        source: {
+          roundNumber: mainDrawRoundsCount - 1,
+          structureId: mainStructure.structureId,
+        },
+        target: {
+          roundNumber: 1,
+          feedProfile: TOP_DOWN,
+          structureId: playoffStructure.structureId,
+        },
+      };
 
-  const links = consolationItems.map((item) => item.links).flat();
-
-  // only add 3-4 playoff structure
-  // 1. if there is one consolation round, drawSize === 16
-  // 2. if drawSize > 32
-  // when drawSize === 32 then all rounds feed into the two consolation structures
-  if ((drawSize >= 4 && drawSize <= 16) || drawSize > 32) {
-    const { matchUps: playoffMatchUps } = treeMatchUps({
-      finishingPositionOffset: 2,
-      idPrefix: idPrefix && `${idPrefix}-p3t4`,
-      drawSize: 2,
-      matchUpType,
-      isMock,
-    });
-    const playoffStructure = structureTemplate({
-      structureId: uuids?.pop(),
-      matchUps: playoffMatchUps,
-      structureName: PLAY_OFF,
-      stageSequence: 2,
-      matchUpType,
-      stage: MAIN,
-    });
-
-    const playoffLink = {
-      linkType: LOSER,
-      source: {
-        roundNumber: mainDrawRoundsCount - 1,
-        structureId: mainStructure.structureId,
-      },
-      target: {
-        roundNumber: 1,
-        feedProfile: TOP_DOWN,
-        structureId: playoffStructure.structureId,
-      },
-    };
-
-    structures.push(playoffStructure);
-    links.push(playoffLink);
+      structures.push(playoffStructure);
+      links.push(playoffLink);
+    }
   }
 
   return { structures, links, ...SUCCESS };
