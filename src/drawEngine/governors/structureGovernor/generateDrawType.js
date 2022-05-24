@@ -141,7 +141,8 @@ export function generateDrawType(params = {}) {
     drawSize < 2 ||
     (!staggeredEntry &&
       ![FEED_IN, AD_HOC, LUCKY_DRAW].includes(drawType) &&
-      ((drawType === ROUND_ROBIN && drawSize < 3) ||
+      (([ROUND_ROBIN_WITH_PLAYOFF, ROUND_ROBIN].includes(drawType) &&
+        drawSize < 3) ||
         (drawType === DOUBLE_ELIMINATION && !validDoubleEliminationSize) ||
         (![ROUND_ROBIN, DOUBLE_ELIMINATION, ROUND_ROBIN_WITH_PLAYOFF].includes(
           drawType
