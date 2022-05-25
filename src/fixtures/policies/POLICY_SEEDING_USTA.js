@@ -3,11 +3,12 @@ import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 
 export const POLICY_SEEDING_USTA = {
   [POLICY_TYPE_SEEDING]: {
-    policyName: 'USTA',
-    seedingProfile: SEPARATE,
+    validSeedPositions: { ignore: true },
     duplicateSeedNumbers: true,
     drawSizeProgression: true,
-    validSeedPositions: { ignore: true },
+    seedingProfile: SEPARATE,
+    policyName: 'USTA',
+
     seedsCountThresholds: [
       { drawSize: 4, minimumParticipantCount: 3, seedsCount: 2 },
       { drawSize: 16, minimumParticipantCount: 12, seedsCount: 4 },
