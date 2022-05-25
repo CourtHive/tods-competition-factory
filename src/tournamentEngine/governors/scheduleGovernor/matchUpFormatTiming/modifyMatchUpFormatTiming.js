@@ -57,7 +57,7 @@ export function modifyMatchUpFormatTiming({
     });
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 function modifyScheduling({

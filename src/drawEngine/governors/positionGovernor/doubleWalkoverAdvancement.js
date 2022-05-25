@@ -32,7 +32,7 @@ export function doubleWalkoverAdvancement(params) {
     targetData,
     structure,
   } = params;
-  if (structure.structureType === CONTAINER) return SUCCESS;
+  if (structure.structureType === CONTAINER) return { ...SUCCESS };
 
   const stack = 'doubleWalkoverAdvancement';
 
@@ -291,7 +291,7 @@ function conditionallyAdvanceDrawPosition(params) {
       if (advancementResult.error) return advancementResult;
     }
   }
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 function advanceByeToLoserMatchUp(params) {

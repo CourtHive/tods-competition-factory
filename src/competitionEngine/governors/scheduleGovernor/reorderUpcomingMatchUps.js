@@ -32,7 +32,7 @@ export function reorderUpcomingMatchUps(params) {
   if (!matchUpsContextIds) return { error: MISSING_VALUE };
 
   const matchUpsCount = matchUpsContextIds?.length;
-  if (!matchUpsCount) return SUCCESS;
+  if (!matchUpsCount) return { ...SUCCESS };
 
   let matchUpsModified = 0;
   matchUpsContextIds.forEach((context, index) => {

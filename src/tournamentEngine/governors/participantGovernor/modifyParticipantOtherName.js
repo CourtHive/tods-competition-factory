@@ -33,5 +33,5 @@ export function modifyParticipantOtherName({
     });
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

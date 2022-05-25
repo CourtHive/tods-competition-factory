@@ -65,5 +65,5 @@ export function removeEventEntries({
     );
   });
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

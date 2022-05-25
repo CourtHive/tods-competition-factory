@@ -62,7 +62,7 @@ export function getStageSpace({
   }
 
   if (entryStatus === WILDCARD) {
-    if (wildcardEntriesCount < wildcardPositions) return SUCCESS;
+    if (wildcardEntriesCount < wildcardPositions) return { ...SUCCESS };
     return { error: NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS };
   }
 

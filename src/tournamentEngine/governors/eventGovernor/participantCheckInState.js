@@ -41,7 +41,7 @@ export function checkInParticipant({
     return { error: EVENT_NOT_FOUND };
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function checkOutParticipant({
@@ -73,5 +73,5 @@ export function checkOutParticipant({
     return { error: EVENT_NOT_FOUND };
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

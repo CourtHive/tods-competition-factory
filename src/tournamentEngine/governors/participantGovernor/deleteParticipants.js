@@ -20,7 +20,7 @@ export function deleteParticipants({ tournamentRecord, participantIds }) {
   if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
 
   const participantsCount = tournamentRecord.participants?.length || 0;
-  if (!participantsCount) return SUCCESS;
+  if (!participantsCount) return { ...SUCCESS };
 
   const teamDrawIds = tournamentRecord.events
     ?.filter(({ eventType }) => eventType === TEAM)

@@ -30,7 +30,7 @@ export function setEntryPosition({
     }
   });
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function setEntryPositions({

@@ -143,5 +143,5 @@ export function modifyMatchUpScore({
     matchUp,
   });
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

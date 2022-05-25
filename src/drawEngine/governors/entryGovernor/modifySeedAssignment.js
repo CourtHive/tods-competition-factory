@@ -86,5 +86,5 @@ export function modifySeedAssignment({
     structure,
   });
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

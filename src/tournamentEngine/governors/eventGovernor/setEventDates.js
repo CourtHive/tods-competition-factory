@@ -37,7 +37,7 @@ export function setEventStartDate({ tournamentRecord, event, startDate }) {
 
   event.startDate = startDate;
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function setEventEndDate({ tournamentRecord, event, endDate }) {
@@ -65,7 +65,7 @@ export function setEventEndDate({ tournamentRecord, event, endDate }) {
   }
 
   event.endDate = endDate;
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function setEventDates({ tournamentRecord, event, startDate, endDate }) {
@@ -92,7 +92,7 @@ export function setEventDates({ tournamentRecord, event, startDate, endDate }) {
     if (error) return { error };
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 function getTournamentDates(tournamentRecord) {

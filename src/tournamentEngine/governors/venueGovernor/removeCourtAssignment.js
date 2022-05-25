@@ -61,5 +61,5 @@ export function removeCourtAssignment({
     }
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

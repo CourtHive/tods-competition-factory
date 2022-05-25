@@ -39,7 +39,7 @@ export const drawEngine = (function () {
     version: () => factoryVersion(),
     reset: () => {
       drawDefinition = undefined;
-      return SUCCESS;
+      return { ...SUCCESS };
     },
     newDrawDefinition: ({ drawId, drawType } = {}) => {
       drawDefinition = newDrawDefinition({ drawId, drawType });

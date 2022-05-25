@@ -93,7 +93,7 @@ export function addDrawEntries({
     }
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 function participantInFlightEntries({

@@ -143,7 +143,7 @@ export function directParticipants(params) {
     return { error: MISSING_DRAW_POSITIONS };
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 function drawPositionsAssignedParticipantIds({ structure, matchUp }) {

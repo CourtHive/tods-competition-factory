@@ -63,5 +63,5 @@ export function removeDrawEntries({
     }
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

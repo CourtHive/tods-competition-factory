@@ -24,5 +24,5 @@ export function addVenue({ tournamentRecords, venue, disableNotice }) {
     addNotice({ topic: ADD_VENUE, payload: { venue } });
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

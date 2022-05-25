@@ -91,5 +91,5 @@ function positionSeedBlock({
     if (!result.success) return result;
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

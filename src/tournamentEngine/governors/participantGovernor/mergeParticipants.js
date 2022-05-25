@@ -71,6 +71,6 @@ export function mergeParticipants({
   }
 
   if (newParticipants.length || modifiedParticipants.length) {
-    return SUCCESS;
+    return { ...SUCCESS };
   }
 }

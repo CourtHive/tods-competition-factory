@@ -53,5 +53,5 @@ export function updateDrawIdsOrder({ event, orderedDrawIdsMap }) {
     flight.flightNumber = orderedDrawIdsMap[flight.drawId];
   });
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

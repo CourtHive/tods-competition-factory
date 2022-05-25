@@ -35,5 +35,5 @@ export function removeParticipantsScaleItems({
     }
   });
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
