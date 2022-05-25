@@ -106,6 +106,7 @@ it('can generate a tournament with events and draws', () => {
     eventId,
     drawId,
   });
+  console.log(result.error);
   expect(result?.error).not.toBeUndefined();
 
   const { upcomingMatchUps } = tournamentEngine.tournamentMatchUps();

@@ -1,4 +1,5 @@
 import { removeDirectedParticipants } from './removeDirectedParticipantsAndUpdateOutcome';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
@@ -14,17 +15,17 @@ import {
   INCOMPLETE,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import { decorateResult } from '../../../global/functions/decorateResult';
 
 export function noDownstreamDependencies(params) {
   const { matchUp, matchUpStatus, score, winningSide } = params;
+  const stack = 'noDownStreamDependencies';
 
   const doubleWalkoverCleanup =
     matchUp?.matchUpStatus === DOUBLE_WALKOVER &&
     matchUpStatus !== DOUBLE_WALKOVER;
   if (doubleWalkoverCleanup) {
     const result = removeDoubleWalkover(params);
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
   const doubleWalkover = matchUpStatus === DOUBLE_WALKOVER;
@@ -79,10 +80,11 @@ export function noDownstreamDependencies(params) {
     (removeWinningSide && removeDirected({ removeScore })) ||
     (matchUp && scoreModification({ ...params, removeScore: true })) ||
     (console.log('unknown condition') && { ...SUCCESS });
-  return decorateResult({ result, stack: 'noDownStreamDependencies' });
+  return decorateResult({ result, stack });
 }
 
 function scoreModification(params) {
+  const stack = 'scoreModification';
   const removeDirected =
     params.isCollectionMatchUp &&
     params.dualMatchUp?.winningSide &&
@@ -108,5 +110,5 @@ function scoreModification(params) {
     if (removeWinningSide) console.log('REMOVE WINNING SIDE');
   }
 
-  return result;
+  return decorateResult({ result, stack });
 }

@@ -32,9 +32,10 @@ export function doubleWalkoverAdvancement(params) {
     targetData,
     structure,
   } = params;
-  if (structure.structureType === CONTAINER) return { ...SUCCESS };
-
   const stack = 'doubleWalkoverAdvancement';
+
+  if (structure.structureType === CONTAINER)
+    return decorateResult({ result: { ...SUCCESS }, stack });
 
   const { matchUp: sourceMatchUp, targetMatchUps, targetLinks } = targetData;
   const { loserMatchUp, winnerMatchUp, loserTargetDrawPosition } =
@@ -64,7 +65,7 @@ export function doubleWalkoverAdvancement(params) {
     if (result.error) return decorateResult({ result, stack });
   }
 
-  return { ...SUCCESS };
+  return decorateResult({ result: { ...SUCCESS }, stack });
 }
 
 // 1. Assigns a WALKOVER status to the winnerMatchUp
@@ -174,7 +175,8 @@ function conditionallyAdvanceDrawPosition(params) {
     });
   }
 
-  if (!nextWinnerMatchUp) return { ...SUCCESS };
+  if (!nextWinnerMatchUp)
+    return decorateResult({ result: { ...SUCCESS }, stack });
 
   // any remaining drawPosition in winnerMatchUp should be advanced
   const drawPositionToAdvance = winnerMatchUpDrawPositions[0];
@@ -241,7 +243,7 @@ function conditionallyAdvanceDrawPosition(params) {
         if (result.error) return decorateResult({ result, stack });
       }
 
-      return { ...SUCCESS };
+      return decorateResult({ result: { ...SUCCESS }, stack });
     }
 
     return assignMatchUpDrawPosition({
@@ -291,7 +293,7 @@ function conditionallyAdvanceDrawPosition(params) {
       if (advancementResult.error) return advancementResult;
     }
   }
-  return { ...SUCCESS };
+  return decorateResult({ result: { ...SUCCESS }, stack });
 }
 
 function advanceByeToLoserMatchUp(params) {

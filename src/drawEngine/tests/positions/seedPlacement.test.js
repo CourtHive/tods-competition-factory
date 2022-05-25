@@ -289,6 +289,7 @@ it.only('can assign seedNumbers and drawPositions to seeded participants', () =>
     drawPosition: 2,
     participantId,
   });
+  console.log({ result });
   expect(result).toHaveProperty(ERROR);
 
   // attempt to assign a valid position to a seeded participant
