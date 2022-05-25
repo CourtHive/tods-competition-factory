@@ -49,5 +49,5 @@ export function deleteEvents({ tournamentRecord, eventIds }) {
     addTournamentTimeItem({ tournamentRecord, timeItem });
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

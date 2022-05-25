@@ -73,7 +73,7 @@ export function savePersonRequests({ tournamentRecords, personRequests }) {
     }
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 /*

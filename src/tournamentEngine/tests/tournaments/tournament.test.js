@@ -4,8 +4,8 @@ import { drawEngine } from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 
+import POLICY_SEEDING_NATIONAL from '../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
 import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
-import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { eventConstants } from '../../../constants/eventConstants';
 
 const { SINGLES } = eventConstants;
@@ -39,7 +39,7 @@ it('can generate a tournament with events and draws', () => {
     eventId,
     seedsCount: 8,
     event: eventResult,
-    policyDefinitions: { ...SEEDING_ITF_POLICY },
+    policyDefinitions: { ...POLICY_SEEDING_NATIONAL },
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const { drawId } = drawDefinition;
@@ -52,7 +52,7 @@ it('can generate a tournament with events and draws', () => {
   const { extensions } = drawDefinition;
   expect(extensions.length).toEqual(2);
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  expect(appliedPolicies.seeding.policyName).toEqual('ITF');
+  expect(appliedPolicies.seeding.policyName).toEqual('NATIONAL');
 
   // find main structureId more intelligently
   const mainStructureId = drawDefinition.structures[0].structureId;

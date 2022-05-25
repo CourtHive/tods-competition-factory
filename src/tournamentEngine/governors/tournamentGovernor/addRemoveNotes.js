@@ -13,7 +13,7 @@ export function addNotes({ element, notes } = {}) {
 
   Object.assign(element, { notes });
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function removeNotes({ element } = {}) {
@@ -21,5 +21,5 @@ export function removeNotes({ element } = {}) {
 
   if (element.notes) delete element.notes;
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

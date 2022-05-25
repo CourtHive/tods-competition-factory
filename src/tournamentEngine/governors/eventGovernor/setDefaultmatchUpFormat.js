@@ -25,7 +25,7 @@ export function setEventDefaultMatchUpFormat({
 
   event.matchUpFormat = matchUpFormat;
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function setDrawDefaultMatchUpFormat({

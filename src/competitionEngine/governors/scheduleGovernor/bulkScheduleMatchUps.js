@@ -32,5 +32,5 @@ export function bulkScheduleMatchUps({
     }
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

@@ -144,5 +144,5 @@ export function deleteDrawDefinitions({
     deleteDrawNotice({ drawId });
   });
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

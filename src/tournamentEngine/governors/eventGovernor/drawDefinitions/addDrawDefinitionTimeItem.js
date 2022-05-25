@@ -26,5 +26,5 @@ export function addDrawDefinitionTimeItem({ drawDefinition, timeItem }) {
 
   addDrawNotice({ drawDefinition });
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

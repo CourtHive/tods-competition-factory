@@ -45,7 +45,7 @@ export function promoteAlternate({
     if (result.error) return result;
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 function promoteWithinElement({
@@ -109,5 +109,5 @@ function promoteWithinElement({
   );
   participantEntry.entryPosition = maxEntryPosition || 0;
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

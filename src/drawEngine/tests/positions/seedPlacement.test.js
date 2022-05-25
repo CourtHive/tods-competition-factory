@@ -8,6 +8,7 @@ import { numericSort } from '../../../utilities';
 import { drawEngine } from '../../sync';
 
 import { MODIFY_DRAW_DEFINITION } from '../../../constants/topicConstants';
+import SEEDING_NATIONAL from '../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
@@ -204,7 +205,7 @@ it('generates valild seedBlocks given different policies', () => {
   });
 });
 
-it.only('can assign seedNumbers and drawPositions to seeded participants', () => {
+it('can assign seedNumbers and drawPositions to seeded participants', () => {
   let updatedAt = 0;
   let drawModifications = 0;
   let result = setSubscriptions({
@@ -230,7 +231,7 @@ it.only('can assign seedNumbers and drawPositions to seeded participants', () =>
   const { drawDefinition } = mocksEngine.generateEventWithDraw({
     drawProfile: {
       enforcePolicyLimits: false,
-      policyDefinitions: SEEDING_ITF,
+      policyDefinitions: SEEDING_NATIONAL,
       automated: false,
       seedsCount,
       drawSize,

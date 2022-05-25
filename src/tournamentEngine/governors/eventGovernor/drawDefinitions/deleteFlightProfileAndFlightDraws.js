@@ -30,5 +30,5 @@ export function deleteFlightProfileAndFlightDraws({ tournamentRecord, event }) {
     return removeEventExtension({ event, name: FLIGHT_PROFILE });
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

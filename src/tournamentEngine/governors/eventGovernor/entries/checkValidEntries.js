@@ -59,5 +59,5 @@ export function checkValidEntries({ event, participants, ignoreGender }) {
     return { error: INVALID_ENTRIES, invalidParticipantIds };
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

@@ -19,6 +19,7 @@ export function filterMatchUps(params) {
     matchUpTypes,
     roundNumbers,
     matchUpIds,
+    roundNames,
 
     // only applies to inContext matchUps and only when processContext boolean is true
     stageSequences,
@@ -47,6 +48,9 @@ export function filterMatchUps(params) {
     : [];
   const targetCollectionIds = Array.isArray(collectionIds)
     ? collectionIds.filter(Boolean)
+    : [];
+  const targetRoundNames = Array.isArray(roundNames)
+    ? roundNames.filter(Boolean)
     : [];
   const targetRoundNumbers = Array.isArray(roundNumbers)
     ? roundNumbers.filter(Boolean)
@@ -122,6 +126,12 @@ export function filterMatchUps(params) {
     if (
       targetCollectionIds.length &&
       !targetCollectionIds.includes(matchUp.collectionId)
+    ) {
+      return false;
+    }
+    if (
+      targetRoundNames.length &&
+      !targetRoundNames.includes(matchUp.roundName)
     ) {
       return false;
     }

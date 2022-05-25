@@ -123,7 +123,7 @@ export function replacementTest({
     );
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 function drawPositionAssignments({ drawId }) {

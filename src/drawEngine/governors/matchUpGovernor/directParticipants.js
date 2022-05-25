@@ -64,7 +64,7 @@ export function directParticipants(params) {
     event,
     score,
   });
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
 
   let drawPositions = matchUp.drawPositions;
 
@@ -81,11 +81,12 @@ export function directParticipants(params) {
       ({ matchUpId }) => matchUpId === matchUpTieId
     );
     drawPositions = matchUpTie?.drawPositions;
-    if (!dualWinningSideChange) return { ...SUCCESS };
+    if (!dualWinningSideChange)
+      return decorateResult({ result: { ...SUCCESS }, stack });
   }
 
   if (isAdHocMatchUp) {
-    return { ...SUCCESS };
+    return decorateResult({ result: { ...SUCCESS }, stack });
   }
 
   if (drawPositions) {
@@ -119,7 +120,7 @@ export function directParticipants(params) {
         matchUpsMap,
         event,
       });
-      if (result.error) return result;
+      if (result.error) return decorateResult({ result, stack });
     }
     if (loserMatchUp) {
       const result = directLoser({
@@ -140,10 +141,10 @@ export function directParticipants(params) {
       if (result.error) return decorateResult({ result, stack });
     }
   } else {
-    return { error: MISSING_DRAW_POSITIONS };
+    return decorateResult({ result: { error: MISSING_DRAW_POSITIONS }, stack });
   }
 
-  return SUCCESS;
+  return decorateResult({ result: { ...SUCCESS }, stack });
 }
 
 function drawPositionsAssignedParticipantIds({ structure, matchUp }) {

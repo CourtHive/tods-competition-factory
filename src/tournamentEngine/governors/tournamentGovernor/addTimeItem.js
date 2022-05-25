@@ -39,7 +39,7 @@ export function addTimeItem({ element, timeItem, duplicateValues = true }) {
         JSON.stringify(itemValue) &&
       !duplicateValues
     ) {
-      return SUCCESS;
+      return { ...SUCCESS };
     }
   }
 
@@ -51,7 +51,7 @@ export function addTimeItem({ element, timeItem, duplicateValues = true }) {
   Object.assign(timeItem, { createdAt });
   element.timeItems.push(timeItem);
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function addParticipantTimeItem({
@@ -90,5 +90,5 @@ export function addEventTimeItem({ event, timeItem, duplicateValues }) {
 export function resetTimeItems({ element }) {
   if (!element) return { error: MISSING_VALUE };
   element.timeItems = [];
-  return SUCCESS;
+  return { ...SUCCESS };
 }

@@ -68,7 +68,7 @@ export function linkTournaments({ tournamentRecords }) {
     return addExtension({ tournamentRecords, extension });
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function unlinkTournaments({ tournamentRecords }) {
@@ -110,7 +110,7 @@ export function unlinkTournament({ tournamentRecords, tournamentId }) {
       name: LINKED_TOURNAMENTS,
     });
 
-    // if there is no extension return SUCCESS because no links exist
+    // if there is no extension return { ...SUCCESS } because no links exist
     if (!extension) return true;
 
     let linkedTournamentIds = extension?.value?.tournamentIds || [];

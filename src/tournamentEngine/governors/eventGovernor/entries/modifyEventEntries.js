@@ -116,5 +116,5 @@ export function modifyEventEntries({
     ...unpairedParticipantEntries
   );
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

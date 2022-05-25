@@ -19,7 +19,7 @@ export function setTournamentName({
   if (tournamentRecord.formalName === tournamentRecord.tournamentName) {
     delete tournamentRecord.formalName;
   }
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function setTournamentNotes({ tournamentRecord, notes }) {
@@ -33,5 +33,5 @@ export function setTournamentCategories({ tournamentRecord, categories }) {
     return category.categoryName && category.type;
   });
   tournamentRecord.tournamentCategories = categories;
-  return SUCCESS;
+  return { ...SUCCESS };
 }

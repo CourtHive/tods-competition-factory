@@ -1,4 +1,5 @@
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { overlap } from '../../../utilities';
@@ -26,6 +27,8 @@ export function removeDoubleWalkover(params) {
     matchUp,
   } = params;
 
+  const stack = 'removeDoubleWalkover';
+
   const {
     targetLinks: { loserTargetLink },
     targetMatchUps: { loserMatchUp, winnerMatchUp, loserTargetDrawPosition },
@@ -40,7 +43,7 @@ export function removeDoubleWalkover(params) {
 
       matchUpsMap,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
   // only handles winnerMatchUps in the same structure
@@ -109,11 +112,11 @@ export function removeDoubleWalkover(params) {
           drawDefinition,
           matchUpsMap,
         });
-        if (result.error) return result;
+        if (result.error) return decorateResult({ result, stack });
       }
     }
 
-    removeDoubleWalkover({
+    let result = removeDoubleWalkover({
       targetData: nextTargetData,
       matchUp: winnerMatchUp,
       inContextDrawMatchUps,
@@ -121,8 +124,9 @@ export function removeDoubleWalkover(params) {
       matchUpsMap,
       structure,
     });
+    if (result.error) return decorateResult({ result, stack });
 
-    let matchUpStatus =
+    const matchUpStatus =
       [WALKOVER, DOUBLE_WALKOVER].includes(
         noContextWinnerMatchUp?.matchUpStatus
       ) && pairedPreviousWOWO
@@ -130,7 +134,7 @@ export function removeDoubleWalkover(params) {
         : TO_BE_PLAYED;
 
     const removeScore = !pairedPreviousWOWO;
-    let result = modifyMatchUpScore({
+    result = modifyMatchUpScore({
       ...params,
       matchUpStatus,
       removeScore,
@@ -142,10 +146,11 @@ export function removeDoubleWalkover(params) {
       removeWinningSide: true,
       matchUp: noContextWinnerMatchUp,
       matchUpId: winnerMatchUp.matchUpId,
+      matchUpStatusCodes: [],
     });
 
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
-  return { ...SUCCESS };
+  return decorateResult({ result: { ...SUCCESS }, stack });
 }

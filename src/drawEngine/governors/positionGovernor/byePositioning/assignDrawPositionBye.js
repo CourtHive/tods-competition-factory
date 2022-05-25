@@ -42,7 +42,7 @@ import {
  
   => assignDrawPositionBye
   1. Modifies structure positionAssignments to assign BYE to position
-     - if structure is part of ROUND ROBIN then return SUCCESS
+     - if structure is part of ROUND ROBIN then return { ...SUCCESS }
   2. Finds the furthest advancement of the drawPosition to determine the matchUp where BYE-advancement needs to occur
   3. Set the matchUpStatus to BYE
   4. Check whether there is a position to Advance

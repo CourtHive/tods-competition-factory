@@ -38,5 +38,5 @@ export function modifyDrawName({ event, drawId, drawDefinition, drawName }) {
     return { error: MISSING_DRAW_DEFINITION };
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

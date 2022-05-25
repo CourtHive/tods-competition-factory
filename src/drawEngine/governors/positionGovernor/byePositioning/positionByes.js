@@ -28,7 +28,7 @@ export function positionByes({
     event,
   });
   const byesToPlace = byesCount - placedByes;
-  if (byesToPlace <= 0) return SUCCESS;
+  if (byesToPlace <= 0) return { ...SUCCESS };
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const {

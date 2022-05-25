@@ -141,7 +141,7 @@ export function addSchedulingProfileRound({
   const result = setSchedulingProfile({ tournamentRecords, schedulingProfile });
   if (result.error) return result;
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function getUpdatedSchedulingProfile({
@@ -217,5 +217,5 @@ export function checkSchedulingProfile({ tournamentRecords }) {
     }
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

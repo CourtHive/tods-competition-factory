@@ -17,5 +17,5 @@ export function addVoluntaryConsolationStage({ drawDefinition, drawSize }) {
 
   modifyDrawNotice({ drawDefinition });
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

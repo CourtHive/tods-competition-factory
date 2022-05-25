@@ -37,5 +37,5 @@ export function modifyParticipantName({
     });
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

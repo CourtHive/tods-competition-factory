@@ -237,7 +237,7 @@ export function assignMatchUpDrawPosition({
   }
 
   if (positionAssigned) {
-    return SUCCESS;
+    return { ...SUCCESS };
   } else {
     return decorateResult({
       result: {

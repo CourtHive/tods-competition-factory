@@ -39,7 +39,7 @@ export function attemptToSetMatchUpStatusBYE({
       drawDefinition,
       matchUp,
     });
-    return SUCCESS;
+    return { ...SUCCESS };
   } else {
     return { error: INVALID_MATCHUP_STATUS_BYE };
   }

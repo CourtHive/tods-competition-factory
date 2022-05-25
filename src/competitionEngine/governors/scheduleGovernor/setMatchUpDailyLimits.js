@@ -34,5 +34,5 @@ export function setMatchUpDailyLimits({
     if (result.error) return result;
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
