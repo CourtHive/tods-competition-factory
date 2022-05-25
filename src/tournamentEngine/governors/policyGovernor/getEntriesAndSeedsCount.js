@@ -1,5 +1,6 @@
 import { getEliminationDrawSize } from '../../../drawEngine/getters/getEliminationDrawSize';
 import { getStageEntries } from '../../getters/participants/getStageEntries';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getSeedsCount } from './getSeedsCount';
 
 import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
@@ -36,12 +37,14 @@ export function getEntriesAndSeedsCount({
   const { drawSize: eliminationDrawSize } = getEliminationDrawSize({
     participantCount,
   });
-  const { seedsCount, error } = getSeedsCount({
+  const result = getSeedsCount({
     drawSize: drawSize || eliminationDrawSize,
     policyDefinitions,
     participantCount,
   });
-  if (error) return { error };
+  if (result.error)
+    return decorateResult({ result, stack: 'getEntriesAndSeedsCount' });
 
+  const { seedsCount } = result;
   return { entries, seedsCount, stageEntries };
 }
