@@ -9,6 +9,7 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { getParticipantId } from '../../../global/functions/extractors';
@@ -38,7 +39,6 @@ import {
   PLAY_OFF,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
-import { decorateResult } from '../../../global/functions/decorateResult';
 
 export function assignDrawPosition({
   inContextDrawMatchUps,
