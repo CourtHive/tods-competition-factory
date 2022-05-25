@@ -7,7 +7,7 @@ import {
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
-it('will properly clean up matchUpStatusCodes', () => {
+it('will properly clean up matchUpStatusCodes when removing DOUBLE_WALKOVERs', () => {
   const mockProfile = {
     drawProfiles: [{ drawSize: 4, participantsCount: 3 }],
   };
