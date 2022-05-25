@@ -16,7 +16,7 @@ it('can generate draw with appropriate ITF seeding', () => {
         category: { categoryName: '12U' },
         rankingRange: [1, 15],
         policyDefinitions: { seeding },
-        seedsCount: 8,
+        seedsCount: 4,
       },
     ],
   };
