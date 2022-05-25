@@ -9,6 +9,7 @@ import {
 
 it('will properly clean up matchUpStatusCodes when removing DOUBLE_WALKOVERs', () => {
   const mockProfile = {
+    // setting the participantsCount to one less than the drawSize will ensure a single BYE is produced
     drawProfiles: [{ drawSize: 4, participantsCount: 3 }],
   };
 
@@ -17,13 +18,15 @@ it('will properly clean up matchUpStatusCodes when removing DOUBLE_WALKOVERs', (
 
   tournamentEngine.setState(tournamentRecord);
 
-  // there should be only one scoringMatchUp ready for scoring
+  // there should be only one matchUp ready for scoring
   let scoringMatchUp =
     tournamentEngine.tournamentMatchUps().upcomingMatchUps[0];
   expect(scoringMatchUp.roundNumber).toEqual(1);
   expect(scoringMatchUp.roundPosition).toEqual(2);
 
   const { matchUpId, drawId } = scoringMatchUp;
+
+  // outcome copied from client payload
   let outcome = {
     score: {
       scoreStringSide1: '',
@@ -55,6 +58,7 @@ it('will properly clean up matchUpStatusCodes when removing DOUBLE_WALKOVERs', (
   expect(finalMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(finalMatchUp.matchUpStatusCodes).toBeUndefined();
 
+  // outcome copied from client payload
   outcome = {
     score: {
       scoreStringSide1: '',
@@ -79,6 +83,7 @@ it('will properly clean up matchUpStatusCodes when removing DOUBLE_WALKOVERs', (
   expect(scoringMatchUp.matchUpStatusCodes).toEqual(['WD.ILL']);
   expect(scoringMatchUp.matchUpStatus).toEqual(WALKOVER);
 
+  // only one draw in this tournament so we expect only one final matchUp
   finalMatchUp = tournamentEngine.allTournamentMatchUps({
     contextFilters: { roundNames: ['Final'] },
   }).matchUps[0];
