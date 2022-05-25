@@ -49,12 +49,14 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   // test errors for invalid collectionDefinitions
   // test adding to tieFormat on event
   result = tournamentEngine.addCollectionDefinition({
+    tieFormatName: 'Modified Format',
     collectionDefinition,
     eventId,
   });
 
   expect(result.addedMatchUps.length).toEqual(0);
   expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
+  expect(result.tieFormat.tieFormatName).toEqual('Modified Format');
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   const collectionIds = drawDefinition.tieFormat.collectionDefinitions.map(

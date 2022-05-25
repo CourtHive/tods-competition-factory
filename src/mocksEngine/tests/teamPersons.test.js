@@ -2,7 +2,6 @@ import { tournamentEngine } from '../..';
 import mocksEngine from '..';
 
 import { TEAM_DOUBLES_3_AGGREGATION } from '../../constants/tieFormatConstants';
-// import { FEMALE, MALE } from '../../constants/genderConstants';
 import { TEAM } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
 
