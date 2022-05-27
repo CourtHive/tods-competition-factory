@@ -1,5 +1,6 @@
 import { getCourtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
 import { generateVirtualCourts } from '../jinnScheduler/generateVirtualCourts';
+import { calculatePeriodLength } from '../jinnScheduler/calculatePeriodLength';
 import { getFirstTimeSlotStartTime } from './getFirstTimeSlotStartTime';
 import { generateRange } from '../../../../utilities/arrays';
 import { courtGenerator } from './courtGenerator';
@@ -31,18 +32,22 @@ import {
 export function getScheduleTimes({
   calculateStartTimeFromCourts = true,
   remainingScheduleTimes, // times remaining from previous scheduling iteration
-  averageMatchUpMinutes = 90,
   date = getUTCdateString(),
-  clearScheduleDates,
-  periodLength = 30,
+  averageMatchUpMinutes,
   startTime = '08:00',
+  clearScheduleDates,
   endTime = '19:00',
+  periodLength,
   courtsCount,
   bookings,
   courts,
 } = {}) {
+  periodLength =
+    periodLength || calculatePeriodLength({ averageMatchUpMinutes });
+
   // standardize date as YYYY-MM-DD
   date = extractDate(date);
+
   // standardize time as 00:00
   startTime = extractTime(startTime);
   endTime = extractTime(endTime);
@@ -69,8 +74,8 @@ export function getScheduleTimes({
 
   const { virtualCourts } = generateVirtualCourts({
     remainingScheduleTimes,
-    scheduleDate: date,
     clearScheduleDates,
+    scheduleDate: date,
     periodLength,
     bookings,
     courts,

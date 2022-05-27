@@ -1,5 +1,6 @@
 import { matchUpFormatTimes } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduleTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
+import { calculatePeriodLength } from '../jinnScheduler/calculatePeriodLength';
 import { competitionScheduleMatchUps } from '../../../getters/matchUpsGetter';
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
 import { getMatchUpId } from '../../../../global/functions/extractors';
@@ -29,12 +30,12 @@ import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorCondition
  */
 export function calculateScheduleTimes({
   calculateStartTimeFromCourts = true,
-  defaultRecoveryMinutes = 60,
-  averageMatchUpMinutes = 90,
   remainingScheduleTimes,
+  defaultRecoveryMinutes,
+  averageMatchUpMinutes,
   clearScheduleDates,
-  periodLength = 30,
   tournamentRecords,
+  periodLength,
   scheduleDate,
   startTime,
   venueIds,
@@ -45,6 +46,13 @@ export function calculateScheduleTimes({
     !Object.keys(tournamentRecords).length
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
+
+  periodLength =
+    periodLength ||
+    calculatePeriodLength({
+      recoveryMinutes: defaultRecoveryMinutes,
+      averageMatchUpMinutes,
+    });
 
   const { courts: allCourts, venues } = getVenuesAndCourts({
     tournamentRecords,

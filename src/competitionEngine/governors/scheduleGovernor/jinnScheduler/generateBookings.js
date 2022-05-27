@@ -1,5 +1,6 @@
 import { matchUpFormatTimes } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduleTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
+import { calculatePeriodLength } from './calculatePeriodLength';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import {
   addMinutesToTimeString,
@@ -21,17 +22,24 @@ import {
  * @returns {object[]} relevantMatchUps - [{ ...matchUp }]
  */
 export function generateBookings({
-  defaultRecoveryMinutes = 0,
-  averageMatchUpMinutes = 90,
-  periodLength = 30,
+  defaultRecoveryMinutes,
+  averageMatchUpMinutes,
   tournamentRecords,
   venueIds = [],
+  periodLength,
   scheduleDate,
   matchUps,
 }) {
   if (typeof tournamentRecords !== 'object')
     return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
+
+  periodLength =
+    periodLength ||
+    calculatePeriodLength({
+      recoveryMinutes: defaultRecoveryMinutes,
+      averageMatchUpMinutes,
+    });
 
   // get a mapping of eventIds to category details
   const eventDetails = Object.assign(
@@ -84,12 +92,12 @@ export function generateBookings({
       const startTime = extractTime(schedule.scheduledTime);
       const endTime = addMinutesToTimeString(startTime, averageMinutes);
       const booking = {
-        averageMinutes,
         recoveryMinutes,
+        averageMinutes,
         periodLength,
         startTime,
-        endTime,
         courtId,
+        endTime,
         venueId,
       };
       return booking;

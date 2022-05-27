@@ -18,8 +18,9 @@ import {
  * @param {string[]} scheduleDates - optional - array of scheduleDates to validate
  */
 export function getSchedulingProfileIssues({
-  tournamentRecords,
   scheduleDates = [],
+  tournamentRecords,
+  periodLength = 30,
 } = {}) {
   if (typeof tournamentRecords !== 'object')
     return { error: INVALID_TOURNAMENT_RECORD };
@@ -39,8 +40,6 @@ export function getSchedulingProfileIssues({
     tournamentRecords,
     nextMatchUps: true,
   });
-
-  const periodLength = 30;
 
   // for each date check the rounds for each venue
   for (const dateProfile of schedulingProfile) {
