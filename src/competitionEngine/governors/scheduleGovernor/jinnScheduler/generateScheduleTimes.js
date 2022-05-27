@@ -1,6 +1,7 @@
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
 import { sameDay, timeStringMinutes } from '../../../../utilities/dateTime';
 import { getMatchUpId } from '../../../../global/functions/extractors';
+import { calculatePeriodLength } from './calculatePeriodLength';
 import { getScheduleTimes } from '../garman/getScheduleTimes';
 import { generateBookings } from './generateBookings';
 
@@ -22,12 +23,12 @@ import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorCondition
  */
 export function generateScheduleTimes({
   calculateStartTimeFromCourts = true,
-  defaultRecoveryMinutes = 60,
-  averageMatchUpMinutes = 90,
   remainingScheduleTimes,
+  defaultRecoveryMinutes,
+  averageMatchUpMinutes,
   clearScheduleDates,
-  periodLength = 30,
   tournamentRecords,
+  periodLength,
   scheduleDate,
   startTime,
   venueIds,
@@ -39,6 +40,13 @@ export function generateScheduleTimes({
     !Object.keys(tournamentRecords).length
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
+
+  periodLength =
+    periodLength ||
+    calculatePeriodLength({
+      recoveryMinutes: defaultRecoveryMinutes,
+      averageMatchUpMinutes,
+    });
 
   const { courts: allCourts, venues } = getVenuesAndCourts({
     tournamentRecords,
