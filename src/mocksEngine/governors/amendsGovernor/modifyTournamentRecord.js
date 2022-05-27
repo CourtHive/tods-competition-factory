@@ -234,7 +234,7 @@ export function modifyTournamentRecord({
   let schedulerResult = {};
   if (schedulingProfile) {
     const result = generateScheduleTimes({
-      schedulingProfile,
+      schedulingProfile, // TODO: verify
       tournamentRecord,
     });
     if (result.error) return result;

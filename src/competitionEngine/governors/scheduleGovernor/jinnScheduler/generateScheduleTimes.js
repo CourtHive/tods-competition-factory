@@ -102,8 +102,8 @@ export function generateScheduleTimes({
     date: scheduleDate,
     periodLength,
     startTime,
-    endTime,
     bookings,
+    endTime,
     courts,
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);

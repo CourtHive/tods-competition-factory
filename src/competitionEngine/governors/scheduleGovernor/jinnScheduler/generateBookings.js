@@ -84,12 +84,12 @@ export function generateBookings({
       const startTime = extractTime(schedule.scheduledTime);
       const endTime = addMinutesToTimeString(startTime, averageMinutes);
       const booking = {
-        averageMinutes,
         recoveryMinutes,
+        averageMinutes,
         periodLength,
         startTime,
-        endTime,
         courtId,
+        endTime,
         venueId,
       };
       return booking;

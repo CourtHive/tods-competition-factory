@@ -10,9 +10,9 @@ export function getEnoughTime({
 }) {
   const enoughTime = (courtDate) => {
     const timeSlots = generateTimeSlots({
-      courtDate,
-      periodLength,
       includeBookingTypes,
+      periodLength,
+      courtDate,
     });
     const availableTimeSlots = timeSlots.filter(validTimeSlot);
     const enough = !!availableTimeSlots.length;

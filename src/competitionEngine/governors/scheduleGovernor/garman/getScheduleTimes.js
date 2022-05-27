@@ -33,9 +33,9 @@ export function getScheduleTimes({
   remainingScheduleTimes, // times remaining from previous scheduling iteration
   averageMatchUpMinutes = 90,
   date = getUTCdateString(),
+  startTime = '08:00',
   clearScheduleDates,
   periodLength = 30,
-  startTime = '08:00',
   endTime = '19:00',
   courtsCount,
   bookings,
@@ -43,6 +43,7 @@ export function getScheduleTimes({
 } = {}) {
   // standardize date as YYYY-MM-DD
   date = extractDate(date);
+
   // standardize time as 00:00
   startTime = extractTime(startTime);
   endTime = extractTime(endTime);
@@ -69,8 +70,8 @@ export function getScheduleTimes({
 
   const { virtualCourts } = generateVirtualCourts({
     remainingScheduleTimes,
-    scheduleDate: date,
     clearScheduleDates,
+    scheduleDate: date,
     periodLength,
     bookings,
     courts,
