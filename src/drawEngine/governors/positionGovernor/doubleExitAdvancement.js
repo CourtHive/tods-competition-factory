@@ -20,6 +20,8 @@ import {
   MISSING_STRUCTURE,
 } from '../../../constants/errorConditionConstants';
 import {
+  DEFAULTED,
+  DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
@@ -80,6 +82,10 @@ function conditionallyAdvanceDrawPosition(params) {
     matchUpsMap,
     structure,
   } = params;
+
+  const DOUBLE_EXIT =
+    params.matchUpStatus === DOUBLE_DEFAULT ? DOUBLE_DEFAULT : DOUBLE_WALKOVER;
+  const EXIT = params.matchUpStatus === DOUBLE_DEFAULT ? DEFAULTED : WALKOVER;
 
   const stack = 'conditionallyAdvanceDrawPosition';
 
@@ -153,8 +159,7 @@ function conditionallyAdvanceDrawPosition(params) {
     noContextWinnerMatchUp.matchUpStatus === WALKOVER && !drawPositions.length;
   const isFinal = noContextWinnerMatchUp.finishingRound === 1;
 
-  const matchUpStatus =
-    existingWalkover && !isFinal ? DOUBLE_WALKOVER : WALKOVER;
+  const matchUpStatus = existingWalkover && !isFinal ? DOUBLE_EXIT : EXIT;
 
   const result = modifyMatchUpScore({
     ...params,
@@ -165,8 +170,8 @@ function conditionallyAdvanceDrawPosition(params) {
   });
   if (result.error) return decorateResult({ result, stack });
 
-  // when there is an existing WO/WO created WALKOVER it is replaced
-  // with a DOUBLE_WALKOVER and move on to advancing from this position
+  // when there is an existing 'Double Exit", the created "Exit" is replaced
+  // with a "Double Exit" and move on to advancing from this position
   if (existingWalkover) {
     return doubleExitAdvancement({
       ...params,
@@ -268,9 +273,7 @@ function conditionallyAdvanceDrawPosition(params) {
     }
 
     const matchUpStatus =
-      noContextNextWinnerMatchUp.matchUpStatus === WALKOVER
-        ? WALKOVER
-        : DOUBLE_WALKOVER;
+      noContextNextWinnerMatchUp.matchUpStatus === EXIT ? EXIT : DOUBLE_EXIT;
 
     const result = modifyMatchUpScore({
       matchUpId: noContextNextWinnerMatchUp.matchUpId,
@@ -283,7 +286,7 @@ function conditionallyAdvanceDrawPosition(params) {
 
     if (result.error) return decorateResult({ result, stack });
 
-    if (matchUpStatus === DOUBLE_WALKOVER) {
+    if (matchUpStatus === DOUBLE_EXIT) {
       const advancementResult = doubleExitAdvancement({
         ...params,
         matchUpStatusCodes: [], // don't propagate matchUpStatusCodes
