@@ -24,7 +24,7 @@ import {
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
-export function doubleWalkoverAdvancement(params) {
+export function doubleExitAdvancement(params) {
   const {
     tournamentRecord,
     drawDefinition,
@@ -32,7 +32,7 @@ export function doubleWalkoverAdvancement(params) {
     targetData,
     structure,
   } = params;
-  const stack = 'doubleWalkoverAdvancement';
+  const stack = 'doubleExitAdvancement';
 
   if (structure.structureType === CONTAINER)
     return decorateResult({ result: { ...SUCCESS }, stack });
@@ -168,7 +168,7 @@ function conditionallyAdvanceDrawPosition(params) {
   // when there is an existing WO/WO created WALKOVER it is replaced
   // with a DOUBLE_WALKOVER and move on to advancing from this position
   if (existingWalkover) {
-    return doubleWalkoverAdvancement({
+    return doubleExitAdvancement({
       ...params,
       matchUpStatusCodes: [],
       targetData,
@@ -234,7 +234,7 @@ function conditionallyAdvanceDrawPosition(params) {
         });
       } else if (nextWinnerMatchUp.matchUpStatus === WALKOVER) {
         // if the next winnerMatchUp is a doubleWalkover
-        const result = doubleWalkoverAdvancement({
+        const result = doubleExitAdvancement({
           ...params,
           matchUpId: noContextNextWinnerMatchUp.matchUpId,
           matchUpStatusCodes: [], // don't propagate matchUpStatusCodes
@@ -284,7 +284,7 @@ function conditionallyAdvanceDrawPosition(params) {
     if (result.error) return decorateResult({ result, stack });
 
     if (matchUpStatus === DOUBLE_WALKOVER) {
-      const advancementResult = doubleWalkoverAdvancement({
+      const advancementResult = doubleExitAdvancement({
         ...params,
         matchUpStatusCodes: [], // don't propagate matchUpStatusCodes
         matchUpId: winnerMatchUp.matchUpId,

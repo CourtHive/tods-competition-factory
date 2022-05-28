@@ -1,5 +1,5 @@
 import { removeDirectedParticipants } from './removeDirectedParticipantsAndUpdateOutcome';
-import { doubleWalkoverAdvancement } from '../positionGovernor/doubleWalkoverAdvancement';
+import { doubleExitAdvancement } from '../positionGovernor/doubleExitAdvancement';
 import { attemptToSetMatchUpStatusBYE } from './attemptToSetMatchUpStatusBYE';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
@@ -33,7 +33,9 @@ export function attemptToSetMatchUpStatus(params) {
 
   const isBYE = matchUpStatus === BYE;
   const existingWinningSide = matchUp.winningSide;
-  const setWOWO = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUpStatus);
+  const isDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(
+    matchUpStatus
+  );
 
   const directing = isDirectingMatchUpStatus({ matchUpStatus });
   const nonDirecting = isNonDirectingMatchUpStatus({ matchUpStatus });
@@ -42,9 +44,9 @@ export function attemptToSetMatchUpStatus(params) {
   // if matchUpTieId present a TEAM matchUp is being modified...
   // at present TEAM matchUps cannot be scored directly
   const onlyModifyScore =
-    params.matchUpTieId || (existingWinningSide && directing && !setWOWO);
+    params.matchUpTieId || (existingWinningSide && directing && !isDoubleExit);
 
-  const changeCompletedToWOWO = existingWinningSide && setWOWO;
+  const changeCompletedToDoubleExit = existingWinningSide && isDoubleExit;
 
   const clearScore = () =>
     modifyMatchUpScore({
@@ -56,7 +58,8 @@ export function attemptToSetMatchUpStatus(params) {
   return (
     (unrecognized && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
     (onlyModifyScore && scoreModification(params)) ||
-    (changeCompletedToWOWO && removeWinningSideSetWOWO(params)) ||
+    (changeCompletedToDoubleExit &&
+      removeWinningSideAndSetDoubleExit(params)) ||
     (existingWinningSide && removeDirectedParticipants(params)) ||
     (nonDirecting && clearScore()) ||
     (isBYE &&
@@ -67,22 +70,22 @@ export function attemptToSetMatchUpStatus(params) {
         matchUp,
       })) ||
     (!directing && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
-    (setWOWO && modifyScoreAndAdvanceWOWO(params)) || {
+    (isDoubleExit && modifyScoreAndAdvanceWOWO(params)) || {
       error: INVALID_MATCHUP_STATUS,
     }
   );
 }
 
-function removeWinningSideSetWOWO(params) {
+function removeWinningSideAndSetDoubleExit(params) {
   let result = removeDirectedParticipants(params);
   if (result.error) return result;
-  return doubleWalkoverAdvancement(params);
+  return doubleExitAdvancement(params);
 }
 
 function modifyScoreAndAdvanceWOWO(params) {
   const result = scoreModification({ ...params, removeScore: true });
   if (result.error) return result;
-  return doubleWalkoverAdvancement(params);
+  return doubleExitAdvancement(params);
 }
 
 function scoreModification(params) {
