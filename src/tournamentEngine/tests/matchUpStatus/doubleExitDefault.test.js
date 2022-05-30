@@ -11,6 +11,7 @@ import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinition
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
   BYE,
+  DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
@@ -25,7 +26,7 @@ const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
 // to turn on WOWO specific logging
 // tournamentEngine.devContext({ WOWO: true });
 
-test('A DOUBLE_WALKOVER will create a WALKOVER and winningSide changes will propagate past WOWO', () => {
+test.only('A DOUBLE_DEFAULT will create a DEFAULT and winningSide changes will propagate past WD/WD', () => {
   const drawProfiles = [{ drawSize: 16 }];
   const {
     tournamentRecord,
@@ -51,9 +52,9 @@ test('A DOUBLE_WALKOVER will create a WALKOVER and winningSide changes will prop
   // Enter DOUBLE_WALKOVER in R1P1
   let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
+    outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId: targetMatchUp.matchUpId,
-    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    drawId,
   });
   expect(result.success).toEqual(true);
 
@@ -67,9 +68,9 @@ test('A DOUBLE_WALKOVER will create a WALKOVER and winningSide changes will prop
   });
 
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId: targetMatchUp.matchUpId,
     outcome,
+    drawId,
   });
   expect(result.success).toEqual(true);
   expect(matchUpsNotificationCounter).toEqual(5);

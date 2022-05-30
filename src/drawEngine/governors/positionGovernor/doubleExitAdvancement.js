@@ -1,6 +1,6 @@
 import { getPairedPreviousMatchUpIsWOWO } from './getPairedPreviousMatchUpisWOWO';
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
-import { getWalkoverWinningSide } from '../matchUpGovernor/getWalkoverWinningSide';
+import { getExitWinningSide } from '../matchUpGovernor/getExitWinningSide';
 import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getPositionAssignments } from '../../getters/positionsGetter';
@@ -70,7 +70,7 @@ export function doubleExitAdvancement(params) {
   return decorateResult({ result: { ...SUCCESS }, stack });
 }
 
-// 1. Assigns a WALKOVER status to the winnerMatchUp
+// 1. Assigns a WALKOVER or DEFAULTED status to the winnerMatchUp
 // 2. Advances any drawPosition that is already present
 function conditionallyAdvanceDrawPosition(params) {
   const {
@@ -147,7 +147,7 @@ function conditionallyAdvanceDrawPosition(params) {
   const hasDrawPosition = drawPositions.length === 1;
   const walkoverWinningSide =
     (hasDrawPosition &&
-      getWalkoverWinningSide({
+      getExitWinningSide({
         drawPosition: drawPositions[0],
         matchUpId: winnerMatchUp.matchUpId,
         inContextDrawMatchUps,
@@ -155,11 +155,12 @@ function conditionallyAdvanceDrawPosition(params) {
     undefined;
 
   // assign the WALKOVER status to winnerMatchUp
-  const existingWalkover =
-    noContextWinnerMatchUp.matchUpStatus === WALKOVER && !drawPositions.length;
+  const existingExit =
+    [WALKOVER, DEFAULTED].includes(noContextWinnerMatchUp.matchUpStatus) &&
+    !drawPositions.length;
   const isFinal = noContextWinnerMatchUp.finishingRound === 1;
 
-  const matchUpStatus = existingWalkover && !isFinal ? DOUBLE_EXIT : EXIT;
+  const matchUpStatus = existingExit && !isFinal ? DOUBLE_EXIT : EXIT;
 
   const result = modifyMatchUpScore({
     ...params,
@@ -172,7 +173,7 @@ function conditionallyAdvanceDrawPosition(params) {
 
   // when there is an existing 'Double Exit", the created "Exit" is replaced
   // with a "Double Exit" and move on to advancing from this position
-  if (existingWalkover) {
+  if (existingExit) {
     return doubleExitAdvancement({
       ...params,
       matchUpStatusCodes: [],
@@ -213,7 +214,7 @@ function conditionallyAdvanceDrawPosition(params) {
           nextWinnerMatchUpDrawPositions.filter(Boolean)[0];
 
         // if the next winnerMatchUp already has a drawPosition
-        const winningSide = getWalkoverWinningSide({
+        const winningSide = getExitWinningSide({
           drawPosition: nextDrawPositionToAdvance,
           matchUpId: noContextNextWinnerMatchUp.matchUpId,
           inContextDrawMatchUps,
@@ -222,7 +223,7 @@ function conditionallyAdvanceDrawPosition(params) {
         const result = modifyMatchUpScore({
           matchUpId: noContextNextWinnerMatchUp.matchUpId,
           matchUp: noContextNextWinnerMatchUp,
-          matchUpStatus: WALKOVER,
+          matchUpStatus: EXIT,
           matchUpStatusCodes: [],
           removeScore: true,
           drawDefinition,
@@ -237,8 +238,10 @@ function conditionallyAdvanceDrawPosition(params) {
           drawDefinition,
           matchUpsMap,
         });
-      } else if (nextWinnerMatchUp.matchUpStatus === WALKOVER) {
-        // if the next winnerMatchUp is a doubleWalkover
+      } else if (
+        [WALKOVER, DEFAULTED].includes(nextWinnerMatchUp.matchUpStatus)
+      ) {
+        // if the next winnerMatchUp is a double walkover or double default
         const result = doubleExitAdvancement({
           ...params,
           matchUpId: noContextNextWinnerMatchUp.matchUpId,
@@ -262,7 +265,7 @@ function conditionallyAdvanceDrawPosition(params) {
 
     if (nextWinnerMatchUpHasDrawPosition) {
       const drawPosition = nextWinnerMatchUpDrawPositions[0];
-      const walkoverWinningSide = getWalkoverWinningSide({
+      const walkoverWinningSide = getExitWinningSide({
         matchUpId: winnerMatchUp.matchUpId,
         inContextDrawMatchUps,
         drawPosition,
@@ -272,8 +275,16 @@ function conditionallyAdvanceDrawPosition(params) {
       });
     }
 
+    const matchUpStatus = [WALKOVER, DEFAULTED].includes(
+      noContextNextWinnerMatchUp.matchUpStatus
+    )
+      ? EXIT
+      : DOUBLE_EXIT;
+
+    /*
     const matchUpStatus =
       noContextNextWinnerMatchUp.matchUpStatus === EXIT ? EXIT : DOUBLE_EXIT;
+      */
 
     const result = modifyMatchUpScore({
       matchUpId: noContextNextWinnerMatchUp.matchUpId,

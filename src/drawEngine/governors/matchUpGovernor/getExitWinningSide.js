@@ -1,4 +1,4 @@
-export function getWalkoverWinningSide({
+export function getExitWinningSide({
   inContextDrawMatchUps,
   drawPosition,
   matchUpId,

@@ -1,3 +1,5 @@
+import { addOutcome } from './keyValueUtilities';
+
 import {
   OUTCOME_DEFAULT,
   OUTCOME_RETIREMENT,
@@ -18,8 +20,6 @@ import {
   OUTCOME_INTERRUPTED,
   OUTCOME_SUSPENDED,
 } from './constants';
-
-import { addOutcome } from './keyValueUtilities';
 
 export function processOutcome({
   lowSide,

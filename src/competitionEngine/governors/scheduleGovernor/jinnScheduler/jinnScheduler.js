@@ -47,6 +47,8 @@ import {
   RETIRED,
   WALKOVER,
   COMPLETED,
+  DOUBLE_WALKOVER,
+  DOUBLE_DEFAULT,
 } from '../../../../constants/matchUpStatusConstants';
 
 export function jinnScheduler({
@@ -298,6 +300,8 @@ export function jinnScheduler({
             ABANDONED,
             RETIRED,
             WALKOVER,
+            DOUBLE_WALKOVER,
+            DOUBLE_DEFAULT,
           ].includes(matchUp?.matchUpStatus);
 
           return (

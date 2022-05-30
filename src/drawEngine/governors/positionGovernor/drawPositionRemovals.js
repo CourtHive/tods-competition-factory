@@ -20,6 +20,7 @@ import {
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   BYE,
+  DEFAULTED,
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
@@ -310,13 +311,14 @@ function removeDrawPosition({
 
   targetMatchUp.matchUpStatus = matchUpContainsBye
     ? BYE
-    : targetMatchUp.matchUpStatus === WALKOVER
-    ? WALKOVER
+    : [DEFAULTED, WALKOVER].includes(targetMatchUp.matchUpStatus)
+    ? targetMatchUp.matcHUpStatus
     : TO_BE_PLAYED;
 
   // if the matchUpStatus is WALKOVER then it is DOUBLE_WALKOVER produced
+  // if the matchUpStatus is DEFAULTED then it is DOUBLE_DEFAULT produced
   // ... and the winningSide must be removed
-  if (targetMatchUp.matchUpStatus === WALKOVER)
+  if ([WALKOVER, DEFAULTED].includes(targetMatchUp.matchUpStatus))
     targetMatchUp.winningSide = undefined;
 
   modifyMatchUpNotice({

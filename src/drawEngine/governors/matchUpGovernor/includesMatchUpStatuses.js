@@ -7,10 +7,10 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 export function includesMatchUpStatuses({
-  sourceMatchUps,
-  loserDrawPosition,
-  drawPositionMatchUps,
   matchUpStatuses = [BYE, WALKOVER, DEFAULTED],
+  drawPositionMatchUps,
+  loserDrawPosition,
+  sourceMatchUps,
 }) {
   const sourceMatchUp = drawPositionMatchUps?.reduce(
     (sourceMatchUp, matchUp) =>
