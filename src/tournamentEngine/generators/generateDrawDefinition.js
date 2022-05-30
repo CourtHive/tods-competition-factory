@@ -7,12 +7,16 @@ import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attach
 import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEntries';
 import { getPolicyDefinitions } from '../governors/queryGovernor/getPolicyDefinitions';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
+import { decorateResult } from '../../global/functions/decorateResult';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { prepareStage } from './prepareStage';
 
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
-import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
+import {
+  INVALID_DRAW_TYPE,
+  MISSING_VALUE,
+} from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
 import {
@@ -241,9 +245,15 @@ export function generateDrawDefinition(params) {
       roundTarget = roundTargetProfile.roundTarget || roundTarget;
       let stageSequence = 1;
 
-      for (const structureProfile of roundTargetProfile.structureProfiles.sort(
-        sequenceSort
-      )) {
+      if (!Array.isArray(roundTargetProfile.structureProfiles))
+        return decorateResult({
+          result: { error: MISSING_VALUE },
+          info: 'structureProfiles must be an array',
+        });
+
+      const sortedStructureProfiles =
+        roundTargetProfile.structureProfiles.sort(sequenceSort) || [];
+      for (const structureProfile of sortedStructureProfiles) {
         const {
           qualifyingRoundNumber,
           qualifyingPositions,

@@ -19,6 +19,7 @@ import {
   QUALIFYING,
   ROUND_ROBIN,
 } from '../../../constants/drawDefinitionConstants';
+import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 // TODO: in generateDrawDefinition:
 /*
@@ -39,6 +40,19 @@ import {
     });
   });
 */
+
+it('will throw an error for incorrect qualifyingStructures', () => {
+  const result = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawSize: 16,
+        qualifyingProfiles: [{ drawSize: 16, qualifyingPositions: 4 }],
+      },
+    ],
+  });
+
+  expect(result.error).toEqual(MISSING_VALUE);
+});
 
 const scenarios = [
   {
