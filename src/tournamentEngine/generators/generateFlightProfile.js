@@ -22,6 +22,9 @@ import {
  * @param {string} eventId - unique identifier for event
  * @param {string} splitMethod - one of the supported methods for splitting entries
  * @param {object} scaleAttributes - { scaleName, scaleType, evenTType }
+ * @param {object[]} scaledEntries - pre-sorted entries
+ * @param {function} scaleSortMethod - ignored if scaledEntries present
+ * @param {boolean} sortDescending - ignored if scaledEntries present
  * @param {number} flightsCount - number of flights to create from existing entries
  * @param {object[]} flightValues - optional - [{ flightNumber: 1, matchUpValue: 1, flightNumber: 2, matchUpValue: 2 }]
  * @param {string[]} drawNames - array of names to be used when generating flights

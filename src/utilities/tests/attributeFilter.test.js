@@ -207,3 +207,113 @@ it('supports sources which contain attributes not present in templates', () => {
 
   expect(filteredParticipant).toEqual(expectedParticipant);
 });
+
+it('can apply the same filter template to multiple attributes', () => {
+  const source = {
+    ratings: {
+      DOUBLES: [
+        {
+          scaleValue: {
+            wtnRating: 29.35,
+            confidence: 70,
+            gameZoneLower: 31.14,
+            gameZoneUpper: 27.57,
+          },
+          scaleName: 'WTN',
+        },
+      ],
+      SINGLES: [
+        {
+          scaleValue: {
+            ageCategoryCode: 'OPEN',
+            eventSubType: 'SINGLES',
+            eventType: 'ADULT',
+            confidence: 90,
+            wtnRating: 24.52,
+            wtnRatingDate: '2022-05-27T09:54:44.383Z',
+          },
+          scaleName: 'WTN',
+        },
+        {
+          scaleValue: {
+            ratingType: 'NTRP',
+            benchmarkType: '',
+            dntrpRatingHundredths: 0,
+            eventSubType: 'SINGLES',
+            eventType: 'ADULT',
+            ntrpRating: 0,
+            ntrpRatingHundredths: 0,
+            ratingDate: '0001-01-01T00:00:00',
+            ratingExpiration: '0001-01-01T00:00:00',
+            ratingYear: 0,
+            updatedAt: '0001-01-01T00:00:00',
+            ustaRatingType: '',
+          },
+          scaleName: 'NTRP',
+        },
+      ],
+    },
+  };
+
+  let template = {
+    ratings: {
+      'SINGLES||DOUBLES': {
+        scaleName: ['WTN'],
+        scaleValue: { wtnRating: true },
+      },
+    },
+  };
+
+  let filteredObject = attributeFilter({
+    template,
+    source,
+  });
+
+  expect(filteredObject.ratings.SINGLES).not.toBeUndefined();
+  expect(filteredObject.ratings.SINGLES.length).toEqual(1);
+  expect(filteredObject.ratings.DOUBLES).not.toBeUndefined();
+
+  template = {
+    ratings: {
+      'SINGLES||DOUBLES': {
+        scaleName: ['WTN', 'NTRP'],
+        scaleValue: { wtnRating: true, ntrpRating: true },
+      },
+    },
+  };
+
+  filteredObject = attributeFilter({
+    template,
+    source,
+  });
+
+  expect(filteredObject.ratings.SINGLES).not.toBeUndefined();
+  expect(filteredObject.ratings.SINGLES.length).toEqual(2);
+  expect(filteredObject.ratings.DOUBLES).not.toBeUndefined();
+
+  template = {
+    ratings: {
+      'SINGLES||DOUBLES': {
+        scaleName: ['NTRP'],
+        scaleValue: {
+          '*': true,
+          ntrpRatingHundredths: false,
+          dntrpRatingHundredths: false,
+        },
+      },
+    },
+  };
+
+  filteredObject = attributeFilter({
+    template,
+    source,
+  });
+
+  expect(filteredObject.ratings.SINGLES.length).toEqual(1);
+
+  const rating = filteredObject.ratings.SINGLES[0];
+  expect(rating.scaleName).toEqual('NTRP');
+  expect(rating.scaleValue.ntrpRatingHundredths).toBeUndefined();
+  expect(rating.scaleValue.dntrpRatingHundredths).toBeUndefined();
+  expect(rating.scaleValue.eventType).toEqual('ADULT');
+});
