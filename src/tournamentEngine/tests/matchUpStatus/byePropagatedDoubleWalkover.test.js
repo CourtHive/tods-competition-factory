@@ -25,9 +25,7 @@ test('bye propagated double walkover hydration', () => {
 
   tournamentEngine.setState(result.tournamentRecord);
 
-  result = tournamentEngine
-    .devContext({ WOWO: true })
-    .allTournamentMatchUps({ inContext: true });
+  result = tournamentEngine.allTournamentMatchUps({ inContext: true });
 
   const matchUp = result.matchUps.find(
     (m) => m.roundNumber === 3 && m.roundPosition === 1
@@ -82,9 +80,7 @@ test('bye propagated double walkover in final has correct sideNumber', () => {
 
   tournamentEngine.setState(result.tournamentRecord);
 
-  result = tournamentEngine
-    .devContext({ WOWO: true })
-    .allTournamentMatchUps({ inContext: true });
+  result = tournamentEngine.allTournamentMatchUps({ inContext: true });
 
   let matchUp = result.matchUps.find(
     (m) => m.stage === CONSOLATION && m.roundNumber === 3

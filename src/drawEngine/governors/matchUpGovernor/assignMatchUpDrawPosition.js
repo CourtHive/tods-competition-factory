@@ -1,4 +1,4 @@
-import { getPairedPreviousMatchUpIsWOWO } from '../positionGovernor/getPairedPreviousMatchUpisWOWO';
+import { getPairedPreviousMatchUpIsDoubleExit } from '../positionGovernor/getPairedPreviousMatchUpIsDoubleExit';
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
@@ -163,14 +163,15 @@ export function assignMatchUpDrawPosition({
       }
     }
   } else if (winnerMatchUp && !inContextMatchUp.feedRound) {
-    const { pairedPreviousMatchUpisWOWO } = getPairedPreviousMatchUpIsWOWO({
-      winnerMatchUp: matchUp,
-      drawPosition,
-      matchUpsMap,
-      structure,
-    });
+    const { pairedPreviousMatchUpIsDoubleExit } =
+      getPairedPreviousMatchUpIsDoubleExit({
+        winnerMatchUp: matchUp,
+        drawPosition,
+        matchUpsMap,
+        structure,
+      });
 
-    if (pairedPreviousMatchUpisWOWO) {
+    if (pairedPreviousMatchUpIsDoubleExit) {
       const result = assignMatchUpDrawPosition({
         matchUpId: winnerMatchUp.matchUpId,
         iterative: 'brightred',

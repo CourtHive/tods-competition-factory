@@ -16,9 +16,6 @@ const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
       matchUp.roundPosition === roundPosition
   );
 
-// to turn on WOWO specific logging
-// tournamentEngine.devContext({ WOWO: true });
-
 /*
   drawSize: 4
   R1P1 is entered as a DOUBLE_WALKOVER, which produces a WALKOVER in R2P1

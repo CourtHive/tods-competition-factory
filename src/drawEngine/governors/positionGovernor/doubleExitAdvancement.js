@@ -1,4 +1,4 @@
-import { getPairedPreviousMatchUpIsWOWO } from './getPairedPreviousMatchUpisWOWO';
+import { getPairedPreviousMatchUpIsDoubleExit } from './getPairedPreviousMatchUpIsDoubleExit';
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
 import { getExitWinningSide } from '../matchUpGovernor/getExitWinningSide';
 import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
@@ -110,8 +110,8 @@ function conditionallyAdvanceDrawPosition(params) {
   if (winnerMatchUpDrawPositions.length > 1)
     return decorateResult({ result: { error: DRAW_POSITION_ASSIGNED }, stack });
 
-  const { pairedPreviousMatchUpisWOWO } =
-    getPairedPreviousMatchUpIsWOWO(params);
+  const { pairedPreviousMatchUpIsDoubleExit } =
+    getPairedPreviousMatchUpIsDoubleExit(params);
 
   // get the targets for the winnerMatchUp
   const targetData = positionTargets({
@@ -260,7 +260,7 @@ function conditionallyAdvanceDrawPosition(params) {
       inContextDrawMatchUps,
       drawDefinition,
     });
-  } else if (pairedPreviousMatchUpisWOWO) {
+  } else if (pairedPreviousMatchUpIsDoubleExit) {
     if (!noContextNextWinnerMatchUp) return { error: MISSING_MATCHUP };
 
     if (nextWinnerMatchUpHasDrawPosition) {
