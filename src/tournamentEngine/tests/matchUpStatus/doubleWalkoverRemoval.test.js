@@ -1,9 +1,6 @@
+import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
-import {
-  setDevContext,
-  setSubscriptions,
-} from '../../../global/state/globalState';
 
 import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
@@ -24,9 +21,6 @@ const getTarget = ({ matchUps, roundNumber, roundPosition, stage }) =>
       matchUp.roundPosition === roundPosition &&
       (!stage || matchUp.stage === stage)
   );
-
-// to turn on WOWO specific logging
-// tournamentEngine.devContext({ WOWO: true });
 
 /*
   drawSize: 4
@@ -690,7 +684,6 @@ test('drawSize: 8 - removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in su
     winningSide: undefined,
     matchUpStatus: TO_BE_PLAYED,
   });
-  // tournamentEngine.devContext({ WOWO: true });
   result = tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
     outcome,
@@ -761,7 +754,6 @@ test('drawSize: 16 - removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in s
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
   expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
 
-  tournamentEngine.devContext({ WOWO: true });
   ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
     winningSide: undefined,
     matchUpStatus: TO_BE_PLAYED,
@@ -773,7 +765,6 @@ test('drawSize: 16 - removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in s
   });
   expect(result.success).toEqual(true);
 
-  // console.log(modifiedMatchUpLog);
   modifiedMatchUpLog = [];
 });
 
@@ -947,7 +938,6 @@ test('consolation fed player advanced by WO/WO will be removed when WO/WO cleare
     roundNumber: 1,
   });
 
-  setDevContext({ WOWO: true });
   result = tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
     drawId: targetMatchUp.drawId,

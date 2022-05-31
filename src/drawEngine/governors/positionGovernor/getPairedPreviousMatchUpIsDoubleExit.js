@@ -1,8 +1,11 @@
 import { getMappedStructureMatchUps } from '../../getters/getMatchUps/getMatchUpsMap';
 
-import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
+import {
+  DOUBLE_DEFAULT,
+  DOUBLE_WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
 
-export function getPairedPreviousMatchUpIsWOWO(params) {
+export function getPairedPreviousMatchUpIsDoubleExit(params) {
   let { sourceMatchUp } = params;
   const { winnerMatchUp, structure, matchUpsMap, drawPosition } = params;
 
@@ -36,8 +39,10 @@ export function getPairedPreviousMatchUpIsWOWO(params) {
     );
 
   const pairedPreviousMatchUpStatus = pairedPreviousMatchUp?.matchUpStatus;
-  const pairedPreviousMatchUpisWOWO = [DOUBLE_WALKOVER].includes(
-    pairedPreviousMatchUpStatus
-  );
-  return { pairedPreviousMatchUp, pairedPreviousMatchUpisWOWO };
+  const pairedPreviousMatchUpIsDoubleExit = [
+    DOUBLE_WALKOVER,
+    DOUBLE_DEFAULT,
+  ].includes(pairedPreviousMatchUpStatus);
+
+  return { pairedPreviousMatchUp, pairedPreviousMatchUpIsDoubleExit };
 }

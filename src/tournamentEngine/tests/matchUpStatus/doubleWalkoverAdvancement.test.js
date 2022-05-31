@@ -1,7 +1,4 @@
-import {
-  setDevContext,
-  setSubscriptions,
-} from '../../../global/state/globalState';
+import { setSubscriptions } from '../../../global/state/globalState';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -22,9 +19,6 @@ const getTarget = ({ matchUps, roundNumber, roundPosition, stage }) =>
       matchUp.roundPosition === roundPosition &&
       (!stage || matchUp.stage === stage)
   );
-
-// to turn on WOWO specific logging
-// tournamentEngine.devContext({ WOWO: true });
 
 test('A produced WALKOVER encountering a produced WALKOVER winningSide will not continue propagation', () => {
   const drawProfiles = [
@@ -80,7 +74,6 @@ test('A produced WALKOVER encountering a produced WALKOVER winningSide will not 
     winningSide: 1,
   });
 
-  // tournamentEngine.devContext({ WOWO: true });
   result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId: targetMatchUp.matchUpId,
@@ -336,7 +329,6 @@ test('DOUBLE_WALKOVER in feedRound does not inappropriately advance drawPosition
     roundNumber: 1,
   });
 
-  setDevContext({ WOWO: true });
   let { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '6-1 6-1',
     winningSide: 1,

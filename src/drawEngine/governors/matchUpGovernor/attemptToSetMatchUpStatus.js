@@ -70,7 +70,7 @@ export function attemptToSetMatchUpStatus(params) {
         matchUp,
       })) ||
     (!directing && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
-    (isDoubleExit && modifyScoreAndAdvanceWOWO(params)) || {
+    (isDoubleExit && modifyScoreAndAdvanceDoubleExit(params)) || {
       error: INVALID_MATCHUP_STATUS,
     }
   );
@@ -82,7 +82,7 @@ function removeWinningSideAndSetDoubleExit(params) {
   return doubleExitAdvancement(params);
 }
 
-function modifyScoreAndAdvanceWOWO(params) {
+function modifyScoreAndAdvanceDoubleExit(params) {
   const result = scoreModification({ ...params, removeScore: true });
   if (result.error) return result;
   return doubleExitAdvancement(params);

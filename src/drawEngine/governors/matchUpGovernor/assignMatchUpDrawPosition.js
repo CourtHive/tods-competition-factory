@@ -1,4 +1,4 @@
-import { getPairedPreviousMatchUpIsWOWO } from '../positionGovernor/getPairedPreviousMatchUpisWOWO';
+import { getPairedPreviousMatchUpIsDoubleExit } from '../positionGovernor/getPairedPreviousMatchUpIsDoubleExit';
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
@@ -7,7 +7,7 @@ import { updateSideLineUp } from '../positionGovernor/updateSideLineUp';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { getUpdatedDrawPositions } from './getUpdatedDrawPositions';
-import { getWalkoverWinningSide } from './getWalkoverWinningSide';
+import { getExitWinningSide } from './getExitWinningSide';
 import { overlap } from '../../../utilities';
 import {
   getMappedStructureMatchUps,
@@ -21,6 +21,7 @@ import { TEAM } from '../../../constants/matchUpTypes';
 import {
   BYE,
   COMPLETED,
+  DEFAULTED,
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   RETIRED,
@@ -78,7 +79,7 @@ export function assignMatchUpDrawPosition({
   );
   const isByeMatchUp = matchUpAssignments.find(({ bye }) => bye);
   const isDoubleExitExit =
-    matchUp.matchUpStatus === WALKOVER &&
+    [WALKOVER, DEFAULTED].includes(matchUp.matchUpStatus) &&
     updatedDrawPositions.filter(Boolean).length < 2;
 
   matchUpStatus = isByeMatchUp
@@ -86,11 +87,9 @@ export function assignMatchUpDrawPosition({
     : matchUpStatus
     ? matchUpStatus
     : isDoubleExitExit
-    ? WALKOVER
-    : matchUp.matchUpStatus === DOUBLE_WALKOVER
-    ? DOUBLE_WALKOVER
-    : matchUp.matchUpStatus === DOUBLE_DEFAULT
-    ? DOUBLE_DEFAULT
+    ? matchUp.matchUpStatus
+    : [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus)
+    ? matchUp.matchUpStatus
     : TO_BE_PLAYED;
 
   if (positionAdded) {
@@ -101,19 +100,19 @@ export function assignMatchUpDrawPosition({
       drawDefinition,
       matchUpsMap,
     }));
-    const walkoverWinningSide =
+    const exitWinningSide =
       (isDoubleExitExit &&
-        getWalkoverWinningSide({
+        getExitWinningSide({
           inContextDrawMatchUps,
           drawPosition,
           matchUpId,
         })) ||
       undefined;
 
-    // only in the case of WOWO produced WALKOVER can a winningSide be assigned at the same time as a position
+    // only in the case of "Double Exit" produced "Exit" can a winningSide be assigned at the same time as a position
     Object.assign(matchUp, {
       drawPositions: updatedDrawPositions,
-      winningSide: walkoverWinningSide,
+      winningSide: exitWinningSide,
       matchUpStatus,
     });
 
@@ -164,14 +163,15 @@ export function assignMatchUpDrawPosition({
       }
     }
   } else if (winnerMatchUp && !inContextMatchUp.feedRound) {
-    const { pairedPreviousMatchUpisWOWO } = getPairedPreviousMatchUpIsWOWO({
-      winnerMatchUp: matchUp,
-      drawPosition,
-      matchUpsMap,
-      structure,
-    });
+    const { pairedPreviousMatchUpIsDoubleExit } =
+      getPairedPreviousMatchUpIsDoubleExit({
+        winnerMatchUp: matchUp,
+        drawPosition,
+        matchUpsMap,
+        structure,
+      });
 
-    if (pairedPreviousMatchUpisWOWO) {
+    if (pairedPreviousMatchUpIsDoubleExit) {
       const result = assignMatchUpDrawPosition({
         matchUpId: winnerMatchUp.matchUpId,
         iterative: 'brightred',

@@ -11,8 +11,8 @@ import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinition
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
   BYE,
-  DOUBLE_WALKOVER,
-  WALKOVER,
+  DEFAULTED,
+  DOUBLE_DEFAULT,
 } from '../../../constants/matchUpStatusConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
@@ -22,10 +22,7 @@ const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
       matchUp.roundPosition === roundPosition
   );
 
-// to turn on WOWO specific logging
-// tournamentEngine.devContext({ WOWO: true });
-
-test('A DOUBLE_WALKOVER will create a WALKOVER and winningSide changes will propagate past WOWO', () => {
+test('A DOUBLE_DEFAULT will create a DEFAULT and winningSide changes will propagate past WD/WD', () => {
   const drawProfiles = [{ drawSize: 16 }];
   const {
     tournamentRecord,
@@ -48,16 +45,15 @@ test('A DOUBLE_WALKOVER will create a WALKOVER and winningSide changes will prop
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  // Enter DOUBLE_WALKOVER in R1P1
+  // Enter DOUBLE_DEFAULT in R1P1
   let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
+    outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId: targetMatchUp.matchUpId,
-    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    drawId,
   });
-  expect(result.success).toEqual(true);
-
   expect(matchUpsNotificationCounter).toEqual(2);
+  expect(result.success).toEqual(true);
 
   // Enter Score in R1P2 advancing DP3
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
@@ -67,9 +63,9 @@ test('A DOUBLE_WALKOVER will create a WALKOVER and winningSide changes will prop
   });
 
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId: targetMatchUp.matchUpId,
     outcome,
+    drawId,
   });
   expect(result.success).toEqual(true);
   expect(matchUpsNotificationCounter).toEqual(5);
@@ -88,10 +84,10 @@ test('A DOUBLE_WALKOVER will create a WALKOVER and winningSide changes will prop
 
   // Change R1P2 winningSide (allowChangePropagation: true)
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId: targetMatchUp.matchUpId,
     allowChangePropagation: true,
     outcome,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
@@ -106,11 +102,11 @@ test('A DOUBLE_WALKOVER will create a WALKOVER and winningSide changes will prop
 
 /*
   R1P1 matchUp is BYE.  Enters three DOUBLE_WALKOVERs in remaining first round matchUps, from top down.
-  Entering WOWO in R1P2 produces WALKOVER in R2P1 and advances DP1 to 3rd round. 
-  Entering WOWO in R1P3 produces WALKOVER in R2P2. 
-  Entering WOWO in R1P4 converts R2P2 to DOUBLE_WALKOVER and produces WALKOVER in R3P1. 
+  Entering "Double Exit" in R1P2 produces DEFAULTED in R2P1 and advances DP1 to 3rd round. 
+  Entering "Double Exit" in R1P3 produces DEFAULTED in R2P2. 
+  Entering "Double Exit" in R1P4 converts R2P2 to DOUBLE_DEFAULT and produces DEFAULTED in R3P1. 
 */
-test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WALKOVER', () => {
+test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULT into a DOUBLE_DEFAULT', () => {
   const drawProfiles = [{ drawSize: 8, participantsCount: 7 }];
   const {
     tournamentRecord,
@@ -136,12 +132,12 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
   let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
-  // Enter DOUBLE_WALKOVER in R1P2
+  // Enter DOUBLE_DEFAULT in R1P2
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
+    outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId: targetMatchUp.matchUpId,
-    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    drawId,
   });
   expect(modifiedMatchUpLog).toEqual([
     [1, 2],
@@ -150,17 +146,17 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
   ]);
   modifiedMatchUpLog = [];
 
-  // Check that R2P1 is a produced WALKOVER
+  // Check that R2P1 is a produced DEFAULTED
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
-  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.matchUpStatus).toEqual(DEFAULTED);
 
-  // Enter DOUBLE_WALKOVER in R1P3
+  // Enter DOUBLE_DEFAULT in R1P3
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 3 });
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
+    outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId: targetMatchUp.matchUpId,
-    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    drawId,
   });
   expect(modifiedMatchUpLog).toEqual([
     [1, 3],
@@ -168,17 +164,17 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
   ]);
   modifiedMatchUpLog = [];
 
-  // Produces WALKOVER in R2P2
+  // Produces DEFAULTED in R2P2
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 2 });
-  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.matchUpStatus).toEqual(DEFAULTED);
 
-  // Enter DOUBLE_WALKOVER in R1P4
+  // Enter DOUBLE_DEFAULT in R1P4
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 4 });
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
+    outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId: targetMatchUp.matchUpId,
-    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    drawId,
   });
   expect(modifiedMatchUpLog).toEqual([
     [1, 4],
@@ -186,25 +182,25 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
     [3, 1],
   ]);
 
-  // Converts WALKOVER to DOUBLE_WALKOVER in R2P2
+  // Converts DEFAULTED to DOUBLE_DEFAULT in R2P2
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 2 });
-  expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
+  expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_DEFAULT);
 
-  // Produces WALKOVER in R3P1, advances DP1 to Final, sets winningSide
+  // Produces DEFAULTED in R3P1, advances DP1 to Final, sets winningSide
   targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
-  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.matchUpStatus).toEqual(DEFAULTED);
   expect(targetMatchUp.winningSide).toEqual(1);
 });
 
 /*
   R1P1 matchUp is BYE.  Enters three DOUBLE_WALKOVERs in remaining first round matchUps, from bottom up.
-  Entering WOWO in R1P4 produces WaLKOVER in R2P2.
-  Entering WOWO in R1P3 converts R2P2 to DOUBLE_WALKOVER and produces WALKOVER in R3P1. 
-  Entering WOWO in R1P2 produces WALKOVER in R2P1 and advances DP1 to 3rd round and to FINAL. 
+  Entering "Double Exit" in R1P4 produces WaLKOVER in R2P2.
+  Entering "Double Exit" in R1P3 converts R2P2 to DOUBLE_DEFAULT and produces DEFAULTED in R3P1. 
+  Entering "Double Exit" in R1P2 produces DEFAULTED in R2P1 and advances DP1 to 3rd round and to FINAL. 
 */
-test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WALKOVER', () => {
+test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULTED into a DOUBLE_DEFAULT', () => {
   const drawProfiles = [{ drawSize: 8, participantsCount: 7 }];
   const {
     tournamentRecord,
@@ -230,12 +226,12 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
   let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
-  // Enter DOUBLE_WALKOVER in R1P2
+  // Enter DOUBLE_DEFAULT in R1P2
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 4 });
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
+    outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId: targetMatchUp.matchUpId,
-    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    drawId,
   });
   expect(modifiedMatchUpLog).toEqual([
     [1, 4],
@@ -243,17 +239,17 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
   ]);
   modifiedMatchUpLog = [];
 
-  // Check that R2P2 is a produced WALKOVER
+  // Check that R2P2 is a produced DEFAULTED
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 2 });
-  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.matchUpStatus).toEqual(DEFAULTED);
 
-  // Enter DOUBLE_WALKOVER in R1P3
+  // Enter DOUBLE_DEFAULT in R1P3
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 3 });
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
+    outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId: targetMatchUp.matchUpId,
-    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    drawId,
   });
   expect(modifiedMatchUpLog).toEqual([
     [1, 3],
@@ -262,20 +258,20 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
   ]);
   modifiedMatchUpLog = [];
 
-  // Produces WALKOVER in R2P2 which is immediately converted into DOUBLE_WALKOVER
+  // Produces DEFAULTED in R2P2 which is immediately converted into DOUBLE_DEFAULT
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 2 });
-  expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
-  // Produces WALKOVER in R3P1
+  expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_DEFAULT);
+  // Produces DEFAULTED in R3P1
   targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
-  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.matchUpStatus).toEqual(DEFAULTED);
 
-  // Enter DOUBLE_WALKOVER in R1P2
+  // Enter DOUBLE_DEFAULT in R1P2
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
+    outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId: targetMatchUp.matchUpId,
-    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    drawId,
   });
   expect(modifiedMatchUpLog).toEqual([
     [1, 2],
@@ -283,21 +279,21 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
     [3, 1],
   ]);
 
-  // R2P1 remains a WALKOVER because it has a winningSide
+  // R2P1 remains a DEFAULTED because it has a winningSide
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
-  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.matchUpStatus).toEqual(DEFAULTED);
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
   expect(targetMatchUp.winningSide).toEqual(1);
 
-  // Produces WALKOVER in R3P1, advances DP1 to Final, sets winningSide
+  // Produces DEFAULTED in R3P1, advances DP1 to Final, sets winningSide
   targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
-  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.matchUpStatus).toEqual(DEFAULTED);
   expect(targetMatchUp.winningSide).toEqual(1);
 });
 
-it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
+it.skip('supports entering DOUBLE_DEFAULT matchUpStatus', () => {
   // create an FMLC with the 1st position matchUp completed
   const drawProfiles = [
     {
@@ -333,7 +329,6 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   } = tournamentEngine.getEvent({ drawId });
 
   const mainStructureOrderedPairs = [[1, 2], [3, 4], [5, 6], [7, 8], [1]];
-
   const consolationStructureOrderedPairs = [[3, 4], [5, 6], [1], [2]];
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({
@@ -351,17 +346,17 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   );
 
   let result = tournamentEngine.setMatchUpStatus({
-    drawId,
+    outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId,
-    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    drawId,
   });
   expect(result.success).toEqual(true);
 
   const { matchUp: updatedMatchUp } = tournamentEngine.findMatchUp({
-    drawId,
     matchUpId,
+    drawId,
   });
-  expect(updatedMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
+  expect(updatedMatchUp.matchUpStatus).toEqual(DOUBLE_DEFAULT);
 
   ({
     drawDefinition: {
@@ -411,6 +406,7 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
     structureId: mainStructure.structureId,
   }));
 
+  console.log(filteredOrderedPairs, mainStructureOrderedPairs);
   expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
     mainStructureOrderedPairs
   );
@@ -426,7 +422,7 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
 /*
 Generate SINGLE_ELIMINATION drawSize: 16 and complete r1p1 with score
 */
-it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
+it('handles DOUBLE_DEFAULT for drawSize: 16', () => {
   const drawProfiles = [
     {
       drawSize: 16,
@@ -473,7 +469,7 @@ it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
   let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
-    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    outcome: { matchUpStatus: DOUBLE_DEFAULT },
   });
   expect(result.success).toEqual(true);
 
@@ -493,7 +489,7 @@ it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
   ]);
 });
 
-it('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', () => {
+it('advanceds a DOUBLE_DEFAULT when encountering DOUBLE DOUBLE_DEFAULT', () => {
   const drawProfiles = [
     {
       drawSize: 16,
@@ -513,7 +509,7 @@ it('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', () =>
         {
           roundNumber: 1,
           roundPosition: 3,
-          matchUpStatus: DOUBLE_WALKOVER,
+          matchUpStatus: DOUBLE_DEFAULT,
         },
       ],
     },
@@ -553,7 +549,7 @@ it('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', () =>
   let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId: targetMatchUp.matchUpId,
-    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    outcome: { matchUpStatus: DOUBLE_DEFAULT },
   });
   expect(result.success).toEqual(true);
 
@@ -568,8 +564,8 @@ it('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', () =>
   expect(roundMatchUps[1].map(({ matchUpStatus }) => matchUpStatus)).toEqual([
     'COMPLETED',
     'COMPLETED',
-    'DOUBLE_WALKOVER',
-    'DOUBLE_WALKOVER',
+    'DOUBLE_DEFAULT',
+    'DOUBLE_DEFAULT',
     'TO_BE_PLAYED',
     'TO_BE_PLAYED',
     'TO_BE_PLAYED',
@@ -577,13 +573,13 @@ it('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', () =>
   ]);
   expect(roundMatchUps[2].map(({ matchUpStatus }) => matchUpStatus)).toEqual([
     'TO_BE_PLAYED',
-    'DOUBLE_WALKOVER',
+    'DOUBLE_DEFAULT',
     'TO_BE_PLAYED',
     'TO_BE_PLAYED',
   ]);
 });
 
-it('handles DOUBLE DOUBLE_WALKOVER advancement', () => {
+it('handles DOUBLE DOUBLE_DEFAULT advancement', () => {
   const drawProfiles = [
     {
       drawSize: 16,
@@ -603,12 +599,12 @@ it('handles DOUBLE DOUBLE_WALKOVER advancement', () => {
         {
           roundNumber: 1,
           roundPosition: 3,
-          matchUpStatus: DOUBLE_WALKOVER,
+          matchUpStatus: DOUBLE_DEFAULT,
         },
         {
           roundNumber: 1,
           roundPosition: 4,
-          matchUpStatus: DOUBLE_WALKOVER,
+          matchUpStatus: DOUBLE_DEFAULT,
         },
       ],
     },
@@ -688,12 +684,12 @@ it('handles advances when encountring consecutive DOUBLE_WALKOVERs', () => {
         {
           roundNumber: 1,
           roundPosition: 3,
-          matchUpStatus: DOUBLE_WALKOVER,
+          matchUpStatus: DOUBLE_DEFAULT,
         },
         {
           roundNumber: 2,
           roundPosition: 1,
-          matchUpStatus: DOUBLE_WALKOVER,
+          matchUpStatus: DOUBLE_DEFAULT,
         },
       ],
     },
