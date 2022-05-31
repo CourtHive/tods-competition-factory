@@ -21,6 +21,7 @@ module.exports = {
               Avoidance: ['policies/avoidance', 'policies/accessors'],
             },
             'policies/positionActions',
+            'policies/participantPolicy',
             'policies/positioningSeeds',
             'policies/scheduling',
             'policies/tally-policy',
