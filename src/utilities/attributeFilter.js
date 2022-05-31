@@ -10,24 +10,52 @@ export function attributeFilter(params) {
     if (!valuesObject || !templateObject) return;
     const vKeys = Object.keys(valuesObject);
     const oKeys = Object.keys(templateObject);
+
+    // the orMap allows spcification of { 'a||b': boolean } so that filter templates can apply to multiple attributes
+    const orMap = Object.assign(
+      {},
+      ...oKeys
+        .filter((key) => key.indexOf('||'))
+        .map((key) => key.split('||').map((or) => ({ [or]: key })))
+        .flat()
+    );
+    const allKeys = oKeys.concat(...Object.keys(orMap));
+    const wildcard = allKeys.includes('*');
+
     for (let k = 0; k < vKeys.length; k++) {
-      if (oKeys.indexOf(vKeys[k]) >= 0) {
-        const tobj = templateObject[vKeys[k]];
+      if (allKeys.indexOf(vKeys[k]) >= 0 || wildcard) {
+        const templateKey = orMap[vKeys[k]] || vKeys[k];
+        const tobj = templateObject[templateKey] || wildcard;
         const vobj = valuesObject[vKeys[k]];
-        if (tobj && typeof tobj === 'object' && typeof vobj !== 'function') {
+
+        if (
+          typeof tobj === 'object' &&
+          typeof vobj !== 'function' &&
+          !Array.isArray(tobj)
+        ) {
           if (Array.isArray(vobj)) {
-            outputObject[vKeys[k]] = vobj.map((arrayMember) => {
-              const target = {};
-              attributeCopy(arrayMember, tobj, target);
-              return target;
-            });
+            const mappedElements = vobj
+              .map((arrayMember) => {
+                const target = {};
+                const result = attributeCopy(arrayMember, tobj, target);
+                if (result !== false) return target;
+              })
+              .filter(Boolean);
+            outputObject[vKeys[k]] = mappedElements;
           } else if (vobj) {
             outputObject[vKeys[k]] = {};
             attributeCopy(vobj, tobj, outputObject[vKeys[k]]);
           }
         } else {
-          if (templateObject[vKeys[k]]) {
-            outputObject[vKeys[k]] = valuesObject[vKeys[k]];
+          const value = valuesObject[vKeys[k]];
+          const exclude = Array.isArray(tobj) && !tobj.includes(value);
+          if (exclude) return false;
+
+          if (
+            templateObject[vKeys[k]] ||
+            (wildcard && templateObject[vKeys[k]] !== false)
+          ) {
+            outputObject[vKeys[k]] = value;
           }
         }
       }
