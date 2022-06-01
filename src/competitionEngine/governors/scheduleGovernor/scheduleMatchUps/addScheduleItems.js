@@ -144,9 +144,11 @@ export function assignMatchUpCourt(params) {
   const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
   if (error) return { error };
 
-  const { matchUpId, courtId, courtDayDate, disableNotice } = params;
+  const { tournamentRecords, matchUpId, courtId, courtDayDate, disableNotice } =
+    params;
 
   return assignCourt({
+    tournamentRecords,
     tournamentRecord,
     drawDefinition,
     disableNotice,

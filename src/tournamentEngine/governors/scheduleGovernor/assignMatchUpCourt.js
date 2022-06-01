@@ -9,6 +9,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function assignMatchUpCourt({
+  tournamentRecords,
   tournamentRecord,
   drawDefinition,
   disableNotice,
@@ -20,9 +21,14 @@ export function assignMatchUpCourt({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   if (courtId) {
-    const { venue, error } = findCourt({ tournamentRecord, courtId });
+    const { venue, error } = findCourt({
+      tournamentRecords,
+      tournamentRecord,
+      courtId,
+    });
     if (error) return { error };
     const venueId = venue?.venueId;
+
     assignMatchUpVenue({
       tournamentRecord,
       drawDefinition,

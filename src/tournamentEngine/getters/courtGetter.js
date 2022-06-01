@@ -1,13 +1,20 @@
+import { getLinkedTournamentIds } from '../../competitionEngine/governors/competitionsGovernor/tournamentLinks';
+import { decorateResult } from '../../global/functions/decorateResult';
+import { addVenue } from '../governors/venueGovernor/addVenue';
 import { makeDeepCopy } from '../../utilities';
+
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   COURT_NOT_FOUND,
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
 
-export function findCourt({ tournamentRecord, courtId }) {
+export function findCourt({ tournamentRecords, tournamentRecord, courtId }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!courtId) return { error: MISSING_COURT_ID };
+
+  const stack = 'findCourt';
 
   let court, venue;
 
@@ -20,7 +27,30 @@ export function findCourt({ tournamentRecord, courtId }) {
     });
   });
 
-  return (court && { court, venue }) || { error: COURT_NOT_FOUND };
+  if (court) {
+    return { ...SUCCESS, court, venue };
+  } else if (tournamentRecords) {
+    // if tournamentRecords is provided then call is from competitionEngine
+    const linkedTournamentIds = getLinkedTournamentIds({
+      tournamentRecords,
+    }).linkedTournamentIds;
+
+    const relevantIds = linkedTournamentIds[tournamentRecord.tournamentId];
+
+    // if there are linked tournaments search for court in all linked tournaments
+    for (const tournamentId of relevantIds) {
+      const record = tournamentRecord[tournamentId];
+      const result = findCourt({ tournamentRecord: record, courtId });
+      // if court is found in linked tournamentRecords, add venue to original tournamentRecord
+      if (result.success) {
+        addVenue({ tournamentRecord, venue: result.venue });
+        return { ...SUCCESS, court, venue };
+      }
+    }
+  }
+
+  // fall through to error condition
+  return decorateResult({ result: { error: COURT_NOT_FOUND }, stack });
 }
 
 export function publicFindCourt(params) {
