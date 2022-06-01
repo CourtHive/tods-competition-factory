@@ -18,6 +18,7 @@ export function generateVenues({ tournamentRecord, venueProfiles }) {
       courtsCount,
       courtNames,
       venueName,
+      idPrefix,
       courtIds,
     } = venueProfile;
 
@@ -49,6 +50,7 @@ export function generateVenues({ tournamentRecord, venueProfiles }) {
       courtsCount,
       courtNames,
       startTime,
+      idPrefix,
       courtIds,
       endTime,
       venueId,

@@ -115,6 +115,7 @@ export function addCourts({
   courtTimings,
   courtsCount,
   startTime,
+  idPrefix,
   courtIds,
   endTime,
   venueId,
@@ -147,8 +148,8 @@ export function addCourts({
     return court;
   });
 
-  const result = courts.map((court) => {
-    const courtId = courtIds?.pop();
+  const result = courts.map((court, i) => {
+    const courtId = courtIds?.pop() || (idPrefix && `${idPrefix}-${i + 1}`);
     return addCourt({
       disableNotice: true,
       returnDetails: true,

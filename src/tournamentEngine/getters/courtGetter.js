@@ -39,7 +39,7 @@ export function findCourt({ tournamentRecords, tournamentRecord, courtId }) {
 
     // if there are linked tournaments search for court in all linked tournaments
     for (const tournamentId of relevantIds) {
-      const record = tournamentRecord[tournamentId];
+      const record = tournamentRecords[tournamentId];
       const result = findCourt({ tournamentRecord: record, courtId });
       // if court is found in linked tournamentRecords, add venue to original tournamentRecord
       if (result.success) {

@@ -69,9 +69,8 @@ export function modifyVenue({
       .map((court) => {
         // check whether deleting court would remove schedule from any matchUps
         const { matchUps } = getScheduledCourtMatchUps({
-          tournamentRecord,
-
           courtId: court.courtId,
+          tournamentRecord,
         });
         return matchUps.length;
       })
