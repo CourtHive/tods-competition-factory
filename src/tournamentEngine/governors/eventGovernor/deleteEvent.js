@@ -27,6 +27,7 @@ export function deleteEvents({ tournamentRecord, eventIds }) {
       };
       auditTrail.push(auditData);
       deletedEventDetails.push({
+        tournamentId: tournamentRecord.tournamentId,
         eventName: event.eventName,
         eventType: event.eventType,
         category: event.category,

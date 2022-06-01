@@ -28,7 +28,13 @@ export function unPublishEvent({ tournamentRecord, event, status = PUBLIC }) {
   const updatedTimeItem = { itemValue, itemType };
 
   addEventTimeItem({ event, timeItem: updatedTimeItem });
-  addNotice({ topic: UNPUBLISH_EVENT, payload: { eventId: event.eventId } });
+  addNotice({
+    topic: UNPUBLISH_EVENT,
+    payload: {
+      tournamentId: tournamentRecord.tournamentId,
+      eventId: event.eventId,
+    },
+  });
 
   return Object.assign({ eventId: event.eventId }, SUCCESS);
 }

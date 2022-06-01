@@ -66,7 +66,10 @@ export function mergeParticipants({
   if (modifiedParticipants.length && topics.includes(MODIFY_PARTICIPANTS)) {
     addNotice({
       topic: MODIFY_PARTICIPANTS,
-      payload: { participants: modifiedParticipants },
+      payload: {
+        tournamentId: tournamentRecord.tournamentId,
+        participants: modifiedParticipants,
+      },
     });
   }
 

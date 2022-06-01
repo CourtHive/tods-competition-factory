@@ -52,7 +52,10 @@ export function removeIndividualParticipantIds({
   if (removed) {
     addNotice({
       topic: MODIFY_PARTICIPANTS,
-      payload: { participants: [groupingParticipant] },
+      payload: {
+        tournamentId: tournamentRecord.tournamentId,
+        participants: [groupingParticipant],
+      },
     });
   }
 

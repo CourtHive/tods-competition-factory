@@ -95,7 +95,10 @@ export function modifyIndividualParticipantIds({
 
     addNotice({
       topic: MODIFY_PARTICIPANTS,
-      payload: { participants: [updatedParticipant] },
+      payload: {
+        tournamentId: tournamentRecord.tournamentId,
+        participants: [updatedParticipant],
+      },
     });
   }
 

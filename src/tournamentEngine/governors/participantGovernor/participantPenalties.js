@@ -71,7 +71,10 @@ export function addPenalty({
 
   addNotice({
     topic: MODIFY_PARTICIPANTS,
-    payload: { participants: relevantParticipants },
+    payload: {
+      tournamentId: tournamentRecord.tournamentId,
+      participants: relevantParticipants,
+    },
   });
 
   return { ...SUCCESS, penaltyId: penaltyItem.penaltyId };
@@ -109,7 +112,10 @@ export function removePenalty({ tournamentRecord, penaltyId }) {
   if (removedPenalty) {
     addNotice({
       topic: MODIFY_PARTICIPANTS,
-      payload: { participants: modifiedParticipants },
+      payload: {
+        tournamentId: tournamentRecord.tournamentId,
+        participants: modifiedParticipants,
+      },
     });
   }
 
@@ -180,7 +186,10 @@ export function modifyPenalty({ tournamentRecord, penaltyId, modifications }) {
   if (updatedPenalty) {
     addNotice({
       topic: MODIFY_PARTICIPANTS,
-      payload: { participants: modifiedParticipants },
+      payload: {
+        tournamentId: tournamentRecord.tournamentId,
+        participants: modifiedParticipants,
+      },
     });
   }
 

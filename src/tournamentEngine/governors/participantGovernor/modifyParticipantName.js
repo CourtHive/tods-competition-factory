@@ -33,7 +33,10 @@ export function modifyParticipantName({
   if (topics.includes(MODIFY_PARTICIPANTS)) {
     addNotice({
       topic: MODIFY_PARTICIPANTS,
-      payload: { participants: [participant] },
+      payload: {
+        tournamentId: tournamentRecord.tournamentId,
+        participants: [participant],
+      },
     });
   }
 

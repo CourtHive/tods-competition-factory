@@ -64,7 +64,10 @@ export function createGroupParticipant({
   if (topics.includes(ADD_PARTICIPANTS)) {
     addNotice({
       topic: ADD_PARTICIPANTS,
-      payload: { participants: [groupParticipant] },
+      payload: {
+        tournamentId: tournamentRecord.tournamentId,
+        participants: [groupParticipant],
+      },
     });
   }
 

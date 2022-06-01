@@ -38,7 +38,7 @@ export function deleteCourt({
     if (!disableNotice)
       addNotice({
         topic: MODIFY_VENUE,
-        payload: { venue },
+        payload: { venue, tournamentId: tournamentRecord.tournamentId },
         key: venue.venueId,
       });
   } else {

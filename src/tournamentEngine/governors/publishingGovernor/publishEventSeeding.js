@@ -37,7 +37,11 @@ export function publishEventSeeding({
   addEventTimeItem({ event, timeItem: updatedTimeItem });
   addNotice({
     topic: PUBLISH_EVENT_SEEDING,
-    payload: { eventId: event.eventId, drawIds },
+    payload: {
+      tournamentId: tournamentRecord.tournamentId,
+      eventId: event.eventId,
+      drawIds,
+    },
   });
 
   return { ...SUCCESS };

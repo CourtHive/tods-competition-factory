@@ -184,8 +184,11 @@ export function addParticipant({
 
   if (!disableNotice) {
     addNotice({
+      payload: {
+        tournamentId: tournamentRecord.tournamentId,
+        participants: [participant],
+      },
       topic: ADD_PARTICIPANTS,
-      payload: { participants: [participant] },
     });
   }
 
@@ -253,7 +256,10 @@ export function addParticipants({
     if (addedParticipants.length) {
       addNotice({
         topic: ADD_PARTICIPANTS,
-        payload: { participants: addedParticipants },
+        payload: {
+          tournamentId: tournamentRecord.tournamentId,
+          participants: addedParticipants,
+        },
       });
     }
 

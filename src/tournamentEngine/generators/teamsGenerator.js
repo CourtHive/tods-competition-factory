@@ -111,7 +111,10 @@ export function generateTeamsFromParticipantAttribute({
 
   if (participantsAdded) {
     addNotice({
-      payload: { participants: newParticipants },
+      payload: {
+        tournamentId: tournamentRecord.tournamentId,
+        participants: newParticipants,
+      },
       topic: ADD_PARTICIPANTS,
     });
   }
