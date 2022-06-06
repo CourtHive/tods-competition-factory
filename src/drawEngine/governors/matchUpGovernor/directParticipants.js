@@ -74,7 +74,6 @@ export function directParticipants(params) {
       matchUpId: matchUpTieId,
       tournamentRecord,
       drawDefinition,
-      structure,
       event,
     });
     const matchUpTie = inContextDrawMatchUps.find(

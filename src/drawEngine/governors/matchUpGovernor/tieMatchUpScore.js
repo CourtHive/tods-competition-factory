@@ -16,13 +16,12 @@ export function updateTieMatchUpScore({
   matchUpStatus,
   removeScore,
   matchUpId,
-  structure,
   event,
 }) {
   const result = findMatchUp({ drawDefinition, event, matchUpId });
   if (result.error) return result;
 
-  const matchUp = result.matchUp;
+  const { matchUp, structure } = result;
 
   const tieFormat =
     matchUp.tieFormat ||

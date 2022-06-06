@@ -109,6 +109,7 @@ function scoreModification(params) {
     const result = updateTieMatchUpScore({
       tournamentRecord: params.tournamentRecord,
       matchUpId: matchUpTieId,
+      event: params.event,
       drawDefinition,
     });
     if (result.error) return decorateResult({ result, stack });
