@@ -345,12 +345,11 @@ function applyMatchUpValues(params) {
 
   // recalculate dualMatchUp score if isCollectionMatchUp
   if (params.isCollectionMatchUp) {
-    const { matchUpTieId, drawDefinition, structure } = params;
+    const { matchUpTieId, drawDefinition } = params;
     const { removeWinningSide } = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       tournamentRecord,
       drawDefinition,
-      structure,
       event,
     });
     console.log('sms', { removeWinningSide });

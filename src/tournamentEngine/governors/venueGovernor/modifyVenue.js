@@ -69,9 +69,8 @@ export function modifyVenue({
       .map((court) => {
         // check whether deleting court would remove schedule from any matchUps
         const { matchUps } = getScheduledCourtMatchUps({
-          tournamentRecord,
-
           courtId: court.courtId,
+          tournamentRecord,
         });
         return matchUps.length;
       })
@@ -113,7 +112,11 @@ export function modifyVenue({
 
   checkSchedulingProfile({ tournamentRecord });
 
-  addNotice({ topic: MODIFY_VENUE, payload: { venue }, key: venue.venueId });
+  addNotice({
+    payload: { venue, tournamentId: tournamentRecord.tournamentId },
+    topic: MODIFY_VENUE,
+    key: venue.venueId,
+  });
 
   return { ...SUCCESS, venue: makeDeepCopy(venue) };
 }

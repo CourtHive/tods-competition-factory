@@ -56,7 +56,6 @@ export function removeDirectedParticipants(params) {
       matchUpId: matchUpTieId,
       tournamentRecord,
       drawDefinition,
-      structure,
       event,
     });
     if (!dualWinningSideChange && !removeWinningSide) return { ...SUCCESS };

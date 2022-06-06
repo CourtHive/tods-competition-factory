@@ -98,12 +98,11 @@ function scoreModification(params) {
 
   // recalculate dualMatchUp score if isCollectionMatchUp
   if (params.isCollectionMatchUp) {
-    const { matchUpTieId, drawDefinition, structure, event } = params;
+    const { matchUpTieId, drawDefinition, event } = params;
     const { removeWinningSide } = updateTieMatchUpScore({
       tournamentRecord: params.tournamentRecord,
       matchUpId: matchUpTieId,
       drawDefinition,
-      structure,
       event,
     });
 

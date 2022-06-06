@@ -75,7 +75,7 @@ export function deleteParticipants({ tournamentRecord, participantIds }) {
   if (participantsRemovedCount) {
     addNotice({
       topic: DELETE_PARTICIPANTS,
-      payload: { participantIds },
+      payload: { participantIds, tournamentId: tournamentRecord.tournamentId },
     });
   }
 

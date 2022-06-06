@@ -32,7 +32,11 @@ export function modifyCourtAvailability({
 
   court.dateAvailability = dateAvailability;
   if (!disableNotice)
-    addNotice({ topic: MODIFY_VENUE, payload: { venue }, key: venue.venueId });
+    addNotice({
+      payload: { venue, tournamentId: tournamentRecord.tournamentId },
+      topic: MODIFY_VENUE,
+      key: venue.venueId,
+    });
 
   return { ...SUCCESS };
 }

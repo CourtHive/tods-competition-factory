@@ -782,14 +782,18 @@ test('does not propagate matchUpStatusCodes from SINGLE/DOUBLES to TEAM matchUps
     [
       'SINGLES',
       ['WOWO', 'WOWO'],
-      { scoreStringSide1: '', scoreStringSide2: '', sets: undefined },
+      {
+        scoreStringSide1: '',
+        scoreStringSide2: '',
+        sets: undefined,
+      },
     ],
     [
       'TEAM',
       {
-        scoreStringSide1: undefined,
-        scoreStringSide2: undefined,
-        sets: [],
+        scoreStringSide1: '0-0',
+        scoreStringSide2: '0-0',
+        sets: [{ side1Score: 0, side2Score: 0 }],
       },
     ],
   ]);

@@ -53,7 +53,10 @@ export function setParticipantScaleItem({
       if (topics.includes(MODIFY_PARTICIPANTS)) {
         addNotice({
           topic: MODIFY_PARTICIPANTS,
-          payload: { participants: [participant] },
+          payload: {
+            tournamentId: tournamentRecord.tournamentId,
+            participants: [participant],
+          },
         });
       }
     }
@@ -114,7 +117,10 @@ export function setParticipantScaleItems({
   if (topics.includes(MODIFY_PARTICIPANTS) && modificationsApplied) {
     addNotice({
       topic: MODIFY_PARTICIPANTS,
-      payload: { participants: modifiedParticipants },
+      payload: {
+        tournamentId: tournamentRecord.tournamentId,
+        participants: modifiedParticipants,
+      },
     });
   }
 

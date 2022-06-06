@@ -46,6 +46,7 @@ export function matchUpScheduleChange(params) {
       matchUpId: sourceMatchUpId,
       courtId: targetCourtId,
       drawId: sourceDrawId,
+      tournamentRecords,
       courtDayDate,
     });
     if (result?.success) matchUpsModified++;
@@ -61,6 +62,7 @@ export function matchUpScheduleChange(params) {
       matchUpId: sourceMatchUpId,
       courtId: targetCourtId,
       drawId: sourceDrawId,
+      tournamentRecords,
       courtDayDate,
     });
     if (sourceResult.success) matchUpsModified++;
@@ -71,6 +73,7 @@ export function matchUpScheduleChange(params) {
       matchUpId: targetMatchUpId,
       courtId: sourceCourtId,
       drawId: targetDrawId,
+      tournamentRecords,
       courtDayDate,
     });
     if (targetResult.success) matchUpsModified++;
@@ -83,6 +86,7 @@ export function matchUpScheduleChange(params) {
   return matchUpsModified ? SUCCESS : { error: NO_MODIFICATIONS_APPLIED };
 
   function assignMatchUpCourt({
+    tournamentRecords,
     tournamentId,
     courtDayDate,
     matchUpId,
@@ -96,6 +100,7 @@ export function matchUpScheduleChange(params) {
     });
 
     return assignCourt({
+      tournamentRecords,
       tournamentRecord,
       drawDefinition,
       courtDayDate,

@@ -8,11 +8,10 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function getScheduledCourtMatchUps({
-  tournamentRecord,
-  courtId,
-
   scheduleVisibilityFilters,
+  tournamentRecord,
   matchUpFilters,
+  courtId,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!courtId) return { error: MISSING_COURT_ID };
@@ -20,9 +19,8 @@ export function getScheduledCourtMatchUps({
   const { schedulingProfile } = getSchedulingProfile({ tournamentRecord });
 
   const { matchUps: tournamentMatchUps } = allTournamentMatchUps({
-    tournamentRecord,
-
     scheduleVisibilityFilters,
+    tournamentRecord,
     matchUpFilters,
   });
   const matchUps = getCourtMatchUps({ matchUps: tournamentMatchUps, courtId });

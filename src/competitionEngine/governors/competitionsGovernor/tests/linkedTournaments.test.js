@@ -145,6 +145,7 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
     const { tournamentRecord: secondRecord } =
       mocksEngine.generateTournamentRecord({ drawProfiles });
     await competitionEngine.setState([firstRecord, secondRecord]);
+    await competitionEngine.linkTournaments();
 
     const { upcomingMatchUps } = await competitionEngine.competitionMatchUps();
 

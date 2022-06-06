@@ -86,8 +86,8 @@ export function addCourt({
 
     if (!disableNotice) {
       addNotice({
+        payload: { venue, tournamentId: tournamentRecord.tournamentId },
         topic: MODIFY_VENUE,
-        payload: { venue },
         key: venue.venueId,
       });
     }
@@ -115,6 +115,7 @@ export function addCourts({
   courtTimings,
   courtsCount,
   startTime,
+  idPrefix,
   courtIds,
   endTime,
   venueId,
@@ -147,8 +148,8 @@ export function addCourts({
     return court;
   });
 
-  const result = courts.map((court) => {
-    const courtId = courtIds?.pop();
+  const result = courts.map((court, i) => {
+    const courtId = courtIds?.pop() || (idPrefix && `${idPrefix}-${i + 1}`);
     return addCourt({
       disableNotice: true,
       returnDetails: true,
@@ -162,7 +163,11 @@ export function addCourts({
 
   if (courtRecords.length === courtsCount) {
     const { venue } = findVenue({ tournamentRecord, venueId });
-    addNotice({ topic: MODIFY_VENUE, payload: { venue }, key: venue.venueId });
+    addNotice({
+      payload: { venue, tournamentId: tournamentRecord.tournamentId },
+      topic: MODIFY_VENUE,
+      key: venue.venueId,
+    });
     return { ...SUCCESS, courts: makeDeepCopy(courtRecords) };
   } else {
     return Object.assign(

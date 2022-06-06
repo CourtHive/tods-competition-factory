@@ -31,7 +31,10 @@ export function addVenue({
   if (!venueExists) {
     tournamentRecord.venues.push(venue);
     if (!disableNotice) {
-      addNotice({ topic: ADD_VENUE, payload: { venue } });
+      addNotice({
+        payload: { venue, tournamentId: tournamentRecord.tournamentId },
+        topic: ADD_VENUE,
+      });
     }
 
     return getDevContext({ addVenue: true })

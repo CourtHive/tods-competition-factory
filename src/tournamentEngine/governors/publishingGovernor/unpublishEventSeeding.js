@@ -36,7 +36,10 @@ export function unPublishEventSeeding({
   addEventTimeItem({ event, timeItem: updatedTimeItem });
   addNotice({
     topic: UNPUBLISH_EVENT_SEEDING,
-    payload: { eventId: event.eventId },
+    payload: {
+      tournamentId: tournamentRecord.tournamentId,
+      eventId: event.eventId,
+    },
   });
 
   return { ...SUCCESS };

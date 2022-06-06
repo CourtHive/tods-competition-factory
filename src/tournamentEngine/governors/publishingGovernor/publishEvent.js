@@ -94,7 +94,10 @@ export function publishEvent({
     publishState?.PUBLIC?.drawIds.includes(drawId)
   );
 
-  addNotice({ topic: PUBLISH_EVENT, payload: { eventData } });
+  addNotice({
+    payload: { eventData, tournamentId: tournamentRecord.tournamentId },
+    topic: PUBLISH_EVENT,
+  });
 
   return { ...SUCCESS, eventData };
 }

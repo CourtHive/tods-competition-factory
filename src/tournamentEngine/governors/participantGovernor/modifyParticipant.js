@@ -137,7 +137,10 @@ export function modifyParticipant({
 
   addNotice({
     topic: MODIFY_PARTICIPANTS,
-    payload: { participants: [existingParticipant] },
+    payload: {
+      tournamentId: tournamentRecord.tournamentId,
+      participants: [existingParticipant],
+    },
   });
 
   if (getDevContext()) {
