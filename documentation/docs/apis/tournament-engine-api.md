@@ -2885,6 +2885,7 @@ scaleItem = {
 };
 
 result = tournamentEngine.setParticipantScaleItem({
+  removePriorValues, // boolean
   participantId,
   scaleItem,
 });
@@ -2909,7 +2910,10 @@ const scaleItemsWithParticipantIds = [
     ],
   },
 ];
-tournamentEngine.setParticipantScaleItems({ scaleItemsWithParticipantIds });
+tournamentEngine.setParticipantScaleItems({
+  scaleItemsWithParticipantIds,
+  removePriorValues,
+});
 ```
 
 ---
