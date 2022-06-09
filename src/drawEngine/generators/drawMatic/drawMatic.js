@@ -4,6 +4,7 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import { generateDrawMaticRound } from './generateDrawMaticRound';
 import { isAdHoc } from '../../governors/queryGovernor/isAdHoc';
 
+import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { RATING } from '../../../constants/scaleConstants';
@@ -13,11 +14,6 @@ import {
   INVALID_VALUES,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import {
-  DIRECT_ACCEPTANCE,
-  ORGANISER_ACCEPTANCE,
-  WILDCARD,
-} from '../../../constants/entryStatusConstants';
 
 /**
  *
@@ -57,9 +53,7 @@ export function drawMatic({
     .filter(
       ({ entryStatus }) =>
         !restrictEntryStatus ||
-        [DIRECT_ACCEPTANCE, ORGANISER_ACCEPTANCE, WILDCARD].includes(
-          entryStatus
-        )
+        STRUCTURE_SELECTED_STATUSES.includes(entryStatus)
     )
     .map(getParticipantId);
 
