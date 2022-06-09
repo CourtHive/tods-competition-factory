@@ -16,6 +16,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function setParticipantScaleItem({
+  removePriorValues,
   tournamentRecord,
   participantId,
   scaleItem,
@@ -42,6 +43,7 @@ export function setParticipantScaleItem({
 
     if (participant) {
       const { valueChanged, error } = addParticipantScaleItem({
+        removePriorValues,
         participant,
         scaleItem,
       });
@@ -75,6 +77,7 @@ export function setParticipantScaleItem({
 
 export function setParticipantScaleItems({
   scaleItemsWithParticipantIds = [],
+  removePriorValues,
   tournamentRecord,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -105,7 +108,7 @@ export function setParticipantScaleItems({
     const { participantId } = participant || {};
     if (Array.isArray(participantScaleItemsMap[participantId])) {
       participantScaleItemsMap[participantId].forEach((scaleItem) => {
-        addParticipantScaleItem({ participant, scaleItem });
+        addParticipantScaleItem({ participant, scaleItem, removePriorValues });
         modifiedParticipants.push(participant);
         modificationsApplied++;
       });
@@ -137,7 +140,11 @@ function isValidScaleItem({ scaleItem }) {
   return !!validScaleItem;
 }
 
-export function addParticipantScaleItem({ participant, scaleItem }) {
+export function addParticipantScaleItem({
+  removePriorValues,
+  participant,
+  scaleItem,
+}) {
   if (!participant) {
     return { error: MISSING_PARTICIPANT };
   }
@@ -166,7 +173,9 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
     !(
       isUndefined(existingScaleItem?.scaleValue) &&
       isUndefined(scaleItem.scaleValue)
-    ) && existingScaleItem?.scaleValue !== scaleItem.scaleValue;
+    ) &&
+    JSON.stringify(existingScaleItem?.scaleValue) !==
+      JSON.stringify(scaleItem.scaleValue);
 
   if (valueChanged) {
     const { scaleType, eventType, scaleName } = scaleItem;
@@ -183,11 +192,15 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
     if (scaleItem.scaleId) {
       timeItem.itemSubTypes = [scaleItem.scaleId];
     }
+
+    if (removePriorValues) {
+      participant.timeItems = participant.timeItems.filter(
+        (timeItem) => timeItem.itemType !== itemType
+      );
+    }
+
     participant.timeItems.push(timeItem);
   }
 
-  return Object.assign(
-    { valueChanged, newValue: scaleItem.scaleValue },
-    SUCCESS
-  );
+  return { ...SUCCESS, valueChanged, newValue: scaleItem.scaleValue };
 }
