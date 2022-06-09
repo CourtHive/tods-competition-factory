@@ -5,7 +5,7 @@ import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../getters/getFlightProfile';
 import { getDevContext } from '../../global/state/globalState';
 
-import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
+import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   EXISTING_PROFILE,
@@ -77,7 +77,7 @@ export function generateFlightProfile({
     .filter(
       (entry) =>
         (!stage || !entry.entryStage || entry.entryStage === stage) &&
-        STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
+        DIRECT_ENTRY_STATUSES.includes(entry.entryStatus)
     );
 
   const flightEntries = scaledEntries.concat(...unscaledEntries);

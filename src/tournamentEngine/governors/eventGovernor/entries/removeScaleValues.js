@@ -2,8 +2,8 @@ import { removeParticipantsScaleItems } from '../../participantGovernor/removeSc
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
-import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
+import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
 
 /**
  *
@@ -16,9 +16,8 @@ import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusCo
  */
 export function removeScaleValues({
   tournamentRecord,
-  drawDefinition,
-
   scaleAttributes,
+  drawDefinition,
   drawId,
   event,
   stage,

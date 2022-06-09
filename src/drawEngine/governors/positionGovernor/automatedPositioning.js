@@ -15,15 +15,12 @@ import {
   enableNotifications,
 } from '../../../global/state/globalState';
 
+import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   LUCKY_DRAW,
   WATERFALL,
 } from '../../../constants/drawDefinitionConstants';
-import {
-  WILDCARD,
-  DIRECT_ACCEPTANCE,
-} from '../../../constants/entryStatusConstants';
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 export function automatedPositioning({
@@ -68,7 +65,7 @@ export function automatedPositioning({
     drawDefinition,
     structureId,
   });
-  const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
+  const entryStatuses = DIRECT_ENTRY_STATUSES;
   const entries = getStageEntries({
     stage: structure.stage,
     drawDefinition,

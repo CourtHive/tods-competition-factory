@@ -6,7 +6,7 @@ import { findExtension } from '../governors/queryGovernor/extensionQueries';
 import { getDrawStructures } from '../../drawEngine/getters/findStructure';
 import { getParticipantId } from '../../global/functions/extractors';
 
-import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
+import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
 
@@ -49,7 +49,7 @@ export function prepareStage({
         !entry.entryStageSequence ||
         entry.entryStageSequence === stageSequence) &&
       (!roundTarget || entryRoundTarget === roundTarget) &&
-      STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
+      DIRECT_ENTRY_STATUSES.includes(entry.entryStatus)
     );
   });
 

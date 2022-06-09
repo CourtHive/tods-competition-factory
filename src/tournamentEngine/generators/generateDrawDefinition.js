@@ -13,12 +13,12 @@ import { tieFormatDefaults } from './tieFormatDefaults';
 import { prepareStage } from './prepareStage';
 
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
+import { SUCCESS } from '../../constants/resultConstants';
+import { TEAM } from '../../constants/matchUpTypes';
 import {
   INVALID_DRAW_TYPE,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { TEAM } from '../../constants/matchUpTypes';
 import {
   LUCKY_DRAW,
   MAIN,

@@ -6,6 +6,9 @@ export enum EntryStatusEnum {
   ALTERNATE = 'ALTERNATE',
   WITHDRAWN = 'WITHDRAWN',
 
+  SPECIAL_EXEMPT = 'SPECIAL_EXEMPT',
+  JUNIOR_EXEMPT = 'JUNIOR_EXEMPT',
+
   // applies only to { participantType: INDIVIDUAL } entries in { eventType: DOUBLES }
   UNPAIRED = 'UNPAIRED', // legacy - being replaced by UNGROUPED
   UNGROUPED = 'UNGROUPED',
@@ -18,21 +21,25 @@ export enum EntryStatusEnum {
 }
 
 export const ALTERNATE = EntryStatusEnum.ALTERNATE;
-export const FEED_IN = EntryStatusEnum.FEED_IN;
-export const QUALIFIER = EntryStatusEnum.QUALIFIER;
-export const WILDCARD = EntryStatusEnum.WILDCARD;
-export const DIRECT_ACCEPTANCE = EntryStatusEnum.DIRECT_ACCEPTANCE;
 export const CONFIRMED = EntryStatusEnum.CONFIRMED;
+export const DIRECT_ACCEPTANCE = EntryStatusEnum.DIRECT_ACCEPTANCE;
+export const FEED_IN = EntryStatusEnum.FEED_IN;
+export const JUNIOR_EXEMPT = EntryStatusEnum.JUNIOR_EXEMPT;
 export const LUCKY_LOSER = EntryStatusEnum.LUCKY_LOSER;
 export const ORGANISER_ACCEPTANCE = EntryStatusEnum.ORGANISER_ACCEPTANCE;
-export const WITHDRAWN = EntryStatusEnum.WITHDRAWN;
-export const UNPAIRED = EntryStatusEnum.UNPAIRED;
+export const QUALIFIER = EntryStatusEnum.QUALIFIER;
+export const SPECIAL_EXEMPT = EntryStatusEnum.SPECIAL_EXEMPT;
 export const UNGROUPED = EntryStatusEnum.UNGROUPED;
+export const UNPAIRED = EntryStatusEnum.UNPAIRED;
+export const WILDCARD = EntryStatusEnum.WILDCARD;
+export const WITHDRAWN = EntryStatusEnum.WITHDRAWN;
 
 export const EQUIVALENT_ACCEPTANCE_STATUSES = [
   CONFIRMED,
   DIRECT_ACCEPTANCE,
+  JUNIOR_EXEMPT,
   ORGANISER_ACCEPTANCE,
+  SPECIAL_EXEMPT,
 ];
 export const DRAW_SPECIFIC_STATUSES = [
   FEED_IN,
@@ -41,13 +48,25 @@ export const DRAW_SPECIFIC_STATUSES = [
   WILDCARD,
 ];
 
+export const DIRECT_ENTRY_STATUSES = [
+  CONFIRMED,
+  DIRECT_ACCEPTANCE,
+  FEED_IN,
+  JUNIOR_EXEMPT,
+  ORGANISER_ACCEPTANCE,
+  SPECIAL_EXEMPT,
+  WILDCARD,
+];
+
 export const STRUCTURE_SELECTED_STATUSES = [
   CONFIRMED,
   DIRECT_ACCEPTANCE,
   FEED_IN,
+  JUNIOR_EXEMPT,
   LUCKY_LOSER,
   ORGANISER_ACCEPTANCE,
   QUALIFIER,
+  SPECIAL_EXEMPT,
   WILDCARD,
 ];
 
@@ -56,9 +75,11 @@ export const VALID_ENTRY_STATUSES = [
   CONFIRMED,
   DIRECT_ACCEPTANCE,
   FEED_IN,
+  JUNIOR_EXEMPT,
   LUCKY_LOSER,
   ORGANISER_ACCEPTANCE,
   QUALIFIER,
+  SPECIAL_EXEMPT,
   UNGROUPED,
   UNPAIRED,
   WILDCARD,
@@ -76,9 +97,11 @@ export const entryStatusConstants = {
   DRAW_SPECIFIC_STATUSES,
   EQUIVALENT_ACCEPTANCE_STATUSES,
   FEED_IN,
+  JUNIOR_EXEMPT,
   LUCKY_LOSER,
   ORGANISER_ACCEPTANCE,
   QUALIFIER,
+  SPECIAL_EXEMPT,
   STRUCTURE_ENTERED_TYPES,
   STRUCTURE_SELECTED_STATUSES,
   UNGROUPED,

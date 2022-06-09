@@ -10,6 +10,7 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isCompletedStructure } from './structureActions';
 import { isAdHoc } from './isAdHoc';
 
+import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
 import {
   ADD_PENALTY,
   ADD_PENALTY_METHOD,
@@ -34,11 +35,6 @@ import {
   START,
   STATUS,
 } from '../../../constants/matchUpActionConstants';
-import {
-  DIRECT_ACCEPTANCE,
-  ORGANISER_ACCEPTANCE,
-  WILDCARD,
-} from '../../../constants/entryStatusConstants';
 
 /**
  *
@@ -81,9 +77,7 @@ export function matchUpActions({
     const enteredParticipantIds =
       drawDefinition?.entries
         .filter(({ entryStatus }) =>
-          [DIRECT_ACCEPTANCE, ORGANISER_ACCEPTANCE, WILDCARD].includes(
-            entryStatus
-          )
+          DIRECT_ENTRY_STATUSES.includes(entryStatus)
         )
         .map(getParticipantId) || [];
 

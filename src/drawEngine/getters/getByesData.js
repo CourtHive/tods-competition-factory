@@ -3,14 +3,11 @@ import { structureAssignedDrawPositions } from './positionsGetter';
 import { getQualifiersCount } from './getQualifiersCount';
 import { getStageEntries } from './stageGetter';
 
+import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import {
   CONSOLATION,
   CONTAINER,
 } from '../../constants/drawDefinitionConstants';
-import {
-  DIRECT_ACCEPTANCE,
-  WILDCARD,
-} from '../../constants/entryStatusConstants';
 
 export function getByesData({ drawDefinition, event, matchUpsMap, structure }) {
   const matchUpFilters = { isCollectionMatchUp: false };
@@ -35,11 +32,10 @@ export function getByesData({ drawDefinition, event, matchUpsMap, structure }) {
 
   // get stage/stageSequence Entries and qualifiers
   const { structureId, stage, stageSequence } = structure;
-  const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = getStageEntries({
+    entryStatuses: STRUCTURE_SELECTED_STATUSES,
     drawDefinition,
     stageSequence,
-    entryStatuses,
     structureId,
     stage,
   });

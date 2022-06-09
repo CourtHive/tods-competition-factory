@@ -18,10 +18,8 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import {
-  ALTERNATE,
-  DIRECT_ACCEPTANCE,
+  STRUCTURE_SELECTED_STATUSES,
   UNGROUPED,
-  WILDCARD,
 } from '../../../../constants/entryStatusConstants';
 
 /**
@@ -77,7 +75,7 @@ export function destroyGroupEntry({
   if (!entry) return { error: PARTICIPANT_ENTRY_NOT_FOUND };
 
   const { stageEntries } = getStageEntries({
-    entryStatusees: [DIRECT_ACCEPTANCE, ALTERNATE, WILDCARD],
+    entryStatusees: STRUCTURE_SELECTED_STATUSES,
     selected: false,
     drawDefinition,
     drawId,
