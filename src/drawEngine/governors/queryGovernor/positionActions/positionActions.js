@@ -19,10 +19,7 @@ import {
 } from './actionPolicyUtils';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
-import {
-  WILDCARD,
-  DIRECT_ACCEPTANCE,
-} from '../../../../constants/entryStatusConstants';
+import { DIRECT_ENTRY_STATUSES } from '../../../../constants/entryStatusConstants';
 import {
   INVALID_DRAW_POSITION,
   MISSING_DRAW_DEFINITION,
@@ -171,7 +168,6 @@ export function positionActions({
     return { error: INVALID_DRAW_POSITION };
 
   const { stage, stageSequence } = structure;
-  const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
 
   const stages = [stage];
 
@@ -180,9 +176,9 @@ export function positionActions({
   if (stage === MAIN) stages.push(CONSOLATION);
 
   const stageEntries = getStageEntries({
+    entryStatuses: DIRECT_ENTRY_STATUSES,
     drawDefinition,
     stageSequence,
-    entryStatuses,
     structureId,
     stages,
   });

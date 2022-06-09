@@ -9,16 +9,13 @@ import { assignDrawPosition } from './positionAssignment';
 import { shuffleArray } from '../../../utilities';
 
 import { INSUFFICIENT_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
+import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
 import { ROUND_TARGET } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   PLAY_OFF,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
-import {
-  WILDCARD,
-  DIRECT_ACCEPTANCE,
-} from '../../../constants/entryStatusConstants';
 
 export function positionUnseededParticipants({
   inContextDrawMatchUps,
@@ -54,7 +51,7 @@ export function positionUnseededParticipants({
           ?.value
       : undefined;
 
-  const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
+  const entryStatuses = DIRECT_ENTRY_STATUSES;
   const entries = getStageEntries({
     drawDefinition,
     stageSequence,

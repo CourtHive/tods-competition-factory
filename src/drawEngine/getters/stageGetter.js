@@ -14,11 +14,7 @@ import {
   ALTERNATE,
   FEED_IN,
   WILDCARD,
-  DIRECT_ACCEPTANCE,
-  ORGANISER_ACCEPTANCE,
-  SPECIAL_EXEMPT,
-  JUNIOR_EXEMPT,
-  CONFIRMED,
+  DIRECT_ENTRY_STATUSES,
 } from '../../constants/entryStatusConstants';
 
 export function stageExists({ stage, drawDefinition }) {
@@ -194,14 +190,7 @@ function getPlayoffEntries({ drawDefinition, structureId }) {
 }
 
 export function getStageDirectEntriesCount({ stage, drawDefinition }) {
-  return [
-    CONFIRMED,
-    DIRECT_ACCEPTANCE,
-    JUNIOR_EXEMPT,
-    ORGANISER_ACCEPTANCE,
-    SPECIAL_EXEMPT,
-    WILDCARD,
-  ].reduce((count, entryStatus) => {
+  return DIRECT_ENTRY_STATUSES.reduce((count, entryStatus) => {
     const statusCount = getStageEntryTypeCount({
       drawDefinition,
       entryStatus,
