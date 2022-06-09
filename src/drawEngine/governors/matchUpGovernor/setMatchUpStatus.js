@@ -69,6 +69,7 @@ export function setMatchUpStatus(params) {
 
   const {
     allowChangePropagation = undefined, // factory default
+    tournamentRecords,
     tournamentRecord,
     drawDefinition,
     matchUpStatus,
@@ -268,6 +269,7 @@ export function setMatchUpStatus(params) {
   if (schedule) {
     const result = addMatchUpScheduleItems({
       disableNotice: true,
+      tournamentRecords,
       tournamentRecord,
       drawDefinition,
       matchUpId,

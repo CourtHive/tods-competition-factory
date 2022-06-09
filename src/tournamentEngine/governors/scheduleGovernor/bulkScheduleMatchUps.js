@@ -17,6 +17,7 @@ import {
  *
  */
 export function bulkScheduleMatchUps({
+  tournamentRecords,
   tournamentRecord,
   matchUpIds,
   schedule,
@@ -51,6 +52,7 @@ export function bulkScheduleMatchUps({
     );
     for (const matchUpId of drawMatchUpIds) {
       const result = addMatchUpScheduleItems({
+        tournamentRecords,
         tournamentRecord,
         drawDefinition,
         matchUpId,

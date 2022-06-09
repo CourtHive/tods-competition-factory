@@ -1,13 +1,14 @@
 import { addMatchUpTimeItem } from '../../../drawEngine/governors/matchUpGovernor/timeItems';
 import { findVenue } from '../../getters/venueGetter';
 
+import { ASSIGN_VENUE } from '../../../constants/timeItemConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_MATCHUP_ID,
 } from '../../../constants/errorConditionConstants';
-import { ASSIGN_VENUE } from '../../../constants/timeItemConstants';
 
 export function assignMatchUpVenue({
+  tournamentRecords,
   tournamentRecord,
   drawDefinition,
   disableNotice,
@@ -18,7 +19,11 @@ export function assignMatchUpVenue({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   if (venueId) {
-    const { error } = findVenue({ tournamentRecord, venueId });
+    const { error } = findVenue({
+      tournamentRecords,
+      tournamentRecord,
+      venueId,
+    });
     if (error) return { error };
   }
 
