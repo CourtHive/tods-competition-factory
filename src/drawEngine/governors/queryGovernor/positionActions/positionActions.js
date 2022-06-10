@@ -145,14 +145,18 @@ export function positionActions({
   const disablePlacementActions =
     positionSourceStructureIds.length && !sourceStructuresCompleted;
 
-  const { policyActions } = getPolicyActions({ enabledStructures, structure });
+  const { policyActions } = getPolicyActions({
+    enabledStructures,
+    drawDefinition,
+    structure,
+  });
 
   const possiblyDisablingAction =
     ![QUALIFYING, MAIN].includes(structure.stage) ||
     structure.stageSequence !== 1;
 
-  const validActions = [];
   const { drawId } = drawDefinition;
+  const validActions = [];
 
   const { assignedPositions, positionAssignments } =
     structureAssignedDrawPositions({ structure });

@@ -8,7 +8,8 @@
         "stageSequences": [1],
         "structureTypes": [],
         "enabledActions": [],
-        "disabledActions": []
+        "disabledActions": [],
+        "feedProfiles": []
       },
       {
         "stages": [],
@@ -20,7 +21,8 @@
           "ADD_PENALTY",
           "QUALIFIER"
         ],
-        "disabledActions": []
+        "disabledActions": [],
+        "feedProfiles": []
       }
     ],
 

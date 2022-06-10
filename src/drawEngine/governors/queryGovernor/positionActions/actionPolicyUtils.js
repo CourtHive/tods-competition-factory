@@ -22,22 +22,41 @@ export function getEnabledStructures({
 
   const positionActionsPolicy = policyDefinitions[POLICY_TYPE_POSITION_ACTIONS];
 
+  const relevantLinks = drawDefinition.links?.filter(
+    (link) => link?.target?.structureId === structure?.structureId
+  );
+  const targetFeedProfiles =
+    relevantLinks?.map(({ target }) => target.feedProfile) || [];
+
   const { enabledStructures, disabledStructures } = positionActionsPolicy || {};
   const actionsDisabled = disabledStructures?.find((structurePolicy) => {
-    const { stages, stageSequences, structureTypes } = structurePolicy;
+    const { stages, stageSequences, structureTypes, feedProfiles } =
+      structurePolicy;
     return (
-      (!stages?.length || stages?.includes(structure.stage)) &&
+      (!feedProfiles?.length ||
+        (Array.isArray(feedProfiles) &&
+          feedProfiles.some((feedProfile) =>
+            targetFeedProfiles.includes(feedProfile)
+          ))) &&
+      (!stages?.length ||
+        (Array.isArray(stages) && stages?.includes(structure.stage))) &&
       (!structureTypes?.length ||
-        structureTypes?.includes(structure.structureType)) &&
+        (Array.isArray(structureTypes) &&
+          structureTypes?.includes(structure.structureType))) &&
       (!stageSequences?.length ||
-        stageSequences.includes(structure.stageSequence))
+        (Array.isArray(stageSequences) &&
+          stageSequences.includes(structure.stageSequence)))
     );
   });
 
   return { enabledStructures, actionsDisabled };
 }
 
-export function getPolicyActions({ enabledStructures, structure }) {
+export function getPolicyActions({
+  enabledStructures,
+  drawDefinition,
+  structure,
+}) {
   if (enabledStructures === false) return {};
 
   if (!enabledStructures?.length)
@@ -45,19 +64,34 @@ export function getPolicyActions({ enabledStructures, structure }) {
 
   const { stage, stageSequence, structureType } = structure || {};
 
+  const relevantLinks = drawDefinition.links?.filter(
+    (link) => link?.target?.structureId === structure?.structureId
+  );
+  const targetFeedProfiles =
+    relevantLinks?.map(({ target }) => target.feedProfile) || [];
+
   const policyActions = enabledStructures.find((structurePolicy) => {
-    const { stages, stageSequences, structureTypes } = structurePolicy || {};
+    const { stages, stageSequences, structureTypes, feedProfiles } =
+      structurePolicy || {};
+
     const matchesStage =
       !stages?.length || (Array.isArray(stages) && stages.includes(stage));
     const matchesStageSequence =
       !stageSequences?.length ||
       (Array.isArray(stageSequences) && stageSequences.includes(stageSequence));
     const matchesStructureType =
-      !structureTypes ||
+      !structureTypes?.length ||
       (Array.isArray(structureTypes) && structureTypes.includes(structureType));
+    const matchesFeedProfile =
+      !feedProfiles?.length ||
+      (Array.isArray(feedProfiles) &&
+        feedProfiles.some((feedProfile) =>
+          targetFeedProfiles.includes(feedProfile)
+        ));
     if (
       matchesStageSequence &&
       matchesStructureType &&
+      matchesFeedProfile &&
       structurePolicy &&
       matchesStage
     ) {
