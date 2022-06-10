@@ -23,12 +23,16 @@ export function getEnabledStructures({
   const positionActionsPolicy = policyDefinitions[POLICY_TYPE_POSITION_ACTIONS];
 
   const { enabledStructures, disabledStructures } = positionActionsPolicy || {};
-  const actionsDisabled = disabledStructures?.find(
-    (structurePolicy) =>
-      structurePolicy.stages?.includes(structure.stage) &&
-      (!structurePolicy.stageSequences?.length ||
-        structurePolicy.stageSequences.includes(structure.stageSequence))
-  );
+  const actionsDisabled = disabledStructures?.find((structurePolicy) => {
+    const { stages, stageSequences, structureTypes } = structurePolicy;
+    return (
+      (!stages?.length || stages?.includes(structure.stage)) &&
+      (!structureTypes?.length ||
+        structureTypes?.includes(structure.structureType)) &&
+      (!stageSequences?.length ||
+        stageSequences.includes(structure.stageSequence))
+    );
+  });
 
   return { enabledStructures, actionsDisabled };
 }
@@ -42,7 +46,7 @@ export function getPolicyActions({ enabledStructures, structure }) {
   const { stage, stageSequence, structureType } = structure || {};
 
   const policyActions = enabledStructures.find((structurePolicy) => {
-    const { stages, stageSequences, structureTypes } = structurePolicy;
+    const { stages, stageSequences, structureTypes } = structurePolicy || {};
     const matchesStage =
       !stages?.length || (Array.isArray(stages) && stages.includes(stage));
     const matchesStageSequence =
