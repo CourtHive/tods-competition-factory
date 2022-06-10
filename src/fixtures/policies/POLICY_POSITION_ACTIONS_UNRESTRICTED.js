@@ -4,7 +4,7 @@ export const POLICY_POSITION_ACTIONS_UNRESTRICTED = {
   [POLICY_TYPE_POSITION_ACTIONS]: {
     policyName: 'positionActionsUnrestricted',
 
-    // positionActions will be selectively enabled for structures matching { stages: [], stageSequences: [] }
+    // positionActions will be selectively enabled for structures matching { stages: [], stageSequences: [], structureTypes: [] }
     // enabledStructures: [] => all structures are enabled
     enabledStructures: [],
 

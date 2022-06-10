@@ -39,15 +39,24 @@ export function getPolicyActions({ enabledStructures, structure }) {
   if (!enabledStructures?.length)
     return { policyActions: { enabledActions: [], disabledActions: [] } };
 
-  const { stage, stageSequence } = structure || {};
+  const { stage, stageSequence, structureType } = structure || {};
 
   const policyActions = enabledStructures.find((structurePolicy) => {
+    const { stages, stageSequences, structureTypes } = structurePolicy;
     const matchesStage =
-      !structurePolicy.stages?.length || structurePolicy.stages.includes(stage);
+      !stages?.length || (Array.isArray(stages) && stages.includes(stage));
     const matchesStageSequence =
-      !structurePolicy.stageSequences?.length ||
-      structurePolicy.stageSequences.includes(stageSequence);
-    if (structurePolicy && matchesStage && matchesStageSequence) {
+      !stageSequences?.length ||
+      (Array.isArray(stageSequences) && stageSequences.includes(stageSequence));
+    const matchesStructureType =
+      !structureTypes ||
+      (Array.isArray(structureTypes) && structureTypes.includes(structureType));
+    if (
+      matchesStageSequence &&
+      matchesStructureType &&
+      structurePolicy &&
+      matchesStage
+    ) {
       return true;
     }
   });

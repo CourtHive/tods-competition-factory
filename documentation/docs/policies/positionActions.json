@@ -6,12 +6,14 @@
       {
         "stages": ["QUALIFYING", "MAIN"],
         "stageSequences": [1],
+        "structureTypes": [],
         "enabledActions": [],
         "disabledActions": []
       },
       {
         "stages": [],
         "stageSequences": [],
+        "structureTypes": [],
         "enabledActions": [
           "SEED_VALUE",
           "ADD_NICKNAME",
