@@ -293,7 +293,7 @@ test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULTED into a DOUBLE_DEF
   expect(targetMatchUp.winningSide).toEqual(1);
 });
 
-it.skip('supports entering DOUBLE_DEFAULT matchUpStatus', () => {
+it('supports entering DOUBLE_DEFAULT matchUpStatus', () => {
   // create an FMLC with the 1st position matchUp completed
   const drawProfiles = [
     {
@@ -391,9 +391,9 @@ it.skip('supports entering DOUBLE_DEFAULT matchUpStatus', () => {
 
   // remove outcome
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId: matchUp.matchUpId,
     outcome: toBePlayed,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
@@ -406,7 +406,6 @@ it.skip('supports entering DOUBLE_DEFAULT matchUpStatus', () => {
     structureId: mainStructure.structureId,
   }));
 
-  console.log(filteredOrderedPairs, mainStructureOrderedPairs);
   expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
     mainStructureOrderedPairs
   );
