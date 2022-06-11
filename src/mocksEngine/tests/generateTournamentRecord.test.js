@@ -80,7 +80,7 @@ test('drawProfiles support generate: false', () => {
     const { event } = tournamentEngine.getEvent({ eventId });
     expect(event.drawDefinitions).toBeUndefined();
     const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
-    expect(flightProfile).toBeUndefined();
+    expect(flightProfile).not.toBeUndefined();
   });
 });
 
