@@ -9,6 +9,7 @@ import { drawMatic } from '../../tournamentEngine/governors/eventGovernor/drawDe
 import { addEventTimeItem } from '../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
+import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { isValidExtension } from '../../global/validation/isValidExtension';
@@ -60,6 +61,7 @@ export function generateEventWithDraw({
     drawType = SINGLE_ELIMINATION,
     tournamentAlternates = 0,
     alternatesCount = 0,
+    qualifyingPositions,
     qualifyingProfiles,
     generate = true,
     eventExtensions,
@@ -69,6 +71,7 @@ export function generateEventWithDraw({
     tieFormatName,
     seedsCount,
     timeItems,
+    drawName,
     category,
     idPrefix,
     publish,
@@ -511,6 +514,18 @@ export function generateEventWithDraw({
 
     if (publish) {
       publishEvent({ tournamentRecord, event });
+    }
+  } else {
+    const result = addFlight({
+      drawEntries: drawDefinition.entries,
+      drawName: drawName || drawType,
+      drawId: drawDefinition.drawId,
+      qualifyingPositions,
+      event,
+      stage,
+    });
+    if (result.error) {
+      return result;
     }
   }
 
