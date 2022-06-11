@@ -1,3 +1,4 @@
+import { getScaleValues } from '../../../tournamentEngine/getters/participants/getScaleValues';
 import { attributeFilter, makeDeepCopy } from '../../../utilities';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
@@ -5,6 +6,7 @@ import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 export function findParticipant({
   tournamentParticipants = [],
   policyDefinitions = {},
+  contextProfile,
   participantId,
   personId,
 }) {
@@ -14,14 +16,23 @@ export function findParticipant({
       (personId && candidate.person && candidate.person.personId === personId)
   );
 
-  const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
+  if (participant) {
+    const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
 
-  if (participantAttributes?.participant) {
-    const filteredParticipant = attributeFilter({
-      template: participantAttributes.participant,
-      source: participant,
-    });
-    return filteredParticipant;
+    if (contextProfile?.withScaleValues) {
+      const { ratings, rankings } = getScaleValues({ participant });
+      participant.ratings = ratings;
+      participant.rankings = rankings;
+    }
+
+    if (participantAttributes?.participant) {
+      const filteredParticipant = attributeFilter({
+        template: participantAttributes.participant,
+        source: participant,
+      });
+      return makeDeepCopy(filteredParticipant);
+    }
   }
+
   return makeDeepCopy(participant);
 }
