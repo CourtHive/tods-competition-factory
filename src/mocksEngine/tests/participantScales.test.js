@@ -141,11 +141,11 @@ test('generates participants with rankings and ratings with additional embellish
   let withRatings = 0;
   let withRankings = 0;
   tournamentParticipants.forEach((participant) => {
-    if (participant.rankings) {
+    if (participant.rankings && participant.rankings[SINGLES]) {
       withRankings += 1;
       expect(participant.rankings[SINGLES].length).toEqual(1);
     }
-    if (participant.ratings) {
+    if (participant.ratings && participant.ratings[SINGLES]) {
       withRatings += 1;
       expect(participant.ratings[SINGLES].length).toEqual(1);
     }
@@ -160,4 +160,34 @@ test('generates participants with rankings and ratings with additional embellish
   }));
 
   expect(tournamentParticipants.length).toEqual(8);
+
+  for (const eventId of eventIds) {
+    const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
+    for (const flight of flightProfile.flights) {
+      const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+        drawEntries: flight.drawEntries,
+        drawId: flight.drawId,
+        eventId,
+      });
+      const result = tournamentEngine.addDrawDefinition({
+        drawDefinition,
+        eventId,
+        flight,
+      });
+      expect(result.success).toEqual(true);
+    }
+  }
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
+    contextProfile: { withScaleValues: true },
+  });
+  const scaleValuesPresent = matchUps.every(
+    ({ sides }) =>
+      !sides ||
+      sides.some(
+        ({ participant }) =>
+          !participant || participant.ratings || participant.rankings
+      )
+  );
+
+  expect(scaleValuesPresent).toEqual(true);
 });
