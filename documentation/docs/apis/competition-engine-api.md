@@ -245,7 +245,7 @@ const { matchUps } = competitionEngine.allCompetitionMatchUps({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
   matchUpFilters, // optional; [ scheduledDate, scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   nextMatchUps, // include winnerTo and loserTo matchUps
-  contextProfile, // optional: { inferGender: true }
+  contextProfile, // optional: { inferGender: true, contextProfile: ['attribute', 'to', 'exclude'], withScaleValues }
 });
 ```
 
@@ -506,6 +506,7 @@ const {
     inContext, // optional - adds individualParticipants for all individualParticipantIds
 
     withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
+    withScaleValues, // optional - include { ratings, rankings } attributes extracted from timeItems
     withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
     withGroupings, // optional - include membership in group, pair, and team participants
     withOpponents, // optional - include opponent participantIds
