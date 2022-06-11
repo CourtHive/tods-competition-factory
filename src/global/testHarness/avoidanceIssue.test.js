@@ -237,8 +237,8 @@ it.each([1, 2, 3, 4, 5])(
 
     const { drawDefinition } = tournamentEngine.generateDrawDefinition(params);
     let result = tournamentEngine.addDrawDefinition({
-      eventId,
       drawDefinition,
+      eventId,
     });
     expect(result.success).toEqual(true);
 
