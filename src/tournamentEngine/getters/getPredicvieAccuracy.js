@@ -87,6 +87,14 @@ export function getPredictiveAccuracy({
       }
     }
 
+    if (
+      values.filter((value) => ![undefined, '', null].includes(value)).length <
+      2
+    ) {
+      accuracy.excluded.push({ winningSide, values });
+      continue;
+    }
+
     if (ascending) {
       if (values[winningIndex].value < values[1 - winningIndex].value) {
         accuracy.affirmative.push({ winningSide, values });
