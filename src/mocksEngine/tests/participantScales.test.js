@@ -199,8 +199,6 @@ it('can assess predictive accuracy of scaleValues', () => {
   );
   drawProfile.generate = true;
 
-  console.log([drawProfile]);
-
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles: [drawProfile],
     completeAllMatchUps: true,
