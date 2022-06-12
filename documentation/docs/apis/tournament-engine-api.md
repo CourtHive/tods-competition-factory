@@ -1875,6 +1875,21 @@ const [{ drawPosition, participantId, qualifier, bye }] = positionAssignments;
 
 ---
 
+## getPredictiveAccuracy
+
+```js
+const { accuracy } = tournamentEngine.getPredictiveAccuracy({
+  matchUpFilters: { matchUpStatuses: [COMPLETED] }, // only consider COMPLETED matchUps
+  contextProfile: { withScaleValues: true }, // add { ratings, rankings } attributes to participants
+  exclusionRule: { valueAccessor: 'confidence', range: [0, 70] }, // exclude low confidence values
+  valueAccessor: 'wtnRating',
+  ascending: true, // scale goes from low to high
+  scaleName: WTN,
+});
+```
+
+---
+
 ## getScaledEntries
 
 See [Scale Items](../concepts/scaleItems).
