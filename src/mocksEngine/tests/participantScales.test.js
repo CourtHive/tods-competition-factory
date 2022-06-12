@@ -4,6 +4,7 @@ import mocksEngine from '..';
 
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { ELO, NTRP, UTR, WTN } from '../../constants/ratingConstants';
+import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../constants/matchUpTypes';
 import { mockProfile } from './mockScaleProfile';
 
@@ -190,4 +191,40 @@ test('generates participants with rankings and ratings with additional embellish
   );
 
   expect(scaleValuesPresent).toEqual(true);
+});
+
+it.only('can assess predictive accuracy of scaleValues', () => {
+  const drawProfile = mockProfile.drawProfiles.find(
+    (drawProfile) => drawProfile.category.ratingType === WTN
+  );
+  drawProfile.generate = true;
+
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [drawProfile],
+    completeAllMatchUps: true,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { accuracy } = tournamentEngine.getPredictiveAccuracy({
+    matchUpFilters: { matchUpStatuses: [COMPLETED] },
+    contextProfile: { withScaleValues: true },
+    exclusionRule: { valueAccessor: 'confidence', range: [0, 70] },
+    valueAccessor: 'wtnRating',
+    ascending: true, // scale goes from low to high
+    scaleName: WTN,
+  });
+
+  accuracy.affirmative.forEach(({ winningSide, values }) => {
+    const winningIndex = winningSide - 1;
+    expect(values[winningIndex].value).toBeLessThanOrEqual(
+      values[1 - winningIndex].value
+    );
+  });
+  accuracy.negative.forEach(({ winningSide, values }) => {
+    const winningIndex = winningSide - 1;
+    expect(values[winningIndex].value).toBeGreaterThanOrEqual(
+      values[1 - winningIndex].value
+    );
+  });
 });
