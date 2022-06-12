@@ -193,11 +193,13 @@ test('generates participants with rankings and ratings with additional embellish
   expect(scaleValuesPresent).toEqual(true);
 });
 
-it.only('can assess predictive accuracy of scaleValues', () => {
+it('can assess predictive accuracy of scaleValues', () => {
   const drawProfile = mockProfile.drawProfiles.find(
     (drawProfile) => drawProfile.category.ratingType === WTN
   );
   drawProfile.generate = true;
+
+  console.log([drawProfile]);
 
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles: [drawProfile],
@@ -212,7 +214,7 @@ it.only('can assess predictive accuracy of scaleValues', () => {
     exclusionRule: { valueAccessor: 'confidence', range: [0, 70] },
     valueAccessor: 'wtnRating',
     ascending: true, // scale goes from low to high
-    scaleName: WTN,
+    scaleName: drawProfile.category.categoryName || WTN, // categoryName is being added to the drawProfile by previous tests...
   });
 
   accuracy.affirmative.forEach(({ winningSide, values }) => {

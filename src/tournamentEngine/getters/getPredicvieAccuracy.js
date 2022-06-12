@@ -74,11 +74,10 @@ export function getPredictiveAccuracy({
         };
 
       const exclude = values.some((value) => {
-        const exclusionValue = value.scaleValue[valueAccessor];
+        const exclusionValue = value.scaleValue?.[valueAccessor];
         const sortedRange = range.sort();
         const exclude =
           exclusionValue >= sortedRange[0] && exclusionValue <= sortedRange[1];
-        if (exclude) console.log(exclusionValue, sortedRange, exclude);
         if (exclude) return true;
       });
 

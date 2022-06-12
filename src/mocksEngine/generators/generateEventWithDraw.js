@@ -14,7 +14,12 @@ import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaul
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { isValidExtension } from '../../global/validation/isValidExtension';
 import { getParticipantId } from '../../global/functions/extractors';
-import { generateRange, intersection, UUID } from '../../utilities';
+import {
+  generateRange,
+  intersection,
+  makeDeepCopy,
+  UUID,
+} from '../../utilities';
 import { generateParticipants } from './generateParticipants';
 import { definedAttributes } from '../../utilities/objects';
 import { processTieFormat } from './processTieFormat';
@@ -77,7 +82,7 @@ export function generateEventWithDraw({
     publish,
     gender,
     stage,
-  } = drawProfile;
+  } = makeDeepCopy(drawProfile, false, true);
 
   const eventType = drawProfile.eventType || drawProfile.matchUpType || SINGLES;
   const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
@@ -343,7 +348,7 @@ export function generateEventWithDraw({
   }
 
   const { drawDefinition, error: generationError } = generateDrawDefinition({
-    ...drawProfile,
+    ...makeDeepCopy(drawProfile, false, true),
     tournamentRecord,
     seedingScaleName,
     matchUpFormat,
