@@ -4,12 +4,12 @@ import {
   allTournamentMatchUps,
 } from './matchUpsGetter';
 
+import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
-import { SUCCESS } from '../../constants/resultConstants';
 
 export function getPredictiveAccuracy({
   tournamentRecord,
