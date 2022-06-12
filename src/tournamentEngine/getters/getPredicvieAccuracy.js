@@ -44,9 +44,11 @@ export function getPredictiveAccuracy({
         contextProfile,
       })?.matchUps;
 
+  const relevantMatchUps = matchUps.filter(({ winningSide }) => winningSide);
+
   const accuracy = { affirmative: [], negative: [], excluded: [] };
 
-  for (const matchUp of matchUps) {
+  for (const matchUp of relevantMatchUps) {
     const { matchUpType, sides, winningSide } = matchUp;
     if (!winningSide) continue;
 
