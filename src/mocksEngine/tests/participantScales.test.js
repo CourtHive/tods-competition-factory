@@ -216,16 +216,20 @@ it('can assess predictive accuracy of scaleValues', () => {
 
   expect(participantsWithTimeItemsCount).toEqual(drawSize - 4);
 
-  const { accuracy, zoneAccuracy } = tournamentEngine.getPredictiveAccuracy({
-    exclusionRule: { valueAccessor: 'confidence', range: [0, 70] },
-    matchUpFilters: { matchUpStatuses: [COMPLETED] },
-    ascending: true, // scale goes from low to high
-    valueAccessor: 'wtnRating',
-    scaleName: WTN,
-    zoneMargin: 3,
-  });
+  const { accuracy, zoneDistribution } = tournamentEngine.getPredictiveAccuracy(
+    {
+      exclusionRule: { valueAccessor: 'confidence', range: [0, 70] },
+      matchUpFilters: { matchUpStatuses: [COMPLETED] },
+      ascending: true, // scale goes from low to high
+      valueAccessor: 'wtnRating',
+      scaleName: WTN,
+      zoneMargin: 3,
+    }
+  );
 
-  const zonePercentTotal = Object.values(zoneAccuracy).reduce((a, b) => a + b);
+  const zonePercentTotal = Object.values(zoneDistribution).reduce(
+    (a, b) => a + b
+  );
   expect(Math.round(zonePercentTotal)).toEqual(100);
 
   accuracy.excluded.forEach(({ exclusionValue, values }) => {

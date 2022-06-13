@@ -76,7 +76,7 @@ export function getPredictiveAccuracy({
   const totalZoneMatchUps =
     zoneBands && [].concat(Object.values(zoneBands)).flat().length;
 
-  const zoneAccuracy =
+  const zoneDistribution =
     totalZoneMatchUps &&
     Object.assign(
       {},
@@ -86,7 +86,7 @@ export function getPredictiveAccuracy({
       }))
     );
 
-  return { ...SUCCESS, matchUps, accuracy, zoneAccuracy };
+  return { ...SUCCESS, matchUps, accuracy, zoneDistribution };
 }
 
 function getGroupingBands({ zoneData }) {
