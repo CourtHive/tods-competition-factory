@@ -487,6 +487,7 @@ export function getAllStructureMatchUps({
             policyDefinitions: appliedPolicies,
             participantId: side.participantId,
             tournamentParticipants,
+            contextProfile,
           });
           if (participant) {
             if (drawDefinition?.entries) {
@@ -506,6 +507,7 @@ export function getAllStructureMatchUps({
               return findParticipant({
                 policyDefinitions: appliedPolicies,
                 tournamentParticipants,
+                contextProfile,
                 participantId,
               });
             });
@@ -523,8 +525,6 @@ export function getAllStructureMatchUps({
         !matchUpWithContext.gender &&
         matchUpWithContext.sides?.length === 2 &&
         matchUpWithContext.matchUpType !== TEAM;
-
-      // if (contextProfile) console.log({ contextProfile, inferGender });
 
       if (inferGender) {
         const sideGenders = matchUpWithContext.sides.map((side) => {

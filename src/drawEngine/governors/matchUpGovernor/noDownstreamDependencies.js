@@ -3,7 +3,7 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
-import { removeDoubleWalkover } from './removeDoubleWalkover';
+import { removeDoubleExit } from './removeDoubleExit';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { scoreHasValue } from '../scoreGovernor/scoreHasValue';
@@ -11,6 +11,7 @@ import { scoreHasValue } from '../scoreGovernor/scoreHasValue';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ABANDONED,
+  DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   INCOMPLETE,
   TO_BE_PLAYED,
@@ -20,11 +21,11 @@ export function noDownstreamDependencies(params) {
   const { matchUp, matchUpStatus, score, winningSide } = params;
   const stack = 'noDownStreamDependencies';
 
-  const doubleWalkoverCleanup =
-    matchUp?.matchUpStatus === DOUBLE_WALKOVER &&
-    matchUpStatus !== DOUBLE_WALKOVER;
-  if (doubleWalkoverCleanup) {
-    const result = removeDoubleWalkover(params);
+  const doubleExitCleanup =
+    [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp?.matchUpStatus) &&
+    ![DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUpStatus);
+  if (doubleExitCleanup) {
+    const result = removeDoubleExit(params);
     if (result.error) return decorateResult({ result, stack });
   }
 

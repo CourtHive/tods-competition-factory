@@ -128,6 +128,25 @@ export function generateParticipants({
         step,
       } = ratingParameters;
 
+      const getAttributes = (attributes) => {
+        const generatedAttributes = {};
+
+        for (const attribute of Object.keys(attributes) || {}) {
+          const attributeValue = attributes[attribute];
+
+          if (typeof attributeValue === 'object' && attributeValue.generator) {
+            const { range } = attributeValue;
+            const [min, max] = range.slice().sort();
+
+            generatedAttributes[attribute] = randomInt(min, max);
+          } else {
+            generatedAttributes[attribute] = attributeValue;
+          }
+        }
+
+        return generatedAttributes;
+      };
+
       const inverted = range[0] > range[1];
       const skew = inverted ? 2 : 0.5;
       const [min, max] = range.slice().sort();
@@ -140,15 +159,15 @@ export function generateParticipants({
               (!ratingMin || rating >= ratingMin)
           )
           .slice(0, scaledParticipantsCount || randomInt(20, 30))
-          .map((scaleValue) =>
-            !accessors
+          .map((scaleValue) => {
+            return !accessors
               ? scaleValue
               : Object.assign(
                   {},
                   ...accessors.map((accessor) => ({ [accessor]: scaleValue })),
-                  attributes
-                )
-          );
+                  getAttributes(attributes)
+                );
+          });
 
       singlesRatings = generateRatings();
       if ([PAIR, TEAM].includes(participantType)) {

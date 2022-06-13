@@ -9,11 +9,17 @@ import { drawMatic } from '../../tournamentEngine/governors/eventGovernor/drawDe
 import { addEventTimeItem } from '../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { publishEvent } from '../../tournamentEngine/governors/publishingGovernor/publishEvent';
+import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { isValidExtension } from '../../global/validation/isValidExtension';
 import { getParticipantId } from '../../global/functions/extractors';
-import { generateRange, intersection, UUID } from '../../utilities';
+import {
+  generateRange,
+  intersection,
+  makeDeepCopy,
+  UUID,
+} from '../../utilities';
 import { generateParticipants } from './generateParticipants';
 import { definedAttributes } from '../../utilities/objects';
 import { processTieFormat } from './processTieFormat';
@@ -60,6 +66,7 @@ export function generateEventWithDraw({
     drawType = SINGLE_ELIMINATION,
     tournamentAlternates = 0,
     alternatesCount = 0,
+    qualifyingPositions,
     qualifyingProfiles,
     generate = true,
     eventExtensions,
@@ -69,12 +76,13 @@ export function generateEventWithDraw({
     tieFormatName,
     seedsCount,
     timeItems,
+    drawName,
     category,
     idPrefix,
     publish,
     gender,
     stage,
-  } = drawProfile;
+  } = makeDeepCopy(drawProfile, false, true);
 
   const eventType = drawProfile.eventType || drawProfile.matchUpType || SINGLES;
   const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
@@ -340,7 +348,7 @@ export function generateEventWithDraw({
   }
 
   const { drawDefinition, error: generationError } = generateDrawDefinition({
-    ...drawProfile,
+    ...makeDeepCopy(drawProfile, false, true),
     tournamentRecord,
     seedingScaleName,
     matchUpFormat,
@@ -511,6 +519,18 @@ export function generateEventWithDraw({
 
     if (publish) {
       publishEvent({ tournamentRecord, event });
+    }
+  } else {
+    const result = addFlight({
+      drawEntries: drawDefinition.entries,
+      drawName: drawName || drawType,
+      drawId: drawDefinition.drawId,
+      qualifyingPositions,
+      event,
+      stage,
+    });
+    if (result.error) {
+      return result;
     }
   }
 

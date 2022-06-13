@@ -392,9 +392,9 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
 
   // remove outcome
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId: matchUp.matchUpId,
     outcome: toBePlayed,
+    drawId,
   });
   expect(result.success).toEqual(true);
 

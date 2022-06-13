@@ -8,9 +8,10 @@ import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 import { getParticipantIds } from '../../../global/functions/extractors';
 import { definedAttributes } from '../../../utilities/objects';
-import { makeDeepCopy, unique } from '../../../utilities';
 import { getFlightProfile } from '../getFlightProfile';
 import { allEventMatchUps } from '../matchUpsGetter';
+import { makeDeepCopy } from '../../../utilities';
+import { getScaleValues } from './getScaleValues';
 import { getSeedValue } from '../getSeedValue';
 import {
   getEventTimeItem,
@@ -22,16 +23,11 @@ import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { DOUBLES, TEAM } from '../../../constants/matchUpTypes';
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import { SEEDING } from '../../../constants/scaleConstants';
 import {
   SIGNED_IN,
   SIGN_IN_STATUS,
 } from '../../../constants/participantConstants';
-import {
-  RANKING,
-  RATING,
-  SCALE,
-  SEEDING,
-} from '../../../constants/scaleConstants';
 import {
   extensionConstants,
   LINEUPS,
@@ -714,7 +710,8 @@ export function addParticipantContext(params) {
 
 function annotateParticipant({
   eventsPublishStatuses,
-  withScaleItems = true,
+  withScaleValues = true,
+  withScaleItems = true, // to be deprecated
   withEvents = true,
   withDraws = true,
   participantIdMap,
@@ -734,42 +731,10 @@ function annotateParticipant({
   if (withIOC || withISO2)
     addNationalityCode({ participant, withIOC, withISO2 });
 
-  if (withScaleItems) {
-    const scaleItems = participant.timeItems?.filter(
-      ({ itemType }) =>
-        itemType.startsWith(SCALE) &&
-        [RANKING, RATING].includes(itemType.split('.')[1])
-    );
-    if (scaleItems?.length) {
-      const latestScaleItem = (scaleType) =>
-        scaleItems
-          .filter((timeItem) => timeItem?.itemType === scaleType)
-          .sort(
-            (a, b) =>
-              new Date(a.createdAt || undefined) -
-              new Date(b.createdAt || undefined)
-          )
-          .pop();
-
-      const itemTypes = unique(scaleItems.map(({ itemType }) => itemType));
-      participant.rankings = undefined; // ensure no server-side persisted context
-      participant.ratings = undefined; // ensure no server-side persisted context
-
-      for (const itemType of itemTypes) {
-        const scaleItem = latestScaleItem(itemType);
-        if (scaleItem) {
-          const [, type, format, scaleName] = scaleItem.itemType.split('.');
-          const scaleType = type === RANKING ? 'rankings' : 'ratings';
-          if (!participant[scaleType]) participant[scaleType] = {};
-          if (!participant[scaleType][format])
-            participant[scaleType][format] = [];
-          participant[scaleType][format].push({
-            scaleValue: scaleItem.itemValue,
-            scaleName,
-          });
-        }
-      }
-    }
+  if (withScaleItems || withScaleValues) {
+    const { ratings, rankings } = getScaleValues({ participant });
+    participant.ratings = ratings;
+    participant.rankings = rankings;
   }
 
   const participantId = participant?.participantId;

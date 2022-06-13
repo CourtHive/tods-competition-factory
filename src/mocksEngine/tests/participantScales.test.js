@@ -4,6 +4,7 @@ import mocksEngine from '..';
 
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { ELO, NTRP, UTR, WTN } from '../../constants/ratingConstants';
+import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../constants/matchUpTypes';
 import { mockProfile } from './mockScaleProfile';
 
@@ -141,11 +142,11 @@ test('generates participants with rankings and ratings with additional embellish
   let withRatings = 0;
   let withRankings = 0;
   tournamentParticipants.forEach((participant) => {
-    if (participant.rankings) {
+    if (participant.rankings && participant.rankings[SINGLES]) {
       withRankings += 1;
       expect(participant.rankings[SINGLES].length).toEqual(1);
     }
-    if (participant.ratings) {
+    if (participant.ratings && participant.ratings[SINGLES]) {
       withRatings += 1;
       expect(participant.ratings[SINGLES].length).toEqual(1);
     }
@@ -160,4 +161,70 @@ test('generates participants with rankings and ratings with additional embellish
   }));
 
   expect(tournamentParticipants.length).toEqual(8);
+
+  for (const eventId of eventIds) {
+    const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
+    for (const flight of flightProfile.flights) {
+      const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+        drawEntries: flight.drawEntries,
+        drawId: flight.drawId,
+        eventId,
+      });
+      const result = tournamentEngine.addDrawDefinition({
+        drawDefinition,
+        eventId,
+        flight,
+      });
+      expect(result.success).toEqual(true);
+    }
+  }
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
+    contextProfile: { withScaleValues: true },
+  });
+  const scaleValuesPresent = matchUps.every(
+    ({ sides }) =>
+      !sides ||
+      sides.some(
+        ({ participant }) =>
+          !participant || participant.ratings || participant.rankings
+      )
+  );
+
+  expect(scaleValuesPresent).toEqual(true);
+});
+
+it('can assess predictive accuracy of scaleValues', () => {
+  const drawProfile = mockProfile.drawProfiles.find(
+    (drawProfile) => drawProfile.category.ratingType === WTN
+  );
+  drawProfile.generate = true;
+
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [drawProfile],
+    completeAllMatchUps: true,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { accuracy } = tournamentEngine.getPredictiveAccuracy({
+    matchUpFilters: { matchUpStatuses: [COMPLETED] },
+    contextProfile: { withScaleValues: true },
+    exclusionRule: { valueAccessor: 'confidence', range: [0, 70] },
+    valueAccessor: 'wtnRating',
+    ascending: true, // scale goes from low to high
+    scaleName: drawProfile.category.categoryName || WTN, // categoryName is being added to the drawProfile by previous tests...
+  });
+
+  accuracy.affirmative.forEach(({ winningSide, values }) => {
+    const winningIndex = winningSide - 1;
+    expect(values[winningIndex].value).toBeLessThanOrEqual(
+      values[1 - winningIndex].value
+    );
+  });
+  accuracy.negative.forEach(({ winningSide, values }) => {
+    const winningIndex = winningSide - 1;
+    expect(values[winningIndex].value).toBeGreaterThanOrEqual(
+      values[1 - winningIndex].value
+    );
+  });
 });

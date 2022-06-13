@@ -101,7 +101,7 @@ test('A DOUBLE_DEFAULT will create a DEFAULT and winningSide changes will propag
 });
 
 /*
-  R1P1 matchUp is BYE.  Enters three DOUBLE_WALKOVERs in remaining first round matchUps, from top down.
+  R1P1 matchUp is BYE.  Enters three DOUBLE_DEFAULTs in remaining first round matchUps, from top down.
   Entering "Double Exit" in R1P2 produces DEFAULTED in R2P1 and advances DP1 to 3rd round. 
   Entering "Double Exit" in R1P3 produces DEFAULTED in R2P2. 
   Entering "Double Exit" in R1P4 converts R2P2 to DOUBLE_DEFAULT and produces DEFAULTED in R3P1. 
@@ -195,8 +195,8 @@ test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULT into a DOUBLE_DEFAU
 });
 
 /*
-  R1P1 matchUp is BYE.  Enters three DOUBLE_WALKOVERs in remaining first round matchUps, from bottom up.
-  Entering "Double Exit" in R1P4 produces WaLKOVER in R2P2.
+  R1P1 matchUp is BYE.  Enters three DOUBLE_DEFAULTs in remaining first round matchUps, from bottom up.
+  Entering "Double Exit" in R1P4 produces DEFAULTED in R2P2.
   Entering "Double Exit" in R1P3 converts R2P2 to DOUBLE_DEFAULT and produces DEFAULTED in R3P1. 
   Entering "Double Exit" in R1P2 produces DEFAULTED in R2P1 and advances DP1 to 3rd round and to FINAL. 
 */
@@ -226,7 +226,7 @@ test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULTED into a DOUBLE_DEF
   let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
-  // Enter DOUBLE_DEFAULT in R1P2
+  // Enter DOUBLE_DEFAULT in R1P4
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 4 });
   result = tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_DEFAULT },
@@ -239,7 +239,7 @@ test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULTED into a DOUBLE_DEF
   ]);
   modifiedMatchUpLog = [];
 
-  // Check that R2P2 is a produced DEFAULTED
+  // Check that R2P4 is a produced DEFAULTED
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 2 });
   expect(targetMatchUp.matchUpStatus).toEqual(DEFAULTED);
@@ -293,7 +293,7 @@ test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULTED into a DOUBLE_DEF
   expect(targetMatchUp.winningSide).toEqual(1);
 });
 
-it.skip('supports entering DOUBLE_DEFAULT matchUpStatus', () => {
+it('supports entering DOUBLE_DEFAULT matchUpStatus', () => {
   // create an FMLC with the 1st position matchUp completed
   const drawProfiles = [
     {
@@ -391,9 +391,9 @@ it.skip('supports entering DOUBLE_DEFAULT matchUpStatus', () => {
 
   // remove outcome
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId: matchUp.matchUpId,
     outcome: toBePlayed,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
@@ -406,7 +406,6 @@ it.skip('supports entering DOUBLE_DEFAULT matchUpStatus', () => {
     structureId: mainStructure.structureId,
   }));
 
-  console.log(filteredOrderedPairs, mainStructureOrderedPairs);
   expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
     mainStructureOrderedPairs
   );

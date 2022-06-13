@@ -12,12 +12,14 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   BYE,
   completedMatchUpStatuses,
+  DEFAULTED,
+  DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
-export function removeDoubleWalkover(params) {
+export function removeDoubleExit(params) {
   const {
     inContextDrawMatchUps,
     drawDefinition,
@@ -27,7 +29,7 @@ export function removeDoubleWalkover(params) {
     matchUp,
   } = params;
 
-  const stack = 'removeDoubleWalkover';
+  const stack = 'removeDoubleExit';
 
   const {
     targetLinks: { loserTargetLink },
@@ -64,7 +66,7 @@ export function removeDoubleWalkover(params) {
 
     let pairedPreviousDrawPositions = [];
     let pairedPreviousMatchUpComplete;
-    let pairedPreviousWOWO;
+    let pairedPreviousDoubleExit;
 
     // winnerMatchUp has context
     if (winnerMatchUp.feedRound) {
@@ -77,8 +79,9 @@ export function removeDoubleWalkover(params) {
         matchUpsMap,
         matchUp,
       });
-      pairedPreviousWOWO =
-        pairedPreviousMatchUp?.matchUpStatus === DOUBLE_WALKOVER;
+      pairedPreviousDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(
+        pairedPreviousMatchUp?.matchUpStatus
+      );
 
       pairedPreviousDrawPositions =
         pairedPreviousMatchUp?.drawPositions?.filter(Boolean) || [];
@@ -116,7 +119,7 @@ export function removeDoubleWalkover(params) {
       }
     }
 
-    let result = removeDoubleWalkover({
+    let result = removeDoubleExit({
       targetData: nextTargetData,
       matchUp: winnerMatchUp,
       inContextDrawMatchUps,
@@ -126,14 +129,15 @@ export function removeDoubleWalkover(params) {
     });
     if (result.error) return decorateResult({ result, stack });
 
-    const matchUpStatus =
-      [WALKOVER, DOUBLE_WALKOVER].includes(
-        noContextWinnerMatchUp?.matchUpStatus
-      ) && pairedPreviousWOWO
-        ? WALKOVER
-        : TO_BE_PLAYED;
+    const matchUpStatus = !pairedPreviousDoubleExit
+      ? TO_BE_PLAYED
+      : [DOUBLE_DEFAULT, DEFAULTED].includes(
+          noContextWinnerMatchUp?.matchUpStatus
+        )
+      ? DEFAULTED
+      : WALKOVER;
 
-    const removeScore = !pairedPreviousWOWO;
+    const removeScore = !pairedPreviousDoubleExit;
     result = modifyMatchUpScore({
       ...params,
       matchUpStatus,

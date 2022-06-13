@@ -4,12 +4,13 @@ import { getMaxEntryPosition } from '../../../global/functions/deducers/getMaxEn
 import { participantScheduledMatchUps } from './participantScheduledMatchUps';
 import { getPositionAssignments } from '../../getters/getPositionAssignments';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { getPredictiveAccuracy } from '../../getters/getPredicvieAccuracy';
 import { getVenuesAndCourts, findVenue } from '../../getters/venueGetter';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { getParticipantScaleItem } from './getParticipantScaleItem';
-import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
-import { getMatchUpsStats } from '../../getters/getMatchUpStats';
+import { getMatchUpsStats } from '../../getters/getMatchUpsStats';
+import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getEvent, getEvents } from '../../getters/eventGetter';
 import { getPolicyDefinitions } from './getPolicyDefinitions';
 import { matchUpActions } from '../../getters/matchUpActions';
@@ -94,6 +95,7 @@ const queryGovernor = {
   positionActions,
   findMatchUp: publicFindMatchUp,
   participantScheduledMatchUps,
+  getPredictiveAccuracy,
   getMatchUpsStats,
 
   participantScaleItem,

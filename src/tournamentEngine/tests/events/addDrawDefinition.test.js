@@ -40,8 +40,8 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
       eventId,
     });
     result = await tournamentEngine.addDrawDefinition({
-      eventId,
       drawDefinition,
+      eventId,
     });
     expect(result.success).toEqual(true);
 

@@ -53,6 +53,7 @@ function validTimeValue(value) {
 }
 
 export function addMatchUpScheduleItems({
+  tournamentRecords,
   tournamentRecord,
   drawDefinition,
   disableNotice,
@@ -145,6 +146,7 @@ export function addMatchUpScheduleItems({
     const result = assignMatchUpCourt({
       courtDayDate: scheduledDate,
       disableNotice: true,
+      tournamentRecords,
       tournamentRecord,
       drawDefinition,
       matchUpId,
@@ -155,6 +157,7 @@ export function addMatchUpScheduleItems({
   } else if (venueId !== undefined) {
     const result = assignMatchUpVenue({
       disableNotice: true,
+      tournamentRecords,
       tournamentRecord,
       drawDefinition,
       matchUpId,

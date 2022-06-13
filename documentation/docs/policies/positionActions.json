@@ -6,19 +6,23 @@
       {
         "stages": ["QUALIFYING", "MAIN"],
         "stageSequences": [1],
+        "structureTypes": [],
         "enabledActions": [],
-        "disabledActions": []
+        "disabledActions": [],
+        "feedProfiles": []
       },
       {
         "stages": [],
         "stageSequences": [],
+        "structureTypes": [],
         "enabledActions": [
           "SEED_VALUE",
           "ADD_NICKNAME",
           "ADD_PENALTY",
           "QUALIFIER"
         ],
-        "disabledActions": []
+        "disabledActions": [],
+        "feedProfiles": []
       }
     ],
 

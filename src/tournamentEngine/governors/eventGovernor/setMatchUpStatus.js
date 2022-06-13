@@ -24,6 +24,7 @@ import {
  */
 export function setMatchUpStatus(params) {
   const {
+    tournamentRecords,
     tournamentRecord,
     drawDefinition,
     matchUpFormat,
@@ -80,6 +81,7 @@ export function setMatchUpStatus(params) {
     winningSide: outcome?.winningSide,
     allowChangePropagation,
     score: outcome?.score,
+    tournamentRecords,
     tournamentRecord,
     drawDefinition,
     matchUpFormat,
@@ -92,7 +94,7 @@ export function setMatchUpStatus(params) {
 
 export function bulkMatchUpStatusUpdate(params) {
   if (!params.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  const { tournamentRecord, outcomes } = params;
+  const { tournamentRecords, tournamentRecord, outcomes } = params;
   const events = {};
 
   // group outcomes by events to optimize
@@ -114,6 +116,7 @@ export function bulkMatchUpStatusUpdate(params) {
         const { matchUpFormat, matchUpId } = outcome;
         const result = setMatchUpStatus({
           schedule: outcome?.schedule,
+          tournamentRecords,
           tournamentRecord,
           drawDefinition,
           matchUpFormat,
