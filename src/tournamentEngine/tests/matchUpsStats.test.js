@@ -1,7 +1,8 @@
-import { ROUTINE } from '../../constants/statsConstants';
-import mocksEngine from '../../mocksEngine';
 import { instanceCount } from '../../utilities';
+import mocksEngine from '../../mocksEngine';
 import tournamentEngine from '../sync';
+
+import { COMPETITIVE, DECISIVE, ROUTINE } from '../../constants/statsConstants';
 
 it('can generate competitive statistics for matchUps and add competitiveness', () => {
   const mocksProfile = {
@@ -103,10 +104,5 @@ it('can determine competitive band for matchUps', () => {
       tournamentEngine.getMatchUpCompetitiveness({ matchUp }).competitiveness
   );
 
-  expect(competitiveness).toEqual([
-    'Decisive',
-    'Routine',
-    'Competitive',
-    'Decisive',
-  ]);
+  expect(competitiveness).toEqual([DECISIVE, ROUTINE, COMPETITIVE, DECISIVE]);
 });
