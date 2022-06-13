@@ -19,14 +19,16 @@ export function getMatchUpCompetitiveness({
 
   if (!winningSide) return { error: INVALID_VALUES };
 
-  const { policy } = findPolicy({
-    policyType: POLICY_TYPE_COMPETIVIE_BANDS,
-    tournamentRecord,
-  });
+  const policy =
+    !competitiveProfile &&
+    findPolicy({
+      policyType: POLICY_TYPE_COMPETIVIE_BANDS,
+      tournamentRecord,
+    }).policy;
 
   const bandProfiles =
-    policy?.competitiveProfile ||
     competitiveProfile ||
+    policy?.competitiveProfile ||
     POLICY_COMPETITIVE_BANDS_DEFAULT.competitiveBands;
 
   const scoreComponents = getScoreComponents(score);
