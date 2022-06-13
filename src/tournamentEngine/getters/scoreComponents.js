@@ -17,7 +17,7 @@ export function getBand(spread, bandProfiles) {
     : COMPETITIVE;
 }
 
-export function getScoreComponents(score) {
+export function getScoreComponents({ score }) {
   const sets = score?.sets || [];
 
   const games = sets.reduce(

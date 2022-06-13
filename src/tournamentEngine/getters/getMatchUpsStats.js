@@ -2,7 +2,7 @@ import { findPolicy } from '../governors/policyGovernor/findPolicy';
 import { getBand, getScoreComponents, pctSpread } from './scoreComponents';
 
 import POLICY_COMPETITIVE_BANDS_DEFAULT from '../../fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
-import { POLICY_TYPE_COMPETIVIE_BANDS } from '../../constants/policyConstants';
+import { POLICY_TYPE_COMPETITIVE_BANDS } from '../../constants/policyConstants';
 import { MISSING_MATCHUPS } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -23,14 +23,15 @@ export function getMatchUpsStats({
   const policy =
     !competitiveProfile &&
     findPolicy({
-      policyType: POLICY_TYPE_COMPETIVIE_BANDS,
+      policyType: POLICY_TYPE_COMPETITIVE_BANDS,
       tournamentRecord,
     }).policy;
 
   const bandProfiles =
     competitiveProfile ||
     policy?.competitiveProfile ||
-    POLICY_COMPETITIVE_BANDS_DEFAULT.competitiveBands;
+    POLICY_COMPETITIVE_BANDS_DEFAULT[POLICY_TYPE_COMPETITIVE_BANDS]
+      .competitiveProfile;
 
   const relevantMatchUps = matchUps.filter(({ winningSide }) => winningSide);
 

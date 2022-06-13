@@ -2,7 +2,7 @@ import { findPolicy } from '../governors/policyGovernor/findPolicy';
 import { getBand, getScoreComponents, pctSpread } from './scoreComponents';
 
 import POLICY_COMPETITIVE_BANDS_DEFAULT from '../../fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
-import { POLICY_TYPE_COMPETIVIE_BANDS } from '../../constants/policyConstants';
+import { POLICY_TYPE_COMPETITIVE_BANDS } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_VALUES,
@@ -22,16 +22,17 @@ export function getMatchUpCompetitiveness({
   const policy =
     !competitiveProfile &&
     findPolicy({
-      policyType: POLICY_TYPE_COMPETIVIE_BANDS,
+      policyType: POLICY_TYPE_COMPETITIVE_BANDS,
       tournamentRecord,
     }).policy;
 
   const bandProfiles =
     competitiveProfile ||
     policy?.competitiveProfile ||
-    POLICY_COMPETITIVE_BANDS_DEFAULT.competitiveBands;
+    POLICY_COMPETITIVE_BANDS_DEFAULT[POLICY_TYPE_COMPETITIVE_BANDS]
+      .competitiveProfile;
 
-  const scoreComponents = getScoreComponents(score);
+  const scoreComponents = getScoreComponents({ score });
   const spread = pctSpread([scoreComponents]);
   const competitiveness = getBand(spread, bandProfiles);
 

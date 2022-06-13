@@ -1,9 +1,9 @@
-import { POLICY_TYPE_COMPETIVIE_BANDS } from '../../constants/policyConstants';
+import { POLICY_TYPE_COMPETITIVE_BANDS } from '../../constants/policyConstants';
 
 import { DECISIVE, ROUTINE } from '../../constants/statsConstants';
 
 export const POLICY_COMPETITIVE_BANDS_DEFAULT = {
-  [POLICY_TYPE_COMPETIVIE_BANDS]: {
+  [POLICY_TYPE_COMPETITIVE_BANDS]: {
     policyName: 'Competitive Bands Default',
     competitiveProfile: {
       [DECISIVE]: 20,
