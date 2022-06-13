@@ -1891,9 +1891,9 @@ Returns an array of `positionAssignments` for a structure. Combines `positionAss
 
 ```js
 let { positionAssignments } = tournamentEngine.getPositionAssignments({
-  drawDefinition, // optional if { structure } is provided
   structureId, // optional if { structure } is provided
-  structure, // optional if { drawDefinition, structureId } are provided
+  structure, // optional if { drawId, structureId } are provided
+  drawId, // optional if { structure } is provided
 });
 
 const [{ drawPosition, participantId, qualifier, bye }] = positionAssignments;
