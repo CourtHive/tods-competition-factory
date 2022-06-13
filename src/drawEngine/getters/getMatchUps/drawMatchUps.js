@@ -1,12 +1,13 @@
 import { addParticipantGroupings } from '../../governors/positionGovernor/avoidance/addParticipantGroupings';
 import { addUpcomingMatchUps } from '../../governors/matchUpGovernor/addUpcomingMatchUps';
+import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getStructureMatchUps } from './getStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
 import { getMatchUpsMap } from './getMatchUpsMap';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { decorateResult } from '../../../global/functions/decorateResult';
 
 /*
   return ALL matchUps within a drawDefinition, regardless of state
@@ -15,10 +16,7 @@ export function getAllDrawMatchUps(params) {
   const stack = 'getAllDrawMatchUps';
   Object.assign(params, { requireParticipants: false });
 
-  const result = getDrawMatchUps({
-    ...params,
-    contextProfile: params.contextProfile,
-  });
+  const result = getDrawMatchUps(params);
 
   if (result.error) return decorateResult({ result, stack });
 
@@ -55,6 +53,7 @@ export function getDrawMatchUps({
   matchUpFilters,
   contextFilters,
   contextProfile,
+  contextContent,
   scheduleTiming,
   nextMatchUps,
   roundFilter,
@@ -70,6 +69,15 @@ export function getDrawMatchUps({
   let allUpcomingMatchUps = [];
   let allPendingMatchUps = [];
   let allByeMatchUps = [];
+
+  if (contextProfile && !contextContent) {
+    contextContent = getContextContent({
+      policyDefinitions,
+      tournamentRecord,
+      contextProfile,
+      event,
+    });
+  }
 
   // getTournamentParticipants() calls getDrawMatchUps()
   // ...so participants must be sourced directly from tournamentRecord
@@ -114,9 +122,10 @@ export function getDrawMatchUps({
       policyDefinitions,
       tournamentRecord,
       drawDefinition,
-      matchUpFilters, //
-      contextFilters, //
+      matchUpFilters,
+      contextFilters,
       contextProfile,
+      contextContent,
       scheduleTiming,
       matchUpsMap,
       roundFilter,
