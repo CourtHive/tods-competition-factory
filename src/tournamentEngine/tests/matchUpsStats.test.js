@@ -15,6 +15,6 @@ it('can generate competitive statistics for matchUps', () => {
 
   const result = tournamentEngine.getMatchUpsStats({ matchUps });
   expect(result.success).toEqual(true);
-  const sum = Object.values(result.matchUpStats).reduce((a, b) => a + b);
+  const sum = Object.values(result.competitiveBands).reduce((a, b) => a + b);
   expect(Math.round(sum)).toEqual(100);
 });

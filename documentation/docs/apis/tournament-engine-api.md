@@ -1722,6 +1722,19 @@ const {
 
 ---
 
+## getMatchUpsStats
+
+Returns percentages of matchUps which fall into `cmpetitiveBands` defined as "Competitive", "Routine", and "Decisive".
+
+```js
+const { competitiveBands } = tournamentEngine.getMatchUpsStats({
+  competitiveProfile, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can also be set in policyDefinitions
+  matchUps,
+});
+```
+
+---
+
 ## getMatchUpDailyLimits
 
 Returns player daily match limits for singles/doubles/total matches.
