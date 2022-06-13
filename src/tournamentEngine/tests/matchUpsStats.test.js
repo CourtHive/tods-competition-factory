@@ -1,5 +1,4 @@
 import mocksEngine from '../../mocksEngine';
-import { getMatchUpCompetitiveness } from '../getters/getMatchUpCompetitiveness';
 import tournamentEngine from '../sync';
 
 it('can generate competitive statistics for matchUps', () => {
@@ -66,7 +65,8 @@ it('can determine competitive band for matchUps', () => {
   expect(matchUps.length).toEqual(4);
 
   const competitiveness = matchUps.map(
-    (matchUp) => getMatchUpCompetitiveness({ matchUp }).competitiveness
+    (matchUp) =>
+      tournamentEngine.getMatchUpCompetitiveness({ matchUp }).competitiveness
   );
 
   expect(competitiveness).toEqual([
