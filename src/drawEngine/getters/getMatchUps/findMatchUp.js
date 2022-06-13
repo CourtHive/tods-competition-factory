@@ -1,3 +1,4 @@
+import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { getMatchUp } from '../../accessors/matchUpAccessor/matchUps';
 import { getDrawStructures } from '../findStructure';
@@ -24,6 +25,7 @@ export function findMatchUp({
   tournamentParticipants,
   drawDefinition,
   contextProfile,
+  contextContent,
   matchUpsMap,
   matchUpId,
   inContext,
@@ -36,11 +38,15 @@ export function findMatchUp({
 
   const { structures } = getDrawStructures({ drawDefinition });
 
+  if (contextProfile && !contextContent)
+    contextContent = getContextContent({ contextProfile, drawDefinition });
+
   for (const structure of structures) {
     const { matchUps } = getAllStructureMatchUps({
       tournamentParticipants,
       drawDefinition,
       contextProfile,
+      contextContent,
       matchUpsMap,
       inContext,
       structure,

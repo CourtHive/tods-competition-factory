@@ -1647,6 +1647,19 @@ const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
 
 ---
 
+## getMatchUpCompetitiveness
+
+Returns a categorization of a matchUp as "Competitive", "Routine" or "Decisive"
+
+```js
+const { competitiveness } = tournamentEngine.getMatchUpCompetitiveness({
+  competitiveProfile, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can be attached to tournamentRecord as a policy
+  matchUp,
+});
+```
+
+---
+
 ## getMatchUpFormat
 
 Returns `matchUpFormat` codes for specified context(s). Refer to `getMatchUpFormat.test.js` for specfic use cases.
@@ -1717,6 +1730,19 @@ const {
 } = tournamentEngine.getMatchUpScheduleDetails({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
   matchUp,
+});
+```
+
+---
+
+## getMatchUpsStats
+
+Returns percentages of matchUps which fall into `cmpetitiveBands` defined as "Competitive", "Routine", and "Decisive".
+
+```js
+const { competitiveBands } = tournamentEngine.getMatchUpsStats({
+  competitiveProfile, // optional { [DECISIVE]: 20, [ROUTINE]: 50 } // can also be set in policyDefinitions
+  matchUps,
 });
 ```
 
@@ -1865,9 +1891,9 @@ Returns an array of `positionAssignments` for a structure. Combines `positionAss
 
 ```js
 let { positionAssignments } = tournamentEngine.getPositionAssignments({
-  drawDefinition, // optional if { structure } is provided
   structureId, // optional if { structure } is provided
-  structure, // optional if { drawDefinition, structureId } are provided
+  structure, // optional if { drawId, structureId } are provided
+  drawId, // optional if { structure } is provided
 });
 
 const [{ drawPosition, participantId, qualifier, bye }] = positionAssignments;
@@ -1878,12 +1904,12 @@ const [{ drawPosition, participantId, qualifier, bye }] = positionAssignments;
 ## getPredictiveAccuracy
 
 ```js
-const { accuracy } = tournamentEngine.getPredictiveAccuracy({
-  matchUpFilters: { matchUpStatuses: [COMPLETED] }, // only consider COMPLETED matchUps
-  contextProfile: { withScaleValues: true }, // add { ratings, rankings } attributes to participants
+const { accuracy, zoneDistribution } = tournamentEngine.getPredictiveAccuracy({
   exclusionRule: { valueAccessor: 'confidence', range: [0, 70] }, // exclude low confidence values
-  valueAccessor: 'wtnRating',
+  zoneMargin: 3, // optional - creates +/- range and report competitiveness distribution
+  matchUpFilters: { matchUpStatuses: [COMPLETED] }, // only consider COMPLETED matchUps
   ascending: true, // scale goes from low to high
+  valueAccessor: 'wtnRating',
   scaleName: WTN,
 });
 ```

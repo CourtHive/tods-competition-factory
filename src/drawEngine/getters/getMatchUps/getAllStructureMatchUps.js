@@ -1,6 +1,7 @@
 import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/getMatchUpScheduleDetails';
 import { getDrawPositionCollectionAssignment } from './getDrawPositionCollectionAssignment';
 import { getCollectionPositionMatchUps } from '../../accessors/matchUpAccessor/matchUps';
+import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
@@ -23,8 +24,9 @@ import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
-import { TEAM } from '../../../constants/eventConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
+import { TEAM } from '../../../constants/eventConstants';
+import { getMatchUpCompetitiveness } from '../../../tournamentEngine/getters/getMatchUpCompetitiveness';
 
 /*
   return all matchUps within a structure and its child structures
@@ -40,6 +42,7 @@ export function getAllStructureMatchUps({
   drawDefinition,
   contextFilters,
   contextProfile,
+  contextContent,
   matchUpFilters,
   scheduleTiming,
   context = {},
@@ -97,6 +100,14 @@ export function getAllStructureMatchUps({
       roundMatchUps,
       matchUps: [],
     };
+  }
+
+  if (contextProfile && !contextContent) {
+    contextContent = getContextContent({
+      tournamentRecord,
+      contextProfile,
+      drawDefinition,
+    });
   }
 
   // TODO: code is shared with matchUpActions.js
@@ -365,6 +376,10 @@ export function getAllStructureMatchUps({
       drawDefinition?.processCodes ||
       event?.processCodes;
 
+    const competitiveness =
+      contextProfile?.withCompetitiveness &&
+      getMatchUpCompetitiveness({ ...contextContent, matchUp }).competitiveness;
+
     // order is important here as Round Robin matchUps already have inContext structureId
     const onlyDefined = (obj) => definedAttributes(obj, undefined, true);
     const matchUpWithContext = Object.assign(
@@ -377,6 +392,7 @@ export function getAllStructureMatchUps({
         category: matchUpCategory,
         abbreviatedRoundName,
         drawPositionsRange,
+        competitiveness,
         structureName,
         stageSequence,
         drawPositions,

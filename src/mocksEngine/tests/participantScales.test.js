@@ -197,6 +197,9 @@ it('can assess predictive accuracy of scaleValues', () => {
   const drawProfile = mockProfile.drawProfiles.find(
     (drawProfile) => drawProfile.category.ratingType === WTN
   );
+  const drawSize = 64;
+  drawProfile.scaledParticipantsCount = drawSize - 4;
+  drawProfile.drawSize = drawSize;
   drawProfile.generate = true;
 
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -206,13 +209,35 @@ it('can assess predictive accuracy of scaleValues', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { accuracy } = tournamentEngine.getPredictiveAccuracy({
-    matchUpFilters: { matchUpStatuses: [COMPLETED] },
-    contextProfile: { withScaleValues: true },
-    exclusionRule: { valueAccessor: 'confidence', range: [0, 70] },
-    valueAccessor: 'wtnRating',
-    ascending: true, // scale goes from low to high
-    scaleName: drawProfile.category.categoryName || WTN, // categoryName is being added to the drawProfile by previous tests...
+  const participants = tournamentRecord.participants;
+  const participantsWithTimeItemsCount = participants.filter(
+    ({ timeItems }) => timeItems?.length
+  ).length;
+
+  expect(participantsWithTimeItemsCount).toEqual(drawSize - 4);
+
+  const { accuracy, zoneDistribution } = tournamentEngine.getPredictiveAccuracy(
+    {
+      exclusionRule: { valueAccessor: 'confidence', range: [0, 70] },
+      matchUpFilters: { matchUpStatuses: [COMPLETED] },
+      ascending: true, // scale goes from low to high
+      valueAccessor: 'wtnRating',
+      scaleName: WTN,
+      zoneMargin: 3,
+    }
+  );
+
+  const zonePercentTotal = Object.values(zoneDistribution).reduce(
+    (a, b) => a + b
+  );
+  expect(Math.round(zonePercentTotal)).toEqual(100);
+
+  accuracy.excluded.forEach(({ exclusionValue, values }) => {
+    if (exclusionValue) {
+      expect(exclusionValue.scaleValue.confidence).toBeLessThanOrEqual(70);
+    } else {
+      expect(values.some((value) => !value.scaleValue)).toEqual(true);
+    }
   });
 
   accuracy.affirmative.forEach(({ winningSide, values }) => {
