@@ -14,14 +14,17 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-export function addExtension({ element, extension } = {}) {
+export function addExtension({ element, extension, creationTime = true } = {}) {
   if (!element) return { error: MISSING_VALUE };
   if (typeof element !== 'object') return { error: INVALID_VALUES };
   if (!isValidExtension(extension)) return { error: INVALID_VALUES };
 
   if (!element.extensions) element.extensions = [];
-  const createdAt = new Date().toISOString();
-  Object.assign(extension, { createdAt });
+
+  if (creationTime) {
+    const createdAt = new Date().toISOString();
+    Object.assign(extension, { createdAt });
+  }
 
   const existingExtension = element.extensions.find(
     ({ name }) => name === extension.name
@@ -48,22 +51,35 @@ export function removeExtension({ element, name } = {}) {
   return { ...SUCCESS };
 }
 
-export function addTournamentExtension({ tournamentRecord, extension } = {}) {
+export function addTournamentExtension({
+  creationTime = true,
+  tournamentRecord,
+  extension,
+} = {}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  return addExtension({ element: tournamentRecord, extension });
+  return addExtension({ element: tournamentRecord, extension, creationTime });
 }
 
-export function addDrawDefinitionExtension({ drawDefinition, extension } = {}) {
+export function addDrawDefinitionExtension({
+  creationTime = true,
+  drawDefinition,
+  extension,
+} = {}) {
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
-  return addExtension({ element: drawDefinition, extension });
+  return addExtension({ element: drawDefinition, extension, creationTime });
 }
 
-export function addEventExtension({ event, extension } = {}) {
+export function addEventExtension({
+  creationTime = true,
+  extension,
+  event,
+} = {}) {
   if (!event) return { error: MISSING_EVENT };
-  return addExtension({ element: event, extension });
+  return addExtension({ element: event, extension, creationTime });
 }
 
 export function addParticipantExtension({
+  creationTime = true,
   tournamentRecord,
   participantId,
   extension,
@@ -75,7 +91,7 @@ export function addParticipantExtension({
     participantId,
   });
   if (!participant) return { error: PARTICIPANT_NOT_FOUND };
-  return addExtension({ element: participant, extension });
+  return addExtension({ element: participant, extension, creationTime });
 }
 
 export function removeTournamentExtension({ tournamentRecord, name } = {}) {
