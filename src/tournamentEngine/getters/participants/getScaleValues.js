@@ -6,7 +6,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function getScaleValues({ participant }) {
   const scaleItems = participant.timeItems?.filter(
     ({ itemType }) =>
-      itemType.startsWith(SCALE) &&
+      itemType?.startsWith(SCALE) &&
       [RANKING, RATING].includes(itemType.split('.')[1])
   );
   const scales = { ratings: {}, rankings: {} };
