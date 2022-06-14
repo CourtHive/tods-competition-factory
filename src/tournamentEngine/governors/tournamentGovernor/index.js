@@ -15,6 +15,7 @@ import {
 } from './tournamentDates';
 
 import {
+  addTimeItem,
   addEventTimeItem,
   addParticipantTimeItem,
   addTournamentTimeItem,
@@ -44,6 +45,7 @@ const tournamentGovernor = {
   setTournamentStartDate,
   setTournamentCategories,
 
+  addTimeItem,
   addEventTimeItem,
   addTournamentTimeItem,
   addParticipantTimeItem,
