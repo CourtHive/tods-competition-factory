@@ -22,14 +22,15 @@ import {
 } from './addTimeItem';
 
 import {
-  removeDrawDefinitionExtension,
   addDrawDefinitionExtension,
-  removeTournamentExtension,
-  addTournamentExtension,
-  removeEventExtension,
   addEventExtension,
+  addExtension,
   addParticipantExtension,
+  addTournamentExtension,
+  removeDrawDefinitionExtension,
+  removeEventExtension,
   removeParticipantExtension,
+  removeTournamentExtension,
 } from './addRemoveExtensions';
 
 const tournamentGovernor = {
@@ -50,6 +51,7 @@ const tournamentGovernor = {
   addTournamentTimeItem,
   addParticipantTimeItem,
 
+  addExtension,
   addEventExtension,
   removeEventExtension,
   addTournamentExtension,

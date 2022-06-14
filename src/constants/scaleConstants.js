@@ -1,11 +1,11 @@
-export const SCALE = 'SCALE';
-export const RATING = 'RATING';
 export const RANKING = 'RANKING';
+export const RATING = 'RATING';
+export const SCALE = 'SCALE';
 export const SEEDING = 'SEEDING';
 
 export const scaleConstants = {
-  SCALE,
-  RATING,
   RANKING,
+  RATING,
+  SCALE,
   SEEDING,
 };
