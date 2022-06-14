@@ -469,7 +469,7 @@ const { extension } = competitionEngine.findExtension({ name });
 Find tournament participant by either `participantId` or `personId`.
 
 ```js
-const { participant } = competitionEngine.findParticipant({
+const { participant, tournamentId } = competitionEngine.findParticipant({
   participantId,
   personId, // required only if no participantId provided
 });
@@ -626,6 +626,30 @@ const {
 } = competitionEngine.getMatchUpDependencies({
   includeParticipantDependencies, // boolean - defaults to false
   drawIds, // optional array of drawIds to scope the analysis
+});
+```
+
+---
+
+## getParticipantScaleItem
+
+Return a ranking or rating or seeding value for a participant, referenced by participantId.
+
+See [Scale Items](../concepts/scaleItems).
+
+```js
+const scaleAttributes = {
+  scaleType: RATING,
+  eventType: SINGLES,
+  scaleName: 'WTN',
+  accessor, // optional - string determining how to access attribute if scaleValue is an object
+};
+const {
+  scaleItem: { scaleValue },
+  tournamentId,
+} = competitionEngine.getParticipantScaleItem({
+  scaleAttributes,
+  participantId,
 });
 ```
 
