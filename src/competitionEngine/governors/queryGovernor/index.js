@@ -1,3 +1,4 @@
+import { getParticipantScaleItem } from '../../getters/getParticipantScaleItem';
 import { getSchedulingProfileIssues } from './getSchedulingProfileIssues';
 import { getCompetitionDateRange } from './getCompetitionDateRange';
 import { credits } from '../../../fixtures/credits';
@@ -21,6 +22,7 @@ function getTournamentIds({ tournamentRecords }) {
 }
 
 const queryGovernor = {
+  getParticipantScaleItem,
   getCompetitionDateRange,
   getTournamentIds,
 
