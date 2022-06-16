@@ -62,7 +62,7 @@ test.each(scenarios)(
       !!scenario.expectation.structure
     );
     expect(!!eventDefaultTieFormat).toEqual(!!scenario.expectation.event);
-    expect(!!drawDefaultTieFormat).toEqual(!!scenario.expectation.draw);
+    expect(!!drawDefaultTieFormat).toEqual(false);
 
     if (scenario.expectation.draw) {
       expect(singlesMatchUpFormat(tieFormat)).toEqual(

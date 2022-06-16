@@ -159,7 +159,7 @@ export function updateTieFormat({
       // ensure that all matchUps in the draw contain tieMatchUps referenced by tieFormat
       const { matchUps } = getAllDrawMatchUps({
         matchUpFilters: { matchUpTypes: [SINGLES, DOUBLES] },
-        structure,
+        drawDefinition,
       });
       const matchUpMap = instanceCount(
         matchUps.map(({ collectionId }) => collectionId)

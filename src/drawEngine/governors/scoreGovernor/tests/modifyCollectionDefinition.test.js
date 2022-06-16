@@ -21,9 +21,9 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
   });
   expect(result.error).toEqual(NOT_FOUND);
 
-  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const collectionId =
-    drawDefinition.tieFormat.collectionDefinitions[0].collectionId;
+  let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+  expect(drawDefinition.tieFormat).toBeUndefined();
+  const collectionId = event.tieFormat.collectionDefinitions[0].collectionId;
 
   const newCollectionName = 'New Name';
   result = tournamentEngine.modifyCollectionDefinition({
@@ -58,10 +58,10 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
   });
   expect(result.error).toEqual(NOT_FOUND);
 
-  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  let { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
+  expect(drawDefinition.tieFormat).toBeUndefined();
   const structureId = drawDefinition.structures[0].structureId;
-  const collectionId =
-    drawDefinition.tieFormat.collectionDefinitions[0].collectionId;
+  const collectionId = event.tieFormat.collectionDefinitions[0].collectionId;
 
   let matchUp = drawDefinition.structures[0].matchUps[0];
   expect(matchUp.tieFormat).toBeUndefined();

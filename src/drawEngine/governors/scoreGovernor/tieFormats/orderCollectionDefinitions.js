@@ -141,8 +141,9 @@ function updateDrawTieFormat({
   orderMap,
   event,
 }) {
+  const tieFormat = drawDefinition.tieFormat || event.tieFormat;
   const updatedFormat = getOrderedTieFormat({
-    tieFormat: drawDefinition.tieFormat,
+    tieFormat,
     orderMap,
   });
   if (!structureIds?.length) drawDefinition.tieFormat = updatedFormat;
