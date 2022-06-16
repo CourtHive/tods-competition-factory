@@ -13,6 +13,7 @@ import {
 
 export function addTimeItem({
   duplicateValues = true,
+  creationTime = true,
   removePriorValues,
   timeItem,
   element,
@@ -52,8 +53,10 @@ export function addTimeItem({
     delete timeItem.itemSubTypes;
   }
 
-  const createdAt = new Date().toISOString();
-  Object.assign(timeItem, { createdAt });
+  if (creationTime) {
+    const createdAt = new Date().toISOString();
+    Object.assign(timeItem, { createdAt });
+  }
 
   if (removePriorValues) {
     element.timeItems = element.timeItems.filter(
@@ -67,6 +70,7 @@ export function addTimeItem({
 }
 
 export function addParticipantTimeItem({
+  creationTime = true,
   removePriorValues,
   tournamentRecord,
   duplicateValues,
@@ -83,6 +87,7 @@ export function addParticipantTimeItem({
     element: result.participant,
     removePriorValues,
     duplicateValues,
+    creationTime,
     timeItem,
   });
 }
@@ -91,6 +96,7 @@ export function addTournamentTimeItem({
   removePriorValues,
   tournamentRecord,
   duplicateValues,
+  creationTime,
   timeItem,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -98,21 +104,24 @@ export function addTournamentTimeItem({
     element: tournamentRecord,
     removePriorValues,
     duplicateValues,
+    creationTime,
     timeItem,
   });
 }
 
 export function addEventTimeItem({
-  event,
-  timeItem,
-  duplicateValues,
   removePriorValues,
+  duplicateValues,
+  creationTime,
+  timeItem,
+  event,
 }) {
   if (!event) return { error: EVENT_NOT_FOUND };
   return addTimeItem({
     removePriorValues,
     duplicateValues,
     element: event,
+    creationTime,
     timeItem,
   });
 }

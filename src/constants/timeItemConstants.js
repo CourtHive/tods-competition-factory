@@ -14,6 +14,8 @@ export const STOP_TIME = 'SCHEDULE.TIME.STOP';
 export const RESUME_TIME = 'SCHEDULE.TIME.RESUME';
 export const END_TIME = 'SCHEDULE.TIME.END';
 
+export const ELIGIBILITY = 'ELIGIBILITY';
+export const REGISTRATION = 'REGISTRATION';
 export const SUSPENSION = 'SUSPENSION';
 export const MEDICAL = 'MEDICAL';
 export const PENALTY = 'PENALTY';
@@ -37,6 +39,7 @@ export const timeItemConstants = {
   ASSIGN_VENUE,
   CHECK_IN,
   CHECK_OUT,
+  ELIGIBILITY,
   END_TIME,
   MEDICAL,
   OTHER,
@@ -45,6 +48,7 @@ export const timeItemConstants = {
   PUBLISH,
   RANKING,
   RATING,
+  REGISTRATION,
   RESUME_TIME,
   RETRIEVAL,
   SCALE,

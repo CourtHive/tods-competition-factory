@@ -1,7 +1,11 @@
+import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 
-import { VALUE_UNCHANGED } from '../../../constants/errorConditionConstants';
+import {
+  SCALE_ITEM_NOT_FOUND,
+  VALUE_UNCHANGED,
+} from '../../../constants/errorConditionConstants';
 import { RANKING } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -19,6 +23,7 @@ it('can set participant scaleItems', () => {
   const { participant } = tournamentEngine.findParticipant({ participantId });
   expect(participant.participantId).toEqual(participantId);
 
+  let tournamentId, error;
   let scaleItem = {
     scaleValue: 8.3,
     scaleName: 'WTN',
@@ -39,18 +44,38 @@ it('can set participant scaleItems', () => {
     scaleName: 'WTN',
   };
   ({ scaleItem: result } = tournamentEngine.getParticipantScaleItem({
-    participantId,
     scaleAttributes,
+    participantId,
   }));
   expect(result?.scaleValue).toEqual(scaleItem.scaleValue);
 
-  scaleAttributes = { scaleName: 'U18' };
-  ({ scaleItem: result } = tournamentEngine.getParticipantScaleItem({
-    participantId,
-    scaleAttributes,
-  }));
+  ({ scaleItem: result, tournamentId } =
+    competitionEngine.getParticipantScaleItem({
+      scaleAttributes,
+      participantId,
+    }));
+  expect(result?.scaleValue).toEqual(scaleItem.scaleValue);
+  expect(tournamentId).toEqual(tournamentRecord.tournamentId);
 
+  scaleAttributes = { scaleName: 'U18' };
+  ({ scaleItem: result, error } = tournamentEngine.getParticipantScaleItem({
+    scaleAttributes,
+    participantId,
+  }));
   expect(result?.scaleValue).toEqual(undefined);
+  expect(error).toEqual(SCALE_ITEM_NOT_FOUND);
+
+  ({
+    scaleItem: result,
+    tournamentId,
+    error,
+  } = competitionEngine.getParticipantScaleItem({
+    scaleAttributes,
+    participantId,
+  }));
+  expect(result?.scaleValue).toEqual(undefined);
+  expect(error).toEqual(SCALE_ITEM_NOT_FOUND);
+  expect(tournamentId).toEqual(tournamentRecord.tournamentId);
 
   scaleItem = {
     scaleValue: 8.4,

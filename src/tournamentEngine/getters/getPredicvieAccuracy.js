@@ -86,7 +86,7 @@ export function getPredictiveAccuracy({
       }))
     );
 
-  return { ...SUCCESS, matchUps, accuracy, zoneDistribution };
+  return { ...SUCCESS, relevantMatchUps, accuracy, zoneDistribution };
 }
 
 function getGroupingBands({ zoneData }) {

@@ -53,31 +53,35 @@ export function getCompetitionParticipants(params) {
 }
 
 export function publicFindParticipant({
+  policyDefinitions,
   tournamentRecords,
   participantId,
   personId,
-  policyDefinitions,
   inContext,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (typeof participantId !== 'string' && typeof personId !== 'string')
     return { error: MISSING_VALUE };
 
-  let participant;
+  let participant, tournamentId;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
+    tournamentId = tournamentRecord.tournamentId;
+
     const { tournamentParticipants } = getTournamentParticipants({
-      tournamentRecord,
       policyDefinitions,
+      tournamentRecord,
       inContext,
     });
+
     participant = findParticipant({
       tournamentParticipants,
+      policyDefinitions,
       participantId,
       personId,
-      policyDefinitions,
     });
+
     if (participant) break;
   }
 
-  return { participant: makeDeepCopy(participant, false, true) };
+  return { participant: makeDeepCopy(participant, false, true), tournamentId };
 }

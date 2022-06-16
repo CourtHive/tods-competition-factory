@@ -15,20 +15,22 @@ import {
 } from './tournamentDates';
 
 import {
+  addTimeItem,
   addEventTimeItem,
   addParticipantTimeItem,
   addTournamentTimeItem,
 } from './addTimeItem';
 
 import {
-  removeDrawDefinitionExtension,
   addDrawDefinitionExtension,
-  removeTournamentExtension,
-  addTournamentExtension,
-  removeEventExtension,
   addEventExtension,
+  addExtension,
   addParticipantExtension,
+  addTournamentExtension,
+  removeDrawDefinitionExtension,
+  removeEventExtension,
   removeParticipantExtension,
+  removeTournamentExtension,
 } from './addRemoveExtensions';
 
 const tournamentGovernor = {
@@ -44,10 +46,12 @@ const tournamentGovernor = {
   setTournamentStartDate,
   setTournamentCategories,
 
+  addTimeItem,
   addEventTimeItem,
   addTournamentTimeItem,
   addParticipantTimeItem,
 
+  addExtension,
   addEventExtension,
   removeEventExtension,
   addTournamentExtension,

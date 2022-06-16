@@ -1,3 +1,4 @@
+import competitionEngine from '../../../competitionEngine/sync';
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -56,11 +57,21 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   };
   participantIds.forEach((participantId, index) => {
     const { scaleItem } = tournamentEngine.getParticipantScaleItem({
-      participantId,
       scaleAttributes,
+      participantId,
     });
     if (scaleValues[index])
       expect(scaleItem.scaleValue).toEqual(scaleValues[index]);
+
+    const result = competitionEngine.getParticipantScaleItem({
+      scaleAttributes,
+      participantId,
+    });
+
+    expect(result.tournamentId).toEqual(tournamentRecord.tournamentId);
+
+    if (scaleValues[index])
+      expect(result.scaleItem.scaleValue).toEqual(scaleValues[index]);
   });
 
   let { flightProfile } = tournamentEngine.generateFlightProfile({

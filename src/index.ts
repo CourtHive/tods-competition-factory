@@ -4,6 +4,7 @@ export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
+import { findExtension } from './tournamentEngine/governors/queryGovernor/extensionQueries';
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
 import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
@@ -33,6 +34,7 @@ export const utilities = {
   dateRange,
   dateTime,
   dehydrateMatchUps,
+  findExtension,
   garman,
   getTimeItem,
   generateHashCode,

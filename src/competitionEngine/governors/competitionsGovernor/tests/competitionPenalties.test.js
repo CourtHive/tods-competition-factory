@@ -23,6 +23,7 @@ test('penalties can be administered via competitionEngine', () => {
 
   result = competitionEngine.findParticipant({ participantId });
   expect(result.participant.participantId).toEqual(participantId);
+  expect(result.tournamentId).not.toBeUndefined();
 
   const penaltyData = {
     refereeParticipantId: undefined,
