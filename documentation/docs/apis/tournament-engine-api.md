@@ -2469,6 +2469,8 @@ const { scheduledMatchUps } = tournamentEngine.participantScheduledMatchUps({
 
 ## positionActions
 
+Returns valid actions for a given `drawPosition`. If params includes `matchUpId` will pass through to [matchUpActions](#matchUpActions) when called for **AD_HOC** structures.
+
 ```js
 const positionActions = tournamentEngine.positionActions({
   drawId,

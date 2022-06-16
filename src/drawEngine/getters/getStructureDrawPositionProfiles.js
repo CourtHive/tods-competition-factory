@@ -1,9 +1,12 @@
 import { getMatchUpDependencies } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
+import { isAdHoc } from '../governors/queryGovernor/isAdHoc';
 import { getPositionAssignments } from './positionsGetter';
 import { numericSort, unique } from '../../utilities';
 import { isActiveMatchUp } from './activeMatchUp';
 import { findStructure } from './findStructure';
+
+import { INVALID_DRAW_POSITION } from '../../constants/errorConditionConstants';
 
 // active drawPositions occur in activeMatchUps...
 // ...which have a winningSide, a scoreString, or a completed matchUpStatus
@@ -18,6 +21,10 @@ export function getStructureDrawPositionProfiles({
     const result = findStructure({ drawDefinition, structureId });
     if (result.error) return result;
     structure = result.structure;
+  }
+
+  if (isAdHoc({ drawDefinition, structure })) {
+    return { structure, isAdHoc: true, error: INVALID_DRAW_POSITION };
   }
 
   const { matchUps: inContextStructureMatchUps } = getAllStructureMatchUps({

@@ -1,9 +1,10 @@
+import { matchUpActions } from '../governors/queryGovernor/matchUpActions';
+
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import { matchUpActions } from '../governors/queryGovernor/matchUpActions';
 
 test('matchUpActions returns expected error messages', () => {
   let result = matchUpActions();

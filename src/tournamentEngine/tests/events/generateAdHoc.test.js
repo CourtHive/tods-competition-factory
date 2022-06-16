@@ -199,6 +199,10 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   );
   expect(targetSide.participant.participantId).toEqual(firstParticipantId);
 
+  result = tournamentEngine.positionActions(firstRoundMatchUp);
+  let actionTypes = result.validActions.map(({ type }) => type);
+  expect(actionTypes).toEqual(['ASSIGN', 'ALTERNATE', 'REFEREE', 'SCHEDULE']);
+
   result = tournamentEngine.matchUpActions(firstRoundMatchUp);
   assignmentAction = result.validActions.find(
     ({ type }) => type === ASSIGN_PARTICIPANT
@@ -259,7 +263,7 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   expect(completedMatchUps[0].matchUpId).toEqual(firstRoundMatchUp.matchUpId);
 
   result = tournamentEngine.matchUpActions(firstRoundMatchUp);
-  const actionTypes = result.validActions.map(({ type }) => type);
+  actionTypes = result.validActions.map(({ type }) => type);
   expect(actionTypes.includes(SCORE)).toEqual(true);
 
   // attempt to remove participantId from one side of a matchUp with outcome

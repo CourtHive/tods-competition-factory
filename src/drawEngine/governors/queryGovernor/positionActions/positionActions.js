@@ -12,6 +12,7 @@ import { isValidSeedPosition } from '../../../getters/seedGetter';
 import { getStageEntries } from '../../../getters/stageGetter';
 import { isCompletedStructure } from '../structureActions';
 import { getValidSwapAction } from './getValidSwapAction';
+import { matchUpActions } from '../matchUpActions';
 import {
   getEnabledStructures,
   getPolicyActions,
@@ -62,19 +63,20 @@ import {
  * @param {string} structureId - id of structure of drawPosition
  *
  */
-export function positionActions({
-  policyDefinitions: specifiedPolicyDefinitions,
-  tournamentParticipants = [],
-  overrideAttachedPolicies,
-  tournamentRecord,
-  drawDefinition,
-  drawPosition,
-  structureId,
-  event,
-}) {
+export function positionActions(params) {
+  const {
+    policyDefinitions: specifiedPolicyDefinitions,
+    tournamentParticipants = [],
+    overrideAttachedPolicies,
+    tournamentRecord,
+    drawDefinition,
+    drawPosition,
+    structureId,
+    event,
+  } = params;
+
   if (!event) return { error: MISSING_EVENT };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (drawPosition === undefined) return { error: MISSING_DRAW_POSITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
   const {
@@ -84,6 +86,7 @@ export function positionActions({
     activeDrawPositions,
     byeDrawPositions,
     structure,
+    isAdHoc,
     error,
   } = getStructureDrawPositionProfiles({
     tournamentRecord,
@@ -91,6 +94,11 @@ export function positionActions({
     structureId,
   });
 
+  if (drawPosition === undefined && !isAdHoc) {
+    return { error: MISSING_DRAW_POSITION };
+  }
+
+  if (isAdHoc) return matchUpActions(params);
   if (error) return { error };
 
   const { policyDefinitions: attachedPolicyDefinitions } = getPolicyDefinitions(
