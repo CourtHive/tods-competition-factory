@@ -170,12 +170,12 @@ Add **PAIR** participant to an event. Creates new `{ participantType: PAIR }` pa
 
 ```js
 tournamentEngine.addEventEntryPairs({
-  eventId,
-  participantIdPairs,
+  allowDuplicateParticipantIdPairs, // optional - boolean - allow multiple pair participants with the same individualParticipantIds
+  uuids, // optional - array of UUIDs to use for newly created pairs
   entryStatus: ALTERNATE, // optional
   entryStage: QUALIFYING, // optional
-  uuids, // optional - array of UUIDs to use for newly created pairs
-  allowDuplicateParticipantIdPairs, // optional - boolean - allow multiple pair participants with the same individualParticipantIds
+  participantIdPairs,
+  eventId,
 });
 ```
 
@@ -2491,6 +2491,20 @@ const {
   payload, // attributes to be passed to method
   // additional method-specific options for values to be added to payload when calling method
 } = validAction;
+```
+
+---
+
+## promoteAlternates
+
+```js
+tournamentEngine.promoteAlternates({
+  tournamentEngine,
+  participantIds,
+  // either drawId or eventId are REQUIRED
+  eventId, // optional if drawId proided
+  drawId, // optional if eventId proided
+});
 ```
 
 ---

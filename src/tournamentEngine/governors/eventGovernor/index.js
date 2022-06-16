@@ -1,4 +1,6 @@
 import { generateAndPopulatePlayoffStructures } from '../../../drawEngine/governors/structureGovernor/generateAndPopulatePlayoffStructures';
+import { setDrawParticipantRepresentativeIds } from './drawDefinitions/setDrawParticipantRepresentativeIds';
+import { getDrawParticipantRepresentativeIds } from './drawDefinitions/getDrawParticipantRepresentativeIds';
 import { assignMatchUpSideParticipant } from './drawDefinitions/assignMatchUpSideParticipant';
 import { assignDrawPosition } from './drawDefinitions/assignDrawPosition';
 import { addDrawDefinition } from './drawDefinitions/addDrawDefinition';
@@ -7,15 +9,10 @@ import { addEventEntryPairs } from './entries/addEventEntryPairs';
 import { removeEventEntries } from './entries/removeEventEntries';
 import { checkValidEntries } from './entries/checkValidEntries';
 import { destroyPairEntry } from './entries/destroyPairEntry';
-import { promoteAlternate } from './entries/promoteAlternate';
 import { assignSeedPositions } from './assignSeedPositions';
 import { addEventEntries } from './entries/addEventEntries';
 import { deleteEvents } from './deleteEvent';
 import { addEvent } from './addEvent';
-import {
-  automatedPositioning,
-  automatedPlayoffPositioning,
-} from './automatedPositioning';
 import { assignTieMatchUpParticipantId } from './assignTieMatchUpParticipant';
 import { removeTieMatchUpParticipantId } from './removeTieMatchUpParticipant';
 import { replaceTieMatchUpParticipantId } from './replaceTieMatchUpParticipant';
@@ -25,8 +22,14 @@ import {
   checkInParticipant,
   checkOutParticipant,
 } from './participantCheckInState';
-import { setDrawParticipantRepresentativeIds } from './drawDefinitions/setDrawParticipantRepresentativeIds';
-import { getDrawParticipantRepresentativeIds } from './drawDefinitions/getDrawParticipantRepresentativeIds';
+import {
+  automatedPositioning,
+  automatedPlayoffPositioning,
+} from './automatedPositioning';
+import {
+  promoteAlternate,
+  promoteAlternates,
+} from './entries/promoteAlternate';
 
 import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
 import {
@@ -147,6 +150,7 @@ const eventGovernor = {
   setSubOrder,
   addEventEntries,
   promoteAlternate,
+  promoteAlternates,
   destroyPairEntry,
   setEntryPosition,
   setEntryPositions,
