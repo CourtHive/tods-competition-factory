@@ -2,6 +2,7 @@
 
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
+import { definedAttributes } from '../../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { validateTieFormat } from './tieFormatUtilities';
 import { makeDeepCopy } from '../../../../utilities';
@@ -26,7 +27,7 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 function copyTieFormat(tieFormat) {
-  return makeDeepCopy(tieFormat, false, true);
+  return makeDeepCopy(definedAttributes(tieFormat), false, true);
 }
 
 /*
@@ -62,14 +63,28 @@ export function removeCollectionDefinition({
   result = validateTieFormat({ tieFormat });
   if (!result.valid) return { error: INVALID_VALUES, errors: result.errors };
 
-  const collectionExists = tieFormat?.collectionDefinitions?.find(
+  const targetCollection = tieFormat?.collectionDefinitions?.find(
     (collectionDefinition) => collectionDefinition.collectionId === collectionId
   );
-  if (!collectionExists) return { error: NOT_FOUND, collectionId };
+  if (!targetCollection) return { error: NOT_FOUND, collectionId };
 
   tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.filter(
     (collectionDefinition) => collectionDefinition.collectionId !== collectionId
   );
+
+  if (targetCollection.collectionGroupNumber) {
+    tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map(
+      (collectionDefinition) => {
+        const { collectionGroupNumber, ...rest } = collectionDefinition;
+        if (collectionGroupNumber) true;
+        return rest;
+      }
+    );
+    tieFormat.collectionGroups = tieFormat.collectionGroups.filter(
+      ({ groupNumber }) =>
+        groupNumber !== targetCollection.collectionGroupNumber
+    );
+  }
 
   // calculate new winCriteria for tieFormat
   // if existing winCriteria is aggregateValue, retain
@@ -155,18 +170,24 @@ export function removeCollectionDefinition({
     });
   }
 
+  const prunedTieFormat = definedAttributes(tieFormat);
   if (eventId) {
-    event.tieFormat = tieFormat;
+    event.tieFormat = prunedTieFormat;
     // NOTE: there is not a modifyEventNotice
   } else if (structure) {
-    structure.tieFormat = tieFormat;
+    structure.tieFormat = prunedTieFormat;
   } else if (drawDefinition) {
-    drawDefinition.tieFormat = tieFormat;
+    drawDefinition.tieFormat = prunedTieFormat;
   } else if (!matchUp || !drawDefinition) {
     return { error: MISSING_DRAW_DEFINITION };
   }
 
   modifyDrawNotice({ drawDefinition, eventId: event?.eventId });
 
-  return { ...SUCCESS, tieFormat, targetMatchUps, deletedMatchUpIds };
+  return {
+    ...SUCCESS,
+    tieFormat: prunedTieFormat,
+    targetMatchUps,
+    deletedMatchUpIds,
+  };
 }

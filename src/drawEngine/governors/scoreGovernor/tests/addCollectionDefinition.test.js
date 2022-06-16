@@ -116,7 +116,8 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   expect(matchUpAddNotices).toEqual([30]);
 
   let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
-  expect(drawDefinition.tieFormat.collectionDefinitions.length).toEqual(2);
+  expect(drawDefinition.tieFormat).toBeUndefined();
+  expect(event.tieFormat.collectionDefinitions.length).toEqual(2);
   const structureId = drawDefinition.structures[0].structureId;
 
   // 3 team matchUps
@@ -215,7 +216,8 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   expect(matchUpIds).toEqual(['a06', 'a05', 'a04', 'a03', 'a02', 'a01']);
 
   ({ drawDefinition, event } = tournamentEngine.getEvent({ drawId }));
-  expect(drawDefinition.tieFormat.collectionDefinitions.length).toEqual(2);
+  expect(drawDefinition.tieFormat).toBeUndefined();
+  expect(event.tieFormat.collectionDefinitions.length).toEqual(2);
   expect(event.tieFormat.winCriteria.valueGoal).toEqual(5);
 
   expect(
@@ -320,7 +322,8 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
   expect(matchUpAddNotices).toEqual([30]);
 
   let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
-  expect(drawDefinition.tieFormat.collectionDefinitions.length).toEqual(2);
+  expect(drawDefinition.tieFormat).toBeUndefined();
+  expect(event.tieFormat.collectionDefinitions.length).toEqual(2);
   const structureId = drawDefinition.structures[0].structureId;
 
   // 3 team matchUps
@@ -406,7 +409,8 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
   expect(matchUpIds).toEqual(['a06', 'a05', 'a04', 'a03', 'a02', 'a01']);
 
   ({ drawDefinition, event } = tournamentEngine.getEvent({ drawId }));
-  expect(drawDefinition.tieFormat.collectionDefinitions.length).toEqual(2);
+  expect(drawDefinition.tieFormat).toBeUndefined();
+  expect(event.tieFormat.collectionDefinitions.length).toEqual(2);
   expect(event.tieFormat.winCriteria.valueGoal).toEqual(5);
 
   expect(

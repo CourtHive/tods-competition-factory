@@ -17,6 +17,7 @@ import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
 import {
   INVALID_DRAW_TYPE,
+  INVALID_VALUES,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 import {
@@ -29,6 +30,7 @@ import {
   POLICY_TYPE_AVOIDANCE,
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
+import { validateTieFormat } from '../../drawEngine/governors/scoreGovernor/tieFormats/tieFormatUtilities';
 
 /**
  * automated = true, // can be true/false or "truthy" { seedsOnly: true }
@@ -91,15 +93,19 @@ export function generateDrawDefinition(params) {
 
   // drawDefinition cannot have both tieFormat and matchUpFormat
   let { tieFormat, matchUpFormat } = params;
+
+  if (tieFormat) {
+    const result = validateTieFormat({ tieFormat });
+    if (!result.valid)
+      return { error: INVALID_VALUES, errors: result.errors, tieFormat };
+  }
+
   if (matchUpType === TEAM && eventType === TEAM) {
+    const specifiedTieFormat = tieFormat || event?.tieFormat;
     tieFormat =
-      tieFormat || event?.tieFormat || tieFormatName
-        ? typeof tieFormat === 'object'
-          ? tieFormat
-          : tieFormatName
-          ? tieFormatDefaults({ namedFormat: tieFormatName })
-          : typeof event?.tieFormat === 'object' && event.tieFormat
-        : tieFormatDefaults();
+      specifiedTieFormat && typeof specifiedTieFormat === 'object'
+        ? specifiedTieFormat
+        : tieFormatDefaults({ namedFormat: tieFormatName });
     matchUpFormat = undefined;
   } else if (!matchUpFormat) {
     tieFormat = undefined;

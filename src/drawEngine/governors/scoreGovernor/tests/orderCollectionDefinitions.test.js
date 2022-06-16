@@ -15,11 +15,12 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  let { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
+  expect(drawDefinition.tieFormat).toBeUndefined();
   expect(drawDefinition.structures[0].tieFormat).toBeUndefined();
   const structureId = drawDefinition.structures[0].structureId;
 
-  const collectionIds = drawDefinition.tieFormat.collectionDefinitions.map(
+  const collectionIds = event.tieFormat.collectionDefinitions.map(
     ({ collectionId }) => collectionId
   );
   const newOrder = [2, 1];
