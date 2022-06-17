@@ -104,12 +104,12 @@ export function getValidAlternatesAction({
 
   if (availableAlternatesParticipantIds.length) {
     const validAlternatesAction = {
-      type: ALTERNATE_PARTICIPANT,
-      method: ALTERNATE_PARTICIPANT_METHOD,
-      availableAlternates,
-      availableAlternatesParticipantIds,
-      willDisableLinks: possiblyDisablingAction,
       payload: { drawId, structureId, drawPosition },
+      willDisableLinks: possiblyDisablingAction,
+      method: ALTERNATE_PARTICIPANT_METHOD,
+      availableAlternatesParticipantIds,
+      type: ALTERNATE_PARTICIPANT,
+      availableAlternates,
     };
     return { validAlternatesAction };
   }
@@ -117,7 +117,7 @@ export function getValidAlternatesAction({
   return {};
 }
 
-function eligibleEntryStage({ structure, entry }) {
+export function eligibleEntryStage({ structure, entry }) {
   const { stage } = structure;
   if (
     !entry.entryStage ||

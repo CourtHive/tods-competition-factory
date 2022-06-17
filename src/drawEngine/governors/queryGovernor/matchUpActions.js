@@ -1,3 +1,5 @@
+import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
+import { eligibleEntryStage } from './positionActions/getValidAlternatesAction';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
@@ -8,17 +10,25 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isCompletedStructure } from './structureActions';
+import { unique } from '../../../utilities';
 import { isAdHoc } from './isAdHoc';
 
-import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
+import {
+  ALTERNATE,
+  DIRECT_ENTRY_STATUSES,
+  UNGROUPED,
+  UNPAIRED,
+  WITHDRAWN,
+} from '../../../constants/entryStatusConstants';
 import {
   ADD_PENALTY,
   ADD_PENALTY_METHOD,
-  ALTERNATE_PARTICIPANT,
   ASSIGN_PARTICIPANT,
   ASSIGN_SIDE_METHOD,
 } from '../../../constants/positionActionConstants';
 import {
+  MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
 } from '../../../constants/errorConditionConstants';
@@ -45,15 +55,21 @@ import {
  *
  */
 export function matchUpActions({
+  restrictAdHocRoundParticipants = true, // disallow the same participant being in the same round multiple times
   tournamentParticipants = [],
   inContextDrawMatchUps,
+  policyDefinitions,
   drawDefinition,
   matchUpsMap,
+  sideNumber,
   matchUpId,
   event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+
+  const otherFlightEntries =
+    policyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS]?.otherFlightEntries;
 
   const { drawId } = drawDefinition;
   const { matchUp, structure } = findMatchUp({
@@ -61,6 +77,13 @@ export function matchUpActions({
     matchUpId,
     event,
   });
+
+  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
+
+  const matchUpParticipantIds =
+    matchUp.sides
+      ?.map((side) => side.participantId || side.participant?.participantid)
+      .filter(Boolean) || [];
 
   const { assignedPositions, allPositionsAssigned } =
     structureAssignedDrawPositions({ structure });
@@ -87,7 +110,10 @@ export function matchUpActions({
       .filter(Boolean);
 
     const availableParticipantIds = enteredParticipantIds.filter(
-      (participantId) => !roundAssignedParticipantIds.includes(participantId)
+      (participantId) =>
+        !matchUpParticipantIds.includes(participantId) &&
+        (!restrictAdHocRoundParticipants ||
+          !roundAssignedParticipantIds.includes(participantId))
     );
     const participantsAvailable = tournamentParticipants?.filter(
       (participant) =>
@@ -103,15 +129,83 @@ export function matchUpActions({
 
     if (availableParticipantIds.length) {
       validActions.push({
+        payload: { drawId, matchUpId, structureId, sideNumber },
+        method: ASSIGN_SIDE_METHOD,
         type: ASSIGN_PARTICIPANT,
         availableParticipantIds,
         participantsAvailable,
-        method: ASSIGN_SIDE_METHOD,
-        payload: { drawId, matchUpId, structureId /*, sideNumber*/ },
       });
     }
 
-    validActions.push({ type: ALTERNATE_PARTICIPANT });
+    const eventEntries = event?.entries || [];
+    const availableEventAlternatesParticipantIds = eventEntries
+      .filter(
+        (entry) =>
+          entry.entryStatus === ALTERNATE &&
+          eligibleEntryStage({ structure, entry })
+      )
+      .sort((a, b) => (a.entryPosition || 9999) - (b.entryPosition || 9999))
+      .map((entry) => entry.participantId);
+
+    let availableAlternatesParticipantIds = unique(
+      enteredParticipantIds.concat(availableEventAlternatesParticipantIds)
+    );
+
+    if (otherFlightEntries) {
+      const { flightProfile } = getFlightProfile({ event });
+      const otherFlightEnteredParticipantIds = flightProfile?.flights
+        ?.filter((flight) => flight.drawId !== drawId)
+        .map((flight) =>
+          flight.drawEntries
+            .filter(
+              (entry) =>
+                entry.participantId &&
+                ![WITHDRAWN, UNGROUPED, UNPAIRED].includes(entry.entryStatus)
+            )
+            .map(({ participantId }) => participantId)
+        )
+        .flat()
+        .filter(Boolean);
+
+      if (otherFlightEnteredParticipantIds?.length) {
+        // include direct acceptance participants from other flights
+        availableAlternatesParticipantIds.push(
+          ...otherFlightEnteredParticipantIds
+        );
+      }
+    }
+
+    availableAlternatesParticipantIds =
+      availableAlternatesParticipantIds.filter(
+        (participantId) =>
+          !matchUpParticipantIds.includes(participantId) &&
+          !availableParticipantIds.includes(participantId) &&
+          (!restrictAdHocRoundParticipants ||
+            !roundAssignedParticipantIds.includes(participantId))
+      );
+
+    const availableAlternates = tournamentParticipants?.filter((participant) =>
+      availableAlternatesParticipantIds.includes(participant.participantId)
+    );
+    availableAlternates.forEach((alternate) => {
+      const entry = (drawDefinition.entries || []).find(
+        (entry) => entry.participantId === alternate.participantId
+      );
+      alternate.entryPosition = entry?.entryPosition;
+    });
+    availableAlternates.sort(
+      (a, b) => (a.entryPosition || 9999) - (b.entryPosition || 9999)
+    );
+
+    if (availableAlternatesParticipantIds.length) {
+      validActions.push({
+        payload: { drawId, matchUpId, structureId, sideNumber },
+        availableParticipantIds: availableAlternatesParticipantIds,
+        participantsAvailable: availableAlternates,
+        method: ASSIGN_SIDE_METHOD,
+        type: ALTERNATE,
+      });
+    }
   }
 
   const structureIsComplete = isCompletedStructure({
@@ -144,7 +238,9 @@ export function matchUpActions({
     drawPositions?.length === 2
   );
 
+  // TODO: impolment method action and pass participants whose role is REFEREE
   validActions.push({ type: REFEREE });
+
   const isInComplete = !isDirectingMatchUpStatus({
     matchUpStatus: matchUp.matchUpStatus,
   });

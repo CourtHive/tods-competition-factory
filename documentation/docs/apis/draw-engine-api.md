@@ -786,6 +786,8 @@ const {
   structureIsComplete, // boolean; true if structure is ready for positioning
   validActions, // array of possible actions given current matchUpStatus
 } = drawEngine.matchUpActions({
+  restrictAdHocRoundParticipants, // optional - true by default; applies to AD_HOC; disallow the same participant being in the same round multiple times
+  sideNumber, // optional - select side to which action should apply; applies to AD_HOC position assignments
   matchUpId,
 });
 
