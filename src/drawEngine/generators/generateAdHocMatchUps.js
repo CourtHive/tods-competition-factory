@@ -41,6 +41,9 @@ export function generateAdHocMatchUps({
 }) {
   if (typeof drawDefinition !== 'object')
     return { error: MISSING_DRAW_DEFINITION };
+
+  if (!structureId && drawDefinition.structures?.length === 1)
+    structureId = drawDefinition.structures[0].structureId;
   if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
 
   if (
