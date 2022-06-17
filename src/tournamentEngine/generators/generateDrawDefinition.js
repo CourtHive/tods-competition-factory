@@ -1,4 +1,5 @@
 import { addVoluntaryConsolationStructure } from '../governors/eventGovernor/addVoluntaryConsolationStructure';
+import { validateTieFormat } from '../../drawEngine/governors/scoreGovernor/tieFormats/tieFormatUtilities';
 import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
 import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/matchUpFormat';
@@ -30,7 +31,6 @@ import {
   POLICY_TYPE_AVOIDANCE,
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
-import { validateTieFormat } from '../../drawEngine/governors/scoreGovernor/tieFormats/tieFormatUtilities';
 
 /**
  * automated = true, // can be true/false or "truthy" { seedsOnly: true }

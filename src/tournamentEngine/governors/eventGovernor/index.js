@@ -74,7 +74,10 @@ import { removeStructure } from '../../../drawEngine/governors/structureGovernor
 import { toggleParticipantCheckInState } from './drawDefinitions/toggleParticipantCheckInState';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { refreshEventDrawOrder } from './drawDefinitions/refreshEventDrawOrder';
-import { generateAdHocMatchUps } from './drawDefinitions/generateAdHocMatchUps';
+import {
+  addAdHocMatchUps,
+  generateAdHocMatchUps,
+} from './drawDefinitions/generateAdHocMatchUps';
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
 import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
@@ -176,6 +179,7 @@ const eventGovernor = {
 
   generateAdHocMatchUps,
   deleteAdHocMatchUps,
+  addAdHocMatchUps,
   drawMatic,
 
   setOrderOfFinish,

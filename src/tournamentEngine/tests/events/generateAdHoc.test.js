@@ -7,6 +7,7 @@ import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { AD_HOC, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 import {
   CANNOT_REMOVE_PARTICIPANTS,
+  INVALID_STRUCTURE,
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
 import {
@@ -291,4 +292,75 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   payload.participantId = undefined;
   result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
+});
+
+it('will not allow addition of AD_HOC matchUps to other draw types', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 16 }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual(15);
+
+  let result = tournamentEngine.generateAdHocMatchUps({
+    matchUpsCount: 3,
+    newRound: true,
+    drawId,
+  });
+
+  expect(result.error).toEqual(INVALID_STRUCTURE);
+
+  const event = { eventName: 'Match Play' };
+  result = tournamentEngine.addEvent({ event });
+  expect(result.success).toEqual(true);
+
+  const eventId = result.event.eventId;
+  result = tournamentEngine.generateDrawDefinition({
+    drawType: AD_HOC,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual(15);
+
+  const drawDefinition = result.drawDefinition;
+  result = tournamentEngine.addDrawDefinition({ drawDefinition, eventId });
+
+  result = tournamentEngine.generateAdHocMatchUps({
+    drawId: drawDefinition.drawId,
+    matchUpsCount: 8,
+    newRound: true,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.matchUps.length).toEqual(8);
+
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual(23);
+
+  result = tournamentEngine.generateAdHocMatchUps({
+    drawId: drawDefinition.drawId,
+    addToStructure: false,
+    matchUpsCount: 8,
+    newRound: true,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.matchUps.length).toEqual(8);
+
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual(23);
+
+  result = tournamentEngine.addAdHocMatchUps({
+    drawId: drawDefinition.drawId,
+    matchUps: result.matchUps,
+  });
+  expect(result.success).toEqual(true);
+
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual(31);
 });
