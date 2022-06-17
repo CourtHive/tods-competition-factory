@@ -198,7 +198,7 @@ drawEngine.addVoluntaryConsolationStage({
 
 Generates a new structure within a `drawDefinition` if any draw entries are present for `{ entryStage: VOLUNTARY_CONSOLATION }`.
 
-````js
+```js
 drawEngine.addVoluntaryConsolationStructure();
 ```
 
@@ -435,7 +435,7 @@ Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In t
 const result = drawEngine.generateAdHocMatchUps({
   participantIdPairings, // required - array of array of pairings [['id1', 'id2'], ['id3', 'id4']]
   drawDefinition, // required - drawDefinition in which target structure is found
-  structureId, // required - structureId of structure for which matchUps are being generated
+  structureId, // required when more than one structure is present - structureId of structure for which matchUps are being generated
   matchUpIds, // optional - if matchUpIds are not specified UUIDs are generated
   roundNumber, // optional - specify round for which matchUps will be generated
   newRound, // optional - boolean defaults to false - whether to auto-increment to next roundNumber
@@ -524,7 +524,7 @@ const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } =
   drawEngine.getAvailablePlayoffRounds({
     structureId,
   });
-````
+```
 
 ...For a SINGLE_ELIMINATION struture with drawSize: 16 this would return:
 
