@@ -1,13 +1,9 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import {
   addEventExtension,
   addTournamentExtension,
   removeEventExtension,
 } from '../tournamentGovernor/addRemoveExtensions';
-
-import {
-  getAppliedPolicies,
-  getEventAppliedPolicies,
-} from './getAppliedPolicies';
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -71,7 +67,7 @@ export function attachEventPolicies({
 
   let policiesApplied = 0;
   if (!event.extensions) event.extensions = [];
-  const { appliedPolicies } = getEventAppliedPolicies({ event });
+  const { appliedPolicies } = getAppliedPolicies({ event });
 
   Object.keys(policyDefinitions).forEach((policyType) => {
     if (!appliedPolicies[policyType] || allowReplacement) {
@@ -94,7 +90,7 @@ export function removeEventPolicy({ event, policyType }) {
 
   let policyRemoved;
   if (event.extensions) {
-    const { appliedPolicies } = getEventAppliedPolicies({ event });
+    const { appliedPolicies } = getAppliedPolicies({ event });
     if (appliedPolicies && appliedPolicies[policyType]) {
       delete appliedPolicies[policyType];
       policyRemoved = true;

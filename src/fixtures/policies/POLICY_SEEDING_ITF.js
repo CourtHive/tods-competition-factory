@@ -7,7 +7,7 @@ export const POLICY_SEEDING_ITF = {
     duplicateSeedNumbers: true,
     drawSizeProgression: true,
     seedingProfile: CLUSTER,
-    policyName: 'ITF',
+    policyName: 'ITF SEEDING',
 
     seedsCountThresholds: [
       { drawSize: 4, minimumParticipantCount: 3, seedsCount: 2 },

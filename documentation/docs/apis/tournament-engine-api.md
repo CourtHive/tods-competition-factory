@@ -1578,16 +1578,6 @@ const {
 
 ---
 
-## getEventAppliedPolicies
-
-```js
-const { appliedPolicies } = tournamentEngine.getEventAppliedPolicies({
-  eventId,
-});
-```
-
----
-
 ## getEvents
 
 Return **deepCopies** of all events in a tournament record.

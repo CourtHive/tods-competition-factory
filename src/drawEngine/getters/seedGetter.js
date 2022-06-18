@@ -93,6 +93,11 @@ export function getValidSeedBlocks({
   if (structure.structureType === CONTAINER) {
     isContainer = true;
 
+    if (appliedPolicies?.seeding?.containerByesIgnoreSeeding)
+      return {
+        validSeedBlocks: [],
+      };
+
     ({ validSeedBlocks, error } = constructContainerBlocks({
       seedingProfile,
       structure,

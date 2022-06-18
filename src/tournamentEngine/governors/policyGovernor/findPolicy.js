@@ -1,26 +1,24 @@
-import {
-  getAppliedPolicies,
-  getEventAppliedPolicies,
-} from './getAppliedPolicies';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 
 import {
   MISSING_TOURNAMENT_RECORD,
   POLICY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-export function findPolicy({ tournamentRecord, event, policyType }) {
+export function findPolicy({
+  tournamentRecord,
+  drawDefinition,
+  policyType,
+  structure,
+  event,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-
-  if (event) {
-    const { appliedPolicies } = getEventAppliedPolicies({
-      event,
-    });
-    if (appliedPolicies && appliedPolicies[policyType])
-      return { policy: appliedPolicies[policyType] };
-  }
 
   const { appliedPolicies } = getAppliedPolicies({
     tournamentRecord,
+    drawDefinition,
+    structure,
+    event,
   });
 
   return appliedPolicies?.[policyType]

@@ -86,7 +86,7 @@ it('can set and remove policies from tournamentRecords and events', () => {
   expect(updatedRecord.events[0].extensions.length).toEqual(1);
 
   const { appliedPolicies: updatedAppliedPolicies } =
-    tournamentEngine.getEventAppliedPolicies({
+    tournamentEngine.getAppliedPolicies({
       eventId,
     });
   expect(updatedAppliedPolicies.avoidance.policyName).toEqual(

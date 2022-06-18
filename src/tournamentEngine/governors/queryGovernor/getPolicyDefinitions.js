@@ -1,9 +1,4 @@
-import { getAppliedPolicies as getDrawAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';
-import {
-  getAppliedPolicies as getTournamentAppliedPolicies,
-  getEventAppliedPolicies,
-} from '../policyGovernor/getAppliedPolicies';
-
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import {
   MISSING_POLICY_TYPE,
   POLICY_NOT_FOUND,
@@ -41,19 +36,17 @@ export function getPolicyDefinitions({
   };
 
   if (drawDefinition) {
-    const { appliedPolicies } =
-      getDrawAppliedPolicies({ drawDefinition }) || {};
+    const { appliedPolicies } = getAppliedPolicies({ drawDefinition }) || {};
     mapAppliedPolicies(appliedPolicies, policyTypes);
   }
 
   if (event) {
-    const { appliedPolicies } = getEventAppliedPolicies({ event }) || {};
+    const { appliedPolicies } = getAppliedPolicies({ event }) || {};
     mapAppliedPolicies(appliedPolicies, policyTypes);
   }
 
   if (tournamentRecord) {
-    const { appliedPolicies } =
-      getTournamentAppliedPolicies({ tournamentRecord }) || {};
+    const { appliedPolicies } = getAppliedPolicies({ tournamentRecord }) || {};
     mapAppliedPolicies(appliedPolicies, policyTypes);
   }
 
