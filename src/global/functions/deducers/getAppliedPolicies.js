@@ -4,6 +4,7 @@ import {
   MISSING_POLICY_TYPE,
   POLICY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { makeDeepCopy } from '../../../utilities';
 
 /**
  * Discovers policies bottom up from drawDefinition => event => tournamentRecord
@@ -51,7 +52,11 @@ export function getAppliedPolicies({
             ? policyTypes.includes(key)
             : !policyTypes.length || policyTypes.includes(key)
         ) {
-          appliedPolicies[key] = extensionPolicies[key];
+          appliedPolicies[key] = makeDeepCopy(
+            extensionPolicies[key],
+            false,
+            true
+          );
         }
     }
   }

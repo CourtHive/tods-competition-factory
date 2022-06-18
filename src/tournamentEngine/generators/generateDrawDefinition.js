@@ -4,7 +4,7 @@ import { generateDrawType } from '../../drawEngine/governors/structureGovernor/g
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
 import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/matchUpFormat';
 import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attachPolicies';
-import { getPolicyDefinitions } from '../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
 import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEntries';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
@@ -14,6 +14,7 @@ import { tieFormatDefaults } from './tieFormatDefaults';
 import { prepareStage } from './prepareStage';
 
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
+import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
 import {
@@ -27,10 +28,6 @@ import {
   QUALIFYING,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
-import {
-  POLICY_TYPE_AVOIDANCE,
-  POLICY_TYPE_SEEDING,
-} from '../../constants/policyConstants';
 
 /**
  * automated = true, // can be true/false or "truthy" { seedsOnly: true }
@@ -161,27 +158,42 @@ export function generateDrawDefinition(params) {
   });
   if (drawTypeResult.error) return drawTypeResult;
 
-  // first attach any policyDefinitions which have been provided
-  if (typeof policyDefinitions === 'object') {
-    attachPolicies({ policyDefinitions, drawDefinition });
+  const { appliedPolicies } = getAppliedPolicies({
+    tournamentRecord,
+    event,
+  });
+
+  if (policyDefinitions) {
+    if (typeof policyDefinitions !== 'object') {
+      return {
+        info: 'policyDefinitions must be an object',
+        error: INVALID_VALUES,
+      };
+    } else {
+      const policiesToAttach = {};
+      for (const key of Object.keys(policyDefinitions)) {
+        if (
+          JSON.stringify(appliedPolicies[key]) !==
+          JSON.stringify(policyDefinitions[key])
+        ) {
+          policiesToAttach[key] = policyDefinitions[key];
+        }
+      }
+
+      if (Object.keys(policiesToAttach).length) {
+        // attach any policyDefinitions which have been provided and are not already present
+        attachPolicies({ drawDefinition, policyDefinitions: policiesToAttach });
+        Object.assign(appliedPolicies, policiesToAttach);
+      }
+    }
   }
 
-  // then check for a seedingPolicy at all levels
-  const { policyDefinitions: seedingPolicy } =
-    getPolicyDefinitions({
-      policyTypes: [POLICY_TYPE_SEEDING],
-      tournamentRecord,
-      drawDefinition,
-      event,
-    }) || {};
-
-  // if no seeding policy provided and none present at any other level, attach default
-  // this needs to be attached for prepareStage => initializeSeedAssignments
-  if (!seedingPolicy?.[POLICY_TYPE_SEEDING]) {
-    // if there is no seeding policy then use default seeing policy
+  if (!appliedPolicies[POLICY_TYPE_SEEDING]) {
     attachPolicies({ drawDefinition, policyDefinitions: POLICY_SEEDING_USTA });
+    Object.assign(appliedPolicies, POLICY_SEEDING_USTA);
   }
 
+  /*
   // if an avoidance policy is not passed in at draw generation
   // but an event level avoidance policy exists... attach that to the draw for posterity.
   // because an event level policy COULD be modified or removed AFTER draw is generated...
@@ -199,6 +211,7 @@ export function generateDrawDefinition(params) {
   ) {
     attachPolicies({ drawDefinition, policyDefinitions: eventAvoidancePolicy });
   }
+  */
 
   // add all entries to the draw
   const entries = drawEntries || event?.entries || [];
@@ -223,6 +236,7 @@ export function generateDrawDefinition(params) {
   const structureResult = prepareStage({
     ...drawTypeResult,
     ...params,
+    appliedPolicies,
     drawDefinition,
     participants,
     seedsCount,
@@ -274,6 +288,7 @@ export function generateDrawDefinition(params) {
           preparedStructureIds,
           qualifyingPositions,
           stage: QUALIFYING,
+          appliedPolicies,
           drawDefinition,
           stageSequence,
           participants,
@@ -305,6 +320,7 @@ export function generateDrawDefinition(params) {
     addVoluntaryConsolationStructure({
       ...voluntaryConsolation,
       tournamentRecord,
+      appliedPolicies,
       drawDefinition,
       matchUpType,
     });
