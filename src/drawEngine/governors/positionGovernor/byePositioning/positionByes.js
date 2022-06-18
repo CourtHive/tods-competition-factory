@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../policyGovernor/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
 import { getSeedOrderByePositions } from './getSeedOrderedByePositions';
 import { getUnseededByePositions } from './getUnseededByePositions';
 import { assignDrawPositionBye } from './assignDrawPositionBye';

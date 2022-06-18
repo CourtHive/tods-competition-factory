@@ -70,12 +70,13 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
         expect(result.tournamentRecord).toBeUndefined();
       } else if (result.success || result.valid) {
         const onList = [
-          'reset',
-          'devContext',
-          'setTournamentId',
-          'newTournamentRecord',
-          'generateDrawDefinition',
           'validateSchedulingProfile',
+          'generateDrawDefinition',
+          'newTournamentRecord',
+          'getAppliedPolicies',
+          'setTournamentId',
+          'devContext',
+          'reset',
         ].includes(method);
         if (!onList) console.log({ method, result });
         expect(onList).toEqual(true);

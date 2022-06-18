@@ -1,8 +1,9 @@
+import { getMatchUpCompetitiveness } from '../../../tournamentEngine/getters/getMatchUpCompetitiveness';
 import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/getMatchUpScheduleDetails';
 import { getDrawPositionCollectionAssignment } from './getDrawPositionCollectionAssignment';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getCollectionPositionMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
-import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
@@ -26,7 +27,6 @@ import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { TEAM } from '../../../constants/eventConstants';
-import { getMatchUpCompetitiveness } from '../../../tournamentEngine/getters/getMatchUpCompetitiveness';
 
 /*
   return all matchUps within a structure and its child structures

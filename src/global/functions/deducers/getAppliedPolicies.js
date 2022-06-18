@@ -1,4 +1,5 @@
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function getAppliedPolicies({
   tournamentRecord,
@@ -16,7 +17,7 @@ export function getAppliedPolicies({
   if (structure)
     Object.assign(appliedPolicies, extractAppliedPolicies(structure));
 
-  return { appliedPolicies };
+  return { appliedPolicies, ...SUCCESS };
 
   function extractAppliedPolicies({ extensions }) {
     const appliedPoliciesExtension = extensions?.find(

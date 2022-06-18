@@ -1,10 +1,10 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
 import { eligibleEntryStage } from './positionActions/getValidAlternatesAction';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { isActiveDownstream } from '../matchUpGovernor/isActiveDownstream';
-import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { positionTargets } from '../positionGovernor/positionTargets';

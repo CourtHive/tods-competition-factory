@@ -2,7 +2,7 @@ import { addParticipantGroupings } from '../../drawEngine/governors/positionGove
 import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps/findMatchUp';
 import { getScheduleTiming } from '../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { addNationalityCode } from '../governors/participantGovernor/addNationalityCode';
-import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
+import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
 import { definedAttributes } from '../../utilities/objects';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { getContextContent } from './getContextContent';

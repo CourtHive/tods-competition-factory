@@ -1,8 +1,8 @@
 import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { randomUnseededSeparation } from './avoidance/randomUnseededSeparation';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 import { getStageEntries } from '../../getters/stageGetter';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
