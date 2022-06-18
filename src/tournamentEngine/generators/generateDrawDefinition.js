@@ -3,10 +3,10 @@ import { validateTieFormat } from '../../drawEngine/governors/scoreGovernor/tieF
 import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
 import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/matchUpFormat';
-import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
 import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attachPolicies';
+import { getPolicyDefinitions } from '../../global/functions/deducers/getAppliedPolicies';
+import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
 import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEntries';
-import { getPolicyDefinitions } from '../governors/queryGovernor/getPolicyDefinitions';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';

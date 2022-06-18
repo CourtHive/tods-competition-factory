@@ -1,5 +1,5 @@
-import { getPolicyDefinitions } from '../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
 import { getSeedsCount } from '../../../tournamentEngine/governors/policyGovernor/getSeedsCount';
+import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';

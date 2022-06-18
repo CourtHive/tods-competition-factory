@@ -1,5 +1,6 @@
 import { getMatchUpScheduleDetails as drawEngineGetMatchUpScheduleDetails } from '../../../drawEngine/accessors/matchUpAccessor/getMatchUpScheduleDetails';
 import { isValid } from '../../../drawEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
+import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getMaxEntryPosition } from '../../../global/functions/deducers/getMaxEntryPosition';
 import { getMatchUpCompetitiveness } from '../../getters/getMatchUpCompetitiveness';
 import { participantScheduledMatchUps } from './participantScheduledMatchUps';
@@ -13,7 +14,6 @@ import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
 import { getMatchUpsStats } from '../../getters/getMatchUpsStats';
 import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getEvent, getEvents } from '../../getters/eventGetter';
-import { getPolicyDefinitions } from './getPolicyDefinitions';
 import { matchUpActions } from '../../getters/matchUpActions';
 import { bulkUpdatePublishedEventIds } from './publishState';
 import { getParticipantSignInStatus } from './signInStatus';

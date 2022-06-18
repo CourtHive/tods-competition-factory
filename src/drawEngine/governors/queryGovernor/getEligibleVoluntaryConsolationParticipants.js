@@ -1,4 +1,4 @@
-import { getPolicyDefinitions } from '../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
+import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getStageEntries } from '../../getters/stageGetter';
 import {
   allDrawMatchUps,

@@ -1,5 +1,5 @@
 import { matchUpActions as drawEngineMatchupActions } from '../../drawEngine/governors/queryGovernor/matchUpActions';
-import { getPolicyDefinitions } from '../governors/queryGovernor/getPolicyDefinitions';
+import { getPolicyDefinitions } from '../../global/functions/deducers/getAppliedPolicies';
 import { allTournamentMatchUps } from './matchUpsGetter';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../constants/policyConstants';

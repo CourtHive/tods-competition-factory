@@ -1423,19 +1423,6 @@ const drawTypes = tournamentEngine.getAllowedMatchUpFormats();
 
 ---
 
-## getAppliedPolicies
-
-Returns policies scoped to the lowest element in the hierarchy, depending on attributes provided;
-
-```js
-const { appliedPolicies } = tournamentEngine.getAppliedPolicies({
-  eventId, // optional
-  drawId, // optional
-});
-```
-
----
-
 ## getAvailablePlayoffRounds
 
 If provided a `structureId`, returns rounds of the selected structure which are available for adding playoff structures.

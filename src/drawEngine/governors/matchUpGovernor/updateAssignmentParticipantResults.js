@@ -1,4 +1,4 @@
-import { getPolicyDefinitions } from '../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
+import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { tallyParticipantResults } from '../scoreGovernor/roundRobinTally/roundRobinTally';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { createSubOrderMap } from './createSubOrderMap';
@@ -24,10 +24,10 @@ export function updateAssignmentParticipantResults({
   if (!positionAssignments) return { error: INVALID_VALUES };
 
   const { policyDefinitions } = getPolicyDefinitions({
+    policyTypes: [POLICY_TYPE_ROUND_ROBIN_TALLY],
     tournamentRecord,
     drawDefinition,
     event,
-    policyTypes: [POLICY_TYPE_ROUND_ROBIN_TALLY],
   });
   const { subOrderMap } = createSubOrderMap({ positionAssignments });
 
