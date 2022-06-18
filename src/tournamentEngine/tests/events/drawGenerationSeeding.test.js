@@ -189,7 +189,6 @@ it.only('can constrain seedsCount by policyDefinitions', () => {
     participantCount,
     drawSize,
   });
-  console.log({ seedsCount });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     seedsCount: 100, // this is in excess of policy limit and above drawSize and stageEntries #

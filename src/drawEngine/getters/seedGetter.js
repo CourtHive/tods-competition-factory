@@ -93,7 +93,7 @@ export function getValidSeedBlocks({
   if (structure.structureType === CONTAINER) {
     isContainer = true;
 
-    if (appliedPolicies?.seeding?.containerByesIgnoreSeeding)
+    if (!allPositions && appliedPolicies?.seeding?.containerByesIgnoreSeeding)
       return {
         validSeedBlocks: [],
       };
@@ -365,17 +365,18 @@ function constructBlocks({
  *
  */
 export function isValidSeedPosition({
-  seedNumber,
+  // appliedPolicies,
   drawDefinition,
-  structureId,
   drawPosition,
+  structureId,
+  seedNumber,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { validSeedBlocks } = getValidSeedBlocks({
-    structure,
-    drawDefinition,
     appliedPolicies,
+    drawDefinition,
+    structure,
   });
 
   if (appliedPolicies?.seeding?.validSeedPositions?.ignore) return true;
@@ -410,9 +411,9 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { validSeedBlocks } = getValidSeedBlocks({
-    structure,
-    drawDefinition,
     appliedPolicies,
+    drawDefinition,
+    structure,
   });
   const unfilledSeedBlocks = (validSeedBlocks || []).filter((seedBlock) => {
     const unfilledPositions = seedBlock.drawPositions.filter(

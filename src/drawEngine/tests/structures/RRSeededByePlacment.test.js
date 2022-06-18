@@ -7,13 +7,13 @@ import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 
 const scenario = [
+  /*
   {
     seedNumbersWithByes: [1, 2],
     participantsCount: 62,
     seedsCount: 4,
     drawSize: 64,
   },
-  /*
   {
     seedNumbersWithByes: [1, 2, 3],
     participantsCount: 61,
@@ -23,7 +23,7 @@ const scenario = [
   */
   {
     policyDefinitions: POLICY_SEEDING_BYES,
-    seedNumbersWithByes: [1, 2],
+    // seedNumbersWithByes: [1, 2],
     participantsCount: 62,
     seedsCount: 4,
     drawSize: 64,
@@ -48,7 +48,6 @@ it.each(scenario)(
     });
 
     tournamentEngine.setState(tournamentRecord);
-    console.log(tournamentRecord.extensions?.[0]);
 
     const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
@@ -72,11 +71,6 @@ it.each(scenario)(
       )
       .map((matchUps) => matchUps[0].structureId);
 
-    const byeStructuresHaveSeeds = structureIdsWithByes.every((structureId) =>
-      structureIdsWithSeeds.includes(structureId)
-    );
-    expect(byeStructuresHaveSeeds).toEqual(true);
-
     const seedNumbersWithByes = unique(
       structureIdsWithByes
         .map((structureId) =>
@@ -90,6 +84,15 @@ it.each(scenario)(
         .flat()
     );
 
-    expect(seedNumbersWithByes).toEqual(scenario.seedNumbersWithByes);
+    const byeStructuresHaveSeeds = structureIdsWithByes.every((structureId) =>
+      structureIdsWithSeeds.includes(structureId)
+    );
+
+    if (scenario.seedNumbersWithByes) {
+      expect(byeStructuresHaveSeeds).toEqual(true);
+      expect(seedNumbersWithByes).toEqual(scenario.seedNumbersWithByes);
+    } else {
+      expect(structureIdsWithByes.length).toEqual(drawSize - participantsCount);
+    }
   }
 );
