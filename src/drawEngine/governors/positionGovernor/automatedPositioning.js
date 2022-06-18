@@ -1,3 +1,4 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { positionUnseededParticipants } from './positionUnseededParticipants';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
@@ -59,6 +60,14 @@ export function automatedPositioning({
 
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return handleErrorCondition({ error });
+
+  if (!appliedPolicies) {
+    appliedPolicies = getAppliedPolicies({
+      drawDefinition,
+      structure,
+      event,
+    })?.appliedPolicies;
+  }
 
   const { qualifiersCount } = getQualifiersCount({
     stageSequence: structure.stageSequence,
