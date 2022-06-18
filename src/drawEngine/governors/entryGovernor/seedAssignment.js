@@ -1,3 +1,4 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { modifySeedAssignmentsNotice } from '../../notifications/drawNotifications';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
@@ -21,6 +22,7 @@ export function assignSeed({
   seedNumber,
   seedValue,
   eventId,
+  event,
 }) {
   const stack = 'assignSeed';
   const { structure } = findStructure({ drawDefinition, structureId });
@@ -51,8 +53,14 @@ export function assignSeed({
   const assignedDrawPosition = relevantAssignment?.drawPosition;
 
   if (assignedDrawPosition) {
+    const { appliedPolicies } = getAppliedPolicies({
+      tournamentRecord,
+      drawDefinition,
+      event,
+    });
     const positionIsValid = isValidSeedPosition({
       drawPosition: assignedDrawPosition,
+      appliedPolicies,
       drawDefinition,
       structureId,
       seedNumber,
