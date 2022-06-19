@@ -1,4 +1,5 @@
 import { mocksEngine, tournamentEngine } from '../../..';
+import { unique } from '../../../utilities';
 
 import {
   DOUBLE_WALKOVER,
@@ -9,9 +10,8 @@ import {
   FICSF,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
-import { unique } from '../../../utilities';
 
-it.only('can 0complete FIC consolation with WOWO before main', () => {
+it('can complete FIC consolation with WOWO before main', () => {
   const winningSide = 1;
   const roundNumber = 1;
   const drawProfiles = [

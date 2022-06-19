@@ -145,7 +145,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   expect(seedValues).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
 });
 
-it.only('can constrain seedsCount by policyDefinitions', () => {
+it('can constrain seedsCount by policyDefinitions', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const ageCategoryCode = 'U18';

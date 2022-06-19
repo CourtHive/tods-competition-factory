@@ -5,7 +5,6 @@ import { generateDrawMaticRound } from './generateDrawMaticRound';
 import { isAdHoc } from '../../governors/queryGovernor/isAdHoc';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { RATING } from '../../../constants/scaleConstants';
 import {
@@ -27,6 +26,7 @@ export function drawMatic({
   restrictEntryStatus,
   tournamentRecord,
   generateMatchUps,
+  addToStructure,
   drawDefinition,
   participantIds,
   maxIterations,
@@ -38,8 +38,9 @@ export function drawMatic({
   if (
     typeof drawDefinition !== 'object' ||
     (drawDefinition.drawType && drawDefinition.drawType !== AD_HOC)
-  )
+  ) {
     return { error: INVALID_DRAW_DEFINITION };
+  }
 
   if (
     !Array.isArray(drawDefinition.entries) ||
@@ -111,22 +112,20 @@ export function drawMatic({
     if (scaleValue) adHocRatings[participantId] = scaleValue;
   }
 
-  const { candidatesCount, iterations, participantIdPairings } =
-    generateDrawMaticRound({
-      tournamentParticipants,
-      tournamentRecord,
-      generateMatchUps,
-      drawDefinition,
-      participantIds,
-      maxIterations,
-      adHocRatings,
-      matchUpIds,
-      structureId,
-      structure,
-      eventType,
-    });
-
-  return { ...SUCCESS, candidatesCount, iterations, participantIdPairings };
+  return generateDrawMaticRound({
+    tournamentParticipants,
+    tournamentRecord,
+    generateMatchUps,
+    addToStructure,
+    drawDefinition,
+    participantIds,
+    maxIterations,
+    adHocRatings,
+    matchUpIds,
+    structureId,
+    structure,
+    eventType,
+  });
 }
 
 function getScaleValue({ scaleName = 'dynamic', eventType, participant }) {

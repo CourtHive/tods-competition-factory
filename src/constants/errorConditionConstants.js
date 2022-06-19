@@ -667,7 +667,7 @@ export const INVALID_OBJECT = {
 };
 export const INVALID_VALUES = {
   message: 'Invalid values',
-  code: 'ERR_INVALID_VALES',
+  code: 'ERR_INVALID_VALUES',
 };
 export const DUPLICATE_VALUE = {
   message: 'Duplicate value',

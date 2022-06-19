@@ -412,6 +412,17 @@ const {
 
 ---
 
+## drawMatic
+
+```js
+const { matchUps } = drawEngine.drawMatic({
+  addToStructure, // optional - defaults to true
+  drawId,
+});
+```
+
+---
+
 ## findMatchUp
 
 ```js

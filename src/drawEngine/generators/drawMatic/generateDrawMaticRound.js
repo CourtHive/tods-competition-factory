@@ -1,12 +1,14 @@
-// import { assignDrawPosition } from '../../governors/positionGovernor/positionAssignment';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { generateCandidate, pairingHash } from './generateCandidate';
 import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
 
-import { NO_CANDIDATES } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
 import { TEAM } from '../../../constants/participantTypes';
+import {
+  MISSING_PARTICIPANT_IDS,
+  NO_CANDIDATES,
+} from '../../../constants/errorConditionConstants';
 
 // this should be in policyDefinitions
 const ENCOUNTER_VALUE = 50;
@@ -17,9 +19,10 @@ const MAX_ITERATIONS = 5000;
 
 export function generateDrawMaticRound({
   maxIterations = MAX_ITERATIONS,
+  generateMatchUps = true,
   tournamentParticipants,
   tournamentRecord,
-  generateMatchUps,
+  addToStructure,
   drawDefinition,
   participantIds,
   adHocRatings,
@@ -28,6 +31,10 @@ export function generateDrawMaticRound({
   eventType,
   structure,
 }) {
+  if (!participantIds?.length) {
+    return { error: MISSING_PARTICIPANT_IDS };
+  }
+
   // create valueObject for each previous encounter within the structure
   const { encounters } = getEncounters({ matchUps: structure.matchUps });
   // valueObjects provide "weighting" to each possible pairing of participants
@@ -87,19 +94,28 @@ export function generateDrawMaticRound({
 
   if (!candidatesCount) return { error: NO_CANDIDATES };
 
+  let matchUps;
   if (generateMatchUps) {
     const result = generateAdHocMatchUps({
       participantIdPairings,
       tournamentRecord,
+      addToStructure,
       drawDefinition,
       newRound: true,
       structureId,
       matchUpIds,
     });
     if (result.error) return result;
+    matchUps = result.matchUps;
   }
 
-  return { ...SUCCESS, participantIdPairings, candidatesCount, iterations };
+  return {
+    ...SUCCESS,
+    participantIdPairings,
+    candidatesCount,
+    iterations,
+    matchUps,
+  };
 }
 
 function getSideRatings({

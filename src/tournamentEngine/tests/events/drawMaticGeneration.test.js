@@ -3,6 +3,7 @@ import { generateRange, unique } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { MISSING_PARTICIPANT_IDS } from '../../../constants/errorConditionConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
 import { AD_HOC } from '../../../constants/drawDefinitionConstants';
@@ -96,3 +97,102 @@ it.each(scenarios)(
     roundNames.forEach((roundName) => expect(roundName[0]).toEqual('R'));
   }
 );
+
+it.only('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: 20 },
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { tournamentParticipants } =
+    tournamentEngine.getTournamentParticipants();
+
+  let {
+    event: { eventId },
+  } = tournamentEngine.addEvent({
+    event: { eventName: 'Match Play' },
+  });
+
+  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  let result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.generateDrawDefinition({
+    drawType: AD_HOC,
+    addToEvent: true,
+    eventId,
+  });
+
+  expect(result.success).toEqual(true);
+
+  const { drawId } = result.drawDefinition;
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  expect(matchUps.length).toEqual(0);
+
+  result = tournamentEngine.drawMatic({ drawId });
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  expect(matchUps.length).toEqual(10);
+
+  result = tournamentEngine.drawMatic({ drawId });
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  expect(matchUps.length).toEqual(20);
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { roundNumbers: [2] },
+  }));
+  expect(matchUps.length).toEqual(10);
+
+  // will not add matchUps to structure
+  result = tournamentEngine.drawMatic({ drawId, addToStructure: false });
+  expect(result.matchUps.length).toEqual(10);
+
+  // number of matchUps will not have changed
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  expect(matchUps.length).toEqual(20);
+
+  result = tournamentEngine.addAdHocMatchUps({
+    matchUps: result.matchUps,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  // number of matchUps will be greater
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  expect(matchUps.length).toEqual(30);
+
+  result = tournamentEngine.addAdHocMatchUps({
+    matchUps: result.matchUps,
+    drawId,
+  });
+  console.log(result);
+});
+
+it('cannot use drawMatic when there are no entries present', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: 20 },
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let {
+    event: { eventId },
+  } = tournamentEngine.addEvent({
+    event: { eventName: 'Match Play' },
+  });
+
+  let result = tournamentEngine.generateDrawDefinition({
+    drawType: AD_HOC,
+    addToEvent: true,
+    eventId,
+  });
+
+  expect(result.success).toEqual(true);
+
+  const { drawId } = result.drawDefinition;
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  expect(matchUps.length).toEqual(0);
+
+  result = tournamentEngine.drawMatic({ drawId });
+  expect(result.error).toEqual(MISSING_PARTICIPANT_IDS);
+});
