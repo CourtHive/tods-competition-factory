@@ -1044,6 +1044,17 @@ tournamentEngine.devContext(true);
 
 ---
 
+## drawMatic
+
+```js
+const { matchUps } = tournamentEngine.drawMatic({
+  addToStructure, // optional - defaults to true
+  drawId,
+});
+```
+
+---
+
 ## eventMatchUps
 
 Returns matchUps for an event grouped by status.
