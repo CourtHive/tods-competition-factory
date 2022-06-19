@@ -22,7 +22,7 @@ export function getValidAlternatesAction({
   possiblyDisablingAction,
   activeDrawPositions,
   positionAssignments,
-  policyDefinitions,
+  appliedPolicies,
   drawDefinition,
   drawPosition,
   structureId,
@@ -33,7 +33,7 @@ export function getValidAlternatesAction({
   if (activeDrawPositions.includes(drawPosition)) return {};
 
   const otherFlightEntries =
-    policyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS]?.otherFlightEntries;
+    appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS]?.otherFlightEntries;
 
   const drawEnteredParticpantIds = (drawDefinition.entries || [])
     .sort((a, b) => (a.entryPosition || 9999) - (b.entryPosition || 9999))

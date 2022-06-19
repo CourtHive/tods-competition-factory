@@ -1,9 +1,6 @@
 import { getSourceStructureIdsAndRelevantLinks } from '../../../getters/getSourceStructureIdsAndRelevantLinks';
 import { getStructureDrawPositionProfiles } from '../../../getters/getStructureDrawPositionProfiles';
-import {
-  getAppliedPolicies,
-  getPolicyDefinitions,
-} from '../../../../global/functions/deducers/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
 import { getAssignedParticipantIds } from '../../../getters/getAssignedParticipantIds';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
@@ -55,7 +52,6 @@ import {
   QUALIFYING,
   WIN_RATIO,
 } from '../../../../constants/drawDefinitionConstants';
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 
 /**
  *
@@ -111,18 +107,6 @@ export function positionActions(params) {
   });
 
   Object.assign(appliedPolicies, specifiedPolicyDefinitions || {});
-
-  const { policyDefinitions: attachedPolicyDefinitions } = getPolicyDefinitions(
-    {
-      policyTypes: [POLICY_TYPE_POSITION_ACTIONS],
-      tournamentRecord,
-      drawDefinition,
-      event,
-    }
-  );
-
-  const policyDefinitions =
-    specifiedPolicyDefinitions || attachedPolicyDefinitions;
 
   const { enabledStructures, actionsDisabled } = getEnabledStructures({
     appliedPolicies,
@@ -240,7 +224,6 @@ export function positionActions(params) {
       tournamentParticipants,
       positionAssignments,
       activeDrawPositions,
-      policyDefinitions,
       appliedPolicies,
       drawDefinition,
       isByePosition,
@@ -260,7 +243,6 @@ export function positionActions(params) {
       isQualifierPosition,
       positionAssignments,
       activeDrawPositions,
-      policyDefinitions,
       appliedPolicies,
       drawDefinition,
       drawPosition,
@@ -405,7 +387,6 @@ export function positionActions(params) {
       tournamentParticipants,
       positionAssignments,
       activeDrawPositions,
-      policyDefinitions,
       appliedPolicies,
       drawDefinition,
       drawPosition,
