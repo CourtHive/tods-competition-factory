@@ -147,17 +147,6 @@ export function generateDrawDefinition(params) {
     }
   }
 
-  let drawTypeResult = generateDrawType({
-    ...params,
-    tournamentRecord,
-    drawDefinition,
-    matchUpFormat,
-    matchUpType,
-    tieFormat,
-    drawSize,
-  });
-  if (drawTypeResult.error) return drawTypeResult;
-
   const { appliedPolicies } = getAppliedPolicies({
     tournamentRecord,
     event,
@@ -192,6 +181,18 @@ export function generateDrawDefinition(params) {
     attachPolicies({ drawDefinition, policyDefinitions: POLICY_SEEDING_USTA });
     Object.assign(appliedPolicies, POLICY_SEEDING_USTA);
   }
+
+  let drawTypeResult = generateDrawType({
+    ...params,
+    tournamentRecord,
+    appliedPolicies,
+    drawDefinition,
+    matchUpFormat,
+    matchUpType,
+    tieFormat,
+    drawSize,
+  });
+  if (drawTypeResult.error) return drawTypeResult;
 
   /*
   // if an avoidance policy is not passed in at draw generation
