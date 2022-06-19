@@ -7,7 +7,6 @@ import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 
 const scenario = [
-  /*
   {
     seedNumbersWithByes: [1, 2],
     participantsCount: 62,
@@ -20,10 +19,8 @@ const scenario = [
     seedsCount: 4,
     drawSize: 64,
   },
-  */
   {
     policyDefinitions: POLICY_SEEDING_BYES,
-    // seedNumbersWithByes: [1, 2],
     participantsCount: 62,
     seedsCount: 4,
     drawSize: 64,
