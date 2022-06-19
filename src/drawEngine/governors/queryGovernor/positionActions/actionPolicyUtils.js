@@ -1,26 +1,14 @@
-import { getPolicyDefinitions } from '../../../../global/functions/deducers/getAppliedPolicies';
-
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 import { POLICY_POSITION_ACTIONS_DEFAULT } from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DEFAULT';
 
 export function getEnabledStructures({
-  policyDefinitions,
-  tournamentRecord,
+  appliedPolicies,
   drawDefinition,
   structure,
-  event,
 }) {
-  const { policyDefinitions: attachedPolicy } = getPolicyDefinitions({
-    policyTypes: [POLICY_TYPE_POSITION_ACTIONS],
-    tournamentRecord,
-    drawDefinition,
-    event,
-  });
-
-  policyDefinitions =
-    policyDefinitions || attachedPolicy || POLICY_POSITION_ACTIONS_DEFAULT;
-
-  const positionActionsPolicy = policyDefinitions[POLICY_TYPE_POSITION_ACTIONS];
+  const positionActionsPolicy =
+    appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS] ||
+    POLICY_POSITION_ACTIONS_DEFAULT[POLICY_TYPE_POSITION_ACTIONS];
 
   const relevantLinks = drawDefinition.links?.filter(
     (link) => link?.target?.structureId === structure?.structureId

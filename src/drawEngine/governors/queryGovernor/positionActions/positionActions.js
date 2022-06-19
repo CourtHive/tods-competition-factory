@@ -121,24 +121,13 @@ export function positionActions(params) {
     }
   );
 
-  /*
-  const policyDefinitions = overrideAttachedPolicies
-    ? specifiedPolicyDefinitions
-    : attachedPolicyDefinitions
-    ? Object.assign(attachedPolicyDefinitions, specifiedPolicyDefinitions || {})
-    : specifiedPolicyDefinitions;
-    */
-
   const policyDefinitions =
     specifiedPolicyDefinitions || attachedPolicyDefinitions;
 
   const { enabledStructures, actionsDisabled } = getEnabledStructures({
-    policyDefinitions,
-    tournamentRecord,
     appliedPolicies,
     drawDefinition,
     structure,
-    event,
   });
 
   // targetRoundNumber will be > 1 for fed positions
