@@ -46,7 +46,7 @@ export function drawMatic({
     !Array.isArray(drawDefinition.entries) ||
     (participantIds && !Array.isArray(participantIds))
   )
-    return { error: INVALID_VALUES };
+    return { error: INVALID_VALUES, info: 'Missing Entries' };
 
   const { eventType } = event || {};
 
