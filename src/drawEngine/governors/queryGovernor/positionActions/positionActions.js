@@ -1,6 +1,9 @@
 import { getSourceStructureIdsAndRelevantLinks } from '../../../getters/getSourceStructureIdsAndRelevantLinks';
 import { getStructureDrawPositionProfiles } from '../../../getters/getStructureDrawPositionProfiles';
-import { getPolicyDefinitions } from '../../../../global/functions/deducers/getAppliedPolicies';
+import {
+  getAppliedPolicies,
+  getPolicyDefinitions,
+} from '../../../../global/functions/deducers/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
 import { getAssignedParticipantIds } from '../../../getters/getAssignedParticipantIds';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
@@ -19,7 +22,6 @@ import {
   isAvailableAction,
 } from './actionPolicyUtils';
 
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 import { DIRECT_ENTRY_STATUSES } from '../../../../constants/entryStatusConstants';
 import {
   INVALID_DRAW_POSITION,
@@ -53,6 +55,7 @@ import {
   QUALIFYING,
   WIN_RATIO,
 } from '../../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 
 /**
  *
@@ -67,7 +70,6 @@ export function positionActions(params) {
   const {
     policyDefinitions: specifiedPolicyDefinitions,
     tournamentParticipants = [],
-    overrideAttachedPolicies,
     tournamentRecord,
     drawDefinition,
     drawPosition,
@@ -101,6 +103,15 @@ export function positionActions(params) {
   if (isAdHoc) return matchUpActions(params);
   if (error) return { error };
 
+  const { appliedPolicies } = getAppliedPolicies({
+    tournamentRecord,
+    drawDefinition,
+    structure,
+    event,
+  });
+
+  Object.assign(appliedPolicies, specifiedPolicyDefinitions || {});
+
   const { policyDefinitions: attachedPolicyDefinitions } = getPolicyDefinitions(
     {
       policyTypes: [POLICY_TYPE_POSITION_ACTIONS],
@@ -110,15 +121,21 @@ export function positionActions(params) {
     }
   );
 
+  /*
   const policyDefinitions = overrideAttachedPolicies
     ? specifiedPolicyDefinitions
     : attachedPolicyDefinitions
     ? Object.assign(attachedPolicyDefinitions, specifiedPolicyDefinitions || {})
     : specifiedPolicyDefinitions;
+    */
+
+  const policyDefinitions =
+    specifiedPolicyDefinitions || attachedPolicyDefinitions;
 
   const { enabledStructures, actionsDisabled } = getEnabledStructures({
     policyDefinitions,
     tournamentRecord,
+    appliedPolicies,
     drawDefinition,
     structure,
     event,
@@ -235,6 +252,7 @@ export function positionActions(params) {
       positionAssignments,
       activeDrawPositions,
       policyDefinitions,
+      appliedPolicies,
       drawDefinition,
       isByePosition,
       drawPosition,
@@ -254,6 +272,7 @@ export function positionActions(params) {
       positionAssignments,
       activeDrawPositions,
       policyDefinitions,
+      appliedPolicies,
       drawDefinition,
       drawPosition,
       structureId,
@@ -398,6 +417,7 @@ export function positionActions(params) {
       positionAssignments,
       activeDrawPositions,
       policyDefinitions,
+      appliedPolicies,
       drawDefinition,
       drawPosition,
       structureId,
@@ -419,6 +439,7 @@ export function positionActions(params) {
       tournamentParticipants,
       activeDrawPositions,
       positionAssignments,
+      appliedPolicies,
       drawDefinition,
       drawPosition,
       structureId,
