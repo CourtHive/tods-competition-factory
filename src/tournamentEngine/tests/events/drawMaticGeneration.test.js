@@ -98,7 +98,7 @@ it.each(scenarios)(
   }
 );
 
-it.only('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
+it('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantsCount: 20 },
   });
