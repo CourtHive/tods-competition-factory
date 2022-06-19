@@ -1,5 +1,5 @@
 import { getTournamentParticipants } from '../../../tournamentEngine/getters/participants/getTournamentParticipants';
-import { getPolicyDefinitions } from '../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
+import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { unique } from '../../../utilities';
 
 import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';

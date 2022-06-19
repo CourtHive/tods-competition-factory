@@ -24,7 +24,7 @@ export function getValidQualifiersAction({
   drawPositionInitialRounds,
   tournamentParticipants,
   positionAssignments,
-  policyDefinitions,
+  appliedPolicies,
   drawDefinition,
   drawPosition,
   structureId,
@@ -39,7 +39,7 @@ export function getValidQualifiersAction({
     .map((assignment) => assignment.participantId)
     .filter(Boolean);
 
-  const policy = policyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS];
+  const policy = appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS];
 
   // get the round number in which the drawPosition initially occurs
   const targetRoundNumber =

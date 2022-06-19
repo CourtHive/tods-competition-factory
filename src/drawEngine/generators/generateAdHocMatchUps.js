@@ -31,6 +31,7 @@ import {
  */
 export function generateAdHocMatchUps({
   participantIdPairings,
+  addToStructure = true,
   tournamentRecord,
   matchUpIds = [],
   drawDefinition,
@@ -41,6 +42,9 @@ export function generateAdHocMatchUps({
 }) {
   if (typeof drawDefinition !== 'object')
     return { error: MISSING_DRAW_DEFINITION };
+
+  if (!structureId && drawDefinition.structures?.length === 1)
+    structureId = drawDefinition.structures?.[0]?.structureId;
   if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
 
   if (
@@ -105,18 +109,20 @@ export function generateAdHocMatchUps({
     };
   });
 
-  const result = addAdHocMatchUps({
-    tournamentRecord,
-    drawDefinition,
-    structureId,
-    matchUps,
-  });
-  if (result.error) return result;
+  if (addToStructure) {
+    const result = addAdHocMatchUps({
+      tournamentRecord,
+      drawDefinition,
+      structureId,
+      matchUps,
+    });
+    if (result.error) return result;
+  }
 
-  return { matchUpsCount: matchUps.length, ...SUCCESS };
+  return { matchUpsCount: matchUps.length, matchUps, ...SUCCESS };
 }
 
-function addAdHocMatchUps({
+export function addAdHocMatchUps({
   tournamentRecord,
   drawDefinition,
   structureId,
@@ -124,6 +130,10 @@ function addAdHocMatchUps({
 }) {
   if (typeof drawDefinition !== 'object')
     return { error: MISSING_DRAW_DEFINITION };
+
+  if (!structureId && drawDefinition.structures?.length === 1)
+    structureId = drawDefinition.structures?.[0]?.structureId;
+
   if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
 
   if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
@@ -137,6 +147,14 @@ function addAdHocMatchUps({
   const structureHasRoundPositions = existingMatchUps.find(
     (matchUp) => !!matchUp.roundPosition
   );
+
+  if (
+    structure.structures ||
+    structureHasRoundPositions ||
+    structure.finishingPosition === ROUND_OUTCOME
+  ) {
+    return { error: INVALID_STRUCTURE };
+  }
 
   if (
     structure.structures ||

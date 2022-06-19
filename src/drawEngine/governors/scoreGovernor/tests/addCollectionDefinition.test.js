@@ -1,13 +1,16 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import { mocksEngine, tournamentEngine } from '../../../..';
 
-import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 import { TEAM } from '../../../../constants/eventConstants';
+import {
+  FIRST_ROUND_LOSER_CONSOLATION,
+  MAIN,
+} from '../../../../constants/drawDefinitionConstants';
 
 it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   const {
     drawIds: [drawId],
-    eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
@@ -20,7 +23,7 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   const collectionDefinition = {
     collectionName: 'Mixed Doubles',
     matchUpFormat: 'SET1-S:8/TB7@7',
-    matchUpType: 'DOUBLES',
+    matchUpType: DOUBLES,
     matchUpCount: 3,
     matchUpValue: 1,
   };
@@ -45,18 +48,6 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   expect(drawDefinition.tieFormat.collectionDefinitions.length).toEqual(3);
   expect(drawDefinition.tieFormat.winCriteria.valueGoal).toEqual(7);
   expect(event.tieFormat.winCriteria.valueGoal).toEqual(5);
-
-  // test errors for invalid collectionDefinitions
-  // test adding to tieFormat on event
-  result = tournamentEngine.addCollectionDefinition({
-    tieFormatName: 'Modified Format',
-    collectionDefinition,
-    eventId,
-  });
-
-  expect(result.addedMatchUps.length).toEqual(0);
-  expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
-  expect(result.tieFormat.tieFormatName).toEqual('Modified Format');
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   const collectionIds = drawDefinition.tieFormat.collectionDefinitions.map(
@@ -104,16 +95,22 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
 
   const {
     drawIds: [drawId],
+    eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
-      { drawSize: 4, eventType: TEAM, tieFormatName: 'COLLEGE_D3' },
+      {
+        drawSize: 4,
+        eventType: TEAM,
+        tieFormatName: 'COLLEGE_D3',
+        drawType: FIRST_ROUND_LOSER_CONSOLATION,
+      },
     ],
   });
 
   tournamentEngine.setState(tournamentRecord);
 
-  expect(matchUpAddNotices).toEqual([30]);
+  expect(matchUpAddNotices).toEqual([40]);
 
   let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.tieFormat).toBeUndefined();
@@ -191,11 +188,11 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
     }));
   expect(secondRoundDualMatchUps[0].drawPositions).toEqual([1]);
 
-  const collectionDefinition = {
+  let collectionDefinition = {
     collectionName: 'Mixed Doubles',
     matchUpCount: 3,
     matchUpFormat: 'SET1-S:8/TB7@7',
-    matchUpType: 'DOUBLES',
+    matchUpType: DOUBLES,
     matchUpValue: 1,
   };
 
@@ -227,7 +224,7 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
     7
   );
 
-  expect(matchUpAddNotices).toEqual([30, 6]);
+  expect(matchUpAddNotices).toEqual([40, 6]);
   // 2 of the three TEAM matchUps have been modified
   expect(matchUpModifyNotices.length - modifiedCount).toEqual(2);
 
@@ -283,6 +280,25 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   structure.tieFormat.collectionDefinitions.forEach(({ collectionId }, i) => {
     expect(orderMap[collectionId]).toEqual(i + 1);
   });
+
+  collectionDefinition = {
+    collectionName: 'More Singles',
+    matchUpCount: 3,
+    matchUpFormat: 'SET1-S:8/TB7@7',
+    matchUpType: SINGLES,
+    matchUpValue: 1,
+  };
+
+  // test adding to tieFormat on event
+  result = tournamentEngine.addCollectionDefinition({
+    tieFormatName: 'New Format',
+    collectionDefinition,
+    eventId,
+  });
+
+  expect(result.addedMatchUps.length).toEqual(3);
+  expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
+  expect(result.tieFormat.tieFormatName).toEqual('New Format');
 });
 
 it('added collectionDefinitions do not appear in inProgress matchUps', () => {
@@ -387,7 +403,7 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
     collectionName: 'Mixed Doubles',
     matchUpCount: 3,
     matchUpFormat: 'SET1-S:8/TB7@7',
-    matchUpType: 'DOUBLES',
+    matchUpType: DOUBLES,
     matchUpValue: 1,
   };
 

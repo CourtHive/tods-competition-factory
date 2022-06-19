@@ -1,6 +1,8 @@
 import { matchUpActions as drawEngineMatchupActions } from '../../drawEngine/governors/queryGovernor/matchUpActions';
+import { getPolicyDefinitions } from '../../global/functions/deducers/getAppliedPolicies';
 import { allTournamentMatchUps } from './matchUpsGetter';
 
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../constants/policyConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
@@ -17,10 +19,12 @@ import {
  *
  */
 export function matchUpActions({
+  policyDefinitions,
   tournamentRecord,
   drawDefinition,
   matchUpId,
   drawId,
+  event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId) {
@@ -38,8 +42,21 @@ export function matchUpActions({
     }, undefined);
   }
 
+  const { policyDefinitions: attachedPolicy } = getPolicyDefinitions({
+    policyTypes: [POLICY_TYPE_POSITION_ACTIONS],
+    tournamentRecord,
+    drawDefinition,
+    event,
+  });
+
+  policyDefinitions = policyDefinitions || attachedPolicy;
+
   if (drawId) {
-    return drawEngineMatchupActions({ drawDefinition, matchUpId });
+    return drawEngineMatchupActions({
+      policyDefinitions,
+      drawDefinition,
+      matchUpId,
+    });
   } else {
     return { error: DRAW_DEFINITION_NOT_FOUND };
   }

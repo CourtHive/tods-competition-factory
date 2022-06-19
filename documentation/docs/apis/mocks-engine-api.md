@@ -280,9 +280,14 @@ mocksEngine.modifyTournamentRecord({
 
   participantsProfile, // optional - participants for events will be generated automatically
   eventProfiles, // optional - see example usage for `generateTournamentRecord`
+  drawProfiles, // optional - see example usage for `generateTournamentRecord`
+  venueProfiles, // optional - see example usage for `generateTournamentRecord`
+  schedulingProfile, // optional - see example usage for `generateTournamentRecord`
 
   completeAllMatchUps, // optional - boolean (legacy support for scoreString to be applied to all matchUps)
   randomWinningSide, // optional - boolean; defaults to false which results in always { winningSide: 1 }
+
+  uuids, // optional - array of uuids for generated items
 });
 ```
 

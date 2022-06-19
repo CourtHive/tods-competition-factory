@@ -35,9 +35,9 @@ it('can promote alternates', () => {
 
   let { participantId } = alternates[0];
 
-  let result = tournamentEngine.promoteAlternate({
+  let result = tournamentEngine.promoteAlternates({
+    participantIds: [participantId],
     tournamentEngine,
-    participantId,
     eventId,
   });
   expect(result.success).toEqual(true);

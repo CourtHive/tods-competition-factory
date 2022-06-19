@@ -1,7 +1,5 @@
-import {
-  ALTERNATE,
-  DIRECT_ACCEPTANCE,
-} from '../../../../constants/entryStatusConstants';
+import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_EVENT,
   INVALID_ENTRY_STATUS,
@@ -9,27 +7,41 @@ import {
   PARTICIPANT_ENTRY_NOT_FOUND,
   PARTICIPANT_NOT_FOUND_IN_STAGE,
   PARTICIPANT_NOT_ENTERED_IN_STAGE,
+  INVALID_VALUES,
 } from '../../../../constants/errorConditionConstants';
+import {
+  ALTERNATE,
+  DIRECT_ACCEPTANCE,
+} from '../../../../constants/entryStatusConstants';
 
-import { MAIN } from '../../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
+export function promoteAlternate(params) {
+  const { participantId } = params;
+  if (participantId && typeof participantId !== 'string')
+    return { error: INVALID_VALUES, participantId };
 
-export function promoteAlternate({
+  return promoteAlternates({
+    ...params,
+    participantIds: [participantId].filter(Boolean),
+  });
+}
+
+export function promoteAlternates({
   tournamentRecord,
   drawDefinition,
-  event,
-
-  participantId,
-  stage = MAIN,
+  participantIds,
   stageSequence,
+  stage = MAIN,
+  event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!Array.isArray(participantIds))
+    return { error: INVALID_VALUES, participantIds };
   if (!event) return { error: MISSING_EVENT };
 
   if (event) {
     const result = promoteWithinElement({
       element: event,
-      participantId,
+      participantIds,
       stageSequence,
       stage,
     });
@@ -38,7 +50,7 @@ export function promoteAlternate({
   if (drawDefinition) {
     const result = promoteWithinElement({
       element: drawDefinition,
-      participantId,
+      participantIds,
       stageSequence,
       stage,
     });
@@ -49,65 +61,85 @@ export function promoteAlternate({
 }
 
 function promoteWithinElement({
-  element,
-  participantId,
-  stage,
+  participantIds,
   stageSequence,
+  element,
+  stage,
 }) {
   const alternates = (element.entries || []).filter(
     (entry) => entry.entryStatus === ALTERNATE
   );
 
-  // if no participantId is provided, take the alternate with the lowest entryPosition
-  const participantEntry =
-    (element.entries || []).find(
-      (entry) => entry.participantId === participantId
-    ) ||
-    alternates.reduce((participantEntry, entry) => {
-      const { entryPosition } = entry;
-      return isNaN(entryPosition)
-        ? participantEntry
-        : !participantEntry || entryPosition < participantEntry.entryPosition
-        ? entry
-        : participantEntry;
-    }, undefined);
-
-  if (!participantEntry) return { error: PARTICIPANT_ENTRY_NOT_FOUND };
-
-  if (participantEntry.entryStatus !== ALTERNATE)
-    return { error: INVALID_ENTRY_STATUS };
-  if (participantEntry.stage && participantEntry.entryStage !== stage)
-    return { error: PARTICIPANT_NOT_ENTERED_IN_STAGE };
-  if (stageSequence && participantEntry.stageSequence !== stageSequence)
-    return { error: PARTICIPANT_NOT_FOUND_IN_STAGE };
-
-  participantEntry.entryStatus = DIRECT_ACCEPTANCE;
-
-  // cleanUp
-  const entryPosition = participantEntry?.entryPosition;
-
-  if (!isNaN(entryPosition)) {
-    // if promoted participant has an entryPosition, adjust all other alternates with an entryPosition higher than promoted participant
-    element.entries.forEach((entry) => {
-      if (
-        entry.entryStatus === ALTERNATE &&
-        entry.entryPosition > entryPosition
-      ) {
-        entry.entryPosition = entry.entryPosition - 1;
-      }
-    });
-  }
-
-  let maxEntryPosition = Math.max(
-    ...element.entries
-      .filter(
-        (entry) =>
-          entry.entryStatus === DIRECT_ACCEPTANCE && !isNaN(entry.entryPosition)
-      )
-      .map(({ entryPosition }) => parseInt(entryPosition || 0)),
-    0
+  const targetedEntries = (element.entries || []).filter((entry) =>
+    participantIds.includes(entry.participantId)
   );
-  participantEntry.entryPosition = maxEntryPosition || 0;
+
+  // if no participantId is provided, take the alternate with the lowest entryPosition
+  const alternateEntry = alternates.reduce((participantEntry, entry) => {
+    const { entryPosition } = entry;
+    return isNaN(entryPosition)
+      ? participantEntry
+      : !participantEntry || entryPosition < participantEntry.entryPosition
+      ? entry
+      : participantEntry;
+  }, undefined);
+
+  const participantEntries = targetedEntries.length
+    ? targetedEntries
+    : [alternateEntry].filter(Boolean);
+
+  if (!participantEntries?.length)
+    return { error: PARTICIPANT_ENTRY_NOT_FOUND };
+
+  const invalidEntryStatus = participantEntries.filter(
+    ({ entryStatus }) => entryStatus !== ALTERNATE
+  );
+
+  if (invalidEntryStatus.length)
+    return { error: INVALID_ENTRY_STATUS, invalidEntryStatus };
+
+  const invalidStage = participantEntries.filter(
+    ({ entryStage }) => entryStage !== stage
+  );
+  if (invalidStage.length)
+    return { error: PARTICIPANT_NOT_ENTERED_IN_STAGE, invalidStage };
+
+  const invalidStageSequence =
+    stageSequence &&
+    participantEntries.filter((entry) => entry.stageSequence !== stageSequence);
+  if (invalidStageSequence?.length)
+    return { error: PARTICIPANT_NOT_FOUND_IN_STAGE, invalidStageSequence };
+
+  for (const participantEntry of participantEntries) {
+    participantEntry.entryStatus = DIRECT_ACCEPTANCE;
+
+    // cleanUp
+    const entryPosition = participantEntry?.entryPosition;
+
+    if (!isNaN(entryPosition)) {
+      // if promoted participant has an entryPosition, adjust all other alternates with an entryPosition higher than promoted participant
+      element.entries.forEach((entry) => {
+        if (
+          entry.entryStatus === ALTERNATE &&
+          entry.entryPosition > entryPosition
+        ) {
+          entry.entryPosition = entry.entryPosition - 1;
+        }
+      });
+    }
+
+    let maxEntryPosition = Math.max(
+      ...element.entries
+        .filter(
+          (entry) =>
+            entry.entryStatus === DIRECT_ACCEPTANCE &&
+            !isNaN(entry.entryPosition)
+        )
+        .map(({ entryPosition }) => parseInt(entryPosition || 0)),
+      0
+    );
+    participantEntry.entryPosition = maxEntryPosition || 0;
+  }
 
   return { ...SUCCESS };
 }

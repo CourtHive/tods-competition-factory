@@ -1,5 +1,5 @@
+import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getEliminationDrawSize } from '../../../drawEngine/getters/getEliminationDrawSize';
-import { getPolicyDefinitions } from '../queryGovernor/getPolicyDefinitions';
 
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import {

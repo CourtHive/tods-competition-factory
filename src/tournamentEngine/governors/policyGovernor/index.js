@@ -1,6 +1,6 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getAllowedDrawTypes, getAllowedMatchUpFormats } from './allowedTypes';
 import { getEntriesAndSeedsCount } from './getEntriesAndSeedsCount';
-import { getEventAppliedPolicies } from './getAppliedPolicies';
 import { getSeedsCount } from './getSeedsCount';
 import { findPolicy } from './findPolicy';
 
@@ -21,7 +21,7 @@ const policyGovernor = {
 
   getAllowedDrawTypes,
   getAllowedMatchUpFormats,
-  getEventAppliedPolicies,
+  getAppliedPolicies,
 };
 
 export default policyGovernor;

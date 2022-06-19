@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { eventConstants } from '../../../constants/eventConstants';
 import { drawEngine } from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
@@ -32,12 +32,12 @@ it('can aggrgate participant finishingPositions', () => {
   expect(result.success).toEqual(true);
 
   const values = {
+    policyDefinitions: { ...SEEDING_ITF_POLICY },
+    event: eventResult,
     automated: true,
+    seedsCount: 4,
     drawSize: 16,
     eventId,
-    seedsCount: 4,
-    event: eventResult,
-    policyDefinitions: { ...SEEDING_ITF_POLICY },
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const { drawId } = drawDefinition;
@@ -50,7 +50,7 @@ it('can aggrgate participant finishingPositions', () => {
   const { extensions } = drawDefinition;
   expect(extensions.length).toEqual(2);
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  expect(appliedPolicies.seeding.policyName).toEqual('ITF');
+  expect(appliedPolicies.seeding.policyName).toEqual('ITF SEEDING');
 
   // find main structureId more intelligently
   const mainStructureId = drawDefinition.structures[0].structureId;

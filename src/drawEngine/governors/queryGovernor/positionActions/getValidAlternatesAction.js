@@ -22,7 +22,7 @@ export function getValidAlternatesAction({
   possiblyDisablingAction,
   activeDrawPositions,
   positionAssignments,
-  policyDefinitions,
+  appliedPolicies,
   drawDefinition,
   drawPosition,
   structureId,
@@ -33,7 +33,7 @@ export function getValidAlternatesAction({
   if (activeDrawPositions.includes(drawPosition)) return {};
 
   const otherFlightEntries =
-    policyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS]?.otherFlightEntries;
+    appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS]?.otherFlightEntries;
 
   const drawEnteredParticpantIds = (drawDefinition.entries || [])
     .sort((a, b) => (a.entryPosition || 9999) - (b.entryPosition || 9999))
@@ -104,12 +104,12 @@ export function getValidAlternatesAction({
 
   if (availableAlternatesParticipantIds.length) {
     const validAlternatesAction = {
-      type: ALTERNATE_PARTICIPANT,
-      method: ALTERNATE_PARTICIPANT_METHOD,
-      availableAlternates,
-      availableAlternatesParticipantIds,
-      willDisableLinks: possiblyDisablingAction,
       payload: { drawId, structureId, drawPosition },
+      willDisableLinks: possiblyDisablingAction,
+      method: ALTERNATE_PARTICIPANT_METHOD,
+      availableAlternatesParticipantIds,
+      type: ALTERNATE_PARTICIPANT,
+      availableAlternates,
     };
     return { validAlternatesAction };
   }
@@ -117,7 +117,7 @@ export function getValidAlternatesAction({
   return {};
 }
 
-function eligibleEntryStage({ structure, entry }) {
+export function eligibleEntryStage({ structure, entry }) {
   const { stage } = structure;
   if (
     !entry.entryStage ||

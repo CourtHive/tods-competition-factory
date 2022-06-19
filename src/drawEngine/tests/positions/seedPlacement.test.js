@@ -1,5 +1,5 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
-import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { findStructure, getDrawStructures } from '../../getters/findStructure';
 import { getValidSeedBlocks } from '../../getters/seedGetter';
 import { getStageEntries } from '../../getters/stageGetter';
@@ -7,8 +7,8 @@ import { mocksEngine, setSubscriptions } from '../../..';
 import { numericSort } from '../../../utilities';
 import { drawEngine } from '../../sync';
 
-import { MODIFY_DRAW_DEFINITION } from '../../../constants/topicConstants';
 import SEEDING_NATIONAL from '../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
+import { MODIFY_DRAW_DEFINITION } from '../../../constants/topicConstants';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
@@ -493,9 +493,9 @@ function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { validSeedBlocks } = getValidSeedBlocks({
-    structure,
-    drawDefinition,
     appliedPolicies,
+    drawDefinition,
+    structure,
   });
 
   validSeedBlocks.forEach((seedBlock, i) => {

@@ -1,3 +1,4 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { positionUnseededParticipants } from './positionUnseededParticipants';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
@@ -29,6 +30,7 @@ export function automatedPositioning({
   multipleStructures,
   placeByes = true,
   tournamentRecord,
+  appliedPolicies,
   candidatesCount,
   drawDefinition,
   participants,
@@ -58,6 +60,14 @@ export function automatedPositioning({
 
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return handleErrorCondition({ error });
+
+  if (!appliedPolicies) {
+    appliedPolicies = getAppliedPolicies({
+      drawDefinition,
+      structure,
+      event,
+    })?.appliedPolicies;
+  }
 
   const { qualifiersCount } = getQualifiersCount({
     stageSequence: structure.stageSequence,
@@ -98,6 +108,7 @@ export function automatedPositioning({
       placeByes &&
       positionByes({
         tournamentRecord,
+        appliedPolicies,
         drawDefinition,
         matchUpsMap,
         structure,
@@ -110,6 +121,7 @@ export function automatedPositioning({
     result = positionSeedBlocks({
       inContextDrawMatchUps,
       tournamentRecord,
+      appliedPolicies,
       drawDefinition,
       participants,
       matchUpsMap,
@@ -123,6 +135,7 @@ export function automatedPositioning({
       let result = positionSeedBlocks({
         inContextDrawMatchUps,
         tournamentRecord,
+        appliedPolicies,
         drawDefinition,
         participants,
         matchUpsMap,
@@ -136,6 +149,7 @@ export function automatedPositioning({
       positionByes({
         inContextDrawMatchUps,
         tournamentRecord,
+        appliedPolicies,
         drawDefinition,
         matchUpsMap,
         structure,
@@ -155,6 +169,7 @@ export function automatedPositioning({
     let result = positionQualifiers({
       inContextDrawMatchUps,
       tournamentRecord,
+      appliedPolicies,
       drawDefinition,
       participants,
       matchUpsMap,
@@ -168,6 +183,7 @@ export function automatedPositioning({
       unseededByePositions,
       multipleStructures,
       tournamentRecord,
+      appliedPolicies,
       candidatesCount,
       drawDefinition,
       participants,

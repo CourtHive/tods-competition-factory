@@ -1,22 +1,14 @@
+import { getMatchUpIds } from '../../../global/functions/extractors';
 import { generateRange, randomPop } from '../../../utilities';
-// import { hasParticipantId } from '../../../global/functions/filters';
-// import { arrayIndices } from '../../../utilities/arrays';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
-import {
-  getMatchUpIds,
-  //   getParticipantId,
-} from '../../../global/functions/extractors';
 
 import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { AD_HOC, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 import {
   CANNOT_REMOVE_PARTICIPANTS,
-  // DRAW_POSITION_ACTIVE,
-  // EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
+  INVALID_STRUCTURE,
   INVALID_VALUES,
-  MISSING_SIDE_NUMBER,
-  // MISSING_PARTICIPANT_ID,
 } from '../../../constants/errorConditionConstants';
 import {
   ABANDONED,
@@ -24,7 +16,11 @@ import {
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import { SCORE } from '../../../constants/matchUpActionConstants';
+import {
+  REFEREE,
+  SCHEDULE,
+  SCORE,
+} from '../../../constants/matchUpActionConstants';
 
 it('can generate AD_HOC drawDefinitions, add and delete matchUps', () => {
   const {
@@ -178,7 +174,7 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
 
   // expect an error when the participantId is not added to the payload
   result = tournamentEngine[method](payload);
-  expect(result.error).toEqual(MISSING_SIDE_NUMBER);
+  expect(result.sidesSwapped).toEqual(true);
 
   // get the first participantId and add to payload
   const firstParticipantId = availableParticipantIds[0];
@@ -199,6 +195,10 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   );
   expect(targetSide.participant.participantId).toEqual(firstParticipantId);
 
+  result = tournamentEngine.positionActions(firstRoundMatchUp);
+  let actionTypes = result.validActions.map(({ type }) => type);
+  expect(actionTypes).toEqual([ASSIGN_PARTICIPANT, REFEREE, SCHEDULE]);
+
   result = tournamentEngine.matchUpActions(firstRoundMatchUp);
   assignmentAction = result.validActions.find(
     ({ type }) => type === ASSIGN_PARTICIPANT
@@ -215,6 +215,13 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   payload.participantId = secondParticipantId;
   result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  const matchUp = matchUps.find(
+    (matchUp) => matchUp.matchUpId === payload.matchUpId
+  );
+  const sideTwo = matchUp.sides.find(({ sideNumber }) => sideNumber === 2);
+  expect(sideTwo.participantId).toEqual(secondParticipantId);
 
   // generate matchUpsPerRound { roundNumber: 2 } matchUps and add them to the adHoc draw structure
   result = tournamentEngine.generateAdHocMatchUps({
@@ -259,7 +266,7 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   expect(completedMatchUps[0].matchUpId).toEqual(firstRoundMatchUp.matchUpId);
 
   result = tournamentEngine.matchUpActions(firstRoundMatchUp);
-  const actionTypes = result.validActions.map(({ type }) => type);
+  actionTypes = result.validActions.map(({ type }) => type);
   expect(actionTypes.includes(SCORE)).toEqual(true);
 
   // attempt to remove participantId from one side of a matchUp with outcome
@@ -269,8 +276,8 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
 
   // now remove outcomes
   ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
-    winningSide: undefined,
     matchUpStatus: TO_BE_PLAYED,
+    winningSide: undefined,
   }));
 
   result = tournamentEngine.setMatchUpStatus({
@@ -285,4 +292,75 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   payload.participantId = undefined;
   result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
+});
+
+it('will not allow addition of AD_HOC matchUps to other draw types', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 16 }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual(15);
+
+  let result = tournamentEngine.generateAdHocMatchUps({
+    matchUpsCount: 3,
+    newRound: true,
+    drawId,
+  });
+
+  expect(result.error).toEqual(INVALID_STRUCTURE);
+
+  const event = { eventName: 'Match Play' };
+  result = tournamentEngine.addEvent({ event });
+  expect(result.success).toEqual(true);
+
+  const eventId = result.event.eventId;
+  result = tournamentEngine.generateDrawDefinition({
+    drawType: AD_HOC,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual(15);
+
+  const drawDefinition = result.drawDefinition;
+  result = tournamentEngine.addDrawDefinition({ drawDefinition, eventId });
+
+  result = tournamentEngine.generateAdHocMatchUps({
+    drawId: drawDefinition.drawId,
+    matchUpsCount: 8,
+    newRound: true,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.matchUps.length).toEqual(8);
+
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual(23);
+
+  result = tournamentEngine.generateAdHocMatchUps({
+    drawId: drawDefinition.drawId,
+    addToStructure: false,
+    matchUpsCount: 8,
+    newRound: true,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.matchUps.length).toEqual(8);
+
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual(23);
+
+  result = tournamentEngine.addAdHocMatchUps({
+    drawId: drawDefinition.drawId,
+    matchUps: result.matchUps,
+  });
+  expect(result.success).toEqual(true);
+
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual(31);
 });

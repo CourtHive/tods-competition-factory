@@ -1,4 +1,4 @@
-import { getAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 import { drawEngine } from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
@@ -34,12 +34,12 @@ it('can generate a tournament with events and draws', () => {
   expect(result.success).toEqual(true);
 
   const values = {
+    policyDefinitions: { ...POLICY_SEEDING_NATIONAL },
+    event: eventResult,
     automated: true,
+    seedsCount: 8,
     drawSize: 32,
     eventId,
-    seedsCount: 8,
-    event: eventResult,
-    policyDefinitions: { ...POLICY_SEEDING_NATIONAL },
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const { drawId } = drawDefinition;
@@ -52,7 +52,7 @@ it('can generate a tournament with events and draws', () => {
   const { extensions } = drawDefinition;
   expect(extensions.length).toEqual(2);
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  expect(appliedPolicies.seeding.policyName).toEqual('NATIONAL');
+  expect(appliedPolicies.seeding.policyName).toEqual('NATIONAL SEEDING');
 
   // find main structureId more intelligently
   const mainStructureId = drawDefinition.structures[0].structureId;

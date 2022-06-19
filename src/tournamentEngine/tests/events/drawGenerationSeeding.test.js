@@ -3,6 +3,8 @@ import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { SPLIT_WATERFALL } from '../../../constants/flightConstants';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { SEEDING } from '../../../constants/scaleConstants';
@@ -14,8 +16,6 @@ import {
   MISSING_EVENT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
-import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
-import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
 it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -145,7 +145,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   expect(seedValues).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
 });
 
-it('can constrain seedsCount by policyDefinitions', () => {
+it.only('can constrain seedsCount by policyDefinitions', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const ageCategoryCode = 'U18';
@@ -191,8 +191,8 @@ it('can constrain seedsCount by policyDefinitions', () => {
   });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    eventId,
     seedsCount: 100, // this is in excess of policy limit and above drawSize and stageEntries #
+    eventId,
   });
   expect(drawDefinition.structures[0].seedLimit).toEqual(seedsCount);
 });

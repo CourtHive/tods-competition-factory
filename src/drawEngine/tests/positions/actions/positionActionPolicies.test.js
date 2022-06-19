@@ -98,7 +98,6 @@ it('supports policyDefinitions in positionActions', () => {
   policyDefinitions = POLICY_POSITION_ACTIONS_NO_MOVEMENT;
   result = tournamentEngine.positionActions({
     structureId: mainStructure.structureId,
-    overrideAttachedPolicies: true,
     policyDefinitions,
     drawPosition,
     drawId,
@@ -110,7 +109,6 @@ it('supports policyDefinitions in positionActions', () => {
   // now check the available positionActions for the consolation structure
   result = tournamentEngine.positionActions({
     structureId: consolationStructure.structureId,
-    overrideAttachedPolicies: true,
     drawPosition,
     drawId,
   });

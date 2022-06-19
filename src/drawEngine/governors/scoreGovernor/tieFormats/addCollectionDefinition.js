@@ -106,14 +106,38 @@ export function addCollectionDefinition({
     }
   }
 
+  const modifiedStructureIds = [];
   const addedMatchUps = [];
   let targetMatchUps = [];
 
   if (eventId) {
     event.tieFormat = tieFormat;
+
     // all team matchUps in the event which do not have tieFormats and where draws/strucures do not have tieFormats should have matchUps added
-    // TODO: implement
-    console.log('support for modifying event.tieFormat not yet implemented');
+    for (const drawDefinition of event.drawDefinitions || []) {
+      if (drawDefinition.tieFormat) continue;
+      for (const structure of drawDefinition.structures || []) {
+        if (structure.tieFormat) continue;
+        const result = updateStructureMatchUps({
+          updateInProgressMatchUps,
+          collectionDefinition,
+          structure,
+          uuids,
+        });
+        addedMatchUps.push(...result.newMatchUps);
+        targetMatchUps.push(...result.targetMatchUps);
+        modifiedStructureIds.push(structure.structureId);
+      }
+    }
+
+    queueNoficiations({
+      structureIds: modifiedStructureIds,
+      modifiedMatchUps: targetMatchUps,
+      eventId: event?.eventId,
+      tournamentRecord,
+      drawDefinition,
+      addedMatchUps,
+    });
   } else if (structureId && structure) {
     structure.tieFormat = tieFormat;
     const result = updateStructureMatchUps({
@@ -159,8 +183,6 @@ export function addCollectionDefinition({
   } else if (drawDefinition) {
     // all team matchUps in the drawDefinition which do not have tieFormats and where strucures do not have tieFormats should have matchUps added
     drawDefinition.tieFormat = tieFormat;
-    const modifiedStructureIds = [];
-    const modifiedMatchUps = [];
 
     for (const structure of drawDefinition.structures || []) {
       const result = updateStructureMatchUps({
@@ -171,14 +193,13 @@ export function addCollectionDefinition({
       });
       modifiedStructureIds.push(structureId);
       addedMatchUps.push(...result.newMatchUps);
-      targetMatchUps = result.targetMatchUps;
-      modifiedMatchUps.push(...result.targetMatchUps);
+      targetMatchUps.push(...result.targetMatchUps);
     }
 
     queueNoficiations({
       structureIds: modifiedStructureIds,
+      modifiedMatchUps: targetMatchUps,
       eventId: event?.eventId,
-      modifiedMatchUps,
       tournamentRecord,
       drawDefinition,
       addedMatchUps,

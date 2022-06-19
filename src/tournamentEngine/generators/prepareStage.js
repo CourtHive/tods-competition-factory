@@ -14,6 +14,7 @@ export function prepareStage({
   preparedStructureIds = [],
   inContextDrawMatchUps,
   tournamentRecord,
+  appliedPolicies,
   drawDefinition,
   participants,
   matchUpsMap,
@@ -39,8 +40,8 @@ export function prepareStage({
   const eventType = event?.eventType;
   const stageEntries = entries.filter((entry) => {
     const entryRoundTarget = findExtension({
-      element: entry,
       name: ROUND_TARGET,
+      element: entry,
     })?.extension?.value;
 
     return (
@@ -73,11 +74,10 @@ export function prepareStage({
   const { seedLimit } = initializeStructureSeedAssignments({
     participantCount: stageEntries.length,
     enforcePolicyLimits,
-    tournamentRecord,
+    appliedPolicies,
     drawDefinition,
     structureId,
     seedsCount,
-    event,
   });
 
   if (seedLimit && seedLimit < seedsCount) seedsCount = seedLimit;
@@ -178,6 +178,7 @@ export function prepareStage({
       inContextDrawMatchUps,
       multipleStructures,
       tournamentRecord,
+      appliedPolicies,
       drawDefinition,
       participants,
       structureId,

@@ -1,12 +1,17 @@
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { getPositionAssignments } from '../../getters/positionsGetter';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import { reset, initialize } from '../primitives/primitives';
 import { setsValues } from './roundRobinSetsValues.js';
 import { intersection } from '../../../utilities';
-
-import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import POLICY_SEEDING_NATIONAL from '../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
+import POLICY_SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
+import { LUCKY_LOSER } from '../../../constants/entryStatusConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 import {
   MAIN,
   PLAY_OFF,
@@ -14,19 +19,11 @@ import {
   WATERFALL,
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../../constants/drawDefinitionConstants';
-
-import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
-import { LUCKY_LOSER } from '../../../constants/entryStatusConstants';
-import { SINGLES } from '../../../constants/eventConstants';
-
 import {
   ASSIGN_BYE,
   ASSIGN_PARTICIPANT,
   REMOVE_ASSIGNMENT,
 } from '../../../constants/positionActionConstants';
-
-import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
-import POLICY_SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 
 it('disables placement actions for Round Robin Playoffs until all groups are complete', () => {
   reset();
@@ -68,12 +65,12 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
 
   const matchUpFormat = 'SET3-S:6/TB7';
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    eventId,
+    seedingProfile: WATERFALL,
+    structureOptions,
+    matchUpFormat,
     drawType,
     drawSize,
-    matchUpFormat,
-    structureOptions,
-    seedingProfile: WATERFALL,
+    eventId,
   });
   const { drawId } = drawDefinition;
 
@@ -111,10 +108,10 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
 
   let drawPosition = 1;
   result = tournamentEngine.positionActions({
-    drawId,
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
     structureId: playoffStructureIds[0],
     drawPosition,
-    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    drawId,
   });
   expect(result.validActions.length).toEqual(0);
 
@@ -137,9 +134,9 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
         setValues,
       });
       const result = tournamentEngine.setMatchUpStatus({
-        drawId,
         matchUpId,
         outcome,
+        drawId,
       });
       expect(result.success).toEqual(true);
     });
@@ -150,10 +147,10 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
   });
   drawPosition = 1;
   result = tournamentEngine.positionActions({
-    drawId,
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
     structureId: playoffStructureIds[0],
     drawPosition,
-    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    drawId,
   });
   expect(result.validActions.length).toEqual(0);
   mainStructure.structures.slice(2).forEach((structure, structureOrder) => {
@@ -171,10 +168,10 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
 
   drawPosition = 1;
   result = tournamentEngine.positionActions({
-    drawId,
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
     structureId: playoffStructureIds[0],
     drawPosition,
-    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    drawId,
   });
   expect(result.validActions.length).not.toEqual(0);
 });
@@ -464,7 +461,10 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
 
   // now test with seed position enforced (default behavior)
   let drawPosition = 1;
-  let policyDefinitions = POLICY_POSITION_ACTIONS_UNRESTRICTED;
+  let policyDefinitions = {
+    ...POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    ...POLICY_SEEDING_NATIONAL,
+  };
   result = tournamentEngine.positionActions({
     drawId,
     structureId: playoffStructureIds[0],
@@ -478,10 +478,10 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
 
   drawPosition = 2;
   result = tournamentEngine.positionActions({
-    drawId,
     structureId: playoffStructureIds[0],
-    drawPosition,
     policyDefinitions,
+    drawPosition,
+    drawId,
   });
 
   validActionTypes = result.validActions.map(({ type }) => type);
@@ -497,10 +497,10 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
 
   drawPosition = 3;
   result = tournamentEngine.positionActions({
-    drawId,
     structureId: playoffStructureIds[0],
-    drawPosition,
     policyDefinitions,
+    drawPosition,
+    drawId,
   });
 
   validActionTypes = result.validActions.map(({ type }) => type);
@@ -515,10 +515,10 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.positionActions({
-    drawId,
     structureId: playoffStructureIds[0],
-    drawPosition,
     policyDefinitions,
+    drawPosition,
+    drawId,
   });
   const participantsAvailable = result.validActions.find(
     (action) => action.type === ASSIGN_PARTICIPANT

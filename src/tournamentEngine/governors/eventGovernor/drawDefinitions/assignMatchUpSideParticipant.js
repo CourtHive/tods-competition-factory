@@ -10,7 +10,6 @@ import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
-  MISSING_SIDE_NUMBER,
 } from '../../../../constants/errorConditionConstants';
 import {
   completedMatchUpStatuses,
@@ -30,8 +29,10 @@ export function assignMatchUpSideParticipant({
   if (participantId && typeof participantId !== 'string')
     return { error: INVALID_PARTICIPANT_ID };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!sideNumber) return { error: MISSING_SIDE_NUMBER };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+
+  const noSideNumberProvided = sideNumber === undefined;
+  if (noSideNumberProvided) sideNumber = 1;
 
   if (![1, 2].includes(sideNumber))
     return { error: INVALID_VALUES, sideNumber };
@@ -71,11 +72,19 @@ export function assignMatchUpSideParticipant({
       : existingSide;
   });
 
+  // makes it possible to use this method with no sideNumber provided
+  // each time a participant is assigned the sides are swapped
+  if (noSideNumberProvided) {
+    for (const side of matchUp.sides) {
+      side.sideNumber = 3 - side.sideNumber;
+    }
+  }
+
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
     drawDefinition,
     matchUp,
   });
 
-  return { ...SUCCESS };
+  return { ...SUCCESS, sidesSwapped: noSideNumberProvided };
 }

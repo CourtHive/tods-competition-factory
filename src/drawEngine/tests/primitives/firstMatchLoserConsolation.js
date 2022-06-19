@@ -1,18 +1,18 @@
 import { generateRange } from '../../../utilities';
 import { drawEngine } from '../../sync';
 
+import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import {
   MAIN,
   FIRST_MATCH_LOSER_CONSOLATION,
   CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
-import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 export function generateFMLC({
-  drawSize,
-  seedsCount,
-  participantsCount,
   policyDefinitions,
+  participantsCount,
+  seedsCount,
+  drawSize,
 }) {
   const drawType = FIRST_MATCH_LOSER_CONSOLATION;
 

@@ -1,7 +1,8 @@
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpGovernor/modifyRoundRobinMatchUpsStatus';
+import { getStructureDrawPositionProfiles } from '../../getters/getStructureDrawPositionProfiles';
 import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { getStructureDrawPositionProfiles } from '../../getters/getStructureDrawPositionProfiles';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
 import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
@@ -86,9 +87,16 @@ export function assignDrawPosition({
   );
   const participantSeedNumber = relevantAssignment?.seedNumber;
 
+  const { appliedPolicies } = getAppliedPolicies({
+    tournamentRecord,
+    drawDefinition,
+    event,
+    structure,
+  });
   if (participantSeedNumber) {
     const isValidDrawPosition = isValidSeedPosition({
       seedNumber: participantSeedNumber,
+      appliedPolicies,
       drawDefinition,
       drawPosition,
       structureId,
@@ -187,6 +195,7 @@ export function assignDrawPosition({
         drawDefinition,
         ...assignment,
         structureId,
+        event,
       });
   }
 

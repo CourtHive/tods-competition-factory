@@ -1,5 +1,5 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { drawEngine } from '../../sync';
-import { getAppliedPolicies } from './getAppliedPolicies';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
@@ -22,6 +22,6 @@ it('can set and reset policy governor', () => {
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { seedingProfile, policyName } = appliedPolicies.seeding;
 
-  expect(policyName).toEqual('ITF');
+  expect(policyName).toEqual('ITF SEEDING');
   expect(seedingProfile).not.toBeUndefined();
 });

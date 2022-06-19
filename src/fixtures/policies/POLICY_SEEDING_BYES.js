@@ -1,11 +1,12 @@
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 import { CLUSTER } from '../../constants/drawDefinitionConstants';
 
-export const POLICY_SEEDING_NATIONAL = {
+export const POLICY_SEEDING_BYES = {
   [POLICY_TYPE_SEEDING]: {
+    containerByesIgnoreSeeding: true,
     drawSizeProgression: true,
     seedingProfile: CLUSTER,
-    policyName: 'NATIONAL SEEDING',
+    policyName: 'SEED_BYES',
 
     seedsCountThresholds: [
       { drawSize: 4, minimumParticipantCount: 3, seedsCount: 2 },
@@ -18,4 +19,4 @@ export const POLICY_SEEDING_NATIONAL = {
   },
 };
 
-export default POLICY_SEEDING_NATIONAL;
+export default POLICY_SEEDING_BYES;

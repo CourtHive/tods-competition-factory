@@ -1,4 +1,3 @@
-import { getAppliedPolicies } from '../../policyGovernor/getAppliedPolicies';
 import { getSeedOrderByePositions } from './getSeedOrderedByePositions';
 import { getUnseededByePositions } from './getUnseededByePositions';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
@@ -10,6 +9,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 export function positionByes({
   blockOrdered = false,
   tournamentRecord,
+  appliedPolicies,
   drawDefinition,
   matchUpsMap,
   structureId,
@@ -30,7 +30,6 @@ export function positionByes({
   const byesToPlace = byesCount - placedByes;
   if (byesToPlace <= 0) return { ...SUCCESS };
 
-  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const {
     strictSeedOrderByePositions,
     blockSeedOrderByePositions,

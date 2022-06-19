@@ -1,5 +1,5 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getValidSeedBlocks, getNextSeedBlock } from '../../getters/seedGetter';
-import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { generateRange } from '../../../utilities';

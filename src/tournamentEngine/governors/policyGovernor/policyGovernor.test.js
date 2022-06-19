@@ -1,6 +1,7 @@
-import { getAppliedPolicies } from './getAppliedPolicies';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { tournamentEngine } from '../../sync';
 
+import POLICY_SCORING_DEFAULT from '../../../fixtures/policies/POLICY_SCORING_DEFAULT';
 import AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
@@ -15,7 +16,6 @@ import {
   POLICY_TYPE_AVOIDANCE,
   POLICY_TYPE_SCORING,
 } from '../../../constants/policyConstants';
-import POLICY_SCORING_DEFAULT from '../../../fixtures/policies/POLICY_SCORING_DEFAULT';
 
 it('can set and remove policies from tournamentRecords and events', () => {
   expect(tournamentEngine).toHaveProperty('attachPolicies');
@@ -86,7 +86,7 @@ it('can set and remove policies from tournamentRecords and events', () => {
   expect(updatedRecord.events[0].extensions.length).toEqual(1);
 
   const { appliedPolicies: updatedAppliedPolicies } =
-    tournamentEngine.getEventAppliedPolicies({
+    tournamentEngine.getAppliedPolicies({
       eventId,
     });
   expect(updatedAppliedPolicies.avoidance.policyName).toEqual(

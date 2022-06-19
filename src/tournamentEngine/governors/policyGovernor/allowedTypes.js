@@ -1,5 +1,4 @@
-import { getAppliedPolicies } from './getAppliedPolicies';
-
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import {
   POLICY_TYPE_SCORING,

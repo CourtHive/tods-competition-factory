@@ -1,6 +1,6 @@
-import { getPolicyDefinitions } from '../../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
 import { getSourceStructureIdsAndRelevantLinks } from '../../../getters/getSourceStructureIdsAndRelevantLinks';
 import { getStructureDrawPositionProfiles } from '../../../getters/getStructureDrawPositionProfiles';
+import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
 import { getAssignedParticipantIds } from '../../../getters/getAssignedParticipantIds';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
@@ -12,13 +12,13 @@ import { isValidSeedPosition } from '../../../getters/seedGetter';
 import { getStageEntries } from '../../../getters/stageGetter';
 import { isCompletedStructure } from '../structureActions';
 import { getValidSwapAction } from './getValidSwapAction';
+import { matchUpActions } from '../matchUpActions';
 import {
   getEnabledStructures,
   getPolicyActions,
   isAvailableAction,
 } from './actionPolicyUtils';
 
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 import { DIRECT_ENTRY_STATUSES } from '../../../../constants/entryStatusConstants';
 import {
   INVALID_DRAW_POSITION,
@@ -62,19 +62,19 @@ import {
  * @param {string} structureId - id of structure of drawPosition
  *
  */
-export function positionActions({
-  policyDefinitions: specifiedPolicyDefinitions,
-  tournamentParticipants = [],
-  overrideAttachedPolicies,
-  tournamentRecord,
-  drawDefinition,
-  drawPosition,
-  structureId,
-  event,
-}) {
+export function positionActions(params) {
+  const {
+    policyDefinitions: specifiedPolicyDefinitions,
+    tournamentParticipants = [],
+    tournamentRecord,
+    drawDefinition,
+    drawPosition,
+    structureId,
+    event,
+  } = params;
+
   if (!event) return { error: MISSING_EVENT };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (drawPosition === undefined) return { error: MISSING_DRAW_POSITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
   const {
@@ -84,6 +84,7 @@ export function positionActions({
     activeDrawPositions,
     byeDrawPositions,
     structure,
+    isAdHoc,
     error,
   } = getStructureDrawPositionProfiles({
     tournamentRecord,
@@ -91,29 +92,26 @@ export function positionActions({
     structureId,
   });
 
+  if (drawPosition === undefined && !isAdHoc) {
+    return { error: MISSING_DRAW_POSITION };
+  }
+
+  if (isAdHoc) return matchUpActions(params);
   if (error) return { error };
 
-  const { policyDefinitions: attachedPolicyDefinitions } = getPolicyDefinitions(
-    {
-      policyTypes: [POLICY_TYPE_POSITION_ACTIONS],
-      tournamentRecord,
-      drawDefinition,
-      event,
-    }
-  );
-
-  const policyDefinitions = overrideAttachedPolicies
-    ? specifiedPolicyDefinitions
-    : attachedPolicyDefinitions
-    ? Object.assign(attachedPolicyDefinitions, specifiedPolicyDefinitions || {})
-    : specifiedPolicyDefinitions;
-
-  const { enabledStructures, actionsDisabled } = getEnabledStructures({
-    policyDefinitions,
+  const { appliedPolicies } = getAppliedPolicies({
     tournamentRecord,
     drawDefinition,
     structure,
     event,
+  });
+
+  Object.assign(appliedPolicies, specifiedPolicyDefinitions || {});
+
+  const { enabledStructures, actionsDisabled } = getEnabledStructures({
+    appliedPolicies,
+    drawDefinition,
+    structure,
   });
 
   // targetRoundNumber will be > 1 for fed positions
@@ -226,7 +224,7 @@ export function positionActions({
       tournamentParticipants,
       positionAssignments,
       activeDrawPositions,
-      policyDefinitions,
+      appliedPolicies,
       drawDefinition,
       isByePosition,
       drawPosition,
@@ -245,7 +243,7 @@ export function positionActions({
       isQualifierPosition,
       positionAssignments,
       activeDrawPositions,
-      policyDefinitions,
+      appliedPolicies,
       drawDefinition,
       drawPosition,
       structureId,
@@ -389,7 +387,7 @@ export function positionActions({
       tournamentParticipants,
       positionAssignments,
       activeDrawPositions,
-      policyDefinitions,
+      appliedPolicies,
       drawDefinition,
       drawPosition,
       structureId,
@@ -411,6 +409,7 @@ export function positionActions({
       tournamentParticipants,
       activeDrawPositions,
       positionAssignments,
+      appliedPolicies,
       drawDefinition,
       drawPosition,
       structureId,

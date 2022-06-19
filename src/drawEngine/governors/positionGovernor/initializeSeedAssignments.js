@@ -1,4 +1,3 @@
-import { getPolicyDefinitions } from '../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
 import { getSeedsCount } from '../../../tournamentEngine/governors/policyGovernor/getSeedsCount';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
@@ -13,12 +12,11 @@ export function initializeStructureSeedAssignments({
   requireParticipantCount = true,
   enforcePolicyLimits = true,
   drawSizeProgression,
-  tournamentRecord,
   participantCount,
+  appliedPolicies,
   drawDefinition,
   structureId,
   seedsCount,
-  event,
 }) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { error };
@@ -29,26 +27,19 @@ export function initializeStructureSeedAssignments({
   if (seedsCount > drawSize)
     return { error: SEEDSCOUNT_GREATER_THAN_DRAW_SIZE };
 
-  const { policyDefinitions } = getPolicyDefinitions({
-    policyTypes: [POLICY_TYPE_SEEDING],
-    tournamentRecord,
-    drawDefinition,
-    event,
-  });
-
   const { seedsCount: maxSeedsCount } = getSeedsCount({
+    policyDefinitions: appliedPolicies,
     requireParticipantCount,
     drawSizeProgression,
-    policyDefinitions,
     participantCount,
     drawSize,
   });
 
   if (
-    policyDefinitions &&
-    maxSeedsCount &&
+    appliedPolicies?.[POLICY_TYPE_SEEDING] &&
     seedsCount > maxSeedsCount &&
-    enforcePolicyLimits
+    enforcePolicyLimits &&
+    maxSeedsCount
   ) {
     seedsCount = maxSeedsCount;
   }

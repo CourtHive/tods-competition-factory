@@ -1,4 +1,4 @@
-import { getPolicyDefinitions } from '../governors/queryGovernor/getPolicyDefinitions';
+import { getPolicyDefinitions } from '../../global/functions/deducers/getAppliedPolicies';
 
 import POLICY_COMPETITIVE_BANDS_DEFAULT from '../../fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
 import { POLICY_TYPE_COMPETITIVE_BANDS } from '../../constants/policyConstants';
