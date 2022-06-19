@@ -28,6 +28,7 @@ import {
   QUALIFYING,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
+import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
 
 /**
  * automated = true, // can be true/false or "truthy" { seedsOnly: true }
@@ -42,6 +43,7 @@ export function generateDrawDefinition(params) {
     tieFormatName,
     stage = MAIN,
     drawEntries,
+    addToEvent,
     placeByes,
     drawId,
     event,
@@ -325,6 +327,10 @@ export function generateDrawDefinition(params) {
       drawDefinition,
       matchUpType,
     });
+  }
+
+  if (addToEvent) {
+    addDrawDefinition({ tournamentRecord, drawDefinition, event });
   }
 
   return {
