@@ -193,6 +193,4 @@ test('mocksEngine can autoschedule', () => {
   } = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps();
 
   expect(Object.keys(mockedMatchUp.schedule).length).toBeGreaterThan(0);
-
-  console.log(mockedMatchUp.sides[0]);
 });
