@@ -359,7 +359,7 @@ export function generateEventWithDraw({
   });
 
   if (generationError) return { error: generationError };
-  const drawId = generate ? drawDefinition.drawId : undefined;
+  const drawId = drawDefinition.drawId;
 
   if (Array.isArray(drawExtensions)) {
     drawExtensions
@@ -524,8 +524,8 @@ export function generateEventWithDraw({
     const result = addFlight({
       drawEntries: drawDefinition.entries,
       drawName: drawName || drawType,
-      drawId: drawDefinition.drawId,
       qualifyingPositions,
+      drawId,
       event,
       stage,
     });
