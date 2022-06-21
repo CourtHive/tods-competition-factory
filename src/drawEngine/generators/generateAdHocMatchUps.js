@@ -1,6 +1,8 @@
+import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
+import { getMatchUpId } from '../../global/functions/extractors';
+import { generateRange, overlap, UUID } from '../../utilities';
 import { isConvertableInteger } from '../../utilities/math';
 import { definedAttributes } from '../../utilities/objects';
-import { generateRange, UUID } from '../../utilities';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
@@ -15,6 +17,7 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
+  EXISTING_MATCHUP_ID,
 } from '../../constants/errorConditionConstants';
 
 /**
@@ -52,8 +55,9 @@ export function generateAdHocMatchUps({
     (matchUpsCount && !isConvertableInteger(matchUpsCount)) ||
     (matchUpIds && !Array.isArray(matchUpIds)) ||
     (!participantIdPairings && !matchUpsCount)
-  )
-    return { error: INVALID_VALUES };
+  ) {
+    return { error: INVALID_VALUES, info: 'matchUpsCount or pairings error' };
+  }
 
   // if drawDefinition and structureId are provided it is possible to infer roundNumber
   const structure = drawDefinition?.structures?.find(
@@ -81,7 +85,7 @@ export function generateAdHocMatchUps({
   }
 
   if (roundNumber && roundNumber - 1 > lastRoundNumber)
-    return { error: INVALID_VALUES };
+    return { error: INVALID_VALUES, info: 'roundNumber error' };
 
   const nextRoundNumber =
     roundNumber || (newRound ? lastRoundNumber + 1 : lastRoundNumber || 1);
@@ -136,7 +140,8 @@ export function addAdHocMatchUps({
 
   if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
 
-  if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
+  if (!Array.isArray(matchUps))
+    return { error: INVALID_VALUES, info: 'matchUps must be an array' };
 
   const structure = drawDefinition.structures?.find(
     (structure) => structure.structureId === structureId
@@ -162,6 +167,21 @@ export function addAdHocMatchUps({
     structure.finishingPosition === ROUND_OUTCOME
   ) {
     return { error: INVALID_STRUCTURE };
+  }
+
+  const existingMatchUpIds =
+    allTournamentMatchUps({
+      tournamentRecord,
+      inContext: false,
+    })?.matchUps?.map(getMatchUpId) || [];
+
+  const newMatchUpIds = matchUps.map(getMatchUpId);
+
+  if (overlap(existingMatchUpIds, newMatchUpIds)) {
+    return {
+      error: EXISTING_MATCHUP_ID,
+      info: 'One or more matchUpIds already present in tournamentRecord',
+    };
   }
 
   structure.matchUps.push(...matchUps);

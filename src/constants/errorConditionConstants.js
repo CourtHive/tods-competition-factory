@@ -710,6 +710,11 @@ export const EXISTING_OUTCOME = {
   code: 'ERR_EXISTING_OUTCOME',
 };
 
+export const EXISTING_MATCHUP_ID = {
+  message: 'Existing matchUpId',
+  code: 'ERR_EXISTING_MATCHUP_ID',
+};
+
 export const METHOD_NOT_FOUND = {
   message: 'Method not found',
   code: 'ERR_NOT_FOUND_METHOD',
@@ -736,6 +741,7 @@ export const errorConditionConstants = {
   EXISTING_DRAW_DEFINITIONS,
   EXISTING_END_TIME,
   EXISTING_FLIGHT,
+  EXISTING_MATCHUP_ID,
   EXISTING_OUTCOME,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   EXISTING_PARTICIPANT,

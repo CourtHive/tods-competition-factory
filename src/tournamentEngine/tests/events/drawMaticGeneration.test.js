@@ -1,12 +1,15 @@
 import { getParticipantId } from '../../../global/functions/extractors';
-import { generateRange, unique } from '../../../utilities';
+import { generateRange, makeDeepCopy, unique } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-import { MISSING_PARTICIPANT_IDS } from '../../../constants/errorConditionConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
 import { AD_HOC } from '../../../constants/drawDefinitionConstants';
+import {
+  EXISTING_MATCHUP_ID,
+  MISSING_PARTICIPANT_IDS,
+} from '../../../constants/errorConditionConstants';
 
 const getParticipantType = (eventType) =>
   eventType === SINGLES ? INDIVIDUAL : eventType === DOUBLES ? PAIR : undefined;
@@ -98,7 +101,7 @@ it.each(scenarios)(
   }
 );
 
-it.only('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
+it('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantsCount: 20 },
   });
@@ -151,8 +154,10 @@ it.only('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   expect(matchUps.length).toEqual(20);
 
+  const matchUpsToAdd = makeDeepCopy(result.matchUps);
+
   result = tournamentEngine.addAdHocMatchUps({
-    matchUps: result.matchUps,
+    matchUps: matchUpsToAdd,
     drawId,
   });
   expect(result.success).toEqual(true);
@@ -162,10 +167,14 @@ it.only('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
   expect(matchUps.length).toEqual(30);
 
   result = tournamentEngine.addAdHocMatchUps({
-    matchUps: result.matchUps,
+    matchUps: matchUpsToAdd,
     drawId,
   });
-  console.log(result);
+  expect(result.error).toEqual(EXISTING_MATCHUP_ID);
+
+  // number of matchUps will not have changed
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  expect(matchUps.length).toEqual(30);
 });
 
 it('cannot use drawMatic when there are no entries present', () => {
