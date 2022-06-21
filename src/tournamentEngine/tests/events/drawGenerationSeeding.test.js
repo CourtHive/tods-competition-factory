@@ -3,17 +3,15 @@ import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import POLICY_AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { SPLIT_WATERFALL } from '../../../constants/flightConstants';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { SEEDING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-
-import POLICY_AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
 import {
   MISSING_DRAW_SIZE,
-  MISSING_EVENT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
 
@@ -104,31 +102,30 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     );
 
     result = tournamentEngine.getEntriesAndSeedsCount({
-      eventId,
-      drawId: flight.drawId,
       policyDefinitions: SEEDING_USTA,
+      drawId: flight.drawId,
+      eventId,
     });
     expect(result.seedsCount).toEqual(seedsCount);
     expect(result.entries.length).toEqual(drawSize);
     expect(result.stageEntries.length).toEqual(drawSize);
 
     result = tournamentEngine.getEntriesAndSeedsCount({
-      drawId: flight.drawId,
       policyDefinitions: SEEDING_USTA,
+      drawId: flight.drawId,
     });
-    expect(result.error).toEqual(MISSING_EVENT);
+    expect(result.entries.length).toEqual(16);
 
     result = tournamentEngine.getEntriesAndSeedsCount({
-      eventId,
-      drawDefinition,
       policyDefinitions: SEEDING_USTA,
+      eventId,
     });
     expect(result.entries.length).toEqual(32);
 
     result = tournamentEngine.getEntriesAndSeedsCount({
-      eventId,
-      stage: QUALIFYING,
       policyDefinitions: SEEDING_USTA,
+      stage: QUALIFYING,
+      eventId,
     });
     expect(result.error).toEqual(MISSING_DRAW_SIZE);
   });

@@ -304,3 +304,70 @@ it('will ignore winnerMatchUpId when feedProfile is DRAW', () => {
     expect(result.success).toEqual(true);
   }
 });
+
+it('does what Jeff wants it to', () => {
+  const drawProfiles = [
+    {
+      drawSize: 2,
+      mathcUpType: 'DOUBLES',
+      qualifyingProfiles: [
+        {
+          roundTarget: 1,
+          structureProfiles: [
+            {
+              structureOptions: { groupSize: 8 },
+              drawType: 'ROUND_ROBIN',
+              qualifyingPositions: 2,
+              stageSequence: 1,
+              drawSize: 16,
+            },
+            {
+              structureOptions: { groupSize: 6 },
+              drawType: 'ROUND_ROBIN',
+              qualifyingPositions: 2,
+              stageSequence: 2,
+              drawSize: 12,
+            },
+            {
+              structureOptions: { groupSize: 10, groupSizeLimit: 10 },
+              drawType: 'ROUND_ROBIN',
+              qualifyingPositions: 2,
+              stageSequence: 3,
+              drawSize: 20,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  expect(tournamentRecord).not.toBeUndefined();
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+
+  for (const structure of drawDefinition.structures) {
+    if (structure.stage === QUALIFYING) {
+      expect(structure.structures.length).toEqual(2);
+      const { positionAssignments } = getPositionAssignments({ structure });
+      const qualifyingPositionsCount = positionAssignments.filter(
+        ({ qualifier }) => qualifier
+      ).length;
+      const unassignedPositionsCount = positionAssignments.filter(
+        ({ qualifier, bye, participantId }) =>
+          !qualifier && !bye && !participantId
+      ).length;
+      if (structure.stageSequence > 1) {
+        expect(qualifyingPositionsCount).toEqual(2);
+      }
+      expect(unassignedPositionsCount).toEqual(0);
+    }
+  }
+});

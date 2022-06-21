@@ -276,14 +276,16 @@ export function generateEventWithDraw({
     for (const roundTargetProfile of qualifyingProfiles.sort(roundTargetSort)) {
       roundTarget = roundTargetProfile.roundTarget || roundTarget;
       let entryStageSequence = 1;
+      let qualifyingPositions;
 
       for (const structureProfile of roundTargetProfile.structureProfiles.sort(
         sequenceSort
       )) {
         const drawSize = structureProfile.drawSize;
+        const participantsCount = drawSize - (qualifyingPositions || 0); // minus qualifyingPositions
         const participantIds = qualifyingParticipantIds.slice(
           qualifyingIndex,
-          qualifyingIndex + drawSize
+          qualifyingIndex + participantsCount
         );
         const result = addEventEntries({
           entryStage: QUALIFYING,
@@ -294,10 +296,13 @@ export function generateEventWithDraw({
           roundTarget,
           event,
         });
+
         if (result.error) {
           return result;
         }
-        qualifyingIndex += drawSize;
+
+        qualifyingPositions = structureProfile.qualifyingPositions;
+        qualifyingIndex += participantsCount;
         entryStageSequence += 1;
       }
 

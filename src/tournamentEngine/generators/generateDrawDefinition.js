@@ -1,6 +1,7 @@
 import { addVoluntaryConsolationStructure } from '../governors/eventGovernor/addVoluntaryConsolationStructure';
 import { validateTieFormat } from '../../drawEngine/governors/scoreGovernor/tieFormats/tieFormatUtilities';
 import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
+import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
 import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/matchUpFormat';
 import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attachPolicies';
@@ -28,7 +29,6 @@ import {
   QUALIFYING,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
-import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
 
 /**
  * automated = true, // can be true/false or "truthy" { seedsOnly: true }
