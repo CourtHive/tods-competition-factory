@@ -2,6 +2,8 @@ import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
+import { INDIVIDUAL } from '../../../../constants/participantTypes';
+import { COMPETITOR } from '../../../../constants/participantRoles';
 import {
   INVALID_ENTRY_STATUS,
   MISSING_EVENT,
@@ -98,4 +100,39 @@ it('can promote alternates', () => {
     drawId,
   });
   expect(result.error).toEqual(INVALID_ENTRY_STATUS);
+});
+
+describe.skip('entryStatus ALTERNATE with no entryStage are assumed to be MAIN stage', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 8, generate: false }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  test('it can add a participant to a tournament', () => {
+    let participant = {
+      participantType: INDIVIDUAL,
+      participantRole: COMPETITOR,
+      person: {
+        standardFamilyName: 'Family',
+        standardGivenName: 'Given',
+      },
+    };
+
+    let result = tournamentEngine.addParticipants({
+      participants: [participant],
+      returnParticipants: true,
+    });
+    expect(result.success).toEqual(true);
+
+    const participantId = result.participants[0].participantId;
+
+    const participantIds = [participantId];
+    console.log({ drawId });
+    result = tournamentEngine.addDrawEntries({ participantIds, drawId });
+    console.log(result);
+  });
 });
