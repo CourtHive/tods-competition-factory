@@ -99,7 +99,7 @@ function promoteWithinElement({
     return { error: INVALID_ENTRY_STATUS, invalidEntryStatus };
 
   const invalidStage = participantEntries.filter(
-    ({ entryStage }) => entryStage !== stage
+    ({ entryStage }) => entryStage && entryStage !== stage
   );
   if (invalidStage.length)
     return { error: PARTICIPANT_NOT_ENTERED_IN_STAGE, invalidStage };

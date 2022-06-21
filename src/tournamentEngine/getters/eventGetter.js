@@ -1,3 +1,4 @@
+import { getFlightProfile } from './getFlightProfile';
 import { makeDeepCopy } from '../../utilities';
 
 import { SUCCESS } from '../../constants/resultConstants';
@@ -51,7 +52,20 @@ export function findEvent({ tournamentRecord, eventId, drawId }) {
       const targetDrawDefinition = drawDefinitions.find(
         (drawDefinition) => drawDefinition.drawId === drawId
       );
-      if (targetDrawDefinition) drawDefinition = targetDrawDefinition;
+      if (targetDrawDefinition) {
+        drawDefinition = targetDrawDefinition;
+      } else {
+        const { flightProfile } = getFlightProfile({ event });
+        const flight = flightProfile?.flights?.find(
+          (flight) => flight.drawId === drawId
+        );
+        if (flight)
+          return {
+            drawId,
+            entries: flight.drawEntries,
+            drawName: flight.drawName,
+          };
+      }
       return targetDrawDefinition;
     });
 

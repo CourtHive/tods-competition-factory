@@ -2,6 +2,8 @@ import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
+import { INDIVIDUAL } from '../../../../constants/participantTypes';
+import { COMPETITOR } from '../../../../constants/participantRoles';
 import {
   INVALID_ENTRY_STATUS,
   MISSING_EVENT,
@@ -98,4 +100,58 @@ it('can promote alternates', () => {
     drawId,
   });
   expect(result.error).toEqual(INVALID_ENTRY_STATUS);
+});
+
+describe('entries with no entryStage can be promoted', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 8, generate: false }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  test('it can add an entry with no entryStage', () => {
+    let participant = {
+      participantType: INDIVIDUAL,
+      participantRole: COMPETITOR,
+      person: {
+        standardFamilyName: 'Family',
+        standardGivenName: 'Given',
+      },
+    };
+
+    let result = tournamentEngine.addParticipants({
+      participants: [participant],
+      returnParticipants: true,
+    });
+    expect(result.success).toEqual(true);
+
+    const participantId = result.participants[0].participantId;
+
+    const participantIds = [participantId];
+    result = tournamentEngine.addEventEntries({
+      entryStatus: ALTERNATE,
+      participantIds,
+      entryStage: '',
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+  });
+
+  test('it can get event by drawId when no drawDefinition is present and promote and alternate with no entryStage', () => {
+    const { event } = tournamentEngine.getEvent({ drawId });
+    const alternateEntry = event.entries.find(
+      ({ entryStatus }) => entryStatus === ALTERNATE
+    );
+    expect(alternateEntry.entryStage).toBeUndefined();
+
+    let result = tournamentEngine.promoteAlternate({
+      participantId: alternateEntry.participantId,
+      eventId: event.eventId,
+      tournamentEngine,
+    });
+    expect(result.success).toEqual(true);
+  });
 });
