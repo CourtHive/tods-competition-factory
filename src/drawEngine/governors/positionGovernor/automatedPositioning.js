@@ -77,6 +77,7 @@ export function automatedPositioning({
   });
   const entryStatuses = DIRECT_ENTRY_STATUSES;
   const entries = getStageEntries({
+    stageSequence: structure.stageSequence,
     stage: structure.stage,
     drawDefinition,
     entryStatuses,
@@ -190,6 +191,7 @@ export function automatedPositioning({
       matchUpsMap,
       structure,
     });
+
     if (result.error) return handleErrorCondition(result);
     if (result.conflicts) conflicts.unseededConflicts = result.conflicts;
   }

@@ -77,6 +77,7 @@ export function generateQualifyingStructures({
             structureName:
               structureProfile.structureName || qualifyingStructureName,
             structureId: structureId || uuids?.pop(),
+            qualifyingPositions, // TODO: use
             stage: QUALIFYING,
             structureOptions,
             stageSequence,

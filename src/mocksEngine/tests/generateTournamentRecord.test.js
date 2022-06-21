@@ -72,7 +72,7 @@ test('drawProfiles support generate: false', () => {
 
   expect(eventIds.length).toEqual(2);
   expect(venueIds.length).toEqual(0);
-  expect(drawIds.length).toEqual(0);
+  expect(drawIds.length).toEqual(2);
 
   tournamentEngine.setState(tournamentRecord);
 
