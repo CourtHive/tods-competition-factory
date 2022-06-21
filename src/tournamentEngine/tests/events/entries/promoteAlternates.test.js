@@ -102,7 +102,7 @@ it('can promote alternates', () => {
   expect(result.error).toEqual(INVALID_ENTRY_STATUS);
 });
 
-describe('entries with no entryStage can be promoted', () => {
+test('entries with no entryStage can be promoted', () => {
   const {
     tournamentRecord,
     drawIds: [drawId],
@@ -111,47 +111,44 @@ describe('entries with no entryStage can be promoted', () => {
   });
 
   tournamentEngine.setState(tournamentRecord);
+  let participant = {
+    participantType: INDIVIDUAL,
+    participantRole: COMPETITOR,
+    person: {
+      standardFamilyName: 'Family',
+      standardGivenName: 'Given',
+    },
+  };
 
-  test('it can add an entry with no entryStage', () => {
-    let participant = {
-      participantType: INDIVIDUAL,
-      participantRole: COMPETITOR,
-      person: {
-        standardFamilyName: 'Family',
-        standardGivenName: 'Given',
-      },
-    };
-
-    let result = tournamentEngine.addParticipants({
-      participants: [participant],
-      returnParticipants: true,
-    });
-    expect(result.success).toEqual(true);
-
-    const participantId = result.participants[0].participantId;
-
-    const participantIds = [participantId];
-    result = tournamentEngine.addEventEntries({
-      entryStatus: ALTERNATE,
-      participantIds,
-      entryStage: '',
-      drawId,
-    });
-    expect(result.success).toEqual(true);
+  let result = tournamentEngine.addParticipants({
+    participants: [participant],
+    returnParticipants: true,
   });
+  expect(result.success).toEqual(true);
 
-  test('it can get event by drawId when no drawDefinition is present and promote and alternate with no entryStage', () => {
-    const { event } = tournamentEngine.getEvent({ drawId });
-    const alternateEntry = event.entries.find(
-      ({ entryStatus }) => entryStatus === ALTERNATE
-    );
-    expect(alternateEntry.entryStage).toBeUndefined();
+  const participantId = result.participants[0].participantId;
 
-    let result = tournamentEngine.promoteAlternate({
-      participantId: alternateEntry.participantId,
-      eventId: event.eventId,
-      tournamentEngine,
-    });
-    expect(result.success).toEqual(true);
+  const participantIds = [participantId];
+  // entries can be added with no entryStage
+  result = tournamentEngine.addEventEntries({
+    entryStatus: ALTERNATE,
+    participantIds,
+    entryStage: '',
+    drawId,
   });
+  expect(result.success).toEqual(true);
+
+  // it can get event by drawId when no drawDefinition is present and promote and alternate with no entryStage
+  const { event } = tournamentEngine.getEvent({ drawId });
+  const alternateEntry = event.entries.find(
+    ({ entryStatus }) => entryStatus === ALTERNATE
+  );
+  expect(alternateEntry.entryStage).toBeUndefined();
+
+  result = tournamentEngine.promoteAlternate({
+    participantId: alternateEntry.participantId,
+    eventId: event.eventId,
+    tournamentEngine,
+  });
+  expect(result.success).toEqual(true);
 });
