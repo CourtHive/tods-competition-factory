@@ -56,6 +56,26 @@ export function updateTieMatchUpScore({
 
   const removeWinningSide = matchUp.winningSide && !hasWinner;
 
+  if (
+    matchUp.tieFormat &&
+    !hasWinner &&
+    (!set || (!set.side1Score && !set.side2Score))
+  ) {
+    // if matchUp.tieFormat is equivalent to hierarchical tieFormat, remove
+    const inheritedTieFormat =
+      structure?.tieFormat ||
+      drawDefinition?.tieFormat ||
+      event?.tieFormat ||
+      undefined;
+
+    if (
+      inheritedTieFormat &&
+      JSON.stringify(tieFormat) === JSON.stringify(inheritedTieFormat)
+    ) {
+      matchUp.tieFormat = undefined;
+    }
+  }
+
   modifyMatchUpScore({
     matchUpStatus: newMatchUpStatus,
     score: scoreObject,
