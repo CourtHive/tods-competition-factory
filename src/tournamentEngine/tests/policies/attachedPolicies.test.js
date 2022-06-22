@@ -1,6 +1,7 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import POLICY_SEEDING_BYES from '../../../fixtures/policies/POLICY_SEEDING_BYES';
 import { AD_HOC, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 import POLICY_SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import ROUND_NAMING_POLICY from '../publishing/roundNamingPolicy';
@@ -155,4 +156,33 @@ it('policyDefinitions can be passed directly into generateDrawDefintion from dra
     ({ name }) => name === APPLIED_POLICIES
   );
   expect(Object.keys(appliedPolicies.value).length).toEqual(2);
+});
+
+test.only('seeding policies attached to tournamentRecords will be used when generating Draws', () => {
+  const {
+    tournamentRecord,
+    eventIds: [eventId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 16, generate: false }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  tournamentEngine.attachPolicies({ policyDefinitions: POLICY_SEEDING_BYES });
+
+  const {
+    flightProfile: {
+      flights: [flight],
+    },
+  } = tournamentEngine.getFlightProfile({ eventId });
+
+  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    eventId,
+    ...flight,
+  });
+
+  // there are no 'appliedPolicies' because seeding was found on the policies attached to the tournament
+  expect(drawDefinition.extensions.map(({ name }) => name)).toEqual([
+    'entryProfile',
+  ]);
 });
