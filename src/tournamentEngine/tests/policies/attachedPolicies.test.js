@@ -158,7 +158,7 @@ it('policyDefinitions can be passed directly into generateDrawDefintion from dra
   expect(Object.keys(appliedPolicies.value).length).toEqual(2);
 });
 
-test.only('seeding policies attached to tournamentRecords will be used when generating Draws', () => {
+test('seeding policies attached to tournamentRecords will be used when generating Draws', () => {
   const {
     tournamentRecord,
     eventIds: [eventId],
