@@ -56,7 +56,9 @@ it('will properly clean up matchUpStatusCodes when removing DOUBLE_WALKOVERs', (
   expect(finalMatchUp.roundNumber).toEqual(2);
   expect(finalMatchUp.winningSide).toEqual(1);
   expect(finalMatchUp.matchUpStatus).toEqual(WALKOVER);
-  expect(finalMatchUp.matchUpStatusCodes).toBeUndefined();
+  expect(
+    finalMatchUp.matchUpStatusCodes.filter((code) => !code.sideNumber)
+  ).toEqual([]);
 
   // outcome copied from client payload
   outcome = {

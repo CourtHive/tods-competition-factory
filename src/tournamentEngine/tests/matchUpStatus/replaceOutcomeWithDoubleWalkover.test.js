@@ -122,5 +122,7 @@ test('Replacing an outcome with a DOUBLE_WALKOVER will advance paired position',
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toEqual(1);
-  expect(targetMatchUp.matchUpStatusCodes).toEqual(undefined);
+  expect(
+    targetMatchUp.matchUpStatusCodes.filter((code) => !code.sideNumber)
+  ).toEqual([]);
 });
