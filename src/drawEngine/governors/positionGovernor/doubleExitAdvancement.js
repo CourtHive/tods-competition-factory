@@ -110,7 +110,7 @@ function conditionallyAdvanceDrawPosition(params) {
   if (winnerMatchUpDrawPositions.length > 1)
     return decorateResult({ result: { error: DRAW_POSITION_ASSIGNED }, stack });
 
-  const { pairedPreviousMatchUpIsDoubleExit } =
+  const { pairedPreviousMatchUpIsDoubleExit, pairedPreviousMatchUp } =
     getPairedPreviousMatchUpIsDoubleExit(params);
 
   // get the targets for the winnerMatchUp
@@ -162,11 +162,53 @@ function conditionallyAdvanceDrawPosition(params) {
 
   const matchUpStatus = existingExit && !isFinal ? DOUBLE_EXIT : EXIT;
 
+  let matchUpStatusCodes = [];
+
+  let sourceSideNumber;
+
+  if (
+    sourceMatchUp &&
+    sourceMatchUp?.structureId === pairedPreviousMatchUp?.structureId
+  ) {
+    // if structureIds are equivalent then sideNumber is inferred from roundPositions
+    if (sourceMatchUp.roundPosition < pairedPreviousMatchUp?.roundPosition) {
+      sourceSideNumber = 1;
+    } else {
+      sourceSideNumber = 2;
+    }
+  } else {
+    // if different structureIds then structureId that is not equivalent to noContextWinnerMatchUp.structureId is fed
+    // ... and fed positions are always sideNumber 1
+    if (
+      sourceMatchUp &&
+      sourceMatchUp.structureId === noContextWinnerMatchUp.structureId
+    ) {
+      sourceSideNumber = 2;
+    } else {
+      sourceSideNumber = 1;
+    }
+  }
+
+  const sourceMatchUpStatus = sourceMatchUp?.matchUpStatus;
+  const pairedMatchUpStatus = pairedPreviousMatchUp?.matchUpStatus;
+
+  if (sourceSideNumber === 1) {
+    matchUpStatusCodes = [
+      { sideNumber: 1, previousMatchUpStatus: sourceMatchUpStatus },
+      { sideNumber: 2, previousMatchUpStatus: pairedMatchUpStatus },
+    ];
+  } else if (sourceSideNumber === 2) {
+    matchUpStatusCodes = [
+      { sideNumber: 2, previousMatchUpStatus: sourceMatchUpStatus },
+      { sideNumber: 1, previousMatchUpStatus: pairedMatchUpStatus },
+    ];
+  }
+
   const result = modifyMatchUpScore({
     ...params,
     matchUp: noContextWinnerMatchUp,
     winningSide: walkoverWinningSide,
-    matchUpStatusCodes: [],
+    matchUpStatusCodes,
     matchUpStatus,
   });
   if (result.error) return decorateResult({ result, stack });
@@ -176,7 +218,7 @@ function conditionallyAdvanceDrawPosition(params) {
   if (existingExit) {
     return doubleExitAdvancement({
       ...params,
-      matchUpStatusCodes: [],
+      // matchUpStatusCodes: [],
       targetData,
     });
   }
@@ -245,7 +287,7 @@ function conditionallyAdvanceDrawPosition(params) {
         const result = doubleExitAdvancement({
           ...params,
           matchUpId: noContextNextWinnerMatchUp.matchUpId,
-          matchUpStatusCodes: [], // don't propagate matchUpStatusCodes
+          // matchUpStatusCodes: [], // don't propagate matchUpStatusCodes
           targetData,
         });
         if (result.error) return decorateResult({ result, stack });
@@ -281,11 +323,6 @@ function conditionallyAdvanceDrawPosition(params) {
       ? EXIT
       : DOUBLE_EXIT;
 
-    /*
-    const matchUpStatus =
-      noContextNextWinnerMatchUp.matchUpStatus === EXIT ? EXIT : DOUBLE_EXIT;
-      */
-
     const result = modifyMatchUpScore({
       matchUpId: noContextNextWinnerMatchUp.matchUpId,
       matchUp: noContextNextWinnerMatchUp,
@@ -300,13 +337,14 @@ function conditionallyAdvanceDrawPosition(params) {
     if (matchUpStatus === DOUBLE_EXIT) {
       const advancementResult = doubleExitAdvancement({
         ...params,
-        matchUpStatusCodes: [], // don't propagate matchUpStatusCodes
+        // matchUpStatusCodes: [], // don't propagate matchUpStatusCodes
         matchUpId: winnerMatchUp.matchUpId,
         targetData,
       });
       if (advancementResult.error) return advancementResult;
     }
   }
+
   return decorateResult({ result: { ...SUCCESS }, stack });
 }
 
