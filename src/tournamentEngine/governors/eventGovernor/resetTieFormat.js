@@ -37,7 +37,6 @@ export function resetTieFormat({
 
   let result = findMatchUp({
     tournamentRecord,
-    inContext: true,
     matchUpId,
   });
   if (result.error) return result;
@@ -61,30 +60,30 @@ export function resetTieFormat({
 
   for (const collectionDefinition of tieFormat.collectionDefinitions) {
     // delete any matchUp.tieMatchUps that are not found in the ancestor tieFormat collectionDefinitions
-    const { matchUpsCount, collectionId } = collectionDefinition;
+    const { matchUpCount, collectionId } = collectionDefinition;
     collectionIds.push(collectionId);
 
     const existingCollectionMatchUps = (matchUp.tieMatchUps || []).filter(
       (matchUp) => matchUp.collectionId === collectionId
     );
 
-    if (existingCollectionMatchUps.length > matchUpsCount) {
+    if (existingCollectionMatchUps.length > matchUpCount) {
       // sort by matchUpStatus to prioritize active or completed matchUpsA
       existingCollectionMatchUps.sort(
         (a, b) =>
           (a.matchUpStatus === TO_BE_PLAYED ? 1 : 0) -
           (b.matchUpStatus === TO_BE_PLAYED ? 1 : 0)
       );
-      tieMatchUps.push(...existingCollectionMatchUps.slice(0, matchUpsCount));
+      tieMatchUps.push(...existingCollectionMatchUps.slice(0, matchUpCount));
       deletedMatchUpIds.push(
         ...existingCollectionMatchUps.slice(3).map(getMatchUpId)
       );
       continue;
     } else {
-      tieMatchUps.push(existingCollectionMatchUps);
+      tieMatchUps.push(...existingCollectionMatchUps);
 
-      if (existingCollectionMatchUps.length < matchUpsCount) {
-        const matchUpsLimit = matchUpsCount - existingCollectionMatchUps.length;
+      if (existingCollectionMatchUps.length < matchUpCount) {
+        const matchUpsLimit = matchUpCount - existingCollectionMatchUps.length;
         const matchUps = generateCollectionMatchUps({
           collectionDefinition,
           matchUpsLimit,
@@ -95,12 +94,13 @@ export function resetTieFormat({
     }
   }
 
-  for (const matchUp of matchUp.tieMatchUps || []) {
-    if (!collectionIds.includes(matchUp.collectionId))
-      deletedMatchUpIds.push(matchUp.matchUpId);
+  for (const tieMatchUp of matchUp.tieMatchUps || []) {
+    if (!collectionIds.includes(tieMatchUp.collectionId))
+      deletedMatchUpIds.push(tieMatchUp.matchUpId);
   }
 
   if (newMatchUps.length) {
+    tieMatchUps.push(...newMatchUps);
     addMatchUpsNotice({
       tournamentId: tournamentRecord?.tournamentId,
       eventId: event.eventId,

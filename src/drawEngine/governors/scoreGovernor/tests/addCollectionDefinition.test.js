@@ -20,6 +20,17 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
+  let {
+    matchUps: [matchUp],
+  } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  });
+
+  expect(matchUp.tieMatchUps.length).toEqual(9);
+
   const collectionDefinition = {
     collectionName: 'Mixed Doubles',
     matchUpFormat: 'SET1-S:8/TB7@7',
@@ -68,6 +79,37 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   drawDefinition.tieFormat.collectionDefinitions.forEach(
     ({ collectionId }, i) => expect(orderMap[collectionId]).toEqual(i + 1)
   );
+
+  ({
+    matchUps: [matchUp],
+  } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  }));
+
+  expect(matchUp.tieMatchUps.length).toEqual(12);
+
+  // in this case the matchUp does not have a tieFormat
+  const matchUpId = matchUp.matchUpId;
+  result = tournamentEngine.resetTieFormat({
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({
+    matchUps: [matchUp],
+  } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  }));
+
+  // because the matchUp did not have a tieFormat there has been no change
+  expect(matchUp.tieMatchUps.length).toEqual(12);
 });
 
 it('can add collectionDefinitions to tieFormat in a structure', () => {
@@ -390,7 +432,10 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
     },
   };
 
-  const teamMatchUpId = firstRoundDualMatchUps[0].matchUpId;
+  let teamMatchUp = firstRoundDualMatchUps[0];
+  const teamMatchUpId = teamMatchUp.matchUpId;
+  expect(teamMatchUp.tieMatchUps.length).toEqual(9);
+
   const { matchUpId } = firstRoundDualMatchUps[0].tieMatchUps[0];
   let result = tournamentEngine.setMatchUpStatus({
     matchUpId,
@@ -456,8 +501,32 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
   firstRoundDualMatchUps.forEach((matchUp) => {
     if (matchUp.matchUpId === teamMatchUpId) {
       expect(matchUp.tieFormat.collectionDefinitions.length).toEqual(2);
+      expect(matchUp.tieMatchUps.length).toEqual(9);
     } else {
       expect(matchUp.tieFormat.collectionDefinitions.length).toEqual(3);
+      expect(matchUp.tieMatchUps.length).toEqual(12);
     }
   });
+
+  result = tournamentEngine.resetTieFormat({
+    matchUpId: teamMatchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ matchUps: firstRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      contextFilters: {
+        stages: [MAIN],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [1],
+      },
+    }));
+
+  teamMatchUp = firstRoundDualMatchUps.find(
+    (matchUp) => matchUp.matchUpId === teamMatchUpId
+  );
+  expect(teamMatchUp.tieMatchUps.length).toEqual(12);
 });
