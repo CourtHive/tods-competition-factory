@@ -55,7 +55,7 @@ it('can remove collectionGroups from tieFormats', () => {
   expect(drawDefinition.tieFormat.tieFormatName).toEqual('Pruned');
 });
 
-it.only('can remove collectionGroups from tieFormats in matchUps which are in progress, and will recalculate score', () => {
+it.only('can remove collectionGroups and recalculate score in matchUps which are in progress', () => {
   let matchUpModifyNotices = [];
 
   const subscriptions = {
