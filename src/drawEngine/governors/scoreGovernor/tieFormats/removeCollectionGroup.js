@@ -1,15 +1,23 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
 import { getTieFormat } from '../../../../tournamentEngine/getters/getTieFormat';
-import { modifyMatchUpNotice } from '../../../notifications/drawNotifications';
+import { updateTieMatchUpScore } from '../../matchUpGovernor/tieMatchUpScore';
+import { definedAttributes } from '../../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { validateTieFormat } from './tieFormatUtilities';
 import { scoreHasValue } from '../scoreHasValue';
 import { copyTieFormat } from './copyTieFormat';
+import {
+  modifyDrawNotice,
+  modifyMatchUpNotice,
+} from '../../../notifications/drawNotifications';
 
-import { MISSING_VALUE } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
+import {
+  MISSING_DRAW_DEFINITION,
+  MISSING_VALUE,
+} from '../../../../constants/errorConditionConstants';
 import {
   COMPLETED,
   IN_PROGRESS,
@@ -84,11 +92,13 @@ export function removeCollectionGroup({
   } else if (structureId && structure) {
     matchUps = getAllStructureMatchUps({
       matchUpFilters: { matchUpTypes: [TEAM] },
+      // inContext: false,
       structure,
     })?.matchUps;
   } else if (drawDefinition) {
     matchUps = allDrawMatchUps({
       matchUpFilters: { matchUpTypes: [TEAM] },
+      // inContext: false,
       drawDefinition,
     })?.matchUps;
   }
@@ -96,22 +106,57 @@ export function removeCollectionGroup({
   // all team matchUps in scope which are completed or which have a tieFormat should not be modified
   const targetMatchUps = matchUps.filter(
     (matchUp) =>
-      !matchUp.tieFormat &&
-      ![COMPLETED, IN_PROGRESS].includes(matchUp.matchUpStatus) &&
       !matchUp.winningSide &&
+      matchUp.matchUpStatus !== COMPLETED &&
+      !(!updateInProgressMatchUps && matchUp.matchUpStatus === IN_PROGRESS) &&
       !(!updateInProgressMatchUps && scoreHasValue(matchUp))
   );
 
   for (const matchUp of targetMatchUps) {
-    if (matchUp.tieFormat) matchUp.tieFormat = copyTieFormat(tieFormat);
+    const hasTieFormat = !!matchUp.tieFormat;
+    if (hasTieFormat) {
+      matchUp.tieFormat = copyTieFormat(tieFormat);
+    }
 
-    modifyMatchUpNotice({
-      tournamentId: tournamentRecord?.tournamentId,
-      eventId: event?.eventId,
-      drawDefinition,
-      matchUp,
-    });
+    let scoreUpdated;
+    if (updateInProgressMatchUps) {
+      // recalculate score
+      const result = updateTieMatchUpScore({
+        matchUpId: matchUp.matchUpId,
+        exitWhenNoValues: true,
+        tournamentRecord,
+        drawDefinition,
+        event,
+      });
+      if (result.error) return result;
+      scoreUpdated = result.score;
+    }
+
+    if (hasTieFormat && !scoreUpdated) {
+      console.log('boo', { scoreUpdated, hasTieFormat });
+
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        eventId: event?.eventId,
+        drawDefinition,
+        matchUp,
+      });
+    }
   }
+
+  const prunedTieFormat = definedAttributes(tieFormat);
+  if (eventId) {
+    event.tieFormat = prunedTieFormat;
+    // NOTE: there is not a modifyEventNotice
+  } else if (structure) {
+    structure.tieFormat = prunedTieFormat;
+  } else if (drawDefinition) {
+    drawDefinition.tieFormat = prunedTieFormat;
+  } else if (!matchUp || !drawDefinition) {
+    return { error: MISSING_DRAW_DEFINITION };
+  }
+
+  modifyDrawNotice({ drawDefinition, eventId: event?.eventId });
 
   return { ...SUCCESS };
 }
