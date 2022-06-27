@@ -1,8 +1,9 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { generateCollectionMatchUps } from '../../../generators/tieMatchUps';
 import { calculateWinCriteria } from './calculateWinCriteria';
-import { makeDeepCopy, UUID } from '../../../../utilities';
+import { copyTieFormat } from './copyTieFormat';
 import { getTieFormat } from './getTieFormat';
+import { UUID } from '../../../../utilities';
 import { validUpdate } from './validUpdate';
 import {
   addMatchUpsNotice,
@@ -22,10 +23,6 @@ import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../../constants/errorConditionConstants';
-
-function copyTieFormat(tieFormat) {
-  return makeDeepCopy(tieFormat, false, true);
-}
 
 /*
  * collectionDefinition will be added to an event tieFormat (if present)
@@ -63,8 +60,7 @@ export function addCollectionDefinition({
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
-  if (!result.valid)
-    return { error: INVALID_VALUES, errors: result.errors, tieFormat };
+  if (result.error) return result;
 
   const originalValueGoal = tieFormat.winCriteria.valueGoal;
 

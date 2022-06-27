@@ -1,6 +1,7 @@
 import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../../getters/findStructure';
 
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_TIE_FORMAT,
@@ -45,5 +46,5 @@ export function getTieFormat({
 
   if (!tieFormat) return { error: MISSING_TIE_FORMAT };
 
-  return { tieFormat, matchUp, structure };
+  return { ...SUCCESS, tieFormat, matchUp, structure };
 }

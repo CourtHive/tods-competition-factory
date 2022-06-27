@@ -95,8 +95,7 @@ export function generateDrawDefinition(params) {
 
   if (tieFormat) {
     const result = validateTieFormat({ tieFormat });
-    if (!result.valid)
-      return { error: INVALID_VALUES, errors: result.errors, tieFormat };
+    if (result.error) return result;
   }
 
   if (matchUpType === TEAM && eventType === TEAM) {

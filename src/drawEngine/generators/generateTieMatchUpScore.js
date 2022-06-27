@@ -37,7 +37,7 @@ export function generateTieMatchUpScore({
   if (!tieFormat) return { error: MISSING_TIE_FORMAT };
 
   const result = validateTieFormat({ tieFormat });
-  if (!result.valid) return { error: INVALID_VALUES, errors: result.errors };
+  if (result.error) return result;
 
   const sideTieValues = [0, 0];
   const tieMatchUps = matchUp?.tieMatchUps || [];

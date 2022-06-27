@@ -1,7 +1,7 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../../getters/findStructure';
-import { makeDeepCopy } from '../../../../utilities';
+import { copyTieFormat } from './copyTieFormat';
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,
@@ -13,10 +13,6 @@ import {
   INVALID_VALUES,
   NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-
-function copyTieFormat(tieFormat) {
-  return makeDeepCopy(tieFormat, false, true);
-}
 
 function getOrderedTieFormat({ tieFormat, orderMap }) {
   const orderedTieFormat = copyTieFormat(tieFormat);
