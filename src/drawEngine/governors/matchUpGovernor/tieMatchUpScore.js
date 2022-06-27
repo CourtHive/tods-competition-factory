@@ -6,6 +6,7 @@ import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   COMPLETED,
+  completedMatchUpStatuses,
   IN_PROGRESS,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
@@ -60,7 +61,13 @@ export function updateTieMatchUpScore({
     : TO_BE_PLAYED;
 
   const removeWinningSide = matchUp.winningSide && !hasWinner;
-  const hasResults = matchUp.tieMatchUps.find(({ score }) => score);
+  const hasResults = matchUp.tieMatchUps.find(
+    ({ score, winningSide, matchUpStatus }) =>
+      (score?.sets?.length &&
+        (score.sets[0].side1Score || score.sets[0].side2Score)) ||
+      completedMatchUpStatuses.includes(matchUpStatus) ||
+      winningSide
+  );
 
   if (matchUp.tieFormat && !hasWinner && !hasResults) {
     // if matchUp.tieFormat is equivalent to hierarchical tieFormat, remove
