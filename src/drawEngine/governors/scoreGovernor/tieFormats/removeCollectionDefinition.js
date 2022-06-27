@@ -2,6 +2,7 @@
 
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
+import { updateTieMatchUpScore } from '../../matchUpGovernor/tieMatchUpScore';
 import { definedAttributes } from '../../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { validateTieFormat } from './tieFormatUtilities';
@@ -120,7 +121,6 @@ export function removeCollectionDefinition({
   // all team matchUps in scope which are completed or which have a tieFormat should not be modified
   const targetMatchUps = matchUps.filter(
     (matchUp) =>
-      !matchUp.tieFormat &&
       ![COMPLETED, IN_PROGRESS].includes(matchUp.matchUpStatus) &&
       !matchUp.winningSide &&
       !(!updateInProgressMatchUps && scoreHasValue(matchUp))
@@ -147,6 +147,18 @@ export function removeCollectionDefinition({
     });
 
     if (matchUp.tieFormat) matchUp.tieFormat = copyTieFormat(tieFormat);
+
+    if (updateInProgressMatchUps) {
+      // recalculate score
+      const result = updateTieMatchUpScore({
+        matchUpId: matchUp.matchUpId,
+        exitWhenNoValues: true,
+        tournamentRecord,
+        drawDefinition,
+        event,
+      });
+      if (result.error) return result;
+    }
 
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
