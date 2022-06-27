@@ -133,8 +133,7 @@ it.only('can remove collectionGroups from tieFormats in matchUps which are in pr
   });
   expect(result.success).toEqual(true);
 
-  const modifiedCount = matchUpModifyNotices.length;
-  expect(modifiedCount).toEqual(2);
+  expect(matchUpModifyNotices.length).toEqual(2);
 
   firstRoundDualMatchUps = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: {
@@ -148,7 +147,10 @@ it.only('can remove collectionGroups from tieFormats in matchUps which are in pr
     firstRoundDualMatchUps.map(({ score }) => score).filter(Boolean).length
   ).toEqual(1);
 
-  console.log(firstRoundDualMatchUps.map(({ tieFormat }) => tieFormat));
+  expect(
+    firstRoundDualMatchUps.map(({ tieFormat }) => tieFormat).filter(Boolean)
+      .length
+  ).toEqual(1);
 
   teamMatchUp = firstRoundDualMatchUps.find(
     (matchUp) => matchUp.matchUpId === teamMatchUp.matchUpId
@@ -163,8 +165,7 @@ it.only('can remove collectionGroups from tieFormats in matchUps which are in pr
   });
   expect(result.success).toEqual(true);
 
-  console.log(matchUpModifyNotices);
-  console.log(matchUpModifyNotices.length);
+  expect(matchUpModifyNotices.length).toEqual(3);
 
   ({ drawDefinition, event } = tournamentEngine.getEvent({ drawId }));
   expect(event.tieFormat.winCriteria.valueGoal).toEqual(4);

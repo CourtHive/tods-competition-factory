@@ -60,12 +60,9 @@ export function updateTieMatchUpScore({
     : TO_BE_PLAYED;
 
   const removeWinningSide = matchUp.winningSide && !hasWinner;
+  const hasResults = matchUp.tieMatchUps.find(({ score }) => score);
 
-  if (
-    matchUp.tieFormat &&
-    !hasWinner &&
-    (!set || (!set.side1Score && !set.side2Score))
-  ) {
+  if (matchUp.tieFormat && !hasWinner && !hasResults) {
     // if matchUp.tieFormat is equivalent to hierarchical tieFormat, remove
     const inheritedTieFormat =
       structure?.tieFormat ||
