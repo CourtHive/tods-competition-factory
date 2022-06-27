@@ -1140,9 +1140,9 @@ const {
   matchUp,
   structure, // returned for convenience
 } = tournamentEngine.findMatchUp({
-  drawId,
-  matchUpId,
   inContext, // optional - boolean - returns matchUp with additional attributes
+  matchUpId,
+  drawId,
 });
 ```
 
@@ -2793,7 +2793,7 @@ tournamentEngine.replaceTieMatchUpParticipantId({
 
 ## resetDrawDefinition
 
-````js
+```js
 tournamentEngine.resetDrawDefinition({ drawId });
 ```
 
@@ -2808,7 +2808,20 @@ tournamentEngine.resetScorecard({
   matchUpId,
   drawId,
 });
-````
+```
+
+---
+
+## resetTieFormat
+
+Remove the `tieFormat` from a TEAM `matchUp` if there is a `tieFormat` further up the hierarchy; modifies `matchUp.tieMatchUps` to correspond.
+
+```js
+tournamentEngine.resetTieFormat({
+  matchUpId, // must be a TEAM matchUp
+  drawId,
+});
+```
 
 ---
 
@@ -3260,3 +3273,7 @@ const version = tournamentEngine.version();
 ```
 
 ---
+
+```
+
+```

@@ -69,6 +69,7 @@ export function deleteMatchUpsNotice({
 export function modifyMatchUpNotice({
   drawDefinition,
   tournamentId,
+  structureId,
   eventId,
   matchUp,
 }) {
@@ -76,7 +77,7 @@ export function modifyMatchUpNotice({
     console.log(MISSING_MATCHUP);
     return { error: MISSING_MATCHUP };
   }
-  const structureId = matchUp.structureId;
+  structureId = structureId || matchUp.structureId;
   modifyDrawNotice({
     structureIds: [structureId],
     drawDefinition,
