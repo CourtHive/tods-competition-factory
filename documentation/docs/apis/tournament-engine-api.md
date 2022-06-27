@@ -2595,6 +2595,24 @@ tournamentEngine.removeCollectionDefinition({
 
 ---
 
+## removeCollectionGroup
+
+Removes a `collectionGroup` from the `tieFormat` found for the `event`, `drawDefinition`, `structure` or `matchUp`; recalculates
+
+```js
+tournamentEngine.removeCollectionGroup({
+  updateInProgressMatchUps, // optional - defaults to true
+  tieFormatName: 'New tieFormat', // if no name is provided then there will be no name
+  collectionGroupNumber: 1,
+  structureId, // optional
+  eventId, // optional
+  drawId, // optional; required if structureId is targeted
+  matchUpId, // optional
+});
+```
+
+---
+
 ## removeDrawDefinitionExtension
 
 ```js

@@ -15,6 +15,7 @@ import {
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 import {
+  INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_VALUE,
 } from '../../../../constants/errorConditionConstants';
@@ -35,6 +36,7 @@ export function removeCollectionGroup({
   event,
 }) {
   if (!collectionGroupNumber) return { error: MISSING_VALUE };
+  if (isNaN(collectionGroupNumber)) return { error: INVALID_VALUES };
 
   let result = getTieFormat({
     tournamentRecord,
@@ -53,19 +55,17 @@ export function removeCollectionGroup({
   result = validateTieFormat({ tieFormat });
   if (result.error) return result;
 
-  if (collectionGroupNumber) {
-    // remove the collectionGroup and all references to it in other collectionDefinitions
-    tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map(
-      (collectionDefinition) => {
-        const { collectionGroupNumber, ...rest } = collectionDefinition;
-        if (collectionGroupNumber) true;
-        return rest;
-      }
-    );
-    tieFormat.collectionGroups = tieFormat.collectionGroups.filter(
-      ({ groupNumber }) => groupNumber !== collectionGroupNumber
-    );
-  }
+  // remove the collectionGroup and all references to it in other collectionDefinitions
+  tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map(
+    (collectionDefinition) => {
+      const { collectionGroupNumber, ...rest } = collectionDefinition;
+      if (collectionGroupNumber) true;
+      return rest;
+    }
+  );
+  tieFormat.collectionGroups = tieFormat.collectionGroups.filter(
+    ({ groupNumber }) => groupNumber !== collectionGroupNumber
+  );
 
   // calculate new winCriteria for tieFormat
   // if existing winCriteria is aggregateValue, retain
