@@ -11,6 +11,7 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 export function updateTieMatchUpScore({
+  exitWhenNoValues,
   tournamentRecord,
   drawDefinition,
   matchUpStatus,
@@ -35,12 +36,16 @@ export function updateTieMatchUpScore({
   const { winningSide, set, scoreStringSide1, scoreStringSide2 } =
     generateTieMatchUpScore({ matchUp });
 
+  const setHasValue = set?.side1Score || set?.side2Score;
+  if (exitWhenNoValues && !matchUp.score && !setHasValue) {
+    return { ...SUCCESS };
+  }
+
   const scoreObject = {
     scoreStringSide1,
     scoreStringSide2,
     sets: set ? [set] : [],
   };
-  matchUp.score = scoreObject;
 
   const hasWinner = [1, 2].includes(winningSide);
   const newMatchUpStatus = hasWinner
@@ -89,5 +94,5 @@ export function updateTieMatchUpScore({
     event,
   });
 
-  return { ...SUCCESS, removeWinningSide };
+  return { ...SUCCESS, removeWinningSide, score: scoreObject };
 }
