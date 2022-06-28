@@ -22,22 +22,21 @@ export function generateCollectionMatchUps({
   const { matchUpCount, matchUpType, collectionId } =
     collectionDefinition || {};
 
-  const matchUps = generateRange(0, matchUpsLimit || matchUpCount || 0).map(
-    (index) => {
-      const collectionPosition = index + 1;
+  const numberToGenerate = matchUpsLimit || matchUpCount || 0;
 
-      const matchUp = {
-        sides: [{ sideNumber: 1 }, { sideNumber: 2 }],
-        matchUpId: uuids?.pop() || UUID(),
-        collectionPosition,
-        collectionId,
-        matchUpType,
-        isMock,
-      };
+  const matchUps = generateRange(0, numberToGenerate).map((index) => {
+    const collectionPosition = index + 1;
+    const matchUp = {
+      sides: [{ sideNumber: 1 }, { sideNumber: 2 }],
+      matchUpId: uuids?.pop() || UUID(),
+      collectionPosition,
+      collectionId,
+      matchUpType,
+      isMock,
+    };
 
-      return matchUp;
-    }
-  );
+    return matchUp;
+  });
 
   return matchUps;
 }

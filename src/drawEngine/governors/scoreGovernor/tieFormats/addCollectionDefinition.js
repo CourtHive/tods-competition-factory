@@ -152,20 +152,18 @@ export function addCollectionDefinition({
       addedMatchUps,
     });
   } else if (matchUpId && matchUp) {
-    if (
-      !validUpdate({ matchUp, updateInProgressMatchUps }) ||
-      matchUp.tieFormat
-    )
+    if (!validUpdate({ matchUp, updateInProgressMatchUps }))
       return { error: CANNOT_MODIFY_TIEFORMAT };
 
     matchUp.tieFormat = tieFormat;
-    const { matchUps: newMatchUps = [] } = generateCollectionMatchUps({
+    const newMatchUps = generateCollectionMatchUps({
       collectionDefinition,
       uuids,
     });
 
     if (!Array.isArray(matchUp.tieMatchUps)) matchUp.tieMatchUps = [];
     matchUp.tieMatchUps.push(...newMatchUps);
+    addedMatchUps.push(...result.newMatchUps);
 
     queueNoficiations({
       modifiedMatchUps: [matchUp],
