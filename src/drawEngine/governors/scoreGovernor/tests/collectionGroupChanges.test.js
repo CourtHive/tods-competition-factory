@@ -3,9 +3,9 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 
 import { USTA_BREWER_CUP } from '../../../../constants/tieFormatConstants';
-import { TEAM } from '../../../../constants/eventConstants';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { DOUBLES } from '../../../../constants/matchUpTypes';
+import { TEAM } from '../../../../constants/eventConstants';
 
 it('can remove collectionGroups from tieFormats', () => {
   let matchUpModifyNotices = [];
