@@ -42,8 +42,10 @@ export function removeCollectionGroup({
   // remove the collectionGroup and all references to it in other collectionDefinitions
   tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map(
     (collectionDefinition) => {
-      const { collectionGroupNumber, ...rest } = collectionDefinition;
-      if (collectionGroupNumber) true;
+      const { collectionGroupNumber: groupNumber, ...rest } =
+        collectionDefinition;
+      if (groupNumber !== collectionGroupNumber)
+        rest.collectionGroupNumber = groupNumber;
       return rest;
     }
   );
