@@ -110,6 +110,7 @@ import { removeCollectionDefinition } from '../../../drawEngine/governors/scoreG
 import { modifyCollectionDefinition } from '../../../drawEngine/governors/scoreGovernor/tieFormats/modifyCollectionDefinition';
 import { addCollectionDefinition } from '../../../drawEngine/governors/scoreGovernor/tieFormats/addCollectionDefinition';
 import { removeCollectionGroup } from '../../../drawEngine/governors/scoreGovernor/tieFormats/removeCollectionGroup';
+import { addCollectionGroup } from '../../../drawEngine/governors/scoreGovernor/tieFormats/addCollectionGroup';
 import { resetScorecard } from './resetScorecard';
 import { resetTieFormat } from './resetTieFormat';
 
@@ -127,6 +128,7 @@ const eventGovernor = {
   removeCollectionDefinition,
   addCollectionDefinition,
   removeCollectionGroup,
+  addCollectionGroup,
   resetScorecard,
   resetTieFormat,
 
