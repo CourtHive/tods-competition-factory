@@ -69,6 +69,23 @@ export function tallyParticipantResults({
       const result = participantResults[finishingPosition.participantId];
       result.groupOrder = finishingPosition.groupOrder;
     });
+  } else {
+    const provionalOrder = getGroupOrder({
+      requireCompletion: false,
+      participantResults,
+      participantsCount,
+      matchUpFormat,
+      tallyPolicy,
+      subOrderMap,
+      matchUps,
+    });
+
+    if (provionalOrder) {
+      provionalOrder.forEach((finishingPosition) => {
+        const result = participantResults[finishingPosition.participantId];
+        result.provisionalOrder = finishingPosition.groupOrder;
+      });
+    }
   }
 
   return { participantResults };

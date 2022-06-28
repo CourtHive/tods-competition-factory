@@ -61,10 +61,15 @@ const GEMScoreValueMap = {
  */
 
 export function getGroupOrder(params) {
-  const { participantResults, subOrderMap, tallyPolicy } = params;
+  const {
+    requireCompletion = true,
+    participantResults,
+    subOrderMap,
+    tallyPolicy,
+  } = params;
 
   // if not all opponents have completed their matchUps, no orders are assigned
-  if (!isComplete(params)) return;
+  if (requireCompletion && !isComplete(params)) return;
 
   const attribute = [
     'matchUpsWon',
