@@ -86,9 +86,7 @@ export function removeCollectionDefinition({
 
   // calculate new winCriteria for tieFormat
   // if existing winCriteria is aggregateValue, retain
-  const { aggregateValue, valueGoal } = calculateWinCriteria({
-    collectionDefinitions: tieFormat.collectionDefinitions,
-  });
+  const { aggregateValue, valueGoal } = calculateWinCriteria(tieFormat);
 
   tieFormat.winCriteria = { aggregateValue, valueGoal };
 
