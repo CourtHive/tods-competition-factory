@@ -39,21 +39,25 @@ export function removeCollectionGroup({
   result = validateTieFormat({ tieFormat });
   if (result.error) return result;
 
+  const modifiedCollectionIds = [];
   // remove the collectionGroup and all references to it in other collectionDefinitions
   tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map(
     (collectionDefinition) => {
       const { collectionGroupNumber: groupNumber, ...rest } =
         collectionDefinition;
-      if (groupNumber !== collectionGroupNumber)
-        rest.collectionGroupNumber = groupNumber;
-      return rest;
+      if (groupNumber !== collectionGroupNumber) {
+        return collectionDefinition;
+      } else {
+        modifiedCollectionIds.push(collectionDefinition.collectionId);
+        return rest;
+      }
     }
   );
   tieFormat.collectionGroups = tieFormat.collectionGroups.filter(
     ({ groupNumber }) => groupNumber !== collectionGroupNumber
   );
 
-  return collectionGroupUpdate({
+  result = collectionGroupUpdate({
     updateInProgressMatchUps,
     originalValueGoal,
     tournamentRecord,
@@ -67,4 +71,6 @@ export function removeCollectionGroup({
     eventId,
     event,
   });
+
+  return { ...result, modifiedCollectionIds };
 }
