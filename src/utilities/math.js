@@ -3,6 +3,17 @@ export function isPowerOf2(n) {
   return n && (n & (n - 1)) === 0;
 }
 
+export function deriveExponent(n) {
+  if (!isPowerOf2(n)) return false;
+  let m = n;
+  let i = 1;
+  while (m !== 2) {
+    i += 1;
+    m = m / 2;
+  }
+  return i;
+}
+
 export function nearestPowerOf2(val) {
   return Math.pow(2, Math.round(Math.log(val) / Math.log(2)));
 }
