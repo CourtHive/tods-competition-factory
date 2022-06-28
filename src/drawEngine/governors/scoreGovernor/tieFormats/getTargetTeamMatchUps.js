@@ -38,8 +38,8 @@ export function getTargetTeamMatchUps({
     (matchUp) =>
       !matchUp.winningSide &&
       matchUp.matchUpStatus !== COMPLETED &&
-      !(!updateInProgressMatchUps && matchUp.matchUpStatus === IN_PROGRESS) &&
-      !(!updateInProgressMatchUps && scoreHasValue(matchUp))
+      (updateInProgressMatchUps ||
+        (matchUp.matchUpStatus !== IN_PROGRESS && !scoreHasValue(matchUp)))
   );
 
   return { targetMatchUps };

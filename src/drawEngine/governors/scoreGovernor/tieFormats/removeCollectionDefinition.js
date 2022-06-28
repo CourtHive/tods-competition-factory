@@ -119,9 +119,10 @@ export function removeCollectionDefinition({
   // all team matchUps in scope which are completed or which have a tieFormat should not be modified
   const targetMatchUps = matchUps.filter(
     (matchUp) =>
-      ![COMPLETED, IN_PROGRESS].includes(matchUp.matchUpStatus) &&
       !matchUp.winningSide &&
-      !(!updateInProgressMatchUps && scoreHasValue(matchUp))
+      matchUp.matchUpStatus !== COMPLETED &&
+      (updateInProgressMatchUps ||
+        (matchUp.matchUpStatus !== IN_PROGRESS && !scoreHasValue(matchUp)))
   );
 
   const deletedMatchUpIds = [];
