@@ -22,6 +22,8 @@ export function addCollectionGroup({
 }) {
   if (!Array.isArray(collectionIds)) return { error: MISSING_VALUE };
 
+  // TODO: validate groupDefinition
+
   let result = getTieFormat({
     tournamentRecord,
     drawDefinition,
@@ -41,12 +43,15 @@ export function addCollectionGroup({
 
   // if any of the collectionIds are already part of a different collectionGroup, throw an error
   for (const collectionDefinition of tieFormat.collectionDefinitions) {
-    const { collectionId } = collectionDefinition;
-    if (collectionIds.includes(collectionId))
+    const { collectionId, collectionGroupNumber } = collectionDefinition;
+    if (collectionGroupNumber && collectionIds.includes(collectionId))
       return {
         error: INVALID_VALUES,
         info: 'collectionIds cannot be part of other collectionGroups',
       };
+    // TODO: calculate the total value of the collectionDefinition
+    // either matchUpCount * matchUpValue or collectionValue or collectionValueProfile total
+    // if not gropuDEfinition.winCriteria.aggregateValue then caluculate valueGoal automatically
   }
 
   const maxGroupNumber = (tieFormat.collectionGroups || []).reduce(
@@ -54,6 +59,7 @@ export function addCollectionGroup({
     0
   );
   const collectionGroupNumber = maxGroupNumber + 1;
+  groupDefinition.groupNumber = collectionGroupNumber;
 
   // add collectionGroupNumber to all targeted collectionDefinitions
   tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map(
