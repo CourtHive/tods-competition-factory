@@ -10,6 +10,7 @@ import { assignDrawPosition } from '../positionAssignment';
 import {
   chunkArray,
   generateRange,
+  isPowerOf2,
   nearestPowerOf2,
   numericSort,
 } from '../../../../utilities';
@@ -22,6 +23,7 @@ import {
   MISSING_AVOIDANCE_POLICY,
   NO_CANDIDATES,
 } from '../../../../constants/errorConditionConstants';
+import { deriveExponent } from '../../../../utilities/math';
 
 /**
  *
@@ -49,10 +51,12 @@ export function randomUnseededSeparation({
   if (!avoidance) {
     return { error: MISSING_AVOIDANCE_POLICY };
   }
-  const { policyAttributes, roundsToSeparate, candidatesCount = 1 } = avoidance;
+  const { candidatesCount = 1, policyAttributes, targetDivisions } = avoidance;
+  let { roundsToSeparate } = avoidance;
 
   // policyAttributes determines participant attributes which are to be used for avoidance
   // roundsToSeparate determines desired degree of separation between players with matching attribute values
+  // targetDivisions derives roundsToSeparate from the number of rounds
 
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({
@@ -60,6 +64,16 @@ export function randomUnseededSeparation({
     structure,
     event,
   });
+
+  if (targetDivisions && isPowerOf2(targetDivisions) && !roundsToSeparate) {
+    const exponent = deriveExponent(targetDivisions);
+    const roundsCount = matchUps.reduce(
+      (count, matchUp) =>
+        matchUp.roundNumber > count ? matchUp.roundNumber : count,
+      0
+    );
+    roundsToSeparate = roundsCount < exponent ? 1 : roundsCount - exponent + 1;
+  }
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const participantsWithGroupings = addParticipantGroupings({ participants });
@@ -236,9 +250,9 @@ function roundRobinParticipantGroups(params) {
 }
 
 function eliminationParticipantGroups({
-  matchUps,
   allDrawPositions,
   roundsToSeparate,
+  matchUps,
 }) {
   const drawPositionPairs = matchUps
     .filter((matchUp) => matchUp.roundNumber === 1)
