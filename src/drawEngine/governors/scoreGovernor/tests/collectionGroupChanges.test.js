@@ -44,15 +44,37 @@ it('can remove collectionGroups from tieFormats', () => {
   let result = tournamentEngine.removeCollectionGroup({
     collectionGroupNumber: 1,
     tieFormatName: 'Pruned',
-    tournamentRecord,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.modifiedCollectionIds.length).toEqual(3);
+
+  ({ drawDefinition, event } = tournamentEngine.getEvent({ drawId }));
+  expect(event.tieFormat.winCriteria.valueGoal).toEqual(4);
+  expect(drawDefinition.tieFormat.winCriteria.valueGoal).toEqual(5);
+  expect(drawDefinition.tieFormat.tieFormatName).toEqual('Pruned');
+  expect(drawDefinition.tieFormat.collectionGroups.length).toEqual(0);
+
+  const groupDefinition = {
+    groupName: 'Doubles',
+    groupValue: 1,
+    winCriteria: {
+      valueGoal: 2,
+    },
+  };
+  result = tournamentEngine.addCollectionGroup({
+    collectionIds: result.modifiedCollectionIds,
+    tieFormatName: 'Swelled',
+    groupDefinition,
     drawId,
   });
   expect(result.success).toEqual(true);
 
   ({ drawDefinition, event } = tournamentEngine.getEvent({ drawId }));
   expect(event.tieFormat.winCriteria.valueGoal).toEqual(4);
-  expect(drawDefinition.tieFormat.winCriteria.valueGoal).toEqual(5);
-  expect(drawDefinition.tieFormat.tieFormatName).toEqual('Pruned');
+  expect(drawDefinition.tieFormat.tieFormatName).toEqual('Swelled');
+  expect(drawDefinition.tieFormat.collectionGroups.length).toEqual(1);
+  expect(drawDefinition.tieFormat.winCriteria.valueGoal).toEqual(4);
 });
 
 it('can remove collectionGroups and recalculate score in matchUps which are in progress', () => {
