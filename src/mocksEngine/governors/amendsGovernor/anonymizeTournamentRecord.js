@@ -114,6 +114,7 @@ export function anonymizeTournamentRecord({
     venue.venueAbbreviation = `V${venueIndex}`;
     const newVenueId = UUID();
     idMap[venue.venueId] = newVenueId;
+    venueIndex += 1;
     // venue.eventId = UUID(); eventIds can't be anonymized without updating schedulingProfiles
   }
 
