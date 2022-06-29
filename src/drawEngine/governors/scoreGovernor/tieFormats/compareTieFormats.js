@@ -40,7 +40,7 @@ export function compareTieFormats({ ancestor, descendant }) {
 
   descendantDifferences.groupsCount =
     ancestor.collectionGroups?.length ||
-    0 - descendant.collectionGroups.length ||
+    0 - descendant.collectionGroups?.length ||
     0;
 
   ancestorDifferences.groupsCount = -1 * descendantDifferences.groupsCount;
