@@ -182,6 +182,8 @@ export function removeCollectionDefinition({
   if (eventId) {
     event.tieFormat = prunedTieFormat;
     // NOTE: there is not a modifyEventNotice
+  } else if (matchUpId) {
+    matchUp.tieFormat = tieFormat;
   } else if (structure) {
     structure.tieFormat = prunedTieFormat;
   } else if (drawDefinition) {
