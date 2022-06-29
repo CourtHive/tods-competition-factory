@@ -119,6 +119,7 @@ export function resetTieFormat({
   }
 
   matchUp.tieMatchUps = tieMatchUps;
+  matchUp.tieFormat = undefined;
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
