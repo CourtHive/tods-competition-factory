@@ -163,7 +163,7 @@ export function addCollectionDefinition({
 
     if (!Array.isArray(matchUp.tieMatchUps)) matchUp.tieMatchUps = [];
     matchUp.tieMatchUps.push(...newMatchUps);
-    addedMatchUps.push(...result.newMatchUps);
+    addedMatchUps.push(...newMatchUps);
 
     queueNoficiations({
       modifiedMatchUps: [matchUp],
