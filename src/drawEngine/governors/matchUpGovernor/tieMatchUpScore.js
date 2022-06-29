@@ -69,6 +69,8 @@ export function updateTieMatchUpScore({
       winningSide
   );
 
+  let tieFormatRemoved;
+
   if (matchUp.tieFormat && !hasWinner && !hasResults) {
     // if matchUp.tieFormat is equivalent to hierarchical tieFormat, remove
     const inheritedTieFormat =
@@ -82,6 +84,7 @@ export function updateTieMatchUpScore({
       JSON.stringify(tieFormat) === JSON.stringify(inheritedTieFormat)
     ) {
       matchUp.tieFormat = undefined;
+      tieFormatRemoved = true;
     }
   }
 
@@ -98,5 +101,10 @@ export function updateTieMatchUpScore({
     event,
   });
 
-  return { ...SUCCESS, removeWinningSide, score: scoreObject };
+  return {
+    ...SUCCESS,
+    score: scoreObject,
+    removeWinningSide,
+    tieFormatRemoved,
+  };
 }

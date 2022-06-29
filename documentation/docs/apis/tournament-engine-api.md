@@ -2837,7 +2837,8 @@ Remove the `tieFormat` from a TEAM `matchUp` if there is a `tieFormat` further u
 ```js
 tournamentEngine.resetTieFormat({
   matchUpId, // must be a TEAM matchUp
-  drawId,
+  drawId, // required
+  uuids, // optional - in client/server scenarios generated matchUps must have equivalent matchUpIds
 });
 ```
 
