@@ -1,6 +1,9 @@
 import { mocksEngine, tournamentEngine } from '../../../..';
 
-import { NOT_FOUND } from '../../../../constants/errorConditionConstants';
+import {
+  INVALID_VALUES,
+  NOT_FOUND,
+} from '../../../../constants/errorConditionConstants';
 import { TEAM } from '../../../../constants/eventConstants';
 
 it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () => {
@@ -34,10 +37,111 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
   expect(result.success).toEqual(true);
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const collection = drawDefinition.tieFormat.collectionDefinitions.find(
+  let definition = drawDefinition.tieFormat.collectionDefinitions.find(
     (collectionDefinition) => collectionDefinition.collectionId === collectionId
   );
-  expect(collection.collectionName).toEqual(newCollectionName);
+  expect(definition.collectionName).toEqual(newCollectionName);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    matchUpValue: 2,
+    collectionId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  definition = drawDefinition.tieFormat.collectionDefinitions.find(
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+  );
+  expect(definition.matchUpValue).toEqual(2);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    matchUpValue: 'x',
+    collectionId,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionValue: 1,
+    collectionId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  definition = drawDefinition.tieFormat.collectionDefinitions.find(
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+  );
+  expect(definition.collectionValue).toEqual(1);
+  expect(definition.matchUpValue).toBeUndefined();
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    scoreValue: 1,
+    collectionId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  definition = drawDefinition.tieFormat.collectionDefinitions.find(
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+  );
+  expect(definition.collectionValue).toBeUndefined();
+  expect(definition.scoreValue).toEqual(1);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionId,
+    setValue: 1,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  definition = drawDefinition.tieFormat.collectionDefinitions.find(
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+  );
+  expect(definition.scoreValue).toBeUndefined();
+  expect(definition.setValue).toEqual(1);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionValueProfile: [
+      { collectionPosition: 1, value: 3 },
+      { collectionPosition: 2, value: 1 },
+      { collectionPosition: 3, value: 1 },
+    ],
+    collectionId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  definition = drawDefinition.tieFormat.collectionDefinitions.find(
+    (collectionDefinition) => collectionDefinition.collectionId === collectionId
+  );
+  expect(definition.setValue).toBeUndefined();
+  expect(definition.collectionValueProfile).not.toBeUndefined();
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionValueProfile: [
+      { collectionPosition: 1, value: 3 },
+      { collectionPosition: 1, value: 1 },
+      { collectionPosition: 1, value: 1 },
+    ],
+    collectionId,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionValueProfile: [
+      { collectionPosition: 1, value: 3 },
+      { collectionPosition: 2, value: 2 },
+    ],
+    collectionId,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
 });
 
 it('can modify collectionDefinitions for a tieFormat on a structure', () => {

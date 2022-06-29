@@ -18,17 +18,7 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 function updateCollectionDefinitions(element, tieFormat) {
-  element.tieFormat.collectionDefinitions.forEach((collectionDefinition) => {
-    const updatedDefinition = tieFormat.collectionDefinitions.find(
-      ({ collectionId }) => collectionId === collectionDefinition.collectionId
-    );
-    if (updatedDefinition?.collectionName) {
-      collectionDefinition.collectionName = updatedDefinition.collectionName;
-    }
-    if (updatedDefinition?.matchUpFormat) {
-      collectionDefinition.matchUpFormat = updatedDefinition.matchUpFormat;
-    }
-  });
+  element.tieFormat = tieFormat;
 }
 
 function mapsCheck(map1, map2) {

@@ -1,5 +1,6 @@
 import { validateCollectionValueProfile } from './tieFormatUtilities';
 import { isConvertableInteger } from '../../../../utilities/math';
+import { definedAttributes } from '../../../../utilities/objects';
 import { isValid } from '../matchUpFormatCode/isValid';
 import { makeDeepCopy } from '../../../../utilities';
 import { updateTieFormat } from './updateTieFormat';
@@ -10,7 +11,6 @@ import {
   MISSING_VALUE,
   NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import { definedAttributes } from '../../../../utilities/objects';
 
 // all child matchUps need to be checked for collectionAssignments / collectionPositions which need to be removed when collectionDefinition.collectionIds are removed
 export function modifyCollectionDefinition({
@@ -33,8 +33,6 @@ export function modifyCollectionDefinition({
   scoreValue,
   setValue,
 }) {
-  if (!matchUpFormat && !collectionName && !collectionOrder)
-    return { error: MISSING_VALUE };
   if (matchUpFormat && !isValid(matchUpFormat))
     return { error: INVALID_VALUES };
   if (collectionName && typeof collectionName !== 'string')
@@ -47,6 +45,14 @@ export function modifyCollectionDefinition({
     scoreValue,
     setValue,
   };
+
+  if (
+    !Object.values(valueAssignments).filter(Boolean).length &&
+    !collectionOrder &&
+    !collectionName &&
+    !matchUpFormat
+  )
+    return { error: MISSING_VALUE };
 
   if (Object.values(valueAssignments).filter(Boolean).length > 1)
     return {
