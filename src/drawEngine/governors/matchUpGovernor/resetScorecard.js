@@ -148,7 +148,7 @@ export function resetScorecard(params) {
       if (
         descendantDifferences.collectionIds.length === 1 &&
         !ancestorDifferences.collectionIds.length &&
-        !ancestorDifferences.groupCount &&
+        !ancestorDifferences.groupsCount &&
         matchUpCountDifference === 1 &&
         valueDifference === 1
       ) {
