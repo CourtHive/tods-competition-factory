@@ -1,3 +1,5 @@
+import { resetTieFormat } from '../../../tournamentEngine/governors/eventGovernor/resetTieFormat';
+import { compareTieFormats } from '../scoreGovernor/tieFormats/compareTieFormats';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
@@ -27,6 +29,7 @@ import {
  * @param {string} matchUpStatus - optional - new matchUpStatus
  * @param {number} winningSide - optional - new winningSide; 1 or 2
  * @param {object} tournamentRecord - optional - used to discover relevant policyDefinitions or to modify scheduling information (integrity checks)
+ * @param {boolean} tiebreakReset - optional - check for tiebreak scenarios and reset tieFormat
  * @returns
  */
 
@@ -116,7 +119,7 @@ export function resetScorecard(params) {
     if (result.error) return decorateResult({ result, stack });
   }
 
-  const result = updateTieMatchUpScore({
+  let result = updateTieMatchUpScore({
     event: params.event,
     removeScore: true,
     tournamentRecord,
@@ -124,6 +127,41 @@ export function resetScorecard(params) {
     matchUpId,
   });
   if (result.error) return decorateResult({ result, stack });
+
+  if (params.tiebreakReset && !result.tieFormatRemoved) {
+    // check for scenarios where an added "Tiebreaker" collectionDefinition/matchUp has been added
+    const inheritedTieFormat =
+      structure?.tieFormat || drawDefinition.tieFormat || event?.tieFormat;
+    if (inheritedTieFormat) {
+      const { ancestorDifferences, descendantDifferences } = compareTieFormats({
+        descendant: matchUp.tieFormat,
+        ancestor: inheritedTieFormat,
+      });
+
+      const valueDifference =
+        descendantDifferences.collectionsValue.totalValue -
+        ancestorDifferences.collectionsValue.totalValue;
+      const matchUpCountDifference =
+        descendantDifferences.collectionsValue.totalMatchUps -
+        ancestorDifferences.collectionsValue.totalMatchUps;
+
+      if (
+        descendantDifferences.collectionIds.length === 1 &&
+        !ancestorDifferences.collectionIds.length &&
+        !ancestorDifferences.groupsCount &&
+        matchUpCountDifference === 1 &&
+        valueDifference === 1
+      ) {
+        const result = resetTieFormat({
+          tournamentRecord,
+          drawDefinition,
+          matchUpId,
+          event,
+        });
+        if (result.error) return result;
+      }
+    }
+  }
 
   return { ...SUCCESS };
 }

@@ -81,6 +81,16 @@ export function intersection(a, b) {
     .filter((n) => b.indexOf(n) !== -1)
     .filter((e, i, c) => c.indexOf(e) === i);
 }
+export function difference(a, b) {
+  if (!Array.isArray(a) || !Array.isArray(b)) return 0;
+  return a.filter((x) => !b.includes(x));
+}
+export function symmetricDifference(a, b) {
+  if (!Array.isArray(a) || !Array.isArray(b)) return 0;
+  return a
+    .filter((x) => !b.includes(x))
+    .concat(b.filter((x) => !a.includes(x)));
+}
 export function overlap(a, b) {
   if (!Array.isArray(a) || !Array.isArray(b)) return false;
   return a.some((e) => b.includes(e));

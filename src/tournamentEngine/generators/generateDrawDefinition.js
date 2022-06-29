@@ -95,16 +95,21 @@ export function generateDrawDefinition(params) {
 
   if (tieFormat) {
     const result = validateTieFormat({ tieFormat });
-    if (!result.valid)
-      return { error: INVALID_VALUES, errors: result.errors, tieFormat };
+    if (result.error) return result;
   }
 
   if (matchUpType === TEAM && eventType === TEAM) {
-    const specifiedTieFormat = tieFormat || event?.tieFormat;
     tieFormat =
-      specifiedTieFormat && typeof specifiedTieFormat === 'object'
-        ? specifiedTieFormat
-        : tieFormatDefaults({ namedFormat: tieFormatName });
+      tieFormat ||
+      // if tieFormatName is proviced and it matches the name of the tieFormat attached to parent event...
+      (tieFormatName &&
+        event?.tieFormat?.tieFormatName === tieFormatName &&
+        event.tieFormat) ||
+      // if the tieFormatName is not found in the factory then will use default
+      (tieFormatName && tieFormatDefaults({ namedFormat: tieFormatName })) ||
+      // if no tieFormat is found on event then will use default
+      event?.tieFormat ||
+      tieFormatDefaults();
     matchUpFormat = undefined;
   } else if (!matchUpFormat) {
     tieFormat = undefined;

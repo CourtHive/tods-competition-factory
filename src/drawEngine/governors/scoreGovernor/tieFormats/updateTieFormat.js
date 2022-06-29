@@ -2,16 +2,13 @@ import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStru
 import { allEventMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { decorateResult } from '../../../../global/functions/decorateResult';
+import { instanceCount, intersection } from '../../../../utilities';
+import { copyTieFormat } from './copyTieFormat';
 import { validUpdate } from './validUpdate';
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,
 } from '../../../notifications/drawNotifications';
-import {
-  instanceCount,
-  intersection,
-  makeDeepCopy,
-} from '../../../../utilities';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -19,10 +16,6 @@ import {
   INVALID_TIE_FORMAT,
   MISSING_DRAW_DEFINITION,
 } from '../../../../constants/errorConditionConstants';
-
-function copyTieFormat(tieFormat) {
-  return makeDeepCopy(tieFormat, false, true);
-}
 
 function updateCollectionDefinitions(element, tieFormat) {
   element.tieFormat.collectionDefinitions.forEach((collectionDefinition) => {

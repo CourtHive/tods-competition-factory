@@ -1,5 +1,7 @@
 import { findStructure } from '../../drawEngine/getters/findStructure';
 import { findMatchUp } from './matchUpsGetter';
+
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,
@@ -62,6 +64,7 @@ export function getTieFormat({
     undefined;
 
   return {
+    ...SUCCESS,
     structureDefaultTieFormat,
     eventDefaultTieFormat,
     drawDefaultTieFormat,

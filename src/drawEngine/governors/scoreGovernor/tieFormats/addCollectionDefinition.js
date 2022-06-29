@@ -1,8 +1,9 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { generateCollectionMatchUps } from '../../../generators/tieMatchUps';
 import { calculateWinCriteria } from './calculateWinCriteria';
-import { makeDeepCopy, UUID } from '../../../../utilities';
+import { copyTieFormat } from './copyTieFormat';
 import { getTieFormat } from './getTieFormat';
+import { UUID } from '../../../../utilities';
 import { validUpdate } from './validUpdate';
 import {
   addMatchUpsNotice,
@@ -22,10 +23,6 @@ import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../../constants/errorConditionConstants';
-
-function copyTieFormat(tieFormat) {
-  return makeDeepCopy(tieFormat, false, true);
-}
 
 /*
  * collectionDefinition will be added to an event tieFormat (if present)
@@ -63,8 +60,7 @@ export function addCollectionDefinition({
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
-  if (!result.valid)
-    return { error: INVALID_VALUES, errors: result.errors, tieFormat };
+  if (result.error) return result;
 
   const originalValueGoal = tieFormat.winCriteria.valueGoal;
 
@@ -91,9 +87,7 @@ export function addCollectionDefinition({
 
   // calculate new winCriteria for tieFormat
   // if existing winCriteria is aggregateValue, retain
-  const { aggregateValue, valueGoal } = calculateWinCriteria({
-    collectionDefinitions: tieFormat.collectionDefinitions,
-  });
+  const { aggregateValue, valueGoal } = calculateWinCriteria(tieFormat);
 
   tieFormat.winCriteria = { aggregateValue, valueGoal };
 
@@ -158,20 +152,18 @@ export function addCollectionDefinition({
       addedMatchUps,
     });
   } else if (matchUpId && matchUp) {
-    if (
-      !validUpdate({ matchUp, updateInProgressMatchUps }) ||
-      matchUp.tieFormat
-    )
+    if (!validUpdate({ matchUp, updateInProgressMatchUps }))
       return { error: CANNOT_MODIFY_TIEFORMAT };
 
     matchUp.tieFormat = tieFormat;
-    const { matchUps: newMatchUps = [] } = generateCollectionMatchUps({
+    const newMatchUps = generateCollectionMatchUps({
       collectionDefinition,
       uuids,
     });
 
     if (!Array.isArray(matchUp.tieMatchUps)) matchUp.tieMatchUps = [];
     matchUp.tieMatchUps.push(...newMatchUps);
+    addedMatchUps.push(...newMatchUps);
 
     queueNoficiations({
       modifiedMatchUps: [matchUp],

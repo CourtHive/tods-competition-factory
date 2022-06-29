@@ -2,11 +2,12 @@
 
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
+import { updateTieMatchUpScore } from '../../matchUpGovernor/tieMatchUpScore';
 import { definedAttributes } from '../../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { validateTieFormat } from './tieFormatUtilities';
-import { makeDeepCopy } from '../../../../utilities';
 import { scoreHasValue } from '../scoreHasValue';
+import { copyTieFormat } from './copyTieFormat';
 import { getTieFormat } from './getTieFormat';
 import {
   deleteMatchUpsNotice,
@@ -21,14 +22,9 @@ import {
   IN_PROGRESS,
 } from '../../../../constants/matchUpStatusConstants';
 import {
-  INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-
-function copyTieFormat(tieFormat) {
-  return makeDeepCopy(definedAttributes(tieFormat), false, true);
-}
 
 /*
  * collectionDefinition will be removed from an event tieFormat (if present)
@@ -61,7 +57,7 @@ export function removeCollectionDefinition({
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
-  if (!result.valid) return { error: INVALID_VALUES, errors: result.errors };
+  if (result.error) return result;
 
   const targetCollection = tieFormat?.collectionDefinitions?.find(
     (collectionDefinition) => collectionDefinition.collectionId === collectionId
@@ -72,6 +68,8 @@ export function removeCollectionDefinition({
     (collectionDefinition) => collectionDefinition.collectionId !== collectionId
   );
 
+  // if the collectionDefinition being removed contains a collectionGroupNumber,
+  // remove the collectionGroup and all references to it in other collectionDefinitions
   if (targetCollection.collectionGroupNumber) {
     tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map(
       (collectionDefinition) => {
@@ -88,9 +86,7 @@ export function removeCollectionDefinition({
 
   // calculate new winCriteria for tieFormat
   // if existing winCriteria is aggregateValue, retain
-  const { aggregateValue, valueGoal } = calculateWinCriteria({
-    collectionDefinitions: tieFormat.collectionDefinitions,
-  });
+  const { aggregateValue, valueGoal } = calculateWinCriteria(tieFormat);
 
   tieFormat.winCriteria = { aggregateValue, valueGoal };
 
@@ -120,13 +116,13 @@ export function removeCollectionDefinition({
     })?.matchUps;
   }
 
-  // all team matchUps in the structure which are completed or which have a tieFormat should not be modified
+  // all team matchUps in scope which are completed or which have a tieFormat should not be modified
   const targetMatchUps = matchUps.filter(
     (matchUp) =>
-      !matchUp.tieFormat &&
-      ![COMPLETED, IN_PROGRESS].includes(matchUp.matchUpStatus) &&
       !matchUp.winningSide &&
-      !(!updateInProgressMatchUps && scoreHasValue(matchUp))
+      matchUp.matchUpStatus !== COMPLETED &&
+      (updateInProgressMatchUps ||
+        (matchUp.matchUpStatus !== IN_PROGRESS && !scoreHasValue(matchUp)))
   );
 
   const deletedMatchUpIds = [];
@@ -151,6 +147,18 @@ export function removeCollectionDefinition({
 
     if (matchUp.tieFormat) matchUp.tieFormat = copyTieFormat(tieFormat);
 
+    if (updateInProgressMatchUps) {
+      // recalculate score
+      const result = updateTieMatchUpScore({
+        matchUpId: matchUp.matchUpId,
+        exitWhenNoValues: true,
+        tournamentRecord,
+        drawDefinition,
+        event,
+      });
+      if (result.error) return result;
+    }
+
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       eventId: event?.eventId,
@@ -174,6 +182,8 @@ export function removeCollectionDefinition({
   if (eventId) {
     event.tieFormat = prunedTieFormat;
     // NOTE: there is not a modifyEventNotice
+  } else if (matchUpId) {
+    matchUp.tieFormat = tieFormat;
   } else if (structure) {
     structure.tieFormat = prunedTieFormat;
   } else if (drawDefinition) {

@@ -6,11 +6,13 @@ import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   COMPLETED,
+  completedMatchUpStatuses,
   IN_PROGRESS,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
 
 export function updateTieMatchUpScore({
+  exitWhenNoValues,
   tournamentRecord,
   drawDefinition,
   matchUpStatus,
@@ -35,12 +37,16 @@ export function updateTieMatchUpScore({
   const { winningSide, set, scoreStringSide1, scoreStringSide2 } =
     generateTieMatchUpScore({ matchUp });
 
+  const setHasValue = set?.side1Score || set?.side2Score;
+  if (exitWhenNoValues && !matchUp.score && !setHasValue) {
+    return { ...SUCCESS };
+  }
+
   const scoreObject = {
     scoreStringSide1,
     scoreStringSide2,
     sets: set ? [set] : [],
   };
-  matchUp.score = scoreObject;
 
   const hasWinner = [1, 2].includes(winningSide);
   const newMatchUpStatus = hasWinner
@@ -55,12 +61,17 @@ export function updateTieMatchUpScore({
     : TO_BE_PLAYED;
 
   const removeWinningSide = matchUp.winningSide && !hasWinner;
+  const hasResults = matchUp.tieMatchUps.find(
+    ({ score, winningSide, matchUpStatus }) =>
+      (score?.sets?.length &&
+        (score.sets[0].side1Score || score.sets[0].side2Score)) ||
+      completedMatchUpStatuses.includes(matchUpStatus) ||
+      winningSide
+  );
 
-  if (
-    matchUp.tieFormat &&
-    !hasWinner &&
-    (!set || (!set.side1Score && !set.side2Score))
-  ) {
+  let tieFormatRemoved;
+
+  if (matchUp.tieFormat && !hasWinner && !hasResults) {
     // if matchUp.tieFormat is equivalent to hierarchical tieFormat, remove
     const inheritedTieFormat =
       structure?.tieFormat ||
@@ -73,6 +84,7 @@ export function updateTieMatchUpScore({
       JSON.stringify(tieFormat) === JSON.stringify(inheritedTieFormat)
     ) {
       matchUp.tieFormat = undefined;
+      tieFormatRemoved = true;
     }
   }
 
@@ -89,5 +101,10 @@ export function updateTieMatchUpScore({
     event,
   });
 
-  return { ...SUCCESS, removeWinningSide };
+  return {
+    ...SUCCESS,
+    score: scoreObject,
+    removeWinningSide,
+    tieFormatRemoved,
+  };
 }

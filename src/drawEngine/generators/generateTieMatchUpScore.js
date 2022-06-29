@@ -1,5 +1,6 @@
 import { validateTieFormat } from '../governors/scoreGovernor/tieFormats/tieFormatUtilities';
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
+import { getGroupValueGroups } from './getGroupValueGroups';
 
 import {
   INVALID_VALUES,
@@ -37,33 +38,14 @@ export function generateTieMatchUpScore({
   if (!tieFormat) return { error: MISSING_TIE_FORMAT };
 
   const result = validateTieFormat({ tieFormat });
-  if (!result.valid) return { error: INVALID_VALUES, errors: result.errors };
+  if (result.error) return result;
 
   const sideTieValues = [0, 0];
   const tieMatchUps = matchUp?.tieMatchUps || [];
   const collectionDefinitions = tieFormat?.collectionDefinitions || [];
 
-  // set up to handle groupValue
-  const collectionGroups = tieFormat?.collectionGroups || [];
-  const groupValueGroups = Object.assign(
-    {},
-    ...collectionGroups
-      .filter((group) => group?.groupValue && group?.groupNumber)
-      .map((group) => ({
-        [group.groupNumber]: {
-          ...group,
-          allGroupMatchUpsCompleted: true,
-          matchUpsCount: 0,
-          sideWins: [0, 0],
-          values: [0, 0],
-        },
-      }))
-  );
-
-  // must be coerced to numbers
-  const groupValueNumbers = Object.keys(groupValueGroups).map((num) =>
-    parseInt(num)
-  );
+  const { groupValueGroups, groupValueNumbers } =
+    getGroupValueGroups(tieFormat);
 
   for (const collectionDefinition of collectionDefinitions) {
     const collectionMatchUps = tieMatchUps.filter(

@@ -162,34 +162,34 @@ function conditionallyAdvanceDrawPosition(params) {
 
   const matchUpStatus = existingExit && !isFinal ? DOUBLE_EXIT : EXIT;
 
+  const inContextPairedPreviousMatchUp = inContextDrawMatchUps.find(
+    (candidate) => candidate.matchUpId === pairedPreviousMatchUp.matchUpId
+  );
   let matchUpStatusCodes = [];
-
   let sourceSideNumber;
 
-  if (
-    sourceMatchUp &&
-    sourceMatchUp?.structureId === pairedPreviousMatchUp?.structureId
-  ) {
-    // if structureIds are equivalent then sideNumber is inferred from roundPositions
-    if (sourceMatchUp.roundPosition < pairedPreviousMatchUp?.roundPosition) {
-      sourceSideNumber = 1;
-    } else {
-      sourceSideNumber = 2;
-    }
-  } else {
-    // if different structureIds then structureId that is not equivalent to noContextWinnerMatchUp.structureId is fed
-    // ... and fed positions are always sideNumber 1
+  if (sourceMatchUp) {
     if (
-      sourceMatchUp &&
-      sourceMatchUp.structureId === noContextWinnerMatchUp.structureId
+      sourceMatchUp?.structureId === inContextPairedPreviousMatchUp?.structureId
     ) {
-      sourceSideNumber = 2;
+      // if structureIds are equivalent then sideNumber is inferred from roundPositions
+      if (sourceMatchUp.roundPosition < pairedPreviousMatchUp?.roundPosition) {
+        sourceSideNumber = 1;
+      } else {
+        sourceSideNumber = 2;
+      }
     } else {
-      sourceSideNumber = 1;
+      // if different structureIds then structureId that is not equivalent to noContextWinnerMatchUp.structureId is fed
+      // ... and fed positions are always sideNumber 1
+      if (sourceMatchUp.structureId === winnerMatchUp.structureId) {
+        sourceSideNumber = 2;
+      } else {
+        sourceSideNumber = 1;
+      }
     }
   }
 
-  const sourceMatchUpStatus = sourceMatchUp?.matchUpStatus;
+  const sourceMatchUpStatus = params.matchUpStatus;
   const pairedMatchUpStatus = pairedPreviousMatchUp?.matchUpStatus;
 
   if (sourceSideNumber === 1) {
@@ -199,8 +199,8 @@ function conditionallyAdvanceDrawPosition(params) {
     ];
   } else if (sourceSideNumber === 2) {
     matchUpStatusCodes = [
-      { sideNumber: 2, previousMatchUpStatus: sourceMatchUpStatus },
       { sideNumber: 1, previousMatchUpStatus: pairedMatchUpStatus },
+      { sideNumber: 2, previousMatchUpStatus: sourceMatchUpStatus },
     ];
   }
 
@@ -218,7 +218,7 @@ function conditionallyAdvanceDrawPosition(params) {
   if (existingExit) {
     return doubleExitAdvancement({
       ...params,
-      // matchUpStatusCodes: [],
+      matchUpStatus,
       targetData,
     });
   }
@@ -287,7 +287,7 @@ function conditionallyAdvanceDrawPosition(params) {
         const result = doubleExitAdvancement({
           ...params,
           matchUpId: noContextNextWinnerMatchUp.matchUpId,
-          // matchUpStatusCodes: [], // don't propagate matchUpStatusCodes
+          matchUpStatus,
           targetData,
         });
         if (result.error) return decorateResult({ result, stack });
@@ -337,8 +337,8 @@ function conditionallyAdvanceDrawPosition(params) {
     if (matchUpStatus === DOUBLE_EXIT) {
       const advancementResult = doubleExitAdvancement({
         ...params,
-        // matchUpStatusCodes: [], // don't propagate matchUpStatusCodes
         matchUpId: winnerMatchUp.matchUpId,
+        matchUpStatus,
         targetData,
       });
       if (advancementResult.error) return advancementResult;

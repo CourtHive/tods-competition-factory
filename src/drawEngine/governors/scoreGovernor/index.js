@@ -16,6 +16,9 @@ import { modifyCollectionDefinition } from './tieFormats/modifyCollectionDefinit
 import { addCollectionDefinition } from './tieFormats/addCollectionDefinition';
 import { scoreHasValue } from './scoreHasValue';
 
+import { removeCollectionGroup } from './tieFormats/removeCollectionGroup';
+import { addCollectionGroup } from './tieFormats/addCollectionGroup';
+
 export const scoreGovernor = {
   stringifyMatchUpFormat: stringify,
   isValidMatchUpFormat: isValid,
@@ -26,8 +29,10 @@ export const scoreGovernor = {
   generateTieMatchUpScore,
   tallyParticipantResults,
   addCollectionDefinition,
+  removeCollectionGroup,
   getTiebreakComplement,
   generateScoreString,
+  addCollectionGroup,
   checkSetIsComplete,
   validateTieFormat,
   getSetComplement,

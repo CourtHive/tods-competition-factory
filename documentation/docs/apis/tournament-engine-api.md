@@ -1140,9 +1140,9 @@ const {
   matchUp,
   structure, // returned for convenience
 } = tournamentEngine.findMatchUp({
-  drawId,
-  matchUpId,
   inContext, // optional - boolean - returns matchUp with additional attributes
+  matchUpId,
+  drawId,
 });
 ```
 
@@ -2595,6 +2595,24 @@ tournamentEngine.removeCollectionDefinition({
 
 ---
 
+## removeCollectionGroup
+
+Removes a `collectionGroup` from the `tieFormat` found for the `event`, `drawDefinition`, `structure` or `matchUp`; recalculates
+
+```js
+tournamentEngine.removeCollectionGroup({
+  updateInProgressMatchUps, // optional - defaults to true
+  tieFormatName: 'New tieFormat', // if no name is provided then there will be no name
+  collectionGroupNumber: 1,
+  structureId, // optional
+  eventId, // optional
+  drawId, // optional; required if structureId is targeted
+  matchUpId, // optional
+});
+```
+
+---
+
 ## removeDrawDefinitionExtension
 
 ```js
@@ -2793,7 +2811,7 @@ tournamentEngine.replaceTieMatchUpParticipantId({
 
 ## resetDrawDefinition
 
-````js
+```js
 tournamentEngine.resetDrawDefinition({ drawId });
 ```
 
@@ -2808,7 +2826,21 @@ tournamentEngine.resetScorecard({
   matchUpId,
   drawId,
 });
-````
+```
+
+---
+
+## resetTieFormat
+
+Remove the `tieFormat` from a TEAM `matchUp` if there is a `tieFormat` further up the hierarchy; modifies `matchUp.tieMatchUps` to correspond.
+
+```js
+tournamentEngine.resetTieFormat({
+  matchUpId, // must be a TEAM matchUp
+  drawId, // required
+  uuids, // optional - in client/server scenarios generated matchUps must have equivalent matchUpIds
+});
+```
 
 ---
 
@@ -3260,3 +3292,7 @@ const version = tournamentEngine.version();
 ```
 
 ---
+
+```
+
+```
