@@ -14,8 +14,10 @@ import {
 
 export function publishEvent({
   policyDefinitions,
+  removePriorValues,
   tournamentRecord,
   status = PUBLIC,
+  event,
 
   drawIdsToRemove,
   drawIdsToAdd,
@@ -24,8 +26,6 @@ export function publishEvent({
   structureIdsToRemove,
   structureIdsToAdd,
   structureIds,
-
-  event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
@@ -79,7 +79,7 @@ export function publishEvent({
     itemValue: { [status]: { drawIds, structureIds } },
     itemType,
   };
-  addEventTimeItem({ event, timeItem: updatedTimeItem });
+  addEventTimeItem({ event, timeItem: updatedTimeItem, removePriorValues });
 
   const { eventData } = getEventData({
     usePublishState: true,
