@@ -38,8 +38,8 @@ export function assignDrawPosition({
       tournamentRecord,
       drawDefinition,
       participantId,
-      structureId,
       drawPosition,
+      structureId,
       event,
     });
     if (result.error) return result;
