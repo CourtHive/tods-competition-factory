@@ -4,6 +4,7 @@ import { unique, UUID } from '../../../../utilities';
 
 import { INVALID_TIE_FORMAT } from '../../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function validateTieFormat({
   checkCollectionIds = true,
@@ -165,39 +166,12 @@ export function validateCollectionDefinition({
     return { errors };
   }
   if (collectionValueProfile) {
-    if (!Array.isArray(collectionValueProfile)) {
-      errors.push(
-        `collectionValueProfile is not an array: ${collectionValueProfile}`
-      );
-      return { errors };
-    }
-    if (collectionValueProfile.length !== matchUpCount) {
-      errors.push(`collectionValueProfile does not align with matchUpsCount`);
-      return { errors };
-    }
-    for (const valueProfile of collectionValueProfile) {
-      if (typeof valueProfile !== 'object') {
-        errors.push(`valueProfile is not type object: ${valueProfile}`);
-        return { errors };
-      }
-      const { value, collectionPosition } = valueProfile;
-      if (
-        typeof value !== 'number' ||
-        typeof collectionPosition !== 'number' ||
-        collectionPosition > matchUpCount ||
-        collectionPosition < 1
-      ) {
-        errors.push(
-          `Invalid value profile: value and collectionPosition must be numeric. collectionPosition cannot be greater than matchUpCount`
-        );
-        return { errors };
-      }
-    }
-    const collectionPositions = collectionValueProfile.map(
-      (valueProfile) => valueProfile.collectionPosition
-    );
-    if (collectionPositions.length !== unique(collectionPositions).length) {
-      errors.push('collectionPositions are not unique');
+    const result = validateCollectionValueProfile({
+      collectionValueProfile,
+      matchUpCount,
+    });
+    if (result.errors) {
+      errors.push(...result.errors);
       return { errors };
     }
   }
@@ -226,4 +200,48 @@ export function checkTieFormat(tieFormat) {
   }
 
   return { tieFormat };
+}
+
+export function validateCollectionValueProfile({
+  collectionValueProfile,
+  matchUpCount,
+}) {
+  const errors = [];
+  if (!Array.isArray(collectionValueProfile)) {
+    errors.push(
+      `collectionValueProfile is not an array: ${collectionValueProfile}`
+    );
+    return { errors };
+  }
+  if (collectionValueProfile.length !== matchUpCount) {
+    errors.push(`collectionValueProfile does not align with matchUpsCount`);
+    return { errors };
+  }
+  for (const valueProfile of collectionValueProfile) {
+    if (typeof valueProfile !== 'object') {
+      errors.push(`valueProfile is not type object: ${valueProfile}`);
+      return { errors };
+    }
+    const { value, collectionPosition } = valueProfile;
+    if (
+      typeof value !== 'number' ||
+      typeof collectionPosition !== 'number' ||
+      collectionPosition > matchUpCount ||
+      collectionPosition < 1
+    ) {
+      errors.push(
+        `Invalid value profile: value and collectionPosition must be numeric. collectionPosition cannot be greater than matchUpCount`
+      );
+      return { errors };
+    }
+  }
+  const collectionPositions = collectionValueProfile.map(
+    (valueProfile) => valueProfile.collectionPosition
+  );
+  if (collectionPositions.length !== unique(collectionPositions).length) {
+    errors.push('collectionPositions are not unique');
+    return { errors };
+  }
+
+  return { ...SUCCESS };
 }

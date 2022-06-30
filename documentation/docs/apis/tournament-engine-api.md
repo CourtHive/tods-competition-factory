@@ -2204,7 +2204,7 @@ tournamentEngine.mergeParticipants({ participants });
 
 ## modifyCollectionDefinition
 
-Modifies the `collectionName` and/or `matchUpFormat` for targeted `tieFormat`.
+Modifies the `collectionName` and/or `matchUpFormat` for targeted `collectionId` within the `tieFormat` specified by `eventId`, `drawId`, `structureId` or `matchUpId`.
 
 ```js
 tournamentEngine.modifyCollectionDefinition({
@@ -2215,6 +2215,13 @@ tournamentEngine.modifyCollectionDefinition({
   matchUpId, // required if modifying tieFormat for a matchUp
   eventId, // required if modifying tieFormat for a event
   drawId, // required if modifying tieFormat for a drawDefinition or a structure
+
+  // value assignment, only one is allowed to have a value
+  collectionValueProfile, // optional - [{ collectionPosition: 1, value: 2 }] - there must be a value provided for all matchUp positions
+  collectionValue, // optional - value awarded for winning more than half of the matchUps in the collection
+  matchUpValue, // optional - value awarded for each matchUp won
+  scoreValue, // optional - value awarded for each game or point won (points for tiebreak sets)
+  setValue, // optional - value awarded for each set won
 });
 ```
 
@@ -3289,10 +3296,4 @@ Returns NPM package version. Can be used in configurations that utilize Competit
 
 ```js
 const version = tournamentEngine.version();
-```
-
----
-
-```
-
 ```
