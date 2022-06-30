@@ -553,7 +553,7 @@ const { matchUps } = allEventMatchUps({
   eventId,
   inContext: true, // include contextual details
   nextMatchUps: true, // include winner/loser target matchUp details
-  matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
 });
 ```
@@ -567,7 +567,7 @@ Return an array of all matchUps contained within a tournament. These matchUps ar
 ```js
 const { matchUps } = tournamentEngine.allTournamentMatchUps({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
-  matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   nextMatchUps, // include winnerTo and loserTo matchUps
   contextProfile, // optional: { inferGender: true }
 });
@@ -906,7 +906,7 @@ tournamentEngine.checkOutParticipant({
 tournamentEngine.clearScheduledMatchUps({
   ignoreMatchUpStatuses, // optional - specify matchUpStatus values to be ignored; defaults to all completed matchUpStatuses
   scheduleAttributes, // optional - specify which attributes should be considered; defaults to ['scheduledDate', 'scheduledTime']
-  scheduleDates, // optional - array of dates to be cleared; only matchUps with specified scheduledDate will be cleared
+  scheduledDates, // optional - array of dates to be cleared; only matchUps with specified scheduledDate will be cleared
   venueIds, // optional - array of venueIds; only matchUps at specified venues will be cleared
 });
 ```
@@ -1069,7 +1069,7 @@ const {
 } = tournamentEngine.eventMatchUps({
   eventId,
   nextMatchUps, // optional boolean; include winner/loser target matchUp details
-  matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   contextFilters,
   tournamentAppliedPolicies,
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
@@ -2579,7 +2579,7 @@ tournamentEngine.publishEventSeeding({
 ```js
 tournamentEngine.publishOrderOfPlay({
   removePriorValues, // optional boolean - when true will delete prior timeItems
-  scheduleDates, // optional - if not provided will publish all scheduleDates
+  scheduledDates, // optional - if not provided will publish all scheduledDates
   eventIds, // optional - if not provided will publish all eventIds
 });
 ```
@@ -3221,7 +3221,7 @@ const {
   pendingMatchUps,
   upcomingMatchUps,
 } = tournamentEngine.tournamentMatchUps({
-  matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   policyDefinitions, // optional - seeding or avoidance policies to be used when placing participants
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
 });

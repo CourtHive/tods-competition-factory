@@ -243,7 +243,7 @@ competitionEngine.addVenue({ venue: { venueName } });
 ```js
 const { matchUps } = competitionEngine.allCompetitionMatchUps({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
-  matchUpFilters, // optional; [ scheduledDate, scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   nextMatchUps, // include winnerTo and loserTo matchUps
   contextProfile, // optional: { inferGender: true, contextProfile: ['attribute', 'to', 'exclude'], withScaleValues }
 });
@@ -367,7 +367,7 @@ const { scheduleTimes } = competitionEngine.calculateScheduleTimes({
 competitionEngine.clearScheduledMatchUps({
   ignoreMatchUpStatuses, // optional - specify matchUpStatus values to be ignored; defaults to all completed matchUpStatuses
   scheduleAttributes, // optional - specify which attributes should be considered; defaults to ['scheduledDate', 'scheduledTime']
-  scheduleDates, // optional - array of dates to be cleared; only matchUps with specified scheduledDate will be cleared
+  scheduledDates, // optional - array of dates to be cleared; only matchUps with specified scheduledDate will be cleared
   venueIds, // optional - array of venueIds; only matchUps at specified venues will be cleared
 });
 ```
