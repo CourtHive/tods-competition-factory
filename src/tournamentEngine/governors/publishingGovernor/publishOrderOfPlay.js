@@ -8,7 +8,7 @@ import { PUBLISH_ORDER_OF_PLAY } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function publishOrderOfPlay({
-  scheduleDates = [],
+  scheduledDates = [],
   removePriorValues,
   tournamentRecord,
   status = PUBLIC,
@@ -23,7 +23,7 @@ export function publishOrderOfPlay({
 
   const itemValue = timeItem?.itemValue || { [status]: {} };
 
-  itemValue[status].orderOfPlay = { published: true, scheduleDates, eventIds };
+  itemValue[status].orderOfPlay = { published: true, scheduledDates, eventIds };
 
   const updatedTimeItem = {
     itemValue,
@@ -38,7 +38,7 @@ export function publishOrderOfPlay({
     topic: PUBLISH_ORDER_OF_PLAY,
     payload: {
       tournamentId: tournamentRecord.tournamentId,
-      scheduleDates,
+      scheduledDates,
       eventIds,
     },
   });

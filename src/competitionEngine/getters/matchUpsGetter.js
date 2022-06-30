@@ -78,17 +78,18 @@ export function competitionScheduleMatchUps(params) {
     }
   }
 
-  if (publishStatus?.scheduleDates?.length) {
-    if (matchUpFilters?.scheduleDates) {
-      if (!matchUpFilters.scheduleDates.length) {
-        matchUpFilters.scheduleDates = publishStatus.scheduleDates;
+  if (publishStatus?.scheduledDates?.length) {
+    if (matchUpFilters?.scheduledDates) {
+      if (!matchUpFilters.scheduledDates.length) {
+        matchUpFilters.scheduledDates = publishStatus.scheduledDates;
       } else {
-        matchUpFilters.scheduleDates = matchUpFilters.scheduleDates.filter(
-          (scheduleDate) => publishStatus.scheduleDates.includes(scheduleDate)
+        matchUpFilters.scheduledDates = matchUpFilters.scheduledDates.filter(
+          (scheduledDate) =>
+            publishStatus.scheduledDates.includes(scheduledDate)
         );
       }
     } else {
-      matchUpFilters = { scheduleDates: publishStatus.scheduleDates };
+      matchUpFilters = { scheduledDates: publishStatus.scheduledDates };
     }
   }
 
