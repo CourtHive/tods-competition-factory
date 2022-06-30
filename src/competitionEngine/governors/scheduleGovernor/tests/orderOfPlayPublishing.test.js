@@ -2,6 +2,7 @@ import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import { PUBLIC } from '../../../../constants/timeItemConstants';
 
 it('can publish order of play for specified days', () => {
   const startDate = '2022-01-01';
@@ -107,15 +108,16 @@ it('can publish order of play for specified days', () => {
   expect(result.success).toEqual(true);
 
   result = competitionEngine.getState();
-  console.log(
-    Object.values(result.tournamentRecords)[0].timeItems[1].itemValue
-  );
+  expect(
+    Object.values(result.tournamentRecords)[0].timeItems[1].itemValue[PUBLIC]
+      .orderOfPlay
+  ).not.toBeUndefined();
 
   result = competitionEngine.unPublishOrderOfPlay();
   expect(result.success).toEqual(true);
 
   result = competitionEngine.getState();
-  console.log(
+  expect(
     Object.values(result.tournamentRecords)[0].timeItems[2].itemValue
-  );
+  ).toEqual({ [PUBLIC]: {} });
 });
