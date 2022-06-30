@@ -37,7 +37,6 @@ export function unPublishOrderOfPlay({
     topic: UNPUBLISH_ORDER_OF_PLAY,
     payload: {
       tournamentId: tournamentRecord.tournamentId,
-      eventId: event.eventId,
     },
   });
 

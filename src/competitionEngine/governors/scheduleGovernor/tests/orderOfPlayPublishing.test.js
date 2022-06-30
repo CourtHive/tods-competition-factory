@@ -107,5 +107,15 @@ it('can publish order of play for specified days', () => {
   expect(result.success).toEqual(true);
 
   result = competitionEngine.getState();
-  console.log(Object.values(result.tournamentRecords)[0].timeItems);
+  console.log(
+    Object.values(result.tournamentRecords)[0].timeItems[1].itemValue
+  );
+
+  result = competitionEngine.unPublishOrderOfPlay();
+  expect(result.success).toEqual(true);
+
+  result = competitionEngine.getState();
+  console.log(
+    Object.values(result.tournamentRecords)[0].timeItems[2].itemValue
+  );
 });
