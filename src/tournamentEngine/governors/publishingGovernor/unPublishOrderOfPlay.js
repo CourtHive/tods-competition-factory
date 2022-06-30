@@ -31,6 +31,7 @@ export function unPublishOrderOfPlay({
   addTournamentTimeItem({
     timeItem: updatedTimeItem,
     removePriorValues,
+    tournamentRecord,
   });
   addNotice({
     topic: UNPUBLISH_ORDER_OF_PLAY,

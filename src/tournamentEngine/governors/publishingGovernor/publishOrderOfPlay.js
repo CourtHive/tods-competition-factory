@@ -33,6 +33,7 @@ export function publishOrderOfPlay({
   addTournamentTimeItem({
     timeItem: updatedTimeItem,
     removePriorValues,
+    tournamentRecord,
   });
   addNotice({
     topic: PUBLISH_ORDER_OF_PLAY,

@@ -1,7 +1,8 @@
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
-import competitionGovernor from './governors/competitionsGovernor';
-import scheduleGovernor from './governors/scheduleGovernor';
 import { factoryVersion } from '../global/functions/factoryVersion';
+import competitionGovernor from './governors/competitionsGovernor';
+import publishingGovernor from './governors/publishingGovernor';
+import scheduleGovernor from './governors/scheduleGovernor';
 import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
 import { makeDeepCopy } from '../utilities';
@@ -84,6 +85,7 @@ export function competitionEngineAsync(test) {
   importGovernors([
     competitionGovernor,
     policyGovernor,
+    publishingGovernor,
     queryGovernor,
     scheduleGovernor,
   ]);
