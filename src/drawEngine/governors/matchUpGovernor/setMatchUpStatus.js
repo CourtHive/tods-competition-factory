@@ -22,21 +22,26 @@ import {
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   ABANDONED,
+  AWAITING_RESULT,
   CANCELLED,
-  INCOMPLETE,
-  TO_BE_PLAYED,
-  particicipantsRequiredMatchUpStatuses,
-  validMatchUpStatuses,
+  DEFAULTED,
+  DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
+  INCOMPLETE,
+  particicipantsRequiredMatchUpStatuses,
+  RETIRED,
+  SUSPENDED,
+  TO_BE_PLAYED,
+  validMatchUpStatuses,
 } from '../../../constants/matchUpStatusConstants';
 import {
+  CANNOT_CHANGE_WINNING_SIDE,
+  INCOMPATIBLE_MATCHUP_STATUS,
   INVALID_MATCHUP_STATUS,
+  INVALID_VALUES,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   NO_VALID_ACTIONS,
-  INVALID_VALUES,
-  INCOMPATIBLE_MATCHUP_STATUS,
-  CANNOT_CHANGE_WINNING_SIDE,
   NOT_IMPLEMENTED,
 } from '../../../constants/errorConditionConstants';
 import {
@@ -131,11 +136,23 @@ export function setMatchUpStatus(params) {
   const assignedDrawPositions = inContextMatchUp.drawPositions?.filter(Boolean);
 
   if (matchUp.matchUpType === TEAM) {
-    // do not direclty set team score... unless walkover/default/double walkover/Retirement
-    return {
-      error: NOT_IMPLEMENTED,
-      info: 'DIRECT SCORING of TEAM matchUp not implemented',
-    };
+    if (
+      ![
+        ABANDONED,
+        AWAITING_RESULT,
+        CANCELLED,
+        DEFAULTED,
+        DOUBLE_DEFAULT,
+        DOUBLE_WALKOVER,
+        RETIRED,
+        SUSPENDED,
+        WALKOVER,
+      ].includes(matchUpStatus)
+    )
+      return {
+        error: NOT_IMPLEMENTED,
+        info: 'DIRECT SCORING of TEAM matchUp not implemented',
+      };
   }
 
   const matchUpTieId = inContextMatchUp.matchUpTieId;
