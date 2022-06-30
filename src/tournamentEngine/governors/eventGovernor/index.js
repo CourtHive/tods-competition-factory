@@ -36,7 +36,6 @@ import {
   setDrawDefaultMatchUpFormat,
   setEventDefaultMatchUpFormat,
   setStructureDefaultMatchUpFormat,
-  setCollectionDefaultMatchUpFormat,
 } from './setDefaultMatchUpFormat';
 
 import {
@@ -203,7 +202,6 @@ const eventGovernor = {
   setDrawDefaultMatchUpFormat,
   setEventDefaultMatchUpFormat,
   setStructureDefaultMatchUpFormat,
-  setCollectionDefaultMatchUpFormat,
 
   assignDrawPosition,
   assignSeedPositions,

@@ -798,3 +798,93 @@ test('does not propagate matchUpStatusCodes from SINGLE/DOUBLES to TEAM matchUps
     ],
   ]);
 });
+
+it('can set matchUpStatus of TEAM matchUps', () => {
+  let matchUpModifyNotices = [];
+
+  const subscriptions = {
+    modifyMatchUp: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUp }) => {
+          const { matchUpType, matchUpStatusCodes, score } = matchUp;
+          if (matchUpStatusCodes || score)
+            matchUpModifyNotices.push(
+              [matchUpType, matchUpStatusCodes, score].filter(Boolean)
+            );
+        });
+      }
+    },
+  };
+
+  setSubscriptions({ subscriptions });
+
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 8, eventType: TEAM }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { matchUps: firstRoundDualMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      contextFilters: {
+        stages: [MAIN],
+      },
+      matchUpFilters: {
+        matchUpTypes: [TEAM],
+        roundNumbers: [1],
+      },
+    });
+
+  expect(firstRoundDualMatchUps.length).toEqual(4);
+
+  let targetMatchUp = firstRoundDualMatchUps[0];
+  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+  expect(targetMatchUp.matchUpStatusCodes).toBeUndefined();
+
+  const singlesMatchUps = targetMatchUp.tieMatchUps.filter(
+    ({ matchUpType }) => matchUpType === SINGLES
+  );
+
+  const outcome = {
+    score: {
+      scoreStringSide1: '',
+      scoreStringSide2: '',
+    },
+    matchUpStatus: DOUBLE_WALKOVER,
+    matchUpStatusCodes: ['WOWO', 'WOWO'],
+  };
+
+  let result = tournamentEngine.setMatchUpStatus({
+    matchUpId: singlesMatchUps[0].matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  targetMatchUp = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpIds: [targetMatchUp.matchUpId],
+    },
+  }).matchUps[0];
+
+  expect(targetMatchUp.matchUpStatus).toEqual(IN_PROGRESS);
+  expect(targetMatchUp.matchUpStatusCodes).toBeUndefined();
+
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  targetMatchUp = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpIds: [targetMatchUp.matchUpId],
+    },
+  }).matchUps[0];
+
+  expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
+});

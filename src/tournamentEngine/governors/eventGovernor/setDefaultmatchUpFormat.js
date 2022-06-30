@@ -1,21 +1,20 @@
 import { isValid } from '../../../drawEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
 import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_EVENT,
   MISSING_MATCHUP_FORMAT,
   MISSING_STRUCTURE_ID,
   MISSING_TOURNAMENT_RECORD,
-  NOT_IMPLEMENTED,
   UNRECOGNIZED_MATCHUP_FORMAT,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setEventDefaultMatchUpFormat({
   tournamentRecord,
-  event,
   matchUpFormat,
+  event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
@@ -68,18 +67,4 @@ export function setStructureDefaultMatchUpFormat({
     structureId,
     event,
   });
-}
-
-export function setCollectionDefaultMatchUpFormat({
-  tournamentRecord,
-  drawDefinition,
-  matchUpFormat,
-}) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
-
-  if (!isValid(matchUpFormat)) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
-
-  return { error: NOT_IMPLEMENTED };
 }

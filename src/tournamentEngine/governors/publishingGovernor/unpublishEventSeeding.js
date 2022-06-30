@@ -11,6 +11,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function unPublishEventSeeding({
+  removePriorValues,
   tournamentRecord,
   status = PUBLIC,
   event,
@@ -33,7 +34,7 @@ export function unPublishEventSeeding({
     itemType,
   };
 
-  addEventTimeItem({ event, timeItem: updatedTimeItem });
+  addEventTimeItem({ event, timeItem: updatedTimeItem, removePriorValues });
   addNotice({
     topic: UNPUBLISH_EVENT_SEEDING,
     payload: {

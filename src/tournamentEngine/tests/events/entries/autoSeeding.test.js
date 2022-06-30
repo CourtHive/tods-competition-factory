@@ -139,7 +139,7 @@ it('can autoSeed by Rankings', () => {
   // when { usePublishState: true } seedValues are added when eventSeeding is published
   expect(seedingScaleValues.length).toEqual(8);
 
-  // now unpublish and test again
+  // now unPublish and test again
   result = tournamentEngine.unPublishEventSeeding({ eventId });
   expect(result.success).toEqual(true);
 

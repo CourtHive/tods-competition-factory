@@ -10,7 +10,12 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-export function unPublishEvent({ tournamentRecord, event, status = PUBLIC }) {
+export function unPublishEvent({
+  removePriorValues,
+  tournamentRecord,
+  status = PUBLIC,
+  event,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
@@ -27,7 +32,7 @@ export function unPublishEvent({ tournamentRecord, event, status = PUBLIC }) {
 
   const updatedTimeItem = { itemValue, itemType };
 
-  addEventTimeItem({ event, timeItem: updatedTimeItem });
+  addEventTimeItem({ event, timeItem: updatedTimeItem, removePriorValues });
   addNotice({
     topic: UNPUBLISH_EVENT,
     payload: {

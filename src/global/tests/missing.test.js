@@ -28,16 +28,19 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
         expect(result.tournamentRecord).toBeUndefined();
       } else if (result.success || result.valid) {
         const successExpected = [
-          'reset',
-          'devContext',
-          'getTournamentIds',
-          'setSchedulingProfile',
-          'getMatchUpDependencies',
-          'validateSchedulingProfile',
+          'removeUnlinkedTournamentRecords',
           'getScheduledRoundsDetails',
           'getSchedulingProfileIssues',
-          'removeUnlinkedTournamentRecords',
+          'validateSchedulingProfile',
+          'getMatchUpDependencies',
+          'setSchedulingProfile',
+          'unPublishOrderOfPlay',
+          'publishOrderOfPlay',
+          'getTournamentIds',
+          'devContext',
+          'reset',
         ].includes(method);
+        if (!successExpected) console.log({ method });
         expect(successExpected).toEqual(true);
       } else {
         if (['devContext'].includes(method)) {
