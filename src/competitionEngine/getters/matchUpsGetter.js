@@ -8,6 +8,8 @@ import {
 } from '../../tournamentEngine/getters/matchUpsGetter';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { getTournamentTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
+import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 
 export function allCompetitionMatchUps({
   scheduleVisibilityFilters,
@@ -47,11 +49,51 @@ export function competitionScheduleMatchUps(params) {
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
   const { courts, venues } = getVenuesAndCourts(params);
-  const { sortCourtsData, sortDateMatchUps = true } = params;
   const schedulingProfile = getSchedulingProfile(params).schedulingProfile;
 
+  let { matchUpFilters } = params;
+  const {
+    sortDateMatchUps = true,
+    usePublishState,
+    status = PUBLIC,
+    sortCourtsData,
+  } = params;
+
+  const timeItem =
+    usePublishState &&
+    getTournamentTimeItem({ itemType: `${PUBLISH}.${STATUS}` }).timeItem;
+
+  const publishStatus = timeItem?.itemValue?.[status];
+  if (publishStatus?.eventIds?.length) {
+    if (matchUpFilters?.eventIds) {
+      if (!matchUpFilters.eventIds.length) {
+        matchUpFilters.eventIds = publishStatus.eventIds;
+      } else {
+        matchUpFilters.eventIds = matchUpFilters.eventIds.filter((eventId) =>
+          publishStatus.eventIds.includes(eventId)
+        );
+      }
+    } else {
+      matchUpFilters = { eventIds: publishStatus.eventIds };
+    }
+  }
+
+  if (publishStatus?.scheduleDates?.length) {
+    if (matchUpFilters?.scheduleDates) {
+      if (!matchUpFilters.scheduleDates.length) {
+        matchUpFilters.scheduleDates = publishStatus.scheduleDates;
+      } else {
+        matchUpFilters.scheduleDates = matchUpFilters.scheduleDates.filter(
+          (scheduleDate) => publishStatus.scheduleDates.includes(scheduleDate)
+        );
+      }
+    } else {
+      matchUpFilters = { scheduleDates: publishStatus.scheduleDates };
+    }
+  }
+
   const { completedMatchUps, upcomingMatchUps, pendingMatchUps } =
-    competitionMatchUps(params);
+    competitionMatchUps({ ...params, matchUpFilters });
 
   const relevantMatchUps = [
     ...(upcomingMatchUps || []),

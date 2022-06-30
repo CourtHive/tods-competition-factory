@@ -387,6 +387,7 @@ const {
   upcomingMatchUps,
 } = competitionEngine.competitionMatchUps({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
+  matchUpFilters, // optional
 });
 ```
 
@@ -402,9 +403,9 @@ const matchUpFilters = {
 
 const { completedMatchUps, dateMatchUps, courtsData, venues } =
   competitionEngine.competitionScheduleMatchUps({
-    matchUpFilters,
     sortCourtsData, // boolean - optional
     sortDateMatchUps, // boolean - optional - defaults to `true`
+    matchUpFilters, // optional
   });
 ```
 

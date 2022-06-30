@@ -2550,12 +2550,13 @@ const policyDefinitions = Object.assign(
 );
 
 const { eventData } = tournamentEngine.publishEvent({
-  policyDefinitions,
-  eventId,
-  drawIds, // optional - array of drawIds within the event to publish
-  structureIds = [], // optional - specify structureIds
+  removePriorValues, // optional boolean - when true will delete prior timeItems
   drawIdsToRemove, // optional - add these drawIds to drawIds already published
   drawIdsToAdd, // optional - remove these drawIds from drawIds published
+  drawIds, // optional - array of drawIds within the event to publish
+  structureIds = [], // optional - specify structureIds
+  policyDefinitions,
+  eventId,
 });
 ```
 
@@ -2565,8 +2566,21 @@ const { eventData } = tournamentEngine.publishEvent({
 
 ```js
 tournamentEngine.publishEventSeeding({
-  eventId,
+  removePriorValues, // optional boolean - when true will delete prior timeItems
   drawIds, // optional - publish specific drawIds (flights) within the event
+  eventId,
+});
+```
+
+---
+
+## publishOrderOfPlay
+
+```js
+tournamentEngine.publishOrderOfPlay({
+  removePriorValues, // optional boolean - when true will delete prior timeItems
+  scheduleDates, // optional - if not provided will publish all scheduleDates
+  eventIds, // optional - if not provided will publish all eventIds
 });
 ```
 
@@ -3000,7 +3014,7 @@ scaleItem = {
 };
 
 result = tournamentEngine.setParticipantScaleItem({
-  removePriorValues, // boolean
+  removePriorValues, // optional boolean - when true will delete prior timeItems
   participantId,
   scaleItem,
 });
@@ -3026,8 +3040,8 @@ const scaleItemsWithParticipantIds = [
   },
 ];
 tournamentEngine.setParticipantScaleItems({
+  removePriorValues, // optional boolean - when true will delete prior timeItems
   scaleItemsWithParticipantIds,
-  removePriorValues,
 });
 ```
 
@@ -3220,7 +3234,10 @@ const {
 Modifies the `publishState` of an event. `Subscriptions` or middleware can be used to trigger messaging to services which make event data visible on public websites.
 
 ```js
-tournamentEngine.unPublishEvent({ eventId });
+tournamentEngine.unPublishEvent({
+  removePriorValues, // optional boolean - when true will delete prior timeItems
+  eventId,
+});
 ```
 
 ---
@@ -3228,7 +3245,20 @@ tournamentEngine.unPublishEvent({ eventId });
 ## unPublishEventSeeding
 
 ```js
-tournamentEngine.unPublishEventSeeding({ eventId });
+tournamentEngine.unPublishEventSeeding({
+  removePriorValues, // optional boolean - when true will delete prior timeItems
+  eventId,
+});
+```
+
+---
+
+## unPublishOrderOfPlay
+
+```js
+tournamentEngine.unPublishOrderOfPlay({
+  removePriorValues, // optional boolean - when true will delete prior timeItems
+});
 ```
 
 ---

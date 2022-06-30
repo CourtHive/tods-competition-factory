@@ -46,6 +46,7 @@ export function getEventData({
     .filter(
       (drawDefinition) =>
         !usePublishState ||
+        !publishStatus?.drawIds ||
         publishStatus?.drawIds?.length === 0 ||
         publishStatus?.drawIds?.includes(drawDefinition.drawId)
     )

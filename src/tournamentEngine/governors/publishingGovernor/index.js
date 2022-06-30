@@ -1,5 +1,7 @@
 import { unPublishEventSeeding } from './unPublishEventSeeding';
+import { unPublishOrderOfPlay } from './unpublishOrderOfPlay';
 import { publishEventSeeding } from './publishEventSeeding';
+import { publishOrderOfPlay } from './publishOrderOfPlay';
 import { getTournamentInfo } from './getTournamentInfo';
 import { getAllEventData } from './getAllEventData';
 import { unPublishEvent } from './unPublishEvent';
@@ -22,6 +24,9 @@ const publishingGovernor = {
   publishEventSeeding,
   unPublishEvent,
   publishEvent,
+
+  unPublishOrderOfPlay,
+  publishOrderOfPlay,
 };
 
 export default publishingGovernor;

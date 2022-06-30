@@ -88,7 +88,7 @@ export function publishEvent({
     event,
   });
 
-  // filter out drawData for unpublished draws
+  // filter out drawData for unPublished draws
   const publishState = eventData?.eventInfo?.publish?.state;
   eventData.drawsData = eventData.drawsData.filter(({ drawId }) =>
     publishState?.PUBLIC?.drawIds.includes(drawId)
