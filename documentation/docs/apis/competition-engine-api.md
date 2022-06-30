@@ -917,6 +917,18 @@ competitionEngine.modifyVenue({ venueId, modifications });
 
 ---
 
+## publishOrderOfPlay
+
+```js
+competitionEngine.publishOrderOfPlay({
+  removePriorValues, // optional boolean - when true will delete prior timeItems
+  scheduledDates, // optional - if not provided will publish all scheduledDates
+  eventIds, // optional - if not provided will publish all eventIds
+});
+```
+
+---
+
 ## removeEventMatchUpFormatTiming
 
 ```js
@@ -1159,6 +1171,16 @@ Removes links between all tournaments currently loaded in `competitionEngine`.
 
 ```js
 competitionEngine.unlinkTournaments();
+```
+
+---
+
+## unPublishOrderOfPlay
+
+```js
+competitionEngine.unPublishOrderOfPlay({
+  removePriorValues, // optional boolean - when true will delete prior timeItems
+});
 ```
 
 ---
