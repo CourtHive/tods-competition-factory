@@ -1,8 +1,8 @@
-import { instanceCount } from '../../../utilities/arrays';
-import { parse } from '../matchUpFormatGovernor/parse';
-import { analyzeSet } from './analyzeSet';
+import { instanceCount } from '../../utilities/arrays';
+import { parse } from '../governors/matchUpFormatGovernor/parse';
+import { analyzeSet } from '../governors/scoreGovernor/analyzeSet';
 
-import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
+import { MISSING_MATCHUP } from '../../constants/errorConditionConstants';
 
 // TODO: what about checking array of sets are in order? ( setNumber )
 

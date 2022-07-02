@@ -4,7 +4,6 @@ import { validateTieFormat } from '../tieFormatGovernor/tieFormatUtilities';
 import { getSetComplement, getTiebreakComplement } from './getComplement';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
 import { generateScoreString } from './generateScoreString';
-import { analyzeMatchUp } from './analyzeMatchUp';
 import { analyzeSet } from './analyzeSet';
 
 import { orderCollectionDefinitions } from '../tieFormatGovernor/orderCollectionDefinitions';
@@ -37,7 +36,6 @@ export const scoreGovernor = {
   checkSetIsComplete,
   validateTieFormat,
   getSetComplement,
-  analyzeMatchUp,
   keyValueScore,
   scoreHasValue,
   analyzeSet,

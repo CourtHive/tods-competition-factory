@@ -17,52 +17,6 @@ const { scoreGovernor } = require('tods-competition-factory');
 
 ## API
 
-### analyzeMatchUp
-
-```js
-let analysis = scoreGovernor.analyzeMatchUp({ matchUp });
-
-const {
-  isActiveSet,
-  isExistingSet,
-  existingValue,
-  hasExistingValue,
-  isValidSideNumber,
-  completedSetsCount,
-  isCompletedMatchUp,
-  isLastSetWithValues,
-  validMatchUpOutcome,
-  matchUpScoringFormat: {
-    bestOf,
-    setFormat: { setTo, tiebreakFormat, tiebreakAt },
-  },
-  calculatedWinningSide,
-  validMatchUpWinningSide,
-  completedSetsHaveValidOutcomes,
-  specifiedSetAnalysis: {
-    expectTiebreakSet,
-    expectTimedSet,
-    hasTiebreakCondition,
-    isCompletedSet,
-    isDecidingSet,
-    isTiebreakSet,
-    isValidSet,
-    isValidSetNumber,
-    isValidSetOutcome,
-    setFormat,
-    sideGameScores,
-    sideGameScoresCount,
-    sidePointScores,
-    sidePointScoresCount,
-    sideTiebreakScores,
-    sideTiebreakScoresCount,
-    winningSide,
-  },
-} = analysis;
-```
-
----
-
 ### analyzeSet
 
 ```js

@@ -1,12 +1,12 @@
-import { mocksEngine, tournamentEngine } from '../../../..';
-import { analyzeMatchUp } from '../analyzeMatchUp';
-import scoreGovernor from '..';
+import { mocksEngine, tournamentEngine } from '../..';
+import { analyzeMatchUp } from '../getters/analyzeMatchUp';
+import matchUpEngine from '../sync';
 
-import { MISSING_MATCHUP } from '../../../../constants/errorConditionConstants';
+import { MISSING_MATCHUP } from '../../constants/errorConditionConstants';
 import {
   FORMAT_ATP_DOUBLES,
   FORMAT_STANDARD,
-} from '../../../../fixtures/scoring/matchUpFormats';
+} from '../../fixtures/scoring/matchUpFormats';
 
 test('can handle empty matchUp', () => {
   let analysis = analyzeMatchUp();
@@ -26,7 +26,22 @@ test('generated completed mock matchUp', () => {
     matchUps: [matchUp],
   } = tournamentEngine.allTournamentMatchUps();
 
-  let analysis = scoreGovernor.analyzeMatchUp({ matchUp });
+  let analysis = matchUpEngine.analyzeMatchUp({ matchUp });
+  expect(analysis.calculatedWinningSide).toEqual(1);
+  expect(analysis.validMatchUpWinningSide).toEqual(true);
+});
+
+test('matchUpEngine state test', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 4 }],
+    completeAllMatchUps: true,
+  });
+  tournamentEngine.setState(tournamentRecord);
+  const {
+    matchUps: [matchUp],
+  } = tournamentEngine.allTournamentMatchUps();
+
+  let analysis = matchUpEngine.setState(matchUp).analyzeMatchUp();
   expect(analysis.calculatedWinningSide).toEqual(1);
   expect(analysis.validMatchUpWinningSide).toEqual(true);
 });

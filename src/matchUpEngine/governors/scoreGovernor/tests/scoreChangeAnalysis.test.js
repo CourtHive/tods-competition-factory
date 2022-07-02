@@ -1,4 +1,4 @@
-import { analyzeMatchUp } from '../analyzeMatchUp';
+import { analyzeMatchUp } from '../../../getters/analyzeMatchUp';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 

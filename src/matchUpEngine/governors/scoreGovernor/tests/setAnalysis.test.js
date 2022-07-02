@@ -1,4 +1,4 @@
-import { parse } from '../matchUpFormatCode/parse';
+import { parse } from '../../matchUpFormatGovernor/parse';
 import { analyzeSet } from '../analyzeSet';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';

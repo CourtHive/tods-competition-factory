@@ -1,9 +1,10 @@
 import scoreGovernor from './governors/scoreGovernor';
 
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
+import { getMatchUp, getState, reset, setState } from './stateMethods';
 import { factoryVersion } from '../global/functions/factoryVersion';
+import queryGovernor from './governors/queryGovernor';
 import { makeDeepCopy } from '../utilities';
-import { setState } from './stateMethods';
 import {
   setDeepCopy,
   setDevContext,
@@ -14,24 +15,15 @@ import {
 
 import { SUCCESS } from '../constants/resultConstants';
 
-let matchUp;
-
 export function matchUpEngineAsync(test) {
   const result = createInstanceState();
   if (result.error && !test) return result;
 
   const engine = {
-    getState: ({ convertExtensions, removeExtensions } = {}) => ({
-      matchUp: makeDeepCopy(
-        matchUp,
-        convertExtensions,
-        false,
-        removeExtensions
-      ),
-    }),
+    getState: () => getState(),
     version: () => factoryVersion(),
     reset: () => {
-      matchUp = undefined;
+      reset();
       return { ...SUCCESS };
     },
   };
@@ -43,13 +35,12 @@ export function matchUpEngineAsync(test) {
     } else {
       engine.error = undefined;
       engine.success = true;
-      matchUp = result;
       engine.drawId = result.drawId;
     }
     return engine;
   }
 
-  importGovernors([scoreGovernor]);
+  importGovernors([queryGovernor, scoreGovernor]);
 
   engine.devContext = (isDev) => {
     setDevContext(isDev);
@@ -96,6 +87,8 @@ export function matchUpEngineAsync(test) {
   async function invoke({ params, governor, governorMethod }) {
     delete engine.success;
     delete engine.error;
+
+    const matchUp = params?.matchUp || getMatchUp();
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(matchUp, false, true);

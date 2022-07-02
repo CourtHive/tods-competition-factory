@@ -1,5 +1,5 @@
 import { parse } from '../matchUpFormatGovernor/parse';
-import { analyzeMatchUp } from './analyzeMatchUp';
+import { analyzeMatchUp } from '../../getters/analyzeMatchUp';
 import { analyzeSet } from './analyzeSet';
 
 import {

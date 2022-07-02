@@ -1,4 +1,4 @@
-import { analyzeMatchUp } from '../../matchUpEngine/governors/scoreGovernor/analyzeMatchUp';
+import { analyzeMatchUp } from '../../matchUpEngine/getters/analyzeMatchUp';
 import { matchUpScore } from '../../matchUpEngine/governors/scoreGovernor/matchUpScore';
 import { analyzeSet } from '../../matchUpEngine/governors/scoreGovernor/analyzeSet';
 import { randomInt, weightedRandom } from '../../utilities/math';
