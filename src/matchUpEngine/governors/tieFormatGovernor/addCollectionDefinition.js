@@ -38,6 +38,7 @@ export function addCollectionDefinition({
   tieFormatName,
   structureId,
   matchUpId,
+  matchUp,
   eventId,
   uuids,
   event,
@@ -47,22 +48,24 @@ export function addCollectionDefinition({
   });
   if (!valid) return { error: INVALID_VALUES, errors };
 
-  let result = getTieFormat({
-    drawDefinition,
-    structureId,
-    matchUpId,
-    eventId,
-    event,
-  });
+  let result =
+    !matchUp &&
+    getTieFormat({
+      drawDefinition,
+      structureId,
+      matchUpId,
+      eventId,
+      event,
+    });
   if (result.error) return result;
 
-  const { matchUp, structure, tieFormat: existingTieFormat } = result;
+  const { structure } = result;
+  matchUp = matchUp || result.matchUp;
+  const existingTieFormat = result.tieFormat || matchUp?.tieFormat;
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
   if (result.error) return result;
-
-  const originalValueGoal = tieFormat.winCriteria.valueGoal;
 
   if (!collectionDefinition.collectionId) {
     collectionDefinition.collectionId = UUID();
@@ -92,6 +95,7 @@ export function addCollectionDefinition({
   tieFormat.winCriteria = { aggregateValue, valueGoal };
 
   // if valueGoal has changed, force renaming of the tieFormat
+  const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
   if (originalValueGoal && originalValueGoal !== valueGoal) {
     if (tieFormatName) {
       tieFormat.tieFormatName = tieFormatName;

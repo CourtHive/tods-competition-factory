@@ -17,6 +17,7 @@ export function addCollectionGroup({
   tieFormatName,
   structureId,
   matchUpId,
+  matchUp,
   eventId,
   event,
 }) {
@@ -24,17 +25,21 @@ export function addCollectionGroup({
 
   // TODO: validate groupDefinition
 
-  let result = getTieFormat({
-    tournamentRecord,
-    drawDefinition,
-    structureId,
-    matchUpId,
-    eventId,
-    event,
-  });
+  let result =
+    !matchUp &&
+    getTieFormat({
+      tournamentRecord,
+      drawDefinition,
+      structureId,
+      matchUpId,
+      eventId,
+      event,
+    });
   if (result.error) return result;
 
-  const { matchUp, structure, tieFormat: existingTieFormat } = result;
+  const { structure } = result;
+  matchUp = matchUp || result.matchUp;
+  const existingTieFormat = result.tieFormat || matchUp?.tieFormat;
   const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
   const tieFormat = copyTieFormat(existingTieFormat);
 

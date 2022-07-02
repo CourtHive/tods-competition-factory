@@ -11,6 +11,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   INVALID_VALUES,
+  MISSING_MATCHUP,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
@@ -35,6 +36,7 @@ export function orderCollectionDefinitions({
   matchUpId,
   orderMap,
   eventId,
+  matchUp,
   event,
 }) {
   if (typeof orderMap !== 'object') return { error: INVALID_VALUES, orderMap };
@@ -42,11 +44,17 @@ export function orderCollectionDefinitions({
   if (eventId && event?.tieFormat) {
     updateEventTieFormat({ tournamentRecord, event, orderMap });
   } else if (matchUpId) {
-    const { matchUp, error } = findMatchUp({
-      drawDefinition,
-      matchUpId,
-    });
-    if (error) return { error };
+    const result =
+      drawDefinition &&
+      findMatchUp({
+        drawDefinition,
+        matchUpId,
+      });
+
+    if (result?.error) return result;
+
+    matchUp = result.matchUp;
+    if (!matchUp) return { error: MISSING_MATCHUP };
 
     if (matchUp?.tieFormat) {
       matchUp.tieFormat = getOrderedTieFormat({

@@ -7,7 +7,7 @@ import {
 
 // TASK: add verify/validate structure as option in setState
 
-let matchUps = {};
+let keyedMatchUps = {};
 let matchUpId;
 
 export function setState(value, deepCopyOption = true) {
@@ -16,18 +16,18 @@ export function setState(value, deepCopyOption = true) {
 
   if (value.matchUpId) {
     matchUpId = value.matchUpId;
-    matchUps[matchUpId] = value;
+    keyedMatchUps[matchUpId] = value;
   } else if (Array.isArray(value)) {
     for (const m of value.reverse()) {
       if (m.matchUpId) {
-        matchUps[m.matchUpId] = m;
+        keyedMatchUps[m.matchUpId] = m;
         if (!matchUpId) matchUpId = m.matchUpId;
       }
     }
   } else {
     for (const m of Object.values(value)) {
       if (m.matchUpId) {
-        matchUps[m.matchUpId] = m;
+        keyedMatchUps[m.matchUpId] = m;
         if (!matchUpId) matchUpId = m.matchUpId;
       }
     }
@@ -37,17 +37,21 @@ export function setState(value, deepCopyOption = true) {
 }
 
 export function getMatchUp() {
-  return matchUps[matchUpId];
+  return keyedMatchUps[matchUpId];
+}
+
+export function getMatchUps() {
+  return Object.values(keyedMatchUps);
 }
 
 export function reset() {
   matchUpId = undefined;
-  matchUps = {};
+  keyedMatchUps = {};
 }
 
 export function getState({ convertExtensions, removeExtensions } = {}) {
   return makeDeepCopy(
-    matchUps[matchUpId],
+    keyedMatchUps[matchUpId],
     convertExtensions,
     false,
     removeExtensions

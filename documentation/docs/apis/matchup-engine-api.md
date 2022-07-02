@@ -136,3 +136,18 @@ matchUpEngine.removeCollectionGroup({
 ```
 
 ---
+
+### tallyParticipantResults
+
+Processes `matchUps` of `{ drawType: 'ROUND_ROBIN' }` from a single grouping within a ROUND_ROBIN structure and produces a detailed tally of particpant metrics.
+
+```js
+const { participantResults } = matchUpEngine.tallyParticipantResults({
+  policyDefinitions, // optional - can configure determination of winner when tied values
+  matchUpFormat, // required for accurate calculations
+  subOrderMap, // map { [participantId]: subOrder } // manual determination of order when ties cannot be broken
+  matchUps, // array of Group matchUps
+});
+```
+
+---

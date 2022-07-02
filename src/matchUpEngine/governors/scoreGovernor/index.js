@@ -1,5 +1,4 @@
 import { generateTieMatchUpScore } from '../../../drawEngine/generators/generateTieMatchUpScore';
-import { tallyParticipantResults } from '../../getters/roundRobinTally/roundRobinTally';
 import { validateTieFormat } from '../tieFormatGovernor/tieFormatUtilities';
 import { getSetComplement, getTiebreakComplement } from './getComplement';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
@@ -17,7 +16,6 @@ export const scoreGovernor = {
   isValidMatchUpFormat: isValid,
   parseMatchUpFormat: parse,
   generateTieMatchUpScore,
-  tallyParticipantResults,
   getTiebreakComplement,
   generateScoreString,
   checkSetIsComplete,

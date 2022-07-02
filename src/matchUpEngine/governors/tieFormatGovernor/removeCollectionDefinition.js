@@ -1,7 +1,6 @@
 // all child matchUps need to be checked for collectionAssignments which need to be removed when collectionDefinition.collectionIds are removed
 
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { allDrawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter';
 import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
 import { definedAttributes } from '../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
@@ -14,6 +13,10 @@ import {
   modifyDrawNotice,
   modifyMatchUpNotice,
 } from '../../../drawEngine/notifications/drawNotifications';
+import {
+  allDrawMatchUps,
+  allEventMatchUps,
+} from '../../../tournamentEngine/getters/matchUpsGetter';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
@@ -41,19 +44,24 @@ export function removeCollectionDefinition({
   structureId,
   matchUpId,
   eventId,
+  matchUp,
   event,
 }) {
-  let result = getTieFormat({
-    drawDefinition,
-    structureId,
-    matchUpId,
-    eventId,
-    event,
-  });
+  let result =
+    !matchUp &&
+    getTieFormat({
+      drawDefinition,
+      structureId,
+      matchUpId,
+      eventId,
+      event,
+    });
+
   if (result.error) return result;
 
-  const { matchUp, structure, tieFormat: existingTieFormat } = result;
-  const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
+  const { structure } = result;
+  matchUp = matchUp || result.matchUp;
+  const existingTieFormat = result.tieFormat || matchUp?.tieFormat;
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
@@ -91,6 +99,7 @@ export function removeCollectionDefinition({
   tieFormat.winCriteria = { aggregateValue, valueGoal };
 
   // if valueGoal has changed, force renaming of the tieFormat
+  const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
   if (originalValueGoal && originalValueGoal !== valueGoal) {
     if (tieFormatName) {
       tieFormat.tieFormatName = tieFormatName;
@@ -111,6 +120,11 @@ export function removeCollectionDefinition({
     })?.matchUps;
   } else if (drawDefinition) {
     matchUps = allDrawMatchUps({
+      matchUpFilters: { matchUpTypes: [TEAM] },
+      drawDefinition,
+    })?.matchUps;
+  } else if (event) {
+    matchUps = allEventMatchUps({
       matchUpFilters: { matchUpTypes: [TEAM] },
       drawDefinition,
     })?.matchUps;

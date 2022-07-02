@@ -3,7 +3,6 @@ import queryGovernor from './governors/queryGovernor';
 import scoreGovernor from './governors/scoreGovernor';
 
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
-import { getMatchUp, getState, reset, setState } from './stateMethods';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import { makeDeepCopy } from '../utilities';
 import {
@@ -13,6 +12,13 @@ import {
   deleteNotices,
   createInstanceState,
 } from '../global/state/globalState';
+import {
+  getMatchUp,
+  getMatchUps,
+  getState,
+  reset,
+  setState,
+} from './stateMethods';
 
 import { SUCCESS } from '../constants/resultConstants';
 
@@ -90,13 +96,15 @@ export function matchUpEngineAsync(test) {
     delete engine.error;
 
     const matchUp = params?.matchUp || getMatchUp();
+    const matchUps = params?.matchUps || getMatchUps();
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(matchUp, false, true);
 
     params = {
       ...params,
-      matchUpId: matchUp.matchUpId,
+      matchUpId: matchUp?.matchUpId,
+      matchUps,
       matchUp,
     };
 

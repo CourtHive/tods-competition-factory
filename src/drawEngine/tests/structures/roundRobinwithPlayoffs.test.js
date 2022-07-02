@@ -4,9 +4,9 @@ import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { chunkArray, intersection } from '../../../utilities/arrays';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { findStructure } from '../../getters/findStructure';
+import matchUpEngine from '../../../matchUpEngine/sync';
 import { setsValues } from './roundRobinSetsValues.js';
 import mocksEngine from '../../../mocksEngine';
-import { scoreGovernor } from '../../..';
 import drawEngine from '../../sync';
 import {
   allPlayoffPositionsFilled,
@@ -538,7 +538,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
     const structureMatchUps = eventMatchUps.filter(
       (matchUp) => matchUp.structureId === structureId
     );
-    const { participantResults } = scoreGovernor.tallyParticipantResults({
+    const { participantResults } = matchUpEngine.tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });
