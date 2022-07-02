@@ -1,9 +1,10 @@
+import tieFormatGovernor from './governors/tieFormatGovernor';
+import queryGovernor from './governors/queryGovernor';
 import scoreGovernor from './governors/scoreGovernor';
 
 import { getMatchUp, getState, reset, setState } from './stateMethods';
 import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
-import queryGovernor from './governors/queryGovernor';
 import { makeDeepCopy } from '../utilities';
 import {
   setDeepCopy,
@@ -36,7 +37,7 @@ export const matchUpEngine = (function () {
     return engine;
   }
 
-  importGovernors([queryGovernor, scoreGovernor]);
+  importGovernors([queryGovernor, scoreGovernor, tieFormatGovernor]);
 
   engine.devContext = (isDev) => {
     setDevContext(isDev);
@@ -85,6 +86,7 @@ export const matchUpEngine = (function () {
 
     params = {
       ...params,
+      matchUpId: matchUp.matchUpId,
       matchUp,
     };
 

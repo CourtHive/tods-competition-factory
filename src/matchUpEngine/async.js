@@ -1,9 +1,10 @@
+import tieFormatGovernor from './governors/tieFormatGovernor';
+import queryGovernor from './governors/queryGovernor';
 import scoreGovernor from './governors/scoreGovernor';
 
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { getMatchUp, getState, reset, setState } from './stateMethods';
 import { factoryVersion } from '../global/functions/factoryVersion';
-import queryGovernor from './governors/queryGovernor';
 import { makeDeepCopy } from '../utilities';
 import {
   setDeepCopy,
@@ -40,7 +41,7 @@ export function matchUpEngineAsync(test) {
     return engine;
   }
 
-  importGovernors([queryGovernor, scoreGovernor]);
+  importGovernors([queryGovernor, scoreGovernor, tieFormatGovernor]);
 
   engine.devContext = (isDev) => {
     setDevContext(isDev);
@@ -95,6 +96,7 @@ export function matchUpEngineAsync(test) {
 
     params = {
       ...params,
+      matchUpId: matchUp.matchUpId,
       matchUp,
     };
 
