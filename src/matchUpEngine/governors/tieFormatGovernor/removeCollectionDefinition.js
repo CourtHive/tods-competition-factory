@@ -5,7 +5,7 @@ import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGove
 import { definedAttributes } from '../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { validateTieFormat } from './tieFormatUtilities';
-import { scoreHasValue } from '../scoreGovernor/scoreHasValue';
+import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 import { copyTieFormat } from './copyTieFormat';
 import { getTieFormat } from './getTieFormat';
 import {

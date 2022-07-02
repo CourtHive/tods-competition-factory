@@ -1,4 +1,4 @@
-import { scoreHasValue } from '../scoreGovernor/scoreHasValue';
+import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 
 import {
   COMPLETED,

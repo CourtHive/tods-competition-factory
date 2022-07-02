@@ -8,7 +8,7 @@ import { checkSetIsComplete, keyValueScore } from './keyValueScore';
 import { generateScoreString } from '../../generators/generateScoreString';
 import { analyzeSet } from '../../getters/analyzeSet';
 
-import { scoreHasValue } from './scoreHasValue';
+import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 
 import { stringify } from '../matchUpFormatGovernor/stringify';
 import { isValid } from '../matchUpFormatGovernor/isValid';

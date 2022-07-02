@@ -1,4 +1,6 @@
-export function scoreHasValue({ score } = {}) {
+export function scoreHasValue({ matchUp, score } = {}) {
+  score = score || matchUp?.score;
+
   const firstSet = score?.sets?.[0];
   const {
     side1Score,
