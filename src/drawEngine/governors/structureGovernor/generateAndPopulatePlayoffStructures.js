@@ -2,7 +2,7 @@ import { generatePlayoffStructures } from '../../generators/playoffStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { directParticipants } from '../matchUpGovernor/directParticipants';
 import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
-import { matchUpIsComplete } from '../scoreGovernor/matchUpIsComplete';
+import { matchUpIsComplete } from '../../../matchUpEngine/governors/scoreGovernor/matchUpIsComplete';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';

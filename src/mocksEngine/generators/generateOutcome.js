@@ -1,14 +1,14 @@
-import { isValid } from '../../drawEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
-import { parse } from '../../drawEngine/governors/scoreGovernor/matchUpFormatCode/parse';
-import { analyzeMatchUp } from '../../drawEngine/governors/scoreGovernor/analyzeMatchUp';
-import { matchUpScore } from '../../drawEngine/governors/scoreGovernor/matchUpScore';
-import { analyzeSet } from '../../drawEngine/governors/scoreGovernor/analyzeSet';
+import { isValid } from '../../matchUpEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
+import { parse } from '../../matchUpEngine/governors/scoreGovernor/matchUpFormatCode/parse';
+import { analyzeMatchUp } from '../../matchUpEngine/governors/scoreGovernor/analyzeMatchUp';
+import { matchUpScore } from '../../matchUpEngine/governors/scoreGovernor/matchUpScore';
+import { analyzeSet } from '../../matchUpEngine/governors/scoreGovernor/analyzeSet';
 import { randomInt, weightedRandom } from '../../utilities/math';
 import { generateRange, randomPop } from '../../utilities';
 import {
   getSetComplement,
   getTiebreakComplement,
-} from '../../drawEngine/governors/scoreGovernor/getComplement';
+} from '../../matchUpEngine/governors/scoreGovernor/getComplement';
 
 import {
   INVALID_MATCHUP_FORMAT,

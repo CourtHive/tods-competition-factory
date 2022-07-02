@@ -1,5 +1,5 @@
-import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
-import { findStructure } from '../../../getters/findStructure';
+import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { findStructure } from '../../../../drawEngine/getters/findStructure';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {

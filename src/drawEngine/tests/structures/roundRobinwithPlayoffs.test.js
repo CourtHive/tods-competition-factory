@@ -1,4 +1,4 @@
-import { tallyParticipantResults } from '../../governors/scoreGovernor/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '../../../matchUpEngine/governors/scoreGovernor/roundRobinTally/roundRobinTally';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { chunkArray, intersection } from '../../../utilities/arrays';

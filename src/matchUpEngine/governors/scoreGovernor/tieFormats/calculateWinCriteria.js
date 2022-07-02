@@ -1,4 +1,4 @@
-import { getGroupValueGroups } from '../../../generators/getGroupValueGroups';
+import { getGroupValueGroups } from '../../../../drawEngine/generators/getGroupValueGroups';
 
 export function calculateWinCriteria({
   collectionDefinitions = [],

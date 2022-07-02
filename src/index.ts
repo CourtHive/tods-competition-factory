@@ -1,6 +1,6 @@
-export { matchUpFormatCode } from './drawEngine/governors/scoreGovernor/matchUpFormatCode';
+export { matchUpFormatCode } from './matchUpEngine/governors/scoreGovernor/matchUpFormatCode';
 export { factoryVersion as version } from './global/functions/factoryVersion';
-export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
+export { scoreGovernor } from './matchUpEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
@@ -84,7 +84,7 @@ export { errorConditionConstants } from './constants/errorConditionConstants';
 export { eventConstants } from './constants/eventConstants';
 export { flightConstants } from './constants/flightConstants';
 export { genderConstants } from './constants/genderConstants';
-export { keyValueConstants } from './drawEngine/governors/scoreGovernor/keyValueScore/constants';
+export { keyValueConstants } from './matchUpEngine/governors/scoreGovernor/keyValueScore/constants';
 export { matchUpActionConstants } from './constants/matchUpActionConstants';
 export { matchUpStatusConstants } from './constants/matchUpStatusConstants';
 export { matchUpTypes } from './constants/matchUpTypes';

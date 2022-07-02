@@ -1,4 +1,4 @@
-import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
+import { generateTieMatchUpScore } from '../../../drawEngine/generators/generateTieMatchUpScore';
 import { tallyParticipantResults } from './roundRobinTally/roundRobinTally';
 import { getSetComplement, getTiebreakComplement } from './getComplement';
 import { validateTieFormat } from './tieFormats/tieFormatUtilities';

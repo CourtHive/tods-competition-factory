@@ -3,7 +3,7 @@ import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
 import { checkInParticipant, checkOutParticipant } from './checkInStatus';
 import { publicFindMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
-import { isValid } from '../scoreGovernor/matchUpFormatCode/isValid';
+import { isValid } from '../../../matchUpEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
 import { removeDelegatedOutcome } from './removeDelegatedOutcome';
 import { drawMatic } from '../../generators/drawMatic/drawMatic';
 import { setDelegatedOutcome } from './setDelegatedOutcome';

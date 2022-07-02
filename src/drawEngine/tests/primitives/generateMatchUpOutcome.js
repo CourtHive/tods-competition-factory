@@ -1,5 +1,5 @@
-import { generateScoreString } from '../../governors/scoreGovernor/generateScoreString';
-import { analyzeMatchUp } from '../../governors/scoreGovernor/analyzeMatchUp';
+import { generateScoreString } from '../../../matchUpEngine/governors/scoreGovernor/generateScoreString';
+import { analyzeMatchUp } from '../../../matchUpEngine/governors/scoreGovernor/analyzeMatchUp';
 
 function generateSetScores(setValues) {
   return setValues.map(

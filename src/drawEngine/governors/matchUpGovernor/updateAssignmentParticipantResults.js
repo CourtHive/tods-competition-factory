@@ -1,5 +1,5 @@
 import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
-import { tallyParticipantResults } from '../scoreGovernor/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '../../../matchUpEngine/governors/scoreGovernor/roundRobinTally/roundRobinTally';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { createSubOrderMap } from './createSubOrderMap';
 import {

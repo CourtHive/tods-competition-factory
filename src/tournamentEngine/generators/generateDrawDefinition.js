@@ -1,5 +1,5 @@
 import { addVoluntaryConsolationStructure } from '../governors/eventGovernor/addVoluntaryConsolationStructure';
-import { validateTieFormat } from '../../drawEngine/governors/scoreGovernor/tieFormats/tieFormatUtilities';
+import { validateTieFormat } from '../../matchUpEngine/governors/scoreGovernor/tieFormats/tieFormatUtilities';
 import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
 import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';

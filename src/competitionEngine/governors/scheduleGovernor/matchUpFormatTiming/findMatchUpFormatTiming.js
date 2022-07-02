@@ -1,5 +1,5 @@
 import { getMatchUpFormatTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
-import { isValid } from '../../../../drawEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
+import { isValid } from '../../../../matchUpEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 
 import { UNRECOGNIZED_MATCHUP_FORMAT } from '../../../../constants/errorConditionConstants';

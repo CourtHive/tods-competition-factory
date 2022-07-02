@@ -1,4 +1,4 @@
-import { tallyParticipantResults } from '../../governors/scoreGovernor/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '../../../matchUpEngine/governors/scoreGovernor/roundRobinTally/roundRobinTally';
 import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { getPositionAssignments } from '../../getters/positionsGetter';

@@ -7,7 +7,7 @@ import { getContextContent } from '../../../tournamentEngine/getters/getContextC
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
-import { parse } from '../../governors/scoreGovernor/matchUpFormatCode/parse';
+import { parse } from '../../../matchUpEngine/governors/scoreGovernor/matchUpFormatCode/parse';
 import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';

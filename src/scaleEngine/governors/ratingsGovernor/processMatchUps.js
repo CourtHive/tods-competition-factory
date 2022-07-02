@@ -1,6 +1,6 @@
 import { getParticipantScaleItem } from '../../../tournamentEngine/governors/queryGovernor/getParticipantScaleItem';
 import { setParticipantScaleItem } from '../../../tournamentEngine/governors/participantGovernor/addScaleItems';
-import { parse } from '../../../drawEngine/governors/scoreGovernor/matchUpFormatCode/parse';
+import { parse } from '../../../matchUpEngine/governors/scoreGovernor/matchUpFormatCode/parse';
 import { allTournamentMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter';
 import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';
 import { matchUpSort } from '../../../drawEngine/getters/matchUpSort';

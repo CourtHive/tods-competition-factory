@@ -1,5 +1,5 @@
 import { isActiveMatchUpStatus } from '../governors/matchUpGovernor/checkStatusType';
-import { scoreHasValue } from '../governors/scoreGovernor/scoreHasValue';
+import { scoreHasValue } from '../../matchUpEngine/governors/scoreGovernor/scoreHasValue';
 
 import { IN_PROGRESS } from '../../constants/matchUpStatusConstants';
 

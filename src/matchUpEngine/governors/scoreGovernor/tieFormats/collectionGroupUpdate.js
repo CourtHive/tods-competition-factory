@@ -1,4 +1,4 @@
-import { modifyDrawNotice } from '../../../notifications/drawNotifications';
+import { modifyDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { updateTargetTeamMatchUps } from './updateTargetTeamMatchUps';
 import { definedAttributes } from '../../../../utilities/objects';
 import { getTargetTeamMatchUps } from './getTargetTeamMatchUps';

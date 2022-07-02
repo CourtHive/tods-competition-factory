@@ -7,7 +7,7 @@ import {
 } from './constants';
 
 export function keyValueSetScore({ analysis, lowSide, scoreString, value }) {
-  const { setTo, tiebreakAt, NoAD } = analysis?.setFormat;
+  const { setTo, tiebreakAt, NoAD } = analysis?.setFormat || {};
   const needsTiebreak = value === parseInt(tiebreakAt || setTo);
 
   if (tiebreakAt && tiebreakAt < setTo && value > tiebreakAt)

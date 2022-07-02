@@ -1,11 +1,11 @@
-import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
-import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
-import { findStructure } from '../../../getters/findStructure';
+import { getAllStructureMatchUps } from '../../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { findStructure } from '../../../../drawEngine/getters/findStructure';
 import { copyTieFormat } from './copyTieFormat';
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../../notifications/drawNotifications';
+} from '../../../../drawEngine/notifications/drawNotifications';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';

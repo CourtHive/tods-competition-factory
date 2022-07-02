@@ -1,5 +1,5 @@
-import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
-import { generateCollectionMatchUps } from '../../../generators/tieMatchUps';
+import { getAllStructureMatchUps } from '../../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { generateCollectionMatchUps } from '../../../../drawEngine/generators/tieMatchUps';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { copyTieFormat } from './copyTieFormat';
 import { getTieFormat } from './getTieFormat';
@@ -9,7 +9,7 @@ import {
   addMatchUpsNotice,
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../../notifications/drawNotifications';
+} from '../../../../drawEngine/notifications/drawNotifications';
 import {
   validateCollectionDefinition,
   validateTieFormat,

@@ -4,7 +4,7 @@ import positionGovernor from './governors/positionGovernor';
 import matchUpGovernor from './governors/matchUpGovernor';
 import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
-import scoreGovernor from './governors/scoreGovernor';
+import scoreGovernor from '../matchUpEngine/governors/scoreGovernor';
 import entryGovernor from './governors/entryGovernor';
 import linkGovernor from './governors/linkGovernor';
 

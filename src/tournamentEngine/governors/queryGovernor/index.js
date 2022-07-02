@@ -1,5 +1,5 @@
 import { getMatchUpScheduleDetails as drawEngineGetMatchUpScheduleDetails } from '../../../drawEngine/accessors/matchUpAccessor/getMatchUpScheduleDetails';
-import { isValid } from '../../../drawEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
+import { isValid } from '../../../matchUpEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
 import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getMaxEntryPosition } from '../../../global/functions/deducers/getMaxEntryPosition';
 import { getMatchUpCompetitiveness } from '../../getters/getMatchUpCompetitiveness';

@@ -104,12 +104,12 @@ import { attachPlayoffStructures } from './attachPlayoffStructures';
 import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 import { applyLineUps } from './drawDefinitions/applyLineUps';
 
-import { orderCollectionDefinitions } from '../../../drawEngine/governors/scoreGovernor/tieFormats/orderCollectionDefinitions';
-import { removeCollectionDefinition } from '../../../drawEngine/governors/scoreGovernor/tieFormats/removeCollectionDefinition';
-import { modifyCollectionDefinition } from '../../../drawEngine/governors/scoreGovernor/tieFormats/modifyCollectionDefinition';
-import { addCollectionDefinition } from '../../../drawEngine/governors/scoreGovernor/tieFormats/addCollectionDefinition';
-import { removeCollectionGroup } from '../../../drawEngine/governors/scoreGovernor/tieFormats/removeCollectionGroup';
-import { addCollectionGroup } from '../../../drawEngine/governors/scoreGovernor/tieFormats/addCollectionGroup';
+import { orderCollectionDefinitions } from '../../../matchUpEngine/governors/scoreGovernor/tieFormats/orderCollectionDefinitions';
+import { removeCollectionDefinition } from '../../../matchUpEngine/governors/scoreGovernor/tieFormats/removeCollectionDefinition';
+import { modifyCollectionDefinition } from '../../../matchUpEngine/governors/scoreGovernor/tieFormats/modifyCollectionDefinition';
+import { addCollectionDefinition } from '../../../matchUpEngine/governors/scoreGovernor/tieFormats/addCollectionDefinition';
+import { removeCollectionGroup } from '../../../matchUpEngine/governors/scoreGovernor/tieFormats/removeCollectionGroup';
+import { addCollectionGroup } from '../../../matchUpEngine/governors/scoreGovernor/tieFormats/addCollectionGroup';
 import { resetScorecard } from './resetScorecard';
 import { resetTieFormat } from './resetTieFormat';
 

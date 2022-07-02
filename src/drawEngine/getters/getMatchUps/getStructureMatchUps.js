@@ -1,4 +1,4 @@
-import { matchUpIsComplete } from '../../governors/scoreGovernor/matchUpIsComplete';
+import { matchUpIsComplete } from '../../../matchUpEngine/governors/scoreGovernor/matchUpIsComplete';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../positionsGetter';
 import { findStructure } from '../findStructure';

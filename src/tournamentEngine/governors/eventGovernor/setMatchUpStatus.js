@@ -1,6 +1,6 @@
 import { setMatchUpStatus as drawEngineSetMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpStatus';
 import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
-import { matchUpScore } from '../../../drawEngine/governors/scoreGovernor/matchUpScore';
+import { matchUpScore } from '../../../matchUpEngine/governors/scoreGovernor/matchUpScore';
 import { findPolicy } from '../policyGovernor/findPolicy';
 import { findEvent } from '../../getters/eventGetter';
 

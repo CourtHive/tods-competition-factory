@@ -1,8 +1,8 @@
 // all child matchUps need to be checked for collectionAssignments which need to be removed when collectionDefinition.collectionIds are removed
 
-import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '../../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
-import { updateTieMatchUpScore } from '../../matchUpGovernor/tieMatchUpScore';
+import { updateTieMatchUpScore } from '../../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
 import { definedAttributes } from '../../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { validateTieFormat } from './tieFormatUtilities';
@@ -13,7 +13,7 @@ import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../../notifications/drawNotifications';
+} from '../../../../drawEngine/notifications/drawNotifications';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
