@@ -1,5 +1,5 @@
 import { decorateResult } from '../../../../global/functions/decorateResult';
-import { matchUpFormatCode } from '../matchUpFormatCode';
+import { matchUpFormatCode } from '../../matchUpFormatGovernor';
 import { unique, UUID } from '../../../../utilities';
 
 import { INVALID_TIE_FORMAT } from '../../../../constants/errorConditionConstants';

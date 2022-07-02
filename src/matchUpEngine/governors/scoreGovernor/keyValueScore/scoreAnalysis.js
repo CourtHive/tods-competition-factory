@@ -1,7 +1,7 @@
 import { checkValidMatchTiebreak } from './keyValueUtilities';
+import { parse } from '../../matchUpFormatGovernor/parse';
 import { testTiebreakEntry } from './keyValueUtilities';
 import { indices } from '../../../../utilities/arrays';
-import { parse } from '../matchUpFormatCode/parse';
 
 import {
   SCORE_JOINER,

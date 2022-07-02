@@ -1,4 +1,4 @@
-import { isValid } from '../../../../matchUpEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
+import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { findEventExtension } from '../../queryGovernor/extensionQueries';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
 import { findPolicy } from '../../policyGovernor/findPolicy';

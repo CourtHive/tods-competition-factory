@@ -1,5 +1,5 @@
+import { parse } from '../matchUpFormatGovernor/parse';
 import { instanceCount } from '../../../utilities';
-import { parse } from './matchUpFormatCode/parse';
 
 import {
   DEFAULTED,

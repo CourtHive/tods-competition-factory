@@ -1,5 +1,5 @@
+import { parse } from '../../matchUpFormatGovernor/parse';
 import { indices } from '../../../../utilities/arrays';
-import { parse } from '../matchUpFormatCode/parse';
 
 import {
   SET_TIEBREAK_BRACKETS,

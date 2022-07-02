@@ -1,5 +1,3 @@
-import { isValid } from '../../matchUpEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
-import { parse } from '../../matchUpEngine/governors/scoreGovernor/matchUpFormatCode/parse';
 import { analyzeMatchUp } from '../../matchUpEngine/governors/scoreGovernor/analyzeMatchUp';
 import { matchUpScore } from '../../matchUpEngine/governors/scoreGovernor/matchUpScore';
 import { analyzeSet } from '../../matchUpEngine/governors/scoreGovernor/analyzeSet';
@@ -27,6 +25,8 @@ import {
   completedMatchUpStatuses,
   DOUBLE_DEFAULT,
 } from '../../constants/matchUpStatusConstants';
+import { isValid } from '../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { parse } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 
 // percentages rounded to the nearest whole number
 const defaultStatusProfile = {

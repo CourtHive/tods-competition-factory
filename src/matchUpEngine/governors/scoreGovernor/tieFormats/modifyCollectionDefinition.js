@@ -1,7 +1,7 @@
 import { validateCollectionValueProfile } from './tieFormatUtilities';
 import { isConvertableInteger } from '../../../../utilities/math';
 import { definedAttributes } from '../../../../utilities/objects';
-import { isValid } from '../matchUpFormatCode/isValid';
+import { isValid } from '../../matchUpFormatGovernor/isValid';
 import { makeDeepCopy } from '../../../../utilities';
 import { updateTieFormat } from './updateTieFormat';
 import { getTieFormat } from './getTieFormat';

@@ -1,4 +1,4 @@
-import { matchUpFormatCode } from '../matchUpFormatCode';
+import { matchUpFormatCode } from '../../matchUpFormatGovernor';
 
 const validFormats = [
   {

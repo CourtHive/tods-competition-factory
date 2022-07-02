@@ -1,5 +1,5 @@
-import { isValid } from '../../../matchUpEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
 import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
+import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
