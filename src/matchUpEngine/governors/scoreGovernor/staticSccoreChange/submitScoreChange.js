@@ -1,6 +1,6 @@
-import { parse } from '../matchUpFormatGovernor/parse';
-import { analyzeMatchUp } from '../../getters/analyzeMatchUp';
-import { analyzeSet } from '../../getters/analyzeSet';
+import { parse } from '../../matchUpFormatGovernor/parse';
+import { analyzeMatchUp } from '../../../getters/analyzeMatchUp';
+import { analyzeSet } from '../../../getters/analyzeSet';
 
 import {
   MISSING_MATCHUP,
@@ -9,8 +9,11 @@ import {
   INVALID_SIDE_NUMBER,
   MISSING_VALUE,
   INVALID_SET_NUMBER,
-} from '../../../constants/errorConditionConstants';
+} from '../../../../constants/errorConditionConstants';
 
+/**
+ * Work in progress: utility for scoring dialogs to submit score change
+ */
 export function submitScoreChange(params) {
   const { matchUp, sideNumber, setNumber, value } = params || {};
 

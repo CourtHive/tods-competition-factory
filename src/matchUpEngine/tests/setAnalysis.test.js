@@ -1,13 +1,13 @@
-import { parse } from '../../matchUpFormatGovernor/parse';
-import { analyzeSet } from '../../../getters/analyzeSet';
+import { parse } from '../governors/matchUpFormatGovernor/parse';
+import { analyzeSet } from '../getters/analyzeSet';
 
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 import {
   INVALID_GAME_SCORES,
   INVALID_VALUES,
   INVALID_WINNING_SIDE,
   MISSING_SET_OBJECT,
-} from '../../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 test('can properly analyze standard advantage sets with tiebreak', () => {
   const matchUpFormat = FORMAT_STANDARD;

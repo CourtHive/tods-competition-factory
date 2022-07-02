@@ -1,6 +1,6 @@
-import { matchUpScore } from '../../../generators/matchUpScore';
+import { matchUpScore } from '../generators/matchUpScore';
 
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
+import { COMPLETED } from '../../constants/matchUpStatusConstants';
 
 it('can generate score object', () => {
   const sets = [
