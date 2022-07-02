@@ -1,5 +1,5 @@
 import { getParticipantResults } from './getParticipantResults';
-import { matchUpIsComplete } from '../../governors/scoreGovernor/matchUpIsComplete';
+import { matchUpIsComplete } from '../../governors/queryGovernor/matchUpIsComplete';
 import { unique } from '../../../utilities/arrays';
 import { getGroupOrder } from './getGroupOrder';
 
@@ -38,15 +38,17 @@ export function tallyParticipantResults({
       .length;
 
   const bracketComplete =
-    relevantMatchUps.filter(matchUpIsComplete).length ===
-    relevantMatchUps.length;
+    relevantMatchUps.filter((matchUp) => matchUpIsComplete({ matchUp }))
+      .length === relevantMatchUps.length;
   // if bracket is incomplete don't use expected matchUps perPlayer for calculating
   if (!bracketComplete) perPlayer = 0;
 
   const tallyPolicy =
     policyDefinitions && policyDefinitions[POLICY_TYPE_ROUND_ROBIN_TALLY];
 
-  const completedMatchUps = matchUps.filter(matchUpIsComplete);
+  const completedMatchUps = matchUps.filter((matchUp) =>
+    matchUpIsComplete({ matchUp })
+  );
   const { participantResults } = getParticipantResults({
     matchUps: completedMatchUps,
     matchUpFormat,

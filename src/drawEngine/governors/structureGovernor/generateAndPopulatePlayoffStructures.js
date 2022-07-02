@@ -2,7 +2,7 @@ import { generatePlayoffStructures } from '../../generators/playoffStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { directParticipants } from '../matchUpGovernor/directParticipants';
 import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
-import { matchUpIsComplete } from '../../../matchUpEngine/governors/scoreGovernor/matchUpIsComplete';
+import { matchUpIsComplete } from '../../../matchUpEngine/governors/queryGovernor/matchUpIsComplete';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
@@ -207,7 +207,8 @@ export function generateAndPopulatePlayoffStructures(params) {
   // now advance any players from completed matchUps into the newly added structures
   const completedMatchUps = inContextDrawMatchUps.filter(
     (matchUp) =>
-      matchUpIsComplete(matchUp) && matchUp.structureId === sourceStructureId
+      matchUpIsComplete({ matchUp }) &&
+      matchUp.structureId === sourceStructureId
   );
 
   completedMatchUps.forEach((matchUp) => {
