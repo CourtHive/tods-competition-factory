@@ -1,7 +1,9 @@
-import { setState } from './stateMethods';
+import scoreGovernor from './governors/scoreGovernor';
+
 import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import { makeDeepCopy } from '../utilities';
+import { setState } from './stateMethods';
 import {
   setDeepCopy,
   setDevContext,
@@ -13,7 +15,7 @@ import { SUCCESS } from '../constants/resultConstants';
 
 let matchUp;
 
-export const drawEngine = (function () {
+export const matchUpEngine = (function () {
   const engine = {
     getState: ({ convertExtensions, removeExtensions } = {}) => ({
       matchUp: makeDeepCopy(
@@ -43,7 +45,7 @@ export const drawEngine = (function () {
     return engine;
   }
 
-  importGovernors([]);
+  importGovernors([scoreGovernor]);
 
   engine.devContext = (isDev) => {
     setDevContext(isDev);
@@ -111,4 +113,4 @@ export const drawEngine = (function () {
   }
 })();
 
-export default drawEngine;
+export default matchUpEngine;

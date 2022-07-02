@@ -1,7 +1,9 @@
-import { setState } from './stateMethods';
+import scoreGovernor from './governors/scoreGovernor';
+
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import { makeDeepCopy } from '../utilities';
+import { setState } from './stateMethods';
 import {
   setDeepCopy,
   setDevContext,
@@ -14,7 +16,7 @@ import { SUCCESS } from '../constants/resultConstants';
 
 let matchUp;
 
-export function drawEngineAsync(test) {
+export function matchUpEngineAsync(test) {
   const result = createInstanceState();
   if (result.error && !test) return result;
 
@@ -47,7 +49,7 @@ export function drawEngineAsync(test) {
     return engine;
   }
 
-  importGovernors([]);
+  importGovernors([scoreGovernor]);
 
   engine.devContext = (isDev) => {
     setDevContext(isDev);
@@ -121,4 +123,4 @@ export function drawEngineAsync(test) {
   }
 }
 
-export default drawEngineAsync;
+export default matchUpEngineAsync;
