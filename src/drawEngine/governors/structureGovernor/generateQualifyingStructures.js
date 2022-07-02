@@ -1,5 +1,5 @@
-import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
+import { addExtension } from '../../../global/functions/producers/addExtension';
 import structureTemplate from '../../generators/structureTemplate';
 import { generateRoundRobin } from '../../generators/roundRobin';
 import { treeMatchUps } from '../../generators/eliminationTree';

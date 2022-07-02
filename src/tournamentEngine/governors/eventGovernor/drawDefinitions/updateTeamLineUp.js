@@ -1,7 +1,7 @@
 import { addDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
-import { addExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { findExtension } from '../../../../global/functions/deducers/findExtension';
+import { addExtension } from '../../../../global/functions/producers/addExtension';
 // import { getParticipantId } from '../../../../global/functions/extractors';
-import { findExtension } from '../../queryGovernor/extensionQueries';
 import { validateLineUp } from './validateTeamLineUp';
 // import { intersection } from '../../../../utilities';
 

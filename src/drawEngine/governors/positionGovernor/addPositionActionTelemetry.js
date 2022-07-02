@@ -1,5 +1,5 @@
-import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../../global/functions/deducers/findExtension';
+import { addExtension } from '../../../global/functions/producers/addExtension';
 
 // updates 'positionActions' extension to keep track of positionActions by end-user
 export function addPositionActionTelemetry({ drawDefinition, positionAction }) {

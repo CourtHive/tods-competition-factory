@@ -1,11 +1,9 @@
+import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { tallyParticipantResults } from '../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
+import { addExtension } from '../../../global/functions/producers/addExtension';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { createSubOrderMap } from './createSubOrderMap';
-import {
-  addExtension,
-  removeExtension,
-} from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../constants/policyConstants';
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';

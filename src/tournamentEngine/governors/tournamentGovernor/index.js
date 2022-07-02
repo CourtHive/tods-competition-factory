@@ -24,7 +24,6 @@ import {
 import {
   addDrawDefinitionExtension,
   addEventExtension,
-  addExtension,
   addParticipantExtension,
   addTournamentExtension,
   removeDrawDefinitionExtension,
@@ -51,7 +50,6 @@ const tournamentGovernor = {
   addTournamentTimeItem,
   addParticipantTimeItem,
 
-  addExtension,
   addEventExtension,
   removeEventExtension,
   addTournamentExtension,

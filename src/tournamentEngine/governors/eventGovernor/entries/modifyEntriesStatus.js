@@ -2,14 +2,12 @@ import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAss
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
 import { modifyDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { findParticipant } from '../../../../global/functions/deducers/findParticipant';
+import { addExtension } from '../../../../global/functions/producers/addExtension';
 import { isValidExtension } from '../../../../global/validation/isValidExtension';
+import { removeExtension } from '../../tournamentGovernor/addRemoveExtensions';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
-import {
-  addExtension,
-  removeExtension,
-} from '../../tournamentGovernor/addRemoveExtensions';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { PAIR } from '../../../../constants/participantTypes';

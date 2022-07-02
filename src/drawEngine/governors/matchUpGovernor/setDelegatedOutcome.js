@@ -1,4 +1,4 @@
-import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { addExtension } from '../../../global/functions/producers/addExtension';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 
 import { DELEGATED_OUTCOME } from '../../../constants/extensionConstants';
