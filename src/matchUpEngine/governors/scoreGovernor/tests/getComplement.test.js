@@ -1,4 +1,7 @@
-import { getSetComplement, getTiebreakComplement } from '../getComplement';
+import {
+  getSetComplement,
+  getTiebreakComplement,
+} from '../../../getters/getComplement';
 
 it('can generate appropriate highValue for standard sets', () => {
   setScoreTest({

@@ -1,9 +1,12 @@
 import { generateTieMatchUpScore } from '../../../drawEngine/generators/generateTieMatchUpScore';
 import { validateTieFormat } from '../tieFormatGovernor/tieFormatUtilities';
-import { getSetComplement, getTiebreakComplement } from './getComplement';
+import {
+  getSetComplement,
+  getTiebreakComplement,
+} from '../../getters/getComplement';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
-import { generateScoreString } from './generateScoreString';
-import { analyzeSet } from './analyzeSet';
+import { generateScoreString } from '../../generators/generateScoreString';
+import { analyzeSet } from '../../getters/analyzeSet';
 
 import { scoreHasValue } from './scoreHasValue';
 

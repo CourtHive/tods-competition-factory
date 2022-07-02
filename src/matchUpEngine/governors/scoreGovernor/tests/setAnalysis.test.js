@@ -1,5 +1,5 @@
 import { parse } from '../../matchUpFormatGovernor/parse';
-import { analyzeSet } from '../analyzeSet';
+import { analyzeSet } from '../../../getters/analyzeSet';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import {

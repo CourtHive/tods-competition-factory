@@ -1,4 +1,4 @@
-import { generateScoreString } from '../../../matchUpEngine/governors/scoreGovernor/generateScoreString';
+import { generateScoreString } from '../../../matchUpEngine/generators/generateScoreString';
 import { analyzeMatchUp } from '../../../matchUpEngine/getters/analyzeMatchUp';
 
 function generateSetScores(setValues) {

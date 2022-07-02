@@ -1,12 +1,12 @@
 import { analyzeMatchUp } from '../../matchUpEngine/getters/analyzeMatchUp';
-import { matchUpScore } from '../../matchUpEngine/governors/scoreGovernor/matchUpScore';
-import { analyzeSet } from '../../matchUpEngine/governors/scoreGovernor/analyzeSet';
+import { matchUpScore } from '../../matchUpEngine/generators/matchUpScore';
+import { analyzeSet } from '../../matchUpEngine/getters/analyzeSet';
 import { randomInt, weightedRandom } from '../../utilities/math';
 import { generateRange, randomPop } from '../../utilities';
 import {
   getSetComplement,
   getTiebreakComplement,
-} from '../../matchUpEngine/governors/scoreGovernor/getComplement';
+} from '../../matchUpEngine/getters/getComplement';
 
 import {
   INVALID_MATCHUP_FORMAT,

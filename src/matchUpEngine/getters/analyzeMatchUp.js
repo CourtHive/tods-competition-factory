@@ -1,6 +1,6 @@
 import { instanceCount } from '../../utilities/arrays';
 import { parse } from '../governors/matchUpFormatGovernor/parse';
-import { analyzeSet } from '../governors/scoreGovernor/analyzeSet';
+import { analyzeSet } from './analyzeSet';
 
 import { MISSING_MATCHUP } from '../../constants/errorConditionConstants';
 

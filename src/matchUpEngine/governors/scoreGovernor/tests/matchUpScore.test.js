@@ -1,4 +1,4 @@
-import { matchUpScore } from '../matchUpScore';
+import { matchUpScore } from '../../../generators/matchUpScore';
 
 import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
 

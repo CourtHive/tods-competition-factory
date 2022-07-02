@@ -1,11 +1,11 @@
-import { parse } from '../matchUpFormatGovernor/parse';
-import { instanceCount } from '../../../utilities';
+import { parse } from '../governors/matchUpFormatGovernor/parse';
+import { instanceCount } from '../../utilities';
 
 import {
   DEFAULTED,
   RETIRED,
   WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+} from '../../constants/matchUpStatusConstants';
 
 export function analyzeScore({
   existingMatchUpStatus,

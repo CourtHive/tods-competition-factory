@@ -1,4 +1,4 @@
-import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { MISSING_VALUE } from '../../constants/errorConditionConstants';
 
 export function getSetWinningSide({
   matchUpScoringFormat,

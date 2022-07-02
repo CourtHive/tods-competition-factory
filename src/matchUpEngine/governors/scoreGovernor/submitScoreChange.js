@@ -1,6 +1,6 @@
 import { parse } from '../matchUpFormatGovernor/parse';
 import { analyzeMatchUp } from '../../getters/analyzeMatchUp';
-import { analyzeSet } from './analyzeSet';
+import { analyzeSet } from '../../getters/analyzeSet';
 
 import {
   MISSING_MATCHUP,

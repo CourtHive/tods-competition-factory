@@ -1,6 +1,6 @@
-import { isNumeric } from '../../../utilities/math';
+import { isNumeric } from '../../utilities/math';
 
-import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { MISSING_VALUE } from '../../constants/errorConditionConstants';
 import {
   ABANDONED,
   DEAD_RUBBER,
@@ -10,7 +10,7 @@ import {
   RETIRED,
   SUSPENDED,
   WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+} from '../../constants/matchUpStatusConstants';
 
 /**
  *

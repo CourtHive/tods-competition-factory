@@ -1,4 +1,4 @@
-import { generateScoreString } from '../../matchUpEngine/governors/scoreGovernor/generateScoreString';
+import { generateScoreString } from '../../matchUpEngine/generators/generateScoreString';
 import { toBePlayed } from '../../fixtures/scoring/outcomes/toBePlayed';
 import { parseScoreString } from '../utilities/parseScoreString';
 

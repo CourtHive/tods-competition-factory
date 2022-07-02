@@ -5,7 +5,7 @@ import {
   INVALID_VALUES,
   INVALID_WINNING_SIDE,
   MISSING_SET_OBJECT,
-} from '../../../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 
 export function analyzeSet(params) {
   const { setObject, matchUpScoringFormat } = params;

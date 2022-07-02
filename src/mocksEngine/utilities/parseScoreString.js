@@ -1,4 +1,4 @@
-import { getTiebreakComplement } from '../../matchUpEngine/governors/scoreGovernor/getComplement';
+import { getTiebreakComplement } from '../../matchUpEngine/getters/getComplement';
 
 // utility function just to allow testing with string score entry
 export function parseScoreString({ scoreString, tiebreakTo = 7 }) {

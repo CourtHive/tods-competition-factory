@@ -1,4 +1,4 @@
-import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { MISSING_VALUE } from '../../constants/errorConditionConstants';
 
 export const getSetComplement = (params) => {
   const { isSide1, lowValue, setTo, tiebreakAt, NoAD } = params;
