@@ -1,30 +1,30 @@
 // all child matchUps need to be checked for collectionAssignments which need to be removed when collectionDefinition.collectionIds are removed
 
-import { getAllStructureMatchUps } from '../../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
-import { updateTieMatchUpScore } from '../../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
-import { definedAttributes } from '../../../../utilities/objects';
+import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { allDrawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter';
+import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
+import { definedAttributes } from '../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { validateTieFormat } from './tieFormatUtilities';
-import { scoreHasValue } from '../scoreHasValue';
+import { scoreHasValue } from '../scoreGovernor/scoreHasValue';
 import { copyTieFormat } from './copyTieFormat';
 import { getTieFormat } from './getTieFormat';
 import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../../../drawEngine/notifications/drawNotifications';
+} from '../../../drawEngine/notifications/drawNotifications';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { TEAM } from '../../../../constants/matchUpTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   COMPLETED,
   IN_PROGRESS,
-} from '../../../../constants/matchUpStatusConstants';
+} from '../../../constants/matchUpStatusConstants';
 import {
   MISSING_DRAW_DEFINITION,
   NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 /*
  * collectionDefinition will be removed from an event tieFormat (if present)

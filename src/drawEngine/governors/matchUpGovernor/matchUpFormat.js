@@ -1,4 +1,4 @@
-import { checkTieFormat } from '../../../matchUpEngine/governors/scoreGovernor/tieFormats/tieFormatUtilities';
+import { checkTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';

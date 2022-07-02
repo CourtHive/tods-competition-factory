@@ -1,4 +1,4 @@
-import { parse } from '../../matchUpFormatGovernor/parse';
+import { parse } from '../../governors/matchUpFormatGovernor/parse';
 
 export function calculateRatios({
   participantResults,

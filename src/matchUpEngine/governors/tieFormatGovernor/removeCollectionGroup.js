@@ -1,4 +1,4 @@
-import { getTieFormat } from '../../../../tournamentEngine/getters/getTieFormat';
+import { getTieFormat } from '../../../tournamentEngine/getters/getTieFormat';
 import { collectionGroupUpdate } from './collectionGroupUpdate';
 import { validateTieFormat } from './tieFormatUtilities';
 import { copyTieFormat } from './copyTieFormat';
@@ -6,7 +6,7 @@ import { copyTieFormat } from './copyTieFormat';
 import {
   INVALID_VALUES,
   MISSING_VALUE,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 export function removeCollectionGroup({
   updateInProgressMatchUps = true,

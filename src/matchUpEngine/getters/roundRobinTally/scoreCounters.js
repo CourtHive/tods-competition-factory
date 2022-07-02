@@ -1,11 +1,11 @@
-import { parse } from '../../matchUpFormatGovernor/parse';
+import { parse } from '../../governors/matchUpFormatGovernor/parse';
 
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import {
   DEFAULTED,
   RETIRED,
   WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
+} from '../../../constants/matchUpStatusConstants';
 
 export function countSets({
   winningSide: matchUpWinningSide,

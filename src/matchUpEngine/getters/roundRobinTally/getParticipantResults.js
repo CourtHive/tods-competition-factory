@@ -1,12 +1,12 @@
 import { countGames, countSets, countPoints } from './scoreCounters';
-import { intersection } from '../../../../utilities';
+import { intersection } from '../../../utilities';
 import { calculateRatios } from './calculateRatios';
 
 import {
   DEFAULTED,
   RETIRED,
   WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
+} from '../../../constants/matchUpStatusConstants';
 
 export function getParticipantResults({
   participantIds,

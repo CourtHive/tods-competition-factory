@@ -1,7 +1,7 @@
 import { countPoints } from '../scoreCounters';
 
-import { COMPLETED } from '../../../../../constants/matchUpStatusConstants';
-import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
+import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 
 it('can count games in normal sets', () => {
   let matchUp = {

@@ -6,7 +6,7 @@ import { getTieFormat } from './getTieFormat';
 import {
   INVALID_VALUES,
   MISSING_VALUE,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 export function addCollectionGroup({
   updateInProgressMatchUps = true,

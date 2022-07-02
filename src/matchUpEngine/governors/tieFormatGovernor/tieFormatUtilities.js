@@ -1,10 +1,10 @@
-import { decorateResult } from '../../../../global/functions/decorateResult';
-import { matchUpFormatCode } from '../../matchUpFormatGovernor';
-import { unique, UUID } from '../../../../utilities';
+import { decorateResult } from '../../../global/functions/decorateResult';
+import { matchUpFormatCode } from '../matchUpFormatGovernor';
+import { unique, UUID } from '../../../utilities';
 
-import { INVALID_TIE_FORMAT } from '../../../../constants/errorConditionConstants';
-import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
+import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function validateTieFormat({
   checkCollectionIds = true,

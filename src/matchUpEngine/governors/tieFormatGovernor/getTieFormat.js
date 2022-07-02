@@ -1,11 +1,11 @@
-import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findMatchUp';
-import { findStructure } from '../../../../drawEngine/getters/findStructure';
+import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { findStructure } from '../../../drawEngine/getters/findStructure';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_TIE_FORMAT,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 export function getTieFormat({
   drawDefinition,

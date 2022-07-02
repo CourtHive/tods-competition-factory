@@ -1,6 +1,6 @@
-import { difference } from '../../../../utilities/arrays';
+import { difference } from '../../../utilities/arrays';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function compareTieFormats({ ancestor, descendant }) {
   const descendantDifferences = {};

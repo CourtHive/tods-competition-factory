@@ -1,9 +1,9 @@
-import mocksEngine from '../../../../../mocksEngine';
-import tournamentEngine from '../../../../../tournamentEngine/sync';
+import mocksEngine from '../../../../mocksEngine';
+import tournamentEngine from '../../../../tournamentEngine/sync';
 
-import { SINGLES } from '../../../../../constants/eventConstants';
-import { ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
-import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
+import { SINGLES } from '../../../../constants/eventConstants';
+import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
+import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 
 it('can recognize absolute ties between multiple participants', () => {
   // 5 ties, each drawPosition has 2 wins

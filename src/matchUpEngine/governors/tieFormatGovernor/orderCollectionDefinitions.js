@@ -1,18 +1,18 @@
-import { getAllStructureMatchUps } from '../../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findMatchUp';
-import { findStructure } from '../../../../drawEngine/getters/findStructure';
+import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { copyTieFormat } from './copyTieFormat';
 import {
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../../../drawEngine/notifications/drawNotifications';
+} from '../../../drawEngine/notifications/drawNotifications';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { TEAM } from '../../../../constants/matchUpTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   INVALID_VALUES,
   NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 function getOrderedTieFormat({ tieFormat, orderMap }) {
   const orderedTieFormat = copyTieFormat(tieFormat);

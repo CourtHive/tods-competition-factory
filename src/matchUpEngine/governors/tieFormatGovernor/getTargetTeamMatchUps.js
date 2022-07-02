@@ -1,12 +1,12 @@
-import { getAllStructureMatchUps } from '../../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
-import { scoreHasValue } from '../scoreHasValue';
+import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { allDrawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter';
+import { scoreHasValue } from '../scoreGovernor/scoreHasValue';
 
-import { TEAM } from '../../../../constants/matchUpTypes';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   COMPLETED,
   IN_PROGRESS,
-} from '../../../../constants/matchUpStatusConstants';
+} from '../../../constants/matchUpStatusConstants';
 
 export function getTargetTeamMatchUps({
   updateInProgressMatchUps,
@@ -16,6 +16,7 @@ export function getTargetTeamMatchUps({
   matchUpId,
   matchUp,
 }) {
+  scoreHasValue;
   let matchUps = [];
   if (matchUpId && matchUp) {
     matchUps = [matchUp];

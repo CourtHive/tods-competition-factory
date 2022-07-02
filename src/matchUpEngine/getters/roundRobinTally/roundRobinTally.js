@@ -1,14 +1,14 @@
 import { getParticipantResults } from './getParticipantResults';
-import { matchUpIsComplete } from '../matchUpIsComplete';
-import { unique } from '../../../../utilities/arrays';
+import { matchUpIsComplete } from '../../governors/scoreGovernor/matchUpIsComplete';
+import { unique } from '../../../utilities/arrays';
 import { getGroupOrder } from './getGroupOrder';
 
-import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../../constants/policyConstants';
-import { BYE } from '../../../../constants/matchUpStatusConstants';
+import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../constants/policyConstants';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 import {
   INVALID_VALUES,
   MISSING_MATCHUPS,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 export function tallyParticipantResults({
   policyDefinitions,

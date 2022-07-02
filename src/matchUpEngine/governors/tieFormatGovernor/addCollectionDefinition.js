@@ -1,28 +1,28 @@
-import { getAllStructureMatchUps } from '../../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { generateCollectionMatchUps } from '../../../../drawEngine/generators/tieMatchUps';
+import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { generateCollectionMatchUps } from '../../../drawEngine/generators/tieMatchUps';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { copyTieFormat } from './copyTieFormat';
 import { getTieFormat } from './getTieFormat';
-import { UUID } from '../../../../utilities';
+import { UUID } from '../../../utilities';
 import { validUpdate } from './validUpdate';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../../../../drawEngine/notifications/drawNotifications';
+} from '../../../drawEngine/notifications/drawNotifications';
 import {
   validateCollectionDefinition,
   validateTieFormat,
 } from './tieFormatUtilities';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { TEAM } from '../../../../constants/matchUpTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   CANNOT_MODIFY_TIEFORMAT,
   DUPLICATE_VALUE,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 /*
  * collectionDefinition will be added to an event tieFormat (if present)

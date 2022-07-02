@@ -1,9 +1,9 @@
-import { scoreHasValue } from '../scoreHasValue';
+import { scoreHasValue } from '../scoreGovernor/scoreHasValue';
 
 import {
   COMPLETED,
   IN_PROGRESS,
-} from '../../../../constants/matchUpStatusConstants';
+} from '../../../constants/matchUpStatusConstants';
 
 export function validUpdate({ matchUp, updateInProgressMatchUps }) {
   const valid =

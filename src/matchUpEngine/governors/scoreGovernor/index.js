@@ -1,20 +1,20 @@
 import { generateTieMatchUpScore } from '../../../drawEngine/generators/generateTieMatchUpScore';
-import { tallyParticipantResults } from './roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '../../getters/roundRobinTally/roundRobinTally';
+import { validateTieFormat } from '../tieFormatGovernor/tieFormatUtilities';
 import { getSetComplement, getTiebreakComplement } from './getComplement';
-import { validateTieFormat } from './tieFormats/tieFormatUtilities';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
 import { generateScoreString } from './generateScoreString';
 import { analyzeMatchUp } from './analyzeMatchUp';
 import { analyzeSet } from './analyzeSet';
 
-import { orderCollectionDefinitions } from './tieFormats/orderCollectionDefinitions';
-import { removeCollectionDefinition } from './tieFormats/removeCollectionDefinition';
-import { modifyCollectionDefinition } from './tieFormats/modifyCollectionDefinition';
-import { addCollectionDefinition } from './tieFormats/addCollectionDefinition';
+import { orderCollectionDefinitions } from '../tieFormatGovernor/orderCollectionDefinitions';
+import { removeCollectionDefinition } from '../tieFormatGovernor/removeCollectionDefinition';
+import { modifyCollectionDefinition } from '../tieFormatGovernor/modifyCollectionDefinition';
+import { addCollectionDefinition } from '../tieFormatGovernor/addCollectionDefinition';
 import { scoreHasValue } from './scoreHasValue';
 
-import { removeCollectionGroup } from './tieFormats/removeCollectionGroup';
-import { addCollectionGroup } from './tieFormats/addCollectionGroup';
+import { removeCollectionGroup } from '../tieFormatGovernor/removeCollectionGroup';
+import { addCollectionGroup } from '../tieFormatGovernor/addCollectionGroup';
 
 import { stringify } from '../matchUpFormatGovernor/stringify';
 import { isValid } from '../matchUpFormatGovernor/isValid';

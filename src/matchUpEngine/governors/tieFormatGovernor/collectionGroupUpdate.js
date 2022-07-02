@@ -1,11 +1,11 @@
-import { modifyDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
+import { modifyDrawNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { updateTargetTeamMatchUps } from './updateTargetTeamMatchUps';
-import { definedAttributes } from '../../../../utilities/objects';
+import { definedAttributes } from '../../../utilities/objects';
 import { getTargetTeamMatchUps } from './getTargetTeamMatchUps';
 import { calculateWinCriteria } from './calculateWinCriteria';
 
-import { MISSING_DRAW_DEFINITION } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function collectionGroupUpdate({
   updateInProgressMatchUps,

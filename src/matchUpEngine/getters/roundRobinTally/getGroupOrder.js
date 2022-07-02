@@ -1,5 +1,5 @@
 import { getParticipantResults } from './getParticipantResults';
-import { instanceCount } from '../../../../utilities';
+import { instanceCount } from '../../../utilities';
 
 /*
 Round Robin group tally logic by default implements the following guidelines:

@@ -1,8 +1,8 @@
 import { validateCollectionValueProfile } from './tieFormatUtilities';
-import { isConvertableInteger } from '../../../../utilities/math';
-import { definedAttributes } from '../../../../utilities/objects';
-import { isValid } from '../../matchUpFormatGovernor/isValid';
-import { makeDeepCopy } from '../../../../utilities';
+import { isConvertableInteger } from '../../../utilities/math';
+import { definedAttributes } from '../../../utilities/objects';
+import { isValid } from '../matchUpFormatGovernor/isValid';
+import { makeDeepCopy } from '../../../utilities';
 import { updateTieFormat } from './updateTieFormat';
 import { getTieFormat } from './getTieFormat';
 
@@ -10,7 +10,7 @@ import {
   INVALID_VALUES,
   MISSING_VALUE,
   NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 // all child matchUps need to be checked for collectionAssignments / collectionPositions which need to be removed when collectionDefinition.collectionIds are removed
 export function modifyCollectionDefinition({
