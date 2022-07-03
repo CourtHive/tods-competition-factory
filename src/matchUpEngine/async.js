@@ -1,4 +1,5 @@
 import tieFormatGovernor from './governors/tieFormatGovernor';
+import historyGovernor from './governors/historyGovernor';
 import queryGovernor from './governors/queryGovernor';
 import scoreGovernor from './governors/scoreGovernor';
 
@@ -47,7 +48,12 @@ export function matchUpEngineAsync(test) {
     return engine;
   }
 
-  importGovernors([queryGovernor, scoreGovernor, tieFormatGovernor]);
+  importGovernors([
+    tieFormatGovernor,
+    historyGovernor,
+    queryGovernor,
+    scoreGovernor,
+  ]);
 
   engine.devContext = (isDev) => {
     setDevContext(isDev);
