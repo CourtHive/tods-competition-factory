@@ -63,10 +63,12 @@ export { competitionEngine } from './competitionEngine/sync';
 export { competitionEngineAsync } from './competitionEngine/async';
 export { drawEngine } from './drawEngine/sync';
 export { drawEngineAsync } from './drawEngine/async';
-export { scaleEngine } from './scaleEngine/sync';
-export { scaleEngineAsync } from './scaleEngine/async';
+export { matchUpEngine } from './matchUpEngine/sync';
+export { matchUpEngineAsync } from './matchUpEngine/async';
 export { tournamentEngine } from './tournamentEngine/sync';
 export { tournamentEngineAsync } from './tournamentEngine/async';
+export { scaleEngine } from './scaleEngine/sync';
+export { scaleEngineAsync } from './scaleEngine/async';
 export { mocksEngine } from './mocksEngine';
 // END- Asynchronous and Synchronous engine exports
 
