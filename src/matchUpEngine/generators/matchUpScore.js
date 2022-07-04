@@ -13,14 +13,14 @@ export function matchUpScore({ score, winningSide, matchUpStatus } = {}) {
 
   let scoreStringSide2 = generateScoreString({
     winnerFirst: false,
-    matchUpStatus,
     reversed: true,
+    matchUpStatus,
     sets,
   });
 
   let winnerPerspective = generateScoreString({
-    winningSide,
     matchUpStatus,
+    winningSide,
     sets,
   });
 

@@ -23,14 +23,15 @@ import {
  */
 export function generateScoreString(params) {
   const {
-    sets,
-    winningSide,
-    autoComplete,
-    matchUpStatus,
-    reversed = false,
     winnerFirst = true,
     addOutcomeString,
+    reversed = false,
+    matchUpStatus,
+    autoComplete,
+    winningSide,
+    sets,
   } = params;
+
   if (!sets) return { error: MISSING_VALUE };
 
   const scoresInSideOrder = !winnerFirst || !winningSide || winningSide === 1;
