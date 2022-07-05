@@ -163,32 +163,32 @@ export function addEventEntries(params) {
     }
   }
 
-  // now remove any unpaired participantIds which exist as part of added paired participants
-  if (event.eventType === DOUBLES) {
+  // now remove any ungrouped participantIds which exist as part of added grouped participants
+  if ([DOUBLES, TEAM].includes(event.eventType)) {
     const enteredParticipantIds = (event.entries || []).map(
       (entry) => entry.participantId
     );
-    const unpairedIndividualParticipantIds = (event.entries || [])
+    const ungroupedIndividualParticipantIds = (event.entries || [])
       .filter((entry) => isUngrouped(entry.entryStatus))
       .map((entry) => entry.participantId);
     const tournamentParticipants = tournamentRecord?.participants || [];
-    const pairedIndividualParticipantIds = tournamentParticipants
+    const groupedIndividualParticipantIds = tournamentParticipants
       .filter(
         (participant) =>
           enteredParticipantIds.includes(participant.participantId) &&
-          participant.participantType === PAIR
+          [PAIR, TEAM].includes(participant.participantType)
       )
       .map((participant) => participant.individualParticipantIds)
       .flat(Infinity);
-    const unpairedParticipantIdsToRemove =
-      unpairedIndividualParticipantIds.filter((participantId) =>
-        pairedIndividualParticipantIds.includes(participantId)
+    const ungroupedParticipantIdsToRemove =
+      ungroupedIndividualParticipantIds.filter((participantId) =>
+        groupedIndividualParticipantIds.includes(participantId)
       );
-    if (unpairedParticipantIdsToRemove.length) {
+    if (ungroupedParticipantIdsToRemove.length) {
       removeEventEntries({
-        tournamentRecord,
-        participantIds: unpairedParticipantIdsToRemove,
+        participantIds: ungroupedParticipantIdsToRemove,
         autoEntryPositions: false, // because the method will be called below if necessary
+        tournamentRecord,
         event,
       });
     }
