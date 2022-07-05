@@ -11,10 +11,8 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function calculateHistoryScore({ matchUp }) {
-  const result = getHistory({ matchUp });
-  if (result.error) return result;
+  const history = getHistory({ matchUp })?.history || [];
 
-  const history = result.history;
   if (!Array.isArray(history))
     return { error: INVALID_VALUES, info: 'history is not an array' };
 
@@ -59,8 +57,8 @@ export function calculateHistoryScore({ matchUp }) {
 
   let tiebreakServingSide;
   let sidePoints = [0, 0];
+  let servingSide = 1;
   let unknowns = [];
-  let servingSide;
   let isFinalSet;
 
   let processedCount = 0;
@@ -106,6 +104,7 @@ export function calculateHistoryScore({ matchUp }) {
     };
 
     if (isValidSide(item.srv)) servingSide = item.srv;
+
     if (['p', 's', 'g'].includes(item.u)) {
       unknowns.push(item.u);
     }
