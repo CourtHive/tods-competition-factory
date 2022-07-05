@@ -15,6 +15,7 @@ import {
   removeTournamentRecord,
   setTournamentRecords,
   getTournamentRecords,
+  getTournamentId,
 } from '../global/state/globalState';
 import {
   getState,
@@ -96,13 +97,15 @@ export function competitionEngineAsync(test) {
     delete engine.error;
 
     const tournamentRecords = getTournamentRecords();
+    const activeTournamentId = getTournamentId();
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
 
     const result = await method({
-      ...params,
+      activeTournamentId,
       tournamentRecords,
+      ...params,
     });
 
     if (result?.error && snapshot) setState(snapshot);
@@ -148,6 +151,7 @@ export function competitionEngineAsync(test) {
   async function executionQueueAsync(directives, rollbackOnError) {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
     const tournamentRecords = getTournamentRecords();
+    const activeTournamentId = getTournamentId();
 
     const snapshot =
       rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
@@ -160,8 +164,9 @@ export function competitionEngineAsync(test) {
       if (!engine[method]) return { error: METHOD_NOT_FOUND };
 
       const result = await engine[method]({
-        ...params,
+        activeTournamentId,
         tournamentRecords,
+        ...params,
       });
 
       if (result?.error) {

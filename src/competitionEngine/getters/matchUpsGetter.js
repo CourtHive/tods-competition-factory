@@ -1,4 +1,8 @@
 import { getSchedulingProfile } from '../governors/scheduleGovernor/schedulingProfile/schedulingProfile';
+import {
+  getEventTimeItem,
+  getTournamentTimeItem,
+} from '../../tournamentEngine/governors/queryGovernor/timeItems';
 import { scheduledSortedMatchUps } from '../../global/sorting/scheduledSortedMatchUps';
 
 import { getVenuesAndCourts } from './venuesAndCourtsGetter';
@@ -8,7 +12,6 @@ import {
 } from '../../tournamentEngine/getters/matchUpsGetter';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
-import { getTournamentTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 
 export function allCompetitionMatchUps({
@@ -51,9 +54,11 @@ export function competitionScheduleMatchUps(params) {
   const { courts, venues } = getVenuesAndCourts(params);
   const schedulingProfile = getSchedulingProfile(params).schedulingProfile;
 
-  let { matchUpFilters } = params;
+  const { matchUpFilters = {}, contextFilters = {} } = params;
   const {
     sortDateMatchUps = true,
+    tournamentRecords,
+    activeTournamentId,
     usePublishState,
     status = PUBLIC,
     sortCourtsData,
@@ -61,11 +66,32 @@ export function competitionScheduleMatchUps(params) {
 
   const timeItem =
     usePublishState &&
-    getTournamentTimeItem({ itemType: `${PUBLISH}.${STATUS}` }).timeItem;
-
+    getTournamentTimeItem({
+      tournamentRecord: tournamentRecords[activeTournamentId],
+      itemType: `${PUBLISH}.${STATUS}`,
+    }).timeItem;
   const publishStatus = timeItem?.itemValue?.[status];
+
+  if (usePublishState && !publishStatus) {
+    return { dateMatchUps: [], completedMatchUps: [], courtsData: [], venues };
+  }
+
+  const publishedDrawIds =
+    usePublishState &&
+    getCompetitionPublishedDrawIds({ tournamentRecords }).drawIds;
+
+  if (publishedDrawIds?.length) {
+    if (!contextFilters.drawIds) {
+      contextFilters.drawIds = publishedDrawIds;
+    } else {
+      contextFilters.drawIds = contextFilters.drawIds.filter((drawId) =>
+        publishedDrawIds.includes(drawId)
+      );
+    }
+  }
+
   if (publishStatus?.eventIds?.length) {
-    if (matchUpFilters?.eventIds) {
+    if (matchUpFilters.eventIds) {
       if (!matchUpFilters.eventIds.length) {
         matchUpFilters.eventIds = publishStatus.eventIds;
       } else {
@@ -74,12 +100,12 @@ export function competitionScheduleMatchUps(params) {
         );
       }
     } else {
-      matchUpFilters = { eventIds: publishStatus.eventIds };
+      matchUpFilters.eventIds = publishStatus.eventIds;
     }
   }
 
   if (publishStatus?.scheduledDates?.length) {
-    if (matchUpFilters?.scheduledDates) {
+    if (matchUpFilters.scheduledDates) {
       if (!matchUpFilters.scheduledDates.length) {
         matchUpFilters.scheduledDates = publishStatus.scheduledDates;
       } else {
@@ -89,12 +115,12 @@ export function competitionScheduleMatchUps(params) {
         );
       }
     } else {
-      matchUpFilters = { scheduledDates: publishStatus.scheduledDates };
+      matchUpFilters.scheduledDates = publishStatus.scheduledDates;
     }
   }
 
   const { completedMatchUps, upcomingMatchUps, pendingMatchUps } =
-    competitionMatchUps({ ...params, matchUpFilters });
+    competitionMatchUps({ ...params, matchUpFilters, contextFilters });
 
   const relevantMatchUps = [
     ...(upcomingMatchUps || []),
@@ -180,4 +206,30 @@ export function competitionMatchUps({
   );
 
   return matchUpGroupings;
+}
+
+function getCompetitionPublishedDrawIds({ tournamentRecords }) {
+  const drawIds = [];
+
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
+    for (const event of tournamentRecord.events || []) {
+      const { timeItem } = getEventTimeItem({
+        itemType: `${PUBLISH}.${STATUS}`,
+        event,
+      });
+
+      const pubState = timeItem?.itemValue?.[PUBLIC];
+      if (pubState?.drawIds?.length) {
+        drawIds.push(...pubState.drawIds);
+      } else {
+        // if there are no drawIds specified then all draws are published
+        const eventDrawIds = (event.drawDefinitions || [])
+          .map(({ drawId }) => drawId)
+          .filter(Boolean);
+        drawIds.push(...eventDrawIds);
+      }
+    }
+  }
+
+  return { drawIds };
 }

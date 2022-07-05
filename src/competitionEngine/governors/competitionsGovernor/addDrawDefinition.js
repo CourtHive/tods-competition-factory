@@ -10,11 +10,11 @@ import {
 
 export function addDrawDefinition({
   tournamentRecords,
+  existingDrawCount,
   drawDefinition,
   tournamentId,
   eventId,
   flight,
-  existingDrawCount,
 }) {
   if (!eventId) return { error: MISSING_EVENT };
 

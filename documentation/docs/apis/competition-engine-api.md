@@ -403,8 +403,9 @@ const matchUpFilters = {
 
 const { completedMatchUps, dateMatchUps, courtsData, venues } =
   competitionEngine.competitionScheduleMatchUps({
-    sortCourtsData, // boolean - optional
     sortDateMatchUps, // boolean - optional - defaults to `true`
+    usePublishState, // boolean - when true filter out events and dates that have not been published
+    sortCourtsData, // boolean - optional
     matchUpFilters, // optional
   });
 ```
@@ -797,9 +798,9 @@ Convenience pass through to `tournamentEngine.matchUpActions` for use in context
 ```js
 const { matchUpActions } = competitionEngine.matchUpActions({
   tournamentId,
+  matchUpId,
   eventId,
   drawId,
-  matchUpId,
 });
 ```
 
@@ -811,11 +812,11 @@ Swaps the schedule details of two scheduled matchUps.
 
 ```js
 competitionEngine.matchUpScheduleChange({
+  courtDayDate: dateSelected,
   sourceMatchUpContextIds,
   targetMatchUpContextIds,
   sourceCourtId,
   targetCourtId,
-  courtDayDate: dateSelected,
 });
 ```
 
@@ -825,10 +826,10 @@ competitionEngine.matchUpScheduleChange({
 
 ```js
 competitionEngine.modifyEventMatchUpFormatTiming({
-  eventId,
-  matchUpFormat,
-  averageMinutes,
   recoveryMinutes,
+  averageMinutes,
+  matchUpFormat,
+  eventId,
 });
 ```
 
