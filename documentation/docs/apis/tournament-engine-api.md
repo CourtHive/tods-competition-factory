@@ -2489,8 +2489,8 @@ const scaleAttributes = {
 const {
   scaleItem: { scaleValue },
 } = tournamentEngine.participantScaleItem({
-  participant,
   scaleAttributes,
+  participant,
 });
 ```
 
