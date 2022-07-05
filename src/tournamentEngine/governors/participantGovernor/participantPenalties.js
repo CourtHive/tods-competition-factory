@@ -1,4 +1,4 @@
-import { addExtension } from '../tournamentGovernor/addRemoveExtensions';
+import { addExtension } from '../../../global/functions/producers/addExtension';
 import penaltyTemplate from '../../generators/penaltyTemplate';
 import { addNotice } from '../../../global/state/globalState';
 
