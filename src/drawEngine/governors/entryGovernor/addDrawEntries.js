@@ -1,5 +1,5 @@
-import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { refreshEntryPositions } from '../../../global/functions/producers/refreshEntryPositions';
+import { addExtension } from '../../../global/functions/producers/addExtension';
 import { isValidExtension } from '../../../global/validation/isValidExtension';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
