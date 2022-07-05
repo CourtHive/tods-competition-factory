@@ -38,7 +38,6 @@ export function getTournamentParticipants({
   tournamentRecord,
   withStatistics,
   withScaleValues,
-  withScaleItems, // to be deprecated
   withGroupings,
   withOpponents,
   withMatchUps,
@@ -108,7 +107,6 @@ export function getTournamentParticipants({
       scheduleAnalysis,
       usePublishState,
       withScaleValues,
-      withScaleItems, // to be deprecated
       withStatistics,
       withGroupings,
       withOpponents,
