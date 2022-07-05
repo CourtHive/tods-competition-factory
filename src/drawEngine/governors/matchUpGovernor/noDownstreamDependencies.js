@@ -6,7 +6,7 @@ import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { removeDoubleExit } from './removeDoubleExit';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
-import { scoreHasValue } from '../scoreGovernor/scoreHasValue';
+import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

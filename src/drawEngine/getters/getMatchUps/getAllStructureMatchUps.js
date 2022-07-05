@@ -5,9 +5,9 @@ import { getAppliedPolicies } from '../../../global/functions/deducers/getApplie
 import { getCollectionPositionMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
+import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
-import { parse } from '../../governors/scoreGovernor/matchUpFormatCode/parse';
 import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';

@@ -6,7 +6,7 @@ import { validateScore } from '../../../global/validation/validateScore';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { scoreHasValue } from '../scoreGovernor/scoreHasValue';
+import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { findStructure } from '../../getters/findStructure';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { isActiveDownstream } from './isActiveDownstream';

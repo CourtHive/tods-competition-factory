@@ -1,5 +1,5 @@
-import { checkTieFormat } from '../scoreGovernor/tieFormats/tieFormatUtilities';
-import { isValid } from '../scoreGovernor/matchUpFormatCode/isValid';
+import { checkTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import {

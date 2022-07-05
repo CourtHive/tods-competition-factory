@@ -1,4 +1,5 @@
-import { mocksEngine, scoreGovernor, tournamentEngine } from '../../..';
+import { mocksEngine, tournamentEngine } from '../../..';
+import matchUpEngine from '../../../matchUpEngine/sync';
 
 test('roundRobinTally policy can specify tally by games only', () => {
   // prettier-ignore
@@ -36,7 +37,7 @@ test('roundRobinTally policy can specify tally by games only', () => {
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  const { participantResults } = scoreGovernor.tallyParticipantResults({
+  const { participantResults } = matchUpEngine.tallyParticipantResults({
     policyDefinitions: mockProfile.policyDefinitions,
     matchUpFormat: mockProfile.matchUpFormat,
     matchUps,

@@ -1,8 +1,5 @@
+import { addExtension } from '../../../global/functions/producers/addExtension';
 import { getPositionAssignments } from '../../getters/positionsGetter';
-import {
-  addExtension,
-  // removeExtension,
-} from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { DISABLE_LINKS } from '../../../constants/extensionConstants';

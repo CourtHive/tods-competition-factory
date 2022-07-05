@@ -1,5 +1,5 @@
-import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
+import { addExtension } from '../../global/functions/producers/addExtension';
 import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 import { generateRange, nextPowerOf2, UUID } from '../../utilities';
 import { generatePlayoffStructures } from './playoffStructures';

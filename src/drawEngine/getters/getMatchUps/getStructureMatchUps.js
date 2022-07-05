@@ -1,4 +1,4 @@
-import { matchUpIsComplete } from '../../governors/scoreGovernor/matchUpIsComplete';
+import { matchUpIsComplete } from '../../../matchUpEngine/governors/queryGovernor/matchUpIsComplete';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../positionsGetter';
 import { findStructure } from '../findStructure';
@@ -126,7 +126,8 @@ export function getStructureMatchUps({
             (!requireParticipants || drawPositionsAssigned)));
 
       if (isByeMatchUp) return byeMatchUps.push(matchUp);
-      if (matchUpIsComplete(matchUp)) return completedMatchUps.push(matchUp);
+      if (matchUpIsComplete({ matchUp }))
+        return completedMatchUps.push(matchUp);
       if (isUpcomingMatchUp) return upcomingMatchUps.push(matchUp);
       return pendingMatchUps.push(matchUp);
     });

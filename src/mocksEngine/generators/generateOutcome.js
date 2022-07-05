@@ -1,14 +1,12 @@
-import { isValid } from '../../drawEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
-import { parse } from '../../drawEngine/governors/scoreGovernor/matchUpFormatCode/parse';
-import { analyzeMatchUp } from '../../drawEngine/governors/scoreGovernor/analyzeMatchUp';
-import { matchUpScore } from '../../drawEngine/governors/scoreGovernor/matchUpScore';
-import { analyzeSet } from '../../drawEngine/governors/scoreGovernor/analyzeSet';
+import { analyzeMatchUp } from '../../matchUpEngine/getters/analyzeMatchUp';
+import { matchUpScore } from '../../matchUpEngine/generators/matchUpScore';
+import { analyzeSet } from '../../matchUpEngine/getters/analyzeSet';
 import { randomInt, weightedRandom } from '../../utilities/math';
 import { generateRange, randomPop } from '../../utilities';
 import {
   getSetComplement,
   getTiebreakComplement,
-} from '../../drawEngine/governors/scoreGovernor/getComplement';
+} from '../../matchUpEngine/getters/getComplement';
 
 import {
   INVALID_MATCHUP_FORMAT,
@@ -27,6 +25,8 @@ import {
   completedMatchUpStatuses,
   DOUBLE_DEFAULT,
 } from '../../constants/matchUpStatusConstants';
+import { isValid } from '../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { parse } from '../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 
 // percentages rounded to the nearest whole number
 const defaultStatusProfile = {

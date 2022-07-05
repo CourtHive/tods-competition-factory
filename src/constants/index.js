@@ -1,4 +1,4 @@
-import { keyValueConstants } from '../drawEngine/governors/scoreGovernor/keyValueScore/constants';
+import { keyValueConstants } from '../matchUpEngine/governors/scoreGovernor/keyValueScore/constants';
 import { auditConstants } from './auditConstants';
 import { drawDefinitionConstants } from './drawDefinitionConstants';
 import { entryStatusConstants } from './entryStatusConstants';

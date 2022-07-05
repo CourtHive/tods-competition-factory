@@ -1,4 +1,4 @@
-import { analyzeScore } from '../../drawEngine/governors/scoreGovernor/analyzeScore';
+import { analyzeScore } from '../../matchUpEngine/getters/analyzeScore';
 import { isConvertableInteger } from '../../utilities/math';
 import { unique } from '../../utilities';
 

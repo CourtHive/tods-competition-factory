@@ -1,5 +1,5 @@
 import { addVoluntaryConsolationStructure } from '../governors/eventGovernor/addVoluntaryConsolationStructure';
-import { validateTieFormat } from '../../drawEngine/governors/scoreGovernor/tieFormats/tieFormatUtilities';
+import { validateTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
 import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
@@ -48,7 +48,6 @@ export function generateDrawDefinition(params) {
     drawId,
     event,
   } = params;
-
   // get participants both for entry validation and for automated placement
   // automated placement requires them to be "inContext" for avoidance policies to work
   const { tournamentParticipants: participants } = getTournamentParticipants({

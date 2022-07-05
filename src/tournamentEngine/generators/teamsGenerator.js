@@ -1,5 +1,5 @@
-import { addExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
-import { findExtension } from '../governors/queryGovernor/extensionQueries';
+import { findExtension } from '../../global/functions/deducers/findExtension';
+import { addExtension } from '../../global/functions/producers/addExtension';
 import { getAccessorValue } from '../../utilities/getAccessorValue';
 import { addNotice } from '../../global/state/globalState';
 import { UUID } from '../../utilities';

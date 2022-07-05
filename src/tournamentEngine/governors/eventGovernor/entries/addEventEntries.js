@@ -1,7 +1,7 @@
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
+import { addExtension } from '../../../../global/functions/producers/addExtension';
 import { isValidExtension } from '../../../../global/validation/isValidExtension';
 import { decorateResult } from '../../../../global/functions/decorateResult';
-import { addExtension } from '../../tournamentGovernor/addRemoveExtensions';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
 import { definedAttributes } from '../../../../utilities/objects';

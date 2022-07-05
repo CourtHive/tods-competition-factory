@@ -38,7 +38,7 @@ module.exports = {
       type: 'category',
       label: 'Mocks Engine',
       items: [
-        'apis/mocks-engine-overview',
+        'engines/mocks-engine-overview',
         { type: 'doc', label: 'API', id: 'apis/mocks-engine-api' },
         'engines/mocks-engine-examples',
       ],
@@ -50,7 +50,7 @@ module.exports = {
         {
           type: 'doc',
           label: 'Overview',
-          id: 'apis/competition-engine-overview',
+          id: 'engines/competition-engine-overview',
         },
         { type: 'doc', label: 'API', id: 'apis/competition-engine-api' },
       ],
@@ -62,7 +62,7 @@ module.exports = {
         {
           type: 'doc',
           label: 'Overview',
-          id: 'apis/tournament-engine-overview',
+          id: 'engines/tournament-engine-overview',
         },
         { type: 'doc', label: 'API', id: 'apis/tournament-engine-api' },
       ],
@@ -77,6 +77,18 @@ module.exports = {
           id: 'engines/draw-engine-overview',
         },
         { type: 'doc', label: 'API', id: 'apis/draw-engine-api' },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'MatchUp Engine',
+      items: [
+        {
+          type: 'doc',
+          label: 'Overview',
+          id: 'engines/matchup-engine-overview',
+        },
+        { type: 'doc', label: 'API', id: 'apis/matchup-engine-api' },
       ],
     },
     {

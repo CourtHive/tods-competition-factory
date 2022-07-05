@@ -1,4 +1,4 @@
-import { isValid } from '../../../../drawEngine/governors/scoreGovernor/matchUpFormatCode/isValid';
+import { isValid } from '../../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import {
   findEventExtension,
   findTournamentExtension,

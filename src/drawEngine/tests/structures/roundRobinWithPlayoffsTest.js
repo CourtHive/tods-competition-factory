@@ -2,9 +2,9 @@ import { allPlayoffPositionsFilled } from '../../governors/queryGovernor/structu
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { reset, initialize } from '../primitives/primitives';
+import matchUpEngine from '../../../matchUpEngine/sync';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import { scoreGovernor } from '../../..';
 
 import {
   MAIN,
@@ -160,7 +160,7 @@ export function roundRobinWithPlayoffsTest({
       (matchUp) => matchUp.structureId === structureId
     );
 
-    const { participantResults } = scoreGovernor.tallyParticipantResults({
+    const { participantResults } = matchUpEngine.tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });

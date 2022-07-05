@@ -1,9 +1,9 @@
+import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
 import { checkInParticipant, checkOutParticipant } from './checkInStatus';
 import { publicFindMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
-import { isValid } from '../scoreGovernor/matchUpFormatCode/isValid';
 import { removeDelegatedOutcome } from './removeDelegatedOutcome';
 import { drawMatic } from '../../generators/drawMatic/drawMatic';
 import { setDelegatedOutcome } from './setDelegatedOutcome';

@@ -1,5 +1,5 @@
-import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { addExtension } from '../../../global/functions/producers/addExtension';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';

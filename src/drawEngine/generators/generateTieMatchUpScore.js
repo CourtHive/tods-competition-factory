@@ -1,4 +1,4 @@
-import { validateTieFormat } from '../governors/scoreGovernor/tieFormats/tieFormatUtilities';
+import { validateTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
 import { getGroupValueGroups } from './getGroupValueGroups';
 

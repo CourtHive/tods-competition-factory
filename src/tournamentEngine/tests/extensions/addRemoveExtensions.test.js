@@ -1,8 +1,8 @@
 import { generateTournamentRecord } from '../../../mocksEngine/generators/generateTournamentRecord';
+import { addExtension } from '../../../global/functions/producers/addExtension';
 import { competitionEngine } from '../../..';
 import tournamentEngine from '../../sync';
 import {
-  addExtension,
   addParticipantExtension,
   removeExtension,
   removeParticipantExtension,
