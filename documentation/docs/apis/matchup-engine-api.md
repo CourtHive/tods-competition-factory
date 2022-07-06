@@ -2,7 +2,7 @@
 title: matchUpEngine API
 ---
 
-All **\_matchUpEngine** methods which make a mutation return either `{ success: true }` or `{ error }`
+All **matchUpEngine** methods which make a mutation return either `{ success: true }` or `{ error }`
 
 ---
 
