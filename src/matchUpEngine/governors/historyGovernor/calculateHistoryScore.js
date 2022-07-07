@@ -24,15 +24,14 @@ export function calculateHistoryScore({ matchUp }) {
 
   const pointProgression = ['0', '15', '30', '40', 'A', 'G'];
   const score = { sets: [] };
-  let point = newPoint();
-  let game = newGame();
-  let set = newSet();
 
   let tiebreakServingSide;
   let sidePoints = [0, 0];
   let servingSide = 1;
   let unknowns = [];
   let isFinalSet;
+
+  const isValidSide = (value) => [1, 2].includes(value);
 
   const newSet = () => {
     return {
@@ -59,7 +58,9 @@ export function calculateHistoryScore({ matchUp }) {
     };
   };
 
-  const isValidSide = (value) => [1, 2].includes(value);
+  let point = newPoint();
+  let game = newGame();
+  let set = newSet();
 
   let processedCount = 0;
   for (const item of history) {
