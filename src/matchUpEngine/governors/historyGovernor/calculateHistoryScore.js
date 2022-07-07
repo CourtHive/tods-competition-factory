@@ -31,6 +31,7 @@ export function calculateHistoryScore({ matchUp }) {
   let servingSide = 1;
   let unknowns = [];
   let isFinalSet;
+  let faults = 0;
 
   const isValidSide = (value) => [1, 2].includes(value);
 
@@ -87,6 +88,7 @@ export function calculateHistoryScore({ matchUp }) {
       set.side2TiebreakScore = 0;
       set.side1PointScore = '';
       set.side2PointScore = '';
+      faults = 0;
     };
     const completeSet = (winningSide) => {
       set.winningSide = winningSide;
@@ -116,7 +118,11 @@ export function calculateHistoryScore({ matchUp }) {
     if (item.o) {
       point.shots.push(item.o);
 
-      // check if shot is second serve fault
+      if (item.fault) faults += 1;
+
+      if (faults === 2) {
+        point.winningSide = 3 - servingSide;
+      }
     }
     if (isValidSide(item.p)) {
       const winningSide = item.p;
