@@ -92,8 +92,8 @@ export function getAllEventData({ tournamentRecord, policyDefinitions }) {
     });
 
     const { timeItem } = getEventTimeItem({
-      event,
       itemType: `${PUBLISH}.${STATUS}`,
+      event,
     });
 
     Object.assign(eventInfo, {

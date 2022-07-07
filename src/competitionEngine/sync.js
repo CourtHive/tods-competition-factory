@@ -14,6 +14,7 @@ import {
   removeTournamentRecord,
   getTournamentRecords,
   setTournamentRecords,
+  getTournamentId,
 } from '../global/state/globalState';
 
 import {
@@ -130,6 +131,7 @@ export const competitionEngine = (function () {
 
   function engineInvoke(method, params, methodName) {
     const tournamentRecords = getTournamentRecords();
+    const activeTournamentId = getTournamentId();
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
@@ -137,7 +139,7 @@ export const competitionEngine = (function () {
     const result = executeFunction(
       tournamentRecords,
       method,
-      params,
+      { activeTournamentId, ...params },
       methodName
     );
 
@@ -180,6 +182,7 @@ export const competitionEngine = (function () {
   function executionQueue(directives, rollbackOnError) {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
     const tournamentRecords = getTournamentRecords();
+    const activeTournamentId = getTournamentId();
 
     const snapshot =
       rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
@@ -205,7 +208,7 @@ export const competitionEngine = (function () {
       const result = executeFunction(
         tournamentRecords,
         engine[methodName],
-        params,
+        { activeTournamentId, ...params },
         methodName
       );
 

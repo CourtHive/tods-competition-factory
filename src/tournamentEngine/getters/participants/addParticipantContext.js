@@ -711,7 +711,6 @@ export function addParticipantContext(params) {
 function annotateParticipant({
   eventsPublishStatuses,
   withScaleValues = true,
-  withScaleItems = true, // to be deprecated
   withEvents = true,
   withDraws = true,
   participantIdMap,
@@ -731,7 +730,7 @@ function annotateParticipant({
   if (withIOC || withISO2)
     addNationalityCode({ participant, withIOC, withISO2 });
 
-  if (withScaleItems || withScaleValues) {
+  if (withScaleValues) {
     const { ratings, rankings } = getScaleValues({ participant });
     participant.ratings = ratings;
     participant.rankings = rankings;

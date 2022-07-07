@@ -73,3 +73,32 @@ it('correctly tracks serving side in tiebreaks', () => {
   result = matchUpEngine.calculateHistoryScore();
   expect(result.servingSide).toEqual(1);
 });
+
+it('supports double fault tracking', () => {
+  const matchUp = {
+    matchUpFormat: 'SET1-S:TB10',
+    matchUpId: 'foo',
+  };
+
+  // possible to invoke without state, passing matchUp directly
+  let result = matchUpEngine.setState(matchUp).calculateHistoryScore();
+  expect(result.servingSide).toEqual(1);
+
+  result = matchUpEngine.setServingSide({ sideNumber: 2 });
+  expect(result.success).toEqual(true);
+
+  result = matchUpEngine.addShot({
+    shot: { shotOutcome: 'NET', shotType: 'SERVE' },
+  });
+  expect(result.success).toEqual(true);
+
+  result = matchUpEngine.addShot({
+    shot: { shotOutcome: 'OUT', shotType: 'SERVE' },
+  });
+  expect(result.success).toEqual(true);
+
+  // sideNumber: 2 served a double fault giving sideNumber: 1 a point
+  result = matchUpEngine.calculateHistoryScore();
+  expect(result.score.sets[0].side1TiebreakScore).toEqual(1);
+  expect(result.servingSide).toEqual(1);
+});

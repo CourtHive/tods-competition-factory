@@ -159,7 +159,7 @@ function getGroupingAccuracy({
 
       if (exclusionValue) {
         accuracy.excluded.push({
-          scoreString: score.scoreStringSide1,
+          scoreString: score?.scoreStringSide1,
           exclusionValue,
           winningSide,
           values,
@@ -173,7 +173,7 @@ function getGroupingAccuracy({
         .length < 2
     ) {
       accuracy.excluded.push({
-        scoreString: score.scoreStringSide1,
+        scoreString: score?.scoreStringSide1,
         winningSide,
         values,
       });
@@ -187,7 +187,7 @@ function getGroupingAccuracy({
     const signedGap = ascending ? valuesGap * -1 : valuesGap;
 
     const winningScoreString =
-      winningSide === 1 ? score.scoreStringSide1 : score.scoreStringSide2;
+      winningSide === 1 ? score?.scoreStringSide1 : score?.scoreStringSide2;
 
     if (signedGap > 0) {
       accuracy.affirmative.push({

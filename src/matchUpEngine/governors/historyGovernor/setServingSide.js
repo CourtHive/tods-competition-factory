@@ -1,15 +1,15 @@
 import { saveHistory } from './saveHistory';
 import { getHistory } from './getHistory';
 
-import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { INVALID_SIDE_NUMBER } from '../../../constants/errorConditionConstants';
 
-export function addGame({ matchUp, game }) {
+export function setServingSide({ matchUp, sideNumber }) {
   // TODO: check game validity
-  if (typeof game !== 'object') return { error: MISSING_VALUE };
+  if (![1, 2].includes(sideNumber)) return { error: INVALID_SIDE_NUMBER };
 
   // do not destructure undoHistory; it is destroyed when adding to history
   const { history = [] } = getHistory({ matchUp });
-  history.push(game);
+  history.push({ srv: sideNumber });
 
   return saveHistory({ matchUp, history });
 }

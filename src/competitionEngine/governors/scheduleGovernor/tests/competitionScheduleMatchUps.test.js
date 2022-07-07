@@ -84,6 +84,21 @@ test.each([competitionEngineSync])(
 
     const matchUpFilters = { scheduledDate: '2021-05-05' };
     result = competitionEngine.competitionScheduleMatchUps({
+      usePublishState: true,
+      matchUpFilters,
+    });
+    expect(result.dateMatchUps.length).toEqual(0);
+
+    result = competitionEngine.publishOrderOfPlay();
+    expect(result.success).toEqual(true);
+
+    result = competitionEngine.competitionScheduleMatchUps({
+      usePublishState: true,
+      matchUpFilters,
+    });
+    expect(result.dateMatchUps.length).toEqual(23);
+
+    result = competitionEngine.competitionScheduleMatchUps({
       matchUpFilters,
     });
     expect(result.dateMatchUps.length).toEqual(23);

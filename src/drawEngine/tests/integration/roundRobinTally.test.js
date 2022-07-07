@@ -6,14 +6,10 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 
-import {
-  DEFAULTED,
-  RETIRED,
-  WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { DOMINANT_DUO } from '../../../constants/tieFormatConstants';
+import { SINGLES, TEAM } from '../../../constants/eventConstants';
 import { TALLY } from '../../../constants/extensionConstants';
-import { SINGLES } from '../../../constants/eventConstants';
 import {
   FORMAT_SHORT_SETS,
   FORMAT_STANDARD,
@@ -22,6 +18,11 @@ import {
   MISSING_DRAW_POSITION,
   MISSING_STRUCTURE_ID,
 } from '../../../constants/errorConditionConstants';
+import {
+  DEFAULTED,
+  RETIRED,
+  WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
 
 it('can recalculate participantResults when outcomes are removed', () => {
   const drawProfiles = [
@@ -871,4 +872,166 @@ it('properly handles DEFAULTS in calculating participant positions', () => {
       expect(participantResult[key]).toEqual(expectation[key]);
     });
   });
+});
+
+it('recognize when TEAM participants are tied with position order', () => {
+  const drawProfiles = [
+    {
+      drawSize: 5,
+      eventType: TEAM,
+      participantsCount: 5,
+      drawType: ROUND_ROBIN,
+      tieFormatName: DOMINANT_DUO,
+      structureOptions: { groupSize: 5 },
+      outcomes: [
+        {
+          matchUpStatus: WALKOVER,
+          drawPositions: [1, 2],
+          winningSide: 1,
+        },
+        {
+          matchUpStatus: WALKOVER,
+          drawPositions: [1, 3],
+          winningSide: 1,
+        },
+        {
+          matchUpStatus: WALKOVER,
+          drawPositions: [1, 4],
+          winningSide: 2,
+        },
+        {
+          matchUpStatus: WALKOVER,
+          drawPositions: [1, 5],
+          winningSide: 2,
+        },
+        {
+          matchUpStatus: WALKOVER,
+          drawPositions: [2, 3],
+          winningSide: 2,
+        },
+        {
+          matchUpStatus: WALKOVER,
+          drawPositions: [2, 4],
+          winningSide: 1,
+        },
+        {
+          matchUpStatus: WALKOVER,
+          drawPositions: [2, 5],
+          winningSide: 1,
+        },
+        {
+          matchUpStatus: WALKOVER,
+          drawPositions: [3, 4],
+          winningSide: 1,
+        },
+        {
+          matchUpStatus: WALKOVER,
+          drawPositions: [3, 5],
+          winningSide: 2,
+        },
+        {
+          matchUpStatus: WALKOVER,
+          drawPositions: [4, 5],
+          winningSide: 1,
+        },
+      ],
+    },
+  ];
+  let result = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  let {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = result;
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  let structure = drawDefinition.structures[0];
+  const mainStructureId = structure.structureId;
+  const { structureId } = structure.structures[0];
+  let { positionAssignments } = getPositionAssignments({
+    structure,
+  });
+
+  let { eventData } = tournamentEngine.getEventData({ drawId });
+  let participantResults =
+    eventData.drawsData[0].structures[0].participantResults;
+
+  // check the expectations against both the positionAssignments for the structure
+  // and the eventData payload that is intended for presentation
+  positionAssignments.forEach((assignment) => {
+    const { drawPosition } = assignment;
+    const result = participantResults.find(
+      (result) => result.drawPosition === drawPosition
+    ).participantResult;
+    const {
+      extension: { value: participantResult },
+    } = findExtension({
+      element: assignment,
+      name: TALLY,
+    });
+
+    // check that the results in eventData are equivalent
+    expect(result).toEqual(participantResult);
+  });
+
+  result = tournamentEngine.setSubOrder({
+    drawPosition: 1,
+    subOrder: 2,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_STRUCTURE_ID);
+
+  result = tournamentEngine.setSubOrder({
+    subOrder: 2,
+    structureId,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_DRAW_POSITION);
+
+  result = tournamentEngine.setSubOrder({
+    structureId: mainStructureId,
+    drawPosition: 1,
+    subOrder: 2,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.setSubOrder({
+    drawPosition: 2,
+    subOrder: 3,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.setSubOrder({
+    drawPosition: 3,
+    subOrder: 1,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ eventData } = tournamentEngine.getEventData({ drawId }));
+  participantResults = eventData.drawsData[0].structures[0].participantResults;
+
+  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  structure = drawDefinition.structures[0];
+  ({ positionAssignments } = getPositionAssignments({
+    structure,
+  }));
+
+  const {
+    extension: { value: tally },
+  } = findExtension({
+    element: positionAssignments[0],
+    name: TALLY,
+  });
+  expect(tally.subOrder).toEqual(
+    participantResults[0].participantResult.subOrder
+  );
 });

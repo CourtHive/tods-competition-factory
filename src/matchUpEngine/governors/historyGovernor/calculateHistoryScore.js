@@ -9,6 +9,7 @@ import {
   INVALID_VALUES,
   MISSING_MATCHUP_FORMAT,
 } from '../../../constants/errorConditionConstants';
+import { isConvertableInteger } from '../../../utilities/math';
 
 export function calculateHistoryScore({ matchUp }) {
   const history = getHistory({ matchUp })?.history || [];
@@ -23,6 +24,17 @@ export function calculateHistoryScore({ matchUp }) {
   const { bestOf, finalSetFormat, setFormat } = parsedFormat;
 
   const pointProgression = ['0', '15', '30', '40', 'A', 'G'];
+  //  const statsCounters = { 1: {}, 2: {} };
+  const score = { sets: [] };
+
+  let tiebreakServingSide;
+  let sidePoints = [0, 0];
+  let servingSide = 1;
+  let unknowns = [];
+  let isFinalSet;
+  let faults = 0;
+
+  const isValidSide = (value) => [1, 2].includes(value);
 
   const newSet = () => {
     return {
@@ -45,21 +57,13 @@ export function calculateHistoryScore({ matchUp }) {
       winningSide: undefined,
       side1Score: '',
       side2Score: '',
+      shots: [],
     };
   };
 
-  const isValidSide = (value) => [1, 2].includes(value);
-
-  const score = { sets: [] };
   let point = newPoint();
   let game = newGame();
   let set = newSet();
-
-  let tiebreakServingSide;
-  let sidePoints = [0, 0];
-  let servingSide = 1;
-  let unknowns = [];
-  let isFinalSet;
 
   let processedCount = 0;
   for (const item of history) {
@@ -85,17 +89,31 @@ export function calculateHistoryScore({ matchUp }) {
       set.side2TiebreakScore = 0;
       set.side1PointScore = '';
       set.side2PointScore = '';
+      faults = 0;
     };
     const completeSet = (winningSide) => {
       set.winningSide = winningSide;
-      score.sets.push(set);
+
+      // strip out shorthand
+      const { s, ...rest } = set;
+      if (s) true;
+
+      score.sets.push(rest);
+      point = newPoint();
+      game = newGame();
       set = newSet();
       cleanup();
     };
 
     const completeGame = (winningSide) => {
       game.winningSide = winningSide;
-      set.games.push(game);
+
+      // strip out shorthand
+      const { g, ...rest } = game;
+      if (g) true;
+
+      set.games.push(rest);
+      point = newPoint();
       game = newGame();
       cleanup();
 
@@ -103,30 +121,31 @@ export function calculateHistoryScore({ matchUp }) {
       set[winningScoreSide] += 1;
     };
 
-    if (isValidSide(item.srv)) servingSide = item.srv;
-
-    if (['p', 's', 'g'].includes(item.u)) {
-      unknowns.push(item.u);
-    }
-    if (isValidSide(item.p)) {
-      const winningSide = item.p;
+    const completePoint = (winningSide) => {
       point.winningSide = winningSide;
 
-      const winningIndex = winningSide - 1;
+      // strip out shorthand
+      const { p, ...rest } = point;
+      if (p) true;
 
-      game.points.push(point);
+      game.points.push(rest);
       point = newPoint();
+      faults = 0;
 
       const getTiebreakServingSide = () => {
         const pointsCount = sidePoints.reduce((a, b) => a + b);
         const value = (pointsCount % 4) / 4;
-        return value > 0.5 ? servingSide : 3 - servingSide;
+        const sideNumber = value > 0.5 ? servingSide : 3 - servingSide;
+        return sideNumber;
       };
 
+      const winningIndex = winningSide - 1;
       if (isTiebreak || isTiebreakSet) {
         sidePoints[winningIndex] += 1;
         tiebreakServingSide = getTiebreakServingSide();
         set[`side${winningSide}TiebreakScore`] = sidePoints[winningIndex];
+        set[`side${3 - winningSide}TiebreakScore`] =
+          sidePoints[1 - winningIndex];
 
         const winBy = tiebreakNoAD ? 1 : 2;
         if (
@@ -134,7 +153,7 @@ export function calculateHistoryScore({ matchUp }) {
           sidePoints[winningIndex] >= sidePoints[1 - winningIndex] + winBy
         ) {
           completeGame(winningSide);
-          continue;
+          return { gameCompleted: true };
         }
       } else {
         if (
@@ -147,6 +166,9 @@ export function calculateHistoryScore({ matchUp }) {
           sidePoints[winningIndex] += 1;
         }
 
+        set.side1PointScore = pointProgression[sidePoints[0]];
+        set.side2PointScore = pointProgression[sidePoints[1]];
+
         if (
           sidePoints[winningIndex] === 5 ||
           (sidePoints[winningIndex] === 4 &&
@@ -154,16 +176,39 @@ export function calculateHistoryScore({ matchUp }) {
           (NoAD && sidePoints[winningIndex] === 4)
         ) {
           completeGame(winningSide);
-          continue;
+          return { gameCompleted: true };
         }
       }
+    };
 
-      set.side1PointScore = pointProgression[sidePoints[0]];
-      set.side2PointScore = pointProgression[sidePoints[1]];
+    if (isValidSide(item.srv)) {
+      servingSide = item.srv;
     }
 
-    if (isValidSide(item.g)) {
-      const winningSide = item.g;
+    if (['p', 's', 'g', 'o'].includes(item.u)) {
+      unknowns.push(item.u);
+    }
+
+    if (item.shotOutcome) {
+      point.shots.push(item);
+
+      const isServe = item.shotType === 'SERVE';
+
+      if (isServe && ['OUT', 'NET'].includes(item.shotOutcome)) faults += 1;
+
+      if (faults === 2) {
+        const winningSide = 3 - servingSide;
+        completePoint(winningSide);
+      }
+    }
+    if (isValidSide(item.p) || isConvertableInteger(item.pointNumber)) {
+      const winningSide = item.winningSide || item.p;
+      const result = completePoint(winningSide);
+      if (result?.gameCompleted) continue;
+    }
+
+    if (isValidSide(item.g) || isConvertableInteger(item.gameNumber)) {
+      const winningSide = item.winningSide || item.g;
       game.winningSide = winningSide;
       const winningScoreSide = `side${winningSide}Score`;
       const losingScoreSide = `side${3 - winningSide}Score`;
@@ -186,8 +231,8 @@ export function calculateHistoryScore({ matchUp }) {
         if (isFinalSet) break;
       }
     }
-    if (isValidSide(item.s)) {
-      const winningSide = item.s;
+    if (isValidSide(item.s) || isConvertableInteger(item.setNumber)) {
+      const winningSide = item.winningSide || item.s;
       completeSet(winningSide);
 
       if (unknowns.length) {
@@ -210,7 +255,13 @@ export function calculateHistoryScore({ matchUp }) {
     console.log({ error: 'Match completed with excess history' });
   }
 
-  if (set.side1Score || set.side2Score || set.games.length) {
+  if (
+    set.side1Score ||
+    set.side2Score ||
+    set.games.length ||
+    set.side1TiebreakScore ||
+    set.side2TiebreakScore
+  ) {
     score.sets.push(set);
   }
 

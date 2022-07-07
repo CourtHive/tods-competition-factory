@@ -278,7 +278,7 @@ function getGroups({ participantResults, participantIds, attribute }) {
   const resultsArray = getResultsArray({ participantResults, participantIds });
   const groups = resultsArray.reduce((groups, participantResult) => {
     const { participantId, results } = participantResult;
-    const value = results[attribute];
+    const value = results?.[attribute];
     if (groups[value]) {
       groups[value].push(participantId);
     } else {

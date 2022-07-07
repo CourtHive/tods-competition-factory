@@ -7,6 +7,7 @@ import { findStructure } from '../../getters/findStructure';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUB_ORDER } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_POSITION,
@@ -60,9 +61,18 @@ export function setSubOrder({
   };
   assignment && addExtension({ element: assignment, extension });
 
+  const isDualMatchUp =
+    event?.eventType === TEAM ||
+    drawDefinition.matchUpType === TEAM ||
+    event?.tieFormat ||
+    drawDefinition?.tieFormat ||
+    structure?.tieFormat;
+  const matchUpFilters = isDualMatchUp && { matchUpTypes: [TEAM] };
   const { matchUps } = getAllStructureMatchUps({
     structure: targetStructure,
     inContext: true,
+    matchUpFilters,
+    event,
   });
   const matchUpFormat =
     structure?.matchUpFormat || drawDefinition.matchUpFormat;
