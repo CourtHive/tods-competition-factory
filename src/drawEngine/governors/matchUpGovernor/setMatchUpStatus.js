@@ -148,11 +148,12 @@ export function setMatchUpStatus(params) {
         SUSPENDED,
         WALKOVER,
       ].includes(matchUpStatus)
-    )
+    ) {
       return {
         error: NOT_IMPLEMENTED,
         info: 'DIRECT SCORING of TEAM matchUp not implemented',
       };
+    }
   }
 
   const matchUpTieId = inContextMatchUp.matchUpTieId;
