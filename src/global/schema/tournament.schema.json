@@ -1389,7 +1389,7 @@
     },
     "ShotOutcomeEnum": {
       "type": "string",
-      "enum": ["IN", "LET", "OUT"]
+      "enum": ["IN", "LET", "OUT", "NET"]
     },
     "ShotTypeEnum": {
       "type": "string",
