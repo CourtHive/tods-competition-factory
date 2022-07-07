@@ -22,15 +22,10 @@ import {
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   ABANDONED,
-  AWAITING_RESULT,
   CANCELLED,
-  DEFAULTED,
-  DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   INCOMPLETE,
   particicipantsRequiredMatchUpStatuses,
-  RETIRED,
-  SUSPENDED,
   TO_BE_PLAYED,
   validMatchUpStatuses,
 } from '../../../constants/matchUpStatusConstants';
@@ -42,7 +37,6 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   NO_VALID_ACTIONS,
-  NOT_IMPLEMENTED,
 } from '../../../constants/errorConditionConstants';
 import {
   BYE,
@@ -135,6 +129,7 @@ export function setMatchUpStatus(params) {
   // Check validity of matchUpStatus considering assigned drawPositions -------
   const assignedDrawPositions = inContextMatchUp.drawPositions?.filter(Boolean);
 
+  /*
   if (matchUp.matchUpType === TEAM) {
     if (
       ![
@@ -155,6 +150,7 @@ export function setMatchUpStatus(params) {
       };
     }
   }
+  */
 
   const matchUpTieId = inContextMatchUp.matchUpTieId;
 
