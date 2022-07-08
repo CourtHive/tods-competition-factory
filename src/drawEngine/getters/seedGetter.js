@@ -293,8 +293,8 @@ function constructPower2Blocks({
   const blocks = [];
 
   const { seedBlocks } = getSeedBlocks({
-    participantsCount: baseDrawSize,
     cluster: getSeedPattern(seedingProfile) === CLUSTER,
+    participantsCount: baseDrawSize,
   });
 
   count = 0;

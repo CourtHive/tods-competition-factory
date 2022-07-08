@@ -129,8 +129,8 @@ export function getUnseededByePositions({
     // and require a special case to properly calculate bye positions
     const baseDrawSize = relevantDrawPositions.length;
     const { seedBlocks } = getSeedBlocks({
-      participantsCount: baseDrawSize,
       cluster: getSeedPattern(seedingProfile) === CLUSTER,
+      participantsCount: baseDrawSize,
     });
     const blockDrawPositions = seedBlocks.map((seedBlock) =>
       seedBlock.map((drawPosition) => drawPosition + drawPositionOffset)
