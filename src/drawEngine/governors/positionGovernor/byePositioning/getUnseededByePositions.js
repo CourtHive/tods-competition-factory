@@ -1,7 +1,10 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
-import { getValidSeedBlocks } from '../../../getters/seedGetter';
 import { getSeedBlocks } from '../getSeedBlocks';
+import {
+  getSeedPattern,
+  getValidSeedBlocks,
+} from '../../../getters/seedGetter';
 import {
   chunkArray,
   numericSort,
@@ -127,7 +130,7 @@ export function getUnseededByePositions({
     const baseDrawSize = relevantDrawPositions.length;
     const { seedBlocks } = getSeedBlocks({
       participantsCount: baseDrawSize,
-      cluster: seedingProfile === CLUSTER,
+      cluster: getSeedPattern(seedingProfile) === CLUSTER,
     });
     const blockDrawPositions = seedBlocks.map((seedBlock) =>
       seedBlock.map((drawPosition) => drawPosition + drawPositionOffset)

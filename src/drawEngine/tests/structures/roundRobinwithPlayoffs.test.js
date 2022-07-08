@@ -188,12 +188,12 @@ it('can advance players in Round Robin with Playoffs', () => {
 
   const matchUpFormat = 'SET3-S:6/TB7';
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    eventId,
+    seedingProfile: { positioning: WATERFALL },
+    structureOptions,
+    matchUpFormat,
     drawType,
     drawSize,
-    matchUpFormat,
-    structureOptions,
-    seedingProfile: WATERFALL,
+    eventId,
   });
 
   expect(drawDefinition.links.length).toEqual(playoffStructuresCount);

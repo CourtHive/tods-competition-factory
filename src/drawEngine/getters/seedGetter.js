@@ -203,17 +203,17 @@ function constructContainerBlocks({ seedingProfile, structure, seedBlocks }) {
     let blocks, error;
     if (isPowerOf2(baseDrawSize)) {
       ({ blocks, error } = constructPower2Blocks({
-        seedBlocks,
-        baseDrawSize,
-        seedingProfile,
-        drawPositionOffset,
         seedCountGoal: baseDrawSize,
+        drawPositionOffset,
+        seedingProfile,
+        baseDrawSize,
+        seedBlocks,
       }));
     } else {
       ({ blocks, error } = constructBlocks({
-        baseDrawSize,
-        drawPositionOffset,
         seedCountGoal: baseDrawSize,
+        drawPositionOffset,
+        baseDrawSize,
       }));
     }
     if (error) return { error };
@@ -273,7 +273,10 @@ function constructContainerBlocks({ seedingProfile, structure, seedBlocks }) {
       drawPositions: [drawPosition],
     }));
 
-  if (structure.seedingProfile === WATERFALL)
+  if (
+    getSeedPattern(structure.seedingProfile) === WATERFALL ||
+    getSeedPattern(seedingProfile) === WATERFALL
+  )
     validSeedBlocks = waterfallSeeding;
 
   return { validSeedBlocks };
@@ -291,7 +294,7 @@ function constructPower2Blocks({
 
   const { seedBlocks } = getSeedBlocks({
     participantsCount: baseDrawSize,
-    cluster: seedingProfile === CLUSTER,
+    cluster: getSeedPattern(seedingProfile) === CLUSTER,
   });
 
   count = 0;
@@ -515,4 +518,9 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
     const randomizedAssignments = shuffleArray(assignmentsWithLowestSeedValue);
     return randomizedAssignments.pop();
   }
+}
+
+export function getSeedPattern(seedingProfile) {
+  if (typeof seedingProfile === 'string') return seedingProfile;
+  if (typeof seedingProfile === 'object') return seedingProfile.positioning;
 }

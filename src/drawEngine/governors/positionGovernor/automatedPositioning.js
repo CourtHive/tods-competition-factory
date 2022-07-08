@@ -8,6 +8,7 @@ import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { positionByes } from './byePositioning/positionByes';
 import { findStructure } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
+import { getSeedPattern } from '../../getters/seedGetter';
 import { positionQualifiers } from './positionQualifiers';
 import { positionSeedBlocks } from './positionSeeds';
 import { makeDeepCopy } from '../../../utilities';
@@ -102,7 +103,7 @@ export function automatedPositioning({
 
   let unseededByePositions = [];
 
-  if (seedingProfile === WATERFALL) {
+  if (getSeedPattern(seedingProfile) === WATERFALL) {
     // since WATERFALL attempts to place ALL participants
     // BYEs must be placed first to ensure lower seeds get BYEs
     let result =

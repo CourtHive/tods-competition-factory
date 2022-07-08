@@ -21,7 +21,7 @@ export const stageOrder = {
   [VOLUNTARY_CONSOLATION]: 4,
 };
 
-// seedingProfile
+// seedingProfile.positioning
 export const CLUSTER = 'CLUSTER';
 export const SEPARATE = 'SEPARATE';
 export const WATERFALL = 'WATERFALL';

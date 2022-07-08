@@ -47,12 +47,12 @@ it('can generate and verify round robin structures', () => {
   });
 
   ({ structureId } = generateRoundRobin({
+    seedingProfile: { positioning: WATERFALL },
+    participantsCount: 40,
+    assignSeeds: 4,
+    seedsCount: 8,
     drawSize: 40,
     groupSize: 7,
-    seedsCount: 8,
-    assignSeeds: 4,
-    participantsCount: 40,
-    seedingProfile: WATERFALL,
   }));
 
   verifyStructure({
@@ -65,12 +65,12 @@ it('can generate and verify round robin structures', () => {
   });
 
   ({ structureId } = generateRoundRobin({
+    seedingProfile: { positioning: WATERFALL },
+    participantsCount: 37,
+    assignSeeds: 16,
+    seedsCount: 16,
     drawSize: 40,
     groupSize: 5,
-    seedsCount: 16,
-    assignSeeds: 16,
-    participantsCount: 37,
-    seedingProfile: WATERFALL,
   }));
 
   verifyStructure({

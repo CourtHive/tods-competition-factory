@@ -3,10 +3,10 @@ import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 
 export const POLICY_SEEDING_ITF = {
   [POLICY_TYPE_SEEDING]: {
+    seedingProfile: { positioning: CLUSTER },
     validSeedPositions: { ignore: true },
     duplicateSeedNumbers: true,
     drawSizeProgression: true,
-    seedingProfile: CLUSTER,
     policyName: 'ITF SEEDING',
 
     seedsCountThresholds: [
