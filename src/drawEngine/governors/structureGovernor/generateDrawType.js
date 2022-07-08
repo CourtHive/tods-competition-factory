@@ -47,7 +47,7 @@ export function generateDrawType(params = {}) {
     enforceMinimumDrawSize = true,
     stageSequence = 1,
     drawTypeCoercion, // coerce to SINGLE_ELIMINATION for drawSize: 2
-    // appliedPolicies,
+    appliedPolicies,
     drawDefinition,
     staggeredEntry, // optional - specifies main structure FEED_IN for drawTypes CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIPS, FMLC
     goesTo = true,
@@ -84,6 +84,7 @@ export function generateDrawType(params = {}) {
     generateQualifyingStructures({
       qualifyingProfiles: params.qualifyingProfiles,
       idPrefix: params.idPrefix,
+      appliedPolicies,
       matchUpType,
       isMock,
       uuids,

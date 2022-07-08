@@ -30,7 +30,6 @@ export function getStructureMatchUps({
   contextContent,
   scheduleTiming,
   matchUpsMap,
-  roundFilter,
   structureId,
   inContext,
   structure,
@@ -94,8 +93,6 @@ export function getStructureMatchUps({
         isCollectionMatchUp &&
         matchUp.sides?.every((side) => side.participantId);
 
-      const roundFilterEquality = matchUp.roundNumber === roundFilter;
-
       const drawPositionsFilled =
         !isCollectionMatchUp &&
         matchUp.drawPositions?.filter(Boolean).length === 2;
@@ -122,7 +119,6 @@ export function getStructureMatchUps({
         validUpcomingMatchUpStatus &&
         (collectionSidesAssigned ||
           (drawPositionsFilled &&
-            (!roundFilter || roundFilterEquality) &&
             (!requireParticipants || drawPositionsAssigned)));
 
       if (isByeMatchUp) return byeMatchUps.push(matchUp);

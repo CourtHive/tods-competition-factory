@@ -3,11 +3,11 @@ import { CLUSTER } from '../../constants/drawDefinitionConstants';
 
 export const POLICY_SEEDING_BYES = {
   [POLICY_TYPE_SEEDING]: {
+    seedingProfile: { positioning: CLUSTER },
     validSeedPositions: { ignore: true },
     containerByesIgnoreSeeding: true,
     duplicateSeedNumbers: true,
     drawSizeProgression: true,
-    seedingProfile: CLUSTER,
     policyName: 'SEED_BYES',
 
     seedsCountThresholds: [

@@ -152,6 +152,7 @@ export function generateVoluntaryConsolation(params = {}) {
 
   if (automated) {
     automatedPositioning({
+      seedingProfile: params.seedingProfile,
       participants: tournamentParticipants,
       applyPositioning,
       tournamentRecord,

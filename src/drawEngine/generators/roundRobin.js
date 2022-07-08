@@ -32,6 +32,7 @@ export function generateRoundRobin({
   structureName = MAIN,
   stageSequence = 1,
   structureOptions,
+  appliedPolicies,
   seedingProfile,
   stage = MAIN,
   matchUpType,
@@ -44,6 +45,7 @@ export function generateRoundRobin({
 }) {
   const { groupCount, groupSize } = deriveGroups({
     structureOptions,
+    appliedPolicies,
     drawSize,
   });
 
@@ -280,24 +282,26 @@ export function generateRoundRobinWithPlayOff(params) {
 
 function generatePlayoffLink({
   playoffStructureId,
-  mainStructureId,
   finishingPositions,
+  mainStructureId,
 }) {
   return {
     linkType: POSITION,
     source: {
-      finishingPositions,
       structureId: mainStructureId,
+      finishingPositions,
     },
     target: {
-      roundNumber: 1,
-      feedProfile: DRAW,
       structureId: playoffStructureId,
+      feedProfile: DRAW,
+      roundNumber: 1,
     },
   };
 }
 
-function deriveGroups({ structureOptions, drawSize }) {
+function deriveGroups({ appliedPolicies, structureOptions, drawSize }) {
+  if (appliedPolicies) true; // FUTURE: policy to set groupSizeLimit
+
   let groupSize = structureOptions?.groupSize;
   const groupSizeLimit = structureOptions?.groupSizeLimit || 8;
   const validGroupSizes = calculateValidGroupSizes({

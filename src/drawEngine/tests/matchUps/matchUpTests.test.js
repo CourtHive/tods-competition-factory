@@ -119,9 +119,9 @@ it('can return matchUps from a ROUND_ROBIN structure', () => {
   });
   expect(upcomingMatchUps.length).toEqual(24);
   const { upcomingMatchUps: filteredActiveMatchUps } = getStructureMatchUps({
-    structure,
+    matchUpFilters: { roundNumbers: [1] },
     requireParticipants: false,
-    roundFilter: 1,
+    structure,
   });
   expect(filteredActiveMatchUps.length).toEqual(8);
 

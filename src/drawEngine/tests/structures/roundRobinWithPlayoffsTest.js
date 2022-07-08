@@ -55,12 +55,12 @@ export function roundRobinWithPlayoffsTest({
 
   const matchUpFormat = 'SET3-S:6/TB7';
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    eventId,
+    seedingProfile: { positioning: WATERFALL },
+    structureOptions,
+    matchUpFormat,
     drawType,
     drawSize,
-    matchUpFormat,
-    structureOptions,
-    seedingProfile: WATERFALL,
+    eventId,
   });
 
   // the number of links should equal the number of playoff playoffGroups

@@ -11,6 +11,7 @@ export function positionSeedBlocks({
   inContextDrawMatchUps,
   tournamentRecord,
   drawDefinition,
+  seedingProfile,
   participants,
   groupsCount,
   structureId,
@@ -40,6 +41,7 @@ export function positionSeedBlocks({
         inContextDrawMatchUps,
         tournamentRecord,
         drawDefinition,
+        seedingProfile,
         participants,
         structureId,
         matchUpsMap,
@@ -58,14 +60,15 @@ function positionSeedBlock({
   inContextDrawMatchUps,
   tournamentRecord,
   drawDefinition,
-  structureId,
+  seedingProfile,
   participants,
+  structureId,
   matchUpsMap,
 }) {
   const { unplacedSeedParticipantIds, unfilledPositions } = getNextSeedBlock({
+    randomize: true,
     drawDefinition,
     structureId,
-    randomize: true,
   });
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
@@ -82,6 +85,7 @@ function positionSeedBlock({
       inContextDrawMatchUps,
       tournamentRecord,
       drawDefinition,
+      seedingProfile,
       participantId,
       drawPosition,
       matchUpsMap,

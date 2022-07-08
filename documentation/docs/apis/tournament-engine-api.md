@@ -560,17 +560,36 @@ tournamentEngine.addVoluntaryConsolationStructure({
 
 ---
 
+## allDrawMatchUps
+
+Returns all matchUps from all structures within a draw.
+
+```js
+const { matchUps } = tournamentEngine.allDrawMatchUps({
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getTournamentParticipants())
+  contextFilters, // filters based on context attributes
+  matchUpFilters, // attribute filters
+  nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
+  inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
+  context, // optional context to be added into matchUps
+});
+```
+
+---
+
 ## allEventMatchUps
 
 Returns all matchUps for an event.
 
 ```js
 const { matchUps } = allEventMatchUps({
-  eventId,
-  inContext: true, // include contextual details
-  nextMatchUps: true, // include winner/loser target matchUp details
-  matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getTournamentParticipants())
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
+  matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  contextFilters, // filters based on context attributes
+  nextMatchUps: true, // include winner/loser target matchUp details
+  inContext: true, // include contextual details
+  eventId,
 });
 ```
 
@@ -583,7 +602,9 @@ Return an array of all matchUps contained within a tournament. These matchUps ar
 ```js
 const { matchUps } = tournamentEngine.allTournamentMatchUps({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getTournamentParticipants())
   matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  contextFilters, // filters based on context attributes
   nextMatchUps, // include winnerTo and loserTo matchUps
   contextProfile, // optional: { inferGender: true }
 });
@@ -1278,9 +1299,24 @@ const drawDefinitionValues = {
   seedsCount, // optional - number of seeds to generate if no seededParticipants provided
   seededParticipants, // optional - { participantId, seedNumber, seedValue }
   seedingScaleName, // optional - custom scale for determining seeded participants
-  seedingProfile, // optional - WATERFALL seeding for ROUND_ROBIN structures, CLUSTER or SEPARATE seeding for elimination structures
+
+  // { positioing: WATERFALL } seeding for ROUND_ROBIN structures
+  // { positioning: CLUSTER } or { positioning: SEPARATE } seeding for elimination structures
+  // { groupSeedingThreshold: 5 } will set seedValue to lowest value within all groups where seedNumber is > 5
+  seedingProfile,
+
   qualifiersCount, // optional - how many positionsAssignments will have { qualifier: true }
-  structureOptions, // optional - for ROUND_ROBIN - { groupSize, playoffGroups }
+
+  structureOptions: {
+    // optional - for ROUND_ROBIN - { groupSize, playoffGroups }
+    groupSize, // e.g. 4 participants per group
+    groupSizeLimit: 8,
+    playoffGroups: [
+      { finishingPositions: [1], structureName: 'Gold Flight', drawType }, // drawype defaults to SINGLE_ELIMINATION
+      { finishingPositions: [2], structureName: 'Silver Flight', drawType }, // drawType can also be COMPASS or FIRST_MATCH_LOSER_CONSOLATION
+    ],
+  },
+
   staggeredEntry, // optional - accepts non-base-2 drawSizes and generates feed arms for "extra" drawPositions
   policyDefinitions, // optional - seeding or avoidance policies to be used when placing participants
   qualifyingPositions, // optional - number of positions in draw structure to be filled by qualifiers

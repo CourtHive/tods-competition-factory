@@ -55,7 +55,7 @@ export function getQualifiersCount({
         } else {
           // return source structure qualifying round matchUps count
           const matchUps = getAllStructureMatchUps({
-            roundFilter: sourceRoundNumber,
+            matchUpFilters: { roundNumbers: [sourceRoundNumber] },
             structure: sourceStructure,
             inContext: false,
           }).matchUps;

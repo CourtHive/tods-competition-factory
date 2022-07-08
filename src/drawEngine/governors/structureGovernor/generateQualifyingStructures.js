@@ -17,6 +17,7 @@ import {
 
 export function generateQualifyingStructures({
   qualifyingProfiles,
+  appliedPolicies,
   idPrefix,
   isMock,
   uuids,
@@ -80,6 +81,7 @@ export function generateQualifyingStructures({
             qualifyingPositions, // TODO: use
             stage: QUALIFYING,
             structureOptions,
+            appliedPolicies,
             stageSequence,
             matchUpType,
             roundTarget,

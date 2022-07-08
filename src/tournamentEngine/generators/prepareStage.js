@@ -16,6 +16,7 @@ export function prepareStage({
   tournamentRecord,
   appliedPolicies,
   drawDefinition,
+  seedingProfile,
   participants,
   matchUpsMap,
   automated,
@@ -76,6 +77,7 @@ export function prepareStage({
     enforcePolicyLimits,
     appliedPolicies,
     drawDefinition,
+    seedingProfile,
     structureId,
     seedsCount,
   });
@@ -103,10 +105,12 @@ export function prepareStage({
         const { participantId, seedNumber, seedValue } = seededParticipant;
         assignSeed({
           drawDefinition,
+          seedingProfile,
           participantId,
           structureId,
           seedNumber,
           seedValue,
+          event,
         });
       });
   } else if (event || seedingScaleName) {
@@ -156,15 +160,17 @@ export function prepareStage({
         .slice(0, assignSeedsCount || seedsCount)
         .forEach((scaledEntry, index) => {
           const seedNumber = index + 1;
-          const seedValue = seedAssignmentProfile?.[seedNumber] || seedNumber;
-          // ?? attach basis of seeding information to seedAssignment ??
-          const { participantId } = scaledEntry;
+          const { participantId, scaleValue } = scaledEntry;
+          const seedValue =
+            seedAssignmentProfile?.[seedNumber] || scaleValue || seedNumber;
           assignSeed({
             drawDefinition,
+            seedingProfile,
             participantId,
             structureId,
             seedNumber,
             seedValue,
+            event,
           });
         });
   }
@@ -180,6 +186,7 @@ export function prepareStage({
       tournamentRecord,
       appliedPolicies,
       drawDefinition,
+      seedingProfile,
       participants,
       structureId,
       matchUpsMap,
@@ -191,7 +198,6 @@ export function prepareStage({
     conflicts = result?.conflicts;
     positionAssignments = result?.positionAssignments;
     if (result.error) {
-      // console.log(result.error);
       return result;
     }
   }

@@ -8,6 +8,7 @@ import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { positionByes } from './byePositioning/positionByes';
 import { findStructure } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
+import { getSeedPattern } from '../../getters/seedGetter';
 import { positionQualifiers } from './positionQualifiers';
 import { positionSeedBlocks } from './positionSeeds';
 import { makeDeepCopy } from '../../../utilities';
@@ -33,6 +34,7 @@ export function automatedPositioning({
   appliedPolicies,
   candidatesCount,
   drawDefinition,
+  seedingProfile,
   participants,
   structureId,
   matchUpsMap,
@@ -87,8 +89,6 @@ export function automatedPositioning({
   if (!entries?.length && !qualifiersCount)
     return handleSuccessCondition({ ...SUCCESS });
 
-  const { seedingProfile } = structure;
-
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
 
   if (!inContextDrawMatchUps) {
@@ -102,7 +102,9 @@ export function automatedPositioning({
 
   let unseededByePositions = [];
 
-  if (seedingProfile === WATERFALL) {
+  if (
+    getSeedPattern(structure.seedingProfile || seedingProfile) === WATERFALL
+  ) {
     // since WATERFALL attempts to place ALL participants
     // BYEs must be placed first to ensure lower seeds get BYEs
     let result =
@@ -120,6 +122,7 @@ export function automatedPositioning({
     unseededByePositions = result.unseededByePositions;
 
     result = positionSeedBlocks({
+      seedingProfile: structure.seedingProfile || seedingProfile,
       inContextDrawMatchUps,
       tournamentRecord,
       appliedPolicies,
@@ -134,6 +137,7 @@ export function automatedPositioning({
     // can follow the seedValues of placed seeds
     if (drawType !== LUCKY_DRAW) {
       let result = positionSeedBlocks({
+        seedingProfile: structure.seedingProfile || seedingProfile,
         inContextDrawMatchUps,
         tournamentRecord,
         appliedPolicies,

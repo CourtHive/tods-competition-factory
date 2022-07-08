@@ -127,6 +127,7 @@ it('will vary bye distribution', () => {
         },
       ],
     });
+    tournamentEngine.reset();
     tournamentEngine.setState(tournamentRecord);
     const { drawDefinition } = tournamentEngine.getEvent({ drawId });
     const structureId = drawDefinition.structures[0].structureId;

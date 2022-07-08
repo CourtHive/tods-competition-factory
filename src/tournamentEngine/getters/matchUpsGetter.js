@@ -496,7 +496,10 @@ function getParticipants({ inContext, tournamentRecord, participantsProfile }) {
     (inContext || participantsProfile?.withGroupings) &&
     participants?.length
   ) {
-    participants = addParticipantGroupings({ participants });
+    participants = addParticipantGroupings({
+      participantsProfile,
+      participants,
+    });
   }
 
   if (participantsProfile?.withScaleValues && participants?.length) {

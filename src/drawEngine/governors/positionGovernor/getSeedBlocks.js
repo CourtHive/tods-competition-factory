@@ -88,3 +88,20 @@ export function getSeedBlocks({ participantsCount, cluster }) {
 
   return { seedBlocks };
 }
+
+export function getSeedGroups({ drawSize, isRoundRobin, roundsCount }) {
+  if (isRoundRobin) {
+    if (roundsCount) true;
+  } else {
+    const { seedBlocks } = getSeedBlocks({ participantsCount: drawSize });
+
+    let counter = 0;
+    const seedGroups = seedBlocks.map((seedBlock) =>
+      seedBlock.map(() => {
+        counter += 1;
+        return counter;
+      })
+    );
+    return { seedGroups };
+  }
+}

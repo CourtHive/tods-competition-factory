@@ -3,9 +3,9 @@ import { CLUSTER } from '../../constants/drawDefinitionConstants';
 
 export const POLICY_SEEDING_NATIONAL = {
   [POLICY_TYPE_SEEDING]: {
-    drawSizeProgression: true,
-    seedingProfile: CLUSTER,
+    seedingProfile: { positioning: CLUSTER },
     policyName: 'NATIONAL SEEDING',
+    drawSizeProgression: true,
 
     seedsCountThresholds: [
       { drawSize: 4, minimumParticipantCount: 3, seedsCount: 2 },

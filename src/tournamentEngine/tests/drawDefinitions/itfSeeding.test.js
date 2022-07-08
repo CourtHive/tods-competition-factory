@@ -6,7 +6,7 @@ it('can generate draw with appropriate ITF seeding', () => {
     duplicateSeedNumbers: true,
     drawSizeProgression: true,
     validSeedPositions: { ignore: true },
-    seedingProfile: 'CLUSTER',
+    seedingProfile: { positioning: 'CLUSTER' },
     seedsCountThresholds: [
       { drawSize: 4, minimumParticipantCount: 3, seedsCount: 2 },
       { drawSize: 16, minimumParticipantCount: 12, seedsCount: 4 },

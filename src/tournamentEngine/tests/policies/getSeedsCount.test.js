@@ -42,7 +42,7 @@ it('can accurately determine seedsCount from drawSize and participantCount', () 
 
   let policyDefinitions = {
     [POLICY_TYPE_SEEDING]: {
-      seedingProfile: CLUSTER,
+      seedingProfile: { positioning: CLUSTER },
       duplicateSeedNumbers: true,
     },
   };

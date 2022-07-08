@@ -17,16 +17,15 @@ import {
 } from './stageEntryCounts';
 
 const entryGovernor = {
-  addDrawEntry,
-  addDrawEntries,
-  assignSeed,
-  removeEntry,
-
-  setStageDrawSize,
   setStageAlternatesCount,
   setStageWildcardsCount,
   setStageQualifiersCount,
   modifySeedAssignment,
+  setStageDrawSize,
+  addDrawEntries,
+  addDrawEntry,
+  removeEntry,
+  assignSeed,
 };
 
 export default entryGovernor;

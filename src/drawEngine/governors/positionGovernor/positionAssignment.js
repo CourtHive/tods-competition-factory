@@ -47,6 +47,7 @@ export function assignDrawPosition({
   automaticPlacement, // internal use to override public behaviors
   tournamentRecord,
   drawDefinition,
+  seedingProfile,
   participantId,
   drawPosition,
   matchUpsMap,
@@ -90,8 +91,8 @@ export function assignDrawPosition({
   const { appliedPolicies } = getAppliedPolicies({
     tournamentRecord,
     drawDefinition,
-    event,
     structure,
+    event,
   });
   if (participantSeedNumber) {
     const isValidDrawPosition = isValidSeedPosition({
@@ -188,11 +189,13 @@ export function assignDrawPosition({
     const assignment = seedAssignments.find(
       (assignment) => assignment.participantId === participantId
     );
+
     if (assignment)
       assignSeed({
         eventId: event?.eventId,
         tournamentRecord,
         drawDefinition,
+        seedingProfile,
         ...assignment,
         structureId,
         event,

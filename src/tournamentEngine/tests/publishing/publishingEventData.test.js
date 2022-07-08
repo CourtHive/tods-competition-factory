@@ -111,12 +111,12 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
 
   const matchUpFormat = 'SET3-S:6/TB7';
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    eventId,
+    seedingProfile: { positioning: WATERFALL },
+    structureOptions,
+    matchUpFormat,
     drawType,
     drawSize,
-    matchUpFormat,
-    structureOptions,
-    seedingProfile: WATERFALL,
+    eventId,
   });
 
   expect(drawDefinition.links.length).toEqual(playoffStructuresCount);
