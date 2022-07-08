@@ -1306,7 +1306,17 @@ const drawDefinitionValues = {
   seedingProfile,
 
   qualifiersCount, // optional - how many positionsAssignments will have { qualifier: true }
-  structureOptions, // optional - for ROUND_ROBIN - { groupSize, playoffGroups }
+
+  structureOptions: {
+    // optional - for ROUND_ROBIN - { groupSize, playoffGroups }
+    groupSize, // e.g. 4 participants per group
+    groupSizeLimit: 8,
+    playoffGroups: [
+      { finishingPositions: [1], structureName: 'Gold Flight', drawType }, // drawype defaults to SINGLE_ELIMINATION
+      { finishingPositions: [2], structureName: 'Silver Flight', drawType }, // drawType can also be COMPASS or FIRST_MATCH_LOSER_CONSOLATION
+    ],
+  },
+
   staggeredEntry, // optional - accepts non-base-2 drawSizes and generates feed arms for "extra" drawPositions
   policyDefinitions, // optional - seeding or avoidance policies to be used when placing participants
   qualifyingPositions, // optional - number of positions in draw structure to be filled by qualifiers
