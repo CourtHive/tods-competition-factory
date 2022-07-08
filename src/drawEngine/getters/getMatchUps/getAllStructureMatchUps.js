@@ -47,7 +47,6 @@ export function getAllStructureMatchUps({
   scheduleTiming,
   context = {},
   matchUpsMap,
-  roundFilter,
   structure,
   inContext,
   event,
@@ -263,11 +262,6 @@ export function getAllStructureMatchUps({
       matchUps,
     }));
   }
-
-  if (roundFilter)
-    matchUps = matchUps?.filter(
-      (matchUp) => matchUp.roundNumber === roundFilter
-    );
 
   return { matchUps, roundMatchUps, collectionPositionMatchUps };
 

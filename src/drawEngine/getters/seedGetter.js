@@ -48,7 +48,7 @@ export function getValidSeedBlocks({
   if (!structure) return { error: MISSING_STRUCTURE };
 
   const { roundMatchUps } = getAllStructureMatchUps({
-    roundFilter: 1,
+    matchUpFilters: { roundNumbers: [1] },
     structure,
   });
   const { seedAssignments } = getStructureSeedAssignments({

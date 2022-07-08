@@ -1,8 +1,9 @@
-import { SINGLES } from '../../../constants/matchUpTypes';
-import { WTN } from '../../../constants/ratingConstants';
-import POLICY_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+
+import POLICY_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
+import { SINGLES } from '../../../constants/matchUpTypes';
+import { WTN } from '../../../constants/ratingConstants';
 
 test('ratings values should be present on tournamentParticipants in getEventData', () => {
   const startDate = '2022-02-02';

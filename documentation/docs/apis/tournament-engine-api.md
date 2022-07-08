@@ -560,17 +560,36 @@ tournamentEngine.addVoluntaryConsolationStructure({
 
 ---
 
+## allDrawMatchUps
+
+Returns all matchUps from all structures within a draw.
+
+```js
+const { matchUps } = tournamentEngine.allDrawMatchUps({
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getTournamentParticipants())
+  contextFilters, // filters based on context attributes
+  matchUpFilters, // attribute filters
+  nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
+  inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
+  context, // optional context to be added into matchUps
+});
+```
+
+---
+
 ## allEventMatchUps
 
 Returns all matchUps for an event.
 
 ```js
 const { matchUps } = allEventMatchUps({
-  eventId,
-  inContext: true, // include contextual details
-  nextMatchUps: true, // include winner/loser target matchUp details
-  matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getTournamentParticipants())
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
+  matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  contextFilters, // filters based on context attributes
+  nextMatchUps: true, // include winner/loser target matchUp details
+  inContext: true, // include contextual details
+  eventId,
 });
 ```
 
@@ -583,7 +602,9 @@ Return an array of all matchUps contained within a tournament. These matchUps ar
 ```js
 const { matchUps } = tournamentEngine.allTournamentMatchUps({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
+  participantsProfile, // optional - ability to specify additions to context (see parameters of getTournamentParticipants())
   matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  contextFilters, // filters based on context attributes
   nextMatchUps, // include winnerTo and loserTo matchUps
   contextProfile, // optional: { inferGender: true }
 });

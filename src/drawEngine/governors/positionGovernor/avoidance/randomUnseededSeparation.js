@@ -76,7 +76,10 @@ export function randomUnseededSeparation({
   }
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
-  const participantsWithGroupings = addParticipantGroupings({ participants });
+  const participantsWithGroupings = addParticipantGroupings({
+    participantsProfile: { convertExtensions: true },
+    participants,
+  });
 
   const unassignedPositions = positionAssignments.filter(
     (assignment) => !assignment.participantId

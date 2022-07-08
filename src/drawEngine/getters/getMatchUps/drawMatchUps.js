@@ -56,7 +56,6 @@ export function getDrawMatchUps({
   contextContent,
   scheduleTiming,
   nextMatchUps,
-  roundFilter,
   matchUpsMap,
   inContext,
   context,
@@ -92,6 +91,7 @@ export function getDrawMatchUps({
     ) {
       tournamentParticipants = addParticipantGroupings({
         participants: tournamentParticipants,
+        participantsProfile,
       });
     }
   }
@@ -128,7 +128,6 @@ export function getDrawMatchUps({
       contextContent,
       scheduleTiming,
       matchUpsMap,
-      roundFilter,
       structure,
       context,
       event,

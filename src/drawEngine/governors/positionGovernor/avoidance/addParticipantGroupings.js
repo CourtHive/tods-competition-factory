@@ -7,8 +7,15 @@ import {
   TEAM,
 } from '../../../../constants/participantTypes';
 
-export function addParticipantGroupings({ participants = [] }) {
-  const participantsWithGroupings = makeDeepCopy(participants, true, true);
+export function addParticipantGroupings({
+  participantsProfile,
+  participants = [],
+}) {
+  const participantsWithGroupings = makeDeepCopy(
+    participants,
+    participantsProfile?.convertExtensions,
+    true
+  );
   const teamParticipants = participantsWithGroupings.filter(
     (participant) => participant.participantType === TEAM
   );

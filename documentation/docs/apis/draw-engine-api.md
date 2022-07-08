@@ -212,7 +212,6 @@ Returns all matchUps from all structures within a draw.
 const { matchUps } = drawEngine.allDrawMatchUps({
   context, // optional context to be added into matchUps
   inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
-  roundFilter, // filter to target matchUps from specified rounds
   nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
   matchUpFilters, // attribute filters
   contextFilters, // filters based on context attributes
@@ -234,7 +233,6 @@ const { matchUps } = drawEngine.allStructureMatchUps({
   structureId,
   context, // optional context to be added into matchUps
   inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
-  roundFilter, // filter to target matchUps from specified rounds
   nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
   matchUpFilters, // attribute filters
   contextFilters, // filters based on context attributes
@@ -399,7 +397,6 @@ const {
 } = drawEngine.drawMatchUps({
   context, // optional context to be added into matchUps
   inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
-  roundFilter, // filter to target matchUps from specified rounds
   nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
   matchUpFilters, // attribute filters
   contextFilters, // filters based on context attributes
@@ -1127,7 +1124,6 @@ const {
   structureId,
   context, // optional context to be added into matchUps
   inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
-  roundFilter, // filter to target matchUps from specified rounds
   nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
   matchUpFilters, // attribute filters
   contextFilters, // filters based on context attributes
