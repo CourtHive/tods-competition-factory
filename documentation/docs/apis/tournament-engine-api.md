@@ -1299,7 +1299,12 @@ const drawDefinitionValues = {
   seedsCount, // optional - number of seeds to generate if no seededParticipants provided
   seededParticipants, // optional - { participantId, seedNumber, seedValue }
   seedingScaleName, // optional - custom scale for determining seeded participants
-  seedingProfile, // optional - WATERFALL seeding for ROUND_ROBIN structures, CLUSTER or SEPARATE seeding for elimination structures
+
+  // { positioing: WATERFALL } seeding for ROUND_ROBIN structures
+  // { positioning: CLUSTER } or { positioning: SEPARATE } seeding for elimination structures
+  // { groupSeedingThreshold: 5 } will set seedValue to lowest value within all groups where seedNumber is > 5
+  seedingProfile,
+
   qualifiersCount, // optional - how many positionsAssignments will have { qualifier: true }
   structureOptions, // optional - for ROUND_ROBIN - { groupSize, playoffGroups }
   staggeredEntry, // optional - accepts non-base-2 drawSizes and generates feed arms for "extra" drawPositions

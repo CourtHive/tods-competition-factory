@@ -100,6 +100,11 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     expect(drawDefinition.structures[0].seedAssignments.length).toEqual(
       seedsCount
     );
+    expect(
+      drawDefinition.structures[0].seedAssignments.map(
+        ({ seedValue }) => seedValue
+      )
+    ).toEqual([1, 2, 3, 4]);
 
     result = tournamentEngine.getEntriesAndSeedsCount({
       policyDefinitions: SEEDING_USTA,
@@ -188,9 +193,74 @@ it('can constrain seedsCount by policyDefinitions', () => {
   });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    seedingProfile: { groupSeedingThreshold: 5 },
     seedsCount: 100, // this is in excess of policy limit and above drawSize and stageEntries #
     eventId,
   });
+
+  expect(
+    drawDefinition.structures[0].seedAssignments.map(
+      ({ seedValue }) => seedValue
+    )
+  ).toEqual([1, 2, 3, 3, 5, 5, 5, 5]);
+  expect(drawDefinition.structures[0].seedLimit).toEqual(seedsCount);
+});
+
+it('can constrain seedsCount by policyDefinitions', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
+  const eventName = 'Test Event';
+  const ageCategoryCode = 'U18';
+  const event = { eventName, category: { ageCategoryCode } };
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
+  let { event: eventResult } = result;
+  const { eventId } = eventResult;
+  expect(result.success).toEqual(true);
+
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+    }
+  );
+  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result.success).toEqual(true);
+
+  const scaleValues = [1, 2, 3, 3, 5, 5, 5, 5];
+  scaleValues.forEach((scaleValue, index) => {
+    let scaleItem = {
+      scaleValue,
+      scaleName: ageCategoryCode,
+      scaleType: SEEDING,
+      eventType: SINGLES,
+      scaleDate: '2020-06-06',
+    };
+    const participantId = participantIds[index];
+    let result = tournamentEngine.setParticipantScaleItem({
+      participantId,
+      scaleItem,
+    });
+    expect(result.success).toEqual(true);
+  });
+
+  const drawSize = 32;
+  const participantCount = 32;
+
+  const { seedsCount } = tournamentEngine.getSeedsCount({
+    policyDefinitions: SEEDING_USTA,
+    participantCount,
+    drawSize,
+  });
+
+  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    seedsCount: 100, // this is in excess of policy limit and above drawSize and stageEntries #
+    eventId,
+  });
+
+  expect(
+    drawDefinition.structures[0].seedAssignments.map(
+      ({ seedValue }) => seedValue
+    )
+  ).toEqual([1, 2, 3, 3, 5, 5, 5, 5]);
   expect(drawDefinition.structures[0].seedLimit).toEqual(seedsCount);
 });
 

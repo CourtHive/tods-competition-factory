@@ -20,9 +20,11 @@ export function assignSeedPositions(params) {
     useExistingSeedLimit,
     tournamentRecord,
     drawDefinition,
+    seedingProfile,
     structureId,
     assignments,
     drawId,
+    event,
   } = params;
 
   let modifications = 0;
@@ -75,7 +77,9 @@ export function assignSeedPositions(params) {
     const result = assignSeed({
       ...assignment,
       drawDefinition,
+      seedingProfile,
       structureId,
+      event,
     });
     if (result?.error) {
       return result;

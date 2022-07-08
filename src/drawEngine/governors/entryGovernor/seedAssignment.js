@@ -1,5 +1,6 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
 import { modifySeedAssignmentsNotice } from '../../notifications/drawNotifications';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { decorateResult } from '../../../global/functions/decorateResult';
@@ -17,6 +18,7 @@ import {
 export function assignSeed({
   tournamentRecord,
   drawDefinition,
+  seedingProfile,
   participantId,
   structureId,
   seedNumber,
@@ -46,6 +48,10 @@ export function assignSeed({
       context: { participantId },
       stack,
     });
+
+  const flightsCount = getFlightProfile({ event }).flightProfile?.flights
+    ?.length;
+  const flighted = flightsCount && flightsCount > 1;
 
   const relevantAssignment = positionAssignments.find(
     (assignment) => assignment.participantId === participantId
@@ -90,8 +96,8 @@ export function assignSeed({
     // assign participantId to target seedNumber
     if (assignment.seedNumber === seedNumber) {
       assignment.participantId = participantId;
-      // assignment.seedValue = (seedValue || seedNumber)?.toString();
-      assignment.seedValue = seedValue || seedNumber;
+      if (!seedingProfile?.groupSeedingThreshold && !flighted)
+        assignment.seedValue = seedValue || seedNumber;
       success = true;
     }
   });

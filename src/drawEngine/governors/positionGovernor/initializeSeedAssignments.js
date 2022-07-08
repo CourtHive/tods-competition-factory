@@ -1,8 +1,10 @@
 import { getSeedsCount } from '../../../tournamentEngine/governors/policyGovernor/getSeedsCount';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { isConvertableInteger } from '../../../utilities/math';
 import { findStructure } from '../../getters/findStructure';
 import { generateRange } from '../../../utilities';
+import { getSeedGroups } from './getSeedBlocks';
 
 import { SEEDSCOUNT_GREATER_THAN_DRAW_SIZE } from '../../../constants/errorConditionConstants';
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
@@ -15,6 +17,7 @@ export function initializeStructureSeedAssignments({
   participantCount,
   appliedPolicies,
   drawDefinition,
+  seedingProfile,
   structureId,
   seedsCount,
 }) {
@@ -26,6 +29,13 @@ export function initializeStructureSeedAssignments({
 
   if (seedsCount > drawSize)
     return { error: SEEDSCOUNT_GREATER_THAN_DRAW_SIZE };
+
+  const isRoundRobin = structure.structures?.length;
+  const groupSeedingThreshold =
+    seedingProfile?.groupSeedingThreshold &&
+    isConvertableInteger(seedingProfile.groupSeedingThreshold);
+
+  const seedGroups = getSeedGroups({ drawSize, isRoundRobin })?.seedGroups;
 
   const { seedsCount: maxSeedsCount } = getSeedsCount({
     policyDefinitions: appliedPolicies,
@@ -46,11 +56,22 @@ export function initializeStructureSeedAssignments({
 
   structure.seedLimit = seedsCount;
   structure.seedAssignments = generateRange(1, seedsCount + 1).map(
-    (seedNumber) => ({
-      seedNumber,
-      seedValue: seedNumber?.toString(),
-      participantId: undefined,
-    })
+    (seedNumber) => {
+      const groupSeedValue =
+        seedGroups &&
+        Math.min(
+          ...seedGroups.find((seedGroup) => seedGroup.includes(seedNumber))
+        );
+      const seedValue =
+        groupSeedingThreshold && seedNumber >= groupSeedingThreshold
+          ? groupSeedValue
+          : seedNumber;
+      return {
+        participantId: undefined,
+        seedNumber,
+        seedValue,
+      };
+    }
   );
 
   modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
