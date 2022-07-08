@@ -87,6 +87,7 @@ export function positionActions(params) {
     isAdHoc,
     error,
   } = getStructureDrawPositionProfiles({
+    findContainer: true, // if a structure is an ITEM, return its parent CONTAINER
     tournamentRecord,
     drawDefinition,
     structureId,
