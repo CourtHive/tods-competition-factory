@@ -200,26 +200,6 @@ export function generateDrawDefinition(params) {
   });
   if (drawTypeResult.error) return drawTypeResult;
 
-  /*
-  // if an avoidance policy is not passed in at draw generation
-  // but an event level avoidance policy exists... attach that to the draw for posterity.
-  // because an event level policy COULD be modified or removed AFTER draw is generated...
-  const { policyDefinitions: eventAvoidancePolicy } =
-    getPolicyDefinitions({
-      policyTypes: [POLICY_TYPE_AVOIDANCE],
-      tournamentRecord,
-      drawDefinition,
-      event,
-    }) || {};
-
-  if (
-    !policyDefinitions?.[POLICY_TYPE_AVOIDANCE] &&
-    eventAvoidancePolicy?.[POLICY_TYPE_AVOIDANCE]
-  ) {
-    attachPolicies({ drawDefinition, policyDefinitions: eventAvoidancePolicy });
-  }
-  */
-
   // add all entries to the draw
   const entries = drawEntries || event?.entries || [];
   for (const entry of entries) {
