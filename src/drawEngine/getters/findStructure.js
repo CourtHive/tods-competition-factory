@@ -8,6 +8,7 @@ import {
   MISSING_STRUCTURE_ID,
   MISSING_DRAW_DEFINITION,
 } from '../../constants/errorConditionConstants';
+import { ITEM } from '../../constants/drawDefinitionConstants';
 
 /*
   TESTS: structureGetter.test.js
@@ -30,7 +31,13 @@ export function findStructure({ drawDefinition, structureId }) {
 
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
-  return { structure };
+  const containingStructure =
+    structure.structureType === ITEM &&
+    allStructures.find((s) =>
+      s.structures?.some((s) => s.structureId === structureId)
+    );
+
+  return { structure, containingStructure };
 }
 
 /*

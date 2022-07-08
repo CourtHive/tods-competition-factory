@@ -12,6 +12,7 @@ import { INVALID_DRAW_POSITION } from '../../constants/errorConditionConstants';
 // ...which have a winningSide, a scoreString, or a completed matchUpStatus
 export function getStructureDrawPositionProfiles({
   drawDefinition,
+  findContainer,
   structureId,
   structure,
 }) {
@@ -20,7 +21,10 @@ export function getStructureDrawPositionProfiles({
   if (!structure) {
     const result = findStructure({ drawDefinition, structureId });
     if (result.error) return result;
-    structure = result.structure;
+
+    structure = findContainer
+      ? result.containingStructure || result.structure
+      : result.structure;
   }
 
   if (isAdHoc({ drawDefinition, structure })) {
