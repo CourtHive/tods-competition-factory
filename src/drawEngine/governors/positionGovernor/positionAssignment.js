@@ -188,6 +188,7 @@ export function assignDrawPosition({
     const assignment = seedAssignments.find(
       (assignment) => assignment.participantId === participantId
     );
+
     if (assignment)
       assignSeed({
         eventId: event?.eventId,

@@ -58,14 +58,14 @@ function positionSeedBlock({
   inContextDrawMatchUps,
   tournamentRecord,
   drawDefinition,
-  structureId,
   participants,
+  structureId,
   matchUpsMap,
 }) {
   const { unplacedSeedParticipantIds, unfilledPositions } = getNextSeedBlock({
+    randomize: true,
     drawDefinition,
     structureId,
-    randomize: true,
   });
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
