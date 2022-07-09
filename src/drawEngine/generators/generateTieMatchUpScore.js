@@ -20,7 +20,7 @@ import {
  * @returns scoreObject: { sets, winningSide, scoreStringSide1, scoreStringSide 2 }
  */
 export function generateTieMatchUpScore({
-  sideAdjustments = [0, 0],
+  sideAdjustments = [0, 0], // currently unused?
   separator = '-',
   tieFormat,
   matchUp,
@@ -76,6 +76,11 @@ export function generateTieMatchUpScore({
       collectionGroupNumber &&
       groupValueNumbers.includes(collectionGroupNumber);
 
+    const sideWins = [0, 0];
+    collectionMatchUps.forEach((matchUp) => {
+      if (matchUp.winningSide) sideWins[matchUp.winningSide - 1] += 1;
+    });
+
     if (matchUpValue) {
       collectionMatchUps.forEach((matchUp) => {
         if (matchUp.winningSide)
@@ -110,17 +115,21 @@ export function generateTieMatchUpScore({
       });
     }
 
-    const sideWins = [0, 0];
-    collectionMatchUps.forEach((matchUp) => {
-      if (matchUp.winningSide) sideWins[matchUp.winningSide - 1] += 1;
-    });
-
+    // processed separately so that setValue, scoreValue and collecitonValueProfile can be used in conjunction with collectionValue
     if (collectionValue) {
       let collectionWinningSide;
 
       if (winCriteria?.aggregateValue) {
-        if (allCollectionMatchUpsCompleted && sideWins[0] !== sideWins[1]) {
-          collectionWinningSide = sideWins[0] > sideWins[1] ? 1 : 2;
+        if (allCollectionMatchUpsCompleted) {
+          if (
+            (matchUpValue || setValue || scoreValue) &&
+            sideMatchUpValues[0] !== sideMatchUpValues[1]
+          ) {
+            collectionWinningSide =
+              sideMatchUpValues[0] > sideMatchUpValues[1] ? 1 : 2;
+          } else if (sideWins[0] !== sideWins[1]) {
+            collectionWinningSide = sideWins[0] > sideWins[1] ? 1 : 2;
+          }
         }
       } else if (winCriteria?.valueGoal) {
         collectionWinningSide = sideMatchUpValues.reduce(
