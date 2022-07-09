@@ -119,12 +119,8 @@ export function generateTieMatchUpScore({
       let collectionWinningSide;
 
       if (winCriteria?.aggregateValue) {
-        if (
-          allCollectionMatchUpsCompleted &&
-          sideMatchUpValues[0] !== sideMatchUpValues[1]
-        ) {
-          collectionWinningSide =
-            sideMatchUpValues[0] > sideMatchUpValues[1] ? 1 : 2;
+        if (allCollectionMatchUpsCompleted && sideWins[0] !== sideWins[1]) {
+          collectionWinningSide = sideWins[0] > sideWins[1] ? 1 : 2;
         }
       } else if (winCriteria?.valueGoal) {
         collectionWinningSide = sideMatchUpValues.reduce(
