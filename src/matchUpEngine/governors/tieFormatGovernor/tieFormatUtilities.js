@@ -46,9 +46,30 @@ export function validateTieFormat({
     });
   }
 
+  let aggregateValueImperative;
+  const validCollections = tieFormat.collectionDefinitions.every(
+    (collectionDefinition) => {
+      const { setValue, scoreValue, collectionValue } = collectionDefinition;
+      if ((setValue || scoreValue) && !collectionValue)
+        aggregateValueImperative = true;
+      const { valid, errors: collectionDefinitionErrors } =
+        validateCollectionDefinition({
+          collectionDefinition,
+          checkCollectionIds,
+        });
+      if (valid) {
+        return true;
+      } else {
+        errors.push(...collectionDefinitionErrors);
+        return false;
+      }
+    }
+  );
+
   const validWinCriteria =
     (typeof tieFormat.winCriteria?.valueGoal === 'number' &&
-      tieFormat.winCriteria?.valueGoal > 0) ||
+      tieFormat.winCriteria?.valueGoal > 0 &&
+      !aggregateValueImperative) ||
     tieFormat.winCriteria?.aggregateValue;
 
   if (!(validWinCriteria || tieFormat.winCriteria?.aggregateValue)) {
@@ -63,22 +84,6 @@ export function validateTieFormat({
       },
     });
   }
-
-  const validCollections = tieFormat.collectionDefinitions.every(
-    (collectionDefinition) => {
-      const { valid, errors: collectionDefinitionErrors } =
-        validateCollectionDefinition({
-          collectionDefinition,
-          checkCollectionIds,
-        });
-      if (valid) {
-        return true;
-      } else {
-        errors.push(...collectionDefinitionErrors);
-        return false;
-      }
-    }
-  );
 
   const collectionIds = tieFormat.collectionDefinitions.map(
     ({ collectionId }) => collectionId
