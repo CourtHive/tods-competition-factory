@@ -1,9 +1,10 @@
 import { validateCollectionValueProfile } from './tieFormatUtilities';
 import { isConvertableInteger } from '../../../utilities/math';
 import { definedAttributes } from '../../../utilities/objects';
+import { calculateWinCriteria } from './calculateWinCriteria';
 import { isValid } from '../matchUpFormatGovernor/isValid';
-import { makeDeepCopy } from '../../../utilities';
 import { updateTieFormat } from './updateTieFormat';
+import { makeDeepCopy } from '../../../utilities';
 import { getTieFormat } from './getTieFormat';
 
 import {
@@ -20,6 +21,7 @@ export function modifyCollectionDefinition({
   collectionName,
   drawDefinition,
   matchUpFormat,
+  tieFormatName,
   collectionId,
   structureId,
   matchUpId,
@@ -99,6 +101,21 @@ export function modifyCollectionDefinition({
 
     // add new value assignment
     Object.assign(collectionDefinition, valueAssignments);
+  }
+
+  // calculate new winCriteria for tieFormat
+  // if existing winCriteria is aggregateValue, retain
+  const { aggregateValue, valueGoal } = calculateWinCriteria(tieFormat);
+  tieFormat.winCriteria = { aggregateValue, valueGoal };
+
+  // if valueGoal has changed, force renaming of the tieFormat
+  const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
+  if (originalValueGoal && originalValueGoal !== valueGoal) {
+    if (tieFormatName) {
+      tieFormat.tieFormatName = tieFormatName;
+    } else {
+      delete tieFormat.tieFormatName;
+    }
   }
 
   if (collectionName) collectionDefinition.collectionName = collectionName;
