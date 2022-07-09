@@ -109,6 +109,7 @@ const tieFormats = {
 
 const scenarios = [
   {
+    scenarioNumber: 1,
     tieFormat: tieFormats.Shuffle,
     outcome: {
       score: { sets: [{ side1Score: 2, side2Score: 1 }] },
@@ -128,6 +129,7 @@ const scenarios = [
     secondRoundDrawPositions: [1, 3],
   },
   {
+    scenarioNumber: 2,
     tieFormat: tieFormats.Shuffle,
     outcome: {
       score: { sets: [{ side1Score: 2, side2Score: 1 }] },
@@ -147,6 +149,7 @@ const scenarios = [
     secondRoundDrawPositions: undefined,
   },
   {
+    scenarioNumber: 3,
     tieFormat: tieFormats.Mixup,
     outcome: {
       score: { sets: [{ side1Score: 2, side2Score: 1 }] },
@@ -187,6 +190,7 @@ const scenarios = [
     secondRoundDrawPositions: undefined,
   },
   {
+    scenarioNumber: 4,
     tieFormat: tieFormats.collectionAggregate,
     outcome: {
       score: { sets: [{ side1Score: 2, side2Score: 1 }] },
@@ -205,7 +209,7 @@ const scenarios = [
     matchUpStatusGoal: COMPLETED,
     secondRoundDrawPositions: [1, 3],
   },
-];
+].filter(({ scenarioNumber }) => scenarioNumber !== 0);
 
 test.each(scenarios)(
   'tieFormat scoreValue works with winCriteria: aggregateValue',
