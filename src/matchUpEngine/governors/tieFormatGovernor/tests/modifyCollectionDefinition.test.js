@@ -1,10 +1,10 @@
 import { mocksEngine, tournamentEngine } from '../../../..';
 
+import { TEAM } from '../../../../constants/eventConstants';
 import {
   INVALID_VALUES,
   NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import { TEAM } from '../../../../constants/eventConstants';
 
 it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () => {
   const {
@@ -190,11 +190,75 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
   matchUp = structure.matchUps[0];
   expect(matchUp.tieFormat).toBeUndefined();
 
-  const matchUps = tournamentEngine.allTournamentMatchUps({
+  let matchUps = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: {
       matchUpTypes: [TEAM],
     },
   }).matchUps;
   expect(matchUps[0].tieFormat).not.toBeUndefined();
   expect(matchUps[0].matchUpId).toEqual(matchUp.matchUpId);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionName: newCollectionName,
+    collectionId,
+    structureId,
+    setValue: 1,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  matchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+    },
+  }).matchUps;
+  expect(matchUps[0].tieFormat.winCriteria.aggregateValue).toEqual(true);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionName: newCollectionName,
+    collectionId,
+    structureId,
+    matchUpValue: 1,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  matchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+    },
+  }).matchUps;
+  expect(matchUps[0].tieFormat.winCriteria.valueGoal).toEqual(5);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionName: newCollectionName,
+    collectionId,
+    structureId,
+    collectionValue: 1,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  matchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+    },
+  }).matchUps;
+  expect(matchUps[0].tieFormat.winCriteria.valueGoal).toEqual(4);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionName: newCollectionName,
+    collectionId,
+    structureId,
+    scoreValue: 1,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  matchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+    },
+  }).matchUps;
+  expect(matchUps[0].tieFormat.winCriteria.aggregateValue).toEqual(true);
 });
