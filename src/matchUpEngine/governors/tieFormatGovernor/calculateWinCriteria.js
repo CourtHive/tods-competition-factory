@@ -8,6 +8,8 @@ export function calculateWinCriteria({
 
   const { groupValueNumbers } = getGroupValueGroups({ collectionGroups });
 
+  let aggregateValueImperative;
+
   for (const collectionDefinition of collectionDefinitions || []) {
     const {
       collectionValueProfiles,
@@ -15,6 +17,8 @@ export function calculateWinCriteria({
       collectionValue,
       matchUpCount,
       matchUpValue,
+      scoreValue,
+      setValue,
     } = collectionDefinition;
 
     const belongsToValueGroup =
@@ -25,15 +29,19 @@ export function calculateWinCriteria({
       continue;
     } else if (collectionValue) {
       valueTotal += collectionValue;
-      continue;
     } else if (collectionValueProfiles) {
       for (const collectionValueProfile of collectionValueProfiles) {
         valueTotal += collectionValueProfile.matchUpValue;
       }
-      continue;
     } else if (matchUpValue) {
       valueTotal += matchUpCount * matchUpValue;
-      continue;
+    } else if (setValue || scoreValue) {
+      // because setValues and scoreValues are unpredictable,
+      // any collectionDefintion that has either of these two values without a collectionValue forces the tieFormat to aggregateValue
+      aggregateValueImperative = true;
+    } else {
+      // default is to give each matchUp a value of 1
+      valueTotal += matchUpCount;
     }
   }
 
@@ -41,7 +49,7 @@ export function calculateWinCriteria({
     valueTotal += collectionGroup.groupValue || 0;
   }
 
-  if (!valueTotal) return { aggregateValue: true };
+  if (aggregateValueImperative || !valueTotal) return { aggregateValue: true };
 
   const valueGoal = Math.floor(valueTotal / 2) + 1;
 
