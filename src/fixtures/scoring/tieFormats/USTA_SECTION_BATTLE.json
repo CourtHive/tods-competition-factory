@@ -1,0 +1,46 @@
+{
+  "collectionDefinitions": [
+    {
+      "category": { "ageCategoryCode": "16U" },
+      "collectionName": "16U Singles",
+      "matchUpCount": 4,
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+      "matchUpType": "SINGLES",
+      "matchUpValue": 1
+    },
+    {
+      "category": { "ageCategoryCode": "18U" },
+      "collectionName": "18U Singles",
+      "matchUpCount": 4,
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+      "matchUpType": "SINGLES",
+      "matchUpValue": 1
+    },
+    {
+      "category": { "ageCategoryCode": "16U" },
+      "collectionName": "16U Doubles",
+      "matchUpCount": 4,
+      "matchUpFormat": "SET1-S:8/TB7",
+      "matchUpType": "DOUBLES",
+      "matchUpValue": 1
+    },
+    {
+      "category": { "ageCategoryCode": "18U" },
+      "collectionName": "18U Doubles",
+      "matchUpCount": 4,
+      "matchUpFormat": "SET1-S:8/TB7",
+      "matchUpType": "DOUBLES",
+      "matchUpValue": 1
+    },
+    {
+      "collectionName": "Tiebreak Doubles",
+      "matchUpCount": 1,
+      "matchUpFormat": "SET1-S:8/TB7",
+      "matchUpType": "DOUBLES"
+    }
+  ],
+  "tieFormatName": "Battle of the sections",
+  "winCriteria": {
+    "valueGoal": 9
+  }
+}
