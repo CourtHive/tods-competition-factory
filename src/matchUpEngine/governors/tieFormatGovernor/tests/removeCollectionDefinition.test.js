@@ -386,7 +386,7 @@ it('deleted collectionDefinitions are not removed from inProgress matchUps', () 
   expect(teamMatchUp.tieMatchUps.length).toEqual(6);
 });
 
-test('removing collection when matchUps are scored and team participant has advanced', () => {
+test.skip('removing collection when matchUps are scored and team participant has advanced', () => {
   const matchUpModifyNotices = [];
   const deletedMatchUpIds = [];
 
@@ -487,7 +487,7 @@ test('removing collection when matchUps are scored and team participant has adva
   console.log(secondRoundDualMatchUps[0].drawPositions);
 });
 
-test.only('team advancement', () => {
+test('team advancement', () => {
   const {
     tournamentRecord,
     drawIds: [drawId],
