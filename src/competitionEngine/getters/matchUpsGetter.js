@@ -72,7 +72,10 @@ export function competitionScheduleMatchUps(params) {
     }).timeItem;
   const publishStatus = timeItem?.itemValue?.[status];
 
-  if (usePublishState && !publishStatus) {
+  if (
+    usePublishState &&
+    (!publishStatus || !Object.keys(publishStatus).length)
+  ) {
     return { dateMatchUps: [], completedMatchUps: [], courtsData: [], venues };
   }
 
