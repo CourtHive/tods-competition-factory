@@ -2864,7 +2864,7 @@
     },
     "SexEnum": {
       "type": "string",
-      "enum": ["FEMALE", "MALE"]
+      "enum": ["FEMALE", "MALE", "OTHER"]
     },
     "ParticipantTypeEnum": {
       "type": "string",
