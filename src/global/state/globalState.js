@@ -8,6 +8,7 @@ import {
 
 const globalState = {
   timers: { default: { elapsedTime: 0 } },
+  iterators: { makeDeepCopy: 0 },
   devContext: undefined,
   deepCopyAttributes: {
     threshold: undefined,
@@ -151,6 +152,14 @@ export function timeKeeper(action = 'reset', timer = 'default') {
 
 export function setDevContext(value) {
   globalState.devContext = value;
+}
+
+export function setDeepCopyIterations(value) {
+  globalState.iterators.makeDeepCopy = value;
+}
+
+export function getDeepCopyIterations() {
+  return globalState.iterators.makeDeepCopy;
 }
 
 export function disableNotifications() {

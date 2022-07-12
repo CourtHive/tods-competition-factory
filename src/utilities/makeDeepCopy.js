@@ -1,5 +1,9 @@
-import { deepCopyEnabled, getDevContext } from '../global/state/globalState';
 import { isDateObject } from './dateTime';
+import {
+  deepCopyEnabled,
+  getDevContext,
+  setDeepCopyIterations,
+} from '../global/state/globalState';
 
 /**
  *
@@ -19,7 +23,9 @@ export function makeDeepCopy(
 
   const devContext = getDevContext({ makeDeepCopy: true });
   if (devContext) {
-    if (iteration > (devContext.iterations || 15))
+    if (iteration > (devContext.iterationThreshold || 15))
+      setDeepCopyIterations(iteration);
+    if (devContext.log)
       console.log({ devContext, iteration, internalUse }, sourceObject);
   }
 
