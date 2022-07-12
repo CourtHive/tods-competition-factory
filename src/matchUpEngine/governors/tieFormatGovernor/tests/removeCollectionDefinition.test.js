@@ -1,6 +1,7 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import { mocksEngine, tournamentEngine } from '../../../..';
 
+import { NO_MODIFICATIONS_APPLIED } from '../../../../constants/errorConditionConstants';
 import { DELETED_MATCHUP_IDS } from '../../../../constants/topicConstants';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../../constants/eventConstants';
@@ -386,7 +387,7 @@ it('deleted collectionDefinitions are not removed from inProgress matchUps', () 
   expect(teamMatchUp.tieMatchUps.length).toEqual(6);
 });
 
-test.only('removing collection when matchUps are scored and team participant has advanced', () => {
+test('removing collection when matchUps are scored and team participant has advanced', () => {
   const {
     tournamentRecord,
     drawIds: [drawId],
@@ -404,6 +405,8 @@ test.only('removing collection when matchUps are scored and team participant has
       },
     });
 
+  expect(firstRoundDualMatchUps[0].winningSide).toBeUndefined();
+
   let { matchUps: secondRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
       matchUpFilters: {
@@ -411,6 +414,7 @@ test.only('removing collection when matchUps are scored and team participant has
         roundNumbers: [2],
       },
     });
+  expect(secondRoundDualMatchUps[0].drawPositions).toEqual(undefined);
 
   let outcome = {
     winningSide: 1,
@@ -445,6 +449,8 @@ test.only('removing collection when matchUps are scored and team participant has
     },
   }).matchUps;
 
+  expect(firstRoundDualMatchUps[0].winningSide).toEqual(1);
+
   secondRoundDualMatchUps = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: {
       matchUpTypes: [TEAM],
@@ -452,5 +458,43 @@ test.only('removing collection when matchUps are scored and team participant has
     },
   }).matchUps;
 
-  console.log(secondRoundDualMatchUps[0].drawPositions);
+  expect(firstRoundDualMatchUps[0].score.scoreStringSide1).toEqual('9-0');
+  expect(secondRoundDualMatchUps[0].drawPositions).toEqual([1]);
+
+  const collectionId = firstRoundDualMatchUps[0].tieMatchUps[0].collectionId;
+  const matchUpId = firstRoundDualMatchUps[0].matchUpId;
+  let result = tournamentEngine.removeCollectionDefinition({
+    updateInProgressMatchUps: false,
+    collectionId,
+    matchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(NO_MODIFICATIONS_APPLIED);
+
+  result = tournamentEngine.removeCollectionDefinition({
+    updateInProgressMatchUps: true,
+    collectionId,
+    matchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(NO_MODIFICATIONS_APPLIED);
+
+  firstRoundDualMatchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  }).matchUps;
+
+  expect(firstRoundDualMatchUps[0].score.scoreStringSide1).toEqual('6-0');
+  expect(secondRoundDualMatchUps[0].drawPositions).toEqual([1]);
+
+  secondRoundDualMatchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [2],
+    },
+  }).matchUps;
+
+  expect(secondRoundDualMatchUps[0].drawPositions).toEqual([1]);
 });
