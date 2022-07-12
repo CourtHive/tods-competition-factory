@@ -4,7 +4,6 @@ import tournamentEngine from '../../sync';
 
 import { USTA_GOLD_TEAM_CHALLENGE } from '../../../constants/tieFormatConstants';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   MODIFY_DRAW_DEFINITION,
@@ -78,9 +77,6 @@ test('can clear TEAM matchUp "scorecards"', () => {
 
   let { matchUps: firstRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
       matchUpFilters: {
         matchUpTypes: [TEAM],
         roundNumbers: [1],
@@ -105,9 +101,6 @@ test('can clear TEAM matchUp "scorecards"', () => {
 
   ({ matchUps: firstRoundDualMatchUps } =
     tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
       matchUpFilters: {
         matchUpTypes: [TEAM],
         roundNumbers: [1],
@@ -133,9 +126,6 @@ test('can clear TEAM matchUp "scorecards"', () => {
   let {
     matchUps: [secondRoundDualMatchUp],
   } = tournamentEngine.allTournamentMatchUps({
-    contextFilters: {
-      stages: [MAIN],
-    },
     matchUpFilters: {
       matchUpTypes: [TEAM],
       roundNumbers: [2],
@@ -173,9 +163,6 @@ test('can clear TEAM matchUp "scorecards"', () => {
   expect(finalTieMatchUpScores.filter(({ sets }) => sets)).toEqual([]);
 
   firstRoundDualMatchUps = tournamentEngine.allTournamentMatchUps({
-    contextFilters: {
-      stages: [MAIN],
-    },
     matchUpFilters: {
       matchUpTypes: [TEAM],
       roundNumbers: [1],
@@ -191,9 +178,6 @@ test('can clear TEAM matchUp "scorecards"', () => {
   ({
     matchUps: [secondRoundDualMatchUp],
   } = tournamentEngine.allTournamentMatchUps({
-    contextFilters: {
-      stages: [MAIN],
-    },
     matchUpFilters: {
       matchUpTypes: [TEAM],
       roundNumbers: [2],

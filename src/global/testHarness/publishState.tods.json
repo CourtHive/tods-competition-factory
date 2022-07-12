@@ -5,11 +5,9 @@
   "deleted": false,
   "endDate": "2021-12-30T00:00:00.000Z",
   "tournamentId": "B512ADA4-9B03-42AD-9AFC-5AAC3268C818",
-  "registrationProfile": [
-    {
-      "entriesClose": "2021-12-22T00:00:00.000Z"
-    }
-  ],
+  "registrationProfile": {
+    "entriesClose": "2021-12-22T00:00:00.000Z"
+  },
   "tournamentName": "Testing COMP-7706",
   "localTimeZone": "America/New_York",
   "startDate": "2021-12-27T00:00:00.000Z",
@@ -951,7 +949,7 @@
                 {
                   "matchUpId": "53ba2419-7807-4714-beda-1a32ddea3a49",
                   "createdAt": "2022-05-31T09:26:00.844Z",
-                  "drawPositions": [1, null],
+                  "drawPositions": [1],
                   "finishingPositionRange": {
                     "loser": [3, 4],
                     "winner": [1, 2]
@@ -973,7 +971,7 @@
                 {
                   "matchUpId": "fe1de284-7a5d-4f70-abe2-59a21b1f3b5f",
                   "createdAt": "2022-05-31T09:26:00.844Z",
-                  "drawPositions": [null],
+                  "drawPositions": [],
                   "finishingPositionRange": {
                     "loser": [3, 4],
                     "winner": [1, 2]
@@ -994,7 +992,7 @@
                 {
                   "matchUpId": "2f354265-920d-45f3-8765-d77260174731",
                   "createdAt": "2022-05-31T09:26:00.844Z",
-                  "drawPositions": [1, null],
+                  "drawPositions": [1],
                   "finishingPositionRange": {
                     "loser": [2, 2],
                     "winner": [1, 1]
@@ -1348,9 +1346,6 @@
             "ballColour": "YELLOW",
             "__typename": "Division"
           }
-        },
-        {
-          "name": "formatConfiguration"
         },
         {
           "name": "flightProfile",
@@ -3616,7 +3611,7 @@
                 {
                   "matchUpId": "2a8554b2-a99e-4596-bf4a-b47bdc13d503",
                   "createdAt": "2022-05-27T13:41:34.887Z",
-                  "drawPositions": [1, null],
+                  "drawPositions": [1],
                   "finishingPositionRange": {
                     "loser": [2, 2],
                     "winner": [1, 1]
@@ -4533,7 +4528,7 @@
                 {
                   "matchUpId": "2b574744-b62d-4753-89ed-8ef20d9e33a6",
                   "createdAt": "2022-06-09T13:35:05.656Z",
-                  "drawPositions": [22, null],
+                  "drawPositions": [22],
                   "finishingPositionRange": {
                     "loser": [5, 8],
                     "winner": [1, 4]
@@ -4547,7 +4542,7 @@
                 {
                   "matchUpId": "e8143a20-0232-4c87-9add-cc4a31876155",
                   "createdAt": "2022-06-09T13:35:05.656Z",
-                  "drawPositions": [30, null],
+                  "drawPositions": [30],
                   "finishingPositionRange": {
                     "loser": [5, 8],
                     "winner": [1, 4]
@@ -5006,7 +5001,7 @@
                 {
                   "matchUpId": "02a0b88a-b09b-45c7-8900-39298df0bca8",
                   "createdAt": "2022-06-09T14:03:09.897Z",
-                  "drawPositions": [8, null],
+                  "drawPositions": [8],
                   "finishingPositionRange": {
                     "loser": [3, 4],
                     "winner": [1, 2]
@@ -6609,7 +6604,7 @@
                 {
                   "matchUpId": "bcbce7e1-d520-4b01-8a05-c965147efe6e",
                   "createdAt": "2022-06-10T11:26:42.047Z",
-                  "drawPositions": [28, null],
+                  "drawPositions": [28],
                   "finishingPositionRange": {
                     "loser": [5, 8],
                     "winner": [1, 4]
@@ -6651,7 +6646,7 @@
                 {
                   "matchUpId": "5cd88427-79f7-4960-b24a-185e7763d682",
                   "createdAt": "2022-06-10T11:26:42.047Z",
-                  "drawPositions": [20, null],
+                  "drawPositions": [20],
                   "finishingPositionRange": {
                     "loser": [3, 4],
                     "winner": [1, 2]
@@ -7048,9 +7043,6 @@
             "ballColour": "YELLOW",
             "__typename": "Division"
           }
-        },
-        {
-          "name": "formatConfiguration"
         }
       ],
       "drawDefinitions": [],
@@ -7399,9 +7391,6 @@
             "ballColour": "YELLOW",
             "__typename": "Division"
           }
-        },
-        {
-          "name": "formatConfiguration"
         }
       ],
       "drawDefinitions": [],
@@ -7832,9 +7821,6 @@
               "code": "55",
               "name": "Northern"
             }
-          },
-          {
-            "name": "ustaDistrict"
           }
         ],
         "wheelchair": false,
@@ -8604,9 +8590,6 @@
               "code": "55",
               "name": "Northern"
             }
-          },
-          {
-            "name": "ustaDistrict"
           }
         ],
         "wheelchair": false,
@@ -9579,9 +9562,6 @@
               "code": "80",
               "name": "Texas"
             }
-          },
-          {
-            "name": "ustaDistrict"
           }
         ],
         "wheelchair": false,
@@ -10177,9 +10157,6 @@
               "code": "80",
               "name": "Texas"
             }
-          },
-          {
-            "name": "ustaDistrict"
           }
         ],
         "wheelchair": false,
@@ -10456,9 +10433,6 @@
               "code": "80",
               "name": "Texas"
             }
-          },
-          {
-            "name": "ustaDistrict"
           }
         ],
         "wheelchair": false,
@@ -11843,9 +11817,6 @@
               "code": "80",
               "name": "Texas"
             }
-          },
-          {
-            "name": "ustaDistrict"
           }
         ],
         "wheelchair": false,
@@ -13819,9 +13790,6 @@
               "code": "80",
               "name": "Texas"
             }
-          },
-          {
-            "name": "ustaDistrict"
           }
         ],
         "wheelchair": false,
@@ -15123,9 +15091,6 @@
               "code": "55",
               "name": "Northern"
             }
-          },
-          {
-            "name": "ustaDistrict"
           }
         ],
         "wheelchair": false,
@@ -15188,14 +15153,7 @@
         "personId": "D091A1BF-303B-4FE4-85A6-C06FE20782F8",
         "standardFamilyName": "Pittxxx",
         "standardGivenName": "Elxxx",
-        "extensions": [
-          {
-            "name": "ustaSection"
-          },
-          {
-            "name": "ustaDistrict"
-          }
-        ],
+        "extensions": [],
         "wheelchair": false,
         "addresses": [
           {
@@ -15263,9 +15221,6 @@
               "code": "80",
               "name": "Texas"
             }
-          },
-          {
-            "name": "ustaDistrict"
           }
         ],
         "wheelchair": false,
@@ -15789,9 +15744,6 @@
               "code": "80",
               "name": "Texas"
             }
-          },
-          {
-            "name": "ustaDistrict"
           }
         ],
         "wheelchair": false,
@@ -16642,9 +16594,6 @@
               "code": "80",
               "name": "Texas"
             }
-          },
-          {
-            "name": "ustaDistrict"
           }
         ],
         "wheelchair": false,

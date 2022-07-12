@@ -53,6 +53,7 @@ export default {
   addNotice,
   callListener,
   createInstanceState,
+  deleteNotice,
   deleteNotices,
   disableNotifications,
   enableNotifications,
@@ -179,6 +180,13 @@ function getNotices({ topic }) {
 function deleteNotices() {
   const instanceState = getInstanceState();
   instanceState.notices = [];
+}
+
+function deleteNotice({ key, topic }) {
+  const instanceState = getInstanceState();
+  instanceState.notices = instanceState.notices.filter(
+    (notice) => (!topic || notice.topic === topic) && notice.key !== key
+  );
 }
 
 function getTopics() {

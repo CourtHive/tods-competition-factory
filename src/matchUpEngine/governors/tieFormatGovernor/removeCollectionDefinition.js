@@ -2,10 +2,12 @@
 
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
+import { setMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpStatus';
+import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
 import { definedAttributes } from '../../../utilities/objects';
+import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { validateTieFormat } from './tieFormatUtilities';
-import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 import { copyTieFormat } from './copyTieFormat';
 import { getTieFormat } from './getTieFormat';
 import {
@@ -27,6 +29,7 @@ import {
 import {
   MISSING_DRAW_DEFINITION,
   NOT_FOUND,
+  NO_MODIFICATIONS_APPLIED,
 } from '../../../constants/errorConditionConstants';
 
 /*
@@ -112,6 +115,29 @@ export function removeCollectionDefinition({
   let matchUps = [];
 
   if (matchUpId && matchUp) {
+    if (updateInProgressMatchUps) {
+      const collectionMatchUps = matchUp.tieMatchUps.filter(
+        (tieMatchUp) => tieMatchUp.collectionId === collectionId
+      );
+      for (const collectionMatchUp of collectionMatchUps) {
+        let result = setMatchUpStatus({
+          matchUpId: collectionMatchUp.matchUpId,
+          tieMatchUpId: matchUp.matchUpId,
+          winningSide: undefined,
+          removeScore: true,
+          tournamentRecord,
+          drawDefinition,
+          event,
+        });
+        if (result.error) return result;
+        result = findMatchUp({
+          drawDefinition,
+          matchUpId,
+        });
+        if (result.error) return result;
+        matchUp = result.matchUp;
+      }
+    }
     matchUps = [matchUp];
   } else if (structureId && structure) {
     matchUps = getAllStructureMatchUps({
@@ -130,7 +156,7 @@ export function removeCollectionDefinition({
     })?.matchUps;
   }
 
-  // all team matchUps in scope which are completed or which have a tieFormat should not be modified
+  // all team matchUps in scope which are completed or which have a score should not be modified
   const targetMatchUps = matchUps.filter(
     (matchUp) =>
       !matchUp.winningSide &&
@@ -138,6 +164,10 @@ export function removeCollectionDefinition({
       (updateInProgressMatchUps ||
         (matchUp.matchUpStatus !== IN_PROGRESS && !scoreHasValue(matchUp)))
   );
+
+  if (!targetMatchUps.length) {
+    return { error: NO_MODIFICATIONS_APPLIED };
+  }
 
   const deletedMatchUpIds = [];
   for (const matchUp of targetMatchUps) {

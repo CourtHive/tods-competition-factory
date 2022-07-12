@@ -1,11 +1,11 @@
 import { newTournamentRecord } from './generators/newTournamentRecord';
 import { getState, paramsMiddleWare, setState } from './stateMethods';
+import { notifySubscribers } from '../global/state/notifySubscribers';
+import { factoryVersion } from '../global/functions/factoryVersion';
 import participantGovernor from './governors/participantGovernor';
 import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
-import { notifySubscribers } from '../global/state/notifySubscribers';
 import scheduleGovernor from './governors/scheduleGovernor';
-import { factoryVersion } from '../global/functions/factoryVersion';
 import policyGovernor from './governors/policyGovernor';
 import eventGovernor from './governors/eventGovernor';
 import queryGovernor from './governors/queryGovernor';
@@ -21,6 +21,7 @@ import {
   removeTournamentRecord,
   setTournamentId,
   setTournamentRecord,
+  getDeepCopyIterations,
 } from '../global/state/globalState';
 
 import { SUCCESS } from '../constants/resultConstants';
@@ -124,6 +125,9 @@ export const tournamentEngine = (function () {
       log.result = result;
     }
     if (Object.keys(log).length > 1) console.log('te:', log);
+
+    if (devContext.makeDeepCopy)
+      result.deepCopyIterations = getDeepCopyIterations();
 
     return result;
   }
