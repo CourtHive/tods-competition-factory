@@ -1,3 +1,4 @@
+import { deleteNotice } from '../../global/state/syncGlobalState';
 import { addNotice } from '../../global/state/globalState';
 
 import {
@@ -65,6 +66,9 @@ export function deleteMatchUpsNotice({
       action,
     },
   });
+  for (const matchUpId of matchUpIds) {
+    deleteNotice({ key: matchUpId });
+  }
 }
 export function modifyMatchUpNotice({
   drawDefinition,
@@ -110,6 +114,7 @@ export function deleteDrawNotice({ tournamentId, eventId, drawId }) {
     topic: DELETED_DRAW_IDS,
     key: drawId,
   });
+  deleteNotice({ key: drawId });
 }
 export function modifyDrawNotice({
   drawDefinition,

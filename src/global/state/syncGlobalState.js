@@ -17,6 +17,7 @@ const syncGlobalState = {
 export default {
   addNotice,
   callListener,
+  deleteNotice,
   deleteNotices,
   disableNotifications,
   enableNotifications,
@@ -132,6 +133,12 @@ export function getNotices({ topic }) {
 
 export function deleteNotices() {
   syncGlobalState.notices = [];
+}
+
+export function deleteNotice({ topic, key }) {
+  syncGlobalState.notices = syncGlobalState.notices.filter(
+    (notice) => (!topic || notice.topic === topic) && notice.key !== key
+  );
 }
 
 export function getTopics() {
