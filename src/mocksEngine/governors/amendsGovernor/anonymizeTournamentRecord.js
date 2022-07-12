@@ -315,8 +315,8 @@ export function anonymizeTournamentRecord({
       generatedPerson.standardGivenName = generatedPerson.firstName;
       individualParticipant.participantName = `${generatedPerson.standardGivenName} ${generatedPerson.standardFamilyName}`;
     } else {
-      generatedPerson.standardFamilyName = person.standardFamilyName;
-      generatedPerson.standardGivenName = person.standardGivenName;
+      generatedPerson.standardFamilyName = person?.standardFamilyName;
+      generatedPerson.standardGivenName = person?.standardGivenName;
     }
 
     delete generatedPerson.firstName;
