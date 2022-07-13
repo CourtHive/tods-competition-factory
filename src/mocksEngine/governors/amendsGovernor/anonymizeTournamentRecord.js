@@ -174,6 +174,19 @@ export function anonymizeTournamentRecord({
           if (assignment.participantId)
             assignment.participantId = idMap[assignment.participantId];
         }
+
+        // update lineUps in each matchUp
+        for (const matchUp of structure.matchUps || []) {
+          for (const side of matchUp.sides || []) {
+            if (!side.lineUp) continue;
+            side.lineUp = side.lineUp.map(
+              ({ participantId, collectionAssignments }) => ({
+                participantId: idMap[participantId],
+                collectionAssignments,
+              })
+            );
+          }
+        }
       };
 
       for (const structure of drawDefinition.structures || []) {
