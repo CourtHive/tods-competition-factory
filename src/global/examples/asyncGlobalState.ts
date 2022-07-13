@@ -163,7 +163,7 @@ function addNotice({ topic, payload, key }) {
       (notice) => !(notice.topic === topic && notice.key === key)
     );
   }
-  instanceState.notices.push({ topic, payload });
+  instanceState.notices.push({ topic, payload, key });
 
   return { success: true };
 }
