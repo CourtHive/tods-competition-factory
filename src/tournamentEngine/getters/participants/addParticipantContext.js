@@ -21,7 +21,7 @@ import {
 import { GROUP, INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
-import { DOUBLES, TEAM } from '../../../constants/matchUpTypes';
+import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SEEDING } from '../../../constants/scaleConstants';
 import {
@@ -566,54 +566,48 @@ export function addParticipantContext(params) {
               relevantParticipantInfo?.relevantParticipantId;
           }
 
-          relevantOpponents
-            // for PAIR participants only show PAIR opponenents
-            ?.filter(
+          const filteredRelevantOpponents =
+            relevantOpponents?.filter(
               (opponent) =>
-                participantType === INDIVIDUAL ||
-                opponent.participantType === participantType
-            )
-            .forEach(
-              ({
-                relevantParticipantId: opponentParticipantId,
-                participantType: opponentParticipantType,
-              }) => {
-                if (
-                  participantIdMap[relevantParticipantId].opponents[
-                    opponentParticipantId
-                  ]
-                ) {
-                  participantIdMap[relevantParticipantId].opponents[
-                    opponentParticipantId
-                  ].push({
-                    eventId,
-                    drawId,
-                    matchUpId,
-                    participantType: opponentParticipantType,
-                    participantId: opponentParticipantId,
-                  });
-                } else {
-                  participantIdMap[relevantParticipantId].opponents[
-                    opponentParticipantId
-                  ] = [
-                    {
-                      eventId,
-                      drawId,
-                      matchUpId,
-                      participantType: opponentParticipantType,
-                      participantId: opponentParticipantId,
-                    },
-                  ];
-                }
-              }
-            );
+                (matchUpType === TEAM &&
+                  participantType === TEAM &&
+                  opponent.participantType === TEAM) ||
+                (matchUpType === SINGLES &&
+                  opponent.participantType === INDIVIDUAL) ||
+                (matchUpType === DOUBLES &&
+                  (participantType === INDIVIDUAL
+                    ? [INDIVIDUAL, PAIR].includes(opponent.participantType)
+                    : // for PAIR participants only show PAIR opponenents
+                      opponent.participantType === PAIR))
+            ) || [];
 
-          const opponentParticipantInfo = relevantOpponents.map(
+          filteredRelevantOpponents.forEach(
+            ({
+              relevantParticipantId: opponentParticipantId,
+              participantType: opponentParticipantType,
+            }) => {
+              if (!participantIdMap[relevantParticipantId].opponents) {
+                participantIdMap[relevantParticipantId].opponents = {};
+              }
+              participantIdMap[relevantParticipantId].opponents[
+                opponentParticipantId
+              ] = {
+                eventId,
+                drawId,
+                matchUpId,
+                participantType: opponentParticipantType,
+                participantId: opponentParticipantId,
+              };
+            }
+          );
+
+          const opponentParticipantInfo = filteredRelevantOpponents.map(
             ({ relevantParticipantId, participantType }) => ({
               participantId: relevantParticipantId,
               participantType,
             })
           );
+
           participantIdMap[relevantParticipantId].matchUps[matchUpId] =
             definedAttributes({
               collectionId,
