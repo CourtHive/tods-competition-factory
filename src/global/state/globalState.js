@@ -24,6 +24,7 @@ let _globalStateProvider = syncGlobalState;
 const requiredStateProviderMethods = [
   'addNotice',
   'callListener',
+  'deleteNotice',
   'deleteNotices',
   'getNotices',
   'getTopics',
@@ -204,6 +205,10 @@ export function addNotice(notice) {
 
 export function getNotices(topic) {
   return _globalStateProvider.getNotices(topic);
+}
+
+export function deleteNotice({ key, topic }) {
+  return _globalStateProvider.deleteNotice({ key, topic });
 }
 
 export function deleteNotices() {
