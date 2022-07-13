@@ -20,7 +20,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "0.250.0",
+  "version": "0.252.0",
   "license": "MIT",
   "private": false,
   "jest": {
@@ -97,7 +97,7 @@
     "@rollup/plugin-json": "4.1.0",
     "@rollup/plugin-node-resolve": "13.3.0",
     "@rollup/plugin-typescript": "8.3.3",
-    "@types/jest": "28.1.4",
+    "@types/jest": "28.1.5",
     "@types/node": "16.11.43",
     "@typescript-eslint/eslint-plugin": "5.30.6",
     "@typescript-eslint/parser": "5.30.6",

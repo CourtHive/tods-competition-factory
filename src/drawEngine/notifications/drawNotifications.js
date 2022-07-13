@@ -1,5 +1,4 @@
-import { deleteNotice } from '../../global/state/syncGlobalState';
-import { addNotice } from '../../global/state/globalState';
+import { addNotice, deleteNotice } from '../../global/state/globalState';
 
 import {
   ADD_DRAW_DEFINITION,
