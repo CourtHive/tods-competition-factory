@@ -570,7 +570,8 @@ it('handles pair dependencies across draws', () => {
     });
 
   individualParticipants.forEach((individualParticipant) =>
-    expect(individualParticipant.draws.length).toBeGreaterThan(0)
+    // no individuals have lineUp assignments
+    expect(individualParticipant.draws.length).toEqual(0)
   );
 
   let { tournamentParticipants: pairParticipants } =
@@ -581,6 +582,7 @@ it('handles pair dependencies across draws', () => {
 
   expect(pairParticipants.length).toEqual(6);
   pairParticipants.forEach((pairParticipant) =>
+    // no individuals have lineUp assignments
     expect(pairParticipant.draws.length).toEqual(0)
   );
 
@@ -601,10 +603,11 @@ it('handles pair dependencies across draws', () => {
       withDraws: true,
     }));
 
-  // expect no new pairs were created and each pairParticipant is in ONE draw
+  // expect no new pairs were created and each pairParticipant is in BOTH draws
   expect(pairParticipants.length).toEqual(6);
   pairParticipants.forEach((pairParticipant) => {
-    expect(pairParticipant.draws.length).toEqual(1);
+    // individuals now have lineUp assignments for DOUBLES matchUps
+    expect(pairParticipant.draws.length).toEqual(2);
   });
 
   // assign the same pairs to matchUps in the second draw

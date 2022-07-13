@@ -122,8 +122,8 @@ test('collection matchUps appear in participant reports', () => {
   expect(tournamentParticipants[0].pairParticipantIds.length).toEqual(1);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
-    tournamentRecord,
     matchUpFilters: { matchUpTypes: [DOUBLES] },
+    tournamentRecord,
   });
   const placedParticipantIds = matchUps
     .map(({ sides }) => sides.map(({ participantId }) => participantId))
@@ -141,8 +141,8 @@ test('collection matchUps appear in participant reports', () => {
 
   expect(placedPairParticipants.length).toEqual(drawSize);
 
-  // expect all DOUBLES pairParticipants to appear in both DOUBLES and TEAM matchUps
+  // unless withTeamMatchUps, DOUBLES pairParticipants will only appear in DOUBLES matchUps
   placedPairParticipants.forEach((participant) => {
-    expect(participant.matchUps.length).toEqual(2);
+    expect(participant.matchUps.length).toEqual(1);
   });
 });

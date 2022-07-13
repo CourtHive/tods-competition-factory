@@ -24,6 +24,7 @@ export function filterMatchUps(params) {
     stageSequences,
     scheduledDates,
     scheduledDate,
+    participantIds,
     processContext,
     tournamentIds,
     matchUpTypes,
@@ -38,6 +39,9 @@ export function filterMatchUps(params) {
     filterMatchUpTypes = true,
   } = params;
 
+  const targetParticipantIds = Array.isArray(participantIds)
+    ? participantIds.filter(Boolean)
+    : [];
   const targetMatchUpStatuses = Array.isArray(matchUpStatuses)
     ? matchUpStatuses.filter(Boolean)
     : [];
@@ -221,6 +225,17 @@ export function filterMatchUps(params) {
         !targetStructureIds.includes(matchUp.structureId)
       ) {
         return false;
+      }
+
+      if (targetParticipantIds.length) {
+        const matchUpParticipantIds =
+          matchUp.sides
+            ?.map(({ participantId }) => participantId)
+            .filter(Boolean) || [];
+        const containsTargetedParticipantId = targetParticipantIds.some(
+          (participantId) => matchUpParticipantIds.includes(participantId)
+        );
+        if (!containsTargetedParticipantId) return false;
       }
     }
 

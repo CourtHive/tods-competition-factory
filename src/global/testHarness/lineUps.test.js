@@ -20,5 +20,5 @@ it('can get competitionScheduleMatchUps', () => {
     (participant) => participant.participantId === participantId
   );
 
-  expect(participant.matchUps.length).toEqual(12);
+  expect(participant.matchUps.length).toEqual(8);
 });
