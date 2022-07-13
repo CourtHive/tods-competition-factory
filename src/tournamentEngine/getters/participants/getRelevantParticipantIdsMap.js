@@ -8,9 +8,9 @@ import { INDIVIDUAL } from '../../../constants/participantConstants';
  * @returns { [participantId]: [relevantParticipantId] } - a map of all PAIR/TEAM/GROUP participantIds to which participantId belongs
  */
 export function getRelevantParticipantIdsMap({
-  tournamentRecord,
-  tournamentRecords,
   processParticipantId, // optional method which is passed each participantId
+  tournamentRecords,
+  tournamentRecord,
 }) {
   if (
     typeof tournamentRecord !== 'object' &&
@@ -36,8 +36,8 @@ export function getRelevantParticipantIdsMap({
         const individualParticipantIdObjects = (
           individualParticipantIds || []
         ).map((relevantParticipantId) => ({
-          relevantParticipantId,
           participantType: INDIVIDUAL,
+          relevantParticipantId,
         }));
 
         return {
