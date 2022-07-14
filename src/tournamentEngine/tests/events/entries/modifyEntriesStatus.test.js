@@ -131,7 +131,7 @@ it('can modify entryStatus within event.entries', () => {
   expect(flightEntryStatuses).toEqual([ORGANISER_ACCEPTANCE]);
 });
 
-it.only('can add and remove extensions from entries', () => {
+it('can add and remove extensions from entries', () => {
   const drawProfiles = [{ drawSize: 8, alternatesCount: 2 }];
   const participantsProfile = {
     participantsCount: 16,
