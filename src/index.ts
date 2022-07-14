@@ -107,9 +107,10 @@ export { venueConstants } from './constants/venueConstants';
 
 // START- Global State methods
 export {
+  deleteNotices,
   getNotices,
   setDeepCopy,
-  deleteNotices,
+  setDevContext,
   setStateProvider,
   setSubscriptions,
 } from './global/state/globalState';
