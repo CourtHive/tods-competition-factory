@@ -124,7 +124,8 @@ export function modifyEntriesStatus({
         entry.entryStatus = entryStatus;
         // since entryStatus has changed remove current entryPosition
         delete entry.entryPosition;
-      } else {
+      }
+      if (extension) {
         if (extension.value) {
           addExtension({ element: entry, extension });
         } else {

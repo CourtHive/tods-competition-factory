@@ -210,9 +210,7 @@ it('can autoSeed by Rankings', () => {
   // check that a timeItem was added
   expect(tournamentParticipants[0].timeItems.length).toEqual(6);
 
-  result = tournamentEngine.removeSeeding({
-    scaleName: 'U18',
-  });
+  result = tournamentEngine.removeSeeding({ scaleName: 'U18' });
   expect(result.error).toEqual(MISSING_EVENT);
 
   result = tournamentEngine.removeSeeding({

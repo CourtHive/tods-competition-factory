@@ -198,6 +198,20 @@ it('can add and remove extensions from entries', () => {
     eventId,
   });
   expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.modifyEntriesStatus({
+    extension: { name: 'statusDetail', value: 'available' },
+    participantIds: unassignedParticipantIds,
+    entryStatus: DIRECT_ACCEPTANCE,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ event, drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  entriesWithExtensions = event.entries.filter(
+    ({ extensions }) => extensions && extensions.length
+  );
+  expect(entriesWithExtensions.length).toEqual(8);
 });
 
 it('can account for individuals appearing in multiple doubles pairs', () => {

@@ -18,7 +18,8 @@ export function getScheduleTiming({
     event?.category?.categoryName ||
     event?.category?.ageCategoryCode;
 
-  categoryType = categoryType || event?.category?.categoryType;
+  categoryType =
+    categoryType || event?.category?.categoryType || event?.category?.subType;
 
   const { policy } = findPolicy({
     policyType: POLICY_TYPE_SCHEDULING,

@@ -114,7 +114,7 @@ test('can clear TEAM matchUp "scorecards"', () => {
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
     const { winningSide, matchUpStatus, score, tieMatchUps } = dualMatchUp;
     expect(matchUpStatus).toEqual(COMPLETED);
-    expect(tieMatchUps.length).toEqual(17);
+    expect(tieMatchUps.length).toEqual(16);
     expect(winningSide).toEqual(1);
     expect(score).toEqual({
       scoreStringSide1: '9-0',

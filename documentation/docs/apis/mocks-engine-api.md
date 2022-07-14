@@ -188,6 +188,12 @@ const venueProfiles = [
     courtTimings: [], // optional [{ startTime, endTime }] to be applied by index
     dateAvailability, // optional - will use tournament start and end dates and default times
     venueName: 'Venue 1', // optional - will auto-generate names
+    venueAbbreviation, // optional
+    startTime, // optional court availability detail
+    courtIds, // optional
+    endTime, // optional court availability detail
+    idPrefix, // optional - prefix for courtIds
+    venuid, // optional
   },
 ];
 

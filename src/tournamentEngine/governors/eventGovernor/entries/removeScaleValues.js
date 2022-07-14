@@ -1,9 +1,12 @@
 import { removeParticipantsScaleItems } from '../../participantGovernor/removeScaleItems';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
-import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
-import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
+import {
+  INVALID_VALUES,
+  MISSING_EVENT,
+} from '../../../../constants/errorConditionConstants';
 
 /**
  *
@@ -18,11 +21,18 @@ export function removeScaleValues({
   tournamentRecord,
   scaleAttributes,
   drawDefinition,
+  entryStatuses,
   drawId,
   event,
   stage,
 }) {
   if (!event) return { error: MISSING_EVENT };
+  if (entryStatuses && !Array.isArray(entryStatuses))
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      info: 'entryStatus must be an array',
+      stack: 'removeScaleValues',
+    });
 
   let entries = event.entries;
 
@@ -41,15 +51,15 @@ export function removeScaleValues({
   const stageEntries = (entries || []).filter(
     (entry) =>
       (!stage || !entry.entryStage || entry.entryStage === stage) &&
-      STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
+      (!entryStatuses || entryStatuses.includes(entry.entryStatus))
   );
 
   const participantIds = stageEntries.map(getParticipantId);
 
   const result = removeParticipantsScaleItems({
     tournamentRecord,
-    participantIds,
     scaleAttributes,
+    participantIds,
   });
 
   return result;

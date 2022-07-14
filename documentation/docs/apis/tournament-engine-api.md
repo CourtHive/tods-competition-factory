@@ -2828,6 +2828,7 @@ tournamentEngine.removeScaleValues({
 ```js
 tournamentEngine.removeSeeding({
   eventId,
+  entryStatuses, // optional array of entryStatues to consider
   scaleName, // optional - override default scaleName, event.category.categoryName || event.category.ageCategoryCode
   drawId, // optional - to scope participants to entries in a specific draw
   stage, // optinal - scope participants to entries in a specific stage of draw
