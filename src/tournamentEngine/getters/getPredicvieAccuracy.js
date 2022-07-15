@@ -1,3 +1,4 @@
+import { scoreHasValue } from '../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import {
   allDrawMatchUps,
   allEventMatchUps,
@@ -32,21 +33,30 @@ export function getPredictiveAccuracy({
 
   const matchUps = drawId
     ? allDrawMatchUps({
+        inContext: true,
         drawDefinition,
         contextFilters,
         contextProfile,
         participants,
-      })?.matchUps
+      })?.matchUps || []
     : eventId
-    ? allEventMatchUps({ participants, event, contextFilters, contextProfile })
-        ?.matchUps
+    ? allEventMatchUps({
+        inContext: true,
+        contextFilters,
+        contextProfile,
+        participants,
+        event,
+      })?.matchUps || []
     : allTournamentMatchUps({
         tournamentRecord,
         contextFilters,
         contextProfile,
-      })?.matchUps;
+      })?.matchUps || [];
 
-  const relevantMatchUps = matchUps.filter(({ winningSide }) => winningSide);
+  const relevantMatchUps = matchUps.filter(
+    ({ winningSide, score, sides }) =>
+      winningSide && sides?.length === 2 && scoreHasValue({ score })
+  );
 
   const accuracy = getGroupingAccuracy({
     matchUps: relevantMatchUps,
