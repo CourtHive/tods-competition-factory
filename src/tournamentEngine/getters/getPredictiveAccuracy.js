@@ -18,6 +18,7 @@ export function getPredictiveAccuracy({
   tournamentRecord,
   ascending = true,
   drawDefinition,
+  excludeMargin,
   exclusionRule,
   valueAccessor,
   matchUpType,
@@ -67,6 +68,7 @@ export function getPredictiveAccuracy({
 
   const accuracy = getGroupingAccuracy({
     matchUps: relevantMatchUps,
+    excludeMargin,
     exclusionRule,
     valueAccessor,
     ascending,
@@ -87,7 +89,10 @@ export function getPredictiveAccuracy({
         const valuesGap = Math.abs(values[0].value - values[1].value);
         return { competitiveness, score, valuesGap };
       })
-      .filter(({ valuesGap }) => valuesGap < zoneMargin);
+      .filter(
+        ({ valuesGap }) =>
+          valuesGap > zoneMargin || (excludeMargin && valuesGap < excludeMargin)
+      );
 
   const zoneBands = zoneData?.length && getGroupingBands({ zoneData });
   const totalZoneMatchUps =
@@ -136,6 +141,7 @@ function getSideValues({ sides, matchUpType, scaleName, valueAccessor }) {
 
 // given a grouping of matchUps, how accurate were the scaleValues in predicting winner
 function getGroupingAccuracy({
+  excludeMargin,
   exclusionRule,
   valueAccessor,
   ascending,
@@ -157,6 +163,18 @@ function getGroupingAccuracy({
       score,
       sides,
     });
+
+    if (excludeMargin) {
+      const valuesGap = Math.abs(values[0].value - values[1].value);
+      if (valuesGap < excludeMargin) {
+        accuracy.excluded.push({
+          scoreString: score?.scoreStringSide1,
+          winningSide,
+          valuesGap,
+          values,
+        });
+      }
+    }
 
     if (exclusionRule) {
       const { valueAccessor, range } = exclusionRule;

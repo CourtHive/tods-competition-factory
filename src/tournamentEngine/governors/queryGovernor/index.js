@@ -6,7 +6,7 @@ import { getMatchUpCompetitiveness } from '../../getters/getMatchUpCompetitivene
 import { participantScheduledMatchUps } from './participantScheduledMatchUps';
 import { getPositionAssignments } from '../../getters/getPositionAssignments';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
-import { getPredictiveAccuracy } from '../../getters/getPredicvieAccuracy';
+import { getPredictiveAccuracy } from '../../getters/getPredictiveAccuracy';
 import { getVenuesAndCourts, findVenue } from '../../getters/venueGetter';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { getParticipantScaleItem } from './getParticipantScaleItem';
