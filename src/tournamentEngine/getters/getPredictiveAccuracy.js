@@ -91,7 +91,8 @@ export function getPredictiveAccuracy({
       })
       .filter(
         ({ valuesGap }) =>
-          valuesGap > zoneMargin || (excludeMargin && valuesGap < excludeMargin)
+          valuesGap < zoneMargin &&
+          (!excludeMargin || (excludeMargin && valuesGap > excludeMargin))
       );
 
   const zoneBands = zoneData?.length && getGroupingBands({ zoneData });
