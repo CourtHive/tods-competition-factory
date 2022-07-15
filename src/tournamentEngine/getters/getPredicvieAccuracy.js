@@ -9,6 +9,7 @@ import { COMPETITIVE, DECISIVE, ROUTINE } from '../../constants/statsConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
+  INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
@@ -19,6 +20,7 @@ export function getPredictiveAccuracy({
   drawDefinition,
   exclusionRule,
   valueAccessor,
+  matchUpType,
   zoneMargin,
   scaleName,
   eventId,
@@ -27,8 +29,13 @@ export function getPredictiveAccuracy({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
+  if (matchUpType && ![SINGLES, DOUBLES].includes(matchUpType))
+    return { error: INVALID_VALUES, info: { matchUpType } };
+
   const contextProfile = { withScaleValues: true, withCompetitiveness: true };
-  const contextFilters = { matchUpTypes: [SINGLES, DOUBLES] };
+  const contextFilters = {
+    matchUpTypes: matchUpType ? [matchUpType] : [SINGLES, DOUBLES],
+  };
   const participants = tournamentRecord.participants;
 
   const matchUps = drawId
