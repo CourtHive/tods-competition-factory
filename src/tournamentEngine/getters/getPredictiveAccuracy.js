@@ -95,7 +95,7 @@ export function getPredictiveAccuracy({
         return { competitiveness, score, valuesGap };
       })
       .filter(({ valuesGap }) => {
-        const inZone = valuesGap < marginCalc;
+        const inZone = valuesGap <= marginCalc;
         return inZone;
       });
 
