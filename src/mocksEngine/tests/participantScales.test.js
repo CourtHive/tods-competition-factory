@@ -135,8 +135,8 @@ test('generates participants with rankings and ratings with additional embellish
   expect(typesCount).toEqual(scaleItems.length);
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    withScaleValues: true,
     inContext: true,
-    withIOC: true,
   }));
 
   let withRatings = 0;

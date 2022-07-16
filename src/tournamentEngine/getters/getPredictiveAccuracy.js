@@ -30,7 +30,6 @@ export function getPredictiveAccuracy({
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (excludeMargin && !isNaN(excludeMargin)) return { error: INVALID_VALUES };
 
   if (matchUpType && ![SINGLES, DOUBLES].includes(matchUpType))
     return { error: INVALID_VALUES, info: { matchUpType } };
@@ -156,11 +155,10 @@ function getSideValues({
     return { exclude, exclusionValue };
   };
 
-  const exclusionValues = [];
-
   return sides
     .sort((a, b) => a.sideNumber - b.sideNumber)
     .map(({ participant, individualParticipants }) => {
+      const exclusionValues = [];
       if (individualParticipants?.length) {
         let scaleValues = [];
         let value = 0;
@@ -175,11 +173,12 @@ function getSideValues({
           const { exclude, exclusionValue } =
             checkExcludeParticipant(scaleValue);
           if (exclude) exclusionValues.push(exclusionValue);
+          if (pValue) console.log({ participant, scaleValue, pValue });
           scaleValues.push(scaleValue);
           value += pValue;
         }
 
-        return { scaleValues, value };
+        return { scaleValues, value, exclusionValues };
       } else {
         const { scaleValue, value } = getSideValue({
           valueAccessor,

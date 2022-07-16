@@ -1,6 +1,8 @@
+import { addNationalityCode } from '../../governors/participantGovernor/addNationalityCode';
 import { attributeFilter, makeDeepCopy } from '../../../utilities';
 import { addParticipantContext } from './addParticipantContext';
 import { filterParticipants } from './filterParticipants';
+import { getScaleValues } from './getScaleValues';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { GROUP, PAIR, TEAM } from '../../../constants/participantTypes';
@@ -68,6 +70,20 @@ export function getTournamentParticipants({
             const individualParticipant = tournamentRecord.participants.find(
               (p) => p.participantId === participantId
             );
+            if (withScaleValues) {
+              const { ratings, rankings } = getScaleValues({
+                participant: individualParticipant,
+              });
+              individualParticipant.ratings = ratings;
+              individualParticipant.rankings = rankings;
+            }
+
+            if (withIOC || withISO2)
+              addNationalityCode({
+                participant: individualParticipant,
+                withISO2,
+                withIOC,
+              });
             return makeDeepCopy(individualParticipant, convertExtensions, true);
           });
       }
@@ -76,15 +92,16 @@ export function getTournamentParticipants({
 
   if (participantFilters)
     tournamentParticipants = filterParticipants({
-      tournamentRecord,
-      participantFilters,
       participants: tournamentParticipants,
+      participantFilters,
+      tournamentRecord,
     });
 
   const addContext =
     withSignInStatus ||
     withScheduleItems ||
     scheduleAnalysis ||
+    withScaleValues ||
     withStatistics ||
     withGroupings ||
     withOpponents ||
