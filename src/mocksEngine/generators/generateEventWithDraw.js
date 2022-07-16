@@ -156,9 +156,12 @@ export function generateEventWithDraw({
     const idPrefix = participantsProfile?.idPrefix
       ? `D-${drawIndex}-${participantsProfile?.idPrefix}`
       : undefined;
+
     const { participants: unique } = generateParticipants({
       ...participantsProfile,
-      scaledParticipantsCount: drawProfile.scaledParticipantsCount,
+      scaledParticipantsCount:
+        drawProfile.scaledParticipantsCount ||
+        participantsProfile.scaledParticipantsCount,
       participantsCount: drawParticipantsCount,
       consideredDate: tournamentRecord?.startDate,
       sex: gender || participantsProfile?.sex,
