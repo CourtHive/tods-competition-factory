@@ -157,8 +157,9 @@ function getSideValues({
 
   return sides
     .sort((a, b) => a.sideNumber - b.sideNumber)
-    .map(({ participant, individualParticipants }) => {
+    .map(({ participant }) => {
       const exclusionValues = [];
+      const { individualParticipants } = participant;
       if (individualParticipants?.length) {
         let scaleValues = [];
         let value = 0;
@@ -173,9 +174,13 @@ function getSideValues({
           const { exclude, exclusionValue } =
             checkExcludeParticipant(scaleValue);
           if (exclude) exclusionValues.push(exclusionValue);
-          if (pValue) console.log({ participant, scaleValue, pValue });
           scaleValues.push(scaleValue);
-          value += pValue;
+
+          if (pValue && value !== undefined) {
+            value += pValue;
+          } else {
+            value = undefined;
+          }
         }
 
         return { scaleValues, value, exclusionValues };
