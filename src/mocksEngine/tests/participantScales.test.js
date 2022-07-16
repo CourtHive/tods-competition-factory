@@ -232,24 +232,24 @@ it('can assess predictive accuracy of scaleValues', () => {
   );
   expect(Math.round(zonePercentTotal)).toEqual(100);
 
-  accuracy.excluded.forEach(({ exclusionValue, values }) => {
-    if (exclusionValue) {
-      expect(exclusionValue.scaleValue.confidence).toBeLessThanOrEqual(70);
+  accuracy.excluded.forEach(({ exclusionValues, sideValues }) => {
+    if (exclusionValues) {
+      exclusionValues.forEach((value) => expect(value).toBeLessThanOrEqual(70));
     } else {
-      expect(values.some((value) => !value.scaleValue)).toEqual(true);
+      expect(sideValues.some((value) => !value.scaleValue)).toEqual(true);
     }
   });
 
-  accuracy.affirmative.forEach(({ winningSide, values }) => {
+  accuracy.affirmative.forEach(({ winningSide, sideValues }) => {
     const winningIndex = winningSide - 1;
-    expect(values[winningIndex].value).toBeLessThanOrEqual(
-      values[1 - winningIndex].value
+    expect(sideValues[winningIndex].value).toBeLessThanOrEqual(
+      sideValues[1 - winningIndex].value
     );
   });
-  accuracy.negative.forEach(({ winningSide, values }) => {
+  accuracy.negative.forEach(({ winningSide, sideValues }) => {
     const winningIndex = winningSide - 1;
-    expect(values[winningIndex].value).toBeGreaterThanOrEqual(
-      values[1 - winningIndex].value
+    expect(sideValues[winningIndex].value).toBeGreaterThanOrEqual(
+      sideValues[1 - winningIndex].value
     );
   });
 });

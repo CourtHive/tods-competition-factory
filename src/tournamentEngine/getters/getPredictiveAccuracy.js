@@ -21,6 +21,7 @@ export function getPredictiveAccuracy({
   excludeMargin,
   exclusionRule,
   valueAccessor,
+  zoneDoubling,
   matchUpType,
   zoneMargin,
   scaleName,
@@ -29,6 +30,7 @@ export function getPredictiveAccuracy({
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (excludeMargin && !isNaN(excludeMargin)) return { error: INVALID_VALUES };
 
   if (matchUpType && ![SINGLES, DOUBLES].includes(matchUpType))
     return { error: INVALID_VALUES, info: { matchUpType } };
@@ -75,23 +77,26 @@ export function getPredictiveAccuracy({
     scaleName,
   });
 
+  const marginCalc =
+    !zoneDoubling || matchUpType === SINGLES ? zoneMargin : zoneMargin * 2;
+
   const zoneData =
     zoneMargin &&
     relevantMatchUps
       .map(({ competitiveness, matchUpType, score, sides }) => {
-        const values = getSideValues({
+        const sideValues = getSideValues({
           valueAccessor,
           matchUpType,
           scaleName,
           score,
           sides,
         });
-        const valuesGap = Math.abs(values[0].value - values[1].value);
+        const valuesGap = Math.abs(sideValues[0].value - sideValues[1].value);
 
         return { competitiveness, score, valuesGap };
       })
       .filter(({ valuesGap }) => {
-        const inZone = valuesGap < zoneMargin;
+        const inZone = valuesGap < marginCalc;
         return inZone;
       });
 
@@ -133,20 +138,73 @@ function getGroupingBands({ zoneData }) {
   return bands;
 }
 
-function getSideValues({ sides, matchUpType, scaleName, valueAccessor }) {
+function getSideValues({
+  exclusionRule,
+  valueAccessor,
+  matchUpType,
+  scaleName,
+  sides,
+}) {
+  const sortedRange = exclusionRule?.range.sort();
+
+  const checkExcludeParticipant = (scaleValue) => {
+    const exclusionValue = scaleValue?.[exclusionRule?.valueAccessor];
+    const exclude =
+      exclusionRule &&
+      exclusionValue >= sortedRange[0] &&
+      exclusionValue <= sortedRange[1];
+    return { exclude, exclusionValue };
+  };
+
+  const exclusionValues = [];
+
   return sides
     .sort((a, b) => a.sideNumber - b.sideNumber)
-    .map(({ participant }) => {
-      const ranking = participant?.rankings?.[matchUpType]?.find(
-        (ranking) => ranking.scaleName === scaleName
-      );
-      const rating = participant?.ratings?.[matchUpType]?.find(
-        (rating) => rating.scaleName === scaleName
-      );
-      const scaleValue = (rating || ranking)?.scaleValue;
-      const value = valueAccessor ? scaleValue?.[valueAccessor] : scaleValue;
-      return { scaleValue, value };
+    .map(({ participant, individualParticipants }) => {
+      if (individualParticipants?.length) {
+        let scaleValues = [];
+        let value = 0;
+
+        for (const participant of individualParticipants) {
+          const { scaleValue, value: pValue } = getSideValue({
+            valueAccessor,
+            participant,
+            matchUpType,
+            scaleName,
+          });
+          const { exclude, exclusionValue } =
+            checkExcludeParticipant(scaleValue);
+          if (exclude) exclusionValues.push(exclusionValue);
+          scaleValues.push(scaleValue);
+          value += pValue;
+        }
+
+        return { scaleValues, value };
+      } else {
+        const { scaleValue, value } = getSideValue({
+          valueAccessor,
+          matchUpType,
+          participant,
+          scaleName,
+        });
+        const { exclude, exclusionValue } = checkExcludeParticipant(scaleValue);
+        if (exclude) exclusionValues.push(exclusionValue);
+
+        return { scaleValue, value, exclusionValues };
+      }
     });
+}
+
+function getSideValue({ participant, valueAccessor, matchUpType, scaleName }) {
+  const ranking = participant?.rankings?.[matchUpType]?.find(
+    (ranking) => ranking.scaleName === scaleName
+  );
+  const rating = participant?.ratings?.[matchUpType]?.find(
+    (rating) => rating.scaleName === scaleName
+  );
+  const scaleValue = (rating || ranking)?.scaleValue;
+  const value = valueAccessor ? scaleValue?.[valueAccessor] : scaleValue;
+  return { scaleValue, value };
 }
 
 // given a grouping of matchUps, how accurate were the scaleValues in predicting winner
@@ -164,9 +222,17 @@ function getGroupingAccuracy({
     const { matchUpType, sides, score, winningSide } = matchUp;
     if (!winningSide) continue;
 
+    if (exclusionRule) {
+      if (!exclusionRule.valueAccessor || !exclusionRule.range)
+        return {
+          info: 'exclusionRule requires valueAccessor and range',
+          error: MISSING_VALUE,
+        };
+    }
     const winningIndex = winningSide - 1;
 
-    const values = getSideValues({
+    const sideValues = getSideValues({
+      exclusionRule,
       valueAccessor,
       matchUpType,
       scaleName,
@@ -175,56 +241,48 @@ function getGroupingAccuracy({
     });
 
     if (exclusionRule) {
-      const { valueAccessor, range } = exclusionRule;
-      if (!valueAccessor || !range)
-        return {
-          info: 'exclusionRule requires valueAccessor and range',
-          error: MISSING_VALUE,
-        };
+      const exclusionValues = sideValues
+        .map(({ exclusionValues }) => exclusionValues)
+        .flat();
 
-      const sortedRange = range.sort();
-      const exclusionValue = values.find((value) => {
-        const exclusionValue = value.scaleValue?.[valueAccessor];
-        const exclude =
-          exclusionValue >= sortedRange[0] && exclusionValue <= sortedRange[1];
-        if (exclude) return exclusionValue;
-      });
-
-      if (exclusionValue) {
+      if (exclusionValues.length) {
         accuracy.excluded.push({
           scoreString: score?.scoreStringSide1,
-          exclusionValue,
+          exclusionValues,
           winningSide,
-          values,
+          sideValues,
         });
         continue;
       }
     }
 
     if (
-      values.filter((value) => ![undefined, '', null].includes(value.value))
+      sideValues.filter((value) => ![undefined, '', null].includes(value.value))
         .length < 2
     ) {
       accuracy.excluded.push({
         scoreString: score?.scoreStringSide1,
         missingValues: true,
         winningSide,
-        values,
+        sideValues,
       });
       continue;
     }
 
     const valuesGap =
-      values[winningIndex].value - values[1 - winningIndex].value;
+      sideValues[winningIndex].value - sideValues[1 - winningIndex].value;
 
-    const excludeGap = excludeMargin && valuesGap < excludeMargin;
+    const floatMargin = parseFloat(excludeMargin);
+    const excludeGap = floatMargin && valuesGap < floatMargin;
 
     if (excludeGap) {
       accuracy.excluded.push({
         scoreString: score?.scoreStringSide1,
+        excludeMargin,
         winningSide,
         excludeGap,
-        values,
+        sideValues,
+        valuesGap,
       });
       continue;
     }
@@ -239,16 +297,16 @@ function getGroupingAccuracy({
       accuracy.affirmative.push({
         winningScoreString,
         winningSide,
+        sideValues,
         valuesGap,
-        values,
         score,
       });
     } else {
       accuracy.negative.push({
         winningScoreString,
         winningSide,
+        sideValues,
         valuesGap,
-        values,
         score,
       });
     }
