@@ -20,7 +20,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "0.259.0",
+  "version": "0.260.0",
   "license": "MIT",
   "private": false,
   "jest": {
