@@ -277,7 +277,7 @@ function getGroupingAccuracy({
       sideValues[winningIndex].value - sideValues[1 - winningIndex].value;
 
     const floatMargin = parseFloat(excludeMargin);
-    const excludeGap = floatMargin && valuesGap < floatMargin;
+    const excludeGap = floatMargin && Math.abs(valuesGap) < floatMargin;
 
     if (excludeGap) {
       accuracy.excluded.push({
