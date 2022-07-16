@@ -70,6 +70,8 @@ export function getTournamentParticipants({
             const individualParticipant = tournamentRecord.participants.find(
               (p) => p.participantId === participantId
             );
+
+            // individualParticipants only need to be hydrated withScaleValues and nationalityCode variations
             if (withScaleValues) {
               const { ratings, rankings } = getScaleValues({
                 participant: individualParticipant,
