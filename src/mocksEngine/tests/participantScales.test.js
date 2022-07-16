@@ -1,12 +1,13 @@
 import { getParticipantId } from '../../global/functions/extractors';
+import { mockProfile } from './mockScaleProfile';
 import { tournamentEngine } from '../..';
+import { unique } from '../../utilities';
 import mocksEngine from '..';
 
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { ELO, NTRP, UTR, WTN } from '../../constants/ratingConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
-import { SINGLES } from '../../constants/matchUpTypes';
-import { mockProfile } from './mockScaleProfile';
+import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 
 // prettier-ignore
 const rankingsScenarios = [
@@ -135,8 +136,8 @@ test('generates participants with rankings and ratings with additional embellish
   expect(typesCount).toEqual(scaleItems.length);
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    withScaleValues: true,
     inContext: true,
-    withIOC: true,
   }));
 
   let withRatings = 0;
@@ -232,24 +233,57 @@ it('can assess predictive accuracy of scaleValues', () => {
   );
   expect(Math.round(zonePercentTotal)).toEqual(100);
 
-  accuracy.excluded.forEach(({ exclusionValue, values }) => {
-    if (exclusionValue) {
-      expect(exclusionValue.scaleValue.confidence).toBeLessThanOrEqual(70);
+  accuracy.excluded.forEach(({ exclusionValues, sideValues }) => {
+    if (exclusionValues) {
+      exclusionValues.forEach((value) => expect(value).toBeLessThanOrEqual(70));
     } else {
-      expect(values.some((value) => !value.scaleValue)).toEqual(true);
+      expect(sideValues.some((value) => !value.scaleValue)).toEqual(true);
     }
   });
 
-  accuracy.affirmative.forEach(({ winningSide, values }) => {
+  accuracy.affirmative.forEach(({ winningSide, sideValues }) => {
     const winningIndex = winningSide - 1;
-    expect(values[winningIndex].value).toBeLessThanOrEqual(
-      values[1 - winningIndex].value
+    expect(sideValues[winningIndex].value).toBeLessThanOrEqual(
+      sideValues[1 - winningIndex].value
     );
   });
-  accuracy.negative.forEach(({ winningSide, values }) => {
+  accuracy.negative.forEach(({ winningSide, sideValues }) => {
     const winningIndex = winningSide - 1;
-    expect(values[winningIndex].value).toBeGreaterThanOrEqual(
-      values[1 - winningIndex].value
+    expect(sideValues[winningIndex].value).toBeGreaterThanOrEqual(
+      sideValues[1 - winningIndex].value
     );
   });
+});
+
+it('can get predictiveAccuracy for DOUBLES events', () => {
+  const drawProfiles = [
+    {
+      category: { ratingType: 'WTN', ratingMin: 8, ratingMax: 12 },
+      eventName: `WTN 8-12 DOUBLES`,
+      eventType: DOUBLES,
+      drawSize: 32,
+    },
+  ];
+  const participantsProfile = { scaledParticipantsCount: 100 };
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    participantsProfile,
+    drawProfiles,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  const matchUpStatuses = unique(
+    matchUps.map(({ matchUpStatus }) => matchUpStatus)
+  );
+  expect(matchUpStatuses).toEqual([COMPLETED]);
+
+  const { accuracy } = tournamentEngine.getPredictiveAccuracy({
+    valueAccessor: 'wtnRating',
+    scaleName: WTN,
+  });
+
+  expect(matchUps.length).toEqual(
+    accuracy.affirmative.length + accuracy.negative.length
+  );
 });
