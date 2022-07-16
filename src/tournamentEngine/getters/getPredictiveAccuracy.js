@@ -75,9 +75,6 @@ export function getPredictiveAccuracy({
     scaleName,
   });
 
-  let nonZone = 0,
-    excluded = 0;
-
   const zoneData =
     zoneMargin &&
     relevantMatchUps
@@ -90,22 +87,12 @@ export function getPredictiveAccuracy({
           sides,
         });
         const valuesGap = Math.abs(values[0].value - values[1].value);
-        const inZone = valuesGap < zoneMargin;
-        if (!inZone) nonZone += 1;
 
-        return { competitiveness, score, valuesGap, inZone };
+        return { competitiveness, score, valuesGap };
       })
       .filter(({ valuesGap }) => {
         const inZone = valuesGap < zoneMargin;
-        if (!inZone) {
-          nonZone += 1;
-          return false;
-        }
-
-        const notExcluded =
-          !excludeMargin || (excludeMargin && valuesGap > excludeMargin);
-        if (!notExcluded) excluded += 1;
-        return notExcluded;
+        return inZone;
       });
 
   const zoneBands = zoneData?.length && getGroupingBands({ zoneData });
@@ -122,13 +109,14 @@ export function getPredictiveAccuracy({
       }))
     );
 
+  const nonZone = relevantMatchUps.length - (zoneData?.length || 0);
+
   return {
     ...SUCCESS,
     relevantMatchUps,
     zoneDistribution,
     zoneData,
     accuracy,
-    excluded,
     nonZone,
   };
 }
@@ -163,6 +151,7 @@ function getSideValues({ sides, matchUpType, scaleName, valueAccessor }) {
 
 // given a grouping of matchUps, how accurate were the scaleValues in predicting winner
 function getGroupingAccuracy({
+  excludeMargin,
   exclusionRule,
   valueAccessor,
   ascending,
@@ -210,6 +199,18 @@ function getGroupingAccuracy({
         });
         continue;
       }
+    }
+
+    const excludeGap = excludeMargin && valuesGap < excludeMargin;
+
+    if (excludeGap) {
+      accuracy.excluded.push({
+        scoreString: score?.scoreStringSide1,
+        winningSide,
+        excludeGap,
+        values,
+      });
+      continue;
     }
 
     if (
