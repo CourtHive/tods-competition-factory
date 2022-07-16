@@ -75,6 +75,9 @@ export function getPredictiveAccuracy({
     scaleName,
   });
 
+  let nonZone = 0,
+    excluded = 0;
+
   const zoneData =
     zoneMargin &&
     relevantMatchUps
@@ -87,13 +90,23 @@ export function getPredictiveAccuracy({
           sides,
         });
         const valuesGap = Math.abs(values[0].value - values[1].value);
-        return { competitiveness, score, valuesGap };
+        const inZone = valuesGap < zoneMargin;
+        if (!inZone) nonZone += 1;
+
+        return { competitiveness, score, valuesGap, inZone };
       })
-      .filter(
-        ({ valuesGap }) =>
-          valuesGap < zoneMargin &&
-          (!excludeMargin || (excludeMargin && valuesGap > excludeMargin))
-      );
+      .filter(({ valuesGap }) => {
+        const inZone = valuesGap < zoneMargin;
+        if (!inZone) {
+          nonZone += 1;
+          return false;
+        }
+
+        const notExcluded =
+          !excludeMargin || (excludeMargin && valuesGap > excludeMargin);
+        if (!notExcluded) excluded += 1;
+        return notExcluded;
+      });
 
   const zoneBands = zoneData?.length && getGroupingBands({ zoneData });
   const totalZoneMatchUps =
@@ -109,7 +122,15 @@ export function getPredictiveAccuracy({
       }))
     );
 
-  return { ...SUCCESS, relevantMatchUps, accuracy, zoneDistribution };
+  return {
+    ...SUCCESS,
+    relevantMatchUps,
+    zoneDistribution,
+    zoneData,
+    accuracy,
+    excluded,
+    nonZone,
+  };
 }
 
 function getGroupingBands({ zoneData }) {
@@ -142,7 +163,6 @@ function getSideValues({ sides, matchUpType, scaleName, valueAccessor }) {
 
 // given a grouping of matchUps, how accurate were the scaleValues in predicting winner
 function getGroupingAccuracy({
-  excludeMargin,
   exclusionRule,
   valueAccessor,
   ascending,
@@ -164,18 +184,6 @@ function getGroupingAccuracy({
       score,
       sides,
     });
-
-    if (excludeMargin) {
-      const valuesGap = Math.abs(values[0].value - values[1].value);
-      if (valuesGap < excludeMargin) {
-        accuracy.excluded.push({
-          scoreString: score?.scoreStringSide1,
-          winningSide,
-          valuesGap,
-          values,
-        });
-      }
-    }
 
     if (exclusionRule) {
       const { valueAccessor, range } = exclusionRule;
@@ -210,6 +218,7 @@ function getGroupingAccuracy({
     ) {
       accuracy.excluded.push({
         scoreString: score?.scoreStringSide1,
+        missingValues: true,
         winningSide,
         values,
       });
