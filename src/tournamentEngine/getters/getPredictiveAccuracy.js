@@ -201,18 +201,6 @@ function getGroupingAccuracy({
       }
     }
 
-    const excludeGap = excludeMargin && valuesGap < excludeMargin;
-
-    if (excludeGap) {
-      accuracy.excluded.push({
-        scoreString: score?.scoreStringSide1,
-        winningSide,
-        excludeGap,
-        values,
-      });
-      continue;
-    }
-
     if (
       values.filter((value) => ![undefined, '', null].includes(value.value))
         .length < 2
@@ -228,6 +216,18 @@ function getGroupingAccuracy({
 
     const valuesGap =
       values[winningIndex].value - values[1 - winningIndex].value;
+
+    const excludeGap = excludeMargin && valuesGap < excludeMargin;
+
+    if (excludeGap) {
+      accuracy.excluded.push({
+        scoreString: score?.scoreStringSide1,
+        winningSide,
+        excludeGap,
+        values,
+      });
+      continue;
+    }
 
     // when ascending is true winning value will be less than losing value
     const signedGap = ascending ? valuesGap * -1 : valuesGap;
