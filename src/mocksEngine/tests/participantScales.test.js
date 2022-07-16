@@ -1,12 +1,13 @@
 import { getParticipantId } from '../../global/functions/extractors';
+import { mockProfile } from './mockScaleProfile';
 import { tournamentEngine } from '../..';
+import { unique } from '../../utilities';
 import mocksEngine from '..';
 
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { ELO, NTRP, UTR, WTN } from '../../constants/ratingConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
-import { SINGLES } from '../../constants/matchUpTypes';
-import { mockProfile } from './mockScaleProfile';
+import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 
 // prettier-ignore
 const rankingsScenarios = [
@@ -252,4 +253,37 @@ it('can assess predictive accuracy of scaleValues', () => {
       sideValues[1 - winningIndex].value
     );
   });
+});
+
+it('can get predictiveAccuracy for DOUBLES events', () => {
+  const drawProfiles = [
+    {
+      category: { ratingType: 'WTN', ratingMin: 8, ratingMax: 12 },
+      eventName: `WTN 8-12 DOUBLES`,
+      eventType: DOUBLES,
+      drawSize: 32,
+    },
+  ];
+  const participantsProfile = { scaledParticipantsCount: 100 };
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    participantsProfile,
+    drawProfiles,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  const matchUpStatuses = unique(
+    matchUps.map(({ matchUpStatus }) => matchUpStatus)
+  );
+  expect(matchUpStatuses).toEqual([COMPLETED]);
+
+  const { accuracy } = tournamentEngine.getPredictiveAccuracy({
+    valueAccessor: 'wtnRating',
+    scaleName: WTN,
+  });
+
+  expect(matchUps.length).toEqual(
+    accuracy.affirmative.length + accuracy.negative.length
+  );
 });
