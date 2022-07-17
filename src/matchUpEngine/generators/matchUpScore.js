@@ -1,12 +1,18 @@
 import { generateScoreString } from './generateScoreString';
 
-export function matchUpScore({ score, winningSide, matchUpStatus } = {}) {
+export function matchUpScore({
+  matchUpFormat,
+  matchUpStatus,
+  winningSide,
+  score,
+} = {}) {
   if (!score) return { sets: [] };
 
   const sets = score.sets || [];
 
   let scoreStringSide1 = generateScoreString({
     winnerFirst: false,
+    matchUpFormat,
     matchUpStatus,
     sets,
   });
@@ -14,11 +20,13 @@ export function matchUpScore({ score, winningSide, matchUpStatus } = {}) {
   let scoreStringSide2 = generateScoreString({
     winnerFirst: false,
     reversed: true,
+    matchUpFormat,
     matchUpStatus,
     sets,
   });
 
   let winnerPerspective = generateScoreString({
+    matchUpFormat,
     matchUpStatus,
     winningSide,
     sets,
