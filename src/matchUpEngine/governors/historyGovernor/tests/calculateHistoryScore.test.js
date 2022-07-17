@@ -104,7 +104,7 @@ it('supports double fault tracking', () => {
   expect(result.servingSide).toEqual(1);
 });
 
-it.only('supports undo and redo', () => {
+it('supports undo and redo', () => {
   let matchUp = {
     matchUpFormat: 'SET1-S:TB10',
     matchUpId: 'foo',
