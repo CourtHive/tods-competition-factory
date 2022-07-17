@@ -1,4 +1,5 @@
 import { generateScoreString } from '../../generators/generateScoreString';
+import { isConvertableInteger } from '../../../utilities/math';
 import { isValid } from '../matchUpFormatGovernor/isValid';
 import { parse } from '../matchUpFormatGovernor/parse';
 import { getHistory } from './getHistory';
@@ -9,18 +10,18 @@ import {
   INVALID_VALUES,
   MISSING_MATCHUP_FORMAT,
 } from '../../../constants/errorConditionConstants';
-import { isConvertableInteger } from '../../../utilities/math';
 
-export function calculateHistoryScore({ matchUp }) {
+export function calculateHistoryScore({ matchUp, updateScore }) {
   const history = getHistory({ matchUp })?.history || [];
 
   if (!Array.isArray(history))
     return { error: INVALID_VALUES, info: 'history is not an array' };
 
-  if (!matchUp.matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
-  if (!isValid(matchUp.matchUpFormat)) return { error: INVALID_MATCHUP_FORMAT };
+  const { matchUpFormat } = matchUp;
+  if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
+  if (!isValid(matchUpFormat)) return { error: INVALID_MATCHUP_FORMAT };
 
-  const parsedFormat = parse(matchUp.matchUpFormat);
+  const parsedFormat = parse(matchUpFormat);
   const { bestOf, finalSetFormat, setFormat } = parsedFormat;
 
   const pointProgression = ['0', '15', '30', '40', 'A', 'G'];
@@ -31,16 +32,19 @@ export function calculateHistoryScore({ matchUp }) {
   let sidePoints = [0, 0];
   let servingSide = 1;
   let unknowns = [];
+  let setNumber = 0;
   let isFinalSet;
   let faults = 0;
 
   const isValidSide = (value) => [1, 2].includes(value);
 
   const newSet = () => {
+    setNumber += 1;
     return {
       winningSide: undefined,
       side1Score: 0,
       side2Score: 0,
+      setNumber,
       games: [],
     };
   };
@@ -265,10 +269,16 @@ export function calculateHistoryScore({ matchUp }) {
     score.sets.push(set);
   }
 
-  score.scoreStringSide1 = generateScoreString(score);
-  score.scoreStringSide2 = generateScoreString({ ...score, reversed: true });
+  score.scoreStringSide1 = generateScoreString({ ...score, matchUpFormat });
+  score.scoreStringSide2 = generateScoreString({
+    ...score,
+    matchUpFormat,
+    reversed: true,
+  });
 
   servingSide = tiebreakServingSide || servingSide;
+
+  if (updateScore) matchUp.score = score;
 
   return { ...SUCCESS, servingSide, score };
 }

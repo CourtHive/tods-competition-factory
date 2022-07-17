@@ -13,9 +13,10 @@ import { INVALID_VALUES } from '../../constants/errorConditionConstants';
  *
  */
 export function generateOutcomeFromScoreString({
-  scoreString,
-  winningSide,
+  matchUpFormat,
   matchUpStatus,
+  winningSide,
+  scoreString,
 }) {
   if (!scoreString)
     return {
@@ -30,10 +31,14 @@ export function generateOutcomeFromScoreString({
 
   const neutralParsedSets = scoreString && parseScoreString({ scoreString });
   const score = {};
-  const winningScoreString = generateScoreString({ sets: neutralParsedSets });
+  const winningScoreString = generateScoreString({
+    sets: neutralParsedSets,
+    matchUpFormat,
+  });
   const losingScoreString = generateScoreString({
     sets: neutralParsedSets,
     reversed: true,
+    matchUpFormat,
   });
   if (winningSide === 2) {
     score.scoreStringSide1 = losingScoreString;

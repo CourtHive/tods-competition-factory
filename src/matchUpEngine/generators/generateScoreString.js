@@ -1,3 +1,4 @@
+import { parse } from '../governors/matchUpFormatGovernor/parse';
 import { isNumeric } from '../../utilities/math';
 
 import { MISSING_VALUE } from '../../constants/errorConditionConstants';
@@ -27,12 +28,16 @@ export function generateScoreString(params) {
     addOutcomeString,
     reversed = false,
     matchUpStatus,
+    matchUpFormat,
     autoComplete,
     winningSide,
     sets,
   } = params;
 
   if (!sets) return { error: MISSING_VALUE };
+
+  const parsedFormat = matchUpFormat && parse(matchUpFormat);
+  const { bestOf, finalSetFormat, setFormat } = parsedFormat || {};
 
   const scoresInSideOrder = !winnerFirst || !winningSide || winningSide === 1;
   const reverseScores = reversed || !scoresInSideOrder;
@@ -53,13 +58,18 @@ export function generateScoreString(params) {
   return `${setScores} ${outcomeString}`;
 
   function setString(currentSet) {
+    const isFinalSet = bestOf && currentSet.setNumber === bestOf;
+    if (isFinalSet) true;
+
+    const format = isFinalSet && finalSetFormat ? finalSetFormat : setFormat;
     const hasGameScores = (set) =>
       isNumeric(set?.side1Score) || isNumeric(set?.side2Score);
     const hasTiebreakScores = (set) =>
       isNumeric(set?.side1TiebreakScore) || isNumeric(set?.side2TiebreakScore);
 
     const isTiebreakSet =
-      !hasGameScores(currentSet) && hasTiebreakScores(currentSet);
+      format?.tiebreakSet ||
+      (!hasGameScores(currentSet) && hasTiebreakScores(currentSet));
 
     const { side1Score, side2Score, side1TiebreakScore, side2TiebreakScore } =
       currentSet;

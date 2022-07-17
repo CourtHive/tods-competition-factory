@@ -5,6 +5,8 @@ import { addPoint } from './addPoint';
 import { addGame } from './addGame';
 import { addShot } from './addShot';
 import { addSet } from './addSet';
+import { redo } from './redo';
+import { undo } from './undo';
 import { umo } from './umo';
 
 export const historyGovernor = {
@@ -15,6 +17,8 @@ export const historyGovernor = {
   addGame,
   addShot,
   addSet,
+  redo,
+  undo,
   umo,
 };
 

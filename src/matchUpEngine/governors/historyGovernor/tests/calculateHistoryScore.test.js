@@ -1,6 +1,7 @@
 import matchUpEngine from '../../../sync';
 
 import { MATCHUP_HISTORY } from '../../../../constants/extensionConstants';
+import { getHistory } from '../getHistory';
 
 it('can calculate score from history', () => {
   const history = [
@@ -101,4 +102,65 @@ it('supports double fault tracking', () => {
   result = matchUpEngine.calculateHistoryScore();
   expect(result.score.sets[0].side1TiebreakScore).toEqual(1);
   expect(result.servingSide).toEqual(1);
+});
+
+it('supports undo and redo', () => {
+  let matchUp = {
+    matchUpFormat: 'SET1-S:TB10',
+    matchUpId: 'foo',
+  };
+
+  // possible to invoke without state, passing matchUp directly
+  let result = matchUpEngine.setState(matchUp).calculateHistoryScore();
+  expect(result.servingSide).toEqual(1);
+
+  result = matchUpEngine.addPoint({ point: { p: 1 } });
+  result = matchUpEngine.calculateHistoryScore();
+  expect(result.score.scoreStringSide1).toEqual('[1-0]');
+  expect(result.score.scoreStringSide2).toEqual('[0-1]');
+  result = getHistory({ matchUp });
+  expect(result.history.length).toEqual(1);
+
+  expect(result.success).toEqual(true);
+  result = matchUpEngine.addPoint({ point: { p: 2 } });
+  expect(result.success).toEqual(true);
+  result = matchUpEngine.calculateHistoryScore();
+  expect(result.success).toEqual(true);
+  expect(result.score.scoreStringSide1).toEqual('[1-1]');
+  expect(result.score.scoreStringSide2).toEqual('[1-1]');
+  result = matchUpEngine.undo();
+  expect(result.success).toEqual(true);
+  result = matchUpEngine.calculateHistoryScore();
+  expect(result.score.scoreStringSide1).toEqual('[1-0]');
+  expect(result.score.scoreStringSide2).toEqual('[0-1]');
+
+  result = getHistory({ matchUp });
+  expect(result.undoHistory.length).toEqual(1);
+
+  result = matchUpEngine.redo();
+  expect(result.success).toEqual(true);
+  result = matchUpEngine.calculateHistoryScore();
+  expect(result.score.scoreStringSide1).toEqual('[1-1]');
+  expect(result.score.scoreStringSide2).toEqual('[1-1]');
+
+  result = getHistory({ matchUp });
+  expect(result.undoHistory.length).toEqual(0);
+
+  result = matchUpEngine.undo();
+  expect(result.success).toEqual(true);
+  result = getHistory({ matchUp });
+  expect(result.undoHistory.length).toEqual(1);
+
+  result = matchUpEngine.addPoint({ point: { p: 1 } });
+  expect(result.success).toEqual(true);
+  result = matchUpEngine.calculateHistoryScore();
+  expect(result.success).toEqual(true);
+  expect(result.score.scoreStringSide1).toEqual('[2-0]');
+  expect(result.score.scoreStringSide2).toEqual('[0-2]');
+  result = getHistory({ matchUp });
+  expect(result.undoHistory.length).toEqual(0);
+
+  result = matchUpEngine.calculateHistoryScore({ updateScore: true });
+  matchUp = matchUpEngine.getState();
+  expect(matchUp.score.sets.length).toEqual(1);
 });

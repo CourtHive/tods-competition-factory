@@ -6,6 +6,7 @@ import {
 } from './matchUpsGetter';
 
 import { COMPETITIVE, DECISIVE, ROUTINE } from '../../constants/statsConstants';
+import { RETIRED, WALKOVER } from '../../constants/matchUpStatusConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -63,8 +64,11 @@ export function getPredictiveAccuracy({
       })?.matchUps || [];
 
   const relevantMatchUps = matchUps.filter(
-    ({ winningSide, score, sides }) =>
-      winningSide && sides?.length === 2 && scoreHasValue({ score })
+    ({ winningSide, score, sides, matchUpStatus }) =>
+      ![RETIRED, WALKOVER].includes(matchUpStatus) &&
+      scoreHasValue({ score }) &&
+      sides?.length === 2 &&
+      winningSide
   );
 
   const accuracy = getGroupingAccuracy({

@@ -214,6 +214,7 @@ export function completeDrawMatchUp({
   const { matchUpId } = targetMatchUp || {};
 
   const { outcome } = generateOutcomeFromScoreString({
+    matchUpFormat,
     matchUpStatus,
     scoreString,
     winningSide,

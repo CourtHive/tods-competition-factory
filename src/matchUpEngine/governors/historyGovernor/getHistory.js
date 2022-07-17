@@ -11,7 +11,7 @@ export function getHistory({ matchUp }) {
   });
   if (!extension) return { error: NOT_FOUND };
 
-  const { history, undoHistory } = extension.value;
+  const { history = [], undoHistory = [] } = extension.value;
 
   return { history, undoHistory, ...SUCCESS };
 }
