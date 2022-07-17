@@ -1,4 +1,5 @@
 import { generateScoreString } from '../../generators/generateScoreString';
+import { isConvertableInteger } from '../../../utilities/math';
 import { isValid } from '../matchUpFormatGovernor/isValid';
 import { parse } from '../matchUpFormatGovernor/parse';
 import { getHistory } from './getHistory';
@@ -9,7 +10,6 @@ import {
   INVALID_VALUES,
   MISSING_MATCHUP_FORMAT,
 } from '../../../constants/errorConditionConstants';
-import { isConvertableInteger } from '../../../utilities/math';
 
 export function calculateHistoryScore({ matchUp }) {
   const history = getHistory({ matchUp })?.history || [];
