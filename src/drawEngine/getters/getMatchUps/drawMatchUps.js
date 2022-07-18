@@ -1,6 +1,7 @@
 import { addParticipantGroupings } from '../../governors/positionGovernor/avoidance/addParticipantGroupings';
 import { addUpcomingMatchUps } from '../../governors/matchUpGovernor/addUpcomingMatchUps';
 import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
+import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getStructureMatchUps } from './getStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
@@ -105,6 +106,9 @@ export function getDrawMatchUps({
   // TODO: get QUALIFYING/MAIN { stageSequence: 1 } seedAssignments
   // ...optionally pass these seedAssignments to other stage structures
 
+  const exitProfiles =
+    drawDefinition && getExitProfiles({ drawDefinition }).exitProfiles;
+
   structures.forEach((structure) => {
     const {
       byeMatchUps = [],
@@ -127,6 +131,7 @@ export function getDrawMatchUps({
       contextProfile,
       contextContent,
       scheduleTiming,
+      exitProfiles,
       matchUpsMap,
       structure,
       context,

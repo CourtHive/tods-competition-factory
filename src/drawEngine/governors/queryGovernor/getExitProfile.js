@@ -54,7 +54,7 @@ export function getExitProfiles({ drawDefinition }) {
     const relevantLinks = links.filter(
       (link) =>
         link.source.structureId === structureId &&
-        link.source.roundNumber >= targetRound
+        link.source.roundNumber >= targetRound // this doesn't work for ROUND_ROBIN. Will need to use roundProfile to determine final roundNumber.
     );
 
     for (const link of relevantLinks) {

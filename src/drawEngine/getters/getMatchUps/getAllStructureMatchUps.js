@@ -8,6 +8,7 @@ import { findParticipant } from '../../../global/functions/deducers/findParticip
 import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
+import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
 import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
@@ -27,6 +28,7 @@ import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { TEAM } from '../../../constants/eventConstants';
+import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
 /*
   return all matchUps within a structure and its child structures
@@ -45,6 +47,7 @@ export function getAllStructureMatchUps({
   contextContent,
   matchUpFilters,
   scheduleTiming,
+  exitProfiles,
   context = {},
   matchUpsMap,
   structure,
@@ -154,6 +157,18 @@ export function getAllStructureMatchUps({
     structure;
   const { drawId, drawName } = drawDefinition || {};
 
+  exitProfiles =
+    exitProfiles ||
+    (drawDefinition && getExitProfiles({ drawDefinition }).exitProfiles);
+  const exitProfile = exitProfiles?.[structureId];
+  const initialRoundOfPlay =
+    exitProfile?.length &&
+    (exitProfile[0]
+      .split('-')
+      .map((x) => parseInt(x))
+      .reduce((a, b) => a + b) ||
+      0);
+
   const isRoundRobin = !!structure.structures;
 
   let matchUps = getMappedStructureMatchUps({
@@ -202,6 +217,7 @@ export function getAllStructureMatchUps({
         sourceDrawPositionRanges,
         drawPositionsRanges,
         roundNamingProfile,
+        initialRoundOfPlay,
         appliedPolicies,
         isRoundRobin,
         roundProfile,
@@ -272,6 +288,7 @@ export function getAllStructureMatchUps({
     additionalContext = {},
     drawPositionsRanges,
     roundNamingProfile,
+    initialRoundOfPlay,
     tieDrawPositions,
     appliedPolicies,
     isCollectionBye,
@@ -382,6 +399,10 @@ export function getAllStructureMatchUps({
       onlyDefined({
         matchUpFormat: matchUp.matchUpType === TEAM ? undefined : matchUpFormat,
         tieFormat: matchUp.matchUpType !== TEAM ? undefined : tieFormat,
+        roundOfPlay:
+          stage !== QUALIFYING &&
+          initialRoundOfPlay !== undefined &&
+          initialRoundOfPlay + roundNumber,
         endDate: matchUp.endDate || endDate,
         category: matchUpCategory,
         abbreviatedRoundName,
@@ -597,6 +618,7 @@ export function getAllStructureMatchUps({
             sourceDrawPositionRanges,
             sideLineUps: lineUps,
             drawPositionsRanges,
+            initialRoundOfPlay,
             roundNamingProfile,
             additionalContext,
             appliedPolicies,
