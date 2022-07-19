@@ -1,5 +1,7 @@
+import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import tieFormatConstants from '../../../constants/tieFormatConstants';
 import mocksEngine from '../../../mocksEngine';
+import { tournamentEngine } from '../../..';
 
 import { TEAM } from '../../../constants/eventConstants';
 
@@ -28,11 +30,17 @@ const tieKeys = [
 
 it.each(tieKeys)('can generate all exported tieFormatConstants', (tieKey) => {
   const { key, collectionsCount, tieFormatName } = tieKey;
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  const { eventIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ eventType: TEAM, drawSize: 2, tieFormatName: key }],
+    eventProfiles: [{ eventType: TEAM }],
   });
 
+  tournamentEngine.setState(tournamentRecord);
+
   const tieFormat = tournamentRecord.events[0].tieFormat;
+
+  let result = validateTieFormat({ tieFormat });
+  expect(result.valid).toEqual(true);
 
   if (tieFormatName) {
     expect(tieFormat.tieFormatName).toEqual(tieFormatName);
@@ -40,4 +48,37 @@ it.each(tieKeys)('can generate all exported tieFormatConstants', (tieKey) => {
     expect(tieFormat.tieFormatName).toEqual(key);
   }
   expect(tieFormat.collectionDefinitions.length).toEqual(collectionsCount);
+
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      participantFilters: { participantTypes: [TEAM] },
+    }
+  );
+  const participantIds = tournamentParticipants.map((p) => p.participantId);
+
+  const eventId = eventIds[1];
+  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.generateDrawDefinition({
+    tieFormatName: key,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  const drawDefinition = result.drawDefinition;
+
+  result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
+  expect(result.success).toEqual(true);
+
+  const { drawId } = drawDefinition;
+  const { tieFormat: foundTieFormat } = tournamentEngine.getTieFormat({
+    eventId,
+    drawId,
+  });
+  if (tieFormatName) {
+    expect(foundTieFormat.tieFormatName).toEqual(tieFormatName);
+  } else {
+    expect(foundTieFormat.tieFormatName).toEqual(key);
+  }
 });

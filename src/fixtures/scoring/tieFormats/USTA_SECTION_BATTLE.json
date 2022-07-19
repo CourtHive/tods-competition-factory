@@ -36,7 +36,8 @@
       "collectionName": "Tiebreak Doubles",
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:6/TB6",
-      "matchUpType": "DOUBLES"
+      "matchUpType": "DOUBLES",
+      "matchUpValue": 1
     }
   ],
   "tieFormatName": "USTA_SECTION_BATTLE",

@@ -109,6 +109,7 @@ export function generateDrawDefinition(params) {
       // if no tieFormat is found on event then will use default
       event?.tieFormat ||
       tieFormatDefaults();
+
     matchUpFormat = undefined;
   } else if (!matchUpFormat) {
     tieFormat = undefined;
