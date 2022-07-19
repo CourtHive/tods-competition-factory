@@ -39,7 +39,7 @@
       "matchUpType": "DOUBLES"
     }
   ],
-  "tieFormatName": "Battle of the sections",
+  "tieFormatName": "USTA_SECTION_BATTLE",
   "winCriteria": {
     "valueGoal": 9
   }

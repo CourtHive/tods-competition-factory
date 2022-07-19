@@ -6,7 +6,6 @@ import {
   MISSING_DRAW_ID,
   MISSING_EVENT,
   MISSING_MATCHUP_FORMAT,
-  MISSING_STRUCTURE_ID,
   MISSING_VALUE,
   UNRECOGNIZED_MATCHUP_FORMAT,
 } from '../../constants/errorConditionConstants';
@@ -187,7 +186,7 @@ it('can set and return matchUpFormat codes', () => {
     matchUpFormat: 'BOBUS',
     drawId,
   });
-  expect(result.error).toEqual(MISSING_STRUCTURE_ID);
+  expect(result.error).toEqual(UNRECOGNIZED_MATCHUP_FORMAT);
 
   result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: 'BOBUS',
