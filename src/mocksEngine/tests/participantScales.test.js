@@ -287,3 +287,47 @@ it('can get predictiveAccuracy for DOUBLES events', () => {
     accuracy.affirmative.length + accuracy.negative.length
   );
 });
+
+it('can pass matchUps array into predictiveAccuracy', () => {
+  const drawProfiles = [
+    {
+      category: { ratingType: 'WTN', ratingMin: 8, ratingMax: 12 },
+      eventName: `WTN 8-12 DOUBLES`,
+      eventType: DOUBLES,
+      drawSize: 32,
+    },
+  ];
+  const participantsProfile = { scaledParticipantsCount: 100 };
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    participantsProfile,
+    drawProfiles,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  const matchUpStatuses = unique(
+    matchUps.map(({ matchUpStatus }) => matchUpStatus)
+  );
+  expect(matchUpStatuses).toEqual([COMPLETED]);
+
+  const contextProfile = { withScaleValues: true, withCompetitiveness: true };
+  const contextFilters = {
+    matchUpTypes: [SINGLES, DOUBLES],
+  };
+  matchUps = tournamentEngine.allTournamentMatchUps({
+    contextProfile,
+    contextFilters,
+    inContext: true,
+  }).matchUps;
+
+  const { accuracy } = tournamentEngine.getPredictiveAccuracy({
+    valueAccessor: 'wtnRating',
+    scaleName: WTN,
+    matchUps,
+  });
+
+  expect(matchUps.length).toEqual(
+    accuracy.affirmative.length + accuracy.negative.length
+  );
+});
