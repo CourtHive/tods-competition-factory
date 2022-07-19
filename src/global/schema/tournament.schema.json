@@ -916,10 +916,7 @@
           "$ref": "#/definitions/MatchUpStatusEnum"
         },
         "matchUpStatusCodes": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "type": "array"
         },
         "matchUpType": {
           "$ref": "#/definitions/MatchUpTypeEnum"

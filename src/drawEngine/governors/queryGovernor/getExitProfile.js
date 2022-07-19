@@ -27,6 +27,8 @@ export function getExitProfiles({ drawDefinition }) {
       ({ stageSequence }) => stageSequence === 1
     );
 
+    if (!initialStructure) continue;
+
     // initial structure of each stage has exitProfile of '0'
     const { structureId } = initialStructure;
     // each structure can **potentially** have more than one exitProfile
@@ -54,7 +56,7 @@ export function getExitProfiles({ drawDefinition }) {
     const relevantLinks = links.filter(
       (link) =>
         link.source.structureId === structureId &&
-        link.source.roundNumber >= targetRound
+        link.source.roundNumber >= targetRound // this doesn't work for ROUND_ROBIN. Will need to use roundProfile to determine final roundNumber.
     );
 
     for (const link of relevantLinks) {

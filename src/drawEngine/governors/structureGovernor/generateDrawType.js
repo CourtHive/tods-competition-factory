@@ -210,7 +210,9 @@ export function generateDrawType(params = {}) {
       targetEntryRound,
       linkType,
     });
-    drawDefinition.links.push(link);
+    if (link) {
+      drawDefinition.links.push(link);
+    }
   }
 
   const { matchUps, matchUpsMap } = getAllDrawMatchUps({ drawDefinition });
