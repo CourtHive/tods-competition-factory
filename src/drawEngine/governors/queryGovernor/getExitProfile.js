@@ -27,6 +27,8 @@ export function getExitProfiles({ drawDefinition }) {
       ({ stageSequence }) => stageSequence === 1
     );
 
+    if (!initialStructure) continue;
+
     // initial structure of each stage has exitProfile of '0'
     const { structureId } = initialStructure;
     // each structure can **potentially** have more than one exitProfile
