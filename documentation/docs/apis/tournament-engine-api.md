@@ -3004,6 +3004,18 @@ tournamentEngine.setMatchUpDailyLimits({
 
 ---
 
+## setMatchUpFormat
+
+```js
+tournamentEngine.settMatchUpFormat({
+  matchUpFormat, // TODS matchUpFormatCode
+  structureId,
+  drawId,
+});
+```
+
+---
+
 ## setMatchUpStatus
 
 Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object. Handles any winner/loser participant movements within or across structures.
@@ -3117,18 +3129,6 @@ const { structurePositionAssignments } =
 result = tournamentEngine.setPositionAssignments({
   structurePositionAssignments,
   drawId,
-});
-```
-
----
-
-## setStructureDefaultMatchUpFormat
-
-```js
-tournamentEngine.setStructureDefaultMatchUpFormat({
-  drawId,
-  structureId,
-  matchUpFormat, // TODS matchUpFormatCode
 });
 ```
 

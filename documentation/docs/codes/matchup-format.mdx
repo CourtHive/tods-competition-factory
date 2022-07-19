@@ -71,10 +71,10 @@ To set the **matchUpFormat** at each level:
 ```js
 tournamentEngine.setEventDefaultMatchUpFormat({ eventId, matchUpFormat });
 tournamentEngine.setDrawDefaultMatchUpFormat({ drawId, matchUpFormat });
-tournamentEngine.setStructureDefaultMatchUpFormat({
-  drawId,
-  structureId,
+tournamentEngine.setMatchUpFormat({
   matchUpFormat,
+  structureId,
+  drawId,
 });
 ```
 
@@ -82,10 +82,10 @@ The **matchUpFormat** for a **matchUp** is set at the time of score entry:
 
 ```js
 tournamentEngine.setMatchUpStatus({
-  drawId,
-  matchUpId,
   matchUpFormat,
+  matchUpId,
   outcome,
+  drawId,
 });
 ```
 

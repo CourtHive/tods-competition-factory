@@ -39,6 +39,7 @@ export function setDrawDefaultMatchUpFormat({
   return setMatchUpFormat({ tournamentRecord, drawDefinition, matchUpFormat });
 }
 
+// TODO: To Be deprecated
 /**
  *
  * @param {object} tournamentRecord - passed automatically by tournamentEngine
