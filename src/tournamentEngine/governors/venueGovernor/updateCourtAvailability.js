@@ -16,7 +16,7 @@ export function updateCourtAvailability({ tournamentRecord }) {
   }
 
   for (const court of courts) {
-    const { startTime, endTime } = court.dateAvailability.reduce(
+    const { startTime, endTime } = (court.dateAvailability || []).reduce(
       (extents, availability) => {
         const startMinutes = timeStringMinutes(extents.startTime);
         const endMinutes = timeStringMinutes(extents.endTime);
