@@ -8,7 +8,7 @@ import { mocksEngine } from '../../..';
 import fs from 'fs';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
-import { QUALIFIER } from '../../../constants/entryStatusConstants';
+import { QUALIFYING_PARTICIPANT } from '../../../constants/positionActionConstants';
 import {
   DRAW,
   MAIN,
@@ -217,7 +217,7 @@ it('can advance participants through multi-stage qualifying structures', () => {
       drawId,
     });
     let qualifyingAction = result.validActions.find(
-      ({ type }) => type === QUALIFIER
+      ({ type }) => type === QUALIFYING_PARTICIPANT
     );
     expect(qualifyingAction).not.toBeUndefined();
 
