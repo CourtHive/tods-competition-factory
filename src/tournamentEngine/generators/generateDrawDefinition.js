@@ -16,6 +16,7 @@ import { tieFormatDefaults } from './tieFormatDefaults';
 import { nextPowerOf2 } from '../../utilities';
 import { prepareStage } from './prepareStage';
 
+import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -45,6 +46,7 @@ export function generateDrawDefinition(params) {
   const stack = 'generateDrawDefinition';
   const {
     drawType = SINGLE_ELIMINATION,
+    considerEventEntries = true, // in the absence of drawSize and drawEntries, look to event.entries
     ignoreAllowedDrawTypes,
     voluntaryConsolation,
     policyDefinitions,
@@ -72,6 +74,11 @@ export function generateDrawDefinition(params) {
 
   if (validEntriesResult?.error) return validEntriesResult;
 
+  const eventEntries =
+    event?.entries?.filter((entry) =>
+      STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
+    ) || [];
+
   // if tournamentRecord is provided, and unless instructed to ignore valid types,
   // check for restrictions on allowed drawTypes
   const allowedDrawTypes =
@@ -86,9 +93,11 @@ export function generateDrawDefinition(params) {
     return { error: INVALID_DRAW_TYPE };
   }
 
+  const consideredEntries =
+    drawEntries || (considerEventEntries ? eventEntries : []);
   const derivedDrawSize =
     !params.drawSize &&
-    drawEntries?.length &&
+    consideredEntries.length &&
     ![
       AD_HOC,
       DOUBLE_ELIMINATION,
@@ -96,7 +105,7 @@ export function generateDrawDefinition(params) {
       ROUND_ROBIN,
       ROUND_ROBIN_WITH_PLAYOFF,
     ].includes(drawType) &&
-    nextPowerOf2(drawEntries.length);
+    nextPowerOf2(consideredEntries.length);
 
   // coersion of drawSize and seedsCount to integers
   let drawSize =
@@ -230,7 +239,7 @@ export function generateDrawDefinition(params) {
   if (drawTypeResult.error) return drawTypeResult;
 
   // add all entries to the draw
-  const entries = drawEntries || event?.entries || [];
+  const entries = drawEntries || eventEntries;
   for (const entry of entries) {
     // convenience: assume MAIN as entryStage if none provided
     const entryData = {
