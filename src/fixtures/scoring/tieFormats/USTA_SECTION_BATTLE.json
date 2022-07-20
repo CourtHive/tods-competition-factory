@@ -19,7 +19,7 @@
     {
       "category": { "ageCategoryCode": "16U" },
       "collectionName": "16U Doubles",
-      "matchUpCount": 4,
+      "matchUpCount": 2,
       "matchUpFormat": "SET1-S:6/TB6",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
@@ -27,7 +27,7 @@
     {
       "category": { "ageCategoryCode": "18U" },
       "collectionName": "18U Doubles",
-      "matchUpCount": 4,
+      "matchUpCount": 2,
       "matchUpFormat": "SET1-S:6/TB6",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
