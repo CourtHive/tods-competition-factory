@@ -6,6 +6,7 @@ import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import { QUALIFYING_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
@@ -17,7 +18,6 @@ import {
   QUALIFYING,
   ROUND_ROBIN,
 } from '../../../constants/drawDefinitionConstants';
-import { QUALIFYING_PARTICIPANT } from '../../../constants/positionActionConstants';
 
 // TODO: in generateDrawDefinition:
 /*
