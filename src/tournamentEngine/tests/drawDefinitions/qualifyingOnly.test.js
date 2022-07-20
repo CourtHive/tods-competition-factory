@@ -2,9 +2,13 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 it('can generate QUALIFYING structures before MAIN structure', () => {
-  let result = mocksEngine.generateTournamentRecord({
+  let {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
       {
+        ignoreDefaults: true,
         qualifyingProfiles: [
           {
             roundTarget: 1,
@@ -15,9 +19,10 @@ it('can generate QUALIFYING structures before MAIN structure', () => {
     ],
   });
 
-  console.log(
-    result.tournamentRecord.events[0].drawDefinitions[0].entries.length
-  );
+  tournamentEngine.setState(tournamentRecord);
+  const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+  expect(drawDefinition.entries.length).toEqual(16);
+  expect(event.entries.length).toEqual(16);
 
-  tournamentEngine.setState(result.tournamentRecord);
+  // console.log(drawDefinition.entries);
 });

@@ -98,6 +98,7 @@ export function generateDrawDefinition(params) {
 
   const consideredEntries =
     drawEntries || (considerEventEntries ? eventEntries : []);
+
   const derivedDrawSize =
     !params.drawSize &&
     consideredEntries.length &&
