@@ -2,6 +2,7 @@ import { getStageDrawPositionsCount } from '../../getters/getStageDrawPositions'
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { generateQualifyingStructures } from './generateQualifyingStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import { getDrawStructures } from '../../getters/findStructure';
@@ -56,6 +57,7 @@ export function generateDrawType(params = {}) {
     uuids,
   } = params;
 
+  const stack = 'generateDrawType';
   let drawType = params.drawType || SINGLE_ELIMINATION;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -140,19 +142,26 @@ export function generateDrawType(params = {}) {
 
   // check that drawSize is a valid value
   const invalidDrawSize =
-    drawSize < 2 ||
-    (!staggeredEntry &&
-      ![FEED_IN, AD_HOC, LUCKY_DRAW].includes(drawType) &&
-      (([ROUND_ROBIN_WITH_PLAYOFF, ROUND_ROBIN].includes(drawType) &&
-        drawSize < 3) ||
-        (drawType === DOUBLE_ELIMINATION && !validDoubleEliminationSize) ||
-        (![ROUND_ROBIN, DOUBLE_ELIMINATION, ROUND_ROBIN_WITH_PLAYOFF].includes(
-          drawType
-        ) &&
-          !isPowerOf2(drawSize))));
+    drawType !== AD_HOC &&
+    (drawSize < 2 ||
+      (!staggeredEntry &&
+        ![FEED_IN, LUCKY_DRAW].includes(drawType) &&
+        (([ROUND_ROBIN_WITH_PLAYOFF, ROUND_ROBIN].includes(drawType) &&
+          drawSize < 3) ||
+          (drawType === DOUBLE_ELIMINATION && !validDoubleEliminationSize) ||
+          (![
+            ROUND_ROBIN,
+            DOUBLE_ELIMINATION,
+            ROUND_ROBIN_WITH_PLAYOFF,
+          ].includes(drawType) &&
+            !isPowerOf2(drawSize)))));
 
   if (invalidDrawSize) {
-    return { error: INVALID_DRAW_SIZE, drawSize };
+    return decorateResult({
+      context: { drawSize, invalidDrawSize },
+      result: { error: INVALID_DRAW_SIZE },
+      stack,
+    });
   }
 
   const multiStructure = MULTI_STRUCTURE_DRAWS.includes(drawType);
@@ -160,7 +169,16 @@ export function generateDrawType(params = {}) {
     if (drawTypeCoercion) {
       drawType = SINGLE_ELIMINATION;
     } else if (enforceMinimumDrawSize) {
-      return { error: INVALID_DRAW_SIZE };
+      return decorateResult({
+        context: {
+          enforceMinimumDrawSize,
+          invalidDrawSize,
+          drawSize,
+          drawType,
+        },
+        result: { error: INVALID_DRAW_SIZE },
+        stack,
+      });
     }
   }
 

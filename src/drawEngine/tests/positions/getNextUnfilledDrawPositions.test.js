@@ -12,7 +12,7 @@ it('can report on drawPositions available for placement', () => {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ automated: false, seedsCount: 8 }],
+    drawProfiles: [{ drawSize: 32, automated: false, seedsCount: 8 }],
     participantsProfile: { participantsCount: 32 },
   });
   tournamentEngine.setState(tournamentRecord);

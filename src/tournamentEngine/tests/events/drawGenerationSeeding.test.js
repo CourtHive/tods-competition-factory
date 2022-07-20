@@ -90,12 +90,13 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
       participantCount,
       drawSize,
     });
-    const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    result = tournamentEngine.generateDrawDefinition({
       drawEntries: flight.drawEntries,
       drawId: flight.drawId,
       seedsCount,
       eventId,
     });
+    const drawDefinition = result.drawDefinition;
     expect(drawDefinition.structures[0].seedLimit).toEqual(seedsCount);
     expect(drawDefinition.structures[0].seedAssignments.length).toEqual(
       seedsCount
@@ -183,8 +184,8 @@ it('can constrain seedsCount by policyDefinitions', () => {
     expect(result.success).toEqual(true);
   });
 
-  const drawSize = 32;
   const participantCount = 32;
+  const drawSize = 32;
 
   const { seedsCount } = tournamentEngine.getSeedsCount({
     policyDefinitions: SEEDING_USTA,
@@ -195,6 +196,7 @@ it('can constrain seedsCount by policyDefinitions', () => {
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     seedingProfile: { groupSeedingThreshold: 5 },
     seedsCount: 100, // this is in excess of policy limit and above drawSize and stageEntries #
+    drawSize,
     eventId,
   });
 
@@ -253,6 +255,7 @@ it('can constrain seedsCount by policyDefinitions', () => {
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     seedsCount: 100, // this is in excess of policy limit and above drawSize and stageEntries #
+    drawSize,
     eventId,
   });
 
@@ -297,6 +300,7 @@ it('can define seeds using seededParticipants', () => {
 
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
     seededParticipants,
+    drawSize: 32,
     eventId,
   });
   expect(drawDefinition.structures[0].seedLimit).toEqual(8);
@@ -304,6 +308,7 @@ it('can define seeds using seededParticipants', () => {
   // code coverage
   result = tournamentEngine.generateDrawDefinition({
     drawType: 'Bogus Draw Type',
+    drawSize: 32,
     eventId,
   });
   expect(result.error).toEqual(UNRECOGNIZED_DRAW_TYPE);

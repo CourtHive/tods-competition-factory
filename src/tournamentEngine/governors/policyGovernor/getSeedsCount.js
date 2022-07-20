@@ -10,6 +10,8 @@ import {
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
+import { isConvertableInteger } from '../../../utilities/math';
+import { decorateResult } from '../../../global/functions/decorateResult';
 
 /**
  *
@@ -31,19 +33,31 @@ export function getSeedsCount({
   drawSize,
   event,
 } = {}) {
+  const stack = 'getSeedsCount';
+
   if (!policyDefinitions) {
     const result = getPolicyDefinitions({
       tournamentRecord,
       drawDefinition,
       event,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
     policyDefinitions = result.policyDefinitions;
   }
-  if (participantCount && isNaN(participantCount))
-    return { error: INVALID_VALUES };
-  if (requireParticipantCount && isNaN(participantCount))
-    return { error: MISSING_PARTICIPANT_COUNT };
+  const validParticpantCount = isConvertableInteger(participantCount);
+
+  if (participantCount && !validParticpantCount)
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      context: { participantCount },
+      stack,
+    });
+  if (requireParticipantCount && !validParticpantCount)
+    return decorateResult({
+      result: { error: MISSING_PARTICIPANT_COUNT },
+      stack,
+    });
+
   if (!drawSize) {
     if (participantCount) {
       ({ drawSize } = getEliminationDrawSize({

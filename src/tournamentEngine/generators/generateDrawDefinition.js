@@ -11,7 +11,9 @@ import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEn
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
+import { isConvertableInteger } from '../../utilities/math';
 import { tieFormatDefaults } from './tieFormatDefaults';
+import { nextPowerOf2 } from '../../utilities';
 import { prepareStage } from './prepareStage';
 
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
@@ -21,12 +23,18 @@ import { TEAM } from '../../constants/matchUpTypes';
 import {
   INVALID_DRAW_TYPE,
   INVALID_VALUES,
+  MISSING_DRAW_SIZE,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 import {
+  AD_HOC,
+  DOUBLE_ELIMINATION,
+  FEED_IN,
   LUCKY_DRAW,
   MAIN,
   QUALIFYING,
+  ROUND_ROBIN,
+  ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
 
@@ -34,6 +42,7 @@ import {
  * automated = true, // can be true/false or "truthy" { seedsOnly: true }
  */
 export function generateDrawDefinition(params) {
+  const stack = 'generateDrawDefinition';
   const {
     drawType = SINGLE_ELIMINATION,
     ignoreAllowedDrawTypes,
@@ -48,6 +57,7 @@ export function generateDrawDefinition(params) {
     drawId,
     event,
   } = params;
+
   // get participants both for entry validation and for automated placement
   // automated placement requires them to be "inContext" for avoidance policies to work
   const { tournamentParticipants: participants } = getTournamentParticipants({
@@ -76,11 +86,29 @@ export function generateDrawDefinition(params) {
     return { error: INVALID_DRAW_TYPE };
   }
 
+  const derivedDrawSize =
+    !params.drawSize &&
+    drawEntries?.length &&
+    ![
+      AD_HOC,
+      DOUBLE_ELIMINATION,
+      FEED_IN,
+      ROUND_ROBIN,
+      ROUND_ROBIN_WITH_PLAYOFF,
+    ].includes(drawType) &&
+    nextPowerOf2(drawEntries.length);
+
   // coersion of drawSize and seedsCount to integers
   let drawSize =
-    typeof params.drawSize !== 'number'
-      ? parseInt(params.drawSize || 32)
-      : params.drawSize || 32;
+    derivedDrawSize ||
+    (isConvertableInteger(params.drawSize) && parseInt(params.drawSize));
+
+  if (!drawSize && drawType !== AD_HOC)
+    return decorateResult({
+      result: { error: MISSING_DRAW_SIZE, info: 'drawSize' },
+      stack,
+    });
+
   let seedsCount =
     typeof params.seedsCount !== 'number'
       ? parseInt(params.seedsCount || 0)

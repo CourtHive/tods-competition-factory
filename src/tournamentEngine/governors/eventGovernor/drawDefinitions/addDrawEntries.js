@@ -10,6 +10,7 @@ import {
   EVENT_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_ENTRIES,
+  MISSING_PARTICIPANT_IDS,
 } from '../../../../constants/errorConditionConstants';
 
 export function addDrawEntries({
@@ -25,8 +26,9 @@ export function addDrawEntries({
   drawId,
   event,
 }) {
-  if (!drawId) return { error: MISSING_DRAW_ID };
+  if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
   if (!event) return { error: EVENT_NOT_FOUND };
+  if (!drawId) return { error: MISSING_DRAW_ID };
 
   const eventEnteredParticipantIds = (event.entries || []).map(
     getParticipantId
