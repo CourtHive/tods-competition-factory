@@ -41,10 +41,10 @@ it('can delete flight and flightDrawDefinition', () => {
 
   flightProfile.flights?.forEach((flight) => {
     const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-      eventId,
-      drawId: flight.drawId,
-      drawName: flight.drawName,
       drawEntries: flight.drawEntries,
+      drawName: flight.drawName,
+      drawId: flight.drawId,
+      eventId,
     });
     result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
     expect(result.success).toEqual(true);
