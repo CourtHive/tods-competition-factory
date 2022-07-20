@@ -16,7 +16,10 @@ import { tieFormatDefaults } from './tieFormatDefaults';
 import { nextPowerOf2 } from '../../utilities';
 import { prepareStage } from './prepareStage';
 
-import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
+import {
+  QUALIFIER,
+  STRUCTURE_ENTERED_TYPES,
+} from '../../constants/entryStatusConstants';
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -74,11 +77,6 @@ export function generateDrawDefinition(params) {
 
   if (validEntriesResult?.error) return validEntriesResult;
 
-  const eventEntries =
-    event?.entries?.filter((entry) =>
-      STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
-    ) || [];
-
   // if tournamentRecord is provided, and unless instructed to ignore valid types,
   // check for restrictions on allowed drawTypes
   const allowedDrawTypes =
@@ -92,6 +90,11 @@ export function generateDrawDefinition(params) {
   if (allowedDrawTypes?.length && !allowedDrawTypes.includes(drawType)) {
     return { error: INVALID_DRAW_TYPE };
   }
+
+  const eventEntries =
+    event?.entries?.filter((entry) =>
+      [...STRUCTURE_ENTERED_TYPES, QUALIFIER].includes(entry.entryStatus)
+    ) || [];
 
   const consideredEntries =
     drawEntries || (considerEventEntries ? eventEntries : []);
