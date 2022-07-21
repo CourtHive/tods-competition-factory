@@ -321,7 +321,8 @@ export function addParticipantContext(params) {
             stageSequence: 1,
             drawDefinition,
             stage: MAIN,
-          });
+          })?.structures?.[0];
+
           const drawSize =
             mainStructure &&
             getPositionAssignments({
@@ -331,7 +332,7 @@ export function addParticipantContext(params) {
             stageSequence: 1,
             drawDefinition,
             stage: QUALIFYING,
-          });
+          })?.structures?.[0];
           const qualifyingDrawSize =
             mainStructure &&
             getPositionAssignments({
