@@ -37,7 +37,6 @@ it.each([ROUND_ROBIN, SINGLE_ELIMINATION, undefined])(
     });
 
     expect(result.error).toEqual(INVALID_DRAW_SIZE);
-    console.log(result);
   }
 );
 
