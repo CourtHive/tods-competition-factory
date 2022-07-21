@@ -20,7 +20,7 @@
       "category": { "ageCategoryCode": "16U" },
       "collectionName": "16U Doubles",
       "matchUpCount": 2,
-      "matchUpFormat": "SET1-S:6/TB6",
+      "matchUpFormat": "SET1-S:6/TB7",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
     },
@@ -28,14 +28,14 @@
       "category": { "ageCategoryCode": "18U" },
       "collectionName": "18U Doubles",
       "matchUpCount": 2,
-      "matchUpFormat": "SET1-S:6/TB6",
+      "matchUpFormat": "SET1-S:6/TB7",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
     },
     {
       "collectionName": "Tiebreak Doubles",
       "matchUpCount": 1,
-      "matchUpFormat": "SET1-S:6/TB6",
+      "matchUpFormat": "SET1-S:6/TB7",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
     }
