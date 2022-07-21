@@ -385,7 +385,8 @@ export function getAllStructureMatchUps({
       collectionDefinition?.processCodes ||
       structure.processCodes ||
       drawDefinition?.processCodes ||
-      event?.processCodes;
+      event?.processCodes ||
+      tournamentRecord?.processCodes;
 
     const competitiveness =
       contextProfile?.withCompetitiveness &&
