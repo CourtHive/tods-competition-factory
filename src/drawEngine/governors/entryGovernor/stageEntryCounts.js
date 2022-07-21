@@ -154,28 +154,6 @@ export function setStageQualifiersCount({
     };
   }
 
-  const stageDrawPositions = getStageDrawPositionsCount({
-    drawDefinition,
-    stage,
-  });
-  const wildcardEntriesCount = getStageWildcardEntriesCount({
-    drawDefinition,
-    stage,
-  });
-  const directAcceptanceEntriesCount = getStageDirectEntriesCount({
-    drawDefinition,
-    stage,
-  });
-  const totalStageDrawPositions =
-    directAcceptanceEntriesCount + wildcardEntriesCount + qualifiersCount;
-
-  if (totalStageDrawPositions > stageDrawPositions) {
-    return {
-      error: DRAW_SIZE_MISMATCH,
-      info: 'Total stage Entries cannot be greater than drawPositions',
-    };
-  }
-
   modifyEntryProfile({
     attributes: [{ [stage]: { qualifiersCount } }],
     drawDefinition,

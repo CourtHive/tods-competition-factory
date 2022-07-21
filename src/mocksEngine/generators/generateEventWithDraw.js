@@ -113,9 +113,9 @@ export function generateEventWithDraw({
     (participantType === DOUBLES ? 2 : 1);
 
   const participantsCount =
-    !drawProfile.participantsCount || drawProfile.participantsCount > drawSize
+    (!drawProfile.participantsCount || drawProfile.participantsCount > drawSize
       ? drawSize
-      : drawProfile.participantsCount;
+      : drawProfile.participantsCount) || 0;
 
   const eventId = UUID();
   let event = { eventName, eventType, tieFormat, category, eventId };

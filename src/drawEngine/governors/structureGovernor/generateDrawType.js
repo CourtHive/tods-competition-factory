@@ -143,7 +143,8 @@ export function generateDrawType(params = {}) {
   // check that drawSize is a valid value
   const invalidDrawSize =
     drawType !== AD_HOC &&
-    (drawSize < 2 ||
+    (isNaN(drawSize) ||
+      drawSize < 2 ||
       (!staggeredEntry &&
         ![FEED_IN, LUCKY_DRAW].includes(drawType) &&
         (([ROUND_ROBIN_WITH_PLAYOFF, ROUND_ROBIN].includes(drawType) &&
@@ -156,7 +157,7 @@ export function generateDrawType(params = {}) {
           ].includes(drawType) &&
             !isPowerOf2(drawSize)))));
 
-  if (invalidDrawSize) {
+  if (invalidDrawSize && !qualifyingResult?.qualifyingDrawPositionsCount) {
     return decorateResult({
       context: { drawSize, invalidDrawSize },
       result: { error: INVALID_DRAW_SIZE },

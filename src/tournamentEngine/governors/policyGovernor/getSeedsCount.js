@@ -58,7 +58,7 @@ export function getSeedsCount({
       stack,
     });
 
-  if (!drawSize) {
+  if (isNaN(drawSize)) {
     if (participantCount) {
       ({ drawSize } = getEliminationDrawSize({
         participantCount,
