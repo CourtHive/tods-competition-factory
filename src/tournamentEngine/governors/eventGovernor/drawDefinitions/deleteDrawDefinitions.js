@@ -1,5 +1,9 @@
+import { addExtension } from '../../../../global/functions/producers/addExtension';
+import { findExtension } from '../../../../global/functions/deducers/findExtension';
 import { checkSchedulingProfile } from '../../scheduleGovernor/schedulingProfile';
 import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { getDrawStructures } from '../../../../drawEngine/getters/findStructure';
+import { getPositionAssignments } from '../../../getters/getPositionAssignments';
 import { addEventTimeItem } from '../../tournamentGovernor/addTimeItem';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
@@ -13,13 +17,17 @@ import {
 
 import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
 import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
-import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
+import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { AUDIT } from '../../../../constants/topicConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
+import {
+  DRAW_DELETIONS,
+  FLIGHT_PROFILE,
+} from '../../../../constants/extensionConstants';
 import {
   PUBLIC,
   PUBLISH,
@@ -31,12 +39,16 @@ export function deleteDrawDefinitions({
   drawIds = [],
   auditData,
   eventId,
+  event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+
   const drawId = Array.isArray(drawIds) && drawIds[0];
 
-  const { event, error } = findEvent({ tournamentRecord, eventId, drawId });
-  if (error) return { error };
+  if (!event) {
+    const result = findEvent({ tournamentRecord, eventId, drawId });
+    if (result.error) return result;
+  }
 
   const auditTrail = [];
   const matchUpIds = [];
@@ -53,6 +65,8 @@ export function deleteDrawDefinitions({
   if (!drawDefinitionsExist) return { error: DRAW_DEFINITION_NOT_FOUND };
 
   const { flightProfile } = getFlightProfile({ event });
+  const assignedPositions = [];
+
   event.drawDefinitions = event.drawDefinitions.filter((drawDefinition) => {
     if (drawIds.includes(drawDefinition.drawId)) {
       const flight = flightProfile?.flights?.find(
@@ -64,6 +78,22 @@ export function deleteDrawDefinitions({
           STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
         );
       }
+
+      const mainStructure = getDrawStructures({
+        stageSequence: 1,
+        drawDefinition,
+        stage: MAIN,
+      })?.structures?.[0];
+
+      const positionAssignments =
+        mainStructure &&
+        getPositionAssignments({
+          drawDefinition,
+          structureId: mainStructure.structureId,
+        })?.positionAssignments;
+
+      if (positionAssignments)
+        assignedPositions.push({ drawId, positionAssignments });
 
       const audit = {
         action: DELETE_DRAW_DEFINITIONS,
@@ -145,5 +175,23 @@ export function deleteDrawDefinitions({
     deleteDrawNotice({ drawId });
   });
 
+  addDrawDeletionTelemetry({ event, assignedPositions, auditData });
+
   return { ...SUCCESS };
+}
+
+function addDrawDeletionTelemetry({ event, assignedPositions, auditData }) {
+  const { extension } = findExtension({
+    element: event,
+    name: DRAW_DELETIONS,
+  });
+
+  const deletionData = { ...auditData, assignedPositions };
+  const updatedExtension = {
+    name: DRAW_DELETIONS,
+    value: Array.isArray(extension?.value)
+      ? extension.value.concat(deletionData)
+      : [deletionData],
+  };
+  addExtension({ element: event, extension: updatedExtension });
 }

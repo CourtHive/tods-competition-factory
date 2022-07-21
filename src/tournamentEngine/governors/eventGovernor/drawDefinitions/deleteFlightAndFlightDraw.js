@@ -64,6 +64,7 @@ export function deleteFlightAndFlightDraw({
     eventId: event.eventId,
     tournamentRecord,
     auditData,
+    event,
   });
 
   return refreshEventDrawOrder({ tournamentRecord, event });
