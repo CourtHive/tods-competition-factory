@@ -6,7 +6,6 @@ import {
   MISSING_DRAW_ID,
   MISSING_EVENT,
   MISSING_MATCHUP_FORMAT,
-  MISSING_STRUCTURE_ID,
   MISSING_VALUE,
   UNRECOGNIZED_MATCHUP_FORMAT,
 } from '../../constants/errorConditionConstants';
@@ -108,7 +107,7 @@ it('can set and return matchUpFormat codes', () => {
   expect(result.drawDefaultMatchUpFormat).toBeUndefined();
   expect(result.structureDefaultMatchUpFormat).toBeUndefined();
 
-  result = tournamentEngine.setStructureDefaultMatchUpFormat({
+  result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: FORMAT_SHORT_SETS,
     structureId,
     drawId,
@@ -171,22 +170,25 @@ it('can set and return matchUpFormat codes', () => {
   });
   expect(result.error).toEqual(UNRECOGNIZED_MATCHUP_FORMAT);
 
-  result = tournamentEngine.setStructureDefaultMatchUpFormat({
+  result = tournamentEngine.setMatchUpFormat({
     structureId,
     drawId,
   });
   expect(result.error).toEqual(MISSING_MATCHUP_FORMAT);
-  result = tournamentEngine.setStructureDefaultMatchUpFormat({
+
+  result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: 'BOBUS',
     structureId,
   });
   expect(result.error).toEqual(MISSING_DRAW_DEFINITION);
-  result = tournamentEngine.setStructureDefaultMatchUpFormat({
+
+  result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: 'BOBUS',
     drawId,
   });
-  expect(result.error).toEqual(MISSING_STRUCTURE_ID);
-  result = tournamentEngine.setStructureDefaultMatchUpFormat({
+  expect(result.error).toEqual(UNRECOGNIZED_MATCHUP_FORMAT);
+
+  result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: 'BOBUS',
     structureId,
     drawId,

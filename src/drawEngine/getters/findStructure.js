@@ -2,13 +2,13 @@ import { findExtension } from '../../tournamentEngine/governors/queryGovernor/ex
 import { structureSort } from './structureSort';
 
 import { ROUND_TARGET } from '../../constants/extensionConstants';
+import { ITEM } from '../../constants/drawDefinitionConstants';
 import {
   MISSING_STRUCTURES,
   STRUCTURE_NOT_FOUND,
   MISSING_STRUCTURE_ID,
   MISSING_DRAW_DEFINITION,
 } from '../../constants/errorConditionConstants';
-import { ITEM } from '../../constants/drawDefinitionConstants';
 
 /*
   TESTS: structureGetter.test.js

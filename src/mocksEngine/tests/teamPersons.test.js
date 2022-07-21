@@ -26,6 +26,7 @@ it('can generate team events using personData', () => {
     drawProfiles: [
       {
         tieFormatName: TEAM_DOUBLES_3_AGGREGATION,
+        considerEventEntries: false,
         tournamentAlternates: 2,
         eventType: TEAM,
         drawSize: 2,
@@ -47,11 +48,12 @@ it('can generate team events using personData', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  expect(drawDefinition.entries.length).toEqual(4);
+  const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+
+  expect(event.entries.length).toEqual(4);
+  expect(drawDefinition.entries.length).toEqual(2);
   expect(
-    drawDefinition.entries.filter((entry) => entry.entryStatus === ALTERNATE)
-      .length
+    event.entries.filter((entry) => entry.entryStatus === ALTERNATE).length
   ).toEqual(2);
 
   const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(

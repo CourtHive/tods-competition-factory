@@ -1,6 +1,8 @@
 export const APPLIED_POLICIES = 'appliedPolicies';
+export const AUDIT_POSITION_ACTIONS = 'positionActions';
 export const DELEGATED_OUTCOME = 'delegatedOutcome';
 export const DISABLE_LINKS = 'disableLinks';
+export const DRAW_DELETIONS = 'drawDelitions';
 export const DRAW_PROFILE = 'drawProfile';
 export const ENTRY_PROFILE = 'entryProfile';
 export const FLIGHT_PROFILE = 'flightProfile';
@@ -19,8 +21,10 @@ export const TALLY = 'tally';
 
 export const extensionConstants = {
   APPLIED_POLICIES,
+  AUDIT_POSITION_ACTIONS,
   DELEGATED_OUTCOME,
   DISABLE_LINKS,
+  DRAW_DELETIONS,
   DRAW_PROFILE,
   ENTRY_PROFILE,
   FLIGHT_PROFILE,

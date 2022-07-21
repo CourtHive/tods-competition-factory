@@ -73,6 +73,7 @@ export function generateParticipants({
 }) {
   const doubles = participantType === PAIR || matchUpType === DOUBLES;
   const team = participantType === TEAM || matchUpType === TEAM;
+
   const individualParticipantsCount =
     participantsCount * (doubles ? 2 : team ? 8 : 1);
 

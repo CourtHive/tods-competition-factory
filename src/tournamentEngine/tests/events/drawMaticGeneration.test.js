@@ -122,8 +122,9 @@ it('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.generateDrawDefinition({
-    drawType: AD_HOC,
+    drawSize: participantIds.length,
     addToEvent: true,
+    drawType: AD_HOC,
     eventId,
   });
 

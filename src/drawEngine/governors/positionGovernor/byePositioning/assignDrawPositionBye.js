@@ -5,6 +5,7 @@ import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
 import { decorateResult } from '../../../../global/functions/decorateResult';
+import { addPositionActionTelemetry } from '../addPositionActionTelemetry';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
 import { findStructure } from '../../../getters/findStructure';
 import { positionTargets } from '../positionTargets';
@@ -60,6 +61,7 @@ import {
  */
 
 export function assignDrawPositionBye({
+  isPositionAction,
   tournamentRecord,
   drawDefinition,
   drawPosition,
@@ -198,7 +200,31 @@ export function assignDrawPositionBye({
     structure,
   });
 
-  return { ...SUCCESS };
+  return successNotice({
+    isPositionAction,
+    drawDefinition,
+    drawPosition,
+    structureId,
+  });
+}
+
+function successNotice({
+  isPositionAction,
+  drawDefinition,
+  drawPosition,
+  structureId,
+}) {
+  const stack = 'assignDrawPositionBye';
+  if (isPositionAction) {
+    const positionAction = {
+      drawPosition,
+      structureId,
+      name: stack,
+    };
+    addPositionActionTelemetry({ drawDefinition, positionAction });
+  }
+
+  return decorateResult({ result: { ...SUCCESS }, stack });
 }
 
 function drawPositionFilled(positionAssignment) {

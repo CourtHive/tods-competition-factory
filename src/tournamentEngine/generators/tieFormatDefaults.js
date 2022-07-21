@@ -12,6 +12,7 @@ import USTA_SOUTHERN_LEVEL_5_TIE_FORMAT from '../../fixtures/scoring/tieFormats/
 import USTA_WTT_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_WTT.json';
 import USTA_ZONAL_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_ZONAL.json';
 import LAVER_CUP_TIE_FORMAT from '../../fixtures/scoring/tieFormats/LAVER_CUP.json';
+import USTA_SECTION_BATTLE_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_SECTION_BATTLE.json';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import {
   COLLEGE_D3,
@@ -26,6 +27,7 @@ import {
   USTA_GOLD_TEAM_CHALLENGE,
   USTA_INTERSECTIONAL,
   USTA_LEVEL_1,
+  USTA_SECTION_BATTLE,
   USTA_SOUTHERN_LEVEL_5,
   USTA_WTT,
   USTA_ZONAL,
@@ -92,6 +94,7 @@ const namedFormats = {
   [USTA_GOLD_TEAM_CHALLENGE]: USTA_GOLD_TEAM_CHALLENGE_FORMAT,
   [USTA_INTERSECTIONAL]: USTA_INTERSECTIONAL_TIE_FORMAT,
   [USTA_LEVEL_1]: USTA_LEVEL_1_TIE_FORMAT,
+  [USTA_SECTION_BATTLE]: USTA_SECTION_BATTLE_TIE_FORMAT,
   [USTA_SOUTHERN_LEVEL_5]: USTA_SOUTHERN_LEVEL_5_TIE_FORMAT,
   [USTA_WTT]: USTA_WTT_TIE_FORMAT,
   [USTA_ZONAL]: USTA_ZONAL_TIE_FORMAT,

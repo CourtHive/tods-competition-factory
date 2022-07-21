@@ -33,9 +33,9 @@ it('can modify the drawOrder of flightProfile.flights and drawDefniitions within
 
   flightProfile.flights?.forEach((flight) => {
     const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-      eventId,
-      drawId: flight.drawId,
       drawEntries: flight.drawEntries,
+      drawId: flight.drawId,
+      eventId,
     });
     result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
     expect(result.success).toEqual(true);

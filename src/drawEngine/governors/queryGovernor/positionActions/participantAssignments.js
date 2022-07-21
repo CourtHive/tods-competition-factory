@@ -66,7 +66,7 @@ export function getValidAssignmentActions({
       type: ASSIGN_BYE,
       method: ASSIGN_BYE_METHOD,
       willDisableLinks: possiblyDisablingAction,
-      payload: { drawId, structureId, drawPosition },
+      payload: { drawId, structureId, drawPosition, isPositionAction: true },
     });
   }
 

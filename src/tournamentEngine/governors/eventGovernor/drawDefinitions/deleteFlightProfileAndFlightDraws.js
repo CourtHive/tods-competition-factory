@@ -9,7 +9,11 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
 
-export function deleteFlightProfileAndFlightDraws({ tournamentRecord, event }) {
+export function deleteFlightProfileAndFlightDraws({
+  tournamentRecord,
+  auditData,
+  event,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
@@ -23,7 +27,9 @@ export function deleteFlightProfileAndFlightDraws({ tournamentRecord, event }) {
     const result = deleteDrawDefinitions({
       eventId: event.eventId,
       tournamentRecord,
+      auditData,
       drawIds,
+      event,
     });
     if (result.error) return result;
 

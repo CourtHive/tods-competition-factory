@@ -53,6 +53,7 @@ export function generateEventWithDraw({
   randomWinningSide,
   ratingsParameters,
   tournamentRecord,
+  ignoreDefaults,
   isMock = true,
   drawProfile,
   startDate,
@@ -60,6 +61,8 @@ export function generateEventWithDraw({
   goesTo,
   uuids,
 }) {
+  const drawProfileCopy = makeDeepCopy(drawProfile, false, true);
+
   const {
     excessParticipantAlternates = true,
     matchUpFormat = FORMAT_STANDARD,
@@ -72,7 +75,6 @@ export function generateEventWithDraw({
     eventExtensions,
     drawExtensions,
     completionGoal,
-    drawSize = 32,
     tieFormatName,
     seedsCount,
     timeItems,
@@ -82,7 +84,9 @@ export function generateEventWithDraw({
     publish,
     gender,
     stage,
-  } = makeDeepCopy(drawProfile, false, true);
+  } = drawProfileCopy;
+
+  let drawSize = drawProfileCopy.drawSize || (ignoreDefaults ? 32 : undefined);
 
   const eventType = drawProfile.eventType || drawProfile.matchUpType || SINGLES;
   const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
@@ -139,7 +143,7 @@ export function generateEventWithDraw({
     category
   ) {
     let drawParticipantsCount =
-      participantsCount + alternatesCount + qualifyingParticipantsCount;
+      (participantsCount || 0) + alternatesCount + qualifyingParticipantsCount;
     let teamSize;
 
     if (eventType === TEAM) {
@@ -150,14 +154,14 @@ export function generateEventWithDraw({
         drawSize,
       }));
       drawParticipantsCount =
-        teamSize * (drawSize + qualifyingParticipantsCount);
+        teamSize * ((drawSize || 0) + qualifyingParticipantsCount);
     }
 
     const idPrefix = participantsProfile?.idPrefix
       ? `D-${drawIndex}-${participantsProfile?.idPrefix}`
       : undefined;
 
-    const { participants: unique } = generateParticipants({
+    const result = generateParticipants({
       ...participantsProfile,
       scaledParticipantsCount:
         drawProfile.scaledParticipantsCount ||
@@ -172,6 +176,7 @@ export function generateEventWithDraw({
       idPrefix,
       category,
     });
+    const { participants: unique } = result;
 
     // update categoryName **after** generating participants
     if (event.category) event.category.categoryName = categoryName;

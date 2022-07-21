@@ -38,15 +38,15 @@ test('event entries are only removed when not placed in draw structures', () => 
   };
 
   let result = tournamentEngine.addParticipant({
-    participant,
     returnParticipant: true,
+    participant,
   });
   expect(result.success).toEqual(true);
   const participantId = result.participant.participantId;
 
   result = tournamentEngine.addEventEntries({
-    eventId,
     participantIds: [participantId],
+    eventId,
   });
   expect(result.success).toEqual(true);
 
@@ -70,7 +70,7 @@ test('event entries are only removed when not placed in draw structures', () => 
   expect(drawDefinition.entries.length).toEqual(drawEntries.length);
 
   // event has an additional entry
-  expect(event.entries.length).toEqual(drawEntries.length + 1);
+  expect(event.entries.length).toEqual(drawEntries.length + 3);
 
   result = tournamentEngine.checkValidEntries({ eventId });
   expect(result.error).toEqual(MISSING_PARTICIPANTS);
@@ -93,12 +93,12 @@ test('event entries are only removed when not placed in draw structures', () => 
   expect(result.success).toEqual(true);
 
   ({ event } = tournamentEngine.getEvent({ eventId }));
-  expect(event.entries.length).toEqual(drawEntries.length);
+  expect(event.entries.length).toEqual(drawEntries.length + 2);
 
   const drawEntriesCount = drawEntries.length;
 
   // now remove an alternate entry that is present in event, flight and drawDefinition
-  const alternateParticipantIds = drawEntries
+  const alternateParticipantIds = event.entries
     .filter(({ entryStatus }) => entryStatus === ALTERNATE)
     .map(getParticipantId);
   const alternateParticipantId = alternateParticipantIds[0];
@@ -120,10 +120,10 @@ test('event entries are only removed when not placed in draw structures', () => 
   ({ drawEntries, drawDefinition } = flightProfile.flights[0]);
   expect(drawDefinition.entries.length).toEqual(drawEntries.length);
 
-  expect(drawEntries.length).toEqual(drawEntriesCount - 1);
+  expect(drawEntries.length).toEqual(drawEntriesCount);
 
   ({ event } = tournamentEngine.getEvent({ eventId }));
-  expect(event.entries.length).toEqual(drawEntries.length);
+  expect(event.entries.length).toEqual(drawEntries.length + 1);
 
   const enteredParticipantIds = drawEntries
     .filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE)

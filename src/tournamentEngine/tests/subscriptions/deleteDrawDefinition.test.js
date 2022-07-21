@@ -4,6 +4,7 @@ import tournamentEngine from '../../sync';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { AUDIT, DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
+import { DRAW_DELETIONS } from '../../../constants/extensionConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_VALUE,
@@ -74,4 +75,9 @@ it('can notify subscriber when drawDefinitions are deleted', () => {
   expect(timeItem.itemValue.length).toEqual(1);
   expect(timeItem.itemValue[0].drawId).toEqual(drawId);
   expect(timeItem.itemValue[0].auditData).toEqual(auditData);
+
+  const { event } = tournamentEngine.getEvent({ eventId });
+  expect(event.extensions.length).toEqual(2);
+  const deletions = event.extensions.find((x) => x.name === DRAW_DELETIONS);
+  expect(deletions.value.length).toEqual(1);
 });

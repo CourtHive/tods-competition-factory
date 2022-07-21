@@ -177,8 +177,8 @@ test('seeding policies attached to tournamentRecords will be used when generatin
   } = tournamentEngine.getFlightProfile({ eventId });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    eventId,
     ...flight,
+    eventId,
   });
 
   // there are no 'appliedPolicies' because seeding was found on the policies attached to the tournament

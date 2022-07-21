@@ -26,6 +26,7 @@ export function getPredictiveAccuracy({
   matchUpType,
   zoneMargin,
   scaleName,
+  matchUps,
   eventId,
   drawId,
   event,
@@ -41,27 +42,35 @@ export function getPredictiveAccuracy({
   };
   const participants = tournamentRecord.participants;
 
-  const matchUps = drawId
-    ? allDrawMatchUps({
-        inContext: true,
-        drawDefinition,
-        contextFilters,
-        contextProfile,
-        participants,
-      })?.matchUps || []
-    : eventId
-    ? allEventMatchUps({
-        inContext: true,
-        contextFilters,
-        contextProfile,
-        participants,
-        event,
-      })?.matchUps || []
-    : allTournamentMatchUps({
-        tournamentRecord,
-        contextFilters,
-        contextProfile,
-      })?.matchUps || [];
+  if (matchUps) {
+    if (matchUpType) {
+      matchUps = matchUps.filter(
+        (matchUp) => matchUp.matchUpType === matchUpType
+      );
+    }
+  } else {
+    matchUps = drawId
+      ? allDrawMatchUps({
+          inContext: true,
+          drawDefinition,
+          contextFilters,
+          contextProfile,
+          participants,
+        })?.matchUps || []
+      : eventId
+      ? allEventMatchUps({
+          inContext: true,
+          contextFilters,
+          contextProfile,
+          participants,
+          event,
+        })?.matchUps || []
+      : allTournamentMatchUps({
+          tournamentRecord,
+          contextFilters,
+          contextProfile,
+        })?.matchUps || [];
+  }
 
   const relevantMatchUps = matchUps.filter(
     ({ winningSide, score, sides, matchUpStatus }) =>

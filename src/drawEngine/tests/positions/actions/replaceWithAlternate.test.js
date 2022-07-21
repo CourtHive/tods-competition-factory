@@ -2,10 +2,10 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 
 import { ALTERNATE_PARTICIPANT } from '../../../../constants/positionActionConstants';
-import { TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
-import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 import { APPLIED_POLICIES } from '../../../../constants/extensionConstants';
+import { TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 
 it('can recognize valid ALTERNATES', () => {
   // Create mock tournament record
@@ -27,7 +27,8 @@ it('can recognize valid ALTERNATES', () => {
   tournamentEngine.setState(tournamentRecord);
 
   let {
-    drawDefinition: { entries, structures },
+    event: { entries },
+    drawDefinition: { structures },
   } = tournamentEngine.getEvent({ drawId });
   const structureId = structures[0].structureId;
   const alternates = entries.filter((entry) => entry.entryStatus === ALTERNATE);

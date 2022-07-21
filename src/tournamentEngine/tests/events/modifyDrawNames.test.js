@@ -30,10 +30,10 @@ it('can modify flightNames and drawNames', () => {
 
   flightProfile.flights?.forEach((flight) => {
     const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-      eventId,
-      drawId: flight.drawId,
-      drawName: flight.drawName,
       drawEntries: flight.drawEntries,
+      drawName: flight.drawName,
+      drawId: flight.drawId,
+      eventId,
     });
     result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
     expect(result.success).toEqual(true);
@@ -114,6 +114,7 @@ it('can modify drawNames when no flightProfile', () => {
 
   [0, 1, 2].forEach(() => {
     const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+      drawSize: 32,
       eventId,
     });
     result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });

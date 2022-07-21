@@ -106,9 +106,9 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
 
   flightProfile.flights?.forEach((flight) => {
     const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-      eventId,
-      drawId: flight.drawId,
       drawEntries: flight.drawEntries,
+      drawId: flight.drawId,
+      eventId,
     });
     result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
     expect(result.success).toEqual(true);
@@ -149,15 +149,29 @@ it('can remove entries from drawDefinitions if they are not positioned', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const alternateIds = drawDefinition.entries
+  let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+  const eventAlternateIds = event.entries
     .filter(({ entryStatus }) => entryStatus === ALTERNATE)
     .map(getParticipantId);
+  expect(eventAlternateIds.length).toEqual(12);
 
-  const result = tournamentEngine.removeDrawEntries({
+  let result = tournamentEngine.addDrawEntries({
+    participantIds: eventAlternateIds,
+    entryStatus: ALTERNATE,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const drawAlternateIds = drawDefinition.entries
+    .filter(({ entryStatus }) => entryStatus === ALTERNATE)
+    .map(getParticipantId);
+  expect(drawAlternateIds.length).toEqual(12);
+
+  result = tournamentEngine.removeDrawEntries({
+    participantIds: drawAlternateIds,
     eventId,
     drawId,
-    participantIds: alternateIds,
   });
   expect(result.success).toEqual(true);
 });

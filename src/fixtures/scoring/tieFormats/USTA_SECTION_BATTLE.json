@@ -19,27 +19,29 @@
     {
       "category": { "ageCategoryCode": "16U" },
       "collectionName": "16U Doubles",
-      "matchUpCount": 4,
-      "matchUpFormat": "SET1-S:6/TB6",
+      "matchUpCount": 2,
+      "matchUpFormat": "SET1-S:6/TB7",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
     },
     {
       "category": { "ageCategoryCode": "18U" },
       "collectionName": "18U Doubles",
-      "matchUpCount": 4,
-      "matchUpFormat": "SET1-S:6/TB6",
+      "matchUpCount": 2,
+      "matchUpFormat": "SET1-S:6/TB7",
       "matchUpType": "DOUBLES",
       "matchUpValue": 1
     },
     {
       "collectionName": "Tiebreak Doubles",
       "matchUpCount": 1,
-      "matchUpFormat": "SET1-S:6/TB6",
-      "matchUpType": "DOUBLES"
+      "matchUpFormat": "SET1-S:TB10",
+      "matchUpType": "DOUBLES",
+      "matchUpValue": 1,
+      "processCodes": ["RANKING.IGNORE"]
     }
   ],
-  "tieFormatName": "Battle of the sections",
+  "tieFormatName": "USTA_SECTION_BATTLE",
   "winCriteria": {
     "valueGoal": 9
   }

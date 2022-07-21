@@ -1,4 +1,3 @@
-import { keyValueConstants } from '../matchUpEngine/governors/scoreGovernor/keyValueScore/constants';
 import { auditConstants } from './auditConstants';
 import { drawDefinitionConstants } from './drawDefinitionConstants';
 import { entryStatusConstants } from './entryStatusConstants';
@@ -7,6 +6,7 @@ import { eventConstants } from './eventConstants';
 import { extensionConstants } from './extensionConstants';
 import { flightConstants } from './flightConstants';
 import { genderConstants } from './genderConstants';
+import { keyValueConstants } from '../matchUpEngine/governors/scoreGovernor/keyValueScore/constants';
 import { matchUpActionConstants } from './matchUpActionConstants';
 import { matchUpTypes } from './matchUpTypes';
 import { participantConstants } from './participantConstants';
@@ -21,25 +21,27 @@ import { resultConstants } from './resultConstants';
 import { scaleConstants } from './scaleConstants';
 import { scheduleConstants } from './scheduleConstants';
 import { surfaceConstants } from './surfaceConstants';
-import { timeItemConstants } from './timeItemConstants';
 import { tieFormatConstants } from './tieFormatConstants';
+import { timeItemConstants } from './timeItemConstants';
 import { topicConstants } from './topicConstants';
 import { venueConstants } from './venueConstants';
 
 import {
   activeMatchUpStatuses,
-  upcomingMatchUpStatuses,
-  nonDirectingMatchUpStatuses,
+  completedMatchUpStatuses,
   directingMatchUpStatuses,
-  validMatchUpStatuses,
+  matchUpStatusConstants,
+  nonDirectingMatchUpStatuses,
   particicipantsRequiredMatchUpStatuses,
   recoveryTimeRequiredMatchUpStatuses,
-  matchUpStatusConstants,
+  upcomingMatchUpStatuses,
+  validMatchUpStatuses,
 } from './matchUpStatusConstants';
 
 export const factoryConstants = {
   activeMatchUpStatuses,
   auditConstants,
+  completedMatchUpStatuses,
   directingMatchUpStatuses,
   drawDefinitionConstants,
   entryStatusConstants,

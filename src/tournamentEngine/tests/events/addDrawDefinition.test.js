@@ -4,9 +4,9 @@ import tournamentEngineAsync from '../../async';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngineSync from '../../sync';
 
+import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { SINGLES } from '../../../constants/matchUpTypes';
-import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 const asyncTournamentEngine = tournamentEngineAsync(true);
 
@@ -31,8 +31,8 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
       });
     const participantIds = tournamentParticipants.map((p) => p.participantId);
     result = await tournamentEngine.addEventEntries({
-      eventId,
       participantIds,
+      eventId,
     });
     expect(result.success).toEqual(true);
 

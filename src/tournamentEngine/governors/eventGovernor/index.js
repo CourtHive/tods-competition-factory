@@ -1,6 +1,7 @@
 import { generateAndPopulatePlayoffStructures } from '../../../drawEngine/governors/structureGovernor/generateAndPopulatePlayoffStructures';
 import { setDrawParticipantRepresentativeIds } from './drawDefinitions/setDrawParticipantRepresentativeIds';
 import { getDrawParticipantRepresentativeIds } from './drawDefinitions/getDrawParticipantRepresentativeIds';
+import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
 import { assignMatchUpSideParticipant } from './drawDefinitions/assignMatchUpSideParticipant';
 import { assignDrawPosition } from './drawDefinitions/assignDrawPosition';
 import { addDrawDefinition } from './drawDefinitions/addDrawDefinition';
@@ -196,12 +197,13 @@ const eventGovernor = {
   generateVoluntaryConsolation,
   attachConsolationStructures,
 
-  setMatchUpStatus,
   bulkMatchUpStatusUpdate,
+  setMatchUpFormat,
+  setMatchUpStatus,
 
   setDrawDefaultMatchUpFormat,
   setEventDefaultMatchUpFormat,
-  setStructureDefaultMatchUpFormat,
+  setStructureDefaultMatchUpFormat, // TODO: To Be deprecated
 
   assignDrawPosition,
   assignSeedPositions,
