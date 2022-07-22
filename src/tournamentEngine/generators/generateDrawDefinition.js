@@ -96,8 +96,9 @@ export function generateDrawDefinition(params) {
       [...STRUCTURE_ENTERED_TYPES, QUALIFIER].includes(entry.entryStatus)
     ) || [];
 
-  const consideredEntries =
-    drawEntries || (considerEventEntries ? eventEntries : []);
+  const consideredEntries = (
+    drawEntries || (considerEventEntries ? eventEntries : [])
+  ).filter(({ entryStage }) => !entryStage || entryStage === stage);
 
   const derivedDrawSize =
     !params.drawSize &&
@@ -116,11 +117,12 @@ export function generateDrawDefinition(params) {
     derivedDrawSize ||
     (isConvertableInteger(params.drawSize) && parseInt(params.drawSize));
 
-  if (!drawSize && drawType !== AD_HOC)
+  if (isNaN(drawSize) && drawType !== AD_HOC) {
     return decorateResult({
       result: { error: MISSING_DRAW_SIZE, info: 'drawSize' },
       stack,
     });
+  }
 
   let seedsCount =
     typeof params.seedsCount !== 'number'

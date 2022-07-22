@@ -47,8 +47,9 @@ export function generateQualifyingStructure(params) {
   let finishingPositions;
   let stageSequence = 1;
 
-  if (!drawSize || !isConvertableInteger(drawSize))
+  if (!isConvertableInteger(drawSize)) {
     return { error: MISSING_DRAW_SIZE };
+  }
 
   const result = findStructure({
     structureId: targetStructureId,

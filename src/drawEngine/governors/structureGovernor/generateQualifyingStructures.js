@@ -58,8 +58,9 @@ export function generateQualifyingStructures({
 
       let roundLimit, structure, matchUps;
 
-      if (!drawSize || !isConvertableInteger(drawSize))
+      if (!isConvertableInteger(drawSize)) {
         return { error: MISSING_DRAW_SIZE };
+      }
 
       const roundTargetName =
         qualifyingProfiles.length > 1 ? `${roundTarget}-` : '';

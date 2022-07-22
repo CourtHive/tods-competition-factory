@@ -1080,9 +1080,9 @@ Sets either matchUpStatus or score and winningSide; values to be set are passed 
 
 ```js
 const outcome = {
-  score,
-  winningSide,
-  matchUpStatus,
+  matchUpStatus, // optional
+  winningSide, // optional
+  score, // optional
 };
 
 competitionEngine.setMatchUpStatus({
@@ -1090,7 +1090,7 @@ competitionEngine.setMatchUpStatus({
   matchUpId,
   tournamentId,
   matchUpTieId, // optional - if part of a TIE matchUp
-  outcome,
+  outcome, // optional
   schedule: {
     // optional - set schedule items
     courtId, // requires scheduledDate

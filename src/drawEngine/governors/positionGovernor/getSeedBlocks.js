@@ -1,3 +1,4 @@
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   chunkArray,
   generateRange,
@@ -86,7 +87,7 @@ export function getSeedBlocks({ participantsCount, cluster }) {
     sum += seedBlockSizes[i];
   });
 
-  return { seedBlocks };
+  return { ...SUCCESS, seedBlocks };
 }
 
 export function getSeedGroups({ drawSize, isRoundRobin, roundsCount }) {
