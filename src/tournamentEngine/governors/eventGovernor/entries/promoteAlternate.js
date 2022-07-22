@@ -1,3 +1,5 @@
+import { decorateResult } from '../../../../global/functions/decorateResult';
+
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
@@ -31,12 +33,14 @@ export function promoteAlternates({
   participantIds,
   stageSequence,
   stage = MAIN,
+  eventId,
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(participantIds))
     return { error: INVALID_VALUES, participantIds };
   if (!event) return { error: MISSING_EVENT };
+  const stack = 'promoteAlternates';
 
   if (event) {
     const result = promoteWithinElement({
@@ -47,6 +51,7 @@ export function promoteAlternates({
     });
     if (result.error) return result;
   }
+
   if (drawDefinition) {
     const result = promoteWithinElement({
       element: drawDefinition,
@@ -54,7 +59,22 @@ export function promoteAlternates({
       stageSequence,
       stage,
     });
-    if (result.error) return result;
+    if (result.error) {
+      if (eventId) {
+        // if successful promoting within the event do not fail if not found in drawDefinition.entries
+        // the reasoning here is that with split draws alternates may or may not appear in drawDefinition.entries
+        return decorateResult({
+          context: {
+            drawPromotionError: result.error,
+            drawId: drawDefinition.drawId,
+          },
+          result: { ...SUCCESS },
+          stack,
+        });
+      } else {
+        return result;
+      }
+    }
   }
 
   return { ...SUCCESS };
