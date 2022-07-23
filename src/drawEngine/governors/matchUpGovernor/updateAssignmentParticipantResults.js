@@ -44,8 +44,8 @@ export function updateAssignmentParticipantResults({
     const { participantId } = assignment;
     if (participantIds.includes(participantId)) {
       let extension = {
-        name: TALLY,
         value: participantResults[participantId],
+        name: TALLY,
       };
       addExtension({ element: assignment, extension });
       if (!participantResults[participantId].ties) {
