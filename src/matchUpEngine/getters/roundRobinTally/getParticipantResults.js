@@ -1,6 +1,6 @@
 import { countGames, countSets, countPoints } from './scoreCounters';
-import { intersection } from '../../../utilities';
 import { calculateRatios } from './calculateRatios';
+import { intersection } from '../../../utilities';
 
 import {
   DEFAULTED,
@@ -8,6 +8,10 @@ import {
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
+/*
+TODO: for TEAM matchUps, what are now games won/lost should be tieMatchUps won/lost
+and the games/sets of all tieMatchUps should be aggregated
+*/
 export function getParticipantResults({
   participantIds,
   matchUpFormat,
@@ -120,19 +124,21 @@ export function getParticipantResults({
       participantResults[participantId] = {
         allDefaults: 0,
         defaults: 0,
-        retirements: 0,
-        walkovers: 0,
-        matchUpsWon: 0,
-        matchUpsLost: 0,
-        victories: [],
         defeats: [],
-        matchUpsCancelled: 0,
-        setsWon: 0,
-        setsLost: 0,
-        gamesWon: 0,
         gamesLost: 0,
-        pointsWon: 0,
+        gamesWon: 0,
+        matchUpsCancelled: 0,
+        matchUpsLost: 0,
+        matchUpsWon: 0,
         pointsLost: 0,
+        pointsWon: 0,
+        retirements: 0,
+        setsLost: 0,
+        setsWon: 0,
+        tieMatchUpsLost: 0,
+        tieMatchUpsWon: 0,
+        victories: [],
+        walkovers: 0,
       };
   }
 
