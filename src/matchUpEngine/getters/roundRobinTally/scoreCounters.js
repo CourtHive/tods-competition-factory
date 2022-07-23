@@ -27,11 +27,9 @@ export function countSets({
     // in the case of WALKOVER or DEFAULT, matchUp winner gets full sets to win value
     setsTally[matchUpWinnerIndex] = setsToWin;
   } else {
-    if (sets) {
-      sets.forEach((set) => {
-        const { winningSide: setWinningSide } = set;
-        if (setWinningSide) setsTally[setWinningSide - 1] += 1;
-      });
+    for (const set of sets || []) {
+      const { winningSide: setWinningSide } = set;
+      if (setWinningSide) setsTally[setWinningSide - 1] += 1;
     }
   }
   if (matchUpStatus === RETIRED) {
@@ -53,12 +51,10 @@ export function countGames({
   const { sets } = score || {};
   const matchUpWinnerIndex = matchUpWinningSide - 1;
   const parsedMatchUpFormat = parse(matchUpFormat);
-  let side1Score = 0,
-    side2Score = 0;
   const setsToWin = getSetsToWin(parsedMatchUpFormat?.bestOf || 1);
   const gamesForSet = parsedMatchUpFormat?.setFormat?.setTo || 0;
   const tiebreakAt = parsedMatchUpFormat?.setFormat?.tiebreakAt || 0;
-  if (!sets) return [side1Score, side2Score];
+  if (!sets) return [0, 0];
 
   const minimumGameWins = setsToWin * gamesForSet;
   const gamesTally = [[], []];
@@ -68,13 +64,11 @@ export function countGames({
   ) {
     gamesTally[matchUpWinnerIndex].push(minimumGameWins);
   } else {
-    if (sets) {
-      sets.forEach((set) => {
-        ({ side1Score, side2Score } = set);
-        gamesTally[0].push(parseInt(side1Score || 0));
-        gamesTally[1].push(parseInt(side2Score || 0));
-      });
-    }
+    (sets || []).forEach((set) => {
+      const { side1Score, side2Score } = set;
+      gamesTally[0].push(parseInt(side1Score || 0));
+      gamesTally[1].push(parseInt(side2Score || 0));
+    });
   }
   if (matchUpStatus === RETIRED) {
     const setsTally = countSets({
