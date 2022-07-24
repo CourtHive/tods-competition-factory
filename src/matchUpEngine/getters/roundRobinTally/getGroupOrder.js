@@ -258,6 +258,7 @@ function groupSubSort({
   return participantIds.map((participantId) => ({ participantId }));
 }
 
+// NOTE: This currently considers one victory rather than a head2head win/loss record (considering rounds of play where participants may encounter each other more than once)
 function headToHeadWinner({ participantIds, participantResults }) {
   if (
     participantResults[participantIds[0]].victories.includes(participantIds[1])
