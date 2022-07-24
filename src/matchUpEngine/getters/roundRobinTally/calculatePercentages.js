@@ -1,6 +1,6 @@
 import { parse } from '../../governors/matchUpFormatGovernor/parse';
 
-export function calculateRatios({
+export function calculatePercentages({
   participantResults,
   matchUpFormat,
   perPlayer,

@@ -1,5 +1,5 @@
 import { countGames, countSets, countPoints } from './scoreCounters';
-import { calculateRatios } from './calculateRatios';
+import { calculatePercentages } from './calculatePercentages';
 import { intersection } from '../../../utilities';
 
 import {
@@ -137,7 +137,7 @@ export function getParticipantResults({
     }
   });
 
-  calculateRatios({ participantResults, perPlayer, matchUpFormat });
+  calculatePercentages({ participantResults, perPlayer, matchUpFormat });
 
   return { participantResults };
 }
