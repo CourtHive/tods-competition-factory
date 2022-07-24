@@ -18,8 +18,8 @@ export function calculateRatios({
     let setsPct = Math.round((setsWon / setsTotal) * 1000) / 1000;
     if (setsPct === Infinity || isNaN(setsPct)) setsPct = setsTotal;
 
-    const tieMatchUpsWon = participantResults[participantId].matchUpsWon;
-    const tieMatchUpsLost = participantResults[participantId].matchUpsLost;
+    const tieMatchUpsWon = participantResults[participantId].tieMatchUpsWon;
+    const tieMatchUpsLost = participantResults[participantId].tieMatchUpsLost;
     const tieMatchUpsTotal = tieMatchUpsWon + tieMatchUpsLost;
     let tieMatchUpsPct =
       Math.round((tieMatchUpsWon / tieMatchUpsTotal) * 1000) / 1000;

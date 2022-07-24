@@ -84,9 +84,22 @@ it('handles TEAM ROUND_ROBIN tallyParticipants', () => {
   expect(assignmentsWithTally.length).toEqual(4);
 
   assignmentsWithTally.forEach((assignment) => {
-    console.log(assignment.extensions[0].value);
     expect(
       assignment.extensions.filter(({ name }) => name === TALLY).length
     ).toEqual(1);
   });
+
+  const GEMscores = assignmentsWithTally
+    .map((assignment) => {
+      const { GEMscore, provisionalOrder } = assignment.extensions[0].value;
+      return [GEMscore, provisionalOrder];
+    })
+    .sort((a, b) => a[1] - b[1]);
+
+  expect(GEMscores).toEqual([
+    [5000500051100000, 1],
+    [5000500051000000, 2],
+    [5000500050500000, 3],
+    [5000500047300000, 4],
+  ]);
 });

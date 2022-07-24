@@ -154,13 +154,15 @@ export function getGroupOrder(params) {
         )
       : Object.keys(GEMScoreValueMap);
 
-    return attributes
-      .map(
-        (attribute) =>
-          (result[attribute] || 0) *
-          Math.pow(10, GEMScoreValueMap[attribute].toFixed(3))
-      )
-      .reduce((a, b) => a + b, 0);
+    const attributeValues = attributes.map(
+      (attribute) =>
+        (result[attribute] || 0) *
+        Math.pow(10, GEMScoreValueMap[attribute].toFixed(3))
+    );
+
+    const ratioHash = attributeValues.reduce((a, b) => a + b, 0);
+
+    return ratioHash;
   }
 }
 
