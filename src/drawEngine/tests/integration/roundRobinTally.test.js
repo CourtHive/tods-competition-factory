@@ -166,9 +166,9 @@ it('calculate participantResult values are present for all drawPositions', () =>
       expect(isNaN(result.gamesLost)).toEqual(false);
       expect(isNaN(result.pointsWon)).toEqual(false);
       expect(isNaN(result.pointsLost)).toEqual(false);
-      expect(isNaN(result.setsRatio)).toEqual(false);
-      expect(isNaN(result.matchUpsRatio)).toEqual(false);
-      expect(isNaN(result.gamesRatio)).toEqual(false);
+      expect(isNaN(result.setsPct)).toEqual(false);
+      expect(isNaN(result.matchUpsPct)).toEqual(false);
+      expect(isNaN(result.gamesPct)).toEqual(false);
       expect(isNaN(result.pointsRatio)).toEqual(false);
       expect(isNaN(result.groupOrder)).toEqual(false);
     });

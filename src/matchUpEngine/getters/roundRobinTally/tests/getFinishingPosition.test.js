@@ -111,7 +111,7 @@ it('can recognize unbreakable 3 way ties', () => {
   ).toEqual([1, 2, 2, 2, 5]);
 });
 
-it('can break 3 way ties by setsRatio without idsFilter', () => {
+it('can break 3 way ties by setsPct without idsFilter', () => {
   const outcomeValues = [
     [[4, 5], '6-0 6-0', 1], // win for drawPosition: 4
     [[2, 4], '6-0 6-0', 2], // win for drawPosition: 4
@@ -130,7 +130,7 @@ it('can break 3 way ties by setsRatio without idsFilter', () => {
   // drawPosition 4 has 3 wins and is 1st
   // drawPositions 1, 2 & 3 each have 2 wins
   // drawPositions 1 beat 2, 2 beat 3 and 3 beat 1
-  // drawPosition 1 lost an additional set so is last in the tied group (4th) due to setsRatio
+  // drawPosition 1 lost an additional set so is last in the tied group (4th) due to setsPct
   // drawPosition 2 beat 3 in h2h and gets 2nd
   // drawPosition 3 is therefore 3rd
   // drawPosition 5 had only one win and is 5th
@@ -150,7 +150,7 @@ it('can break 3 way ties by setsRatio without idsFilter', () => {
   ).toEqual([1, 2, 3, 4, 5]);
 });
 
-it('can break 3 way ties by gamesRatio', () => {
+it('can break 3 way ties by gamesPct', () => {
   const outcomeValues = [
     [[4, 5], '6-0 6-0', 1], // win for drawPosition: 4
     [[2, 4], '6-0 6-0', 2], // win for drawPosition: 4
@@ -169,7 +169,7 @@ it('can break 3 way ties by gamesRatio', () => {
   // drawPosition 4 has 3 wins and is 1st
   // drawPositions 1, 2 & 3 each have 2 wins
   // drawPositions 1 beat 2, 2 beat 3 and 3 beat 1
-  // drawPosition 1 lost one more game than 2 and 3 and is therefore last in tied group due to gamesRatio
+  // drawPosition 1 lost one more game than 2 and 3 and is therefore last in tied group due to gamesPct
   // drawPosition 5 had only one win and is 5th
 
   const { participantResults } = generateScenario({ outcomeValues });

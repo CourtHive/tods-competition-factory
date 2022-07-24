@@ -187,9 +187,9 @@ See [Round Robin Tally Policy](policies/tally-policy).
     gamesLost: 12,
     pointsWon: 0,
     pointsLost: 0,
-    setsRatio: 3,
-    matchUpsRatio: 3,
-    gamesRatio: 0.75,
+    setsPct: 3,
+    matchUpsPct: 3,
+    gamesPct: 0.75,
     pointsRatio: 0,
     result: '3/1',
     games: '36/12',
@@ -207,9 +207,10 @@ This is used to determine "seedProxies" when ordered participants from each grou
 
 ```js
 const GEM =
-  matchUpsRatio * Math.pow(10, 16) +
-  setsRatio * Math.pow(10, 12) +
-  gamesRatio * Math.pow(10, 8) +
+  matchUpsPct * Math.pow(10, 20) +
+  tieMatchUpsPct * Math.pow(10, 16) +
+  setsPct * Math.pow(10, 12) +
+  gamesPct * Math.pow(10, 8) +
   pointsRatio * Math.pow(10, 3);
 ```
 

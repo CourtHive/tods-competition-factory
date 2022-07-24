@@ -45,7 +45,7 @@ export function getScoreComponents({ score }) {
   return { sets, games, score };
 }
 
-function gamesPct(scoreComponents) {
+function gamesPercent(scoreComponents) {
   const minGames = Math.min(...scoreComponents.games);
   const maxGames = Math.max(...scoreComponents.games);
   return Math.round((minGames / maxGames) * 100);
@@ -53,7 +53,7 @@ function gamesPct(scoreComponents) {
 
 export function pctSpread(pcts) {
   return pcts
-    .map(gamesPct)
+    .map(gamesPercent)
     .sort()
     .map((p) => p.toFixed(2));
 }

@@ -7,7 +7,7 @@ test('roundRobinTally policy can specify tally by games only', () => {
     tournamentName: 'Round Robin Points',
     policyDefinitions: {
       roundRobinTally: {
-	groupOrderKey: 'gamesRatio',
+	groupOrderKey: 'gamesPct',
         headToHead: { disabled: false },
         disqualifyDefaults: true,
         disqualifyWalkovers: true,
@@ -15,7 +15,7 @@ test('roundRobinTally policy can specify tally by games only', () => {
         setsCreditForWalkovers: true,
         gamesCreditForDefaults: true,
         gamesCreditForWalkovers: true,
-	GEMscore: [ 'gamesRatio', 'pointsRatio' ],
+	GEMscore: [ 'gamesPct', 'pointsRatio' ],
       },
     },
 
@@ -44,9 +44,9 @@ test('roundRobinTally policy can specify tally by games only', () => {
   });
 
   Object.values(participantResults).forEach((result) => {
-    const { GEMscore, gamesRatio = 0 } = result;
+    const { GEMscore, gamesPct = 0 } = result;
     expect(GEMscore?.toString()?.slice(0, 2)).toEqual(
-      (gamesRatio * 1000).toString().slice(0, 2)
+      (gamesPct * 1000).toString().slice(0, 2)
     );
   });
 });
