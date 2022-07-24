@@ -84,6 +84,7 @@ it('handles TEAM ROUND_ROBIN tallyParticipants', () => {
   expect(assignmentsWithTally.length).toEqual(4);
 
   assignmentsWithTally.forEach((assignment) => {
+    console.log(assignment.extensions[0].value);
     expect(
       assignment.extensions.filter(({ name }) => name === TALLY).length
     ).toEqual(1);

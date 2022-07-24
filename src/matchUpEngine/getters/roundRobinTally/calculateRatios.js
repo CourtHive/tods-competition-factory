@@ -12,18 +12,26 @@ export function calculateRatios({
   const bracketGamesForSet = parsedGroupMatchUpFormat.setFormat?.setTo;
 
   Object.keys(participantResults).forEach((participantId) => {
-    const setsNumerator = participantResults[participantId].setsWon;
-    const setsDenominator = participantResults[participantId].setsLost;
-    const setsTotal = perPlayer * (bracketSetsToWin || 0) || setsNumerator;
-    let setsRatio = Math.round((setsNumerator / setsDenominator) * 1000) / 1000;
+    const setsWon = participantResults[participantId].setsWon;
+    const setsLost = participantResults[participantId].setsLost;
+    const setsTotal = perPlayer * (bracketSetsToWin || 0) || setsWon + setsLost;
+    let setsRatio = Math.round((setsWon / setsTotal) * 1000) / 1000;
     if (setsRatio === Infinity || isNaN(setsRatio)) setsRatio = setsTotal;
 
-    const matchesNumerator = participantResults[participantId].matchUpsWon;
-    const matchesDenominator = participantResults[participantId].matchUpsLost;
-    let matchUpsRatio =
-      Math.round((matchesNumerator / matchesDenominator) * 1000) / 1000;
+    const tieMatchUpsWon = participantResults[participantId].matchUpsWon;
+    const tieMatchUpsLost = participantResults[participantId].matchUpsLost;
+    const tieMatchUpsTotal = tieMatchUpsWon + tieMatchUpsLost;
+    let tieMatchUpsRatio =
+      Math.round((tieMatchUpsWon / tieMatchUpsTotal) * 1000) / 1000;
+    if (tieMatchUpsRatio === Infinity || isNaN(tieMatchUpsRatio))
+      tieMatchUpsRatio = tieMatchUpsWon;
+
+    const matchUpsWon = participantResults[participantId].matchUpsWon;
+    const matchUpsLost = participantResults[participantId].matchUpsLost;
+    const matchUpsTotal = matchUpsWon + matchUpsLost;
+    let matchUpsRatio = Math.round((matchUpsWon / matchUpsTotal) * 1000) / 1000;
     if (matchUpsRatio === Infinity || isNaN(matchUpsRatio))
-      matchUpsRatio = matchesNumerator;
+      matchUpsRatio = matchUpsWon;
 
     const gamesWon = participantResults[participantId].gamesWon || 0;
     const gamesLost = participantResults[participantId].gamesLost || 0;
@@ -42,6 +50,7 @@ export function calculateRatios({
     if (pointsRatio === Infinity || isNaN(pointsRatio)) pointsRatio = 0;
 
     participantResults[participantId].setsRatio = setsRatio;
+    participantResults[participantId].tieMatchUpsRatio = tieMatchUpsRatio;
     participantResults[participantId].matchUpsRatio = matchUpsRatio;
     participantResults[participantId].gamesRatio = gamesRatio;
     participantResults[participantId].pointsRatio = pointsRatio;

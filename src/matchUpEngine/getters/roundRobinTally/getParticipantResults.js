@@ -53,7 +53,30 @@ export function getParticipantResults({
         return;
       } else {
         if (tieMatchUps?.length) {
+          perPlayer = 0; // if any matchUps are matchUpType: TEAM don't calculate perPlayer
+
           for (const tieMatchUp of tieMatchUps) {
+            if (tieMatchUp.winningSide) {
+              const tieWinningParticipantId = sides.find(
+                ({ sideNumber }) => sideNumber === tieMatchUp.winningSide
+              )?.participantId;
+              const tieLosingParticipantId = sides.find(
+                ({ sideNumber }) => sideNumber === tieMatchUp.winningSide
+              )?.participantId;
+              if (tieWinningParticipantId && tieLosingParticipantId) {
+                checkInitializeParticipant(
+                  participantResults,
+                  tieWinningParticipantId
+                );
+                checkInitializeParticipant(
+                  participantResults,
+                  tieLosingParticipantId
+                );
+                participantResults[tieWinningParticipantId].tieMatchUpsWon += 1;
+                participantResults[tieLosingParticipantId].tieMatchUpsLost += 1;
+              }
+            }
+
             processScore({
               score: tieMatchUp.score,
               participantResults,
@@ -68,16 +91,49 @@ export function getParticipantResults({
       checkInitializeParticipant(participantResults, winningParticipantId);
       checkInitializeParticipant(participantResults, losingParticipantId);
 
-      processMatchUp({
-        winningParticipantId,
-        losingParticipantId,
-        participantResults,
-        matchUpStatus,
-        matchUpFormat,
-        winningSide,
-        tallyPolicy,
-        score,
-      });
+      if (tieMatchUps?.length) {
+        perPlayer = 0; // if any matchUps are matchUpType: TEAM don't calculate perPlayer
+
+        for (const tieMatchUp of tieMatchUps) {
+          if (tieMatchUp.winningSide === winningSide) {
+            participantResults[winningParticipantId].tieMatchUpsWon += 1;
+            participantResults[losingParticipantId].tieMatchUpsLost += 1;
+          } else if (tieMatchUp.winningSide === 3 - winningSide) {
+            participantResults[losingParticipantId].tieMatchUpsWon += 1;
+            participantResults[winningParticipantId].tieMatchUpsLost += 1;
+          }
+
+          processMatchUp({
+            matchUpFormat: tieMatchUp.matchUpFormat,
+            matchUpStatus: tieMatchUp.matchUpStatus,
+            score: tieMatchUp.score,
+            winningParticipantId,
+            losingParticipantId,
+            participantResults,
+            isTieMatchUp: true,
+            tallyPolicy,
+            winningSide,
+          });
+
+          processOutcome({
+            winningParticipantId,
+            losingParticipantId,
+            participantResults,
+            matchUpStatus,
+          });
+        }
+      } else {
+        processMatchUp({
+          winningParticipantId,
+          losingParticipantId,
+          participantResults,
+          matchUpFormat,
+          matchUpStatus,
+          tallyPolicy,
+          winningSide,
+          score,
+        });
+      }
     }
   });
 
@@ -163,30 +219,24 @@ function processMatchUp({
   winningParticipantId,
   losingParticipantId,
   participantResults,
-  matchUpStatus,
   matchUpFormat,
-  winningSide,
+  matchUpStatus,
+  isTieMatchUp,
   tallyPolicy,
+  winningSide,
   score,
 }) {
   const winningSideIndex = winningSide && winningSide - 1;
   const losingSideIndex = 1 - winningSideIndex;
 
-  if (matchUpStatus === WALKOVER)
-    participantResults[losingParticipantId].walkovers += 1;
-  if (matchUpStatus === DEFAULTED)
-    participantResults[losingParticipantId].defaults += 1;
-  if (matchUpStatus === RETIRED)
-    participantResults[losingParticipantId].retirements += 1;
-
-  // attribute to catch all scenarios where participant terminated matchUp irregularly
-  if ([DEFAULTED, RETIRED, WALKOVER].includes(matchUpStatus))
-    participantResults[losingParticipantId].allDefaults += 1;
-
-  participantResults[winningParticipantId].matchUpsWon += 1;
-  participantResults[losingParticipantId].matchUpsLost += 1;
-  participantResults[losingParticipantId].defeats.push(winningParticipantId);
-  participantResults[winningParticipantId].victories.push(losingParticipantId);
+  if (!isTieMatchUp) {
+    processOutcome({
+      winningParticipantId,
+      losingParticipantId,
+      participantResults,
+      matchUpStatus,
+    });
+  }
 
   const setsTally = countSets({
     matchUpStatus,
@@ -228,4 +278,27 @@ function processMatchUp({
     pointsTally[losingSideIndex];
   participantResults[losingParticipantId].pointsLost +=
     pointsTally[winningSideIndex];
+}
+
+function processOutcome({
+  winningParticipantId,
+  losingParticipantId,
+  participantResults,
+  matchUpStatus,
+}) {
+  if (matchUpStatus === WALKOVER)
+    participantResults[losingParticipantId].walkovers += 1;
+  if (matchUpStatus === DEFAULTED)
+    participantResults[losingParticipantId].defaults += 1;
+  if (matchUpStatus === RETIRED)
+    participantResults[losingParticipantId].retirements += 1;
+
+  // attribute to catch all scenarios where participant terminated matchUp irregularly
+  if ([DEFAULTED, RETIRED, WALKOVER].includes(matchUpStatus))
+    participantResults[losingParticipantId].allDefaults += 1;
+
+  participantResults[winningParticipantId].matchUpsWon += 1;
+  participantResults[losingParticipantId].matchUpsLost += 1;
+  participantResults[losingParticipantId].defeats.push(winningParticipantId);
+  participantResults[winningParticipantId].victories.push(losingParticipantId);
 }

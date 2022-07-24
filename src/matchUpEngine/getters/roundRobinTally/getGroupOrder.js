@@ -45,7 +45,8 @@ const headToHeadTallyDirectives = [
 ];
 
 const GEMScoreValueMap = {
-  matchUpsRatio: 16,
+  matchUpsRatio: 20,
+  tieMatchUpsRatio: 16,
   setsRatio: 12,
   gamesRatio: 8,
   pointsRatio: 4,
