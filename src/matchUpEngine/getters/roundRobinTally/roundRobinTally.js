@@ -5,6 +5,7 @@ import { getGroupOrder } from './getGroupOrder';
 
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../constants/policyConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   INVALID_VALUES,
   MISSING_MATCHUPS,
@@ -46,18 +47,18 @@ export function tallyParticipantResults({
   const tallyPolicy =
     policyDefinitions && policyDefinitions[POLICY_TYPE_ROUND_ROBIN_TALLY];
 
-  const completedMatchUps = matchUps.filter((matchUp) =>
-    matchUpIsComplete({ matchUp })
+  const consideredMatchUps = matchUps.filter(
+    (matchUp) => matchUpIsComplete({ matchUp }) || matchUp.matchUpType === TEAM
   );
   const { participantResults } = getParticipantResults({
-    matchUps: completedMatchUps,
+    matchUps: consideredMatchUps,
     matchUpFormat,
     tallyPolicy,
     perPlayer,
   });
 
   const groupOrder = getGroupOrder({
-    matchUps: completedMatchUps,
+    matchUps: consideredMatchUps,
     participantResults,
     participantsCount,
     matchUpFormat,

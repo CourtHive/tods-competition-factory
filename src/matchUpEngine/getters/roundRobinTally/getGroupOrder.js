@@ -30,24 +30,25 @@ The algorithm relies on the values avaialble in the calculated `participantResul
 */
 
 const headToHeadTallyDirectives = [
-  { attribute: 'matchUpsRatio', idsFilter: false },
+  { attribute: 'matchUpsPct', idsFilter: false },
   { attribute: 'allDefaults', reversed: true, idsFilter: false },
   { attribute: 'defaults', reversed: true, idsFilter: false },
   { attribute: 'walkovers', reversed: true, idsFilter: false },
   { attribute: 'retirements', reversed: true, idsFilter: false },
-  { attribute: 'setsRatio', idsFilter: false },
-  { attribute: 'gamesRatio', idsFilter: false },
+  { attribute: 'setsPct', idsFilter: false },
+  { attribute: 'gamesPct', idsFilter: false },
   { attribute: 'pointsRatio', idsFilter: false },
-  { attribute: 'matchUpsRatio', idsFilter: true },
-  { attribute: 'setsRatio', idsFilter: true },
-  { attribute: 'gamesRatio', idsFilter: true },
+  { attribute: 'matchUpsPct', idsFilter: true },
+  { attribute: 'setsPct', idsFilter: true },
+  { attribute: 'gamesPct', idsFilter: true },
   { attribute: 'pointsRatio', idsFilter: true },
 ];
 
 const GEMScoreValueMap = {
-  matchUpsRatio: 16,
-  setsRatio: 12,
-  gamesRatio: 8,
+  matchUpsPct: 20,
+  tieMatchUpsPct: 16,
+  setsPct: 12,
+  gamesPct: 8,
   pointsRatio: 4,
 };
 
@@ -76,10 +77,10 @@ export function getGroupOrder(params) {
     'pointsWon',
     'gamesWon',
     'setsWon',
-    'gamesRatio',
-    'setsRatio',
+    'gamesPct',
+    'setsPct',
     'pointsRatio',
-    'matchUpsRatio',
+    'matchUpsPct',
   ].includes(tallyPolicy?.groupOrderKey)
     ? tallyPolicy.groupOrderKey
     : 'matchUpsWon';
@@ -145,6 +146,7 @@ export function getGroupOrder(params) {
   });
 
   return groupOrder;
+
   function getRatioHash(result) {
     const attributes = Array.isArray(tallyPolicy?.GEMscore)
       ? Object.keys(GEMScoreValueMap).filter((attribute) =>
@@ -152,12 +154,15 @@ export function getGroupOrder(params) {
         )
       : Object.keys(GEMScoreValueMap);
 
-    return attributes
-      .map(
-        (attribute) =>
-          (result[attribute] || 0) * Math.pow(10, GEMScoreValueMap[attribute])
-      )
-      .reduce((a, b) => a + b, 0);
+    const attributeValues = attributes.map(
+      (attribute) =>
+        (result[attribute] || 0) *
+        Math.pow(10, GEMScoreValueMap[attribute].toFixed(3))
+    );
+
+    const ratioHash = attributeValues.reduce((a, b) => a + b, 0);
+
+    return ratioHash;
   }
 }
 
@@ -257,6 +262,7 @@ function groupSubSort({
   return participantIds.map((participantId) => ({ participantId }));
 }
 
+// NOTE: This currently considers one victory rather than a head2head win/loss record (considering rounds of play where participants may encounter each other more than once)
 function headToHeadWinner({ participantIds, participantResults }) {
   if (
     participantResults[participantIds[0]].victories.includes(participantIds[1])

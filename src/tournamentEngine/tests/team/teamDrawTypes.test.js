@@ -268,7 +268,7 @@ it('handles TEAM ROUND_ROBIN tallyParticipants', () => {
   const assignmentsWithTally = positionAssignments.filter(
     ({ extensions }) => extensions
   );
-  expect(assignmentsWithTally.length).toEqual(2);
+  expect(assignmentsWithTally.length).toEqual(4);
 
   assignmentsWithTally.forEach((assignment) => {
     expect(
