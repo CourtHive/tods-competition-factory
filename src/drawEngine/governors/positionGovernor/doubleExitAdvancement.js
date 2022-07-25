@@ -4,6 +4,7 @@ import { getExitWinningSide } from '../matchUpGovernor/getExitWinningSide';
 import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getPositionAssignments } from '../../getters/positionsGetter';
+import { definedAttributes } from '../../../utilities/objects';
 import { findStructure } from '../../getters/findStructure';
 import { positionTargets } from './positionTargets';
 import { overlap } from '../../../utilities';
@@ -192,17 +193,45 @@ function conditionallyAdvanceDrawPosition(params) {
   const sourceMatchUpStatus = params.matchUpStatus;
   const pairedMatchUpStatus = pairedPreviousMatchUp?.matchUpStatus;
 
+  const producedMatchUpStatus = (previousMatchUpStatus) =>
+    previousMatchUpStatus === DOUBLE_WALKOVER
+      ? WALKOVER
+      : previousMatchUpStatus === DOUBLE_DEFAULT
+      ? DEFAULTED
+      : undefined;
+
   if (sourceSideNumber === 1) {
     matchUpStatusCodes = [
-      { sideNumber: 1, previousMatchUpStatus: sourceMatchUpStatus },
-      { sideNumber: 2, previousMatchUpStatus: pairedMatchUpStatus },
+      {
+        sideNumber: 1,
+        previousMatchUpStatus: sourceMatchUpStatus,
+        matchUpStatus: producedMatchUpStatus(sourceMatchUpStatus),
+      },
+      {
+        sideNumber: 2,
+        previousMatchUpStatus: pairedMatchUpStatus,
+        matchUpStatus: producedMatchUpStatus(pairedMatchUpStatus),
+      },
     ];
   } else if (sourceSideNumber === 2) {
     matchUpStatusCodes = [
-      { sideNumber: 1, previousMatchUpStatus: pairedMatchUpStatus },
-      { sideNumber: 2, previousMatchUpStatus: sourceMatchUpStatus },
+      {
+        sideNumber: 1,
+        previousMatchUpStatus: pairedMatchUpStatus,
+        matchUpStatus: producedMatchUpStatus(pairedMatchUpStatus),
+      },
+      {
+        sideNumber: 2,
+        previousMatchUpStatus: sourceMatchUpStatus,
+        matchUpStatus: producedMatchUpStatus(sourceMatchUpStatus),
+      },
     ];
   }
+
+  if (matchUpStatusCodes.length)
+    matchUpStatusCodes = matchUpStatusCodes.map((code) =>
+      definedAttributes(code)
+    );
 
   const result = modifyMatchUpScore({
     ...params,
