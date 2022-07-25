@@ -115,6 +115,46 @@ export function removeCollectionDefinition({
   let matchUps = [];
 
   if (matchUpId && matchUp) {
+    matchUps = [matchUp];
+  } else if (structureId && structure) {
+    matchUps = getAllStructureMatchUps({
+      matchUpFilters: { matchUpTypes: [TEAM] },
+      structure,
+    })?.matchUps;
+  } else if (drawDefinition) {
+    matchUps = allDrawMatchUps({
+      matchUpFilters: { matchUpTypes: [TEAM] },
+      drawDefinition,
+    })?.matchUps;
+  } else if (event) {
+    matchUps = allEventMatchUps({
+      matchUpFilters: { matchUpTypes: [TEAM] },
+      drawDefinition,
+    })?.matchUps;
+  }
+
+  // all team matchUps in scope which are completed or which have a score should not be modified
+  // UNLESS all collectionMatchUps have no score
+  const targetMatchUps = matchUps.filter((matchUp) => {
+    const collectionMatchUps = matchUp.tieMatchUps.filter(
+      (tieMatchUp) => tieMatchUp.collectionId === collectionId
+    );
+    const collectionScore = collectionMatchUps.some(scoreHasValue);
+
+    return (
+      (updateInProgressMatchUps && !collectionScore) ||
+      (!matchUp.winningSide &&
+        matchUp.matchUpStatus !== COMPLETED &&
+        (updateInProgressMatchUps ||
+          (matchUp.matchUpStatus !== IN_PROGRESS && !scoreHasValue(matchUp))))
+    );
+  });
+
+  if (!targetMatchUps.length) {
+    return { error: NO_MODIFICATIONS_APPLIED };
+  }
+
+  if (matchUpId && matchUp) {
     if (updateInProgressMatchUps) {
       const collectionMatchUps = matchUp.tieMatchUps.filter(
         (tieMatchUp) => tieMatchUp.collectionId === collectionId
@@ -138,35 +178,6 @@ export function removeCollectionDefinition({
         matchUp = result.matchUp;
       }
     }
-    matchUps = [matchUp];
-  } else if (structureId && structure) {
-    matchUps = getAllStructureMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM] },
-      structure,
-    })?.matchUps;
-  } else if (drawDefinition) {
-    matchUps = allDrawMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM] },
-      drawDefinition,
-    })?.matchUps;
-  } else if (event) {
-    matchUps = allEventMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM] },
-      drawDefinition,
-    })?.matchUps;
-  }
-
-  // all team matchUps in scope which are completed or which have a score should not be modified
-  const targetMatchUps = matchUps.filter(
-    (matchUp) =>
-      !matchUp.winningSide &&
-      matchUp.matchUpStatus !== COMPLETED &&
-      (updateInProgressMatchUps ||
-        (matchUp.matchUpStatus !== IN_PROGRESS && !scoreHasValue(matchUp)))
-  );
-
-  if (!targetMatchUps.length) {
-    return { error: NO_MODIFICATIONS_APPLIED };
   }
 
   const deletedMatchUpIds = [];
