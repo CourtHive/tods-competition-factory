@@ -200,7 +200,6 @@ test('DOUBLE_WALKOVER produceds participants eligible for voluntary consolation 
     links: result.links,
     drawId,
   });
-  console.log({ result });
   expect(result.success).toEqual(true);
 
   matchUps = tournamentEngine.allTournamentMatchUps({
