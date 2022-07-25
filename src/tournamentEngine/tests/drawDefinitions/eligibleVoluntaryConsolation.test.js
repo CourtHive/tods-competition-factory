@@ -195,11 +195,12 @@ test('DOUBLE_WALKOVER produceds participants eligible for voluntary consolation 
   });
   expect(matchUps.length).toEqual(0);
 
-  result = tournamentEngine.attachConsolationStructures({
+  result = tournamentEngine.attachStructures({
     structures: result.structures,
     links: result.links,
     drawId,
   });
+  console.log({ result });
   expect(result.success).toEqual(true);
 
   matchUps = tournamentEngine.allTournamentMatchUps({
