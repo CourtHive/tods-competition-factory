@@ -10,7 +10,11 @@ import {
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
 
-export function attachConsolationStructures({
+export function attachPlayoffStructures(params) {
+  return attachStructures(params);
+}
+
+export function attachStructures({
   tournamentRecord,
   drawDefinition,
   structures,
@@ -21,7 +25,9 @@ export function attachConsolationStructures({
   if (!Array.isArray(structures) || !Array.isArray(links))
     return { error: INVALID_VALUES };
 
+  // TODO: ensure that all links are valid and reference structures that are/will be included in the drawDefinition
   if (links.length) drawDefinition.links.push(...links);
+
   const generatedStructureIds = structures.map(
     ({ structureId }) => structureId
   );
@@ -30,7 +36,7 @@ export function attachConsolationStructures({
   );
 
   // replace any existing structures with newly generated structures
-  // this is done because it is possible that a consolation structure exists without matchUps
+  // this is done because it is possible that a structure exists without matchUps
   drawDefinition.structures = drawDefinition.structures.map((structure) => {
     return generatedStructureIds.includes(structure.structureId)
       ? structures.find(

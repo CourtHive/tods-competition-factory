@@ -1,4 +1,4 @@
-import { attachConsolationStructures as attachConsolation } from '../../../drawEngine/governors/structureGovernor/attachConsolationStructures';
+import { attachStructures as structuresAttachment } from '../../../drawEngine/governors/structureGovernor/attachStructures';
 import { addTournamentTimeItem } from '../tournamentGovernor/addTimeItem';
 
 import {
@@ -6,7 +6,19 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-export function attachConsolationStructures({
+export function attachConsolationStructures(params) {
+  return attachStructures({
+    ...params,
+    itemType: 'attachConsolationStructures',
+  });
+}
+
+export function attachPlayoffStructures(params) {
+  return attachStructures({ ...params, itemType: 'attachPlayoffStructures' });
+}
+
+export function attachStructures({
+  itemType = 'attachStructures',
   tournamentRecord,
   drawDefinition,
   structures,
@@ -15,7 +27,7 @@ export function attachConsolationStructures({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const result = attachConsolation({
+  const result = structuresAttachment({
     tournamentRecord,
     drawDefinition,
     structures,
@@ -24,11 +36,11 @@ export function attachConsolationStructures({
   if (result.error) return result;
 
   const structureIds = structures?.map(({ structureId }) => structureId);
-  const consolationDetails = { structureIds, drawId: drawDefinition.drawId };
+  const itemValue = { structureIds, drawId: drawDefinition.drawId };
 
   const timeItem = {
-    itemType: 'attachConsolationStructures',
-    itemValue: consolationDetails,
+    itemValue,
+    itemType,
   };
   addTournamentTimeItem({ tournamentRecord, timeItem });
 

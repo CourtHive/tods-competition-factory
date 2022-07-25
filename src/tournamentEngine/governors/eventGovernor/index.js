@@ -81,7 +81,11 @@ import {
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
 import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
-import { attachConsolationStructures } from './attachConsolationStructures';
+import {
+  attachConsolationStructures,
+  attachPlayoffStructures,
+  attachStructures,
+} from './attachStructures';
 import { deleteAdHocMatchUps } from './drawDefinitions/deleteAdHocMatchUps';
 import { resetDrawDefinition } from './drawDefinitions/resetDrawDefinition';
 import { pruneDrawDefinition } from './drawDefinitions/pruneDrawDefinition';
@@ -101,7 +105,6 @@ import {
 
 import { validateLineUp } from './drawDefinitions/validateTeamLineUp';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
-import { attachPlayoffStructures } from './attachPlayoffStructures';
 import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 import { applyLineUps } from './drawDefinitions/applyLineUps';
 
@@ -121,6 +124,8 @@ import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure
 const eventGovernor = {
   generateQualifyingStructure,
   attachQualifyingStructure,
+  attachPlayoffStructures,
+  attachStructures,
   addQualifyingStructure,
 
   modifyCollectionDefinition,
@@ -152,7 +157,6 @@ const eventGovernor = {
   removeStructure,
 
   generateAndPopulatePlayoffStructures,
-  attachPlayoffStructures,
 
   generateSeedingScaleItems,
 
