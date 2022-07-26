@@ -1017,7 +1017,10 @@ tournamentEngine.deleteEvents({ eventIds });
 ## deleteParticipants
 
 ```js
-tournamentEngine.deleteParticipants({ paricipantIds });
+tournamentEngine.deleteParticipants({
+  addIndividualParticipantsToEvents, // optional boolean
+  paricipantIds,
+});
 ```
 
 ---
@@ -2771,8 +2774,9 @@ Remove an array of individualParticipantIds from a grouping participant [TEAM, G
 
 ```js
 tournamentEngine.removeIndividualParticipantIds({
-  groupingParticipantId,
+  addIndividualParticipantsToEvents, // optional boolean
   individualParticipantIds,
+  groupingParticipantId,
 });
 ```
 
