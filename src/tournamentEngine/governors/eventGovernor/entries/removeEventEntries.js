@@ -1,5 +1,6 @@
 import { getTournamentParticipants } from '../../../getters/participants/getTournamentParticipants';
 import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -17,6 +18,7 @@ export function removeEventEntries({
 }) {
   if (!event?.eventId) return { error: MISSING_EVENT };
   if (!Array.isArray(participantIds)) return { error: MISSING_PARTICIPANT_IDS };
+  const stack = 'removeEventEntries';
 
   participantIds = participantIds?.filter(Boolean);
   if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
@@ -33,17 +35,29 @@ export function removeEventEntries({
     const eventObject = participant.events.find(
       (event) => event.eventId === eventId
     );
-    const enteredInDraw = eventObject?.drawIds?.length;
+    // const enteredInDraw = eventObject?.drawIds?.length;
+    const drawIds = eventObject?.drawIds || [];
+    const enteredInDraw = participant.draws.filter(
+      (drawInfo) =>
+        drawIds.includes(drawInfo.drawId) && drawInfo.positionAssignments
+    ).length;
     return enteredInDraw;
   });
 
   if (enteredParticipantIds) {
-    return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
+    return decorateResult({
+      result: { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT },
+      stack,
+    });
   }
 
-  event.entries = (event.entries || []).filter((entry) =>
-    participantIds.includes(entry?.participantId) ? false : true
-  );
+  const participantIdsRemoved = [];
+
+  event.entries = (event.entries || []).filter((entry) => {
+    const keepEntry = !participantIds.includes(entry?.participantId);
+    if (!keepEntry) participantIdsRemoved.push(entry.participantId);
+    return keepEntry;
+  });
 
   if (autoEntryPositions) {
     event.entries = refreshEntryPositions({
@@ -65,5 +79,5 @@ export function removeEventEntries({
     );
   });
 
-  return { ...SUCCESS };
+  return { ...SUCCESS, participantIdsRemoved };
 }

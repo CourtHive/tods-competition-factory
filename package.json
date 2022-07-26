@@ -20,7 +20,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "0.268.0",
+  "version": "0.272.0",
   "license": "MIT",
   "private": false,
   "jest": {
@@ -99,8 +99,8 @@
     "@rollup/plugin-typescript": "8.3.3",
     "@types/jest": "28.1.6",
     "@types/node": "16.11.45",
-    "@typescript-eslint/eslint-plugin": "5.30.7",
-    "@typescript-eslint/parser": "5.30.7",
+    "@typescript-eslint/eslint-plugin": "5.31.0",
+    "@typescript-eslint/parser": "5.31.0",
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
     "babel-jest": "28.1.3",
@@ -119,7 +119,7 @@
     "pinst": "3.0.0",
     "prettier": "2.7.1",
     "prettier-eslint": "13.0.0",
-    "rollup": "2.77.0",
+    "rollup": "2.77.1",
     "rollup-plugin-dts": "4.2.2",
     "rollup-plugin-terser": "7.0.2",
     "source-map-resolve": "0.6.0",

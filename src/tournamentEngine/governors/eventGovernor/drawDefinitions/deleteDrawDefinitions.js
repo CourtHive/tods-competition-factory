@@ -69,6 +69,7 @@ export function deleteDrawDefinitions({
 
   event.drawDefinitions = event.drawDefinitions.filter((drawDefinition) => {
     if (drawIds.includes(drawDefinition.drawId)) {
+      const { drawId, drawType, drawName } = drawDefinition;
       const flight = flightProfile?.flights?.find(
         (flight) => flight.drawId === drawDefinition.drawId
       );
@@ -88,8 +89,9 @@ export function deleteDrawDefinitions({
       const positionAssignments =
         mainStructure &&
         getPositionAssignments({
-          drawDefinition,
+          tournamentRecord,
           structureId: mainStructure.structureId,
+          drawDefinition,
         })?.positionAssignments;
 
       if (positionAssignments)
@@ -104,7 +106,6 @@ export function deleteDrawDefinitions({
         },
       };
       auditTrail.push(audit);
-      const { drawId, drawType, drawName } = drawDefinition;
       deletedDrawDetails.push({
         tournamentId: tournamentRecord.tournamentId,
         eventId: event.eventId,

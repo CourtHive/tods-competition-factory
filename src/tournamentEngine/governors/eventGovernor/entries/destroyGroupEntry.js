@@ -1,5 +1,6 @@
 import { deleteParticipants } from '../../participantGovernor/deleteParticipants';
 import { getStageEntries } from '../../../getters/participants/getStageEntries';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { removeEventEntries } from './removeEventEntries';
 import { indices } from '../../../../utilities/arrays';
@@ -50,13 +51,16 @@ export function destroyGroupEntry({
   if (![DOUBLES, TEAM].includes(event.eventType)) {
     return { error: INVALID_EVENT_TYPE };
   }
+  const stack = 'destroyGroupEntry';
 
   const tournamentParticipants = tournamentRecord.participants || [];
   const participant = tournamentParticipants.find(
     (participant) => participant.participantId === participantId
   );
 
-  if (!participant) return { error: PARTICIPANT_NOT_FOUND };
+  if (!participant) {
+    return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
+  }
 
   if (
     ![PAIR, TEAM].includes(participant.participantType) ||

@@ -1,10 +1,13 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { removeParticipantIdsFromAllTeams } from './groupings/removeIndividualParticipantIds';
+import { removeEventEntries } from '../eventGovernor/entries/removeEventEntries';
+import { addEventEntries } from '../eventGovernor/entries/addEventEntries';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
 import { addNotice } from '../../../global/state/globalState';
 import { intersection } from '../../../utilities';
 
 import { DELETE_PARTICIPANTS } from '../../../constants/topicConstants';
+import { UNGROUPED } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 import { TEAM } from '../../../constants/eventConstants';
@@ -14,15 +17,23 @@ import {
   MISSING_TOURNAMENT_RECORD,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
 } from '../../../constants/errorConditionConstants';
+import {
+  PAIR,
+  TEAM as participantTeam,
+} from '../../../constants/participantTypes';
 
-export function deleteParticipants({ tournamentRecord, participantIds }) {
+export function deleteParticipants({
+  addIndividualParticipantsToEvents,
+  tournamentRecord,
+  participantIds,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
 
   const participantsCount = tournamentRecord.participants?.length || 0;
   if (!participantsCount) return { ...SUCCESS };
 
-  const teamDrawIds = tournamentRecord.events
+  const teamDrawIds = (tournamentRecord.events || [])
     ?.filter(({ eventType }) => eventType === TEAM)
     .map((event) => event?.drawDefinitions?.map(({ drawId }) => drawId))
     .flat(Infinity);
@@ -52,30 +63,85 @@ export function deleteParticipants({ tournamentRecord, participantIds }) {
   const participantsInDraws = tournamentParticipants.filter(
     (participant) =>
       participant.draws?.filter(
-        ({ drawId }) => !teamDrawIds?.length || !teamDrawIds?.includes(drawId)
+        (drawInfo) =>
+          (!teamDrawIds?.length || !teamDrawIds?.includes(drawInfo.drawId)) &&
+          drawInfo.positionAssignments
       ).length
   );
 
-  if (placedPairParticipantIds?.length || participantsInDraws.length)
+  if (placedPairParticipantIds?.length || participantsInDraws.length) {
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
+  }
+
+  const eventParticipantIdsRemoved = {};
+  const mappedIndividualParticipantIdsToAdd = {};
 
   // If not active in draws, remove participantIds from all entries
+  for (const event of tournamentRecord.events || []) {
+    const result = removeEventEntries({
+      participantIds: participantIds,
+      tournamentRecord,
+      event,
+    });
+    if (result.error) return result;
+    eventParticipantIdsRemoved[event.eventId] = result.participantIdsRemoved;
+  }
 
   tournamentRecord.participants = tournamentRecord.participants.filter(
-    (participant) => !participantIds.includes(participant.participantId)
+    (participant) => {
+      const participantToRemove = participantIds.includes(
+        participant.participantId
+      );
+      if (
+        participantToRemove &&
+        addIndividualParticipantsToEvents &&
+        [PAIR, participantTeam].includes(participant.participantType)
+      ) {
+        for (const individualParticipantId of participant.individualParticipantIds ||
+          []) {
+          if (!participantIds.includes(individualParticipantId)) {
+            if (!mappedIndividualParticipantIdsToAdd[participant.participantId])
+              mappedIndividualParticipantIdsToAdd[participant.participantId] =
+                [];
+            mappedIndividualParticipantIdsToAdd[participant.participantId].push(
+              individualParticipantId
+            );
+          }
+        }
+      }
+      return !participantToRemove;
+    }
   );
+
   const participantsRemovedCount =
     participantsCount - tournamentRecord.participants.length;
 
   removeParticipantIdsFromAllTeams({
-    tournamentRecord,
     individualParticipantIds: participantIds,
+    tournamentRecord,
   });
+
+  if (addIndividualParticipantsToEvents) {
+    for (const event of tournamentRecord.events || []) {
+      const groupParticipantIds = eventParticipantIdsRemoved[event.eventId];
+      const individualParticipantIds = groupParticipantIds
+        .map(
+          (particiapntId) =>
+            mappedIndividualParticipantIdsToAdd[particiapntId] || []
+        )
+        .flat();
+      addEventEntries({
+        participantIds: individualParticipantIds,
+        entryStatus: UNGROUPED,
+        event,
+      });
+    }
+  }
 
   if (participantsRemovedCount) {
     addNotice({
-      topic: DELETE_PARTICIPANTS,
       payload: { participantIds, tournamentId: tournamentRecord.tournamentId },
+      topic: DELETE_PARTICIPANTS,
     });
   }
 

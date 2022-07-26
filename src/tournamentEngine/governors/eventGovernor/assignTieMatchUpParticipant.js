@@ -4,6 +4,7 @@ import { getPairedParticipant } from '../participantGovernor/getPairedParticipan
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { findExtension } from '../queryGovernor/extensionQueries';
@@ -28,6 +29,7 @@ import {
 export function assignTieMatchUpParticipantId(params) {
   const matchUpContext = getTieMatchUpContext(params);
   if (matchUpContext.error) return matchUpContext;
+  const stack = 'assignTieMatchUpParticipantId';
 
   let teamParticipantId = params.teamParticipantId;
   const { tournamentRecord, drawDefinition, participantId } = params;
@@ -55,7 +57,7 @@ export function assignTieMatchUpParticipantId(params) {
   });
 
   if (!participantToAssign) {
-    return { error: PARTICIPANT_NOT_FOUND };
+    return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
   }
 
   const { individualParticipantIds, participantType } = participantToAssign;

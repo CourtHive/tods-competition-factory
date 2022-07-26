@@ -1,10 +1,12 @@
 import mocksEngine from '../../../mocksEngine';
+import { unique } from '../../../utilities';
 import tournamentEngine from '../../sync';
 
 import { EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT } from '../../../constants/errorConditionConstants';
 import { DOMINANT_DUO } from '../../../constants/tieFormatConstants';
 import { TEAM } from '../../../constants/eventConstants';
 import { PAIR } from '../../../constants/participantTypes';
+import { UNGROUPED } from '../../../constants/entryStatusConstants';
 
 it('can delete participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -74,4 +76,48 @@ it('will not delete pair participants in team draws', () => {
   });
 
   expect(result.error).toEqual(EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT);
+});
+
+it('will clean up entries when participants are deleted', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        tieFormatName: DOMINANT_DUO,
+        eventType: TEAM,
+        generate: false,
+        drawSize: 2,
+      },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { tournamentParticipants: teamParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [TEAM] },
+    });
+
+  const pairParticipantIds = teamParticipants.map(
+    ({ participantId }) => participantId
+  );
+  expect(pairParticipantIds.length).toEqual(2);
+
+  let { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
+  expect(event.entries.length).toEqual(2);
+  expect(drawDefinition).toBeUndefined();
+
+  let result = tournamentEngine.deleteParticipants({
+    addIndividualParticipantsToEvents: true,
+    participantIds: pairParticipantIds,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ event, drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  expect(event.entries.length).toEqual(4);
+  expect(unique(event.entries.map(({ entryStatus }) => entryStatus))).toEqual([
+    UNGROUPED,
+  ]);
 });

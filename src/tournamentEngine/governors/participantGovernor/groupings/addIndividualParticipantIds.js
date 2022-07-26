@@ -79,8 +79,8 @@ export function addIndividualParticipantIds({
   if (participantIdsToAdd.length) {
     if (removeFromOtherTeams) {
       removeParticipantIdsFromAllTeams({
-        tournamentRecord,
         individualParticipantIds: participantIdsToAdd,
+        tournamentRecord,
       });
     }
     groupingParticipant.individualParticipantIds =

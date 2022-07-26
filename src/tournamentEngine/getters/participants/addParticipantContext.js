@@ -38,7 +38,7 @@ export function addParticipantContext(params) {
   const eventsPublishStatuses = {};
 
   let matchUps;
-  const drawSizes = {};
+  const derivedDrawInfo = {};
   const participantIdMap = {};
   const initializeParticipantId = (participantId) => {
     if (!participantIdMap[participantId])
@@ -57,6 +57,24 @@ export function addParticipantContext(params) {
         losses: 0,
         wins: 0,
       };
+  };
+
+  const participantPositionAssignments = ({ drawId, participantId }) => {
+    const mainPositionAssignment = derivedDrawInfo[
+      drawId
+    ]?.mainPositionAssignments.find(
+      (assignment) => assignment.participantId === participantId
+    );
+    const qualifyingPositionAssignment = derivedDrawInfo[
+      drawId
+    ]?.qualifyingPositionAssignments.find(
+      (assignment) => assignment.participantId === participantId
+    );
+    const positionAssignments = [
+      mainPositionAssignment,
+      qualifyingPositionAssignment,
+    ].filter(Boolean);
+    return positionAssignments.length ? positionAssignments : undefined;
   };
 
   const { tournamentRecord, participantFilters } = params;
@@ -268,17 +286,23 @@ export function addParticipantContext(params) {
           }
 
           if (!participantIdMap[relevantParticipantId].draws[drawId]) {
-            participantIdMap[relevantParticipantId].draws[drawId] = {
-              qualifyingDrawSize: drawSizes[drawId]?.qualifyingDrawSize,
-              drawSize: drawSizes[drawId]?.drawSize,
-              partnerParticipantIds: [],
-              entryPosition,
-              entryStatus,
-              eventDrawsCount,
-              entryStage,
-              eventId,
+            const positionAssignments = participantPositionAssignments({
+              participantId: relevantParticipantId,
               drawId,
-            };
+            });
+            participantIdMap[relevantParticipantId].draws[drawId] =
+              definedAttributes({
+                positionAssignments,
+                qualifyingDrawSize: derivedDrawInfo[drawId]?.qualifyingDrawSize,
+                drawSize: derivedDrawInfo[drawId]?.drawSize,
+                partnerParticipantIds: [],
+                entryPosition,
+                entryStatus,
+                eventDrawsCount,
+                entryStage,
+                eventId,
+                drawId,
+              });
           }
           const eventDrawIds =
             participantIdMap[relevantParticipantId].events[eventId].drawIds;
@@ -323,23 +347,30 @@ export function addParticipantContext(params) {
             stage: MAIN,
           })?.structures?.[0];
 
-          const drawSize =
+          const mainPositionAssignments =
             mainStructure &&
             getPositionAssignments({
               structure: mainStructure,
-            })?.positionAssignments?.length;
+            })?.positionAssignments;
+          const drawSize = mainPositionAssignments?.length;
           const qualifyingStructure = getDrawStructures({
             stageSequence: 1,
             drawDefinition,
             stage: QUALIFYING,
           })?.structures?.[0];
-          const qualifyingDrawSize =
+          const qualifyingPositionAssignments =
             mainStructure &&
             getPositionAssignments({
               structure: qualifyingStructure,
-            })?.positionAssignments?.length;
+            })?.positionAssignments;
+          const qualifyingDrawSize = qualifyingPositionAssignments?.length;
 
-          drawSizes[drawDefinition.drawId] = { drawSize, qualifyingDrawSize };
+          derivedDrawInfo[drawDefinition.drawId] = {
+            qualifyingPositionAssignments,
+            mainPositionAssignments,
+            qualifyingDrawSize,
+            drawSize,
+          };
 
           return {
             [drawDefinition.drawId]: {
@@ -559,18 +590,24 @@ export function addParticipantContext(params) {
           const { entryStage, entryStatus, entryPosition } = drawEntry || {};
 
           if (!participantIdMap[relevantParticipantId].draws[drawId]) {
-            participantIdMap[relevantParticipantId].draws[drawId] = {
-              qualifyingDrawSize: drawSizes[drawId]?.qualifyingDrawSize,
-              drawSize: drawSizes[drawId]?.drawSize,
-              partnerParticipantIds: [],
-              entryPosition,
-              entryStatus,
-              entryStage,
-              drawName,
-              drawType,
-              eventId,
+            const positionAssignments = participantPositionAssignments({
+              participantId: relevantParticipantId,
               drawId,
-            };
+            });
+            participantIdMap[relevantParticipantId].draws[drawId] =
+              definedAttributes({
+                positionAssignments,
+                qualifyingDrawSize: derivedDrawInfo[drawId]?.qualifyingDrawSize,
+                drawSize: derivedDrawInfo[drawId]?.drawSize,
+                partnerParticipantIds: [],
+                entryPosition,
+                entryStatus,
+                entryStage,
+                drawName,
+                drawType,
+                eventId,
+                drawId,
+              });
           }
 
           if (!participantIdMap[relevantParticipantId].events[eventId]) {

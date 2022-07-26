@@ -12,6 +12,7 @@ import {
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { TEAM } from '../../../constants/eventConstants';
 
 let participantModifyEventsCounter = 0;
 setSubscriptions({
@@ -167,26 +168,26 @@ it('can add a GROUP participant and remove individualParticipantIds', () => {
   expect(result.error).toEqual(INVALID_PARTICIPANT_TYPE);
 
   result = tournamentEngine.removeIndividualParticipantIds({
-    groupingParticipantId,
     individualParticipantIds: individualParticipantIds.slice(2),
+    groupingParticipantId,
   });
   expect(result.success).toEqual(true);
-  expect(result.removed).toEqual(2);
+  expect(result.removed.length).toEqual(2);
 
   result = tournamentEngine.removeIndividualParticipantIds({
-    groupingParticipantId,
     individualParticipantIds: ['bogusId'],
+    groupingParticipantId,
   });
   expect(result.success).toEqual(true);
-  expect(result.removed).toEqual(0);
+  expect(result.removed.length).toEqual(0);
 
   result = tournamentEngine.removeIndividualParticipantIds({
     individualParticipantIds: individualParticipantIds.slice(2),
   });
   expect(result.error).toEqual(MISSING_VALUE);
   result = tournamentEngine.removeIndividualParticipantIds({
-    groupingParticipantId: 'bogusId',
     individualParticipantIds: individualParticipantIds.slice(2),
+    groupingParticipantId: 'bogusId',
   });
   expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
 });
@@ -236,17 +237,17 @@ it('can modify individualParticipantIds of a grouping participant', () => {
   expect(result.error).toEqual(MISSING_VALUE);
 
   result = tournamentEngine.modifyIndividualParticipantIds({
-    groupingParticipantId: 'bogusId',
     individualParticipantIds: newIndividualParticipantIds,
+    groupingParticipantId: 'bogusId',
   });
   expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
 
   result = tournamentEngine.modifyIndividualParticipantIds({
-    groupingParticipantId,
     individualParticipantIds: newIndividualParticipantIds,
+    groupingParticipantId,
   });
   expect(result.added).toEqual(2);
-  expect(result.removed).toEqual(2);
+  expect(result.removed.length).toEqual(2);
   expect(result.success).toEqual(true);
   expect(participantModifyEventsCounter).toBeGreaterThan(0);
 
@@ -295,8 +296,38 @@ it('can remove individualParticipantIds from a grouping participant', () => {
   );
 
   result = tournamentEngine.removeParticipantIdsFromAllTeams({
-    groupingType: GROUP,
     individualParticipantIds,
+    groupingType: [GROUP],
   });
   expect(result.success).toEqual(true);
+});
+
+it('will add individualParticipants to events as UNGROUPED when removed from TEAMs', () => {
+  expect(true);
+
+  const {
+    tournamentRecord,
+    eventIds: [eventId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 4, eventType: TEAM }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const teamParticipant = tournamentRecord.participants.find(
+    (participant) => participant.participantType === TEAM
+  );
+
+  const individualParticipantIdToRemove =
+    teamParticipant.individualParticipantIds[0];
+
+  let result = tournamentEngine.removeIndividualParticipantIds({
+    individualParticipantIds: [individualParticipantIdToRemove],
+    groupingParticipantId: teamParticipant.participantId,
+    addIndividualParticipantsToEvents: true,
+  });
+  expect(result.success).toEqual(true);
+
+  const { event } = tournamentEngine.getEvent({ eventId });
+  expect(event.entries.length).toEqual(5);
 });
