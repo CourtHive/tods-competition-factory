@@ -87,10 +87,10 @@ function removeParticipantIdsFromGroupingParticipant({
 }
 
 export function removeParticipantIdsFromAllTeams({
-  groupingType = TEAM,
+  individualParticipantIds = [],
+  groupingTypes = [TEAM, GROUP],
   participantRole = COMPETITOR,
   tournamentRecord,
-  individualParticipantIds = [],
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const tournamentParticipants = tournamentRecord.participants || [];
@@ -101,12 +101,12 @@ export function removeParticipantIdsFromAllTeams({
       return (
         (participant.participantRole === participantRole ||
           !participant.participantRole) &&
-        participant.participantType === groupingType
+        groupingTypes.includes(participant.participantType)
       );
     })
-    .forEach((team) => {
+    .forEach((grouping) => {
       const { removed } = removeParticipantIdsFromGroupingParticipant({
-        groupingParticipant: team,
+        groupingParticipant: grouping,
         individualParticipantIds,
       });
       if (removed) modifications++;

@@ -295,8 +295,8 @@ it('can remove individualParticipantIds from a grouping participant', () => {
   );
 
   result = tournamentEngine.removeParticipantIdsFromAllTeams({
-    groupingType: GROUP,
     individualParticipantIds,
+    groupingType: [GROUP],
   });
   expect(result.success).toEqual(true);
 });

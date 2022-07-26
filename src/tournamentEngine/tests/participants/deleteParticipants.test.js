@@ -51,7 +51,7 @@ it('will not delete participants in draws', () => {
   expect(tournamentParticipants.length).toEqual(32);
 });
 
-it.only('will not delete pair participants in team draws', () => {
+it('will not delete pair participants in team draws', () => {
   let result = mocksEngine.generateTournamentRecord({
     drawProfiles: [
       { drawSize: 2, eventType: TEAM, tieFormatName: DOMINANT_DUO },
