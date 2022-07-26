@@ -247,7 +247,7 @@ it('can modify individualParticipantIds of a grouping participant', () => {
     groupingParticipantId,
   });
   expect(result.added).toEqual(2);
-  expect(result.removed.lengthG).toEqual(2);
+  expect(result.removed.length).toEqual(2);
   expect(result.success).toEqual(true);
   expect(participantModifyEventsCounter).toBeGreaterThan(0);
 
