@@ -1,3 +1,4 @@
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { intersection } from '../../../utilities/arrays';
 import { makeDeepCopy } from '../../../utilities';
 
@@ -20,6 +21,7 @@ export function getPairedParticipant({
   if (!Array.isArray(participantIds) || participantIds.length > 2)
     return { error: INVALID_PARTICIPANT_IDS };
   if (!participantIds.length) return { error: MISSING_PARTICIPANT_IDS };
+  const stack = 'getPairedParticipant';
 
   tournamentParticipants =
     tournamentParticipants || tournamentRecord?.participants || [];
@@ -32,7 +34,9 @@ export function getPairedParticipant({
       participant.individualParticipantIds.length === participantIds.length
   );
   const existingPairedParticipant = existingPairedParticipants[0];
-  if (!existingPairedParticipant) return { error: PARTICIPANT_NOT_FOUND };
+  if (!existingPairedParticipant) {
+    return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
+  }
 
   const duplicatedPairParticipants = makeDeepCopy(
     existingPairedParticipants.slice(1)
