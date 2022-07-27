@@ -92,18 +92,18 @@ export function modifyVenue({
     for (const court of modifications.courts) {
       const { courtId } = court || {};
       let result = modifyCourt({
-        tournamentRecord,
         modifications: court,
         disableNotice: true,
+        tournamentRecord,
         courtId,
         force,
       });
       if (result.error === COURT_NOT_FOUND) {
         result = addCourt({
+          disableNotice: true,
           tournamentRecord,
           venueId,
           court,
-          disableNotice: true,
         });
       }
       if (result.error) return result;
