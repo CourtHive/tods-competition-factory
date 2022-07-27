@@ -215,7 +215,6 @@ it('properly calculates short sets', () => {
   expect(dp1.matchUpsWon).toEqual(0);
   expect(dp1.matchUpsLost).toEqual(1);
   expect(dp1.result).toEqual('0/1');
-  expect(dp1.games).toEqual('1/8');
 });
 
 it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', () => {
@@ -444,7 +443,6 @@ it('RR Format Standard tally test', () => {
   expect(dp1.matchUpsWon).toEqual(2);
   expect(dp1.matchUpsLost).toEqual(1);
   expect(dp1.result).toEqual('2/1');
-  expect(dp1.games).toEqual('26/16');
 
   const dp2 = getDrawPositionTally({
     positionAssignments,
@@ -457,7 +455,6 @@ it('RR Format Standard tally test', () => {
   expect(dp2.matchUpsWon).toEqual(0);
   expect(dp2.matchUpsLost).toEqual(1);
   expect(dp2.result).toEqual('0/1');
-  expect(dp2.games).toEqual('2/12');
 
   const dp3 = getDrawPositionTally({
     positionAssignments,
@@ -470,7 +467,6 @@ it('RR Format Standard tally test', () => {
   expect(dp3.matchUpsWon).toEqual(1);
   expect(dp3.matchUpsLost).toEqual(0);
   expect(dp3.result).toEqual('1/0');
-  expect(dp3.games).toEqual('12/2');
 });
 
 function getDrawPositionTally({ positionAssignments, drawPosition }) {
