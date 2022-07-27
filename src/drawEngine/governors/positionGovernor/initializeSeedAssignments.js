@@ -65,11 +65,10 @@ export function initializeStructureSeedAssignments({
   structure.seedLimit = seedsCount;
   structure.seedAssignments = generateRange(1, seedsCount + 1).map(
     (seedNumber) => {
-      const groupSeedValue =
+      const seedGroup =
         seedGroups &&
-        Math.min(
-          ...seedGroups.find((seedGroup) => seedGroup.includes(seedNumber))
-        );
+        seedGroups.find((seedGroup) => seedGroup.includes(seedNumber));
+      const groupSeedValue = seedGroup && Math.min(...seedGroup);
       const seedValue =
         groupSeedingThreshold && seedNumber >= groupSeedingThreshold
           ? groupSeedValue
