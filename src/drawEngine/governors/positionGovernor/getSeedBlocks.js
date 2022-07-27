@@ -1,10 +1,14 @@
-import { SUCCESS } from '../../../constants/resultConstants';
+import { isConvertableInteger } from '../../../utilities/math';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import {
   chunkArray,
   generateRange,
   overlap,
   nextPowerOf2,
 } from '../../../utilities';
+
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 /**
  * Generates seedBlocks for USTA or ITF style seeding
@@ -19,6 +23,13 @@ import {
  */
 
 export function getSeedBlocks({ participantsCount, cluster }) {
+  if (!isConvertableInteger(participantsCount))
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      context: { participantsCount },
+      stack: 'getSeedBlocks',
+    });
+
   const drawSize = nextPowerOf2(participantsCount);
   const range = generateRange(1, drawSize + 1);
 
@@ -90,19 +101,81 @@ export function getSeedBlocks({ participantsCount, cluster }) {
   return { ...SUCCESS, seedBlocks };
 }
 
-export function getSeedGroups({ drawSize, isRoundRobin, roundsCount }) {
-  if (isRoundRobin) {
-    if (roundsCount) true;
+export function getSeedGroups({
+  roundRobinGroupsCount,
+  roundsCount,
+  drawSize,
+}) {
+  const stack = 'getSeedGroups';
+
+  if (!isConvertableInteger(drawSize))
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      context: { drawSize },
+      stack,
+    });
+
+  if (roundRobinGroupsCount) {
+    if (!isConvertableInteger(roundRobinGroupsCount))
+      return decorateResult({
+        result: { error: INVALID_VALUES },
+        context: { roundRobinGroupsCount },
+        stack,
+      });
+
+    if (roundsCount) {
+      if (!isConvertableInteger(roundsCount))
+        return decorateResult({
+          result: { error: INVALID_VALUES },
+          context: { roundsCount },
+          stack,
+        });
+
+      let seedNumber = 1;
+      const seedGroups = generateRange(0, roundsCount).map(() => {
+        const seedNumbers = generateRange(
+          seedNumber,
+          seedNumber + roundRobinGroupsCount
+        );
+        seedNumber += roundRobinGroupsCount;
+        return seedNumbers;
+      });
+      return { seedGroups };
+    }
   } else {
     const { seedBlocks } = getSeedBlocks({ participantsCount: drawSize });
 
-    let counter = 0;
-    const seedGroups = seedBlocks.map((seedBlock) =>
-      seedBlock.map(() => {
-        counter += 1;
-        return counter;
+    let seedNumber = 0;
+    const seedGroups = (seedBlocks || []).map((seedBlock) =>
+      (seedBlock || []).map(() => {
+        seedNumber += 1;
+        return seedNumber;
       })
     );
+
     return { seedGroups };
   }
+
+  return { seedGroups: [] };
+}
+
+export function getSeedingThresholds({
+  participantsCount,
+  roundRobinGroups,
+  roundsCount,
+}) {
+  const result = getSeedBlocks({
+    participantsCount,
+    roundRobinGroups,
+    roundsCount,
+  });
+  if (result.error) return result;
+
+  const { seedGroups } = getSeedGroups({ drawSize: participantsCount });
+
+  const seedingThresholds = seedGroups.map((seedNumberBlock) =>
+    Math.min(...seedNumberBlock)
+  );
+
+  return { ...SUCCESS, seedingThresholds };
 }

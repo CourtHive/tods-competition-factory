@@ -30,12 +30,20 @@ export function initializeStructureSeedAssignments({
   if (seedsCount > drawSize)
     return { error: SEEDSCOUNT_GREATER_THAN_DRAW_SIZE };
 
-  const isRoundRobin = structure.structures?.length;
+  const roundRobinGroupsCount = structure.structures?.length;
+  const roundsCount = structure.structures?.[0]?.matchUps?.reduce(
+    (maxRoundNumber, { roundNumber }) => Math.max(roundNumber, maxRoundNumber),
+    0
+  );
   const groupSeedingThreshold =
     seedingProfile?.groupSeedingThreshold &&
     isConvertableInteger(seedingProfile.groupSeedingThreshold);
 
-  const seedGroups = getSeedGroups({ drawSize, isRoundRobin })?.seedGroups;
+  const seedGroups = getSeedGroups({
+    roundRobinGroupsCount,
+    roundsCount,
+    drawSize,
+  })?.seedGroups;
 
   const { seedsCount: maxSeedsCount } = getSeedsCount({
     policyDefinitions: appliedPolicies,
