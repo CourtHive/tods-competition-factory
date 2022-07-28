@@ -27,9 +27,9 @@ export function positionSeedBlocks({
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { validSeedBlocks, error } = getValidSeedBlocks({
-    structure,
     drawDefinition,
     appliedPolicies,
+    structure,
   });
   if (error) errors.push(error);
 
