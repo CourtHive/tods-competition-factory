@@ -1,16 +1,17 @@
 import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
-import { getSeedBlocks } from '../governors/positionGovernor/getSeedBlocks';
 import { getStructureSeedAssignments } from './getStructureSeedAssignments';
-import { structureAssignedDrawPositions } from './positionsGetter';
+import { chunkArray, isPowerOf2, shuffleArray } from '../../utilities';
 import { getNumericSeedValue } from './getNumericSeedValue';
 import { findStructure } from './findStructure';
 import {
-  chunkArray,
-  generateRange,
-  isPowerOf2,
-  shuffleArray,
-} from '../../utilities';
+  getSeedBlocks,
+  getSeedGroups,
+} from '../governors/positionGovernor/getSeedBlocks';
+import {
+  getPositionAssignments,
+  structureAssignedDrawPositions,
+} from './positionsGetter';
 
 import {
   CLUSTER,
@@ -42,8 +43,7 @@ export function getValidSeedBlocks({
     validSeedBlocks = [],
     isContainer,
     isFeedIn,
-    isLucky,
-    error;
+    isLucky;
 
   if (!structure) return { error: MISSING_STRUCTURE };
 
@@ -98,11 +98,15 @@ export function getValidSeedBlocks({
         validSeedBlocks: [],
       };
 
-    ({ validSeedBlocks, error } = constructContainerBlocks({
+    const result = getContainerBlocks({
       seedingProfile,
       structure,
-    }));
-    if (error) return { error };
+    });
+    if (!result || result.error) {
+      console.log(result);
+      return result;
+    }
+    ({ validSeedBlocks } = result);
   } else if (uniqueDrawPositionsByRound.length) {
     isFeedIn = true;
 
@@ -186,101 +190,52 @@ export function getValidSeedBlocks({
   };
 }
 
-function constructContainerBlocks({ seedingProfile, structure, seedBlocks }) {
+export function getContainerBlocks({ seedingProfile, structure, seedBlocks }) {
   const containedStructures = structure.structures || [];
-
-  const groupSeedBlocks = [];
   const roundRobinGroupsCount = containedStructures.length;
-  for (const structure of containedStructures) {
-    const { positionAssignments } = structureAssignedDrawPositions({
-      structure,
-    });
-    const drawPositionOffset =
-      Math.min(
-        ...positionAssignments.map((assignment) => assignment.drawPosition)
-      ) - 1;
-    const baseDrawSize = positionAssignments.length;
+  const positionAssignments = getPositionAssignments({
+    structure,
+  })?.positionAssignments;
+  const validSeedBlocks = [];
 
-    let blocks, error;
-    if (isPowerOf2(baseDrawSize)) {
-      ({ blocks, error } = constructPower2Blocks({
-        seedCountGoal: baseDrawSize,
-        roundRobinGroupsCount,
-        drawPositionOffset,
-        seedingProfile,
-        baseDrawSize,
-        seedBlocks,
-      }));
-    } else {
-      ({ blocks, error } = constructBlocks({
-        seedCountGoal: baseDrawSize,
-        drawPositionOffset,
-        baseDrawSize,
-      }));
-    }
-    if (error) return { error };
+  const positioning = getSeedPattern(seedingProfile);
 
-    groupSeedBlocks.push(blocks);
+  if (!seedBlocks) {
+    seedBlocks = getSeedBlocks({
+      participantsCount: positionAssignments?.length,
+      roundRobinGroupsCount,
+    }).seedBlocks;
   }
 
-  const seedNumberDrawPositions = groupSeedBlocks
-    .map((groupBlocks) => {
-      return groupBlocks.map((block) => {
-        return block.seedNumbers.map((seedNumber, i) => ({
-          seedNumber,
-          drawPosition: block.drawPositions[i],
-        }));
-      });
-    })
-    .flat(Infinity)
-    .sort((a, b) => a.seedNumber - b.seedNumber);
-  const drawPositionsGroups = seedNumberDrawPositions.reduce(
-    (groups, candidate) => {
-      const seedNumber = candidate.seedNumber;
-      if (!groups[seedNumber]) groups[seedNumber] = [];
-      groups[seedNumber].push(candidate.drawPosition);
-      return groups;
-    },
-    {}
-  );
-
-  let seedCounter = 1,
-    validSeedBlocks = [];
-  if (drawPositionsGroups[1]) {
-    drawPositionsGroups[1].forEach((drawPosition, i) => {
-      validSeedBlocks.push({
-        seedNumbers: [i + 1],
-        drawPositions: [drawPosition],
-      });
-      seedCounter++;
-    });
-  }
-  const seedBlockProfile = [[2], [3, 4], [5, 6, 7, 8], generateRange(9, 17)];
-  seedBlockProfile.forEach((profile) => {
-    const drawPositions = [].concat(
-      ...profile.map((key) => drawPositionsGroups[key] || [])
-    );
-    const seedNumbers = drawPositions.map((_, i) => seedCounter + i);
-    const seedBlock = { seedNumbers, drawPositions };
-    validSeedBlocks.push(seedBlock);
-    seedCounter += seedNumbers.length;
+  const { seedGroups } = getSeedGroups({
+    drawSize: positionAssignments.length,
+    roundRobinGroupsCount,
   });
+  const drawPositionBlocks = containedStructures.map((containedStructure) =>
+    getPositionAssignments({
+      structure: containedStructure,
+    }).positionAssignments.map((assignment) => assignment.drawPosition)
+  );
 
   const topDown = (a, b) => a - b;
   const bottomUp = (a, b) => b - a;
-  const waterfallSeeding = Object.keys(drawPositionsGroups)
-    .map((key, i) => drawPositionsGroups[key].sort(i % 2 ? bottomUp : topDown))
-    .flat()
-    .map((drawPosition, i) => ({
-      seedNumbers: [i + 1],
-      drawPositions: [drawPosition],
-    }));
-
-  if (
-    getSeedPattern(structure.seedingProfile) === WATERFALL ||
-    getSeedPattern(seedingProfile) === WATERFALL
-  )
-    validSeedBlocks = waterfallSeeding;
+  const assignedPositions = [];
+  seedGroups.forEach((seedGroup, i) => {
+    if (i && positioning !== WATERFALL) {
+      shuffleArray(seedGroup);
+    }
+    seedGroup.forEach((seedNumber, j) => {
+      const blockIndex = i % 2 ? drawPositionBlocks.length - j - 1 : j;
+      const drawPosition = drawPositionBlocks[blockIndex]
+        .sort(i % 2 ? bottomUp : topDown)
+        .find((drawPosition) => !assignedPositions.includes(drawPosition));
+      assignedPositions.push(drawPosition);
+      validSeedBlocks.push({
+        seedNumbers: [seedNumber],
+        drawPositions: [drawPosition],
+      });
+    });
+  });
 
   return { validSeedBlocks };
 }
@@ -301,7 +256,6 @@ function constructPower2Blocks({
     participantsCount: baseDrawSize,
     roundRobinGroupsCount,
   });
-  // console.log({ seedBlocks });
 
   count = 0;
   for (const seedBlock of seedBlocks) {
@@ -323,43 +277,6 @@ function constructPower2Blocks({
   }
 }
 
-function constructBlocks({
-  baseDrawSize,
-  seedCountGoal,
-  drawPositionOffset = 0,
-}) {
-  let count = 1;
-  const blocks = [];
-  const blockPositions = generateRange(
-    drawPositionOffset + 1,
-    drawPositionOffset + baseDrawSize + 1
-  );
-  const seedNumberBlocks = [
-    [1],
-    [2],
-    [3, 4],
-    [5, 6, 7, 8],
-    generateRange(9, 17),
-    generateRange(17, 33),
-    generateRange(33, 65),
-  ];
-
-  seedNumberBlocks.forEach((seedNumbers) => {
-    const drawPositions = seedNumbers
-      .map(() => blockPositions.reverse().pop())
-      .filter(Boolean);
-    seedNumbers = seedNumbers.slice(0, drawPositions.length);
-
-    const block = { seedNumbers, drawPositions };
-    if (count <= seedCountGoal) {
-      blocks.push(block);
-    }
-    count += drawPositions.length;
-  });
-
-  return { blocks };
-}
-
 /**
  *
  * @param {Object} drawDefinition - TODS JSON Object containing draw components
@@ -374,7 +291,6 @@ function constructBlocks({
  *
  */
 export function isValidSeedPosition({
-  // appliedPolicies,
   drawDefinition,
   drawPosition,
   structureId,
@@ -462,7 +378,6 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
       )) ||
     [];
   const unfilledPositions = randomize ? shuffleArray(unfilled) : unfilled;
-
   const selectedParticipantIds = [];
   const randomlySelectedUnplacedSeedValueIds = unfilledPositions
     .map(() => {
@@ -519,7 +434,8 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
       )
     );
     const assignmentsWithLowestSeedValue = filteredAssignments.filter(
-      (assignment) => assignment.seedValue === lowestSeedValue
+      (assignment) =>
+        getNumericSeedValue(assignment.seedValue) === lowestSeedValue
     );
     const randomizedAssignments = shuffleArray(assignmentsWithLowestSeedValue);
     return randomizedAssignments.pop();
