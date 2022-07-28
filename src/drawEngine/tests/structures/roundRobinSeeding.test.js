@@ -7,7 +7,6 @@ import POLICY_SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA'
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 
 const scenarios = [
-  /*
   { drawProfiles: [{ drawSize: 32, drawType: ROUND_ROBIN, seedsCount: 8 }] },
   {
     drawProfiles: [
@@ -19,7 +18,6 @@ const scenarios = [
       },
     ],
   },
-  */
   {
     drawProfiles: [
       {
@@ -29,7 +27,6 @@ const scenarios = [
         drawSize: 32,
       },
     ],
-    /*
   },
   {
     drawProfiles: [
@@ -40,7 +37,6 @@ const scenarios = [
         drawSize: 32,
       },
     ],
-    */
   },
 ];
 
@@ -92,7 +88,5 @@ it.each(scenarios)('can seed drawType: ROUND_ROBIN', (scenario) => {
   const seedsPerGroup = unique(
     groups.map((group) => group.filter(({ seedNumber }) => seedNumber).length)
   );
-  if (seedsPerGroup.length !== 1)
-    console.log({ seedsPerGroup, participantDetails });
-  // expect(seedsPerGroup.length).toEqual(1);
+  expect(seedsPerGroup.length).toEqual(1);
 });
