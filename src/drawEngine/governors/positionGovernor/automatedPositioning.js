@@ -8,7 +8,7 @@ import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { positionByes } from './byePositioning/positionByes';
 import { findStructure } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
-import { getSeedPattern } from '../../getters/seedGetter';
+import { getSeedPattern, getValidSeedBlocks } from '../../getters/seedGetter';
 import { positionQualifiers } from './positionQualifiers';
 import { positionSeedBlocks } from './positionSeeds';
 import { makeDeepCopy } from '../../../utilities';
@@ -60,8 +60,9 @@ export function automatedPositioning({
   };
   //-----------------------------------------------------------
 
-  const { structure, error } = findStructure({ drawDefinition, structureId });
-  if (error) return handleErrorCondition({ error });
+  let result = findStructure({ drawDefinition, structureId });
+  if (result.error) return handleErrorCondition(result);
+  const { structure } = result;
 
   if (!appliedPolicies) {
     appliedPolicies = getAppliedPolicies({
@@ -102,6 +103,14 @@ export function automatedPositioning({
 
   let unseededByePositions = [];
 
+  result = getValidSeedBlocks({
+    appliedPolicies,
+    drawDefinition,
+    structure,
+  });
+  if (result.error) return result;
+  const { validSeedBlocks } = result;
+
   if (
     getSeedPattern(structure.seedingProfile || seedingProfile) === WATERFALL
   ) {
@@ -112,6 +121,7 @@ export function automatedPositioning({
       positionByes({
         tournamentRecord,
         appliedPolicies,
+        validSeedBlocks,
         drawDefinition,
         matchUpsMap,
         structure,
@@ -126,6 +136,7 @@ export function automatedPositioning({
       inContextDrawMatchUps,
       tournamentRecord,
       appliedPolicies,
+      validSeedBlocks,
       drawDefinition,
       participants,
       matchUpsMap,
@@ -141,6 +152,7 @@ export function automatedPositioning({
         inContextDrawMatchUps,
         tournamentRecord,
         appliedPolicies,
+        validSeedBlocks,
         drawDefinition,
         participants,
         matchUpsMap,
@@ -155,6 +167,7 @@ export function automatedPositioning({
         inContextDrawMatchUps,
         tournamentRecord,
         appliedPolicies,
+        validSeedBlocks,
         drawDefinition,
         matchUpsMap,
         structure,
@@ -175,6 +188,7 @@ export function automatedPositioning({
       inContextDrawMatchUps,
       tournamentRecord,
       appliedPolicies,
+      validSeedBlocks,
       drawDefinition,
       participants,
       matchUpsMap,
@@ -189,6 +203,7 @@ export function automatedPositioning({
       multipleStructures,
       tournamentRecord,
       appliedPolicies,
+      validSeedBlocks,
       candidatesCount,
       drawDefinition,
       participants,
