@@ -10,6 +10,7 @@ export function positionByes({
   blockOrdered = false,
   tournamentRecord,
   appliedPolicies,
+  validSeedBlocks,
   drawDefinition,
   matchUpsMap,
   structureId,
@@ -38,6 +39,7 @@ export function positionByes({
   } = getSeedOrderByePositions({
     relevantMatchUps,
     appliedPolicies,
+    validSeedBlocks,
     drawDefinition,
     structure,
   });
@@ -48,10 +50,13 @@ export function positionByes({
 
   const { unseededByePositions } = getUnseededByePositions({
     appliedPolicies,
+    validSeedBlocks,
+    drawDefinition,
     structure,
     isFeedIn,
     isLucky,
   });
+
   // first add all drawPositions paired with sorted seeds drawPositions
   // then add quarter separated and evenly distributed drawPositions
   // derived from theoretical seeding of firstRoundParticipants/2
