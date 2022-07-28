@@ -109,16 +109,6 @@ it('can generate and verify round robin structures', () => {
   */
 });
 
-it('can write to the file system', () => {
-  generateRoundRobin({
-    drawSize: 5,
-    groupSize: 5,
-    seedsCount: 0,
-    assignSeeds: 0,
-    participantsCount: 5,
-  });
-});
-
 function generateRoundRobin({
   drawSize,
   groupSize,
