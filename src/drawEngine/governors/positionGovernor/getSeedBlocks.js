@@ -37,8 +37,23 @@ export function getSeedBlocks({
   const drawSize = nextPowerOf2(participantsCount);
 
   if (roundRobinGroupsCount) {
-    // const groupSize = Math.ceil(drawSize / roundRobinGroupsCount);
-    // console.log({ groupSize });
+    // ensure that drawSize has not already been subdivided
+    // e.g. each group treated as a separate drawSize whilst passing total groupsCount
+    const increment = Math.min(roundRobinGroupsCount, drawSize);
+    const seedBlocks = [];
+    let position = 1;
+
+    generateRange(0, increment).forEach(() => {
+      seedBlocks.push([position]);
+      position++;
+    });
+
+    while (position < drawSize) {
+      const range = generateRange(position, position + increment);
+      position += increment;
+      seedBlocks.push(range);
+    }
+    return { ...SUCCESS, seedBlocks };
   }
 
   const range = generateRange(1, drawSize + 1);
