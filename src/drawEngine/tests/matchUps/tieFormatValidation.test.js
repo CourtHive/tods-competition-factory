@@ -142,6 +142,12 @@ test('various tieFormat defaults', () => {
 
 it('can validate tieFormat fixtures', () => {
   let result = validateTieFormat({
+    tieFormat: fixtures.tieFormats.USTA_SECTION_BATTLE,
+    checkCollectionIds: false,
+  });
+  expect(result.valid).toEqual(true);
+
+  result = validateTieFormat({
     tieFormat: fixtures.tieFormats.COLLEGE_D3,
     checkCollectionIds: false,
   });
