@@ -19,6 +19,7 @@ import {
 
 export function getUnseededByePositions({
   appliedPolicies,
+  drawDefinition,
   structure,
   isFeedIn,
   isLucky,
@@ -111,6 +112,7 @@ export function getUnseededByePositions({
   const { validSeedBlocks } = getValidSeedBlocks({
     allPositions: true,
     appliedPolicies,
+    drawDefinition,
     structure,
   });
 

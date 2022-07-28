@@ -69,8 +69,16 @@ export function tallyParticipantResults({
   // do not add groupOrder if bracket is not complete
   if (bracketComplete && groupOrder) {
     groupOrder.forEach((finishingPosition) => {
-      const result = participantResults[finishingPosition.participantId];
-      result.groupOrder = finishingPosition.groupOrder;
+      const { participantId, groupOrder, rankOrder, subOrder, ties, GEMscore } =
+        finishingPosition;
+      const participantResult = participantResults[participantId];
+      Object.assign(participantResult, {
+        groupOrder,
+        rankOrder,
+        GEMscore,
+        subOrder,
+        ties,
+      });
     });
   } else {
     const provionalOrder = getGroupOrder({
@@ -85,8 +93,15 @@ export function tallyParticipantResults({
 
     if (provionalOrder) {
       provionalOrder.forEach((finishingPosition) => {
-        const result = participantResults[finishingPosition.participantId];
-        result.provisionalOrder = finishingPosition.groupOrder;
+        const { participantId, groupOrder, subOrder, GEMscore } =
+          finishingPosition;
+        const participantResult = participantResults[participantId];
+        Object.assign(participantResult, {
+          provisionalOrder: groupOrder,
+          groupOrder,
+          GEMscore,
+          subOrder,
+        });
       });
     }
   }

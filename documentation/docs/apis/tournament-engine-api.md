@@ -979,8 +979,8 @@ Remove drawDefinitions from an event. An audit timeItem is added to the tourname
 
 ```js
 tournamentEngine.deleteDrawDefinitions({
-  eventId,
   drawIds: [drawId],
+  eventId,
 });
 ```
 
@@ -1412,11 +1412,11 @@ Used in conjunction with `getEntriesAndSeedsCount` when it is necessary to make 
 ```js
 const { scaleItemsWithParticipantIds } =
   tournamentEngine.generateSeedingScaleItems({
-    scaledEntries,
-    seedsCount,
     scaleAttributes,
-    scaleName,
+    scaledEntries,
     stageEntries,
+    seedsCount,
+    scaleName,
   });
 ```
 
@@ -1614,9 +1614,8 @@ const { eligibleParticipants } =
 ```js
 const { error, entries, seedsCount, stageEntries } =
   tournamentEngine.getEntriesAndSeedsCount({
-    eventId,
     policyDefinitions, // seeding policy which determines # of seeds for # of participants/drawSize
-
+    eventId,
     drawSize, // optional - overrides number calculaed from entries in either event or draw
     drawId, // optional - scopes entries to a specific flight/drawDefinition
     stage, // optional - scopes entries to a specific stage

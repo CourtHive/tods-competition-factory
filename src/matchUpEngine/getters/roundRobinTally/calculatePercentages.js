@@ -57,8 +57,5 @@ export function calculatePercentages({
     participantResults[
       participantId
     ].result = `${participantResults[participantId].matchUpsWon}/${participantResults[participantId].matchUpsLost}`;
-    participantResults[
-      participantId
-    ].games = `${participantResults[participantId].gamesWon}/${participantResults[participantId].gamesLost}`;
   });
 }

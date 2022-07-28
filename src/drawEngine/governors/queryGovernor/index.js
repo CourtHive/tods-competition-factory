@@ -9,7 +9,11 @@ import { getEliminationDrawSize } from '../../getters/getEliminationDrawSize';
 import { getParticipantIdFinishingPositions } from './finishingPositions';
 import { positionActions } from './positionActions/positionActions';
 import { getParticipantIdMatchUps } from './participantIdMatchUps';
-import { getSeedBlocks } from '../positionGovernor/getSeedBlocks';
+import {
+  getSeedBlocks,
+  getSeedGroups,
+  getSeedingThresholds,
+} from '../positionGovernor/getSeedBlocks';
 import { findStructure } from '../../getters/findStructure';
 import { credits } from '../../../fixtures/credits';
 import { getExitProfiles } from './getExitProfile';
@@ -69,7 +73,10 @@ const queryGovernor = {
   getStructureSeedAssignments,
   getNextUnfilledDrawPositions,
   getExitProfiles,
+
+  getSeedingThresholds,
   getSeedBlocks,
+  getSeedGroups,
 
   getMatchUpContextIds,
   getMatchUpParticipantIds,

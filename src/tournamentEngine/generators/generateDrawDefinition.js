@@ -16,10 +16,6 @@ import { tieFormatDefaults } from './tieFormatDefaults';
 import { nextPowerOf2 } from '../../utilities';
 import { prepareStage } from './prepareStage';
 
-import {
-  QUALIFIER,
-  STRUCTURE_ENTERED_TYPES,
-} from '../../constants/entryStatusConstants';
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -41,6 +37,10 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
+import {
+  QUALIFIER,
+  STRUCTURE_ENTERED_TYPES,
+} from '../../constants/entryStatusConstants';
 
 /**
  * automated = true, // can be true/false or "truthy" { seedsOnly: true }

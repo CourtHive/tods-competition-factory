@@ -215,7 +215,6 @@ it('properly calculates short sets', () => {
   expect(dp1.matchUpsWon).toEqual(0);
   expect(dp1.matchUpsLost).toEqual(1);
   expect(dp1.result).toEqual('0/1');
-  expect(dp1.games).toEqual('1/8');
 });
 
 it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', () => {
@@ -443,8 +442,8 @@ it('RR Format Standard tally test', () => {
   expect(dp1.gamesLost).toEqual(16);
   expect(dp1.matchUpsWon).toEqual(2);
   expect(dp1.matchUpsLost).toEqual(1);
+  expect(dp1.ties).toBeUndefined();
   expect(dp1.result).toEqual('2/1');
-  expect(dp1.games).toEqual('26/16');
 
   const dp2 = getDrawPositionTally({
     positionAssignments,
@@ -456,8 +455,8 @@ it('RR Format Standard tally test', () => {
   expect(dp2.gamesLost).toEqual(12);
   expect(dp2.matchUpsWon).toEqual(0);
   expect(dp2.matchUpsLost).toEqual(1);
+  expect(dp2.ties).toBeUndefined();
   expect(dp2.result).toEqual('0/1');
-  expect(dp2.games).toEqual('2/12');
 
   const dp3 = getDrawPositionTally({
     positionAssignments,
@@ -469,8 +468,8 @@ it('RR Format Standard tally test', () => {
   expect(dp3.gamesLost).toEqual(2);
   expect(dp3.matchUpsWon).toEqual(1);
   expect(dp3.matchUpsLost).toEqual(0);
+  expect(dp3.ties).toBeUndefined();
   expect(dp3.result).toEqual('1/0');
-  expect(dp3.games).toEqual('12/2');
 });
 
 function getDrawPositionTally({ positionAssignments, drawPosition }) {
@@ -577,6 +576,7 @@ it('recognize when participants are tied with position order', () => {
     });
 
     const {
+      ties,
       matchUpsWon,
       matchUpsLost,
       setsWon,
@@ -587,6 +587,7 @@ it('recognize when participants are tied with position order', () => {
     } = participantResult;
 
     const check = [
+      ties,
       matchUpsWon,
       matchUpsLost,
       setsWon,
@@ -596,7 +597,7 @@ it('recognize when participants are tied with position order', () => {
       groupOrder,
     ];
 
-    expect(check).toEqual([2, 2, 4, 4, 24, 24, 1]);
+    expect(check).toEqual([5, 2, 2, 4, 4, 24, 24, 1]);
 
     // check that the results in eventData are equivalent
     expect(result).toEqual(participantResult);

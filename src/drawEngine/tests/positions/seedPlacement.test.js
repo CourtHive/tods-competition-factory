@@ -261,7 +261,7 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   const participantId2 = participants[1].participantId;
   const participantId3 = participants[2].participantId;
 
-  // attempt to assign a seedNumber higher than seedCount for structure
+  // attempt to assign a seedNumber higher than seedsCount for structure
   // NOTE: this boundary was abandoned
   /*
   result = drawEngine.assignSeed({

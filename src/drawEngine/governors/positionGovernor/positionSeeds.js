@@ -10,6 +10,8 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function positionSeedBlocks({
   inContextDrawMatchUps,
   tournamentRecord,
+  appliedPolicies,
+  validSeedBlocks,
   drawDefinition,
   seedingProfile,
   participants,
@@ -25,13 +27,18 @@ export function positionSeedBlocks({
     ({ structure } = findStructure({ drawDefinition, structureId }));
   if (!structureId) ({ structureId } = structure);
 
-  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  const { validSeedBlocks, error } = getValidSeedBlocks({
-    structure,
-    drawDefinition,
-    appliedPolicies,
-  });
-  if (error) errors.push(error);
+  if (!appliedPolicies) {
+    appliedPolicies = getAppliedPolicies({ drawDefinition }).appliedPolicies;
+  }
+  if (!validSeedBlocks) {
+    const result = getValidSeedBlocks({
+      appliedPolicies,
+      drawDefinition,
+      structure,
+    });
+    if (result.error) errors.push(result.error);
+    validSeedBlocks = result.validSeedBlocks;
+  }
 
   groupsCount = groupsCount || validSeedBlocks.length;
 

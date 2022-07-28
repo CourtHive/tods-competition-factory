@@ -1,8 +1,9 @@
+import { isConvertableInteger } from '../../utilities/math';
+
 export function getNumericSeedValue(seedValue) {
-  const numericSeedValue =
-    seedValue && typeof seedValue === 'string'
-      ? parseInt(seedValue.split('-')[0])
-      : seedValue;
-  if (isNaN(numericSeedValue)) console.log(numericSeedValue);
-  return numericSeedValue;
+  if (!seedValue) return undefined;
+  if (isConvertableInteger(seedValue)) return parseInt(seedValue);
+  const firstValue = seedValue.split('-')[0];
+  if (isConvertableInteger(firstValue)) return parseInt(firstValue);
+  return undefined;
 }
