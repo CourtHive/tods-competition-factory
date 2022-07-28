@@ -127,22 +127,25 @@ export function getGroupOrder(params) {
   const positions = groupOrder.map(({ position }) => position);
   const positionsCount = instanceCount(positions);
 
-  groupOrder.forEach((f) => {
-    const result = participantResults[f.participantId];
-    const positionInstances = positionsCount[f.position];
+  groupOrder.forEach((finishingPosition) => {
+    const { participantId, position } = finishingPosition || {};
+    const participantResult = participantResults[participantId];
+    finishingPosition.GEMscore = getRatioHash(participantResult);
 
-    if (f !== undefined && f.position !== undefined) {
+    const positionInstances = positionsCount[position];
+
+    if (finishingPosition?.position !== undefined) {
       // subOrder is only assigned if there are ties
       if (positionInstances > 1) {
-        result.ties = positionInstances;
-        if (subOrderMap) result.subOrder = subOrderMap[f.participantId];
+        finishingPosition.ties = positionInstances;
+        if (subOrderMap) {
+          finishingPosition.subOrder = subOrderMap[participantId];
+        }
       }
 
-      // result.positionOrder = f.position + (result.subOrder || 1) - 1;
-      f.groupOrder = f.position + (result.subOrder || 1) - 1;
-      result.rankOrder = f.position;
+      finishingPosition.groupOrder =
+        position + (finishingPosition.subOrder || 1) - 1;
     }
-    result.GEMscore = getRatioHash(result);
   });
 
   return groupOrder;
