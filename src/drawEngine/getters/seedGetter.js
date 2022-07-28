@@ -190,6 +190,7 @@ function constructContainerBlocks({ seedingProfile, structure, seedBlocks }) {
   const containedStructures = structure.structures || [];
 
   const groupSeedBlocks = [];
+  const roundRobinGroupsCount = containedStructures.length;
   for (const structure of containedStructures) {
     const { positionAssignments } = structureAssignedDrawPositions({
       structure,
@@ -204,6 +205,7 @@ function constructContainerBlocks({ seedingProfile, structure, seedBlocks }) {
     if (isPowerOf2(baseDrawSize)) {
       ({ blocks, error } = constructPower2Blocks({
         seedCountGoal: baseDrawSize,
+        roundRobinGroupsCount,
         drawPositionOffset,
         seedingProfile,
         baseDrawSize,
@@ -217,6 +219,7 @@ function constructContainerBlocks({ seedingProfile, structure, seedBlocks }) {
       }));
     }
     if (error) return { error };
+
     groupSeedBlocks.push(blocks);
   }
 
@@ -283,6 +286,7 @@ function constructContainerBlocks({ seedingProfile, structure, seedBlocks }) {
 }
 
 function constructPower2Blocks({
+  roundRobinGroupsCount,
   drawPositionOffset = 0,
   seedNumberOffset = 0,
   seedingProfile,
@@ -295,7 +299,9 @@ function constructPower2Blocks({
   const { seedBlocks } = getSeedBlocks({
     cluster: getSeedPattern(seedingProfile) === CLUSTER,
     participantsCount: baseDrawSize,
+    roundRobinGroupsCount,
   });
+  // console.log({ seedBlocks });
 
   count = 0;
   for (const seedBlock of seedBlocks) {

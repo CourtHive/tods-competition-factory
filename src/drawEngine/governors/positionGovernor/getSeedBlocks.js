@@ -22,7 +22,11 @@ import { SUCCESS } from '../../../constants/resultConstants';
  * @returns
  */
 
-export function getSeedBlocks({ participantsCount, cluster }) {
+export function getSeedBlocks({
+  roundRobinGroupsCount,
+  participantsCount,
+  cluster,
+}) {
   if (!isConvertableInteger(participantsCount))
     return decorateResult({
       result: { error: INVALID_VALUES },
@@ -31,6 +35,12 @@ export function getSeedBlocks({ participantsCount, cluster }) {
     });
 
   const drawSize = nextPowerOf2(participantsCount);
+
+  if (roundRobinGroupsCount) {
+    // const groupSize = Math.ceil(drawSize / roundRobinGroupsCount);
+    // console.log({ groupSize });
+  }
+
   const range = generateRange(1, drawSize + 1);
 
   let positions = [];
@@ -101,11 +111,7 @@ export function getSeedBlocks({ participantsCount, cluster }) {
   return { ...SUCCESS, seedBlocks };
 }
 
-export function getSeedGroups({
-  roundRobinGroupsCount,
-  roundsCount,
-  drawSize,
-}) {
+export function getSeedGroups({ drawSize, roundRobinGroupsCount }) {
   const stack = 'getSeedGroups';
 
   if (!isConvertableInteger(drawSize))
@@ -123,27 +129,22 @@ export function getSeedGroups({
         stack,
       });
 
-    if (roundsCount) {
-      if (!isConvertableInteger(roundsCount))
-        return decorateResult({
-          result: { error: INVALID_VALUES },
-          context: { roundsCount },
-          stack,
-        });
-
-      let seedNumber = 1;
-      const seedGroups = generateRange(0, roundsCount).map(() => {
-        const seedNumbers = generateRange(
-          seedNumber,
-          seedNumber + roundRobinGroupsCount
-        );
-        seedNumber += roundRobinGroupsCount;
-        return seedNumbers;
-      });
-      return { seedGroups };
-    }
+    let seedNumber = 1;
+    const roundsCount = Math.floor(drawSize / roundRobinGroupsCount);
+    const seedGroups = generateRange(0, roundsCount).map(() => {
+      const seedNumbers = generateRange(
+        seedNumber,
+        seedNumber + roundRobinGroupsCount
+      );
+      seedNumber += roundRobinGroupsCount;
+      return seedNumbers;
+    });
+    return { seedGroups };
   } else {
-    const { seedBlocks } = getSeedBlocks({ participantsCount: drawSize });
+    const { seedBlocks } = getSeedBlocks({
+      participantsCount: drawSize,
+      roundRobinGroupsCount,
+    });
 
     let seedNumber = 0;
     const seedGroups = (seedBlocks || []).map((seedBlock) =>
@@ -155,27 +156,19 @@ export function getSeedGroups({
 
     return { seedGroups };
   }
-
-  return { seedGroups: [] };
 }
 
 export function getSeedingThresholds({
+  roundRobinGroupsCount,
   participantsCount,
-  roundRobinGroups,
-  roundsCount,
 }) {
-  const result = getSeedBlocks({
-    participantsCount,
-    roundRobinGroups,
-    roundsCount,
+  const { seedGroups } = getSeedGroups({
+    drawSize: participantsCount,
+    roundRobinGroupsCount,
   });
-  if (result.error) return result;
 
-  const { seedGroups } = getSeedGroups({ drawSize: participantsCount });
-
-  const seedingThresholds = seedGroups.map((seedNumberBlock) =>
-    Math.min(...seedNumberBlock)
-  );
+  const seedingThresholds =
+    seedGroups?.map((seedNumberBlock) => Math.min(...seedNumberBlock)) || [];
 
   return { ...SUCCESS, seedingThresholds };
 }
