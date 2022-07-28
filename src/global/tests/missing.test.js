@@ -112,6 +112,7 @@ it.each([asyncDrawEngine, drawEngineSync])(
         const onList = [
           'addVoluntaryConsolationStructure',
           'addVoluntaryConsolationStage',
+          'getSeedingThresholds',
           'newDrawDefinition',
           'getSeedBlocks',
           'assignSeed',
