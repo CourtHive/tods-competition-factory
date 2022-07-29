@@ -702,6 +702,17 @@ const { roundMatchUps, roundProfile } = drawEngine.getRoundMatchUps({
 
 ---
 
+## getSeedingThresholds
+
+```js
+const { seedingThresholds } = drawEngine.getSeedingThresholds({
+  roundRobinGroupsCount,
+  participantsCount,
+});
+```
+
+---
+
 ## getSourceRounds
 
 Returns the round numbers for desired playoff positions.
