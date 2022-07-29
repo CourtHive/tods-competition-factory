@@ -3,7 +3,7 @@ import { getAccessorValue } from '../getAccessorValue';
 import mocksEngine from '../../mocksEngine';
 
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
-import { PAIR } from '../../constants/participantTypes';
+import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { MALE } from '../../constants/genderConstants';
 
 test('accessorValues can target person.sex when participantType: PAIR', () => {
@@ -28,17 +28,34 @@ test('accessorValues can target person.sex when participantType: PAIR', () => {
   });
   tournamentEngine.setState(tournamentRecord);
 
+  let participantWithTimeItems = tournamentRecord.participants.find(
+    (participant) =>
+      participant.participantType === INDIVIDUAL &&
+      participant.timeItems?.length
+  );
+  expect(participantWithTimeItems.ratings).toBeUndefined();
+
   let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantTypes: [PAIR] },
+    convertExtensions: true,
     withScaleValues: true,
     inContext: true,
   });
+
   let ratedParticipant = tournamentParticipants.find(
-    (p) => p.individualParticipants && p.individualParticipants[0].timeItems
+    (p) =>
+      p.participantType === PAIR &&
+      p.individualParticipants &&
+      p.individualParticipants[0].timeItems
   );
   for (const participant of ratedParticipant.individualParticipants) {
     expect(Object.keys(participant.ratings)).not.toBeUndefined();
   }
+
+  let targetParticipant = tournamentParticipants.find(
+    (participant) =>
+      participant.participantId === participantWithTimeItems.participantId
+  );
+  expect(Object.keys(targetParticipant.ratings)).not.toBeUndefined();
 
   let { value, values } = getAccessorValue({
     element: tournamentParticipants[0],
@@ -46,4 +63,11 @@ test('accessorValues can target person.sex when participantType: PAIR', () => {
   });
   expect(value).toEqual(MALE);
   expect(values).toEqual([MALE]);
+
+  const state = tournamentEngine.getState();
+  targetParticipant = state.tournamentRecord.participants.find(
+    (participant) =>
+      participant.participantId === participantWithTimeItems.participantId
+  );
+  expect(targetParticipant.ratings).toBeUndefined();
 });

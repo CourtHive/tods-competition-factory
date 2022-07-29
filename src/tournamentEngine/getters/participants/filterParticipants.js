@@ -9,8 +9,8 @@ import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
 export function filterParticipants({
-  tournamentRecord,
   participantFilters,
+  tournamentRecord,
   participants,
 }) {
   let { eventIds } = participantFilters;

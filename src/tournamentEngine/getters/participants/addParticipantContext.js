@@ -77,8 +77,8 @@ export function addParticipantContext(params) {
     return positionAssignments.length ? positionAssignments : undefined;
   };
 
-  const { tournamentRecord, participantFilters } = params;
-  const allTournamentParticipants = tournamentRecord?.participants || [];
+  const { tournamentRecord, participantFilters, allTournamentParticipants } =
+    params;
 
   const { relevantParticipantIdsMap } = getRelevantParticipantIdsMap({
     processParticipantId: initializeParticipantId,
@@ -92,6 +92,7 @@ export function addParticipantContext(params) {
     const relevantParticipantIds =
       (participantId && relevantParticipantIdsMap[participantId]) || [];
     relevantParticipantIds.push(participantId);
+
     return relevantParticipantIds.some(
       (obj) =>
         !targetParticipantIds ||
@@ -405,7 +406,6 @@ export function addParticipantContext(params) {
   }
 
   // tournamentParticipants is an array of FILTERED participants
-  // whereas allTournamentParticipants = params.tournamentRecord.participants
   params.tournamentParticipants?.forEach((participant) => {
     const { scheduleConflicts, scheduleItems } = annotateParticipant({
       ...params,

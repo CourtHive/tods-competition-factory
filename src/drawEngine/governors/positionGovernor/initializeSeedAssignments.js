@@ -36,8 +36,8 @@ export function initializeStructureSeedAssignments({
     0
   );
   const groupSeedingThreshold =
-    seedingProfile?.groupSeedingThreshold &&
-    isConvertableInteger(seedingProfile.groupSeedingThreshold);
+    isConvertableInteger(seedingProfile?.groupSeedingThreshold) &&
+    seedingProfile.groupSeedingThreshold;
 
   const seedGroups = getSeedGroups({
     roundRobinGroupsCount,
@@ -73,6 +73,7 @@ export function initializeStructureSeedAssignments({
         groupSeedingThreshold && seedNumber >= groupSeedingThreshold
           ? groupSeedValue
           : seedNumber;
+
       return {
         participantId: undefined,
         seedNumber,
