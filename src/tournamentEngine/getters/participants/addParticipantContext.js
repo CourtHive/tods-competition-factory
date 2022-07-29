@@ -811,8 +811,8 @@ function annotateParticipant({
 
   if (withScaleValues) {
     const { ratings, rankings } = getScaleValues({ participant });
-    participant.ratings = ratings;
     participant.rankings = rankings;
+    participant.ratings = ratings;
   }
 
   const participantId = participant?.participantId;
