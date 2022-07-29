@@ -54,7 +54,7 @@ export function getTournamentParticipants({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
 
-  let tournamentParticipants = tournamentRecord.participants.map(
+  const allTournamentParticipants = tournamentRecord.participants.map(
     // (participant) => makeDeepCopy(participant, convertExtensions, true)
     (participant) => makeDeepCopy(participant, convertExtensions) // removed until Mongo/Mongoose issues resolved
   );
@@ -63,12 +63,17 @@ export function getTournamentParticipants({
     return { error: INVALID_OBJECT, participantFilters };
 
   if (inContext) {
-    tournamentParticipants?.forEach((participant) => {
+    allTournamentParticipants?.forEach((participant) => {
       if ([PAIR, TEAM, GROUP].includes(participant.participantType)) {
         participant.individualParticipants =
           participant.individualParticipantIds?.map((participantId) => {
-            const individualParticipant = tournamentRecord.participants.find(
+            const targetParticipant = tournamentRecord.participants.find(
               (p) => p.participantId === participantId
+            );
+            const individualParticipant = makeDeepCopy(
+              targetParticipant,
+              convertExtensions,
+              true
             );
 
             // individualParticipants only need to be hydrated withScaleValues and nationalityCode variations
@@ -86,18 +91,21 @@ export function getTournamentParticipants({
                 withISO2,
                 withIOC,
               });
-            return makeDeepCopy(individualParticipant, convertExtensions, true);
+            return individualParticipant;
           });
       }
     });
   }
 
-  if (participantFilters)
-    tournamentParticipants = filterParticipants({
-      participants: tournamentParticipants,
-      participantFilters,
-      tournamentRecord,
-    });
+  let tournamentParticipants = participantFilters
+    ? filterParticipants({
+        participants: allTournamentParticipants,
+        participantFilters,
+        tournamentRecord,
+      })
+    : allTournamentParticipants;
+
+  let participantIdsWithConflicts, eventsPublishStatuses;
 
   const addContext =
     withSignInStatus ||
@@ -114,11 +122,10 @@ export function getTournamentParticipants({
     withISO2 ||
     withIOC;
 
-  let participantIdsWithConflicts, eventsPublishStatuses;
-
   if (addContext) {
     const result = addParticipantContext({
       tournamentEvents: tournamentRecord.events,
+      allTournamentParticipants,
       tournamentParticipants,
       participantFilters,
       withScheduleItems,
@@ -147,8 +154,8 @@ export function getTournamentParticipants({
   if (participantAttributes?.participant) {
     tournamentParticipants = tournamentParticipants.map((participant) =>
       attributeFilter({
-        source: participant,
         template: participantAttributes.participant,
+        source: participant,
       })
     );
   }
