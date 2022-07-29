@@ -8,7 +8,7 @@ import { addEventEntries } from './addEventEntries';
 import { DOUBLES } from '../../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../../constants/participantRoles';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { ADD_PARTICIPANTS } from '../../../../constants/topicConstants';
 import { UUID } from '../../../../utilities';

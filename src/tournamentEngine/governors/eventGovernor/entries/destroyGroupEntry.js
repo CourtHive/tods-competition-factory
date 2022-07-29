@@ -8,7 +8,7 @@ import { addEventEntries } from './addEventEntries';
 
 import { TEAM, DOUBLES } from '../../../../constants/eventConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { PAIR } from '../../../../constants/participantTypes';
+import { PAIR } from '../../../../constants/participantConstants';
 import {
   INVALID_EVENT_TYPE,
   INVALID_PARTICIPANT_TYPE,

@@ -2,12 +2,12 @@ import { chunkArray, unique } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
+import { DOUBLES } from '../../../../constants/eventConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
-import { DOUBLES } from '../../../../constants/eventConstants';
 
 it('can modify entries for a DOUBLES event and create PAIR participants', () => {
   const participantsProfile = {

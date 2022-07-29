@@ -1,8 +1,8 @@
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
 import { WITHDRAWN } from '../../../../constants/entryStatusConstants';
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
 import { FEMALE, MALE } from '../../../../constants/genderConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {

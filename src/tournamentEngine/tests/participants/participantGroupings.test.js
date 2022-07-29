@@ -2,9 +2,9 @@ import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-import { GROUP, INDIVIDUAL } from '../../../constants/participantTypes';
-import { COMPETITOR, OTHER } from '../../../constants/participantRoles';
+import { GROUP, INDIVIDUAL } from '../../../constants/participantConstants';
 import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
+import { COMPETITOR, OTHER } from '../../../constants/participantRoles';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,

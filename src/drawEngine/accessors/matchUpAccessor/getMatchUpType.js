@@ -1,5 +1,9 @@
-import { TEAM, INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { SINGLES, DOUBLES } from '../../../constants/matchUpTypes';
+import {
+  TEAM,
+  INDIVIDUAL,
+  PAIR,
+} from '../../../constants/participantConstants';
 
 export function getMatchUpType({ matchUp = {} } = {}) {
   let matchUpType = matchUp.matchUpType;

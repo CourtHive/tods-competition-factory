@@ -8,7 +8,7 @@ import {
 } from '../../notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/participantTypes';
+import { TEAM } from '../../../constants/participantConstants';
 import {
   MISSING_MATCHUP_FORMAT,
   MISSING_DRAW_DEFINITION,

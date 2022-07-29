@@ -5,7 +5,7 @@ import { definedAttributes } from '../../../utilities/objects';
 import { addParticipants } from './addParticipants';
 import { UUID } from '../../../utilities';
 
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   COMPETITOR,

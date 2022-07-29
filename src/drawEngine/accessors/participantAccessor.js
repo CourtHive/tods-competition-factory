@@ -1,6 +1,6 @@
 import { unique } from '../../utilities';
 
-import { INDIVIDUAL } from '../../constants/participantTypes';
+import { INDIVIDUAL } from '../../constants/participantConstants';
 import {
   MISSING_CONTEXT,
   MISSING_MATCHUP,

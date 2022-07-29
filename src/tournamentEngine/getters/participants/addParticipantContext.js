@@ -18,13 +18,15 @@ import {
   getTimeItem,
 } from '../../governors/queryGovernor/timeItems';
 
-import { GROUP, INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SEEDING } from '../../../constants/scaleConstants';
 import {
+  GROUP,
+  INDIVIDUAL,
+  PAIR,
   SIGNED_IN,
   SIGN_IN_STATUS,
 } from '../../../constants/participantConstants';

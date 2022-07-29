@@ -18,7 +18,7 @@ import {
   INDIVIDUAL,
   PAIR,
   TEAM,
-} from '../../constants/participantTypes';
+} from '../../constants/participantConstants';
 
 /**
  *

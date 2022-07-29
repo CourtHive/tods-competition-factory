@@ -28,7 +28,7 @@ import {
   completeDrawMatchUp,
 } from './completeDrawMatchUps';
 
-import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
+import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantConstants';
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';

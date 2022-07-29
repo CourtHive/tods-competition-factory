@@ -5,7 +5,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngineSync from '../../sync';
 
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
-import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 
 const asyncTournamentEngine = tournamentEngineAsync(true);

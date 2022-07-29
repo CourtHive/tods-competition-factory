@@ -21,7 +21,7 @@ import {
   INDIVIDUAL,
   PAIR,
   TEAM,
-} from '../../../constants/participantTypes';
+} from '../../../constants/participantConstants';
 import {
   DELEGATED_OUTCOME,
   DISABLE_LINKS,

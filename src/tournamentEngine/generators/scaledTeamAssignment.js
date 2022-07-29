@@ -1,5 +1,5 @@
+import { INDIVIDUAL, TEAM } from '../../constants/participantConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { INDIVIDUAL, TEAM } from '../../constants/participantTypes';
 import {
   INVALID_PARTICIPANT_TYPE,
   INVALID_VALUES,

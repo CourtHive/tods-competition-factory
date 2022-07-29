@@ -2,8 +2,8 @@ import { generateRange, shuffleArray } from '../../../utilities';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import {
   INVALID_MATCHUP,

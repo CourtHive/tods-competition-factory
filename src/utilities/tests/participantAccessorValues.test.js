@@ -2,8 +2,8 @@ import tournamentEngine from '../../tournamentEngine/sync';
 import { getAccessorValue } from '../getAccessorValue';
 import mocksEngine from '../../mocksEngine';
 
+import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
-import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { MALE } from '../../constants/genderConstants';
 
 test('accessorValues can target person.sex when participantType: PAIR', () => {

@@ -9,7 +9,7 @@ import {
   INDIVIDUAL,
   PAIR,
   TEAM,
-} from '../../../constants/participantTypes';
+} from '../../../constants/participantConstants';
 
 it('can generate TEAM events', () => {
   const personExtensions = [{ name: 'districtCode', value: 'Z' }];

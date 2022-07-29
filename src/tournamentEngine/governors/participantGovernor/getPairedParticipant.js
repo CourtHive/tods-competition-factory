@@ -2,8 +2,8 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { intersection } from '../../../utilities/arrays';
 import { makeDeepCopy } from '../../../utilities';
 
+import { PAIR } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { PAIR } from '../../../constants/participantTypes';
 import {
   INVALID_PARTICIPANT_IDS,
   MISSING_PARTICIPANT_IDS,

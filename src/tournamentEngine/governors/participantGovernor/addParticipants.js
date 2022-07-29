@@ -10,7 +10,7 @@ import {
   PAIR,
   participantTypes,
   TEAM,
-} from '../../../constants/participantTypes';
+} from '../../../constants/participantConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,

@@ -2,7 +2,7 @@ import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../..';
 import competitionEngine from '../../../sync';
 
-import { INDIVIDUAL } from '../../../../constants/participantTypes';
+import { INDIVIDUAL } from '../../../../constants/participantConstants';
 import { OFFICIAL } from '../../../../constants/participantRoles';
 import {
   COURT_NOT_FOUND,

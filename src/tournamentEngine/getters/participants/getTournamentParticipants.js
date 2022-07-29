@@ -5,7 +5,7 @@ import { filterParticipants } from './filterParticipants';
 import { getScaleValues } from './getScaleValues';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
-import { GROUP, PAIR, TEAM } from '../../../constants/participantTypes';
+import { GROUP, PAIR, TEAM } from '../../../constants/participantConstants';
 import {
   INVALID_OBJECT,
   MISSING_PARTICIPANTS,

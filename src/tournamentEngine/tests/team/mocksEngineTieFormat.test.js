@@ -1,8 +1,8 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { UUID } from '../../../utilities';
 
 it('can generate draws in TEAM events with tieFormat and assign particiapnts to collectionPositions', () => {

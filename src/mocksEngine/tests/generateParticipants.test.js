@@ -3,7 +3,7 @@ import defaultPersonData from '../data/persons.json';
 import mocksEngine from '..';
 
 import { FEMALE, MALE } from '../../constants/genderConstants';
-import { PAIR } from '../../constants/participantTypes';
+import { PAIR } from '../../constants/participantConstants';
 
 it('can generate unique participants', () => {
   const participantsCount = defaultPersonData.length + 10;

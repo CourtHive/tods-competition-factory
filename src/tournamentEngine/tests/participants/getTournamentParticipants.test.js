@@ -3,7 +3,7 @@ import tournamentEngine from '../../sync';
 import { utilities } from '../../..';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { SINGLES } from '../../../constants/eventConstants';

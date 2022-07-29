@@ -1,7 +1,7 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
-import { INDIVIDUAL } from '../../../../constants/participantTypes';
+import { INDIVIDUAL } from '../../../../constants/participantConstants';
 import {
   MISSING_DRAW_ID,
   MISSING_EVENT,

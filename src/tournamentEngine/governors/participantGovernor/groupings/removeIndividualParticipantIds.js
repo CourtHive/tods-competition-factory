@@ -3,8 +3,8 @@ import { decorateResult } from '../../../../global/functions/decorateResult';
 import { addNotice } from '../../../../global/state/globalState';
 
 import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
+import { GROUP, TEAM } from '../../../../constants/participantConstants';
 import { UNGROUPED } from '../../../../constants/entryStatusConstants';
-import { GROUP, TEAM } from '../../../../constants/participantTypes';
 import { COMPETITOR } from '../../../../constants/participantRoles';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {

@@ -1,7 +1,7 @@
 import { generateTeamTournament } from './generateTestTeamTournament';
 import tournamentEngine from '../../sync';
 
-import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { SINGLES, TEAM } from '../../../constants/matchUpTypes';
 
 test.skip('participants can play for a team even when not part of team', () => {

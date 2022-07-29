@@ -9,7 +9,7 @@ import {
   randomPop,
 } from '../../../../utilities';
 
-// import { GROUP, PAIR, TEAM } from '../../../../constants/participantTypes';
+// import { GROUP, PAIR, TEAM } from '../../../../constants/participantConstants';
 import { INVALID_ASSIGNMENT } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 

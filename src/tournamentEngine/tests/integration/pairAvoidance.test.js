@@ -1,7 +1,7 @@
 import { avoidanceTest } from '../primitives/avoidanceTest';
 import { intersection } from '../../../utilities/arrays';
 
-import { PAIR } from '../../../constants/participantTypes';
+import { PAIR } from '../../../constants/participantConstants';
 import { eventConstants } from '../../..';
 const { SINGLES } = eventConstants;
 

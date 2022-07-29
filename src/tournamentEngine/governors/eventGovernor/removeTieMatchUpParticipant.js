@@ -10,7 +10,7 @@ import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { findExtension } from '../queryGovernor/extensionQueries';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { LINEUPS } from '../../../constants/extensionConstants';

@@ -2,7 +2,7 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
-import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { TEAM } from '../../../constants/eventConstants';
 import {
   DIRECT_ACCEPTANCE,

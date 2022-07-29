@@ -1,7 +1,7 @@
 import { mocksEngine, tournamentEngine } from '../../..';
 import drawEngine from '../../sync';
 
-import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { INDIVIDUAL } from '../../../constants/participantConstants';
 import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,

@@ -3,8 +3,8 @@ import { generateTeamTournament } from './generateTestTeamTournament';
 import { setDevContext } from '../../../global/state/globalState';
 import tournamentEngine from '../../sync';
 
+import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { INDIVIDUAL } from '../../../constants/participantTypes';
 
 test('collection matchUps appear in participant reports', () => {
   const drawSize = 8;

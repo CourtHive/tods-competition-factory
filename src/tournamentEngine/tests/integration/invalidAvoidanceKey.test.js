@@ -1,7 +1,7 @@
 import { eventConstants } from '../../..';
 import { avoidanceTest } from '../primitives/avoidanceTest';
 
-import { PAIR } from '../../../constants/participantTypes';
+import { PAIR } from '../../../constants/participantConstants';
 const { DOUBLES } = eventConstants;
 
 const avoidancePolicy = {

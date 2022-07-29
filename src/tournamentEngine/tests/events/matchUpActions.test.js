@@ -4,13 +4,13 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
+import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { FEMALE } from '../../../constants/genderConstants';
 import {
   COMPLETED,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import { INDIVIDUAL } from '../../../constants/participantTypes';
 import {
   END,
   PENALTY,

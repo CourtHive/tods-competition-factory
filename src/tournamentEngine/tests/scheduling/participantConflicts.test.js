@@ -5,8 +5,8 @@ import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { eventConstants } from '../../../constants/eventConstants';
-import { INDIVIDUAL } from '../../../constants/participantTypes';
 
 const { SINGLES, DOUBLES } = eventConstants;
 

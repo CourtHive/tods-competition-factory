@@ -7,9 +7,8 @@ import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
-import { INDIVIDUAL } from '../../../../constants/participantTypes';
-import { PAIR } from '../../../../constants/participantConstants';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,

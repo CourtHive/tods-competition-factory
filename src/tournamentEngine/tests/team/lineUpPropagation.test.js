@@ -2,7 +2,7 @@ import { generateTeamTournament } from './generateTestTeamTournament';
 import tournamentEngine from '../../sync';
 
 import { COMPASS } from '../../../constants/drawDefinitionConstants';
-import { TEAM } from '../../../constants/participantTypes';
+import { TEAM } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 
 const scenario = {

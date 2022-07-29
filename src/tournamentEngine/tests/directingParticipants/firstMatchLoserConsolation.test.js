@@ -2,7 +2,7 @@ import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
   BYE,

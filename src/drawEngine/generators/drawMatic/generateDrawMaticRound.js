@@ -2,9 +2,9 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import { generateCandidate, pairingHash } from './generateCandidate';
 import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
 
+import { TEAM } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
-import { TEAM } from '../../../constants/participantTypes';
 import {
   MISSING_PARTICIPANT_IDS,
   NO_CANDIDATES,

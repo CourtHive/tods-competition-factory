@@ -5,7 +5,7 @@ import { addNotice } from '../../global/state/globalState';
 import { UUID } from '../../utilities';
 
 import { GROUPING_ATTRIBUTE } from '../../constants/extensionConstants';
-import { INDIVIDUAL, TEAM } from '../../constants/participantTypes';
+import { INDIVIDUAL, TEAM } from '../../constants/participantConstants';
 import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { SUCCESS } from '../../constants/resultConstants';
