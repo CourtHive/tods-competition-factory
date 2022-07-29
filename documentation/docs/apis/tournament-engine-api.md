@@ -1306,7 +1306,7 @@ const drawDefinitionValues = {
   // { positioing: WATERFALL } seeding for ROUND_ROBIN structures
   // { positioning: CLUSTER } or { positioning: SEPARATE } seeding for elimination structures
   // { groupSeedingThreshold: 5 } will set seedValue to lowest value within all groups where seedNumber is > 5
-  seedingProfile,
+  seedingProfile, // optional { positioning, groupSeedingThreshold }
 
   qualifiersCount, // optional - how many positionsAssignments will have { qualifier: true }
 
