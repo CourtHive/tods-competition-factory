@@ -193,12 +193,26 @@ it('can constrain seedsCount by policyDefinitions', () => {
     drawSize,
   });
 
-  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  let { drawDefinition } = tournamentEngine.generateDrawDefinition({
     seedingProfile: { groupSeedingThreshold: 5 },
     seedsCount: 100, // this is in excess of policy limit and above drawSize and stageEntries #
     drawSize,
     eventId,
   });
+
+  expect(
+    drawDefinition.structures[0].seedAssignments.map(
+      ({ seedValue }) => seedValue
+    )
+  ).toEqual([1, 2, 3, 4, 5, 5, 5, 5]);
+  expect(drawDefinition.structures[0].seedLimit).toEqual(seedsCount);
+
+  drawDefinition = tournamentEngine.generateDrawDefinition({
+    seedingProfile: { groupSeedingThreshold: 3 },
+    seedsCount: 100, // this is in excess of policy limit and above drawSize and stageEntries #
+    drawSize,
+    eventId,
+  }).drawDefinition;
 
   expect(
     drawDefinition.structures[0].seedAssignments.map(
