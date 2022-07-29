@@ -11,6 +11,7 @@ import { modifyIndividualParticipantIds } from './groupings/modifyIndividualPart
 import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
 import { addIndividualParticipantIds } from './groupings/addIndividualParticipantIds';
 import { modifyParticipantsSignInStatus } from './modifyParticipantsSignInStatus';
+import { scaledTeamAssignment } from '../../generators/scaledTeamAssignment';
 import { createGroupParticipant } from './groupings/createGroupParticipant';
 import { modifyParticipantOtherName } from './modifyParticipantOtherName';
 import { getTournamentPersons } from '../../getters/getTournamentPersons';
@@ -33,16 +34,17 @@ import {
 } from './participantPenalties';
 
 const participantGovernor = {
-  addPenalty,
+  getTournamentPenalties,
   modifyPenalty,
   removePenalty,
-  getTournamentPenalties,
+  addPenalty,
 
-  addPersons,
-  addParticipant,
-  addParticipants,
-  deleteParticipants,
   createGroupParticipant,
+  scaledTeamAssignment,
+  deleteParticipants,
+  addParticipants,
+  addParticipant,
+  addPersons,
 
   addIndividualParticipantIds,
   removeIndividualParticipantIds,
