@@ -1,10 +1,10 @@
+import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { DELETE_DRAW_DEFINITIONS } from '../../../constants/auditConstants';
 import { DRAW_DELETIONS } from '../../../constants/extensionConstants';
-import { findExtension } from '../../../global/functions/deducers/findExtension';
 
 it('can notify subscriber when audit information is added', () => {
   const drawProfiles = [
@@ -47,7 +47,9 @@ it('can notify subscriber when audit information is added', () => {
     element: event,
   });
   expect(extension.value.length).toEqual(1);
-  expect(extension.value[0].assignedPositions).not.toBeUndefined();
+  expect(
+    extension.value[0].deletedDrawsDetail[0].positionAssignments
+  ).not.toBeUndefined();
 
   expect(notificationsCounter).toEqual(1);
 });

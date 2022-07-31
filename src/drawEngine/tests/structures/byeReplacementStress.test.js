@@ -9,6 +9,7 @@ import {
   pushGlobalLog,
 } from '../../../global/functions/globalLog';
 
+import { AUDIT_POSITION_ACTIONS } from '../../../constants/extensionConstants';
 import {
   COMPASS,
   CURTIS_CONSOLATION,
@@ -122,8 +123,8 @@ test.each([
         const { drawId } = tournamentRecord.events[0].drawDefinitions[0];
         const { extension: positionActions } =
           tournamentEngine.findDrawDefinitionExtension({
+            name: AUDIT_POSITION_ACTIONS,
             drawId,
-            name: 'positionActions',
           });
         positionActionErrorScenarios.push({
           positionActions,

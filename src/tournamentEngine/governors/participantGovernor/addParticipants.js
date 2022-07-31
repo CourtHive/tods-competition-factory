@@ -1,3 +1,4 @@
+import { definedAttributes } from '../../../utilities/objects';
 import { addNotice } from '../../../global/state/globalState';
 import { intersection } from '../../../utilities/arrays';
 import { makeDeepCopy, UUID } from '../../../utilities';
@@ -196,7 +197,7 @@ export function addParticipant({
     participant: returnParticipant && makeDeepCopy(participant),
     ...SUCCESS,
   };
-  return result;
+  return definedAttributes(result);
 }
 
 export function addParticipants({
@@ -273,7 +274,7 @@ export function addParticipants({
       Object.assign(result, { notAdded, info: EXISTING_PARTICIPANT });
     }
 
-    return result;
+    return definedAttributes(result);
   } else {
     return {
       info: 'No new participants to add',

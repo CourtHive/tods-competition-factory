@@ -1,8 +1,10 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { addTournamentTimeItem } from '../tournamentGovernor/addTimeItem';
 import { addNotice, getTopics } from '../../../global/state/globalState';
 import { definedAttributes } from '../../../utilities/objects';
 
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
+import { AUDIT, MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SCALE } from '../../../constants/scaleConstants';
 import {
@@ -23,20 +25,9 @@ export function setParticipantScaleItem({
 }) {
   let equivalentValue, participant;
 
-  const scaleItemAttributes = (scaleItem && Object.keys(scaleItem)) || [];
-  const requiredAttributes = ['scaleType', 'eventType', 'scaleName'];
-  const validScaleItem =
-    requiredAttributes.filter((attribute) =>
-      scaleItemAttributes.includes(attribute)
-    ).length === requiredAttributes.length;
+  if (!isValidScaleItem({ scaleItem })) return { error: INVALID_SCALE_ITEM };
 
-  if (!validScaleItem) return { error: INVALID_SCALE_ITEM };
-
-  if (
-    participantId &&
-    validScaleItem &&
-    Array.isArray(tournamentRecord.participants)
-  ) {
+  if (participantId && Array.isArray(tournamentRecord.participants)) {
     participant = tournamentRecord.participants.find(
       (participant) => participant.participantId === participantId
     );
@@ -79,9 +70,11 @@ export function setParticipantScaleItems({
   scaleItemsWithParticipantIds = [],
   removePriorValues,
   tournamentRecord,
+  auditData,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
+  const auditTrail = [];
 
   let modificationsApplied = 0;
   const participantScaleItemsMap = {};
@@ -125,6 +118,21 @@ export function setParticipantScaleItems({
         participants: modifiedParticipants,
       },
     });
+  }
+  if (auditData) {
+    if (topics.includes(AUDIT)) {
+      addNotice({ topic: AUDIT, payload: auditTrail });
+    }
+
+    const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
+
+    if (appliedPolicies?.audit) {
+      const timeItem = {
+        itemType: AUDIT,
+        itemValue: auditData,
+      };
+      addTournamentTimeItem({ tournamentRecord, timeItem });
+    }
   }
 
   return definedAttributes({ ...SUCCESS, modificationsApplied, info });
