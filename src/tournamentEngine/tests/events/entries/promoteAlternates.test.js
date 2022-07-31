@@ -1,8 +1,8 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
+import { INDIVIDUAL } from '../../../../constants/participantConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
-import { INDIVIDUAL } from '../../../../constants/participantTypes';
 import { COMPETITOR } from '../../../../constants/participantRoles';
 import {
   INVALID_ENTRY_STATUS,

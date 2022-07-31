@@ -3,9 +3,9 @@ import tournamentEngine from '../../sync';
 
 import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
 import { COMPASS } from '../../../constants/drawDefinitionConstants';
-import { TEAM } from '../../../constants/participantTypes';
-import { SINGLES } from '../../../constants/matchUpTypes';
+import { TEAM } from '../../../constants/participantConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
+import { SINGLES } from '../../../constants/matchUpTypes';
 import { countries } from '../../../fixtures/countryData';
 
 it('returns eventData with expected drawsData', () => {

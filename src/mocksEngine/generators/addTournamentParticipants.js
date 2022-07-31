@@ -5,7 +5,7 @@ import { generateParticipants } from './generateParticipants';
 import { getParticipantsCount } from './getParticipantsCount';
 import { generateRange, UUID } from '../../utilities';
 
-import { INDIVIDUAL, TEAM } from '../../constants/participantTypes';
+import { INDIVIDUAL, TEAM } from '../../constants/participantConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 
 export function addTournamentParticipants({

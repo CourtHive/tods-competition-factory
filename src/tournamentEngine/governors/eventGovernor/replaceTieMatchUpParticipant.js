@@ -9,8 +9,8 @@ import { getTieMatchUpContext } from './getTieMatchUpContext';
 
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { LINEUPS } from '../../../constants/extensionConstants';
+import { PAIR } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { PAIR } from '../../../constants/participantTypes';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 import {
   INVALID_PARTICIPANT_TYPE,

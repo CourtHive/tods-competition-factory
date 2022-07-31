@@ -3,7 +3,7 @@ import { generateRange, makeDeepCopy, unique } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
 import { AD_HOC } from '../../../constants/drawDefinitionConstants';
 import {

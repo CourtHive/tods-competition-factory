@@ -7,7 +7,7 @@ import {
   getParticipantIds,
 } from '../../../../global/functions/extractors';
 
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { COMPETITOR } from '../../../../constants/participantRoles';
 import {
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,

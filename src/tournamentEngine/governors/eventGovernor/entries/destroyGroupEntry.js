@@ -8,7 +8,7 @@ import { addEventEntries } from './addEventEntries';
 
 import { TEAM, DOUBLES } from '../../../../constants/eventConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { PAIR } from '../../../../constants/participantTypes';
+import { PAIR } from '../../../../constants/participantConstants';
 import {
   INVALID_EVENT_TYPE,
   INVALID_PARTICIPANT_TYPE,
@@ -106,23 +106,23 @@ export function destroyGroupEntry({
 
   // remove the group participant from event entries
   let result = removeEventEntries({
-    event,
-    drawId,
-    drawDefinition,
-    tournamentRecord,
     participantIds: [participantId],
+    tournamentRecord,
+    drawDefinition,
+    drawId,
+    event,
   });
   if (result.error) return result;
 
   if (individualParticipantIds.length) {
     result = addEventEntries({
-      event,
-      drawId,
-      drawDefinition,
-      tournamentRecord,
-      entryStage: entry.entryStage,
-      entryStatus: entryStatus || defaultEntryStatus,
       participantIds: individualParticipantIds,
+      entryStatus: entryStatus || defaultEntryStatus,
+      entryStage: entry.entryStage,
+      tournamentRecord,
+      drawDefinition,
+      drawId,
+      event,
     });
     if (result.error) return result;
   }

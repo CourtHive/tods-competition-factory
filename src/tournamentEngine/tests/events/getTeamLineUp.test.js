@@ -2,7 +2,7 @@ import { generateTeamTournament } from '../team/generateTestTeamTournament';
 import tournamentEngine from '../../sync';
 
 import { MISSING_PARTICIPANT_ID } from '../../../constants/errorConditionConstants';
-import { INDIVIDUAL, TEAM } from '../../../constants/participantTypes';
+import { INDIVIDUAL, TEAM } from '../../../constants/participantConstants';
 
 it('can retrieve team lineUps', () => {
   let { tournamentRecord, drawId } = generateTeamTournament();

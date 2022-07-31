@@ -16,7 +16,7 @@ import {
   GROUP,
   INDIVIDUAL,
   TEAM,
-} from '../../../../constants/participantTypes';
+} from '../../../../constants/participantConstants';
 
 /**
  *

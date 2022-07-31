@@ -1,12 +1,13 @@
 import tournamentEngine from '../../sync';
+
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
+import { COMPETITOR } from '../../../constants/participantRoles';
+import { UUID } from '../../../utilities';
 import {
   INVALID_PARTICIPANT_TYPE,
   MISSING_PARTICIPANT_ROLE,
   MISSING_PERSON_DETAILS,
 } from '../../../constants/errorConditionConstants';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
-import { UUID } from '../../../utilities';
 
 it('can add multiple participants at once', () => {
   let result = tournamentEngine.newTournamentRecord();

@@ -2,8 +2,8 @@ import { getParticipantId } from '../../../../global/functions/extractors';
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
+import { INDIVIDUAL } from '../../../../constants/participantConstants';
 import { COMPETITOR } from '../../../../constants/participantRoles';
-import { INDIVIDUAL } from '../../../../constants/participantTypes';
 import { MALE } from '../../../../constants/genderConstants';
 import {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,

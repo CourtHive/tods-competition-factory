@@ -1,10 +1,10 @@
 import { overlap } from '../../../utilities/arrays';
 
+import { PAIR, TEAM } from '../../../constants/participantConstants';
 import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { PAIR, TEAM } from '../../../constants/participantTypes';
 
 /**
  * Returns { eventDetails: { eventName, eventId }} for events in which participantId or TEAM/PAIR including participantId appears

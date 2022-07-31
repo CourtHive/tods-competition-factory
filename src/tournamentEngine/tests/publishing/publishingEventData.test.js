@@ -2,7 +2,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import PARTICIPANT_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
-import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { ROUND_NAMING_POLICY } from './roundNamingPolicy';

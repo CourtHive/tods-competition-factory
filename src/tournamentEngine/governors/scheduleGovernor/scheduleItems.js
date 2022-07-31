@@ -11,7 +11,7 @@ import {
   addMatchUpEndTime as addEndTime,
 } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 
-import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { OFFICIAL } from '../../../constants/participantRoles';
 import {
   MISSING_PARTICIPANT_ID,

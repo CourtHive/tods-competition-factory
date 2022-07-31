@@ -1,6 +1,6 @@
 import { attributeFilter } from '../attributeFilter';
 
-import { INDIVIDUAL } from '../../constants/participantTypes';
+import { INDIVIDUAL } from '../../constants/participantConstants';
 import { MALE } from '../../constants/genderConstants';
 
 it('handles bad data', () => {

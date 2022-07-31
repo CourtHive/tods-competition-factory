@@ -20,7 +20,7 @@ import {
   GROUP,
   PAIR,
   participantTypes,
-} from '../../../constants/participantTypes';
+} from '../../../constants/participantConstants';
 
 export function modifyParticipant({
   updateParticipantName = true,

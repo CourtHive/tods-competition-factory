@@ -105,7 +105,8 @@ export function assignDrawPositionBye({
   );
   if (!positionAssignment) return { error: INVALID_DRAW_POSITION };
 
-  const { filled, containsBye } = drawPositionFilled(positionAssignment);
+  const { filled, containsBye, assignedParticipantId } =
+    drawPositionFilled(positionAssignment);
   if (containsBye) return { ...SUCCESS }; // nothing to be done
 
   if (filled && !containsBye) {
@@ -153,7 +154,14 @@ export function assignDrawPositionBye({
       structure,
     });
 
-    return { ...SUCCESS };
+    return successNotice({
+      assignedParticipantId,
+      isPositionAction,
+      drawDefinition,
+      drawPosition,
+      structureId,
+      stack,
+    });
   }
 
   // ############ Get furthest advancement of drawPosition ############
@@ -201,22 +209,26 @@ export function assignDrawPositionBye({
   });
 
   return successNotice({
+    assignedParticipantId,
     isPositionAction,
     drawDefinition,
     drawPosition,
     structureId,
+    stack,
   });
 }
 
 function successNotice({
+  assignedParticipantId,
   isPositionAction,
   drawDefinition,
   drawPosition,
   structureId,
+  stack,
 }) {
-  const stack = 'assignDrawPositionBye';
   if (isPositionAction) {
     const positionAction = {
+      removedParticipantId: assignedParticipantId,
       drawPosition,
       structureId,
       name: stack,
@@ -230,9 +242,9 @@ function successNotice({
 function drawPositionFilled(positionAssignment) {
   const containsBye = positionAssignment.bye;
   const containsQualifier = positionAssignment.qualifier;
-  const containsParticipant = positionAssignment.participantId;
-  const filled = containsBye || containsQualifier || containsParticipant;
-  return { containsBye, containsQualifier, containsParticipant, filled };
+  const assignedParticipantId = positionAssignment.participantId;
+  const filled = containsBye || containsQualifier || assignedParticipantId;
+  return { containsBye, containsQualifier, assignedParticipantId, filled };
 }
 
 function setMatchUpStatusBYE({

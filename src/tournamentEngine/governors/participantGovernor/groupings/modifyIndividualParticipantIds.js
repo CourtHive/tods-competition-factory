@@ -2,6 +2,7 @@ import { removeIndividualParticipantIds } from './removeIndividualParticipantIds
 import { addIndividualParticipantIds } from './addIndividualParticipantIds';
 import { addNotice, getTopics } from '../../../../global/state/globalState';
 
+import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,
@@ -13,8 +14,7 @@ import {
   GROUP,
   INDIVIDUAL,
   TEAM,
-} from '../../../../constants/participantTypes';
-import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
+} from '../../../../constants/participantConstants';
 
 /**
  *

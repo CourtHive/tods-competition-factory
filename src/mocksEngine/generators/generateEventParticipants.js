@@ -3,8 +3,8 @@ import { getParticipantId } from '../../global/functions/extractors';
 import { generateParticipants } from './generateParticipants';
 
 import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
+import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../constants/eventConstants';
-import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { FEMALE, MALE } from '../../constants/genderConstants';
 
 export function generateEventParticipants({

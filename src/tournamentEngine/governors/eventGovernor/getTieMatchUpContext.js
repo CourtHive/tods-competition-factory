@@ -4,8 +4,8 @@ import { getPositionAssignments } from '../../../drawEngine/getters/positionsGet
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
 import { getParticipantIds } from '../../../global/functions/extractors';
 
-import { TEAM } from '../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { TEAM } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,

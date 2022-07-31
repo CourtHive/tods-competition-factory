@@ -1,8 +1,8 @@
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { processTieFormat } from './processTieFormat';
 
+import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { QUALIFYING } from '../../constants/drawDefinitionConstants';
-import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DOUBLES, TEAM } from '../../constants/eventConstants';
 
 export function getParticipantsCount({

@@ -1,7 +1,8 @@
 import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
+
 import { FICR16, MAIN } from '../../../constants/drawDefinitionConstants';
-import { PAIR } from '../../../constants/participantTypes';
+import { PAIR } from '../../../constants/participantConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
 
 it('can modify score for main draw match after loser directed to consolation', () => {

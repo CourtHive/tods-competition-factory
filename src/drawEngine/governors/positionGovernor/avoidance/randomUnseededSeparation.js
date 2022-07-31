@@ -6,6 +6,7 @@ import { generatePositioningCandidate } from './generatePositioningCandidate';
 import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { addParticipantGroupings } from './addParticipantGroupings';
 import { findStructure } from '../../../getters/findStructure';
+import { deriveExponent } from '../../../../utilities/math';
 import { assignDrawPosition } from '../positionAssignment';
 import {
   chunkArray,
@@ -15,7 +16,7 @@ import {
   numericSort,
 } from '../../../../utilities';
 
-import { GROUP, PAIR, TEAM } from '../../../../constants/participantTypes';
+import { GROUP, PAIR, TEAM } from '../../../../constants/participantConstants';
 import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
@@ -23,7 +24,6 @@ import {
   MISSING_AVOIDANCE_POLICY,
   NO_CANDIDATES,
 } from '../../../../constants/errorConditionConstants';
-import { deriveExponent } from '../../../../utilities/math';
 
 /**
  *

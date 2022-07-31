@@ -12,7 +12,7 @@ import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 import { makeDeepCopy, overlap } from '../../../utilities';
 
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { LINEUPS } from '../../../constants/extensionConstants';

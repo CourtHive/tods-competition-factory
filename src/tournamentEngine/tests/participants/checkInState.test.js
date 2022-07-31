@@ -3,10 +3,10 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
+import { PAIR } from '../../../constants/participantConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
 import { MALE } from '../../../constants/genderConstants';
-import { PAIR } from '../../../constants/participantTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_PARTICIPANT_ID,
   MISSING_MATCHUP_ID,

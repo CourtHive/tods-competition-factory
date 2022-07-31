@@ -4,7 +4,7 @@ import { mocksEngine, tournamentEngine } from '../..';
 import { PUBLISH, STATUS } from '../../constants/timeItemConstants';
 import { DOUBLES, SINGLES } from '../../constants/eventConstants';
 import { FEMALE, MALE } from '../../constants/genderConstants';
-import { PAIR } from '../../constants/participantTypes';
+import { PAIR } from '../../constants/participantConstants';
 import {
   COMPASS,
   CURTIS_CONSOLATION,

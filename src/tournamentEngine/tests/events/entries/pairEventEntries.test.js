@@ -4,8 +4,8 @@ import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../sync';
 
 import { WITHDRAWN } from '../../../../constants/entryStatusConstants';
+import { PAIR } from '../../../../constants/participantConstants';
 import { DOUBLES } from '../../../../constants/eventConstants';
-import { PAIR } from '../../../../constants/participantTypes';
 
 it('can add doubles events to a tournament record', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

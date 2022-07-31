@@ -3,8 +3,8 @@ import { generateTeamTournament } from './generateTestTeamTournament';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import {
   EXISTING_OUTCOME,

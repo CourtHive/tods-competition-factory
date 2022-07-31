@@ -8,7 +8,7 @@ import tournamentEngine from '../../sync';
 import { SWAP_PARTICIPANTS } from '../../../constants/positionActionConstants';
 import { TEAM_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import {
   TEAM_DOUBLES_3_AGGREGATION,

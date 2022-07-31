@@ -20,7 +20,7 @@ import {
 import {
   PAIR,
   TEAM as participantTeam,
-} from '../../../constants/participantTypes';
+} from '../../../constants/participantConstants';
 
 export function deleteParticipants({
   addIndividualParticipantsToEvents,
@@ -133,6 +133,7 @@ export function deleteParticipants({
       addEventEntries({
         participantIds: individualParticipantIds,
         entryStatus: UNGROUPED,
+        tournamentRecord,
         event,
       });
     }

@@ -1,14 +1,15 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+
+import {
+  MISSING_PARTICIPANT_ID,
+  PARTICIPANT_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 import {
   SIGNED_IN,
   SIGNED_OUT,
   SIGN_IN_STATUS,
 } from '../../../constants/participantConstants';
-import {
-  MISSING_PARTICIPANT_ID,
-  PARTICIPANT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
 
 it('can sign participants in and out', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

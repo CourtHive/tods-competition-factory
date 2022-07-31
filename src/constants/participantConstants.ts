@@ -10,6 +10,7 @@ export const INDIVIDUAL = ParticipantTypeEnum.INDIVIDUAL;
 export const GROUP = ParticipantTypeEnum.GROUP;
 export const PAIR = ParticipantTypeEnum.PAIR;
 export const TEAM = ParticipantTypeEnum.TEAM;
+export const TEAM_PARTICIPANT = ParticipantTypeEnum.TEAM;
 
 export enum SignedInStatusEnum {
   SIGNED_IN = 'SIGNED_IN',
@@ -18,6 +19,14 @@ export enum SignedInStatusEnum {
 
 export const SIGNED_IN = SignedInStatusEnum.SIGNED_IN;
 export const SIGNED_OUT = SignedInStatusEnum.SIGNED_OUT;
+
+export const participantTypes = {
+  TEAM_PARTICIPANT,
+  INDIVIDUAL,
+  GROUP,
+  TEAM,
+  PAIR,
+};
 
 export const participantConstants = {
   INDIVIDUAL,

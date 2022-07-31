@@ -2,9 +2,9 @@ import { getPairedParticipant } from '../../participantGovernor/getPairedPartici
 import { addParticipants } from '../../participantGovernor/addParticipants';
 import { intersection } from '../../../../utilities/arrays';
 
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
-import { COMPETITOR } from '../../../../constants/participantRoles';
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { COMPETITOR } from '../../../../constants/participantRoles';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_EVENT,

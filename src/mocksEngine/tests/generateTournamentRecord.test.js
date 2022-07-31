@@ -4,8 +4,8 @@ import { unique } from '../../utilities';
 import mocksEngine from '..';
 
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
+import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { AGE, DOUBLES, SINGLES } from '../../constants/eventConstants';
-import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { FEMALE, MALE } from '../../constants/genderConstants';
 import { CLAY, HARD } from '../../constants/surfaceConstants';
 import {

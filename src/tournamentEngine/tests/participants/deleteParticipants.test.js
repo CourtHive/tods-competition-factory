@@ -4,9 +4,9 @@ import tournamentEngine from '../../sync';
 
 import { EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT } from '../../../constants/errorConditionConstants';
 import { DOMINANT_DUO } from '../../../constants/tieFormatConstants';
-import { TEAM } from '../../../constants/eventConstants';
-import { PAIR } from '../../../constants/participantTypes';
 import { UNGROUPED } from '../../../constants/entryStatusConstants';
+import { PAIR } from '../../../constants/participantConstants';
+import { TEAM } from '../../../constants/eventConstants';
 
 it('can delete participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

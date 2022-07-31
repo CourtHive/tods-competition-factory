@@ -2,14 +2,14 @@ import { findTournamentParticipant } from '../../getters/participants/participan
 import { getTimeItem } from './timeItems';
 
 import {
-  SIGNED_IN,
-  SIGN_IN_STATUS,
-} from '../../../constants/participantConstants';
-import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  SIGNED_IN,
+  SIGN_IN_STATUS,
+} from '../../../constants/participantConstants';
 
 export function getParticipantSignInStatus({
   tournamentRecord,

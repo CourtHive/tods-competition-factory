@@ -6,7 +6,7 @@ import {
 } from '../../../../global/functions/extractors';
 
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
-import { INDIVIDUAL } from '../../../../constants/participantTypes';
+import { INDIVIDUAL } from '../../../../constants/participantConstants';
 import {
   EVENT_NOT_FOUND,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,

@@ -7,7 +7,6 @@ import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
 import { definedAttributes } from '../../../../utilities/objects';
 import { removeEventEntries } from './removeEventEntries';
 
-import { INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantTypes';
 import { DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
 import { ROUND_TARGET } from '../../../../constants/extensionConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
@@ -20,6 +19,11 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '../../../../constants/errorConditionConstants';
+import {
+  INDIVIDUAL,
+  PAIR,
+  TEAM,
+} from '../../../../constants/participantConstants';
 
 /**
  *
@@ -72,6 +76,8 @@ export function addEventEntries(params) {
     });
   }
 
+  const checkTypedParticipants = !!tournamentRecord;
+
   const typedParticipantIds =
     tournamentRecord?.participants
       ?.filter((participant) => {
@@ -102,13 +108,14 @@ export function addEventEntries(params) {
         ) {
           return true;
         }
+
         return false;
       })
       .map((participant) => participant.participantId) || [];
 
   const validParticipantIds = participantIds.filter(
     (participantId) =>
-      !typedParticipantIds.length || typedParticipantIds.includes(participantId)
+      !checkTypedParticipants || typedParticipantIds.includes(participantId)
   );
 
   if (!event.entries) event.entries = [];

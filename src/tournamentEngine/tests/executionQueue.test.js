@@ -5,13 +5,13 @@ import tournamentEngineSync from '../sync';
 
 import mocksEngine from '../../mocksEngine';
 
+import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
+import { DOUBLES } from '../../constants/eventConstants';
 import {
   METHOD_NOT_FOUND,
   MISSING_EVENT,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
-import { DOUBLES } from '../../constants/eventConstants';
 
 const asyncTournamentEngine = tournamentEngineAsync(true);
 const asyncCompetitionEngine = competitionEngineAsync(true);

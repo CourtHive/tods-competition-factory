@@ -8,7 +8,7 @@ import { findStructure } from '../../../../drawEngine/getters/findStructure';
 import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';
 import { destroyPairEntry } from '../entries/destroyPairEntry';
 
-import { PAIR } from '../../../../constants/participantTypes';
+import { PAIR } from '../../../../constants/participantConstants';
 import {
   ALTERNATE,
   WITHDRAWN,

@@ -3,8 +3,8 @@ import { makeDeepCopy } from '../makeDeepCopy';
 import mocksEngine from '../../mocksEngine';
 import { UUID } from '../UUID';
 
+import { INDIVIDUAL } from '../../constants/participantConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
-import { INDIVIDUAL } from '../../constants/participantTypes';
 import { MALE } from '../../constants/genderConstants';
 
 it('can convert extensions during deepCopy', () => {

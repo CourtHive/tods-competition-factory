@@ -1,11 +1,11 @@
 import { drawEngine, tournamentEngine, mocksEngine } from '../../..';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
+import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { RANKING } from '../../../constants/scaleConstants';
-import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
 
 /**
  *

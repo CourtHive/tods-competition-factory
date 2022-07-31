@@ -3,9 +3,9 @@ import { chunkArray } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../sync';
 
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/eventConstants';
 import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../../../constants/participantRoles';
 import {

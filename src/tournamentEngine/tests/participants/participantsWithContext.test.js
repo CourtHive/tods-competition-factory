@@ -3,7 +3,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { PAIR } from '../../../constants/participantTypes';
+import { PAIR } from '../../../constants/participantConstants';
 import { MALE } from '../../../constants/genderConstants';
 import { AGE } from '../../../constants/eventConstants';
 

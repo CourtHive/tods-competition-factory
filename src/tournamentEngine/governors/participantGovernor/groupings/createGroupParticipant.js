@@ -4,7 +4,7 @@ import { definedAttributes } from '../../../../utilities/objects';
 import { makeDeepCopy, UUID } from '../../../../utilities';
 import { addParticipant } from '../addParticipants';
 
-import { GROUP, INDIVIDUAL } from '../../../../constants/participantTypes';
+import { GROUP, INDIVIDUAL } from '../../../../constants/participantConstants';
 import { ADD_PARTICIPANTS } from '../../../../constants/topicConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { OTHER } from '../../../../constants/participantRoles';

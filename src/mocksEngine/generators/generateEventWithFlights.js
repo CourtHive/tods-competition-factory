@@ -12,7 +12,7 @@ import { generateFlights } from './generateFlights';
 import { UUID } from '../../utilities';
 
 import { SINGLES, DOUBLES, TEAM } from '../../constants/eventConstants';
-import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
+import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 
 export function generateEventWithFlights({
   allUniqueParticipantIds,

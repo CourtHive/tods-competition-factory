@@ -1,9 +1,9 @@
-import tournamentEngine from '../../sync';
-import mocksEngine from '../../../mocksEngine';
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
-
-import { GROUP, INDIVIDUAL } from '../../../constants/participantTypes';
 import { setSubscriptions } from '../../../global/state/globalState';
+import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
+
+import { GROUP, INDIVIDUAL } from '../../../constants/participantConstants';
 import { ADD_PARTICIPANTS } from '../../../constants/topicConstants';
 
 it('can create group participants', () => {

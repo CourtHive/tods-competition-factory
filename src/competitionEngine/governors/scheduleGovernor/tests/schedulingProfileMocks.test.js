@@ -7,7 +7,7 @@ import { EXISTING_ROUND } from '../../../../constants/errorConditionConstants';
 import { FEMALE, MALE } from '../../../../constants/genderConstants';
 import { BYE } from '../../../../constants/matchUpStatusConstants';
 import { DOUBLES } from '../../../../constants/eventConstants';
-import { PAIR } from '../../../../constants/participantTypes';
+import { PAIR } from '../../../../constants/participantConstants';
 import {
   FEED_IN_CHAMPIONSHIP_TO_R16,
   ROUND_ROBIN,

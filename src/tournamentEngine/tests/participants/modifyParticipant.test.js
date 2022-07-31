@@ -2,7 +2,7 @@ import { intersection, makeDeepCopy } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { MALE } from '../../../constants/genderConstants';
 
 tournamentEngine.devContext(true);

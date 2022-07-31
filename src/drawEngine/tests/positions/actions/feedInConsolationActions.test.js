@@ -2,8 +2,8 @@ import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 
 import { PENALTY, SCORE } from '../../../../constants/matchUpActionConstants';
+import { PAIR } from '../../../../constants/participantConstants';
 import { DOUBLES } from '../../../../constants/eventConstants';
-import { PAIR } from '../../../../constants/participantTypes';
 import {
   CONSOLATION,
   FEED_IN_CHAMPIONSHIP,

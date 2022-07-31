@@ -68,14 +68,6 @@ it('can notify subscriber when drawDefinitions are deleted', () => {
   expect(notificationCounter).toEqual(1);
   expect(auditTrail.flat(Infinity)[0].payload.auditData).toEqual(auditData);
 
-  let { timeItem } = tournamentEngine.getEventTimeItem({
-    itemType: 'deleteDrawDefinitions',
-    eventId,
-  });
-  expect(timeItem.itemValue.length).toEqual(1);
-  expect(timeItem.itemValue[0].drawId).toEqual(drawId);
-  expect(timeItem.itemValue[0].auditData).toEqual(auditData);
-
   const { event } = tournamentEngine.getEvent({ eventId });
   expect(event.extensions.length).toEqual(2);
   const deletions = event.extensions.find((x) => x.name === DRAW_DELETIONS);

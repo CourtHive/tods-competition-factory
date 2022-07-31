@@ -2,10 +2,13 @@ import { tournamentEngine, mocksEngine } from '../..';
 import { numericSort, unique } from '../../utilities';
 import fs from 'fs';
 
-import { TEAM as PARTICIPANT_TEAM } from '../../constants/participantConstants';
 import { TEAM as EVENT_TEAM } from '../../constants/eventConstants';
-import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DOUBLES, SINGLES, TEAM } from '../../constants/matchUpTypes';
+import {
+  TEAM as PARTICIPANT_TEAM,
+  INDIVIDUAL,
+  PAIR,
+} from '../../constants/participantConstants';
 
 // node --expose-gc ./node_modules/.bin/jest --runInBand --logHeapUsage --watch madness
 it('withOpponents adds appropriate opponents', () => {

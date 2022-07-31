@@ -11,14 +11,14 @@ import { nameMocks } from '../utilities/nameMocks';
 import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { RANKING, RATING, SCALE } from '../../constants/scaleConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
-import { DOUBLES } from '../../constants/matchUpTypes';
 import { SINGLES } from '../../constants/eventConstants';
+import { DOUBLES } from '../../constants/matchUpTypes';
 import {
   GROUP,
   INDIVIDUAL,
   PAIR,
   TEAM,
-} from '../../constants/participantTypes';
+} from '../../constants/participantConstants';
 
 /**
  *
@@ -73,6 +73,8 @@ export function generateParticipants({
 }) {
   const doubles = participantType === PAIR || matchUpType === DOUBLES;
   const team = participantType === TEAM || matchUpType === TEAM;
+
+  rankingRange[1] += 1; // so that behavior is as expected
 
   const individualParticipantsCount =
     participantsCount * (doubles ? 2 : team ? 8 : 1);

@@ -1,7 +1,7 @@
 import { avoidanceTest } from '../primitives/avoidanceTest';
 import { eventConstants } from '../../..';
 
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 const { SINGLES, DOUBLES } = eventConstants;
 

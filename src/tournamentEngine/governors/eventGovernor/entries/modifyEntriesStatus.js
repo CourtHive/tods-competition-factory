@@ -9,8 +9,8 @@ import { decorateResult } from '../../../../global/functions/decorateResult';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
+import { PAIR } from '../../../../constants/participantConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { PAIR } from '../../../../constants/participantTypes';
 import {
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
   INVALID_ENTRY_STATUS,
