@@ -76,6 +76,8 @@ export function addEventEntries(params) {
     });
   }
 
+  const checkTypedParticipants = !!tournamentRecord;
+
   const typedParticipantIds =
     tournamentRecord?.participants
       ?.filter((participant) => {
@@ -111,8 +113,9 @@ export function addEventEntries(params) {
       })
       .map((participant) => participant.participantId) || [];
 
-  const validParticipantIds = participantIds.filter((participantId) =>
-    typedParticipantIds.includes(participantId)
+  const validParticipantIds = participantIds.filter(
+    (participantId) =>
+      !checkTypedParticipants || typedParticipantIds.includes(participantId)
   );
 
   if (!event.entries) event.entries = [];

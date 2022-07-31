@@ -122,12 +122,12 @@ export function addEventEntryPairs({
     .map((participant) => participant.participantId);
 
   const result = addEventEntries({
-    event,
-    entryStage,
-    entryStatus,
-    drawDefinition,
-    tournamentRecord,
     participantIds: pairParticipantIds,
+    tournamentRecord,
+    drawDefinition,
+    entryStatus,
+    entryStage,
+    event,
   });
 
   if (newParticipants.length) {
