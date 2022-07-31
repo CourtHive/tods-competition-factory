@@ -2,15 +2,15 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
+import { INVALID_PARTICIPANT_IDS } from '../../../constants/errorConditionConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { TEAM } from '../../../constants/eventConstants';
 import {
   DIRECT_ACCEPTANCE,
   UNGROUPED,
 } from '../../../constants/entryStatusConstants';
-import { INVALID_PARTICIPANT_IDS } from '../../../constants/errorConditionConstants';
 
-test('adding individualParticipantids to TEAM participants removes them from team event entries', () => {
+test('adding individualParticipantIds to TEAM participants removes them from team event entries', () => {
   const eventProfiles = [
     {
       eventType: TEAM,

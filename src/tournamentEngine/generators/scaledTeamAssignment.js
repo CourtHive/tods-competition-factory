@@ -44,8 +44,14 @@ export function scaledTeamAssignment({
     return { error: INVALID_VALUES };
   if (scaleAttributes && typeof scaleAttributes !== 'object')
     return { error: INVALID_VALUES };
-  if (!scaleAttributes && !individualParticipantIds && !scaledParticipants)
-    return { error: MISSING_VALUE };
+  if (
+    (!scaleAttributes ||
+      !individualParticipantIds ||
+      !Object.keys(scaleAttributes).length) &&
+    !scaledParticipants
+  ) {
+    return { error: MISSING_VALUE, info: 'Missing scaling details' };
+  }
 
   const relevantTeams = [];
   for (const participant of tournamentRecord.participants || []) {
@@ -98,7 +104,9 @@ export function scaledTeamAssignment({
     relevantTeam.individualParticipants = [];
   }
 
-  for (const scaledParticipant of scaledParticipants) {
+  for (const scaledParticipant of scaledParticipants.sort(
+    (a, b) => a.scaleValue - b.scaleValue
+  )) {
     if (!scaledParticipant.participantId)
       return { error: INVALID_VALUES, scaledParticipant };
   }
