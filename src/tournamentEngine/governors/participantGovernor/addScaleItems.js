@@ -143,7 +143,7 @@ function isValidScaleItem({ scaleItem }) {
   const requiredAttributes = ['scaleType', 'eventType', 'scaleName'];
   const validScaleItem =
     requiredAttributes.filter((attribute) =>
-      scaleItemAttributes.includes(attribute)
+      scaleItemAttributes?.includes(attribute)
     ).length === requiredAttributes.length;
   return !!validScaleItem;
 }
