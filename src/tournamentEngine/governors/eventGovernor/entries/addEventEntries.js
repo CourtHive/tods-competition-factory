@@ -106,6 +106,7 @@ export function addEventEntries(params) {
         ) {
           return true;
         }
+
         return false;
       })
       .map((participant) => participant.participantId) || [];

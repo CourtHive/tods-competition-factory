@@ -133,6 +133,7 @@ export function deleteParticipants({
       addEventEntries({
         participantIds: individualParticipantIds,
         entryStatus: UNGROUPED,
+        tournamentRecord,
         event,
       });
     }

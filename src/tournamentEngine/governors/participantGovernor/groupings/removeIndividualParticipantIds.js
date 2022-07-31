@@ -70,6 +70,7 @@ export function removeIndividualParticipantIds({
         addEventEntries({
           participantIds: participantIdsToEnter,
           entryStatus: UNGROUPED,
+          tournamentRecord,
           event,
         });
       }
