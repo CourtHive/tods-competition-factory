@@ -2,7 +2,7 @@ import { addVoluntaryConsolationStructure } from '../governors/eventGovernor/add
 import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
 import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
-import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/matchUpFormat';
+import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/setMatchUpFormat';
 import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attachPolicies';
 import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';

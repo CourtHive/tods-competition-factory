@@ -46,7 +46,7 @@ import { removeDrawEntries } from './drawDefinitions/removeDrawEntries';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
 import { addPlayoffStructures } from './addPlayoffStructures';
 import { modifySeedAssignment } from './modifySeedAssignment';
-import { setMatchUpFormat } from './setDefaultMatchUpFormat';
+import { setMatchUpFormat } from './setMatchUpFormat';
 
 import {
   setEntryPosition,

@@ -1,4 +1,5 @@
-import { setMatchUpFormat as drawEngineSetMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
+import { setMatchUpFormat as drawEngineSetMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpFormat';
+import { modifyDrawNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -50,6 +51,7 @@ export function setMatchUpFormat({
   }
 
   const processStructures = (drawDefinition) => {
+    const structureIds = [];
     for (const structure of drawDefinition.structures || []) {
       if (
         (Array.isArray(stages) && !stages.includes(structure.stage)) ||
@@ -59,7 +61,10 @@ export function setMatchUpFormat({
         continue;
 
       structure.matchUpFormat = matchUpFormat;
+      structureIds.push(structure.structureId);
+      modificationsCount += 1;
     }
+    return structureIds;
   };
 
   eventIds = eventIds || [eventId].filter(Boolean);
@@ -79,11 +84,11 @@ export function setMatchUpFormat({
       for (const drawDefinition of event.drawDefinitions || []) {
         if (Array.isArray(drawIds) && !drawIds.includes(drawDefinition.drawId))
           continue;
-        processStructures(drawDefinition);
+        const structureIds = processStructures(drawDefinition);
+        modifyDrawNotice({ drawDefinition, structureIds });
       }
     } else {
       event.matchUpFormat = matchUpFormat;
-
       modificationsCount += 1;
     }
   }

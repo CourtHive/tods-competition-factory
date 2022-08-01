@@ -11,7 +11,7 @@ import { validDrawPositions } from './validDrawPositions';
 import { matchUpSort } from '../../getters/matchUpSort';
 import { setMatchUpStatus } from './setMatchUpStatus';
 import { setOrderOfFinish } from './setOrderOfFinish';
-import { setMatchUpFormat } from './matchUpFormat';
+import { setMatchUpFormat } from './setMatchUpFormat';
 import { resetScorecard } from './resetScorecard';
 
 import {
