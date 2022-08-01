@@ -1,5 +1,4 @@
 import { setMatchUpFormat as drawEngineSetMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
-import { checkTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -19,7 +18,7 @@ export function setMatchUpFormat({
   structureIds,
   structureId,
   eventTypes,
-  tieFormat,
+  matchUpId,
   eventIds,
   eventId,
   drawIds,
@@ -27,15 +26,9 @@ export function setMatchUpFormat({
   drawId,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!matchUpFormat && !tieFormat) return { error: MISSING_MATCHUP_FORMAT };
+  if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
   if (matchUpFormat && !isValid(matchUpFormat))
     return { error: UNRECOGNIZED_MATCHUP_FORMAT };
-
-  if (tieFormat) {
-    const result = checkTieFormat(tieFormat);
-    if (result.error) return result;
-    tieFormat = result.tieFormat;
-  }
 
   let modificationsCount = 0;
 
@@ -43,14 +36,14 @@ export function setMatchUpFormat({
     return { error: MISSING_DRAW_DEFINITION };
   }
 
-  if (drawId) {
+  if (matchUpId || drawId) {
     const result = drawEngineSetMatchUpFormat({
       tournamentRecord,
       drawDefinition,
       matchUpFormat,
       structureIds,
       structureId,
-      tieFormat,
+      matchUpId,
     });
     if (result.error) return result;
     modificationsCount += 1;
@@ -65,8 +58,7 @@ export function setMatchUpFormat({
       )
         continue;
 
-      if (matchUpFormat) structure.matchUpFormat = matchUpFormat;
-      else structure.tieFormat = tieFormat;
+      structure.matchUpFormat = matchUpFormat;
     }
   };
 
@@ -90,8 +82,7 @@ export function setMatchUpFormat({
         processStructures(drawDefinition);
       }
     } else {
-      if (matchUpFormat) event.matchUpFormat = matchUpFormat;
-      else event.tieFormat = tieFormat;
+      event.matchUpFormat = matchUpFormat;
 
       modificationsCount += 1;
     }

@@ -1,5 +1,4 @@
 import { addVoluntaryConsolationStructure } from '../governors/eventGovernor/addVoluntaryConsolationStructure';
-import { validateTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
 import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
@@ -15,6 +14,10 @@ import { isConvertableInteger } from '../../utilities/math';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { nextPowerOf2 } from '../../utilities';
 import { prepareStage } from './prepareStage';
+import {
+  checkTieFormat,
+  validateTieFormat,
+} from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
@@ -175,25 +178,28 @@ export function generateDrawDefinition(params) {
     // if an equivalent matchUpFormat or tieFormat is attached to the event
     // there is no need to attach to the drawDefinition
     if (!equivalentInScope) {
-      let result = setMatchUpFormat({
-        tournamentRecord,
-        drawDefinition,
-        matchUpFormat,
-        tieFormat,
-        event,
-      });
+      if (tieFormat) {
+        const result = checkTieFormat(tieFormat);
+        if (result.error) return result;
 
-      if (result.error)
-        return {
-          error: result.error,
-          info: 'matchUpFormat or tieFormat error',
-        };
+        drawDefinition.tieFormat = result.tieFormat || tieFormat;
+      } else {
+        let result = setMatchUpFormat({
+          tournamentRecord,
+          drawDefinition,
+          matchUpFormat,
+          tieFormat,
+          event,
+        });
+        if (result.error) {
+          return {
+            error: result.error,
+            info: 'matchUpFormat or tieFormat error',
+          };
+        }
+      }
 
       if (matchUpType) drawDefinition.matchUpType = matchUpType;
-      if (tieFormat) drawDefinition.tieFormat = tieFormat;
-
-      // update tieFormat if integrity check has added collectionIds
-      if (result.tieFormat) tieFormat = result.tieFormat;
     }
   }
 
