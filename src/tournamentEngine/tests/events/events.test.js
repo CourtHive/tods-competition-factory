@@ -45,10 +45,12 @@ it('can add events to a tournament record', () => {
 
   const { drawId } = drawDefinition;
   const defaultMatchUpFormat = 'SET3-S:6/TB7';
-  result = tournamentEngine.setDrawDefaultMatchUpFormat({
-    drawId,
+  result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: defaultMatchUpFormat,
+    drawId,
   });
+  expect(result.success).toEqual(true);
+  expect(result.modificationsCount).toEqual(1);
   const { tournamentRecord: updatedTournamentRecord } =
     tournamentEngine.getState();
   expect(

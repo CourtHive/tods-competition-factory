@@ -2972,17 +2972,6 @@ tournamentEngine.scaledTeamAssignment({
 
 ---
 
-## setDrawDefaultMatchUpFormat
-
-```js
-tournamentEngine.setDrawDefaultMatchUpFormat({
-  drawId,
-  matchUpFormat, // TODS matchUpFormatCode
-});
-```
-
----
-
 ## setDrawParticipantRepresentativeIds
 
 Set the participantIds of participants in the draw who are representing players by observing the creation of the draw.
@@ -2991,17 +2980,6 @@ Set the participantIds of participants in the draw who are representing players 
 tournamentEngine.setDrawParticipantRepresentativeIds({
   drawId,
   representativeParticipantIds,
-});
-```
-
----
-
-## setEventDefaultMatchUpFormat
-
-```js
-tournamentEngine.setEventDefaultMatchUpFormat({
-  eventId,
-  matchUpFormat, // TODS matchUpFormatCode
 });
 ```
 
