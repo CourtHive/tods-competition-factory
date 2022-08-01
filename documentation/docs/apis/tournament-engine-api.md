@@ -2932,6 +2932,46 @@ tournamentEngine.resetVoluntaryConsolationStructure({
 
 --
 
+## scaledTeamAssignment
+
+Assigns individual participants to teams using a waterfall pattern; removes UNGROUPED entries as appropriate for TEAM events. May be called with either `individualParticpantIds` and `scaleAttributes` or with an array of `scaledParticipants`.
+
+```js
+const scaleAttributes = {
+  scaleType: RANKING,
+  eventType: SINGLES,
+  scaleName: '18U',
+};
+tournamentEngine.scaledTeamAssignment({
+  individualParticipantIds,
+  teamParticipantIds,
+  scaleAttributes,
+});
+```
+
+```js
+const scaleAttributes = {
+  scaleType: RANKING,
+  eventType: SINGLES,
+  scaleName: '18U',
+};
+
+const scaledParticipants = individualParticipants.map((participant) => ({
+  participantId: participant.participantId,
+  scaleValue: participantScaleItem({ participant, scaleAttributes }).scaleItem
+    .scaleValue,
+}));
+
+const teamParticipantIds = teamParticipants.map(getParticipantId);
+
+tournamentEngine.scaledTeamAssignment({
+  teamParticipantIds,
+  scaledParticipants, // [{ participantId, scaleValue}]
+});
+```
+
+---
+
 ## setDrawDefaultMatchUpFormat
 
 ```js
