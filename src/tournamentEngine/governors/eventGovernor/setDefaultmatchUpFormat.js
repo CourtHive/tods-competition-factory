@@ -1,4 +1,5 @@
 import { setMatchUpFormat as drawEngineSetMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
+import { checkTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -13,21 +14,28 @@ import {
 export function setMatchUpFormat({
   tournamentRecord,
   drawDefinition,
-  // stageSequences,
+  stageSequences,
   matchUpFormat,
   structureIds,
   structureId,
   eventTypes,
-  // eventIds,
+  tieFormat,
+  eventIds,
   eventId,
-  // drawIds,
-  // stages,
+  drawIds,
+  stages,
   drawId,
-  event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
-  if (!isValid(matchUpFormat)) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
+  if (!matchUpFormat && !tieFormat) return { error: MISSING_MATCHUP_FORMAT };
+  if (matchUpFormat && !isValid(matchUpFormat))
+    return { error: UNRECOGNIZED_MATCHUP_FORMAT };
+
+  if (tieFormat) {
+    const result = checkTieFormat(tieFormat);
+    if (result.error) return result;
+    tieFormat = result.tieFormat;
+  }
 
   let modificationsCount = 0;
 
@@ -42,18 +50,51 @@ export function setMatchUpFormat({
       matchUpFormat,
       structureIds,
       structureId,
+      tieFormat,
     });
     if (result.error) return result;
     modificationsCount += 1;
   }
 
-  if (
-    eventId &&
-    (!eventTypes ||
-      (Array.isArray(eventTypes) && eventTypes.includes(event.eventType)))
-  ) {
-    event.matchUpFormat = matchUpFormat;
-    modificationsCount += 1;
+  const processStructures = (drawDefinition) => {
+    for (const structure of drawDefinition.structures || []) {
+      if (
+        (Array.isArray(stages) && !stages.includes(structure.stage)) ||
+        (Array.isArray(stageSequences) &&
+          !stageSequences.includes(structure.stageSequence))
+      )
+        continue;
+
+      if (matchUpFormat) structure.matchUpFormat = matchUpFormat;
+      else structure.tieFormat = tieFormat;
+    }
+  };
+
+  eventIds = eventIds || [eventId].filter(Boolean);
+  for (const event of tournamentRecord.events || []) {
+    if (
+      !eventIds.includes(event.eventId) ||
+      (Array.isArray(eventTypes) && !eventTypes.includes(event.eventType))
+    ) {
+      continue;
+    }
+
+    if (
+      Array.isArray(drawIds) ||
+      Array.isArray(stageSequences) ||
+      Array.isArray(stages)
+    ) {
+      for (const drawDefinition of event.drawDefinitions || []) {
+        if (Array.isArray(drawIds) && !drawIds.includes(drawDefinition.drawId))
+          continue;
+        processStructures(drawDefinition);
+      }
+    } else {
+      if (matchUpFormat) event.matchUpFormat = matchUpFormat;
+      else event.tieFormat = tieFormat;
+
+      modificationsCount += 1;
+    }
   }
 
   if (!modificationsCount) return { error: NO_MODIFICATIONS_APPLIED };

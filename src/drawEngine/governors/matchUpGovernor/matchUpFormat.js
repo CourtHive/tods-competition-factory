@@ -7,8 +7,8 @@ import {
   modifyMatchUpNotice,
 } from '../../notifications/drawNotifications';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/participantConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_MATCHUP_FORMAT,
   MISSING_DRAW_DEFINITION,
