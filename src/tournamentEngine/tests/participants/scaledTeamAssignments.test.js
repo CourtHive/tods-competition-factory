@@ -50,7 +50,7 @@ it('can automatically assign participants to teams using individualParticipantId
   });
   expect(result.success).toEqual(true);
 
-  const { event } = tournamentEngine.getEvent({ eventId });
+  let { event } = tournamentEngine.getEvent({ eventId });
   expect(event.entries.length).toEqual(participantsCount);
 
   let teamParticipants = generateRange(0, 8).map((i) => ({
@@ -65,6 +65,12 @@ it('can automatically assign participants to teams using individualParticipantId
   expect(result.success).toEqual(true);
 
   const teamParticipantIds = teamParticipants.map(getParticipantId);
+
+  result = tournamentEngine.addEventEntries({
+    participantIds: teamParticipantIds,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.scaledTeamAssignment({
     individualParticipantIds,
@@ -114,6 +120,9 @@ it('can automatically assign participants to teams using individualParticipantId
   // 4 teams received an additional team member, rankings 97, 98, 99, 100
   // all teams are balanced apart from the final four placements
   expect(teamScaleTotals).toEqual([679, 680, 681, 682, 582, 582, 582, 582]);
+
+  event = tournamentEngine.getEvent({ eventId }).event;
+  expect(event.entries.length).toEqual(teamParticipants.length);
 });
 
 it('can automatically assign participants to teams using scaledParticipants', () => {
@@ -146,7 +155,7 @@ it('can automatically assign participants to teams using scaledParticipants', ()
   });
   expect(result.success).toEqual(true);
 
-  const { event } = tournamentEngine.getEvent({ eventId });
+  let { event } = tournamentEngine.getEvent({ eventId });
   expect(event.entries.length).toEqual(participantsCount);
 
   let teamParticipants = generateRange(0, 8).map((i) => ({
@@ -173,6 +182,11 @@ it('can automatically assign participants to teams using scaledParticipants', ()
   }));
 
   const teamParticipantIds = teamParticipants.map(getParticipantId);
+  result = tournamentEngine.addEventEntries({
+    participantIds: teamParticipantIds,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.scaledTeamAssignment({
     teamParticipantIds,
@@ -203,4 +217,7 @@ it('can automatically assign participants to teams using scaledParticipants', ()
   // 4 teams received an additional team member, rankings 97, 98, 99, 100
   // all teams are balanced apart from the final four placements
   expect(teamScaleTotals).toEqual([679, 680, 681, 682, 582, 582, 582, 582]);
+
+  event = tournamentEngine.getEvent({ eventId }).event;
+  expect(event.entries.length).toEqual(teamParticipants.length);
 });

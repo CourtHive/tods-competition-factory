@@ -133,7 +133,12 @@ export function scaledTeamAssignment({
       relevantTeamParticipantIds.includes(entry.participantId)
     );
     for (const relevantEntry of relevantTeamEntries) {
-      const individualParticipantIds = relevantEntry.individualParticipantIds;
+      const relevantTeamParticipantId = relevantEntry.participantId;
+      const relevantTeam = relevantTeams.find(
+        (teamParticipant) =>
+          teamParticipant.participantId === relevantTeamParticipantId
+      );
+      const individualParticipantIds = relevantTeam?.individualParticipantIds;
       // remove any relevant individualParticipant entries from event.entries
       event.entries = (event.entries || []).filter(
         (entry) => !individualParticipantIds.includes(entry.participantId)
