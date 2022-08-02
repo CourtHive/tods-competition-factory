@@ -115,8 +115,8 @@ it.each([
 
       playoffStructureIds.forEach((structureId) => {
         const result = tournamentEngine.removeStructure({
-          drawId,
           structureId,
+          drawId,
         });
         expect(result.success).toEqual(true);
       });
@@ -160,8 +160,8 @@ it.each([32, 64])(
 
     stageSequence2structureIds.forEach((structureId) => {
       const result = tournamentEngine.removeStructure({
-        drawId,
         structureId,
+        drawId,
       });
       expect(result.success).toEqual(true);
     });
