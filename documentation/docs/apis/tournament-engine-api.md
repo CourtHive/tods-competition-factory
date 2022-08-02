@@ -3027,13 +3027,22 @@ tournamentEngine.setMatchUpDailyLimits({
 
 ## setMatchUpFormat
 
+Sets the `matchUpFormat` for a specific `matchUp` or for any scope within the hierarchy of a `tournamentRecord`.
+
+:::info
+If an array of `scheduledDates` is provided then `matchUps` which have `matchUpStatus: TO_BE_PLAYED` and are scheduled to be played on the specified dates will have their `matchUpFormat` fixed rather than inherited. This means that subsequent changes to the parent `structure.matchUpFormat` will have no effect on such `matchUps`.
+
+The `force` attribute will remove the `matchUpFormat` from all targeted `matchUps` which have `matchUpStatus: TO_BE_PLAYED`; this allows the effect of using `scheduledDates` to be reversed. Use of this attribute will have no effect is `scheduledDates` is also provided.
+
+:::
+
 ```js
 tournamentEngine.settMatchUpFormat({
   matchUpFormat, // TODS matchUpFormatCode
 
   matchUpId, // optional - set matchUpFormat for a specific matchUp
   drawId, // required only if matchUpId, structureId or structureIds is present
-  force, // optional - when setting for structure, draws or events, strip any defined matchUpFormat from all TO_BE_PLAYED matchUps
+  force, // optional boolean - when setting for structure, draws or events, strip any defined matchUpFormat from all TO_BE_PLAYED matchUps
 
   // scoping options
   scheduledDates, // optional - ['2022-01-01']
