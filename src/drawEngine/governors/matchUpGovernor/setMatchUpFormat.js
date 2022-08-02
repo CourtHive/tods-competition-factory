@@ -7,11 +7,13 @@ import {
 } from '../../notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/eventConstants';
 import {
   MISSING_MATCHUP_FORMAT,
   MISSING_DRAW_DEFINITION,
   UNRECOGNIZED_MATCHUP_FORMAT,
   STRUCTURE_NOT_FOUND,
+  INVALID_EVENT_TYPE,
 } from '../../../constants/errorConditionConstants';
 
 export function setMatchUpFormat(params) {
@@ -27,6 +29,7 @@ export function setMatchUpFormat(params) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
   if (!isValid(matchUpFormat)) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
+  if (event?.eventType === TEAM) return { error: INVALID_EVENT_TYPE };
 
   if (matchUpId) {
     const { matchUp, error } = findMatchUp({
