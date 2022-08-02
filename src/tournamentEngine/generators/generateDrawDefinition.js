@@ -159,7 +159,9 @@ export function generateDrawDefinition(params) {
     matchUpFormat = undefined;
   } else if (!matchUpFormat) {
     tieFormat = undefined;
-    matchUpFormat = 'SET3-S:6/TB7';
+    if (!event?.matchUpFormat) {
+      matchUpFormat = 'SET3-S:6/TB7';
+    }
   }
 
   // ---------------------------------------------------------------------------
