@@ -89,10 +89,18 @@ it('can set and return matchUpFormat codes', () => {
     eventId,
   });
   expect(result.error).toEqual(MISSING_MATCHUP_FORMAT);
+
   result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: TIMED20,
   });
-  expect(result.error).toEqual(NO_MODIFICATIONS_APPLIED);
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.setMatchUpFormat({
+    matchUpFormat: TIMED20,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.info).toEqual(NO_MODIFICATIONS_APPLIED);
+
   // now set some values other than drawDefaultMatchUpFormat
   result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: TIMED20,
@@ -162,7 +170,7 @@ it('can set and return matchUpFormat codes', () => {
   result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: FORMAT_SHORT_SETS,
   });
-  expect(result.error).toEqual(NO_MODIFICATIONS_APPLIED);
+  expect(result.success).toEqual(true);
   result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: 'BOBUS',
   });
