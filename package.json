@@ -131,9 +131,5 @@
     "*": "prettier --ignore-unknown --write"
   },
   "dependencies": {},
-  "exports": {
-    "require": "./dist/tods-competition-factory.production.cjs.js ",
-    "import": "./dist/tods-competition-factory.production.esm.min.js"
-  },
   "browserslist": "last 2 versions, not dead, not ie >= 0"
 }
