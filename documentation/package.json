@@ -28,6 +28,12 @@
     "tods-competition-factory": "0.276.0",
     "tods-score-grid": "0.7.0"
   },
+  "exports": {
+    ".": {
+      "require": "./dist/tods-competition-factory.production.cjs.js ",
+      "import": "./dist/tods-competition-factory.production.esm.min.js"
+    }
+  },
   "browserslist": {
     "production": [
       ">0.5%",
