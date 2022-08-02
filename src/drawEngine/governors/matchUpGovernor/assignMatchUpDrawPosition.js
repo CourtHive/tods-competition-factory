@@ -14,10 +14,13 @@ import {
   getMatchUpsMap,
 } from '../../getters/getMatchUps/getMatchUpsMap';
 
-import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
+import {
+  DRAW_POSITION_ASSIGNED,
+  STRUCTURE_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 import {
   BYE,
   COMPLETED,
@@ -60,6 +63,8 @@ export function assignMatchUpDrawPosition({
   const structure = drawDefinition?.structures?.find(
     (structure) => structure.structureId === structureId
   );
+
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   const matchUp = matchUpsMap?.drawMatchUps?.find(
     (matchUp) => matchUp.matchUpId === matchUpId
