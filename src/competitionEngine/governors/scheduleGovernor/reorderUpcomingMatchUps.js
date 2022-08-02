@@ -1,24 +1,18 @@
 import { addMatchUpScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
   MODIFICATIONS_FAILED,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 /**
  * Reorders an array of time-ordered matchUps by re-assigning their times
  * Assumes:
  * 1. that only the matchUps which need to be reordered are present in the matchUpContextIds array
  * 2. that either a match has moved from the bottom of the group to the top or vice-versa
- *
- * @param {object[]} tournamentRecords
- * @param {object[]} matchUpsContextIds - [{ tournamentId, drawId, matchUpId, schedule }] - derived from inContext matchUps
- * @param {boolean} firstToLast - boolean whether first is moved to last or last to first (default)
- *
- * @returns { success: true } or { error }
  */
 export function reorderUpcomingMatchUps(params) {
   const { tournamentRecords } = params;

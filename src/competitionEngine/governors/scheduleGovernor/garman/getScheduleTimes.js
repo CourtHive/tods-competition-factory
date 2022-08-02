@@ -12,23 +12,6 @@ import {
   dayMinutesToTimeString,
 } from '../../../../utilities/dateTime';
 
-/**
- *
- * @param {integer} averageMatchUpMinutes - average length of matchUps to be considered
- * @param {string} date - optional - YYYY-MM-DD date string - defaults to current UTC date
- * @param {integer} periodLength - number of minutes in a scheduling period
- * @param {boolean} calculateStartTimeFromCourts - defaults to true - use court startTimes, endTimes, and availabillity to derive startTime
- * @param {string} startTime - HH:MM time string
- * @param {string} endTime - HH:MM time string
- *
- * @param {object[]} bookings - optional - array of bookings objects [{ startTime, endTime, bookingType }]
- * @param {object[]} courts - array of court objects [{ courtId, dateAvailability: [{ date, startTime, endTime }]]
- * @param {integer} courtsCount - optional - useful for generating mock courts objects using { date, startTime, endTime }
- *
- *  @returns {string[]} scheduleTimes - array of time strings: ['HH:MM', 'HH:MM']
- *  @returns {object[]} timingProfile - array of periods [{ periodStart, add, availableToScheduleCount, newCourts, totalMatchUps}]
- *  @returns {integer} totalMatchUps - total number of matchUps of averageMatchUpMinutes that can be scheduled
- */
 export function getScheduleTimes({
   calculateStartTimeFromCourts = true,
   remainingScheduleTimes, // times remaining from previous scheduling iteration

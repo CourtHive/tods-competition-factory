@@ -742,6 +742,9 @@ This methods is used internally for creating a "virtual" view of court availabil
 
 ```js
 const { bookings, relevantMatchUps } = competitionEngine.generateBookings({
+  defaultRecoveryMinutes, // optional
+  averageMatchUpMinutes, // optional
+  periodLength, // optional - scheduling period in minutes
   scheduleDate, // optional - only consider matchUps scheduled on scheduleDate
   venueIds, // optional - only consider matchUps at specific venue(s)
   matchUps,

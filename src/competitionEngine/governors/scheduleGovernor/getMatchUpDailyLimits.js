@@ -2,13 +2,6 @@ import { getMatchUpDailyLimits as getDailyLimit } from '../../../tournamentEngin
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
 
-/**
- *
- * @param {object[]} tournamentRecords - auto populated by competitionEngine
- * @param {string} tournamentId - optional - narrow search to specific tournamentRecord
- *
- * @returns
- */
 export function getMatchUpDailyLimits({ tournamentRecords, tournamentId }) {
   if (
     typeof tournamentRecords !== 'object' ||

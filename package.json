@@ -124,12 +124,18 @@
     "rollup-plugin-terser": "7.0.2",
     "source-map-resolve": "0.6.0",
     "tslib": "2.4.0",
-    "typescript": "4.7.4"
+    "typescript": "^4.7.4"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint",
     "*": "prettier --ignore-unknown --write"
   },
   "dependencies": {},
+  "exports": {
+    ".": {
+      "require": "./dist/tods-competition-factory.production.cjs.js ",
+      "import": "./dist/tods-competition-factory.production.esm.min.js"
+    }
+  },
   "browserslist": "last 2 versions, not dead, not ie >= 0"
 }
