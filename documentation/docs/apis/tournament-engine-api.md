@@ -3037,8 +3037,9 @@ The `force` attribute will remove the `matchUpFormat` from all targeted `matchUp
 :::
 
 ```js
-tournamentEngine.settMatchUpFormat({
+tournamentEngine.setMatchUpFormat({
   matchUpFormat, // TODS matchUpFormatCode
+  eventType, // optional - restrict to SINGLES or DOUBLES
 
   matchUpId, // optional - set matchUpFormat for a specific matchUp
   drawId, // required only if matchUpId, structureId or structureIds is present
