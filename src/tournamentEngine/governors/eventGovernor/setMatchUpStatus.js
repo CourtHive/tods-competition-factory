@@ -1,5 +1,5 @@
 import { setMatchUpStatus as drawEngineSetMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpStatus';
-import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
+import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpFormat';
 import { matchUpScore } from '../../../matchUpEngine/generators/matchUpScore';
 import { findPolicy } from '../policyGovernor/findPolicy';
 import { findEvent } from '../../getters/eventGetter';
@@ -43,6 +43,7 @@ export function setMatchUpStatus(params) {
     event,
   });
 
+  // whether or not to allow winningSide change propagation
   const allowChangePropagation =
     params.allowChangePropagation !== undefined
       ? params.allowChangePropagation

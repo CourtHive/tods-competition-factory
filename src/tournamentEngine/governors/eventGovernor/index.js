@@ -1,8 +1,12 @@
 import { generateAndPopulatePlayoffStructures } from '../../../drawEngine/governors/structureGovernor/generateAndPopulatePlayoffStructures';
 import { setDrawParticipantRepresentativeIds } from './drawDefinitions/setDrawParticipantRepresentativeIds';
 import { getDrawParticipantRepresentativeIds } from './drawDefinitions/getDrawParticipantRepresentativeIds';
-import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
 import { assignMatchUpSideParticipant } from './drawDefinitions/assignMatchUpSideParticipant';
+import { replaceTieMatchUpParticipantId } from './replaceTieMatchUpParticipant';
+import { deleteDrawDefinitions } from './drawDefinitions/deleteDrawDefinitions';
+import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
+import { assignTieMatchUpParticipantId } from './assignTieMatchUpParticipant';
+import { removeTieMatchUpParticipantId } from './removeTieMatchUpParticipant';
 import { assignDrawPosition } from './drawDefinitions/assignDrawPosition';
 import { addDrawDefinition } from './drawDefinitions/addDrawDefinition';
 import { addDrawEntries } from './drawDefinitions/addDrawEntries';
@@ -14,11 +18,6 @@ import { assignSeedPositions } from './assignSeedPositions';
 import { addEventEntries } from './entries/addEventEntries';
 import { deleteEvents } from './deleteEvent';
 import { addEvent } from './addEvent';
-import { assignTieMatchUpParticipantId } from './assignTieMatchUpParticipant';
-import { removeTieMatchUpParticipantId } from './removeTieMatchUpParticipant';
-import { replaceTieMatchUpParticipantId } from './replaceTieMatchUpParticipant';
-import { deleteDrawDefinitions } from './drawDefinitions/deleteDrawDefinitions';
-import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
 import {
   checkInParticipant,
   checkOutParticipant,
@@ -32,31 +31,27 @@ import {
   promoteAlternates,
 } from './entries/promoteAlternate';
 
-import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
-import {
-  setDrawDefaultMatchUpFormat,
-  setEventDefaultMatchUpFormat,
-  setStructureDefaultMatchUpFormat,
-} from './setDefaultMatchUpFormat';
-
-import {
-  setEntryPosition,
-  setEntryPositions,
-} from './entries/setEntryPositions';
-import { setPositionAssignments } from './drawDefinitions/setPositionAssignments';
-import { addDrawDefinitionTimeItem } from './drawDefinitions/addDrawDefinitionTimeItem';
-import { swapDrawPositionAssignments } from './drawDefinitions/swapDrawPositionAssignments';
 import { withdrawParticipantAtDrawPosition } from './drawDefinitions/withdrawParticipantAtDrawPosition';
 import { luckyLoserDrawPositionAssignment } from './drawDefinitions/luckyLoserDrawPositionAssignment';
 import { qualifierDrawPositionAssignment } from './drawDefinitions/qualifierDrawPositionAssignment';
 import { alternateDrawPositionAssignment } from './drawDefinitions/alternateDrawPositionAssignment';
 import { removeDrawPositionAssignment } from './drawDefinitions/removeDrawPositionAssignment';
+import { swapDrawPositionAssignments } from './drawDefinitions/swapDrawPositionAssignments';
+import { addDrawDefinitionTimeItem } from './drawDefinitions/addDrawDefinitionTimeItem';
 import { getAvailablePlayoffRounds } from './drawDefinitions/getAvailablePlayoffRounds';
+import { setPositionAssignments } from './drawDefinitions/setPositionAssignments';
+import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
 import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
 import { removeDrawEntries } from './drawDefinitions/removeDrawEntries';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
 import { addPlayoffStructures } from './addPlayoffStructures';
 import { modifySeedAssignment } from './modifySeedAssignment';
+import { setMatchUpFormat } from './setMatchUpFormat';
+
+import {
+  setEntryPosition,
+  setEntryPositions,
+} from './entries/setEntryPositions';
 
 import { setSubOrder } from '../../../drawEngine/governors/positionGovernor/setSubOrder';
 import { removeDelegatedOutcome } from './drawDefinitions/removeDelegatedOutcome';
@@ -202,12 +197,8 @@ const eventGovernor = {
   attachConsolationStructures,
 
   bulkMatchUpStatusUpdate,
-  setMatchUpFormat,
   setMatchUpStatus,
-
-  setDrawDefaultMatchUpFormat,
-  setEventDefaultMatchUpFormat,
-  setStructureDefaultMatchUpFormat, // TODO: To Be deprecated
+  setMatchUpFormat,
 
   assignDrawPosition,
   assignSeedPositions,

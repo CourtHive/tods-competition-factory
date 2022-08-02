@@ -11,16 +11,6 @@ import {
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
 
-/**
- * generates bookings objects which may be used for generating "virtual" views of court availability
- * @param {object} tournamentRecords - provided automatically by competitionEngine
- * @param {integer} defaultRecoveryMinutes - recoveryMinutes to use if not found in scheduling policy
- * @param {integer} averageMatchUpMinutes - averageMinutes to use if not found in scheduling policy
- * @param {integer} periodLength - scheduling period in minutes
- * @param {object[]} matchUps - matchUps with schedules from which to derive bookings
- * @returns {object} bookings - [{ averageMinutes, recoveryMinutes, periodLength, startTime, endTime, courtId, venueId }]
- * @returns {object[]} relevantMatchUps - [{ ...matchUp }]
- */
 export function generateBookings({
   defaultRecoveryMinutes,
   averageMatchUpMinutes,

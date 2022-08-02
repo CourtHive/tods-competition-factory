@@ -4,13 +4,6 @@ import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConsta
 import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-/**
- * @param {string[]} scheduleAttributes - attributes by which it is determined that a matchUp as a schedule
- * @param {boolean} ignoreMatchUpStatuses - array of matchUpStatuses to ignore; defaults to completed
- * @param {object} tournamentRecord - provided automatically by tournamentEngine
- * @param {string[]} scheduledDates - optional - array of schedule dates to be cleared; default is to clear all dates
- * @param {string[]} venueIds - optional array of specific venueIds to be cleared
- */
 export function clearScheduledMatchUps({
   scheduleAttributes = ['scheduledDate', 'scheduledTime'],
   ignoreMatchUpStatuses = completedMatchUpStatuses,

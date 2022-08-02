@@ -1,4 +1,3 @@
-import { checkTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';
@@ -8,13 +7,13 @@ import {
 } from '../../notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/participantConstants';
+import { TEAM } from '../../../constants/eventConstants';
 import {
   MISSING_MATCHUP_FORMAT,
   MISSING_DRAW_DEFINITION,
   UNRECOGNIZED_MATCHUP_FORMAT,
   STRUCTURE_NOT_FOUND,
-  INVALID_VALUES,
+  INVALID_EVENT_TYPE,
 } from '../../../constants/errorConditionConstants';
 
 export function setMatchUpFormat(params) {
@@ -26,19 +25,11 @@ export function setMatchUpFormat(params) {
     matchUpId,
     event,
   } = params;
-  let { tieFormat } = params;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!matchUpFormat && !tieFormat) return { error: MISSING_MATCHUP_FORMAT };
-
-  if (matchUpFormat && !isValid(matchUpFormat))
-    return { error: UNRECOGNIZED_MATCHUP_FORMAT };
-
-  if (tieFormat) {
-    const result = checkTieFormat(tieFormat);
-    if (result.error) return result;
-    tieFormat = result.tieFormat;
-  }
+  if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
+  if (!isValid(matchUpFormat)) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
+  if (event?.eventType === TEAM) return { error: INVALID_EVENT_TYPE };
 
   if (matchUpId) {
     const { matchUp, error } = findMatchUp({
@@ -48,13 +39,7 @@ export function setMatchUpFormat(params) {
     });
     if (error) return { error };
 
-    if (matchUpFormat && matchUp.matchUpType !== TEAM) {
-      matchUp.matchUpFormat = matchUpFormat;
-    } else if (tieFormat && matchUp.matchUpType === TEAM) {
-      matchUp.tieFormat = tieFormat;
-    } else {
-      return { error: INVALID_VALUES };
-    }
+    matchUp.matchUpFormat = matchUpFormat;
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       eventId: event?.eventId,
@@ -67,22 +52,14 @@ export function setMatchUpFormat(params) {
     if (!structure) {
       return { error: STRUCTURE_NOT_FOUND };
     } else {
-      if (matchUpFormat && structure.matchUpType !== TEAM) {
-        structure.matchUpFormat = matchUpFormat;
-      } else if (tieFormat) {
-        structure.tieFormat = tieFormat;
-      }
+      structure.matchUpFormat = matchUpFormat;
     }
   } else if (drawDefinition) {
-    if (matchUpFormat) {
-      drawDefinition.matchUpFormat = matchUpFormat;
-    } else if (tieFormat) {
-      drawDefinition.tieFormat = tieFormat;
-    }
+    drawDefinition.matchUpFormat = matchUpFormat;
   }
 
   const structureIds = structureId ? [structureId] : undefined;
   modifyDrawNotice({ drawDefinition, structureIds });
 
-  return { ...SUCCESS, tieFormat };
+  return { ...SUCCESS };
 }

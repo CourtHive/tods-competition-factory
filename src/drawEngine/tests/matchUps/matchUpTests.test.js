@@ -1,7 +1,6 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import tieFormatDefaults from '../../../tournamentEngine/generators/tieFormatDefaults';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
-import { setMatchUpFormat } from '../../governors/matchUpGovernor/matchUpFormat';
+import { setMatchUpFormat } from '../../governors/matchUpGovernor/setMatchUpFormat';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { getMatchUpType } from '../../accessors/matchUpAccessor';
 import { getDrawStructures } from '../../getters/findStructure';
@@ -19,7 +18,6 @@ import {
   SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
 import {
-  INVALID_TIE_FORMAT,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_FORMAT,
@@ -185,33 +183,6 @@ it('can set matchUpFormat', () => {
     structureId: structure.structureId,
     drawDefinition,
     matchUpFormat,
-  });
-  expect(result.success).toEqual(true);
-
-  result = setMatchUpFormat({
-    structureId: structure.structureId,
-    drawDefinition,
-    tieFormat: {},
-  });
-  expect(result.error).toEqual(INVALID_TIE_FORMAT);
-
-  result = setMatchUpFormat({
-    drawDefinition,
-    tieFormat: {},
-    matchUpId,
-  });
-  expect(result.error).toEqual(INVALID_TIE_FORMAT);
-
-  result = setMatchUpFormat({
-    tieFormat: tieFormatDefaults(),
-    drawDefinition,
-  });
-  expect(result.success).toEqual(true);
-
-  result = setMatchUpFormat({
-    structureId: structure.structureId,
-    tieFormat: tieFormatDefaults(),
-    drawDefinition,
   });
   expect(result.success).toEqual(true);
 });

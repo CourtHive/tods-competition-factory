@@ -2932,12 +2932,41 @@ tournamentEngine.resetVoluntaryConsolationStructure({
 
 --
 
-## setDrawDefaultMatchUpFormat
+## scaledTeamAssignment
+
+Assigns individual participants to teams using a waterfall pattern; removes UNGROUPED entries as appropriate for TEAM events. May be called with either `individualParticpantIds` and `scaleAttributes` or with an array of `scaledParticipants`.
 
 ```js
-tournamentEngine.setDrawDefaultMatchUpFormat({
-  drawId,
-  matchUpFormat, // TODS matchUpFormatCode
+const scaleAttributes = {
+  scaleType: RANKING,
+  eventType: SINGLES,
+  scaleName: '18U',
+};
+tournamentEngine.scaledTeamAssignment({
+  individualParticipantIds,
+  teamParticipantIds,
+  scaleAttributes,
+});
+```
+
+```js
+const scaleAttributes = {
+  scaleType: RANKING,
+  eventType: SINGLES,
+  scaleName: '18U',
+};
+
+const scaledParticipants = individualParticipants.map((participant) => ({
+  participantId: participant.participantId,
+  scaleValue: participantScaleItem({ participant, scaleAttributes }).scaleItem
+    .scaleValue,
+}));
+
+const teamParticipantIds = teamParticipants.map(getParticipantId);
+
+tournamentEngine.scaledTeamAssignment({
+  teamParticipantIds,
+  scaledParticipants, // [{ participantId, scaleValue}]
 });
 ```
 
@@ -2951,17 +2980,6 @@ Set the participantIds of participants in the draw who are representing players 
 tournamentEngine.setDrawParticipantRepresentativeIds({
   drawId,
   representativeParticipantIds,
-});
-```
-
----
-
-## setEventDefaultMatchUpFormat
-
-```js
-tournamentEngine.setEventDefaultMatchUpFormat({
-  eventId,
-  matchUpFormat, // TODS matchUpFormatCode
 });
 ```
 
@@ -3009,11 +3027,33 @@ tournamentEngine.setMatchUpDailyLimits({
 
 ## setMatchUpFormat
 
+Sets the `matchUpFormat` for a specific `matchUp` or for any scope within the hierarchy of a `tournamentRecord`.
+
+:::info
+If an array of `scheduledDates` is provided then `matchUps` which have `matchUpStatus: TO_BE_PLAYED` and are scheduled to be played on the specified dates will have their `matchUpFormat` fixed rather than inherited. This means that subsequent changes to the parent `structure.matchUpFormat` will have no effect on such `matchUps`.
+
+The `force` attribute will remove the `matchUpFormat` from all targeted `matchUps` which have `matchUpStatus: TO_BE_PLAYED`; this allows the effect of using `scheduledDates` to be reversed. Use of this attribute will have no effect if `scheduledDates` is also provided.
+
+:::
+
 ```js
-tournamentEngine.settMatchUpFormat({
+tournamentEngine.setMatchUpFormat({
   matchUpFormat, // TODS matchUpFormatCode
-  structureId,
-  drawId,
+  eventType, // optional - restrict to SINGLES or DOUBLES
+
+  matchUpId, // optional - set matchUpFormat for a specific matchUp
+  drawId, // required only if matchUpId, structureId or structureIds is present
+  force, // optional boolean - when setting for structure, draws or events, strip any defined matchUpFormat from all TO_BE_PLAYED matchUps
+
+  // scoping options
+  scheduledDates, // optional - ['2022-01-01']
+  stageSequences, // optional - [1, 2]
+  structureIds, // optional - ['structureId1', 'structureId2']
+  structureId, // optional
+  eventIds, // optional - ['eventId1', 'eventId2']
+  eventId, // optional
+  drawIds, // optional - ['drawId1', 'drawId2']
+  stages, // optional - ['MAIN', 'CONSOLATION']
 });
 ```
 

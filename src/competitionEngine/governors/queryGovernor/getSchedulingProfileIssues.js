@@ -12,11 +12,6 @@ import {
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
 
-/**
- *
- * @param {object} tournamentRecords
- * @param {string[]} scheduleDates - optional - array of scheduleDates to validate
- */
 export function getSchedulingProfileIssues({
   scheduleDates = [],
   tournamentRecords,

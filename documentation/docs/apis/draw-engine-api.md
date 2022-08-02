@@ -963,7 +963,6 @@ drawEngine.setMatchUpFormat({
   matchUpFormat,
   structureId, // optional - if structureId is present and not matchUpId is present, then set for structure
   matchUpId, // optional - if matchUpId is present then only set for matchUp
-  tieFormat, // optional - when setting the format for a tieMatchUp
 });
 ```
 

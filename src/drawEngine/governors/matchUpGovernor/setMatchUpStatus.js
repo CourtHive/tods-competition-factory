@@ -22,6 +22,7 @@ import {
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   ABANDONED,
+  AWAITING_RESULT,
   CANCELLED,
   DOUBLE_WALKOVER,
   INCOMPLETE,
@@ -129,28 +130,22 @@ export function setMatchUpStatus(params) {
   // Check validity of matchUpStatus considering assigned drawPositions -------
   const assignedDrawPositions = inContextMatchUp.drawPositions?.filter(Boolean);
 
-  /*
   if (matchUp.matchUpType === TEAM) {
     if (
-      ![
-        ABANDONED,
+      [
         AWAITING_RESULT,
-        CANCELLED,
-        DEFAULTED,
-        DOUBLE_DEFAULT,
-        DOUBLE_WALKOVER,
-        RETIRED,
-        SUSPENDED,
-        WALKOVER,
+        // for the following statuses sould all tieMatchUp results be removed?
+        // CANCELLED,
+        // DOUBLE_WALKOVER,
+        // WALKOVER,
       ].includes(matchUpStatus)
     ) {
       return {
-        error: NOT_IMPLEMENTED,
-        info: 'DIRECT SCORING of TEAM matchUp not implemented',
+        error: INVALID_VALUES,
+        info: 'Not supported for machUpType: TEAM',
       };
     }
   }
-  */
 
   const matchUpTieId = inContextMatchUp.matchUpTieId;
 

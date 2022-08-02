@@ -69,12 +69,11 @@ const { matchUpFormat } = tournamentEngine.getMatchUpFormat({
 To set the **matchUpFormat** at each level:
 
 ```js
-tournamentEngine.setEventDefaultMatchUpFormat({ eventId, matchUpFormat });
-tournamentEngine.setDrawDefaultMatchUpFormat({ drawId, matchUpFormat });
 tournamentEngine.setMatchUpFormat({
   matchUpFormat,
-  structureId,
-  drawId,
+  structureId, // optional
+  eventId, // optional
+  drawId, // optional
 });
 ```
 

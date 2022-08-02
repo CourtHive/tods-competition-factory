@@ -1,10 +1,5 @@
 /**
  * Finds all container structures within a tournament object and returns a mapping of container structureIds to arrays of contained structureIds
- *
- * @param {object} tournamentRecord - TODS tournament object
- * @param {object} drawDefinition - TODS draw object
- * @param {object} event - TODS event object
- * @returns {object} mapping
  */
 export function getContainedStructures({
   tournamentRecord,

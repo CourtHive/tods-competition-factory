@@ -19,12 +19,6 @@ import {
   COURT_EXISTS,
 } from '../../../constants/errorConditionConstants';
 
-/**
- *
- * @param {string} venueId
- * @param {object} court - court object
- * { courtId, courtName, altitude, latitude, longitude, surfaceCategory, surfaceType, surfaceDate, dateAvailability, onlineResources, courtDimensions, notes }
- */
 export function addCourt({
   tournamentRecord,
   disableNotice,
@@ -102,12 +96,6 @@ export function addCourt({
   }
 }
 
-/**
- * @param {string} venueId
- * @param {number} courtsCount - number of courts to add
- * @param {string[]} courtNames - array of names to assign to generated courts
- * @param {object[]} dataAvailability - dataAvailability object
- */
 export function addCourts({
   dateAvailability = [],
   tournamentRecord,

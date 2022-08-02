@@ -62,10 +62,12 @@ it('can add doubles events to a tournament record', () => {
 
   const { drawId } = drawDefinition;
   const defaultMatchUpFormat = 'SET3-S:6/TB7';
-  result = tournamentEngine.setDrawDefaultMatchUpFormat({
-    drawId,
+  result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: defaultMatchUpFormat,
+    drawId,
   });
+  expect(result.success).toEqual(true);
+
   const { tournamentRecord: updatedTournamentRecord } =
     tournamentEngine.getState();
   expect(
