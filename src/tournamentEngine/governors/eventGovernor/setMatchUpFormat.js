@@ -7,9 +7,11 @@ import {
   modifyMatchUpNotice,
 } from '../../../drawEngine/notifications/drawNotifications';
 
+import { DOUBLES, SINGLES, TEAM } from '../../../constants/eventConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  INVALID_EVENT_TYPE,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_FORMAT,
@@ -26,7 +28,7 @@ export function setMatchUpFormat({
   matchUpFormat,
   structureIds,
   structureId,
-  eventTypes,
+  eventType, // only SINGLES or DOUBLES
   matchUpId,
   eventIds,
   eventId,
@@ -41,6 +43,8 @@ export function setMatchUpFormat({
     return { error: UNRECOGNIZED_MATCHUP_FORMAT, matchUpFormat };
   if (scheduledDates && !Array.isArray(scheduledDates))
     return { error: INVALID_VALUES, scheduledDates };
+  if (eventType && ![SINGLES, DOUBLES].includes(eventType))
+    return { error: INVALID_EVENT_TYPE };
 
   let modificationsCount = 0;
 
@@ -48,7 +52,7 @@ export function setMatchUpFormat({
     return { error: MISSING_DRAW_DEFINITION };
   }
 
-  if (matchUpId || drawId) {
+  if (drawId && matchUpId) {
     const result = drawEngineSetMatchUpFormat({
       tournamentRecord,
       drawDefinition,
@@ -63,18 +67,24 @@ export function setMatchUpFormat({
   }
 
   const processStructures = (drawDefinition) => {
-    const structureIds = [];
+    const modifiedStructureIds = [];
+
     for (const structure of drawDefinition.structures || []) {
       if (
         (Array.isArray(stages) && !stages.includes(structure.stage)) ||
         (Array.isArray(stageSequences) &&
-          !stageSequences.includes(structure.stageSequence))
+          !stageSequences.includes(structure.stageSequence)) ||
+        (structureIds.length && !structureIds.includes(structure.structureId))
       )
         continue;
 
-      structure.matchUpFormat = matchUpFormat;
-      structureIds.push(structure.structureId);
-      modificationsCount += 1;
+      if (structureIds.length) {
+        if (structure.matchUpFormat !== matchUpFormat) {
+          structure.matchUpFormat = matchUpFormat;
+          modifiedStructureIds.push(structure.structureId);
+          modificationsCount += 1;
+        }
+      }
 
       const matchUps =
         (force || scheduledDates) &&
@@ -99,7 +109,10 @@ export function setMatchUpFormat({
 
         for (const matchUp of matchUps) {
           if (matchUpIdsToModify.includes(matchUp.matchUpId)) {
-            matchUp.matchUpFormat = undefined; // force to inherit structure matchUpFormat
+            matchUp.matchUpFormat = scheduledDates?.length
+              ? matchUpFormat
+              : undefined; // force to inherit structure matchUpFormat
+
             modifyMatchUpNotice({
               tournamentId: tournamentRecord?.tournamentId,
               eventId: event?.eventId,
@@ -110,36 +123,55 @@ export function setMatchUpFormat({
         }
       }
     }
-    return structureIds;
+
+    if (!modifiedStructureIds.length) {
+      if (drawDefinition.matchUpFormat !== matchUpFormat) {
+        drawDefinition.matchUpFormat = matchUpFormat;
+        modificationsCount += 1;
+      }
+    }
+
+    return modifiedStructureIds;
   };
 
+  structureIds = structureIds || [structureId].filter(Boolean);
   eventIds = eventIds || [eventId].filter(Boolean);
+  drawIds = drawIds || [drawId].filter(Boolean);
+
   for (const event of tournamentRecord.events || []) {
     if (
-      !eventIds.includes(event.eventId) ||
-      (Array.isArray(eventTypes) && !eventTypes.includes(event.eventType))
+      (eventIds?.length && !eventIds.includes(event.eventId)) ||
+      (eventType && eventType !== event.eventType) ||
+      eventType === TEAM
     ) {
       continue;
     }
 
     if (
-      Array.isArray(drawIds) ||
       Array.isArray(stageSequences) ||
-      Array.isArray(stages)
+      Array.isArray(stages) ||
+      structureIds.length ||
+      drawIds.length
     ) {
       for (const drawDefinition of event.drawDefinitions || []) {
         if (Array.isArray(drawIds) && !drawIds.includes(drawDefinition.drawId))
           continue;
-        const structureIds = processStructures(drawDefinition);
-        modifyDrawNotice({ drawDefinition, structureIds });
+        const modifiedStructureIds = processStructures(drawDefinition);
+        modifyDrawNotice({
+          structureIds: modifiedStructureIds,
+          drawDefinition,
+        });
       }
     } else {
-      event.matchUpFormat = matchUpFormat;
-      modificationsCount += 1;
+      if (event.matchUpFormat !== matchUpFormat) {
+        event.matchUpFormat = matchUpFormat;
+        modificationsCount += 1;
+      }
     }
   }
 
-  if (!modificationsCount) return { error: NO_MODIFICATIONS_APPLIED };
+  if (!modificationsCount)
+    return { ...SUCCESS, info: NO_MODIFICATIONS_APPLIED };
 
   return { ...SUCCESS, modificationsCount };
 }
