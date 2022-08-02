@@ -3030,8 +3030,20 @@ tournamentEngine.setMatchUpDailyLimits({
 ```js
 tournamentEngine.settMatchUpFormat({
   matchUpFormat, // TODS matchUpFormatCode
-  structureId,
-  drawId,
+
+  matchUpId, // optional - set matchUpFormat for a specific matchUp
+  drawId, // required only if matchUpId, structureId or structureIds is present
+  force, // optional - when setting for structure, draws or events, strip any defined matchUpFormat from all TO_BE_PLAYED matchUps
+
+  // scoping options
+  scheduledDates, // optional - ['2022-01-01']
+  stageSequences, // optional - [1, 2]
+  structureIds, // optional - ['structureId1', 'structureId2']
+  structureId, // optional
+  eventIds, // optional - ['eventId1', 'eventId2']
+  eventId, // optional
+  drawIds, // optional - ['drawId1', 'drawId2']
+  stages, // optional - ['MAIN', 'CONSOLATION']
 });
 ```
 
