@@ -1,9 +1,16 @@
 import { setMatchUpFormat as drawEngineSetMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpFormat';
-import { modifyDrawNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { getMatchUpId } from '../../../global/functions/extractors';
+import {
+  modifyDrawNotice,
+  modifyMatchUpNotice,
+} from '../../../drawEngine/notifications/drawNotifications';
 
+import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_FORMAT,
   MISSING_TOURNAMENT_RECORD,
@@ -14,6 +21,7 @@ import {
 export function setMatchUpFormat({
   tournamentRecord,
   drawDefinition,
+  scheduledDates,
   stageSequences,
   matchUpFormat,
   structureIds,
@@ -25,11 +33,14 @@ export function setMatchUpFormat({
   drawIds,
   stages,
   drawId,
+  force, // strip matchUpFormat from scoped matchUps which have not been scored
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
   if (matchUpFormat && !isValid(matchUpFormat))
-    return { error: UNRECOGNIZED_MATCHUP_FORMAT };
+    return { error: UNRECOGNIZED_MATCHUP_FORMAT, matchUpFormat };
+  if (scheduledDates && !Array.isArray(scheduledDates))
+    return { error: INVALID_VALUES, scheduledDates };
 
   let modificationsCount = 0;
 
@@ -45,6 +56,7 @@ export function setMatchUpFormat({
       structureIds,
       structureId,
       matchUpId,
+      force,
     });
     if (result.error) return result;
     modificationsCount += 1;
@@ -63,6 +75,40 @@ export function setMatchUpFormat({
       structure.matchUpFormat = matchUpFormat;
       structureIds.push(structure.structureId);
       modificationsCount += 1;
+
+      const matchUps =
+        (force || scheduledDates) &&
+        getAllStructureMatchUps({
+          matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
+          structure,
+        });
+
+      const inContextMatchUps =
+        scheduledDates &&
+        getAllStructureMatchUps({
+          matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
+          contextFilters: { scheduledDates },
+          inContext: true,
+          structure,
+        });
+
+      if (matchUps?.length) {
+        const matchUpIdsToModify = inContextMatchUps
+          ? inContextMatchUps.map(getMatchUpId)
+          : matchUps.map(getMatchUpId);
+
+        for (const matchUp of matchUps) {
+          if (matchUpIdsToModify.includes(matchUp.matchUpId)) {
+            matchUp.matchUpFormat = undefined; // force to inherit structure matchUpFormat
+            modifyMatchUpNotice({
+              tournamentId: tournamentRecord?.tournamentId,
+              eventId: event?.eventId,
+              drawDefinition,
+              matchUp,
+            });
+          }
+        }
+      }
     }
     return structureIds;
   };
