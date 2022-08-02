@@ -132,7 +132,7 @@ export function setMatchUpStatus(params) {
 
   if (matchUp.matchUpType === TEAM) {
     if (
-      ![
+      [
         AWAITING_RESULT,
         // for the following statuses sould all tieMatchUp results be removed?
         // CANCELLED,
