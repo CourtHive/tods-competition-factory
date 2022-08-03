@@ -28,6 +28,7 @@ Competition Factory engines manage different concerns within a tournament and ma
 1. [**competitionEngine**](./apis/competition-engine-api) - manages resources which may be shared across multiple linked tournaments, such as venues (courts & other locations); includes advanced scheduling and cross-tournament reporting.
 2. [**tournamentEngine**](./apis/tournament-engine-api) - manages tournament metadata, participants, events (including the generation of complex draw types and "flights" within events), and reporting.
 3. [**drawEngine**](./apis/draw-engine-api) - generates drawDefinitions and matchUp results; manages participant seeding and movement within and between draw structures.
+4. [**matchUpEngine**](./apis/matchUp-engine-api) - methods to manipulate tieFormats, analyze arrays of matchUps, and report on matchUp scores.
 
 ## Other Utilities
 
