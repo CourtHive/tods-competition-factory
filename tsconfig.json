@@ -1,23 +1,15 @@
 {
-  "include": ["src", "types"],
-  "exclude": ["node_modules", "public", "**/*.d.ts", "dist"],
+  "include": ["src/**/*.ts"],
   "compilerOptions": {
-    "module": "esnext",
-    "lib": ["dom", "esnext"],
-    "allowJs": true,
-    "declaration": false,
-    "importHelpers": true,
-    "sourceMap": false,
-    "rootDir": "./src",
-    "outDir": "./scratch",
+    "declaration": true,
+    "target": "esnext",
+    "lib": ["esnext", "dom"],
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
     "noImplicitAny": false,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
     "moduleResolution": "node",
-    "noEmit": true,
-    "esModuleInterop": true
+    "outDir": "dist",
+    "allowJs": true,
+    "checkJs": false
   }
 }
