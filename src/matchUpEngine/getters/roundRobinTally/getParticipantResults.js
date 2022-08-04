@@ -114,14 +114,13 @@ export function getParticipantResults({
             tallyPolicy,
             winningSide,
           });
-
-          processOutcome({
-            winningParticipantId,
-            losingParticipantId,
-            participantResults,
-            matchUpStatus,
-          });
         }
+        processOutcome({
+          winningParticipantId,
+          losingParticipantId,
+          participantResults,
+          matchUpStatus,
+        });
       } else {
         processMatchUp({
           winningParticipantId,

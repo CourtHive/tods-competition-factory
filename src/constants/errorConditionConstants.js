@@ -172,7 +172,7 @@ export const UNLINKED_STRUCTURES = {
 };
 
 export const INVALID_EVENT_TYPE = {
-  message: 'Invalie eventType',
+  message: 'Invalid eventType',
   code: 'ERR_INVALID_EVENT_TYPE',
 };
 export const UNRECOGNIZED_EVENT_TYPE = {
