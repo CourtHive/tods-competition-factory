@@ -244,5 +244,5 @@ it('can autoSeed by Rankings', () => {
   });
   expect(result.success).toEqual(true);
 
-  // also need to test this with scale items that are stageEntries on a drawDefinition where the scaleAttributes include drawId-specific scaleName
+  // TODO: also need to test this with scale items that are stageEntries on a drawDefinition where the scaleAttributes include drawId-specific scaleName
 });

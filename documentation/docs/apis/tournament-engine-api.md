@@ -2936,6 +2936,16 @@ tournamentEngine.resetVoluntaryConsolationStructure({
 
 Assigns individual participants to teams using a waterfall pattern; removes UNGROUPED entries as appropriate for TEAM events. May be called with either `individualParticpantIds` and `scaleAttributes` or with an array of `scaledParticipants`.
 
+:::info
+By default existing `individualParticipant` assignments are cleared. If existing assignments are retained, any `individualParticipant` already assigned will be excluded from further assignment. It may be desirable to retain existing assignments if sequential assignment of different groups of `individualParticipants` is desired.
+:::
+
+:::note
+Modifying team assignments has "global" effect, meaning that if a team appears in multiple events, team membership will be changed for all events.
+:::
+
+### Example use with `individualParticipantIds` and `scaleAttributes`
+
 ```js
 const scaleAttributes = {
   scaleType: RANKING,
@@ -2943,11 +2953,18 @@ const scaleAttributes = {
   scaleName: '18U',
 };
 tournamentEngine.scaledTeamAssignment({
+  reverseAssignmentOrder, // optional - reverses team order; useful for sequential assignment of participant groupings to ensure balanced distribution
+  initialTeamIndex, // optional - allows assignment to begin at a specified array index; useful for sequential assignment of groups of scaledParticipants
+  clearExistingAssignments, // optional - true by default remove all existing individualParticipantIds from targeted teams
+  descendingScaleSort, // optional - allow use of scales where the higher value denotes a stronger participant
+
   individualParticipantIds,
   teamParticipantIds,
   scaleAttributes,
 });
 ```
+
+### Example use with `scaledParticipants`
 
 ```js
 const scaleAttributes = {
@@ -2967,6 +2984,25 @@ const teamParticipantIds = teamParticipants.map(getParticipantId);
 tournamentEngine.scaledTeamAssignment({
   teamParticipantIds,
   scaledParticipants, // [{ participantId, scaleValue}]
+});
+```
+
+### Example use with sequential assignment where there are 8 teams
+
+In this scenario scaled MALE participants are assigned in a waterfall pattern beginning with the first team (default behavior); scaled FEMALE particiapnts are then assigned in a reverse waterfall pattern beginning with the last team. The goal is to balance the teams to the greatest extent possible. This pattern can be used with an arbitrary number of groups of `individualParticipants`.
+
+```js
+tournamentEngine.scaledTeamAssignment({
+  teamParticipantIds,
+  scaledParticipants: maleScaleParticipants,
+});
+
+tournamentEngine.scaledTeamAssignment({
+  teamParticipantIds,
+  scaledParticipants: femaleScaleParticipants,
+  clearExistingAssignments: false,
+  reverseAssignmentOrder: true,
+  initialTeamIndex: 7,
 });
 ```
 
