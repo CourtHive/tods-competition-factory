@@ -172,7 +172,7 @@ function getSideValues({
     .sort((a, b) => a.sideNumber - b.sideNumber)
     .map(({ participant }) => {
       const exclusionValues = [];
-      const { individualParticipants } = participant;
+      const individualParticipants = participant?.individualParticipants;
       if (individualParticipants?.length) {
         let scaleValues = [];
         let value = 0;
@@ -197,7 +197,7 @@ function getSideValues({
         }
 
         return { scaleValues, value, exclusionValues };
-      } else {
+      } else if (participant) {
         const { scaleValue, value } = getSideValue({
           valueAccessor,
           matchUpType,
@@ -208,6 +208,8 @@ function getSideValues({
         if (exclude) exclusionValues.push(exclusionValue);
 
         return { scaleValue, value, exclusionValues };
+      } else {
+        return {};
       }
     });
 }
