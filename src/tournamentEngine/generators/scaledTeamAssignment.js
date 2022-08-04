@@ -1,6 +1,7 @@
 import { participantScaleItem } from '../accessors/participantScaleItem';
 import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../getters/getFlightProfile';
+import { isConvertableInteger } from '../../utilities/math';
 
 import { TEAM as TEAM_EVENT } from '../../constants/eventConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -9,6 +10,7 @@ import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
+  NO_CANDIDATES,
   PARTICIPANT_NOT_FOUND,
   TEAM_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
@@ -30,8 +32,12 @@ the parameter is generalized... as long as there is a `participantId` and a `sca
 
 export function scaledTeamAssignment({
   teamParticipantIds,
-  ascending = true, // sort direction; by default sort least to greatest, followed by undefined
   tournamentRecord,
+
+  clearExistingAssignments = true, // by default remove all existing individualParticipantIds from targeted teams
+  reverseAssignmentOrder, // optional - reverses team order; useful for sequential assignment of participant groupings to ensure balanced distribution
+  descendingScaleSort, // sort direction; by default sort least to greatest, followed by undefined
+  initialTeamIndex = 0,
 
   scaledParticipants, // optional - either scaledParticipants or (individualParticipantIds and scaleName) must be provided
 
@@ -39,11 +45,14 @@ export function scaledTeamAssignment({
   scaleAttributes, // if scaledParticipants are provided, scaleName is ignored
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!Array.isArray(teamParticipantIds)) return { error: INVALID_VALUES };
-  if (scaledParticipants && !Array.isArray(scaledParticipants))
+  if (
+    !Array.isArray(teamParticipantIds) ||
+    !isConvertableInteger(initialTeamIndex) ||
+    (scaledParticipants && !Array.isArray(scaledParticipants)) ||
+    (scaleAttributes && typeof scaleAttributes !== 'object')
+  ) {
     return { error: INVALID_VALUES };
-  if (scaleAttributes && typeof scaleAttributes !== 'object')
-    return { error: INVALID_VALUES };
+  }
   if (
     (!scaleAttributes ||
       !individualParticipantIds ||
@@ -53,10 +62,24 @@ export function scaledTeamAssignment({
     return { error: MISSING_VALUE, info: 'Missing scaling details' };
   }
 
+  let participantIdsToAssign =
+    individualParticipantIds ||
+    scaledParticipants.map(({ participantId }) => participantId);
+
+  if (reverseAssignmentOrder) {
+    teamParticipantIds.reverse();
+    initialTeamIndex += 1; // ensures that the targeted team remains the first team to receive an assignment
+  }
+  if (initialTeamIndex > teamParticipantIds.length - 1) initialTeamIndex = 0;
+
+  const orderedTeamParticipantIds = teamParticipantIds
+    .slice(initialTeamIndex)
+    .concat(...teamParticipantIds.slice(0, initialTeamIndex));
+
   const relevantTeams = [];
   for (const participant of tournamentRecord.participants || []) {
     const { participantId, participantType } = participant;
-    if (!teamParticipantIds.includes(participantId)) continue;
+    if (!orderedTeamParticipantIds.includes(participantId)) continue;
     if (participantType !== TEAM_PARTICIPANT)
       return { error: INVALID_PARTICIPANT_TYPE, participant };
     relevantTeams.push(participant);
@@ -64,11 +87,37 @@ export function scaledTeamAssignment({
 
   if (!relevantTeams.length) return { error: TEAM_NOT_FOUND };
 
+  if (clearExistingAssignments) {
+    // clear pre-existing individualParticipantIds
+    for (const relevantTeam of relevantTeams) {
+      relevantTeam.individualParticipantIds = [];
+    }
+  } else {
+    const preAssignedParticipantIds = relevantTeams
+      .map((individualParticipantIds) => individualParticipantIds)
+      .flat();
+
+    if (individualParticipantIds?.length) {
+      participantIdsToAssign = participantIdsToAssign.filter(
+        (participantId) => !preAssignedParticipantIds.includes(participantId)
+      );
+    } else {
+      scaledParticipants = scaledParticipants?.filter(
+        ({ participantId }) =>
+          !preAssignedParticipantIds.includes(participantId)
+      );
+    }
+  }
+
+  if (!individualParticipantIds?.length && !scaledParticipants?.length) {
+    return { error: NO_CANDIDATES, info: 'Nothing to be done' };
+  }
+
   if (!scaledParticipants) {
     const relevantIndividualParticipants = [];
     for (const participant of tournamentRecord.participants || []) {
       const { participantId, participantType } = participant;
-      if (!individualParticipantIds.includes(participantId)) continue;
+      if (!participantIdsToAssign.includes(participantId)) continue;
       if (participantType !== INDIVIDUAL)
         return { error: INVALID_PARTICIPANT_TYPE, participant };
 
@@ -94,14 +143,11 @@ export function scaledTeamAssignment({
 
     scaledParticipants = participantsWithScaleValues
       .sort((a, b) =>
-        ascending ? a.scaleValue - b.scaleValue : b.scaleValue - a.scaleValue
+        descendingScaleSort
+          ? b.scaleValue - a.scaleValue
+          : a.scaleValue - b.scaleValue
       )
       .concat(...participantsNoScaleValues);
-  }
-
-  // clear pre-existing individualParticipantids
-  for (const relevantTeam of relevantTeams) {
-    relevantTeam.individualParticipants = [];
   }
 
   for (const scaledParticipant of scaledParticipants.sort(
