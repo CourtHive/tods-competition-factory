@@ -14,6 +14,7 @@ import {
   UNRECOGNIZED_MATCHUP_FORMAT,
   STRUCTURE_NOT_FOUND,
   INVALID_EVENT_TYPE,
+  INVALID_MATCHUP,
 } from '../../../constants/errorConditionConstants';
 
 export function setMatchUpFormat(params) {
@@ -29,7 +30,6 @@ export function setMatchUpFormat(params) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
   if (!isValid(matchUpFormat)) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
-  if (event?.eventType === TEAM) return { error: INVALID_EVENT_TYPE };
 
   if (matchUpId) {
     const { matchUp, error } = findMatchUp({
@@ -38,6 +38,11 @@ export function setMatchUpFormat(params) {
       event,
     });
     if (error) return { error };
+    if (matchUp?.matchUpType === TEAM)
+      return {
+        error: INVALID_MATCHUP,
+        info: 'Cannot set matchUpFormat when { matchUpType: TEAM }',
+      };
 
     matchUp.matchUpFormat = matchUpFormat;
     modifyMatchUpNotice({
@@ -47,6 +52,7 @@ export function setMatchUpFormat(params) {
       matchUp,
     });
   } else if (structureId) {
+    if (event?.eventType === TEAM) return { error: INVALID_EVENT_TYPE };
     const { structure, error } = findStructure({ drawDefinition, structureId });
     if (error) return { error };
     if (!structure) {
