@@ -3097,7 +3097,7 @@ tournamentEngine.setMatchUpFormat({
 
 ## setMatchUpStatus
 
-Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object. Handles any winner/loser participant movements within or across structures.
+Sets either `matchUpStatus` or `score` and `winningSide`; values to be set are passed in `outcome` object. Handles any winner/loser participant movements within or across `structures`.
 
 ```js
 const outcome = {
@@ -3233,7 +3233,7 @@ tournamentEngine.setsState(tournamentRecord, deepCopy, deepCopyConfig);
 
 ## setSubOrder
 
-Used to order ROUND_ROBIN participants when finishingPosition ties cannot be broken algorithmically. Assigns a subOrder value to a participant within a structure by drawPosition.
+Used to order ROUND_ROBIN participants when finishingPosition ties cannot be broken algorithmically. Assigns a `subOrder` value to a participant within a `structure` by `drawPosition`.
 
 ```js
 tournamentEngine.setSubOrder({
@@ -3248,7 +3248,7 @@ tournamentEngine.setSubOrder({
 
 ## setTournamentCategories
 
-Define categories to be used in event creation for tournament record.
+Define categories to be used in `event` creation for tournament record.
 
 ```js
 const categories = [
