@@ -1,6 +1,7 @@
 import { setMatchUpFormat as drawEngineSetMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpFormat';
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import {
   modifyDrawNotice,
@@ -37,19 +38,30 @@ export function setMatchUpFormat({
   drawId,
   force, // strip matchUpFormat from scoped matchUps which have not been scored
 }) {
+  const stack = 'setMatchUpFormat';
+
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
   if (matchUpFormat && !isValid(matchUpFormat))
-    return { error: UNRECOGNIZED_MATCHUP_FORMAT, matchUpFormat };
+    return decorateResult({
+      result: { error: UNRECOGNIZED_MATCHUP_FORMAT, matchUpFormat },
+      stack,
+    });
   if (scheduledDates && !Array.isArray(scheduledDates))
-    return { error: INVALID_VALUES, scheduledDates };
+    return decorateResult({
+      result: { error: INVALID_VALUES, scheduledDates },
+      stack,
+    });
   if (eventType && ![SINGLES, DOUBLES].includes(eventType))
-    return { error: INVALID_EVENT_TYPE };
+    return decorateResult({ result: { error: INVALID_EVENT_TYPE }, stack });
 
   let modificationsCount = 0;
 
   if ((structureId || structureIds) && !drawDefinition) {
-    return { error: MISSING_DRAW_DEFINITION };
+    return decorateResult({
+      result: { error: MISSING_DRAW_DEFINITION },
+      stack,
+    });
   }
 
   if (drawId && matchUpId) {
