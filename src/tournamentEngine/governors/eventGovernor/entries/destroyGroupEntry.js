@@ -45,13 +45,14 @@ export function destroyGroupEntry({
   stage,
   event,
 }) {
+  const stack = 'destroyGroupEntry';
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
   if (!event) return { error: MISSING_EVENT };
+
   if (![DOUBLES, TEAM].includes(event.eventType)) {
-    return { error: INVALID_EVENT_TYPE };
+    return decorateResult({ result: { error: INVALID_EVENT_TYPE }, stack });
   }
-  const stack = 'destroyGroupEntry';
 
   const tournamentParticipants = tournamentRecord.participants || [];
   const participant = tournamentParticipants.find(
