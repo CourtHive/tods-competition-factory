@@ -1,5 +1,5 @@
-import { unPublishEventSeeding } from './unPublishEventSeeding';
-import { unPublishOrderOfPlay } from './unpublishOrderOfPlay';
+import { unPublishEventSeeding } from './unpublishEventSeeding';
+import { unPublishOrderOfPlay } from './unPublishOrderOfPlay';
 import { publishEventSeeding } from './publishEventSeeding';
 import { publishOrderOfPlay } from './publishOrderOfPlay';
 import { getTournamentInfo } from './getTournamentInfo';

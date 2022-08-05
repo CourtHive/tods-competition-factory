@@ -29,6 +29,9 @@ import {
   particicipantsRequiredMatchUpStatuses,
   TO_BE_PLAYED,
   validMatchUpStatuses,
+  BYE,
+  COMPLETED,
+  WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
@@ -39,11 +42,6 @@ import {
   MISSING_DRAW_DEFINITION,
   NO_VALID_ACTIONS,
 } from '../../../constants/errorConditionConstants';
-import {
-  BYE,
-  COMPLETED,
-  WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
 
 /**
  *
