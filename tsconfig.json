@@ -1,7 +1,6 @@
 {
   "include": ["src/**/*.ts"],
   "compilerOptions": {
-    "declaration": true,
     "target": "esnext",
     "lib": ["esnext", "dom"],
     "strict": true,
@@ -10,6 +9,7 @@
     "moduleResolution": "node",
     "outDir": "dist",
     "allowJs": true,
+    "noEmit": true,
     "checkJs": false
   }
 }
