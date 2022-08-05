@@ -56,7 +56,7 @@ if (process.env.NODE_ENV === 'production') {
 export default [
   {
     plugins: [
-      typescript({ sourceMap: true, declaration: true }),
+      typescript({ sourceMap: true, declaration: false }),
       nodeResolve(),
       commonjs(),
       json(),
