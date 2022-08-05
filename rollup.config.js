@@ -1,13 +1,10 @@
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
-import commonjs from '@rollup/plugin-commonjs';
-import { terser } from 'rollup-plugin-terser';
-import { babel } from '@rollup/plugin-babel';
 import json from '@rollup/plugin-json';
-// import dts from 'rollup-plugin-dts';
+import dts from 'rollup-plugin-dts';
+import esbuild from 'rollup-plugin-esbuild';
+import { terser } from 'rollup-plugin-terser';
 
-import path from 'path';
 import fs from 'fs-extra';
+import path from 'path';
 
 const basePath = fs.realpathSync(process.cwd());
 const distPath = path.resolve(basePath, 'dist');
@@ -55,13 +52,7 @@ if (process.env.NODE_ENV === 'production') {
 
 export default [
   {
-    plugins: [
-      typescript({ sourceMap: true, declaration: false }),
-      nodeResolve(),
-      commonjs(),
-      json(),
-      babel({ babelHelpers: 'bundled' }),
-    ],
+    plugins: [esbuild(), json()],
 
     input: 'src/index.ts',
     output: [
@@ -70,11 +61,9 @@ export default [
       ...output('esm', true),
     ],
   },
-  /*
   {
     input: 'src/index.ts',
-    output: [{ file: `${distPath}/index.d.ts`, format: 'es' }],
+    output: [{ file: `${distPath}/index.d.ts` }],
     plugins: [dts()],
   },
-  */
 ];
