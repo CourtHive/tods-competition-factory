@@ -1,6 +1,7 @@
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { setState, getState, paramsMiddleWare } from './stateMethods';
 import { factoryVersion } from '../global/functions/factoryVersion';
+import { makeDeepCopy } from '../utilities';
 import {
   createInstanceState,
   removeTournamentRecord,
@@ -11,7 +12,6 @@ import {
   getDevContext,
   setDeepCopy,
 } from '../global/state/globalState';
-import { makeDeepCopy } from '../utilities';
 
 import rankingsGovernor from './governors/rankingsGovernor';
 import ratingsGovernor from './governors/ratingsGovernor';

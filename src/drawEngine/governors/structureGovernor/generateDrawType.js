@@ -16,14 +16,14 @@ import {
   setStageQualifiersCount,
 } from '../entryGovernor/stageEntryCounts';
 
+import { SUCCESS } from '../../../constants/resultConstants';
+import { SINGLES } from '../../../constants/matchUpTypes';
 import {
   MISSING_DRAW_DEFINITION,
   INVALID_DRAW_SIZE,
   STAGE_SEQUENCE_LIMIT,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { SINGLES } from '../../../constants/matchUpTypes';
 import {
   MAIN,
   AD_HOC,

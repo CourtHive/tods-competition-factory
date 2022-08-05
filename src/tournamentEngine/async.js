@@ -2,6 +2,15 @@ import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { newTournamentRecord } from './generators/newTournamentRecord';
 import { setState, getState, paramsMiddleWare } from './stateMethods';
 import { factoryVersion } from '../global/functions/factoryVersion';
+import participantGovernor from './governors/participantGovernor';
+import publishingGovernor from './governors/publishingGovernor';
+import tournamentGovernor from './governors/tournamentGovernor';
+import scheduleGovernor from './governors/scheduleGovernor';
+import policyGovernor from './governors/policyGovernor';
+import eventGovernor from './governors/eventGovernor';
+import queryGovernor from './governors/queryGovernor';
+import venueGovernor from './governors/venueGovernor';
+import { makeDeepCopy } from '../utilities';
 import {
   createInstanceState,
   deleteNotices,
@@ -14,15 +23,6 @@ import {
   setTournamentId,
   setTournamentRecord,
 } from '../global/state/globalState';
-import participantGovernor from './governors/participantGovernor';
-import publishingGovernor from './governors/publishingGovernor';
-import tournamentGovernor from './governors/tournamentGovernor';
-import scheduleGovernor from './governors/scheduleGovernor';
-import policyGovernor from './governors/policyGovernor';
-import eventGovernor from './governors/eventGovernor';
-import queryGovernor from './governors/queryGovernor';
-import venueGovernor from './governors/venueGovernor';
-import { makeDeepCopy } from '../utilities';
 
 import { SUCCESS } from '../constants/resultConstants';
 import {

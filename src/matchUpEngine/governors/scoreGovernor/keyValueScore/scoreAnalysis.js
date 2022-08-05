@@ -1,9 +1,9 @@
+import { parse } from '../../matchUpFormatGovernor/parse';
+import { indices } from '../../../../utilities/arrays';
 import {
   checkValidMatchTiebreak,
   testTiebreakEntry,
 } from './keyValueUtilities';
-import { parse } from '../../matchUpFormatGovernor/parse';
-import { indices } from '../../../../utilities/arrays';
 
 import {
   SCORE_JOINER,
