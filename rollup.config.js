@@ -1,5 +1,5 @@
 import json from '@rollup/plugin-json';
-import dts from 'rollup-plugin-dts';
+// import dts from 'rollup-plugin-dts';
 import esbuild from 'rollup-plugin-esbuild';
 import { terser } from 'rollup-plugin-terser';
 
@@ -60,10 +60,12 @@ export default [
       ...output('cjs', true),
       ...output('esm', true),
     ],
+    /*
   },
   {
     input: 'src/index.ts',
     output: [{ file: `${distPath}/index.d.ts` }],
     plugins: [dts()],
+    */
   },
 ];
