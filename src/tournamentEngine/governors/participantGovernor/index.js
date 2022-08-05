@@ -17,8 +17,6 @@ import { modifyParticipantOtherName } from './modifyParticipantOtherName';
 import { getTournamentPersons } from '../../getters/getTournamentPersons';
 import { addParticipant, addParticipants } from './addParticipants';
 import { modifyParticipantName } from './modifyParticipantName';
-import { setParticipantScaleItems } from './addScaleItems';
-import { setParticipantScaleItem } from './addScaleItems';
 import { deleteParticipants } from './deleteParticipants';
 import { mergeParticipants } from './mergeParticipants';
 import { modifyParticipant } from './modifyParticipant';
@@ -32,6 +30,10 @@ import {
   removePenalty,
   getTournamentPenalties,
 } from './participantPenalties';
+import {
+  setParticipantScaleItems,
+  setParticipantScaleItem,
+} from './addScaleItems';
 
 const participantGovernor = {
   getTournamentPenalties,

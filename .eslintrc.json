@@ -10,6 +10,8 @@
     "plugin:react/recommended",
     "plugin:prettier/recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
     "eslint:recommended",
     "prettier"
   ],
@@ -27,7 +29,9 @@
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/no-unused-vars": "warn"
+    "@typescript-eslint/no-unused-vars": "warn",
+    "import/no-named-as-default": "off",
+    "import/no-named-as-default-member": "off"
   },
   "settings": {
     "react": {

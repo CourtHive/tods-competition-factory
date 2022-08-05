@@ -1,9 +1,9 @@
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { setState, getState, paramsMiddleWare } from './stateMethods';
 import { factoryVersion } from '../global/functions/factoryVersion';
-import { createInstanceState } from '../global/state/globalState';
 import { makeDeepCopy } from '../utilities';
 import {
+  createInstanceState,
   removeTournamentRecord,
   getTournamentRecord,
   getTournamentId,
