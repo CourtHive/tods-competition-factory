@@ -93,14 +93,11 @@ export function tallyParticipantResults({
 
     if (provionalOrder) {
       provionalOrder.forEach((finishingPosition) => {
-        const { participantId, groupOrder, subOrder, GEMscore } =
-          finishingPosition;
+        const { participantId, groupOrder, GEMscore } = finishingPosition;
         const participantResult = participantResults[participantId];
         Object.assign(participantResult, {
           provisionalOrder: groupOrder,
-          groupOrder,
           GEMscore,
-          subOrder,
         });
       });
     }
