@@ -8,8 +8,6 @@ import {
   INVALID_DATE,
   INVALID_VALUES,
   SCHEDULE_NOT_CLEARED,
-} from '../../../constants/errorConditionConstants';
-import {
   MISSING_DATE,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
