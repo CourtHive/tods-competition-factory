@@ -51,11 +51,18 @@ it('can recalculate participantResults when outcomes are removed', () => {
   let mainStructure = drawDefinition.structures[0];
 
   let { matchUps } = tournamentEngine.allDrawMatchUps({
-    drawId,
     inContext: true,
+    drawId,
   });
   let { participantResults } = tallyParticipantResults({ matchUps });
   expect(Object.keys(participantResults).length).toEqual(2);
+
+  Object.values(participantResults).forEach(
+    ({ provisionalOrder, groupOrder }) => {
+      expect(groupOrder).toBeUndefined();
+      expect(provisionalOrder).not.toBeUndefined();
+    }
+  );
 
   let { positionAssignments } = getPositionAssignments({
     structure: mainStructure,
@@ -75,8 +82,8 @@ it('can recalculate participantResults when outcomes are removed', () => {
   expect(result.success).toEqual(true);
 
   ({ matchUps } = tournamentEngine.allDrawMatchUps({
-    drawId,
     inContext: true,
+    drawId,
   }));
   ({ participantResults } = tallyParticipantResults({
     matchUps,
