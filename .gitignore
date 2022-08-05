@@ -1,6 +1,7 @@
 *.log
 .DS_Store
 benchmarks
+coverage
 node_modules
 scratch
 dist
