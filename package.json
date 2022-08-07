@@ -33,7 +33,6 @@
     "url": "https://github.com/CourtHive/tods-competition-factory"
   },
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
