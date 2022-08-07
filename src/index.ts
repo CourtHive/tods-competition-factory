@@ -9,7 +9,6 @@ import { garman } from './competitionEngine/governors/scheduleGovernor/garman/ga
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
 import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
 import { nearestPowerOf2, isPowerOf2, isNumeric } from './utilities/math';
-import { addExtension } from './global/functions/producers/addExtension';
 import { generateHashCode, generateTimeCode } from './utilities';
 import { dateTime, dateRange } from './utilities/dateTime';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
@@ -30,7 +29,6 @@ import {
 } from './utilities/arrays';
 
 export const utilities = {
-  addExtension,
   chunkArray,
   countValues,
   dateRange,

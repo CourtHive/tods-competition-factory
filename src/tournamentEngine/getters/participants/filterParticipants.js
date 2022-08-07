@@ -7,20 +7,13 @@ import { unique } from '../../../utilities';
 
 import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import type { Participant } from '../../../types';
-
-type FilterParticipantsArgs = {
-  participantFilters: any;
-  tournamentRecord: any;
-  participants: Participant[];
-};
 
 export function filterParticipants({
   participantFilters,
   tournamentRecord,
   participants,
-}: FilterParticipantsArgs): Participant[] {
-  const { eventIds } = participantFilters;
+}) {
+  let { eventIds } = participantFilters;
   const {
     accessorValues,
     drawEntryStatuses, // {string[]} participantIds that are in draw.entries or flightProfile.flights[].drawEnteredParticipantIds with entryStatuses
@@ -77,7 +70,7 @@ export function filterParticipants({
     const participantSignInStatus = getTimeItem({
       element: participant,
       itemType: SIGN_IN_STATUS,
-    } as any);
+    });
     const {
       participantId,
       participantType,
@@ -107,7 +100,7 @@ export function filterParticipants({
           isValidFilterArray(responsibilities) &&
           isValidFilterArray(participantRoleResponsibilities) &&
           participantRoleResponsibilities.find((roleResponsbility) =>
-            responsibilities?.includes(roleResponsbility)
+            responsibilities.includes(roleResponsbility)
           )) ||
         (accessorValues?.length &&
           isValidFilterArray(accessorValues) &&
@@ -136,7 +129,7 @@ export function filterParticipants({
           (isValidFilterArray(responsibilities) &&
             isValidFilterArray(participantRoleResponsibilities) &&
             participantRoleResponsibilities.find((roleResponsbility) =>
-              responsibilities?.includes(roleResponsbility)
+              responsibilities.includes(roleResponsbility)
             ))) &&
         (!accessorValues?.length ||
           (isValidFilterArray(accessorValues) &&
@@ -182,7 +175,7 @@ function getDrawEntries({ drawEntryStatuses, tournamentEvents }) {
 
   return unique(
     tournamentEvents.reduce((entries, event) => {
-      const { flightProfile } = getFlightProfile({ event } as any);
+      const { flightProfile } = getFlightProfile({ event });
       const flightEntries =
         flightProfile?.flights
           ?.map(({ drawEntries }) =>
