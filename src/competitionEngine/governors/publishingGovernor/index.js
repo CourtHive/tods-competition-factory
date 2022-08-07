@@ -1,5 +1,4 @@
-import { unPublishOrderOfPlay } from './unPublishOrderOfPlay';
-import { publishOrderOfPlay } from './publishOrderOfPlay';
+import { publishOrderOfPlay, unPublishOrderOfPlay } from './orderOfPlay';
 
 const publishingGovernor = {
   unPublishOrderOfPlay,
