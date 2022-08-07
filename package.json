@@ -61,7 +61,7 @@
   "scripts": {
     "release": "np",
     "start": "rollup --config -w",
-    "build": "rollup --config",
+    "build": "rimraf dist && rollup --config",
     "test": "jest --maxWorkers=50%",
     "vtest": "vitest",
     "benchmark": "jest --runInBand benchmark",
@@ -69,12 +69,13 @@
     "coverage": "jest --maxWorkers=50% --collect-coverage",
     "vcoverage": "vitest run --coverage",
     "lint": "eslint src",
-    "prepare": "rollup --config",
+    "prepare": "rimraf dist && rollup --config",
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
     "postinstall": "husky install",
     "postpublish": "pinst --enable",
     "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy",
-    "generate-types": "quicktype -s schema src/global/schema/tournament.schema.json -o src/types.ts --just-types -t Tournament"
+    "generate-types": "quicktype -s schema src/global/schema/tournament.schema.json -o src/types.ts --just-types -t Tournament",
+    "check-types": "tsc --noEmit"
   },
   "husky": {
     "hooks": {
@@ -110,6 +111,8 @@
     "c8": "^7.12.0",
     "eslint": "8.21.0",
     "eslint-config-prettier": "8.5.0",
+    "eslint-import-resolver-typescript": "3.4.0",
+    "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jest": "26.8.0",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-react": "7.30.1",
@@ -124,6 +127,7 @@
     "prettier": "2.7.1",
     "prettier-eslint": "13.0.0",
     "quicktype": "15.0.261",
+    "rimraf": "3.0.2",
     "rollup": "2.77.2",
     "rollup-plugin-dts": "4.2.2",
     "rollup-plugin-terser": "7.0.2",
