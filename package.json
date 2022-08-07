@@ -63,9 +63,11 @@
     "start": "rollup --config -w",
     "build": "rollup --config",
     "test": "jest --maxWorkers=50%",
+    "vtest": "vitest",
     "benchmark": "jest --runInBand benchmark",
     "benchmark-coverage": "jest --runInBand benchmark --collect-coverage",
     "coverage": "jest --maxWorkers=50% --collect-coverage",
+    "vcoverage": "vitest run --coverage",
     "lint": "eslint src",
     "prepare": "rollup --config",
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
@@ -104,6 +106,7 @@
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
     "babel-jest": "28.1.3",
+    "c8": "^7.12.0",
     "eslint": "8.21.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-jest": "26.7.0",
@@ -124,7 +127,9 @@
     "rollup-plugin-terser": "7.0.2",
     "source-map-resolve": "0.6.0",
     "tslib": "2.4.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "vite": "^3.0.4",
+    "vitest": "^0.21.0"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint",
