@@ -21,6 +21,15 @@ import {
 
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
+  CANNOT_CHANGE_WINNING_SIDE,
+  INCOMPATIBLE_MATCHUP_STATUS,
+  INVALID_MATCHUP_STATUS,
+  INVALID_VALUES,
+  MATCHUP_NOT_FOUND,
+  MISSING_DRAW_DEFINITION,
+  NO_VALID_ACTIONS,
+} from '../../../constants/errorConditionConstants';
+import {
   ABANDONED,
   AWAITING_RESULT,
   CANCELLED,
@@ -30,15 +39,6 @@ import {
   TO_BE_PLAYED,
   validMatchUpStatuses,
 } from '../../../constants/matchUpStatusConstants';
-import {
-  CANNOT_CHANGE_WINNING_SIDE,
-  INCOMPATIBLE_MATCHUP_STATUS,
-  INVALID_MATCHUP_STATUS,
-  INVALID_VALUES,
-  MATCHUP_NOT_FOUND,
-  MISSING_DRAW_DEFINITION,
-  NO_VALID_ACTIONS,
-} from '../../../constants/errorConditionConstants';
 import {
   BYE,
   COMPLETED,

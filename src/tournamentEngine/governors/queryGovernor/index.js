@@ -12,7 +12,6 @@ import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { getParticipantScaleItem } from './getParticipantScaleItem';
 import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
 import { getMatchUpsStats } from '../../getters/getMatchUpsStats';
-import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getEvent, getEvents } from '../../getters/eventGetter';
 import { matchUpActions } from '../../getters/matchUpActions';
 import { bulkUpdatePublishedEventIds } from './publishState';
@@ -24,6 +23,7 @@ import { credits } from '../../../fixtures/credits';
 import { positionActions } from './positionQueries';
 import { makeDeepCopy } from '../../../utilities';
 import {
+  publicFindMatchUp,
   allTournamentMatchUps,
   tournamentMatchUps,
   allEventMatchUps,
@@ -31,14 +31,12 @@ import {
   eventMatchUps,
   drawMatchUps,
 } from '../../getters/matchUpsGetter';
-
 import {
   findEventExtension,
   findTournamentExtension,
   findParticipantExtension,
   findDrawDefinitionExtension,
 } from './extensionQueries';
-
 import {
   getEventTimeItem,
   getTournamentTimeItem,
