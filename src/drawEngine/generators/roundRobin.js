@@ -3,8 +3,8 @@ import { addExtension } from '../../global/functions/producers/addExtension';
 import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 import { generateRange, nextPowerOf2, UUID } from '../../utilities';
 import { generatePlayoffStructures } from './playoffStructures';
-import { feedInChampionship } from './feedInChampionship';
 import { structureSort } from '../getters/structureSort';
+import { feedInChampionship } from './feedInChamp';
 import {
   getRoundRobinGroupMatchUps,
   drawPositionsHash,

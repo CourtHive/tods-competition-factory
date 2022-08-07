@@ -63,15 +63,18 @@
     "start": "rollup --config -w",
     "build": "rollup --config",
     "test": "jest --maxWorkers=50%",
+    "vtest": "vitest",
     "benchmark": "jest --runInBand benchmark",
     "benchmark-coverage": "jest --runInBand benchmark --collect-coverage",
     "coverage": "jest --maxWorkers=50% --collect-coverage",
+    "vcoverage": "vitest run --coverage",
     "lint": "eslint src",
     "prepare": "rollup --config",
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
     "postinstall": "husky install",
     "postpublish": "pinst --enable",
-    "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy"
+    "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy",
+    "generate-types": "quicktype -s schema src/global/schema/tournament.schema.json -o src/types.ts --just-types -t Tournament"
   },
   "husky": {
     "hooks": {
@@ -104,6 +107,7 @@
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
     "babel-jest": "28.1.3",
+    "c8": "^7.12.0",
     "eslint": "8.21.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-jest": "26.7.0",
@@ -119,12 +123,15 @@
     "pinst": "3.0.0",
     "prettier": "2.7.1",
     "prettier-eslint": "13.0.0",
+    "quicktype": "15.0.261",
     "rollup": "2.77.2",
     "rollup-plugin-dts": "4.2.2",
     "rollup-plugin-terser": "7.0.2",
     "source-map-resolve": "0.6.0",
     "tslib": "2.4.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "vite": "^3.0.4",
+    "vitest": "^0.21.0"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint",
