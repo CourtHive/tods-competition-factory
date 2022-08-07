@@ -1,5 +1,5 @@
-import { competitionEngine } from '../../competitionEngine/sync';
-import { mocksEngine } from '../../mocksEngine/index';
+import { competitionEngine } from '../..';
+import { mocksEngine } from '../../..';
 import { scaleEngine } from '../sync';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';

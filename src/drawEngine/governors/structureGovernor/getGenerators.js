@@ -2,7 +2,7 @@ import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserCons
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
 import { generatePlayoffStructures } from '../../generators/playoffStructures';
-import { feedInChampionship } from '../../generators/feedInChamp';
+import { feedInChampionship } from '../../generators/feedInChampionship';
 import structureTemplate from '../../generators/structureTemplate';
 import { feedInMatchUps } from '../../generators/feedInMatchUps';
 import { treeMatchUps } from '../../generators/eliminationTree';
