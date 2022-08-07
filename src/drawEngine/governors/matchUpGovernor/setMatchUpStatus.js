@@ -32,16 +32,14 @@ import {
 import {
   ABANDONED,
   AWAITING_RESULT,
+  BYE,
   CANCELLED,
+  COMPLETED,
   DOUBLE_WALKOVER,
   INCOMPLETE,
   particicipantsRequiredMatchUpStatuses,
   TO_BE_PLAYED,
   validMatchUpStatuses,
-} from '../../../constants/matchUpStatusConstants';
-import {
-  BYE,
-  COMPLETED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 

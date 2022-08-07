@@ -7,11 +7,9 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_DATE,
   INVALID_VALUES,
-  SCHEDULE_NOT_CLEARED,
-} from '../../../constants/errorConditionConstants';
-import {
   MISSING_DATE,
   MISSING_TOURNAMENT_RECORD,
+  SCHEDULE_NOT_CLEARED,
 } from '../../../constants/errorConditionConstants';
 
 export function setTournamentDates({ tournamentRecord, startDate, endDate }) {
