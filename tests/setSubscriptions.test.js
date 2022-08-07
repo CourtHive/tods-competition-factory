@@ -1,4 +1,4 @@
-import { setSubscriptions, tournamentEngine, utilities } from '../dist';
+import { setSubscriptions, tournamentEngine, utilities } from '../src/index';
 
 it('can set subscriptions in global state outside of engines', () => {
   const allMatchUps = [];
