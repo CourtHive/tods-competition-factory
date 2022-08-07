@@ -3,12 +3,10 @@ import { addExtension } from '../../global/functions/producers/addExtension';
 import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 import { generateRange, nextPowerOf2, UUID } from '../../utilities';
 import { generatePlayoffStructures } from './playoffStructures';
+import { getRoundRobinGroupMatchUps } from './roundRobinGroups';
 import { feedInChampionship } from './feedInChampionship';
 import { structureSort } from '../getters/structureSort';
-import {
-  getRoundRobinGroupMatchUps,
-  drawPositionsHash,
-} from './roundRobinGroups';
+import { drawPositionsHash } from './roundRobinGroups';
 
 import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';

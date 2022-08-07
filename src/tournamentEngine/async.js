@@ -2,6 +2,7 @@ import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { newTournamentRecord } from './generators/newTournamentRecord';
 import { setState, getState, paramsMiddleWare } from './stateMethods';
 import { factoryVersion } from '../global/functions/factoryVersion';
+import { createInstanceState } from '../global/state/globalState';
 import participantGovernor from './governors/participantGovernor';
 import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
@@ -12,7 +13,6 @@ import queryGovernor from './governors/queryGovernor';
 import venueGovernor from './governors/venueGovernor';
 import { makeDeepCopy } from '../utilities';
 import {
-  createInstanceState,
   deleteNotices,
   setDeepCopy,
   setDevContext,
