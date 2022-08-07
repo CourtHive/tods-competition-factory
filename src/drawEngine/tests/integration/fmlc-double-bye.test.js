@@ -328,10 +328,7 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
   let { orderedPairs, positionAssignments } = getConsolationDetails({
     drawId,
   });
-  expect(orderedPairs).toEqual([
-    [2, 3],
-    [1, undefined],
-  ]);
+  expect(orderedPairs).toEqual([[2, 3], [1]]);
   expect(
     positionAssignments.map(({ participantId }) => !!participantId)
   ).toEqual([false, false, true]);
@@ -381,10 +378,7 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
   let { orderedPairs, positionAssignments } = getConsolationDetails({
     drawId,
   });
-  expect(orderedPairs).toEqual([
-    [2, 3],
-    [1, undefined],
-  ]);
+  expect(orderedPairs).toEqual([[2, 3], [1]]);
 
   replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 1 });
   ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
