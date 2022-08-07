@@ -57,7 +57,6 @@ export function setStateProvider(globalStateProvider) {
 
 export function createInstanceState() {
   //Only applicable for async
-  // global test coverage doesn't appear becuase this is run against built package
   if (_globalStateProvider.createInstanceState) {
     try {
       _globalStateProvider.createInstanceState();
