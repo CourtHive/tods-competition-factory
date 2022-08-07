@@ -73,7 +73,8 @@
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
     "postinstall": "husky install",
     "postpublish": "pinst --enable",
-    "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy"
+    "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy",
+    "generate-types": "quicktype -s schema src/global/schema/tournament.schema.json -o src/types.ts --just-types -t Tournament"
   },
   "husky": {
     "hooks": {
@@ -122,6 +123,7 @@
     "pinst": "3.0.0",
     "prettier": "2.7.1",
     "prettier-eslint": "13.0.0",
+    "quicktype": "15.0.261",
     "rollup": "2.77.2",
     "rollup-plugin-dts": "4.2.2",
     "rollup-plugin-terser": "7.0.2",
