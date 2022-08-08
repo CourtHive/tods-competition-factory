@@ -42,7 +42,7 @@ export function generateQualifyingStructure(params) {
     uuids,
   } = params;
 
-  let roundLimit, structure, link, matchUps;
+  let roundLimit, roundsCount, structure, link, matchUps;
   let qualifyingDrawPositionsCount;
   let finishingPositions;
   let stageSequence = 1;
@@ -135,7 +135,7 @@ export function generateQualifyingStructure(params) {
     structure = structures[0];
     finishingPositions = [1];
   } else {
-    ({ matchUps, roundLimit } = treeMatchUps({
+    ({ matchUps, roundLimit, roundsCount } = treeMatchUps({
       qualifyingRoundNumber,
       qualifyingPositions,
       matchUpType,
@@ -144,6 +144,7 @@ export function generateQualifyingStructure(params) {
       isMock,
       uuids,
     }));
+    if (!roundLimit) roundLimit = roundsCount;
 
     structure = structureTemplate({
       structureName: structureName || qualifyingStructureName,

@@ -4,7 +4,6 @@ import tournamentEngine from '../../sync';
 
 import { INVALID_DRAW_SIZE } from '../../../constants/errorConditionConstants';
 import {
-  AD_HOC,
   DRAW,
   MAIN,
   QUALIFYING,
@@ -12,22 +11,6 @@ import {
   SINGLE_ELIMINATION,
   WINNER,
 } from '../../../constants/drawDefinitionConstants';
-
-it('will generate an AD_HOC drawDefinition with no matchUps', () => {
-  let {
-    tournamentRecord,
-    drawIds: [drawId],
-  } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 0, drawType: AD_HOC }],
-  });
-
-  tournamentEngine.setState(tournamentRecord);
-
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  expect(drawDefinition.structures.length).toEqual(1);
-  expect(drawDefinition.structures[0].matchUps.length).toEqual(0);
-  console.log(drawDefinition.extensions[1]);
-});
 
 it.each([ROUND_ROBIN, SINGLE_ELIMINATION, undefined])(
   'will generate a drawDefinition with no matchUps',

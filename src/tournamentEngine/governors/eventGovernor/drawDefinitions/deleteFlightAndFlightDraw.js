@@ -11,6 +11,7 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 export function deleteFlightAndFlightDraw({
+  autoPublish = true,
   tournamentRecord,
   auditData,
   drawId,
@@ -59,13 +60,15 @@ export function deleteFlightAndFlightDraw({
     }
   }
 
-  deleteDrawDefinitions({
+  const result = deleteDrawDefinitions({
     drawIds: [drawId, ...dependentDrawIds],
     eventId: event.eventId,
     tournamentRecord,
+    autoPublish,
     auditData,
     event,
   });
+  if (result.error) return result;
 
   return refreshEventDrawOrder({ tournamentRecord, event });
 }

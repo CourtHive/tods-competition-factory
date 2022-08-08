@@ -40,7 +40,6 @@ import { swapDrawPositionAssignments } from './drawDefinitions/swapDrawPositionA
 import { addDrawDefinitionTimeItem } from './drawDefinitions/addDrawDefinitionTimeItem';
 import { getAvailablePlayoffRounds } from './drawDefinitions/getAvailablePlayoffRounds';
 import { setPositionAssignments } from './drawDefinitions/setPositionAssignments';
-import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
 import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
 import { removeDrawEntries } from './drawDefinitions/removeDrawEntries';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
@@ -115,6 +114,8 @@ import { resetTieFormat } from './resetTieFormat';
 import { generateQualifyingStructure } from './drawDefinitions/generateQualifyingStructure';
 import { attachQualifyingStructure } from './drawDefinitions/attachQualifyingStructure';
 import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure';
+import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
+import { generateDrawType } from '../../generators/generateDrawType';
 
 const eventGovernor = {
   generateQualifyingStructure,
@@ -221,8 +222,9 @@ const eventGovernor = {
   checkOutParticipant,
   toggleParticipantCheckInState,
 
-  generateDrawDefinition,
   addDrawDefinitionTimeItem,
+  generateDrawDefinition,
+  generateDrawType,
 
   applyLineUps,
   assignTieMatchUpParticipantId,

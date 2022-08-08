@@ -1,3 +1,4 @@
+import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
 import { findExtension } from '../../../../global/functions/deducers/findExtension';
 import { checkSchedulingProfile } from '../../scheduleGovernor/schedulingProfile';
@@ -6,11 +7,13 @@ import { getDrawStructures } from '../../../../drawEngine/getters/findStructure'
 import { getPositionAssignments } from '../../../getters/getPositionAssignments';
 import { addEventTimeItem } from '../../tournamentGovernor/addTimeItem';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
+import { publishEvent } from '../../publishingGovernor/publishEvent';
 import { definedAttributes } from '../../../../utilities/objects';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 import { addNotice } from '../../../../global/state/globalState';
 import { getTimeItem } from '../../queryGovernor/timeItems';
 import { findEvent } from '../../../getters/eventGetter';
+import { makeDeepCopy } from '../../../../utilities';
 import {
   deleteDrawNotice,
   deleteMatchUpsNotice,
@@ -18,12 +21,12 @@ import {
 
 import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
 import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
+import { AUDIT } from '../../../../constants/topicConstants';
 import {
   MAIN,
   QUALIFYING,
 } from '../../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { AUDIT } from '../../../../constants/topicConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
@@ -39,6 +42,8 @@ import {
 } from '../../../../constants/timeItemConstants';
 
 export function deleteDrawDefinitions({
+  autoPublish = true,
+  policyDefinitions,
   tournamentRecord,
   drawIds = [],
   auditData,
@@ -46,6 +51,11 @@ export function deleteDrawDefinitions({
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+
+  if (!policyDefinitions) {
+    const { appliedPolicies } = getAppliedPolicies({ tournamentRecord, event });
+    policyDefinitions = appliedPolicies;
+  }
 
   const drawId = Array.isArray(drawIds) && drawIds[0];
 
@@ -68,78 +78,86 @@ export function deleteDrawDefinitions({
     drawIds.length && drawIds.every((drawId) => eventDrawIds.includes(drawId));
   if (!drawDefinitionsExist) return { error: DRAW_DEFINITION_NOT_FOUND };
 
-  const { flightProfile } = getFlightProfile({ event });
+  const flightProfile = makeDeepCopy(
+    getFlightProfile({ event }).flightProfile,
+    false,
+    true
+  );
 
-  event.drawDefinitions = event.drawDefinitions.filter((drawDefinition) => {
-    if (drawIds.includes(drawDefinition.drawId)) {
-      const { drawId, drawType, drawName } = drawDefinition;
-      const flight = flightProfile?.flights?.find(
-        (flight) => flight.drawId === drawDefinition.drawId
-      );
-
-      if (flight) {
-        flight.drawEntries = flight.drawEntries?.filter((entry) =>
-          STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
+  const filteredDrawDefinitions = event.drawDefinitions.filter(
+    (drawDefinition) => {
+      if (drawIds.includes(drawDefinition.drawId)) {
+        const { drawId, drawType, drawName } = drawDefinition;
+        const flight = flightProfile?.flights?.find(
+          (flight) => flight.drawId === drawDefinition.drawId
         );
-      }
 
-      const mainStructure = getDrawStructures({
-        stageSequence: 1,
-        drawDefinition,
-        stage: MAIN,
-      })?.structures?.[0];
+        if (flight) {
+          flight.drawEntries = flight.drawEntries?.filter((entry) =>
+            STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
+          );
+        }
 
-      const positionAssignments =
-        mainStructure &&
-        getPositionAssignments({
-          structureId: mainStructure.structureId,
-          tournamentRecord,
+        const mainStructure = getDrawStructures({
+          stageSequence: 1,
           drawDefinition,
-        })?.positionAssignments;
+          stage: MAIN,
+        })?.structures?.[0];
 
-      const qualifyingStructures = getDrawStructures({
-        stage: QUALIFYING,
-        drawDefinition,
-      })?.structures;
+        const positionAssignments =
+          mainStructure &&
+          getPositionAssignments({
+            structureId: mainStructure.structureId,
+            tournamentRecord,
+            drawDefinition,
+          })?.positionAssignments;
 
-      const qualifyingPositionAssignments = qualifyingStructures?.length
-        ? qualifyingStructures.map((qualifyingStructure) => {
-            const stageSequence = qualifyingStructure.stageSequence;
-            const positionAssignments = getPositionAssignments({
-              structureId: qualifyingStructure.structureId,
-              tournamentRecord,
-              drawDefinition,
-            })?.positionAssignments;
-            return { positionAssignments, stageSequence };
+        const qualifyingStructures = getDrawStructures({
+          stage: QUALIFYING,
+          drawDefinition,
+        })?.structures;
+
+        const qualifyingPositionAssignments = qualifyingStructures?.length
+          ? qualifyingStructures.map((qualifyingStructure) => {
+              const stageSequence = qualifyingStructure.stageSequence;
+              const positionAssignments = getPositionAssignments({
+                structureId: qualifyingStructure.structureId,
+                tournamentRecord,
+                drawDefinition,
+              })?.positionAssignments;
+              return { positionAssignments, stageSequence };
+            })
+          : undefined;
+
+        const audit = {
+          action: DELETE_DRAW_DEFINITIONS,
+          payload: {
+            drawDefinitions: [drawDefinition],
+            eventId: event.eventId,
+            auditData,
+          },
+        };
+        auditTrail.push(audit);
+        deletedDrawsDetail.push(
+          definedAttributes({
+            tournamentId: tournamentRecord.tournamentId,
+            qualifyingPositionAssignments,
+            eventId: event.eventId,
+            positionAssignments,
+            auditData,
+            drawType,
+            drawName,
+            drawId,
           })
-        : undefined;
-
-      const audit = {
-        action: DELETE_DRAW_DEFINITIONS,
-        payload: {
-          drawDefinitions: [drawDefinition],
-          eventId: event.eventId,
-          auditData,
-        },
-      };
-      auditTrail.push(audit);
-      deletedDrawsDetail.push(
-        definedAttributes({
-          tournamentId: tournamentRecord.tournamentId,
-          qualifyingPositionAssignments,
-          eventId: event.eventId,
-          positionAssignments,
-          auditData,
-          drawType,
-          drawName,
-          drawId,
-        })
-      );
-      const { matchUps } = allDrawMatchUps({ event, drawDefinition });
-      matchUps.forEach(({ matchUpId }) => matchUpIds.push(matchUpId));
+        );
+        const { matchUps } = allDrawMatchUps({ event, drawDefinition });
+        matchUps.forEach(({ matchUpId }) => matchUpIds.push(matchUpId));
+      }
+      return !drawIds.includes(drawDefinition.drawId);
     }
-    return !drawIds.includes(drawDefinition.drawId);
-  });
+  );
+
+  event.drawDefinitions = filteredDrawDefinitions;
 
   if (flightProfile) {
     const extension = {
@@ -156,10 +174,12 @@ export function deleteDrawDefinitions({
   const itemType = `${PUBLISH}.${STATUS}`;
   const { timeItem } = getTimeItem({ element: event, itemType });
   const publishStatus = timeItem?.itemValue?.[PUBLIC];
+  let publishedDrawsDeleted;
 
   for (const drawId of drawIds) {
     const drawPublished = publishStatus?.drawIds?.includes(drawId);
     if (drawPublished) {
+      publishedDrawsDeleted = true;
       const updatedDrawIds =
         publishStatus.drawIds?.filter(
           (publishedDrawId) => publishedDrawId !== drawId
@@ -192,6 +212,10 @@ export function deleteDrawDefinitions({
   });
 
   addDrawDeletionTelemetry({ event, deletedDrawsDetail, auditData });
+
+  if (autoPublish && publishedDrawsDeleted) {
+    publishEvent({ tournamentRecord, event, policyDefinitions });
+  }
 
   return { ...SUCCESS };
 }

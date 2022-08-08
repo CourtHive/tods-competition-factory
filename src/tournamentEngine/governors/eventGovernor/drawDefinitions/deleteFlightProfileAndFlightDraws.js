@@ -10,6 +10,7 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 export function deleteFlightProfileAndFlightDraws({
+  autoPublish = true,
   tournamentRecord,
   auditData,
   event,
@@ -27,6 +28,7 @@ export function deleteFlightProfileAndFlightDraws({
     const result = deleteDrawDefinitions({
       eventId: event.eventId,
       tournamentRecord,
+      autoPublish,
       auditData,
       drawIds,
       event,
