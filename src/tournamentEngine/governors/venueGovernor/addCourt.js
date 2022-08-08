@@ -1,6 +1,6 @@
 import { UUID, generateRange, makeDeepCopy } from '../../../utilities';
-import { addNotice, getDevContext } from '../../../global/state/globalState';
 import { courtTemplate } from '../../generators/courtTemplate';
+import { addNotice } from '../../../global/state/globalState';
 import { validDateAvailability } from './dateAvailability';
 import { findVenue } from '../../getters/venueGetter';
 import { isNumeric } from '../../../utilities/math';
@@ -22,7 +22,6 @@ import {
 export function addCourt({
   tournamentRecord,
   disableNotice,
-  returnDetails,
   venueId,
   courtId,
   court,
@@ -86,13 +85,7 @@ export function addCourt({
       });
     }
 
-    return getDevContext() || returnDetails
-      ? {
-          ...SUCCESS,
-          court: makeDeepCopy(courtRecord),
-          venueId,
-        }
-      : { ...SUCCESS };
+    return { ...SUCCESS, court: makeDeepCopy(courtRecord), venueId };
   }
 }
 
@@ -140,7 +133,6 @@ export function addCourts({
     const courtId = courtIds?.pop() || (idPrefix && `${idPrefix}-${i + 1}`);
     return addCourt({
       disableNotice: true,
-      returnDetails: true,
       tournamentRecord,
       courtId,
       venueId,

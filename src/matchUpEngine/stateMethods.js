@@ -16,18 +16,18 @@ export function setState(value, deepCopyOption = true) {
 
   if (value.matchUpId) {
     matchUpId = value.matchUpId;
-    keyedMatchUps[matchUpId] = value;
+    keyedMatchUps[matchUpId] = deepCopyOption ? makeDeepCopy(value) : value;
   } else if (Array.isArray(value)) {
     for (const m of value.reverse()) {
       if (m.matchUpId) {
-        keyedMatchUps[m.matchUpId] = m;
+        keyedMatchUps[m.matchUpId] = deepCopyOption ? makeDeepCopy(m) : m;
         if (!matchUpId) matchUpId = m.matchUpId;
       }
     }
   } else {
     for (const m of Object.values(value)) {
       if (m.matchUpId) {
-        keyedMatchUps[m.matchUpId] = m;
+        keyedMatchUps[m.matchUpId] = deepCopyOption ? makeDeepCopy(m) : m;
         if (!matchUpId) matchUpId = m.matchUpId;
       }
     }
