@@ -1,4 +1,4 @@
-import { addNotice, getDevContext } from '../../../global/state/globalState';
+import { addNotice } from '../../../global/state/globalState';
 import { UUID, makeDeepCopy } from '../../../utilities';
 
 import { ADD_VENUE } from '../../../constants/topicConstants';
@@ -9,12 +9,7 @@ import {
   VENUE_EXISTS,
 } from '../../../constants/errorConditionConstants';
 
-export function addVenue({
-  tournamentRecord,
-  returnDetails,
-  disableNotice,
-  venue,
-}) {
+export function addVenue({ tournamentRecord, disableNotice, venue }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!venue) return { error: MISSING_VALUE };
 
@@ -37,11 +32,7 @@ export function addVenue({
       });
     }
 
-    return getDevContext({ addVenue: true })
-      ? { ...SUCCESS, venue: makeDeepCopy(venue) }
-      : returnDetails
-      ? venue
-      : { ...SUCCESS };
+    return { ...SUCCESS, venue: makeDeepCopy(venue) };
   } else {
     return { error: VENUE_EXISTS };
   }
