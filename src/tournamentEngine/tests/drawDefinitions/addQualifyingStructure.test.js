@@ -193,7 +193,7 @@ it('will ignore drawProfile qualifiersCount if qualifyingProfile.qualifiersCount
   expect(mainStructureQualifiers.length).toEqual(4);
 });
 
-it.only('can add a qualifying structure to an existing draw which has existing qualifying structure', () => {
+it('can add a qualifying structure to an existing draw which has existing qualifying structure', () => {
   const {
     tournamentRecord,
     drawIds: [drawId],
