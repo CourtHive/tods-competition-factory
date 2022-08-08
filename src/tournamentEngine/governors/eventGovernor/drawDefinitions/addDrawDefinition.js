@@ -3,7 +3,6 @@ import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 import { getTopics } from '../../../../global/state/globalState';
-import { overlap } from '../../../../utilities';
 import {
   addDrawNotice,
   addMatchUpsNotice,
@@ -58,9 +57,8 @@ export function addDrawDefinition({
       ({ structureId }) => structureId
     );
 
-    const overlappingStructureIds = overlap(existingStructureIds, structureIds);
     const allExistingStructureIdsPresent = !!existingStructureIds.every(
-      (structureId) => overlappingStructureIds.includes(structureId)
+      (structureId) => structureIds.includes(structureId)
     );
     const newStructureIds = structureIds.filter(
       (structureId) => !existingStructureIds.includes(structureId)
