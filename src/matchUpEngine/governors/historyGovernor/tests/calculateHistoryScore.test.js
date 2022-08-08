@@ -125,7 +125,9 @@ it.each([matchUpEngineSync, asyncMatchUpEngine])(
     };
 
     // possible to invoke without state, passing matchUp directly
-    let result = await matchUpEngine.setState(matchUp).calculateHistoryScore();
+    let result = await matchUpEngine
+      .setState(matchUp, false)
+      .calculateHistoryScore();
     expect(result.servingSide).toEqual(1);
 
     result = await matchUpEngine.addPoint({ point: { p: 1 } });
