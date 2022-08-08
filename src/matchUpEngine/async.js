@@ -55,8 +55,8 @@ export function matchUpEngineAsync(test) {
     scoreGovernor,
   ]);
 
-  engine.devContext = (isDev) => {
-    setDevContext(isDev);
+  engine.devContext = (contextCriteria) => {
+    setDevContext(contextCriteria);
     return engine;
   };
   engine.setState = (definition, deepCopyOption, deepCopyAttributes) => {
