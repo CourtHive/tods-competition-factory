@@ -3,6 +3,7 @@ import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 import { getTopics } from '../../../../global/state/globalState';
+import { overlap } from '../../../../utilities';
 import {
   addDrawNotice,
   addMatchUpsNotice,
@@ -45,11 +46,29 @@ export function addDrawDefinition({
   )
     return { error: INVALID_VALUES, info: 'drawDefintions count mismatch' };
 
-  const drawDefinitionExists = !!event.drawDefinitions.find(
+  const existingDrawDefinition = event.drawDefinitions.find(
     (drawDefinition) => drawDefinition.drawId === drawId
   );
 
-  if (drawDefinitionExists) return { error: DRAW_ID_EXISTS };
+  if (existingDrawDefinition) {
+    const existingStructureIds = existingDrawDefinition.structures.map(
+      ({ structureId }) => structureId
+    );
+    const structureIds = drawDefinition.structures.map(
+      ({ structureId }) => structureId
+    );
+
+    const overlappingStructureIds = overlap(existingStructureIds, structureIds);
+    const allExistingStructureIdsPresent = !!existingStructureIds.every(
+      (structureId) => overlappingStructureIds.includes(structureId)
+    );
+    const newStructureIds = structureIds.filter(
+      (structureId) => !existingStructureIds.includes(structureId)
+    );
+    console.log({ allExistingStructureIdsPresent, newStructureIds });
+    // check whether there are new structures to add
+    return { error: DRAW_ID_EXISTS };
+  }
 
   const { flightProfile } = getFlightProfile({ event });
   const relevantFlight =
