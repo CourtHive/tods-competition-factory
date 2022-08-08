@@ -101,7 +101,7 @@
     "np": "7.6.2",
     "pinst": "3.0.0",
     "prettier": "2.7.1",
-    "prettier-eslint": "13.0.0",
+    "prettier-eslint": "15.0.1",
     "quicktype": "15.0.261",
     "rimraf": "3.0.2",
     "rollup": "2.77.2",
