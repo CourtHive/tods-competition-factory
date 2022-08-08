@@ -1,8 +1,12 @@
 import mocksEngine from '../../../mocksEngine';
 import { unique } from '../../../utilities';
 import tournamentEngine from '../../sync';
+import { expect } from 'vitest';
 
-import { INVALID_DRAW_SIZE } from '../../../constants/errorConditionConstants';
+import {
+  DRAW_ID_EXISTS,
+  INVALID_DRAW_SIZE,
+} from '../../../constants/errorConditionConstants';
 import {
   DRAW,
   MAIN,
@@ -46,7 +50,7 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   } = result;
 
   tournamentEngine.setState(tournamentRecord);
-  const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+  let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.entries.length).toEqual(16);
   expect(event.entries.length).toEqual(16);
 
@@ -72,4 +76,13 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   expect(links[0].target.feedProfile).toEqual(DRAW);
   expect(links[0].target.structureId).toEqual(mainStructure.structureId);
   expect(links[0].target.roundNumber).toEqual(1);
+
+  result = tournamentEngine.generateDrawDefinition({
+    drawSize: 32,
+    drawId,
+  });
+  expect(result.error).toEqual(DRAW_ID_EXISTS);
+
+  result = tournamentEngine.generateDrawType({ drawDefinition, drawSize: 32 });
+  console.log(result);
 });
