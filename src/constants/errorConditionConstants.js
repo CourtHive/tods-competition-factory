@@ -715,6 +715,11 @@ export const EXISTING_MATCHUP_ID = {
   code: 'ERR_EXISTING_MATCHUP_ID',
 };
 
+export const EXISTING_STAGE = {
+  message: 'Existing stage',
+  code: 'ERR_EXISTING_STAGE',
+};
+
 export const METHOD_NOT_FOUND = {
   message: 'Method not found',
   code: 'ERR_NOT_FOUND_METHOD',
@@ -748,6 +753,7 @@ export const errorConditionConstants = {
   EXISTING_POLICY_TYPE,
   EXISTING_PROFILE,
   EXISTING_ROUND,
+  EXISTING_STAGE,
   INCOMPATIBLE_MATCHUP_STATUS,
   INCOMPLETE_SOURCE_STRUCTURE,
   INSUFFICIENT_DRAW_POSITIONS,

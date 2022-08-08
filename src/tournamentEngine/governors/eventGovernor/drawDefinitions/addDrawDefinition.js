@@ -45,11 +45,34 @@ export function addDrawDefinition({
   )
     return { error: INVALID_VALUES, info: 'drawDefintions count mismatch' };
 
-  const drawDefinitionExists = !!event.drawDefinitions.find(
+  const existingDrawDefinition = event.drawDefinitions.find(
     (drawDefinition) => drawDefinition.drawId === drawId
   );
 
-  if (drawDefinitionExists) return { error: DRAW_ID_EXISTS };
+  if (existingDrawDefinition) {
+    const existingStructureIds = existingDrawDefinition.structures.map(
+      ({ structureId }) => structureId
+    );
+    const structureIds = drawDefinition.structures.map(
+      ({ structureId }) => structureId
+    );
+
+    const allExistingStructureIdsPresent = !!existingStructureIds.every(
+      (structureId) => structureIds.includes(structureId)
+    );
+
+    if (!allExistingStructureIdsPresent) {
+      /*
+      const newStructureIds = structureIds.filter(
+        (structureId) => !existingStructureIds.includes(structureId)
+      );
+      // TODO: get all matchUpIds and emit notices for deletedMatchUpIds
+      console.log({ allExistingStructureIdsPresent, newStructureIds });
+      */
+    }
+    // check whether there are new structures to add
+    return { error: DRAW_ID_EXISTS };
+  }
 
   const { flightProfile } = getFlightProfile({ event });
   const relevantFlight =

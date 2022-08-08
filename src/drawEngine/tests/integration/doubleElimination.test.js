@@ -175,7 +175,7 @@ function generateDouble({
   drawEngine.reset();
   drawEngine.newDrawDefinition();
   drawEngine.setStageDrawSize({ stage: MAIN, drawSize });
-  drawEngine.generateDrawType({
+  drawEngine.generateDrawTypeAndModifyDrawDefinition({
     drawType,
     feedPolicy: { roundGroupedOrder: [] },
   });

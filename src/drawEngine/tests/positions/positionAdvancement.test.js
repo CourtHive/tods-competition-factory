@@ -24,7 +24,7 @@ it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOL
   initialize();
   const drawSize = 32;
   mainDrawPositions({ drawSize });
-  const result = drawEngine.generateDrawType({
+  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
     drawType: FIRST_MATCH_LOSER_CONSOLATION,
   });
   expect(result).not.toHaveProperty(ERROR);
@@ -246,7 +246,9 @@ it('can direct participants in COMPASS', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 32 });
-  const result = drawEngine.generateDrawType({ drawType: COMPASS });
+  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+    drawType: COMPASS,
+  });
   expect(result).not.toHaveProperty(ERROR);
   const { drawDefinition } = drawEngine.getState();
   expect(drawDefinition.links.length).toEqual(7);
