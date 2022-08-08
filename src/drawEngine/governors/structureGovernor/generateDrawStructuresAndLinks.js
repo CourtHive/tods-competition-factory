@@ -165,6 +165,7 @@ export function generateDrawStructuresAndLinks(params = {}) {
 
   return {
     ...SUCCESS,
+    qualifyingResult,
     structures,
     links,
   };
