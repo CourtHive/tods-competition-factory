@@ -975,10 +975,11 @@ tournamentEngine.deleteCourt({
 
 ## deleteDrawDefinitions
 
-Remove drawDefinitions from an event. An audit timeItem is added to the tournamentRecord whenever this method is called.
+Remove `drawDefinitions` from an `event`. An audit timeItem is added to the tournamentRecord whenever this method is called. If `autoPublish: true` (default behavior) then if a deleted draw was published then the `event` to which it belongs will be re-published.
 
 ```js
 tournamentEngine.deleteDrawDefinitions({
+  autoPublish, // optional - defaults to true.
   drawIds: [drawId],
   eventId,
 });
@@ -988,10 +989,14 @@ tournamentEngine.deleteDrawDefinitions({
 
 ## deleteFlightAndFlightDraw
 
-Removes flight from event's flightProfile as well as associated drawDefinition (if generated).
+Removes flight from `event` flightProfile as well as associated `drawDefinition` (if generated).
 
 ```js
-tournamentEngine.deleteFlightAndFlightDraw({ eventId, drawId });
+tournamentEngine.deleteFlightAndFlightDraw({
+  autoPublish, // optional - defaults to true.
+  eventId,
+  drawId,
+});
 ```
 
 ---

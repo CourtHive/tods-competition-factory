@@ -1,3 +1,4 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
 import { getEventTimeItem } from '../queryGovernor/timeItems';
 import { addNotice } from '../../../global/state/globalState';
@@ -29,6 +30,11 @@ export function publishEvent({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
+
+  if (!policyDefinitions) {
+    const { appliedPolicies } = getAppliedPolicies({ tournamentRecord, event });
+    policyDefinitions = appliedPolicies;
+  }
 
   const itemType = `${PUBLISH}.${STATUS}`;
   const eventDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId) || [];
