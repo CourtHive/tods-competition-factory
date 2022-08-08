@@ -9,9 +9,11 @@ export function getPositionAssignments({
   tournamentRecord,
   drawDefinition,
   structureId,
+  structure,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!structureId) return { error: MISSING_STRUCTURE_ID };
-  return positionAssignments({ drawDefinition, structureId });
+  if (!structure && !drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  if (!structure && !structureId) return { error: MISSING_STRUCTURE_ID };
+
+  return positionAssignments({ drawDefinition, structureId, structure });
 }
