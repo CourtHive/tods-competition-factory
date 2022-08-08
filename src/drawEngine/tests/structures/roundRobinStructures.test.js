@@ -16,7 +16,7 @@ it('can generate Round Robin Main Draws', () => {
   mainDrawPositions({ drawSize: 16 });
   let {
     structures: [structure],
-  } = drawEngine.generateDrawType({ drawType });
+  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType });
   expect(structure.structureType).toEqual(CONTAINER);
   expect(structure.finishingPosition).toEqual(WIN_RATIO);
   expect(structure.structures.length).toEqual(4);
@@ -28,7 +28,7 @@ it('can generate Round Robin Main Draws', () => {
   mainDrawPositions({ drawSize: 32 });
   ({
     structures: [structure],
-  } = drawEngine.generateDrawType({ drawType }));
+  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType }));
   expect(structure.structures.length).toEqual(8);
 });
 
@@ -39,7 +39,7 @@ it('can generate Round Robins with varying group sizes', () => {
   let structureOptions = { groupSize: 5 };
   let {
     structures: [structure],
-  } = drawEngine.generateDrawType({
+  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({
     drawType: ROUND_ROBIN,
     structureOptions,
   });
@@ -52,7 +52,7 @@ it('can generate Round Robins with varying group sizes', () => {
   structureOptions = { groupSize: 3 };
   ({
     structures: [structure],
-  } = drawEngine.generateDrawType({
+  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({
     drawType: ROUND_ROBIN,
     structureOptions,
   }));

@@ -470,14 +470,14 @@ const { structures, links } = drawEngine.generateAndPopulatePlayoffStructures({
 
 ---
 
-## generateDrawType
+## generateDrawTypeAndModifyDrawDefinition
 
 Convenience method to generate pre-defined drawTypes.
 
 For more information on `feedPolicy` see [Feed Policies](../policies/feedPolicy).
 
 ```js
-drawEngine.generateDrawType({
+drawEngine.generateDrawTypeAndModifyDrawDefinition({
   drawType, // defaults to SINGLE_ELIMINATION
 
   matchUpType, // optional - defaults to SINGLES - will check first on drawDefinition

@@ -225,7 +225,7 @@ function generateCompass({
   drawEngine.reset();
   drawEngine.newDrawDefinition();
   drawEngine.setStageDrawSize({ stage, drawSize });
-  drawEngine.generateDrawType({ drawType });
+  drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType });
   const {
     structures: [structure],
   } = drawEngine.getDrawStructures({ stage, stageSequence: 1 });

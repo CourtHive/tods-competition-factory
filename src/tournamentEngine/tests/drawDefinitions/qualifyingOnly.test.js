@@ -83,6 +83,9 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   });
   expect(result.error).toEqual(DRAW_ID_EXISTS);
 
-  result = tournamentEngine.generateDrawType({ drawDefinition, drawSize: 32 });
+  result = tournamentEngine.generateDrawTypeAndModifyDrawDefinition({
+    drawDefinition,
+    drawSize: 32,
+  });
   console.log(result);
 });

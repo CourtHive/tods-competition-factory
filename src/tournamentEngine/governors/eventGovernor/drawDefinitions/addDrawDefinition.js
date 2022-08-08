@@ -60,10 +60,16 @@ export function addDrawDefinition({
     const allExistingStructureIdsPresent = !!existingStructureIds.every(
       (structureId) => structureIds.includes(structureId)
     );
-    const newStructureIds = structureIds.filter(
-      (structureId) => !existingStructureIds.includes(structureId)
-    );
-    console.log({ allExistingStructureIdsPresent, newStructureIds });
+
+    if (!allExistingStructureIdsPresent) {
+      /*
+      const newStructureIds = structureIds.filter(
+        (structureId) => !existingStructureIds.includes(structureId)
+      );
+      // TODO: get all matchUpIds and emit notices for deletedMatchUpIds
+      console.log({ allExistingStructureIdsPresent, newStructureIds });
+      */
+    }
     // check whether there are new structures to add
     return { error: DRAW_ID_EXISTS };
   }

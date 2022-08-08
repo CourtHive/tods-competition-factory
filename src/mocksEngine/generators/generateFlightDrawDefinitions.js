@@ -78,6 +78,7 @@ export function generateFlightDrawDefinitions({
 
         let result = generateDrawDefinition({
           ...drawProfile,
+          overwriteExisting: true,
           matchUpType: eventType,
           seedingScaleName,
           tournamentRecord,
@@ -90,9 +91,7 @@ export function generateFlightDrawDefinitions({
         });
 
         const { drawDefinition, error } = result;
-        if (error) {
-          return { error };
-        }
+        if (error) return { error };
 
         const drawExtensions = drawProfiles[index]?.drawExtensions;
         if (Array.isArray(drawExtensions)) {

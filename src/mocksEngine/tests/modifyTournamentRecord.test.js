@@ -82,7 +82,7 @@ test('mocksEngine can modify existing tournamentRecords and complete SOME matchU
   expect(publishStatus).not.toBeUndefined();
 });
 
-test('mocksEngine can modify existing tournamentRecords', () => {
+test.only('mocksEngine can modify existing tournamentRecords', () => {
   let eventProfiles = [
     { eventName: `Gentlemen's O50 Doubles`, eventType: DOUBLES, gender: MALE },
     { eventName: `Boy's U16 Doubles`, eventType: DOUBLES, gender: MALE },
@@ -142,7 +142,7 @@ test('mocksEngine can modify existing tournamentRecords', () => {
 
   // prettier-ignore
   eventProfiles = [
-    { eventId: eventIds[0], drawProfiles: [{ drawSize: 8 }] },
+    { eventId: eventIds[0], drawProfiles: [{ drawSize: 8, drawId: 'foo' }] },
   ];
   result = mocksEngine.modifyTournamentRecord({
     tournamentRecord,

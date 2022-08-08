@@ -26,7 +26,7 @@ it('can generate structured entry draw', () => {
   mainDrawPositions({ drawSize: 31 });
   const {
     structures: [structure],
-  } = drawEngine.generateDrawType({ drawType: FEED_IN });
+  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType: FEED_IN });
   const { matchUps } = structure;
   const matchUpsCount = matchUps && matchUps.length;
   expect(matchUpsCount).toEqual(30);
@@ -77,7 +77,7 @@ it('generates structured entry draw with expected finishing drawPositions', () =
   mainDrawPositions({ drawSize: 31 });
   const {
     structures: [structure],
-  } = drawEngine.generateDrawType({ drawType: FEED_IN });
+  } = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType: FEED_IN });
   const { matchUps } = structure;
   const matchUpsCount = matchUps && matchUps.length;
   expect(matchUpsCount).toEqual(30);

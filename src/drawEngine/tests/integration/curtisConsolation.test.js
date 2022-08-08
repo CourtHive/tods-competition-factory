@@ -150,7 +150,7 @@ function generateCurtis({
   drawEngine.reset();
   drawEngine.newDrawDefinition();
   drawEngine.setStageDrawSize({ stage, drawSize });
-  drawEngine.generateDrawType({ drawType });
+  drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType });
 
   const {
     structures: [mainStructure],

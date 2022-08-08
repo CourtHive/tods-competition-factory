@@ -8,7 +8,7 @@ it('can correctly determin positions playedOff for STANDARD_ELIMINATION', () => 
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const result = drawEngine.generateDrawType();
+  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition();
   expect(result.success).toEqual(true);
 
   const { drawDefinition } = drawEngine.getState();
@@ -21,7 +21,7 @@ it('can correctly determin positions playedOff for FIRST_MATCH_LOSER_CONSOLATION
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const result = drawEngine.generateDrawType({
+  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
     drawType: FIRST_MATCH_LOSER_CONSOLATION,
   });
   expect(result.success).toEqual(true);

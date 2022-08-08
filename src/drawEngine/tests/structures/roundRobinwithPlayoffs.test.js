@@ -37,7 +37,7 @@ it('can generate Round Robins 32 with playoffs', () => {
       { finishingPositions: [2], structureName: 'Silver Flight' },
     ],
   };
-  const result = drawEngine.generateDrawType({
+  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
     drawType,
     structureOptions,
   });
@@ -78,7 +78,7 @@ it('can generate Round Robins 16 with playoffs', () => {
       { finishingPositions: [2], structureName: 'Silver Flight' },
     ],
   };
-  const result = drawEngine.generateDrawType({
+  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
     drawType,
     structureOptions,
   });

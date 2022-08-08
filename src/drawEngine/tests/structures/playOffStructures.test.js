@@ -447,7 +447,7 @@ function playoffDraw({ drawSize, drawType, finishingPositionLimit }) {
   reset();
   initialize();
   mainDrawPositions({ drawSize });
-  const result = drawEngine.generateDrawType({
+  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
     drawType,
     finishingPositionLimit,
   });

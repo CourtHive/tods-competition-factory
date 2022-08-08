@@ -1,5 +1,5 @@
+import { generateDrawTypeAndModifyDrawDefinition } from '../../drawEngine/governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { addVoluntaryConsolationStructure } from '../governors/eventGovernor/addVoluntaryConsolationStructure';
-import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
 import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
 import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/setMatchUpFormat';
@@ -24,6 +24,7 @@ import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
 import {
+  DRAW_ID_EXISTS,
   INVALID_DRAW_TYPE,
   INVALID_VALUES,
   MISSING_DRAW_SIZE,
@@ -55,6 +56,7 @@ export function generateDrawDefinition(params) {
     considerEventEntries = true, // in the absence of drawSize and drawEntries, look to event.entries
     ignoreAllowedDrawTypes,
     voluntaryConsolation,
+    overwriteExisting,
     policyDefinitions,
     tournamentRecord,
     tieFormatName,
@@ -62,7 +64,6 @@ export function generateDrawDefinition(params) {
     drawEntries,
     addToEvent,
     placeByes,
-    drawId,
     event,
   } = params;
 
@@ -166,7 +167,15 @@ export function generateDrawDefinition(params) {
 
   // ---------------------------------------------------------------------------
   // Begin construction of drawDefinition
-  const drawDefinition = newDrawDefinition({ drawType, drawId });
+  const existingDrawDefinition = !!(
+    params.drawId &&
+    event?.drawDefinitions?.find((d) => d.drawId === params.drawId)
+  );
+  if (existingDrawDefinition && !overwriteExisting) {
+    return { error: DRAW_ID_EXISTS };
+  }
+
+  const drawDefinition = newDrawDefinition({ drawType, drawId: params.drawId });
 
   // if there is a defined matchUpFormat/tieFormat only attach to drawDefinition...
   // ...when there is not an equivalent definition on the parent event
@@ -240,7 +249,7 @@ export function generateDrawDefinition(params) {
     Object.assign(appliedPolicies, POLICY_SEEDING_USTA);
   }
 
-  let drawTypeResult = generateDrawType({
+  let drawTypeResult = generateDrawTypeAndModifyDrawDefinition({
     ...params,
     tournamentRecord,
     appliedPolicies,
@@ -370,6 +379,7 @@ export function generateDrawDefinition(params) {
   }
 
   return {
+    existingDrawDefinition,
     qualifyingConflicts,
     drawDefinition,
     structureId,

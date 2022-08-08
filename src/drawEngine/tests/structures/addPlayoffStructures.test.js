@@ -117,7 +117,7 @@ function drawEngineAddStructuresTest({
   reset();
   initialize();
   mainDrawPositions({ drawSize, drawType });
-  let result = drawEngine.generateDrawType({ drawType });
+  let result = drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType });
   expect(result.success).toEqual(true);
 
   let { drawDefinition } = drawEngine.getState();

@@ -8,7 +8,10 @@ export function feedInChampionship({ drawSize, drawType, feedPolicy }) {
   reset();
   initialize();
   mainDrawPositions({ drawSize });
-  const result = drawEngine.generateDrawType({ drawType, feedPolicy });
+  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
+    drawType,
+    feedPolicy,
+  });
   if (result.error) return result;
 
   const { links } = result;
