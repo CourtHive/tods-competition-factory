@@ -82,7 +82,7 @@ test('mocksEngine can modify existing tournamentRecords and complete SOME matchU
   expect(publishStatus).not.toBeUndefined();
 });
 
-test.only('mocksEngine can modify existing tournamentRecords', () => {
+test('mocksEngine can modify existing tournamentRecords', () => {
   let eventProfiles = [
     { eventName: `Gentlemen's O50 Doubles`, eventType: DOUBLES, gender: MALE },
     { eventName: `Boy's U16 Doubles`, eventType: DOUBLES, gender: MALE },
