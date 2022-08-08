@@ -93,10 +93,10 @@ it('can add 3-4 playoff structure to a FIRST_MATCH_LOSER_CONSOLATION structure',
 });
 
 function drawEngineAddStructuresTest({
-  drawSize,
-  drawType,
   playoffPositions,
   roundNumbers,
+  drawSize,
+  drawType,
 }) {
   const allMatchUps = [];
   let matchUpAddNotices = [];

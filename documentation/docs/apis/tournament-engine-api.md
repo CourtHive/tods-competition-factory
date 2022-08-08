@@ -499,7 +499,7 @@ const playoffAttributes = {
 tournamentEngine.addQualifyingStructure({
   targetStructureId, // required: structure for which participants will qualify
   qualifyingPositions, // optional: specify the # of qualifyingPositions
-  qualifyingRound, // optional: determine qualifyingPositions by # of matchUps in specified round; does not apply to ROUND_ROBIN
+  qualifyingRoundNumber, // optional: determine qualifyingPositions by # of matchUps in specified round; does not apply to ROUND_ROBIN
   structureOptions, // optional: specific to ROUND_ROBIN generation
   structureName, // optional
   drawSize,
@@ -1399,7 +1399,7 @@ const { drawDefinition } =
 let { structure, link } = tournamentEngine.generateQualifyingStructure({
   targetStructureId, // required: structure for which participants will qualify
   qualifyingPositions, // optional: specify the # of qualifyingPositions
-  qualifyingRound, // optional: determine qualifyingPositions by # of matchUps in specified round; does not apply to ROUND_ROBIN
+  qualifyingRoundNumber, // optional: determine qualifyingPositions by # of matchUps in specified round; does not apply to ROUND_ROBIN
   structureOptions, // optional: specific to ROUND_ROBIN generation
   structureName, // optional
   drawSize,

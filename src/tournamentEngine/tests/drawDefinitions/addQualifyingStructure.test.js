@@ -88,13 +88,13 @@ it('can add a qualifying structure to an existing drawDefinition', () => {
   expect(mainStructureQualifiers.length).toEqual(0);
 
   let result = tournamentEngine.addQualifyingStructure({
-    qualifyingRound: 2,
+    qualifyingRoundNumber: 2,
     drawSize: 32,
   });
   expect(result.error).toEqual(MISSING_DRAW_DEFINITION);
 
   result = tournamentEngine.addQualifyingStructure({
-    qualifyingRound: 2,
+    qualifyingRoundNumber: 2,
     drawSize: 32,
     drawId,
   });
@@ -102,7 +102,7 @@ it('can add a qualifying structure to an existing drawDefinition', () => {
 
   result = tournamentEngine.addQualifyingStructure({
     targetStructureId: mainStructure.structureId,
-    qualifyingRound: 2,
+    qualifyingRoundNumber: 2,
     drawSize: 32,
     drawId,
   });
@@ -193,7 +193,7 @@ it('will ignore drawProfile qualifiersCount if qualifyingProfile.qualifiersCount
   expect(mainStructureQualifiers.length).toEqual(4);
 });
 
-it('can add a qualifying structure to an existing draw which has existing qualifying structure', () => {
+it.only('can add a qualifying structure to an existing draw which has existing qualifying structure', () => {
   const {
     tournamentRecord,
     drawIds: [drawId],
@@ -223,4 +223,20 @@ it('can add a qualifying structure to an existing draw which has existing qualif
     ({ qualifier }) => qualifier
   );
   expect(mainStructureQualifiers.length).toEqual(4);
+  expect(drawDefinition.links.length).toEqual(1);
+
+  expect(drawDefinition.links[0].source.roundNumber).toEqual(2);
+
+  let result = tournamentEngine.addQualifyingStructure({
+    targetStructureId: mainStructure.structureId,
+    qualifyingRoundNumber: 3,
+    drawSize: 32,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  expect(drawDefinition.structures.length).toEqual(3);
+  expect(drawDefinition.links.length).toEqual(2);
+  expect(drawDefinition.links[1].source.roundNumber).toEqual(3);
 });

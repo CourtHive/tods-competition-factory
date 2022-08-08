@@ -92,7 +92,7 @@ it('can recalculate participantResults when outcomes are removed', () => {
   expect(Object.keys(participantResults).length).toEqual(0);
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
   mainStructure = drawDefinition.structures[0];
-  ({ positionAssignments } = getPositionAssignments({
+  ({ positionAssignments } = tournamentEngine.getPositionAssignments({
     structure: mainStructure,
   }));
   dp1 = getDrawPositionTally({ positionAssignments, drawPosition: 1 });
