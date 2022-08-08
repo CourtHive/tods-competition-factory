@@ -30,6 +30,7 @@ export function generateDrawStructuresAndLinks(params = {}) {
     drawTypeCoercion, // coerce to SINGLE_ELIMINATION for drawSize: 2
     appliedPolicies,
     staggeredEntry, // optional - specifies main structure FEED_IN for drawTypes CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIPS, FMLC
+    drawSize,
     isMock,
     uuids,
   } = params;
@@ -64,9 +65,6 @@ export function generateDrawStructuresAndLinks(params = {}) {
       links.push(...qualifyingResult.links);
     }
   }
-
-  // const drawSize = params.drawSize || mainStageDrawPositionsCount;
-  const drawSize = params.drawSize;
 
   Object.assign(
     params,
@@ -165,6 +163,7 @@ export function generateDrawStructuresAndLinks(params = {}) {
 
   return {
     ...SUCCESS,
+    qualifyingResult,
     structures,
     links,
   };

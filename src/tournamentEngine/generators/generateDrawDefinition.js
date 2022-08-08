@@ -293,7 +293,6 @@ export function generateDrawDefinition(params) {
     entries,
     stage,
   });
-  // if (structureResult.error) return structureResult;
 
   const structureId = structureResult.structureId;
   const conflicts = structureResult.conflicts;
