@@ -56,9 +56,9 @@ export function setStageDrawSize({
 }
 
 export function setStageAlternatesCount({
+  alternatesCount,
   drawDefinition,
   stage,
-  alternatesCount,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!stageExists({ drawDefinition, stage })) {

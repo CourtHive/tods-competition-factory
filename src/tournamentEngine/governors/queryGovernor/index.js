@@ -3,6 +3,7 @@ import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppl
 import { getMaxEntryPosition } from '../../../global/functions/deducers/getMaxEntryPosition';
 import { isValid } from '../../../matchUpEngine/governors/matchUpFormatGovernor/isValid';
 import { getMatchUpCompetitiveness } from '../../getters/getMatchUpCompetitiveness';
+import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { participantScheduledMatchUps } from './participantScheduledMatchUps';
 import { getPositionAssignments } from '../../getters/getPositionAssignments';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
@@ -64,10 +65,11 @@ const queryGovernor = {
   getEvent,
   getEvents,
 
-  findEventExtension,
-  findTournamentExtension,
-  findParticipantExtension,
   findDrawDefinitionExtension,
+  findParticipantExtension,
+  findTournamentExtension,
+  findEventExtension,
+  findExtension,
 
   getTieFormat,
   getMatchUpFormat,
