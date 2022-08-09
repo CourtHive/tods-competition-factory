@@ -1,5 +1,5 @@
 import { generateDrawStructuresAndLinks as genDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawStructuresAndLinks';
 
-export function generateDrawTypeAndModifyDrawDefinition(params) {
+export function generateDrawStructuresAndLinks(params) {
   return genDrawType(params);
 }
