@@ -328,7 +328,7 @@ export function generateDrawDefinition(params) {
           drawSize,
         } = structureProfile;
 
-        const qualifyingResult = prepareStage({
+        const qualifyingStageResult = prepareStage({
           ...drawTypeResult,
           ...params,
           qualifyingRoundNumber,
@@ -346,15 +346,14 @@ export function generateDrawDefinition(params) {
           entries,
         });
 
-        if (qualifyingResult.structureId) {
-          preparedStructureIds.push(qualifyingResult.structureId);
+        if (qualifyingStageResult.structureId) {
+          preparedStructureIds.push(qualifyingStageResult.structureId);
         }
 
-        // if (qualifyingResult.error) return qualifyingResult;
         stageSequence += 1;
 
-        if (qualifyingResult.conflicts?.length)
-          qualifyingConflicts.push(...qualifyingResult.conflicts);
+        if (qualifyingStageResult.conflicts?.length)
+          qualifyingConflicts.push(...qualifyingStageResult.conflicts);
       }
 
       roundTarget += 1;
