@@ -5,6 +5,7 @@ import { expect } from 'vitest';
 
 import {
   DRAW_ID_EXISTS,
+  EXISTING_STAGE,
   INVALID_DRAW_SIZE,
 } from '../../../constants/errorConditionConstants';
 import {
@@ -84,8 +85,8 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   expect(result.error).toEqual(DRAW_ID_EXISTS);
 
   result = tournamentEngine.generateDrawTypeAndModifyDrawDefinition({
-    drawDefinition,
     drawSize: 32,
+    drawId,
   });
-  console.log(result);
+  expect(result.error).toEqual(EXISTING_STAGE);
 });

@@ -6,12 +6,16 @@ import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import { definedAttributes } from '../../../utilities/objects';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
+import { unique } from '../../../utilities';
 import {
   setStageDrawSize,
   setStageQualifiersCount,
 } from '../entryGovernor/stageEntryCounts';
 
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import {
+  EXISTING_STAGE,
+  MISSING_DRAW_DEFINITION,
+} from '../../../constants/errorConditionConstants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
@@ -52,6 +56,12 @@ export function generateDrawTypeAndModifyDrawDefinition(params = {}) {
   if (result.error) return decorateResult({ result, stack });
 
   const { structures, links, qualifyingResult } = result;
+  const stageHash = ({ stage, stageSequence }) => `${stage}|${stageSequence}`;
+  const stageHashes = unique(drawDefinition.structures.map(stageHash));
+  const stageOverlap = !!structures.find((structure) =>
+    stageHashes.includes(stageHash(structure))
+  );
+  if (stageOverlap) return { error: EXISTING_STAGE };
   drawDefinition.structures.push(...structures);
   drawDefinition.links.push(...links);
 

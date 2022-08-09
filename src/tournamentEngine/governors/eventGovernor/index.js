@@ -111,7 +111,8 @@ import { addCollectionGroup } from '../../../matchUpEngine/governors/tieFormatGo
 import { resetScorecard } from './resetScorecard';
 import { resetTieFormat } from './resetTieFormat';
 
-import { generateDrawTypeAndModifyDrawDefinition } from '../../generators/generateDrawStructuresAndLinks';
+import { generateDrawTypeAndModifyDrawDefinition } from '../../generators/generateDrawTypeAndModifyDrawDefinition';
+import { generateDrawStructuresAndLinks } from '../../generators/generateDrawStructuresAndLinks';
 import { generateQualifyingStructure } from './drawDefinitions/generateQualifyingStructure';
 import { attachQualifyingStructure } from './drawDefinitions/attachQualifyingStructure';
 import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure';
@@ -224,6 +225,7 @@ const eventGovernor = {
 
   addDrawDefinitionTimeItem,
   generateDrawDefinition,
+  generateDrawStructuresAndLinks,
   generateDrawTypeAndModifyDrawDefinition,
 
   applyLineUps,
