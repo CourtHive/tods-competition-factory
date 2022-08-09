@@ -39,7 +39,9 @@ export function getPairedParticipant({
   }
 
   const duplicatedPairParticipants = makeDeepCopy(
-    existingPairedParticipants.slice(1)
+    existingPairedParticipants.slice(1),
+    false,
+    true
   );
 
   return {

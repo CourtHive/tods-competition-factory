@@ -157,9 +157,9 @@ it('can selectively stringify or ignore attributes when used internally', () => 
   };
 
   let result = tournamentEngine.setMatchUpStatus({
-    drawId,
-    matchUpId,
     notes: myObject,
+    matchUpId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 

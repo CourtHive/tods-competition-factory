@@ -37,5 +37,5 @@ export function getVenueData({ tournamentRecord, venueId }) {
 
   const venueData = { ...venueInfo, courtsInfo };
 
-  return { ...SUCCESS, venueData: makeDeepCopy(venueData) };
+  return { ...SUCCESS, venueData: makeDeepCopy(venueData, false, true) };
 }

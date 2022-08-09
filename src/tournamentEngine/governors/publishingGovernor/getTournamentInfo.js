@@ -40,5 +40,8 @@ export function getTournamentInfo({ tournamentRecord }) {
     tournamentAddresses,
   }))(tournamentRecord);
 
-  return { ...SUCCESS, tournamentInfo: makeDeepCopy(tournamentInfo) };
+  return {
+    ...SUCCESS,
+    tournamentInfo: makeDeepCopy(tournamentInfo, false, true),
+  };
 }
