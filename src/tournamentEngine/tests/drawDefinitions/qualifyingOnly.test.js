@@ -3,10 +3,6 @@ import { unique } from '../../../utilities';
 import tournamentEngine from '../../sync';
 import { expect } from 'vitest';
 
-import {
-  DRAW_ID_EXISTS,
-  INVALID_DRAW_SIZE,
-} from '../../../constants/errorConditionConstants';
 import { ENTRY_PROFILE } from '../../../constants/extensionConstants';
 import {
   DRAW,
@@ -16,6 +12,10 @@ import {
   SINGLE_ELIMINATION,
   WINNER,
 } from '../../../constants/drawDefinitionConstants';
+import {
+  DRAW_ID_EXISTS,
+  INVALID_DRAW_SIZE,
+} from '../../../constants/errorConditionConstants';
 
 it.each([ROUND_ROBIN, SINGLE_ELIMINATION, undefined])(
   'will generate a drawDefinition with no matchUps',
