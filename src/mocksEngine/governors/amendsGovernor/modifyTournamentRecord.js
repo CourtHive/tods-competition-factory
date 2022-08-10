@@ -176,10 +176,7 @@ export function modifyTournamentRecord({
             drawProfiles,
             event,
           });
-          if (result.error) {
-            console.log(drawProfiles, eventProfile, result.error);
-            return result;
-          }
+          if (result.error) return result;
 
           drawIds.push(...result.drawIds);
         }

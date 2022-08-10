@@ -28,9 +28,10 @@ Adds a drawDefinition to an event in a tournamentRecord.
 ```js
 if (!error) {
   const result = competitionEngine.addDrawDefinition({
+    allowReplacement, // optional - defaults to false
+    drawDefinition,
     tournamentId,
     eventId,
-    drawDefinition,
     flight, // optional - pass flight definition object for integrity check
   });
 }

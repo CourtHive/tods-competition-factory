@@ -116,8 +116,9 @@ const { drawDefinition, error } =
   tournamentEngine.generateDrawDefinition(drawDefinitionValues);
 if (!error) {
   const result = tournamentEngine.addDrawDefinition({
-    eventId,
+    allowReplacement, // optional - defaults to false
     drawDefinition,
+    eventId,
     flight, // optional - pass flight definition object for integrity check
   });
 }

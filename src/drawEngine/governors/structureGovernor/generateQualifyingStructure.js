@@ -43,7 +43,7 @@ export function generateQualifyingStructure(params) {
   } = params;
 
   let roundLimit, roundsCount, structure, link, matchUps;
-  let qualifyingDrawPositionsCount;
+  let qualifiersCount = 0;
   let finishingPositions;
   let stageSequence = 1;
 
@@ -130,7 +130,7 @@ export function generateQualifyingStructure(params) {
         isMock,
         uuids,
       });
-    qualifyingDrawPositionsCount = groupCount;
+    qualifiersCount = groupCount;
     roundLimit = maxRoundNumber;
     structure = structures[0];
     finishingPositions = [1];
@@ -164,7 +164,7 @@ export function generateQualifyingStructure(params) {
       });
     }
 
-    qualifyingDrawPositionsCount = matchUps?.filter(
+    qualifiersCount = matchUps?.filter(
       (matchUp) => matchUp.roundNumber === roundLimit
     )?.length;
   }
@@ -180,7 +180,8 @@ export function generateQualifyingStructure(params) {
   }));
 
   return {
-    qualifyingDrawPositionsCount,
+    qualifyingDrawPositionsCount: drawSize,
+    qualifiersCount,
     ...SUCCESS,
     structure,
     link,

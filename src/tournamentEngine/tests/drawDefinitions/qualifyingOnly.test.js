@@ -5,9 +5,9 @@ import { expect } from 'vitest';
 
 import {
   DRAW_ID_EXISTS,
-  EXISTING_STAGE,
   INVALID_DRAW_SIZE,
 } from '../../../constants/errorConditionConstants';
+import { ENTRY_PROFILE } from '../../../constants/extensionConstants';
 import {
   DRAW,
   MAIN,
@@ -54,6 +54,8 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.entries.length).toEqual(16);
   expect(event.entries.length).toEqual(16);
+  let { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+  expect(matchUps.length).toEqual(12);
 
   const entryStages = unique(event.entries.map(({ entryStage }) => entryStage));
   expect(entryStages).toEqual([QUALIFYING]);
@@ -78,15 +80,71 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   expect(links[0].target.structureId).toEqual(mainStructure.structureId);
   expect(links[0].target.roundNumber).toEqual(1);
 
+  const structureIds = drawDefinition.structures.map(
+    ({ structureId }) => structureId
+  );
+  result = tournamentEngine.generateDrawTypeAndModifyDrawDefinition({
+    modifyOriginal: false,
+    drawSize: 32,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  // check that structureIds have not changed
+  expect(
+    result.drawDefinition.structures.map(({ structureId }) => structureId)
+  ).toEqual(structureIds);
+
+  // check that number of matchUps has not changed in state
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  matchUps = tournamentEngine.allDrawMatchUps({ drawDefinition }).matchUps;
+  expect(matchUps.length).toEqual(12);
+
+  // check that result.drawDefinition has more matchUps
+  matchUps = tournamentEngine.allDrawMatchUps({
+    drawDefinition: result.drawDefinition,
+  }).matchUps;
+  expect(matchUps.length).toBeGreaterThan(12);
+
+  expect(drawDefinition.structures[1].matchUps.length).toEqual(0);
+  expect(result.drawDefinition.structures[1].matchUps.length).toEqual(31);
+
+  const existingEntryProfile = tournamentEngine.findDrawDefinitionExtension({
+    name: ENTRY_PROFILE,
+    drawId,
+  }).extension.value;
+
   result = tournamentEngine.generateDrawDefinition({
     drawSize: 32,
     drawId,
   });
+  expect(result.success).toEqual(true);
+  const newEntryProfile = tournamentEngine.findExtension({
+    element: result.drawDefinition,
+    name: ENTRY_PROFILE,
+  }).extension.value;
+
+  expect(existingEntryProfile[QUALIFYING]).toEqual(newEntryProfile[QUALIFYING]);
+  expect(existingEntryProfile[MAIN]).not.toEqual(newEntryProfile[MAIN]);
+  expect(existingEntryProfile[MAIN].drawSize).toBeUndefined();
+  expect(newEntryProfile[MAIN].drawSize).toEqual(32);
+
+  result = tournamentEngine.addDrawDefinition({
+    drawDefinition: result.drawDefinition,
+    eventId: event.eventId,
+  });
   expect(result.error).toEqual(DRAW_ID_EXISTS);
 
-  result = tournamentEngine.generateDrawTypeAndModifyDrawDefinition({
+  result = tournamentEngine.generateDrawDefinition({
     drawSize: 32,
     drawId,
   });
-  expect(result.error).toEqual(EXISTING_STAGE);
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.addDrawDefinition({
+    drawDefinition: result.drawDefinition,
+    allowReplacement: true,
+    eventId: event.eventId,
+  });
+  expect(result.success).toEqual(true);
 });
