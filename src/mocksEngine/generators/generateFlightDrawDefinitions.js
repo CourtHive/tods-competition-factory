@@ -12,7 +12,6 @@ import { hasParticipantId } from '../../global/functions/filters';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange } from '../../utilities';
 
-import { DRAW_ID_EXISTS } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { SEEDING } from '../../constants/scaleConstants';
 import {
@@ -36,6 +35,7 @@ export function generateFlightDrawDefinitions({
 
   const categoryName =
     category?.categoryName || category?.ageCategoryCode || category?.ratingType;
+  const existingDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId);
 
   if (Array.isArray(flightProfile?.flights)) {
     for (const [index, flight] of flightProfile.flights.entries()) {
@@ -76,9 +76,10 @@ export function generateFlightDrawDefinitions({
           });
         }
 
+        if (existingDrawIds?.includes(drawId)) break;
+
         let result = generateDrawDefinition({
           ...drawProfile,
-          overwriteExisting: true,
           matchUpType: eventType,
           seedingScaleName,
           tournamentRecord,
@@ -89,9 +90,9 @@ export function generateFlightDrawDefinitions({
           event,
           stage,
         });
+        if (result.error) return result;
 
-        const { drawDefinition, error } = result;
-        if (error) return { error };
+        const { drawDefinition } = result;
 
         const drawExtensions = drawProfiles[index]?.drawExtensions;
         if (Array.isArray(drawExtensions)) {
@@ -108,8 +109,6 @@ export function generateFlightDrawDefinitions({
           drawDefinition,
           event,
         });
-        // since this is mock generation, don't throw error for duplicate drawId
-        if (result.error === DRAW_ID_EXISTS) break;
         if (result.error) return result;
 
         if (drawProfile.drawType === AD_HOC && drawProfile.drawMatic) {

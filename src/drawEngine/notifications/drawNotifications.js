@@ -80,7 +80,6 @@ export function modifyMatchUpNotice({
     console.log(MISSING_MATCHUP);
     return { error: MISSING_MATCHUP };
   }
-  structureId = structureId || matchUp.structureId;
   modifyDrawNotice({
     structureIds: [structureId],
     drawDefinition,

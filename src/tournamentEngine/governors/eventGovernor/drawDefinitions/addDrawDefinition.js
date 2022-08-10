@@ -1,16 +1,18 @@
 import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
 import { decorateResult } from '../../../../global/functions/decorateResult';
+import { getMatchUpId } from '../../../../global/functions/extractors';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
-import { getTopics } from '../../../../global/state/globalState';
 import {
   addDrawNotice,
   addMatchUpsNotice,
+  deleteMatchUpsNotice,
+  modifyDrawNotice,
+  modifyMatchUpNotice,
 } from '../../../../drawEngine/notifications/drawNotifications';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
-import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   DRAW_ID_EXISTS,
@@ -27,6 +29,7 @@ export function addDrawDefinition({
   suppressNotifications,
   modifyEventEntries, // event.entries[{entryStatus}] are modified to match draw.entries[{entryStatus}]
   existingDrawCount,
+  allowReplacement,
   tournamentRecord,
   drawDefinition,
   event,
@@ -44,35 +47,6 @@ export function addDrawDefinition({
     existingDrawCount !== event.drawDefinitions.length
   )
     return { error: INVALID_VALUES, info: 'drawDefintions count mismatch' };
-
-  const existingDrawDefinition = event.drawDefinitions.find(
-    (drawDefinition) => drawDefinition.drawId === drawId
-  );
-
-  if (existingDrawDefinition) {
-    const existingStructureIds = existingDrawDefinition.structures.map(
-      ({ structureId }) => structureId
-    );
-    const structureIds = drawDefinition.structures.map(
-      ({ structureId }) => structureId
-    );
-
-    const allExistingStructureIdsPresent = !!existingStructureIds.every(
-      (structureId) => structureIds.includes(structureId)
-    );
-
-    if (!allExistingStructureIdsPresent) {
-      /*
-      const newStructureIds = structureIds.filter(
-        (structureId) => !existingStructureIds.includes(structureId)
-      );
-      // TODO: get all matchUpIds and emit notices for deletedMatchUpIds
-      console.log({ allExistingStructureIdsPresent, newStructureIds });
-      */
-    }
-    // check whether there are new structures to add
-    return { error: DRAW_ID_EXISTS };
-  }
 
   const { flightProfile } = getFlightProfile({ event });
   const relevantFlight =
@@ -221,20 +195,91 @@ export function addDrawDefinition({
 
   addEventExtension({ event, extension });
   Object.assign(drawDefinition, { drawOrder });
-  event.drawDefinitions.push(drawDefinition);
 
-  if (!suppressNotifications) {
-    const { topics } = getTopics();
-    if (topics.includes(ADD_MATCHUPS)) {
+  const existingDrawDefinition = event.drawDefinitions.find(
+    (drawDefinition) => drawDefinition.drawId === drawId
+  );
+  const tournamentId = tournamentRecord?.tournamentId;
+  const eventId = event.eventId;
+
+  if (existingDrawDefinition) {
+    if (!allowReplacement) {
+      return { error: DRAW_ID_EXISTS };
+    }
+    // find matchUps added/removed
+    const existingMatchUps = allDrawMatchUps({
+      drawDefinition: existingDrawDefinition,
+    })?.matchUps;
+    const existingMatchUpIds = existingMatchUps?.map(getMatchUpId);
+    const incomingMatchUps = allDrawMatchUps({
+      drawDefinition,
+    })?.matchUps;
+    const incomingMatchUpIds = incomingMatchUps?.map(getMatchUpId);
+    const deletedMatchUpIds = existingMatchUpIds.filter(
+      (matchUpId) => !incomingMatchUpIds.includes(matchUpId)
+    );
+    const addedMatchUpIds = incomingMatchUpIds.filter(
+      (matchUpId) => !existingMatchUpIds.includes(matchUpId)
+    );
+    const modifiedMatchUpIds = existingMatchUpIds.filter(
+      (matchUpId) =>
+        !deletedMatchUpIds.includes(matchUpId) &&
+        !addedMatchUpIds.includes(matchUpId)
+    );
+    const modifiedMatchUps = existingMatchUps.filter(({ matchUpId }) =>
+      modifiedMatchUpIds.includes(matchUpId)
+    );
+
+    if (modifiedMatchUps?.length) {
+      for (const matchUp of modifiedMatchUps) {
+        modifyMatchUpNotice({ drawDefinition, matchUp, tournamentId });
+      }
+    }
+    if (!suppressNotifications) {
+      if (deletedMatchUpIds?.length) {
+        deleteMatchUpsNotice({
+          matchUpIds: deletedMatchUpIds,
+          action: 'modifyDrawDefiniton',
+          drawDefinition,
+          tournamentId,
+          eventId,
+        });
+      }
+      if (addedMatchUpIds?.length) {
+        const addedMatchUps = incomingMatchUps.filter(({ matchUpId }) =>
+          addedMatchUpIds.includes(matchUpId)
+        );
+        addMatchUpsNotice({
+          matchUps: addedMatchUps,
+          drawDefinition,
+          tournamentId,
+          eventId,
+        });
+      }
+
+      // replace the existing drawDefinition with the updated version
+      event.drawDefinitions = event.drawDefinitions.map((d) =>
+        d.drawId === drawId ? drawDefinition : d
+      );
+
+      const structureIds = drawDefinition.structures?.map(
+        ({ structureId }) => structureId
+      );
+      modifyDrawNotice({ drawDefinition, tournamentId, structureIds, eventId });
+    }
+  } else {
+    event.drawDefinitions.push(drawDefinition);
+
+    if (!suppressNotifications) {
       const { matchUps } = allDrawMatchUps({ drawDefinition, event });
       addMatchUpsNotice({
         tournamentId: tournamentRecord?.tournamentId,
         drawDefinition,
         matchUps,
       });
-    }
 
-    addDrawNotice({ drawDefinition });
+      addDrawNotice({ drawDefinition, tournamentId, eventId });
+    }
   }
 
   return { ...SUCCESS, modifiedEventEntryStatusCount };

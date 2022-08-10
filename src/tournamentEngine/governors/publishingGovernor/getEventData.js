@@ -119,5 +119,5 @@ export function getEventData({
     createdAt: timeItem?.createdAt,
   };
 
-  return { ...SUCCESS, eventData: makeDeepCopy(eventData) };
+  return { ...SUCCESS, eventData: makeDeepCopy(eventData, false, true) };
 }

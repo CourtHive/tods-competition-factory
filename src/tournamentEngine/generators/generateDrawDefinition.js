@@ -24,7 +24,6 @@ import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
 import {
-  DRAW_ID_EXISTS,
   INVALID_DRAW_TYPE,
   INVALID_VALUES,
   MISSING_DRAW_SIZE,
@@ -56,7 +55,6 @@ export function generateDrawDefinition(params) {
     considerEventEntries = true, // in the absence of drawSize and drawEntries, look to event.entries
     ignoreAllowedDrawTypes,
     voluntaryConsolation,
-    overwriteExisting,
     policyDefinitions,
     tournamentRecord,
     tieFormatName,
@@ -167,15 +165,13 @@ export function generateDrawDefinition(params) {
 
   // ---------------------------------------------------------------------------
   // Begin construction of drawDefinition
-  const existingDrawDefinition = !!(
+  const existingDrawDefinition =
     params.drawId &&
-    event?.drawDefinitions?.find((d) => d.drawId === params.drawId)
-  );
-  if (existingDrawDefinition && !overwriteExisting) {
-    return { error: DRAW_ID_EXISTS };
-  }
+    event?.drawDefinitions?.find((d) => d.drawId === params.drawId);
 
-  const drawDefinition = newDrawDefinition({ drawType, drawId: params.drawId });
+  let drawDefinition =
+    existingDrawDefinition ||
+    newDrawDefinition({ drawType, drawId: params.drawId });
 
   // if there is a defined matchUpFormat/tieFormat only attach to drawDefinition...
   // ...when there is not an equivalent definition on the parent event
@@ -251,6 +247,7 @@ export function generateDrawDefinition(params) {
 
   let drawTypeResult = generateDrawTypeAndModifyDrawDefinition({
     ...params,
+    modifyOriginal: false,
     tournamentRecord,
     appliedPolicies,
     drawDefinition,
@@ -259,7 +256,10 @@ export function generateDrawDefinition(params) {
     tieFormat,
     drawSize,
   });
-  if (drawTypeResult.error) return drawTypeResult;
+  if (drawTypeResult.error) {
+    return drawTypeResult;
+  }
+  drawDefinition = drawTypeResult.drawDefinition;
 
   // add all entries to the draw
   const entries = drawEntries || eventEntries;
@@ -328,7 +328,7 @@ export function generateDrawDefinition(params) {
           drawSize,
         } = structureProfile;
 
-        const qualifyingResult = prepareStage({
+        const qualifyingStageResult = prepareStage({
           ...drawTypeResult,
           ...params,
           qualifyingRoundNumber,
@@ -346,15 +346,14 @@ export function generateDrawDefinition(params) {
           entries,
         });
 
-        if (qualifyingResult.structureId) {
-          preparedStructureIds.push(qualifyingResult.structureId);
+        if (qualifyingStageResult.structureId) {
+          preparedStructureIds.push(qualifyingStageResult.structureId);
         }
 
-        // if (qualifyingResult.error) return qualifyingResult;
         stageSequence += 1;
 
-        if (qualifyingResult.conflicts?.length)
-          qualifyingConflicts.push(...qualifyingResult.conflicts);
+        if (qualifyingStageResult.conflicts?.length)
+          qualifyingConflicts.push(...qualifyingStageResult.conflicts);
       }
 
       roundTarget += 1;
@@ -378,7 +377,7 @@ export function generateDrawDefinition(params) {
   }
 
   return {
-    existingDrawDefinition,
+    existingDrawDefinition: !!existingDrawDefinition,
     qualifyingConflicts,
     drawDefinition,
     structureId,

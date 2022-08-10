@@ -11,6 +11,7 @@ import {
 export function addDrawDefinition({
   tournamentRecords,
   existingDrawCount,
+  allowReplacement,
   drawDefinition,
   tournamentId,
   eventId,
@@ -28,5 +29,11 @@ export function addDrawDefinition({
   const { event, error } = findEvent({ tournamentRecord, eventId });
   if (error) return { error };
 
-  return addDefinition({ drawDefinition, event, flight, existingDrawCount });
+  return addDefinition({
+    existingDrawCount,
+    allowReplacement,
+    drawDefinition,
+    flight,
+    event,
+  });
 }

@@ -22,7 +22,7 @@ export function getVenuesAndCourts({ tournamentRecords, venueIds = [] }) {
       ?.filter(({ venueId }) => !venueIds.length || venueIds.includes(venueId))
       .forEach((venue) => {
         if (!uniqueVenueIds.includes(venue.venueId)) {
-          venues.push(makeDeepCopy(venue));
+          venues.push(makeDeepCopy(venue, false, true));
           uniqueVenueIds.push(venue.venueId);
         }
         venue.courts?.forEach((court) => {

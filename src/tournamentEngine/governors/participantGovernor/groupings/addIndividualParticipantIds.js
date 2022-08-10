@@ -108,7 +108,7 @@ export function addIndividualParticipantIds({
   });
 
   return {
-    groupingParticipant: makeDeepCopy(groupingParticipant),
+    groupingParticipant: makeDeepCopy(groupingParticipant, false, true),
     added: participantIdsToAdd.length,
     ...SUCCESS,
   };

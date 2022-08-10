@@ -479,6 +479,7 @@ For more information on `feedPolicy` see [Feed Policies](../policies/feedPolicy)
 ```js
 drawEngine.generateDrawTypeAndModifyDrawDefinition({
   drawType, // defaults to SINGLE_ELIMINATION
+  modifyOriginal, // optional - defaults to true (primarily used by other engines)
 
   matchUpType, // optional - defaults to SINGLES - will check first on drawDefinition
   matchUpFormat, // optional - default matchUpFormat

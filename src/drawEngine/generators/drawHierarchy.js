@@ -133,7 +133,9 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
       true
     );
     const finishingPositionRange = makeDeepCopy(
-      firstRoundMatchUps[0].finishingPositionRange
+      firstRoundMatchUps[0].finishingPositionRange,
+      false,
+      true
     );
 
     missingMatchUps = missingPairs.map((drawPositions, index) => {

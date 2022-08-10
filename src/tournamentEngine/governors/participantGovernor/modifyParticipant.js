@@ -2,10 +2,10 @@ import { getTournamentParticipants } from '../../getters/participants/getTournam
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 import { addIndividualParticipantIds } from './groupings/addIndividualParticipantIds';
 import { getParticipantId } from '../../../global/functions/extractors';
-import { addNotice, getDevContext } from '../../../global/state/globalState';
 import { participantRoles } from '../../../constants/participantRoles';
 import { genderConstants } from '../../../constants/genderConstants';
 import { definedAttributes } from '../../../utilities/objects';
+import { addNotice } from '../../../global/state/globalState';
 import { addParticipant } from './addParticipants';
 import { makeDeepCopy } from '../../../utilities';
 
@@ -143,14 +143,10 @@ export function modifyParticipant({
     },
   });
 
-  if (getDevContext()) {
-    return {
-      ...SUCCESS,
-      participant: makeDeepCopy(existingParticipant),
-    };
-  }
-
-  return { ...SUCCESS };
+  return {
+    ...SUCCESS,
+    participant: makeDeepCopy(existingParticipant),
+  };
 }
 
 function generatePairParticipantName({ individualParticipants, newValues }) {
