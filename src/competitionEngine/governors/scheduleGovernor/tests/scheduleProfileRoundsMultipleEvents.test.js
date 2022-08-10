@@ -168,11 +168,11 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
     scheduleDate: startDate,
     venueId: venueIds[1],
     round: {
-      tournamentId,
       eventId: eventIds[1],
       drawId: drawIds[1],
-      structureId,
       roundNumber: 1,
+      tournamentId,
+      structureId,
     },
   });
   expect(result.success).toEqual(true);
@@ -184,8 +184,8 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
       tournamentId,
       eventId: eventIds[1],
       drawId: drawIds[1],
-      structureId,
       roundNumber: 2,
+      structureId,
     },
   });
   expect(result.success).toEqual(true);

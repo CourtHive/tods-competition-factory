@@ -99,9 +99,9 @@ it.each([
         },
       } = tournamentEngine.getEvent({ drawId });
       const result = competitionEngine.addSchedulingProfileRound({
+        round: { tournamentId, eventId, drawId, structureId, roundNumber },
         scheduleDate: startDate,
         venueId,
-        round: { tournamentId, eventId, drawId, structureId, roundNumber },
       });
       expect(result.success).toEqual(true);
     }
@@ -155,9 +155,9 @@ it('does not schedule subsequent rounds if dependencies are unscheduled', () => 
       },
     } = tournamentEngine.getEvent({ drawId });
     const result = competitionEngine.addSchedulingProfileRound({
+      round: { tournamentId, eventId, drawId, structureId, roundNumber },
       scheduleDate: startDate,
       venueId,
-      round: { tournamentId, eventId, drawId, structureId, roundNumber },
     });
     expect(result.success).toEqual(true);
   }

@@ -63,25 +63,25 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
 
   scheduledStructureIds.push(structureId);
   let result = competitionEngine.addSchedulingProfileRound({
+    round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
     scheduleDate: startDate,
     venueId,
-    round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
   });
   expect(result.success).toEqual(true);
 
   // add second round of draw to scheduling profile
   result = competitionEngine.addSchedulingProfileRound({
+    round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
     scheduleDate: startDate,
     venueId,
-    round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
   });
   expect(result.success).toEqual(true);
 
   // add third round of draw to scheduling profile
   result = competitionEngine.addSchedulingProfileRound({
+    round: { tournamentId, eventId, drawId, structureId, roundNumber: 3 },
     scheduleDate: startDate,
     venueId,
-    round: { tournamentId, eventId, drawId, structureId, roundNumber: 3 },
   });
   expect(result.success).toEqual(true);
 
@@ -160,25 +160,25 @@ it('can auto schedule Round Robin draws without daily limits', () => {
 
   scheduledStructureIds.push(structureId);
   let result = competitionEngine.addSchedulingProfileRound({
+    round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
     scheduleDate: startDate,
     venueId,
-    round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
   });
   expect(result.success).toEqual(true);
 
   // add second round of draw to scheduling profile
   result = competitionEngine.addSchedulingProfileRound({
+    round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
     scheduleDate: startDate,
     venueId,
-    round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
   });
   expect(result.success).toEqual(true);
 
   // add third round of draw to scheduling profile
   result = competitionEngine.addSchedulingProfileRound({
+    round: { tournamentId, eventId, drawId, structureId, roundNumber: 3 },
     scheduleDate: startDate,
     venueId,
-    round: { tournamentId, eventId, drawId, structureId, roundNumber: 3 },
   });
   expect(result.success).toEqual(true);
 

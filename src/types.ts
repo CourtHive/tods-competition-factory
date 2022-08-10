@@ -49,6 +49,7 @@ export interface Event {
    */
   endDate?: string;
   entries?: Entry[];
+  eventAbbreviation?: string;
   eventId: string;
   eventLevel?: TournamentLevelEnum;
   eventName?: string;

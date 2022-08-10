@@ -31,16 +31,16 @@ it('can update a schedulingProfile when venues change', () => {
   const { tournamentId, eventId, drawId, structureId } = matchUp;
 
   let result = competitionEngine.addSchedulingProfileRound({
+    round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
     scheduleDate: '2022-01-03',
     venueId: venueIds[0],
-    round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
   });
   expect(result.success).toEqual(true);
 
   result = competitionEngine.addSchedulingProfileRound({
+    round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
     scheduleDate: '2022-01-03',
     venueId: venueIds[1],
-    round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
   });
   expect(result.success).toEqual(true);
 

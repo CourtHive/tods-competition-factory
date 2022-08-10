@@ -262,6 +262,9 @@
             "$ref": "#/definitions/Entry"
           }
         },
+        "eventAbbreviation": {
+          "type": "string"
+        },
         "eventId": {
           "type": "string"
         },

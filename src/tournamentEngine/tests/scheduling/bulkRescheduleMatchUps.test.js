@@ -80,9 +80,9 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
     } = tournamentEngine.getEvent({ drawId });
     scheduledStructureIds.push(structureId);
     const result = competitionEngine.addSchedulingProfileRound({
+      round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
       scheduleDate: startDate,
       venueId,
-      round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
     });
     expect(result.success).toEqual(true);
   }
@@ -96,9 +96,9 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
       },
     } = tournamentEngine.getEvent({ drawId });
     const result = competitionEngine.addSchedulingProfileRound({
+      round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
       scheduleDate: startDate,
       venueId,
-      round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
     });
     expect(result.success).toEqual(true);
   }

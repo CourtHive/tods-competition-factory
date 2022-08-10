@@ -295,9 +295,9 @@ it('can clear scheduled matchUps', () => {
       },
     } = tournamentEngine.getEvent({ drawId });
     const result = competitionEngine.addSchedulingProfileRound({
+      round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
       scheduleDate: startDate,
       venueId,
-      round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
     });
     expect(result.success).toEqual(true);
   }
@@ -311,9 +311,9 @@ it('can clear scheduled matchUps', () => {
       },
     } = tournamentEngine.getEvent({ drawId });
     const result = competitionEngine.addSchedulingProfileRound({
+      round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
       scheduleDate: startDate,
       venueId,
-      round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
     });
     expect(result.success).toEqual(true);
   }

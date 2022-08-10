@@ -65,9 +65,9 @@ test.each([
         },
       } = tournamentEngine.getEvent({ drawId });
       result = competitionEngine.addSchedulingProfileRound({
+        round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
         scheduleDate: startDate,
         venueId,
-        round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
       });
       expect(result.success).toEqual(true);
     }
@@ -81,9 +81,9 @@ test.each([
         },
       } = tournamentEngine.getEvent({ drawId });
       result = competitionEngine.addSchedulingProfileRound({
+        round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
         scheduleDate: startDate,
         venueId,
-        round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
       });
       expect(result.success).toEqual(true);
     }

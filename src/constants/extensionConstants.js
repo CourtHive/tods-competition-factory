@@ -5,6 +5,7 @@ export const DISABLE_LINKS = 'disableLinks';
 export const DRAW_DELETIONS = 'drawDeletions';
 export const DRAW_PROFILE = 'drawProfile';
 export const ENTRY_PROFILE = 'entryProfile';
+export const EVENT_PROFILE = 'eventProfile';
 export const FLIGHT_PROFILE = 'flightProfile';
 export const GROUPING_ATTRIBUTE = 'groupingAttribute';
 export const LINEUPS = 'lineUps';
@@ -27,6 +28,7 @@ export const extensionConstants = {
   DRAW_DELETIONS,
   DRAW_PROFILE,
   ENTRY_PROFILE,
+  EVENT_PROFILE,
   FLIGHT_PROFILE,
   GROUPING_ATTRIBUTE,
   LINEUPS,

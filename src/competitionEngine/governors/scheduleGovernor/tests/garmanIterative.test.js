@@ -115,9 +115,9 @@ it.each([
         },
       } = tournamentEngine.getEvent({ drawId });
       const result = competitionEngine.addSchedulingProfileRound({
+        round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
         scheduleDate: startDate,
         venueId,
-        round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
       });
       expect(result.success).toEqual(true);
     }

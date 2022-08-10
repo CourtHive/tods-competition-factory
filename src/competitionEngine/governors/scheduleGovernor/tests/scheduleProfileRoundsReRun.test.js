@@ -47,9 +47,9 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
 
   // add first round of draw to scheduling profile
   let result = competitionEngine.addSchedulingProfileRound({
+    round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
     scheduleDate: startDate,
     venueId,
-    round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
   });
   expect(result.success).toEqual(true);
   result = competitionEngine.scheduleProfileRounds({
@@ -72,9 +72,9 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
 
   // add second round of draw to scheduling profile
   result = competitionEngine.addSchedulingProfileRound({
+    round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
     scheduleDate: startDate,
     venueId,
-    round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
   });
   expect(result.success).toEqual(true);
 
