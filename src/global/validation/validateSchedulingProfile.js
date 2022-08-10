@@ -48,12 +48,12 @@ export function validateSchedulingProfile({
           return false;
         }
         const {
+          roundSegment,
           tournamentId,
-          eventId,
-          drawId,
           structureId,
           roundNumber,
-          roundSegment,
+          eventId,
+          drawId,
         } = round;
 
         const rounds =
@@ -146,12 +146,12 @@ export function tournamentRelevantSchedulingIds({
   }
 
   return {
+    tournamentMap,
     tournamentIds,
+    structureIds,
     venueIds,
     eventIds,
     drawIds,
-    structureIds,
-    tournamentMap,
   };
 }
 
@@ -162,12 +162,12 @@ export function getAllRelevantSchedulingIds({ tournamentRecords = {} } = {}) {
     records.reduce(
       (aggregator, tournamentRecord) => {
         const {
+          tournamentIds,
+          tournamentMap,
+          structureIds,
           venueIds,
           eventIds,
           drawIds,
-          structureIds,
-          tournamentIds,
-          tournamentMap,
         } = tournamentRelevantSchedulingIds({
           tournamentRecord,
         });
@@ -183,20 +183,20 @@ export function getAllRelevantSchedulingIds({ tournamentRecords = {} } = {}) {
         return aggregator;
       },
       {
+        tournamentIds: [],
+        structureIds: [],
         venueIds: [],
         eventIds: [],
         drawIds: [],
-        structureIds: [],
-        tournamentIds: [],
       }
     );
 
   return {
+    tournamentsMap,
+    tournamentIds,
+    structureIds,
     venueIds,
     eventIds,
     drawIds,
-    structureIds,
-    tournamentIds,
-    tournamentsMap,
   };
 }
