@@ -29,8 +29,8 @@ export function getSchedulingProfile({ tournamentRecords }) {
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const { extension } = findExtension({
-    tournamentRecords,
     name: SCHEDULING_PROFILE,
+    tournamentRecords,
   });
 
   let schedulingProfile = extension?.value || [];

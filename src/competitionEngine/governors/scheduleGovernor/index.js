@@ -22,6 +22,7 @@ import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
 import { matchUpScheduleChange } from './matchUpScheduleChange';
 import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
+import { getRounds } from './schedulingProfile/getRounds';
 import {
   addSchedulingProfileRound,
   getSchedulingProfile,
@@ -70,9 +71,10 @@ const scheduleGovernor = {
   getEventMatchUpFormatTiming,
   removeEventMatchUpFormatTiming,
 
+  getMatchUpDailyLimitsUpdate, // document
   getMatchUpDailyLimits,
   setMatchUpDailyLimits,
-  getMatchUpDailyLimitsUpdate, // document
+  getRounds,
 
   assignMatchUpVenue,
   assignMatchUpCourt,
