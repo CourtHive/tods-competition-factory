@@ -195,9 +195,9 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
       if (matchUp) {
         const { eventId, structureId, roundNumber } = matchUp;
         let result = competitionEngine.addSchedulingProfileRound({
+          round: { tournamentId, eventId, drawId, structureId, roundNumber },
           scheduleDate: startDate,
           venueId,
-          round: { tournamentId, eventId, drawId, structureId, roundNumber },
         });
         expect(result.error).toEqual(EXISTING_ROUND);
       }

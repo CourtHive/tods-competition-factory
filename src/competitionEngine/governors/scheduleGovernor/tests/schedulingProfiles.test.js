@@ -160,9 +160,9 @@ test.each([competitionEngineSync])(
     expect(schedulingProfile).toEqual([]);
 
     result = competitionEngine.addSchedulingProfileRound({
+      round: { drawId: 'drawId' },
       scheduleDate: '2022-01-03',
       venueId: venueIds[0],
-      round: { drawId: 'drawId' },
     });
     expect(result.error).toEqual(INVALID_VALUES);
 
@@ -174,23 +174,23 @@ test.each([competitionEngineSync])(
     expect(issues).toEqual(undefined);
 
     result = competitionEngine.addSchedulingProfileRound({
+      round: { eventId, drawId },
       scheduleDate: '2022-01-13',
       venueId: venueIds[0],
-      round: { eventId, drawId },
     });
     expect(result.error).toEqual(INVALID_DATE);
 
     result = competitionEngine.addSchedulingProfileRound({
+      round: { eventId, drawId },
       scheduleDate: '2022-01-03',
       venueId: venueIds[0],
-      round: { eventId, drawId },
     });
     expect(result.error).toEqual(INVALID_VALUES);
 
     result = competitionEngine.addSchedulingProfileRound({
+      round: { tournamentId, eventId, drawId, structureId, roundNumber },
       scheduleDate: '2022-01-03',
       venueId: venueIds[0],
-      round: { tournamentId, eventId, drawId, structureId, roundNumber },
     });
     expect(result.success).toEqual(true);
 

@@ -117,16 +117,16 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
     },
   } = tournamentEngine.getEvent({ drawId });
   let result = competitionEngine.addSchedulingProfileRound({
+    round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
     scheduleDate: startDate,
     venueId,
-    round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
   });
   expect(result.success).toEqual(true);
 
   result = competitionEngine.addSchedulingProfileRound({
+    round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
     scheduleDate: startDate,
     venueId,
-    round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
   });
   expect(result.success).toEqual(true);
 
