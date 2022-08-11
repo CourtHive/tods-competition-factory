@@ -76,9 +76,9 @@ it('supports policyDefinitions in positionActions', () => {
 
   // default configuration should return all validActions
   let result = tournamentEngine.positionActions({
-    drawId,
     structureId: mainStructure.structureId,
     drawPosition,
+    drawId,
   });
   expect(result.isActiveDrawPosition).toEqual(false);
   expect(result.validActions.map((a) => a.type)).toEqual(allActions);

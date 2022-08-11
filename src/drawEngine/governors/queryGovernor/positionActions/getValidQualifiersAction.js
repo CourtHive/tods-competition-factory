@@ -15,6 +15,7 @@ import {
   QUALIFYING,
   WINNER,
 } from '../../../../constants/drawDefinitionConstants';
+import { definedAttributes } from '../../../../utilities/objects';
 
 export function getValidQualifiersAction({
   /*
@@ -24,6 +25,7 @@ export function getValidQualifiersAction({
   drawPositionInitialRounds,
   tournamentParticipants,
   positionAssignments,
+  returnParticipants,
   appliedPolicies,
   drawDefinition,
   drawPosition,
@@ -102,7 +104,8 @@ export function getValidQualifiersAction({
         );
         const { participantId, participant } = winningSide || {};
         if (participantId && !assignedParticipantIds.includes(participantId)) {
-          if (participant) qualifyingParticipants.push(participant);
+          if (participant && returnParticipants)
+            qualifyingParticipants.push(participant);
           qualifyingParticipantIds.push(participantId);
         }
       }
@@ -142,27 +145,33 @@ export function getValidQualifiersAction({
 
       qualifyingParticipantIds.push(...relevantParticipantIds);
 
-      const relevantParticipants = tournamentParticipants.filter(
-        ({ participantId }) => relevantParticipantIds.includes(participantId)
-      );
-      qualifyingParticipants.push(...relevantParticipants);
+      if (returnParticipants) {
+        const relevantParticipants = tournamentParticipants.filter(
+          ({ participantId }) => relevantParticipantIds.includes(participantId)
+        );
+        qualifyingParticipants.push(...relevantParticipants);
+      }
     }
   }
 
   // this should be "if qualifiers are available"
   if (qualifyingParticipantIds.length) {
-    validAssignmentActions.push({
-      payload: {
-        qualifyingParticipantId: undefined, // to be provided by client
-        drawPosition,
-        structureId,
-        drawId,
-      },
-      method: QUALIFYING_PARTICIPANT_METHOD,
-      type: QUALIFYING_PARTICIPANT,
-      qualifyingParticipantIds,
-      qualifyingParticipants,
-    });
+    validAssignmentActions.push(
+      definedAttributes({
+        payload: {
+          qualifyingParticipantId: undefined, // to be provided by client
+          drawPosition,
+          structureId,
+          drawId,
+        },
+        method: QUALIFYING_PARTICIPANT_METHOD,
+        type: QUALIFYING_PARTICIPANT,
+        qualifyingParticipantIds,
+        qualifyingParticipants: returnParticipants
+          ? qualifyingParticipants
+          : undefined,
+      })
+    );
   }
 
   return { validAssignmentActions };

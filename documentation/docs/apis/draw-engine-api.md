@@ -865,9 +865,10 @@ const { drawDefinition } = drawEngine.getState();
 
 ```js
 const positionActions = drawEngine.positionActions({
-  structureId,
-  drawPosition,
   policyDefinitions: positionActionsPolicy, // optional - policy defining what actions are allowed in client context
+  returnParticipants, // optional boolean; defaults to true; performance optimization when false requires client to provide participants.
+  drawPosition,
+  structureId,
 });
 
 const {

@@ -421,9 +421,8 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   expect(result.success).toEqual(true);
   expect(venueDeletionsCounter).toEqual(1);
 
-  // drawDefinition has not been modified because deleteCourt removed all scheduling information from matchUps
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
-  expect(lastUpdatedAt).toEqual(drawDefinition.updatedAt);
+  expect(lastUpdatedAt).not.toEqual(drawDefinition.updatedAt);
   lastUpdatedAt = drawDefinition.updatedAt;
 
   ({ venues } = tournamentEngine.getVenuesAndCourts());

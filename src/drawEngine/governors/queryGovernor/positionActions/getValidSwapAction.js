@@ -1,4 +1,5 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { definedAttributes } from '../../../../utilities/objects';
 import { overlap, makeDeepCopy } from '../../../../utilities';
 
 import {
@@ -13,6 +14,7 @@ export function getValidSwapAction({
   inactiveDrawPositions,
   activeDrawPositions,
   positionAssignments,
+  returnParticipants,
   byeDrawPositions,
   drawDefinition,
   isByePosition,
@@ -95,20 +97,22 @@ export function getValidSwapAction({
     const sourceDrawPositionRange =
       sourceDrawPositionRangeMap[assignment.drawPosition];
 
-    return {
+    return definedAttributes({
       ...assignment,
-      participant: makeDeepCopy(participant, false, true),
+      participant: returnParticipants
+        ? makeDeepCopy(participant, false, true)
+        : undefined,
       sourceDrawPositionRange,
-    };
+    });
   });
 
   if (availableAssignments.length) {
     const validSwapAction = {
-      type: SWAP_PARTICIPANTS,
-      method: SWAP_PARTICIPANT_METHOD,
-      availableAssignments,
-      willDisableLinks: possiblyDisablingAction,
       payload: { drawId, structureId, drawPositions: [drawPosition] },
+      willDisableLinks: possiblyDisablingAction,
+      method: SWAP_PARTICIPANT_METHOD,
+      type: SWAP_PARTICIPANTS,
+      availableAssignments,
     };
     return { validSwapAction };
   }

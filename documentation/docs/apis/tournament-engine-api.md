@@ -2558,10 +2558,11 @@ Returns valid actions for a given `drawPosition`. If params includes `matchUpId`
 
 ```js
 const positionActions = tournamentEngine.positionActions({
-  drawId,
-  structureId,
-  drawPosition,
   policyDefinitions: positionActionsPolicy, // optional - policy defining what actions are allowed in client context
+  returnParticipants, // optional boolean; defaults to true; performance optimization when false requires client to provide participants.
+  drawPosition,
+  structureId,
+  drawId,
 });
 
 const {
