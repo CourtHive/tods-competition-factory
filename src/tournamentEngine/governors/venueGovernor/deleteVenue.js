@@ -9,6 +9,7 @@ import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
+  VENUE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
 export function deleteVenue({ tournamentRecord, venueId, force }) {
@@ -41,12 +42,13 @@ export function deleteVenue({ tournamentRecord, venueId, force }) {
     deleted = true;
   });
 
-  if (deleted)
-    addNotice({
-      payload: { venueId, tournamentId: tournamentRecord.tournamentId },
-      topic: DELETE_VENUE,
-      key: venueId,
-    });
+  if (!deleted) return { error: VENUE_NOT_FOUND };
+
+  addNotice({
+    payload: { venueId, tournamentId: tournamentRecord.tournamentId },
+    topic: DELETE_VENUE,
+    key: venueId,
+  });
 
   return { ...SUCCESS };
 }

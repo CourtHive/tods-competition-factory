@@ -16,7 +16,7 @@ export function deleteVenue({ tournamentRecords, venueId, force }) {
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const result = venueDelete({ tournamentRecord, venueId, force });
     if (result.error && result.error !== VENUE_NOT_FOUND) return result;
-    deleted = true;
+    if (result.success) deleted = true;
   }
 
   checkSchedulingProfile({ tournamentRecords });
