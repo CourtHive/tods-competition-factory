@@ -62,7 +62,6 @@ const scenarios = [
 test.each(scenarios)(
   'varying court availability is properly considered',
   (scenario) => {
-    expect(true);
     const drawId = 'drawId';
     const venueId = 'venueId';
     const startDate = extractDate(new Date().toISOString());

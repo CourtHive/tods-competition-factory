@@ -725,6 +725,11 @@ export const METHOD_NOT_FOUND = {
   code: 'ERR_NOT_FOUND_METHOD',
 };
 
+export const SCHEDULED_MATCHUPS = {
+  message: 'Scheduled matchUps',
+  code: 'ERR_SCHEDULED_MATCHUPS',
+};
+
 export const errorConditionConstants = {
   CANNOT_CHANGE_WINNING_SIDE,
   CANNOT_MODIFY_TIEFORMAT,
@@ -878,6 +883,7 @@ export const errorConditionConstants = {
   POLICY_NOT_FOUND,
   SCALE_ITEM_NOT_FOUND,
   SCHEDULE_NOT_CLEARED,
+  SCHEDULED_MATCHUPS,
   SEEDSCOUNT_GREATER_THAN_DRAW_SIZE,
   STAGE_SEQUENCE_LIMIT,
   STRUCTURE_NOT_FOUND,

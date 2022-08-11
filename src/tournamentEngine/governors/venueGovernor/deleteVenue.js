@@ -1,7 +1,6 @@
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
 import { removeCourtAssignment } from './removeCourtAssignment';
 import { addNotice } from '../../../global/state/globalState';
-import { getCourts } from '../../getters/courtGetter';
 import { deletionMessage } from './deletionMessage';
 
 import { DELETE_VENUE } from '../../../constants/topicConstants';
@@ -16,9 +15,7 @@ export function deleteVenue({ tournamentRecord, venueId, force }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof venueId !== 'string') return { error: MISSING_VENUE_ID };
 
-  const { courts } = getCourts({ tournamentRecord, venueId });
-  const courtIds = courts.map((court) => court.courtId);
-  const contextFilters = { courtIds };
+  const contextFilters = { venueIds: [venueId] };
   const { matchUps: matchUpsToUnschedule } = allTournamentMatchUps({
     tournamentRecord,
     contextFilters,
