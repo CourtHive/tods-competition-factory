@@ -1,6 +1,8 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect } from 'vitest';
 
+import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { RATING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -9,10 +11,6 @@ import {
   SPLIT_SHUTTLE,
   SPLIT_WATERFALL,
 } from '../../../constants/flightConstants';
-import {
-  DRAW_DEFINITION_NOT_FOUND,
-  MISSING_EVENT,
-} from '../../../constants/errorConditionConstants';
 
 // turn on devContext to enable checking splitEntries value
 tournamentEngine.devContext(true);
@@ -145,7 +143,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   expect(result.error).toEqual(MISSING_EVENT);
 
   result = tournamentEngine.deleteFlightProfileAndFlightDraws({ eventId });
-  expect(result.error).toEqual(DRAW_DEFINITION_NOT_FOUND);
+  expect(result.success).toEqual(true);
 });
 
 it('can delete flightProfileAndFlightDraw', () => {

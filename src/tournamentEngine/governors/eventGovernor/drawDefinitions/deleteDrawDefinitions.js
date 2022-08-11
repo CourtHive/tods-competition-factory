@@ -5,6 +5,7 @@ import { checkSchedulingProfile } from '../../scheduleGovernor/schedulingProfile
 import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
 import { getDrawStructures } from '../../../../drawEngine/getters/findStructure';
 import { getPositionAssignments } from '../../../getters/getPositionAssignments';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { addEventTimeItem } from '../../tournamentGovernor/addTimeItem';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { publishEvent } from '../../publishingGovernor/publishEvent';
@@ -19,6 +20,7 @@ import {
   deleteMatchUpsNotice,
 } from '../../../../drawEngine/notifications/drawNotifications';
 
+import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
 import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -27,10 +29,6 @@ import {
   MAIN,
   QUALIFYING,
 } from '../../../../constants/drawDefinitionConstants';
-import {
-  DRAW_DEFINITION_NOT_FOUND,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../../constants/errorConditionConstants';
 import {
   DRAW_DELETIONS,
   FLIGHT_PROFILE,
@@ -51,6 +49,7 @@ export function deleteDrawDefinitions({
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  const stack = 'deleteDrawDefinitions';
 
   if (!policyDefinitions) {
     const { appliedPolicies } = getAppliedPolicies({ tournamentRecord, event });
@@ -68,15 +67,25 @@ export function deleteDrawDefinitions({
   const matchUpIds = [];
   const deletedDrawsDetail = [];
 
-  if (!event.drawDefinitions) return { error: DRAW_DEFINITION_NOT_FOUND };
+  if (!event.drawDefinitions)
+    return decorateResult({
+      result: { ...SUCCESS },
+      info: 'event has no drawDefinition',
+      stack,
+    });
 
   const eventDrawIds = event.drawDefinitions.map(({ drawId }) => drawId);
   // if drawIds were not provided, assume that the intent is to delete all drawDefinitions
   if (!drawIds.length) drawIds = eventDrawIds;
 
-  const drawDefinitionsExist =
-    drawIds.length && drawIds.every((drawId) => eventDrawIds.includes(drawId));
-  if (!drawDefinitionsExist) return { error: DRAW_DEFINITION_NOT_FOUND };
+  drawIds = drawIds.filter((drawId) => eventDrawIds.includes(drawId));
+
+  if (!drawIds.length)
+    return decorateResult({
+      result: { ...SUCCESS },
+      info: 'nothing to do; no matching drawIds in event.',
+      stack,
+    });
 
   const flightProfile = makeDeepCopy(
     getFlightProfile({ event }).flightProfile,
@@ -214,7 +223,8 @@ export function deleteDrawDefinitions({
   addDrawDeletionTelemetry({ event, deletedDrawsDetail, auditData });
 
   if (autoPublish && publishedDrawsDeleted) {
-    publishEvent({ tournamentRecord, event, policyDefinitions });
+    const result = publishEvent({ tournamentRecord, event, policyDefinitions });
+    if (result.error) console.log('publish error', result);
   }
 
   return { ...SUCCESS };

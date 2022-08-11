@@ -6,6 +6,7 @@ import {
   DRAW_ID_EXISTS,
   EXISTING_PROFILE,
 } from '../../../constants/errorConditionConstants';
+import { expect } from 'vitest';
 
 it('can create and return flighProfiles', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -79,6 +80,24 @@ it('can create and return flighProfiles', () => {
   }));
 
   expect(tournamentParticipants[0].events[0].drawIds.length).toBeGreaterThan(0);
+
+  expect(flightProfile.flights.length).toEqual(4);
+  const drawIds = flightProfile.flights.map(({ drawId }) => drawId);
+
+  result = tournamentEngine.deleteFlightAndFlightDraw({
+    drawId: drawIds[0],
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
+  expect(flightProfile.flights.length).toEqual(3);
+
+  result = tournamentEngine.deleteFlightProfileAndFlightDraws({ eventId });
+  expect(result.success).toEqual(true);
+
+  ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
+  expect(flightProfile).toBeUndefined();
 });
 
 it('can create and return flighProfiles with drawDefinitions', () => {

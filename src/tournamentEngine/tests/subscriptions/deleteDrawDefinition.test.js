@@ -4,11 +4,9 @@ import tournamentEngine from '../../sync';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { AUDIT, DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
+import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { DRAW_DELETIONS } from '../../../constants/extensionConstants';
-import {
-  DRAW_DEFINITION_NOT_FOUND,
-  MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+import { expect } from 'vitest';
 
 it('can notify subscriber when drawDefinitions are deleted', () => {
   const drawProfiles = [
@@ -59,11 +57,11 @@ it('can notify subscriber when drawDefinitions are deleted', () => {
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.deleteDrawDefinitions({
-    eventId,
     drawIds: [drawId],
     auditData,
+    eventId,
   });
-  expect(result.error).toEqual(DRAW_DEFINITION_NOT_FOUND);
+  expect(result.success).toEqual(true);
 
   expect(notificationCounter).toEqual(1);
   expect(auditTrail.flat(Infinity)[0].payload.auditData).toEqual(auditData);

@@ -1,3 +1,4 @@
+import { decorateResult } from '../../global/functions/decorateResult';
 import { getFlightProfile } from './getFlightProfile';
 import { makeDeepCopy } from '../../utilities';
 
@@ -99,5 +100,10 @@ export function getDrawDefinition({ tournamentRecord, drawId }) {
       : target;
   }, undefined);
 
-  return target ? { ...target, SUCCESS } : { error: DRAW_DEFINITION_NOT_FOUND };
+  return target
+    ? { ...target, SUCCESS }
+    : decorateResult({
+        result: { error: DRAW_DEFINITION_NOT_FOUND },
+        stack: 'getDrawDefinition',
+      });
 }
