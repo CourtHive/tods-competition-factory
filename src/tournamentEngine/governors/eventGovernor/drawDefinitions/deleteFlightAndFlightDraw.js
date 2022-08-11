@@ -23,21 +23,14 @@ export function deleteFlightAndFlightDraw({
 
   const { flightProfile } = getFlightProfile({ event });
 
-  const dependentDrawIds =
-    flightProfile?.links
-      ?.filter((link) => link.source?.drawId === drawId)
-      ?.map((link) => link.target?.drawId)
-      ?.filter(Boolean) || [];
-
   if (flightProfile) {
     const flight = flightProfile.flights?.find(
       (flight) => flight.drawId === drawId
     );
 
-    if (flight || dependentDrawIds.length) {
+    if (flight) {
       const flights = flightProfile.flights.filter((flight) => {
-        const included = dependentDrawIds.includes(flight.drawId);
-        return flight.drawId !== drawId && !included;
+        return flight.drawId !== drawId;
       });
 
       const extension = {
@@ -48,27 +41,24 @@ export function deleteFlightAndFlightDraw({
         },
       };
 
-      // TODO: this cleanup is not iterative
-      if (dependentDrawIds.length && flightProfile.links) {
-        const links = flightProfile.links.filter(
-          (link) => !dependentDrawIds.includes(link.target?.drawId)
-        );
-        extension.value.links = links;
-      }
-
       addEventExtension({ event, extension });
     }
   }
 
-  const result = deleteDrawDefinitions({
-    drawIds: [drawId, ...dependentDrawIds],
-    eventId: event.eventId,
-    tournamentRecord,
-    autoPublish,
-    auditData,
-    event,
-  });
-  if (result.error) return result;
+  const drawWasGenerated = event.drawDefinitions?.find(
+    (drawDefinition) => drawDefinition.drawId === drawId
+  );
+  if (drawWasGenerated) {
+    const result = deleteDrawDefinitions({
+      drawIds: [drawId],
+      eventId: event.eventId,
+      tournamentRecord,
+      autoPublish,
+      auditData,
+      event,
+    });
+    if (result.error) return result;
+  }
 
   return refreshEventDrawOrder({ tournamentRecord, event });
 }
