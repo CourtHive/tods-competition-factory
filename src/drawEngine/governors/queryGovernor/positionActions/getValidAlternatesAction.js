@@ -1,4 +1,5 @@
 import { getFlightProfile } from '../../../../tournamentEngine/getters/getFlightProfile';
+import { definedAttributes } from '../../../../utilities/objects';
 import { unique } from '../../../../utilities';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
@@ -22,6 +23,7 @@ export function getValidAlternatesAction({
   possiblyDisablingAction,
   activeDrawPositions,
   positionAssignments,
+  returnParticipants,
   appliedPolicies,
   drawDefinition,
   drawPosition,
@@ -89,28 +91,30 @@ export function getValidAlternatesAction({
       );
     }
   }
-  const availableAlternates = tournamentParticipants?.filter((participant) =>
-    availableAlternatesParticipantIds.includes(participant.participantId)
-  );
-  availableAlternates.forEach((alternate) => {
+  const availableAlternates = returnParticipants
+    ? tournamentParticipants?.filter((participant) =>
+        availableAlternatesParticipantIds.includes(participant.participantId)
+      )
+    : undefined;
+  availableAlternates?.forEach((alternate) => {
     const entry = (drawDefinition.entries || []).find(
       (entry) => entry.participantId === alternate.participantId
     );
     alternate.entryPosition = entry?.entryPosition;
   });
-  availableAlternates.sort(
+  availableAlternates?.sort(
     (a, b) => (a.entryPosition || 9999) - (b.entryPosition || 9999)
   );
 
   if (availableAlternatesParticipantIds.length) {
-    const validAlternatesAction = {
+    const validAlternatesAction = definedAttributes({
       payload: { drawId, structureId, drawPosition },
       willDisableLinks: possiblyDisablingAction,
       method: ALTERNATE_PARTICIPANT_METHOD,
       availableAlternatesParticipantIds,
       type: ALTERNATE_PARTICIPANT,
       availableAlternates,
-    };
+    });
     return { validAlternatesAction };
   }
 

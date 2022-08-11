@@ -2,6 +2,7 @@
 import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getNumericSeedValue } from '../../../getters/getNumericSeedValue';
 import { getParticipantId } from '../../../../global/functions/extractors';
+import { definedAttributes } from '../../../../utilities/objects';
 import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { unique } from '../../../../utilities';
 
@@ -21,6 +22,7 @@ export function getValidAssignmentActions({
   tournamentParticipants,
   isWinRatioFedStructure,
   positionAssignments,
+  returnParticipants,
   appliedPolicies,
   drawDefinition,
   isByePosition,
@@ -63,10 +65,10 @@ export function getValidAssignmentActions({
 
   if (!isByePosition) {
     validAssignmentActions.push({
-      type: ASSIGN_BYE,
-      method: ASSIGN_BYE_METHOD,
-      willDisableLinks: possiblyDisablingAction,
       payload: { drawId, structureId, drawPosition, isPositionAction: true },
+      willDisableLinks: possiblyDisablingAction,
+      method: ASSIGN_BYE_METHOD,
+      type: ASSIGN_BYE,
     });
   }
 
@@ -96,10 +98,11 @@ export function getValidAssignmentActions({
         )
     );
 
-    const participantsAvailable = tournamentParticipants?.filter(
-      (participant) =>
-        availableParticipantIds?.includes(participant.participantId)
-    );
+    const participantsAvailable = returnParticipants
+      ? tournamentParticipants?.filter((participant) =>
+          availableParticipantIds?.includes(participant.participantId)
+        )
+      : undefined;
 
     participantsAvailable?.forEach((participant) => {
       const entry = (drawDefinition.entries || []).find(
@@ -108,14 +111,16 @@ export function getValidAssignmentActions({
       participant.entryPosition = entry?.entryPosition;
     });
     if (participantsAvailable?.length) {
-      validAssignmentActions.push({
-        type: ASSIGN_PARTICIPANT,
-        method: ASSIGN_PARTICIPANT_METHOD,
-        availableParticipantIds,
-        participantsAvailable,
-        willDisableLinks: possiblyDisablingAction,
-        payload: { drawId, structureId, drawPosition },
-      });
+      validAssignmentActions.push(
+        definedAttributes({
+          payload: { drawId, structureId, drawPosition },
+          willDisableLinks: possiblyDisablingAction,
+          method: ASSIGN_PARTICIPANT_METHOD,
+          type: ASSIGN_PARTICIPANT,
+          availableParticipantIds,
+          participantsAvailable,
+        })
+      );
     }
     return { validAssignmentActions };
   }
@@ -149,19 +154,22 @@ export function getValidAssignmentActions({
     }
 
     // add structureId and drawPosition to the payload so the client doesn't need to discover
-    const participantsAvailable = tournamentParticipants?.filter(
-      (participant) =>
-        availableParticipantIds.includes(participant.participantId)
-    );
+    const participantsAvailable = returnParticipants
+      ? tournamentParticipants?.filter((participant) =>
+          availableParticipantIds.includes(participant.participantId)
+        )
+      : undefined;
     if (participantsAvailable?.length) {
-      validAssignmentActions.push({
-        type: ASSIGN_PARTICIPANT,
-        method: ASSIGN_PARTICIPANT_METHOD,
-        availableParticipantIds,
-        participantsAvailable,
-        willDisableLinks: possiblyDisablingAction,
-        payload: { drawId, structureId, drawPosition },
-      });
+      validAssignmentActions.push(
+        definedAttributes({
+          payload: { drawId, structureId, drawPosition },
+          willDisableLinks: possiblyDisablingAction,
+          method: ASSIGN_PARTICIPANT_METHOD,
+          type: ASSIGN_PARTICIPANT,
+          availableParticipantIds,
+          participantsAvailable,
+        })
+      );
     }
   }
 

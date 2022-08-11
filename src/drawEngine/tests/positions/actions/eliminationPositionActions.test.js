@@ -54,9 +54,9 @@ it('can return accurate position details when requesting positionActions', () =>
 
   let drawPosition = 1;
   let result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isActiveDrawPosition).toEqual(false);
   expect(result.isDrawPosition).toEqual(true);
@@ -85,9 +85,9 @@ it('can return accurate position details when requesting positionActions', () =>
 
   drawPosition = 2;
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isActiveDrawPosition).toEqual(false);
   expect(result.isDrawPosition).toEqual(true);
@@ -95,17 +95,17 @@ it('can return accurate position details when requesting positionActions', () =>
 
   drawPosition = 0;
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.error).toEqual(INVALID_DRAW_POSITION);
 
   drawPosition = 40;
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.error).toEqual(INVALID_DRAW_POSITION);
 });
@@ -113,8 +113,8 @@ it('can return accurate position details when requesting positionActions', () =>
 it('returns correct positionActions for participants in completed matchUps', () => {
   const drawProfiles = [
     {
-      drawSize: 32,
       participantsCount: 32,
+      drawSize: 32,
       outcomes: [
         {
           roundNumber: 1,
@@ -147,9 +147,9 @@ it('returns correct positionActions for participants in completed matchUps', () 
   expect(targetMatchUp.matchUpStatus).toEqual(COMPLETED);
 
   let result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isActiveDrawPosition).toEqual(true);
   expect(result.isDrawPosition).toEqual(true);
@@ -171,9 +171,9 @@ it('returns correct positionActions for participants in completed matchUps', () 
   expect(targetMatchUp.matchUpStatus).toEqual(COMPLETED);
 
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isActiveDrawPosition).toEqual(true);
   expect(result.isDrawPosition).toEqual(true);
@@ -195,9 +195,9 @@ it('returns correct positionActions for participants in completed matchUps', () 
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
 
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isActiveDrawPosition).toEqual(false);
   expect(result.isDrawPosition).toEqual(true);
@@ -256,9 +256,9 @@ it('returns correct positionActions for BYE positions where paired participants 
   expect(targetMatchUp.matchUpStatus).toEqual(COMPLETED);
 
   let result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isActiveDrawPosition).toEqual(true);
   expect(result.isDrawPosition).toEqual(true);
@@ -280,9 +280,9 @@ it('returns correct positionActions for BYE positions where paired participants 
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isActiveDrawPosition).toEqual(true);
   expect(result.isDrawPosition).toEqual(true);
@@ -304,9 +304,9 @@ it('returns correct positionActions for BYE positions where paired participants 
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isActiveDrawPosition).toEqual(false);
   expect(result.isDrawPosition).toEqual(true);
@@ -329,9 +329,9 @@ it('returns correct positionActions for BYE positions where paired participants 
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isActiveDrawPosition).toEqual(false);
   expect(result.isDrawPosition).toEqual(true);

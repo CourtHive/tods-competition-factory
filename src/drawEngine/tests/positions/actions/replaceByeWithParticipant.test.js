@@ -65,6 +65,22 @@ it('supports replacing a BYE with a participant (DA or ALT)', () => {
   );
   expect(assignment.bye).toEqual(true);
 
+  // test that availableAlternates will not be returned with { returnParticipants: false }
+  result = tournamentEngine.positionActions({
+    returnParticipants: false,
+    drawPosition,
+    structureId,
+    drawId,
+  });
+  options = result.validActions?.map((validAction) => validAction.type);
+  expect(options.includes(BYE)).toEqual(false);
+  expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true);
+
+  option = result.validActions.find(
+    (action) => action.type === ALTERNATE_PARTICIPANT
+  );
+  expect(option.availableAlternates).toBeUndefined();
+
   // Now test that a BYE can be replaced
   result = tournamentEngine.positionActions({
     drawId,
@@ -78,6 +94,7 @@ it('supports replacing a BYE with a participant (DA or ALT)', () => {
   option = result.validActions.find(
     (action) => action.type === ALTERNATE_PARTICIPANT
   );
+  expect(option.availableAlternates.length).toEqual(3);
 
   const alternateParticipantId = option.availableAlternatesParticipantIds[0];
   payload = { ...option.payload, alternateParticipantId };
