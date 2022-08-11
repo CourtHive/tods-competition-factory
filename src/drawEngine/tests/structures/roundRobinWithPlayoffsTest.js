@@ -6,6 +6,7 @@ import matchUpEngine from '../../../matchUpEngine/sync';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 
+import { SINGLES } from '../../../constants/eventConstants';
 import {
   MAIN,
   PLAY_OFF,
@@ -13,8 +14,6 @@ import {
   WATERFALL,
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../../constants/drawDefinitionConstants';
-
-import { SINGLES } from '../../../constants/eventConstants';
 
 export function roundRobinWithPlayoffsTest({
   drawSize,

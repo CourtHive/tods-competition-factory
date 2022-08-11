@@ -29,8 +29,8 @@ export function getSchedulingProfile({ tournamentRecords }) {
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const { extension } = findExtension({
-    tournamentRecords,
     name: SCHEDULING_PROFILE,
+    tournamentRecords,
   });
 
   let schedulingProfile = extension?.value || [];
@@ -90,7 +90,9 @@ export function addSchedulingProfileRound({
   venueId,
   round,
 }) {
-  if (!isValidDateString(scheduleDate)) return { error: INVALID_DATE };
+  if (!isValidDateString(scheduleDate)) {
+    return { error: INVALID_DATE };
+  }
 
   const { extension } = findExtension({
     tournamentRecords,
@@ -107,8 +109,9 @@ export function addSchedulingProfileRound({
       tournamentRecords,
     });
     const dateObject = new Date(scheduleDate);
-    if (dateObject < new Date(startDate) || dateObject > new Date(endDate))
+    if (dateObject < new Date(startDate) || dateObject > new Date(endDate)) {
       return { error: INVALID_DATE };
+    }
 
     dateProfile = { scheduleDate, venues: [] };
     schedulingProfile.push(dateProfile);

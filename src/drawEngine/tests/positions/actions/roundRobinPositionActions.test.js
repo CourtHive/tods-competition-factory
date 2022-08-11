@@ -37,9 +37,9 @@ it('can return accurate position details when requesting positionActions', () =>
 
   let drawPosition = 1;
   let result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isActiveDrawPosition).toEqual(false);
   expect(result.isDrawPosition).toEqual(true);
@@ -56,9 +56,9 @@ it('can return accurate position details when requesting positionActions', () =>
 
   drawPosition = 2;
   result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isActiveDrawPosition).toEqual(false);
   expect(result.isDrawPosition).toEqual(true);
@@ -72,4 +72,25 @@ it('can return accurate position details when requesting positionActions', () =>
   // expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true); temporarily disabled
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
   expect(options.includes(WITHDRAW_PARTICIPANT)).toEqual(false);
+
+  drawPosition = 6;
+  result = tournamentEngine.positionActions({
+    drawPosition,
+    structureId,
+    drawId,
+  });
+  let { method, payload } = result.validActions.find(
+    ({ type }) => type === ASSIGN_BYE
+  );
+  result = tournamentEngine[method](payload);
+  let m = tournamentEngine
+    .allTournamentMatchUps()
+    .matchUps.filter((x) => x.drawPositions.includes(6));
+  expect(
+    m
+      .map((x) => x.sides)
+      .flat(Infinity)
+      .filter((y) => y.drawPosition === 6)
+      .map((z) => z.bye)
+  ).toEqual([true, true, true]);
 });

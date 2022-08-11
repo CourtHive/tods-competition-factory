@@ -12,6 +12,7 @@ import { removeEventMatchUpFormatTiming } from './removeEventMatchUpFormatTiming
 import { toggleParticipantCheckInState } from './toggleParticipantCheckInState';
 import { generateVirtualCourts } from './jinnScheduler/generateVirtualCourts';
 import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
+import { getRounds, getProfileRounds } from './schedulingProfile/getRounds';
 import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
 import { bulkUpdateCourtAssignments } from './bulkUpdateCourtAssignments';
 import { scheduleMatchUps } from './scheduleMatchUps/scheduleMatchUps';
@@ -70,9 +71,11 @@ const scheduleGovernor = {
   getEventMatchUpFormatTiming,
   removeEventMatchUpFormatTiming,
 
+  getMatchUpDailyLimitsUpdate, // document
   getMatchUpDailyLimits,
   setMatchUpDailyLimits,
-  getMatchUpDailyLimitsUpdate, // document
+  getProfileRounds,
+  getRounds,
 
   assignMatchUpVenue,
   assignMatchUpCourt,
