@@ -1,10 +1,10 @@
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
+import { definedAttributes } from '../../../../utilities/objects';
 import { getSchedulingProfile } from './schedulingProfile';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';
 import drawDefinitionConstants from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { definedAttributes } from '../../../../utilities/objects';
 
 const { stageOrder } = drawDefinitionConstants;
 

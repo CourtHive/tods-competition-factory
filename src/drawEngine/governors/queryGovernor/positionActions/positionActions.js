@@ -10,6 +10,7 @@ import { getValidQualifiersAction } from './getValidQualifiersAction';
 import { getValidAssignmentActions } from './participantAssignments';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
 import { getStageEntries } from '../../../getters/stageGetter';
+import { findStructure } from '../../../getters/findStructure';
 import { isCompletedStructure } from '../structureActions';
 import { getValidSwapAction } from './getValidSwapAction';
 import { matchUpActions } from '../matchUpActions';
@@ -69,13 +70,21 @@ export function positionActions(params) {
     tournamentRecord,
     drawDefinition,
     drawPosition,
-    structureId,
     event,
   } = params;
 
   if (!event) return { error: MISSING_EVENT };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!structureId) return { error: MISSING_STRUCTURE_ID };
+  if (!params.structureId) return { error: MISSING_STRUCTURE_ID };
+
+  const result = findStructure({
+    structureId: params.structureId,
+    drawDefinition,
+  });
+  if (result.error) return result;
+
+  const structure = result.containingStructure || result.structure;
+  const structureId = structure.structureId;
 
   const {
     drawPositionInitialRounds,
@@ -83,11 +92,9 @@ export function positionActions(params) {
     inactiveDrawPositions,
     activeDrawPositions,
     byeDrawPositions,
-    structure,
     isAdHoc,
     error,
   } = getStructureDrawPositionProfiles({
-    findContainer: true, // if a structure is an ITEM, return its parent CONTAINER
     tournamentRecord,
     drawDefinition,
     structureId,
