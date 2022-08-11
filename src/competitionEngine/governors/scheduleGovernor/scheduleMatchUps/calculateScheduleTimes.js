@@ -30,9 +30,9 @@ import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorCondition
  */
 export function calculateScheduleTimes({
   calculateStartTimeFromCourts = true,
+  defaultRecoveryMinutes = 0,
+  averageMatchUpMinutes = 90,
   remainingScheduleTimes,
-  defaultRecoveryMinutes,
-  averageMatchUpMinutes,
   clearScheduleDates,
   tournamentRecords,
   periodLength,
