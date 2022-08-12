@@ -112,7 +112,7 @@ const scenarios = [
     scenarioNumber: 1,
     tieFormat: tieFormats.Shuffle,
     outcome: {
-      score: { sets: [{ side1Score: 2, side2Score: 1 }] },
+      score: { sets: [{ side1Score: 2, side2Score: 1, winningSide: 1 }] },
       winningSide: 1,
     },
     collectionValues: {
@@ -123,7 +123,7 @@ const scenarios = [
     scoreGoal: {
       scoreStringSide1: '18-9',
       scoreStringSide2: '9-18',
-      sets: [{ side1Score: 18, side2Score: 9 }],
+      sets: [{ side1Score: 18, side2Score: 9, winningSide: 1 }],
     },
     matchUpStatusGoal: COMPLETED,
     secondRoundDrawPositions: [1, 3],
@@ -132,7 +132,7 @@ const scenarios = [
     scenarioNumber: 2,
     tieFormat: tieFormats.Shuffle,
     outcome: {
-      score: { sets: [{ side1Score: 2, side2Score: 1 }] },
+      score: { sets: [{ side1Score: 2, side2Score: 1, winningSide: 1 }] },
       winningSide: 1,
     },
     collectionValues: {
@@ -152,7 +152,7 @@ const scenarios = [
     scenarioNumber: 3,
     tieFormat: tieFormats.Mixup,
     outcome: {
-      score: { sets: [{ side1Score: 2, side2Score: 1 }] },
+      score: { sets: [{ side1Score: 2, side2Score: 1, winningSide: 1 }] },
       winningSide: 1,
     },
     collectionValues: {
@@ -193,7 +193,7 @@ const scenarios = [
     scenarioNumber: 4,
     tieFormat: tieFormats.collectionAggregate,
     outcome: {
-      score: { sets: [{ side1Score: 2, side2Score: 1 }] },
+      score: { sets: [{ side1Score: 2, side2Score: 1, winningSide: 1 }] },
       winningSide: 1,
     },
     collectionValues: {
@@ -204,7 +204,7 @@ const scenarios = [
     scoreGoal: {
       scoreStringSide1: '13-6',
       scoreStringSide2: '6-13',
-      sets: [{ side1Score: 13, side2Score: 6 }],
+      sets: [{ side1Score: 13, side2Score: 6, winningSide: 1 }],
     },
     matchUpStatusGoal: COMPLETED,
     secondRoundDrawPositions: [1, 3],

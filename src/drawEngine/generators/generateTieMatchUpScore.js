@@ -96,9 +96,23 @@ export function generateTieMatchUpScore({
     } else if (scoreValue) {
       collectionMatchUps.forEach((matchUp) => {
         matchUp.score?.sets?.forEach((set) => {
-          const { side1Score = 0, side2Score = 0 } = set;
-          sideMatchUpValues[0] += side1Score;
-          sideMatchUpValues[1] += side2Score;
+          const {
+            side1TiebreakScore = 0,
+            side2TiebreakScore = 0,
+            side1Score = 0,
+            side2Score = 0,
+          } = set;
+          if (set.winningSide || matchUp.winningSide) {
+            if (side1Score || side2Score) {
+              sideMatchUpValues[0] += side1Score;
+              sideMatchUpValues[1] += side2Score;
+            } else if (
+              (side1TiebreakScore || side2TiebreakScore) &&
+              set.winningSide
+            ) {
+              sideMatchUpValues[set.winningSide - 1] += 1;
+            }
+          }
         });
       });
     } else if (Array.isArray(collectionValueProfiles)) {
@@ -243,6 +257,8 @@ export function generateTieMatchUpScore({
       }
     }
   }
+
+  if (winningSide) set.winningSide = winningSide;
 
   return {
     scoreStringSide1,
