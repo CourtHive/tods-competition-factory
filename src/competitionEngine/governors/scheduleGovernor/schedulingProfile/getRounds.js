@@ -2,15 +2,15 @@ import { validateSchedulingProfile } from '../../../../global/validation/validat
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { definedAttributes } from '../../../../utilities/objects';
 import { getSchedulingProfile } from './schedulingProfile';
+import { chunkArray } from '../../../../utilities';
 
+import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
 import drawDefinitionConstants from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
   NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import { chunkArray } from '../../../../utilities';
-import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
 
 const { stageOrder } = drawDefinitionConstants;
 
@@ -101,7 +101,7 @@ function getRoundProfile(matchUps) {
     ).length || 0;
   const unscheduledCount = matchUpsCount - scheduledCount;
   const incompleteCount = matchUpsCount - scheduledCount;
-  const isScheduled = matchUpsCount - scheduledCount;
+  const isScheduled = matchUpsCount === scheduledCount;
   return {
     unscheduledCount,
     incompleteCount,
@@ -116,9 +116,9 @@ function getRoundProfile(matchUps) {
 export function getRounds({
   excludedScheduledRounds,
   excludeCompletedRounds,
-  withSplitRounds,
   schedulingProfile,
   tournamentRecords,
+  withSplitRounds,
 }) {
   if (
     typeof tournamentRecords !== 'object' ||
