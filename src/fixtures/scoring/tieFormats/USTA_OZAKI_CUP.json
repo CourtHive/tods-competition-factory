@@ -4,7 +4,7 @@
   "collectionDefinitions": [
     {
       "category": { "ageCategoryCode": "18U" },
-      "matchUpFormat": "SET3-S:6/TB10-F:TB10",
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
       "collectionName": "18U Boys Singles",
       "matchUpType": "SINGLES",
       "matchUpCount": 3,
@@ -13,7 +13,7 @@
     },
     {
       "category": { "ageCategoryCode": "18U" },
-      "matchUpFormat": "SET3-S:6/TB10-F:TB10",
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
       "collectionName": "18U Girls Singles",
       "matchUpType": "SINGLES",
       "gender": "FEMALE",
@@ -49,7 +49,7 @@
     },
     {
       "category": { "ageCategoryCode": "16U" },
-      "matchUpFormat": "SET3-S:6/TB10-F:TB10",
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
       "collectionName": "16U Boys Singles",
       "matchUpType": "SINGLES",
       "matchUpCount": 3,
@@ -58,7 +58,7 @@
     },
     {
       "category": { "ageCategoryCode": "16U" },
-      "matchUpFormat": "SET3-S:6/TB10-F:TB10",
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
       "collectionName": "16U Girls Singles",
       "matchUpType": "SINGLES",
       "gender": "FEMALE",
@@ -94,7 +94,7 @@
     },
     {
       "category": { "ageCategoryCode": "14U" },
-      "matchUpFormat": "SET3-S:6/TB10-F:TB10",
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
       "collectionName": "14U Boys Singles",
       "matchUpType": "SINGLES",
       "matchUpCount": 3,
@@ -103,7 +103,7 @@
     },
     {
       "category": { "ageCategoryCode": "14U" },
-      "matchUpFormat": "SET3-S:6/TB10-F:TB10",
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
       "collectionName": "14U Girls Singles",
       "matchUpType": "SINGLES",
       "gender": "FEMALE",
@@ -139,7 +139,7 @@
     },
     {
       "category": { "ageCategoryCode": "12U" },
-      "matchUpFormat": "SET3-S:6/TB10-F:TB10",
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
       "collectionName": "12U Boys Singles",
       "matchUpType": "SINGLES",
       "matchUpCount": 3,
@@ -148,7 +148,7 @@
     },
     {
       "category": { "ageCategoryCode": "12U" },
-      "matchUpFormat": "SET3-S:6/TB10-F:TB10",
+      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
       "collectionName": "12U Girls Singles",
       "matchUpType": "SINGLES",
       "gender": "FEMALE",
