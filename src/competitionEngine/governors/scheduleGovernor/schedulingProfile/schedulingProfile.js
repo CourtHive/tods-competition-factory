@@ -20,6 +20,7 @@ import {
   INVALID_DATE,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 
 export function getSchedulingProfile({ tournamentRecords }) {
   if (
@@ -93,6 +94,7 @@ export function addSchedulingProfileRound({
   if (!isValidDateString(scheduleDate)) {
     return { error: INVALID_DATE };
   }
+  const stack = 'addSchedulingProfileRound';
 
   const { extension } = findExtension({
     tournamentRecords,
@@ -132,13 +134,20 @@ export function addSchedulingProfileRound({
     Object.keys(r)
       .filter((key) => !excludeKeys.includes(key))
       .sort()
-      .map((k) => r[k])
+      .map((k) => {
+        if (typeof r[k] === 'object') {
+          return hashRound(r[k]);
+        }
+        return r[k];
+      })
+      .flat()
       .join('|');
 
   const roundExists = venueOnDate.rounds.find(
     (existingRound) => hashRound(existingRound) === hashRound(round)
   );
-  if (roundExists) return { error: EXISTING_ROUND };
+  if (roundExists)
+    return decorateResult({ result: { error: EXISTING_ROUND }, stack });
   venueOnDate.rounds.push(round);
 
   const result = setSchedulingProfile({ tournamentRecords, schedulingProfile });

@@ -18,6 +18,7 @@ const tieKeys = [
     collectionsCount: 3,
   },
   { key: tieFormatConstants.USTA_BREWER_CUP, collectionsCount: 6 },
+  { key: tieFormatConstants.USTA_OZAKI_CUP, collectionsCount: 20 },
   { key: tieFormatConstants.USTA_COLLEGE, collectionsCount: 2 },
   { key: tieFormatConstants.USTA_GOLD_TEAM_CHALLENGE, collectionsCount: 5 },
   { key: tieFormatConstants.USTA_INTERSECTIONAL, collectionsCount: 5 },
