@@ -52,7 +52,7 @@ if (process.env.NODE_ENV === 'production') {
   ${fileImportRoot}.development.cjs.js')
 }
 `;
-  return fs.outputFile(`${distPath}${subFolder}/index.js;`, body);
+  return fs.outputFile(`${distPath}${subFolder}/index.js`, body);
 }
 
 function createExport({ input, folder }) {
