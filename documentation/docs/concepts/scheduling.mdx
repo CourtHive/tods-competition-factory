@@ -165,7 +165,7 @@ The highest level auto-scheduling method is `competitionEngine.scheduleProfileRo
 13. Filter out `matchUps` which include participants who have reached daily limits
 14. Loop through available `scheduleTimes` and build up mapping of `matchUpIds` to `scheduleTimes`
     - Defer scheduling of matchUps where `timeAfterRecovery` has not been reached
-    - Defer scheduling of matchUps where `personRequests` include `{ requestType: DO_NO_SCHEDULE }` conflicts
+    - Defer scheduling of matchUps where `personRequests` include `{ requestType: DO_NOT_SCHEDULE }` conflicts
 15. Group `matchUpIds` by **eventId|drawId|structureId** and assign `scheduleTimes` to `matchUps`
 16. Return array of `remainingScheduleTimes` from current iteration to seed next iteration of virtualCourtBookings
 
