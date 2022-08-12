@@ -1,31 +1,63 @@
+import { validateSchedulingProfile } from '../../../../global/validation/validateSchedulingProfile';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { definedAttributes } from '../../../../utilities/objects';
 import { getSchedulingProfile } from './schedulingProfile';
 
-import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';
 import drawDefinitionConstants from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import {
+  MISSING_TOURNAMENT_RECORDS,
+  NOT_FOUND,
+} from '../../../../constants/errorConditionConstants';
+import { chunkArray } from '../../../../utilities';
+import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
 
 const { stageOrder } = drawDefinitionConstants;
 
-export function getProfileRounds({ tournamentRecords }) {
-  const { schedulingProfile, error } = getSchedulingProfile({
-    tournamentRecords,
-  });
-  if (error) return { error };
+export function getProfileRounds({ tournamentRecords, schedulingProfile }) {
+  if (schedulingProfile) {
+    const profileValidity = validateSchedulingProfile({
+      tournamentRecords,
+      schedulingProfile,
+    });
+
+    if (profileValidity.error) return profileValidity;
+  }
+
+  if (!schedulingProfile) {
+    const result = getSchedulingProfile({ tournamentRecords });
+    if (result.error) return result;
+    schedulingProfile = result.schedulingProfile;
+  }
+
+  if (!schedulingProfile) return { error: NOT_FOUND };
+
+  const segmentedRounds = {};
 
   const profileRounds = schedulingProfile
     .map(({ venues }) =>
-      venues.map(({ rounds }) => rounds.map((round) => getRef(round)))
+      venues.map(({ rounds }) =>
+        rounds.map((round) => {
+          const roundRef = getRef(round);
+          if (roundRef.roundSegment?.segmentsCount) {
+            segmentedRounds[roundRef.ref] = roundRef.roundSegment.segmentsCount;
+          }
+          return definedAttributes({
+            ...roundRef,
+            ref: undefined,
+          });
+        })
+      )
     )
     .flat(Infinity);
-  return { profileRounds };
+
+  return { profileRounds, segmentedRounds };
 }
 
 function getRef(obj) {
   const {
     containerStructureId,
-    segmentNumber,
+    roundSegment,
     isRoundRobin,
     tournamentId,
     roundNumber,
@@ -46,7 +78,7 @@ function getRef(obj) {
 
   return definedAttributes({
     ref,
-    segmentNumber,
+    roundSegment,
     tournamentId,
     eventId,
     drawId,
@@ -55,36 +87,58 @@ function getRef(obj) {
   });
 }
 
-/*
-export function roundIsScheduled({ matchUp, schedulingProfile }) {
-  const ref = getRef(matchUp).ref;
-  return !!schedulingProfile.find((profile) =>
-    profile.venues.find((venue) =>
-      venue.rounds.find((round) => {
-        const roundRef = getRef(round).ref;
-        if (roundRef === ref) {
-          if (!round.roundSegment) return true;
-        }
-      })
-    )
-  );
+function getRoundProfile(matchUps) {
+  const matchUpsCount = matchUps.length;
+  const completedCount =
+    matchUps.filter(
+      ({ winningSide, matchUpStatus }) =>
+        winningSide || completedMatchUpStatuses.includes(matchUpStatus)
+    ).length || 0;
+  const incompleteCount = matchUpsCount - scheduledCount;
+  const isComplete = matchUpsCount === completedCount;
+  const scheduledCount =
+    matchUps.filter(
+      ({ schedule }) => schedule?.scheduledDate && schedule?.scheduledTime
+    ).length || 0;
+  const unscheduledCount = matchUpsCount - scheduledCount;
+  const isScheduled = matchUpsCount - scheduledCount;
+  return {
+    unscheduledCount,
+    incompleteCount,
+    scheduledCount,
+    completedCount,
+    matchUpsCount,
+    isScheduled,
+    isComplete,
+  };
 }
-*/
 
-export function getRounds({ tournamentRecords }) {
+export function getRounds({
+  excludedScheduledRounds,
+  excludeCompletedRounds,
+  showSegmentedRounds,
+  schedulingProfile,
+  tournamentRecords,
+}) {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
 
-  const matchUps =
+  const { segmentedRounds } =
+    schedulingProfile || excludeCompletedRounds || showSegmentedRounds
+      ? getProfileRounds({ tournamentRecords, schedulingProfile })
+      : {};
+
+  const allMatchUps =
     allCompetitionMatchUps({ tournamentRecords })?.matchUps || [];
 
-  const rounds = Object.values(
-    matchUps.reduce((rounds, matchUp) => {
+  let rounds = Object.values(
+    allMatchUps.reduce((rounds, matchUp) => {
       const ref = getRef(matchUp).ref;
-      const roundMatchUps = [...(rounds[ref]?.roundMatchUps ?? []), matchUp];
+      const segmentsCount = segmentedRounds?.[ref];
+      const matchUps = [...(rounds[ref]?.matchUps ?? []), matchUp];
       const {
         containerStructureId,
         drawId,
@@ -112,11 +166,12 @@ export function getRounds({ tournamentRecords }) {
           eventId,
           eventName,
           matchUpType,
-          roundMatchUps,
+          matchUps,
           roundName,
           roundNumber,
           roundOffset,
           stageSequence,
+          segmentsCount,
           structureId: relevantStructureId,
           structureName,
           tournamentId,
@@ -125,15 +180,61 @@ export function getRounds({ tournamentRecords }) {
     }, {})
   )
     .map((round) => {
-      const matchUpsCount = round.roundMatchUps?.length ?? 0;
       const { minFinishingSum, winnerFinishingPositionRange } =
-        getFinishingPositionDetails(round.roundMatchUps);
-      return {
+        getFinishingPositionDetails(round.matchUps);
+      const segmentsCount = round.segmentsCount;
+      if (segmentsCount) {
+        const chunkSize = round.matchUps.length / segmentsCount;
+        const sortedMatchUps = chunkArray(
+          round.matchUps.sort((a, b) => a.roundPosition - b.roundPosition),
+          chunkSize
+        );
+        return sortedMatchUps.map((matchUps, i) => {
+          const {
+            unscheduledCount,
+            incompleteCount,
+            matchUpsCount,
+            isScheduled,
+            isComplete,
+          } = getRoundProfile(matchUps);
+          return definedAttributes({
+            ...round,
+            roundSegment: { segmentsCount, segmentNumber: i + 1 },
+            winnerFinishingPositionRange,
+            unscheduledCount,
+            incompleteCount,
+            minFinishingSum,
+            matchUpsCount,
+            isScheduled,
+            isComplete,
+            matchUps,
+          });
+        });
+      }
+
+      const {
+        unscheduledCount,
+        incompleteCount,
+        matchUpsCount,
+        isScheduled,
+        isComplete,
+      } = getRoundProfile(round.matchUps);
+      return definedAttributes({
         ...round,
         winnerFinishingPositionRange,
+        unscheduledCount,
+        incompleteCount,
         minFinishingSum,
         matchUpsCount,
-      };
+        isScheduled,
+        isComplete,
+      });
+    })
+    .flat()
+    .filter(({ isComplete, isScheduled }) => {
+      const keepComplete = !excludeCompletedRounds || !isComplete;
+      const keepScheduled = !excludedScheduledRounds || !isScheduled;
+      return keepComplete && keepScheduled;
     })
     .sort(roundSort);
 
