@@ -94,13 +94,13 @@ function getRoundProfile(matchUps) {
       ({ winningSide, matchUpStatus }) =>
         winningSide || completedMatchUpStatuses.includes(matchUpStatus)
     ).length || 0;
-  const incompleteCount = matchUpsCount - scheduledCount;
   const isComplete = matchUpsCount === completedCount;
   const scheduledCount =
     matchUps.filter(
       ({ schedule }) => schedule?.scheduledDate && schedule?.scheduledTime
     ).length || 0;
   const unscheduledCount = matchUpsCount - scheduledCount;
+  const incompleteCount = matchUpsCount - scheduledCount;
   const isScheduled = matchUpsCount - scheduledCount;
   return {
     unscheduledCount,
