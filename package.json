@@ -70,12 +70,6 @@
   },
   "author": "Charles Allen <charles@CourtHive.com> (CourtHive.com)",
   "module": "dist/tods-competition-factory.production.esm.min.js",
-  "exports": {
-    ".": {
-      "import": "./dist/tods-competition-factory.production.cjs.min.js",
-      "require": "./dist/tods-competition-factory.production.esm.min.js"
-    }
-  },
   "devDependencies": {
     "@babel/core": "7.18.10",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.18.6",
