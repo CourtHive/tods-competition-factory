@@ -350,7 +350,7 @@ test('tieFormat with scoreValue calculation', () => {
 
   const outcome = {
     winningSide: 1,
-    score: { sets: [{ side1Score: 2, side2Score: 1 }] },
+    score: { sets: [{ winningSide: 1, side1Score: 2, side2Score: 1 }] },
   };
 
   let { matchUps: firstRoundDualMatchUps } =
@@ -401,7 +401,7 @@ test('tieFormat with scoreValue calculation', () => {
     expect(score).toEqual({
       scoreStringSide1: '18-9',
       scoreStringSide2: '9-18',
-      sets: [{ side1Score: 18, side2Score: 9 }],
+      sets: [{ side1Score: 18, side2Score: 9, winningSide: 1 }],
     });
   });
 
@@ -495,7 +495,7 @@ test('properly removes advanced team at 9-0 in USTA_GOLD', () => {
     expect(score).toEqual({
       scoreStringSide1: '9-0',
       scoreStringSide2: '0-9',
-      sets: [{ side1Score: 9, side2Score: 0 }],
+      sets: [{ side1Score: 9, side2Score: 0, winningSide: 1 }],
     });
   });
 
