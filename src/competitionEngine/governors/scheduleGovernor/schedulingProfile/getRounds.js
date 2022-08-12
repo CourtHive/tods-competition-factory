@@ -116,7 +116,7 @@ function getRoundProfile(matchUps) {
 export function getRounds({
   excludedScheduledRounds,
   excludeCompletedRounds,
-  showSegmentedRounds,
+  withSplitRounds,
   schedulingProfile,
   tournamentRecords,
 }) {
@@ -127,7 +127,7 @@ export function getRounds({
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const { segmentedRounds } =
-    schedulingProfile || excludeCompletedRounds || showSegmentedRounds
+    schedulingProfile || excludeCompletedRounds || withSplitRounds
       ? getProfileRounds({ tournamentRecords, schedulingProfile })
       : {};
 
