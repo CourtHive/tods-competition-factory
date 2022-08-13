@@ -134,6 +134,8 @@ export function getRounds({
   const allMatchUps =
     allCompetitionMatchUps({ tournamentRecords })?.matchUps || [];
 
+  const excludedRounds = [];
+
   let rounds = Object.values(
     allMatchUps.reduce((rounds, matchUp) => {
       const ref = getRef(matchUp).ref;
@@ -231,14 +233,17 @@ export function getRounds({
       });
     })
     .flat()
-    .filter(({ isComplete, isScheduled }) => {
+    .filter((round) => {
+      const { isComplete, isScheduled } = round;
       const keepComplete = !excludeCompletedRounds || !isComplete;
       const keepScheduled = !excludedScheduledRounds || !isScheduled;
-      return keepComplete && keepScheduled;
+      const keepRound = keepComplete && keepScheduled;
+      if (!keepRound) excludedRounds.push(round);
+      return keepRound;
     })
     .sort(roundSort);
 
-  return { ...SUCCESS, rounds };
+  return { ...SUCCESS, rounds, excludedRounds };
 }
 
 // Sort rounds by order in which they will be played
