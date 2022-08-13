@@ -89,19 +89,22 @@ function getRef(obj) {
 
 function getRoundProfile(matchUps) {
   const matchUpsCount = matchUps.length;
+  const byeCount =
+    matchUps.filter(({ sides }) => sides?.some(({ bye }) => bye)) || 0;
   const completedCount =
     matchUps.filter(
       ({ winningSide, matchUpStatus }) =>
         winningSide || completedMatchUpStatuses.includes(matchUpStatus)
     ).length || 0;
-  const isComplete = matchUpsCount === completedCount;
   const scheduledCount =
     matchUps.filter(
       ({ schedule }) => schedule?.scheduledDate && schedule?.scheduledTime
     ).length || 0;
-  const unscheduledCount = matchUpsCount - scheduledCount;
-  const incompleteCount = matchUpsCount - scheduledCount;
-  const isScheduled = matchUpsCount === scheduledCount;
+  const consideredCount = matchUpsCount - byeCount;
+  const isComplete = consideredCount === completedCount;
+  const unscheduledCount = consideredCount - scheduledCount;
+  const incompleteCount = consideredCount - scheduledCount;
+  const isScheduled = consideredCount === scheduledCount;
   return {
     unscheduledCount,
     incompleteCount,
@@ -110,6 +113,7 @@ function getRoundProfile(matchUps) {
     matchUpsCount,
     isScheduled,
     isComplete,
+    byeCount,
   };
 }
 
@@ -119,6 +123,8 @@ export function getRounds({
   schedulingProfile,
   tournamentRecords,
   withSplitRounds,
+  matchUpFilters,
+  matchUps,
 }) {
   if (
     typeof tournamentRecords !== 'object' ||
@@ -131,31 +137,33 @@ export function getRounds({
       ? getProfileRounds({ tournamentRecords, schedulingProfile })
       : {};
 
-  const allMatchUps =
-    allCompetitionMatchUps({ tournamentRecords })?.matchUps || [];
+  const consideredMatchUps =
+    matchUps ||
+    allCompetitionMatchUps({ tournamentRecords, matchUpFilters })?.matchUps ||
+    [];
 
   const excludedRounds = [];
 
   let rounds = Object.values(
-    allMatchUps.reduce((rounds, matchUp) => {
+    consideredMatchUps.reduce((rounds, matchUp) => {
       const ref = getRef(matchUp).ref;
       const segmentsCount = segmentedRounds?.[ref];
       const matchUps = [...(rounds[ref]?.matchUps ?? []), matchUp];
       const {
         containerStructureId,
-        drawId,
-        drawName,
-        eventId,
-        eventName,
-        isRoundRobin,
-        matchUpType,
-        roundName,
-        roundNumber,
-        roundOffset,
         stageSequence,
-        structureId,
         structureName,
         tournamentId,
+        isRoundRobin,
+        matchUpType,
+        roundNumber,
+        roundOffset,
+        structureId,
+        eventName,
+        roundName,
+        drawName,
+        eventId,
+        drawId,
       } = matchUp;
       const relevantStructureId = isRoundRobin
         ? containerStructureId
@@ -163,20 +171,20 @@ export function getRounds({
       return {
         ...rounds,
         [ref]: {
-          drawId,
-          drawName,
-          eventId,
-          eventName,
-          matchUpType,
-          matchUps,
-          roundName,
-          roundNumber,
-          roundOffset,
+          structureId: relevantStructureId,
           stageSequence,
           segmentsCount,
-          structureId: relevantStructureId,
           structureName,
           tournamentId,
+          matchUpType,
+          roundNumber,
+          roundOffset,
+          eventName,
+          roundName,
+          drawName,
+          matchUps,
+          eventId,
+          drawId,
         },
       };
     }, {})
@@ -198,6 +206,7 @@ export function getRounds({
             matchUpsCount,
             isScheduled,
             isComplete,
+            byeCount,
           } = getRoundProfile(matchUps);
           return definedAttributes({
             ...round,
@@ -209,6 +218,7 @@ export function getRounds({
             matchUpsCount,
             isScheduled,
             isComplete,
+            byeCount,
             matchUps,
           });
         });
@@ -220,6 +230,7 @@ export function getRounds({
         matchUpsCount,
         isScheduled,
         isComplete,
+        byeCount,
       } = getRoundProfile(round.matchUps);
       return definedAttributes({
         ...round,
@@ -230,6 +241,7 @@ export function getRounds({
         matchUpsCount,
         isScheduled,
         isComplete,
+        byeCount,
       });
     })
     .flat()
