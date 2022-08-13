@@ -90,7 +90,7 @@ function getRef(obj) {
 function getRoundProfile(matchUps) {
   const matchUpsCount = matchUps.length;
   const byeCount =
-    matchUps.filter(({ sides }) => sides?.some(({ bye }) => bye)) || 0;
+    matchUps.filter(({ sides }) => sides?.some(({ bye }) => bye)).length || 0;
   const completedCount =
     matchUps.filter(
       ({ winningSide, matchUpStatus }) =>
