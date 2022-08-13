@@ -2,15 +2,15 @@ import { validateSchedulingProfile } from '../../../../global/validation/validat
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { definedAttributes } from '../../../../utilities/objects';
 import { getSchedulingProfile } from './schedulingProfile';
+import { chunkArray } from '../../../../utilities';
 
+import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
 import drawDefinitionConstants from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
   NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import { chunkArray } from '../../../../utilities';
-import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
 
 const { stageOrder } = drawDefinitionConstants;
 
@@ -94,14 +94,14 @@ function getRoundProfile(matchUps) {
       ({ winningSide, matchUpStatus }) =>
         winningSide || completedMatchUpStatuses.includes(matchUpStatus)
     ).length || 0;
-  const incompleteCount = matchUpsCount - scheduledCount;
   const isComplete = matchUpsCount === completedCount;
   const scheduledCount =
     matchUps.filter(
       ({ schedule }) => schedule?.scheduledDate && schedule?.scheduledTime
     ).length || 0;
   const unscheduledCount = matchUpsCount - scheduledCount;
-  const isScheduled = matchUpsCount - scheduledCount;
+  const incompleteCount = matchUpsCount - scheduledCount;
+  const isScheduled = matchUpsCount === scheduledCount;
   return {
     unscheduledCount,
     incompleteCount,
@@ -116,9 +116,9 @@ function getRoundProfile(matchUps) {
 export function getRounds({
   excludedScheduledRounds,
   excludeCompletedRounds,
-  showSegmentedRounds,
   schedulingProfile,
   tournamentRecords,
+  withSplitRounds,
 }) {
   if (
     typeof tournamentRecords !== 'object' ||
@@ -127,12 +127,14 @@ export function getRounds({
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const { segmentedRounds } =
-    schedulingProfile || excludeCompletedRounds || showSegmentedRounds
+    schedulingProfile || excludeCompletedRounds || withSplitRounds
       ? getProfileRounds({ tournamentRecords, schedulingProfile })
       : {};
 
   const allMatchUps =
     allCompetitionMatchUps({ tournamentRecords })?.matchUps || [];
+
+  const excludedRounds = [];
 
   let rounds = Object.values(
     allMatchUps.reduce((rounds, matchUp) => {
@@ -231,14 +233,17 @@ export function getRounds({
       });
     })
     .flat()
-    .filter(({ isComplete, isScheduled }) => {
+    .filter((round) => {
+      const { isComplete, isScheduled } = round;
       const keepComplete = !excludeCompletedRounds || !isComplete;
       const keepScheduled = !excludedScheduledRounds || !isScheduled;
-      return keepComplete && keepScheduled;
+      const keepRound = keepComplete && keepScheduled;
+      if (!keepRound) excludedRounds.push(round);
+      return keepRound;
     })
     .sort(roundSort);
 
-  return { ...SUCCESS, rounds };
+  return { ...SUCCESS, rounds, excludedRounds };
 }
 
 // Sort rounds by order in which they will be played

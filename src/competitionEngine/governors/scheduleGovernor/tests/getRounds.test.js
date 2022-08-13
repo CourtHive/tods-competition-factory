@@ -68,7 +68,7 @@ it('can generate tournament rounds and profileRounds', () => {
   expect(result.success).toEqual(true);
   expect(result.rounds.length).toEqual(18);
 
-  result = competitionEngine.getRounds({ showSegmentedRounds: true });
+  result = competitionEngine.getRounds({ withSplitRounds: true });
   expect(result.success).toEqual(true);
   expect(result.rounds.length).toEqual(19); // one of the rounds is now split
   const segmentedRounds = result.rounds.filter((r) => r.segmentsCount);
