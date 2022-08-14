@@ -634,6 +634,54 @@ const {
 
 ---
 
+## getRounds
+
+Returns all rounds of all `structures` in all `tournamentRecords`.
+
+```js
+const { rounds, excludedRounds } = competitionEngine.getRounds({
+  excludedScheduledRounds, // optional - exclude rounds where all matchUps are scheduled
+  excludeCompletedRounds, // optional - exclude rounds where all matchUps are completed
+  inContextMatchUps, // optional - if not provided will be read from tournamentRecords
+  schedulingProfile, // optional - if not provided will be read from tournamentRecords (where applicable)
+  withSplitRounds, // optional - read schedulingProfile and split rounds where defined
+  matchUpFilters, // optional - filter competition matchUps before deriving rounds
+  withRoundId, // optional - return a unique id for each derived round
+});
+```
+
+Returns the following detail for each round:
+
+```js
+  {
+    roundSegment: { segmentsCount, segmentNumber }, // if the round has been split in schedulingProfile
+    winnerFinishingPositionRange,
+    unscheduledCount,
+    incompleteCount,
+    minFinishingSum,
+    matchUpsCount,
+    stageSequence,
+    segmentsCount, // when { withSplitRounds: true } and a round split is defined in schedulingProfile
+    structureName,
+    tournamentId,
+    isScheduled, // whether every matchUp in the round has been scheduled (does not consider matchUpStatus: BYE)
+    isComplete, // whether every matchUp in the round has been COMPLETED or ABANDONED/CANCELLED
+    matchUpType,
+    roundNumber,
+    structureId,
+    eventName,
+    roundName,
+    drawName,
+    matchUps,
+    byeCount
+    eventId,
+    drawId,
+    id, // unique id provided when { withRoundId: true }
+  } = round;
+```
+
+---
+
 ## getParticipantScaleItem
 
 Return a ranking or rating or seeding value for a participant, referenced by participantId.
