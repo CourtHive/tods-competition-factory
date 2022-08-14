@@ -12,9 +12,12 @@ import fs from 'fs-extra';
 const basePath = fs.realpathSync(process.cwd());
 const distPath = path.resolve(basePath, 'dist');
 
-const packageName = 'tods-competition-factory';
-
-const output = ({ format, minified, folder }) => {
+const output = ({
+  packageName = 'tods-competition-factory',
+  minified,
+  folder,
+  format,
+}) => {
   const development = format === 'cjs' && !minified ? 'development.' : '';
   const subFolder = folder ? `/${folder}` : '';
   const file = `${distPath}${subFolder}/${packageName}.${development}${format}.js`;
@@ -30,7 +33,7 @@ const output = ({ format, minified, folder }) => {
     exports: 'named',
   };
 
-  if (format === 'cjs' && minified) writeCjsIndex({ subFolder });
+  if (format === 'cjs' && minified) writeCjsIndex({ subFolder, packageName });
 
   return minified
     ? [
@@ -43,7 +46,7 @@ const output = ({ format, minified, folder }) => {
     : [base];
 };
 
-function writeCjsIndex({ subFolder }) {
+function writeCjsIndex({ subFolder, packageName }) {
   const fileImportRoot = `module.exports = require('./${packageName}`;
   const body = `'use strict';
 if (process.env.NODE_ENV === 'production') {
@@ -55,7 +58,7 @@ if (process.env.NODE_ENV === 'production') {
   return fs.outputFile(`${distPath}${subFolder}/index.js`, body);
 }
 
-function createExport({ input, folder }) {
+function createExport({ input, folder, packageName }) {
   return {
     plugins: [
       typescript({ sourceMap: true, declaration: false }),
@@ -67,16 +70,20 @@ function createExport({ input, folder }) {
 
     input,
     output: [
-      ...output({ format: 'cjs', minified: false, folder }),
-      ...output({ format: 'cjs', minified: true, folder }),
-      ...output({ format: 'esm', minified: true, folder }),
+      ...output({ format: 'cjs', minified: false, folder, packageName }),
+      ...output({ format: 'cjs', minified: true, folder, packageName }),
+      ...output({ format: 'esm', minified: true, folder, packageName }),
     ],
   };
 }
 
 const exports = [
   { input: 'src/index.ts' },
-  { input: 'src/utilities/index.ts', folder: 'utilities ' },
+  {
+    input: 'src/utilities/index.ts',
+    packageName: 'utilities',
+    folder: 'utilities',
+  },
 ].map(createExport);
 
 export default [

@@ -37,10 +37,13 @@
   "module": "dist/tods-competition-factory.production.esm.min.js",
   "exports": {
     ".": "./dist/index.js",
-    "./dist": "./dist/index.js",
     "./dist/*": "./dist/*.js",
+    "./dist": "./dist/index.js",
     "./dist/*.js": "./dist/*.js",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./dist/utilities/*": "./dist/utilities/*.js",
+    "./dist/utilities": "./dist/utilities/index.js",
+    "./dist/utilities/*.js": "./dist/utilities/*.js"
   },
   "files": [
     "dist"
