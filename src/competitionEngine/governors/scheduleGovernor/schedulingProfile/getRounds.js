@@ -1,6 +1,7 @@
 import { validateSchedulingProfile } from '../../../../global/validation/validateSchedulingProfile';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { definedAttributes } from '../../../../utilities/objects';
+import { extractDate } from '../../../../utilities/dateTime';
 import { getSchedulingProfile } from './schedulingProfile';
 import { chunkArray } from '../../../../utilities';
 
@@ -40,7 +41,7 @@ export function getProfileRounds({
   const segmentedRounds = {};
 
   const profileRounds = schedulingProfile
-    .map(({ venues }) =>
+    .map(({ venues, scheduleDate }) =>
       venues.map(({ rounds }) =>
         rounds.map((round) => {
           const roundRef = getRoundId(round);
@@ -48,8 +49,9 @@ export function getProfileRounds({
             segmentedRounds[roundRef.id] = roundRef.roundSegment.segmentsCount;
           }
           return definedAttributes({
-            ...roundRef,
             id: withRoundId ? roundRef.id : undefined,
+            scheduleDate,
+            ...roundRef,
           });
         })
       )
@@ -123,6 +125,7 @@ function getRoundProfile(matchUps) {
 }
 
 export function getRounds({
+  excludeScheduleDateProfileRounds,
   excludedScheduledRounds,
   excludeCompletedRounds,
   inContextMatchUps,
@@ -147,10 +150,20 @@ export function getRounds({
     return { error: INVALID_VALUES, inContextMatchUps };
   }
 
-  const { segmentedRounds } =
-    schedulingProfile || excludeCompletedRounds || withSplitRounds
+  const { segmentedRounds, profileRounds } =
+    excludeScheduleDateProfileRounds ||
+    excludeCompletedRounds ||
+    schedulingProfile ||
+    withSplitRounds
       ? getProfileRounds({ tournamentRecords, schedulingProfile })
       : {};
+
+  const profileRoundsMap =
+    excludeScheduleDateProfileRounds &&
+    Object.assign(
+      {},
+      ...profileRounds.map((profile) => ({ [profile.id]: profile }))
+    );
 
   const consideredMatchUps =
     inContextMatchUps ||
@@ -264,6 +277,17 @@ export function getRounds({
         })
         .flat()
         .filter((round) => {
+          if (excludeScheduleDateProfileRounds) {
+            const scheduleDate = extractDate(excludeScheduleDateProfileRounds);
+            const roundId = withRoundId ? round.id : getRoundId(round).id;
+            if (
+              scheduleDate &&
+              profileRoundsMap[roundId] &&
+              extractDate(profileRoundsMap[roundId].scheduleDate) ===
+                scheduleDate
+            )
+              return false;
+          }
           const { isComplete, isScheduled } = round;
           const keepComplete = !excludeCompletedRounds || !isComplete;
           const keepScheduled = !excludedScheduledRounds || !isScheduled;

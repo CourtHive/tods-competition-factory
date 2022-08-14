@@ -88,4 +88,13 @@ it('can generate tournament rounds and profileRounds', () => {
   result = competitionEngine.getProfileRounds();
   expect(result.profileRounds.length).toEqual(3);
   expect(Object.keys(result.segmentedRounds).length).toEqual(1);
+  console.log(result.profileRounds);
+
+  result = competitionEngine.getRounds({
+    excludeScheduleDateProfileRounds: startDate,
+    withSplitRounds: true,
+  });
+  expect(result.success).toEqual(true);
+  // when excluding rounds scheduled on a specific date, 3 will be filtered out
+  expect(result.rounds.length).toEqual(16);
 });

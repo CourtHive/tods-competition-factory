@@ -388,7 +388,7 @@ const {
   upcomingMatchUps,
 } = competitionEngine.competitionMatchUps({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
-  matchUpFilters, // optional
+  matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
 });
 ```
 
@@ -407,7 +407,7 @@ const { completedMatchUps, dateMatchUps, courtsData, venues } =
     sortDateMatchUps, // boolean - optional - defaults to `true`
     usePublishState, // boolean - when true filter out events and dates that have not been published
     sortCourtsData, // boolean - optional
-    matchUpFilters, // optional
+    matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   });
 ```
 
@@ -640,13 +640,14 @@ Returns all rounds of all `structures` in all `tournamentRecords`.
 
 ```js
 const { rounds, excludedRounds } = competitionEngine.getRounds({
-  excludedScheduledRounds, // optional - exclude rounds where all matchUps are scheduled
-  excludeCompletedRounds, // optional - exclude rounds where all matchUps are completed
+  excludeScheduleDateProfileRounds, // optional date string - exclude rounds which appear in schedulingProfile on given date
+  excludedScheduledRounds, // optional boolean - exclude rounds where all matchUps are scheduled
+  excludeCompletedRounds, // optional boolean - exclude rounds where all matchUps are completed
   inContextMatchUps, // optional - if not provided will be read from tournamentRecords
   schedulingProfile, // optional - if not provided will be read from tournamentRecords (where applicable)
-  withSplitRounds, // optional - read schedulingProfile and split rounds where defined
+  withSplitRounds, // optional boolean - read schedulingProfile and split rounds where defined
   matchUpFilters, // optional - filter competition matchUps before deriving rounds
-  withRoundId, // optional - return a unique id for each derived round
+  withRoundId, // optional boolean - return a unique id for each derived round
 });
 ```
 
