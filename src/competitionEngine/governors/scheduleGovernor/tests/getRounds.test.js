@@ -73,6 +73,9 @@ it('can generate tournament rounds and profileRounds', () => {
   expect(result.rounds.length).toEqual(19); // one of the rounds is now split
   const segmentedRounds = result.rounds.filter((r) => r.segmentsCount);
   expect(segmentedRounds.length).toEqual(2);
+  expect(result.rounds[0].id).toBeUndefined();
+  result = competitionEngine.getRounds({ withRoundId: true });
+  expect(result.rounds[0].id).not.toBeUndefined();
 
   const ronundPositions = segmentedRounds.map(({ matchUps }) =>
     matchUps.map(({ roundPosition }) => roundPosition)
@@ -82,10 +85,15 @@ it('can generate tournament rounds and profileRounds', () => {
     [9, 10, 11, 12, 13, 14, 15, 16],
   ]);
 
-  /*
-  const { profileRounds, segmentedRounds } =
-    competitionEngine.getProfileRounds();
-  expect(profileRounds.length).toEqual(3);
-  expect(Object.keys(segmentedRounds).length).toEqual(1);
-  */
+  result = competitionEngine.getProfileRounds();
+  expect(result.profileRounds.length).toEqual(3);
+  expect(Object.keys(result.segmentedRounds).length).toEqual(1);
+
+  result = competitionEngine.getRounds({
+    excludeScheduleDateProfileRounds: startDate,
+    withSplitRounds: true,
+  });
+  expect(result.success).toEqual(true);
+  // when excluding rounds scheduled on a specific date, 3 will be filtered out
+  expect(result.rounds.length).toEqual(16);
 });

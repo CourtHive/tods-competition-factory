@@ -2,6 +2,7 @@ import { validateSchedulingProfile } from '../../../../global/validation/validat
 import { getCompetitionDateRange } from '../../queryGovernor/getCompetitionDateRange';
 import { getEventIdsAndDrawIds } from '../../../getters/getEventIdsAndDrawIds';
 import { getCompetitionVenues } from '../../../getters/venuesAndCourtsGetter';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import {
   extractDate,
   isValidDateString,
@@ -20,7 +21,6 @@ import {
   INVALID_DATE,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
-import { decorateResult } from '../../../../global/functions/decorateResult';
 
 export function getSchedulingProfile({ tournamentRecords }) {
   if (
