@@ -641,8 +641,8 @@ Returns all rounds of all `structures` in all `tournamentRecords`.
 ```js
 const { rounds, excludedRounds } = competitionEngine.getRounds({
   excludeScheduleDateProfileRounds, // optional date string - exclude rounds which appear in schedulingProfile on given date
-  excludedScheduledRounds, // optional boolean - exclude rounds where all matchUps are scheduled
   excludeCompletedRounds, // optional boolean - exclude rounds where all matchUps are completed
+  excludeScheduledRounds, // optional boolean - exclude rounds where all matchUps are scheduled
   inContextMatchUps, // optional - if not provided will be read from tournamentRecords
   schedulingProfile, // optional - if not provided will be read from tournamentRecords (where applicable)
   withSplitRounds, // optional boolean - read schedulingProfile and split rounds where defined

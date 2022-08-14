@@ -126,7 +126,7 @@ function getRoundProfile(matchUps) {
 
 export function getRounds({
   excludeScheduleDateProfileRounds,
-  excludedScheduledRounds,
+  excludeScheduledRounds,
   excludeCompletedRounds,
   inContextMatchUps,
   schedulingProfile,
@@ -285,12 +285,13 @@ export function getRounds({
               profileRoundsMap[roundId] &&
               extractDate(profileRoundsMap[roundId].scheduleDate) ===
                 scheduleDate
-            )
+            ) {
               return false;
+            }
           }
           const { isComplete, isScheduled } = round;
           const keepComplete = !excludeCompletedRounds || !isComplete;
-          const keepScheduled = !excludedScheduledRounds || !isScheduled;
+          const keepScheduled = !excludeScheduledRounds || !isScheduled;
           const keepRound = keepComplete && keepScheduled;
           if (!keepRound) excludedRounds.push(round);
           return keepRound;
