@@ -88,7 +88,6 @@ it('can generate tournament rounds and profileRounds', () => {
   result = competitionEngine.getProfileRounds();
   expect(result.profileRounds.length).toEqual(3);
   expect(Object.keys(result.segmentedRounds).length).toEqual(1);
-  console.log(result.profileRounds);
 
   result = competitionEngine.getRounds({
     excludeScheduleDateProfileRounds: startDate,
