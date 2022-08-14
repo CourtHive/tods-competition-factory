@@ -9,6 +9,7 @@ import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusCon
 import drawDefinitionConstants from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
+  INVALID_TOURNAMENT_RECORD,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
   NOT_FOUND,
@@ -17,10 +18,19 @@ import {
 const { stageOrder } = drawDefinitionConstants;
 
 export function getProfileRounds({
-  tournamentRecords,
   schedulingProfile,
+  tournamentRecords,
+  tournamentRecord,
   withRoundId,
 }) {
+  if (tournamentRecord && !tournamentRecords) {
+    if (typeof tournamentRecord !== 'object') {
+      return { error: INVALID_TOURNAMENT_RECORD };
+    } else {
+      tournamentRecords = { [tournamentRecord.tournamentId]: tournamentRecord };
+    }
+  }
+
   if (schedulingProfile) {
     const profileValidity = validateSchedulingProfile({
       tournamentRecords,
@@ -131,16 +141,12 @@ export function getRounds({
   inContextMatchUps,
   schedulingProfile,
   tournamentRecords,
+  tournamentRecord,
   withSplitRounds,
   matchUpFilters,
   withRoundId,
+  context,
 }) {
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
-    return { error: MISSING_TOURNAMENT_RECORDS };
-
   if (
     inContextMatchUps &&
     !Array.isArray(
@@ -149,6 +155,29 @@ export function getRounds({
   ) {
     return { error: INVALID_VALUES, inContextMatchUps };
   }
+
+  if (tournamentRecord && !tournamentRecords) {
+    if (typeof tournamentRecord !== 'object') {
+      return { error: INVALID_TOURNAMENT_RECORD };
+    } else {
+      tournamentRecords = { [tournamentRecord.tournamentId]: tournamentRecord };
+    }
+  }
+
+  const noTournamentRecords =
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length;
+
+  const needsTournamentRecords =
+    !inContextMatchUps ||
+    (!schedulingProfile &&
+      (excludeScheduleDateProfileRounds ||
+        excludeCompletedRounds ||
+        schedulingProfile ||
+        withSplitRounds));
+
+  if (needsTournamentRecords && noTournamentRecords)
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const { segmentedRounds, profileRounds } =
     excludeScheduleDateProfileRounds ||
@@ -241,6 +270,7 @@ export function getRounds({
               } = getRoundProfile(matchUps);
               return definedAttributes({
                 ...round,
+                ...context,
                 roundSegment: { segmentsCount, segmentNumber: i + 1 },
                 winnerFinishingPositionRange,
                 unscheduledCount,
@@ -265,6 +295,7 @@ export function getRounds({
           } = getRoundProfile(round.matchUps);
           return definedAttributes({
             ...round,
+            ...context,
             winnerFinishingPositionRange,
             unscheduledCount,
             incompleteCount,
