@@ -85,7 +85,7 @@ it('will remove redundant tieFormat on matchUp with no results', () => {
     expect(score).toEqual({
       scoreStringSide1: '9-0',
       scoreStringSide2: '0-9',
-      sets: [{ side1Score: 9, side2Score: 0 }],
+      sets: [{ side1Score: 9, side2Score: 0, winningSide: 1 }],
     });
     expect(dualMatchUp.tieFormat).not.toBeUndefined();
   });

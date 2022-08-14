@@ -16,6 +16,7 @@ import {
   INVALID_DATE,
   INVALID_VALUES,
 } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 /**
  *
@@ -219,6 +220,7 @@ export function generateTournamentRecord({
   }
 
   return definedAttributes({
+    ...SUCCESS,
     tournamentRecord,
     scheduledRounds,
     schedulerResult,

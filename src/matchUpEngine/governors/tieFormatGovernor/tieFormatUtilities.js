@@ -98,9 +98,9 @@ export function validateTieFormat({
   if (!valid) {
     return decorateResult({
       result: {
+        context: { tieFormat, errors },
         error: INVALID_TIE_FORMAT,
         stack,
-        context: { tieFormat, errors },
       },
     });
   } else {

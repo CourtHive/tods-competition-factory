@@ -1,4 +1,3 @@
-import { validateCollectionValueProfile } from './tieFormatUtilities';
 import { isConvertableInteger } from '../../../utilities/math';
 import { definedAttributes } from '../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
@@ -6,6 +5,10 @@ import { isValid } from '../matchUpFormatGovernor/isValid';
 import { updateTieFormat } from './updateTieFormat';
 import { makeDeepCopy } from '../../../utilities';
 import { getTieFormat } from './getTieFormat';
+import {
+  validateCollectionValueProfile,
+  validateTieFormat,
+} from './tieFormatUtilities';
 
 import {
   INVALID_VALUES,
@@ -118,24 +121,21 @@ export function modifyCollectionDefinition({
     }
   }
 
+  if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
   if (collectionName) collectionDefinition.collectionName = collectionName;
   if (matchUpFormat) collectionDefinition.matchUpFormat = matchUpFormat;
-  if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
 
-  // cleanup any undefined attributes
-  tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map((def) =>
-    def.collectionId === collectionId
-      ? definedAttributes(collectionDefinition)
-      : def
-  );
+  const prunedTieFormat = definedAttributes(tieFormat);
+  result = validateTieFormat({ tieFormat: prunedTieFormat });
+  if (result.error) return result;
 
   return updateTieFormat({
+    tieFormat: prunedTieFormat,
     updateInProgressMatchUps,
     tournamentRecord,
     drawDefinition,
     structureId,
     structure,
-    tieFormat,
     eventId,
     matchUp,
     event,

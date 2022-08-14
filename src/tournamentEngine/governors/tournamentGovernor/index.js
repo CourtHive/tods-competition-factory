@@ -3,6 +3,11 @@ import { analyzeTournament } from './analyzeTournament';
 import { analyzeDraws } from './analysis/analyzeDraws';
 
 import {
+  getRounds,
+  getProfileRounds,
+} from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/getRounds';
+
+import {
   setTournamentName,
   setTournamentNotes,
   setTournamentCategories,
@@ -35,8 +40,11 @@ import {
 const tournamentGovernor = {
   addNotes,
   removeNotes,
-  analyzeTournament,
   analyzeDraws,
+  analyzeTournament,
+
+  getRounds,
+  getProfileRounds,
 
   setTournamentName,
   setTournamentNotes,

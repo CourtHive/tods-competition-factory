@@ -1,5 +1,6 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { generateCollectionMatchUps } from '../../../drawEngine/generators/tieMatchUps';
+import { definedAttributes } from '../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { copyTieFormat } from './copyTieFormat';
 import { getTieFormat } from './getTieFormat';
@@ -107,8 +108,12 @@ export function addCollectionDefinition({
   const addedMatchUps = [];
   let targetMatchUps = [];
 
+  const prunedTieFormat = definedAttributes(tieFormat);
+  result = validateTieFormat({ tieFormat: prunedTieFormat });
+  if (result.error) return result;
+
   if (eventId) {
-    event.tieFormat = tieFormat;
+    event.tieFormat = prunedTieFormat;
 
     // all team matchUps in the event which do not have tieFormats and where draws/strucures do not have tieFormats should have matchUps added
     for (const drawDefinition of event.drawDefinitions || []) {
@@ -136,7 +141,7 @@ export function addCollectionDefinition({
       addedMatchUps,
     });
   } else if (structureId && structure) {
-    structure.tieFormat = tieFormat;
+    structure.tieFormat = prunedTieFormat;
     const result = updateStructureMatchUps({
       updateInProgressMatchUps,
       collectionDefinition,
@@ -158,7 +163,7 @@ export function addCollectionDefinition({
     if (!validUpdate({ matchUp, updateInProgressMatchUps }))
       return { error: CANNOT_MODIFY_TIEFORMAT };
 
-    matchUp.tieFormat = tieFormat;
+    matchUp.tieFormat = prunedTieFormat;
     const newMatchUps = generateCollectionMatchUps({
       collectionDefinition,
       uuids,
@@ -177,7 +182,7 @@ export function addCollectionDefinition({
     });
   } else if (drawDefinition) {
     // all team matchUps in the drawDefinition which do not have tieFormats and where strucures do not have tieFormats should have matchUps added
-    drawDefinition.tieFormat = tieFormat;
+    drawDefinition.tieFormat = prunedTieFormat;
 
     for (const structure of drawDefinition.structures || []) {
       const result = updateStructureMatchUps({
@@ -203,7 +208,12 @@ export function addCollectionDefinition({
     return { error: MISSING_DRAW_DEFINITION };
   }
 
-  return { ...SUCCESS, tieFormat, addedMatchUps, targetMatchUps };
+  return {
+    ...SUCCESS,
+    tieFormat: prunedTieFormat,
+    targetMatchUps,
+    addedMatchUps,
+  };
 }
 
 function updateStructureMatchUps({

@@ -98,7 +98,6 @@ export function removeCollectionDefinition({
   // calculate new winCriteria for tieFormat
   // if existing winCriteria is aggregateValue, retain
   const { aggregateValue, valueGoal } = calculateWinCriteria(tieFormat);
-
   tieFormat.winCriteria = { aggregateValue, valueGoal };
 
   // if valueGoal has changed, force renaming of the tieFormat
@@ -234,11 +233,14 @@ export function removeCollectionDefinition({
   }
 
   const prunedTieFormat = definedAttributes(tieFormat);
+  result = validateTieFormat({ tieFormat: prunedTieFormat });
+  if (result.error) return result;
+
   if (eventId) {
     event.tieFormat = prunedTieFormat;
     // NOTE: there is not a modifyEventNotice
   } else if (matchUpId) {
-    matchUp.tieFormat = tieFormat;
+    matchUp.tieFormat = prunedTieFormat;
   } else if (structure) {
     structure.tieFormat = prunedTieFormat;
   } else if (drawDefinition) {
