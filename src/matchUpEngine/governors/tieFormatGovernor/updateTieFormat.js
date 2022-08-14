@@ -17,10 +17,6 @@ import {
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
 
-function updateCollectionDefinitions(element, tieFormat) {
-  element.tieFormat = tieFormat;
-}
-
 function mapsCheck(map1, map2) {
   const referenceKeys = Object.keys(map1);
   return (
@@ -29,7 +25,6 @@ function mapsCheck(map1, map2) {
   );
 }
 
-// only allows update to collectionName and matchUpFormat
 export function updateTieFormat({
   updateInProgressMatchUps,
   tournamentRecord,
@@ -53,7 +48,7 @@ export function updateTieFormat({
 
   if (event && eventId) {
     if (event.tieFormat) {
-      updateCollectionDefinitions(event, tieFormat);
+      event.tieFormat = copyTieFormat(tieFormat);
     } else {
       // ensure that all matchUps in the event contain tieMatchUps referenced by tieFormat
       const { matchUps } = allEventMatchUps({
@@ -76,7 +71,7 @@ export function updateTieFormat({
     }
   } else if (matchUp) {
     if (matchUp.tieFormat) {
-      updateCollectionDefinitions(matchUp, tieFormat);
+      matchUp.tieFormat = copyTieFormat(tieFormat);
     } else {
       // ensure that all tieMatchUps are referenced by tieFormat
       const matchUpMap = instanceCount(
@@ -101,7 +96,7 @@ export function updateTieFormat({
     });
   } else if (structure) {
     if (structure.tieFormat) {
-      updateCollectionDefinitions(structure, tieFormat);
+      structure.tieFormat = copyTieFormat(tieFormat);
     } else {
       // ensure that all matchUps in the structure contain tieMatchUps referenced by tieFormat
       const { matchUps } = getAllStructureMatchUps({
@@ -137,7 +132,7 @@ export function updateTieFormat({
     });
   } else if (drawDefinition) {
     if (drawDefinition.tieFormat) {
-      updateCollectionDefinitions(drawDefinition, tieFormat);
+      drawDefinition.tieFormat = copyTieFormat(tieFormat);
     } else {
       // ensure that all matchUps in the draw contain tieMatchUps referenced by tieFormat
       const { matchUps } = getAllDrawMatchUps({
@@ -196,8 +191,8 @@ function updateStructureMatchUps({
   );
 
   for (const matchUp of targetMatchUps) {
-    if (matchUp.tieFormat?.collectionDefinitions) {
-      updateCollectionDefinitions(matchUp, tieFormat);
+    if (matchUp.tieFormat) {
+      matchUp.tieFormat = copyTieFormat(tieFormat);
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
         drawDefinition,
