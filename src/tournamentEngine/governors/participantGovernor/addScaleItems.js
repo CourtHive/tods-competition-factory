@@ -74,7 +74,6 @@ export function setParticipantScaleItems({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
-  const auditTrail = [];
 
   let modificationsApplied = 0;
   const participantScaleItemsMap = {};
@@ -121,7 +120,7 @@ export function setParticipantScaleItems({
   }
   if (auditData) {
     if (topics.includes(AUDIT)) {
-      addNotice({ topic: AUDIT, payload: auditTrail });
+      addNotice({ topic: AUDIT, payload: auditData });
     }
 
     const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
