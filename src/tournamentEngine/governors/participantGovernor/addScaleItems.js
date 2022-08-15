@@ -125,7 +125,7 @@ export function setParticipantScaleItems({
 
     const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
 
-    if (appliedPolicies?.audit) {
+    if (appliedPolicies?.audit?.scaleItems) {
       const timeItem = {
         itemType: AUDIT,
         itemValue: auditData,
