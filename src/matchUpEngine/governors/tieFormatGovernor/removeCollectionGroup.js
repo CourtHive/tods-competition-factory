@@ -1,8 +1,12 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getTieFormat } from '../../../tournamentEngine/getters/getTieFormat';
 import { collectionGroupUpdate } from './collectionGroupUpdate';
+import { definedAttributes } from '../../../utilities/objects';
+import { tieFormatTelemetry } from './tieFormatTelemetry';
 import { validateTieFormat } from './tieFormatUtilities';
 import { copyTieFormat } from './copyTieFormat';
 
+import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
 import {
   INVALID_VALUES,
   MISSING_VALUE,
@@ -22,6 +26,7 @@ export function removeCollectionGroup({
 }) {
   if (!collectionGroupNumber) return { error: MISSING_VALUE };
   if (isNaN(collectionGroupNumber)) return { error: INVALID_VALUES };
+  const stack = 'removeCollectionGroup';
 
   let result =
     !matchUp &&
@@ -76,6 +81,21 @@ export function removeCollectionGroup({
     eventId,
     event,
   });
+
+  if (!result.error) {
+    const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
+    if (appliedPolicies?.audit?.[TIE_FORMAT_MODIFICATIONS]) {
+      const auditData = definedAttributes({
+        drawId: drawDefinition?.drawId,
+        collectionGroupNumber,
+        action: stack,
+        structureId,
+        matchUpId,
+        eventId,
+      });
+      tieFormatTelemetry({ drawDefinition, auditData });
+    }
+  }
 
   return { ...result, modifiedCollectionIds };
 }

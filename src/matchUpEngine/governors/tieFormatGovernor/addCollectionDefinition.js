@@ -1,11 +1,13 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { generateCollectionMatchUps } from '../../../drawEngine/generators/tieMatchUps';
 import { definedAttributes } from '../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
+import { tieFormatTelemetry } from './tieFormatTelemetry';
 import { copyTieFormat } from './copyTieFormat';
 import { getTieFormat } from './getTieFormat';
-import { UUID } from '../../../utilities';
 import { validUpdate } from './validUpdate';
+import { UUID } from '../../../utilities';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
@@ -16,6 +18,7 @@ import {
   validateTieFormat,
 } from './tieFormatUtilities';
 
+import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
@@ -48,6 +51,7 @@ export function addCollectionDefinition({
     collectionDefinition,
   });
   if (!valid) return { error: INVALID_VALUES, errors };
+  const stack = 'addCollectionDefinition';
 
   let result =
     !matchUp &&
@@ -206,6 +210,19 @@ export function addCollectionDefinition({
     });
   } else {
     return { error: MISSING_DRAW_DEFINITION };
+  }
+
+  const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
+  if (appliedPolicies?.audit?.[TIE_FORMAT_MODIFICATIONS]) {
+    const auditData = definedAttributes({
+      drawId: drawDefinition?.drawId,
+      collectionDefinition,
+      action: stack,
+      structureId,
+      matchUpId,
+      eventId,
+    });
+    tieFormatTelemetry({ drawDefinition, auditData });
   }
 
   return {

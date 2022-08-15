@@ -1,7 +1,9 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { isConvertableInteger } from '../../../utilities/math';
 import { definedAttributes } from '../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { isValid } from '../matchUpFormatGovernor/isValid';
+import { tieFormatTelemetry } from './tieFormatTelemetry';
 import { updateTieFormat } from './updateTieFormat';
 import { copyTieFormat } from './copyTieFormat';
 import { getTieFormat } from './getTieFormat';
@@ -10,6 +12,7 @@ import {
   validateTieFormat,
 } from './tieFormatUtilities';
 
+import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
 import {
   INVALID_VALUES,
   MISSING_VALUE,
@@ -42,6 +45,7 @@ export function modifyCollectionDefinition({
     return { error: INVALID_VALUES };
   if (collectionName && typeof collectionName !== 'string')
     return { error: INVALID_VALUES };
+  const stack = 'modifyCollectionDefinition';
 
   const valueAssignments = {
     collectionValueProfile,
@@ -129,7 +133,7 @@ export function modifyCollectionDefinition({
   result = validateTieFormat({ tieFormat: prunedTieFormat });
   if (result.error) return result;
 
-  return updateTieFormat({
+  result = updateTieFormat({
     tieFormat: prunedTieFormat,
     updateInProgressMatchUps,
     tournamentRecord,
@@ -140,4 +144,20 @@ export function modifyCollectionDefinition({
     matchUp,
     event,
   });
+  if (!result.error) {
+    const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
+    if (appliedPolicies?.audit?.[TIE_FORMAT_MODIFICATIONS]) {
+      const auditData = definedAttributes({
+        drawId: drawDefinition?.drawId,
+        collectionDefinition,
+        action: stack,
+        structureId,
+        matchUpId,
+        eventId,
+      });
+      tieFormatTelemetry({ drawDefinition, auditData });
+    }
+  }
+
+  return result;
 }

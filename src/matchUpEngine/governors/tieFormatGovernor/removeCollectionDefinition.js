@@ -31,6 +31,9 @@ import {
   NOT_FOUND,
   NO_MODIFICATIONS_APPLIED,
 } from '../../../constants/errorConditionConstants';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
+import { tieFormatTelemetry } from './tieFormatTelemetry';
 
 /*
  * collectionDefinition will be removed from an event tieFormat (if present)
@@ -74,6 +77,8 @@ export function removeCollectionDefinition({
     (collectionDefinition) => collectionDefinition.collectionId === collectionId
   );
   if (!targetCollection) return { error: NOT_FOUND, collectionId };
+
+  const stack = 'removeCollectionDefinition';
 
   tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.filter(
     (collectionDefinition) => collectionDefinition.collectionId !== collectionId
@@ -250,6 +255,19 @@ export function removeCollectionDefinition({
   }
 
   modifyDrawNotice({ drawDefinition, eventId: event?.eventId });
+
+  const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
+  if (appliedPolicies?.audit?.[TIE_FORMAT_MODIFICATIONS]) {
+    const auditData = definedAttributes({
+      drawId: drawDefinition?.drawId,
+      action: stack,
+      collectionId,
+      structureId,
+      matchUpId,
+      eventId,
+    });
+    tieFormatTelemetry({ drawDefinition, auditData });
+  }
 
   return {
     ...SUCCESS,
