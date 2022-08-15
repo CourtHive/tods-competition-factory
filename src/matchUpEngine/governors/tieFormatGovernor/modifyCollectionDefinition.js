@@ -117,7 +117,11 @@ export function modifyCollectionDefinition({
 
   // if valueGoal has changed, force renaming of the tieFormat
   const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
-  if (originalValueGoal && originalValueGoal !== valueGoal) {
+  const wasAggregateValue = existingTieFormat.winCriteria.aggregateValue;
+  if (
+    (originalValueGoal && originalValueGoal !== valueGoal) ||
+    (aggregateValue && !wasAggregateValue)
+  ) {
     if (tieFormatName) {
       tieFormat.tieFormatName = tieFormatName;
     } else {

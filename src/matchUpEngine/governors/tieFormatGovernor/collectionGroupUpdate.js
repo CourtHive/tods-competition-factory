@@ -12,6 +12,7 @@ export function collectionGroupUpdate({
   updateInProgressMatchUps,
   originalValueGoal,
   tournamentRecord,
+  wasAggregateValue,
   tieFormatName,
   drawDefinition,
   structureId,
@@ -28,7 +29,10 @@ export function collectionGroupUpdate({
   tieFormat.winCriteria = definedAttributes({ aggregateValue, valueGoal });
 
   // if valueGoal has changed, force renaming of the tieFormat
-  if (originalValueGoal && originalValueGoal !== valueGoal) {
+  if (
+    (originalValueGoal && originalValueGoal !== valueGoal) ||
+    (aggregateValue && !wasAggregateValue)
+  ) {
     if (tieFormatName) {
       tieFormat.tieFormatName = tieFormatName;
     } else {
