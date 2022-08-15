@@ -44,6 +44,7 @@ export function removeCollectionGroup({
   matchUp = matchUp || result.matchUp;
   const existingTieFormat = result.tieFormat || matchUp?.tieFormat;
   const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
+  const wasAggregateValue = existingTieFormat.winCriteria.aggregateValue;
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
@@ -70,6 +71,7 @@ export function removeCollectionGroup({
   result = collectionGroupUpdate({
     updateInProgressMatchUps,
     originalValueGoal,
+    wasAggregateValue,
     tournamentRecord,
     drawDefinition,
     tieFormatName,
