@@ -84,6 +84,21 @@ const exports = [
     packageName: 'utilities',
     folder: 'utilities',
   },
+  {
+    input: 'src/forge/generate/index.ts',
+    packageName: 'generate',
+    folder: 'generate',
+  },
+  {
+    input: 'src/forge/transform/index.ts',
+    packageName: 'transform',
+    folder: 'transform',
+  },
+  {
+    input: 'src/forge/query/index.ts',
+    packageName: 'query',
+    folder: 'query',
+  },
 ].map(createExport);
 
 export default [

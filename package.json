@@ -41,9 +41,18 @@
     "./dist": "./dist/index.js",
     "./dist/*.js": "./dist/*.js",
     "./package.json": "./package.json",
-    "./dist/utilities/*": "./dist/utilities/*.js",
-    "./dist/utilities": "./dist/utilities/index.js",
-    "./dist/utilities/*.js": "./dist/utilities/*.js"
+    "./utilities/*": "./dist/utilities/*.js",
+    "./utilities": "./dist/utilities/index.js",
+    "./utilities/*.js": "./dist/utilities/*.js",
+    "./generate/*": "./dist/forge/generate/*.js",
+    "./generate": "./dist/forge/generate/index.js",
+    "./generate/*.js": "./dist/forge/generate/*.js",
+    "./transform/*": "./dist/forge/transform/*.js",
+    "./transform": "./dist/forge/transform/index.js",
+    "./transform/*.js": "./dist/forge/generators/*.js",
+    "./query/*": "./dist/forge/query/*.js",
+    "./query": "./dist/forge/query/index.js",
+    "./query/*.js": "./dist/forge/query/*.js"
   },
   "files": [
     "dist"
