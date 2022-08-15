@@ -24,12 +24,18 @@ export function getTieFormat({
   drawDefinition,
   structureId,
   matchUpId,
+  structure,
+  eventId,
   drawId,
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId && !event && !structureId && !matchUpId)
     return { error: MISSING_VALUE };
+
+  if (eventId && !event) {
+    event = tournamentRecord.events?.find((event) => event.eventId === eventId);
+  }
 
   const matchUpResult = findMatchUp({
     tournamentRecord,
@@ -45,7 +51,7 @@ export function getTieFormat({
     drawDefinition = matchUpResult?.drawDefinition;
   }
 
-  let structure = matchUpResult?.structure;
+  structure = structure || matchUpResult?.structure;
   if (!structure && structureId && !matchUpId) {
     if (!drawDefinition) return { error: MISSING_DRAW_ID };
     const structureResult = findStructure({ drawDefinition, structureId });

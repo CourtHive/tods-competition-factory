@@ -12,13 +12,18 @@ import fs from 'fs-extra';
 const basePath = fs.realpathSync(process.cwd());
 const distPath = path.resolve(basePath, 'dist');
 
-const packageName = 'tods-competition-factory';
-
-const output = (format, minified) => {
+const output = ({
+  packageName = 'tods-competition-factory',
+  minified,
+  folder,
+  format,
+}) => {
   const development = format === 'cjs' && !minified ? 'development.' : '';
+  const subFolder = folder ? `/${folder}` : '';
+  const file = `${distPath}${subFolder}/${packageName}.${development}${format}.js`;
 
   const base = {
-    file: `${distPath}/${packageName}.${development}${format}.js`,
+    file,
     format,
     sourcemap: true,
     esModule: true,
@@ -28,20 +33,20 @@ const output = (format, minified) => {
     exports: 'named',
   };
 
-  if (format === 'cjs' && minified) writeCjsIndex();
+  if (format === 'cjs' && minified) writeCjsIndex({ subFolder, packageName });
 
   return minified
     ? [
         {
           ...base,
-          file: `${distPath}/${packageName}.production.${format}.min.js`,
+          file: `${distPath}${subFolder}/${packageName}.production.${format}.min.js`,
           plugins: [terser()],
         },
       ]
     : [base];
 };
 
-function writeCjsIndex() {
+function writeCjsIndex({ subFolder, packageName }) {
   const fileImportRoot = `module.exports = require('./${packageName}`;
   const body = `'use strict';
 if (process.env.NODE_ENV === 'production') {
@@ -50,11 +55,11 @@ if (process.env.NODE_ENV === 'production') {
   ${fileImportRoot}.development.cjs.js')
 }
 `;
-  return fs.outputFile(`${distPath}/index.js`, body);
+  return fs.outputFile(`${distPath}${subFolder}/index.js`, body);
 }
 
-export default [
-  {
+function createExport({ input, folder, packageName }) {
+  return {
     plugins: [
       typescript({ sourceMap: true, declaration: false }),
       nodeResolve(),
@@ -63,13 +68,41 @@ export default [
       babel({ babelHelpers: 'bundled' }),
     ],
 
-    input: 'src/index.ts',
+    input,
     output: [
-      ...output('cjs', false),
-      ...output('cjs', true),
-      ...output('esm', true),
+      ...output({ format: 'cjs', minified: false, folder, packageName }),
+      ...output({ format: 'cjs', minified: true, folder, packageName }),
+      ...output({ format: 'esm', minified: true, folder, packageName }),
     ],
+  };
+}
+
+const exports = [
+  { input: 'src/index.ts' },
+  {
+    input: 'src/utilities/index.ts',
+    packageName: 'utilities',
+    folder: 'utilities',
   },
+  {
+    input: 'src/forge/generate/index.ts',
+    packageName: 'generate',
+    folder: 'generate',
+  },
+  {
+    input: 'src/forge/transform/index.ts',
+    packageName: 'transform',
+    folder: 'transform',
+  },
+  {
+    input: 'src/forge/query/index.ts',
+    packageName: 'query',
+    folder: 'query',
+  },
+].map(createExport);
+
+export default [
+  ...exports,
   /*
   {
     input: 'src/index.ts',

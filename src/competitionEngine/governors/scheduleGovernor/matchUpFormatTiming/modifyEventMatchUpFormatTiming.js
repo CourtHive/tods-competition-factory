@@ -9,13 +9,12 @@ import {
 
 export function modifyEventMatchUpFormatTiming({
   tournamentRecords,
+  recoveryMinutes,
+  averageMinutes,
+  matchUpFormat,
+  categoryType,
   tournamentId,
   eventId,
-
-  categoryType,
-  matchUpFormat,
-  averageMinutes,
-  recoveryMinutes,
 }) {
   if (!eventId) return { error: MISSING_EVENT };
 
