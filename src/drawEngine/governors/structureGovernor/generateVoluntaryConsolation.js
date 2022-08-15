@@ -1,4 +1,6 @@
 import { getTournamentParticipants } from '../../../tournamentEngine/getters/participants/getTournamentParticipants';
+import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { automatedPositioning } from '../positionGovernor/automatedPositioning';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
@@ -71,7 +73,12 @@ export function generateVoluntaryConsolation(params = {}) {
     return { error: INVALID_DRAW_SIZE };
 
   let { tieFormat, matchUpType } = params;
-  tieFormat = tieFormat || drawDefinition.tieFormat || undefined;
+  if (tieFormat) {
+    const result = validateTieFormat({ tieFormat });
+    if (result.error) return result;
+  }
+
+  tieFormat = copyTieFormat(tieFormat || drawDefinition.tieFormat || undefined);
   matchUpType = matchUpType || drawDefinition.matchUpType || SINGLES;
 
   const { structures: stageStructures } = getDrawStructures({

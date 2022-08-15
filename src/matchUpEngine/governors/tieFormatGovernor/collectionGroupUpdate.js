@@ -1,8 +1,9 @@
 import { modifyDrawNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { updateTargetTeamMatchUps } from './updateTargetTeamMatchUps';
-import { definedAttributes } from '../../../utilities/objects';
 import { getTargetTeamMatchUps } from './getTargetTeamMatchUps';
+import { definedAttributes } from '../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
+import { validateTieFormat } from './tieFormatUtilities';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -24,7 +25,7 @@ export function collectionGroupUpdate({
   // calculate new winCriteria for tieFormat
   // if existing winCriteria is aggregateValue, retain
   const { aggregateValue, valueGoal } = calculateWinCriteria(tieFormat);
-  tieFormat.winCriteria = { aggregateValue, valueGoal };
+  tieFormat.winCriteria = definedAttributes({ aggregateValue, valueGoal });
 
   // if valueGoal has changed, force renaming of the tieFormat
   if (originalValueGoal && originalValueGoal !== valueGoal) {
@@ -54,6 +55,9 @@ export function collectionGroupUpdate({
   });
 
   const prunedTieFormat = definedAttributes(tieFormat);
+  const result = validateTieFormat({ tieFormat: prunedTieFormat });
+  if (result.error) return result;
+
   if (eventId) {
     event.tieFormat = prunedTieFormat;
     // NOTE: there is not a modifyEventNotice

@@ -14,7 +14,7 @@ export function validateTieFormat({
   const errors = [];
 
   if (typeof tieFormat !== 'object') {
-    errors.push('tieformat must be an object');
+    errors.push('tieFormat must be an object');
     return decorateResult({
       result: {
         error: INVALID_TIE_FORMAT,
@@ -78,9 +78,9 @@ export function validateTieFormat({
     );
     return decorateResult({
       result: {
+        context: { tieFormat, errors },
         error: INVALID_TIE_FORMAT,
         stack,
-        context: { tieFormat, errors },
       },
     });
   }

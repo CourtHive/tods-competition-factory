@@ -1,3 +1,4 @@
+import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isActiveMatchUp } from '../../getters/activeMatchUp';
@@ -32,7 +33,7 @@ export function updateTieMatchUpScore({
     event?.tieFormat ||
     undefined;
 
-  matchUp.tieFormat = tieFormat;
+  matchUp.tieFormat = copyTieFormat(tieFormat);
 
   const { winningSide, set, scoreStringSide1, scoreStringSide2 } =
     generateTieMatchUpScore({ matchUp });

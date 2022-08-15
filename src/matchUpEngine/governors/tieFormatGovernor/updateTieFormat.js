@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { allEventMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter';
 import { getAllDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
+import { allEventMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { instanceCount, intersection } from '../../../utilities';
 import { copyTieFormat } from './copyTieFormat';
@@ -37,6 +37,8 @@ export function updateTieFormat({
 }) {
   const stack = 'updateTieFormat';
 
+  const tieFormatCopy = copyTieFormat(tieFormat);
+
   const collectionMap = tieFormat?.collectionDefinitions.reduce(
     (instanceMap, def) => {
       instanceMap[def.collectionId] =
@@ -48,7 +50,7 @@ export function updateTieFormat({
 
   if (event && eventId) {
     if (event.tieFormat) {
-      event.tieFormat = copyTieFormat(tieFormat);
+      event.tieFormat = tieFormatCopy;
     } else {
       // ensure that all matchUps in the event contain tieMatchUps referenced by tieFormat
       const { matchUps } = allEventMatchUps({
@@ -59,7 +61,7 @@ export function updateTieFormat({
         matchUps.map(({ collectionId }) => collectionId)
       );
       if (mapsCheck(collectionMap, matchUpMap)) {
-        event.tieFormat = copyTieFormat(tieFormat);
+        event.tieFormat = tieFormatCopy;
       } else {
         return decorateResult({
           context: { collectionMap, matchUpMap },
@@ -71,14 +73,14 @@ export function updateTieFormat({
     }
   } else if (matchUp) {
     if (matchUp.tieFormat) {
-      matchUp.tieFormat = copyTieFormat(tieFormat);
+      matchUp.tieFormat = tieFormatCopy;
     } else {
       // ensure that all tieMatchUps are referenced by tieFormat
       const matchUpMap = instanceCount(
         matchUp.tieMatchUps.map(({ collectionId }) => collectionId)
       );
       if (mapsCheck(collectionMap, matchUpMap)) {
-        matchUp.tieFormat = copyTieFormat(tieFormat);
+        matchUp.tieFormat = tieFormatCopy;
       } else {
         return decorateResult({
           context: { collectionMap, matchUpMap },
@@ -96,7 +98,7 @@ export function updateTieFormat({
     });
   } else if (structure) {
     if (structure.tieFormat) {
-      structure.tieFormat = copyTieFormat(tieFormat);
+      structure.tieFormat = tieFormatCopy;
     } else {
       // ensure that all matchUps in the structure contain tieMatchUps referenced by tieFormat
       const { matchUps } = getAllStructureMatchUps({
@@ -107,7 +109,7 @@ export function updateTieFormat({
         matchUps.map(({ collectionId }) => collectionId)
       );
       if (mapsCheck(collectionMap, matchUpMap)) {
-        structure.tieFormat = copyTieFormat(tieFormat);
+        structure.tieFormat = tieFormatCopy;
       } else {
         return decorateResult({
           context: { collectionMap, matchUpMap },
@@ -132,7 +134,7 @@ export function updateTieFormat({
     });
   } else if (drawDefinition) {
     if (drawDefinition.tieFormat) {
-      drawDefinition.tieFormat = copyTieFormat(tieFormat);
+      drawDefinition.tieFormat = tieFormatCopy;
     } else {
       // ensure that all matchUps in the draw contain tieMatchUps referenced by tieFormat
       const { matchUps } = getAllDrawMatchUps({
@@ -143,7 +145,7 @@ export function updateTieFormat({
         matchUps.map(({ collectionId }) => collectionId)
       );
       if (mapsCheck(collectionMap, matchUpMap)) {
-        drawDefinition.tieFormat = copyTieFormat(tieFormat);
+        drawDefinition.tieFormat = tieFormatCopy;
       }
     }
     const modifiedStructureIds = [];
