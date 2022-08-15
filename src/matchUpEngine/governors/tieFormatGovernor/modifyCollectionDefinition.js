@@ -3,7 +3,7 @@ import { definedAttributes } from '../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { isValid } from '../matchUpFormatGovernor/isValid';
 import { updateTieFormat } from './updateTieFormat';
-import { makeDeepCopy } from '../../../utilities';
+import { copyTieFormat } from './copyTieFormat';
 import { getTieFormat } from './getTieFormat';
 import {
   validateCollectionValueProfile,
@@ -75,7 +75,7 @@ export function modifyCollectionDefinition({
   if (result.error) return result;
 
   const { matchUp, structure, tieFormat: existingTieFormat } = result;
-  const tieFormat = makeDeepCopy(existingTieFormat, false, true);
+  const tieFormat = copyTieFormat(existingTieFormat);
 
   const collectionDefinition = tieFormat.collectionDefinitions.find(
     (collectionDefinition) => collectionDefinition.collectionId === collectionId
