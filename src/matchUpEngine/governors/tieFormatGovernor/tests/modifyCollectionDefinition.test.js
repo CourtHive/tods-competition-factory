@@ -307,7 +307,6 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
   });
   expect(result.error).toEqual(INVALID_MATCHUP);
 
-  console.log('-----------------');
   result = tournamentEngine.modifyCollectionDefinition({
     matchUpId: matchUps[0].matchUpId, // the TEAM matchUp, not a tieMatchUp
     collectionName: 'progressCheck2',
@@ -349,4 +348,27 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
   });
   expect(result.success).toEqual(true);
   expect(result.modifiedCount).toEqual(1);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionName: 'progressCheck5',
+    scoreValue: 2,
+    collectionId,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.modifiedCount).toEqual(1);
+  expect(result.modifiedStructuresCount).toEqual(0);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionName: 'progressCheck6',
+    updateInProgressMatchUps: true,
+    scoreValue: 2,
+    collectionId,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.modifiedCount).toEqual(1);
+  expect(result.modifiedStructuresCount).toEqual(1);
 });
