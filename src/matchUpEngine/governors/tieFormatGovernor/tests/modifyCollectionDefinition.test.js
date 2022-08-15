@@ -1,7 +1,10 @@
 import { mocksEngine, tournamentEngine } from '../../../..';
+import { expect, it } from 'vitest';
 
 import { TEAM } from '../../../../constants/eventConstants';
 import {
+  CANNOT_MODIFY_TIEFORMAT,
+  INVALID_MATCHUP,
   INVALID_VALUES,
   NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
@@ -216,9 +219,9 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
 
   result = tournamentEngine.modifyCollectionDefinition({
     collectionName: newCollectionName,
+    matchUpValue: 1,
     collectionId,
     structureId,
-    matchUpValue: 1,
     drawId,
   });
   expect(result.success).toEqual(true);
@@ -232,9 +235,9 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
 
   result = tournamentEngine.modifyCollectionDefinition({
     collectionName: newCollectionName,
+    collectionValue: 1,
     collectionId,
     structureId,
-    collectionValue: 1,
     drawId,
   });
   expect(result.success).toEqual(true);
@@ -248,9 +251,9 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
 
   result = tournamentEngine.modifyCollectionDefinition({
     collectionName: newCollectionName,
+    scoreValue: 1,
     collectionId,
     structureId,
-    scoreValue: 1,
     drawId,
   });
   expect(result.success).toEqual(true);
@@ -261,4 +264,111 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
     },
   }).matchUps;
   expect(matchUps[0].tieFormat.winCriteria.aggregateValue).toEqual(true);
+
+  let outcome = {
+    score: {
+      scoreStringSide1: '0-1',
+      scoreStringSide2: '1-0',
+      sets: [
+        {
+          setNumber: 1,
+          side1Score: 0,
+          side2Score: 1,
+        },
+      ],
+    },
+  };
+
+  const { matchUpId } = matchUps[0].tieMatchUps[0];
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionName: 'progressCheck',
+    scoreValue: 2,
+    collectionId,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.modifiedCount).toEqual(1);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionName: 'progressCheck',
+    scoreValue: 2,
+    collectionId,
+    structureId,
+    matchUpId, // this is a tieMatchUp so expect an error
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_MATCHUP);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    matchUpId: matchUps[0].matchUpId, // the TEAM matchUp, not a tieMatchUp
+    collectionName: 'progressCheck2',
+    updateInProgressMatchUps: true,
+    scoreValue: 2,
+    collectionId,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.modifiedCount).toEqual(1);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    matchUpId: matchUps[0].matchUpId, // the TEAM matchUp, not a tieMatchUp
+    collectionName: 'progressCheck2',
+    scoreValue: 2,
+    collectionId,
+    structureId,
+    drawId,
+  });
+  expect(result.error).toEqual(CANNOT_MODIFY_TIEFORMAT);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionName: 'progressCheck3',
+    updateInProgressMatchUps: true,
+    eventId: event.eventId,
+    scoreValue: 2,
+    collectionId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.modifiedCount).toEqual(1);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionName: 'progressCheck4',
+    updateInProgressMatchUps: true,
+    eventId: event.eventId,
+    scoreValue: 2,
+    collectionId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.modifiedCount).toEqual(1);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionName: 'progressCheck5',
+    scoreValue: 2,
+    collectionId,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.modifiedCount).toEqual(1);
+  expect(result.modifiedStructuresCount).toEqual(0);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    collectionName: 'progressCheck6',
+    updateInProgressMatchUps: true,
+    scoreValue: 2,
+    collectionId,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.modifiedCount).toEqual(1);
+  expect(result.modifiedStructuresCount).toEqual(1);
 });

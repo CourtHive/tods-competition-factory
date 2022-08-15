@@ -1,14 +1,14 @@
 import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 
 import {
-  COMPLETED,
+  completedMatchUpStatuses,
   IN_PROGRESS,
 } from '../../../constants/matchUpStatusConstants';
 
 export function validUpdate({ matchUp, updateInProgressMatchUps }) {
   const valid =
     !matchUp.winningSide &&
-    matchUp.matchUpStatus !== COMPLETED &&
+    ![completedMatchUpStatuses].includes(matchUp.matchUpStatus) &&
     (updateInProgressMatchUps ||
       (matchUp.matchUpStatus !== IN_PROGRESS && !scoreHasValue(matchUp)));
 
