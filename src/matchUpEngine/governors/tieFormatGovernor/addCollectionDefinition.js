@@ -62,7 +62,7 @@ export function addCollectionDefinition({
 
   const { structure } = result;
   matchUp = matchUp || result.matchUp;
-  const existingTieFormat = result.tieFormat || matchUp?.tieFormat;
+  const existingTieFormat = result.tieFormat || matchUp.tieFormat;
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
@@ -92,7 +92,7 @@ export function addCollectionDefinition({
   // calculate new winCriteria for tieFormat
   // if existing winCriteria is aggregateValue, retain
   const { aggregateValue, valueGoal } = calculateWinCriteria(tieFormat);
-  tieFormat.winCriteria = { aggregateValue, valueGoal };
+  tieFormat.winCriteria = definedAttributes({ aggregateValue, valueGoal });
 
   // if valueGoal has changed, force renaming of the tieFormat
   const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
