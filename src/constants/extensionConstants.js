@@ -19,6 +19,7 @@ export const SCHEDULE_TIMING = 'scheduleTiming';
 export const SCHEDULING_PROFILE = 'schedulingProfile';
 export const SUB_ORDER = 'subOrder';
 export const TALLY = 'tally';
+export const TIE_FORMAT_MODIFICATIONS = 'tieFormatModification';
 
 export const extensionConstants = {
   APPLIED_POLICIES,
@@ -42,4 +43,5 @@ export const extensionConstants = {
   SCHEDULING_PROFILE,
   SUB_ORDER,
   TALLY,
+  TIE_FORMAT_MODIFICATIONS,
 };

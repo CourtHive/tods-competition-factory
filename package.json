@@ -1,5 +1,6 @@
 {
   "name": "tods-competition-factory",
+  "author": "Charles Allen <charles@CourtHive.com> (CourtHive.com)",
   "description": "Create and mutate TODS compliant tournament objects",
   "keywords": [
     "TODS",
@@ -20,7 +21,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "0.295.0",
+  "version": "0.296.0",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/tods-competition-factory/",
@@ -33,6 +34,26 @@
     "url": "https://github.com/CourtHive/tods-competition-factory"
   },
   "main": "dist/index.js",
+  "module": "dist/tods-competition-factory.production.esm.min.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./dist/*": "./dist/*.js",
+    "./dist": "./dist/index.js",
+    "./dist/*.js": "./dist/*.js",
+    "./package.json": "./package.json",
+    "./utilities/*": "./dist/utilities/*.js",
+    "./utilities": "./dist/utilities/index.js",
+    "./utilities/*.js": "./dist/utilities/*.js",
+    "./generate/*": "./dist/forge/generate/*.js",
+    "./generate": "./dist/forge/generate/index.js",
+    "./generate/*.js": "./dist/forge/generate/*.js",
+    "./transform/*": "./dist/forge/transform/*.js",
+    "./transform": "./dist/forge/transform/index.js",
+    "./transform/*.js": "./dist/forge/generators/*.js",
+    "./query/*": "./dist/forge/query/*.js",
+    "./query": "./dist/forge/query/index.js",
+    "./query/*.js": "./dist/forge/query/*.js"
+  },
   "files": [
     "dist"
   ],
@@ -68,8 +89,6 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "author": "Charles Allen <charles@CourtHive.com> (CourtHive.com)",
-  "module": "dist/tods-competition-factory.production.esm.min.js",
   "devDependencies": {
     "@babel/core": "7.18.10",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.18.6",
