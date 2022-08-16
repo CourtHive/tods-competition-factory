@@ -2357,6 +2357,7 @@ Modify the entryStatus of participants already in an event or flight/draw. Does 
 const result = tournamentEngine.modifyEntriesStatus({
   participantIds, // ids of participants whose entryStatus will be modified
   entryStatus, // new entryStatus
+  entryStage, // optional - e.g. QUALIFYING
   extension, // optional - { name, value } - add if value; removes if value is undefined
   eventId, // id of event where the modification(s) will occur
   drawId, // optional - scope to a specific flight/draw
