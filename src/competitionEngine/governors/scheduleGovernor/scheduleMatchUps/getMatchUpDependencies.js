@@ -10,10 +10,12 @@ import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
 
+import { POSITION } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_DRAW_ID,
   MISSING_MATCHUPS,
+  MISSING_MATCHUP_IDS,
 } from '../../../../constants/errorConditionConstants';
 
 /**
@@ -29,13 +31,67 @@ export function getMatchUpDependencies({
   includeParticipantDependencies,
   tournamentRecords = {},
   drawDefinition,
+  matchUpIds = [],
   matchUps = [], // requires matchUps { inContext: true }
   drawIds = [],
 }) {
+  if (!Array.isArray(matchUpIds)) return { error: MISSING_MATCHUP_IDS };
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
   if (!Array.isArray(drawIds)) return { error: MISSING_DRAW_ID };
+  if (!matchUpIds.length)
+    matchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
 
+  const positionDependencies = {};
   const matchUpDependencies = {};
+  const sourceStructureIdMap = {};
+
+  const allLinks = Object.values(tournamentRecords).reduce(
+    (allLinks, tournamentRecord) => {
+      return (tournamentRecord.events || [])
+        .map((event) =>
+          (event.drawDefinitions || []).map(
+            (drawDefinition) => drawDefinition.links || []
+          )
+        )
+        .flat(Infinity);
+    },
+    []
+  );
+
+  const positionLinks = allLinks.filter(
+    ({ linkType }) => linkType === POSITION
+  );
+
+  if (positionLinks.length) {
+    ({ matchUps } = allCompetitionMatchUps({
+      nextMatchUps: true,
+      tournamentRecords,
+    }));
+
+    // sourceStructureIdMap returns the sourceStructureId for a given targetStructureId
+    const sourceStructureIds = positionLinks.reduce((structureIds, link) => {
+      const sourceStructureId = link.source?.structureId;
+      const targetStructureId = link.target?.structureId;
+      if (sourceStructureId && targetStructureId)
+        sourceStructureIdMap[targetStructureId] = sourceStructureId;
+      if (sourceStructureId && !structureIds.includes(sourceStructureId))
+        structureIds.push(sourceStructureId);
+      return structureIds;
+    }, []);
+
+    // positionDependencies map a sourceStructureId to the matchUpIds which it contains
+    for (const sourceStructureId of sourceStructureIds) {
+      positionDependencies[sourceStructureId] = [];
+    }
+    for (const matchUp of matchUps) {
+      // pertains to Round Robins and e.g. Swiss rounds; Round Robins require hoisting to containing structure
+      const sourceStructureId =
+        matchUp.containerStructureId || matchUp.structureId;
+      if (sourceStructureIds.includes(sourceStructureId)) {
+        positionDependencies[sourceStructureId].push(matchUp.matchUpId);
+      }
+    }
+  }
 
   const initializeMatchUpId = (matchUpId) => {
     if (!matchUpDependencies[matchUpId])
@@ -64,24 +120,44 @@ export function getMatchUpDependencies({
   };
 
   const processMatchUps = (matchUpsToProcess) => {
+    const processSourceStructures = Object.keys(positionDependencies).length;
+
     for (const matchUp of matchUpsToProcess) {
       const { matchUpId, winnerMatchUpId, loserMatchUpId } = matchUp;
-      initializeMatchUpId(matchUpId);
 
-      if (includeParticipantDependencies) {
-        const { individualParticipantIds } =
-          getIndividualParticipantIds(matchUp);
-        matchUpDependencies[matchUpId].participantIds =
-          individualParticipantIds;
-      }
+      // only process specified matchUps
+      if (!matchUpIds.length || matchUpIds.includes(matchUpId)) {
+        initializeMatchUpId(matchUpId);
 
-      if (winnerMatchUpId) {
-        initializeMatchUpId(winnerMatchUpId);
-        propagateDependencies(matchUpId, winnerMatchUpId);
-      }
-      if (loserMatchUpId) {
-        initializeMatchUpId(loserMatchUpId);
-        propagateDependencies(matchUpId, loserMatchUpId);
+        if (includeParticipantDependencies) {
+          const { individualParticipantIds } =
+            getIndividualParticipantIds(matchUp);
+          matchUpDependencies[matchUpId].participantIds =
+            individualParticipantIds;
+        }
+
+        if (winnerMatchUpId) {
+          initializeMatchUpId(winnerMatchUpId);
+          propagateDependencies(matchUpId, winnerMatchUpId);
+        }
+        if (loserMatchUpId) {
+          initializeMatchUpId(loserMatchUpId);
+          propagateDependencies(matchUpId, loserMatchUpId);
+        }
+
+        if (processSourceStructures) {
+          const relevantStructureId =
+            matchUp.containerStructureId || matchUp.structureId;
+          const sourceStructureId = sourceStructureIdMap[relevantStructureId];
+          if (positionDependencies[sourceStructureId]) {
+            for (const matchUpDependency of positionDependencies[
+              sourceStructureId
+            ]) {
+              initializeMatchUpId(matchUpDependency);
+              propagateDependencies(matchUpDependency, matchUpId);
+            }
+          }
+        }
       }
     }
   };
@@ -95,8 +171,8 @@ export function getMatchUpDependencies({
   } else {
     if (!matchUps.length) {
       ({ matchUps } = allCompetitionMatchUps({
-        tournamentRecords,
         nextMatchUps: true,
+        tournamentRecords,
       }));
     }
 
@@ -144,5 +220,5 @@ export function getMatchUpDependencies({
     }
   }
 
-  return { matchUpDependencies, ...SUCCESS };
+  return { matchUpDependencies, positionDependencies, ...SUCCESS };
 }
