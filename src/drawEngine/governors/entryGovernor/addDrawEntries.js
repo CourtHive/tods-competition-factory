@@ -95,7 +95,11 @@ export function addDrawEntry({
     participantInEntries({ drawDefinition, participantId });
 
   if (invalidEntry || invalidLuckyLoser || invalidVoluntaryConsolation) {
-    return { error: EXISTING_PARTICIPANT };
+    return decorateResult({
+      context: { invalidEntry, invalidLuckyLoser, invalidVoluntaryConsolation },
+      result: { error: EXISTING_PARTICIPANT },
+      stack,
+    });
   }
 
   const entry = definedAttributes({
