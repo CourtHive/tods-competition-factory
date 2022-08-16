@@ -264,6 +264,9 @@ export function generateDrawDefinition(params) {
   // add all entries to the draw
   const entries = drawEntries || eventEntries;
   for (const entry of entries) {
+    // if drawEntries and entryStage !== stage ignore
+    if (drawEntries && stage && entry.entryStage && entry.entryStage !== stage)
+      continue;
     // convenience: assume MAIN as entryStage if none provided
     const entryData = {
       ...entry,

@@ -1,3 +1,5 @@
+import { definedAttributes } from '../../utilities';
+
 export function decorateResult({ result, stack, context, info }) {
   if (!result.stack) result.stack = [];
   if (stack) {
@@ -7,7 +9,7 @@ export function decorateResult({ result, stack, context, info }) {
     result.error.info = info;
   }
   if (typeof context === 'object' && Object.keys(context).length) {
-    result = Object.assign(result, context);
+    result = Object.assign(result, definedAttributes(context));
   }
 
   return result;
