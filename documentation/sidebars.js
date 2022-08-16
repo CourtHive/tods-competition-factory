@@ -3,7 +3,13 @@ module.exports = {
     {
       type: 'category',
       label: 'Competition Factory',
-      items: ['introduction', 'state-engines', 'features', 'installation'],
+      items: [
+        'introduction',
+        'state-engines',
+        'forge',
+        'features',
+        'installation',
+      ],
     },
     {
       type: 'category',
