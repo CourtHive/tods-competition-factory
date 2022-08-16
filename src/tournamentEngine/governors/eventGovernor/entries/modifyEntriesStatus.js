@@ -9,6 +9,7 @@ import { decorateResult } from '../../../../global/functions/decorateResult';
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
+import { validStages } from '../../../../constants/drawDefinitionConstants';
 import { PAIR } from '../../../../constants/participantConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
@@ -19,6 +20,7 @@ import {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   MISSING_VALUE,
   INVALID_VALUES,
+  INVALID_STAGE,
 } from '../../../../constants/errorConditionConstants';
 import {
   DRAW_SPECIFIC_STATUSES,
@@ -35,6 +37,7 @@ export function modifyEntriesStatus({
   drawDefinition,
   participantIds,
   entryStatus,
+  entryStage,
   extension, // modify the specified extension (remove if value undefined)
   eventSync,
   drawId,
@@ -51,6 +54,9 @@ export function modifyEntriesStatus({
   if (!drawDefinition && !event) return { error: MISSING_EVENT };
   if (entryStatus && !VALID_ENTRY_STATUSES.includes(entryStatus))
     return { error: INVALID_ENTRY_STATUS };
+
+  if (entryStage && !validStages.includes(entryStage))
+    return { error: INVALID_STAGE };
 
   const stack = 'modifyEntriesStatus';
   const modifiedDrawIds = [];
@@ -123,6 +129,11 @@ export function modifyEntriesStatus({
       if (entryStatus) {
         entry.entryStatus = entryStatus;
         // since entryStatus has changed remove current entryPosition
+        delete entry.entryPosition;
+      }
+      if (entryStage) {
+        entry.entryStage = entryStage;
+        // since entryStage has changed remove current entryPosition
         delete entry.entryPosition;
       }
       if (extension) {
