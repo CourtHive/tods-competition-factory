@@ -36,23 +36,26 @@
   "main": "dist/index.js",
   "module": "dist/tods-competition-factory.production.esm.min.js",
   "exports": {
-    ".": "./dist/index.js",
-    "./dist/*": "./dist/*.js",
-    "./dist": "./dist/index.js",
-    "./dist/*.js": "./dist/*.js",
-    "./package.json": "./package.json",
-    "./utilities/*": "./dist/utilities/*.js",
-    "./utilities": "./dist/utilities/index.js",
-    "./utilities/*.js": "./dist/utilities/*.js",
-    "./generate/*": "./dist/forge/generate/*.js",
-    "./generate": "./dist/forge/generate/index.js",
-    "./generate/*.js": "./dist/forge/generate/*.js",
-    "./transform/*": "./dist/forge/transform/*.js",
-    "./transform": "./dist/forge/transform/index.js",
-    "./transform/*.js": "./dist/forge/generators/*.js",
-    "./query/*": "./dist/forge/query/*.js",
-    "./query": "./dist/forge/query/index.js",
-    "./query/*.js": "./dist/forge/query/*.js"
+    ".": {
+      "import": "./dist/tods-competition-factory.production.esm.min.js",
+      "default": "./dist/index.js"
+    },
+    "./generate": {
+      "import": "./dist/forge/generate/generate.production.esm.min.js",
+      "default": "./dist/forge/generate/index.js"
+    },
+    "./transform": {
+      "import": "./dist/forge/transform/transform.production.esm.min.js",
+      "default": "./dist/forge/transform/index.js"
+    },
+    "./query": {
+      "import": "./dist/forge/query/query.production.esm.min.js",
+      "default": "./dist/forge/query/index.js"
+    },
+    "./utilities": {
+      "import": "./dist/forge/utilities/utilities.production.esm.min.js",
+      "default": "./dist/forge/utilities/index.js"
+    }
   },
   "files": [
     "dist"
@@ -129,7 +132,7 @@
     "source-map-resolve": "0.6.0",
     "tslib": "2.4.0",
     "typescript": "4.7.4",
-    "vite": "3.0.7",
+    "vite": "3.0.8",
     "vitest": "0.22.0"
   },
   "lint-staged": {

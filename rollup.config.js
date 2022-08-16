@@ -82,22 +82,22 @@ const exports = [
   {
     input: 'src/utilities/index.ts',
     packageName: 'utilities',
-    folder: 'utilities',
+    folder: 'forge/utilities',
   },
   {
     input: 'src/forge/generate/index.ts',
     packageName: 'generate',
-    folder: 'generate',
+    folder: 'forge/generate',
   },
   {
     input: 'src/forge/transform/index.ts',
     packageName: 'transform',
-    folder: 'transform',
+    folder: 'forge/transform',
   },
   {
     input: 'src/forge/query/index.ts',
     packageName: 'query',
-    folder: 'query',
+    folder: 'forge/query',
   },
 ].map(createExport);
 

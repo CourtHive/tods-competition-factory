@@ -23,6 +23,7 @@ import {
   ORGANISER_ACCEPTANCE,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
+import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 
 it('can modify entryStatus within event.entries', () => {
   const drawProfiles = [{ drawSize: 8, alternatesCount: 2 }];
@@ -434,5 +435,17 @@ it('will not allow event.entries to have entryStatus appropriate only for draws'
   ({ event } = tournamentEngine.getEvent({ eventId }));
   expect(unique(event.entries.map(getEntryStatus))).toEqual([
     DIRECT_ACCEPTANCE,
+  ]);
+
+  result = tournamentEngine.modifyEntriesStatus({
+    entryStatus: DIRECT_ACCEPTANCE,
+    entryStage: QUALIFYING,
+    participantIds,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+  ({ event } = tournamentEngine.getEvent({ eventId }));
+  expect(unique(event.entries.map(({ entryStage }) => entryStage))).toEqual([
+    QUALIFYING,
   ]);
 });
