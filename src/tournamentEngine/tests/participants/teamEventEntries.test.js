@@ -14,10 +14,7 @@ test('adding individualParticipantIds to TEAM participants removes them from tea
   const eventProfiles = [
     {
       eventType: TEAM,
-      drawProfiles: [
-        { drawSize: 2, automate: false },
-        { drawSize: 2, automate: false },
-      ],
+      drawProfiles: [{ drawSize: 2 }, { drawSize: 2 }],
     },
   ];
   const {
