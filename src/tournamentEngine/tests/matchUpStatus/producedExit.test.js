@@ -13,7 +13,7 @@ import {
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
-test.only('A produced WALKOVER or DEFAULTED matchUpStatus will not cause prior rounds to be considered active positions', () => {
+test('A produced WALKOVER or DEFAULTED matchUpStatus will not cause prior rounds to be considered active positions', () => {
   const mockProfile = {
     drawProfiles: [
       {
