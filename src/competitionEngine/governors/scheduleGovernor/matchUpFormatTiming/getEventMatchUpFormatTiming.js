@@ -9,13 +9,6 @@ import {
 
 /**
  * method requires an array of target matchUpFormats either be defined in scoring policy or passed in as parameter
- *
- * @param {string[]} matchUpFormats - optional - array of targetd matchUpFormats
- * @param {string} eventId - resolved to { event } by tournamentEngine
- * @param {string} tournamentId - optional - optimization
- * @param {string} categoryType - optional filter
- *
- * @returns { eventMatchUpFormatTiming }
  */
 export function getEventMatchUpFormatTiming({
   tournamentRecords,

@@ -78,7 +78,7 @@
     "postinstall": "husky install",
     "postpublish": "pinst --enable",
     "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy",
-    "generate-types": "quicktype -s schema src/global/schema/tournament.schema.json -o src/types.ts --just-types -t Tournament",
+    "generate-types": "quicktype -s schema src/global/schema/tournament.schema.json -o src/types/tournamentFromSchema.ts --just-types -t Tournament",
     "check-types": "tsc --noEmit"
   },
   "husky": {

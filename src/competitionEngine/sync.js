@@ -105,12 +105,15 @@ export const competitionEngine = (function () {
     const devContext = getDevContext();
 
     const log = { methodName };
+    const logErrors =
+      typeof devContext.result === 'object' && devContext.result.error;
     if (
       ![undefined, false].includes(devContext.perf) &&
       (isNaN(devContext.perf) || elapsed > devContext.perf)
     )
       log.elapsed = elapsed;
     if (
+      logErrors ||
       (devContext.params && !Array.isArray(devContext.params)) ||
       (Array.isArray(devContext.params) &&
         devContext.params?.includes(methodName))
@@ -118,6 +121,7 @@ export const competitionEngine = (function () {
       log.params = params;
     }
     if (
+      logErrors ||
       (devContext.result && !Array.isArray(devContext.result)) ||
       (Array.isArray(devContext.result) &&
         devContext.result?.includes(methodName))
