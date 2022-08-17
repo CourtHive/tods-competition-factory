@@ -7,7 +7,7 @@ import { unique } from '../../../utilities';
 
 import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import type { Participant } from '../../../types';
+import type { Participant } from '../../../types/tournamentFromSchema';
 
 type FilterParticipantsArgs = {
   participantFilters: any;

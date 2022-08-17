@@ -105,8 +105,8 @@ export default [
   ...exports,
   /*
   {
-    input: 'src/index.ts',
-    output: [{ file: `${distPath}/index.d.ts`, format: 'es' }],
+    input: 'src/forge/query/index.ts',
+    output: [{ file: `${distPath}/forge/query/index.d.ts`, format: 'es' }],
     plugins: [dts()],
   },
   */
