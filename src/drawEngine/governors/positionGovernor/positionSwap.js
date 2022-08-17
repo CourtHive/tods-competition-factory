@@ -5,7 +5,6 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
-import { getParticipantId } from '../../../global/functions/extractors';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { cleanupLineUps } from './cleanupLineUps';
@@ -18,6 +17,7 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { makeDeepCopy } from '../../../utilities';
 
 export function swapDrawPositionAssignments({
   tournamentRecord,
@@ -103,6 +103,11 @@ function eliminationSwap({
 
   // if both positions are BYE no need to do anything
   if (assignments.filter(({ bye }) => bye).length === 2) return { ...SUCCESS };
+
+  // if both positions are qualifier no need to do anything
+  if (assignments.filter(({ qualifier }) => qualifier).length === 2)
+    return { ...SUCCESS };
+
   const isByeSwap = assignments.some(({ bye }) => bye);
 
   if (isByeSwap) {
@@ -243,6 +248,10 @@ function roundRobinSwap({
   // if both positions are BYE no need to do anything
   if (assignments.filter(({ bye }) => bye).length === 2) return { ...SUCCESS };
 
+  // if both positions are QUALIFIER no need to do anything
+  if (assignments.filter(({ qualifier }) => qualifier).length === 2)
+    return { ...SUCCESS };
+
   cleanupLineUps({
     inContextDrawMatchUps,
     tournamentRecord,
@@ -264,11 +273,14 @@ function roundRobinSwap({
       structure,
     });
   } else {
-    const participantIds = assignments.map(getParticipantId);
-    assignments.forEach(
-      (assignment, index) =>
-        (assignment.participantId = participantIds[1 - index])
-    );
+    // for Round Robin the positionAssignments are distributed across structures
+    // so the strategy of creating a new positionAssignments array won't work
+    const originalAssignments = makeDeepCopy(assignments, false, true);
+    assignments.forEach((assignment, index) => {
+      const newParticipantId = originalAssignments[1 - index].participantId;
+      assignment.qualifier = originalAssignments[1 - index].qualifier;
+      assignment.participantId = newParticipantId;
+    });
   }
 
   return { ...SUCCESS };
