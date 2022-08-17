@@ -26,7 +26,7 @@ export function isActiveMatchUp({
     // must exclude IN_PROGRESS as this is automatically set by updateTieMatchUpScore
     // must exclude WALKOVER and DEFAULTED as "produced" scenarios do not imply a winningSide
     (isActiveMatchUpStatus({ matchUpStatus }) &&
-      [DEFAULTED, WALKOVER, IN_PROGRESS].includes(matchUpStatus));
+      ![DEFAULTED, WALKOVER, IN_PROGRESS].includes(matchUpStatus));
 
   return activeStatus;
 }
