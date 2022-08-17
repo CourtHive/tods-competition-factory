@@ -1,7 +1,11 @@
 import { isActiveMatchUpStatus } from '../governors/matchUpGovernor/checkStatusType';
 import { scoreHasValue } from '../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 
-import { IN_PROGRESS } from '../../constants/matchUpStatusConstants';
+import {
+  DEFAULTED,
+  IN_PROGRESS,
+  WALKOVER,
+} from '../../constants/matchUpStatusConstants';
 
 // an active matchUp is one that has a winningSide, more than one set, or a single set with any score value greater than zero
 // when { matchUpType: TEAM } the child tieMatchUps must be checked as well
@@ -20,7 +24,9 @@ export function isActiveMatchUp({
     winningSide ||
     activeTieMatchUps ||
     // must exclude IN_PROGRESS as this is automatically set by updateTieMatchUpScore
-    (isActiveMatchUpStatus({ matchUpStatus }) && matchUpStatus !== IN_PROGRESS);
+    // must exclude WALKOVER and DEFAULTED as "produced" scenarios do not imply a winningSide
+    (isActiveMatchUpStatus({ matchUpStatus }) &&
+      [DEFAULTED, WALKOVER, IN_PROGRESS].includes(matchUpStatus));
 
   return activeStatus;
 }
