@@ -1098,7 +1098,7 @@ competitionEngine.scheduleMatchUps({
 Auto-schedules all rounds which have been specified in a `schedulingProfile` which has been saved to the tournamentRecord using `competitionEngine.setSchedulingProfile`.
 
 :::note
-TEAM `matchUps` will not be auto-scheduled.
+SINGLES and DOUBLES `matchUps` will be scheduled, but not TEAM `matchUps`.
 :::
 
 ```js
