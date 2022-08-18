@@ -8,7 +8,7 @@ import { getPersonRequests } from '../scheduleMatchUps/personRequests';
 import { clearScheduledMatchUps } from '../clearScheduledMatchUps';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 import { jinnScheduler } from '../jinnScheduler/jinnScheduler';
-import { proScheduler } from '../proScheduler/proScheduler';
+import { proScheduler } from '../schedulers/proScheduler/proScheduler';
 
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
