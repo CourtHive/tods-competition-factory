@@ -14,6 +14,7 @@ import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
 import { getGroupedRounds } from '../../schedulingProfile/getGroupedRounds';
 import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
+import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
 import {
   extractDate,
   sameDay,
@@ -36,7 +37,6 @@ import {
 } from '../../../../../constants/matchUpStatusConstants';
 
 // will not be used in pro scheduling
-import { generateScheduleTimes } from '../utils/generateScheduleTimes';
 
 export function proScheduler({
   schedulingProfileModifications,
@@ -137,18 +137,13 @@ export function proScheduler({
         garmanSinglePass: true,
       });
 
-      // determines court availability taking into account already scheduled matchUps on the scheduleDate
-      // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
-      // on first call pass in the averageMatchUpMiutes of first round to be scheduled
-      const { scheduleTimes, dateScheduledMatchUpIds } = generateScheduleTimes({
-        averageMatchUpMinutes: groupedRounds[0]?.averageMinutes,
-        scheduleDate: extractDate(scheduleDate),
-        venueIds: [venue.venueId],
-        clearScheduleDates,
-        tournamentRecords,
-        periodLength,
-        matchUps,
-      });
+      const dateScheduledMatchUps = matchUps?.filter(
+        (matchUp) =>
+          hasSchedule(matchUp) &&
+          (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate)
+      );
+
+      const dateScheduledMatchUpIds = dateScheduledMatchUps.map(getMatchUpId);
 
       // first build up a map of matchUpNotBeforeTimes and matchUpPotentialParticipantIds
       // based on already scheduled matchUps
@@ -254,7 +249,7 @@ export function proScheduler({
         greatestAverageMinutes,
         scheduledRoundsDetails,
         matchUpsToSchedule,
-        scheduleTimes,
+        scheduleTimes: [],
         groupedRounds,
         minutesMap,
         matchUpMap,
