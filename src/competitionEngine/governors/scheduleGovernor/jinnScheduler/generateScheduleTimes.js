@@ -1,9 +1,9 @@
+import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength';
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
 import { sameDay, timeStringMinutes } from '../../../../utilities/dateTime';
+import { generateBookings } from '../schedulers/utils/generateBookings';
 import { getMatchUpId } from '../../../../global/functions/extractors';
-import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength';
 import { getScheduleTimes } from '../garman/getScheduleTimes';
-import { generateBookings } from './generateBookings';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';
 
