@@ -52,7 +52,7 @@ import {
   DOUBLE_DEFAULT,
 } from '../../../../constants/matchUpStatusConstants';
 
-export function jinnScheduler({
+export function proScheduler({
   checkPotentialRequestConflicts = true, // passed to checkRequestConflicts
   scheduleCompletedMatchUps, // override which can be used by mocksEngine
   clearScheduleDates,

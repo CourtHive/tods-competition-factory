@@ -284,11 +284,14 @@ export function weekDays(date = new Date(), firstDayOfWeek = 0) {
   }
 }
 
-export function addWeek(date, dateFormat) {
+export function addDays(date, days = 7) {
   const universalDate = extractDate(date) + 'T00:00';
   const now = new Date(universalDate);
-  let adjustedDate = new Date(now.setDate(now.getDate() + 7));
-  return formatDate(adjustedDate, dateFormat);
+  let adjustedDate = new Date(now.setDate(now.getDate() + days));
+  return formatDate(adjustedDate);
+}
+export function addWeek(date) {
+  return addDays(date);
 }
 export function subtractWeek(date, dateFormat) {
   const universalDate = extractDate(date) + 'T00:00';
