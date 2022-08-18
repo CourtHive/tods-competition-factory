@@ -63,11 +63,14 @@ export function jinnScheduler({
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
 
+  const result = getSchedulingProfile({ tournamentRecords });
+  if (result.error) return result;
+
   const {
     schedulingProfile = [],
     issues: schedulingProfileIssues = [],
     modifications: schedulingProfileModifications,
-  } = getSchedulingProfile({ tournamentRecords });
+  } = result;
 
   // round robin structures contain other structures and the scheduler
   // needs to reference the containing structure by contained structureIds
