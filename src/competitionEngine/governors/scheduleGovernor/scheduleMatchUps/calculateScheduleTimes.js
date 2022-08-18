@@ -1,6 +1,6 @@
 import { matchUpFormatTimes } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduleTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
-import { calculatePeriodLength } from '../jinnScheduler/calculatePeriodLength';
+import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength';
 import { competitionScheduleMatchUps } from '../../../getters/matchUpsGetter';
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
 import { getMatchUpId } from '../../../../global/functions/extractors';

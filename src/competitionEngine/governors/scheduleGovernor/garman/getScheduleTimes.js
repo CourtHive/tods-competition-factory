@@ -1,6 +1,6 @@
 import { getCourtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
 import { generateVirtualCourts } from '../jinnScheduler/generateVirtualCourts';
-import { calculatePeriodLength } from '../jinnScheduler/calculatePeriodLength';
+import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength';
 import { getFirstTimeSlotStartTime } from './getFirstTimeSlotStartTime';
 import { generateRange } from '../../../../utilities/arrays';
 import { courtGenerator } from './courtGenerator';

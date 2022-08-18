@@ -1,6 +1,6 @@
 import { matchUpFormatTimes } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduleTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
-import { calculatePeriodLength } from './calculatePeriodLength';
+import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import {
   addMinutesToTimeString,
