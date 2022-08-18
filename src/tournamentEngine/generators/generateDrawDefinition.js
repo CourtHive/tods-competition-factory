@@ -58,7 +58,6 @@ export function generateDrawDefinition(params) {
     policyDefinitions,
     tournamentRecord,
     tieFormatName,
-    stage = MAIN,
     drawEntries,
     addToEvent,
     placeByes,
@@ -100,7 +99,7 @@ export function generateDrawDefinition(params) {
 
   const consideredEntries = (
     drawEntries || (considerEventEntries ? eventEntries : [])
-  ).filter(({ entryStage }) => !entryStage || entryStage === stage);
+  ).filter(({ entryStage }) => !entryStage || entryStage === MAIN);
 
   const derivedDrawSize =
     !params.drawSize &&
@@ -265,9 +264,7 @@ export function generateDrawDefinition(params) {
   const entries = drawEntries || eventEntries;
   for (const entry of entries) {
     // if drawEntries and entryStage !== stage ignore
-    if (drawEntries && stage && entry.entryStage && entry.entryStage !== stage)
-      continue;
-    // convenience: assume MAIN as entryStage if none provided
+    if (drawEntries && entry.entryStage && entry.entryStage !== MAIN) continue;
     const entryData = {
       ...entry,
       entryStage: entry.entryStage || MAIN,
@@ -290,11 +287,11 @@ export function generateDrawDefinition(params) {
     appliedPolicies,
     drawDefinition,
     participants,
+    stage: MAIN,
     seedsCount,
     placeByes,
     drawSize,
     entries,
-    stage,
   });
 
   const structureId = structureResult.structureId;

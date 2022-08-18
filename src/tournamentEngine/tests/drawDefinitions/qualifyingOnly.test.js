@@ -1,3 +1,4 @@
+import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../mocksEngine';
 import { unique } from '../../../utilities';
 import tournamentEngine from '../../sync';
@@ -147,4 +148,57 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
     eventId: event.eventId,
   });
   expect(result.success).toEqual(true);
+});
+
+it('can generate a qualifying structure', () => {
+  const {
+    eventIds: [eventId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    eventProfiles: [{ eventName: 'QTest' }],
+    participantsProfile: { participantsCount: 44 },
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let event = tournamentEngine.getEvent({ eventId }).event;
+  expect(event.entries.length).toEqual(0);
+
+  const participants =
+    tournamentEngine.getTournamentParticipants().tournamentParticipants;
+  expect(participants.length).toEqual(44);
+
+  const participantIds = participants.map(getParticipantId);
+  const mainStageEntries = participantIds.slice(0, 12);
+  const qualifyingStageEntries = participantIds.slice(12);
+
+  let result = tournamentEngine.addEventEntries({
+    participantIds: mainStageEntries,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.addEventEntries({
+    participantIds: qualifyingStageEntries,
+    entryStage: QUALIFYING,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.generateDrawDefinition({
+    eventId,
+    qualifyingProfiles: [
+      {
+        structureProfiles: [{ drawSize: 32, qualifyingPositions: 4 }],
+      },
+    ],
+  });
+  expect(result.success).toEqual(true);
+  const drawDefinition = result.drawDefinition;
+  expect(drawDefinition.structures.length).toEqual(2);
+  expect(
+    drawDefinition.structures[0].positionAssignments.filter(
+      ({ participantId }) => participantId
+    ).length
+  ).toEqual(32);
 });

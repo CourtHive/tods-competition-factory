@@ -1,6 +1,6 @@
 import { decorateResult } from '../../global/functions/decorateResult';
+import { definedAttributes, makeDeepCopy } from '../../utilities';
 import { getFlightProfile } from './getFlightProfile';
-import { makeDeepCopy } from '../../utilities';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -25,7 +25,10 @@ export function getEvent({ tournamentRecord, drawDefinition, event, context }) {
       ({ drawId }) => drawDefinition.drawId === drawId
     );
 
-  return { event: eventCopy, drawDefinition: drawDefinitionCopy };
+  return definedAttributes({
+    event: eventCopy,
+    drawDefinition: drawDefinitionCopy,
+  });
 }
 
 export function getEvents({ tournamentRecord, context, inContext }) {
