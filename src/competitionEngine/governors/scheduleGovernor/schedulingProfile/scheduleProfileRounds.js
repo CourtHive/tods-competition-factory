@@ -3,12 +3,12 @@ import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependenci
 import { extractDate, isValidDateString } from '../../../../utilities/dateTime';
 import { getSchedulingProfile } from '../schedulingProfile/schedulingProfile';
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
+import { jinnScheduler } from '../schedulers/jinnScheduler/jinnScheduler';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
+import { proScheduler } from '../schedulers/proScheduler/proScheduler';
 import { getPersonRequests } from '../scheduleMatchUps/personRequests';
 import { clearScheduledMatchUps } from '../clearScheduledMatchUps';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
-import { jinnScheduler } from '../jinnScheduler/jinnScheduler';
-import { proScheduler } from '../schedulers/proScheduler/proScheduler';
 
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
