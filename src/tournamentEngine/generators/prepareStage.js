@@ -50,7 +50,7 @@ export function prepareStage({
       (!stageSequence ||
         !entry.entryStageSequence ||
         entry.entryStageSequence === stageSequence) &&
-      (!roundTarget || entryRoundTarget === roundTarget) &&
+      (!roundTarget || !entryRoundTarget || entryRoundTarget === roundTarget) &&
       DIRECT_ENTRY_STATUSES.includes(entry.entryStatus)
     );
   });

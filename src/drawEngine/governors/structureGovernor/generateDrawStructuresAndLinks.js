@@ -242,14 +242,16 @@ export function generateDrawStructuresAndLinks(params = {}) {
       ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
     );
 
-    const { link } = generateQualifyingLink({
-      targetStructureId: mainStructure.structureId,
-      sourceStructureId: qualifyingStructureId,
-      sourceRoundNumber: qualifyingRoundNumber,
-      finishingPositions,
-      targetEntryRound,
-      linkType,
-    });
+    const link =
+      mainStructure &&
+      generateQualifyingLink({
+        targetStructureId: mainStructure.structureId,
+        sourceStructureId: qualifyingStructureId,
+        sourceRoundNumber: qualifyingRoundNumber,
+        finishingPositions,
+        targetEntryRound,
+        linkType,
+      })?.link;
     if (link) {
       links.push(link);
     }
