@@ -353,9 +353,8 @@ function getFinishingPositionDetails(matchUps) {
         (a, b) => a + b,
         0
       );
-      const winnerFinishingPositionRange = (
-        matchUp.finishingPositionRange?.winner || []
-      ).join('-');
+      const winnerFinishingPositionRange =
+        (matchUp.finishingPositionRange?.winner || []).join('-') || '';
       return !foo.minFinishingSum || sum < foo.minFinishingSum
         ? { minFinishingSum: sum, winnerFinishingPositionRange }
         : foo;
