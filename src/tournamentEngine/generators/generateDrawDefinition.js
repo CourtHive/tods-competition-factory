@@ -324,7 +324,12 @@ export function generateDrawDefinition(params) {
         const {
           qualifyingRoundNumber,
           qualifyingPositions,
+          seededParticipants,
+          seedingScaleName,
           seedsCount = 0,
+          seedingProfile,
+          seedByRanking,
+          placeByes,
           drawSize,
         } = structureProfile;
 
@@ -334,10 +339,14 @@ export function generateDrawDefinition(params) {
           qualifyingRoundNumber,
           preparedStructureIds,
           qualifyingPositions,
+          seededParticipants,
           stage: QUALIFYING,
+          seedingScaleName,
           appliedPolicies,
           drawDefinition,
+          seedingProfile,
           stageSequence,
+          seedByRanking,
           participants,
           roundTarget,
           seedsCount,
