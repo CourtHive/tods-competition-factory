@@ -107,7 +107,8 @@ it('can autoSeed by Rankings', () => {
   );
 
   // check that a timeItem was added
-  expect(tournamentParticipants[0].timeItems.length).toEqual(4);
+  // can range from 3-4 depending on whether an equivalent value was generated (won't add new timeItem)
+  expect(tournamentParticipants[0].timeItems.length).toBeGreaterThanOrEqual(3);
   expect(scaledEntries.length).toEqual(8);
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
@@ -208,7 +209,8 @@ it('can autoSeed by Rankings', () => {
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
 
   // check that a timeItem was added
-  expect(tournamentParticipants[0].timeItems.length).toEqual(6);
+  // can range from 4-6 depending on whether an equivalent value was generated (won't add new timeItem)
+  expect(tournamentParticipants[0].timeItems.length).toBeGreaterThanOrEqual(4);
 
   result = tournamentEngine.removeSeeding({ scaleName: 'U18' });
   expect(result.error).toEqual(MISSING_EVENT);
@@ -221,7 +223,8 @@ it('can autoSeed by Rankings', () => {
 
   // check that all seeding timeItems were removed
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
-  expect(tournamentParticipants[0].timeItems.length).toEqual(3);
+  // can be 2-3 based on whether the initial value for ranking was 100
+  expect(tournamentParticipants[0].timeItems.length).toBeGreaterThanOrEqual(2);
 
   result = tournamentEngine.removeSeeding({
     scaleName: 'U18',

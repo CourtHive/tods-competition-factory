@@ -5,6 +5,9 @@ import tournamentEngine from '../../sync';
 import { expect } from 'vitest';
 
 import { ENTRY_PROFILE } from '../../../constants/extensionConstants';
+import { SINGLES } from '../../../constants/eventConstants';
+import { RATING, SEEDING } from '../../../constants/scaleConstants';
+import { ELO } from '../../../constants/ratingConstants';
 import {
   DRAW,
   MAIN,
@@ -150,13 +153,19 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   expect(result.success).toEqual(true);
 });
 
-it('can generate a qualifying structure', () => {
+it('can generate and seed a qualifying structure', () => {
+  const ratingType = ELO;
+  const participantsCount = 44;
   const {
     eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     eventProfiles: [{ eventName: 'QTest' }],
-    participantsProfile: { participantsCount: 44 },
+    participantsProfile: {
+      scaledParticipantsCount: 44,
+      category: { ratingType },
+      participantsCount: 44,
+    },
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -168,28 +177,78 @@ it('can generate a qualifying structure', () => {
     tournamentEngine.getTournamentParticipants().tournamentParticipants;
   expect(participants.length).toEqual(44);
 
-  const participantIds = participants.map(getParticipantId);
-  const mainStageEntries = participantIds.slice(0, 12);
-  const qualifyingStageEntries = participantIds.slice(12);
+  const scaledParticipants = participants.filter(({ timeItems }) => timeItems);
+  expect(scaledParticipants.length).toEqual(participantsCount);
 
-  let result = tournamentEngine.addEventEntries({
-    participantIds: mainStageEntries,
+  const scaleAttributes = {
+    scaleType: RATING,
+    eventType: SINGLES,
+    scaleName: ELO,
+  };
+  let result = tournamentEngine.participantScaleItem({
+    participant: scaledParticipants[0],
+    scaleAttributes,
+  });
+  expect(result.scaleItem.scaleName).toEqual(ratingType);
+
+  const participantIds = participants.map(getParticipantId);
+  const mainStageEntryIds = participantIds.slice(0, 12);
+  const qualifyingStageEntryIds = participantIds.slice(12);
+
+  const sortedQualifyingParticipantIds = qualifyingStageEntryIds.sort(
+    (a, b) =>
+      tournamentEngine.getParticipantScaleItem({
+        scaleAttributes,
+        participantId: a,
+      }).scaleItem.scaleValue -
+      tournamentEngine.getParticipantScaleItem({
+        scaleAttributes,
+        participantId: b,
+      }).scaleItem.scaleValue
+  );
+
+  result = tournamentEngine.addEventEntries({
+    participantIds: mainStageEntryIds,
     eventId,
   });
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.addEventEntries({
-    participantIds: qualifyingStageEntries,
+    participantIds: qualifyingStageEntryIds,
     entryStage: QUALIFYING,
     eventId,
   });
   expect(result.success).toEqual(true);
 
+  const qualifyingSeedingScaleName = 'QS';
+  const scaleValues = [1, 2, 3, 4, 5, 6, 7, 8];
+  scaleValues.forEach((scaleValue, index) => {
+    let scaleItem = {
+      scaleValue,
+      scaleName: qualifyingSeedingScaleName,
+      scaleType: SEEDING,
+      eventType: SINGLES,
+    };
+    const participantId = sortedQualifyingParticipantIds[index];
+    let result = tournamentEngine.setParticipantScaleItem({
+      participantId,
+      scaleItem,
+    });
+    expect(result.success).toEqual(true);
+  });
+
   result = tournamentEngine.generateDrawDefinition({
     eventId,
     qualifyingProfiles: [
       {
-        structureProfiles: [{ drawSize: 32, qualifyingPositions: 4 }],
+        structureProfiles: [
+          {
+            qualifyingPositions: 4,
+            seedingScaleName: qualifyingSeedingScaleName,
+            seedsCount: 4,
+            drawSize: 32,
+          },
+        ],
       },
     ],
   });
@@ -201,4 +260,10 @@ it('can generate a qualifying structure', () => {
       ({ participantId }) => participantId
     ).length
   ).toEqual(32);
+
+  expect(
+    drawDefinition.structures[0].seedAssignments.map(
+      ({ participantId }) => participantId
+    ).length
+  );
 });
