@@ -14,7 +14,7 @@ import { checkRecoveryTime } from '../scheduleMatchUps/checkRecoveryTime';
 import { getGroupedRounds } from '../schedulingProfile/getGroupedRounds';
 import { checkDailyLimits } from '../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../global/functions/extractors';
-import { generateScheduleTimes } from './generateScheduleTimes';
+import { generateScheduleTimes } from '../schedulers/utils/generateScheduleTimes';
 import {
   extractDate,
   sameDay,

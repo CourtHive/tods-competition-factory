@@ -36,7 +36,7 @@ import {
 } from '../../../../../constants/matchUpStatusConstants';
 
 // will not be used in pro scheduling
-import { generateScheduleTimes } from '../../jinnScheduler/generateScheduleTimes';
+import { generateScheduleTimes } from '../utils/generateScheduleTimes';
 
 export function proScheduler({
   schedulingProfileModifications,
