@@ -5,7 +5,7 @@ import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
 import {
   addMinutesToTimeString,
   extractTime,
-} from '../../../../utilities/dateTime';
+} from '../../../../../utilities/dateTime';
 import {
   MISSING_MATCHUPS,
   MISSING_TOURNAMENT_RECORDS,
