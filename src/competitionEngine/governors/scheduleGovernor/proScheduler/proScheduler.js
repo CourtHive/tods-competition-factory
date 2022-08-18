@@ -32,6 +32,7 @@ import {
 } from '../../../../utilities/dateTime';
 
 import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
+import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { TOTAL } from '../../../../constants/scheduleConstants';
 import { AUDIT } from '../../../../constants/topicConstants';
@@ -119,6 +120,7 @@ export function proScheduler({
   const { courts } = getVenuesAndCourts({ tournamentRecords });
 
   const { matchUps } = allCompetitionMatchUps({
+    matchUpFilters: { matchUpTypes: [SINGLES, DOUBLES] },
     nextMatchUps: true,
     tournamentRecords,
   });
