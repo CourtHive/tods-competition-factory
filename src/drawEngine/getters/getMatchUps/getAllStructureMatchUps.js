@@ -392,6 +392,11 @@ export function getAllStructureMatchUps({
       contextProfile?.withCompetitiveness &&
       getMatchUpCompetitiveness({ ...contextContent, matchUp }).competitiveness;
 
+    // necessry for SINGLES/DOUBLES matchUps that are part of TEAM tournaments
+    const finishingPositionRange =
+      matchUp.finishingPositionRange ||
+      additionalContext.finishingPositionRange;
+
     // order is important here as Round Robin matchUps already have inContext structureId
     const onlyDefined = (obj) => definedAttributes(obj, undefined, true);
     const matchUpWithContext = Object.assign(
@@ -406,6 +411,7 @@ export function getAllStructureMatchUps({
           initialRoundOfPlay + roundNumber,
         endDate: matchUp.endDate || endDate,
         category: matchUpCategory,
+        finishingPositionRange,
         abbreviatedRoundName,
         drawPositionsRange,
         competitiveness,
@@ -607,7 +613,10 @@ export function getAllStructureMatchUps({
       matchUpWithContext.tieMatchUps = matchUpWithContext.tieMatchUps.map(
         (matchUp) => {
           const matchUpTieId = matchUpWithContext.matchUpId;
+          const finishingPositionRange =
+            matchUpWithContext.finishingPositionRange;
           const additionalContext = {
+            finishingPositionRange,
             abbreviatedRoundName,
             roundNumber,
             roundName,
