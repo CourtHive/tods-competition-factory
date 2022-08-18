@@ -61,7 +61,7 @@ export function addEventEntries(params) {
 
   if (!event || !event.eventId) return { error: EVENT_NOT_FOUND };
 
-  const stack = 'addDrawEntry';
+  const stack = 'addEventEntries';
 
   if (
     (extensions &&
@@ -205,13 +205,13 @@ export function addEventEntries(params) {
     validParticipantIds.length !== participantIds.length
   );
 
+  if (invalidParticipantIds) return { error: INVALID_PARTICIPANT_IDS };
+
   if (autoEntryPositions) {
     event.entries = refreshEntryPositions({
       entries: event.entries || [],
     });
   }
 
-  return !invalidParticipantIds
-    ? Object.assign({ info }, SUCCESS)
-    : { error: INVALID_PARTICIPANT_IDS };
+  return decorateResult({ result: { ...SUCCESS }, info, stack });
 }

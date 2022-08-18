@@ -103,7 +103,8 @@ export function getStageEntries({
       const entryStageSequence = entry.entryStageSequence || 1; // default to 1 if not present
       const sameStageSequence =
         !stageSequence || entryStageSequence === stageSequence;
-      const targetMatch = !roundTarget || roundTarget === entryRoundTarget;
+      const targetMatch =
+        !roundTarget || !entryRoundTarget || roundTarget === entryRoundTarget;
 
       return stageTarget && sameStageSequence && matchesEntryType && targetMatch
         ? entries.concat(entry)
