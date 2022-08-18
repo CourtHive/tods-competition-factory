@@ -1,7 +1,7 @@
-import { matchUpFormatTimes } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
-import { getScheduleTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
-import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength';
-import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
+import { matchUpFormatTimes } from '../../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
+import { getScheduleTiming } from '../../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
+import { calculatePeriodLength } from './calculatePeriodLength';
+import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
 import {
   addMinutesToTimeString,
   extractTime,
@@ -9,7 +9,7 @@ import {
 import {
   MISSING_MATCHUPS,
   MISSING_TOURNAMENT_RECORDS,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../../../constants/errorConditionConstants';
 
 export function generateBookings({
   defaultRecoveryMinutes,
