@@ -390,7 +390,8 @@ export function addParticipantContext(params) {
         params.scheduleAnalysis ||
         params.withStatistics ||
         params.withOpponents ||
-        params.withMatchUps
+        params.withMatchUps ||
+        params.withDraws
       ) {
         matchUps = allEventMatchUps({
           participants: allTournamentParticipants,
@@ -465,6 +466,7 @@ export function addParticipantContext(params) {
       drawName,
       eventId,
       eventName,
+      finishingRound,
       finishingPositionRange,
       processCodes,
       loserTo,
@@ -479,6 +481,7 @@ export function addParticipantContext(params) {
       roundPosition,
       score,
       sides,
+      stage,
       schedule,
       structureName,
       structureId,
@@ -700,6 +703,7 @@ export function addParticipantContext(params) {
                 eventId,
                 eventType,
                 eventDrawsCount,
+                finishingRound,
                 finishingPositionRange,
                 loserTo,
                 matchUpId,
@@ -719,6 +723,7 @@ export function addParticipantContext(params) {
                 schedule,
                 score,
                 sides,
+                stage,
                 structureName,
                 structureId,
                 tieFormat,
@@ -1067,9 +1072,34 @@ function annotateParticipant({
         )) ||
       [];
     const diff = (range) => Math.abs(range[0] - range[1]);
+
+    const exits = {};
     const finishingPositionRange = drawMatchUps.reduce(
       (finishingPositionRange, matchUp) => {
+        const { stage, finishingRound } = matchUp;
+        if (!exits[stage]) exits[stage] = {};
+        if (matchUp.finishingPositionRange) {
+          if (
+            !exits[stage].finishingPositionRange ||
+            diff(matchUp.finishingPositionRange) <
+              diff(exits[stage].finishingPositionRange)
+          ) {
+            exits[stage].finishingPositionRange =
+              matchUp.finishingPositionRange;
+          }
+        }
+        if (finishingRound) {
+          if (
+            !exits[stage].finishingRound ||
+            finishingRound < exits[stage].finishingRound
+          ) {
+            exits[stage].finishingRound = finishingRound;
+          }
+        }
+
         if (!finishingPositionRange) return matchUp.finishingPositionRange;
+        if (matchUp.stage === QUALIFYING) finishingPositionRange;
+
         return finishingPositionRange &&
           matchUp.finishingPositionRange &&
           diff(finishingPositionRange) > diff(matchUp.finishingPositionRange)
@@ -1079,6 +1109,7 @@ function annotateParticipant({
       undefined
     );
     draw.finishingPositionRange = finishingPositionRange;
+    draw.exits = exits;
   });
 
   if (withStatistics) participant.statistics = [winRatioStat];
