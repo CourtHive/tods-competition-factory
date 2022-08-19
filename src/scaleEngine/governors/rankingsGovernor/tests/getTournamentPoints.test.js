@@ -2,6 +2,10 @@ import { mocksEngine, scaleEngine, tournamentEngine } from '../../../..';
 
 import { MISSING_POLICY_DEFINITION } from '../../../../constants/errorConditionConstants';
 import { POLICY_TYPE_RANKING_POINTS } from '../../../../constants/policyConstants';
+import {
+  CONSOLATION,
+  QUALIFYING,
+} from '../../../../constants/drawDefinitionConstants';
 
 // policyDefinition needs to be able to capture stage, and whether e.g. CONSOLATION, PLAY_OFF are points per win
 const policyDefinitions = {
@@ -13,6 +17,26 @@ const policyDefinitions = {
       '5-8': { drawSizes: { 32: { value: 4 }, 16: { value: 3 } } },
       '9-16': { drawSizes: { 32: { value: 2 } } },
     },
+    awards: [
+      {
+        drawTypes: [],
+        stages: [QUALIFYING],
+        finishingStageSequence: 1, // will need to derive for QUALIFYING
+        finishingRounds: { 1: 30, 2: 15 },
+      },
+      {
+        drawTypes: [],
+        stages: [],
+        finishingPositionRanges: {
+          1: { value: 10 },
+          2: { value: 8 },
+          '3-4': { value: 6 },
+          '5-8': { drawSizes: { 32: { value: 4 }, 16: { value: 3 } } },
+          '9-16': { drawSizes: { 32: { value: 2 } } },
+        },
+      },
+      { drawTypes: [], stages: [CONSOLATION], pointsPerWin: 30 },
+    ],
   },
 };
 
@@ -40,7 +64,7 @@ it('will fail without ranking point policy definition', () => {
   expect(result.success).toEqual(true);
 });
 
-it('can generate points from tournamentRecords', () => {
+it.only('can generate points from tournamentRecords', () => {
   const drawProfiles = [{ drawSize: 32, category: { ageCategoryCode: 'U12' } }];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     completeAllMatchUps: true,
@@ -59,6 +83,7 @@ it('can generate points from tournamentRecords', () => {
   let result = scaleEngine.getTournamentPoints();
   expect(result.success).toEqual(true);
 
+  expect(Object.keys(result.personPoints).length).toEqual(16);
   Object.values(result.personPoints).forEach((personResults) => {
     personResults.forEach(({ rangeAccessor, points }) => {
       if (rangeAccessor === '9-16') expect(points).toEqual(2);
