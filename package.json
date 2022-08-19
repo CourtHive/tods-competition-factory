@@ -33,7 +33,7 @@
     "type": "git",
     "url": "https://github.com/CourtHive/tods-competition-factory"
   },
-  "types": "dist/tods-competition-factory.d.ts",
+  "main": "./dist/index.mjs",
   "exports": {
     ".": "./dist/index.mjs",
     "./generate": "./dist/forge/generate.mjs",
