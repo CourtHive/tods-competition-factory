@@ -7,7 +7,7 @@ import { PAIR } from '../../../constants/participantConstants';
 import { MALE } from '../../../constants/genderConstants';
 import { AGE } from '../../../constants/eventConstants';
 
-it('can add statistics to tournament participants', () => {
+it.only('can add statistics to tournament participants', () => {
   const participantsProfile = {
     participantsCount: 200,
     participantType: PAIR,
@@ -100,8 +100,8 @@ it('can add statistics to tournament participants', () => {
     },
   ];
   let { tournamentRecord, eventIds } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile,
+    drawProfiles,
   });
   tournamentEngine.setState(tournamentRecord);
 
@@ -146,6 +146,7 @@ it('can add statistics to tournament participants', () => {
     event.drawDefinitions[0].structures[0].positionAssignments;
 
   let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    withRankingProfile: true,
     convertExtensions: true,
     withStatistics: true,
     withOpponents: true,
