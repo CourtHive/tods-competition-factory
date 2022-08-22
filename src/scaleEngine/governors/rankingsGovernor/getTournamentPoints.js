@@ -56,7 +56,10 @@ export function getTournamentPoints({
       const awardProfiles =
         pointsPolicy.categories?.[category].awardProfiles ||
         pointsPolicy.awardProfiles;
-      const requireWinDefault =
+      let requireWinFirstRound =
+        pointsPolicy.categories?.[category].requireWinFirstRound ||
+        pointsPolicy.requireWinFirstRound;
+      let requireWinDefault =
         pointsPolicy.categories?.[category].requireWinDefault ||
         pointsPolicy.requireWinDefault;
 
@@ -96,8 +99,14 @@ export function getTournamentPoints({
 
           if (awardProfile) {
             const accessor =
-              finishingPositionRange &&
+              Array.isArray(finishingPositionRange) &&
               unique(finishingPositionRange).join('-');
+            const firstRound =
+              accessor && finishingPositionRange?.includes(drawSize);
+            if (awardProfile.requireWinDefault !== undefined)
+              requireWin = awardProfile.requireWinDefault;
+            if (awardProfile.requireWinFirstRound !== undefined)
+              requireWinFirstRound = awardProfile.requireWinFirstRound;
 
             const { finishingPositionRanges, finishingRound, pointsPerWin } =
               awardProfile;
@@ -128,7 +137,18 @@ export function getTournamentPoints({
               }
             }
 
+            if (firstRound && requireWinFirstRound !== undefined)
+              requireWin = requireWinFirstRound;
             if (winRequired !== undefined) requireWin = winRequired;
+            /*
+            if (firstRound)
+              console.log({
+                firstRound,
+                accessor,
+                requireWinFirstRound,
+                requireWin,
+              });
+              */
 
             if (awardPoints > positionPoints && (!requireWin || winCount)) {
               positionPoints = awardPoints;
