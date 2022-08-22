@@ -495,8 +495,7 @@ export function addParticipantContext(params) {
         (opponentParticipantId &&
           relevantParticipantIdsMap[opponentParticipantId]) ||
         [];
-      const finishingPositionRange =
-        winningSide && (participantWon ? winner : loser);
+      const finishingPositionRange = participantWon ? winner : loser;
       const drawEntry = drawEntries.find(
         (entry) => entry.participantId === participantId
       );
