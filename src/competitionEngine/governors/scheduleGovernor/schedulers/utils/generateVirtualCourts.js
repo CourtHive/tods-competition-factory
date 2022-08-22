@@ -1,16 +1,16 @@
-import { getCourtDateAvailability } from '../garman/getCourtDateAvailability';
-import { generateTimeSlots } from '../garman/generateTimeSlots';
-import { makeDeepCopy } from '../../../../utilities';
+import { getCourtDateAvailability } from '../../garman/getCourtDateAvailability';
+import { generateTimeSlots } from '../../garman/generateTimeSlots';
+import { makeDeepCopy } from '../../../../../utilities';
 import {
   isValidDateString,
   timeStringMinutes,
-} from '../../../../utilities/dateTime';
+} from '../../../../../utilities/dateTime';
 
 import {
   INVALID_BOOKINGS,
   INVALID_DATE,
   INVALID_VALUES,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../../../constants/errorConditionConstants';
 
 export function generateVirtualCourts({
   remainingScheduleTimes = [],

@@ -10,14 +10,14 @@ import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTime
 import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
 import { removeEventMatchUpFormatTiming } from './removeEventMatchUpFormatTiming';
 import { toggleParticipantCheckInState } from './toggleParticipantCheckInState';
-import { generateVirtualCourts } from './jinnScheduler/generateVirtualCourts';
+import { generateVirtualCourts } from './schedulers/utils/generateVirtualCourts';
 import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
 import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
 import { getRounds, getProfileRounds } from './schedulingProfile/getRounds';
 import { bulkUpdateCourtAssignments } from './bulkUpdateCourtAssignments';
 import { scheduleMatchUps } from './scheduleMatchUps/scheduleMatchUps';
+import { generateBookings } from './schedulers/utils/generateBookings';
 import { reorderUpcomingMatchUps } from './reorderUpcomingMatchUps';
-import { generateBookings } from './jinnScheduler/generateBookings';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';

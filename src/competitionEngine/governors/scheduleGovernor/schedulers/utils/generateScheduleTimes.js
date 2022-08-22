@@ -1,11 +1,11 @@
-import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
-import { sameDay, timeStringMinutes } from '../../../../utilities/dateTime';
-import { getMatchUpId } from '../../../../global/functions/extractors';
+import { getVenuesAndCourts } from '../../../../getters/venuesAndCourtsGetter';
+import { sameDay, timeStringMinutes } from '../../../../../utilities/dateTime';
+import { getMatchUpId } from '../../../../../global/functions/extractors';
+import { getScheduleTimes } from '../../garman/getScheduleTimes';
 import { calculatePeriodLength } from './calculatePeriodLength';
-import { getScheduleTimes } from '../garman/getScheduleTimes';
 import { generateBookings } from './generateBookings';
 
-import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORDS } from '../../../../../constants/errorConditionConstants';
 
 /**
  *
