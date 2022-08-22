@@ -62,8 +62,8 @@ const policyDefinitions = {
         eventTypes: [SINGLES],
         stages: [MAIN, CONSOLATION, PLAY_OFF],
         finishingPositionRanges: {
-          3: { value: 1950 },
-          4: { value: 1800 },
+          3: { value: 1950 }, // perhaps requirePriorWins attribute for positioning points after participationOrder: 1
+          4: { value: 1800 }, // perhaps requirePriorWins attribute for positioning points after participationOrder: 1
           5: { value: 1350 },
           6: { value: 1050 },
           '7-8': { value: 930 },
