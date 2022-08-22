@@ -20,7 +20,7 @@ const policyDefinitions = {
         drawTypes: [],
         stages: [QUALIFYING],
         eventTypes: [SINGLES],
-        finishingStageSequence: 1, // will need to derive for QUALIFYING
+        finishingStageSequence: 1, // TODO: will need to derive for QUALIFYING
         finishingRound: { 1: { won: 30, lost: 15 }, 2: { won: 15 } },
       },
       {
