@@ -25,6 +25,7 @@ const policyDefinitions = {
       },
       {
         drawTypes: [CURTIS_CONSOLATION],
+        requireWinFirstRound: true,
         requireWinDefault: false,
         stages: [MAIN],
         flightNumbers: [],
@@ -44,8 +45,9 @@ const policyDefinitions = {
             { drawSize: 32, value: 750 },
             { drawSize: 64, value: 750 },
           ],
-          '17-32': [{ drawSizes: [32, 64], value: 390, requireWin: true }],
-          // other options which achieve the same thing
+          '17-32': [{ drawSizes: [32, 64], value: 390 }],
+          // if requireWinFirstRound is not true then any of the following will achieve the same thing
+          // '17-32': [{ drawSizes: [32, 64], value: 390, requireWin: true }],
           // '17-32': [{ drawSizes: [64], value: 390 }],
           // '17-32': [{ drawSize: 64, value: 390 }],
         },
@@ -60,8 +62,8 @@ const policyDefinitions = {
         eventTypes: [SINGLES],
         stages: [MAIN, CONSOLATION, PLAY_OFF],
         finishingPositionRanges: {
-          3: { value: 1950 },
-          4: { value: 1800 },
+          3: { value: 1950 }, // perhaps requirePriorWins attribute for positioning points after participationOrder: 1
+          4: { value: 1800 }, // perhaps requirePriorWins attribute for positioning points after participationOrder: 1
           5: { value: 1350 },
           6: { value: 1050 },
           '7-8': { value: 930 },
