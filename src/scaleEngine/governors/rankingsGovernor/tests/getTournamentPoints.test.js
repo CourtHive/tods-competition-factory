@@ -45,7 +45,9 @@ const policyDefinitions = {
             { drawSize: 64, value: 750 },
           ],
           '17-32': [{ drawSizes: [32, 64], value: 390, requireWin: true }],
+          // other options which achieve the same thing
           // '17-32': [{ drawSizes: [64], value: 390 }],
+          // '17-32': [{ drawSize: 64, value: 390 }],
         },
         // alternative to finishingPositionRanges
         finishingRound: {
