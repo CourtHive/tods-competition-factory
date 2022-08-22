@@ -1,11 +1,15 @@
+import { getContainedStructures } from '../../governors/tournamentGovernor/getContainedStructures';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
+import { structureSort } from '../../../drawEngine/getters/structureSort';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
 // ADD: orderedStructures with stage, stageSequence info
 export function getDrawDetails({ event, eventEntries }) {
   const derivedInfo = {};
+  const { containedStructures } = getContainedStructures({ event });
+
   const drawDetails = Object.assign(
     {},
     ...(event.drawDefinitions || []).map((drawDefinition) => {
@@ -33,8 +37,8 @@ export function getDrawDetails({ event, eventEntries }) {
       const drawSize = mainPositionAssignments?.length;
       const qualifyingStructure = getDrawStructures({
         stageSequence: 1,
-        drawDefinition,
         stage: QUALIFYING,
+        drawDefinition,
       })?.structures?.[0];
       const qualifyingPositionAssignments =
         mainStructure &&
@@ -43,10 +47,28 @@ export function getDrawDetails({ event, eventEntries }) {
         })?.positionAssignments;
       const qualifyingDrawSize = qualifyingPositionAssignments?.length;
 
+      // used in rankings pipeline.
+      // the structures in which a particpant particpants are ordered
+      // to enable differentiation for Points-per-round and points-per-win
+      const orderedStructureIds = (drawDefinition.structures || [])
+        .sort(structureSort)
+        .map(({ structureId }) => {
+          const containedStructureIds = containedStructures[structureId] || [];
+          const structureIds = [structureId, ...containedStructureIds];
+          return structureIds;
+        })
+        .flat(Infinity);
+
+      const flightNumber = event?._flightProfile?.flights?.find(
+        (flight) => flight.drawId === drawDefinition.drawId
+      )?.flightNumber;
+
       derivedInfo[drawDefinition.drawId] = {
         qualifyingPositionAssignments,
         mainPositionAssignments,
+        orderedStructureIds,
         qualifyingDrawSize,
+        flightNumber,
         drawSize,
       };
 

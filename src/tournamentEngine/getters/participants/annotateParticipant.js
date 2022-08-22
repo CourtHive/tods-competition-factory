@@ -10,12 +10,14 @@ import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SEEDING } from '../../../constants/scaleConstants';
 
 export function annotateParticipant({
-  eventsPublishStatuses,
   withScaleValues = true,
+  eventsPublishStatuses,
+  withRankingProfile,
   withEvents = true,
   withDraws = true,
   participantIdMap,
   scheduleAnalysis,
+  derivedDrawInfo,
   usePublishState,
   withStatistics,
   withOpponents,
@@ -281,7 +283,14 @@ export function annotateParticipant({
     });
   });
 
-  addRankingProfile({ participantMatchUps, participantDraws, matchUps });
+  if (withRankingProfile) {
+    addRankingProfile({
+      participantMatchUps,
+      participantDraws,
+      derivedDrawInfo,
+      matchUps,
+    });
+  }
 
   if (withStatistics) participant.statistics = [winRatioStat];
 
