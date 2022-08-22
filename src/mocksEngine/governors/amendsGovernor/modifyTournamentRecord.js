@@ -1,5 +1,5 @@
 import { scheduleProfileRounds } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
-import { generateScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/jinnScheduler/generateScheduleTimes';
+import { generateScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/schedulers/utils/generateScheduleTimes';
 import { publishEvent } from '../../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import { generateFlightDrawDefinitions } from '../../generators/generateFlightDrawDefinitions';
 import { addTournamentParticipants } from '../../generators/addTournamentParticipants';

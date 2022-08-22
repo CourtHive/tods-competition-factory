@@ -1,46 +1,30 @@
-import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
-import { assignMatchUpVenue } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
-import { addTournamentTimeItem } from '../../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
-import { addMatchUpScheduledTime } from '../../../../drawEngine/governors/matchUpGovernor/scheduleItems';
-import { modifyParticipantMatchUpsCount } from '../scheduleMatchUps/modifyParticipantMatchUpsCount';
-import { checkDependenciesScheduled } from '../scheduleMatchUps/checkDependenciesScheduled';
-import { getScheduledRoundsDetails } from '../schedulingProfile/getScheduledRoundsDetails';
-import { updateTimeAfterRecovery } from '../scheduleMatchUps/updateTimeAfterRecovery';
-import { getDrawDefinition } from '../../../../tournamentEngine/getters/eventGetter';
-import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
-import { checkDependendantTiming } from '../scheduleMatchUps/checkDependentTiming';
-import { checkRequestConflicts } from '../scheduleMatchUps/checkRequestConflicts';
-import { getSchedulingProfile } from '../schedulingProfile/schedulingProfile';
-import { processNextMatchUps } from '../scheduleMatchUps/processNextMatchUps';
-import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
-import { checkRecoveryTime } from '../scheduleMatchUps/checkRecoveryTime';
-import { getGroupedRounds } from '../schedulingProfile/getGroupedRounds';
-import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
-import { checkDailyLimits } from '../scheduleMatchUps/checkDailyLimits';
-import { getPersonRequests } from '../scheduleMatchUps/personRequests';
-import { getMatchUpId } from '../../../../global/functions/extractors';
-import { addNotice, getTopics } from '../../../../global/state/globalState';
-import { clearScheduledMatchUps } from '../clearScheduledMatchUps';
-import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
-import { generateScheduleTimes } from './generateScheduleTimes';
+import { assignMatchUpVenue } from '../../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
+import { addTournamentTimeItem } from '../../../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
+import { addMatchUpScheduledTime } from '../../../../../drawEngine/governors/matchUpGovernor/scheduleItems';
+import { modifyParticipantMatchUpsCount } from '../../scheduleMatchUps/modifyParticipantMatchUpsCount';
+import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
+import { getScheduledRoundsDetails } from '../../schedulingProfile/getScheduledRoundsDetails';
+import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
+import { getDrawDefinition } from '../../../../../tournamentEngine/getters/eventGetter';
+import { checkDependendantTiming } from '../../scheduleMatchUps/checkDependentTiming';
+import { checkRequestConflicts } from '../../scheduleMatchUps/checkRequestConflicts';
+import { processNextMatchUps } from '../../scheduleMatchUps/processNextMatchUps';
+import { addNotice, getTopics } from '../../../../../global/state/globalState';
+import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
+import { getGroupedRounds } from '../../schedulingProfile/getGroupedRounds';
+import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
+import { getMatchUpId } from '../../../../../global/functions/extractors';
+import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
 import {
   extractDate,
-  isValidDateString,
   sameDay,
   timeStringMinutes,
   zeroPad,
-} from '../../../../utilities/dateTime';
+} from '../../../../../utilities/dateTime';
 
-import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
-import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { TOTAL } from '../../../../constants/scheduleConstants';
-import { AUDIT } from '../../../../constants/topicConstants';
-import {
-  INVALID_VALUES,
-  MISSING_TOURNAMENT_RECORDS,
-  NO_VALID_DATES,
-} from '../../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../../../constants/resultConstants';
+import { TOTAL } from '../../../../../constants/scheduleConstants';
+import { AUDIT } from '../../../../../constants/topicConstants';
 import {
   BYE,
   ABANDONED,
@@ -50,105 +34,28 @@ import {
   COMPLETED,
   DOUBLE_WALKOVER,
   DOUBLE_DEFAULT,
-} from '../../../../constants/matchUpStatusConstants';
+} from '../../../../../constants/matchUpStatusConstants';
 
-export function jinnScheduler({
-  checkPotentialRequestConflicts = true, // passed to checkRequestConflicts
+// will not be used in pro scheduling
+
+export function proScheduler({
+  schedulingProfileModifications,
+  checkPotentialRequestConflicts,
   scheduleCompletedMatchUps, // override which can be used by mocksEngine
+  schedulingProfileIssues,
+  dateSchedulingProfiles,
+  containedStructureIds,
+  matchUpDependencies,
+  matchUpDailyLimits,
   clearScheduleDates,
-  scheduleDates = [],
+  schedulingProfile,
   tournamentRecords,
+  personRequests,
   periodLength,
+  matchUps,
+  courts,
   dryRun,
 }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
-
-  const result = getSchedulingProfile({ tournamentRecords });
-  if (result.error) return result;
-
-  const {
-    schedulingProfile = [],
-    issues: schedulingProfileIssues = [],
-    modifications: schedulingProfileModifications,
-  } = result;
-
-  // round robin structures contain other structures and the scheduler
-  // needs to reference the containing structure by contained structureIds
-  const containedStructureIds = Object.assign(
-    {},
-    ...Object.values(tournamentRecords).map(
-      (tournamentRecord) =>
-        getContainedStructures({ tournamentRecord }).containedStructures
-    )
-  );
-
-  // ensure all scheduleDates are valid date strings
-  const validScheduleDates = scheduleDates
-    .map((scheduleDate) => {
-      if (!isValidDateString(scheduleDate)) return;
-      return extractDate(scheduleDate);
-    })
-    .filter(Boolean);
-
-  // filter out any invalid scheduleDates in schedulingProfile
-  const profileDates = schedulingProfile
-    .map((dateSchedulingProfile) => dateSchedulingProfile.scheduleDate)
-    .map(
-      (scheduleDate) =>
-        isValidDateString(scheduleDate) && extractDate(scheduleDate)
-    )
-    .filter(
-      (scheduleDate) =>
-        scheduleDate &&
-        (!scheduleDates.length || validScheduleDates.includes(scheduleDate))
-    );
-
-  // if no valid profileDates remain throw an error
-  if (!profileDates.length) {
-    return { error: NO_VALID_DATES };
-  }
-
-  // if array of clearScheduleDates, clear all matchUps on scheduledDates
-  if (clearScheduleDates && !dryRun) {
-    const scheduledDates = Array.isArray(clearScheduleDates)
-      ? clearScheduleDates
-      : undefined;
-    clearScheduledMatchUps({ tournamentRecords, scheduledDates });
-  }
-
-  const { courts } = getVenuesAndCourts({ tournamentRecords });
-
-  const { matchUps } = allCompetitionMatchUps({
-    matchUpFilters: { matchUpTypes: [SINGLES, DOUBLES] },
-    nextMatchUps: true,
-    tournamentRecords,
-  });
-
-  // build up a map of all matchUp dependencies
-  const { matchUpDependencies } = getMatchUpDependencies({
-    includeParticipantDependencies: true,
-    tournamentRecords,
-    matchUps,
-  });
-
-  const { matchUpDailyLimits } = getMatchUpDailyLimits({ tournamentRecords });
-
-  const { personRequests } = getPersonRequests({
-    requestType: DO_NOT_SCHEDULE,
-    tournamentRecords,
-  });
-
-  // filter out any dates in schedulingProfile which have been excluded and sort
-  const dateSchedulingProfiles = schedulingProfile
-    .filter((dateschedulingProfile) => {
-      const scheduleDate = extractDate(dateschedulingProfile?.scheduleDate);
-      return profileDates.includes(scheduleDate);
-    })
-    .sort((a, b) => {
-      new Date(a.scheduleDate).getTime() - new Date(b.scheduleDate).getTime();
-    });
-
   const scheduleTimesRemaining = {};
   const skippedScheduleTimes = {};
 
@@ -230,18 +137,13 @@ export function jinnScheduler({
         garmanSinglePass: true,
       });
 
-      // determines court availability taking into account already scheduled matchUps on the scheduleDate
-      // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
-      // on first call pass in the averageMatchUpMiutes of first round to be scheduled
-      const { scheduleTimes, dateScheduledMatchUpIds } = generateScheduleTimes({
-        averageMatchUpMinutes: groupedRounds[0]?.averageMinutes,
-        scheduleDate: extractDate(scheduleDate),
-        venueIds: [venue.venueId],
-        clearScheduleDates,
-        tournamentRecords,
-        periodLength,
-        matchUps,
-      });
+      const dateScheduledMatchUps = matchUps?.filter(
+        (matchUp) =>
+          hasSchedule(matchUp) &&
+          (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate)
+      );
+
+      const dateScheduledMatchUpIds = dateScheduledMatchUps.map(getMatchUpId);
 
       // first build up a map of matchUpNotBeforeTimes and matchUpPotentialParticipantIds
       // based on already scheduled matchUps
@@ -347,7 +249,7 @@ export function jinnScheduler({
         greatestAverageMinutes,
         scheduledRoundsDetails,
         matchUpsToSchedule,
-        scheduleTimes,
+        scheduleTimes: [],
         groupedRounds,
         minutesMap,
         matchUpMap,
