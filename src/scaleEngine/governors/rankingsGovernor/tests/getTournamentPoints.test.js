@@ -12,7 +12,6 @@ import {
   QUALIFYING,
 } from '../../../../constants/drawDefinitionConstants';
 
-// policyDefinition needs to be able to capture stage, and whether e.g. CONSOLATION, PLAY_OFF are points per win
 const policyDefinitions = {
   [POLICY_TYPE_RANKING_POINTS]: {
     awardProfiles: [
