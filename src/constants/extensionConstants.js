@@ -13,6 +13,7 @@ export const LINKED_TOURNAMENTS = 'linkedTournamentsIds';
 export const MATCHUP_HISTORY = 'matchUpHistory';
 export const PARTICIPANT_REPRESENTATIVES = 'participantRepresentatives';
 export const PERSON_REQUESTS = 'personRequests';
+export const RANKING_POINTS = 'rankingPoints';
 export const ROUND_TARGET = 'roundTarget';
 export const SCHEDULE_LIMITS = 'scheduleLimits';
 export const SCHEDULE_TIMING = 'scheduleTiming';
@@ -37,6 +38,7 @@ export const extensionConstants = {
   MATCHUP_HISTORY,
   PARTICIPANT_REPRESENTATIVES,
   PERSON_REQUESTS,
+  RANKING_POINTS,
   ROUND_TARGET,
   SCHEDULE_LIMITS,
   SCHEDULE_TIMING,

@@ -1,9 +1,11 @@
 import { getTournamentParticipants } from '../../../tournamentEngine/getters/participants/getTournamentParticipants';
 import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
+import { addExtension } from '../../../global/functions/producers/addExtension';
 import { isConvertableInteger } from '../../../utilities/math';
 import { unique } from '../../../utilities';
 
 import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
+import { RANKING_POINTS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_POLICY_DEFINITION,
@@ -13,6 +15,7 @@ import {
 export function getTournamentPoints({
   policyDefinition,
   tournamentRecord,
+  saveSnapshot,
   level,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -154,6 +157,14 @@ export function getTournamentPoints({
         }
       }
     });
+  }
+
+  if (saveSnapshot) {
+    const extension = {
+      name: RANKING_POINTS,
+      value: personPoints,
+    };
+    addExtension({ element: tournamentRecord, extension });
   }
 
   return { personPoints, ...SUCCESS };
