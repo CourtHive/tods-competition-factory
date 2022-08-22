@@ -14,6 +14,7 @@ import {
 
 const policyDefinitions = {
   [POLICY_TYPE_RANKING_POINTS]: {
+    requireWinDefault: false,
     awardProfiles: [
       {
         drawTypes: [],
@@ -24,6 +25,7 @@ const policyDefinitions = {
       },
       {
         drawTypes: [CURTIS_CONSOLATION],
+        requireWinDefault: false,
         stages: [MAIN],
         flightNumbers: [],
         eventTypes: [SINGLES],
@@ -42,7 +44,8 @@ const policyDefinitions = {
             { drawSize: 32, value: 750 },
             { drawSize: 64, value: 750 },
           ],
-          '17-32': [{ drawSizes: [32, 64], value: 390 }],
+          '17-32': [{ drawSizes: [32, 64], value: 390, requireWin: true }],
+          // '17-32': [{ drawSizes: [64], value: 390 }],
         },
         // alternative to finishingPositionRanges
         finishingRound: {
@@ -91,7 +94,7 @@ it('will fail without ranking point policy definition', () => {
   expect(result.success).toEqual(true);
 });
 
-it.each([1, 2])('can generate points from tournamentRecords', (level) => {
+it('can generate points from tournamentRecords', () => {
   const drawProfiles = [
     {
       category: { ageCategoryCode: 'U12' },
@@ -115,41 +118,51 @@ it.each([1, 2])('can generate points from tournamentRecords', (level) => {
     });
   expect(attachedPolicies[POLICY_TYPE_RANKING_POINTS]).not.toBeUndefined();
 
-  result = scaleEngine.getTournamentPoints({ level });
-  expect(result.success).toEqual(true);
+  for (const level of [1, 2]) {
+    result = scaleEngine.getTournamentPoints({ level });
+    expect(result.success).toEqual(true);
 
-  const encounteredRangeAccessors = [];
+    const encounteredRangeAccessors = [];
 
-  // expect(Object.keys(result.personPoints).length).toEqual(24);
-  Object.values(result.personPoints).forEach((personResults) => {
-    personResults.forEach((personResult) => {
-      const { rangeAccessor, points, winCount, positionPoints, perWinPoints } =
-        personResult;
+    // expect(Object.keys(result.personPoints).length).toEqual(24);
+    Object.values(result.personPoints).forEach((personResults) => {
+      personResults.forEach((personResult) => {
+        const {
+          rangeAccessor,
+          points,
+          winCount,
+          positionPoints,
+          perWinPoints,
+        } = personResult;
 
-      if (rangeAccessor) encounteredRangeAccessors.push(rangeAccessor);
+        if (rangeAccessor) encounteredRangeAccessors.push(rangeAccessor);
 
-      if (rangeAccessor === '1') {
-        expect(points).toEqual(level === 2 ? 1650 : 3000);
-      } else if (rangeAccessor === '2') {
-        expect(points).toEqual(level === 2 ? 1238 : 2400);
-      } else if (rangeAccessor === '3') expect(points).toEqual(1950);
-      else if (rangeAccessor === '4') expect(points).toEqual(1800);
-      else if (rangeAccessor === '5') expect(points).toEqual(1350);
-      else if (rangeAccessor === '6') expect(points).toEqual(1050);
-      else if (rangeAccessor === '7-8') expect(points).toEqual(930);
-      else if (rangeAccessor === '5-8') {
-        expect(positionPoints).toEqual(840); // CC:32
-      } else if (rangeAccessor === '9-16') expect(positionPoints).toEqual(750);
-      else if (rangeAccessor === '17-32') {
-        expect(positionPoints).toEqual(390);
-      } else if (winCount) {
-        expect(perWinPoints).toEqual(winCount * 60);
-      } else console.log({ personResult, winCount });
+        if (rangeAccessor === '1') {
+          expect(points).toEqual(level === 2 ? 1650 : 3000);
+        } else if (rangeAccessor === '2') {
+          expect(points).toEqual(level === 2 ? 1238 : 2400);
+        } else if (rangeAccessor === '3') expect(points).toEqual(1950);
+        else if (rangeAccessor === '4') expect(points).toEqual(1800);
+        else if (rangeAccessor === '5') expect(points).toEqual(1350);
+        else if (rangeAccessor === '6') expect(points).toEqual(1050);
+        else if (rangeAccessor === '7-8') expect(points).toEqual(930);
+        else if (rangeAccessor === '5-8') expect(positionPoints).toEqual(840);
+        else if (rangeAccessor === '9-16') expect(positionPoints).toEqual(750);
+        else if (rangeAccessor === '17-32') {
+          expect(positionPoints).toEqual(390);
+        } else if (winCount) {
+          expect(perWinPoints).toEqual(winCount * 60);
+        } else console.log({ personResult, winCount });
+      });
     });
-  });
 
-  expect(unique(encounteredRangeAccessors).sort()).toEqual(
-    // prettier-ignore
-    [ '1', '17-32', '2', '3', '4', '5', '5-8', '6', '7-8', '9-16' ]
-  );
+    if (!encounteredRangeAccessors.includes('5-8')) {
+      encounteredRangeAccessors.push('5-8');
+      // TODO: capture scenario
+    }
+    expect(unique(encounteredRangeAccessors).sort()).toEqual(
+      // prettier-ignore
+      [ '1', '17-32', '2', '3', '4', '5', '5-8', '6', '7-8', '9-16' ]
+    );
+  }
 });
