@@ -21,7 +21,7 @@ const policyDefinitions = {
         stages: [QUALIFYING],
         eventTypes: [SINGLES],
         finishingStageSequence: 1, // will need to derive for QUALIFYING
-        finishingRounds: { 1: 30, 2: 15 },
+        finishingRound: { 1: { won: 30, lost: 15 }, 2: { won: 15 } },
       },
       {
         drawTypes: [CURTIS_CONSOLATION],
@@ -86,7 +86,7 @@ it('will fail without ranking point policy definition', () => {
   expect(result.success).toEqual(true);
 });
 
-it.only('can generate points from tournamentRecords', () => {
+it('can generate points from tournamentRecords', () => {
   const drawProfiles = [
     {
       category: { ageCategoryCode: 'U12' },
