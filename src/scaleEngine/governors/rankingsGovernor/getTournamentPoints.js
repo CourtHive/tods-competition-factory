@@ -47,7 +47,7 @@ export function getTournamentPoints({ tournamentRecord, policyDefinition }) {
       const { category, eventType } = event || {};
 
       const awardProfiles =
-        pointsPolicy.categories?.[category].awards ||
+        pointsPolicy.categories?.[category].awardProfiles ||
         pointsPolicy.awardProfiles;
 
       let points;
