@@ -31,7 +31,13 @@ const policyDefinitions = {
         participationOrder: 1,
         finishingPositionRanges: {
           // 1: { value: 3000 }, // handled by finishingRound
-          2: [{ drawSizes: [], value: 2400 }],
+          2: [
+            {
+              level: { 1: 2400, 2: 1238, 3: 900, 4: 540, 5: 300 },
+              drawSizes: [],
+              value: 2400,
+            },
+          ],
           '5-8': [{ drawSize: 32, threshold: true, value: 840 }],
           '9-16': [
             { drawSize: 32, value: 750 },
@@ -41,7 +47,7 @@ const policyDefinitions = {
         },
         // alternative to finishingPositionRanges
         finishingRound: {
-          1: { won: 3000, lost: 2400 },
+          1: { won: { value: 3000, level: { 1: 3000, 2: 1650 } }, lost: 2400 },
           2: { won: 2400, lost: 1800 }, // allows for different points for winning SF vs. losing in F
         },
       },
@@ -86,7 +92,7 @@ it('will fail without ranking point policy definition', () => {
   expect(result.success).toEqual(true);
 });
 
-it('can generate points from tournamentRecords', () => {
+it.each([1, 2])('can generate points from tournamentRecords', (level) => {
   const drawProfiles = [
     {
       category: { ageCategoryCode: 'U12' },
@@ -110,15 +116,7 @@ it('can generate points from tournamentRecords', () => {
     });
   expect(attachedPolicies[POLICY_TYPE_RANKING_POINTS]).not.toBeUndefined();
 
-  /*
-  const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-  const targetMatchUp = matchUps.find(
-    (m) => m.roundName === 'Quarterfinal' && m.stage === 'MAIN'
-  );
-  console.log(targetMatchUp.finishingPositionRange);
-  */
-
-  result = scaleEngine.getTournamentPoints();
+  result = scaleEngine.getTournamentPoints({ level });
   expect(result.success).toEqual(true);
 
   const encounteredRangeAccessors = [];
@@ -131,9 +129,11 @@ it('can generate points from tournamentRecords', () => {
 
       if (rangeAccessor) encounteredRangeAccessors.push(rangeAccessor);
 
-      if (rangeAccessor === '1') expect(points).toEqual(3000);
-      else if (rangeAccessor === '2') expect(points).toEqual(2400);
-      else if (rangeAccessor === '3') expect(points).toEqual(1950);
+      if (rangeAccessor === '1') {
+        expect(points).toEqual(level === 2 ? 1650 : 3000);
+      } else if (rangeAccessor === '2') {
+        expect(points).toEqual(level === 2 ? 1238 : 2400);
+      } else if (rangeAccessor === '3') expect(points).toEqual(1950);
       else if (rangeAccessor === '4') expect(points).toEqual(1800);
       else if (rangeAccessor === '5') expect(points).toEqual(1350);
       else if (rangeAccessor === '6') expect(points).toEqual(1050);
