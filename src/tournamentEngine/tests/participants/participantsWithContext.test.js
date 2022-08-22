@@ -7,7 +7,7 @@ import { PAIR } from '../../../constants/participantConstants';
 import { MALE } from '../../../constants/genderConstants';
 import { AGE } from '../../../constants/eventConstants';
 
-it.only('can add statistics to tournament participants', () => {
+it('can add statistics to tournament participants', () => {
   const participantsProfile = {
     participantsCount: 200,
     participantType: PAIR,

@@ -10,7 +10,11 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-export function getTournamentPoints({ tournamentRecord, policyDefinition }) {
+export function getTournamentPoints({
+  policyDefinition,
+  tournamentRecord,
+  level,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const { policyDefinitions: attachedPolicies } = getPolicyDefinitions({
@@ -47,7 +51,7 @@ export function getTournamentPoints({ tournamentRecord, policyDefinition }) {
       const { category, eventType } = event || {};
 
       const awardProfiles =
-        pointsPolicy.categories?.[category].awards ||
+        pointsPolicy.categories?.[category].awardProfiles ||
         pointsPolicy.awardProfiles;
 
       let points;
@@ -96,7 +100,7 @@ export function getTournamentPoints({ tournamentRecord, policyDefinition }) {
             if (finishingPositionRanges) {
               const valueObj = finishingPositionRanges[accessor];
               if (valueObj) {
-                awardPoints = getAwardPoints({ valueObj, drawSize });
+                awardPoints = getAwardPoints({ valueObj, drawSize, level });
               }
             }
 
@@ -107,6 +111,7 @@ export function getTournamentPoints({ tournamentRecord, policyDefinition }) {
                   participantWon,
                   valueObj,
                   drawSize,
+                  level,
                 });
               }
             }
@@ -143,7 +148,12 @@ export function getTournamentPoints({ tournamentRecord, policyDefinition }) {
   return { personPoints, ...SUCCESS };
 }
 
-function getAwardPoints({ valueObj, drawSize, participantWon }) {
+function getAwardPoints({ valueObj, drawSize, level, participantWon }) {
+  const getValue = (obj) => {
+    const value = obj?.value || (isConvertableInteger(obj) ? obj : 0);
+    return level && obj?.level ? obj.level[level] || value : value;
+  };
+
   const winAccessor = participantWon
     ? 'won'
     : participantWon === false
@@ -168,16 +178,20 @@ function getAwardPoints({ valueObj, drawSize, participantWon }) {
         defaultDef?.[winAccessor]
       );
     } else {
-      return sizeDefined?.value || thresholdMatched?.value || defaultDef?.value;
+      return (
+        getValue(sizeDefined) ||
+        getValue(thresholdMatched) ||
+        getValue(defaultDef)
+      );
     }
   } else if (typeof valueObj === 'object') {
     if (winAccessor !== undefined) {
-      return (
-        valueObj?.drawSizes?.[drawSize]?.[winAccessor] ||
-        valueObj?.[winAccessor]
-      );
+      const foo =
+        getValue(valueObj?.drawSizes?.[drawSize]?.[winAccessor]) ||
+        getValue(valueObj?.[winAccessor]);
+      return foo;
     } else {
-      return valueObj?.drawSizes?.[drawSize]?.value || valueObj?.value;
+      return getValue(valueObj?.drawSizes?.[drawSize]) || getValue(valueObj);
     }
   } else if (isConvertableInteger(valueObj)) {
     // when using participantWon non-objects are not valid
