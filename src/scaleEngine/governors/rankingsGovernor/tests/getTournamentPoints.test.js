@@ -166,3 +166,42 @@ it('can generate points from tournamentRecords', () => {
     );
   }
 });
+
+it('can generate points from tournamentRecords', () => {
+  const drawProfiles = [
+    {
+      category: { ageCategoryCode: 'U12' },
+      drawType: CURTIS_CONSOLATION,
+      completionGoal: 24,
+      drawSize: 32,
+    },
+  ];
+  let result = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    randomWinningSide: true,
+    policyDefinitions,
+    drawProfiles,
+  });
+
+  const { tournamentRecord } = result;
+  tournamentEngine.setState(tournamentRecord);
+
+  const { policyDefinitions: attachedPolicies } =
+    tournamentEngine.getPolicyDefinitions({
+      policyTypes: [POLICY_TYPE_RANKING_POINTS],
+    });
+  expect(attachedPolicies[POLICY_TYPE_RANKING_POINTS]).not.toBeUndefined();
+
+  result = scaleEngine.getTournamentPoints();
+  expect(result.success).toEqual(true);
+
+  expect(Object.values(result.personPoints).length).toEqual(16);
+  expect(
+    Object.values(result.personPoints)
+      .map((p) => p[0].points)
+      .sort()
+  ).toEqual(
+    // prettier-ignore
+    [ 750, 750, 750, 750, 750, 750, 750, 750, 840, 840, 840, 840, 840, 840, 840, 840 ]
+  );
+});
