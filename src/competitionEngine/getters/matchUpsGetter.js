@@ -13,6 +13,7 @@ import {
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
+import { COMPLETED } from '../../constants/matchUpStatusConstants';
 
 export function allCompetitionMatchUps({
   scheduleVisibilityFilters,
@@ -57,6 +58,7 @@ export function competitionScheduleMatchUps(params) {
   const { matchUpFilters = {}, contextFilters = {} } = params;
   const {
     sortDateMatchUps = true,
+    alwaysReturnCompleted,
     tournamentRecords,
     activeTournamentId,
     usePublishState,
@@ -72,11 +74,24 @@ export function competitionScheduleMatchUps(params) {
     }).timeItem;
   const publishStatus = timeItem?.itemValue?.[status];
 
+  const allCompletedMatchUps = alwaysReturnCompleted
+    ? competitionMatchUps({
+        ...params,
+        matchUpFilters: { ...matchUpFilters, matchUpStatuses: [COMPLETED] },
+        contextFilters,
+      }).completedMatchUps
+    : [];
+
   if (
     usePublishState &&
     (!publishStatus || !Object.keys(publishStatus).length)
   ) {
-    return { dateMatchUps: [], completedMatchUps: [], courtsData: [], venues };
+    return {
+      completedMatchUps: allCompletedMatchUps,
+      dateMatchUps: [],
+      courtsData: [],
+      venues,
+    };
   }
 
   const publishedDrawIds =
@@ -122,6 +137,17 @@ export function competitionScheduleMatchUps(params) {
     }
   }
 
+  // optimization: if all completed matchUps have already been retrieved, skip the hydration process
+  if (alwaysReturnCompleted) {
+    if (matchUpFilters.excludeMatchUpStatuses?.length) {
+      if (!matchUpFilters.excludeMatchUpStatuses.includes(COMPLETED)) {
+        matchUpFilters.excludeMatchUpStatuses.push(COMPLETED);
+      }
+    } else {
+      matchUpFilters.excludeMatchUpStatuses = [COMPLETED];
+    }
+  }
+
   const { completedMatchUps, upcomingMatchUps, pendingMatchUps } =
     competitionMatchUps({ ...params, matchUpFilters, contextFilters });
 
@@ -143,7 +169,14 @@ export function competitionScheduleMatchUps(params) {
     };
   });
 
-  return { courtsData, completedMatchUps, dateMatchUps, venues };
+  return {
+    courtsData,
+    completedMatchUps: alwaysReturnCompleted
+      ? allCompletedMatchUps
+      : completedMatchUps,
+    dateMatchUps,
+    venues,
+  };
 
   function getCourtMatchUps({ courtId }) {
     const courtMatchUps = dateMatchUps.filter(
