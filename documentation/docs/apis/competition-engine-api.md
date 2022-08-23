@@ -404,10 +404,11 @@ const matchUpFilters = {
 
 const { completedMatchUps, dateMatchUps, courtsData, venues } =
   competitionEngine.competitionScheduleMatchUps({
+    alwaysReturnCompleted, // boolean - when true return completed matchUps regardless of publish state
     sortDateMatchUps, // boolean - optional - defaults to `true`
     usePublishState, // boolean - when true filter out events and dates that have not been published
-    sortCourtsData, // boolean - optional
     matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+    sortCourtsData, // boolean - optional
   });
 ```
 

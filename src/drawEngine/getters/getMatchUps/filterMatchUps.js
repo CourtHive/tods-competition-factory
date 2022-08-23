@@ -9,6 +9,7 @@ export function filterMatchUps(params) {
     matchUps,
 
     isCollectionMatchUp,
+    excludeMatchUpStatuses,
     matchUpStatuses,
     hasWinningSide,
     matchUpFormats,
@@ -44,6 +45,9 @@ export function filterMatchUps(params) {
     : [];
   const targetMatchUpStatuses = Array.isArray(matchUpStatuses)
     ? matchUpStatuses.filter(Boolean)
+    : [];
+  const excludeTargetMatchUpStatuses = Array.isArray(excludeMatchUpStatuses)
+    ? excludeMatchUpStatuses.filter(Boolean)
     : [];
 
   const targetStages = Array.isArray(stages) ? stages.filter(Boolean) : [];
@@ -154,6 +158,12 @@ export function filterMatchUps(params) {
     if (
       targetMatchUpStatuses.length &&
       !targetMatchUpStatuses.includes(matchUp.matchUpStatus)
+    ) {
+      return false;
+    }
+    if (
+      excludeTargetMatchUpStatuses.length &&
+      excludeTargetMatchUpStatuses.includes(matchUp.matchUpStatus)
     ) {
       return false;
     }

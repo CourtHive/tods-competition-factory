@@ -77,7 +77,7 @@ export function updateTieFormat({
     }
     // ensure that all tieMatchUps are referenced by tieFormat
     const matchUpMap = instanceCount(
-      matchUp.tieMatchUps.map(({ collectionId }) => collectionId)
+      matchUp.tieMatchUps?.map(({ collectionId }) => collectionId)
     );
     if (mapsCheck(collectionMap, matchUpMap)) {
       if (validUpdate({ matchUp, updateInProgressMatchUps })) {
@@ -161,7 +161,7 @@ export function updateTieFormat({
     for (const matchUp of structureMatchUps) {
       let modified = false;
       const tieMatchUpsMap = instanceCount(
-        matchUp.tieMatchUps.map(({ collectionId }) => collectionId)
+        matchUp.tieMatchUps?.map(({ collectionId }) => collectionId)
       );
       if (!mapsCheck(collectionMap, tieMatchUpsMap)) {
         if (inheritedTieFormat) {
