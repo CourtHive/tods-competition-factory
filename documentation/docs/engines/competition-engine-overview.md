@@ -1,14 +1,11 @@
 ---
-name: Competition Engine Overview
-title: Overview
+title: Competition Engine
 ---
 
 **competitionEngine** operates on a multiple tournament object, or `tournamentRecords`.
 
 ```js
 import { competitionEngine } from 'tods-competition-factory';
-// -- or --
-const { competitionEngine } = require('tods-competition-factory');
 ```
 
 The `competitionEngine` is a state machine that performs mutations across multiple `tournamentRecords`.
