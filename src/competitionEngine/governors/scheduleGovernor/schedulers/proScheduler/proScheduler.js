@@ -137,6 +137,8 @@ export function proScheduler({
         garmanSinglePass: true,
       });
 
+      console.log(groupedRounds);
+
       const dateScheduledMatchUps = matchUps?.filter(
         (matchUp) =>
           hasSchedule(matchUp) &&

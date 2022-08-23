@@ -30,6 +30,7 @@ module.exports = {
             'policies/participantPolicy',
             'policies/positioningSeeds',
             'policies/scheduling',
+            'policies/ranking-policy',
             'policies/tally-policy',
             'policies/feedPolicy',
           ],
@@ -98,8 +99,20 @@ module.exports = {
       ],
     },
     {
+      type: 'category',
+      label: 'Scale Engine',
+      items: [
+        {
+          type: 'doc',
+          label: 'Overview',
+          id: 'engines/scale-engine-overview',
+        },
+        { type: 'doc', label: 'API', id: 'apis/scale-engine-api' },
+      ],
+    },
+    {
       type: 'doc',
-      label: 'scoreGovernor',
+      label: 'Score Governor',
       id: 'scoreGovernor',
     },
     {
