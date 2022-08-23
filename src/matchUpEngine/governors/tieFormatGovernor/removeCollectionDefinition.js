@@ -143,7 +143,7 @@ export function removeCollectionDefinition({
 
   // all team matchUps in scope which are completed or which have a score should not be modified
   // UNLESS all collectionMatchUps have no score
-  const targetMatchUps = matchUps.filter((matchUp) => {
+  const targetMatchUps = (matchUps || []).filter((matchUp) => {
     const collectionMatchUps = matchUp.tieMatchUps.filter(
       (tieMatchUp) => tieMatchUp.collectionId === collectionId
     );
