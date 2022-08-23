@@ -78,7 +78,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-json": "4.1.0",
-    "@types/node": "16.11.53",
+    "@types/node": "16.11.54",
     "@typescript-eslint/eslint-plugin": "5.34.0",
     "@typescript-eslint/parser": "5.34.0",
     "ajv": "8.11.0",
