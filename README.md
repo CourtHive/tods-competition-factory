@@ -21,18 +21,25 @@ which provide a document-based representation of all of the elements of a tourna
 
 After a tournament has been completed, a **TODS** file can be considered a "time capsule" of all the information related to the constructrion and management of a tournament. This means that complete historical data is available in one cross-platform, database-independent JSON file, removing all concerns about keeping software maintenance contracts active in order to retain access to data, as well as any reliance on applications which interpret database schemas.
 
-## Core Engines
+## State Engines
 
 Competition Factory engines manage different concerns within a tournament and may be used either synchronously or asynchronously.
+Engine methods which mutate/transform operate on documents which are held in state.
+The **competitionEngine**, **tournamentEngine** and **scaleEngine** share a state which contains one or more _tournamentRecords_;
+while the **drawEngine** and **matchUpEngine** have their own state.
 
-1. [**competitionEngine**](./apis/competition-engine-api) - manages resources which may be shared across multiple linked tournaments, such as venues (courts & other locations); includes advanced scheduling and cross-tournament reporting.
-2. [**tournamentEngine**](./apis/tournament-engine-api) - manages tournament metadata, participants, events (including the generation of complex draw types and "flights" within events), and reporting.
-3. [**drawEngine**](./apis/draw-engine-api) - generates drawDefinitions and matchUp results; manages participant seeding and movement within and between draw structures.
-4. [**matchUpEngine**](./apis/matchUp-engine-api) - methods to manipulate tieFormats, analyze arrays of matchUps, and report on matchUp scores.
+By default a deep copy of documents are made as they are loaded into each state engine. This behavior can be overridden such that the engines operate on original documents.
+Alternatively, factory methods are exported directly via [the Forge](./forge).
+
+1. [**competitionEngine**](./engines/competition-engine-overview) - manages resources which may be shared across multiple linked tournaments, such as venues (courts & other locations); includes advanced scheduling and cross-tournament reporting.
+2. [**tournamentEngine**](./engines/tournament-engine-overview) - manages tournament metadata, participants, events (including the generation of complex draw types and "flights" within events), and reporting.
+3. [**drawEngine**](./engines/draw-engine-overview) - generates drawDefinitions and matchUp results; manages participant seeding and movement within and between draw structures.
+4. [**matchUpEngine**](./engines/matchUp-engine-overview) - methods to manipulate tieFormats, analyze arrays of matchUps, and report on matchUp scores.
+5. [**scaleEngine**](./engines/scale-engine-overview) - methods to generate ranking points and calculate ratings.
 
 ## Other Utilities
 
-1. [**mocksEngine**](./apis/mocks-engine-api) - generates complete tournament objects, or tournamentRecords, as well as mock persons, participants and matchUp outcomes.
+1. [**mocksEngine**](./overview/mocks-engine-overview) - generates complete tournament objects, or tournamentRecords, as well as mock persons, participants and matchUp outcomes.
    It is used extensively in the ~1000 test suites that are run against the factory methods before every package release.
 2. [**scoreGovernor**](./scoreGovernor) - is a collection of scoring related utilities which provide analysis/validation or generate values, but do not make any mutations.
 3. [**matchUpFormatCode**](./codes/matchup-format) - is an ITF matchUp format code parser, stringifier, and validator.
