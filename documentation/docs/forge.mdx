@@ -5,8 +5,9 @@ title: The Forge
 Factory methods are exported directly via `generate`, `transform`, `query` and `utility` packages.
 
 ```js
-const generate = import('tods-competition-factory/generate');
-const transform = import('tods-competition-factory/transform');
-const query = import('tods-competition-factory/query');
-const utilities = import('tods-competition-factory/utilities');
+// node REPL
+const generate = await import('tods-competition-factory/generate');
+const transform = await import('tods-competition-factory/transform');
+const query = await import('tods-competition-factory/query');
+const utilities = await import('tods-competition-factory/utilities');
 ```
