@@ -21,7 +21,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "0.305.0",
+  "version": "0.306.0",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/tods-competition-factory/",
@@ -33,9 +33,13 @@
     "type": "git",
     "url": "https://github.com/CourtHive/tods-competition-factory"
   },
-  "main": "./dist/index.mjs",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "exports": {
-    ".": "./dist/index.mjs",
+    ".": {
+      "import": "./dist/index.mjs",
+      "default": "./dist/index.js"
+    },
     "./generate": "./dist/forge/generate.mjs",
     "./transform": "./dist/forge/transform.mjs",
     "./query": "./dist/forge/query.mjs",
@@ -77,8 +81,17 @@
     "trailingComma": "es5"
   },
   "devDependencies": {
+    "@babel/core": "7.18.13",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "7.18.6",
+    "@babel/plugin-proposal-optional-chaining": "7.18.9",
+    "@babel/preset-env": "7.18.10",
+    "@babel/preset-typescript": "7.18.6",
+    "@rollup/plugin-babel": "5.3.1",
+    "@rollup/plugin-commonjs": "22.0.2",
     "@rollup/plugin-json": "4.1.0",
-    "@types/node": "16.11.54",
+    "@rollup/plugin-node-resolve": "13.3.0",
+    "@rollup/plugin-typescript": "8.4.0",
+    "@types/node": "16.11.56",
     "@typescript-eslint/eslint-plugin": "5.34.0",
     "@typescript-eslint/parser": "5.34.0",
     "ajv": "8.11.0",
@@ -106,6 +119,7 @@
     "rollup": "2.78.1",
     "rollup-plugin-dts": "4.2.2",
     "rollup-plugin-esbuild": "4.9.3",
+    "rollup-plugin-terser": "7.0.2",
     "source-map-resolve": "0.6.0",
     "tslib": "2.4.0",
     "typescript": "4.7.4",
