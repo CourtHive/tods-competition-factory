@@ -224,7 +224,7 @@ export function getDrawData({
 
   return {
     structures: noDeepCopy ? structures : makeDeepCopy(structures, false, true),
-    drawInfo: noDeepCopy ? structures : makeDeepCopy(drawInfo, false, true),
+    drawInfo: noDeepCopy ? drawInfo : makeDeepCopy(drawInfo, false, true),
     ...SUCCESS,
   };
 }
