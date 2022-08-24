@@ -56,8 +56,8 @@ export function publicFindParticipant({
   policyDefinitions,
   tournamentRecords,
   participantId,
-  personId,
   inContext,
+  personId,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (typeof participantId !== 'string' && typeof personId !== 'string')

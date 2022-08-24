@@ -1,3 +1,4 @@
+import { countries } from '../../../fixtures/countryData';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
@@ -6,12 +7,13 @@ import { COMPASS } from '../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../constants/participantConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
-import { countries } from '../../../fixtures/countryData';
+import { expect } from 'vitest';
 
 it('returns eventData with expected drawsData', () => {
   const drawProfiles = [{ drawSize: 4, drawType: COMPASS }];
   const {
     eventIds: [eventId],
+    drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
@@ -19,7 +21,17 @@ it('returns eventData with expected drawsData', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let result = tournamentEngine.getEventData();
+  let result = tournamentEngine.modifyDrawName({
+    drawName: 'This is a Draw',
+    eventId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  expect(drawDefinition.updatedAt).not.toBeUndefined();
+
+  result = tournamentEngine.getEventData();
   expect(result.error).toEqual(MISSING_EVENT);
 
   const { eventData } = tournamentEngine.getEventData({ eventId });

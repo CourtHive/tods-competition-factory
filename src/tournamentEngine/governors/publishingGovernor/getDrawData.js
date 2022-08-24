@@ -13,8 +13,8 @@ import {
   unique,
 } from '../../../utilities';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import { TALLY } from '../../../constants/extensionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
   UNLINKED_STRUCTURES,
@@ -45,6 +45,7 @@ export function getDrawData({
   tournamentRecord,
   inContext = true,
   drawDefinition,
+  noDeepCopy,
   context,
   event,
 }) {
@@ -222,9 +223,9 @@ export function getDrawData({
   );
 
   return {
+    structures: noDeepCopy ? structures : makeDeepCopy(structures, false, true),
+    drawInfo: noDeepCopy ? drawInfo : makeDeepCopy(drawInfo, false, true),
     ...SUCCESS,
-    drawInfo: makeDeepCopy(drawInfo),
-    structures: makeDeepCopy(structures),
   };
 }
 

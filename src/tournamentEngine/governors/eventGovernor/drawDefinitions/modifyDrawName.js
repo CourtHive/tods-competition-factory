@@ -1,12 +1,13 @@
+import { modifyDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
+import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function modifyDrawName({ event, drawId, drawDefinition, drawName }) {
   if (!drawName || typeof drawName !== 'string')
@@ -32,6 +33,7 @@ export function modifyDrawName({ event, drawId, drawDefinition, drawName }) {
 
   if (drawDefinition) {
     drawDefinition.drawName = drawName;
+    modifyDrawNotice({ drawDefinition });
   }
 
   if (!flight && !drawDefinition) {

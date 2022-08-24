@@ -52,13 +52,12 @@ export function makeDeepCopy(
       Object.assign(targetObject, ...extensionConversions);
     } else if (removeExtensions && key === 'extensions') {
       targetObject[key] = [];
-    } else if (internalUse && deepCopy?.stringify.includes(key)) {
+    } else if (deepCopy?.stringify.includes(key)) {
       targetObject[key] =
         typeof value?.toString === 'function'
           ? value.toString()
           : JSON.stringify(value);
     } else if (
-      internalUse &&
       deepCopy?.toJSON.includes(key) &&
       typeof value?.toJSON === 'function'
     ) {
