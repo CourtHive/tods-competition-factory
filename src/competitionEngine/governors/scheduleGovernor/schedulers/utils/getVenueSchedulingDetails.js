@@ -53,6 +53,7 @@ export function getVenueSchedulingDetails({
     });
 
     let dateScheduledMatchUpIds;
+    let dateScheduledMatchUps;
     let scheduleTimes = [];
     let clearDate;
 
@@ -60,30 +61,32 @@ export function getVenueSchedulingDetails({
       // determines court availability taking into account already scheduled matchUps on the scheduleDate
       // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
       // on first call pass in the averageMatchUpMiutes of first round to be scheduled
-      ({ scheduleTimes, dateScheduledMatchUpIds } = generateScheduleTimes({
-        averageMatchUpMinutes: groupedRounds[0]?.averageMinutes,
-        scheduleDate: extractDate(scheduleDate),
-        venueIds: [venue.venueId],
-        clearScheduleDates,
-        tournamentRecords,
-        periodLength,
-        matchUps,
-      }));
+      ({ scheduleTimes, dateScheduledMatchUpIds, dateScheduledMatchUps } =
+        generateScheduleTimes({
+          averageMatchUpMinutes: groupedRounds[0]?.averageMinutes,
+          scheduleDate: extractDate(scheduleDate),
+          venueIds: [venue.venueId],
+          clearScheduleDates,
+          tournamentRecords,
+          periodLength,
+          matchUps,
+        }));
     }
 
-    ({ clearDate, dateScheduledMatchUpIds } = processAlreadyScheduledMatchUps({
-      matchUpPotentialParticipantIds,
-      individualParticipantProfiles,
-      dateScheduledMatchUpIds,
-      greatestAverageMinutes,
-      matchUpNotBeforeTimes,
-      matchUpScheduleTimes,
-      matchUpDependencies,
-      clearScheduleDates,
-      scheduleDate,
-      minutesMap,
-      matchUps,
-    }));
+    ({ clearDate, dateScheduledMatchUpIds, dateScheduledMatchUps } =
+      processAlreadyScheduledMatchUps({
+        matchUpPotentialParticipantIds,
+        individualParticipantProfiles,
+        dateScheduledMatchUpIds,
+        greatestAverageMinutes,
+        matchUpNotBeforeTimes,
+        matchUpScheduleTimes,
+        matchUpDependencies,
+        clearScheduleDates,
+        scheduleDate,
+        minutesMap,
+        matchUps,
+      }));
 
     const { matchUpsToSchedule, matchUpMap } = getMatchUpsToSchedule({
       matchUpPotentialParticipantIds,
@@ -100,6 +103,7 @@ export function getVenueSchedulingDetails({
       previousRemainingScheduleTimes: [], // keep track of sheduleTimes not used on previous iteration
       greatestAverageMinutes,
       scheduledRoundsDetails,
+      dateScheduledMatchUps,
       matchUpsToSchedule,
       scheduleTimes,
       groupedRounds,
@@ -108,5 +112,8 @@ export function getVenueSchedulingDetails({
     };
   }
 
-  return { venueScheduledRoundDetails, allDateMatchUpIds };
+  return {
+    venueScheduledRoundDetails,
+    allDateMatchUpIds,
+  };
 }

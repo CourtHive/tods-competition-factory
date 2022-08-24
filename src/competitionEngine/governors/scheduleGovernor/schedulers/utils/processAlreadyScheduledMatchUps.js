@@ -8,6 +8,7 @@ export function processAlreadyScheduledMatchUps({
   individualParticipantProfiles,
   dateScheduledMatchUpIds,
   greatestAverageMinutes,
+  dateScheduledMatchUps,
   matchUpNotBeforeTimes,
   matchUpScheduleTimes,
   matchUpDependencies,
@@ -17,7 +18,7 @@ export function processAlreadyScheduledMatchUps({
   matchUps,
 }) {
   if (!dateScheduledMatchUpIds) {
-    const dateScheduledMatchUps = matchUps?.filter(
+    dateScheduledMatchUps = matchUps?.filter(
       (matchUp) =>
         hasSchedule(matchUp) &&
         (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate)
@@ -70,5 +71,5 @@ export function processAlreadyScheduledMatchUps({
     }
   }
 
-  return { clearDate, dateScheduledMatchUpIds };
+  return { clearDate, dateScheduledMatchUpIds, dateScheduledMatchUps };
 }

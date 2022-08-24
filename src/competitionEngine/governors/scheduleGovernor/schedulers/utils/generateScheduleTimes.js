@@ -126,5 +126,10 @@ export function generateScheduleTimes({
 
   const dateScheduledMatchUpIds = dateScheduledMatchUps.map(getMatchUpId);
 
-  return { venueId, scheduleTimes, dateScheduledMatchUpIds };
+  return {
+    dateScheduledMatchUpIds,
+    dateScheduledMatchUps,
+    scheduleTimes,
+    venueId,
+  };
 }
