@@ -15,6 +15,7 @@ import { getGroupedRounds } from '../../schedulingProfile/getGroupedRounds';
 import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
 import { generateScheduleTimes } from '../utils/generateScheduleTimes';
+import { getMatchUpsToSchedule } from '../utils/getMatchUpsToSchedule';
 import {
   extractDate,
   sameDay,
@@ -25,16 +26,6 @@ import {
 import { SUCCESS } from '../../../../../constants/resultConstants';
 import { TOTAL } from '../../../../../constants/scheduleConstants';
 import { AUDIT } from '../../../../../constants/topicConstants';
-import {
-  BYE,
-  ABANDONED,
-  DEFAULTED,
-  RETIRED,
-  WALKOVER,
-  COMPLETED,
-  DOUBLE_WALKOVER,
-  DOUBLE_DEFAULT,
-} from '../../../../../constants/matchUpStatusConstants';
 
 export function jinnScheduler({
   schedulingProfileModifications,
@@ -70,7 +61,6 @@ export function jinnScheduler({
     const scheduleDate = extractDate(dateSchedulingProfile?.scheduleDate);
     const venues = dateSchedulingProfile?.venues || [];
     const matchUpPotentialParticipantIds = {};
-    const venueScheduledRoundDetails = {};
     const individualParticipantProfiles = {};
 
     const bumpLimits = (relevantParticipantIds, matchUpType) => {
@@ -107,6 +97,7 @@ export function jinnScheduler({
       }
     });
 
+    const venueScheduledRoundDetails = {};
     // checking that matchUpDependencies is scoped to only those matchUps that are already or are to be scheduled on the same date
     const allDateMatchUpIds = [];
 
@@ -161,58 +152,15 @@ export function jinnScheduler({
         matchUps,
       });
 
-      // this must be done to preserve the order of matchUpIds
-      let matchUpsToSchedule = orderedMatchUpIds
-        .map((matchUpId) =>
-          matchUps.find((matchUp) => matchUp.matchUpId === matchUpId)
-        )
-        .filter(Boolean)
-        .filter((matchUp) => {
-          const alreadyScheduled =
-            !clearDate && dateScheduledMatchUpIds.includes(matchUp.matchUpId);
-
-          const doNotSchedule = [
-            BYE,
-            DEFAULTED,
-            COMPLETED,
-            ABANDONED,
-            RETIRED,
-            WALKOVER,
-            DOUBLE_WALKOVER,
-            DOUBLE_DEFAULT,
-          ].includes(matchUp?.matchUpStatus);
-
-          return (
-            scheduleCompletedMatchUps || // override for mocksEngine
-            (!alreadyScheduled && !matchUp.winningSide && !doNotSchedule)
-          );
-        });
-
-      // for optimization, build up an object for each tournament and an array for each draw with target matchUps
-      // keep track of matchUps counts per participant and don't add matchUps for participants beyond those limits
-      const { matchUpMap } = matchUpsToSchedule.reduce(
-        (aggregator, matchUp) => {
-          const { drawId, tournamentId /*, matchUpType*/ } = matchUp;
-
-          if (!aggregator.matchUpMap[tournamentId])
-            aggregator.matchUpMap[tournamentId] = {};
-          if (!aggregator.matchUpMap[tournamentId][drawId]) {
-            aggregator.matchUpMap[tournamentId][drawId] = [matchUp];
-          } else {
-            aggregator.matchUpMap[tournamentId][drawId].push(matchUp);
-          }
-
-          // since this matchUp is to be scheduled, update the matchUpPotentialParticipantIds
-          processNextMatchUps({
-            matchUpPotentialParticipantIds,
-            matchUpNotBeforeTimes,
-            matchUp,
-          });
-
-          return aggregator;
-        },
-        { matchUpMap: {} }
-      );
+      const { matchUpsToSchedule, matchUpMap } = getMatchUpsToSchedule({
+        matchUpPotentialParticipantIds,
+        scheduleCompletedMatchUps,
+        dateScheduledMatchUpIds,
+        matchUpNotBeforeTimes,
+        orderedMatchUpIds,
+        clearDate,
+        matchUps,
+      });
 
       venueScheduledRoundDetails[venueId] = {
         courtsCount: courts.filter((court) => court.venueId === venueId).length,

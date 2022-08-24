@@ -1,0 +1,112 @@
+import { getScheduledRoundsDetails } from '../../schedulingProfile/getScheduledRoundsDetails';
+import { getGroupedRounds } from '../../schedulingProfile/getGroupedRounds';
+import { processAlreadyScheduledMatchUps } from './processAlreadyScheduledMatchUps';
+import { getMatchUpsToSchedule } from './getMatchUpsToSchedule';
+import { extractDate } from '../../../../../utilities/dateTime';
+import { generateScheduleTimes } from './generateScheduleTimes';
+
+export function getVenueSchedulingDetails({
+  matchUpPotentialParticipantIds,
+  individualParticipantProfiles,
+  scheduleCompletedMatchUps,
+  containedStructureIds,
+  matchUpNotBeforeTimes,
+  matchUpScheduleTimes,
+  matchUpDependencies,
+  clearScheduleDates,
+  tournamentRecords,
+  periodLength,
+  scheduleDate,
+  useGarman,
+  matchUps,
+  courts,
+  venues,
+}) {
+  const venueScheduledRoundDetails = {};
+
+  // checking that matchUpDependencies is scoped to only those matchUps that are already or are to be scheduled on the same date
+  const allDateMatchUpIds = [];
+
+  // first pass through all venues is to build up an array of all matchUpIds in the schedulingProfile for current scheduleDate
+  for (const venue of venues) {
+    const { rounds = [], venueId } = venue;
+    const {
+      scheduledRoundsDetails,
+      greatestAverageMinutes,
+      orderedMatchUpIds,
+      minutesMap,
+    } = getScheduledRoundsDetails({
+      scheduleCompletedMatchUps,
+      containedStructureIds,
+      tournamentRecords,
+      periodLength,
+      matchUps,
+      rounds,
+    });
+
+    allDateMatchUpIds.push(...orderedMatchUpIds);
+
+    const { groupedRounds } = getGroupedRounds({
+      scheduledRoundsDetails,
+      greatestAverageMinutes,
+      garmanSinglePass: true,
+    });
+
+    let dateScheduledMatchUpIds;
+    let scheduleTimes = [];
+    let clearDate;
+
+    if (useGarman) {
+      // determines court availability taking into account already scheduled matchUps on the scheduleDate
+      // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
+      // on first call pass in the averageMatchUpMiutes of first round to be scheduled
+      ({ scheduleTimes, dateScheduledMatchUpIds } = generateScheduleTimes({
+        averageMatchUpMinutes: groupedRounds[0]?.averageMinutes,
+        scheduleDate: extractDate(scheduleDate),
+        venueIds: [venue.venueId],
+        clearScheduleDates,
+        tournamentRecords,
+        periodLength,
+        matchUps,
+      }));
+    }
+
+    ({ clearDate, dateScheduledMatchUpIds } = processAlreadyScheduledMatchUps({
+      matchUpPotentialParticipantIds,
+      individualParticipantProfiles,
+      dateScheduledMatchUpIds,
+      greatestAverageMinutes,
+      matchUpNotBeforeTimes,
+      matchUpScheduleTimes,
+      matchUpDependencies,
+      clearScheduleDates,
+      scheduleDate,
+      minutesMap,
+      matchUps,
+    }));
+
+    const { matchUpsToSchedule, matchUpMap } = getMatchUpsToSchedule({
+      matchUpPotentialParticipantIds,
+      scheduleCompletedMatchUps,
+      dateScheduledMatchUpIds,
+      matchUpNotBeforeTimes,
+      orderedMatchUpIds,
+      clearDate,
+      matchUps,
+    });
+
+    venueScheduledRoundDetails[venueId] = {
+      courtsCount: courts.filter((court) => court.venueId === venueId).length,
+      previousRemainingScheduleTimes: [], // keep track of sheduleTimes not used on previous iteration
+      greatestAverageMinutes,
+      scheduledRoundsDetails,
+      matchUpsToSchedule,
+      scheduleTimes,
+      groupedRounds,
+      minutesMap,
+      matchUpMap,
+    };
+  }
+
+  return { venueScheduledRoundDetails, allDateMatchUpIds };
+}
