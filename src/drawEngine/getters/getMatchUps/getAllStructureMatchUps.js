@@ -525,6 +525,7 @@ export function getAllStructureMatchUps({
             policyDefinitions: appliedPolicies,
             participantId: side.participantId,
             tournamentParticipants,
+            internalUse: true,
             contextProfile,
           });
           if (participant) {
@@ -545,6 +546,7 @@ export function getAllStructureMatchUps({
               return findParticipant({
                 policyDefinitions: appliedPolicies,
                 tournamentParticipants,
+                internalUse: true,
                 contextProfile,
                 participantId,
               });

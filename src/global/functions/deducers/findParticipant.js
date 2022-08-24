@@ -8,6 +8,7 @@ export function findParticipant({
   policyDefinitions = {},
   contextProfile,
   participantId,
+  internalUse,
   personId,
 }) {
   const participant = tournamentParticipants.find(
@@ -30,9 +31,9 @@ export function findParticipant({
         template: participantAttributes.participant,
         source: participant,
       });
-      return makeDeepCopy(filteredParticipant);
+      return makeDeepCopy(filteredParticipant, false, internalUse);
     }
   }
 
-  return makeDeepCopy(participant);
+  return makeDeepCopy(participant, false, internalUse);
 }
