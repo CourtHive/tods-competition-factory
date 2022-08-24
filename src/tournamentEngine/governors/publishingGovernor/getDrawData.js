@@ -222,9 +222,9 @@ export function getDrawData({
   );
 
   return {
+    structures: makeDeepCopy(structures, false, true),
+    drawInfo: makeDeepCopy(drawInfo, false, true),
     ...SUCCESS,
-    drawInfo: makeDeepCopy(drawInfo),
-    structures: makeDeepCopy(structures),
   };
 }
 
