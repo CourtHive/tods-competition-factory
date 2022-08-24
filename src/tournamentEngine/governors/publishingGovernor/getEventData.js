@@ -13,13 +13,16 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function getEventData({
+  tournamentRecord: t,
   participantsProfile,
   policyDefinitions,
-  tournamentRecord,
   usePublishState,
   status = PUBLIC,
-  event,
+  event: e,
 }) {
+  const tournamentRecord = makeDeepCopy(t, false, true);
+  const event = makeDeepCopy(e, false, true);
+
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
@@ -58,6 +61,7 @@ export function getEventData({
         getDrawData({
           context: { eventId, tournamentId, endDate },
           tournamentParticipants,
+          noDeepCopy: true,
           policyDefinitions,
           tournamentRecord,
           drawDefinition,
@@ -108,16 +112,16 @@ export function getEventData({
   }))(event);
 
   const eventData = {
+    tournamentInfo,
+    venuesData,
     eventInfo,
     drawsData,
-    venuesData,
-    tournamentInfo,
   };
 
   eventData.eventInfo.publish = {
-    state: timeItem?.itemValue,
     createdAt: timeItem?.createdAt,
+    state: timeItem?.itemValue,
   };
 
-  return { ...SUCCESS, eventData: makeDeepCopy(eventData, false, true) };
+  return { ...SUCCESS, eventData };
 }

@@ -43,9 +43,9 @@ it('can modify flightNames and drawNames', () => {
 
   const newDrawName = 'New Draw Name';
   result = tournamentEngine.modifyDrawName({
+    drawName: newDrawName,
     eventId,
     drawId,
-    drawName: newDrawName,
   });
 
   const {
