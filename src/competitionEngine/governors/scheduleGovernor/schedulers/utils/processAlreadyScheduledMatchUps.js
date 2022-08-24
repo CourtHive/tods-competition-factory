@@ -6,6 +6,7 @@ import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
 export function processAlreadyScheduledMatchUps({
   matchUpPotentialParticipantIds,
   individualParticipantProfiles,
+  dateScheduledMatchUpIds,
   greatestAverageMinutes,
   matchUpNotBeforeTimes,
   matchUpScheduleTimes,
@@ -15,13 +16,15 @@ export function processAlreadyScheduledMatchUps({
   minutesMap,
   matchUps,
 }) {
-  const dateScheduledMatchUps = matchUps?.filter(
-    (matchUp) =>
-      hasSchedule(matchUp) &&
-      (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate)
-  );
+  if (!dateScheduledMatchUpIds) {
+    const dateScheduledMatchUps = matchUps?.filter(
+      (matchUp) =>
+        hasSchedule(matchUp) &&
+        (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate)
+    );
 
-  const dateScheduledMatchUpIds = dateScheduledMatchUps.map(getMatchUpId);
+    dateScheduledMatchUpIds = dateScheduledMatchUps.map(getMatchUpId);
+  }
 
   // first build up a map of matchUpNotBeforeTimes and matchUpPotentialParticipantIds
   // based on already scheduled matchUps
@@ -67,5 +70,5 @@ export function processAlreadyScheduledMatchUps({
     }
   }
 
-  return { dateScheduledMatchUpIds };
+  return { clearDate, dateScheduledMatchUpIds };
 }
