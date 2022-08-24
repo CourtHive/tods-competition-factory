@@ -25,8 +25,8 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-json-tree": "0.17.0",
-    "tods-competition-factory": "0.309.0",
-    "tods-score-grid": "0.8.0"
+    "tods-competition-factory": "0.310.0",
+    "tods-score-grid": "0.9.0"
   },
   "browserslist": {
     "production": [
