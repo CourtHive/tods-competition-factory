@@ -12,8 +12,9 @@ import {
 } from '../../../../../constants/errorConditionConstants';
 
 export function generateBookings({
-  defaultRecoveryMinutes,
-  averageMatchUpMinutes,
+  defaultRecoveryMinutes = 0,
+  averageMatchUpMinutes = 90,
+  dateScheduledMatchUps,
   tournamentRecords,
   venueIds = [],
   periodLength,
@@ -22,7 +23,9 @@ export function generateBookings({
 }) {
   if (typeof tournamentRecords !== 'object')
     return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
+
+  if (!Array.isArray(matchUps) && !Array.isArray(dateScheduledMatchUps))
+    return { error: MISSING_MATCHUPS };
 
   periodLength =
     periodLength ||
@@ -55,11 +58,13 @@ export function generateBookings({
     recoveryTimes: [{ minutes: { default: defaultRecoveryMinutes } }],
   };
 
-  const dateScheduledMatchUps = matchUps?.filter(
-    (matchUp) =>
-      hasSchedule(matchUp) &&
-      (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate)
-  );
+  if (!dateScheduledMatchUps) {
+    dateScheduledMatchUps = matchUps?.filter(
+      (matchUp) =>
+        hasSchedule(matchUp) &&
+        (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate)
+    );
+  }
 
   const relevantMatchUps = dateScheduledMatchUps?.filter(
     (matchUp) => !venueIds.length || venueIds.includes(matchUp.schedule.venueId)
@@ -75,8 +80,8 @@ export function generateBookings({
         matchUpFormat,
       };
       const { averageMinutes, recoveryMinutes } = matchUpFormatTimes({
-        eventType,
         timingDetails,
+        eventType,
       });
       const { courtId, venueId } = schedule;
       const startTime = extractTime(schedule.scheduledTime);

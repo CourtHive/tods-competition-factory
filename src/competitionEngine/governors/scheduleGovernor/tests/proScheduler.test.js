@@ -26,10 +26,12 @@ it('supports pro-scheduling', () => {
   const { rounds } = competitionEngine.getRounds();
   const roundChunks = chunkArray(rounds, 2);
 
-  const schedulingProfile = roundChunks.map((chunk, i) => ({
-    scheduleDate: tournamentDateRange[i],
-    venues: [{ venueId, rounds: chunk }],
-  }));
+  const schedulingProfile = roundChunks
+    .map((chunk, i) => ({
+      scheduleDate: tournamentDateRange[i],
+      venues: [{ venueId, rounds: chunk }],
+    }))
+    .slice(0, 1);
   let result = competitionEngine.setSchedulingProfile({ schedulingProfile });
   expect(result.success).toEqual(true);
 
