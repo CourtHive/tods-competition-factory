@@ -1,10 +1,11 @@
+import { makeDeepCopy } from '../../../utilities';
+
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_POLICY_TYPE,
   POLICY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { makeDeepCopy } from '../../../utilities';
 
 /**
  * Discovers policies bottom up from drawDefinition => event => tournamentRecord
