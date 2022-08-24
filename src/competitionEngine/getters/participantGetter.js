@@ -1,7 +1,6 @@
 import { getTournamentParticipants } from '../../tournamentEngine/getters/participants/getTournamentParticipants';
 import { findParticipant } from '../../global/functions/deducers/findParticipant';
 import { deepMerge } from '../../utilities/deepMerge';
-import { makeDeepCopy } from '../../utilities';
 
 import {
   MISSING_TOURNAMENT_RECORDS,
@@ -75,6 +74,7 @@ export function publicFindParticipant({
 
     participant = findParticipant({
       tournamentParticipants,
+      internalUse: true,
       policyDefinitions,
       participantId,
       personId,
@@ -83,5 +83,5 @@ export function publicFindParticipant({
     if (participant) break;
   }
 
-  return { participant: makeDeepCopy(participant, false, true), tournamentId };
+  return { participant, tournamentId };
 }
