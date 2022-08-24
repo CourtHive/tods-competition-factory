@@ -12,6 +12,9 @@ import { addNotice, getTopics } from '../../../../../global/state/globalState';
 import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
 import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
+import { generateVirtualCourts } from '../utils/generateVirtualCourts';
+import { getEarliestCourtTime } from '../utils/getEarliestCourtTime';
+import { generateBookings } from '../utils/generateBookings';
 import {
   extractDate,
   sameDay,
@@ -121,18 +124,44 @@ export function proScheduler({
       for (const { venueId } of venues) {
         let scheduledThisPass = 0;
         const details = venueScheduledRoundDetails[venueId];
+        console.log(details.matchUpsToSchedule.length);
+
+        const { bookings } = generateBookings({
+          dateScheduledMatchUps: details.dateScheduledMatchUps,
+          tournamentRecords,
+          scheduleDate,
+          periodLength,
+        });
+        const { virtualCourts } = generateVirtualCourts({
+          courts: details.venueCourts,
+          clearScheduleDates,
+          scheduleDate,
+          periodLength,
+          bookings,
+        });
+
+        virtualCourts.forEach((court) => {
+          const { earliestCourtTime } = getEarliestCourtTime({
+            averageMinutes: details.greatestAverageMinutes,
+            date: scheduleDate,
+            court,
+          });
+          console.log({ earliestCourtTime });
+        });
+
+        // on each pass attempt to schedule one matchUp per court
+        // when a matchUp is scheduled, add it to details.dateScheduledMatchUps
 
         while (
           details.courtsCount &&
-          details.scheduleTimes?.length &&
           details.matchUpsToSchedule?.length &&
           scheduledThisPass <= details.courtsCount
         ) {
           // attempt to schedule a round or at least venue.courts.length matchUps
-          const { scheduleTime, attempts = 0 } = details.scheduleTimes.shift();
           const scheduledMatchUp = details.matchUpsToSchedule.find(
             (matchUp) => {
               const { matchUpId, matchUpType } = matchUp;
+              let scheduleTime;
 
               const { participantIdsAtLimit, relevantParticipantIds } =
                 checkDailyLimits({
@@ -243,12 +272,7 @@ export function proScheduler({
           );
 
           if (!scheduledMatchUp) {
-            if (!skippedScheduleTimes[scheduleDate][venueId])
-              skippedScheduleTimes[scheduleDate][venueId] = [];
-            skippedScheduleTimes[scheduleDate][venueId].push({
-              scheduleTime,
-              attempts: attempts + 1,
-            });
+            //
           } else {
             scheduledThisPass += 1;
           }
