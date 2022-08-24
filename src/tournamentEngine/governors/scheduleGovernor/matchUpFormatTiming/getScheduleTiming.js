@@ -28,22 +28,22 @@ export function getScheduleTiming({
   });
 
   const { extension: tournamentExtension } = findTournamentExtension({
-    tournamentRecord,
     name: SCHEDULE_TIMING,
+    tournamentRecord,
   });
   const tournamentScheduling = tournamentExtension?.value;
 
   const { extension: eventExtension } = findEventExtension({
-    event,
     name: SCHEDULE_TIMING,
+    event,
   });
   const eventScheduling = eventExtension?.value;
 
   const scheduleTiming = {
+    tournamentScheduling,
+    eventScheduling,
     categoryName,
     categoryType,
-    eventScheduling,
-    tournamentScheduling,
     policy,
   };
 

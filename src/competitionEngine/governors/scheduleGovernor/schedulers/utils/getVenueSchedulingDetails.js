@@ -98,15 +98,17 @@ export function getVenueSchedulingDetails({
       matchUps,
     });
 
+    const venueCourts = courts.filter((court) => court.venueId === venueId);
     venueScheduledRoundDetails[venueId] = {
-      courtsCount: courts.filter((court) => court.venueId === venueId).length,
       previousRemainingScheduleTimes: [], // keep track of sheduleTimes not used on previous iteration
+      courtsCount: venueCourts.length,
       greatestAverageMinutes,
       scheduledRoundsDetails,
       dateScheduledMatchUps,
       matchUpsToSchedule,
       scheduleTimes,
       groupedRounds,
+      venueCourts,
       minutesMap,
       matchUpMap,
     };
