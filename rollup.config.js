@@ -23,7 +23,7 @@ const esmBundle = (config) => ({
   ],
 });
 
-const esmExports = [
+const esmProfile = [
   { input: 'src/index.ts', outputFile: 'dist/index.mjs' },
   {
     input: 'src/utilities/index.ts',
@@ -47,7 +47,7 @@ const esmExports = [
   },
 ];
 
-const esmOutputs = [...esmExports.map(esmBundle)];
+const esmExports = [...esmProfile.map(esmBundle)];
 
 const basePath = fs.realpathSync(process.cwd());
 const distPath = path.resolve(basePath, 'dist');
@@ -131,7 +131,7 @@ const cjsExports = [{ input: 'src/index.ts', cjs: true }].map(createExport);
 
 export default [
   ...cjsExports,
-  ...esmOutputs,
+  ...esmExports,
   /*
   {
     input: 'src/forge/query/index.ts',
