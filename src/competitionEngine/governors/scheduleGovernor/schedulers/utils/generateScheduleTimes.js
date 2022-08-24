@@ -1,9 +1,9 @@
 import { getVenuesAndCourts } from '../../../../getters/venuesAndCourtsGetter';
-import { sameDay, timeStringMinutes } from '../../../../../utilities/dateTime';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
 import { getScheduleTimes } from '../../garman/getScheduleTimes';
 import { calculatePeriodLength } from './calculatePeriodLength';
 import { generateBookings } from './generateBookings';
+import { getTimeBoundary } from './getTimeBoundary';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../../../constants/errorConditionConstants';
 
@@ -56,41 +56,9 @@ export function generateScheduleTimes({
     (court) => !venueIds || venueIds.includes(court.venueId)
   );
 
-  if (!startTime) {
-    startTime = courts.reduce((minStartTime, court) => {
-      const dateAvailability = court.dateAvailability?.find(
-        // if no date is specified consider it to be default for all tournament dates
-        (availability) =>
-          !availability.date || sameDay(scheduleDate, availability.date)
-      );
-      const comparisonStartTime =
-        dateAvailability?.startTime || court.startTime;
-
-      return comparisonStartTime &&
-        (!minStartTime ||
-          timeStringMinutes(comparisonStartTime) <
-            timeStringMinutes(minStartTime))
-        ? comparisonStartTime
-        : minStartTime;
-    }, undefined);
-  }
-
-  if (!endTime) {
-    endTime = courts.reduce((maxEndTime, court) => {
-      const dateAvailability = court.dateAvailability?.find(
-        // if no date is specified consider it to be default for all tournament dates
-        (availability) =>
-          !availability.date || sameDay(scheduleDate, availability.date)
-      );
-      const comparisonEndTime = dateAvailability?.endTime || court.endTime;
-
-      return comparisonEndTime &&
-        (!maxEndTime ||
-          timeStringMinutes(comparisonEndTime) > timeStringMinutes(maxEndTime))
-        ? comparisonEndTime
-        : maxEndTime;
-    }, undefined);
-  }
+  startTime =
+    startTime || getTimeBoundary({ courts, scheduleDate, startTime: true });
+  endTime = endTime || getTimeBoundary({ courts, scheduleDate, endTime: true });
 
   const { bookings, dateScheduledMatchUps } = generateBookings({
     defaultRecoveryMinutes,
@@ -126,5 +94,10 @@ export function generateScheduleTimes({
 
   const dateScheduledMatchUpIds = dateScheduledMatchUps.map(getMatchUpId);
 
-  return { venueId, scheduleTimes, dateScheduledMatchUpIds };
+  return {
+    dateScheduledMatchUpIds,
+    dateScheduledMatchUps,
+    scheduleTimes,
+    venueId,
+  };
 }
