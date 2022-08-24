@@ -23,8 +23,9 @@ export function getVenueData({ tournamentRecord, venueId }) {
       ...courtInfo,
     }))(
       getCourtInfo({
-        tournamentRecord,
         courtId: court.courtId,
+        internalUse: true,
+        tournamentRecord,
       })
     )
   );
