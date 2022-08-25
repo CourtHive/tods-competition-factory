@@ -30,7 +30,6 @@ export function directLoser(params) {
     matchUpsMap,
     event,
   } = params;
-
   const stack = 'directLoser';
   const loserLinkCondition = loserTargetLink.linkCondition;
   const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];

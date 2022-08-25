@@ -1,9 +1,12 @@
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { getDrawStructures } from '../../getters/findStructure';
 import { getStructureLinks } from '../../getters/linkGetter';
 import { getSourceRounds } from './getSourceRounds';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import {
   CONTAINER,
   FIRST_MATCHUP,
@@ -36,15 +39,12 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
 
   for (const structure of filteredStructures) {
     const structureId = structure?.structureId;
-    const {
-      playoffSourceRounds: playoffRounds,
-      playoffRoundsRanges,
-      error,
-    } = avaialblePlayoffRounds({
-      playoffPositions: positionsNotPlayedOff,
-      drawDefinition,
-      structure,
-    });
+    const { playoffRoundsRanges, playoffRounds, error } =
+      avaialblePlayoffRounds({
+        playoffPositions: positionsNotPlayedOff,
+        drawDefinition,
+        structure,
+      });
     if (error) return { error };
 
     available[structureId] = {
@@ -77,14 +77,53 @@ function avaialblePlayoffRounds({
 
   const linkSourceRoundNumbers =
     links?.source
-      // TODO: perhaps this should be enabled by a policyDefinitions
+      // This does not prevent generation of 3-4 playoff in FMLC drawSize: 8, for instance
+      // TODO: perhaps this should be enabled by a policyDefinition
       ?.filter((link) => link.linkCondition !== FIRST_MATCHUP)
       .map((link) => link.source?.roundNumber) || [];
 
-  return getSourceRounds({
+  const {
+    playoffSourceRounds,
+    playoffRoundsRanges: roundsRanges,
+    error,
+  } = getSourceRounds({
     excludeRoundNumbers: linkSourceRoundNumbers,
     playoffPositions,
     drawDefinition,
     structureId,
   });
+
+  const matchUps = getAllStructureMatchUps({
+    matchUpFilters: { roundNumbers: playoffSourceRounds },
+    structure,
+  }).matchUps;
+
+  const sourceRounds = links.source?.map(({ source }) => source.roundNumber);
+
+  const excludeRoundNumbers = [];
+  const { roundMatchUps } = getRoundMatchUps({ matchUps });
+  for (const roundNumber of playoffSourceRounds) {
+    // sourceRounds will only include roundNumbers in the case of FMLC
+    // because it should still be possible to generate 3-4 playoffs even if 2nd round losers lost in the 1st round
+    // but 3-4 playoffs should not be possible to generate if there are not at least 2 matchUps where players COULD progress
+    if (sourceRounds.includes(roundNumber)) {
+      const availableToProgress = roundMatchUps[roundNumber].filter(
+        ({ matchUpStatus, winningSide }) =>
+          !winningSide && [TO_BE_PLAYED].includes(matchUpStatus)
+      ).length;
+      if (availableToProgress < 2) {
+        excludeRoundNumbers.push(roundNumber);
+      }
+    }
+  }
+
+  const playoffRounds = playoffSourceRounds.filter(
+    (roundNumber) => !excludeRoundNumbers.includes(roundNumber)
+  );
+
+  const playoffRoundsRanges = roundsRanges.filter(
+    ({ roundNumber }) => !excludeRoundNumbers.includes(roundNumber)
+  );
+
+  return { playoffRounds, playoffRoundsRanges, error };
 }
