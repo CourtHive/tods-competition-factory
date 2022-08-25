@@ -93,6 +93,13 @@ export function deleteDrawDefinitions({
     true
   );
 
+  const positionAssignmentMap = ({
+    participantId,
+    drawPosition,
+    qualifier,
+    bye,
+  }) => ({ bye, qualifier, drawPosition, participantId });
+
   const filteredDrawDefinitions = event.drawDefinitions.filter(
     (drawDefinition) => {
       if (drawIds.includes(drawDefinition.drawId)) {
@@ -119,7 +126,7 @@ export function deleteDrawDefinitions({
             structureId: mainStructure.structureId,
             tournamentRecord,
             drawDefinition,
-          })?.positionAssignments;
+          })?.positionAssignments.map(positionAssignmentMap);
 
         const qualifyingStructures = getDrawStructures({
           stage: QUALIFYING,
@@ -133,7 +140,7 @@ export function deleteDrawDefinitions({
                 structureId: qualifyingStructure.structureId,
                 tournamentRecord,
                 drawDefinition,
-              })?.positionAssignments;
+              })?.positionAssignments.map(positionAssignmentMap);
               return { positionAssignments, stageSequence };
             })
           : undefined;
