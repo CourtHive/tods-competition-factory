@@ -117,12 +117,11 @@ export function proScheduler({
     const failSafe = 10;
     let schedulingComplete;
     let schedulingIterations = 0;
-    let maxScheduleTimeAttempts = 10; // TODO: calculate this based on max court start/end range and averageMinutes
+    let maxScheduleTimeAttempts = 10;
 
     while (!schedulingComplete) {
       // for each venue schedule a round
       for (const { venueId } of venues) {
-        let scheduledThisPass = 0;
         const details = venueScheduledRoundDetails[venueId];
         console.log(details.matchUpsToSchedule.length);
 
@@ -152,10 +151,15 @@ export function proScheduler({
         // on each pass attempt to schedule one matchUp per court
         // when a matchUp is scheduled, add it to details.dateScheduledMatchUps
 
+        const matchUpIdsScheduled = [];
+        const courtIdsScheduled = [];
+        let scheduledThisPass = 0;
+
         while (
           details.courtsCount &&
-          details.matchUpsToSchedule?.length &&
-          scheduledThisPass <= details.courtsCount
+          scheduledThisPass <= details.courtsCount &&
+          courtIdsScheduled.length < details.courtsCount &&
+          matchUpIdsScheduled.length < details.courtsCount
         ) {
           // attempt to schedule a round or at least venue.courts.length matchUps
           const scheduledMatchUp = details.matchUpsToSchedule.find(
