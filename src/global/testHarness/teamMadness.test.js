@@ -22,7 +22,7 @@ it('withOpponents adds appropriate opponents', () => {
   tournamentEngine.setState(tournamentRecord);
 
   let result = tournamentEngine
-    .devContext({ makeDeepCopy: true, iterations: 7 })
+    .devContext({ makeDeepCopy: true })
     .allTournamentMatchUps({ inContext: true });
   const matchUps = result.matchUps;
   expect(matchUps.length).toEqual(240);
@@ -30,16 +30,15 @@ it('withOpponents adds appropriate opponents', () => {
   result = tournamentEngine
     .devContext({ makeDeepCopy: true, iterationThreshold: 15 })
     .getTournamentParticipants({
-      inContext: true,
-      withGroupings: true,
-      withMatchUps: true,
       convertExtensions: true,
       withStatistics: true,
+      withGroupings: true,
       withOpponents: true,
+      withMatchUps: true,
+      inContext: true,
     });
 
-  // zero indicates that iterations did not exceed the threshold
-  expect(result.deepCopyIterations).toEqual(0);
+  expect(result.deepCopyIterations).toEqual(3);
 
   const tournamentParticipants = result.tournamentParticipants;
   expect(tournamentParticipants.length).toEqual(314);
