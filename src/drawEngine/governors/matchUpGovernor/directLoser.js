@@ -30,7 +30,6 @@ export function directLoser(params) {
     matchUpsMap,
     event,
   } = params;
-
   const stack = 'directLoser';
   const loserLinkCondition = loserTargetLink.linkCondition;
   const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];
@@ -43,7 +42,7 @@ export function directLoser(params) {
   const targetMatchUpDrawPosition =
     fedDrawPositionFMLC ||
     targetMatchUpDrawPositions[loserMatchUpDrawPositionIndex];
-  const winnerBackdrawPosition =
+  const loserBackdrawPosition =
     fedDrawPositionFMLC ||
     targetMatchUpDrawPositions[1 - loserMatchUpDrawPositionIndex];
 
@@ -228,18 +227,18 @@ export function directLoser(params) {
     if (validForConsolation) {
       return decorateResult({ result: asssignLoserDrawPosition(), stack });
     } else {
-      return decorateResult({ result: assignWinnerPositionBye(), stack });
+      return decorateResult({ result: assignLoserPositionBye(), stack });
     }
   }
 
-  function assignWinnerPositionBye() {
+  function assignLoserPositionBye() {
     const result = assignDrawPositionBye({
-      drawPosition: winnerBackdrawPosition,
+      drawPosition: loserBackdrawPosition,
       structureId: targetStructureId,
       tournamentRecord,
       drawDefinition,
     });
-    return decorateResult({ result, stack: 'assignWinnerPositionBye' });
+    return decorateResult({ result, stack: 'assignLoserPositionBye' });
   }
 
   function asssignLoserDrawPosition() {

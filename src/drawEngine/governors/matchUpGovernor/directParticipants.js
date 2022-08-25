@@ -1,3 +1,4 @@
+import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { isDirectingMatchUpStatus } from './checkStatusType';
@@ -96,12 +97,13 @@ export function directParticipants(params) {
     const loserDrawPosition = drawPositions[losingIndex];
 
     const {
-      targetLinks: { loserTargetLink, winnerTargetLink },
+      targetLinks: { loserTargetLink, winnerTargetLink, byeTargetLink },
       targetMatchUps: {
         winnerMatchUpDrawPositionIndex,
         loserMatchUpDrawPositionIndex,
         winnerMatchUp,
         loserMatchUp,
+        byeMatchUp,
       },
     } = targetData;
 
@@ -136,6 +138,21 @@ export function directParticipants(params) {
         matchUpsMap,
         dualMatchUp,
         event,
+      });
+      if (result.error) return decorateResult({ result, stack });
+    }
+
+    if (byeMatchUp) {
+      const targetMatchUpDrawPositions = byeMatchUp.drawPositions || [];
+      const backdrawPosition = Math.min(
+        ...targetMatchUpDrawPositions.filter(Boolean)
+      );
+      const targetStructureId = byeTargetLink.target.structureId;
+      const result = assignDrawPositionBye({
+        drawPosition: backdrawPosition,
+        structureId: targetStructureId,
+        tournamentRecord,
+        drawDefinition,
       });
       if (result.error) return decorateResult({ result, stack });
     }

@@ -5,6 +5,7 @@ import mocksEngine from '../../../mocksEngine';
 import { setSubscriptions } from '../../..';
 import { drawEngine } from '../../sync';
 
+import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import {
   CONSOLATION,
   FEED_IN,
@@ -90,13 +91,89 @@ it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATIO
       finishingPositionRange: '3-4',
     },
   ]);
-  /*
-  expect(playoffRoundsRanges[0]).toEqual({
-    roundNumber: 3,
-    finishingPositionRange: '3-4',
-    finishingPositions: [3, 4],
+});
+
+it('will allow generation of 3-4 playoffs in FMLC if there are players who COULD progress', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawType: FIRST_MATCH_LOSER_CONSOLATION,
+        participantsCount: 6,
+        drawSize: 8,
+      },
+    ],
   });
-  */
+
+  let result = tournamentEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.getAvailablePlayoffRounds({ drawId });
+  const { positionsPlayedOff } = result;
+  const { playoffRounds, playoffRoundsRanges } =
+    result.availablePlayoffRounds[0];
+
+  expect(positionsPlayedOff).toEqual([1, 2, 5, 6]);
+
+  expect(playoffRounds).toEqual([2]);
+  expect(playoffRoundsRanges).toEqual([
+    {
+      roundNumber: 2,
+      finishingPositions: [3, 4],
+      finishingPositionRange: '3-4',
+    },
+  ]);
+});
+
+it('will exclude playoff rounds where participants have progressed to other structures', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawType: FIRST_MATCH_LOSER_CONSOLATION,
+        participantsCount: 6,
+        drawSize: 8,
+        outcomes: [
+          {
+            roundNumber: 1,
+            roundPosition: 2,
+            winningSide: 1,
+          },
+          {
+            roundNumber: 1,
+            roundPosition: 3,
+            winningSide: 2,
+          },
+          {
+            roundNumber: 2,
+            roundPosition: 1,
+            winningSide: 2,
+          },
+        ],
+      },
+    ],
+  });
+
+  let result = tournamentEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpStatuses: [COMPLETED] },
+  });
+  expect(result.matchUps.length).toEqual(3);
+
+  result = tournamentEngine.getAvailablePlayoffRounds({ drawId });
+  const { positionsPlayedOff } = result;
+  const { playoffRounds, playoffRoundsRanges } =
+    result.availablePlayoffRounds[0];
+
+  expect(positionsPlayedOff).toEqual([1, 2, 5, 6]);
+  expect(playoffRounds).toEqual([]);
+  expect(playoffRoundsRanges).toEqual([]);
 });
 
 it('can accurately determine no playoff rounds available for MAIN draw of FIC', () => {

@@ -1,4 +1,4 @@
-import { removeDirectedParticipants } from './removeDirectedParticipantsAndUpdateOutcome';
+import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';

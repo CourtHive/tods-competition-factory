@@ -1,6 +1,7 @@
 import { generateScoreString } from '../../matchUpEngine/generators/generateScoreString';
 import { toBePlayed } from '../../fixtures/scoring/outcomes/toBePlayed';
 import { parseScoreString } from '../utilities/parseScoreString';
+import { definedAttributes } from '../../utilities';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 
@@ -49,11 +50,11 @@ export function generateOutcomeFromScoreString({
   }
   score.sets = parseScoreString({ scoreString: score.scoreStringSide1 });
 
-  return {
+  return definedAttributes({
     outcome: {
       matchUpStatus,
       winningSide,
       score,
     },
-  };
+  });
 }

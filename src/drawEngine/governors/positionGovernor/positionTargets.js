@@ -2,12 +2,14 @@ import { nextRoundMatchUp } from '../../getters/getMatchUps/nextRoundMatchUp';
 import { getTargetMatchUp } from '../../getters/getMatchUps/getTargetMatchUp';
 import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
 import { findStructure } from '../../getters/findStructure';
+import { definedAttributes } from '../../../utilities';
 
 import {
   LOSER,
   WINNER,
   ROUND_OUTCOME,
   DRAW,
+  FIRST_MATCHUP,
 } from '../../../constants/drawDefinitionConstants';
 
 /**
@@ -66,13 +68,24 @@ function targetByRoundOutcome({
     drawDefinition,
   });
   const source = links?.source;
-  const winnerTargetLink = getTargetLink({ source, linkType: WINNER });
-  const loserTargetLink = getTargetLink({ source, linkType: LOSER });
   const { winnerMatchUpId, loserMatchUpId } = matchUp;
+
+  const winnerTargetLink = getTargetLink({ source, linkType: WINNER });
+  const byeTargetLink = getTargetLink({
+    linkCondition: FIRST_MATCHUP,
+    linkType: LOSER,
+    source,
+  });
+  let loserTargetLink = getTargetLink({ source, linkType: LOSER });
+
+  const propagateByeFMLC = byeTargetLink && loserTargetLink;
+  if (!loserTargetLink) loserTargetLink = byeTargetLink;
 
   const winnerFeedProfile = winnerTargetLink?.target?.feedProfile;
   const loserFeedProfile = loserTargetLink?.target?.feedProfile;
+  const byeFeedProfile = byeTargetLink?.target?.feedProfile;
 
+  let byeMatchUp, byeTargetDrawPosition, byeMatchUpDrawPositionIndex;
   let loserMatchUp, loserTargetDrawPosition, loserMatchUpDrawPositionIndex;
   let winnerMatchUp, winnerTargetDrawPosition, winnerMatchUpDrawPositionIndex;
   let structureMatchUps;
@@ -118,9 +131,9 @@ function targetByRoundOutcome({
 
   if (loserTargetLink && !loserMatchUp && loserFeedProfile !== DRAW) {
     ({
-      matchUp: loserMatchUp,
       matchUpDrawPositionIndex: loserMatchUpDrawPositionIndex,
       targetDrawPosition: loserTargetDrawPosition,
+      matchUp: loserMatchUp,
     } = getTargetMatchUp({
       targetLink: loserTargetLink,
       sourceRoundMatchUpCount,
@@ -130,11 +143,25 @@ function targetByRoundOutcome({
     }));
   }
 
+  if (propagateByeFMLC && byeFeedProfile !== DRAW) {
+    ({
+      matchUpDrawPositionIndex: byeMatchUpDrawPositionIndex,
+      targetDrawPosition: byeTargetDrawPosition,
+      matchUp: byeMatchUp,
+    } = getTargetMatchUp({
+      targetLink: byeTargetLink,
+      sourceRoundMatchUpCount,
+      inContextDrawMatchUps,
+      sourceRoundPosition,
+      drawDefinition,
+    }));
+  }
+
   if (winnerTargetLink && !winnerMatchUp && winnerFeedProfile !== DRAW) {
     ({
-      matchUp: winnerMatchUp,
       matchUpDrawPositionIndex: winnerMatchUpDrawPositionIndex,
       targetDrawPosition: winnerTargetDrawPosition,
+      matchUp: winnerMatchUp,
     } = getTargetMatchUp({
       drawDefinition,
       inContextDrawMatchUps,
@@ -157,18 +184,21 @@ function targetByRoundOutcome({
     }));
   }
 
-  return {
+  return definedAttributes({
     matchUp,
-    targetLinks: { loserTargetLink, winnerTargetLink },
+    targetLinks: { loserTargetLink, winnerTargetLink, byeTargetLink },
     targetMatchUps: {
+      byeMatchUp,
       loserMatchUp,
       winnerMatchUp,
+      byeTargetDrawPosition,
       loserTargetDrawPosition,
       winnerTargetDrawPosition,
+      byeMatchUpDrawPositionIndex,
       loserMatchUpDrawPositionIndex,
       winnerMatchUpDrawPositionIndex,
     },
-  };
+  });
 }
 
 function targetByWinRatio({ matchUp }) {
