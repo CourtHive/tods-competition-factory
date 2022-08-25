@@ -26,9 +26,9 @@ export function deleteVenue({ tournamentRecord, venueId, force }) {
     // if no matchUpsToUnschedule this does nothing but avoid the deletionMessage
     for (const matchUp of matchUpsToUnschedule) {
       const result = removeCourtAssignment({
-        tournamentRecord,
-        drawId: matchUp.drawId,
         matchUpId: matchUp.matchUpId,
+        drawId: matchUp.drawId,
+        tournamentRecord,
       });
       if (result.error) return result;
     }
