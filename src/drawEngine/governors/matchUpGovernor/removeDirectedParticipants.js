@@ -39,8 +39,8 @@ export function removeDirectedParticipants(params) {
   }
 
   const {
-    targetLinks: { loserTargetLink, winnerTargetLink },
-    targetMatchUps: { loserMatchUp, winnerMatchUp },
+    targetLinks: { loserTargetLink, winnerTargetLink, byeTargetLink },
+    targetMatchUps: { loserMatchUp, winnerMatchUp, byeMatchUp },
   } = targetData;
 
   const result = modifyMatchUpScore({
@@ -145,6 +145,21 @@ export function removeDirectedParticipants(params) {
       event,
     });
     if (removeLoserResult) return removeLoserResult;
+  }
+
+  if (byeMatchUp) {
+    console.log('BYE BYE', { byeMatchUp });
+    // check whether byeMatchUp includes an active drawPosition
+    const drawPosition = Math.min(...byeMatchUp.drawPositions);
+    const removeByeResult = removeDirectedBye({
+      targetLink: byeTargetLink,
+      inContextDrawMatchUps,
+      drawDefinition,
+      drawPosition,
+      matchUpsMap,
+      event,
+    });
+    if (removeByeResult.error) return removeByeResult;
   }
 
   return { ...SUCCESS };
