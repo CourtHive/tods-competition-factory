@@ -144,11 +144,10 @@ export function removeDirectedParticipants(params) {
       matchUpsMap,
       event,
     });
-    if (removeLoserResult) return removeLoserResult;
+    if (removeLoserResult.error) return removeLoserResult;
   }
 
   if (byeMatchUp) {
-    console.log('BYE BYE', { byeMatchUp });
     // check whether byeMatchUp includes an active drawPosition
     const drawPosition = Math.min(...byeMatchUp.drawPositions);
     const removeByeResult = removeDirectedBye({
@@ -159,7 +158,11 @@ export function removeDirectedParticipants(params) {
       matchUpsMap,
       event,
     });
-    if (removeByeResult.error) return removeByeResult;
+    if (removeByeResult.error) {
+      console.log({ removeByeResult });
+      // for now don't return an error here; it may be possible the bye cannot be removed and that's ok
+      // return removeByeResult;
+    }
   }
 
   return { ...SUCCESS };

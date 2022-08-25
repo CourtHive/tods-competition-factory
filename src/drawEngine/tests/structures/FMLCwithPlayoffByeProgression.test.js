@@ -125,7 +125,7 @@ it('will place a BYE in CONSOLATION if participant has progressed to 3-4 playoff
 
   result = tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
-    outcome: {},
+    outcome,
     drawId,
   });
   expect(result.success).toEqual(true);
