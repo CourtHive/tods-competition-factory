@@ -1,6 +1,8 @@
+import { addExtension } from '../../../global/functions/producers/addExtension';
 import { addNotice } from '../../../global/state/globalState';
 import { UUID, makeDeepCopy } from '../../../utilities';
 
+import { CONTEXT } from '../../../constants/extensionConstants';
 import { ADD_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -9,7 +11,7 @@ import {
   VENUE_EXISTS,
 } from '../../../constants/errorConditionConstants';
 
-export function addVenue({ tournamentRecord, disableNotice, venue }) {
+export function addVenue({ tournamentRecord, context, disableNotice, venue }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!venue) return { error: MISSING_VALUE };
 
@@ -24,7 +26,16 @@ export function addVenue({ tournamentRecord, disableNotice, venue }) {
   );
 
   if (!venueExists) {
+    if (context) {
+      const extension = {
+        value: context,
+        name: CONTEXT,
+      };
+      addExtension({ element: venue, extension });
+    }
+
     tournamentRecord.venues.push(venue);
+
     if (!disableNotice) {
       addNotice({
         payload: { venue, tournamentId: tournamentRecord.tournamentId },

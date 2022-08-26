@@ -17,24 +17,17 @@ import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionCons
 import { FEMALE, MALE, OTHER } from '../../../constants/genderConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  FLIGHT_PROFILE,
+  internalExtensions,
+  PERSON_REQUESTS,
+  SCHEDULING_PROFILE,
+} from '../../../constants/extensionConstants';
+import {
   GROUP,
   INDIVIDUAL,
   PAIR,
   TEAM,
 } from '../../../constants/participantConstants';
-import {
-  DELEGATED_OUTCOME,
-  DISABLE_LINKS,
-  FLIGHT_PROFILE,
-  PARTICIPANT_REPRESENTATIVES,
-  PERSON_REQUESTS,
-  ROUND_TARGET,
-  SCHEDULE_LIMITS,
-  SCHEDULE_TIMING,
-  SCHEDULING_PROFILE,
-  SUB_ORDER,
-  TALLY,
-} from '../../../constants/extensionConstants';
 
 export function anonymizeTournamentRecord({
   keepExtensions = [], // e.g. ['level']
@@ -48,19 +41,6 @@ export function anonymizeTournamentRecord({
 
   // if keepExtensions is boolean true then keep all extensions
   // otherwise, keep any specified extensions along with internal extensions
-  const internalExtensions = [
-    DELEGATED_OUTCOME,
-    DISABLE_LINKS,
-    FLIGHT_PROFILE,
-    PARTICIPANT_REPRESENTATIVES,
-    PERSON_REQUESTS,
-    ROUND_TARGET,
-    SCHEDULE_LIMITS,
-    SCHEDULING_PROFILE,
-    SCHEDULE_TIMING,
-    SUB_ORDER,
-    TALLY,
-  ];
   const extensionsToKeep = Array.isArray(keepExtensions)
     ? internalExtensions.concat(...keepExtensions)
     : internalExtensions;

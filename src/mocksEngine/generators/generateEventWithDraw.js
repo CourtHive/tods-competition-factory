@@ -14,12 +14,6 @@ import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { addExtension } from '../../global/functions/producers/addExtension';
 import { isValidExtension } from '../../global/validation/isValidExtension';
 import { getParticipantId } from '../../global/functions/extractors';
-import {
-  generateRange,
-  intersection,
-  makeDeepCopy,
-  UUID,
-} from '../../utilities';
 import { generateParticipants } from './generateParticipants';
 import { definedAttributes } from '../../utilities/objects';
 import { processTieFormat } from './processTieFormat';
@@ -27,6 +21,12 @@ import {
   completeDrawMatchUps,
   completeDrawMatchUp,
 } from './completeDrawMatchUps';
+import {
+  generateRange,
+  intersection,
+  makeDeepCopy,
+  UUID,
+} from '../../utilities';
 
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantConstants';
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
