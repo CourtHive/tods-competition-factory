@@ -1315,6 +1315,7 @@ const drawDefinitionValues = {
   seedingProfile, // optional { positioning, groupSeedingThreshold }
 
   qualifiersCount, // optional - how many positionsAssignments will have { qualifier: true }
+  qualifyingOnly, // optional boolean - ignore event.entries that are not entryStage: QUALIFYING
 
   structureOptions: {
     // optional - for ROUND_ROBIN - { groupSize, playoffGroups }
