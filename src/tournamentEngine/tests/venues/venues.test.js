@@ -1,17 +1,19 @@
+import { tournamentEngine } from '../../sync';
+
 import {
   MISSING_COURTS_INFO,
   MISSING_VENUE_ID,
 } from '../../../constants/errorConditionConstants';
-import { tournamentEngine } from '../../sync';
 
 it('can define a new venue', () => {
   let result = tournamentEngine.newTournamentRecord();
   expect(result.success).toEqual(true);
 
   const myCourts = { venueName: 'My Courts' };
-  result = tournamentEngine
-    .devContext({ addVenue: true })
-    .addVenue({ venue: myCourts });
+  result = tournamentEngine.addVenue({
+    context: { addedBy: 'TOURNAMENT_DESK_USER' },
+    venue: myCourts,
+  });
   const {
     venue: { venueId },
   } = result;
@@ -62,6 +64,7 @@ it('can define a new venue', () => {
   tournamentEngine.modifyCourt({ courtId, modifications });
 
   const { venue } = tournamentEngine.findVenue({ venueId });
+  expect(venue.extensions[0].value.addedBy).not.toBeUndefined();
   expect(venue.courts.length).toEqual(4);
   expect(venue.courts[0].courtName).toEqual(courtName);
   expect(venue.courts[0].dateAvailability).toEqual([]);
