@@ -53,7 +53,6 @@ export function generateEventWithDraw({
   randomWinningSide,
   ratingsParameters,
   tournamentRecord,
-  ignoreDefaults,
   isMock = true,
   drawProfile,
   startDate,
@@ -86,7 +85,9 @@ export function generateEventWithDraw({
     stage,
   } = drawProfileCopy;
 
-  let drawSize = drawProfileCopy.drawSize || (ignoreDefaults ? 32 : undefined);
+  let drawSize =
+    drawProfileCopy.drawSize ||
+    (drawProfileCopy.ignoreDefaults ? undefined : 32);
 
   const eventType = drawProfile.eventType || drawProfile.matchUpType || SINGLES;
   const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
