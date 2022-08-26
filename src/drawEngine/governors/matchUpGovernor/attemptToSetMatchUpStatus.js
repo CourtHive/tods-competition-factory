@@ -1,4 +1,4 @@
-import { removeDirectedParticipants } from './removeDirectedParticipantsAndUpdateOutcome';
+import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { doubleExitAdvancement } from '../positionGovernor/doubleExitAdvancement';
 import { attemptToSetMatchUpStatusBYE } from './attemptToSetMatchUpStatusBYE';
 import { decorateResult } from '../../../global/functions/decorateResult';

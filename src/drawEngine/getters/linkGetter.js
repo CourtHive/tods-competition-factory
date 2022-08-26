@@ -34,15 +34,21 @@ export function getRoundLinks({ drawDefinition, roundNumber, structureId }) {
   return { links: { source, target } };
 }
 
-export function getTargetLink({ source, linkType, finishingPositions }) {
-  const target = source.reduce((target, link) => {
+export function getTargetLink({
+  finishingPositions,
+  linkCondition,
+  linkType,
+  source,
+}) {
+  const result = source.find((link) => {
     const positionCondition =
       !link.source?.finishingPositions ||
       !finishingPositions ||
       overlap(finishingPositions, link.source?.finishingPositions);
-    return positionCondition && link.linkType === linkType ? link : target;
-  }, undefined);
-  return target;
+    const condition = linkCondition === link.linkCondition;
+    return condition && positionCondition && link.linkType === linkType;
+  });
+  return result;
 }
 
 /**

@@ -94,19 +94,19 @@ export function getSourceRounds({
     const [min, max] = rangeDefinition;
     const finishingPositions = generateRange(min, (max || min) + 1);
     return {
-      roundNumber,
-      finishingPositions,
       finishingPositionRange: rangeDefinition.join('-'),
+      finishingPositions,
+      roundNumber,
     };
   });
 
   const sourceRounds = [...playoffSourceRounds, ...playedOffSourceRounds];
 
   return {
-    sourceRounds,
+    playoffPositionsReturned,
+    playedOffSourceRounds,
     playoffRoundsRanges,
     playoffSourceRounds,
-    playedOffSourceRounds,
-    playoffPositionsReturned,
+    sourceRounds,
   };
 }

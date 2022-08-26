@@ -6,7 +6,7 @@ import { overlap } from '../../../utilities';
 import {
   removeDirectedBye,
   removeDirectedWinner,
-} from './removeDirectedParticipantsAndUpdateOutcome';
+} from './removeDirectedParticipants';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
