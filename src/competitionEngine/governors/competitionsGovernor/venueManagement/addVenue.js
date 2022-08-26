@@ -7,7 +7,7 @@ import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { ADD_VENUE } from '../../../../constants/topicConstants';
 
-export function addVenue({ tournamentRecords, disableNotice, venue }) {
+export function addVenue({ tournamentRecords, disableNotice, venue, context }) {
   if (typeof venue !== 'object') return { error: INVALID_VALUES };
 
   if (!venue.venueId) venue.venueId = UUID();
@@ -18,6 +18,7 @@ export function addVenue({ tournamentRecords, disableNotice, venue }) {
     const result = venueAdd({
       disableNotice: true,
       tournamentRecord,
+      context,
       venue,
     });
     if (result?.error) return result;

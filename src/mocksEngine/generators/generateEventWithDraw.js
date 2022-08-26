@@ -14,12 +14,6 @@ import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { addExtension } from '../../global/functions/producers/addExtension';
 import { isValidExtension } from '../../global/validation/isValidExtension';
 import { getParticipantId } from '../../global/functions/extractors';
-import {
-  generateRange,
-  intersection,
-  makeDeepCopy,
-  UUID,
-} from '../../utilities';
 import { generateParticipants } from './generateParticipants';
 import { definedAttributes } from '../../utilities/objects';
 import { processTieFormat } from './processTieFormat';
@@ -27,6 +21,12 @@ import {
   completeDrawMatchUps,
   completeDrawMatchUp,
 } from './completeDrawMatchUps';
+import {
+  generateRange,
+  intersection,
+  makeDeepCopy,
+  UUID,
+} from '../../utilities';
 
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantConstants';
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
@@ -53,7 +53,6 @@ export function generateEventWithDraw({
   randomWinningSide,
   ratingsParameters,
   tournamentRecord,
-  ignoreDefaults,
   isMock = true,
   drawProfile,
   startDate,
@@ -86,7 +85,9 @@ export function generateEventWithDraw({
     stage,
   } = drawProfileCopy;
 
-  let drawSize = drawProfileCopy.drawSize || (ignoreDefaults ? 32 : undefined);
+  let drawSize =
+    drawProfileCopy.drawSize ||
+    (drawProfileCopy.ignoreDefaults ? undefined : 32);
 
   const eventType = drawProfile.eventType || drawProfile.matchUpType || SINGLES;
   const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;

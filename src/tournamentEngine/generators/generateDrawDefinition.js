@@ -57,6 +57,7 @@ export function generateDrawDefinition(params) {
     voluntaryConsolation,
     policyDefinitions,
     tournamentRecord,
+    qualifyingOnly,
     tieFormatName,
     drawEntries,
     addToEvent,
@@ -97,9 +98,11 @@ export function generateDrawDefinition(params) {
       [...STRUCTURE_ENTERED_TYPES, QUALIFIER].includes(entry.entryStatus)
     ) || [];
 
-  const consideredEntries = (
-    drawEntries || (considerEventEntries ? eventEntries : [])
-  ).filter(({ entryStage }) => !entryStage || entryStage === MAIN);
+  const consideredEntries = qualifyingOnly
+    ? []
+    : (drawEntries || (considerEventEntries ? eventEntries : [])).filter(
+        ({ entryStage }) => !entryStage || entryStage === MAIN
+      );
 
   const derivedDrawSize =
     !params.drawSize &&

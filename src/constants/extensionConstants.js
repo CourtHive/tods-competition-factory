@@ -1,5 +1,6 @@
 export const APPLIED_POLICIES = 'appliedPolicies';
 export const AUDIT_POSITION_ACTIONS = 'positionActions';
+export const CONTEXT = 'context';
 export const DELEGATED_OUTCOME = 'delegatedOutcome';
 export const DISABLE_LINKS = 'disableLinks';
 export const DRAW_DELETIONS = 'drawDeletions';
@@ -25,25 +26,42 @@ export const TIE_FORMAT_MODIFICATIONS = 'tieFormatModification';
 export const extensionConstants = {
   APPLIED_POLICIES,
   AUDIT_POSITION_ACTIONS,
+  CONTEXT, // used to capture, e.g. context in which a venue was added
   DELEGATED_OUTCOME,
   DISABLE_LINKS,
   DRAW_DELETIONS,
   DRAW_PROFILE,
-  ENTRY_PROFILE,
+  ENTRY_PROFILE, // used for drawGeneration; not relevant for anonymized tournaments
   EVENT_PROFILE,
   FLIGHT_PROFILE,
-  GROUPING_ATTRIBUTE,
+  GROUPING_ATTRIBUTE, // for generating teams; not relevant for anonymized tournaments
   LINEUPS,
   LINKED_TOURNAMENTS,
   MATCHUP_HISTORY,
   PARTICIPANT_REPRESENTATIVES,
   PERSON_REQUESTS,
-  RANKING_POINTS,
+  RANKING_POINTS, // for attaching points awarded to tournamentRecord
   ROUND_TARGET,
   SCHEDULE_LIMITS,
   SCHEDULE_TIMING,
   SCHEDULING_PROFILE,
   SUB_ORDER,
   TALLY,
-  TIE_FORMAT_MODIFICATIONS,
+  TIE_FORMAT_MODIFICATIONS, // for auditing, not important when anonymized
 };
+
+export const internalExtensions = [
+  DELEGATED_OUTCOME,
+  DISABLE_LINKS,
+  FLIGHT_PROFILE,
+  LINEUPS,
+  MATCHUP_HISTORY,
+  PARTICIPANT_REPRESENTATIVES,
+  PERSON_REQUESTS,
+  ROUND_TARGET,
+  SCHEDULE_LIMITS,
+  SCHEDULE_TIMING,
+  SCHEDULING_PROFILE,
+  SUB_ORDER,
+  TALLY,
+];

@@ -238,7 +238,6 @@ it('can generate and seed a qualifying structure', () => {
   });
 
   result = tournamentEngine.generateDrawDefinition({
-    eventId,
     qualifyingProfiles: [
       {
         structureProfiles: [
@@ -251,6 +250,8 @@ it('can generate and seed a qualifying structure', () => {
         ],
       },
     ],
+    qualifyingOnly: true,
+    eventId,
   });
   expect(result.success).toEqual(true);
   const drawDefinition = result.drawDefinition;
@@ -261,9 +262,10 @@ it('can generate and seed a qualifying structure', () => {
     ).length
   ).toEqual(32);
 
+  expect(drawDefinition.structures[1].matchUps.length).toEqual(0);
   expect(
     drawDefinition.structures[0].seedAssignments.map(
       ({ participantId }) => participantId
     ).length
-  );
+  ).toEqual(4);
 });
