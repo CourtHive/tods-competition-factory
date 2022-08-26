@@ -234,7 +234,10 @@ competitionEngine.addSchedulingProfileRound({
 Adds **venueId** if not provided.
 
 ```js
-competitionEngine.addVenue({ venue: { venueName } });
+competitionEngine.addVenue({
+  venue: { venueName },
+  context, // optional - adds detail in CONTEXT extension
+});
 ```
 
 ---
