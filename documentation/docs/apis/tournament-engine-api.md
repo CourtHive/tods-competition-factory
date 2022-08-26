@@ -529,7 +529,10 @@ tournamentEngine.addTournamentExtension({
 Adds **venueId** if not provided.
 
 ```js
-tournamentEngine.addVenue({ venue: { venueName } });
+tournamentEngine.addVenue({
+  venue: { venueName },
+  context, // optional - adds detail in CONTEXT extension
+});
 ```
 
 ---
