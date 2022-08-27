@@ -1112,6 +1112,7 @@ const result = competitionEngine.scheduleProfileRounds({
   clearScheduleDates, // optional - boolean: true to clear ALL dates, otherwise array of scheduleDates to clear
   scheduleDates, // optional array of dates to schedule
   dryRun, // boolean - only report what would happen without making modifications
+  pro: // boolean - defaults to false; schedule specific courts without using garman
 });
 
 const {
