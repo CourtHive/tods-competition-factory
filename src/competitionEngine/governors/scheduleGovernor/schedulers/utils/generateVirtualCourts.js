@@ -51,15 +51,15 @@ export function generateVirtualCourts({
   );
 
   const inProcessCourts = courts.map((court, index) => {
-    const { courtId } = court;
+    const { courtId, courtName } = court;
     const bookingsThisCourt = courtBookings[courtId] || [];
     const availability =
       getCourtDateAvailability({ date: scheduleDate, court }) || {};
     const {
-      date,
+      bookings: existingBookings = [],
       startTime,
       endTime,
-      bookings: existingBookings = [],
+      date,
     } = availability;
 
     const allocatedTimeBooking = remainingScheduleTimes[index] && {
@@ -75,11 +75,12 @@ export function generateVirtualCourts({
 
     return {
       courtId,
+      courtName,
       dateAvailability: {
-        date,
+        bookings: amendedBookings,
         startTime,
         endTime,
-        bookings: amendedBookings,
+        date,
       },
     };
   });
@@ -93,7 +94,11 @@ export function generateVirtualCourts({
       .map((court) => {
         const courtDate = court.dateAvailability;
         const timeSlots = generateTimeSlots({ courtDate });
-        return { courtId: court.courtId, timeSlots };
+        return {
+          courtName: court.courtName,
+          courtId: court.courtId,
+          timeSlots,
+        };
       })
       .flat();
 
@@ -106,7 +111,7 @@ export function generateVirtualCourts({
     const endMinutes = timeStringMinutes(endTime);
     const courtTimeSlots = getCourtTimeSlots();
     const bestCourt = courtTimeSlots.reduce(
-      (best, { courtId, timeSlots }) => {
+      (best, { courtId, courtName, timeSlots }) => {
         let startDifference;
         const timeSlot = timeSlots.find(({ startTime, endTime }) => {
           startDifference = timeStringMinutes(startTime) - startMinutes;
@@ -121,9 +126,9 @@ export function generateVirtualCourts({
               startFits)
           );
         });
-        return timeSlot ? { courtId, startDifference } : best;
+        return timeSlot ? { courtName, courtId, startDifference } : best;
       },
-      { courtId: undefined, startDifference: undefined }
+      {}
     );
 
     if (bestCourt.courtId) {
@@ -145,9 +150,10 @@ export function generateVirtualCourts({
   }
 
   const virtualCourts = inProcessCourts.map(
-    ({ courtId, dateAvailability }) => ({
-      courtId,
+    ({ courtId, courtName, dateAvailability }) => ({
       dateAvailability: [dateAvailability],
+      courtName,
+      courtId,
     })
   );
 
