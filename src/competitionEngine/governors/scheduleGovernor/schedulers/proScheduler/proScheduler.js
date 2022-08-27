@@ -139,146 +139,155 @@ export function proScheduler({
           bookings,
         });
 
-        virtualCourts.forEach((court) => {
-          const { earliestCourtTime } = getEarliestCourtTime({
-            averageMinutes: details.greatestAverageMinutes,
-            date: scheduleDate,
-            court,
-          });
-          console.log({ earliestCourtTime });
-        });
-
         // on each pass attempt to schedule one matchUp per court
         // when a matchUp is scheduled, add it to details.dateScheduledMatchUps
 
         const matchUpIdsScheduled = [];
         const courtIdsScheduled = [];
-        let scheduledThisPass = 0;
 
-        while (
-          details.courtsCount &&
-          scheduledThisPass <= details.courtsCount &&
-          courtIdsScheduled.length < details.courtsCount &&
-          matchUpIdsScheduled.length < details.courtsCount
-        ) {
-          // attempt to schedule a round or at least venue.courts.length matchUps
-          const scheduledMatchUp = details.matchUpsToSchedule.find(
-            (matchUp) => {
-              const { matchUpId, matchUpType } = matchUp;
-              let scheduleTime;
+        for (const matchUp of details.matchUpsToSchedule) {
+          if (
+            courtIdsScheduled.length === details.courtsCount ||
+            matchUpIdsScheduled.length === details.courtsCount
+          )
+            break;
 
-              const { participantIdsAtLimit, relevantParticipantIds } =
-                checkDailyLimits({
-                  matchUpPotentialParticipantIds,
-                  individualParticipantProfiles,
-                  matchUpDailyLimits,
-                  matchUp,
-                });
+          const { matchUpId, matchUpType } = matchUp;
 
-              if (participantIdsAtLimit.length) {
-                if (!overLimitMatchUpIds[scheduleDate].includes(matchUpId))
-                  overLimitMatchUpIds[scheduleDate].push(matchUpId);
-                return false;
+          const { participantIdsAtLimit, relevantParticipantIds } =
+            checkDailyLimits({
+              matchUpPotentialParticipantIds,
+              individualParticipantProfiles,
+              matchUpDailyLimits,
+              matchUp,
+            });
+
+          if (participantIdsAtLimit.length) {
+            if (!overLimitMatchUpIds[scheduleDate].includes(matchUpId))
+              overLimitMatchUpIds[scheduleDate].push(matchUpId);
+            continue;
+          }
+
+          const { dependenciesScheduled, remainingDependencies } =
+            checkDependenciesScheduled({
+              matchUpScheduleTimes,
+              matchUpDependencies,
+              allDateMatchUpIds,
+              matchUps,
+              matchUp,
+            });
+
+          if (!dependenciesScheduled) {
+            if (!dependencyDeferredMatchUpIds[scheduleDate][matchUpId])
+              dependencyDeferredMatchUpIds[scheduleDate][matchUpId] = [];
+            dependencyDeferredMatchUpIds[scheduleDate][matchUpId].push({
+              remainingDependencies,
+            });
+            continue;
+          }
+
+          const schedulingConflicts = [];
+          const courtTime = virtualCourts.reduce((courtTime, court) => {
+            if (courtIdsScheduled.includes(court.courtId)) return courtTime;
+
+            const { earliestCourtTime: scheduleTime } = getEarliestCourtTime({
+              averageMinutes: details.greatestAverageMinutes,
+              date: scheduleDate,
+              court,
+            });
+
+            const { scheduledDependent } = checkDependendantTiming({
+              matchUpScheduleTimes,
+              matchUpDependencies,
+              scheduleTime,
+              matchUpId,
+              details,
+            });
+            if (scheduledDependent) return courtTime;
+
+            const { enoughTime } = checkRecoveryTime({
+              individualParticipantProfiles,
+              matchUpNotBeforeTimes,
+              matchUpDependencies,
+              scheduleTime,
+              details,
+              matchUp,
+            });
+
+            if (!enoughTime) {
+              if (!recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId])
+                recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId] = [];
+              if (
+                !recoveryTimeDeferredMatchUpIds[scheduleDate][
+                  matchUpId
+                ].includes(scheduleTime)
+              ) {
+                recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId].push(
+                  scheduleTime
+                );
               }
-
-              const { scheduledDependent } = checkDependendantTiming({
-                matchUpScheduleTimes,
-                matchUpDependencies,
-                scheduleTime,
-                matchUpId,
-                details,
-              });
-              if (scheduledDependent) return false;
-
-              const { dependenciesScheduled, remainingDependencies } =
-                checkDependenciesScheduled({
-                  matchUpScheduleTimes,
-                  matchUpDependencies,
-                  allDateMatchUpIds,
-                  matchUps,
-                  matchUp,
-                });
-              if (!dependenciesScheduled) {
-                if (!dependencyDeferredMatchUpIds[scheduleDate][matchUpId])
-                  dependencyDeferredMatchUpIds[scheduleDate][matchUpId] = [];
-                dependencyDeferredMatchUpIds[scheduleDate][matchUpId].push({
-                  scheduleTime,
-                  remainingDependencies,
-                });
-                return false;
-              }
-
-              const { enoughTime } = checkRecoveryTime({
-                individualParticipantProfiles,
-                matchUpNotBeforeTimes,
-                matchUpDependencies,
-                scheduleTime,
-                details,
-                matchUp,
-              });
-
-              if (!enoughTime) {
-                if (!recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId])
-                  recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId] = [];
-                recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId].push({
-                  scheduleTime,
-                });
-                return false;
-              }
-
-              const averageMatchUpMinutes = details.greatestAverageMinutes;
-              // details.minutesMap?.[matchUpId]?.averageMinutes;
-              // TODO: check the previous scheduled matchUp for each participantId/potentialParticipantId
-              // CHECK: if the matchUpType has changed for ALL PARTICIPANTS from SINGLE/DOUBLES use typeChangeRecoveryMinutes
-
-              const { conflicts } = checkRequestConflicts({
-                potentials: checkPotentialRequestConflicts,
-                averageMatchUpMinutes,
-                requestConflicts,
-                personRequests,
-                scheduleTime,
-                scheduleDate,
-                matchUp,
-              });
-
-              if (conflicts?.length) {
-                if (!scheduleDateRequestConflicts[scheduleDate])
-                  scheduleDateRequestConflicts[scheduleDate] = [];
-                scheduleDateRequestConflicts[scheduleDate].push(...conflicts);
-                return false;
-              }
-
-              bumpLimits(relevantParticipantIds, matchUpType);
-
-              const recoveryMinutes =
-                details.minutesMap?.[matchUpId]?.recoveryMinutes;
-
-              updateTimeAfterRecovery({
-                matchUpPotentialParticipantIds,
-                individualParticipantProfiles,
-                matchUpNotBeforeTimes,
-                averageMatchUpMinutes,
-                matchUpDependencies,
-                recoveryMinutes,
-                scheduleDate,
-                scheduleTime,
-                matchUp,
-              });
-
-              matchUpScheduleTimes[matchUpId] = scheduleTime;
-
-              return true;
+              return courtTime;
             }
-          );
 
-          details.matchUpsToSchedule = details.matchUpsToSchedule.filter(
-            ({ matchUpId }) => matchUpId !== scheduledMatchUp?.matchUpId
-          );
+            const averageMatchUpMinutes =
+              details.minutesMap?.[matchUpId]?.averageMinutes ||
+              details.greatestAverageMinutes;
 
-          if (!scheduledMatchUp) {
-            //
+            const { conflicts } = checkRequestConflicts({
+              potentials: checkPotentialRequestConflicts,
+              averageMatchUpMinutes,
+              requestConflicts,
+              personRequests,
+              scheduleTime,
+              scheduleDate,
+              matchUp,
+            });
+
+            if (conflicts?.length) {
+              schedulingConflicts.push(...conflicts);
+              return false;
+            }
+
+            bumpLimits(relevantParticipantIds, matchUpType);
+
+            const recoveryMinutes =
+              details.minutesMap?.[matchUpId]?.recoveryMinutes;
+
+            updateTimeAfterRecovery({
+              matchUpPotentialParticipantIds,
+              individualParticipantProfiles,
+              matchUpNotBeforeTimes,
+              averageMatchUpMinutes,
+              matchUpDependencies,
+              recoveryMinutes,
+              scheduleDate,
+              scheduleTime,
+              matchUp,
+            });
+
+            matchUpScheduleTimes[matchUpId] = scheduleTime;
+
+            courtTime.scheduleTime = scheduleTime;
+            courtTime.court = court;
+
+            return courtTime;
+          }, {});
+
+          if (courtTime.scheduleTime) {
+            courtIdsScheduled.push(courtTime.court.courtId);
+            matchUpIdsScheduled.push(matchUpId);
+
+            details.matchUpsToSchedule = details.matchUpsToSchedule.filter(
+              (matchUp) => matchUp.matchUpId !== matchUpId
+            );
           } else {
-            scheduledThisPass += 1;
+            if (schedulingConflicts?.length) {
+              if (!scheduleDateRequestConflicts[scheduleDate])
+                scheduleDateRequestConflicts[scheduleDate] = [];
+              scheduleDateRequestConflicts[scheduleDate].push(
+                ...schedulingConflicts
+              );
+            }
           }
         }
 
@@ -292,11 +301,7 @@ export function proScheduler({
           });
         }
 
-        if (
-          !details.scheduleTimes?.length ||
-          !details.matchUpsToSchedule?.length
-        )
-          details.complete = true;
+        if (!details.matchUpsToSchedule?.length) details.complete = true;
       }
 
       schedulingIterations += 1;
