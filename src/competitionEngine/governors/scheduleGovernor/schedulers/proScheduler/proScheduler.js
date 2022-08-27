@@ -1,4 +1,4 @@
-import { assignMatchUpVenue } from '../../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
+import { assignMatchUpCourt } from '../../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { addTournamentTimeItem } from '../../../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import { addMatchUpScheduledTime } from '../../../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
@@ -16,6 +16,7 @@ import { generateVirtualCourts } from '../utils/generateVirtualCourts';
 import { getEarliestCourtTime } from '../utils/getEarliestCourtTime';
 import { generateBookings } from '../utils/generateBookings';
 import {
+  addMinutesToTimeString,
   extractDate,
   sameDay,
   timeStringMinutes,
@@ -50,6 +51,7 @@ export function proScheduler({
   const recoveryTimeDeferredMatchUpIds = {};
   const dependencyDeferredMatchUpIds = {};
   const scheduleDateRequestConflicts = {};
+  const matchUpScheduleCourtIds = {};
   const matchUpScheduleTimes = {};
   const scheduledMatchUpIds = {};
   const overLimitMatchUpIds = {};
@@ -96,23 +98,37 @@ export function proScheduler({
       }
     });
 
-    const { venueScheduledRoundDetails, allDateMatchUpIds } =
-      getVenueSchedulingDetails({
-        matchUpPotentialParticipantIds,
-        individualParticipantProfiles,
-        scheduleCompletedMatchUps,
-        containedStructureIds,
-        matchUpNotBeforeTimes,
-        matchUpScheduleTimes,
-        matchUpDependencies,
-        clearScheduleDates,
-        tournamentRecords,
-        periodLength,
-        scheduleDate,
-        matchUps,
-        courts,
-        venues,
-      });
+    const {
+      allDateScheduledMatchUpIds,
+      venueScheduledRoundDetails,
+      allDateMatchUpIds,
+    } = getVenueSchedulingDetails({
+      matchUpPotentialParticipantIds,
+      individualParticipantProfiles,
+      scheduleCompletedMatchUps,
+      containedStructureIds,
+      matchUpNotBeforeTimes,
+      matchUpScheduleTimes,
+      matchUpDependencies,
+      clearScheduleDates,
+      tournamentRecords,
+      periodLength,
+      scheduleDate,
+      matchUps,
+      courts,
+      venues,
+    });
+
+    const dateScheduledMatchUps = matchUps.filter(({ matchUpId }) =>
+      allDateScheduledMatchUpIds.includes(matchUpId)
+    );
+
+    const { bookings } = generateBookings({
+      dateScheduledMatchUps,
+      tournamentRecords,
+      scheduleDate,
+      periodLength,
+    });
 
     const failSafe = 10;
     let schedulingComplete;
@@ -123,21 +139,6 @@ export function proScheduler({
       // for each venue schedule a round
       for (const { venueId } of venues) {
         const details = venueScheduledRoundDetails[venueId];
-        console.log(details.matchUpsToSchedule.length);
-
-        const { bookings } = generateBookings({
-          dateScheduledMatchUps: details.dateScheduledMatchUps,
-          tournamentRecords,
-          scheduleDate,
-          periodLength,
-        });
-        const { virtualCourts } = generateVirtualCourts({
-          courts: details.venueCourts,
-          clearScheduleDates,
-          scheduleDate,
-          periodLength,
-          bookings,
-        });
 
         // on each pass attempt to schedule one matchUp per court
         // when a matchUp is scheduled, add it to details.dateScheduledMatchUps
@@ -153,6 +154,14 @@ export function proScheduler({
             break;
 
           const { matchUpId, matchUpType } = matchUp;
+
+          const { virtualCourts } = generateVirtualCourts({
+            courts: details.venueCourts,
+            clearScheduleDates,
+            scheduleDate,
+            periodLength,
+            bookings,
+          });
 
           const { participantIdsAtLimit, relevantParticipantIds } =
             checkDailyLimits({
@@ -265,17 +274,47 @@ export function proScheduler({
               matchUp,
             });
 
-            matchUpScheduleTimes[matchUpId] = scheduleTime;
-
-            courtTime.scheduleTime = scheduleTime;
-            courtTime.court = court;
+            if (
+              !courtTime.scheduleTime ||
+              timeStringMinutes(scheduleTime) <
+                timeStringMinutes(courtTime.scheduleTime)
+            ) {
+              courtTime.averageMatchUpMinutes = averageMatchUpMinutes;
+              courtTime.recoveryMinutes = recoveryMinutes;
+              courtTime.scheduleTime = scheduleTime;
+              courtTime.courtId = court.courtId;
+            }
 
             return courtTime;
           }, {});
 
           if (courtTime.scheduleTime) {
-            courtIdsScheduled.push(courtTime.court.courtId);
+            const {
+              averageMatchUpMinutes,
+              recoveryMinutes,
+              scheduleTime,
+              courtId,
+            } = courtTime;
+            matchUpScheduleTimes[matchUpId] = scheduleTime;
+            matchUpScheduleCourtIds[matchUpId] = courtId;
+            courtIdsScheduled.push(courtId);
             matchUpIdsScheduled.push(matchUpId);
+            const startTime = scheduleTime;
+            const endTime = addMinutesToTimeString(
+              startTime,
+              averageMatchUpMinutes
+            );
+            const booking = {
+              averageMatchUpMinutes,
+              recoveryMinutes,
+              periodLength,
+              matchUpId,
+              startTime,
+              courtId,
+              endTime,
+              venueId,
+            };
+            bookings.push(booking);
 
             details.matchUpsToSchedule = details.matchUpsToSchedule.filter(
               (matchUp) => matchUp.matchUpId !== matchUpId
@@ -311,7 +350,7 @@ export function proScheduler({
         ) || schedulingIterations === failSafe;
     }
 
-    // assign scheduledTime and venue to each matchUp
+    // assign scheduledTime, venueId and courtId to each matchUp
     // because this is done in an optimized fashion from hash of assignments
     // scheduledMatchUpIds[scheduleDate] will not be in the order that scheduleTimes were assigned
     for (const { venueId } of venues) {
@@ -330,6 +369,7 @@ export function proScheduler({
 
               drawMatchUps.forEach(({ matchUpId }) => {
                 const scheduleTime = matchUpScheduleTimes[matchUpId];
+                const courtId = matchUpScheduleCourtIds[matchUpId];
                 if (scheduleTime) {
                   // must include scheduleDate being scheduled to generate proper ISO string
                   const formatTime = scheduleTime
@@ -343,22 +383,20 @@ export function proScheduler({
                   if (dryRun) {
                     scheduledMatchUpIds[scheduleDate].push(matchUpId);
                   } else {
-                    const result = addMatchUpScheduledTime({
+                    addMatchUpScheduledTime({
                       drawDefinition,
                       scheduledTime,
                       matchUpId,
                     });
-                    if (result.success)
-                      scheduledMatchUpIds[scheduleDate].push(matchUpId);
-
-                    if (venueId) {
-                      assignMatchUpVenue({
-                        tournamentRecord,
-                        drawDefinition,
-                        matchUpId,
-                        venueId,
-                      });
-                    }
+                    assignMatchUpCourt({
+                      courtDayDate: scheduleDate,
+                      tournamentRecords,
+                      tournamentRecord,
+                      drawDefinition,
+                      matchUpId,
+                      courtId,
+                    });
+                    scheduledMatchUpIds[scheduleDate].push(matchUpId);
                   }
                 }
               });

@@ -32,9 +32,9 @@ export function assignMatchUpCourt({
     assignMatchUpVenue({
       tournamentRecord,
       drawDefinition,
+      disableNotice,
       matchUpId,
       venueId,
-      disableNotice,
     });
   }
 
