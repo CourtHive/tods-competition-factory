@@ -25,6 +25,7 @@ export function getVenueSchedulingDetails({
   const venueScheduledRoundDetails = {};
 
   // checking that matchUpDependencies is scoped to only those matchUps that are already or are to be scheduled on the same date
+  const allDateScheduledMatchUpIds = [];
   const allDateMatchUpIds = [];
 
   // first pass through all venues is to build up an array of all matchUpIds in the schedulingProfile for current scheduleDate
@@ -112,9 +113,12 @@ export function getVenueSchedulingDetails({
       minutesMap,
       matchUpMap,
     };
+
+    allDateScheduledMatchUpIds.push(...dateScheduledMatchUpIds);
   }
 
   return {
+    allDateScheduledMatchUpIds,
     venueScheduledRoundDetails,
     allDateMatchUpIds,
   };

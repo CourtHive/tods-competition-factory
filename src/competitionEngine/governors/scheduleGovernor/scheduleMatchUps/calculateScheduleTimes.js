@@ -154,8 +154,8 @@ export function calculateScheduleTimes({
       const startTime = extractTime(schedule.scheduledTime);
       const endTime = addMinutesToTimeString(startTime, averageMinutes);
       const booking = {
-        averageMinutes,
         recoveryMinutes,
+        averageMinutes,
         periodLength,
         startTime,
         endTime,
