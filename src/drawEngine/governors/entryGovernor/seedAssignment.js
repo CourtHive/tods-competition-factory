@@ -20,6 +20,7 @@ export function assignSeed({
   drawDefinition,
   seedingProfile,
   participantId,
+  seedBlockInfo,
   structureId,
   seedNumber,
   seedValue,
@@ -68,6 +69,7 @@ export function assignSeed({
       drawPosition: assignedDrawPosition,
       appliedPolicies,
       drawDefinition,
+      seedBlockInfo,
       structureId,
       seedNumber,
     });

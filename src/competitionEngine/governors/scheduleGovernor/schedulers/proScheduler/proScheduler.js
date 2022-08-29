@@ -46,7 +46,6 @@ export function proScheduler({
   dryRun,
 }) {
   const scheduleTimesRemaining = {};
-  const skippedScheduleTimes = {};
 
   const recoveryTimeDeferredMatchUpIds = {};
   const dependencyDeferredMatchUpIds = {};
@@ -77,7 +76,6 @@ export function proScheduler({
     recoveryTimeDeferredMatchUpIds[scheduleDate] = {};
     dependencyDeferredMatchUpIds[scheduleDate] = {};
     scheduleTimesRemaining[scheduleDate] = {};
-    skippedScheduleTimes[scheduleDate] = {};
     scheduledMatchUpIds[scheduleDate] = []; // will not be in scheduled order
     overLimitMatchUpIds[scheduleDate] = [];
     noTimeMatchUpIds[scheduleDate] = [];
@@ -133,7 +131,6 @@ export function proScheduler({
     const failSafe = 10;
     let schedulingComplete;
     let schedulingIterations = 0;
-    let maxScheduleTimeAttempts = 10;
 
     while (!schedulingComplete) {
       // for each venue schedule a round
@@ -330,16 +327,6 @@ export function proScheduler({
           }
         }
 
-        if (details.matchUpsToSchedule?.length) {
-          skippedScheduleTimes[scheduleDate][venueId] = skippedScheduleTimes[
-            scheduleDate
-          ][venueId]?.filter((unused) => {
-            const tryAgain = unused.attempts < maxScheduleTimeAttempts;
-            if (tryAgain) details.scheduleTimes.push(unused);
-            return !tryAgain;
-          });
-        }
-
         if (!details.matchUpsToSchedule?.length) details.complete = true;
       }
 
@@ -452,7 +439,6 @@ export function proScheduler({
     schedulingProfileIssues,
     scheduleTimesRemaining,
     dateSchedulingProfiles,
-    skippedScheduleTimes,
 
     recoveryTimeDeferredMatchUpIds,
     dependencyDeferredMatchUpIds,

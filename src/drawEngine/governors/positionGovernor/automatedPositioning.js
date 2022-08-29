@@ -103,13 +103,13 @@ export function automatedPositioning({
 
   let unseededByePositions = [];
 
-  result = getValidSeedBlocks({
+  const seedBlockInfo = getValidSeedBlocks({
     appliedPolicies,
     drawDefinition,
     structure,
   });
-  if (result.error) return result;
-  const { validSeedBlocks } = result;
+  if (seedBlockInfo.error) return seedBlockInfo;
+  const { validSeedBlocks } = seedBlockInfo;
 
   if (
     getSeedPattern(structure.seedingProfile || seedingProfile) === WATERFALL
@@ -121,8 +121,8 @@ export function automatedPositioning({
       positionByes({
         tournamentRecord,
         appliedPolicies,
-        validSeedBlocks,
         drawDefinition,
+        seedBlockInfo,
         matchUpsMap,
         structure,
         seedsOnly,
@@ -138,6 +138,7 @@ export function automatedPositioning({
       appliedPolicies,
       validSeedBlocks,
       drawDefinition,
+      seedBlockInfo,
       participants,
       matchUpsMap,
       structure,
@@ -154,6 +155,7 @@ export function automatedPositioning({
         appliedPolicies,
         validSeedBlocks,
         drawDefinition,
+        seedBlockInfo,
         participants,
         matchUpsMap,
         structure,
@@ -167,8 +169,8 @@ export function automatedPositioning({
         inContextDrawMatchUps,
         tournamentRecord,
         appliedPolicies,
-        validSeedBlocks,
         drawDefinition,
+        seedBlockInfo,
         matchUpsMap,
         structure,
         seedsOnly,
@@ -190,6 +192,7 @@ export function automatedPositioning({
       appliedPolicies,
       validSeedBlocks,
       drawDefinition,
+      seedBlockInfo,
       participants,
       matchUpsMap,
       structure,
@@ -206,6 +209,7 @@ export function automatedPositioning({
       validSeedBlocks,
       candidatesCount,
       drawDefinition,
+      seedBlockInfo,
       participants,
       matchUpsMap,
       structure,

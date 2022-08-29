@@ -2,8 +2,8 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getQualifiersCount } from '../../getters/getQualifiersCount';
-import { findStructure } from '../../getters/findStructure';
 import { generateRange, randomPop } from '../../../utilities';
+import { findStructure } from '../../getters/findStructure';
 
 import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

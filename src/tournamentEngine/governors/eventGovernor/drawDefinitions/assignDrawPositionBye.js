@@ -3,12 +3,14 @@ import { assignDrawPositionBye as assignBye } from '../../../../drawEngine/gover
 export function assignDrawPositionBye({
   tournamentRecord,
   drawDefinition,
+  seedBlockInfo,
   drawPosition,
   structureId,
 }) {
   return assignBye({
     tournamentRecord,
     drawDefinition,
+    seedBlockInfo,
     drawPosition,
     structureId,
   });

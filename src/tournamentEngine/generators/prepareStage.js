@@ -4,6 +4,7 @@ import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEn
 import { assignSeed } from '../../drawEngine/governors/entryGovernor/seedAssignment';
 import { findExtension } from '../governors/queryGovernor/extensionQueries';
 import { getDrawStructures } from '../../drawEngine/getters/findStructure';
+import { getValidSeedBlocks } from '../../drawEngine/getters/seedGetter';
 import { getParticipantId } from '../../global/functions/extractors';
 
 import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
@@ -72,6 +73,12 @@ export function prepareStage({
   );
   const { structureId } = structure || {};
 
+  const seedBlockInfo = getValidSeedBlocks({
+    appliedPolicies,
+    drawDefinition,
+    structure,
+  });
+
   const { seedLimit } = initializeStructureSeedAssignments({
     participantCount: stageEntries.length,
     enforcePolicyLimits,
@@ -107,6 +114,7 @@ export function prepareStage({
           drawDefinition,
           seedingProfile,
           participantId,
+          seedBlockInfo,
           structureId,
           seedNumber,
           seedValue,

@@ -49,6 +49,7 @@ export function assignDrawPosition({
   drawDefinition,
   seedingProfile,
   participantId,
+  seedBlockInfo,
   drawPosition,
   matchUpsMap,
   structureId,
@@ -99,6 +100,7 @@ export function assignDrawPosition({
       seedNumber: participantSeedNumber,
       appliedPolicies,
       drawDefinition,
+      seedBlockInfo,
       drawPosition,
       structureId,
     });
