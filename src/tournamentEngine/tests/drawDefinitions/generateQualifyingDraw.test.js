@@ -57,6 +57,7 @@ it('can generateDrawDefinition and place qualifiers', () => {
     expect(result.success).toEqual(true);
   });
 
+  console.log('--------');
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
     qualifyingProfiles: [
       {
@@ -97,6 +98,7 @@ it('can generateDrawDefinition and place qualifiers', () => {
   );
   expect(mainStructure.matchUps.length).toEqual(0);
 
+  console.log('--------');
   drawDefinition = tournamentEngine.generateDrawDefinition({
     qualifyingProfiles: [
       {

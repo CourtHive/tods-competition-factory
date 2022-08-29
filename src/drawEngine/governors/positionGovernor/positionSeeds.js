@@ -79,6 +79,7 @@ function positionSeedBlock({
   const { unplacedSeedParticipantIds, unfilledPositions } = getNextSeedBlock({
     randomize: true,
     drawDefinition,
+    seedBlockInfo,
     structureId,
   });
 
