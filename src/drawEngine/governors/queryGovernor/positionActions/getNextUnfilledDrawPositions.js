@@ -7,7 +7,11 @@ import {
   MISSING_STRUCTURE_ID,
 } from '../../../../constants/errorConditionConstants';
 
-export function getNextUnfilledDrawPositions({ drawDefinition, structureId }) {
+export function getNextUnfilledDrawPositions({
+  drawDefinition,
+  seedBlockInfo,
+  structureId,
+}) {
   if (!drawDefinition) {
     const error = MISSING_DRAW_DEFINITION;
     return { error, nextUnfilledDrawPositions: [] };
@@ -23,9 +27,10 @@ export function getNextUnfilledDrawPositions({ drawDefinition, structureId }) {
   const result = structureAssignedDrawPositions({ structure });
   const positionAssignments = result?.positionAssignments || [];
   const { unfilledPositions } = getNextSeedBlock({
-    drawDefinition,
-    structureId,
     randomize: true,
+    drawDefinition,
+    seedBlockInfo,
+    structureId,
   });
 
   const unfilledDrawPositions = positionAssignments

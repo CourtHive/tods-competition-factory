@@ -1,7 +1,6 @@
 import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from './getStructureSeedAssignments';
-import { chunkArray, isPowerOf2, shuffleArray } from '../../utilities';
 import { getNumericSeedValue } from './getNumericSeedValue';
 import { findStructure } from './findStructure';
 import {
@@ -12,6 +11,12 @@ import {
   getPositionAssignments,
   structureAssignedDrawPositions,
 } from './positionsGetter';
+import {
+  chunkArray,
+  generateRange,
+  isPowerOf2,
+  shuffleArray,
+} from '../../utilities';
 
 import {
   CLUSTER,
@@ -39,12 +44,7 @@ export function getValidSeedBlocks({
   allPositions,
   structure,
 }) {
-  let fedSeedNumberOffset = 0,
-    firstRoundSeedsCount,
-    validSeedBlocks = [],
-    isContainer,
-    isFeedIn,
-    isLucky;
+  let validSeedBlocks = [];
 
   if (!structure) return { error: MISSING_STRUCTURE };
 
@@ -90,13 +90,56 @@ export function getValidSeedBlocks({
     (block) => block.filter((drawPosition) => drawPosition <= seedsCount).length
   );
 
-  const countLimit = allPositions ? positionsCount : seedsCount;
-  if (structure.stage === QUALIFYING) {
-    console.log(QUALIFYING);
-  }
-  if (structure.structureType === CONTAINER) {
-    isContainer = true;
+  const { stage, structureType, roundLimit } = structure;
+  const isContainer = structureType === CONTAINER;
+  const isFeedIn = !isContainer && uniqueDrawPositionsByRound?.length;
+  // if there are first round draw positions it is not AdHoc
+  // if the baseDrawSize is not a power of 2 then it isLucky
+  const isLucky = firstRoundDrawPositions?.length && !isPowerOf2(baseDrawSize);
+  const qualifyingBlocks = !isContainer && stage === QUALIFYING && roundLimit;
 
+  const fedSeedBlockPositions = seedRangeDrawPositionBlocks.flat(Infinity);
+  const fedSeedNumberOffset = isFeedIn ? fedSeedBlockPositions?.length : 0;
+  const countLimit = allPositions ? positionsCount : seedsCount;
+  const firstRoundSeedsCount = isLucky
+    ? 0
+    : !isFeedIn
+    ? countLimit
+    : fedSeedBlockPositions.length < countLimit
+    ? countLimit - fedSeedBlockPositions.length
+    : 0;
+
+  if (qualifyingBlocks) {
+    const seedingBlocksCount = structure.matchUps.filter(
+      ({ roundNumber }) => roundNumber === structure.roundLimit
+    ).length;
+    if (isFeedIn) {
+      // TODO: figure this out
+    } else {
+      const positioning = getSeedPattern(seedingProfile);
+      const drawPositionChunks = chunkArray(
+        firstRoundDrawPositions,
+        seedingBlocksCount
+      );
+      let groupNumber = 1;
+      const seedGroups = generateRange(0, drawPositionChunks[0].length).map(
+        () => {
+          const seedNumbers = generateRange(
+            groupNumber,
+            groupNumber + drawPositionChunks.length
+          );
+          groupNumber += drawPositionChunks.length;
+          return seedNumbers;
+        }
+      );
+
+      ({ validSeedBlocks } = getSeedBlockPattern({
+        drawPositionBlocks: drawPositionChunks,
+        positioning,
+        seedGroups,
+      }));
+    }
+  } else if (isContainer) {
     if (!allPositions && appliedPolicies?.seeding?.containerByesIgnoreSeeding)
       return {
         validSeedBlocks: [],
@@ -111,33 +154,22 @@ export function getValidSeedBlocks({
       return result;
     }
     ({ validSeedBlocks } = result);
-  } else if (uniqueDrawPositionsByRound.length) {
-    isFeedIn = true;
-
+  } else if (isFeedIn) {
     // for FEED_IN structures, block seeding proceeds from final rounds
     // to earlier rounds.  If there are more seeds than fed positions,
     // then seeds must be assigned to first round drawPositions
     validSeedBlocks = seedRangeDrawPositionBlocks.map((block) => {
       return { seedNumbers: block, drawPositions: block };
     });
-    const fedSeedBlockPositions = seedRangeDrawPositionBlocks.flat(Infinity);
-
-    // firstRoundSeedsCount determines how many seeds must be placed in first round
-    firstRoundSeedsCount =
-      fedSeedBlockPositions.length < countLimit
-        ? countLimit - fedSeedBlockPositions.length
-        : 0;
-
-    // fedSeedNumberOffset is used to calculate seedNumber
-    // should be equal fo firstRoundDrawPositionOffset
-    fedSeedNumberOffset = fedSeedBlockPositions.length;
-  } else if (firstRoundDrawPositions && !isPowerOf2(baseDrawSize)) {
+  } else if (isLucky) {
     // if there are first round draw positions it is not AdHoc
     // if the baseDrawSize is not a power of 2 then it isLucky
-    firstRoundSeedsCount = 0;
-    isLucky = true;
-  } else {
-    firstRoundSeedsCount = countLimit;
+    // firstRoundSeedsCount = 0;
+    const blocks = chunkArray(firstRoundDrawPositions, 2).map((block, i) => ({
+      drawPositions: [block[0]],
+      seedNumbers: [i + 1],
+    }));
+    blocks.forEach((block) => validSeedBlocks.push(block));
   }
 
   if (!isContainer && !isLucky) {
@@ -156,14 +188,6 @@ export function getValidSeedBlocks({
         error,
       };
     }
-    blocks.forEach((block) => validSeedBlocks.push(block));
-  }
-
-  if (isLucky) {
-    const blocks = chunkArray(firstRoundDrawPositions, 2).map((block, i) => ({
-      drawPositions: [block[0]],
-      seedNumbers: [i + 1],
-    }));
     blocks.forEach((block) => validSeedBlocks.push(block));
   }
 
@@ -200,8 +224,6 @@ export function getContainerBlocks({ seedingProfile, structure, seedBlocks }) {
   const positionAssignments = getPositionAssignments({
     structure,
   })?.positionAssignments;
-  const validSeedBlocks = [];
-
   const positioning = getSeedPattern(seedingProfile);
 
   if (!seedBlocks) {
@@ -220,6 +242,16 @@ export function getContainerBlocks({ seedingProfile, structure, seedBlocks }) {
       structure: containedStructure,
     }).positionAssignments.map((assignment) => assignment.drawPosition)
   );
+
+  return getSeedBlockPattern({
+    drawPositionBlocks,
+    positioning,
+    seedGroups,
+  });
+}
+
+function getSeedBlockPattern({ positioning, seedGroups, drawPositionBlocks }) {
+  const validSeedBlocks = [];
 
   const topDown = (a, b) => a - b;
   const bottomUp = (a, b) => b - a;
@@ -329,7 +361,12 @@ export function isValidSeedPosition({
   return validSeedPositions.includes(drawPosition);
 }
 
-export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
+export function getNextSeedBlock({
+  drawDefinition,
+  seedBlockInfo,
+  structureId,
+  randomize,
+}) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { seedAssignments } = getStructureSeedAssignments({
     drawDefinition,
@@ -345,11 +382,13 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
     .filter(Boolean);
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  const { validSeedBlocks } = getValidSeedBlocks({
-    appliedPolicies,
-    drawDefinition,
-    structure,
-  });
+  const validSeedBlocks =
+    seedBlockInfo?.validSeedBlocks ||
+    getValidSeedBlocks({
+      appliedPolicies,
+      drawDefinition,
+      structure,
+    })?.validSeedBlocks;
   const unfilledSeedBlocks = (validSeedBlocks || []).filter((seedBlock) => {
     const unfilledPositions = seedBlock.drawPositions.filter(
       (drawPosition) => !assignedDrawPositions.includes(drawPosition)
