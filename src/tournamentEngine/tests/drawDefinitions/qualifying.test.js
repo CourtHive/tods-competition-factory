@@ -160,7 +160,6 @@ it.each(scenarios)(
       ({ type }) => type === QUALIFYING_PARTICIPANT
     );
     expect(qualifierAssingmentAction).not.toBeUndefined();
-    // console.log(qualifierAssingmentAction);
   }
 );
 

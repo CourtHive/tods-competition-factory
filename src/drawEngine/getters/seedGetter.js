@@ -1,7 +1,6 @@
 import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from './getStructureSeedAssignments';
-import { chunkArray, isPowerOf2, shuffleArray } from '../../utilities';
 import { getNumericSeedValue } from './getNumericSeedValue';
 import { findStructure } from './findStructure';
 import {
@@ -12,6 +11,12 @@ import {
   getPositionAssignments,
   structureAssignedDrawPositions,
 } from './positionsGetter';
+import {
+  chunkArray,
+  generateRange,
+  isPowerOf2,
+  shuffleArray,
+} from '../../utilities';
 
 import {
   CLUSTER,
@@ -91,6 +96,7 @@ export function getValidSeedBlocks({
   // if there are first round draw positions it is not AdHoc
   // if the baseDrawSize is not a power of 2 then it isLucky
   const isLucky = firstRoundDrawPositions?.length && !isPowerOf2(baseDrawSize);
+  const qualifyingBlocks = !isContainer && stage === QUALIFYING && roundLimit;
 
   const fedSeedBlockPositions = seedRangeDrawPositionBlocks.flat(Infinity);
   const fedSeedNumberOffset = isFeedIn ? fedSeedBlockPositions?.length : 0;
@@ -103,13 +109,37 @@ export function getValidSeedBlocks({
     ? countLimit - fedSeedBlockPositions.length
     : 0;
 
-  if (structureType !== CONTAINER && stage === QUALIFYING && roundLimit) {
+  if (qualifyingBlocks) {
     const seedingBlocksCount = structure.matchUps.filter(
       ({ roundNumber }) => roundNumber === structure.roundLimit
     ).length;
-    console.log(seedingBlocksCount);
-  }
-  if (isContainer) {
+    if (isFeedIn) {
+      // TODO: figure this out
+    } else {
+      const positioning = getSeedPattern(seedingProfile);
+      const drawPositionChunks = chunkArray(
+        firstRoundDrawPositions,
+        seedingBlocksCount
+      );
+      let groupNumber = 1;
+      const seedGroups = generateRange(0, drawPositionChunks[0].length).map(
+        () => {
+          const seedNumbers = generateRange(
+            groupNumber,
+            groupNumber + drawPositionChunks.length
+          );
+          groupNumber += drawPositionChunks.length;
+          return seedNumbers;
+        }
+      );
+
+      ({ validSeedBlocks } = getSeedBlockPattern({
+        drawPositionBlocks: drawPositionChunks,
+        positioning,
+        seedGroups,
+      }));
+    }
+  } else if (isContainer) {
     if (!allPositions && appliedPolicies?.seeding?.containerByesIgnoreSeeding)
       return {
         validSeedBlocks: [],
@@ -194,8 +224,6 @@ export function getContainerBlocks({ seedingProfile, structure, seedBlocks }) {
   const positionAssignments = getPositionAssignments({
     structure,
   })?.positionAssignments;
-  const validSeedBlocks = [];
-
   const positioning = getSeedPattern(seedingProfile);
 
   if (!seedBlocks) {
@@ -214,6 +242,16 @@ export function getContainerBlocks({ seedingProfile, structure, seedBlocks }) {
       structure: containedStructure,
     }).positionAssignments.map((assignment) => assignment.drawPosition)
   );
+
+  return getSeedBlockPattern({
+    drawPositionBlocks,
+    positioning,
+    seedGroups,
+  });
+}
+
+function getSeedBlockPattern({ positioning, seedGroups, drawPositionBlocks }) {
+  const validSeedBlocks = [];
 
   const topDown = (a, b) => a - b;
   const bottomUp = (a, b) => b - a;
