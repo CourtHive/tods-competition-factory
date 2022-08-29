@@ -41,10 +41,7 @@ export function getValidSeedBlocks({
 }) {
   let fedSeedNumberOffset = 0,
     firstRoundSeedsCount,
-    validSeedBlocks = [],
-    isContainer,
-    isFeedIn,
-    isLucky;
+    validSeedBlocks = [];
 
   if (!structure) return { error: MISSING_STRUCTURE };
 
@@ -90,13 +87,21 @@ export function getValidSeedBlocks({
     (block) => block.filter((drawPosition) => drawPosition <= seedsCount).length
   );
 
-  const countLimit = allPositions ? positionsCount : seedsCount;
-  if (structure.stage === QUALIFYING) {
-    console.log(QUALIFYING);
-  }
-  if (structure.structureType === CONTAINER) {
-    isContainer = true;
+  const { stage, structureType, roundLimit } = structure;
+  const isContainer = structureType === CONTAINER;
+  const isFeedIn = !isContainer && uniqueDrawPositionsByRound?.length;
+  // if there are first round draw positions it is not AdHoc
+  // if the baseDrawSize is not a power of 2 then it isLucky
+  const isLucky = firstRoundDrawPositions?.length && !isPowerOf2(baseDrawSize);
 
+  const countLimit = allPositions ? positionsCount : seedsCount;
+  if (structureType !== CONTAINER && stage === QUALIFYING && roundLimit) {
+    const seedingBlocksCount = structure.matchUps.filter(
+      ({ roundNumber }) => roundNumber === structure.roundLimit
+    ).length;
+    console.log(seedingBlocksCount);
+  }
+  if (isContainer) {
     if (!allPositions && appliedPolicies?.seeding?.containerByesIgnoreSeeding)
       return {
         validSeedBlocks: [],
@@ -111,9 +116,7 @@ export function getValidSeedBlocks({
       return result;
     }
     ({ validSeedBlocks } = result);
-  } else if (uniqueDrawPositionsByRound.length) {
-    isFeedIn = true;
-
+  } else if (isFeedIn) {
     // for FEED_IN structures, block seeding proceeds from final rounds
     // to earlier rounds.  If there are more seeds than fed positions,
     // then seeds must be assigned to first round drawPositions
@@ -135,7 +138,6 @@ export function getValidSeedBlocks({
     // if there are first round draw positions it is not AdHoc
     // if the baseDrawSize is not a power of 2 then it isLucky
     firstRoundSeedsCount = 0;
-    isLucky = true;
   } else {
     firstRoundSeedsCount = countLimit;
   }
