@@ -57,7 +57,6 @@ it('can generateDrawDefinition and place qualifiers', () => {
     expect(result.success).toEqual(true);
   });
 
-  console.log('--------');
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
     qualifyingProfiles: [
       {
@@ -85,20 +84,22 @@ it('can generateDrawDefinition and place qualifiers', () => {
       ({ participantId, drawPosition }) => ({ [participantId]: drawPosition })
     )
   );
-  const seededDrawPositions = console.log(
-    qualifyingStructure.seedAssignments.map((assignment) => [
+  let seededDrawPositions = qualifyingStructure.seedAssignments.map(
+    (assignment) => [
       assignment.seedNumber,
       participantIdDrawPositionMap[assignment.participantId],
-    ])
+    ]
   );
-  console.log(seededDrawPositions);
+  let positionsSeeded = seededDrawPositions
+    .map((seeding) => seeding[1])
+    .sort((a, b) => a - b);
+  expect(positionsSeeded).toEqual([1, 5, 9, 13]);
 
   let mainStructure = drawDefinition.structures.find(
     ({ stage }) => stage === MAIN
   );
   expect(mainStructure.matchUps.length).toEqual(0);
 
-  console.log('--------');
   drawDefinition = tournamentEngine.generateDrawDefinition({
     qualifyingProfiles: [
       {
@@ -109,6 +110,17 @@ it('can generateDrawDefinition and place qualifiers', () => {
     ],
     eventId,
   }).drawDefinition;
+
+  seededDrawPositions = qualifyingStructure.seedAssignments.map(
+    (assignment) => [
+      assignment.seedNumber,
+      participantIdDrawPositionMap[assignment.participantId],
+    ]
+  );
+  positionsSeeded = seededDrawPositions
+    .map((seeding) => seeding[1])
+    .sort((a, b) => a - b);
+  expect(positionsSeeded).toEqual([1, 5, 9, 13]);
 
   mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
   expect(mainStructure.matchUps.length).toEqual(15);
