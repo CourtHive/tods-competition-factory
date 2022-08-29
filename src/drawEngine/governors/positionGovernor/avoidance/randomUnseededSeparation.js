@@ -41,6 +41,7 @@ export function randomUnseededSeparation({
   unseededByePositions,
   tournamentRecord,
   drawDefinition,
+  seedBlockInfo,
   participants,
   matchUpsMap,
   structureId,
@@ -208,6 +209,7 @@ export function randomUnseededSeparation({
         const result = assignDrawPositionBye({
           tournamentRecord,
           drawDefinition,
+          seedBlockInfo,
           structureId,
           matchUpsMap,
           ...assignment,
@@ -221,6 +223,7 @@ export function randomUnseededSeparation({
           inContextDrawMatchUps,
           tournamentRecord,
           drawDefinition,
+          seedBlockInfo,
           structureId,
           matchUpsMap,
           ...assignment,

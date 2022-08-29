@@ -7,14 +7,18 @@ export function getSeedOrderByePositions({
   relevantMatchUps,
   appliedPolicies,
   drawDefinition,
+  seedBlockInfo,
   structure,
 }) {
-  const { validSeedBlocks, isFeedIn, isLucky, isContainer } =
-    getValidSeedBlocks({
+  if (!seedBlockInfo) {
+    seedBlockInfo = getValidSeedBlocks({
       appliedPolicies,
       drawDefinition,
       structure,
     });
+  }
+
+  const { validSeedBlocks, isFeedIn, isLucky, isContainer } = seedBlockInfo;
   const positionedSeeds = getStructurePositionedSeeds({
     drawDefinition,
     structure,

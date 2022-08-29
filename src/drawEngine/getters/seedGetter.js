@@ -16,6 +16,7 @@ import {
 import {
   CLUSTER,
   CONTAINER,
+  QUALIFYING,
   WATERFALL,
 } from '../../constants/drawDefinitionConstants';
 import {
@@ -90,6 +91,9 @@ export function getValidSeedBlocks({
   );
 
   const countLimit = allPositions ? positionsCount : seedsCount;
+  if (structure.stage === QUALIFYING) {
+    console.log(QUALIFYING);
+  }
   if (structure.structureType === CONTAINER) {
     isContainer = true;
 
@@ -292,17 +296,23 @@ function constructPower2Blocks({
  */
 export function isValidSeedPosition({
   drawDefinition,
+  seedBlockInfo,
   drawPosition,
   structureId,
   seedNumber,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  const { validSeedBlocks } = getValidSeedBlocks({
-    appliedPolicies,
-    drawDefinition,
-    structure,
-  });
+
+  let validSeedBlocks = seedBlockInfo?.validSeedBlocks;
+
+  if (!validSeedBlocks) {
+    validSeedBlocks = getValidSeedBlocks({
+      appliedPolicies,
+      drawDefinition,
+      structure,
+    })?.validSeedBlocks;
+  }
 
   if (appliedPolicies?.seeding?.validSeedPositions?.ignore) return true;
   if (appliedPolicies?.seeding?.validSeedPositions?.strict) {

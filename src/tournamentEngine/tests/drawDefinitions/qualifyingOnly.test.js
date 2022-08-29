@@ -224,10 +224,10 @@ it('can generate and seed a qualifying structure', () => {
   const scaleValues = [1, 2, 3, 4, 5, 6, 7, 8];
   scaleValues.forEach((scaleValue, index) => {
     let scaleItem = {
-      scaleValue,
       scaleName: qualifyingSeedingScaleName,
       scaleType: SEEDING,
       eventType: SINGLES,
+      scaleValue,
     };
     const participantId = sortedQualifyingParticipantIds[index];
     let result = tournamentEngine.setParticipantScaleItem({
@@ -242,8 +242,8 @@ it('can generate and seed a qualifying structure', () => {
       {
         structureProfiles: [
           {
-            qualifyingPositions: 4,
             seedingScaleName: qualifyingSeedingScaleName,
+            qualifyingPositions: 4,
             seedsCount: 4,
             drawSize: 32,
           },
@@ -268,4 +268,18 @@ it('can generate and seed a qualifying structure', () => {
       ({ participantId }) => participantId
     ).length
   ).toEqual(4);
+
+  const participantIdDrawPositionMap = Object.assign(
+    {},
+    ...drawDefinition.structures[0].positionAssignments.map(
+      ({ participantId, drawPosition }) => ({ [participantId]: drawPosition })
+    )
+  );
+  const seededDrawPositions = console.log(
+    drawDefinition.structures[0].seedAssignments.map((assignment) => [
+      assignment.seedNumber,
+      participantIdDrawPositionMap[assignment.participantId],
+    ])
+  );
+  console.log(seededDrawPositions);
 });

@@ -2,11 +2,12 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { expect } from 'vitest';
 
-import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { INDIVIDUAL } from '../../../constants/participantConstants';
+import { SEEDING } from '../../../constants/scaleConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 
 it('can generateDrawDefinition and place qualifiers', () => {
-  expect(true);
   const {
     tournamentRecord,
     eventIds: [eventId],
@@ -39,17 +40,58 @@ it('can generateDrawDefinition and place qualifiers', () => {
   });
   expect(result.success).toEqual(true);
 
+  const qualifyingSeedingScaleName = 'QS';
+  const scaleValues = [1, 2, 3, 4, 5, 6, 7, 8];
+  scaleValues.forEach((scaleValue, index) => {
+    let scaleItem = {
+      scaleName: qualifyingSeedingScaleName,
+      scaleType: SEEDING,
+      eventType: SINGLES,
+      scaleValue,
+    };
+    const participantId = qualifyingParticipantIds[index];
+    let result = tournamentEngine.setParticipantScaleItem({
+      participantId,
+      scaleItem,
+    });
+    expect(result.success).toEqual(true);
+  });
+
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
     qualifyingProfiles: [
       {
         structureProfiles: [
-          { stageSequence: 2, drawSize: 16, qualifyingPositions: 4 },
+          {
+            seedingScaleName: qualifyingSeedingScaleName,
+            qualifyingPositions: 4,
+            seedsCount: 4,
+            drawSize: 16,
+          },
         ],
       },
     ],
     qualifyingOnly: true,
     eventId,
   });
+  let qualifyingStructure = drawDefinition.structures.find(
+    ({ stage }) => stage === QUALIFYING
+  );
+  expect(qualifyingStructure.matchUps.length).toEqual(12);
+
+  const participantIdDrawPositionMap = Object.assign(
+    {},
+    ...qualifyingStructure.positionAssignments.map(
+      ({ participantId, drawPosition }) => ({ [participantId]: drawPosition })
+    )
+  );
+  const seededDrawPositions = console.log(
+    qualifyingStructure.seedAssignments.map((assignment) => [
+      assignment.seedNumber,
+      participantIdDrawPositionMap[assignment.participantId],
+    ])
+  );
+  console.log(seededDrawPositions);
+
   let mainStructure = drawDefinition.structures.find(
     ({ stage }) => stage === MAIN
   );
@@ -59,7 +101,7 @@ it('can generateDrawDefinition and place qualifiers', () => {
     qualifyingProfiles: [
       {
         structureProfiles: [
-          { stageSequence: 2, drawSize: 16, qualifyingPositions: 4 },
+          { seedsCount: 4, drawSize: 16, qualifyingPositions: 4 },
         ],
       },
     ],
