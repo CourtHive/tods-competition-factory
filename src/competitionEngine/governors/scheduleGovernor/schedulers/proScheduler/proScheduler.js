@@ -45,8 +45,6 @@ export function proScheduler({
   courts,
   dryRun,
 }) {
-  const scheduleTimesRemaining = {};
-
   const recoveryTimeDeferredMatchUpIds = {};
   const dependencyDeferredMatchUpIds = {};
   const scheduleDateRequestConflicts = {};
@@ -57,6 +55,8 @@ export function proScheduler({
   const noTimeMatchUpIds = {};
   const requestConflicts = {};
 
+  // Start SCHEDULING
+  console.log('start scheduling');
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const scheduleDate = extractDate(dateSchedulingProfile?.scheduleDate);
     const venues = dateSchedulingProfile?.venues || [];
@@ -75,7 +75,6 @@ export function proScheduler({
 
     recoveryTimeDeferredMatchUpIds[scheduleDate] = {};
     dependencyDeferredMatchUpIds[scheduleDate] = {};
-    scheduleTimesRemaining[scheduleDate] = {};
     scheduledMatchUpIds[scheduleDate] = []; // will not be in scheduled order
     overLimitMatchUpIds[scheduleDate] = [];
     noTimeMatchUpIds[scheduleDate] = [];
@@ -116,7 +115,6 @@ export function proScheduler({
       courts,
       venues,
     });
-
     const dateScheduledMatchUps = matchUps.filter(({ matchUpId }) =>
       allDateScheduledMatchUpIds.includes(matchUpId)
     );
@@ -132,10 +130,24 @@ export function proScheduler({
     let schedulingComplete;
     let schedulingIterations = 0;
 
+    console.log(
+      'start scheduling',
+      { scheduleDate, clearScheduleDates },
+      Object.values(venueScheduledRoundDetails)[0].matchUpsToSchedule.length,
+      dateScheduledMatchUps.length,
+      bookings.length
+    );
     while (!schedulingComplete) {
       // for each venue schedule a round
       for (const { venueId } of venues) {
         const details = venueScheduledRoundDetails[venueId];
+        console.log(
+          'mts',
+          details.matchUpsToSchedule.map(({ roundNumber, roundPosition }) => ({
+            roundNumber,
+            roundPosition,
+          }))
+        );
 
         // on each pass attempt to schedule one matchUp per court
         // when a matchUp is scheduled, add it to details.dateScheduledMatchUps
@@ -147,14 +159,20 @@ export function proScheduler({
           if (
             courtIdsScheduled.length === details.courtsCount ||
             matchUpIdsScheduled.length === details.courtsCount
-          )
+          ) {
+            console.log(
+              'courts scheeduled',
+              courtIdsScheduled.length,
+              'matchUp scheduled',
+              matchUpIdsScheduled.length
+            );
             break;
+          }
 
           const { matchUpId, matchUpType } = matchUp;
 
           const { virtualCourts } = generateVirtualCourts({
             courts: details.venueCourts,
-            clearScheduleDates,
             scheduleDate,
             periodLength,
             bookings,
@@ -171,6 +189,7 @@ export function proScheduler({
           if (participantIdsAtLimit.length) {
             if (!overLimitMatchUpIds[scheduleDate].includes(matchUpId))
               overLimitMatchUpIds[scheduleDate].push(matchUpId);
+            console.log('participant at limit');
             continue;
           }
 
@@ -189,6 +208,19 @@ export function proScheduler({
             dependencyDeferredMatchUpIds[scheduleDate][matchUpId].push({
               remainingDependencies,
             });
+            const dependency = matchUps.find(
+              (matchUp) => matchUp.matchUpId === remainingDependencies[0]
+            );
+            console.log(
+              matchUp.roundNumber,
+              matchUp.roundPosition,
+              'dependencies not scheduled',
+              {
+                remainingDependencies,
+              },
+              dependency?.roundNumber,
+              dependency?.roundPosition
+            );
             continue;
           }
 
@@ -201,6 +233,14 @@ export function proScheduler({
               date: scheduleDate,
               court,
             });
+
+            if (
+              courtTime.scheduleTime &&
+              timeStringMinutes(scheduleTime) >=
+                timeStringMinutes(courtTime.scheduleTime)
+            ) {
+              return courtTime;
+            }
 
             const { scheduledDependent } = checkDependendantTiming({
               matchUpScheduleTimes,
@@ -232,6 +272,16 @@ export function proScheduler({
                   scheduleTime
                 );
               }
+              console.log(
+                'NOT ENOUGH TIME',
+                court.courtName,
+                matchUp.roundNumber,
+                matchUp.roundPosition,
+                'courts scheeduled',
+                courtIdsScheduled.length,
+                'matchUp scheduled',
+                matchUpIdsScheduled.length
+              );
               return courtTime;
             }
 
@@ -279,6 +329,7 @@ export function proScheduler({
               courtTime.averageMatchUpMinutes = averageMatchUpMinutes;
               courtTime.recoveryMinutes = recoveryMinutes;
               courtTime.scheduleTime = scheduleTime;
+              courtTime.courtName = court.courtName;
               courtTime.courtId = court.courtId;
             }
 
@@ -290,6 +341,7 @@ export function proScheduler({
               averageMatchUpMinutes,
               recoveryMinutes,
               scheduleTime,
+              courtName,
               courtId,
             } = courtTime;
             matchUpScheduleTimes[matchUpId] = scheduleTime;
@@ -311,7 +363,14 @@ export function proScheduler({
               endTime,
               venueId,
             };
+
             bookings.push(booking);
+            console.log(
+              'scheduled',
+              { startTime, courtName },
+              matchUp.roundNumber,
+              matchUp.roundPosition
+            );
 
             details.matchUpsToSchedule = details.matchUpsToSchedule.filter(
               (matchUp) => matchUp.matchUpId !== matchUpId
@@ -396,13 +455,6 @@ export function proScheduler({
         venueScheduledRoundDetails[venueId].matchUpsToSchedule.map(
           getMatchUpId
         );
-
-      scheduleTimesRemaining[scheduleDate][venueId] =
-        venueScheduledRoundDetails[venueId].scheduleTimes.sort(
-          (a, b) =>
-            timeStringMinutes(a.scheduleTime) -
-            timeStringMinutes(b.scheduleTime)
-        );
     }
   }
 
@@ -437,7 +489,6 @@ export function proScheduler({
     ...SUCCESS,
     schedulingProfileModifications,
     schedulingProfileIssues,
-    scheduleTimesRemaining,
     dateSchedulingProfiles,
 
     recoveryTimeDeferredMatchUpIds,
