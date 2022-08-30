@@ -237,14 +237,15 @@ test('pro-scheduling respects DO_NOT_SCHEDULE requests', () => {
     clearScheduleDates: true,
     pro: true,
   });
-  console.log(result);
   matchUps = competitionEngine.allCompetitionMatchUps().matchUps;
   roundSchedules = matchUps
     .filter(({ matchUpStatus }) => matchUpStatus === TO_BE_PLAYED)
-    .map(({ schedule: { scheduledTime, courtName }, roundNumber }) => [
+    .map(({ schedule: { courtName }, roundNumber }) => [
       roundNumber,
-      scheduledTime,
       courtName,
     ]);
-  console.log({ roundSchedules });
+  expect(roundSchedules).toEqual([
+    [1, '1'],
+    [2, '1'],
+  ]);
 });

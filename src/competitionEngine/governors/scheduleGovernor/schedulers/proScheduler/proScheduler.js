@@ -57,7 +57,6 @@ export function proScheduler({
   const requestConflicts = {};
 
   // Start SCHEDULING
-  console.log('start scheduling');
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const scheduleDate = extractDate(dateSchedulingProfile?.scheduleDate);
     const venues = dateSchedulingProfile?.venues || [];
@@ -165,31 +164,20 @@ export function proScheduler({
         .find((court) => court.courtId === courtId)
         ?.dateAvailability[0].bookings.push(booking);
 
-    const failSafe = (allDateMatchUpIds.length / courts.length) * 2;
+    // const failSafe = (allDateMatchUpIds.length / courts.length) * 2;
+    const failSafe = 10;
     let schedulingIterations = 0;
     let schedulingComplete;
 
-    console.log(
-      'start scheduling',
-      { scheduleDate, clearScheduleDates },
-      Object.values(venueScheduledRoundDetails)[0].matchUpsToSchedule.length,
-      dateScheduledMatchUps.length
-    );
     while (!schedulingComplete) {
       // for each venue schedule a round
       for (const { venueId } of venues) {
         const details = venueScheduledRoundDetails[venueId];
-        console.log(
-          'mts',
-          details.matchUpsToSchedule.map(({ roundNumber, roundPosition }) => ({
-            roundNumber,
-            roundPosition,
-          }))
-        );
 
         // on each pass attempt to schedule one matchUp per court
         // when a matchUp is scheduled, add it to details.dateScheduledMatchUps
 
+        const venuePassFailSafe = details.matchUpsToSchedule.length;
         const matchUpIdsScheduled = [];
         const courtIdsScheduled = [];
         let venuePassComplete;
@@ -249,7 +237,6 @@ export function proScheduler({
                 date: scheduleDate,
                 court,
               });
-              console.log({ venueEarliestCourtTime, scheduleTime });
 
               if (
                 courtTime.scheduleTime &&
@@ -348,7 +335,6 @@ export function proScheduler({
                 averageMatchUpMinutes,
                 recoveryMinutes,
                 scheduleTime,
-                courtName,
                 courtId,
               } = courtTime;
               matchUpScheduleTimes[matchUpId] = scheduleTime;
@@ -373,12 +359,6 @@ export function proScheduler({
               };
 
               addDateCourtBooking({ courtId, booking });
-              console.log(
-                'scheduled',
-                { startTime, courtName },
-                matchUp.roundNumber,
-                matchUp.roundPosition
-              );
 
               details.matchUpsToSchedule = details.matchUpsToSchedule.filter(
                 (matchUp) => matchUp.matchUpId !== matchUpId
@@ -394,6 +374,13 @@ export function proScheduler({
             }
           }
 
+          if (
+            courtIdsScheduled.length === details.courtsCount ||
+            matchUpIdsScheduled.length === details.courtsCount ||
+            !details.matchUpsToSchedule.length
+          ) {
+            venuePassComplete = true;
+          }
           if (
             details.matchUpsToSchedule.length &&
             matchUpIdsScheduled < details.courtsCount
@@ -412,15 +399,17 @@ export function proScheduler({
             }
           }
 
+          // this is necessary for scenarios where there are more courts than matches which can be scheduled at the same time
           passIterations += 1;
-          if (passIterations >= failSafe) venuePassComplete = true;
+          if (!venuePassComplete && passIterations >= venuePassFailSafe) {
+            venuePassComplete = true;
+          }
         }
 
         if (!details.matchUpsToSchedule?.length) details.complete = true;
       }
 
       schedulingIterations += 1;
-      console.log({ schedulingIterations });
       schedulingComplete =
         venues.every(
           ({ venueId }) => venueScheduledRoundDetails[venueId].complete
