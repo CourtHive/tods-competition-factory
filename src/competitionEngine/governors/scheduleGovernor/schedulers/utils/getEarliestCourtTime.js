@@ -7,6 +7,8 @@ import {
   timeToDate,
 } from '../../../../../utilities/dateTime';
 
+import { MISSING_VALUE } from '../../../../../constants/errorConditionConstants';
+
 export function getEarliestCourtTime({
   averageMinutes,
   startTime,
@@ -14,34 +16,46 @@ export function getEarliestCourtTime({
   court,
   date,
 }) {
-  startTime =
-    startTime ||
-    getTimeBoundary({ startTime: true, scheduleDate: date, courts: [court] });
-  endTime =
-    endTime ||
-    getTimeBoundary({ endTime: true, scheduleDate: date, courts: [court] });
-  const dateStartTime = timeToDate(startTime);
-  const dateEndTime = timeToDate(endTime);
-  if (!Array.isArray(court.dateAvailability)) return false;
+  if (!Array.isArray(court.dateAvailability)) return { error: MISSING_VALUE };
+
+  const courtStartTime = getTimeBoundary({
+    scheduleDate: date,
+    courts: [court],
+    startTime: true,
+  });
+  const courtEndTime = getTimeBoundary({
+    scheduleDate: date,
+    courts: [court],
+    endTime: true,
+  });
+
+  startTime = startTime || courtStartTime;
+  endTime = endTime || courtEndTime;
+
   const courtDate = getCourtDateAvailability({ court, date });
   const timeSlots = generateTimeSlots({ courtDate });
+  const dateStartTime = timeToDate(startTime);
+  const dateEndTime = timeToDate(endTime);
+
   const earliestCourtTime = timeSlots.reduce((first, timeSlot) => {
     const timeSlotStartTime = timeToDate(timeSlot.startTime);
     const timeSlotEndTime = timeToDate(timeSlot.endTime);
-    if (timeSlotStartTime > dateEndTime || timeSlotStartTime < dateStartTime)
-      return false;
-    if (timeSlotEndTime < dateStartTime) return false;
+    if (timeSlotStartTime > dateEndTime || timeSlotEndTime < dateStartTime) {
+      return first;
+    }
+    const consideredStartTime =
+      dateStartTime > timeSlotStartTime ? dateStartTime : timeSlotStartTime;
     const timeSlotMinutes = minutesDifference(
-      timeSlotStartTime,
+      consideredStartTime,
       timeSlotEndTime
     );
     const available = timeSlotMinutes >= averageMinutes;
     if (available) {
-      const timeString = extractTime(timeSlotStartTime.toISOString());
+      const timeString = extractTime(consideredStartTime.toISOString());
       if (!first || timeString < first) first = timeString;
     }
     return first;
   }, undefined);
 
-  return { earliestCourtTime };
+  return { earliestCourtTime, courtStartTime, courtEndTime };
 }

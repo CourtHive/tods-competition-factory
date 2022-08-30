@@ -114,7 +114,9 @@ export function getVenueSchedulingDetails({
       matchUpMap,
     };
 
-    allDateScheduledMatchUpIds.push(...dateScheduledMatchUpIds);
+    if (!clearScheduleDates) {
+      allDateScheduledMatchUpIds.push(...dateScheduledMatchUpIds);
+    }
   }
 
   return {
