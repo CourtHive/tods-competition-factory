@@ -165,9 +165,9 @@ export function proScheduler({
         .find((court) => court.courtId === courtId)
         ?.dateAvailability[0].bookings.push(booking);
 
-    const failSafe = 10;
-    let schedulingComplete;
+    const failSafe = (allDateMatchUpIds.length / courts.length) * 2;
     let schedulingIterations = 0;
+    let schedulingComplete;
 
     console.log(
       'start scheduling',
