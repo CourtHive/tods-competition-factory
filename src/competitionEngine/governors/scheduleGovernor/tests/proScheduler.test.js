@@ -106,7 +106,7 @@ it('supports pro-scheduling', () => {
   expect(roundSchedules).toEqual(roundScheduleExpectation);
 });
 
-test.only('pro-scheduling respects DO_NOT_SCHEDULE requests', () => {
+test('pro-scheduling respects DO_NOT_SCHEDULE requests', () => {
   competitionEngine.reset();
 
   const startDate = '2022-01-01';

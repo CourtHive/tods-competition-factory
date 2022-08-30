@@ -53,7 +53,7 @@ export function getEarliestCourtTime({
       if (!first || timeString < first) first = timeString;
     }
     return first;
-  }, startTime);
+  }, undefined);
 
   return { earliestCourtTime, courtStartTime, courtEndTime };
 }
