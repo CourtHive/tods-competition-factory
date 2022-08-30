@@ -43,7 +43,18 @@
     "./generate": "./dist/forge/generate.mjs",
     "./transform": "./dist/forge/transform.mjs",
     "./query": "./dist/forge/query.mjs",
-    "./utilities": "./dist/forge/utilities.mjs"
+    "./utilities": "./dist/forge/utilities.mjs",
+    "types": "dist/index.mjs",
+    "typesVersions": {
+      "*": {
+        "*": [
+          "dist/index.mjs"
+        ],
+        "query": [
+          "dist/forge/query.mjs"
+        ]
+      }
+    }
   },
   "files": [
     "dist"
@@ -92,12 +103,12 @@
     "@rollup/plugin-node-resolve": "13.3.0",
     "@rollup/plugin-typescript": "8.4.0",
     "@types/node": "16.11.56",
-    "@typescript-eslint/eslint-plugin": "5.35.1",
-    "@typescript-eslint/parser": "5.35.1",
+    "@typescript-eslint/eslint-plugin": "5.36.1",
+    "@typescript-eslint/parser": "5.36.1",
     "ajv": "8.11.0",
     "ajv-formats": "2.1.1",
     "c8": "7.12.0",
-    "esbuild": "0.15.5",
+    "esbuild": "0.15.6",
     "eslint": "8.23.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-import-resolver-typescript": "3.5.0",
