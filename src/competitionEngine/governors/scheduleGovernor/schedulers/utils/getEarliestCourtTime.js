@@ -40,9 +40,9 @@ export function getEarliestCourtTime({
   const earliestCourtTime = timeSlots.reduce((first, timeSlot) => {
     const timeSlotStartTime = timeToDate(timeSlot.startTime);
     const timeSlotEndTime = timeToDate(timeSlot.endTime);
-    if (timeSlotStartTime > dateEndTime || timeSlotStartTime < dateStartTime)
+    if (timeSlotStartTime > dateEndTime || timeSlotEndTime < dateStartTime) {
       return first;
-    if (timeSlotEndTime < dateStartTime) return first;
+    }
     const timeSlotMinutes = minutesDifference(
       timeSlotStartTime,
       timeSlotEndTime

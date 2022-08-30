@@ -200,12 +200,11 @@ test('pro-scheduling respects DO_NOT_SCHEDULE requests', () => {
     scheduleDates: availableDates,
     pro: true,
   });
-  console.log(result);
   expect(result.success).toEqual(true);
   expect(result.noTimeMatchUpIds[availableDates[0]]).toEqual([]);
 
-  const { matchUps } = competitionEngine.allCompetitionMatchUps();
-  const roundSchedules = matchUps
+  let { matchUps } = competitionEngine.allCompetitionMatchUps();
+  let roundSchedules = matchUps
     .filter(({ matchUpStatus }) => matchUpStatus === TO_BE_PLAYED)
     .map(({ schedule: { scheduledTime, courtName }, roundNumber }) => [
       roundNumber,
@@ -239,4 +238,13 @@ test('pro-scheduling respects DO_NOT_SCHEDULE requests', () => {
     pro: true,
   });
   console.log(result);
+  matchUps = competitionEngine.allCompetitionMatchUps().matchUps;
+  roundSchedules = matchUps
+    .filter(({ matchUpStatus }) => matchUpStatus === TO_BE_PLAYED)
+    .map(({ schedule: { scheduledTime, courtName }, roundNumber }) => [
+      roundNumber,
+      scheduledTime,
+      courtName,
+    ]);
+  console.log({ roundSchedules });
 });
