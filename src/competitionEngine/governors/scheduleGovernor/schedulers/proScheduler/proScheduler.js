@@ -126,6 +126,15 @@ export function proScheduler({
       periodLength,
     });
 
+    const { virtualCourts: dateCourts } = generateVirtualCourts({
+      scheduleDate,
+      periodLength,
+      bookings,
+      courts,
+    });
+
+    console.log({ dateCourts });
+
     const failSafe = 10;
     let schedulingComplete;
     let schedulingIterations = 0;
