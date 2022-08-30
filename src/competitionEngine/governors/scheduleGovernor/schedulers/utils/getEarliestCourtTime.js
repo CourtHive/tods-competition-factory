@@ -43,13 +43,15 @@ export function getEarliestCourtTime({
     if (timeSlotStartTime > dateEndTime || timeSlotEndTime < dateStartTime) {
       return first;
     }
+    const consideredStartTime =
+      dateStartTime > timeSlotStartTime ? dateStartTime : timeSlotStartTime;
     const timeSlotMinutes = minutesDifference(
-      timeSlotStartTime,
+      consideredStartTime,
       timeSlotEndTime
     );
     const available = timeSlotMinutes >= averageMinutes;
     if (available) {
-      const timeString = extractTime(timeSlotStartTime.toISOString());
+      const timeString = extractTime(consideredStartTime.toISOString());
       if (!first || timeString < first) first = timeString;
     }
     return first;
