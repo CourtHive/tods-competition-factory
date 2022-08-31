@@ -3,6 +3,7 @@ import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { ADD_MATCHUPS } from '../../../constants/topicConstants';
 import { TALLY } from '../../../constants/extensionConstants';
 import { TEAM } from '../../../constants/eventConstants';
 import {
@@ -143,7 +144,7 @@ it('generates playoff structures for TEAM events and propagates tieFormat', () =
   let matchUpAddNotices = [];
 
   const subscriptions = {
-    addMatchUps: (payload) => {
+    [ADD_MATCHUPS]: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);

@@ -12,6 +12,12 @@ import {
  */
 
 import asyncGlobalState from '../src/global/examples/asyncGlobalState';
+import {
+  ADD_MATCHUPS,
+  ADD_PARTICIPANTS,
+  DELETED_MATCHUP_IDS,
+  MODIFY_MATCHUP,
+} from '../src/constants/topicConstants';
 
 const ssp = setStateProvider(asyncGlobalState);
 const asyncCompetitionEngine = competitionEngineAsync();
@@ -69,20 +75,20 @@ it('can setStateProvier', async () => {
 
   const subscriptions = {
     audit: (notices) => auditNotices.push(...notices),
-    addMatchUps: (addedMatchUps) => {
+    [ADD_MATCHUPS]: (addedMatchUps) => {
       addedMatchUps.forEach(({ matchUps }) => {
         allMatchUps.push(...matchUps);
       });
     },
-    modifyMatchUp: (modified) => {
+    [MODIFY_MATCHUP]: (modified) => {
       modified.forEach(({ matchUp }) => modifiedMatchUps.push(matchUp));
     },
-    deletedMatchUpIds: (deletedMatchUpIds) => {
+    [DELETED_MATCHUP_IDS]: (deletedMatchUpIds) => {
       deletedMatchUpIds.forEach(({ matchUpIds }) => {
         allDeletedMatchUpIds.push(...matchUpIds);
       });
     },
-    addParticipants: (addedParticipants) => {
+    [ADD_PARTICIPANTS]: (addedParticipants) => {
       addedParticipants.forEach(({ participants }) => {
         allParticipants.push(...participants);
       });

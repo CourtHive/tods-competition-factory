@@ -7,6 +7,10 @@ import {
   FIRST_ROUND_LOSER_CONSOLATION,
   MAIN,
 } from '../../../../constants/drawDefinitionConstants';
+import {
+  ADD_MATCHUPS,
+  MODIFY_MATCHUP,
+} from '../../../../constants/topicConstants';
 
 it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   const {
@@ -117,7 +121,7 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   let matchUpModifyNotices = [];
 
   const subscriptions = {
-    addMatchUps: (payload) => {
+    [ADD_MATCHUPS]: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
@@ -348,14 +352,14 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
   const matchUpModifyNotices = [];
 
   const subscriptions = {
-    addMatchUps: (payload) => {
+    [ADD_MATCHUPS]: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
         });
       }
     },
-    modifyMatchUp: (payload) => {
+    [MODIFY_MATCHUP]: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUp }) => {
           matchUpModifyNotices.push(matchUp);

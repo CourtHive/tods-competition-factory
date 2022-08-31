@@ -2,6 +2,7 @@ import { mocksEngine, setSubscriptions } from '../../..';
 import tournamentEngine from '../../sync';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { ADD_MATCHUPS } from '../../../constants/topicConstants';
 import {
   PLAY_OFF,
   ROUND_ROBIN,
@@ -32,7 +33,7 @@ test('ROUND_ROBIN_WITH_PLAYOFFS will have accurate playoff finishingPositionRang
   let matchUpAddNotices = [];
 
   const subscriptions = {
-    addMatchUps: (payload) => {
+    [ADD_MATCHUPS]: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);

@@ -2,6 +2,7 @@ import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { ADD_MATCHUPS } from '../../../constants/topicConstants';
 import {
   FEED_IN,
   MAIN,
@@ -12,7 +13,7 @@ import {
 it('can generate an event with a draw and attach it to a tournamentRecord', () => {
   const matchUpAddNotices = [];
   const subscriptions = {
-    addMatchUps: (payload) => {
+    [ADD_MATCHUPS]: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);

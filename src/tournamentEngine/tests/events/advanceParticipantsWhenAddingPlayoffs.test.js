@@ -3,6 +3,8 @@ import mocksEngine from '../../../mocksEngine';
 import { setSubscriptions } from '../../..';
 import tournamentEngine from '../../sync';
 
+import { ADD_MATCHUPS } from '../../../constants/topicConstants';
+
 tournamentEngine.devContext(true);
 
 it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
@@ -10,7 +12,7 @@ it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
   let matchUpAddNotices = [];
 
   const subscriptions = {
-    addMatchUps: (payload) => {
+    [ADD_MATCHUPS]: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
