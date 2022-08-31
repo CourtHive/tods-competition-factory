@@ -1,23 +1,18 @@
 import { setSubscriptions, tournamentEngine, utilities } from '../src/index';
 
-import {
-  ADD_MATCHUPS,
-  ADD_PARTICIPANTS,
-} from '../src/constants/topicConstants';
-
 it('can set subscriptions in global state outside of engines', () => {
   const allMatchUps = [];
   const allParticipants = [];
 
   const subscriptions = {
-    [ADD_MATCHUPS]: (payload) => {
+    addMatchUps: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           allMatchUps.push(...matchUps);
         });
       }
     },
-    [ADD_PARTICIPANTS]: (payload) => {
+    addParticipants: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ participants }) => {
           allParticipants.push(...participants);
@@ -66,7 +61,7 @@ it('can delay notifications to subscribers', () => {
   const allParticipants = [];
 
   const subscriptions = {
-    [ADD_MATCHUPS]: (payload) => {
+    addMatchUps: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           allMatchUps.push(...matchUps);

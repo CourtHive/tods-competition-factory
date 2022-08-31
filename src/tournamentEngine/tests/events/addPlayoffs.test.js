@@ -4,7 +4,6 @@ import { setSubscriptions } from '../../..';
 import tournamentEngine from '../../sync';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { ADD_MATCHUPS } from '../../../constants/topicConstants';
 import {
   FIRST_MATCH_LOSER_CONSOLATION,
   PLAY_OFF,
@@ -204,7 +203,7 @@ it('can add playoff structures to a FIRST_MATCH_LOSER_CONSOLATION structure', ()
   let matchUpAddNotices = 0;
 
   const subscriptions = {
-    [ADD_MATCHUPS]: (payload) => {
+    addMatchUps: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices += 1;
