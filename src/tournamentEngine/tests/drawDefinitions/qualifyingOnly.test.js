@@ -93,6 +93,7 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
     drawId,
   });
   expect(result.success).toEqual(true);
+  expect(result.drawDefinition.links.length).toEqual(1);
 
   // check that structureIds have not changed
   expect(
@@ -123,6 +124,7 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
     drawId,
   });
   expect(result.success).toEqual(true);
+
   const newEntryProfile = tournamentEngine.findExtension({
     element: result.drawDefinition,
     name: ENTRY_PROFILE,
@@ -132,6 +134,9 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   expect(existingEntryProfile[MAIN]).not.toEqual(newEntryProfile[MAIN]);
   expect(existingEntryProfile[MAIN].drawSize).toBeUndefined();
   expect(newEntryProfile[MAIN].drawSize).toEqual(32);
+
+  result = tournamentEngine.getEvent({ drawId });
+  expect(result.drawDefinition.links.length).toEqual(1);
 
   result = tournamentEngine.addDrawDefinition({
     drawDefinition: result.drawDefinition,
@@ -151,6 +156,13 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
     eventId: event.eventId,
   });
   expect(result.success).toEqual(true);
+
+  result = tournamentEngine.getEvent({ drawId });
+  expect(result.drawDefinition.links.length).toEqual(1);
+
+  const { eventData } = tournamentEngine.getEventData({ drawId });
+  expect(eventData.drawsData.length).toEqual(1);
+  expect(eventData.drawsData[0].structures.length).toEqual(2);
 });
 
 it('can generate and seed a qualifying structure', () => {

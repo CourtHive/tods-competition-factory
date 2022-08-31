@@ -257,6 +257,8 @@ export function generateDrawStructuresAndLinks(params = {}) {
     }
   }
 
+  if (existingQualifyingLinks) links.push(...existingQualifyingLinks);
+
   return {
     ...SUCCESS,
     qualifyingResult: {
