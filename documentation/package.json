@@ -19,13 +19,13 @@
     "@docusaurus/theme-live-codeblock": "2.0.1",
     "@material-ui/core": "4.12.4",
     "@mdx-js/react": "1.6.22",
-    "@types/react": "18.0.17",
+    "@types/react": "18.0.18",
     "clsx": "1.2.1",
     "material-ui": "0.20.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-json-tree": "0.17.0",
-    "tods-competition-factory": "0.315.0",
+    "tods-competition-factory": "0.316.0",
     "tods-score-grid": "0.9.0"
   },
   "browserslist": {
