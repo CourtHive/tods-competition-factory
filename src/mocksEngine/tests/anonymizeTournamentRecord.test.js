@@ -3,6 +3,7 @@ import { intersection } from '../../utilities';
 import mocksEngine from '..';
 import fs from 'fs';
 
+import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 import {
   COMPASS,
@@ -27,6 +28,11 @@ const mockProfiles = [
   { drawProfiles: [{ drawSize: 32, drawType: COMPASS }] },
   { drawProfiles: [{ drawSize: 48, drawType: FEED_IN }] },
 ];
+
+test('anonymizeTournamentRecord error conditions', () => {
+  const result = mocksEngine.anonymizeTournamentRecord();
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
+});
 
 test.each(mockProfiles)('it can anonymize tournamentRecords', (mockProfile) => {
   const tournamentName = 'Demo Tournament';
