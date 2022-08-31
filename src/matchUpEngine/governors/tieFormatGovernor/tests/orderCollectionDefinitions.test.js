@@ -1,11 +1,13 @@
+import { expect } from 'vitest';
 import { mocksEngine, tournamentEngine } from '../../../..';
+import { NOT_FOUND } from '../../../../constants/errorConditionConstants';
 
 import { TEAM } from '../../../../constants/eventConstants';
 
 it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   const {
     drawIds: [drawId],
-    // eventIds: [eventId],
+    eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
@@ -32,6 +34,23 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   );
 
   let result = tournamentEngine.orderCollectionDefinitions({
+    orderMap,
+  });
+  expect(result.error).toEqual(NOT_FOUND);
+
+  result = tournamentEngine.orderCollectionDefinitions({
+    orderMap,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.orderCollectionDefinitions({
+    orderMap,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.orderCollectionDefinitions({
     structureId,
     orderMap,
     drawId,
@@ -46,4 +65,13 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
 
   // tieFormat has been attached to structure and order has been modified
   expect(collectionIds[0]).toEqual(updatedCollectionIds[1]);
+
+  const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  const matchUpId = matchUps[0].matchUpId;
+  result = tournamentEngine.orderCollectionDefinitions({
+    matchUpId,
+    orderMap,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
 });

@@ -12,8 +12,8 @@ export function getMatchUpDailyLimitsUpdate({ tournamentRecord }) {
   const methods = [];
 
   const { extension } = findTournamentExtension({
-    tournamentRecord,
     name: SCHEDULE_LIMITS,
+    tournamentRecord,
   });
 
   if (extension) {
@@ -28,13 +28,13 @@ export function getMatchUpDailyLimitsUpdate({ tournamentRecord }) {
   for (const event of tournamentEvents) {
     const { eventId } = event;
     const { extension } = findEventExtension({
-      event,
       name: SCHEDULE_LIMITS,
+      event,
     });
     if (extension) {
       methods.push({
-        method: 'addEventExtension',
         params: { eventId, extension },
+        method: 'addEventExtension',
       });
     }
   }

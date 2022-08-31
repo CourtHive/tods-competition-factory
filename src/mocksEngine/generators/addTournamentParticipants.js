@@ -7,6 +7,7 @@ import { generateRange, UUID } from '../../utilities';
 
 import { INDIVIDUAL, TEAM } from '../../constants/participantConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
+import { SUCCESS } from '../../constants/resultConstants';
 
 export function addTournamentParticipants({
   participantsProfile = {},
@@ -37,8 +38,10 @@ export function addTournamentParticipants({
     participantType,
   });
 
+  let addedCount = 0;
   let result = addParticipants({ tournamentRecord, participants });
-  if (!result.success) return result;
+  if (result.error) return result;
+  addedCount += result.addedCount;
 
   if (teamKey) {
     const result = generateTeamsFromParticipantAttribute({
@@ -68,8 +71,12 @@ export function addTournamentParticipants({
     }
   );
 
-  return addParticipants({
-    tournamentRecord,
+  result = addParticipants({
     participants: teamParticipants,
+    tournamentRecord,
   });
+  if (result.error) return result;
+  addedCount += result.addedCount;
+
+  return { addedCount, ...SUCCESS };
 }

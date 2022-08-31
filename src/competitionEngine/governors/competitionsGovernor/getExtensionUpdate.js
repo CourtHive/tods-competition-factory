@@ -24,8 +24,8 @@ export function getExtensionUpdate({ tournamentRecords, extensionName }) {
   let tournamentExtensionAdded;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { extension } = findTournamentExtension({
-      tournamentRecord,
       name: extensionName,
+      tournamentRecord,
     });
 
     // only necessary to push this method once to cover both tournaments
@@ -41,13 +41,13 @@ export function getExtensionUpdate({ tournamentRecords, extensionName }) {
     for (const event of tournamentEvents) {
       const { eventId } = event;
       const { extension } = findEventExtension({
-        event,
         name: extensionName,
+        event,
       });
       if (extension) {
         methods.push({
-          method: 'addEventExtension',
           params: { eventId, extension },
+          method: 'addEventExtension',
         });
       }
     }

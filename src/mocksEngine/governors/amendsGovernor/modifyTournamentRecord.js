@@ -1,5 +1,5 @@
 import { scheduleProfileRounds } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
-import { generateScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/schedulers/utils/generateScheduleTimes';
+import { setSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { publishEvent } from '../../../tournamentEngine/governors/publishingGovernor/publishEvent';
 import { generateFlightDrawDefinitions } from '../../generators/generateFlightDrawDefinitions';
 import { addTournamentParticipants } from '../../generators/addTournamentParticipants';
@@ -41,7 +41,7 @@ export function modifyTournamentRecord({
   const drawIds = [];
 
   eventProfiles?.forEach((eventProfile) => {
-    const event = tournamentRecord.events.find(
+    const event = tournamentRecord.events?.find(
       (event, index) =>
         (eventProfile.eventIndex !== undefined &&
           index === eventProfile.eventIndex) ||
@@ -56,8 +56,9 @@ export function modifyTournamentRecord({
   });
 
   const participantsCount = tournamentRecord.participants?.length || undefined;
-  if (participantsCount && participantsProfile?.idPrefix)
+  if (participantsCount && participantsProfile?.idPrefix) {
     participantsProfile.idPrefix = `${participantsProfile.idPrefix}-${participantsCount}`;
+  }
 
   const result = addTournamentParticipants({
     startDate: tournamentRecord.startDate,
@@ -74,7 +75,7 @@ export function modifyTournamentRecord({
     for (const eventProfile of eventProfiles) {
       let { ratingsParameters } = eventProfile;
 
-      const event = tournamentRecord.events.find(
+      const event = tournamentRecord.events?.find(
         (event, index) =>
           (eventProfile.eventIndex !== undefined &&
             index === eventProfile.eventIndex) ||
@@ -232,13 +233,15 @@ export function modifyTournamentRecord({
 
   let scheduledRounds;
   let schedulerResult = {};
-  if (schedulingProfile) {
-    const result = generateScheduleTimes({
-      schedulingProfile, // TODO: verify
-      tournamentRecord,
+  if (schedulingProfile?.length) {
+    const tournamentRecords = {
+      [tournamentRecord.tournamentId]: tournamentRecord,
+    };
+    const result = setSchedulingProfile({
+      tournamentRecords,
+      schedulingProfile,
     });
     if (result.error) return result;
-    scheduledRounds = result.scheduledRounds;
 
     if (autoSchedule) {
       const { tournamentId } = tournamentRecord;
@@ -248,12 +251,15 @@ export function modifyTournamentRecord({
     }
   }
 
+  const totalParticipantsCount = tournamentRecord.participants.length;
+
   return {
-    ...SUCCESS,
-    drawIds,
-    eventIds,
-    venueIds,
+    totalParticipantsCount,
     scheduledRounds,
     schedulerResult,
+    ...SUCCESS,
+    eventIds,
+    venueIds,
+    drawIds,
   };
 }

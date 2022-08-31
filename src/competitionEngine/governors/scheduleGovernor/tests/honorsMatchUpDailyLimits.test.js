@@ -1,4 +1,5 @@
 import { getMatchUpIds } from '../../../../global/functions/extractors';
+import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import { unique } from '../../../../utilities';
 import competitionEngine from '../../../sync';
@@ -40,6 +41,10 @@ it('can set and honor matchUpDailyLimits', () => {
     dailyLimits,
   });
   expect(result.success).toEqual(true);
+
+  result = tournamentEngine.getMatchUpDailyLimitsUpdate();
+  expect(result.methods.length).toEqual(1);
+  expect(result.methods[0].method).toEqual('addTournamentExtension');
 
   result = competitionEngine.getMatchUpDailyLimitsUpdate();
   expect(result.methods.length).toEqual(1);

@@ -28,6 +28,7 @@ export function generateScheduleTimes({
   averageMatchUpMinutes,
   clearScheduleDates,
   tournamentRecords,
+  tournamentRecord,
   periodLength,
   scheduleDate,
   startTime,
@@ -35,6 +36,9 @@ export function generateScheduleTimes({
   matchUps,
   endTime,
 }) {
+  if (tournamentRecord && !tournamentRecords) {
+    tournamentRecords = { [tournamentRecord.tournamentId]: tournamentRecord };
+  }
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -92,7 +96,7 @@ export function generateScheduleTimes({
       ? venues[0].venueId
       : undefined;
 
-  const dateScheduledMatchUpIds = dateScheduledMatchUps.map(getMatchUpId);
+  const dateScheduledMatchUpIds = dateScheduledMatchUps?.map(getMatchUpId);
 
   return {
     dateScheduledMatchUpIds,

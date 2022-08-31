@@ -47,7 +47,7 @@ export function submitScoreChange(params) {
     }
   }
 
-  return { result: true };
+  return { result: true, modifiedSet };
 }
 
 function getModifiedSet(params) {

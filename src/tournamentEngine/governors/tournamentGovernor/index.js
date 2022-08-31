@@ -1,3 +1,4 @@
+import { addExtension } from '../../../global/functions/producers/addExtension';
 import { addNotes, removeNotes } from './addRemoveNotes';
 import { analyzeTournament } from './analyzeTournament';
 import { analyzeDraws } from './analysis/analyzeDraws';
@@ -58,6 +59,7 @@ const tournamentGovernor = {
   addTournamentTimeItem,
   addParticipantTimeItem,
 
+  addExtension,
   addEventExtension,
   removeEventExtension,
   addTournamentExtension,
