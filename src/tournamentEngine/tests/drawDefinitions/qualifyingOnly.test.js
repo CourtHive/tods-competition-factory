@@ -275,11 +275,16 @@ it('can generate and seed a qualifying structure', () => {
       ({ participantId, drawPosition }) => ({ [participantId]: drawPosition })
     )
   );
-  const seededDrawPositions = console.log(
-    drawDefinition.structures[0].seedAssignments.map((assignment) => [
+  const seededDrawPositions = drawDefinition.structures[0].seedAssignments.map(
+    (assignment) => [
       assignment.seedNumber,
       participantIdDrawPositionMap[assignment.participantId],
-    ])
+    ]
   );
-  console.log(seededDrawPositions);
+  expect(seededDrawPositions).toEqual([
+    [1, 1],
+    [2, 5],
+    [3, 9],
+    [4, 13],
+  ]);
 });
