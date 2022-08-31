@@ -135,6 +135,7 @@ test('can clear TEAM matchUp "scorecards"', () => {
 
   trackMatchUpModifications = true;
   result = tournamentEngine.resetScorecard({
+    tiebreakReset: true,
     matchUpId,
     drawId,
   });

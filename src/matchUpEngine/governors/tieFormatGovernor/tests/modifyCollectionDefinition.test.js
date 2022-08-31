@@ -8,12 +8,19 @@ import {
   INVALID_VALUES,
   NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
+import { TIE_FORMAT_MODIFICATIONS } from '../../../../constants/extensionConstants';
 
 it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () => {
+  const policyDefinitions = {
+    audit: {
+      [TIE_FORMAT_MODIFICATIONS]: true,
+    },
+  };
   const {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
+    policyDefinitions,
     drawProfiles: [
       { drawSize: 2, eventType: TEAM, tieFormatName: 'COLLEGE_D3' },
     ],
