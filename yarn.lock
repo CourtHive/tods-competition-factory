@@ -1507,7 +1507,7 @@
     "@typescript-eslint/types" "5.36.1"
     eslint-visitor-keys "^3.3.0"
 
-"@vitest/coverage-c8@^0.22.1":
+"@vitest/coverage-c8@0.22.1":
   version "0.22.1"
   resolved "https://registry.yarnpkg.com/@vitest/coverage-c8/-/coverage-c8-0.22.1.tgz#d91b3487caca570a815899943c1939fe421fc114"
   integrity sha512-KOOYpO7EGpaF+nD8GD+Y05D0JtZp12NUu6DdLXvBPqSOPo2HkZ7KNBtfR0rb6gOy3NLtGiWTYTzCwhajgb2HlA==
