@@ -29,7 +29,12 @@ import {
   METHOD_NOT_FOUND,
 } from '../constants/errorConditionConstants';
 
+/**
+ * @typedef { import("../types/engines").CompetitionEngine } CompetitionEngine
+ */
+
 export const competitionEngine = (function () {
+  /** @type {CompetitionEngine} */
   const engine = {
     getState: ({ convertExtensions, removeExtensions } = {}) =>
       getState({ convertExtensions, removeExtensions }),

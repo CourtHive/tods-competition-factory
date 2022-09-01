@@ -12,10 +12,11 @@ import {
  * Calculates the number of wins per side and winningSide. When provided with `sideAdjustments`
  * will calculate prjected score and winningSide which is necessary for checking validity of score
  *
- * @param {object} matchUp - TODS matchUp: { matchUpType: 'TEAM', tieMatchUps: [] }
- * @param {object} tieFormat - TODS tieFormat which defines the winCriteria for determining a winningSide
- * @param {string} separator - used to separate the two side scores in a scoreString
- * @param {number[]} sideAdjustments - used for projecting the score of a TEAM matchUp; sideAdjustments is only relevant for winCriteria based on matchUp winningSide
+ * @param generateTieMatchUpScoreParams
+ * @param {object} generateTieMatchUpScoreParams.matchUp - TODS matchUp: { matchUpType: 'TEAM', tieMatchUps: [] }
+ * @param {object} generateTieMatchUpScoreParams.tieFormat - TODS tieFormat which defines the winCriteria for determining a winningSide
+ * @param {string} generateTieMatchUpScoreParams.separator - used to separate the two side scores in a scoreString
+ * @param {number[]} generateTieMatchUpScoreParams.sideAdjustments - used for projecting the score of a TEAM matchUp; sideAdjustments is only relevant for winCriteria based on matchUp winningSide
  *
  * @returns scoreObject: { sets, winningSide, scoreStringSide1, scoreStringSide 2 }
  */

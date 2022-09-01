@@ -115,7 +115,7 @@ function createExport({ input, folder, packageName, cjs, esm }) {
   }
   return {
     plugins: [
-      typescript({ sourceMap: true, declaration: false }),
+      typescript(),
       nodeResolve(),
       commonjs(),
       json(),

@@ -27,8 +27,10 @@ export function findTournamentExtension({ tournamentRecord, name }) {
 
 /**
  *
- * @param {string} eventId - tournamentEngine will resolve eventId to event
- * @param {string} name
+ * @typedef {Object} FindEventExtensionParams
+ * @property {import("../types/tournamentFromSchema").Event} event
+ * @property {string} name
+ * @param {FindEventExtensionParams} params
  *
  */
 export function findEventExtension({ event, name }) {
@@ -38,8 +40,10 @@ export function findEventExtension({ event, name }) {
 
 /**
  *
- * @param {string} drawId - tournamentEngine will resolve drawId to draw
- * @param {string} name
+ * @typedef {Object} FindDrawDefinitionExtensionParams
+ * @property {import("../types/tournamentFromSchema").DrawDefinition} drawDefinition
+ * @property {string} name
+ * @param {FindDrawDefinitionExtensionParams} params
  *
  */
 export function findDrawDefinitionExtension({ drawDefinition, name }) {

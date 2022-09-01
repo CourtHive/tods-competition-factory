@@ -9,9 +9,14 @@ import {
 import amendsGovernor from './governors/amendsGovernor';
 import mocksGovernor from './governors/mocksGovernor';
 
+/**
+ * @typedef { import("../types/engines").MocksEngine } MocksEngine
+ */
+
 let devContextSet = false;
 
 export const mocksEngine = (function () {
+  /** @type {MocksEngine} */
   const engine = {
     version: () => factoryVersion(),
     setDeepCopy: (deepCopyOption, deepCopyAttributes) => {

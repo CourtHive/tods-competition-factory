@@ -30,10 +30,20 @@ import {
   METHOD_NOT_FOUND,
 } from '../constants/errorConditionConstants';
 
+/**
+ * @typedef { import("../types/engines").TournamentEngine } TournamentEngine
+ */
+
+/**
+ *
+ * @param {*} [test]
+ * @returns {TournamentEngine | { error: any; success?: boolean; }}
+ */
 export function tournamentEngineAsync(test) {
   const result = createInstanceState();
   if (result.error && !test) return result;
 
+  /** @type {TournamentEngine} */
   const engine = {
     getState: ({ convertExtensions, removeExtensions } = {}) =>
       getState({

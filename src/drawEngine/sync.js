@@ -22,11 +22,16 @@ import {
 import { MISSING_DRAW_DEFINITION } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 
+/**
+ * @typedef { import("../types/engines").DrawEngine } DrawEngine
+ */
+
 let drawDefinition;
 let prefetch = false;
 let tournamentParticipants = [];
 
 export const drawEngine = (function () {
+  /** @type {DrawEngine} */
   const engine = {
     getState: ({ convertExtensions, removeExtensions } = {}) => ({
       drawDefinition: makeDeepCopy(

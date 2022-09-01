@@ -38,24 +38,31 @@
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./generate": "./dist/forge/generate.mjs",
-    "./transform": "./dist/forge/transform.mjs",
-    "./query": "./dist/forge/query.mjs",
-    "./utilities": "./dist/forge/utilities.mjs"
-  },
-  "types": "dist/index.mjs",
-  "typesVersions": {
-    "*": {
-      "*": [
-        "dist/index.mjs"
-      ],
-      "query": [
-        "dist/forge/query.mjs"
-      ]
+    "./generate": {
+      "import": "./dist/forge/generate.mjs",
+      "types": "./dist/forge/generate/index.d.ts",
+      "default": "./dist/forge/generate.js"
+    },
+    "./transform": {
+      "import": "./dist/forge/transform.mjs",
+      "types": "./dist/forge/transform/index.d.ts",
+      "default": "./dist/forge/transform.js"
+    },
+    "./query": {
+      "import": "./dist/forge/query.mjs",
+      "types": "./dist/forge/query/index.d.ts",
+      "default": "./dist/forge/query.js"
+    },
+    "./utilities": {
+      "import": "./dist/forge/utilities.mjs",
+      "types": "./dist/forge/utilities/index.d.ts",
+      "default": "./dist/forge/utilities.js"
     }
   },
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],

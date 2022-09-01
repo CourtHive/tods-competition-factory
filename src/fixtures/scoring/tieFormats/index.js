@@ -16,6 +16,28 @@ import USTA_SOUTHERN_LEVEL_5 from './USTA_SOUTHERN_LEVEL_5.json';
 import USTA_WTT from './USTA_WTT.json';
 import USTA_ZONAL from './USTA_ZONAL.json';
 
+/**
+ * @typedef TieFormats
+ * @prop {typeof COLLEGE_D3} COLLEGE_D3
+ * @prop {typeof COLLEGE_DEFAULT} COLLEGE_DEFAULT
+ * @prop {typeof COLLEGE_JUCO} COLLEGE_JUCO
+ * @prop {typeof DOMINANT_DUO} DOMINANT_DUO
+ * @prop {typeof DOMINANT_DUO_MIXED} DOMINANT_DUO_MIXED
+ * @prop {typeof LAVER_CUP} LAVER_CUP
+ * @prop {typeof TEAM_DOUBLES_3_AGGREGATION} TEAM_DOUBLES_3_AGGREGATION
+ * @prop {typeof USTA_BREWER_CUP} USTA_BREWER_CUP
+ * @prop {typeof USTA_OZAKI_CUP} USTA_OZAKI_CUP
+ * @prop {typeof USTA_COLLEGE} USTA_COLLEGE
+ * @prop {typeof USTA_GOLD_TEAM_CHALLENGE} USTA_GOLD_TEAM_CHALLENGE
+ * @prop {typeof USTA_INTERSECTIONAL} USTA_INTERSECTIONAL
+ * @prop {typeof USTA_LEVEL_1} USTA_LEVEL_1
+ * @prop {typeof USTA_SECTION_BATTLE} USTA_SECTION_BATTLE
+ * @prop {typeof USTA_SOUTHERN_LEVEL_5} USTA_SOUTHERN_LEVEL_5
+ * @prop {typeof USTA_WTT} USTA_WTT
+ * @prop {typeof USTA_ZONAL} USTA_ZONAL
+ */
+
+/** @type {TieFormats} */
 export const tieFormats = {
   COLLEGE_D3,
   COLLEGE_DEFAULT,

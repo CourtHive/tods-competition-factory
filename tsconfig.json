@@ -1,22 +1,23 @@
 {
-  "include": ["src/**/*.ts"],
+  "include": ["src"],
   "compilerOptions": {
     "allowJs": true,
-    "declaration": false,
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationMap": true,
     "esModuleInterop": true,
     "importHelpers": true,
     "lib": ["dom", "esnext"],
     "module": "esnext",
     "moduleResolution": "node",
-    "noEmit": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": false,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "./scratch",
+    "outDir": "./dist",
     "rootDir": "./src",
-    "sourceMap": false,
+    "sourceMap": true,
     "strict": true
   }
 }

@@ -29,10 +29,20 @@ import {
   METHOD_NOT_FOUND,
 } from '../constants/errorConditionConstants';
 
+/**
+ * @typedef { import("../types/engines").CompetitionEngine } CompetitionEngine
+ */
+
+/**
+ *
+ * @param {*} [test]
+ * @returns {CompetitionEngine | { error: any; success?: boolean; }}
+ */
 export function competitionEngineAsync(test) {
   const result = createInstanceState();
   if (result.error && !test) return result;
 
+  /** @type {CompetitionEngine} */
   const engine = {
     getState: ({ convertExtensions, removeExtensions } = {}) =>
       getState({ convertExtensions, removeExtensions }),
