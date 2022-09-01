@@ -47,6 +47,7 @@ it.each(scenario)(
       tournamentRecord,
       drawIds: [drawId],
     } = mocksEngine.generateTournamentRecord({
+      tournamentName: 'Seed Order BYEs',
       policyDefinitions,
       drawProfiles: [
         {
@@ -128,125 +129,103 @@ it.each(scenario)(
   }
 );
 
-it('can generate ROUND_ROBIN draw which ignores seeded bye placement', () => {
-  const policyDefinitions = POLICY_SEEDING_BYES;
-  const ageCategoryCode = 'U18';
+const iterativeByePositions = [];
 
-  const {
-    tournamentRecord,
-    eventIds: [eventId],
-  } = mocksEngine.generateTournamentRecord({
-    eventProfiles: [
-      {
-        eventName: 'RR Ignore Seeded Byes',
-        category: { ageCategoryCode },
-      },
-    ],
-    participantsProfile: { participantsCount: 61 },
-    policyDefinitions,
-  });
-  tournamentEngine.setState(tournamentRecord);
+it.each([1, 2, 3, 4, 5])(
+  'can generate ROUND_ROBIN draw which ignores seeded bye placement',
+  (iteration) => {
+    if (iteration === 5) {
+      const uniqueByePositioning = unique(iterativeByePositions);
+      expect(uniqueByePositioning.length).toBeGreaterThan(1);
+    } else {
+      const policyDefinitions = POLICY_SEEDING_BYES;
+      const ageCategoryCode = 'U18';
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
+      const {
+        tournamentRecord,
+        eventIds: [eventId],
+      } = mocksEngine.generateTournamentRecord({
+        eventProfiles: [
+          {
+            eventName: 'RR Ignore Seeded Byes',
+            category: { ageCategoryCode },
+          },
+        ],
+        participantsProfile: { participantsCount: 61 },
+        policyDefinitions,
+      });
 
-  const participantIds = tournamentParticipants.map((p) => p.participantId);
-  let result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result.success).toEqual(true);
+      // reset necessary here to flush previous state
+      tournamentEngine.reset().setState(tournamentRecord);
 
-  const scaleValues = [1, 2, 3, 3, 5, 5, 5, 5];
-  scaleValues.forEach((scaleValue, index) => {
-    let scaleItem = {
-      scaleValue,
-      scaleName: ageCategoryCode,
-      scaleType: SEEDING,
-      eventType: SINGLES,
-      scaleDate: '2020-06-06',
-    };
-    const participantId = participantIds[index];
-    let result = tournamentEngine.setParticipantScaleItem({
-      participantId,
-      scaleItem,
-    });
-    expect(result.success).toEqual(true);
-  });
+      const { tournamentParticipants } =
+        tournamentEngine.getTournamentParticipants();
 
-  const seedsCount = 2;
-  const drawSize = 64;
-  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    drawType: ROUND_ROBIN,
-    policyDefinitions,
-    seedsCount,
-    drawSize,
-    eventId,
-  });
+      const participantIds = tournamentParticipants.map((p) => p.participantId);
+      let result = tournamentEngine.addEventEntries({
+        eventId,
+        participantIds,
+      });
+      expect(result.success).toEqual(true);
 
-  const structure = drawDefinition.structures[0];
-  const assignedSeedNumbersCount = structure.seedAssignments.filter(
-    ({ participantId }) => participantId
-  ).length;
-  expect(assignedSeedNumbersCount).toEqual(seedsCount);
-  const structureId = structure.structureId;
-  const { positionAssignments } = tournamentEngine.getPositionAssignments({
-    drawDefinition,
-    structureId,
-  });
-  const assignedPositionsCount = positionAssignments.filter(
-    ({ participantId, bye }) => participantId || bye
-  ).length;
-  expect(assignedPositionsCount).toEqual(drawSize);
-  const byePositionsCount = positionAssignments.filter(({ bye }) => bye).length;
-  expect(byePositionsCount).toEqual(3);
+      const scaleValues = [1, 2, 3, 3, 5, 5, 5, 5];
+      scaleValues.forEach((scaleValue, index) => {
+        let scaleItem = {
+          scaleValue,
+          scaleName: ageCategoryCode,
+          scaleType: SEEDING,
+          eventType: SINGLES,
+          scaleDate: '2020-06-06',
+        };
+        const participantId = participantIds[index];
+        let result = tournamentEngine.setParticipantScaleItem({
+          participantId,
+          scaleItem,
+        });
+        expect(result.success).toEqual(true);
+      });
 
-  result = tournamentEngine.addDrawDefinition({ drawDefinition, eventId });
-  expect(result.success).toEqual(true);
+      const seedsCount = 2;
+      const drawSize = 64;
+      const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+        drawType: ROUND_ROBIN,
+        policyDefinitions,
+        seedsCount,
+        drawSize,
+        eventId,
+      });
 
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  expect(matchUps.length).toEqual(96);
+      const structure = drawDefinition.structures[0];
+      const assignedSeedNumbersCount = structure.seedAssignments.filter(
+        ({ participantId }) => participantId
+      ).length;
+      expect(assignedSeedNumbersCount).toEqual(seedsCount);
+      const structureId = structure.structureId;
+      const { positionAssignments } = tournamentEngine.getPositionAssignments({
+        drawDefinition,
+        structureId,
+      });
+      const assignedPositionsCount = positionAssignments.filter(
+        ({ participantId, bye }) => participantId || bye
+      ).length;
+      expect(assignedPositionsCount).toEqual(drawSize);
+      const byePositionsCount = positionAssignments.filter(
+        ({ bye }) => bye
+      ).length;
+      expect(byePositionsCount).toEqual(3);
 
-  // Visual Verification
-  /*
-  const structureMatchUps = matchUps.reduce((structures, matchUp) => {
-    const { structureId } = matchUp;
-    if (!structures[structureId]) structures[structureId] = [];
-    structures[structureId].push(matchUp);
-    return structures;
-  }, {});
+      result = tournamentEngine.addDrawDefinition({ drawDefinition, eventId });
+      expect(result.success).toEqual(true);
 
-  const groupedMatchUps = Object.values(structureMatchUps);
+      const { matchUps } = tournamentEngine.allTournamentMatchUps();
+      expect(matchUps.length).toEqual(96);
 
-  const structureIdsWithByes = groupedMatchUps
-    .filter((matchUps) =>
-      matchUps.some(({ matchUpStatus }) => matchUpStatus === BYE)
-    )
-    .map((matchUps) => matchUps[0].structureId);
+      const byePositions = positionAssignments
+        .filter(({ bye }) => bye)
+        .map(({ drawPosition }) => drawPosition)
+        .join('|');
 
-  const structureIdsWithSeeds = groupedMatchUps
-    .filter((matchUps) =>
-      matchUps.some(({ sides }) => sides.some(({ seedNumber }) => seedNumber))
-    )
-    .map((matchUps) => matchUps[0].structureId);
-
-  const seedNumbersWithByes = unique(
-    structureIdsWithByes
-      .map((structureId) =>
-        structureMatchUps[structureId]
-          .map(
-            ({ sides }) =>
-              sides.find(({ seedNumber }) => seedNumber)?.seedNumber
-          )
-          .filter(Boolean)
-      )
-      .flat()
-  );
-
-  const allByeStructuresHaveSeeds = structureIdsWithByes.every((structureId) =>
-    structureIdsWithSeeds.includes(structureId)
-  );
-  console.log(positionAssignments.filter(({ bye }) => bye));
-  console.log({
-    seedNumbersWithByes,
-    allByeStructuresHaveSeeds,
-  });
-  */
-});
+      iterativeByePositions.push(byePositions);
+    }
+  }
+);
