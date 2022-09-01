@@ -23,7 +23,7 @@ import {
 export function notifySubscribers() {
   const { topics } = getTopics();
 
-  for (const topic of [...topics].sort()) {
+  for (const topic of [...topics].sort(topicSort)) {
     const notices = getNotices({ topic });
     if (notices) callListener({ topic, notices });
   }
@@ -32,7 +32,7 @@ export function notifySubscribers() {
 export async function notifySubscribersAsync() {
   const { topics } = getTopics();
 
-  for (const topic of [...topics].sort()) {
+  for (const topic of [...topics].sort(topicSort)) {
     // only tested with packaged version of factory
     // won't show up in test coverage
     const notices = getNotices({ topic });
@@ -60,6 +60,6 @@ const topicValues = {
   [ADD_DRAW_DEFINITION]: 2,
 };
 
-export function topicSort(a, b) {
+function topicSort(a, b) {
   return (topicValues[b] || 0) - (topicValues[a] || 0);
 }
