@@ -223,13 +223,12 @@ export function addDrawDefinition({
     );
     /*
     // This will not occur with adding MAIN structure when QUALIFYING exists
-    // but map need to be considered for future scenarios
     const modifiedMatchUpIds = existingMatchUpIds.filter(
       (matchUpId) =>
         !deletedMatchUpIds.includes(matchUpId) &&
         !addedMatchUpIds.includes(matchUpId)
     );
-    const modifiedMatchUps = existingMatchUps.filter(({ matchUpId }) =>
+    const modifiedMatchUps = incomingMatchUps.filter(({ matchUpId }) =>
       modifiedMatchUpIds.includes(matchUpId)
     );
 
