@@ -7,7 +7,10 @@ import { expect } from 'vitest';
 
 import { ENTRY_PROFILE } from '../../../constants/extensionConstants';
 import { RATING, SEEDING } from '../../../constants/scaleConstants';
-import { ADD_MATCHUPS } from '../../../constants/topicConstants';
+import {
+  ADD_MATCHUPS,
+  DELETED_MATCHUP_IDS,
+} from '../../../constants/topicConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { ELO } from '../../../constants/ratingConstants';
 import {
@@ -35,13 +38,24 @@ it.each([ROUND_ROBIN, SINGLE_ELIMINATION, undefined])(
 );
 
 it('can generate QUALIFYING structures when no MAIN structure is specified', () => {
+  const allDeletedMatchUpIds = [];
+  let notificationsOrder = [];
   const allMatchUps = [];
 
   const subscriptions = {
     [ADD_MATCHUPS]: (payload) => {
       if (Array.isArray(payload)) {
+        notificationsOrder.push(ADD_MATCHUPS);
         payload.forEach(({ matchUps }) => {
           allMatchUps.push(...matchUps);
+        });
+      }
+    },
+    [DELETED_MATCHUP_IDS]: (payload) => {
+      if (Array.isArray(payload)) {
+        notificationsOrder.push(DELETED_MATCHUP_IDS);
+        payload.forEach(({ matchUpIds }) => {
+          allDeletedMatchUpIds.push(...matchUpIds);
         });
       }
     },
@@ -168,6 +182,9 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   });
   expect(result.success).toEqual(true);
 
+  expect(notificationsOrder).toEqual(['addMatchUps']);
+  notificationsOrder = [];
+
   result = tournamentEngine.addDrawDefinition({
     drawDefinition: result.drawDefinition,
     allowReplacement: true,
@@ -186,6 +203,8 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   const { eventData } = tournamentEngine.getEventData({ drawId });
   expect(eventData.drawsData.length).toEqual(1);
   expect(eventData.drawsData[0].structures.length).toEqual(2);
+
+  expect(notificationsOrder).toEqual(['deletedMatchUpIds', 'addMatchUps']);
 });
 
 it('can generate and seed a qualifying structure', () => {
