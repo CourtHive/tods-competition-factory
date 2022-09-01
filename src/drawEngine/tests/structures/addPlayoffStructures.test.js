@@ -4,6 +4,7 @@ import { drawEngine } from '../../sync';
 
 drawEngine.devContext(true);
 
+import { ADD_MATCHUPS } from '../../../constants/topicConstants';
 import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
@@ -102,7 +103,7 @@ function drawEngineAddStructuresTest({
   let matchUpAddNotices = [];
 
   const subscriptions = {
-    addMatchUps: (payload) => {
+    [ADD_MATCHUPS]: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);

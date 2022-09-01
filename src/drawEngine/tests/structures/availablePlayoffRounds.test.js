@@ -6,6 +6,7 @@ import { setSubscriptions } from '../../..';
 import { drawEngine } from '../../sync';
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
+import { ADD_MATCHUPS } from '../../../constants/topicConstants';
 import {
   CONSOLATION,
   FEED_IN,
@@ -241,7 +242,7 @@ it('can generate only specified playoff rounds and give them custom names', () =
   let matchUpAddNotices = [];
 
   const subscriptions = {
-    addMatchUps: (payload) => {
+    [ADD_MATCHUPS]: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
@@ -300,7 +301,7 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
   let matchUpAddNotices = [];
 
   const subscriptions = {
-    addMatchUps: (payload) => {
+    [ADD_MATCHUPS]: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
@@ -355,7 +356,7 @@ it('can determine playoff structures available from playoff structures', () => {
   let matchUpAddNotices = [];
 
   const subscriptions = {
-    addMatchUps: (payload) => {
+    [ADD_MATCHUPS]: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
