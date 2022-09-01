@@ -6,6 +6,7 @@ import { getByesData } from '../../../getters/getByesData';
 import { shuffleArray } from '../../../../utilities';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { getDevContext } from '../../../../global/state/globalState';
 
 export function positionByes({
   blockOrdered = false,
@@ -71,6 +72,7 @@ export function positionByes({
 
   if (ignoreSeededByes) {
     byePositions = shuffleArray(byePositions);
+    if (getDevContext({ ignoreSeededByes })) console.log({ byePositions });
   }
 
   // then take only the number of required byes
