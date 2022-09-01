@@ -193,9 +193,9 @@ it('can generate and seed a qualifying structure', () => {
   } = mocksEngine.generateTournamentRecord({
     eventProfiles: [{ eventName: 'QTest' }],
     participantsProfile: {
-      scaledParticipantsCount: 44,
+      scaledParticipantsCount: participantsCount,
       category: { ratingType },
-      participantsCount: 44,
+      participantsCount,
     },
   });
 
@@ -206,7 +206,7 @@ it('can generate and seed a qualifying structure', () => {
 
   const participants =
     tournamentEngine.getTournamentParticipants().tournamentParticipants;
-  expect(participants.length).toEqual(44);
+  expect(participants.length).toEqual(participantsCount);
 
   const scaledParticipants = participants.filter(({ timeItems }) => timeItems);
   expect(scaledParticipants.length).toEqual(participantsCount);
