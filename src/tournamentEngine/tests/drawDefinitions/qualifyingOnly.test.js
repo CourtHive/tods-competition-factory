@@ -174,7 +174,11 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
     eventId: event.eventId,
   });
   expect(result.success).toEqual(true);
-  expect(allMatchUps.length).toEqual(43);
+  // this is 12 from the original QUALIFYING structure generation
+  // then 31 for the added MAIN structure
+  // and 12 again because replacing an existing drawDefinition deletes all existing matchUps before replacing
+  // this is due to how subscriptions are implmented on a back end that relies on storage systems such as Mongo
+  expect(allMatchUps.length).toEqual(55);
 
   result = tournamentEngine.getEvent({ drawId });
   expect(result.drawDefinition.links.length).toEqual(1);
