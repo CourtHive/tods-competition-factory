@@ -42,7 +42,7 @@ export function addMatchUpsNotice({
   matchUps,
   eventId,
 }) {
-  drawUpdatedAt(drawDefinition);
+  if (drawDefinition) drawUpdatedAt(drawDefinition);
   addNotice({
     payload: { matchUps, tournamentId, eventId },
     topic: ADD_MATCHUPS,
@@ -55,7 +55,7 @@ export function deleteMatchUpsNotice({
   eventId,
   action,
 }) {
-  drawUpdatedAt(drawDefinition);
+  if (drawDefinition) drawUpdatedAt(drawDefinition);
   addNotice({
     topic: DELETED_MATCHUP_IDS,
     payload: {
@@ -80,12 +80,13 @@ export function modifyMatchUpNotice({
     console.log(MISSING_MATCHUP);
     return { error: MISSING_MATCHUP };
   }
-  modifyDrawNotice({
-    structureIds: [structureId],
-    drawDefinition,
-    tournamentId,
-    eventId,
-  });
+  if (drawDefinition)
+    modifyDrawNotice({
+      structureIds: [structureId],
+      drawDefinition,
+      tournamentId,
+      eventId,
+    });
   addNotice({
     topic: MODIFY_MATCHUP,
     payload: { matchUp, tournamentId },

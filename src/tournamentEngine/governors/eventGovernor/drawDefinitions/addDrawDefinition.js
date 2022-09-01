@@ -8,7 +8,7 @@ import {
   addMatchUpsNotice,
   deleteMatchUpsNotice,
   modifyDrawNotice,
-  modifyMatchUpNotice,
+  // modifyMatchUpNotice,
 } from '../../../../drawEngine/notifications/drawNotifications';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
@@ -221,6 +221,9 @@ export function addDrawDefinition({
     const addedMatchUpIds = incomingMatchUpIds.filter(
       (matchUpId) => !existingMatchUpIds.includes(matchUpId)
     );
+    /*
+    // This will not occur with adding MAIN structure when QUALIFYING exists
+    // but map need to be considered for future scenarios
     const modifiedMatchUpIds = existingMatchUpIds.filter(
       (matchUpId) =>
         !deletedMatchUpIds.includes(matchUpId) &&
@@ -232,15 +235,15 @@ export function addDrawDefinition({
 
     if (modifiedMatchUps?.length) {
       for (const matchUp of modifiedMatchUps) {
-        modifyMatchUpNotice({ drawDefinition, matchUp, tournamentId });
+        modifyMatchUpNotice({ matchUp, tournamentId });
       }
     }
+    */
     if (!suppressNotifications) {
       if (deletedMatchUpIds?.length) {
         deleteMatchUpsNotice({
           matchUpIds: deletedMatchUpIds,
           action: 'modifyDrawDefiniton',
-          drawDefinition,
           tournamentId,
           eventId,
         });
@@ -251,7 +254,6 @@ export function addDrawDefinition({
         );
         addMatchUpsNotice({
           matchUps: addedMatchUps,
-          drawDefinition,
           tournamentId,
           eventId,
         });
@@ -274,7 +276,6 @@ export function addDrawDefinition({
       const { matchUps } = allDrawMatchUps({ drawDefinition, event });
       addMatchUpsNotice({
         tournamentId: tournamentRecord?.tournamentId,
-        drawDefinition,
         matchUps,
       });
 
