@@ -45,12 +45,8 @@
     "./query": "./dist/forge/query.mjs",
     "./utilities": "./dist/forge/utilities.mjs"
   },
-  "types": "dist/index.mjs",
   "typesVersions": {
     "*": {
-      "*": [
-        "dist/index.mjs"
-      ],
       "query": [
         "dist/forge/query.mjs"
       ]
