@@ -140,11 +140,6 @@ export function getValidSeedBlocks({
       }));
     }
   } else if (isContainer) {
-    if (!allPositions && appliedPolicies?.seeding?.containerByesIgnoreSeeding)
-      return {
-        validSeedBlocks: [],
-      };
-
     const result = getContainerBlocks({
       seedingProfile,
       structure,

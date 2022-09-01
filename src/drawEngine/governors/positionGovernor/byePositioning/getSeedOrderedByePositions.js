@@ -18,7 +18,10 @@ export function getSeedOrderByePositions({
     });
   }
 
-  const { validSeedBlocks, isFeedIn, isLucky, isContainer } = seedBlockInfo;
+  let { validSeedBlocks, isFeedIn, isLucky, isContainer } = seedBlockInfo;
+  if (appliedPolicies?.seeding?.containerByesIgnoreSeeding)
+    validSeedBlocks = [];
+
   const positionedSeeds = getStructurePositionedSeeds({
     drawDefinition,
     structure,
