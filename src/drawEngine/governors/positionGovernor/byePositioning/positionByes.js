@@ -1,12 +1,13 @@
 import { getSeedOrderByePositions } from './getSeedOrderedByePositions';
+import { getDevContext } from '../../../../global/state/globalState';
 import { getUnseededByePositions } from './getUnseededByePositions';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { findStructure } from '../../../getters/findStructure';
 import { getByesData } from '../../../getters/getByesData';
 import { shuffleArray } from '../../../../utilities';
 
+import { CONTAINER, ITEM } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { getDevContext } from '../../../../global/state/globalState';
 
 export function positionByes({
   blockOrdered = false,
@@ -47,7 +48,9 @@ export function positionByes({
     structure,
   });
 
-  const ignoreSeededByes = appliedPolicies?.seeding?.containerByesIgnoreSeeding;
+  const ignoreSeededByes =
+    [CONTAINER, ITEM].includes(structure.structureType) &&
+    appliedPolicies?.seeding?.containerByesIgnoreSeeding;
   const seedOrderByePositions = blockOrdered
     ? blockSeedOrderByePositions
     : strictSeedOrderByePositions;
