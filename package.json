@@ -43,23 +43,19 @@
     },
     "./generate": {
       "import": "./dist/forge/generate.mjs",
-      "types": "./dist/forge/generate/index.d.ts",
-      "default": "./dist/forge/generate.js"
+      "types": "./dist/forge/generate/index.d.ts"
     },
     "./transform": {
       "import": "./dist/forge/transform.mjs",
-      "types": "./dist/forge/transform/index.d.ts",
-      "default": "./dist/forge/transform.js"
+      "types": "./dist/forge/transform/index.d.ts"
     },
     "./query": {
       "import": "./dist/forge/query.mjs",
-      "types": "./dist/forge/query/index.d.ts",
-      "default": "./dist/forge/query.js"
+      "types": "./dist/forge/query/index.d.ts"
     },
     "./utilities": {
       "import": "./dist/forge/utilities.mjs",
-      "types": "./dist/forge/utilities/index.d.ts",
-      "default": "./dist/forge/utilities.js"
+      "types": "./dist/forge/utilities/index.d.ts"
     }
   },
   "types": "dist/index.d.ts",
