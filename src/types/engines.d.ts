@@ -84,7 +84,6 @@ export interface TournamentEngine {
   deleteVenues: any;
   destroyPairEntry: any;
   devContext: any;
-  devContext: any;
   drawMatchUps: any;
   drawMatic: any;
   eventMatchUps: any;
@@ -102,7 +101,6 @@ export interface TournamentEngine {
   generateAdHocMatchUps: any;
   generateAndPopulatePlayoffStructures: any;
   generateDrawDefinition: any;
-  generateDrawDefinition?: any;
   generateDrawStructuresAndLinks: any;
   generateDrawTypeAndModifyDrawDefinition: any;
   generateFlightProfile: any;
@@ -150,7 +148,6 @@ export interface TournamentEngine {
   getParticipantTimeItem: any;
   getPolicyDefinitions: any;
   getPositionAssignments: any;
-  getPositionAssignments?: any;
   getPredictiveAccuracy: any;
   getProfileRounds: any;
   getRoundMatchUps: any;
@@ -244,7 +241,6 @@ export interface TournamentEngine {
   setParticipantScaleItems: any;
   setPositionAssignments: any;
   setSchedulingProfile: any;
-  setState: any;
   setState: any;
   setSubOrder: any;
   setTournamentCategories: any;
