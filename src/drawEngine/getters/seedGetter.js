@@ -140,11 +140,6 @@ export function getValidSeedBlocks({
       }));
     }
   } else if (isContainer) {
-    if (!allPositions && appliedPolicies?.seeding?.containerByesIgnoreSeeding)
-      return {
-        validSeedBlocks: [],
-      };
-
     const result = getContainerBlocks({
       seedingProfile,
       structure,
@@ -218,20 +213,13 @@ export function getValidSeedBlocks({
   };
 }
 
-export function getContainerBlocks({ seedingProfile, structure, seedBlocks }) {
+export function getContainerBlocks({ seedingProfile, structure }) {
   const containedStructures = structure.structures || [];
   const roundRobinGroupsCount = containedStructures.length;
   const positionAssignments = getPositionAssignments({
     structure,
   })?.positionAssignments;
   const positioning = getSeedPattern(seedingProfile);
-
-  if (!seedBlocks) {
-    seedBlocks = getSeedBlocks({
-      participantsCount: positionAssignments?.length,
-      roundRobinGroupsCount,
-    }).seedBlocks;
-  }
 
   const { seedGroups } = getSeedGroups({
     drawSize: positionAssignments.length,

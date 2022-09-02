@@ -127,7 +127,7 @@ export const competitionEngine = (function () {
     }
     if (
       logErrors ||
-      (devContext.result && !Array.isArray(devContext.result)) ||
+      (!logErrors && devContext.result && !Array.isArray(devContext.result)) ||
       (Array.isArray(devContext.result) &&
         devContext.result?.includes(methodName))
     ) {

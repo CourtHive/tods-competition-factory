@@ -8,7 +8,6 @@ import {
   addMatchUpsNotice,
   deleteMatchUpsNotice,
   modifyDrawNotice,
-  // modifyMatchUpNotice,
 } from '../../../../drawEngine/notifications/drawNotifications';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
@@ -214,46 +213,20 @@ export function addDrawDefinition({
     const incomingMatchUps = allDrawMatchUps({
       drawDefinition,
     })?.matchUps;
-    const incomingMatchUpIds = incomingMatchUps?.map(getMatchUpId);
-    const deletedMatchUpIds = existingMatchUpIds.filter(
-      (matchUpId) => !incomingMatchUpIds.includes(matchUpId)
-    );
-    const addedMatchUpIds = incomingMatchUpIds.filter(
-      (matchUpId) => !existingMatchUpIds.includes(matchUpId)
-    );
-    /*
-    // This will not occur with adding MAIN structure when QUALIFYING exists
-    // but map need to be considered for future scenarios
-    const modifiedMatchUpIds = existingMatchUpIds.filter(
-      (matchUpId) =>
-        !deletedMatchUpIds.includes(matchUpId) &&
-        !addedMatchUpIds.includes(matchUpId)
-    );
-    const modifiedMatchUps = existingMatchUps.filter(({ matchUpId }) =>
-      modifiedMatchUpIds.includes(matchUpId)
-    );
 
-    if (modifiedMatchUps?.length) {
-      for (const matchUp of modifiedMatchUps) {
-        modifyMatchUpNotice({ matchUp, tournamentId });
-      }
-    }
-    */
     if (!suppressNotifications) {
-      if (deletedMatchUpIds?.length) {
+      // all existing are deleted and then re-added to handle back-end created Id issues
+      if (existingMatchUpIds?.length) {
         deleteMatchUpsNotice({
-          matchUpIds: deletedMatchUpIds,
-          action: 'modifyDrawDefiniton',
+          matchUpIds: existingMatchUpIds,
+          action: 'modifyDrawDefinition',
           tournamentId,
           eventId,
         });
       }
-      if (addedMatchUpIds?.length) {
-        const addedMatchUps = incomingMatchUps.filter(({ matchUpId }) =>
-          addedMatchUpIds.includes(matchUpId)
-        );
+      if (incomingMatchUps?.length) {
         addMatchUpsNotice({
-          matchUps: addedMatchUps,
+          matchUps: incomingMatchUps,
           tournamentId,
           eventId,
         });
