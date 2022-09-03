@@ -29,8 +29,6 @@ it('will feed only 2nd round for MFIC with drawSize 8', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  console.log(drawDefinition.links.length);
-  console.log(drawDefinition.structures[1].matchUps);
   expect(drawDefinition.links.length).toEqual(2);
   expect(drawDefinition.structures[1].matchUps.length).toEqual(5);
 });

@@ -20,7 +20,6 @@ export function feedInMatchUps({
   uuids,
   fmlc,
 }) {
-  console.log('-------', { skipRounds });
   // calculate the number of rounds and the number of matchUps in each round
   // for normal elimination structure
   baseDrawSize = baseDrawSize || getBaseDrawSize(drawSize);
@@ -64,8 +63,6 @@ export function feedInMatchUps({
     positionsFed = feedRoundsProfile.reduce((a, b) => a + b, 0);
     drawSize = baseDrawSize + positionsFed;
     feedRounds = feedRoundsProfile.length;
-
-    console.log({ baseRoundsCount, skipRounds, feedRoundsProfile });
   }
 
   const allRounds = [...baseDrawRounds, ...feedRoundsProfile].sort(
