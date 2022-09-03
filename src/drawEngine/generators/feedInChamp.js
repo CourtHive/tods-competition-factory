@@ -17,6 +17,7 @@ export function feedInChampionship(params = {}) {
     structureName,
     structureId,
     matchUpType,
+    skipRounds,
     feedRounds,
     idPrefix,
     drawSize,
@@ -27,10 +28,6 @@ export function feedInChampionship(params = {}) {
 
   const feedPolicy =
     params.feedPolicy || policyDefinitions?.[POLICY_TYPE_FEED_IN];
-
-  // unless policy specifies feedMainFinal, don't feed main final for drawSize <= 4
-  const skipRounds =
-    drawSize > 4 || feedPolicy?.feedMainFinal ? params.skipRounds : 1;
 
   const mainParams = {
     finishingPositionOffset,
