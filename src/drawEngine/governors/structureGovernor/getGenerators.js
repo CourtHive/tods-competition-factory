@@ -38,6 +38,20 @@ export function getGenerators(params) {
     uuids,
   } = params;
 
+  const singleElimination = () => {
+    const { matchUps } = treeMatchUps(params);
+    const structure = structureTemplate({
+      structureName: structureName || MAIN,
+      structureId: structureId || uuids?.pop(),
+      stageSequence,
+      matchUpType,
+      matchUps,
+      stage,
+    });
+
+    return { structures: [structure], links: [], ...SUCCESS };
+  };
+
   const generators = {
     [AD_HOC]: () => {
       const structure = structureTemplate({
@@ -65,19 +79,7 @@ export function getGenerators(params) {
 
       return { structures: [structure], links: [], ...SUCCESS };
     },
-    [SINGLE_ELIMINATION]: () => {
-      const { matchUps } = treeMatchUps(params);
-      const structure = structureTemplate({
-        structureName: structureName || MAIN,
-        structureId: structureId || uuids?.pop(),
-        stageSequence,
-        matchUpType,
-        matchUps,
-        stage,
-      });
-
-      return { structures: [structure], links: [], ...SUCCESS };
-    },
+    [SINGLE_ELIMINATION]: () => singleElimination(),
     [DOUBLE_ELIMINATION]: () => generateDoubleElimination(params),
     [COMPASS]: () => {
       Object.assign(params, {
@@ -114,7 +116,12 @@ export function getGenerators(params) {
     [FIRST_ROUND_LOSER_CONSOLATION]: () => firstRoundLoserConsolation(params),
     [FIRST_MATCH_LOSER_CONSOLATION]: () =>
       feedInChampionship(Object.assign(params, { feedRounds: 1, fmlc: true })),
-    [MFIC]: () => feedInChampionship(Object.assign(params, { feedRounds: 1 })),
+    [MFIC]: () => {
+      const skipRounds = drawSize <= 4 ? 1 : 0;
+      return feedInChampionship(
+        Object.assign(params, { feedRounds: 1, skipRounds })
+      );
+    },
     [FICQF]: () =>
       feedInChampionship(Object.assign(params, { feedsFromFinal: 2 })),
     [FICSF]: () =>
