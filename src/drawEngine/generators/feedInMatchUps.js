@@ -20,6 +20,7 @@ export function feedInMatchUps({
   uuids,
   fmlc,
 }) {
+  console.log('-------', { skipRounds });
   // calculate the number of rounds and the number of matchUps in each round
   // for normal elimination structure
   baseDrawSize = baseDrawSize || getBaseDrawSize(drawSize);
@@ -43,11 +44,11 @@ export function feedInMatchUps({
     feedRounds = feedRoundsProfile.length;
   } else {
     // if skipRounds is set higher than baseRoundsCount then there are no feedRounds
-    if (skipRounds >= baseRoundsCount) feedRounds = 0;
-
-    // if feedsFromFinal is defined, calculate number of feed rounds from Final Match
-    // e.g. feedsFromFinal is 1 for Semifinal, 2 for QuarterFinals, 3 for Round of 16
-    if (feedsFromFinal) {
+    if (skipRounds >= baseRoundsCount) {
+      feedRounds = 0;
+    } else if (feedsFromFinal) {
+      // if feedsFromFinal is defined, calculate number of feed rounds from Final Match
+      // e.g. feedsFromFinal is 1 for Semifinal, 2 for QuarterFinals, 3 for Round of 16
       feedRounds = baseRoundsCount - feedsFromFinal;
       skipRounds = 0;
     }
@@ -63,6 +64,8 @@ export function feedInMatchUps({
     positionsFed = feedRoundsProfile.reduce((a, b) => a + b, 0);
     drawSize = baseDrawSize + positionsFed;
     feedRounds = feedRoundsProfile.length;
+
+    console.log({ baseRoundsCount, skipRounds, feedRoundsProfile });
   }
 
   const allRounds = [...baseDrawRounds, ...feedRoundsProfile].sort(

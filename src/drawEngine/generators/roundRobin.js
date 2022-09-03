@@ -12,6 +12,7 @@ import {
 
 import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+import { POLICY_TYPE_FEED_IN } from '../../constants/policyConstants';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -113,6 +114,7 @@ export function generateRoundRobin({
 export function generateRoundRobinWithPlayOff(params) {
   const {
     playoffMatchUpFormat,
+    policyDefinitions,
     stageSequence = 1,
     structureOptions,
     matchUpType,
@@ -120,6 +122,9 @@ export function generateRoundRobinWithPlayOff(params) {
     isMock,
     uuids,
   } = params;
+
+  let feedPolicy =
+    params.feedPolicy || policyDefinitions?.[POLICY_TYPE_FEED_IN];
 
   const mainDrawProperties = Object.assign(
     { structureName: MAIN }, // default structureName
@@ -254,6 +259,7 @@ export function generateRoundRobinWithPlayOff(params) {
         stage: PLAY_OFF,
         feedRounds: 1,
         matchUpType,
+        feedPolicy,
         fmlc: true,
         drawSize,
       });
