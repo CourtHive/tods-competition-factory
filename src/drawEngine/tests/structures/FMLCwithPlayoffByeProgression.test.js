@@ -119,8 +119,8 @@ it('will place a BYE in CONSOLATION if participant has progressed to 3-4 playoff
   expect(fmlcTarget.matchUpStatus).toEqual(BYE);
 
   ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
-    winningSide: undefined,
     matchUpStatus: TO_BE_PLAYED,
+    winningSide: undefined,
   }));
 
   result = tournamentEngine.setMatchUpStatus({
