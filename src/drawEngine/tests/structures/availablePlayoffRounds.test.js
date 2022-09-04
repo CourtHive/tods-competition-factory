@@ -94,7 +94,7 @@ it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATIO
   ]);
 });
 
-it.only('will allow generation of 3-4 playoffs in FMLC if there are players who COULD progress', () => {
+it('will allow generation of 3-4 playoffs in FMLC if there are players who COULD progress', () => {
   const {
     tournamentRecord,
     drawIds: [drawId],
