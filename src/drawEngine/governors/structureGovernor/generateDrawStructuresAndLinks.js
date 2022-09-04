@@ -209,9 +209,6 @@ export function generateDrawStructuresAndLinks(params = {}) {
 
   const { structures: generatedStructures, links: generatedLinks } =
     generatorResult;
-  if (generatedLinks?.length) {
-    links.push(...generatedLinks);
-  }
   if (generatedStructures?.length) {
     const generatedMainStructure = generatedStructures.find(
       ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
@@ -219,7 +216,18 @@ export function generateDrawStructuresAndLinks(params = {}) {
 
     if (existingMainStructure && generatedMainStructure) {
       if (mainStructureIsPlaceholder) {
+        const generatedMainStructureId = generatedMainStructure.structureId;
         generatedMainStructure.structureId = existingMainStructure.structureId;
+        if (generatedLinks?.length) {
+          for (const link of generatedLinks) {
+            if (link.source.structureId === generatedMainStructureId) {
+              link.source.structureId = existingMainStructure.structureId;
+            }
+            if (link.target.structureId === generatedMainStructureId) {
+              link.target.structureId = existingMainStructure.structureId;
+            }
+          }
+        }
       } else if (!overwriteExisting) {
         return { error: EXISTING_STAGE };
       }
@@ -228,6 +236,10 @@ export function generateDrawStructuresAndLinks(params = {}) {
     structures.push(...generatedStructures);
   }
   structures.sort(structureSort);
+
+  if (generatedLinks?.length) {
+    links.push(...generatedLinks);
+  }
 
   for (const qualifyingDetail of qualifyingDetails || []) {
     const {
