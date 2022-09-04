@@ -82,9 +82,12 @@ const { participants } = mocksEngine.generateParticipants({
   nationalityCodeType: 'IOC', // optional - 'IOC' or 'ISO', defaults to ISO
   nationalityCodes: [], // optional - an array of ISO codes to randomly assign to participants
   addressProps: {
-    citiesCount: 10,
-    statesCount: 10,
-    postalCodesCount: 10,
+    postalCodesCount: 10, // optional
+    postalCodesProfile, // optional { 12345: 12, 23456: 20 }
+    citiesCount: 10, // optional
+    citiesProfile, // optional { Atlanta: 10, Orlando: 5, "New York": 1 }
+    statesCount: 10, // optional
+    statesProfile, // optional { FL: 10, GA: 10, SC: 5, NC: 4, AL: 3 }
   },
   personExtensions, // optional array of extensions to attach to all generated persons
   personData, //  optional array of persons to seed generator [{ firstName, lastName, sex, nationalityCode }]

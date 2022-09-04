@@ -101,11 +101,11 @@
     "@types/node": "16.11.56",
     "@typescript-eslint/eslint-plugin": "5.36.1",
     "@typescript-eslint/parser": "5.36.1",
-    "@vitest/coverage-c8": "0.22.1",
+    "@vitest/coverage-c8": "0.23.0",
     "ajv": "8.11.0",
     "ajv-formats": "2.1.1",
     "c8": "7.12.0",
-    "esbuild": "0.15.6",
+    "esbuild": "0.15.7",
     "eslint": "8.23.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-import-resolver-typescript": "3.5.0",
@@ -113,7 +113,7 @@
     "eslint-plugin-compat": "4.0.2",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-prettier": "4.2.1",
-    "eslint-plugin-react": "7.31.4",
+    "eslint-plugin-react": "7.31.5",
     "esm": "3.2.25",
     "fs-extra": "10.1.0",
     "husky": "8.0.1",
@@ -132,7 +132,7 @@
     "tslib": "2.4.0",
     "typescript": "4.8.2",
     "vite": "3.0.9",
-    "vitest": "0.22.1"
+    "vitest": "0.23.0"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint",

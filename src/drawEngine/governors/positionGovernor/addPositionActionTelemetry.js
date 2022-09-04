@@ -1,7 +1,9 @@
 import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { addExtension } from '../../../global/functions/producers/addExtension';
+import { getPositionAssignments } from '../../getters/positionsGetter';
 
 import { AUDIT_POSITION_ACTIONS } from '../../../constants/extensionConstants';
+import { MAIN } from '../../../constants/drawDefinitionConstants';
 
 // updates 'positionActions' extension to keep track of positionActions by end-user
 export function addPositionActionTelemetry({ drawDefinition, positionAction }) {
@@ -9,11 +11,36 @@ export function addPositionActionTelemetry({ drawDefinition, positionAction }) {
     element: drawDefinition,
     name: AUDIT_POSITION_ACTIONS,
   });
+
+  const existingValue = Array.isArray(extension?.value) ? extension.value : [];
+
+  if (!existingValue.length) {
+    const mainStructure = drawDefinition.structures.find(
+      (structure) => structure.stage === MAIN
+    );
+    if (mainStructure) {
+      const initialAssignments = getPositionAssignments({
+        structure: mainStructure,
+      }).positionAssignments.map(
+        ({ drawPosition, participantId, bye, qualifier }) => ({
+          drawPosition,
+          participantId,
+          qualifier,
+          bye,
+        })
+      );
+
+      existingValue.push({
+        name: 'initialMainAssignments',
+        initialAssignments,
+      });
+    }
+  }
+
   const updatedExtension = {
     name: AUDIT_POSITION_ACTIONS,
-    value: Array.isArray(extension?.value)
-      ? extension.value.concat(positionAction)
-      : [positionAction],
+    value: existingValue.concat(positionAction),
   };
+
   addExtension({ element: drawDefinition, extension: updatedExtension });
 }
