@@ -3,11 +3,10 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
-import { expect } from 'vitest';
 
 const avoidancePolicy = {
   policyAttributes: [{ key: 'person.addresses.state' }],
-  roundsToSeparate: undefined,
+  roundsToSeparate: 1,
   policyName: 'State',
 };
 
