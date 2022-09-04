@@ -7,6 +7,7 @@ import { unique } from '../../../utilities';
 
 import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/eventConstants';
+
 import type { Participant } from '../../../types/tournamentFromSchema';
 
 type FilterParticipantsArgs = {
@@ -32,6 +33,7 @@ export function filterParticipants({
     participantIds,
     signInStatus,
     enableOrFiltering,
+    genders,
   } = participantFilters;
 
   const tournamentEvents =
@@ -79,14 +81,22 @@ export function filterParticipants({
       itemType: SIGN_IN_STATUS,
     } as any);
     const {
-      participantId,
+      participantRoleResponsibilities: responsibilities,
       participantType,
       participantRole,
-      participantRoleResponsibilities: responsibilities,
+      participantId,
+      person,
     } = participant;
+
+    const hasGender =
+      Array.isArray(genders) &&
+      genders?.length &&
+      person?.sex &&
+      genders.includes(person.sex);
 
     if (enableOrFiltering) {
       return (
+        (genders && hasGender) ||
         (positionedParticipants &&
           positionedParticipantIds.includes(participantId)) ||
         (positionedParticipants === false &&
@@ -115,6 +125,7 @@ export function filterParticipants({
       );
     } else {
       return (
+        (!genders || hasGender) &&
         (positionedParticipants === undefined ||
           (positionedParticipants &&
             positionedParticipantIds.includes(participantId)) ||

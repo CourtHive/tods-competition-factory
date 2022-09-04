@@ -29,6 +29,7 @@ export function positionUnseededParticipants({
   matchUpsMap,
   structureId,
   structure,
+  event,
 }) {
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
@@ -82,7 +83,11 @@ export function positionUnseededParticipants({
     return { error: INSUFFICIENT_DRAW_POSITIONS };
   }
 
-  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  const { appliedPolicies } = getAppliedPolicies({
+    tournamentRecord,
+    drawDefinition,
+    event,
+  });
   let { avoidance } = appliedPolicies || {};
 
   if (structure.stage === PLAY_OFF) {
