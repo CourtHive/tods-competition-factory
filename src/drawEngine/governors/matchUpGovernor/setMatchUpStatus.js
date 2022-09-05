@@ -1,3 +1,4 @@
+import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getProjectedDualWinningSide } from './getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
@@ -6,7 +7,6 @@ import { validateScore } from '../../../global/validation/validateScore';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { findStructure } from '../../getters/findStructure';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { isActiveDownstream } from './isActiveDownstream';
@@ -88,7 +88,11 @@ export function setMatchUpStatus(params) {
     return { error: INVALID_VALUES, winningSide, matchUpStatus };
 
   if (![undefined, ...validMatchUpStatuses].includes(matchUpStatus)) {
-    return { error: INVALID_MATCHUP_STATUS };
+    return decorateResult({
+      result: { error: INVALID_MATCHUP_STATUS },
+      info: 'matchUpStatus does not exist',
+      stack: 'setMatchUpStatus',
+    });
   }
 
   // Get map of all drawMatchUps and inContextDrawMatchUPs ---------------------
@@ -187,7 +191,11 @@ export function setMatchUpStatus(params) {
     particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) &&
     !bothSideParticipants
   ) {
-    return { error: INVALID_MATCHUP_STATUS };
+    return decorateResult({
+      result: { error: INVALID_MATCHUP_STATUS },
+      info: 'present in participantRequiredMatchUpStatuses',
+      context: { matchUpStatus, bothSideParticipants },
+    });
   }
 
   Object.assign(params, {

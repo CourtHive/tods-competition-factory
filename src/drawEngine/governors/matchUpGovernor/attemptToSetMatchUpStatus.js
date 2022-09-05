@@ -1,6 +1,6 @@
-import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { doubleExitAdvancement } from '../positionGovernor/doubleExitAdvancement';
 import { attemptToSetMatchUpStatusBYE } from './attemptToSetMatchUpStatusBYE';
+import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
@@ -30,6 +30,8 @@ export function attemptToSetMatchUpStatus(params) {
     structure,
     matchUp,
   } = params;
+
+  const stack = 'attemptToSetMatchUpStatus';
 
   const isBYE = matchUpStatus === BYE;
   const existingWinningSide = matchUp.winningSide;
@@ -70,9 +72,13 @@ export function attemptToSetMatchUpStatus(params) {
         matchUp,
       })) ||
     (!directing && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
-    (isDoubleExit && modifyScoreAndAdvanceDoubleExit(params)) || {
-      error: INVALID_MATCHUP_STATUS,
-    }
+    (isDoubleExit && modifyScoreAndAdvanceDoubleExit(params)) ||
+    decorateResult({
+      result: {
+        error: INVALID_MATCHUP_STATUS,
+      },
+      stack,
+    })
   );
 }
 
