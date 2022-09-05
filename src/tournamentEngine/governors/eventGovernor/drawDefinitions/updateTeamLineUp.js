@@ -1,9 +1,7 @@
 import { addDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { findExtension } from '../../../../global/functions/deducers/findExtension';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
-// import { getParticipantId } from '../../../../global/functions/extractors';
 import { validateLineUp } from './validateTeamLineUp';
-// import { intersection } from '../../../../utilities';
 
 import { LINEUPS } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';

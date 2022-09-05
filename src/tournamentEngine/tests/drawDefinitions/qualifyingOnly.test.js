@@ -1,4 +1,3 @@
-import { getParticipantId } from '../../../global/functions/extractors';
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import { unique } from '../../../utilities';
@@ -6,15 +5,11 @@ import tournamentEngine from '../../sync';
 import { expect } from 'vitest';
 
 import { ENTRY_PROFILE } from '../../../constants/extensionConstants';
-import { RATING, SEEDING } from '../../../constants/scaleConstants';
 import {
-  ADD_MATCHUPS,
-  DELETED_MATCHUP_IDS,
-} from '../../../constants/topicConstants';
-import { SINGLES } from '../../../constants/eventConstants';
-import { ELO } from '../../../constants/ratingConstants';
-import {
+  COMPASS,
+  CURTIS,
   DRAW,
+  FEED_IN_CHAMPIONSHIP,
   MAIN,
   QUALIFYING,
   ROUND_ROBIN,
@@ -25,6 +20,10 @@ import {
   DRAW_ID_EXISTS,
   INVALID_DRAW_SIZE,
 } from '../../../constants/errorConditionConstants';
+import {
+  ADD_MATCHUPS,
+  DELETED_MATCHUP_IDS,
+} from '../../../constants/topicConstants';
 
 it.each([ROUND_ROBIN, SINGLE_ELIMINATION, undefined])(
   'will generate a drawDefinition with no matchUps',
@@ -207,138 +206,69 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   expect(notificationsOrder).toEqual(['deletedMatchUpIds', 'addMatchUps']);
 });
 
-it('can generate and seed a qualifying structure', () => {
-  const ratingType = ELO;
-  const participantsCount = 44;
-  const {
-    eventIds: [eventId],
-    tournamentRecord,
-  } = mocksEngine.generateTournamentRecord({
-    eventProfiles: [{ eventName: 'QTest' }],
-    participantsProfile: {
-      scaledParticipantsCount: participantsCount,
-      category: { ratingType },
-      participantsCount,
-    },
-  });
+it.each([
+  { drawType: FEED_IN_CHAMPIONSHIP, linksCount: 6, structuresCount: 3 },
+  { drawType: SINGLE_ELIMINATION, linksCount: 1, structuresCount: 2 },
+  { drawType: COMPASS, linksCount: 8, structuresCount: 9 },
+  { drawType: CURTIS, linksCount: 5, structuresCount: 4 },
+])(
+  'can generate QUALIFYING structures followed by various MAIN drawTypes',
+  ({ drawType, linksCount, structuresCount }) => {
+    let result = mocksEngine.generateTournamentRecord({
+      drawProfiles: [
+        {
+          ignoreDefaults: true,
+          qualifyingProfiles: [
+            {
+              roundTarget: 1,
+              structureProfiles: [
+                { stageSequence: 1, drawSize: 16, qualifyingRoundNumber: 2 },
+              ],
+            },
+          ],
+        },
+      ],
+    });
 
-  tournamentEngine.setState(tournamentRecord);
+    let {
+      tournamentRecord,
+      eventIds: [eventId],
+      drawIds: [drawId],
+    } = result;
 
-  let event = tournamentEngine.getEvent({ eventId }).event;
-  expect(event.entries.length).toEqual(0);
+    tournamentEngine.setState(tournamentRecord);
+    let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+    const mainStructure = drawDefinition.structures.find(
+      ({ stage }) => stage === MAIN
+    );
+    expect(mainStructure.matchUps.length).toEqual(0);
 
-  const participants =
-    tournamentEngine.getTournamentParticipants().tournamentParticipants;
-  expect(participants.length).toEqual(participantsCount);
+    const qualifyingStructure = drawDefinition.structures.find(
+      ({ stage }) => stage === QUALIFYING
+    );
+    expect(qualifyingStructure.matchUps.length).toEqual(12);
 
-  const scaledParticipants = participants.filter(({ timeItems }) => timeItems);
-  expect(scaledParticipants.length).toEqual(participantsCount);
-
-  const scaleAttributes = {
-    scaleType: RATING,
-    eventType: SINGLES,
-    scaleName: ELO,
-  };
-  let result = tournamentEngine.participantScaleItem({
-    participant: scaledParticipants[0],
-    scaleAttributes,
-  });
-  expect(result.scaleItem.scaleName).toEqual(ratingType);
-
-  const participantIds = participants.map(getParticipantId);
-  const mainStageEntryIds = participantIds.slice(0, 12);
-  const qualifyingStageEntryIds = participantIds.slice(12);
-
-  const sortedQualifyingParticipantIds = qualifyingStageEntryIds.sort(
-    (a, b) =>
-      tournamentEngine.getParticipantScaleItem({
-        scaleAttributes,
-        participantId: a,
-      }).scaleItem.scaleValue -
-      tournamentEngine.getParticipantScaleItem({
-        scaleAttributes,
-        participantId: b,
-      }).scaleItem.scaleValue
-  );
-
-  result = tournamentEngine.addEventEntries({
-    participantIds: mainStageEntryIds,
-    eventId,
-  });
-  expect(result.success).toEqual(true);
-
-  result = tournamentEngine.addEventEntries({
-    participantIds: qualifyingStageEntryIds,
-    entryStage: QUALIFYING,
-    eventId,
-  });
-  expect(result.success).toEqual(true);
-
-  const qualifyingSeedingScaleName = 'QS';
-  const scaleValues = [1, 2, 3, 4, 5, 6, 7, 8];
-  scaleValues.forEach((scaleValue, index) => {
-    let scaleItem = {
-      scaleName: qualifyingSeedingScaleName,
-      scaleType: SEEDING,
-      eventType: SINGLES,
-      scaleValue,
-    };
-    const participantId = sortedQualifyingParticipantIds[index];
-    let result = tournamentEngine.setParticipantScaleItem({
-      participantId,
-      scaleItem,
+    result = tournamentEngine.generateDrawDefinition({
+      drawSize: 32,
+      drawType,
+      drawId,
     });
     expect(result.success).toEqual(true);
-  });
 
-  result = tournamentEngine.generateDrawDefinition({
-    qualifyingProfiles: [
-      {
-        structureProfiles: [
-          {
-            seedingScaleName: qualifyingSeedingScaleName,
-            qualifyingPositions: 4,
-            seedsCount: 4,
-            drawSize: 32,
-          },
-        ],
-      },
-    ],
-    qualifyingOnly: true,
-    eventId,
-  });
-  expect(result.success).toEqual(true);
-  const drawDefinition = result.drawDefinition;
-  expect(drawDefinition.structures.length).toEqual(2);
-  expect(
-    drawDefinition.structures[0].positionAssignments.filter(
-      ({ participantId }) => participantId
-    ).length
-  ).toEqual(32);
+    result = tournamentEngine.addDrawDefinition({
+      drawDefinition: result.drawDefinition,
+      allowReplacement: true,
+      eventId: event.eventId,
+    });
+    expect(result.success).toEqual(true);
 
-  expect(drawDefinition.structures[1].matchUps.length).toEqual(0);
-  expect(
-    drawDefinition.structures[0].seedAssignments.map(
-      ({ participantId }) => participantId
-    ).length
-  ).toEqual(4);
+    result = tournamentEngine.getEvent({ drawId });
+    expect(result.drawDefinition.links.length).toEqual(linksCount);
 
-  const participantIdDrawPositionMap = Object.assign(
-    {},
-    ...drawDefinition.structures[0].positionAssignments.map(
-      ({ participantId, drawPosition }) => ({ [participantId]: drawPosition })
-    )
-  );
-  const seededDrawPositions = drawDefinition.structures[0].seedAssignments.map(
-    (assignment) => [
-      assignment.seedNumber,
-      participantIdDrawPositionMap[assignment.participantId],
-    ]
-  );
-  expect(seededDrawPositions).toEqual([
-    [1, 1],
-    [2, 5],
-    [3, 9],
-    [4, 13],
-  ]);
-});
+    result = tournamentEngine.getEventData({ eventId });
+    expect(result.success).toEqual(true);
+    expect(result.eventData.drawsData[0].structures?.length).toEqual(
+      structuresCount
+    );
+  }
+);

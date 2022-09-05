@@ -213,6 +213,7 @@ export function automatedPositioning({
       participants,
       matchUpsMap,
       structure,
+      event,
     });
 
     if (result.error) return handleErrorCondition(result);

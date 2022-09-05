@@ -182,7 +182,6 @@ export function generateParticipants({
   const countryCodes = countries.filter((country) =>
     nationalityCodeType === 'IOC' ? country.ioc || country.iso : country.iso
   );
-  const { citiesCount, statesCount, postalCodesCount } = addressProps || {};
 
   function getMin(count) {
     const instances = Math.ceil(individualParticipantsCount / count);
@@ -191,18 +190,42 @@ export function generateParticipants({
     return count;
   }
 
-  const { cities } = cityMocks({
-    count: citiesCount || individualParticipantsCount,
-    participantsCount: individualParticipantsCount,
-  });
-  const { states } = stateMocks({
-    count: statesCount || individualParticipantsCount,
-    participantsCount: individualParticipantsCount,
-  });
-  const { postalCodes } = postalCodeMocks({
-    count: postalCodesCount || individualParticipantsCount,
-    participantsCount: individualParticipantsCount,
-  });
+  const {
+    postalCodesProfile,
+    postalCodesCount,
+    statesProfile,
+    citiesProfile,
+    citiesCount,
+    statesCount,
+  } = addressProps || {};
+
+  const valuesFromProfile = (profile) =>
+    Object.keys(profile)
+      .map((key) => generateRange(0, statesProfile[key]).map(() => key))
+      .flat();
+
+  const cities =
+    (citiesProfile && valuesFromProfile(citiesProfile)) ||
+    addressProps?.cities ||
+    cityMocks({
+      count: citiesCount || individualParticipantsCount,
+      participantsCount: individualParticipantsCount,
+    }).cities;
+  const states =
+    (statesProfile && valuesFromProfile(statesProfile)) ||
+    addressProps?.states ||
+    stateMocks({
+      count: statesCount || individualParticipantsCount,
+      participantsCount: individualParticipantsCount,
+    }).states;
+  const postalCodes =
+    (postalCodesProfile && valuesFromProfile(postalCodesProfile)) ||
+    addressProps?.postalCodes ||
+    postalCodeMocks({
+      count: postalCodesCount || individualParticipantsCount,
+      participantsCount: individualParticipantsCount,
+    }).postalCodes;
+
   const addressValues = { cities, states, postalCodes };
 
   const isoMin = getMin(nationalityCodesCount);

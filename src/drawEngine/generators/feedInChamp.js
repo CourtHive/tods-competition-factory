@@ -4,18 +4,20 @@ import { treeMatchUps } from './eliminationTree';
 import { feedInLinks } from './feedInLinks';
 
 import { MAIN, CONSOLATION } from '../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_FEED_IN } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function feedInChampionship(params = {}) {
   const {
     finishingPositionOffset,
+    policyDefinitions,
     stageSequence = 1,
     feedsFromFinal,
     staggeredEntry,
     structureName,
     structureId,
     matchUpType,
-    feedPolicy,
+    skipRounds,
     feedRounds,
     idPrefix,
     drawSize,
@@ -24,9 +26,13 @@ export function feedInChampionship(params = {}) {
     fmlc,
   } = params;
 
+  const feedPolicy =
+    params.feedPolicy || policyDefinitions?.[POLICY_TYPE_FEED_IN];
+
   const mainParams = {
     finishingPositionOffset,
     matchUpType,
+    skipRounds,
     drawSize,
     idPrefix,
     isMock,
@@ -57,6 +63,7 @@ export function feedInChampionship(params = {}) {
     baseDrawSize,
     matchUpType,
     feedRounds,
+    skipRounds,
     isMock,
     uuids,
     fmlc,

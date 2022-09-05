@@ -1,12 +1,10 @@
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { getDrawStructures } from '../../getters/findStructure';
 import { getStructureLinks } from '../../getters/linkGetter';
+import { allDrawMatchUps } from '../../../forge/query';
 import { getSourceRounds } from './getSourceRounds';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import {
   CONTAINER,
   FIRST_MATCHUP,
@@ -37,6 +35,11 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
 
   const available = {};
 
+  const matchUps = allDrawMatchUps({
+    inContext: true,
+    drawDefinition,
+  }).matchUps;
+
   for (const structure of filteredStructures) {
     const structureId = structure?.structureId;
     const { playoffRoundsRanges, playoffRounds, error } =
@@ -44,6 +47,7 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
         playoffPositions: positionsNotPlayedOff,
         drawDefinition,
         structure,
+        matchUps,
       });
     if (error) return { error };
 
@@ -68,6 +72,7 @@ function avaialblePlayoffRounds({
   playoffPositions,
   drawDefinition,
   structure,
+  matchUps,
 }) {
   if (structure.structureType === CONTAINER)
     return { playoffSourceRounds: [], playoffRoundsRanges: [] };
@@ -93,25 +98,27 @@ function avaialblePlayoffRounds({
     structureId,
   });
 
-  const matchUps = getAllStructureMatchUps({
-    matchUpFilters: { roundNumbers: playoffSourceRounds },
-    structure,
-  }).matchUps;
-
   const sourceRounds = links.source?.map(({ source }) => source.roundNumber);
-
   const excludeRoundNumbers = [];
-  const { roundMatchUps } = getRoundMatchUps({ matchUps });
+
   for (const roundNumber of playoffSourceRounds) {
     // sourceRounds will only include roundNumbers in the case of FMLC
     // because it should still be possible to generate 3-4 playoffs even if 2nd round losers lost in the 1st round
     // but 3-4 playoffs should not be possible to generate if there are not at least 2 matchUps where players COULD progress
     if (sourceRounds.includes(roundNumber)) {
-      const availableToProgress = roundMatchUps[roundNumber].filter(
-        ({ matchUpStatus, winningSide }) =>
-          !winningSide && [TO_BE_PLAYED].includes(matchUpStatus)
+      const link = links?.source.find(
+        (link) => link.source.roundNumber === roundNumber
+      );
+      const targetRoundNumber = link?.target.roundNumber;
+      const targetStructureId = link?.target.structureId;
+      const targetRoundMatchUps = matchUps.filter(
+        ({ roundNumber, structureId }) =>
+          structureId === targetStructureId && roundNumber === targetRoundNumber
+      );
+      const availableToProgress = targetRoundMatchUps.filter(({ sides }) =>
+        sides.find((side) => side.participantFed && !side.participantId)
       ).length;
-      if (availableToProgress < 2) {
+      if (availableToProgress !== targetRoundMatchUps.length) {
         excludeRoundNumbers.push(roundNumber);
       }
     }

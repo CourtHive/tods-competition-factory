@@ -43,11 +43,11 @@ export function feedInMatchUps({
     feedRounds = feedRoundsProfile.length;
   } else {
     // if skipRounds is set higher than baseRoundsCount then there are no feedRounds
-    if (skipRounds >= baseRoundsCount) feedRounds = 0;
-
-    // if feedsFromFinal is defined, calculate number of feed rounds from Final Match
-    // e.g. feedsFromFinal is 1 for Semifinal, 2 for QuarterFinals, 3 for Round of 16
-    if (feedsFromFinal) {
+    if (skipRounds >= baseRoundsCount) {
+      feedRounds = 0;
+    } else if (feedsFromFinal) {
+      // if feedsFromFinal is defined, calculate number of feed rounds from Final Match
+      // e.g. feedsFromFinal is 1 for Semifinal, 2 for QuarterFinals, 3 for Round of 16
       feedRounds = baseRoundsCount - feedsFromFinal;
       skipRounds = 0;
     }
