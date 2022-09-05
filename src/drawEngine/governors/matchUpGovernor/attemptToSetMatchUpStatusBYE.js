@@ -1,5 +1,6 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { decorateResult } from '../../../global/functions/decorateResult';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -15,8 +16,15 @@ export function attemptToSetMatchUpStatusBYE({
   matchUp,
 }) {
   if (matchUp?.winningSide) {
-    return { error: INVALID_MATCHUP_STATUS, matchUpStatus: BYE };
+    return decorateResult({
+      result: { error: INVALID_MATCHUP_STATUS },
+      context: { matchUpStatus: BYE },
+      stack,
+    });
   }
+
+  const stack = 'attemptToSetMatchUpStatusBYE';
+
   // It is not possible to change matchUp status to BYE unless
   // matchUp.drawPositions includes BYE assigned position
   const { positionAssignments } = structureAssignedDrawPositions({
@@ -41,6 +49,10 @@ export function attemptToSetMatchUpStatusBYE({
     });
     return { ...SUCCESS };
   } else {
-    return { error: INVALID_MATCHUP_STATUS_BYE };
+    return decorateResult({
+      result: { error: INVALID_MATCHUP_STATUS_BYE },
+      info: 'matchUp does not include BYE',
+      stack,
+    });
   }
 }

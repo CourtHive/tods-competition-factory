@@ -1,4 +1,5 @@
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { isConvertableInteger } from '../../../utilities/math';
@@ -19,11 +20,16 @@ import {
  */
 export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  const stack = 'setOrderOfFinish';
+
   if (!Array.isArray(finishingOrder))
-    return {
-      error: INVALID_VALUES,
+    return decorateResult({
+      result: {
+        error: INVALID_VALUES,
+      },
       info: 'finishingOrder must be an array',
-    };
+      stack,
+    });
 
   const { completedMatchUps, matchUpsMap } = getDrawMatchUps({
     inContext: true,
@@ -65,10 +71,13 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
     roundNumbers.length > 1 ||
     structureIds.length > 1
   ) {
-    return {
-      error: INVALID_VALUES,
+    return decorateResult({
+      result: {
+        error: INVALID_VALUES,
+      },
       info: 'matchUpType, structureId and roundNumber must be equivalent',
-    };
+      stack,
+    });
   }
 
   // targetedMatchUps must all be in draws completedMatchUps and orderOfFinish values must be integers
@@ -88,14 +97,17 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
   });
 
   if (!validValues)
-    return {
-      error: !validMatchUpId ? INVALID_MATCHUP_STATUS : INVALID_VALUES,
+    return decorateResult({
+      result: {
+        error: !validMatchUpId ? INVALID_MATCHUP_STATUS : INVALID_VALUES,
+      },
       info: !validMatchUpId
         ? 'matchUps must be completed'
         : !validOrderOfFinish
         ? 'orderOfFinish must be integer > 0 or undefined'
         : undefined,
-    };
+      stack,
+    });
 
   // get other matchUps in the same logical grouping
   const otherCohortMatchUps = completedMatchUps.filter(
@@ -112,7 +124,12 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
     const { orderOfFinish } = matchUp || {};
     if (orderOfFinish) {
       if (!isConvertableInteger(orderOfFinish))
-        return { error: INVALID_VALUES, info: 'Existing value', matchUp };
+        return decorateResult({
+          result: { error: INVALID_VALUES },
+          context: { orderOfFinish },
+          matchUp,
+          stack,
+        });
       orderOfFinishValues.push(orderOfFinish);
     }
   }
@@ -122,10 +139,13 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
     uniqueValues(orderOfFinishValues).length !== orderOfFinishValues.length ||
     Math.max(...orderOfFinishValues) > orderOfFinishValues.length
   ) {
-    return {
-      error: INVALID_VALUES,
+    return decorateResult({
+      result: {
+        error: INVALID_VALUES,
+      },
       info: 'Values not unique or greater than expected number of values',
-    };
+      stack,
+    });
   }
 
   if (structureIds.length) {
@@ -136,7 +156,7 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
       drawDefinition,
       matchUpsMap,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
 
     // apply the new values to targeted matchUps
     result.completedMatchUps?.forEach(
