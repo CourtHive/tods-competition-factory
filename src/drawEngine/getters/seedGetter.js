@@ -113,14 +113,12 @@ export function getValidSeedBlocks({
     const seedingBlocksCount = structure.matchUps.filter(
       ({ roundNumber }) => roundNumber === structure.roundLimit
     ).length;
+    const chunkSize = firstRoundDrawPositions.length / seedingBlocksCount;
     if (isFeedIn) {
       // TODO: figure this out
     } else {
       const positioning = getSeedPattern(seedingProfile);
-      const drawPositionChunks = chunkArray(
-        firstRoundDrawPositions,
-        seedingBlocksCount
-      );
+      const drawPositionChunks = chunkArray(firstRoundDrawPositions, chunkSize);
       let groupNumber = 1;
       const seedGroups = generateRange(0, drawPositionChunks[0].length).map(
         () => {
