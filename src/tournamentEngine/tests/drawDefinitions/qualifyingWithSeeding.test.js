@@ -187,6 +187,7 @@ it.each(scenarios)(
       usePublishState: false,
       withGroupings: true,
       withSeeding: {
+        // NOTE: this currently only works for a single event...
         [QUALIFYING]: qualifyingSeedingScaleName,
         [MAIN]: mainSeedingScaleName,
       },
