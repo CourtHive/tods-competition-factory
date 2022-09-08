@@ -14,9 +14,8 @@ import {
   MISSING_DRAW_SIZE,
   UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
-import { expect } from 'vitest';
 
-it.only('can sort entries by scaleAttributes when generatingflighProfiles', () => {
+it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const event = { eventName, category: { categoryName: 'U18' } };

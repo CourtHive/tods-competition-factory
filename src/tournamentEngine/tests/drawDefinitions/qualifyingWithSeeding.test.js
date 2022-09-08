@@ -140,30 +140,10 @@ it.each(scenarios)(
       expect(result.success).toEqual(true);
     });
 
-    result = tournamentEngine.publishEventSeeding({
-      // seedingScaleNames: [qualifyingSeedingScaleName, mainSeedingScaleName],
-      stageSeedingScaleNames: {
-        [QUALIFYING]: qualifyingSeedingScaleName,
-        [MAIN]: mainSeedingScaleName,
-      },
-      eventId,
-    });
+    // first get all participants that have SEEDING timeItems
+    let { tournamentParticipants } =
+      tournamentEngine.getTournamentParticipants();
 
-    let { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-      {
-        inContext: true,
-        convertExtensions: true,
-        withStatistics: true,
-        withOpponents: true,
-        withMatchUps: true,
-        usePublishState: true,
-        withGroupings: true,
-        withSeeding: true,
-        participantFilters: {
-          participantRoles: ['COMPETITOR'],
-        },
-      }
-    );
     let seedScaledParticipants = tournamentParticipants.filter(
       ({ timeItems }) =>
         timeItems?.find(
@@ -174,12 +154,83 @@ it.each(scenarios)(
     let seedScaledParticipantIds = seedScaledParticipants.map(getParticipantId);
     expect(seedScaledParticipantIds.length).toEqual(16);
 
+    // now attempt to get hydrated seeding information when { usePublishState: true }
+    tournamentParticipants = tournamentEngine.getTournamentParticipants({
+      inContext: true,
+      convertExtensions: true,
+      withStatistics: true,
+      withOpponents: true,
+      withMatchUps: true,
+      usePublishState: true,
+      withGroupings: true,
+      withSeeding: true,
+      participantFilters: {
+        participantRoles: ['COMPETITOR'],
+      },
+    }).tournamentParticipants;
+
     let targetParticiapnts = tournamentParticipants
       .filter(({ participantId }) =>
         seedScaledParticipantIds.includes(participantId)
       )
       .filter(({ events }) => events[0].seedAssignments);
+    // no seeding has been published, so we expect no participants with hydrated seeding information
+    expect(targetParticiapnts.length).toEqual(0);
+
+    // now attempt to get hydrated seeding information when { usePublishState: false }
+    tournamentParticipants = tournamentEngine.getTournamentParticipants({
+      inContext: true,
+      convertExtensions: true,
+      withStatistics: true,
+      withOpponents: true,
+      withMatchUps: true,
+      usePublishState: false,
+      withGroupings: true,
+      withSeeding: {
+        // NOTE: this currently only works for a single event...
+        [QUALIFYING]: qualifyingSeedingScaleName,
+        [MAIN]: mainSeedingScaleName,
+      },
+      participantFilters: {
+        participantRoles: ['COMPETITOR'],
+      },
+    }).tournamentParticipants;
+
+    targetParticiapnts = tournamentParticipants
+      .filter(({ participantId }) =>
+        seedScaledParticipantIds.includes(participantId)
+      )
+      .filter(({ events }) => events[0].seedAssignments);
     expect(targetParticiapnts.length).toEqual(16);
+
+    result = tournamentEngine.publishEventSeeding({
+      stageSeedingScaleNames: {
+        [QUALIFYING]: qualifyingSeedingScaleName,
+        [MAIN]: mainSeedingScaleName,
+      },
+      eventId,
+    });
+
+    tournamentParticipants = tournamentEngine.getTournamentParticipants({
+      inContext: true,
+      convertExtensions: true,
+      withStatistics: true,
+      withOpponents: true,
+      withMatchUps: true,
+      usePublishState: true,
+      withGroupings: true,
+      withSeeding: true,
+      participantFilters: {
+        participantRoles: ['COMPETITOR'],
+      },
+    }).tournamentParticipants;
+    targetParticiapnts = tournamentParticipants
+      .filter(({ participantId }) =>
+        seedScaledParticipantIds.includes(participantId)
+      )
+      .filter(({ events }) => events[0].seedAssignments);
+    expect(targetParticiapnts.length).toEqual(16);
+
     let seedAssignments = targetParticiapnts.map(
       ({ events }) => events[0].seedAssignments
     );
