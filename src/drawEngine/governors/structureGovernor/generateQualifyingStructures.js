@@ -1,5 +1,6 @@
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { addExtension } from '../../../global/functions/producers/addExtension';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import structureTemplate from '../../generators/structureTemplate';
 import { generateRoundRobin } from '../../generators/roundRobin';
 import { treeMatchUps } from '../../generators/eliminationTree';
@@ -22,6 +23,7 @@ export function generateQualifyingStructures({
   isMock,
   uuids,
 }) {
+  const stack = 'generateQualifyingSTructures';
   const qualifyingDetails = [];
   const structures = [];
   const links = [];
@@ -59,7 +61,10 @@ export function generateQualifyingStructures({
       let roundLimit, structure, matchUps;
 
       if (!isConvertableInteger(drawSize)) {
-        return { error: MISSING_DRAW_SIZE };
+        return decorateResult({
+          result: { error: MISSING_DRAW_SIZE },
+          stack,
+        });
       }
 
       const roundTargetName =

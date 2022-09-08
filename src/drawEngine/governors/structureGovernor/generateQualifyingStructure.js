@@ -24,6 +24,7 @@ import {
 // not for use when generating structures from qualifyingProfiles
 export function generateQualifyingStructure(params) {
   if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  const stack = 'generateQualifyingStructure';
 
   const {
     qualifyingRoundNumber,
@@ -48,7 +49,7 @@ export function generateQualifyingStructure(params) {
   let stageSequence = 1;
 
   if (!isConvertableInteger(drawSize)) {
-    return { error: MISSING_DRAW_SIZE };
+    return decorateResult({ result: { error: MISSING_DRAW_SIZE }, stack });
   }
 
   const result = findStructure({
@@ -58,9 +59,9 @@ export function generateQualifyingStructure(params) {
 
   if (result.error) {
     return decorateResult({
-      stack: 'generateQualifyingStructure',
       context: { targetStructureId },
       result,
+      stack,
     });
   }
 
@@ -94,9 +95,9 @@ export function generateQualifyingStructure(params) {
           });
           if (result.error) {
             return decorateResult({
-              stack: 'generateQualifyingStructure',
               context: { targetTargetStructureId },
               result,
+              stack,
             });
           }
           if (result.structure.stage !== QUALIFYING) chainModified = true;

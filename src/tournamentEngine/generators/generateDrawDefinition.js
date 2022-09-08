@@ -123,7 +123,7 @@ export function generateDrawDefinition(params) {
 
   if (isNaN(drawSize) && drawType !== AD_HOC) {
     return decorateResult({
-      result: { error: MISSING_DRAW_SIZE, info: 'drawSize' },
+      result: { error: MISSING_DRAW_SIZE },
       stack,
     });
   }
