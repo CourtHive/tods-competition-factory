@@ -12,11 +12,11 @@ import { definedAttributes } from '../../utilities/objects';
 import { generateVenues } from './generateVenues';
 
 import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_DATE,
   INVALID_VALUES,
 } from '../../constants/errorConditionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
 
 /**
  *
@@ -141,6 +141,7 @@ export function generateTournamentRecord({
         uuids,
       });
       if (result.error) return result;
+
       const { drawId, eventId, event, uniqueParticipantIds } = result;
 
       result = addEvent({
@@ -163,12 +164,7 @@ export function generateTournamentRecord({
   if (eventProfiles) {
     let eventIndex = 0;
     for (const eventProfile of eventProfiles) {
-      const {
-        error,
-        eventId,
-        drawIds: generatedDrawIds,
-        uniqueParticipantIds,
-      } = generateEventWithFlights({
+      const result = generateEventWithFlights({
         allUniqueParticipantIds,
         matchUpStatusProfile,
         participantsProfile,
@@ -182,7 +178,13 @@ export function generateTournamentRecord({
         startDate,
         uuids,
       });
-      if (error) return { error };
+      if (result.error) return result;
+
+      const {
+        eventId,
+        drawIds: generatedDrawIds,
+        uniqueParticipantIds,
+      } = result;
 
       if (generatedDrawIds) drawIds.push(...generatedDrawIds);
       eventIds.push(eventId);

@@ -2633,6 +2633,8 @@ const { eventData } = tournamentEngine.publishEvent({
 ```js
 tournamentEngine.publishEventSeeding({
   removePriorValues, // optional boolean - when true will delete prior timeItems
+  stageSeedingScaleNames, // { MAIN: 'mainScaleName', QUALIFYING: 'qualifyingScaleName' } - required if a distinction is made between MAIN and QUALIFYING seeding
+  seedingScaleNames, // optional
   drawIds, // optional - publish specific drawIds (flights) within the event
   eventId,
 });

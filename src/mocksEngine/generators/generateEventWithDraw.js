@@ -341,7 +341,7 @@ export function generateEventWithDraw({
       tournamentRecord,
       event,
     });
-    if (result.error) return { error: result.error };
+    if (result.error) return result.error;
   }
 
   // now add seeding information for seedsCount participants
@@ -361,7 +361,7 @@ export function generateEventWithDraw({
     });
   }
 
-  const { drawDefinition, error: generationError } = generateDrawDefinition({
+  const result = generateDrawDefinition({
     ...makeDeepCopy(drawProfile, false, true),
     tournamentRecord,
     seedingScaleName,
@@ -372,7 +372,9 @@ export function generateEventWithDraw({
     event,
   });
 
-  if (generationError) return { error: generationError };
+  if (result.error) return result;
+
+  const { drawDefinition } = result;
   const drawId = drawDefinition.drawId;
 
   if (Array.isArray(drawExtensions)) {

@@ -94,9 +94,20 @@ export function generateFlightProfile({
   }
 
   function getDrawEntries(entriesChunk) {
-    return (entriesChunk || []).map(({ participantId }) =>
-      eventEntries.find((entry) => entry.participantId === participantId)
-    );
+    const entries = (entriesChunk || [])
+      .map(({ participantId, scaleValue }) => {
+        const entry = eventEntries.find(
+          (entry) => entry.participantId === participantId
+        );
+        if (scaleValue) entry.scaleValue = scaleValue;
+        return entry;
+      })
+      .sort((a, b) => a.scaleValue - b.scaleValue)
+      .map((entry, i) => {
+        if (entry.scaleValue) entry.seedNumber = i + 1;
+        return entry;
+      });
+    return entries;
   }
 
   const flights = generateRange(0, flightsCount).map((index) => {

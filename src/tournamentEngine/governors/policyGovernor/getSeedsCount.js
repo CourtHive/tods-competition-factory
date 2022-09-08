@@ -64,7 +64,7 @@ export function getSeedsCount({
         participantCount,
       }));
     } else {
-      return { error: MISSING_DRAW_SIZE };
+      return decorateResult({ result: { error: MISSING_DRAW_SIZE }, stack });
     }
   }
 

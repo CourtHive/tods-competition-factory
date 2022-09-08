@@ -123,7 +123,7 @@ export function generateDrawDefinition(params) {
 
   if (isNaN(drawSize) && drawType !== AD_HOC) {
     return decorateResult({
-      result: { error: MISSING_DRAW_SIZE, info: 'drawSize' },
+      result: { error: MISSING_DRAW_SIZE },
       stack,
     });
   }
@@ -164,6 +164,10 @@ export function generateDrawDefinition(params) {
       matchUpFormat = 'SET3-S:6/TB7';
     }
   }
+
+  const invalidDrawId = params.drawId && typeof params.drawId !== 'string';
+  if (invalidDrawId)
+    return decorateResult({ result: { error: INVALID_VALUES }, stack });
 
   // ---------------------------------------------------------------------------
   // Begin construction of drawDefinition

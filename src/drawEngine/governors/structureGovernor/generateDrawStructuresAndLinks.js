@@ -131,7 +131,9 @@ export function generateDrawStructuresAndLinks(params = {}) {
       uuids,
     });
 
-  if (qualifyingResult?.error) return qualifyingResult;
+  if (qualifyingResult?.error) {
+    return qualifyingResult;
+  }
 
   const { qualifyingDrawPositionsCount, qualifyingDetails, qualifiersCount } =
     qualifyingResult || {
@@ -199,7 +201,9 @@ export function generateDrawStructuresAndLinks(params = {}) {
   }
 
   const { generators, error } = getGenerators(params);
-  if (error) return { error };
+  if (error) {
+    return { error };
+  }
 
   const generator = generators[drawType];
   if (!generator) return { error: UNRECOGNIZED_DRAW_TYPE };

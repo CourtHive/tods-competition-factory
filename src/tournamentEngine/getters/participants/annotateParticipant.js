@@ -2,12 +2,14 @@ import { participantScheduledMatchUps } from '../../governors/queryGovernor/part
 import { addNationalityCode } from '../../governors/participantGovernor/addNationalityCode';
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { getDerivedSeedAssignments } from './getDerivedSeedAssignments';
 import { addRankingProfile } from './addRankingProfile';
 import { getScaleValues } from './getScaleValues';
-import { getSeedValue } from '../getSeedValue';
+import { intersection } from '../../../utilities';
+// import { getSeedValue } from '../getSeedValue';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';
-import { SEEDING } from '../../../constants/scaleConstants';
+import { SCALE, SEEDING } from '../../../constants/scaleConstants';
 
 export function annotateParticipant({
   withScaleValues = true,
@@ -68,29 +70,26 @@ export function annotateParticipant({
 
   if (withDraws && participantDraws) {
     participant.draws = participantDraws;
+
     for (const participantDraw of participantDraws) {
-      const event = participantEvents?.find(
-        (e) => e.eventId === participantDraw.eventId
-      );
+      const publishedSeeding =
+        eventsPublishStatuses[participantDraw.eventId]?.publishedSeeding;
 
-      const { seedValue } = getSeedValue({
-        drawId: participantDraw.drawId,
-        participant,
-        event,
-      });
+      const seedingPublished =
+        !usePublishState ||
+        (publishedSeeding?.published &&
+          (publishedSeeding?.drawIds?.length === 0 ||
+            publishedSeeding?.drawIds?.includes(participantDraw.drawId)));
 
-      if (seedValue) {
-        const publishedSeeding =
-          eventsPublishStatuses[participantDraw.eventId]?.publishedSeeding;
+      if (seedingPublished) {
+        const seedAssignments = getDerivedSeedAssignments({
+          drawId: participantDraw.drawId,
+          derivedDrawInfo,
+          participantId,
+        });
 
-        const seedingPublished =
-          !usePublishState ||
-          (publishedSeeding?.published &&
-            (publishedSeeding?.drawIds?.length === 0 ||
-              publishedSeeding?.drawIds?.includes(participantDraw.drawId)));
-
-        if (seedingPublished) {
-          participantDraw.seedValue = seedValue;
+        if (seedAssignments) {
+          participantDraw.seedAssignments = seedAssignments;
         }
       }
     }
@@ -98,27 +97,66 @@ export function annotateParticipant({
 
   if (withEvents && participantEvents) {
     participant.events = participantEvents;
-    let foundScaleName;
 
     if (withSeeding) {
+      const seedingScales = Object.assign(
+        {},
+        ...(participant.timeItems || [])
+          .filter(({ itemType }) => itemType.split('.')[1] === 'SEEDING')
+          .map(({ itemType: seedingScaleName, itemValue: seedValue }) => ({
+            [seedingScaleName]: seedValue,
+          }))
+      );
       for (const participantEvent of participantEvents) {
-        const { categoryName, ageCategoryCode } =
-          participantEvent.category || {};
+        const getScaleAccessor = (scaleName) =>
+          [SCALE, SEEDING, participantEvent.eventType, scaleName].join('.');
+        const publishedSeeding =
+          eventsPublishStatuses[participantEvent.eventId]?.publishedSeeding;
+        const eventSeedingScaleNames = (
+          publishedSeeding?.seedingScaleNames ||
+          (publishedSeeding?.stageSeedingScaleNames &&
+            Object.values(publishedSeeding?.stageSeedingScaleNames)) ||
+          []
+        ).map(getScaleAccessor);
+        const publishedEventSeedingScaleNames = intersection(
+          Object.keys(seedingScales),
+          eventSeedingScaleNames
+        );
+        const eventSeedingPublished = !!(
+          !usePublishState ||
+          (!Object.keys(seedingScales).length &&
+            !publishedSeeding?.drawIds?.length) ||
+          publishedEventSeedingScaleNames.length
+        );
 
-        let scaleItem;
-        if (foundScaleName) {
-          const scaleAttributes = {
-            eventType: participantEvent.eventType,
-            scaleName: foundScaleName,
-            scaleType: SEEDING,
-          };
+        if (eventSeedingPublished && publishedEventSeedingScaleNames.length) {
+          if (publishedSeeding?.stageSeedingScaleNames) {
+            const scaleValues = Object.keys(
+              publishedSeeding.stageSeedingScaleNames
+            )
+              .map((key) => {
+                const accessor = getScaleAccessor(
+                  publishedSeeding.stageSeedingScaleNames[key]
+                );
+                const scaleValue = seedingScales[accessor];
+                return [key, scaleValue];
+              })
+              .filter((pair) => pair[1])
+              .map((pair) => ({ [pair[0]]: { seedValue: pair[1] } }));
+            const seedAssignments = Object.assign({}, ...scaleValues);
 
-          const result = participantScaleItem({
-            scaleAttributes,
-            participant,
-          });
-          scaleItem = result.scaleItem;
+            participantEvent.seedAssignments = seedAssignments;
+          } else if (publishedEventSeedingScaleNames) {
+            const seedValues = publishedEventSeedingScaleNames.map(
+              (scaleName) => seedingScales[scaleName]
+            );
+            participantEvent.seedValue = seedValues.pop();
+          }
         } else {
+          const { categoryName, ageCategoryCode } =
+            participantEvent.category || {};
+
+          let scaleItem;
           for (const scaleName of [
             participantEvent.eventId,
             ageCategoryCode,
@@ -135,41 +173,50 @@ export function annotateParticipant({
             });
             if (result.scaleItem) {
               scaleItem = result.scaleItem;
-              foundScaleName = scaleName;
               break;
+            }
+          }
+
+          if (scaleItem) {
+            const seedValue = scaleItem.scaleValue;
+            const seedingPublished =
+              !usePublishState ||
+              (publishedSeeding?.published &&
+                (publishedSeeding?.drawIds?.length === 0 ||
+                  publishedSeeding?.drawIds?.includes(
+                    participantEvent.drawId
+                  )));
+
+            if (seedingPublished) {
+              participantEvent.seedValue = seedValue;
             }
           }
         }
 
-        if (participantEvent.drawIds?.length > 1) {
+        if (participantEvent.drawIds?.length) {
           for (const flightDrawId of participantEvent.drawIds || []) {
-            const scaleAttributes = {
-              eventType: participantEvent.eventType,
-              scaleName: flightDrawId,
-              scaleType: SEEDING,
-            };
-            const result = participantScaleItem({
-              scaleAttributes,
-              participant,
-            });
+            const drawSeedPublishingDisabled =
+              publishedSeeding?.drawIds?.length &&
+              !publishedSeeding?.drawIds?.includes(flightDrawId);
 
-            if (result.scaleItem?.seedValue) scaleItem = result.scaleItem;
-          }
-        }
+            if (eventSeedingPublished && !drawSeedPublishingDisabled) {
+              const seedAssignments = getDerivedSeedAssignments({
+                drawId: flightDrawId,
+                derivedDrawInfo,
+                participantId,
+              });
 
-        if (scaleItem) {
-          const seedValue = scaleItem.scaleValue;
-          const publishedSeeding =
-            eventsPublishStatuses[participantEvent.eventId]?.publishedSeeding;
-
-          const seedingPublished =
-            !usePublishState ||
-            (publishedSeeding?.published &&
-              (publishedSeeding?.drawIds?.length === 0 ||
-                publishedSeeding?.drawIds?.includes(participantEvent.drawId)));
-
-          if (seedingPublished) {
-            participantEvent.seedValue = seedValue;
+              // preserve filtering of MAIN/QUALIFYING seedValues, if present
+              if (seedAssignments && participantEvent.seedAssignments) {
+                for (const key of Object.keys(
+                  participantEvent.seedAssignments
+                )) {
+                  participantEvent.seedAssignments[key] = seedAssignments[key];
+                }
+              } else {
+                participantEvent.seedAssignments = seedAssignments;
+              }
+            }
           }
         }
       }

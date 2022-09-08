@@ -188,12 +188,12 @@ export function addParticipantScaleItem({
     const { scaleType, eventType, scaleName } = scaleItem;
     const itemType = [SCALE, scaleType, eventType, scaleName].join('.');
 
-    const timeItem = {
+    const timeItem = definedAttributes({
       itemValue: scaleItem.scaleValue,
       itemDate: scaleItem.scaleDate,
       createdAt,
       itemType,
-    };
+    });
 
     // if there is a unique identifier for the scale
     if (scaleItem.scaleId) {
