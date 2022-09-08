@@ -1,6 +1,8 @@
+import { getDerivedPositionAssignments } from './getDerivedPositionAssignments';
 import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
 import { getParticipantIds } from '../../../global/functions/extractors';
+import { getDerivedSeedAssignments } from './getDerivedSeedAssignments';
 import { definedAttributes } from '../../../utilities/objects';
 import { annotateParticipant } from './annotateParticipant';
 import { getFlightProfile } from '../getFlightProfile';
@@ -12,8 +14,8 @@ import {
   getTimeItem,
 } from '../../governors/queryGovernor/timeItems';
 
-import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
+import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import {
   GROUP,
   INDIVIDUAL,
@@ -50,24 +52,6 @@ export function addParticipantContext(params) {
         losses: 0,
         wins: 0,
       };
-  };
-
-  const participantPositionAssignments = ({ drawId, participantId }) => {
-    const mainPositionAssignment = derivedDrawInfo[
-      drawId
-    ]?.mainPositionAssignments.find(
-      (assignment) => assignment.participantId === participantId
-    );
-    const qualifyingPositionAssignment = derivedDrawInfo[
-      drawId
-    ]?.qualifyingPositionAssignments.find(
-      (assignment) => assignment.participantId === participantId
-    );
-    const positionAssignments = [
-      mainPositionAssignment,
-      qualifyingPositionAssignment,
-    ].filter(Boolean);
-    return positionAssignments.length ? positionAssignments : undefined;
   };
 
   const { tournamentRecord, participantFilters, allTournamentParticipants } =
@@ -176,16 +160,16 @@ export function addParticipantContext(params) {
       const eventDrawsCount =
         flightProfile?.flights?.length || event.drawDefinitions?.length || 0;
 
-      if (event?.eventType === TEAM) {
-        // add back lineUps extension for team resolution when { matchUpType: TEAM } is missing side.lineUps
-        (event.drawDefinitions || []).forEach((drawDefinition, i) => {
+      (event.drawDefinitions || []).forEach((drawDefinition, i) => {
+        if (event?.eventType === TEAM) {
+          // add back lineUps extension for team resolution when { matchUpType: TEAM } is missing side.lineUps
           const { extension } = findExtension({
-            element: rawEvent.drawDefinitions[i],
+            element: rawEvent.drawDefinitions[i], // rawEvent because deepCopy has converted extensions
             name: LINEUPS,
           });
           if (extension) drawDefinition.extensions = [extension];
-        });
-      }
+        }
+      });
 
       const { eventId, eventName, eventType, category } = event;
       const eventInfo = { eventId, eventName, eventType, category };
@@ -208,6 +192,7 @@ export function addParticipantContext(params) {
 
         const publishedSeeding = {
           published: undefined, // seeding can be present for all entries in an event when no flights have been defined
+          seedingScaleNames: [],
           drawIds: [], // seeding can be specific to drawIds
         };
 
@@ -281,19 +266,26 @@ export function addParticipantContext(params) {
           }
 
           if (!participantIdMap[relevantParticipantId].draws[drawId]) {
-            const positionAssignments = participantPositionAssignments({
+            const positionAssignments = getDerivedPositionAssignments({
               participantId: relevantParticipantId,
+              derivedDrawInfo,
+              drawId,
+            });
+            const seedAssignments = getDerivedSeedAssignments({
+              participantId: relevantParticipantId,
+              derivedDrawInfo,
               drawId,
             });
             participantIdMap[relevantParticipantId].draws[drawId] =
               definedAttributes({
-                positionAssignments,
                 qualifyingDrawSize: derivedDrawInfo[drawId]?.qualifyingDrawSize,
                 drawSize: derivedDrawInfo[drawId]?.drawSize,
                 partnerParticipantIds: [],
+                positionAssignments,
+                eventDrawsCount,
+                seedAssignments,
                 entryPosition,
                 entryStatus,
-                eventDrawsCount,
                 entryStage,
                 eventId,
                 drawId,
@@ -542,16 +534,23 @@ export function addParticipantContext(params) {
           const { entryStage, entryStatus, entryPosition } = drawEntry || {};
 
           if (!participantIdMap[relevantParticipantId].draws[drawId]) {
-            const positionAssignments = participantPositionAssignments({
+            const positionAssignments = getDerivedPositionAssignments({
               participantId: relevantParticipantId,
+              derivedDrawInfo,
+              drawId,
+            });
+            const seedAssignments = getDerivedSeedAssignments({
+              participantId: relevantParticipantId,
+              derivedDrawInfo,
               drawId,
             });
             participantIdMap[relevantParticipantId].draws[drawId] =
               definedAttributes({
-                positionAssignments,
                 qualifyingDrawSize: derivedDrawInfo[drawId]?.qualifyingDrawSize,
                 drawSize: derivedDrawInfo[drawId]?.drawSize,
                 partnerParticipantIds: [],
+                positionAssignments,
+                seedAssignments,
                 entryPosition,
                 entryStatus,
                 entryStage,

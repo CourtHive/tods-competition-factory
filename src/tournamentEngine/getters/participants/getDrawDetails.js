@@ -7,8 +7,8 @@ import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
 // ADD: orderedStructures with stage, stageSequence info
 export function getDrawDetails({ event, eventEntries }) {
-  const derivedInfo = {};
   const { containedStructures } = getContainedStructures({ event });
+  const derivedInfo = {};
 
   const drawDetails = Object.assign(
     {},
@@ -47,6 +47,9 @@ export function getDrawDetails({ event, eventEntries }) {
         })?.positionAssignments;
       const qualifyingDrawSize = qualifyingPositionAssignments?.length;
 
+      const mainSeedAssignments = mainStructure?.seedAssignments;
+      const qualifyingSeedAssignments = qualifyingStructure?.seedAssignments;
+
       // used in rankings pipeline.
       // the structures in which a particpant particpants are ordered
       // to enable differentiation for Points-per-round and points-per-win
@@ -65,7 +68,9 @@ export function getDrawDetails({ event, eventEntries }) {
 
       derivedInfo[drawDefinition.drawId] = {
         qualifyingPositionAssignments,
+        qualifyingSeedAssignments,
         mainPositionAssignments,
+        mainSeedAssignments,
         orderedStructureIds,
         qualifyingDrawSize,
         flightNumber,
