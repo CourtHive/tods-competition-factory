@@ -2,9 +2,11 @@ import { getSourceStructureIdsAndRelevantLinks } from '../../../getters/getSourc
 import { findExtension } from '../../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
+import { definedAttributes } from '../../../../utilities/objects';
 import { isCompletedStructure } from '../structureActions';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
+import { BYE } from '../../../../constants/matchUpStatusConstants';
 import { TALLY } from '../../../../constants/extensionConstants';
 import {
   QUALIFYING_PARTICIPANT,
@@ -15,7 +17,6 @@ import {
   QUALIFYING,
   WINNER,
 } from '../../../../constants/drawDefinitionConstants';
-import { definedAttributes } from '../../../../utilities/objects';
 
 export function getValidQualifiersAction({
   /*
@@ -102,11 +103,21 @@ export function getValidQualifiersAction({
         const winningSide = matchUp.sides.find(
           (side) => side?.sideNumber === matchUp.winningSide
         );
-        const { participantId, participant } = winningSide || {};
-        if (participantId && !assignedParticipantIds.includes(participantId)) {
-          if (participant && returnParticipants)
-            qualifyingParticipants.push(participant);
-          qualifyingParticipantIds.push(participantId);
+        const relevantSide =
+          matchUp.matchUpStatus === BYE &&
+          matchUp.sides?.find(({ participantId }) => participantId);
+
+        if (winningSide || relevantSide) {
+          const { participantId, participant } =
+            winningSide || relevantSide || {};
+          if (
+            participantId &&
+            !assignedParticipantIds.includes(participantId)
+          ) {
+            if (participant && returnParticipants)
+              qualifyingParticipants.push(participant);
+            qualifyingParticipantIds.push(participantId);
+          }
         }
       }
     }

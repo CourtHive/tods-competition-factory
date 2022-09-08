@@ -87,6 +87,28 @@ const scenarios = [
       qualifiersCount: 2,
     },
   },
+  {
+    drawSize: 16,
+    qualifyingProfiles: [
+      {
+        roundTarget: 1,
+        structureProfiles: [
+          {
+            qualifyingPositions: 4,
+            participantsCount: 7,
+            stageSequence: 1,
+            drawSize: 8,
+          },
+        ],
+      },
+    ],
+    expectation: {
+      qualifyingRoundNumber: 1,
+      qualifyingMatchUps: 4,
+      directAcceptance: 19,
+      qualifiersCount: 4,
+    },
+  },
 ];
 
 it.each(scenarios)(
@@ -160,6 +182,9 @@ it.each(scenarios)(
       ({ type }) => type === QUALIFYING_PARTICIPANT
     );
     expect(qualifierAssingmentAction).not.toBeUndefined();
+    expect(qualifierAssingmentAction.qualifyingParticipantIds.length).toEqual(
+      qualifiersCount
+    );
   }
 );
 
