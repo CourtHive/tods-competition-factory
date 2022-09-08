@@ -1,4 +1,5 @@
 import { participantScheduledMatchUps } from '../../governors/queryGovernor/participantScheduledMatchUps';
+import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { addNationalityCode } from '../../governors/participantGovernor/addNationalityCode';
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
@@ -6,10 +7,13 @@ import { getDerivedSeedAssignments } from './getDerivedSeedAssignments';
 import { addRankingProfile } from './addRankingProfile';
 import { getScaleValues } from './getScaleValues';
 import { intersection } from '../../../utilities';
-// import { getSeedValue } from '../getSeedValue';
 
-import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SCALE, SEEDING } from '../../../constants/scaleConstants';
+import {
+  BYE,
+  DEFAULTED,
+  WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
 
 export function annotateParticipant({
   withScaleValues = true,
@@ -29,8 +33,8 @@ export function annotateParticipant({
   withISO2,
   withIOC,
 }) {
-  const scheduleItems = [];
   const scheduleConflicts = [];
+  const scheduleItems = [];
 
   if (withIOC || withISO2)
     addNationalityCode({ participant, withIOC, withISO2 });
@@ -45,23 +49,24 @@ export function annotateParticipant({
   if (!participantId || !participantIdMap[participantId]) return {};
 
   const {
-    wins,
-    losses,
-    matchUps,
     potentialMatchUps,
-    events,
-    draws,
     opponents,
+    matchUps,
+    events,
+    losses,
+    draws,
+    wins,
   } = participantIdMap[participantId];
 
-  const numerator = wins;
   const denominator = wins + losses;
+  const numerator = wins;
+
   const statValue = denominator && numerator / denominator;
 
   const winRatioStat = {
     statCode: 'winRatio',
-    numerator,
     denominator,
+    numerator,
     statValue,
   };
 
@@ -273,36 +278,45 @@ export function annotateParticipant({
           typeChangeTimeAfterRecovery,
         },
         matchUpStatus,
-        matchUpId,
-        roundNumber,
         roundPosition,
         structureName,
         matchUpType,
+        roundNumber,
+        matchUpId,
         drawId,
+        score,
       } = matchUp;
 
       scheduleItems.push({
-        drawId,
-        matchUpType,
-        matchUpId,
-        structureName,
-        roundNumber,
-        roundPosition,
         ...matchUp.schedule,
         scheduledTime: extractTime(matchUp.schedule?.scheduledTime),
+        roundPosition,
+        structureName,
+        matchUpType,
+        roundNumber,
+        matchUpId,
+        drawId,
       });
 
-      // matchUps with { matchUpStatus: BYE } are ignored
-      if (scheduledTime && matchUpStatus !== BYE) {
+      // matchUps with { matchUpStatus: BYE } are ignored or { matchUpStatus: WALKOVER } and no score
+      const ignoreMatchUp =
+        matchUpStatus === BYE ||
+        ([WALKOVER, DEFAULTED].includes(matchUpStatus) &&
+          !scoreHasValue({ score }));
+
+      if (scheduledTime && !ignoreMatchUp) {
         const scheduledMinutes = timeStringMinutes(scheduledTime);
         // each matchUp only considers conflicts with matchUps which occur at the same or later scheduledTime
         const matchUpsToConsider = scheduledMatchUps[date].slice(i + 1);
+
         for (const consideredMatchUp of matchUpsToConsider) {
           // ignore { matchUpStatus: BYE } and matchUps which are unscheduled
-          if (
-            matchUpStatus !== BYE &&
-            consideredMatchUp.schedule?.scheduledTime
-          ) {
+          const ignoreMatchUp =
+            consideredMatchUp.matchUpStatus === BYE ||
+            ([WALKOVER, DEFAULTED].includes(consideredMatchUp.matchUpStatus) &&
+              !scoreHasValue(consideredMatchUp));
+
+          if (!ignoreMatchUp && consideredMatchUp.schedule?.scheduledTime) {
             // if there is a matchType change (SINGLES => DOUBLES or vice versa) then there is potentially a different timeAfterRecovery
             const typeChange =
               matchUp.matchUpType !== consideredMatchUp.matchUpType;
