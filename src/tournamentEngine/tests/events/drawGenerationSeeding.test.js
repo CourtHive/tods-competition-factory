@@ -5,7 +5,7 @@ import tournamentEngine from '../../sync';
 
 import POLICY_AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
-import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { SPLIT_WATERFALL } from '../../../constants/flightConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { SEEDING } from '../../../constants/scaleConstants';
@@ -80,6 +80,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     eventId,
   });
 
+  const drawDefinitions = [];
   flightProfile.flights?.forEach((flight) => {
     const participantCount = flight.drawEntries.length;
     const { drawSize } = drawEngine.getEliminationDrawSize({
@@ -97,6 +98,8 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
       eventId,
     });
     const drawDefinition = result.drawDefinition;
+    drawDefinitions.push(drawDefinition);
+
     expect(drawDefinition.structures[0].seedLimit).toEqual(seedsCount);
     expect(drawDefinition.structures[0].seedAssignments.length).toEqual(
       seedsCount
@@ -140,12 +143,27 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     withDraws: true,
   }));
 
-  const seedValues = tournamentParticipants
-    .map((participant) => participant.draws && participant.draws[0].seedValue)
+  for (const drawDefinition of drawDefinitions) {
+    result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
+    expect(result.success).toEqual(true);
+  }
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    withDraws: true,
+  }));
+
+  const seedAssignments = tournamentParticipants
+    .map(
+      (participant) => participant.draws && participant.draws[0].seedAssignments
+    )
     .filter(Boolean)
     .sort();
 
-  expect(seedValues).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+  const seedValues = seedAssignments.map(
+    (assignment) => assignment[MAIN].seedValue
+  );
+  // we have 2 flights...
+  expect(seedValues).toEqual([1, 1, 2, 2, 3, 3, 4, 4]);
 });
 
 it('can constrain seedsCount by policyDefinitions', () => {

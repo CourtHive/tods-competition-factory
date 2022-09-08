@@ -14,6 +14,8 @@ import {
 } from '../../../constants/topicConstants';
 
 export function publishEventSeeding({
+  stageSeedingScaleNames,
+  seedingScaleNames,
   removePriorValues,
   tournamentRecord,
   status = PUBLIC,
@@ -31,7 +33,12 @@ export function publishEventSeeding({
 
   const itemValue = timeItem?.itemValue || { [status]: {} };
 
-  itemValue[status].seeding = { published: true, drawIds };
+  itemValue[status].seeding = {
+    stageSeedingScaleNames,
+    seedingScaleNames,
+    published: true,
+    drawIds,
+  };
 
   const updatedTimeItem = {
     itemValue,

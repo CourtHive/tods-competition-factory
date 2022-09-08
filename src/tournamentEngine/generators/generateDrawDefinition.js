@@ -165,6 +165,10 @@ export function generateDrawDefinition(params) {
     }
   }
 
+  const invalidDrawId = params.drawId && typeof params.drawId !== 'string';
+  if (invalidDrawId)
+    return decorateResult({ result: { error: INVALID_VALUES }, stack });
+
   // ---------------------------------------------------------------------------
   // Begin construction of drawDefinition
   const existingDrawDefinition =

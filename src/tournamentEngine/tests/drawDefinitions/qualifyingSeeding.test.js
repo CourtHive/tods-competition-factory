@@ -56,6 +56,33 @@ const scenarios = [
     seedsCount: 2,
     drawSize: 8,
   },
+  {
+    qualifyingPositions: 2,
+    seededDrawPositions: [
+      [1, 1],
+      [2, 9],
+    ],
+    seedsCount: 2,
+    drawSize: 16,
+  },
+  {
+    qualifyingPositions: 4,
+    seededDrawPositions: [
+      [1, 1],
+      [2, 5],
+    ],
+    seedsCount: 2,
+    drawSize: 16,
+  },
+  {
+    qualifyingPositions: 8,
+    seededDrawPositions: [
+      [1, 1],
+      [2, 3],
+    ],
+    seedsCount: 2,
+    drawSize: 16,
+  },
 ];
 
 it.each(scenarios)(
