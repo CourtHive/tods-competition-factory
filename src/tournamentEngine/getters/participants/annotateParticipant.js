@@ -152,6 +152,18 @@ export function annotateParticipant({
             );
             participantEvent.seedValue = seedValues.pop();
           }
+        } else if (!usePublishState && typeof withSeeding === 'object') {
+          const scaleValues = Object.keys(withSeeding)
+            .map((key) => {
+              const accessor = getScaleAccessor(withSeeding[key]);
+              const scaleValue = seedingScales[accessor];
+              return [key, scaleValue];
+            })
+            .filter((pair) => pair[1])
+            .map((pair) => ({ [pair[0]]: { seedValue: pair[1] } }));
+          const seedAssignments = Object.assign({}, ...scaleValues);
+
+          participantEvent.seedAssignments = seedAssignments;
         } else {
           const { categoryName, ageCategoryCode } =
             participantEvent.category || {};
