@@ -3,7 +3,6 @@ import { getAccessorValue } from '../../utilities/getAccessorValue';
 import type { Participant } from '../../types/tournamentFromSchema';
 import { SCALE } from '../../constants/scaleConstants';
 import { ScaleAttributes } from '../../types/scales';
-import { definedAttributes } from '../../utilities';
 import {
   INVALID_SCALE_ITEM,
   INVALID_VALUES,
@@ -50,13 +49,13 @@ export function participantScaleItem({
         accessor && getAccessorValue({ element: timeItem.itemValue, accessor });
       const scaleValue = accessorValue?.value || timeItem.itemValue;
 
-      const scaleItem = definedAttributes({
+      const scaleItem = {
         scaleDate: timeItem.itemDate,
         scaleName,
         scaleType,
         eventType,
         scaleValue,
-      });
+      };
       return { scaleItem };
     } else {
       return { error: SCALE_ITEM_NOT_FOUND };
