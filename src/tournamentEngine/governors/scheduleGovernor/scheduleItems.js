@@ -132,10 +132,10 @@ export function addMatchUpResumeTime({
 export function addMatchUpOfficial({
   tournamentRecord,
   drawDefinition,
+  disableNotice,
   participantId,
   officialType,
   matchUpId,
-  disableNotice,
 }) {
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
@@ -156,10 +156,10 @@ export function addMatchUpOfficial({
 
   const result = addOfficial({
     drawDefinition,
+    disableNotice,
     participantId,
     officialType,
     matchUpId,
-    disableNotice,
   });
   return result;
 }
