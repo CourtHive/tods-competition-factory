@@ -1,5 +1,7 @@
 import { assignMatchUpVenue as assignVenue } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { assignMatchUpCourt as assignCourt } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
+import { findTournamentId } from '../../competitionsGovernor/findTournamentId';
+import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import {
   addMatchUpScheduledDate as addScheduledDate,
   addMatchUpScheduledTime as addScheduledTime,
@@ -10,14 +12,12 @@ import {
   addMatchUpOfficial as addOfficial,
   addMatchUpScheduleItems as addScheduleItems,
 } from '../../../../tournamentEngine/governors/scheduleGovernor/scheduleItems';
-import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 
 import {
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
-import { findTournamentId } from '../../competitionsGovernor/findTournamentId';
 
 export function addMatchUpScheduleItems(params) {
   const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);

@@ -1,9 +1,12 @@
 import { overlap } from '../../utilities';
 
+import { LOSER, WINNER } from '../../constants/drawDefinitionConstants';
 import {
   MISSING_STRUCTURE_ID,
   MISSING_DRAW_DEFINITION,
+  INVALID_VALUES,
 } from '../../constants/errorConditionConstants';
+import { decorateResult } from '../../global/functions/decorateResult';
 
 /**
  *
@@ -48,6 +51,17 @@ export function getTargetLink({
     const condition = linkCondition === link.linkCondition;
     return condition && positionCondition && link.linkType === linkType;
   });
+
+  if (
+    [WINNER, LOSER].includes(result?.linkType) &&
+    !result?.source?.roundNumber
+  ) {
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      stack: 'getTargetLink',
+      context: result,
+    });
+  }
   return result;
 }
 

@@ -110,8 +110,14 @@ export function generateEventWithDraw({
     (qualifyingProfiles
       ?.map((profile) => profile.structureProfiles || [])
       .flat() // in case each profile contains an array of stageSequences
-      .reduce((count, profile) => count + profile.drawSize, 0) || 0) *
-    (participantType === DOUBLES ? 2 : 1);
+      .reduce((count, profile) => {
+        const qpc =
+          !profile.participantsCount ||
+          profile.participantsCount > profile.drawSize
+            ? profile.drawSize
+            : profile.participantsCount || 0;
+        return count + qpc;
+      }, 0) || 0) * (participantType === DOUBLES ? 2 : 1);
 
   const participantsCount =
     (!drawProfile.participantsCount || drawProfile.participantsCount > drawSize

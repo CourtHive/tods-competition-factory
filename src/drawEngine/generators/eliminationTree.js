@@ -69,6 +69,10 @@ export function treeMatchUps({
 
   if (roundLimit) {
     matchUps = matchUps.filter((matchUp) => matchUp.roundNumber <= roundLimit);
+  } else {
+    // this is the case { qualifyingPositions : 1 }
+    // subtract one to account for the last ++
+    roundLimit = roundNumber - 1;
   }
 
   return { matchUps, roundsCount, roundLimit };
