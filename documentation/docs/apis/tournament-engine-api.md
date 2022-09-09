@@ -941,6 +941,18 @@ tournamentEngine.checkOutParticipant({
 
 ---
 
+## clearMatchUpSchedule
+
+```js
+tournamentEngine.clearMatchUpSchedule({
+  scheduleAttributes, // optional array of schedule constants
+  matchUpId,
+  drawId, // optional optimizes matchUp lookup, triggers drawModificationNotice
+});
+```
+
+---
+
 ## clearScheduledMatchUps
 
 ```js

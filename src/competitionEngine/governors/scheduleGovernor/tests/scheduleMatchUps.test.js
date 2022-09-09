@@ -18,6 +18,13 @@ import {
   NO_MODIFICATIONS_APPLIED,
   PARTICIPANT_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
+import {
+  ASSIGN_COURT,
+  END_TIME,
+  RESUME_TIME,
+  START_TIME,
+  STOP_TIME,
+} from '../../../../constants/timeItemConstants';
 
 it('can add events, venues, and schedule matchUps', () => {
   let startDate = '2020-01-01';
@@ -304,14 +311,14 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(result.tournamentInfo.startDate).toEqual(startDate);
 });
 
-it('can schedule many attributes at once', () => {
+it.only('can schedule many attributes at once', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize: 8 }],
   });
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
 
   let { tournamentId, drawId, matchUpId } = matchUps[0];
   let result = competitionEngine.addMatchUpScheduleItems({
@@ -328,7 +335,15 @@ it('can schedule many attributes at once', () => {
   });
   expect(result.success).toEqual(true);
 
+  const modifiedMatchUpId = matchUpId;
+
+  let modifiedMatchUp = competitionEngine.allCompetitionMatchUps({
+    matchUpFilters: { matchUpIds: [modifiedMatchUpId] },
+  }).matchUps[0];
+  expect(modifiedMatchUp.timeItems.length).toEqual(5);
+
   ({ tournamentId, drawId, matchUpId } = matchUps[1]);
+
   result = competitionEngine.addMatchUpEndTime({
     endTime: '10:00',
     tournamentId,
@@ -344,6 +359,38 @@ it('can schedule many attributes at once', () => {
     drawId,
   });
   expect(result.error).toEqual(INVALID_START_TIME);
+
+  matchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpIds: [modifiedMatchUpId] },
+  }).matchUps;
+  expect(matchUps[0].timeItems.length).toEqual(5);
+
+  result = tournamentEngine.clearMatchUpSchedule({
+    scheduleAttributes: [
+      ASSIGN_COURT,
+      RESUME_TIME,
+      STOP_TIME,
+      START_TIME,
+      END_TIME,
+    ],
+    matchUpId: modifiedMatchUpId,
+  });
+  expect(result.success).toEqual(true);
+
+  matchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpIds: [modifiedMatchUpId] },
+  }).matchUps;
+  expect(matchUps[0].timeItems.length).toEqual(1);
+
+  result = tournamentEngine.clearMatchUpSchedule({
+    matchUpId: modifiedMatchUpId,
+  });
+  expect(result.success).toEqual(true);
+
+  matchUps = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpIds: [modifiedMatchUpId] },
+  }).matchUps;
+  expect(matchUps[0].timeItems).toBeUndefined();
 });
 
 const scheduleItems = [
@@ -354,27 +401,24 @@ const scheduleItems = [
   { resumeTime: '24:00' },
 ];
 
-it.each(scheduleItems)(
-  'can schedule many attributes at once',
-  (scheduleItem) => {
-    const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-      drawProfiles: [{ drawSize: 8 }],
-    });
+it.each(scheduleItems)('throws errors for invalid time', (scheduleItem) => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 8 }],
+  });
 
-    tournamentEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
 
-    const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-    const { tournamentId, drawId, matchUpId } = matchUps[0];
-    let result = competitionEngine.addMatchUpScheduleItems({
-      schedule: scheduleItem,
-      tournamentId,
-      matchUpId,
-      drawId,
-    });
-    expect(result.error).toEqual(INVALID_TIME);
-  }
-);
+  const { tournamentId, drawId, matchUpId } = matchUps[0];
+  let result = competitionEngine.addMatchUpScheduleItems({
+    schedule: scheduleItem,
+    tournamentId,
+    matchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_TIME);
+});
 
 const scheduleScenarios = [
   {
@@ -400,7 +444,7 @@ it.each(scheduleScenarios)(
 
     tournamentEngine.setState(tournamentRecord);
 
-    const { matchUps } = tournamentEngine.allTournamentMatchUps();
+    let { matchUps } = tournamentEngine.allTournamentMatchUps();
 
     const { tournamentId, drawId, matchUpId } = matchUps[0];
     const { schedule, error } = scheduleScenario;
