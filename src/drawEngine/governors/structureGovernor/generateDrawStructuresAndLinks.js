@@ -268,6 +268,8 @@ export function generateDrawStructuresAndLinks(params = {}) {
         targetEntryRound,
         linkType,
       })?.link;
+    if (link?.error) return link;
+
     if (link) {
       links.push(link);
     }

@@ -221,7 +221,13 @@ export function removeDirectedWinner({
         }
       });
     } else {
-      console.log('not removing from position assignments since instances > 1');
+      const drawPositionMatchUps = matchUps.filter(({ drawPositions }) =>
+        drawPositions.includes(winnerDrawPosition)
+      );
+      console.log(
+        'not removing from position assignments since instances > 1',
+        { drawPositionMatchUps, winnerTargetLink }
+      );
     }
 
     const targetMatchUp = matchUpsMap?.drawMatchUps?.find(
