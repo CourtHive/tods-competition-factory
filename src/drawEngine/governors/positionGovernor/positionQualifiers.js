@@ -1,6 +1,7 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { generateRange, randomPop } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
@@ -16,8 +17,11 @@ export function positionQualifiers(params) {
   let { structure, structureId } = params; // participants is being passed in
   if (!structure) ({ structure } = findStructure(params));
   if (!structureId) ({ structureId } = structure);
+
+  let stack = 'positionQualifiers';
+
   if (structure.stage === CONSOLATION) {
-    return { error: INVALID_STAGE };
+    return decorateResult({ result: { error: INVALID_STAGE }, stack });
   }
 
   const {
@@ -39,7 +43,11 @@ export function positionQualifiers(params) {
       .map((assignment) => assignment.drawPosition);
 
     if (unplacedRoundQualifierCounts[roundNumber] > unfilledDrawPositions)
-      return { error: NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS };
+      return decorateResult({
+        result: { error: NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS },
+        context: { unfilledDrawPositions },
+        stack,
+      });
 
     generateRange(0, unplacedRoundQualifierCounts[roundNumber]).forEach(() => {
       const drawPosition = randomPop(unfilledDrawPositions);
