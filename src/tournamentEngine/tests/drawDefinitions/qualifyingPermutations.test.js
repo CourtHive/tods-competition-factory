@@ -1,4 +1,5 @@
 import { getParticipantId } from '../../../global/functions/extractors';
+import { chunkArray } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
@@ -8,6 +9,19 @@ import { SINGLES } from '../../../constants/eventConstants';
 import { ELO } from '../../../constants/ratingConstants';
 
 const scenarios = [
+  {
+    qualifyingParticipants: 16,
+    qualifyingPositions: 2,
+    seedsCount: 4,
+    drawSize: 16,
+  },
+  {
+    qualifyingParticipants: 11,
+    qualifyingPositions: 4,
+    resultSeedsCount: 2,
+    seedsCount: 4,
+    drawSize: 16,
+  },
   {
     qualifyingParticipants: 21,
     qualifyingPositions: 2,
@@ -102,23 +116,52 @@ it.each(scenarios)(
       eventId,
     });
 
-    console.log(result);
-    /*
-    expect(result.success).toEqual(true);
+    if (result.success) {
+      expect(result.success).toEqual(true);
 
-    const drawDefinition = result.drawDefinition;
-    expect(drawDefinition.structures.length).toEqual(2);
+      const drawDefinition = result.drawDefinition;
+      expect(drawDefinition.structures.length).toEqual(2);
 
-    const qualifyingStructure = drawDefinition.structures[0];
+      const qualifyingStructure = drawDefinition.structures[0];
+      const byeAssignments = qualifyingStructure.positionAssignments.filter(
+        ({ bye }) => bye
+      );
 
-    expect(
-      qualifyingStructure.positionAssignments.filter(
-        ({ participantId }) => participantId
-      ).length
-    ).toEqual(scenario.qualifyingParticipants);
+      expect(
+        qualifyingStructure.positionAssignments.filter(
+          ({ participantId }) => participantId
+        ).length
+      ).toEqual(scenario.qualifyingParticipants);
 
-    console.log(qualifyingStructure.positionAssignments);
-    console.log(qualifyingStructure.seedAssignments);
-    */
+      const expectedByesCount =
+        scenario.drawSize - scenario.qualifyingParticipants;
+      expect(byeAssignments.length).toEqual(expectedByesCount);
+
+      const drawPositionChunks = chunkArray(
+        qualifyingStructure.positionAssignments,
+        scenario.drawSize / scenario.qualifyingPositions
+      );
+
+      if (expectedByesCount) {
+        const byeDistribution = drawPositionChunks.map((chunk) =>
+          chunk.filter(({ bye }) => bye)
+        );
+        const maxDiff = byeDistribution.slice(1).reduce((p, c) => {
+          const diff = Math.abs(byeDistribution[0].length - c.length);
+          return diff > p ? diff : p;
+        }, 0);
+        expect(maxDiff).toBeLessThanOrEqual(1);
+      }
+      // console.log(result.positioningReports[0][QUALIFYING][0].validSeedBlocks);
+      // console.log(result.positioningReports[0][QUALIFYING][2]);
+
+      expect(
+        qualifyingStructure.seedAssignments.filter(
+          ({ participantId }) => participantId
+        ).length
+      ).toEqual(scenario.resultSeedsCount || scenario.seedsCount);
+    } else {
+      console.log(result);
+    }
   }
 );

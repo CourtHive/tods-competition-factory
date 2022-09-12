@@ -15,16 +15,19 @@ import {
 import {
   CLUSTER,
   CONTAINER,
+  QUALIFYING,
 } from '../../../../constants/drawDefinitionConstants';
 
 export function getUnseededByePositions({
   appliedPolicies,
   drawDefinition,
+  seedLimit,
   structure,
   isFeedIn,
   isLucky,
 }) {
   const seedingProfile = appliedPolicies?.seeding?.seedingProfile;
+  const isQualifying = structure.stage === QUALIFYING;
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const filledDrawPositions = positionAssignments
@@ -122,9 +125,7 @@ export function getUnseededByePositions({
     )
   );
 
-  let unfilledSeedBlocks = validBlockDrawPositions
-    .map(quarterSeparateBlock)
-    .filter((block) => block.length);
+  let unfilledSeedBlocks;
 
   if (isFeedIn) {
     // FEED_IN structures calculate seedDrawPositions uniquely
@@ -141,8 +142,20 @@ export function getUnseededByePositions({
     unfilledSeedBlocks = blockDrawPositions
       .map(quarterSeparateBlock)
       .filter((block) => block.length);
+  } else if (isQualifying) {
+    // if qualifying don't quarter/halve separate because seeding is WATERFALL
+    unfilledSeedBlocks = validBlockDrawPositions.map((block) =>
+      block.filter(unfilledDrawPosition)
+    );
   } else if (isLucky) {
     // console.log({ isLucky });
+    unfilledSeedBlocks = validBlockDrawPositions
+      .map(quarterSeparateBlock)
+      .filter((block) => block.length);
+  } else {
+    unfilledSeedBlocks = validBlockDrawPositions
+      .map(quarterSeparateBlock)
+      .filter((block) => block.length);
   }
 
   // for Round Robins pairs need to be reduced to pairs in drawPosition order
@@ -159,10 +172,30 @@ export function getUnseededByePositions({
     }, undefined);
   };
 
-  const unseededByePositions = unfilledSeedBlocks
+  let unseededByePositions = unfilledSeedBlocks
     .map((block) => block.map(findDrawPositionPair))
     .flat(Infinity)
+    .filter(unfilledDrawPosition)
     .filter(Boolean);
+
+  if (isQualifying) {
+    // need to know how many qualifying blocks so that unseededByePositions can be shuffled
+    // (after removing blocks.length time blocks which had seeds placed)
+    // console.log(validBlockDrawPositions.length, unseededByePositions.length);
+    const seedingOverhang = seedLimit % 4;
+    const overhangDrawPositions = unseededByePositions.slice(
+      0,
+      seedingOverhang
+    );
+    const qualifierBlocksCount = roundMatchUps[structure.roundLimit].length;
+    const shuffledRemainder = chunkArray(
+      unseededByePositions.slice(seedingOverhang),
+      qualifierBlocksCount
+    )
+      .map(shuffleArray)
+      .flat();
+    unseededByePositions = overhangDrawPositions.concat(shuffledRemainder);
+  }
 
   return { unseededByePositions };
 }

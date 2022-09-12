@@ -186,8 +186,10 @@ export function prepareStage({
         });
   }
 
-  let conflicts = [];
   let positionAssignments;
+  let positioningReport;
+  let conflicts = [];
+
   if (
     automated !== false &&
     drawType !== AD_HOC &&
@@ -206,12 +208,15 @@ export function prepareStage({
       structureId,
       matchUpsMap,
       placeByes,
+      seedLimit,
       seedsOnly,
       drawType,
       event,
     });
     conflicts = result?.conflicts;
     positionAssignments = result?.positionAssignments;
+    positioningReport = result?.positioningReport;
+
     if (result.error) {
       return decorateResult({ result, stack: 'prepareStage' });
     }
@@ -219,6 +224,7 @@ export function prepareStage({
 
   return {
     positionAssignments,
+    positioningReport,
     stageEntries,
     structureId,
     seedsCount,

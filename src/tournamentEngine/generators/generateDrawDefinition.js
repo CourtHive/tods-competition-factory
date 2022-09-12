@@ -297,6 +297,7 @@ export function generateDrawDefinition(params) {
   // temporary until seeding is supported in LUCKY_DRAW
   if (drawType === LUCKY_DRAW) seedsCount = 0;
 
+  const positioningReports = [];
   const structureResult = prepareStage({
     ...drawTypeResult,
     ...params,
@@ -315,6 +316,9 @@ export function generateDrawDefinition(params) {
     console.log('MAIN', structureResult);
     //return decorateResult({ result: structureResult, stack });
   }
+
+  if (structureResult.positioningReport?.length)
+    positioningReports.push({ [MAIN]: structureResult.positioningReport });
 
   const structureId = structureResult.structureId;
   const conflicts = structureResult.conflicts;
@@ -388,6 +392,11 @@ export function generateDrawDefinition(params) {
 
         if (qualifyingStageResult.conflicts?.length)
           qualifyingConflicts.push(...qualifyingStageResult.conflicts);
+
+        if (qualifyingStageResult.positioningReport?.length)
+          positioningReports.push({
+            [QUALIFYING]: qualifyingStageResult.positioningReport,
+          });
       }
 
       roundTarget += 1;
@@ -413,6 +422,7 @@ export function generateDrawDefinition(params) {
   return {
     existingDrawDefinition: !!existingDrawDefinition,
     qualifyingConflicts,
+    positioningReports,
     drawDefinition,
     structureId,
     ...SUCCESS,

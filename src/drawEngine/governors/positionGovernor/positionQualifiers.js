@@ -19,6 +19,7 @@ export function positionQualifiers(params) {
   if (!structureId) ({ structureId } = structure);
 
   let stack = 'positionQualifiers';
+  const qualifierDrawPositions = [];
 
   if (structure.stage === CONSOLATION) {
     return decorateResult({ result: { error: INVALID_STAGE }, stack });
@@ -51,6 +52,7 @@ export function positionQualifiers(params) {
 
     generateRange(0, unplacedRoundQualifierCounts[roundNumber]).forEach(() => {
       const drawPosition = randomPop(unfilledDrawPositions);
+      qualifierDrawPositions.push(drawPosition);
       positionAssignments.forEach((assignment) => {
         if (assignment.drawPosition === drawPosition) {
           assignment.qualifier = true;
@@ -61,7 +63,7 @@ export function positionQualifiers(params) {
     });
   }
 
-  return { ...SUCCESS };
+  return { ...SUCCESS, qualifierDrawPositions };
 }
 
 export function getQualifiersData({ drawDefinition, structure, structureId }) {
