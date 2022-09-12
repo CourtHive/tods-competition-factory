@@ -102,7 +102,7 @@
     "@types/node": "16.11.58",
     "@typescript-eslint/eslint-plugin": "5.36.2",
     "@typescript-eslint/parser": "5.36.2",
-    "@vitest/coverage-c8": "0.23.1",
+    "@vitest/coverage-c8": "0.23.2",
     "ajv": "8.11.0",
     "ajv-formats": "2.1.1",
     "c8": "7.12.0",
