@@ -39,10 +39,13 @@ export function automatedPositioning({
   participants,
   structureId,
   matchUpsMap,
+  seedLimit,
   seedsOnly,
   drawType,
   event,
 }) {
+  const positioningReport = [];
+
   //-----------------------------------------------------------
   // handle notification state for all exit conditions
   if (!applyPositioning) {
@@ -112,6 +115,8 @@ export function automatedPositioning({
   if (seedBlockInfo.error) return seedBlockInfo;
   const { validSeedBlocks } = seedBlockInfo;
 
+  positioningReport.push({ validSeedBlocks });
+
   if (
     getSeedPattern(structure.seedingProfile || seedingProfile) === WATERFALL
   ) {
@@ -126,11 +131,14 @@ export function automatedPositioning({
         seedBlockInfo,
         matchUpsMap,
         structure,
+        seedLimit,
         seedsOnly,
         event,
       });
     if (result?.error) return handleErrorCondition(result);
     unseededByePositions = result.unseededByePositions;
+
+    positioningReport.push({ action: 'positionByes', unseededByePositions });
 
     result = positionSeedBlocks({
       seedingProfile: structure.seedingProfile || seedingProfile,
@@ -145,6 +153,11 @@ export function automatedPositioning({
       structure,
     });
     if (result.error) return handleErrorCondition(result);
+
+    positioningReport.push({
+      action: 'positionSeedBlocks',
+      seedPositions: result.seedPositions,
+    });
   } else {
     // otherwise... seeds need to be placed first so that BYEs
     // can follow the seedValues of placed seeds
@@ -161,7 +174,13 @@ export function automatedPositioning({
         matchUpsMap,
         structure,
       });
+
       if (result.error) return handleErrorCondition(result);
+
+      positioningReport.push({
+        action: 'positionSeedBlocks',
+        seedPositions: result.seedPositions,
+      });
     }
 
     const result =
@@ -174,6 +193,7 @@ export function automatedPositioning({
         seedBlockInfo,
         matchUpsMap,
         structure,
+        seedLimit,
         seedsOnly,
         event,
       });
@@ -183,6 +203,11 @@ export function automatedPositioning({
       return handleErrorCondition(result);
     }
     unseededByePositions = result.unseededByePositions;
+    positioningReport.push({
+      action: 'positionByes',
+      byeDrawPositions: result.byeDrawPositions,
+      unseededByePositions,
+    });
   }
 
   const conflicts = {};
@@ -206,6 +231,10 @@ export function automatedPositioning({
       return handleErrorCondition(result);
     }
     if (result.conflicts) conflicts.qualifierConflicts = result.conflicts;
+    positioningReport.push({
+      action: 'positionQualifiers',
+      qualifierDrawPositions: result.qualifierDrawPositions,
+    });
 
     result = positionUnseededParticipants({
       inContextDrawMatchUps,
@@ -227,6 +256,7 @@ export function automatedPositioning({
       return handleErrorCondition(result);
     }
     if (result.conflicts) conflicts.unseededConflicts = result.conflicts;
+    positioningReport.push({ action: 'positionUnseededParticipants' });
   }
 
   const { positionAssignments } = getPositionAssignments({
@@ -241,5 +271,5 @@ export function automatedPositioning({
   if (!applyPositioning) enableNotifications();
   //-----------------------------------------------------------
 
-  return { positionAssignments, conflicts, ...SUCCESS };
+  return { positionAssignments, conflicts, ...SUCCESS, positioningReport };
 }
