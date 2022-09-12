@@ -1,8 +1,10 @@
+import { allDrawMatchUps } from '../../getters/matchUpsGetter';
 import { avoidanceTest } from '../primitives/avoidanceTest';
 import { eventConstants } from '../../..';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { getPositionAssignments } from '../../../forge/query';
 const { SINGLES, DOUBLES } = eventConstants;
 
 const avoidancePolicy = {
@@ -109,17 +111,25 @@ it('can generate SINGLE_ELIMINATION drawDefinition using country avoidance with 
 });
 
 it('can generate ROUND_ROBIN drawDefinition using country avoidance with INDIVIDUAL participants', () => {
-  const { conflicts, error } = avoidanceTest({
-    eventType: SINGLES,
-    drawType: ROUND_ROBIN,
+  const { conflicts, error, drawDefinition } = avoidanceTest({
     participantType: INDIVIDUAL,
     avoidance: avoidancePolicy,
-    participantsCount: 8,
-
     valuesInstanceLimit: 4,
+    drawType: ROUND_ROBIN,
+    participantsCount: 32,
+    eventType: SINGLES,
     valuesCount: 8,
   });
   if (error) console.log({ error });
   if (conflicts?.unseededConflicts)
     console.log('RR conflicts:', conflicts?.unseededConflicts);
+
+  const matchUps = allDrawMatchUps({ drawDefinition }).matchUps;
+  expect(matchUps.length).toEqual(48);
+  const structure = drawDefinition.structures[0];
+  const { positionAssignments } = getPositionAssignments({ structure });
+  const assignedPositions = positionAssignments.filter(
+    ({ participantId }) => participantId
+  );
+  expect(assignedPositions.length).toEqual(32);
 });

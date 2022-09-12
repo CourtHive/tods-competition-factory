@@ -203,7 +203,6 @@ export function automatedPositioning({
       structure,
     });
     if (result.error) {
-      console.log('positiongQualifiers', result);
       return handleErrorCondition(result);
     }
     if (result.conflicts) conflicts.qualifierConflicts = result.conflicts;
