@@ -300,6 +300,7 @@ export function generateDrawDefinition(params) {
   const structureResult = prepareStage({
     ...drawTypeResult,
     ...params,
+    qualifyingOnly: !drawSize || qualifyingOnly, // ooo!! If there is no drawSize then MAIN is not being generated
     appliedPolicies,
     drawDefinition,
     participants,
@@ -310,8 +311,10 @@ export function generateDrawDefinition(params) {
     entries,
   });
 
-  if (structureResult.error)
-    return decorateResult({ result: structureResult, stack });
+  if (structureResult.error && !structureResult.conflicts) {
+    console.log('MAIN', structureResult);
+    //return decorateResult({ result: structureResult, stack });
+  }
 
   const structureId = structureResult.structureId;
   const conflicts = structureResult.conflicts;
@@ -363,6 +366,7 @@ export function generateDrawDefinition(params) {
           seedingScaleName,
           appliedPolicies,
           drawDefinition,
+          qualifyingOnly,
           seedingProfile,
           stageSequence,
           seedByRanking,
