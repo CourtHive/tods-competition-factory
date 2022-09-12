@@ -102,12 +102,12 @@
     "@types/node": "16.11.58",
     "@typescript-eslint/eslint-plugin": "5.36.2",
     "@typescript-eslint/parser": "5.36.2",
-    "@vitest/coverage-c8": "0.23.1",
+    "@vitest/coverage-c8": "0.23.2",
     "ajv": "8.11.0",
     "ajv-formats": "2.1.1",
     "c8": "7.12.0",
     "esbuild": "0.15.7",
-    "eslint": "8.23.0",
+    "eslint": "8.23.1",
     "eslint-config-prettier": "8.5.0",
     "eslint-import-resolver-typescript": "3.5.1",
     "eslint-module-utils": "2.7.4",
@@ -133,7 +133,7 @@
     "tslib": "2.4.0",
     "typescript": "4.8.3",
     "vite": "3.1.0",
-    "vitest": "0.23.1"
+    "vitest": "0.23.2"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint",

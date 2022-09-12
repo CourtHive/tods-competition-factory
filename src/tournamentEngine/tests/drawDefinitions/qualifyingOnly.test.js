@@ -255,6 +255,8 @@ it.each([
     });
     expect(result.success).toEqual(true);
 
+    expect(result.drawDefinition.drawType).toEqual(drawType);
+
     result = tournamentEngine.addDrawDefinition({
       drawDefinition: result.drawDefinition,
       allowReplacement: true,

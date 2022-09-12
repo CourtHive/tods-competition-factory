@@ -175,6 +175,9 @@ export function generateDrawDefinition(params) {
     params.drawId &&
     event?.drawDefinitions?.find((d) => d.drawId === params.drawId);
 
+  if (existingDrawDefinition && drawType !== existingDrawDefinition.drawType)
+    existingDrawDefinition.drawType = drawType;
+
   let drawDefinition =
     existingDrawDefinition ||
     newDrawDefinition({ drawType, drawId: params.drawId });
