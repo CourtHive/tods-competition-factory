@@ -15,10 +15,10 @@ export function positionByes({
   appliedPolicies,
   drawDefinition,
   seedBlockInfo,
-  seedBlckInfo,
   matchUpsMap,
   structureId,
   structure,
+  seedLimit,
   seedsOnly,
   event,
 }) {
@@ -44,7 +44,7 @@ export function positionByes({
     relevantMatchUps,
     appliedPolicies,
     drawDefinition,
-    seedBlckInfo,
+    seedBlockInfo,
     structure,
   });
 
@@ -59,7 +59,7 @@ export function positionByes({
     ignoreSeededByes,
     appliedPolicies,
     drawDefinition,
-    seedBlckInfo,
+    seedLimit,
     structure,
     isFeedIn,
     isLucky,
@@ -94,5 +94,5 @@ export function positionByes({
     if (result?.error) return result;
   }
 
-  return { ...SUCCESS, unseededByePositions };
+  return { ...SUCCESS, unseededByePositions, byeDrawPositions };
 }

@@ -21,8 +21,9 @@ export function positionSeedBlocks({
   matchUpsMap,
   structure,
 }) {
-  const errors = [];
   let placedSeedBlocks = 0;
+  const seedPositions = [];
+  const errors = [];
 
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
@@ -56,14 +57,18 @@ export function positionSeedBlocks({
         structureId,
         matchUpsMap,
       });
-      if (result && result.success) placedSeedBlocks++;
+      if (result?.success) {
+        placedSeedBlocks++;
+        seedPositions.push(...result.seedPositions);
+      }
       if (result.error) {
         errors.push({ seedPositionError: result.error });
       }
     }
   });
 
-  return { errors };
+  if (errors.length) return { error: errors };
+  return { ...SUCCESS, seedPositions };
 }
 
 function positionSeedBlock({
@@ -89,9 +94,13 @@ function positionSeedBlock({
     // console.log('implement seed placement avoidance');
   }
 
+  const seedPositions = [];
+
   for (const participantId of unplacedSeedParticipantIds) {
     const drawPosition = unfilledPositions.pop();
     if (!drawPosition) return { error: MISSING_DRAW_POSITION };
+    seedPositions.push(drawPosition);
+
     const result = assignDrawPosition({
       automaticPlacement: true,
       inContextDrawMatchUps,
@@ -108,5 +117,5 @@ function positionSeedBlock({
     if (!result.success) return result;
   }
 
-  return { ...SUCCESS };
+  return { ...SUCCESS, seedPositions };
 }

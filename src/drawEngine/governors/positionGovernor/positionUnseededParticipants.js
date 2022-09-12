@@ -3,6 +3,7 @@ import { getAppliedPolicies } from '../../../global/functions/deducers/getApplie
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { randomUnseededSeparation } from './avoidance/randomUnseededSeparation';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getStageEntries } from '../../getters/stageGetter';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
@@ -31,6 +32,8 @@ export function positionUnseededParticipants({
   structure,
   event,
 }) {
+  const stack = 'positionUnseededParticipants';
+
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
   if (!structureId) ({ structureId } = structure);
@@ -80,7 +83,14 @@ export function positionUnseededParticipants({
     !multipleStructures &&
     unseededParticipantIds.length > unfilledDrawPositions.length
   ) {
-    return { error: INSUFFICIENT_DRAW_POSITIONS };
+    return decorateResult({
+      result: { error: INSUFFICIENT_DRAW_POSITIONS },
+      context: {
+        unseededParticipantsCount: unseededParticipantIds.length,
+        unfilledDrawPositionsCount: unfilledDrawPositions.length,
+      },
+      stack,
+    });
   }
 
   const { appliedPolicies } = getAppliedPolicies({
@@ -163,7 +173,7 @@ function randomUnseededDistribution({
         matchUpsMap,
         structureId,
       });
-      if (result?.error) console.log({ result });
+      if (result?.error) console.log('!!!!!', { result });
       if (result?.error) return result;
     }
   }

@@ -311,7 +311,7 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(result.tournamentInfo.startDate).toEqual(startDate);
 });
 
-it.only('can schedule many attributes at once', () => {
+it('can schedule many attributes at once', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize: 8 }],
   });

@@ -1,6 +1,8 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getSeedPattern, getValidSeedBlocks } from '../../getters/seedGetter';
 import { positionUnseededParticipants } from './positionUnseededParticipants';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getPositionAssignments } from '../../getters/positionsGetter';
@@ -8,7 +10,6 @@ import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { positionByes } from './byePositioning/positionByes';
 import { findStructure } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
-import { getSeedPattern, getValidSeedBlocks } from '../../getters/seedGetter';
 import { positionQualifiers } from './positionQualifiers';
 import { positionSeedBlocks } from './positionSeeds';
 import { makeDeepCopy } from '../../../utilities';
@@ -38,10 +39,13 @@ export function automatedPositioning({
   participants,
   structureId,
   matchUpsMap,
+  seedLimit,
   seedsOnly,
   drawType,
   event,
 }) {
+  const positioningReport = [];
+
   //-----------------------------------------------------------
   // handle notification state for all exit conditions
   if (!applyPositioning) {
@@ -51,7 +55,7 @@ export function automatedPositioning({
 
   const handleErrorCondition = (result) => {
     if (!applyPositioning) enableNotifications();
-    return result;
+    return decorateResult({ result, stack: 'automatedPositioning' });
   };
 
   const handleSuccessCondition = (result) => {
@@ -111,6 +115,8 @@ export function automatedPositioning({
   if (seedBlockInfo.error) return seedBlockInfo;
   const { validSeedBlocks } = seedBlockInfo;
 
+  positioningReport.push({ validSeedBlocks });
+
   if (
     getSeedPattern(structure.seedingProfile || seedingProfile) === WATERFALL
   ) {
@@ -125,11 +131,14 @@ export function automatedPositioning({
         seedBlockInfo,
         matchUpsMap,
         structure,
+        seedLimit,
         seedsOnly,
         event,
       });
     if (result?.error) return handleErrorCondition(result);
     unseededByePositions = result.unseededByePositions;
+
+    positioningReport.push({ action: 'positionByes', unseededByePositions });
 
     result = positionSeedBlocks({
       seedingProfile: structure.seedingProfile || seedingProfile,
@@ -144,6 +153,11 @@ export function automatedPositioning({
       structure,
     });
     if (result.error) return handleErrorCondition(result);
+
+    positioningReport.push({
+      action: 'positionSeedBlocks',
+      seedPositions: result.seedPositions,
+    });
   } else {
     // otherwise... seeds need to be placed first so that BYEs
     // can follow the seedValues of placed seeds
@@ -160,7 +174,13 @@ export function automatedPositioning({
         matchUpsMap,
         structure,
       });
+
       if (result.error) return handleErrorCondition(result);
+
+      positioningReport.push({
+        action: 'positionSeedBlocks',
+        seedPositions: result.seedPositions,
+      });
     }
 
     const result =
@@ -173,11 +193,21 @@ export function automatedPositioning({
         seedBlockInfo,
         matchUpsMap,
         structure,
+        seedLimit,
         seedsOnly,
         event,
       });
-    if (result?.error) return handleErrorCondition(result);
+
+    if (result?.error) {
+      console.log('positionByes', { result });
+      return handleErrorCondition(result);
+    }
     unseededByePositions = result.unseededByePositions;
+    positioningReport.push({
+      action: 'positionByes',
+      byeDrawPositions: result.byeDrawPositions,
+      unseededByePositions,
+    });
   }
 
   const conflicts = {};
@@ -197,8 +227,14 @@ export function automatedPositioning({
       matchUpsMap,
       structure,
     });
-    if (result.error) return handleErrorCondition(result);
+    if (result.error) {
+      return handleErrorCondition(result);
+    }
     if (result.conflicts) conflicts.qualifierConflicts = result.conflicts;
+    positioningReport.push({
+      action: 'positionQualifiers',
+      qualifierDrawPositions: result.qualifierDrawPositions,
+    });
 
     result = positionUnseededParticipants({
       inContextDrawMatchUps,
@@ -216,8 +252,11 @@ export function automatedPositioning({
       event,
     });
 
-    if (result.error) return handleErrorCondition(result);
+    if (result.error) {
+      return handleErrorCondition(result);
+    }
     if (result.conflicts) conflicts.unseededConflicts = result.conflicts;
+    positioningReport.push({ action: 'positionUnseededParticipants' });
   }
 
   const { positionAssignments } = getPositionAssignments({
@@ -232,5 +271,5 @@ export function automatedPositioning({
   if (!applyPositioning) enableNotifications();
   //-----------------------------------------------------------
 
-  return { positionAssignments, conflicts, ...SUCCESS };
+  return { positionAssignments, conflicts, ...SUCCESS, positioningReport };
 }

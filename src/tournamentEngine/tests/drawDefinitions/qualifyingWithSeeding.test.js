@@ -8,6 +8,7 @@ import { RATING, SEEDING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { ELO } from '../../../constants/ratingConstants';
 
+// TODO: unPublishEventSeeding - unPublish only MAIN or only QUALIFYING or both...
 const scenarios = [
   {
     qualifyingPositions: 4,

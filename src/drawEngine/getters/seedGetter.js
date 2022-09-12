@@ -114,6 +114,7 @@ export function getValidSeedBlocks({
       ({ roundNumber }) => roundNumber === structure.roundLimit
     ).length;
     const chunkSize = firstRoundDrawPositions.length / seedingBlocksCount;
+
     if (isFeedIn) {
       // TODO: figure this out
     } else {
@@ -165,7 +166,7 @@ export function getValidSeedBlocks({
     blocks.forEach((block) => validSeedBlocks.push(block));
   }
 
-  if (!isContainer && !isLucky) {
+  if (!isContainer && !isLucky && !qualifyingBlocks) {
     const { blocks, error } = constructPower2Blocks({
       drawPositionOffset: firstRoundDrawPositionOffset,
       seedNumberOffset: fedSeedNumberOffset,

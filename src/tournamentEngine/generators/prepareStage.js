@@ -5,17 +5,20 @@ import { assignSeed } from '../../drawEngine/governors/entryGovernor/seedAssignm
 import { findExtension } from '../governors/queryGovernor/extensionQueries';
 import { getDrawStructures } from '../../drawEngine/getters/findStructure';
 import { getValidSeedBlocks } from '../../drawEngine/getters/seedGetter';
+import { decorateResult } from '../../global/functions/decorateResult';
 import { getParticipantId } from '../../global/functions/extractors';
 
 import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
+import { AD_HOC, QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 export function prepareStage({
   preparedStructureIds = [],
   inContextDrawMatchUps,
   tournamentRecord,
   appliedPolicies,
+  qualifyingOnly,
   drawDefinition,
   seedingProfile,
   participants,
@@ -183,9 +186,15 @@ export function prepareStage({
         });
   }
 
-  let conflicts = [];
   let positionAssignments;
-  if (automated !== false) {
+  let positioningReport;
+  let conflicts = [];
+
+  if (
+    automated !== false &&
+    drawType !== AD_HOC &&
+    !(qualifyingOnly && stage !== QUALIFYING)
+  ) {
     const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
     // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
     const result = automatedPositioning({
@@ -199,19 +208,23 @@ export function prepareStage({
       structureId,
       matchUpsMap,
       placeByes,
+      seedLimit,
       seedsOnly,
       drawType,
       event,
     });
     conflicts = result?.conflicts;
     positionAssignments = result?.positionAssignments;
+    positioningReport = result?.positioningReport;
+
     if (result.error) {
-      return result;
+      return decorateResult({ result, stack: 'prepareStage' });
     }
   }
 
   return {
     positionAssignments,
+    positioningReport,
     stageEntries,
     structureId,
     seedsCount,
