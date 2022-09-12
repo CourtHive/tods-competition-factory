@@ -10,6 +10,8 @@ import { getParticipantId } from '../../global/functions/extractors';
 import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
+import { decorateResult } from '../../global/functions/decorateResult';
+import { AD_HOC } from '../../constants/drawDefinitionConstants';
 
 export function prepareStage({
   preparedStructureIds = [],
@@ -185,7 +187,7 @@ export function prepareStage({
 
   let conflicts = [];
   let positionAssignments;
-  if (automated !== false) {
+  if (automated !== false && drawType !== AD_HOC) {
     const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
     // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
     const result = automatedPositioning({
@@ -206,7 +208,7 @@ export function prepareStage({
     conflicts = result?.conflicts;
     positionAssignments = result?.positionAssignments;
     if (result.error) {
-      return result;
+      return decorateResult({ result, stack: 'prepareStage' });
     }
   }
 

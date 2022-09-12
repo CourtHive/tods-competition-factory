@@ -77,7 +77,8 @@ export function generateDrawDefinition(params) {
   const validEntriesResult =
     event && participants && checkValidEntries({ event, participants });
 
-  if (validEntriesResult?.error) return validEntriesResult;
+  if (validEntriesResult?.error)
+    return decorateResult({ result: validEntriesResult, stack });
 
   // if tournamentRecord is provided, and unless instructed to ignore valid types,
   // check for restrictions on allowed drawTypes
@@ -90,7 +91,7 @@ export function generateDrawDefinition(params) {
       categoryName: event?.categoryName,
     });
   if (allowedDrawTypes?.length && !allowedDrawTypes.includes(drawType)) {
-    return { error: INVALID_DRAW_TYPE };
+    return decorateResult({ result: { error: INVALID_DRAW_TYPE }, stack });
   }
 
   const eventEntries =
@@ -141,7 +142,7 @@ export function generateDrawDefinition(params) {
 
   if (tieFormat) {
     const result = validateTieFormat({ tieFormat });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
   if (matchUpType === TEAM && eventType === TEAM) {
@@ -196,7 +197,7 @@ export function generateDrawDefinition(params) {
     if (!equivalentInScope) {
       if (tieFormat) {
         const result = checkTieFormat(tieFormat);
-        if (result.error) return result;
+        if (result.error) return decorateResult({ result, stack });
 
         drawDefinition.tieFormat = result.tieFormat || tieFormat;
       } else {
@@ -226,10 +227,15 @@ export function generateDrawDefinition(params) {
 
   if (policyDefinitions) {
     if (typeof policyDefinitions !== 'object') {
-      return {
-        info: 'policyDefinitions must be an object',
-        error: INVALID_VALUES,
-      };
+      return decorateResult(
+        {
+          result: {
+            info: 'policyDefinitions must be an object',
+            error: INVALID_VALUES,
+          },
+        },
+        stack
+      );
     } else {
       const policiesToAttach = {};
       for (const key of Object.keys(policyDefinitions)) {
@@ -266,7 +272,7 @@ export function generateDrawDefinition(params) {
     drawSize,
   });
   if (drawTypeResult.error) {
-    return drawTypeResult;
+    return decorateResult({ result: drawTypeResult, stack });
   }
   drawDefinition = drawTypeResult.drawDefinition;
 
@@ -284,7 +290,7 @@ export function generateDrawDefinition(params) {
     if (drawEntries && result.error) {
       // only report errors with drawEntries
       // if entries are taken from event.entries assume stageSpace is not available
-      return result;
+      return decorateResult({ result, stack });
     }
   }
 
@@ -303,6 +309,9 @@ export function generateDrawDefinition(params) {
     drawSize,
     entries,
   });
+
+  if (structureResult.error)
+    return decorateResult({ result: structureResult, stack });
 
   const structureId = structureResult.structureId;
   const conflicts = structureResult.conflicts;
@@ -364,6 +373,8 @@ export function generateDrawDefinition(params) {
           drawSize,
           entries,
         });
+
+        if (qualifyingStageResult.error) return qualifyingStageResult;
 
         if (qualifyingStageResult.structureId) {
           preparedStructureIds.push(qualifyingStageResult.structureId);

@@ -35,16 +35,17 @@ it('will generate an AD_HOC drawDefinition with no matchUps', () => {
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(1);
   expect(drawDefinition.structures[0].matchUps.length).toEqual(0);
-  console.log(drawDefinition.extensions[1]);
 });
 
 it('can generate AD_HOC drawDefinitions, add and delete matchUps', () => {
+  let result = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 32, drawType: AD_HOC }],
+  });
+
   const {
     tournamentRecord,
     drawIds: [drawId],
-  } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 32, drawType: AD_HOC }],
-  });
+  } = result;
 
   tournamentEngine.setState(tournamentRecord);
 
@@ -55,7 +56,7 @@ it('can generate AD_HOC drawDefinitions, add and delete matchUps', () => {
 
   const structureId = drawDefinition.structures[0].structureId;
 
-  let result = tournamentEngine.generateAdHocMatchUps({ drawId, structureId });
+  result = tournamentEngine.generateAdHocMatchUps({ drawId, structureId });
   expect(result.error).toEqual(INVALID_VALUES);
 
   result = tournamentEngine.generateAdHocMatchUps({

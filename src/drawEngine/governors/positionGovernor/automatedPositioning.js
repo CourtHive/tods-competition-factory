@@ -1,6 +1,8 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { getSeedPattern, getValidSeedBlocks } from '../../getters/seedGetter';
 import { positionUnseededParticipants } from './positionUnseededParticipants';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getPositionAssignments } from '../../getters/positionsGetter';
@@ -8,7 +10,6 @@ import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { positionByes } from './byePositioning/positionByes';
 import { findStructure } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
-import { getSeedPattern, getValidSeedBlocks } from '../../getters/seedGetter';
 import { positionQualifiers } from './positionQualifiers';
 import { positionSeedBlocks } from './positionSeeds';
 import { makeDeepCopy } from '../../../utilities';
@@ -51,7 +52,7 @@ export function automatedPositioning({
 
   const handleErrorCondition = (result) => {
     if (!applyPositioning) enableNotifications();
-    return result;
+    return decorateResult({ result, stack: 'automatedPositioning' });
   };
 
   const handleSuccessCondition = (result) => {
@@ -176,7 +177,11 @@ export function automatedPositioning({
         seedsOnly,
         event,
       });
-    if (result?.error) return handleErrorCondition(result);
+
+    if (result?.error) {
+      console.log('positionByes', { result });
+      return handleErrorCondition(result);
+    }
     unseededByePositions = result.unseededByePositions;
   }
 
@@ -197,7 +202,10 @@ export function automatedPositioning({
       matchUpsMap,
       structure,
     });
-    if (result.error) return handleErrorCondition(result);
+    if (result.error) {
+      console.log('positiongQualifiers', result);
+      return handleErrorCondition(result);
+    }
     if (result.conflicts) conflicts.qualifierConflicts = result.conflicts;
 
     result = positionUnseededParticipants({
@@ -216,7 +224,9 @@ export function automatedPositioning({
       event,
     });
 
-    if (result.error) return handleErrorCondition(result);
+    if (result.error) {
+      return handleErrorCondition(result);
+    }
     if (result.conflicts) conflicts.unseededConflicts = result.conflicts;
   }
 
