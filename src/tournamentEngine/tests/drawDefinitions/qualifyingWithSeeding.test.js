@@ -366,5 +366,33 @@ it.each(scenarios)(
     for (const seedAssignment of drawSeedAssignments) {
       expect(Object.values(seedAssignment)[0].seedValue).not.toBeUndefined();
     }
+
+    // unpublish only qualifying stage seeding
+    result = tournamentEngine.unPublishEventSeeding({
+      stages: [QUALIFYING],
+      eventId,
+    });
+    expect(result.success).toEqual(true);
+
+    tournamentParticipants = tournamentEngine.getTournamentParticipants({
+      inContext: true,
+      convertExtensions: true,
+      withStatistics: true,
+      withOpponents: true,
+      withMatchUps: true,
+      usePublishState: true,
+      withGroupings: true,
+      withSeeding: true,
+      participantFilters: {
+        participantRoles: ['COMPETITOR'],
+      },
+    }).tournamentParticipants;
+
+    targetParticiapnts = tournamentParticipants
+      .filter(({ participantId }) =>
+        seedScaledParticipantIds.includes(participantId)
+      )
+      .filter(({ events }) => events[0].seedAssignments);
+    expect(targetParticiapnts.length).toEqual(4);
   }
 );

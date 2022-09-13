@@ -11,7 +11,7 @@ import {
 } from '../../../constants/topicConstants';
 
 export function unPublishOrderOfPlay({
-  removePriorValues,
+  removePriorValues = true,
   tournamentRecord,
   status = PUBLIC,
 }) {
