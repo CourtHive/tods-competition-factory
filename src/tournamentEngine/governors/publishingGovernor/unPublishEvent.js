@@ -11,7 +11,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function unPublishEvent({
-  removePriorValues,
+  removePriorValues = true,
   tournamentRecord,
   status = PUBLIC,
   event,

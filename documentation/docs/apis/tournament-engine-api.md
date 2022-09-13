@@ -3393,7 +3393,7 @@ Modifies the `publishState` of an event. `Subscriptions` or middleware can be us
 
 ```js
 tournamentEngine.unPublishEvent({
-  removePriorValues, // optional boolean - when true will delete prior timeItems
+  removePriorValues, // optional boolean, defaults to true - when true will delete prior timeItems
   eventId,
 });
 ```
@@ -3404,7 +3404,8 @@ tournamentEngine.unPublishEvent({
 
 ```js
 tournamentEngine.unPublishEventSeeding({
-  removePriorValues, // optional boolean - when true will delete prior timeItems
+  removePriorValues, // optional boolean, defaults to true - when true will delete prior timeItems
+  stages, // optionally specify array of stages to be unpublished, otherwise unpublish all stages
   eventId,
 });
 ```
@@ -3415,7 +3416,7 @@ tournamentEngine.unPublishEventSeeding({
 
 ```js
 tournamentEngine.unPublishOrderOfPlay({
-  removePriorValues, // optional boolean - when true will delete prior timeItems
+  removePriorValues, // optional boolean, defaults to true - when true will delete prior timeItems
 });
 ```
 
