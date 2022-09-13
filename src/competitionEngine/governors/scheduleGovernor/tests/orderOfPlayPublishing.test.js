@@ -113,11 +113,27 @@ it('can publish order of play for specified days', () => {
       .orderOfPlay
   ).not.toBeUndefined();
 
+  result = competitionEngine.unPublishOrderOfPlay({
+    removePriorValues: false,
+  });
+  expect(result.success).toEqual(true);
+
+  result = competitionEngine.getState();
+  expect(Object.values(result.tournamentRecords)[0].timeItems.length).toEqual(
+    3
+  );
+  expect(
+    Object.values(result.tournamentRecords)[0].timeItems[2].itemValue
+  ).toEqual({ [PUBLIC]: {} });
+
   result = competitionEngine.unPublishOrderOfPlay();
   expect(result.success).toEqual(true);
 
   result = competitionEngine.getState();
+  expect(Object.values(result.tournamentRecords)[0].timeItems.length).toEqual(
+    2
+  );
   expect(
-    Object.values(result.tournamentRecords)[0].timeItems[2].itemValue
+    Object.values(result.tournamentRecords)[0].timeItems[1].itemValue
   ).toEqual({ [PUBLIC]: {} });
 });
