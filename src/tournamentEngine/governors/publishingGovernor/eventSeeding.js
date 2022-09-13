@@ -14,9 +14,9 @@ import {
 } from '../../../constants/topicConstants';
 
 export function publishEventSeeding({
+  removePriorValues = true,
   stageSeedingScaleNames,
   seedingScaleNames,
-  removePriorValues,
   tournamentRecord,
   status = PUBLIC,
   drawIds = [],
@@ -33,9 +33,23 @@ export function publishEventSeeding({
 
   const itemValue = timeItem?.itemValue || { [status]: {} };
 
+  const updatedSeedingScaleNames = (itemValue[status].seeding
+    ?.seedingScaleNames ||
+    seedingScaleNames) && {
+    ...itemValue[status].seeding?.seedingScaleNames,
+    ...seedingScaleNames,
+  };
+
+  const updatedStageSeedingScaleNames = (itemValue[status].seeding
+    ?.stageSeedingScaleNames ||
+    stageSeedingScaleNames) && {
+    ...itemValue[status].seeding?.stageSeedingScaleNames,
+    ...stageSeedingScaleNames,
+  };
+
   itemValue[status].seeding = {
-    stageSeedingScaleNames,
-    seedingScaleNames,
+    stageSeedingScaleNames: updatedStageSeedingScaleNames,
+    seedingScaleNames: updatedSeedingScaleNames,
     published: true,
     drawIds,
   };
@@ -59,9 +73,11 @@ export function publishEventSeeding({
 }
 
 export function unPublishEventSeeding({
-  removePriorValues,
+  removePriorValues = true,
+  seedingScaleNames,
   tournamentRecord,
   status = PUBLIC,
+  stages,
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -75,7 +91,33 @@ export function unPublishEventSeeding({
 
   const itemValue = timeItem?.itemValue || { [status]: {} };
 
-  if (itemValue[status]) delete itemValue[status].seeding;
+  if (itemValue[status]) {
+    if (
+      Array.isArray(stages) &&
+      itemValue[status].seeding?.stageSeedingScaleNames
+    ) {
+      for (const stage of stages) {
+        if (itemValue[status].seeding.stageSeedingScaleNames[stage]) {
+          delete itemValue[status].seeding.stageSeedingScaleNames[stage];
+        }
+      }
+    }
+
+    if (
+      Array.isArray(seedingScaleNames) &&
+      itemValue[status].seeding?.seedingScaleNames
+    ) {
+      itemValue[status].seeding.seedingScaleNames = itemValue[
+        status
+      ].seeding.seedingScaleNames.filter(
+        (scaleName) => !seedingScaleNames.includes(scaleName)
+      );
+    }
+
+    if (!stages && !seedingScaleNames) {
+      delete itemValue[status].seeding;
+    }
+  }
 
   const updatedTimeItem = {
     itemValue,
