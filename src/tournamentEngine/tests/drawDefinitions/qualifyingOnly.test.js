@@ -206,7 +206,7 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   expect(notificationsOrder).toEqual(['deletedMatchUpIds', 'addMatchUps']);
 });
 
-it.each([
+it.only.each([
   { drawType: FEED_IN_CHAMPIONSHIP, linksCount: 6, structuresCount: 3 },
   { drawType: SINGLE_ELIMINATION, linksCount: 1, structuresCount: 2 },
   { drawType: COMPASS, linksCount: 8, structuresCount: 9 },
@@ -222,7 +222,12 @@ it.each([
             {
               roundTarget: 1,
               structureProfiles: [
-                { stageSequence: 1, drawSize: 16, qualifyingRoundNumber: 2 },
+                {
+                  stageSequence: 1,
+                  drawSize: 16,
+                  qualifyingRoundNumber: 2,
+                  matchUpFormat: 'SET3-S:6/TB7-F:TB10',
+                },
               ],
             },
           ],
@@ -246,6 +251,7 @@ it.each([
     const qualifyingStructure = drawDefinition.structures.find(
       ({ stage }) => stage === QUALIFYING
     );
+    expect(qualifyingStructure.matchUpFormat).not.toBeUndefined();
     expect(qualifyingStructure.matchUps.length).toEqual(12);
 
     result = tournamentEngine.generateDrawDefinition({

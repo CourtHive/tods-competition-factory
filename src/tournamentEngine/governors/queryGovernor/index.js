@@ -24,6 +24,10 @@ import { credits } from '../../../fixtures/credits';
 import { positionActions } from './positionQueries';
 import { makeDeepCopy } from '../../../utilities';
 import {
+  getEventStructures,
+  getTournamentStructures,
+} from '../../getters/structureGetter';
+import {
   publicFindMatchUp,
   allTournamentMatchUps,
   tournamentMatchUps,
@@ -62,8 +66,10 @@ const queryGovernor = {
   drawMatchUps,
   credits,
 
-  getEvent,
+  getTournamentStructures,
+  getEventStructures,
   getEvents,
+  getEvent,
 
   findDrawDefinitionExtension,
   findParticipantExtension,

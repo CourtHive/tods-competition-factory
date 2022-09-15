@@ -51,6 +51,7 @@ export function generateQualifyingStructures({
         qualifyingRoundNumber,
         qualifyingPositions,
         structureOptions,
+        matchUpFormat,
         structureName,
         matchUpType,
         structureId,
@@ -117,6 +118,7 @@ export function generateQualifyingStructures({
           structureId: structureId || uuids?.pop(),
           qualifyingRoundNumber: roundLimit,
           stage: QUALIFYING,
+          matchUpFormat,
           stageSequence,
           matchUpType,
           roundLimit, // redundant

@@ -1675,23 +1675,6 @@ const { events } = tournamentEngine.getEvents();
 
 ---
 
-## getEventProperties
-
-Gather attributes of events which come from other tournament elements, e.g. participants which have rankings/ratings/seedings for a given event.
-
-```js
-const {
-  entryScaleAttributes,
-  hasSeededParticipants,
-  hasRankedParticipants,
-  hasRatedParticipants,
-} = tournamentEngine.getEventProperties({ eventId });
-```
-
-... where **entryScaleAttributes** is an array of { prticipantId, participantName, seed, ranking, rating }
-
----
-
 ## getEventData
 
 Returns event information optimized for publishing: `matchUps` have context and separated into rounds for consumption by visualization libraries such as `tods-react-draws`.
@@ -1710,6 +1693,23 @@ const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
 
 ---
 
+## getEventProperties
+
+Gather attributes of events which come from other tournament elements, e.g. participants which have rankings/ratings/seedings for a given event.
+
+```js
+const {
+  entryScaleAttributes,
+  hasSeededParticipants,
+  hasRankedParticipants,
+  hasRatedParticipants,
+} = tournamentEngine.getEventProperties({ eventId });
+```
+
+... where **entryScaleAttributes** is an array of { prticipantId, participantName, seed, ranking, rating }
+
+---
+
 ## getEventMatchUpFormatTiming
 
 Method is used internally in advanced scheduling to determine averageMatchUp times for matchUps within an event.
@@ -1723,6 +1723,21 @@ const { eventMatchUpFormatTiming } =
     categoryType, // optional - categoryType is not part of TODS or event attributes, but can be defined in a policy
     eventId,
   });
+```
+
+---
+
+## getEventStructures
+
+```js
+const { structures, stageStructures } = tournamentEngine.getEventStructures({
+  withStageGrouping: true, // optional return structures grouped by stages
+  stageSequences, // optional - specify stageSequences to include
+  stageSequence, // optional - filter by stageSequence
+  stages, // optional - specify stageSequences to include
+  stage, // optional - filter by stage
+  eventId, // REQUIRED
+});
 ```
 
 ---
@@ -2088,6 +2103,33 @@ const {
 
 ---
 
+## getTournamentInfo
+
+Returns tournament attributes. Used to attach details to publishing payload by `getEventData`.
+
+```js
+const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
+const {
+  tournamentId,
+  tournamentRank,
+
+  formalName,
+  tournamentName,
+  promotionalName,
+  onlineResources,
+
+  localTimeZone,
+  startDate,
+  endDate,
+
+  hostCountryCode,
+  tournamentContacts,
+  tournamentAddresses,
+} = tournamentInfo;
+```
+
+---
+
 ## getTournamentParticipants
 
 Returns **deepCopies** of tournament participants filtered by participantFilters which are arrays of desired participant attribute values.
@@ -2166,29 +2208,17 @@ const { penalties } = tournamentEngine.getTournamentPenalties();
 
 ---
 
-## getTournamentInfo
-
-Returns tournament attributes. Used to attach details to publishing payload by `getEventData`.
+## getTournamentStructures
 
 ```js
-const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
-const {
-  tournamentId,
-  tournamentRank,
-
-  formalName,
-  tournamentName,
-  promotionalName,
-  onlineResources,
-
-  localTimeZone,
-  startDate,
-  endDate,
-
-  hostCountryCode,
-  tournamentContacts,
-  tournamentAddresses,
-} = tournamentInfo;
+const { structures, stageStructures } =
+  tournamentEngine.getTournamentStructures({
+    withStageGrouping: true, // optional return structures grouped by stages
+    stageSequences, // optional - specify stageSequences to include
+    stageSequence, // optional - filter by stageSequence
+    stages, // optional - specify stageSequences to include
+    stage, // optional - filter by stage
+  });
 ```
 
 ---
