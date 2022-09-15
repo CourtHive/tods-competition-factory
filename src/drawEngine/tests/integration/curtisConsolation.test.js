@@ -152,6 +152,10 @@ function generateCurtis({
   drawEngine.setStageDrawSize({ stage, drawSize });
   drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType });
 
+  const { stageStructures } = drawEngine.getDrawStructures({
+    withStageGrouping: true,
+  });
+  console.log({ stageStructures });
   const {
     structures: [mainStructure],
   } = drawEngine.getDrawStructures({ stage, stageSequence: 1 });
