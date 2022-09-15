@@ -206,7 +206,7 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   expect(notificationsOrder).toEqual(['deletedMatchUpIds', 'addMatchUps']);
 });
 
-it.only.each([
+it.each([
   { drawType: FEED_IN_CHAMPIONSHIP, linksCount: 6, structuresCount: 3 },
   { drawType: SINGLE_ELIMINATION, linksCount: 1, structuresCount: 2 },
   { drawType: COMPASS, linksCount: 8, structuresCount: 9 },
