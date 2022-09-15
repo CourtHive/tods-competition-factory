@@ -3,8 +3,12 @@ import {
   getDrawStructures,
 } from '../../drawEngine/getters/findStructure';
 
-import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { PLAY_OFF } from '../../constants/drawDefinitionConstants';
+import {
+  MISSING_DRAW_DEFINITION,
+  MISSING_EVENT,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../constants/errorConditionConstants';
 
 export function getPlayoffStructures({ drawDefinition, structureId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -33,6 +37,7 @@ export function getEventStructures({
   event,
   stage,
 }) {
+  if (!event) return { error: MISSING_EVENT };
   const stageStructures = {};
   const structures = [];
 
@@ -69,6 +74,7 @@ export function getTournamentStructures({
   stages,
   stage,
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const stageStructures = {};
   const structures = [];
 
