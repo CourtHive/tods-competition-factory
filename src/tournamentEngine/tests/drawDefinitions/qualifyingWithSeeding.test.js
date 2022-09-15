@@ -238,6 +238,7 @@ it.each(scenarios)(
     for (const seedAssignment of seedAssignments) {
       expect(Object.values(seedAssignment)[0].seedValue).not.toBeUndefined();
     }
+    expect(targetParticiapnts.length).toEqual(16);
 
     result = tournamentEngine.generateDrawDefinition({
       qualifyingProfiles: [
@@ -284,6 +285,26 @@ it.each(scenarios)(
 
     result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
     expect(result.success).toEqual(true);
+
+    tournamentParticipants = tournamentEngine.getTournamentParticipants({
+      inContext: true,
+      convertExtensions: true,
+      withStatistics: true,
+      withOpponents: true,
+      withMatchUps: true,
+      usePublishState: true,
+      withGroupings: true,
+      withSeeding: true,
+      participantFilters: {
+        participantRoles: ['COMPETITOR'],
+      },
+    }).tournamentParticipants;
+    targetParticiapnts = tournamentParticipants
+      .filter(({ participantId }) =>
+        seedScaledParticipantIds.includes(participantId)
+      )
+      .filter(({ events }) => events[0].seedAssignments);
+    expect(targetParticiapnts.length).toEqual(12);
 
     event = tournamentEngine.getEvent({ eventId }).event;
     expect(event.drawDefinitions.length).toEqual(1);
