@@ -572,9 +572,12 @@ const {
 ## getDrawStructures
 
 ```js
-const { structures } = drawEngine.getDrawStructures({
+const { structures, stageStructures } = drawEngine.getDrawStructures({
+  withStageGrouping, // optinal, return structures collated by stage
+  stageSequences, // optional - specify stageSequences to include
+  stageSequence, // optional - filter by stageSequence
+  stages, // optional - specify stageSequences to include
   stage, // optional - filter by stage
-  stageSequence, // optiona - filter by stageSequence
 });
 ```
 

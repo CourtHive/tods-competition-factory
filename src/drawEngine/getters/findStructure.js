@@ -1,8 +1,8 @@
 import { findExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { structureSort } from './structureSort';
 
+import { ITEM, validStages } from '../../constants/drawDefinitionConstants';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
-import { ITEM } from '../../constants/drawDefinitionConstants';
 import {
   MISSING_STRUCTURES,
   STRUCTURE_NOT_FOUND,
@@ -44,9 +44,12 @@ export function findStructure({ drawDefinition, structureId }) {
   TESTS: structureGetter.test.js
 */
 export function getDrawStructures({
+  withStageGrouping,
   drawDefinition,
+  stageSequences,
   stageSequence,
   roundTarget,
+  stages,
   stage,
 }) {
   const error = !drawDefinition
@@ -70,12 +73,36 @@ export function getDrawStructures({
     .filter(isStageSequence)
     .filter(isRoundTarget)
     .sort(structureSort);
-  return { structures };
+
+  const stageStructures =
+    withStageGrouping &&
+    Object.assign(
+      {},
+      ...validStages
+        .map((stage) => {
+          const relevantStructures = structures.filter(
+            (structure) => structure.stage === stage
+          );
+          return relevantStructures.length && { [stage]: relevantStructures };
+        })
+        .filter(Boolean)
+    );
+
+  return { structures, stageStructures };
 
   function isStage(structure) {
-    return !stage || structure.stage === stage;
+    return (
+      (!stage && !Array.isArray(stages)) ||
+      (stage && structure.stage === stage) ||
+      (Array.isArray(stages) && stages.includes(structure.stage))
+    );
   }
   function isStageSequence(structure) {
-    return !stageSequence || structure.stageSequence === stageSequence;
+    return (
+      (!stageSequence && !Array.isArray(stageSequences)) ||
+      (stageSequence && structure.stageSequence === stageSequence) ||
+      (Array.isArray(stageSequences) &&
+        stageSequences.includes(structure.stageSequence))
+    );
   }
 }

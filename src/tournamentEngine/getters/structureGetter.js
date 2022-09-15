@@ -1,6 +1,14 @@
-import { findStructure } from '../../drawEngine/getters/findStructure';
+import {
+  findStructure,
+  getDrawStructures,
+} from '../../drawEngine/getters/findStructure';
+
 import { PLAY_OFF } from '../../constants/drawDefinitionConstants';
-import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import {
+  MISSING_DRAW_DEFINITION,
+  MISSING_EVENT,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../constants/errorConditionConstants';
 
 export function getPlayoffStructures({ drawDefinition, structureId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -18,4 +26,80 @@ export function getPlayoffStructures({ drawDefinition, structureId }) {
   );
 
   return { playoffStructures, structure };
+}
+
+export function getEventStructures({
+  withStageGrouping,
+  stageSequences,
+  stageSequence,
+  roundTarget,
+  stages,
+  event,
+  stage,
+}) {
+  if (!event) return { error: MISSING_EVENT };
+  const stageStructures = {};
+  const structures = [];
+
+  for (const drawDefinition of event.drawDefinitions || []) {
+    const { structures: drawStructures, stageStructures: drawStageStructures } =
+      getDrawStructures({
+        withStageGrouping,
+        stageSequences,
+        drawDefinition,
+        stageSequence,
+        roundTarget,
+        stages,
+        stage,
+      });
+
+    structures.push(...drawStructures);
+    if (drawStageStructures) {
+      for (const stage of Object.keys(drawStageStructures)) {
+        if (!stageStructures[stage]) stageStructures[stage] = [];
+        stageStructures[stage].push(...drawStageStructures[stage]);
+      }
+    }
+  }
+
+  return { structures, stageStructures };
+}
+
+export function getTournamentStructures({
+  withStageGrouping,
+  tournamentRecord,
+  stageSequences,
+  stageSequence,
+  roundTarget,
+  stages,
+  stage,
+}) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  const stageStructures = {};
+  const structures = [];
+
+  for (const event of tournamentRecord.events || []) {
+    const {
+      structures: eventStructures,
+      stageStructures: eventStageStructures,
+    } = getEventStructures({
+      withStageGrouping,
+      stageSequences,
+      stageSequence,
+      roundTarget,
+      stages,
+      event,
+      stage,
+    });
+
+    structures.push(...eventStructures);
+    if (eventStageStructures) {
+      for (const stage of Object.keys(eventStageStructures)) {
+        if (!stageStructures[stage]) stageStructures[stage] = [];
+        stageStructures[stage].push(...eventStageStructures[stage]);
+      }
+    }
+  }
+
+  return { structures, stageStructures };
 }

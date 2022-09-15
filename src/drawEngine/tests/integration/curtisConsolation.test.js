@@ -8,6 +8,7 @@ import {
   CONSOLATION,
   CURTIS,
 } from '../../../constants/drawDefinitionConstants';
+import { expect } from 'vitest';
 
 it('can generate and verify curtis structures', () => {
   let mainStructureId,
@@ -152,6 +153,10 @@ function generateCurtis({
   drawEngine.setStageDrawSize({ stage, drawSize });
   drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType });
 
+  const { stageStructures } = drawEngine.getDrawStructures({
+    withStageGrouping: true,
+  });
+  expect(Object.keys(stageStructures).length).toEqual(2);
   const {
     structures: [mainStructure],
   } = drawEngine.getDrawStructures({ stage, stageSequence: 1 });
