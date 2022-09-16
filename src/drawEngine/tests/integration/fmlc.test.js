@@ -6,12 +6,13 @@ import {
   verifyMatchUps,
 } from '../../tests/primitives/verifyMatchUps';
 
+import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import {
   BYE,
   RETIRED,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
 
 it('can generate FIRST_MATCH_LOSER_CONSOLATION', () => {
   const drawSize = 32;
@@ -288,10 +289,12 @@ it('can direct winners and losers drawSize: 4 with NO BYEs', () => {
 
   let result;
 
+  const policyDefinitions = { [POLICY_TYPE_FEED_IN]: { feedMainFinal: true } };
   const { mainStructureId, consolationStructureId } = generateFMLC({
-    drawSize,
-    seedsCount,
     participantsCount,
+    policyDefinitions,
+    seedsCount,
+    drawSize,
   });
 
   result = completeMatchUp({

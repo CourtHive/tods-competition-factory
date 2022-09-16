@@ -9,6 +9,7 @@ import {
   replaceWithBye,
 } from '../testingUtilities';
 
+import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
   CONSOLATION,
@@ -18,15 +19,18 @@ import {
 
 tournamentEngine.devContext(true);
 
+const policyDefinitions = { [POLICY_TYPE_FEED_IN]: { feedMainFinal: true } };
+
 it('can generate FIRST_MATCH_LOSER_CONSOLATION with double-byes in consolation 17/32', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 17;
 
   const { mainStructureId, consolationStructureId } = generateFMLC({
-    drawSize,
-    seedsCount,
+    policyDefinitions,
     participantsCount,
+    seedsCount,
+    drawSize,
   });
 
   verifyStructure({
@@ -77,9 +81,10 @@ it('can generate FIRST_MATCH_LOSER_CONSOLATION with double-byes in consolation 1
   const participantsCount = 18;
 
   const { mainStructureId, consolationStructureId } = generateFMLC({
-    drawSize,
-    seedsCount,
     participantsCount,
+    policyDefinitions,
+    seedsCount,
+    drawSize,
   });
 
   verifyStructure({
@@ -300,6 +305,7 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
+    policyDefinitions,
     drawProfiles,
   });
 
@@ -364,6 +370,7 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
+    policyDefinitions,
     drawProfiles,
   });
 
