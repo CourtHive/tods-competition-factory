@@ -19,7 +19,10 @@ export function generateFMLC({
   drawEngine.reset();
   drawEngine.newDrawDefinition();
   drawEngine.setStageDrawSize({ stage: MAIN, drawSize });
-  drawEngine.generateDrawTypeAndModifyDrawDefinition({ drawType });
+  drawEngine.generateDrawTypeAndModifyDrawDefinition({
+    policyDefinitions,
+    drawType,
+  });
 
   const {
     structures: [mainStructure],

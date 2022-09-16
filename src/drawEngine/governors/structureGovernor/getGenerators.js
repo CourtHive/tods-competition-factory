@@ -1,3 +1,4 @@
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserConsolation';
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
@@ -12,6 +13,7 @@ import {
   generateRoundRobinWithPlayOff,
 } from '../../generators/roundRobin';
 
+import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 // prettier-ignore
 import {
@@ -37,6 +39,21 @@ export function getGenerators(params) {
     drawSize,
     uuids,
   } = params;
+
+  const { appliedPolicies } = getAppliedPolicies(params);
+  const feedPolicy =
+    params.policyDefinitions?.[POLICY_TYPE_FEED_IN] ||
+    appliedPolicies[POLICY_TYPE_FEED_IN];
+
+  // disable feeding from MAIN final unless policy specifies
+  params.skipRounds =
+    params.skipRounds !== undefined
+      ? params.skipRounds
+      : drawSize <= 4
+      ? feedPolicy?.feedMainFinal
+        ? 0
+        : 1
+      : 0;
 
   const singleElimination = () => {
     const { matchUps } = treeMatchUps(params);
@@ -81,20 +98,18 @@ export function getGenerators(params) {
     },
     [SINGLE_ELIMINATION]: () => singleElimination(),
     [DOUBLE_ELIMINATION]: () => generateDoubleElimination(params),
-    [COMPASS]: () => {
-      Object.assign(params, {
+    [COMPASS]: () =>
+      generatePlayoffStructures({
+        ...params,
         roundOffsetLimit: 3,
         playoffAttributes: COMPASS_ATTRIBUTES,
-      });
-      return generatePlayoffStructures(params);
-    },
-    [OLYMPIC]: () => {
-      Object.assign(params, {
+      }),
+    [OLYMPIC]: () =>
+      generatePlayoffStructures({
+        ...params,
         roundOffsetLimit: 2,
         playoffAttributes: OLYMPIC_ATTRIBUTES,
-      });
-      return generatePlayoffStructures(params);
-    },
+      }),
     [PLAY_OFF]: () => {
       return generatePlayoffStructures(params);
     },
@@ -115,19 +130,11 @@ export function getGenerators(params) {
     },
     [FIRST_ROUND_LOSER_CONSOLATION]: () => firstRoundLoserConsolation(params),
     [FIRST_MATCH_LOSER_CONSOLATION]: () =>
-      feedInChampionship(Object.assign(params, { feedRounds: 1, fmlc: true })),
-    [MFIC]: () => {
-      const skipRounds = drawSize <= 4 ? 1 : 0;
-      return feedInChampionship(
-        Object.assign(params, { feedRounds: 1, skipRounds })
-      );
-    },
-    [FICQF]: () =>
-      feedInChampionship(Object.assign(params, { feedsFromFinal: 2 })),
-    [FICSF]: () =>
-      feedInChampionship(Object.assign(params, { feedsFromFinal: 1 })),
-    [FICR16]: () =>
-      feedInChampionship(Object.assign(params, { feedsFromFinal: 3 })),
+      feedInChampionship({ ...params, feedRounds: 1, fmlc: true }),
+    [MFIC]: () => feedInChampionship({ ...params, feedRounds: 1 }),
+    [FICSF]: () => feedInChampionship({ ...params, feedsFromFinal: 1 }),
+    [FICQF]: () => feedInChampionship({ ...params, feedsFromFinal: 2 }),
+    [FICR16]: () => feedInChampionship({ ...params, feedsFromFinal: 3 }),
     [FEED_IN_CHAMPIONSHIP]: () => feedInChampionship(params),
     [CURTIS]: () => generateCurtisConsolation(params),
     [ROUND_ROBIN]: () => generateRoundRobin(params),
