@@ -4,6 +4,7 @@ title: Feed Policy
 
 ```js
 const feedPolicy = {
+  feedMainFinal, // optional - defaults to false; drawSize: 4 will not feed main final unless true
   roundGroupedOrder: [
     [1], // complete round TOP_DOWN
     [1], // complete round BOTTOM_UP
