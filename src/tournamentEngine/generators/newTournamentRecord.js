@@ -23,7 +23,7 @@ export function newTournamentRecord(params = {}) {
   }
 
   if (params.extensions) {
-    params.extensions = params.filter(isValidExtension);
+    params.extensions = params.extensions.filter(isValidExtension);
   }
 
   return { ...params };

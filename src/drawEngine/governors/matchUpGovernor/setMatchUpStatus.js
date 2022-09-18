@@ -136,7 +136,7 @@ export function setMatchUpStatus(params) {
     if (
       [
         AWAITING_RESULT,
-        // for the following statuses sould all tieMatchUp results be removed?
+        // for the following statuses should all tieMatchUp results be removed?
         // CANCELLED,
         // DOUBLE_WALKOVER,
         // WALKOVER,
