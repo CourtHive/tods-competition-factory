@@ -90,8 +90,13 @@ export function directParticipants(params) {
   }
 
   if (drawPositions) {
-    const winningIndex = winningSide - 1;
-    const losingIndex = 1 - winningIndex;
+    // if projectedWinningSide is present then a TEAM matchUp is being directed, not the tieMatchUp
+    const winningIndex = projectedWinningSide
+      ? projectedWinningSide - 1
+      : winningSide - 1;
+    const losingIndex = projectedWinningSide
+      ? 1 - projectedWinningSide
+      : 1 - winningIndex;
 
     const winningDrawPosition = drawPositions[winningIndex];
     const loserDrawPosition = drawPositions[losingIndex];
