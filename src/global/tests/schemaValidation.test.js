@@ -24,9 +24,10 @@ const schema = JSON.parse(
 const validate = ajv.compile(schema);
 
 const sourcePath = './src/global/testHarness';
-const filenames = fs
-  .readdirSync(sourcePath)
-  .filter((filename) => filename.indexOf('.tods.json') > 0);
+const filenames = fs.readdirSync(sourcePath).filter(
+  (filename) =>
+    filename.indexOf('.tods.json') > 0 && filename.indexOf('.8') === undefined // we don't want to validate TODS v0.8
+);
 
 it.each(filenames)(
   'can validate all tods files in testHarness directory',
