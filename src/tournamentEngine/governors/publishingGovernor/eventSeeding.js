@@ -1,6 +1,7 @@
 import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
 import { getEventTimeItem } from '../queryGovernor/timeItems';
 import { addNotice } from '../../../global/state/globalState';
+import { definedAttributes } from '../../../utilities';
 
 import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -47,12 +48,12 @@ export function publishEventSeeding({
     ...stageSeedingScaleNames,
   };
 
-  itemValue[status].seeding = {
+  itemValue[status].seeding = definedAttributes({
     stageSeedingScaleNames: updatedStageSeedingScaleNames,
     seedingScaleNames: updatedSeedingScaleNames,
     published: true,
     drawIds,
-  };
+  });
 
   const updatedTimeItem = {
     itemValue,
