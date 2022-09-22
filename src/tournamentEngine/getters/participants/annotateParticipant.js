@@ -118,9 +118,10 @@ export function annotateParticipant({
         const publishedSeeding =
           eventsPublishStatuses[participantEvent.eventId]?.publishedSeeding;
         const eventSeedingScaleNames = (
-          publishedSeeding?.seedingScaleNames ||
           (publishedSeeding?.stageSeedingScaleNames &&
             Object.values(publishedSeeding?.stageSeedingScaleNames)) ||
+          (Array.isArray(publishedSeeding?.seedingScaleNames) &&
+            publishedSeeding.seedingScaleNames) ||
           []
         ).map(getScaleAccessor);
         const publishedEventSeedingScaleNames = intersection(

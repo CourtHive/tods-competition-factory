@@ -147,8 +147,8 @@ it('can propagate and remove lineUps', () => {
         structureName === 'WEST' && roundNumber === 1
     )
     .forEach(({ sides }) => {
-      expect(sides[0].lineUp).not.toBeDefined();
-      expect(sides[1].lineUp).not.toBeDefined();
+      expect(sides[0].lineUp).toBeDefined();
+      expect(sides[1].lineUp).toBeDefined();
     });
 });
 
