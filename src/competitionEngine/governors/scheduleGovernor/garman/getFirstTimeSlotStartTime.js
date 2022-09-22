@@ -1,4 +1,4 @@
-import { getTimeBoundary } from '../schedulers/utils/getTimeBoundary';
+import { getDateTimeBoundary } from '../schedulers/utils/getTimeBoundary';
 import { getCourtDateAvailability } from './getCourtDateAvailability';
 import { generateTimeSlots } from './generateTimeSlots';
 import {
@@ -17,9 +17,10 @@ export function getFirstTimeSlotStartTime({
   // find the first timeSlot across all courts between startTime and endTime that can accommodate averageMatchUpMinutes
   startTime =
     startTime ||
-    getTimeBoundary({ courts, scheduleDate: date, startTime: true });
+    getDateTimeBoundary({ courts, scheduleDate: date, startTime: true });
   endTime =
-    endTime || getTimeBoundary({ courts, scheduleDate: date, endTime: true });
+    endTime ||
+    getDateTimeBoundary({ courts, scheduleDate: date, endTime: true });
 
   let firstTimeSlotStartTime;
   if (startTime && endTime) {
