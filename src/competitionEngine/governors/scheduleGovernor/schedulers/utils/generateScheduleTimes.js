@@ -2,8 +2,8 @@ import { getVenuesAndCourts } from '../../../../getters/venuesAndCourtsGetter';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
 import { getScheduleTimes } from '../../garman/getScheduleTimes';
 import { calculatePeriodLength } from './calculatePeriodLength';
+import { getDateTimeBoundary } from './getTimeBoundary';
 import { generateBookings } from './generateBookings';
-import { getTimeBoundary } from './getTimeBoundary';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../../../constants/errorConditionConstants';
 
@@ -61,8 +61,9 @@ export function generateScheduleTimes({
   );
 
   startTime =
-    startTime || getTimeBoundary({ courts, scheduleDate, startTime: true });
-  endTime = endTime || getTimeBoundary({ courts, scheduleDate, endTime: true });
+    startTime || getDateTimeBoundary({ courts, scheduleDate, startTime: true });
+  endTime =
+    endTime || getDateTimeBoundary({ courts, scheduleDate, endTime: true });
 
   const { bookings, dateScheduledMatchUps } = generateBookings({
     defaultRecoveryMinutes,

@@ -1,6 +1,6 @@
 import { getCourtDateAvailability } from '../../garman/getCourtDateAvailability';
 import { generateTimeSlots } from '../../garman/generateTimeSlots';
-import { getTimeBoundary } from './getTimeBoundary';
+import { getDateTimeBoundary } from './getTimeBoundary';
 import {
   extractTime,
   minutesDifference,
@@ -18,12 +18,12 @@ export function getEarliestCourtTime({
 }) {
   if (!Array.isArray(court.dateAvailability)) return { error: MISSING_VALUE };
 
-  const courtStartTime = getTimeBoundary({
+  const courtStartTime = getDateTimeBoundary({
     scheduleDate: date,
     courts: [court],
     startTime: true,
   });
-  const courtEndTime = getTimeBoundary({
+  const courtEndTime = getDateTimeBoundary({
     scheduleDate: date,
     courts: [court],
     endTime: true,
