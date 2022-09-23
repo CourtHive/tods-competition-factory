@@ -5,6 +5,8 @@ import { INDIVIDUAL } from '../../constants/participantConstants';
 import { DOUBLES } from '../../constants/eventConstants';
 import { PAIR } from '../../constants/participantTypes';
 import { JSON2CSV } from '../json';
+import { expect } from 'vitest';
+import { MALE } from '../../constants/genderConstants';
 
 it('can export CSV files with player demographic data', () => {
   const personExtensions = [
@@ -28,6 +30,7 @@ it('can export CSV files with player demographic data', () => {
         drawSize: participantsCount,
         eventType: DOUBLES,
         seedsCount: 8,
+        gender: MALE,
         category,
       },
     ],
@@ -50,7 +53,9 @@ it('can export CSV files with player demographic data', () => {
     });
   expect(individualParticipants.length).toEqual(128);
 
+  const columnJoiner = ',';
   const rowJoiner = '|';
+
   const config = {
     rowJoiner,
     delimiter: '',
@@ -72,7 +77,12 @@ it('can export CSV files with player demographic data', () => {
   const eventParticipants = individualParticipants.filter(
     (participant) => participant.events?.length
   );
-  console.log(eventParticipants[0]);
+  // console.log(eventParticipants[0]);
   const csvParticipants = JSON2CSV(eventParticipants, config);
-  console.log(csvParticipants);
+  const rows = csvParticipants.split(rowJoiner);
+  expect(rows.length).toEqual(65);
+  expect(rows[0]).toEqual(
+    'sex,birthDate,section,district,city,state,lastName,firstName,personId'
+  );
+  expect(rows[1].split(columnJoiner)[0]).toEqual(MALE);
 });
