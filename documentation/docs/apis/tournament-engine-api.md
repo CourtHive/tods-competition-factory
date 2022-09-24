@@ -1961,6 +1961,16 @@ const {
 
 ---
 
+## getParticipantSchedules
+
+```js
+const { participantSchedules } = tournamentEngine.getParticipantSchedules({
+  participantFilters: { participantIds, participantTypes, eventIds },
+});
+```
+
+---
+
 ## getParticipantSignInStatus
 
 Participant signInStatus can be either 'SIGNED_IN' or 'SIGNED_OUT' (or undefined). See [modifyParticipantsSignInStatus](#modifyParticipantsSignInStatus).

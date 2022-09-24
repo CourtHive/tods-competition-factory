@@ -1,4 +1,9 @@
-import { instanceCount, intersection, unique } from '../../../../utilities';
+import {
+  instanceCount,
+  intersection,
+  unique,
+  UUID,
+} from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 import {
@@ -7,7 +12,12 @@ import {
   getParticipantIds,
 } from '../../../../global/functions/extractors';
 
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
+import {
+  INDIVIDUAL,
+  PAIR,
+  TEAM,
+} from '../../../../constants/participantConstants';
+import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 import { COMPETITOR } from '../../../../constants/participantRoles';
 import {
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
@@ -21,9 +31,10 @@ import {
   DIRECT_ACCEPTANCE,
   LUCKY_LOSER,
   ORGANISER_ACCEPTANCE,
+  UNGROUPED,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
-import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
+import { expect } from 'vitest';
 
 it('can modify entryStatus within event.entries', () => {
   const drawProfiles = [{ drawSize: 8, alternatesCount: 2 }];
@@ -448,4 +459,79 @@ it('will not allow event.entries to have entryStatus appropriate only for draws'
   expect(unique(event.entries.map(({ entryStage }) => entryStage))).toEqual([
     QUALIFYING,
   ]);
+});
+
+it('disallows invalid entryTypes for TEAM events', () => {
+  const {
+    tournamentRecord,
+    eventIds: [eventId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 4, eventType: TEAM, generate: false }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const {
+    tournamentParticipants: [individualParticipant],
+  } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
+
+  let { event } = tournamentEngine.getEvent({ eventId });
+  expect(event.drawDefinitions).toBeUndefined();
+  expect(event.entries.length).toEqual(4);
+
+  let result = tournamentEngine.addEventEntries({
+    participantIds: [individualParticipant.participantId],
+    entryStatus: UNGROUPED,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+  // no entry was added because individualParticipantId was already part of a team
+  expect(result.addedEntriesCount).toEqual(0);
+
+  let entries = tournamentEngine.getEvent({ eventId }).event.entries;
+  expect(entries.length).toEqual(4);
+
+  const participantId = UUID();
+  const participant = {
+    participantId,
+    participantType: INDIVIDUAL,
+    participantRole: COMPETITOR,
+    person: {
+      standardFamilyName: 'Family',
+      standardGivenName: 'Given',
+    },
+  };
+
+  result = tournamentEngine.addParticipants({
+    participants: [participant],
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.addEventEntries({
+    participantIds: [participantId],
+    entryStatus: UNGROUPED,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+  // no entry was added because individualParticipantId was already part of a team
+  expect(result.addedEntriesCount).toEqual(1);
+
+  entries = tournamentEngine.getEvent({ eventId }).event.entries;
+  expect(entries.length).toEqual(5);
+
+  result = tournamentEngine.modifyEntriesStatus({
+    participantIds: [participantId],
+    entryStatus: DIRECT_ACCEPTANCE,
+    eventId,
+  });
+  expect(result.error).toEqual(INVALID_ENTRY_STATUS);
+
+  result = tournamentEngine.modifyEntriesStatus({
+    participantIds: [participantId],
+    entryStatus: ALTERNATE,
+    eventId,
+  });
+  expect(result.error).toEqual(INVALID_ENTRY_STATUS);
 });
