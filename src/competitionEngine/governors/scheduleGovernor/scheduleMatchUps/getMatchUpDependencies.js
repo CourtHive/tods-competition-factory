@@ -30,6 +30,7 @@ import {
 export function getMatchUpDependencies({
   includeParticipantDependencies,
   tournamentRecords = {},
+  tournamentRecord,
   drawDefinition,
   matchUpIds = [],
   matchUps = [], // requires matchUps { inContext: true }
@@ -44,19 +45,22 @@ export function getMatchUpDependencies({
   const positionDependencies = {};
   const matchUpDependencies = {};
   const sourceStructureIdMap = {};
+  const sourceMatchUpIds = {};
 
-  const allLinks = Object.values(tournamentRecords).reduce(
-    (allLinks, tournamentRecord) => {
-      return (tournamentRecord.events || [])
-        .map((event) =>
-          (event.drawDefinitions || []).map(
-            (drawDefinition) => drawDefinition.links || []
-          )
+  if (tournamentRecord && !Object.keys(tournamentRecords).length)
+    tournamentRecords = { [tournamentRecord.tournamentId]: tournamentRecord };
+
+  const allTournamentRecords = Object.values(tournamentRecords);
+
+  const allLinks = allTournamentRecords.reduce((allLinks, tournamentRecord) => {
+    return (tournamentRecord.events || [])
+      .map((event) =>
+        (event.drawDefinitions || []).map(
+          (drawDefinition) => drawDefinition.links || []
         )
-        .flat(Infinity);
-    },
-    []
-  );
+      )
+      .flat(Infinity);
+  }, []);
 
   const positionLinks = allLinks.filter(
     ({ linkType }) => linkType === POSITION
@@ -94,12 +98,14 @@ export function getMatchUpDependencies({
   }
 
   const initializeMatchUpId = (matchUpId) => {
-    if (!matchUpDependencies[matchUpId])
+    if (!matchUpDependencies[matchUpId]) {
       matchUpDependencies[matchUpId] = {
         dependentMatchUpIds: [],
         participantIds: [],
         matchUpIds: [],
       };
+      sourceMatchUpIds[matchUpId] = [];
+    }
   };
 
   const propagateDependencies = (matchUpId, targetMatchUpId) => {
@@ -139,10 +145,12 @@ export function getMatchUpDependencies({
         if (winnerMatchUpId) {
           initializeMatchUpId(winnerMatchUpId);
           propagateDependencies(matchUpId, winnerMatchUpId);
+          sourceMatchUpIds[winnerMatchUpId].push(matchUpId);
         }
         if (loserMatchUpId) {
           initializeMatchUpId(loserMatchUpId);
           propagateDependencies(matchUpId, loserMatchUpId);
+          sourceMatchUpIds[loserMatchUpId].push(matchUpId);
         }
 
         if (processSourceStructures) {
@@ -155,6 +163,7 @@ export function getMatchUpDependencies({
             ]) {
               initializeMatchUpId(matchUpDependency);
               propagateDependencies(matchUpDependency, matchUpId);
+              sourceMatchUpIds[matchUpDependency].push(matchUpId);
             }
           }
         }
@@ -177,8 +186,8 @@ export function getMatchUpDependencies({
     }
 
     if (!drawIds.length) {
-      drawIds = tournamentRecords
-        ? Object.values(tournamentRecords)
+      drawIds = allTournamentRecords?.length
+        ? allTournamentRecords
             .map(({ events = [] }) =>
               events.map(({ drawDefinitions = [] }) =>
                 drawDefinitions.map(({ drawId }) => drawId)
@@ -220,5 +229,10 @@ export function getMatchUpDependencies({
     }
   }
 
-  return { matchUpDependencies, positionDependencies, ...SUCCESS };
+  return {
+    positionDependencies,
+    matchUpDependencies,
+    sourceMatchUpIds,
+    ...SUCCESS,
+  };
 }

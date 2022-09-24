@@ -2,8 +2,8 @@ import { tournamentEngine } from '../..';
 import mocksEngine from '..';
 
 import { TEAM_DOUBLES_3_AGGREGATION } from '../../constants/tieFormatConstants';
-import { TEAM } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
+import { TEAM } from '../../constants/eventConstants';
 
 it('can generate team events using personData', () => {
   // prettier-ignore
