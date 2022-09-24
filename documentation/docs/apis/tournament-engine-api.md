@@ -1961,7 +1961,7 @@ const {
 
 ---
 
-## getParticipantScnhedules
+## getParticipantSchedules
 
 ```js
 const { participantSchedules } = tournamentEngine.getParticipantSchedules({
