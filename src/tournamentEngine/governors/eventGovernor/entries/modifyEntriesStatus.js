@@ -10,7 +10,7 @@ import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import { validStages } from '../../../../constants/drawDefinitionConstants';
-import { PAIR } from '../../../../constants/participantConstants';
+import { DOUBLES, TEAM_EVENT } from '../../../../constants/eventConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
@@ -23,11 +23,17 @@ import {
   INVALID_STAGE,
 } from '../../../../constants/errorConditionConstants';
 import {
+  ALTERNATE,
   DRAW_SPECIFIC_STATUSES,
   EQUIVALENT_ACCEPTANCE_STATUSES,
   VALID_ENTRY_STATUSES,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
+import {
+  INDIVIDUAL,
+  PAIR,
+  TEAM,
+} from '../../../../constants/participantConstants';
 
 // disallow changing entryStatus to WITHDRAWN or UNGROUPED for assignedParticipants
 
@@ -94,7 +100,14 @@ export function modifyEntriesStatus({
         tournamentParticipants,
         participantId,
       });
-      return !(participantType === PAIR && isUngrouped(entryStatus));
+      return (
+        !([PAIR, TEAM].includes(participantType) && isUngrouped(entryStatus)) &&
+        !(
+          participantType === INDIVIDUAL &&
+          [DOUBLES, TEAM_EVENT].includes(event.eventType) &&
+          [ALTERNATE, ...EQUIVALENT_ACCEPTANCE_STATUSES].includes(entryStatus)
+        )
+      );
     }
   );
 

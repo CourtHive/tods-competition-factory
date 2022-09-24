@@ -62,6 +62,8 @@ export function addEventEntries(params) {
   if (!event || !event.eventId) return { error: EVENT_NOT_FOUND };
 
   const stack = 'addEventEntries';
+  const removedEntries = [];
+  const addedEntries = [];
 
   if (
     (extensions &&
@@ -143,6 +145,7 @@ export function addEventEntries(params) {
         });
       }
       if (entryStageSequence) entry.entryStageSequence = entryStageSequence;
+      addedEntries.push(entry.participantId);
       event.entries.push(entry);
     }
   });
@@ -192,6 +195,7 @@ export function addEventEntries(params) {
         groupedIndividualParticipantIds.includes(participantId)
       );
     if (ungroupedParticipantIdsToRemove.length) {
+      removedEntries.push(...ungroupedParticipantIdsToRemove);
       removeEventEntries({
         participantIds: ungroupedParticipantIdsToRemove,
         autoEntryPositions: false, // because the method will be called below if necessary
@@ -213,5 +217,11 @@ export function addEventEntries(params) {
     });
   }
 
-  return decorateResult({ result: { ...SUCCESS }, info, stack });
+  const addedEntriesCount = addedEntries.length - removedEntries.length;
+
+  return decorateResult({
+    result: { ...SUCCESS, addedEntriesCount },
+    stack,
+    info,
+  });
 }
