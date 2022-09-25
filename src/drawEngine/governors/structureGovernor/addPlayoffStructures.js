@@ -1,5 +1,5 @@
-import { attachPlayoffStructures } from './attachPlayoffStructures';
 import { generateAndPopulatePlayoffStructures } from './generateAndPopulatePlayoffStructures';
+import { attachPlayoffStructures } from './attachStructures';
 
 export function addPlayoffStructures(params) {
   const { structures, links } = generateAndPopulatePlayoffStructures(params);
