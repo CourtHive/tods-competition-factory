@@ -21,6 +21,20 @@ export function attachPlayoffStructures({
   if (!Array.isArray(structures) || !Array.isArray(links))
     return { error: INVALID_VALUES };
 
+  const linkHash = (link) =>
+    [
+      link.source.structureId,
+      link.source.roundNumber,
+      link.target.roundNumber,
+    ].join('|');
+
+  const existingLinkHashes = drawDefinition.links.map(linkHash);
+
+  const duplicateLink = links.some((link) =>
+    existingLinkHashes.includes(linkHash(link))
+  );
+  console.log({ duplicateLink });
+
   const structureIds = structures.map(({ structureId }) => structureId);
   drawDefinition.structures.push(...structures);
   drawDefinition.links.push(...links);

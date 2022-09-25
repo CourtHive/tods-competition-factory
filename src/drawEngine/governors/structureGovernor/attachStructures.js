@@ -1,4 +1,5 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
@@ -6,6 +7,7 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  EXISTING_STRUCTURE,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
@@ -24,6 +26,29 @@ export function attachStructures({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!Array.isArray(structures) || !Array.isArray(links))
     return { error: INVALID_VALUES };
+
+  const stack = 'attachStructures';
+
+  const linkHash = (link) =>
+    [
+      link.source.structureId,
+      link.source.roundNumber,
+      link.target.roundNumber,
+    ].join('|');
+
+  const existingLinkHashes = drawDefinition.links.map(linkHash);
+
+  const duplicateLink = links.some((link) => {
+    const hash = linkHash(link);
+    return existingLinkHashes.includes(hash);
+  });
+
+  if (duplicateLink)
+    return decorateResult({
+      result: { error: EXISTING_STRUCTURE },
+      info: 'playoff structure exists',
+      stack,
+    });
 
   // TODO: ensure that all links are valid and reference structures that are/will be included in the drawDefinition
   if (links.length) drawDefinition.links.push(...links);
