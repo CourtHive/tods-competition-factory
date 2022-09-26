@@ -8,6 +8,7 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../../constants/matchUpStatusConstants';
+import { expect } from 'vitest';
 
 it('will not allow BYE removal when there are active matchUps in connected structures', () => {
   const policyDefinitions = POLICY_POSITION_ACTIONS_UNRESTRICTED;
@@ -134,11 +135,11 @@ it('will not allow BYE removal when there are active matchUps in connected struc
   tournamentEngine.devContext({ positionActions: true });
   result = tournamentEngine.positionActions({
     structureId: southStructureId,
-    drawPosition: 2,
+    drawPosition: 4,
     drawId,
   });
   let validActionTypes = result.validActions.map(({ type }) => type);
-  expect(validActionTypes).toEqual(['PENALTY', 'NICKNAME']);
+  expect(validActionTypes.length).toEqual(0);
 
   result = tournamentEngine.positionActions({
     structureId: westStructureId,
@@ -146,7 +147,7 @@ it('will not allow BYE removal when there are active matchUps in connected struc
     drawId,
   });
   validActionTypes = result.validActions.map(({ type }) => type);
-  console.log({ validActionTypes });
+  expect(validActionTypes.length).toEqual(0);
 
   result = tournamentEngine.positionActions({
     structureId: eastStructureId,
@@ -154,5 +155,5 @@ it('will not allow BYE removal when there are active matchUps in connected struc
     drawId,
   });
   validActionTypes = result.validActions.map(({ type }) => type);
-  console.log({ validActionTypes });
+  expect(validActionTypes.length).toEqual(0);
 });
