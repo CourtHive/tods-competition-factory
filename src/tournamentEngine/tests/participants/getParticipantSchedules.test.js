@@ -28,6 +28,11 @@ it('can return participant scheduled matchUps', () => {
   expect(result.success).toEqual(true);
 
   result = competitionEngine.scheduleProfileRounds();
+  expect(
+    result.dateSchedulingProfiles[0].venues[0].rounds.map(
+      ({ roundTiming }) => roundTiming?.roundMinutes
+    )
+  ).toEqual([1440, 720, 360, 180, 90]);
   expect(result.scheduledMatchUpIds[startDate].length).toEqual(23);
 
   result = tournamentEngine.getParticipantSchedules();
