@@ -1,9 +1,10 @@
 import { validateSchedulingProfile } from '../../../../global/validation/validateSchedulingProfile';
+import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
+import { chunkArray, instanceCount } from '../../../../utilities';
 import { definedAttributes } from '../../../../utilities/objects';
 import { extractDate } from '../../../../utilities/dateTime';
 import { getSchedulingProfile } from './schedulingProfile';
-import { chunkArray } from '../../../../utilities';
 
 import { completedMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
 import drawDefinitionConstants from '../../../../constants/drawDefinitionConstants';
@@ -179,6 +180,10 @@ export function getRounds({
   if (needsTournamentRecords && noTournamentRecords)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
+  const events = Object.values(tournamentRecords || {})
+    .map(({ events }) => events)
+    .flat();
+
   const { segmentedRounds, profileRounds } =
     excludeScheduleDateProfileRounds ||
     excludeCompletedRounds ||
@@ -253,6 +258,7 @@ export function getRounds({
           const { minFinishingSum, winnerFinishingPositionRange } =
             getFinishingPositionDetails(round.matchUps);
           const segmentsCount = round.segmentsCount;
+
           if (segmentsCount) {
             const chunkSize = round.matchUps.length / segmentsCount;
             const sortedMatchUps = chunkArray(
@@ -268,6 +274,12 @@ export function getRounds({
                 isComplete,
                 byeCount,
               } = getRoundProfile(matchUps);
+              const roundTiming = getRoundTiming({
+                matchUps: round.matchUps,
+                tournamentRecords,
+                events,
+                round,
+              });
               return definedAttributes({
                 ...round,
                 ...context,
@@ -278,6 +290,7 @@ export function getRounds({
                 minFinishingSum,
                 matchUpsCount,
                 isScheduled,
+                roundTiming,
                 isComplete,
                 byeCount,
                 matchUps,
@@ -293,6 +306,12 @@ export function getRounds({
             isComplete,
             byeCount,
           } = getRoundProfile(round.matchUps);
+          const roundTiming = getRoundTiming({
+            matchUps: round.matchUps,
+            tournamentRecords,
+            events,
+            round,
+          });
           return definedAttributes({
             ...round,
             ...context,
@@ -302,6 +321,7 @@ export function getRounds({
             minFinishingSum,
             matchUpsCount,
             isScheduled,
+            roundTiming,
             isComplete,
             byeCount,
           });
@@ -331,6 +351,33 @@ export function getRounds({
     [];
 
   return { ...SUCCESS, rounds, excludedRounds };
+}
+
+function getRoundTiming({ round, matchUps, events, tournamentRecords }) {
+  const event = events.find((event) => event.eventId === round.eventId);
+  const { eventType, category, categoryType } = event || {};
+  const { categoryName, ageCategoryCode } = category || {};
+  const formatCounts = instanceCount(
+    matchUps.map(({ matchUpFormat }) => matchUpFormat)
+  );
+
+  let roundMinutes = 0;
+  Object.keys(formatCounts).map((matchUpFormat) => {
+    const formatCount = formatCounts[matchUpFormat];
+    const { averageMinutes, error } = findMatchUpFormatTiming({
+      categoryName: categoryName || ageCategoryCode,
+      tournamentId: round.tournamentId,
+      eventId: round.eventId,
+      tournamentRecords,
+      matchUpFormat,
+      categoryType,
+      eventType,
+    });
+    if (error) return { error };
+    const formatMinutes = averageMinutes * formatCount;
+    if (!isNaN(roundMinutes)) roundMinutes += formatMinutes;
+  });
+  return { roundMinutes };
 }
 
 // Sort rounds by order in which they will be played
