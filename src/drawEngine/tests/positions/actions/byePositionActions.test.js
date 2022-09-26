@@ -135,11 +135,11 @@ it('will not allow BYE removal when there are active matchUps in connected struc
   tournamentEngine.devContext({ positionActions: true });
   result = tournamentEngine.positionActions({
     structureId: southStructureId,
-    drawPosition: 2,
+    drawPosition: 4,
     drawId,
   });
   let validActionTypes = result.validActions.map(({ type }) => type);
-  expect(validActionTypes).toEqual(['PENALTY', 'NICKNAME']);
+  expect(validActionTypes.length).toEqual(0);
 
   result = tournamentEngine.positionActions({
     structureId: westStructureId,
