@@ -3,6 +3,7 @@ import { getRoundMatchUps } from '../../../../drawEngine/accessors/matchUpAccess
 import { getPositionAssignments } from '../../../../drawEngine/getters/positionsGetter';
 import { getStructureLinks } from '../../../../drawEngine/getters/linkGetter';
 import { stageOrder } from '../../../../constants/drawDefinitionConstants';
+import { getStructureGroups } from '../../publishingGovernor/getDrawData';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -27,6 +28,7 @@ export function analyzeDraws({ tournamentRecord }) {
     let positionsAssignedCount = 0;
     let matchUpsWithWinningSideCount = 0;
     let matchUpsNoOutcomeCount = 0;
+    const { allStructuresLinked } = getStructureGroups({ drawDefinition });
 
     const structures = drawDefinition?.structures || [];
     const structuresData = structures.map((structure) => {
@@ -134,6 +136,7 @@ export function analyzeDraws({ tournamentRecord }) {
       matchUpsWithWinningSideCount,
       matchUpsNoOutcomeCount,
       positionsAssignedCount,
+      allStructuresLinked,
       structuresData,
       inactiveDraw,
       isMatchPlay,

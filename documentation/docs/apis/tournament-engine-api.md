@@ -1329,8 +1329,10 @@ const drawDefinitionValues = {
   // { groupSeedingThreshold: 5 } will set seedValue to lowest value within all groups where seedNumber is > 5
   seedingProfile, // optional { positioning, groupSeedingThreshold }
 
+  qualifyingPlaceholder, // optional boolean - generate a placeholder qualifying structure if qualifiersCount and no qualifyingProfiles
   qualifiersCount, // optional - how many positionsAssignments will have { qualifier: true }
   qualifyingOnly, // optional boolean - ignore event.entries that are not entryStage: QUALIFYING
+  qualifyingProfiles, // optional array [{ roundTarget, structureProfiles: [{ drawSize, seedsCount, seedingScaleName, qualifyingPositions }]}]
 
   structureOptions: {
     // optional - for ROUND_ROBIN - { groupSize, playoffGroups }

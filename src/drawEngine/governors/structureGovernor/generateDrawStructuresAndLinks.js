@@ -245,6 +245,10 @@ export function generateDrawStructuresAndLinks(params = {}) {
     links.push(...generatedLinks);
   }
 
+  const mainStructure = generatorResult.structures.find(
+    ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
+  );
+
   for (const qualifyingDetail of qualifyingDetails || []) {
     const {
       finalQualifyingRoundNumber: qualifyingRoundNumber,
@@ -253,10 +257,6 @@ export function generateDrawStructuresAndLinks(params = {}) {
       finishingPositions,
       linkType,
     } = qualifyingDetail;
-
-    const mainStructure = generatorResult.structures.find(
-      ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
-    );
 
     const link =
       mainStructure &&
