@@ -46,7 +46,9 @@ export function generateQualifyingStructures({
       finalQualifyingStructureId,
       linkType;
 
-    for (const structureProfile of structureProfiles.sort(sequenceSort)) {
+    for (const structureProfile of (structureProfiles || []).sort(
+      sequenceSort
+    )) {
       const {
         qualifyingRoundNumber,
         qualifyingPositions,
