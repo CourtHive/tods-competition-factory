@@ -398,7 +398,7 @@ export function getAllStructureMatchUps({
       additionalContext.finishingPositionRange;
 
     // order is important here as Round Robin matchUps already have inContext structureId
-    const onlyDefined = (obj) => definedAttributes(obj, undefined, true);
+    const onlyDefined = (obj) => definedAttributes(obj, undefined, true, true);
     const matchUpWithContext = Object.assign(
       {},
       onlyDefined(context),
