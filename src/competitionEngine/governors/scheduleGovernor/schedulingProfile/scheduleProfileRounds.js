@@ -85,7 +85,10 @@ export function scheduleProfileRounds({
     clearScheduledMatchUps({ tournamentRecords, scheduledDates });
   }
 
-  const { courts } = getVenuesAndCourts({ tournamentRecords });
+  const { courts } = getVenuesAndCourts({
+    ignoreDisabled: true,
+    tournamentRecords,
+  });
 
   const { matchUps } = allCompetitionMatchUps({
     matchUpFilters: { matchUpTypes: [SINGLES, DOUBLES] },

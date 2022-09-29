@@ -1105,6 +1105,22 @@ tournamentEngine.devContext(true);
 
 ---
 
+## disableCourts
+
+```js
+tournamentEngine.disableCourts({ courtIds });
+```
+
+---
+
+## disableVenues
+
+```js
+tournamentEngine.disableVenues({ venueIds });
+```
+
+---
+
 ## drawMatic
 
 ```js
@@ -1112,6 +1128,22 @@ const { matchUps } = tournamentEngine.drawMatic({
   addToStructure, // optional - defaults to true
   drawId,
 });
+```
+
+---
+
+## enableCourts
+
+```js
+tournamentEngine.enableCourts({ courtIds, enableAll });
+```
+
+---
+
+## enableVenues
+
+```js
+tournamentEngine.enableVenues({ venueIds, enableAll });
 ```
 
 ---
@@ -2340,6 +2372,31 @@ tournamentEngine.modifyCollectionDefinition({
   matchUpValue, // optional - value awarded for each matchUp won
   scoreValue, // optional - value awarded for each game or point won (points for tiebreak sets)
   setValue, // optional - value awarded for each set won
+});
+```
+
+---
+
+## modifyCourt
+
+```js
+tournamentEngine.modifyCourt({
+  courtId,
+  force, // applies only to dateAvailability, will remove scheduling information from matchUps where court is no longer available
+  modifications: {
+    courtName,
+    dateAvailability,
+    courtDimensions,
+    onlineResources,
+    surfaceCategory,
+    surfaceDate,
+    surfaceType,
+    altitude,
+    latitude,
+    longitude,
+    notes,
+    pace,
+  },
 });
 ```
 

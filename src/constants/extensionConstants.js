@@ -2,6 +2,7 @@ export const APPLIED_POLICIES = 'appliedPolicies';
 export const AUDIT_POSITION_ACTIONS = 'positionActions';
 export const CONTEXT = 'context';
 export const DELEGATED_OUTCOME = 'delegatedOutcome';
+export const DISABLED = 'disabled';
 export const DISABLE_LINKS = 'disableLinks';
 export const DRAW_DELETIONS = 'drawDeletions';
 export const DRAW_PROFILE = 'drawProfile';
@@ -28,6 +29,7 @@ export const extensionConstants = {
   AUDIT_POSITION_ACTIONS,
   CONTEXT, // used to capture, e.g. context in which a venue was added
   DELEGATED_OUTCOME,
+  DISABLED,
   DISABLE_LINKS,
   DRAW_DELETIONS,
   DRAW_PROFILE,
@@ -52,6 +54,7 @@ export const extensionConstants = {
 
 export const internalExtensions = [
   DELEGATED_OUTCOME,
+  DISABLED,
   DISABLE_LINKS,
   FLIGHT_PROFILE,
   LINEUPS,

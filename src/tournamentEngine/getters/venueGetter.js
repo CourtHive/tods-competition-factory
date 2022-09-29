@@ -1,7 +1,9 @@
 import { getLinkedTournamentIds } from '../../competitionEngine/governors/competitionsGovernor/tournamentLinks';
+import { findExtension } from '../../global/functions/deducers/findExtension';
 import { addVenue } from '../governors/venueGovernor/addVenue';
 import { makeDeepCopy } from '../../utilities';
 
+import { DISABLED } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
@@ -9,12 +11,34 @@ import {
   VENUE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
 
-export function getVenuesAndCourts({ tournamentRecord }) {
+export function getVenuesAndCourts({ tournamentRecord, ignoreDisabled }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  const venues = makeDeepCopy(tournamentRecord.venues || []);
+
+  const venues = makeDeepCopy(tournamentRecord.venues || [])
+    .filter((venue) => {
+      if (!ignoreDisabled) return venue;
+      const { extension } = findExtension({
+        name: DISABLED,
+        element: venue,
+      });
+      return !extension?.value && venue;
+    })
+    .filter(Boolean);
+
   const courts = venues.reduce((courts, venue) => {
-    return venue?.courts?.length ? courts.concat(venue.courts) : courts;
+    const additionalCourts = (venue?.courts || [])
+      .filter((court) => {
+        if (!ignoreDisabled) return court;
+        const { extension } = findExtension({
+          name: DISABLED,
+          element: court,
+        });
+        return !extension?.value && court;
+      })
+      .filter(Boolean);
+    return additionalCourts.length ? courts.concat(additionalCourts) : courts;
   }, []);
+
   return { venues, courts };
 }
 

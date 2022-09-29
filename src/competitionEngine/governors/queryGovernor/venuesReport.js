@@ -15,6 +15,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function getVenuesReport({
+  ignoreDisabled = true,
   tournamentRecords,
   venueIds = [],
   dates = [],
@@ -25,7 +26,7 @@ export function getVenuesReport({
   const validDates = dates.every(isValidDateString);
   if (!validDates) return { error: INVALID_DATE };
 
-  const result = getVenuesAndCourts({ tournamentRecords });
+  const result = getVenuesAndCourts({ tournamentRecords, ignoreDisabled });
   if (result.error) return result;
 
   const venues = result.venues.filter(

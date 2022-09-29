@@ -1,7 +1,6 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../drawEngine/governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { generateQualifyingStructures } from '../../drawEngine/governors/structureGovernor/generateQualifyingStructures';
 import { addVoluntaryConsolationStructure } from '../governors/eventGovernor/addVoluntaryConsolationStructure';
-import { setStageQualifiersCount } from '../../drawEngine/governors/entryGovernor/stageEntryCounts';
 import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/setMatchUpFormat';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
@@ -23,6 +22,10 @@ import {
   checkTieFormat,
   validateTieFormat,
 } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+import {
+  setStageDrawSize,
+  setStageQualifiersCount,
+} from '../../drawEngine/governors/entryGovernor/stageEntryCounts';
 
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
@@ -342,12 +345,31 @@ export function generateDrawDefinition(params) {
       existingQualifiersCount || 0
     );
 
-    const result = setStageQualifiersCount({
+    let result = setStageQualifiersCount({
       qualifiersCount: derivedQualifiersCount,
       drawDefinition,
       stage: MAIN,
     });
     if (result.error) return result;
+
+    result = setStageDrawSize({
+      drawSize: qualifyingDrawPositionsCount,
+      stage: QUALIFYING,
+      drawDefinition,
+    });
+    if (result.error) return result;
+
+    for (const entry of (drawEntries || []).filter(
+      ({ entryStage }) => entryStage === QUALIFYING
+    )) {
+      const entryData = {
+        ...entry,
+        entryStage: entry.entryStage || MAIN,
+        drawDefinition,
+      };
+      // ignore errors (EXITING_PARTICIPANT)
+      addDrawEntry(entryData);
+    }
 
     for (const qualifyingDetail of qualifyingDetails || []) {
       const {

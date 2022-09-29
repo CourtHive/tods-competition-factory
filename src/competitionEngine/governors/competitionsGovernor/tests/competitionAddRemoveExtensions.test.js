@@ -1,7 +1,7 @@
+import { findExtension } from '../../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
-import { findExtension } from '../../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 
