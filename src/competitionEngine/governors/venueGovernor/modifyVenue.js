@@ -1,12 +1,12 @@
-import { modifyVenue as venueModify } from '../../../../tournamentEngine/governors/venueGovernor/modifyVenue';
-import { checkSchedulingProfile } from '../../scheduleGovernor/schedulingProfile/schedulingProfile';
+import { modifyVenue as venueModify } from '../../../tournamentEngine/governors/venueGovernor/modifyVenue';
+import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile/schedulingProfile';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 export function modifyVenue({
   tournamentRecords,

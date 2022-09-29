@@ -1,11 +1,11 @@
-import { addVenue as venueAdd } from '../../../../tournamentEngine/governors/venueGovernor/addVenue';
-import { definedAttributes } from '../../../../utilities/objects';
-import { addNotice } from '../../../../global/state/globalState';
-import { UUID } from '../../../../utilities';
+import { addVenue as venueAdd } from '../../../tournamentEngine/governors/venueGovernor/addVenue';
+import { definedAttributes } from '../../../utilities/objects';
+import { addNotice } from '../../../global/state/globalState';
+import { UUID } from '../../../utilities';
 
-import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { ADD_VENUE } from '../../../../constants/topicConstants';
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { ADD_VENUE } from '../../../constants/topicConstants';
 
 export function addVenue({ tournamentRecords, disableNotice, venue, context }) {
   if (typeof venue !== 'object') return { error: INVALID_VALUES };
