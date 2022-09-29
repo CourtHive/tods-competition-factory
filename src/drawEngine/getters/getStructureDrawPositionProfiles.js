@@ -1,5 +1,6 @@
 import { getMatchUpDependencies } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
-import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
+import { getContainedStructures } from '../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
+import { getAllDrawMatchUps } from './getMatchUps/drawMatchUps';
 import { isAdHoc } from '../governors/queryGovernor/isAdHoc';
 import { getPositionAssignments } from './positionsGetter';
 import { numericSort, unique } from '../../utilities';
@@ -17,6 +18,8 @@ export function getStructureDrawPositionProfiles({
   structure,
 }) {
   const matchUpFilters = { isCollectionMatchUp: false };
+  const { containedStructures } = getContainedStructures({ drawDefinition });
+  const containedStructureIds = containedStructures[structureId] || [];
 
   if (!structure) {
     const result = findStructure({ drawDefinition, structureId });
@@ -31,17 +34,23 @@ export function getStructureDrawPositionProfiles({
     return { structure, isAdHoc: true, error: INVALID_DRAW_POSITION };
   }
 
-  const { matchUps: inContextStructureMatchUps } = getAllStructureMatchUps({
+  // must use all draw matchUps to get active matchUps across all connected structures
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     inContext: true,
     drawDefinition,
     matchUpFilters,
-    structure,
   });
+
+  const inContextStructureMatchUps = inContextDrawMatchUps.filter(
+    (matchUp) =>
+      matchUp.structureId === structureId ||
+      containedStructureIds.includes(matchUp.structureId)
+  );
 
   // get a mapping of all matchUpIds to dependent matchUpIds
   const { matchUpDependencies } = getMatchUpDependencies({
-    matchUps: inContextStructureMatchUps,
     drawIds: [drawDefinition.drawId],
+    matchUps: inContextDrawMatchUps,
     drawDefinition,
   });
 
@@ -50,23 +59,32 @@ export function getStructureDrawPositionProfiles({
   const drawPositionsCollection = [];
   const activeMatchUps = [];
 
-  for (const matchUp of inContextStructureMatchUps) {
-    drawPositionsCollection.push(...(matchUp.drawPositions || []));
+  for (const matchUp of inContextDrawMatchUps) {
+    if (
+      matchUp.structureId === structureId ||
+      containedStructureIds.includes(matchUp.structureId)
+    ) {
+      drawPositionsCollection.push(...(matchUp.drawPositions || []));
+
+      const roundNumber = matchUp.roundNumber;
+      for (const drawPosition of (matchUp.drawPositions || []).filter(
+        Boolean
+      )) {
+        if (
+          !drawPositionInitialRounds[drawPosition] ||
+          drawPositionInitialRounds[drawPosition] > roundNumber
+        ) {
+          drawPositionInitialRounds[drawPosition] = roundNumber;
+        }
+      }
+    }
+
     if (isActiveMatchUp(matchUp)) {
       activeMatchUps.push(matchUp);
       activeDependentMatchUpIdsCollection.push(
         matchUp.matchUpId,
         ...(matchUpDependencies[matchUp.matchUpId]?.matchUpIds || [])
       );
-    }
-    const roundNumber = matchUp.roundNumber;
-    for (const drawPosition of (matchUp.drawPositions || []).filter(Boolean)) {
-      if (
-        !drawPositionInitialRounds[drawPosition] ||
-        drawPositionInitialRounds[drawPosition] > roundNumber
-      ) {
-        drawPositionInitialRounds[drawPosition] = roundNumber;
-      }
     }
   }
 

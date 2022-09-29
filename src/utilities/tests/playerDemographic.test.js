@@ -4,9 +4,8 @@ import mocksEngine from '../../mocksEngine';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { DOUBLES } from '../../constants/eventConstants';
 import { PAIR } from '../../constants/participantTypes';
-import { JSON2CSV } from '../json';
-import { expect } from 'vitest';
 import { MALE } from '../../constants/genderConstants';
+import { JSON2CSV } from '../json';
 
 it('can export CSV files with player demographic data', () => {
   const personExtensions = [

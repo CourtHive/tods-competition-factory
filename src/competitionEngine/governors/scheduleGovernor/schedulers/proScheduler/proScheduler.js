@@ -476,6 +476,26 @@ export function proScheduler({
           getMatchUpId
         );
     }
+
+    for (const venue of dateSchedulingProfile.venues) {
+      for (const round of venue.rounds) {
+        const matchUpIds = round.matchUps.map(({ matchUpId }) => matchUpId);
+        const canScheduleMatchUpIds = matchUpIds.filter((matchUpId) =>
+          scheduledMatchUpIds[scheduleDate].includes(matchUpId)
+        );
+        round.canScheduledMatchUpIds = canScheduleMatchUpIds;
+        let possibleToSchedulePct =
+          Math.round(
+            (canScheduleMatchUpIds.length / round.matchUpsCount) * 10000
+          ) / 100;
+        if (possibleToSchedulePct === Infinity || isNaN(possibleToSchedulePct))
+          possibleToSchedulePct = 0;
+        round.possibleToSchedulePct = possibleToSchedulePct;
+        if (round.matchUpsCount === canScheduleMatchUpIds.length) {
+          round.possibleToSchedule = true;
+        }
+      }
+    }
   }
 
   // returns the original form of the dateStrings, before extractDate()

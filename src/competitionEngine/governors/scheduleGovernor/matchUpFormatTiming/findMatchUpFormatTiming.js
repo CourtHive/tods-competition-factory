@@ -28,12 +28,11 @@ export function findMatchUpFormatTiming({
     const event = eventId && findEvent({ tournamentRecord, eventId })?.event;
     timing = getMatchUpFormatTiming({
       tournamentRecord,
-      event,
-
       matchUpFormat,
       categoryName,
       categoryType,
       eventType,
+      event,
     });
     const foundTiming = timing?.averageMinutes || timing?.recoveryMinutes;
     return foundTiming;

@@ -720,6 +720,11 @@ export const EXISTING_STAGE = {
   code: 'ERR_EXISTING_STAGE',
 };
 
+export const EXISTING_STRUCTURE = {
+  message: 'Existing structure',
+  code: 'ERR_EXISTING_STRUCTURE',
+};
+
 export const METHOD_NOT_FOUND = {
   message: 'Method not found',
   code: 'ERR_NOT_FOUND_METHOD',
@@ -759,6 +764,7 @@ export const errorConditionConstants = {
   EXISTING_PROFILE,
   EXISTING_ROUND,
   EXISTING_STAGE,
+  EXISTING_STRUCTURE,
   INCOMPATIBLE_MATCHUP_STATUS,
   INCOMPLETE_SOURCE_STRUCTURE,
   INSUFFICIENT_DRAW_POSITIONS,

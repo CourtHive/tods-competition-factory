@@ -1,9 +1,9 @@
 import { getSchedulingProfile } from '../governors/scheduleGovernor/schedulingProfile/schedulingProfile';
+import { scheduledSortedMatchUps } from '../../global/sorting/scheduledSortedMatchUps';
 import {
   getEventTimeItem,
   getTournamentTimeItem,
 } from '../../tournamentEngine/governors/queryGovernor/timeItems';
-import { scheduledSortedMatchUps } from '../../global/sorting/scheduledSortedMatchUps';
 
 import { getVenuesAndCourts } from './venuesAndCourtsGetter';
 import {

@@ -121,7 +121,7 @@ export function getScheduledRoundsDetails({
       event,
     });
 
-    const { eventType, category } = event || {};
+    const { eventType, category, categoryType } = event || {};
     const { categoryName, ageCategoryCode } = category || {};
     const {
       typeChangeRecoveryMinutes,
@@ -129,11 +129,12 @@ export function getScheduledRoundsDetails({
       averageMinutes,
       error,
     } = findMatchUpFormatTiming({
-      tournamentRecords,
       categoryName: categoryName || ageCategoryCode,
       tournamentId: round.tournamentId,
       eventId: round.eventId,
+      tournamentRecords,
       matchUpFormat,
+      categoryType,
       eventType,
     });
     if (error) return { error, round };

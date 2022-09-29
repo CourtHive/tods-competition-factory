@@ -51,10 +51,11 @@ export function addDrawEntry({
   extensions,
   extension,
 }) {
+  const stack = 'addDrawEntry';
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!entryStage) return { error: MISSING_STAGE };
   if (!getValidStage({ stage: entryStage, drawDefinition })) {
-    return { error: INVALID_STAGE };
+    return decorateResult({ result: { error: INVALID_STAGE }, stack });
   }
   const spaceAvailable = getStageSpace({
     stageSequence: entryStageSequence,
@@ -65,8 +66,6 @@ export function addDrawEntry({
   if (!ignoreStageSpace && !spaceAvailable.success) {
     return { error: spaceAvailable.error };
   }
-
-  const stack = 'addDrawEntry';
 
   if (extension && !isValidExtension(extension))
     return decorateResult({

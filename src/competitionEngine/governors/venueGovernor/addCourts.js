@@ -1,11 +1,11 @@
-import { addCourts as courtsAdd } from '../../../../tournamentEngine/governors/venueGovernor/addCourt';
-import { findVenue } from '../../../../tournamentEngine/getters/venueGetter';
+import { addCourts as courtsAdd } from '../../../tournamentEngine/governors/venueGovernor/addCourt';
+import { findVenue } from '../../../tournamentEngine/getters/venueGetter';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 export function addCourts(params) {
   const { tournamentRecords, venueId } = params;

@@ -1,10 +1,6 @@
 import { bulkScheduleMatchUps } from '../scheduleGovernor/bulkScheduleMatchUps';
 import { bulkMatchUpStatusUpdate, setMatchUpStatus } from './setMatchUpStatus';
-import { modifyVenue } from './venueManagement/modifyVenue';
-import { deleteVenue } from './venueManagement/deleteVenue';
-import { addCourts } from './venueManagement/addCourts';
 import { addDrawDefinition } from './addDrawDefinition';
-import { addVenue } from './venueManagement/addVenue';
 import { addParticipant } from './addParticipant';
 import {
   getCompetitionParticipants,
@@ -48,11 +44,6 @@ const competitionGovernor = {
   bulkMatchUpStatusUpdate,
 
   bulkScheduleMatchUps,
-
-  addVenue,
-  deleteVenue,
-  modifyVenue,
-  addCourts,
 
   addPenalty, // test
   removePenalty, // test

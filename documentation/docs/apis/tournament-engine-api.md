@@ -1105,6 +1105,22 @@ tournamentEngine.devContext(true);
 
 ---
 
+## disableCourts
+
+```js
+tournamentEngine.disableCourts({ courtIds });
+```
+
+---
+
+## disableVenues
+
+```js
+tournamentEngine.disableVenues({ venueIds });
+```
+
+---
+
 ## drawMatic
 
 ```js
@@ -1112,6 +1128,22 @@ const { matchUps } = tournamentEngine.drawMatic({
   addToStructure, // optional - defaults to true
   drawId,
 });
+```
+
+---
+
+## enableCourts
+
+```js
+tournamentEngine.enableCourts({ courtIds, enableAll });
+```
+
+---
+
+## enableVenues
+
+```js
+tournamentEngine.enableVenues({ venueIds, enableAll });
 ```
 
 ---
@@ -1329,8 +1361,10 @@ const drawDefinitionValues = {
   // { groupSeedingThreshold: 5 } will set seedValue to lowest value within all groups where seedNumber is > 5
   seedingProfile, // optional { positioning, groupSeedingThreshold }
 
+  qualifyingPlaceholder, // optional boolean - generate a placeholder qualifying structure if qualifiersCount and no qualifyingProfiles
   qualifiersCount, // optional - how many positionsAssignments will have { qualifier: true }
   qualifyingOnly, // optional boolean - ignore event.entries that are not entryStage: QUALIFYING
+  qualifyingProfiles, // optional array [{ roundTarget, structureProfiles: [{ drawSize, seedsCount, seedingScaleName, qualifyingPositions }]}]
 
   structureOptions: {
     // optional - for ROUND_ROBIN - { groupSize, playoffGroups }
@@ -2338,6 +2372,31 @@ tournamentEngine.modifyCollectionDefinition({
   matchUpValue, // optional - value awarded for each matchUp won
   scoreValue, // optional - value awarded for each game or point won (points for tiebreak sets)
   setValue, // optional - value awarded for each set won
+});
+```
+
+---
+
+## modifyCourt
+
+```js
+tournamentEngine.modifyCourt({
+  courtId,
+  force, // applies only to dateAvailability, will remove scheduling information from matchUps where court is no longer available
+  modifications: {
+    courtName,
+    dateAvailability,
+    courtDimensions,
+    onlineResources,
+    surfaceCategory,
+    surfaceDate,
+    surfaceType,
+    altitude,
+    latitude,
+    longitude,
+    notes,
+    pace,
+  },
 });
 ```
 

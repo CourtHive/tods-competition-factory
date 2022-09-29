@@ -33,12 +33,11 @@ export function modifyEventMatchUpFormatTiming({
     if (event) {
       return modifyEventTiming({
         tournamentRecord,
-        event,
-
-        categoryType,
-        matchUpFormat,
-        averageMinutes,
         recoveryMinutes,
+        averageMinutes,
+        matchUpFormat,
+        categoryType,
+        event,
       });
     }
   }

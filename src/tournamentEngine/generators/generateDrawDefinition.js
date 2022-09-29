@@ -1,13 +1,17 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../drawEngine/governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
+import { generateQualifyingStructures } from '../../drawEngine/governors/structureGovernor/generateQualifyingStructures';
 import { addVoluntaryConsolationStructure } from '../governors/eventGovernor/addVoluntaryConsolationStructure';
 import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
-import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
 import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/setMatchUpFormat';
+import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
+import { generateQualifyingLink } from '../../drawEngine/generators/generateQualifyingLink';
 import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attachPolicies';
 import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
 import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEntries';
+import { getQualifiersCount } from '../../drawEngine/getters/getQualifiersCount';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
+import structureTemplate from '../../drawEngine/generators/structureTemplate';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { isConvertableInteger } from '../../utilities/math';
@@ -18,6 +22,10 @@ import {
   checkTieFormat,
   validateTieFormat,
 } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+import {
+  setStageDrawSize,
+  setStageQualifiersCount,
+} from '../../drawEngine/governors/entryGovernor/stageEntryCounts';
 
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
@@ -35,6 +43,7 @@ import {
   FEED_IN,
   LUCKY_DRAW,
   MAIN,
+  POSITION,
   QUALIFYING,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
@@ -260,74 +269,205 @@ export function generateDrawDefinition(params) {
     Object.assign(appliedPolicies, POLICY_SEEDING_USTA);
   }
 
-  let drawTypeResult = generateDrawTypeAndModifyDrawDefinition({
-    ...params,
-    modifyOriginal: false,
-    tournamentRecord,
-    appliedPolicies,
-    drawDefinition,
-    matchUpFormat,
-    matchUpType,
-    tieFormat,
-    drawSize,
-  });
-  if (drawTypeResult.error) {
-    return decorateResult({ result: drawTypeResult, stack });
-  }
-  drawDefinition = drawTypeResult.drawDefinition;
-
-  // add all entries to the draw
+  // find existing MAIN structureId if existingDrawDefinition
+  let structureId = existingDrawDefinition?.structures?.find(
+    (structure) => structure.stage === MAIN && structure.stageSequence === 1
+  )?.structureId;
   const entries = drawEntries || eventEntries;
-  for (const entry of entries) {
-    // if drawEntries and entryStage !== stage ignore
-    if (drawEntries && entry.entryStage && entry.entryStage !== MAIN) continue;
-    const entryData = {
-      ...entry,
-      entryStage: entry.entryStage || MAIN,
-      drawDefinition,
-    };
-    const result = addDrawEntry(entryData);
-    if (drawEntries && result.error) {
-      // only report errors with drawEntries
-      // if entries are taken from event.entries assume stageSpace is not available
-      return decorateResult({ result, stack });
-    }
-  }
-
-  // temporary until seeding is supported in LUCKY_DRAW
-  if (drawType === LUCKY_DRAW) seedsCount = 0;
-
   const positioningReports = [];
-  const structureResult = prepareStage({
-    ...drawTypeResult,
-    ...params,
-    qualifyingOnly: !drawSize || qualifyingOnly, // ooo!! If there is no drawSize then MAIN is not being generated
-    appliedPolicies,
-    drawDefinition,
-    participants,
-    stage: MAIN,
-    seedsCount,
-    placeByes,
-    drawSize,
-    entries,
-  });
+  let drawTypeResult;
+  let conflicts = [];
 
-  if (structureResult.error && !structureResult.conflicts) {
-    console.log('MAIN', structureResult);
-    //return decorateResult({ result: structureResult, stack });
+  const generateQualifyingPlaceholder =
+    params.qualifyingPlaceholder &&
+    !params.qualifyingProfiles?.length &&
+    !existingDrawDefinition;
+
+  const existingQualifyingStructures =
+    existingDrawDefinition?.structures.filter(
+      (structure) => structure.stage === QUALIFYING
+    );
+  const existingQualifyingPlaceholderStructureId =
+    existingQualifyingStructures?.length === 1 &&
+    !existingQualifyingStructures[0].matchUps?.length &&
+    existingQualifyingStructures[0].structureId;
+
+  if (existingQualifyingPlaceholderStructureId) {
+    const qualifyingProfiles = params.qualifyingProfiles;
+    const qualifyingResult =
+      qualifyingProfiles?.length &&
+      generateQualifyingStructures({
+        idPrefix: params.idPrefix,
+        isMock: params.isMock,
+        uuids: params.uuids,
+        qualifyingProfiles,
+        appliedPolicies,
+        matchUpType,
+      });
+
+    if (qualifyingResult?.error) {
+      return qualifyingResult;
+    }
+
+    drawDefinition.structures = drawDefinition.structures.filter(
+      ({ structureId }) =>
+        structureId !== existingQualifyingPlaceholderStructureId
+    );
+    drawDefinition.links = drawDefinition.links.filter(
+      ({ source }) =>
+        source.structureId !== existingQualifyingPlaceholderStructureId
+    );
+
+    const { qualifiersCount, qualifyingDrawPositionsCount, qualifyingDetails } =
+      qualifyingResult;
+
+    if (qualifyingDrawPositionsCount) {
+      if (qualifyingResult?.structures) {
+        drawDefinition.structures.push(...qualifyingResult.structures);
+      }
+      if (qualifyingResult?.links) {
+        drawDefinition.links.push(...qualifyingResult.links);
+      }
+    }
+
+    const mainStructure = drawDefinition.structures.find(
+      ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
+    );
+    const { qualifiersCount: existingQualifiersCount } = getQualifiersCount({
+      drawDefinition,
+      stageSequence: 1,
+      structureId,
+      stage: MAIN,
+    });
+
+    const derivedQualifiersCount = Math.max(
+      qualifiersCount || 0,
+      existingQualifiersCount || 0
+    );
+
+    let result = setStageQualifiersCount({
+      qualifiersCount: derivedQualifiersCount,
+      drawDefinition,
+      stage: MAIN,
+    });
+    if (result.error) return result;
+
+    result = setStageDrawSize({
+      drawSize: qualifyingDrawPositionsCount,
+      stage: QUALIFYING,
+      drawDefinition,
+    });
+    if (result.error) return result;
+
+    for (const entry of (drawEntries || []).filter(
+      ({ entryStage }) => entryStage === QUALIFYING
+    )) {
+      const entryData = {
+        ...entry,
+        entryStage: entry.entryStage || MAIN,
+        drawDefinition,
+      };
+      // ignore errors (EXITING_PARTICIPANT)
+      addDrawEntry(entryData);
+    }
+
+    for (const qualifyingDetail of qualifyingDetails || []) {
+      const {
+        finalQualifyingRoundNumber: qualifyingRoundNumber,
+        finalQualifyingStructureId: qualifyingStructureId,
+        roundTarget: targetEntryRound,
+        finishingPositions,
+        linkType,
+      } = qualifyingDetail;
+
+      const link =
+        mainStructure &&
+        generateQualifyingLink({
+          targetStructureId: mainStructure.structureId,
+          sourceStructureId: qualifyingStructureId,
+          sourceRoundNumber: qualifyingRoundNumber,
+          finishingPositions,
+          targetEntryRound,
+          linkType,
+        })?.link;
+      if (link?.error) return link;
+
+      if (link) {
+        drawDefinition.links.push(link);
+      }
+    }
+
+    drawTypeResult = { drawDefinition };
+  } else {
+    drawTypeResult = generateDrawTypeAndModifyDrawDefinition({
+      ...params,
+      modifyOriginal: false,
+      tournamentRecord,
+      appliedPolicies,
+      drawDefinition,
+      matchUpFormat,
+      matchUpType,
+      tieFormat,
+      drawSize,
+    });
+    if (drawTypeResult.error) {
+      return decorateResult({ result: drawTypeResult, stack });
+    }
+    drawDefinition = drawTypeResult.drawDefinition;
+
+    // add all entries to the draw
+    for (const entry of entries) {
+      // if drawEntries and entryStage !== stage ignore
+      if (drawEntries && entry.entryStage && entry.entryStage !== MAIN)
+        continue;
+      const entryData = {
+        ...entry,
+        entryStage: entry.entryStage || MAIN,
+        drawDefinition,
+      };
+      const result = addDrawEntry(entryData);
+      if (drawEntries && result.error) {
+        // only report errors with drawEntries
+        // if entries are taken from event.entries assume stageSpace is not available
+        return decorateResult({ result, stack });
+      }
+    }
+
+    // temporary until seeding is supported in LUCKY_DRAW
+    if (drawType === LUCKY_DRAW) seedsCount = 0;
+
+    const structureResult = prepareStage({
+      ...drawTypeResult,
+      ...params,
+      qualifyingOnly: !drawSize || qualifyingOnly, // ooo!! If there is no drawSize then MAIN is not being generated
+      appliedPolicies,
+      drawDefinition,
+      participants,
+      stage: MAIN,
+      seedsCount,
+      placeByes,
+      drawSize,
+      entries,
+    });
+
+    if (structureResult.error && !structureResult.conflicts) {
+      console.log('MAIN', structureResult);
+      //return decorateResult({ result: structureResult, stack });
+    }
+
+    if (structureResult.positioningReport?.length)
+      positioningReports.push({ [MAIN]: structureResult.positioningReport });
+
+    structureId = structureResult.structureId;
+    conflicts = structureResult.conflicts;
   }
 
-  if (structureResult.positioningReport?.length)
-    positioningReports.push({ [MAIN]: structureResult.positioningReport });
-
-  const structureId = structureResult.structureId;
-  const conflicts = structureResult.conflicts;
   const qualifyingConflicts = [];
 
-  const sequenceSort = (a, b) => a.stageSequence - b.stageSequence;
-  const roundTargetSort = (a, b) => a.roundTarget - b.roundTarget;
-
   if (params.qualifyingProfiles) {
+    const sequenceSort = (a, b) => a.stageSequence - b.stageSequence;
+    const roundTargetSort = (a, b) => a.roundTarget - b.roundTarget;
+
     // keep track of structures already prepared in case of multiple matching structures
     const preparedStructureIds = [];
     let roundTarget = 1;
@@ -335,17 +475,18 @@ export function generateDrawDefinition(params) {
     for (const roundTargetProfile of params.qualifyingProfiles.sort(
       roundTargetSort
     )) {
-      roundTarget = roundTargetProfile.roundTarget || roundTarget;
-      let stageSequence = 1;
-
       if (!Array.isArray(roundTargetProfile.structureProfiles))
         return decorateResult({
           result: { error: MISSING_VALUE },
           info: 'structureProfiles must be an array',
         });
 
+      roundTarget = roundTargetProfile.roundTarget || roundTarget;
+      let stageSequence = 1;
+
       const sortedStructureProfiles =
-        roundTargetProfile.structureProfiles.sort(sequenceSort) || [];
+        roundTargetProfile.structureProfiles?.sort(sequenceSort) || [];
+
       for (const structureProfile of sortedStructureProfiles) {
         const {
           qualifyingRoundNumber,
@@ -382,7 +523,9 @@ export function generateDrawDefinition(params) {
           entries,
         });
 
-        if (qualifyingStageResult.error) return qualifyingStageResult;
+        if (qualifyingStageResult.error) {
+          return qualifyingStageResult;
+        }
 
         if (qualifyingStageResult.structureId) {
           preparedStructureIds.push(qualifyingStageResult.structureId);
@@ -401,6 +544,19 @@ export function generateDrawDefinition(params) {
 
       roundTarget += 1;
     }
+  } else if (generateQualifyingPlaceholder) {
+    const qualifyingStructure = structureTemplate({
+      structureName: QUALIFYING,
+      stage: QUALIFYING,
+    });
+    const { link } = generateQualifyingLink({
+      sourceStructureId: qualifyingStructure.structureId,
+      sourceRoundNumber: 0,
+      targetStructureId: structureId,
+      linkType: POSITION,
+    });
+    drawDefinition.structures.push(qualifyingStructure);
+    drawDefinition.links.push(link);
   }
 
   drawDefinition.drawName = params.drawName || drawType;

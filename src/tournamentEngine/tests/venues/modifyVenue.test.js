@@ -1,5 +1,5 @@
-import { deleteVenue as competitionEngineDeleteVenue } from '../../../competitionEngine/governors/competitionsGovernor/venueManagement/deleteVenue';
-import { modifyVenue as competitionEngineModifyVenue } from '../../../competitionEngine/governors/competitionsGovernor/venueManagement/modifyVenue';
+import { deleteVenue as competitionEngineDeleteVenue } from '../../../competitionEngine/governors/venueGovernor/deleteVenue';
+import { modifyVenue as competitionEngineModifyVenue } from '../../../competitionEngine/governors/venueGovernor/modifyVenue';
 import { deleteVenue as tournamentEngineDeleteVenue } from '../../governors/venueGovernor/deleteVenue';
 import { modifyVenue as tournamentEngineModifyVenue } from '../../governors/venueGovernor/modifyVenue';
 import { tournamentEngine } from '../../sync';

@@ -3,8 +3,8 @@ import { getCourtDateAvailability } from './getCourtDateAvailability';
 import { getEnoughTime } from './getEnoughTime';
 
 export function getCourtsAvailableAtPeriodStart({
-  includeBookingTypes,
   averageMatchUpMinutes,
+  includeBookingTypes,
   periodLength,
   periodStart,
   courts,
@@ -14,8 +14,8 @@ export function getCourtsAvailableAtPeriodStart({
   const periodEndTime = addMinutes(periodStartTime, averageMatchUpMinutes);
 
   const { enoughTime } = getEnoughTime({
-    includeBookingTypes,
     averageMatchUpMinutes,
+    includeBookingTypes,
     periodStartTime,
     periodEndTime,
     periodLength,

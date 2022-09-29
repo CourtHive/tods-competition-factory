@@ -1,19 +1,35 @@
-export function definedAttributes(obj, ignoreFalse, ignoreEmptyArrays) {
+import { deepCopyEnabled } from '../global/state/globalState';
+
+export function definedAttributes(
+  obj,
+  ignoreFalse,
+  ignoreEmptyArrays,
+  shallow
+) {
   if (typeof obj !== 'object' || obj === null) return obj;
+  const deepCopy = deepCopyEnabled();
+  if (!deepCopy?.enabled) shallow = true;
+
   const ignoreValues = ['', undefined, null];
   if (ignoreFalse) ignoreValues.push(false);
+
   const definedKeys = Object.keys(obj).filter(
     (key) =>
       !ignoreValues.includes(obj[key]) &&
       (!ignoreEmptyArrays || (Array.isArray(obj[key]) ? obj[key].length : true))
   );
+
   return Object.assign(
     {},
-    ...definedKeys.map((key) =>
-      Array.isArray(obj[key])
-        ? { [key]: obj[key].map((m) => definedAttributes(m)) } // doesn't filter out undefined array elements
-        : { [key]: definedAttributes(obj[key]) }
-    )
+    ...definedKeys.map((key) => {
+      return Array.isArray(obj[key])
+        ? {
+            [key]: shallow
+              ? obj[key]
+              : obj[key].map((m) => definedAttributes(m)),
+          } // doesn't filter out undefined array elements
+        : { [key]: shallow ? obj[key] : definedAttributes(obj[key]) };
+    })
   );
 }
 
