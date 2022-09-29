@@ -4,14 +4,14 @@ import { addNotice } from '../../../global/state/globalState';
 import { findCourt } from '../../getters/courtGetter';
 import { makeDeepCopy } from '../../../utilities';
 
+import { MODIFY_VENUE } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_OBJECT,
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { MODIFY_VENUE } from '../../../constants/topicConstants';
 
 export function modifyCourt({
   tournamentRecord,
