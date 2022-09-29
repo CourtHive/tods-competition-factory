@@ -1,7 +1,10 @@
 import { modifyCourt as courtModification } from '../../../tournamentEngine/governors/venueGovernor/modifyCourt';
 
-import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  MISSING_TOURNAMENT_RECORDS,
+  MISSING_VALUE,
+} from '../../../constants/errorConditionConstants';
 
 export function modifyCourt({
   tournamentRecords,
@@ -11,6 +14,7 @@ export function modifyCourt({
   force,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (!courtId) return { error: MISSING_VALUE };
 
   let courtModified;
   let error;
