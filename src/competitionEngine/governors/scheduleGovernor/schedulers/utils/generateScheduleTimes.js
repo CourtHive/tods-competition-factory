@@ -53,6 +53,7 @@ export function generateScheduleTimes({
     });
 
   const { courts: allCourts, venues } = getVenuesAndCourts({
+    ignoreDisabled: true,
     tournamentRecords,
   });
 

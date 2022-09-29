@@ -1105,6 +1105,22 @@ tournamentEngine.devContext(true);
 
 ---
 
+## disableCourts
+
+```js
+tournamentEngine.disableCourts({ courtIds });
+```
+
+---
+
+## disableVenues
+
+```js
+tournamentEngine.disableVenues({ venueIds });
+```
+
+---
+
 ## drawMatic
 
 ```js
@@ -1112,6 +1128,22 @@ const { matchUps } = tournamentEngine.drawMatic({
   addToStructure, // optional - defaults to true
   drawId,
 });
+```
+
+---
+
+## enableCourts
+
+```js
+tournamentEngine.enableCourts({ courtIds, enableAll });
+```
+
+---
+
+## enableVenues
+
+```js
+tournamentEngine.enableVenues({ venueIds, enableAll });
 ```
 
 ---

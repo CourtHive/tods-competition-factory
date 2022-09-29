@@ -437,6 +437,38 @@ competitionEngine.devContext(true);
 
 ---
 
+## disableCourts
+
+```js
+competitionEngine.disableCourts({ courtIds });
+```
+
+---
+
+## disableVenues
+
+```js
+competitionEngine.disableVenues({ venueIds });
+```
+
+---
+
+## enableCourts
+
+```js
+competitionEngine.enableCourts({ courtIds, enableAll });
+```
+
+---
+
+## enableVenues
+
+```js
+competitionEngine.enableVenues({ venueIds, enableAll });
+```
+
+---
+
 ## executionQueue
 
 The `executionQueue` method accepts an array of `competitionEngine` methods and associated parameters,
@@ -826,6 +858,7 @@ Returns a `venueReports` array which provides details for each targt `venue` for
 const { venuesReport } = competitionEngine.getVenuesReport({
   dates, // optional array of target dates
   venueIds, // optional array of target venueIds
+  ignoreDisabled, // optional boolean, defaults to true - ignore disabled venues/courts
 });
 
 const {

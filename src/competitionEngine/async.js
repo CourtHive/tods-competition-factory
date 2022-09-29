@@ -5,6 +5,7 @@ import publishingGovernor from './governors/publishingGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
 import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
+import venueGovernor from './governors/venueGovernor';
 import { makeDeepCopy } from '../utilities';
 import {
   createInstanceState,
@@ -89,6 +90,7 @@ export function competitionEngineAsync(test) {
     publishingGovernor,
     queryGovernor,
     scheduleGovernor,
+    venueGovernor,
   ]);
 
   // enable Middleware
