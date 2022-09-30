@@ -1,3 +1,4 @@
+import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
@@ -109,4 +110,13 @@ test('ratings values should be present on tournamentParticipants in getEventData
     eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0]
       .participant.timeItems
   ).toBeUndefined();
+
+  competitionEngine.setState(tournamentRecord);
+  let result = competitionEngine.competitionScheduleMatchUps({
+    participantsProfile,
+  });
+  expect(
+    result.completedMatchUps[0].sides[0].participant.ratings.SINGLES[0]
+      .scaleName
+  ).toEqual(WTN);
 });
