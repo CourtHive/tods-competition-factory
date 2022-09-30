@@ -7,7 +7,6 @@
  * @param {number} drawPosition -
  * @param {boolean} isFeedRound - whether a round includes fed drawPositions
  * @param {number} sideNumber - 1 or 2
- * @returns {object} properties require for side attribute of matchUp.sides array
  */
 export function getSide({
   drawPositionCollectionAssignment,
