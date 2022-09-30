@@ -207,6 +207,7 @@ export function competitionScheduleMatchUps(params) {
 
 export function competitionMatchUps({
   scheduleVisibilityFilters,
+  participantsProfile,
   policyDefinitions,
   tournamentRecords,
   matchUpFilters,
@@ -223,6 +224,7 @@ export function competitionMatchUps({
     const tournamentRecord = tournamentRecords[tournamentId];
     return tournamentMatchUps({
       scheduleVisibilityFilters,
+      participantsProfile,
       policyDefinitions,
       tournamentRecord,
       matchUpFilters,
