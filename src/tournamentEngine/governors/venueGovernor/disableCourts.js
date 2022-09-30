@@ -13,13 +13,17 @@ export function disableCourts({ tournamentRecord, courtIds }) {
 
   for (const venue of tournamentRecord.venues || []) {
     for (const court of venue.courts || []) {
-      if (courtIds?.includes(court.courtId))
-        addExtension({
+      if (courtIds?.includes(court.courtId)) {
+        const result = addExtension({
           creationTime: false,
           element: court,
-          name: DISABLED,
-          value: true,
+          extension: {
+            name: DISABLED,
+            value: true,
+          },
         });
+        if (result.error) return result;
+      }
     }
   }
 

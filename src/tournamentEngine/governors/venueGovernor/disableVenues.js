@@ -12,13 +12,17 @@ export function disableVenues({ tournamentRecord, venueIds }) {
   if (!Array.isArray(venueIds)) return { error: MISSING_VALUE };
 
   for (const venue of tournamentRecord.venues || []) {
-    if (venueIds?.includes(venue.venueId))
-      addExtension({
+    if (venueIds?.includes(venue.venueId)) {
+      const result = addExtension({
         creationTime: false,
         element: venue,
-        name: DISABLED,
-        value: true,
+        extension: {
+          name: DISABLED,
+          value: true,
+        },
       });
+      if (result.error) return result;
+    }
   }
 
   return { ...SUCCESS };

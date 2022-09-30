@@ -408,6 +408,7 @@ const matchUpFilters = {
 const { completedMatchUps, dateMatchUps, courtsData, venues } =
   competitionEngine.competitionScheduleMatchUps({
     alwaysReturnCompleted, // boolean - when true return completed matchUps regardless of publish state
+    participantsProfile, // optional - ability to specify additions to context (see parameters of tournamentEngine.getTournamentParticipants())
     sortDateMatchUps, // boolean - optional - defaults to `true`
     usePublishState, // boolean - when true filter out events and dates that have not been published
     matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
@@ -845,7 +846,10 @@ const { bookings, relevantMatchUps } = competitionEngine.generateBookings({
 Returns an aggregate view of venues and courts across all tournamentRecords loaded into `competitionEngine`.
 
 ```js
-const { courts, venues } = competitionEngine.getVenuesAndCourts();
+const { courts, venues } = competitionEngine.getVenuesAndCourts({
+  convertExtensions, // optional boolean
+  ignoreDisabled, // optional boolean
+});
 ```
 
 ---

@@ -10,7 +10,7 @@ export function disableVenues({ tournamentRecords, venueIds }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(venueIds)) return { error: MISSING_VALUE };
 
-  for (const tournamentRecord of Object.keys(tournamentRecords)) {
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
     venuesDisable({ tournamentRecord, venueIds });
   }
 

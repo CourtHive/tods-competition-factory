@@ -143,6 +143,7 @@ export function getGroupOrder(params) {
         }
       }
 
+      finishingPosition.rankOrder = position;
       finishingPosition.groupOrder =
         position + (finishingPosition.subOrder || 1) - 1;
     }
