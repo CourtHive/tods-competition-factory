@@ -846,7 +846,10 @@ const { bookings, relevantMatchUps } = competitionEngine.generateBookings({
 Returns an aggregate view of venues and courts across all tournamentRecords loaded into `competitionEngine`.
 
 ```js
-const { courts, venues } = competitionEngine.getVenuesAndCourts();
+const { courts, venues } = competitionEngine.getVenuesAndCourts({
+  convertExtensions, // optional boolean
+  ignoreDisabled, // optional boolean
+});
 ```
 
 ---

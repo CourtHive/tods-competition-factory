@@ -2272,7 +2272,10 @@ const { structures, stageStructures } =
 Returns an array of all Venues which are part of a tournamentRecord and an aggregation of courts across all venues.
 
 ```js
-const { venues, courts } = tournamentEngine.getVenuesAndCourts();
+const { venues, courts } = tournamentEngine.getVenuesAndCourts({
+  convertExtensions, // optional boolean
+  ignoreDisabled, // optional boolean
+});
 ```
 
 ---

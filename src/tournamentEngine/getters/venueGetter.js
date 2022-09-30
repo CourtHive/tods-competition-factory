@@ -11,10 +11,14 @@ import {
   VENUE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
 
-export function getVenuesAndCourts({ tournamentRecord, ignoreDisabled }) {
+export function getVenuesAndCourts({
+  tournamentRecord,
+  convertExtensions,
+  ignoreDisabled,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
-  const venues = makeDeepCopy(tournamentRecord.venues || [])
+  const venues = makeDeepCopy(tournamentRecord.venues || [], convertExtensions)
     .filter((venue) => {
       if (!ignoreDisabled) return venue;
       const { extension } = findExtension({
@@ -76,6 +80,6 @@ export function findVenue({ tournamentRecords, tournamentRecord, venueId }) {
   }
 }
 
-export function publicFindVenue(params) {
-  return makeDeepCopy(findVenue(params), false, true);
+export function publicFindVenue({ convertExtensions, ...params }) {
+  return makeDeepCopy(findVenue(params), convertExtensions, true);
 }
