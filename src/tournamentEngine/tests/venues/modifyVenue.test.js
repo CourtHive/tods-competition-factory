@@ -15,7 +15,10 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 it('can define and modify a venue', () => {
-  let result = tournamentEngine.newTournamentRecord();
+  let result = tournamentEngine.newTournamentRecord({
+    startDate: '2021-01-01',
+    endDate: '2021-01-03',
+  });
   expect(result.success).toEqual(true);
 
   const myCourts = { venueName: 'My Courts' };
@@ -258,15 +261,41 @@ it('can define and modify a venue', () => {
   result = tournamentEngine.modifyCourtAvailability({ courtId: 'someId' });
   expect(result.error).toEqual(MISSING_DATE_AVAILABILITY);
   result = tournamentEngine.modifyCourtAvailability({
-    courtId: 'someId',
     dateAvailability: [],
+    courtId: 'someId',
   });
   expect(result.error).toEqual(COURT_NOT_FOUND);
   result = tournamentEngine.modifyCourtAvailability({
-    courtId,
     dateAvailability: [{ foo: 'foo' }],
+    courtId,
   });
   expect(result.error).toEqual(INVALID_DATE_AVAILABILITY);
+
+  result = tournamentEngine.modifyCourtAvailability({
+    dateAvailability: [{ startTime: '08:00', endTime: '20:00' }],
+    courtId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.modifyCourtAvailability({
+    dateAvailability: [{ startTime: '07:00' }],
+    courtId,
+  });
+  expect(result.error).toEqual(INVALID_DATE_AVAILABILITY);
+
+  const { startDate, endDate } =
+    tournamentEngine.getTournamentInfo().tournamentInfo;
+  expect(startDate).toEqual('2021-01-01');
+  expect(endDate).toEqual('2021-01-03');
+
+  // dateAvailability does not have to be within tournament dates
+  result = tournamentEngine.modifyCourtAvailability({
+    dateAvailability: [
+      { date: '2022-02-02', startTime: '08:00', endTime: '20:00' },
+    ],
+    courtId,
+  });
+  expect(result.success).toEqual(true);
 });
 
 test('miscellaneous items for coverage', () => {
