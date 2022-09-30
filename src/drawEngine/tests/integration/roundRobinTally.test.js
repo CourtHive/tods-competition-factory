@@ -317,6 +317,7 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
       drawPosition: 1,
       expectation: {
         groupOrder: 5,
+        rankOrder: 5,
         setsWon: 0,
         setsLost: 8,
         gamesWon: 8,
@@ -327,6 +328,7 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
       drawPosition: 2,
       expectation: {
         groupOrder: 2,
+        rankOrder: 2,
         setsWon: 6,
         setsLost: 3,
         gamesWon: 24,
@@ -337,6 +339,7 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
       drawPosition: 3,
       expectation: {
         groupOrder: 3,
+        rankOrder: 3,
         setsWon: 5,
         setsLost: 4,
         gamesWon: 24,
@@ -347,6 +350,7 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
       drawPosition: 4,
       expectation: {
         groupOrder: 4,
+        rankOrder: 4,
         setsWon: 4,
         setsLost: 4,
         gamesWon: 24,
@@ -357,6 +361,7 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
       drawPosition: 5,
       expectation: {
         groupOrder: 1,
+        rankOrder: 1,
         setsWon: 6,
         setsLost: 2,
         gamesWon: 26,
@@ -591,6 +596,7 @@ it('recognize when participants are tied with position order', () => {
       gamesWon,
       gamesLost,
       groupOrder,
+      rankOrder,
     } = participantResult;
 
     const check = [
@@ -602,9 +608,10 @@ it('recognize when participants are tied with position order', () => {
       gamesWon,
       gamesLost,
       groupOrder,
+      rankOrder,
     ];
 
-    expect(check).toEqual([5, 2, 2, 4, 4, 24, 24, 1]);
+    expect(check).toEqual([5, 2, 2, 4, 4, 24, 24, 1, 1]);
 
     // check that the results in eventData are equivalent
     expect(result).toEqual(participantResult);
@@ -642,7 +649,15 @@ it('recognize when participants are tied with position order', () => {
 
   result = tournamentEngine.setSubOrder({
     drawPosition: 3,
-    subOrder: 1,
+    subOrder: 4,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.setSubOrder({
+    drawPosition: 4,
+    subOrder: 5,
     structureId,
     drawId,
   });
@@ -666,6 +681,50 @@ it('recognize when participants are tied with position order', () => {
   expect(tally.subOrder).toEqual(
     participantResults[0].participantResult.subOrder
   );
+
+  const groupOrders = [];
+  positionAssignments.forEach((assignment) => {
+    const { drawPosition } = assignment;
+    const result = participantResults.find(
+      (result) => result.drawPosition === drawPosition
+    ).participantResult;
+    const {
+      extension: { value: participantResult },
+    } = findExtension({
+      element: assignment,
+      name: TALLY,
+    });
+
+    const {
+      ties,
+      matchUpsWon,
+      matchUpsLost,
+      setsWon,
+      setsLost,
+      gamesWon,
+      gamesLost,
+      groupOrder,
+      rankOrder,
+    } = participantResult;
+    groupOrders.push(groupOrder);
+
+    const check = [
+      ties,
+      matchUpsWon,
+      matchUpsLost,
+      setsWon,
+      setsLost,
+      gamesWon,
+      gamesLost,
+      rankOrder,
+    ];
+
+    expect(check).toEqual([5, 2, 2, 4, 4, 24, 24, 1]);
+
+    // check that the results in eventData are equivalent
+    expect(result).toEqual(participantResult);
+  });
+  expect(groupOrders).toEqual([2, 3, 4, 5, 1]);
 });
 
 it('properly handles walkovers in calculating participant positions', () => {
@@ -753,11 +812,11 @@ it('properly handles walkovers in calculating participant positions', () => {
   });
 
   const expectations = [
-    { result: '1/3', groupOrder: 4 },
-    { result: '3/1', groupOrder: 1 },
-    { result: '3/1', groupOrder: 2 },
-    { result: '0/4', groupOrder: 5 },
-    { result: '3/1', groupOrder: 3 },
+    { result: '1/3', groupOrder: 4, rankOrder: 4 },
+    { result: '3/1', groupOrder: 1, rankOrder: 1 },
+    { result: '3/1', groupOrder: 2, rankOrder: 2 },
+    { result: '0/4', groupOrder: 5, rankOrder: 5 },
+    { result: '3/1', groupOrder: 3, rankOrder: 3 },
   ];
 
   positionAssignments.forEach((assignment, i) => {
