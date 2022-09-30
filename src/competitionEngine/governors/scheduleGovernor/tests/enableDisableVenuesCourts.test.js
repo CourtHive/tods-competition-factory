@@ -93,4 +93,19 @@ it('can disable and enable courts and venues', () => {
   matchUps = competitionEngine.allCompetitionMatchUps().matchUps;
   scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toBeLessThan(50);
+
+  result = competitionEngine.getVenuesAndCourts();
+  expect([result.courts.length, result.venues.length]).toEqual([12, 2]);
+  let disabledCourts = result.courts.filter(
+    (court) => court.extensions?.length
+  );
+  expect(disabledCourts.length).toEqual(6);
+
+  result = competitionEngine.enableCourts({ enableAll: true });
+  expect(result.success).toEqual(true);
+
+  result = competitionEngine.getVenuesAndCourts();
+  expect([result.courts.length, result.venues.length]).toEqual([12, 2]);
+  disabledCourts = result.courts.filter((court) => court.extensions?.length);
+  expect(disabledCourts.length).toEqual(0);
 });
