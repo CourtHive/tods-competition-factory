@@ -7,6 +7,7 @@ import { DISABLED } from '../../constants/extensionConstants';
 
 export function getVenuesAndCourts({
   tournamentRecords,
+  convertExtensions,
   ignoreDisabled,
   venueIds = [],
 }) {
@@ -35,7 +36,7 @@ export function getVenuesAndCourts({
         if (extension?.value) continue;
       }
       if (!uniqueVenueIds.includes(venue.venueId)) {
-        venues.push(makeDeepCopy(venue, false, true));
+        venues.push(makeDeepCopy(venue, convertExtensions, true));
         uniqueVenueIds.push(venue.venueId);
       }
       for (const court of venue.courts || []) {
@@ -48,7 +49,7 @@ export function getVenuesAndCourts({
             if (extension?.value) continue;
           }
           const inContextCourt = {
-            ...makeDeepCopy(court, false, true),
+            ...makeDeepCopy(court, convertExtensions, true),
             venueId: venue.venueId,
           };
           courts.push(inContextCourt);
