@@ -7,11 +7,11 @@ import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import { SINGLES } from '../../../../constants/eventConstants';
 import {
   INVALID_DATE,
   INVALID_VALUES,
 } from '../../../../constants/errorConditionConstants';
-import { SINGLES } from '../../../../constants/eventConstants';
 import {
   COMPASS,
   FIRST_MATCH_LOSER_CONSOLATION,

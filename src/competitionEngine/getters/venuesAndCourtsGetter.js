@@ -1,9 +1,15 @@
 import { getVenuesAndCourts as teVenuesAndCourts } from '../../tournamentEngine/getters/venueGetter';
+import { findExtension } from '../../global/functions/deducers/findExtension';
 import { makeDeepCopy } from '../../utilities';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { DISABLED } from '../../constants/extensionConstants';
 
-export function getVenuesAndCourts({ tournamentRecords, venueIds = [] }) {
+export function getVenuesAndCourts({
+  tournamentRecords,
+  ignoreDisabled,
+  venueIds = [],
+}) {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -19,14 +25,33 @@ export function getVenuesAndCourts({ tournamentRecords, venueIds = [] }) {
   tournamentIds.forEach((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
     tournamentRecord.venues
-      ?.filter(({ venueId }) => !venueIds.length || venueIds.includes(venueId))
+      ?.filter((venue) => {
+        if (venueIds.length && !venueIds.includes(venue.venueId)) return;
+        if (ignoreDisabled) {
+          const { extension } = findExtension({
+            name: DISABLED,
+            element: venue,
+          });
+          if (extension?.value) {
+            return false;
+          }
+        }
+        return true;
+      })
       .forEach((venue) => {
         if (!uniqueVenueIds.includes(venue.venueId)) {
           venues.push(makeDeepCopy(venue, false, true));
           uniqueVenueIds.push(venue.venueId);
         }
-        venue.courts?.forEach((court) => {
+        for (const court of venue.courts || []) {
           if (!uniqueCourtIds.includes(court.courtId)) {
+            if (ignoreDisabled) {
+              const { extension } = findExtension({
+                name: DISABLED,
+                element: court,
+              });
+              if (extension?.value) continue;
+            }
             const inContextCourt = {
               ...makeDeepCopy(court, false, true),
               venueId: venue.venueId,
@@ -34,7 +59,7 @@ export function getVenuesAndCourts({ tournamentRecords, venueIds = [] }) {
             courts.push(inContextCourt);
             uniqueCourtIds.push(court.courtId);
           }
-        });
+        }
       });
   });
 

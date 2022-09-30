@@ -26,7 +26,7 @@ export function getFirstTimeSlotStartTime({
   if (startTime && endTime) {
     const dateStartTime = timeToDate(startTime);
     const dateEndTime = timeToDate(endTime);
-    for (const court of courts) {
+    for (const court of courts || []) {
       if (!Array.isArray(court.dateAvailability)) return false;
       const courtDate = getCourtDateAvailability({ court, date });
       const timeSlots = generateTimeSlots({ courtDate });
