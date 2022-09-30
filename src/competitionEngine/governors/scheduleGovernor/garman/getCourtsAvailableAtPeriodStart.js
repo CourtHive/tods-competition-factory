@@ -21,11 +21,12 @@ export function getCourtsAvailableAtPeriodStart({
     periodLength,
   });
 
-  const availableCourts = courts.filter((court) => {
-    if (!Array.isArray(court.dateAvailability)) return false;
-    const courtDate = getCourtDateAvailability({ date, court });
-    return !!(courtDate && enoughTime(courtDate));
-  });
+  const availableCourts =
+    courts?.filter((court) => {
+      if (!Array.isArray(court.dateAvailability)) return false;
+      const courtDate = getCourtDateAvailability({ date, court });
+      return !!(courtDate && enoughTime(courtDate));
+    }) || [];
 
   return {
     availableToScheduleCount: availableCourts.length,

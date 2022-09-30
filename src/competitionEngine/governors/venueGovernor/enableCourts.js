@@ -10,7 +10,7 @@ export function enableCourts({ tournamentRecords, courtIds, enableAll }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!enableAll && !Array.isArray(courtIds)) return { error: MISSING_VALUE };
 
-  for (const tournamentRecord of Object.keys(tournamentRecords)) {
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
     courtsEnable({ tournamentRecord, courtIds, enableAll });
   }
 
