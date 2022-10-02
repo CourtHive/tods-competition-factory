@@ -99,7 +99,7 @@
     "@rollup/plugin-json": "4.1.0",
     "@rollup/plugin-node-resolve": "14.1.0",
     "@rollup/plugin-typescript": "8.5.0",
-    "@types/node": "16.11.62",
+    "@types/node": "16.11.63",
     "@typescript-eslint/eslint-plugin": "5.38.1",
     "@typescript-eslint/parser": "5.38.1",
     "@vitest/coverage-c8": "0.23.4",
