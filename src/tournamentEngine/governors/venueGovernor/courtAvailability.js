@@ -1,3 +1,4 @@
+import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
 import { validDateAvailability } from './dateAvailability';
 import { addNotice } from '../../../global/state/globalState';
 import { findCourt } from '../../getters/courtGetter';
@@ -13,6 +14,7 @@ export function modifyCourtAvailability({
   tournamentRecord,
   dateAvailability,
   disableNotice,
+  venueMatchUps,
   courtId,
   force,
 }) {
@@ -25,9 +27,19 @@ export function modifyCourtAvailability({
   const { court, venue, error } = findCourt({ tournamentRecord, courtId });
   if (error) return { error };
 
-  if (force) {
-    // TODO: determine if any scheduled matchUps would be affected and warn
-    // if forced then remove schedule detail from affected matchUps
+  const { matchUps: courtMatchUps } = getScheduledCourtMatchUps({
+    tournamentRecord,
+    venueMatchUps,
+    courtId,
+  });
+
+  // check whether there are matchUps which are no longer possible to play
+  // this will only apply to Pro Scheduling
+  if (courtMatchUps?.length) {
+    console.log('scheduled court matchUps', courtMatchUps.length);
+    if (force) {
+      // go ahead and remove scheduling
+    }
   }
 
   court.dateAvailability = dateAvailability;
