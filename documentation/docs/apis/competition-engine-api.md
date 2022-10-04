@@ -418,6 +418,17 @@ const { completedMatchUps, dateMatchUps, courtsData, venues } =
 
 ---
 
+## deleteCourt
+
+```js
+competitionEngine.deleteCourt({
+  courtId,
+  force, // override warnings about matchUps scheduled on specified court
+});
+```
+
+---
+
 ## deleteVenue
 
 If a venue has scheduled matchUps then it will not be deleted unless `{ force: true }` in which case all relevant matchUps will be unscheduled.

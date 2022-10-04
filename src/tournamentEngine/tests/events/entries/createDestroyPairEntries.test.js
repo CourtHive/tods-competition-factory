@@ -134,8 +134,8 @@ it('can destroy pair entries in doubles events', () => {
     .filter((participant) => participant.participantType === PAIR)
     .map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({
-    eventId: doublesId,
     participantIds: pairParticipantIds,
+    eventId: doublesId,
   });
   expect(result.success).toEqual(true);
 
