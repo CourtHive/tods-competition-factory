@@ -41,6 +41,7 @@ import { addDrawDefinitionTimeItem } from './drawDefinitions/addDrawDefinitionTi
 import { getAvailablePlayoffRounds } from './drawDefinitions/getAvailablePlayoffRounds';
 import { setPositionAssignments } from './drawDefinitions/setPositionAssignments';
 import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
+import { modifyPairAssignment } from './drawDefinitions/modifyPairAssignment';
 import { removeDrawEntries } from './drawDefinitions/removeDrawEntries';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
 import { addPlayoffStructures } from './addPlayoffStructures';
@@ -170,6 +171,7 @@ const eventGovernor = {
   modifyEventEntries,
   modifyEntriesStatus,
   modifySeedAssignment,
+  modifyPairAssignment,
 
   resetVoluntaryConsolationStructure,
   deleteFlightProfileAndFlightDraws,

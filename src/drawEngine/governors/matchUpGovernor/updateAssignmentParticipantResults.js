@@ -36,7 +36,7 @@ export function updateAssignmentParticipantResults({
     matchUps,
   });
   if (result.error) return result;
-  const { participantResults } = result;
+  const { participantResults, bracketComplete } = result;
 
   const participantIds = Object.keys(participantResults);
 
@@ -68,5 +68,5 @@ export function updateAssignmentParticipantResults({
 
   modifyDrawNotice({ drawDefinition });
 
-  return { ...SUCCESS, participantResults };
+  return { ...SUCCESS, participantResults, bracketComplete };
 }

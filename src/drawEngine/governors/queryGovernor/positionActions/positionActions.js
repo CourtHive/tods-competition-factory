@@ -3,6 +3,7 @@ import { getStructureDrawPositionProfiles } from '../../../getters/getStructureD
 import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
 import { getAssignedParticipantIds } from '../../../getters/getAssignedParticipantIds';
+import { getValidModifyAssignedPairAction } from './getValidModifyAssignedPairAction';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getValidLuckyLosersAction } from './getValidLuckyLoserAction';
 import { getValidAlternatesAction } from './getValidAlternatesAction';
@@ -45,6 +46,7 @@ import {
   WITHDRAW_PARTICIPANT_METHOD,
   WITHDRAW_PARTICIPANT,
   QUALIFYING_PARTICIPANT,
+  MODIFY_PAIR_ASSIGNMENT,
 } from '../../../../constants/positionActionConstants';
 import {
   CONSOLATION,
@@ -53,6 +55,7 @@ import {
   QUALIFYING,
   WIN_RATIO,
 } from '../../../../constants/drawDefinitionConstants';
+import { PAIR } from '../../../../constants/participantTypes';
 
 /**
  *
@@ -431,6 +434,26 @@ export function positionActions(params) {
       drawId,
     });
     if (validLuckyLosersAction) validActions.push(validLuckyLosersAction);
+  }
+
+  if (
+    participant?.participantType === PAIR &&
+    isAvailableAction({ policyActions, action: MODIFY_PAIR_ASSIGNMENT })
+  ) {
+    const { validModifyAssignedPairAction } = getValidModifyAssignedPairAction({
+      tournamentParticipants,
+      positionAssignment,
+      returnParticipants,
+      drawDefinition,
+      drawPosition,
+      participant,
+      structureId,
+      structure,
+      drawId,
+      event,
+    });
+    if (validModifyAssignedPairAction)
+      validActions.push(validModifyAssignedPairAction);
   }
 
   return {

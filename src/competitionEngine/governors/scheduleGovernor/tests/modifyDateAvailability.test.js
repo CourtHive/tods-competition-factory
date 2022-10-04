@@ -1,4 +1,3 @@
-import { expect } from 'vitest';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 

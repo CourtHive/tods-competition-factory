@@ -91,7 +91,8 @@ export function addEventEntries(params) {
         }
         if (
           event.eventType === DOUBLES &&
-          participant.participantType === PAIR
+          participant.participantType === PAIR &&
+          !isUngrouped(entryStatus)
         ) {
           return true;
         }
