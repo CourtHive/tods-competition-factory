@@ -3,10 +3,12 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
 import { setMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpStatus';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
 import { definedAttributes } from '../../../utilities/objects';
 import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 import { calculateWinCriteria } from './calculateWinCriteria';
+import { tieFormatTelemetry } from './tieFormatTelemetry';
 import { validateTieFormat } from './tieFormatUtilities';
 import { copyTieFormat } from './copyTieFormat';
 import { getTieFormat } from './getTieFormat';
@@ -20,6 +22,7 @@ import {
   allEventMatchUps,
 } from '../../../tournamentEngine/getters/matchUpsGetter';
 
+import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
@@ -31,9 +34,6 @@ import {
   NOT_FOUND,
   NO_MODIFICATIONS_APPLIED,
 } from '../../../constants/errorConditionConstants';
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
-import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
-import { tieFormatTelemetry } from './tieFormatTelemetry';
 
 /*
  * collectionDefinition will be removed from an event tieFormat (if present)
