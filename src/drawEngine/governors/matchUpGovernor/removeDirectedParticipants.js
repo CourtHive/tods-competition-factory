@@ -64,6 +64,7 @@ export function removeDirectedParticipants(params) {
   if (isAdHocMatchUp) return { ...SUCCESS };
 
   const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
+    afterRecoveryTimes: false,
     inContext: true,
     drawDefinition,
     matchUpsMap,

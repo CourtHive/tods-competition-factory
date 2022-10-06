@@ -103,6 +103,7 @@ export function modifyMatchUpScore({
 
     const matchUpFilters = isDualMatchUp && { matchUpTypes: [TEAM] };
     const { matchUps } = getAllStructureMatchUps({
+      afterRecoveryTimes: false,
       structure: itemStructure,
       inContext: true,
       matchUpFilters,

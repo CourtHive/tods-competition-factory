@@ -16,8 +16,8 @@ import {
 export function removeCourtAssignment({
   tournamentRecord,
   drawDefinition,
-  drawId,
   matchUpId,
+  drawId,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!drawDefinition && !drawId) return { error: MISSING_DRAW_ID };

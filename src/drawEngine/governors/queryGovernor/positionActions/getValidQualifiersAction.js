@@ -93,6 +93,7 @@ export function getValidQualifiersAction({
       const qualifyingRoundNumber = structure.qualifyingRoundNumber;
       const { matchUps } = getAllStructureMatchUps({
         matchUpFilters: { roundNumbers: [qualifyingRoundNumber] },
+        afterRecoveryTimes: false,
         tournamentParticipants,
         hasWinningSide: true,
         inContext: true,

@@ -145,6 +145,7 @@ export function completeDrawMatchUps({
 
     const { matchUps } = getAllStructureMatchUps({
       matchUpFilters: { matchUpTypes: [DOUBLES, SINGLES] },
+      afterRecoveryTimes: false,
       tournamentRecord,
       inContext: true,
       drawDefinition,
@@ -163,6 +164,7 @@ export function completeDrawMatchUps({
 
       const { matchUps } = getAllStructureMatchUps({
         matchUpFilters: { matchUpTypes: [DOUBLES, SINGLES] },
+        afterRecoveryTimes: false,
         tournamentRecord,
         inContext: true,
         drawDefinition,

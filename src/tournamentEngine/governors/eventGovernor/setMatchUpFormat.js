@@ -110,6 +110,7 @@ export function setMatchUpFormat({
         getAllStructureMatchUps({
           matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
           contextFilters: { scheduledDates },
+          afterRecoveryTimes: false,
           inContext: true,
           structure,
         });

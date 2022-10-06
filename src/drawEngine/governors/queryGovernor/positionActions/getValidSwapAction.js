@@ -53,6 +53,7 @@ export function getValidSwapAction({
     ({ drawPosition }) => drawPosition
   );
   const { matchUps } = getAllStructureMatchUps({
+    afterRecoveryTimes: false,
     inContext: true,
     drawDefinition,
     structure,
