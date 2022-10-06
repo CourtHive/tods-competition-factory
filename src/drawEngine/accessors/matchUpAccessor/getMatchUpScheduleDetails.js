@@ -31,7 +31,11 @@ export function getMatchUpScheduleDetails({
 }) {
   if (!matchUp) return { error: MISSING_MATCHUP };
 
+  // matchUpType is required to derive averageMatchUpMinutes and recoveryMinutes.
+  /// If matchUpType is not provided or is not present on matchUp...
+  // ...attempt to derive by interrogating structure, draw, and event
   if (
+    afterRecoveryTimes &&
     !matchUp.matchUpType &&
     !matchUpType &&
     (event || tournamentRecord) &&

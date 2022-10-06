@@ -22,13 +22,13 @@ import { makeDeepCopy, unique } from '../../../utilities';
 import { filterMatchUps } from './filterMatchUps';
 import { getSide } from './getSide';
 
-import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
+import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
+import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { TEAM } from '../../../constants/eventConstants';
-import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
 /*
   return all matchUps within a structure and its child structures
@@ -38,6 +38,7 @@ export function getAllStructureMatchUps({
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,
   tournamentParticipants,
+  afterRecoveryTimes,
   policyDefinitions,
   tournamentRecord,
   seedAssignments,
@@ -330,6 +331,7 @@ export function getAllStructureMatchUps({
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
     const { schedule, endDate } = getMatchUpScheduleDetails({
       scheduleVisibilityFilters,
+      afterRecoveryTimes,
       tournamentRecord,
       scheduleTiming,
       matchUpFormat,

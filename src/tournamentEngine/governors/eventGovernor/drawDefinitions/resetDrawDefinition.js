@@ -59,6 +59,7 @@ export function resetDrawDefinition({
     }
 
     const { matchUps: inContextMatchUps } = getAllStructureMatchUps({
+      afterRecoveryTimes: false,
       inContext: true,
       matchUpsMap,
       structure,

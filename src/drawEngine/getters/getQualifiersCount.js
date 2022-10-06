@@ -57,6 +57,7 @@ export function getQualifiersCount({
           const matchUps = getAllStructureMatchUps({
             matchUpFilters: { roundNumbers: [sourceRoundNumber] },
             structure: sourceStructure,
+            afterRecoveryTimes: false,
             inContext: false,
           }).matchUps;
 

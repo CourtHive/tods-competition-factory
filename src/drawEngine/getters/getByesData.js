@@ -12,6 +12,7 @@ import {
 export function getByesData({ drawDefinition, event, matchUpsMap, structure }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps, roundMatchUps } = getAllStructureMatchUps({
+    afterRecoveryTimes: false,
     drawDefinition,
     matchUpFilters,
     matchUpsMap,

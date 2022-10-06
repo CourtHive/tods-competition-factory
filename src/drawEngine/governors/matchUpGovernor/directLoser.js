@@ -52,6 +52,7 @@ export function directLoser(params) {
     drawDefinition,
   });
   const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
+    afterRecoveryTimes: false,
     inContext: true,
     drawDefinition,
     structure,
