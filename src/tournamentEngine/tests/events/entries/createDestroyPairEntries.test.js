@@ -285,50 +285,50 @@ it('can create pair entries in doubles events', () => {
   );
 
   result = tournamentEngine.addEventEntryPairs({
-    participantIdPairs,
     entryStatus: ALTERNATE,
     entryStage: QUALIFYING,
+    participantIdPairs,
   });
   expect(result.error).toEqual(MISSING_EVENT);
 
   result = tournamentEngine.addEventEntryPairs({
-    eventId: 'singlesId',
-    participantIdPairs,
     entryStatus: ALTERNATE,
     entryStage: QUALIFYING,
+    eventId: 'singlesId',
+    participantIdPairs,
   });
   expect(result.error).toEqual(INVALID_EVENT_TYPE);
 
   result = tournamentEngine.addEventEntryPairs({
-    eventId,
     participantIdPairs: invalidParticipantIdPairs,
     entryStatus: ALTERNATE,
     entryStage: QUALIFYING,
+    eventId,
   });
   expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
 
   result = tournamentEngine.addEventEntryPairs({
-    eventId,
     participantIdPairs: unpairedIndividualParticipants,
     entryStatus: ALTERNATE,
     entryStage: QUALIFYING,
+    eventId,
   });
   expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
 
   result = tournamentEngine.addEventEntryPairs({
-    eventId,
-    participantIdPairs,
     entryStatus: ALTERNATE,
     entryStage: QUALIFYING,
+    participantIdPairs,
+    eventId,
   });
   expect(result.success).toEqual(true);
   expect(result.newParticipantIds.length).toEqual(16);
 
   result = tournamentEngine.addEventEntryPairs({
-    eventId,
-    participantIdPairs,
     entryStatus: ALTERNATE,
     entryStage: QUALIFYING,
+    participantIdPairs,
+    eventId,
   });
   expect(result.success).toEqual(true);
   expect(result.info).not.toBeUndefined();
@@ -346,17 +346,17 @@ it('can create pair entries in doubles events', () => {
 
 it('can allow duplicateParticipantIdsPairs and add them to events', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantType: PAIR, participantsCount: 32 },
     startDate: '2020-01-01',
     endDate: '2020-01-06',
-    participantsProfile: { participantType: PAIR, participantsCount: 32 },
   });
 
   tournamentEngine.setState(tournamentRecord);
 
   const eventName = 'Test Event';
   const event = {
-    eventName,
     eventType: DOUBLES,
+    eventName,
   };
 
   let result = tournamentEngine.addEvent({ event });
@@ -384,9 +384,9 @@ it('can allow duplicateParticipantIdsPairs and add them to events', () => {
     pairParticipantToDuplicate.individualParticipantIds,
   ];
   result = tournamentEngine.addEventEntryPairs({
-    eventId,
-    participantIdPairs,
     allowDuplicateParticipantIdPairs: true,
+    participantIdPairs,
+    eventId,
   });
   expect(result.success).toEqual(true);
 
