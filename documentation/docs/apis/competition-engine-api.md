@@ -247,6 +247,7 @@ competitionEngine.addVenue({
 ```js
 const { matchUps } = competitionEngine.allCompetitionMatchUps({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
+  afterRecoveryTimes, // optional boolean; include participant recovery times for each matchUp
   matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   nextMatchUps, // include winnerTo and loserTo matchUps
   contextProfile, // optional: { inferGender: true, contextProfile: ['attribute', 'to', 'exclude'], withScaleValues }
@@ -259,11 +260,11 @@ const { matchUps } = competitionEngine.allCompetitionMatchUps({
 
 ```js
 competitionEngine.assignMatchUpCourt({
-  tournamentId,
   drawId, // drawId where matchUp is found
+  courtDayDate, // ISO Date String or 'YYYY-MM-DD'
+  tournamentId,
   matchUpId,
   courtId,
-  courtDayDate, // ISO Date String or 'YYYY-MM-DD'
 });
 ```
 

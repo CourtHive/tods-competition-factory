@@ -17,6 +17,7 @@ import { COMPLETED } from '../../constants/matchUpStatusConstants';
 
 export function allCompetitionMatchUps({
   scheduleVisibilityFilters,
+  afterRecoveryTimes,
   tournamentRecords,
   matchUpFilters,
   contextFilters,
@@ -34,6 +35,7 @@ export function allCompetitionMatchUps({
       const tournamentRecord = tournamentRecords[tournamentId];
       const { matchUps } = allTournamentMatchUps({
         scheduleVisibilityFilters,
+        afterRecoveryTimes,
         tournamentRecord,
         matchUpFilters,
         contextFilters,

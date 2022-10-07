@@ -155,7 +155,9 @@ it.each([
         .length
     ).toEqual(0);
 
-    let { matchUps } = competitionEngine.allCompetitionMatchUps();
+    let { matchUps } = competitionEngine.allCompetitionMatchUps({
+      afterRecoveryTimes: true,
+    });
     let scheduledMatchUps = matchUps.filter(hasSchedule);
     expect(scheduledMatchUps[0].schedule.timeAfterRecovery).toEqual('10:30');
 
@@ -355,7 +357,9 @@ it('can clear scheduled matchUps', () => {
     return !!matchUpScheduleKeys.length;
   };
 
-  let { matchUps } = competitionEngine.allCompetitionMatchUps();
+  let { matchUps } = competitionEngine.allCompetitionMatchUps({
+    afterRecoveryTimes: true,
+  });
   let scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toEqual(scheduledCount);
   expect(scheduledMatchUps[0].schedule.timeAfterRecovery).toEqual('10:30');

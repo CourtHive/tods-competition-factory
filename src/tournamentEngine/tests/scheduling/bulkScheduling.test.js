@@ -168,6 +168,7 @@ test('recognizes scheduling conflicts', () => {
   expect(result.success).toEqual(true);
 
   ({ matchUps } = competitionEngine.allCompetitionMatchUps({
+    afterRecoveryTimes: true,
     nextMatchUps: true,
   }));
   expect(Object.keys(matchUps[0].schedule).includes('scheduledDate')).toEqual(
@@ -187,8 +188,8 @@ test('recognizes scheduling conflicts', () => {
   );
 
   ({ matchUps } = competitionEngine.allCompetitionMatchUps({
-    nextMatchUps: true,
     scheduleVisibilityFilters: { visibilityThreshold },
+    nextMatchUps: true,
   }));
 
   // visibilityThreshold has removed all schedule details except for time and milliseconds

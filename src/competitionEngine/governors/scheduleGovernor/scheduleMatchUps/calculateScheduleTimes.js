@@ -123,8 +123,9 @@ export function calculateScheduleTimes({
   // need to reduce courts available for a given time period by the number of matchUps scheduled at a given venue
   const matchUpFilters = { scheduledDate: scheduleDate, venueIds };
   const matchUpsWithSchedule = competitionScheduleMatchUps({
-    tournamentRecords,
+    afterRecoveryTimes: true,
     sortDateMatchUps: false, // unnecessary for extracting bookings; reduce processing overhead;
+    tournamentRecords,
     matchUpFilters,
   });
 
