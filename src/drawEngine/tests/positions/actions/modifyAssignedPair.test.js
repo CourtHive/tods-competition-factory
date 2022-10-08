@@ -6,7 +6,6 @@ import { MODIFY_PAIR_ASSIGNMENT } from '../../../../constants/positionActionCons
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
 import { UNGROUPED } from '../../../../constants/entryStatusConstants';
 import { DOUBLES_EVENT } from '../../../../constants/eventConstants';
-import { expect } from 'vitest';
 
 test('postionAction for replacing participant within PAIR', () => {
   const participantsCount = 10;
