@@ -44,6 +44,7 @@ export function getVenuesReport({
 
   const matchUpFilters = { venueIds: venues.map(({ venueId }) => venueId) };
   const { matchUps } = allCompetitionMatchUps({
+    afterRecoveryTimes: true,
     tournamentRecords,
     matchUpFilters,
   });

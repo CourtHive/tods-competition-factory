@@ -38,9 +38,9 @@ export function reorderUpcomingMatchUps(params) {
       matchUpsContextIds[calculatedIndex].schedule.scheduledTime;
     const result = assignMatchUpScheduledTime({
       tournamentId,
-      drawId,
-      matchUpId,
       scheduledTime,
+      matchUpId,
+      drawId,
     });
     if (result.success) {
       matchUpsModified++;
@@ -55,9 +55,9 @@ export function reorderUpcomingMatchUps(params) {
 
   function assignMatchUpScheduledTime({
     tournamentId,
-    drawId,
-    matchUpId,
     scheduledTime,
+    matchUpId,
+    drawId,
   }) {
     const tournamentRecord = tournamentRecords[tournamentId];
     const { drawDefinition } = getDrawDefinition({
@@ -67,8 +67,8 @@ export function reorderUpcomingMatchUps(params) {
 
     return addMatchUpScheduledTime({
       drawDefinition,
-      matchUpId,
       scheduledTime,
+      matchUpId,
     });
   }
 }

@@ -332,6 +332,7 @@ export function addParticipantContext(params) {
         params.withDraws
       ) {
         matchUps = allEventMatchUps({
+          afterRecoveryTimes: params.scheduleAnalysis,
           participants: allTournamentParticipants,
           nextMatchUps: true,
           tournamentRecord,

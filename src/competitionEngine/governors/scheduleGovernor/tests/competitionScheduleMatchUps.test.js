@@ -138,7 +138,9 @@ test.each([competitionEngineSync])(
       showGlobalLog: false,
     });
 
-    const { matchUps } = competitionEngine.allCompetitionMatchUps();
+    const { matchUps } = competitionEngine.allCompetitionMatchUps({
+      afterRecoveryTimes: true,
+    });
     matchUps.filter(hasSchedule).forEach(({ schedule }) => {
       expect(schedule.averageMinutes).toBeGreaterThan(0);
       expect(schedule.recoveryMinutes).toBeGreaterThan(0);

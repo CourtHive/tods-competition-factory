@@ -21,7 +21,7 @@ import { TEAM } from '../../../constants/eventConstants';
 
 export function getMatchUpScheduleDetails({
   scheduleVisibilityFilters,
-  afterRecoveryTimes = true,
+  afterRecoveryTimes,
   tournamentRecord,
   scheduleTiming,
   matchUpFormat,

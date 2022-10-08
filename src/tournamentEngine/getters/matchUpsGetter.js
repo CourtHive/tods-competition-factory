@@ -24,6 +24,7 @@ import {
 export function allTournamentMatchUps({
   scheduleVisibilityFilters,
   participantsProfile,
+  afterRecoveryTimes,
   policyDefinitions,
   tournamentRecord,
   inContext = true,
@@ -71,6 +72,7 @@ export function allTournamentMatchUps({
         scheduleVisibilityFilters,
         tournamentAppliedPolicies,
         participantsProfile,
+        afterRecoveryTimes,
         policyDefinitions,
         tournamentRecord,
         matchUpFilters,
