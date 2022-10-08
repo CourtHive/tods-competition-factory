@@ -8,7 +8,18 @@ import { mocksEngine } from '../../..';
 import fs from 'fs';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
-import { QUALIFYING_PARTICIPANT } from '../../../constants/positionActionConstants';
+import { NICKNAME } from '../../../constants/matchUpActionConstants';
+import {
+  ALTERNATE_PARTICIPANT,
+  QUALIFYING_PARTICIPANT,
+  ASSIGN_BYE,
+  ADD_PENALTY,
+  REMOVE_SEED,
+  SEED_VALUE,
+  SWAP_PARTICIPANTS,
+  WITHDRAW_PARTICIPANT,
+  REMOVE_ASSIGNMENT,
+} from '../../../constants/positionActionConstants';
 import {
   DRAW,
   MAIN,
@@ -142,8 +153,8 @@ it('supports multi-sequence qualifying structures', () => {
 
   // prettier-ignore
   expect(validTypes).toEqual([
-    'ALTERNATE', 'BYE', 'NICKNAME', 'PENALTY',
-    'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
+    ALTERNATE_PARTICIPANT, ASSIGN_BYE, NICKNAME, ADD_PENALTY,
+    REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 });
 

@@ -22,6 +22,7 @@ import {
 } from './actionPolicyUtils';
 
 import { DIRECT_ENTRY_STATUSES } from '../../../../constants/entryStatusConstants';
+import { PAIR } from '../../../../constants/participantTypes';
 import {
   INVALID_DRAW_POSITION,
   MISSING_DRAW_DEFINITION,
@@ -47,6 +48,8 @@ import {
   WITHDRAW_PARTICIPANT,
   QUALIFYING_PARTICIPANT,
   MODIFY_PAIR_ASSIGNMENT,
+  REMOVE_SEED,
+  REMOVE_SEED_METHOD,
 } from '../../../../constants/positionActionConstants';
 import {
   CONSOLATION,
@@ -55,7 +58,6 @@ import {
   QUALIFYING,
   WIN_RATIO,
 } from '../../../../constants/drawDefinitionConstants';
-import { PAIR } from '../../../../constants/participantTypes';
 
 /**
  *
@@ -339,6 +341,35 @@ export function positionActions(params) {
           structureId,
           participantId,
           seedValue,
+        },
+      });
+    }
+
+    if (
+      !isByePosition &&
+      !activeDrawPositions.length && // if any drawPositions are active, action is disabled
+      isAvailableAction({ policyActions, action: REMOVE_SEED }) &&
+      isValidSeedPosition({ drawDefinition, structureId, drawPosition }) &&
+      validToAssignSeed
+    ) {
+      const { seedAssignments } = getStructureSeedAssignments({
+        drawDefinition,
+        structure,
+      });
+      const { seedNumber } =
+        seedAssignments.find(
+          (assignment) => assignment.participantId === participantId
+        ) || {};
+
+      validActions.push({
+        type: REMOVE_SEED,
+        method: REMOVE_SEED_METHOD,
+        participant,
+        seedNumber,
+        payload: {
+          drawId,
+          structureId,
+          participantId,
         },
       });
     }

@@ -98,6 +98,7 @@ import {
   setEventStartDate,
 } from './setEventDates';
 
+import { removeSeededParticipant } from './drawDefinitions/removeSeededParticipant';
 import { validateLineUp } from './drawDefinitions/validateTeamLineUp';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
@@ -141,11 +142,12 @@ const eventGovernor = {
   setEventStartDate,
   setEventEndDate,
 
-  autoSeeding,
-  removeSeeding,
+  removeSeededParticipant,
   removeScaleValues,
-  addDrawEntries,
   checkValidEntries,
+  addDrawEntries,
+  removeSeeding,
+  autoSeeding,
 
   modifyDrawName,
   addDrawDefinition,
