@@ -6,10 +6,22 @@ import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
-import { QUALIFYING_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
+import { NICKNAME } from '../../../constants/matchUpActionConstants';
+import {
+  ADD_PENALTY,
+  ASSIGN_BYE,
+  ALTERNATE_PARTICIPANT,
+  LUCKY_PARTICIPANT,
+  QUALIFYING_PARTICIPANT,
+  REMOVE_ASSIGNMENT,
+  REMOVE_SEED,
+  SEED_VALUE,
+  SWAP_PARTICIPANTS,
+  WITHDRAW_PARTICIPANT,
+} from '../../../constants/positionActionConstants';
 import {
   DRAW,
   FEED_IN,
@@ -318,8 +330,8 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
   let validTypes = result.validActions.map(({ type }) => type).sort();
   // prettier-ignore
   expect(validTypes).toEqual([
-    'ALTERNATE', 'BYE', 'LUCKY', QUALIFIER_PARTICIPANT,
-    'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
+    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, QUALIFIER_PARTICIPANT,
+    REMOVE_ASSIGNMENT, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
   */
 
@@ -338,8 +350,8 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
   let validTypes = result.validActions.map(({ type }) => type).sort();
   // prettier-ignore
   expect(validTypes).toEqual([
-    'ALTERNATE', 'BYE', 'LUCKY', 'NICKNAME', 'PENALTY',
-    QUALIFYING_PARTICIPANT, 'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
+    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
+    QUALIFYING_PARTICIPANT, REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 });
 
@@ -568,8 +580,8 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
   let validTypes = result.validActions.map(({ type }) => type).sort();
   // prettier-ignore
   expect(validTypes).toEqual([
-    'ALTERNATE', 'BYE', 'LUCKY', 'NICKNAME', 'PENALTY',
-    QUALIFYING_PARTICIPANT, 'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
+    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
+    QUALIFYING_PARTICIPANT, REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 
   const qualifierDrawPosition = positionAssignments.find(
@@ -587,8 +599,8 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
 
   // prettier-ignore
   expect(validTypes).toEqual([
-    'ALTERNATE', 'BYE', 'LUCKY', QUALIFYING_PARTICIPANT,
-    'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
+    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, QUALIFYING_PARTICIPANT,
+    REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 
   let qualifierAssingmentAction = result.validActions.find(
@@ -711,8 +723,8 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
 
   // prettier-ignore
   expect(validTypes).toEqual([
-    'ALTERNATE', 'BYE', 'LUCKY', 'NICKNAME', 'PENALTY',
-    QUALIFYING_PARTICIPANT, 'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
+    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
+    QUALIFYING_PARTICIPANT, REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 
   const qualifierDrawPosition = positionAssignments.find(
@@ -730,8 +742,8 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
 
   // prettier-ignore
   expect(validTypes).toEqual([
-    'ALTERNATE', 'BYE', 'LUCKY', QUALIFYING_PARTICIPANT,
-    'REMOVE', 'SEED_VALUE', 'SWAP', 'WITHDRAW',
+    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, QUALIFYING_PARTICIPANT,
+    REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 
   let qualifierAssingmentAction = result.validActions.find(

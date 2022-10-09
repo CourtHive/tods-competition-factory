@@ -1,6 +1,7 @@
-import tournamentEngine from '../../sync';
 import { generateTournamentRecord } from '../../../mocksEngine/generators/generateTournamentRecord';
 import drawEngine from '../../../drawEngine/sync';
+import tournamentEngine from '../../sync';
+
 import {
   CONSOLATION,
   FIRST_MATCH_LOSER_CONSOLATION,
@@ -14,8 +15,8 @@ it('can return event matchUps with potential participants', () => {
     },
   ];
   const { drawIds, tournamentRecord } = generateTournamentRecord({
-    drawProfiles,
     inContext: true,
+    drawProfiles,
     goesTo: true,
   });
 
@@ -24,8 +25,8 @@ it('can return event matchUps with potential participants', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const { matchUps } = tournamentEngine.allDrawMatchUps({
-    drawId,
     nextMatchUps: true,
+    drawId,
   });
 
   const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
