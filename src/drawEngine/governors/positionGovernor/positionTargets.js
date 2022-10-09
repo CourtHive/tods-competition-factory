@@ -62,13 +62,13 @@ function targetByRoundOutcome({
   structure,
   matchUp,
 }) {
+  const { winnerMatchUpId, loserMatchUpId } = matchUp;
   const { links } = getRoundLinks({
     roundNumber: matchUp.roundNumber,
     structureId: structure.structureId,
     drawDefinition,
   });
   const source = links?.source;
-  const { winnerMatchUpId, loserMatchUpId } = matchUp;
 
   const winnerTargetLink = getTargetLink({ source, linkType: WINNER });
   const byeTargetLink = getTargetLink({
@@ -163,11 +163,11 @@ function targetByRoundOutcome({
       targetDrawPosition: winnerTargetDrawPosition,
       matchUp: winnerMatchUp,
     } = getTargetMatchUp({
-      drawDefinition,
+      targetLink: winnerTargetLink,
+      sourceRoundMatchUpCount,
       inContextDrawMatchUps,
       sourceRoundPosition,
-      sourceRoundMatchUpCount,
-      targetLink: winnerTargetLink,
+      drawDefinition,
     }));
   }
 
@@ -198,6 +198,7 @@ function targetByRoundOutcome({
       loserMatchUpDrawPositionIndex,
       winnerMatchUpDrawPositionIndex,
     },
+    targetMatchUpIds: !!(winnerMatchUpId || loserMatchUpId),
   });
 }
 
