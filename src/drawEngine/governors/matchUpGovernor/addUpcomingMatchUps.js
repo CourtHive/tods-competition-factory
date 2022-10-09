@@ -46,7 +46,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
         drawDefinition,
         matchUpId,
       });
-      const { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
+      let { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
 
       if (!inContextMatchUp.winnerMatchUpId && winnerMatchUp) {
         inContextMatchUp.winnerMatchUpId = winnerMatchUp.matchUpId;
@@ -119,11 +119,32 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
             loserPotentials.push({ bye: true, tbd: true }); // tbd: true indiciates that for FMLC, WO/DEF could propagate a player
           }
           if (winnerPotentials?.length && winnerMatchUp) {
+            // -----------------------------------------------------
+            // when targetMatchUpIds are not present in source data
+            // winnerMatchUp / loserMatchUp are not original objects
+            if (!targetData.targetMatchUpIds && winnerMatchUp) {
+              winnerMatchUp = inContextDrawMatchUps.find(
+                ({ matchUpId }) => matchUpId === winnerMatchUp.matchUpId
+              );
+            }
+            // -----------------------------------------------------
+
             if (!winnerMatchUp.potentialParticipants)
               winnerMatchUp.potentialParticipants = [];
             winnerMatchUp.potentialParticipants.push(winnerPotentials);
           }
           if (loserPotentials?.length && loserMatchUp) {
+            // -----------------------------------------------------
+            // when targetMatchUpIds are not present in source data
+            // winnerMatchUp / loserMatchUp are not original objects
+
+            if (!targetData.targetMatchUpIds && loserMatchUp) {
+              winnerMatchUp = inContextDrawMatchUps.find(
+                ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
+              );
+            }
+            // -----------------------------------------------------
+
             if (!loserMatchUp.potentialParticipants)
               loserMatchUp.potentialParticipants = [];
             loserMatchUp.potentialParticipants.push(loserPotentials);
