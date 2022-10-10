@@ -17,5 +17,7 @@ export function removeSeededParticipant({
   if (!isConvertableInteger(drawPosition))
     return { error: INVALID_DRAW_POSITION };
 
+  // TODO: implement rotation of seeded players
+
   return { ...SUCCESS };
 }

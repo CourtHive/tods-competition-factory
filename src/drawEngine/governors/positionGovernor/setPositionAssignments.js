@@ -1,5 +1,6 @@
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
@@ -27,8 +28,11 @@ export function setPositionAssignments({
   if (!Array.isArray(structurePositionAssignments))
     return { error: INVALID_VALUES };
 
+  const stack = 'setPositionAssignments';
+
   for (const structureAssignments of structurePositionAssignments) {
     const { structureId, positionAssignments } = structureAssignments;
+    if (!positionAssignments) continue;
 
     const result = findStructure({ drawDefinition, structureId });
     if (result.error) return result;
@@ -44,15 +48,20 @@ export function setPositionAssignments({
     const structureDrawPositions = structure.positionAssignments?.map(
       ({ drawPosition }) => drawPosition
     );
-    const submittedDrawPositions = positionAssignments.map(
+    const submittedDrawPositions = positionAssignments?.map(
       ({ drawPosition }) => drawPosition
     );
 
     if (
       intersection(structureDrawPositions, submittedDrawPositions).length !==
       structureDrawPositions.length
-    )
-      return { error: INVALID_VALUES, info: 'drawPositions do not match' };
+    ) {
+      return decorateResult({
+        result: { error: INVALID_VALUES },
+        info: 'drawPositions do not match',
+        stack,
+      });
+    }
 
     const matchUpsMap = getMatchUpsMap({ drawDefinition });
     const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
@@ -62,7 +71,7 @@ export function setPositionAssignments({
       matchUpsMap,
     });
 
-    for (const assignment of positionAssignments) {
+    for (const assignment of positionAssignments || []) {
       const { drawPosition, participantId, bye, qualifier } = assignment;
 
       if (bye) {
