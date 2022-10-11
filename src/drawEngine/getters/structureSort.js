@@ -1,12 +1,24 @@
 import { findExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
-import { stageOrder } from '../../constants/drawDefinitionConstants';
+import {
+  finishOrder,
+  stageOrder,
+  FINISHING_POSITIONS,
+} from '../../constants/drawDefinitionConstants';
 
 import { ROUND_TARGET } from '../../constants/extensionConstants';
 
 // TODO: option to sort COMPLETED structures to the bottom
-export function structureSort(a, b) {
+export function structureSort(a, b, config = {}) {
   const getRoundTarget = (element) =>
     findExtension({ element, name: ROUND_TARGET })?.extension?.value;
+
+  if (config?.mode === FINISHING_POSITIONS) {
+    return (
+      (finishOrder[a?.stage] || 0) - (finishOrder[b?.stage] || 0) ||
+      (getMinFinishingPositionRange(a) || 0) -
+        (getMinFinishingPositionRange(b) || 0)
+    );
+  }
 
   return (
     (stageOrder[a?.stage] || 0) - (stageOrder[b?.stage] || 0) ||
