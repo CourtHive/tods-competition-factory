@@ -113,6 +113,8 @@ export function generateRoundRobin({
 // groups of finishing drawPositions which playoff
 export function generateRoundRobinWithPlayOff(params) {
   const {
+    compassAttributes = COMPASS_ATTRIBUTES,
+    olympicAttributes = OLYMPIC_ATTRIBUTES,
     playoffMatchUpFormat,
     policyDefinitions,
     stageSequence = 1,
@@ -219,12 +221,12 @@ export function generateRoundRobinWithPlayOff(params) {
       if (playoffDrawType === COMPASS) {
         Object.assign(params, {
           roundOffsetLimit: 3,
-          playoffAttributes: COMPASS_ATTRIBUTES,
+          playoffAttributes: compassAttributes,
         });
       } else if (playoffDrawType === OLYMPIC) {
         Object.assign(params, {
           roundOffsetLimit: 2,
-          playoffAttributes: OLYMPIC_ATTRIBUTES,
+          playoffAttributes: olympicAttributes,
         });
       }
 
