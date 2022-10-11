@@ -44,7 +44,9 @@ import {
 export function assignDrawPosition({
   inContextDrawMatchUps,
   isQualifierPosition, // internal use
+  sourceMatchUpStatus,
   automaticPlacement, // internal use to override public behaviors
+  drawPositionIndex,
   tournamentRecord,
   drawDefinition,
   seedingProfile,
@@ -208,11 +210,13 @@ export function assignDrawPosition({
     addDrawPositionToMatchUps({
       inContextDrawMatchUps,
       positionAssignments,
+      sourceMatchUpStatus,
       automaticPlacement,
+      drawPositionIndex,
       tournamentRecord,
       drawDefinition,
-      matchUpsMap,
       drawPosition,
+      matchUpsMap,
       structure,
       event,
     });
@@ -291,7 +295,9 @@ export function assignDrawPosition({
 // used for matchUps which are NOT in a ROUND_ROBIN { structureType: CONTAINER }
 function addDrawPositionToMatchUps({
   inContextDrawMatchUps,
+  sourceMatchUpStatus,
   automaticPlacement,
+  drawPositionIndex,
   tournamentRecord,
   drawDefinition,
   drawPosition,
@@ -323,7 +329,9 @@ function addDrawPositionToMatchUps({
     const result = assignMatchUpDrawPosition({
       matchUpId: matchUp.matchUpId,
       inContextDrawMatchUps,
+      sourceMatchUpStatus,
       automaticPlacement,
+      drawPositionIndex,
       tournamentRecord,
       drawDefinition,
       drawPosition,

@@ -1384,6 +1384,9 @@ const drawDefinitionValues = {
   voluntaryConsolation, // optional { structureName, structureAbbreviation } - causes voluntary consolation structure to be added
   enforceMinimumDrawSize, // optional boolean - defaults to true - false will allow generation of multi-structure drawTypes with only 2 participants
   drawTypeCoercion, // optional boolean - coerce multi-structure drawTypes to SINGLE_ELIMINATION for drawSize: 2
+
+  compassAttributes, // optional - provide translations for name mappings
+  olympicAttributes, // optional - provide translations for name mappings
 };
 
 const { drawDefinition } =

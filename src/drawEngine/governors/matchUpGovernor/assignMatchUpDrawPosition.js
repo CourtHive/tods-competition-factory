@@ -31,10 +31,13 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import { updateMatchUpStatusCodes } from './matchUpStatusCodes';
 
 export function assignMatchUpDrawPosition({
   inContextDrawMatchUps,
+  sourceMatchUpStatus,
   tournamentRecord,
+  sourceMatchUpId,
   drawDefinition,
   matchUpStatus,
   drawPosition,
@@ -113,6 +116,16 @@ export function assignMatchUpDrawPosition({
           matchUpId,
         })) ||
       undefined;
+
+    if (matchUp.matchUpStatusCodes) {
+      updateMatchUpStatusCodes({
+        inContextDrawMatchUps,
+        sourceMatchUpStatus,
+        sourceMatchUpId,
+        matchUpsMap,
+        matchUp,
+      });
+    }
 
     // only in the case of "Double Exit" produced "Exit" can a winningSide be assigned at the same time as a position
     Object.assign(matchUp, {

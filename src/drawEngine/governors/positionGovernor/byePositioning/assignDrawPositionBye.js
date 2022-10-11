@@ -61,6 +61,7 @@ import {
  */
 
 export function assignDrawPositionBye({
+  // drawPositionIndex,
   isPositionAction,
   tournamentRecord,
   drawDefinition,

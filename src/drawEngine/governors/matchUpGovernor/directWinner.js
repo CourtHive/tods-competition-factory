@@ -12,9 +12,11 @@ export function directWinner({
   winnerMatchUpDrawPositionIndex,
   inContextDrawMatchUps,
   projectedWinningSide,
+  sourceMatchUpStatus,
   winningDrawPosition,
   tournamentRecord,
   winnerTargetLink,
+  sourceMatchUpId,
   drawDefinition,
   winnerMatchUp,
   dualMatchUp,
@@ -73,31 +75,40 @@ export function directWinner({
       targetDrawPositionIsUnfilled
     ) {
       assignDrawPosition({
+        drawPositionIndex: winnerMatchUpDrawPositionIndex,
         drawPosition: targetMatchUpDrawPosition,
         participantId: winnerParticipantId,
         structureId: targetStructureId,
         inContextDrawMatchUps,
+        sourceMatchUpStatus,
         tournamentRecord,
+        sourceMatchUpId,
         drawDefinition,
         matchUpsMap,
       });
     } else if (unfilledTargetMatchUpDrawPositions.length) {
       const drawPosition = unfilledTargetMatchUpDrawPositions.pop();
       assignDrawPosition({
+        drawPositionIndex: winnerMatchUpDrawPositionIndex,
         participantId: winnerParticipantId,
         structureId: targetStructureId,
         inContextDrawMatchUps,
+        sourceMatchUpStatus,
         tournamentRecord,
+        sourceMatchUpId,
         drawDefinition,
         drawPosition,
         matchUpsMap,
       });
     } else if (winnerExistingDrawPosition) {
       const result = assignMatchUpDrawPosition({
+        drawPositionIndex: winnerMatchUpDrawPositionIndex,
         drawPosition: winnerExistingDrawPosition,
         matchUpId: winnerMatchUp.matchUpId,
         inContextDrawMatchUps,
+        sourceMatchUpStatus,
         tournamentRecord,
+        sourceMatchUpId,
         drawDefinition,
         matchUpsMap,
       });
@@ -131,10 +142,13 @@ export function directWinner({
     }
   } else {
     const result = assignMatchUpDrawPosition({
+      drawPositionIndex: winnerMatchUpDrawPositionIndex,
       matchUpId: winnerMatchUp.matchUpId,
       drawPosition: winningDrawPosition,
       inContextDrawMatchUps,
+      sourceMatchUpStatus,
       tournamentRecord,
+      sourceMatchUpId,
       drawDefinition,
       matchUpsMap,
     });

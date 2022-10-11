@@ -21,9 +21,11 @@ export function directLoser(params) {
     loserMatchUpDrawPositionIndex,
     inContextDrawMatchUps,
     projectedWinningSide,
+    sourceMatchUpStatus,
     loserDrawPosition,
     tournamentRecord,
     loserTargetLink,
+    sourceMatchUpId,
     drawDefinition,
     loserMatchUp,
     dualMatchUp,
@@ -95,8 +97,8 @@ export function directLoser(params) {
   const targetStructureId = loserTargetLink.target.structureId;
   const { positionAssignments: targetPositionAssignments } =
     structureAssignedDrawPositions({
-      drawDefinition,
       structureId: targetStructureId,
+      drawDefinition,
     });
 
   const targetMatchUpPositionAssignments = targetPositionAssignments.filter(
@@ -143,12 +145,15 @@ export function directLoser(params) {
     const fedDrawPosition =
       unfilledTargetMatchUpDrawPositions.sort(numericSort)[0];
     const result = assignDrawPosition({
+      drawPositionIndex: loserMatchUpDrawPositionIndex,
       participantId: loserParticipantId,
       structureId: targetStructureId,
       drawPosition: fedDrawPosition,
       automaticPlacement: true,
       inContextDrawMatchUps,
+      sourceMatchUpStatus,
       tournamentRecord,
+      sourceMatchUpId,
       drawDefinition,
       matchUpsMap,
     });
@@ -234,9 +239,11 @@ export function directLoser(params) {
 
   function assignLoserPositionBye() {
     const result = assignDrawPositionBye({
+      drawPositionIndex: loserMatchUpDrawPositionIndex,
       drawPosition: loserBackdrawPosition,
       structureId: targetStructureId,
       tournamentRecord,
+      sourceMatchUpId,
       drawDefinition,
     });
     return decorateResult({ result, stack: 'assignLoserPositionBye' });
@@ -244,12 +251,15 @@ export function directLoser(params) {
 
   function asssignLoserDrawPosition() {
     const result = assignDrawPosition({
+      drawPositionIndex: loserMatchUpDrawPositionIndex,
       drawPosition: targetMatchUpDrawPosition,
       participantId: loserParticipantId,
       structureId: targetStructureId,
       automaticPlacement: true,
       inContextDrawMatchUps,
+      sourceMatchUpStatus,
       tournamentRecord,
+      sourceMatchUpId,
       drawDefinition,
       matchUpsMap,
     });
