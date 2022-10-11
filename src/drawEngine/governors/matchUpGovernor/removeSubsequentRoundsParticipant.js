@@ -2,6 +2,7 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../getters/positionsGetter';
+import { updateMatchUpStatusCodes } from './matchUpStatusCodes';
 import { findStructure } from '../../getters/findStructure';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
@@ -15,8 +16,10 @@ import {
 
 export function removeSubsequentRoundsParticipant({
   inContextDrawMatchUps,
+  sourceMatchUpStatus,
   targetDrawPosition,
   tournamentRecord,
+  sourceMatchUpId,
   drawDefinition,
   structureId,
   dualMatchUp,
@@ -51,9 +54,11 @@ export function removeSubsequentRoundsParticipant({
   for (const matchUp of relevantMatchUps) {
     const result = removeDrawPosition({
       inContextDrawMatchUps,
+      sourceMatchUpStatus,
       positionAssignments,
       targetDrawPosition,
       tournamentRecord,
+      sourceMatchUpId,
       drawDefinition,
       dualMatchUp,
       matchUpsMap,
@@ -69,10 +74,13 @@ export function removeSubsequentRoundsParticipant({
 function removeDrawPosition({
   inContextDrawMatchUps,
   positionAssignments,
+  sourceMatchUpStatus,
   targetDrawPosition,
   tournamentRecord,
+  sourceMatchUpId,
   drawDefinition,
   dualMatchUp,
+  matchUpsMap,
   matchUp,
   event,
 }) {
@@ -113,6 +121,16 @@ function removeDrawPosition({
   // ... and the winningSide must be removed
   if ([WALKOVER, DEFAULTED].includes(matchUp.matchUpStatus))
     matchUp.winningSide = undefined;
+
+  if (matchUp.matchUpStatusCodes) {
+    updateMatchUpStatusCodes({
+      inContextDrawMatchUps,
+      sourceMatchUpStatus,
+      sourceMatchUpId,
+      matchUpsMap,
+      matchUp,
+    });
+  }
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,

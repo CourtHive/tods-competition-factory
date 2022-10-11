@@ -31,6 +31,8 @@ import {
 
 export function getGenerators(params) {
   const {
+    compassAttributes = COMPASS_ATTRIBUTES,
+    olympicAttributes = OLYMPIC_ATTRIBUTES,
     stageSequence = 1,
     structureName,
     structureId,
@@ -102,13 +104,13 @@ export function getGenerators(params) {
       generatePlayoffStructures({
         ...params,
         roundOffsetLimit: 3,
-        playoffAttributes: COMPASS_ATTRIBUTES,
+        playoffAttributes: compassAttributes,
       }),
     [OLYMPIC]: () =>
       generatePlayoffStructures({
         ...params,
         roundOffsetLimit: 2,
-        playoffAttributes: OLYMPIC_ATTRIBUTES,
+        playoffAttributes: olympicAttributes,
       }),
     [PLAY_OFF]: () => {
       return generatePlayoffStructures(params);

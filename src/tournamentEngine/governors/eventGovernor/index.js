@@ -41,6 +41,7 @@ import { addDrawDefinitionTimeItem } from './drawDefinitions/addDrawDefinitionTi
 import { getAvailablePlayoffRounds } from './drawDefinitions/getAvailablePlayoffRounds';
 import { setPositionAssignments } from './drawDefinitions/setPositionAssignments';
 import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
+import { modifyPairAssignment } from './drawDefinitions/modifyPairAssignment';
 import { removeDrawEntries } from './drawDefinitions/removeDrawEntries';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
 import { addPlayoffStructures } from './addPlayoffStructures';
@@ -97,6 +98,7 @@ import {
   setEventStartDate,
 } from './setEventDates';
 
+import { removeSeededParticipant } from './drawDefinitions/removeSeededParticipant';
 import { validateLineUp } from './drawDefinitions/validateTeamLineUp';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
@@ -140,11 +142,12 @@ const eventGovernor = {
   setEventStartDate,
   setEventEndDate,
 
-  autoSeeding,
-  removeSeeding,
+  removeSeededParticipant,
   removeScaleValues,
-  addDrawEntries,
   checkValidEntries,
+  addDrawEntries,
+  removeSeeding,
+  autoSeeding,
 
   modifyDrawName,
   addDrawDefinition,
@@ -170,6 +173,7 @@ const eventGovernor = {
   modifyEventEntries,
   modifyEntriesStatus,
   modifySeedAssignment,
+  modifyPairAssignment,
 
   resetVoluntaryConsolationStructure,
   deleteFlightProfileAndFlightDraws,

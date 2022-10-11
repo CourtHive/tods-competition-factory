@@ -1,4 +1,7 @@
-import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
+import {
+  getScheduledCourtMatchUps,
+  getScheduledVenueMatchUps,
+} from '../queryGovernor/getScheduledCourtMatchUps';
 import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 import venueTemplate from '../../generators/venueTemplate';
 import { addNotice } from '../../../global/state/globalState';
@@ -28,6 +31,11 @@ export function modifyVenue({
   if (!modifications || typeof modifications !== 'object')
     return { error: INVALID_OBJECT };
   if (!venueId) return { error: MISSING_VENUE_ID };
+
+  const { matchUps: venueMatchUps } = getScheduledVenueMatchUps({
+    tournamentRecord,
+    venueId,
+  });
 
   const { venue, error } = findVenue({ tournamentRecord, venueId });
   if (error) return { error };
@@ -68,11 +76,12 @@ export function modifyVenue({
     const scheduleDeletionsCount = courtsToDelete
       .map((court) => {
         // check whether deleting court would remove schedule from any matchUps
-        const { matchUps } = getScheduledCourtMatchUps({
+        const result = getScheduledCourtMatchUps({
           courtId: court.courtId,
           tournamentRecord,
+          venueMatchUps,
         });
-        return matchUps.length;
+        return result.matchUps?.length || 0;
       })
       .reduce((a, b) => a + b);
 
@@ -95,6 +104,7 @@ export function modifyVenue({
         modifications: court,
         disableNotice: true,
         tournamentRecord,
+        venueMatchUps,
         courtId,
         force,
       });

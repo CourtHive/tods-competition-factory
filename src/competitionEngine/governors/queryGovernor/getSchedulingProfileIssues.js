@@ -32,8 +32,8 @@ export function getSchedulingProfileIssues({
   if (!schedulingProfile) return { issues, ...SUCCESS };
 
   const { matchUps } = allCompetitionMatchUps({
-    tournamentRecords,
     nextMatchUps: true,
+    tournamentRecords,
   });
 
   // for each date check the rounds for each venue

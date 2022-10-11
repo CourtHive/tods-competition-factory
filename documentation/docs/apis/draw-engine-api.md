@@ -502,7 +502,7 @@ drawEngine.generateDrawTypeAndModifyDrawDefinition({
     ],
   },
 
-  goesTo, // optional - generate winnerMatchUpId and loserMatchUpId attributes
+  goesTo, // optional - defaults to true - generate winnerMatchUpId and loserMatchUpId attributes
   uuids, // optional - array of UUIDs to be used for structureIds and matchUpIds
 
   structureName, // optional - defaults to stage
@@ -1109,6 +1109,17 @@ Used internally to order Compass structures
 ```js
 const sortedStructures = drawDefinition.structures.sort(
   drawEngine.structureSort
+);
+```
+
+Optionally pass configuration object. Mode 'finishing positions' sorts MAIN stage structures by participant final positions first, followwed by PLAY_OFF, CONSOLATION, QUALIFYING and finally VOLUNTARY_CONSOLATION. NOTE: Compass directions are all considered MAIN stage.
+
+```js
+import { drawDefinitionConstants } from 'tods-competition-factory';
+const { FINISHING_POSITIONS } = drawDefinitionConstants;
+
+const sortedStructures = drawDefinition.structures.sort((a, b) =>
+  drawEngine.structureSort(a, b, { mode: FINISHING_POSITIONS })
 );
 ```
 

@@ -21,6 +21,16 @@ export const stageOrder = {
   [VOLUNTARY_CONSOLATION]: 4,
 };
 
+export const FINISHING_POSITIONS = 'finishingPositions';
+
+export const finishOrder = {
+  [MAIN]: 1,
+  [PLAY_OFF]: 2,
+  [CONSOLATION]: 3,
+  [QUALIFYING]: 4,
+  [VOLUNTARY_CONSOLATION]: 5,
+};
+
 // seedingProfile.positioning
 export const CLUSTER = 'CLUSTER';
 export const SEPARATE = 'SEPARATE';
@@ -193,6 +203,8 @@ export const drawDefinitionConstants = {
   generatedDrawTypes,
 
   stageOrder,
+  finishOrder,
+  FINISHING_POSITIONS,
 };
 
 export default drawDefinitionConstants;

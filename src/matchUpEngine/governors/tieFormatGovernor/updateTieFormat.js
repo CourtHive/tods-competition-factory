@@ -126,7 +126,7 @@ export function updateTieFormat({
     return { error: MISSING_DRAW_DEFINITION };
   }
 
-  return { ...SUCCESS, modifiedCount, modifiedStructuresCount };
+  return { ...SUCCESS, modifiedCount, modifiedStructuresCount, tieFormat };
 
   function processDrawDefinition({ drawDefinition }) {
     const modifiedStructureIds = [];

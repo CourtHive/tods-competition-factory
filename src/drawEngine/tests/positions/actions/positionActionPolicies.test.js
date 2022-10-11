@@ -1,3 +1,4 @@
+import { getParticipantIds } from '../../../../global/functions/extractors';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { matchUpSort } from '../../../getters/matchUpSort';
 import mocksEngine from '../../../../mocksEngine';
@@ -20,6 +21,7 @@ import {
   ALTERNATE_PARTICIPANT,
   ASSIGN_BYE,
   REMOVE_ASSIGNMENT,
+  REMOVE_SEED,
   SEED_VALUE,
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT,
@@ -33,7 +35,6 @@ import {
   NICKNAME,
   PENALTY,
 } from '../../../../constants/matchUpActionConstants';
-import { getParticipantIds } from '../../../../global/functions/extractors';
 
 // demonstrates that policyDefinitions can be used to change the behavior of positionActions
 it('supports policyDefinitions in positionActions', () => {
@@ -63,6 +64,7 @@ it('supports policyDefinitions in positionActions', () => {
     WITHDRAW_PARTICIPANT,
     ASSIGN_BYE,
     SEED_VALUE,
+    REMOVE_SEED,
     ADD_PENALTY,
     ADD_NICKNAME,
     SWAP_PARTICIPANTS,

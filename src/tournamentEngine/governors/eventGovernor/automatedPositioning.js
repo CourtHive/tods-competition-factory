@@ -85,10 +85,12 @@ export function automatedPlayoffPositioning({
 
       if (result.error) return result;
 
-      structurePositionAssignments.push({
-        positionAssignments: result.positionAssignments,
-        structureId: playoffStructureId,
-      });
+      if (result.positionAssignments) {
+        structurePositionAssignments.push({
+          positionAssignments: result.positionAssignments,
+          structureId: playoffStructureId,
+        });
+      }
     }
   }
 

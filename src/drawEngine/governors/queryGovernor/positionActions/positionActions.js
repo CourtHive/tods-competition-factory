@@ -3,6 +3,7 @@ import { getStructureDrawPositionProfiles } from '../../../getters/getStructureD
 import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
 import { getAssignedParticipantIds } from '../../../getters/getAssignedParticipantIds';
+import { getValidModifyAssignedPairAction } from './getValidModifyAssignedPairAction';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getValidLuckyLosersAction } from './getValidLuckyLoserAction';
 import { getValidAlternatesAction } from './getValidAlternatesAction';
@@ -21,6 +22,7 @@ import {
 } from './actionPolicyUtils';
 
 import { DIRECT_ENTRY_STATUSES } from '../../../../constants/entryStatusConstants';
+import { PAIR } from '../../../../constants/participantTypes';
 import {
   INVALID_DRAW_POSITION,
   MISSING_DRAW_DEFINITION,
@@ -45,6 +47,9 @@ import {
   WITHDRAW_PARTICIPANT_METHOD,
   WITHDRAW_PARTICIPANT,
   QUALIFYING_PARTICIPANT,
+  MODIFY_PAIR_ASSIGNMENT,
+  REMOVE_SEED,
+  REMOVE_SEED_METHOD,
 } from '../../../../constants/positionActionConstants';
 import {
   CONSOLATION,
@@ -340,6 +345,35 @@ export function positionActions(params) {
       });
     }
 
+    if (
+      !isByePosition &&
+      !activeDrawPositions.length && // if any drawPositions are active, action is disabled
+      isAvailableAction({ policyActions, action: REMOVE_SEED }) &&
+      isValidSeedPosition({ drawDefinition, structureId, drawPosition }) &&
+      validToAssignSeed
+    ) {
+      const { seedAssignments } = getStructureSeedAssignments({
+        drawDefinition,
+        structure,
+      });
+      const { seedNumber } =
+        seedAssignments.find(
+          (assignment) => assignment.participantId === participantId
+        ) || {};
+
+      validActions.push({
+        type: REMOVE_SEED,
+        method: REMOVE_SEED_METHOD,
+        participant,
+        seedNumber,
+        payload: {
+          drawId,
+          structureId,
+          participantId,
+        },
+      });
+    }
+
     if (!isByePosition && participantId) {
       if (isAvailableAction({ policyActions, action: ADD_PENALTY })) {
         const addPenaltyAction = {
@@ -431,6 +465,26 @@ export function positionActions(params) {
       drawId,
     });
     if (validLuckyLosersAction) validActions.push(validLuckyLosersAction);
+  }
+
+  if (
+    participant?.participantType === PAIR &&
+    isAvailableAction({ policyActions, action: MODIFY_PAIR_ASSIGNMENT })
+  ) {
+    const { validModifyAssignedPairAction } = getValidModifyAssignedPairAction({
+      tournamentParticipants,
+      positionAssignment,
+      returnParticipants,
+      drawDefinition,
+      drawPosition,
+      participant,
+      structureId,
+      structure,
+      drawId,
+      event,
+    });
+    if (validModifyAssignedPairAction)
+      validActions.push(validModifyAssignedPairAction);
   }
 
   return {

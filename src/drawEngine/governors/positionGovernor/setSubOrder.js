@@ -70,6 +70,7 @@ export function setSubOrder({
   const matchUpFilters = isDualMatchUp && { matchUpTypes: [TEAM] };
   const { matchUps } = getAllStructureMatchUps({
     structure: targetStructure,
+    afterRecoveryTimes: false,
     inContext: true,
     matchUpFilters,
     event,

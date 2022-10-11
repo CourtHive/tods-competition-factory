@@ -103,5 +103,5 @@ export function tallyParticipantResults({
     }
   }
 
-  return { participantResults };
+  return { participantResults, bracketComplete };
 }

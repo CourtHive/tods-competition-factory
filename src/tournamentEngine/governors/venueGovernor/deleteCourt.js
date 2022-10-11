@@ -25,10 +25,10 @@ export function deleteCourt({
   if (!matchUps.length || force) {
     for (const matchUp of matchUps) {
       const result = removeCourtAssignment({
+        matchUpId: matchUp.matchUpId,
+        drawId: matchUp.drawId,
         tournamentRecord,
         drawDefinition,
-        drawId: matchUp.drawId,
-        matchUpId: matchUp.matchUpId,
       });
       if (result.error) return result;
     }

@@ -38,8 +38,8 @@ it('can generate Round Robins 32 with playoffs', () => {
     ],
   };
   const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
-    drawType,
     structureOptions,
+    drawType,
   });
   const { structures: playoffStructures, links } = result;
   const mainStructure = playoffStructures.shift();
@@ -79,8 +79,8 @@ it('can generate Round Robins 16 with playoffs', () => {
     ],
   };
   const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
-    drawType,
     structureOptions,
+    drawType,
   });
 
   const { structures: playoffStructures, links } = result;
@@ -126,9 +126,9 @@ it('can generate Round Robin with Playoffs', () => {
     ],
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    structureOptions,
     drawType,
     drawSize,
-    structureOptions,
   });
 
   const mainStructure = drawDefinition.structures.find(

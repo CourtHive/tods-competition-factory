@@ -73,12 +73,16 @@ export function validateTieFormat({
     tieFormat.winCriteria?.aggregateValue;
 
   if (!(validWinCriteria || tieFormat.winCriteria?.aggregateValue)) {
-    errors.push(
-      'Either non-zero valueGoal, or { aggregateValue: true } must be specified in winCriteria'
-    );
+    if (aggregateValueImperative) {
+      errors.push('aggregateValue is required');
+    } else {
+      errors.push(
+        'Either non-zero valueGoal, or { aggregateValue: true } must be specified in winCriteria'
+      );
+    }
     return decorateResult({
       result: {
-        context: { tieFormat, errors },
+        context: { tieFormat, errors, aggregateValueImperative },
         error: INVALID_TIE_FORMAT,
         stack,
       },

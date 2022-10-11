@@ -69,6 +69,7 @@ test('recognizes scheduling conflicts', () => {
 
   ({ matchUps } = competitionEngine.allCompetitionMatchUps({
     matchUpFilters: { eventIds: [eventIds[0]] },
+    afterRecoveryTimes: true,
     nextMatchUps: true,
   }));
   expect(Object.keys(matchUps[0].schedule).includes('scheduledDate')).toEqual(

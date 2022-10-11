@@ -110,6 +110,25 @@ export function modifyCollectionDefinition({
     Object.assign(collectionDefinition, valueAssignments);
   }
 
+  // must remove all collectionGroups which contain the collection which has been modified
+  if ((scoreValue || setValue) && collectionDefinition.collectionGroupNumber) {
+    const targetCollectionGroupNumber =
+      collectionDefinition.collectionGroupNumber;
+    tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map(
+      (collectionDefinition) => {
+        const { collectionGroupNumber, ...rest } = collectionDefinition;
+        if (collectionGroupNumber === targetCollectionGroupNumber) {
+          return rest;
+        } else {
+          return collectionDefinition;
+        }
+      }
+    );
+    tieFormat.collectionGroups = tieFormat.collectionGroups.filter(
+      ({ groupNumber }) => groupNumber !== targetCollectionGroupNumber
+    );
+  }
+
   // calculate new winCriteria for tieFormat
   // if existing winCriteria is aggregateValue, retain
   const { aggregateValue, valueGoal } = calculateWinCriteria(tieFormat);

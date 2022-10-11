@@ -1,10 +1,10 @@
+import { SUCCESS } from '../../../constants/resultConstants';
+import { SCALE } from '../../../constants/timeItemConstants';
 import {
   MISSING_PARTICIPANT_IDS,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { SCALE } from '../../../constants/timeItemConstants';
 
 /**
  *
@@ -15,8 +15,8 @@ import { SCALE } from '../../../constants/timeItemConstants';
  */
 export function removeParticipantsScaleItems({
   tournamentRecord,
-  participantIds,
   scaleAttributes,
+  participantIds,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantIds) return { error: MISSING_PARTICIPANT_IDS };

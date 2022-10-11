@@ -17,6 +17,7 @@ export function modifyCourt({
   tournamentRecord,
   modifications,
   disableNotice,
+  venueMatchUps,
   courtId,
   force,
 }) {
@@ -55,8 +56,9 @@ export function modifyCourt({
 
   if (modifications.dateAvailability) {
     const result = modifyCourtAvailability({
-      tournamentRecord,
       dateAvailability: modifications.dateAvailability,
+      tournamentRecord,
+      venueMatchUps,
       disableNotice,
       courtId,
       force,

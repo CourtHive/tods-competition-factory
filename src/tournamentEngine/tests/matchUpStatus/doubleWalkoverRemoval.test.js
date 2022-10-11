@@ -367,7 +367,7 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER will remove produced WALKOVER in 
         {
           roundNumber: 1,
           roundPosition: 1,
-          matchUpStatus: 'DOUBLE_WALKOVER',
+          matchUpStatus: DOUBLE_WALKOVER,
         },
         {
           roundNumber: 1,
@@ -378,7 +378,7 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER will remove produced WALKOVER in 
         {
           roundNumber: 1,
           roundPosition: 3,
-          matchUpStatus: 'DOUBLE_WALKOVER',
+          matchUpStatus: DOUBLE_WALKOVER,
         },
         {
           roundNumber: 1,
@@ -486,7 +486,7 @@ test('DOUBLE_WALKOVER cannot be removed when active downstream matchUps', () => 
         {
           roundNumber: 1,
           roundPosition: 2,
-          matchUpStatus: 'DOUBLE_WALKOVER',
+          matchUpStatus: DOUBLE_WALKOVER,
         },
         {
           roundNumber: 1,
@@ -580,7 +580,7 @@ test('Removing DOUBLE_WALKOVER will remove BYE-Advanced WALKOVER Winner', () => 
         {
           roundNumber: 1,
           roundPosition: 2,
-          matchUpStatus: 'DOUBLE_WALKOVER',
+          matchUpStatus: DOUBLE_WALKOVER,
         },
       ],
     },
@@ -642,12 +642,12 @@ test('drawSize: 8 - removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in su
         {
           roundNumber: 1,
           roundPosition: 1,
-          matchUpStatus: 'DOUBLE_WALKOVER',
+          matchUpStatus: DOUBLE_WALKOVER,
         },
         {
           roundNumber: 1,
           roundPosition: 2,
-          matchUpStatus: 'DOUBLE_WALKOVER',
+          matchUpStatus: DOUBLE_WALKOVER,
         },
       ],
     },
@@ -892,7 +892,7 @@ test('consolation fed player advanced by WO/WO will be removed when WO/WO cleare
           stage: 'CONSOLATION',
           roundNumber: 1,
           roundPosition: 1,
-          matchUpStatus: 'DOUBLE_WALKOVER',
+          matchUpStatus: DOUBLE_WALKOVER,
           matchUpStatusCodes: ['WOWO'],
         },
       ],

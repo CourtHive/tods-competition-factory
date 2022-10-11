@@ -76,8 +76,9 @@ export function verifyStructure({
     expect(seedAssignedDrawPositions.length).toEqual(expectedSeeds);
 
   const { matchUps, roundMatchUps } = getAllStructureMatchUps({
-    structure,
+    afterRecoveryTimes: false,
     inContext: true,
+    structure,
   });
   if (hierarchyVerification)
     verifyDrawHierarchy({ matchUps, hierarchyVerification });

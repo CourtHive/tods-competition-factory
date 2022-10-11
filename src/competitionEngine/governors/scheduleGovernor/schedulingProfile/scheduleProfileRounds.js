@@ -92,6 +92,7 @@ export function scheduleProfileRounds({
 
   const { matchUps } = allCompetitionMatchUps({
     matchUpFilters: { matchUpTypes: [SINGLES, DOUBLES] },
+    afterRecoveryTimes: true,
     nextMatchUps: true,
     tournamentRecords,
   });

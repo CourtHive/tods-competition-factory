@@ -234,7 +234,7 @@ export function generateAndPopulatePlayoffStructures(params) {
     if (result.error) console.log(result.error);
   });
 
-  if (params.goesTo)
+  if (params.goesTo !== false)
     addGoesTo({
       inContextDrawMatchUps,
       drawDefinition,

@@ -25,7 +25,11 @@ export function calculateWinCriteria({
       collectionGroupNumber &&
       groupValueNumbers.includes(collectionGroupNumber);
 
-    if (belongsToValueGroup) {
+    if (setValue || scoreValue) {
+      // because setValues and scoreValues are unpredictable,
+      // any collectionDefintion that has either of these two values without a collectionValue forces the tieFormat to aggregateValue
+      aggregateValueImperative = true;
+    } else if (belongsToValueGroup) {
       continue;
     } else if (collectionValue) {
       valueTotal += collectionValue;
@@ -35,10 +39,6 @@ export function calculateWinCriteria({
       }
     } else if (matchUpValue) {
       valueTotal += matchUpCount * matchUpValue;
-    } else if (setValue || scoreValue) {
-      // because setValues and scoreValues are unpredictable,
-      // any collectionDefintion that has either of these two values without a collectionValue forces the tieFormat to aggregateValue
-      aggregateValueImperative = true;
     } else {
       // default is to give each matchUp a value of 1
       valueTotal += matchUpCount;

@@ -120,6 +120,7 @@ export function verifySideNumbers({
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({
     requireParticipants: false,
+    afterRecoveryTimes: false,
     inContext: true,
     drawDefinition,
     structure,

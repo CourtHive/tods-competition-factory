@@ -12,7 +12,7 @@ import { isAdHoc } from '../queryGovernor/isAdHoc';
 
 import { MISSING_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function removeDirectedParticipants(params) {
@@ -25,6 +25,7 @@ export function removeDirectedParticipants(params) {
     matchUpsMap,
     dualMatchUp,
     targetData,
+    matchUpId,
     structure,
     event,
   } = params;
@@ -64,6 +65,7 @@ export function removeDirectedParticipants(params) {
   if (isAdHocMatchUp) return { ...SUCCESS };
 
   const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
+    afterRecoveryTimes: false,
     inContext: true,
     drawDefinition,
     matchUpsMap,
@@ -96,6 +98,8 @@ export function removeDirectedParticipants(params) {
 
   if (winnerMatchUp) {
     const result = removeDirectedWinner({
+      sourceMatchUpStatus: matchUpStatus,
+      sourceMatchUpId: matchUpId,
       inContextDrawMatchUps,
       winningDrawPosition,
       winnerParticipantId,
@@ -134,6 +138,8 @@ export function removeDirectedParticipants(params) {
     }
 
     const removeLoserResult = removeDirectedLoser({
+      sourceMatchUpStatus: matchUpStatus,
+      sourceMatchUpId: matchUpId,
       inContextDrawMatchUps,
       loserParticipantId,
       tournamentRecord,
@@ -151,6 +157,7 @@ export function removeDirectedParticipants(params) {
     // check whether byeMatchUp includes an active drawPosition
     const drawPosition = Math.min(...byeMatchUp.drawPositions);
     const removeByeResult = removeDirectedBye({
+      sourceMatchUpId: matchUpId,
       targetLink: byeTargetLink,
       inContextDrawMatchUps,
       drawDefinition,
@@ -171,9 +178,11 @@ export function removeDirectedParticipants(params) {
 export function removeDirectedWinner({
   inContextDrawMatchUps,
   winningDrawPosition,
+  sourceMatchUpStatus,
   winnerParticipantId,
   tournamentRecord,
   winnerTargetLink,
+  sourceMatchUpId,
   drawDefinition,
   winnerMatchUp,
   matchUpsMap,
@@ -246,7 +255,9 @@ export function removeDirectedWinner({
   const result = removeSubsequentRoundsParticipant({
     targetDrawPosition: winningDrawPosition,
     inContextDrawMatchUps,
+    sourceMatchUpStatus,
     tournamentRecord,
+    sourceMatchUpId,
     drawDefinition,
     dualMatchUp,
     matchUpsMap,
@@ -260,9 +271,11 @@ export function removeDirectedWinner({
 }
 
 function removeDirectedLoser({
+  sourceMatchUpStatus,
   loserParticipantId,
   tournamentRecord,
   loserTargetLink,
+  sourceMatchUpId,
   drawDefinition,
   loserMatchUp,
   matchUpsMap,
@@ -280,6 +293,11 @@ function removeDirectedLoser({
       delete assignment.participantId;
     }
   });
+
+  if (sourceMatchUpId && sourceMatchUpStatus) {
+    // TODO: update matchUpStatusCodes if necessary
+    // console.log({ sourceMatchUpId, sourceMatchUpStatus });
+  }
 
   // remove participant from seedAssignments
   structure.seedAssignments = (structure.seedAssignments || []).filter(
@@ -316,6 +334,7 @@ function removeDirectedLoser({
 export function removeDirectedBye({
   inContextDrawMatchUps,
   tournamentRecord,
+  sourceMatchUpId,
   drawDefinition,
   drawPosition,
   matchUpsMap,
@@ -325,8 +344,10 @@ export function removeDirectedBye({
   const structureId = targetLink.target.structureId;
 
   clearDrawPosition({
+    sourceMatchUpStatus: BYE,
     inContextDrawMatchUps,
     tournamentRecord,
+    sourceMatchUpId,
     drawDefinition,
     matchUpsMap,
     drawPosition,
