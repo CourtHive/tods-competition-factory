@@ -63,6 +63,9 @@ export function randomMember(arr) {
 export function generateRange(start, end) {
   return Array.from({ length: end - start }, (v, k) => k + start);
 }
+export function sizedRange(size, start) {
+  return Array.from(Array(size).keys()).map((i) => i + start);
+}
 export function indices(val, arr) {
   return arr.reduce((a, e, i) => {
     if (e === val) a.push(i);

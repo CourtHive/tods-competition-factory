@@ -16,6 +16,10 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function directParticipants(params) {
+  const matchUpStatusIsValid = isDirectingMatchUpStatus({
+    matchUpStatus: params.matchUpStatus,
+  });
+
   const {
     dualWinningSideChange,
     projectedWinningSide,
@@ -47,8 +51,6 @@ export function directParticipants(params) {
   if (!validToScore) {
     return { error: MISSING_ASSIGNMENTS };
   }
-
-  const matchUpStatusIsValid = isDirectingMatchUpStatus({ matchUpStatus });
 
   const removeScore = [WALKOVER].includes(matchUpStatus);
 
@@ -104,8 +106,8 @@ export function directParticipants(params) {
     const {
       targetLinks: { loserTargetLink, winnerTargetLink, byeTargetLink },
       targetMatchUps: {
-        winnerMatchUpDrawPositionIndex,
-        loserMatchUpDrawPositionIndex,
+        winnerMatchUpDrawPositionIndex, // only present when positionTargets found without winnerMatchUpId
+        loserMatchUpDrawPositionIndex, // only present when positionTargets found without loserMatchUpId
         winnerMatchUp,
         loserMatchUp,
         byeMatchUp,
@@ -114,7 +116,10 @@ export function directParticipants(params) {
 
     if (winnerMatchUp) {
       const result = directWinner({
+        sourceMatchUpStatus:
+          (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
         winnerMatchUpDrawPositionIndex,
+        sourceMatchUpId: matchUpId,
         inContextDrawMatchUps,
         projectedWinningSide,
         winningDrawPosition,
@@ -130,14 +135,16 @@ export function directParticipants(params) {
     }
     if (loserMatchUp) {
       const result = directLoser({
+        sourceMatchUpStatus:
+          (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
         loserMatchUpDrawPositionIndex,
+        sourceMatchUpId: matchUpId,
         inContextDrawMatchUps,
         projectedWinningSide,
         loserDrawPosition,
         tournamentRecord,
         loserTargetLink,
         drawDefinition,
-        matchUpStatus,
         loserMatchUp,
         winningSide,
         matchUpsMap,

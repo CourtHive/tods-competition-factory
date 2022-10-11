@@ -14,7 +14,7 @@ export function getPairedPreviousMatchUp({
   });
   const pairedPreviousMatchUp = structureMatchUps.find(
     ({ roundNumber, roundPosition }) =>
-      roundNumber === matchUp.roundNumber &&
+      roundNumber === matchUp?.roundNumber &&
       roundPosition === pairedRoundPosition
   );
   return { pairedPreviousMatchUp };
