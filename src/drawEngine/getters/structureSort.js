@@ -3,6 +3,7 @@ import { stageOrder } from '../../constants/drawDefinitionConstants';
 
 import { ROUND_TARGET } from '../../constants/extensionConstants';
 
+// TODO: option to sort COMPLETED structures to the bottom
 export function structureSort(a, b) {
   const getRoundTarget = (element) =>
     findExtension({ element, name: ROUND_TARGET })?.extension?.value;
