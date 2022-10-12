@@ -13,6 +13,7 @@ import { addExtension } from './global/functions/producers/addExtension';
 import { generateHashCode, generateTimeCode } from './utilities';
 import { dateTime, dateRange } from './utilities/dateTime';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
+import { structureSort } from './forge/transform';
 import { numericSort } from './utilities/sorting';
 import { UUID, UUIDS } from './utilities/UUID';
 import { JSON2CSV } from './utilities/json';
@@ -30,6 +31,7 @@ import {
 } from './utilities/arrays';
 
 export const utilities = {
+  structureSort,
   addExtension,
   chunkArray,
   countValues,
