@@ -1,3 +1,4 @@
+import { expect } from 'vitest';
 import { generateOutcomeFromScoreString } from '../generators/generateOutcomeFromScoreString';
 
 it('can generate outcomes for either winningSide', () => {
@@ -41,4 +42,11 @@ it('can generate outcomes for short sets', () => {
   expect(outcome.score.sets[1].side1Score).toEqual(4);
   expect(outcome.score.sets[1].side2Score).toEqual(1);
   expect(outcome.winningSide).toEqual(1);
+});
+
+it('can parse score strings with third set tiebreaks', () => {
+  let scoreString = '7-5 5-7 [10-3]';
+  let values = { scoreString, winningSide: 1 };
+  let { outcome } = generateOutcomeFromScoreString(values);
+  expect(outcome.score.scoreStringSide1).toEqual(scoreString);
 });
