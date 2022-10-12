@@ -13,19 +13,21 @@ export function isValid(matchUpFormat) {
     return stringify(parsedFormat).slice(7) === matchUpFormat;
   }
 
-  const setsParts = matchUpFormat.match(/-S(\d+)+:TB(\d+)@(\d*)([A-Za-z]*)/);
-  const setsTo = setsParts?.[0];
-  const tiebreakAt = setsParts?.[2];
+  const setParts = matchUpFormat.match(/-S:(\d+)+\/TB(\d+)@?(\d*)*/);
+  const setsTo = setParts?.[1];
+  const tiebreakTo = setParts?.[2];
+  const tiebreakAt = setParts?.[3];
 
-  const finalSetParts = matchUpFormat.match(
-    /-S(\d+)+:TB(\d+)@(\d*)([A-Za-z]*)/
-  );
-  const finalSetTo = finalSetParts?.[0];
-  const finalTiebreakAt = finalSetParts?.[2];
+  const finalSetParts = matchUpFormat.match(/-F:(\d+)+\/TB(\d+)@?(\d*)*/);
+  const finalSetTo = finalSetParts?.[1];
+  const finalSetTiebreakTo = finalSetParts?.[2];
+  const finalTiebreakAt = finalSetParts?.[3];
 
   const preserveRedundant =
-    (setsParts && setsTo === tiebreakAt) ||
-    (finalSetParts && finalSetTo === finalTiebreakAt);
+    (setParts && tiebreakTo && setsTo === tiebreakAt) ||
+    (finalSetParts && finalSetTiebreakTo && finalSetTo === finalTiebreakAt);
 
-  return stringify(parsedFormat, preserveRedundant) === matchUpFormat;
+  const stringified = stringify(parsedFormat, preserveRedundant);
+
+  return stringified === matchUpFormat;
 }
