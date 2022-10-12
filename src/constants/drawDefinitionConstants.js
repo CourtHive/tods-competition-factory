@@ -22,10 +22,20 @@ export const stageOrder = {
 };
 
 export const FINISHING_POSITIONS = 'finishingPositions';
+export const AGGREGATE_EVENT_STRUCTURES = 'aggregateEventStructures';
 
 export const finishOrder = {
   [MAIN]: 1,
   [PLAY_OFF]: 2,
+  [CONSOLATION]: 3,
+  [QUALIFYING]: 4,
+  [VOLUNTARY_CONSOLATION]: 5,
+};
+
+// for aggregateOrder { stage: MAIN, stageSequence: 1 } is always first
+export const aggregateOrder = {
+  [PLAY_OFF]: 1,
+  [MAIN]: 2,
   [CONSOLATION]: 3,
   [QUALIFYING]: 4,
   [VOLUNTARY_CONSOLATION]: 5,

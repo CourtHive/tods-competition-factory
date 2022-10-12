@@ -1,34 +1,53 @@
 import { findExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
+
+import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
+import { ROUND_TARGET } from '../../constants/extensionConstants';
 import {
+  aggregateOrder,
   finishOrder,
   stageOrder,
+  AGGREGATE_EVENT_STRUCTURES,
   FINISHING_POSITIONS,
+  MAIN,
 } from '../../constants/drawDefinitionConstants';
 
-import { ROUND_TARGET } from '../../constants/extensionConstants';
-
-// TODO: option to sort COMPLETED structures to the bottom
 export function structureSort(a, b, config = {}) {
   const getRoundTarget = (element) =>
     findExtension({ element, name: ROUND_TARGET })?.extension?.value;
 
-  if (config?.mode === FINISHING_POSITIONS) {
-    return (
-      (finishOrder[a?.stage] || 0) - (finishOrder[b?.stage] || 0) ||
-      (getMinFinishingPositionRange(a) || 0) -
-        (getMinFinishingPositionRange(b) || 0)
-    );
-  }
+  const completed = config?.deprioritizeCompleted;
+  const aggregate = config?.mode === AGGREGATE_EVENT_STRUCTURES;
+  const finish = config?.mode === FINISHING_POSITIONS;
 
-  return (
-    (stageOrder[a?.stage] || 0) - (stageOrder[b?.stage] || 0) ||
+  const orderProtocol = finish
+    ? finishOrder
+    : aggregate
+    ? aggregateOrder
+    : stageOrder;
+
+  const mainSequence1 = (s) =>
+    s?.stage === MAIN && a?.stageSequence === 1 ? -1 : 1;
+
+  const completedStructure = (s) =>
+    s?.matchUps.every(({ matchUpStatus }) =>
+      completedMatchUpStatuses.includes(matchUpStatus) ? 1 : -1
+    );
+
+  const comparison =
+    (completed &&
+      (completedStructure(a) || 0) - (completedStructure(b) || 0)) ||
+    (aggregate && (mainSequence1(a) || 0) - (mainSequence1(b) || 0)) ||
+    (orderProtocol[a?.stage] || 0) - (orderProtocol[b?.stage] || 0) ||
     (getRoundTarget(a) || 0) - (getRoundTarget(b) || 0) ||
-    (b?.positionAssignments?.length || 9999) -
-      (a?.positionAssignments?.length || 9999) ||
+    (!finish &&
+      !aggregate &&
+      (b?.positionAssignments?.length || 9999) -
+        (a?.positionAssignments?.length || 9999)) ||
     (a?.stageSequence || 0) - (b?.stageSequence || 0) ||
     (getMinFinishingPositionRange(a) || 0) -
-      (getMinFinishingPositionRange(b) || 0)
-  );
+      (getMinFinishingPositionRange(b) || 0);
+
+  return comparison;
 }
 
 export function getMinFinishingPositionRange(structure) {
