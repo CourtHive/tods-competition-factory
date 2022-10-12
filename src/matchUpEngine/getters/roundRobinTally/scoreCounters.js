@@ -36,7 +36,8 @@ export function countSets({
     // if the loser has setsToWin then last set was incomplete and needs to be subtracted from loser
     if (+setsTally[1 - matchUpWinnerIndex] === setsToWin)
       setsTally[1 - matchUpWinnerIndex] -= 1;
-    setsTally[matchUpWinnerIndex] = setsToWin;
+    if (tallyPolicy?.setsCreditForRetirements)
+      setsTally[matchUpWinnerIndex] = setsToWin;
   }
   return setsTally;
 }
@@ -77,7 +78,6 @@ export function countGames({
       matchUpFormat,
       sets,
     });
-    const totalSets = setsTally.reduce((a, b) => a + b, 0);
     const loserLeadSet = gamesTally
       .map((g) => g[matchUpWinnerIndex] <= g[1 - matchUpWinnerIndex])
       .reduce((a, b) => a + b, 0);
@@ -90,8 +90,12 @@ export function countGames({
       if (complement)
         gamesTally[matchUpWinnerIndex][talliedGames - 1] = complement;
     }
-    // if the total # of sets is less than gamesTally[x].length award gamesForSet to winner
-    if (totalSets > gamesTally[matchUpWinnerIndex].length) {
+    // if the gamesTally[x].length is less than the number of sets to win award gamesForSet to winner
+    // gamesTally[x].length is an array of games won for each set, so length is number of sets
+    if (
+      setsToWin > gamesTally[matchUpWinnerIndex].length &&
+      tallyPolicy?.gamesCreditForRetirements
+    ) {
       gamesTally[matchUpWinnerIndex].push(gamesForSet);
     }
   }
@@ -99,11 +103,6 @@ export function countGames({
     gamesTally[0].reduce((a, b) => a + b, 0),
     gamesTally[1].reduce((a, b) => a + b, 0),
   ];
-  if (
-    [RETIRED, WALKOVER, DEFAULTED].includes(matchUpStatus) &&
-    result[matchUpWinnerIndex] < minimumGameWins
-  )
-    result[matchUpWinnerIndex] = minimumGameWins;
 
   return result;
 

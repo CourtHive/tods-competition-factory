@@ -63,16 +63,6 @@ it('properly interprets tallyPolicies', () => {
   });
   tournamentEngine.setState(tournamentRecord);
 
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  console.log(
-    matchUps.map(({ drawPositions, score, winningSide, matchUpStatus }) => ({
-      drawPositions,
-      winningSide,
-      score,
-      matchUpStatus,
-    }))
-  );
-
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { structureId } = drawDefinition.structures[0];
   const { positionAssignments } = tournamentEngine.getPositionAssignments({
@@ -83,51 +73,23 @@ it('properly interprets tallyPolicies', () => {
     positionAssignments,
     drawPosition: 1,
   });
-  /*
-  expect(dp1.setsWon).toEqual(4);
-  expect(dp1.setsLost).toEqual(2);
-  expect(dp1.gamesWon).toEqual(26);
-  expect(dp1.gamesLost).toEqual(16);
-  expect(dp1.matchUpsWon).toEqual(2);
-  expect(dp1.matchUpsLost).toEqual(1);
-  expect(dp1.ties).toBeUndefined();
-  expect(dp1.result).toEqual('2/1');
-  */
+  expect(dp1.groupOrder).toEqual(4);
 
   const dp2 = getDrawPositionTally({
     positionAssignments,
     drawPosition: 2,
   });
-  /*;
-  expect(dp2.setsWon).toEqual(0);
-  expect(dp2.setsLost).toEqual(2);
-  expect(dp2.gamesWon).toEqual(2);
-  expect(dp2.gamesLost).toEqual(12);
-  expect(dp2.matchUpsWon).toEqual(0);
-  expect(dp2.matchUpsLost).toEqual(1);
-  expect(dp2.ties).toBeUndefined();
-  expect(dp2.result).toEqual('0/1');
-  */
+  expect(dp2.groupOrder).toEqual(2);
 
   const dp3 = getDrawPositionTally({
     positionAssignments,
     drawPosition: 3,
   });
-  /*
-  expect(dp3.setsWon).toEqual(2);
-  expect(dp3.setsLost).toEqual(0);
-  expect(dp3.gamesWon).toEqual(12);
-  expect(dp3.gamesLost).toEqual(2);
-  expect(dp3.matchUpsWon).toEqual(1);
-  expect(dp3.matchUpsLost).toEqual(0);
-  expect(dp3.ties).toBeUndefined();
-  expect(dp3.result).toEqual('1/0');
-  */
+  expect(dp3.groupOrder).toEqual(3);
 
   const dp4 = getDrawPositionTally({
     positionAssignments,
-    drawPosition: 3,
+    drawPosition: 4,
   });
-
-  console.log({ dp1, dp2, dp3, dp4 });
+  expect(dp4.groupOrder).toEqual(1);
 });
