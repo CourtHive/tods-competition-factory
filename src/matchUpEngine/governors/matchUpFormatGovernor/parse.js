@@ -37,7 +37,6 @@ function setsMatch(formatstring) {
 
 function parseSetFormat(formatstring) {
   if (formatstring && formatstring[1] === ':') {
-    const isEven = (i) => i % 2 === 0;
     const parts = formatstring.split(':');
     const setType = setTypes[parts[0]];
     const setFormatString = parts[1];
@@ -66,14 +65,9 @@ function parseSetFormat(formatstring) {
         result.tiebreakFormat = tiebreakFormat;
         result.tiebreakAt = tiebreakAt;
       } else {
-        if (isEven(setTo) && setType === setTypes.S) {
-          // result.tiebreakFormat = { tiebreakTo: setTo + 1 };
-          // result.tiebreakAt = setTo;
-          result.noTiebreak = true;
-        } else {
-          result.noTiebreak = true;
-        }
+        result.noTiebreak = true;
       }
+
       return (
         (setTo && validNoAD && validTiebreak && validTiebreakAt && result) || {
           invalid: true,

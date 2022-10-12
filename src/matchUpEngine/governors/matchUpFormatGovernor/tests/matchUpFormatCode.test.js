@@ -1,4 +1,5 @@
 import { matchUpFormatCode } from '..';
+import { isValid } from '../isValid';
 
 const validFormats = [
   {
@@ -295,4 +296,9 @@ it('will not include final set code when equivalent to other sets', () => {
     },
   };
   expect(matchUpFormatCode.stringify(obj)).toEqual('SET3-S:6/TB7');
+});
+
+it('can preserve redundant tiebreakAt detail', () => {
+  expect(isValid('SET3-S:6/TB7@6')).toEqual(true);
+  expect(isValid('SET3-S:6/TB7')).toEqual(true);
 });
