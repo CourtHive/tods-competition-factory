@@ -1101,30 +1101,6 @@ drawEngine.setSubOrder({
 
 ---
 
-## structureSort
-
-Sorting function to arrange structures by stage, positionAssignments count (size) then stageSequence
-Used internally to order Compass structures
-
-```js
-const sortedStructures = drawDefinition.structures.sort(
-  drawEngine.structureSort
-);
-```
-
-Optionally pass configuration object. Mode 'finishing positions' sorts MAIN stage structures by participant final positions first, followwed by PLAY_OFF, CONSOLATION, QUALIFYING and finally VOLUNTARY_CONSOLATION. NOTE: Compass directions are all considered MAIN stage.
-
-```js
-import { drawDefinitionConstants } from 'tods-competition-factory';
-const { FINISHING_POSITIONS } = drawDefinitionConstants;
-
-const sortedStructures = drawDefinition.structures.sort((a, b) =>
-  drawEngine.structureSort(a, b, { mode: FINISHING_POSITIONS })
-);
-```
-
----
-
 ## swapDrawPositionAssignments
 
 Swaps the `participantIds` of two `drawPositions`.

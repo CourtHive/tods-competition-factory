@@ -2,12 +2,20 @@ import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
 
 import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
 
-export function matchUpAssignedCourtId({ matchUp, visibilityThreshold }) {
-  const itemValue = latestVisibleTimeItemValue(
-    matchUp?.timeItems || [],
-    ASSIGN_COURT,
-    visibilityThreshold
-  );
+export function matchUpAssignedCourtId({
+  visibilityThreshold,
+  timeStamp,
+  schedule,
+  matchUp,
+}) {
+  const { itemValue: courtId, timeStamp: itemTimeStamp } =
+    latestVisibleTimeItemValue(
+      matchUp?.timeItems || [],
+      ASSIGN_COURT,
+      visibilityThreshold
+    );
 
-  return { courtId: itemValue };
+  return !schedule || (itemTimeStamp && timeStamp && itemTimeStamp > timeStamp)
+    ? { courtId }
+    : schedule;
 }

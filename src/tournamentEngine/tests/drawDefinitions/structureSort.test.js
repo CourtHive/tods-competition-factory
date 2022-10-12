@@ -1,5 +1,6 @@
 import { structureSort } from '../../../drawEngine/getters/structureSort';
 import mocksEngine from '../../../mocksEngine';
+import { utilities } from '../../../index';
 import tournamentEngine from '../../sync';
 
 import {
@@ -46,11 +47,7 @@ test('structureSort can sort by stage and stageSequence', () => {
     'SOUTHEAST',
   ]);
 
-  structureNames = drawDefinition.structures
-    .sort((a, b) => structureSort(a, b, { mode: FINISHING_POSITIONS }))
-    .map(({ structureName }) => structureName);
-
-  expect(structureNames).toEqual([
+  const fpSort = [
     'EAST',
     'NORTHEAST',
     'NORTH',
@@ -60,5 +57,19 @@ test('structureSort can sort by stage and stageSequence', () => {
     'SOUTH',
     'SOUTHEAST',
     'QUALIFYING',
-  ]);
+  ];
+
+  structureNames = drawDefinition.structures
+    .sort((a, b) => structureSort(a, b, { mode: FINISHING_POSITIONS }))
+    .map(({ structureName }) => structureName);
+
+  expect(structureNames).toEqual(fpSort);
+
+  structureNames = drawDefinition.structures
+    .sort((a, b) =>
+      utilities.structureSort(a, b, { mode: FINISHING_POSITIONS })
+    )
+    .map(({ structureName }) => structureName);
+
+  expect(structureNames).toEqual(fpSort);
 });
