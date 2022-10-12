@@ -18,6 +18,7 @@ export function getEventData({
   policyDefinitions,
   usePublishState,
   status = PUBLIC,
+  sortConfig,
   event: e,
 }) {
   const tournamentRecord = makeDeepCopy(t, false, true);
@@ -65,6 +66,7 @@ export function getEventData({
           policyDefinitions,
           tournamentRecord,
           drawDefinition,
+          sortConfig,
           event,
         })
       )

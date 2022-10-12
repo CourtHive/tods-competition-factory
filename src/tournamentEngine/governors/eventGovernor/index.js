@@ -119,7 +119,6 @@ import { generateQualifyingStructure } from './drawDefinitions/generateQualifyin
 import { attachQualifyingStructure } from './drawDefinitions/attachQualifyingStructure';
 import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure';
 import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
-import { structureSort } from '../../../forge/transform';
 
 const eventGovernor = {
   generateQualifyingStructure,
@@ -156,7 +155,6 @@ const eventGovernor = {
   deleteDrawDefinitions,
   getAvailablePlayoffRounds,
   removeStructure,
-  structureSort,
 
   generateAndPopulatePlayoffStructures,
 

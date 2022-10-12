@@ -6,7 +6,7 @@ import { structureSort } from '../../../drawEngine/getters/structureSort';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
 // ADD: orderedStructures with stage, stageSequence info
-export function getDrawDetails({ event, eventEntries }) {
+export function getDrawDetails({ event, eventEntries, sortConfig }) {
   const { containedStructures } = getContainedStructures({ event });
   const derivedInfo = {};
 
@@ -54,7 +54,7 @@ export function getDrawDetails({ event, eventEntries }) {
       // the structures in which a particpant particpants are ordered
       // to enable differentiation for Points-per-round and points-per-win
       const orderedStructureIds = (drawDefinition.structures || [])
-        .sort(structureSort)
+        .sort((a, b) => structureSort(a, b, sortConfig))
         .map(({ structureId }) => {
           const containedStructureIds = containedStructures[structureId] || [];
           const structureIds = [structureId, ...containedStructureIds];

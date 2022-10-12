@@ -46,6 +46,7 @@ export function getDrawData({
   inContext = true,
   drawDefinition,
   noDeepCopy,
+  sortConfig,
   context,
   event,
 }) {
@@ -89,7 +90,7 @@ export function getDrawData({
 
         return structure;
       })
-      .sort(structureSort)
+      .sort((a, b) => structureSort(a, b, sortConfig))
       .map((structure) => {
         const { structureId } = structure;
         let seedAssignments = [];

@@ -141,7 +141,11 @@ module.exports = {
     {
       type: 'category',
       label: 'Utilities',
-      items: ['utilities/make-deep-copy', 'utilities/json-to-csv'],
+      items: [
+        'utilities/make-deep-copy',
+        'utilities/structure-sort',
+        'utilities/json-to-csv',
+      ],
     },
   ],
 };
