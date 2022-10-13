@@ -59,9 +59,8 @@ const scenarios = [
   },
   {
     roundRobinGroupsCount: 10,
-    expectation: [1, 11, 21],
-    seedGroupsCount: 3,
     drawSize: 32,
+    error: true,
   },
 ];
 
@@ -73,12 +72,32 @@ it.each(scenarios)(
 
     const { seedGroups } = getSeedGroups({ roundRobinGroupsCount, drawSize });
 
-    const { seedingThresholds } = getSeedingThresholds({
+    const { seedingThresholds, error } = getSeedingThresholds({
       participantsCount: drawSize,
       roundRobinGroupsCount,
     });
 
-    expect(seedGroups.length).toEqual(seedGroupsCount);
-    expect(seedingThresholds).toEqual(expectation);
+    if (error) {
+      expect(scenario.error).toEqual(true);
+    } else {
+      if (seedGroupsCount) {
+        expect(seedGroups.length).toEqual(seedGroupsCount);
+      }
+      if (expectation) {
+        expect(seedingThresholds).toEqual(expectation);
+      }
+    }
   }
 );
+
+it('will throw an error for invalid roundRobinGroupsCount', () => {
+  const drawSize = 13;
+  const roundRobinGroupsCount = 3;
+
+  const { seedingThresholds } = getSeedingThresholds({
+    participantsCount: drawSize,
+    roundRobinGroupsCount,
+  });
+
+  expect(seedingThresholds).toEqual([1, 4, 7, 10]);
+});
