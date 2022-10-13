@@ -21,12 +21,15 @@ it('can generate Playoffs for Round Robin with 2 groups of 5, each with BYE', ()
       byesCount: 0,
     },
   ];
+
+  // NOTE: with drawSize: 8 this will throw an error
+  // drawSize: 9 allows calculateValidGroupSizes to ignore participantCount limitations
   roundRobinWithPlayoffsTest({
-    drawSize: 8,
-    groupSize: 5,
+    finishingGroupSizes: [2, 2, 2, 2],
+    participantsCount: 8,
     groupsCount: 2,
     playoffGroups,
-    participantsCount: 8,
-    finishingGroupSizes: [2, 2, 2, 2],
+    groupSize: 5,
+    drawSize: 9,
   });
 });
