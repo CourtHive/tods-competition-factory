@@ -2,12 +2,20 @@ import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
 
 import { SCHEDULED_TIME } from '../../../constants/timeItemConstants';
 
-export function scheduledMatchUpTime({ matchUp, visibilityThreshold }) {
-  const itemValue = latestVisibleTimeItemValue(
-    matchUp?.timeItems || [],
-    SCHEDULED_TIME,
-    visibilityThreshold
-  );
+export function scheduledMatchUpTime({
+  visibilityThreshold,
+  timeStamp,
+  schedule,
+  matchUp,
+}) {
+  const { itemValue: scheduledTime, timeStamp: itemTimeStamp } =
+    latestVisibleTimeItemValue(
+      matchUp?.timeItems || [],
+      SCHEDULED_TIME,
+      visibilityThreshold
+    );
 
-  return { scheduledTime: itemValue };
+  return !schedule || (itemTimeStamp && timeStamp && itemTimeStamp > timeStamp)
+    ? { scheduledTime }
+    : schedule;
 }

@@ -35,10 +35,12 @@ const roundRobinTally = {
   },
   disqualifyDefaults: true, // disqualified participants are pushed to the bottom of the group order
   disqualifyWalkovers: true, // disqualified participants are pushed to the bottom of the group order
-  setsCreditForDefaults: true, // whether or not to award e.g. 2 sets won for participant who wins by opponent DEFAULT
-  setsCreditForWalkovers: true, // whether or not to award e.g. 2 sets won for participant who wins by opponent WALKOVER
-  gamesCreditForDefaults: true, // whether or not to award e.g. 12 games won for participant who wins by opponent DEFAULT
-  gamesCreditForWalkovers: true, // whether or not to award e.g. 12 games won for participant who wins by opponent WALKOVER
+  setsCreditForDefaults: false, // whether or not to award e.g. 2 sets won for participant who wins by opponent DEFAULT
+  setsCreditForWalkovers: false, // whether or not to award e.g. 2 sets won for participant who wins by opponent WALKOVER
+  setsCreditForRetirements: false, // whether or not to award e.g. 2 sets won for participant who wins by opponent RETIREMENT
+  gamesCreditForDefaults: false, // whether or not to award e.g. 12 games won for participant who wins by opponent DEFAULT
+  gamesCreditForWalkovers: false, // whether or not to award e.g. 12 games won for participant who wins by opponent WALKOVER
+  gamesCreditForRetirements: false, // whether or not to award e.g. 2 sets won for participant who wins by opponent RETIREMENT
   GEMscore: [
     'matchUpsPct',
     'tieMatchUpsPct',

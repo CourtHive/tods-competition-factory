@@ -49,6 +49,7 @@ export function getDrawStructures({
   stageSequences,
   stageSequence,
   roundTarget,
+  sortConfig,
   stages,
   stage,
 }) {
@@ -72,7 +73,7 @@ export function getDrawStructures({
     ?.filter(isStage)
     .filter(isStageSequence)
     .filter(isRoundTarget)
-    .sort(structureSort);
+    .sort((a, b) => structureSort(a, b, sortConfig));
 
   const stageStructures =
     withStageGrouping &&

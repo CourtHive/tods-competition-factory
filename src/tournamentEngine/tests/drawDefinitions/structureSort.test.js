@@ -1,11 +1,17 @@
 import { structureSort } from '../../../drawEngine/getters/structureSort';
 import mocksEngine from '../../../mocksEngine';
+import { utilities } from '../../../index';
 import tournamentEngine from '../../sync';
 
 import {
+  AGGREGATE_EVENT_STRUCTURES,
   COMPASS,
+  CURTIS_CONSOLATION,
+  FEED_IN_CHAMPIONSHIP,
   FINISHING_POSITIONS,
+  FIRST_MATCH_LOSER_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
+import { instanceCount } from '../../../utilities';
 
 test('structureSort can sort by stage and stageSequence', () => {
   const {
@@ -46,19 +52,97 @@ test('structureSort can sort by stage and stageSequence', () => {
     'SOUTHEAST',
   ]);
 
-  structureNames = drawDefinition.structures
-    .sort((a, b) => structureSort(a, b, { mode: FINISHING_POSITIONS }))
-    .map(({ structureName }) => structureName);
-
-  expect(structureNames).toEqual([
+  const fpSort = [
     'EAST',
     'NORTHEAST',
     'NORTH',
-    'NORTHWEST',
     'WEST',
+    'NORTHWEST',
     'SOUTHWEST',
     'SOUTH',
     'SOUTHEAST',
     'QUALIFYING',
-  ]);
+  ];
+
+  structureNames = drawDefinition.structures
+    .sort((a, b) => structureSort(a, b, { mode: FINISHING_POSITIONS }))
+    .map(({ structureName }) => structureName);
+
+  // console.log(structureNames);
+  expect(structureNames).toEqual(fpSort);
+
+  structureNames = drawDefinition.structures
+    .sort((a, b) =>
+      utilities.structureSort(a, b, { mode: FINISHING_POSITIONS })
+    )
+    .map(({ structureName }) => structureName);
+
+  expect(structureNames).toEqual(fpSort);
+
+  structureNames = drawDefinition.structures
+    .sort((a, b) =>
+      utilities.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES })
+    )
+    .map(({ structureName }) => structureName);
+
+  expect(structureNames).toEqual(fpSort);
+});
+
+test('structureSort can sort by stage and stageSequence', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawType: FIRST_MATCH_LOSER_CONSOLATION,
+        drawSize: 64,
+      },
+      {
+        drawType: CURTIS_CONSOLATION,
+        drawSize: 64,
+      },
+      {
+        drawType: FEED_IN_CHAMPIONSHIP,
+        drawSize: 64,
+      },
+    ],
+  });
+
+  const allStructures = tournamentRecord.events
+    .map(({ drawDefinitions }) =>
+      drawDefinitions.map(({ structures }) => structures).flat()
+    )
+    .flat()
+    .sort((a, b) =>
+      utilities.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES })
+    );
+
+  const structureMap = Object.keys(
+    instanceCount(allStructures.map(({ structureName }) => structureName))
+  );
+
+  const flatStructures = tournamentRecord.events
+    ?.flatMap(({ drawDefinitions, eventType }) =>
+      drawDefinitions?.flatMap(({ structures, drawId }) =>
+        structures?.map((s) => ({ ...s, drawId, eventType }))
+      )
+    )
+    .sort((a, b) =>
+      utilities.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES })
+    )
+    ?.reduce(
+      (acc, { structureName, stage }) => ({
+        ...acc,
+        [structureName]: [...(acc[structureName] ?? []), { stage }],
+      }),
+      {}
+    );
+
+  const expectation = [
+    'MAIN',
+    'PLAY_OFF',
+    'CONSOLATION',
+    'CONSOLATION 1',
+    'CONSOLATION 2',
+  ];
+  expect(Object.keys(flatStructures)).toEqual(expectation);
+  expect(structureMap).toEqual(expectation);
 });

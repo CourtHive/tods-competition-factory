@@ -67,6 +67,7 @@ function parseSetFormat(formatstring) {
       } else {
         result.noTiebreak = true;
       }
+
       return (
         (setTo && validNoAD && validTiebreak && validTiebreakAt && result) || {
           invalid: true,

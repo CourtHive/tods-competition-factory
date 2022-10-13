@@ -12,7 +12,6 @@ import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { getDrawStructures } from '../../getters/findStructure';
 import { addPlayoffStructures } from './addPlayoffStructures';
 import { attachPlayoffStructures } from './attachStructures';
-import { structureSort } from '../../getters/structureSort';
 import { deleteAdHocMatchUps } from './deleteAdHocMatchUps';
 import { removeStructure } from './removeStructure';
 import { getSourceRounds } from './getSourceRounds';
@@ -44,7 +43,6 @@ const structureGovernor = {
   deleteAdHocMatchUps,
   addAdHocMatchUps,
 
-  structureSort,
   addVoluntaryConsolationStage,
   addVoluntaryConsolationStructure,
   generateVoluntaryConsolation,
