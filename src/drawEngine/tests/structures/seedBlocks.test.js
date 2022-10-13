@@ -1,3 +1,4 @@
+import { expect } from 'vitest';
 import {
   getSeedBlocks,
   getSeedGroups,
@@ -41,14 +42,43 @@ it('can generate seedBlocks, seedGroups and seedingThresholds', () => {
     [17, 18, 19, 20, 21, 22, 23, 24],
     [25, 26, 27, 28, 29, 30, 31, 32],
   ]);
-
-  /*
-  // not working for ROUND_ROBIN
-  result = getSeedingThresholds({
-    participantsCount: drawSize,
-    roundRobinGroupsCount,
-  });
-
-  console.log({ result });
-  */
 });
+
+const scenarios = [
+  {
+    roundRobinGroupsCount: 5,
+    expectation: [1, 6],
+    seedGroupsCount: 2,
+    drawSize: 13,
+  },
+  {
+    roundRobinGroupsCount: 8,
+    expectation: [1, 9, 17, 25],
+    seedGroupsCount: 4,
+    drawSize: 32,
+  },
+  {
+    roundRobinGroupsCount: 10,
+    expectation: [1, 11, 21],
+    seedGroupsCount: 3,
+    drawSize: 32,
+  },
+];
+
+it.each(scenarios)(
+  'can generate seedingThresholds for Round Robin groups',
+  (scenario) => {
+    const { drawSize, roundRobinGroupsCount, seedGroupsCount, expectation } =
+      scenario;
+
+    const { seedGroups } = getSeedGroups({ roundRobinGroupsCount, drawSize });
+
+    const { seedingThresholds } = getSeedingThresholds({
+      participantsCount: drawSize,
+      roundRobinGroupsCount,
+    });
+
+    expect(seedGroups.length).toEqual(seedGroupsCount);
+    expect(seedingThresholds).toEqual(expectation);
+  }
+);
