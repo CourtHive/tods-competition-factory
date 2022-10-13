@@ -1,5 +1,6 @@
-import { isConvertableInteger } from '../../../utilities/math';
 import { decorateResult } from '../../../global/functions/decorateResult';
+import { calculateValidGroupSizes } from '../../generators/roundRobin';
+import { isConvertableInteger } from '../../../utilities/math';
 import {
   chunkArray,
   generateRange,
@@ -177,6 +178,23 @@ export function getSeedingThresholds({
   roundRobinGroupsCount,
   participantsCount,
 }) {
+  if (roundRobinGroupsCount) {
+    const validGroupSizes = calculateValidGroupSizes({
+      drawSize: participantsCount,
+    });
+    const validGroupsCounts = validGroupSizes.map((groupSize) =>
+      Math.ceil(participantsCount / groupSize)
+    );
+    const invalid = !validGroupsCounts.includes(roundRobinGroupsCount);
+
+    if (invalid) {
+      return decorateResult({
+        result: { error: INVALID_VALUES },
+        context: { roundRobinGroupsCount },
+      });
+    }
+  }
+
   const { seedGroups } = getSeedGroups({
     drawSize: participantsCount,
     roundRobinGroupsCount,

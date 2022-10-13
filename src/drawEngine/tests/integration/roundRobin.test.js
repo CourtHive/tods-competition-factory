@@ -30,15 +30,15 @@ const scenarios = [
     drawProfile: {
       seedingProfile: { positioning: WATERFALL },
       structureOptions: { groupSize: 5 },
-      participantsCount: 8,
+      participantsCount: 9,
       seedsCount: 4,
-      drawSize: 8,
+      drawSize: 9,
     },
     expectation: {
       assignedPositionsCount: 10,
       roundMatchUpCounts: [4, 4, 4, 4, 4],
       seedsWithByes: [1, 2, 3, 4],
-      byesCount: 2,
+      byesCount: 1,
       groups: 2,
     },
   },

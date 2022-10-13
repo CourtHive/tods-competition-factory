@@ -335,12 +335,22 @@ function deriveGroups({ appliedPolicies, structureOptions, drawSize }) {
   return { groupSize, groupCount };
 }
 
-function calculateValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
-  return generateRange(3, groupSizeLimit + 1).filter((groupSize) => {
-    const minimumGroups = Math.ceil(drawSize / groupSize);
-    const byes = minimumGroups * groupSize - drawSize;
-    return byes < groupSize;
-  });
+export function calculateValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
+  const validSizes = generateRange(3, groupSizeLimit + 1).filter(
+    (groupSize) => {
+      const groupsCount = Math.ceil(drawSize / groupSize);
+      const byesCount = groupsCount * groupSize - drawSize;
+      const maxParticipantsPerGroup = Math.ceil(drawSize / groupsCount);
+      const maxByesPerGroup = Math.ceil(byesCount / groupsCount);
+      const valid =
+        (!byesCount || byesCount < groupSize) &&
+        maxParticipantsPerGroup === groupSize &&
+        maxParticipantsPerGroup >= 3 &&
+        maxByesPerGroup < 2;
+      return valid;
+    }
+  );
+  return validSizes;
 }
 
 function roundRobinMatchUps({
