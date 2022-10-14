@@ -22,6 +22,7 @@ export { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/time
 export { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 export { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';
 export { findExtension } from '../../global/functions/deducers/findExtension';
+export { getValidGroupSizes } from '../../drawEngine/generators/roundRobin';
 export { getTieFormat } from '../../tournamentEngine/getters/getTieFormat';
 export {
   getRounds,
