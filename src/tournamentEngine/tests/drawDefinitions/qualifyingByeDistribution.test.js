@@ -3,6 +3,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { expect } from 'vitest';
 
 it('places BYEs reasonably in qualifying structures', () => {
   let result = mocksEngine.generateTournamentRecord({
@@ -14,10 +15,10 @@ it('places BYEs reasonably in qualifying structures', () => {
             roundTarget: 1,
             structureProfiles: [
               {
+                qualifyingPositions: 2,
+                participantsCount: 11,
                 stageSequence: 1,
                 drawSize: 16,
-                participantsCount: 11,
-                qualifyingPositions: 2,
               },
             ],
           },
@@ -46,7 +47,5 @@ it('places BYEs reasonably in qualifying structures', () => {
     chunk.every(({ bye }) => bye)
   );
 
-  if (doubleByeChunks.length) {
-    // console.log(doubleByeChunks);
-  }
+  expect(doubleByeChunks.length).toEqual(0);
 });
