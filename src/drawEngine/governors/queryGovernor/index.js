@@ -9,6 +9,7 @@ import { getEliminationDrawSize } from '../../getters/getEliminationDrawSize';
 import { getParticipantIdFinishingPositions } from './finishingPositions';
 import { positionActions } from './positionActions/positionActions';
 import { getParticipantIdMatchUps } from './participantIdMatchUps';
+import { getValidGroupSizes } from '../../generators/roundRobin';
 import {
   getSeedBlocks,
   getSeedGroups,
@@ -74,6 +75,7 @@ const queryGovernor = {
   getNextUnfilledDrawPositions,
   getExitProfiles,
 
+  getValidGroupSizes,
   getSeedingThresholds,
   getSeedBlocks,
   getSeedGroups,

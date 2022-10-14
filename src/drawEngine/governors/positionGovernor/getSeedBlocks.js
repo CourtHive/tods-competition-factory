@@ -1,5 +1,5 @@
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { calculateValidGroupSizes } from '../../generators/roundRobin';
+import { getValidGroupSizes } from '../../generators/roundRobin';
 import { isConvertableInteger } from '../../../utilities/math';
 import {
   chunkArray,
@@ -179,7 +179,7 @@ export function getSeedingThresholds({
   participantsCount,
 }) {
   if (roundRobinGroupsCount) {
-    const validGroupSizes = calculateValidGroupSizes({
+    const { validGroupSizes } = getValidGroupSizes({
       drawSize: participantsCount,
     });
     const validGroupsCounts = validGroupSizes.map((groupSize) =>

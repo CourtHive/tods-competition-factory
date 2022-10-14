@@ -314,7 +314,7 @@ function deriveGroups({ appliedPolicies, structureOptions, drawSize }) {
 
   let groupSize = structureOptions?.groupSize;
   const groupSizeLimit = structureOptions?.groupSizeLimit || 8;
-  const validGroupSizes = calculateValidGroupSizes({
+  const { validGroupSizes } = getValidGroupSizes({
     groupSizeLimit,
     drawSize,
   });
@@ -335,8 +335,8 @@ function deriveGroups({ appliedPolicies, structureOptions, drawSize }) {
   return { groupSize, groupCount };
 }
 
-export function calculateValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
-  const validSizes = generateRange(3, groupSizeLimit + 1).filter(
+export function getValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
+  const validGroupSizes = generateRange(3, groupSizeLimit + 1).filter(
     (groupSize) => {
       const groupsCount = Math.ceil(drawSize / groupSize);
       const byesCount = groupsCount * groupSize - drawSize;
@@ -350,7 +350,7 @@ export function calculateValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
       return valid;
     }
   );
-  return validSizes;
+  return { validGroupSizes };
 }
 
 function roundRobinMatchUps({
