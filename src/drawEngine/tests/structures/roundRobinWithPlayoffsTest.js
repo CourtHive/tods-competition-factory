@@ -16,20 +16,20 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 export function roundRobinWithPlayoffsTest({
-  drawSize,
-  groupSize,
-  groupsCount,
-  playoffGroups,
-  participantsCount,
   finishingGroupSizes,
+  participantsCount,
+  playoffGroups,
+  groupsCount,
+  groupSize,
+  drawSize,
 }) {
   reset();
   initialize();
   groupsCount = groupsCount || drawSize / groupSize;
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
   const structureOptions = {
-    groupSize,
     playoffGroups,
+    groupSize,
   };
 
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -133,10 +133,10 @@ export function roundRobinWithPlayoffsTest({
           matchUpFormat,
           setValues,
         });
-        const result = tournamentEngine.setMatchUpStatus({
-          drawId,
+        let result = tournamentEngine.setMatchUpStatus({
           matchUpId,
           outcome,
+          drawId,
         });
         expect(result.success).toEqual(true);
       }

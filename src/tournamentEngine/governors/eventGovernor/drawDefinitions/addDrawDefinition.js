@@ -24,11 +24,11 @@ import {
 
 export function addDrawDefinition({
   flight: flightDefinition,
-  checkEntryStatus = true,
   suppressNotifications,
   modifyEventEntries, // event.entries[{entryStatus}] are modified to match draw.entries[{entryStatus}]
   existingDrawCount,
   allowReplacement,
+  checkEntryStatus, // optional boolean to enable checking that flight.drawEntries match event.entries
   tournamentRecord,
   drawDefinition,
   event,

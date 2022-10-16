@@ -187,7 +187,7 @@ export function getUnseededByePositions({
       0,
       seedingOverhang
     );
-    const qualifierBlocksCount = roundMatchUps[structure.roundLimit].length;
+    const qualifierBlocksCount = roundMatchUps[structure.roundLimit]?.length;
     const shuffledRemainder = chunkArray(
       unseededByePositions.slice(seedingOverhang),
       qualifierBlocksCount

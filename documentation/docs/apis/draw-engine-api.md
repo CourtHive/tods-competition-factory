@@ -774,6 +774,19 @@ const { drawDefinition } = drawEngine.getState({
 
 ---
 
+## getValidGroupSizes
+
+Returns valid Round Robin group sizes for specified `drawSize`.
+
+```js
+const { validGroupSizes } = drawEngine.getValidGroupSies({
+  groupSizeLimit, // optional - defaults to 10
+  drawSize,
+});
+```
+
+---
+
 ## initializeStructureSeedAssignments
 
 Creates the `seedAssignments` attribute for the specified structure.
