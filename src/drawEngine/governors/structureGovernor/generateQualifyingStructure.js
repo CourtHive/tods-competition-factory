@@ -1,10 +1,10 @@
 import { generateQualifyingLink } from '../../generators/generateQualifyingLink';
 import { addExtension } from '../../../global/functions/producers/addExtension';
+import { coerceEven, isConvertableInteger } from '../../../utilities/math';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import structureTemplate from '../../generators/structureTemplate';
 import { generateRoundRobin } from '../../generators/roundRobin';
 import { treeMatchUps } from '../../generators/eliminationTree';
-import { isConvertableInteger } from '../../../utilities/math';
 import { findStructure } from '../../getters/findStructure';
 
 import { ROUND_TARGET } from '../../../constants/extensionConstants';
@@ -26,6 +26,7 @@ export function generateQualifyingStructure(params) {
   if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const stack = 'generateQualifyingStructure';
 
+  const drawSize = params.drawSize || coerceEven(params.participantsCount);
   const {
     qualifyingRoundNumber,
     qualifyingPositions,
@@ -36,7 +37,6 @@ export function generateQualifyingStructure(params) {
     structureName,
     structureId,
     roundTarget,
-    drawSize,
     drawType,
     idPrefix,
     isMock,
