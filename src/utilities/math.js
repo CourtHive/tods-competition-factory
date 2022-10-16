@@ -14,6 +14,10 @@ export function deriveExponent(n) {
   return i;
 }
 
+export function coerceEven(n) {
+  return isNaN(n) ? 0 : n % 2 ? n + 1 : n;
+}
+
 export function nearestPowerOf2(val) {
   return Math.pow(2, Math.round(Math.log(val) / Math.log(2)));
 }

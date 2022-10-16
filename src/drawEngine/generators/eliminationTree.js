@@ -3,9 +3,9 @@ import { addFinishingRounds } from './addFinishingRounds';
 import { buildRound } from './buildRound';
 
 export function treeMatchUps({
-  qualifyingRoundNumber, // round at which participants qualify
   finishingPositionOffset,
   finishingPositionLimit, // optional - limit finishingPositionRanges
+  qualifyingRoundNumber, // round at which participants qualify
   qualifyingPositions, // number of positions which qualify
   matchUpType,
   roundLimit,
@@ -14,7 +14,19 @@ export function treeMatchUps({
   isMock,
   uuids,
 }) {
-  if (isNaN(drawSize) || !isPowerOf2(drawSize) || drawSize < 2) {
+  if (isNaN(drawSize) || drawSize < 2) {
+    return { matchUps: [], roundsCount: 0 };
+  }
+
+  const isValidQualifying =
+    !(drawSize % 2) &&
+    (!isNaN(qualifyingPositions) || !isNaN(qualifyingRoundNumber)) &&
+    (drawSize / qualifyingPositions ===
+      Math.round(drawSize / qualifyingPositions) ||
+      drawSize / qualifyingRoundNumber ===
+        Math.round(drawSize / qualifyingRoundNumber));
+
+  if (!isPowerOf2(drawSize) && !isValidQualifying) {
     return { matchUps: [], roundsCount: 0 };
   }
 
@@ -39,7 +51,9 @@ export function treeMatchUps({
   }));
   roundNumber++;
 
-  roundLimit = roundLimit || qualifyingRoundNumber;
+  roundLimit =
+    roundLimit || qualifyingRoundNumber || drawSize / 2 / qualifyingPositions;
+
   while (roundNodes.length > 1) {
     if (qualifyingPositions && roundNodes.length === qualifyingPositions) {
       roundLimit = roundNumber - 1;

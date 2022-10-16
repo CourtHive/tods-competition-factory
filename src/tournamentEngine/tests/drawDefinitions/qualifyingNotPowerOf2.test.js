@@ -3,17 +3,35 @@ import tournamentEngine from '../../sync';
 
 const scenarios = [
   {
-    expectation: { matchUpsCount: 12 },
+    expectation: { matchUpsCount: 9 },
     qualifyingPositions: 3,
     drawSize: 12,
   },
-  /*
   {
     expectation: { matchUpsCount: 9 },
     qualifyingPositions: 3,
     participantsCount: 12,
   },
-  */
+  {
+    expectation: { matchUpsCount: 9 },
+    qualifyingRoundNumber: 2,
+    participantsCount: 12,
+  },
+  {
+    expectation: { matchUpsCount: 6 },
+    qualifyingRoundNumber: 1,
+    participantsCount: 12,
+  },
+  {
+    expectation: { matchUpsCount: 6 },
+    qualifyingPositions: 6,
+    participantsCount: 12,
+  },
+  {
+    expectation: { matchUpsCount: 6 },
+    qualifyingPositions: 6,
+    participantsCount: 11,
+  },
 ];
 
 it.each(scenarios)(
@@ -33,21 +51,29 @@ it.each(scenarios)(
       ],
     });
 
-    let {
-      tournamentRecord,
-      drawIds: [drawId],
-    } = result;
+    // if (scenario.expectation.error) {
     if (result.error) {
       console.log(result);
     } else {
+      let {
+        tournamentRecord,
+        drawIds: [drawId],
+      } = result;
       tournamentEngine.setState(tournamentRecord);
 
       let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
-      expect(drawDefinition.entries.length).toEqual(scenario.drawSize);
-      expect(event.entries.length).toEqual(scenario.drawSize);
+      if (scenario.participantsCount) {
+        expect(event.entries.length).toEqual(scenario.participantsCount);
+        expect(drawDefinition.entries.length).toEqual(
+          scenario.participantsCount
+        );
+      } else if (scenario.drawSize) {
+        expect(event.entries.length).toEqual(scenario.drawSize);
+        expect(drawDefinition.entries.length).toEqual(scenario.drawSize);
+      }
+
       let { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
-      console.log(matchUps.length);
-      //expect(matchUps.length).toEqual(12);
+      expect(matchUps.length).toEqual(scenario.expectation.matchUpsCount);
     }
   }
 );
