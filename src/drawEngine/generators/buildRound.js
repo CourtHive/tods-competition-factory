@@ -40,7 +40,7 @@ export function buildRound({
     roundNodes.push(node);
 
     const matchUp = {
-      drawPositions: node.children.map((c) => c.drawPosition).filter(Boolean),
+      drawPositions: node.children.map((c) => c?.drawPosition).filter(Boolean),
       matchUpStatus: TO_BE_PLAYED,
       matchUpId: node.matchUpId,
       roundPosition,

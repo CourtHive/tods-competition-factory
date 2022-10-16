@@ -17,6 +17,7 @@ import { getParticipantId } from '../../global/functions/extractors';
 import { generateParticipants } from './generateParticipants';
 import { definedAttributes } from '../../utilities/objects';
 import { processTieFormat } from './processTieFormat';
+import { coerceEven } from '../../utilities/math';
 import {
   completeDrawMatchUps,
   completeDrawMatchUp,
@@ -296,7 +297,9 @@ export function generateEventWithDraw({
       for (const structureProfile of roundTargetProfile.structureProfiles.sort(
         sequenceSort
       )) {
-        const drawSize = structureProfile.drawSize;
+        const drawSize =
+          structureProfile.drawSize ||
+          coerceEven(structureProfile.participantsCount);
         const participantsCount = drawSize - (qualifyingPositions || 0); // minus qualifyingPositions
         const participantIds = qualifyingParticipantIds.slice(
           qualifyingIndex,
