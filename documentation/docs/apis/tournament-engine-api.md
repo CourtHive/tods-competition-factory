@@ -116,7 +116,10 @@ const { drawDefinition, error } =
   tournamentEngine.generateDrawDefinition(drawDefinitionValues);
 if (!error) {
   const result = tournamentEngine.addDrawDefinition({
+    modifyEventEntries, // event.entries[{entryStatus}] are modified to match draw.entries[{entryStatus}]
+    existingDrawCount, // number of draws that exist in the event, used to check that two clients don't attempt to add simultaneously
     allowReplacement, // optional - defaults to false
+    checkEntryStatus, // optional - defualts to false
     drawDefinition,
     eventId,
     flight, // optional - pass flight definition object for integrity check
@@ -2497,11 +2500,11 @@ Modify the entries for an event. For DOUBLES events automatically create PAIR pa
 
 ```js
 tournamentEngine.modifyEventEntries({
-  eventId,
-  entryStage = MAIN,
-  participantIdPairs = [],
-  unpairedParticipantIds = [],
   entryStatus = DIRECT_ACCEPTANCE,
+  unpairedParticipantIds = [],
+  participantIdPairs = [],
+  entryStage = MAIN,
+  eventId,
 })
 ```
 
