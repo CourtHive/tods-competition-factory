@@ -162,13 +162,7 @@ export function setMatchUpStatus(params) {
   const structureId = inContextMatchUp.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
 
-  // not yet validating tieMatchUps
-  if (
-    score &&
-    matchUp.matchUpType !== TEAM &&
-    !matchUp.collectionId &&
-    !disableScoreValidation
-  ) {
+  if (score && matchUp.matchUpType !== TEAM && !disableScoreValidation) {
     const matchUpFormat =
       matchUp.matchUpFormat ||
       structure?.matchUpFormat ||
@@ -183,7 +177,6 @@ export function setMatchUpStatus(params) {
       score,
     });
     if (result.error) {
-      // console.log({ matchUp, result, winningSide }, score);
       return result;
     }
   }
