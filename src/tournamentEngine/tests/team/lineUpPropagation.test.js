@@ -74,7 +74,7 @@ it('can propagate and remove lineUps', () => {
 
   let outcome = {
     winningSide: 1,
-    score: { sets: [{ side1Score: 2, side2Score: 1 }] },
+    score: { sets: [{ side1Score: 2, side2Score: 1, winningSide: 1 }] },
   };
 
   const { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
@@ -214,7 +214,7 @@ it('can propagate COMPASS lineUps properly', () => {
 
   let outcome = {
     winningSide: 1,
-    score: { sets: [{ side1Score: 2, side2Score: 1 }] },
+    score: { sets: [{ side1Score: 2, side2Score: 1, winningSide: 1 }] },
   };
 
   const { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({

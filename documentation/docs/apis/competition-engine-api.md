@@ -1223,10 +1223,12 @@ const outcome = {
 };
 
 competitionEngine.setMatchUpStatus({
-  drawId,
-  matchUpId,
+  disableScoreValidation, // optional boolean
+  allowChangePropagation, // optional boolean - allow winner/loser to be swapped and propgate change throughout draw structures
   tournamentId,
   matchUpTieId, // optional - if part of a TIE matchUp
+  matchUpId,
+  drawId,
   outcome, // optional
   schedule: {
     // optional - set schedule items

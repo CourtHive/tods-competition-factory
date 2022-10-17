@@ -26,7 +26,7 @@ export function generateQualifyingStructure(params) {
   if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const stack = 'generateQualifyingStructure';
 
-  const drawSize = params.drawSize || coerceEven(params.participantsCount);
+  let drawSize = params.drawSize || coerceEven(params.participantsCount);
   const {
     qualifyingRoundNumber,
     qualifyingPositions,
@@ -136,7 +136,7 @@ export function generateQualifyingStructure(params) {
     structure = structures[0];
     finishingPositions = [1];
   } else {
-    ({ matchUps, roundLimit, roundsCount } = treeMatchUps({
+    ({ drawSize, matchUps, roundLimit, roundsCount } = treeMatchUps({
       qualifyingRoundNumber,
       qualifyingPositions,
       matchUpType,

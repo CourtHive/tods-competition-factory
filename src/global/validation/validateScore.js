@@ -3,8 +3,8 @@ import { isConvertableInteger } from '../../utilities/math';
 import { unique } from '../../utilities';
 
 import {
+  INVALID_SCORE,
   INVALID_VALUES,
-  INVALID_WINNING_SIDE,
 } from '../../constants/errorConditionConstants';
 
 export function validateScore({
@@ -69,17 +69,19 @@ export function validateScore({
       if (winningSide && ![1, 2].includes(winningSide))
         return { error: INVALID_VALUES, info: 'winningSide must be 1 or 2' };
     }
-    const isValidScore = analyzeScore({
+
+    const { valid: isValidScore } = analyzeScore({
       existingMatchUpStatus,
       matchUpStatus,
       matchUpFormat,
       winningSide,
       score,
     });
+
     if (!isValidScore) {
       return {
-        error: INVALID_WINNING_SIDE,
-        info: 'winningSide does not match analyzed score',
+        error: INVALID_SCORE,
+        info: 'score is invalid for matchUpFormat or winningSide does not match calculated winningSide',
       };
     }
   }

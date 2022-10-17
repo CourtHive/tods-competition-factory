@@ -992,9 +992,11 @@ Sets either matchUpStatus or score and winningSide. Handles any winner/loser par
 
 ```js
 drawEngine.setMatchUpStatus({
-  matchUpId,
+  disableScoreValidation, // optional boolean
+  allowChangePropagation, // optional boolean - allow winner/loser to be swapped and propgate change throughout draw structures
   matchUpTieId, // optional - if part of a TIE matchUp
   matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
+  matchUpId,
   score, // optional - { sets }
   winningSide,
   schedule: {

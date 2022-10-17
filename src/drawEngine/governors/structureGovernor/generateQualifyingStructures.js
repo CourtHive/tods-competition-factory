@@ -49,7 +49,7 @@ export function generateQualifyingStructures({
     for (const structureProfile of (structureProfiles || []).sort(
       sequenceSort
     )) {
-      const drawSize =
+      let drawSize =
         structureProfile.drawSize ||
         coerceEven(structureProfile.participantsCount);
       const {
@@ -106,7 +106,7 @@ export function generateQualifyingStructures({
         structure = structures[0];
         finishingPositions = [1];
       } else {
-        ({ matchUps, roundLimit } = treeMatchUps({
+        ({ drawSize, matchUps, roundLimit } = treeMatchUps({
           qualifyingRoundNumber,
           qualifyingPositions,
           matchUpType,
@@ -187,7 +187,7 @@ export function generateQualifyingStructures({
     qualifyingDrawPositionsCount,
     qualifyingDetails,
     structures,
-    links,
     ...SUCCESS,
+    links,
   };
 }

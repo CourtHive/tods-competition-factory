@@ -1,4 +1,5 @@
 import { addNotes } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveNotes';
+import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
 import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
@@ -10,7 +11,11 @@ import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
+  AWAITING_RESULT,
+  completedMatchUpStatuses,
   DOUBLE_WALKOVER,
+  IN_PROGRESS,
+  SUSPENDED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
@@ -83,6 +88,14 @@ export function modifyMatchUpScore({
       matchUpId,
       event,
     }));
+  }
+
+  if (
+    scoreHasValue(matchUp) &&
+    !completedMatchUpStatuses.includes(matchUpStatus) &&
+    ![AWAITING_RESULT, SUSPENDED].includes(matchUpStatus)
+  ) {
+    matchUp.matchUpStatus = IN_PROGRESS;
   }
 
   // if the matchUp has a collectionId it is a tieMatchUp contained in a dual matchUp
