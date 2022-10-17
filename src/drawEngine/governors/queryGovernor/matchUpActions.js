@@ -34,6 +34,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import {
   BYE,
+  completedMatchUpStatuses,
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
@@ -41,10 +42,14 @@ import {
   END,
   REFEREE,
   SCHEDULE,
+  SCHEDULE_METHOD,
   SCORE,
   START,
   STATUS,
+  SUBSTITUTION,
 } from '../../../constants/matchUpActionConstants';
+import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { DOUBLES_MATCHUP } from '../../../constants/matchUpTypes';
 
 /**
  *
@@ -239,7 +244,7 @@ export function matchUpActions({
   );
 
   // TODO: impolment method action and pass participants whose role is REFEREE
-  validActions.push({ type: REFEREE });
+  validActions.push({ type: REFEREE, payload: { matchUpId } });
 
   const isInComplete = !isDirectingMatchUpStatus({
     matchUpStatus: matchUp.matchUpStatus,
@@ -308,7 +313,10 @@ export function matchUpActions({
       notes: undefined,
     },
   };
-  if (isInComplete) validActions.push({ type: SCHEDULE });
+  if (isInComplete) {
+    // TODO: method & info
+    validActions.push({ type: SCHEDULE, payload: { matchUpId } });
+  }
   if (readyToScore) validActions.push(addPenaltyAction);
   if (isInComplete && readyToScore) validActions.push({ type: STATUS });
   if (scoringActive && readyToScore) {
@@ -326,12 +334,21 @@ export function matchUpActions({
     };
     validActions.push({
       type: SCORE,
-      method: 'setMatchUpStatus',
+      method: SCHEDULE_METHOD,
       info: 'set outcome and winningSide',
       payload,
     });
     validActions.push({ type: START });
     validActions.push({ type: END });
+  }
+
+  if (
+    scoreHasValue(matchUp) &&
+    !completedMatchUpStatuses.includes(matchUp.matchUpStatus)
+  ) {
+    if (matchUp.matchUpType === DOUBLES_MATCHUP) {
+      validActions.push({ type: SUBSTITUTION, payload: { matchUpId } });
+    }
   }
 
   return {

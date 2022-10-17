@@ -6,6 +6,9 @@ export const SCHEDULE = 'SCHEDULE';
 export const SCORE = 'SCORE';
 export const START = 'START';
 export const STATUS = 'STATUS';
+export const SUBSTITUTION = 'SUBSTITUTION';
+
+export const SCHEDULE_METHOD = 'setMatchUpStatus';
 
 export const matchUpActionConstants = {
   END,
@@ -13,9 +16,11 @@ export const matchUpActionConstants = {
   PENALTY,
   REFEREE,
   SCHEDULE,
+  SCHEDULE_METHOD,
   SCORE,
   START,
   STATUS,
+  SUBSTITUTION,
 };
 
 export default matchUpActionConstants;
