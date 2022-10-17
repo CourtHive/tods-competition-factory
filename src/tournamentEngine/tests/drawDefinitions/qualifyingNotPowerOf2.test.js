@@ -3,6 +3,16 @@ import tournamentEngine from '../../sync';
 
 const scenarios = [
   {
+    expectation: { matchUpsCount: 21 },
+    qualifyingPositions: 3,
+    drawSize: 21,
+  },
+  {
+    expectation: { matchUpsCount: 21 },
+    qualifyingPositions: 3,
+    drawSize: 24,
+  },
+  {
     expectation: { matchUpsCount: 9 },
     qualifyingPositions: 3,
     drawSize: 12,
