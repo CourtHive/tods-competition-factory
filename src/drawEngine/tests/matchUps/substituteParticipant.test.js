@@ -148,7 +148,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     score: { sets: [{ side1Score: 5, side2Score: 2 }] },
   };
 
-  result = tournamentEngine.matchUpActions({
+  let result = tournamentEngine.matchUpActions({
     matchUpId: singlesMatchUpId,
     drawId,
   });
@@ -156,7 +156,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   // options for singles matchUps don't change after scoring is active
   expect(validActions).toEqual(['REFEREE', 'SCHEDULE']);
 
-  let result = tournamentEngine.setMatchUpStatus({
+  result = tournamentEngine.setMatchUpStatus({
     matchUpId: singlesMatchUpId,
     outcome,
     drawId,
