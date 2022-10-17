@@ -66,7 +66,8 @@ export function setMatchUpStatus(params) {
   // winningSide in params is new winningSide
 
   const {
-    allowChangePropagation = undefined, // factory default
+    allowChangePropagation,
+    disableScoreValidation,
     tournamentRecords,
     tournamentRecord,
     drawDefinition,
@@ -162,7 +163,12 @@ export function setMatchUpStatus(params) {
   const { structure } = findStructure({ drawDefinition, structureId });
 
   // not yet validating tieMatchUps
-  if (score && matchUp.matchUpType !== TEAM && !matchUp.collectionId) {
+  if (
+    score &&
+    matchUp.matchUpType !== TEAM &&
+    !matchUp.collectionId &&
+    !disableScoreValidation
+  ) {
     const matchUpFormat =
       matchUp.matchUpFormat ||
       structure?.matchUpFormat ||
