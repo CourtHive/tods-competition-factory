@@ -18,5 +18,6 @@ export function scoreHasValue({ matchUp, score } = {}) {
     side1PointScore ||
     side2PointScore;
   const hasValue = score?.sets?.length > 1 || firstSetScore;
-  return hasValue;
+
+  return !!hasValue;
 }

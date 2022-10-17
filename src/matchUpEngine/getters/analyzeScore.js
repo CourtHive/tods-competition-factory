@@ -14,7 +14,7 @@ export function analyzeScore({
   winningSide,
   score,
 }) {
-  const sets = score?.sets;
+  const sets = score?.sets || [];
   const completedSets = sets?.filter((set) => set?.winningSide) || [];
   const setsWinCounts = completedSets.reduce(
     (counts, set) => {
@@ -42,18 +42,37 @@ export function analyzeScore({
     relevantMatchUpStatus
   );
 
+  const validSets =
+    !matchUpScoringFormat ||
+    !sets.length ||
+    sets.every((set, i) => {
+      const setNumber = i + 1;
+      const isFinalSet = setNumber === bestOf;
+      const { side1Score, side2Score } = set;
+      const maxSetScore = Math.max(side1Score || 0, side2Score || 0);
+
+      const { finalSetFormat, setFormat } = matchUpScoringFormat;
+      const setValues = isFinalSet ? finalSetFormat || setFormat : setFormat;
+
+      if (maxSetScore > setValues.setTo + 1) {
+        return false;
+      }
+
+      return true;
+    });
+
   const calculatedWinningSide =
     ((!matchUpFormat || maxSetsCount === setsToWin) &&
       maxSetsInstances === 1 &&
       setsWinCounts.indexOf(maxSetsCount) + 1) ||
     undefined;
 
-  const validMatchUpWinningSide =
+  const valid =
     (winningSide &&
       winningSideSetsCount > losingSideSetsCount &&
       winningSide === calculatedWinningSide) ||
-    (!winningSide && !calculatedWinningSide) ||
+    (!winningSide && !calculatedWinningSide && validSets) ||
     irregularEnding;
 
-  return validMatchUpWinningSide;
+  return { valid };
 }
