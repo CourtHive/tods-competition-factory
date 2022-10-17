@@ -2,6 +2,7 @@ export enum EntryStatusEnum {
   CONFIRMED = 'CONFIRMED',
   DIRECT_ACCEPTANCE = 'DIRECT_ACCEPTANCE',
   ORGANISER_ACCEPTANCE = 'ORGANISER_ACCEPTANCE',
+  REGISTERED = 'REGILSTERED',
 
   ALTERNATE = 'ALTERNATE',
   WITHDRAWN = 'WITHDRAWN',
@@ -28,6 +29,7 @@ export const JUNIOR_EXEMPT = EntryStatusEnum.JUNIOR_EXEMPT;
 export const LUCKY_LOSER = EntryStatusEnum.LUCKY_LOSER;
 export const ORGANISER_ACCEPTANCE = EntryStatusEnum.ORGANISER_ACCEPTANCE;
 export const QUALIFIER = EntryStatusEnum.QUALIFIER;
+export const REGISTERED = EntryStatusEnum.REGISTERED;
 export const SPECIAL_EXEMPT = EntryStatusEnum.SPECIAL_EXEMPT;
 export const UNGROUPED = EntryStatusEnum.UNGROUPED;
 export const UNPAIRED = EntryStatusEnum.UNPAIRED;

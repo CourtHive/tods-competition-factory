@@ -14,8 +14,23 @@ export function treeMatchUps({
   isMock,
   uuids,
 }) {
-  if (isNaN(drawSize) || drawSize < 2) {
+  if (
+    isNaN(drawSize) ||
+    drawSize < 2 ||
+    (qualifyingPositions && drawSize <= qualifyingPositions)
+  ) {
     return { matchUps: [], roundsCount: 0 };
+  }
+
+  if (
+    qualifyingPositions &&
+    (!isPowerOf2(drawSize) || drawSize % qualifyingPositions)
+  ) {
+    // if drawSize is NOT a multiple of qualifyingPositions...
+    // change drawSize to a multiple of qualifyingPositions that is larger than drawSize
+    let requiredDrawSize = qualifyingPositions;
+    while (requiredDrawSize < drawSize) requiredDrawSize = 2 * requiredDrawSize;
+    drawSize = requiredDrawSize;
   }
 
   const isValidQualifying =
@@ -89,7 +104,7 @@ export function treeMatchUps({
     roundLimit = roundNumber - 1;
   }
 
-  return { matchUps, roundsCount, roundLimit };
+  return { drawSize, matchUps, roundsCount, roundLimit };
 }
 
 /*
