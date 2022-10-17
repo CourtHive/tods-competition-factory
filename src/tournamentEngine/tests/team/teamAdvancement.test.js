@@ -523,8 +523,8 @@ test('properly removes advanced team at 9-0 in USTA_GOLD', () => {
         {
           setNumber: 1,
           side1Score: 1,
-          side2Score: 1,
-          winningSide: 8,
+          side2Score: 8,
+          winningSide: 2,
         },
       ],
     },
