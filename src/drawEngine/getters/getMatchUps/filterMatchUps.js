@@ -4,6 +4,8 @@ import { matchUpAssignedCourtId } from '../../accessors/matchUpAccessor/courtAss
 import { matchUpAssignedVenueId } from '../../accessors/matchUpAccessor/venueAssignment';
 import { extractDate, sameDay } from '../../../utilities/dateTime';
 
+import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
+
 export function filterMatchUps(params) {
   const {
     matchUps,
@@ -30,6 +32,7 @@ export function filterMatchUps(params) {
     tournamentIds,
     matchUpTypes,
     structureIds,
+    readyToScore,
     courtIds,
     eventIds,
     venueIds,
@@ -104,6 +107,12 @@ export function filterMatchUps(params) {
     : [];
 
   const filteredMatchUps = matchUps.filter((matchUp) => {
+    if (
+      readyToScore &&
+      matchUp.matchUpType !== TEAM_MATCHUP &&
+      !matchUp.readyToScore
+    )
+      return false;
     if (hasWinningSide && ![1, 2].includes(matchUp.winningSide)) return false;
     if (isMatchUpTie !== undefined) {
       if (isMatchUpTie && !matchUp.tieMatchUps) {
