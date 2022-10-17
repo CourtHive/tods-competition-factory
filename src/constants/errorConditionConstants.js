@@ -399,6 +399,11 @@ export const INVALID_GAME_SCORES = {
   message: 'Invalid game scores',
   code: 'ERR_INVALID_SCORES_GAME',
 };
+export const INVALID_SCORE = {
+  message: 'Invalid score',
+  code: 'ERR_INVALID_SCORE',
+};
+
 export const INVALID_WINNING_SIDE = {
   message: 'Invalid winningSide',
   code: 'ERR_INVALID_WINNING_SIDE',
@@ -799,6 +804,7 @@ export const errorConditionConstants = {
   INVALID_SEED_POSITION,
   INVALID_SET_NUMBER,
   INVALID_SIDE_NUMBER,
+  INVALID_SCORE,
   INVALID_STAGE,
   INVALID_START_TIME,
   INVALID_STRUCTURE,
