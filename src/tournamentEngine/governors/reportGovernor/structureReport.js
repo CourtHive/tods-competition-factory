@@ -1,6 +1,7 @@
 import { findTournamentExtension } from '../queryGovernor/extensionQueries';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
 
+import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
 import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';
 import { DOUBLES_MATCHUP } from '../../../constants/matchUpTypes';
 import { WTN } from '../../../constants/ratingConstants';
@@ -11,6 +12,8 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 export function structureReport({ firstFlightOnly = true, tournamentRecord }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_ID };
+
   const level = findTournamentExtension({ name: 'level', tournamentRecord })
     ?.extension?.value?.level;
   const levelOrder = level?.orderIndex;
@@ -32,18 +35,17 @@ export function structureReport({ firstFlightOnly = true, tournamentRecord }) {
     }).matchUps || [];
 
   const tournamentStructureData = tournamentRecord?.events?.flatMap(
-    ({ drawDefinitions, eventType, eventId, category, extensions }) => {
-      const flightNumbers = extensions
-        ?.find((x) => x.name === FLIGHT_PROFILE)
-        ?.value?.flights?.map((flight) => ({
-          [flight.drawId]: flight.flightNumber,
-        }));
+    ({ drawDefinitions = [], eventType, eventId, category, extensions }) => {
+      const flightProfile = extensions?.find((x) => x.name === FLIGHT_PROFILE);
+      const flightNumbers = flightProfile?.value?.flights?.map((flight) => ({
+        [flight.drawId]: flight.flightNumber,
+      }));
       const flightMap = flightNumbers && Object.assign({}, ...flightNumbers);
 
       return (
+        // check whether to only pull data from initial flights & ignore all other flights
         drawDefinitions
-          // check whether to only pull data from initial flights & ignore all other flights
-          ?.filter(
+          .filter(
             (d) =>
               !firstFlightOnly || !flightNumbers || flightMap[d.drawId] === 1
           )
@@ -177,12 +179,11 @@ function getAvgWTN({ matchUps, drawId, eventId, eventType }) {
     .reduce((participants, matchUp) => {
       countMatchUpFormat(matchUp);
       (matchUp.sides || [])
-        .map((side) =>
+        .flatMap((side) =>
           (
             side?.participant?.individualParticipants || [side?.participant]
           ).filter(Boolean)
         )
-        .flat()
         .forEach(
           (participant) =>
             (participants[participant.participantId] = participant)
