@@ -517,8 +517,8 @@ function getParticipants({ inContext, tournamentRecord, participantsProfile }) {
   if (participantsProfile?.withScaleValues && participants?.length) {
     for (const participant of participants) {
       const { ratings, rankings } = getScaleValues({ participant });
-      participant.ratings = ratings;
       participant.rankings = rankings;
+      participant.ratings = ratings;
     }
   }
 
