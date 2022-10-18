@@ -78,7 +78,14 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     drawProfiles,
   });
 
+  // structure analytics
   tournamentEngine.setState(tournamentRecord);
   const targetStructureData = tournamentEngine.structureReport();
   expect(targetStructureData.length).toEqual(2);
+
+  // event analytics
+  const { eventReports, personEntryReports } =
+    tournamentEngine.entryStatusReport();
+  expect(eventReports.length).toEqual(2);
+  expect(personEntryReports.length).toEqual(12);
 });
