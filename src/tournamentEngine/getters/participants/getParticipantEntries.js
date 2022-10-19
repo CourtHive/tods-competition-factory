@@ -8,12 +8,14 @@ import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { PAIR } from '../../../constants/participantConstants';
 
 export function getParticipantEntries({
+  policyDefinitions,
   scheduleAnalysis,
   tournamentRecord,
   participantMap,
 
   withPotentialMatchUps,
   withTeamMatchUps,
+  withOpponents,
   withMatchUps,
   withEvents,
   withDraws,
@@ -49,21 +51,49 @@ export function getParticipantEntries({
       drawId,
       sides,
     }) => {
+      const opponents =
+        withOpponents &&
+        sides?.length === 2 &&
+        Object.assign(
+          {},
+          ...sides
+            .map(({ sideNumber }, i) => {
+              const opponentParticipantId = sides[1 - i].participantId;
+              return (
+                sideNumber && {
+                  [sideNumber]: opponentParticipantId,
+                }
+              );
+            })
+            .filter(Boolean)
+        );
+
       for (const side of sides) {
         const { participantId, sideNumber } = side;
         const participantWon = winningSide && winningSide === sideNumber;
 
         const addMatchUp = (participantId) => {
           participantMap[participantId].matchUps[matchUpId] = {
-            matchUpId,
             participantWon,
-            sideNumber,
             matchUpType,
+            sideNumber,
+            matchUpId,
           };
         };
 
         if (participantId) {
           addMatchUp(participantId);
+
+          if (withOpponents) {
+            const opponentParticipantId = opponents?.[sideNumber];
+            participantMap[participantId].opponents[opponentParticipantId] = {
+              participantId: opponentParticipantId,
+              matchUpId,
+              eventId,
+              drawId,
+            };
+          }
+
           if (
             participantMap[participantId].participant.participantType === PAIR
           ) {
@@ -105,8 +135,9 @@ export function getParticipantEntries({
 
     if (withMatchUps) {
       const eventMatchUps = allEventMatchUps({
-        afterRecoveryTimes: scheduleAnalysis,
         nextMatchUps: scheduleAnalysis || withPotentialMatchUps,
+        afterRecoveryTimes: scheduleAnalysis,
+        policyDefinitions,
         tournamentRecord,
         inContext: true,
         participantMap,
@@ -124,9 +155,12 @@ export function getParticipantEntries({
           drawId,
         } = matchUp;
         processSides({
-          matchUpId,
+          withOpponents,
           winningSide,
           matchUpType,
+          matchUpId,
+          eventId,
+          drawId,
           sides,
         });
 
@@ -144,6 +178,7 @@ export function getParticipantEntries({
             matchUpId: tieMatchUpId,
             sides: tieMatchUpSides,
             matchUpSides: sides,
+            withOpponents,
             matchUpType,
             eventId,
             drawId,

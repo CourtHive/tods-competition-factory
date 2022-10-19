@@ -15,6 +15,7 @@ export function getParticipants({
   withSignInStatus,
   withTeamMatchUps,
   withScaleValues,
+  withOpponents,
   withMatchUps,
   internalUse,
   withEvents,
@@ -36,14 +37,16 @@ export function getParticipants({
     withIOC,
   });
 
-  let matchUps;
+  let matchUps, derivedDrawInfo;
   if (withMatchUps) {
-    ({ participantMap, matchUps } = getParticipantEntries({
+    ({ participantMap, matchUps, derivedDrawInfo } = getParticipantEntries({
       withPotentialMatchUps,
+      policyDefinitions,
       tournamentRecord,
       scheduleAnalysis,
       withTeamMatchUps,
       participantMap,
+      withOpponents,
       withMatchUps,
       withEvents,
       withDraws,
@@ -51,19 +54,37 @@ export function getParticipants({
   }
 
   let processedParticipants = Object.values(participantMap).map(
-    ({ draws, events, matchUps, ...p }) => ({
-      ...p.participant,
-      matchUps: Object.values(matchUps),
-      events: Object.values(events),
-      draws: Object.values(draws),
-    })
+    ({ draws, events, matchUps, opponents, ...p }) => {
+      const participantOpponents = Object.values(opponents);
+      const participantDraws = Object.values(draws);
+      participantDraws?.forEach((draw) => {
+        draw.opponents = participantOpponents.filter(
+          (opponent) => opponent.drawId === draw.drawId
+        );
+      });
+
+      return {
+        ...p.participant,
+        opponents: participantOpponents,
+        matchUps: Object.values(matchUps),
+        events: Object.values(events),
+        draws: participantDraws,
+      };
+    }
   );
 
+  // filter must be last so attributes can be used for reporting & etc.
   let participants = filterParticipants({
     participants: processedParticipants,
     participantFilters,
     tournamentRecord,
   });
 
-  return { ...SUCCESS, matchUps, participants };
+  return {
+    derivedDrawInfo,
+    participantMap,
+    participants,
+    ...SUCCESS,
+    matchUps,
+  };
 }
