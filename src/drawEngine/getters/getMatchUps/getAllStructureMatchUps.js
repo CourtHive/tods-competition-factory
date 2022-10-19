@@ -47,6 +47,7 @@ export function getAllStructureMatchUps({
   contextProfile,
   contextContent,
   matchUpFilters,
+  participantMap,
   scheduleTiming,
   exitProfiles,
   context = {},
@@ -349,6 +350,7 @@ export function getAllStructureMatchUps({
         positionAssignments,
         collectionPosition,
         drawDefinition,
+        participantMap,
         drawPositions,
         collectionId,
         sideLineUps,
@@ -523,13 +525,15 @@ export function getAllStructureMatchUps({
     if (tournamentParticipants && matchUpWithContext.sides) {
       matchUpWithContext.sides.filter(Boolean).forEach((side) => {
         if (side.participantId) {
-          const participant = findParticipant({
-            policyDefinitions: appliedPolicies,
-            participantId: side.participantId,
-            tournamentParticipants,
-            internalUse: true,
-            contextProfile,
-          });
+          const participant =
+            participantMap?.[side.participantId]?.participant ||
+            findParticipant({
+              policyDefinitions: appliedPolicies,
+              participantId: side.participantId,
+              tournamentParticipants,
+              internalUse: true,
+              contextProfile,
+            });
           if (participant) {
             if (drawDefinition?.entries) {
               const entry = drawDefinition.entries.find(
@@ -545,13 +549,16 @@ export function getAllStructureMatchUps({
         if (side?.participant?.individualParticipantIds?.length) {
           const individualParticipants =
             side.participant.individualParticipantIds.map((participantId) => {
-              return findParticipant({
-                policyDefinitions: appliedPolicies,
-                tournamentParticipants,
-                internalUse: true,
-                contextProfile,
-                participantId,
-              });
+              return (
+                participantMap?.[participantId]?.participant ||
+                findParticipant({
+                  policyDefinitions: appliedPolicies,
+                  tournamentParticipants,
+                  internalUse: true,
+                  contextProfile,
+                  participantId,
+                })
+              );
             });
           Object.assign(side.participant, { individualParticipants });
         }
