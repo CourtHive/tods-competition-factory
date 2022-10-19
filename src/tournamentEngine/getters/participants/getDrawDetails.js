@@ -1,4 +1,3 @@
-// import { getContainedStructures } from '../../governors/tournamentGovernor/getContainedStructures';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
@@ -7,7 +6,6 @@ import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
 // ADD: orderedStructures with stage, stageSequence info
 export function getDrawDetails({ event, eventEntries, sortConfig }) {
-  // const { containedStructures } = getContainedStructures({ event });
   const derivedInfo = {};
 
   const drawDetails = Object.assign(
@@ -61,13 +59,6 @@ export function getDrawDetails({ event, eventEntries, sortConfig }) {
             ...(structures || []).map(({ structureId }) => structureId),
           ];
         })
-        /*
-        .map(({ structureId }) => {
-          const containedStructureIds = containedStructures[structureId] || [];
-          const structureIds = [structureId, ...containedStructureIds];
-          return structureIds;
-        })
-        */
         .flat(Infinity);
 
       const flightNumber = event?._flightProfile?.flights?.find(
