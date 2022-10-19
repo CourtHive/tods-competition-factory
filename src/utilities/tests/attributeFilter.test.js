@@ -13,7 +13,7 @@ it('handles bad data', () => {
   result = attributeFilter(undefined);
   expect(result).toEqual();
   result = attributeFilter(1);
-  expect(result).toEqual({});
+  expect(result).toEqual();
 });
 
 it('can filter attributes from arrays of object', () => {
