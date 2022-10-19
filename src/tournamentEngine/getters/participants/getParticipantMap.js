@@ -29,6 +29,10 @@ export function getParticipantMap({
     [PAIR]: 'pairParticipantIds',
     [TEAM]: 'teamParticipantIds',
   };
+  const membershipMap = {
+    [GROUP]: 'groups',
+    [TEAM]: 'teams',
+  };
 
   const signedIn = (participant) => {
     const { timeItem } = getTimeItem({
@@ -89,6 +93,25 @@ export function getParticipantMap({
         participantMap[individualParticiapntId][typeMap[participantType]].push(
           participantId
         );
+
+        if ([TEAM, GROUP].includes(participantType)) {
+          const {
+            participantRoleResponsibilities,
+            participantOtherName,
+            participantName,
+            participantId,
+            teamId,
+          } = filteredParticipant;
+          participantMap[individualParticiapntId][
+            membershipMap[participantType]
+          ].push({
+            participantRoleResponsibilities,
+            participantOtherName,
+            participantName,
+            participantId,
+            teamId,
+          });
+        }
 
         if (participantType === PAIR) {
           const partnerParticipantId = individualParticipantIds.find(
