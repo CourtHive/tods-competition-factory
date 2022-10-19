@@ -5,13 +5,13 @@ import { MALE } from '../../constants/genderConstants';
 
 it('handles bad data', () => {
   let result = attributeFilter();
-  expect(result).toEqual({});
+  expect(result).toEqual();
   result = attributeFilter('');
-  expect(result).toEqual({});
+  expect(result).toEqual();
   result = attributeFilter(null);
   expect(result).toEqual({});
   result = attributeFilter(undefined);
-  expect(result).toEqual({});
+  expect(result).toEqual();
   result = attributeFilter(1);
   expect(result).toEqual({});
 });
