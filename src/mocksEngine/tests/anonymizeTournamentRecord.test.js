@@ -97,12 +97,13 @@ test.each(mockProfiles)('it can anonymize tournamentRecords', (mockProfile) => {
 });
 
 const sourcePath = './src/global/testHarness';
-const filenames = fs
-  .readdirSync(sourcePath)
-  .filter((filename) => filename.indexOf('.tods.json') > 0);
+const filenames = fs.readdirSync(sourcePath).filter(
+  (filename) =>
+    filename.indexOf('.tods.json') > 0 && filename.indexOf('.8') === undefined // skip v0.8
+);
 
 it.each(filenames)(
-  'can validate all tods files in testHarness directory',
+  'can anonymize TODS files in the testHarness directory',
   (filename) => {
     const tournamentRecord = JSON.parse(
       fs.readFileSync(`./src/global/testHarness/${filename}`, 'UTF-8')

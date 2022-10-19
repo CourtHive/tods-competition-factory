@@ -142,19 +142,22 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   );
   expect(singlesMatchUps.length).toEqual(24);
 
-  const doublesMatchUps = matchUps.filter(
-    ({ matchUpType }) => matchUpType === DOUBLES_MATCHUP
-  );
-  expect(doublesMatchUps.length).toEqual(16);
-
-  const matchUpId = singlesMatchUps[0].matchUpId;
+  const singlesMatchUpId = singlesMatchUps[0].matchUpId;
 
   let outcome = {
     score: { sets: [{ side1Score: 5, side2Score: 2 }] },
   };
 
-  let result = tournamentEngine.setMatchUpStatus({
-    matchUpId,
+  let result = tournamentEngine.matchUpActions({
+    matchUpId: singlesMatchUpId,
+    drawId,
+  });
+  let validActions = result.validActions.map(({ type }) => type);
+  // options for singles matchUps don't change after scoring is active
+  expect(validActions).toEqual(['REFEREE', 'SCHEDULE']);
+
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: singlesMatchUpId,
     outcome,
     drawId,
   });
@@ -163,11 +166,45 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   let {
     matchUps: [matchUp],
   } = tournamentEngine.allTournamentMatchUps({
-    matchUpFilters: { matchUpIds: [matchUpId] },
+    matchUpFilters: { matchUpIds: [singlesMatchUpId] },
   });
   expect(matchUp.matchUpStatus).toEqual(IN_PROGRESS);
   expect(scoreHasValue(matchUp)).toEqual(true);
 
-  result = tournamentEngine.matchUpActions({ drawId, matchUpId });
-  console.log(result);
+  result = tournamentEngine.matchUpActions({
+    matchUpId: singlesMatchUpId,
+    drawId,
+  });
+  validActions = result.validActions.map(({ type }) => type);
+  // options for singles matchUps don't change after scoring is active
+  expect(validActions).toEqual(['REFEREE', 'SCHEDULE']);
+
+  // test doublesMatchUps
+  const doublesMatchUps = matchUps.filter(
+    ({ matchUpType }) => matchUpType === DOUBLES_MATCHUP
+  );
+  expect(doublesMatchUps.length).toEqual(16);
+
+  const doublesMatchUpId = doublesMatchUps[0].matchUpId;
+
+  result = tournamentEngine.matchUpActions({
+    matchUpId: doublesMatchUpId,
+    drawId,
+  });
+  validActions = result.validActions.map(({ type }) => type);
+  expect(validActions).toEqual(['REFEREE', 'SCHEDULE']);
+
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: doublesMatchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.matchUpActions({
+    matchUpId: doublesMatchUpId,
+    drawId,
+  });
+  validActions = result.validActions.map(({ type }) => type);
+  expect(validActions).toEqual(['REFEREE', 'SCHEDULE', 'SUBSTITUTION']);
 });

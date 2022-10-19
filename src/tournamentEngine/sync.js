@@ -7,6 +7,7 @@ import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
 import policyGovernor from './governors/policyGovernor';
+import reportGovernor from './governors/reportGovernor';
 import eventGovernor from './governors/eventGovernor';
 import queryGovernor from './governors/queryGovernor';
 import venueGovernor from './governors/venueGovernor';
@@ -83,6 +84,7 @@ export const tournamentEngine = (function () {
     eventGovernor,
     venueGovernor,
     policyGovernor,
+    reportGovernor,
     scheduleGovernor,
     publishingGovernor,
     tournamentGovernor,

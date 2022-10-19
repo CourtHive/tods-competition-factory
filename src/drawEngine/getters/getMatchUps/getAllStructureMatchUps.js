@@ -12,23 +12,26 @@ import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
 import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
+import { attributeFilter, makeDeepCopy, unique } from '../../../utilities';
 import { structureAssignedDrawPositions } from '../positionsGetter';
 import { getOrderedDrawPositions } from './getOrderedDrawPositions';
 import { getRoundContextProfile } from './getRoundContextProfile';
 import { getDrawPositionsRanges } from './getDrawPositionsRanges';
 import { getCheckedInParticipantIds } from '../matchUpTimeItems';
 import { definedAttributes } from '../../../utilities/objects';
-import { makeDeepCopy, unique } from '../../../utilities';
 import { filterMatchUps } from './filterMatchUps';
 import { getSide } from './getSide';
 
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
-import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { TEAM } from '../../../constants/eventConstants';
+import {
+  POLICY_TYPE_PARTICIPANT,
+  POLICY_TYPE_ROUND_NAMING,
+} from '../../../constants/policyConstants';
 
 /*
   return all matchUps within a structure and its child structures
@@ -47,6 +50,7 @@ export function getAllStructureMatchUps({
   contextProfile,
   contextContent,
   matchUpFilters,
+  participantMap,
   scheduleTiming,
   exitProfiles,
   context = {},
@@ -349,6 +353,7 @@ export function getAllStructureMatchUps({
         positionAssignments,
         collectionPosition,
         drawDefinition,
+        participantMap,
         drawPositions,
         collectionId,
         sideLineUps,
@@ -521,15 +526,29 @@ export function getAllStructureMatchUps({
     }
 
     if (tournamentParticipants && matchUpWithContext.sides) {
+      const participantAttributes =
+        policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
+      const getMappedParticipant = (participantId) => {
+        const participant = participantMap?.[participantId]?.participant;
+        return (
+          participant &&
+          attributeFilter({
+            template: participantAttributes?.participant,
+            source: participant,
+          })
+        );
+      };
       matchUpWithContext.sides.filter(Boolean).forEach((side) => {
         if (side.participantId) {
-          const participant = findParticipant({
-            policyDefinitions: appliedPolicies,
-            participantId: side.participantId,
-            tournamentParticipants,
-            internalUse: true,
-            contextProfile,
-          });
+          const participant =
+            getMappedParticipant(side.participantId) ||
+            findParticipant({
+              policyDefinitions: appliedPolicies,
+              participantId: side.participantId,
+              tournamentParticipants,
+              internalUse: true,
+              contextProfile,
+            });
           if (participant) {
             if (drawDefinition?.entries) {
               const entry = drawDefinition.entries.find(
@@ -545,13 +564,16 @@ export function getAllStructureMatchUps({
         if (side?.participant?.individualParticipantIds?.length) {
           const individualParticipants =
             side.participant.individualParticipantIds.map((participantId) => {
-              return findParticipant({
-                policyDefinitions: appliedPolicies,
-                tournamentParticipants,
-                internalUse: true,
-                contextProfile,
-                participantId,
-              });
+              return (
+                getMappedParticipant(participantId) ||
+                findParticipant({
+                  policyDefinitions: appliedPolicies,
+                  tournamentParticipants,
+                  internalUse: true,
+                  contextProfile,
+                  participantId,
+                })
+              );
             });
           Object.assign(side.participant, { individualParticipants });
         }

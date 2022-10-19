@@ -1,7 +1,6 @@
 import { getDerivedPositionAssignments } from './getDerivedPositionAssignments';
 import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
-import { getParticipantIds } from '../../../global/functions/extractors';
 import { getDerivedSeedAssignments } from './getDerivedSeedAssignments';
 import { definedAttributes } from '../../../utilities/objects';
 import { annotateParticipant } from './annotateParticipant';
@@ -9,16 +8,16 @@ import { getFlightProfile } from '../getFlightProfile';
 import { allEventMatchUps } from '../matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities';
 import { getDrawDetails } from './getDrawDetails';
+import { processMatchUp } from './processMatchUp';
 import {
   getEventTimeItem,
   getTimeItem,
 } from '../../governors/queryGovernor/timeItems';
 
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   GROUP,
-  INDIVIDUAL,
   PAIR,
   SIGNED_IN,
   SIGN_IN_STATUS,
@@ -32,7 +31,6 @@ export function addParticipantContext(params) {
   const participantIdsWithConflicts = [];
   const eventsPublishStatuses = {};
 
-  let matchUps;
   const derivedDrawInfo = {};
   const participantIdMap = {};
   const initializeParticipantId = (participantId) => {
@@ -331,7 +329,7 @@ export function addParticipantContext(params) {
         params.withMatchUps ||
         params.withDraws
       ) {
-        matchUps = allEventMatchUps({
+        const matchUps = allEventMatchUps({
           afterRecoveryTimes: params.scheduleAnalysis,
           participants: allTournamentParticipants,
           nextMatchUps: true,
@@ -341,7 +339,16 @@ export function addParticipantContext(params) {
         })?.matchUps;
 
         matchUps?.forEach((matchUp) =>
-          processMatchUp({ matchUp, drawDetails, eventType, eventDrawsCount })
+          processMatchUp({
+            relevantParticipantIdsMap,
+            participantFilters,
+            participantIdMap,
+            derivedDrawInfo,
+            eventDrawsCount,
+            drawDetails,
+            eventType,
+            matchUp,
+          })
         );
       }
     });
@@ -392,350 +399,6 @@ export function addParticipantContext(params) {
       // get all matchUpTieIds and add team matchUps to participant.matchUps
     }
   });
-
-  function processMatchUp({
-    eventDrawsCount,
-    drawDetails,
-    eventType,
-    matchUp,
-  }) {
-    const {
-      collectionId,
-      collectionPosition,
-      drawId,
-      drawName,
-      eventId,
-      eventName,
-      finishingRound,
-      finishingPositionRange,
-      processCodes,
-      loserTo,
-      matchUpId,
-      matchUpType,
-      matchUpFormat,
-      matchUpStatus,
-      matchUpStatusCodes,
-      matchUpTieId,
-      roundName,
-      roundNumber,
-      roundPosition,
-      score,
-      sides,
-      stage,
-      stageSequence,
-      schedule,
-      structureName,
-      structureId,
-      tieFormat,
-      tieMatchUps,
-      tournamentId,
-      winnerTo,
-      winningSide,
-    } = matchUp;
-
-    const { winner, loser } = finishingPositionRange || {};
-
-    // doubles participants are not defined in the entries for a draw/event
-    // and can only be determined by interrogating inContext tieMatchUps
-    // because here the pairParticipantIds are derived from collectionAssignments
-    const doublesTieParticipants =
-      (tieMatchUps?.length &&
-        tieMatchUps
-          .filter(({ matchUpType }) => matchUpType === DOUBLES)
-          .map(({ sides }) =>
-            sides.map(
-              ({ sideNumber, participantId, participant }) =>
-                sideNumber &&
-                participantId && {
-                  sideNumber,
-                  participantId,
-                  participant,
-                }
-            )
-          )
-          .flat()
-          .filter(Boolean)) ||
-      [];
-
-    if (eventType === TEAM && matchUpType === DOUBLES) {
-      const participants = (matchUp.sides?.filter(Boolean) || [])
-        .map(
-          ({ sideNumber, participantId, participant }) =>
-            sideNumber &&
-            participantId && {
-              sideNumber,
-              participantId,
-              participant,
-            }
-        )
-        .filter(Boolean);
-      doublesTieParticipants.push(...participants);
-    }
-
-    sides?.forEach(({ participantId, sideNumber } = {}) => {
-      if (!participantId) return;
-
-      const { drawType, drawEntries } = drawDetails[drawId];
-      const participantScore =
-        sideNumber === 1 ? score?.scoreStringSide1 : score?.scoreStringSide2;
-      const participantWon = winningSide && sideNumber === winningSide;
-      const opponent = matchUp.sides.find(
-        ({ sideNumber: otherSideNumber } = {}) =>
-          otherSideNumber === 3 - sideNumber
-      );
-      const opponentParticipantId = opponent?.participantId;
-      const relevantOpponents =
-        (opponentParticipantId &&
-          relevantParticipantIdsMap[opponentParticipantId]) ||
-        [];
-      const finishingPositionRange = participantWon ? winner : loser;
-      const drawEntry = drawEntries.find(
-        (entry) => entry.participantId === participantId
-      );
-
-      // for all matchUps include all individual participants that are part of pairs
-      // this does NOT include PAIR participants in teams, because they are constructed from collectionAssignments
-      // if { eventType: TEAM } then only add relevant PAIR participantIds using doublesTieParticipants
-      // this will avoid adding a pair to all team events in which individuals appear
-      const relevantParticipantIds = getRelevantParticipantIds(participantId);
-
-      // for TEAM matchUps add all PAIR participants
-      const addedPairParticipantIds = [];
-      doublesTieParticipants
-        ?.filter((participant) => participant.sideNumber === sideNumber)
-        .forEach(({ participantId }) => {
-          if (
-            participantId &&
-            !addedPairParticipantIds.includes(participantId)
-          ) {
-            relevantParticipantIds.push({
-              relevantParticipantId: participantId,
-              participantType: PAIR,
-            });
-            addedPairParticipantIds.push(participantId);
-          }
-        });
-
-      const filteredRelevantParticipantIds = relevantParticipantIds.filter(
-        (opponent) => {
-          return (
-            eventType !== TEAM ||
-            (eventType === TEAM &&
-              [DOUBLES, TEAM].includes(matchUpType) &&
-              [PAIR, TEAM].includes(opponent.participantType)) ||
-            (eventType === TEAM &&
-              [SINGLES, DOUBLES].includes(matchUpType) &&
-              [INDIVIDUAL].includes(opponent.participantType))
-          );
-        }
-      );
-
-      filteredRelevantParticipantIds?.forEach(
-        ({ relevantParticipantId, participantType }) => {
-          const { entryStage, entryStatus, entryPosition } = drawEntry || {};
-
-          if (!participantIdMap[relevantParticipantId].draws[drawId]) {
-            const positionAssignments = getDerivedPositionAssignments({
-              participantId: relevantParticipantId,
-              derivedDrawInfo,
-              drawId,
-            });
-            const seedAssignments = getDerivedSeedAssignments({
-              participantId: relevantParticipantId,
-              derivedDrawInfo,
-              drawId,
-            });
-            participantIdMap[relevantParticipantId].draws[drawId] =
-              definedAttributes({
-                qualifyingDrawSize: derivedDrawInfo[drawId]?.qualifyingDrawSize,
-                drawSize: derivedDrawInfo[drawId]?.drawSize,
-                partnerParticipantIds: [],
-                positionAssignments,
-                seedAssignments,
-                entryPosition,
-                entryStatus,
-                entryStage,
-                drawName,
-                drawType,
-                eventId,
-                drawId,
-              });
-          }
-
-          if (!participantIdMap[relevantParticipantId].events[eventId]) {
-            participantIdMap[relevantParticipantId].events[eventId] = {
-              partnerParticipantIds: [],
-              drawIds: [],
-              eventName,
-              eventId,
-            };
-          }
-          const eventDrawIds =
-            participantIdMap[relevantParticipantId].events[eventId].drawIds;
-
-          if (eventDrawIds && !eventDrawIds?.includes(drawId)) {
-            participantIdMap[relevantParticipantId].events[
-              eventId
-            ].drawIds.push(drawId);
-          }
-
-          let partnerParticipantId;
-          if (participantType === INDIVIDUAL && matchUpType === DOUBLES) {
-            const relevantParticipantInfo = filteredRelevantParticipantIds.find(
-              (participantInfo) => {
-                return (
-                  participantInfo.relevantParticipantId !==
-                    relevantParticipantId &&
-                  participantInfo.participantType === INDIVIDUAL
-                );
-              }
-            );
-            partnerParticipantId =
-              relevantParticipantInfo?.relevantParticipantId;
-          }
-
-          const filteredRelevantOpponents =
-            relevantOpponents?.filter(
-              (opponent) =>
-                (matchUpType === TEAM &&
-                  participantType === TEAM &&
-                  opponent.participantType === TEAM) ||
-                (matchUpType === SINGLES &&
-                  opponent.participantType === INDIVIDUAL) ||
-                (matchUpType === DOUBLES &&
-                  (participantType === INDIVIDUAL
-                    ? [INDIVIDUAL, PAIR].includes(opponent.participantType)
-                    : // for PAIR participants only show PAIR opponenents
-                      opponent.participantType === PAIR))
-            ) || [];
-
-          filteredRelevantOpponents.forEach(
-            ({
-              relevantParticipantId: opponentParticipantId,
-              participantType: opponentParticipantType,
-            }) => {
-              if (!participantIdMap[relevantParticipantId].opponents) {
-                participantIdMap[relevantParticipantId].opponents = {};
-              }
-              participantIdMap[relevantParticipantId].opponents[
-                opponentParticipantId
-              ] = {
-                eventId,
-                drawId,
-                matchUpId,
-                participantType: opponentParticipantType,
-                participantId: opponentParticipantId,
-              };
-            }
-          );
-
-          const opponentParticipantInfo = filteredRelevantOpponents.map(
-            ({ relevantParticipantId, participantType }) => ({
-              participantId: relevantParticipantId,
-              participantType,
-            })
-          );
-
-          const includeMatchUp =
-            (matchUpType !== TEAM &&
-              [INDIVIDUAL, PAIR].includes(participantType)) ||
-            (matchUpType === TEAM && participantType === TEAM);
-
-          if (includeMatchUp)
-            participantIdMap[relevantParticipantId].matchUps[matchUpId] =
-              definedAttributes({
-                collectionId,
-                collectionPosition,
-                drawId,
-                eventId,
-                eventType,
-                eventDrawsCount,
-                finishingRound,
-                finishingPositionRange,
-                loserTo,
-                matchUpId,
-                matchUpType,
-                matchUpFormat,
-                matchUpStatus,
-                matchUpStatusCodes,
-                matchUpTieId,
-                opponentParticipantInfo,
-                participantWon,
-                partnerParticipantId,
-                perspectiveScoreString: participantScore,
-                processCodes,
-                roundName,
-                roundNumber,
-                roundPosition,
-                schedule,
-                score,
-                sides,
-                stage,
-                stageSequence,
-                structureName,
-                structureId,
-                tieFormat,
-                tournamentId,
-                winnerTo,
-                winningSide,
-              });
-
-          if (partnerParticipantId) {
-            participantIdMap[relevantParticipantId].events[
-              eventId
-            ].partnerParticipantIds.push(partnerParticipantId);
-            participantIdMap[relevantParticipantId].draws[
-              drawId
-            ].partnerParticipantIds.push(partnerParticipantId);
-
-            // legacy.... deprecate when ETL updated
-            participantIdMap[relevantParticipantId].events[
-              eventId
-            ].partnerParticipantId = partnerParticipantId;
-            participantIdMap[relevantParticipantId].draws[
-              drawId
-            ].partnerParticipantId = partnerParticipantId;
-          }
-
-          if (winningSide) {
-            if (participantWon) {
-              participantIdMap[relevantParticipantId].wins++;
-            } else {
-              participantIdMap[relevantParticipantId].losses++;
-            }
-          }
-        }
-      );
-    });
-
-    if (Array.isArray(matchUp.potentialParticipants)) {
-      const potentialParticipantIds = getParticipantIds(
-        matchUp.potentialParticipants.flat()
-      );
-
-      potentialParticipantIds?.forEach((participantId) => {
-        const relevantParticipantIds = getRelevantParticipantIds(participantId);
-        relevantParticipantIds?.forEach(({ relevantParticipantId }) => {
-          participantIdMap[relevantParticipantId].potentialMatchUps[matchUpId] =
-            definedAttributes({
-              drawId,
-              eventId,
-              eventType,
-              matchUpId,
-              matchUpType,
-              matchUpFormat,
-              roundName,
-              roundNumber,
-              roundPosition,
-              schedule,
-              tieFormat,
-              structureName,
-              potential: true,
-            });
-        });
-      });
-    }
-  }
 
   return { participantIdsWithConflicts, eventsPublishStatuses };
 }
