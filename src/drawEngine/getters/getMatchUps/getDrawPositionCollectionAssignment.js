@@ -10,6 +10,7 @@ export function getDrawPositionCollectionAssignment({
   collectionPosition,
   drawPositions = [],
   drawDefinition,
+  participantMap,
   collectionId,
   sideLineUps,
   matchUpType,
@@ -29,6 +30,7 @@ export function getDrawPositionCollectionAssignment({
 
         const teamParticipant =
           side?.teamParticipant ||
+          participantMap?.[teamParticipantId]?.participant ||
           tournamentParticipants?.find(
             ({ participantId }) => participantId === teamParticipantId
           );
@@ -51,20 +53,30 @@ export function getDrawPositionCollectionAssignment({
         if (matchUpType === DOUBLES) {
           if (relevantCompetitors?.length <= 2) {
             const participantIds = relevantCompetitors?.map(getParticipantId);
-            const { participant } = getPairedParticipant({
-              tournamentParticipants,
-              participantIds,
-            });
+
+            const pairedParticipantId =
+              participantMap?.[participantIds[0]]?.pairIdMap?.[
+                participantIds[1]
+              ];
+            const pairedParticipant =
+              pairedParticipantId &&
+              participantMap[pairedParticipantId]?.participant;
+            const participant =
+              pairedParticipant ||
+              // resort to brute force
+              getPairedParticipant({
+                tournamentParticipants,
+                participantIds,
+              }).participant;
+
             const participantId = participant?.participantId;
             return { [drawPosition]: { participantId, teamParticipant } };
           } else if (relevantCompetitors?.length > 2) {
-            /*
             console.log('ERROR: Too many assignments for', {
-              collectionId,
-              collectionPosition,
               assignmentsCount: relevantCompetitors.length,
+              collectionPosition,
+              collectionId,
             });
-            */
             return { [drawPosition]: { teamParticipant } };
           }
         } else {

@@ -17,11 +17,12 @@ type FilterParticipantsArgs = {
 };
 
 export function filterParticipants({
-  participantFilters,
+  participantFilters = {},
   tournamentRecord,
   participants,
 }: FilterParticipantsArgs): Participant[] {
-  const { eventIds } = participantFilters;
+  if (!Object.keys(participantFilters).length) return participants;
+
   const {
     accessorValues,
     drawEntryStatuses, // {string[]} participantIds that are in draw.entries or flightProfile.flights[].drawEnteredParticipantIds with entryStatuses
@@ -33,6 +34,7 @@ export function filterParticipants({
     participantIds,
     signInStatus,
     enableOrFiltering,
+    eventIds,
     genders,
   } = participantFilters;
 

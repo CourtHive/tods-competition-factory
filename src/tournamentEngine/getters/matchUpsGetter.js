@@ -3,6 +3,7 @@ import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/g
 import { getScheduleTiming } from '../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { addNationalityCode } from '../governors/participantGovernor/addNationalityCode';
 import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
+import { getParticipantMap } from './participants/getParticipantMap';
 import { getScaleValues } from './participants/getScaleValues';
 import { definedAttributes } from '../../utilities/objects';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
@@ -25,6 +26,7 @@ export function allTournamentMatchUps({
   scheduleVisibilityFilters,
   participantsProfile,
   afterRecoveryTimes,
+  useParticipantMap,
   policyDefinitions,
   tournamentRecord,
   inContext = true,
@@ -45,6 +47,15 @@ export function allTournamentMatchUps({
     tournamentRecord,
     inContext,
   });
+
+  const participantMap =
+    useParticipantMap &&
+    getParticipantMap({
+      ...participantsProfile,
+      policyDefinitions,
+      tournamentRecord,
+    })?.participantMap;
+
   const { appliedPolicies: tournamentAppliedPolicies } = getAppliedPolicies({
     tournamentRecord,
   });
@@ -75,10 +86,11 @@ export function allTournamentMatchUps({
         afterRecoveryTimes,
         policyDefinitions,
         tournamentRecord,
-        matchUpFilters,
-        contextFilters,
         contextContent,
+        contextFilters,
         contextProfile,
+        matchUpFilters,
+        participantMap,
         nextMatchUps,
         participants,
         inContext,
@@ -99,11 +111,12 @@ export function allDrawMatchUps({
   afterRecoveryTimes,
   policyDefinitions,
   tournamentRecord,
-  matchUpFilters,
-  contextFilters,
   contextContent,
-  drawDefinition,
+  contextFilters,
   contextProfile,
+  drawDefinition,
+  matchUpFilters,
+  participantMap,
   nextMatchUps,
   inContext,
   context,
@@ -151,10 +164,11 @@ export function allDrawMatchUps({
     policyDefinitions,
     tournamentRecord,
     drawDefinition,
-    matchUpFilters,
+    contextContent,
     contextFilters,
     contextProfile,
-    contextContent,
+    matchUpFilters,
+    participantMap,
     nextMatchUps,
     inContext,
     event,
@@ -169,10 +183,11 @@ export function allEventMatchUps({
   policyDefinitions,
   participants = [],
   tournamentRecord,
-  matchUpFilters,
+  contextContent,
   contextFilters,
   contextProfile,
-  contextContent,
+  matchUpFilters,
+  participantMap,
   nextMatchUps,
   inContext,
   context,
@@ -233,11 +248,12 @@ export function allEventMatchUps({
         afterRecoveryTimes,
         policyDefinitions,
         tournamentRecord,
-        drawDefinition,
-        matchUpFilters,
         contextFilters,
         contextProfile,
+        drawDefinition,
         contextContent,
+        matchUpFilters,
+        participantMap,
         scheduleTiming,
         nextMatchUps,
         inContext,
@@ -257,10 +273,11 @@ export function tournamentMatchUps({
   policyDefinitions,
   tournamentRecord,
   inContext = true,
-  matchUpFilters,
   contextFilters,
   contextProfile,
   contextContent,
+  matchUpFilters,
+  participantMap,
   nextMatchUps,
   context,
 }) {
@@ -305,10 +322,11 @@ export function tournamentMatchUps({
         afterRecoveryTimes,
         policyDefinitions,
         tournamentRecord,
-        matchUpFilters,
         contextFilters,
         contextProfile,
         contextContent,
+        matchUpFilters,
+        participantMap,
         participants,
         tournamentId,
         nextMatchUps,
@@ -346,10 +364,11 @@ export function eventMatchUps({
   afterRecoveryTimes,
   policyDefinitions,
   tournamentRecord,
-  matchUpFilters,
   contextFilters,
   contextProfile,
   contextContent,
+  matchUpFilters,
+  participantMap,
   nextMatchUps,
   tournamentId,
   inContext,
@@ -401,10 +420,11 @@ export function eventMatchUps({
         policyDefinitions,
         tournamentRecord,
         drawDefinition,
-        matchUpFilters,
+        contextContent,
         contextFilters,
         contextProfile,
-        contextContent,
+        matchUpFilters,
+        participantMap,
         nextMatchUps,
         inContext,
         event,
@@ -517,8 +537,8 @@ function getParticipants({ inContext, tournamentRecord, participantsProfile }) {
   if (participantsProfile?.withScaleValues && participants?.length) {
     for (const participant of participants) {
       const { ratings, rankings } = getScaleValues({ participant });
-      participant.ratings = ratings;
       participant.rankings = rankings;
+      participant.ratings = ratings;
     }
   }
 

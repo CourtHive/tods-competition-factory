@@ -1,4 +1,3 @@
-import { getContainedStructures } from '../../governors/tournamentGovernor/getContainedStructures';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
@@ -7,7 +6,6 @@ import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
 // ADD: orderedStructures with stage, stageSequence info
 export function getDrawDetails({ event, eventEntries, sortConfig }) {
-  const { containedStructures } = getContainedStructures({ event });
   const derivedInfo = {};
 
   const drawDetails = Object.assign(
@@ -15,7 +13,7 @@ export function getDrawDetails({ event, eventEntries, sortConfig }) {
     ...(event.drawDefinitions || []).map((drawDefinition) => {
       const entriesMap = Object.assign(
         {},
-        ...eventEntries
+        ...(eventEntries || [])
           .filter((entry) => entry.participantId)
           .map((entry) => ({ [entry.participantId]: entry })),
         ...drawDefinition.entries
@@ -51,14 +49,15 @@ export function getDrawDetails({ event, eventEntries, sortConfig }) {
       const qualifyingSeedAssignments = qualifyingStructure?.seedAssignments;
 
       // used in rankings pipeline.
-      // the structures in which a particpant particpants are ordered
+      // the structures in which a particpant particpates are ordered
       // to enable differentiation for Points-per-round and points-per-win
       const orderedStructureIds = (drawDefinition.structures || [])
         .sort((a, b) => structureSort(a, b, sortConfig))
-        .map(({ structureId }) => {
-          const containedStructureIds = containedStructures[structureId] || [];
-          const structureIds = [structureId, ...containedStructureIds];
-          return structureIds;
+        .map(({ structureId, structures }) => {
+          return [
+            structureId,
+            ...(structures || []).map(({ structureId }) => structureId),
+          ];
         })
         .flat(Infinity);
 

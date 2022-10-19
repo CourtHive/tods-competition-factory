@@ -1,9 +1,11 @@
 export function attributeFilter(params) {
   if (params === null) return {};
   const { source, template } = params || {};
-  const target = {};
+  if (!template) return source;
 
+  const target = {};
   attributeCopy(source, template, target);
+
   return target;
 
   function attributeCopy(valuesObject, templateObject, outputObject) {
