@@ -127,25 +127,26 @@ export function getParticipantEntries({
           matchUpId,
           winningSide,
           matchUpType,
-          eventId,
-          drawId,
           sides,
         });
 
         for (const tieMatchUp of tieMatchUps) {
           const {
             winningSide: tieMatchUpWinningSide,
+            sides: tieMatchUpSides = [],
             matchUpId: tieMatchUpId,
             matchUpType,
-            sides = [],
           } = tieMatchUp;
           processSides({
             winningSide: tieMatchUpWinningSide,
             tieWinningSide: winningSide,
             matchUpTieId: matchUpId,
             matchUpId: tieMatchUpId,
+            sides: tieMatchUpSides,
+            matchUpSides: sides,
             matchUpType,
-            sides,
+            eventId,
+            drawId,
           });
         }
       }
