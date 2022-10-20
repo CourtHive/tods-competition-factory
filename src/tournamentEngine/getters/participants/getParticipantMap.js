@@ -12,57 +12,32 @@ import {
   TEAM,
 } from '../../../constants/participantConstants';
 
+const typeMap = {
+  [GROUP]: 'groupParticipantIds',
+  [PAIR]: 'pairParticipantIds',
+  [TEAM]: 'teamParticipantIds',
+};
+const membershipMap = {
+  [GROUP]: 'groups',
+  [TEAM]: 'teams',
+};
+
 // build up an object with participantId keys which map to deepCopied participants
 // and which include all relevant groupings for each individualParticipant
 export function getParticipantMap({
+  withIndividualParticipants,
   convertExtensions,
   policyDefinitions,
   tournamentRecord,
   withSignInStatus,
   withScaleValues,
   internalUse,
+  // inContext, - may be deprecated in favor of `withIndividualParticipants`
   withISO2,
   withIOC,
 }) {
-  const typeMap = {
-    [GROUP]: 'groupParticipantIds',
-    [PAIR]: 'pairParticipantIds',
-    [TEAM]: 'teamParticipantIds',
-  };
-  const membershipMap = {
-    [GROUP]: 'groups',
-    [TEAM]: 'teams',
-  };
-
-  const signedIn = (participant) => {
-    const { timeItem } = getTimeItem({
-      itemType: SIGN_IN_STATUS,
-      element: participant,
-    });
-
-    return !!(timeItem?.itemValue === SIGNED_IN);
-  };
   const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
   const filterAttributes = participantAttributes?.participant;
-
-  const initializeParticipantId = (participantId) => {
-    participantMap[participantId] = {
-      [typeMap[GROUP]]: [],
-      [typeMap[TEAM]]: [],
-      [typeMap[PAIR]]: [],
-      potentialMatchUps: {},
-      scheduleItems: [],
-      opponents: {},
-      pairIdMap: {},
-      matchUps: {},
-      events: {},
-      groups: [],
-      teams: [],
-      draws: {},
-      losses: 0,
-      wins: 0,
-    };
-  };
 
   const participantMap = {};
   for (const participant of tournamentRecord.participants || []) {
@@ -81,49 +56,21 @@ export function getParticipantMap({
     const { participantId, individualParticipantIds, participantType } =
       filteredParticipant;
 
-    initializeParticipantId(participantId);
+    initializeParticipantId({ participantMap, participantId });
 
-    participantMap[participantId].participant = filteredParticipant;
+    Object.assign(
+      participantMap[participantId].participant,
+      filteredParticipant
+    );
 
     if (individualParticipantIds) {
-      for (const individualParticiapntId of individualParticipantIds) {
-        if (!participantMap[individualParticiapntId]) {
-          initializeParticipantId(individualParticiapntId);
-        }
-        participantMap[individualParticiapntId][typeMap[participantType]].push(
-          participantId
-        );
-
-        if ([TEAM, GROUP].includes(participantType)) {
-          const {
-            participantRoleResponsibilities,
-            participantOtherName,
-            participantName,
-            participantId,
-            teamId,
-          } = filteredParticipant;
-          participantMap[individualParticiapntId][
-            membershipMap[participantType]
-          ].push({
-            participantRoleResponsibilities,
-            participantOtherName,
-            participantName,
-            participantId,
-            teamId,
-          });
-        }
-
-        if (participantType === PAIR) {
-          const partnerParticipantId = individualParticipantIds.find(
-            (id) => id !== individualParticiapntId
-          );
-          participantMap[individualParticiapntId].pairIdMap[participantId] =
-            partnerParticipantId;
-          participantMap[individualParticiapntId].pairIdMap[
-            partnerParticipantId
-          ] = participantId;
-        }
-      }
+      processIndividualParticipantIds({
+        individualParticipantIds,
+        filteredParticipant,
+        participantMap,
+        participantType,
+        participantId,
+      });
     }
 
     if (withSignInStatus) {
@@ -147,5 +94,96 @@ export function getParticipantMap({
       });
   }
 
+  if (withIndividualParticipants) addIndividualParticipants({ participantMap });
+
   return { participantMap };
+}
+
+function signedIn(participant) {
+  const { timeItem } = getTimeItem({
+    itemType: SIGN_IN_STATUS,
+    element: participant,
+  });
+
+  return timeItem?.itemValue !== SIGNED_IN;
+}
+
+function addIndividualParticipants({ participantMap }) {
+  for (const { participant } of Object.values(participantMap)) {
+    if (participant.individualParticipantIds?.length) {
+      participant.individualParticipants = [];
+      for (const participantId of participant.individualParticipantIds) {
+        participant.individualParticipants.push(participantMap[participantId]);
+      }
+    }
+  }
+}
+
+function processIndividualParticipantIds({
+  individualParticipantIds,
+  filteredParticipant,
+  participantMap,
+  participantType,
+  participantId,
+}) {
+  for (const individualParticipantId of individualParticipantIds) {
+    if (!participantMap[individualParticipantId]) {
+      initializeParticipantId({
+        participantMap,
+        participantId: individualParticipantId,
+      });
+    }
+    const individualParticipant =
+      participantMap[individualParticipantId].participant;
+    individualParticipant[typeMap[participantType]].push(participantId);
+
+    if ([TEAM, GROUP].includes(participantType)) {
+      const {
+        participantRoleResponsibilities,
+        participantOtherName,
+        participantName,
+        participantId,
+        teamId,
+      } = filteredParticipant;
+      const membership = membershipMap[participantType];
+      individualParticipant[membership].push({
+        participantRoleResponsibilities,
+        participantOtherName,
+        participantName,
+        participantId,
+        teamId,
+      });
+    }
+
+    if (participantType === PAIR) {
+      const partnerParticipantId = individualParticipantIds.find(
+        (id) => id !== individualParticipantId
+      );
+      participantMap[individualParticipantId].pairIdMap[participantId] =
+        partnerParticipantId;
+      participantMap[individualParticipantId].pairIdMap[partnerParticipantId] =
+        participantId;
+    }
+  }
+}
+
+function initializeParticipantId({ participantMap, participantId }) {
+  participantMap[participantId] = {
+    potentialMatchUps: {},
+    scheduleItems: [],
+    participant: {
+      groupParticipantIds: [],
+      pairParticipantIds: [],
+      teamParticipantIds: [],
+      groups: [],
+      teams: [],
+    },
+    opponents: {},
+    pairIdMap: {},
+    matchUps: {},
+    events: {},
+    draws: {},
+    losses: 0,
+    wins: 0,
+  };
 }

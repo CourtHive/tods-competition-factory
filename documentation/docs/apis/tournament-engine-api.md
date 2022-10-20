@@ -3123,7 +3123,7 @@ tournamentEngine.scaledTeamAssignment({
 
 ### Example use with sequential assignment where there are 8 teams
 
-In this scenario scaled MALE participants are assigned in a waterfall pattern beginning with the first team (default behavior); scaled FEMALE particiapnts are then assigned in a reverse waterfall pattern beginning with the last team. The goal is to balance the teams to the greatest extent possible. This pattern can be used with an arbitrary number of groups of `individualParticipants`.
+In this scenario scaled MALE participants are assigned in a waterfall pattern beginning with the first team (default behavior); scaled FEMALE participants are then assigned in a reverse waterfall pattern beginning with the last team. The goal is to balance the teams to the greatest extent possible. This pattern can be used with an arbitrary number of groups of `individualParticipants`.
 
 ```js
 tournamentEngine.scaledTeamAssignment({

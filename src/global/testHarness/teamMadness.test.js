@@ -38,7 +38,7 @@ it('withOpponents adds appropriate opponents', () => {
       inContext: true,
     });
 
-  expect(result.deepCopyIterations).toEqual(3);
+  expect(result.deepCopyIterations).toEqual(5);
 
   const tournamentParticipants = result.tournamentParticipants;
   expect(tournamentParticipants.length).toEqual(314);

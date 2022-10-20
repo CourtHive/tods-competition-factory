@@ -561,7 +561,10 @@ export function getAllStructureMatchUps({
           }
         }
 
-        if (side?.participant?.individualParticipantIds?.length) {
+        if (
+          side?.participant?.individualParticipantIds?.length &&
+          !side.participant.individualParticipants?.length
+        ) {
           const individualParticipants =
             side.participant.individualParticipantIds.map((participantId) => {
               return (

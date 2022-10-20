@@ -170,13 +170,13 @@ it.each(scenarios)(
       },
     }).tournamentParticipants;
 
-    let targetParticiapnts = tournamentParticipants
+    let targetParticipants = tournamentParticipants
       .filter(({ participantId }) =>
         seedScaledParticipantIds.includes(participantId)
       )
       .filter(({ events }) => events[0].seedAssignments);
     // no seeding has been published, so we expect no participants with hydrated seeding information
-    expect(targetParticiapnts.length).toEqual(0);
+    expect(targetParticipants.length).toEqual(0);
 
     // now attempt to get hydrated seeding information when { usePublishState: false }
     tournamentParticipants = tournamentEngine.getTournamentParticipants({
@@ -197,12 +197,12 @@ it.each(scenarios)(
       },
     }).tournamentParticipants;
 
-    targetParticiapnts = tournamentParticipants
+    targetParticipants = tournamentParticipants
       .filter(({ participantId }) =>
         seedScaledParticipantIds.includes(participantId)
       )
       .filter(({ events }) => events[0].seedAssignments);
-    expect(targetParticiapnts.length).toEqual(16);
+    expect(targetParticipants.length).toEqual(16);
 
     result = tournamentEngine.publishEventSeeding({
       stageSeedingScaleNames: {
@@ -225,20 +225,20 @@ it.each(scenarios)(
         participantRoles: ['COMPETITOR'],
       },
     }).tournamentParticipants;
-    targetParticiapnts = tournamentParticipants
+    targetParticipants = tournamentParticipants
       .filter(({ participantId }) =>
         seedScaledParticipantIds.includes(participantId)
       )
       .filter(({ events }) => events[0].seedAssignments);
-    expect(targetParticiapnts.length).toEqual(16);
+    expect(targetParticipants.length).toEqual(16);
 
-    let seedAssignments = targetParticiapnts.map(
+    let seedAssignments = targetParticipants.map(
       ({ events }) => events[0].seedAssignments
     );
     for (const seedAssignment of seedAssignments) {
       expect(Object.values(seedAssignment)[0].seedValue).not.toBeUndefined();
     }
-    expect(targetParticiapnts.length).toEqual(16);
+    expect(targetParticipants.length).toEqual(16);
 
     result = tournamentEngine.generateDrawDefinition({
       qualifyingProfiles: [
@@ -299,12 +299,12 @@ it.each(scenarios)(
         participantRoles: ['COMPETITOR'],
       },
     }).tournamentParticipants;
-    targetParticiapnts = tournamentParticipants
+    targetParticipants = tournamentParticipants
       .filter(({ participantId }) =>
         seedScaledParticipantIds.includes(participantId)
       )
       .filter(({ events }) => events[0].seedAssignments);
-    expect(targetParticiapnts.length).toEqual(12);
+    expect(targetParticipants.length).toEqual(12);
 
     event = tournamentEngine.getEvent({ eventId }).event;
     expect(event.drawDefinitions.length).toEqual(1);
@@ -368,20 +368,20 @@ it.each(scenarios)(
     seedScaledParticipantIds = seedScaledParticipants.map(getParticipantId);
     expect(seedScaledParticipantIds.length).toEqual(16);
 
-    targetParticiapnts = tournamentParticipants
+    targetParticipants = tournamentParticipants
       .filter(({ participantId }) =>
         seedScaledParticipantIds.includes(participantId)
       )
       .filter(({ events }) => events[0].seedAssignments);
-    expect(targetParticiapnts.length).toEqual(8);
+    expect(targetParticipants.length).toEqual(8);
 
-    seedAssignments = targetParticiapnts.map(
+    seedAssignments = targetParticipants.map(
       ({ events }) => events[0].seedAssignments
     );
     for (const seedAssignment of seedAssignments) {
       expect(Object.values(seedAssignment)[0].seedValue).not.toBeUndefined();
     }
-    const drawSeedAssignments = targetParticiapnts
+    const drawSeedAssignments = targetParticipants
       .filter(({ draws }) => draws[0].seedAssignments)
       .map(({ draws }) => draws[0].seedAssignments);
     for (const seedAssignment of drawSeedAssignments) {
@@ -409,11 +409,11 @@ it.each(scenarios)(
       },
     }).tournamentParticipants;
 
-    targetParticiapnts = tournamentParticipants
+    targetParticipants = tournamentParticipants
       .filter(({ participantId }) =>
         seedScaledParticipantIds.includes(participantId)
       )
       .filter(({ events }) => events[0].seedAssignments);
-    expect(targetParticiapnts.length).toEqual(4);
+    expect(targetParticipants.length).toEqual(4);
   }
 );
