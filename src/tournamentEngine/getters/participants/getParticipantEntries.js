@@ -49,6 +49,21 @@ export function getParticipantEntries({
             eventId,
           };
         }
+        if (
+          participantMap[participantId].participant.individualParticipantIds
+            ?.length
+        ) {
+          for (const individualParticiapntId of participantMap[participantId]
+            .participant.individualParticipantIds) {
+            if (!participantMap[individualParticiapntId].events[eventId]) {
+              participantMap[individualParticiapntId].events[eventId] = {
+                entryPosition,
+                entryStatus,
+                eventId,
+              };
+            }
+          }
+        }
       }
     }
 
@@ -170,12 +185,6 @@ export function getParticipantEntries({
         for (const entry of relevantEntries) {
           const { entryStatus, entryPosition, participantId } = entry;
           if (![UNGROUPED, UNPAIRED].includes(entryStatus)) {
-            if (!participantMap[participantId].events[eventId]) {
-              participantMap[participantId].events[eventId] = {
-                entryStatus,
-                eventId,
-              };
-            }
             participantMap[participantId].draws[drawId] = {
               entryPosition,
               entryStatus,
@@ -206,7 +215,6 @@ function processSides({
   participantMap,
   withOpponents,
   withMatchUps,
-  withEvents,
   withDraws,
 
   tieWinningSide,
@@ -278,14 +286,6 @@ function processSides({
             matchUpId: matchUpTieId,
             sideNumber,
           };
-        }
-        if (withEvents) {
-          if (!participantMap[participantId].events[eventId]) {
-            participantMap[participantId].events[eventId] = {
-              // entryStatus, // this would be entryStatus of TEAM
-              eventId,
-            };
-          }
         }
         if (withDraws) {
           if (!participantMap[participantId].draws[drawId]) {
