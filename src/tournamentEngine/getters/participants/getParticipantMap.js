@@ -42,7 +42,7 @@ export function getParticipantMap({
       element: participant,
     });
 
-    return !!(timeItem?.itemValue === SIGNED_IN);
+    return timeItem?.itemValue !== SIGNED_IN;
   };
   const participantAttributes = policyDefinitions?.[POLICY_TYPE_PARTICIPANT];
   const filterAttributes = participantAttributes?.participant;
