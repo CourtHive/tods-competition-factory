@@ -20,6 +20,17 @@ export function getParticipantEntries({
   withEvents,
   withDraws,
 }) {
+  const withOpts = {
+    withPotentialMatchUps,
+    scheduleAnalysis,
+    withTeamMatchUps,
+    participantMap,
+    withOpponents,
+    withMatchUps,
+    withEvents,
+    withDraws,
+  };
+
   const derivedDrawInfo = {};
   let matchUps = [];
 
@@ -38,102 +49,25 @@ export function getParticipantEntries({
             eventId,
           };
         }
-      }
-    }
-
-    const processSides = ({
-      tieWinningSide,
-      matchUpTieId,
-      matchUpType,
-      winningSide,
-      matchUpId,
-      eventId,
-      drawId,
-      sides,
-    }) => {
-      const opponents =
-        withOpponents &&
-        sides?.length === 2 &&
-        Object.assign(
-          {},
-          ...sides
-            .map(({ sideNumber }, i) => {
-              const opponentParticipantId = sides[1 - i].participantId;
-              return (
-                sideNumber && {
-                  [sideNumber]: opponentParticipantId,
-                }
-              );
-            })
-            .filter(Boolean)
-        );
-
-      for (const side of sides) {
-        const { participantId, sideNumber } = side;
-        const participantWon = winningSide && winningSide === sideNumber;
-
-        const addMatchUp = (participantId) => {
-          participantMap[participantId].matchUps[matchUpId] = {
-            participantWon,
-            matchUpType,
-            sideNumber,
-            matchUpId,
-          };
-        };
-
-        if (participantId) {
-          addMatchUp(participantId);
-
-          if (withOpponents) {
-            const opponentParticipantId = opponents?.[sideNumber];
-            participantMap[participantId].opponents[opponentParticipantId] = {
-              participantId: opponentParticipantId,
-              matchUpId,
-              eventId,
-              drawId,
-            };
-          }
-
-          if (
-            participantMap[participantId].participant.participantType === PAIR
-          ) {
-            (
-              participantMap[participantId].participant
-                .individualParticipantIds || []
-            ).forEach(addMatchUp);
-          }
-
-          if (matchUpTieId) {
-            if (withTeamMatchUps) {
-              participantMap[participantId].matchUps[matchUpTieId] = {
-                participantWon: tieWinningSide === sideNumber,
-                matchUpType: TEAM_MATCHUP,
-                matchUpId: matchUpTieId,
-                sideNumber,
+        if (
+          participantMap[participantId].participant.individualParticipantIds
+            ?.length
+        ) {
+          for (const individualParticiapntId of participantMap[participantId]
+            .participant.individualParticipantIds) {
+            if (!participantMap[individualParticiapntId].events[eventId]) {
+              participantMap[individualParticiapntId].events[eventId] = {
+                entryPosition,
+                entryStatus,
+                eventId,
               };
-            }
-            if (withEvents) {
-              if (!participantMap[participantId].events[eventId]) {
-                participantMap[participantId].events[eventId] = {
-                  // entryStatus, // this would be entryStatus of TEAM
-                  eventId,
-                };
-              }
-            }
-            if (withDraws) {
-              if (!participantMap[participantId].draws[drawId]) {
-                participantMap[participantId].draws[drawId] = {
-                  // entryStatus, // this would be entryStatus of TEAM
-                  drawId,
-                };
-              }
             }
           }
         }
       }
-    };
+    }
 
-    if (withMatchUps) {
+    if (withMatchUps || withOpponents || withTeamMatchUps) {
       const eventMatchUps = allEventMatchUps({
         nextMatchUps: scheduleAnalysis || withPotentialMatchUps,
         afterRecoveryTimes: scheduleAnalysis,
@@ -155,7 +89,7 @@ export function getParticipantEntries({
           drawId,
         } = matchUp;
         processSides({
-          withOpponents,
+          ...withOpts,
           winningSide,
           matchUpType,
           matchUpId,
@@ -172,13 +106,13 @@ export function getParticipantEntries({
             matchUpType,
           } = tieMatchUp;
           processSides({
+            ...withOpts,
             winningSide: tieMatchUpWinningSide,
             tieWinningSide: winningSide,
             matchUpTieId: matchUpId,
             matchUpId: tieMatchUpId,
             sides: tieMatchUpSides,
             matchUpSides: sides,
-            withOpponents,
             matchUpType,
             eventId,
             drawId,
@@ -251,12 +185,6 @@ export function getParticipantEntries({
         for (const entry of relevantEntries) {
           const { entryStatus, entryPosition, participantId } = entry;
           if (![UNGROUPED, UNPAIRED].includes(entryStatus)) {
-            if (!participantMap[participantId].events[eventId]) {
-              participantMap[participantId].events[eventId] = {
-                entryStatus,
-                eventId,
-              };
-            }
             participantMap[participantId].draws[drawId] = {
               entryPosition,
               entryStatus,
@@ -280,4 +208,94 @@ export function getParticipantEntries({
   }
 
   return { participantMap, derivedDrawInfo, matchUps };
+}
+
+function processSides({
+  withTeamMatchUps,
+  participantMap,
+  withOpponents,
+  withMatchUps,
+  withDraws,
+
+  tieWinningSide,
+  matchUpTieId,
+  matchUpType,
+  winningSide,
+  matchUpId,
+  eventId,
+  drawId,
+  sides,
+}) {
+  const opponents =
+    withOpponents &&
+    sides?.length === 2 &&
+    Object.assign(
+      {},
+      ...sides
+        .map(({ sideNumber }, i) => {
+          const opponentParticipantId = sides[1 - i].participantId;
+          return (
+            sideNumber && {
+              [sideNumber]: opponentParticipantId,
+            }
+          );
+        })
+        .filter(Boolean)
+    );
+
+  for (const side of sides) {
+    const { participantId, sideNumber } = side;
+    const participantWon = winningSide && winningSide === sideNumber;
+
+    const addMatchUp = (participantId) => {
+      if (withMatchUps) {
+        participantMap[participantId].matchUps[matchUpId] = {
+          participantWon,
+          matchUpType,
+          sideNumber,
+          matchUpId,
+        };
+      }
+    };
+
+    if (participantId) {
+      addMatchUp(participantId);
+
+      if (withOpponents) {
+        const opponentParticipantId = opponents?.[sideNumber];
+        participantMap[participantId].opponents[opponentParticipantId] = {
+          participantId: opponentParticipantId,
+          matchUpId,
+          eventId,
+          drawId,
+        };
+      }
+
+      if (participantMap[participantId].participant.participantType === PAIR) {
+        (
+          participantMap[participantId].participant.individualParticipantIds ||
+          []
+        ).forEach(addMatchUp);
+      }
+
+      if (matchUpTieId) {
+        if (withTeamMatchUps) {
+          participantMap[participantId].matchUps[matchUpTieId] = {
+            participantWon: tieWinningSide === sideNumber,
+            matchUpType: TEAM_MATCHUP,
+            matchUpId: matchUpTieId,
+            sideNumber,
+          };
+        }
+        if (withDraws) {
+          if (!participantMap[participantId].draws[drawId]) {
+            participantMap[participantId].draws[drawId] = {
+              // entryStatus, // this would be entryStatus of TEAM
+              drawId,
+            };
+          }
+        }
+      }
+    }
+  }
 }

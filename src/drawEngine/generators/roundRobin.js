@@ -350,7 +350,7 @@ export function getValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
       return valid;
     }
   );
-  return { validGroupSizes };
+  return { ...SUCCESS, validGroupSizes };
 }
 
 function roundRobinMatchUps({

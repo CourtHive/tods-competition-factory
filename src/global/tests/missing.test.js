@@ -113,6 +113,7 @@ it.each([asyncDrawEngine, drawEngineSync])(
           'addVoluntaryConsolationStructure',
           'addVoluntaryConsolationStage',
           'getSeedingThresholds',
+          'getValidGroupSizes',
           'newDrawDefinition',
           'getSeedBlocks',
           'assignSeed',
