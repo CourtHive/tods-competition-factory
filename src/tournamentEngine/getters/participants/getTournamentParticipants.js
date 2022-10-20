@@ -18,8 +18,8 @@ import {
  * @param {object} tournamentRecord - tournament object (passed automatically from tournamentEngine state)
  * @param {object} participantFilters - attribute arrays with filter value strings
  * @param {boolean} inContext - adds individualParticipants for all individualParticipantIds
- * @param {boolean} withDraws -  defaults to true when inContext - include all matchUps in which participant appears
- * @param {boolean} withEvents - defaults to true when inContext - include all events in which participant appears
+ * @param {boolean} withDraws - include all matchUps in which participant appears
+ * @param {boolean} withEvents - include all events in which participant appears
  * @param {boolean} withMatchUps - include all matchUps in which participant appears
  * @param {boolean} withStatistics - adds events: { [eventId]: eventName }, matchUps: { [matchUpId]: score }, statistics: [{ statCode: 'winRatio'}]
  * @param {boolean} withScheduleItems - include schedule items; scheduled matchUps
