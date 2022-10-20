@@ -73,12 +73,14 @@ export function getParticipantEntries({
         const participantWon = winningSide && winningSide === sideNumber;
 
         const addMatchUp = (participantId) => {
-          participantMap[participantId].matchUps[matchUpId] = {
-            participantWon,
-            matchUpType,
-            sideNumber,
-            matchUpId,
-          };
+          if (withMatchUps) {
+            participantMap[participantId].matchUps[matchUpId] = {
+              participantWon,
+              matchUpType,
+              sideNumber,
+              matchUpId,
+            };
+          }
         };
 
         if (participantId) {
@@ -133,7 +135,7 @@ export function getParticipantEntries({
       }
     };
 
-    if (withMatchUps) {
+    if (withMatchUps || withOpponents || withTeamMatchUps) {
       const eventMatchUps = allEventMatchUps({
         nextMatchUps: scheduleAnalysis || withPotentialMatchUps,
         afterRecoveryTimes: scheduleAnalysis,

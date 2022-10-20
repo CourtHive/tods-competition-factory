@@ -6,8 +6,10 @@ import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionCons
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function getParticipants({
+  withIndividualParticipants,
   participantFilters = {},
   withPotentialMatchUps,
+  // withRankingProfile,
   convertExtensions,
   policyDefinitions,
   tournamentRecord,
@@ -15,6 +17,8 @@ export function getParticipants({
   withSignInStatus,
   withTeamMatchUps,
   withScaleValues,
+  // usePublishState,
+  // withStatistics,
   withOpponents,
   withMatchUps,
   internalUse,
@@ -22,11 +26,12 @@ export function getParticipants({
   withDraws,
   withISO2,
   withIOC,
-  // inContext,
+  // inContext, - may be deprecated in favor of `withIndividualParticipants`
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   let { participantMap } = getParticipantMap({
+    withIndividualParticipants,
     convertExtensions,
     policyDefinitions,
     tournamentRecord,
@@ -38,20 +43,18 @@ export function getParticipants({
   });
 
   let matchUps, derivedDrawInfo;
-  if (withMatchUps) {
-    ({ participantMap, matchUps, derivedDrawInfo } = getParticipantEntries({
-      withPotentialMatchUps,
-      policyDefinitions,
-      tournamentRecord,
-      scheduleAnalysis,
-      withTeamMatchUps,
-      participantMap,
-      withOpponents,
-      withMatchUps,
-      withEvents,
-      withDraws,
-    }));
-  }
+  ({ participantMap, matchUps, derivedDrawInfo } = getParticipantEntries({
+    withPotentialMatchUps,
+    policyDefinitions,
+    tournamentRecord,
+    scheduleAnalysis,
+    withTeamMatchUps,
+    participantMap,
+    withOpponents,
+    withMatchUps,
+    withEvents,
+    withDraws,
+  }));
 
   let processedParticipants = Object.values(participantMap).map(
     ({ draws, events, matchUps, opponents, ...p }) => {
