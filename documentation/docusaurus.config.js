@@ -2,14 +2,16 @@
 module.exports = {
   title: 'Competition Factory',
   tagline: 'Tournament Management Tools',
-  url: 'https://github.com/CourtHive',
-  baseUrl: '/tods-competition-factory/',
+  url: 'https://github.com',
+  baseUrl: '/CourtHive/tods-competition-factory/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'CourtHive', // Usually your GitHub org/user name.
   projectName: 'tods-competition-factory', // Usually your repo name.
-  themes: ['@docusaurus/theme-live-codeblock'],
+  themes: [
+    '@docusaurus/theme-live-codeblock' /*, '@docusaurus/theme-mermaid'*/,
+  ],
   themeConfig: {
     navbar: {
       title: 'Competition Factory',
@@ -35,6 +37,10 @@ module.exports = {
       style: 'dark',
       links: [],
       copyright: `Copyright © ${new Date().getFullYear()} CourtHive`,
+    },
+    mermaid: {
+      theme: { light: 'neutral', dark: 'forest' },
+      // mermaidOptions: { maxTextSize: 50 },
     },
   },
   presets: [
