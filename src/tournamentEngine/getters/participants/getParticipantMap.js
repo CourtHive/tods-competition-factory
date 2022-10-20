@@ -47,17 +47,12 @@ export function getParticipantMap({
 
   const initializeParticipantId = (participantId) => {
     participantMap[participantId] = {
-      [typeMap[GROUP]]: [],
-      [typeMap[TEAM]]: [],
-      [typeMap[PAIR]]: [],
       potentialMatchUps: {},
       scheduleItems: [],
       opponents: {},
       pairIdMap: {},
       matchUps: {},
       events: {},
-      groups: [],
-      teams: [],
       draws: {},
       losses: 0,
       wins: 0,
@@ -83,16 +78,23 @@ export function getParticipantMap({
 
     initializeParticipantId(participantId);
 
-    participantMap[participantId].participant = filteredParticipant;
+    participantMap[participantId].participant = {
+      ...filteredParticipant,
+      [typeMap[GROUP]]: [],
+      [typeMap[TEAM]]: [],
+      [typeMap[PAIR]]: [],
+      groups: [],
+      teams: [],
+    };
 
     if (individualParticipantIds) {
       for (const individualParticiapntId of individualParticipantIds) {
         if (!participantMap[individualParticiapntId]) {
           initializeParticipantId(individualParticiapntId);
         }
-        participantMap[individualParticiapntId][typeMap[participantType]].push(
-          participantId
-        );
+        participantMap[individualParticiapntId].participant[
+          typeMap[participantType]
+        ].push(participantId);
 
         if ([TEAM, GROUP].includes(participantType)) {
           const {
@@ -102,7 +104,7 @@ export function getParticipantMap({
             participantId,
             teamId,
           } = filteredParticipant;
-          participantMap[individualParticiapntId][
+          participantMap[individualParticiapntId].participant[
             membershipMap[participantType]
           ].push({
             participantRoleResponsibilities,
