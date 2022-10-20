@@ -49,6 +49,13 @@ export function getParticipantMap({
     participantMap[participantId] = {
       potentialMatchUps: {},
       scheduleItems: [],
+      participant: {
+        groupParticipantIds: [],
+        pairParticipantIds: [],
+        teamParticipantIds: [],
+        groups: [],
+        teams: [],
+      },
       opponents: {},
       pairIdMap: {},
       matchUps: {},
@@ -78,14 +85,10 @@ export function getParticipantMap({
 
     initializeParticipantId(participantId);
 
-    participantMap[participantId].participant = {
-      ...filteredParticipant,
-      [typeMap[GROUP]]: [],
-      [typeMap[TEAM]]: [],
-      [typeMap[PAIR]]: [],
-      groups: [],
-      teams: [],
-    };
+    Object.assign(
+      participantMap[participantId].participant,
+      filteredParticipant
+    );
 
     if (individualParticipantIds) {
       for (const individualParticiapntId of individualParticipantIds) {
