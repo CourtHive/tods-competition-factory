@@ -554,6 +554,7 @@ function getParticipants({
       ...contextProfile,
       policyDefinitions,
       tournamentRecord,
+      inContext,
     })?.participantMap;
 
     return { participantMap };
