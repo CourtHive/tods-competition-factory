@@ -22,12 +22,12 @@
     "@types/react": "18.0.21",
     "clsx": "1.2.1",
     "material-ui": "0.20.2",
-    "mdx-mermaid": "^v1.3.0",
-    "mermaid": "^9.1.7",
+    "mdx-mermaid": "1.3.2",
+    "mermaid": "9.1.7",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-json-tree": "0.17.0",
-    "tods-competition-factory": "0.366.0",
+    "tods-competition-factory": "0.367.0",
     "tods-score-grid": "0.10.0"
   },
   "browserslist": {
