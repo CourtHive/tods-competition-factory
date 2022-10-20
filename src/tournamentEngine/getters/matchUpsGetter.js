@@ -26,7 +26,7 @@ export function allTournamentMatchUps({
   scheduleVisibilityFilters,
   participantsProfile,
   afterRecoveryTimes,
-  useParticipantMap = true,
+  useParticipantMap = false,
   policyDefinitions,
   tournamentRecord,
   inContext = true,
@@ -42,20 +42,15 @@ export function allTournamentMatchUps({
     tournamentRecord.unifiedTournamentId?.tournamentId ||
     tournamentRecord.tournamentId;
   const events = tournamentRecord?.events || [];
-  const participants = getParticipants({
+
+  const { participants, participantMap } = getParticipants({
     participantsProfile,
+    policyDefinitions,
+    useParticipantMap,
     tournamentRecord,
+    contextProfile,
     inContext,
   });
-
-  const participantMap =
-    useParticipantMap &&
-    getParticipantMap({
-      ...participantsProfile,
-      ...contextProfile,
-      policyDefinitions,
-      tournamentRecord,
-    })?.participantMap;
 
   const { appliedPolicies: tournamentAppliedPolicies } = getAppliedPolicies({
     tournamentRecord,
@@ -140,9 +135,11 @@ export function allDrawMatchUps({
   };
 
   if (!tournamentParticipants?.length && tournamentRecord) {
-    tournamentParticipants =
-      getParticipants({ inContext, tournamentRecord, participantsProfile }) ||
-      [];
+    ({ participants: tournamentParticipants = [] } = getParticipants({
+      participantsProfile,
+      tournamentRecord,
+      inContext,
+    }));
   }
 
   if (contextProfile && !contextContent) {
@@ -225,11 +222,11 @@ export function allEventMatchUps({
   }
 
   if (!participants?.length && tournamentRecord) {
-    participants = getParticipants({
+    ({ participants } = getParticipants({
       participantsProfile,
       tournamentRecord,
       inContext,
-    });
+    }));
   }
 
   const drawDefinitions = event.drawDefinitions || [];
@@ -288,7 +285,7 @@ export function tournamentMatchUps({
     tournamentRecord.tournamentId;
   const events = (tournamentRecord && tournamentRecord.events) || [];
 
-  const participants = getParticipants({
+  const { participants } = getParticipants({
     participantsProfile,
     tournamentRecord,
     inContext,
@@ -393,11 +390,11 @@ export function eventMatchUps({
   };
 
   if (!tournamentParticipants && tournamentRecord) {
-    tournamentParticipants = getParticipants({
+    ({ participants: tournamentParticipants } = getParticipants({
       participantsProfile,
       tournamentRecord,
       inContext,
-    });
+    }));
   }
 
   if (contextProfile && !contextContent)
@@ -481,11 +478,11 @@ export function drawMatchUps({
   };
 
   if (!tournamentParticipants?.length && tournamentRecord) {
-    tournamentParticipants = getParticipants({
+    ({ participants: tournamentParticipants } = getParticipants({
       participantsProfile,
       tournamentRecord,
       inContext,
-    });
+    }));
   }
 
   if (contextProfile && !contextContent)
@@ -517,7 +514,25 @@ export function drawMatchUps({
   });
 }
 
-function getParticipants({ inContext, tournamentRecord, participantsProfile }) {
+function getParticipants({
+  participantsProfile,
+  policyDefinitions,
+  useParticipantMap,
+  tournamentRecord,
+  contextProfile,
+  inContext,
+}) {
+  if (useParticipantMap) {
+    const participantMap = getParticipantMap({
+      ...participantsProfile,
+      ...contextProfile,
+      policyDefinitions,
+      tournamentRecord,
+    })?.participantMap;
+
+    return { participantMap };
+  }
+
   let participants = tournamentRecord.participants || [];
 
   if (participantsProfile?.withIOC || participantsProfile?.withISO2)
@@ -543,7 +558,7 @@ function getParticipants({ inContext, tournamentRecord, participantsProfile }) {
     }
   }
 
-  return participants;
+  return { participants };
 }
 
 export function publicFindMatchUp(params) {
