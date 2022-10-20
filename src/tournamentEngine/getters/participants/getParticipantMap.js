@@ -15,12 +15,14 @@ import {
 // build up an object with participantId keys which map to deepCopied participants
 // and which include all relevant groupings for each individualParticipant
 export function getParticipantMap({
+  withIndividualParticipants,
   convertExtensions,
   policyDefinitions,
   tournamentRecord,
   withSignInStatus,
   withScaleValues,
   internalUse,
+  // inContext, - may be deprecated in favor of `withIndividualParticipants`
   withISO2,
   withIOC,
 }) {
@@ -91,11 +93,11 @@ export function getParticipantMap({
     );
 
     if (individualParticipantIds) {
-      for (const individualParticiapntId of individualParticipantIds) {
-        if (!participantMap[individualParticiapntId]) {
-          initializeParticipantId(individualParticiapntId);
+      for (const individualParticipantId of individualParticipantIds) {
+        if (!participantMap[individualParticipantId]) {
+          initializeParticipantId(individualParticipantId);
         }
-        participantMap[individualParticiapntId].participant[
+        participantMap[individualParticipantId].participant[
           typeMap[participantType]
         ].push(participantId);
 
@@ -107,7 +109,7 @@ export function getParticipantMap({
             participantId,
             teamId,
           } = filteredParticipant;
-          participantMap[individualParticiapntId].participant[
+          participantMap[individualParticipantId].participant[
             membershipMap[participantType]
           ].push({
             participantRoleResponsibilities,
@@ -120,11 +122,11 @@ export function getParticipantMap({
 
         if (participantType === PAIR) {
           const partnerParticipantId = individualParticipantIds.find(
-            (id) => id !== individualParticiapntId
+            (id) => id !== individualParticipantId
           );
-          participantMap[individualParticiapntId].pairIdMap[participantId] =
+          participantMap[individualParticipantId].pairIdMap[participantId] =
             partnerParticipantId;
-          participantMap[individualParticiapntId].pairIdMap[
+          participantMap[individualParticipantId].pairIdMap[
             partnerParticipantId
           ] = participantId;
         }
@@ -150,6 +152,19 @@ export function getParticipantMap({
         withISO2,
         withIOC,
       });
+  }
+
+  if (withIndividualParticipants) {
+    for (const { participant } of Object.values(participantMap)) {
+      if (participant.individualParticipantIds?.length) {
+        participant.individualParticipants = [];
+        for (const participantId of participant.individualParticipantIds) {
+          participant.individualParticipants.push(
+            participantMap[participantId]
+          );
+        }
+      }
+    }
   }
 
   return { participantMap };
