@@ -26,7 +26,7 @@ export function allTournamentMatchUps({
   scheduleVisibilityFilters,
   participantsProfile,
   afterRecoveryTimes,
-  useParticipantMap = false,
+  useParticipantMap, // will default to true in future release
   policyDefinitions,
   tournamentRecord,
   inContext = true,
@@ -106,6 +106,7 @@ export function allDrawMatchUps({
   participantsProfile,
   afterRecoveryTimes,
   policyDefinitions,
+  useParticipantMap,
   tournamentRecord,
   contextContent,
   contextFilters,
@@ -134,12 +135,16 @@ export function allDrawMatchUps({
     endDate: event?.endDate,
   };
 
-  if (!tournamentParticipants?.length && tournamentRecord) {
-    ({ participants: tournamentParticipants = [] } = getParticipants({
-      participantsProfile,
-      tournamentRecord,
-      inContext,
-    }));
+  if (!tournamentParticipants?.length && !participantMap && tournamentRecord) {
+    ({ participants: tournamentParticipants = [], participantMap } =
+      getParticipants({
+        participantsProfile,
+        policyDefinitions,
+        useParticipantMap,
+        tournamentRecord,
+        contextProfile,
+        inContext,
+      }));
   }
 
   if (contextProfile && !contextContent) {
@@ -180,6 +185,7 @@ export function allEventMatchUps({
   afterRecoveryTimes,
   policyDefinitions,
   participants = [],
+  useParticipantMap,
   tournamentRecord,
   contextContent,
   contextFilters,
@@ -221,10 +227,13 @@ export function allEventMatchUps({
     });
   }
 
-  if (!participants?.length && tournamentRecord) {
-    ({ participants } = getParticipants({
+  if (!participants?.length && !participantMap && tournamentRecord) {
+    ({ participants, participantMap } = getParticipants({
       participantsProfile,
+      policyDefinitions,
+      useParticipantMap,
       tournamentRecord,
+      contextProfile,
       inContext,
     }));
   }
@@ -269,13 +278,13 @@ export function tournamentMatchUps({
   participantsProfile,
   afterRecoveryTimes,
   policyDefinitions,
+  useParticipantMap,
   tournamentRecord,
   inContext = true,
   contextFilters,
   contextProfile,
   contextContent,
   matchUpFilters,
-  participantMap,
   nextMatchUps,
   context,
 }) {
@@ -285,9 +294,12 @@ export function tournamentMatchUps({
     tournamentRecord.tournamentId;
   const events = (tournamentRecord && tournamentRecord.events) || [];
 
-  const { participants } = getParticipants({
+  const { participants, participantMap } = getParticipants({
     participantsProfile,
+    policyDefinitions,
+    useParticipantMap,
     tournamentRecord,
+    contextProfile,
     inContext,
   });
 
@@ -361,6 +373,7 @@ export function eventMatchUps({
   participantsProfile,
   afterRecoveryTimes,
   policyDefinitions,
+  useParticipantMap,
   tournamentRecord,
   contextFilters,
   contextProfile,
@@ -390,11 +403,16 @@ export function eventMatchUps({
   };
 
   if (!tournamentParticipants && tournamentRecord) {
-    ({ participants: tournamentParticipants } = getParticipants({
-      participantsProfile,
-      tournamentRecord,
-      inContext,
-    }));
+    ({ participants: tournamentParticipants, participantMap } = getParticipants(
+      {
+        participantsProfile,
+        policyDefinitions,
+        useParticipantMap,
+        tournamentRecord,
+        contextProfile,
+        inContext,
+      }
+    ));
   }
 
   if (contextProfile && !contextContent)
@@ -449,12 +467,14 @@ export function drawMatchUps({
   participantsProfile,
   afterRecoveryTimes,
   policyDefinitions,
+  useParticipantMap,
   tournamentRecord,
-  matchUpFilters,
   contextFilters,
   contextProfile,
   contextContent,
   drawDefinition,
+  matchUpFilters,
+  participantMap,
   nextMatchUps,
   tournamentId,
   inContext,
@@ -478,11 +498,16 @@ export function drawMatchUps({
   };
 
   if (!tournamentParticipants?.length && tournamentRecord) {
-    ({ participants: tournamentParticipants } = getParticipants({
-      participantsProfile,
-      tournamentRecord,
-      inContext,
-    }));
+    ({ participants: tournamentParticipants, participantMap } = getParticipants(
+      {
+        participantsProfile,
+        policyDefinitions,
+        useParticipantMap,
+        tournamentRecord,
+        contextProfile,
+        inContext,
+      }
+    ));
   }
 
   if (contextProfile && !contextContent)
@@ -503,6 +528,7 @@ export function drawMatchUps({
     afterRecoveryTimes,
     policyDefinitions,
     tournamentRecord,
+    participantMap,
     drawDefinition,
     matchUpFilters,
     contextFilters,
