@@ -26,7 +26,7 @@ export function allTournamentMatchUps({
   scheduleVisibilityFilters,
   participantsProfile,
   afterRecoveryTimes,
-  useParticipantMap,
+  useParticipantMap = true,
   policyDefinitions,
   tournamentRecord,
   inContext = true,
@@ -52,6 +52,7 @@ export function allTournamentMatchUps({
     useParticipantMap &&
     getParticipantMap({
       ...participantsProfile,
+      ...contextProfile,
       policyDefinitions,
       tournamentRecord,
     })?.participantMap;
