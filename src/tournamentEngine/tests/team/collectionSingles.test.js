@@ -233,7 +233,7 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
   }
 });
 
-it('can assign SINGLES particiapnts to collectionPositions and complete matchUps', () => {
+it('can assign SINGLES participants to collectionPositions and complete matchUps', () => {
   const drawSize = 8;
   const valueGoal = 2;
   const { tournamentRecord, eventId, drawId } = generateTeamTournament({

@@ -126,8 +126,8 @@ export function deleteParticipants({
       const groupParticipantIds = eventParticipantIdsRemoved[event.eventId];
       const individualParticipantIds = groupParticipantIds
         .map(
-          (particiapntId) =>
-            mappedIndividualParticipantIdsToAdd[particiapntId] || []
+          (participantId) =>
+            mappedIndividualParticipantIdsToAdd[participantId] || []
         )
         .flat();
       addEventEntries({
