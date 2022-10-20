@@ -96,9 +96,7 @@ export function directParticipants(params) {
     const winningIndex = projectedWinningSide
       ? projectedWinningSide - 1
       : winningSide - 1;
-    const losingIndex = projectedWinningSide
-      ? 1 - projectedWinningSide
-      : 1 - winningIndex;
+    const losingIndex = 1 - winningIndex;
 
     const winningDrawPosition = drawPositions[winningIndex];
     const loserDrawPosition = drawPositions[losingIndex];
