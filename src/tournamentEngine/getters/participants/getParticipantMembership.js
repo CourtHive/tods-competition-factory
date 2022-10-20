@@ -1,9 +1,10 @@
 import { getTournamentParticipants } from './getTournamentParticipants';
+
+import { GROUP, PAIR, TEAM } from '../../../constants/participantConstants';
 import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { GROUP, PAIR, TEAM } from '../../../constants/participantConstants';
 
 /**
  *
@@ -18,8 +19,8 @@ export function getParticipantMembership({ tournamentRecord, participantId }) {
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
   const { tournamentParticipants } = getTournamentParticipants({
-    tournamentRecord,
     participantFilters: { participantTypes: [TEAM, PAIR, GROUP] },
+    tournamentRecord,
   });
 
   const memberOf = (tournamentParticipants || []).filter((participant) => {
