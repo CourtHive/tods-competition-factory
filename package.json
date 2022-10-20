@@ -109,7 +109,7 @@
     "esbuild": "0.15.12",
     "eslint": "8.25.0",
     "eslint-config-prettier": "8.5.0",
-    "eslint-import-resolver-typescript": "3.5.1",
+    "eslint-import-resolver-typescript": "3.5.2",
     "eslint-module-utils": "2.7.4",
     "eslint-plugin-compat": "4.0.2",
     "eslint-plugin-import": "2.26.0",
