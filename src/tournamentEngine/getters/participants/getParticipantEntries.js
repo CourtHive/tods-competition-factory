@@ -271,11 +271,14 @@ function processSides({
         };
       }
 
-      if (participantMap[participantId].participant.participantType === PAIR) {
-        (
+      const isPair =
+        participantMap[participantId].participant.participantType === PAIR;
+
+      if (isPair) {
+        const individualParticipantIds =
           participantMap[participantId].participant.individualParticipantIds ||
-          []
-        ).forEach(addMatchUp);
+          [];
+        individualParticipantIds.forEach(addMatchUp);
       }
 
       if (matchUpTieId) {
