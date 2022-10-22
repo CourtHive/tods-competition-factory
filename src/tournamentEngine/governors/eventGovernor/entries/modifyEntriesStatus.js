@@ -39,6 +39,7 @@ import {
 
 export function modifyEntriesStatus({
   autoEntryPositions = true,
+  ignoreAssignment, // override check for existing assignments
   tournamentRecord,
   drawDefinition,
   participantIds,
@@ -138,7 +139,7 @@ export function modifyEntriesStatus({
       );
 
     const success = filteredEntries.every((entry) => {
-      if (isAssigned(entry)) return false;
+      if (isAssigned(entry) && !ignoreAssignment) return false;
       if (entryStatus) {
         entry.entryStatus = entryStatus;
         // since entryStatus has changed remove current entryPosition
