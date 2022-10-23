@@ -64,6 +64,16 @@ it('can propagate and remove lineUps', () => {
     },
   });
 
+  const winningSide = 1;
+  const losingSide = 2;
+
+  const losingParticipantIds = teamMatchUps
+    .filter(({ readyToScore }) => readyToScore)
+    .flatMap(
+      ({ sides }) =>
+        sides.find(({ sideNumber }) => sideNumber === losingSide)?.participantId
+    );
+
   // assign individual participants to all first round EAST matchUps
   teamMatchUps
     .filter(
@@ -73,7 +83,7 @@ it('can propagate and remove lineUps', () => {
     .forEach(assignParticipants);
 
   let outcome = {
-    winningSide: 1,
+    winningSide,
     score: { sets: [{ side1Score: 2, side2Score: 1, winningSide: 1 }] },
   };
 
@@ -110,8 +120,14 @@ it('can propagate and remove lineUps', () => {
         structureName === 'WEST' && roundNumber === 1
     )
     .forEach(({ sides }) => {
-      expect(sides[0].lineUp).not.toBeUndefined();
-      expect(sides[1].lineUp).not.toBeUndefined();
+      expect(losingParticipantIds.includes(sides[0].participantId)).toEqual(
+        true
+      );
+      expect(losingParticipantIds.includes(sides[1].participantId)).toEqual(
+        true
+      );
+      expect(sides[0].lineUp).toBeDefined();
+      expect(sides[1].lineUp).toBeDefined();
       expect(sides[0].lineUp).not.toEqual(sides[1].lineUp);
     });
 
@@ -147,8 +163,8 @@ it('can propagate and remove lineUps', () => {
         structureName === 'WEST' && roundNumber === 1
     )
     .forEach(({ sides }) => {
-      expect(sides[0].lineUp).toBeDefined();
-      expect(sides[1].lineUp).toBeDefined();
+      expect(sides[0].lineUp).not.toBeDefined();
+      expect(sides[1].lineUp).not.toBeDefined();
     });
 });
 
