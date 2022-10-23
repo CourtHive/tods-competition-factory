@@ -13,13 +13,13 @@ import {
   findMatchUpByRoundNumberAndPosition,
 } from '../../tests/primitives/verifyMatchUps';
 
+import { MAIN } from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
   INCOMPATIBLE_MATCHUP_STATUS,
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   BYE,
   RETIRED,
@@ -28,7 +28,6 @@ import {
   DEFAULTED,
   SUSPENDED,
 } from '../../../constants/matchUpStatusConstants';
-
 import {
   DIRECT_ACCEPTANCE,
   WILDCARD,

@@ -1,7 +1,7 @@
-import { drawEngine } from '../../sync';
-import { chunkArray } from '../../../utilities';
-import { completeMatchUp } from '../primitives/verifyMatchUps';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
+import { completeMatchUp } from '../primitives/verifyMatchUps';
+import { chunkArray } from '../../../utilities';
+import { drawEngine } from '../../sync';
 
 import { CONSOLATION, MAIN } from '../../../constants/drawDefinitionConstants';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
