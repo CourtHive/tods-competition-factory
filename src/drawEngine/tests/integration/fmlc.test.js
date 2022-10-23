@@ -7,12 +7,12 @@ import {
 } from '../../tests/primitives/verifyMatchUps';
 
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
 import {
   BYE,
   RETIRED,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
 
 it('can generate FIRST_MATCH_LOSER_CONSOLATION', () => {
   const drawSize = 32;
@@ -124,7 +124,7 @@ it('can direct winners and losers', () => {
   // now the participant in drawPosition: 1 will lose to the winner of 3-4 and be fed into consolation
   // this tests first matchUp loss in the second round for participant who received a first round BYE
   // the participant in drawPosition: 1 should go into the consolation structure
-  result = completeMatchUp({
+  completeMatchUp({
     structureId: mainStructureId,
     roundNumber: 2,
     roundPosition: 1,
@@ -170,19 +170,19 @@ it('can direct winners and losers', () => {
   );
   expect(consolationStructure.positionAssignments[0].bye).toEqual(undefined);
 
-  result = completeMatchUp({
+  completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 1,
     roundPosition: 13,
+    roundNumber: 1,
     winningSide: 2,
   });
-  result = completeMatchUp({
+  completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 1,
     roundPosition: 14,
+    roundNumber: 1,
     winningSide: 1,
   });
-  result = completeMatchUp({
+  completeMatchUp({
     structureId: mainStructureId,
     roundNumber: 1,
     roundPosition: 15,
@@ -323,7 +323,7 @@ it('can direct winners and losers drawSize: 4 with NO BYEs', () => {
   // now the participant in drawPosition: 1 will lose to the winner of 3-4 and be fed into consolation
   // this tests first matchUp loss in the second round for participant who received a first round BYE
   // the participant in drawPosition: 1 should go into the consolation structure
-  result = completeMatchUp({
+  completeMatchUp({
     structureId: mainStructureId,
     roundNumber: 2,
     roundPosition: 1,
