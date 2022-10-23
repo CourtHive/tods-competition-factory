@@ -1,6 +1,9 @@
-import { drawEngine } from '../../sync';
-import { completeMatchUp } from '../primitives/verifyMatchUps';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
+import { completeMatchUp } from '../primitives/verifyMatchUps';
+import tournamentEngine from '../../../tournamentEngine/sync';
+import { instanceCount } from '../../../utilities';
+import mocksEngine from '../../../mocksEngine';
+import { drawEngine } from '../../sync';
 
 import {
   CONSOLATION,
@@ -9,9 +12,6 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../tournamentEngine/sync';
-import { instanceCount } from '../../../utilities';
 
 it('can support ITF Consolation BYE placement', () => {
   const drawSize = 32;
