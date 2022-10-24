@@ -1,3 +1,4 @@
+import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
 import { eligibleEntryStage } from './positionActions/getValidAlternatesAction';
@@ -14,6 +15,7 @@ import { unique } from '../../../utilities';
 import { isAdHoc } from './isAdHoc';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
+import { DOUBLES_MATCHUP } from '../../../constants/matchUpTypes';
 import {
   ALTERNATE,
   DIRECT_ENTRY_STATUSES,
@@ -48,8 +50,6 @@ import {
   STATUS,
   SUBSTITUTION,
 } from '../../../constants/matchUpActionConstants';
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
-import { DOUBLES_MATCHUP } from '../../../constants/matchUpTypes';
 
 /**
  *
@@ -110,8 +110,7 @@ export function matchUpActions({
         .map(getParticipantId) || [];
 
     const roundAssignedParticipantIds = roundMatchUps
-      .map((matchUp) => (matchUp.sides || []).map((side) => side.participantId))
-      .flat()
+      .map((matchUp) => (matchUp.sides || []).flatMap(getParticipantId))
       .filter(Boolean);
 
     const availableParticipantIds = enteredParticipantIds.filter(
@@ -143,14 +142,8 @@ export function matchUpActions({
     }
 
     const eventEntries = event?.entries || [];
-    const availableEventAlternatesParticipantIds = eventEntries
-      .filter(
-        (entry) =>
-          entry.entryStatus === ALTERNATE &&
-          eligibleEntryStage({ structure, entry })
-      )
-      .sort((a, b) => (a.entryPosition || 9999) - (b.entryPosition || 9999))
-      .map((entry) => entry.participantId);
+    const availableEventAlternatesParticipantIds =
+      getEventAlternateParticipantIds({ eventEntries, structure });
 
     let availableAlternatesParticipantIds = unique(
       enteredParticipantIds.concat(availableEventAlternatesParticipantIds)
@@ -160,7 +153,7 @@ export function matchUpActions({
       const { flightProfile } = getFlightProfile({ event });
       const otherFlightEnteredParticipantIds = flightProfile?.flights
         ?.filter((flight) => flight.drawId !== drawId)
-        .map((flight) =>
+        .flatMap((flight) =>
           flight.drawEntries
             .filter(
               (entry) =>
@@ -169,7 +162,6 @@ export function matchUpActions({
             )
             .map(({ participantId }) => participantId)
         )
-        .flat()
         .filter(Boolean);
 
       if (otherFlightEnteredParticipantIds?.length) {
@@ -356,4 +348,16 @@ export function matchUpActions({
     isDoubleExit,
     structureIsComplete,
   };
+}
+
+function getEventAlternateParticipantIds({ eventEntries, structure }) {
+  const eligibleAlternate = (entry) =>
+    entry.entryStatus === ALTERNATE && eligibleEntryStage({ structure, entry });
+  const entryPositionSort = (a, b) =>
+    (a.entryPosition || Infinity) - (b.entryPosition || Infinity);
+
+  return eventEntries
+    .filter(eligibleAlternate)
+    .sort(entryPositionSort)
+    .map(getParticipantId);
 }
