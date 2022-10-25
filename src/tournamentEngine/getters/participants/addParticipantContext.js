@@ -370,7 +370,7 @@ export function addParticipantContext(params) {
         element: participant,
       });
 
-      participant.signedIn = !!(timeItem?.itemValue === SIGNED_IN);
+      participant.signedIn = timeItem?.itemValue !== SIGNED_IN;
     }
 
     if (params.withScheduleItems) {

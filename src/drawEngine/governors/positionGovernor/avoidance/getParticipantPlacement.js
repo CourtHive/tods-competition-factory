@@ -18,7 +18,7 @@ export function getParticipantPlacement({
   const largestGroupSize = drawPositionGroups.reduce((largest, group) => {
     return group.length > largest ? group.length : largest;
   }, 0);
-  const useSpecifiedGroupKey = !!(largestGroupSize > 2);
+  const useSpecifiedGroupKey = largestGroupSize <= 2;
 
   const targetParticipantIds = getUnplacedParticipantIds({
     participantIds: unseededParticipantIds,
