@@ -1,4 +1,5 @@
 import { structureSort } from '../../../forge/transform';
+import { definedAttributes } from '../../../utilities';
 import { getFlightProfile } from '../getFlightProfile';
 import { allEventMatchUps } from '../matchUpsGetter';
 
@@ -160,6 +161,13 @@ export function getParticipantEntries({
           (flight) => flight.drawId === drawId
         )?.flightNumber;
 
+        const scaleNames = [
+          category?.categoryName,
+          category?.ageCategoryCode,
+          eventId,
+          drawId,
+        ].filter(Boolean);
+
         // used in rankings pipeline.
         // the structures in which a particpant particpates are ordered
         // to enable differentiation for Points-per-round and points-per-win
@@ -215,12 +223,55 @@ export function getParticipantEntries({
 
         for (const entry of relevantEntries) {
           const { entryStatus, entryPosition, participantId } = entry;
+
+          // get draw ranking
+          const ranking = getRanking({ eventType, scaleNames, participantId });
+
           if (![UNGROUPED, UNPAIRED].includes(entryStatus)) {
-            participantMap[participantId].draws[drawId] = {
-              entryPosition,
-              entryStatus,
-              drawId,
-            };
+            participantMap[participantId].draws[drawId] = definedAttributes(
+              {
+                entryPosition,
+                entryStatus,
+                eventId,
+                ranking,
+                drawId,
+              },
+              false,
+              false,
+              true
+            );
+
+            // add for individualParticipantIds when participantType is TEAM/PAIR
+            if (
+              participantMap[participantId].participant.individualParticipantIds
+                ?.length
+            ) {
+              for (const individualParticiapntId of participantMap[
+                participantId
+              ].participant.individualParticipantIds) {
+                if (!participantMap[individualParticiapntId].events[eventId]) {
+                  // get event ranking
+                  const ranking = getRanking({
+                    participantId: individualParticiapntId,
+                    scaleNames,
+                    eventType,
+                  });
+                  participantMap[individualParticiapntId].events[eventId] =
+                    definedAttributes(
+                      {
+                        entryPosition,
+                        entryStatus,
+                        ranking,
+                        eventId,
+                        drawId,
+                      },
+                      false,
+                      false,
+                      true
+                    );
+                }
+              }
+            }
           }
         }
 
