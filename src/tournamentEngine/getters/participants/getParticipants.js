@@ -59,13 +59,15 @@ export function getParticipants({
 
   let processedParticipants = Object.values(participantMap).map(
     ({ draws, events, matchUps, opponents, ...p }) => {
-      const participantOpponents = Object.values(opponents);
       const participantDraws = Object.values(draws);
-      participantDraws?.forEach((draw) => {
-        draw.opponents = participantOpponents.filter(
-          (opponent) => opponent.drawId === draw.drawId
-        );
-      });
+      const participantOpponents = Object.values(opponents);
+      if (withOpponents) {
+        participantDraws?.forEach((draw) => {
+          draw.opponents = participantOpponents.filter(
+            (opponent) => opponent.drawId === draw.drawId
+          );
+        });
+      }
 
       return definedAttributes(
         {
