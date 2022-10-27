@@ -19,6 +19,7 @@ export function entryStatusReport({ tournamentRecord }) {
     withScaleValues: true,
     withEvents: true, // so that event rankings will be present
     tournamentRecord,
+    // withDraws: true,
   });
 
   const nonTeamMatchUps = allTournamentMatchUps({
