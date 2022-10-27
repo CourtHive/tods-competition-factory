@@ -34,21 +34,45 @@ export function getParticipantEntries({
   const derivedDrawInfo = {};
   let matchUps = [];
 
+  const getRanking = ({ eventType, scaleNames, participantId }) =>
+    participantMap[participantId].participant.rankings?.[eventType]?.find(
+      (ranking) => scaleNames.includes(ranking.scaleName)
+    )?.scaleValue;
+
   for (const event of tournamentRecord.events || []) {
-    const { drawDefinitions = [], entries, eventId } = event;
+    const {
+      drawDefinitions = [],
+      entries,
+      eventId,
+      category,
+      eventType,
+    } = event;
     const { flightProfile } = getFlightProfile({ event });
     const flights = flightProfile?.flights;
 
     if (withEvents) {
+      const scaleNames = [
+        category?.categoryName,
+        category?.ageCategoryCode,
+        eventId,
+      ].filter(Boolean);
+
       for (const entry of entries) {
         const { entryStatus, participantId, entryPosition } = entry;
+
+        // get event ranking
+        const ranking = getRanking({ eventType, scaleNames, participantId });
+
         if (!participantMap[participantId].events[eventId]) {
           participantMap[participantId].events[eventId] = {
             entryPosition,
             entryStatus,
+            ranking,
             eventId,
           };
         }
+
+        // add details for individualParticipantIds for TEAM/PAIR events
         if (
           participantMap[participantId].participant.individualParticipantIds
             ?.length
@@ -56,9 +80,16 @@ export function getParticipantEntries({
           for (const individualParticiapntId of participantMap[participantId]
             .participant.individualParticipantIds) {
             if (!participantMap[individualParticiapntId].events[eventId]) {
+              // get event ranking
+              const ranking = getRanking({
+                participantId: individualParticiapntId,
+                scaleNames,
+                eventType,
+              });
               participantMap[individualParticiapntId].events[eventId] = {
                 entryPosition,
                 entryStatus,
+                ranking,
                 eventId,
               };
             }
