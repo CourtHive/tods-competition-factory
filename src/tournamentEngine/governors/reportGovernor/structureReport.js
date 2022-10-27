@@ -1,10 +1,11 @@
 import { findTournamentExtension } from '../queryGovernor/extensionQueries';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
+import { getTieFormatDesc } from './getTieFormatDescription';
+import { getDetailsWTN } from './getDetailsWTN';
+import { getAvgWTN } from './getAvgWTN';
 
 import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
 import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';
-import { DOUBLES_MATCHUP } from '../../../constants/matchUpTypes';
-import { WTN } from '../../../constants/ratingConstants';
 import {
   CONSOLATION,
   MAIN,
@@ -90,6 +91,7 @@ export function structureReport({ firstFlightOnly = true, tournamentRecord }) {
                   )?.participant;
                   const { individualParticipants, person, ratings, rankings } =
                     winningParticipant || {};
+
                   const winnerDetails = (
                     individualParticipants?.map(
                       ({ person, ratings, rankings }) => ({
@@ -99,19 +101,25 @@ export function structureReport({ firstFlightOnly = true, tournamentRecord }) {
                       })
                     ) || [{ person, ratings, rankings }]
                   ).filter((x) => x?.person);
-                  const winningPersonId = winnerDetails?.[0]?.person?.personId;
-                  const winningPersonWTN = winnerDetails?.[0]?.ratings?.[
-                    eventType
-                  ]?.find(({ scaleName }) => scaleName === WTN)?.scaleValue;
-                  const { wtnRating: wtnRating1, confidence: confidence1 } =
-                    winningPersonWTN || {};
+                  const winningPersonWTN = getDetailsWTN({
+                    participant: winnerDetails?.[0],
+                    eventType,
+                  });
+                  const {
+                    personId: winningPersonId,
+                    wtnRating: wtnRating1,
+                    confidence: confidence1,
+                  } = winningPersonWTN || {};
 
-                  const winningPerson2Id = winnerDetails?.[1]?.person?.personId;
-                  const winningPerson2WTN = winnerDetails?.[1]?.ratings?.[
-                    eventType
-                  ]?.find(({ scaleName }) => scaleName === WTN)?.scaleValue;
-                  const { wtnRating: wtnRating2, confidence: confidence2 } =
-                    winningPerson2WTN || {};
+                  const winningPerson2WTN = getDetailsWTN({
+                    participant: winnerDetails?.[1],
+                    eventType,
+                  });
+                  const {
+                    personId: winningPerson2Id,
+                    wtnRating: wtnRating2,
+                    confidence: confidence2,
+                  } = winningPerson2WTN || {};
 
                   const { ageCategoryCode, categoryName, subType } =
                     category || {};
@@ -162,91 +170,4 @@ export function structureReport({ firstFlightOnly = true, tournamentRecord }) {
   );
 
   return tournamentStructureData;
-}
-
-function getAvgWTN({ matchUps, drawId, eventId, eventType }) {
-  const matchUpFormats = {};
-
-  const countMatchUpFormat = ({ matchUpFormat }) => {
-    if (!matchUpFormat) return;
-    if (!matchUpFormats[matchUpFormat]) matchUpFormats[matchUpFormat] = 0;
-    matchUpFormats[matchUpFormat] += 1;
-  };
-  const participantsMap = matchUps
-    .filter((matchUp) =>
-      eventId ? matchUp.eventId === eventId : matchUp.drawId === drawId
-    )
-    .reduce((participants, matchUp) => {
-      countMatchUpFormat(matchUp);
-      (matchUp.sides || [])
-        .flatMap((side) =>
-          (
-            side?.participant?.individualParticipants || [side?.participant]
-          ).filter(Boolean)
-        )
-        .forEach(
-          (participant) =>
-            (participants[participant.participantId] = participant)
-        );
-      return participants;
-    }, {});
-  const eventParticipants = Object.values(participantsMap);
-  const wtnRatings = eventParticipants
-    .map((participant) => getWTNdetails({ participant, eventType }))
-    .filter(({ wtnRating }) => wtnRating);
-
-  const pctNoRating =
-    ((eventParticipants.length - wtnRatings.length) /
-      eventParticipants.length) *
-    100;
-
-  const wtnTotals = wtnRatings.reduce(
-    (totals, wtnDetails) => {
-      const { wtnRating, confidence } = wtnDetails;
-      totals.totalWTN += wtnRating;
-      totals.totalConfidence += confidence;
-      return totals;
-    },
-    { totalWTN: 0, totalConfidence: 0 }
-  );
-  const avgWTN = wtnTotals.totalWTN / wtnRatings.length;
-  const avgConfidence = wtnTotals.totalConfidence / wtnRatings.length;
-
-  const matchUpsCount = Object.values(matchUpFormats).reduce(
-    (p, c) => (p += c || 0),
-    0
-  );
-
-  return { avgWTN, avgConfidence, matchUpFormats, matchUpsCount, pctNoRating };
-}
-
-function getWTNdetails({ participant, eventType }) {
-  const personId = participant?.person?.personId;
-  const personWTN = participant?.ratings?.[eventType]?.find(
-    ({ scaleName }) => scaleName === WTN
-  )?.scaleValue;
-  const { wtnRating, confidence } = personWTN || {};
-  return { personId, wtnRating, confidence };
-}
-
-function getTieFormatDesc(tieFormat) {
-  if (!tieFormat) return {};
-  const tieFormatName = tieFormat.tieFormatName;
-  const collectionDesc = tieFormat.collectionDefinitions
-    ?.map((def) => {
-      const { matchUpType, matchUpFormat, matchUpCount, category } = def;
-      const ageCategoryCode = category?.ageCategoryCode;
-      const matchUpTypeCode = matchUpType === DOUBLES_MATCHUP ? 'D' : 'S';
-      return [
-        matchUpCount,
-        matchUpTypeCode,
-        ageCategoryCode,
-        matchUpFormat,
-      ].join(';');
-    })
-    .join('|');
-  return {
-    tieFormatName: tieFormat ? tieFormatName || 'UNNAMED' : undefined,
-    tieFormatDesc: [collectionDesc].join('='),
-  };
 }
