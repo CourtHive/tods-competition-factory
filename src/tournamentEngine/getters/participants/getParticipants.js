@@ -1,6 +1,7 @@
 import { getParticipantEntries } from './getParticipantEntries';
 import { filterParticipants } from './filterParticipants';
 import { getParticipantMap } from './getParticipantMap';
+import { definedAttributes } from '../../../utilities';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -58,21 +59,28 @@ export function getParticipants({
 
   let processedParticipants = Object.values(participantMap).map(
     ({ draws, events, matchUps, opponents, ...p }) => {
-      const participantOpponents = Object.values(opponents);
       const participantDraws = Object.values(draws);
-      participantDraws?.forEach((draw) => {
-        draw.opponents = participantOpponents.filter(
-          (opponent) => opponent.drawId === draw.drawId
-        );
-      });
+      const participantOpponents = Object.values(opponents);
+      if (withOpponents) {
+        participantDraws?.forEach((draw) => {
+          draw.opponents = participantOpponents.filter(
+            (opponent) => opponent.drawId === draw.drawId
+          );
+        });
+      }
 
-      return {
-        ...p.participant,
-        opponents: participantOpponents,
-        matchUps: Object.values(matchUps),
-        events: Object.values(events),
-        draws: participantDraws,
-      };
+      return definedAttributes(
+        {
+          ...p.participant,
+          opponents: withOpponents ? participantOpponents : undefined,
+          matchUps: withMatchUps ? Object.values(matchUps) : undefined,
+          events: withEvents ? Object.values(events) : undefined,
+          draws: withDraws ? participantDraws : undefined,
+        },
+        false,
+        false,
+        true
+      );
     }
   );
 
