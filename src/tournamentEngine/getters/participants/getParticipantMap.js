@@ -79,11 +79,12 @@ export function getParticipantMap({
     }
 
     if (withScaleValues) {
-      const { ratings, rankings } = getScaleValues({
+      const { ratings, rankings, seedings } = getScaleValues({
         participant: participantCopy,
       });
-      participantMap[participantId].participant.ratings = ratings;
+      participantMap[participantId].participant.seedings = seedings;
       participantMap[participantId].participant.rankings = rankings;
+      participantMap[participantId].participant.ratings = ratings;
     }
 
     if (withIOC || withISO2)

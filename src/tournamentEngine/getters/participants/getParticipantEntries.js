@@ -55,7 +55,6 @@ export function getParticipantEntries({
       const scaleNames = [
         category?.categoryName,
         category?.ageCategoryCode,
-        eventId,
       ].filter(Boolean);
 
       for (const entry of entries) {
@@ -65,12 +64,17 @@ export function getParticipantEntries({
         const ranking = getRanking({ eventType, scaleNames, participantId });
 
         if (!participantMap[participantId].events[eventId]) {
-          participantMap[participantId].events[eventId] = {
-            entryPosition,
-            entryStatus,
-            ranking,
-            eventId,
-          };
+          participantMap[participantId].events[eventId] = definedAttributes(
+            {
+              entryPosition,
+              entryStatus,
+              ranking,
+              eventId,
+            },
+            false,
+            false,
+            true
+          );
         }
 
         // add details for individualParticipantIds for TEAM/PAIR events
@@ -87,12 +91,18 @@ export function getParticipantEntries({
                 scaleNames,
                 eventType,
               });
-              participantMap[individualParticiapntId].events[eventId] = {
-                entryPosition,
-                entryStatus,
-                ranking,
-                eventId,
-              };
+              participantMap[individualParticiapntId].events[eventId] =
+                definedAttributes(
+                  {
+                    entryPosition,
+                    entryStatus,
+                    ranking,
+                    eventId,
+                  },
+                  false,
+                  false,
+                  true
+                );
             }
           }
         }
@@ -155,6 +165,16 @@ export function getParticipantEntries({
     }
 
     if (withDraws) {
+      const getSeedingMap = (assignments) =>
+        assignments
+          ? Object.assign(
+              {},
+              ...assignments.map((assignment) => ({
+                [assignment.participantId]: assignment,
+              }))
+            )
+          : undefined;
+
       for (const drawDefinition of drawDefinitions) {
         const { drawId, entries, structures = [] } = drawDefinition;
         const flightNumber = flights?.find(
@@ -164,8 +184,6 @@ export function getParticipantEntries({
         const scaleNames = [
           category?.categoryName,
           category?.ageCategoryCode,
-          eventId,
-          drawId,
         ].filter(Boolean);
 
         // used in rankings pipeline.
@@ -215,6 +233,9 @@ export function getParticipantEntries({
           .map(({ participantId }) => participantId)
           .filter(Boolean);
 
+        const mainSeedingMap = getSeedingMap(mainSeedAssignments);
+        const qualifyingSeedingMap = getSeedingMap(qualifyingSeedAssignments);
+
         const relevantEntries = entries.filter(
           ({ entryStage, participantId }) =>
             entryStage === MAIN &&
@@ -226,12 +247,20 @@ export function getParticipantEntries({
 
           // get draw ranking
           const ranking = getRanking({ eventType, scaleNames, participantId });
+          const mainSeeding =
+            mainSeedingMap?.[participantId]?.seedValue ||
+            mainSeedingMap?.[participantId]?.seedNumber;
+          const qualifyingSeeding =
+            qualifyingSeedingMap?.[participantId]?.seedValue ||
+            qualifyingSeedingMap?.[participantId]?.seedNumber;
 
           if (![UNGROUPED, UNPAIRED].includes(entryStatus)) {
             participantMap[participantId].draws[drawId] = definedAttributes(
               {
+                qualifyingSeeding,
                 entryPosition,
                 entryStatus,
+                mainSeeding,
                 eventId,
                 ranking,
                 drawId,
@@ -256,11 +285,20 @@ export function getParticipantEntries({
                     scaleNames,
                     eventType,
                   });
+                  const mainSeeding =
+                    mainSeedingMap?.[individualParticiapntId]?.seedValue ||
+                    mainSeedingMap?.[individualParticiapntId]?.seedNumber;
+                  const qualifyingSeeding =
+                    qualifyingSeedingMap?.[individualParticiapntId]
+                      ?.seedValue ||
+                    qualifyingSeedingMap?.[individualParticiapntId]?.seedNumber;
                   participantMap[individualParticiapntId].events[eventId] =
                     definedAttributes(
                       {
+                        qualifyingSeeding,
                         entryPosition,
                         entryStatus,
+                        mainSeeding,
                         ranking,
                         eventId,
                         drawId,
@@ -279,8 +317,10 @@ export function getParticipantEntries({
           qualifyingPositionAssignments,
           qualifyingSeedAssignments,
           mainPositionAssignments,
+          qualifyingSeedingMap,
           mainSeedAssignments,
           orderedStructureIds,
+          mainSeedingMap,
           flightNumber,
           drawSize,
           // qualifyingDrawSize,
@@ -376,6 +416,7 @@ function processSides({
           if (!participantMap[participantId].draws[drawId]) {
             participantMap[participantId].draws[drawId] = {
               // entryStatus, // this would be entryStatus of TEAM
+              // add positions played in lineUp collections
               drawId,
             };
           }
