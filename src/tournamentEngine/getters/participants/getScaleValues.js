@@ -1,15 +1,20 @@
 import { unique } from '../../../utilities';
 
-import { RANKING, RATING, SCALE } from '../../../constants/scaleConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  RANKING,
+  RATING,
+  SCALE,
+  SEEDING,
+} from '../../../constants/scaleConstants';
 
 export function getScaleValues({ participant }) {
   const scaleItems = participant.timeItems?.filter(
     ({ itemType }) =>
       itemType?.startsWith(SCALE) &&
-      [RANKING, RATING].includes(itemType.split('.')[1])
+      [RANKING, RATING, SEEDING].includes(itemType.split('.')[1])
   );
-  const scales = { ratings: {}, rankings: {} };
+  const scales = { ratings: {}, rankings: {}, seedings: {} };
 
   if (scaleItems?.length) {
     const latestScaleItem = (scaleType) =>
@@ -28,7 +33,13 @@ export function getScaleValues({ participant }) {
       const scaleItem = latestScaleItem(itemType);
       if (scaleItem) {
         const [, type, format, scaleName] = scaleItem.itemType.split('.');
-        const scaleType = type === RANKING ? 'rankings' : 'ratings';
+        const scaleType =
+          type === SEEDING
+            ? 'seedings'
+            : type === RANKING
+            ? 'rankings'
+            : 'ratings';
+
         if (!scales[scaleType][format]) scales[scaleType][format] = [];
         scales[scaleType][format].push({
           scaleValue: scaleItem.itemValue,
