@@ -1,7 +1,7 @@
 import { findTournamentExtension } from '../../governors/queryGovernor/extensionQueries';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
-// import { utilities } from '../../..';
+import { utilities } from '../../..';
 import fs from 'fs';
 
 import { DOUBLES_EVENT } from '../../../constants/eventConstants';
@@ -104,14 +104,15 @@ it('can identify winningParticipants and map WTN and ranking', () => {
 
   expect(personEntryReports.length).toEqual(participants.length);
 
-  /*
-  console.log('STRUCTURE REPORT');
-  console.log(utilities.JSON2CSV(structureReport));
-  console.log('ENTRY STATUS REPORTS');
-  console.log(utilities.JSON2CSV(entryStatusReports));
-  console.log('PERSON ENTRY REPORTS');
-  console.log(utilities.JSON2CSV(personEntryReports));
-  */
+  // dummy condition
+  if (!personEntryReports.length) {
+    console.log('STRUCTURE REPORT');
+    console.log(utilities.JSON2CSV(structureReport));
+    console.log('ENTRY STATUS REPORTS');
+    console.log(utilities.JSON2CSV(entryStatusReports));
+    console.log('PERSON ENTRY REPORTS');
+    console.log(utilities.JSON2CSV(personEntryReports));
+  }
 
   expect(structureReport.map((r) => r.pctNoRating)).toEqual([0, 0, 100]);
   expect(Object.keys(structureReport[0])).toEqual([
