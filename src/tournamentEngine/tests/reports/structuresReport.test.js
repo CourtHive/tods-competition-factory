@@ -1,11 +1,12 @@
 import { findTournamentExtension } from '../../governors/queryGovernor/extensionQueries';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
-import { utilities } from '../../..';
+// import { utilities } from '../../..';
 import fs from 'fs';
 
 import { DOUBLES_EVENT } from '../../../constants/eventConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
+import { instanceCount } from '../../../utilities';
 
 const sourcePath = './src/global/testHarness';
 const filenames = fs
@@ -44,6 +45,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
       eventName: `WTN 14-19 SINGLES`,
       category: { ratingType: 'WTN', ratingMin: 14, ratingMax: 19.99 },
       generate: true,
+      seedsCount: 2,
       drawSize: 4,
     },
     {
@@ -51,6 +53,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
       category: { ratingType: 'WTN', ratingMin: 14, ratingMax: 19.99 },
       eventType: DOUBLES_EVENT,
       generate: true,
+      seedsCount: 2,
       drawSize: 4,
     },
     {
@@ -98,16 +101,84 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     withScaleValues: true,
     withEvents: true,
   });
-  console.log(participants[0].timeItems);
-  console.log(participants[0].rankings);
-  console.log(participants[0].events[0]);
 
   expect(personEntryReports.length).toEqual(participants.length);
 
+  /*
   console.log('STRUCTURE REPORT');
   console.log(utilities.JSON2CSV(structureReport));
   console.log('ENTRY STATUS REPORTS');
   console.log(utilities.JSON2CSV(entryStatusReports));
   console.log('PERSON ENTRY REPORTS');
   console.log(utilities.JSON2CSV(personEntryReports));
+  */
+
+  expect(structureReport.map((r) => r.pctNoRating)).toEqual([0, 0, 100]);
+  expect(Object.keys(structureReport[0])).toEqual([
+    'tournamentId',
+    'levelOrder',
+    'sectionCode',
+    'districtCode',
+    'eventId',
+    'eventType',
+    'category',
+    'categoryName',
+    'ageCategoryCode',
+    'flightNumber',
+    'drawId',
+    'drawType',
+    'stage',
+    'winningPersonId',
+    'winningPersonWTNrating',
+    'winningPersonWTNconfidence',
+    'winningPerson2Id',
+    'winningPerson2WTNrating',
+    'winningPerson2WTNconfidence',
+    'pctNoRating',
+    'matchUpFormat',
+    'pctInitialMatchUpFormat',
+    'matchUpsCount',
+    'tieFormatDesc',
+    'tieFormatName',
+    'avgConfidence',
+    'avgWTN',
+  ]);
+  expect(Object.keys(entryStatusReports[0])).toEqual([
+    'eventId',
+    'CONFIRMED_count',
+    'CONFIRMED_pct',
+    'DIRECT_ACCEPTANCE_count',
+    'DIRECT_ACCEPTANCE_pct',
+    'FEED_IN_count',
+    'FEED_IN_pct',
+    'JUNIOR_EXEMPT_count',
+    'JUNIOR_EXEMPT_pct',
+    'LUCKY_LOSER_count',
+    'LUCKY_LOSER_pct',
+    'QUALIFIER_count',
+    'QUALIFIER_pct',
+    'ORGANISER_ACCEPTANCE_count',
+    'ORGANISER_ACCEPTANCE_pct',
+    'SPECIAL_EXEMPT_count',
+    'SPECIAL_EXEMPT_pct',
+    'WILDCARD_count',
+    'WILDCARD_pct',
+  ]);
+
+  expect(
+    instanceCount(personEntryReports.map((r) => r.mainSeeding).filter(Boolean))
+  ).toEqual({ 1: 4, 2: 4 });
+  expect(Object.keys(personEntryReports[0])).toEqual([
+    'participantId',
+    'tournamentId',
+    'eventId',
+    'drawId',
+    'entryStatus',
+    'personId',
+    'wtnRating',
+    'confidence',
+    'ranking',
+    'mainSeeding',
+    'qualifyingSeeding',
+  ]);
 });
