@@ -19,7 +19,7 @@ export function entryStatusReport({ tournamentRecord }) {
     withScaleValues: true,
     withEvents: true, // so that event rankings will be present
     tournamentRecord,
-    // withDraws: true,
+    withDraws: true,
   });
 
   const nonTeamMatchUps = allTournamentMatchUps({
@@ -36,6 +36,28 @@ export function entryStatusReport({ tournamentRecord }) {
   const personEntryReports = {};
   const entryStatusReports = {};
   const eventReports = {};
+
+  const pushEntryReport = ({ id, entry, eventId, eventType }) => {
+    const { qualifyingSeeding, mainSeeding, entryStatus, drawId } = entry;
+
+    if (!personEntryReports[id]) personEntryReports[id] = [];
+
+    const { participant, events } = participantMap[id];
+    const entryDetailsWTN = getDetailsWTN({ participant, eventType });
+    const ranking = events?.[eventId]?.ranking;
+
+    personEntryReports[id].push({
+      participantId: id,
+      tournamentId,
+      eventId,
+      drawId,
+      entryStatus,
+      ...entryDetailsWTN,
+      ranking,
+      mainSeeding,
+      qualifyingSeeding,
+    });
+  };
 
   // Who was in a draw and how they got there...
   for (const event of tournamentRecord.events || []) {
@@ -68,10 +90,18 @@ export function entryStatusReport({ tournamentRecord }) {
           )
           .map(({ entryStatus, participantId }) => {
             countEntryStatus(entryStatus);
+
+            const mainSeeding =
+              participantMap[participantId]?.draws?.[drawId]?.mainSeeding;
+            const qualifyingSeeding =
+              participantMap[participantId]?.draws?.[drawId]?.qualifyingSeeding;
+
             return {
+              qualifyingSeeding,
               participantId,
-              drawId,
               entryStatus,
+              mainSeeding,
+              drawId,
             };
           });
       }
@@ -98,50 +128,23 @@ export function entryStatusReport({ tournamentRecord }) {
 
       // add entry details into personEntryReports
       for (const entry of entries) {
-        const { participantId, entryStatus, drawId } = entry;
+        const { participantId } = entry;
         for (const individualParticipantId of participantEntriesMap[
           participantId
         ].individualParticipantIds) {
-          if (!personEntryReports[individualParticipantId])
-            personEntryReports[individualParticipantId] = [];
-
-          const { participant, events } =
-            participantMap[individualParticipantId];
-          const entryDetailsWTN = getDetailsWTN({ participant, eventType });
-          const ranking = events?.[eventId]?.ranking;
-
-          personEntryReports[individualParticipantId].push({
-            participantId: individualParticipantId,
-            tournamentId,
+          pushEntryReport({
+            id: individualParticipantId,
+            eventType,
             eventId,
-            drawId,
-            entryStatus,
-            ...entryDetailsWTN,
-            ranking,
+            entry,
           });
         }
       }
     } else {
       // add entry details into personEntryReports
       for (const entry of entries) {
-        const { participantId, entryStatus, drawId } = entry;
-
-        if (!personEntryReports[participantId])
-          personEntryReports[participantId] = [];
-
-        const { participant, events } = participantMap[participantId];
-        const entryDetailsWTN = getDetailsWTN({ participant, eventType });
-        const ranking = events?.[eventId]?.ranking;
-
-        personEntryReports[participantId].push({
-          participantId,
-          tournamentId,
-          eventId,
-          drawId,
-          entryStatus,
-          ...entryDetailsWTN,
-          ranking,
-        });
+        const { participantId } = entry;
+        pushEntryReport({ id: participantId, entry, eventId, eventType });
       }
     }
 
