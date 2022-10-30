@@ -68,6 +68,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     { name: 'sectionCode', value: '123' },
   ];
   const participantsProfile = {
+    participantsCount: 100,
     withScaleValues: true,
     personExtensions,
   };
@@ -92,17 +93,32 @@ it('can identify winningParticipants and map WTN and ranking', () => {
   expect(structureReport.length).toEqual(drawProfiles.length);
 
   // event analytics
-  const { eventReports, personEntryReports, entryStatusReports } =
-    tournamentEngine.entryStatusReport();
+  const {
+    tournamentEntryReport,
+    entryStatusReports,
+    personEntryReports,
+    eventReports,
+  } = tournamentEngine.entryStatusReport();
   expect(eventReports.length).toEqual(drawProfiles.length);
 
-  const { participants } = tournamentEngine.getParticipants({
-    participantFilters: { participantTypes: [INDIVIDUAL] },
-    withScaleValues: true,
-    withEvents: true,
-  });
+  const { participants: individualParticipants } =
+    tournamentEngine.getParticipants({
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+      withScaleValues: true,
+      withEvents: true,
+    });
+  const individualParticipantsWithEvents = individualParticipants.filter(
+    ({ events }) => events.length
+  );
 
-  expect(personEntryReports.length).toEqual(participants.length);
+  expect(
+    tournamentEntryReport.nonParticipatingEntriesCount +
+      personEntryReports.length
+  ).toEqual(individualParticipants.length);
+
+  expect(personEntryReports.length).toEqual(
+    individualParticipantsWithEvents.length
+  );
 
   // dummy condition
   if (!personEntryReports.length) {

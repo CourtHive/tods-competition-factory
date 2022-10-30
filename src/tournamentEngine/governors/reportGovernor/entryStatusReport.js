@@ -4,7 +4,9 @@ import { getDetailsWTN } from './getDetailsWTN';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
+import { WITHDRAW_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { DOUBLES_EVENT } from '../../../constants/eventConstants';
 import {
   DOUBLES_MATCHUP,
@@ -35,6 +37,7 @@ export function entryStatusReport({ tournamentRecord }) {
     )
   );
 
+  const withDrawnParticipantIds = [];
   const personEntryReports = {};
   const entryStatusReports = {};
   const eventReports = {};
@@ -47,6 +50,8 @@ export function entryStatusReport({ tournamentRecord }) {
     const { participant, events } = participantMap[id];
     const entryDetailsWTN = getDetailsWTN({ participant, eventType });
     const ranking = events?.[eventId]?.ranking;
+
+    if (entryStatus === WITHDRAW_PARTICIPANT) withDrawnParticipantIds.push(id);
 
     personEntryReports[id].push({
       participantId: id,
@@ -181,8 +186,18 @@ export function entryStatusReport({ tournamentRecord }) {
     };
   }
 
-  // const nonParticipatingEntries = Object.values(participantMap).filter(Boolean);
-  const tournamentEntryReport = { tournamentId };
+  const nonParticipatingParticipants = Object.values(participantMap)
+    .filter(
+      ({ participant }) =>
+        participant.participantType === INDIVIDUAL &&
+        !nonTeamEnteredParticipantIds.includes(participant.participantId)
+    )
+    .map(({ participant }) => participant.participantId);
+
+  const tournamentEntryReport = {
+    nonParticipatingEntriesCount: nonParticipatingParticipants.length,
+    tournamentId,
+  };
 
   return {
     entryStatusReports: Object.values(entryStatusReports).flat(),
