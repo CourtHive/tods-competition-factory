@@ -145,6 +145,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     'avgWTN',
   ]);
   expect(Object.keys(entryStatusReports[0])).toEqual([
+    'tournamentId',
     'eventId',
     'CONFIRMED_count',
     'CONFIRMED_pct',
