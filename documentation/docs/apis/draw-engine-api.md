@@ -29,6 +29,7 @@ drawEngine.addDrawEntry({
   entryStage, // optional - stage into which participantIds have been entered; defaults to MAIN
   entryStatus, // optional - defaults to DIRECT_ACCEPTANCE
   entryPosition, // optional - used to order entries, e.g. { entryPosition: 1 } for 1st alternate
+  ignoreStageSpace, // optional boolean to disable checking available positions
 });
 ```
 
