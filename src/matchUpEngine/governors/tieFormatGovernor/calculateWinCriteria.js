@@ -33,7 +33,7 @@ export function calculateWinCriteria({
       continue;
     } else if (collectionValue) {
       valueTotal += collectionValue;
-    } else if (collectionValueProfiles) {
+    } else if (collectionValueProfiles?.length) {
       for (const collectionValueProfile of collectionValueProfiles) {
         valueTotal += collectionValueProfile.matchUpValue;
       }
