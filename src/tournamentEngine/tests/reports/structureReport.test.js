@@ -16,7 +16,7 @@ const filenames = fs
   .filter((filename) => filename.indexOf('.tods.json') > 0);
 
 it.skip.each(filenames)(
-  'can generate structureReport for all tournamentRecords in testHarness',
+  'can generate structureReports for all tournamentRecords in testHarness',
   (filename) => {
     const tournamentRecord = JSON.parse(
       fs.readFileSync(`./src/global/testHarness/${filename}`, 'UTF-8')
@@ -32,10 +32,10 @@ it.skip.each(filenames)(
       })?.extension?.value;
 
       if (sectionCode && districtCode) {
-        const structureReport = getStructureReports({
+        const structureReports = getStructureReports({
           tournamentRecord,
         });
-        console.log({ structureReport });
+        console.log({ structureReports });
       }
     }
   }
@@ -91,7 +91,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
 
   // structure analytics
   tournamentEngine.setState(tournamentRecord);
-  const { structureReport, eventStructureReport } =
+  const { structureReports, eventStructureReports } =
     tournamentEngine.getStructureReports({
       extensionProfiles: [
         { name: 'level', label: 'levelOrder', accessor: 'level.orderIndex' },
@@ -99,8 +99,8 @@ it('can identify winningParticipants and map WTN and ranking', () => {
         { name: 'sectionCode' },
       ],
     });
-  expect(structureReport.length).toEqual(drawProfiles.length);
-  eventStructureReport.forEach((report) => {
+  expect(structureReports.length).toEqual(drawProfiles.length);
+  eventStructureReports.forEach((report) => {
     expect(report.totalPositionManipulations).toEqual(0);
     expect(report.generatedDrawsCount).toEqual(1);
     expect(report.drawDeletionsCount).toEqual(0);
@@ -146,15 +146,15 @@ it('can identify winningParticipants and map WTN and ranking', () => {
   // dummy condition
   if (!personEntryReports.length) {
     console.log('STRUCTURE REPORT');
-    console.log(utilities.JSON2CSV(structureReport));
+    console.log(utilities.JSON2CSV(structureReports));
     console.log('ENTRY STATUS REPORTS');
     console.log(utilities.JSON2CSV(entryStatusReports));
     console.log('PERSON ENTRY REPORTS');
     console.log(utilities.JSON2CSV(personEntryReports));
   }
 
-  expect(structureReport.map((r) => r.pctNoRating)).toEqual([0, 0, 100]);
-  expect(Object.keys(structureReport[0]).sort()).toEqual([
+  expect(structureReports.map((r) => r.pctNoRating)).toEqual([0, 0, 100]);
+  expect(Object.keys(structureReports[0]).sort()).toEqual([
     'ageCategoryCode',
     'avgConfidence',
     'avgWTN',

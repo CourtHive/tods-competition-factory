@@ -24,7 +24,7 @@ export function getStructureReports({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_ID };
 
-  const eventStructureReport = {};
+  const eventStructureReports = {};
 
   const extensionValues = Object.assign(
     {},
@@ -60,7 +60,7 @@ export function getStructureReports({
       const drawDeletionsCount =
         extensions?.find((x) => x.name === DRAW_DELETIONS)?.value?.length || 0;
 
-      eventStructureReport[eventId] = {
+      eventStructureReports[eventId] = {
         totalPositionManipulations: 0,
         maxPositionManipulations: 0,
         generatedDrawsCount: 0,
@@ -102,15 +102,15 @@ export function getStructureReports({
               });
               const manipulationsCount = positionManipulations?.length || 0;
 
-              eventStructureReport[eventId].totalPositionManipulations +=
+              eventStructureReports[eventId].totalPositionManipulations +=
                 manipulationsCount;
-              eventStructureReport[eventId].generatedDrawsCount += 1;
+              eventStructureReports[eventId].generatedDrawsCount += 1;
 
               if (
                 manipulationsCount >
-                eventStructureReport[eventId].maxPositionManipulations
+                eventStructureReports[eventId].maxPositionManipulations
               )
-                eventStructureReport[eventId].maxPositionManipulations =
+                eventStructureReports[eventId].maxPositionManipulations =
                   manipulationsCount;
 
               return structures
@@ -218,8 +218,8 @@ export function getStructureReports({
   );
 
   return {
-    eventStructureReport: Object.values(eventStructureReport),
-    structureReport: tournamentStructureData,
+    eventStructureReports: Object.values(eventStructureReports),
+    structureReports: tournamentStructureData,
   };
 }
 
