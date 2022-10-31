@@ -45,8 +45,12 @@ export function getAvgWTN({ matchUps, drawId, eventId, eventType }) {
     },
     { totalWTN: 0, totalConfidence: 0 }
   );
-  const avgWTN = wtnTotals.totalWTN / wtnRatings.length;
-  const avgConfidence = wtnTotals.totalConfidence / wtnRatings.length;
+  const avgWTN = wtnRatings?.length
+    ? wtnTotals.totalWTN / wtnRatings.length
+    : 0;
+  const avgConfidence = wtnRatings?.length
+    ? wtnTotals.totalConfidence / wtnRatings.length
+    : 0;
 
   const matchUpsCount = Object.values(matchUpFormats).reduce(
     (p, c) => (p += c || 0),

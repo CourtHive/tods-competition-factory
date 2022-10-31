@@ -1,12 +1,12 @@
 import { findTournamentExtension } from '../../governors/queryGovernor/extensionQueries';
 import tournamentEngine from '../../../tournamentEngine/sync';
+import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { utilities } from '../../..';
 import fs from 'fs';
 
 import { DOUBLES_EVENT } from '../../../constants/eventConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { instanceCount } from '../../../utilities';
 
 const sourcePath = './src/global/testHarness';
 const filenames = fs
@@ -68,6 +68,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     { name: 'sectionCode', value: '123' },
   ];
   const participantsProfile = {
+    participantsCount: 100,
     withScaleValues: true,
     personExtensions,
   };
@@ -88,21 +89,42 @@ it('can identify winningParticipants and map WTN and ranking', () => {
 
   // structure analytics
   tournamentEngine.setState(tournamentRecord);
-  const structureReport = tournamentEngine.structureReport();
+  const { structureReport, eventStructureReport } =
+    tournamentEngine.getStructureReport();
   expect(structureReport.length).toEqual(drawProfiles.length);
-
-  // event analytics
-  const { eventReports, personEntryReports, entryStatusReports } =
-    tournamentEngine.entryStatusReport();
-  expect(eventReports.length).toEqual(drawProfiles.length);
-
-  const { participants } = tournamentEngine.getParticipants({
-    participantFilters: { participantTypes: [INDIVIDUAL] },
-    withScaleValues: true,
-    withEvents: true,
+  eventStructureReport.forEach((report) => {
+    expect(report.totalPositionManipulations).toEqual(0);
+    expect(report.generatedDrawsCount).toEqual(1);
+    expect(report.drawDeletionsCount).toEqual(0);
   });
 
-  expect(personEntryReports.length).toEqual(participants.length);
+  // event analytics
+  const {
+    tournamentEntryReport,
+    entryStatusReports,
+    personEntryReports,
+    eventReports,
+  } = tournamentEngine.entryStatusReport();
+  expect(eventReports.length).toEqual(drawProfiles.length);
+
+  const { participants: individualParticipants } =
+    tournamentEngine.getParticipants({
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+      withScaleValues: true,
+      withEvents: true,
+    });
+  const individualParticipantsWithEvents = individualParticipants.filter(
+    ({ events }) => events.length
+  );
+
+  expect(
+    tournamentEntryReport.nonParticipatingEntriesCount +
+      personEntryReports.length
+  ).toEqual(individualParticipants.length);
+
+  expect(personEntryReports.length).toEqual(
+    individualParticipantsWithEvents.length
+  );
 
   // dummy condition
   if (!personEntryReports.length) {
@@ -115,38 +137,38 @@ it('can identify winningParticipants and map WTN and ranking', () => {
   }
 
   expect(structureReport.map((r) => r.pctNoRating)).toEqual([0, 0, 100]);
-  expect(Object.keys(structureReport[0])).toEqual([
-    'tournamentId',
-    'levelOrder',
-    'sectionCode',
-    'districtCode',
-    'eventId',
-    'eventType',
-    'category',
-    'categoryName',
+  expect(Object.keys(structureReport[0]).sort()).toEqual([
     'ageCategoryCode',
-    'flightNumber',
-    'drawId',
-    'drawType',
-    'stage',
-    'winningPersonId',
-    'winningPersonWTNrating',
-    'winningPersonWTNconfidence',
-    'winningPerson2Id',
-    'winningPerson2WTNrating',
-    'winningPerson2WTNconfidence',
-    'pctNoRating',
-    'matchUpFormat',
-    'pctInitialMatchUpFormat',
-    'matchUpsCount',
-    'tieFormatDesc',
-    'tieFormatName',
     'avgConfidence',
     'avgWTN',
-  ]);
-  expect(Object.keys(entryStatusReports[0])).toEqual([
-    'tournamentId',
+    'category',
+    'categoryName',
+    'districtCode',
+    'drawId',
+    'drawType',
     'eventId',
+    'eventType',
+    'flightNumber',
+    'levelOrder',
+    'matchUpFormat',
+    'matchUpsCount',
+    'pctInitialMatchUpFormat',
+    'pctNoRating',
+    'positionManipulations',
+    'sectionCode',
+    'stage',
+    'structureId',
+    'tieFormatDesc',
+    'tieFormatName',
+    'tournamentId',
+    'winningPerson2Id',
+    'winningPerson2WTNconfidence',
+    'winningPerson2WTNrating',
+    'winningPersonId',
+    'winningPersonWTNconfidence',
+    'winningPersonWTNrating',
+  ]);
+  expect(Object.keys(entryStatusReports[0]).sort()).toEqual([
     'CONFIRMED_count',
     'CONFIRMED_pct',
     'DIRECT_ACCEPTANCE_count',
@@ -157,30 +179,32 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     'JUNIOR_EXEMPT_pct',
     'LUCKY_LOSER_count',
     'LUCKY_LOSER_pct',
-    'QUALIFIER_count',
-    'QUALIFIER_pct',
     'ORGANISER_ACCEPTANCE_count',
     'ORGANISER_ACCEPTANCE_pct',
+    'QUALIFIER_count',
+    'QUALIFIER_pct',
     'SPECIAL_EXEMPT_count',
     'SPECIAL_EXEMPT_pct',
     'WILDCARD_count',
     'WILDCARD_pct',
+    'eventId',
+    'tournamentId',
   ]);
 
   expect(
     instanceCount(personEntryReports.map((r) => r.mainSeeding).filter(Boolean))
   ).toEqual({ 1: 4, 2: 4 });
-  expect(Object.keys(personEntryReports[0])).toEqual([
-    'participantId',
-    'tournamentId',
-    'eventId',
+  expect(Object.keys(personEntryReports[0]).sort()).toEqual([
+    'confidence',
     'drawId',
     'entryStatus',
-    'personId',
-    'wtnRating',
-    'confidence',
-    'ranking',
+    'eventId',
     'mainSeeding',
+    'participantId',
+    'personId',
     'qualifyingSeeding',
+    'ranking',
+    'tournamentId',
+    'wtnRating',
   ]);
 });

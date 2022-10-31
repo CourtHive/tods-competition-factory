@@ -5,15 +5,24 @@ import { getDetailsWTN } from './getDetailsWTN';
 import { getAvgWTN } from './getAvgWTN';
 
 import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';
+import {
+  AUDIT_POSITION_ACTIONS,
+  DRAW_DELETIONS,
+  FLIGHT_PROFILE,
+} from '../../../constants/extensionConstants';
 import {
   CONSOLATION,
   MAIN,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
 
-export function structureReport({ firstFlightOnly = true, tournamentRecord }) {
+export function getStructureReport({
+  firstFlightOnly = true,
+  tournamentRecord,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_ID };
+
+  const eventStructureReport = {};
 
   const level = findTournamentExtension({ name: 'level', tournamentRecord })
     ?.extension?.value?.level;
@@ -42,6 +51,17 @@ export function structureReport({ firstFlightOnly = true, tournamentRecord }) {
         [flight.drawId]: flight.flightNumber,
       }));
       const flightMap = flightNumbers && Object.assign({}, ...flightNumbers);
+      const drawDeletionsCount =
+        extensions?.find((x) => x.name === DRAW_DELETIONS)?.value?.length || 0;
+
+      eventStructureReport[eventId] = {
+        totalPositionManipulations: 0,
+        maxPositionManipulations: 0,
+        generatedDrawsCount: 0,
+        drawDeletionsCount,
+        tournamentId,
+        eventId,
+      };
 
       return (
         // check whether to only pull data from initial flights & ignore all other flights
@@ -52,23 +72,40 @@ export function structureReport({ firstFlightOnly = true, tournamentRecord }) {
           )
           .flatMap(
             ({
-              structures,
-              drawId,
-              drawType,
               matchUpFormat: drawMatchUpFormat,
               tieFormat: drawTieFormat,
+              extensions,
+              structures,
+              drawType,
+              drawId,
             }) => {
               const {
-                avgWTN,
                 avgConfidence,
                 matchUpFormats,
                 matchUpsCount,
                 pctNoRating,
+                avgWTN,
               } = getAvgWTN({
                 eventType,
                 matchUps,
                 drawId,
               });
+
+              const positionManipulations = getPositionManipulations({
+                extensions,
+              });
+              const manipulationsCount = positionManipulations?.length || 0;
+
+              eventStructureReport[eventId].totalPositionManipulations +=
+                manipulationsCount;
+              eventStructureReport[eventId].generatedDrawsCount += 1;
+
+              if (
+                manipulationsCount >
+                eventStructureReport[eventId].maxPositionManipulations
+              )
+                eventStructureReport[eventId].maxPositionManipulations =
+                  manipulationsCount;
 
               return structures
                 ?.filter(
@@ -95,9 +132,9 @@ export function structureReport({ firstFlightOnly = true, tournamentRecord }) {
                   const winnerDetails = (
                     individualParticipants?.map(
                       ({ person, ratings, rankings }) => ({
-                        person,
-                        ratings,
                         rankings,
+                        ratings,
+                        person,
                       })
                     ) || [{ person, ratings, rankings }]
                   ).filter((x) => x?.person);
@@ -107,8 +144,8 @@ export function structureReport({ firstFlightOnly = true, tournamentRecord }) {
                   });
                   const {
                     personId: winningPersonId,
-                    wtnRating: wtnRating1,
                     confidence: confidence1,
+                    wtnRating: wtnRating1,
                   } = winningPersonWTN || {};
 
                   const winningPerson2WTN = getDetailsWTN({
@@ -117,8 +154,8 @@ export function structureReport({ firstFlightOnly = true, tournamentRecord }) {
                   });
                   const {
                     personId: winningPerson2Id,
-                    wtnRating: wtnRating2,
                     confidence: confidence2,
+                    wtnRating: wtnRating2,
                   } = winningPerson2WTN || {};
 
                   const { ageCategoryCode, categoryName, subType } =
@@ -133,18 +170,24 @@ export function structureReport({ firstFlightOnly = true, tournamentRecord }) {
                   const { tieFormatName, tieFormatDesc } =
                     getTieFormatDesc(tieFormat);
 
+                  const manipulations =
+                    positionManipulations?.filter(
+                      (action) => action.structureId === s.structureId
+                    )?.length || 0;
+
                   return {
                     tournamentId,
                     levelOrder,
                     sectionCode,
                     districtCode,
                     eventId,
+                    structureId: s.structureId,
+                    drawId,
                     eventType,
                     category: subType,
                     categoryName,
                     ageCategoryCode,
                     flightNumber: flightMap[drawId],
-                    drawId,
                     drawType,
                     stage: s.stage,
                     winningPersonId,
@@ -153,6 +196,7 @@ export function structureReport({ firstFlightOnly = true, tournamentRecord }) {
                     winningPerson2Id,
                     winningPerson2WTNrating: wtnRating2,
                     winningPerson2WTNconfidence: confidence2,
+                    positionManipulations: manipulations,
                     pctNoRating,
                     matchUpFormat,
                     pctInitialMatchUpFormat,
@@ -169,5 +213,15 @@ export function structureReport({ firstFlightOnly = true, tournamentRecord }) {
     }
   );
 
-  return tournamentStructureData;
+  return {
+    eventStructureReport: Object.values(eventStructureReport),
+    structureReport: tournamentStructureData,
+  };
+}
+
+function getPositionManipulations({ extensions }) {
+  const positionManipulations = extensions
+    ?.find(({ name }) => name === AUDIT_POSITION_ACTIONS)
+    ?.value?.slice(1);
+  return positionManipulations;
 }

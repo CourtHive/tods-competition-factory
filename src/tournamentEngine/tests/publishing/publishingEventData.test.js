@@ -203,8 +203,8 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   expect(structureNames).toEqual(['Group 1', 'Group 2', 'Group 3', 'Group 4']);
 
   result = tournamentEngine.deleteDrawDefinitions({
-    eventId,
     drawIds: [drawId],
+    eventId,
   });
   expect(result.success).toEqual(true);
 });
