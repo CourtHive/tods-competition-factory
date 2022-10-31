@@ -131,7 +131,6 @@ it.each(scenario)(
       expect(seedNumbersWithByes).toEqual(scenario.seedNumbersWithByes);
       expect(seedNumbersWithByes.length).toEqual(expectedByesCount);
     } else {
-      // console.log(positionAssignments.filter(({ bye }) => bye));
       if (seedNumbersWithByes.length === expectedByesCount) {
         console.log('seeds were randomly placed with BYEs');
       } else {
