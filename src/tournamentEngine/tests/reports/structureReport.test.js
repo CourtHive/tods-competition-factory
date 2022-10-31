@@ -1,5 +1,5 @@
 import { findTournamentExtension } from '../../governors/queryGovernor/extensionQueries';
-import { getStructureReport } from '../../governors/reportGovernor/structureReport';
+import { getStructureReports } from '../../governors/reportGovernor/structureReport';
 import tournamentEngine from '../../sync';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
@@ -32,7 +32,7 @@ it.skip.each(filenames)(
       })?.extension?.value;
 
       if (sectionCode && districtCode) {
-        const structureReport = getStructureReport({
+        const structureReport = getStructureReports({
           tournamentRecord,
         });
         console.log({ structureReport });
@@ -92,7 +92,13 @@ it('can identify winningParticipants and map WTN and ranking', () => {
   // structure analytics
   tournamentEngine.setState(tournamentRecord);
   const { structureReport, eventStructureReport } =
-    tournamentEngine.getStructureReport();
+    tournamentEngine.getStructureReports({
+      extensionProfiles: [
+        { name: 'level', label: 'levelOrder', accessor: 'level.orderIndex' },
+        { name: 'districtCode' },
+        { name: 'sectionCode' },
+      ],
+    });
   expect(structureReport.length).toEqual(drawProfiles.length);
   eventStructureReport.forEach((report) => {
     expect(report.totalPositionManipulations).toEqual(0);
@@ -106,7 +112,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     entryStatusReports,
     personEntryReports,
     eventReports,
-  } = tournamentEngine.entryStatusReport();
+  } = tournamentEngine.getEntryStatusReports();
   expect(eventReports.length).toEqual(drawProfiles.length);
 
   const { participants: individualParticipants } =
