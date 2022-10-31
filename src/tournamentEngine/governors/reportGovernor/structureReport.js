@@ -150,6 +150,8 @@ export function getStructureReports({
                   });
                   const {
                     personId: winningPersonId,
+                    personOtherId: winningPersonOtherId,
+                    tennisId: winningPersonTennisId,
                     confidence: confidence1,
                     wtnRating: wtnRating1,
                   } = winningPersonWTN || {};
@@ -160,6 +162,8 @@ export function getStructureReports({
                   });
                   const {
                     personId: winningPerson2Id,
+                    personOtherId: winningPerson2OtherId,
+                    tennisId: winningPerson2TennisId,
                     confidence: confidence2,
                     wtnRating: wtnRating2,
                   } = winningPerson2WTN || {};
@@ -195,9 +199,13 @@ export function getStructureReports({
                     drawType,
                     stage: s.stage,
                     winningPersonId,
+                    winningPersonOtherId,
+                    winningPersonTennisId,
                     winningPersonWTNrating: wtnRating1,
                     winningPersonWTNconfidence: confidence1,
                     winningPerson2Id,
+                    winningPerson2OtherId,
+                    winningPerson2TennisId,
                     winningPerson2WTNrating: wtnRating2,
                     winningPerson2WTNconfidence: confidence2,
                     positionManipulations: manipulations,
