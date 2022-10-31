@@ -65,6 +65,7 @@ export function generateDrawDefinition(params) {
     ignoreAllowedDrawTypes,
     voluntaryConsolation,
     policyDefinitions,
+    ignoreStageSpace,
     tournamentRecord,
     qualifyingOnly,
     tieFormatName,
@@ -423,6 +424,7 @@ export function generateDrawDefinition(params) {
       const entryData = {
         ...entry,
         entryStage: entry.entryStage || MAIN,
+        ignoreStageSpace,
         drawDefinition,
       };
       const result = addDrawEntry(entryData);
