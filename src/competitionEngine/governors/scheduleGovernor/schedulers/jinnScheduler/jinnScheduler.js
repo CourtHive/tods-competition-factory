@@ -1,5 +1,4 @@
 import { assignMatchUpVenue } from '../../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
-import { addTournamentTimeItem } from '../../../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import { addMatchUpScheduledTime } from '../../../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
 import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
@@ -8,10 +7,10 @@ import { checkDependendantTiming } from '../../scheduleMatchUps/checkDependentTi
 import { checkRequestConflicts } from '../../scheduleMatchUps/checkRequestConflicts';
 import { processNextMatchUps } from '../../scheduleMatchUps/processNextMatchUps';
 import { getVenueSchedulingDetails } from '../utils/getVenueSchedulingDetails';
-import { addNotice, getTopics } from '../../../../../global/state/globalState';
 import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
 import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
+import { auditAutoScheduling } from '../auditAutoSccheduling';
 import {
   extractDate,
   sameDay,
@@ -21,7 +20,6 @@ import {
 
 import { SUCCESS } from '../../../../../constants/resultConstants';
 import { TOTAL } from '../../../../../constants/scheduleConstants';
-import { AUDIT } from '../../../../../constants/topicConstants';
 
 export function jinnScheduler({
   schedulingProfileModifications,
@@ -384,18 +382,8 @@ export function jinnScheduler({
     overLimitMatchUpIds,
     requestConflicts,
   };
-  const { topics } = getTopics();
-  if (topics.includes(AUDIT)) {
-    addNotice({ topic: AUDIT, payload: autoSchedulingAudit });
-  } else {
-    const timeItem = {
-      itemType: 'autoSchedulingAudit',
-      itemValue: autoSchedulingAudit,
-    };
-    for (const tournamentRecord of Object.values(tournamentRecords)) {
-      addTournamentTimeItem({ tournamentRecord, timeItem });
-    }
-  }
+
+  auditAutoScheduling({ tournamentRecords, autoSchedulingAudit });
 
   return {
     ...SUCCESS,
