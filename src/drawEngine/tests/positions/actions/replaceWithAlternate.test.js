@@ -92,7 +92,7 @@ it('can recognize valid ALTERNATES', () => {
 
   // now test structureReport
   const { structureReport, eventStructureReport } =
-    tournamentEngine.getStructureReport();
+    tournamentEngine.getStructureReports();
   const report = structureReport.find((s) => s.structureId === structureId);
   expect(report.positionManipulations).toEqual(2);
   expect(report.avgWTN).toEqual(0);

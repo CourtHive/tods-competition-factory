@@ -72,7 +72,7 @@ it('can notify subscriber when drawDefinitions are deleted', () => {
   expect(deletions.value.length).toEqual(1);
 
   // now test structureReport
-  const { eventStructureReport } = tournamentEngine.getStructureReport();
+  const { eventStructureReport } = tournamentEngine.getStructureReports();
   const eventReport = eventStructureReport.find((e) => e.eventId === eventId);
   expect(eventReport.totalPositionManipulations).toEqual(0);
   expect(eventReport.generatedDrawsCount).toEqual(0);
