@@ -14,7 +14,7 @@ import {
   SINGLES_MATCHUP,
 } from '../../../constants/matchUpTypes';
 
-export function entryStatusReport({ tournamentRecord }) {
+export function getEntryStatusReports({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const tournamentId = tournamentRecord.tournamentId;

@@ -1,6 +1,6 @@
-import { entryStatusReport } from './entryStatusReport';
-import { getStructureReport } from './structureReport';
+import { getEntryStatusReports } from './entryStatusReport';
+import { getStructureReports } from './structureReport';
 
-const reportGovernor = { getStructureReport, entryStatusReport };
+const reportGovernor = { getStructureReports, getEntryStatusReports };
 
 export default reportGovernor;

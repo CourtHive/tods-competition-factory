@@ -1,4 +1,5 @@
 import { findTournamentExtension } from '../queryGovernor/extensionQueries';
+import { getAccessorValue } from '../../../utilities/getAccessorValue';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
 import { getTieFormatDesc } from './getTieFormatDescription';
 import { getDetailsWTN } from './getDetailsWTN';
@@ -16,25 +17,30 @@ import {
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
 
-export function getStructureReport({
+export function getStructureReports({
   firstFlightOnly = true,
+  extensionProfiles,
   tournamentRecord,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_ID };
 
   const eventStructureReport = {};
 
-  const level = findTournamentExtension({ name: 'level', tournamentRecord })
-    ?.extension?.value?.level;
-  const levelOrder = level?.orderIndex;
-  const districtCode = findTournamentExtension({
-    name: 'districtCode',
-    tournamentRecord,
-  })?.extension?.value;
-  const sectionCode = findTournamentExtension({
-    name: 'sectionCode',
-    tournamentRecord,
-  })?.extension?.value;
+  const extensionValues = Object.assign(
+    {},
+    ...(extensionProfiles || []).map(({ name, label, accessor }) => {
+      const element = findTournamentExtension({
+        tournamentRecord,
+        name,
+      })?.extension?.value;
+
+      const value = accessor
+        ? getAccessorValue({ element, accessor })?.value
+        : element;
+
+      return { [label || name]: value };
+    })
+  );
 
   const tournamentId = tournamentRecord?.tournamentId;
   const participantsProfile = { withScaleValues: true };
@@ -176,10 +182,8 @@ export function getStructureReport({
                     )?.length || 0;
 
                   return {
+                    ...extensionValues,
                     tournamentId,
-                    levelOrder,
-                    sectionCode,
-                    districtCode,
                     eventId,
                     structureId: s.structureId,
                     drawId,

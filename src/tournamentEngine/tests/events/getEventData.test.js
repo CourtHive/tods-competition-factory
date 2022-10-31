@@ -7,7 +7,6 @@ import { COMPASS } from '../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../constants/participantConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
-import { expect } from 'vitest';
 
 it('returns eventData with expected drawsData', () => {
   const drawProfiles = [{ drawSize: 4, drawType: COMPASS }];
