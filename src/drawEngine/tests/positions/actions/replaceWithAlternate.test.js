@@ -27,7 +27,7 @@ it('can recognize valid ALTERNATES', () => {
   tournamentEngine.setState(tournamentRecord);
 
   let {
-    event: { entries },
+    event: { entries, eventId },
     drawDefinition: { structures },
   } = tournamentEngine.getEvent({ drawId });
   const structureId = structures[0].structureId;
@@ -89,6 +89,17 @@ it('can recognize valid ALTERNATES', () => {
   );
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.drawPositions.includes(drawPosition)).toEqual(true);
+
+  // now test structureReport
+  const { structureReport, eventStructureReport } =
+    tournamentEngine.getStructureReports();
+  const report = structureReport.find((s) => s.structureId === structureId);
+  expect(report.positionManipulations).toEqual(2);
+  expect(report.avgWTN).toEqual(0);
+  const eventReport = eventStructureReport.find((e) => e.eventId === eventId);
+  expect(eventReport.totalPositionManipulations).toEqual(2);
+  expect(eventReport.generatedDrawsCount).toEqual(1);
+  expect(eventReport.drawDeletionsCount).toEqual(0);
 });
 
 it('can extend Alternates to DIRECT_ACCEPTANCE participants in other flights', () => {
