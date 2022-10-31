@@ -1,12 +1,18 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import { mocksEngine, tournamentEngine } from '../../../..';
 
-import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
+import {
+  DOUBLES,
+  SINGLES,
+  TEAM_MATCHUP,
+} from '../../../../constants/matchUpTypes';
 import { TEAM } from '../../../../constants/eventConstants';
 import {
   FIRST_ROUND_LOSER_CONSOLATION,
   MAIN,
+  ROUND_ROBIN,
 } from '../../../../constants/drawDefinitionConstants';
+import { expect } from 'vitest';
 
 it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   const {
@@ -529,4 +535,84 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
     (matchUp) => matchUp.matchUpId === teamMatchUpId
   );
   expect(teamMatchUp.tieMatchUps.length).toEqual(12);
+});
+
+it('properly calculates valueGoal when adding collectionDefinition with tiebreak match', () => {
+  const tieFormatName = 'G14 Singles';
+  const tieFormat = {
+    collectionDefinitions: [
+      {
+        collectionName: 'G14 Doubles',
+        collectionOrder: 1,
+        matchUpType: 'DOUBLES',
+        collectionId: 'c738fa5f-93a6-45c1-8bff-f17dbe1c1976',
+        matchUpFormat: 'SET1-S:4/TB7',
+        matchUpCount: 1,
+        matchUpValue: 1,
+        collectionValueProfiles: [],
+      },
+      {
+        collectionName: 'G14 Singles',
+        collectionOrder: 2,
+        matchUpType: 'SINGLES',
+        collectionId: '631742d0-ff2e-46a2-af84-25952cbfcc71',
+        matchUpFormat: 'SET1-S:4/TB7',
+        matchUpCount: 3,
+        matchUpValue: 1,
+        collectionValueProfiles: [],
+      },
+    ],
+    winCriteria: {
+      valueGoal: 3,
+    },
+    tieFormatName,
+  };
+
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      { drawSize: 4, drawType: ROUND_ROBIN, eventType: TEAM, tieFormat },
+    ],
+  });
+  let result = tournamentEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+
+  let { event } = tournamentEngine.getEvent({ drawId });
+  expect(event.tieFormat.tieFormatName).toEqual(tieFormatName);
+  expect(event.tieFormat.winCriteria).toEqual({ valueGoal: 3 });
+
+  let [matchUp] = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM_MATCHUP] },
+  }).matchUps;
+
+  let params = {
+    collectionDefinition: {
+      collectionId: '1d9791e8-61b5-47a9-b1b2-ab79b2753109',
+      collectionName: 'Tiebreak Match',
+      collectionOrder: 3,
+      matchUpValue: 1,
+      matchUpFormat: 'SET1-S:TB10',
+      matchUpType: 'SINGLES',
+      matchUpCount: 1,
+      processCodes: ['RANKING.IGNORE'],
+    },
+    tieFormatName: 'added tie collection',
+    matchUpId: matchUp.matchUpId,
+    updateInProgressMatchUps: true,
+    drawId,
+  };
+  result = tournamentEngine.addCollectionDefinition(params);
+  expect(result.tieFormat.winCriteria).toEqual({ valueGoal: 3 });
+
+  params = {
+    collectionId: '1d9791e8-61b5-47a9-b1b2-ab79b2753109',
+    tieFormatName: 'remove tie collection',
+    updateInProgressMatchUps: true,
+    matchUpId: matchUp.matchUpId,
+    drawId,
+  };
+  result = tournamentEngine.removeCollectionDefinition(params);
+  expect(result.tieFormat.winCriteria).toEqual({ valueGoal: 3 });
 });
