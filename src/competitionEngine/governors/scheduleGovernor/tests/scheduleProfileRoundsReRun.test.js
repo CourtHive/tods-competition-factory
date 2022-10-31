@@ -4,6 +4,7 @@ import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import { AUTO_SCHEDULING_AUDIT } from '../../../../constants/auditConstants';
 
 it('can auto schedule Round Robin draws respecting daily limits', () => {
   const venueProfiles = [
@@ -96,4 +97,10 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
     []
   );
   expect(roundNumbers).toEqual([1, 2]);
+
+  const { tournamentRecord: tournament } = tournamentEngine.getState();
+  const schedulingTimeItem = tournament.timeItems.filter(
+    ({ itemType }) => itemType === AUTO_SCHEDULING_AUDIT
+  );
+  expect(schedulingTimeItem.length).toEqual(2);
 });
