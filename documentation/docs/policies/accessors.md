@@ -10,7 +10,7 @@ const accessor = 'individualParticipants.person.nationalityCode';
 
 // an array of nationalityCodes can be accessed from a PAIR participant
 const participant = {
-  participantType: PAIR,
   individualParticipants: [{ person: { nationalityCode } }],
+  participantType: PAIR,
 };
 ```

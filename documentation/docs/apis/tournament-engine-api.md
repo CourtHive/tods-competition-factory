@@ -1686,6 +1686,31 @@ const { error, entries, seedsCount, stageEntries } =
 
 ---
 
+## getEntryStatusReports
+
+```js
+const {
+  tournamentEntryReport: {
+    nonParticipatingEntriesCount,
+    individualParticipantsCount,
+    drawDefinitionsCount,
+    eventsCount,
+  },
+  entryStatusReports, // count and pct of total for all entryStatuses for each event
+  personEntryReports, // person entryStatus, ranking, seeding, WTN and confidence for each event
+  eventReports, // primarily internal use - entries for each event with main/qualifying seeding
+} = tournamentEngine.getEntryStatusReports();
+```
+
+To export reports as CSV:
+
+```js
+const entryStatusCSV = utilities.JSON2CSV(entryStatusReports);
+const personEntryCSV = utilities.JSON2CSV(personEntryReports);
+```
+
+---
+
 ## getEvent
 
 Get an event by either its `eventId` or by a `drawId` which it contains. Also returns `drawDefinition` if a `drawId` is specified.
@@ -2119,6 +2144,41 @@ const { tournamentRecord } = tournamentEngine.getState({
   convertExtensions, // optional - convert extensions to '_' prefixed attributes
   removeExtensions, // optional - strip all extensions out of tournamentRecord
 });
+```
+
+---
+
+## getStructureReports
+
+Returns details of all structures within a tournamentRecord, as well as aggregated details per event.
+
+`tournamentId, eventId, structureId, drawId, eventType, category: subType, categoryName, ageCategoryCode, flightNumber, drawType, stage, winningPersonId, winningPersonWTNrating, winningPersonWTNconfidence, winningPerson2Id, winningPerson2WTNrating, winningPerson2WTNconfidence, positionManipulations, pctNoRating, matchUpFormat, pctInitialMatchUpFormat, matchUpsCount, tieFormatDesc, tieFormatName, avgConfidence, avgWTN`
+
+```js
+const {
+  structureReport,
+  eventStructureReport: {
+    totalPositionManipulations,
+    maxPositionManipulations,
+    generatedDrawsCount,
+    drawDeletionsCount,
+  },
+} = tournamentEngine.getStructureReports({
+  firstFlightOnly, // boolean - defaults to true - only return first flight when multiple drawDefinitions per event
+  extensionProfiles: [
+    {
+      name, // extension name
+      label, // label for generated attribute
+      accessor, // dot-notation accessor for extension value, e.g. 'attribute.attribute'
+    },
+  ],
+});
+```
+
+To export report as CSV:
+
+```js
+const csv = utilities.JSON2CSV(structureReport);
 ```
 
 ---
