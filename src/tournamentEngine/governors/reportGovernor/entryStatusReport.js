@@ -8,6 +8,7 @@ import { WITHDRAW_PARTICIPANT } from '../../../constants/positionActionConstants
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { DOUBLES_EVENT } from '../../../constants/eventConstants';
+import { COMPETITOR } from '../../../constants/participantRoles';
 import {
   DOUBLES_MATCHUP,
   SINGLES_MATCHUP,
@@ -41,6 +42,8 @@ export function entryStatusReport({ tournamentRecord }) {
   const personEntryReports = {};
   const entryStatusReports = {};
   const eventReports = {};
+
+  let drawDefinitionsCount = 0;
 
   const pushEntryReport = ({ id, entry, eventId, eventType }) => {
     const { qualifyingSeeding, mainSeeding, entryStatus, drawId } = entry;
@@ -78,6 +81,8 @@ export function entryStatusReport({ tournamentRecord }) {
     const { drawDefinitions = [], eventType, eventId } = event;
     const entries = drawDefinitions.flatMap(
       ({ drawId, entries, structures = [] }) => {
+        drawDefinitionsCount += 1;
+
         // build up assignedParticipantIds array
         // to ensure that only assignedParticipants are included
         const stageFilter = ({ stage, stageSequence }) =>
@@ -186,16 +191,22 @@ export function entryStatusReport({ tournamentRecord }) {
     };
   }
 
-  const nonParticipatingParticipants = Object.values(participantMap)
+  const individualParticipants = Object.values(participantMap).filter(
+    ({ participant: { participantType, participantRole } }) =>
+      participantType === INDIVIDUAL && participantRole === COMPETITOR
+  );
+  const nonParticipatingParticipants = individualParticipants
     .filter(
       ({ participant }) =>
-        participant.participantType === INDIVIDUAL &&
         !nonTeamEnteredParticipantIds.includes(participant.participantId)
     )
     .map(({ participant }) => participant.participantId);
 
   const tournamentEntryReport = {
     nonParticipatingEntriesCount: nonParticipatingParticipants.length,
+    individualParticipantsCount: individualParticipants.length,
+    eventsCount: Object.values(eventReports).length,
+    drawDefinitionsCount,
     tournamentId,
   };
 

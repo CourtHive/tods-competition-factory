@@ -1,5 +1,6 @@
 import { findTournamentExtension } from '../../governors/queryGovernor/extensionQueries';
-import tournamentEngine from '../../../tournamentEngine/sync';
+import { getStructureReport } from '../../governors/reportGovernor/structureReport';
+import tournamentEngine from '../../sync';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { utilities } from '../../..';
@@ -7,6 +8,7 @@ import fs from 'fs';
 
 import { DOUBLES_EVENT } from '../../../constants/eventConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
+import { COMPETITOR } from '../../../constants/participantRoles';
 
 const sourcePath = './src/global/testHarness';
 const filenames = fs
@@ -30,7 +32,7 @@ it.skip.each(filenames)(
       })?.extension?.value;
 
       if (sectionCode && districtCode) {
-        const structureReport = tournamentEngine.structureReport({
+        const structureReport = getStructureReport({
           tournamentRecord,
         });
         console.log({ structureReport });
@@ -109,13 +111,22 @@ it('can identify winningParticipants and map WTN and ranking', () => {
 
   const { participants: individualParticipants } =
     tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
+      participantFilters: {
+        participantTypes: [INDIVIDUAL],
+        participantRoles: [COMPETITOR],
+      },
       withScaleValues: true,
       withEvents: true,
     });
   const individualParticipantsWithEvents = individualParticipants.filter(
     ({ events }) => events.length
   );
+
+  expect(tournamentEntryReport.individualParticipantsCount).toEqual(
+    individualParticipants.length
+  );
+  expect(tournamentEntryReport.drawDefinitionsCount).toEqual(3);
+  expect(tournamentEntryReport.eventsCount).toEqual(3);
 
   expect(
     tournamentEntryReport.nonParticipatingEntriesCount +
