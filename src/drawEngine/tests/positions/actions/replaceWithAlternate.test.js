@@ -90,13 +90,13 @@ it('can recognize valid ALTERNATES', () => {
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.drawPositions.includes(drawPosition)).toEqual(true);
 
-  // now test structureReport
-  const { structureReport, eventStructureReport } =
+  // now test structureReports
+  const { structureReports, eventStructureReports } =
     tournamentEngine.getStructureReports();
-  const report = structureReport.find((s) => s.structureId === structureId);
+  const report = structureReports.find((s) => s.structureId === structureId);
   expect(report.positionManipulations).toEqual(2);
   expect(report.avgWTN).toEqual(0);
-  const eventReport = eventStructureReport.find((e) => e.eventId === eventId);
+  const eventReport = eventStructureReports.find((e) => e.eventId === eventId);
   expect(eventReport.totalPositionManipulations).toEqual(2);
   expect(eventReport.generatedDrawsCount).toEqual(1);
   expect(eventReport.drawDeletionsCount).toEqual(0);

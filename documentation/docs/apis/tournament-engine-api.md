@@ -2157,8 +2157,8 @@ Returns details of all structures within a tournamentRecord, as well as aggregat
 
 ```js
 const {
-  structureReport,
-  eventStructureReport: {
+  structureReports,
+  eventStructureReports: {
     totalPositionManipulations,
     maxPositionManipulations,
     generatedDrawsCount,
@@ -2179,7 +2179,7 @@ const {
 To export report as CSV:
 
 ```js
-const csv = utilities.JSON2CSV(structureReport);
+const csv = utilities.JSON2CSV(structureReports);
 ```
 
 ---
