@@ -1,10 +1,11 @@
+import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { structureSort } from '../../../forge/transform';
 import { definedAttributes } from '../../../utilities';
 import { getFlightProfile } from '../getFlightProfile';
 import { allEventMatchUps } from '../matchUpsGetter';
 
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { UNGROUPED, UNPAIRED } from '../../../constants/entryStatusConstants';
+import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { PAIR } from '../../../constants/participantConstants';
 
@@ -58,7 +59,7 @@ export function getParticipantEntries({
       ].filter(Boolean);
 
       for (const entry of entries) {
-        const { entryStatus, participantId, entryPosition } = entry;
+        const { entryStatus, entryStage, participantId, entryPosition } = entry;
 
         // get event ranking
         const ranking = getRanking({ eventType, scaleNames, participantId });
@@ -68,6 +69,7 @@ export function getParticipantEntries({
             {
               entryPosition,
               entryStatus,
+              entryStage,
               ranking,
               eventId,
             },
@@ -77,13 +79,12 @@ export function getParticipantEntries({
           );
         }
 
+        const individualParticipantIds =
+          participantMap[participantId].participant.individualParticipantIds ||
+          [];
         // add details for individualParticipantIds for TEAM/PAIR events
-        if (
-          participantMap[participantId].participant.individualParticipantIds
-            ?.length
-        ) {
-          for (const individualParticiapntId of participantMap[participantId]
-            .participant.individualParticipantIds) {
+        if (individualParticipantIds?.length) {
+          for (const individualParticiapntId of individualParticipantIds) {
             if (!participantMap[individualParticiapntId].events[eventId]) {
               // get event ranking
               const ranking = getRanking({
@@ -96,6 +97,7 @@ export function getParticipantEntries({
                   {
                     entryPosition,
                     entryStatus,
+                    entryStage,
                     ranking,
                     eventId,
                   },
@@ -109,7 +111,167 @@ export function getParticipantEntries({
       }
     }
 
-    if (withMatchUps || withOpponents || withTeamMatchUps) {
+    if (withDraws) {
+      const getSeedingMap = (assignments) =>
+        assignments
+          ? Object.assign(
+              {},
+              ...assignments.map((assignment) => ({
+                [assignment.participantId]: assignment,
+              }))
+            )
+          : undefined;
+
+      for (const drawDefinition of drawDefinitions) {
+        const { drawId, entries, structures = [] } = drawDefinition;
+        const flightNumber = flights?.find(
+          (flight) => flight.drawId === drawId
+        )?.flightNumber;
+
+        const scaleNames = [
+          category?.categoryName,
+          category?.ageCategoryCode,
+        ].filter(Boolean);
+
+        // used in rankings pipeline.
+        // the structures in which a particpant particpates are ordered
+        // to enable differentiation for Points-per-round and points-per-win
+        const orderedStructureIds = (drawDefinition.structures || [])
+          .sort((a, b) => structureSort(a, b))
+          .map(({ structureId, structures }) => {
+            return [
+              structureId,
+              ...(structures || []).map(({ structureId }) => structureId),
+            ];
+          })
+          .flat(Infinity);
+
+        let qualifyingPositionAssignments,
+          qualifyingSeedAssignments,
+          mainPositionAssignments,
+          mainSeedAssignments,
+          drawSize = 0;
+
+        // build up assignedParticipantIds array
+        // to ensure that only assignedParticipants are included
+        const assignedParticipantIds = structures
+          .filter(
+            ({ stage, stageSequence }) =>
+              (stage === MAIN && stageSequence === 1) || stage === QUALIFYING
+          )
+          .flatMap((structure) => {
+            const { seedAssignments, stageSequence, stage } = structure;
+            const { positionAssignments } = getPositionAssignments({
+              structure,
+            });
+
+            if (stage === MAIN) {
+              drawSize = positionAssignments?.length || 0;
+              mainPositionAssignments = positionAssignments;
+              mainSeedAssignments = seedAssignments;
+            } else if (stageSequence === 1) {
+              qualifyingPositionAssignments = positionAssignments;
+              qualifyingSeedAssignments = seedAssignments;
+            }
+            return positionAssignments;
+          })
+          .map(({ participantId }) => participantId)
+          .filter(Boolean);
+
+        const mainSeedingMap = getSeedingMap(mainSeedAssignments);
+        const qualifyingSeedingMap = getSeedingMap(qualifyingSeedAssignments);
+
+        const relevantEntries = entries.filter(
+          ({ entryStage, participantId }) =>
+            entryStage === MAIN &&
+            assignedParticipantIds.includes(participantId)
+        );
+
+        for (const entry of relevantEntries) {
+          const { entryStatus, entryPosition, participantId } = entry;
+
+          // get draw ranking
+          const ranking = getRanking({ eventType, scaleNames, participantId });
+          const mainSeeding =
+            mainSeedingMap?.[participantId]?.seedValue ||
+            mainSeedingMap?.[participantId]?.seedNumber;
+          const qualifyingSeeding =
+            qualifyingSeedingMap?.[participantId]?.seedValue ||
+            qualifyingSeedingMap?.[participantId]?.seedNumber;
+
+          if (![UNGROUPED, UNPAIRED].includes(entryStatus)) {
+            participantMap[participantId].draws[drawId] = definedAttributes(
+              {
+                qualifyingSeeding,
+                entryPosition,
+                entryStatus,
+                mainSeeding,
+                eventId,
+                ranking,
+                drawId,
+              },
+              false,
+              false,
+              true
+            );
+
+            const individualParticipantIds =
+              participantMap[participantId].participant
+                .individualParticipantIds || [];
+            // add for individualParticipantIds when participantType is TEAM/PAIR
+            if (individualParticipantIds?.length) {
+              for (const individualParticiapntId of individualParticipantIds) {
+                if (!participantMap[individualParticiapntId].events[eventId]) {
+                  // get event ranking
+                  const ranking = getRanking({
+                    participantId: individualParticiapntId,
+                    scaleNames,
+                    eventType,
+                  });
+                  const mainSeeding =
+                    mainSeedingMap?.[individualParticiapntId]?.seedValue ||
+                    mainSeedingMap?.[individualParticiapntId]?.seedNumber;
+                  const qualifyingSeeding =
+                    qualifyingSeedingMap?.[individualParticiapntId]
+                      ?.seedValue ||
+                    qualifyingSeedingMap?.[individualParticiapntId]?.seedNumber;
+                  participantMap[individualParticiapntId].events[eventId] =
+                    definedAttributes(
+                      {
+                        qualifyingSeeding,
+                        entryPosition,
+                        entryStatus,
+                        mainSeeding,
+                        ranking,
+                        eventId,
+                        drawId,
+                      },
+                      false,
+                      false,
+                      true
+                    );
+                }
+              }
+            }
+          }
+        }
+
+        derivedDrawInfo[drawId] = {
+          qualifyingPositionAssignments,
+          qualifyingSeedAssignments,
+          mainPositionAssignments,
+          qualifyingSeedingMap,
+          mainSeedAssignments,
+          orderedStructureIds,
+          mainSeedingMap,
+          flightNumber,
+          drawSize,
+          // qualifyingDrawSize,
+        };
+      }
+    }
+
+    if (withMatchUps || withOpponents || withTeamMatchUps || withDraws) {
       const eventMatchUps = allEventMatchUps({
         nextMatchUps: scheduleAnalysis || withPotentialMatchUps,
         afterRecoveryTimes: scheduleAnalysis,
@@ -163,170 +325,6 @@ export function getParticipantEntries({
       }
       matchUps.push(...eventMatchUps);
     }
-
-    if (withDraws) {
-      const getSeedingMap = (assignments) =>
-        assignments
-          ? Object.assign(
-              {},
-              ...assignments.map((assignment) => ({
-                [assignment.participantId]: assignment,
-              }))
-            )
-          : undefined;
-
-      for (const drawDefinition of drawDefinitions) {
-        const { drawId, entries, structures = [] } = drawDefinition;
-        const flightNumber = flights?.find(
-          (flight) => flight.drawId === drawId
-        )?.flightNumber;
-
-        const scaleNames = [
-          category?.categoryName,
-          category?.ageCategoryCode,
-        ].filter(Boolean);
-
-        // used in rankings pipeline.
-        // the structures in which a particpant particpates are ordered
-        // to enable differentiation for Points-per-round and points-per-win
-        const orderedStructureIds = (drawDefinition.structures || [])
-          .sort((a, b) => structureSort(a, b))
-          .map(({ structureId, structures }) => {
-            return [
-              structureId,
-              ...(structures || []).map(({ structureId }) => structureId),
-            ];
-          })
-          .flat(Infinity);
-
-        let qualifyingPositionAssignments,
-          qualifyingSeedAssignments,
-          mainPositionAssignments,
-          mainSeedAssignments,
-          drawSize = 0;
-
-        // build up assignedParticipantIds array
-        // to ensure that only assignedParticipants are included
-        const assignedParticipantIds = structures
-          .filter(
-            ({ stage, stageSequence }) =>
-              (stage === MAIN && stageSequence === 1) || stage === QUALIFYING
-          )
-          .flatMap(
-            ({
-              positionAssignments,
-              seedAssignments,
-              stageSequence,
-              stage,
-            }) => {
-              if (stage === MAIN) {
-                drawSize = positionAssignments?.length || 0;
-                mainPositionAssignments = positionAssignments;
-                mainSeedAssignments = seedAssignments;
-              } else if (stageSequence === 1) {
-                qualifyingPositionAssignments = positionAssignments;
-                qualifyingSeedAssignments = seedAssignments;
-              }
-              return positionAssignments;
-            }
-          )
-          .map(({ participantId }) => participantId)
-          .filter(Boolean);
-
-        const mainSeedingMap = getSeedingMap(mainSeedAssignments);
-        const qualifyingSeedingMap = getSeedingMap(qualifyingSeedAssignments);
-
-        const relevantEntries = entries.filter(
-          ({ entryStage, participantId }) =>
-            entryStage === MAIN &&
-            assignedParticipantIds.includes(participantId)
-        );
-
-        for (const entry of relevantEntries) {
-          const { entryStatus, entryPosition, participantId } = entry;
-
-          // get draw ranking
-          const ranking = getRanking({ eventType, scaleNames, participantId });
-          const mainSeeding =
-            mainSeedingMap?.[participantId]?.seedValue ||
-            mainSeedingMap?.[participantId]?.seedNumber;
-          const qualifyingSeeding =
-            qualifyingSeedingMap?.[participantId]?.seedValue ||
-            qualifyingSeedingMap?.[participantId]?.seedNumber;
-
-          if (![UNGROUPED, UNPAIRED].includes(entryStatus)) {
-            participantMap[participantId].draws[drawId] = definedAttributes(
-              {
-                qualifyingSeeding,
-                entryPosition,
-                entryStatus,
-                mainSeeding,
-                eventId,
-                ranking,
-                drawId,
-              },
-              false,
-              false,
-              true
-            );
-
-            // add for individualParticipantIds when participantType is TEAM/PAIR
-            if (
-              participantMap[participantId].participant.individualParticipantIds
-                ?.length
-            ) {
-              for (const individualParticiapntId of participantMap[
-                participantId
-              ].participant.individualParticipantIds) {
-                if (!participantMap[individualParticiapntId].events[eventId]) {
-                  // get event ranking
-                  const ranking = getRanking({
-                    participantId: individualParticiapntId,
-                    scaleNames,
-                    eventType,
-                  });
-                  const mainSeeding =
-                    mainSeedingMap?.[individualParticiapntId]?.seedValue ||
-                    mainSeedingMap?.[individualParticiapntId]?.seedNumber;
-                  const qualifyingSeeding =
-                    qualifyingSeedingMap?.[individualParticiapntId]
-                      ?.seedValue ||
-                    qualifyingSeedingMap?.[individualParticiapntId]?.seedNumber;
-                  participantMap[individualParticiapntId].events[eventId] =
-                    definedAttributes(
-                      {
-                        qualifyingSeeding,
-                        entryPosition,
-                        entryStatus,
-                        mainSeeding,
-                        ranking,
-                        eventId,
-                        drawId,
-                      },
-                      false,
-                      false,
-                      true
-                    );
-                }
-              }
-            }
-          }
-        }
-
-        derivedDrawInfo[drawId] = {
-          qualifyingPositionAssignments,
-          qualifyingSeedAssignments,
-          mainPositionAssignments,
-          qualifyingSeedingMap,
-          mainSeedAssignments,
-          orderedStructureIds,
-          mainSeedingMap,
-          flightNumber,
-          drawSize,
-          // qualifyingDrawSize,
-        };
-      }
-    }
   }
 
   return { participantMap, derivedDrawInfo, matchUps };
@@ -337,10 +335,12 @@ function processSides({
   participantMap,
   withOpponents,
   withMatchUps,
+  withEvents,
   withDraws,
 
   tieWinningSide,
   matchUpTieId,
+  matchUpSides,
   matchUpType,
   winningSide,
   matchUpId,
@@ -380,11 +380,32 @@ function processSides({
       }
     };
 
+    const addPartnerParticiapntId = (element, partnerParticipantId) => {
+      if (element) {
+        if (!element.partnerParticipantIds) element.partnerParticipantIds = [];
+        if (!element.partnerParticipantIds.includes(partnerParticipantId))
+          element.partnerParticipantIds.push(partnerParticipantId);
+      }
+    };
+
+    const addPartner = ({ participantId, partnerParticipantId }) => {
+      if (withDraws)
+        addPartnerParticiapntId(
+          participantMap[participantId]?.draws?.[drawId],
+          partnerParticipantId
+        );
+      if (withEvents) {
+        addPartnerParticiapntId(
+          participantMap[participantId]?.events?.[eventId],
+          partnerParticipantId
+        );
+      }
+    };
     if (participantId) {
       addMatchUp(participantId);
 
-      if (withOpponents) {
-        const opponentParticipantId = opponents?.[sideNumber];
+      const opponentParticipantId = opponents?.[sideNumber];
+      if (withOpponents && opponentParticipantId) {
         participantMap[participantId].opponents[opponentParticipantId] = {
           participantId: opponentParticipantId,
           matchUpId,
@@ -395,32 +416,49 @@ function processSides({
 
       const isPair =
         participantMap[participantId].participant.participantType === PAIR;
-
-      if (isPair) {
-        const individualParticipantIds =
-          participantMap[participantId].participant.individualParticipantIds ||
-          [];
-        individualParticipantIds.forEach(addMatchUp);
-      }
+      const individualParticipantIds =
+        participantMap[participantId].participant.individualParticipantIds ||
+        [];
 
       if (matchUpTieId) {
         if (withTeamMatchUps) {
-          participantMap[participantId].matchUps[matchUpTieId] = {
-            participantWon: tieWinningSide === sideNumber,
-            matchUpType: TEAM_MATCHUP,
-            matchUpId: matchUpTieId,
-            sideNumber,
-          };
+          const addTeamMatchUp = (participantId) =>
+            (participantMap[participantId].matchUps[matchUpTieId] = {
+              participantWon: tieWinningSide === sideNumber,
+              matchUpType: TEAM_MATCHUP,
+              matchUpId: matchUpTieId,
+              sideNumber,
+            });
+          addTeamMatchUp(participantId);
+          individualParticipantIds.forEach(addTeamMatchUp);
         }
+
         if (withDraws) {
           if (!participantMap[participantId].draws[drawId]) {
-            participantMap[participantId].draws[drawId] = {
-              // entryStatus, // this would be entryStatus of TEAM
-              // add positions played in lineUp collections
-              drawId,
-            };
+            const teamParticipantId = matchUpSides.find(
+              (s) => s.sideNumber === sideNumber
+            )?.participant?.participantId;
+            const teamEntryStatus =
+              participantMap[teamParticipantId]?.draws?.[drawId]?.entryStatus;
+
+            const addDrawData = (participantId) =>
+              (participantMap[participantId].draws[drawId] = {
+                entryStatus: teamEntryStatus,
+                // add positions played in lineUp collections
+                drawId,
+              });
+            addDrawData(participantId);
+            individualParticipantIds.forEach(addDrawData);
           }
         }
+      }
+
+      if (isPair) {
+        individualParticipantIds.forEach(addMatchUp);
+        individualParticipantIds.forEach((participantId, i) => {
+          const partnerParticipantId = individualParticipantIds[1 - i];
+          addPartner({ participantId, partnerParticipantId });
+        });
       }
     }
   }
