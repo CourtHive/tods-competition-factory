@@ -1,10 +1,11 @@
+import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { structureSort } from '../../../forge/transform';
 import { definedAttributes } from '../../../utilities';
 import { getFlightProfile } from '../getFlightProfile';
 import { allEventMatchUps } from '../matchUpsGetter';
 
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { UNGROUPED, UNPAIRED } from '../../../constants/entryStatusConstants';
+import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { PAIR } from '../../../constants/participantConstants';
 
@@ -109,61 +110,6 @@ export function getParticipantEntries({
       }
     }
 
-    if (withMatchUps || withOpponents || withTeamMatchUps) {
-      const eventMatchUps = allEventMatchUps({
-        nextMatchUps: scheduleAnalysis || withPotentialMatchUps,
-        afterRecoveryTimes: scheduleAnalysis,
-        policyDefinitions,
-        tournamentRecord,
-        inContext: true,
-        participantMap,
-        event,
-      })?.matchUps;
-
-      for (const matchUp of eventMatchUps) {
-        const {
-          tieMatchUps = [],
-          sides = [],
-          winningSide,
-          matchUpType,
-          matchUpId,
-          eventId,
-          drawId,
-        } = matchUp;
-        processSides({
-          ...withOpts,
-          winningSide,
-          matchUpType,
-          matchUpId,
-          eventId,
-          drawId,
-          sides,
-        });
-
-        for (const tieMatchUp of tieMatchUps) {
-          const {
-            winningSide: tieMatchUpWinningSide,
-            sides: tieMatchUpSides = [],
-            matchUpId: tieMatchUpId,
-            matchUpType,
-          } = tieMatchUp;
-          processSides({
-            ...withOpts,
-            winningSide: tieMatchUpWinningSide,
-            tieWinningSide: winningSide,
-            matchUpTieId: matchUpId,
-            matchUpId: tieMatchUpId,
-            sides: tieMatchUpSides,
-            matchUpSides: sides,
-            matchUpType,
-            eventId,
-            drawId,
-          });
-        }
-      }
-      matchUps.push(...eventMatchUps);
-    }
-
     if (withDraws) {
       const getSeedingMap = (assignments) =>
         assignments
@@ -212,24 +158,22 @@ export function getParticipantEntries({
             ({ stage, stageSequence }) =>
               (stage === MAIN && stageSequence === 1) || stage === QUALIFYING
           )
-          .flatMap(
-            ({
-              positionAssignments,
-              seedAssignments,
-              stageSequence,
-              stage,
-            }) => {
-              if (stage === MAIN) {
-                drawSize = positionAssignments?.length || 0;
-                mainPositionAssignments = positionAssignments;
-                mainSeedAssignments = seedAssignments;
-              } else if (stageSequence === 1) {
-                qualifyingPositionAssignments = positionAssignments;
-                qualifyingSeedAssignments = seedAssignments;
-              }
-              return positionAssignments;
+          .flatMap((structure) => {
+            const { seedAssignments, stageSequence, stage } = structure;
+            const { positionAssignments } = getPositionAssignments({
+              structure,
+            });
+
+            if (stage === MAIN) {
+              drawSize = positionAssignments?.length || 0;
+              mainPositionAssignments = positionAssignments;
+              mainSeedAssignments = seedAssignments;
+            } else if (stageSequence === 1) {
+              qualifyingPositionAssignments = positionAssignments;
+              qualifyingSeedAssignments = seedAssignments;
             }
-          )
+            return positionAssignments;
+          })
           .map(({ participantId }) => participantId)
           .filter(Boolean);
 
@@ -327,6 +271,61 @@ export function getParticipantEntries({
         };
       }
     }
+
+    if (withMatchUps || withOpponents || withTeamMatchUps || withDraws) {
+      const eventMatchUps = allEventMatchUps({
+        nextMatchUps: scheduleAnalysis || withPotentialMatchUps,
+        afterRecoveryTimes: scheduleAnalysis,
+        policyDefinitions,
+        tournamentRecord,
+        inContext: true,
+        participantMap,
+        event,
+      })?.matchUps;
+
+      for (const matchUp of eventMatchUps) {
+        const {
+          tieMatchUps = [],
+          sides = [],
+          winningSide,
+          matchUpType,
+          matchUpId,
+          eventId,
+          drawId,
+        } = matchUp;
+        processSides({
+          ...withOpts,
+          winningSide,
+          matchUpType,
+          matchUpId,
+          eventId,
+          drawId,
+          sides,
+        });
+
+        for (const tieMatchUp of tieMatchUps) {
+          const {
+            winningSide: tieMatchUpWinningSide,
+            sides: tieMatchUpSides = [],
+            matchUpId: tieMatchUpId,
+            matchUpType,
+          } = tieMatchUp;
+          processSides({
+            ...withOpts,
+            winningSide: tieMatchUpWinningSide,
+            tieWinningSide: winningSide,
+            matchUpTieId: matchUpId,
+            matchUpId: tieMatchUpId,
+            sides: tieMatchUpSides,
+            matchUpSides: sides,
+            matchUpType,
+            eventId,
+            drawId,
+          });
+        }
+      }
+      matchUps.push(...eventMatchUps);
+    }
   }
 
   return { participantMap, derivedDrawInfo, matchUps };
@@ -341,6 +340,7 @@ function processSides({
 
   tieWinningSide,
   matchUpTieId,
+  matchUpSides,
   matchUpType,
   winningSide,
   matchUpId,
@@ -414,8 +414,13 @@ function processSides({
         }
         if (withDraws) {
           if (!participantMap[participantId].draws[drawId]) {
+            const teamParticipantId = matchUpSides.find(
+              (s) => s.sideNumber === sideNumber
+            )?.participant?.participantId;
+            const teamEntryStatus =
+              participantMap[teamParticipantId]?.draws?.[drawId]?.entryStatus;
             participantMap[participantId].draws[drawId] = {
-              // entryStatus, // this would be entryStatus of TEAM
+              entryStatus: teamEntryStatus,
               // add positions played in lineUp collections
               drawId,
             };
