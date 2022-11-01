@@ -59,7 +59,7 @@ export function getParticipantEntries({
       ].filter(Boolean);
 
       for (const entry of entries) {
-        const { entryStatus, participantId, entryPosition } = entry;
+        const { entryStatus, entryStage, participantId, entryPosition } = entry;
 
         // get event ranking
         const ranking = getRanking({ eventType, scaleNames, participantId });
@@ -69,6 +69,7 @@ export function getParticipantEntries({
             {
               entryPosition,
               entryStatus,
+              entryStage,
               ranking,
               eventId,
             },
@@ -78,13 +79,12 @@ export function getParticipantEntries({
           );
         }
 
+        const individualParticipantIds =
+          participantMap[participantId].participant.individualParticipantIds ||
+          [];
         // add details for individualParticipantIds for TEAM/PAIR events
-        if (
-          participantMap[participantId].participant.individualParticipantIds
-            ?.length
-        ) {
-          for (const individualParticiapntId of participantMap[participantId]
-            .participant.individualParticipantIds) {
+        if (individualParticipantIds?.length) {
+          for (const individualParticiapntId of individualParticipantIds) {
             if (!participantMap[individualParticiapntId].events[eventId]) {
               // get event ranking
               const ranking = getRanking({
@@ -97,6 +97,7 @@ export function getParticipantEntries({
                   {
                     entryPosition,
                     entryStatus,
+                    entryStage,
                     ranking,
                     eventId,
                   },
@@ -214,14 +215,12 @@ export function getParticipantEntries({
               true
             );
 
+            const individualParticipantIds =
+              participantMap[participantId].participant
+                .individualParticipantIds || [];
             // add for individualParticipantIds when participantType is TEAM/PAIR
-            if (
-              participantMap[participantId].participant.individualParticipantIds
-                ?.length
-            ) {
-              for (const individualParticiapntId of participantMap[
-                participantId
-              ].participant.individualParticipantIds) {
+            if (individualParticipantIds?.length) {
+              for (const individualParticiapntId of individualParticipantIds) {
                 if (!participantMap[individualParticiapntId].events[eventId]) {
                   // get event ranking
                   const ranking = getRanking({
@@ -336,6 +335,7 @@ function processSides({
   participantMap,
   withOpponents,
   withMatchUps,
+  withEvents,
   withDraws,
 
   tieWinningSide,
@@ -380,11 +380,32 @@ function processSides({
       }
     };
 
+    const addPartnerParticiapntId = (element, partnerParticipantId) => {
+      if (element) {
+        if (!element.partnerParticipantIds) element.partnerParticipantIds = [];
+        if (!element.partnerParticipantIds.includes(partnerParticipantId))
+          element.partnerParticipantIds.push(partnerParticipantId);
+      }
+    };
+
+    const addPartner = ({ participantId, partnerParticipantId }) => {
+      if (withDraws)
+        addPartnerParticiapntId(
+          participantMap[participantId]?.draws?.[drawId],
+          partnerParticipantId
+        );
+      if (withEvents) {
+        addPartnerParticiapntId(
+          participantMap[participantId]?.events?.[eventId],
+          partnerParticipantId
+        );
+      }
+    };
     if (participantId) {
       addMatchUp(participantId);
 
-      if (withOpponents) {
-        const opponentParticipantId = opponents?.[sideNumber];
+      const opponentParticipantId = opponents?.[sideNumber];
+      if (withOpponents && opponentParticipantId) {
         participantMap[participantId].opponents[opponentParticipantId] = {
           participantId: opponentParticipantId,
           matchUpId,
@@ -395,23 +416,23 @@ function processSides({
 
       const isPair =
         participantMap[participantId].participant.participantType === PAIR;
-
-      if (isPair) {
-        const individualParticipantIds =
-          participantMap[participantId].participant.individualParticipantIds ||
-          [];
-        individualParticipantIds.forEach(addMatchUp);
-      }
+      const individualParticipantIds =
+        participantMap[participantId].participant.individualParticipantIds ||
+        [];
 
       if (matchUpTieId) {
         if (withTeamMatchUps) {
-          participantMap[participantId].matchUps[matchUpTieId] = {
-            participantWon: tieWinningSide === sideNumber,
-            matchUpType: TEAM_MATCHUP,
-            matchUpId: matchUpTieId,
-            sideNumber,
-          };
+          const addTeamMatchUp = (participantId) =>
+            (participantMap[participantId].matchUps[matchUpTieId] = {
+              participantWon: tieWinningSide === sideNumber,
+              matchUpType: TEAM_MATCHUP,
+              matchUpId: matchUpTieId,
+              sideNumber,
+            });
+          addTeamMatchUp(participantId);
+          individualParticipantIds.forEach(addTeamMatchUp);
         }
+
         if (withDraws) {
           if (!participantMap[participantId].draws[drawId]) {
             const teamParticipantId = matchUpSides.find(
@@ -419,13 +440,25 @@ function processSides({
             )?.participant?.participantId;
             const teamEntryStatus =
               participantMap[teamParticipantId]?.draws?.[drawId]?.entryStatus;
-            participantMap[participantId].draws[drawId] = {
-              entryStatus: teamEntryStatus,
-              // add positions played in lineUp collections
-              drawId,
-            };
+
+            const addDrawData = (participantId) =>
+              (participantMap[participantId].draws[drawId] = {
+                entryStatus: teamEntryStatus,
+                // add positions played in lineUp collections
+                drawId,
+              });
+            addDrawData(participantId);
+            individualParticipantIds.forEach(addDrawData);
           }
         }
+      }
+
+      if (isPair) {
+        individualParticipantIds.forEach(addMatchUp);
+        individualParticipantIds.forEach((participantId, i) => {
+          const partnerParticipantId = individualParticipantIds[1 - i];
+          addPartner({ participantId, partnerParticipantId });
+        });
       }
     }
   }
