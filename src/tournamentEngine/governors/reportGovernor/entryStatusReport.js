@@ -30,13 +30,17 @@ export function getEntryStatusReports({ tournamentRecord }) {
     tournamentRecord,
   }).matchUps;
 
-  const nonTeamEnteredParticipantIds = nonTeamMatchUps.flatMap(({ sides }) =>
-    sides.flatMap(({ participant }) =>
-      participant
-        ? participant.individualParticipantIds || [participant.participantId]
-        : []
+  const nonTeamEnteredParticipantIds = nonTeamMatchUps
+    .flatMap(({ sides, matchUpType }) =>
+      sides
+        .flatMap(({ participant, participantId }) =>
+          matchUpType === DOUBLES_MATCHUP
+            ? participant?.individualParticipantIds
+            : participant?.participantId || participantId
+        )
+        .filter(Boolean)
     )
-  );
+    .filter(Boolean);
 
   const withDrawnParticipantIds = [];
   const personEntryReports = {};
