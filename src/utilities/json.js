@@ -26,6 +26,9 @@ export function JSON2CSV(arrayOfJSON, config) {
   if (config && typeof config !== 'object') return INVALID_VALUES;
   const {
     includeTransoformAccessors,
+    includeHeaderRow = true,
+    onlyHeaderRow,
+
     columnAccessors = [],
     columnTransform = {},
     columnMap = {},
@@ -113,6 +116,8 @@ export function JSON2CSV(arrayOfJSON, config) {
     (key) => columnMap[key] || key
   );
 
+  if (onlyHeaderRow) return [mappedHeaderRow];
+
   const withDelimiter = (value) => `${delimiter}${value}${delimiter}`;
 
   const processRow = (row) => {
@@ -136,9 +141,11 @@ export function JSON2CSV(arrayOfJSON, config) {
 
   const rows = flattened.map(processRow);
 
-  return [mappedHeaderRow.map(withDelimiter).join(columnJoiner), ...rows].join(
-    rowJoiner
-  );
+  return includeHeaderRow
+    ? [mappedHeaderRow.map(withDelimiter).join(columnJoiner), ...rows].join(
+        rowJoiner
+      )
+    : rows.join(rowJoiner);
 }
 
 function flatten(obj, keyJoiner, path = []) {
