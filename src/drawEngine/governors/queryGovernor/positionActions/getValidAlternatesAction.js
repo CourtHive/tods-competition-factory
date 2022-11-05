@@ -1,4 +1,5 @@
 import { getFlightProfile } from '../../../../tournamentEngine/getters/getFlightProfile';
+import { getAllPositionedParticipantIds } from '../../../getters/positionsGetter';
 import { definedAttributes } from '../../../../utilities/objects';
 import { unique } from '../../../../utilities';
 
@@ -6,6 +7,7 @@ import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConsta
 import {
   CONSOLATION,
   MAIN,
+  QUALIFYING,
 } from '../../../../constants/drawDefinitionConstants';
 import {
   ALTERNATE_PARTICIPANT,
@@ -38,16 +40,30 @@ export function getValidAlternatesAction({
     appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS]?.otherFlightEntries;
 
   const drawEnteredParticpantIds = (drawDefinition.entries || [])
-    .sort((a, b) => (a.entryPosition || 9999) - (b.entryPosition || 9999))
+    .filter(({ entryStage }) =>
+      structure.stage === QUALIFYING
+        ? entryStage === QUALIFYING
+        : entryStage !== QUALIFYING
+    )
+    .sort(
+      (a, b) => (a.entryPosition || Infinity) - (b.entryPosition || Infinity)
+    )
     .map(({ participantId }) => participantId)
     .filter(Boolean);
+
+  const allPositionedParticipantIds = getAllPositionedParticipantIds({
+    drawDefinition,
+  });
 
   const assignedParticipantIds = positionAssignments
     .map((assignment) => assignment.participantId)
     .filter(Boolean);
 
   const availableDrawEnteredParticipantIds = drawEnteredParticpantIds.filter(
-    (participantId) => !assignedParticipantIds.includes(participantId)
+    (participantId) =>
+      structure.stage === QUALIFYING
+        ? !allPositionedParticipantIds.includes(participantId)
+        : !assignedParticipantIds.includes(participantId)
   );
 
   const eventEntries = event.entries || [];
@@ -56,9 +72,13 @@ export function getValidAlternatesAction({
       (entry) =>
         entry.entryStatus === ALTERNATE &&
         eligibleEntryStage({ structure, entry }) &&
-        !assignedParticipantIds.includes(entry.participantId)
+        (structure.stage === QUALIFYING
+          ? !allPositionedParticipantIds.includes(entry.participantId)
+          : !assignedParticipantIds.includes(entry.participantId))
     )
-    .sort((a, b) => (a.entryPosition || 9999) - (b.entryPosition || 9999))
+    .sort(
+      (a, b) => (a.entryPosition || Infinity) - (b.entryPosition || Infinity)
+    )
     .map((entry) => entry.participantId);
 
   const availableAlternatesParticipantIds = unique(
@@ -103,7 +123,7 @@ export function getValidAlternatesAction({
     alternate.entryPosition = entry?.entryPosition;
   });
   availableAlternates?.sort(
-    (a, b) => (a.entryPosition || 9999) - (b.entryPosition || 9999)
+    (a, b) => (a.entryPosition || Infinity) - (b.entryPosition || Infinity)
   );
 
   if (availableAlternatesParticipantIds.length) {

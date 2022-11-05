@@ -2,13 +2,13 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import {
   CONSOLATION,
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
-import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
 
 test('hydrated consolation matchUps include seeding when participants advance', () => {
   const {

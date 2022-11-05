@@ -13,7 +13,6 @@ import { NICKNAME } from '../../../constants/matchUpActionConstants';
 import {
   ADD_PENALTY,
   ASSIGN_BYE,
-  ALTERNATE_PARTICIPANT,
   LUCKY_PARTICIPANT,
   QUALIFYING_PARTICIPANT,
   REMOVE_ASSIGNMENT,
@@ -30,26 +29,6 @@ import {
   QUALIFYING,
   ROUND_ROBIN,
 } from '../../../constants/drawDefinitionConstants';
-
-// TODO: in generateDrawDefinition:
-/*
-  initializeStructureSeedAssignments({
-    structureId: qualifyingStructureId,
-    seedsCount: qualifyingSeedsCount,
-    drawDefinition,
-  });
-  assignQualifyingSeeds = assignQualifyingSeeds || qualifyingSeedsCount;
-  generateRange(1, assignQualifyingSeeds + 1).forEach((seedNumber) => {
-    const participantId = qualifyingParticipants[seedNumber - 1].participantId;
-    const seedValue = qualifyingSeedAssignmentProfile[seedNumber] || seedNumber;
-    assignSeed({
-      structureId: qualifyingStructureId,
-      seedNumber,
-      seedValue,
-      participantId,
-    });
-  });
-*/
 
 it('will throw an error for incorrect qualifyingStructures', () => {
   const result = mocksEngine.generateTournamentRecord({
@@ -292,9 +271,6 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
   expect(q1.structureName).toEqual('QUALIFYING 1');
   expect(q2.structureName).toEqual('QUALIFYING 2');
 
-  // const q2qualifiers = q2.positionAssignments.filter((a) => a.qualifier);
-  // expect(q2qualifiers.length).toEqual(4);
-
   const firstLink = drawDefinition.links.find(
     (link) => link.source.structureId === q1.structureId
   );
@@ -313,28 +289,6 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
   expect(firstLink.target.feedProfile).toEqual(DRAW);
   expect(secondLink.target.feedProfile).toEqual(DRAW);
 
-  /*
-  // check the positionActions for qualifying stageSequence: 2
-  const qualifierAssignment = q2.positionAssignments.find(
-    ({ qualifier }) => qualifier
-  );
-  const qualifierDrawPosition = qualifierAssignment.drawPosition;
-
-  let result = tournamentEngine.positionActions({
-    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
-    drawPosition: qualifierDrawPosition,
-    structureId: q2.structureId,
-    drawId,
-  });
-
-  let validTypes = result.validActions.map(({ type }) => type).sort();
-  // prettier-ignore
-  expect(validTypes).toEqual([
-    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, QUALIFIER_PARTICIPANT,
-    REMOVE_ASSIGNMENT, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
-  ]);
-  */
-
   const participantAssignment = q2.positionAssignments.find(
     ({ participantId }) => participantId
   );
@@ -350,7 +304,7 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
   let validTypes = result.validActions.map(({ type }) => type).sort();
   // prettier-ignore
   expect(validTypes).toEqual([
-    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
+    ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
     QUALIFYING_PARTICIPANT, REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 });
@@ -580,7 +534,7 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
   let validTypes = result.validActions.map(({ type }) => type).sort();
   // prettier-ignore
   expect(validTypes).toEqual([
-    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
+    ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
     QUALIFYING_PARTICIPANT, REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 
@@ -599,7 +553,7 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
 
   // prettier-ignore
   expect(validTypes).toEqual([
-    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, QUALIFYING_PARTICIPANT,
+    ASSIGN_BYE, LUCKY_PARTICIPANT, QUALIFYING_PARTICIPANT,
     REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 
@@ -723,7 +677,7 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
 
   // prettier-ignore
   expect(validTypes).toEqual([
-    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
+    ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
     QUALIFYING_PARTICIPANT, REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 
@@ -742,7 +696,7 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
 
   // prettier-ignore
   expect(validTypes).toEqual([
-    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, QUALIFYING_PARTICIPANT,
+    ASSIGN_BYE, LUCKY_PARTICIPANT, QUALIFYING_PARTICIPANT,
     REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 

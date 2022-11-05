@@ -1,9 +1,3 @@
-import {
-  instanceCount,
-  intersection,
-  unique,
-  UUID,
-} from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 import {
@@ -11,14 +5,20 @@ import {
   getParticipantId,
   getParticipantIds,
 } from '../../../../global/functions/extractors';
+import {
+  instanceCount,
+  intersection,
+  unique,
+  UUID,
+} from '../../../../utilities';
 
+import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
+import { COMPETITOR } from '../../../../constants/participantRoles';
 import {
   INDIVIDUAL,
   PAIR,
   TEAM,
 } from '../../../../constants/participantConstants';
-import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
-import { COMPETITOR } from '../../../../constants/participantRoles';
 import {
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
@@ -34,7 +34,6 @@ import {
   UNGROUPED,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
-import { expect } from 'vitest';
 
 it('can modify entryStatus within event.entries', () => {
   const drawProfiles = [{ drawSize: 8, alternatesCount: 2 }];
@@ -120,7 +119,7 @@ it('can modify entryStatus within event.entries', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ event, drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
   eventEntries = event.entries;
   drawEntries = drawDefinition.entries;
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
@@ -166,7 +165,7 @@ it('can add and remove extensions from entries', () => {
   let result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
-  let { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { structureId } = drawDefinition.structures[0];
   const { positionAssignments } = tournamentEngine.getPositionAssignments({
     structureId,
@@ -184,7 +183,7 @@ it('can add and remove extensions from entries', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ event, drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  let { event } = tournamentEngine.getEvent({ drawId });
 
   let entriesWithExtensions = event.entries.filter(
     ({ extensions }) => extensions && extensions.length
@@ -198,7 +197,7 @@ it('can add and remove extensions from entries', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ event, drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  ({ event } = tournamentEngine.getEvent({ drawId }));
   entriesWithExtensions = event.entries.filter(
     ({ extensions }) => extensions && extensions.length
   );
@@ -219,7 +218,7 @@ it('can add and remove extensions from entries', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ event, drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  ({ event } = tournamentEngine.getEvent({ drawId }));
   entriesWithExtensions = event.entries.filter(
     ({ extensions }) => extensions && extensions.length
   );

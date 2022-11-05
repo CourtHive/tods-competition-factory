@@ -10,7 +10,7 @@ import fs from 'fs';
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import { NICKNAME } from '../../../constants/matchUpActionConstants';
 import {
-  ALTERNATE_PARTICIPANT,
+  // ALTERNATE_PARTICIPANT,
   QUALIFYING_PARTICIPANT,
   ASSIGN_BYE,
   ADD_PENALTY,
@@ -120,9 +120,6 @@ it('supports multi-sequence qualifying structures', () => {
   expect(q1.structureName).toEqual('QUALIFYING 1');
   expect(q2.structureName).toEqual('QUALIFYING 2');
 
-  // const q2qualifiers = q2.positionAssignments.filter((a) => a.qualifier);
-  // expect(q2qualifiers.length).toEqual(4);
-
   const firstLink = drawDefinition.links.find(
     (link) => link.source.structureId === q1.structureId
   );
@@ -153,7 +150,8 @@ it('supports multi-sequence qualifying structures', () => {
 
   // prettier-ignore
   expect(validTypes).toEqual([
-    ALTERNATE_PARTICIPANT, ASSIGN_BYE, NICKNAME, ADD_PENALTY,
+    // ALTERNATE_PARTICIPANT, ASSIGN_BYE, NICKNAME, ADD_PENALTY,
+    ASSIGN_BYE, NICKNAME, ADD_PENALTY,
     REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 });

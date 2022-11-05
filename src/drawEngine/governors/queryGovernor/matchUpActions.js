@@ -191,7 +191,7 @@ export function matchUpActions({
       alternate.entryPosition = entry?.entryPosition;
     });
     availableAlternates.sort(
-      (a, b) => (a.entryPosition || 9999) - (b.entryPosition || 9999)
+      (a, b) => (a.entryPosition || Infinity) - (b.entryPosition || Infinity)
     );
 
     if (availableAlternatesParticipantIds.length) {

@@ -15,7 +15,7 @@ export function refreshEntryPositions({ entries = [] } = {}) {
   }, {});
 
   const validEntryPosition = (entryPosition) =>
-    !isNaN(entryPosition) ? entryPosition : 9999;
+    !isNaN(entryPosition) ? entryPosition : Infinity;
   const positionedEntries = Object.keys(stagedEntries)
     .map((entryHash) => {
       return stagedEntries[entryHash]

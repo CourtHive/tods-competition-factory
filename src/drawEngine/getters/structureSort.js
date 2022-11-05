@@ -16,14 +16,11 @@ export function structureSort(a, b, config = {}) {
     findExtension({ element, name: ROUND_TARGET })?.extension?.value;
 
   const completed = config?.deprioritizeCompleted;
-  const aggregate = config?.mode === AGGREGATE_EVENT_STRUCTURES;
-  const finish = config?.mode === FINISHING_POSITIONS;
+  const aggregate =
+    config?.mode === AGGREGATE_EVENT_STRUCTURES && aggregateOrder;
+  const finish = config?.mode === FINISHING_POSITIONS && finishOrder;
 
-  const orderProtocol = finish
-    ? finishOrder
-    : aggregate
-    ? aggregateOrder
-    : stageOrder;
+  const orderProtocol = finish || aggregate || stageOrder;
 
   const mainSequence1 = (s) =>
     s?.stage === MAIN && a?.stageSequence === 1 ? -1 : 1;
@@ -41,8 +38,8 @@ export function structureSort(a, b, config = {}) {
     (getRoundTarget(a) || 0) - (getRoundTarget(b) || 0) ||
     (!finish &&
       !aggregate &&
-      (b?.positionAssignments?.length || 9999) -
-        (a?.positionAssignments?.length || 9999)) ||
+      (b?.positionAssignments?.length || Infinity) -
+        (a?.positionAssignments?.length || Infinity)) ||
     (a?.stageSequence || 0) - (b?.stageSequence || 0) ||
     (getMinFinishingPositionRange(a) || 0) -
       (getMinFinishingPositionRange(b) || 0);
