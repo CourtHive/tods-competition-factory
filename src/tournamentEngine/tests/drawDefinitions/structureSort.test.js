@@ -68,7 +68,6 @@ test('structureSort can sort by stage and stageSequence', () => {
     .sort((a, b) => structureSort(a, b, { mode: FINISHING_POSITIONS }))
     .map(({ structureName }) => structureName);
 
-  // console.log(structureNames);
   expect(structureNames).toEqual(fpSort);
 
   structureNames = drawDefinition.structures

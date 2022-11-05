@@ -375,7 +375,7 @@ function roundRobinMatchUps({
 
   const matchUps = uniqueMatchUpGroupings
     .map(positionMatchUp)
-    .sort((a, b) => (a.roundNumber || 9999) - (b.roundNumber || 9999));
+    .sort((a, b) => (a.roundNumber || Infinity) - (b.roundNumber || Infinity));
 
   return matchUps;
 
