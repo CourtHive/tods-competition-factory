@@ -8,12 +8,20 @@ import {
 
 export function getAllPositionedParticipantIds({ drawDefinition }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  return (drawDefinition.structures || [])
+  const stagePositionedParticipantIds = {};
+
+  const allPositionedParticipantIds = (drawDefinition.structures || [])
     .map((structure) => {
+      const stage = structure.stage;
+      if (!stagePositionedParticipantIds[stage])
+        stagePositionedParticipantIds[stage] = [];
       const { positionAssignments } = getPositionAssignments({ structure });
-      return getParticipantIds(positionAssignments);
+      const particiapntIds = getParticipantIds(positionAssignments);
+      stagePositionedParticipantIds[stage].push(...particiapntIds);
+      return particiapntIds;
     })
     .flat();
+  return { allPositionedParticipantIds, stagePositionedParticipantIds };
 }
 
 export function getPositionAssignments({

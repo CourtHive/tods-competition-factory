@@ -59,8 +59,10 @@ export function filterParticipants({
     tournamentEvents.reduce((participantIds, event) => {
       return participantIds.concat(
         ...(event.drawDefinitions || [])
-          .map((drawDefinition) =>
-            getAllPositionedParticipantIds({ drawDefinition })
+          .map(
+            (drawDefinition) =>
+              getAllPositionedParticipantIds({ drawDefinition })
+                .allPositionedParticipantIds
           )
           .filter(Boolean)
       );

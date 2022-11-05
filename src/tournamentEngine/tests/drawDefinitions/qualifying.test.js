@@ -12,6 +12,7 @@ import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { NICKNAME } from '../../../constants/matchUpActionConstants';
 import {
   ADD_PENALTY,
+  ALTERNATE_PARTICIPANT,
   ASSIGN_BYE,
   LUCKY_PARTICIPANT,
   QUALIFYING_PARTICIPANT,
@@ -29,6 +30,7 @@ import {
   QUALIFYING,
   ROUND_ROBIN,
 } from '../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
 
 it('will throw an error for incorrect qualifyingStructures', () => {
   const result = mocksEngine.generateTournamentRecord({
@@ -666,8 +668,17 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
   const assignment = positionAssignments.find(
     ({ participantId }) => participantId
   );
+  const unrestrictedActionsPolicy =
+    POLICY_POSITION_ACTIONS_UNRESTRICTED[POLICY_TYPE_POSITION_ACTIONS];
+  const restrictedQualifyingAlternatesPolicy = {
+    ...unrestrictedActionsPolicy,
+    restrictQualifyingAlternates: true,
+  };
+
   let result = tournamentEngine.positionActions({
-    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    policyDefinitions: {
+      [POLICY_TYPE_POSITION_ACTIONS]: unrestrictedActionsPolicy,
+    },
     drawPosition: assignment.drawPosition,
     structureId: mainStructureId,
     drawId,
@@ -677,6 +688,24 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
 
   // prettier-ignore
   expect(validTypes).toEqual([
+    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
+    QUALIFYING_PARTICIPANT, REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
+  ]);
+
+  result = tournamentEngine.positionActions({
+    policyDefinitions: {
+      [POLICY_TYPE_POSITION_ACTIONS]: restrictedQualifyingAlternatesPolicy,
+    },
+    drawPosition: assignment.drawPosition,
+    structureId: mainStructureId,
+    drawId,
+  });
+
+  validTypes = result.validActions.map(({ type }) => type).sort();
+
+  // prettier-ignore
+  expect(validTypes).toEqual([
+    // restrictQualifyingAlternates will remove ALTERNATE_PARTICIPANT
     ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
     QUALIFYING_PARTICIPANT, REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
@@ -686,7 +715,9 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
   ).drawPosition;
 
   result = tournamentEngine.positionActions({
-    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    policyDefinitions: {
+      [POLICY_TYPE_POSITION_ACTIONS]: unrestrictedActionsPolicy,
+    },
     drawPosition: qualifierDrawPosition,
     structureId: mainStructureId,
     drawId,
@@ -696,6 +727,24 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
 
   // prettier-ignore
   expect(validTypes).toEqual([
+    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, QUALIFYING_PARTICIPANT,
+    REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
+  ]);
+
+  result = tournamentEngine.positionActions({
+    policyDefinitions: {
+      [POLICY_TYPE_POSITION_ACTIONS]: restrictedQualifyingAlternatesPolicy,
+    },
+    drawPosition: qualifierDrawPosition,
+    structureId: mainStructureId,
+    drawId,
+  });
+
+  validTypes = result.validActions.map(({ type }) => type).sort();
+
+  // prettier-ignore
+  expect(validTypes).toEqual([
+    // restrictQualifyingAlternates will remove ALTERNATE_PARTICIPANT
     ASSIGN_BYE, LUCKY_PARTICIPANT, QUALIFYING_PARTICIPANT,
     REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);

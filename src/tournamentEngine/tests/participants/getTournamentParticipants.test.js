@@ -307,6 +307,7 @@ it('can filter by entries', () => {
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     participantFilters: { positionedParticipants: false },
   }));
+
   expect(tournamentParticipants.length).toEqual(
     totalExpectedParticipants - drawSize
   );

@@ -7,6 +7,7 @@ import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConsta
 import {
   CONSOLATION,
   MAIN,
+  PLAY_OFF,
   QUALIFYING,
 } from '../../../../constants/drawDefinitionConstants';
 import {
@@ -36,14 +37,20 @@ export function getValidAlternatesAction({
 }) {
   if (activeDrawPositions.includes(drawPosition)) return {};
 
+  // TODO: document policy options
   const otherFlightEntries =
     appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS]?.otherFlightEntries;
+  const restrictQualifyingAlternates =
+    appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS]
+      ?.restrictQualifyingAlternates;
 
   const drawEnteredParticpantIds = (drawDefinition.entries || [])
-    .filter(({ entryStage }) =>
-      structure.stage === QUALIFYING
-        ? entryStage === QUALIFYING
-        : entryStage !== QUALIFYING
+    .filter(
+      ({ entryStage }) =>
+        !restrictQualifyingAlternates ||
+        (structure.stage === QUALIFYING
+          ? entryStage === QUALIFYING
+          : entryStage !== QUALIFYING)
     )
     .sort(
       (a, b) => (a.entryPosition || Infinity) - (b.entryPosition || Infinity)
@@ -51,7 +58,7 @@ export function getValidAlternatesAction({
     .map(({ participantId }) => participantId)
     .filter(Boolean);
 
-  const allPositionedParticipantIds = getAllPositionedParticipantIds({
+  const { allPositionedParticipantIds } = getAllPositionedParticipantIds({
     drawDefinition,
   });
 
@@ -61,7 +68,7 @@ export function getValidAlternatesAction({
 
   const availableDrawEnteredParticipantIds = drawEnteredParticpantIds.filter(
     (participantId) =>
-      structure.stage === QUALIFYING
+      [QUALIFYING, MAIN, PLAY_OFF].includes(structure.stage)
         ? !allPositionedParticipantIds.includes(participantId)
         : !assignedParticipantIds.includes(participantId)
   );
@@ -71,8 +78,12 @@ export function getValidAlternatesAction({
     .filter(
       (entry) =>
         entry.entryStatus === ALTERNATE &&
-        eligibleEntryStage({ structure, entry }) &&
-        (structure.stage === QUALIFYING
+        eligibleEntryStage({
+          restrictQualifyingAlternates,
+          structure,
+          entry,
+        }) &&
+        ([QUALIFYING, MAIN, PLAY_OFF].includes(structure.stage)
           ? !allPositionedParticipantIds.includes(entry.participantId)
           : !assignedParticipantIds.includes(entry.participantId))
     )
@@ -141,11 +152,16 @@ export function getValidAlternatesAction({
   return {};
 }
 
-export function eligibleEntryStage({ structure, entry }) {
+export function eligibleEntryStage({
+  restrictQualifyingAlternates,
+  structure,
+  entry,
+}) {
   const { stage } = structure;
   if (
     !entry.entryStage ||
     entry.entryStage === stage ||
+    (stage === QUALIFYING && !restrictQualifyingAlternates) ||
     (entry.entryStage === MAIN && stage === CONSOLATION)
   )
     return true;
