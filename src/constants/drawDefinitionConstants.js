@@ -214,6 +214,7 @@ export const drawDefinitionConstants = {
 
   stageOrder,
   finishOrder,
+  AGGREGATE_EVENT_STRUCTURES,
   FINISHING_POSITIONS,
 };
 
