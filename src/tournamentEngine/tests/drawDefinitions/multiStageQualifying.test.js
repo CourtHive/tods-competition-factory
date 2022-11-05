@@ -10,7 +10,6 @@ import fs from 'fs';
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import { NICKNAME } from '../../../constants/matchUpActionConstants';
 import {
-  // ALTERNATE_PARTICIPANT,
   QUALIFYING_PARTICIPANT,
   ASSIGN_BYE,
   ADD_PENALTY,
@@ -150,7 +149,6 @@ it('supports multi-sequence qualifying structures', () => {
 
   // prettier-ignore
   expect(validTypes).toEqual([
-    // ALTERNATE_PARTICIPANT, ASSIGN_BYE, NICKNAME, ADD_PENALTY,
     ASSIGN_BYE, NICKNAME, ADD_PENALTY,
     REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
