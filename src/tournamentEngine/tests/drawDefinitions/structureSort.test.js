@@ -1,4 +1,5 @@
 import { structureSort } from '../../../drawEngine/getters/structureSort';
+import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { utilities } from '../../../index';
 import tournamentEngine from '../../sync';
@@ -11,7 +12,6 @@ import {
   FINISHING_POSITIONS,
   FIRST_MATCH_LOSER_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
-import { instanceCount } from '../../../utilities';
 
 test('structureSort can sort by stage and stageSequence', () => {
   const {
