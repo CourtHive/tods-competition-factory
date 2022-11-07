@@ -32,14 +32,6 @@ export function getAppliedPolicies({
   if (drawDefinition) extractAppliedPolicies(drawDefinition);
   if (structure) extractAppliedPolicies(structure);
 
-  if (
-    policyTypes.length &&
-    Object.keys(appliedPolicies).length !== policyTypes.length
-  ) {
-    console.log({ policyTypes, appliedPolicies });
-    return { error: MISSING_POLICY_TYPE };
-  }
-
   return { appliedPolicies, ...SUCCESS };
 
   function extractAppliedPolicies({ extensions }) {

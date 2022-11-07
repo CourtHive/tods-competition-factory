@@ -30,6 +30,7 @@ import {
 export function doubleExitAdvancement(params) {
   const {
     tournamentRecord,
+    appliedPolicies,
     drawDefinition,
     matchUpsMap,
     targetData,
@@ -46,15 +47,35 @@ export function doubleExitAdvancement(params) {
 
   if (loserMatchUp) {
     const { loserTargetLink } = targetLinks;
-    const result = advanceByeToLoserMatchUp({
-      loserTargetDrawPosition,
-      tournamentRecord,
-      loserTargetLink,
-      drawDefinition,
-      loserMatchUp,
-      matchUpsMap,
-    });
-    if (result.error) return decorateResult({ result, stack });
+    if (appliedPolicies?.progression?.doubleExitPropagateLoserWalkover) {
+      const { feedRound, drawPositions, matchUpId } = loserMatchUp;
+      const winningSide = feedRound
+        ? 2
+        : 2 - drawPositions.indexOf(loserTargetDrawPosition);
+      const noContextLoserMatchUp = matchUpsMap.drawMatchUps.find(
+        (matchUp) => matchUp.matchUpId === loserMatchUp.matchUpId
+      );
+      const result = modifyMatchUpScore({
+        matchUp: noContextLoserMatchUp,
+        tournamentRecord,
+        drawDefinition,
+        winningSide,
+        matchUpId,
+        // matchUpStatusCodes,
+        matchUpStatus: WALKOVER,
+      });
+      if (result.error) return decorateResult({ result, stack });
+    } else {
+      const result = advanceByeToLoserMatchUp({
+        loserTargetDrawPosition,
+        tournamentRecord,
+        loserTargetLink,
+        drawDefinition,
+        loserMatchUp,
+        matchUpsMap,
+      });
+      if (result.error) return decorateResult({ result, stack });
+    }
   }
 
   if (winnerMatchUp) {

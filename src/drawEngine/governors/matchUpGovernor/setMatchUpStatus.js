@@ -1,4 +1,5 @@
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getProjectedDualWinningSide } from './getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
@@ -19,6 +20,7 @@ import {
   isNonDirectingMatchUpStatus,
 } from './checkStatusType';
 
+import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
@@ -197,9 +199,17 @@ export function setMatchUpStatus(params) {
     });
   }
 
+  const { appliedPolicies } = getAppliedPolicies({
+    policyTypes: [POLICY_TYPE_PROGRESSION],
+    tournamentRecord,
+    drawDefinition,
+    event,
+  });
+
   Object.assign(params, {
     inContextDrawMatchUps,
     inContextMatchUp,
+    appliedPolicies,
     matchUpTieId,
     matchUpsMap,
     targetData,
