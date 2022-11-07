@@ -85,6 +85,7 @@ export function doubleExitAdvancement(params) {
       tournamentRecord,
       sourceMatchUp,
       winnerMatchUp,
+      targetMatchUp: winnerMatchUp,
     });
     if (result.error) return decorateResult({ result, stack });
   }
@@ -100,7 +101,7 @@ function conditionallyAdvanceDrawPosition(params) {
     tournamentRecord,
     drawDefinition,
     sourceMatchUp,
-    winnerMatchUp,
+    targetMatchUp,
     matchUpsMap,
     structure,
   } = params;
@@ -112,7 +113,7 @@ function conditionallyAdvanceDrawPosition(params) {
   const stack = 'conditionallyAdvanceDrawPosition';
 
   const noContextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
-    (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
+    (matchUp) => matchUp.matchUpId === targetMatchUp.matchUpId
   );
   if (!noContextWinnerMatchUp) return { error: MISSING_MATCHUP };
 
@@ -120,7 +121,7 @@ function conditionallyAdvanceDrawPosition(params) {
   let winnerMatchUpDrawPositions =
     noContextWinnerMatchUp.drawPositions?.filter(Boolean);
 
-  // ensure winnerMatchUp.drawPositions does not contain sourceMatchUp.drawPositions
+  // ensure targetMatchUp.drawPositions does not contain sourceMatchUp.drawPositions
   // this covers the case where a pre-existing advancement was made
   if (overlap(sourceDrawPositions, winnerMatchUpDrawPositions)) {
     winnerMatchUpDrawPositions = winnerMatchUpDrawPositions.filter(
@@ -128,16 +129,16 @@ function conditionallyAdvanceDrawPosition(params) {
     );
   }
 
-  // if there are 2 drawPositions in winnerMatchUp, something is wrong
+  // if there are 2 drawPositions in targetMatchUp, something is wrong
   if (winnerMatchUpDrawPositions.length > 1)
     return decorateResult({ result: { error: DRAW_POSITION_ASSIGNED }, stack });
 
   const { pairedPreviousMatchUpIsDoubleExit, pairedPreviousMatchUp } =
     getPairedPreviousMatchUpIsDoubleExit(params);
 
-  // get the targets for the winnerMatchUp
+  // get the targets for the targetMatchUp
   const targetData = positionTargets({
-    matchUpId: winnerMatchUp.matchUpId,
+    matchUpId: targetMatchUp.matchUpId,
     inContextDrawMatchUps,
     drawDefinition,
     structure,
@@ -171,12 +172,12 @@ function conditionallyAdvanceDrawPosition(params) {
     (hasDrawPosition &&
       getExitWinningSide({
         drawPosition: drawPositions[0],
-        matchUpId: winnerMatchUp.matchUpId,
+        matchUpId: targetMatchUp.matchUpId,
         inContextDrawMatchUps,
       })) ||
     undefined;
 
-  // assign the WALKOVER status to winnerMatchUp
+  // assign the WALKOVER status to targetMatchUp
   const existingExit =
     [WALKOVER, DEFAULTED].includes(noContextWinnerMatchUp.matchUpStatus) &&
     !drawPositions.length;
@@ -203,7 +204,7 @@ function conditionallyAdvanceDrawPosition(params) {
     } else {
       // if different structureIds then structureId that is not equivalent to noContextWinnerMatchUp.structureId is fed
       // ... and fed positions are always sideNumber 1
-      if (sourceMatchUp.structureId === winnerMatchUp.structureId) {
+      if (sourceMatchUp.structureId === targetMatchUp.structureId) {
         sourceSideNumber = 2;
       } else {
         sourceSideNumber = 1;
@@ -276,7 +277,7 @@ function conditionallyAdvanceDrawPosition(params) {
   if (!nextWinnerMatchUp)
     return decorateResult({ result: { ...SUCCESS }, stack });
 
-  // any remaining drawPosition in winnerMatchUp should be advanced
+  // any remaining drawPosition in targetMatchUp should be advanced
   const drawPositionToAdvance = winnerMatchUpDrawPositions[0];
   const { positionAssignments } = getPositionAssignments({ structure });
   const assignment = positionAssignments.find(
@@ -305,7 +306,7 @@ function conditionallyAdvanceDrawPosition(params) {
         const nextDrawPositionToAdvance =
           nextWinnerMatchUpDrawPositions.filter(Boolean)[0];
 
-        // if the next winnerMatchUp already has a drawPosition
+        // if the next targetMatchUp already has a drawPosition
         const winningSide = getExitWinningSide({
           drawPosition: nextDrawPositionToAdvance,
           matchUpId: noContextNextWinnerMatchUp.matchUpId,
@@ -333,7 +334,7 @@ function conditionallyAdvanceDrawPosition(params) {
       } else if (
         [WALKOVER, DEFAULTED].includes(nextWinnerMatchUp.matchUpStatus)
       ) {
-        // if the next winnerMatchUp is a double walkover or double default
+        // if the next targetMatchUp is a double walkover or double default
         const result = doubleExitAdvancement({
           ...params,
           matchUpId: noContextNextWinnerMatchUp.matchUpId,
@@ -358,7 +359,7 @@ function conditionallyAdvanceDrawPosition(params) {
     if (nextWinnerMatchUpHasDrawPosition) {
       const drawPosition = nextWinnerMatchUpDrawPositions[0];
       const walkoverWinningSide = getExitWinningSide({
-        matchUpId: winnerMatchUp.matchUpId,
+        matchUpId: targetMatchUp.matchUpId,
         inContextDrawMatchUps,
         drawPosition,
       });
@@ -387,7 +388,7 @@ function conditionallyAdvanceDrawPosition(params) {
     if (matchUpStatus === DOUBLE_EXIT) {
       const advancementResult = doubleExitAdvancement({
         ...params,
-        matchUpId: winnerMatchUp.matchUpId,
+        matchUpId: targetMatchUp.matchUpId,
         matchUpStatus,
         targetData,
       });

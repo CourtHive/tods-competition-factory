@@ -183,7 +183,7 @@ export function assignMatchUpDrawPosition({
   } else if (winnerMatchUp && !inContextMatchUp.feedRound) {
     const { pairedPreviousMatchUpIsDoubleExit } =
       getPairedPreviousMatchUpIsDoubleExit({
-        winnerMatchUp: matchUp,
+        targetMatchUp: matchUp,
         drawPosition,
         matchUpsMap,
         structure,
