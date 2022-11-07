@@ -5,7 +5,6 @@ import tournamentEngine from '../../sync';
 import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { REFEREE, SCORE } from '../../../constants/matchUpActionConstants';
-import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
   COMPLETED,
@@ -13,6 +12,12 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import {
+  CONSOLATION,
+  FIRST_MATCH_LOSER_CONSOLATION,
+} from '../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
+import { expect } from 'vitest';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition, stage }) =>
   matchUps.find(
@@ -964,4 +969,59 @@ test('consolation fed player advanced by WO/WO will be removed when WO/WO cleare
   });
 
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+});
+
+test('Double Exit produces exit in consolation', () => {
+  // keep track of notficiations with each setMatchUpStatus event
+  let modifiedMatchUpLog = [];
+  let result = setSubscriptions({
+    subscriptions: {
+      [MODIFY_MATCHUP]: (matchUps) => {
+        matchUps.forEach(({ matchUp }) => {
+          const { roundNumber, roundPosition, matchUpStatus, stage } = matchUp;
+          modifiedMatchUpLog.push([
+            matchUpStatus,
+            roundPosition,
+            roundNumber,
+            stage,
+          ]);
+        });
+      },
+    },
+  });
+  expect(result.success).toEqual(true);
+
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    policyDefinitions: {
+      [POLICY_TYPE_PROGRESSION]: {
+        doubleExitPropagateLoserExit: true,
+      },
+    },
+    drawProfiles: [
+      {
+        drawType: FIRST_MATCH_LOSER_CONSOLATION,
+        drawSize: 8,
+        outcomes: [
+          {
+            matchUpStatus: DOUBLE_WALKOVER,
+            roundPosition: 1,
+            roundNumber: 1,
+          },
+        ],
+      },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+
+  let targetMatchUp = getTarget({
+    stage: CONSOLATION,
+    roundPosition: 1,
+    roundNumber: 1,
+    matchUps,
+  });
+
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
 });

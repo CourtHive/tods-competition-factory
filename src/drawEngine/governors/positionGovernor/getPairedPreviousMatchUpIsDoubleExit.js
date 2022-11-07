@@ -7,10 +7,10 @@ import {
 
 export function getPairedPreviousMatchUpIsDoubleExit(params) {
   let { sourceMatchUp } = params;
-  const { winnerMatchUp, structure, matchUpsMap, drawPosition } = params;
+  const { targetMatchUp, structure, matchUpsMap, drawPosition } = params;
 
   const previousRoundNumber =
-    winnerMatchUp.roundNumber > 1 && winnerMatchUp.roundNumber - 1;
+    targetMatchUp.roundNumber > 1 && targetMatchUp.roundNumber - 1;
 
   const structureMatchUps = getMappedStructureMatchUps({
     structureId: structure.structureId,

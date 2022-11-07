@@ -528,6 +528,7 @@ export function generateEventWithDraw({
 
           const result = completeDrawMatchUp({
             matchUpStatusCodes,
+            tournamentRecord,
             drawDefinition,
             targetMatchUp,
             matchUpFormat,
