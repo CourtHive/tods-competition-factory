@@ -994,7 +994,7 @@ test('Double Exit produces exit in consolation', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     policyDefinitions: {
       [POLICY_TYPE_PROGRESSION]: {
-        doubleExitPropagateLoserWalkover: true,
+        doubleExitPropagateLoserExit: true,
       },
     },
     drawProfiles: [

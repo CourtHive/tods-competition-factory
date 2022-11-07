@@ -37,12 +37,12 @@ export function removeDoubleExit(params) {
   } = targetData;
 
   if (loserMatchUp) {
+    // TODO: refactor winnerMatchUp condition to re-use for loserMatchUp condition
     const result = removeDirectedBye({
       targetLink: loserTargetLink,
       drawPosition: loserTargetDrawPosition,
-      drawDefinition,
       inContextDrawMatchUps,
-
+      drawDefinition,
       matchUpsMap,
     });
     if (result.error) return decorateResult({ result, stack });
