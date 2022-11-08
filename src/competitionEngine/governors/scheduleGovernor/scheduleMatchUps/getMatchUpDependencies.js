@@ -204,25 +204,19 @@ export function getMatchUpDependencies({
         // sort by stage/stageSequence/roundNumber/roundPosition
         .sort(matchUpSort);
 
-      const hasGoesTo = !!drawMatchUps.find(
-        ({ winnerMatchUpId, loserMatchUpId }) =>
-          winnerMatchUpId || loserMatchUpId
+      const isRoundRobin = drawMatchUps.find(
+        ({ roundPosition }) => !roundPosition
       );
-      if (!hasGoesTo) {
-        const isRoundRobin = drawMatchUps.find(
-          ({ roundPosition }) => roundPosition
+      // skip this if Round Robin because there is no "Goes To"
+      if (!isRoundRobin) {
+        const hasTournamentId = drawMatchUps.find(
+          ({ tournamentId }) => tournamentId
         );
-        // skip this if Round Robin because there is no "Goes To"
-        if (!isRoundRobin) {
-          const hasTournamentId = drawMatchUps.find(
-            ({ tournamentId }) => tournamentId
-          );
-          const { drawDefinition } = findEvent({
-            tournamentRecord: tournamentRecords[hasTournamentId?.tournamentId],
-            drawId,
-          });
-          if (drawDefinition) addGoesTo({ drawDefinition });
-        }
+        const { drawDefinition } = findEvent({
+          tournamentRecord: tournamentRecords[hasTournamentId?.tournamentId],
+          drawId,
+        });
+        if (drawDefinition) addGoesTo({ drawDefinition });
       }
 
       processMatchUps(drawMatchUps);
