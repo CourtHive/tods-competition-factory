@@ -44,7 +44,7 @@ export function modifyMatchUpScore({
   removeScore,
   winningSide,
   matchUpId,
-  matchUp,
+  matchUp, // matchUp without context
   event,
   notes,
   score,

@@ -185,6 +185,7 @@ export function completeDrawMatchUps({
         const result = smartComplete({
           winningSide: !randomWinningSide && 1,
           matchUpStatusProfile,
+          tournamentRecord,
           drawDefinition,
           targetMatchUp,
           matchUpFormat,
@@ -203,6 +204,7 @@ export function completeDrawMatchUps({
 
 export function completeDrawMatchUp({
   matchUpStatusCodes,
+  tournamentRecord,
   drawDefinition,
   targetMatchUp,
   matchUpStatus,
@@ -225,6 +227,7 @@ export function completeDrawMatchUp({
   if (matchUpStatusCodes) outcome.matchUpStatusCodes = matchUpStatusCodes;
 
   return setMatchUpStatus({
+    tournamentRecord,
     drawDefinition,
     matchUpFormat,
     matchUpId,
@@ -236,6 +239,7 @@ export function completeDrawMatchUp({
 function smartComplete(params) {
   const {
     matchUpStatusProfile = {},
+    tournamentRecord,
     drawDefinition,
     matchUpStatus,
     matchUpFormat,
@@ -254,8 +258,9 @@ function smartComplete(params) {
   });
 
   return setMatchUpStatus({
-    matchUpFormat,
+    tournamentRecord,
     drawDefinition,
+    matchUpFormat,
     matchUpId,
     outcome,
   });
