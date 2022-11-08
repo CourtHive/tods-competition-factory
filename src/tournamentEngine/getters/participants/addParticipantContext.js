@@ -1,3 +1,4 @@
+import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 import { getDerivedPositionAssignments } from './getDerivedPositionAssignments';
 import { findExtension } from '../../governors/queryGovernor/extensionQueries';
 import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
@@ -139,6 +140,10 @@ export function addParticipantContext(params) {
         });
       }
     });
+
+  if (params.withMatchUps) {
+    getMatchUpDependencies({ tournamentRecord }); // ensure that goesTos exist
+  }
 
   if (
     params.withRankingProfile ||

@@ -1,3 +1,4 @@
+import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 import { getParticipantEntries } from './getParticipantEntries';
 import { filterParticipants } from './filterParticipants';
 import { getParticipantMap } from './getParticipantMap';
@@ -30,6 +31,7 @@ export function getParticipants({
   // inContext, - may be deprecated in favor of `withIndividualParticipants`
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (withMatchUps) getMatchUpDependencies({ tournamentRecord }); // ensure goesTos are present
 
   let { participantMap } = getParticipantMap({
     withIndividualParticipants,
@@ -43,19 +45,20 @@ export function getParticipants({
     withIOC,
   });
 
-  let matchUps, derivedDrawInfo;
-  ({ participantMap, matchUps, derivedDrawInfo } = getParticipantEntries({
-    withPotentialMatchUps,
-    policyDefinitions,
-    tournamentRecord,
-    scheduleAnalysis,
-    withTeamMatchUps,
-    participantMap,
-    withOpponents,
-    withMatchUps,
-    withEvents,
-    withDraws,
-  }));
+  let matchUps, derivedDrawInfo, mappedMatchUps;
+  ({ participantMap, matchUps, mappedMatchUps, derivedDrawInfo } =
+    getParticipantEntries({
+      withPotentialMatchUps,
+      policyDefinitions,
+      tournamentRecord,
+      scheduleAnalysis,
+      withTeamMatchUps,
+      participantMap,
+      withOpponents,
+      withMatchUps,
+      withEvents,
+      withDraws,
+    }));
 
   let processedParticipants = Object.values(participantMap).map(
     ({ draws, events, matchUps, opponents, ...p }) => {
@@ -93,6 +96,7 @@ export function getParticipants({
 
   return {
     derivedDrawInfo,
+    mappedMatchUps,
     participantMap,
     participants,
     ...SUCCESS,

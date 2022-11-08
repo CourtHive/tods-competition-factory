@@ -22,6 +22,7 @@ import {
   PLAY_OFF,
   TOP_DOWN,
 } from '../../../constants/drawDefinitionConstants';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 
 /**
  *
@@ -234,12 +235,37 @@ export function generateAndPopulatePlayoffStructures(params) {
     if (result.error) console.log(result.error);
   });
 
-  if (params.goesTo !== false)
-    addGoesTo({
+  // the matchUps in the source structure must have goesTo details added
+  if (params.goesTo !== false) {
+    const goesToMap = addGoesTo({
       inContextDrawMatchUps,
       drawDefinition,
       matchUpsMap,
+    }).goesToMap;
+
+    const { structure: sourceStructure } = findStructure({
+      drawDefinition: params.drawDefinition,
+      structureId: sourceStructureId,
     });
 
-  return { structures: newStructures, links: newLinks, ...SUCCESS };
+    const { matchUps: sourceStructureMatchUps } = getAllStructureMatchUps({
+      structure: sourceStructure,
+    });
+
+    sourceStructureMatchUps.forEach((matchUp) => {
+      if (goesToMap.loserMatchUpIds[matchUp.matchUpId]) {
+        matchUp.loserMatchUpId = goesToMap.loserMatchUpIds[matchUp.matchUpId];
+      }
+      if (goesToMap.winnerMatchUpIds[matchUp.matchUpId]) {
+        matchUp.winnerMatchUpId = goesToMap.winnerMatchUpIds[matchUp.matchUpId];
+      }
+    });
+  }
+
+  return {
+    structures: newStructures,
+    links: newLinks,
+    drawDefinition,
+    ...SUCCESS,
+  };
 }

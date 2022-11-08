@@ -7,6 +7,8 @@ export function addGoesTo({
   drawDefinition,
   matchUpsMap,
 }) {
+  const goesToMap = { loserMatchUpIds: {}, winnerMatchUpIds: [] };
+
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps, matchUpsMap } = getAllDrawMatchUps({
       includeByeMatchUps: true,
@@ -39,15 +41,17 @@ export function addGoesTo({
 
       if (matchUp) {
         if (winnerMatchUpId) {
+          goesToMap.winnerMatchUpIds[matchUp.matchUpId] = winnerMatchUpId;
           Object.assign(matchUp, { winnerMatchUpId });
           Object.assign(inContextMatchUp, { winnerMatchUpId });
         }
         if (loserMatchUpId) {
+          goesToMap.loserMatchUpIds[matchUp.matchUpId] = loserMatchUpId;
           Object.assign(matchUp, { loserMatchUpId });
           Object.assign(inContextMatchUp, { loserMatchUpId });
         }
       }
     });
 
-  return { inContextDrawMatchUps };
+  return { inContextDrawMatchUps, goesToMap };
 }

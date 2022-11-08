@@ -16,6 +16,7 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 import {
   CONSOLATION,
+  FEED_IN_CHAMPIONSHIP_TO_SF,
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
@@ -891,15 +892,15 @@ test('consolation fed player advanced by WO/WO will be removed when WO/WO cleare
   let drawProfiles = [
     {
       drawSize: 8,
-      drawType: 'FEED_IN_CHAMPIONSHIP_TO_SF',
+      drawType: FEED_IN_CHAMPIONSHIP_TO_SF,
       completionGoal,
       outcomes: [
         {
-          stage: 'CONSOLATION',
-          roundNumber: 1,
-          roundPosition: 1,
           matchUpStatus: DOUBLE_WALKOVER,
           matchUpStatusCodes: ['WOWO'],
+          stage: CONSOLATION,
+          roundPosition: 1,
+          roundNumber: 1,
         },
       ],
     },

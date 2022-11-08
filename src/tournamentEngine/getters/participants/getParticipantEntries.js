@@ -34,6 +34,7 @@ export function getParticipantEntries({
   };
 
   const derivedDrawInfo = {};
+  const mappedMatchUps = {};
   let matchUps = [];
 
   const getRanking = ({ eventType, scaleNames, participantId }) =>
@@ -292,6 +293,9 @@ export function getParticipantEntries({
           eventId,
           drawId,
         } = matchUp;
+
+        mappedMatchUps[matchUpId] = matchUp;
+
         processSides({
           ...withOpts,
           winningSide,
@@ -327,7 +331,7 @@ export function getParticipantEntries({
     }
   }
 
-  return { participantMap, derivedDrawInfo, matchUps };
+  return { participantMap, derivedDrawInfo, matchUps, mappedMatchUps };
 }
 
 function processSides({
