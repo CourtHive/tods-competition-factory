@@ -61,21 +61,6 @@ export function doubleExitAdvancement(params) {
         matchUpId,
       });
       if (result.error) return decorateResult({ result, stack });
-      /*
-      const noContextLoserMatchUp = matchUpsMap.drawMatchUps.find(
-        (matchUp) => matchUp.matchUpId === loserMatchUp.matchUpId
-      );
-      const result = modifyMatchUpScore({
-        matchUp: noContextLoserMatchUp,
-        tournamentRecord,
-        drawDefinition,
-        winningSide,
-        matchUpId,
-        // matchUpStatusCodes,
-        matchUpStatus: WALKOVER,
-      });
-      if (result.error) return decorateResult({ result, stack });
-      */
     } else {
       const result = advanceByeToLoserMatchUp({
         loserTargetDrawPosition,
@@ -234,13 +219,6 @@ function conditionallyAdvanceDrawPosition(params) {
 
   const sourceMatchUpStatus = params.matchUpStatus;
   const pairedMatchUpStatus = pairedPreviousMatchUp?.matchUpStatus;
-
-  const producedMatchUpStatus = (previousMatchUpStatus) =>
-    previousMatchUpStatus === DOUBLE_WALKOVER
-      ? WALKOVER
-      : previousMatchUpStatus === DOUBLE_DEFAULT
-      ? DEFAULTED
-      : undefined;
 
   if (sourceSideNumber === 1) {
     matchUpStatusCodes = [
@@ -438,4 +416,9 @@ function advanceByeToLoserMatchUp(params) {
     structureId,
     matchUpsMap,
   });
+}
+
+function producedMatchUpStatus(previousMatchUpStatus) {
+  if (previousMatchUpStatus === DOUBLE_WALKOVER) return WALKOVER;
+  return previousMatchUpStatus === DOUBLE_DEFAULT ? DEFAULTED : undefined;
 }
