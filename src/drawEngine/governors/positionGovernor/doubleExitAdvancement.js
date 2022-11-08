@@ -207,12 +207,16 @@ function conditionallyAdvanceDrawPosition(params) {
         sourceSideNumber = 2;
       }
     } else {
-      // if different structureIds then structureId that is not equivalent to noContextTargetMatchUp.structureId is fed
-      // ... and fed positions are always sideNumber 1
-      if (sourceMatchUp.structureId === targetMatchUp.structureId) {
-        sourceSideNumber = 2;
+      if (targetMatchUp.feedRound) {
+        // if different structureIds then structureId that is not equivalent to noContextTargetMatchUp.structureId is fed
+        // ... and fed positions are always sideNumber 1
+        if (sourceMatchUp.structureId === targetMatchUp.structureId) {
+          sourceSideNumber = 2;
+        } else {
+          sourceSideNumber = 1;
+        }
       } else {
-        sourceSideNumber = 1;
+        if (walkoverWinningSide) sourceSideNumber = 3 - walkoverWinningSide;
       }
     }
   }
@@ -420,5 +424,6 @@ function advanceByeToLoserMatchUp(params) {
 
 function producedMatchUpStatus(previousMatchUpStatus) {
   if (previousMatchUpStatus === DOUBLE_WALKOVER) return WALKOVER;
-  return previousMatchUpStatus === DOUBLE_DEFAULT ? DEFAULTED : undefined;
+  if (previousMatchUpStatus === DOUBLE_DEFAULT) return DEFAULTED;
+  return previousMatchUpStatus;
 }
