@@ -3,6 +3,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
+import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { REFEREE, SCORE } from '../../../constants/matchUpActionConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
@@ -18,7 +19,6 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
-import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition, stage }) =>
   matchUps.find(
@@ -1031,6 +1031,11 @@ test('Double Exit produces exit in consolation', () => {
     matchUps,
   });
 
+  expect(targetMatchUp.winningSide).toEqual(2);
+  const losingSideMatchUpStatusCode = targetMatchUp.matchUpStatusCodes.find(
+    (side) => side.sideNumber === 1
+  ).previousMatchUpStatus;
+  expect(losingSideMatchUpStatusCode).toEqual(DOUBLE_WALKOVER);
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
 
   targetMatchUp = getTarget({
