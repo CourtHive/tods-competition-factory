@@ -8,6 +8,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
   BYE,
@@ -297,6 +298,11 @@ it('supports entering DOUBLE_DEFAULT matchUpStatus', () => {
   // create an FMLC with the 1st position matchUp completed
   const drawProfiles = [
     {
+      policyDefinitions: {
+        [POLICY_TYPE_PROGRESSION]: {
+          doubleExitPropagateBye: true,
+        },
+      },
       drawSize: 8,
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
       outcomes: [

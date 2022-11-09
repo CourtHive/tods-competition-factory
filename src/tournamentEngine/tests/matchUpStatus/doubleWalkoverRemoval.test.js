@@ -3,7 +3,6 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
-import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { REFEREE, SCORE } from '../../../constants/matchUpActionConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
@@ -994,11 +993,6 @@ test('Double Exit produces exit in consolation', () => {
   expect(result.success).toEqual(true);
 
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    policyDefinitions: {
-      [POLICY_TYPE_PROGRESSION]: {
-        doubleExitPropagateLoserExit: true,
-      },
-    },
     drawProfiles: [
       {
         drawType: FIRST_MATCH_LOSER_CONSOLATION,

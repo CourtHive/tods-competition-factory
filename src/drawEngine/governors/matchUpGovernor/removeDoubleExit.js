@@ -37,13 +37,7 @@ export function removeDoubleExit(params) {
   } = targetData;
 
   if (loserMatchUp) {
-    if (appliedPolicies?.progression?.doubleExitPropagateLoserExit) {
-      conditionallyRemoveDrawPosition({
-        ...params,
-        targetMatchUp: loserMatchUp,
-        sourceMatchUp: matchUp,
-      });
-    } else {
+    if (appliedPolicies?.progression?.doubleExitPropagateBye) {
       const result = removeDirectedBye({
         targetLink: loserTargetLink,
         drawPosition: loserTargetDrawPosition,
@@ -52,6 +46,14 @@ export function removeDoubleExit(params) {
         matchUpsMap,
       });
       if (result.error) return decorateResult({ result, stack });
+    } else {
+      const result = conditionallyRemoveDrawPosition({
+        ...params,
+        targetMatchUp: loserMatchUp,
+        sourceMatchUp: matchUp,
+      });
+      if (result.error) return decorateResult({ result, stack });
+      // console.log({ result });
     }
   }
 
@@ -183,6 +185,8 @@ export function conditionallyRemoveDrawPosition(params) {
   });
 
   if (result.error) return decorateResult({ result, stack });
+
+  return { ...SUCCESS };
 }
 
 function getMatchUpStatus({

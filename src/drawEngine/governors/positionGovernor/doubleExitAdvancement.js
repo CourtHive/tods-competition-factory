@@ -47,7 +47,17 @@ export function doubleExitAdvancement(params) {
 
   if (loserMatchUp) {
     const { loserTargetLink } = targetLinks;
-    if (appliedPolicies?.progression?.doubleExitPropagateLoserExit) {
+    if (appliedPolicies?.progression?.doubleExitPropagateBye) {
+      const result = advanceByeToLoserMatchUp({
+        loserTargetDrawPosition,
+        tournamentRecord,
+        loserTargetLink,
+        drawDefinition,
+        loserMatchUp,
+        matchUpsMap,
+      });
+      if (result.error) return decorateResult({ result, stack });
+    } else {
       const { feedRound, drawPositions, matchUpId } = loserMatchUp;
       const walkoverWinningSide = feedRound
         ? 2
@@ -59,16 +69,6 @@ export function doubleExitAdvancement(params) {
         tournamentRecord,
         sourceMatchUp,
         matchUpId,
-      });
-      if (result.error) return decorateResult({ result, stack });
-    } else {
-      const result = advanceByeToLoserMatchUp({
-        loserTargetDrawPosition,
-        tournamentRecord,
-        loserTargetLink,
-        drawDefinition,
-        loserMatchUp,
-        matchUpsMap,
       });
       if (result.error) return decorateResult({ result, stack });
     }
