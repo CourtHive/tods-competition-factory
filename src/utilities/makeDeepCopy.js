@@ -89,7 +89,7 @@ export function makeDeepCopy(
   return targetObject;
 }
 
-function extensionsToAttributes(extensions) {
+export function extensionsToAttributes(extensions = []) {
   return extensions
     ?.map((extension) => {
       const { name, value } = extension;
