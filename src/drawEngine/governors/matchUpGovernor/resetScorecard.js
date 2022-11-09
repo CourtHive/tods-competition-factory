@@ -8,7 +8,6 @@ import { findStructure } from '../../getters/findStructure';
 import { isActiveDownstream } from './isActiveDownstream';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { setMatchUpStatus } from './setMatchUpStatus';
-import { addGoesTo } from './addGoesTo';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
@@ -55,19 +54,11 @@ export function resetScorecard(params) {
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
   let { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     includeByeMatchUps: true,
+    nextMatchUps: true,
     inContext: true,
     drawDefinition,
     matchUpsMap,
   });
-  const hasGoesTo = !!inContextDrawMatchUps.find(
-    ({ winnerMatchUpId, loserMatchUpId }) => winnerMatchUpId || loserMatchUpId
-  );
-  if (!hasGoesTo)
-    ({ inContextDrawMatchUps } = addGoesTo({
-      inContextDrawMatchUps,
-      drawDefinition,
-      matchUpsMap,
-    }));
 
   // Find target matchUp ------------------------------------------------------
   const matchUp = matchUpsMap.drawMatchUps.find(

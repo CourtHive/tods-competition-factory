@@ -14,7 +14,6 @@ import { isActiveDownstream } from './isActiveDownstream';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { addMatchUpScheduleItems } from './scheduleItems';
 import { swapWinnerLoser } from './swapWinnerLoser';
-import { addGoesTo } from './addGoesTo';
 import {
   isDirectingMatchUpStatus,
   isNonDirectingMatchUpStatus,
@@ -102,20 +101,11 @@ export function setMatchUpStatus(params) {
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
   let { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     includeByeMatchUps: true,
+    nextMatchUps: true,
     inContext: true,
     drawDefinition,
     matchUpsMap,
   });
-  const hasGoesTo = !!inContextDrawMatchUps.find(
-    ({ winnerMatchUpId, loserMatchUpId }) => winnerMatchUpId || loserMatchUpId
-  );
-  if (!hasGoesTo) {
-    ({ inContextDrawMatchUps } = addGoesTo({
-      inContextDrawMatchUps,
-      drawDefinition,
-      matchUpsMap,
-    }));
-  }
 
   // Find target matchUp ------------------------------------------------------
   const matchUp = matchUpsMap.drawMatchUps.find(
