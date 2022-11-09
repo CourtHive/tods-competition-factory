@@ -33,7 +33,9 @@ export function allTournamentMatchUps({
   contextProfile,
   matchUpFilters,
   contextFilters,
+  participantMap,
   nextMatchUps,
+  participants,
   context,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -43,14 +45,16 @@ export function allTournamentMatchUps({
     tournamentRecord.tournamentId;
   const events = tournamentRecord?.events || [];
 
-  const { participants, participantMap } = getParticipants({
-    participantsProfile,
-    policyDefinitions,
-    useParticipantMap,
-    tournamentRecord,
-    contextProfile,
-    inContext,
-  });
+  if (!participants) {
+    ({ participants, participantMap } = getParticipants({
+      participantsProfile,
+      policyDefinitions,
+      useParticipantMap,
+      tournamentRecord,
+      contextProfile,
+      inContext,
+    }));
+  }
 
   const { appliedPolicies: tournamentAppliedPolicies } = getAppliedPolicies({
     tournamentRecord,

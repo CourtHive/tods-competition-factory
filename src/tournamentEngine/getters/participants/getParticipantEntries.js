@@ -1,4 +1,5 @@
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
 import { structureSort } from '../../../forge/transform';
 import { definedAttributes } from '../../../utilities';
 import { getFlightProfile } from '../getFlightProfile';
@@ -7,9 +8,13 @@ import { allEventMatchUps } from '../matchUpsGetter';
 import { UNGROUPED, UNPAIRED } from '../../../constants/entryStatusConstants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
-import { PAIR } from '../../../constants/participantConstants';
+import {
+  PAIR,
+  TEAM_PARTICIPANT,
+} from '../../../constants/participantConstants';
 
 export function getParticipantEntries({
+  convertExtensions,
   policyDefinitions,
   scheduleAnalysis,
   tournamentRecord,
@@ -33,6 +38,7 @@ export function getParticipantEntries({
     withDraws,
   };
 
+  const derivedEventInfo = {};
   const derivedDrawInfo = {};
   const mappedMatchUps = {};
   let matchUps = [];
@@ -45,15 +51,28 @@ export function getParticipantEntries({
   for (const event of tournamentRecord.events || []) {
     const {
       drawDefinitions = [],
+      extensions,
+      eventType,
+      eventName,
+      category,
       entries,
       eventId,
-      category,
-      eventType,
     } = event;
     const { flightProfile } = getFlightProfile({ event });
     const flights = flightProfile?.flights;
 
     if (withEvents) {
+      const extensionConversions = convertExtensions
+        ? Object.assign({}, ...extensionsToAttributes(extensions))
+        : {};
+      derivedEventInfo[eventId] = {
+        ...extensionConversions,
+        eventName,
+        eventType,
+        category,
+        eventId,
+      };
+
       const scaleNames = [
         category?.categoryName,
         category?.ageCategoryCode,
@@ -68,6 +87,7 @@ export function getParticipantEntries({
         if (!participantMap[participantId].events[eventId]) {
           participantMap[participantId].events[eventId] = definedAttributes(
             {
+              ...extensionConversions, // this should be deprecated and clients should use derivedEventInfo
               entryPosition,
               entryStatus,
               entryStage,
@@ -80,10 +100,10 @@ export function getParticipantEntries({
           );
         }
 
+        // add details for individualParticipantIds for TEAM/PAIR events
         const individualParticipantIds =
           participantMap[participantId].participant.individualParticipantIds ||
           [];
-        // add details for individualParticipantIds for TEAM/PAIR events
         if (individualParticipantIds?.length) {
           for (const individualParticiapntId of individualParticipantIds) {
             if (!participantMap[individualParticiapntId].events[eventId]) {
@@ -96,6 +116,7 @@ export function getParticipantEntries({
               participantMap[individualParticiapntId].events[eventId] =
                 definedAttributes(
                   {
+                    ...extensionConversions, // this should be deprecated and clients should use derivedEventInfo
                     entryPosition,
                     entryStatus,
                     entryStage,
@@ -124,7 +145,7 @@ export function getParticipantEntries({
           : undefined;
 
       for (const drawDefinition of drawDefinitions) {
-        const { drawId, entries, structures = [] } = drawDefinition;
+        const { drawId, entries, structures = [], drawOrder } = drawDefinition;
         const flightNumber = flights?.find(
           (flight) => flight.drawId === drawId
         )?.flightNumber;
@@ -219,10 +240,11 @@ export function getParticipantEntries({
             const individualParticipantIds =
               participantMap[participantId].participant
                 .individualParticipantIds || [];
+
             // add for individualParticipantIds when participantType is TEAM/PAIR
             if (individualParticipantIds?.length) {
               for (const individualParticiapntId of individualParticipantIds) {
-                if (!participantMap[individualParticiapntId].events[eventId]) {
+                if (!participantMap[individualParticiapntId].draws[drawId]) {
                   // get event ranking
                   const ranking = getRanking({
                     participantId: individualParticiapntId,
@@ -236,7 +258,7 @@ export function getParticipantEntries({
                     qualifyingSeedingMap?.[individualParticiapntId]
                       ?.seedValue ||
                     qualifyingSeedingMap?.[individualParticiapntId]?.seedNumber;
-                  participantMap[individualParticiapntId].events[eventId] =
+                  participantMap[individualParticiapntId].draws[drawId] =
                     definedAttributes(
                       {
                         qualifyingSeeding,
@@ -266,7 +288,9 @@ export function getParticipantEntries({
           orderedStructureIds,
           mainSeedingMap,
           flightNumber,
+          drawOrder,
           drawSize,
+          drawId,
           // qualifyingDrawSize,
         };
       }
@@ -331,7 +355,13 @@ export function getParticipantEntries({
     }
   }
 
-  return { participantMap, derivedDrawInfo, matchUps, mappedMatchUps };
+  return {
+    derivedEventInfo,
+    derivedDrawInfo,
+    mappedMatchUps,
+    participantMap,
+    matchUps,
+  };
 }
 
 function processSides({
@@ -373,9 +403,35 @@ function processSides({
     const { participantId, sideNumber } = side;
     const participantWon = winningSide && winningSide === sideNumber;
 
-    const addMatchUp = (participantId) => {
+    const getOpponentInfo = (opponentParticipantId) => {
+      const opponent = participantMap[opponentParticipantId]?.participant;
+      const participantType = opponent?.participantType;
+      const info = [
+        {
+          participantId: opponentParticipantId,
+          participantType,
+        },
+      ];
+
+      if (participantType !== TEAM_PARTICIPANT) {
+        for (const participantId of opponent?.individualParticipantIds || []) {
+          const participant = participantMap[participantId]?.participant;
+          info.push({
+            participantType: participant?.participantType,
+            participantId,
+          });
+        }
+      }
+
+      return info;
+    };
+
+    const addMatchUp = (participantId, opponentParticipantId) => {
       if (withMatchUps) {
+        const opponentParticipantInfo =
+          withOpponents && getOpponentInfo(opponentParticipantId);
         participantMap[participantId].matchUps[matchUpId] = {
+          opponentParticipantInfo,
           participantWon,
           matchUpType,
           sideNumber,
@@ -404,11 +460,19 @@ function processSides({
           partnerParticipantId
         );
       }
+      if (withMatchUps) {
+        addPartnerParticiapntId(
+          participantMap[participantId]?.matchUps?.[matchUpId],
+          partnerParticipantId
+        );
+      }
     };
-    if (participantId) {
-      addMatchUp(participantId);
 
+    if (participantId) {
       const opponentParticipantId = opponents?.[sideNumber];
+
+      addMatchUp(participantId, opponentParticipantId);
+
       if (withOpponents && opponentParticipantId) {
         participantMap[participantId].opponents[opponentParticipantId] = {
           participantId: opponentParticipantId,
@@ -449,6 +513,7 @@ function processSides({
               (participantMap[participantId].draws[drawId] = {
                 entryStatus: teamEntryStatus,
                 // add positions played in lineUp collections
+                eventId,
                 drawId,
               });
             addDrawData(participantId);
@@ -458,11 +523,28 @@ function processSides({
       }
 
       if (isPair) {
-        individualParticipantIds.forEach(addMatchUp);
+        individualParticipantIds.forEach((participantId) =>
+          addMatchUp(participantId, opponentParticipantId)
+        );
         individualParticipantIds.forEach((participantId, i) => {
           const partnerParticipantId = individualParticipantIds[1 - i];
           addPartner({ participantId, partnerParticipantId });
         });
+
+        // in TEAM events PAIR participants do not appear in entries
+        if (withEvents && matchUpSides) {
+          const teamParticipantId = matchUpSides.find(
+            (s) => s.sideNumber === sideNumber
+          )?.participant?.participantId;
+          const teamEntry = participantMap[teamParticipantId].events[eventId];
+
+          participantMap[participantId].events[eventId] = teamEntry;
+          individualParticipantIds.forEach(
+            (individualParticiapntId) =>
+              (participantMap[individualParticiapntId].events[eventId] =
+                teamEntry)
+          );
+        }
       }
     }
   }

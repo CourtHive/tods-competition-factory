@@ -128,12 +128,10 @@ function processIndividualParticipantIds({
   participantId,
 }) {
   for (const individualParticipantId of individualParticipantIds) {
-    if (!participantMap[individualParticipantId]) {
-      initializeParticipantId({
-        participantMap,
-        participantId: individualParticipantId,
-      });
-    }
+    initializeParticipantId({
+      participantId: individualParticipantId,
+      participantMap,
+    });
     const individualParticipant =
       participantMap[individualParticipantId].participant;
     individualParticipant[typeMap[participantType]].push(participantId);
@@ -169,6 +167,9 @@ function processIndividualParticipantIds({
 }
 
 function initializeParticipantId({ participantMap, participantId }) {
+  // nothing to do if participantId is present
+  if (participantMap[participantId]) return;
+
   participantMap[participantId] = {
     potentialMatchUps: {},
     scheduleItems: [],

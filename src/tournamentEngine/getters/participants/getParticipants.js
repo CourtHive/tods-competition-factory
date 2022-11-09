@@ -45,20 +45,26 @@ export function getParticipants({
     withIOC,
   });
 
-  let matchUps, derivedDrawInfo, mappedMatchUps;
-  ({ participantMap, matchUps, mappedMatchUps, derivedDrawInfo } =
-    getParticipantEntries({
-      withPotentialMatchUps,
-      policyDefinitions,
-      tournamentRecord,
-      scheduleAnalysis,
-      withTeamMatchUps,
-      participantMap,
-      withOpponents,
-      withMatchUps,
-      withEvents,
-      withDraws,
-    }));
+  let matchUps, derivedDrawInfo, derivedEventInfo, mappedMatchUps;
+  ({
+    derivedEventInfo,
+    derivedDrawInfo,
+    participantMap,
+    mappedMatchUps,
+    matchUps,
+  } = getParticipantEntries({
+    withPotentialMatchUps,
+    policyDefinitions,
+    convertExtensions,
+    tournamentRecord,
+    scheduleAnalysis,
+    withTeamMatchUps,
+    participantMap,
+    withOpponents,
+    withMatchUps,
+    withEvents,
+    withDraws,
+  }));
 
   let processedParticipants = Object.values(participantMap).map(
     ({ draws, events, matchUps, opponents, ...p }) => {
@@ -95,6 +101,7 @@ export function getParticipants({
   });
 
   return {
+    derivedEventInfo,
     derivedDrawInfo,
     mappedMatchUps,
     participantMap,
