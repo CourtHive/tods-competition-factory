@@ -155,7 +155,7 @@ export function getParticipantEntries({
       }
     }
 
-    if (withDraws) {
+    if (withDraws || withRankingProfile) {
       const getSeedingMap = (assignments) =>
         assignments
           ? Object.assign(
