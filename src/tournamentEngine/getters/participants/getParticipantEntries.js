@@ -8,11 +8,16 @@ import { allEventMatchUps } from '../matchUpsGetter';
 
 import { UNGROUPED, UNPAIRED } from '../../../constants/entryStatusConstants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
+import {
+  DOUBLES,
+  SINGLES,
+  TEAM_MATCHUP,
+} from '../../../constants/matchUpTypes';
 import {
   PAIR,
   TEAM_PARTICIPANT,
 } from '../../../constants/participantConstants';
+import { WIN_RATIO } from '../../../constants/statsConstants';
 
 export function getParticipantEntries({
   participantFilters,
@@ -24,6 +29,7 @@ export function getParticipantEntries({
 
   withPotentialMatchUps,
   withTeamMatchUps,
+  withStatistics,
   withOpponents,
   withMatchUps,
   withEvents,
@@ -51,6 +57,7 @@ export function getParticipantEntries({
     withPotentialMatchUps,
     scheduleAnalysis,
     withTeamMatchUps,
+    withStatistics,
     participantMap,
     withOpponents,
     withMatchUps,
@@ -316,7 +323,13 @@ export function getParticipantEntries({
       }
     }
 
-    if (withMatchUps || withOpponents || withTeamMatchUps || withDraws) {
+    if (
+      withMatchUps ||
+      withOpponents ||
+      withTeamMatchUps ||
+      withDraws ||
+      withStatistics
+    ) {
       const nextMatchUps = scheduleAnalysis || withPotentialMatchUps;
       const eventMatchUps = allEventMatchUps({
         afterRecoveryTimes: scheduleAnalysis,
@@ -399,6 +412,35 @@ export function getParticipantEntries({
     }
   }
 
+  if (withStatistics) {
+    for (const participant of Object.values(participantMap)) {
+      const {
+        wins,
+        losses,
+        [SINGLES]: { wins: singlesWins, losses: singlesLosses },
+        [DOUBLES]: { wins: doublesWins, losses: doublesLosses },
+      } = participant.counters;
+
+      const addStatValue = (statCode, wins, losses) => {
+        const denominator = wins + losses;
+        const numerator = wins;
+
+        const statValue = denominator && numerator / denominator;
+
+        participant.statistics[statCode] = {
+          denominator,
+          numerator,
+          statValue,
+          statCode,
+        };
+      };
+
+      addStatValue(WIN_RATIO, wins, losses);
+      addStatValue(`${WIN_RATIO}.${SINGLES}`, singlesWins, singlesLosses);
+      addStatValue(`${WIN_RATIO}.${DOUBLES}`, doublesWins, doublesLosses);
+    }
+  }
+
   return {
     derivedEventInfo,
     derivedDrawInfo,
@@ -445,8 +487,7 @@ function processSides({
 
   for (const side of sides) {
     const { participantId, sideNumber } = side;
-    const participantWon = winningSide && winningSide === sideNumber;
-
+    let participantWon;
     const getOpponentInfo = (opponentParticipantId) => {
       const opponent = participantMap[opponentParticipantId]?.participant;
       const participantType = opponent?.participantType;
@@ -589,6 +630,21 @@ function processSides({
                 teamEntry)
           );
         }
+      }
+
+      if (winningSide) {
+        participantWon = winningSide === sideNumber;
+        const processParticipantId = (id) => {
+          if (participantWon) {
+            participantMap[id].counters[matchUpType].wins += 1;
+            participantMap[id].counters.wins += 1;
+          } else {
+            participantMap[id].counters[matchUpType].losses += 1;
+            participantMap[id].counters.losses += 1;
+          }
+        };
+        processParticipantId(participantId);
+        individualParticipantIds.forEach(processParticipantId);
       }
     }
   }

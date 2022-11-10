@@ -9,6 +9,7 @@ import { getScaleValues } from './getScaleValues';
 import { intersection } from '../../../utilities';
 
 import { SCALE, SEEDING } from '../../../constants/scaleConstants';
+import { WIN_RATIO } from '../../../constants/statsConstants';
 import {
   BYE,
   DEFAULTED,
@@ -64,7 +65,7 @@ export function annotateParticipant({
   const statValue = denominator && numerator / denominator;
 
   const winRatioStat = {
-    statCode: 'winRatio',
+    statCode: WIN_RATIO,
     denominator,
     numerator,
     statValue,

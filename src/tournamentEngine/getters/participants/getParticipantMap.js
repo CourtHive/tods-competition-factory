@@ -11,6 +11,7 @@ import {
   SIGN_IN_STATUS,
   TEAM,
 } from '../../../constants/participantConstants';
+import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 
 const typeMap = {
   [GROUP]: 'groupParticipantIds',
@@ -180,12 +181,18 @@ function initializeParticipantId({ participantMap, participantId }) {
       groups: [],
       teams: [],
     },
+    statistics: {},
     opponents: {},
     pairIdMap: {},
     matchUps: {},
     events: {},
     draws: {},
-    losses: 0,
-    wins: 0,
+    counters: {
+      [SINGLES]: { wins: 0, losses: 0 },
+      [DOUBLES]: { wins: 0, losses: 0 },
+      [TEAM]: { wins: 0, losses: 0 },
+      losses: 0,
+      wins: 0,
+    },
   };
 }
