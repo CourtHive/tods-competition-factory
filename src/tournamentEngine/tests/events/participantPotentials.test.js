@@ -1,7 +1,9 @@
 import { generateTournamentRecord } from '../../../mocksEngine/generators/generateTournamentRecord';
 import drawEngine from '../../../drawEngine/sync';
+import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { DOUBLES_EVENT } from '../../../constants/eventConstants';
 import {
   CONSOLATION,
   FIRST_MATCH_LOSER_CONSOLATION,
@@ -10,8 +12,8 @@ import {
 it('can return event matchUps with potential participants', () => {
   const drawProfiles = [
     {
-      drawSize: 8,
       participantsCount: 6,
+      drawSize: 8,
     },
   ];
   const { drawIds, tournamentRecord } = generateTournamentRecord({
@@ -41,6 +43,29 @@ it('can return event matchUps with potential participants', () => {
   expect(
     roundMatchUps[1][1].sides.map(({ participant }) => participant)
   ).toEqual(roundMatchUps[2][0].potentialParticipants[0]);
+});
+
+it('participant object include potentials', () => {
+  const drawProfiles = [
+    {
+      drawType: FIRST_MATCH_LOSER_CONSOLATION,
+      eventType: DOUBLES_EVENT,
+      drawSize: 8,
+    },
+  ];
+
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  const { participants } = tournamentEngine.getParticipants({
+    withPotentialMatchUps: true,
+    withMatchUps: true,
+  });
+  expect(participants.length).toEqual(
+    participants.map((p) => p.potentialMatchUps).filter(Boolean).length
+  );
 });
 
 it('handles potential BYES for FMLC consolation structures', () => {

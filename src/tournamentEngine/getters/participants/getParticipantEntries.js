@@ -1,5 +1,6 @@
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
+import { getParticipantIds } from '../../../global/functions/extractors';
 import { structureSort } from '../../../forge/transform';
 import { definedAttributes } from '../../../utilities';
 import { getFlightProfile } from '../getFlightProfile';
@@ -14,6 +15,7 @@ import {
 } from '../../../constants/participantConstants';
 
 export function getParticipantEntries({
+  participantFilters,
   convertExtensions,
   policyDefinitions,
   scheduleAnalysis,
@@ -27,6 +29,24 @@ export function getParticipantEntries({
   withEvents,
   withDraws,
 }) {
+  const targetParticipantIds = participantFilters?.participantIds;
+  const getRelevantParticipantIds = (participantId) => {
+    const relevantParticipantIds = [participantId];
+    relevantParticipantIds.push(participantId);
+    participantMap[participantId].participant.individualParticipantIds?.forEach(
+      (individualParticiapntId) =>
+        relevantParticipantIds.push(individualParticiapntId)
+    );
+
+    return relevantParticipantIds.some(
+      (obj) =>
+        !targetParticipantIds?.length ||
+        targetParticipantIds.includes(obj.relevantParticipantId)
+    )
+      ? relevantParticipantIds
+      : [];
+  };
+
   const withOpts = {
     withPotentialMatchUps,
     scheduleAnalysis,
@@ -297,18 +317,20 @@ export function getParticipantEntries({
     }
 
     if (withMatchUps || withOpponents || withTeamMatchUps || withDraws) {
+      const nextMatchUps = scheduleAnalysis || withPotentialMatchUps;
       const eventMatchUps = allEventMatchUps({
-        nextMatchUps: scheduleAnalysis || withPotentialMatchUps,
         afterRecoveryTimes: scheduleAnalysis,
         policyDefinitions,
         tournamentRecord,
         inContext: true,
         participantMap,
+        nextMatchUps,
         event,
       })?.matchUps;
 
       for (const matchUp of eventMatchUps) {
         const {
+          potentialParticipants,
           tieMatchUps = [],
           sides = [],
           winningSide,
@@ -350,7 +372,29 @@ export function getParticipantEntries({
             drawId,
           });
         }
+
+        if (nextMatchUps && Array.isArray(potentialParticipants)) {
+          const potentialParticipantIds = getParticipantIds(
+            potentialParticipants.flat()
+          );
+          potentialParticipantIds?.forEach((participantId) => {
+            const relevantParticipantIds =
+              getRelevantParticipantIds(participantId);
+
+            relevantParticipantIds?.forEach((relevantParticipantId) => {
+              participantMap[relevantParticipantId].potentialMatchUps[
+                matchUpId
+              ] = definedAttributes({
+                potential: true,
+                matchUpId,
+                eventId,
+                drawId,
+              });
+            });
+          });
+        }
       }
+
       matchUps.push(...eventMatchUps);
     }
   }

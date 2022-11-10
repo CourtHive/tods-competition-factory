@@ -54,6 +54,7 @@ export function getParticipants({
     matchUps,
   } = getParticipantEntries({
     withPotentialMatchUps,
+    participantFilters,
     policyDefinitions,
     convertExtensions,
     tournamentRecord,
@@ -66,8 +67,9 @@ export function getParticipants({
     withDraws,
   }));
 
+  const nextMatchUps = scheduleAnalysis || withPotentialMatchUps;
   let processedParticipants = Object.values(participantMap).map(
-    ({ draws, events, matchUps, opponents, ...p }) => {
+    ({ draws, events, matchUps, potentialMatchUps, opponents, ...p }) => {
       const participantDraws = Object.values(draws);
       const participantOpponents = Object.values(opponents);
       if (withOpponents) {
@@ -82,6 +84,9 @@ export function getParticipants({
         {
           ...p.participant,
           opponents: withOpponents ? participantOpponents : undefined,
+          potentialMatchUps: nextMatchUps
+            ? Object.values(potentialMatchUps)
+            : undefined,
           matchUps: withMatchUps ? Object.values(matchUps) : undefined,
           events: withEvents ? Object.values(events) : undefined,
           draws: withDraws ? participantDraws : undefined,
