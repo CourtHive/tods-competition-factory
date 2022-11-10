@@ -3,10 +3,11 @@ import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 export function addStructureParticipation({
   finishingPositionRange,
   participantMap,
-  participantId,
   finishingRound,
   participantWon,
   matchUpStatus,
+  participantId,
+  stageSequence,
   roundNumber,
   structureId,
   matchUpId,
@@ -22,6 +23,7 @@ export function addStructureParticipation({
       rankingStage: stage,
       walkoverWinCount: 0,
       defaultWinCount: 0,
+      stageSequence,
       winCount: 0,
       drawId,
     };
