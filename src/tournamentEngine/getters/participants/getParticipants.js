@@ -15,7 +15,7 @@ export function getParticipants({
   convertExtensions,
   policyDefinitions,
   tournamentRecord,
-  scheduleAnalysis,
+  scheduleAnalysis, // TODO
   withSignInStatus,
   withTeamMatchUps,
   withScaleValues,
@@ -70,7 +70,7 @@ export function getParticipants({
   }));
 
   const nextMatchUps = scheduleAnalysis || withPotentialMatchUps;
-  let processedParticipants = Object.values(participantMap).map(
+  const processedParticipants = Object.values(participantMap).map(
     ({
       potentialMatchUps,
       statistics,
