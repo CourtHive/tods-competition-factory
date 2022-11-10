@@ -1,13 +1,16 @@
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
 import { getParticipantIds } from '../../../global/functions/extractors';
+import { addStructureParticipation } from './addStructureParticipation';
 import { structureSort } from '../../../forge/transform';
 import { definedAttributes } from '../../../utilities';
 import { getFlightProfile } from '../getFlightProfile';
 import { allEventMatchUps } from '../matchUpsGetter';
 
+import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { UNGROUPED, UNPAIRED } from '../../../constants/entryStatusConstants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { WIN_RATIO } from '../../../constants/statsConstants';
 import {
   DOUBLES,
   SINGLES,
@@ -17,7 +20,6 @@ import {
   PAIR,
   TEAM_PARTICIPANT,
 } from '../../../constants/participantConstants';
-import { WIN_RATIO } from '../../../constants/statsConstants';
 
 export function getParticipantEntries({
   participantFilters,
@@ -28,6 +30,7 @@ export function getParticipantEntries({
   participantMap,
 
   withPotentialMatchUps,
+  withRankingProfile,
   withTeamMatchUps,
   withStatistics,
   withOpponents,
@@ -55,6 +58,7 @@ export function getParticipantEntries({
 
   const withOpts = {
     withPotentialMatchUps,
+    withRankingProfile,
     scheduleAnalysis,
     withTeamMatchUps,
     withStatistics,
@@ -324,11 +328,12 @@ export function getParticipantEntries({
     }
 
     if (
-      withMatchUps ||
-      withOpponents ||
+      withRankingProfile ||
       withTeamMatchUps ||
-      withDraws ||
-      withStatistics
+      withStatistics ||
+      withOpponents ||
+      withMatchUps ||
+      withDraws
     ) {
       const nextMatchUps = scheduleAnalysis || withPotentialMatchUps;
       const eventMatchUps = allEventMatchUps({
@@ -343,6 +348,7 @@ export function getParticipantEntries({
 
       for (const matchUp of eventMatchUps) {
         const {
+          finishingPositionRange,
           potentialParticipants,
           tieMatchUps = [],
           sides = [],
@@ -351,17 +357,32 @@ export function getParticipantEntries({
           matchUpId,
           eventId,
           drawId,
+          finishingRound,
+          matchUpStatus,
+          roundNumber,
+          structureId,
+          stage,
         } = matchUp;
 
         mappedMatchUps[matchUpId] = matchUp;
 
+        const baseAttrs = {
+          finishingPositionRange,
+          finishingRound,
+          roundNumber,
+          structureId,
+          eventId,
+          drawId,
+          stage,
+        };
+
         processSides({
+          ...baseAttrs,
           ...withOpts,
+          matchUpStatus,
           winningSide,
           matchUpType,
           matchUpId,
-          eventId,
-          drawId,
           sides,
         });
 
@@ -370,9 +391,11 @@ export function getParticipantEntries({
             winningSide: tieMatchUpWinningSide,
             sides: tieMatchUpSides = [],
             matchUpId: tieMatchUpId,
+            matchUpStatus,
             matchUpType,
           } = tieMatchUp;
           processSides({
+            ...baseAttrs,
             ...withOpts,
             winningSide: tieMatchUpWinningSide,
             tieWinningSide: winningSide,
@@ -380,9 +403,8 @@ export function getParticipantEntries({
             matchUpId: tieMatchUpId,
             sides: tieMatchUpSides,
             matchUpSides: sides,
+            matchUpStatus,
             matchUpType,
-            eventId,
-            drawId,
           });
         }
 
@@ -458,6 +480,14 @@ function processSides({
   withEvents,
   withDraws,
 
+  finishingPositionRange,
+  finishingRound,
+  matchUpStatus,
+  roundNumber,
+  structureId,
+  stage,
+
+  withRankingProfile,
   tieWinningSide,
   matchUpTieId,
   matchUpSides,
@@ -487,7 +517,8 @@ function processSides({
 
   for (const side of sides) {
     const { participantId, sideNumber } = side;
-    let participantWon;
+    const participantWon = winningSide === sideNumber;
+
     const getOpponentInfo = (opponentParticipantId) => {
       const opponent = participantMap[opponentParticipantId]?.participant;
       const participantType = opponent?.participantType;
@@ -522,6 +553,21 @@ function processSides({
           sideNumber,
           matchUpId,
         };
+      }
+      if (withRankingProfile) {
+        addStructureParticipation({
+          finishingPositionRange,
+          participantMap,
+          participantWon,
+          participantId,
+          finishingRound,
+          matchUpStatus,
+          roundNumber,
+          structureId,
+          matchUpId,
+          drawId,
+          stage,
+        });
       }
     };
 
@@ -633,14 +679,29 @@ function processSides({
       }
 
       if (winningSide) {
-        participantWon = winningSide === sideNumber;
         const processParticipantId = (id) => {
           if (participantWon) {
             participantMap[id].counters[matchUpType].wins += 1;
             participantMap[id].counters.wins += 1;
+            if (matchUpStatus === WALKOVER) {
+              participantMap[id].counters[matchUpType].walkoverWins += 1;
+              participantMap[id].counters.walkoverWins += 1;
+            }
+            if (matchUpStatus === DEFAULTED) {
+              participantMap[id].counters[matchUpType].defaultWins += 1;
+              participantMap[id].counters.defaultWins += 1;
+            }
           } else {
             participantMap[id].counters[matchUpType].losses += 1;
             participantMap[id].counters.losses += 1;
+            if (matchUpStatus === WALKOVER) {
+              participantMap[id].counters[matchUpType].walkovers += 1;
+              participantMap[id].counters.walkovers += 1;
+            }
+            if (matchUpStatus === DEFAULTED) {
+              participantMap[id].counters[matchUpType].defaults += 1;
+              participantMap[id].counters.defaults += 1;
+            }
           }
         };
         processParticipantId(participantId);

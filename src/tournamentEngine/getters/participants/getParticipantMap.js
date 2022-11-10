@@ -171,7 +171,17 @@ function initializeParticipantId({ participantMap, participantId }) {
   // nothing to do if participantId is present
   if (participantMap[participantId]) return;
 
+  const counters = {
+    walkoverWins: 0,
+    defaultWins: 0,
+    walkovers: 0,
+    defaults: 0,
+    losses: 0,
+    wins: 0,
+  };
+
   participantMap[participantId] = {
+    structureParticipation: {},
     potentialMatchUps: {},
     scheduleItems: [],
     participant: {
@@ -188,11 +198,10 @@ function initializeParticipantId({ participantMap, participantId }) {
     events: {},
     draws: {},
     counters: {
-      [SINGLES]: { wins: 0, losses: 0 },
-      [DOUBLES]: { wins: 0, losses: 0 },
-      [TEAM]: { wins: 0, losses: 0 },
-      losses: 0,
-      wins: 0,
+      [SINGLES]: { ...counters },
+      [DOUBLES]: { ...counters },
+      [TEAM]: { ...counters },
+      ...counters,
     },
   };
 }

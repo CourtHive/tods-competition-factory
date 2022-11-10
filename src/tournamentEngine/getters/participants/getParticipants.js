@@ -11,7 +11,7 @@ export function getParticipants({
   withIndividualParticipants,
   participantFilters = {},
   withPotentialMatchUps,
-  // withRankingProfile,
+  withRankingProfile,
   convertExtensions,
   policyDefinitions,
   tournamentRecord,
@@ -55,6 +55,7 @@ export function getParticipants({
   } = getParticipantEntries({
     withPotentialMatchUps,
     participantFilters,
+    withRankingProfile,
     policyDefinitions,
     convertExtensions,
     tournamentRecord,

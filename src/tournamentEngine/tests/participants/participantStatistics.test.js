@@ -26,12 +26,34 @@ test.each(scenarios)(
       });
 
     const { participants, participantMap } = tournamentEngine.getParticipants({
+      withRankingProfile: true,
       withStatistics: true,
     });
 
     expect(participants.every(({ statistics }) => statistics.length)).toEqual(
       true
     );
+
+    expect(
+      Object.values(participantMap).every(({ structureParticipation }) => {
+        const {
+          finishingMatchUpId,
+          finishingPositionRange,
+          finishingRound,
+          rankingStage,
+          roundNumber,
+          drawId,
+        } = Object.values(structureParticipation)[0];
+        return (
+          finishingPositionRange &&
+          finishingMatchUpId &&
+          finishingRound &&
+          rankingStage &&
+          roundNumber &&
+          drawId
+        );
+      })
+    ).toEqual(true);
 
     for (const participant of tournamentParticipants) {
       const winRatio = participant.statistics.find(
