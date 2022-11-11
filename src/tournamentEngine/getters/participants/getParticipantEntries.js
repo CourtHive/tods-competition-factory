@@ -428,13 +428,13 @@ export function getParticipantEntries({
   }
 
   if (withStatistics || withRankingProfile) {
-    for (const participant of Object.values(participantMap)) {
+    for (const participantAggregator of Object.values(participantMap)) {
       const {
         wins,
         losses,
         [SINGLES]: { wins: singlesWins, losses: singlesLosses },
         [DOUBLES]: { wins: doublesWins, losses: doublesLosses },
-      } = participant.counters;
+      } = participantAggregator.counters;
 
       const addStatValue = (statCode, wins, losses) => {
         const denominator = wins + losses;
@@ -442,7 +442,7 @@ export function getParticipantEntries({
 
         const statValue = denominator && numerator / denominator;
 
-        participant.statistics[statCode] = {
+        participantAggregator.statistics[statCode] = {
           denominator,
           numerator,
           statValue,
@@ -457,7 +457,53 @@ export function getParticipantEntries({
       }
 
       if (withRankingProfile) {
-        // process structureParticipation
+        const diff = (range) => Math.abs(range[0] - range[1]);
+        for (const drawId of Object.keys(participantAggregator.draws)) {
+          const { orderedStructureIds = [], flightNumber } =
+            derivedDrawInfo[drawId] || {};
+          if (
+            participantAggregator.structureParticipation &&
+            orderedStructureIds.length
+          ) {
+            let finishingPositionRange;
+            let nonQualifyingOrder = 0;
+
+            // structures in which a participant participants/exits
+            const orderedParticipation = orderedStructureIds
+              .map((structureId) => {
+                const participation =
+                  participantAggregator.structureParticipation[structureId];
+                if (!participation) return;
+
+                if (!finishingPositionRange)
+                  finishingPositionRange = participation.finishingPositionRange;
+                if (
+                  diff(finishingPositionRange) >
+                  diff(participation.finishingPositionRange)
+                )
+                  finishingPositionRange = participation.finishingPositionRange;
+
+                const notQualifying = participation.stage !== QUALIFYING;
+                if (notQualifying) nonQualifyingOrder += 1;
+
+                const participationOrder = notQualifying
+                  ? nonQualifyingOrder
+                  : undefined;
+
+                return definedAttributes({
+                  ...participation,
+                  participationOrder,
+                  flightNumber,
+                });
+              })
+              .filter(Boolean);
+
+            participantAggregator.draws[drawId].finishingPositionRange =
+              finishingPositionRange;
+            participantAggregator.draws[drawId].structureParticipation =
+              orderedParticipation;
+          }
+        }
       }
     }
   }
