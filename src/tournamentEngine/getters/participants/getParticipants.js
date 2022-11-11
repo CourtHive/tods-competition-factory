@@ -14,8 +14,9 @@ export function getParticipants({
   withRankingProfile,
   convertExtensions,
   policyDefinitions,
+  withScheduleItems,
   tournamentRecord,
-  scheduleAnalysis, // TODO
+  scheduleAnalysis,
   withSignInStatus,
   withTeamMatchUps,
   withScaleValues,
@@ -45,8 +46,13 @@ export function getParticipants({
     withIOC,
   });
 
-  let matchUps, derivedDrawInfo, derivedEventInfo, mappedMatchUps;
+  let participantIdsWithConflicts,
+    derivedEventInfo,
+    derivedDrawInfo,
+    mappedMatchUps,
+    matchUps;
   ({
+    participantIdsWithConflicts,
     derivedEventInfo,
     derivedDrawInfo,
     participantMap,
@@ -58,6 +64,7 @@ export function getParticipants({
     withRankingProfile,
     policyDefinitions,
     convertExtensions,
+    withScheduleItems,
     tournamentRecord,
     scheduleAnalysis,
     withTeamMatchUps,
@@ -120,6 +127,7 @@ export function getParticipants({
   // filter mappedMatchUps and matchUps to reduce over-the-wire payloads
 
   return {
+    participantIdsWithConflicts,
     derivedEventInfo,
     derivedDrawInfo,
     mappedMatchUps,

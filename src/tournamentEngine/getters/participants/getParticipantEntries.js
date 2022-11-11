@@ -1,12 +1,15 @@
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { timeSort, timeStringMinutes } from '../../../utilities/dateTime';
 import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
 import { getParticipantIds } from '../../../global/functions/extractors';
 import { structureSort } from '../../../forge/transform';
 import { definedAttributes } from '../../../utilities';
 import { getFlightProfile } from '../getFlightProfile';
 import { allEventMatchUps } from '../matchUpsGetter';
+import { addScheduleItem } from './addScheduleItem';
 import { processSides } from './processSides';
 
+import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { UNGROUPED, UNPAIRED } from '../../../constants/entryStatusConstants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
@@ -16,12 +19,13 @@ export function getParticipantEntries({
   participantFilters,
   convertExtensions,
   policyDefinitions,
-  scheduleAnalysis,
   tournamentRecord,
   participantMap,
 
   withPotentialMatchUps,
   withRankingProfile,
+  withScheduleTimes,
+  scheduleAnalysis,
   withTeamMatchUps,
   withStatistics,
   withOpponents,
@@ -50,6 +54,7 @@ export function getParticipantEntries({
   const withOpts = {
     withPotentialMatchUps,
     withRankingProfile,
+    withScheduleTimes,
     scheduleAnalysis,
     withTeamMatchUps,
     withStatistics,
@@ -60,6 +65,7 @@ export function getParticipantEntries({
     withDraws,
   };
 
+  const participantIdsWithConflicts = [];
   const derivedEventInfo = {};
   const derivedDrawInfo = {};
   const mappedMatchUps = {};
@@ -320,6 +326,7 @@ export function getParticipantEntries({
 
     if (
       withRankingProfile ||
+      scheduleAnalysis ||
       withTeamMatchUps ||
       withStatistics ||
       withOpponents ||
@@ -351,8 +358,11 @@ export function getParticipantEntries({
           stageSequence,
           finishingRound,
           matchUpStatus,
+          roundPosition,
           roundNumber,
           structureId,
+          schedule,
+          score,
           stage,
         } = matchUp;
 
@@ -362,10 +372,13 @@ export function getParticipantEntries({
           finishingPositionRange,
           finishingRound,
           stageSequence,
+          roundPosition,
           roundNumber,
           structureId,
+          schedule,
           eventId,
           drawId,
+          score,
           stage,
         };
 
@@ -401,7 +414,10 @@ export function getParticipantEntries({
           });
         }
 
-        if (nextMatchUps && Array.isArray(potentialParticipants)) {
+        if (
+          Array.isArray(potentialParticipants) &&
+          (nextMatchUps || scheduleAnalysis || withScheduleTimes)
+        ) {
           const potentialParticipantIds = getParticipantIds(
             potentialParticipants.flat()
           );
@@ -413,12 +429,28 @@ export function getParticipantEntries({
               participantMap[relevantParticipantId].potentialMatchUps[
                 matchUpId
               ] = definedAttributes({
-                potential: true,
                 matchUpId,
                 eventId,
                 drawId,
               });
             });
+
+            if (scheduleAnalysis || withScheduleTimes) {
+              addScheduleItem({
+                potential: true,
+                participantMap,
+                participantId,
+                matchUpStatus,
+                roundPosition,
+                structureId,
+                matchUpType,
+                roundNumber,
+                matchUpId,
+                schedule,
+                drawId,
+                score,
+              });
+            }
           });
         }
       }
@@ -427,7 +459,7 @@ export function getParticipantEntries({
     }
   }
 
-  if (withStatistics || withRankingProfile) {
+  if (withStatistics || withRankingProfile || scheduleAnalysis) {
     for (const participantAggregator of Object.values(participantMap)) {
       const {
         wins,
@@ -505,10 +537,90 @@ export function getParticipantEntries({
           }
         }
       }
+
+      if (scheduleAnalysis) {
+        const { scheduledMinutesDifference } = scheduleAnalysis || {};
+
+        // iterate through participantAggregator.scheduleItems
+        const scheduleItems = participantAggregator.scheduleItems || [];
+        const potentialMatchUps = participantAggregator.potentialMatchUps || {};
+        const dateItems = scheduleItems.reduce((dateItems, scheduleItem) => {
+          const { scheduledDate, scheduledTime } = scheduleItem;
+          if (!dateItems[scheduledDate]) dateItems[scheduledDate] = [];
+          if (scheduledTime) dateItems[scheduledDate].push(scheduleItem);
+
+          return dateItems;
+        }, {});
+
+        // sort scheduleItems for each date
+        Object.values(dateItems).forEach((items) => items.sort(timeSort));
+
+        for (const scheduleItem of scheduleItems) {
+          const {
+            typeChangeTimeAfterRecovery,
+            timeAfterRecovery,
+            scheduledDate,
+            scheduledTime,
+          } = scheduleItem;
+
+          const scheduleItemsToConsider = dateItems[scheduledDate];
+          const scheduledMinutes = timeStringMinutes(scheduledTime);
+
+          for (const consideredItem of scheduleItemsToConsider) {
+            const ignoreItem =
+              consideredItem.matchUpId === scheduleItem.matchUpId ||
+              ([WALKOVER, DEFAULTED].includes(consideredItem.matchUpStatus) &&
+                !consideredItem.scoreHasValue);
+            if (ignoreItem) continue;
+
+            // if there is a matchType change (SINGLES => DOUBLES or vice versa) then there is potentially a different timeAfterRecovery
+            const typeChange =
+              scheduleItem.matchUpType !== consideredItem.matchUpType;
+
+            const notBeforeTime = typeChange
+              ? typeChangeTimeAfterRecovery || timeAfterRecovery
+              : timeAfterRecovery;
+
+            // if two matchUps are both potentials and both part of the same draw they cannot be considered in conflict
+            const sameDraw = scheduleItem.drawId === consideredItem.drawId;
+
+            const bothPotential =
+              potentialMatchUps[scheduleItem.matchUpId] &&
+              potentialMatchUps[consideredItem.matchUpId];
+
+            const nextMinutes = timeStringMinutes(consideredItem.scheduledTime);
+            const minutesDifference = nextMinutes - scheduledMinutes;
+
+            // Conflicts can be determined in two ways:
+            // 1. scheduledMinutesDifference - the minutes difference between two scheduledTimes
+            // 2. A scheduledTime occurring before a prior matchUps notBeforeTime (timeAfterRecovery)
+            const timeOverlap =
+              scheduledMinutesDifference && !isNaN(scheduledMinutesDifference)
+                ? minutesDifference <= scheduledMinutesDifference
+                : timeStringMinutes(notBeforeTime) >
+                  timeStringMinutes(consideredItem.scheduledTime);
+
+            // if there is a time overlap capture both the prior matchUpId and the conflicted matchUpId
+            if (timeOverlap && !(bothPotential && sameDraw)) {
+              participantAggregator.scheduleConflicts.push({
+                priorScheduledMatchUpId: consideredItem.matchUpId,
+                matchUpIdWithConflict: scheduleItem.matchUpId,
+              });
+            }
+          }
+        }
+
+        if (participantAggregator.scheduleConflicts.length) {
+          participantIdsWithConflicts.push(
+            participantAggregator.participant.participantId
+          );
+        }
+      }
     }
   }
 
   return {
+    participantIdsWithConflicts,
     derivedEventInfo,
     derivedDrawInfo,
     mappedMatchUps,

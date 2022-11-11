@@ -1,4 +1,5 @@
 import { addStructureParticipation } from './addStructureParticipation';
+import { addScheduleItem } from './addScheduleItem';
 
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
@@ -8,6 +9,8 @@ import {
 } from '../../../constants/participantConstants';
 
 export function processSides({
+  withScheduleTimes,
+  scheduleAnalysis,
   withTeamMatchUps,
   participantMap,
   withOpponents,
@@ -21,15 +24,18 @@ export function processSides({
   stageSequence,
   roundNumber,
   structureId,
+  score,
   stage,
 
   withRankingProfile,
   tieWinningSide,
+  roundPosition,
   matchUpTieId,
   matchUpSides,
   matchUpType,
   winningSide,
   matchUpId,
+  schedule,
   eventId,
   drawId,
   sides,
@@ -90,6 +96,7 @@ export function processSides({
           matchUpId,
         };
       }
+
       if (withRankingProfile) {
         addStructureParticipation({
           finishingPositionRange,
@@ -104,6 +111,22 @@ export function processSides({
           matchUpId,
           drawId,
           stage,
+        });
+      }
+
+      if (scheduleAnalysis || withScheduleTimes) {
+        addScheduleItem({
+          participantMap,
+          participantId,
+          matchUpStatus,
+          roundPosition,
+          structureId,
+          matchUpType,
+          roundNumber,
+          matchUpId,
+          schedule,
+          drawId,
+          score,
         });
       }
     };
