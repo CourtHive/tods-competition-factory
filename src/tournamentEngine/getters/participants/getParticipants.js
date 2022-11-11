@@ -116,6 +116,9 @@ export function getParticipants({
     tournamentRecord,
   });
 
+  // IDEA: optimizePayload derive array of matchUpIds required for filteredParticipants
+  // filter mappedMatchUps and matchUps to reduce over-the-wire payloads
+
   return {
     derivedEventInfo,
     derivedDrawInfo,
