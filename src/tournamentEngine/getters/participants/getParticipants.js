@@ -20,7 +20,7 @@ export function getParticipants({
   withSignInStatus,
   withTeamMatchUps,
   withScaleValues,
-  // usePublishState,
+  usePublishState,
   withStatistics,
   withOpponents,
   withMatchUps,
@@ -47,12 +47,14 @@ export function getParticipants({
   });
 
   let participantIdsWithConflicts,
+    eventsPublishStatuses,
     derivedEventInfo,
     derivedDrawInfo,
     mappedMatchUps,
     matchUps;
   ({
     participantIdsWithConflicts,
+    eventsPublishStatuses,
     derivedEventInfo,
     derivedDrawInfo,
     participantMap,
@@ -68,6 +70,7 @@ export function getParticipants({
     tournamentRecord,
     scheduleAnalysis,
     withTeamMatchUps,
+    usePublishState,
     withStatistics,
     participantMap,
     withOpponents,
@@ -128,6 +131,7 @@ export function getParticipants({
 
   return {
     participantIdsWithConflicts,
+    eventsPublishStatuses,
     derivedEventInfo,
     derivedDrawInfo,
     mappedMatchUps,
