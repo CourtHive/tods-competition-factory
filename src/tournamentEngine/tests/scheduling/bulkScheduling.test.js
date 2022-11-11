@@ -214,9 +214,18 @@ test('recognizes scheduling conflicts', () => {
     participantIdsWithConflicts: gpConflicts,
     mappedMatchUps,
     participantMap,
-  } = tournamentEngine.getParticipants({
+  } = competitionEngine.getParticipants({
     scheduleAnalysis: true,
   });
+  expect(gpConflicts.length).toEqual(16);
+
+  ({
+    participantIdsWithConflicts: gpConflicts,
+    mappedMatchUps,
+    participantMap,
+  } = tournamentEngine.getParticipants({
+    scheduleAnalysis: true,
+  }));
   expect(gpConflicts.length).toEqual(16);
 
   const participantWithConflict = tournamentParticipants.find(

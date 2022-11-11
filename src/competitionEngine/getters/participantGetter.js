@@ -1,11 +1,66 @@
+import { getParticipants as participantGetter } from '../../tournamentEngine/getters/participants/getParticipants';
 import { getTournamentParticipants } from '../../tournamentEngine/getters/participants/getTournamentParticipants';
 import { findParticipant } from '../../global/functions/deducers/findParticipant';
 import { deepMerge } from '../../utilities/deepMerge';
 
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
+
+export function getParticipants(params) {
+  const { tournamentRecords } = params || {};
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  ) {
+    return { error: MISSING_TOURNAMENT_RECORDS };
+  }
+
+  const derivedEventInfo = {};
+  const derivedDrawInfo = {};
+  const partiicipantMap = {};
+  const mappedMatchUps = {};
+  const participants = [];
+  const matchUps = [];
+
+  const participantIdsWithConflicts = [];
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
+    const {
+      participantIdsWithConflicts: idsWithConflicts,
+      mappedMatchUps: tournamentMappedMatchUps,
+      participantMap: tournamentParticipants,
+      matchUps: tournamentMatchUps,
+      derivedEventInfo: eventInfo,
+      derivedDrawInfo: drawInfo,
+      participants,
+    } = participantGetter({ tournamentRecord, ...params });
+
+    Object.assign(mappedMatchUps, tournamentMappedMatchUps);
+    Object.assign(derivedEventInfo, eventInfo);
+    Object.assign(derivedDrawInfo, drawInfo);
+
+    participants.push(tournamentParticipants);
+    matchUps.push(...tournamentMatchUps);
+
+    idsWithConflicts &&
+      idsWithConflicts.forEach((participantId) => {
+        if (!participantIdsWithConflicts.includes(participantId))
+          participantIdsWithConflicts.push(participantId);
+      });
+  }
+  return {
+    participantIdsWithConflicts,
+    derivedEventInfo,
+    derivedDrawInfo,
+    partiicipantMap,
+    mappedMatchUps,
+    participants,
+    ...SUCCESS,
+    matchUps,
+  };
+}
 
 export function getCompetitionParticipants(params) {
   const { tournamentRecords } = params || {};
@@ -14,9 +69,10 @@ export function getCompetitionParticipants(params) {
     !Object.keys(tournamentRecords).length
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
-  let competitionParticipants = [];
-  const competitionParticipantIds = [];
+
   const participantIdsWithConflicts = [];
+  const competitionParticipantIds = [];
+  let competitionParticipants = [];
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const {
@@ -48,7 +104,7 @@ export function getCompetitionParticipants(params) {
       });
   }
 
-  return { competitionParticipants, participantIdsWithConflicts };
+  return { competitionParticipants, participantIdsWithConflicts, ...SUCCESS };
 }
 
 export function publicFindParticipant({
@@ -83,5 +139,5 @@ export function publicFindParticipant({
     if (participant) break;
   }
 
-  return { participant, tournamentId };
+  return { participant, tournamentId, ...SUCCESS };
 }
