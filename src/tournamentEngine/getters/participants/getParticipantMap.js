@@ -11,6 +11,7 @@ import {
   SIGN_IN_STATUS,
   TEAM,
 } from '../../../constants/participantConstants';
+import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 
 const typeMap = {
   [GROUP]: 'groupParticipantIds',
@@ -170,7 +171,17 @@ function initializeParticipantId({ participantMap, participantId }) {
   // nothing to do if participantId is present
   if (participantMap[participantId]) return;
 
+  const counters = {
+    walkoverWins: 0,
+    defaultWins: 0,
+    walkovers: 0,
+    defaults: 0,
+    losses: 0,
+    wins: 0,
+  };
+
   participantMap[participantId] = {
+    structureParticipation: {},
     potentialMatchUps: {},
     scheduleItems: [],
     participant: {
@@ -180,12 +191,17 @@ function initializeParticipantId({ participantMap, participantId }) {
       groups: [],
       teams: [],
     },
+    statistics: {},
     opponents: {},
     pairIdMap: {},
     matchUps: {},
     events: {},
     draws: {},
-    losses: 0,
-    wins: 0,
+    counters: {
+      [SINGLES]: { ...counters },
+      [DOUBLES]: { ...counters },
+      [TEAM]: { ...counters },
+      ...counters,
+    },
   };
 }

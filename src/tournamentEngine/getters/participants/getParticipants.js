@@ -11,16 +11,16 @@ export function getParticipants({
   withIndividualParticipants,
   participantFilters = {},
   withPotentialMatchUps,
-  // withRankingProfile,
+  withRankingProfile,
   convertExtensions,
   policyDefinitions,
   tournamentRecord,
-  scheduleAnalysis,
+  scheduleAnalysis, // TODO
   withSignInStatus,
   withTeamMatchUps,
   withScaleValues,
   // usePublishState,
-  // withStatistics,
+  withStatistics,
   withOpponents,
   withMatchUps,
   internalUse,
@@ -54,11 +54,14 @@ export function getParticipants({
     matchUps,
   } = getParticipantEntries({
     withPotentialMatchUps,
+    participantFilters,
+    withRankingProfile,
     policyDefinitions,
     convertExtensions,
     tournamentRecord,
     scheduleAnalysis,
     withTeamMatchUps,
+    withStatistics,
     participantMap,
     withOpponents,
     withMatchUps,
@@ -66,8 +69,17 @@ export function getParticipants({
     withDraws,
   }));
 
-  let processedParticipants = Object.values(participantMap).map(
-    ({ draws, events, matchUps, opponents, ...p }) => {
+  const nextMatchUps = scheduleAnalysis || withPotentialMatchUps;
+  const processedParticipants = Object.values(participantMap).map(
+    ({
+      potentialMatchUps,
+      statistics,
+      opponents,
+      matchUps,
+      events,
+      draws,
+      ...p
+    }) => {
       const participantDraws = Object.values(draws);
       const participantOpponents = Object.values(opponents);
       if (withOpponents) {
@@ -82,7 +94,11 @@ export function getParticipants({
         {
           ...p.participant,
           opponents: withOpponents ? participantOpponents : undefined,
+          potentialMatchUps: nextMatchUps
+            ? Object.values(potentialMatchUps)
+            : undefined,
           matchUps: withMatchUps ? Object.values(matchUps) : undefined,
+          statistics: withStatistics ? Object.values(statistics) : undefined,
           events: withEvents ? Object.values(events) : undefined,
           draws: withDraws ? participantDraws : undefined,
         },

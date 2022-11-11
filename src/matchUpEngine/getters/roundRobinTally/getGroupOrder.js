@@ -198,27 +198,29 @@ function processAttribute({
     tallyPolicy,
     matchUps,
   });
+
   const groups = getGroups({
     participantResults,
     participantIds,
     attribute,
   });
-  if (Object.keys(groups).length > 1) {
+
+  if (Object.keys(groups).length > 1 && participantIds.length) {
     // separation by attribute was successful
     return Object.keys(groups)
       .map((key) => parseFloat(key))
       .sort((a, b) => (reversed ? a - b : b - a))
       .map((key) => groups[key])
-      .map((participantIds) =>
-        groupSubSort({
+      .map((participantIds) => {
+        return groupSubSort({
           participantResults,
           disableHeadToHead,
           participantIds,
           matchUpFormat,
           tallyPolicy,
           matchUps,
-        })
-      )
+        });
+      })
       .flat(Infinity);
   }
 }
@@ -231,9 +233,9 @@ function groupSubSort({
   tallyPolicy,
   matchUps,
 }) {
-  if (participantIds.length === 1)
+  if (participantIds?.length === 1)
     return { resolved: true, participantId: participantIds[0] };
-  if (participantIds.length === 2) {
+  if (participantIds?.length === 2) {
     if (
       !tallyPolicy?.headToHead ||
       (!tallyPolicy.headToHead.disabled && !disableHeadToHead)
@@ -263,11 +265,13 @@ function groupSubSort({
   );
   if (result) return result;
 
-  return participantIds.map((participantId) => ({ participantId }));
+  return participantIds?.map((participantId) => ({ participantId }));
 }
 
 // NOTE: This currently considers one victory rather than a head2head win/loss record (considering rounds of play where participants may encounter each other more than once)
 function headToHeadWinner({ participantIds, participantResults }) {
+  if (!participantIds) return;
+
   if (
     participantResults[participantIds[0]].victories.includes(participantIds[1])
   ) {
@@ -289,10 +293,12 @@ function getGroups({ participantResults, participantIds, attribute }) {
   const groups = resultsArray.reduce((groups, participantResult) => {
     const { participantId, results } = participantResult;
     const value = results?.[attribute];
-    if (groups[value]) {
-      groups[value].push(participantId);
-    } else {
-      groups[value] = [participantId];
+    if (!isNaN(value) && participantId) {
+      if (groups[value]) {
+        groups[value].push(participantId);
+      } else {
+        groups[value] = [participantId];
+      }
     }
     return groups;
   }, {});
