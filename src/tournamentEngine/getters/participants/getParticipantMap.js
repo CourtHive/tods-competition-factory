@@ -183,6 +183,7 @@ function initializeParticipantId({ participantMap, participantId }) {
   participantMap[participantId] = {
     structureParticipation: {},
     potentialMatchUps: {},
+    scheduleConflicts: [],
     scheduleItems: [],
     participant: {
       groupParticipantIds: [],

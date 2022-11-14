@@ -157,14 +157,14 @@ it.each(scenarios)(
 
     // now attempt to get hydrated seeding information when { usePublishState: true }
     tournamentParticipants = tournamentEngine.getTournamentParticipants({
-      inContext: true,
       convertExtensions: true,
+      usePublishState: true,
       withStatistics: true,
+      withGroupings: true,
       withOpponents: true,
       withMatchUps: true,
-      usePublishState: true,
-      withGroupings: true,
       withSeeding: true,
+      inContext: true,
       participantFilters: {
         participantRoles: ['COMPETITOR'],
       },
@@ -178,15 +178,29 @@ it.each(scenarios)(
     // no seeding has been published, so we expect no participants with hydrated seeding information
     expect(targetParticipants.length).toEqual(0);
 
+    // test getParticipants parity
+    let p = tournamentEngine.getParticipants({
+      usePublishState: true,
+      withSeeding: true,
+      withEvents: true,
+    }).participants;
+
+    let tP = p
+      .filter(({ participantId }) =>
+        seedScaledParticipantIds.includes(participantId)
+      )
+      .filter(({ events }) => events[0].seedAssignments);
+    expect(tP.length).toEqual(0);
+
     // now attempt to get hydrated seeding information when { usePublishState: false }
     tournamentParticipants = tournamentEngine.getTournamentParticipants({
-      inContext: true,
       convertExtensions: true,
+      usePublishState: false,
       withStatistics: true,
       withOpponents: true,
-      withMatchUps: true,
-      usePublishState: false,
       withGroupings: true,
+      withMatchUps: true,
+      inContext: true,
       withSeeding: {
         // NOTE: this currently only works for a single event...
         [QUALIFYING]: qualifyingSeedingScaleName,
@@ -204,6 +218,24 @@ it.each(scenarios)(
       .filter(({ events }) => events[0].seedAssignments);
     expect(targetParticipants.length).toEqual(16);
 
+    // test getParticipants parity
+    p = tournamentEngine.getParticipants({
+      usePublishState: false,
+      withSeeding: {
+        // NOTE: this currently only works for a single event...
+        [QUALIFYING]: qualifyingSeedingScaleName,
+        [MAIN]: mainSeedingScaleName,
+      },
+      withEvents: true,
+    }).participants;
+
+    tP = p
+      .filter(({ participantId }) =>
+        seedScaledParticipantIds.includes(participantId)
+      )
+      .filter(({ events }) => events[0].seedAssignments);
+    expect(tP.length).toEqual(16);
+
     result = tournamentEngine.publishEventSeeding({
       stageSeedingScaleNames: {
         [QUALIFYING]: qualifyingSeedingScaleName,
@@ -213,14 +245,14 @@ it.each(scenarios)(
     });
 
     tournamentParticipants = tournamentEngine.getTournamentParticipants({
-      inContext: true,
       convertExtensions: true,
+      usePublishState: true,
       withStatistics: true,
+      withGroupings: true,
       withOpponents: true,
       withMatchUps: true,
-      usePublishState: true,
-      withGroupings: true,
       withSeeding: true,
+      inContext: true,
       participantFilters: {
         participantRoles: ['COMPETITOR'],
       },
@@ -239,6 +271,24 @@ it.each(scenarios)(
       expect(Object.values(seedAssignment)[0].seedValue).not.toBeUndefined();
     }
     expect(targetParticipants.length).toEqual(16);
+
+    // test getParticipants parity
+    p = tournamentEngine.getParticipants({
+      usePublishState: true,
+      withSeeding: true,
+      withEvents: true,
+    }).participants;
+
+    tP = p
+      .filter(({ participantId }) =>
+        seedScaledParticipantIds.includes(participantId)
+      )
+      .filter(({ events }) => events[0].seedAssignments);
+    seedAssignments = tP.map(({ events }) => events[0].seedAssignments);
+    for (const seedAssignment of seedAssignments) {
+      expect(Object.values(seedAssignment)[0].seedValue).not.toBeUndefined();
+    }
+    // end parity check
 
     result = tournamentEngine.generateDrawDefinition({
       qualifyingProfiles: [
@@ -287,14 +337,14 @@ it.each(scenarios)(
     expect(result.success).toEqual(true);
 
     tournamentParticipants = tournamentEngine.getTournamentParticipants({
-      inContext: true,
       convertExtensions: true,
+      usePublishState: true,
       withStatistics: true,
       withOpponents: true,
-      withMatchUps: true,
-      usePublishState: true,
       withGroupings: true,
+      withMatchUps: true,
       withSeeding: true,
+      inContext: true,
       participantFilters: {
         participantRoles: ['COMPETITOR'],
       },
@@ -343,14 +393,14 @@ it.each(scenarios)(
     });
 
     tournamentParticipants = tournamentEngine.getTournamentParticipants({
-      inContext: true,
       convertExtensions: true,
+      usePublishState: true,
       withStatistics: true,
       withOpponents: true,
-      withMatchUps: true,
-      usePublishState: true,
       withGroupings: true,
+      withMatchUps: true,
       withSeeding: true,
+      inContext: true,
       participantFilters: {
         participantRoles: ['COMPETITOR'],
       },
@@ -396,14 +446,14 @@ it.each(scenarios)(
     expect(result.success).toEqual(true);
 
     tournamentParticipants = tournamentEngine.getTournamentParticipants({
-      inContext: true,
       convertExtensions: true,
+      usePublishState: true,
       withStatistics: true,
       withOpponents: true,
-      withMatchUps: true,
-      usePublishState: true,
       withGroupings: true,
+      withMatchUps: true,
       withSeeding: true,
+      inContext: true,
       participantFilters: {
         participantRoles: ['COMPETITOR'],
       },

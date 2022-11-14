@@ -14,16 +14,18 @@ export function getParticipants({
   withRankingProfile,
   convertExtensions,
   policyDefinitions,
+  withScheduleItems,
   tournamentRecord,
-  scheduleAnalysis, // TODO
+  scheduleAnalysis,
   withSignInStatus,
   withTeamMatchUps,
   withScaleValues,
-  // usePublishState,
+  usePublishState,
   withStatistics,
   withOpponents,
   withMatchUps,
   internalUse,
+  withSeeding,
   withEvents,
   withDraws,
   withISO2,
@@ -45,8 +47,15 @@ export function getParticipants({
     withIOC,
   });
 
-  let matchUps, derivedDrawInfo, derivedEventInfo, mappedMatchUps;
+  let participantIdsWithConflicts,
+    eventsPublishStatuses,
+    derivedEventInfo,
+    derivedDrawInfo,
+    mappedMatchUps,
+    matchUps;
   ({
+    participantIdsWithConflicts,
+    eventsPublishStatuses,
     derivedEventInfo,
     derivedDrawInfo,
     participantMap,
@@ -58,13 +67,16 @@ export function getParticipants({
     withRankingProfile,
     policyDefinitions,
     convertExtensions,
+    withScheduleItems,
     tournamentRecord,
     scheduleAnalysis,
     withTeamMatchUps,
+    usePublishState,
     withStatistics,
     participantMap,
     withOpponents,
     withMatchUps,
+    withSeeding,
     withEvents,
     withDraws,
   }));
@@ -116,7 +128,12 @@ export function getParticipants({
     tournamentRecord,
   });
 
+  // IDEA: optimizePayload derive array of matchUpIds required for filteredParticipants
+  // filter mappedMatchUps and matchUps to reduce over-the-wire payloads
+
   return {
+    participantIdsWithConflicts,
+    eventsPublishStatuses,
     derivedEventInfo,
     derivedDrawInfo,
     mappedMatchUps,

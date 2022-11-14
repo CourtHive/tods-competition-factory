@@ -319,51 +319,51 @@ it('advances paired drawPosition if BYE is assigned second', () => {
 
   ({ drawDefinition } = drawEngine.getState());
   verifyStructure({
-    structureId,
-    drawDefinition,
-    expectedByeAssignments: 1,
     expectedPositionsAssignedCount: 2,
+    expectedByeAssignments: 1,
+    drawDefinition,
+    structureId,
   });
 
   verifyMatchUps({
-    structureId,
-    expectedRoundPending: [3, 2],
-    expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
+    expectedRoundUpcoming: [0, 0],
+    expectedRoundPending: [3, 2],
+    structureId,
   });
 
   drawEngine.assignDrawPosition({
-    structureId,
     drawPosition: unassignedPositions[7].drawPosition,
     participantId: participantId2,
+    structureId,
   });
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber: 2,
     roundPosition: 2,
+    roundNumber: 2,
+    structureId,
   }));
   expect(matchUp.drawPositions.filter(Boolean)).toMatchObject([]);
   drawEngine.assignDrawPositionBye({
-    structureId,
     drawPosition: unassignedPositions[6].drawPosition,
+    structureId,
   });
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber: 2,
     roundPosition: 2,
+    roundNumber: 2,
+    structureId,
   }));
   expect(matchUp.drawPositions).toMatchObject([8, undefined]);
 });
 
 it('can change a FMLC first round matchUp winner and update consolation', () => {
-  const drawSize = 32;
-  const seedsCount = 8;
   const participantsCount = 30;
+  const seedsCount = 8;
+  const drawSize = 32;
 
   const { mainStructureId, consolationStructureId } = generateFMLC({
-    drawSize,
-    seedsCount,
     participantsCount,
+    seedsCount,
+    drawSize,
   });
 
   let result, error, success, drawPositions;
@@ -373,10 +373,10 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   // complete the 2nd position matchUp, between drawPositions: [3, 4]; 3 advances;
   ({ matchUp, success, matchUpId } = completeMatchUp({
     structureId: mainStructureId,
-    roundNumber: 1,
+    scoreString: '6-1 6-2',
     roundPosition: 2,
     winningSide: 1,
-    scoreString: '6-1 6-2',
+    roundNumber: 1,
   }));
   expect(success).toEqual(true);
 

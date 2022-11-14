@@ -1,4 +1,7 @@
 import mocksEngine from '../../../mocksEngine';
+import { tournamentEngine } from '../../sync';
+import { generateRange, unique } from '../../../utilities';
+import { MAIN } from '../../../constants/drawDefinitionConstants';
 
 it('can generate draw with appropriate ITF seeding', () => {
   const seeding = {
@@ -92,6 +95,27 @@ it('can generate draw with appropriate ITF seeding', () => {
     mocksEngine.generateTournamentRecord(mockProfile).tournamentRecord;
   expect(
     tournamentRecord.events[0].drawDefinitions[0].structures[0].seedAssignments
+      .length
+  ).toEqual(32);
+
+  tournamentEngine.setState(tournamentRecord);
+  const { participants } = tournamentEngine.getParticipants({
+    withSeeding: true,
+    withEvents: true,
+    withDraws: true,
+  });
+  const targetParticipants = participants.filter(
+    (participant) => participant.events[0].seedValue
+  );
+  const seedingScaleValues = targetParticipants.map(
+    (participant) => participant.events[0].seedValue
+  );
+
+  expect(unique(seedingScaleValues).length).toEqual(32);
+  expect(seedingScaleValues).toEqual(generateRange(1, 33));
+
+  expect(
+    unique(targetParticipants.map((p) => p.draws[0].seedAssignments[MAIN]))
       .length
   ).toEqual(32);
 });

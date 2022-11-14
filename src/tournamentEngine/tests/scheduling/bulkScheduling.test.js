@@ -7,7 +7,7 @@ import { tournamentEngine } from '../../sync';
 
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { eventConstants } from '../../../constants/eventConstants';
+import { SINGLES_EVENT } from '../../../constants/eventConstants';
 import {
   INVALID_DATE,
   INVALID_TIME,
@@ -15,8 +15,6 @@ import {
   MISSING_SCHEDULE,
   VENUE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-
-const { SINGLES } = eventConstants;
 
 it('can bulk schedule matchUps', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -35,7 +33,7 @@ it('can bulk schedule matchUps', () => {
 
   const event = {
     eventName: 'Test Event',
-    eventType: SINGLES,
+    eventType: SINGLES_EVENT,
   };
 
   result = tournamentEngine.addEvent({ event });
@@ -125,7 +123,7 @@ test('recognizes scheduling conflicts', () => {
   const eventProfiles = [
     {
       eventName: 'Event Test',
-      eventType: SINGLES,
+      eventType: SINGLES_EVENT,
       drawProfiles: [
         {
           drawSize: 16,
@@ -201,18 +199,34 @@ test('recognizes scheduling conflicts', () => {
   const { participantIdsWithConflicts: ceConflicts } =
     competitionEngine.getCompetitionParticipants({
       scheduleAnalysis: true,
-      withStatistics: true,
     });
 
   let { tournamentParticipants, participantIdsWithConflicts: teConflicts } =
     tournamentEngine.getTournamentParticipants({
       scheduleAnalysis: true,
-      withStatistics: true,
       withMatchUps: true,
     });
 
   expect(ceConflicts.length).toEqual(16);
   expect(teConflicts.length).toEqual(16);
+
+  let {
+    participantIdsWithConflicts: gpConflicts,
+    mappedMatchUps,
+    participantMap,
+  } = competitionEngine.getParticipants({
+    scheduleAnalysis: true,
+  });
+  expect(gpConflicts.length).toEqual(16);
+
+  ({
+    participantIdsWithConflicts: gpConflicts,
+    mappedMatchUps,
+    participantMap,
+  } = tournamentEngine.getParticipants({
+    scheduleAnalysis: true,
+  }));
+  expect(gpConflicts.length).toEqual(16);
 
   const participantWithConflict = tournamentParticipants.find(
     ({ participantId }) => teConflicts.includes(participantId)
@@ -223,10 +237,16 @@ test('recognizes scheduling conflicts', () => {
       .scheduleConflict
   ).toEqual('string');
 
+  const targetParticipantId = participantWithConflict.participantId;
+  expect(
+    typeof mappedMatchUps[
+      Object.keys(participantMap[targetParticipantId].potentialMatchUps)[0]
+    ].schedule.scheduleConflict
+  ).toEqual('string');
+
   let { participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({
       scheduleAnalysis: { scheduledMinutesDifference: 60 },
-      withStatistics: true,
     });
 
   expect(participantIdsWithConflicts.length).toEqual(16);
@@ -234,8 +254,13 @@ test('recognizes scheduling conflicts', () => {
   ({ participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({
       scheduleAnalysis: { scheduledMinutesDifference: 50 },
-      withStatistics: true,
     }));
 
   expect(participantIdsWithConflicts.length).toEqual(0);
+
+  ({ participantIdsWithConflicts: gpConflicts } =
+    tournamentEngine.getParticipants({
+      scheduleAnalysis: { scheduledMinutesDifference: 50 },
+    }));
+  expect(gpConflicts.length).toEqual(0);
 });

@@ -5,6 +5,7 @@ import { addParticipant } from './addParticipant';
 import {
   getCompetitionParticipants,
   publicFindParticipant,
+  getParticipants,
 } from '../../getters/participantGetter';
 import {
   addEventExtension,
@@ -38,6 +39,7 @@ const competitionGovernor = {
 
   addDrawDefinition, // test
   getCompetitionParticipants,
+  getParticipants,
   addParticipant,
 
   setMatchUpStatus,
