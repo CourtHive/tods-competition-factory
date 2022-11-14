@@ -8,12 +8,13 @@ export function processEventEntry({
   publishedSeeding,
   usePublishState,
   participantMap,
+  participantId,
   withSeeding,
   ranking,
   entry,
   event,
 }) {
-  const { entryStatus, entryStage, participantId, entryPosition } = entry;
+  const { entryStatus, entryStage, entryPosition } = entry;
   const { eventType, eventId } = event;
 
   participantMap[participantId].events[eventId] = definedAttributes(

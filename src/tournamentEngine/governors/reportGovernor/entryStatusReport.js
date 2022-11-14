@@ -104,9 +104,13 @@ export function getEntryStatusReports({ tournamentRecord }) {
           countEntryStatus(entryStatus);
 
           const mainSeeding =
-            participantMap[participantId]?.draws?.[drawId]?.mainSeeding;
+            participantMap[participantId]?.draws?.[drawId]?.seedAssignments?.[
+              MAIN
+            ];
           const qualifyingSeeding =
-            participantMap[participantId]?.draws?.[drawId]?.qualifyingSeeding;
+            participantMap[participantId]?.draws?.[drawId]?.seedAssignments?.[
+              QUALIFYING
+            ];
 
           return {
             qualifyingSeeding,

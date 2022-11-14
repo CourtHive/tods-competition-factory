@@ -115,21 +115,23 @@ it('can identify winningParticipants and map WTN and ranking', () => {
   } = tournamentEngine.getEntryStatusReports();
   expect(eventReports.length).toEqual(drawProfiles.length);
 
-  const { participants: individualParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: {
-        participantTypes: [INDIVIDUAL],
-        participantRoles: [COMPETITOR],
-      },
-      withScaleValues: true,
-      withEvents: true,
-    });
-  const individualParticipantsWithEvents = individualParticipants.filter(
-    ({ events }) => events.length
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: {
+      participantTypes: [INDIVIDUAL],
+      participantRoles: [COMPETITOR],
+    },
+    withScaleValues: true,
+    withEvents: true,
+    withDraws: true,
+  });
+
+  const individualParticipantsWithEvents = participants.filter(
+    ({ events, participantType }) =>
+      events.length && participantType === INDIVIDUAL
   );
 
   expect(tournamentEntryReport.individualParticipantsCount).toEqual(
-    individualParticipants.length
+    participants.length
   );
   expect(tournamentEntryReport.drawDefinitionsCount).toEqual(3);
   expect(tournamentEntryReport.eventsCount).toEqual(3);
@@ -137,7 +139,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
   expect(
     tournamentEntryReport.nonParticipatingEntriesCount +
       personEntryReports.length
-  ).toEqual(individualParticipants.length);
+  ).toEqual(participants.length);
 
   expect(personEntryReports.length).toEqual(
     individualParticipantsWithEvents.length

@@ -122,14 +122,18 @@ export function getParticipantEntries({
         // const { entryStatus, entryStage, participantId, entryPosition } = entry;
         const { participantId } = entry;
 
-        const addEventEntry = (participantId) => {
-          if (participantMap[participantId].events[eventId]) return;
+        // IMPORTANT NOTE!
+        // id is the pair, team or individual participant currently being processed
+        // whereas participantId is the id of the entry into the event
+        const addEventEntry = (id) => {
+          if (participantMap[id].events[eventId]) return;
 
-          // get event ranking
+          // get event ranking; this is the same for pairs, teams and all individual participants
           const ranking = getRanking({ eventType, scaleNames, participantId });
 
           processEventEntry({
             extensionConversions,
+            participantId: id, // id can be pair, team or indidividual participants
             publishedSeeding,
             usePublishState,
             participantMap,
@@ -150,7 +154,7 @@ export function getParticipantEntries({
       }
     }
 
-    if (withDraws || withRankingProfile) {
+    if (withDraws || withRankingProfile || withSeeding) {
       const getSeedingMap = (assignments) =>
         assignments
           ? Object.assign(
@@ -238,15 +242,20 @@ export function getParticipantEntries({
         for (const entry of relevantEntries) {
           const { entryStatus, entryPosition, participantId } = entry;
 
-          const addDrawEntry = (participantId) => {
-            if (participantMap[participantId].draws[drawId]) return;
+          // get event ranking
+          const ranking = getRanking({
+            participantId,
+            scaleNames,
+            eventType,
+          });
 
-            // get event ranking
-            const ranking = getRanking({
-              participantId,
-              scaleNames,
-              eventType,
-            });
+          // IMPORTANT NOTE!
+          // id is the pair, team or individual participant currently being processed
+          // whereas participantId is the id of the entry into the draw
+          const addDrawEntry = (id) => {
+            if (participantMap[id].draws[drawId]) return;
+
+            const seedAssignments = seedingPublished ? {} : undefined;
             const mainSeeding = seedingPublished
               ? mainSeedingMap?.[participantId]?.seedValue ||
                 mainSeedingMap?.[participantId]?.seedNumber
@@ -256,20 +265,37 @@ export function getParticipantEntries({
                 qualifyingSeedingMap?.[participantId]?.seedNumber
               : undefined;
 
-            participantMap[participantId].draws[drawId] = definedAttributes(
-              {
-                qualifyingSeeding,
-                entryPosition,
-                entryStatus,
-                mainSeeding,
-                eventId,
-                ranking,
-                drawId,
-              },
-              false,
-              false,
-              true
-            );
+            if (mainSeeding) seedAssignments[MAIN] = mainSeeding;
+            if (qualifyingSeeding) seedAssignments[QUALIFYING] = mainSeeding;
+
+            if (withEvents) {
+              if (seedingPublished) {
+                // overwrite any event seeding with actual draw seeding (which may differ)
+                participantMap[id].events[eventId].seedValue =
+                  mainSeeding || qualifyingSeeding;
+              } else {
+                // if seeding for this specific drawIds is NOT published, remove from event
+                if (participantMap[id].events[eventId].seedValue) {
+                  participantMap[id].events[eventId].seedValue = undefined;
+                }
+              }
+            }
+
+            if (withDraws) {
+              participantMap[id].draws[drawId] = definedAttributes(
+                {
+                  seedAssignments,
+                  entryPosition,
+                  entryStatus,
+                  eventId,
+                  ranking,
+                  drawId,
+                },
+                false,
+                false,
+                true
+              );
+            }
           };
 
           if (![UNGROUPED, UNPAIRED].includes(entryStatus)) {
