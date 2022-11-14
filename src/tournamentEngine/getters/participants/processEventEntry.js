@@ -76,6 +76,6 @@ export function processEventEntry({
       participantMap[participantId].events[eventId].seedAssignments =
         seedAssignments;
     if (seedValue)
-      participantMap[participantId].events[eventId].seedAssignments = seedValue;
+      participantMap[participantId].events[eventId].seedValue = seedValue;
   }
 }

@@ -71,19 +71,17 @@ export function getEventSeedAssignments({
     }
 
     if (scaleItem) {
-      const seedValue = scaleItem.scaleValue;
-      console.log({ seedValue });
-      /*
       const seedingPublished =
         !usePublishState ||
         (publishedSeeding?.published &&
-          (publishedSeeding?.drawIds?.length === 0 ||
-            publishedSeeding?.drawIds?.includes(drawId)));
+          // if drawIds have been specified then don't attach event seeding here
+          // defer to seedValue that is in seedAssignments for draw in which participant appears
+          !publishedSeeding?.published?.drawIds?.length);
 
       if (seedingPublished) {
+        const seedValue = scaleItem.scaleValue;
         eventSeedAssignments.seedValue = seedValue;
       }
-      */
     }
   }
 
