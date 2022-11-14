@@ -139,6 +139,19 @@ it('can autoSeed by Rankings', () => {
 
   // when { usePublishState: true } seedValues are added when eventSeeding is published
   expect(seedingScaleValues.length).toEqual(8);
+  console.log({ seedingScaleValues });
+
+  const { participants } = tournamentEngine.getParticipants({
+    withSeeding: true,
+    withEvents: true,
+  });
+  console.log(participants[0]);
+  /*
+  seedingScaleValues = participants
+    .map((participant) => participant.events[0].seedValue)
+    .filter(Boolean);
+  console.log({ seedingScaleValues });
+  */
 
   // now unPublish and test again
   result = tournamentEngine.unPublishEventSeeding({ eventId });
@@ -159,11 +172,11 @@ it('can autoSeed by Rankings', () => {
 
   // now test that { sortDescending: false } sorts the other way
   result = tournamentEngine.autoSeeding({
-    eventId,
-    scaleName: 'U18',
-    scaleAttributes,
     policyDefinitions: SEEDING_USTA,
     sortDescending: false,
+    scaleName: 'U18',
+    scaleAttributes,
+    eventId,
   });
   scaleValues = result.scaleItemsWithParticipantIds
     .map(({ scaleItems }) => scaleItems[0].scaleValue)
@@ -176,15 +189,15 @@ it('can autoSeed by Rankings', () => {
 
   // now test seeding by ranking
   scaleAttributes = {
-    scaleName: 'U18',
     scaleType: RANKING,
     eventType: SINGLES,
+    scaleName: 'U18',
   };
   result = tournamentEngine.autoSeeding({
-    eventId,
+    policyDefinitions: SEEDING_USTA,
     scaleName: 'U18',
     scaleAttributes,
-    policyDefinitions: SEEDING_USTA,
+    eventId,
   });
   scaleValues = result.scaleItemsWithParticipantIds
     .map(({ scaleItems }) => scaleItems[0].scaleValue)

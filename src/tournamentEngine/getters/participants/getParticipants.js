@@ -25,6 +25,7 @@ export function getParticipants({
   withOpponents,
   withMatchUps,
   internalUse,
+  withSeeding,
   withEvents,
   withDraws,
   withISO2,
@@ -75,6 +76,7 @@ export function getParticipants({
     participantMap,
     withOpponents,
     withMatchUps,
+    withSeeding,
     withEvents,
     withDraws,
   }));

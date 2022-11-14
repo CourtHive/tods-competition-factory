@@ -2,7 +2,7 @@ import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 
 import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 
-export function getEventsPublishStatuses({ event }) {
+export function getEventPublishStatuses({ event }) {
   const itemType = `${PUBLISH}.${STATUS}`;
 
   const { timeItem } = getTimeItem({
@@ -20,8 +20,9 @@ export function getEventsPublishStatuses({ event }) {
       drawIds: [], // seeding can be specific to drawIds
     };
 
-    if (seeding)
+    if (seeding) {
       Object.assign(publishedSeeding, timeItem.itemValue.PUBLIC.seeding);
+    }
 
     return {
       publishedDrawIds,

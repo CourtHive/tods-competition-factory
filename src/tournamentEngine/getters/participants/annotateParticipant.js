@@ -108,7 +108,7 @@ export function annotateParticipant({
       const seedingScales = Object.assign(
         {},
         ...(participant.timeItems || [])
-          .filter(({ itemType }) => itemType.split('.')[1] === 'SEEDING')
+          .filter(({ itemType }) => itemType.split('.')[1] === SEEDING)
           .map(({ itemType: seedingScaleName, itemValue: seedValue }) => ({
             [seedingScaleName]: seedValue,
           }))

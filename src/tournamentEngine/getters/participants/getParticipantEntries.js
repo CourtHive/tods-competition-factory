@@ -2,8 +2,9 @@ import { getPositionAssignments } from '../../../drawEngine/getters/positionsGet
 import { timeSort, timeStringMinutes } from '../../../utilities/dateTime';
 import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
 import { getParticipantIds } from '../../../global/functions/extractors';
-import { getEventsPublishStatuses } from './getEventsPublishStatuses';
+import { getEventPublishStatuses } from './getEventPublishStatuses';
 import { structureSort } from '../../../forge/transform';
+import { processEventEntry } from './processEventEntry';
 import { definedAttributes } from '../../../utilities';
 import { getFlightProfile } from '../getFlightProfile';
 import { allEventMatchUps } from '../matchUpsGetter';
@@ -32,6 +33,7 @@ export function getParticipantEntries({
   withStatistics,
   withOpponents,
   withMatchUps,
+  withSeeding,
   withEvents,
   withDraws,
 }) {
@@ -63,6 +65,7 @@ export function getParticipantEntries({
     participantMap,
     withOpponents,
     withMatchUps,
+    withSeeding,
     withEvents,
     withDraws,
   };
@@ -89,18 +92,19 @@ export function getParticipantEntries({
       entries,
       eventId,
     } = event;
+
     const { flightProfile } = getFlightProfile({ event });
     const flights = flightProfile?.flights;
 
-    const publishStatuses = getEventsPublishStatuses();
-    if (publishStatuses) {
-      eventsPublishStatuses[eventId] = publishStatuses;
-    }
+    const publishStatuses = getEventPublishStatuses({ event });
+    const publishedSeeding = publishStatuses?.publishedSeeding;
+    if (publishStatuses) eventsPublishStatuses[eventId] = publishStatuses;
 
-    if (withEvents) {
+    if (withEvents || withSeeding) {
       const extensionConversions = convertExtensions
         ? Object.assign({}, ...extensionsToAttributes(extensions))
         : {};
+
       derivedEventInfo[eventId] = {
         ...extensionConversions,
         eventName,
@@ -115,57 +119,34 @@ export function getParticipantEntries({
       ].filter(Boolean);
 
       for (const entry of entries) {
-        const { entryStatus, entryStage, participantId, entryPosition } = entry;
+        // const { entryStatus, entryStage, participantId, entryPosition } = entry;
+        const { participantId } = entry;
 
-        // get event ranking
-        const ranking = getRanking({ eventType, scaleNames, participantId });
+        const addEventEntry = (participantId) => {
+          if (participantMap[participantId].events[eventId]) return;
 
-        if (!participantMap[participantId].events[eventId]) {
-          participantMap[participantId].events[eventId] = definedAttributes(
-            {
-              ...extensionConversions, // this should be deprecated and clients should use derivedEventInfo
-              entryPosition,
-              entryStatus,
-              entryStage,
-              ranking,
-              eventId,
-            },
-            false,
-            false,
-            true
-          );
-        }
+          // get event ranking
+          const ranking = getRanking({ eventType, scaleNames, participantId });
+
+          processEventEntry({
+            extensionConversions,
+            publishedSeeding,
+            usePublishState,
+            participantMap,
+            withSeeding,
+            ranking,
+            entry,
+            event,
+          });
+        };
+
+        addEventEntry(participantId);
 
         // add details for individualParticipantIds for TEAM/PAIR events
         const individualParticipantIds =
           participantMap[participantId].participant.individualParticipantIds ||
           [];
-        if (individualParticipantIds?.length) {
-          for (const individualParticiapntId of individualParticipantIds) {
-            if (!participantMap[individualParticiapntId].events[eventId]) {
-              // get event ranking
-              const ranking = getRanking({
-                participantId: individualParticiapntId,
-                scaleNames,
-                eventType,
-              });
-              participantMap[individualParticiapntId].events[eventId] =
-                definedAttributes(
-                  {
-                    ...extensionConversions, // this should be deprecated and clients should use derivedEventInfo
-                    entryPosition,
-                    entryStatus,
-                    entryStage,
-                    ranking,
-                    eventId,
-                  },
-                  false,
-                  false,
-                  true
-                );
-            }
-          }
-        }
+        individualParticipantIds.forEach(addEventEntry);
       }
     }
 
