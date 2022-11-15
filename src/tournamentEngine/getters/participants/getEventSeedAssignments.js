@@ -1,13 +1,11 @@
 import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { intersection } from '../../../utilities';
 
 import { SCALE, SEEDING } from '../../../constants/scaleConstants';
 
 export function getEventSeedAssignments({
-  publishedEventSeedingScaleNames,
-  eventSeedingPublished,
   publishedSeeding,
   usePublishState,
-  seedingScales,
   withSeeding,
   participant,
   event,
@@ -16,6 +14,35 @@ export function getEventSeedAssignments({
 
   const getScaleAccessor = (scaleName) =>
     [SCALE, SEEDING, event.eventType, scaleName].join('.');
+
+  const seedingScales = Object.assign(
+    {},
+    ...(participant.timeItems || [])
+      .filter(({ itemType }) => itemType.split('.')[1] === SEEDING)
+      .map(({ itemType: seedingScaleName, itemValue: seedValue }) => ({
+        [seedingScaleName]: seedValue,
+      }))
+  );
+
+  const eventSeedingScaleNames = (
+    (publishedSeeding?.stageSeedingScaleNames &&
+      Object.values(publishedSeeding?.stageSeedingScaleNames)) ||
+    (Array.isArray(publishedSeeding?.seedingScaleNames) &&
+      publishedSeeding.seedingScaleNames) ||
+    []
+  ).map(getScaleAccessor);
+
+  const publishedEventSeedingScaleNames = intersection(
+    Object.keys(seedingScales),
+    eventSeedingScaleNames
+  );
+
+  const eventSeedingPublished = !!(
+    !usePublishState ||
+    (!Object.keys(seedingScales).length &&
+      !publishedSeeding?.drawIds?.length) ||
+    publishedEventSeedingScaleNames.length
+  );
 
   if (eventSeedingPublished && publishedEventSeedingScaleNames.length) {
     if (publishedSeeding?.stageSeedingScaleNames) {

@@ -100,10 +100,11 @@ function removeDrawPosition({
     }
   }
 
-  // UNDEFINED drawPositions
-  matchUp.drawPositions = (matchUp.drawPositions || []).map((drawPosition) =>
-    drawPosition === targetDrawPosition ? undefined : drawPosition
-  );
+  matchUp.drawPositions = (matchUp.drawPositions || [])
+    .map((drawPosition) =>
+      drawPosition === targetDrawPosition ? undefined : drawPosition
+    )
+    .filter(Boolean);
   const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
     matchUp.drawPositions?.includes(drawPosition)
   );

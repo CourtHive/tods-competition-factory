@@ -3,10 +3,11 @@ import { timeSort, timeStringMinutes } from '../../../utilities/dateTime';
 import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
 import { getParticipantIds } from '../../../global/functions/extractors';
 import { getEventPublishStatuses } from './getEventPublishStatuses';
+import { getEventSeedAssignments } from './getEventSeedAssignments';
 import { structureSort } from '../../../forge/transform';
 import { processEventEntry } from './processEventEntry';
-import { definedAttributes } from '../../../utilities';
 import { getFlightProfile } from '../getFlightProfile';
+import { definedAttributes } from '../../../utilities';
 import { allEventMatchUps } from '../matchUpsGetter';
 import { addScheduleItem } from './addScheduleItem';
 import { processSides } from './processSides';
@@ -119,28 +120,39 @@ export function getParticipantEntries({
       ].filter(Boolean);
 
       for (const entry of entries) {
-        // const { entryStatus, entryStage, participantId, entryPosition } = entry;
         const { participantId } = entry;
+
+        // get event ranking; this is the same for pairs, teams and all individual participants
+        const ranking = getRanking({ eventType, scaleNames, participantId });
+
+        let seedAssignments, seedValue;
+        if (withSeeding) {
+          const participant = participantMap[participantId].participant;
+          ({ seedAssignments, seedValue } = getEventSeedAssignments({
+            publishedSeeding,
+            usePublishState,
+            withSeeding,
+            participant,
+            event,
+          }));
+        }
 
         // IMPORTANT NOTE!
         // id is the pair, team or individual participant currently being processed
         // whereas participantId is the id of the entry into the event
         const addEventEntry = (id) => {
           if (participantMap[id].events[eventId]) return;
-
-          // get event ranking; this is the same for pairs, teams and all individual participants
-          const ranking = getRanking({ eventType, scaleNames, participantId });
+          const participant = participantMap[id];
 
           processEventEntry({
             extensionConversions,
-            participantId: id, // id can be pair, team or indidividual participants
-            publishedSeeding,
-            usePublishState,
-            participantMap,
+            seedAssignments,
+            participant,
             withSeeding,
+            seedValue,
+            eventId,
             ranking,
             entry,
-            event,
           });
         };
 

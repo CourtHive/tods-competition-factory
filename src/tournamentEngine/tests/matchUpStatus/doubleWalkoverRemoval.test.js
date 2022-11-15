@@ -7,7 +7,6 @@ import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { REFEREE, SCORE } from '../../../constants/matchUpActionConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
-  BYE,
   COMPLETED,
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
@@ -16,8 +15,6 @@ import {
 import {
   CONSOLATION,
   FEED_IN_CHAMPIONSHIP_TO_SF,
-  FIRST_MATCH_LOSER_CONSOLATION,
-  MAIN,
 } from '../../../constants/drawDefinitionConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition, stage }) =>
@@ -265,7 +262,8 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   expect(targetMatchUp.matchUpStatusCodes).toEqual(undefined);
 
   targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  expect(targetMatchUp.drawPositions).toEqual(undefined);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.winningSide).toBeUndefined();
   expect(targetMatchUp.matchUpStatusCodes?.length || 0).toEqual(0);
@@ -359,7 +357,8 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   expect(targetMatchUp.matchUpStatusCodes).toEqual(undefined);
 
   targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  expect(targetMatchUp.drawPositions).toEqual(undefined);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.winningSide).toBeUndefined();
   expect(targetMatchUp.matchUpStatusCodes?.length || 0).toEqual(0);
@@ -463,7 +462,8 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER will remove produced WALKOVER in 
   // DOUBLE_WALKOVER advanced winner is removed from R2P2
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 2 });
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  expect(targetMatchUp.drawPositions).toEqual(undefined);
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toEqual(undefined);
 
@@ -637,7 +637,8 @@ test('Removing DOUBLE_WALKOVER will remove BYE-Advanced WALKOVER Winner', () => 
   // produced WALKOVER advanced winner is removed from R3P1
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  expect(targetMatchUp.drawPositions).toEqual(undefined);
 });
 
 test('drawSize: 8 - removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in subsequent rounds', () => {
@@ -969,114 +970,6 @@ test('consolation fed player advanced by WO/WO will be removed when WO/WO cleare
     matchUps,
   });
 
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
-});
-
-test('Double Exit produces exit in consolation', () => {
-  // keep track of notficiations with each setMatchUpStatus event
-  let modifiedMatchUpLog = [];
-  let result = setSubscriptions({
-    subscriptions: {
-      [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) => {
-          const { roundNumber, roundPosition, matchUpStatus, stage } = matchUp;
-          modifiedMatchUpLog.push([
-            matchUpStatus,
-            roundPosition,
-            roundNumber,
-            stage,
-          ]);
-        });
-      },
-    },
-  });
-  expect(result.success).toEqual(true);
-
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      {
-        drawType: FIRST_MATCH_LOSER_CONSOLATION,
-        drawSize: 8,
-        outcomes: [
-          {
-            matchUpStatus: DOUBLE_WALKOVER,
-            roundPosition: 1,
-            roundNumber: 1,
-          },
-          {
-            roundPosition: 2,
-            roundNumber: 1,
-            winningSide: 1,
-          },
-        ],
-      },
-    ],
-  });
-
-  tournamentEngine.setState(tournamentRecord);
-
-  expect(modifiedMatchUpLog.length).toEqual(7);
-
-  let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-
-  let targetMatchUp = getTarget({
-    stage: CONSOLATION,
-    roundPosition: 1,
-    roundNumber: 1,
-    matchUps,
-  });
-
-  expect(targetMatchUp.winningSide).toEqual(2);
-  const losingSideMatchUpStatusCode = targetMatchUp.matchUpStatusCodes.find(
-    (side) => side.sideNumber === 1
-  ).previousMatchUpStatus;
-  expect(losingSideMatchUpStatusCode).toEqual(DOUBLE_WALKOVER);
-  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
-
-  targetMatchUp = getTarget({
-    stage: CONSOLATION,
-    roundPosition: 1,
-    roundNumber: 2,
-    matchUps,
-  });
-  expect(targetMatchUp.matchUpStatus).toEqual(BYE);
-  expect(targetMatchUp.drawPositions).toEqual([1, 3]);
-
-  targetMatchUp = getTarget({
-    stage: MAIN,
-    roundPosition: 1,
-    roundNumber: 1,
-    matchUps,
-  });
-
-  result = tournamentEngine.setMatchUpStatus({
-    matchUpId: targetMatchUp.matchUpId,
-    drawId: targetMatchUp.drawId,
-    outcome: toBePlayed,
-  });
-
-  expect(result.success).toEqual(true);
-
-  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-
-  targetMatchUp = getTarget({
-    stage: CONSOLATION,
-    roundPosition: 1,
-    roundNumber: 1,
-    matchUps,
-  });
-
-  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
-  expect(targetMatchUp.winningSide).toEqual(undefined);
-
-  targetMatchUp = getTarget({
-    stage: CONSOLATION,
-    roundPosition: 1,
-    roundNumber: 2,
-    matchUps,
-  });
-
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
-  expect(targetMatchUp.matchUpStatus).toEqual(BYE);
-  expect(targetMatchUp.winningSide).toEqual(undefined);
+  // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  expect(targetMatchUp.drawPositions).toEqual(undefined);
 });

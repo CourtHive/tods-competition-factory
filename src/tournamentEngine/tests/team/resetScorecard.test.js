@@ -184,5 +184,6 @@ test('can clear TEAM matchUp "scorecards"', () => {
       roundNumbers: [2],
     },
   }));
-  expect(secondRoundDualMatchUp.drawPositions).toEqual([undefined, 3]);
+  // expect(secondRoundDualMatchUp.drawPositions).toEqual([undefined, 3]);
+  expect(secondRoundDualMatchUp.drawPositions).toEqual([3]);
 });
