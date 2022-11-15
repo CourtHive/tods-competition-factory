@@ -119,7 +119,6 @@ export function getParticipantEntries({
       ].filter(Boolean);
 
       for (const entry of entries) {
-        // const { entryStatus, entryStage, participantId, entryPosition } = entry;
         const { participantId } = entry;
 
         // IMPORTANT NOTE!

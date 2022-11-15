@@ -44,6 +44,7 @@ export function processEventEntry({
           [seedingScaleName]: seedValue,
         }))
     );
+
     const eventSeedingScaleNames = (
       (publishedSeeding?.stageSeedingScaleNames &&
         Object.values(publishedSeeding?.stageSeedingScaleNames)) ||
@@ -51,10 +52,12 @@ export function processEventEntry({
         publishedSeeding.seedingScaleNames) ||
       []
     ).map(getScaleAccessor);
+
     const publishedEventSeedingScaleNames = intersection(
       Object.keys(seedingScales),
       eventSeedingScaleNames
     );
+
     const eventSeedingPublished = !!(
       !usePublishState ||
       (!Object.keys(seedingScales).length &&

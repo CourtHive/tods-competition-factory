@@ -33,7 +33,6 @@ export function getParticipantMap({
   withSignInStatus,
   withScaleValues,
   internalUse,
-  // inContext, - may be deprecated in favor of `withIndividualParticipants`
   withISO2,
   withIOC,
 }) {
