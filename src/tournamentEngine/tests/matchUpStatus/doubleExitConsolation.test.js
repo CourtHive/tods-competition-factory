@@ -34,6 +34,9 @@ const getTarget = ({ matchUps, roundNumber, roundPosition, stage }) =>
 
 const scenarios = [
   {
+    skip: true,
+    devContext: true,
+    modifiedMatchUpsCount: 7,
     outcomes: [
       {
         roundPosition: 1,
@@ -46,7 +49,6 @@ const scenarios = [
         roundNumber: 1,
       },
     ],
-    winningSide: 1,
     preRemovalChecks: [
       {
         stage: MAIN,
@@ -84,6 +86,13 @@ const scenarios = [
         matchUpStatus: BYE,
         drawPositions: [1, 3],
         roundNumber: 2,
+        roundPosition: 1,
+      },
+      {
+        stage: CONSOLATION,
+        matchUpStatus: TO_BE_PLAYED,
+        drawPositions: [3],
+        roundNumber: 3,
         roundPosition: 1,
       },
     ],
@@ -132,31 +141,87 @@ const scenarios = [
       },
     ],
   },
-  /*
   {
-    outcomes: [
+    devContext: true,
+    modifiedMatchUpsCount: 8,
+    updates: [
       {
         matchUpStatus: DOUBLE_WALKOVER,
         roundPosition: 1,
         roundNumber: 1,
+        stage: MAIN,
       },
       {
         roundPosition: 2,
         roundNumber: 1,
         winningSide: 1,
+        stage: MAIN,
       },
     ],
-    winningSide: 2,
-    drawPositions: [2, 3],
+    preRemovalChecks: [
+      {
+        stage: MAIN,
+        matchUpStatus: DOUBLE_WALKOVER,
+        drawPositions: [1, 2],
+        roundNumber: 1,
+        roundPosition: 1,
+      },
+      {
+        stage: MAIN,
+        matchUpStatus: WALKOVER,
+        drawPositions: [3],
+        roundNumber: 2,
+        roundPosition: 1,
+        winningSide: 2,
+      },
+      {
+        stage: MAIN,
+        matchUpStatus: TO_BE_PLAYED,
+        drawPositions: [3],
+        roundNumber: 3,
+        roundPosition: 1,
+      },
+      {
+        stage: CONSOLATION,
+        matchUpStatus: WALKOVER,
+        drawPositions: [3, 4],
+        losingSideMatchUpStatusCode: DOUBLE_WALKOVER,
+        roundNumber: 1,
+        roundPosition: 1,
+        winningSide: 2,
+      },
+      {
+        stage: CONSOLATION,
+        matchUpStatus: BYE,
+        drawPositions: [1, 3],
+        roundNumber: 2,
+        roundPosition: 1,
+      },
+      {
+        stage: CONSOLATION,
+        matchUpStatus: TO_BE_PLAYED,
+        drawPositions: [3],
+        roundNumber: 3,
+        roundPosition: 1,
+      },
+    ],
   },
-  */
 ];
 
 test.each(scenarios)(
   'Double Exit produces exit in consolation',
-  ({ postRemovalChecks, preRemovalChecks, outcomes }) => {
-    // setDevContext({ globalLog: true });
-    setDevContext();
+  ({
+    modifiedMatchUpsCount,
+    postRemovalChecks,
+    preRemovalChecks,
+    devContext,
+    outcomes,
+    updates,
+    skip,
+  }) => {
+    if (skip) return;
+
+    setDevContext(devContext);
 
     // keep track of notficiations with each setMatchUpStatus event
     let modifiedMatchUpLog = [];
@@ -164,13 +229,11 @@ test.each(scenarios)(
       subscriptions: {
         [MODIFY_MATCHUP]: (matchUps) => {
           matchUps.forEach(({ matchUp }) => {
-            const { roundNumber, roundPosition, matchUpStatus, stage } =
-              matchUp;
+            const { roundNumber, roundPosition, matchUpStatus } = matchUp;
             modifiedMatchUpLog.push([
               matchUpStatus,
-              roundPosition,
               roundNumber,
-              stage,
+              roundPosition,
             ]);
           });
         },
@@ -188,16 +251,32 @@ test.each(scenarios)(
       ],
     });
 
-    const doubleWalkoverOutcome = outcomes.find(
+    const doubleWalkoverOutcome = (outcomes || updates)?.find(
       ({ matchUpStatus }) => matchUpStatus === DOUBLE_WALKOVER
     );
 
     tournamentEngine.setState(tournamentRecord);
-
-    expect(modifiedMatchUpLog.length).toEqual(7);
-
     let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-    pushGlobalLog('doubleExitConsolation');
+
+    if (updates?.length) {
+      for (const update of updates) {
+        const targetMatchUp = getTarget({
+          ...update,
+          matchUps,
+        });
+        const result = tournamentEngine.setMatchUpStatus({
+          matchUpId: targetMatchUp.matchUpId,
+          drawId: targetMatchUp.drawId,
+          outcome: update,
+        });
+        expect(result.success).toEqual(true);
+      }
+    }
+
+    expect(modifiedMatchUpLog.length).toEqual(modifiedMatchUpsCount);
+
+    matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+    pushGlobalLog('doubleExitConsolation', true);
 
     // remove the DOUBLE_WALKOVER
     if (preRemovalChecks?.length) {
@@ -206,7 +285,9 @@ test.each(scenarios)(
           ...check,
           matchUps,
         });
-        expect(targetMatchUp.drawPositions).toEqual(check.drawPositions);
+        expect(targetMatchUp.drawPositions?.filter(Boolean)).toEqual(
+          check.drawPositions
+        );
         expect(targetMatchUp.matchUpStatus).toEqual(check.matchUpStatus);
         expect(targetMatchUp.winningSide).toEqual(check.winningSide);
         const { roundNumber, roundPosition } = targetMatchUp;
@@ -215,19 +296,22 @@ test.each(scenarios)(
           JSON.stringify(check.drawPositions)
             ? 'brightmagenta'
             : 'brightgreen';
-        pushGlobalLog({
-          method: 'before',
-          keyColors: {
-            stage: 'brightcyan',
-            round: 'brightcyan',
-            target: color,
-            check: 'bright',
+        pushGlobalLog(
+          {
+            method: 'before',
+            keyColors: {
+              stage: 'brightcyan',
+              round: 'brightcyan',
+              target: color,
+              check: 'bright',
+            },
+            stage: targetMatchUp.stage,
+            round: [roundNumber, roundPosition],
+            target: JSON.stringify(targetMatchUp.drawPositions),
+            check: JSON.stringify(check.drawPositions),
           },
-          stage: targetMatchUp.stage,
-          round: [roundNumber, roundPosition],
-          target: JSON.stringify(targetMatchUp.drawPositions),
-          check: JSON.stringify(check.drawPositions),
-        });
+          true
+        );
 
         if (check.losingSideMatchUpStatusCode) {
           const losingSideMatchUpStatusCode =
@@ -291,9 +375,9 @@ test.each(scenarios)(
         expect(targetMatchUp.matchUpStatus).toEqual(check.matchUpStatus);
         expect(targetMatchUp.winningSide).toEqual(check.winningSide);
       }
-      printGlobalLog(true);
     }
 
+    printGlobalLog(true);
     // reset
     setDevContext();
   }
