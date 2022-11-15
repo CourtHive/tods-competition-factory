@@ -24,111 +24,144 @@ const getTarget = ({ matchUps, roundNumber, roundPosition, stage }) =>
       (!stage || matchUp.stage === stage)
   );
 
-test('Double Exit produces exit in consolation', () => {
-  // keep track of notficiations with each setMatchUpStatus event
-  let modifiedMatchUpLog = [];
-  let result = setSubscriptions({
-    subscriptions: {
-      [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) => {
-          const { roundNumber, roundPosition, matchUpStatus, stage } = matchUp;
-          modifiedMatchUpLog.push([
-            matchUpStatus,
-            roundPosition,
-            roundNumber,
-            stage,
-          ]);
-        });
-      },
-    },
-  });
-  expect(result.success).toEqual(true);
-
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
+const scenarios = [
+  {
+    outcomes: [
       {
-        drawType: FIRST_MATCH_LOSER_CONSOLATION,
-        drawSize: 8,
-        outcomes: [
-          {
-            matchUpStatus: DOUBLE_WALKOVER,
-            roundPosition: 1,
-            roundNumber: 1,
-          },
-          {
-            roundPosition: 2,
-            roundNumber: 1,
-            winningSide: 1,
-          },
-        ],
+        roundPosition: 1,
+        roundNumber: 1,
+        winningSide: 1,
+      },
+      {
+        matchUpStatus: DOUBLE_WALKOVER,
+        roundPosition: 2,
+        roundNumber: 1,
       },
     ],
-  });
+    winningSide: 1,
+    drawPositions: [1, 3],
+  },
+  {
+    outcomes: [
+      {
+        matchUpStatus: DOUBLE_WALKOVER,
+        roundPosition: 1,
+        roundNumber: 1,
+      },
+      {
+        roundPosition: 2,
+        roundNumber: 1,
+        winningSide: 1,
+      },
+    ],
+    winningSide: 2,
+    drawPositions: [2, 3],
+  },
+];
 
-  tournamentEngine.setState(tournamentRecord);
+test.each(scenarios)(
+  'Double Exit produces exit in consolation',
+  ({ outcomes, winningSide, drawPositions }) => {
+    // keep track of notficiations with each setMatchUpStatus event
+    let modifiedMatchUpLog = [];
+    let result = setSubscriptions({
+      subscriptions: {
+        [MODIFY_MATCHUP]: (matchUps) => {
+          matchUps.forEach(({ matchUp }) => {
+            const { roundNumber, roundPosition, matchUpStatus, stage } =
+              matchUp;
+            modifiedMatchUpLog.push([
+              matchUpStatus,
+              roundPosition,
+              roundNumber,
+              stage,
+            ]);
+          });
+        },
+      },
+    });
+    expect(result.success).toEqual(true);
 
-  expect(modifiedMatchUpLog.length).toEqual(7);
+    const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+      drawProfiles: [
+        {
+          drawType: FIRST_MATCH_LOSER_CONSOLATION,
+          drawSize: 8,
+          outcomes,
+        },
+      ],
+    });
 
-  let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+    const doubleWalkoverOutcome = outcomes.find(
+      ({ matchUpStatus }) => matchUpStatus === DOUBLE_WALKOVER
+    );
 
-  let targetMatchUp = getTarget({
-    stage: CONSOLATION,
-    roundPosition: 1,
-    roundNumber: 1,
-    matchUps,
-  });
+    tournamentEngine.setState(tournamentRecord);
 
-  expect(targetMatchUp.winningSide).toEqual(2);
-  const losingSideMatchUpStatusCode = targetMatchUp.matchUpStatusCodes.find(
-    (side) => side.sideNumber === 1
-  ).previousMatchUpStatus;
-  expect(losingSideMatchUpStatusCode).toEqual(DOUBLE_WALKOVER);
-  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+    expect(modifiedMatchUpLog.length).toEqual(7);
 
-  targetMatchUp = getTarget({
-    stage: CONSOLATION,
-    roundPosition: 1,
-    roundNumber: 2,
-    matchUps,
-  });
-  expect(targetMatchUp.matchUpStatus).toEqual(BYE);
-  expect(targetMatchUp.drawPositions).toEqual([1, 3]);
+    let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
 
-  targetMatchUp = getTarget({
-    stage: MAIN,
-    roundPosition: 1,
-    roundNumber: 1,
-    matchUps,
-  });
+    let targetMatchUp = getTarget({
+      stage: CONSOLATION,
+      roundPosition: 1,
+      roundNumber: 1,
+      matchUps,
+    });
 
-  result = tournamentEngine.setMatchUpStatus({
-    matchUpId: targetMatchUp.matchUpId,
-    drawId: targetMatchUp.drawId,
-    outcome: toBePlayed,
-  });
+    expect(targetMatchUp.winningSide).toEqual(winningSide);
+    const losingSideMatchUpStatusCode = targetMatchUp.matchUpStatusCodes.find(
+      (side) => side.sideNumber !== winningSide
+    ).previousMatchUpStatus;
+    expect(losingSideMatchUpStatusCode).toEqual(DOUBLE_WALKOVER);
+    expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
 
-  expect(result.success).toEqual(true);
+    targetMatchUp = getTarget({
+      stage: CONSOLATION,
+      roundPosition: 1,
+      roundNumber: 2,
+      matchUps,
+    });
+    expect(targetMatchUp.matchUpStatus).toEqual(BYE);
+    expect(targetMatchUp.drawPositions).toEqual(drawPositions);
 
-  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+    targetMatchUp = getTarget({
+      ...doubleWalkoverOutcome,
+      stage: MAIN,
+      matchUps,
+    });
 
-  targetMatchUp = getTarget({
-    stage: CONSOLATION,
-    roundPosition: 1,
-    roundNumber: 1,
-    matchUps,
-  });
+    console.log('-------------------');
+    result = tournamentEngine.setMatchUpStatus({
+      matchUpId: targetMatchUp.matchUpId,
+      drawId: targetMatchUp.drawId,
+      outcome: toBePlayed,
+    });
 
-  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
-  expect(targetMatchUp.winningSide).toEqual(undefined);
+    expect(result.success).toEqual(true);
 
-  targetMatchUp = getTarget({
-    stage: CONSOLATION,
-    roundPosition: 1,
-    roundNumber: 2,
-    matchUps,
-  });
+    matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
 
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
-  expect(targetMatchUp.matchUpStatus).toEqual(BYE);
-  expect(targetMatchUp.winningSide).toEqual(undefined);
-});
+    targetMatchUp = getTarget({
+      stage: CONSOLATION,
+      roundPosition: 1,
+      roundNumber: 1,
+      matchUps,
+    });
+
+    expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+    expect(targetMatchUp.winningSide).toEqual(undefined);
+
+    targetMatchUp = getTarget({
+      stage: CONSOLATION,
+      roundPosition: 1,
+      roundNumber: 2,
+      matchUps,
+    });
+
+    console.log(targetMatchUp.drawPositions);
+    expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
+    expect(targetMatchUp.matchUpStatus).toEqual(BYE);
+    expect(targetMatchUp.winningSide).toEqual(undefined);
+  }
+);
