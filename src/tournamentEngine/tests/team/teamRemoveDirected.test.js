@@ -71,7 +71,8 @@ it.each(scenarios)('can remove directed teamParticipants', (scenario) => {
   // check that all second round matchUps have two advanced positions
   if (secondRoundDualMatchUps.length) {
     secondRoundDualMatchUps.forEach((dualMatchUp) => {
-      expect(dualMatchUp.drawPositions.filter(Boolean).length).toEqual(0);
+      // expect(dualMatchUp.drawPositions.filter(Boolean).length).toEqual(0);
+      expect(dualMatchUp.drawPositions).toEqual(undefined);
     });
   }
 });

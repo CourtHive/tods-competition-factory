@@ -247,7 +247,8 @@ test('A produced WALKOVER encountering a produced WALKOVER winningSide will not 
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  expect(targetMatchUp.drawPositions).toEqual(undefined);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.winningSide).toEqual(undefined);
 
@@ -265,8 +266,10 @@ test('A produced WALKOVER encountering a produced WALKOVER winningSide will not 
   matchUps.forEach((matchUp) => {
     expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
     expect(matchUp.winningSide).toEqual(undefined);
-    const drawPositions = matchUp.drawPositions.filter(Boolean);
-    expect(drawPositions.length).toEqual(matchUp.roundNumber === 1 ? 2 : 0);
+    const drawPositions = matchUp.drawPositions?.filter(Boolean);
+    expect(drawPositions?.length).toEqual(
+      matchUp.roundNumber === 1 ? 2 : undefined
+    );
   });
 });
 
