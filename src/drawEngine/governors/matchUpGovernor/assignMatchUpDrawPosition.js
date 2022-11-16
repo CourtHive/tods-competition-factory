@@ -7,6 +7,7 @@ import { updateSideLineUp } from '../positionGovernor/updateSideLineUp';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { getUpdatedDrawPositions } from './getUpdatedDrawPositions';
+import { updateMatchUpStatusCodes } from './matchUpStatusCodes';
 import { getExitWinningSide } from './getExitWinningSide';
 import { overlap } from '../../../utilities';
 import {
@@ -31,7 +32,6 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { updateMatchUpStatusCodes } from './matchUpStatusCodes';
 
 export function assignMatchUpDrawPosition({
   inContextDrawMatchUps,
@@ -260,9 +260,9 @@ export function assignMatchUpDrawPosition({
     return decorateResult({
       result: {
         error: DRAW_POSITION_ASSIGNED,
-        context: { drawPosition },
-        stack,
       },
+      context: { drawPosition },
+      stack,
     });
   }
 }

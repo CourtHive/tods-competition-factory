@@ -1,7 +1,9 @@
 import { definedAttributes } from '../../utilities';
 
 export function decorateResult({ result, stack, context, info }) {
-  if (!result.stack) result.stack = [];
+  if (!Array.isArray(result.stack)) {
+    result.stack = [];
+  }
   if (stack) {
     result.stack.push(stack);
   }

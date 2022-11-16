@@ -21,6 +21,7 @@ import {
   MISSING_STRUCTURE,
 } from '../../../constants/errorConditionConstants';
 import {
+  BYE,
   DEFAULTED,
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
@@ -45,7 +46,7 @@ export function doubleExitAdvancement(params) {
   const { loserMatchUp, winnerMatchUp, loserTargetDrawPosition } =
     targetMatchUps;
 
-  if (loserMatchUp) {
+  if (loserMatchUp && loserMatchUp.matchUpStatus !== BYE) {
     const { loserTargetLink } = targetLinks;
     if (appliedPolicies?.progression?.doubleExitPropagateBye) {
       const result = advanceByeToLoserMatchUp({

@@ -57,7 +57,7 @@ export function removeDoubleExit(params) {
   } = targetData;
 
   // only handles winnerMatchUps in the same structure
-  if (winnerMatchUp) {
+  if (winnerMatchUp && winnerMatchUp.matchUpStatus !== BYE) {
     const { stage, roundNumber, roundPosition } = winnerMatchUp;
     pushGlobalLog({
       winner: 'winner',
@@ -74,7 +74,7 @@ export function removeDoubleExit(params) {
     });
   }
 
-  if (loserMatchUp) {
+  if (loserMatchUp && loserMatchUp.matchUpStatus !== BYE) {
     const inContextLoserMatchUp = inContextDrawMatchUps.find(
       ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
     );
@@ -152,7 +152,7 @@ export function conditionallyRemoveDrawPosition(params) {
   if (targetMatchUp.feedRound) {
     const nextWinnerDrawPositions =
       nextWinnerMatchUp?.drawPositions?.filter(Boolean);
-    drawPositionToRemove = nextWinnerDrawPositions.find((drawPosition) =>
+    drawPositionToRemove = nextWinnerDrawPositions?.find((drawPosition) =>
       targetMatchUp.drawPositions.includes(drawPosition)
     );
   } else if (!sourceMatchUp) {
