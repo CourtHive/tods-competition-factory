@@ -114,7 +114,9 @@ function addIndividualParticipants({ participantMap }) {
     if (participant.individualParticipantIds?.length) {
       participant.individualParticipants = [];
       for (const participantId of participant.individualParticipantIds) {
-        participant.individualParticipants.push(participantMap[participantId]);
+        participant.individualParticipants.push(
+          participantMap[participantId].participant
+        );
       }
     }
   }
