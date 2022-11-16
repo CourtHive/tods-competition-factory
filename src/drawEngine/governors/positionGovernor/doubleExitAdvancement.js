@@ -280,7 +280,11 @@ function conditionallyAdvanceDrawPosition(params) {
     return decorateResult({ result: { ...SUCCESS }, stack });
 
   // any remaining drawPosition in targetMatchUp should be advanced
-  const drawPositionToAdvance = targetMatchUpDrawPositions[0];
+  const drawPositionToAdvance =
+    targetMatchUpDrawPositions.length === 2
+      ? targetMatchUpDrawPositions[walkoverWinningSide - 1]
+      : targetMatchUpDrawPositions[0];
+
   const { positionAssignments } = getPositionAssignments({ structure });
   const assignment = positionAssignments.find(
     (assignment) => assignment.drawPosition === drawPositionToAdvance
