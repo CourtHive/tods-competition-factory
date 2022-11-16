@@ -14,6 +14,7 @@ import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
   BYE,
+  COMPLETED,
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
   WALKOVER,
@@ -34,8 +35,8 @@ const getTarget = ({ matchUps, roundNumber, roundPosition, stage }) =>
 
 const scenarios = [
   {
-    skip: true,
-    devContext: true,
+    skip: false,
+    devContext: false,
     modifiedMatchUpsCount: 7,
     outcomes: [
       {
@@ -99,6 +100,14 @@ const scenarios = [
     postRemovalChecks: [
       {
         stage: MAIN,
+        matchUpStatus: COMPLETED,
+        drawPositions: [1, 2],
+        roundNumber: 1,
+        roundPosition: 1,
+        winningSide: 1,
+      },
+      {
+        stage: MAIN,
         matchUpStatus: TO_BE_PLAYED,
         drawPositions: [3, 4],
         roundNumber: 1,
@@ -142,7 +151,8 @@ const scenarios = [
     ],
   },
   {
-    devContext: true,
+    skip: false,
+    devContext: false,
     modifiedMatchUpsCount: 8,
     updates: [
       {
@@ -193,15 +203,68 @@ const scenarios = [
       {
         stage: CONSOLATION,
         matchUpStatus: BYE,
-        drawPositions: [1, 3],
+        drawPositions: [1, 4],
         roundNumber: 2,
         roundPosition: 1,
       },
       {
         stage: CONSOLATION,
         matchUpStatus: TO_BE_PLAYED,
-        drawPositions: [3],
+        drawPositions: [4],
         roundNumber: 3,
+        roundPosition: 1,
+      },
+    ],
+    postRemovalChecks: [
+      {
+        stage: MAIN,
+        matchUpStatus: TO_BE_PLAYED,
+        drawPositions: [1, 2],
+        roundNumber: 1,
+        roundPosition: 1,
+      },
+      {
+        stage: MAIN,
+        matchUpStatus: COMPLETED,
+        drawPositions: [3, 4],
+        roundNumber: 1,
+        roundPosition: 2,
+        winningSide: 1,
+      },
+      {
+        stage: MAIN,
+        matchUpStatus: TO_BE_PLAYED,
+        drawPositions: [3],
+        roundNumber: 2,
+        roundPosition: 1,
+      },
+      {
+        stage: MAIN,
+        matchUpStatus: TO_BE_PLAYED,
+        drawPositions: undefined,
+        roundNumber: 3,
+        roundPosition: 1,
+      },
+      {
+        stage: CONSOLATION,
+        matchUpStatus: TO_BE_PLAYED,
+        drawPositions: undefined,
+        roundNumber: 3,
+        roundPosition: 1,
+      },
+      {
+        stage: CONSOLATION,
+        matchUpStatus: TO_BE_PLAYED,
+        drawPositions: [3, 4],
+        roundNumber: 1,
+        roundPosition: 1,
+      },
+      {
+        includeCheck: true,
+        stage: CONSOLATION,
+        matchUpStatus: BYE,
+        drawPositions: [1],
+        roundNumber: 2,
         roundPosition: 1,
       },
     ],
@@ -273,10 +336,12 @@ test.each(scenarios)(
       }
     }
 
-    expect(modifiedMatchUpLog.length).toEqual(modifiedMatchUpsCount);
+    if (modifiedMatchUpsCount) {
+      expect(modifiedMatchUpLog.length).toEqual(modifiedMatchUpsCount);
+    }
 
     matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-    pushGlobalLog('doubleExitConsolation', true);
+    pushGlobalLog('doubleExitConsolation');
 
     // remove the DOUBLE_WALKOVER
     if (preRemovalChecks?.length) {
@@ -285,33 +350,32 @@ test.each(scenarios)(
           ...check,
           matchUps,
         });
-        expect(targetMatchUp.drawPositions?.filter(Boolean)).toEqual(
-          check.drawPositions
-        );
-        expect(targetMatchUp.matchUpStatus).toEqual(check.matchUpStatus);
-        expect(targetMatchUp.winningSide).toEqual(check.winningSide);
+        if (check.includeCheck !== false) {
+          expect(targetMatchUp.drawPositions?.filter(Boolean)).toEqual(
+            check.drawPositions
+          );
+          expect(targetMatchUp.matchUpStatus).toEqual(check.matchUpStatus);
+          expect(targetMatchUp.winningSide).toEqual(check.winningSide);
+        }
         const { roundNumber, roundPosition } = targetMatchUp;
         const color =
           JSON.stringify(targetMatchUp.drawPositions) !==
           JSON.stringify(check.drawPositions)
             ? 'brightmagenta'
             : 'brightgreen';
-        pushGlobalLog(
-          {
-            method: 'before',
-            keyColors: {
-              stage: 'brightcyan',
-              round: 'brightcyan',
-              target: color,
-              check: 'bright',
-            },
-            stage: targetMatchUp.stage,
-            round: [roundNumber, roundPosition],
-            target: JSON.stringify(targetMatchUp.drawPositions),
-            check: JSON.stringify(check.drawPositions),
+        pushGlobalLog({
+          method: 'before',
+          keyColors: {
+            stage: 'brightcyan',
+            round: 'brightcyan',
+            target: color,
+            check: 'bright',
           },
-          true
-        );
+          stage: targetMatchUp.stage,
+          round: [roundNumber, roundPosition],
+          target: JSON.stringify(targetMatchUp.drawPositions),
+          check: JSON.stringify(check.drawPositions),
+        });
 
         if (check.losingSideMatchUpStatusCode) {
           const losingSideMatchUpStatusCode =
@@ -369,11 +433,13 @@ test.each(scenarios)(
           target: JSON.stringify(targetMatchUp.drawPositions),
           check: JSON.stringify(check.drawPositions),
         });
-        expect(targetMatchUp.drawPositions?.filter(Boolean)).toEqual(
-          check.drawPositions
-        );
-        expect(targetMatchUp.matchUpStatus).toEqual(check.matchUpStatus);
-        expect(targetMatchUp.winningSide).toEqual(check.winningSide);
+        if (check.includeCheck !== false) {
+          expect(targetMatchUp.drawPositions?.filter(Boolean)).toEqual(
+            check.drawPositions
+          );
+          expect(targetMatchUp.matchUpStatus).toEqual(check.matchUpStatus);
+          expect(targetMatchUp.winningSide).toEqual(check.winningSide);
+        }
       }
     }
 
