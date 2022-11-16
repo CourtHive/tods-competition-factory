@@ -5,6 +5,7 @@ import {
   PAIR,
 } from '../../../constants/participantConstants';
 
+// derive matchUpType from participants when not defined on matchUp
 export function getMatchUpType({ matchUp = {} } = {}) {
   let matchUpType = matchUp.matchUpType;
 
