@@ -1,10 +1,12 @@
 import { validDrawPositions } from '../../governors/matchUpGovernor/validDrawPositions';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { treeMatchUps } from '../../generators/eliminationTree';
+import { structureSort } from '../../getters/structureSort';
 import { drawEngine } from '../../sync';
 
 drawEngine.devContext(true);
 
+import { ERROR } from '../../../constants/resultConstants';
 import {
   MAIN,
   CONSOLATION,
@@ -15,9 +17,9 @@ import {
   CURTIS,
   SINGLE_ELIMINATION,
   COMPASS,
+  PLAY_OFF,
+  AGGREGATE_EVENT_STRUCTURES,
 } from '../../../constants/drawDefinitionConstants';
-
-import { ERROR } from '../../../constants/resultConstants';
 
 it('can generate main draw', () => {
   reset();
@@ -154,7 +156,7 @@ it('can generate a Curtis Consolation draw', () => {
 
   const stageSequences = [1, 2, 1, 2];
   const matchUps = [63, 1, 47, 11];
-  const stages = [MAIN, MAIN, CONSOLATION, CONSOLATION];
+  const stages = [MAIN, PLAY_OFF, CONSOLATION, CONSOLATION];
 
   const firstRoundFinishingPositions = [
     { winner: [1, 32], loser: [33, 64] },
@@ -170,7 +172,11 @@ it('can generate a Curtis Consolation draw', () => {
     { winner: [5, 5], loser: [6, 6] },
   ];
 
-  state.structures.forEach((structure, i) => {
+  const structures = state.structures.sort((a, b) =>
+    structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES })
+  );
+
+  structures.forEach((structure, i) => {
     expect(structure.stage).toEqual(stages[i]);
     expect(structure.matchUps.length).toEqual(matchUps[i]);
     expect(structure.stageSequence).toEqual(stageSequences[i]);
