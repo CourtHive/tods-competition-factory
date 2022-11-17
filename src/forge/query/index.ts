@@ -11,9 +11,12 @@ export { getEntriesAndSeedsCount } from '../../tournamentEngine/governors/policy
 export { getMatchUpDailyLimits } from '../../competitionEngine/governors/scheduleGovernor/getMatchUpDailyLimits';
 export { getVenuesAndCourts as getTournamentVenuesAndCourts } from '../../tournamentEngine/getters/venueGetter';
 export { matchUpActions as tournamentMatchUpActions } from '../../tournamentEngine/getters/matchUpActions';
+export { getOrderedDrawPositions } from '../../drawEngine/getters/getMatchUps/getOrderedDrawPositions';
+export { getRoundContextProfile } from '../../drawEngine/getters/getMatchUps/getRoundContextProfile';
 export { getParticipantScaleItem } from '../../competitionEngine/getters/getParticipantScaleItem';
 export { positionActions } from '../../tournamentEngine/governors/queryGovernor/positionQueries';
 export { getEventData } from '../../tournamentEngine/governors/publishingGovernor/getEventData';
+export { getRoundMatchUps } from '../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 export { getSeedsCount } from '../../tournamentEngine/governors/policyGovernor/getSeedsCount';
 export { participantScaleItem } from '../../tournamentEngine/accessors/participantScaleItem';
 export { getCompetitionVenues } from '../../competitionEngine/getters/venuesAndCourtsGetter';

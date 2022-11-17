@@ -1,3 +1,4 @@
+import { getDrawData } from '../../../tournamentEngine/governors/publishingGovernor/getDrawData';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
 import { feedInMatchUps } from '../../generators/feedInMatchUps';
@@ -109,8 +110,8 @@ it('generates structured entry draw with expected finishing drawPositions', () =
 it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 16', () => {
   const drawSize = 16;
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
-    drawSize,
     drawType: FEED_IN_CHAMPIONSHIP,
+    drawSize,
   });
 
   expect(mainDrawMatchUps.length).toEqual(drawSize - 1);
@@ -138,10 +139,11 @@ it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 16', () => {
 
 it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 32', () => {
   const drawSize = 32;
-  const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
-    drawSize,
-    drawType: FEED_IN_CHAMPIONSHIP,
-  });
+  const { consolationMatchUps, mainDrawMatchUps, drawDefinition, links } =
+    feedInChampionship({
+      drawType: FEED_IN_CHAMPIONSHIP,
+      drawSize,
+    });
 
   expect(mainDrawMatchUps.length).toEqual(drawSize - 1);
   expect(consolationMatchUps.length).toEqual(drawSize - 2);
@@ -168,13 +170,18 @@ it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 32', () => {
   expect(links[3].target.roundNumber).toEqual(6);
   expect(links[4].source.roundNumber).toEqual(5);
   expect(links[4].target.roundNumber).toEqual(8);
+
+  const { structures } = getDrawData({ drawDefinition });
+  expect(
+    structures[0].roundMatchUps[1][0].sides[0].displaySideNumber
+  ).not.toBeUndefined();
 });
 
 it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 64', () => {
   const drawSize = 64;
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
-    drawSize,
     drawType: FEED_IN_CHAMPIONSHIP,
+    drawSize,
   });
 
   expect(mainDrawMatchUps.length).toEqual(drawSize - 1);
@@ -210,8 +217,8 @@ it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 64', () => {
 
 it('can generate FEED_IN_CHAMPIONSHIP_TO_R16', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
-    drawSize: 32,
     drawType: FICR16,
+    drawSize: 32,
   });
 
   expect(mainDrawMatchUps.length).toEqual(31);
@@ -221,8 +228,8 @@ it('can generate FEED_IN_CHAMPIONSHIP_TO_R16', () => {
 
 it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
-    drawSize: 32,
     drawType: FICSF,
+    drawSize: 32,
   });
 
   expect(mainDrawMatchUps.length).toEqual(31);
@@ -232,9 +239,9 @@ it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
 
 it('can generate MODIFIED_FEED_IN_CHAMPIONSHIP', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
-    drawSize: 32,
-    drawType: MFIC,
     feedPolicy: { roundGroupedOrder: [] },
+    drawType: MFIC,
+    drawSize: 32,
   });
   expect(mainDrawMatchUps.length).toEqual(31);
   expect(consolationMatchUps.length).toEqual(23);
@@ -276,28 +283,28 @@ it('can generate MODIFIED_FEED_IN_CHAMPIONSHIP', () => {
 
 it('can generate feedInMatchUps', () => {
   verifyexpectedRoundMatchUpsCounts({
-    baseDrawSize: 16,
-    feedRoundsProfile: [2],
     expectedRoundMatchUpsCounts: [8, 4, 2, 2, 1],
-  });
-
-  verifyexpectedRoundMatchUpsCounts({
+    feedRoundsProfile: [2],
     baseDrawSize: 16,
-    feedRoundsProfile: [2, 2],
-    expectedRoundMatchUpsCounts: [8, 4, 2, 2, 2, 1],
   });
 
   verifyexpectedRoundMatchUpsCounts({
-    baseDrawSize: 32,
-    feedRoundsProfile: [8, 8, 2, 2],
+    expectedRoundMatchUpsCounts: [8, 4, 2, 2, 2, 1],
+    feedRoundsProfile: [2, 2],
+    baseDrawSize: 16,
+  });
+
+  verifyexpectedRoundMatchUpsCounts({
     expectedRoundMatchUpsCounts: [16, 8, 8, 8, 4, 2, 2, 2, 1],
+    feedRoundsProfile: [8, 8, 2, 2],
+    baseDrawSize: 32,
   });
 });
 
 function verifyexpectedRoundMatchUpsCounts({
-  baseDrawSize,
-  feedRoundsProfile,
   expectedRoundMatchUpsCounts,
+  feedRoundsProfile,
+  baseDrawSize,
 }) {
   const { matchUps, roundsCount } = feedInMatchUps({
     feedRoundsProfile,

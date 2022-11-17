@@ -9,8 +9,8 @@ export function feedInChampionship({ drawSize, drawType, feedPolicy }) {
   initialize();
   mainDrawPositions({ drawSize });
   const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
-    drawType,
     feedPolicy,
+    drawType,
   });
   if (result.error) return result;
 
@@ -26,10 +26,10 @@ export function feedInChampionship({ drawSize, drawType, feedPolicy }) {
   const consolationMatchUps = consolationStructure?.matchUps;
 
   return {
-    links,
-    drawDefinition,
-    mainDrawMatchUps,
-    consolationMatchUps,
     consolationStructure,
+    consolationMatchUps,
+    mainDrawMatchUps,
+    drawDefinition,
+    links,
   };
 }
