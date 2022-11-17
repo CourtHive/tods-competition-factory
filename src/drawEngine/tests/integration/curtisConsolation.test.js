@@ -7,8 +7,8 @@ import {
   MAIN,
   CONSOLATION,
   CURTIS,
+  PLAY_OFF,
 } from '../../../constants/drawDefinitionConstants';
-import { expect } from 'vitest';
 
 it('can generate and verify curtis structures', () => {
   let mainStructureId,
@@ -156,7 +156,7 @@ function generateCurtis({
   const { stageStructures } = drawEngine.getDrawStructures({
     withStageGrouping: true,
   });
-  expect(Object.keys(stageStructures).length).toEqual(2);
+  expect(Object.keys(stageStructures).length).toEqual(drawSize === 64 ? 3 : 2);
   const {
     structures: [mainStructure],
   } = drawEngine.getDrawStructures({ stage, stageSequence: 1 });
@@ -164,7 +164,7 @@ function generateCurtis({
 
   const {
     structures: [playoffStructure],
-  } = drawEngine.getDrawStructures({ stage, stageSequence: 2 });
+  } = drawEngine.getDrawStructures({ stage: PLAY_OFF, stageSequence: 2 });
   const { structureId: playoffStructureId } = { ...playoffStructure };
 
   const {

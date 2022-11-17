@@ -42,7 +42,10 @@ it('can extract and collate event and tournament structures', () => {
         { drawSize: 8, drawType: FIRST_MATCH_LOSER_CONSOLATION },
         { drawType: CURTIS_CONSOLATION, drawSize: 64 },
       ],
-      expectation: { structuresCount: 6, stageStructures: [MAIN, CONSOLATION] },
+      expectation: {
+        structuresCount: 6,
+        stageStructures: [MAIN, CONSOLATION, PLAY_OFF],
+      },
     },
   ];
 
