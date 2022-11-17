@@ -22,8 +22,8 @@ export function structureSort(a, b, config = {}) {
 
   const orderProtocol = finish || aggregate || stageOrder;
 
-  const mainSequence1 = (s) =>
-    s?.stage === MAIN && a?.stageSequence === 1 ? -1 : 1;
+  const isMain1 = (s) => s?.stage === MAIN && s?.stageSequence === 1;
+  const protocolSequence = (s) => (isMain1(s) ? -1 : orderProtocol[s?.stage]);
 
   const completedStructure = (s) =>
     s?.matchUps.every(({ matchUpStatus }) =>
@@ -31,9 +31,8 @@ export function structureSort(a, b, config = {}) {
     );
 
   const comparison =
-    (completed &&
-      (completedStructure(a) || 0) - (completedStructure(b) || 0)) ||
-    (aggregate && (mainSequence1(a) || 0) - (mainSequence1(b) || 0)) ||
+    (completed && completedStructure(a) - completedStructure(b)) ||
+    (aggregate && protocolSequence(a) - protocolSequence(b)) ||
     (orderProtocol[a?.stage] || 0) - (orderProtocol[b?.stage] || 0) ||
     (getRoundTarget(a) || 0) - (getRoundTarget(b) || 0) ||
     (!finish &&
