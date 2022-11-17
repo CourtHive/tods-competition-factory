@@ -96,8 +96,8 @@ export function generateCurtisConsolation({
         matchUps: playoffMatchUps,
         structureName: PLAY_OFF,
         stageSequence: 2,
+        stage: PLAY_OFF,
         matchUpType,
-        stage: MAIN,
       });
 
       const playoffLink = {
