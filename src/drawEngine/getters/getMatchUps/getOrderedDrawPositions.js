@@ -1,4 +1,3 @@
-import { getDevContext } from '../../../global/state/globalState';
 import {
   allNumeric,
   overlap,
@@ -37,14 +36,6 @@ export function getOrderedDrawPositions({
   const isFeedRound = targetRoundProfile?.feedRound;
   if (allNumeric(drawPositions)) {
     const orderedDrawPositions = drawPositions.sort(numericSort);
-
-    if (getDevContext({ sideNumbers: true }) && drawPositions.length < 2)
-      console.log({
-        drawPositions,
-        pairedDrawPositions,
-        orderedDrawPositions,
-        displayOrder,
-      });
 
     return {
       orderedDrawPositions:
