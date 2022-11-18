@@ -114,7 +114,7 @@
     "eslint-plugin-compat": "4.0.2",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-prettier": "4.2.1",
-    "eslint-plugin-react": "7.31.10",
+    "eslint-plugin-react": "7.31.11",
     "esm": "3.2.25",
     "fs-extra": "10.1.0",
     "husky": "8.0.2",
