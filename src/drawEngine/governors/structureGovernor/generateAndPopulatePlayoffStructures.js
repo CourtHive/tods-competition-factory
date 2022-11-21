@@ -1,8 +1,10 @@
-import { generatePlayoffStructures } from '../../generators/playoffStructures';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { directParticipants } from '../matchUpGovernor/directParticipants';
-import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
 import { matchUpIsComplete } from '../../../matchUpEngine/governors/queryGovernor/matchUpIsComplete';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { generatePlayoffStructures } from '../../generators/playoffStructures';
+import { directParticipants } from '../matchUpGovernor/directParticipants';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
@@ -22,7 +24,6 @@ import {
   PLAY_OFF,
   TOP_DOWN,
 } from '../../../constants/drawDefinitionConstants';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 
 /**
  *
@@ -237,6 +238,7 @@ export function generateAndPopulatePlayoffStructures(params) {
 
   // the matchUps in the source structure must have goesTo details added
   if (params.goesTo !== false) {
+    console.log('adding goesTo');
     const goesToMap = addGoesTo({
       inContextDrawMatchUps,
       drawDefinition,
@@ -255,9 +257,21 @@ export function generateAndPopulatePlayoffStructures(params) {
     sourceStructureMatchUps.forEach((matchUp) => {
       if (goesToMap.loserMatchUpIds[matchUp.matchUpId]) {
         matchUp.loserMatchUpId = goesToMap.loserMatchUpIds[matchUp.matchUpId];
+        modifyMatchUpNotice({
+          tournamentId: tournamentRecord?.tournamentId,
+          eventId: params.event?.eventId,
+          drawDefinition,
+          matchUp,
+        });
       }
       if (goesToMap.winnerMatchUpIds[matchUp.matchUpId]) {
         matchUp.winnerMatchUpId = goesToMap.winnerMatchUpIds[matchUp.matchUpId];
+        modifyMatchUpNotice({
+          tournamentId: tournamentRecord?.tournamentId,
+          eventId: params.event?.eventId,
+          drawDefinition,
+          matchUp,
+        });
       }
     });
   }
