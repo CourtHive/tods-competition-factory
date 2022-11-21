@@ -238,7 +238,6 @@ export function generateAndPopulatePlayoffStructures(params) {
 
   // the matchUps in the source structure must have goesTo details added
   if (params.goesTo !== false) {
-    console.log('adding goesTo');
     const goesToMap = addGoesTo({
       inContextDrawMatchUps,
       drawDefinition,
