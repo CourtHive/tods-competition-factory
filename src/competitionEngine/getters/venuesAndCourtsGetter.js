@@ -1,5 +1,6 @@
 import { getVenuesAndCourts as teVenuesAndCourts } from '../../tournamentEngine/getters/venueGetter';
 import { getDisabledStatus } from '../../global/functions/deducers/getDisabledStatus';
+import { getInContextCourt } from '../../global/functions/deducers/getInContextCourt';
 import { findExtension } from '../../global/functions/deducers/findExtension';
 import { makeDeepCopy } from '../../utilities';
 
@@ -11,7 +12,7 @@ export function getVenuesAndCourts({
   convertExtensions,
   ignoreDisabled,
   venueIds = [],
-  dates,
+  dates, // used in conjunction with ignoreDisabled
 }) {
   if (
     typeof tournamentRecords !== 'object' ||
@@ -51,10 +52,13 @@ export function getVenuesAndCourts({
             const isDisabled = getDisabledStatus({ extension, dates });
             if (isDisabled) continue;
           }
-          const inContextCourt = {
-            ...makeDeepCopy(court, convertExtensions, true),
-            venueId: venue.venueId,
-          };
+          const { inContextCourt } = getInContextCourt({
+            convertExtensions,
+            ignoreDisabled,
+            venue,
+            court,
+          });
+
           courts.push(inContextCourt);
           uniqueCourtIds.push(court.courtId);
         }
