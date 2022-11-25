@@ -7,9 +7,11 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
-export function disableCourts({ tournamentRecord, courtIds }) {
+export function disableCourts({ tournamentRecord, courtIds, dates }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(courtIds)) return { error: MISSING_VALUE };
+
+  const disabledValue = Array.isArray(dates) && dates.length ? { dates } : true;
 
   for (const venue of tournamentRecord.venues || []) {
     for (const court of venue.courts || []) {
@@ -18,8 +20,8 @@ export function disableCourts({ tournamentRecord, courtIds }) {
           creationTime: false,
           element: court,
           extension: {
+            value: disabledValue,
             name: DISABLED,
-            value: true,
           },
         });
         if (result.error) return result;
