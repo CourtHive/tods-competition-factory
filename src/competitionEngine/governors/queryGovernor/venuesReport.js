@@ -26,7 +26,11 @@ export function getVenuesReport({
   const validDates = dates.every(isValidDateString);
   if (!validDates) return { error: INVALID_DATE };
 
-  const result = getVenuesAndCourts({ tournamentRecords, ignoreDisabled });
+  const result = getVenuesAndCourts({
+    tournamentRecords,
+    ignoreDisabled,
+    dates,
+  });
   if (result.error) return result;
 
   const venues = result.venues.filter(

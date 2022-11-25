@@ -86,6 +86,7 @@ export function scheduleProfileRounds({
   }
 
   const { courts } = getVenuesAndCourts({
+    dates: scheduleDates,
     ignoreDisabled: true,
     tournamentRecords,
   });

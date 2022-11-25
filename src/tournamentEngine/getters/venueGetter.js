@@ -1,4 +1,5 @@
 import { getLinkedTournamentIds } from '../../competitionEngine/governors/competitionsGovernor/tournamentLinks';
+import { getDisabledStatus } from '../../global/functions/deducers/getDisabledStatus';
 import { findExtension } from '../../global/functions/deducers/findExtension';
 import { addVenue } from '../governors/venueGovernor/addVenue';
 import { makeDeepCopy } from '../../utilities';
@@ -12,9 +13,10 @@ import {
 } from '../../constants/errorConditionConstants';
 
 export function getVenuesAndCourts({
-  tournamentRecord,
   convertExtensions,
+  tournamentRecord,
   ignoreDisabled,
+  dates,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
@@ -37,7 +39,7 @@ export function getVenuesAndCourts({
           name: DISABLED,
           element: court,
         });
-        return !extension?.value && court;
+        return getDisabledStatus({ extension, dates });
       })
       .filter(Boolean);
     return additionalCourts.length ? courts.concat(additionalCourts) : courts;

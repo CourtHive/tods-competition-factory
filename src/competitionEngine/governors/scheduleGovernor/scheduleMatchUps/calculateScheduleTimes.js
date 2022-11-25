@@ -55,6 +55,7 @@ export function calculateScheduleTimes({
     });
 
   const { courts: allCourts, venues } = getVenuesAndCourts({
+    dates: [scheduleDate],
     ignoreDisabled: true,
     tournamentRecords,
   });

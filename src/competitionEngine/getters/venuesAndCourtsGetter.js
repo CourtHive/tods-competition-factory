@@ -1,4 +1,5 @@
 import { getVenuesAndCourts as teVenuesAndCourts } from '../../tournamentEngine/getters/venueGetter';
+import { getDisabledStatus } from '../../global/functions/deducers/getDisabledStatus';
 import { findExtension } from '../../global/functions/deducers/findExtension';
 import { makeDeepCopy } from '../../utilities';
 
@@ -10,6 +11,7 @@ export function getVenuesAndCourts({
   convertExtensions,
   ignoreDisabled,
   venueIds = [],
+  dates,
 }) {
   if (
     typeof tournamentRecords !== 'object' ||
@@ -46,7 +48,8 @@ export function getVenuesAndCourts({
               name: DISABLED,
               element: court,
             });
-            if (extension?.value) continue;
+            const isDisabled = getDisabledStatus({ extension, dates });
+            if (isDisabled) continue;
           }
           const inContextCourt = {
             ...makeDeepCopy(court, convertExtensions, true),
@@ -62,7 +65,11 @@ export function getVenuesAndCourts({
   return { courts, venues };
 }
 
-export function getCompetitionVenues({ tournamentRecords, requireCourts }) {
+export function getCompetitionVenues({
+  tournamentRecords,
+  requireCourts,
+  dates,
+}) {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -73,7 +80,7 @@ export function getCompetitionVenues({ tournamentRecords, requireCourts }) {
   return tournamentIds.reduce(
     (accumulator, tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
-      const { venues } = teVenuesAndCourts({ tournamentRecord });
+      const { venues } = teVenuesAndCourts({ tournamentRecord, dates });
       venues.forEach((venue) => {
         const { venueId, courts } = venue;
         const includeVenue = !requireCourts || courts?.length;
