@@ -1111,7 +1111,10 @@ tournamentEngine.devContext(true);
 ## disableCourts
 
 ```js
-tournamentEngine.disableCourts({ courtIds });
+tournamentEngine.disableCourts({
+  courtIds,
+  dates, // optional - if not provided, courts will be disalbed for all dates
+});
 ```
 
 ---
@@ -2343,6 +2346,7 @@ Returns an array of all Venues which are part of a tournamentRecord and an aggre
 const { venues, courts } = tournamentEngine.getVenuesAndCourts({
   convertExtensions, // optional boolean
   ignoreDisabled, // optional boolean
+  dates, // optional - used with ignoreDisabled - applies to courts
 });
 ```
 

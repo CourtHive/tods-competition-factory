@@ -453,7 +453,10 @@ competitionEngine.devContext(true);
 ## disableCourts
 
 ```js
-competitionEngine.disableCourts({ courtIds });
+competitionEngine.disableCourts({
+  courtIds,
+  dates, // optional - if not provided, courts will be disalbed for all dates
+});
 ```
 
 ---
@@ -862,6 +865,7 @@ Returns an aggregate view of venues and courts across all tournamentRecords load
 const { courts, venues } = competitionEngine.getVenuesAndCourts({
   convertExtensions, // optional boolean
   ignoreDisabled, // optional boolean
+  dates, // optional - used with ignoreDisabled - applies to courts
 });
 ```
 
