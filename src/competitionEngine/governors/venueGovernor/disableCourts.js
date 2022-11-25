@@ -6,12 +6,12 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
-export function disableCourts({ tournamentRecords, courtIds }) {
+export function disableCourts({ tournamentRecords, courtIds, dates }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(courtIds)) return { error: MISSING_VALUE };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    courtsDisable({ tournamentRecord, courtIds });
+    courtsDisable({ tournamentRecord, courtIds, dates });
   }
 
   return { ...SUCCESS };
