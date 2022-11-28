@@ -234,28 +234,6 @@ export function randomUnseededSeparation({
       }
     });
 
-  if (errors.length) {
-    structure = findStructure({ drawDefinition, structureId }).structure;
-    positionAssignments = structureAssignedDrawPositions({
-      structure,
-    }).positionAssignments;
-    console.log(
-      positionAssignments.filter(
-        (p) => !p.participantId && !p.qualifier && !p.bye
-      ),
-      positionAssignments.filter((p) => p.qualifier),
-      unseededParticipantIds.length
-    );
-    unplacedParticipantIds = getUnplacedParticipantIds({
-      participantIds: unseededParticipantIds,
-      positionAssignments,
-    });
-
-    if (unplacedParticipantIds.length) {
-      console.log({ unplacedParticipantIds });
-    }
-  }
-
   return errors.length
     ? { error: errors, conflicts: candidate.conflicts }
     : Object.assign(
