@@ -9,10 +9,10 @@ export function getDisabledStatus({ extension, dates = [] }) {
     // and no dates have been provided then consider the court disabled
     if (!dates.length) return true;
 
-    const enabledDates = dates.filter(
-      (date) => !extension.value.dates.includes(date)
+    const disabledDates = dates.filter((date) =>
+      extension.value.dates.includes(date)
     );
     // only if all provided dates appear in disabled dates is the court considered disabled
-    return enabledDates.length;
+    return disabledDates.length;
   }
 }

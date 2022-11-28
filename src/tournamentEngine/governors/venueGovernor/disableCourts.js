@@ -12,18 +12,20 @@ export function disableCourts({ tournamentRecord, courtIds, dates }) {
   if (!Array.isArray(courtIds)) return { error: MISSING_VALUE };
 
   const disabledValue = Array.isArray(dates) && dates.length ? { dates } : true;
+  const disableCourt = (court) =>
+    addExtension({
+      creationTime: false,
+      element: court,
+      extension: {
+        value: disabledValue,
+        name: DISABLED,
+      },
+    });
 
   for (const venue of tournamentRecord.venues || []) {
     for (const court of venue.courts || []) {
       if (courtIds?.includes(court.courtId)) {
-        const result = addExtension({
-          creationTime: false,
-          element: court,
-          extension: {
-            value: disabledValue,
-            name: DISABLED,
-          },
-        });
+        const result = disableCourt(court);
         if (result.error) return result;
       }
     }

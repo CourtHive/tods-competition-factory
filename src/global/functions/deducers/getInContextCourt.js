@@ -20,21 +20,19 @@ export function getInContextCourt({
 
   if (ignoreDisabled && extension) {
     const disabledDates =
-      extension.value === 'object' && (extension.value.dates || []);
+      (typeof extension.value === 'object' && extension.value.dates) || [];
 
-    inContextCourt.forEach((inContextCourt) => {
-      const dateAvailability =
-        extension.value === true
-          ? []
-          : inContextCourt.dateAvailability
-              .map((availability) => {
-                const date = availability.date;
-                if (!date || disabledDates.includes(date)) return; // ignore defaultAvailility (no date)
-                return availability;
-              })
-              .filter(Boolean);
-      inContextCourt.dateAvailability = dateAvailability;
-    });
+    const dateAvailability =
+      extension.value === true
+        ? []
+        : inContextCourt.dateAvailability
+            .map((availability) => {
+              const date = availability.date;
+              if (!date || disabledDates.includes(date)) return; // ignore defaultAvailility (no date)
+              return availability;
+            })
+            .filter(Boolean);
+    inContextCourt.dateAvailability = dateAvailability;
   }
 
   return { inContextCourt };
