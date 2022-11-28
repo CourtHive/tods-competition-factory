@@ -6,7 +6,6 @@ import tournamentEngine from '../../sync';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { DRAW_ID_EXISTS } from '../../../constants/errorConditionConstants';
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
-import { expect } from 'vitest';
 
 it('can specify qualifiersCount when no qualifying draws are generated', () => {
   const qualifiersCount = 4;
