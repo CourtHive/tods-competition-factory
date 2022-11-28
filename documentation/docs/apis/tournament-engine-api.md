@@ -579,6 +579,7 @@ const { matchUps } = tournamentEngine.allDrawMatchUps({
   nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
   inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
   context, // optional context to be added into matchUps
+  drawId,
 });
 ```
 
