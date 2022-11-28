@@ -2,6 +2,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
+import { expect } from 'vitest';
 
 it('properly handles qualifiers with avoidances', () => {
   const avoidancePolicy = {
@@ -11,9 +12,10 @@ it('properly handles qualifiers with avoidances', () => {
     ],
   };
   const policyDefinitions = { [POLICY_TYPE_AVOIDANCE]: avoidancePolicy };
+  const qualifiersCount = 8;
   const drawProfiles = [
     {
-      qualifiersCount: 8,
+      qualifiersCount,
       drawSize: 64,
     },
   ];
@@ -22,16 +24,23 @@ it('properly handles qualifiers with avoidances', () => {
     policyDefinitions,
     drawProfiles,
   });
-
-  console.log(result);
+  expect(result.success).toEqual(true);
 
   const {
     tournamentRecord,
-    // eventIds: [eventId],
+    drawIds: [drawId],
   } = result;
 
   tournamentEngine.setState(tournamentRecord);
-
-  // const event = tournamentEngine.getEvent({ eventId }).event;
-  console.log(tournamentRecord.extensions);
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  expect(
+    drawDefinition.structures[0].positionAssignments.every(
+      ({ participantId, qualifier }) => participantId || qualifier
+    )
+  ).toEqual(true);
+  expect(
+    drawDefinition.structures[0].positionAssignments.filter(
+      ({ qualifier }) => qualifier
+    ).length
+  ).toEqual(qualifiersCount);
 });

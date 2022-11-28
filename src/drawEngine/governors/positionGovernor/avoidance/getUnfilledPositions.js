@@ -22,6 +22,7 @@ export function getUnfilledPositions({
       const unfilled = drawPositions
         .filter(Boolean)
         .map((drawPosition) => assignmentMap[drawPosition])
+        .filter(Boolean)
         .filter((assignment) => !assignment.participantId && !assignment.bye)
         .map((assignment) => assignment.drawPosition);
       return unfilled;

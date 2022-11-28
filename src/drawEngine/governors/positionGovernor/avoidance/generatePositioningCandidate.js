@@ -53,7 +53,7 @@ export function generatePositioningCandidate(params) {
     initialPositionAssignments,
     false,
     true
-  );
+  ).filter((assignment) => !assignment.qualifier);
 
   // all drawPositions which are available for placement
   const potentialDrawPositions = initialPositionAssignments
@@ -69,9 +69,9 @@ export function generatePositioningCandidate(params) {
     const { newGroupKey, selectedParticipantId, targetDrawPosition } =
       getParticipantPlacement({
         ...params,
-        groupKey,
-        allGroups,
         candidatePositionAssignments,
+        allGroups,
+        groupKey,
       });
     groupKey = newGroupKey;
 
@@ -81,6 +81,7 @@ export function generatePositioningCandidate(params) {
       }
     });
   });
+
   let positionedParticipants = getPositionedParticipants({
     candidatePositionAssignments,
     participantsWithGroupings,
@@ -131,6 +132,10 @@ export function generatePositioningCandidate(params) {
   candidatePositionAssignments.forEach((assignment) => {
     // TODO: Investigate this scenario
     if (assignment.bye && assignment.participantId) {
+      const error = INVALID_ASSIGNMENT;
+      errors.push(error);
+    }
+    if (assignment.qualifier && assignment.participantId) {
       const error = INVALID_ASSIGNMENT;
       errors.push(error);
     }
