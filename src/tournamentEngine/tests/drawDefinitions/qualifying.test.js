@@ -6,6 +6,7 @@ import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
@@ -30,7 +31,6 @@ import {
   QUALIFYING,
   ROUND_ROBIN,
 } from '../../../constants/drawDefinitionConstants';
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
 
 it('will throw an error for incorrect qualifyingStructures', () => {
   const result = mocksEngine.generateTournamentRecord({

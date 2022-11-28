@@ -1,3 +1,7 @@
+export const CANNOT_REMOVE_MAIN_STRUCTURE = {
+  message: 'Cannot remove main structure',
+  code: 'ERR_CANNOT_REMOVE_MAIN_STRUCTURE',
+};
 export const INVALID_RECORDS = {
   message: 'records must be an object with tournamentId keys',
   code: 'ERR_INVALID_TOURNAMENTS',
@@ -743,6 +747,7 @@ export const SCHEDULED_MATCHUPS = {
 export const errorConditionConstants = {
   CANNOT_CHANGE_WINNING_SIDE,
   CANNOT_MODIFY_TIEFORMAT,
+  CANNOT_REMOVE_MAIN_STRUCTURE,
   CANNOT_REMOVE_PARTICIPANTS,
   COURT_EXISTS,
   COURT_NOT_FOUND,
