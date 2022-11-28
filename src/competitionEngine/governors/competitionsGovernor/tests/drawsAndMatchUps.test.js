@@ -1,9 +1,11 @@
+import { setSubscriptions } from '../../../../global/state/globalState';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
 import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import POLICY_SCORING_USTA from '../../../../fixtures/policies/POLICY_SCORING_USTA';
+import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
@@ -11,6 +13,21 @@ import {
   MISSING_SCORING_POLICY,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
+import { expect } from 'vitest';
+
+const matchUpAddNotices = [];
+
+const subscriptions = {
+  [ADD_MATCHUPS]: (payload) => {
+    if (Array.isArray(payload)) {
+      payload.forEach(({ matchUps }) => {
+        matchUpAddNotices.push(matchUps.length);
+      });
+    }
+  },
+};
+
+setSubscriptions({ subscriptions });
 
 test('competitionEngine can addDrawDefinitions', () => {
   const drawSize = 32;
@@ -37,30 +54,31 @@ test('competitionEngine can addDrawDefinitions', () => {
   const { drawDefinition } = result;
 
   result = competitionEngine.addDrawDefinition({
-    tournamentId,
     drawDefinition,
+    tournamentId,
   });
   expect(result.error).toEqual(MISSING_EVENT);
   result = competitionEngine.addDrawDefinition({
     tournamentId: 'bogusId',
-    eventId,
     drawDefinition,
+    eventId,
   });
   expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
   result = competitionEngine.addDrawDefinition({
-    tournamentId,
     eventId: 'bogusId',
     drawDefinition,
+    tournamentId,
   });
   expect(result.error).toEqual(EVENT_NOT_FOUND);
   result = competitionEngine.addDrawDefinition({
+    drawDefinition,
     tournamentId,
     eventId,
-    drawDefinition,
   });
   expect(result.success).toEqual(true);
   ({ matchUps } = competitionEngine.allCompetitionMatchUps());
   expect(matchUps.length).toEqual(totalExpectedMatchUps);
+  expect(matchUpAddNotices).toEqual([31, 15]);
 });
 
 test('competitionEngine can setMatchUpStatus', () => {
