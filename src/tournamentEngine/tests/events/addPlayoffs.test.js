@@ -146,8 +146,8 @@ it.each([32, 64])(
 
     let { positionsPlayedOff, playoffRounds, playoffRoundsRanges } =
       tournamentEngine.getAvailablePlayoffRounds({
-        drawId,
         structureId,
+        drawId,
       });
     // since this is a PLAY_OFF structure there are no available structures to add
     expect(playoffRounds).toEqual([]);
@@ -165,10 +165,11 @@ it.each([32, 64])(
       });
       expect(result.success).toEqual(true);
     });
+
     ({ positionsPlayedOff, playoffRounds, playoffRoundsRanges } =
       tournamentEngine.getAvailablePlayoffRounds({
-        drawId,
         structureId,
+        drawId,
       }));
     expect(positionsPlayedOff).toEqual([1, 2]);
   }

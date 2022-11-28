@@ -67,14 +67,14 @@ export function removeStructure({
   while (idsToRemove.length) {
     const idBeingRemoved = idsToRemove.pop();
     const { structure } = findStructure({
-      drawDefinition,
       structureId: idBeingRemoved,
+      drawDefinition,
     });
     const { matchUps } = getAllStructureMatchUps({ structure });
     const matchUpIds = getMatchUpIds(matchUps);
     removedMatchUpIds.push(...matchUpIds);
 
-    if (!mainStageSequence1 && idBeingRemoved === structureId) {
+    if (!mainStageSequence1 || idBeingRemoved !== structureId) {
       drawDefinition.links =
         drawDefinition.links?.filter(
           (link) =>
