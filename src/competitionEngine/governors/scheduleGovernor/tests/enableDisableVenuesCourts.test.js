@@ -1,8 +1,9 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
+import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
-import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { expect } from 'vitest';
+
 import { DISABLED } from '../../../../constants/extensionConstants';
 
 it('can disable and enable courts and venues', () => {
@@ -86,7 +87,7 @@ it('can disable and enable courts and venues', () => {
   result = competitionEngine.disableCourts({ courtIds: targetCourtIds });
   expect(result.success).toEqual(true);
   result = competitionEngine.getVenuesAndCourts({ ignoreDisabled: true });
-  expect([result.courts.length, result.venues.length]).toEqual([6, 2]);
+  expect([result.courts.length, result.venues.length]).toEqual([12, 2]);
 
   result = competitionEngine.scheduleProfileRounds();
   expect(result.success).toEqual(true);
@@ -104,8 +105,66 @@ it('can disable and enable courts and venues', () => {
   result = competitionEngine.enableCourts({ enableAll: true });
   expect(result.success).toEqual(true);
 
+  result = tournamentEngine.getVenuesAndCourts();
+  expect([result.courts.length, result.venues.length]).toEqual([12, 2]);
+  disabledCourts = result.courts.filter((court) => court.extensions?.length);
+  expect(disabledCourts.length).toEqual(0);
+
+  result.courts.forEach((court) =>
+    expect(court.dateAvailability.length).toEqual(6)
+  );
+
   result = competitionEngine.getVenuesAndCourts();
   expect([result.courts.length, result.venues.length]).toEqual([12, 2]);
   disabledCourts = result.courts.filter((court) => court.extensions?.length);
   expect(disabledCourts.length).toEqual(0);
+
+  result.courts.forEach((court) =>
+    expect(court.dateAvailability.length).toEqual(6)
+  );
+
+  result = competitionEngine.disableCourts({
+    courtIds: targetCourtIds,
+    dates: [startDate, endDate],
+  });
+  expect(result.success).toEqual(true);
+
+  result = competitionEngine.getVenuesAndCourts({
+    ignoreDisabled: true,
+  });
+  result.courts.forEach((court) => {
+    if (targetCourtIds.includes(court.courtId)) {
+      expect(court.dateAvailability.length).toEqual(3);
+    } else {
+      expect(court.dateAvailability.length).toEqual(6);
+    }
+  });
+
+  result = tournamentEngine.getVenuesAndCourts({
+    ignoreDisabled: true,
+  });
+  result.courts.forEach((court) => {
+    if (targetCourtIds.includes(court.courtId)) {
+      expect(court.dateAvailability.length).toEqual(3);
+    } else {
+      expect(court.dateAvailability.length).toEqual(6);
+    }
+  });
+
+  // specifying a date with ignoreDisabled will filter out courts which have no dateAvailability for given date
+  result = competitionEngine.getVenuesAndCourts({
+    ignoreDisabled: true,
+    dates: [startDate],
+  });
+  expect([result.courts.length, result.venues.length]).toEqual([6, 2]);
+
+  result = tournamentEngine.enableCourts({ enableAll: true });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.getVenuesAndCourts({
+    ignoreDisabled: true,
+  });
+  result.courts.forEach((court) => {
+    expect(court.dateAvailability.length).toEqual(6);
+  });
 });

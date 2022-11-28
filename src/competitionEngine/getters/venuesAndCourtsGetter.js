@@ -44,7 +44,8 @@ export function getVenuesAndCourts({
       }
       for (const court of venue.courts || []) {
         if (!uniqueCourtIds.includes(court.courtId)) {
-          if (ignoreDisabled) {
+          // if dates are provided, only ignore the court if it is disabled for all given dates
+          if (ignoreDisabled && dates) {
             const { extension } = findExtension({
               name: DISABLED,
               element: court,

@@ -35,7 +35,7 @@ export function getVenuesAndCourts({
   const courts = venues.reduce((courts, venue) => {
     const additionalCourts = (venue?.courts || [])
       .filter((court) => {
-        if (!ignoreDisabled) return court;
+        if (!ignoreDisabled && !dates?.length) return court;
         const { extension } = findExtension({
           name: DISABLED,
           element: court,
