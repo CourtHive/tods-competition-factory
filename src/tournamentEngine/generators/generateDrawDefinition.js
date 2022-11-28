@@ -453,7 +453,7 @@ export function generateDrawDefinition(params) {
     });
 
     if (structureResult.error && !structureResult.conflicts) {
-      console.log('MAIN', structureResult);
+      // console.log('MAIN', structureResult);
       //return decorateResult({ result: structureResult, stack });
     }
 

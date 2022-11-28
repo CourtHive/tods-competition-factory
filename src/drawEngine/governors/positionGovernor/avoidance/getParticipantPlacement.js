@@ -21,26 +21,26 @@ export function getParticipantPlacement({
   const useSpecifiedGroupKey = largestGroupSize <= 2;
 
   const targetParticipantIds = getUnplacedParticipantIds({
-    participantIds: unseededParticipantIds,
     positionAssignments: candidatePositionAssignments,
+    participantIds: unseededParticipantIds,
   });
 
   const unfilledPositions = getUnfilledPositions({
-    drawPositionGroups,
     positionAssignments: candidatePositionAssignments,
+    drawPositionGroups,
   });
 
   const { participantId: selectedParticipantId, groupKey: newGroupKey } =
     getNextParticipantId({
-      groupKey,
-      allGroups,
       targetParticipantIds,
       useSpecifiedGroupKey,
+      allGroups,
+      groupKey,
     });
 
   const selectedParticipantGroups = getParticipantGroups({
-    allGroups,
     participantId: selectedParticipantId,
+    allGroups,
   });
 
   const drawPositionOptions = organizeDrawPositionOptions({
