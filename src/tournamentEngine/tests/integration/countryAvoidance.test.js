@@ -1,10 +1,10 @@
 import { allDrawMatchUps } from '../../getters/matchUpsGetter';
+import { getPositionAssignments } from '../../../forge/query';
 import { avoidanceTest } from '../primitives/avoidanceTest';
 import { eventConstants } from '../../..';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
-import { getPositionAssignments } from '../../../forge/query';
 const { SINGLES, DOUBLES } = eventConstants;
 
 const avoidancePolicy = {
