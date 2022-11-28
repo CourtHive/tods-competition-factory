@@ -59,7 +59,7 @@ export function randomUnseededSeparation({
   // roundsToSeparate determines desired degree of separation between players with matching attribute values
   // targetDivisions derives roundsToSeparate from the number of rounds
 
-  const { structure } = findStructure({ drawDefinition, structureId });
+  let { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({
     matchUpsMap,
     structure,
@@ -76,7 +76,7 @@ export function randomUnseededSeparation({
     roundsToSeparate = roundsCount < exponent ? 1 : roundsCount - exponent + 1;
   }
 
-  const { positionAssignments } = structureAssignedDrawPositions({ structure });
+  let { positionAssignments } = structureAssignedDrawPositions({ structure });
   const participantsWithGroupings = addParticipantGroupings({
     participantsProfile: { convertExtensions: true },
     participants,
@@ -128,7 +128,7 @@ export function randomUnseededSeparation({
     })
   );
 
-  const unplacedParticipantIds = getUnplacedParticipantIds({
+  let unplacedParticipantIds = getUnplacedParticipantIds({
     participantIds: unseededParticipantIds,
     positionAssignments,
   });
@@ -233,6 +233,28 @@ export function randomUnseededSeparation({
         }
       }
     });
+
+  if (errors.length) {
+    structure = findStructure({ drawDefinition, structureId }).structure;
+    positionAssignments = structureAssignedDrawPositions({
+      structure,
+    }).positionAssignments;
+    console.log(
+      positionAssignments.filter(
+        (p) => !p.participantId && !p.qualifier && !p.bye
+      ),
+      positionAssignments.filter((p) => p.qualifier),
+      unseededParticipantIds.length
+    );
+    unplacedParticipantIds = getUnplacedParticipantIds({
+      participantIds: unseededParticipantIds,
+      positionAssignments,
+    });
+
+    if (unplacedParticipantIds.length) {
+      console.log({ unplacedParticipantIds });
+    }
+  }
 
   return errors.length
     ? { error: errors, conflicts: candidate.conflicts }
