@@ -50,10 +50,11 @@ it('can recalculate participantResults when outcomes are removed', () => {
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   let mainStructure = drawDefinition.structures[0];
 
-  let { matchUps } = tournamentEngine.allDrawMatchUps({
+  let { matchUps, matchUpsMap } = tournamentEngine.allDrawMatchUps({
     inContext: true,
     drawId,
   });
+  expect([matchUps.length, matchUpsMap.drawMatchUps.length]).toEqual([6, 6]);
   let { participantResults } = tallyParticipantResults({ matchUps });
   expect(Object.keys(participantResults).length).toEqual(2);
 

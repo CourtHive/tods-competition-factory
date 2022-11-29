@@ -27,7 +27,6 @@ export function getMatchUpsMap({ drawDefinition, structure }) {
           };
           drawMatchUps.push(...filteredMatchUps);
           filteredMatchUps.forEach((matchUp) => {
-            drawMatchUps.push(matchUp);
             if (matchUp.tieMatchUps) drawMatchUps.push(...matchUp.tieMatchUps);
           });
           if (!mappedMatchUps[structureId]) mappedMatchUps[structureId] = {};
