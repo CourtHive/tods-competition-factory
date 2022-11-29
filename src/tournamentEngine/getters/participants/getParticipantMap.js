@@ -4,6 +4,7 @@ import { attributeFilter, makeDeepCopy } from '../../../utilities';
 import { getScaleValues } from './getScaleValues';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
+import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import {
   GROUP,
   PAIR,
@@ -11,7 +12,6 @@ import {
   SIGN_IN_STATUS,
   TEAM,
 } from '../../../constants/participantConstants';
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 
 const typeMap = {
   [GROUP]: 'groupParticipantIds',

@@ -8,6 +8,7 @@ import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { cleanupLineUps } from './cleanupLineUps';
+import { makeDeepCopy } from '../../../utilities';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -17,7 +18,6 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { makeDeepCopy } from '../../../utilities';
 
 export function swapDrawPositionAssignments({
   tournamentRecord,
