@@ -1,5 +1,7 @@
 import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getEliminationDrawSize } from '../../../drawEngine/getters/getEliminationDrawSize';
+import { decorateResult } from '../../../global/functions/decorateResult';
+import { isConvertableInteger } from '../../../utilities/math';
 
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import {
@@ -10,8 +12,6 @@ import {
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
-import { isConvertableInteger } from '../../../utilities/math';
-import { decorateResult } from '../../../global/functions/decorateResult';
 
 /**
  *
