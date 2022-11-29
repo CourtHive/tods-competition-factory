@@ -1,5 +1,5 @@
-import { CLUSTER } from '../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
+import { CLUSTER } from '../../constants/drawDefinitionConstants';
 
 export const POLICY_SEEDING_ITF = {
   [POLICY_TYPE_SEEDING]: {
