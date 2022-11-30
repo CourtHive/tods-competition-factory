@@ -21,6 +21,8 @@ export function makeDeepCopy(
 ) {
   const deepCopy = deepCopyEnabled();
 
+  const { stringify, toJSON, ignore } = deepCopy || {};
+
   if (
     (!deepCopy?.enabled && !internalUse) ||
     typeof sourceObject !== 'object' ||
@@ -51,7 +53,11 @@ export function makeDeepCopy(
   const targetObject = Array.isArray(sourceObject) ? [] : {};
 
   const sourceObjectKeys = Object.keys(sourceObject).filter(
-    (key) => !internalUse || !deepCopy?.ignore.includes(key)
+    (key) =>
+      !internalUse ||
+      !ignore ||
+      (Array.isArray(ignore) && !ignore.includes(key)) ||
+      (typeof ignore === 'function' && !ignore(key))
   );
 
   for (const key of sourceObjectKeys) {
@@ -61,13 +67,14 @@ export function makeDeepCopy(
       Object.assign(targetObject, ...extensionConversions);
     } else if (removeExtensions && key === 'extensions') {
       targetObject[key] = [];
-    } else if (deepCopy?.stringify.includes(key)) {
+    } else if (Array.isArray(stringify) && stringify.includes(key)) {
       targetObject[key] =
         typeof value?.toString === 'function'
           ? value.toString()
           : JSON.stringify(value);
     } else if (
-      deepCopy?.toJSON.includes(key) &&
+      Array.isArray(toJSON) &&
+      toJSON.includes(key) &&
       typeof value?.toJSON === 'function'
     ) {
       targetObject[key] = value.toJSON();
@@ -75,6 +82,10 @@ export function makeDeepCopy(
       targetObject[key] = undefined;
     } else if (isDateObject(value)) {
       targetObject[key] = new Date(value).toISOString();
+    } else if (typeof stringify === 'function') {
+      targetObject[key] = stringify(value);
+    } else if (typeof toJSON === 'function') {
+      targetObject[key] = toJSON(value);
     } else {
       targetObject[key] = makeDeepCopy(
         value,
