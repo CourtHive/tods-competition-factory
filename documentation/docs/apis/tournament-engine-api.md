@@ -3420,16 +3420,25 @@ result = tournamentEngine.setPositionAssignments({
 
 Loads a tournament record into tournamentEngine.
 
+```js
+tournamentEngine.setsState(tournamentRecord, deepCopy, deepCopyConfig);
+```
+
 :::info
 By default a deep copy of the `tournamentRecord` is made so that mutations made by `tournamentEngine` do not affect the source object. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.
 :::
 
 :::note
-`deepCopyConfig` is an object which configures `makeDeepCopy` for "internal use". In server configurations when `deepCopy` is FALSE and `tournamentRecords` are retrieved from Mongo, for instance, there are scenarios where nodes of the JSON structure contain prototypes which cannot be converted.
+`deepCopyConfig` is an optional configuration for `makeDeepCopy`. In server configurations when `deepCopy` is FALSE and `tournamentRecords` are retrieved from Mongo, for instance, there are scenarios where nodes of the JSON structure contain prototypes which cannot be converted.
 :::
 
 ```js
-tournamentEngine.setsState(tournamentRecord, deepCopy, deepCopyConfig);
+const deepCopyConfig = {
+  ignore, // optional - either an array of attributes to ignore or a function which processes attributes to determine whether to ignore them
+  toJSON, // optional - an array of attributes to convert to JSON if the attribute in question is an object with .toJSON property
+  stringify, // optional - an array of attributes to stringify
+  modulate, // optional - function to process every attribute and return custom values, or undefined, which continues normal processing
+};
 ```
 
 ---
