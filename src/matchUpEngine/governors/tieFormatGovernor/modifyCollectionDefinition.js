@@ -1,4 +1,5 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { genderConstants } from '../../../constants/genderConstants';
 import { isConvertableInteger } from '../../../utilities/math';
 import { definedAttributes } from '../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
@@ -32,6 +33,7 @@ export function modifyCollectionDefinition({
   structureId,
   matchUpId,
   eventId,
+  gender,
   event,
 
   // value assignment, only one is allowed to have a value
@@ -45,6 +47,10 @@ export function modifyCollectionDefinition({
     return { error: INVALID_VALUES };
   if (collectionName && typeof collectionName !== 'string')
     return { error: INVALID_VALUES };
+  if (gender && !genderConstants.includes(gender)) {
+    return { error: INVALID_VALUES };
+  }
+
   const stack = 'modifyCollectionDefinition';
 
   const valueAssignments = {
@@ -151,6 +157,7 @@ export function modifyCollectionDefinition({
   if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
   if (collectionName) collectionDefinition.collectionName = collectionName;
   if (matchUpFormat) collectionDefinition.matchUpFormat = matchUpFormat;
+  if (gender) collectionDefinition.gender = gender;
 
   const prunedTieFormat = definedAttributes(tieFormat);
   result = validateTieFormat({ tieFormat: prunedTieFormat });
