@@ -47,7 +47,7 @@ export function modifyCollectionDefinition({
     return { error: INVALID_VALUES };
   if (collectionName && typeof collectionName !== 'string')
     return { error: INVALID_VALUES };
-  if (gender && !genderConstants.includes(gender)) {
+  if (gender && !Object.values(genderConstants).includes(gender)) {
     return { error: INVALID_VALUES };
   }
 
