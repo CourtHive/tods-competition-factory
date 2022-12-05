@@ -2441,6 +2441,7 @@ tournamentEngine.modifyCollectionDefinition({
   matchUpId, // required if modifying tieFormat for a matchUp
   eventId, // required if modifying tieFormat for a event
   drawId, // required if modifying tieFormat for a drawDefinition or a structure
+  gender, // optional
 
   // value assignment, only one is allowed to have a value
   collectionValueProfile, // optional - [{ collectionPosition: 1, value: 2 }] - there must be a value provided for all matchUp positions

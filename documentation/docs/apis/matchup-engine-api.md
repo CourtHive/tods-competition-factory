@@ -95,6 +95,7 @@ matchUpEngine.modifyCollectionDefinition({
   matchUpValue, // optional - value awarded for each matchUp won
   scoreValue, // optional - value awarded for each game or point won (points for tiebreak sets)
   setValue, // optional - value awarded for each set won
+  gender, // optional
 });
 ```
 
