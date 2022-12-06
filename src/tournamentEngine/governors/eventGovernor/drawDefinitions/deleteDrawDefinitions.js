@@ -61,6 +61,7 @@ export function deleteDrawDefinitions({
   if (!event) {
     const result = findEvent({ tournamentRecord, eventId, drawId });
     if (result.error) return result;
+    event = result.event;
   }
 
   const auditTrail = [];

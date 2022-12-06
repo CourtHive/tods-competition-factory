@@ -4,7 +4,9 @@ import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks
 import { getStageDrawPositionsCount } from '../../getters/getStageDrawPositions';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
+import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import { definedAttributes } from '../../../utilities/objects';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
@@ -65,6 +67,10 @@ export function generateDrawTypeAndModifyDrawDefinition(params = {}) {
     });
   }
 
+  const existingMatchUpIds = getMatchUpsMap({
+    drawDefinition,
+  }).drawMatchUps.map(getMatchUpId);
+
   const result = generateDrawStructuresAndLinks(params);
   if (result.error) {
     return decorateResult({ result, stack });
@@ -118,9 +124,12 @@ export function generateDrawTypeAndModifyDrawDefinition(params = {}) {
   const { matchUps, matchUpsMap } = getAllDrawMatchUps({ drawDefinition });
 
   if (tieFormat) {
+    // if there were exiting matchUps, exclude them from this step
     matchUps.forEach((matchUp) => {
-      const { tieMatchUps } = generateTieMatchUps({ tieFormat, isMock });
-      Object.assign(matchUp, { tieMatchUps, matchUpType });
+      if (!existingMatchUpIds.includes(matchUp.matchUpId)) {
+        const { tieMatchUps } = generateTieMatchUps({ tieFormat, isMock });
+        Object.assign(matchUp, { tieMatchUps, matchUpType });
+      }
     });
   }
 

@@ -41,6 +41,7 @@ import {
 
 export function getDrawData({
   tournamentParticipants = [],
+  includePositionAssignments,
   policyDefinitions,
   tournamentRecord,
   inContext = true,
@@ -205,8 +206,10 @@ export function getDrawData({
         };
       });
 
-    // cleanup attribute used for sorting
-    structures.forEach((structure) => delete structure.positionAssignments);
+    if (!includePositionAssignments) {
+      // cleanup attribute used for sorting
+      structures.forEach((structure) => delete structure.positionAssignments);
+    }
 
     return structures;
   });

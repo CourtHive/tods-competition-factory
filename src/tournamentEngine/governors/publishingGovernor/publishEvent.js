@@ -24,6 +24,7 @@ export function publishEvent({
   drawIdsToAdd,
   drawIds,
 
+  includePositionAssignments,
   structureIdsToRemove,
   structureIdsToAdd,
   structureIds,
@@ -88,6 +89,7 @@ export function publishEvent({
   addEventTimeItem({ event, timeItem: updatedTimeItem, removePriorValues });
 
   const { eventData } = getEventData({
+    includePositionAssignments,
     usePublishState: true,
     policyDefinitions,
     tournamentRecord,

@@ -13,6 +13,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function getEventData({
+  includePositionAssignments,
   tournamentRecord: t,
   participantsProfile,
   policyDefinitions,
@@ -61,6 +62,7 @@ export function getEventData({
       }))(
         getDrawData({
           context: { eventId, tournamentId, endDate },
+          includePositionAssignments,
           tournamentParticipants,
           noDeepCopy: true,
           policyDefinitions,
