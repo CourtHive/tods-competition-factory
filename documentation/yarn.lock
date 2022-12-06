@@ -8460,10 +8460,10 @@ tods-competition-factory@0.326.0:
   resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.326.0.tgz#840b44bc4d947c57ad898dc5cd309e4f2165e083"
   integrity sha512-vkzF5OZRtsDuP9XyfjYoHImuQ6l5G52YSj6XLK2EgEZTPeKkzDBDaEcrQNZhIn9Ypda0qRDFgheWGHz/VjVFjg==
 
-tods-competition-factory@0.403.0:
-  version "0.403.0"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.403.0.tgz#5b9049f78b004f0876ecde630162c096b44c6020"
-  integrity sha512-n/LI3kmKuTXXSl3dYz+crfOzzj/M0JFObbCBQ2isrudWu3lmpFFB3QKLWORGdBkgLddFVB0U89ElUBomwtqTjQ==
+tods-competition-factory@0.404.0:
+  version "0.404.0"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.404.0.tgz#af620825198dea72213a544542ea01f5f00fb8ca"
+  integrity sha512-23JzapdyTNfG/UJc5Mp4PcoCvroZUkh1pCAAqGV1h09VJTji6M01jXIoMrvpayoR7Jo4lRufHBgnD3aJecNb+Q==
 
 tods-score-grid@0.10.0:
   version "0.10.0"
