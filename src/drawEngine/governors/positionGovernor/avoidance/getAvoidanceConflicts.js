@@ -32,8 +32,8 @@ export function getAvoidanceConflicts({ isRoundRobin, groupedParticipants }) {
   } else {
     groupedParticipants.forEach((matchUpPair) => {
       const avoidanceConflict = overlap(
-        matchUpPair[0].values || [],
-        matchUpPair[1].values || []
+        matchUpPair[0]?.values || [],
+        matchUpPair[1]?.values || []
       );
 
       if (avoidanceConflict) {

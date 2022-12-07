@@ -102,11 +102,11 @@
     "@types/node": "18.11.11",
     "@typescript-eslint/eslint-plugin": "5.45.1",
     "@typescript-eslint/parser": "5.45.1",
-    "@vitest/coverage-c8": "0.25.4",
+    "@vitest/coverage-c8": "0.25.5",
     "ajv": "8.11.2",
     "ajv-formats": "2.1.1",
     "c8": "7.12.0",
-    "esbuild": "0.15.18",
+    "esbuild": "0.16.1",
     "eslint": "8.29.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-import-resolver-typescript": "3.5.2",
@@ -121,7 +121,7 @@
     "lint-staged": "13.1.0",
     "np": "7.6.2",
     "pinst": "3.0.0",
-    "prettier": "2.8.0",
+    "prettier": "2.8.1",
     "prettier-eslint": "15.0.1",
     "quicktype": "15.1.0",
     "rimraf": "3.0.2",
@@ -133,7 +133,7 @@
     "tslib": "2.4.1",
     "typescript": "4.9.3",
     "vite": "3.2.5",
-    "vitest": "0.25.4"
+    "vitest": "0.25.5"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint",
