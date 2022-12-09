@@ -11,9 +11,9 @@ import { SINGLES } from '../../../constants/eventConstants';
 import type { Participant } from '../../../types/tournamentFromSchema';
 
 type FilterParticipantsArgs = {
+  participants: Participant[];
   participantFilters: any;
   tournamentRecord: any;
-  participants: Participant[];
 };
 
 export function filterParticipants({
@@ -40,10 +40,10 @@ export function filterParticipants({
 
   const tournamentEvents =
     (isValidFilterArray(eventIds) &&
-      tournamentRecord.events?.filter((event) =>
+      tournamentRecord?.events?.filter((event) =>
         eventIds.includes(event.eventId)
       )) ||
-    tournamentRecord.events ||
+    tournamentRecord?.events ||
     [];
 
   const drawEnteredParticipantIds =
@@ -168,7 +168,7 @@ export function filterParticipants({
           (entry) => entry.participantId
         );
         if (event.eventType === SINGLES) return enteredParticipantIds;
-        const individualParticipantIds = (tournamentRecord.participants || [])
+        const individualParticipantIds = (tournamentRecord?.participants || [])
           .filter((participant) =>
             enteredParticipantIds.includes(participant.participantId)
           )

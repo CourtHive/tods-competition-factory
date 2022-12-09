@@ -8,9 +8,9 @@ export function getTournamentPersons({ tournamentRecord, participantFilters }) {
 
   if (participantFilters)
     tournamentParticipants = filterParticipants({
-      tournamentRecord,
-      participantFilters,
       participants: tournamentParticipants,
+      participantFilters,
+      tournamentRecord,
     });
 
   const tournamentPersons = {};
