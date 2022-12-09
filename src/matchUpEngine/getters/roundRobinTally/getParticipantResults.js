@@ -32,6 +32,13 @@ export function getParticipantResults({
     );
   });
 
+  const allSets = matchUps.flatMap(({ score, tieMatchUps }) =>
+    tieMatchUps
+      ? tieMatchUps.flatMap(({ score }) => score?.sets?.length || 0)
+      : score?.sets?.length || 0
+  );
+  const totalSets = allSets.reduce((a, b) => a + b, 0);
+
   filteredMatchUps.forEach((matchUp) => {
     const { matchUpStatus, tieMatchUps, score, winningSide, sides } = matchUp;
 
@@ -140,7 +147,13 @@ export function getParticipantResults({
     }
   });
 
-  calculatePercentages({ participantResults, perPlayer, matchUpFormat });
+  calculatePercentages({
+    participantResults,
+    matchUpFormat,
+    tallyPolicy,
+    perPlayer,
+    totalSets,
+  });
 
   return { participantResults };
 }
