@@ -3,7 +3,9 @@ import { parse } from '../../governors/matchUpFormatGovernor/parse';
 export function calculatePercentages({
   participantResults,
   matchUpFormat,
+  tallyPolicy,
   perPlayer,
+  totalSets,
 }) {
   const parsedGroupMatchUpFormat =
     (matchUpFormat && parse(matchUpFormat)) || {};
@@ -14,7 +16,9 @@ export function calculatePercentages({
   Object.keys(participantResults).forEach((participantId) => {
     const setsWon = participantResults[participantId].setsWon;
     const setsLost = participantResults[participantId].setsLost;
-    const setsTotal = perPlayer * (bracketSetsToWin || 0) || setsWon + setsLost;
+    const setsTotal = tallyPolicy?.groupTotalSetsPlayed
+      ? totalSets
+      : perPlayer * (bracketSetsToWin || 0) || setsWon + setsLost;
     let setsPct = Math.round((setsWon / setsTotal) * 1000) / 1000;
     if (setsPct === Infinity || isNaN(setsPct)) setsPct = setsTotal;
 
