@@ -12,6 +12,7 @@ import { addPersons } from './addPersons';
 import { modifyIndividualParticipantIds } from './groupings/modifyIndividualParticipantIds';
 import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
 import { addIndividualParticipantIds } from './groupings/addIndividualParticipantIds';
+import { filterParticipants } from '../../getters/participants/filterParticipants';
 import { modifyParticipantsSignInStatus } from './modifyParticipantsSignInStatus';
 import { scaledTeamAssignment } from '../../generators/scaledTeamAssignment';
 import { createGroupParticipant } from './groupings/createGroupParticipant';
@@ -66,6 +67,7 @@ const participantGovernor = {
 
   mergeParticipants,
   getPairedParticipant,
+  filterParticipants,
   setParticipantScaleItem,
   setParticipantScaleItems,
   modifyParticipantsSignInStatus,

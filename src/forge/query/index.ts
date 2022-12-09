@@ -13,6 +13,7 @@ export { getVenuesAndCourts as getTournamentVenuesAndCourts } from '../../tourna
 export { matchUpActions as tournamentMatchUpActions } from '../../tournamentEngine/getters/matchUpActions';
 export { getOrderedDrawPositions } from '../../drawEngine/getters/getMatchUps/getOrderedDrawPositions';
 export { getRoundContextProfile } from '../../drawEngine/getters/getMatchUps/getRoundContextProfile';
+export { filterParticipants } from '../../tournamentEngine/getters/participants/filterParticipants';
 export { getParticipantScaleItem } from '../../competitionEngine/getters/getParticipantScaleItem';
 export { positionActions } from '../../tournamentEngine/governors/queryGovernor/positionQueries';
 export { getEventData } from '../../tournamentEngine/governors/publishingGovernor/getEventData';
