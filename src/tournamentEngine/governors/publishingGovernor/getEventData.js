@@ -46,15 +46,19 @@ export function getEventData({
     tournamentRecord,
   });
 
+  const structureFilter = ({ structureId }) =>
+    !usePublishState ||
+    !publishStatus?.structureIds?.length ||
+    publishStatus.structureIds.includes(structureId);
+
+  const drawFilter = ({ drawId }) =>
+    !usePublishState ||
+    !publishStatus?.drawIds?.length ||
+    publishStatus.drawIds.includes(drawId);
+
   const drawDefinitions = event.drawDefinitions || [];
   const drawsData = drawDefinitions
-    .filter(
-      (drawDefinition) =>
-        !usePublishState ||
-        !publishStatus?.drawIds ||
-        publishStatus?.drawIds?.length === 0 ||
-        publishStatus?.drawIds?.includes(drawDefinition.drawId)
-    )
+    .filter(drawFilter)
     .map((drawDefinition) =>
       (({ drawInfo, structures }) => ({
         ...drawInfo,
@@ -72,7 +76,12 @@ export function getEventData({
           event,
         })
       )
-    );
+    )
+    .map(({ structures, ...drawData }) => ({
+      ...drawData,
+      structures: structures.filter(structureFilter),
+    }))
+    .filter((drawData) => drawData.structures?.length);
 
   const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
   const venues = tournamentRecord.venues || [];

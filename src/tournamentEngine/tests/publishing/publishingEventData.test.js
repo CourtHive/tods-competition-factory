@@ -13,6 +13,7 @@ import {
 import {
   COMPASS,
   CONTAINER,
+  FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
   PLAY_OFF,
@@ -311,8 +312,8 @@ it('can generate payload for publishing a compass draw', () => {
   );
 
   const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    eventId,
     policyDefinitions,
+    eventId,
   });
   expect(publishSuccess).toEqual(true);
   expect(eventData.eventInfo.publish.state[PUBLIC].structureIds).toEqual([]);
@@ -444,8 +445,8 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
   );
 
   const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    eventId,
     policyDefinitions,
+    eventId,
   });
   expect(publishSuccess).toEqual(true);
 
@@ -538,9 +539,9 @@ it('can filter out unPublished draws when publishing event', () => {
 
   const drawId = drawIds[0];
   const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
-    eventId,
     policyDefinitions,
     drawIds: [drawId],
+    eventId,
   });
   expect(publishSuccess).toEqual(true);
   expect(eventData.eventInfo.publish.state[PUBLIC].drawIds).toEqual([drawId]);
@@ -552,15 +553,19 @@ it('can filter out unPublished draws when publishing event', () => {
   expect(result.success).toEqual(true);
 });
 
-it('can add or remove drawIds from a published event', () => {
+it.only('can add or remove drawIds from a published event', () => {
   const eventId = 'event1';
   const eventProfiles = [
     {
       eventId,
       drawProfiles: [
-        { drawSize: 8, drawId: 'draw1' },
-        { drawSize: 8, drawId: 'draw2' },
-        { drawSize: 8, drawId: 'draw3' },
+        { drawSize: 8, drawId: 'draw1', drawType: ROUND_ROBIN_WITH_PLAYOFF },
+        { drawSize: 8, drawId: 'draw2', drawType: FEED_IN_CHAMPIONSHIP },
+        {
+          drawType: FIRST_MATCH_LOSER_CONSOLATION,
+          drawId: 'draw3',
+          drawSize: 8,
+        },
       ],
     },
   ];
@@ -573,8 +578,8 @@ it('can add or remove drawIds from a published event', () => {
 
   const policyDefinitions = Object.assign(
     {},
-    ROUND_NAMING_POLICY,
-    PARTICIPANT_PRIVACY_DEFAULT
+    PARTICIPANT_PRIVACY_DEFAULT,
+    ROUND_NAMING_POLICY
   );
 
   let { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
@@ -584,6 +589,16 @@ it('can add or remove drawIds from a published event', () => {
   });
   expect(publishSuccess).toEqual(true);
   expect(eventData.drawsData.length).toEqual(2);
+  const secondStructureId = eventData.drawsData[0].structures[1].structureId;
+
+  ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    structureIds: [secondStructureId],
+    drawIds: ['draw1', 'draw2'],
+    policyDefinitions,
+    eventId,
+  }));
+  expect(publishSuccess).toEqual(true);
+  expect(eventData.drawsData.length).toEqual(1);
 
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
     drawIdsToAdd: ['draw3'],
