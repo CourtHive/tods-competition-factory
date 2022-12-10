@@ -58,6 +58,7 @@ function allDrawMatchUps(params) {
 const queryGovernor = {
   allPlayoffPositionsFilled,
   isCompletedStructure,
+  getAllStructureMatchUps,
   getStructureMatchUps,
   allStructureMatchUps,
   allDrawMatchUps,
