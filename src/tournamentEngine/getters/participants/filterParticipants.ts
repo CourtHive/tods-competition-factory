@@ -19,9 +19,11 @@ type FilterParticipantsArgs = {
 export function filterParticipants({
   participantFilters = {},
   tournamentRecord,
-  participants,
+  participants = [],
 }: FilterParticipantsArgs): Participant[] {
-  if (!Object.keys(participantFilters).length) return participants;
+  if (!Object.keys(participantFilters).length) {
+    return participants;
+  }
 
   const {
     accessorValues,
