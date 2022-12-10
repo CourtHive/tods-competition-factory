@@ -58,9 +58,10 @@ export function getValidLuckyLosersAction({
 
   const availableLuckyLoserParticipantIds = [];
 
-  let relevantLinks = drawDefinition.links?.filter(
-    (link) => link.target?.structureId === structure.structureId
-  );
+  let relevantLinks =
+    drawDefinition.links?.filter(
+      (link) => link.target?.structureId === structure.structureId
+    ) || [];
 
   for (const relevantLink of relevantLinks) {
     const sourceStructureId = relevantLink?.source?.structureId;
