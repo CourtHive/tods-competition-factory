@@ -553,7 +553,7 @@ it('can filter out unPublished draws when publishing event', () => {
   expect(result.success).toEqual(true);
 });
 
-it.only('can add or remove drawIds from a published event', () => {
+it('can add or remove drawIds from a published event', () => {
   const eventId = 'event1';
   const eventProfiles = [
     {
