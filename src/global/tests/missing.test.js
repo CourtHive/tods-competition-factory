@@ -6,6 +6,7 @@ import scaleEngineAsync from '../../scaleEngine/async';
 import scaleEngineSync from '../../scaleEngine/sync';
 import drawEngineAsync from '../../drawEngine/async';
 import drawEngineSync from '../../drawEngine/sync';
+import { expect } from 'vitest';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 const asyncTournamentEngine = tournamentEngineAsync(true);
@@ -77,12 +78,15 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
           'generateDrawDefinition',
           'newTournamentRecord',
           'getAppliedPolicies',
+          'filterParticipants',
           'setTournamentId',
           'devContext',
           'reset',
         ].includes(method);
         if (!onList) console.log({ method, result });
         expect(onList).toEqual(true);
+      } else if (Array.isArray(result)) {
+        expect(result.length).toEqual(0); // filtering with no values returns no results
       } else {
         if (!result.error) console.log({ method, result });
         expect(result.error).not.toBeUndefined();
