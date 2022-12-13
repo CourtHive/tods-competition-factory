@@ -306,8 +306,11 @@ export function matchUpActions({
     },
   };
   if (isInComplete) {
-    // TODO: method & info
-    validActions.push({ type: SCHEDULE, payload: { matchUpId } });
+    validActions.push({
+      type: SCHEDULE,
+      method: SCHEDULE_METHOD,
+      payload: { drawId, matchUpId, schedule: {} },
+    });
   }
   if (readyToScore) validActions.push(addPenaltyAction);
   if (isInComplete && readyToScore) validActions.push({ type: STATUS });
@@ -326,7 +329,7 @@ export function matchUpActions({
     };
     validActions.push({
       type: SCORE,
-      method: SCHEDULE_METHOD,
+      method: SCHEDULE_METHOD, // setMatchUpStatus
       info: 'set outcome and winningSide',
       payload,
     });
