@@ -54,8 +54,8 @@ export function generateFMLC({
     const participantId = participants[i].participantId;
     drawEngine.assignSeed({
       structureId: mainStructureId,
-      seedNumber,
       participantId,
+      seedNumber,
     });
   });
 

@@ -76,6 +76,7 @@ export function assignSeedPositions(params) {
   for (const assignment of updatedAssignments) {
     const result = assignSeed({
       ...assignment,
+      tournamentRecord,
       drawDefinition,
       seedingProfile,
       structureId,
