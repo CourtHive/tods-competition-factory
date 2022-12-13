@@ -1982,8 +1982,8 @@ Returns the Range of finishing positions possible for all participantIds within 
 
 ```js
 const idMap = tournamentEngine.getParticipantIdFinishingPositions({
-  drawId,
   byeAdvancements, // optional boolean - whether or not to consider byeAdvancements
+  drawId,
 });
 
 const { relevantMatchUps, finishingPositionRanges, finishingPositionRange } =

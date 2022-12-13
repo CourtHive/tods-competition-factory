@@ -1,6 +1,8 @@
 import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
 import { generateRange } from '../../utilities';
 
+import { MISSING_MATCHUPS } from '../../constants/errorConditionConstants';
+
 export function addFinishingRounds({
   finishingPositionOffset = 0,
   finishingPositionLimit,
@@ -11,7 +13,17 @@ export function addFinishingRounds({
   lucky,
   fmlc,
 }) {
+  if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
   const { roundProfile, roundNumbers } = getRoundMatchUps({ matchUps });
+
+  if (!roundsCount) {
+    const maxRoundNumber = matchUps?.reduce(
+      (matchUp, roundNumber) =>
+        matchUp.roundNumber > roundNumber ? matchUp.roundNumber : roundNumber,
+      0
+    );
+    roundsCount = maxRoundNumber;
+  }
 
   // array of # of matchUps (value) for eaach round (index)
   const roundMatchUpsCountArray = Object.values(roundProfile).map(
