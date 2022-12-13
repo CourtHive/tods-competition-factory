@@ -114,6 +114,7 @@ export function prepareStage({
       .forEach((seededParticipant) => {
         const { participantId, seedNumber, seedValue } = seededParticipant;
         assignSeed({
+          tournamentRecord,
           drawDefinition,
           seedingProfile,
           participantId,
@@ -175,6 +176,7 @@ export function prepareStage({
           const seedValue =
             seedAssignmentProfile?.[seedNumber] || scaleValue || seedNumber;
           assignSeed({
+            tournamentRecord,
             drawDefinition,
             seedingProfile,
             participantId,
