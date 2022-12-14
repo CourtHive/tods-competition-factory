@@ -16,15 +16,15 @@ export function getOrderedDrawPositionPairs({ structureId } = {}) {
   });
   const orderedPairs = matchUps
     .map(({ roundNumber, roundPosition, drawPositions }) => ({
-      roundNumber,
       roundPosition,
       drawPositions,
+      roundNumber,
     }))
     .sort(matchUpSort)
     .map(({ drawPositions }) => drawPositions?.sort((a, b) => a - b));
 
   const filteredOrderedPairs =
-    orderedPairs && orderedPairs.map((pair) => pair && pair.filter(Boolean));
+    orderedPairs && orderedPairs.map((pair) => pair?.filter(Boolean));
   return { filteredOrderedPairs, orderedPairs, matchUps };
 }
 

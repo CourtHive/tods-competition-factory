@@ -1,9 +1,18 @@
-import { setSubscriptions } from '../../../global/state/globalState';
+import { rgbColors } from '../../../global/functions/logColors';
 import { makeDeepCopy } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import diff from 'variable-diff';
 import chalk from 'chalk';
+import {
+  setDevContext,
+  setSubscriptions,
+} from '../../../global/state/globalState';
+import {
+  printGlobalLog,
+  purgeGlobalLog,
+  pushGlobalLog,
+} from '../../../global/functions/globalLog';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
@@ -12,14 +21,8 @@ import {
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
 
-export const rgbColors = {
-  gold: [255, 215, 0],
-  pink: [233, 36, 116],
-  lime: [0, 255, 0],
-  orange: [255, 140, 0],
-  springGreen: [0, 255, 127],
-  tomato: [255, 99, 71],
-};
+const debug = false;
+const debugLog = debug ? console.log : () => {};
 
 let matchUpNotifications = [];
 let notificationsCounter = 0;
@@ -31,15 +34,17 @@ const subscriptions = {
 };
 setSubscriptions({ subscriptions });
 
-const snapshots = {};
 const separator = '------------------------------------------------';
+let snapshots = {};
 
-function snapshot({ name, compare, notifications, log }) {
+function snapshot({ name, compare, notifications, log, reset }) {
   let matchUps;
 
+  if (reset) snapshots = {};
+
   if (log && compare) {
-    console.log(chalk.rgb(...rgbColors.pink)('\r\n', separator));
-    console.log(
+    debugLog(chalk.rgb(...rgbColors.pink)('\r\n', separator));
+    debugLog(
       chalk.yellowBright(
         'comparing',
         chalk.cyan(compare),
@@ -47,7 +52,7 @@ function snapshot({ name, compare, notifications, log }) {
         chalk.greenBright(name)
       )
     );
-    console.log(chalk.rgb(...rgbColors.pink)(separator, '\r\n'));
+    debugLog(chalk.rgb(...rgbColors.pink)(separator, '\r\n'));
   }
 
   if (!snapshots[name]) {
@@ -106,24 +111,24 @@ function snapshot({ name, compare, notifications, log }) {
   if (log && comparison) {
     comparison.map(({ matchUpId, text }) => {
       if (missingNotifications?.includes(matchUpId)) {
-        console.log(
+        debugLog(
           chalk.blueBright(
             'matchUpId',
             chalk.rgb(...rgbColors.tomato)(matchUpId)
           )
         );
       } else {
-        console.log(chalk.blueBright('matchUpId', chalk.cyan(matchUpId)));
+        debugLog(chalk.blueBright('matchUpId', chalk.cyan(matchUpId)));
       }
-      console.log(text);
+      debugLog(text);
       const context = notificationMap?.[matchUpId]?.context;
-      if (context) console.log(chalk.black.bgCyan('context', context, '\r\n'));
+      if (context) debugLog(chalk.black.bgCyan('context', context, '\r\n'));
     });
     if (excessNotifications?.length) {
-      console.log(chalk.yellow('excessNotifications:', excessNotifications));
+      debugLog(chalk.yellow('excessNotifications:', excessNotifications));
     }
     if (missingNotifications?.length) {
-      console.log(
+      debugLog(
         chalk.red(
           'missingNotifications:',
           chalk.rgb(...rgbColors.tomato)(missingNotifications)
@@ -153,10 +158,6 @@ function findTarget({ drawId }) {
   const mainFirstRound = mainStructureMatchUps.filter(
     ({ roundNumber }) => roundNumber === 1
   );
-  const mainFirstRoundByesCount = mainFirstRound.filter(
-    ({ matchUpStatus }) => matchUpStatus === BYE
-  ).length;
-  expect(mainFirstRoundByesCount).toEqual(15); // out of 16 first round matchUps;
 
   // targetMatchUp is the matchUp with a BYE which is paired with matchUp which is TO_BE_PLAYED in { roundNumber: 2 }
   const firstRoundNoBye = mainFirstRound.find(
@@ -181,81 +182,122 @@ function findTarget({ drawId }) {
   return { drawPosition, structureId: mainStructure.structureId };
 }
 
-it('triggers all expected events', () => {
-  const drawProfiles = [
-    {
+const scenarios = [
+  {
+    drawProfile: {
       drawType: FEED_IN_CHAMPIONSHIP,
       participantsCount: 17,
       drawSize: 32,
     },
-  ];
-  const {
-    tournamentRecord,
-    drawIds: [drawId],
-  } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
-  });
+    expectations: { notificationsCount: 4 },
+  },
+  {
+    drawProfile: {
+      drawType: FEED_IN_CHAMPIONSHIP,
+      participantsCount: 22,
+      drawSize: 32,
+    },
+    expectations: { notificationsCount: 4 },
+  },
+  {
+    drawProfile: {
+      drawType: FEED_IN_CHAMPIONSHIP,
+      participantsCount: 31,
+      drawSize: 32,
+    },
+    expectations: { notificationsCount: 4 },
+  },
+];
 
-  tournamentEngine.setState(tournamentRecord);
+it.each(scenarios)(
+  'triggers all expected events',
+  ({ drawProfile, expectations }) => {
+    purgeGlobalLog();
+    const drawProfiles = [drawProfile];
+    const {
+      tournamentRecord,
+      drawIds: [drawId],
+    } = mocksEngine.generateTournamentRecord({
+      drawProfiles,
+    });
 
-  matchUpNotifications = [];
-  notificationsCounter = 0;
+    tournamentEngine.setState(tournamentRecord);
 
-  let result = snapshot({ name: 'start' });
-  let matchUps = result.matchUps;
-  expect(matchUps.length).toEqual(61);
+    setDevContext(false);
+    pushGlobalLog({ method: 'Undo', color: 'brightwhite' });
+    matchUpNotifications = [];
+    notificationsCounter = 0;
 
-  const { drawPosition, structureId } = findTarget({ drawId });
+    let result = snapshot({ reset: true, name: 'start' });
+    let matchUps = result.matchUps;
 
-  result = tournamentEngine.positionActions({
-    drawPosition,
-    structureId,
-    drawId,
-  });
-  expect(result.isByePosition).toEqual(true);
-  let alternateOption = result.validActions.find(
-    ({ type }) => type === ALTERNATE
-  );
-  let { method, payload, availableAlternatesParticipantIds } = alternateOption;
-  const alternateParticipantId = availableAlternatesParticipantIds[0];
-  Object.assign(payload, { alternateParticipantId });
-  result = tournamentEngine[method](payload);
-  expect(result.success).toEqual(true);
+    expect(matchUps.length).toEqual(61);
 
-  // check notifications
-  expect(notificationsCounter).toEqual(1);
-  expect(matchUpNotifications.length).toEqual(6);
+    const { drawPosition, structureId } = findTarget({ drawId });
 
-  let { comparison, excessNotifications, missingNotifications } = snapshot({
-    notifications: matchUpNotifications,
-    name: 'alternatePlaced',
-    compare: 'start',
-    log: true,
-  });
+    result = tournamentEngine.positionActions({
+      drawPosition,
+      structureId,
+      drawId,
+    });
+    expect(result.isByePosition).toEqual(true);
+    let alternateOption = result.validActions.find(
+      ({ type }) => type === ALTERNATE
+    );
+    let { method, payload, availableAlternatesParticipantIds } =
+      alternateOption;
+    const alternateParticipantId = availableAlternatesParticipantIds[0];
+    Object.assign(payload, { alternateParticipantId });
 
-  matchUpNotifications = [];
-  result = tournamentEngine.positionActions({
-    drawPosition,
-    structureId,
-    drawId,
-  });
-  let byeOption = result.validActions.find(({ type }) => type === BYE);
-  ({ method, payload } = byeOption);
-  result = tournamentEngine[method](payload);
-  expect(result.success).toEqual(true);
+    pushGlobalLog({ method: 'Assign Alternate', color: 'brightmagenta' });
+    result = tournamentEngine[method](payload);
+    expect(result.success).toEqual(true);
 
-  ({ comparison, excessNotifications, missingNotifications } = snapshot({
-    notifications: matchUpNotifications,
-    compare: 'alternatePlaced',
-    name: 'byeRestored',
-    log: true,
-  }));
+    // check notifications
+    expect(notificationsCounter).toEqual(1);
+    expect(matchUpNotifications.length).toEqual(
+      expectations.notificationsCount
+    );
 
-  ({ comparison, excessNotifications, missingNotifications } = snapshot({
-    compare: 'start',
-    name: 'byeRestored',
-    log: true,
-  }));
+    let { comparison, excessNotifications, missingNotifications } = snapshot({
+      notifications: matchUpNotifications,
+      name: 'alternatePlaced',
+      compare: 'start',
+      log: true,
+    });
 
-  comparison && excessNotifications && missingNotifications;
-});
+    matchUpNotifications = [];
+    result = tournamentEngine.positionActions({
+      drawPosition,
+      structureId,
+      drawId,
+    });
+    let byeOption = result.validActions.find(({ type }) => type === BYE);
+    ({ method, payload } = byeOption);
+
+    pushGlobalLog({ method: 'Assign Bye', color: 'brightmagenta' });
+    result = tournamentEngine[method](payload);
+    expect(result.success).toEqual(true);
+
+    expect(matchUpNotifications.length).toEqual(
+      expectations.notificationsCount
+    );
+
+    ({ comparison, excessNotifications, missingNotifications } = snapshot({
+      notifications: matchUpNotifications,
+      compare: 'alternatePlaced',
+      name: 'byeRestored',
+      log: true,
+    }));
+
+    ({ comparison, excessNotifications, missingNotifications } = snapshot({
+      compare: 'start',
+      name: 'byeRestored',
+      log: true,
+    }));
+
+    printGlobalLog();
+
+    comparison && excessNotifications && missingNotifications;
+  }
+);

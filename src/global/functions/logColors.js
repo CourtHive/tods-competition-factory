@@ -20,6 +20,15 @@ export const logColors = {
   brightwhite: '\x1b[97m',
 };
 
+export const rgbColors = {
+  gold: [255, 215, 0],
+  pink: [233, 36, 116],
+  lime: [0, 255, 0],
+  orange: [255, 140, 0],
+  springGreen: [0, 255, 127],
+  tomato: [255, 99, 71],
+};
+
 /*
 const rgbToHex = (rgb) =>
   rgb.reduce((accum, colorVal) => {

@@ -4,6 +4,7 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { pushGlobalLog } from '../../../global/functions/globalLog';
 import { findStructure } from '../../getters/findStructure';
 import { positionTargets } from './positionTargets';
 import { overlap } from '../../../utilities';
@@ -12,6 +13,7 @@ import {
   structureAssignedDrawPositions,
 } from '../../getters/positionsGetter';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   CONTAINER,
   DRAW,
@@ -67,7 +69,7 @@ export function drawPositionRemovals({
       matchUpsMap,
       structure,
     });
-    return { drawPositionCleared };
+    return { drawPositionCleared, ...SUCCESS };
   }
 
   const matchUpFilters = { isCollectionMatchUp: false };
@@ -245,7 +247,11 @@ function removeDrawPosition({
   structure,
   event,
 }) {
-  const stack = 'removeDrawposition';
+  const stack = 'removeDrawPosition';
+  const initialDrawPositions = targetMatchUp.drawPositions.slice();
+  const initialMatchUpStatus = targetMatchUp.matchUpStatus;
+  const initialWinningSide = targetMatchUp.winningSide;
+
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
   const mappedMatchUps = matchUpsMap.mappedMatchUps;
   const matchUps = mappedMatchUps[structure.structureId].matchUps;
@@ -281,7 +287,7 @@ function removeDrawPosition({
         tournamentId: tournamentRecord?.tournamentId,
         eventId: event?.eventId,
         matchUp: targetMatchUp,
-        context: stack,
+        context: `${stack}-TEAM`,
         drawDefinition,
       });
     }
@@ -311,11 +317,15 @@ function removeDrawPosition({
     (assignment) => assignment.bye
   ).length;
 
-  targetMatchUp.matchUpStatus = matchUpContainsBye
+  const newMatchUpStatus = matchUpContainsBye
     ? BYE
     : [DEFAULTED, WALKOVER].includes(targetMatchUp.matchUpStatus)
     ? targetMatchUp.matcHUpStatus
-    : TO_BE_PLAYED;
+    : targetMatchUp.drawPositions.length === 2
+    ? TO_BE_PLAYED
+    : undefined;
+
+  targetMatchUp.matchUpStatus = newMatchUpStatus;
 
   // if the matchUpStatus is WALKOVER then it is DOUBLE_WALKOVER produced
   // if the matchUpStatus is DEFAULTED then it is DOUBLE_DEFAULT produced
@@ -323,13 +333,31 @@ function removeDrawPosition({
   if ([WALKOVER, DEFAULTED].includes(targetMatchUp.matchUpStatus))
     targetMatchUp.winningSide = undefined;
 
-  modifyMatchUpNotice({
-    tournamentId: tournamentRecord?.tournamentId,
-    eventId: event?.eventId,
-    matchUp: targetMatchUp,
-    context: stack,
-    drawDefinition,
-  });
+  const removedDrawPosition = initialDrawPositions.find(
+    (position) => !targetMatchUp.drawPositions.includes(position)
+  );
+  const noChange =
+    initialDrawPositions.includes(drawPosition) &&
+    initialMatchUpStatus === targetMatchUp.matchUpStatus &&
+    initialWinningSide === targetMatchUp.winningSide;
+
+  if (!noChange) {
+    if (removedDrawPosition) {
+      pushGlobalLog({
+        method: stack,
+        color: 'brightyellow',
+        removedDrawPosition,
+      });
+    }
+
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      eventId: event?.eventId,
+      matchUp: targetMatchUp,
+      context: `${stack}-${drawPosition}`,
+      drawDefinition,
+    });
+  }
 
   if (
     loserMatchUp &&
@@ -365,8 +393,15 @@ function removeDrawPosition({
           drawPosition: loserMatchUpDrawPosition,
           matchUps: loserStructureMatchUps,
         });
-        // if clearing a drawPosition from a feed round the initialRoundNumber for the drawPosition must equal the roundNumber
-        if (initialRoundNumber === roundNumber) {
+
+        // if clearing a drawPosition from a feed round the initialRoundNumber for the drawPosition must be { roundNumber: 1 }
+        if (initialRoundNumber === 1) {
+          pushGlobalLog({
+            method: stack,
+            color: 'brightyellow',
+            loserMatchUpDrawPosition,
+          });
+
           drawPositionRemovals({
             structureId: loserMatchUp.structureId,
             drawPosition: loserMatchUpDrawPosition,
@@ -397,4 +432,6 @@ function removeDrawPosition({
         winnerTargetLink,
       });
   }
+
+  return { ...SUCCESS };
 }
