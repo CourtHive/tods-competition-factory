@@ -84,6 +84,8 @@ function removeDrawPosition({
   matchUp,
   event,
 }) {
+  const stack = 'removeDrawPosition';
+
   if (dualMatchUp) {
     // remove propagated lineUp
     const inContextMatchUp = inContextDrawMatchUps.find(
@@ -136,6 +138,7 @@ function removeDrawPosition({
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
     eventId: event?.eventId,
+    context: stack,
     drawDefinition,
     matchUp,
   });

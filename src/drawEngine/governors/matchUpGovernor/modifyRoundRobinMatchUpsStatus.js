@@ -32,6 +32,7 @@ export function modifyRoundRobinMatchUpsStatus({
       Object.assign(matchUp, { matchUpStatus });
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
+        context: 'modifyRoundRobinMatchUpsStatus',
         eventId: event?.eventId,
         drawDefinition,
         matchUp,

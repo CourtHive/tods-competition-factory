@@ -30,6 +30,7 @@ export function applyLineUps({
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
   if (typeof matchUpId !== 'string') return { error: INVALID_MATCHUP };
   if (!Array.isArray(lineUps)) return { error: INVALID_VALUES, lineUps };
+  const stack = 'applyLineUps';
 
   const tournamentParticipants = tournamentRecord.participants || [];
   let result = findMatchUp({
@@ -186,6 +187,7 @@ export function applyLineUps({
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    context: stack,
     drawDefinition,
     matchUp,
   });

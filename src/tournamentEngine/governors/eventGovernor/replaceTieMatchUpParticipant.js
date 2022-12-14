@@ -22,6 +22,7 @@ import {
 export function replaceTieMatchUpParticipantId(params) {
   const matchUpContext = getTieMatchUpContext(params);
   if (matchUpContext.error) return matchUpContext;
+  const stack = 'replaceTieMatchUpParticipantid';
 
   const {
     existingParticipantId,
@@ -244,6 +245,7 @@ export function replaceTieMatchUpParticipantId(params) {
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
     matchUp: dualMatchUp,
+    context: stack,
     drawDefinition,
   });
 

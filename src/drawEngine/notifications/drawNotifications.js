@@ -73,6 +73,7 @@ export function modifyMatchUpNotice({
   drawDefinition,
   tournamentId,
   structureId,
+  context,
   eventId,
   matchUp,
 }) {
@@ -89,7 +90,7 @@ export function modifyMatchUpNotice({
     });
   addNotice({
     topic: MODIFY_MATCHUP,
-    payload: { matchUp, tournamentId },
+    payload: { matchUp, tournamentId, context },
     key: matchUp.matchUpId,
   });
 }

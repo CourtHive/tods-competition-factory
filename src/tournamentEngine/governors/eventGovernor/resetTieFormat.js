@@ -34,6 +34,7 @@ export function resetTieFormat({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
+  const stack = 'resetTieFormat';
 
   let result = findMatchUp({
     tournamentRecord,
@@ -125,6 +126,7 @@ export function resetTieFormat({
     tournamentId: tournamentRecord?.tournamentId,
     structureId: structure.structureId,
     eventId: event.eventId,
+    context: stack,
     drawDefinition,
     matchUp,
   });

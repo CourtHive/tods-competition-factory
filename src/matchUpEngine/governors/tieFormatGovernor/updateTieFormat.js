@@ -100,6 +100,7 @@ export function updateTieFormat({
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       eventId: event?.eventId,
+      context: stack,
       drawDefinition,
       matchUp,
     });
@@ -186,6 +187,7 @@ export function updateTieFormat({
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,
           drawDefinition,
+          context: stack,
           eventId,
           matchUp,
         });

@@ -36,6 +36,7 @@ export function setMatchUpFormat({
   drawIds,
   stages,
   drawId,
+  event,
   force, // strip matchUpFormat from scoped matchUps which have not been scored
 }) {
   const stack = 'setMatchUpFormat';
@@ -129,6 +130,7 @@ export function setMatchUpFormat({
             modifyMatchUpNotice({
               tournamentId: tournamentRecord?.tournamentId,
               eventId: event?.eventId,
+              context: stack,
               drawDefinition,
               matchUp,
             });

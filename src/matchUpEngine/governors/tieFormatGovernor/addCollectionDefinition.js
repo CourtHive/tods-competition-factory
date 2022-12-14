@@ -147,6 +147,7 @@ export function addCollectionDefinition({
       tournamentRecord,
       drawDefinition,
       addedMatchUps,
+      stack,
     });
   } else if (structureId && structure) {
     structure.tieFormat = prunedTieFormat;
@@ -166,6 +167,7 @@ export function addCollectionDefinition({
       tournamentRecord,
       drawDefinition,
       addedMatchUps,
+      stack,
     });
   } else if (matchUpId && matchUp) {
     if (!validUpdate({ matchUp, updateInProgressMatchUps }))
@@ -187,6 +189,7 @@ export function addCollectionDefinition({
       tournamentRecord,
       drawDefinition,
       addedMatchUps,
+      stack,
     });
   } else if (drawDefinition) {
     // all team matchUps in the drawDefinition which do not have tieFormats and where strucures do not have tieFormats should have matchUps added
@@ -211,6 +214,7 @@ export function addCollectionDefinition({
       tournamentRecord,
       drawDefinition,
       addedMatchUps,
+      stack,
     });
   } else {
     return { error: MISSING_DRAW_DEFINITION };
@@ -275,6 +279,7 @@ function queueNoficiations({
   drawDefinition,
   addedMatchUps,
   eventId,
+  stack,
 }) {
   addMatchUpsNotice({
     tournamentId: tournamentRecord?.tournamentId,
@@ -286,6 +291,7 @@ function queueNoficiations({
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       drawDefinition,
+      context: stack,
       matchUp,
       eventId,
     });

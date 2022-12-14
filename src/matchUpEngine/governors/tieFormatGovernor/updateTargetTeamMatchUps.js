@@ -33,6 +33,7 @@ export function updateTargetTeamMatchUps({
     if (hasTieFormat && !scoreUpdated) {
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
+        context: 'updateTargetTeamMatchUps',
         eventId: event?.eventId,
         matchUp: targetMatchUp,
         drawDefinition,

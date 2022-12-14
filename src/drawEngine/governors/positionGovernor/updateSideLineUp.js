@@ -51,6 +51,7 @@ export function updateSideLineUp({
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    context: 'updateSidLineUps',
     eventId: event?.eventId,
     drawDefinition,
     matchUp,

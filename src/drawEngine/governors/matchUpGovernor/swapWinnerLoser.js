@@ -28,6 +28,8 @@ export function swapWinnerLoser(params) {
     participantId: existingLoserParticipantId,
   } = existingLoserSide;
 
+  const stack = 'swapWinnerLoser';
+
   const { matchUps } = getAllStructureMatchUps(params);
   const existingWinnerSubsequentMatchUps = matchUps.filter(
     ({ drawPositions, roundNumber }) =>
@@ -49,6 +51,7 @@ export function swapWinnerLoser(params) {
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       eventId: params.event?.eventId,
+      context: stack,
       drawDefinition,
       matchUp,
     });

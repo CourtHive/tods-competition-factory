@@ -226,6 +226,7 @@ export function removeCollectionDefinition({
       tournamentId: tournamentRecord?.tournamentId,
       eventId: event?.eventId,
       drawDefinition,
+      context: stack,
       matchUp,
     });
   }

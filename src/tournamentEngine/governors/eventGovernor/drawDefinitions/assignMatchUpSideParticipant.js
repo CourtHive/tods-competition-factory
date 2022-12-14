@@ -82,6 +82,7 @@ export function assignMatchUpSideParticipant({
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    context: 'assignSideParticipant',
     drawDefinition,
     matchUp,
   });

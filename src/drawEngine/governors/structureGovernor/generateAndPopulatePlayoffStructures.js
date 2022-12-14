@@ -39,6 +39,7 @@ import {
  */
 export function generateAndPopulatePlayoffStructures(params) {
   if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  const stack = 'genPlayoffStructure';
 
   const {
     playoffRoundsRanges: availablePlayoffRoundsRanges,
@@ -259,6 +260,7 @@ export function generateAndPopulatePlayoffStructures(params) {
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,
           eventId: params.event?.eventId,
+          context: stack,
           drawDefinition,
           matchUp,
         });
@@ -268,6 +270,7 @@ export function generateAndPopulatePlayoffStructures(params) {
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,
           eventId: params.event?.eventId,
+          context: stack,
           drawDefinition,
           matchUp,
         });
