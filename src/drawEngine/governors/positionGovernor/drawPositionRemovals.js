@@ -245,6 +245,7 @@ function removeDrawPosition({
   structure,
   event,
 }) {
+  const stack = 'removeDrawposition';
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
   const mappedMatchUps = matchUpsMap.mappedMatchUps;
   const matchUps = mappedMatchUps[structure.structureId].matchUps;
@@ -280,6 +281,7 @@ function removeDrawPosition({
         tournamentId: tournamentRecord?.tournamentId,
         eventId: event?.eventId,
         matchUp: targetMatchUp,
+        context: stack,
         drawDefinition,
       });
     }
@@ -325,6 +327,7 @@ function removeDrawPosition({
     tournamentId: tournamentRecord?.tournamentId,
     eventId: event?.eventId,
     matchUp: targetMatchUp,
+    context: stack,
     drawDefinition,
   });
 

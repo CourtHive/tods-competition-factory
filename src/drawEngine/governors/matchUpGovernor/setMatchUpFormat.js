@@ -30,6 +30,7 @@ export function setMatchUpFormat(params) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
   if (!isValid(matchUpFormat)) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
+  const stack = 'setMatchUpFormat';
 
   if (matchUpId) {
     const { matchUp, error } = findMatchUp({
@@ -48,6 +49,7 @@ export function setMatchUpFormat(params) {
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       eventId: event?.eventId,
+      context: stack,
       drawDefinition,
       matchUp,
     });

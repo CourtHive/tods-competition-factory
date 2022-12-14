@@ -25,6 +25,7 @@ import {
 
 export function removeTieMatchUpParticipantId(params) {
   const { tournamentRecord, drawDefinition, participantId } = params;
+  const stack = 'removeTieMatchUpParticiapantId';
 
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
@@ -226,6 +227,7 @@ export function removeTieMatchUpParticipantId(params) {
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
     matchUp: dualMatchUp,
+    context: stack,
     drawDefinition,
   });
 

@@ -19,3 +19,11 @@ export const logColors = {
   white: '\x1b[37m',
   brightwhite: '\x1b[97m',
 };
+
+/*
+const rgbToHex = (rgb) =>
+  rgb.reduce((accum, colorVal) => {
+    accum += colorVal.toString(16);
+    return accum;
+  }, '');
+*/

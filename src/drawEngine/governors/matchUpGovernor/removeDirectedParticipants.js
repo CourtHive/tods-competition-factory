@@ -2,6 +2,7 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { clearDrawPosition } from '../positionGovernor/positionClear';
 import { includesMatchUpStatuses } from './includesMatchUpStatuses';
 import { findStructure } from '../../getters/findStructure';
@@ -190,6 +191,7 @@ export function removeDirectedWinner({
   event,
 }) {
   const { structureId, roundNumber } = winnerMatchUp;
+  const stack = 'removeDirectedWinner';
 
   if (winnerTargetLink) {
     const structureId = winnerTargetLink.target.structureId;
@@ -247,6 +249,7 @@ export function removeDirectedWinner({
       tournamentId: tournamentRecord?.tournamentId,
       eventId: event?.eventId,
       matchUp: targetMatchUp,
+      context: stack,
       drawDefinition,
     });
   }
@@ -265,7 +268,7 @@ export function removeDirectedWinner({
     structureId,
   });
 
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
 
   return { ...SUCCESS };
 }
@@ -282,6 +285,7 @@ function removeDirectedLoser({
   dualMatchUp,
   event,
 }) {
+  const stack = 'removeDirectedLoser';
   const structureId = loserTargetLink.target.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -323,6 +327,7 @@ function removeDirectedLoser({
         tournamentId: tournamentRecord?.tournamentId,
         eventId: event?.eventId,
         matchUp: targetMatchUp,
+        context: stack,
         drawDefinition,
       });
     }

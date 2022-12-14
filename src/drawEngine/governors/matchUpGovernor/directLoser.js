@@ -219,6 +219,7 @@ export function directLoser(params) {
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,
           matchUp: targetMatchUp,
+          context: stack,
           drawDefinition,
           eventId,
         });

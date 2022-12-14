@@ -262,6 +262,7 @@ function setMatchUpStatusBYE({
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    context: 'setMatchUpStatusBye',
     eventId: event?.eventId,
     drawDefinition,
     matchUp,
@@ -487,6 +488,7 @@ function advanceWinner({
     tournamentId: tournamentRecord?.tournamentId,
     matchUp: noContextWinnerMatchUp,
     eventId: event?.eventId,
+    context: stack,
     drawDefinition,
   });
 

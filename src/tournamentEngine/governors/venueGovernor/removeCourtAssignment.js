@@ -19,6 +19,7 @@ export function removeCourtAssignment({
   matchUpId,
   drawId,
 }) {
+  const stack = 'removeCourtAssignment';
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!drawDefinition && !drawId) return { error: MISSING_DRAW_ID };
 
@@ -55,6 +56,7 @@ export function removeCourtAssignment({
 
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
+        context: stack,
         drawDefinition,
         matchUp,
       });

@@ -194,6 +194,7 @@ export function assignTieMatchUpParticipantId(params) {
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
         matchUp: dualMatchUp,
+        context: stack,
         drawDefinition,
       });
     } else if (participantType === PAIR) {
@@ -226,6 +227,7 @@ export function assignTieMatchUpParticipantId(params) {
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
     matchUp: dualMatchUp,
+    context: stack,
     drawDefinition,
   });
 

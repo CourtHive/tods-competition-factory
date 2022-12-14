@@ -32,6 +32,7 @@ export function clearMatchUpSchedule({
   drawDefinition,
   matchUpId,
 }) {
+  const stack = 'clearMatchUpSchedule';
   const matchUp = drawDefinition
     ? allDrawMatchUps({
         matchUpFilters: { matchUpIds: [matchUpId] },
@@ -53,6 +54,7 @@ export function clearMatchUpSchedule({
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord.tournamentId,
+    context: stack,
     drawDefinition,
     matchUp,
   });

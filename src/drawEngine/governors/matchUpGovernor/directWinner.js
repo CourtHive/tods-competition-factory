@@ -1,6 +1,7 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
 import { assignSeed } from '../entryGovernor/seedAssignment';
 import { findStructure } from '../../getters/findStructure';
@@ -22,6 +23,8 @@ export function directWinner({
   dualMatchUp,
   matchUpsMap,
 }) {
+  const stack = 'directWinner';
+
   if (winnerTargetLink) {
     const targetMatchUpDrawPositions = winnerMatchUp.drawPositions || [];
     const targetMatchUpDrawPosition =
@@ -112,7 +115,7 @@ export function directWinner({
         drawDefinition,
         matchUpsMap,
       });
-      if (result.error) return result;
+      if (result.error) return decorateResult({ result, stack });
     } else {
       // qualifiers do not get automatically directed
       if (structure.stage !== QUALIFYING) {
@@ -194,6 +197,7 @@ export function directWinner({
           tournamentId: tournamentRecord?.tournamentId,
           eventId: winnerMatchUp?.eventId,
           matchUp: targetMatchUp,
+          context: stack,
           drawDefinition,
         });
       }

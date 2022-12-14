@@ -32,6 +32,7 @@ export function cleanupLineUps({
 
           modifyMatchUpNotice({
             tournamentId: tournamentRecord?.tournamentId,
+            context: 'cleanupLineUps',
             eventId: event?.eventId,
             drawDefinition,
             matchUp,

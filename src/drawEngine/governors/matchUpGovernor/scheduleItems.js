@@ -173,10 +173,12 @@ export function addMatchUpScheduleItems({
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       eventId: event?.eventId,
+      context: stack,
       drawDefinition,
       matchUp,
     });
   }
+
   return { ...SUCCESS };
 }
 

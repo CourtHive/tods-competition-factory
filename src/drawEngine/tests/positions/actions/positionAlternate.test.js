@@ -43,9 +43,9 @@ it('can generate drawSize: 8 with 6 participants', () => {
 
   const { structureId, drawPositions } = upcomingMatchUps[0];
   let result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition: drawPositions[0],
+    structureId,
+    drawId,
   });
   expect(result.isActiveDrawPosition).toEqual(false);
   expect(result.isDrawPosition).toEqual(true);

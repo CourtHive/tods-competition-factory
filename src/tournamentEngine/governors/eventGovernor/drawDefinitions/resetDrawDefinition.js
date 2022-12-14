@@ -105,6 +105,7 @@ export function resetDrawDefinition({
 
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,
+        context: 'resetDrawDefiniton',
         drawDefinition,
         matchUp,
       });

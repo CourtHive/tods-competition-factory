@@ -3,6 +3,7 @@ import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/sc
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
 import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
@@ -49,6 +50,7 @@ export function modifyMatchUpScore({
   notes,
   score,
 }) {
+  const stack = 'modifyMatchUpScore';
   let structure;
 
   const isDualMatchUp = matchUp.matchUpType === TEAM;
@@ -131,7 +133,7 @@ export function modifyMatchUpScore({
       matchUps,
       event,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
   const winningSideChanged = winningSide !== matchUp.winningSide;
@@ -147,12 +149,13 @@ export function modifyMatchUpScore({
 
   if (notes) {
     const result = addNotes({ element: matchUp, notes });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
     eventId: event?.eventId,
+    context: stack,
     drawDefinition,
     matchUp,
   });
