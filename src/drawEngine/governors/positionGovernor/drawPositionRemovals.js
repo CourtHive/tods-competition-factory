@@ -245,7 +245,11 @@ function removeDrawPosition({
   structure,
   event,
 }) {
-  const stack = 'removeDrawposition';
+  const stack = 'removeDrawPosition';
+  const initialDrawPositions = targetMatchUp.drawPositions.slice();
+  const initialMatchUpStatus = targetMatchUp.matchUpStatus;
+  const initialWinningSide = targetMatchUp.winningSide;
+
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
   const mappedMatchUps = matchUpsMap.mappedMatchUps;
   const matchUps = mappedMatchUps[structure.structureId].matchUps;
@@ -281,7 +285,7 @@ function removeDrawPosition({
         tournamentId: tournamentRecord?.tournamentId,
         eventId: event?.eventId,
         matchUp: targetMatchUp,
-        context: stack,
+        context: `${stack}-TEAM`,
         drawDefinition,
       });
     }
@@ -311,11 +315,15 @@ function removeDrawPosition({
     (assignment) => assignment.bye
   ).length;
 
-  targetMatchUp.matchUpStatus = matchUpContainsBye
+  const newMatchUpStatus = matchUpContainsBye
     ? BYE
     : [DEFAULTED, WALKOVER].includes(targetMatchUp.matchUpStatus)
     ? targetMatchUp.matcHUpStatus
-    : TO_BE_PLAYED;
+    : targetMatchUp.drawPositions.length === 2
+    ? TO_BE_PLAYED
+    : undefined;
+
+  targetMatchUp.matchUpStatus = newMatchUpStatus;
 
   // if the matchUpStatus is WALKOVER then it is DOUBLE_WALKOVER produced
   // if the matchUpStatus is DEFAULTED then it is DOUBLE_DEFAULT produced
@@ -323,13 +331,20 @@ function removeDrawPosition({
   if ([WALKOVER, DEFAULTED].includes(targetMatchUp.matchUpStatus))
     targetMatchUp.winningSide = undefined;
 
-  modifyMatchUpNotice({
-    tournamentId: tournamentRecord?.tournamentId,
-    eventId: event?.eventId,
-    matchUp: targetMatchUp,
-    context: stack,
-    drawDefinition,
-  });
+  const noChange =
+    initialDrawPositions.includes(drawPosition) &&
+    initialMatchUpStatus === targetMatchUp.matchUpStatus &&
+    initialWinningSide === targetMatchUp.winningSide;
+
+  if (!noChange) {
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      eventId: event?.eventId,
+      matchUp: targetMatchUp,
+      context: `${stack}-${drawPosition}`,
+      drawDefinition,
+    });
+  }
 
   if (
     loserMatchUp &&
