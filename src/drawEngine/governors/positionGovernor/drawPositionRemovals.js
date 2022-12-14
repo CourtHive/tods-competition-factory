@@ -4,6 +4,7 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { pushGlobalLog } from '../../../global/functions/globalLog';
 import { findStructure } from '../../getters/findStructure';
 import { positionTargets } from './positionTargets';
 import { overlap } from '../../../utilities';
@@ -12,6 +13,7 @@ import {
   structureAssignedDrawPositions,
 } from '../../getters/positionsGetter';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   CONTAINER,
   DRAW,
@@ -67,7 +69,7 @@ export function drawPositionRemovals({
       matchUpsMap,
       structure,
     });
-    return { drawPositionCleared };
+    return { drawPositionCleared, ...SUCCESS };
   }
 
   const matchUpFilters = { isCollectionMatchUp: false };
@@ -331,12 +333,23 @@ function removeDrawPosition({
   if ([WALKOVER, DEFAULTED].includes(targetMatchUp.matchUpStatus))
     targetMatchUp.winningSide = undefined;
 
+  const removedDrawPosition = initialDrawPositions.find(
+    (position) => !targetMatchUp.drawPositions.includes(position)
+  );
   const noChange =
     initialDrawPositions.includes(drawPosition) &&
     initialMatchUpStatus === targetMatchUp.matchUpStatus &&
     initialWinningSide === targetMatchUp.winningSide;
 
   if (!noChange) {
+    if (removedDrawPosition) {
+      pushGlobalLog({
+        method: stack,
+        color: 'brightyellow',
+        removedDrawPosition,
+      });
+    }
+
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       eventId: event?.eventId,
@@ -380,8 +393,15 @@ function removeDrawPosition({
           drawPosition: loserMatchUpDrawPosition,
           matchUps: loserStructureMatchUps,
         });
-        // if clearing a drawPosition from a feed round the initialRoundNumber for the drawPosition must equal the roundNumber
-        if (initialRoundNumber === roundNumber) {
+
+        // if clearing a drawPosition from a feed round the initialRoundNumber for the drawPosition must be { roundNumber: 1 }
+        if (initialRoundNumber === 1) {
+          pushGlobalLog({
+            method: stack,
+            color: 'brightyellow',
+            loserMatchUpDrawPosition,
+          });
+
           drawPositionRemovals({
             structureId: loserMatchUp.structureId,
             drawPosition: loserMatchUpDrawPosition,
@@ -412,4 +432,6 @@ function removeDrawPosition({
         winnerTargetLink,
       });
   }
+
+  return { ...SUCCESS };
 }
