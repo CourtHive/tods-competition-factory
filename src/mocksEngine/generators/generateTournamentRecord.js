@@ -38,7 +38,6 @@ import {
  * @param {boolean} completeAllMatchUps - optional - boolean (legacy support for scoreString to apply to all matchUps)
  * @param {boolean} randomWinningSide
  * @param {boolean} autoSchedule
- * @param {boolean} inContext
  *
  */
 export function generateTournamentRecord({

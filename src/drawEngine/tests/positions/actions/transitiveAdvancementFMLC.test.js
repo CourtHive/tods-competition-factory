@@ -49,8 +49,8 @@ it('can advance participants when double BYEs are created removing 3-4', () => {
     },
   ];
   const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     inContext: true,
+    drawProfiles,
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -138,12 +138,13 @@ it('can advance participants when double BYEs are created removing 3-4', () => {
       structures: [mainStructure, consolationStructure],
     },
   } = tournamentEngine.getEvent({ drawId }));
+
   expect(filteredOrderedPairs).toEqual([
     [3, 4], // 3 and 4 are BYEs
     [5, 6], // 6 is a BYE
-    [1, 3], // 3 is BYE-advanced, 1 is BYE
+    [1, 3], // 1 is BYE-advanced, 3 is BYE
     [2, 5], // 5 is BYE-advanced
-    [3], // 3 is BYE advanced by 1 which is a BYE
+    [1], // 1 is BYE advanced by 3 which is a BYE
   ]);
   const consolationStructureAssignments = structureAssignedDrawPositions({
     structure: consolationStructure,
@@ -253,7 +254,7 @@ it('can advance participants when double BYEs are created removing 5-6', () => {
     [5, 6], // 5, 6 are BYEs
     [1, 4], // 4 is BYE-advanced; 1 is unassigned
     [2, 6], // 2 is a BYE; 6 is BYE-advanced
-    [6], // 6 is BYE advanced by 2 which is a BYE
+    [2], // 2 is BYE advanced by 6 which is a BYE
   ]);
   const consolationStructureAssignments = structureAssignedDrawPositions({
     structure: consolationStructure,
@@ -267,9 +268,9 @@ it('can advance participants when double BYEs are created removing 5-6', () => {
 it('does not remove CONSOLATION BYE if at least one source position is a BYE', () => {
   const drawProfiles = [
     {
-      drawSize: 8,
-      participantsCount: 6,
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
+      participantsCount: 6,
+      drawSize: 8,
     },
   ];
   const {
@@ -309,11 +310,12 @@ it('does not remove CONSOLATION BYE if at least one source position is a BYE', (
     [8], // drawPosition 8 is BYE-advanced
   ]);
 
+  // ACTION: remove draw position and replace with BYE
   removeAssignment({
-    drawId,
     structureId: mainStructure.structureId,
-    drawPosition: 3,
     replaceWithBye: true,
+    drawPosition: 3,
+    drawId,
   });
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
@@ -333,10 +335,11 @@ it('does not remove CONSOLATION BYE if at least one source position is a BYE', (
   }));
   expect(filteredOrderedPairs).toEqual([[3, 4], [5, 6], [1, 3], [2, 5], [1]]);
 
+  // ACTION: remove draw position do NOT replace with BYE
   removeAssignment({
-    drawId,
     structureId: mainStructure.structureId,
     drawPosition: 4,
+    drawId,
   });
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
@@ -355,6 +358,6 @@ it('does not remove CONSOLATION BYE if at least one source position is a BYE', (
     structureId: consolationStructure.structureId,
   }));
   // removing { drawPosition: 4 } from mainStructure
-  // but NOT replacing it with a BYE does NOT advance any position to the final
-  expect(filteredOrderedPairs).toEqual([[3, 4], [5, 6], [1, 3], [2, 5], []]);
+  // consolation final still has drawPosition: 1 advanced by a propagated BYE from 1-2/3-4
+  expect(filteredOrderedPairs).toEqual([[3, 4], [5, 6], [1, 3], [2, 5], [1]]);
 });

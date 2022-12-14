@@ -12,17 +12,16 @@ import { FEED_IN_CHAMPIONSHIP } from '../../../../constants/drawDefinitionConsta
 it('can remove transitive BYEs in consolation of FIC', () => {
   const drawProfiles = [
     {
-      drawSize: 8,
-      alternatesCount: 10,
-      participantsCount: 8,
       drawType: FEED_IN_CHAMPIONSHIP,
+      participantsCount: 8,
+      alternatesCount: 10,
+      drawSize: 8,
     },
   ];
   const {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    inContext: true,
     drawProfiles,
   });
 
@@ -69,8 +68,8 @@ it('can remove transitive BYEs in consolation of FIC', () => {
 
   replaceWithByes({
     drawPositions: [1, 8, 3, 2, 4, 7, 6, 5],
-    drawId,
     structureId: mainStructure.structureId,
+    drawId,
   });
 
   ({
@@ -102,7 +101,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
     [6, 7],
     [2, 4],
     [3, 7],
-    [4, 7],
+    [2, 7],
     [1, 7],
   ]);
 
@@ -154,7 +153,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
     [6, 7],
     [2, 4],
     [3, 7],
-    [4, 7],
+    [2, 7],
     [1, 7],
   ]);
 
@@ -167,7 +166,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   assignedByes = consolationStructure.positionAssignments.filter(
     ({ bye }) => bye
   );
-  expect(assignedByes.length).toEqual(6);
+  expect(assignedByes.length).toEqual(7);
 
   removeAssignment({
     drawId,
