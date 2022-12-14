@@ -1,9 +1,18 @@
-import { setSubscriptions } from '../../../global/state/globalState';
+import { rgbColors } from '../../../global/functions/logColors';
 import { makeDeepCopy } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import diff from 'variable-diff';
 import chalk from 'chalk';
+import {
+  setDevContext,
+  setSubscriptions,
+} from '../../../global/state/globalState';
+import {
+  printGlobalLog,
+  purgeGlobalLog,
+  pushGlobalLog,
+} from '../../../global/functions/globalLog';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
@@ -12,17 +21,8 @@ import {
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
 
-const debug = true;
+const debug = false;
 const debugLog = debug ? console.log : () => {};
-
-export const rgbColors = {
-  gold: [255, 215, 0],
-  pink: [233, 36, 116],
-  lime: [0, 255, 0],
-  orange: [255, 140, 0],
-  springGreen: [0, 255, 127],
-  tomato: [255, 99, 71],
-};
 
 let matchUpNotifications = [];
 let notificationsCounter = 0;
@@ -189,9 +189,16 @@ const scenarios = [
       participantsCount: 17,
       drawSize: 32,
     },
-    expectations: { notificationsCount: 5 },
+    expectations: { notificationsCount: 4 },
   },
-  /*
+  {
+    drawProfile: {
+      drawType: FEED_IN_CHAMPIONSHIP,
+      participantsCount: 22,
+      drawSize: 32,
+    },
+    expectations: { notificationsCount: 4 },
+  },
   {
     drawProfile: {
       drawType: FEED_IN_CHAMPIONSHIP,
@@ -200,12 +207,12 @@ const scenarios = [
     },
     expectations: { notificationsCount: 4 },
   },
-  */
 ];
 
 it.each(scenarios)(
   'triggers all expected events',
   ({ drawProfile, expectations }) => {
+    purgeGlobalLog();
     const drawProfiles = [drawProfile];
     const {
       tournamentRecord,
@@ -216,11 +223,14 @@ it.each(scenarios)(
 
     tournamentEngine.setState(tournamentRecord);
 
+    setDevContext(false);
+    pushGlobalLog({ method: 'Undo', color: 'brightwhite' });
     matchUpNotifications = [];
     notificationsCounter = 0;
 
     let result = snapshot({ reset: true, name: 'start' });
     let matchUps = result.matchUps;
+
     expect(matchUps.length).toEqual(61);
 
     const { drawPosition, structureId } = findTarget({ drawId });
@@ -238,6 +248,8 @@ it.each(scenarios)(
       alternateOption;
     const alternateParticipantId = availableAlternatesParticipantIds[0];
     Object.assign(payload, { alternateParticipantId });
+
+    pushGlobalLog({ method: 'Assign Alternate', color: 'brightmagenta' });
     result = tournamentEngine[method](payload);
     expect(result.success).toEqual(true);
 
@@ -262,8 +274,14 @@ it.each(scenarios)(
     });
     let byeOption = result.validActions.find(({ type }) => type === BYE);
     ({ method, payload } = byeOption);
+
+    pushGlobalLog({ method: 'Assign Bye', color: 'brightmagenta' });
     result = tournamentEngine[method](payload);
     expect(result.success).toEqual(true);
+
+    expect(matchUpNotifications.length).toEqual(
+      expectations.notificationsCount
+    );
 
     ({ comparison, excessNotifications, missingNotifications } = snapshot({
       notifications: matchUpNotifications,
@@ -277,6 +295,8 @@ it.each(scenarios)(
       name: 'byeRestored',
       log: true,
     }));
+
+    printGlobalLog();
 
     comparison && excessNotifications && missingNotifications;
   }
