@@ -7,8 +7,10 @@ import { getMatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { addPositionActionTelemetry } from '../addPositionActionTelemetry';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
+import { pushGlobalLog } from '../../../../global/functions/globalLog';
 import { findStructure } from '../../../getters/findStructure';
 import { positionTargets } from '../positionTargets';
+import { numericSort } from '../../../../utilities';
 import {
   modifyMatchUpNotice,
   modifyPositionAssignmentsNotice,
@@ -61,7 +63,6 @@ import {
  */
 
 export function assignDrawPositionBye({
-  // drawPositionIndex,
   isPositionAction,
   tournamentRecord,
   drawDefinition,
@@ -77,7 +78,9 @@ export function assignDrawPositionBye({
 
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
   if (!structureId) ({ structureId } = structure);
+
   const stack = 'assignDrawPositionBye';
+  pushGlobalLog({ method: stack, color: 'cyan', drawPosition });
 
   if (!matchUpsMap) {
     matchUpsMap = getMatchUpsMap({ drawDefinition });
@@ -300,6 +303,9 @@ export function advanceDrawPosition({
   matchUpId,
   event,
 }) {
+  const stack = 'advanceDrawPosition';
+  pushGlobalLog({ method: stack, color: 'cyan', drawPositionToAdvance });
+
   const matchUp = matchUpsMap.drawMatchUps.find(
     (matchUp) => matchUp.matchUpId === matchUpId
   );
@@ -355,6 +361,7 @@ export function advanceDrawPosition({
     loserMatchUp.structureId !== structure.structureId
   ) {
     const { roundNumber } = loserMatchUp;
+
     if (roundNumber === 1) {
       const result = assignDrawPositionBye({
         structureId: loserTargetLink.target.structureId,
@@ -447,17 +454,19 @@ function advanceWinner({
     )
     .slice(0, 2);
 
-  const drawPositions = twoDrawPositions.map((position) => {
-    if (!position && !drawPositionAssigned) {
-      drawPositionAssigned = true;
-      return drawPositionToAdvance;
-    } else if (position === drawPositionToAdvance) {
-      drawPositionAssigned = true;
-      return drawPositionToAdvance;
-    } else {
-      return position;
-    }
-  });
+  const drawPositions = twoDrawPositions
+    .map((position) => {
+      if (!position && !drawPositionAssigned) {
+        drawPositionAssigned = true;
+        return drawPositionToAdvance;
+      } else if (position === drawPositionToAdvance) {
+        drawPositionAssigned = true;
+        return drawPositionToAdvance;
+      } else {
+        return position;
+      }
+    })
+    .sort(numericSort);
 
   if (!drawPositionAssigned) {
     console.log('@@@@@@@', {
@@ -477,11 +486,24 @@ function advanceWinner({
 
   const matchUpStatus =
     drawPositionIsBye || pairedDrawPositionIsBye ? BYE : TO_BE_PLAYED;
+
   Object.assign(noContextWinnerMatchUp, {
     matchUpStatus,
     score: undefined,
     winningSide: undefined,
     drawPositions,
+  });
+
+  const changedDrawPosition = noContextWinnerMatchUp.drawPositions.find(
+    (position) => !twoDrawPositions.includes(position)
+  );
+
+  pushGlobalLog({
+    method: stack,
+    color: 'brightyellow',
+    changedDrawPosition,
+    pairedDrawPositionIsBye,
+    drawPositionIsBye,
   });
 
   modifyMatchUpNotice({
@@ -490,6 +512,16 @@ function advanceWinner({
     eventId: event?.eventId,
     context: stack,
     drawDefinition,
+  });
+
+  const {
+    targetLinks: { loserTargetLink },
+    targetMatchUps: { loserMatchUp, loserTargetDrawPosition },
+  } = positionTargets({
+    matchUpId: winnerMatchUp.matchUpId,
+    inContextDrawMatchUps,
+    drawDefinition,
+    structure,
   });
 
   if (pairedDrawPositionIsBye || drawPositionIsBye) {
@@ -507,15 +539,6 @@ function advanceWinner({
         matchUpsMap,
       });
     } else if (drawPositionIsBye) {
-      const {
-        targetLinks: { loserTargetLink },
-        targetMatchUps: { loserMatchUp, loserTargetDrawPosition },
-      } = positionTargets({
-        matchUpId: winnerMatchUp.matchUpId,
-        structure,
-        drawDefinition,
-        inContextDrawMatchUps,
-      });
       if (loserTargetLink && loserMatchUp) {
         if (loserMatchUp.feedRound) {
           assignFedDrawPositionBye({
@@ -558,6 +581,9 @@ function assignFedDrawPositionBye({
   matchUpsMap,
 }) {
   const { roundNumber } = loserMatchUp;
+
+  const stack = 'assignFedDrawPositionBye';
+  pushGlobalLog({ method: stack, color: 'cyan', loserTargetDrawPosition });
 
   const mappedMatchUps = matchUpsMap?.mappedMatchUps || {};
   const loserStructureMatchUps =
