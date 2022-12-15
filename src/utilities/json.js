@@ -25,7 +25,7 @@ import { INVALID_VALUES } from '../constants/errorConditionConstants';
 export function JSON2CSV(arrayOfJSON, config) {
   if (config && typeof config !== 'object') return INVALID_VALUES;
   const {
-    includeTransoformAccessors,
+    includeTransformAccessors,
     includeHeaderRow = true,
     onlyHeaderRow,
 
@@ -62,7 +62,7 @@ export function JSON2CSV(arrayOfJSON, config) {
     .map((obj) => flatten(obj, keyJoiner));
 
   const transformColumns = Object.values(columnTransform).flat();
-  if (includeTransoformAccessors) columnAccessors.push(...transformColumns);
+  if (includeTransformAccessors) columnAccessors.push(...transformColumns);
 
   const headerRow = flattened
     .reduce(
