@@ -177,6 +177,7 @@ export function drawPositionRemovals({
     removeDrawPosition({
       inContextDrawMatchUps,
       positionAssignments,
+      tournamentRecord,
       drawDefinition,
       targetMatchUp,
       drawPosition,
