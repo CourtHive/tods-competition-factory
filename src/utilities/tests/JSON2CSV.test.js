@@ -195,7 +195,7 @@ it('can transform singles and doubles matchUps to extract side1player1', () => {
 
   const config = {
     delimiter: '',
-    includeTransoformAccessors: true,
+    includeTransformAccessors: true,
     columnAccessors: ['matchUpType', 'matchUpFormat', 'endDate'],
     columnTransform: {
       scoreString: ['score.scoreStringSide1'],

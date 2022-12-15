@@ -160,7 +160,7 @@ export function getAllStructureMatchUps({
 
   const { roundOffset, structureId, structureName, stage, stageSequence } =
     structure;
-  const { drawId, drawName } = drawDefinition || {};
+  const { drawId, drawName, drawType } = drawDefinition || {};
 
   exitProfiles =
     exitProfiles ||
@@ -438,6 +438,7 @@ export function getAllStructureMatchUps({
         feedRound,
         roundName,
         drawName,
+        drawType,
         schedule,
         drawId,
         stage,
