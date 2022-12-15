@@ -262,7 +262,7 @@ it.each(scenarios)(
       expectations.notificationsCount
     );
 
-    let { comparison, excessNotifications, missingNotifications } = snapshot({
+    snapshot({
       notifications: matchUpNotifications,
       name: 'alternatePlaced',
       compare: 'start',
@@ -286,21 +286,19 @@ it.each(scenarios)(
       expectations.notificationsCount
     );
 
-    ({ comparison, excessNotifications, missingNotifications } = snapshot({
+    snapshot({
       notifications: matchUpNotifications,
       compare: 'alternatePlaced',
       name: 'byeRestored',
       log: true,
-    }));
+    });
 
-    ({ comparison, excessNotifications, missingNotifications } = snapshot({
+    snapshot({
       compare: 'start',
       name: 'byeRestored',
       log: true,
-    }));
+    });
 
     printGlobalLog();
-
-    comparison && excessNotifications && missingNotifications;
   }
 );
