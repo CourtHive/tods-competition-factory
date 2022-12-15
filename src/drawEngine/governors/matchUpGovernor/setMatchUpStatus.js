@@ -7,6 +7,7 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { validateScore } from '../../../global/validation/validateScore';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
+import { pushGlobalLog } from '../../../global/functions/globalLog';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
@@ -311,6 +312,13 @@ export function setMatchUpStatus(params) {
 
   const matchUpWinner =
     (winningSide && !matchUpTieId) || params.projectedWinningSide;
+
+  pushGlobalLog({
+    method: stack,
+    activeDownstream,
+    winningSide,
+    matchUpWinner,
+  });
 
   const result = (!activeDownstream && noDownstreamDependencies(params)) ||
     (matchUpWinner && winningSideWithDownstreamDependencies(params)) ||
