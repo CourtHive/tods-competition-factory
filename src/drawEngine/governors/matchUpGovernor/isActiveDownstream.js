@@ -36,7 +36,7 @@ export function isActiveDownstream(params) {
     (winnerMatchUp?.winningSide &&
       winnerDrawPositionsCount === 2 &&
       (!winnerMatchUp.feedRound ||
-        [WALKOVER, DEFAULTED].includes(winnerMatchUp?.matchUpStatus)))
+        ![WALKOVER, DEFAULTED].includes(winnerMatchUp?.matchUpStatus)))
   ) {
     return true;
   }
