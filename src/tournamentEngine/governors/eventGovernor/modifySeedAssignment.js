@@ -29,6 +29,7 @@ export function modifySeedAssignment({
   if (!participant) return { error: INVALID_PARTICIPANT_ID };
 
   return drawEngineModifySeedAssignment({
+    tournamentRecord,
     drawDefinition,
     participantId,
     structureId,
