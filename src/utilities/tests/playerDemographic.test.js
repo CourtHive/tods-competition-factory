@@ -59,7 +59,7 @@ it('can export CSV files with player demographic data', () => {
     rowJoiner,
     delimiter: '',
     includeTransformAccessors: true,
-    columnAccessors: [''],
+    columnAccessors: [],
     columnTransform: {
       personId: ['person.personId'],
       firstName: ['person.standardGivenName'],
@@ -76,12 +76,11 @@ it('can export CSV files with player demographic data', () => {
   const eventParticipants = individualParticipants.filter(
     (participant) => participant.events?.length
   );
-  // console.log(eventParticipants[0]);
   const csvParticipants = JSON2CSV(eventParticipants, config);
   const rows = csvParticipants.split(rowJoiner);
   expect(rows.length).toEqual(65);
   expect(rows[0]).toEqual(
-    'sex,birthDate,section,district,city,state,lastName,firstName,personId'
+    'city,state,personId,lastName,firstName,district,section,birthDate,sex'
   );
-  expect(rows[1].split(columnJoiner)[0]).toEqual(MALE);
+  expect(rows[1].split(columnJoiner).reverse()[0]).toEqual(MALE);
 });
