@@ -5,8 +5,8 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setTournamentName({
   tournamentRecord,
-  tournamentName,
   promotionalName,
+  tournamentName,
   formalName,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

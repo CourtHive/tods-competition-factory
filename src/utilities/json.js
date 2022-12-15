@@ -31,6 +31,7 @@ export function JSON2CSV(arrayOfJSON, config) {
 
     columnAccessors = [],
     columnTransform = {},
+    functionMap = {},
     columnMap = {},
     valuesMap = {},
     context = {},
@@ -47,6 +48,7 @@ export function JSON2CSV(arrayOfJSON, config) {
     typeof context !== 'object' ||
     typeof columnMap !== 'object' ||
     typeof columnTransform !== 'object' ||
+    typeof functionMap !== 'object' ||
     typeof valuesMap !== 'object' ||
     typeof columnJoiner !== 'string' ||
     typeof rowJoiner !== 'string' ||
@@ -75,6 +77,7 @@ export function JSON2CSV(arrayOfJSON, config) {
   const accessorMap = Object.assign(
     {},
     ...Object.keys(columnTransform)
+      .reverse() // so that original order is preserved when later pushed
       .map((transform) =>
         columnTransform[transform]
           .map((value) => ({ [value]: transform }))
@@ -132,7 +135,11 @@ export function JSON2CSV(arrayOfJSON, config) {
           '';
 
         const mappedValue = valuesMap[columnName]?.[value] || value;
-        columnsMap[columnName] = withDelimiter(mappedValue);
+        const fxValue =
+          typeof functionMap[columnName] === 'function'
+            ? functionMap[columnName](mappedValue)
+            : mappedValue;
+        columnsMap[columnName] = withDelimiter(fxValue);
         return columnsMap;
       }, {})
     );
