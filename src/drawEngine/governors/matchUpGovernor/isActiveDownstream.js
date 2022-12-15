@@ -32,7 +32,11 @@ export function isActiveDownstream(params) {
 
   if (
     (loserMatchUp?.winningSide && !loserMatchUpExit) ||
-    (winnerDrawPositionsCount === 2 && winnerMatchUp?.winningSide)
+    // NOTE: produced WALKOVER, DEFAULTEED fed into consolation structures should NOT be considered active
+    (winnerMatchUp?.winningSide &&
+      winnerDrawPositionsCount === 2 &&
+      (!winnerMatchUp.feedRound ||
+        [WALKOVER, DEFAULTED].includes(winnerMatchUp?.matchUpStatus)))
   ) {
     return true;
   }
