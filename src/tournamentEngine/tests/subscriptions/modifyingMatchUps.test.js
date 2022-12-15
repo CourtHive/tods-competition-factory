@@ -231,13 +231,17 @@ it.each(scenarios)(
     matchUpNotifications = [];
     notificationsCounter = 0;
 
+    // FIRST: get a snapshot of the initial condition
     let result = snapshot({ reset: true, name: 'start' });
     let matchUps = result.matchUps;
 
     expect(matchUps.length).toEqual(61);
 
+    // SECOND: find matchUp part of four first round main which meet in second round...
+    // ... where matchUp has BYE and is paired with matchUp containing two participants
     const { drawPosition, structureId } = findTarget({ drawId });
 
+    // THIRD: get postiionActions for targetMatchup BYE position
     result = tournamentEngine.positionActions({
       drawPosition,
       structureId,
@@ -252,6 +256,7 @@ it.each(scenarios)(
     const alternateParticipantId = availableAlternatesParticipantIds[0];
     Object.assign(payload, { alternateParticipantId });
 
+    // FOURTH: assign an alternate to the position where bye exists
     pushGlobalLog({ method: 'Assign Alternate', color: 'brightmagenta' });
     result = tournamentEngine[method](payload);
     expect(result.success).toEqual(true);
@@ -262,6 +267,7 @@ it.each(scenarios)(
       expectations.notificationsCount
     );
 
+    // FIFTH: take a snapshot of the data and compare
     snapshot({
       notifications: matchUpNotifications,
       name: 'alternatePlaced',
@@ -269,6 +275,7 @@ it.each(scenarios)(
       log: true,
     });
 
+    // SIXTH: reset notifications and get updated positionActions
     matchUpNotifications = [];
     result = tournamentEngine.positionActions({
       drawPosition,
@@ -278,6 +285,7 @@ it.each(scenarios)(
     let byeOption = result.validActions.find(({ type }) => type === BYE);
     ({ method, payload } = byeOption);
 
+    // SEVENTH: re-assign a BYE to the target drawPosition
     pushGlobalLog({ method: 'Assign Bye', color: 'brightmagenta' });
     result = tournamentEngine[method](payload);
     expect(result.success).toEqual(true);
@@ -286,6 +294,7 @@ it.each(scenarios)(
       expectations.notificationsCount
     );
 
+    // EIGHTH: take snapshot and compare
     snapshot({
       notifications: matchUpNotifications,
       compare: 'alternatePlaced',
@@ -293,6 +302,7 @@ it.each(scenarios)(
       log: true,
     });
 
+    // NINTH: take snapshot and compare initial condition to final condition; expect equivalence
     snapshot({
       compare: 'start',
       name: 'byeRestored',
