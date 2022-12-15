@@ -7,7 +7,7 @@ import { INVALID_VALUES } from '../constants/errorConditionConstants';
  * @returns {string} - joined by '\r\n' or specified line separator
  *
  * config {
- *  {boolean} includeTransoformAccessors, // transform accessors are included with columnAccessors
+ *  {boolean} includeTransformAccessors, // transform accessors are included with columnAccessors
  *  {string[]} columnAccessors, // [ 'includeThis', 'andThis' ]
  *  {object} columnTransform, // e.g. { 'newColumnName': ['oldColumn1', 'oldColumn2' ]}
  *  {object} columnMap, // e.g. { 'columnName': 'newColumnName' }
