@@ -1,13 +1,14 @@
 import { mocksEngine, tournamentEngine } from '../..';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
-import { DOUBLES } from '../../constants/eventConstants';
+import { DOUBLES, SINGLES_EVENT } from '../../constants/eventConstants';
 import { SINGLES } from '../../constants/matchUpTypes';
 import { JSON2CSV } from '../json';
 import {
   FORMAT_ATP_DOUBLES,
   FORMAT_STANDARD,
 } from '../../fixtures/scoring/matchUpFormats';
+import { WALKOVER } from '../../constants/matchUpStatusConstants';
 
 it('can create CSV from shallow JSON objects', () => {
   const csv = JSON2CSV([{ a: '1', b: '2' }]);
@@ -31,6 +32,27 @@ it('can transform arrays of JSON objects to CSV and remap values', () => {
   const jsonObjects = [{ a: 1 }, { b: 2 }];
   const expectations = ['a,b', '100,', ',2'];
   const config = { delimiter: '', valuesMap: { a: { 1: 100, 2: 200 } } };
+  const conversion = JSON2CSV(jsonObjects, config).split('\r\n');
+  expectations.length
+    ? expectations.forEach((expectation, i) =>
+        expect(conversion[i]).toEqual(expectation)
+      )
+    : console.log(conversion);
+});
+
+it('supports passing functions which manipulate values', () => {
+  const jsonObjects = [
+    { matchUpStatus: WALKOVER },
+    { matchUpType: SINGLES_EVENT },
+  ];
+  const expectations = ['matchUpStatus,matchUpType', 'WO,', ',S'];
+  const config = {
+    delimiter: '',
+    valuesMap: { matchUpStatus: { WALKOVER: 'WO' } },
+    functionMap: {
+      matchUpType: (value) => value?.slice(0, 1),
+    },
+  };
   const conversion = JSON2CSV(jsonObjects, config).split('\r\n');
   expectations.length
     ? expectations.forEach((expectation, i) =>
