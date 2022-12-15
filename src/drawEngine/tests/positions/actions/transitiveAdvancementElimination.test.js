@@ -74,9 +74,9 @@ it('can advance participants when double BYEs are created', () => {
   // now remove assignment for { drawPosition: 2 }
   // expect { drawPosition: 1 } to be removed from all advanced positions
   let result = tournamentEngine.removeDrawPositionAssignment({
-    drawId,
     drawPosition: 2,
     structureId,
+    drawId,
   });
   expect(result.success).toEqual(true);
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));

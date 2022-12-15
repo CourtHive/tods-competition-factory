@@ -184,7 +184,7 @@ export function assignDrawPositionBye({
     drawPositions?.includes(drawPosition)
   );
 
-  setMatchUpStatusBYE({ drawDefinition, matchUp, event });
+  setMatchUpStatusBYE({ tournamentRecord, drawDefinition, matchUp, event });
 
   const drawPositionToAdvance = matchUp.drawPositions?.find(
     (position) => position !== drawPosition
@@ -282,8 +282,8 @@ function assignRoundRobinBYE({
   matchUps.forEach((matchUp) => {
     if (matchUp.drawPositions?.includes(drawPosition)) {
       setMatchUpStatusBYE({
-        tournamentId: tournamentRecord?.tournamentId,
         eventId: event?.eventId,
+        tournamentRecord,
         drawDefinition,
         matchUp,
       });

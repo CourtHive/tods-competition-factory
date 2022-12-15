@@ -123,6 +123,9 @@ function snapshot({ name, compare, notifications, log, reset }) {
       debugLog(text);
       const context = notificationMap?.[matchUpId]?.context;
       if (context) debugLog(chalk.black.bgCyan('context', context, '\r\n'));
+      const tournamentId = notificationMap?.[matchUpId]?.tournamentId;
+      if (tournamentId)
+        debugLog(chalk.black.bgYellow('tournamentId', tournamentId, '\r\n'));
     });
     if (excessNotifications?.length) {
       debugLog(chalk.yellow('excessNotifications:', excessNotifications));
