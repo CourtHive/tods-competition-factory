@@ -146,6 +146,16 @@ it('can recognized bad data', () => {
   expect(result).toEqual(INVALID_VALUES);
 });
 
+it('can sort csv columns', () => {
+  let result = JSON2CSV([{ a: 1, c: 2, b: 3 }], { sortOrder: ['a', 'b'] });
+  expect(result).toEqual('"a","b","c"\r\n"1","3","2"');
+});
+
+it('can remove columns with no values', () => {
+  let result = JSON2CSV([{ a: 1, c: '', b: 3 }], { removeEmptyColumns: true });
+  expect(result).toEqual('"a","b"\r\n"1","3"');
+});
+
 it('can transform arrays of JSON objects to CSV and transform multiple target attributes and map column header names', () => {
   const jsonObjects = [{ a: 1 }, { b: 2, z: 100 }, { a: 3, b: 4 }];
   const expectations = ['name,second', '1,', '100,2', '3,4'];
