@@ -155,10 +155,12 @@ function isTimeString(timeString) {
   const noZ = timeString.split('Z')[0];
   const parts = noZ.split(':');
   const isNumeric = parts.every((part) => !isNaN(part));
-  if (parts.length < 2 || !isNumeric) return false;
-  if (parseInt(parts[0]) > 23) return false;
-  if (parseInt(parts[1]) > 60) return false;
-  return true;
+  return parts.length < 2 ||
+    !isNumeric ||
+    parseInt(parts[0]) > 23 ||
+    parseInt(parts[1]) > 60
+    ? false
+    : true;
 }
 
 export function timeStringMinutes(timeString) {
