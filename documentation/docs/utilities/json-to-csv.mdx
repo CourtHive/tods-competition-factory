@@ -11,10 +11,13 @@ import { utilities } from 'tods-competition-factory';
 
 const config = {
   includeTransformAccessors, // optional boolean - transform accessors are included with columnAccessors
+  removeEmptyColumns, // optional boolean - remove columns which contain no values
   columnAccessors, // optional - array of column accessors to include [ 'includeThis', 'andThis' ]
   columnTransform, // optional - multiple generated column names can resolve to a single custom column, e.g. { 'newColumnName': ['oldColumn1', 'oldColumn2' ]}
   columnMap, // optional - simple mapping from generated columnName to custom columnName, e.g. { 'columnName': 'newColumnName' }
+  functionMap, // optional - transform values, e.g. { 'columnName': (value) => value }
   valuesMap, // optional - map values for specified columns, e.g. { 'columnName': { 'value': 'mappedValue '}}
+  sortOrder // optional - e.g. ['columnName1', 'columnName2'] // determine order of csv columns
   context, // optional - object defining values which should be added to all rows, e.g. { 'columnName': 'columnValue '}
   delimiter, // optional - defaults to '"'
   columnJoiner, // optional - defines how CSV columns are joined; defaults to ','

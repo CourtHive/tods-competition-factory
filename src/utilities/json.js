@@ -1,3 +1,5 @@
+import { isNumeric } from './math';
+
 import { INVALID_VALUES } from '../constants/errorConditionConstants';
 
 /**
@@ -12,6 +14,7 @@ import { INVALID_VALUES } from '../constants/errorConditionConstants';
  *  {object} columnTransform, // e.g. { 'newColumnName': ['oldColumn1', 'oldColumn2' ]}
  *  {object} columnMap, // e.g. { 'columnName': 'newColumnName' }
  *  {object} valuesMap, // e.g. { 'columnName': { 'value1': 'mappedValue' }} // useful for mapping IDs
+ *  {array} sortOrder // e.g. ['columnName1', 'columnName2'] // determine order of csv columns
  *  {object} context, // attributes which are to be added to all rows { 'columnName': 'value }
  *  {string} delimiter, // defaults to '"'
  *  {string} columnJoiner, // defaults to ',' // defines how CSV columns are joined
@@ -27,6 +30,7 @@ export function JSON2CSV(arrayOfJSON, config) {
   const {
     includeTransformAccessors,
     includeHeaderRow = true,
+    removeEmptyColumns,
     onlyHeaderRow,
 
     columnAccessors = [],
@@ -86,15 +90,25 @@ export function JSON2CSV(arrayOfJSON, config) {
       .flat()
   );
 
-  const tranformedHeaderRow = headerRow.reduce((def, key) => {
-    const transform = accessorMap[key];
-    if (transform) {
-      if (!def.includes(transform)) def.push(transform);
-    } else {
-      def.push(key);
-    }
-    return def;
-  }, []);
+  const sortColumns = (a, b) =>
+    !config?.sortOrder
+      ? 0
+      : (config.sortOrder.includes(a) &&
+          config.sortOrder.includes(b) &&
+          config.sortOrder.indexOf(a) - config.sortOrder.indexOf(b)) ||
+        (!config.sortOrder.includes(b) && -1);
+
+  const tranformedHeaderRow = headerRow
+    .reduce((def, key) => {
+      const transform = accessorMap[key];
+      if (transform) {
+        if (!def.includes(transform)) def.push(transform);
+      } else {
+        def.push(key);
+      }
+      return def;
+    }, [])
+    .sort(sortColumns);
 
   Object.keys(columnMap).forEach(
     (columnName) =>
@@ -115,17 +129,16 @@ export function JSON2CSV(arrayOfJSON, config) {
         tranformedHeaderRow.unshift(columnName)
     );
 
-  const mappedHeaderRow = tranformedHeaderRow.map(
-    (key) => columnMap[key] || key
-  );
+  let mappedHeaderRow = tranformedHeaderRow.map((key) => columnMap[key] || key);
 
   if (onlyHeaderRow) return [mappedHeaderRow];
 
   const withDelimiter = (value) => `${delimiter}${value}${delimiter}`;
 
+  const columnValueCounts = [];
   const processRow = (row) => {
     const columnsMap = Object.values(
-      tranformedHeaderRow.reduce((columnsMap, columnName) => {
+      tranformedHeaderRow.reduce((columnsMap, columnName, columnIndex) => {
         const accessors = columnTransform[columnName];
         const value =
           (accessors?.length
@@ -140,13 +153,34 @@ export function JSON2CSV(arrayOfJSON, config) {
             ? functionMap[columnName](mappedValue)
             : mappedValue;
         columnsMap[columnName] = withDelimiter(fxValue);
+        if (fxValue) {
+          columnValueCounts[columnIndex] =
+            (columnValueCounts[columnIndex] || 0) + 1;
+        }
         return columnsMap;
       }, {})
     );
-    return columnsMap.join(columnJoiner);
+    // return columnsMap.join(columnJoiner);
+    return columnsMap;
   };
 
-  const rows = flattened.map(processRow);
+  let flattenedRows = flattened.map(processRow);
+
+  const indicesToRemove =
+    removeEmptyColumns &&
+    [...columnValueCounts]
+      .map((count, index) => !count && index)
+      .filter(isNumeric)
+      .reverse();
+
+  if (indicesToRemove) {
+    const purge = (row) =>
+      row.filter((value, index) => !indicesToRemove.includes(index));
+    flattenedRows = flattenedRows.map(purge);
+    mappedHeaderRow = purge(mappedHeaderRow);
+  }
+
+  const rows = flattenedRows.map((row) => row.join(columnJoiner));
 
   return includeHeaderRow
     ? [mappedHeaderRow.map(withDelimiter).join(columnJoiner), ...rows].join(
