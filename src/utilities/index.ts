@@ -1,6 +1,7 @@
 export { nearestPowerOf2, nextPowerOf2, isPowerOf2, isOdd } from './math';
 export { generateHashCode, definedAttributes } from './objects';
 export { attributeFilter } from './attributeFilter';
+export { tidyScore } from './tidyScore/tidyScore';
 export { generateTimeCode } from './timeCode';
 export { makeDeepCopy } from './makeDeepCopy';
 export { numericSort } from './sorting';

@@ -4,6 +4,7 @@ export { setMatchUpDailyLimits } from '../../competitionEngine/governors/schedul
 export { addFinishingRounds } from '../../drawEngine/generators/addFinishingRounds';
 export { structureSort } from '../../drawEngine/getters/structureSort';
 export { attributeFilter } from '../../utilities';
+export { tidyScore } from '../../utilities';
 export {
   linkTournaments,
   unlinkTournament,
