@@ -11,6 +11,7 @@ export function tidyScore({ score = '' }) {
         .join(' ');
     }
   }
+  score = containedSets(score);
   score = separateScoreBlocks(score);
   score = correctShiftErrors(score);
   score = removeErroneous(score);
@@ -107,4 +108,50 @@ function correctShiftErrors(score) {
       return part;
     })
     .join(' ');
+}
+
+function containedSets(score) {
+  if (typeof score !== 'string') return score;
+  const potentialEndings = [')', ']'];
+  const potentialMiddles = [')(', ')[', ']('];
+  if (
+    score.startsWith('(') &&
+    potentialEndings.some((ending) => score.endsWith(ending)) &&
+    potentialMiddles.some((middle) => score.includes(middle))
+  ) {
+    let newScore = '';
+    const parts = score.split(/[)\]]/).filter(Boolean);
+    if (parts.every((part) => part.includes(','))) {
+      let lastPart;
+      parts.forEach((part) => {
+        if (part.startsWith('(')) {
+          // is a set score
+          if (lastPart === 'set') newScore += ' ';
+          newScore += part
+            .slice(1)
+            .split(',')
+            .map((s) => s.trim())
+            .join('-');
+
+          lastPart = 'set';
+        } else if (part.startsWith('[')) {
+          const values = part
+            .slice(1)
+            .split(',')
+            .map((s) => parseInt(s.trim()));
+          const highValue = Math.min(...values);
+          // is a tiebreak score
+          if (lastPart === 'set') {
+            newScore += `(${highValue}) `;
+          } else {
+            newScore += `[${values.join('-')}] `;
+          }
+          lastPart = 'tiebreak';
+        }
+      });
+
+      score = newScore.trim();
+    }
+  }
+  return score;
 }
