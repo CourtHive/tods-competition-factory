@@ -367,6 +367,7 @@ export function processMatchUp({
             schedule,
             tieFormat,
             structureName,
+            tournamentId,
             potential: true,
           });
       });
