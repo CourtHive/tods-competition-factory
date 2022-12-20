@@ -105,20 +105,21 @@ export function getDrawData({
           seedAssignments = qualificationStageSeedAssignments;
         }
 
-        const { matchUps, roundMatchUps } = getAllStructureMatchUps({
-          // only propagate seedAssignments where none are present
-          seedAssignments: !structure?.seedAssignments?.length
-            ? seedAssignments
-            : undefined,
-          context: { drawId: drawInfo.drawId, ...context },
-          tournamentParticipants,
-          policyDefinitions,
-          tournamentRecord,
-          drawDefinition,
-          structure,
-          inContext,
-          event,
-        });
+        const { matchUps, roundMatchUps, roundProfile } =
+          getAllStructureMatchUps({
+            // only propagate seedAssignments where none are present
+            seedAssignments: !structure?.seedAssignments?.length
+              ? seedAssignments
+              : undefined,
+            context: { drawId: drawInfo.drawId, ...context },
+            tournamentParticipants,
+            policyDefinitions,
+            tournamentRecord,
+            drawDefinition,
+            structure,
+            inContext,
+            event,
+          });
 
         const { positionAssignments } = getPositionAssignments({
           structure,
@@ -199,10 +200,11 @@ export function getDrawData({
 
         return {
           ...structureInfo,
-          structureId,
-          roundMatchUps,
-          seedAssignments,
           participantResults,
+          seedAssignments,
+          roundMatchUps,
+          roundProfile,
+          structureId,
         };
       });
 

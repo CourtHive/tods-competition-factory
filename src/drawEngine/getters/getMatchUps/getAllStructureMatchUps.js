@@ -284,7 +284,7 @@ export function getAllStructureMatchUps({
     }));
   }
 
-  return { matchUps, roundMatchUps, collectionPositionMatchUps };
+  return { matchUps, roundMatchUps, roundProfile, collectionPositionMatchUps };
 
   // isCollectionBye is an attempt to embed BYE status in matchUp.tieMatchUps
   function addMatchUpContext({
