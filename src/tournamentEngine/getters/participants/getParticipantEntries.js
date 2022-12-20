@@ -444,6 +444,7 @@ export function getParticipantEntries({
               participantMap[relevantParticipantId].potentialMatchUps[
                 matchUpId
               ] = definedAttributes({
+                tournamentId: tournamentRecord?.tournamentId,
                 matchUpId,
                 eventId,
                 drawId,
