@@ -6,6 +6,7 @@ export function assignDrawPositionBye({
   seedBlockInfo,
   drawPosition,
   structureId,
+  event,
 }) {
   return assignBye({
     tournamentRecord,
@@ -13,5 +14,6 @@ export function assignDrawPositionBye({
     seedBlockInfo,
     drawPosition,
     structureId,
+    event,
   });
 }

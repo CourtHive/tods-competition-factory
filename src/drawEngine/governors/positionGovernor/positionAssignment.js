@@ -274,11 +274,10 @@ export function assignDrawPosition({
 
   modifyPositionAssignmentsNotice({
     tournamentId: tournamentRecord?.tournamentId,
-    structureIds: [structureId],
-    eventId: event?.eventId,
-    positionAssignments,
     drawDefinition,
+    source: stack,
     structure,
+    event,
   });
 
   return Object.assign({ positionAssignments }, SUCCESS);

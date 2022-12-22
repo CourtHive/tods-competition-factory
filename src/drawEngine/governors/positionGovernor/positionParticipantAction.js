@@ -63,6 +63,7 @@ export function positionParticipantAction(params) {
       drawPosition,
       structureId,
       matchUpsMap,
+      event,
     });
     if (!result.success) {
       return decorateResult({ result, stack });

@@ -43,6 +43,7 @@ export function assignMatchUpDrawPosition({
   drawPosition,
   matchUpsMap,
   matchUpId,
+  event,
 }) {
   const stack = 'assignMatchUpDrawPosition';
 
@@ -250,6 +251,7 @@ export function assignMatchUpDrawPosition({
         drawDefinition,
         structureId,
         matchUpsMap,
+        event,
       });
       if (result.error) return result;
     }

@@ -36,6 +36,7 @@ export function doubleExitAdvancement(params) {
     matchUpsMap,
     targetData,
     structure,
+    event,
   } = params;
   const stack = 'doubleExitAdvancement';
 
@@ -56,6 +57,7 @@ export function doubleExitAdvancement(params) {
         drawDefinition,
         loserMatchUp,
         matchUpsMap,
+        event,
       });
       if (result.error) return decorateResult({ result, stack });
     } else {
@@ -413,6 +415,7 @@ function advanceByeToLoserMatchUp(params) {
     loserTargetLink,
     drawDefinition,
     matchUpsMap,
+    event,
   } = params;
   const structureId = loserTargetLink?.target?.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
@@ -424,6 +427,7 @@ function advanceByeToLoserMatchUp(params) {
     drawDefinition,
     structureId,
     matchUpsMap,
+    event,
   });
 }
 

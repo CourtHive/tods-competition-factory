@@ -233,6 +233,7 @@ export function generateAndPopulatePlayoffStructures(params) {
       structure,
       matchUp,
       score,
+      event,
     });
     if (result.error) console.log(result.error);
   });

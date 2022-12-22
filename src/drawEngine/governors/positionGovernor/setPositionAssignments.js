@@ -82,6 +82,7 @@ export function setPositionAssignments({
           matchUpsMap,
           structureId,
           structure,
+          event,
         });
         if (result?.error) return result;
       } else if (qualifier) {
@@ -102,17 +103,17 @@ export function setPositionAssignments({
           drawPosition,
           matchUpsMap,
           structureId,
+          event,
         });
         if (result?.error) return result;
       }
     }
     modifyPositionAssignmentsNotice({
       tournamentId: tournamentRecord?.tournamentId,
-      structureIds: [structureId],
-      eventId: event?.eventId,
-      positionAssignments,
       drawDefinition,
+      source: stack,
       structure,
+      event,
     });
   }
 

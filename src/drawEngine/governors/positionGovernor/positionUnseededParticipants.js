@@ -141,6 +141,7 @@ export function positionUnseededParticipants({
       seedBlockInfo,
       structureId,
       matchUpsMap,
+      event,
     });
     return result;
   }
@@ -156,6 +157,7 @@ function randomUnseededDistribution({
   seedBlockInfo,
   matchUpsMap,
   structureId,
+  event,
 }) {
   const shuffledDrawPositions = shuffleArray(unfilledDrawPositions);
 
@@ -172,6 +174,7 @@ function randomUnseededDistribution({
         drawPosition,
         matchUpsMap,
         structureId,
+        event,
       });
       if (result?.error) console.log('!!!!!', { result });
       if (result?.error) return result;
