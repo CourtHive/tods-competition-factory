@@ -109,8 +109,14 @@ export const HOTKEYS = [VALID_VALUE_KEYS, MOVEUP, MOVEDOWN, TEST].join(',');
 // for testing purposes; side keys overrepresented
 export const SCORE_TEST_KEYS = [].concat(
   ...SIDE1KEYS,
-  ...SIDE2KEYS,
-  ...MODIFIERS
+  ...SIDE1KEYS,
+  ...MODIFIERS,
+  ...SIDE1KEYS,
+  ...SIDE1KEYS,
+  ...SIDE1KEYS,
+  ...SIDE1KEYS,
+  ...SIDE1KEYS,
+  ...SIDE1KEYS
 );
 
 export const keyValueConstants = {
