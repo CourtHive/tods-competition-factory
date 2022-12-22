@@ -30,6 +30,7 @@ export function clearDrawPosition({
   matchUpsMap,
   event,
 }) {
+  const stack = 'clearDrawPosition';
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({
     drawDefinition,
@@ -70,11 +71,7 @@ export function clearDrawPosition({
     }));
   }
 
-  const {
-    positionAssignments: updatedPositionAssignments,
-    drawPositionCleared,
-    error,
-  } = drawPositionRemovals({
+  const { drawPositionCleared, error } = drawPositionRemovals({
     inContextDrawMatchUps,
     tournamentRecord,
     drawDefinition,
@@ -88,12 +85,11 @@ export function clearDrawPosition({
   if (!drawPositionCleared) return { error: DRAW_POSITION_NOT_CLEARED };
 
   modifyPositionAssignmentsNotice({
-    positionAssignments: updatedPositionAssignments,
     tournamentId: tournamentRecord?.tournamentId,
-    structureIds: [structureId],
-    eventId: event?.eventId,
     drawDefinition,
+    source: stack,
     structure,
+    event,
   });
 
   return { ...SUCCESS, participantId };

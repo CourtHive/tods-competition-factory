@@ -22,6 +22,7 @@ export function directWinner({
   winnerMatchUp,
   dualMatchUp,
   matchUpsMap,
+  event,
 }) {
   const stack = 'directWinner';
 
@@ -88,6 +89,7 @@ export function directWinner({
         sourceMatchUpId,
         drawDefinition,
         matchUpsMap,
+        event,
       });
     } else if (unfilledTargetMatchUpDrawPositions.length) {
       const drawPosition = unfilledTargetMatchUpDrawPositions.pop();
@@ -102,6 +104,7 @@ export function directWinner({
         drawDefinition,
         drawPosition,
         matchUpsMap,
+        event,
       });
     } else if (winnerExistingDrawPosition) {
       const result = assignMatchUpDrawPosition({

@@ -29,6 +29,7 @@ export function assignDrawPosition({
       drawDefinition,
       drawPosition,
       structureId,
+      event,
     });
     if (result.error) return result;
   } else if (qualifier) {

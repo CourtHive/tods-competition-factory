@@ -212,6 +212,7 @@ export function randomUnseededSeparation({
           seedBlockInfo,
           structureId,
           matchUpsMap,
+          event,
           ...assignment,
         });
         if (!result?.success) {
@@ -226,6 +227,7 @@ export function randomUnseededSeparation({
           seedBlockInfo,
           structureId,
           matchUpsMap,
+          event,
           ...assignment,
         });
         if (!result?.success) {

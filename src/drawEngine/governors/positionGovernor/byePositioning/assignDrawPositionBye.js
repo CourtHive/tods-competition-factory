@@ -151,11 +151,10 @@ export function assignDrawPositionBye({
 
     modifyPositionAssignmentsNotice({
       tournamentId: tournamentRecord?.tournamentId,
-      structureIds: [structureId],
-      eventId: event?.eventId,
-      positionAssignments,
       drawDefinition,
+      source: stack,
       structure,
+      event,
     });
 
     return successNotice({
@@ -205,11 +204,10 @@ export function assignDrawPositionBye({
 
   modifyPositionAssignmentsNotice({
     tournamentId: tournamentRecord?.tournamentId,
-    structureIds: [structureId],
-    eventId: event?.eventId,
-    positionAssignments,
     drawDefinition,
+    source: stack,
     structure,
+    event,
   });
 
   return successNotice({
@@ -369,6 +367,7 @@ export function advanceDrawPosition({
         iterative: 'brightyellow',
         tournamentRecord,
         drawDefinition,
+        event,
       });
       if (result.error) return result;
     } else {
@@ -379,6 +378,7 @@ export function advanceDrawPosition({
         drawDefinition,
         loserMatchUp,
         matchUpsMap,
+        event,
       });
     }
   }
@@ -564,6 +564,7 @@ function advanceWinner({
             iterative: 'brightgreen',
             tournamentRecord,
             drawDefinition,
+            event,
           });
           if (result.error) return result;
         }
@@ -579,6 +580,7 @@ function assignFedDrawPositionBye({
   drawDefinition,
   loserMatchUp,
   matchUpsMap,
+  event,
 }) {
   const { roundNumber } = loserMatchUp;
 
@@ -599,6 +601,7 @@ function assignFedDrawPositionBye({
       tournamentRecord,
       iterative: 'red',
       drawDefinition,
+      event,
     });
     if (result.error) return result;
   }

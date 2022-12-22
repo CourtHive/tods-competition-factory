@@ -88,6 +88,7 @@ export function removeDrawPositionAssignment(params) {
       drawPosition,
       structureId,
       matchUpsMap,
+      event,
     });
     if (result.error) return decorateResult({ result, stack });
   }

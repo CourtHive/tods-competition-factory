@@ -1,4 +1,5 @@
 import { addNotice, deleteNotice } from '../../global/state/globalState';
+import { getPositionAssignments } from '../getters/positionsGetter';
 
 import {
   ADD_DRAW_DEFINITION,
@@ -168,7 +169,7 @@ export function modifyPositionAssignmentsNotice({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structure) return { error: MISSING_STRUCTURE };
 
-  const positionAssignments = structure.positionAssignments;
+  const positionAssignments = getPositionAssignments({ structure });
   const structureId = structure.structureId;
   const drawId = drawDefinition.drawId;
   const eventId = event?.eventId;
@@ -184,6 +185,7 @@ export function modifyPositionAssignmentsNotice({
     },
     key: drawDefinition.drawId,
   });
+
   modifyDrawNotice({
     sructureIds: [structureId],
     drawDefinition,

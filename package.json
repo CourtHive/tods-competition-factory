@@ -102,7 +102,7 @@
     "@types/node": "18.11.17",
     "@typescript-eslint/eslint-plugin": "5.47.0",
     "@typescript-eslint/parser": "5.47.0",
-    "@vitest/coverage-c8": "0.26.0",
+    "@vitest/coverage-c8": "0.26.2",
     "ajv": "8.11.2",
     "ajv-formats": "2.1.1",
     "c8": "7.12.0",
@@ -126,7 +126,7 @@
     "prettier-eslint": "15.0.1",
     "quicktype": "15.1.0",
     "rimraf": "3.0.2",
-    "rollup": "3.7.5",
+    "rollup": "3.8.0",
     "rollup-plugin-dts": "5.0.0",
     "rollup-plugin-esbuild": "5.0.0",
     "rollup-plugin-terser": "7.0.2",
@@ -134,8 +134,8 @@
     "tslib": "2.4.1",
     "typescript": "4.9.4",
     "variable-diff": "^2.0.2",
-    "vite": "4.0.2",
-    "vitest": "0.26.1"
+    "vite": "4.0.3",
+    "vitest": "0.26.2"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint",

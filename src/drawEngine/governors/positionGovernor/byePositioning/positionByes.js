@@ -111,6 +111,7 @@ export function positionByes({
       matchUpsMap,
       structureId,
       structure,
+      event,
     });
     if (result?.error) return result;
   }

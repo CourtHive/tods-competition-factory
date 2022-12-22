@@ -156,6 +156,7 @@ export function directLoser(params) {
       sourceMatchUpId,
       drawDefinition,
       matchUpsMap,
+      event,
     });
     if (result.error) return decorateResult({ result, stack });
   } else {
@@ -246,6 +247,7 @@ export function directLoser(params) {
       tournamentRecord,
       sourceMatchUpId,
       drawDefinition,
+      event,
     });
     return decorateResult({ result, stack: 'assignLoserPositionBye' });
   }
@@ -263,6 +265,7 @@ export function directLoser(params) {
       sourceMatchUpId,
       drawDefinition,
       matchUpsMap,
+      event,
     });
     return decorateResult({ result, stack: 'assignLoserDrawPosition' });
   }

@@ -20,6 +20,7 @@ export function positionSeedBlocks({
   structureId,
   matchUpsMap,
   structure,
+  event,
 }) {
   let placedSeedBlocks = 0;
   const seedPositions = [];
@@ -56,6 +57,7 @@ export function positionSeedBlocks({
         participants,
         structureId,
         matchUpsMap,
+        event,
       });
       if (result?.success) {
         placedSeedBlocks++;
@@ -80,6 +82,7 @@ function positionSeedBlock({
   participants,
   structureId,
   matchUpsMap,
+  event,
 }) {
   const { unplacedSeedParticipantIds, unfilledPositions } = getNextSeedBlock({
     randomize: true,
@@ -112,6 +115,7 @@ function positionSeedBlock({
       drawPosition,
       matchUpsMap,
       structureId,
+      event,
     });
 
     if (!result.success) return result;

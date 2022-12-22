@@ -163,6 +163,7 @@ export function directParticipants(params) {
         structureId: targetStructureId,
         tournamentRecord,
         drawDefinition,
+        event,
       });
       if (result.error) return decorateResult({ result, stack });
     }

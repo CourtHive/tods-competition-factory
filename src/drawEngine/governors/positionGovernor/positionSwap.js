@@ -4,11 +4,14 @@ import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { cleanupLineUps } from './cleanupLineUps';
 import { makeDeepCopy } from '../../../utilities';
+import {
+  modifyDrawNotice,
+  modifyPositionAssignmentsNotice,
+} from '../../notifications/drawNotifications';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -24,7 +27,9 @@ export function swapDrawPositionAssignments({
   drawDefinition,
   drawPositions,
   structureId,
+  event,
 }) {
+  const stack = 'swapDrawPositionAssignments';
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
   if (drawPositions?.length !== 2) {
@@ -53,6 +58,7 @@ export function swapDrawPositionAssignments({
       drawPositions,
       matchUpsMap,
       structure,
+      event,
     });
   } else {
     // if not a CONTAINER then swap occurs within elimination structure
@@ -63,6 +69,7 @@ export function swapDrawPositionAssignments({
       drawPositions,
       matchUpsMap,
       structure,
+      event,
     });
   }
 
@@ -76,7 +83,16 @@ export function swapDrawPositionAssignments({
   };
   addPositionActionTelemetry({ drawDefinition, positionAction });
 
+  modifyPositionAssignmentsNotice({
+    tournamentId: tournamentRecord?.tournamentId,
+    drawDefinition,
+    source: stack,
+    structure,
+    event,
+  });
+
   modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
+
   return { ...SUCCESS };
 }
 
@@ -87,6 +103,7 @@ function eliminationSwap({
   drawPositions,
   matchUpsMap,
   structure,
+  event,
 }) {
   // if not a CONTAINER then swap occurs within elimination structure
   const assignments = structure?.positionAssignments.filter((assignment) =>
@@ -118,6 +135,7 @@ function eliminationSwap({
       assignments,
       matchUpsMap,
       structure,
+      event,
     });
   } else {
     return eliminationParticipantSwap({
@@ -127,6 +145,7 @@ function eliminationSwap({
       assignments,
       matchUpsMap,
       structure,
+      event,
     });
   }
 }
@@ -138,6 +157,7 @@ function swapParticipantIdWithBYE({
   assignments,
   matchUpsMap,
   structure,
+  event,
 }) {
   // remove the assignment that has a participantId
   const originalByeAssignment = assignments.find(({ bye }) => bye);
@@ -177,6 +197,7 @@ function swapParticipantIdWithBYE({
     drawDefinition,
     structureId,
     matchUpsMap,
+    event,
   });
 
   // replace the original byeAssignment with participantId
@@ -188,6 +209,7 @@ function swapParticipantIdWithBYE({
     structureId,
     participantId,
     matchUpsMap,
+    event,
   });
   if (result.error) return result;
 
@@ -201,6 +223,7 @@ function eliminationParticipantSwap({
   assignments,
   matchUpsMap,
   structure,
+  event,
 }) {
   // preserves order of drawPositions in original positionAssignments array
   // while insuring that all attributes are faithfully copied over and only drawPosition is swapped
@@ -224,6 +247,7 @@ function eliminationParticipantSwap({
     matchUpsMap,
     assignments,
     structure,
+    event,
   });
 
   return { ...SUCCESS };
@@ -236,6 +260,7 @@ function roundRobinSwap({
   drawPositions,
   matchUpsMap,
   structure,
+  event,
 }) {
   const assignments = structure.structures?.reduce((assignments, structure) => {
     const structureAssignments = structure?.positionAssignments.filter(
@@ -259,6 +284,7 @@ function roundRobinSwap({
     matchUpsMap,
     assignments,
     structure,
+    event,
   });
 
   const isByeSwap = assignments.some(({ bye }) => bye);
@@ -271,6 +297,7 @@ function roundRobinSwap({
       assignments,
       matchUpsMap,
       structure,
+      event,
     });
   } else {
     // for Round Robin the positionAssignments are distributed across structures

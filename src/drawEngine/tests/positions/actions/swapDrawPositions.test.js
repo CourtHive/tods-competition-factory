@@ -3,7 +3,10 @@ import mocksEngine from '../../../../mocksEngine';
 import { setSubscriptions } from '../../../..';
 
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
-import { MODIFY_DRAW_DEFINITION } from '../../../../constants/topicConstants';
+import {
+  MODIFY_DRAW_DEFINITION,
+  MODIFY_POSITION_ASSIGNMENTS,
+} from '../../../../constants/topicConstants';
 import {
   ALTERNATE_PARTICIPANT,
   REMOVE_ASSIGNMENT,
@@ -85,8 +88,10 @@ it('can recognize valid SWAP positions', () => {
 });
 
 it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () => {
-  let updatedAt = 0;
+  let assignmentNotifications = [];
   let drawModifications = 0;
+  let updatedAt = 0;
+
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_DRAW_DEFINITION]: ([{ drawDefinition }]) => {
@@ -95,6 +100,9 @@ it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () 
           new Date(updatedAt).getTime()
         );
         updatedAt = drawDefinition.updatedAt;
+      },
+      [MODIFY_POSITION_ASSIGNMENTS]: (positions) => {
+        assignmentNotifications.push(positions);
       },
     },
   });
@@ -174,6 +182,7 @@ it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () 
   expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true);
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
 
+  expect(assignmentNotifications.length).toEqual(2);
   expect(drawModifications).toEqual(2);
 });
 
