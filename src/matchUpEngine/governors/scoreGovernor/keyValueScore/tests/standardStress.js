@@ -1,3 +1,5 @@
+import { generateRange, randomMember } from '../../../../../utilities';
+import { scoreMatchUp, enterValues } from './primitives';
 import {
   SCORE_TEST_KEYS,
   OUTCOME_ABANDONED,
@@ -7,8 +9,6 @@ import {
   STATUS_SUSPENDED,
   STATUS_INTERRUPTED,
 } from '../constants';
-import { scoreMatchUp, enterValues } from './primitives';
-import { generateRange, randomMember } from '../../../../../utilities';
 
 export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
   singleSetStressTests({ matchUpFormat, setTo });
