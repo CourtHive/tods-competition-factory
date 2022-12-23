@@ -128,7 +128,7 @@
     "prettier-eslint": "15.0.1",
     "quicktype": "15.1.0",
     "rimraf": "3.0.2",
-    "rollup": "3.8.0",
+    "rollup": "3.8.1",
     "rollup-plugin-dts": "5.0.0",
     "rollup-plugin-esbuild": "5.0.0",
     "rollup-plugin-terser": "7.0.2",
