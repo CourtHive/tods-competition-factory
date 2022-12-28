@@ -263,6 +263,8 @@ export function assignDrawPosition({
       drawPositions: [drawPosition],
       structure,
     });
+
+    // TODO: This is probably unnecessary and creates double entry in positionAction telemetry
     const positionAction = {
       name: 'positionAssignment',
       participantId,
@@ -270,6 +272,7 @@ export function assignDrawPosition({
       structureId,
     };
     addPositionActionTelemetry({ drawDefinition, positionAction });
+    // END TODO.
   }
 
   modifyPositionAssignmentsNotice({

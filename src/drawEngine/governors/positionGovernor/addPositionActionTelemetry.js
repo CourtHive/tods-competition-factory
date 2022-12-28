@@ -6,10 +6,11 @@ import { AUDIT_POSITION_ACTIONS } from '../../../constants/extensionConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 
 // updates 'positionActions' extension to keep track of positionActions by end-user
+// TODO: consider adding timestamp attribute to positionAction object
 export function addPositionActionTelemetry({ drawDefinition, positionAction }) {
   const { extension } = findExtension({
-    element: drawDefinition,
     name: AUDIT_POSITION_ACTIONS,
+    element: drawDefinition,
   });
 
   const existingValue = Array.isArray(extension?.value) ? extension.value : [];
