@@ -109,7 +109,7 @@
     "ajv-formats": "2.1.1",
     "c8": "7.12.0",
     "chalk": "^5.2.0",
-    "esbuild": "0.16.12",
+    "esbuild": "0.16.13",
     "eslint": "8.31.0",
     "eslint-config-prettier": "8.6.0",
     "eslint-import-resolver-typescript": "3.5.2",
