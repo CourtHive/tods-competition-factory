@@ -120,7 +120,7 @@
     "eslint-plugin-react": "7.31.11",
     "esm": "3.2.25",
     "fs-extra": "11.1.0",
-    "husky": "8.0.2",
+    "husky": "8.0.3",
     "lint-staged": "13.1.0",
     "np": "7.6.3",
     "pinst": "3.0.0",
