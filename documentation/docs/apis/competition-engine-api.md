@@ -472,7 +472,11 @@ competitionEngine.disableVenues({ venueIds });
 ## enableCourts
 
 ```js
-competitionEngine.enableCourts({ courtIds, enableAll });
+competitionEngine.enableCourts({
+  enableAll, // optional boolean
+  courtIds,
+  dates, // optional - array of dates to enable (if they have been disabled)
+});
 ```
 
 ---
