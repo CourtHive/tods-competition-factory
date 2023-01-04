@@ -132,8 +132,8 @@ it('can disable and enable courts and venues', () => {
   );
 
   result = competitionEngine.disableCourts({
-    courtIds: targetCourtIds,
     dates: [startDate, endDate],
+    courtIds: targetCourtIds,
   });
   expect(result.success).toEqual(true);
 
@@ -166,6 +166,48 @@ it('can disable and enable courts and venues', () => {
   });
   expect([result.courts.length, result.venues.length]).toEqual([6, 2]);
 
+  // re-enable stardDate
+  result = tournamentEngine.enableCourts({
+    dates: [startDate],
+    enableAll: true,
+  });
+
+  result = tournamentEngine.getVenuesAndCourts({
+    ignoreDisabled: true,
+  });
+  result.courts.forEach((court) => {
+    expect(court.dateAvailability.length).toEqual(4);
+  });
+
+  // re-enable endDate
+  result = tournamentEngine.enableCourts({
+    dates: [endDate],
+    enableAll: true,
+  });
+
+  result = tournamentEngine.getVenuesAndCourts({
+    ignoreDisabled: true,
+  });
+
+  result.courts.forEach((court) => {
+    expect(court.dateAvailability.length).toEqual(5);
+  });
+
+  result = competitionEngine.disableCourts({
+    courtIds: targetCourtIds,
+    dates: [startDate],
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.getVenuesAndCourts({
+    ignoreDisabled: true,
+  });
+
+  result.courts.forEach((court) => {
+    expect(court.dateAvailability.length).toEqual(4);
+  });
+
+  // finally re-enable all courts
   result = tournamentEngine.enableCourts({ enableAll: true });
   expect(result.success).toEqual(true);
 
