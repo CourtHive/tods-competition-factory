@@ -1142,7 +1142,11 @@ const { matchUps } = tournamentEngine.drawMatic({
 ## enableCourts
 
 ```js
-tournamentEngine.enableCourts({ courtIds, enableAll });
+tournamentEngine.enableCourts({
+  enableAll, // optional boolean
+  courtIds,
+  dates, // optional - array of dates to enable (if they have been disabled)
+});
 ```
 
 ---
