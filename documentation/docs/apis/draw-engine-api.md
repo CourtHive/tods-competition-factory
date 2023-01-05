@@ -421,6 +421,26 @@ const { matchUps } = drawEngine.drawMatic({
 
 ---
 
+## disableTiaAutoCalc
+
+Disable default behavior of auto calculating TEAM matchUp scores.
+
+```js
+drawEngine.disableTieAutoCalc({ matchUpId });
+```
+
+---
+
+## enableTiaAutoCalc
+
+Re-enable default behavior of auto calculating TEAM matchUp scores, and trigger auto calculation.
+
+```js
+drawEngine.enableTieAutoCalc({ matchUpId });
+```
+
+---
+
 ## findMatchUp
 
 ```js
@@ -995,6 +1015,8 @@ Sets either matchUpStatus or score and winningSide. Handles any winner/loser par
 drawEngine.setMatchUpStatus({
   disableScoreValidation, // optional boolean
   allowChangePropagation, // optional boolean - allow winner/loser to be swapped and propgate change throughout draw structures
+  disableAutoCalc, // optional - applies only to { matchUpType: TEAM }
+  enableAutoCalc, // optional - applies only to { matchUpType: TEAM }
   matchUpTieId, // optional - if part of a TIE matchUp
   matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
   matchUpId,

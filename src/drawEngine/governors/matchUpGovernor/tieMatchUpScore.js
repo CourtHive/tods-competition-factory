@@ -1,9 +1,13 @@
+import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
+import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isActiveMatchUp } from '../../getters/activeMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
+import { INVALID_MATCHUP } from '../../../constants/errorConditionConstants';
+import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   COMPLETED,
@@ -25,6 +29,21 @@ export function updateTieMatchUpScore({
   if (result.error) return result;
 
   const { matchUp, structure } = result;
+
+  if (!matchUp.tieMatchUps) return { error: INVALID_MATCHUP };
+
+  const { extension } = findExtension({
+    name: DISABLE_AUTO_CALC,
+    element: matchUp,
+  });
+
+  if (extension?.value) {
+    if (!removeScore) {
+      return { ...SUCCESS, score: matchUp.score };
+    } else {
+      removeExtension({ element: matchUp, name: DISABLE_AUTO_CALC });
+    }
+  }
 
   const tieFormat =
     matchUp.tieFormat ||

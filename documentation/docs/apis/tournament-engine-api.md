@@ -1120,6 +1120,16 @@ tournamentEngine.disableCourts({
 
 ---
 
+## disableTiaAutoCalc
+
+Disable default behavior of auto calculating TEAM matchUp scores.
+
+```js
+tournamentEngine.disableTieAutoCalc({ drawId, matchUpId });
+```
+
+---
+
 ## disableVenues
 
 ```js
@@ -1147,6 +1157,16 @@ tournamentEngine.enableCourts({
   courtIds,
   dates, // optional - array of dates to enable (if they have been disabled)
 });
+```
+
+---
+
+## enableTiaAutoCalc
+
+Re-enable default behavior of auto calculating TEAM matchUp scores, and trigger auto calculation.
+
+```js
+tournamentEngine.enableTieAutoCalc({ drawId, matchUpId });
 ```
 
 ---
@@ -3315,6 +3335,8 @@ const outcome = {
 tournamentEngine.setMatchUpStatus({
   disableScoreValidation, // optional boolean
   allowChangePropagation, // optional boolean - allow winner/loser to be swapped and propgate change throughout draw structures
+  disableAutoCalc, // optional - applies only to { matchUpType: TEAM }
+  enableAutoCalc, // optional - applies only to { matchUpType: TEAM }
   matchUpTieId, // optional - if part of a TIE matchUp
   matchUpId,
   outcome, // optional
