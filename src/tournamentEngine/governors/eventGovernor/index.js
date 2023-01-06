@@ -76,11 +76,7 @@ import {
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
 import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
-import {
-  attachConsolationStructures,
-  attachPlayoffStructures,
-  attachStructures,
-} from './attachStructures';
+import { substituteParticipant } from './drawDefinitions/substituteParticipant';
 import { deleteAdHocMatchUps } from './drawDefinitions/deleteAdHocMatchUps';
 import { resetDrawDefinition } from './drawDefinitions/resetDrawDefinition';
 import { pruneDrawDefinition } from './drawDefinitions/pruneDrawDefinition';
@@ -92,6 +88,11 @@ import { modifyEventEntries } from './entries/modifyEventEntries';
 import { attachFlightProfile } from './attachFlightProfile';
 import { drawMatic } from './drawDefinitions/drawMatic';
 import { addFlight } from './addFlight';
+import {
+  attachConsolationStructures,
+  attachPlayoffStructures,
+  attachStructures,
+} from './attachStructures';
 import {
   setEventDates,
   setEventEndDate,
@@ -215,8 +216,9 @@ const eventGovernor = {
   assignDrawPosition,
   assignSeedPositions,
   assignDrawPositionBye,
-  assignMatchUpSideParticipant,
+  substituteParticipant,
   swapDrawPositionAssignments,
+  assignMatchUpSideParticipant,
   removeDrawPositionAssignment,
   alternateDrawPositionAssignment,
   withdrawParticipantAtDrawPosition,

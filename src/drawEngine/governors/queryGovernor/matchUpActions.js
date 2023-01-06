@@ -49,6 +49,7 @@ import {
   START,
   STATUS,
   SUBSTITUTION,
+  SUBSTITUTION_METHOD,
 } from '../../../constants/matchUpActionConstants';
 
 /**
@@ -328,9 +329,9 @@ export function matchUpActions({
       winningSide: undefined,
     };
     validActions.push({
-      type: SCORE,
-      method: SCHEDULE_METHOD, // setMatchUpStatus
       info: 'set outcome and winningSide',
+      method: SCHEDULE_METHOD, // setMatchUpStatus
+      type: SCORE,
       payload,
     });
     validActions.push({ type: START });
@@ -342,7 +343,12 @@ export function matchUpActions({
     !completedMatchUpStatuses.includes(matchUp.matchUpStatus)
   ) {
     if (matchUp.matchUpType === DOUBLES_MATCHUP) {
-      validActions.push({ type: SUBSTITUTION, payload: { matchUpId } });
+      validActions.push({
+        info: 'list of team players available for substitution',
+        method: SUBSTITUTION_METHOD,
+        type: SUBSTITUTION,
+        payload: { matchUpId },
+      });
     }
   }
 
