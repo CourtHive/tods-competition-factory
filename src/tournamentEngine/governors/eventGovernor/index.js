@@ -120,12 +120,18 @@ import { attachQualifyingStructure } from './drawDefinitions/attachQualifyingStr
 import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure';
 import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
 
+import { disableTieAutoCalc } from './disableTieAutoCalc';
+import { enableTieAutoCalc } from './enableTieAutoCalc';
+
 const eventGovernor = {
   generateQualifyingStructure,
   attachQualifyingStructure,
   attachPlayoffStructures,
   attachStructures,
   addQualifyingStructure,
+
+  disableTieAutoCalc,
+  enableTieAutoCalc,
 
   modifyCollectionDefinition,
   orderCollectionDefinitions,

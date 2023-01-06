@@ -26,6 +26,8 @@ export function setMatchUpStatus(params) {
   const {
     tournamentRecords,
     tournamentRecord,
+    disableAutoCalc,
+    enableAutoCalc,
     drawDefinition,
     matchUpFormat,
     matchUpId,
@@ -84,6 +86,8 @@ export function setMatchUpStatus(params) {
     score: outcome?.score,
     tournamentRecords,
     tournamentRecord,
+    disableAutoCalc,
+    enableAutoCalc,
     drawDefinition,
     matchUpFormat,
     matchUpId,

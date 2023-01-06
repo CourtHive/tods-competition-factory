@@ -58,9 +58,9 @@ The `outcome` object can be passed into the `tournamentEngine` method for updati
 
 ```js
 tournamentEngine.devContext(true).setMatchUpStatus({
-  drawId,
   matchUpId,
   outcome,
+  drawId,
 });
 ```
 

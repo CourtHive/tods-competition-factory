@@ -1,5 +1,7 @@
+import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { addExtension } from '../../../global/functions/producers/addExtension';
 import { getProjectedDualWinningSide } from './getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
@@ -21,6 +23,7 @@ import {
 } from './checkStatusType';
 
 import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
+import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
@@ -72,6 +75,8 @@ export function setMatchUpStatus(params) {
     disableScoreValidation,
     tournamentRecords,
     tournamentRecord,
+    disableAutoCalc,
+    enableAutoCalc,
     drawDefinition,
     matchUpStatus,
     winningSide,
@@ -127,6 +132,14 @@ export function setMatchUpStatus(params) {
   const assignedDrawPositions = inContextMatchUp.drawPositions?.filter(Boolean);
 
   if (matchUp.matchUpType === TEAM) {
+    if (disableAutoCalc) {
+      addExtension({
+        extension: { name: DISABLE_AUTO_CALC, value: true },
+        element: matchUp,
+      });
+    } else if (enableAutoCalc) {
+      removeExtension({ name: DISABLE_AUTO_CALC, element: matchUp });
+    }
     if (
       [
         AWAITING_RESULT,
@@ -366,17 +379,18 @@ function applyMatchUpValues(params) {
     removeWinningSide,
     removeScore,
   });
+  if (result.error) return result;
 
   // recalculate dualMatchUp score if isCollectionMatchUp
   if (params.isCollectionMatchUp) {
     const { matchUpTieId, drawDefinition } = params;
-    const { removeWinningSide } = updateTieMatchUpScore({
+    const result = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       tournamentRecord,
       drawDefinition,
       event,
     });
-    console.log('sms', { removeWinningSide });
+    if (result.error) return result;
   }
 
   return result;

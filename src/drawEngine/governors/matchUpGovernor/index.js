@@ -9,7 +9,9 @@ import { removeDelegatedOutcome } from './removeDelegatedOutcome';
 import { drawMatic } from '../../generators/drawMatic/drawMatic';
 import { setDelegatedOutcome } from './setDelegatedOutcome';
 import { validDrawPositions } from './validDrawPositions';
+import { disableTieAutoCalc } from './disableTieAutoCalc';
 import { matchUpSort } from '../../getters/matchUpSort';
+import { enableTieAutoCalc } from './enableTieAutoCalc';
 import { setMatchUpStatus } from './setMatchUpStatus';
 import { setOrderOfFinish } from './setOrderOfFinish';
 import { setMatchUpFormat } from './setMatchUpFormat';
@@ -31,6 +33,9 @@ const matchUpGovernor = {
   setMatchUpStatus,
   setMatchUpFormat,
   isValidMatchUpFormat: isValid,
+
+  disableTieAutoCalc,
+  enableTieAutoCalc,
 
   addFinishingRounds,
   addMatchUpTimeItem,

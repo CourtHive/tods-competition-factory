@@ -430,7 +430,7 @@ test.each(outcomeScenarios)(
     let teamMatchUp = matchUps.find(
       (m) => m.matchUpType === TEAM && m.roundNumber === 1
     );
-    const singlesMatchUps = teamMatchUp.tieMatchUps.filter(
+    let singlesMatchUps = teamMatchUp.tieMatchUps.filter(
       (m) => m.matchUpType === SINGLES
     );
     const doublesMatchUp = teamMatchUp.tieMatchUps.find(
@@ -438,22 +438,22 @@ test.each(outcomeScenarios)(
     );
 
     let result = tournamentEngine.setMatchUpStatus({
-      outcome: scenario.outcomes[0],
       matchUpId: doublesMatchUp.matchUpId,
+      outcome: scenario.outcomes[0],
       drawId,
     });
     expect(result.success).toEqual(true);
 
     result = tournamentEngine.setMatchUpStatus({
-      outcome: scenario.outcomes[1],
       matchUpId: singlesMatchUps[0].matchUpId,
+      outcome: scenario.outcomes[1],
       drawId,
     });
     expect(result.success).toEqual(true);
 
     result = tournamentEngine.setMatchUpStatus({
-      outcome: scenario.outcomes[2],
       matchUpId: singlesMatchUps[1].matchUpId,
+      outcome: scenario.outcomes[2],
       drawId,
     });
     expect(result.success).toEqual(true);
@@ -473,11 +473,12 @@ test.each(outcomeScenarios)(
     ).participant;
     const winningParticipantId = winningParticipant.participantId;
 
-    const finalTeamMatchUp = matchUps.find(
+    let finalTeamMatchUp = matchUps.find(
       ({ roundNumber, matchUpType }) =>
         matchUpType === TEAM && roundNumber === 2
     );
-    const advancedTeam = finalTeamMatchUp.sides
+
+    let advancedTeam = finalTeamMatchUp.sides
       .map(({ participant }) => participant)
       .filter(Boolean)[0];
     const advancedParticipantId = advancedTeam.participantId;
@@ -486,5 +487,126 @@ test.each(outcomeScenarios)(
       advancedTeam.participantName
     );
     expect(winningParticipantId).toEqual(advancedParticipantId);
+
+    const automaticallyAdvancedTeamName = advancedTeam.participantName;
+    const automaticallyCalculatedScore = teamMatchUp.score;
+
+    const manuallyScoredSets = [
+      { side1Score: 0, side2Score: 1, winningSide: 2 },
+    ];
+
+    // now manually change the team score to not match the calculated score
+    result = tournamentEngine.setMatchUpStatus({
+      matchUpId: teamMatchUp.matchUpId,
+      disableAutoCalc: true,
+      outcome: {
+        score: { sets: manuallyScoredSets },
+        winningSide: 2,
+      },
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+
+    matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+
+    teamMatchUp = matchUps.find(
+      ({ matchUpId }) => matchUpId === teamMatchUp.matchUpId
+    );
+
+    finalTeamMatchUp = matchUps.find(
+      ({ roundNumber, matchUpType }) =>
+        matchUpType === TEAM && roundNumber === 2
+    );
+    advancedTeam = finalTeamMatchUp.sides
+      .map(({ participant }) => participant)
+      .filter(Boolean)[0];
+
+    expect(teamMatchUp.winningSide).toEqual(2);
+    expect(teamMatchUp.score.sets).toEqual(manuallyScoredSets);
+    const manuallyAdvancedTeamName = advancedTeam.participantName;
+    expect(manuallyAdvancedTeamName).not.toEqual(automaticallyAdvancedTeamName);
+
+    // now re-score one of the singles matchUps and expect the team score not to change
+    // NOTE: extensions have been converted to _extension format
+    expect(teamMatchUp._disableAutoCalc).toEqual(true);
+
+    singlesMatchUps = teamMatchUp.tieMatchUps.filter(
+      (m) => m.matchUpType === SINGLES
+    );
+
+    let firstSinglesMatchUp = singlesMatchUps[0];
+
+    const newWinningSide = 2 - firstSinglesMatchUp.winningSide;
+    const newScoreString = '6-1 6-1';
+    let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+      scoreString: newScoreString,
+      winningSide: newWinningSide,
+      matchUpStatus: COMPLETED,
+    });
+
+    result = tournamentEngine.setMatchUpStatus({
+      matchUpId: firstSinglesMatchUp.matchUpId,
+      outcome,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+
+    matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+
+    teamMatchUp = matchUps.find(
+      ({ matchUpId }) => matchUpId === teamMatchUp.matchUpId
+    );
+    // expect that the teamMatchUp score has not automatically been recalculated
+    expect(teamMatchUp.score.sets).toEqual(manuallyScoredSets);
+
+    singlesMatchUps = teamMatchUp.tieMatchUps.filter(
+      (m) => m.matchUpType === SINGLES
+    );
+
+    firstSinglesMatchUp = singlesMatchUps[0];
+    expect(firstSinglesMatchUp.winningSide).toEqual(newWinningSide);
+
+    expect(
+      firstSinglesMatchUp.score[`scoreStringSide${newWinningSide}`]
+    ).toEqual(newScoreString);
+
+    // enabling auto calc recalculates score
+    result = tournamentEngine.enableTieAutoCalc({
+      matchUpId: teamMatchUp.matchUpId,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+    expect(result.score).toEqual(automaticallyCalculatedScore);
+
+    // test disabling / enabling auto calc
+    matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+    teamMatchUp = matchUps.find(
+      ({ matchUpId }) => matchUpId === teamMatchUp.matchUpId
+    );
+    expect(teamMatchUp._disableAutoCalc).toBeUndefined();
+
+    result = tournamentEngine.disableTieAutoCalc({
+      matchUpId: teamMatchUp.matchUpId,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+
+    matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+    teamMatchUp = matchUps.find(
+      ({ matchUpId }) => matchUpId === teamMatchUp.matchUpId
+    );
+    expect(teamMatchUp._disableAutoCalc).toEqual(true);
+
+    result = tournamentEngine.enableTieAutoCalc({
+      matchUpId: teamMatchUp.matchUpId,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+
+    matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+    teamMatchUp = matchUps.find(
+      ({ matchUpId }) => matchUpId === teamMatchUp.matchUpId
+    );
+    expect(teamMatchUp._disableAutoCalc).toBeUndefined();
   }
 );
