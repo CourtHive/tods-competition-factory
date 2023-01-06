@@ -6045,10 +6045,10 @@ quick-lru@^4.0.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
   integrity sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==
 
-quicktype@16.0.14:
-  version "16.0.14"
-  resolved "https://registry.yarnpkg.com/quicktype/-/quicktype-16.0.14.tgz#89b0a0fcb15fd3b970fda73b9c01e3f1ca03b937"
-  integrity sha512-R/IXHTatKd9HtrLOtqhPVVX5fFI8jTxuXcyOe+qnnTGA3v8atH6nktBleUMFyf57oQtxhgzL2rF3YiW1/gfWrQ==
+quicktype@16.0.15:
+  version "16.0.15"
+  resolved "https://registry.yarnpkg.com/quicktype/-/quicktype-16.0.15.tgz#2c7ef1147e8099fad0cd2a3a656f5bbae884ab4b"
+  integrity sha512-sAUcaZR4QcmNB5ap6kJU10bGR3LFATRoG931yuBjw7jyZpoEWojPm1U16iX+9ST1/gixpZdrMWryQij8JdjwqQ==
   dependencies:
     "@mark.probst/typescript-json-schema" "~0.32.0"
     "@mark.probst/unicode-properties" "~1.1.0"
