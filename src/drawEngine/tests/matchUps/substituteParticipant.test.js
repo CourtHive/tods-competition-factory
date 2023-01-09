@@ -2,6 +2,7 @@ import { generateTeamTournament } from '../../../tournamentEngine/tests/team/gen
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import tournamentEngine from '../../../tournamentEngine/sync';
 
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { IN_PROGRESS } from '../../../constants/matchUpStatusConstants';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import {
@@ -47,6 +48,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     });
 
   const assignParticipants = (dualMatchUp) => {
+    // assign team participants to singlesG matchUps
     const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
       ({ matchUpType }) => matchUpType === SINGLES_MATCHUP
     );
@@ -71,6 +73,37 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
           });
           if (!result.success) console.log(result);
           expect(result.success).toEqual(true);
+        }
+      });
+    });
+
+    // assign team participants to doubles matchUps
+    const doublesMatchUps = dualMatchUp.tieMatchUps.filter(
+      ({ matchUpType }) => matchUpType === DOUBLES_MATCHUP
+    );
+    doublesMatchUps.forEach((doublesMatchUp, i) => {
+      const tieMatchUpId = doublesMatchUp.matchUpId;
+      doublesMatchUp.sides.forEach((side) => {
+        const { drawPosition } = side;
+        const teamParticipant = teamParticipants.find((teamParticipant) => {
+          const { participantId } = teamParticipant;
+          const assignment = positionAssignments.find(
+            (assignment) => assignment.participantId === participantId
+          );
+          return assignment.drawPosition === drawPosition;
+        });
+        if (teamParticipant) {
+          const individualParticipantIds =
+            teamParticipant.individualParticipantIds.slice(i * 2, i * 2 + 2);
+          individualParticipantIds.forEach((individualParticipantId) => {
+            const result = tournamentEngine.assignTieMatchUpParticipantId({
+              participantId: individualParticipantId,
+              tieMatchUpId,
+              drawId,
+            });
+            if (!result.success) console.log(result);
+            expect(result.success).toEqual(true);
+          });
         }
       });
     });
@@ -205,17 +238,50 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     drawId,
   });
   expect(result.success).toEqual(true);
+  expect(validActions).toEqual([REFEREE, SCHEDULE]);
 
   result = tournamentEngine.matchUpActions({
     matchUpId: doublesMatchUpId,
     drawId,
   });
   validActions = result.validActions.map(({ type }) => type);
+
   expect(validActions).toEqual([REFEREE, SCHEDULE, SUBSTITUTION]);
 
-  const substitutionAction = result.validActions.find(
+  let substitutionAction = result.validActions.find(
     ({ type }) => type === SUBSTITUTION
   );
 
-  console.log({ substitutionAction });
+  expect(substitutionAction.payload.existingParticipants.length).toEqual(4);
+  expect(substitutionAction.payload.availableParticipants.length).toEqual(2);
+  // when no sideNumber is provided availableParticiants is an array
+  expect(
+    substitutionAction.payload.availableParticipants[0].sideNumber
+  ).toEqual(1);
+  expect(
+    substitutionAction.payload.availableParticipants[0].participants.length
+  ).toEqual(2);
+
+  result = tournamentEngine.matchUpActions({
+    matchUpId: doublesMatchUpId,
+    sideNumber: 3,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.matchUpActions({
+    matchUpId: doublesMatchUpId,
+    sideNumber: 2,
+    drawId,
+  });
+  validActions = result.validActions.map(({ type }) => type);
+
+  expect(validActions).toEqual([REFEREE, SCHEDULE, SUBSTITUTION]);
+
+  substitutionAction = result.validActions.find(
+    ({ type }) => type === SUBSTITUTION
+  );
+
+  expect(substitutionAction.payload.existingParticipants.length).toEqual(2);
+  expect(substitutionAction.payload.availableParticipants.length).toEqual(2);
 });
