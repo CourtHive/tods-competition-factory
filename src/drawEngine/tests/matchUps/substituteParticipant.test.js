@@ -9,14 +9,19 @@ import {
   TEAM_PARTICIPANT,
 } from '../../../constants/participantConstants';
 import {
+  REFEREE,
+  SCHEDULE,
+  SUBSTITUTION,
+} from '../../../constants/matchUpActionConstants';
+import {
   DOUBLES_MATCHUP,
   SINGLES_MATCHUP,
 } from '../../../constants/matchUpTypes';
 
 const scenario = {
-  drawSize: 16,
   singlesCount: 3,
   doublesCount: 2,
+  drawSize: 16,
   valueGoal: 3,
 };
 
@@ -177,7 +182,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   });
   validActions = result.validActions.map(({ type }) => type);
   // options for singles matchUps don't change after scoring is active
-  expect(validActions).toEqual(['REFEREE', 'SCHEDULE']);
+  expect(validActions).toEqual([REFEREE, SCHEDULE]);
 
   // test doublesMatchUps
   const doublesMatchUps = matchUps.filter(
@@ -192,7 +197,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     drawId,
   });
   validActions = result.validActions.map(({ type }) => type);
-  expect(validActions).toEqual(['REFEREE', 'SCHEDULE']);
+  expect(validActions).toEqual([REFEREE, SCHEDULE]);
 
   result = tournamentEngine.setMatchUpStatus({
     matchUpId: doublesMatchUpId,
@@ -206,5 +211,11 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     drawId,
   });
   validActions = result.validActions.map(({ type }) => type);
-  expect(validActions).toEqual(['REFEREE', 'SCHEDULE', 'SUBSTITUTION']);
+  expect(validActions).toEqual([REFEREE, SCHEDULE, SUBSTITUTION]);
+
+  const substitutionAction = result.validActions.find(
+    ({ type }) => type === SUBSTITUTION
+  );
+
+  console.log({ substitutionAction });
 });
