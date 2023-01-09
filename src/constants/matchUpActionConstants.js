@@ -7,7 +7,7 @@ export const SCORE = 'SCORE';
 export const START = 'START';
 export const STATUS = 'STATUS';
 export const SUBSTITUTION = 'SUBSTITUTION';
-export const SUBSTITUTION_METHOD = 'subtituteParticipant';
+export const SUBSTITUTION_METHOD = 'substituteParticipant';
 
 export const SCHEDULE_METHOD = 'setMatchUpStatus';
 
