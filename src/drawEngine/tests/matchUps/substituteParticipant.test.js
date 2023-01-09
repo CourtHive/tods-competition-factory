@@ -2,7 +2,13 @@ import { generateTeamTournament } from '../../../tournamentEngine/tests/team/gen
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import tournamentEngine from '../../../tournamentEngine/sync';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import {
+  INVALID_MATCHUP,
+  INVALID_PARTICIPANT_ID,
+  INVALID_VALUES,
+  MATCHUP_NOT_FOUND,
+  MISSING_PARTICIPANT_ID,
+} from '../../../constants/errorConditionConstants';
 import { IN_PROGRESS } from '../../../constants/matchUpStatusConstants';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import {
@@ -252,14 +258,12 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     ({ type }) => type === SUBSTITUTION
   );
 
-  expect(substitutionAction.payload.existingParticipants.length).toEqual(4);
-  expect(substitutionAction.payload.availableParticipants.length).toEqual(2);
+  expect(substitutionAction.existingParticipants.length).toEqual(4);
+  expect(substitutionAction.availableParticipants.length).toEqual(2);
   // when no sideNumber is provided availableParticiants is an array
+  expect(substitutionAction.availableParticipants[0].sideNumber).toEqual(1);
   expect(
-    substitutionAction.payload.availableParticipants[0].sideNumber
-  ).toEqual(1);
-  expect(
-    substitutionAction.payload.availableParticipants[0].participants.length
+    substitutionAction.availableParticipants[0].participants.length
   ).toEqual(2);
 
   result = tournamentEngine.matchUpActions({
@@ -282,6 +286,46 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     ({ type }) => type === SUBSTITUTION
   );
 
-  expect(substitutionAction.payload.existingParticipants.length).toEqual(2);
-  expect(substitutionAction.payload.availableParticipants.length).toEqual(2);
+  expect(substitutionAction.existingParticipants.length).toEqual(2);
+  expect(substitutionAction.availableParticipants.length).toEqual(2);
+
+  const { method, payload, availableParticipantIds, existingParticipantIds } =
+    substitutionAction;
+
+  const substituteParticipantId = availableParticipantIds[0];
+  Object.assign(payload, { substituteParticipantId });
+
+  // method is 'substituteParticipant'
+  result = tournamentEngine[method](payload);
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
+
+  const existingParticipantId = existingParticipantIds[0];
+  Object.assign(payload, { existingParticipantId });
+
+  result = tournamentEngine[method]({
+    ...payload, // order is important!
+    matchUpId: 'bogusMatchUpid',
+  });
+  expect(result.error).toEqual(MATCHUP_NOT_FOUND);
+
+  result = tournamentEngine[method]({
+    ...payload, // order is important!
+    matchUpId: teamMatchUps[0].matchUpId,
+  });
+  expect(result.error).toEqual(INVALID_MATCHUP);
+
+  result = tournamentEngine[method]({
+    ...payload, // order is important!
+    existingParticipantId: substituteParticipantId,
+  });
+  expect(result.error).toEqual(INVALID_PARTICIPANT_ID);
+
+  result = tournamentEngine[method]({
+    ...payload, // order is important!
+    substituteParticipantId: existingParticipantId,
+  });
+  expect(result.error).toEqual(INVALID_PARTICIPANT_ID);
+
+  result = tournamentEngine[method](payload);
+  expect(result.success).toEqual(true);
 });

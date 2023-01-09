@@ -377,15 +377,28 @@ export function matchUpActions({
             sideNumber: i + 1,
           }));
 
+      const availableParticipantIds = sideNumber
+        ? availableIndividualParticipants[sideNumber - 1]?.map(getParticipantId)
+        : availableIndividualParticipants.map((available, i) => ({
+            participants: available?.map(getParticipantId),
+            sideNumber: i + 1,
+          }));
+
       // action is not valid if there are no existing assignments or no available substitutions
       if (existingParticipants.length && availableParticipants.length) {
+        const existingParticipantIds =
+          existingParticipants.map(getParticipantId);
         validActions.push({
           info: 'list of team players available for substitution',
           method: SUBSTITUTION_METHOD,
+          availableParticipantIds,
+          existingParticipantIds,
+          availableParticipants,
+          existingParticipants,
           type: SUBSTITUTION,
           payload: {
-            existingParticipants,
-            availableParticipants,
+            substituteParticipantId: undefined,
+            existingParticipantId: undefined,
             sideNumber,
             matchUpId,
             drawId,
