@@ -1502,6 +1502,9 @@
         },
         "collectionPosition": {
           "type": "number"
+        },
+        "substitutionOrder": {
+          "type": "number"
         }
       },
       "required": ["collectionId", "collectionPosition"],
