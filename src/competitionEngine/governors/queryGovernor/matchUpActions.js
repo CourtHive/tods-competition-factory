@@ -8,6 +8,7 @@ import {
 export function matchUpActions({
   tournamentRecords,
   tournamentId,
+  sideNumber,
   matchUpId,
   eventId, // optional
   drawId,
@@ -33,7 +34,8 @@ export function matchUpActions({
   return tournamentMatchUpActions({
     tournamentRecord,
     drawDefinition,
-    drawId,
+    sideNumber,
     matchUpId,
+    drawId,
   });
 }

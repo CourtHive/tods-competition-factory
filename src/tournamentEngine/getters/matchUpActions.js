@@ -22,6 +22,7 @@ export function matchUpActions({
   policyDefinitions,
   tournamentRecord,
   drawDefinition,
+  sideNumber,
   matchUpId,
   drawId,
   event,
@@ -53,9 +54,12 @@ export function matchUpActions({
 
   if (drawId) {
     return drawEngineMatchupActions({
+      tournamentParticipants: tournamentRecord.participants,
       policyDefinitions,
       drawDefinition,
+      sideNumber,
       matchUpId,
+      drawId,
     });
   } else {
     return { error: DRAW_DEFINITION_NOT_FOUND };
