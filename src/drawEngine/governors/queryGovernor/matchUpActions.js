@@ -30,6 +30,7 @@ import {
   ASSIGN_SIDE_METHOD,
 } from '../../../constants/positionActionConstants';
 import {
+  INVALID_VALUES,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
@@ -73,6 +74,9 @@ export function matchUpActions({
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+
+  if (sideNumber && ![1, 2].includes(sideNumber))
+    return { error: INVALID_VALUES, context: { sideNumber } };
 
   const otherFlightEntries =
     policyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS]?.otherFlightEntries;
@@ -266,29 +270,28 @@ export function matchUpActions({
     matchUp.matchUpStatus
   );
 
-  if (isDoubleExit) {
-    matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
+  matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
 
-    if (!inContextDrawMatchUps) {
-      ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-        includeByeMatchUps: true,
-        inContext: true,
-        drawDefinition,
-        matchUpsMap,
-      }));
-    }
-
-    const targetData = positionTargets({
-      inContextDrawMatchUps,
+  if (!inContextDrawMatchUps) {
+    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+      includeByeMatchUps: true,
+      tournamentParticipants,
+      inContext: true,
       drawDefinition,
-      matchUpId,
-    });
-    activeDownstream = isActiveDownstream({
-      inContextDrawMatchUps,
-      drawDefinition,
-      targetData,
-    });
+      matchUpsMap,
+    }));
   }
+
+  const targetData = positionTargets({
+    inContextDrawMatchUps,
+    drawDefinition,
+    matchUpId,
+  });
+  activeDownstream = isActiveDownstream({
+    inContextDrawMatchUps,
+    drawDefinition,
+    targetData,
+  });
 
   const readyToScore =
     (matchUpDrawPositionsAreAssigned || hasParticipants) &&
@@ -339,16 +342,56 @@ export function matchUpActions({
   }
 
   if (
+    matchUp.collectionId && // substituion only aplies to TEAM matchUps
     scoreHasValue(matchUp) &&
     !completedMatchUpStatuses.includes(matchUp.matchUpStatus)
   ) {
     if (matchUp.matchUpType === DOUBLES_MATCHUP) {
-      validActions.push({
-        info: 'list of team players available for substitution',
-        method: SUBSTITUTION_METHOD,
-        type: SUBSTITUTION,
-        payload: { matchUpId },
-      });
+      const inContextMatchUp = inContextDrawMatchUps.find(
+        (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
+      );
+      const existingParticipants = inContextMatchUp.sides
+        .filter((side) => !sideNumber || side.sideNumber === sideNumber)
+        .flatMap(
+          (side) => side.participant?.individualParticipants || side.participant
+        )
+        .filter(Boolean);
+      const existingParticipantIds = existingParticipants.map(getParticipantId);
+
+      const inContextDualMatchUp = inContextDrawMatchUps.find(
+        (drawMatchUp) => drawMatchUp.matchUpId === inContextMatchUp.matchUpTieId
+      );
+      const availableIndividualParticipants = inContextDualMatchUp.sides.map(
+        (side) =>
+          side.participant.individualParticipants.filter(
+            ({ participantId }) =>
+              !existingParticipantIds.includes(participantId)
+          )
+      );
+
+      // if no sideNumber is provided, segregate available by sideNumber and specify sideNumber
+      const availableParticipants = sideNumber
+        ? availableIndividualParticipants[sideNumber - 1]
+        : availableIndividualParticipants.map((available, i) => ({
+            participants: available,
+            sideNumber: i + 1,
+          }));
+
+      // action is not valid if there are no existing assignments or no available substitutions
+      if (existingParticipants.length && availableParticipants.length) {
+        validActions.push({
+          info: 'list of team players available for substitution',
+          method: SUBSTITUTION_METHOD,
+          type: SUBSTITUTION,
+          payload: {
+            existingParticipants,
+            availableParticipants,
+            sideNumber,
+            matchUpId,
+            drawId,
+          },
+        });
+      }
     }
   }
 
