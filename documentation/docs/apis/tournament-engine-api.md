@@ -835,6 +835,10 @@ tournamentEngine.automatedPositioning({ drawId, structureId });
 
 ## autoSeeding
 
+:::note
+Only generates seeding. To apply `tournamentEngine.setParticipantScaleItems({ scaleItemsWithParticipantIds }`.
+:::
+
 ```js
 const { scaleItemsWithParticipantIds } = tournamentEngine.autoSeeding({
   eventId,

@@ -15,7 +15,6 @@ it('can autoSeed by Rankings', () => {
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize: 32, category: { categoryName: 'U18' } }],
-    participantCount: 32,
   });
 
   tournamentEngine.setState(tournamentRecord);

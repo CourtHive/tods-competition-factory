@@ -177,7 +177,8 @@ function randomUnseededDistribution({
         event,
       });
       if (result?.error) console.log('!!!!!', { result });
-      if (result?.error) return result;
+      if (result?.error)
+        return decorateResult({ result, stack: 'randomUnseededDistribution' });
     }
   }
   return { ...SUCCESS };

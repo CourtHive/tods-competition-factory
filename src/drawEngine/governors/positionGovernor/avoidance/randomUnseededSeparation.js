@@ -1,13 +1,17 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
-import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { assignDrawPositionBye } from '../byePositioning/assignDrawPositionBye';
 import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
 import { generatePositioningCandidate } from './generatePositioningCandidate';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { addParticipantGroupings } from './addParticipantGroupings';
 import { findStructure } from '../../../getters/findStructure';
 import { deriveExponent } from '../../../../utilities/math';
 import { assignDrawPosition } from '../positionAssignment';
+import {
+  getPositionAssignments,
+  structureAssignedDrawPositions,
+} from '../../../getters/positionsGetter';
 import {
   chunkArray,
   generateRange,
@@ -54,6 +58,8 @@ export function randomUnseededSeparation({
   }
   const { candidatesCount = 1, policyAttributes, targetDivisions } = avoidance;
   let { roundsToSeparate } = avoidance;
+
+  const stack = 'randomUnseededSeparation';
 
   // policyAttributes determines participant attributes which are to be used for avoidance
   // roundsToSeparate determines desired degree of separation between players with matching attribute values
@@ -138,7 +144,6 @@ export function randomUnseededSeparation({
   }
 
   let candidate;
-  const errors = [];
   const opponentsToPlaceCount = unplacedParticipantIds.length;
 
   const noPairPriorityCandidates = generateRange(0, candidatesCount).map(() =>
@@ -194,57 +199,48 @@ export function randomUnseededSeparation({
 
   if (!candidate) return { error: NO_CANDIDATES };
 
-  const alreadyAssignedParticipantIds = (structure.positionAssignments || [])
+  const alreadyAssignedParticipantIds = (
+    getPositionAssignments({ structure })?.positionAssignments || []
+  )
     .filter((assignment) => assignment.participantId)
     .map((assignment) => assignment.participantId);
 
-  candidate.positionAssignments
-    .filter(
-      (assignment) =>
-        !alreadyAssignedParticipantIds.includes(assignment.participantId)
-      // && !assignment.bye
-    )
-    .forEach((assignment) => {
-      if (assignment.bye) {
-        const result = assignDrawPositionBye({
-          tournamentRecord,
-          drawDefinition,
-          seedBlockInfo,
-          structureId,
-          matchUpsMap,
-          event,
-          ...assignment,
-        });
-        if (!result?.success) {
-          errors.push(result);
-        }
-      } else {
-        const result = assignDrawPosition({
-          automaticPlacement: true,
-          inContextDrawMatchUps,
-          tournamentRecord,
-          drawDefinition,
-          seedBlockInfo,
-          structureId,
-          matchUpsMap,
-          event,
-          ...assignment,
-        });
-        if (!result?.success) {
-          errors.push(result);
-        }
-      }
-    });
+  const filteredAssignments = candidate.positionAssignments.filter(
+    (assignment) =>
+      !alreadyAssignedParticipantIds.includes(assignment.participantId)
+    // && !assignment.bye
+  );
 
-  return errors.length
-    ? { error: errors, conflicts: candidate.conflicts }
-    : Object.assign(
-        {
-          positionAssignments: candidate.positionAssignments,
-          conflicts: candidate.conflicts,
-        },
-        SUCCESS
-      );
+  for (const assignment of filteredAssignments) {
+    if (assignment.bye) {
+      const result = assignDrawPositionBye({
+        tournamentRecord,
+        drawDefinition,
+        seedBlockInfo,
+        structureId,
+        matchUpsMap,
+        event,
+        ...assignment,
+      });
+      if (result.error) return decorateResult({ result, stack });
+    } else {
+      const result = assignDrawPosition({
+        automaticPlacement: true,
+        inContextDrawMatchUps,
+        tournamentRecord,
+        drawDefinition,
+        seedBlockInfo,
+        structureId,
+        matchUpsMap,
+        event,
+        ...assignment,
+      });
+
+      if (result.error) return decorateResult({ result, stack });
+    }
+  }
+
+  return { ...SUCCESS };
 }
 
 function roundRobinParticipantGroups(params) {
