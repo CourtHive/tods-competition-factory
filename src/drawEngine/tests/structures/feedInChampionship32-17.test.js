@@ -32,10 +32,10 @@ it('correctly assigns BYE positions in consolation structure', () => {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    eventId,
-    drawSize,
     matchUpFormat: 'SET3-S:6/TB7',
     drawType: FEED_IN_CHAMPIONSHIP,
+    drawSize,
+    eventId,
   });
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
