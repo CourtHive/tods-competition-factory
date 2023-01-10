@@ -145,8 +145,8 @@ export function replaceTieMatchUpParticipantId(params) {
         if (!teamCompetitor.collectionAssignments)
           teamCompetitor.collectionAssignments = [];
         teamCompetitor.collectionAssignments.push({
-          collectionId,
           collectionPosition,
+          collectionId,
         });
       }
 
@@ -155,8 +155,8 @@ export function replaceTieMatchUpParticipantId(params) {
 
   if (!newParticipantIdInLineUp) {
     modifiedLineUp.push({
-      participantId: newParticipantId,
       collectionAssignments: [{ collectionId, collectionPosition }],
+      participantId: newParticipantId,
     });
   }
 

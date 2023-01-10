@@ -42,6 +42,7 @@ export function getDrawPositionCollectionAssignment({
             drawDefinition,
           })?.lineUp;
 
+        // TODO: when there have been substitutions check substitutionOrder and previousParticipantId
         const relevantCompetitors = lineUp?.filter((teamCompetitor) => {
           return teamCompetitor.collectionAssignments?.find(
             (assignment) =>
