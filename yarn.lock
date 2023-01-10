@@ -5912,10 +5912,10 @@ quick-lru@^4.0.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
   integrity sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==
 
-quicktype@17.0.5:
-  version "17.0.5"
-  resolved "https://registry.yarnpkg.com/quicktype/-/quicktype-17.0.5.tgz#e5457eead93fd95cdd15a98b6f7b485836b9dbaf"
-  integrity sha512-1SG/rjLXeqMMQKWxH0UNvyGAviZu0ssXLKhFwjML5iksdHZfGj8sgCG3MnbwqWBo/RVaTRJ88/u/NPxRJBVcgA==
+quicktype@17.0.6:
+  version "17.0.6"
+  resolved "https://registry.yarnpkg.com/quicktype/-/quicktype-17.0.6.tgz#0c71c4668ae8084c169c280b40fae3ea7ebc523f"
+  integrity sha512-DOKuLrcWCXxvMXp/DCA5fxSzJuPvx7rVF/t7kziXvQ3n+qnMZkGtz2XeEOKOJjQTC6TTrlKaL/cTqAtm53C0Cg==
   dependencies:
     "@mark.probst/typescript-json-schema" "~0.32.0"
     browser-or-node "^1.2.1"
