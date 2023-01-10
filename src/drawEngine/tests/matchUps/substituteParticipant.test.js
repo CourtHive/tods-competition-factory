@@ -326,6 +326,12 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   });
   expect(result.error).toEqual(INVALID_PARTICIPANT_ID);
 
+  result = tournamentEngine[method]({
+    ...payload, // order is important!
+    sideNumber: 1, // specifying a sideNumber which does not correspond to the side of the participants
+  });
+  expect(result.error).toEqual(INVALID_PARTICIPANT_ID);
+
   result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
 });

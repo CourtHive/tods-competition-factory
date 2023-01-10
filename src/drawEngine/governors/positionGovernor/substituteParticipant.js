@@ -50,34 +50,25 @@ export function substituteParticipant({
     (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
   );
 
-  const existingParticipants = inContextMatchUp.sides
-    .filter((side) => !sideNumber || side.sideNumber === sideNumber)
-    .flatMap(
-      (side) => side.participant?.individualParticipants || side.participant
-    )
-    .filter(Boolean);
-  const existingParticipantIds = existingParticipants.map(getParticipantId);
-
-  if (!existingParticipantIds.includes(existingParticipantId))
-    return { error: INVALID_PARTICIPANT_ID };
-
   const inContextDualMatchUp = inContextDrawMatchUps.find(
     (drawMatchUp) => drawMatchUp.matchUpId === inContextMatchUp.matchUpTieId
   );
-  const availableIndividualParticipants = inContextDualMatchUp.sides.map(
-    (side) =>
-      side.participant.individualParticipants.filter(
-        ({ participantId }) => !existingParticipantIds.includes(participantId)
-      )
+
+  // ensure that existingParticipantId and substituteParticipantId are on the same team
+  const relevantSide = inContextDualMatchUp.sides.find((side) =>
+    side.participant.individualParticipants.some(
+      ({ participantId }) => participantId === existingParticipantId
+    )
   );
 
+  if (!relevantSide || (sideNumber && relevantSide.sideNumber !== sideNumber))
+    return { error: INVALID_PARTICIPANT_ID };
+
   // if no sideNumber is provided, segregate available by sideNumber and specify sideNumber
-  const availableParticipantIds = sideNumber
-    ? availableIndividualParticipants[sideNumber - 1]?.map(getParticipantId)
-    : availableIndividualParticipants.map((available, i) => ({
-        participants: available?.map(getParticipantId),
-        sideNumber: i + 1,
-      }));
+  const availableParticipantIds =
+    relevantSide.participant.individualParticipants
+      .map(getParticipantId)
+      .filter((participantId) => participantId !== existingParticipantId);
 
   if (!availableParticipantIds.includes(substituteParticipantId))
     return { error: INVALID_PARTICIPANT_ID };
