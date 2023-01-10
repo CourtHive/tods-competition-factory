@@ -30,11 +30,11 @@ it('can add drawPositionsRange to inContext matchUps in a SINGLE_ELIMINATION str
 
   const matchUpFormat = 'SET5-S:4/TB7';
   const values = {
+    event: eventResult,
     automated: true,
+    matchUpFormat,
     drawSize: 32,
     eventId,
-    event: eventResult,
-    matchUpFormat,
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const structure = drawDefinition.structures[0];
