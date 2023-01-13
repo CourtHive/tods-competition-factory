@@ -36,7 +36,7 @@ export function getSchedulingProfile({ tournamentRecord }) {
   let schedulingProfile = extension?.value || [];
 
   if (schedulingProfile.length) {
-    const venueIds = tournamentRecord.venues.map(
+    const venueIds = tournamentRecord.venues?.map(
       ({ venueId, courts }) => courts?.length && venueId
     );
     const { eventIds, drawIds } = getEventIdsAndDrawIds({
