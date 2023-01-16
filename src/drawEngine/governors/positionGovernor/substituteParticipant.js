@@ -1,9 +1,9 @@
+import { replaceTieMatchUpParticipantId } from '../../../tournamentEngine/governors/eventGovernor/replaceTieMatchUpParticipant';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_MATCHUP,
   INVALID_PARTICIPANT_ID,
@@ -27,7 +27,7 @@ export function substituteParticipant({
   if (!existingParticipantId || !substituteParticipantId)
     return { error: MISSING_PARTICIPANT_ID };
 
-  const { matchUp, structure } = findMatchUp({
+  const { matchUp } = findMatchUp({
     drawDefinition,
     matchUpId,
     event,
@@ -73,9 +73,13 @@ export function substituteParticipant({
   if (!availableParticipantIds.includes(substituteParticipantId))
     return { error: INVALID_PARTICIPANT_ID };
 
-  structure;
-
-  // if the matchUp is doubles then need to check whether a valid PAIR participant exists and if not create
-
-  return { ...SUCCESS };
+  return replaceTieMatchUpParticipantId({
+    newParticipantId: substituteParticipantId,
+    tieMatchUpId: matchUpId,
+    existingParticipantId,
+    substitution: true,
+    tournamentRecord,
+    drawDefinition,
+    event,
+  });
 }
