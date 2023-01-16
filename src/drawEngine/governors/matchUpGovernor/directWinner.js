@@ -1,3 +1,4 @@
+import { removeLineUpSubstitutions } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeLineUpSubstitutions';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
@@ -192,9 +193,13 @@ export function directWinner({
 
       // attach to appropriate side of winnerMatchUp
       if (targetSide) {
-        targetSide.lineUp = side.lineUp?.filter(
+        const filteredLineUp = side.lineUp?.filter(
           (assignment) => assignment?.participantId
         );
+
+        targetSide.lineUp = removeLineUpSubstitutions({
+          lineUp: filteredLineUp,
+        });
 
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,

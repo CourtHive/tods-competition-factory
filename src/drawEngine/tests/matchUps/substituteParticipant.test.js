@@ -1,3 +1,5 @@
+import { removeLineUpSubstitutions } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeLineUpSubstitutions';
+import { validateLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/validateTeamLineUp';
 import { generateTeamTournament } from '../../../tournamentEngine/tests/team/generateTestTeamTournament';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import tournamentEngine from '../../../tournamentEngine/sync';
@@ -338,9 +340,10 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
 
-  const targetMatchUp = tournamentEngine
-    .allTournamentMatchUps()
-    .matchUps.find(({ matchUpId }) => matchUpId === doublesMatchUpId);
+  const allMatchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  const targetMatchUp = allMatchUps.find(
+    ({ matchUpId }) => matchUpId === doublesMatchUpId
+  );
 
   const modifiedSides = targetMatchUp.sides;
 
@@ -362,7 +365,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
       .participantId
   );
 
-  // expect the side that DID have a substitution to have one individualParticipantId that is equivalent
+  // expect the side that DID have a substitution to have one individualParticipantId that is equivalent const originalSideIndividualParticipantIds = originalSides.find(
   const originalSideIndividualParticipantIds = originalSides.find(
     ({ sideNumber }) => sideNumber === targetSideNumber
   ).participant.individualParticipantIds;
@@ -380,4 +383,44 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   expect(
     modifiedSideIndividualParticipantIds.includes(substituteParticipantId)
   ).toEqual(true);
+
+  const teamLineUps = allMatchUps
+    .find(({ matchUpId }) => matchUpId === targetMatchUp.matchUpTieId)
+    .sides.map(({ lineUp }) => lineUp);
+  expect(
+    teamLineUps.every((lineUp) => validateLineUp({ lineUp }).valid)
+  ).toEqual(true);
+
+  const modifiedLineUp = teamLineUps.find((lineUp) =>
+    lineUp.some(({ collectionAssignments }) =>
+      collectionAssignments.some(({ substitutionOrder }) => substitutionOrder)
+    )
+  );
+  const prunedLineUp = removeLineUpSubstitutions({
+    lineUp: modifiedLineUp,
+    log: true,
+  });
+  // expect the number of participants in the lineUp to be the same
+  expect(modifiedLineUp.length).toEqual(prunedLineUp.length);
+  // expect the aggregate number of collectionAssignments in prunedLineUp to be one less
+  expect(
+    modifiedLineUp.flatMap((assignment) => assignment.collectionAssignments)
+      .length
+  ).toEqual(
+    prunedLineUp.flatMap((assignment) => assignment.collectionAssignments)
+      .length + 1
+  );
+
+  // expect there to be SOME collectionAssignments with substitutionOrder in prunedLineUp
+  expect(
+    modifiedLineUp
+      .flatMap((assignment) => assignment.collectionAssignments)
+      .some(({ substitutionOrder }) => substitutionOrder)
+  ).toEqual(true);
+  // expect there to be NO collectionAssignments with substitutionOrder in prunedLineUp
+  expect(
+    prunedLineUp
+      .flatMap((assignment) => assignment.collectionAssignments)
+      .some(({ substitutionOrder }) => substitutionOrder)
+  ).toEqual(false);
 });
