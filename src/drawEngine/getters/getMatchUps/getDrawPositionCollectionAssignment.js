@@ -1,6 +1,6 @@
+import { getCollectionPositionAssignments } from '../../../tournamentEngine/governors/eventGovernor/getCollectionPositionAssignments';
 import { getPairedParticipant } from '../../../tournamentEngine/governors/participantGovernor/getPairedParticipant';
 import { getTeamLineUp } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/getTeamLineUp';
-import { getParticipantId } from '../../../global/functions/extractors';
 
 import { DOUBLES } from '../../../constants/matchUpTypes';
 
@@ -42,22 +42,17 @@ export function getDrawPositionCollectionAssignment({
             drawDefinition,
           })?.lineUp;
 
-        // TODO: when there have been substitutions check substitutionOrder and previousParticipantId
-        const relevantCompetitors = lineUp?.filter((teamCompetitor) => {
-          return teamCompetitor.collectionAssignments?.find(
-            (assignment) =>
-              assignment.collectionId === collectionId &&
-              assignment.collectionPosition === collectionPosition
-          );
+        const collectionPositionAssignments = getCollectionPositionAssignments({
+          collectionPosition,
+          collectionId,
+          lineUp,
         });
 
         if (matchUpType === DOUBLES) {
-          if (relevantCompetitors?.length <= 2) {
-            const participantIds = relevantCompetitors?.map(getParticipantId);
-
+          if (collectionPositionAssignments?.length <= 2) {
             const pairedParticipantId =
-              participantMap?.[participantIds[0]]?.pairIdMap?.[
-                participantIds[1]
+              participantMap?.[collectionPositionAssignments[0]]?.pairIdMap?.[
+                collectionPositionAssignments[1]
               ];
             const pairedParticipant =
               pairedParticipantId &&
@@ -66,13 +61,13 @@ export function getDrawPositionCollectionAssignment({
               pairedParticipant ||
               // resort to brute force
               getPairedParticipant({
+                participantIds: collectionPositionAssignments,
                 tournamentParticipants,
-                participantIds,
               }).participant;
 
             const participantId = participant?.participantId;
             return { [drawPosition]: { participantId, teamParticipant } };
-          } else if (relevantCompetitors?.length > 2) {
+          } else if (collectionPositionAssignments?.length > 2) {
             /*
             console.log('ERROR: Too many assignments for', {
               assignmentsCount: relevantCompetitors.length,
@@ -83,7 +78,7 @@ export function getDrawPositionCollectionAssignment({
             return { [drawPosition]: { teamParticipant } };
           }
         } else {
-          const participantId = relevantCompetitors?.[0]?.participantId;
+          const participantId = collectionPositionAssignments?.[0];
 
           return (
             participantId && {

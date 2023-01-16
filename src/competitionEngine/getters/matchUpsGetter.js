@@ -1,11 +1,10 @@
 import { getSchedulingProfile } from '../governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { scheduledSortedMatchUps } from '../../global/sorting/scheduledSortedMatchUps';
+import { getVenuesAndCourts } from './venuesAndCourtsGetter';
 import {
   getEventTimeItem,
   getTournamentTimeItem,
 } from '../../tournamentEngine/governors/queryGovernor/timeItems';
-
-import { getVenuesAndCourts } from './venuesAndCourtsGetter';
 import {
   allTournamentMatchUps,
   tournamentMatchUps,
