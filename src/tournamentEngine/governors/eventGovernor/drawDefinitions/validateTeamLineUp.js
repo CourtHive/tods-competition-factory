@@ -3,7 +3,7 @@ import { unique } from '../../../../utilities/arrays';
 
 import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
 
-export function validateLineUp({ lineUp }) {
+export function validateLineUp({ lineUp, tieFormat }) {
   let errors = [];
   if (!Array.isArray(lineUp)) {
     errors.push('lineUp must be an array of objects');
@@ -48,6 +48,10 @@ export function validateLineUp({ lineUp }) {
   const noDuplicates =
     unique(lineUp.map(getParticipantId)).length === lineUp.length;
   if (!noDuplicates) errors.push('Duplicated participantId(s)');
+
+  if (tieFormat) {
+    // validate that all lineUp assignments contain valid collectionIds and collectionPositions
+  }
 
   const valid = validItems && noDuplicates;
 
