@@ -1,7 +1,10 @@
 import { generateTeamTournament } from '../../../tournamentEngine/tests/team/generateTestTeamTournament';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import tournamentEngine from '../../../tournamentEngine/sync';
+import { intersection } from '../../../utilities';
 
+import { IN_PROGRESS } from '../../../constants/matchUpStatusConstants';
+import { LINEUPS } from '../../../constants/extensionConstants';
 import {
   INVALID_MATCHUP,
   INVALID_PARTICIPANT_ID,
@@ -9,8 +12,6 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_PARTICIPANT_ID,
 } from '../../../constants/errorConditionConstants';
-import { IN_PROGRESS } from '../../../constants/matchUpStatusConstants';
-import { LINEUPS } from '../../../constants/extensionConstants';
 import {
   PAIR,
   TEAM_PARTICIPANT,
@@ -224,12 +225,13 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   expect(validActions).toEqual([REFEREE, SCHEDULE]);
 
   // test doublesMatchUps
-  const doublesMatchUps = matchUps.filter(
+  let doublesMatchUps = matchUps.filter(
     ({ matchUpType }) => matchUpType === DOUBLES_MATCHUP
   );
   expect(doublesMatchUps.length).toEqual(16);
 
   const doublesMatchUpId = doublesMatchUps[0].matchUpId;
+  const originalSides = doublesMatchUps[0].sides;
 
   result = tournamentEngine.matchUpActions({
     matchUpId: doublesMatchUpId,
@@ -273,9 +275,10 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
+  const targetSideNumber = 2;
   result = tournamentEngine.matchUpActions({
+    sideNumber: targetSideNumber,
     matchUpId: doublesMatchUpId,
-    sideNumber: 2,
     drawId,
   });
   validActions = result.validActions.map(({ type }) => type);
@@ -334,4 +337,47 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
 
   result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
+
+  const targetMatchUp = tournamentEngine
+    .allTournamentMatchUps()
+    .matchUps.find(({ matchUpId }) => matchUpId === doublesMatchUpId);
+
+  const modifiedSides = targetMatchUp.sides;
+
+  // expect the side that DID NOT have a substitution to be equivalent
+  expect(
+    originalSides.find(({ sideNumber }) => sideNumber !== targetSideNumber)
+      .participantId
+  ).toEqual(
+    modifiedSides.find(({ sideNumber }) => sideNumber !== targetSideNumber)
+      .participantId
+  );
+
+  // expect the side that DID have a substitution to be different
+  expect(
+    originalSides.find(({ sideNumber }) => sideNumber === targetSideNumber)
+      .participantId
+  ).not.toEqual(
+    modifiedSides.find(({ sideNumber }) => sideNumber === targetSideNumber)
+      .participantId
+  );
+
+  // expect the side that DID have a substitution to have one individualParticipantId that is equivalent
+  const originalSideIndividualParticipantIds = originalSides.find(
+    ({ sideNumber }) => sideNumber === targetSideNumber
+  ).participant.individualParticipantIds;
+  const modifiedSideIndividualParticipantIds = modifiedSides.find(
+    ({ sideNumber }) => sideNumber === targetSideNumber
+  ).participant.individualParticipantIds;
+
+  expect(
+    intersection(
+      originalSideIndividualParticipantIds,
+      modifiedSideIndividualParticipantIds
+    ).length
+  ).toEqual(1);
+
+  expect(
+    modifiedSideIndividualParticipantIds.includes(substituteParticipantId)
+  ).toEqual(true);
 });
