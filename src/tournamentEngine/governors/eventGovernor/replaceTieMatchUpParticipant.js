@@ -1,11 +1,13 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { getCollectionPositionAssignments } from './getCollectionPositionAssignments';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { findExtension } from '../queryGovernor/extensionQueries';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
+import { makeDeepCopy } from '../../../utilities';
 
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { LINEUPS } from '../../../constants/extensionConstants';
@@ -29,10 +31,13 @@ export function replaceTieMatchUpParticipantId(params) {
     tournamentRecord,
     newParticipantId,
     drawDefinition,
+    substitution,
   } = params;
 
   if (!existingParticipantId || !newParticipantId)
     return { error: MISSING_PARTICIPANT_ID };
+
+  if (existingParticipantId === newParticipantId) return { ...SUCCESS };
 
   const {
     inContextDualMatchUp,
@@ -98,9 +103,9 @@ export function replaceTieMatchUpParticipantId(params) {
 
   if (!dualMatchUpSide) {
     return {
-      error: NOT_FOUND,
-      existingParticipantId,
       sideNumber: side.sideNumber,
+      existingParticipantId,
+      error: NOT_FOUND,
     };
   }
 
@@ -113,44 +118,74 @@ export function replaceTieMatchUpParticipantId(params) {
     ({ participantId }) => newParticipantId === participantId
   );
 
+  const substitutionOrder = teamLineUp?.reduce(
+    (order, teamCompetitor) =>
+      teamCompetitor.substitutionOrder > order
+        ? teamCompetitor.substitutionOrder
+        : order,
+    0
+  );
+
   const modifiedLineUp =
     teamLineUp?.map((teamCompetitor) => {
+      const modifiedCompetitor = makeDeepCopy(teamCompetitor, false, true);
+
       // if the current competitor is not either id, return as is
       if (
         ![existingParticipantId, newParticipantId].includes(
-          teamCompetitor.participantId
+          modifiedCompetitor.participantId
         )
       ) {
-        return teamCompetitor;
+        return modifiedCompetitor;
       }
 
       // if current competitor includes an id then filter out current assignment
       if (
+        !substitution &&
         [existingParticipantId, newParticipantId].includes(
-          teamCompetitor.participantId
+          modifiedCompetitor.participantId
         )
       ) {
-        teamCompetitor.collectionAssignments =
-          teamCompetitor.collectionAssignments?.filter(
+        modifiedCompetitor.collectionAssignments =
+          modifiedCompetitor.collectionAssignments?.filter(
             (assignment) =>
               !(
-                assignment.collectionId === collectionId &&
-                assignment.collectionPosition === collectionPosition
+                assignment.collectionPosition === collectionPosition &&
+                assignment.collectionId === collectionId
               )
           );
       }
 
-      // if current competitor is newParticipantId, push the new assignment
-      if (teamCompetitor.participantId === newParticipantId) {
-        if (!teamCompetitor.collectionAssignments)
-          teamCompetitor.collectionAssignments = [];
-        teamCompetitor.collectionAssignments.push({
-          collectionPosition,
-          collectionId,
-        });
+      if (
+        substitution &&
+        existingParticipantId === modifiedCompetitor.participantId
+      ) {
+        modifiedCompetitor.collectionAssignments =
+          modifiedCompetitor.collectionAssignments.map((assignment) => {
+            if (
+              assignment.collectionPosition === collectionPosition &&
+              assignment.collectionId === collectionId &&
+              assignment.substitutionOrder === undefined
+            ) {
+              return { ...assignment, substitutionOrder };
+            }
+            return assignment;
+          });
       }
 
-      return teamCompetitor;
+      // if current competitor is newParticipantId, push the new assignment
+      if (modifiedCompetitor.participantId === newParticipantId) {
+        if (!modifiedCompetitor.collectionAssignments)
+          modifiedCompetitor.collectionAssignments = [];
+        const assignment = { collectionId, collectionPosition };
+        if (substitution) {
+          assignment.previousParticipantId = existingParticipantId;
+          assignment.substitutionOrder = substitutionOrder + 1;
+        }
+        modifiedCompetitor.collectionAssignments.push(assignment);
+      }
+
+      return modifiedCompetitor;
     }) || [];
 
   if (!newParticipantIdInLineUp) {
@@ -164,30 +199,20 @@ export function replaceTieMatchUpParticipantId(params) {
 
   const existingIndividualParticipantIds =
     isDoubles &&
-    teamLineUp
-      .map((teamCompetitor) => {
-        const assignment = teamCompetitor.collectionAssignments?.find(
-          (assignment) =>
-            assignment.collectionId === collectionId &&
-            assignment.collectionPosition === collectionPosition
-        );
-        return assignment && teamCompetitor.participantId;
-      })
-      .filter(Boolean);
+    getCollectionPositionAssignments({
+      lineUp: teamLineUp,
+      collectionPosition,
+      collectionId,
+    });
 
   // now check whether new pairParticipant exists
   const individualParticipantIds =
     isDoubles &&
-    modifiedLineUp
-      .map((teamCompetitor) => {
-        const assignment = teamCompetitor.collectionAssignments?.find(
-          (assignment) =>
-            assignment.collectionId === collectionId &&
-            assignment.collectionPosition === collectionPosition
-        );
-        return assignment && teamCompetitor.participantId;
-      })
-      .filter(Boolean);
+    getCollectionPositionAssignments({
+      lineUp: modifiedLineUp,
+      collectionPosition,
+      collectionId,
+    });
 
   dualMatchUpSide.lineUp = modifiedLineUp;
 
@@ -213,9 +238,9 @@ export function replaceTieMatchUpParticipantId(params) {
 
     if (!result.participant) {
       const participant = {
+        participantRole: COMPETITOR,
         individualParticipantIds,
         participantType: PAIR,
-        participantRole: COMPETITOR,
       };
       const result = addParticipant({
         returnParticipant: true,
@@ -249,5 +274,5 @@ export function replaceTieMatchUpParticipantId(params) {
     drawDefinition,
   });
 
-  return { ...SUCCESS, participantRemoved, participantAdded };
+  return { ...SUCCESS, modifiedLineUp, participantRemoved, participantAdded };
 }

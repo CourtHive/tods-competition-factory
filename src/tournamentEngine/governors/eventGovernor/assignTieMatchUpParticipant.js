@@ -33,6 +33,7 @@ export function assignTieMatchUpParticipantId(params) {
 
   let teamParticipantId = params.teamParticipantId;
   const { tournamentRecord, drawDefinition, participantId } = params;
+
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
   const {
@@ -153,19 +154,18 @@ export function assignTieMatchUpParticipantId(params) {
     ?.map((assignment) => assignment?.participantId);
 
   const participantIds =
-    assignedParticipantIds?.length > 1
-      ? assignedParticipantIds
-      : participantType === PAIR
+    (assignedParticipantIds?.length > 1 && assignedParticipantIds) ||
+    (participantType === PAIR
       ? participantToAssign.individualParticipantIds
-      : [participantId];
+      : [participantId]);
 
   // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/participantId
   const modifiedLineUp = removeCollectionAssignments({
-    participantIds,
     collectionPosition,
     teamParticipantId,
     dualMatchUpSide,
     drawDefinition,
+    participantIds,
     collectionId,
   })?.modifiedLineUp;
 

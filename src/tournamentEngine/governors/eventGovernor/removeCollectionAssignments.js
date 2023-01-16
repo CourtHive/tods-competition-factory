@@ -2,7 +2,6 @@ import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
-// NOTE: do not remove participantIds for which there has been a substitution
 export function removeCollectionAssignments({
   collectionPosition,
   teamParticipantId,

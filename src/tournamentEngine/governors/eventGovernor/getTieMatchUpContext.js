@@ -15,6 +15,9 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
+// for a given tieMatchUpId (SINGLES or DOUBLES) return:
+// the tieMatchUp, the dualMatchUp within which it occurs, an inContext copy of the dualMatchUp
+// the tieFormat, collectionId and collectionPosition & etc.
 export function getTieMatchUpContext({
   tournamentRecord,
   drawDefinition,
