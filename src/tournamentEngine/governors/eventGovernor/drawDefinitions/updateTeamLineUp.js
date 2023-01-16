@@ -1,6 +1,7 @@
 import { addDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { findExtension } from '../../../../global/functions/deducers/findExtension';
 import { addExtension } from '../../../../global/functions/producers/addExtension';
+import { removeLineUpSubstitutions } from './removeLineUpSubstitutions';
 import { validateLineUp } from './validateTeamLineUp';
 
 import { LINEUPS } from '../../../../constants/extensionConstants';
@@ -17,7 +18,7 @@ import {
  *
  * @param {string} drawId - drawDefinition is resolved by tournamentEngine
  * @param {string} participantId - id of the team for which lineUp is being updated
- * @param {object} tieFormat - valid tieFormat definition; used to validate collectionIds
+ * @param {object} tieFormat - optional - valid tieFormat definition; used to validate collectionIds
  * @param {object[]} lineUp - modified lineUp [{ participantId, collectionAssignments }]
  * @returns
  */
@@ -41,7 +42,7 @@ export function updateTeamLineUp({
   });
 
   const value = existingExtension?.value || {};
-  value[participantId] = lineUp;
+  value[participantId] = removeLineUpSubstitutions({ lineUp });
 
   const extension = { name: LINEUPS, value };
 

@@ -1,3 +1,4 @@
+import { removeLineUpSubstitutions } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeLineUpSubstitutions';
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
@@ -215,7 +216,7 @@ export function directLoser(params) {
 
       // attach to appropriate side of winnerMatchUp
       if (targetSide) {
-        targetSide.lineUp = side.lineUp;
+        targetSide.lineUp = removeLineUpSubstitutions({ lineUp: side.lineUp });
 
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,

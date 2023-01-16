@@ -239,7 +239,7 @@ export function assignDrawPosition({
       structure,
     });
 
-    // if this a team participant is being assigned and there is a default lineUp, attach to side
+    // if a team participant is being assigned and there is a default lineUp, attach to side
     if (matchUps?.length === 1 && matchUps[0].matchUpType === TEAM) {
       const drawPositionSideIndex = targetMatchUps?.[0]?.sides.reduce(
         (sideIndex, side, i) =>
