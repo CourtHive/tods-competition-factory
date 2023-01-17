@@ -157,8 +157,8 @@ export function conditionallyRemoveDrawPosition(params) {
     );
   } else if (!sourceMatchUp) {
     drawPositionToRemove = intersection(
-      targetMatchUp.drawPositions,
-      nextWinnerMatchUp.drawPositions
+      targetMatchUp?.drawPositions || [],
+      nextWinnerMatchUp?.drawPositions || []
     )?.[0];
   } else {
     pairedPreviousMatchUp = getPairedPreviousMatchUp({
