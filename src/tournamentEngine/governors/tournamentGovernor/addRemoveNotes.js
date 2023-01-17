@@ -1,8 +1,8 @@
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function addNotes({ element, notes } = {}) {
   if (typeof element !== 'object') return { error: INVALID_VALUES };
