@@ -126,7 +126,7 @@
     "pinst": "3.0.0",
     "prettier": "2.8.3",
     "prettier-eslint": "15.0.1",
-    "quicktype": "18.0.6",
+    "quicktype": "21.0.2",
     "rimraf": "4.1.0",
     "rollup": "3.10.0",
     "rollup-plugin-dts": "5.1.1",
