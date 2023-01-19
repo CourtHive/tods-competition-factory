@@ -273,7 +273,8 @@ function eliminationParticipantGroups({
   );
 
   const structureSize = firstRoundMatchUpDrawPositions.length;
-  const roundSizes = generateRange(2, structureSize).filter(
+  const rangeStart = structureSize === 2 ? 1 : 2;
+  const roundSizes = generateRange(rangeStart, structureSize).filter(
     (f) => f === nearestPowerOf2(f)
   );
 
