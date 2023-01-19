@@ -12,8 +12,8 @@ import {
 
 export function modifyParticipantName({
   tournamentRecord,
-  participantId,
   participantName,
+  participantId,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };

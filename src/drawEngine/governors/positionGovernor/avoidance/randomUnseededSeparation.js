@@ -208,7 +208,6 @@ export function randomUnseededSeparation({
   const filteredAssignments = candidate.positionAssignments.filter(
     (assignment) =>
       !alreadyAssignedParticipantIds.includes(assignment.participantId)
-    // && !assignment.bye
   );
 
   for (const assignment of filteredAssignments) {
@@ -236,7 +235,9 @@ export function randomUnseededSeparation({
         ...assignment,
       });
 
-      if (result.error) return decorateResult({ result, stack });
+      if (result.error) {
+        return decorateResult({ result, stack, context: { assignment } });
+      }
     }
   }
 
@@ -272,7 +273,8 @@ function eliminationParticipantGroups({
   );
 
   const structureSize = firstRoundMatchUpDrawPositions.length;
-  const roundSizes = generateRange(2, structureSize).filter(
+  const rangeStart = structureSize === 2 ? 1 : 2;
+  const roundSizes = generateRange(rangeStart, structureSize).filter(
     (f) => f === nearestPowerOf2(f)
   );
 

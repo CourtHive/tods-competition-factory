@@ -54,14 +54,18 @@ export function addEventEntries(params) {
     event,
   } = params;
 
+  const stack = 'addEventEntries';
+
   if (!event) return { error: MISSING_EVENT };
   if (!participantIds || !participantIds.length) {
-    return { error: MISSING_PARTICIPANT_IDS };
+    return decorateResult({
+      result: { error: MISSING_PARTICIPANT_IDS },
+      stack,
+    });
   }
 
   if (!event || !event.eventId) return { error: EVENT_NOT_FOUND };
 
-  const stack = 'addEventEntries';
   const removedEntries = [];
   const addedEntries = [];
 

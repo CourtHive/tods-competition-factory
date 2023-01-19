@@ -16,12 +16,20 @@ export function removeEventEntries({
   participantIds,
   event,
 }) {
-  if (!event?.eventId) return { error: MISSING_EVENT };
-  if (!Array.isArray(participantIds)) return { error: MISSING_PARTICIPANT_IDS };
   const stack = 'removeEventEntries';
+  if (!event?.eventId) return { error: MISSING_EVENT };
+  if (!Array.isArray(participantIds))
+    return decorateResult({
+      result: { error: MISSING_PARTICIPANT_IDS },
+      stack,
+    });
 
   participantIds = participantIds?.filter(Boolean);
-  if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
+  if (!participantIds?.length)
+    return decorateResult({
+      result: { error: MISSING_PARTICIPANT_IDS },
+      stack,
+    });
 
   const { eventId } = event;
 

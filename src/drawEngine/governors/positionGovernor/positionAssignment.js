@@ -60,7 +60,7 @@ export function assignDrawPosition({
   const stack = 'assignDrawPosition';
 
   if (!participantId && !isQualifierPosition)
-    return { error: MISSING_PARTICIPANT_ID };
+    return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
 
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
 

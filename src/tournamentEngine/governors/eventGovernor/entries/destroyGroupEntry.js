@@ -47,7 +47,8 @@ export function destroyGroupEntry({
 }) {
   const stack = 'destroyGroupEntry';
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
+  if (!participantId)
+    return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
   if (!event) return { error: MISSING_EVENT };
 
   if (![DOUBLES, TEAM].includes(event.eventType)) {

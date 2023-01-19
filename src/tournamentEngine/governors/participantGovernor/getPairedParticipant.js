@@ -16,12 +16,17 @@ export function getPairedParticipant({
   tournamentRecord,
   participantIds,
 }) {
+  const stack = 'getPairedParticipant';
+
   if (!tournamentParticipants && !tournamentRecord)
     return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(participantIds) || participantIds.length > 2)
     return { error: INVALID_PARTICIPANT_IDS };
-  if (!participantIds.length) return { error: MISSING_PARTICIPANT_IDS };
-  const stack = 'getPairedParticipant';
+  if (!participantIds.length)
+    return decorateResult({
+      result: { error: MISSING_PARTICIPANT_IDS },
+      stack,
+    });
 
   tournamentParticipants =
     tournamentParticipants || tournamentRecord?.participants || [];
