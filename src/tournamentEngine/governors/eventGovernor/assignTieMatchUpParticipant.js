@@ -34,7 +34,8 @@ export function assignTieMatchUpParticipantId(params) {
   let teamParticipantId = params.teamParticipantId;
   const { tournamentRecord, drawDefinition, participantId } = params;
 
-  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
+  if (!participantId)
+    return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
 
   const {
     inContextDualMatchUp,

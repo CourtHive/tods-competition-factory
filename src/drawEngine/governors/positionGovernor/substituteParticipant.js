@@ -1,5 +1,6 @@
 import { replaceTieMatchUpParticipantId } from '../../../tournamentEngine/governors/eventGovernor/replaceTieMatchUpParticipant';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
@@ -22,10 +23,12 @@ export function substituteParticipant({
   matchUpId,
   event,
 }) {
+  const stack = 'substituteParticipant';
+
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!existingParticipantId || !substituteParticipantId)
-    return { error: MISSING_PARTICIPANT_ID };
+    return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
 
   const { matchUp } = findMatchUp({
     drawDefinition,
@@ -34,7 +37,8 @@ export function substituteParticipant({
   });
 
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
-  if (!matchUp.collectionId) return { error: INVALID_MATCHUP };
+  if (!matchUp.collectionId)
+    return decorateResult({ result: { error: INVALID_MATCHUP }, stack });
 
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
@@ -71,7 +75,7 @@ export function substituteParticipant({
       .filter((participantId) => participantId !== existingParticipantId);
 
   if (!availableParticipantIds.includes(substituteParticipantId))
-    return { error: INVALID_PARTICIPANT_ID };
+    return decorateResult({ result: { error: INVALID_PARTICIPANT_ID }, stack });
 
   return replaceTieMatchUpParticipantId({
     newParticipantId: substituteParticipantId,

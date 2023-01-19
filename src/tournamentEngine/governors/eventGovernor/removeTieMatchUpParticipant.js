@@ -5,6 +5,7 @@ import { getPairedParticipant } from '../participantGovernor/getPairedParticipan
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
 import { modifyParticipant } from '../participantGovernor/modifyParticipant';
 import { removeCollectionAssignments } from './removeCollectionAssignments';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { findExtension } from '../queryGovernor/extensionQueries';
@@ -27,7 +28,8 @@ export function removeTieMatchUpParticipantId(params) {
   const { tournamentRecord, drawDefinition, participantId } = params;
   const stack = 'removeTieMatchUpParticiapantId';
 
-  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
+  if (!participantId)
+    return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
 
   const matchUpContext = getTieMatchUpContext(params);
   if (matchUpContext.error) return matchUpContext;

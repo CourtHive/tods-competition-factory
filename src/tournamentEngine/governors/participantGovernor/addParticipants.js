@@ -1,3 +1,4 @@
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { definedAttributes } from '../../../utilities/objects';
 import { addNotice } from '../../../global/state/globalState';
 import { intersection } from '../../../utilities/arrays';
@@ -34,8 +35,11 @@ export function addParticipant({
   pairOverride,
   participant,
 }) {
+  const stack = 'addParticipant';
+
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!participant) return { error: MISSING_PARTICIPANT };
+  if (!participant)
+    return decorateResult({ result: { error: MISSING_PARTICIPANT }, stack });
   if (!participant.participantId) participant.participantId = UUID();
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
 
@@ -71,29 +75,42 @@ export function addParticipant({
     if (participant.person)
       return { error: INVALID_VALUES, person: participant.person };
     if (!participant.individualParticipantIds) {
-      return { error: MISSING_PARTICIPANT_IDS };
+      return decorateResult({
+        result: { error: MISSING_PARTICIPANT_IDS },
+        stack,
+      });
     } else if (
       participant.individualParticipantIds.length !== 2 &&
       !pairOverride
     ) {
-      return {
-        error: INVALID_PARTICIPANT_IDS,
-        info: 'PAIR must be 2 individualParticipantIds',
-      };
+      return decorateResult({
+        result: {
+          error: INVALID_PARTICIPANT_IDS,
+          info: 'PAIR must be 2 individualParticipantIds',
+        },
+        stack,
+      });
     } else {
       const individualParticipantIds = tournamentParticipants
         .filter((participant) => participant.participantType === INDIVIDUAL)
         .map((participant) => participant.participantId);
 
       if (!Array.isArray(participant.individualParticipantIds))
-        return { error: INVALID_PARTICIPANT_IDS };
+        return decorateResult({
+          result: { error: INVALID_PARTICIPANT_IDS },
+          stack,
+        });
 
       const validPairParticipants = participant.individualParticipantIds.reduce(
         (valid, participantId) =>
           individualParticipantIds.includes(participantId) && valid,
         true
       );
-      if (!validPairParticipants) return { error: INVALID_PARTICIPANT_IDS };
+      if (!validPairParticipants)
+        return decorateResult({
+          result: { error: INVALID_PARTICIPANT_IDS },
+          stack,
+        });
     }
 
     const existingPairParticipants = tournamentParticipants
@@ -162,18 +179,24 @@ export function addParticipant({
     if (participant.individualParticipantIds.length) {
       for (const individualParticipantId of participant.individualParticipantIds) {
         if (typeof individualParticipantId !== 'string') {
-          return {
-            error: INVALID_VALUES,
-            participantId: individualParticipantId,
-          };
+          return decorateResult({
+            result: {
+              participantId: individualParticipantId,
+              error: INVALID_VALUES,
+            },
+            stack,
+          });
         }
         if (
           !tournamentIndividualParticipantIds.includes(individualParticipantId)
         ) {
-          return {
-            error: PARTICIPANT_NOT_FOUND,
-            participantId: individualParticipantId,
-          };
+          return decorateResult({
+            result: {
+              participantId: individualParticipantId,
+              error: PARTICIPANT_NOT_FOUND,
+            },
+            stack,
+          });
         }
       }
     }

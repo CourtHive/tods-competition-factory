@@ -1,3 +1,5 @@
+import { decorateResult } from '../../../../global/functions/decorateResult';
+
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_VALUES,
@@ -12,8 +14,11 @@ export function setEntryPosition({
   entryPosition,
   event,
 }) {
+  const stack = 'setEntryPositions';
+
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
+  if (!participantId)
+    return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
 
   if (entryPosition !== undefined && !Number.isSafeInteger(entryPosition))
     return { error: INVALID_VALUES, entryPosition };

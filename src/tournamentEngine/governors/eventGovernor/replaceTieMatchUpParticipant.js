@@ -3,6 +3,7 @@ import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotif
 import { getCollectionPositionAssignments } from './getCollectionPositionAssignments';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { addParticipant } from '../participantGovernor/addParticipants';
 import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { findExtension } from '../queryGovernor/extensionQueries';
@@ -35,7 +36,7 @@ export function replaceTieMatchUpParticipantId(params) {
   } = params;
 
   if (!existingParticipantId || !newParticipantId)
-    return { error: MISSING_PARTICIPANT_ID };
+    return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
 
   if (existingParticipantId === newParticipantId) return { ...SUCCESS };
 
@@ -67,12 +68,16 @@ export function replaceTieMatchUpParticipantId(params) {
       },
     });
 
-  if (targetParticipants.length !== 2) return { error: MISSING_PARTICIPANT_ID };
+  if (targetParticipants.length !== 2)
+    return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
   if (
     targetParticipants[0].participantType !==
     targetParticipants[1].participantType
   )
-    return { error: INVALID_PARTICIPANT_TYPE };
+    return decorateResult({
+      result: { error: INVALID_PARTICIPANT_TYPE },
+      stack,
+    });
 
   const { extension } = findExtension({
     element: drawDefinition,
@@ -102,11 +107,14 @@ export function replaceTieMatchUpParticipantId(params) {
   );
 
   if (!dualMatchUpSide) {
-    return {
-      sideNumber: side.sideNumber,
-      existingParticipantId,
-      error: NOT_FOUND,
-    };
+    return decorateResult({
+      result: {
+        sideNumber: side.sideNumber,
+        existingParticipantId,
+        error: NOT_FOUND,
+      },
+      stack,
+    });
   }
 
   const teamParticipantId = inContextDualMatchUp.sides?.find(
@@ -223,7 +231,7 @@ export function replaceTieMatchUpParticipantId(params) {
       drawDefinition,
       tieFormat,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   } else {
     console.log('team participantId not found');
   }
@@ -248,7 +256,7 @@ export function replaceTieMatchUpParticipantId(params) {
         tournamentRecord,
         participant,
       });
-      if (result.error) return result;
+      if (result.error) return decorateResult({ result, stack });
       participantAdded = result.participant?.participantId;
     }
 

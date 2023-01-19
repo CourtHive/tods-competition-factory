@@ -76,7 +76,8 @@ export function addDrawEntry({
     });
 
   participantId = participantId || participant?.participantId;
-  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
+  if (!participantId)
+    return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
 
   const invalidLuckyLoser =
     entryStatus === LUCKY_LOSER &&
