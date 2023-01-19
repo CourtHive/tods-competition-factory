@@ -24,8 +24,8 @@ it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
 it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure by playoffPositions', () => {
   const { success, drawDefinition, matchUpAddNotices, allMatchUps } =
     drawEngineAddStructuresTest({
-      drawSize: 16,
       playoffPositions: [5, 6, 7, 8],
+      drawSize: 16,
     });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
@@ -39,8 +39,8 @@ it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure by playoffPo
 
 it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure by a single playoff position', () => {
   const { success, drawDefinition } = drawEngineAddStructuresTest({
-    drawSize: 16,
     playoffPositions: [5],
+    drawSize: 16,
   });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
@@ -50,8 +50,8 @@ it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure by a single 
 
 it('can add 3-8 playoff structures to a SINGLE ELIMINATION by a single playoff position from each structure', () => {
   const { success, drawDefinition } = drawEngineAddStructuresTest({
-    drawSize: 16,
     playoffPositions: [3, 5],
+    drawSize: 16,
   });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
@@ -61,8 +61,8 @@ it('can add 3-8 playoff structures to a SINGLE ELIMINATION by a single playoff p
 
 it('can add 3-8 playoff structures to a SINGLE ELIMINATION by roundNumbers', () => {
   const { success, drawDefinition } = drawEngineAddStructuresTest({
-    drawSize: 16,
     roundNumbers: [2, 3],
+    drawSize: 16,
   });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
@@ -72,8 +72,8 @@ it('can add 3-8 playoff structures to a SINGLE ELIMINATION by roundNumbers', () 
 
 it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure by roundNumbers', () => {
   const { success, drawDefinition } = drawEngineAddStructuresTest({
-    drawSize: 16,
     roundNumbers: [2],
+    drawSize: 16,
   });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
@@ -83,9 +83,9 @@ it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure by roundNumb
 
 it('can add 3-4 playoff structure to a FIRST_MATCH_LOSER_CONSOLATION structure', () => {
   const { success, drawDefinition } = drawEngineAddStructuresTest({
-    drawSize: 16,
-    playoffPositions: [3, 4],
     drawType: FIRST_MATCH_LOSER_CONSOLATION,
+    playoffPositions: [3, 4],
+    drawSize: 16,
   });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;

@@ -1,13 +1,13 @@
 import { findTournamentExtension } from '../../governors/queryGovernor/extensionQueries';
 import { getStructureReports } from '../../governors/reportGovernor/structureReport';
-import tournamentEngine from '../../sync';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
 import { utilities } from '../../..';
 import fs from 'fs';
 
-import { DOUBLES_EVENT } from '../../../constants/eventConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
+import { DOUBLES_EVENT } from '../../../constants/eventConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 
 const sourcePath = './src/global/testHarness';

@@ -19,6 +19,7 @@ export function attachPlayoffStructures(params) {
 
 export function attachStructures({
   itemType = 'attachStructures',
+  matchUpModifications,
   tournamentRecord,
   drawDefinition,
   structures,
@@ -28,6 +29,7 @@ export function attachStructures({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const result = structuresAttachment({
+    matchUpModifications,
     tournamentRecord,
     drawDefinition,
     structures,
