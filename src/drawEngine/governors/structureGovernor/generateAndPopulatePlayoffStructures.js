@@ -256,8 +256,9 @@ export function generateAndPopulatePlayoffStructures(params) {
     });
 
     sourceStructureMatchUps.forEach((matchUp) => {
-      if (goesToMap.loserMatchUpIds[matchUp.matchUpId]) {
-        matchUp.loserMatchUpId = goesToMap.loserMatchUpIds[matchUp.matchUpId];
+      const loserMatchUpId = goesToMap.loserMatchUpIds[matchUp.matchUpId];
+      if (loserMatchUpId && matchUp.loserMatchUpId !== loserMatchUpId) {
+        matchUp.loserMatchUpId = loserMatchUpId;
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,
           eventId: params.event?.eventId,
@@ -266,8 +267,9 @@ export function generateAndPopulatePlayoffStructures(params) {
           matchUp,
         });
       }
-      if (goesToMap.winnerMatchUpIds[matchUp.matchUpId]) {
-        matchUp.winnerMatchUpId = goesToMap.winnerMatchUpIds[matchUp.matchUpId];
+      const winnerMatchUpId = goesToMap.winnerMatchUpIds[matchUp.matchUpId];
+      if (winnerMatchUpId && matchUp.winnerMatchUpId !== winnerMatchUpId) {
+        matchUp.winnerMatchUpId = winnerMatchUpId;
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,
           eventId: params.event?.eventId,

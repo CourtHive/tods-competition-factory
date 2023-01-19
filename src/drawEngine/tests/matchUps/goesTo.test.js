@@ -1,13 +1,13 @@
-import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../tournamentEngine/sync';
+import mocksEngine from '../../../mocksEngine';
 
+import { SINGLES } from '../../../constants/eventConstants';
+import { MALE } from '../../../constants/genderConstants';
 import {
   CONSOLATION,
   FEED_IN_CHAMPIONSHIP,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
-import { SINGLES } from '../../../constants/eventConstants';
-import { MALE } from '../../../constants/genderConstants';
 
 it('accurately determines winnerMatchUpId and loserMatchUpId for FIC matchUps', () => {
   const participantsProfile = {
@@ -16,27 +16,27 @@ it('accurately determines winnerMatchUpId and loserMatchUpId for FIC matchUps', 
   };
   const drawProfiles = [
     {
-      drawSize: 32,
-      eventType: SINGLES,
-      participantsCount: 17,
-      drawType: FEED_IN_CHAMPIONSHIP,
       feedPolicy: { roundGroupedOrder: [] },
+      drawType: FEED_IN_CHAMPIONSHIP,
+      participantsCount: 17,
+      eventType: SINGLES,
+      drawSize: 32,
     },
   ];
   let {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile,
+    drawProfiles,
     goesTo: true,
   });
 
   const { matchUps } = tournamentEngine
     .setState(tournamentRecord)
     .allDrawMatchUps({
-      drawId,
       inContext: true,
+      drawId,
     });
 
   checkGoesTo(matchUps, [MAIN, 1, 1, MAIN, 2, 1, CONSOLATION, 1, 1]);
@@ -62,31 +62,31 @@ function checkGoesTo(matchUps, expectation) {
   ] = expectation;
 
   let { winnerMatchUpId, loserMatchUpId } = findTargetMatchUpByAttributes({
+    roundPosition,
+    roundNumber,
     matchUps,
     stage,
-    roundNumber,
-    roundPosition,
   });
   const expectedWinnerMatchUp = findTargetMatchUpByAttributes({
-    matchUps,
-    stage: winnerStage,
-    roundNumber: winnerRoundNumber,
     roundPosition: winnerRoundPosition,
+    roundNumber: winnerRoundNumber,
+    stage: winnerStage,
+    matchUps,
   });
   const expectedloserMatchUp = findTargetMatchUpByAttributes({
-    matchUps,
-    stage: loserStage,
-    roundNumber: loserRoundNumber,
     roundPosition: loserRoundPosition,
+    roundNumber: loserRoundNumber,
+    stage: loserStage,
+    matchUps,
   });
 
   expect(winnerMatchUpId).toEqual(expectedWinnerMatchUp.matchUpId);
   expect(loserMatchUpId).toEqual(expectedloserMatchUp.matchUpId);
 
   function findTargetMatchUpByAttributes({
-    matchUps,
-    roundNumber,
     roundPosition,
+    roundNumber,
+    matchUps,
     stage,
   }) {
     return matchUps.find(
