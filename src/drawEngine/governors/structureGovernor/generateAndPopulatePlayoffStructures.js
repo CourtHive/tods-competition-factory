@@ -1,9 +1,8 @@
 import { matchUpIsComplete } from '../../../matchUpEngine/governors/queryGovernor/matchUpIsComplete';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { generatePlayoffStructures } from '../../generators/playoffStructures';
-import { directParticipants } from '../matchUpGovernor/directParticipants';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { directParticipants } from '../matchUpGovernor/directParticipants';
 import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { getMatchUpId } from '../../../global/functions/extractors';
@@ -239,6 +238,7 @@ export function generateAndPopulatePlayoffStructures(params) {
   });
 
   // the matchUps in the source structure must have goesTo details added
+  const matchUpModifications = [];
   if (params.goesTo !== false) {
     const goesToMap = addGoesTo({
       inContextDrawMatchUps,
@@ -259,30 +259,31 @@ export function generateAndPopulatePlayoffStructures(params) {
       const loserMatchUpId = goesToMap.loserMatchUpIds[matchUp.matchUpId];
       if (loserMatchUpId && matchUp.loserMatchUpId !== loserMatchUpId) {
         matchUp.loserMatchUpId = loserMatchUpId;
-        modifyMatchUpNotice({
+        const modification = {
           tournamentId: tournamentRecord?.tournamentId,
           eventId: params.event?.eventId,
           context: stack,
-          drawDefinition,
           matchUp,
-        });
+        };
+        matchUpModifications.push(modification);
       }
       const winnerMatchUpId = goesToMap.winnerMatchUpIds[matchUp.matchUpId];
       if (winnerMatchUpId && matchUp.winnerMatchUpId !== winnerMatchUpId) {
         matchUp.winnerMatchUpId = winnerMatchUpId;
-        modifyMatchUpNotice({
+        const modification = {
           tournamentId: tournamentRecord?.tournamentId,
           eventId: params.event?.eventId,
           context: stack,
-          drawDefinition,
           matchUp,
-        });
+        };
+        matchUpModifications.push(modification);
       }
     });
   }
 
   return {
     structures: newStructures,
+    matchUpModifications,
     links: newLinks,
     drawDefinition,
     ...SUCCESS,

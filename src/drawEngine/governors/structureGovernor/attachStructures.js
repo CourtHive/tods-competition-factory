@@ -3,6 +3,7 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
+  modifyMatchUpNotice,
 } from '../../notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -17,6 +18,7 @@ export function attachPlayoffStructures(params) {
 }
 
 export function attachStructures({
+  matchUpModifications,
   tournamentRecord,
   drawDefinition,
   structures,
@@ -88,6 +90,10 @@ export function attachStructures({
 
   const structureIds = structures.map(({ structureId }) => structureId);
   modifyDrawNotice({ drawDefinition, structureIds });
+
+  if (matchUpModifications?.length) {
+    matchUpModifications.forEach(modifyMatchUpNotice);
+  }
 
   return { ...SUCCESS };
 }

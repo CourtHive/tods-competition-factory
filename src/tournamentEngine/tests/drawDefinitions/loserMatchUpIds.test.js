@@ -89,7 +89,21 @@ test('generates loserMatchUpIds when generated playoffs are attached', () => {
   } = tournamentEngine.getEvent({ drawId });
 
   matchUpModifyNotices = [];
-  let result = tournamentEngine.addPlayoffStructures({
+  let result = tournamentEngine.generateAndPopulatePlayoffStructures({
+    playoffStructureNameBase: 'Playoff',
+    playoffAttributes,
+    roundProfiles,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.matchUpModifications.length).toEqual(6);
+
+  result = tournamentEngine.attachPlayoffStructures({ drawId, ...result });
+  expect(result.success).toEqual(true);
+
+  /*
+  result = tournamentEngine.addPlayoffStructures({
     playoffStructureNameBase: 'Playoff',
     playoffAttributes,
     roundProfiles,
@@ -98,6 +112,7 @@ test('generates loserMatchUpIds when generated playoffs are attached', () => {
   });
 
   expect(result.success).toEqual(true);
+  */
 
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(getLoserMatchUpIdRounds(matchUps)).toEqual([4, 2]);
