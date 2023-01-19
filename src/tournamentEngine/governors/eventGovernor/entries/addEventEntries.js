@@ -107,16 +107,12 @@ export function addEventEntries(params) {
         ) {
           return true;
         }
-        if (
+        return (
           event.eventType === TEAM &&
           (participant.participantType === TEAM ||
             (isUngrouped(entryStatus) &&
               participant.participantType === INDIVIDUAL))
-        ) {
-          return true;
-        }
-
-        return false;
+        );
       })
       .map((participant) => participant.participantId) || [];
 
@@ -210,9 +206,8 @@ export function addEventEntries(params) {
     }
   }
 
-  const invalidParticipantIds = !!(
-    validParticipantIds.length !== participantIds.length
-  );
+  const invalidParticipantIds =
+    validParticipantIds.length !== participantIds.length;
 
   if (invalidParticipantIds) return { error: INVALID_PARTICIPANT_IDS };
 
