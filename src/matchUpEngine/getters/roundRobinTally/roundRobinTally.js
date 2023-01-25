@@ -1,5 +1,5 @@
-import { getParticipantResults } from './getParticipantResults';
 import { matchUpIsComplete } from '../../governors/queryGovernor/matchUpIsComplete';
+import { getParticipantResults } from './getParticipantResults';
 import { unique } from '../../../utilities/arrays';
 import { getGroupOrder } from './getGroupOrder';
 
