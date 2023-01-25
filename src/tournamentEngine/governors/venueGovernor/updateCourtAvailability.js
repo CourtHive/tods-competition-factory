@@ -4,6 +4,7 @@ import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionCons
 import { SUCCESS } from '../../../constants/resultConstants';
 
 // bulk update when tournament dates change
+// TODO: merge overlapping availability blocks
 export function updateCourtAvailability({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
