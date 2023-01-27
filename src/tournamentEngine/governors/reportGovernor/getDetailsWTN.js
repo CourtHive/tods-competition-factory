@@ -4,9 +4,17 @@ export function getDetailsWTN({ participant, eventType }) {
   const personId = participant?.person?.personId;
   const personOtherId = participant?.person?.personOtherIds?.[0];
   const tennisId = participant?.person?.tennisId;
-  const personWTN = participant?.ratings?.[eventType]?.find(
+  const scaleItem = participant?.ratings?.[eventType]?.find(
     ({ scaleName }) => scaleName === WTN
-  )?.scaleValue;
+  );
+  const personWTN = scaleItem?.scaleValue;
   const { wtnRating, confidence } = personWTN || {};
-  return { personId, personOtherId, tennisId, wtnRating, confidence };
+  return {
+    timeStamp: scaleItem?.scaleDate,
+    personOtherId,
+    confidence,
+    wtnRating,
+    personId,
+    tennisId,
+  };
 }

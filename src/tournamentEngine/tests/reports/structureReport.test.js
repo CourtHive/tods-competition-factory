@@ -220,6 +220,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
   expect(Object.keys(personEntryReports[0]).sort()).toEqual([
     'confidence',
     'drawId',
+    'entryStage',
     'entryStatus',
     'eventId',
     'mainSeeding',
@@ -229,6 +230,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     'qualifyingSeeding',
     'ranking',
     'tennisId',
+    'timeStamp',
     'tournamentId',
     'wtnRating',
   ]);
