@@ -50,7 +50,8 @@ export function getEntryStatusReports({ tournamentRecord }) {
   let drawDefinitionsCount = 0;
 
   const pushEntryReport = ({ id, entry, eventId, eventType }) => {
-    const { qualifyingSeeding, mainSeeding, entryStatus, drawId } = entry;
+    const { qualifyingSeeding, mainSeeding, entryStatus, entryStage, drawId } =
+      entry;
 
     if (!personEntryReports[id]) personEntryReports[id] = [];
 
@@ -66,6 +67,7 @@ export function getEntryStatusReports({ tournamentRecord }) {
       eventId,
       drawId,
       entryStatus,
+      entryStage,
       ...entryDetailsWTN,
       ranking,
       mainSeeding,
