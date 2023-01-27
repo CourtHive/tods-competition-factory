@@ -1361,10 +1361,10 @@ const result = tournamentEngine.generateAdHocMatchUps({
 
 ## generateAndPopulatePlayoffStructures
 
-Generates `structures` and `links` but does not attach them to the `drawDefinition`. Used in conjunction with `attachPlayoffStructures`.
+Generates values but does not attach them to the `drawDefinition`. Used in conjunction with `attachPlayoffStructures`.
 
 ```js
-const { structures, links } =
+const { structures, links, matchUpModifications } =
   tournamentEngine.generateAndPopulatePlayoffStructures({
     roundNumbers: [3], // optional if playoffPositions not provided; roundNumbers of structure to be played off.
     roundProfiles, // optional - source roundNumbers as Object.keys with depth as Object.values, e.g. [{ 1: 2}, {2: 1}]
