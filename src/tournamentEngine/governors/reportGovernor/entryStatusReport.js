@@ -99,10 +99,14 @@ export function getEntryStatusReports({ tournamentRecord }) {
           .map(({ participantId }) => participantId)
           .filter(Boolean);
 
-        const entryFilter = ({ entryStage, participantId }) =>
-          entryStage === MAIN && assignedParticipantIds.includes(participantId);
+        const entryFilter = ({ participantId }) =>
+          assignedParticipantIds.includes(participantId);
 
-        const createEntryProfile = ({ entryStatus, participantId }) => {
+        const createEntryProfile = ({
+          participantId,
+          entryStatus,
+          entryStage,
+        }) => {
           countEntryStatus(entryStatus);
 
           const mainSeeding =
@@ -117,8 +121,9 @@ export function getEntryStatusReports({ tournamentRecord }) {
           return {
             qualifyingSeeding,
             participantId,
-            entryStatus,
             mainSeeding,
+            entryStatus,
+            entryStage,
             drawId,
           };
         };
