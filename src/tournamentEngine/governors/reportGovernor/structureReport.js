@@ -16,6 +16,7 @@ import {
   MAIN,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
+import { PAIR } from '../../../constants/participantConstants';
 
 export function getStructureReports({
   firstFlightOnly = true,
@@ -136,20 +137,15 @@ export function getStructureReports({
                   const winningParticipant = finalMatchUp?.sides?.find(
                     (side) => side.sideNumber === finalMatchUp.winningSide
                   )?.participant;
-                  const { individualParticipants, person, ratings, rankings } =
-                    winningParticipant || {};
 
-                  const winnerDetails = (
-                    individualParticipants?.map(
-                      ({ person, ratings, rankings }) => ({
-                        rankings,
-                        ratings,
-                        person,
-                      })
-                    ) || [{ person, ratings, rankings }]
-                  ).filter((x) => x?.person);
+                  const { individualParticipants } =
+                    (winningParticipant.participantType === PAIR &&
+                      winningParticipant) ||
+                    {};
+
                   const winningPersonWTN = getDetailsWTN({
-                    participant: winnerDetails?.[0],
+                    participant:
+                      individualParticipants?.[0] || winningParticipant,
                     eventType,
                   });
                   const {
@@ -161,7 +157,7 @@ export function getStructureReports({
                   } = winningPersonWTN || {};
 
                   const winningPerson2WTN = getDetailsWTN({
-                    participant: winnerDetails?.[1],
+                    participant: individualParticipants?.[1],
                     eventType,
                   });
                   const {

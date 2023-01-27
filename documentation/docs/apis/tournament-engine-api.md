@@ -1740,7 +1740,7 @@ const {
     eventsCount,
   },
   entryStatusReports, // count and pct of total for all entryStatuses for each event
-  personEntryReports, // person entryStatus, ranking, seeding, WTN and confidence for each event
+  participantEntryReports, // person entryStatus, ranking, seeding, WTN and confidence for each event
   eventReports, // primarily internal use - entries for each event with main/qualifying seeding
 } = tournamentEngine.getEntryStatusReports();
 ```
@@ -1749,7 +1749,7 @@ To export reports as CSV:
 
 ```js
 const entryStatusCSV = utilities.JSON2CSV(entryStatusReports);
-const personEntryCSV = utilities.JSON2CSV(personEntryReports);
+const personEntryCSV = utilities.JSON2CSV(participantEntryReports);
 ```
 
 ---
