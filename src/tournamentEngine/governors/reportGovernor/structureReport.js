@@ -60,6 +60,8 @@ export function getStructureReports({
       const drawDeletionsCount =
         extensions?.find((x) => x.name === DRAW_DELETIONS)?.value?.length || 0;
 
+      const minFlightNumber = Math.min(...Object.values(flightMap));
+
       eventStructureReports[eventId] = {
         totalPositionManipulations: 0,
         maxPositionManipulations: 0,
@@ -74,7 +76,9 @@ export function getStructureReports({
         drawDefinitions
           .filter(
             (d) =>
-              !firstFlightOnly || !flightNumbers || flightMap[d.drawId] === 1
+              !firstFlightOnly ||
+              !flightNumbers ||
+              flightMap[d.drawId] === minFlightNumber
           )
           .flatMap(
             ({
