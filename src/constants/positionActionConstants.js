@@ -1,9 +1,6 @@
 export const QUALIFYING_PARTICIPANT_METHOD = 'qualifierDrawPositionAssignment';
 export const WITHDRAW_PARTICIPANT_METHOD = 'withdrawParticipantAtDrawPosition';
 export const ALTERNATE_PARTICIPANT_METHOD = 'alternateDrawPositionAssignment';
-export const REPLACE_TEAM_POSITION_METHOD = 'replaceTieMatchUpParticipantId';
-export const ASSIGN_TEAM_POSITION_METHOD = 'assignTieMatchUpParticipantId';
-export const REMOVE_TEAM_POSITION_METHOD = 'removeTieMatchUpParticipantId';
 export const LUCKY_PARTICIPANT_METHOD = 'luckyLoserDrawPositionAssignment';
 export const REMOVE_ASSIGNMENT_METHOD = 'removeDrawPositionAssignment';
 export const SWAP_PARTICIPANT_METHOD = 'swapDrawPositionAssignments';

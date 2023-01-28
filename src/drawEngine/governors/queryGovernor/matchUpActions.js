@@ -27,7 +27,6 @@ import {
   ADD_PENALTY_METHOD,
   ASSIGN_PARTICIPANT,
   ASSIGN_SIDE_METHOD,
-  ASSIGN_TEAM_POSITION_METHOD,
 } from '../../../constants/positionActionConstants';
 import {
   INVALID_VALUES,
@@ -43,6 +42,7 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 import {
   END,
+  ASSIGN_TEAM_POSITION_METHOD,
   REFEREE,
   SCHEDULE,
   SCHEDULE_METHOD,
@@ -101,7 +101,6 @@ export function matchUpActions({
 
   const { assignedPositions, allPositionsAssigned } =
     structureAssignedDrawPositions({ structure });
-  const { drawPositions } = matchUp || {};
   const { structureId } = structure || {};
 
   const validActions = [];
@@ -237,13 +236,6 @@ export function matchUpActions({
 
   if (isByeMatchUp) return { validActions, isByeMatchUp };
 
-  const matchUpDrawPositionsAreAssigned = drawPositions?.reduce(
-    (assignedBoolean, drawPosition) =>
-      participantAssignedDrawPositions.includes(drawPosition) &&
-      assignedBoolean,
-    drawPositions?.length === 2
-  );
-
   // TODO: impolment method action and pass participants whose role is REFEREE
   validActions.push({ type: REFEREE, payload: { matchUpId } });
 
@@ -286,6 +278,10 @@ export function matchUpActions({
     }));
   }
 
+  const inContextMatchUp = inContextDrawMatchUps.find(
+    (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
+  );
+
   const targetData = positionTargets({
     inContextDrawMatchUps,
     drawDefinition,
@@ -296,6 +292,14 @@ export function matchUpActions({
     drawDefinition,
     targetData,
   });
+
+  const matchUpDrawPositionsAreAssigned =
+    inContextMatchUp?.drawPositions?.length === 2 &&
+    inContextMatchUp.drawPositions.every((drawPosition) =>
+      participantAssignedDrawPositions.includes(drawPosition)
+    ) &&
+    inContextMatchUp?.sides?.length === 2 &&
+    inContextMatchUp.sides.every(({ participantId }) => participantId);
 
   const readyToScore =
     (matchUpDrawPositionsAreAssigned || hasParticipants) &&
@@ -320,8 +324,12 @@ export function matchUpActions({
       payload: { drawId, matchUpId, schedule: {} },
     });
   }
-  if (readyToScore) validActions.push(addPenaltyAction);
+  if (readyToScore) {
+    validActions.push(addPenaltyAction);
+  }
+
   if (isInComplete && readyToScore) validActions.push({ type: STATUS });
+
   if (scoringActive && readyToScore) {
     const { matchUpId, matchUpFormat } = matchUp;
     const payload = {
@@ -346,9 +354,6 @@ export function matchUpActions({
   }
 
   if (isCollectionMatchUp) {
-    const inContextMatchUp = inContextDrawMatchUps.find(
-      (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
-    );
     const matchUpType = inContextMatchUp.matchUpType;
     const existingParticipants = inContextMatchUp.sides
       .filter((side) => !sideNumber || side.sideNumber === sideNumber)

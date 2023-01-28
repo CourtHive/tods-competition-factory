@@ -19,8 +19,13 @@ import {
   TEAM_PARTICIPANT,
 } from '../../../constants/participantConstants';
 import {
+  END,
+  PENALTY,
   REFEREE,
   SCHEDULE,
+  SCORE,
+  START,
+  STATUS,
   SUBSTITUTION,
 } from '../../../constants/matchUpActionConstants';
 import {
@@ -200,7 +205,15 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     drawId,
   });
   let validActions = result.validActions.map(({ type }) => type);
-  expect(validActions).toEqual([REFEREE, SCHEDULE]);
+  expect(validActions).toEqual([
+    REFEREE,
+    SCHEDULE,
+    PENALTY,
+    STATUS,
+    SCORE,
+    START,
+    END,
+  ]);
 
   result = tournamentEngine.setMatchUpStatus({
     matchUpId: singlesMatchUpId,
@@ -222,7 +235,16 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     drawId,
   });
   validActions = result.validActions.map(({ type }) => type);
-  expect(validActions).toEqual([REFEREE, SCHEDULE, SUBSTITUTION]);
+  expect(validActions).toEqual([
+    REFEREE,
+    SCHEDULE,
+    PENALTY,
+    STATUS,
+    SCORE,
+    START,
+    END,
+    SUBSTITUTION,
+  ]);
 
   // test doublesMatchUps
   let doublesMatchUps = matchUps.filter(
@@ -238,7 +260,15 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     drawId,
   });
   validActions = result.validActions.map(({ type }) => type);
-  expect(validActions).toEqual([REFEREE, SCHEDULE]);
+  expect(validActions).toEqual([
+    REFEREE,
+    SCHEDULE,
+    PENALTY,
+    STATUS,
+    SCORE,
+    START,
+    END,
+  ]);
 
   result = tournamentEngine.setMatchUpStatus({
     matchUpId: doublesMatchUpId,
@@ -246,7 +276,6 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     drawId,
   });
   expect(result.success).toEqual(true);
-  expect(validActions).toEqual([REFEREE, SCHEDULE]);
 
   result = tournamentEngine.matchUpActions({
     matchUpId: doublesMatchUpId,
@@ -254,7 +283,16 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   });
   validActions = result.validActions.map(({ type }) => type);
 
-  expect(validActions).toEqual([REFEREE, SCHEDULE, SUBSTITUTION]);
+  expect(validActions).toEqual([
+    REFEREE,
+    SCHEDULE,
+    PENALTY,
+    STATUS,
+    SCORE,
+    START,
+    END,
+    SUBSTITUTION,
+  ]);
 
   let substitutionAction = result.validActions.find(
     ({ type }) => type === SUBSTITUTION
@@ -283,7 +321,16 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   });
   validActions = result.validActions.map(({ type }) => type);
 
-  expect(validActions).toEqual([REFEREE, SCHEDULE, SUBSTITUTION]);
+  expect(validActions).toEqual([
+    REFEREE,
+    SCHEDULE,
+    PENALTY,
+    STATUS,
+    SCORE,
+    START,
+    END,
+    SUBSTITUTION,
+  ]);
 
   substitutionAction = result.validActions.find(
     ({ type }) => type === SUBSTITUTION

@@ -5,8 +5,14 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import { SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import {
+  END,
+  PENALTY,
   REFEREE,
   SCHEDULE,
+  SCORE,
+  START,
+  STATUS,
+  SUBSTITUTION,
   // SUBSTITUTION,
 } from '../../../constants/matchUpActionConstants';
 import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
@@ -108,4 +114,47 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
 
   result = tournamentEngine[method]({ ...payload, participantId });
   expect(result.success).toEqual(true);
+
+  result = tournamentEngine.matchUpActions({
+    matchUpId: singlesMatchUpId,
+    drawId,
+  });
+  validActions = result.validActions.map(({ type }) => type);
+  expect(validActions).toEqual([
+    REFEREE,
+    SCHEDULE,
+    PENALTY,
+    STATUS,
+    SCORE,
+    START,
+    END,
+  ]);
+
+  // add an incomplete outcome and confirm SUBSTITUTION for SINGLES_MATCHUP
+  let outcome = {
+    score: { sets: [{ side1Score: 5, side2Score: 2 }] },
+  };
+
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: singlesMatchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.matchUpActions({
+    matchUpId: singlesMatchUpId,
+    drawId,
+  });
+  validActions = result.validActions.map(({ type }) => type);
+  expect(validActions).toEqual([
+    REFEREE,
+    SCHEDULE,
+    PENALTY,
+    STATUS,
+    SCORE,
+    START,
+    END,
+    SUBSTITUTION,
+  ]);
 });
