@@ -1,4 +1,6 @@
 import { validDateAvailability } from '../../governors/venueGovernor/dateAvailability';
+import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
 
 import {
   INVALID_BOOKINGS,
@@ -126,4 +128,69 @@ test('will not allow saving of Invalid Date in dateAvailability', () => {
   ];
   result = validDateAvailability({ dateAvailability });
   expect(result.error).toEqual(INVALID_TIME);
+});
+
+it.only('can add events, venues, and schedule matchUps', () => {
+  const startDate = '2023-01-01';
+  const endDate = '2023-01-06';
+
+  const dateAvailability = [
+    {
+      date: startDate,
+      startTime: '07:00',
+      endTime: '19:00',
+      bookings: [
+        { startTime: '07:00', endTime: '08:30', bookingType: 'PRACTICE' },
+        { startTime: '08:30', endTime: '09:00', bookingType: 'MAINTENANCE' },
+        { startTime: '13:30', endTime: '14:00', bookingType: 'MAINTENANCE' },
+      ],
+    },
+  ];
+  const venueProfiles = [
+    {
+      venueName: 'venue 1',
+      dateAvailability,
+      courtsCount: 3,
+    },
+  ];
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    venueProfiles,
+    startDate,
+    endDate,
+  });
+
+  let result = tournamentEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+
+  let { courts } = tournamentEngine.getCourts();
+  expect(courts.length).toEqual(3);
+  const courtId = courts[0].courtId;
+
+  result = tournamentEngine.modifyCourtAvailability({
+    dateAvailability: [
+      { date: '2022-02-02', startTime: '10:00', endTime: '20:00' },
+      { date: '2022-02-02', startTime: '08:00', endTime: '09:00' },
+    ],
+    courtId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.totalMergeCount).toEqual(0);
+
+  result = tournamentEngine.modifyCourtAvailability({
+    dateAvailability: [
+      { date: '2022-02-02', startTime: '08:30', endTime: '20:00' },
+      { date: '2022-02-02', startTime: '08:00', endTime: '09:00' },
+    ],
+    courtId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.totalMergeCount).toEqual(1);
+
+  courts = tournamentEngine.getCourts().courts;
+  const court = courts.find((court) => court.courtId === courtId);
+
+  // overlapping dateAvailability has been merged
+  expect(court.dateAvailability).toEqual([
+    { date: '2022-02-02', startTime: '08:00', endTime: '20:00' },
+  ]);
 });
