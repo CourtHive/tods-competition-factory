@@ -16,6 +16,7 @@ import {
   MAIN,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
+import { PAIR } from '../../../constants/participantConstants';
 
 export function getStructureReports({
   firstFlightOnly = true,
@@ -60,6 +61,8 @@ export function getStructureReports({
       const drawDeletionsCount =
         extensions?.find((x) => x.name === DRAW_DELETIONS)?.value?.length || 0;
 
+      const minFlightNumber = Math.min(...Object.values(flightMap));
+
       eventStructureReports[eventId] = {
         totalPositionManipulations: 0,
         maxPositionManipulations: 0,
@@ -74,7 +77,9 @@ export function getStructureReports({
         drawDefinitions
           .filter(
             (d) =>
-              !firstFlightOnly || !flightNumbers || flightMap[d.drawId] === 1
+              !firstFlightOnly ||
+              !flightNumbers ||
+              flightMap[d.drawId] === minFlightNumber
           )
           .flatMap(
             ({
@@ -132,20 +137,15 @@ export function getStructureReports({
                   const winningParticipant = finalMatchUp?.sides?.find(
                     (side) => side.sideNumber === finalMatchUp.winningSide
                   )?.participant;
-                  const { individualParticipants, person, ratings, rankings } =
-                    winningParticipant || {};
 
-                  const winnerDetails = (
-                    individualParticipants?.map(
-                      ({ person, ratings, rankings }) => ({
-                        rankings,
-                        ratings,
-                        person,
-                      })
-                    ) || [{ person, ratings, rankings }]
-                  ).filter((x) => x?.person);
+                  const { individualParticipants } =
+                    (winningParticipant?.participantType === PAIR &&
+                      winningParticipant) ||
+                    {};
+
                   const winningPersonWTN = getDetailsWTN({
-                    participant: winnerDetails?.[0],
+                    participant:
+                      individualParticipants?.[0] || winningParticipant,
                     eventType,
                   });
                   const {
@@ -157,7 +157,7 @@ export function getStructureReports({
                   } = winningPersonWTN || {};
 
                   const winningPerson2WTN = getDetailsWTN({
-                    participant: winnerDetails?.[1],
+                    participant: individualParticipants?.[1],
                     eventType,
                   });
                   const {

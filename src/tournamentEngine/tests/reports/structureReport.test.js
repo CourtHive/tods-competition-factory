@@ -108,9 +108,9 @@ it('can identify winningParticipants and map WTN and ranking', () => {
 
   // event analytics
   const {
+    participantEntryReports,
     tournamentEntryReport,
     entryStatusReports,
-    personEntryReports,
     eventReports,
   } = tournamentEngine.getEntryStatusReports();
   expect(eventReports.length).toEqual(drawProfiles.length);
@@ -138,21 +138,21 @@ it('can identify winningParticipants and map WTN and ranking', () => {
 
   expect(
     tournamentEntryReport.nonParticipatingEntriesCount +
-      personEntryReports.length
+      participantEntryReports.length
   ).toEqual(participants.length);
 
-  expect(personEntryReports.length).toEqual(
+  expect(participantEntryReports.length).toEqual(
     individualParticipantsWithEvents.length
   );
 
   // dummy condition
-  if (!personEntryReports.length) {
+  if (!participantEntryReports.length) {
     console.log('STRUCTURE REPORT');
     console.log(utilities.JSON2CSV(structureReports));
     console.log('ENTRY STATUS REPORTS');
     console.log(utilities.JSON2CSV(entryStatusReports));
     console.log('PERSON ENTRY REPORTS');
-    console.log(utilities.JSON2CSV(personEntryReports));
+    console.log(utilities.JSON2CSV(participantEntryReports));
   }
 
   expect(structureReports.map((r) => r.pctNoRating)).toEqual([0, 0, 100]);
@@ -215,9 +215,11 @@ it('can identify winningParticipants and map WTN and ranking', () => {
   ]);
 
   expect(
-    instanceCount(personEntryReports.map((r) => r.mainSeeding).filter(Boolean))
+    instanceCount(
+      participantEntryReports.map((r) => r.mainSeeding).filter(Boolean)
+    )
   ).toEqual({ 1: 4, 2: 4 });
-  expect(Object.keys(personEntryReports[0]).sort()).toEqual([
+  expect(Object.keys(participantEntryReports[0]).sort()).toEqual([
     'confidence',
     'drawId',
     'entryStage',
@@ -225,6 +227,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     'eventId',
     'mainSeeding',
     'participantId',
+    'participantType',
     'personId',
     'personOtherId',
     'qualifyingSeeding',
