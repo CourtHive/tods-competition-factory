@@ -139,7 +139,7 @@ export function getStructureReports({
                   )?.participant;
 
                   const { individualParticipants } =
-                    (winningParticipant.participantType === PAIR &&
+                    (winningParticipant?.participantType === PAIR &&
                       winningParticipant) ||
                     {};
 
