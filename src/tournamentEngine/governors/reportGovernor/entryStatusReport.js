@@ -43,7 +43,7 @@ export function getEntryStatusReports({ tournamentRecord }) {
     .filter(Boolean);
 
   const withDrawnParticipantIds = [];
-  const personEntryReports = {};
+  const participantEntryReports = {};
   const entryStatusReports = {};
   const eventReports = {};
 
@@ -53,7 +53,7 @@ export function getEntryStatusReports({ tournamentRecord }) {
     const { qualifyingSeeding, mainSeeding, entryStatus, entryStage, drawId } =
       entry;
 
-    if (!personEntryReports[id]) personEntryReports[id] = [];
+    if (!participantEntryReports[id]) participantEntryReports[id] = [];
 
     const { participant, events } = participantMap[id];
     const entryDetailsWTN = getDetailsWTN({ participant, eventType });
@@ -61,7 +61,8 @@ export function getEntryStatusReports({ tournamentRecord }) {
 
     if (entryStatus === WITHDRAW_PARTICIPANT) withDrawnParticipantIds.push(id);
 
-    personEntryReports[id].push({
+    participantEntryReports[id].push({
+      participantType: participant?.participantType,
       participantId: id,
       tournamentId,
       eventId,
@@ -162,14 +163,14 @@ export function getEntryStatusReports({ tournamentRecord }) {
         });
       };
 
-      // add entry details into personEntryReports
+      // add entry details into participantEntryReports
       entries.forEach(processIndividuals);
     };
 
     if (eventType === DOUBLES_EVENT) {
       processDoublesEvent();
     } else {
-      // add entry details into personEntryReports
+      // add entry details into participantEntryReports
       entries.forEach((entry) => {
         pushEntryReport({ id: entry.participantId, entry, eventId, eventType });
       });
@@ -227,7 +228,7 @@ export function getEntryStatusReports({ tournamentRecord }) {
 
   return {
     entryStatusReports: Object.values(entryStatusReports).flat(),
-    personEntryReports: Object.values(personEntryReports).flat(),
+    participantEntryReports: Object.values(participantEntryReports).flat(),
     eventReports: Object.values(eventReports).flat(),
     tournamentEntryReport,
   };
