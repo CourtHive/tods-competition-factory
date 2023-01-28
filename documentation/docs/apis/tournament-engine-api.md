@@ -2523,8 +2523,8 @@ Modifies the `dateAvailability` attribute of a specified court. Warns if existin
 
 ```js
 const result = tournamentEngine.modifyCourtAvailability({
-  courtId,
   dateAvailability,
+  courtId,
   force, // override warning that existing scheduled matchUps exist
 });
 ```
