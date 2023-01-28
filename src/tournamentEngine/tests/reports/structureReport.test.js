@@ -18,24 +18,28 @@ const filenames = fs
 it.skip.each(filenames)(
   'can generate structureReports for all tournamentRecords in testHarness',
   (filename) => {
-    const tournamentRecord = JSON.parse(
-      fs.readFileSync(`./src/global/testHarness/${filename}`, 'UTF-8')
-    );
-    if ((tournamentRecord?.extensions || []).find((e) => e?.name === 'level')) {
-      const districtCode = findTournamentExtension({
-        name: 'districtCode',
-        tournamentRecord,
-      })?.extension?.value;
-      const sectionCode = findTournamentExtension({
-        name: 'sectionCode',
-        tournamentRecord,
-      })?.extension?.value;
-
-      if (sectionCode && districtCode) {
-        const structureReports = getStructureReports({
+    if (filename) {
+      const tournamentRecord = JSON.parse(
+        fs.readFileSync(`./src/global/testHarness/${filename}`, 'UTF-8')
+      );
+      if (
+        (tournamentRecord?.extensions || []).find((e) => e?.name === 'level')
+      ) {
+        const districtCode = findTournamentExtension({
+          name: 'districtCode',
           tournamentRecord,
-        });
-        console.log({ structureReports });
+        })?.extension?.value;
+        const sectionCode = findTournamentExtension({
+          name: 'sectionCode',
+          tournamentRecord,
+        })?.extension?.value;
+
+        if (sectionCode && districtCode) {
+          const structureReports = getStructureReports({
+            tournamentRecord,
+          });
+          console.log({ structureReports });
+        }
       }
     }
   }
