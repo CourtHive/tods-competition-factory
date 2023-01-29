@@ -15,7 +15,6 @@ import { unique } from '../../../utilities';
 import { isAdHoc } from './isAdHoc';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
-import { DOUBLES_MATCHUP } from '../../../constants/matchUpTypes';
 import {
   ALTERNATE,
   DIRECT_ENTRY_STATUSES,
@@ -43,6 +42,7 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 import {
   END,
+  ASSIGN_TEAM_POSITION_METHOD,
   REFEREE,
   SCHEDULE,
   SCHEDULE_METHOD,
@@ -51,7 +51,15 @@ import {
   STATUS,
   SUBSTITUTION,
   SUBSTITUTION_METHOD,
+  REPLACE_TEAM_POSITION_METHOD,
+  REPLACE_PARTICIPANT,
+  REMOVE_TEAM_POSITION_METHOD,
+  REMOVE_PARTICIPANT,
 } from '../../../constants/matchUpActionConstants';
+import {
+  DOUBLES_MATCHUP,
+  SINGLES_MATCHUP,
+} from '../../../constants/matchUpTypes';
 
 /**
  *
@@ -97,7 +105,6 @@ export function matchUpActions({
 
   const { assignedPositions, allPositionsAssigned } =
     structureAssignedDrawPositions({ structure });
-  const { drawPositions } = matchUp || {};
   const { structureId } = structure || {};
 
   const validActions = [];
@@ -233,13 +240,6 @@ export function matchUpActions({
 
   if (isByeMatchUp) return { validActions, isByeMatchUp };
 
-  const matchUpDrawPositionsAreAssigned = drawPositions?.reduce(
-    (assignedBoolean, drawPosition) =>
-      participantAssignedDrawPositions.includes(drawPosition) &&
-      assignedBoolean,
-    drawPositions?.length === 2
-  );
-
   // TODO: impolment method action and pass participants whose role is REFEREE
   validActions.push({ type: REFEREE, payload: { matchUpId } });
 
@@ -282,6 +282,10 @@ export function matchUpActions({
     }));
   }
 
+  const inContextMatchUp = inContextDrawMatchUps.find(
+    (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
+  );
+
   const targetData = positionTargets({
     inContextDrawMatchUps,
     drawDefinition,
@@ -292,6 +296,14 @@ export function matchUpActions({
     drawDefinition,
     targetData,
   });
+
+  const matchUpDrawPositionsAreAssigned =
+    inContextMatchUp?.drawPositions?.length === 2 &&
+    inContextMatchUp.drawPositions.every((drawPosition) =>
+      participantAssignedDrawPositions.includes(drawPosition)
+    ) &&
+    inContextMatchUp?.sides?.length === 2 &&
+    inContextMatchUp.sides.every(({ participantId }) => participantId);
 
   const readyToScore =
     (matchUpDrawPositionsAreAssigned || hasParticipants) &&
@@ -316,8 +328,12 @@ export function matchUpActions({
       payload: { drawId, matchUpId, schedule: {} },
     });
   }
-  if (readyToScore) validActions.push(addPenaltyAction);
+  if (readyToScore) {
+    validActions.push(addPenaltyAction);
+  }
+
   if (isInComplete && readyToScore) validActions.push({ type: STATUS });
+
   if (scoringActive && readyToScore) {
     const { matchUpId, matchUpFormat } = matchUp;
     const payload = {
@@ -341,49 +357,95 @@ export function matchUpActions({
     validActions.push({ type: END });
   }
 
-  if (
-    matchUp.collectionId && // substituion only aplies to TEAM matchUps
-    scoreHasValue(matchUp) &&
-    !completedMatchUpStatuses.includes(matchUp.matchUpStatus)
-  ) {
-    if (matchUp.matchUpType === DOUBLES_MATCHUP) {
-      const inContextMatchUp = inContextDrawMatchUps.find(
-        (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
-      );
-      const existingParticipants = inContextMatchUp.sides
-        .filter((side) => !sideNumber || side.sideNumber === sideNumber)
-        .flatMap(
-          (side) => side.participant?.individualParticipants || side.participant
+  if (isCollectionMatchUp) {
+    const matchUpType = inContextMatchUp.matchUpType;
+    const existingParticipants = inContextMatchUp.sides
+      .filter((side) => !sideNumber || side.sideNumber === sideNumber)
+      .flatMap(
+        (side) => side.participant?.individualParticipants || side.participant
+      )
+      .filter(Boolean);
+    const existingParticipantIds = existingParticipants.map(getParticipantId);
+
+    const inContextDualMatchUp = inContextDrawMatchUps.find(
+      (drawMatchUp) => drawMatchUp.matchUpId === inContextMatchUp.matchUpTieId
+    );
+    const availableIndividualParticipants = inContextDualMatchUp.sides.map(
+      (side) =>
+        side.participant.individualParticipants.filter(
+          ({ participantId }) => !existingParticipantIds.includes(participantId)
         )
-        .filter(Boolean);
-      const existingParticipantIds = existingParticipants.map(getParticipantId);
+    );
 
-      const inContextDualMatchUp = inContextDrawMatchUps.find(
-        (drawMatchUp) => drawMatchUp.matchUpId === inContextMatchUp.matchUpTieId
-      );
-      const availableIndividualParticipants = inContextDualMatchUp.sides.map(
-        (side) =>
-          side.participant.individualParticipants.filter(
-            ({ participantId }) =>
-              !existingParticipantIds.includes(participantId)
-          )
-      );
+    // if no sideNumber is provided, segregate available by sideNumber and specify sideNumber
+    const availableParticipants = sideNumber
+      ? availableIndividualParticipants[sideNumber - 1]
+      : availableIndividualParticipants.map((available, i) => ({
+          participants: available,
+          sideNumber: i + 1,
+        }));
 
-      // if no sideNumber is provided, segregate available by sideNumber and specify sideNumber
-      const availableParticipants = sideNumber
-        ? availableIndividualParticipants[sideNumber - 1]
-        : availableIndividualParticipants.map((available, i) => ({
-            participants: available,
-            sideNumber: i + 1,
-          }));
+    const availableParticipantIds = sideNumber
+      ? availableIndividualParticipants[sideNumber - 1]?.map(getParticipantId)
+      : availableIndividualParticipants.map((available, i) => ({
+          participants: available?.map(getParticipantId),
+          sideNumber: i + 1,
+        }));
 
-      const availableParticipantIds = sideNumber
-        ? availableIndividualParticipants[sideNumber - 1]?.map(getParticipantId)
-        : availableIndividualParticipants.map((available, i) => ({
-            participants: available?.map(getParticipantId),
-            sideNumber: i + 1,
-          }));
+    const assignmentAvailable =
+      (sideNumber &&
+        ((matchUpType === SINGLES_MATCHUP && !existingParticipantIds.length) ||
+          (matchUpType === DOUBLES_MATCHUP &&
+            existingParticipantIds.length < 2))) ||
+      (!sideNumber &&
+        ((matchUpType === SINGLES_MATCHUP &&
+          existingParticipantIds.length < 2) ||
+          (matchUpType === DOUBLES_MATCHUP &&
+            existingParticipantIds.length < 4)));
 
+    if (assignmentAvailable) {
+      validActions.push({
+        method: ASSIGN_TEAM_POSITION_METHOD,
+        type: ASSIGN_PARTICIPANT,
+        availableParticipantIds,
+        availableParticipants,
+        payload: {
+          participantId: undefined,
+          tieMatchUpId: matchUpId,
+          drawId,
+        },
+      });
+    }
+
+    if (existingParticipantIds?.length) {
+      validActions.push({
+        method: REMOVE_TEAM_POSITION_METHOD,
+        type: REMOVE_PARTICIPANT,
+        existingParticipantIds,
+        payload: {
+          participantId: undefined,
+          tieMatchUpId: matchUpId,
+          drawId,
+        },
+      });
+      validActions.push({
+        method: REPLACE_TEAM_POSITION_METHOD,
+        type: REPLACE_PARTICIPANT,
+        existingParticipantIds,
+        payload: {
+          existingParticipantId: undefined,
+          participantId: undefined,
+          tieMatchUpId: matchUpId,
+          drawId,
+        },
+      });
+    }
+
+    // SUBSTITUTION
+    if (
+      scoreHasValue(matchUp) &&
+      !completedMatchUpStatuses.includes(matchUp.matchUpStatus)
+    ) {
       // action is not valid if there are no existing assignments or no available substitutions
       if (existingParticipants.length && availableParticipants.length) {
         const existingParticipantIds =
