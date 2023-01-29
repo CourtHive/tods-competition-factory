@@ -51,6 +51,10 @@ import {
   STATUS,
   SUBSTITUTION,
   SUBSTITUTION_METHOD,
+  REPLACE_TEAM_POSITION_METHOD,
+  REPLACE_PARTICIPANT,
+  REMOVE_TEAM_POSITION_METHOD,
+  REMOVE_PARTICIPANT,
 } from '../../../constants/matchUpActionConstants';
 import {
   DOUBLES_MATCHUP,
@@ -406,6 +410,30 @@ export function matchUpActions({
         availableParticipantIds,
         availableParticipants,
         payload: {
+          participantId: undefined,
+          tieMatchUpId: matchUpId,
+          drawId,
+        },
+      });
+    }
+
+    if (existingParticipantIds?.length) {
+      validActions.push({
+        method: REMOVE_TEAM_POSITION_METHOD,
+        type: REMOVE_PARTICIPANT,
+        existingParticipantIds,
+        payload: {
+          participantId: undefined,
+          tieMatchUpId: matchUpId,
+          drawId,
+        },
+      });
+      validActions.push({
+        method: REPLACE_TEAM_POSITION_METHOD,
+        type: REPLACE_PARTICIPANT,
+        existingParticipantIds,
+        payload: {
+          existingParticipantId: undefined,
           participantId: undefined,
           tieMatchUpId: matchUpId,
           drawId,

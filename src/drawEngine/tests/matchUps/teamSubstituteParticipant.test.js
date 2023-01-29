@@ -22,6 +22,8 @@ import {
   END,
   PENALTY,
   REFEREE,
+  REMOVE_PARTICIPANT,
+  REPLACE_PARTICIPANT,
   SCHEDULE,
   SCORE,
   START,
@@ -213,6 +215,8 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     SCORE,
     START,
     END,
+    REMOVE_PARTICIPANT,
+    REPLACE_PARTICIPANT,
   ]);
 
   result = tournamentEngine.setMatchUpStatus({
@@ -243,6 +247,8 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     SCORE,
     START,
     END,
+    REMOVE_PARTICIPANT,
+    REPLACE_PARTICIPANT,
     SUBSTITUTION,
   ]);
 
@@ -268,6 +274,8 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     SCORE,
     START,
     END,
+    REMOVE_PARTICIPANT,
+    REPLACE_PARTICIPANT,
   ]);
 
   result = tournamentEngine.setMatchUpStatus({
@@ -291,6 +299,8 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     SCORE,
     START,
     END,
+    REMOVE_PARTICIPANT,
+    REPLACE_PARTICIPANT,
     SUBSTITUTION,
   ]);
 
@@ -329,6 +339,8 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     SCORE,
     START,
     END,
+    REMOVE_PARTICIPANT,
+    REPLACE_PARTICIPANT,
     SUBSTITUTION,
   ]);
 

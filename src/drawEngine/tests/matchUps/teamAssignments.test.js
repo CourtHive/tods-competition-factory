@@ -2,20 +2,21 @@ import { validateLineUp } from '../../../tournamentEngine/governors/eventGoverno
 import { generateTeamTournament } from '../../../tournamentEngine/tests/team/generateTestTeamTournament';
 import tournamentEngine from '../../../tournamentEngine/sync';
 
+import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import {
   END,
   PENALTY,
   REFEREE,
+  REMOVE_PARTICIPANT,
+  REPLACE_PARTICIPANT,
   SCHEDULE,
   SCORE,
   START,
   STATUS,
   SUBSTITUTION,
-  // SUBSTITUTION,
 } from '../../../constants/matchUpActionConstants';
-import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
 
 const scenario = {
   singlesCount: 3,
@@ -96,7 +97,12 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     drawId,
   });
   validActions = result.validActions.map(({ type }) => type);
-  expect(validActions).toEqual([REFEREE, SCHEDULE]);
+  expect(validActions).toEqual([
+    REFEREE,
+    SCHEDULE,
+    REMOVE_PARTICIPANT,
+    REPLACE_PARTICIPANT,
+  ]);
 
   result = tournamentEngine.matchUpActions({
     matchUpId: singlesMatchUpId,
@@ -128,6 +134,8 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     SCORE,
     START,
     END,
+    REMOVE_PARTICIPANT,
+    REPLACE_PARTICIPANT,
   ]);
 
   // add an incomplete outcome and confirm SUBSTITUTION for SINGLES_MATCHUP
@@ -155,6 +163,8 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     SCORE,
     START,
     END,
+    REMOVE_PARTICIPANT,
+    REPLACE_PARTICIPANT,
     SUBSTITUTION,
   ]);
 });
