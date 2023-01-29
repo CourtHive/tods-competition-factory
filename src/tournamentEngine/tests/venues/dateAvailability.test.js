@@ -130,7 +130,7 @@ test('will not allow saving of Invalid Date in dateAvailability', () => {
   expect(result.error).toEqual(INVALID_TIME);
 });
 
-it.only('can add events, venues, and schedule matchUps', () => {
+it('can add events, venues, and schedule matchUps', () => {
   const startDate = '2023-01-01';
   const endDate = '2023-01-06';
 
