@@ -376,19 +376,6 @@ function removeDrawPosition({
         const loserMatchUpDrawPosition =
           drawPositions[loserMatchUpDrawPositionIndex];
 
-        /*
-        const result = consolationCleanup({
-          loserMatchUpDrawPosition,
-          inContextDrawMatchUps,
-          tournamentRecord,
-          drawDefinition,
-          loserMatchUp,
-          matchUpsMap,
-          event,
-        });
-        if (result.error) return decorateResult({ result, stack });
-        */
-
         drawPositionRemovals({
           structureId: loserMatchUp.structureId,
           drawPosition: loserMatchUpDrawPosition,

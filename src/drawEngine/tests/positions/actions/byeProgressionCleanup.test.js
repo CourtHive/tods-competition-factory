@@ -1,4 +1,5 @@
 import { replaceWithBye, assignDrawPosition } from '../../testingUtilities';
+import { setSubscriptions } from '../../../../global/state/globalState';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 
@@ -7,6 +8,10 @@ import {
   BYE,
   TO_BE_PLAYED,
 } from '../../../../constants/matchUpStatusConstants';
+import {
+  MODIFY_MATCHUP,
+  MODIFY_POSITION_ASSIGNMENTS,
+} from '../../../../constants/topicConstants';
 
 it('will remove BYEs fed into CONSOLATION', () => {
   const {
@@ -24,6 +29,24 @@ it('will remove BYEs fed into CONSOLATION', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
+  let assignmentNotifications = [];
+  let matchUpModifyNotices = [];
+
+  const subscriptions = {
+    [MODIFY_MATCHUP]: (payload) => {
+      if (Array.isArray(payload)) {
+        payload.forEach(({ matchUp }) => {
+          matchUpModifyNotices.push(matchUp);
+        });
+      }
+    },
+    [MODIFY_POSITION_ASSIGNMENTS]: (positions) => {
+      assignmentNotifications.push(positions);
+    },
+  };
+
+  setSubscriptions({ subscriptions });
+
   let {
     drawDefinition: {
       structures: [mainStructure, consolationStructure],
@@ -38,6 +61,9 @@ it('will remove BYEs fed into CONSOLATION', () => {
   );
   expect(consolationAssignedByes.length).toEqual(2);
 
+  expect(matchUpModifyNotices.length).toEqual(0);
+  expect(assignmentNotifications.flat().length).toEqual(0);
+
   // replace 2nd seed position with a bye creating a bye-progressed bye in main 2nd round
   // and propagating a bye to consolation 2nd round
   const drawPosition = 16;
@@ -47,6 +73,9 @@ it('will remove BYEs fed into CONSOLATION', () => {
     drawId,
   });
   expect(result.success).toEqual(true);
+
+  expect(matchUpModifyNotices.length).toEqual(4);
+  // expect(assignmentNotifications.length).toEqual(1);
 
   ({
     drawDefinition: {
@@ -66,12 +95,15 @@ it('will remove BYEs fed into CONSOLATION', () => {
   expect(secondRoundConsolationByeMatchUps.length).toEqual(1);
   const targetMatchUpId = secondRoundConsolationByeMatchUps[0].matchUpId;
 
+  expect(assignmentNotifications.flat().length).toEqual(2);
   // assign a participant to the original drawPosition
   result = assignDrawPosition({
     structureId: mainStructure.structureId,
     drawPosition,
     drawId,
   });
+  expect(matchUpModifyNotices.length).toEqual(7);
+  expect(assignmentNotifications.flat().length).toEqual(4);
 
   ({
     drawDefinition: {
