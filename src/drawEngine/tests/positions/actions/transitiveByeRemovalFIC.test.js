@@ -10,6 +10,7 @@ import {
 import { FEED_IN_CHAMPIONSHIP } from '../../../../constants/drawDefinitionConstants';
 
 it('can remove transitive BYEs in consolation of FIC', () => {
+  // STEP #1: generate FIC w/ 8 participants
   const drawProfiles = [
     {
       drawType: FEED_IN_CHAMPIONSHIP,
@@ -66,6 +67,12 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   let assignedByes = mainStructure.positionAssignments.filter(({ bye }) => bye);
   expect(assignedByes.length).toEqual(0);
 
+  assignedByes = consolationStructure.positionAssignments.filter(
+    ({ bye }) => bye
+  );
+  expect(assignedByes.length).toEqual(0);
+
+  // STEP #2: replace all positions with BYEs
   replaceWithByes({
     drawPositions: [1, 8, 3, 2, 4, 7, 6, 5],
     structureId: mainStructure.structureId,
@@ -105,6 +112,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
     [1, 7],
   ]);
 
+  // STEP #3: check main structure has 0 participants and 8 BYEs
   assignedParticipantIds = mainStructure.positionAssignments.filter(
     ({ participantId }) => participantId
   );
@@ -112,15 +120,17 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   assignedByes = mainStructure.positionAssignments.filter(({ bye }) => bye);
   expect(assignedByes.length).toEqual(8);
 
+  // STEP #4: check consolation structure has 7 BYEs
   assignedByes = consolationStructure.positionAssignments.filter(
     ({ bye }) => bye
   );
   expect(assignedByes.length).toEqual(7);
 
+  // STEP #5: place two alternates
   replaceWithAlternates({
+    structureId: mainStructure.structureId,
     drawPositions: [3, 7],
     drawId,
-    structureId: mainStructure.structureId,
   });
 
   ({
@@ -157,6 +167,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
     [1, 7],
   ]);
 
+  // STEP #6: check main structure has 2 participants and 6 BYEs
   assignedParticipantIds = mainStructure.positionAssignments.filter(
     ({ participantId }) => participantId
   );
@@ -166,12 +177,12 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   assignedByes = consolationStructure.positionAssignments.filter(
     ({ bye }) => bye
   );
-  expect(assignedByes.length).toEqual(7);
+  expect(assignedByes.length).toEqual(6);
 
   removeAssignment({
-    drawId,
     structureId: mainStructure.structureId,
     drawPosition: 4,
+    drawId,
   });
 
   ({

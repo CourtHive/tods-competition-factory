@@ -183,7 +183,7 @@ export function modifyPositionAssignmentsNotice({
       eventId,
       drawId,
     },
-    key: drawDefinition.drawId,
+    key: structureId,
   });
 
   modifyDrawNotice({
