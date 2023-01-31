@@ -47,9 +47,9 @@ export function getContextMatchUp({
 
 export function assignDrawPosition({ drawId, structureId, drawPosition }) {
   let result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
     drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isDrawPosition).toEqual(true);
   const options = result.validActions?.map((validAction) => validAction.type);
@@ -63,20 +63,21 @@ export function assignDrawPosition({ drawId, structureId, drawPosition }) {
   Object.assign(payload, { participantId });
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
+  return result;
 }
 
 export function removeAssignment({
-  drawId,
-  structureId,
-  drawPosition,
-  replaceWithBye,
   policyDefinitions,
+  replaceWithBye,
+  drawPosition,
+  structureId,
+  drawId,
 }) {
   let result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
-    drawPosition,
     policyDefinitions,
+    drawPosition,
+    structureId,
+    drawId,
   });
   expect(result.isDrawPosition).toEqual(true);
   const options = result.validActions?.map((validAction) => validAction.type);
@@ -88,6 +89,7 @@ export function removeAssignment({
   Object.assign(payload, { replaceWithBye });
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
+  return result;
 }
 
 export function replaceWithBye({
