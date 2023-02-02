@@ -14,7 +14,10 @@ import { isCompletedStructure } from './structureActions';
 import { unique } from '../../../utilities';
 import { isAdHoc } from './isAdHoc';
 
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
+import {
+  POLICY_TYPE_MATCHUP_ACTIONS,
+  POLICY_TYPE_POSITION_ACTIONS,
+} from '../../../constants/policyConstants';
 import {
   ALTERNATE,
   DIRECT_ENTRY_STATUSES,
@@ -441,9 +444,12 @@ export function matchUpActions({
       });
     }
 
+    const substituteWithoutScore =
+      policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS]?.substituteWithoutScore;
+
     // SUBSTITUTION
     if (
-      scoreHasValue(matchUp) &&
+      (substituteWithoutScore || scoreHasValue(matchUp)) &&
       !completedMatchUpStatuses.includes(matchUp.matchUpStatus)
     ) {
       // action is not valid if there are no existing assignments or no available substitutions

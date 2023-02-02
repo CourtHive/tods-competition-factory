@@ -34,6 +34,7 @@ import {
   DOUBLES_MATCHUP,
   SINGLES_MATCHUP,
 } from '../../../constants/matchUpTypes';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 
 const scenario = {
   singlesCount: 3,
@@ -276,6 +277,29 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     END,
     REMOVE_PARTICIPANT,
     REPLACE_PARTICIPANT,
+  ]);
+
+  result = tournamentEngine.matchUpActions({
+    policyDefinitions: {
+      [POLICY_TYPE_MATCHUP_ACTIONS]: {
+        substituteWithoutScore: true,
+      },
+    },
+    matchUpId: doublesMatchUpId,
+    drawId,
+  });
+  validActions = result.validActions.map(({ type }) => type);
+  expect(validActions).toEqual([
+    REFEREE,
+    SCHEDULE,
+    PENALTY,
+    STATUS,
+    SCORE,
+    START,
+    END,
+    REMOVE_PARTICIPANT,
+    REPLACE_PARTICIPANT,
+    SUBSTITUTION,
   ]);
 
   result = tournamentEngine.setMatchUpStatus({
