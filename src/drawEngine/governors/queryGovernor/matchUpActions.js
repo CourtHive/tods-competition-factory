@@ -444,13 +444,12 @@ export function matchUpActions({
       });
     }
 
-    const substitutionRequiresScore =
-      policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS]
-        ?.substitutionRequiresScore;
+    const substituteWithoutScore =
+      policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS]?.substituteWithoutScore;
 
     // SUBSTITUTION
     if (
-      (!substitutionRequiresScore || scoreHasValue(matchUp)) &&
+      (substituteWithoutScore || scoreHasValue(matchUp)) &&
       !completedMatchUpStatuses.includes(matchUp.matchUpStatus)
     ) {
       // action is not valid if there are no existing assignments or no available substitutions
