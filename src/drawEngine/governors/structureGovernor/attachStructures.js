@@ -92,7 +92,31 @@ export function attachStructures({
   modifyDrawNotice({ drawDefinition, structureIds });
 
   if (matchUpModifications?.length) {
-    matchUpModifications.forEach(modifyMatchUpNotice);
+    const modifiedMatchUpMap = {};
+    matchUpModifications.forEach((modification) => {
+      const matchUpId = modification.matchUp?.matchUpId;
+      if (matchUpId) {
+        modifyMatchUpNotice(modification);
+        modifiedMatchUpMap[matchUpId] = modification.matchUp;
+      }
+    });
+
+    // pre-existing structures must be updated if any matchUpModifications were passed into this method
+    drawDefinition.structures.forEach((structure) => {
+      if (existingStructureIds.includes(structure.structureId)) {
+        if (structure.structures) {
+          for (const subStructure of structure.structures) {
+            subStructure.matchUps = subStructure.matchUps.map(
+              (matchUp) => modifiedMatchUpMap[matchUp.matchUpId] || matchUp
+            );
+          }
+        } else {
+          structure.matchUps = structure.matchUps.map(
+            (matchUp) => modifiedMatchUpMap[matchUp.matchUpId] || matchUp
+          );
+        }
+      }
+    });
   }
 
   return { ...SUCCESS };
