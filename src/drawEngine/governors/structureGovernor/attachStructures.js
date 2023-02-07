@@ -111,8 +111,10 @@ export function attachStructures({
             );
           }
         } else {
-          structure.matchUps = structure.matchUps.map(
-            (matchUp) => modifiedMatchUpMap[matchUp.matchUpId] || matchUp
+          structure.matchUps = structure.matchUps.map((matchUp) =>
+            modifiedMatchUpMap[matchUp.matchUpId]
+              ? { ...matchUp, ...modifiedMatchUpMap[matchUp.matchUpId] }
+              : matchUp
           );
         }
       }
