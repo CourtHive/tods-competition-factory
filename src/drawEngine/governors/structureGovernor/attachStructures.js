@@ -92,7 +92,36 @@ export function attachStructures({
   modifyDrawNotice({ drawDefinition, structureIds });
 
   if (matchUpModifications?.length) {
-    matchUpModifications.forEach(modifyMatchUpNotice);
+    const modifiedMatchUpMap = {};
+    matchUpModifications.forEach((modification) => {
+      const matchUpId = modification.matchUp?.matchUpId;
+      if (matchUpId) {
+        modifyMatchUpNotice(modification);
+        modifiedMatchUpMap[matchUpId] = modification.matchUp;
+      }
+    });
+
+    const modifyStructureMatchUps = (structure) => {
+      structure.matchUps.forEach((matchUp) => {
+        if (modifiedMatchUpMap[matchUp.matchUpId]) {
+          Object.assign(matchUp, modifiedMatchUpMap[matchUp.matchUpId]);
+          modifiedMatchUpMap[matchUp.matchUpId] = matchUp;
+        }
+      });
+    };
+
+    // pre-existing structures must be updated if any matchUpModifications were passed into this method
+    drawDefinition.structures.forEach((structure) => {
+      if (existingStructureIds.includes(structure.structureId)) {
+        if (structure.structures) {
+          for (const subStructure of structure.structures) {
+            modifyStructureMatchUps(subStructure);
+          }
+        } else {
+          modifyStructureMatchUps(structure);
+        }
+      }
+    });
   }
 
   return { ...SUCCESS };
