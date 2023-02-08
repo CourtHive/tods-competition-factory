@@ -12,11 +12,11 @@ import { nearestPowerOf2, isPowerOf2, isNumeric } from './utilities/math';
 import { addExtension } from './global/functions/producers/addExtension';
 import { generateHashCode, generateTimeCode } from './utilities';
 import { dateTime, dateRange } from './utilities/dateTime';
+import { JSON2CSV, flattenJSON } from './utilities/json';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
 import { structureSort } from './forge/transform';
 import { numericSort } from './utilities/sorting';
 import { UUID, UUIDS } from './utilities/UUID';
-import { JSON2CSV } from './utilities/json';
 import {
   countValues,
   chunkArray,
@@ -49,6 +49,7 @@ export const utilities = {
   isNumeric,
   isPowerOf2,
   JSON2CSV,
+  flattenJSON,
   makeDeepCopy,
   nearestPowerOf2,
   numericSort,
