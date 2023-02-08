@@ -30,7 +30,7 @@ export function JSON2CSV(arrayOfJSON, config) {
   const {
     includeTransformAccessors,
     includeHeaderRow = true,
-    returnFlattenedJSON,
+    returnTransformedJSON,
     removeEmptyColumns,
     onlyHeaderRow,
 
@@ -66,9 +66,10 @@ export function JSON2CSV(arrayOfJSON, config) {
     .filter(Boolean)
     .map((obj) => flattenJSON(obj, keyJoiner));
 
+  /*
   if (returnFlattenedJSON) {
     return flattened;
-  }
+  }*/
 
   const transformColumns = Object.values(columnTransform).flat();
   if (includeTransformAccessors) columnAccessors.push(...transformColumns);
@@ -185,6 +186,17 @@ export function JSON2CSV(arrayOfJSON, config) {
   }
 
   const rows = flattenedRows.map((row) => row.join(columnJoiner));
+
+  if (returnTransformedJSON) {
+    const flattenedJSON = rows.map((row) => {
+      const columnValues = row.split(columnJoiner);
+      return Object.assign(
+        {},
+        ...columnValues.map((v, i) => ({ [mappedHeaderRow[i]]: v }))
+      );
+    });
+    return flattenedJSON;
+  }
 
   return includeHeaderRow
     ? [mappedHeaderRow.map(withDelimiter).join(columnJoiner), ...rows].join(
