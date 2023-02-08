@@ -11,9 +11,12 @@ import { DOUBLES_EVENT } from '../../../constants/eventConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 
 const sourcePath = './src/global/testHarness/structureReport';
+/*
 const filenames = fs
   .readdirSync(sourcePath)
   .filter((filename) => filename.indexOf('.tods.json') > 0);
+  */
+const filenames = [];
 
 it.skip.each(filenames)(
   'can generate structureReports for all tournamentRecords in testHarness',
