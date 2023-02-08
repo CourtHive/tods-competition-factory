@@ -1,5 +1,5 @@
 import { findTournamentExtension } from '../../governors/queryGovernor/extensionQueries';
-import { getStructureReports } from '../../governors/reportGovernor/structureReport';
+// import { getStructureReports } from '../../governors/reportGovernor/structureReport';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -10,7 +10,7 @@ import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { DOUBLES_EVENT } from '../../../constants/eventConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 
-const sourcePath = './src/global/testHarness';
+const sourcePath = './src/global/testHarness/structureReport';
 const filenames = fs
   .readdirSync(sourcePath)
   .filter((filename) => filename.indexOf('.tods.json') > 0);
@@ -20,8 +20,10 @@ it.skip.each(filenames)(
   (filename) => {
     if (filename) {
       const tournamentRecord = JSON.parse(
-        fs.readFileSync(`./src/global/testHarness/${filename}`, 'UTF-8')
+        fs.readFileSync(`${sourcePath}/${filename}`, 'UTF-8')
       );
+      tournamentEngine.setState(tournamentRecord);
+
       if (
         (tournamentRecord?.extensions || []).find((e) => e?.name === 'level')
       ) {
@@ -35,10 +37,20 @@ it.skip.each(filenames)(
         })?.extension?.value;
 
         if (sectionCode && districtCode) {
-          const structureReports = getStructureReports({
+          /*
+          const { structureReports } = tournamentEngine.getStructureReports({
             tournamentRecord,
           });
-          console.log({ structureReports });
+          console.log(structureReports.slice(0, 5));
+          */
+          let result = tournamentEngine.getEntryStatusReports();
+          const {
+            participantEntryReports,
+            // tournamentEntryReport,
+            // entryStatusReports,
+            // eventReports,
+          } = result;
+          console.log(participantEntryReports[0]);
         }
       }
     }
@@ -229,6 +241,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     'entryStage',
     'entryStatus',
     'eventId',
+    'eventType',
     'mainSeeding',
     'participantId',
     'participantType',
