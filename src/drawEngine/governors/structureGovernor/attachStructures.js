@@ -101,21 +101,24 @@ export function attachStructures({
       }
     });
 
+    const modifyStructureMatchUps = (structure) => {
+      structure.matchUps.forEach((matchUp) => {
+        if (modifiedMatchUpMap[matchUp.matchUpId]) {
+          Object.assign(matchUp, modifiedMatchUpMap[matchUp.matchUpId]);
+          modifiedMatchUpMap[matchUp.matchUpId] = matchUp;
+        }
+      });
+    };
+
     // pre-existing structures must be updated if any matchUpModifications were passed into this method
     drawDefinition.structures.forEach((structure) => {
       if (existingStructureIds.includes(structure.structureId)) {
         if (structure.structures) {
           for (const subStructure of structure.structures) {
-            subStructure.matchUps = subStructure.matchUps.map(
-              (matchUp) => modifiedMatchUpMap[matchUp.matchUpId] || matchUp
-            );
+            modifyStructureMatchUps(subStructure);
           }
         } else {
-          structure.matchUps = structure.matchUps.map((matchUp) =>
-            modifiedMatchUpMap[matchUp.matchUpId]
-              ? { ...matchUp, ...modifiedMatchUpMap[matchUp.matchUpId] }
-              : matchUp
-          );
+          modifyStructureMatchUps(structure);
         }
       }
     });
