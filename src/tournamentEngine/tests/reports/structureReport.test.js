@@ -241,6 +241,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     'entryStage',
     'entryStatus',
     'eventId',
+    'eventType',
     'mainSeeding',
     'participantId',
     'participantType',
