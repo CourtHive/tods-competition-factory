@@ -65,6 +65,7 @@ export function getEntryStatusReports({ tournamentRecord }) {
       participantType: participant?.participantType,
       participantId: id,
       tournamentId,
+      eventType,
       eventId,
       drawId,
       entryStatus,
@@ -230,6 +231,7 @@ export function getEntryStatusReports({ tournamentRecord }) {
     entryStatusReports: Object.values(entryStatusReports).flat(),
     participantEntryReports: Object.values(participantEntryReports).flat(),
     eventReports: Object.values(eventReports).flat(),
+    withDrawnParticipantIds,
     tournamentEntryReport,
   };
 }
