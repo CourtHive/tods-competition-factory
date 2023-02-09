@@ -1,3 +1,4 @@
+import { refreshEntryPositions } from '../../../../global/functions/producers/refreshEntryPositions';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -12,6 +13,7 @@ export function setEntryPosition({
   drawDefinition,
   participantId,
   entryPosition,
+  skipRefresh,
   event,
 }) {
   const stack = 'setEntryPositions';
@@ -35,6 +37,17 @@ export function setEntryPosition({
     }
   });
 
+  if (!skipRefresh) {
+    if (event?.entries) {
+      event.entries = refreshEntryPositions({ entries: event.entries });
+    }
+    if (drawDefinition?.entries) {
+      drawDefinition.entries = refreshEntryPositions({
+        entries: drawDefinition.entries,
+      });
+    }
+  }
+
   return { ...SUCCESS };
 }
 
@@ -50,6 +63,7 @@ export function setEntryPositions({
   for (const positioning of entryPositions) {
     const { participantId, entryPosition } = positioning;
     const result = setEntryPosition({
+      skipRefresh: true, // avoid redundant processing
       tournamentRecord,
       drawDefinition,
       participantId,
@@ -57,6 +71,15 @@ export function setEntryPositions({
       event,
     });
     if (result.error) return result;
+  }
+
+  if (event?.entries) {
+    event.entries = refreshEntryPositions({ entries: event.entries });
+  }
+  if (drawDefinition?.entries) {
+    drawDefinition.entries = refreshEntryPositions({
+      entries: drawDefinition.entries,
+    });
   }
 
   return { ...SUCCESS };
