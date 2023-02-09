@@ -4,6 +4,7 @@ import { generateTeamTournament } from '../../../tournamentEngine/tests/team/gen
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { intersection } from '../../../utilities';
+import mocksEngine from '../../../mocksEngine';
 
 import { IN_PROGRESS } from '../../../constants/matchUpStatusConstants';
 import { LINEUPS } from '../../../constants/extensionConstants';
@@ -504,4 +505,57 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
       .flatMap((assignment) => assignment.collectionAssignments)
       .some(({ substitutionOrder }) => substitutionOrder)
   ).toEqual(false);
+
+  result = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '7-5 7-5',
+    winningSide: 1,
+  });
+  outcome = result.outcome;
+
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: doublesMatchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.matchUpActions({
+    sideNumber: targetSideNumber,
+    matchUpId: doublesMatchUpId,
+    drawId,
+  });
+  validActions = result.validActions.map(({ type }) => type);
+
+  expect(validActions).toEqual([
+    REFEREE,
+    PENALTY,
+    SCORE,
+    START,
+    END,
+    REMOVE_PARTICIPANT,
+    REPLACE_PARTICIPANT,
+  ]);
+
+  result = tournamentEngine.matchUpActions({
+    policyDefinitions: {
+      [POLICY_TYPE_MATCHUP_ACTIONS]: {
+        substituteAfterCompleted: true,
+      },
+    },
+    sideNumber: targetSideNumber,
+    matchUpId: doublesMatchUpId,
+    drawId,
+  });
+  validActions = result.validActions.map(({ type }) => type);
+
+  expect(validActions).toEqual([
+    REFEREE,
+    PENALTY,
+    SCORE,
+    START,
+    END,
+    REMOVE_PARTICIPANT,
+    REPLACE_PARTICIPANT,
+    SUBSTITUTION,
+  ]);
 });

@@ -444,13 +444,17 @@ export function matchUpActions({
       });
     }
 
-    const substituteWithoutScore =
-      policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS]?.substituteWithoutScore;
+    const matchUpActionPolicy =
+      policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS];
+    const substituteWithoutScore = matchUpActionPolicy?.substituteWithoutScore;
+    const substituteAfterCompleted =
+      matchUpActionPolicy?.substituteAfterCompleted;
 
     // SUBSTITUTION
     if (
       (substituteWithoutScore || scoreHasValue(matchUp)) &&
-      !completedMatchUpStatuses.includes(matchUp.matchUpStatus)
+      (substituteAfterCompleted ||
+        !completedMatchUpStatuses.includes(matchUp.matchUpStatus))
     ) {
       // action is not valid if there are no existing assignments or no available substitutions
       if (existingParticipants.length && availableParticipants.length) {
