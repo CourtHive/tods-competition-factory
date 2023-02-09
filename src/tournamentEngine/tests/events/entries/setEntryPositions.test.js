@@ -40,14 +40,12 @@ it('can set entryPositions', () => {
     { participantId: alternates[1].participantId, entryPosition: 'y' },
   ];
   let result = tournamentEngine.setEntryPositions({
-    tournamentEngine,
     entryPositions,
     eventId,
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
   result = tournamentEngine.setEntryPositions({
-    tournamentEngine,
     eventId,
     drawId,
   });
@@ -55,7 +53,6 @@ it('can set entryPositions', () => {
 
   // code coverage for single participant
   result = tournamentEngine.setEntryPosition({
-    tournamentEngine,
     eventId,
     drawId,
   });
@@ -67,7 +64,6 @@ it('can set entryPositions', () => {
     { participantId: alternates[1].participantId, entryPosition: 2 },
   ];
   result = tournamentEngine.setEntryPositions({
-    tournamentEngine,
     entryPositions,
     eventId,
   });
@@ -83,7 +79,6 @@ it('can set entryPositions', () => {
   const [firstAlternate, secondAlternate] = alternates;
 
   result = tournamentEngine.promoteAlternate({
-    tournamentEngine,
     eventId,
   });
   expect(result.success).toEqual(true);
@@ -107,7 +102,6 @@ it('can set entryPositions', () => {
     { participantId: alternates[0].participantId, entryPosition: undefined },
   ];
   result = tournamentEngine.setEntryPositions({
-    tournamentEngine,
     entryPositions,
     eventId,
   });
@@ -117,7 +111,6 @@ it('can set entryPositions', () => {
     { participantId: alternates[0].participantId, entryPosition: 0 },
   ];
   result = tournamentEngine.setEntryPositions({
-    tournamentEngine,
     entryPositions,
     eventId,
   });

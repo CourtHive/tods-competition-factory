@@ -39,13 +39,11 @@ it('can promote alternates', () => {
 
   let result = tournamentEngine.promoteAlternates({
     participantIds: [participantId],
-    tournamentEngine,
     eventId,
   });
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.promoteAlternate({
-    tournamentEngine,
     participantId,
   });
   expect(result.error).toEqual(MISSING_EVENT);
@@ -57,7 +55,6 @@ it('can promote alternates', () => {
   expect(alternates.length).toEqual(1);
 
   result = tournamentEngine.promoteAlternate({
-    tournamentEngine,
     participantId,
     eventId,
   });
@@ -66,7 +63,6 @@ it('can promote alternates', () => {
   ({ participantId } = alternates[0]);
 
   result = tournamentEngine.promoteAlternate({
-    tournamentEngine,
     stageSequence: 4,
     participantId,
     eventId,
@@ -74,7 +70,6 @@ it('can promote alternates', () => {
   expect(result.error).toEqual(PARTICIPANT_NOT_FOUND_IN_STAGE);
 
   result = tournamentEngine.promoteAlternate({
-    tournamentEngine,
     participantId,
     eventId,
   });
@@ -87,14 +82,12 @@ it('can promote alternates', () => {
   expect(alternates.length).toEqual(0);
 
   result = tournamentEngine.promoteAlternate({
-    tournamentEngine,
     participantId: 'invalid',
     eventId,
   });
   expect(result.error).toEqual(PARTICIPANT_ENTRY_NOT_FOUND);
 
   result = tournamentEngine.promoteAlternate({
-    tournamentEngine,
     participantId,
     eventId,
     drawId,
@@ -148,7 +141,6 @@ test('entries with no entryStage can be promoted', () => {
   result = tournamentEngine.promoteAlternate({
     participantId: alternateEntry.participantId,
     eventId: event.eventId,
-    tournamentEngine,
   });
   expect(result.success).toEqual(true);
 });
