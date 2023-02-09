@@ -2818,7 +2818,6 @@ const {
 
 ```js
 tournamentEngine.promoteAlternates({
-  tournamentEngine,
   participantIds,
   // either drawId or eventId are REQUIRED
   eventId, // optional if drawId proided
@@ -3256,6 +3255,36 @@ Set the participantIds of participants in the draw who are representing players 
 tournamentEngine.setDrawParticipantRepresentativeIds({
   drawId,
   representativeParticipantIds,
+});
+```
+
+---
+
+## setEntryPosition
+
+Set entry position a single event entry
+
+```js
+tournamentEngine.setEntryPosition({
+  entryPosition,
+  participantId,
+  eventId, // optional if drawId is provided
+  drawId, // optional if eventId is provided
+});
+```
+
+---
+
+## setEntryPositions
+
+Set entry position for multiple event entries.
+
+```js
+const entryPositions = [{ entryPosition, participantId }];
+tournamentEngine.setEntryPositions({
+  entryPositions, // arrah of [{ entryPosition, participantId }]
+  eventId, // optional if drawId is provided
+  drawId, // optional if eventId is provided
 });
 ```
 
