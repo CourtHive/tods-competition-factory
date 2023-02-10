@@ -1,7 +1,8 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 
-import { PENALTY, SCORE } from '../../../../constants/matchUpActionConstants';
+import { ADD_PENALTY } from '../../../../constants/positionActionConstants';
+import { SCORE } from '../../../../constants/matchUpActionConstants';
 import { PAIR } from '../../../../constants/participantConstants';
 import { DOUBLES } from '../../../../constants/eventConstants';
 import {
@@ -200,7 +201,7 @@ it('can modify score for main draw match after loser directed to consolation', (
     structureId,
     drawPosition: drawPositions[0],
   });
-  expect(result.validActions.map(({ type }) => type).includes(PENALTY)).toEqual(
-    true
-  );
+  expect(
+    result.validActions.map(({ type }) => type).includes(ADD_PENALTY)
+  ).toEqual(true);
 });

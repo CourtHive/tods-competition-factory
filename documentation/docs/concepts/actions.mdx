@@ -7,16 +7,50 @@ which means that errors are thrown when **invalid** actions are attempted, such 
 when participants have already progressed and completed subsequent matchUps in an elimination structure.
 
 In developing a User Interface for interaction with draw structures it is useful to know in advance which actions are **valid**.
-The Competition Factory exports two methods via `drawEngine`, and `tournamentEngine` which return not only `validActions`
-but also the `methods` to perform each action along with both pre-populated parameters and valid values for parameters which are yet to be defined.
+The Competition Factory exports two methods which return not only `validActions` but also the `methods` to perform each action,
+along with both pre-populated parameters and valid values for parameters which are yet to be defined.
 
 ## positionActions
 
-- [drawEngine.positionActions](/docs/apis/draw-engine-api#positionactions)
-- [tournamentEngine.positionActions](/docs/apis/tournament-engine-api#positionactions)
+Actions which are relevant to assigned positions within a draw structure.
+
+- **Assign Participant**: Assign accepted/selected participants to specified draw position
+- **Set Nickname**: Set a nickname for assigned participant (useful when players have excessively long names or multiple players have the same name)
+- **Assign Alternate**: Assign participant from the list of alternates to specified draw position
+- **Assign Qualifier**: Assign qualifier from Qualifying structure to specified draw position
+- **Assign Lucky Loser**: Assign loser from Qualifying structure to specified draw position
+- **Remove Assignment**: Clear specified draw position
+- **Withdraw Particiapnt**: Clear specified draw position and withdraw participant from event
+- **Assign Bye**: Assign a BYE to specified draw position
+- **Set Seed Value**: Assign custom seed value to participant at draw position
+- **Remove Seed Value**: Remove seed assignment from participant at draw position
+- **Swap Participants**: Swap participant at specified draw position with any other positioned participant
+- **Modify Pair Assignment**: Modify individual participant within a positioned doubles pair participant
+- **Add Penalty**: Record a penalty for participant at specified draw position
+
+**positionActions** are available via `drawEngine` and `tournamentEngine`.
+
+- [drawEngine.positionActions()](/docs/apis/draw-engine-api#positionactions)
+- [tournamentEngine.positionActions()](/docs/apis/tournament-engine-api#positionactions)
 
 ## matchUpActions
 
-- [drawEngine.matchUpActions](/docs/apis/draw-engine-api#matchupactions)
-- [tournamentEngine.matchUpActions](/docs/apis/tournament-engine-api#matchupactions)
-- [competitionEngine.matchUpActions](/docs/apis/competition-engine-api#matchupactions)
+Actions which are relevant to a specific `matchUp` within a draw structure.
+
+- **Set Score**: Submit either complete or partial score for specified `matchUp`
+- **Set Status**: Submit `matchUpStatus` for specified `matchUp`
+- **Set Schedule**: Submit scheduling details for specified `matchUp`
+- **Add Penalty**: Record a penalty for participant at within specified `matchUp`
+- **Assign Referee**: Set Referee Participant for specified `matchUp`
+- **Set Start Time**: Set start time for specified `matchUp`
+- **Set End Time**: Set end time for specified `matchUp`
+- **Assign Lineup Position**: In Team Events, assign participant to line up position for specified `matchUp`
+- **Remove Lineup Position**: In Team Events, remove participant from line up position for specified `matchUp`
+- **Replace Lineup Position**: In Team Events, replace participant assigned to line up position for specified `matchUp`
+- **Substitute Position Participant**: In Team Events, nominate substitute participant for line up position for specified `matchUp`
+
+**matchUpActions** are available via `drawEngine`, `tournamentEngine`, and `competitionEngine`.
+
+- [drawEngine.matchUpActions()](/docs/apis/draw-engine-api#matchupactions)
+- [tournamentEngine.matchUpActions()](/docs/apis/tournament-engine-api#matchupactions)
+- [competitionEngine.matchUpActions()](/docs/apis/competition-engine-api#matchupactions)

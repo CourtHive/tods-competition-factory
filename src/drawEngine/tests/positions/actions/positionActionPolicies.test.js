@@ -31,10 +31,6 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../../constants/drawDefinitionConstants';
-import {
-  NICKNAME,
-  PENALTY,
-} from '../../../../constants/matchUpActionConstants';
 
 // demonstrates that policyDefinitions can be used to change the behavior of positionActions
 it('supports policyDefinitions in positionActions', () => {
@@ -301,8 +297,8 @@ it('can disable actions for a specified structure', () => {
   expect(result.validActions.length).toBeGreaterThan(0);
 
   let validActionTypes = result.validActions.map(({ type }) => type);
-  expect(validActionTypes.includes(PENALTY)).toEqual(true);
-  expect(validActionTypes.includes(NICKNAME)).toEqual(true);
+  expect(validActionTypes.includes(ADD_PENALTY)).toEqual(true);
+  expect(validActionTypes.includes(ADD_NICKNAME)).toEqual(true);
 
   // default configuration should return all validActions
   result = tournamentEngine.positionActions({
@@ -320,7 +316,7 @@ it('can disable actions for a specified structure', () => {
           stages: [MAIN], // stages to which this policy applies
           stageSequences: [1], // stageSequences to which this policy applies
           enabledActions: [], // enabledActions: [] => all actions are enabled
-          disabledActions: [PENALTY], // disabledActions: [] => no actions are disabled
+          disabledActions: [ADD_PENALTY], // disabledActions: [] => no actions are disabled
         },
       ],
     },
@@ -335,8 +331,8 @@ it('can disable actions for a specified structure', () => {
   });
   expect(result.validActions.length).toBeGreaterThan(0);
   validActionTypes = result.validActions.map(({ type }) => type);
-  expect(validActionTypes.includes(PENALTY)).toEqual(false);
-  expect(validActionTypes.includes(NICKNAME)).toEqual(true);
+  expect(validActionTypes.includes(ADD_PENALTY)).toEqual(false);
+  expect(validActionTypes.includes(ADD_NICKNAME)).toEqual(true);
   expect(validActionTypes.includes(SEED_VALUE)).toEqual(true);
 
   result = tournamentEngine.positionActions({
@@ -376,6 +372,6 @@ it('can disable actions for a specified structure', () => {
   });
   expect(result.validActions.length).toBeGreaterThan(0);
   validActionTypes = result.validActions.map(({ type }) => type);
-  expect(validActionTypes.includes(PENALTY)).toEqual(false);
+  expect(validActionTypes.includes(ADD_PENALTY)).toEqual(false);
   expect(validActionTypes.includes(SEED_VALUE)).toEqual(true);
 });

@@ -10,8 +10,8 @@ import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { NICKNAME } from '../../../constants/matchUpActionConstants';
 import {
+  ADD_NICKNAME,
   ADD_PENALTY,
   ALTERNATE_PARTICIPANT,
   ASSIGN_BYE,
@@ -306,7 +306,7 @@ it('supports ROUND_ROBIN in multi-sequence qualifying structures', () => {
   let validTypes = result.validActions.map(({ type }) => type).sort();
   // prettier-ignore
   expect(validTypes).toEqual([
-    ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
+    ASSIGN_BYE, LUCKY_PARTICIPANT, ADD_NICKNAME, ADD_PENALTY,
     QUALIFYING_PARTICIPANT, REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 });
@@ -536,7 +536,7 @@ it('Fish Farm: supports qualifying structures with multiple roundTargets', () =>
   let validTypes = result.validActions.map(({ type }) => type).sort();
   // prettier-ignore
   expect(validTypes).toEqual([
-    ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
+    ASSIGN_BYE, LUCKY_PARTICIPANT, ADD_NICKNAME, ADD_PENALTY,
     QUALIFYING_PARTICIPANT, REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 
@@ -688,7 +688,7 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
 
   // prettier-ignore
   expect(validTypes).toEqual([
-    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
+    ALTERNATE_PARTICIPANT, ASSIGN_BYE, LUCKY_PARTICIPANT, ADD_NICKNAME, ADD_PENALTY,
     QUALIFYING_PARTICIPANT, REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 
@@ -706,7 +706,7 @@ it('qualifying structures with multiple chains can share the same roundTarget', 
   // prettier-ignore
   expect(validTypes).toEqual([
     // restrictQualifyingAlternates will remove ALTERNATE_PARTICIPANT
-    ASSIGN_BYE, LUCKY_PARTICIPANT, NICKNAME, ADD_PENALTY,
+    ASSIGN_BYE, LUCKY_PARTICIPANT, ADD_NICKNAME, ADD_PENALTY,
     QUALIFYING_PARTICIPANT, REMOVE_ASSIGNMENT, REMOVE_SEED, SEED_VALUE, SWAP_PARTICIPANTS, WITHDRAW_PARTICIPANT,
   ]);
 

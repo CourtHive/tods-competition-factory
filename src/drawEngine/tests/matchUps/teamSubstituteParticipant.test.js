@@ -6,6 +6,7 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 import { IN_PROGRESS } from '../../../constants/matchUpStatusConstants';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import {
@@ -35,7 +36,6 @@ import {
   DOUBLES_MATCHUP,
   SINGLES_MATCHUP,
 } from '../../../constants/matchUpTypes';
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 
 const scenario = {
   singlesCount: 3,
