@@ -6,7 +6,6 @@ export const REPLACE_PARTICIPANT = 'REPLACE_PARTICIPANT';
 export const REMOVE_PARTICIPANT = 'REMOVE_PARTICIPANT';
 export const SCHEDULE_METHOD = 'setMatchUpStatus';
 export const SUBSTITUTION = 'SUBSTITUTION';
-export const NICKNAME = 'NICKNAME';
 export const SCHEDULE = 'SCHEDULE';
 export const PENALTY = 'PENALTY';
 export const REFEREE = 'REFEREE';
@@ -24,7 +23,6 @@ export const matchUpActionConstants = {
   REMOVE_PARTICIPANT,
   SCHEDULE_METHOD,
   SUBSTITUTION,
-  NICKNAME,
   SCHEDULE,
   PENALTY,
   REFEREE,
