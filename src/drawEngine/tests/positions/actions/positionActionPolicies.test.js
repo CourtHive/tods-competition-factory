@@ -191,7 +191,7 @@ it('supports policyDefinitions in positionActions', () => {
   ]);
 });
 
-it.only('can disable actions for a specified structure', () => {
+it('can disable actions for a specified structure', () => {
   const drawProfiles = [
     {
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
