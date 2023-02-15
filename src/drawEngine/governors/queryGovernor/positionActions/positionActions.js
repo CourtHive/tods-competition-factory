@@ -318,6 +318,7 @@ export function positionActions(params) {
 
     if (
       !isByePosition &&
+      !activeDrawPositions.length && // if any drawPositions are active, action is disabled
       isAvailableAction({ policyActions, action: SEED_VALUE }) &&
       isValidSeedPosition({ drawDefinition, structureId, drawPosition }) &&
       validToAssignSeed

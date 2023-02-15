@@ -1,0 +1,82 @@
+import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
+
+import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
+import {
+  ADD_NICKNAME,
+  ADD_PENALTY,
+  ASSIGN_BYE,
+  REMOVE_ASSIGNMENT,
+  REMOVE_SEED,
+  SEED_VALUE,
+  SWAP_PARTICIPANTS,
+  WITHDRAW_PARTICIPANT,
+} from '../../../constants/positionActionConstants';
+
+const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
+  matchUps.find(
+    (matchUp) =>
+      matchUp.roundNumber === roundNumber &&
+      matchUp.roundPosition === roundPosition
+  );
+
+test('A DOUBLE_WALKOVER in FMLC does not restrict positionActions', () => {
+  const drawProfiles = [
+    { drawSize: 16, drawType: FIRST_MATCH_LOSER_CONSOLATION },
+  ];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
+
+  let result = tournamentEngine.positionActions({
+    structureId: targetMatchUp.structureId,
+    drawPosition: 3,
+    drawId,
+  });
+
+  expect(result.isActiveDrawPosition).toEqual(false);
+  expect(result.validActions.map(({ type }) => type)).toEqual([
+    REMOVE_ASSIGNMENT,
+    WITHDRAW_PARTICIPANT,
+    ASSIGN_BYE,
+    SEED_VALUE,
+    REMOVE_SEED,
+    ADD_PENALTY,
+    ADD_NICKNAME,
+    SWAP_PARTICIPANTS,
+  ]);
+
+  // Enter DOUBLE_WALKOVER in R1P1
+  result = tournamentEngine.setMatchUpStatus({
+    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    matchUpId: targetMatchUp.matchUpId,
+    drawId,
+  });
+
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.positionActions({
+    structureId: targetMatchUp.structureId,
+    drawPosition: 3,
+    drawId,
+  });
+
+  expect(result.isActiveDrawPosition).toEqual(false);
+  expect(result.validActions.map(({ type }) => type)).toEqual([
+    REMOVE_ASSIGNMENT,
+    WITHDRAW_PARTICIPANT,
+    ASSIGN_BYE,
+    ADD_PENALTY,
+    ADD_NICKNAME,
+    SWAP_PARTICIPANTS,
+  ]);
+});
