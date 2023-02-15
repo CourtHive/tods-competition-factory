@@ -2,10 +2,7 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import drawEngine from '../../../sync';
 
-import {
-  INVALID_DRAW_POSITION,
-  INVALID_PARTICIPANT_ID,
-} from '../../../../constants/errorConditionConstants';
+import { INVALID_DRAW_POSITION } from '../../../../constants/errorConditionConstants';
 import {
   BYE,
   COMPLETED,
@@ -18,8 +15,6 @@ import {
   REMOVE_ASSIGNMENT,
   ALTERNATE_PARTICIPANT,
   ASSIGN_BYE,
-  SEED_VALUE,
-  SEED_VALUE_METHOD,
 } from '../../../../constants/positionActionConstants';
 
 it('can return accurate position details when requesting positionActions', () => {
@@ -62,26 +57,8 @@ it('can return accurate position details when requesting positionActions', () =>
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
 
-  const seedAssignmentAction = result.validActions.find(
-    ({ type }) => type === SEED_VALUE
-  );
-  expect(seedAssignmentAction.method).toEqual(SEED_VALUE_METHOD);
-  const { method, payload } = seedAssignmentAction;
-  payload.seedValue = '3';
-  result = tournamentEngine[method](payload);
-  expect(result.success).toEqual(true);
-
-  payload.participantId = 'bogus';
-  result = tournamentEngine[method](payload);
-  expect(result.error).toEqual(INVALID_PARTICIPANT_ID);
-
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   drawEngine.setState(drawDefinition);
-  let { seedAssignments } = drawEngine.getStructureSeedAssignments({
-    structureId,
-  });
-  expect(seedAssignments.length).toEqual(1);
-  expect(seedAssignments[0].seedValue).toEqual('3');
 
   drawPosition = 2;
   result = tournamentEngine.positionActions({

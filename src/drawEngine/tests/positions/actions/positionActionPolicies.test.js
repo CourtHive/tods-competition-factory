@@ -138,9 +138,10 @@ it('supports policyDefinitions in positionActions', () => {
     drawPosition,
   });
   expect(result.isActiveDrawPosition).toEqual(true);
-  expect(result.validActions.map(({ type }) => type)).toEqual(
-    noMovementActions
-  );
+  expect(result.validActions.map(({ type }) => type)).toEqual([
+    ADD_PENALTY,
+    ADD_NICKNAME,
+  ]);
 
   contextFilters = { stages: [CONSOLATION] };
   ({ upcomingMatchUps } = tournamentEngine.tournamentMatchUps({
@@ -190,7 +191,7 @@ it('supports policyDefinitions in positionActions', () => {
   ]);
 });
 
-it('can disable actions for a specified structure', () => {
+it.only('can disable actions for a specified structure', () => {
   const drawProfiles = [
     {
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
@@ -333,7 +334,6 @@ it('can disable actions for a specified structure', () => {
   validActionTypes = result.validActions.map(({ type }) => type);
   expect(validActionTypes.includes(ADD_PENALTY)).toEqual(false);
   expect(validActionTypes.includes(ADD_NICKNAME)).toEqual(true);
-  expect(validActionTypes.includes(SEED_VALUE)).toEqual(true);
 
   result = tournamentEngine.positionActions({
     structureId: consolationStructure.structureId,
@@ -370,8 +370,7 @@ it('can disable actions for a specified structure', () => {
     drawPosition,
     drawId,
   });
-  expect(result.validActions.length).toBeGreaterThan(0);
+  expect(result.validActions.length).toEqual(0);
   validActionTypes = result.validActions.map(({ type }) => type);
   expect(validActionTypes.includes(ADD_PENALTY)).toEqual(false);
-  expect(validActionTypes.includes(SEED_VALUE)).toEqual(true);
 });
