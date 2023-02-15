@@ -14,15 +14,17 @@ export function isActiveMatchUp({
   matchUpStatus,
   winningSide,
   tieMatchUps,
+  sides,
   score,
 }) {
+  const participantAssigned = sides?.find(({ participantId }) => participantId);
   const activeTieMatchUps = tieMatchUps?.filter(isActiveMatchUp)?.length;
   const scoreExists = scoreHasValue({ score });
 
   const activeStatus =
     scoreExists ||
-    winningSide ||
     activeTieMatchUps ||
+    (winningSide && participantAssigned) || // if winningSide and no participant assigned => "produced" WALKOVER
     // must exclude IN_PROGRESS as this is automatically set by updateTieMatchUpScore
     // must exclude WALKOVER and DEFAULTED as "produced" scenarios do not imply a winningSide
     (isActiveMatchUpStatus({ matchUpStatus }) &&
