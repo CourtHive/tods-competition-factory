@@ -154,7 +154,7 @@ it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () =>
   expect(result.error).toEqual(INVALID_VALUES);
 });
 
-it.only('can modify collectionDefinitions for a tieFormat on a structure', () => {
+it('can modify collectionDefinitions for a tieFormat on a structure', () => {
   const {
     drawIds: [drawId],
     tournamentRecord,
