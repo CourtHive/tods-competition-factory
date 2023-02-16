@@ -1,8 +1,8 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getTieFormat } from '../../../tournamentEngine/getters/getTieFormat';
 import { decorateResult } from '../../../global/functions/decorateResult';
-import { instanceCount, intersection } from '../../../utilities';
+import { instanceCount, intersection, UUID } from '../../../utilities';
 import { copyTieFormat } from './copyTieFormat';
-import { getTieFormat } from './getTieFormat';
 import { validUpdate } from './validUpdate';
 import {
   modifyDrawNotice,
@@ -32,6 +32,7 @@ export function updateTieFormat({
   updateInProgressMatchUps,
   tournamentRecord,
   drawDefinition,
+  collectionId,
   structure,
   tieFormat,
   eventId,
@@ -39,8 +40,11 @@ export function updateTieFormat({
   event,
 }) {
   const stack = 'updateTieFormat';
-  let modifiedCount = 0;
   let modifiedStructuresCount = 0;
+  let modifiedCount = 0;
+
+  const newCollectionId = UUID();
+  // const newCollectionId = collectionId;
 
   const collectionMap = tieFormat?.collectionDefinitions.reduce(
     (instanceMap, def) => {
@@ -61,15 +65,29 @@ export function updateTieFormat({
   };
 
   const { drawDefaultTieFormat, eventDefaultTieFormat } = getTieFormat({
+    tournamentRecord,
     drawDefinition,
     event,
   });
+
+  const uniqueTieFormat = {
+    ...tieFormat,
+    collectionDefinitions: tieFormat.collectionDefinitions.map((def) => ({
+      ...def,
+      collectionId:
+        def.collectionId === collectionId ? newCollectionId : def.collectionId,
+    })),
+  };
 
   if (event && eventId) {
     for (const drawDefinition of event.drawDefinitions || []) {
       processDrawDefinition({ drawDefinition });
     }
-    event.tieFormat = tieFormat;
+    event.tieFormat = uniqueTieFormat;
+    // descend into every drawDefinition that does not have a tieFormat
+    // descend into every structure that does not have a tieFormat
+    // descend into every TEAM matchUp that does not have a tieFormat
+    // ... where tieMatchUp.collectionId === collectionId, set tieMatchUp.collectionId = newCollectionId
     modifiedCount += 1;
   } else if (matchUp) {
     if (!matchUp.tieMatchUps) {
@@ -81,7 +99,7 @@ export function updateTieFormat({
     );
     if (mapsCheck(collectionMap, matchUpMap)) {
       if (validUpdate({ matchUp, updateInProgressMatchUps })) {
-        matchUp.tieFormat = tieFormat;
+        matchUp.tieFormat = uniqueTieFormat;
         modifiedCount += 1;
       } else {
         return decorateResult({
@@ -97,6 +115,8 @@ export function updateTieFormat({
         stack,
       });
     }
+
+    updateTieMatchUps({ matchUp });
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       eventId: event?.eventId,
@@ -109,10 +129,14 @@ export function updateTieFormat({
     // attaching a tieFormat to the structure must ensure that affected TEAM matchUps within the structure all have appropriate tieMatchUps
     // therefore those that fail to match the modified tieFormat MUST have an appropriate tieFormat attached from higher in the hierarchy
     const inheritedTieFormat = drawDefaultTieFormat || eventDefaultTieFormat;
-    const modified = processStructure({ inheritedTieFormat, structure });
+    const { modifiedCount: modified, error } = processStructure({
+      inheritedTieFormat,
+      structure,
+    });
+    if (error) return { error };
     modifiedStructuresCount += modified;
 
-    structure.tieFormat = tieFormat;
+    structure.tieFormat = uniqueTieFormat;
     modifiedCount += 1;
     modifyDrawNotice({
       structureIds: [structure.structureId],
@@ -121,13 +145,19 @@ export function updateTieFormat({
     });
   } else if (drawDefinition) {
     processDrawDefinition({ drawDefinition });
-    drawDefinition.tieFormat = tieFormat;
+    drawDefinition.tieFormat = uniqueTieFormat;
     modifiedCount += 1;
   } else {
     return { error: MISSING_DRAW_DEFINITION };
   }
 
-  return { ...SUCCESS, modifiedCount, modifiedStructuresCount, tieFormat };
+  return {
+    ...SUCCESS,
+    modifiedStructuresCount,
+    newCollectionId,
+    modifiedCount,
+    tieFormat,
+  };
 
   function processDrawDefinition({ drawDefinition }) {
     const modifiedStructureIds = [];
@@ -135,7 +165,10 @@ export function updateTieFormat({
       // if a sub-structure has a tieFormat then setting drawDefinition.tieFormat will have no effect
       if (structure.tieFormat) continue;
       const inheritedTieFormat = eventDefaultTieFormat;
-      const modifiedCount = processStructure({ inheritedTieFormat, structure });
+      const { modifiedCount } = processStructure({
+        inheritedTieFormat,
+        structure,
+      });
       if (modifiedCount) {
         modifiedStructuresCount += modifiedCount;
         modifiedStructureIds.push(structure.structureId);
@@ -161,11 +194,14 @@ export function updateTieFormat({
 
     for (const matchUp of structureMatchUps) {
       let modified = false;
+      let updateCollectionId;
       const tieMatchUpsMap = instanceCount(
         matchUp.tieMatchUps?.map(({ collectionId }) => collectionId)
       );
+
       if (!mapsCheck(collectionMap, tieMatchUpsMap)) {
         if (inheritedTieFormat) {
+          // do not update collectionId
           matchUp.tieFormat = inheritedTieFormat;
           modified = true;
         } else {
@@ -179,20 +215,49 @@ export function updateTieFormat({
         matchingCollections(matchUp) &&
         validUpdate({ matchUp, updateInProgressMatchUps })
       ) {
-        matchUp.tieFormat = copyTieFormat(tieFormat);
+        matchUp.tieFormat = copyTieFormat(uniqueTieFormat);
+        updateCollectionId = true;
         modified = true;
+      } else if (!matchUp.tieFormat) {
+        updateCollectionId = true;
       }
+
       if (modified) {
         modifiedCount += 1;
         modifyMatchUpNotice({
           tournamentId: tournamentRecord?.tournamentId,
+          drawId: drawDefinition.drawId,
           drawDefinition,
           context: stack,
           eventId,
           matchUp,
         });
       }
+      if (updateCollectionId) {
+        updateTieMatchUps({ matchUp });
+      }
     }
-    return modifiedCount;
+
+    return { modifiedCount };
+  }
+
+  function updateTieMatchUps({ matchUp }) {
+    let updatedCount = 0;
+    for (const tieMatchUp of matchUp.tieMatchUps) {
+      if (tieMatchUp.collectionId === collectionId) {
+        tieMatchUp.collectionId = newCollectionId;
+        updatedCount += 1;
+        modifyMatchUpNotice({
+          tournamentId: tournamentRecord?.tournamentId,
+          drawId: drawDefinition.drawId,
+          matchUp: tieMatchUp,
+          drawDefinition,
+          context: stack,
+          eventId,
+        });
+      }
+    }
+
+    return updatedCount;
   }
 }
