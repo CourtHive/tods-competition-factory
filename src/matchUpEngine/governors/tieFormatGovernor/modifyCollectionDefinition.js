@@ -90,9 +90,7 @@ export function modifyCollectionDefinition({
   const collectionDefinition = tieFormat.collectionDefinitions.find(
     (collectionDefinition) => collectionDefinition.collectionId === collectionId
   );
-  if (!collectionDefinition) {
-    return { error: NOT_FOUND };
-  }
+  if (!collectionDefinition) return { error: NOT_FOUND };
 
   const value = collectionValue || matchUpValue || scoreValue || setValue;
   if (value || collectionValueProfile) {
@@ -170,7 +168,7 @@ export function modifyCollectionDefinition({
     updateInProgressMatchUps,
     tournamentRecord,
     drawDefinition,
-    collectionId,
+    structureId,
     structure,
     eventId,
     matchUp,
