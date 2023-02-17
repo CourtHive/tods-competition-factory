@@ -2,6 +2,7 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getTargetMatchUps } from './getTargetMatchUps';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { updateSideLineUp } from './updateSideLineUp';
 
 export function cleanupLineUps({
   inContextDrawMatchUps,
@@ -37,6 +38,20 @@ export function cleanupLineUps({
             drawDefinition,
             matchUp,
           });
+
+          const teamParticipantId = matchUp.sides[sideIndex].participantId;
+          if (teamParticipantId) {
+            console.log('-------------------------////////////////');
+            updateSideLineUp({
+              inContextTargetMatchUp: inContextMatchUp,
+              drawPositionSideIndex: sideIndex,
+              teamParticipantId,
+              tournamentRecord,
+              drawDefinition,
+              matchUp,
+              event,
+            });
+          }
         }
       }
     });
