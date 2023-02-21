@@ -165,6 +165,7 @@ it.each(scenarios)(
       withMatchUps: true,
       withSeeding: true,
       inContext: true,
+      withDraws: true,
       participantFilters: {
         participantRoles: ['COMPETITOR'],
       },
@@ -183,6 +184,7 @@ it.each(scenarios)(
       usePublishState: true,
       withSeeding: true,
       withEvents: true,
+      withDraws: true,
     }).participants;
 
     let tP = p
@@ -227,6 +229,7 @@ it.each(scenarios)(
         [MAIN]: mainSeedingScaleName,
       },
       withEvents: true,
+      withDraws: true,
     }).participants;
 
     tP = p
@@ -345,6 +348,7 @@ it.each(scenarios)(
       withMatchUps: true,
       withSeeding: true,
       inContext: true,
+      withDraws: true,
       participantFilters: {
         participantRoles: ['COMPETITOR'],
       },

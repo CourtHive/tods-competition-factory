@@ -32,6 +32,7 @@ export function processSides({
   roundPosition,
   matchUpTieId,
   matchUpSides,
+  collectionId,
   matchUpType,
   winningSide,
   matchUpId,
@@ -86,15 +87,26 @@ export function processSides({
 
     const addMatchUp = (participantId, opponentParticipantId) => {
       if (withMatchUps) {
-        const opponentParticipantInfo =
-          withOpponents && getOpponentInfo(opponentParticipantId);
         participantMap[participantId].matchUps[matchUpId] = {
-          opponentParticipantInfo,
           participantWon,
           matchUpType,
           sideNumber,
           matchUpId,
+          eventId,
+          drawId,
         };
+        if (withOpponents) {
+          const opponentParticipantInfo = getOpponentInfo(
+            opponentParticipantId
+          );
+          participantMap[participantId].matchUps[
+            matchUpId
+          ].opponentParticipantInfo = opponentParticipantInfo;
+        }
+        if (collectionId) {
+          participantMap[participantId].matchUps[matchUpId].collectionId =
+            collectionId;
+        }
       }
 
       if (withRankingProfile) {

@@ -46,7 +46,6 @@ export function getParticipants({
     withISO2,
     withIOC,
   });
-
   let participantIdsWithConflicts,
     eventsPublishStatuses,
     derivedEventInfo,
