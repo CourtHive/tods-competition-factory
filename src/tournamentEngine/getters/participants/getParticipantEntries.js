@@ -236,10 +236,8 @@ export function getParticipantEntries({
         const mainSeedingMap = getSeedingMap(mainSeedAssignments);
         const qualifyingSeedingMap = getSeedingMap(qualifyingSeedAssignments);
 
-        const relevantEntries = entries.filter(
-          ({ entryStage, participantId }) =>
-            entryStage === MAIN &&
-            assignedParticipantIds.includes(participantId)
+        const relevantEntries = entries.filter(({ participantId }) =>
+          assignedParticipantIds.includes(participantId)
         );
 
         const publishedSeeding =
@@ -252,7 +250,8 @@ export function getParticipantEntries({
               publishedSeeding?.drawIds?.includes(drawId)));
 
         for (const entry of relevantEntries) {
-          const { entryStatus, entryPosition, participantId } = entry;
+          const { entryStatus, entryStage, entryPosition, participantId } =
+            entry;
 
           // get event ranking
           const ranking = getRanking({
@@ -267,12 +266,14 @@ export function getParticipantEntries({
           const addDrawEntry = (id) => {
             if (participantMap[id].draws[drawId]) return;
 
-            const seedAssignments = seedingPublished ? {} : undefined;
-            const mainSeeding = seedingPublished
+            const includeSeeding = withSeeding && seedingPublished;
+
+            const seedAssignments = includeSeeding ? {} : undefined;
+            const mainSeeding = includeSeeding
               ? mainSeedingMap?.[participantId]?.seedValue ||
                 mainSeedingMap?.[participantId]?.seedNumber
               : undefined;
-            const qualifyingSeeding = seedingPublished
+            const qualifyingSeeding = includeSeeding
               ? qualifyingSeedingMap?.[participantId]?.seedValue ||
                 qualifyingSeedingMap?.[participantId]?.seedNumber
               : undefined;
@@ -281,7 +282,7 @@ export function getParticipantEntries({
             if (qualifyingSeeding) seedAssignments[QUALIFYING] = mainSeeding;
 
             if (withEvents) {
-              if (seedingPublished) {
+              if (includeSeeding) {
                 // overwrite any event seeding with actual draw seeding (which may differ)
                 participantMap[id].events[eventId].seedValue =
                   mainSeeding || qualifyingSeeding;
@@ -299,6 +300,7 @@ export function getParticipantEntries({
                   seedAssignments,
                   entryPosition,
                   entryStatus,
+                  entryStage,
                   eventId,
                   ranking,
                   drawId,

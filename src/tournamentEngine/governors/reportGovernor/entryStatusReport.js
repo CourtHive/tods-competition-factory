@@ -21,6 +21,7 @@ export function getEntryStatusReports({ tournamentRecord }) {
   const { participantMap } = getParticipants({
     withScaleValues: true,
     withEvents: true, // so that event rankings will be present
+    withSeeding: true,
     tournamentRecord,
     withDraws: true,
   });

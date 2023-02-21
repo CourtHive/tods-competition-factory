@@ -541,22 +541,26 @@ export function getAllStructureMatchUps({
       };
       matchUpWithContext.sides.filter(Boolean).forEach((side) => {
         if (side.participantId) {
-          const participant =
+          const participant = makeDeepCopy(
             getMappedParticipant(side.participantId) ||
-            findParticipant({
-              policyDefinitions: appliedPolicies,
-              participantId: side.participantId,
-              tournamentParticipants,
-              internalUse: true,
-              contextProfile,
-            });
+              findParticipant({
+                policyDefinitions: appliedPolicies,
+                participantId: side.participantId,
+                tournamentParticipants,
+                internalUse: true,
+                contextProfile,
+              }),
+            undefined,
+            true
+          );
           if (participant) {
             if (drawDefinition?.entries) {
               const entry = drawDefinition.entries.find(
                 (entry) => entry.participantId === side.participantId
               );
-              if (entry?.entryStatus)
+              if (entry?.entryStatus) {
                 participant.entryStatus = entry.entryStatus || ALTERNATE;
+              }
             }
             Object.assign(side, { participant });
           }
