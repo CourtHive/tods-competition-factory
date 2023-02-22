@@ -90,6 +90,7 @@ export function processSides({
         participantMap[participantId].matchUps[matchUpId] = {
           participantWon,
           matchUpType,
+          structureId,
           sideNumber,
           matchUpId,
           eventId,
@@ -132,9 +133,9 @@ export function processSides({
           participantId,
           matchUpStatus,
           roundPosition,
-          structureId,
           matchUpType,
           roundNumber,
+          structureId,
           matchUpId,
           schedule,
           drawId,
