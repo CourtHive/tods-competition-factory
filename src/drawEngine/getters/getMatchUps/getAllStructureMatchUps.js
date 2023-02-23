@@ -388,11 +388,12 @@ export function getAllStructureMatchUps({
       : context?.category;
 
     const processCodes =
-      matchUp.processCodes ||
-      collectionDefinition?.processCodes ||
-      structure.processCodes ||
-      drawDefinition?.processCodes ||
-      event?.processCodes ||
+      (matchUp.processCodes?.length && matchUp.processCodes) ||
+      (collectionDefinition?.processCodes?.length &&
+        collectionDefinition?.processCodes) ||
+      (structure.processCodes?.length && structure.processCodes) ||
+      (drawDefinition?.processCodes?.length && drawDefinition?.processCodes) ||
+      (event?.processCodes?.length && event?.processCodes) ||
       tournamentRecord?.processCodes;
 
     const competitiveness =
