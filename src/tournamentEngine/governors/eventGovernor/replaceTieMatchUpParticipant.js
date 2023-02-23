@@ -197,10 +197,16 @@ export function replaceTieMatchUpParticipantId(params) {
     }) || [];
 
   if (!newParticipantIdInLineUp) {
-    modifiedLineUp.push({
-      collectionAssignments: [{ collectionId, collectionPosition }],
+    const collectionAssignment = { collectionId, collectionPosition };
+    if (substitution) {
+      collectionAssignment.substitutionOrder = substitutionOrder + 1;
+      collectionAssignment.previousParticipantId = existingParticipantId;
+    }
+    const assignment = {
+      collectionAssignments: [collectionAssignment],
       participantId: newParticipantId,
-    });
+    };
+    modifiedLineUp.push(assignment);
   }
 
   const isDoubles = matchUpType === DOUBLES;
