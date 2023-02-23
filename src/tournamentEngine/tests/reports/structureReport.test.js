@@ -1,5 +1,4 @@
 import { findTournamentExtension } from '../../governors/queryGovernor/extensionQueries';
-// import { getStructureReports } from '../../governors/reportGovernor/structureReport';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -11,11 +10,6 @@ import { DOUBLES_EVENT } from '../../../constants/eventConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 
 const sourcePath = './src/global/testHarness/structureReport';
-/*
-const filenames = fs
-  .readdirSync(sourcePath)
-  .filter((filename) => filename.indexOf('.tods.json') > 0);
-  */
 const filenames = [];
 
 it.skip.each(filenames)(
@@ -40,12 +34,6 @@ it.skip.each(filenames)(
         })?.extension?.value;
 
         if (sectionCode && districtCode) {
-          /*
-          const { structureReports } = tournamentEngine.getStructureReports({
-            tournamentRecord,
-          });
-          console.log(structureReports.slice(0, 5));
-          */
           let result = tournamentEngine.getEntryStatusReports();
           const {
             participantEntryReports,

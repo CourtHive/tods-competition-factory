@@ -16,6 +16,7 @@ import { isCompletedStructure } from '../structureActions';
 import { getValidSwapAction } from './getValidSwapAction';
 import { matchUpActions } from '../matchUpActions';
 import {
+  activePositionsCheck,
   getEnabledStructures,
   getPolicyActions,
   isAvailableAction,
@@ -122,11 +123,15 @@ export function positionActions(params) {
 
   Object.assign(appliedPolicies, specifiedPolicyDefinitions || {});
 
-  const { enabledStructures, actionsDisabled } = getEnabledStructures({
-    appliedPolicies,
-    drawDefinition,
-    structure,
-  });
+  const { enabledStructures, actionsDisabled, positionActionsPolicy } =
+    getEnabledStructures({
+      appliedPolicies,
+      drawDefinition,
+      structure,
+    });
+
+  const activePositionOverrides =
+    positionActionsPolicy?.activePositionOverrides || [];
 
   // targetRoundNumber will be > 1 for fed positions
   const { sourceStructureIds: positionSourceStructureIds } =
@@ -318,7 +323,12 @@ export function positionActions(params) {
 
     if (
       !isByePosition &&
-      !activeDrawPositions.length && // if any drawPositions are active, action is disabled
+      // if any drawPositions are active, action is disabled unless override in policy
+      activePositionsCheck({
+        activePositionOverrides,
+        activeDrawPositions,
+        action: SEED_VALUE,
+      }) &&
       isAvailableAction({ policyActions, action: SEED_VALUE }) &&
       isValidSeedPosition({ drawDefinition, structureId, drawPosition }) &&
       validToAssignSeed
@@ -348,7 +358,12 @@ export function positionActions(params) {
 
     if (
       !isByePosition &&
-      !activeDrawPositions.length && // if any drawPositions are active, action is disabled
+      // if any drawPositions are active, action is disabled unless override in policy
+      activePositionsCheck({
+        activePositionOverrides,
+        activeDrawPositions,
+        action: REMOVE_SEED,
+      }) &&
       isAvailableAction({ policyActions, action: REMOVE_SEED }) &&
       isValidSeedPosition({ drawDefinition, structureId, drawPosition }) &&
       validToAssignSeed

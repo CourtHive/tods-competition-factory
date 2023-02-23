@@ -388,11 +388,12 @@ export function getAllStructureMatchUps({
       : context?.category;
 
     const processCodes =
-      matchUp.processCodes ||
-      collectionDefinition?.processCodes ||
-      structure.processCodes ||
-      drawDefinition?.processCodes ||
-      event?.processCodes ||
+      (matchUp.processCodes?.length && matchUp.processCodes) ||
+      (collectionDefinition?.processCodes?.length &&
+        collectionDefinition?.processCodes) ||
+      (structure.processCodes?.length && structure.processCodes) ||
+      (drawDefinition?.processCodes?.length && drawDefinition?.processCodes) ||
+      (event?.processCodes?.length && event?.processCodes) ||
       tournamentRecord?.processCodes;
 
     const competitiveness =
@@ -541,22 +542,26 @@ export function getAllStructureMatchUps({
       };
       matchUpWithContext.sides.filter(Boolean).forEach((side) => {
         if (side.participantId) {
-          const participant =
+          const participant = makeDeepCopy(
             getMappedParticipant(side.participantId) ||
-            findParticipant({
-              policyDefinitions: appliedPolicies,
-              participantId: side.participantId,
-              tournamentParticipants,
-              internalUse: true,
-              contextProfile,
-            });
+              findParticipant({
+                policyDefinitions: appliedPolicies,
+                participantId: side.participantId,
+                tournamentParticipants,
+                internalUse: true,
+                contextProfile,
+              }),
+            undefined,
+            true
+          );
           if (participant) {
             if (drawDefinition?.entries) {
               const entry = drawDefinition.entries.find(
                 (entry) => entry.participantId === side.participantId
               );
-              if (entry?.entryStatus)
+              if (entry?.entryStatus) {
                 participant.entryStatus = entry.entryStatus || ALTERNATE;
+              }
             }
             Object.assign(side, { participant });
           }

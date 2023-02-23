@@ -37,7 +37,16 @@ export function getEnabledStructures({
     );
   });
 
-  return { enabledStructures, actionsDisabled };
+  return { enabledStructures, actionsDisabled, positionActionsPolicy };
+}
+
+export function activePositionsCheck({
+  activePositionOverrides,
+  activeDrawPositions,
+  action,
+}) {
+  if (action && activePositionOverrides.includes(action)) return true;
+  return !activeDrawPositions.length;
 }
 
 export function getPolicyActions({
