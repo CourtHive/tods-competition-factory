@@ -39,6 +39,9 @@ export const POLICY_POSITION_ACTIONS_DEFAULT = {
 
     // enables entries in other flights to be accessed as alternates
     otherFlightEntries: false,
+
+    // enable specific actions even when there are active positions
+    activePositionOverrides: [],
   },
 };
 
