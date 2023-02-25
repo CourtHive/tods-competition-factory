@@ -550,7 +550,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   ]);
 });
 
-function makeSubstitution({ drawId, matchUpType, matchUp }) {
+function makeSubstitution({ drawId, matchUpType, matchUp, sideNumber = 1 }) {
   const matchUps =
     !matchUp &&
     tournamentEngine.allTournamentMatchUps({
@@ -567,7 +567,7 @@ function makeSubstitution({ drawId, matchUpType, matchUp }) {
       },
     },
     matchUpId: targetMatchUp.matchUpId,
-    sideNumber: 1,
+    sideNumber,
     drawId,
   });
   const substitutionAction = result.validActions.find(
@@ -636,6 +636,9 @@ it('can substitute a single individual participant in a TEAM tieMatchUp when onl
   }).matchUps[0];
 
   expect(tieMatchUp.processCodes).toEqual(['RANKING.IGNORE']);
+
+  const side = tieMatchUp.sides.find(({ sideNumber }) => sideNumber === 1);
+  console.log(side.substitutions);
 
   const sOrder = result.modifiedLineUp.map((participant) => {
     return participant.collectionAssignments.find(

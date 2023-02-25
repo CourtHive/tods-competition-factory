@@ -17,13 +17,13 @@ export function removeLineUpSubstitutions({ lineUp }) {
   permutations.forEach((permutation) => {
     const [collectionId, position] = permutation.split('|');
     const collectionPosition = parseInt(position);
-    const participantIds = getCollectionPositionAssignments({
+    const { assignedParticipantIds } = getCollectionPositionAssignments({
       collectionPosition,
       collectionId,
       lineUp,
     });
 
-    participantIds.forEach((participantId) => {
+    assignedParticipantIds.forEach((participantId) => {
       if (!participantAssignments[participantId])
         participantAssignments[participantId] = [];
       participantAssignments[participantId].push({

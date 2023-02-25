@@ -48,7 +48,11 @@ export function getSide({
   const participant =
     drawPositionCollectionAssignment?.[drawPosition]?.participant;
 
+  const substitutions =
+    drawPositionCollectionAssignment?.[drawPosition]?.substitutions;
+
   if (participant) Object.assign(sideValue, { participant });
+  if (substitutions) Object.assign(sideValue, { substitutions });
   if (teamParticipant) Object.assign(sideValue, { teamParticipant });
 
   return sideValue;

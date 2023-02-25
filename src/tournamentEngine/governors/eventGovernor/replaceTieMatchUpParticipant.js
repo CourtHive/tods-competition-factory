@@ -212,8 +212,7 @@ export function replaceTieMatchUpParticipantId(params) {
 
   const isDoubles = matchUpType === DOUBLES;
 
-  const existingIndividualParticipantIds =
-    isDoubles &&
+  const { assignedParticipantIds: existingIndividualParticipantIds } =
     getCollectionPositionAssignments({
       lineUp: teamLineUp,
       collectionPosition,
@@ -221,8 +220,7 @@ export function replaceTieMatchUpParticipantId(params) {
     });
 
   // now check whether new pairParticipant exists
-  const individualParticipantIds =
-    isDoubles &&
+  const { assignedParticipantIds: individualParticipantIds } =
     getCollectionPositionAssignments({
       lineUp: modifiedLineUp,
       collectionPosition,
