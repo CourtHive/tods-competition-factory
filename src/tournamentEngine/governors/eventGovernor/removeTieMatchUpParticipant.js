@@ -36,20 +36,23 @@ export function removeTieMatchUpParticipantId(params) {
 
   const {
     inContextDualMatchUp,
+    inContextTieMatchUp,
     relevantAssignments,
     collectionPosition,
     teamParticipants,
     collectionId,
     matchUpType,
     dualMatchUp,
-    tieMatchUp,
     tieFormat,
   } = matchUpContext;
 
-  if (scoreHasValue({ score: tieMatchUp.score }) || tieMatchUp.winningSide)
+  if (
+    scoreHasValue({ score: inContextTieMatchUp.score }) ||
+    inContextTieMatchUp.winningSide
+  )
     return { error: EXISTING_OUTCOME };
 
-  const side = tieMatchUp.sides?.find(
+  const side = inContextTieMatchUp.sides?.find(
     (side) =>
       side.participant?.participantId === participantId ||
       side.participant?.individualParticipantIds?.includes(participantId)
@@ -161,7 +164,7 @@ export function removeTieMatchUpParticipantId(params) {
     matchUpType === DOUBLES &&
     participantToRemove.participantType === INDIVIDUAL
   ) {
-    const tieMatchUpSide = tieMatchUp.sides?.find(
+    const tieMatchUpSide = inContextTieMatchUp.sides?.find(
       (side) => side.sideNumber === dualMatchUpSide.sideNumber
     );
 

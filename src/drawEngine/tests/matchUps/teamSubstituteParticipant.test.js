@@ -570,20 +570,23 @@ function makeSubstitution({ drawId, matchUpType, matchUp }) {
     sideNumber: 1,
     drawId,
   });
-  let substitutionAction = result.validActions.find(
+  const substitutionAction = result.validActions.find(
     ({ type }) => type === SUBSTITUTION
   );
 
-  let { method, payload, availableParticipantIds, existingParticipantIds } =
+  const { method, payload, availableParticipantIds, existingParticipantIds } =
     substitutionAction;
 
-  let substituteParticipantId = availableParticipantIds[0];
-  let existingParticipantId = existingParticipantIds[0];
+  const substituteParticipantId = availableParticipantIds[0];
+  const existingParticipantId = existingParticipantIds[0];
 
   Object.assign(payload, { substituteParticipantId, existingParticipantId });
 
   // method is 'substituteParticipant'
-  return tournamentEngine[method](payload);
+  result = tournamentEngine[method](payload);
+  result.matchUpId = payload.matchUpId;
+
+  return result;
 }
 
 it('can substitute a single individual participant in a TEAM tieMatchUp when only one position has been assigned', () => {
@@ -626,6 +629,14 @@ it('can substitute a single individual participant in a TEAM tieMatchUp when onl
   expect(lineUpExtension).not.toBeUndefined();
 
   const result = makeSubstitution({ drawId, matchUpType: SINGLES_MATCHUP });
+  const tieMatchUp = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpIds: [result.matchUpId],
+    },
+  }).matchUps[0];
+
+  expect(tieMatchUp.processCodes).toEqual(['RANKING.IGNORE']);
+
   const sOrder = result.modifiedLineUp.map((participant) => {
     return participant.collectionAssignments.find(
       (assignment) => assignment.substitutionOrder !== undefined

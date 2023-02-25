@@ -42,6 +42,7 @@ export function replaceTieMatchUpParticipantId(params) {
 
   const {
     inContextDualMatchUp,
+    inContextTieMatchUp,
     collectionPosition,
     collectionId,
     dualMatchUp,
@@ -49,9 +50,9 @@ export function replaceTieMatchUpParticipantId(params) {
     tieFormat,
   } = matchUpContext;
 
-  const { matchUpType } = tieMatchUp;
+  const { matchUpType } = inContextTieMatchUp;
 
-  const side = tieMatchUp.sides?.find(
+  const side = inContextTieMatchUp.sides?.find(
     (side) =>
       side.participant?.participantId === existingParticipantId ||
       side.participant?.individualParticipantIds?.includes(
@@ -279,6 +280,20 @@ export function replaceTieMatchUpParticipantId(params) {
       });
       if (result.success) participantRemoved = existingPairParticipantId;
     }
+  }
+
+  if (substitution) {
+    const processCodes = tieMatchUp.processCodes || [];
+    processCodes.push('RANKING.IGNORE');
+
+    tieMatchUp.processCodes = processCodes;
+
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      matchUp: tieMatchUp,
+      context: stack,
+      drawDefinition,
+    });
   }
 
   modifyMatchUpNotice({
