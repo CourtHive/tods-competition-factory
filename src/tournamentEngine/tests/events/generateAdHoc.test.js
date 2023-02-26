@@ -17,6 +17,7 @@ import {
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
 import {
+  PENALTY,
   REFEREE,
   SCHEDULE,
   SCORE,
@@ -214,7 +215,7 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
 
   result = tournamentEngine.positionActions(firstRoundMatchUp);
   let actionTypes = result.validActions.map(({ type }) => type);
-  expect(actionTypes).toEqual([ASSIGN_PARTICIPANT, REFEREE, SCHEDULE]);
+  expect(actionTypes).toEqual([ASSIGN_PARTICIPANT, REFEREE, SCHEDULE, PENALTY]);
 
   result = tournamentEngine.matchUpActions(firstRoundMatchUp);
   assignmentAction = result.validActions.find(

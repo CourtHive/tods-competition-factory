@@ -101,8 +101,28 @@ export function matchUpActions({
 
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
+  matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
+
+  if (!inContextDrawMatchUps) {
+    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+      includeByeMatchUps: true,
+      tournamentParticipants,
+      inContext: true,
+      drawDefinition,
+      matchUpsMap,
+    }));
+  }
+
+  const inContextMatchUp = inContextDrawMatchUps.find(
+    (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
+  );
+
+  const side =
+    sideNumber &&
+    inContextMatchUp.sides?.find((side) => side.sideNumber === sideNumber);
+
   const matchUpParticipantIds =
-    matchUp.sides
+    inContextMatchUp.sides
       ?.map((side) => side.participantId || side.participant?.participantid)
       .filter(Boolean) || [];
 
@@ -243,7 +263,7 @@ export function matchUpActions({
 
   if (isByeMatchUp) return { validActions, isByeMatchUp };
 
-  // TODO: impolment method action and pass participants whose role is REFEREE
+  // TODO: implement method action and pass participants whose role is REFEREE
   validActions.push({ type: REFEREE, payload: { matchUpId } });
 
   const isInComplete = !isDirectingMatchUpStatus({
@@ -271,22 +291,6 @@ export function matchUpActions({
   let activeDownstream;
   const isDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(
     matchUp.matchUpStatus
-  );
-
-  matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
-
-  if (!inContextDrawMatchUps) {
-    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-      includeByeMatchUps: true,
-      tournamentParticipants,
-      inContext: true,
-      drawDefinition,
-      matchUpsMap,
-    }));
-  }
-
-  const inContextMatchUp = inContextDrawMatchUps.find(
-    (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
   );
 
   const targetData = positionTargets({
@@ -331,7 +335,8 @@ export function matchUpActions({
       payload: { drawId, matchUpId, schedule: {} },
     });
   }
-  if (readyToScore) {
+
+  if (side?.participant || (!sideNumber && matchUpParticipantIds?.length)) {
     validActions.push(addPenaltyAction);
   }
 
@@ -420,7 +425,11 @@ export function matchUpActions({
       });
     }
 
-    if (existingParticipantIds?.length) {
+    if (
+      // isInComplete && // TODO: determin whether removal should be disallowed for completed matchUps => policy consideration?
+      existingParticipantIds?.length &&
+      (!scoreHasValue(matchUp) || side?.substitutions?.length)
+    ) {
       validActions.push({
         method: REMOVE_TEAM_POSITION_METHOD,
         type: REMOVE_PARTICIPANT,
@@ -431,6 +440,11 @@ export function matchUpActions({
           drawId,
         },
       });
+    }
+    if (
+      (!sideNumber && existingParticipantIds?.length) ||
+      (sideNumber && side?.participant)
+    ) {
       validActions.push({
         method: REPLACE_TEAM_POSITION_METHOD,
         type: REPLACE_PARTICIPANT,
@@ -451,7 +465,11 @@ export function matchUpActions({
       matchUpActionPolicy?.substituteAfterCompleted;
 
     // SUBSTITUTION
+    // substitution is only possible when both sides are present; otherwise => nonsensical
     if (
+      matchUpParticipantIds.length === 2 &&
+      ((!sideNumber && existingParticipantIds?.length) ||
+        (sideNumber && side?.participant)) &&
       (substituteWithoutScore || scoreHasValue(matchUp)) &&
       (substituteAfterCompleted ||
         !completedMatchUpStatuses.includes(matchUp.matchUpStatus))
@@ -481,9 +499,9 @@ export function matchUpActions({
   }
 
   return {
+    structureIsComplete,
     validActions,
     isDoubleExit,
-    structureIsComplete,
   };
 }
 
