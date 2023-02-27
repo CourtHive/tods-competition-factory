@@ -33,6 +33,7 @@ export function getCollectionPositionAssignments({
         substitutions.push({
           previousParticipantId,
           substitutionOrder,
+          participantId,
         });
       assignedParticipantIds = assignedParticipantIds.filter(
         (id) => id !== previousParticipantId

@@ -280,11 +280,18 @@ export function replaceTieMatchUpParticipantId(params) {
     }
   }
 
-  if (substitution) {
-    const processCodes = tieMatchUp.processCodes || [];
-    processCodes.push('RANKING.IGNORE');
+  if (substitution || side.substitutions?.length === 1) {
+    if (substitution) {
+      const processCodes = tieMatchUp.processCodes || [];
+      processCodes.push('RANKING.IGNORE');
 
-    tieMatchUp.processCodes = processCodes;
+      tieMatchUp.processCodes = processCodes;
+    } else {
+      // if there was only one substitution, remove processCode
+      tieMatchUp.processCodes = tieMatchUp.processCodes.filter(
+        (code) => code !== 'RANKING.IGNORE'
+      );
+    }
 
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,

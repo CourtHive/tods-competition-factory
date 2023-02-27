@@ -14,17 +14,7 @@ import { isCompletedStructure } from './structureActions';
 import { unique } from '../../../utilities';
 import { isAdHoc } from './isAdHoc';
 
-import {
-  POLICY_TYPE_MATCHUP_ACTIONS,
-  POLICY_TYPE_POSITION_ACTIONS,
-} from '../../../constants/policyConstants';
-import {
-  ALTERNATE,
-  DIRECT_ENTRY_STATUSES,
-  UNGROUPED,
-  UNPAIRED,
-  WITHDRAWN,
-} from '../../../constants/entryStatusConstants';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import {
   ADD_PENALTY,
   ADD_PENALTY_METHOD,
@@ -58,7 +48,19 @@ import {
   REPLACE_PARTICIPANT,
   REMOVE_TEAM_POSITION_METHOD,
   REMOVE_PARTICIPANT,
+  REMOVE_SUBSTITUTION,
 } from '../../../constants/matchUpActionConstants';
+import {
+  ALTERNATE,
+  DIRECT_ENTRY_STATUSES,
+  UNGROUPED,
+  UNPAIRED,
+  WITHDRAWN,
+} from '../../../constants/entryStatusConstants';
+import {
+  POLICY_TYPE_MATCHUP_ACTIONS,
+  POLICY_TYPE_POSITION_ACTIONS,
+} from '../../../constants/policyConstants';
 import {
   DOUBLES_MATCHUP,
   SINGLES_MATCHUP,
@@ -451,6 +453,31 @@ export function matchUpActions({
         existingParticipantIds,
         payload: {
           existingParticipantId: undefined,
+          participantId: undefined,
+          tieMatchUpId: matchUpId,
+          drawId,
+        },
+      });
+    }
+
+    if (side?.substitutions?.length) {
+      const sideIndividualParticipantIds =
+        (side.participant?.participantType === INDIVIDUAL && [
+          side.participantId,
+        ]) ||
+        (side.participant?.participantType === PAIR &&
+          side.participant.individualParticipantIds) ||
+        [];
+
+      const substitutedParticipantIds = side.substitutions
+        .map((sub) => sub.participantId)
+        .filter((id) => sideIndividualParticipantIds.includes(id));
+
+      validActions.push({
+        method: REMOVE_TEAM_POSITION_METHOD,
+        type: REMOVE_SUBSTITUTION,
+        substitutedParticipantIds,
+        payload: {
           participantId: undefined,
           tieMatchUpId: matchUpId,
           drawId,
