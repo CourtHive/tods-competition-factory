@@ -1,3 +1,4 @@
+import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
 import { generateTieMatchUpScore } from '../../../drawEngine/generators/generateTieMatchUpScore';
 import { validateTieFormat } from '../tieFormatGovernor/tieFormatUtilities';
 import { generateScoreString } from '../../generators/generateScoreString';
@@ -20,6 +21,7 @@ export const scoreGovernor = {
   parseMatchUpFormat: parse,
   generateTieMatchUpScore,
   getTiebreakComplement,
+  updateTieMatchUpScore,
   generateScoreString,
   checkSetIsComplete,
   validateTieFormat,
