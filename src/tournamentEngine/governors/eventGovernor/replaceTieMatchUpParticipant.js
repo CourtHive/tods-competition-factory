@@ -42,6 +42,7 @@ export function replaceTieMatchUpParticipantId(params) {
 
   const {
     inContextDualMatchUp,
+    inContextTieMatchUp,
     collectionPosition,
     collectionId,
     dualMatchUp,
@@ -49,9 +50,9 @@ export function replaceTieMatchUpParticipantId(params) {
     tieFormat,
   } = matchUpContext;
 
-  const { matchUpType } = tieMatchUp;
+  const { matchUpType } = inContextTieMatchUp;
 
-  const side = tieMatchUp.sides?.find(
+  const side = inContextTieMatchUp.sides?.find(
     (side) =>
       side.participant?.participantId === existingParticipantId ||
       side.participant?.individualParticipantIds?.includes(
@@ -211,8 +212,7 @@ export function replaceTieMatchUpParticipantId(params) {
 
   const isDoubles = matchUpType === DOUBLES;
 
-  const existingIndividualParticipantIds =
-    isDoubles &&
+  const { assignedParticipantIds: existingIndividualParticipantIds } =
     getCollectionPositionAssignments({
       lineUp: teamLineUp,
       collectionPosition,
@@ -220,8 +220,7 @@ export function replaceTieMatchUpParticipantId(params) {
     });
 
   // now check whether new pairParticipant exists
-  const individualParticipantIds =
-    isDoubles &&
+  const { assignedParticipantIds: individualParticipantIds } =
     getCollectionPositionAssignments({
       lineUp: modifiedLineUp,
       collectionPosition,
@@ -279,6 +278,27 @@ export function replaceTieMatchUpParticipantId(params) {
       });
       if (result.success) participantRemoved = existingPairParticipantId;
     }
+  }
+
+  if (substitution || side.substitutions?.length === 1) {
+    if (substitution) {
+      const processCodes = tieMatchUp.processCodes || [];
+      processCodes.push('RANKING.IGNORE');
+
+      tieMatchUp.processCodes = processCodes;
+    } else {
+      // if there was only one substitution, remove processCode
+      tieMatchUp.processCodes = tieMatchUp.processCodes.filter(
+        (code) => code !== 'RANKING.IGNORE'
+      );
+    }
+
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      matchUp: tieMatchUp,
+      context: stack,
+      drawDefinition,
+    });
   }
 
   modifyMatchUpNotice({

@@ -23,6 +23,7 @@ export function removeCollectionAssignments({
       drawDefinition,
     })?.lineUp;
 
+  const previousParticipantIds = [];
   const assignmentsRemoved = [];
 
   const modifiedLineUp =
@@ -31,16 +32,19 @@ export function removeCollectionAssignments({
         if (!participantIds.includes(teamCompetitor.participantId)) {
           return teamCompetitor;
         }
+
         const collectionAssignments =
           teamCompetitor.collectionAssignments?.filter((assignment) => {
             const target =
               assignment.collectionId === collectionId &&
               assignment.collectionPosition === collectionPosition;
             if (target)
-              assignmentsRemoved.push({
-                participantId: teamCompetitor.participantId,
-                ...assignment,
-              });
+              if (assignment.previousParticipantId)
+                previousParticipantIds.push(assignment.previousParticipantId);
+            assignmentsRemoved.push({
+              participantId: teamCompetitor.participantId,
+              ...assignment,
+            });
             return !target;
           });
         return {
@@ -50,5 +54,5 @@ export function removeCollectionAssignments({
       })
       .filter(Boolean) || [];
 
-  return { modifiedLineUp, assignmentsRemoved };
+  return { modifiedLineUp, assignmentsRemoved, previousParticipantIds };
 }
