@@ -3707,6 +3707,19 @@ tournamentEngine.updateTeamLineUp({
 
 ---
 
+## updateTieMatchUpScore
+
+Trigger automatic calculation of the score of a TEAM matchUp.
+
+```js
+tournamentEngine.updateTieMatchUpScore({
+  matchUpId,
+  drawId,
+});
+```
+
+---
+
 ## withdrawParticipantAtDrawPosition
 
 Thin wrapper around [removeDrawPositionAssignment](#removedrawpositionassignment). This method is included in `validActions` for [positionActions](../policies/positionActions).

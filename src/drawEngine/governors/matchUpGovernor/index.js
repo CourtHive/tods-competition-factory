@@ -8,6 +8,7 @@ import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
 import { removeDelegatedOutcome } from './removeDelegatedOutcome';
 import { drawMatic } from '../../generators/drawMatic/drawMatic';
 import { setDelegatedOutcome } from './setDelegatedOutcome';
+import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { validDrawPositions } from './validDrawPositions';
 import { disableTieAutoCalc } from './disableTieAutoCalc';
 import { matchUpSort } from '../../getters/matchUpSort';
@@ -32,6 +33,7 @@ const matchUpGovernor = {
   resetScorecard,
   setMatchUpStatus,
   setMatchUpFormat,
+  updateTieMatchUpScore,
   isValidMatchUpFormat: isValid,
 
   disableTieAutoCalc,

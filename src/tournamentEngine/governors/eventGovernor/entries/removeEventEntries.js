@@ -12,6 +12,7 @@ import {
 
 export function removeEventEntries({
   autoEntryPositions = true,
+  tournamentParticipants,
   tournamentRecord,
   participantIds,
   event,
@@ -33,17 +34,20 @@ export function removeEventEntries({
 
   const { eventId } = event;
 
-  const { tournamentParticipants } = getTournamentParticipants({
-    participantFilters: { participantIds },
-    withStatistics: true,
-    tournamentRecord,
-  });
+  if (!tournamentParticipants) {
+    // cannot use getParticipants() because event objects don't have drawIds array
+    tournamentParticipants = getTournamentParticipants({
+      participantFilters: { participantIds },
+      tournamentRecord,
+      withEvents: true,
+      withDraws: true,
+    }).tournamentParticipants;
+  }
 
   const enteredParticipantIds = tournamentParticipants?.every((participant) => {
     const eventObject = participant.events.find(
       (event) => event.eventId === eventId
     );
-    // const enteredInDraw = eventObject?.drawIds?.length;
     const drawIds = eventObject?.drawIds || [];
     const enteredInDraw = participant.draws.filter(
       (drawInfo) =>
