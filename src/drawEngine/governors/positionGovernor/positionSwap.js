@@ -1,5 +1,6 @@
 import { removeDrawPositionAssignment } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeDrawPositionAssignment';
 import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
@@ -14,6 +15,8 @@ import {
 } from '../../notifications/drawNotifications';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
+import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
@@ -21,6 +24,7 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { updateSideLineUp } from './updateSideLineUp';
 
 export function swapDrawPositionAssignments({
   tournamentRecord,
@@ -36,7 +40,7 @@ export function swapDrawPositionAssignments({
     return { error: INVALID_VALUES, drawPositions };
   }
 
-  const matchUpsMap = getMatchUpsMap({ drawDefinition });
+  let matchUpsMap = getMatchUpsMap({ drawDefinition });
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     includeByeMatchUps: true,
@@ -91,6 +95,49 @@ export function swapDrawPositionAssignments({
     event,
   });
 
+  if (event.eventType === TEAM_EVENT) {
+    // update side lineUps for drawPositions that were swapped
+    const inContextTargetMatchUps = getAllStructureMatchUps({
+      matchUpFilters: { matchUpTypes: [TEAM_MATCHUP] },
+      inContext: true,
+      structure,
+    }).matchUps.filter((matchUp) =>
+      matchUp.drawPositions?.some((drawPosition) =>
+        drawPositions.includes(drawPosition)
+      )
+    );
+    const structureMatchUps = getAllStructureMatchUps({
+      structure,
+      matchUpFilters: { matchUpTypes: [TEAM_MATCHUP] },
+    }).matchUps;
+
+    inContextTargetMatchUps.forEach((inContextTargetMatchUp) => {
+      (inContextTargetMatchUp.sides || []).forEach((inContextSide) => {
+        const drawPosition = inContextSide?.drawPosition;
+        if (drawPositions.includes(drawPosition)) {
+          const teamParticipantId = inContextSide.participantId;
+          const matchUp = structureMatchUps.find(
+            ({ matchUpId }) => matchUpId === inContextTargetMatchUp.matchUpId
+          );
+          const drawPositionSideIndex = inContextTargetMatchUp?.sides?.reduce(
+            (index, side, i) =>
+              side.drawPosition === drawPosition ? i : index,
+            undefined
+          );
+
+          updateSideLineUp({
+            inContextTargetMatchUp,
+            drawPositionSideIndex,
+            teamParticipantId,
+            tournamentRecord,
+            drawDefinition,
+            matchUp,
+            event,
+          });
+        }
+      });
+    });
+  }
   modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 
   return { ...SUCCESS };

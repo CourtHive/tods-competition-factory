@@ -1,8 +1,8 @@
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getTargetMatchUps } from './getTargetMatchUps';
 
+import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { updateSideLineUp } from './updateSideLineUp';
 
 export function cleanupLineUps({
   inContextDrawMatchUps,
@@ -23,6 +23,8 @@ export function cleanupLineUps({
   // remove all lineUps on appropriate sides of matchUps which include drawPositions
   // this will cause all lineUps to revert back to the team default lineUps (last modification) stored in LINEUPS extension
   for (const inContextMatchUp of targetMatchUps) {
+    if (inContextMatchUp.matchUpType !== TEAM_MATCHUP) continue;
+
     (inContextMatchUp.sides || []).forEach((side, sideIndex) => {
       if (side?.drawPosition && drawPositions?.includes(side.drawPosition)) {
         const matchUp = matchUps.find(
@@ -38,20 +40,6 @@ export function cleanupLineUps({
             drawDefinition,
             matchUp,
           });
-
-          const teamParticipantId = matchUp.sides[sideIndex].participantId;
-          if (teamParticipantId) {
-            console.log('-------------------------////////////////');
-            updateSideLineUp({
-              inContextTargetMatchUp: inContextMatchUp,
-              drawPositionSideIndex: sideIndex,
-              teamParticipantId,
-              tournamentRecord,
-              drawDefinition,
-              matchUp,
-              event,
-            });
-          }
         }
       }
     });
