@@ -13,6 +13,12 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isCompletedStructure } from './structureActions';
 import { unique } from '../../../utilities';
 import { isAdHoc } from './isAdHoc';
+import {
+  getEnabledStructures,
+  getPolicyActions,
+  isAvailableAction,
+  MATCHUP_ACTION,
+} from './positionActions/actionPolicyUtils';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import {
@@ -65,10 +71,6 @@ import {
   DOUBLES_MATCHUP,
   SINGLES_MATCHUP,
 } from '../../../constants/matchUpTypes';
-import {
-  getEnabledStructures,
-  MATCHUP_ACTION,
-} from './positionActions/actionPolicyUtils';
 
 /**
  *
@@ -118,20 +120,18 @@ export function matchUpActions({
 
   Object.assign(appliedPolicies, specifiedPolicyDefinitions || {});
 
-  const {
-    // actionsPolicy: matchUpActionsPolicy,
-    enabledStructures,
-    actionsDisabled,
-  } = getEnabledStructures({
+  const { enabledStructures } = getEnabledStructures({
     actionType: MATCHUP_ACTION,
     appliedPolicies,
     drawDefinition,
     structure,
   });
 
-  if (enabledStructures || actionsDisabled) {
-    //
-  }
+  const { policyActions } = getPolicyActions({
+    enabledStructures,
+    drawDefinition,
+    structure,
+  });
 
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
 
@@ -296,13 +296,14 @@ export function matchUpActions({
   if (isByeMatchUp) return { validActions, isByeMatchUp };
 
   // TODO: implement method action and pass participants whose role is REFEREE
-  validActions.push({ type: REFEREE, payload: { matchUpId } });
+  if (isAvailableAction({ policyActions, action: REFEREE })) {
+    validActions.push({ type: REFEREE, payload: { matchUpId } });
+  }
 
   const isInComplete = !isDirectingMatchUpStatus({
     matchUpStatus: matchUp.matchUpStatus,
   });
 
-  // const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const structureScoringPolicies = appliedPolicies?.scoring?.structures;
   const stageSpecificPolicies =
     structureScoringPolicies?.stage &&

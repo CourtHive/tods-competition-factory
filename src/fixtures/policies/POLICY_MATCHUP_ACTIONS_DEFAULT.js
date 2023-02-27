@@ -14,6 +14,8 @@ export const POLICY_MATCHUP_ACTIONS_DEFAULT = {
         disabledActions: [], // disabledActions: [] => no actions are disabled
       },
     ],
+
+    substitutionProcessCode: 'RANKING.IGNORE',
   },
 };
 
