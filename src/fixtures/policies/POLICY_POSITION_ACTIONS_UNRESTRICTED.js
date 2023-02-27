@@ -1,4 +1,8 @@
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../constants/policyConstants';
+import {
+  REMOVE_SEED,
+  SEED_VALUE,
+} from '../../constants/positionActionConstants';
 
 export const POLICY_POSITION_ACTIONS_UNRESTRICTED = {
   [POLICY_TYPE_POSITION_ACTIONS]: {
@@ -13,6 +17,9 @@ export const POLICY_POSITION_ACTIONS_UNRESTRICTED = {
 
     // enables entries with multiple qualifying roundTargets to be placed in any round
     disableRoundRestrictions: true,
+
+    // enable specific actions even when there are active positions
+    activePositionOverrides: [SEED_VALUE, REMOVE_SEED],
   },
 };
 

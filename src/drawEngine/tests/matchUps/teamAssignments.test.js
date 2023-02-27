@@ -100,6 +100,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   expect(validActions).toEqual([
     REFEREE,
     SCHEDULE,
+    PENALTY,
     REMOVE_PARTICIPANT,
     REPLACE_PARTICIPANT,
   ]);
@@ -163,7 +164,6 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     SCORE,
     START,
     END,
-    REMOVE_PARTICIPANT,
     REPLACE_PARTICIPANT,
     SUBSTITUTION,
   ]);

@@ -42,17 +42,18 @@ export function getDrawPositionCollectionAssignment({
             drawDefinition,
           })?.lineUp;
 
-        const collectionPositionAssignments = getCollectionPositionAssignments({
-          collectionPosition,
-          collectionId,
-          lineUp,
-        });
+        const { assignedParticipantIds, substitutions } =
+          getCollectionPositionAssignments({
+            collectionPosition,
+            collectionId,
+            lineUp,
+          });
 
         if (matchUpType === DOUBLES) {
-          if (collectionPositionAssignments?.length <= 2) {
+          if (assignedParticipantIds?.length <= 2) {
             const pairedParticipantId =
-              participantMap?.[collectionPositionAssignments[0]]?.pairIdMap?.[
-                collectionPositionAssignments[1]
+              participantMap?.[assignedParticipantIds[0]]?.pairIdMap?.[
+                assignedParticipantIds[1]
               ];
             const pairedParticipant =
               pairedParticipantId &&
@@ -61,13 +62,15 @@ export function getDrawPositionCollectionAssignment({
               pairedParticipant ||
               // resort to brute force
               getPairedParticipant({
-                participantIds: collectionPositionAssignments,
+                participantIds: assignedParticipantIds,
                 tournamentParticipants,
               }).participant;
 
             const participantId = participant?.participantId;
-            return { [drawPosition]: { participantId, teamParticipant } };
-          } else if (collectionPositionAssignments?.length > 2) {
+            return {
+              [drawPosition]: { participantId, teamParticipant, substitutions },
+            };
+          } else if (assignedParticipantIds?.length > 2) {
             /*
             console.log('ERROR: Too many assignments for', {
               assignmentsCount: relevantCompetitors.length,
@@ -75,14 +78,14 @@ export function getDrawPositionCollectionAssignment({
               collectionId,
             });
             */
-            return { [drawPosition]: { teamParticipant } };
+            return { [drawPosition]: { teamParticipant, substitutions } };
           }
         } else {
-          const participantId = collectionPositionAssignments?.[0];
+          const participantId = assignedParticipantIds?.[0];
 
           return (
             participantId && {
-              [drawPosition]: { participantId, teamParticipant },
+              [drawPosition]: { participantId, teamParticipant, substitutions },
             }
           );
         }

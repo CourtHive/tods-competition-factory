@@ -13,6 +13,7 @@ import {
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT,
 } from '../../../constants/positionActionConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find(
@@ -75,6 +76,28 @@ test('A DOUBLE_WALKOVER in FMLC does not restrict positionActions', () => {
     REMOVE_ASSIGNMENT,
     WITHDRAW_PARTICIPANT,
     ASSIGN_BYE,
+    ADD_PENALTY,
+    ADD_NICKNAME,
+    SWAP_PARTICIPANTS,
+  ]);
+
+  // even when there are activeDrawPositions, overrides can enable specific actions which are otherwise disabled
+  result = tournamentEngine.positionActions({
+    policyDefinitions: {
+      [POLICY_TYPE_POSITION_ACTIONS]: {
+        activePositionOverrides: [SEED_VALUE, REMOVE_SEED],
+      },
+    },
+    structureId: targetMatchUp.structureId,
+    drawPosition: 3,
+    drawId,
+  });
+  expect(result.validActions.map(({ type }) => type)).toEqual([
+    REMOVE_ASSIGNMENT,
+    WITHDRAW_PARTICIPANT,
+    ASSIGN_BYE,
+    SEED_VALUE,
+    REMOVE_SEED,
     ADD_PENALTY,
     ADD_NICKNAME,
     SWAP_PARTICIPANTS,
