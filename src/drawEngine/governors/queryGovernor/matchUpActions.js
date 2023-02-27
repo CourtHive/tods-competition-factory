@@ -369,7 +369,10 @@ export function matchUpActions({
     });
   }
 
-  if (side?.participant || (!sideNumber && matchUpParticipantIds?.length)) {
+  if (
+    isAvailableAction({ policyActions, action: ADD_PENALTY }) &&
+    (side?.participant || (!sideNumber && matchUpParticipantIds?.length))
+  ) {
     validActions.push(addPenaltyAction);
   }
 
@@ -394,8 +397,13 @@ export function matchUpActions({
       type: SCORE,
       payload,
     });
-    validActions.push({ type: START });
-    validActions.push({ type: END });
+
+    if (isAvailableAction({ policyActions, action: START })) {
+      validActions.push({ type: START });
+    }
+    if (isAvailableAction({ policyActions, action: END })) {
+      validActions.push({ type: END });
+    }
   }
 
   if (isCollectionMatchUp) {
@@ -491,7 +499,10 @@ export function matchUpActions({
       });
     }
 
-    if (side?.substitutions?.length) {
+    if (
+      isAvailableAction({ policyActions, action: REMOVE_SUBSTITUTION }) &&
+      side?.substitutions?.length
+    ) {
       const sideIndividualParticipantIds =
         (side.participant?.participantType === INDIVIDUAL && [
           side.participantId,
@@ -525,6 +536,7 @@ export function matchUpActions({
     // SUBSTITUTION
     // substitution is only possible when both sides are present; otherwise => nonsensical
     if (
+      isAvailableAction({ policyActions, action: SUBSTITUTION }) &&
       matchUpParticipantIds.length === 2 &&
       ((!sideNumber && existingParticipantIds?.length) ||
         (sideNumber && side?.participant)) &&
