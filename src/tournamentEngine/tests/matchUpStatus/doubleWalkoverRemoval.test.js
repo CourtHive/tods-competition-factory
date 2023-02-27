@@ -551,7 +551,7 @@ test('DOUBLE_WALKOVER cannot be removed when active downstream matchUps', () => 
     drawId,
     matchUpId: targetMatchUp.matchUpId,
   });
-  expect(result.validActions.length).toEqual(1);
+  expect(result.validActions.length).toEqual(2);
   expect(result.validActions[0].type).toEqual(REFEREE);
 
   // a produced WALKOVER matchUp will not have SCORE option if { activeDownstream: true }
@@ -560,7 +560,7 @@ test('DOUBLE_WALKOVER cannot be removed when active downstream matchUps', () => 
     drawId,
     matchUpId: targetMatchUp.matchUpId,
   });
-  expect(result.validActions.length).toEqual(1);
+  expect(result.validActions.length).toEqual(2);
   expect(result.validActions[0].type).toEqual(REFEREE);
 
   // attempting to score an active DOUBLE_WALKOVER matchUp will return an error

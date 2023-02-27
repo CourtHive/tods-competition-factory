@@ -39,13 +39,13 @@ export function assignTieMatchUpParticipantId(params) {
 
   const {
     inContextDualMatchUp,
+    inContextTieMatchUp,
     relevantAssignments,
     collectionPosition,
     teamParticipants,
     collectionId,
     matchUpType,
     dualMatchUp,
-    tieMatchUp,
     tieFormat,
   } = matchUpContext;
 
@@ -91,7 +91,7 @@ export function assignTieMatchUpParticipantId(params) {
     (assignment) => assignment.participantId === participantTeam?.participantId
   );
   const teamDrawPosition = teamAssignment?.drawPosition;
-  const teamSide = tieMatchUp.sides?.find(
+  const teamSide = inContextTieMatchUp.sides?.find(
     ({ drawPosition }) => drawPosition === teamDrawPosition
   );
   const sideNumber = teamSide?.sideNumber;
@@ -133,7 +133,7 @@ export function assignTieMatchUpParticipantId(params) {
     (side) => side.sideNumber === sideNumber
   );
 
-  const tieMatchUpSide = tieMatchUp.sides.find(
+  const tieMatchUpSide = inContextTieMatchUp.sides.find(
     (side) => side.sideNumber === sideNumber
   );
 

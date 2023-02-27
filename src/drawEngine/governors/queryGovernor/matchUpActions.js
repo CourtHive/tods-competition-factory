@@ -14,17 +14,7 @@ import { isCompletedStructure } from './structureActions';
 import { unique } from '../../../utilities';
 import { isAdHoc } from './isAdHoc';
 
-import {
-  POLICY_TYPE_MATCHUP_ACTIONS,
-  POLICY_TYPE_POSITION_ACTIONS,
-} from '../../../constants/policyConstants';
-import {
-  ALTERNATE,
-  DIRECT_ENTRY_STATUSES,
-  UNGROUPED,
-  UNPAIRED,
-  WITHDRAWN,
-} from '../../../constants/entryStatusConstants';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import {
   ADD_PENALTY,
   ADD_PENALTY_METHOD,
@@ -58,7 +48,19 @@ import {
   REPLACE_PARTICIPANT,
   REMOVE_TEAM_POSITION_METHOD,
   REMOVE_PARTICIPANT,
+  REMOVE_SUBSTITUTION,
 } from '../../../constants/matchUpActionConstants';
+import {
+  ALTERNATE,
+  DIRECT_ENTRY_STATUSES,
+  UNGROUPED,
+  UNPAIRED,
+  WITHDRAWN,
+} from '../../../constants/entryStatusConstants';
+import {
+  POLICY_TYPE_MATCHUP_ACTIONS,
+  POLICY_TYPE_POSITION_ACTIONS,
+} from '../../../constants/policyConstants';
 import {
   DOUBLES_MATCHUP,
   SINGLES_MATCHUP,
@@ -101,8 +103,28 @@ export function matchUpActions({
 
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
+  matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
+
+  if (!inContextDrawMatchUps) {
+    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+      includeByeMatchUps: true,
+      tournamentParticipants,
+      inContext: true,
+      drawDefinition,
+      matchUpsMap,
+    }));
+  }
+
+  const inContextMatchUp = inContextDrawMatchUps.find(
+    (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
+  );
+
+  const side =
+    sideNumber &&
+    inContextMatchUp.sides?.find((side) => side.sideNumber === sideNumber);
+
   const matchUpParticipantIds =
-    matchUp.sides
+    inContextMatchUp.sides
       ?.map((side) => side.participantId || side.participant?.participantid)
       .filter(Boolean) || [];
 
@@ -243,7 +265,7 @@ export function matchUpActions({
 
   if (isByeMatchUp) return { validActions, isByeMatchUp };
 
-  // TODO: impolment method action and pass participants whose role is REFEREE
+  // TODO: implement method action and pass participants whose role is REFEREE
   validActions.push({ type: REFEREE, payload: { matchUpId } });
 
   const isInComplete = !isDirectingMatchUpStatus({
@@ -271,22 +293,6 @@ export function matchUpActions({
   let activeDownstream;
   const isDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(
     matchUp.matchUpStatus
-  );
-
-  matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
-
-  if (!inContextDrawMatchUps) {
-    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-      includeByeMatchUps: true,
-      tournamentParticipants,
-      inContext: true,
-      drawDefinition,
-      matchUpsMap,
-    }));
-  }
-
-  const inContextMatchUp = inContextDrawMatchUps.find(
-    (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
   );
 
   const targetData = positionTargets({
@@ -331,7 +337,8 @@ export function matchUpActions({
       payload: { drawId, matchUpId, schedule: {} },
     });
   }
-  if (readyToScore) {
+
+  if (side?.participant || (!sideNumber && matchUpParticipantIds?.length)) {
     validActions.push(addPenaltyAction);
   }
 
@@ -420,7 +427,11 @@ export function matchUpActions({
       });
     }
 
-    if (existingParticipantIds?.length) {
+    if (
+      // isInComplete && // TODO: determin whether removal should be disallowed for completed matchUps => policy consideration?
+      existingParticipantIds?.length &&
+      (!scoreHasValue(matchUp) || side?.substitutions?.length)
+    ) {
       validActions.push({
         method: REMOVE_TEAM_POSITION_METHOD,
         type: REMOVE_PARTICIPANT,
@@ -431,12 +442,42 @@ export function matchUpActions({
           drawId,
         },
       });
+    }
+    if (
+      (!sideNumber && existingParticipantIds?.length) ||
+      (sideNumber && side?.participant)
+    ) {
       validActions.push({
         method: REPLACE_TEAM_POSITION_METHOD,
         type: REPLACE_PARTICIPANT,
         existingParticipantIds,
         payload: {
           existingParticipantId: undefined,
+          participantId: undefined,
+          tieMatchUpId: matchUpId,
+          drawId,
+        },
+      });
+    }
+
+    if (side?.substitutions?.length) {
+      const sideIndividualParticipantIds =
+        (side.participant?.participantType === INDIVIDUAL && [
+          side.participantId,
+        ]) ||
+        (side.participant?.participantType === PAIR &&
+          side.participant.individualParticipantIds) ||
+        [];
+
+      const substitutedParticipantIds = side.substitutions
+        .map((sub) => sub.participantId)
+        .filter((id) => sideIndividualParticipantIds.includes(id));
+
+      validActions.push({
+        method: REMOVE_TEAM_POSITION_METHOD,
+        type: REMOVE_SUBSTITUTION,
+        substitutedParticipantIds,
+        payload: {
           participantId: undefined,
           tieMatchUpId: matchUpId,
           drawId,
@@ -451,7 +492,11 @@ export function matchUpActions({
       matchUpActionPolicy?.substituteAfterCompleted;
 
     // SUBSTITUTION
+    // substitution is only possible when both sides are present; otherwise => nonsensical
     if (
+      matchUpParticipantIds.length === 2 &&
+      ((!sideNumber && existingParticipantIds?.length) ||
+        (sideNumber && side?.participant)) &&
       (substituteWithoutScore || scoreHasValue(matchUp)) &&
       (substituteAfterCompleted ||
         !completedMatchUpStatuses.includes(matchUp.matchUpStatus))
@@ -481,9 +526,9 @@ export function matchUpActions({
   }
 
   return {
+    structureIsComplete,
     validActions,
     isDoubleExit,
-    structureIsComplete,
   };
 }
 

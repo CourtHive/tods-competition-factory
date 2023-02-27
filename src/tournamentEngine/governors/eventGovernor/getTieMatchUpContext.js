@@ -31,7 +31,14 @@ export function getTieMatchUpContext({
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
   // tieMatchUp is matchUpType: SINGLES or DOUBLES
-  const { matchUp: tieMatchUp, structure } = findMatchUp({
+  const { matchUp: tieMatchUp } = findMatchUp({
+    matchUpId: tieMatchUpId,
+    drawDefinition,
+    matchUpsMap,
+  });
+  if (!tieMatchUp) return { error: MATCHUP_NOT_FOUND };
+
+  const { matchUp: inContextTieMatchUp, structure } = findMatchUp({
     tournamentParticipants: tournamentRecord.participants,
     matchUpId: tieMatchUpId,
     inContext: true,
@@ -40,15 +47,13 @@ export function getTieMatchUpContext({
     event,
   });
 
-  if (!tieMatchUp) return { error: MATCHUP_NOT_FOUND };
-
   const {
     collectionPosition,
     drawPositions,
     collectionId,
     matchUpTieId,
     matchUpType,
-  } = tieMatchUp;
+  } = inContextTieMatchUp;
 
   if (![SINGLES, DOUBLES].includes(matchUpType))
     return { error: INVALID_MATCHUP };
@@ -90,6 +95,7 @@ export function getTieMatchUpContext({
 
   return {
     inContextDualMatchUp,
+    inContextTieMatchUp,
     relevantAssignments,
     collectionPosition,
     teamParticipants,

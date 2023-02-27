@@ -62,8 +62,8 @@ it('can return valid actions for matchUps', () => {
   let actionTypes = validActions.map((action) => action.type);
   let overlap = intersection(actionTypes, [
     REFEREE,
-    PENALTY,
     SCORE,
+    PENALTY,
     START,
     END,
   ]);

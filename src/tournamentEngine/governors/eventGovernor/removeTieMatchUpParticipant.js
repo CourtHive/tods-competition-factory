@@ -19,6 +19,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EXISTING_OUTCOME,
   INVALID_PARTICIPANT,
+  INVALID_PARTICIPANT_IDS,
   MISSING_PARTICIPANT_ID,
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
@@ -36,6 +37,7 @@ export function removeTieMatchUpParticipantId(params) {
 
   const {
     inContextDualMatchUp,
+    inContextTieMatchUp,
     relevantAssignments,
     collectionPosition,
     teamParticipants,
@@ -46,15 +48,19 @@ export function removeTieMatchUpParticipantId(params) {
     tieFormat,
   } = matchUpContext;
 
-  if (scoreHasValue({ score: tieMatchUp.score }) || tieMatchUp.winningSide)
-    return { error: EXISTING_OUTCOME };
-
-  const side = tieMatchUp.sides?.find(
+  const side = inContextTieMatchUp.sides?.find(
     (side) =>
       side.participant?.participantId === participantId ||
       side.participant?.individualParticipantIds?.includes(participantId)
   );
   if (!side) return { error: PARTICIPANT_NOT_FOUND };
+
+  if (
+    !side.substitutions?.length &&
+    (scoreHasValue({ score: inContextTieMatchUp.score }) ||
+      inContextTieMatchUp.winningSide)
+  )
+    return { error: EXISTING_OUTCOME };
 
   const teamParticipantId = inContextDualMatchUp.sides?.find(
     ({ sideNumber }) => sideNumber === side.sideNumber
@@ -136,14 +142,15 @@ export function removeTieMatchUpParticipantId(params) {
     return { error: NOT_FOUND, participantId };
   }
 
-  const { modifiedLineUp } = removeCollectionAssignments({
-    collectionPosition,
-    teamParticipantId,
-    dualMatchUpSide,
-    participantIds,
-    drawDefinition,
-    collectionId,
-  });
+  const { modifiedLineUp, previousParticipantIds } =
+    removeCollectionAssignments({
+      collectionPosition,
+      teamParticipantId,
+      dualMatchUpSide,
+      participantIds,
+      drawDefinition,
+      collectionId,
+    });
 
   dualMatchUpSide.lineUp = modifiedLineUp;
 
@@ -161,7 +168,7 @@ export function removeTieMatchUpParticipantId(params) {
     matchUpType === DOUBLES &&
     participantToRemove.participantType === INDIVIDUAL
   ) {
-    const tieMatchUpSide = tieMatchUp.sides?.find(
+    const tieMatchUpSide = inContextTieMatchUp.sides?.find(
       (side) => side.sideNumber === dualMatchUpSide.sideNumber
     );
 
@@ -182,6 +189,12 @@ export function removeTieMatchUpParticipantId(params) {
           (currentId) => currentId !== participantId
         );
 
+      individualParticipantIds.push(...previousParticipantIds);
+
+      if (individualParticipantIds.length > 2) {
+        return { error: INVALID_PARTICIPANT_IDS };
+      }
+
       // don't modify pair participant that is part of other events/draws
       if (!pairParticipant.draws.length) {
         if (individualParticipantIds.length) {
@@ -201,7 +214,6 @@ export function removeTieMatchUpParticipantId(params) {
         }
       } else {
         if (individualParticipantIds.length === 1) {
-          // check to see if a pair with one individualParticipantId needs to be created
           const { participant: existingParticipant } = getPairedParticipant({
             participantIds: individualParticipantIds,
             tournamentRecord,
@@ -223,6 +235,25 @@ export function removeTieMatchUpParticipantId(params) {
       }
     } else {
       return { error: PARTICIPANT_NOT_FOUND };
+    }
+  }
+
+  // if there was only one subsitution on target side and there are no substiutions on other side
+  if (side.substitutions?.length === 1) {
+    const otherSide = inContextTieMatchUp.sides.find(
+      (s) => s.sideNumber !== side.sideNumber
+    );
+    if (!otherSide?.substitutions?.length && tieMatchUp.processCodes?.length) {
+      tieMatchUp.processCodes = tieMatchUp.processCodes.filter(
+        (code) => !code === 'RANKING.IGNORE'
+      );
+
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        matchUp: tieMatchUp,
+        context: stack,
+        drawDefinition,
+      });
     }
   }
 
