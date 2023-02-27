@@ -1,14 +1,31 @@
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
-import { POLICY_POSITION_ACTIONS_DEFAULT } from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DEFAULT';
+import {
+  POLICY_MATCHUP_ACTIONS_DEFAULT,
+  POLICY_POSITION_ACTIONS_DEFAULT,
+} from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DEFAULT';
+import {
+  POLICY_TYPE_POSITION_ACTIONS,
+  POLICY_TYPE_MATCHUP_ACTIONS,
+} from '../../../../constants/policyConstants';
+
+export const POSITION_ACTION = 'positionAction';
+export const MATCHUP_ACTION = 'matchUpAction';
 
 export function getEnabledStructures({
+  actionType = POSITION_ACTION,
   appliedPolicies,
   drawDefinition,
   structure,
 }) {
-  const positionActionsPolicy =
-    appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS] ||
-    POLICY_POSITION_ACTIONS_DEFAULT[POLICY_TYPE_POSITION_ACTIONS];
+  const policyType =
+    (actionType === POSITION_ACTION && POLICY_TYPE_POSITION_ACTIONS) ||
+    (actionType === MATCHUP_ACTION && POLICY_TYPE_MATCHUP_ACTIONS);
+
+  const defaultPolicy =
+    (actionType === POSITION_ACTION && POLICY_POSITION_ACTIONS_DEFAULT) ||
+    (actionType === MATCHUP_ACTION && POLICY_MATCHUP_ACTIONS_DEFAULT);
+
+  const actionsPolicy =
+    appliedPolicies?.[policyType] || defaultPolicy?.[policyType];
 
   const relevantLinks = drawDefinition.links?.filter(
     (link) => link?.target?.structureId === structure?.structureId
@@ -16,7 +33,7 @@ export function getEnabledStructures({
   const targetFeedProfiles =
     relevantLinks?.map(({ target }) => target.feedProfile) || [];
 
-  const { enabledStructures, disabledStructures } = positionActionsPolicy || {};
+  const { enabledStructures, disabledStructures } = actionsPolicy || {};
   const actionsDisabled = disabledStructures?.find((structurePolicy) => {
     const { stages, stageSequences, structureTypes, feedProfiles } =
       structurePolicy;
@@ -37,7 +54,7 @@ export function getEnabledStructures({
     );
   });
 
-  return { enabledStructures, actionsDisabled, positionActionsPolicy };
+  return { enabledStructures, actionsDisabled, actionsPolicy };
 }
 
 export function activePositionsCheck({

@@ -1,4 +1,5 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { getCollectionPositionAssignments } from './getCollectionPositionAssignments';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
@@ -10,6 +11,8 @@ import { findExtension } from '../queryGovernor/extensionQueries';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 import { makeDeepCopy } from '../../../utilities';
 
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import { PAIR } from '../../../constants/participantConstants';
@@ -33,6 +36,7 @@ export function replaceTieMatchUpParticipantId(params) {
     newParticipantId,
     drawDefinition,
     substitution,
+    event,
   } = params;
 
   if (!existingParticipantId || !newParticipantId)
@@ -79,6 +83,18 @@ export function replaceTieMatchUpParticipantId(params) {
       result: { error: INVALID_PARTICIPANT_TYPE },
       stack,
     });
+
+  const { appliedPolicies } = getAppliedPolicies({
+    tournamentRecord,
+    drawDefinition,
+    event,
+  });
+
+  const matchUpActionsPolicy =
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
+    POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
+
+  const substitutionProcessCode = matchUpActionsPolicy?.substitutionProcessCode;
 
   const { extension } = findExtension({
     element: drawDefinition,
@@ -283,14 +299,16 @@ export function replaceTieMatchUpParticipantId(params) {
   if (substitution || side.substitutions?.length === 1) {
     if (substitution) {
       const processCodes = tieMatchUp.processCodes || [];
-      processCodes.push('RANKING.IGNORE');
+      processCodes.push(substitutionProcessCode);
 
       tieMatchUp.processCodes = processCodes;
     } else {
       // if there was only one substitution, remove processCode
-      tieMatchUp.processCodes = tieMatchUp.processCodes.filter(
-        (code) => code !== 'RANKING.IGNORE'
+      const codeIndex = tieMatchUp.processCodes.lastIndexOf(
+        substitutionProcessCode
       );
+      // remove only one instance of substitutionProcessCode
+      tieMatchUp.processCodes.splice(codeIndex, 1);
     }
 
     modifyMatchUpNotice({
