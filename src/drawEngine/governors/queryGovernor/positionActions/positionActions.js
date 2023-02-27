@@ -20,6 +20,7 @@ import {
   getEnabledStructures,
   getPolicyActions,
   isAvailableAction,
+  POSITION_ACTION,
 } from './actionPolicyUtils';
 
 import { DIRECT_ENTRY_STATUSES } from '../../../../constants/entryStatusConstants';
@@ -123,12 +124,16 @@ export function positionActions(params) {
 
   Object.assign(appliedPolicies, specifiedPolicyDefinitions || {});
 
-  const { enabledStructures, actionsDisabled, positionActionsPolicy } =
-    getEnabledStructures({
-      appliedPolicies,
-      drawDefinition,
-      structure,
-    });
+  const {
+    actionsPolicy: positionActionsPolicy,
+    enabledStructures,
+    actionsDisabled,
+  } = getEnabledStructures({
+    actionType: POSITION_ACTION,
+    appliedPolicies,
+    drawDefinition,
+    structure,
+  });
 
   const activePositionOverrides =
     positionActionsPolicy?.activePositionOverrides || [];

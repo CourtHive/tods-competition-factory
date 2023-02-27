@@ -65,6 +65,10 @@ import {
   DOUBLES_MATCHUP,
   SINGLES_MATCHUP,
 } from '../../../constants/matchUpTypes';
+import {
+  getEnabledStructures,
+  MATCHUP_ACTION,
+} from './positionActions/actionPolicyUtils';
 
 /**
  *
@@ -76,9 +80,10 @@ import {
  */
 export function matchUpActions({
   restrictAdHocRoundParticipants = true, // disallow the same participant being in the same round multiple times
+  policyDefinitions: specifiedPolicyDefinitions,
   tournamentParticipants = [],
   inContextDrawMatchUps,
-  policyDefinitions,
+  tournamentRecord,
   drawDefinition,
   matchUpsMap,
   sideNumber,
@@ -92,7 +97,8 @@ export function matchUpActions({
     return { error: INVALID_VALUES, context: { sideNumber } };
 
   const otherFlightEntries =
-    policyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS]?.otherFlightEntries;
+    specifiedPolicyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS]
+      ?.otherFlightEntries;
 
   const { drawId } = drawDefinition;
   const { matchUp, structure } = findMatchUp({
@@ -102,6 +108,30 @@ export function matchUpActions({
   });
 
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
+
+  const { appliedPolicies } = getAppliedPolicies({
+    tournamentRecord,
+    drawDefinition,
+    structure,
+    event,
+  });
+
+  Object.assign(appliedPolicies, specifiedPolicyDefinitions || {});
+
+  const {
+    // actionsPolicy: matchUpActionsPolicy,
+    enabledStructures,
+    actionsDisabled,
+  } = getEnabledStructures({
+    actionType: MATCHUP_ACTION,
+    appliedPolicies,
+    drawDefinition,
+    structure,
+  });
+
+  if (enabledStructures || actionsDisabled) {
+    //
+  }
 
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
 
@@ -272,7 +302,7 @@ export function matchUpActions({
     matchUpStatus: matchUp.matchUpStatus,
   });
 
-  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  // const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const structureScoringPolicies = appliedPolicies?.scoring?.structures;
   const stageSpecificPolicies =
     structureScoringPolicies?.stage &&
@@ -486,7 +516,7 @@ export function matchUpActions({
     }
 
     const matchUpActionPolicy =
-      policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS];
+      specifiedPolicyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS];
     const substituteWithoutScore = matchUpActionPolicy?.substituteWithoutScore;
     const substituteAfterCompleted =
       matchUpActionPolicy?.substituteAfterCompleted;
