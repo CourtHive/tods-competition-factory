@@ -6,6 +6,7 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { IN_PROGRESS } from '../../../constants/matchUpStatusConstants';
@@ -804,7 +805,10 @@ it('can substitute a single individual participant in a TEAM tieMatchUp when onl
     },
   }).matchUps[0];
 
-  expect(tieMatchUp.processCodes).toEqual(['RANKING.IGNORE']);
+  const matchUpActionsPolicy =
+    POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
+  const substitutionProcessCode = matchUpActionsPolicy?.substitutionProcessCode;
+  expect(tieMatchUp.processCodes).toEqual([substitutionProcessCode]);
 
   const side = tieMatchUp.sides.find(({ sideNumber }) => sideNumber === 1);
   expect(side.substitutions.length).toEqual(1);
