@@ -1365,6 +1365,20 @@ competitionEngine.unPublishOrderOfPlay({
 
 ---
 
+## updateTieMatchUpScore
+
+Trigger automatic calculation of the score of a TEAM matchUp.
+
+```js
+competitionEngine.updateTieMatchUpScore({
+  tournamentId,
+  matchUpId,
+  drawId,
+});
+```
+
+---
+
 ## validateSchedulingProfile
 
 ```js

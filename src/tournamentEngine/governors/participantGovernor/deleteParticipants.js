@@ -38,10 +38,11 @@ export function deleteParticipants({
     .map((event) => event?.drawDefinitions?.map(({ drawId }) => drawId))
     .flat(Infinity);
 
+  // cannot use getParticipants() because event objects don't have drawIds array
   const { tournamentParticipants } = getTournamentParticipants({
     participantFilters: { participantIds },
-    withStatistics: true,
     tournamentRecord,
+    withDraws: true,
   });
 
   const getPlacedPairParticipantIds = () => {
@@ -79,8 +80,9 @@ export function deleteParticipants({
   // If not active in draws, remove participantIds from all entries
   for (const event of tournamentRecord.events || []) {
     const result = removeEventEntries({
-      participantIds: participantIds,
+      tournamentParticipants,
       tournamentRecord,
+      participantIds,
       event,
     });
     if (result.error) return result;
@@ -147,6 +149,6 @@ export function deleteParticipants({
   }
 
   return participantsRemovedCount
-    ? SUCCESS
+    ? { ...SUCCESS, participantsRemovedCount }
     : { error: CANNOT_REMOVE_PARTICIPANTS };
 }
