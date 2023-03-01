@@ -44,15 +44,17 @@ export function modifyCollectionDefinition({
   scoreValue,
   setValue,
 }) {
-  if (matchUpFormat && !isValid(matchUpFormat))
+  if (matchUpFormat && !isValid(matchUpFormat)) {
     return { error: INVALID_VALUES };
-  if (collectionName && typeof collectionName !== 'string')
+  }
+  if (collectionName && typeof collectionName !== 'string') {
     return { error: INVALID_VALUES };
+  }
   if (gender && !Object.values(genderConstants).includes(gender)) {
     return { error: INVALID_VALUES };
   }
-  if (category) {
-    // TODO: validate category
+  if (category && typeof category !== 'object') {
+    return { error: INVALID_VALUES };
   }
 
   const stack = 'modifyCollectionDefinition';
