@@ -108,9 +108,9 @@ export function scheduleMatchUps({
 
   if (!matchUpDependencies) {
     ({ matchUpDependencies } = getMatchUpDependencies({
-      tournamentRecords,
       includeParticipantDependencies: true,
       matchUps: competitionMatchUps,
+      tournamentRecords,
     }));
   }
 

@@ -14,6 +14,7 @@ import {
   addMinutesToTimeString,
   extractDate,
   extractTime,
+  getIsoDateString,
 } from '../../../utilities/dateTime';
 
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
@@ -123,12 +124,7 @@ export function getMatchUpScheduleDetails({
       }
     }
 
-    if (!scheduledDate && scheduledTime)
-      scheduledDate = extractDate(scheduledTime);
-
-    const extractedTime = extractTime(scheduledTime);
-    let isoDateString = extractDate(scheduledDate);
-    if (isoDateString && extractedTime) isoDateString += `T${extractedTime}`;
+    const isoDateString = getIsoDateString({ scheduledDate, scheduledTime });
 
     const venueData =
       (

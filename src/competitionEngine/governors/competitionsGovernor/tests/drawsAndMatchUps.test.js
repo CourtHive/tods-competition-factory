@@ -2,18 +2,19 @@ import { setSubscriptions } from '../../../../global/state/globalState';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
+import { expect } from 'vitest';
 
 import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import POLICY_SCORING_USTA from '../../../../fixtures/policies/POLICY_SCORING_USTA';
 import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
 import {
+  ANACHRONISM,
   EVENT_NOT_FOUND,
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_SCORING_POLICY,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
-import { expect } from 'vitest';
 
 const matchUpAddNotices = [];
 
@@ -142,12 +143,13 @@ test('competitionEngine can setMatchUpStatus', () => {
   });
 });
 
-test('competitionEngine can bulkScheduleMatchUps', () => {
+test.only('competitionEngine can bulkScheduleMatchUps', () => {
   const drawProfiles = [{ drawSize: 32 }];
   const venueProfiles = [{ courtsCount: 3 }];
   const {
-    tournamentRecord,
     venueIds: [venueId],
+    drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     venueProfiles,
@@ -158,7 +160,7 @@ test('competitionEngine can bulkScheduleMatchUps', () => {
 
   let { upcomingMatchUps } = competitionEngine.competitionMatchUps();
 
-  const matchUpContextIds = upcomingMatchUps.map(
+  let matchUpContextIds = upcomingMatchUps.map(
     ({ tournamentId, drawId, matchUpId }) => ({
       tournamentId,
       matchUpId,
@@ -166,9 +168,9 @@ test('competitionEngine can bulkScheduleMatchUps', () => {
     })
   );
 
-  const schedule = {
-    scheduledTime: '08:00',
+  let schedule = {
     scheduledDate: startDate,
+    scheduledTime: '08:00',
     venueId,
   };
   let result = competitionEngine.bulkScheduleMatchUps({
@@ -184,9 +186,58 @@ test('competitionEngine can bulkScheduleMatchUps', () => {
 
   ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
 
-  upcomingMatchUps.forEach(({ schedule }) => {
+  upcomingMatchUps.forEach(({ schedule, roundNumber }) => {
     expect(schedule.scheduledDate).toEqual(startDate);
+    expect(roundNumber).toEqual(1);
   });
+
+  let matchUps = competitionEngine.allCompetitionMatchUps({
+    matchUpFilters: { drawIds: [drawId], roundNumbers: [2] },
+  }).matchUps;
+
+  matchUpContextIds = matchUps.map(({ tournamentId, drawId, matchUpId }) => ({
+    tournamentId,
+    matchUpId,
+    drawId,
+  }));
+
+  schedule = {
+    scheduledDate: startDate,
+    scheduledTime: '08:00',
+    venueId,
+  };
+  result = competitionEngine.bulkScheduleMatchUps({
+    errorOnAnachronism: true,
+    matchUpContextIds,
+    schedule,
+  });
+  expect(result.error).toEqual(ANACHRONISM);
+
+  schedule = {
+    scheduledDate: startDate,
+    scheduledTime: '08:00',
+    venueId,
+  };
+  result = competitionEngine.bulkScheduleMatchUps({
+    errorOnAnachronism: false,
+    matchUpContextIds,
+    schedule,
+  });
+  expect(result.warnings.length).toEqual(8);
+  expect(result.warnings[0]).toEqual(ANACHRONISM);
+  expect(result.success).toEqual(true);
+
+  schedule = {
+    scheduledDate: startDate,
+    scheduledTime: '09:00',
+    venueId,
+  };
+  result = competitionEngine.bulkScheduleMatchUps({
+    errorOnAnachronism: true,
+    matchUpContextIds,
+    schedule,
+  });
+  expect(result.success).toEqual(true);
 });
 
 test('can modify event timing for matchUpFormat codes', () => {

@@ -32,7 +32,7 @@ export function getMatchUpDependencies({
   tournamentRecords = {},
   tournamentRecord,
   drawDefinition,
-  matchUpIds = [],
+  matchUpIds = [], // will restrict dependency checking if prior matchUpIds are not included
   matchUps = [], // requires matchUps { inContext: true }
   drawIds = [],
 }) {
@@ -227,6 +227,7 @@ export function getMatchUpDependencies({
     positionDependencies,
     matchUpDependencies,
     sourceMatchUpIds,
+    matchUps,
     ...SUCCESS,
   };
 }

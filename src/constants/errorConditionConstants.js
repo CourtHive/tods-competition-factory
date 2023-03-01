@@ -1,3 +1,7 @@
+export const ANACHRONISM = {
+  message: 'Chronological error; time violation.',
+  code: 'ANACHRONISM',
+};
 export const CANNOT_REMOVE_MAIN_STRUCTURE = {
   message: 'Cannot remove main structure',
   code: 'ERR_CANNOT_REMOVE_MAIN_STRUCTURE',
@@ -745,6 +749,7 @@ export const SCHEDULED_MATCHUPS = {
 };
 
 export const errorConditionConstants = {
+  ANACHRONISM,
   CANNOT_CHANGE_WINNING_SIDE,
   CANNOT_MODIFY_TIEFORMAT,
   CANNOT_REMOVE_MAIN_STRUCTURE,
