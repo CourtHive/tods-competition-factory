@@ -124,6 +124,9 @@ export function getMatchUpScheduleDetails({
       }
     }
 
+    if (!scheduledDate && scheduledTime)
+      scheduledDate = extractDate(scheduledTime);
+
     const isoDateString = getIsoDateString({ scheduledDate, scheduledTime });
 
     const venueData =
