@@ -1,5 +1,17 @@
 import { dateValidation, validDateString } from '../fixtures/validations/regex';
 
+export function getIsoDateString(schedule) {
+  let { scheduledDate, scheduledTime } = schedule;
+  if (!scheduledDate && scheduledTime)
+    scheduledDate = extractDate(scheduledTime);
+  if (!scheduledDate) return;
+
+  const extractedTime = extractTime(scheduledTime);
+  let isoDateString = extractDate(scheduledDate);
+  if (isoDateString && extractedTime) isoDateString += `T${extractedTime}`;
+  return isoDateString;
+}
+
 export function isDateObject(value) {
   if (typeof value !== 'object' || Array.isArray(value)) {
     return false;
@@ -488,6 +500,7 @@ export function isoDateString(date) {
 export const dateTime = {
   addMinutesToTimeString,
   convertTime,
+  getIsoDateString,
   getUTCdateString,
   DateHHMM,
   extractDate,

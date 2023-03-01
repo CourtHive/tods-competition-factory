@@ -701,6 +701,7 @@ const {
     [matchUpId]: {
       matchUpIds: [matchUpIdDependency], // array of all matchUpIds which occur prior to this matchUpId in the draw; crosses all structures
       participantIds: [potentialParticipantIds], // array of all participantIds which could potentially appear in this matchUp
+      dependentMatchUpIds: [dependentMatchUpId], // array of matchUpIds which occur after this matchUpId in the draw; crosses all structures
     },
   },
 } = competitionEngine.getMatchUpDependencies({

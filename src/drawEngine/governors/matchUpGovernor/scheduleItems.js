@@ -1,3 +1,4 @@
+import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
@@ -9,6 +10,7 @@ import {
   extractDate,
   extractTime,
   formatDate,
+  getIsoDateString,
 } from '../../../utilities/dateTime';
 import {
   dateValidation,
@@ -29,6 +31,7 @@ import {
   MISSING_DRAW_DEFINITION,
   MATCHUP_NOT_FOUND,
   MISSING_VALUE,
+  ANACHRONISM,
 } from '../../../constants/errorConditionConstants';
 import {
   START_TIME,
@@ -53,11 +56,15 @@ function validTimeValue(value) {
 }
 
 export function addMatchUpScheduleItems({
+  errorOnAnachronism = false,
+  checkChronology = true,
+  matchUpDependencies,
   tournamentRecords,
   tournamentRecord,
   drawDefinition,
   disableNotice,
   matchUpId,
+  matchUps,
   schedule,
   event,
 }) {
@@ -65,10 +72,15 @@ export function addMatchUpScheduleItems({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!schedule) return { error: MISSING_VALUE };
   const stack = 'addMatchUpScheduleItems';
+  let warning;
+
+  const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
+  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
   const {
     endTime,
     courtId,
+    // courtIds,f
     resumeTime,
     scheduledDate,
     scheduledTime,
@@ -76,6 +88,39 @@ export function addMatchUpScheduleItems({
     stopTime,
     venueId,
   } = schedule;
+
+  if (checkChronology && (!matchUpDependencies || !matchUps)) {
+    ({ matchUpDependencies, matchUps } = getMatchUpDependencies({
+      drawDefinition,
+    }));
+  }
+
+  const priorMatchUpIds = matchUpDependencies?.[matchUpId]?.matchUpIds;
+  if (schedule.scheduledDate && checkChronology && priorMatchUpIds) {
+    const priorMatchUpTimes = matchUps
+      .filter(
+        (matchUp) =>
+          (matchUp.schedule?.scheduledDate ||
+            extractDate(matchUp.schedule?.scheduledTime)) &&
+          priorMatchUpIds.includes(matchUp.matchUpId)
+      )
+      .map(({ schedule }) => {
+        const isoDateString = getIsoDateString(schedule);
+        return new Date(isoDateString).getTime();
+      });
+    if (priorMatchUpTimes?.length) {
+      const isoDateString = getIsoDateString(schedule);
+      const matchUpTime = new Date(isoDateString).getTime();
+      const maxPriorMatchUpTime = Math.max(...priorMatchUpTimes);
+      if (maxPriorMatchUpTime >= matchUpTime) {
+        if (errorOnAnachronism) {
+          return decorateResult({ result: { error: ANACHRONISM }, stack });
+        } else {
+          warning = ANACHRONISM;
+        }
+      }
+    }
+  }
 
   if (scheduledDate !== undefined) {
     const result = addMatchUpScheduledDate({
@@ -168,8 +213,6 @@ export function addMatchUpScheduleItems({
   }
 
   if (!disableNotice) {
-    const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
-    if (!matchUp) return { error: MATCHUP_NOT_FOUND };
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
       eventId: event?.eventId,
@@ -179,7 +222,7 @@ export function addMatchUpScheduleItems({
     });
   }
 
-  return { ...SUCCESS };
+  return warning ? { ...SUCCESS, warnings: [warning] } : { ...SUCCESS };
 }
 
 export function addMatchUpScheduledDate({
