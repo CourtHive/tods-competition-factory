@@ -32,6 +32,7 @@ export function modifyCollectionDefinition({
   collectionId,
   structureId,
   matchUpId,
+  category,
   eventId,
   gender,
   event,
@@ -49,6 +50,9 @@ export function modifyCollectionDefinition({
     return { error: INVALID_VALUES };
   if (gender && !Object.values(genderConstants).includes(gender)) {
     return { error: INVALID_VALUES };
+  }
+  if (category) {
+    // TODO: validate category
   }
 
   const stack = 'modifyCollectionDefinition';
@@ -157,6 +161,7 @@ export function modifyCollectionDefinition({
   if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
   if (collectionName) collectionDefinition.collectionName = collectionName;
   if (matchUpFormat) collectionDefinition.matchUpFormat = matchUpFormat;
+  if (category) collectionDefinition.category = category;
   if (gender) collectionDefinition.gender = gender;
 
   const prunedTieFormat = definedAttributes(tieFormat);
