@@ -6092,10 +6092,10 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-mermaid@10.0.1:
-  version "10.0.1"
-  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-10.0.1.tgz#d9fa5f76eef0dc895f38553f5ac96db0fda03e12"
-  integrity sha512-3O3QfTE0Ohhe3jbzsiQImKKnnARoZS3QQt/cyLbfnFaKN5fRs0tf0cOznCTpZHyB/r505S1qGrJJNYXxmMcYyg==
+mermaid@10.0.2:
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-10.0.2.tgz#8e294ea4890fe86ca7f5a4cd3c10362ec8d3ed98"
+  integrity sha512-slwoB9WdNUT+/W9VhxLYRLZ0Ey12fIE+cAZjm3FmHTD+0F1uoJETfsNbVS1POnvQZhFYzfT6/z6hJZXgecqVBA==
   dependencies:
     "@braintree/sanitize-url" "^6.0.0"
     cytoscape "^3.23.0"
@@ -8282,10 +8282,10 @@ tods-competition-factory@0.326.0:
   resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.326.0.tgz#840b44bc4d947c57ad898dc5cd309e4f2165e083"
   integrity sha512-vkzF5OZRtsDuP9XyfjYoHImuQ6l5G52YSj6XLK2EgEZTPeKkzDBDaEcrQNZhIn9Ypda0qRDFgheWGHz/VjVFjg==
 
-tods-competition-factory@0.447.0:
-  version "0.447.0"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.447.0.tgz#11c817085c2c155d013ad8a38f7aca99cabe6775"
-  integrity sha512-M41PLRhEbY3Riu+Sz7tkLpA6EXpd4dcO3/KH/CG8O4jtOJXjfbiySlPgt9hS3O89cZpVtnJ+TPLLn2/vM55vug==
+tods-competition-factory@0.448.1:
+  version "0.448.1"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.448.1.tgz#e38a11a2b49ed7ae3cfb568ff4018563234b3cc9"
+  integrity sha512-3bxW0Wns967spawRWa+5ZUZG6IPD3VO8Cn8STHnGkgd/ufjI6K27IoCzZE61lxz/CzSf1Hnp/UnvEZnWkhfg7g==
 
 tods-score-grid@0.10.0:
   version "0.10.0"

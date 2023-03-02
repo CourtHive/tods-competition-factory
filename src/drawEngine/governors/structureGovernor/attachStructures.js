@@ -96,16 +96,16 @@ export function attachStructures({
     matchUpModifications.forEach((modification) => {
       const matchUpId = modification.matchUp?.matchUpId;
       if (matchUpId) {
-        modifyMatchUpNotice(modification);
-        modifiedMatchUpMap[matchUpId] = modification.matchUp;
+        modifiedMatchUpMap[matchUpId] = modification;
       }
     });
 
     const modifyStructureMatchUps = (structure) => {
       structure.matchUps.forEach((matchUp) => {
         if (modifiedMatchUpMap[matchUp.matchUpId]) {
-          Object.assign(matchUp, modifiedMatchUpMap[matchUp.matchUpId]);
-          modifiedMatchUpMap[matchUp.matchUpId] = matchUp;
+          Object.assign(matchUp, modifiedMatchUpMap[matchUp.matchUpId].matchUp);
+          modifiedMatchUpMap[matchUp.matchUpId].matchUp = matchUp;
+          modifyMatchUpNotice(modifiedMatchUpMap[matchUp.matchUpId]);
         }
       });
     };
