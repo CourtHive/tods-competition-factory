@@ -143,7 +143,7 @@ test('competitionEngine can setMatchUpStatus', () => {
   });
 });
 
-test.only('competitionEngine can bulkScheduleMatchUps', () => {
+test('competitionEngine can bulkScheduleMatchUps', () => {
   const drawProfiles = [{ drawSize: 32 }];
   const venueProfiles = [{ courtsCount: 3 }];
   const {
