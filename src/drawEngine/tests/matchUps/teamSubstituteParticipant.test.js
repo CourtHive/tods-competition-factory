@@ -606,7 +606,10 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     inContext: false,
   }).matchUps[0];
 
-  expect(targetMatchUp.processCodes).toEqual(['RANKING.IGNORE']);
+  expect(targetMatchUp.processCodes).toEqual([
+    'RANKING.IGNORE',
+    'RATING.IGNORE',
+  ]);
 
   result = tournamentEngine.matchUpActions({
     policyDefinitions: {
@@ -658,7 +661,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     REPLACE_PARTICIPANT,
   ]);
 
-  // if there are no substitutions then RANKING.IGNORE should be removed
+  // if there are no substitutions then processCodes should be removed
   targetMatchUp = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: {
       matchUpIds: [doublesMatchUpId],
@@ -809,7 +812,7 @@ it('can substitute a single individual participant in a TEAM tieMatchUp when onl
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
   const substitutionProcessCodes =
     matchUpActionsPolicy?.substitutionProcessCodes;
-  expect(tieMatchUp.processCodes).toEqual([substitutionProcessCodes]);
+  expect(tieMatchUp.processCodes).toEqual(substitutionProcessCodes);
 
   const side = tieMatchUp.sides.find(({ sideNumber }) => sideNumber === 1);
   expect(side.substitutions.length).toEqual(1);
