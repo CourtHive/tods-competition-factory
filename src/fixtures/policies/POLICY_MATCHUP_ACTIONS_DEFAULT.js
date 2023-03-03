@@ -15,7 +15,7 @@ export const POLICY_MATCHUP_ACTIONS_DEFAULT = {
       },
     ],
 
-    substitutionProcessCode: 'RANKING.IGNORE',
+    substitutionProcessCodes: ['RANKING.IGNORE', 'RATING.IGNORE'],
   },
 };
 

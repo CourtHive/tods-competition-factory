@@ -48,7 +48,8 @@ export function removeTieMatchUpParticipantId(params) {
     appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
-  const substitutionProcessCode = matchUpActionsPolicy?.substitutionProcessCode;
+  const substitutionProcessCodes =
+    matchUpActionsPolicy?.substitutionProcessCodes;
 
   const {
     inContextDualMatchUp,
@@ -259,11 +260,14 @@ export function removeTieMatchUpParticipantId(params) {
       (s) => s.sideNumber !== side.sideNumber
     );
     if (!otherSide?.substitutions?.length && tieMatchUp.processCodes?.length) {
-      const codeIndex = tieMatchUp.processCodes.lastIndexOf(
-        substitutionProcessCode
-      );
-      // remove only one instance of substitutionProcessCode
-      tieMatchUp.processCodes.splice(codeIndex, 1);
+      // remove processCode(s)
+      for (const substitutionProcessCode of substitutionProcessCodes || []) {
+        const codeIndex = tieMatchUp.processCodes.lastIndexOf(
+          substitutionProcessCode
+        );
+        // remove only one instance of substitutionProcessCode
+        tieMatchUp.processCodes.splice(codeIndex, 1);
+      }
 
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,

@@ -807,8 +807,9 @@ it('can substitute a single individual participant in a TEAM tieMatchUp when onl
 
   const matchUpActionsPolicy =
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
-  const substitutionProcessCode = matchUpActionsPolicy?.substitutionProcessCode;
-  expect(tieMatchUp.processCodes).toEqual([substitutionProcessCode]);
+  const substitutionProcessCodes =
+    matchUpActionsPolicy?.substitutionProcessCodes;
+  expect(tieMatchUp.processCodes).toEqual([substitutionProcessCodes]);
 
   const side = tieMatchUp.sides.find(({ sideNumber }) => sideNumber === 1);
   expect(side.substitutions.length).toEqual(1);
