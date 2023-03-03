@@ -100,6 +100,10 @@ export function attachStructures({
       }
     });
 
+    // This is necessary to support external data stores in client/server architectures
+    // where the data store, e.g. Mongo, requires additional attributes to be present
+    // for each matchUp for which there are modifications, merge matchUp in state with modifications
+    // also descend into tieMatchUps, when present, with the same logic
     const modifyStructureMatchUps = (structure) => {
       structure.matchUps.forEach((matchUp) => {
         if (modifiedMatchUpMap[matchUp.matchUpId]) {
