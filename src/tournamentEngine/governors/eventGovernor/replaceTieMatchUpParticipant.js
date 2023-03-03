@@ -94,7 +94,8 @@ export function replaceTieMatchUpParticipantId(params) {
     appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
-  const substitutionProcessCode = matchUpActionsPolicy?.substitutionProcessCode;
+  const substitutionProcessCodes =
+    matchUpActionsPolicy?.substitutionProcessCodes;
 
   const { extension } = findExtension({
     element: drawDefinition,
@@ -299,16 +300,19 @@ export function replaceTieMatchUpParticipantId(params) {
   if (substitution || side.substitutions?.length === 1) {
     if (substitution) {
       const processCodes = tieMatchUp.processCodes || [];
-      processCodes.push(substitutionProcessCode);
+      if (substitutionProcessCodes)
+        processCodes.push(...substitutionProcessCodes);
 
       tieMatchUp.processCodes = processCodes;
     } else {
-      // if there was only one substitution, remove processCode
-      const codeIndex = tieMatchUp.processCodes.lastIndexOf(
-        substitutionProcessCode
-      );
-      // remove only one instance of substitutionProcessCode
-      tieMatchUp.processCodes.splice(codeIndex, 1);
+      // if there was only one substitution, remove processCode(s)
+      for (const substitutionProcessCode of substitutionProcessCodes || []) {
+        const codeIndex = tieMatchUp.processCodes.lastIndexOf(
+          substitutionProcessCode
+        );
+        // remove only one instance of substitutionProcessCode
+        tieMatchUp.processCodes.splice(codeIndex, 1);
+      }
     }
 
     modifyMatchUpNotice({

@@ -4,6 +4,7 @@ import tournamentEngineAsync from '../../async';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngineSync from '../../sync';
 
+import { TEAM_EVENT } from '../../../constants/eventConstants';
 import {
   FEED_IN_CHAMPIONSHIP_TO_R16,
   MAIN,
@@ -137,6 +138,125 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
     // expect that the number of notices is twice the number of first round playoff matchUps
     // because there are two participants progressed for each first round playoff matchUp
     expect(matchUpModifyNotices.length).toEqual(playoffMatchUps.length * 2);
+
+    const sanityCheckMatchUpIds = withLoserMatchUpId.map(
+      ({ matchUpId }) => matchUpId
+    );
+
+    result = await tournamentEngine.allTournamentMatchUps();
+    matchUps = result.matchUps;
+    matchUps.forEach(({ matchUpId, loserMatchUpId }) => {
+      if (sanityCheckMatchUpIds.includes(matchUpId)) {
+        expect(loserMatchUpId).not.toBeUndefined();
+      }
+    });
+  }
+);
+
+// test used to work through MONGO interactions in client/server scenarios
+test.each([tournamentEngineSync, asyncTournamentEngine])(
+  'generates appropriate notifications for team matchUps',
+  async (tournamentEngine) => {
+    let matchUpModifyNotices = [];
+    let addMatchUpNotices = [];
+
+    const subscriptions = {
+      addMatchUps: (payload) => {
+        if (Array.isArray(payload)) {
+          payload.forEach(({ matchUps }) => {
+            addMatchUpNotices.push(...matchUps);
+          });
+        }
+      },
+      modifyMatchUp: (payload) => {
+        if (Array.isArray(payload)) {
+          payload.forEach(({ matchUp }) => {
+            matchUpModifyNotices.push(matchUp);
+          });
+        }
+      },
+    };
+
+    setSubscriptions({ subscriptions });
+
+    const {
+      tournamentRecord,
+      drawIds: [drawId],
+    } = mocksEngine.generateTournamentRecord({
+      drawProfiles: [
+        { drawSize: 32, eventType: TEAM_EVENT, tieFormatName: 'DOMINANT_DUO' },
+      ],
+    });
+
+    expect(addMatchUpNotices.length).toEqual(124);
+    // console.log(addMatchUpNotices.map(({ matchUpType }) => matchUpType));
+    addMatchUpNotices = [];
+
+    await tournamentEngine.setState(tournamentRecord);
+
+    let result = await tournamentEngine.allTournamentMatchUps({
+      inContext: false,
+    });
+    let matchUps = result.matchUps;
+    /*
+    const semiFinals = matchUps.find(
+      (matchUp) =>
+        matchUp.matchUpType === 'TEAM' &&
+        matchUp.roundNumber === 4 &&
+        matchUp.roundPosition === 1
+    );
+    console.log('SF', semiFinals);
+    */
+    expect(getLoserMatchUpIdRounds(matchUps)).toEqual([]);
+
+    const roundProfiles = [{ 4: 1 }];
+    const {
+      drawDefinition: {
+        structures: [{ structureId }],
+      },
+    } = await tournamentEngine.getEvent({ drawId });
+
+    result = await tournamentEngine.generateAndPopulatePlayoffStructures({
+      playoffStructureNameBase: 'Playoff',
+      roundProfiles,
+      structureId,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+    expect(result.matchUpModifications.length).toEqual(2);
+
+    matchUpModifyNotices = [];
+    result = await tournamentEngine.attachPlayoffStructures({
+      ...result,
+      drawId,
+    });
+    // console.log('ad', addMatchUpNotices);
+    // console.log('mmn', matchUpModifyNotices[0]);
+    expect(matchUpModifyNotices.length).toEqual(2);
+    expect(result.success).toEqual(true);
+
+    result = await tournamentEngine.allTournamentMatchUps();
+    matchUps = result.matchUps;
+    expect(getLoserMatchUpIdRounds(matchUps)).toEqual([2]);
+
+    const withLoserMatchUpId = matchUpModifyNotices.filter(
+      ({ loserMatchUpId }) => loserMatchUpId
+    );
+    const noLoserMatchUpId = matchUpModifyNotices.filter(
+      ({ loserMatchUpId }) => !loserMatchUpId
+    );
+    expect(matchUpModifyNotices.length).toEqual(
+      withLoserMatchUpId.length + noLoserMatchUpId.length
+    );
+
+    const playoffMatchUps = matchUps.filter(
+      ({ stage, roundNumber }) => stage !== MAIN && roundNumber === 1
+    );
+    // DOMINANT_DUO has 3 tieMatchUps, plus 1 TEAM matchUp = 4 per
+    // There are two MAIN matchUps which have been modified, feeding into one PLAYOFF matchUp
+    expect(playoffMatchUps.length).toEqual(
+      (matchUpModifyNotices.length / 2) * 4
+    );
 
     const sanityCheckMatchUpIds = withLoserMatchUpId.map(
       ({ matchUpId }) => matchUpId
