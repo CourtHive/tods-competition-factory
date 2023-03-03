@@ -103,7 +103,20 @@ export function attachStructures({
     const modifyStructureMatchUps = (structure) => {
       structure.matchUps.forEach((matchUp) => {
         if (modifiedMatchUpMap[matchUp.matchUpId]) {
-          Object.assign(matchUp, modifiedMatchUpMap[matchUp.matchUpId].matchUp);
+          const { tieMatchUps, ...attribs } =
+            modifiedMatchUpMap[matchUp.matchUpId].matchUp;
+          Object.assign(matchUp, attribs);
+          if (tieMatchUps?.length) {
+            const modifiedTieMatchUpsMap = {};
+            tieMatchUps.forEach(
+              (modifiedTieMatchUp) =>
+                (modifiedMatchUpMap[modifiedTieMatchUp.matchUpId] =
+                  modifiedTieMatchUp)
+            );
+            matchUp.tieMatchUps.forEach((tm) =>
+              Object.assign(tm, modifiedTieMatchUpsMap[tm.matchUpId])
+            );
+          }
           modifiedMatchUpMap[matchUp.matchUpId].matchUp = matchUp;
           modifyMatchUpNotice(modifiedMatchUpMap[matchUp.matchUpId]);
         }
