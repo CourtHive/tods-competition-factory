@@ -15,9 +15,10 @@ export function assignMatchUpCourt({
   disableNotice,
   courtDayDate,
   matchUpId,
-  courtId,
+  courtId, // not required as "unasigning" court can be achieved by setting value to `undefined`
 }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!tournamentRecord && !tournamentRecords)
+    return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   if (courtId) {

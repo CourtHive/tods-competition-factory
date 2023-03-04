@@ -2,6 +2,7 @@ export const CHECK_IN = 'CHECK_IN';
 export const CHECK_OUT = 'CHECK_OUT';
 
 export const SCHEDULE = 'SCHEDULE';
+export const ALLOCATE_COURTS = 'SCHEDULE.ALLOCATION.COURTS';
 export const ASSIGN_COURT = 'SCHEDULE.ASSIGNMENT.COURT';
 export const ASSIGN_VENUE = 'SCHEDULE.ASSIGNMENT.VENUE';
 export const SCHEDULED_DATE = 'SCHEDULE.DATE';
@@ -34,6 +35,7 @@ export const RETRIEVAL = 'RETRIEVAL';
 export const OTHER = 'other';
 
 export const timeItemConstants = {
+  ALLOCATE_COURTS,
   ASSIGN_COURT,
   ASSIGN_OFFICIAL,
   ASSIGN_VENUE,

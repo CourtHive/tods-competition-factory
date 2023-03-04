@@ -34,9 +34,16 @@ export function getScheduledCourtMatchUps({
   return { matchUps };
 
   function getCourtMatchUps({ matchUps, courtId }) {
-    const courtMatchUps = matchUps.filter(
-      (matchUp) => matchUp.schedule?.courtId === courtId
-    );
+    const courtMatchUps = matchUps.filter((matchUp) => {
+      // allocatedCourtIds only applies to TEAM matchUps
+      const allocatedCourtIds = matchUp.schedule?.allocatedCourts?.map(
+        ({ courtId }) => courtId
+      );
+      return (
+        matchUp.schedule?.courtId === courtId ||
+        allocatedCourtIds?.includes(courtId)
+      );
+    });
     return scheduledSortedMatchUps({
       matchUps: courtMatchUps,
       schedulingProfile,
@@ -65,9 +72,16 @@ export function getScheduledVenueMatchUps({
   return { matchUps };
 
   function getVenueMatchUps({ matchUps, venueId }) {
-    const venueMatchUps = matchUps.filter(
-      (matchUp) => matchUp.schedule?.venueId === venueId
-    );
+    const venueMatchUps = matchUps.filter((matchUp) => {
+      // allocatedCourtIds only applies to TEAM matchUps
+      const allocatedVenueIds = matchUp.schedule?.allocatedCourts?.map(
+        ({ venueId }) => venueId
+      );
+      return (
+        matchUp.schedule?.venueId === venueId ||
+        allocatedVenueIds?.includes(venueId)
+      );
+    });
     return scheduledSortedMatchUps({
       matchUps: venueMatchUps,
       schedulingProfile,

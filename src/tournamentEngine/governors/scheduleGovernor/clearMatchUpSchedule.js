@@ -7,6 +7,7 @@ import {
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  ALLOCATE_COURTS,
   ASSIGN_COURT,
   ASSIGN_VENUE,
   END_TIME,
@@ -19,6 +20,7 @@ import {
 
 export function clearMatchUpSchedule({
   scheduleAttributes = [
+    ALLOCATE_COURTS,
     ASSIGN_COURT,
     ASSIGN_VENUE,
     SCHEDULED_DATE,

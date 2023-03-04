@@ -19,6 +19,7 @@ import {
   ASSIGN_OFFICIAL,
   SCHEDULED_DATE,
   SCHEDULED_TIME,
+  ALLOCATE_COURTS,
 } from '../../../../constants/timeItemConstants';
 
 export function resetDrawDefinition({
@@ -94,6 +95,7 @@ export function resetDrawDefinition({
         matchUp.timeItems = matchUp.timeItems.filter(
           (timeItem) =>
             ![
+              ALLOCATE_COURTS,
               ASSIGN_COURT,
               ASSIGN_VENUE,
               ASSIGN_OFFICIAL,

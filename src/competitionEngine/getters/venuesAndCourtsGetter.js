@@ -20,10 +20,10 @@ export function getVenuesAndCourts({
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
 
-  const venues = [];
-  const courts = [];
   const uniqueVenueIds = [];
   const uniqueCourtIds = [];
+  const venues = [];
+  const courts = [];
 
   const tournamentIds = Object.keys(tournamentRecords);
   tournamentIds.forEach((tournamentId) => {

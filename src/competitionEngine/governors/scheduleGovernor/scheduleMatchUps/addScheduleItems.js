@@ -1,3 +1,4 @@
+import { allocateTeamMatchUpCourts as allocateCourts } from '../../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
 import { assignMatchUpVenue as assignVenue } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { assignMatchUpCourt as assignCourt } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { findTournamentId } from '../../competitionsGovernor/findTournamentId';
@@ -155,6 +156,29 @@ export function assignMatchUpCourt(params) {
     courtDayDate,
     matchUpId,
     courtId,
+  });
+}
+
+export function allocateTeamMatchUpCourts(params) {
+  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
+  if (error) return { error };
+
+  const {
+    tournamentRecords,
+    disableNotice,
+    courtDayDate,
+    matchUpId,
+    courtIds,
+  } = params;
+
+  return allocateCourts({
+    tournamentRecords,
+    tournamentRecord,
+    drawDefinition,
+    disableNotice,
+    courtDayDate,
+    matchUpId,
+    courtIds,
   });
 }
 

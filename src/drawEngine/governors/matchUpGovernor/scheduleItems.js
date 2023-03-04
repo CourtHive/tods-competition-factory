@@ -41,6 +41,7 @@ import {
   SCHEDULED_TIME,
   SCHEDULED_DATE,
 } from '../../../constants/timeItemConstants';
+import { allocateTeamMatchUpCourts } from '../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
 
 function timeDate(value, scheduledDate) {
   const time = validTimeString.test(value) ? value : extractTime(value);
@@ -80,7 +81,7 @@ export function addMatchUpScheduleItems({
   const {
     endTime,
     courtId,
-    // courtIds,f
+    courtIds,
     resumeTime,
     scheduledDate,
     scheduledTime,
@@ -186,6 +187,16 @@ export function addMatchUpScheduleItems({
       event,
     });
     if (result?.error) return { error: result.error, endTime };
+  }
+  if (courtIds !== undefined) {
+    const result = allocateTeamMatchUpCourts({
+      disableNotice: true,
+      tournamentRecord,
+      drawDefinition,
+      matchUpId,
+      courtIds,
+    });
+    if (result?.error) return { error: result.error, context: { courtIds } };
   }
   if (courtId !== undefined && scheduledDate !== undefined) {
     const result = assignMatchUpCourt({
