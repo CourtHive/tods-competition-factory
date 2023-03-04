@@ -135,6 +135,7 @@ competitionEngine.addMatchUpScheduleItems({
   matchUpId,
   tournamentId,
   schedule: {
+    courtIds, // applies only to TEAM matchUps
     courtId, // requires scheduledDate
     venueId,
     scheduledTime,
@@ -1264,6 +1265,7 @@ competitionEngine.setMatchUpStatus({
   outcome, // optional
   schedule: {
     // optional - set schedule items
+    courtIds, // optional - applies only to TEAM matchUps => creates .allocatedCourts
     courtId, // requires scheduledDate
     venueId,
     scheduledDate,

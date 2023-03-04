@@ -649,6 +649,7 @@ const {
     milliseconds,
     scheduledDate,
     scheduledTime,
+    allocatedCourts: [{ venueId, courtid }], // applies only to TEAM matchUps
   },
 } = drawEngine.getMatchUpScheduleDetails({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }

@@ -336,6 +336,7 @@ tournamentEngine.addMatchUpScheduleItems({
   drawId,
   matchUpId,
   schedule: {
+    courtIds, // applies only to TEAM matchUps
     courtId, // requires scheduledDate
     venueId,
     scheduledTime,
@@ -1941,6 +1942,7 @@ const {
     milliseconds,
     scheduledDate,
     scheduledTime,
+    allocatedCourts: [{ venueId, courtid }], // applies only to TEAM matchUps
   },
 } = tournamentEngine.getMatchUpScheduleDetails({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
@@ -3386,6 +3388,7 @@ tournamentEngine.setMatchUpStatus({
   drawId,
   schedule: {
     // optional - set schedule items
+    courtIds, // applies only to TEAM matchUps
     courtId, // requires scheduledDate
     venueId,
     scheduledDate,
