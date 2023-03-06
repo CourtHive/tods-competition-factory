@@ -111,7 +111,7 @@
     "chalk": "^5.2.0",
     "esbuild": "0.17.10",
     "eslint": "8.35.0",
-    "eslint-config-prettier": "8.6.0",
+    "eslint-config-prettier": "8.7.0",
     "eslint-import-resolver-typescript": "3.5.3",
     "eslint-module-utils": "2.7.4",
     "eslint-plugin-compat": "4.1.2",
