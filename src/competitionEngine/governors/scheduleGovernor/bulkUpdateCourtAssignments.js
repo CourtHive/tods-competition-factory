@@ -1,6 +1,7 @@
 import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
@@ -8,7 +9,6 @@ import {
   MISSING_VALUE,
   UNABLE_TO_ASSIGN_COURT,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function bulkUpdateCourtAssignments({
   tournamentRecords,

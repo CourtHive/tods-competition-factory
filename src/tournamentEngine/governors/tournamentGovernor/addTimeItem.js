@@ -64,7 +64,11 @@ export function addTimeItem({
     );
   }
 
-  element.timeItems.push(timeItem);
+  // if priorValues are being remvoed and there is no new itemValue, do not add by pushing
+  const doNotAdd = removePriorValues && !timeItem.itemValue;
+  if (!doNotAdd) {
+    element.timeItems.push(timeItem);
+  }
 
   return { ...SUCCESS };
 }

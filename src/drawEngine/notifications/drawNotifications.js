@@ -82,13 +82,14 @@ export function modifyMatchUpNotice({
     console.log(MISSING_MATCHUP);
     return { error: MISSING_MATCHUP };
   }
-  if (drawDefinition)
+  if (drawDefinition) {
     modifyDrawNotice({
       structureIds: [structureId],
       drawDefinition,
       tournamentId,
       eventId,
     });
+  }
   addNotice({
     topic: MODIFY_MATCHUP,
     payload: { matchUp, tournamentId, context },

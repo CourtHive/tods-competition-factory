@@ -336,6 +336,7 @@ tournamentEngine.addMatchUpScheduleItems({
   drawId,
   matchUpId,
   schedule: {
+    courtIds, // applies only to TEAM matchUps
     courtId, // requires scheduledDate
     venueId,
     scheduledTime,
@@ -567,6 +568,19 @@ tournamentEngine.addVoluntaryConsolationStructure({
 
 ---
 
+## allocateTeamMatchUpCourts
+
+```js
+let result = tournamentEngine.allocateTeamMatchUpCourts({
+  removePriorValues, // optional boolean
+  matchUpId,
+  courtIds,
+  drawId,
+});
+```
+
+---
+
 ## allDrawMatchUps
 
 Returns all matchUps from all structures within a draw.
@@ -670,10 +684,11 @@ tournamentEngine.assignDrawPosition({
 
 ```js
 tournamentEngine.assignMatchUpCourt({
+  removePriorValues, // optional boolean
   drawId, // drawId where matchUp is found
+  courtDayDate, // ISO date string
   matchUpId,
   courtId,
-  courtDayDate, // ISO date string
 });
 ```
 
@@ -683,6 +698,7 @@ tournamentEngine.assignMatchUpCourt({
 
 ```js
 tournamentEngine.assignMatchUVenue({
+  removePriorValues, // optional boolean
   drawId, // drawId where matchUp is found
   matchUpId,
   venueId,
@@ -703,10 +719,10 @@ Assign **seedNumbers** to **participantIds** within a target draw structure.
 ```js
 let assignments = [{ seedNumber: 1, seedValue: '1', participantId }];
 tournamentEngine.assignSeedPositions({
-  eventId,
-  drawId,
   structureId,
   assignments,
+  eventId,
+  drawId,
 
   stage, // opional; defaults to { stage: MAIN }
   stageSequence, // optional; defaults to { stageSequence: 1 }
@@ -1941,6 +1957,7 @@ const {
     milliseconds,
     scheduledDate,
     scheduledTime,
+    allocatedCourts: [{ venueId, courtid }], // applies only to TEAM matchUps
   },
 } = tournamentEngine.getMatchUpScheduleDetails({
   scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
@@ -3386,6 +3403,7 @@ tournamentEngine.setMatchUpStatus({
   drawId,
   schedule: {
     // optional - set schedule items
+    courtIds, // applies only to TEAM matchUps
     courtId, // requires scheduledDate
     venueId,
     scheduledDate,

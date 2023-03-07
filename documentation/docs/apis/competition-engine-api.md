@@ -135,6 +135,7 @@ competitionEngine.addMatchUpScheduleItems({
   matchUpId,
   tournamentId,
   schedule: {
+    courtIds, // applies only to TEAM matchUps
     courtId, // requires scheduledDate
     venueId,
     scheduledTime,
@@ -242,6 +243,19 @@ competitionEngine.addVenue({
 
 ---
 
+## allocateTeamMatchUpCourts
+
+```js
+let result = competitionEngine.allocateTeamMatchUpCourts({
+  removePriorValues, // optional boolean
+  matchUpId,
+  courtIds,
+  drawId,
+});
+```
+
+---
+
 ## allCompetitionMatchUps
 
 ```js
@@ -260,6 +274,7 @@ const { matchUps } = competitionEngine.allCompetitionMatchUps({
 
 ```js
 competitionEngine.assignMatchUpCourt({
+  removePriorValues, // optional boolean
   drawId, // drawId where matchUp is found
   courtDayDate, // ISO Date String or 'YYYY-MM-DD'
   tournamentId,
@@ -273,7 +288,8 @@ competitionEngine.assignMatchUpCourt({
 ## assignMatchUpVenue
 
 ```js
-competitionEngine.assignMatchUVenue({
+competitionEngine.assignMatchUpVenue({
+  removePriorValues, // optional boolean
   tournamentId,
   matchUpId,
   drawId, // drawId where matchUp is found
@@ -1114,10 +1130,10 @@ competitionEngine.removeExtension({ name });
 
 ```js
 competitionEngine.removeMatchUpCourtAssignment({
-  drawId,
-  matchUpId,
   tournamentId,
   courtDayDate,
+  matchUpId,
+  drawId,
 });
 ```
 
@@ -1264,6 +1280,7 @@ competitionEngine.setMatchUpStatus({
   outcome, // optional
   schedule: {
     // optional - set schedule items
+    courtIds, // optional - applies only to TEAM matchUps => creates .allocatedCourts
     courtId, // requires scheduledDate
     venueId,
     scheduledDate,

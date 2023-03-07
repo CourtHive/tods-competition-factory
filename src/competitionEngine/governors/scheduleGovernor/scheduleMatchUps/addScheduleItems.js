@@ -1,3 +1,4 @@
+import { allocateTeamMatchUpCourts as allocateCourts } from '../../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
 import { assignMatchUpVenue as assignVenue } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { assignMatchUpCourt as assignCourt } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { findTournamentId } from '../../competitionsGovernor/findTournamentId';
@@ -30,8 +31,9 @@ export function addMatchUpScheduledDate(params) {
   const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
   if (error) return { error };
 
-  const { disableNotice, scheduledDate, matchUpId } = params;
+  const { disableNotice, scheduledDate, matchUpId, removePriorValues } = params;
   return addScheduledDate({
+    removePriorValues,
     tournamentRecord,
     drawDefinition,
     disableNotice,
@@ -44,8 +46,9 @@ export function addMatchUpScheduledTime(params) {
   const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
   if (error) return { error };
 
-  const { disableNotice, scheduledTime, matchUpId } = params;
+  const { disableNotice, scheduledTime, matchUpId, removePriorValues } = params;
   return addScheduledTime({
+    removePriorValues,
     tournamentRecord,
     drawDefinition,
     disableNotice,
@@ -129,9 +132,10 @@ export function assignMatchUpVenue(params) {
   const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
   if (error) return { error };
 
-  const { matchUpId, venueId, disableNotice } = params;
+  const { matchUpId, venueId, disableNotice, removePriorValues } = params;
 
   return assignVenue({
+    removePriorValues,
     tournamentRecord,
     drawDefinition,
     disableNotice,
@@ -144,10 +148,17 @@ export function assignMatchUpCourt(params) {
   const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
   if (error) return { error };
 
-  const { tournamentRecords, matchUpId, courtId, courtDayDate, disableNotice } =
-    params;
+  const {
+    removePriorValues,
+    tournamentRecords,
+    disableNotice,
+    courtDayDate,
+    matchUpId,
+    courtId,
+  } = params;
 
   return assignCourt({
+    removePriorValues,
     tournamentRecords,
     tournamentRecord,
     drawDefinition,
@@ -155,6 +166,31 @@ export function assignMatchUpCourt(params) {
     courtDayDate,
     matchUpId,
     courtId,
+  });
+}
+
+export function allocateTeamMatchUpCourts(params) {
+  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
+  if (error) return { error };
+
+  const {
+    removePriorValues,
+    tournamentRecords,
+    disableNotice,
+    courtDayDate,
+    matchUpId,
+    courtIds,
+  } = params;
+
+  return allocateCourts({
+    removePriorValues,
+    tournamentRecords,
+    tournamentRecord,
+    drawDefinition,
+    disableNotice,
+    courtDayDate,
+    matchUpId,
+    courtIds,
   });
 }
 
