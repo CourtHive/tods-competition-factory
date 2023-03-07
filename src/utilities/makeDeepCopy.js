@@ -7,8 +7,9 @@ import {
 
 /**
  *
- * @param {object} sourceObject - arbitrary JSON object; functions not supported.
+ * @param {object} sourceObject - arbitrary JSON object; functions will be stripped.
  * @param {boolean} convertExtensions - optional - all extension objects converted to attributes ._key
+ * @param {boolean} removeExtensions - optional - strip all extension attributes
  * @param {boolean} internalUse - disregard deepCopy being disabled within the engine - necessary for query results
  * @returns
  */

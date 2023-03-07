@@ -23,6 +23,7 @@ export function addMatchUpScheduleItems(params) {
 }
 
 export function addMatchUpScheduledDate({
+  removePriorValues,
   tournamentRecord,
   drawDefinition,
   disableNotice,
@@ -32,6 +33,7 @@ export function addMatchUpScheduledDate({
   // TODO: check that scheduledDate is within range of event dates / tournament dates
 
   const result = addScheduledDate({
+    removePriorValues,
     tournamentRecord,
     drawDefinition,
     disableNotice,
@@ -43,6 +45,7 @@ export function addMatchUpScheduledDate({
 }
 
 export function addMatchUpScheduledTime({
+  removePriorValues,
   tournamentRecord,
   drawDefinition,
   scheduledTime,
@@ -52,6 +55,7 @@ export function addMatchUpScheduledTime({
   // TODO: check that scheduledTime is within range of event dates / tournament dates
 
   const result = addScheduledTime({
+    removePriorValues,
     tournamentRecord,
     drawDefinition,
     scheduledTime,

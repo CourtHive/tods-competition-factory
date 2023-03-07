@@ -1,3 +1,4 @@
+import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 import { addMatchUpScheduleItems } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
 import { getDrawDefinition } from '../../getters/eventGetter';
@@ -17,6 +18,9 @@ import {
  *
  */
 export function bulkScheduleMatchUps({
+  errorOnAnachronism = false,
+  checkChronology = true,
+  matchUpDependencies,
   tournamentRecords,
   tournamentRecord,
   matchUpIds,
@@ -28,6 +32,15 @@ export function bulkScheduleMatchUps({
 
   if (!schedule || typeof schedule !== 'object')
     return { error: MISSING_SCHEDULE };
+
+  const warnings = [];
+
+  matchUpDependencies =
+    checkChronology &&
+    (matchUpDependencies ||
+      getMatchUpDependencies({
+        tournamentRecords,
+      }).matchUpDependencies);
 
   const { matchUps } = allTournamentMatchUps({ tournamentRecord });
 
@@ -50,17 +63,23 @@ export function bulkScheduleMatchUps({
     const drawMatchUpIds = drawIdMap[drawId].filter((matchUpId) =>
       matchUpIds.includes(matchUpId)
     );
+
     for (const matchUpId of drawMatchUpIds) {
       const result = addMatchUpScheduleItems({
+        matchUpDependencies,
+        errorOnAnachronism,
         tournamentRecords,
         tournamentRecord,
+        checkChronology,
         drawDefinition,
         matchUpId,
+        matchUps,
         schedule,
       });
+      if (result.warnings?.length) warnings.push(...result.warnings);
       if (result.error) return result;
     }
   }
 
-  return { ...SUCCESS };
+  return warnings.length ? { ...SUCCESS, warnings } : { ...SUCCESS };
 }
