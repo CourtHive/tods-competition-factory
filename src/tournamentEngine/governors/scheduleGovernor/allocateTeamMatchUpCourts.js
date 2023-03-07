@@ -13,6 +13,7 @@ import {
 
 // allocate courts for a TEAM matchUp
 export function allocateTeamMatchUpCourts({
+  removePriorValues,
   tournamentRecords,
   tournamentRecord,
   drawDefinition,
@@ -69,6 +70,7 @@ export function allocateTeamMatchUpCourts({
 
   return addMatchUpTimeItem({
     duplicateValues: false,
+    removePriorValues,
     tournamentRecord,
     drawDefinition,
     disableNotice,

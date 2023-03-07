@@ -2,12 +2,12 @@ import { removeMatchUpCourtAssignment as removeCourtAssignment } from '../../../
 
 export function removeMatchUpCourtAssignment({
   drawDefinition,
-  matchUpId,
   courtDayDate,
+  matchUpId,
 }) {
   return removeCourtAssignment({
     drawDefinition,
-    matchUpId,
     courtDayDate,
+    matchUpId,
   });
 }

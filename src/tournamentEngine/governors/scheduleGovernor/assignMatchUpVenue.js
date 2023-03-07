@@ -8,6 +8,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function assignMatchUpVenue({
+  removePriorValues,
   tournamentRecords,
   tournamentRecord,
   drawDefinition,
@@ -34,6 +35,7 @@ export function assignMatchUpVenue({
 
   return addMatchUpTimeItem({
     duplicateValues: false,
+    removePriorValues,
     tournamentRecord,
     drawDefinition,
     disableNotice,
