@@ -51,7 +51,7 @@ export function modifyParticipant({
     participantName,
     participantRole,
     participantType,
-    onlineProfiles, // TODO: validate onlineProfiles
+    onlineResources, // TODO: validate onlineResources
     contacts, // TODO: validate contacts
     person,
   } = participant;
@@ -60,7 +60,7 @@ export function modifyParticipant({
 
   // validate participant attributes
   if (contacts) newValues.contacts = contacts;
-  if (onlineProfiles) newValues.onlineProfiles = onlineProfiles;
+  if (onlineResources) newValues.onlineResources = onlineResources;
 
   if (participantName && typeof participantName === 'string')
     newValues.participantName = participantName;
