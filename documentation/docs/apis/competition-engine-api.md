@@ -1076,6 +1076,7 @@ See [Scheduling](/docs/concepts/scheduling).
 ```js
 const modifications = {
   venueName,
+  onlineResources,
   venueAbbreviation,
   courts: [
     {

@@ -52,7 +52,7 @@ export function modifyVenue({
     return { error: NO_VALID_ATTRIBUTES };
 
   const validReplacements = validAttributes.filter(
-    (attribute) => !['courts'].includes(attribute)
+    (attribute) => !['courts', 'onlineResources'].includes(attribute)
   );
 
   const validReplacementAttributes = Object.keys(modifications).filter(
