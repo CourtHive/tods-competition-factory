@@ -125,7 +125,7 @@ export function generateEventWithDraw({
       ? drawSize
       : drawProfile.participantsCount) || 0;
 
-  const eventId = UUID();
+  const eventId = drawProfileCopy.eventId || UUID();
   let event = { eventName, eventType, tieFormat, category, eventId };
 
   if (Array.isArray(timeItems)) {
