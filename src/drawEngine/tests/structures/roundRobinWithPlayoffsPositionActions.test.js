@@ -65,7 +65,7 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
 
   const matchUpFormat = 'SET3-S:6/TB7';
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    seedingProfile: WATERFALL,
+    seedingProfile: { positioning: WATERFALL },
     structureOptions,
     matchUpFormat,
     drawType,
