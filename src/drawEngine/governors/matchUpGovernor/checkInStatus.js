@@ -26,7 +26,6 @@ import {
   Otherwise a participant may be checked in multiple times
 */
 export function checkInParticipant({
-  removePriorValues = true,
   tournamentParticipants,
   tournamentRecord,
   drawDefinition,
@@ -68,7 +67,6 @@ export function checkInParticipant({
   };
 
   return addMatchUpTimeItem({
-    removePriorValues,
     tournamentRecord,
     drawDefinition,
     matchUpId,
@@ -77,7 +75,6 @@ export function checkInParticipant({
 }
 
 export function checkOutParticipant({
-  removePriorValues = true,
   tournamentParticipants,
   tournamentRecord,
   drawDefinition,
@@ -139,7 +136,6 @@ export function checkOutParticipant({
   };
 
   return addMatchUpTimeItem({
-    removePriorValues,
     tournamentRecord,
     drawDefinition,
     matchUpId,
