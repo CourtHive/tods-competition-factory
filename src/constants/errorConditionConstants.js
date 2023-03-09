@@ -128,6 +128,10 @@ export const MISSING_SEEDCOUNT_THRESHOLDS = {
   message: 'Missing seedCountThresholds',
   code: 'ERR_MISSING_SEED_COUNT_THRESHOLD',
 };
+export const INVALID_ACTION = {
+  message: 'Invalid action',
+  code: 'ERR_INVALID_ACTION',
+};
 export const INVALID_ASSIGNMENT = {
   message: 'Invalid assignment',
   code: 'ERR_INVALID_ASSIGNMENT',
@@ -783,6 +787,7 @@ export const errorConditionConstants = {
   INCOMPATIBLE_MATCHUP_STATUS,
   INCOMPLETE_SOURCE_STRUCTURE,
   INSUFFICIENT_DRAW_POSITIONS,
+  INVALID_ACTION,
   INVALID_ASSIGNMENT,
   INVALID_BOOKINGS,
   INVALID_CONFIGURATION,
