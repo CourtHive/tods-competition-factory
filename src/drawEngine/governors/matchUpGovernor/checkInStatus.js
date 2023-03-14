@@ -1,3 +1,4 @@
+import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
@@ -5,6 +6,7 @@ import { addMatchUpTimeItem } from './timeItems';
 
 import { CHECK_IN, CHECK_OUT } from '../../../constants/timeItemConstants';
 import {
+  INVALID_ACTION,
   INVALID_PARTICIPANT_ID,
   MATCHUP_NOT_FOUND,
   MISSING_MATCHUP,
@@ -13,6 +15,10 @@ import {
   PARTICIPANT_ALREADY_CHECKED_IN,
   PARTICIPANT_NOT_CHECKED_IN,
 } from '../../../constants/errorConditionConstants';
+import {
+  activeMatchUpStatuses,
+  completedMatchUpStatuses,
+} from '../../../constants/matchUpStatusConstants';
 
 /*
   function is only able to check whether participant is alredy checked in 
@@ -29,6 +35,9 @@ export function checkInParticipant({
 }) {
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
   if (!matchUpId) return { error: MISSING_MATCHUP };
+
+  tournamentParticipants =
+    tournamentParticipants || tournamentRecord?.participants;
 
   if (tournamentParticipants && tournamentParticipants.length) {
     const { matchUp } = findMatchUp({
@@ -76,16 +85,27 @@ export function checkOutParticipant({
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
-  // TODO: disallow checkout of participants if a matchUp is in progress
+  tournamentParticipants =
+    tournamentParticipants || tournamentRecord?.participants;
+
+  const { matchUp } = findMatchUp({
+    tournamentParticipants,
+    inContext: true,
+    drawDefinition,
+    matchUpId,
+    event,
+  });
+
+  const { matchUpStatus, score } = matchUp;
+  if (
+    activeMatchUpStatuses.includes(matchUpStatus) ||
+    completedMatchUpStatuses.includes(matchUpStatus) ||
+    scoreHasValue({ score })
+  ) {
+    return { error: INVALID_ACTION };
+  }
 
   if (tournamentParticipants && tournamentParticipants.length) {
-    const { matchUp } = findMatchUp({
-      tournamentParticipants,
-      inContext: true,
-      drawDefinition,
-      matchUpId,
-      event,
-    });
     const { checkedInParticipantIds, allRelevantParticipantIds } =
       getCheckedInParticipantIds({ matchUp });
     if (!allRelevantParticipantIds.includes(participantId))
