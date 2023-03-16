@@ -841,6 +841,8 @@ Uses Round Robin Tallies to position participants in playoff structure(s).
 ```js
 tournamentEngine.automatedPlayoffPositioning({
   structureId: mainStructure.structureId,
+  provisionalPositioning, // optional boolean, defaults to false; when true will honor provisionalOrder if no groupOrder is found in tallyResults
+  applyPositioning, // optional boolean, defaults to true; when false will return positioning but not apply it to playoff structures
   drawId,
 });
 ```
