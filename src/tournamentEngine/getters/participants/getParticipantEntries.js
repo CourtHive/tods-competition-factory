@@ -83,7 +83,7 @@ export function getParticipantEntries({
       (ranking) => scaleNames.includes(ranking.scaleName)
     )?.scaleValue;
 
-  for (const event of tournamentRecord.events || []) {
+  for (const event of tournamentRecord?.events || []) {
     const {
       drawDefinitions = [],
       extensions,
@@ -141,7 +141,7 @@ export function getParticipantEntries({
         // id is the pair, team or individual participant currently being processed
         // whereas participantId is the id of the entry into the event
         const addEventEntry = (id) => {
-          if (participantMap[id].events[eventId]) return;
+          if (participantMap[id]?.events[eventId]) return;
           const participant = participantMap[id];
 
           processEventEntry({
