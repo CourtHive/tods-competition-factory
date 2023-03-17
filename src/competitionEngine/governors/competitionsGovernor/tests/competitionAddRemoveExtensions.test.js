@@ -2,6 +2,7 @@ import { findExtension } from '../../../../tournamentEngine/governors/queryGover
 import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
+import { expect, test } from 'vitest';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 

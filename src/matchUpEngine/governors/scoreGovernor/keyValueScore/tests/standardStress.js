@@ -1,5 +1,6 @@
 import { generateRange, randomMember } from '../../../../../utilities';
 import { scoreMatchUp, enterValues } from './primitives';
+import { expect, it } from 'vitest';
 import {
   SCORE_TEST_KEYS,
   OUTCOME_ABANDONED,

@@ -2,6 +2,7 @@ import { allDrawMatchUps } from '../../getters/matchUpsGetter';
 import { getPositionAssignments } from '../../../forge/query';
 import { avoidanceTest } from '../primitives/avoidanceTest';
 import { eventConstants } from '../../..';
+import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';

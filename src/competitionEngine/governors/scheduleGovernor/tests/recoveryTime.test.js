@@ -2,6 +2,7 @@ import { getMatchUpIds } from '../../../../global/functions/extractors';
 import { instanceCount } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngineSync from '../../../sync';
+import { expect, test } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 

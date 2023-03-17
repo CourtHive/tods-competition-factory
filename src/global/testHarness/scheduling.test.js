@@ -1,4 +1,5 @@
 import { competitionEngine, tournamentEngine } from '../..';
+import { expect, it } from 'vitest';
 import fs from 'fs';
 
 it('can schedule', () => {

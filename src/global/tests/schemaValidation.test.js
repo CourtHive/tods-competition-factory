@@ -1,5 +1,6 @@
 import mocksEngine from '../../mocksEngine';
 import addFormats from 'ajv-formats';
+import { expect, it } from 'vitest';
 import Ajv from 'ajv';
 import fs from 'fs';
 

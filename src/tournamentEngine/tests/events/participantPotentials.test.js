@@ -2,6 +2,7 @@ import { generateTournamentRecord } from '../../../mocksEngine/generators/genera
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { DOUBLES_EVENT } from '../../../constants/eventConstants';
 import {

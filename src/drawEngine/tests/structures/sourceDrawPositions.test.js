@@ -1,5 +1,6 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
+import { it, expect } from 'vitest';
 
 import {
   BOTTOM_UP,

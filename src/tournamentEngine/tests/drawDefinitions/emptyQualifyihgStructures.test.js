@@ -2,6 +2,7 @@ import { getStructureGroups } from '../../governors/publishingGovernor/getDrawDa
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { DRAW_ID_EXISTS } from '../../../constants/errorConditionConstants';

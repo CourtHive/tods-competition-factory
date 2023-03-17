@@ -1,4 +1,5 @@
 import { replacementTest } from './byeReplacementStressTest';
+import { test, expect } from 'vitest';
 
 import {
   COMPASS,

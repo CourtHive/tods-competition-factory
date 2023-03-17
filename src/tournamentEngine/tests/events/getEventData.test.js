@@ -1,6 +1,7 @@
 import { countries } from '../../../fixtures/countryData';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
 import { COMPASS } from '../../../constants/drawDefinitionConstants';

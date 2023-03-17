@@ -1,5 +1,6 @@
 import { generateTeamTournament } from './generateTestTeamTournament';
 import tournamentEngine from '../../sync';
+import { expect, test } from 'vitest';
 
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { SINGLES, TEAM } from '../../../constants/matchUpTypes';

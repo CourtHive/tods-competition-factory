@@ -1,4 +1,5 @@
 import { validateScore } from '../../../global/validation/validateScore';
+import { test, expect } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 

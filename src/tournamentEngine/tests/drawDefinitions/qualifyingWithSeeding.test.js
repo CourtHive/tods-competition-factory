@@ -1,7 +1,7 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
-import { expect } from 'vitest';
+import { expect, it } from 'vitest';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { RATING, SEEDING } from '../../../constants/scaleConstants';

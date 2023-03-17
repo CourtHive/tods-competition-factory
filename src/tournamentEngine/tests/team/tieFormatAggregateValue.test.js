@@ -1,5 +1,6 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, test } from 'vitest';
 
 import { FEMALE, MALE, MIXED } from '../../../constants/genderConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';

@@ -3,6 +3,7 @@ import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreStrin
 import { drawEngine } from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 import POLICY_SEEDING_NATIONAL from '../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
 import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';

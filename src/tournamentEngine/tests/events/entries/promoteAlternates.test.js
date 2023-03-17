@@ -1,5 +1,6 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
+import { expect, it, test } from 'vitest';
 
 import { INDIVIDUAL } from '../../../../constants/participantConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';

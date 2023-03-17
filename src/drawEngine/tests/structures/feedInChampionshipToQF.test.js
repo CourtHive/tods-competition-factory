@@ -1,4 +1,5 @@
 import { feedInChampionship } from '../../tests/primitives/feedIn';
+import { expect, it } from 'vitest';
 
 import { FICQF } from '../../../constants/drawDefinitionConstants';
 import { INVALID_DRAW_SIZE } from '../../../constants/errorConditionConstants';

@@ -1,6 +1,7 @@
 import { setSubscriptions } from '../../../global/state/syncGlobalState';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
+import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { TALLY } from '../../../constants/extensionConstants';

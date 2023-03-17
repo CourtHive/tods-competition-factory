@@ -1,6 +1,7 @@
 import mocksEngine from '../../../mocksEngine';
 import { unique } from '../../../utilities';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT } from '../../../constants/errorConditionConstants';
 import { DOMINANT_DUO } from '../../../constants/tieFormatConstants';

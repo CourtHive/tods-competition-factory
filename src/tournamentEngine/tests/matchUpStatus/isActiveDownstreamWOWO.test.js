@@ -1,7 +1,9 @@
-import { SCORE } from '../../../constants/matchUpActionConstants';
-import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
+
+import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
+import { SCORE } from '../../../constants/matchUpActionConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find(

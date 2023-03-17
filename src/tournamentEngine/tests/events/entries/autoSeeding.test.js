@@ -2,6 +2,7 @@ import { participantScaleItem } from '../../../accessors/participantScaleItem';
 import mocksEngine from '../../../../mocksEngine';
 import { unique } from '../../../../utilities';
 import tournamentEngine from '../../../sync';
+import { expect, it } from 'vitest';
 
 import { RANKING, RATING, SEEDING } from '../../../../constants/scaleConstants';
 import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';

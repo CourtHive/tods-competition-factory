@@ -1,6 +1,7 @@
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { drawEngine } from '../../sync';
+import { expect, it } from 'vitest';
 import {
   completeMatchUp,
   verifyMatchUps,

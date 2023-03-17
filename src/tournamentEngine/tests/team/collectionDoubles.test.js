@@ -4,6 +4,7 @@ import { generateTeamTournament } from './generateTestTeamTournament';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, TEAM } from '../../../constants/matchUpTypes';

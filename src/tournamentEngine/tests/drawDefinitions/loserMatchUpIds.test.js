@@ -3,6 +3,7 @@ import { instanceCount } from '../../../utilities';
 import tournamentEngineAsync from '../../async';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngineSync from '../../sync';
+import { expect, test } from 'vitest';
 
 import { TEAM_EVENT } from '../../../constants/eventConstants';
 import {

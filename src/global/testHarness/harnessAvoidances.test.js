@@ -1,5 +1,6 @@
 import tournamentEngine from '../../tournamentEngine/sync';
 import { timeKeeper } from '../state/globalState';
+import { test } from 'vitest';
 import fs from 'fs';
 
 test.skip('benchmark drawGeneration times', () => {

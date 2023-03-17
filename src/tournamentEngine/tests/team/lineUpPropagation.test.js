@@ -1,5 +1,6 @@
 import { generateTeamTournament } from './generateTestTeamTournament';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { COMPASS } from '../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../constants/participantConstants';

@@ -5,6 +5,7 @@ import { reset, initialize } from '../primitives/primitives';
 import matchUpEngine from '../../../matchUpEngine/sync';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
+import { expect } from 'vitest';
 
 import { SINGLES } from '../../../constants/eventConstants';
 import {

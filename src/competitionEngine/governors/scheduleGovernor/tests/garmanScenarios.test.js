@@ -6,6 +6,7 @@ import { intersection, unique } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 import garman from '../garman/garman';
+import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import { BYE } from '../../../../constants/matchUpStatusConstants';

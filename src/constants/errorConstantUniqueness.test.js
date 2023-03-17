@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { unique } from '../utilities';
 
 import errorConditionConstants from './errorConditionConstants';

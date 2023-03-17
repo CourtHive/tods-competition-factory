@@ -2,6 +2,7 @@ import { dateStringDaysChange } from '../../utilities/dateTime';
 import competitionEngine from '../../competitionEngine/sync';
 import tournamentEngine from '../../tournamentEngine/sync';
 import mocksEngine from '../../mocksEngine';
+import { expect, test } from 'vitest';
 
 test('setting deepCopy option to false will allow source objects to be modified', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

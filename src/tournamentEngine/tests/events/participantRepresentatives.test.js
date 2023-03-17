@@ -1,7 +1,9 @@
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import mocksEngine from '../../../mocksEngine';
 import { intersection } from '../../../utilities';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
+
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 it('can set and get drawRepresentatitveIds', () => {
   const drawProfiles = [

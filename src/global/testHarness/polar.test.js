@@ -1,4 +1,5 @@
 import { competitionEngine, tournamentEngine } from '../..';
+import { expect, it } from 'vitest';
 import fs from 'fs';
 
 it('can get competitionScheduleMatchUps', () => {
@@ -10,7 +11,9 @@ it('can get competitionScheduleMatchUps', () => {
   let tournamentRecord = JSON.parse(tournamentRecordJSON);
   tournamentEngine.setState(tournamentRecord);
 
-  competitionEngine.competitionScheduleMatchUps();
+  let result = competitionEngine.competitionScheduleMatchUps();
+  expect(result.dateMatchUps.length).not.toBeUndefined();
 
-  tournamentEngine.allTournamentMatchUps();
+  result = tournamentEngine.allTournamentMatchUps();
+  expect(result.matchUps.length).not.toBeUndefined();
 });

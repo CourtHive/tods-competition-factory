@@ -8,6 +8,7 @@ import matchUpEngine from '../../../matchUpEngine/sync';
 import { setsValues } from './roundRobinSetsValues.js';
 import mocksEngine from '../../../mocksEngine';
 import drawEngine from '../../sync';
+import { expect, it } from 'vitest';
 import {
   allPlayoffPositionsFilled,
   isCompletedStructure,

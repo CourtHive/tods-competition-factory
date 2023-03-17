@@ -2,7 +2,7 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
-import { expect } from 'vitest';
+import { expect, it } from 'vitest';
 
 import { DISABLED } from '../../../../constants/extensionConstants';
 

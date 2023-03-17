@@ -1,4 +1,6 @@
 import { replacementTest } from '../../structures/byeReplacementStressTest';
+import { expect, test } from 'vitest';
+
 import { COMPASS } from '../../../../constants/drawDefinitionConstants';
 
 test.each([

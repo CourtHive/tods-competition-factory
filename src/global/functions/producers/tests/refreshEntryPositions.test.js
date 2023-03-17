@@ -1,4 +1,5 @@
 import { refreshEntryPositions } from '../refreshEntryPositions';
+import { expect, it } from 'vitest';
 
 import {
   CONSOLATION,

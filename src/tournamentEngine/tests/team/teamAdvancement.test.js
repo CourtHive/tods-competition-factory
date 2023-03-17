@@ -4,6 +4,7 @@ import { generateTeamTournament } from './generateTestTeamTournament';
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it, test } from 'vitest';
 
 import { SWAP_PARTICIPANTS } from '../../../constants/positionActionConstants';
 import { TEAM_NOT_FOUND } from '../../../constants/errorConditionConstants';

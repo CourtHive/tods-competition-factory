@@ -1,5 +1,6 @@
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
+import { expect, test } from 'vitest';
 
 import { COMPASS } from '../../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';

@@ -1,6 +1,7 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
+import { expect, it } from 'vitest';
 
 import { COMPASS } from '../../../constants/drawDefinitionConstants';
 
