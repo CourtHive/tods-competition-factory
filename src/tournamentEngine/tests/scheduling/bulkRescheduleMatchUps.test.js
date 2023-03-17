@@ -69,7 +69,6 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
   });
 
   const { tournamentId } = tournamentRecord;
-  const scheduledStructureIds = [];
 
   // add first round of each draw to scheduling profile
   for (const drawId of drawIds) {
@@ -79,7 +78,6 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
         structures: [{ structureId }],
       },
     } = tournamentEngine.getEvent({ drawId });
-    scheduledStructureIds.push(structureId);
     const result = competitionEngine.addSchedulingProfileRound({
       round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
       scheduleDate: startDate,

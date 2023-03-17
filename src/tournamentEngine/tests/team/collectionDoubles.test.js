@@ -159,8 +159,6 @@ it('An EXISTING_OUTCOME will prevent removal of individualParticipants in DOUBLE
       participantFilters: { participantIds: teamParticipantIds },
     });
 
-  const assignedIndividualParticipantIds = [];
-
   // assign individual participants to the first doubles matchUp
   teamParticipants.forEach((teamParticipant) => {
     const { participantId } = teamParticipant;
@@ -174,7 +172,6 @@ it('An EXISTING_OUTCOME will prevent removal of individualParticipants in DOUBLE
 
     const individualParticipantIds =
       teamParticipant.individualParticipantIds.slice(0, 2);
-    assignedIndividualParticipantIds.push(...individualParticipantIds);
 
     individualParticipantIds.forEach((individualParticipantId, i) => {
       const result = tournamentEngine.assignTieMatchUpParticipantId({

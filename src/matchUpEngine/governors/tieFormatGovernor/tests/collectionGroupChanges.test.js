@@ -9,24 +9,6 @@ import { DOUBLES } from '../../../../constants/matchUpTypes';
 import { TEAM } from '../../../../constants/eventConstants';
 
 it('can remove collectionGroups from tieFormats', () => {
-  let matchUpModifyNotices = [];
-
-  const subscriptions = {
-    modifyMatchUp: (payload) => {
-      if (Array.isArray(payload)) {
-        payload.forEach(({ matchUp }) => {
-          const { matchUpType, matchUpStatusCodes, score } = matchUp;
-          if (matchUpStatusCodes || score)
-            matchUpModifyNotices.push(
-              [matchUpType, matchUpStatusCodes, score].filter(Boolean)
-            );
-        });
-      }
-    },
-  };
-
-  setSubscriptions({ subscriptions });
-
   const {
     tournamentRecord,
     drawIds: [drawId],
