@@ -1,4 +1,5 @@
 import { generateRange } from '../../utilities';
+import { it, test, expect } from 'vitest';
 import mocksEngine from '..';
 
 import {

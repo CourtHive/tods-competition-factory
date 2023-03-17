@@ -1,6 +1,7 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import drawEngine from '../../../sync';
+import { expect, it } from 'vitest';
 
 import { INVALID_DRAW_POSITION } from '../../../../constants/errorConditionConstants';
 import {

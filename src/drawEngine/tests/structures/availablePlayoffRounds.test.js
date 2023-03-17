@@ -4,6 +4,7 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { setSubscriptions } from '../../..';
 import { drawEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { ADD_MATCHUPS } from '../../../constants/topicConstants';

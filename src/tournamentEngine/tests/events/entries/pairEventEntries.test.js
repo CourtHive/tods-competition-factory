@@ -2,6 +2,7 @@ import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import drawEngine from '../../../../drawEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../sync';
+import { expect, it } from 'vitest';
 
 import { WITHDRAWN } from '../../../../constants/entryStatusConstants';
 import { PAIR } from '../../../../constants/participantConstants';

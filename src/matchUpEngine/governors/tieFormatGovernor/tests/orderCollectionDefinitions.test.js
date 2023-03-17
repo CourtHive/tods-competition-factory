@@ -1,7 +1,7 @@
-import { expect } from 'vitest';
 import { mocksEngine, tournamentEngine } from '../../../..';
-import { NOT_FOUND } from '../../../../constants/errorConditionConstants';
+import { expect, it } from 'vitest';
 
+import { NOT_FOUND } from '../../../../constants/errorConditionConstants';
 import { TEAM } from '../../../../constants/eventConstants';
 
 it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {

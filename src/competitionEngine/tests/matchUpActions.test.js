@@ -1,4 +1,5 @@
 import { matchUpActions } from '../governors/queryGovernor/matchUpActions';
+import { expect, test } from 'vitest';
 
 import {
   EVENT_NOT_FOUND,

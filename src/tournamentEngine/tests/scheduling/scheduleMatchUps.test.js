@@ -5,6 +5,7 @@ import { competitionEngine } from '../../../competitionEngine/sync';
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 import { DELETE_VENUE, MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SINGLES } from '../../../constants/eventConstants';

@@ -1,5 +1,6 @@
 import { competitionEngine, mocksEngine, tournamentEngine } from '../../../..';
 import { extractDate } from '../../../../utilities/dateTime';
+import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 

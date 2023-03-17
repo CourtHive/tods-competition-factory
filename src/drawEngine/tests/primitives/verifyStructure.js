@@ -7,6 +7,7 @@ import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
 import { getNumericSeedValue } from '../../getters/getNumericSeedValue';
 import { chunkArray, generateRange } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
+import { expect } from 'vitest';
 
 import { drawEngine } from '../../sync';
 

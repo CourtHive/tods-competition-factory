@@ -1,8 +1,8 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
-import { expect } from 'vitest';
 
 it('properly handles qualifiers with avoidances', () => {
   const avoidancePolicy = {

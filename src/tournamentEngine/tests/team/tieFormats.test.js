@@ -2,6 +2,7 @@ import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGov
 import tieFormatConstants from '../../../constants/tieFormatConstants';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../..';
+import { expect, it } from 'vitest';
 
 import { TEAM } from '../../../constants/eventConstants';
 

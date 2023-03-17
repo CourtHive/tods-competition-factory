@@ -1,5 +1,6 @@
 import { generateRange } from '../../../utilities';
 import { drawEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 import { MAIN, COMPASS } from '../../../constants/drawDefinitionConstants';
 import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';

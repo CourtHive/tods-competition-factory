@@ -3,6 +3,7 @@ import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { drawEngine } from '../../sync';
+import { expect, it } from 'vitest';
 import {
   completeMatchUp,
   verifyMatchUps,

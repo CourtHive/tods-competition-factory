@@ -1,4 +1,5 @@
 import { mocksEngine, scaleEngine, tournamentEngine } from '../../../..';
+import { expect, test } from 'vitest';
 
 import ratingsParameters from '../../../../fixtures/ratings/ratingsParameters';
 import { NTRP, UTR, WTN } from '../../../../constants/ratingConstants';

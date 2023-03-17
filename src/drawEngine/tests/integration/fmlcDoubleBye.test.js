@@ -1,9 +1,10 @@
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
-import { verifyStructure } from '../../tests/primitives/verifyStructure';
-import { verifyMatchUps } from '../../tests/primitives/verifyMatchUps';
+import { verifyStructure } from '../primitives/verifyStructure';
+import { verifyMatchUps } from '../primitives/verifyMatchUps';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
+import { expect, it } from 'vitest';
 import {
   getOrderedDrawPositionPairs,
   replaceWithBye,

@@ -1,5 +1,6 @@
 import { mocksEngine, tournamentEngine } from '../../../..';
 import competitionEngine from '../../../sync';
+import { expect, test } from 'vitest';
 
 /*
 used for benchmarking when optimizing competitionMatchUps

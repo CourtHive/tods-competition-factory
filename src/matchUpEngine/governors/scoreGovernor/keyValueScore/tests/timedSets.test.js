@@ -1,5 +1,6 @@
 import { keyValueMatchUpScore } from '..';
 import { enterValues } from './primitives';
+import { expect, it } from 'vitest';
 
 it('can enter single timed set', () => {
   const matchUpFormat = 'SET1-S:T10';

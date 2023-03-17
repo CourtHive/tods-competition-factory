@@ -1,6 +1,7 @@
 import syncGlobalState from '../../global/state/syncGlobalState';
 import competitionEngine from '../../competitionEngine/sync';
 import tournamentEngine from '../sync';
+import { expect, it } from 'vitest';
 import {
   setStateProvider,
   setSubscriptions,

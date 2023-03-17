@@ -1,6 +1,7 @@
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 import {
   SCALE_ITEM_NOT_FOUND,

@@ -3,6 +3,7 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { TEAM_PARTICIPANT } from '../../../constants/participantConstants';
 import { SINGLES, TEAM as TEAM_EVENT } from '../../../constants/eventConstants';

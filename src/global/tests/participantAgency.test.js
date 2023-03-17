@@ -2,6 +2,7 @@ import { resolveDrawPositions } from '../../drawEngine/generators/drawPositionsR
 import { getDrawPosition, getParticipantId } from '../functions/extractors';
 import tournamentEngine from '../../tournamentEngine/sync';
 import mocksEngine from '../../mocksEngine';
+import { expect, it } from 'vitest';
 import {
   generateRange,
   nextPowerOf2,

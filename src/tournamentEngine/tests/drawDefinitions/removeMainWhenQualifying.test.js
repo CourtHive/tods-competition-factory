@@ -1,6 +1,7 @@
 import mocksEngine from '../../../mocksEngine';
 import { unique } from '../../../utilities';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { CANNOT_REMOVE_MAIN_STRUCTURE } from '../../../constants/errorConditionConstants';
 import {

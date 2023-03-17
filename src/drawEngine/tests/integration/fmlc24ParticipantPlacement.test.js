@@ -1,6 +1,7 @@
-import { drawEngine } from '../../sync';
-import { completeMatchUp } from '../primitives/verifyMatchUps';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
+import { completeMatchUp } from '../primitives/verifyMatchUps';
+import { drawEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';

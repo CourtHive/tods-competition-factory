@@ -5,6 +5,7 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { getMatchUpType } from '../../accessors/matchUpAccessor';
 import { getDrawStructures } from '../../getters/findStructure';
 import { drawEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 import {
   reset,

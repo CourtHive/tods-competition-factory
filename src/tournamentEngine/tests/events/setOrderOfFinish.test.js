@@ -1,6 +1,7 @@
 import { generateTeamTournament } from '../team/generateTestTeamTournament';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
+import { expect, it } from 'vitest';
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';

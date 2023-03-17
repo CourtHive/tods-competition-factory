@@ -1,6 +1,7 @@
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { replacementTest } from './byeReplacementStressTest';
 import { generateRange } from '../../../utilities';
+import { expect, it, test } from 'vitest';
 import fs from 'fs';
 import {
   popGlobalLog,

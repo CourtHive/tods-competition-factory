@@ -1,5 +1,6 @@
-import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
+import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
+import { expect, it } from 'vitest';
 
 it('can reliably generate matchUp outcomes', () => {
   let setValues = [

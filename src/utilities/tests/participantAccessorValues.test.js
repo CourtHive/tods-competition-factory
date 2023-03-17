@@ -1,6 +1,7 @@
 import tournamentEngine from '../../tournamentEngine/sync';
 import { getAccessorValue } from '../getAccessorValue';
 import mocksEngine from '../../mocksEngine';
+import { expect, test } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';

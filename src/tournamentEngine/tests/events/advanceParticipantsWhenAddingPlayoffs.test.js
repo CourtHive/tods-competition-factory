@@ -2,6 +2,7 @@ import { getParticipantIds } from '../../../global/functions/extractors';
 import mocksEngine from '../../../mocksEngine';
 import { setSubscriptions } from '../../..';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 tournamentEngine.devContext(true);
 

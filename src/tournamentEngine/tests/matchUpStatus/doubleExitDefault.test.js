@@ -6,6 +6,7 @@ import { setSubscriptions } from '../../../global/state/globalState';
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it, test } from 'vitest';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';

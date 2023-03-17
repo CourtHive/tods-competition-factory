@@ -1,14 +1,14 @@
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { generateTeamTournament } from './generateTestTeamTournament';
+import { setDevContext } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, test } from 'vitest';
 
-import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { SINGLES, TEAM } from '../../../constants/matchUpTypes';
-
-import { setDevContext } from '../../../global/state/globalState';
 import { REMOVE_ASSIGNMENT } from '../../../constants/positionActionConstants';
+import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { SINGLES, TEAM } from '../../../constants/matchUpTypes';
 
 const getMatchUp = (id, inContext) => {
   const {

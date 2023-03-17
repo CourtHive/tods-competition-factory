@@ -2,6 +2,7 @@ import { getDrawStructures } from '../../getters/findStructure';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import drawEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../constants/eventConstants';

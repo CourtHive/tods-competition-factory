@@ -1,6 +1,7 @@
 import competitionEngine from '../../competitionEngine/sync';
 import tournamentEngine from '../../tournamentEngine/sync';
 import mocksEngine from '../../mocksEngine';
+import { expect, test } from 'vitest';
 
 test('engines share state', () => {
   const { tournamentRecord: firstRecord } =

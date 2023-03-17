@@ -1,5 +1,6 @@
 import { mocksEngine, tournamentEngine } from '../../..';
 import { unique } from '../../../utilities';
+import { expect, it } from 'vitest';
 
 import {
   DOUBLE_WALKOVER,

@@ -1,5 +1,6 @@
 import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
+import { expect, it } from 'vitest';
 
 it('can re-schedule matchUp date backwards and forwards in time', () => {
   const drawProfiles = [

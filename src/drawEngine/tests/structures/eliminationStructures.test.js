@@ -3,6 +3,7 @@ import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { treeMatchUps } from '../../generators/eliminationTree';
 import { structureSort } from '../../getters/structureSort';
 import { drawEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 drawEngine.devContext(true);
 

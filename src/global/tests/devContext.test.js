@@ -1,5 +1,6 @@
 import competitionEngine from '../../competitionEngine/sync';
 import tournamentEngine from '../../tournamentEngine/sync';
+import { expect, it } from 'vitest';
 
 it('handles devContext objects', () => {
   let result = tournamentEngine.devContext(true);

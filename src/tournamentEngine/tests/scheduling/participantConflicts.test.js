@@ -3,6 +3,7 @@ import competitionEngine from '../../../competitionEngine/sync';
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
+import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import { INDIVIDUAL } from '../../../constants/participantConstants';

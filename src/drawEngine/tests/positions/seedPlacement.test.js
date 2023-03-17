@@ -6,6 +6,7 @@ import { getStageEntries } from '../../getters/stageGetter';
 import { mocksEngine, setSubscriptions } from '../../..';
 import { numericSort } from '../../../utilities';
 import { drawEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 import SEEDING_NATIONAL from '../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
 import { MODIFY_DRAW_DEFINITION } from '../../../constants/topicConstants';

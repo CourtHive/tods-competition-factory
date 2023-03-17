@@ -2,6 +2,7 @@ import { generateOutcomeFromScoreString } from '../../../mocksEngine/generators/
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';

@@ -2,6 +2,7 @@ import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssig
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { chunkArray, unique } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
+import { it, expect } from 'vitest';
 
 import POLICY_SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';

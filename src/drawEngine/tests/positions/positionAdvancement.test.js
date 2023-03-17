@@ -3,12 +3,13 @@ import { feedInChampionship } from '../../tests/primitives/feedIn';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
+import { drawEngine } from '../../sync';
+import { expect, it } from 'vitest';
 import {
   reset,
   initialize,
   mainDrawPositions,
 } from '../../tests/primitives/primitives';
-import { drawEngine } from '../../sync';
 
 import {
   MAIN,

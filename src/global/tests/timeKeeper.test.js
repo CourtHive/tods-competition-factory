@@ -1,4 +1,5 @@
 import { timeKeeper } from '../state/globalState';
+import { expect, it } from 'vitest';
 
 async function getAllTimers(delay = 1000) {
   return new Promise((resolve) => {

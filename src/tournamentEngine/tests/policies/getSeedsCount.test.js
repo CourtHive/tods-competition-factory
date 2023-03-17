@@ -1,4 +1,5 @@
 import { getSeedsCount } from '../../governors/policyGovernor/getSeedsCount';
+import { expect, it } from 'vitest';
 
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';

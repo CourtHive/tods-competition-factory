@@ -1,6 +1,8 @@
+import { generateRange, unique } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
-import { generateRange, unique } from '../../../utilities';
+import { expect, it } from 'vitest';
+
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 
 it('can generate draw with appropriate ITF seeding', () => {

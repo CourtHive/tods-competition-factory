@@ -3,6 +3,7 @@ import { getStructureDrawPositionProfiles } from '../../getters/getStructureDraw
 import { getDrawPosition } from '../../../global/functions/extractors';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
+import { expect, it } from 'vitest';
 
 import {
   BYE,

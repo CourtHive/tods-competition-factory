@@ -1,5 +1,5 @@
-import { expect } from 'vitest';
 import { generateOutcomeFromScoreString } from '../generators/generateOutcomeFromScoreString';
+import { expect, it } from 'vitest';
 
 it('can generate outcomes for either winningSide', () => {
   let values = {

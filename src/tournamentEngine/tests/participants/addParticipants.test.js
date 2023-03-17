@@ -1,4 +1,5 @@
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';

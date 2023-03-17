@@ -1,6 +1,7 @@
 import { setSubscriptions } from '../../../global/state/globalState';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
+import { expect, it } from 'vitest';
 
 import { VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';

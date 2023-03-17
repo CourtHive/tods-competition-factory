@@ -4,6 +4,7 @@ import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { instanceCount } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngineSync from '../../../sync';
+import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
