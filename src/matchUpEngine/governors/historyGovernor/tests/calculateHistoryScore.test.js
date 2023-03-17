@@ -1,6 +1,7 @@
 import matchUpEngineAsync from '../../../async';
 import matchUpEngineSync from '../../../sync';
 import { getHistory } from '../getHistory';
+import { expect, it } from 'vitest';
 
 import { MATCHUP_HISTORY } from '../../../../constants/extensionConstants';
 

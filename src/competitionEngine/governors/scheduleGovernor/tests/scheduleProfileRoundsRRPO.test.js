@@ -1,7 +1,7 @@
 import { shuffleArray, unique } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
-import { expect } from 'vitest';
+import { expect, it } from 'vitest';
 
 import { SINGLES } from '../../../../constants/eventConstants';
 import {

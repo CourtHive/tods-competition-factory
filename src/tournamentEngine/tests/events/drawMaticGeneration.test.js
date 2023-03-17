@@ -2,6 +2,7 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import { generateRange, makeDeepCopy, unique } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/eventConstants';

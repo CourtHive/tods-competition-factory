@@ -1,5 +1,6 @@
 import { mocksEngine, scaleEngine, tournamentEngine } from '../../../..';
 import { unique } from '../../../../utilities';
+import { expect, it } from 'vitest';
 
 import { MISSING_POLICY_DEFINITION } from '../../../../constants/errorConditionConstants';
 import { POLICY_TYPE_RANKING_POINTS } from '../../../../constants/policyConstants';

@@ -1,4 +1,5 @@
 import { submitScoreChange } from '../submitScoreChange';
+import { expect, test } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
 import {

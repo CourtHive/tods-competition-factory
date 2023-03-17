@@ -1,5 +1,6 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { tournamentEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 import POLICY_SCORING_DEFAULT from '../../../fixtures/policies/POLICY_SCORING_DEFAULT';
 import AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';

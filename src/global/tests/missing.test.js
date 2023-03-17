@@ -6,7 +6,7 @@ import scaleEngineAsync from '../../scaleEngine/async';
 import scaleEngineSync from '../../scaleEngine/sync';
 import drawEngineAsync from '../../drawEngine/async';
 import drawEngineSync from '../../drawEngine/sync';
-import { expect } from 'vitest';
+import { expect, it } from 'vitest';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 const asyncTournamentEngine = tournamentEngineAsync(true);

@@ -3,6 +3,7 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import { unique } from '../../../../utilities';
 import competitionEngine from '../../../sync';
+import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 import { SCHEDULE_LIMITS } from '../../../../constants/extensionConstants';

@@ -1,4 +1,5 @@
 import { drawEngine, tournamentEngine, mocksEngine } from '../../..';
+import { expect } from 'vitest';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';

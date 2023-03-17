@@ -1,6 +1,7 @@
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { unique } from '../../../utilities';
+import { it, expect } from 'vitest';
 
 import { COMPASS } from '../../../constants/drawDefinitionConstants';
 

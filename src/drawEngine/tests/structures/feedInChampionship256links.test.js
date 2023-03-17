@@ -1,6 +1,7 @@
-import drawEngine from '../../sync';
-import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../tournamentEngine/sync';
+import mocksEngine from '../../../mocksEngine';
+import drawEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import {
   BOTTOM_UP,

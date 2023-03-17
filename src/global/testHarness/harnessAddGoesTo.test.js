@@ -2,6 +2,7 @@ import { hasSchedule } from '../../competitionEngine/governors/scheduleGovernor/
 import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
 import { extractTime, timeStringMinutes } from '../../utilities/dateTime';
 import { competitionEngine } from '../..';
+import { expect, it } from 'vitest';
 import fs from 'fs';
 
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';

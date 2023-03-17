@@ -1,4 +1,5 @@
 import { analyzeScheduleOverlap } from '../scheduleMatchUps/analyzeScheduleOverlap';
+import { expect, it } from 'vitest';
 
 const scenarios = [
   {

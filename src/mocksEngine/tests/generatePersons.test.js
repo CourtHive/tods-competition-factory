@@ -1,6 +1,7 @@
 import { generatePersons } from '../generators/generatePersons';
 import { tournamentEngine } from '../..';
 import { UUID } from '../../utilities';
+import { expect, test } from 'vitest';
 import mocksEngine from '..';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';

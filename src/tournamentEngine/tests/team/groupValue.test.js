@@ -1,6 +1,7 @@
 import { generateRange, shuffleArray } from '../../../utilities';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
+import { expect, test } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';

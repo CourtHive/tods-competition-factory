@@ -1,5 +1,6 @@
 import { generateRange, UUID } from '../../utilities';
 import defaultPersonData from '../data/persons.json';
+import { expect, it, test } from 'vitest';
 import mocksEngine from '..';
 
 import { FEMALE, MALE } from '../../constants/genderConstants';

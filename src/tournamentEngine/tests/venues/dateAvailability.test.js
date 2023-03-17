@@ -1,6 +1,7 @@
 import { validDateAvailability } from '../../governors/venueGovernor/dateAvailability';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it, test } from 'vitest';
 
 import {
   INVALID_BOOKINGS,

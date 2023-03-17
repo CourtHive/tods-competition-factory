@@ -1,5 +1,6 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
+import { expect, it } from 'vitest';
 
 import { INVALID_MATCHUP_STATUS } from '../../../../constants/errorConditionConstants';
 import { IN_PROGRESS } from '../../../../constants/matchUpStatusConstants';

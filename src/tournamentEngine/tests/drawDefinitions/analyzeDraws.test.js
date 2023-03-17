@@ -2,6 +2,7 @@ import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import { drawEngine, mocksEngine, setSubscriptions } from '../../..';
 import { generateRange } from '../../../utilities';
 import tournamentEngine from '../../sync';
+import { expect, test } from 'vitest';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';

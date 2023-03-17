@@ -1,6 +1,7 @@
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 it('can return participant scheduled matchUps', () => {
   const startDate = '2022-09-24';

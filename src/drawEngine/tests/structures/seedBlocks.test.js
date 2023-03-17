@@ -1,4 +1,4 @@
-import { expect } from 'vitest';
+import { it, expect } from 'vitest';
 import {
   getSeedBlocks,
   getSeedGroups,

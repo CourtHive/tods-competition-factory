@@ -1,6 +1,7 @@
 import { getParticipantId } from '../../../../global/functions/extractors';
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
+import { expect, test } from 'vitest';
 
 import { INDIVIDUAL } from '../../../../constants/participantConstants';
 import { COMPETITOR } from '../../../../constants/participantRoles';

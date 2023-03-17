@@ -1,5 +1,6 @@
 import tournamentEngine from '../../tournamentEngine/sync';
 import { instanceCount } from '../../utilities';
+import { expect, it } from 'vitest';
 import mocksEngine from '..';
 
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';

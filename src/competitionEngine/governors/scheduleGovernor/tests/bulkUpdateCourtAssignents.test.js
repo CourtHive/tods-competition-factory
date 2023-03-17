@@ -2,6 +2,7 @@ import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { intersection, unique } from '../../../../utilities';
 import competitionEngine from '../../../sync';
+import { expect, it } from 'vitest';
 
 it('can update matchUp court assignments accross multiple events/draws', () => {
   const drawProfiles = [

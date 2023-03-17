@@ -2,10 +2,12 @@ import { getParticipantIds } from '../../../../global/functions/extractors';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { matchUpSort } from '../../../getters/matchUpSort';
 import mocksEngine from '../../../../mocksEngine';
+import { expect, it } from 'vitest';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import POLICY_POSITION_ACTIONS_NO_MOVEMENT from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_NO_MOVEMENT';
 import POLICY_POSITION_ACTIONS_DISABLED from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DISABLED';
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 import {
   EXISTING_POLICY_TYPE,
   MISSING_DRAW_DEFINITION,
@@ -14,7 +16,6 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 import {
   ADD_NICKNAME,
   ADD_PENALTY,

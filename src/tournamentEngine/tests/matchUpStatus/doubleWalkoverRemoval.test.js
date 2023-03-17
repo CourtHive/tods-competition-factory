@@ -1,6 +1,7 @@
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, test } from 'vitest';
 
 import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';

@@ -1,6 +1,7 @@
 import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
 import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../..';
+import { expect, it } from 'vitest';
 
 import { COMPASS } from '../../../../constants/drawDefinitionConstants';
 

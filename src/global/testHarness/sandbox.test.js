@@ -1,4 +1,5 @@
 import { tournamentEngine } from '../..';
+import { expect, it } from 'vitest';
 import fs from 'fs';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';

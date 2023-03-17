@@ -2,6 +2,7 @@ import competitionEngine from '../../competitionEngine/sync';
 import tournamentEngine from '../../tournamentEngine/sync';
 import drawEngine from '../../drawEngine/sync';
 import mocksEngine from '../../mocksEngine';
+import { expect, it } from 'vitest';
 
 it('can return version from all engines', () => {
   let result = drawEngine.version();

@@ -1,5 +1,6 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import { mocksEngine, tournamentEngine } from '../../../..';
+import { expect, it, test } from 'vitest';
 
 import { NO_MODIFICATIONS_APPLIED } from '../../../../constants/errorConditionConstants';
 import { DELETED_MATCHUP_IDS } from '../../../../constants/topicConstants';

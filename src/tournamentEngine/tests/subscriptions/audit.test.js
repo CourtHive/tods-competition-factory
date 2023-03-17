@@ -2,6 +2,7 @@ import { findExtension } from '../../../global/functions/deducers/findExtension'
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { DELETE_DRAW_DEFINITIONS } from '../../../constants/auditConstants';
 import { DRAW_DELETIONS } from '../../../constants/extensionConstants';

@@ -5,6 +5,7 @@ import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/sc
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
+import { expect, it } from 'vitest';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';

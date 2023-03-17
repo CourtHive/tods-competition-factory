@@ -3,6 +3,7 @@ import { getMatchUpIds } from '../../../global/functions/extractors';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 import {
   dateStringDaysChange,
   extractDate,

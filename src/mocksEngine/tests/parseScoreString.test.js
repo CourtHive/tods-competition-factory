@@ -1,4 +1,5 @@
 import { parseScoreString } from '../utilities/parseScoreString';
+import { expect, it } from 'vitest';
 
 it('can parse match tiebreaks', () => {
   let scoreString = '[10-3]';

@@ -1,5 +1,6 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import { mocksEngine, tournamentEngine } from '../../../..';
+import { expect, it } from 'vitest';
 
 import { DELETED_MATCHUP_IDS } from '../../../../constants/topicConstants';
 import { TEAM } from '../../../../constants/eventConstants';

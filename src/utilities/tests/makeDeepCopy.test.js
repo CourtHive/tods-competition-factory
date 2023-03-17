@@ -1,6 +1,7 @@
 import tournamentEngine from '../../tournamentEngine/sync';
 import { makeDeepCopy } from '../makeDeepCopy';
 import mocksEngine from '../../mocksEngine';
+import { expect, it, test } from 'vitest';
 import { UUID } from '../UUID';
 
 import { INDIVIDUAL } from '../../constants/participantConstants';

@@ -1,5 +1,6 @@
 import { tournamentEngine, mocksEngine } from '../..';
 import { numericSort, unique } from '../../utilities';
+import { expect, it } from 'vitest';
 import fs from 'fs';
 
 import { TEAM as EVENT_TEAM } from '../../constants/eventConstants';

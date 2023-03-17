@@ -3,6 +3,7 @@ import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 it('can toggle participant check-in state', () => {
   const drawProfiles = [

@@ -1,6 +1,7 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
+import { expect, it } from 'vitest';
 
 import { USTA_BREWER_CUP } from '../../../../constants/tieFormatConstants';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';

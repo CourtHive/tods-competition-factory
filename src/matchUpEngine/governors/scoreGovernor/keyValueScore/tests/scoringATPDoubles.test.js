@@ -1,6 +1,8 @@
+import { TIEBREAK_CLOSER, scoreMatchUp, enterValues } from './primitives';
+import { expect, it } from 'vitest';
+
 import { FORMAT_ATP_DOUBLES } from '../../../../../fixtures/scoring/matchUpFormats';
 import { MATCH_TIEBREAK_JOINER } from '../constants';
-import { TIEBREAK_CLOSER, scoreMatchUp, enterValues } from './primitives';
 
 it('recognizes incomplete matchUp tiebreaks', () => {
   let info;

@@ -1,4 +1,6 @@
 import { keyValueMatchUpScore } from '../index';
+import { expect, it } from 'vitest';
+
 import {
   FORMAT_STANDARD,
   FORMAT_ATP_DOUBLES,

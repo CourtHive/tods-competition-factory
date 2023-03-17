@@ -1,5 +1,6 @@
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
+import { expect, test } from 'vitest';
 
 import { CANNOT_CHANGE_WINNING_SIDE } from '../../../constants/errorConditionConstants';
 import {

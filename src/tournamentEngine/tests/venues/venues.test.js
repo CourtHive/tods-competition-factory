@@ -1,4 +1,5 @@
 import { tournamentEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 import {
   MISSING_COURTS_INFO,

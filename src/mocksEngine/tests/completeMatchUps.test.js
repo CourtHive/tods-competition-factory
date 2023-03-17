@@ -2,6 +2,7 @@ import { matchUpSort } from '../../drawEngine/getters/matchUpSort';
 import tournamentEngine from '../../tournamentEngine/sync';
 import { instanceCount } from '../../utilities';
 import { fmlc32profile } from './fmlc32';
+import { expect, it } from 'vitest';
 import mocksEngine from '..';
 
 import { COMPLETED } from '../../constants/matchUpStatusConstants';

@@ -1,4 +1,5 @@
 import { analyzeMatchUp } from '../getters/analyzeMatchUp';
+import { expect, test } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 

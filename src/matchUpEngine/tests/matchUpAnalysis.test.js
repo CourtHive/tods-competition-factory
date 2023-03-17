@@ -1,5 +1,6 @@
 import { mocksEngine, tournamentEngine } from '../..';
 import { analyzeMatchUp } from '../getters/analyzeMatchUp';
+import { expect, test } from 'vitest';
 import matchUpEngine from '../sync';
 
 import { MISSING_MATCHUP } from '../../constants/errorConditionConstants';

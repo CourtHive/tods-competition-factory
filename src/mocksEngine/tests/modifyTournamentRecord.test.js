@@ -1,5 +1,6 @@
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 import { mocksEngine, tournamentEngine, competitionEngine } from '../..';
+import { expect, test } from 'vitest';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { PUBLISH, STATUS } from '../../constants/timeItemConstants';
@@ -12,7 +13,6 @@ import {
   FEED_IN_CHAMPIONSHIP,
   ROUND_ROBIN,
 } from '../../constants/drawDefinitionConstants';
-import { expect } from 'vitest';
 
 test('modifyTournamentRecord error conditions', () => {
   let result = mocksEngine.modifyTournamentRecord();

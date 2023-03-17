@@ -1,4 +1,5 @@
 import { setSubscriptions, tournamentEngine, utilities } from '../src/index';
+import { expect, it } from 'vitest';
 
 it('can set subscriptions in global state outside of engines', () => {
   const allMatchUps = [];

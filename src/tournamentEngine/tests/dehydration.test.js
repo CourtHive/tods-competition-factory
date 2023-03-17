@@ -1,6 +1,7 @@
 import { allTournamentMatchUps } from '../getters/matchUpsGetter';
 import mocksEngine from '../../mocksEngine';
 import tournamentEngine from '../sync';
+import { expect, it } from 'vitest';
 import { utilities } from '../..';
 
 import { ROUND_ROBIN } from '../../constants/drawDefinitionConstants';

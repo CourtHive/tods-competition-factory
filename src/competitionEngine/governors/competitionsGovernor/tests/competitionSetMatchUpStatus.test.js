@@ -1,6 +1,8 @@
 import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
+import { expect, test } from 'vitest';
+
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,

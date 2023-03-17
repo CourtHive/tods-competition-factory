@@ -1,6 +1,6 @@
 import tournamentEngine from '../../tournamentEngine/sync';
 import mocksEngine from '../../mocksEngine';
-import { expect } from 'vitest';
+import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES, TEAM_MATCHUP } from '../../constants/matchUpTypes';
 import { TEAM_EVENT } from '../../constants/eventConstants';

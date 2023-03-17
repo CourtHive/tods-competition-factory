@@ -1,4 +1,5 @@
 import { drawEngine } from '../../sync';
+import { expect } from 'vitest';
 
 export function verifyLinks({ linksProfiles = [] }) {
   const { drawDefinition } = drawEngine.getState();

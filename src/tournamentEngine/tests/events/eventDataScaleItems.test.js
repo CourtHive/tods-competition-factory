@@ -1,6 +1,7 @@
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, test } from 'vitest';
 
 import POLICY_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
 import { SINGLES } from '../../../constants/matchUpTypes';

@@ -1,4 +1,6 @@
 import { replacementTest } from '../../structures/byeReplacementStressTest';
+import { expect, test } from 'vitest';
+
 import { CURTIS_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 
 test.each([

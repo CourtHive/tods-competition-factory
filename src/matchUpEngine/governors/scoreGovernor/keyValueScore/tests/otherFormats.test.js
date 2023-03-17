@@ -1,5 +1,6 @@
-import { singleSetStressTests } from './standardStress';
 import { TIEBREAK_CLOSER, scoreMatchUp, enterValues } from './primitives';
+import { singleSetStressTests } from './standardStress';
+import { expect, it } from 'vitest';
 
 const FORMAT_NOAD_SET_TIEBREAK = 'SET1-S:6/TB7NOAD';
 const FORMAT_BEST_OF_3_MATCH_TB7 = 'SET3-S:TB7';

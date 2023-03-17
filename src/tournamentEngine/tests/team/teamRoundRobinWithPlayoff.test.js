@@ -1,5 +1,6 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, test } from 'vitest';
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { DOMINANT_DUO } from '../../../constants/tieFormatConstants';

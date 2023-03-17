@@ -1,5 +1,6 @@
 import tournamentEngine from '../../tournamentEngine/sync';
 import mocksEngine from '../../mocksEngine';
+import { expect, it } from 'vitest';
 
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { DOUBLES } from '../../constants/eventConstants';

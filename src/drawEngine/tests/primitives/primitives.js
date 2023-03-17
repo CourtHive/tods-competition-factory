@@ -1,4 +1,5 @@
 import { drawEngine } from '../../sync';
+import { expect } from 'vitest';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

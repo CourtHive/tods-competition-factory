@@ -1,13 +1,7 @@
-import {
-  generateRange,
-  intersection,
-  makeDeepCopy,
-  noNulls,
-  randomPop,
-} from '..';
 import { isOdd, nextPowerOf2, isPowerOf2, skewedDistribution } from '../math';
 import { generateHashCode } from '../objects';
 import { safeUUID, UUIDS } from '../UUID';
+import { expect, it, test } from 'vitest';
 import { deepMerge } from '../deepMerge';
 import {
   addMinutesToTimeString,
@@ -25,6 +19,13 @@ import {
   timeSort,
   weekDays,
 } from '../dateTime';
+import {
+  generateRange,
+  intersection,
+  makeDeepCopy,
+  noNulls,
+  randomPop,
+} from '..';
 import {
   arrayIndices,
   chunkByNth,
