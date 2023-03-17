@@ -13,7 +13,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 const getParticipantType = (eventType) =>
-  eventType === SINGLES ? INDIVIDUAL : eventType === DOUBLES ? PAIR : undefined;
+  (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR);
 
 const scenarios = [
   { eventType: SINGLES, drawSize: 5, roundsCount: 5 },
