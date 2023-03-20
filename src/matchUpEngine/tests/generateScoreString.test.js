@@ -1,4 +1,5 @@
 import { generateScoreString } from '../generators/generateScoreString';
+import { expect, it, test } from 'vitest';
 
 import { RETIRED } from '../../constants/matchUpStatusConstants';
 

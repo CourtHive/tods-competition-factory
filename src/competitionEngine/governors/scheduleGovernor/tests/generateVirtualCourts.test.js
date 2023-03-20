@@ -2,6 +2,7 @@ import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testU
 import { extractDate, timeStringMinutes } from '../../../../utilities/dateTime';
 import { mocksEngine, competitionEngine, tournamentEngine } from '../../../..';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
+import { expect, it, test } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 

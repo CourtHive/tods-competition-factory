@@ -1,6 +1,7 @@
 import { instanceCount } from '../../utilities';
 import mocksEngine from '../../mocksEngine';
 import tournamentEngine from '../sync';
+import { expect, it } from 'vitest';
 
 import { COMPETITIVE, DECISIVE, ROUTINE } from '../../constants/statsConstants';
 

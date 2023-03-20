@@ -1,6 +1,7 @@
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 import { generateRange } from '../../../utilities';
 import { drawEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import {

@@ -1,6 +1,7 @@
 import defaultPersonData from '../../../mocksEngine/data/persons.json';
 import tournamentEngine from '../../sync';
 import { UUID } from '../../../utilities';
+import { expect, test } from 'vitest';
 
 import {
   INVALID_PARTICIPANT_ROLE,

@@ -1,5 +1,6 @@
 import { verifyStructure } from '../primitives/verifyStructure';
 import { mocksEngine, tournamentEngine } from '../../..';
+import { expect, it } from 'vitest';
 
 import { FEED_IN } from '../../../constants/drawDefinitionConstants';
 

@@ -1,5 +1,6 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
+import { expect, it } from 'vitest';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import { COMPASS } from '../../../../constants/drawDefinitionConstants';
@@ -8,7 +9,6 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../../constants/matchUpStatusConstants';
-import { expect } from 'vitest';
 
 it('will not allow BYE removal when there are active matchUps in connected structures', () => {
   const policyDefinitions = POLICY_POSITION_ACTIONS_UNRESTRICTED;

@@ -1,5 +1,6 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import POLICY_SCORING_USTA from '../../../fixtures/policies/POLICY_SCORING_USTA';

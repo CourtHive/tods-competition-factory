@@ -1,5 +1,7 @@
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
+import { expect, test } from 'vitest';
+
 import {
   CONSOLATION,
   FIRST_MATCH_LOSER_CONSOLATION,

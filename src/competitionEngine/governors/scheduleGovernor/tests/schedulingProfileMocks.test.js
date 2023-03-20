@@ -2,6 +2,7 @@ import { getContainedStructures } from '../../../../tournamentEngine/governors/t
 import { mocksEngine, tournamentEngine, competitionEngine } from '../../../..';
 import { getMatchUpIds } from '../../../../global/functions/extractors';
 import { intersection, unique } from '../../../../utilities';
+import { expect, it } from 'vitest';
 
 import { EXISTING_ROUND } from '../../../../constants/errorConditionConstants';
 import { FEMALE, MALE } from '../../../../constants/genderConstants';

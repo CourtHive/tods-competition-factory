@@ -1,5 +1,6 @@
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
+import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';

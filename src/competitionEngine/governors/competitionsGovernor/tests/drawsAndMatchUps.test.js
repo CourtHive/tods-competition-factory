@@ -2,7 +2,7 @@ import { setSubscriptions } from '../../../../global/state/globalState';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
-import { expect } from 'vitest';
+import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import POLICY_SCORING_USTA from '../../../../fixtures/policies/POLICY_SCORING_USTA';

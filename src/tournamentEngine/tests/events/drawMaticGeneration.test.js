@@ -2,6 +2,7 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import { generateRange, makeDeepCopy, unique } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
@@ -12,7 +13,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 const getParticipantType = (eventType) =>
-  eventType === SINGLES ? INDIVIDUAL : eventType === DOUBLES ? PAIR : undefined;
+  (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR);
 
 const scenarios = [
   { eventType: SINGLES, drawSize: 5, roundsCount: 5 },

@@ -66,12 +66,6 @@ export function generateRange(start, end) {
 export function sizedRange(size, start) {
   return Array.from(Array(size).keys()).map((i) => i + start);
 }
-export function indices(val, arr) {
-  return arr.reduce((a, e, i) => {
-    if (e === val) a.push(i);
-    return a;
-  }, []);
-}
 export function arrayIndices(val, arr) {
   return arr.reduce((a, e, i) => {
     if (e === val) a.push(i);
@@ -201,6 +195,18 @@ export function chunkByNth(arr, chunksCount, shuttle) {
     chunks[directionIndex].push(entry);
     return chunks;
   }, []);
+}
+
+// group numbers by contiguous ranges
+export function getRanges(array) {
+  return array
+    .map((e) => parseInt(e))
+    .filter((e) => !isNaN(e))
+    .reduce((ranges, a) => {
+      if (!ranges.some((range) => range.includes(a - 1) && range.push(a)))
+        ranges.push([a]);
+      return ranges;
+    }, []);
 }
 
 /*

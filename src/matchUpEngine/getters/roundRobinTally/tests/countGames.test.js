@@ -1,4 +1,5 @@
 import { countGames } from '../scoreCounters';
+import { expect, it } from 'vitest';
 
 import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
 import {

@@ -4,6 +4,7 @@ import { getPositionAssignments } from '../../../drawEngine/getters/positionsGet
 import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
+import { expect, it } from 'vitest';
 
 import fs from 'fs';
 

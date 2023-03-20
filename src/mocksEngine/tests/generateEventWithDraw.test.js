@@ -1,4 +1,5 @@
 import { mocksEngine, tournamentEngine } from '../..';
+import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES } from '../../constants/eventConstants';
 import { FEMALE, MALE } from '../../constants/genderConstants';

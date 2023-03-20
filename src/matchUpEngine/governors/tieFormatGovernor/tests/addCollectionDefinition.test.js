@@ -1,5 +1,6 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import { mocksEngine, tournamentEngine } from '../../../..';
+import { expect, it } from 'vitest';
 
 import {
   DOUBLES,
@@ -12,7 +13,6 @@ import {
   MAIN,
   ROUND_ROBIN,
 } from '../../../../constants/drawDefinitionConstants';
-import { expect } from 'vitest';
 
 it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   const {

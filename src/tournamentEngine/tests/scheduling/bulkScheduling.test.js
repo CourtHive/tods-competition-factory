@@ -4,6 +4,7 @@ import competitionEngine from '../../../competitionEngine/sync';
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
+import { expect, it, test } from 'vitest';
 
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';

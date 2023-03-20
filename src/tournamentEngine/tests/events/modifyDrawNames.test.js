@@ -1,5 +1,6 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';

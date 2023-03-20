@@ -3,6 +3,7 @@ import { getMatchUpIds } from '../../../global/functions/extractors';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 import {
   dateStringDaysChange,
   extractDate,
@@ -68,7 +69,6 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
   });
 
   const { tournamentId } = tournamentRecord;
-  const scheduledStructureIds = [];
 
   // add first round of each draw to scheduling profile
   for (const drawId of drawIds) {
@@ -78,7 +78,6 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
         structures: [{ structureId }],
       },
     } = tournamentEngine.getEvent({ drawId });
-    scheduledStructureIds.push(structureId);
     const result = competitionEngine.addSchedulingProfileRound({
       round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
       scheduleDate: startDate,

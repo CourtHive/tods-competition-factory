@@ -2,6 +2,7 @@ import { getMatchUpIds } from '../../../global/functions/extractors';
 import { generateRange, randomPop } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { AD_HOC, WIN_RATIO } from '../../../constants/drawDefinitionConstants';

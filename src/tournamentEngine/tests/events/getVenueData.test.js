@@ -1,5 +1,6 @@
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
+import { expect, it } from 'vitest';
 
 import {
   COURT_NOT_FOUND,

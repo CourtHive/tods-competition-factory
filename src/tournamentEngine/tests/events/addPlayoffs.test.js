@@ -2,6 +2,7 @@ import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { setSubscriptions } from '../../..';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import {

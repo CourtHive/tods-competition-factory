@@ -3,6 +3,7 @@ import drawEngine from '../../../drawEngine/sync';
 import tournamentEngineAsync from '../../async';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngineSync from '../../sync';
+import { expect, test } from 'vitest';
 
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';

@@ -3,7 +3,7 @@ import { extractDate } from '../../../../utilities/dateTime';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 import { UUID } from '../../../../utilities';
-import { expect } from 'vitest';
+import { expect, test } from 'vitest';
 
 test('court availability overrides default availability', () => {
   const venueId = UUID();

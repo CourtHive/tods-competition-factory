@@ -1,6 +1,7 @@
 import { chunkArray, unique } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
+import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { DOUBLES } from '../../../../constants/eventConstants';

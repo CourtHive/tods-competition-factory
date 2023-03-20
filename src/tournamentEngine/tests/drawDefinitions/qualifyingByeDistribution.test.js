@@ -1,9 +1,9 @@
 import { chunkArray } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { expect } from 'vitest';
 
 it('places BYEs reasonably in qualifying structures', () => {
   let result = mocksEngine.generateTournamentRecord({

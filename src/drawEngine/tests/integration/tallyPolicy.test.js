@@ -1,5 +1,6 @@
 import { mocksEngine, tournamentEngine } from '../../..';
 import matchUpEngine from '../../../matchUpEngine/sync';
+import { expect, test } from 'vitest';
 
 test('roundRobinTally policy can specify tally by games only', () => {
   // prettier-ignore

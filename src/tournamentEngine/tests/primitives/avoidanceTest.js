@@ -1,4 +1,5 @@
 import { drawEngine, tournamentEngine, mocksEngine } from '../../..';
+import { expect } from 'vitest';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
@@ -59,7 +60,7 @@ export function avoidanceTest(params) {
   const category = { categoryName: 'U18' };
 
   const eventParticipantType =
-    eventType === SINGLES ? INDIVIDUAL : DOUBLES ? PAIR : participantType;
+    (eventType === SINGLES && INDIVIDUAL) || (DOUBLES && PAIR);
 
   const relevantParticipants = participants
     .filter(

@@ -3,6 +3,7 @@ import { generateTeamTournament } from './generateTestTeamTournament';
 import { setDevContext } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import {

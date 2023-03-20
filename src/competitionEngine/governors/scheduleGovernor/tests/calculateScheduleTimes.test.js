@@ -1,6 +1,6 @@
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
-import { it } from 'vitest';
+import { expect, it } from 'vitest';
 
 it('can calculste Schedule Times', () => {
   const venueProfiles = [

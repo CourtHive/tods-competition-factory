@@ -2,6 +2,7 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import { unique } from '../../../../utilities';
 import drawEngine from '../../../sync';
+import { expect, it } from 'vitest';
 
 import {
   BYE,

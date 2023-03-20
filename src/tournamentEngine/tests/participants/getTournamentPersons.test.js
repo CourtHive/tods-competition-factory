@@ -1,5 +1,6 @@
 import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
+import { expect, it } from 'vitest';
 
 import PARTICIPANT_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';

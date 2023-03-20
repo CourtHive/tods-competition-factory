@@ -1,4 +1,6 @@
 import { replacementTest } from '../../structures/byeReplacementStressTest';
+import { expect, test } from 'vitest';
+
 import { FEED_IN_CHAMPIONSHIP } from '../../../../constants/drawDefinitionConstants';
 
 test.each([

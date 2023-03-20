@@ -1,5 +1,6 @@
 import tournamentEngine from '../../tournamentEngine/sync';
 import { matchUpSort } from '../getters/matchUpSort';
+import { expect } from 'vitest';
 
 import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { MAIN } from '../../constants/drawDefinitionConstants';

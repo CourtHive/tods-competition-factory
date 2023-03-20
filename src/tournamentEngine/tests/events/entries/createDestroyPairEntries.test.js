@@ -2,6 +2,7 @@ import { isUngrouped } from '../../../../global/functions/isUngrouped';
 import { chunkArray } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../sync';
+import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/eventConstants';

@@ -1,6 +1,8 @@
 import { singleSetStressTests } from './standardStress';
-import { FORMAT_COLLEGE_PRO_SET } from '../../../../../fixtures/scoring/matchUpFormats';
 import { scoreMatchUp, enterValues } from './primitives';
+import { expect, it } from 'vitest';
+
+import { FORMAT_COLLEGE_PRO_SET } from '../../../../../fixtures/scoring/matchUpFormats';
 
 singleSetStressTests({ matchUpFormat: FORMAT_COLLEGE_PRO_SET, setTo: 8 });
 

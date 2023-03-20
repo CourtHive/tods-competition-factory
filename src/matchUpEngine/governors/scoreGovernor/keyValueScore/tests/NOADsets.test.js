@@ -1,4 +1,5 @@
 import { enterValues, scoreMatchUp } from './primitives';
+import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD_NOAD } from '../../../../../fixtures/scoring/matchUpFormats';
 

@@ -1,10 +1,10 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS } from '../../../constants/errorConditionConstants';
 import { WILDCARD } from '../../../constants/entryStatusConstants';
-import { expect } from 'vitest';
 
 it('generateDrawDefinition can ignoreStageSpace', () => {
   const {

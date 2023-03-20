@@ -2,6 +2,7 @@ import { generateOutcomeFromScoreString } from '../../../mocksEngine/generators/
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { SCORE } from '../../../constants/matchUpActionConstants';

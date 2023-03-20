@@ -1,5 +1,5 @@
 import { parse } from '../../matchUpFormatGovernor/parse';
-import { indices } from '../../../../utilities/arrays';
+import { arrayIndices } from '../../../../utilities/arrays';
 import {
   checkValidMatchTiebreak,
   testTiebreakEntry,
@@ -64,9 +64,9 @@ export function getScoreAnalysis({
   const splitScore = scoreString && scoreString.split('');
   const [open] = MATCH_TIEBREAK_BRACKETS.split('');
   const lastOpenBracketIndex =
-    splitScore && Math.max(...indices(open, splitScore));
+    splitScore && Math.max(...arrayIndices(open, splitScore));
   const lastJoinerIndex =
-    splitScore && Math.max(...indices(MATCH_TIEBREAK_JOINER, splitScore));
+    splitScore && Math.max(...arrayIndices(MATCH_TIEBREAK_JOINER, splitScore));
   const matchTiebreakHasJoiner =
     splitScore && lastJoinerIndex > lastOpenBracketIndex;
 

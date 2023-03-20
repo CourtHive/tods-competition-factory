@@ -1,6 +1,7 @@
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, test } from 'vitest';
 
 import {
   ADD_PARTICIPANTS,
