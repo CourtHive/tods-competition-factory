@@ -15,7 +15,7 @@ export function deriveExponent(n) {
 }
 
 export function coerceEven(n) {
-  return isNaN(n) ? 0 : n % 2 ? n + 1 : n;
+  return isNaN(n) ? 0 : (n % 2 && n + 1) || n;
 }
 
 export function nearestPowerOf2(val) {
@@ -64,7 +64,7 @@ export function weightedRandom(max = 1, weight = 3, round = true) {
 // round to nearest step, e.g. 0.25
 function stepRound(value, step) {
   step || (step = 1.0);
-  var inv = 1.0 / step;
+  const inv = 1.0 / step;
   return Math.round(value * inv) / inv;
 }
 
@@ -72,8 +72,8 @@ export function skewedDistribution(
   min,
   max,
   skew,
-  significantDecimals = 2,
-  step
+  step,
+  significantDecimals = 2
 ) {
   const u = 1 - Math.random();
   const v = 1 - Math.random();

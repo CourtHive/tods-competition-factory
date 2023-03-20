@@ -3,7 +3,7 @@ import { getStageEntries } from '../../../getters/participants/getStageEntries';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { removeEventEntries } from './removeEventEntries';
-import { indices } from '../../../../utilities/arrays';
+import { arrayIndices } from '../../../../utilities/arrays';
 import { addEventEntries } from './addEventEntries';
 
 import { TEAM, DOUBLES } from '../../../../constants/eventConstants';
@@ -101,7 +101,7 @@ export function destroyGroupEntry({
   // this scenario can occur in e.g. ITA tournaments where an individual participant is paired multiple times across flights
   const individualParticipantIds = participant.individualParticipantIds.filter(
     (participantId) =>
-      indices(participantId, individualParticipantIdsInGroups).length === 1
+      arrayIndices(participantId, individualParticipantIdsInGroups).length === 1
   );
 
   // const individualParticipantIds = participant.individualParticipantIds;
