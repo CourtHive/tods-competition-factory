@@ -230,7 +230,7 @@ test('miscellaneous math tests', () => {
 
 test('skewedDistribution supports step values', () => {
   let result = generateRange(0, 100).map(() =>
-    skewedDistribution(1, 100, 2, 2, 0.5)
+    skewedDistribution(1, 100, 2, 0.5, 2)
   );
   result.forEach((v) => {
     const finalDigit = v.toString().split('.')[1];
@@ -238,7 +238,7 @@ test('skewedDistribution supports step values', () => {
   });
 
   result = generateRange(0, 100).map(() =>
-    skewedDistribution(1, 100, 2, 2, 0.25)
+    skewedDistribution(1, 100, 2, 0.25, 2)
   );
   result.forEach((v) => {
     const finalDigit = v.toString().split('.')[1];

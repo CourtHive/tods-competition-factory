@@ -51,7 +51,6 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
   });
 
   const { tournamentId } = tournamentRecord;
-  const scheduledStructureIds = [];
 
   // add first round of draw to scheduling profile
   const {
@@ -62,7 +61,6 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
     structures: [{ structureId }],
   } = drawDefinition;
 
-  scheduledStructureIds.push(structureId);
   let result = competitionEngine.addSchedulingProfileRound({
     round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
     scheduleDate: startDate,
@@ -148,7 +146,6 @@ it('can auto schedule Round Robin draws without daily limits', () => {
   });
 
   const { tournamentId } = tournamentRecord;
-  const scheduledStructureIds = [];
 
   // add first round of draw to scheduling profile
   const {
@@ -159,7 +156,6 @@ it('can auto schedule Round Robin draws without daily limits', () => {
     structures: [{ structureId }],
   } = drawDefinition;
 
-  scheduledStructureIds.push(structureId);
   let result = competitionEngine.addSchedulingProfileRound({
     round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
     scheduleDate: startDate,

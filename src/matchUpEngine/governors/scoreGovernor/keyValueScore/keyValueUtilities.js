@@ -1,5 +1,5 @@
 import { parse } from '../../matchUpFormatGovernor/parse';
-import { indices } from '../../../../utilities/arrays';
+import { arrayIndices } from '../../../../utilities/arrays';
 
 import {
   SET_TIEBREAK_BRACKETS,
@@ -212,8 +212,8 @@ export function testTiebreakEntry({
   if (!scoreString) return false;
   const [open, close] = brackets.split('');
   const splitScore = scoreString.split('');
-  const lastOpenBracketIndex = Math.max(...indices(open, splitScore));
-  const lastCloseBracketIndex = Math.max(...indices(close, splitScore));
+  const lastOpenBracketIndex = Math.max(...arrayIndices(open, splitScore));
+  const lastCloseBracketIndex = Math.max(...arrayIndices(close, splitScore));
   const isTiebreakEntry = lastOpenBracketIndex > lastCloseBracketIndex;
   return { isTiebreakEntry, lastOpenBracketIndex };
 }
@@ -226,10 +226,10 @@ export function checkValidMatchTiebreak({ scoreString }) {
 
   const [open, close] = MATCH_TIEBREAK_BRACKETS.split('');
   const splitScore = scoreString.split('');
-  const lastOpenBracketIndex = Math.max(...indices(open, splitScore));
-  const lastCloseBracketIndex = Math.max(...indices(close, splitScore));
+  const lastOpenBracketIndex = Math.max(...arrayIndices(open, splitScore));
+  const lastCloseBracketIndex = Math.max(...arrayIndices(close, splitScore));
   const lastJoinerIndex = Math.max(
-    ...indices(MATCH_TIEBREAK_JOINER, splitScore)
+    ...arrayIndices(MATCH_TIEBREAK_JOINER, splitScore)
   );
   const isValid =
     isNumericEnding &&
@@ -240,11 +240,11 @@ export function checkValidMatchTiebreak({ scoreString }) {
 
 export function lastNumericIndex(str) {
   const arr = str.split('');
-  const indices = arr.reduce((a, e, i) => {
+  const arrayIndices = arr.reduce((a, e, i) => {
     if (e.match(/\d+/g)) a.push(i);
     return a;
   }, []);
-  return indices.pop();
+  return arrayIndices.pop();
 }
 
 export function getHighTiebreakValue({

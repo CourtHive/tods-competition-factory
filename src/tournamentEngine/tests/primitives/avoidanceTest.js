@@ -60,7 +60,7 @@ export function avoidanceTest(params) {
   const category = { categoryName: 'U18' };
 
   const eventParticipantType =
-    eventType === SINGLES ? INDIVIDUAL : DOUBLES ? PAIR : participantType;
+    (eventType === SINGLES && INDIVIDUAL) || (DOUBLES && PAIR);
 
   const relevantParticipants = participants
     .filter(
