@@ -20,11 +20,9 @@ export function generateEventParticipants({
   const { category, gender, eventType } = event;
 
   const eventParticipantType =
-    eventType === SINGLES
-      ? INDIVIDUAL
-      : eventType === DOUBLES
-      ? PAIR
-      : eventType;
+    (eventType === SINGLES && INDIVIDUAL) ||
+    (eventType === DOUBLES && PAIR) ||
+    eventType;
 
   const mainParticipantsCount = uniqueParticipantsCount[MAIN] || 0;
   const qualifyingParticipantsCount = uniqueParticipantsCount[QUALIFYING] || 0;
