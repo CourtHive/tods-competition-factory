@@ -78,21 +78,20 @@ export function completeDrawMatchUps({
               const assignment = positionAssignments.find(
                 (assignment) => assignment.participantId === participantId
               );
-              return assignment.drawPosition === drawPosition;
+              return assignment?.drawPosition === drawPosition;
             });
 
             if (teamParticipant) {
               const individualParticipantId =
                 teamParticipant.individualParticipantIds[i];
-              const result = assignTieMatchUpParticipantId({
+              assignTieMatchUpParticipantId({
+                teamParticipantId: teamParticipant.participantId,
                 participantId: individualParticipantId,
                 tournamentRecord,
                 drawDefinition,
                 tieMatchUpId,
                 event,
               });
-
-              if (!result.success) console.log(result);
             }
           });
         });
@@ -106,7 +105,7 @@ export function completeDrawMatchUps({
               const assignment = positionAssignments.find(
                 (assignment) => assignment.participantId === participantId
               );
-              return assignment.drawPosition === drawPosition;
+              return assignment?.drawPosition === drawPosition;
             });
 
             if (teamParticipant) {
@@ -116,14 +115,14 @@ export function completeDrawMatchUps({
                   i * 2 + 2
                 );
               individualParticipantIds.forEach((individualParticipantId) => {
-                const result = assignTieMatchUpParticipantId({
+                assignTieMatchUpParticipantId({
+                  teamParticipantId: teamParticipant.participantId,
                   participantId: individualParticipantId,
                   tournamentRecord,
                   drawDefinition,
                   tieMatchUpId,
                   event,
                 });
-                if (!result.success) console.log(result);
               });
             }
           });
