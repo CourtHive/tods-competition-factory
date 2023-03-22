@@ -66,10 +66,9 @@ export function paramsMiddleWare(tournamentRecord, params, prefetch) {
         const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
         const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-          drawDefinition,
-          inContext: true,
           includeByeMatchUps: true,
-
+          inContext: true,
+          drawDefinition,
           matchUpsMap,
         });
 
@@ -80,8 +79,8 @@ export function paramsMiddleWare(tournamentRecord, params, prefetch) {
 
     if (params.eventId && !params.event) {
       const { event } = findEvent({
-        tournamentRecord,
         eventId: params.eventId,
+        tournamentRecord,
       });
       if (event) {
         params = { ...params, event };
