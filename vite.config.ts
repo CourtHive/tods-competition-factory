@@ -10,7 +10,7 @@ export default defineConfig(() => {
         'tests/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
         // 'scratch/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
       ],
-      exclude: ['src/global/tests/benchmarks/test.{js,ts,jsx,tsx}'],
+      exclude: ['src/global/tests/benchmarks/*.test.{js,ts,jsx,tsx}'],
       useAtomics: true,
       coverage: {
         reporter: ['text', 'lcov'],
