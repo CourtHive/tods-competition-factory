@@ -5,6 +5,8 @@ import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import { ENTRY_PROFILE } from '../../../constants/extensionConstants';
+import { DOMINANT_DUO } from '../../../constants/tieFormatConstants';
+import { TEAM_EVENT } from '../../../constants/eventConstants';
 import {
   COMPASS,
   CURTIS,
@@ -24,6 +26,11 @@ import {
   ADD_MATCHUPS,
   DELETED_MATCHUP_IDS,
 } from '../../../constants/topicConstants';
+import {
+  INDIVIDUAL,
+  PAIR,
+  TEAM,
+} from '../../../constants/participantConstants';
 
 it.each([ROUND_ROBIN, SINGLE_ELIMINATION, undefined])(
   'will generate a drawDefinition with no matchUps',
@@ -37,7 +44,6 @@ it.each([ROUND_ROBIN, SINGLE_ELIMINATION, undefined])(
 );
 
 it('can generate QUALIFYING structures when no MAIN structure is specified', () => {
-  const allDeletedMatchUpIds = [];
   let notificationsOrder = [];
   const allMatchUps = [];
 
@@ -53,9 +59,6 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
     [DELETED_MATCHUP_IDS]: (payload) => {
       if (Array.isArray(payload)) {
         notificationsOrder.push(DELETED_MATCHUP_IDS);
-        payload.forEach(({ matchUpIds }) => {
-          allDeletedMatchUpIds.push(...matchUpIds);
-        });
       }
     },
   };
@@ -181,7 +184,7 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   });
   expect(result.success).toEqual(true);
 
-  expect(notificationsOrder).toEqual(['addMatchUps']);
+  expect(notificationsOrder).toEqual([ADD_MATCHUPS]);
   notificationsOrder = [];
 
   result = tournamentEngine.addDrawDefinition({
@@ -203,7 +206,7 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   expect(eventData.drawsData.length).toEqual(1);
   expect(eventData.drawsData[0].structures.length).toEqual(2);
 
-  expect(notificationsOrder).toEqual(['deletedMatchUpIds', 'addMatchUps']);
+  expect(notificationsOrder).toEqual([DELETED_MATCHUP_IDS, ADD_MATCHUPS]);
 });
 
 it.each([
@@ -280,3 +283,57 @@ it.each([
     );
   }
 );
+
+it('can generate only qualifying structure for eventType: TEAM', () => {
+  let result = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    drawProfiles: [
+      {
+        eventType: TEAM_EVENT,
+        tieFormatName: DOMINANT_DUO,
+        ignoreDefaults: true, // do not use defaults for main structure
+        qualifyingProfiles: [
+          {
+            roundTarget: 1,
+            structureProfiles: [
+              { stageSequence: 1, drawSize: 16, qualifyingRoundNumber: 2 },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+
+  let {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = result;
+
+  result = tournamentEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+  const { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
+  expect(event.entries.length).toEqual(16);
+
+  const [qualifying, main] = drawDefinition.structures;
+  expect(qualifying.matchUps.length).toEqual(12);
+  expect(main.matchUps.length).toEqual(0);
+
+  const { completedMatchUps } = tournamentEngine.tournamentMatchUps();
+  // 12 team matchUps w/ 2 SINGLES 1 DOUBLES each => 48
+  expect(completedMatchUps.length).toEqual(48);
+
+  const { participants } = tournamentEngine.getParticipants();
+  //expect(participants.length).toEqual(80);
+  const teamParticipants = participants.filter(
+    ({ participantType }) => participantType === TEAM
+  );
+  expect(teamParticipants.length).toEqual(16);
+  const individualParticipants = participants.filter(
+    ({ participantType }) => participantType === INDIVIDUAL
+  );
+  expect(individualParticipants.length).toEqual(32);
+  const pairParticipants = participants.filter(
+    ({ participantType }) => participantType === PAIR
+  );
+  expect(pairParticipants.length).toEqual(16);
+});
