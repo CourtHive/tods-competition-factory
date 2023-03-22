@@ -161,8 +161,7 @@ export function generateEventWithDraw({
         tieFormat,
         drawSize,
       }));
-      drawParticipantsCount =
-        teamSize * ((drawSize || 0) + qualifyingParticipantsCount);
+      drawParticipantsCount = (drawSize || 0) + qualifyingParticipantsCount;
     }
 
     const idPrefix = participantsProfile?.idPrefix
@@ -191,8 +190,8 @@ export function generateEventWithDraw({
 
     if (tournamentRecord) {
       const result = addParticipants({
-        tournamentRecord,
         participants: unique,
+        tournamentRecord,
       });
       if (result.error) return result;
     }
@@ -206,20 +205,22 @@ export function generateEventWithDraw({
       const allIndividualParticipantIds = unique
         .filter(({ participantType }) => participantType === INDIVIDUAL)
         .map(getParticipantId);
-      const teamParticipants = generateRange(0, drawSize).map((teamIndex) => {
-        const individualParticipantIds = allIndividualParticipantIds.slice(
-          teamIndex * teamSize,
-          (teamIndex + 1) * teamSize
-        );
-        return {
-          participantName: `Team ${teamIndex + 1}`,
-          participantOtherName: `TM${teamIndex + 1}`,
-          participantRole: COMPETITOR,
-          participantType: TEAM,
-          participantId: UUID(),
-          individualParticipantIds,
-        };
-      });
+      const teamParticipants = generateRange(0, drawParticipantsCount).map(
+        (teamIndex) => {
+          const individualParticipantIds = allIndividualParticipantIds.slice(
+            teamIndex * teamSize,
+            (teamIndex + 1) * teamSize
+          );
+          return {
+            participantName: `Team ${teamIndex + 1}`,
+            participantOtherName: `TM${teamIndex + 1}`,
+            participantRole: COMPETITOR,
+            participantType: TEAM,
+            participantId: UUID(),
+            individualParticipantIds,
+          };
+        }
+      );
       const result = addParticipants({
         participants: teamParticipants,
         tournamentRecord,
@@ -233,8 +234,7 @@ export function generateEventWithDraw({
     const { participantType } = participant;
     if (eventType === SINGLES && participantType === INDIVIDUAL) return true;
     if (eventType === DOUBLES && participantType === PAIR) return true;
-    if (eventType === TEAM && participantType === TEAM) return true;
-    return false;
+    return eventType === TEAM && participantType === TEAM;
   };
 
   const isEventGender = (participant) => {
