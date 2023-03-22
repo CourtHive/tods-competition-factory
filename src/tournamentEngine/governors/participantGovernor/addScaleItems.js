@@ -130,12 +130,15 @@ export function setParticipantScaleItems({
 
   if (context) {
     const { eventId, drawId, ...itemValue } = context;
-
+    const itemSubTypes = itemValue.scaleAttributes?.scaleType && [
+      itemValue.scaleAttributes.scaleType,
+    ];
     if (Object.keys(itemValue).length) {
       const timeItem = {
         itemType: ADD_SCALE_ITEMS,
         itemValue,
       };
+      if (itemSubTypes) timeItem.itemSubTypes = itemSubTypes;
 
       if (drawId || eventId) {
         const { drawDefinition, event } = findEvent({

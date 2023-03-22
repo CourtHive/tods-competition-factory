@@ -22,6 +22,7 @@ it('can autoSeed by Rankings', () => {
   tournamentEngine.setState(tournamentRecord);
   let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
 
+  const scaleDate = '2021-01-01';
   const scaleValuesRating = [3.3, 4.4, 5.5, 1.1, 2.2, 6.6, 7.7, 8.8, 10.1, 9.9];
   const scaleValuesRanking = [100, 90, 80, 30, 20, 10, 70, 60, 50, 40];
   const scaleItemsWithParticipantIds = tournamentParticipants.map(
@@ -30,17 +31,17 @@ it('can autoSeed by Rankings', () => {
       const scaleItems = [
         {
           scaleValue: scaleValuesRating[index],
-          scaleDate: '2021-01-01',
           eventType: SINGLES,
           scaleType: RATING,
           scaleName: 'WTN',
+          scaleDate,
         },
         {
           scaleValue: scaleValuesRanking[index],
-          scaleDate: '2021-01-01',
           scaleType: RANKING,
           eventType: SINGLES,
           scaleName: 'U18',
+          scaleDate,
         },
       ];
 
@@ -59,11 +60,18 @@ it('can autoSeed by Rankings', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { timeItem } = tournamentEngine.getEventTimeItem({
+  let { timeItem } = tournamentEngine.getEventTimeItem({
     itemType: ADD_SCALE_ITEMS,
     eventId,
   });
   expect(timeItem.itemType).toEqual(ADD_SCALE_ITEMS);
+  expect(timeItem.itemValue.scaleAttributes.scaleType).toEqual(RATING);
+  timeItem = tournamentEngine.getEventTimeItem({
+    itemType: ADD_SCALE_ITEMS,
+    itemSubTypes: [SEEDING],
+    eventId,
+  }).timeItem;
+  expect(timeItem).toBeUndefined();
 
   result = tournamentEngine.autoSeeding({
     policyDefinitions: SEEDING_USTA,
@@ -77,16 +85,35 @@ it('can autoSeed by Rankings', () => {
     .filter(Boolean);
   expect(scaleValues).toEqual([8, 7, 6, 5, 4, 3, 1, 2]);
 
-  result = tournamentEngine.setParticipantScaleItems({
-    scaleItemsWithParticipantIds: result.scaleItemsWithParticipantIds,
-  });
-  expect(result.success).toEqual(true);
-
   let seedingScaleAttributes = {
     scaleType: SEEDING,
     eventType: SINGLES,
     scaleName: 'U18',
   };
+  result = tournamentEngine.setParticipantScaleItems({
+    scaleItemsWithParticipantIds: result.scaleItemsWithParticipantIds,
+    context: {
+      scaleAttributes: seedingScaleAttributes,
+      scaleBasis: { ...scaleAttributes, scaleDate },
+      eventId,
+    },
+  });
+  expect(result.success).toEqual(true);
+
+  timeItem = tournamentEngine.getEventTimeItem({
+    itemType: ADD_SCALE_ITEMS,
+    eventId,
+  }).timeItem;
+  expect(timeItem.itemType).toEqual(ADD_SCALE_ITEMS);
+  expect(timeItem.itemValue.scaleAttributes.scaleType).toEqual(SEEDING);
+  expect(timeItem.itemValue.scaleBasis.scaleType).toEqual(RATING);
+  timeItem = tournamentEngine.getEventTimeItem({
+    itemType: ADD_SCALE_ITEMS,
+    itemSubTypes: [SEEDING],
+    eventId,
+  }).timeItem;
+  expect(timeItem.itemValue.scaleBasis.scaleType).toEqual(RATING);
+
   let { scaledEntries } = tournamentEngine.getScaledEntries({
     scaleAttributes: seedingScaleAttributes,
     eventId,

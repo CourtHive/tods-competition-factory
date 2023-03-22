@@ -35,19 +35,19 @@ export function autoSeeding({
   scaleSortMethod,
 }) {
   const { error, entries, seedsCount, stageEntries } = getEntriesAndSeedsCount({
+    policyDefinitions,
     drawDefinition,
+    drawSize,
     drawId,
     event,
-    policyDefinitions,
-    drawSize,
     stage,
   });
 
   if (error) return { error };
 
   const { scaledEntries } = getScaledEntries({
-    scaleAttributes,
     tournamentRecord,
+    scaleAttributes,
     scaleSortMethod,
     sortDescending,
     entries,
@@ -55,11 +55,11 @@ export function autoSeeding({
   });
 
   const { scaleItemsWithParticipantIds } = generateSeedingScaleItems({
-    scaledEntries,
-    seedsCount,
     scaleAttributes,
-    scaleName,
+    scaledEntries,
     stageEntries,
+    seedsCount,
+    scaleName,
   });
 
   return { scaleItemsWithParticipantIds };

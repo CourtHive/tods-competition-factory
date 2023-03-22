@@ -185,6 +185,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     'pctNoRating',
     'positionManipulations',
     'sectionCode',
+    'seedingBasis',
     'stage',
     'structureId',
     'tieFormatDesc',
