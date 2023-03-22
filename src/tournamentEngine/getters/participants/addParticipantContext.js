@@ -393,11 +393,13 @@ export function addParticipantContext(params) {
     if (params.withGroupings !== false) {
       const participantAttributes = participantIdMap[participant.participantId];
       participant.groupParticipantIds =
-        participantAttributes.groupParticipantIds;
-      participant.pairParticipantIds = participantAttributes.pairParticipantIds;
-      participant.teamParticipantIds = participantAttributes.teamParticipantIds;
-      participant.groups = participantAttributes.groups;
-      participant.teams = participantAttributes.teams;
+        participantAttributes?.groupParticipantIds;
+      participant.pairParticipantIds =
+        participantAttributes?.pairParticipantIds;
+      participant.teamParticipantIds =
+        participantAttributes?.teamParticipantIds;
+      participant.groups = participantAttributes?.groups;
+      participant.teams = participantAttributes?.teams;
     }
 
     if (params.withTeamMatchUps) {
