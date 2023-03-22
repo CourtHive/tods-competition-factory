@@ -190,6 +190,7 @@ export function completeDrawMatchUps({
           matchUpFormat,
           matchUpStatus,
           scoreString,
+          event,
         });
 
         if (result.error) return result;
@@ -198,6 +199,7 @@ export function completeDrawMatchUps({
       }
     }
   }
+
   return { ...SUCCESS, completedCount };
 }
 
@@ -210,6 +212,7 @@ export function completeDrawMatchUp({
   matchUpFormat,
   scoreString,
   winningSide,
+  event,
 }) {
   if (!targetMatchUp || targetMatchUp.matchUpStatus === BYE) {
     return;
@@ -231,6 +234,7 @@ export function completeDrawMatchUp({
     matchUpFormat,
     matchUpId,
     outcome,
+    event,
   });
 }
 
@@ -245,6 +249,7 @@ function smartComplete(params) {
     targetMatchUp,
     scoreString,
     winningSide,
+    event,
   } = params;
 
   if (scoreString || matchUpStatus) return completeDrawMatchUp(params);
@@ -262,5 +267,6 @@ function smartComplete(params) {
     matchUpFormat,
     matchUpId,
     outcome,
+    event,
   });
 }
