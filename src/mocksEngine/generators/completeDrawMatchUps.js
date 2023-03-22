@@ -78,21 +78,20 @@ export function completeDrawMatchUps({
               const assignment = positionAssignments.find(
                 (assignment) => assignment.participantId === participantId
               );
-              return assignment.drawPosition === drawPosition;
+              return assignment?.drawPosition === drawPosition;
             });
 
             if (teamParticipant) {
               const individualParticipantId =
                 teamParticipant.individualParticipantIds[i];
-              const result = assignTieMatchUpParticipantId({
+              assignTieMatchUpParticipantId({
+                teamParticipantId: teamParticipant.participantId,
                 participantId: individualParticipantId,
                 tournamentRecord,
                 drawDefinition,
                 tieMatchUpId,
                 event,
               });
-
-              if (!result.success) console.log(result);
             }
           });
         });
@@ -106,7 +105,7 @@ export function completeDrawMatchUps({
               const assignment = positionAssignments.find(
                 (assignment) => assignment.participantId === participantId
               );
-              return assignment.drawPosition === drawPosition;
+              return assignment?.drawPosition === drawPosition;
             });
 
             if (teamParticipant) {
@@ -116,14 +115,14 @@ export function completeDrawMatchUps({
                   i * 2 + 2
                 );
               individualParticipantIds.forEach((individualParticipantId) => {
-                const result = assignTieMatchUpParticipantId({
+                assignTieMatchUpParticipantId({
+                  teamParticipantId: teamParticipant.participantId,
                   participantId: individualParticipantId,
                   tournamentRecord,
                   drawDefinition,
                   tieMatchUpId,
                   event,
                 });
-                if (!result.success) console.log(result);
               });
             }
           });
@@ -191,6 +190,7 @@ export function completeDrawMatchUps({
           matchUpFormat,
           matchUpStatus,
           scoreString,
+          event,
         });
 
         if (result.error) return result;
@@ -199,6 +199,7 @@ export function completeDrawMatchUps({
       }
     }
   }
+
   return { ...SUCCESS, completedCount };
 }
 
@@ -211,6 +212,7 @@ export function completeDrawMatchUp({
   matchUpFormat,
   scoreString,
   winningSide,
+  event,
 }) {
   if (!targetMatchUp || targetMatchUp.matchUpStatus === BYE) {
     return;
@@ -232,6 +234,7 @@ export function completeDrawMatchUp({
     matchUpFormat,
     matchUpId,
     outcome,
+    event,
   });
 }
 
@@ -246,6 +249,7 @@ function smartComplete(params) {
     targetMatchUp,
     scoreString,
     winningSide,
+    event,
   } = params;
 
   if (scoreString || matchUpStatus) return completeDrawMatchUp(params);
@@ -263,5 +267,6 @@ function smartComplete(params) {
     matchUpFormat,
     matchUpId,
     outcome,
+    event,
   });
 }
