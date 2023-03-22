@@ -150,8 +150,9 @@ export function generateEventWithDraw({
     gender ||
     category
   ) {
-    let drawParticipantsCount =
+    const drawParticipantsCount =
       (participantsCount || 0) + alternatesCount + qualifyingParticipantsCount;
+    let individualParticipantCount = drawParticipantsCount;
     let teamSize;
 
     if (eventType === TEAM) {
@@ -161,7 +162,8 @@ export function generateEventWithDraw({
         tieFormat,
         drawSize,
       }));
-      drawParticipantsCount = (drawSize || 0) + qualifyingParticipantsCount;
+      individualParticipantCount =
+        teamSize * ((drawSize || 0) + qualifyingParticipantsCount);
     }
 
     const idPrefix = participantsProfile?.idPrefix
@@ -173,7 +175,7 @@ export function generateEventWithDraw({
       scaledParticipantsCount:
         drawProfile.scaledParticipantsCount ||
         participantsProfile.scaledParticipantsCount,
-      participantsCount: drawParticipantsCount,
+      participantsCount: individualParticipantCount,
       consideredDate: tournamentRecord?.startDate,
       sex: gender || participantsProfile?.sex,
       rankingRange: drawProfile.rankingRange,
