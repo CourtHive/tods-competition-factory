@@ -7,6 +7,7 @@ import { expect, it } from 'vitest';
 import { RANKING, RATING, SEEDING } from '../../../../constants/scaleConstants';
 import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
+import { ADD_SCALE_ITEMS } from '../../../../constants/topicConstants';
 import { SINGLES } from '../../../../constants/eventConstants';
 
 it('can autoSeed by Rankings', () => {
@@ -47,16 +48,23 @@ it('can autoSeed by Rankings', () => {
     }
   );
 
-  let result = tournamentEngine.setParticipantScaleItems({
-    scaleItemsWithParticipantIds,
-  });
-  expect(result.success).toEqual(true);
-
   let scaleAttributes = {
     eventType: SINGLES,
     scaleType: RATING,
     scaleName: 'WTN',
   };
+  let result = tournamentEngine.setParticipantScaleItems({
+    context: { scaleAttributes, eventId },
+    scaleItemsWithParticipantIds,
+  });
+  expect(result.success).toEqual(true);
+
+  const { timeItem } = tournamentEngine.getEventTimeItem({
+    itemType: ADD_SCALE_ITEMS,
+    eventId,
+  });
+  expect(timeItem.itemType).toEqual(ADD_SCALE_ITEMS);
+
   result = tournamentEngine.autoSeeding({
     policyDefinitions: SEEDING_USTA,
     sortDescending: true,
