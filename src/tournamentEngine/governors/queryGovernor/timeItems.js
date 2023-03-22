@@ -2,6 +2,7 @@ import { findTournamentParticipant } from '../../getters/participants/participan
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  INVALID_VALUES,
   MISSING_DRAW_ID,
   MISSING_EVENT,
   MISSING_PARTICIPANT_ID,
@@ -18,13 +19,18 @@ export function getTimeItem({
   element,
 }) {
   if (!element) return { error: MISSING_VALUE };
+  if (itemSubTypes && !Array.isArray(itemSubTypes))
+    return { error: INVALID_VALUES, context: { itemSubTypes } };
   if (!Array.isArray(element.timeItems)) return { error: MISSING_TIME_ITEMS };
 
   const filteredSorted = element.timeItems
     .filter((timeItem) => timeItem?.itemType === itemType)
     .filter(
       (timeItem) =>
-        !itemSubTypes?.length || timeItem?.itemSubTypes?.includes(itemSubTypes)
+        !itemSubTypes?.length ||
+        itemSubTypes.some((subType) =>
+          timeItem?.itemSubTypes?.includes(subType)
+        )
     )
     .sort(
       (a, b) =>

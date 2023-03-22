@@ -1,10 +1,13 @@
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { addDrawDefinitionTimeItem } from '../eventGovernor/drawDefinitions/addDrawDefinitionTimeItem';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
-import { addTournamentTimeItem } from '../tournamentGovernor/addTimeItem';
 import { addNotice, getTopics } from '../../../global/state/globalState';
 import { definedAttributes } from '../../../utilities/objects';
+import { findEvent } from '../../getters/eventGetter';
+import {
+  addEventTimeItem,
+  addTournamentTimeItem,
+} from '../tournamentGovernor/addTimeItem';
 
-import { AUDIT, MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SCALE } from '../../../constants/scaleConstants';
 import {
@@ -16,6 +19,11 @@ import {
   PARTICIPANT_NOT_FOUND,
   VALUE_UNCHANGED,
 } from '../../../constants/errorConditionConstants';
+import {
+  ADD_SCALE_ITEMS,
+  AUDIT,
+  MODIFY_PARTICIPANTS,
+} from '../../../constants/topicConstants';
 
 export function setParticipantScaleItem({
   removePriorValues,
@@ -71,6 +79,7 @@ export function setParticipantScaleItems({
   removePriorValues,
   tournamentRecord,
   auditData,
+  context,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
@@ -118,19 +127,41 @@ export function setParticipantScaleItems({
       },
     });
   }
+
+  if (context) {
+    const { eventId, drawId, ...itemValue } = context;
+    const itemSubTypes = itemValue.scaleAttributes?.scaleType && [
+      itemValue.scaleAttributes.scaleType,
+    ];
+    if (Object.keys(itemValue).length) {
+      const timeItem = {
+        itemType: ADD_SCALE_ITEMS,
+        itemValue,
+      };
+      if (itemSubTypes) timeItem.itemSubTypes = itemSubTypes;
+
+      if (drawId || eventId) {
+        const { drawDefinition, event } = findEvent({
+          tournamentRecord,
+          eventId,
+          drawId,
+        });
+
+        if (drawId) {
+          addDrawDefinitionTimeItem({ drawDefinition, timeItem });
+        }
+        if (eventId) {
+          addEventTimeItem({ event, timeItem });
+        }
+      } else {
+        addTournamentTimeItem({ tournamentRecord, timeItem });
+      }
+    }
+  }
+
   if (auditData) {
     if (topics.includes(AUDIT)) {
       addNotice({ topic: AUDIT, payload: auditData });
-    }
-
-    const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
-
-    if (appliedPolicies?.audit?.scaleItems) {
-      const timeItem = {
-        itemType: AUDIT,
-        itemValue: auditData,
-      };
-      addTournamentTimeItem({ tournamentRecord, timeItem });
     }
   }
 
