@@ -5,6 +5,7 @@ import { getPositionAssignments } from '../../getters/positionsGetter';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
+import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 import { DOMINANT_DUO } from '../../../constants/tieFormatConstants';

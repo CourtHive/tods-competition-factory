@@ -25,8 +25,8 @@ export function getStageParticipantsCount({ drawProfiles, category, gender }) {
         uniqueParticipantsCount[stage] += stageCount;
       } else {
         stageParticipantsCount[stage] = Math.max(
-          stageCount,
-          stageParticipantsCount[stage]
+          stageParticipantsCount[stage],
+          stageCount
         );
       }
       return stageParticipantsCount;

@@ -8,6 +8,7 @@ import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFo
 import { getMatchUpFormatTiming } from './matchUpFormatTiming/getMatchUpFormatTiming';
 import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
 import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
+import { allocateTeamMatchUpCourts } from './allocateTeamMatchUpCourts';
 import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
@@ -32,6 +33,7 @@ import {
 } from './schedulingProfile';
 
 const scheduleGovernor = {
+  allocateTeamMatchUpCourts,
   assignMatchUpCourt,
   assignMatchUpVenue,
 

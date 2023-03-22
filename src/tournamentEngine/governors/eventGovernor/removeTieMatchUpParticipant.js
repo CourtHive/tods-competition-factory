@@ -1,5 +1,6 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
@@ -11,6 +12,8 @@ import { updateTeamLineUp } from './drawDefinitions/updateTeamLineUp';
 import { findExtension } from '../queryGovernor/extensionQueries';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
@@ -26,7 +29,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function removeTieMatchUpParticipantId(params) {
-  const { tournamentRecord, drawDefinition, participantId } = params;
+  const { tournamentRecord, drawDefinition, participantId, event } = params;
   const stack = 'removeTieMatchUpParticiapantId';
 
   if (!participantId)
@@ -34,6 +37,19 @@ export function removeTieMatchUpParticipantId(params) {
 
   const matchUpContext = getTieMatchUpContext(params);
   if (matchUpContext.error) return matchUpContext;
+
+  const { appliedPolicies } = getAppliedPolicies({
+    tournamentRecord,
+    drawDefinition,
+    event,
+  });
+
+  const matchUpActionsPolicy =
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
+    POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
+
+  const substitutionProcessCodes =
+    matchUpActionsPolicy?.substitutionProcessCodes;
 
   const {
     inContextDualMatchUp,
@@ -244,9 +260,14 @@ export function removeTieMatchUpParticipantId(params) {
       (s) => s.sideNumber !== side.sideNumber
     );
     if (!otherSide?.substitutions?.length && tieMatchUp.processCodes?.length) {
-      tieMatchUp.processCodes = tieMatchUp.processCodes.filter(
-        (code) => !code === 'RANKING.IGNORE'
-      );
+      // remove processCode(s)
+      for (const substitutionProcessCode of substitutionProcessCodes || []) {
+        const codeIndex = tieMatchUp.processCodes.lastIndexOf(
+          substitutionProcessCode
+        );
+        // remove only one instance of substitutionProcessCode
+        tieMatchUp.processCodes.splice(codeIndex, 1);
+      }
 
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,

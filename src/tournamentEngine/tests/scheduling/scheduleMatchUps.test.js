@@ -5,6 +5,7 @@ import { competitionEngine } from '../../../competitionEngine/sync';
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 import { DELETE_VENUE, MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -422,7 +423,9 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   expect(venueDeletionsCounter).toEqual(1);
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
-  expect(lastUpdatedAt).not.toEqual(drawDefinition.updatedAt);
+
+  // no change was made to the drawDefinition because courts have already been removed from matchUps
+  expect(lastUpdatedAt).toEqual(drawDefinition.updatedAt);
   lastUpdatedAt = drawDefinition.updatedAt;
 
   ({ venues } = tournamentEngine.getVenuesAndCourts());

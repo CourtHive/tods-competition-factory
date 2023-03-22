@@ -1,12 +1,12 @@
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { AUDIT, DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { DRAW_DELETIONS } from '../../../constants/extensionConstants';
-import { expect } from 'vitest';
 
 it('can notify subscriber when drawDefinitions are deleted', () => {
   const drawProfiles = [

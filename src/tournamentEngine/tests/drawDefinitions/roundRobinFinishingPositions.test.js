@@ -1,5 +1,6 @@
 import { mocksEngine, setSubscriptions } from '../../..';
 import tournamentEngine from '../../sync';
+import { expect, test } from 'vitest';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import {
@@ -28,7 +29,6 @@ test('ROUND_ROBIN matchUps have equivalent finishingPositionRanges', () => {
 });
 
 test('ROUND_ROBIN_WITH_PLAYOFFS will have accurate playoff finishingPositionRanges', () => {
-  const allMatchUps = [];
   let matchUpAddNotices = [];
 
   const subscriptions = {
@@ -36,7 +36,6 @@ test('ROUND_ROBIN_WITH_PLAYOFFS will have accurate playoff finishingPositionRang
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
-          allMatchUps.push(...matchUps);
         });
       }
     },

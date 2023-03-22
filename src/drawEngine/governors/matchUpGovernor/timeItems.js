@@ -10,6 +10,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
   must retrieve matchUp WITHOUT CONTEXT so original can be modified
 */
 export function addMatchUpTimeItem({
+  removePriorValues,
   tournamentRecord,
   duplicateValues,
   drawDefinition,
@@ -21,7 +22,12 @@ export function addMatchUpTimeItem({
   const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
-  const result = addTimeItem({ element: matchUp, timeItem, duplicateValues });
+  const result = addTimeItem({
+    removePriorValues,
+    element: matchUp,
+    duplicateValues,
+    timeItem,
+  });
   if (!disableNotice) {
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,

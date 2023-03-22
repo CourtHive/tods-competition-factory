@@ -3,6 +3,7 @@ import { eventConstants } from '../../../constants/eventConstants';
 import { drawEngine } from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
 import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';

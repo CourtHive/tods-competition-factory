@@ -2,6 +2,7 @@ import { getTournamentParticipants } from '../../getters/participants/getTournam
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { GROUP, INDIVIDUAL } from '../../../constants/participantConstants';
 import { ADD_PARTICIPANTS } from '../../../constants/topicConstants';

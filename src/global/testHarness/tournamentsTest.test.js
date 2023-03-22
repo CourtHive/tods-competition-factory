@@ -1,4 +1,5 @@
 import { tournamentEngine } from '../..';
+import { expect, it } from 'vitest';
 import fs from 'fs';
 
 import { CONSOLATION } from '../../constants/drawDefinitionConstants';

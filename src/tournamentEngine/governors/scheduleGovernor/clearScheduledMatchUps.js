@@ -9,6 +9,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import {
+  ALLOCATE_COURTS,
   ASSIGN_COURT,
   ASSIGN_VENUE,
   SCHEDULED_DATE,
@@ -55,6 +56,7 @@ export function clearScheduledMatchUps({
       matchUp.timeItems = (matchUp.timeItems || []).filter(
         (timeItem) =>
           ![
+            ALLOCATE_COURTS,
             ASSIGN_COURT,
             ASSIGN_VENUE,
             SCHEDULED_DATE,

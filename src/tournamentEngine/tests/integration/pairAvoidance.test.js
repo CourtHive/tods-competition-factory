@@ -1,5 +1,6 @@
 import { avoidanceTest } from '../primitives/avoidanceTest';
 import { intersection } from '../../../utilities/arrays';
+import { expect, it } from 'vitest';
 
 import { PAIR } from '../../../constants/participantConstants';
 import { eventConstants } from '../../..';

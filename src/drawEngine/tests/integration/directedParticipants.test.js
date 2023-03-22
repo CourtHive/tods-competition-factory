@@ -6,6 +6,7 @@ import { getDrawStructures } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
 import { drawEngine } from '../../sync';
 import { mocksEngine } from '../../..';
+import { expect, it } from 'vitest';
 import {
   completeMatchUp,
   verifyMatchUps,

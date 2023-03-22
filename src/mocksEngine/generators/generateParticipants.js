@@ -155,7 +155,7 @@ export function generateParticipants({
       const [min, max] = range.slice().sort();
       const generateRatings = () =>
         generateRange(0, 1000)
-          .map(() => skewedDistribution(min, max, skew, decimalsCount, step))
+          .map(() => skewedDistribution(min, max, skew, step, decimalsCount))
           .filter(
             (rating) =>
               (!ratingMax || rating <= ratingMax) &&

@@ -1,4 +1,4 @@
-import { indices } from '../../../../utilities/arrays';
+import { arrayIndices } from '../../../../utilities/arrays';
 
 import {
   SET_TIEBREAK_BRACKETS,
@@ -269,7 +269,7 @@ export function keyValueScore(params) {
   } else if (analysis.isSetTiebreakEntry) {
     const [open] = SET_TIEBREAK_BRACKETS.split('');
     const lastOpenBracketIndex = Math.max(
-      ...indices(open, scoreString.split(''))
+      ...arrayIndices(open, scoreString.split(''))
     );
     const tiebreakValue = scoreString.slice(lastOpenBracketIndex + 1);
     const hasZeroStart = tiebreakValue && parseInt(tiebreakValue) === ZERO;

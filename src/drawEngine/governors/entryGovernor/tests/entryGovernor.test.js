@@ -1,4 +1,5 @@
 import drawEngine from '../../../sync';
+import { expect, it } from 'vitest';
 import {
   reset,
   initialize,
@@ -6,6 +7,7 @@ import {
   mainDrawPositions,
 } from '../../../tests/primitives/primitives';
 
+import { ERROR, SUCCESS } from '../../../../constants/resultConstants';
 import {
   MAIN,
   QUALIFYING,
@@ -14,7 +16,6 @@ import {
   INVALID_STAGE,
   EXISTING_PARTICIPANT,
 } from '../../../../constants/errorConditionConstants';
-import { ERROR, SUCCESS } from '../../../../constants/resultConstants';
 
 let result;
 

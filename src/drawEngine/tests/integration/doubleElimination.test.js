@@ -5,6 +5,7 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { drawEngine } from '../../sync';
+import { expect, it } from 'vitest';
 
 import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import {

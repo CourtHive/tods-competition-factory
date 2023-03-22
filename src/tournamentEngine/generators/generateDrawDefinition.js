@@ -147,6 +147,10 @@ export function generateDrawDefinition(params) {
   const eventType = event?.eventType;
   const matchUpType = params.matchUpType || eventType;
 
+  const existingDrawDefinition =
+    params.drawId &&
+    event?.drawDefinitions?.find((d) => d.drawId === params.drawId);
+
   // drawDefinition cannot have both tieFormat and matchUpFormat
   let { tieFormat, matchUpFormat } = params;
 
@@ -156,8 +160,15 @@ export function generateDrawDefinition(params) {
   }
 
   if (matchUpType === TEAM && eventType === TEAM) {
+    // if there is an existingDrawDefinition which has a tieFormat on MAIN structure
+    // use this tieFormat ONLY when no tieFormat is specified in params
+    const existingMainTieFormat = existingDrawDefinition?.structures?.find(
+      ({ stage }) => stage === MAIN
+    )?.tieFormat;
+
     tieFormat =
       tieFormat ||
+      existingMainTieFormat ||
       // if tieFormatName is proviced and it matches the name of the tieFormat attached to parent event...
       (tieFormatName &&
         event?.tieFormat?.tieFormatName === tieFormatName &&
@@ -182,10 +193,6 @@ export function generateDrawDefinition(params) {
 
   // ---------------------------------------------------------------------------
   // Begin construction of drawDefinition
-  const existingDrawDefinition =
-    params.drawId &&
-    event?.drawDefinitions?.find((d) => d.drawId === params.drawId);
-
   if (existingDrawDefinition && drawType !== existingDrawDefinition.drawType)
     existingDrawDefinition.drawType = drawType;
 

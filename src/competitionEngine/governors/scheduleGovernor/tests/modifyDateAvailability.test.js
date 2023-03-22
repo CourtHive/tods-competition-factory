@@ -1,5 +1,6 @@
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
+import { expect, it } from 'vitest';
 
 it('recognizes scheduled matchUps when court dateAvailability changes', () => {
   const startDate = '2022-09-30';

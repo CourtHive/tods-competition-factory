@@ -4,7 +4,6 @@ import { getMatchUp } from '../../../drawEngine/accessors/matchUpAccessor';
 import { tournamentMatchUps } from '../../getters/matchUpsGetter';
 import { findEvent } from '../../getters/eventGetter';
 
-import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MATCHUP_NOT_FOUND,
@@ -12,6 +11,10 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import {
+  ALLOCATE_COURTS,
+  ASSIGN_COURT,
+} from '../../../constants/timeItemConstants';
 
 export function removeCourtAssignment({
   tournamentRecord,
@@ -39,20 +42,14 @@ export function removeCourtAssignment({
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
   if (matchUp.timeItems) {
-    const hasCourtAssignment = matchUp.timeItems.reduce(
-      (hasAssignment, candidate) => {
-        return candidate.itemType === ASSIGN_COURT ? true : hasAssignment;
-      },
-      undefined
+    const hasCourtAssignment = matchUp.timeItems.find((candidate) =>
+      [ASSIGN_COURT, ALLOCATE_COURTS].includes(candidate.itemType)
     );
 
     if (hasCourtAssignment) {
-      const timeItem = {
-        itemType: ASSIGN_COURT,
-        itemValue: '',
-        itemDate: '',
-      };
-      matchUp.timeItems.push(timeItem);
+      matchUp.timeItems = matchUp.timeItems.filter(
+        ({ itemType }) => ![ASSIGN_COURT, ALLOCATE_COURTS].includes(itemType)
+      );
 
       modifyMatchUpNotice({
         tournamentId: tournamentRecord?.tournamentId,

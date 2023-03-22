@@ -2,6 +2,7 @@ import { getDrawPosition } from '../../../../global/functions/extractors';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { generateRange } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
+import { expect, it } from 'vitest';
 import {
   getOrderedDrawPositionPairs,
   getContextMatchUp,

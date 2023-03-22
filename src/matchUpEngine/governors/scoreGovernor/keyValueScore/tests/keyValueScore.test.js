@@ -1,9 +1,11 @@
+import { keyValueScore } from '../index';
+import { expect, it } from 'vitest';
+
+import { OUTCOME_COMPLETE } from '../constants';
 import {
   INCOMPLETE,
   TO_BE_PLAYED,
 } from '../../../../../constants/matchUpStatusConstants';
-import { OUTCOME_COMPLETE } from '../constants';
-import { keyValueScore } from '../index';
 import {
   FORMAT_STANDARD,
   TIMED20,

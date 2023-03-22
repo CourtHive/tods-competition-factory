@@ -1,18 +1,18 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import { mocksEngine, tournamentEngine } from '../../../..';
+import { expect, it } from 'vitest';
 
+import { TEAM } from '../../../../constants/eventConstants';
 import {
   DOUBLES,
   SINGLES,
   TEAM_MATCHUP,
 } from '../../../../constants/matchUpTypes';
-import { TEAM } from '../../../../constants/eventConstants';
 import {
   FIRST_ROUND_LOSER_CONSOLATION,
   MAIN,
   ROUND_ROBIN,
 } from '../../../../constants/drawDefinitionConstants';
-import { expect } from 'vitest';
 
 it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   const {

@@ -13,6 +13,12 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isCompletedStructure } from './structureActions';
 import { unique } from '../../../utilities';
 import { isAdHoc } from './isAdHoc';
+import {
+  getEnabledStructures,
+  getPolicyActions,
+  isAvailableAction,
+  MATCHUP_ACTION,
+} from './positionActions/actionPolicyUtils';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import {
@@ -76,9 +82,10 @@ import {
  */
 export function matchUpActions({
   restrictAdHocRoundParticipants = true, // disallow the same participant being in the same round multiple times
+  policyDefinitions: specifiedPolicyDefinitions,
   tournamentParticipants = [],
   inContextDrawMatchUps,
-  policyDefinitions,
+  tournamentRecord,
   drawDefinition,
   matchUpsMap,
   sideNumber,
@@ -92,7 +99,8 @@ export function matchUpActions({
     return { error: INVALID_VALUES, context: { sideNumber } };
 
   const otherFlightEntries =
-    policyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS]?.otherFlightEntries;
+    specifiedPolicyDefinitions?.[POLICY_TYPE_POSITION_ACTIONS]
+      ?.otherFlightEntries;
 
   const { drawId } = drawDefinition;
   const { matchUp, structure } = findMatchUp({
@@ -102,6 +110,28 @@ export function matchUpActions({
   });
 
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
+
+  const { appliedPolicies } = getAppliedPolicies({
+    tournamentRecord,
+    drawDefinition,
+    structure,
+    event,
+  });
+
+  Object.assign(appliedPolicies, specifiedPolicyDefinitions || {});
+
+  const { enabledStructures } = getEnabledStructures({
+    actionType: MATCHUP_ACTION,
+    appliedPolicies,
+    drawDefinition,
+    structure,
+  });
+
+  const { policyActions } = getPolicyActions({
+    enabledStructures,
+    drawDefinition,
+    structure,
+  });
 
   matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
 
@@ -266,13 +296,14 @@ export function matchUpActions({
   if (isByeMatchUp) return { validActions, isByeMatchUp };
 
   // TODO: implement method action and pass participants whose role is REFEREE
-  validActions.push({ type: REFEREE, payload: { matchUpId } });
+  if (isAvailableAction({ policyActions, action: REFEREE })) {
+    validActions.push({ type: REFEREE, payload: { matchUpId } });
+  }
 
   const isInComplete = !isDirectingMatchUpStatus({
     matchUpStatus: matchUp.matchUpStatus,
   });
 
-  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const structureScoringPolicies = appliedPolicies?.scoring?.structures;
   const stageSpecificPolicies =
     structureScoringPolicies?.stage &&
@@ -338,7 +369,10 @@ export function matchUpActions({
     });
   }
 
-  if (side?.participant || (!sideNumber && matchUpParticipantIds?.length)) {
+  if (
+    isAvailableAction({ policyActions, action: ADD_PENALTY }) &&
+    (side?.participant || (!sideNumber && matchUpParticipantIds?.length))
+  ) {
     validActions.push(addPenaltyAction);
   }
 
@@ -363,8 +397,13 @@ export function matchUpActions({
       type: SCORE,
       payload,
     });
-    validActions.push({ type: START });
-    validActions.push({ type: END });
+
+    if (isAvailableAction({ policyActions, action: START })) {
+      validActions.push({ type: START });
+    }
+    if (isAvailableAction({ policyActions, action: END })) {
+      validActions.push({ type: END });
+    }
   }
 
   if (isCollectionMatchUp) {
@@ -460,7 +499,10 @@ export function matchUpActions({
       });
     }
 
-    if (side?.substitutions?.length) {
+    if (
+      isAvailableAction({ policyActions, action: REMOVE_SUBSTITUTION }) &&
+      side?.substitutions?.length
+    ) {
       const sideIndividualParticipantIds =
         (side.participant?.participantType === INDIVIDUAL && [
           side.participantId,
@@ -486,7 +528,7 @@ export function matchUpActions({
     }
 
     const matchUpActionPolicy =
-      policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS];
+      specifiedPolicyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS];
     const substituteWithoutScore = matchUpActionPolicy?.substituteWithoutScore;
     const substituteAfterCompleted =
       matchUpActionPolicy?.substituteAfterCompleted;
@@ -494,6 +536,7 @@ export function matchUpActions({
     // SUBSTITUTION
     // substitution is only possible when both sides are present; otherwise => nonsensical
     if (
+      isAvailableAction({ policyActions, action: SUBSTITUTION }) &&
       matchUpParticipantIds.length === 2 &&
       ((!sideNumber && existingParticipantIds?.length) ||
         (sideNumber && side?.participant)) &&

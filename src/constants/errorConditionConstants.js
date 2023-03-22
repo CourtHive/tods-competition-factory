@@ -1,3 +1,7 @@
+export const ANACHRONISM = {
+  message: 'Chronological error; time violation.',
+  code: 'ANACHRONISM',
+};
 export const CANNOT_REMOVE_MAIN_STRUCTURE = {
   message: 'Cannot remove main structure',
   code: 'ERR_CANNOT_REMOVE_MAIN_STRUCTURE',
@@ -123,6 +127,10 @@ export const SEEDSCOUNT_GREATER_THAN_DRAW_SIZE = {
 export const MISSING_SEEDCOUNT_THRESHOLDS = {
   message: 'Missing seedCountThresholds',
   code: 'ERR_MISSING_SEED_COUNT_THRESHOLD',
+};
+export const INVALID_ACTION = {
+  message: 'Invalid action',
+  code: 'ERR_INVALID_ACTION',
 };
 export const INVALID_ASSIGNMENT = {
   message: 'Invalid assignment',
@@ -745,6 +753,7 @@ export const SCHEDULED_MATCHUPS = {
 };
 
 export const errorConditionConstants = {
+  ANACHRONISM,
   CANNOT_CHANGE_WINNING_SIDE,
   CANNOT_MODIFY_TIEFORMAT,
   CANNOT_REMOVE_MAIN_STRUCTURE,
@@ -778,6 +787,7 @@ export const errorConditionConstants = {
   INCOMPATIBLE_MATCHUP_STATUS,
   INCOMPLETE_SOURCE_STRUCTURE,
   INSUFFICIENT_DRAW_POSITIONS,
+  INVALID_ACTION,
   INVALID_ASSIGNMENT,
   INVALID_BOOKINGS,
   INVALID_CONFIGURATION,

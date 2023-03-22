@@ -1,13 +1,7 @@
-import {
-  generateRange,
-  intersection,
-  makeDeepCopy,
-  noNulls,
-  randomPop,
-} from '..';
 import { isOdd, nextPowerOf2, isPowerOf2, skewedDistribution } from '../math';
 import { generateHashCode } from '../objects';
 import { safeUUID, UUIDS } from '../UUID';
+import { expect, it, test } from 'vitest';
 import { deepMerge } from '../deepMerge';
 import {
   addMinutesToTimeString,
@@ -25,6 +19,13 @@ import {
   timeSort,
   weekDays,
 } from '../dateTime';
+import {
+  generateRange,
+  intersection,
+  makeDeepCopy,
+  noNulls,
+  randomPop,
+} from '..';
 import {
   arrayIndices,
   chunkByNth,
@@ -229,7 +230,7 @@ test('miscellaneous math tests', () => {
 
 test('skewedDistribution supports step values', () => {
   let result = generateRange(0, 100).map(() =>
-    skewedDistribution(1, 100, 2, 2, 0.5)
+    skewedDistribution(1, 100, 2, 0.5, 2)
   );
   result.forEach((v) => {
     const finalDigit = v.toString().split('.')[1];
@@ -237,7 +238,7 @@ test('skewedDistribution supports step values', () => {
   });
 
   result = generateRange(0, 100).map(() =>
-    skewedDistribution(1, 100, 2, 2, 0.25)
+    skewedDistribution(1, 100, 2, 0.25, 2)
   );
   result.forEach((v) => {
     const finalDigit = v.toString().split('.')[1];

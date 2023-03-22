@@ -239,6 +239,7 @@ export function assignTieMatchUpParticipantId(params) {
     });
     if (error) console.log('cleanup');
   }
+
   return { ...SUCCESS, modifiedLineUp };
 
   function addParticipantId2Pair({ side }) {

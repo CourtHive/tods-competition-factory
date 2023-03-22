@@ -5,6 +5,7 @@ import { reset, initialize } from '../primitives/primitives';
 import { setsValues } from './roundRobinSetsValues.js';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
+import { expect, it } from 'vitest';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import POLICY_SEEDING_NATIONAL from '../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
@@ -65,7 +66,7 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
 
   const matchUpFormat = 'SET3-S:6/TB7';
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    seedingProfile: WATERFALL,
+    seedingProfile: { positioning: WATERFALL },
     structureOptions,
     matchUpFormat,
     drawType,

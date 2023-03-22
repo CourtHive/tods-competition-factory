@@ -8,6 +8,7 @@ import matchUpEngine from '../../../matchUpEngine/sync';
 import { setsValues } from './roundRobinSetsValues.js';
 import mocksEngine from '../../../mocksEngine';
 import drawEngine from '../../sync';
+import { expect, it } from 'vitest';
 import {
   allPlayoffPositionsFilled,
   isCompletedStructure,
@@ -402,12 +403,12 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
 
   const matchUpFormat = 'SET3-S:6/TB7';
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    eventId,
-    drawType,
-    drawSize,
-    matchUpFormat,
+    seedingProfile: { positioning: WATERFALL },
     structureOptions,
-    seedingProfile: WATERFALL,
+    matchUpFormat,
+    drawSize,
+    drawType,
+    eventId,
   });
 
   // if FEDD_FMLC

@@ -1,6 +1,7 @@
-import { drawEngine } from '../../sync';
-import { feedInChampionship } from '../../tests/primitives/feedIn';
 import { findStructure, getDrawStructures } from '../findStructure';
+import { feedInChampionship } from '../../tests/primitives/feedIn';
+import { drawEngine } from '../../sync';
+import { expect, it } from 'vitest';
 import {
   reset,
   initialize,

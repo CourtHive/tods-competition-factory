@@ -1,5 +1,6 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
+import { expect, it } from 'vitest';
 
 import { ALTERNATE_PARTICIPANT } from '../../../../constants/positionActionConstants';
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';

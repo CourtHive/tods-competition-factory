@@ -1,5 +1,6 @@
 import { drawEngine } from '../../sync';
 import { mocksEngine } from '../../..';
+import { expect, it } from 'vitest';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/matchUpTypes';
@@ -44,17 +45,18 @@ it('can check-in and check-out matchUp participants', () => {
   expect(checkedInParticipantIds.length).toEqual(1);
 
   result = drawEngine.checkInParticipant({
-    matchUpId,
     participantId: individualParticipantIds[1],
+    matchUpId,
   });
   expect(result).toMatchObject(SUCCESS);
 
   // after checking in the first two individual participants the first side participant
   // should also be in checkedInParticipantIds
   ({ matchUp: updatedMatchUp } = drawEngine.findMatchUp({
-    matchUpId,
     inContext: true,
+    matchUpId,
   }));
+
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
     drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);

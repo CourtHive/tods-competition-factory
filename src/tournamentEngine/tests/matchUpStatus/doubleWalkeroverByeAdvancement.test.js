@@ -1,6 +1,7 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
+import { expect, test } from 'vitest';
 
 import {
   CONSOLATION,

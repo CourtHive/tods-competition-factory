@@ -1,5 +1,6 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { MAIN } from '../../../constants/drawDefinitionConstants';

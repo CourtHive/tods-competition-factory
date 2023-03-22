@@ -1,6 +1,7 @@
 import { getSourceRounds } from '../../governors/structureGovernor/getSourceRounds';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { drawEngine } from '../../sync';
+import { it, expect } from 'vitest';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 

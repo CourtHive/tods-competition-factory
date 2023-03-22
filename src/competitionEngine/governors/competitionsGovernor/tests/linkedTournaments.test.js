@@ -3,6 +3,7 @@ import { intersection } from '../../../../utilities';
 import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
+import { expect, test } from 'vitest';
 
 import { LINKED_TOURNAMENTS } from '../../../../constants/extensionConstants';
 import {

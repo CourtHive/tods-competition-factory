@@ -1,6 +1,7 @@
 import { intersection, makeDeepCopy } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { MALE } from '../../../constants/genderConstants';

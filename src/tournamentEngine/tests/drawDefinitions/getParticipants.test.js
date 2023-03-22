@@ -1,6 +1,7 @@
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { QUALIFYING_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';

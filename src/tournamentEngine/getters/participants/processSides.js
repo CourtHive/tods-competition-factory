@@ -59,7 +59,9 @@ export function processSides({
     );
 
   for (const side of sides) {
-    const { participantId, sideNumber } = side;
+    const { participantId, sideNumber, bye } = side;
+    if (bye) continue;
+
     const participantWon = winningSide === sideNumber;
 
     const getOpponentInfo = (opponentParticipantId) => {
@@ -240,14 +242,21 @@ export function processSides({
           const teamParticipantId = matchUpSides.find(
             (s) => s.sideNumber === sideNumber
           )?.participant?.participantId;
-          const teamEntry = participantMap[teamParticipantId].events[eventId];
+          if (teamParticipantId) {
+            const teamEntry =
+              participantMap[teamParticipantId]?.events[eventId];
 
-          participantMap[participantId].events[eventId] = teamEntry;
-          individualParticipantIds.forEach(
-            (individualParticiapntId) =>
-              (participantMap[individualParticiapntId].events[eventId] =
-                teamEntry)
-          );
+            if (teamEntry) {
+              participantMap[participantId].events[eventId] = teamEntry;
+              individualParticipantIds.forEach(
+                (individualParticiapntId) =>
+                  (participantMap[individualParticiapntId].events[eventId] =
+                    teamEntry)
+              );
+            } else {
+              console.log('Missing teamEntry', { eventId, teamParticipantId });
+            }
+          }
         }
       }
 

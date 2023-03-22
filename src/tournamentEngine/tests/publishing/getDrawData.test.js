@@ -1,3 +1,4 @@
+import { expect, it } from 'vitest';
 import fs from 'fs';
 import {
   getDrawData,

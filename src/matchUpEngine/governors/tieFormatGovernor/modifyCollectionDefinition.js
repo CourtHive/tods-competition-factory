@@ -32,6 +32,7 @@ export function modifyCollectionDefinition({
   collectionId,
   structureId,
   matchUpId,
+  category,
   eventId,
   gender,
   event,
@@ -43,11 +44,16 @@ export function modifyCollectionDefinition({
   scoreValue,
   setValue,
 }) {
-  if (matchUpFormat && !isValid(matchUpFormat))
+  if (matchUpFormat && !isValid(matchUpFormat)) {
     return { error: INVALID_VALUES };
-  if (collectionName && typeof collectionName !== 'string')
+  }
+  if (collectionName && typeof collectionName !== 'string') {
     return { error: INVALID_VALUES };
+  }
   if (gender && !Object.values(genderConstants).includes(gender)) {
+    return { error: INVALID_VALUES };
+  }
+  if (category && typeof category !== 'object') {
     return { error: INVALID_VALUES };
   }
 
@@ -157,6 +163,7 @@ export function modifyCollectionDefinition({
   if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
   if (collectionName) collectionDefinition.collectionName = collectionName;
   if (matchUpFormat) collectionDefinition.matchUpFormat = matchUpFormat;
+  if (category) collectionDefinition.category = category;
   if (gender) collectionDefinition.gender = gender;
 
   const prunedTieFormat = definedAttributes(tieFormat);

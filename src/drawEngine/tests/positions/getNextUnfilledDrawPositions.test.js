@@ -1,5 +1,6 @@
 import { mocksEngine, tournamentEngine } from '../../..';
 import drawEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import {

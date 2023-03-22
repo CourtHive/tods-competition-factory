@@ -1,4 +1,5 @@
 import { getAccessorValue } from '../getAccessorValue';
+import { expect, it } from 'vitest';
 
 it('can extract values from nested objects', () => {
   const element = {

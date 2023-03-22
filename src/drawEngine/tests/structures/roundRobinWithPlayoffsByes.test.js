@@ -1,4 +1,5 @@
 import { roundRobinWithPlayoffsTest } from './roundRobinWithPlayoffsTest';
+import { expect, it } from 'vitest';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 

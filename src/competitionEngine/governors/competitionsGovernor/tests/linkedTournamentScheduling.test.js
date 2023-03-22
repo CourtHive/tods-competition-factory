@@ -1,7 +1,9 @@
+import tournamentEngine from '../../../../tournamentEngine/sync';
 import { formatDate } from '../../../../utilities/dateTime';
 import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
+import { expect, test } from 'vitest';
 
 import { DOUBLES, TEAM } from '../../../../constants/eventConstants';
 import { FEMALE, MALE } from '../../../../constants/genderConstants';
@@ -11,7 +13,6 @@ import {
   FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
 } from '../../../../constants/drawDefinitionConstants';
-import tournamentEngine from '../../../../tournamentEngine/sync';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 

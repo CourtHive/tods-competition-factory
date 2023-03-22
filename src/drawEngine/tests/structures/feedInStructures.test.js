@@ -4,6 +4,7 @@ import { feedInChampionship } from '../../tests/primitives/feedIn';
 import { feedInMatchUps } from '../../generators/feedInMatchUps';
 import { generateRange } from '../../../utilities';
 import { drawEngine } from '../../sync';
+import { expect, it } from 'vitest';
 import {
   reset,
   initialize,

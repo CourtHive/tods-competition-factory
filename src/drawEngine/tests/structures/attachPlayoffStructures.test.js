@@ -1,5 +1,7 @@
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
+import { expect, it } from 'vitest';
+
 import {
   EXISTING_STRUCTURE,
   INVALID_VALUES,

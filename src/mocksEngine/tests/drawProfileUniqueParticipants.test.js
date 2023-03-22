@@ -1,4 +1,5 @@
 import { getParticipantId } from '../../global/functions/extractors';
+import { expect, test } from 'vitest';
 import mocksEngine from '..';
 
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';

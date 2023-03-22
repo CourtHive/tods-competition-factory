@@ -1,4 +1,5 @@
 import { buildDrawHierarchy } from '../../generators/drawHierarchy';
+import { expect } from 'vitest';
 
 export function verifyDrawHierarchy({ matchUps, hierarchyVerification = [] }) {
   const { hierarchy: drawHierarchy } = buildDrawHierarchy({ matchUps });

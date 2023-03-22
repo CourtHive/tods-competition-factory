@@ -1,4 +1,5 @@
 import { attributeFilter } from '../attributeFilter';
+import { expect, it } from 'vitest';
 
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { MALE } from '../../constants/genderConstants';

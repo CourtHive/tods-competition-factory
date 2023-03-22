@@ -1,3 +1,7 @@
+import tournamentEngine from '../../../tournamentEngine/sync';
+import mocksEngine from '../../../mocksEngine';
+import { expect, it } from 'vitest';
+
 import {
   INVALID_VALUES,
   MATCHUP_NOT_FOUND,
@@ -5,8 +9,6 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../tournamentEngine/sync';
 
 it('attached delegated outcomes to matchUps', () => {
   const drawSize = 8;

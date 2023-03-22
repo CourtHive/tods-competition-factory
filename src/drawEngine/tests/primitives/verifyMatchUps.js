@@ -5,6 +5,7 @@ import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreStrin
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import { drawEngine } from '../../sync';
+import { expect } from 'vitest';
 
 export function completeMatchUp({
   roundPosition,

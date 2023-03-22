@@ -4,6 +4,7 @@ import { getPositionAssignments } from '../../../drawEngine/getters/positionsGet
 import { getDrawStructures } from '../../../drawEngine/getters/findStructure';
 import tournamentEngine from '../../sync';
 import { mocksEngine } from '../../..';
+import { expect, it } from 'vitest';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';

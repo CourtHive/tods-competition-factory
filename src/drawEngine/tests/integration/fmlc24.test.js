@@ -1,6 +1,7 @@
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { instanceCount } from '../../../utilities';
 import { drawEngine } from '../../sync';
+import { expect, it } from 'vitest';
 import {
   completeMatchUp,
   verifyMatchUps,

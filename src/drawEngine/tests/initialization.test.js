@@ -1,7 +1,8 @@
+import definitionTemplate from '../generators/drawDefinitionTemplate';
+import { reset, initialize } from './primitives/primitives';
 import drawEngineAsync from '../../drawEngine/async';
 import drawEngine from '../../drawEngine/sync';
-import { reset, initialize } from './primitives/primitives';
-import definitionTemplate from '../generators/drawDefinitionTemplate';
+import { it, expect } from 'vitest';
 
 import {
   MAIN,

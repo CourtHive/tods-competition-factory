@@ -5,6 +5,7 @@ import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 import { definedAttributes } from '../../../utilities/objects';
 import { scheduledMatchUpTime } from './scheduledMatchUpTime';
 import { scheduledMatchUpDate } from './scheduledMatchUpDate';
+import { matchUpAllocatedCourts } from './courtAllocations';
 import { matchUpAssignedCourtId } from './courtAssignment';
 import { matchUpAssignedVenueId } from './venueAssignment';
 import { matchUpDuration } from './matchUpDuration';
@@ -14,6 +15,7 @@ import {
   addMinutesToTimeString,
   extractDate,
   extractTime,
+  getIsoDateString,
 } from '../../../utilities/dateTime';
 
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
@@ -77,8 +79,9 @@ export function getMatchUpScheduleDetails({
     (!drawIds || drawIds.includes(matchUp.drawId))
   ) {
     const scheduleSource = { matchUp, visibilityThreshold };
-    let { scheduledDate } = scheduledMatchUpDate(scheduleSource);
+    const { allocatedCourts } = matchUpAllocatedCourts(scheduleSource);
     const { scheduledTime } = scheduledMatchUpTime(scheduleSource);
+    let { scheduledDate } = scheduledMatchUpDate(scheduleSource);
     const { courtId } = matchUpAssignedCourtId(scheduleSource);
     const { venueId } = matchUpAssignedVenueId(scheduleSource);
 
@@ -126,9 +129,7 @@ export function getMatchUpScheduleDetails({
     if (!scheduledDate && scheduledTime)
       scheduledDate = extractDate(scheduledTime);
 
-    const extractedTime = extractTime(scheduledTime);
-    let isoDateString = extractDate(scheduledDate);
-    if (isoDateString && extractedTime) isoDateString += `T${extractedTime}`;
+    const isoDateString = getIsoDateString({ scheduledDate, scheduledTime });
 
     const venueData =
       (
@@ -150,6 +151,7 @@ export function getMatchUpScheduleDetails({
       scheduledTime,
       isoDateString,
 
+      allocatedCourts,
       venueAbbreviation,
       venueName,
       venueId,

@@ -1,6 +1,7 @@
 import { tournamentEngine } from '../../sync';
 import mocksEngine from '../../../mocksEngine';
 import { UUID } from '../../../utilities';
+import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';

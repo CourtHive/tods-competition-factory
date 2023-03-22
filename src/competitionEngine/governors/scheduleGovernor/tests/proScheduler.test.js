@@ -3,7 +3,7 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import { chunkArray } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
-import { expect } from 'vitest';
+import { expect, it, test } from 'vitest';
 
 import { TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
 

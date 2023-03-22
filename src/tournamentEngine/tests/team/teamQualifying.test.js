@@ -2,6 +2,7 @@ import { getParticipantId } from '../../../global/functions/extractors';
 import { instanceCount, UUID } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it } from 'vitest';
 
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
@@ -13,7 +14,6 @@ import {
   ALTERNATE,
   DIRECT_ACCEPTANCE,
 } from '../../../constants/entryStatusConstants';
-import { expect } from 'vitest';
 
 it('Modifying tieFormats supported for TEAM QUALIFYING events', () => {
   const singlesCollectionId = UUID();

@@ -3,6 +3,7 @@ import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import { utilities } from '../../../index';
 import tournamentEngine from '../../sync';
+import { expect, test } from 'vitest';
 
 import {
   AGGREGATE_EVENT_STRUCTURES,

@@ -4,6 +4,7 @@ import { generateTeamTournament } from './generateTestTeamTournament';
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { expect, it, test } from 'vitest';
 
 import { SWAP_PARTICIPANTS } from '../../../constants/positionActionConstants';
 import { TEAM_NOT_FOUND } from '../../../constants/errorConditionConstants';
@@ -640,6 +641,12 @@ test('properly removes lineUps when team drawPositions are swapped', () => {
   }).matchUps;
 
   let targetMatchUp = firstRoundDualMatchUps[0];
+  const side1LineUp = targetMatchUp.sides[0].lineUp.map(
+    ({ participantId }) => participantId
+  );
+  const side2LineUp = targetMatchUp.sides[1].lineUp.map(
+    ({ participantId }) => participantId
+  );
   targetMatchUp.sides.forEach((side) => expect(side.lineUp.length).toEqual(8));
 
   let drawPosition = 1;
@@ -662,7 +669,6 @@ test('properly removes lineUps when team drawPositions are swapped', () => {
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
 
-  // after the swap, expect that side 1 no longer has a lineUp
   firstRoundDualMatchUps = tournamentEngine.allTournamentMatchUps({
     contextFilters: {
       stages: [MAIN],
@@ -675,8 +681,15 @@ test('properly removes lineUps when team drawPositions are swapped', () => {
 
   targetMatchUp = firstRoundDualMatchUps[0];
 
-  expect(targetMatchUp.sides[0].lineUp).toBeUndefined();
-  expect(targetMatchUp.sides[1].lineUp.length).toEqual(8);
+  targetMatchUp.sides.forEach((side) => expect(side.lineUp.length).toEqual(8));
+  const newSide1LineUp = targetMatchUp.sides[0].lineUp.map(
+    ({ participantId }) => participantId
+  );
+  expect(side1LineUp).not.toEqual(newSide1LineUp);
+  const newSide2LineUp = targetMatchUp.sides[1].lineUp.map(
+    ({ participantId }) => participantId
+  );
+  expect(side2LineUp).toEqual(newSide2LineUp);
 });
 
 test('does not propagate matchUpStatusCodes from SINGLE/DOUBLES to TEAM matchUps on DOUBLE_WALKOVER', () => {

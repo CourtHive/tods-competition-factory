@@ -1,5 +1,6 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
+import { expect, it } from 'vitest';
 
 import { REMOVE_SEED } from '../../../../constants/positionActionConstants';
 import { MALE } from '../../../../constants/genderConstants';

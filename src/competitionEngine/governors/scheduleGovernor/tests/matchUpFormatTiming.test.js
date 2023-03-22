@@ -1,6 +1,7 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
+import { expect, test } from 'vitest';
 
 import {
   EVENT_NOT_FOUND,

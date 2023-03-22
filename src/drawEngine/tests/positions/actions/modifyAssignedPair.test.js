@@ -1,6 +1,7 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { instanceCount } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
+import { expect, test } from 'vitest';
 
 import { MODIFY_PAIR_ASSIGNMENT } from '../../../../constants/positionActionConstants';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';

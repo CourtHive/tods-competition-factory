@@ -2,6 +2,7 @@ import { getParticipantIdMatchUps } from '../../governors/queryGovernor/particip
 import { generateRange, instanceCount, unique } from '../../../utilities';
 import { verifyStructure } from '../primitives/verifyStructure';
 import { mocksEngine, tournamentEngine } from '../../..';
+import { expect, it } from 'vitest';
 import {
   verifyMatchUps,
   verifySideNumbers,

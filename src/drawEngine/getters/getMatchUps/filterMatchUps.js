@@ -1,5 +1,6 @@
 import { scheduledMatchUpTime } from '../../accessors/matchUpAccessor/scheduledMatchUpTime';
 import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor/scheduledMatchUpDate';
+import { matchUpAllocatedCourts } from '../../accessors/matchUpAccessor/courtAllocations';
 import { matchUpAssignedCourtId } from '../../accessors/matchUpAccessor/courtAssignment';
 import { matchUpAssignedVenueId } from '../../accessors/matchUpAccessor/venueAssignment';
 import { extractDate, sameDay } from '../../../utilities/dateTime';
@@ -211,7 +212,12 @@ export function filterMatchUps(params) {
 
     if (targetCourtIds.length) {
       const { courtId } = matchUpAssignedCourtId({ matchUp });
-      if (!courtIds.filter(Boolean).includes(courtId)) {
+      const { allocatedCourts } = matchUpAllocatedCourts({ matchUp });
+      const allocatedCourtIds = allocatedCourts?.map(({ courtId }) => courtId);
+      if (
+        !courtIds.filter(Boolean).includes(courtId) ||
+        allocatedCourtIds?.includes(courtId)
+      ) {
         return false;
       }
     }

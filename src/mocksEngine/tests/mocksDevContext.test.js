@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import mocksEngine from '..';
 
 test('mocksEngine supports devContext', () => {

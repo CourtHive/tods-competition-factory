@@ -2,6 +2,7 @@ import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { extractTime } from '../../../../utilities/dateTime';
 import { mocksEngine, tournamentEngine } from '../../../..';
 import { unique } from '../../../../utilities';
+import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { FEMALE, MALE } from '../../../../constants/genderConstants';

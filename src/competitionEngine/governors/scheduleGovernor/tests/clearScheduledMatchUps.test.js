@@ -5,6 +5,7 @@ import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { intersection } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
+import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { SINGLES } from '../../../../constants/eventConstants';
@@ -98,7 +99,6 @@ it.each([
     });
 
     const { tournamentId } = tournamentRecord;
-    const scheduledStructureIds = [];
 
     // add first round of each draw to scheduling profile
     for (const drawId of drawIds) {
@@ -108,7 +108,6 @@ it.each([
           structures: [{ structureId }],
         },
       } = tournamentEngine.getEvent({ drawId });
-      scheduledStructureIds.push(structureId);
       const result = competitionEngine.addSchedulingProfileRound({
         round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
         scheduleDate: startDate,
