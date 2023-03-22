@@ -172,6 +172,8 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     'categoryName',
     'districtCode',
     'drawId',
+    'drawTieFormatDesc',
+    'drawTieFormatName',
     'drawType',
     'eventId',
     'eventType',
@@ -198,6 +200,7 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     'winningPersonTennisId',
     'winningPersonWTNconfidence',
     'winningPersonWTNrating',
+    'winningTeamId',
   ]);
   expect(Object.keys(entryStatusReports[0]).sort()).toEqual([
     'CONFIRMED_count',

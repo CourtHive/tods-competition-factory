@@ -7,16 +7,19 @@ import { getAvgWTN } from './getAvgWTN';
 
 import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
 import {
-  AUDIT_POSITION_ACTIONS,
-  DRAW_DELETIONS,
-  FLIGHT_PROFILE,
-} from '../../../constants/extensionConstants';
-import {
   CONSOLATION,
   MAIN,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
-import { PAIR } from '../../../constants/participantConstants';
+import {
+  PAIR,
+  TEAM_PARTICIPANT,
+} from '../../../constants/participantConstants';
+import {
+  AUDIT_POSITION_ACTIONS,
+  DRAW_DELETIONS,
+  FLIGHT_PROFILE,
+} from '../../../constants/extensionConstants';
 
 export function getStructureReports({
   firstFlightOnly = true,
@@ -139,6 +142,10 @@ export function getStructureReports({
                     (side) => side.sideNumber === finalMatchUp.winningSide
                   )?.participant;
 
+                  const winningTeamId =
+                    winningParticipant?.participantType === TEAM_PARTICIPANT &&
+                    winningParticipant.participantId;
+
                   const { individualParticipants } =
                     (winningParticipant?.participantType === PAIR &&
                       winningParticipant) ||
@@ -177,9 +184,21 @@ export function getStructureReports({
                   const pctInitialMatchUpFormat =
                     (matchUpsInitialFormat / matchUpsCount) * 100;
 
-                  const tieFormat = s.tieFormat || drawTieFormat;
-                  const { tieFormatName, tieFormatDesc } =
-                    getTieFormatDesc(tieFormat);
+                  const {
+                    tieFormatName: drawTieFormatName,
+                    tieFormatDesc: drawTieFormatDesc,
+                  } = getTieFormatDesc(drawTieFormat);
+                  const {
+                    tieFormatName: structureTieFormatName,
+                    tieFormatDesc: structureTieFormatDesc,
+                  } = getTieFormatDesc(drawTieFormat);
+
+                  const equivalentTieFormatDesc =
+                    drawTieFormatDesc === structureTieFormatDesc;
+                  const tieFormatName =
+                    !equivalentTieFormatDesc && structureTieFormatName;
+                  const tieFormatDesc =
+                    !equivalentTieFormatDesc && structureTieFormatDesc;
 
                   const manipulations =
                     positionManipulations?.filter(
@@ -209,13 +228,16 @@ export function getStructureReports({
                     winningPerson2TennisId,
                     winningPerson2WTNrating: wtnRating2,
                     winningPerson2WTNconfidence: confidence2,
+                    winningTeamId,
                     positionManipulations: manipulations,
                     pctNoRating,
                     matchUpFormat,
                     pctInitialMatchUpFormat,
                     matchUpsCount,
-                    tieFormatDesc,
+                    drawTieFormatName,
+                    drawTieFormatDesc,
                     tieFormatName,
+                    tieFormatDesc,
                     avgConfidence,
                     avgWTN,
                   };
