@@ -421,6 +421,7 @@ export function getAllStructureMatchUps({
           initialRoundOfPlay + roundNumber,
         endDate: matchUp.endDate || endDate,
         gender: collectionDefinition?.gender,
+        discipline: event?.discipline,
         category: matchUpCategory,
         finishingPositionRange,
         abbreviatedRoundName,
