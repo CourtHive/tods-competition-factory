@@ -40,6 +40,7 @@ import {
  *
  */
 export function randomUnseededSeparation({
+  provisionalPositioning,
   unseededParticipantIds,
   inContextDrawMatchUps,
   unseededByePositions,
@@ -67,6 +68,7 @@ export function randomUnseededSeparation({
 
   let { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({
+    provisionalPositioning,
     matchUpsMap,
     structure,
     event,

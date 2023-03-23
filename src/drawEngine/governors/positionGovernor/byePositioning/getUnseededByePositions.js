@@ -19,6 +19,7 @@ import {
 } from '../../../../constants/drawDefinitionConstants';
 
 export function getUnseededByePositions({
+  provisionalPositioning,
   appliedPolicies,
   drawDefinition,
   seedLimit,
@@ -36,6 +37,7 @@ export function getUnseededByePositions({
 
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps, roundMatchUps } = getAllStructureMatchUps({
+    provisionalPositioning,
     matchUpFilters,
     structure,
   });
@@ -113,6 +115,7 @@ export function getUnseededByePositions({
   // setting allPositions: true returns seedBlocks for all positions
   // overriding the default which returns only seedBlocks for seedsCount
   const { validSeedBlocks } = getValidSeedBlocks({
+    provisionalPositioning,
     allPositions: true,
     appliedPolicies,
     drawDefinition,

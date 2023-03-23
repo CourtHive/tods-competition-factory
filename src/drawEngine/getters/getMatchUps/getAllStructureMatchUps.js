@@ -40,6 +40,7 @@ import {
 export function getAllStructureMatchUps({
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,
+  provisionalPositioning,
   tournamentParticipants,
   afterRecoveryTimes,
   policyDefinitions,
@@ -150,6 +151,7 @@ export function getAllStructureMatchUps({
   const scoringActive = !requireAllPositionsAssigned || allPositionsAssigned;
   const { seedAssignments: structureSeedAssignments } =
     getStructureSeedAssignments({
+      provisionalPositioning,
       drawDefinition,
       matchUpsMap,
       structure,

@@ -8,6 +8,7 @@ import { MISSING_DRAW_POSITION } from '../../../constants/errorConditionConstant
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function positionSeedBlocks({
+  provisionalPositioning,
   inContextDrawMatchUps,
   tournamentRecord,
   appliedPolicies,
@@ -35,6 +36,7 @@ export function positionSeedBlocks({
   }
   if (!validSeedBlocks) {
     const result = getValidSeedBlocks({
+      provisionalPositioning,
       appliedPolicies,
       drawDefinition,
       structure,
@@ -48,6 +50,7 @@ export function positionSeedBlocks({
   generateRange(0, groupsCount).forEach(() => {
     if (placedSeedBlocks < groupsCount) {
       const result = positionSeedBlock({
+        provisionalPositioning,
         inContextDrawMatchUps,
         tournamentRecord,
         validSeedBlocks,
@@ -74,6 +77,7 @@ export function positionSeedBlocks({
 }
 
 function positionSeedBlock({
+  provisionalPositioning,
   inContextDrawMatchUps,
   tournamentRecord,
   drawDefinition,
@@ -85,6 +89,7 @@ function positionSeedBlock({
   event,
 }) {
   const { unplacedSeedParticipantIds, unfilledPositions } = getNextSeedBlock({
+    provisionalPositioning,
     randomize: true,
     drawDefinition,
     seedBlockInfo,
@@ -106,6 +111,7 @@ function positionSeedBlock({
 
     const result = assignDrawPosition({
       automaticPlacement: true,
+      provisionalPositioning,
       inContextDrawMatchUps,
       tournamentRecord,
       drawDefinition,

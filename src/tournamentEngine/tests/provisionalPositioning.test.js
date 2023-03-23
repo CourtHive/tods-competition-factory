@@ -2,6 +2,7 @@ import tournamentEngine from '../sync';
 import { expect, test } from 'vitest';
 import { mocksEngine } from '../..';
 
+import { INCOMPLETE_SOURCE_STRUCTURE } from '../../constants/errorConditionConstants';
 import { ROUND_ROBIN_WITH_PLAYOFF } from '../../constants/drawDefinitionConstants';
 
 test('provisional positioning is possible', () => {
@@ -22,11 +23,32 @@ test('provisional positioning is possible', () => {
   const upcomingMatchUps = matchUps.upcomingMatchUps;
   expect(upcomingMatchUps.length).toEqual(1);
   const { matchUpId, containerStructureId } = upcomingMatchUps[0];
+
+  let result = tournamentEngine.automatedPlayoffPositioning({
+    structureId: containerStructureId,
+    provisionalPositioning: true,
+    applyPositioning: false,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  expect(
+    result.structurePositionAssignments[0].positionAssignments.length
+  ).toEqual(4);
+
+  // by default provisional positioning is not allowed
+  result = tournamentEngine.automatedPlayoffPositioning({
+    structureId: containerStructureId,
+    provisionalPositioning: false,
+    applyPositioning: false,
+    drawId,
+  });
+  expect(result.error).toEqual(INCOMPLETE_SOURCE_STRUCTURE);
+
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '7-5 7-5',
     winningSide: 1,
   });
-  let result = tournamentEngine.setMatchUpStatus({
+  result = tournamentEngine.setMatchUpStatus({
     matchUpId,
     outcome,
     drawId,

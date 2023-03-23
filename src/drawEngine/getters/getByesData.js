@@ -9,10 +9,17 @@ import {
   CONTAINER,
 } from '../../constants/drawDefinitionConstants';
 
-export function getByesData({ drawDefinition, event, matchUpsMap, structure }) {
+export function getByesData({
+  provisionalPositioning,
+  drawDefinition,
+  matchUpsMap,
+  structure,
+  event,
+}) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps, roundMatchUps } = getAllStructureMatchUps({
     afterRecoveryTimes: false,
+    provisionalPositioning,
     drawDefinition,
     matchUpFilters,
     matchUpsMap,
@@ -35,6 +42,7 @@ export function getByesData({ drawDefinition, event, matchUpsMap, structure }) {
   const { structureId, stage, stageSequence } = structure;
   const entries = getStageEntries({
     entryStatuses: STRUCTURE_SELECTED_STATUSES,
+    provisionalPositioning,
     drawDefinition,
     stageSequence,
     structureId,
@@ -42,6 +50,7 @@ export function getByesData({ drawDefinition, event, matchUpsMap, structure }) {
   });
 
   const { qualifiersCount } = getQualifiersCount({
+    provisionalPositioning,
     drawDefinition,
     stageSequence,
     structureId,

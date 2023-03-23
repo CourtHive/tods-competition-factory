@@ -63,6 +63,7 @@ import {
  */
 
 export function assignDrawPositionBye({
+  provisionalPositioning,
   isPositionAction,
   tournamentRecord,
   drawDefinition,
@@ -85,7 +86,6 @@ export function assignDrawPositionBye({
   if (!matchUpsMap) {
     matchUpsMap = getMatchUpsMap({ drawDefinition });
   }
-
   const { positionAssignments } = getPositionAssignments({ structure });
   const { activeDrawPositions } = getStructureDrawPositionProfiles({
     drawDefinition,
@@ -127,6 +127,7 @@ export function assignDrawPositionBye({
 
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
+    provisionalPositioning,
     drawDefinition,
     matchUpFilters,
     matchUpsMap,

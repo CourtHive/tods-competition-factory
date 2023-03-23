@@ -1,9 +1,14 @@
 import { getStructureSeedAssignments } from './getStructureSeedAssignments';
 import { structureAssignedDrawPositions } from './positionsGetter';
 
-export function getStructurePositionedSeeds({ drawDefinition, structure }) {
+export function getStructurePositionedSeeds({
+  provisionalPositioning,
+  drawDefinition,
+  structure,
+}) {
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { seedAssignments } = getStructureSeedAssignments({
+    provisionalPositioning,
     drawDefinition,
     structure,
   });

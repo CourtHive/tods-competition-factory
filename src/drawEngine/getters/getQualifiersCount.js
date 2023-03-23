@@ -6,6 +6,7 @@ import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants
 import { CONTAINER, QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 export function getQualifiersCount({
+  provisionalPositioning,
   drawDefinition,
   stageSequence,
   structureId,
@@ -56,6 +57,7 @@ export function getQualifiersCount({
           // return source structure qualifying round matchUps count
           const matchUps = getAllStructureMatchUps({
             matchUpFilters: { roundNumbers: [sourceRoundNumber] },
+            provisionalPositioning,
             structure: sourceStructure,
             afterRecoveryTimes: false,
             inContext: false,

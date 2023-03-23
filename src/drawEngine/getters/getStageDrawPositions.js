@@ -8,6 +8,7 @@ export function getStageDrawPositionsCount({ stage, drawDefinition }) {
 
 // drawSize - qualifyingPositions
 export function getStageDrawPositionsAvailable({
+  provisionalPositioning,
   drawDefinition,
   stageSequence,
   stage,
@@ -15,6 +16,7 @@ export function getStageDrawPositionsAvailable({
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
 
   const { qualifiersCount } = getQualifiersCount({
+    provisionalPositioning,
     drawDefinition,
     stageSequence,
     stage,
