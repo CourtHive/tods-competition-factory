@@ -39,6 +39,7 @@ import {
  */
 
 export function getValidSeedBlocks({
+  provisionalPositioning,
   appliedPolicies,
   drawDefinition,
   allPositions,
@@ -50,9 +51,11 @@ export function getValidSeedBlocks({
 
   const { roundMatchUps } = getAllStructureMatchUps({
     matchUpFilters: { roundNumbers: [1] },
+    provisionalPositioning,
     structure,
   });
   const { seedAssignments } = getStructureSeedAssignments({
+    provisionalPositioning,
     drawDefinition,
     structure,
   });
@@ -349,6 +352,7 @@ export function isValidSeedPosition({
 }
 
 export function getNextSeedBlock({
+  provisionalPositioning,
   drawDefinition,
   seedBlockInfo,
   structureId,
@@ -356,6 +360,7 @@ export function getNextSeedBlock({
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { seedAssignments } = getStructureSeedAssignments({
+    provisionalPositioning,
     drawDefinition,
     structure,
   });
@@ -372,6 +377,7 @@ export function getNextSeedBlock({
   const validSeedBlocks =
     seedBlockInfo?.validSeedBlocks ||
     getValidSeedBlocks({
+      provisionalPositioning,
       appliedPolicies,
       drawDefinition,
       structure,

@@ -10,6 +10,7 @@ import { CONTAINER, ITEM } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function positionByes({
+  provisionalPositioning,
   blockOrdered = false,
   tournamentRecord,
   appliedPolicies,
@@ -27,6 +28,7 @@ export function positionByes({
   if (!structureId) ({ structureId } = structure);
 
   const { byesCount, placedByes, relevantMatchUps } = getByesData({
+    provisionalPositioning,
     drawDefinition,
     matchUpsMap,
     structure,
@@ -41,6 +43,7 @@ export function positionByes({
     isFeedIn,
     isLucky,
   } = getSeedOrderByePositions({
+    provisionalPositioning,
     relevantMatchUps,
     appliedPolicies,
     drawDefinition,
@@ -56,6 +59,7 @@ export function positionByes({
     : strictSeedOrderByePositions;
 
   let { unseededByePositions } = getUnseededByePositions({
+    provisionalPositioning,
     ignoreSeededByes,
     appliedPolicies,
     drawDefinition,
@@ -104,6 +108,7 @@ export function positionByes({
 
   for (const drawPosition of byeDrawPositions) {
     const result = assignDrawPositionBye({
+      provisionalPositioning,
       tournamentRecord,
       drawDefinition,
       seedBlockInfo,

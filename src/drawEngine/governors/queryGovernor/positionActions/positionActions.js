@@ -75,6 +75,7 @@ export function positionActions(params) {
     policyDefinitions: specifiedPolicyDefinitions,
     tournamentParticipants = [],
     returnParticipants = true,
+    provisionalPositioning,
     tournamentRecord,
     drawDefinition,
     drawPosition,
@@ -203,6 +204,7 @@ export function positionActions(params) {
 
   const stageEntries = getStageEntries({
     entryStatuses: DIRECT_ENTRY_STATUSES,
+    provisionalPositioning,
     drawDefinition,
     stageSequence,
     structureId,

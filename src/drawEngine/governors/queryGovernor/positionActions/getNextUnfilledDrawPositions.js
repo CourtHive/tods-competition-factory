@@ -8,6 +8,7 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 export function getNextUnfilledDrawPositions({
+  provisionalPositioning,
   drawDefinition,
   seedBlockInfo,
   structureId,
@@ -26,7 +27,9 @@ export function getNextUnfilledDrawPositions({
 
   const result = structureAssignedDrawPositions({ structure });
   const positionAssignments = result?.positionAssignments || [];
+  console.log('gnudp', { provisionalPositioning });
   const { unfilledPositions } = getNextSeedBlock({
+    provisionalPositioning,
     randomize: true,
     drawDefinition,
     seedBlockInfo,

@@ -20,6 +20,7 @@ import {
 
 export function setPositionAssignments({
   structurePositionAssignments,
+  provisionalPositioning,
   tournamentRecord,
   drawDefinition,
   event,
@@ -95,6 +96,7 @@ export function setPositionAssignments({
         });
       } else if (participantId) {
         const result = assignDrawPosition({
+          provisionalPositioning,
           automaticPlacement: true,
           inContextDrawMatchUps,
           tournamentRecord,

@@ -15,6 +15,7 @@ import { AD_HOC, QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 export function prepareStage({
   preparedStructureIds = [],
+  provisionalPositioning,
   inContextDrawMatchUps,
   tournamentRecord,
   appliedPolicies,
@@ -77,6 +78,7 @@ export function prepareStage({
   const { structureId } = structure || {};
 
   const seedBlockInfo = getValidSeedBlocks({
+    provisionalPositioning,
     appliedPolicies,
     drawDefinition,
     structure,
@@ -114,6 +116,7 @@ export function prepareStage({
       .forEach((seededParticipant) => {
         const { participantId, seedNumber, seedValue } = seededParticipant;
         assignSeed({
+          provisionalPositioning,
           tournamentRecord,
           drawDefinition,
           seedingProfile,
@@ -176,6 +179,7 @@ export function prepareStage({
           const seedValue =
             seedAssignmentProfile?.[seedNumber] || scaleValue || seedNumber;
           assignSeed({
+            provisionalPositioning,
             tournamentRecord,
             drawDefinition,
             seedingProfile,

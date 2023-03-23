@@ -4,6 +4,7 @@ import { getValidSeedBlocks } from '../../../getters/seedGetter';
 import { shuffleArray, unique } from '../../../../utilities';
 
 export function getSeedOrderByePositions({
+  provisionalPositioning,
   relevantMatchUps,
   appliedPolicies,
   drawDefinition,
@@ -12,6 +13,7 @@ export function getSeedOrderByePositions({
 }) {
   if (!seedBlockInfo) {
     seedBlockInfo = getValidSeedBlocks({
+      provisionalPositioning,
       appliedPolicies,
       drawDefinition,
       structure,
@@ -23,6 +25,7 @@ export function getSeedOrderByePositions({
     validSeedBlocks = [];
 
   const positionedSeeds = getStructurePositionedSeeds({
+    provisionalPositioning,
     drawDefinition,
     structure,
   });

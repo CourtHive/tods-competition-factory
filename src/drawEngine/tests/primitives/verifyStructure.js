@@ -12,16 +12,16 @@ import { expect } from 'vitest';
 import { drawEngine } from '../../sync';
 
 export function verifyStructure({
-  structureId,
-  expectedSeeds,
-  drawDefinition,
-  hierarchyVerification,
-  expectedSeedsWithByes,
-  expectedByeAssignments,
-  expectedSeedValuesWithBye,
-  expectedRoundMatchUpsCounts,
-  expectedQualifierAssignments,
   expectedPositionsAssignedCount,
+  expectedQualifierAssignments,
+  expectedRoundMatchUpsCounts,
+  expectedSeedValuesWithBye,
+  expectedByeAssignments,
+  expectedSeedsWithByes,
+  hierarchyVerification,
+  drawDefinition,
+  expectedSeeds,
+  structureId,
 }) {
   if (!drawDefinition) {
     ({ drawDefinition } = drawEngine.getState());

@@ -19,6 +19,7 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 export function positionUnseededParticipants({
+  provisionalPositioning,
   inContextDrawMatchUps,
   unseededByePositions,
   multipleStructures,
@@ -40,6 +41,7 @@ export function positionUnseededParticipants({
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { seedAssignments } = getStructureSeedAssignments({
+    provisionalPositioning,
     drawDefinition,
     structure,
   });
@@ -58,6 +60,7 @@ export function positionUnseededParticipants({
 
   const entryStatuses = DIRECT_ENTRY_STATUSES;
   const entries = getStageEntries({
+    provisionalPositioning,
     drawDefinition,
     stageSequence,
     entryStatuses,
@@ -116,6 +119,7 @@ export function positionUnseededParticipants({
 
   if (avoidance && participants) {
     const result = randomUnseededSeparation({
+      provisionalPositioning,
       unseededParticipantIds,
       inContextDrawMatchUps,
       unseededByePositions,
@@ -132,6 +136,7 @@ export function positionUnseededParticipants({
     return result;
   } else {
     const result = randomUnseededDistribution({
+      provisionalPositioning,
       unseededParticipantIds,
       inContextDrawMatchUps,
       unfilledDrawPositions,
@@ -148,6 +153,7 @@ export function positionUnseededParticipants({
 }
 
 function randomUnseededDistribution({
+  provisionalPositioning,
   unseededParticipantIds,
   inContextDrawMatchUps,
   unfilledDrawPositions,
@@ -166,6 +172,7 @@ function randomUnseededDistribution({
     if (!multipleStructures || drawPosition) {
       const result = assignDrawPosition({
         automaticPlacement: true,
+        provisionalPositioning,
         inContextDrawMatchUps,
         tournamentRecord,
         drawDefinition,
