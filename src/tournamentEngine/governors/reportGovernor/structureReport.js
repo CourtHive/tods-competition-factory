@@ -215,14 +215,16 @@ export function getStructureReports({
                   const {
                     tieFormatName: structureTieFormatName,
                     tieFormatDesc: structureTieFormatDesc,
-                  } = getTieFormatDesc(drawTieFormat);
+                  } = getTieFormatDesc(s.tieFormat);
 
                   const equivalentTieFormatDesc =
                     drawTieFormatDesc === structureTieFormatDesc;
                   const tieFormatName =
                     !equivalentTieFormatDesc && structureTieFormatName;
                   const tieFormatDesc =
-                    !equivalentTieFormatDesc && structureTieFormatDesc;
+                    s.tieFormat &&
+                    !equivalentTieFormatDesc &&
+                    structureTieFormatDesc;
 
                   const manipulations =
                     positionManipulations?.filter(
