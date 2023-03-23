@@ -86,11 +86,16 @@ export function getStructureReports({
       const minFlightNumber =
         flightMap && Math.min(...Object.values(flightMap));
 
+      const eventSeedingBasis = getSeedingBasis(eventTimeItems);
+
       eventStructureReports[eventId] = {
         totalPositionManipulations: 0,
         maxPositionManipulations: 0,
         generatedDrawsCount: 0,
         drawDeletionsCount,
+        seedingBasis: eventSeedingBasis
+          ? JSON.stringify(eventSeedingBasis)
+          : undefined,
         tournamentId,
         eventId,
       };
@@ -127,8 +132,7 @@ export function getStructureReports({
               });
 
               const seedingBasis =
-                getSeedingBasis(drawTimeItems) ||
-                getSeedingBasis(eventTimeItems);
+                getSeedingBasis(drawTimeItems) || eventSeedingBasis;
 
               const positionManipulations = getPositionManipulations({
                 extensions,
