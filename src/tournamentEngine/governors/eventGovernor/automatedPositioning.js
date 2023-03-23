@@ -43,7 +43,7 @@ export function automatedPositioning({
 
 export function automatedPlayoffPositioning({
   applyPositioning = true,
-  provisionalPositioining,
+  provisionalPositioning,
   candidatesCount = 1,
   tournamentRecord,
   drawDefinition,
@@ -60,7 +60,9 @@ export function automatedPlayoffPositioning({
     drawDefinition,
     structureId,
   });
-  if (!structureIsComplete) return { error: INCOMPLETE_SOURCE_STRUCTURE };
+  if (!structureIsComplete && !provisionalPositioning) {
+    return { error: INCOMPLETE_SOURCE_STRUCTURE };
+  }
 
   const { playoffStructures } = getPlayoffStructures({
     drawDefinition,
@@ -75,7 +77,7 @@ export function automatedPlayoffPositioning({
       const { structureId: playoffStructureId } = structure;
       const result = drawEngineAutomatedPositioning({
         structureId: playoffStructureId,
-        provisionalPositioining,
+        provisionalPositioning,
         applyPositioning,
         candidatesCount,
         drawDefinition,

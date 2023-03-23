@@ -17,6 +17,7 @@ import {
  */
 export function assignSeedPositions(params) {
   const {
+    provisionalPositioning,
     useExistingSeedLimit,
     tournamentRecord,
     drawDefinition,
@@ -33,7 +34,9 @@ export function assignSeedPositions(params) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId) return { error: MISSING_DRAW_ID };
 
+  console.log('asp', { provisionalPositioning });
   const { seedAssignments, seedLimit, error } = getStructureSeedAssignments({
+    provisionalPositioning,
     drawDefinition,
     structureId,
   });
@@ -76,6 +79,7 @@ export function assignSeedPositions(params) {
   for (const assignment of updatedAssignments) {
     const result = assignSeed({
       ...assignment,
+      provisionalPositioning,
       tournamentRecord,
       drawDefinition,
       seedingProfile,

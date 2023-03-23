@@ -8,6 +8,7 @@ import {
 } from '../../constants/errorConditionConstants';
 
 export function getStructureSeedAssignments({
+  provisionalPositioning,
   drawDefinition,
   matchUpsMap,
   structureId,
@@ -27,6 +28,7 @@ export function getStructureSeedAssignments({
     const isPlayoffStructure = stage === PLAY_OFF;
     if (isPlayoffStructure && drawDefinition) {
       const entries = getStageEntries({
+        provisionalPositioning,
         drawDefinition,
         stageSequence,
         matchUpsMap,

@@ -19,6 +19,7 @@ export function getValidAssignmentActions({
   positionSourceStructureIds,
   unassignedParticipantIds,
   possiblyDisablingAction,
+  provisionalPositioning,
   tournamentParticipants,
   isWinRatioFedStructure,
   positionAssignments,
@@ -42,6 +43,7 @@ export function getValidAssignmentActions({
 
   if (!ignoreSeedPositions) {
     const result = getNextSeedBlock({
+      provisionalPositioning,
       randomize: true,
       drawDefinition,
       structureId,

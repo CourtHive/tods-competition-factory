@@ -175,6 +175,25 @@ function getPlayoffEntries({
             })
             .filter(Boolean)
         );
+
+        // TODO: ignore structures where finishingPositions are not unique
+        const uniqueFinishingPositions = Object.keys(results).reduce(
+          (unique, key) => {
+            const result = results[key];
+            const finishingPosition =
+              result.groupOrder ||
+              (provisionalPositioning && result.provisionalOrder);
+            if (!unique.includes(finishingPosition)) {
+              unique.push(finishingPosition);
+            }
+            return unique;
+          },
+          []
+        );
+
+        const finishingPositionsAreUnique =
+          uniqueFinishingPositions.length === Object.keys(results).length;
+
         const participantIds = Object.keys(results).filter((key) => {
           const result = results[key];
           const finishingPosition =
@@ -183,23 +202,26 @@ function getPlayoffEntries({
           return finishingPositions.includes(finishingPosition);
         });
 
-        participantIds.forEach((participantId) => {
-          const participantResult = results[participantId];
-          const { groupOrder, provisionalOrder, GEMscore } = participantResult;
-          const finishingPosition =
-            groupOrder || (provisionalPositioning && provisionalOrder);
-          const placementGroup =
-            finishingPositions.sort().indexOf(finishingPosition) + 1;
+        if (!provisionalPositioning || finishingPositionsAreUnique) {
+          participantIds.forEach((participantId) => {
+            const participantResult = results[participantId];
+            const { groupOrder, provisionalOrder, GEMscore } =
+              participantResult;
+            const finishingPosition =
+              groupOrder || (provisionalPositioning && provisionalOrder);
+            const placementGroup =
+              finishingPositions.sort().indexOf(finishingPosition) + 1;
 
-          playoffEntries.push({
-            entryStage: PLAY_OFF,
-            entryStatus: FEED_IN,
-            placementGroup,
-            groupingValue,
-            participantId,
-            GEMscore,
+            playoffEntries.push({
+              entryStage: PLAY_OFF,
+              entryStatus: FEED_IN,
+              placementGroup,
+              groupingValue,
+              participantId,
+              GEMscore,
+            });
           });
-        });
+        }
       });
     }
   }

@@ -42,6 +42,7 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 export function assignDrawPosition({
+  provisionalPositioning,
   inContextDrawMatchUps,
   isQualifierPosition, // internal use
   sourceMatchUpStatus,
@@ -82,6 +83,7 @@ export function assignDrawPosition({
     return decorateResult({ result: { error: INVALID_MATCHUP }, stack });
 
   const { seedAssignments } = getStructureSeedAssignments({
+    provisionalPositioning,
     drawDefinition,
     structure,
   });
@@ -197,6 +199,7 @@ export function assignDrawPosition({
     if (assignment)
       assignSeed({
         eventId: event?.eventId,
+        provisionalPositioning,
         tournamentRecord,
         drawDefinition,
         seedingProfile,
@@ -208,6 +211,7 @@ export function assignDrawPosition({
 
   if (structure.structureType !== CONTAINER) {
     addDrawPositionToMatchUps({
+      provisionalPositioning,
       inContextDrawMatchUps,
       positionAssignments,
       sourceMatchUpStatus,
@@ -296,6 +300,7 @@ export function assignDrawPosition({
 
 // used for matchUps which are NOT in a ROUND_ROBIN { structureType: CONTAINER }
 function addDrawPositionToMatchUps({
+  provisionalPositioning,
   inContextDrawMatchUps,
   sourceMatchUpStatus,
   automaticPlacement,
@@ -309,6 +314,7 @@ function addDrawPositionToMatchUps({
 }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
+    provisionalPositioning,
     inContextDrawMatchUps,
     drawDefinition,
     matchUpFilters,

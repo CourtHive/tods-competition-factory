@@ -27,8 +27,8 @@ import {
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 export function automatedPositioning({
-  provisionalPositioining,
   applyPositioning = true,
+  provisionalPositioning,
   inContextDrawMatchUps,
   multipleStructures,
   placeByes = true,
@@ -79,14 +79,16 @@ export function automatedPositioning({
 
   const { qualifiersCount } = getQualifiersCount({
     stageSequence: structure.stageSequence,
+    provisionalPositioning,
     stage: structure.stage,
     drawDefinition,
     structureId,
   });
+
   const entryStatuses = DIRECT_ENTRY_STATUSES;
   const entries = getStageEntries({
     stageSequence: structure.stageSequence,
-    provisionalPositioining,
+    provisionalPositioning,
     stage: structure.stage,
     drawDefinition,
     entryStatuses,
@@ -110,6 +112,7 @@ export function automatedPositioning({
   let unseededByePositions = [];
 
   const seedBlockInfo = getValidSeedBlocks({
+    provisionalPositioning,
     appliedPolicies,
     drawDefinition,
     structure,
@@ -127,6 +130,7 @@ export function automatedPositioning({
     let result =
       placeByes &&
       positionByes({
+        provisionalPositioning,
         tournamentRecord,
         appliedPolicies,
         drawDefinition,
@@ -144,6 +148,7 @@ export function automatedPositioning({
 
     result = positionSeedBlocks({
       seedingProfile: structure.seedingProfile || seedingProfile,
+      provisionalPositioning,
       inContextDrawMatchUps,
       tournamentRecord,
       appliedPolicies,
@@ -167,6 +172,7 @@ export function automatedPositioning({
     if (drawType !== LUCKY_DRAW) {
       let result = positionSeedBlocks({
         seedingProfile: structure.seedingProfile || seedingProfile,
+        provisionalPositioning,
         inContextDrawMatchUps,
         tournamentRecord,
         appliedPolicies,
@@ -190,6 +196,7 @@ export function automatedPositioning({
     const result =
       placeByes &&
       positionByes({
+        provisionalPositioning,
         inContextDrawMatchUps,
         tournamentRecord,
         appliedPolicies,
@@ -241,6 +248,7 @@ export function automatedPositioning({
     });
 
     result = positionUnseededParticipants({
+      provisionalPositioning,
       inContextDrawMatchUps,
       unseededByePositions,
       multipleStructures,
