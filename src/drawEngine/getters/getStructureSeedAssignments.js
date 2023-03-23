@@ -36,9 +36,13 @@ export function getStructureSeedAssignments({
       const seedProxies = entries
         .filter((entry) => entry.placementGroup === 1)
         .sort((a, b) => {
-          // GEMscore is used here because there were headToHead encounters are not relevant
+          // GEMscore is used here because headToHead encounters are not relevant
           // when the participants are derived from more than one RR group
-          return a.GEMscore < b.GEMscore ? 1 : a.GEMscore > b.GEMscore ? -1 : 0;
+          return (
+            (a.GEMscore < b.GEMscore && 1) ||
+            (a.GEMscore > b.GEMscore && -1) ||
+            0
+          );
         })
         .map((entry, index) => {
           const seedNumber = index + 1;

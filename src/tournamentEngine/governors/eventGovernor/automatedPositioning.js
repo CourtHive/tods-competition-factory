@@ -43,6 +43,7 @@ export function automatedPositioning({
 
 export function automatedPlayoffPositioning({
   applyPositioning = true,
+  provisionalPositioining,
   candidatesCount = 1,
   tournamentRecord,
   drawDefinition,
@@ -74,6 +75,7 @@ export function automatedPlayoffPositioning({
       const { structureId: playoffStructureId } = structure;
       const result = drawEngineAutomatedPositioning({
         structureId: playoffStructureId,
+        provisionalPositioining,
         applyPositioning,
         candidatesCount,
         drawDefinition,

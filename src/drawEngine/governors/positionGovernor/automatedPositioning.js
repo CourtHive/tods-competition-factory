@@ -27,6 +27,7 @@ import {
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 export function automatedPositioning({
+  provisionalPositioining,
   applyPositioning = true,
   inContextDrawMatchUps,
   multipleStructures,
@@ -85,6 +86,7 @@ export function automatedPositioning({
   const entryStatuses = DIRECT_ENTRY_STATUSES;
   const entries = getStageEntries({
     stageSequence: structure.stageSequence,
+    provisionalPositioining,
     stage: structure.stage,
     drawDefinition,
     entryStatuses,

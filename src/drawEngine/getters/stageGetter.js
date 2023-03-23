@@ -81,6 +81,7 @@ export function stageSeededEntries({ stage, drawDefinition }) {
  *
  */
 export function getStageEntries({
+  provisionalPositioning,
   drawDefinition,
   stageSequence,
   entryStatuses,
@@ -113,7 +114,14 @@ export function getStageEntries({
 
   // handle POSITION entries
   if (structureId && stage === PLAY_OFF) {
-    const playoffEntries = getPlayoffEntries({ drawDefinition, structureId });
+    const { playoffEntries, error } = getPlayoffEntries({
+      provisionalPositioning,
+      drawDefinition,
+      structureId,
+    });
+    if (error) {
+      console.log('playoff entries error'); // TODO: bubble this up...
+    }
     return playoffEntries?.length ? playoffEntries : entries;
   }
   return entries;
@@ -125,8 +133,12 @@ export function getStageEntries({
  * @param {string} structureId - id of structure within drawDefinition
  *
  */
-function getPlayoffEntries({ drawDefinition, structureId }) {
-  const entries = [];
+function getPlayoffEntries({
+  provisionalPositioning,
+  drawDefinition,
+  structureId,
+}) {
+  const playoffEntries = [];
   const inboundLink = (drawDefinition.links || []).find(
     (link) =>
       link.linkType === POSITION && link.target.structureId === structureId
@@ -163,31 +175,36 @@ function getPlayoffEntries({ drawDefinition, structureId }) {
             })
             .filter(Boolean)
         );
-        Object.keys(results)
-          .filter((key) => {
-            const result = results[key];
-            return finishingPositions.includes(result.groupOrder);
-          })
-          .forEach((participantId) => {
-            const participantResult = results[participantId];
-            const { groupOrder, GEMscore } = participantResult;
-            const placementGroup =
-              finishingPositions.sort().indexOf(groupOrder) + 1;
+        const participantIds = Object.keys(results).filter((key) => {
+          const result = results[key];
+          const finishingPosition =
+            result.groupOrder ||
+            (provisionalPositioning && result.provisionalOrder);
+          return finishingPositions.includes(finishingPosition);
+        });
 
-            entries.push({
-              GEMscore,
-              groupingValue,
-              participantId,
-              placementGroup,
-              entryStage: PLAY_OFF,
-              entryStatus: FEED_IN,
-            });
+        participantIds.forEach((participantId) => {
+          const participantResult = results[participantId];
+          const { groupOrder, provisionalOrder, GEMscore } = participantResult;
+          const finishingPosition =
+            groupOrder || (provisionalPositioning && provisionalOrder);
+          const placementGroup =
+            finishingPositions.sort().indexOf(finishingPosition) + 1;
+
+          playoffEntries.push({
+            entryStage: PLAY_OFF,
+            entryStatus: FEED_IN,
+            placementGroup,
+            groupingValue,
+            participantId,
+            GEMscore,
           });
+        });
       });
     }
   }
 
-  return entries;
+  return { playoffEntries };
 }
 
 export function getStageDirectEntriesCount({ stage, drawDefinition }) {
