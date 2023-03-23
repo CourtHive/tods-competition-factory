@@ -1819,6 +1819,18 @@ const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
 
 ---
 
+## getEventTimeItem
+
+```js
+const { timeItem } = tournamentEngine.getEventTimeItem({
+  itemType: ADD_SCALE_ITEMS,
+  itemSubTypes: [SEEDING], // optional
+  eventId,
+});
+```
+
+---
+
 ## getEventProperties
 
 Gather attributes of events which come from other tournament elements, e.g. participants which have rankings/ratings/seedings for a given event.
@@ -3479,6 +3491,18 @@ const scaleItemsWithParticipantIds = [
 tournamentEngine.setParticipantScaleItems({
   removePriorValues, // optional boolean - when true will delete prior timeItems
   scaleItemsWithParticipantIds,
+  // optional context, primarily used when adding SEEDING, useful for structureReports
+  context: {
+    scaleAttributes, // e.g. { scaleType: 'SEEDING' }
+    scaleBasis, // e.g. { scaleType: 'RANKING', scaleDate }
+    eventId,
+  },
+});
+```
+
+```js
+result = tournamentEngine.setParticipantScaleItems({
+  scaleItemsWithParticipantIds: result.scaleItemsWithParticipantIds,
 });
 ```
 
