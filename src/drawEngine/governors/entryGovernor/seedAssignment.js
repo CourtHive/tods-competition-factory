@@ -31,7 +31,6 @@ export function assignSeed({
   const stack = 'assignSeed';
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
-  console.log('as', { provisionalPositioning });
   const { seedAssignments } = getStructureSeedAssignments({
     provisionalPositioning,
     drawDefinition,
