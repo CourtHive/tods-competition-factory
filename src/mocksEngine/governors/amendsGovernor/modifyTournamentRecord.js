@@ -24,6 +24,7 @@ export function modifyTournamentRecord({
   matchUpStatusProfile,
   completeAllMatchUps,
   autoEntryPositions,
+  hydrateCollections,
   randomWinningSide,
   schedulingProfile,
   tournamentRecord,
@@ -118,11 +119,9 @@ export function modifyTournamentRecord({
         const { drawProfiles, publish } = eventProfile;
 
         const eventParticipantType =
-          eventType === SINGLES
-            ? INDIVIDUAL
-            : eventType === DOUBLES
-            ? PAIR
-            : eventType;
+          (eventType === SINGLES && INDIVIDUAL) ||
+          (eventType === DOUBLES && PAIR) ||
+          eventType;
 
         if (drawProfiles) {
           const {
@@ -204,6 +203,7 @@ export function modifyTournamentRecord({
           participantsProfile,
           completeAllMatchUps,
           autoEntryPositions,
+          hydrateCollections,
           randomWinningSide,
           ratingsParameters,
           tournamentRecord,

@@ -20,6 +20,7 @@ export function generateEventWithFlights({
   participantsProfile,
   completeAllMatchUps,
   autoEntryPositions,
+  hydrateCollections,
   randomWinningSide,
   ratingsParameters,
   tournamentRecord,
@@ -48,7 +49,11 @@ export function generateEventWithFlights({
   const tieFormat =
     eventProfile.tieFormat ||
     (eventType === TEAM
-      ? tieFormatDefaults({ namedFormat: tieFormatName })
+      ? tieFormatDefaults({
+          namedFormat: tieFormatName,
+          event: { category, gender },
+          hydrateCollections,
+        })
       : undefined);
 
   let targetParticipants = tournamentRecord.participants;
@@ -68,11 +73,9 @@ export function generateEventWithFlights({
   });
 
   const eventParticipantType =
-    eventType === SINGLES
-      ? INDIVIDUAL
-      : eventType === DOUBLES
-      ? PAIR
-      : eventType;
+    (eventType === SINGLES && INDIVIDUAL) ||
+    (eventType === DOUBLES && PAIR) ||
+    eventType;
 
   const { uniqueDrawParticipants = [], uniqueParticipantIds = [] } =
     uniqueParticipantStages

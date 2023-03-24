@@ -64,6 +64,7 @@ export function generateDrawDefinition(params) {
     considerEventEntries = true, // in the absence of drawSize and drawEntries, look to event.entries
     ignoreAllowedDrawTypes,
     voluntaryConsolation,
+    hydrateCollections,
     policyDefinitions,
     ignoreStageSpace,
     tournamentRecord,
@@ -169,15 +170,20 @@ export function generateDrawDefinition(params) {
     tieFormat =
       tieFormat ||
       existingMainTieFormat ||
-      // if tieFormatName is proviced and it matches the name of the tieFormat attached to parent event...
+      // if tieFormatName is provided and it matches the name of the tieFormat attached to parent event...
       (tieFormatName &&
         event?.tieFormat?.tieFormatName === tieFormatName &&
         event.tieFormat) ||
       // if the tieFormatName is not found in the factory then will use default
-      (tieFormatName && tieFormatDefaults({ namedFormat: tieFormatName })) ||
+      (tieFormatName &&
+        tieFormatDefaults({
+          namedFormat: tieFormatName,
+          hydrateCollections,
+          event,
+        })) ||
       // if no tieFormat is found on event then will use default
       event?.tieFormat ||
-      tieFormatDefaults();
+      tieFormatDefaults({ event, hydrateCollections });
 
     matchUpFormat = undefined;
   } else if (!matchUpFormat) {

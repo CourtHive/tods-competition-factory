@@ -51,6 +51,7 @@ export function generateEventWithDraw({
   matchUpStatusProfile,
   completeAllMatchUps,
   autoEntryPositions,
+  hydrateCollections,
   randomWinningSide,
   ratingsParameters,
   tournamentRecord,
@@ -94,11 +95,14 @@ export function generateEventWithDraw({
   const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
 
   const tieFormat =
-    typeof drawProfile.tieFormat === 'object'
-      ? drawProfile.tieFormat
-      : eventType === TEAM
-      ? tieFormatDefaults({ namedFormat: tieFormatName })
-      : undefined;
+    (typeof drawProfile.tieFormat === 'object' && drawProfile.tieFormat) ||
+    (eventType === TEAM &&
+      tieFormatDefaults({
+        namedFormat: tieFormatName,
+        event: { category, gender },
+        hydrateCollections,
+      })) ||
+    undefined;
 
   const categoryName =
     category?.categoryName || category?.ageCategoryCode || category?.ratingType;
