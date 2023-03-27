@@ -1,4 +1,4 @@
-import { UUID } from '../../utilities';
+import { makeDeepCopy, UUID } from '../../utilities';
 
 import TEAM_AGGREGATION_TIE_FORMAT from '../../fixtures/scoring/tieFormats/TEAM_DOUBLES_3_AGGREGATION.json';
 import DOMINANT_DUO_TIE_FORMAT from '../../fixtures/scoring/tieFormats/DOMINANT_DUO.json';
@@ -103,43 +103,60 @@ const namedFormats = {
   [USTA_ZONAL]: USTA_ZONAL_TIE_FORMAT,
 };
 
-export const tieFormatDefaults = ({ namedFormat, uuids = [] } = {}) => {
+export const tieFormatDefaults = ({
+  hydrateCollections,
+  namedFormat,
+  event = {},
+  uuids = [],
+} = {}) => {
   if (!Object.keys(namedFormats).includes(namedFormat))
     namedFormat = 'STANDARD';
   if (!Array.isArray(uuids)) uuids = [];
 
-  const template = namedFormats[namedFormat];
+  let tieFormat;
+  const { category, gender } = event;
+  const template = makeDeepCopy(namedFormats[namedFormat], false, true);
 
   if (!template.hydrate) {
     template.collectionDefinitions.forEach(
       (collectionDefinition) => (collectionDefinition.collectionId = UUID())
     );
-    return template;
+    tieFormat = template;
+  } else {
+    tieFormat = {
+      winCriteria: {
+        valueGoal: template.valueGoal,
+      },
+      collectionDefinitions: [
+        {
+          collectionId: uuids?.pop() || UUID(),
+          collectionName: 'Doubles',
+          matchUpType: DOUBLES,
+          matchUpFormat: 'SET3-S:6/TB7-F:TB10',
+          ...template.doubles,
+        },
+        {
+          collectionId: uuids?.pop() || UUID(),
+          collectionName: 'Singles',
+          matchUpType: SINGLES,
+          matchUpFormat: 'SET3-S:6/TB7',
+          ...template.singles,
+        },
+      ],
+    };
+
+    if (template.tieFormatName)
+      tieFormat.tieFormatName = template.tieFormatName;
   }
 
-  const tieFormat = {
-    winCriteria: {
-      valueGoal: template.valueGoal,
-    },
-    collectionDefinitions: [
-      {
-        collectionId: uuids?.pop() || UUID(),
-        collectionName: 'Doubles',
-        matchUpType: DOUBLES,
-        matchUpFormat: 'SET3-S:6/TB7-F:TB10',
-        ...template.doubles,
-      },
-      {
-        collectionId: uuids?.pop() || UUID(),
-        collectionName: 'Singles',
-        matchUpType: SINGLES,
-        matchUpFormat: 'SET3-S:6/TB7',
-        ...template.singles,
-      },
-    ],
-  };
-
-  if (template.tieFormatName) tieFormat.tieFormatName = template.tieFormatName;
+  if (hydrateCollections) {
+    tieFormat.collectionDefinitions.forEach((collectionDefinition) => {
+      if (category && !collectionDefinition.category)
+        collectionDefinition.category = category;
+      if (gender && !collectionDefinition.gender)
+        collectionDefinition.gender = gender;
+    });
+  }
 
   return tieFormat;
 };
