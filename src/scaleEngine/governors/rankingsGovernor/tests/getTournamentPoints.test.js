@@ -165,6 +165,7 @@ it('can generate points from tournamentRecords', () => {
       encounteredRangeAccessors.push('5-8');
       // TODO: capture scenario
     }
+
     expect(unique(encounteredRangeAccessors).sort()).toEqual(
       // prettier-ignore
       [ '1', '17-32', '2', '3', '4', '5', '5-8', '6', '7-8', '9-16' ]

@@ -1,4 +1,4 @@
-import { getTournamentParticipants } from '../../../tournamentEngine/getters/participants/getTournamentParticipants';
+import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
 import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { isConvertableInteger } from '../../../utilities/math';
@@ -30,29 +30,29 @@ export function getTournamentPoints({
     attachedPolicies?.[POLICY_TYPE_RANKING_POINTS];
   if (!pointsPolicy) return { error: MISSING_POLICY_DEFINITION };
 
-  const { tournamentParticipants } = getTournamentParticipants({
+  const { participants, derivedEventInfo, derivedDrawInfo } = getParticipants({
     withRankingProfile: true,
     tournamentRecord,
   });
 
-  const participantsWithOutcomes = tournamentParticipants.filter(
-    (p) => p.draws?.length
-  );
+  const participantsWithOutcomes = participants.filter((p) => p.draws?.length);
 
   // keep track of points earned per person
   const personPoints = {};
 
   for (const participant of participantsWithOutcomes) {
-    const { events, draws, person, individualParticipants } = participant;
+    const { draws, person, individualParticipants } = participant;
     const personId = person?.personId;
     if (individualParticipants) console.log('individualParticipants');
 
     draws.forEach((draw) => {
-      const { structureParticipation, drawName, drawSize, drawType, eventId } =
-        draw;
-      const event = events?.find((event) => event.eventId === eventId);
-      const { category, eventType } = event || {};
+      const { drawId, structureParticipation, drawName, eventId } = draw;
+      const eventInfo = derivedEventInfo[eventId];
+      const drawInfo = derivedDrawInfo[drawId];
+      const drawType = drawInfo?.drawType;
+      const drawSize = drawInfo?.drawSize;
 
+      const { category, eventType } = eventInfo || {};
       const awardProfiles =
         pointsPolicy.categories?.[category].awardProfiles ||
         pointsPolicy.awardProfiles;

@@ -1,7 +1,7 @@
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 export function addStructureParticipation({
-  finishingPositionRange,
+  finishingPositionRange: matchUpFinishingPositionRanges,
   participantMap,
   finishingRound,
   participantWon,
@@ -32,6 +32,8 @@ export function addStructureParticipation({
   const structureParticipation =
     participantAggregator.structureParticipation[structureId];
 
+  const { winner, loser } = matchUpFinishingPositionRanges;
+  const finishingPositionRange = participantWon ? winner : loser;
   if (participantWon) {
     structureParticipation.winCount += 1;
     if (matchUpStatus === WALKOVER) {
