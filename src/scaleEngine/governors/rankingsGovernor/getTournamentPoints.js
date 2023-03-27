@@ -12,8 +12,31 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
+export function getAwardProfile({
+  awardProfiles,
+  participation,
+  eventType,
+  drawType,
+}) {
+  const { participationOrder, flightNumber, rankingStage } = participation;
+
+  const awardProfile = awardProfiles.find(
+    (profile) =>
+      (!profile.stages?.length || profile.stages.includes(rankingStage)) &&
+      (!profile.drawTypes?.length || profile.drawTypes?.includes(drawType)) &&
+      (!profile.eventTypes?.length ||
+        profile.eventTypes?.includes(eventType)) &&
+      (!profile.participationOrder ||
+        profile.participationOrder === participationOrder) &&
+      (!profile.flightNumbers?.length ||
+        profile.flightNumbers.includes(flightNumber))
+  );
+
+  return { awardProfile };
+}
+
 export function getTournamentPoints({
-  policyDefinition,
+  policyDefinitions,
   tournamentRecord,
   saveSnapshot,
   level,
@@ -26,7 +49,7 @@ export function getTournamentPoints({
   });
 
   const pointsPolicy =
-    policyDefinition?.[POLICY_TYPE_RANKING_POINTS] ||
+    policyDefinitions?.[POLICY_TYPE_RANKING_POINTS] ||
     attachedPolicies?.[POLICY_TYPE_RANKING_POINTS];
   if (!pointsPolicy) return { error: MISSING_POLICY_DEFINITION };
 
@@ -46,7 +69,7 @@ export function getTournamentPoints({
     if (individualParticipants) console.log('individualParticipants');
 
     draws.forEach((draw) => {
-      const { drawId, structureParticipation, drawName, eventId } = draw;
+      const { drawId, structureParticipation, eventId } = draw;
       const eventInfo = derivedEventInfo[eventId];
       const drawInfo = derivedDrawInfo[drawId];
       const drawType = drawInfo?.drawType;
@@ -73,29 +96,17 @@ export function getTournamentPoints({
         let rangeAccessor;
 
         for (const participation of structureParticipation) {
-          const {
-            finishingPositionRange,
-            participationOrder,
-            participantWon,
-            flightNumber,
-            rankingStage,
-            winCount,
-          } = participation;
+          const { finishingPositionRange, participantWon, winCount } =
+            participation;
 
           totalWinsCount += winCount || 0;
 
-          const awardProfile = awardProfiles.find(
-            (profile) =>
-              profile.stages.includes(rankingStage) &&
-              (!profile.drawTypes?.length ||
-                profile.drawTypes?.includes(drawType)) &&
-              (!profile.eventTypes?.length ||
-                profile.eventTypes?.includes(eventType)) &&
-              (!profile.participationOrder ||
-                profile.participationOrder === participationOrder) &&
-              (!profile.flightNumbers?.length ||
-                profile.flightNumbers.includes(flightNumber))
-          );
+          const { awardProfile } = getAwardProfile({
+            awardProfiles,
+            participation,
+            eventType,
+            drawType,
+          });
 
           if (awardProfile) {
             const accessor =
@@ -171,7 +182,7 @@ export function getTournamentPoints({
             rangeAccessor,
             perWinPoints,
             eventType,
-            drawName,
+            drawId,
             points,
           });
         }
@@ -243,7 +254,7 @@ function getAwardPoints({ valueObj, drawSize, level, participantWon }) {
     d = getValue(defaultDef);
     awardPoints = s || d;
 
-    requireWin = s ? sizeDefined.requireWin : defaultDef.requireWin;
+    requireWin = s ? sizeDefined.requireWin : defaultDef?.requireWin;
   } else if (isConvertableInteger(valueObj)) {
     // when using participantWon non-objects are not valid
     if (winAccessor === undefined) awardPoints = valueObj;

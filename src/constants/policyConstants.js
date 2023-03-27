@@ -1,6 +1,6 @@
 export const POLICY_TYPE_VOLUNTARY_CONSOLATION = 'voluntaryConsolation';
-export const POLICY_TYPE_ROUND_ROBIN_TALLY = 'roundRobinTally';
 export const POLICY_TYPE_COMPETITIVE_BANDS = 'competitiveBands';
+export const POLICY_TYPE_ROUND_ROBIN_TALLY = 'roundRobinTally';
 export const POLICY_TYPE_POSITION_ACTIONS = 'positionActions';
 export const POLICY_TYPE_MATCHUP_ACTIONS = 'matchUpActions';
 export const POLICY_TYPE_RANKING_POINTS = 'rankingPoints';

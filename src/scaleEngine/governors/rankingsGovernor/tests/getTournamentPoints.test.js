@@ -1,4 +1,5 @@
 import { mocksEngine, scaleEngine, tournamentEngine } from '../../../..';
+import { getAwardProfile } from '../getTournamentPoints';
 import { unique } from '../../../../utilities';
 import { expect, it } from 'vitest';
 
@@ -10,68 +11,70 @@ import {
   CURTIS_CONSOLATION,
   MAIN,
   PLAY_OFF,
-  QUALIFYING,
+  SINGLE_ELIMINATION,
 } from '../../../../constants/drawDefinitionConstants';
+
+const awardProfiles = [
+  {
+    eventTypes: [SINGLES],
+    drawTypes: [CURTIS_CONSOLATION],
+    stages: [MAIN],
+    flightNumbers: [],
+    requireWinFirstRound: true,
+    requireWinDefault: false,
+    participationOrder: 1,
+    finishingPositionRanges: {
+      // 1: { value: 3000 }, // handled by finishingRound
+      2: [
+        {
+          level: { 1: 2400, 2: 1238, 3: 900, 4: 540, 5: 300 },
+          drawSizes: [],
+          value: 2400,
+        },
+      ],
+      '5-8': [{ drawSize: 32, threshold: true, value: 840 }],
+      '9-16': [
+        { drawSize: 32, value: 750 },
+        { drawSize: 64, value: 750 },
+      ],
+      '17-32': [{ drawSizes: [32, 64], value: 390 }],
+      // if requireWinFirstRound is not true then any of the following will achieve the same thing
+      // '17-32': [{ drawSizes: [32, 64], value: 390, requireWin: true }],
+      // '17-32': [{ drawSizes: [64], value: 390 }],
+      // '17-32': [{ drawSize: 64, value: 390 }],
+    },
+    // alternative to finishingPositionRanges
+    finishingRound: {
+      1: { won: { value: 3000, level: { 1: 3000, 2: 1650 } }, lost: 2400 },
+      2: { won: 2400, lost: 1800 }, // allows for different points for winning SF vs. losing in F
+    },
+  },
+  {
+    eventTypes: [SINGLES],
+    drawTypes: [CURTIS_CONSOLATION],
+    stages: [MAIN, CONSOLATION, PLAY_OFF],
+    finishingPositionRanges: {
+      3: { value: 1950 }, // perhaps requirePriorWins attribute for positioning points after participationOrder: 1
+      4: { value: 1800 }, // perhaps requirePriorWins attribute for positioning points after participationOrder: 1
+      5: { value: 1350 },
+      6: { value: 1050 },
+      '7-8': { value: 930 },
+    },
+    pointsPerWin: 60,
+  },
+  {
+    eventTypes: [SINGLES],
+    drawTypes: [],
+    stages: [],
+    finishingStageSequence: 1, // TODO: will need to derive for QUALIFYING
+    finishingRound: { 1: { won: 30, lost: 15 }, 2: { won: 15 } },
+  },
+];
 
 const policyDefinitions = {
   [POLICY_TYPE_RANKING_POINTS]: {
     requireWinDefault: false,
-    awardProfiles: [
-      {
-        drawTypes: [],
-        stages: [QUALIFYING],
-        eventTypes: [SINGLES],
-        finishingStageSequence: 1, // TODO: will need to derive for QUALIFYING
-        finishingRound: { 1: { won: 30, lost: 15 }, 2: { won: 15 } },
-      },
-      {
-        drawTypes: [CURTIS_CONSOLATION],
-        requireWinFirstRound: true,
-        requireWinDefault: false,
-        stages: [MAIN],
-        flightNumbers: [],
-        eventTypes: [SINGLES],
-        participationOrder: 1,
-        finishingPositionRanges: {
-          // 1: { value: 3000 }, // handled by finishingRound
-          2: [
-            {
-              level: { 1: 2400, 2: 1238, 3: 900, 4: 540, 5: 300 },
-              drawSizes: [],
-              value: 2400,
-            },
-          ],
-          '5-8': [{ drawSize: 32, threshold: true, value: 840 }],
-          '9-16': [
-            { drawSize: 32, value: 750 },
-            { drawSize: 64, value: 750 },
-          ],
-          '17-32': [{ drawSizes: [32, 64], value: 390 }],
-          // if requireWinFirstRound is not true then any of the following will achieve the same thing
-          // '17-32': [{ drawSizes: [32, 64], value: 390, requireWin: true }],
-          // '17-32': [{ drawSizes: [64], value: 390 }],
-          // '17-32': [{ drawSize: 64, value: 390 }],
-        },
-        // alternative to finishingPositionRanges
-        finishingRound: {
-          1: { won: { value: 3000, level: { 1: 3000, 2: 1650 } }, lost: 2400 },
-          2: { won: 2400, lost: 1800 }, // allows for different points for winning SF vs. losing in F
-        },
-      },
-      {
-        drawTypes: [CURTIS_CONSOLATION],
-        eventTypes: [SINGLES],
-        stages: [MAIN, CONSOLATION, PLAY_OFF],
-        finishingPositionRanges: {
-          3: { value: 1950 }, // perhaps requirePriorWins attribute for positioning points after participationOrder: 1
-          4: { value: 1800 }, // perhaps requirePriorWins attribute for positioning points after participationOrder: 1
-          5: { value: 1350 },
-          6: { value: 1050 },
-          '7-8': { value: 930 },
-        },
-        pointsPerWin: 60,
-      },
-    ],
+    awardProfiles,
   },
 };
 
@@ -88,11 +91,32 @@ it('will fail without ranking point policy definition', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
+  const awardCriteria = {
+    drawType: SINGLE_ELIMINATION,
+    eventType: SINGLES,
+
+    participation: {
+      participationOrder: 1,
+      rankingStage: MAIN,
+      flightNumber: 1,
+    },
+  };
+
+  const { awardProfile } = getAwardProfile({ awardProfiles, ...awardCriteria });
+  expect(awardProfile).not.toBeUndefined();
+
   const { event } = tournamentEngine.getEvent({ eventId });
   expect(event.category.ageCategoryCode).toEqual(ageCategoryCode);
 
   let result = scaleEngine.getTournamentPoints();
   expect(result.error).toEqual(MISSING_POLICY_DEFINITION);
+
+  // policyDefinitions can be passed in as a parameter
+  result = scaleEngine.getTournamentPoints({ policyDefinitions });
+  expect(result.success).toEqual(true);
+
+  const { personPoints } = result;
+  expect(Object.values(personPoints)).not.toBeUndefined();
 
   tournamentEngine.attachPolicies({ policyDefinitions });
   result = scaleEngine.getTournamentPoints();

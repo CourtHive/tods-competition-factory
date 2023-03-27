@@ -146,7 +146,6 @@ export function addParticipantContext(params) {
   }
 
   if (
-    params.withRankingProfile ||
     params.withScheduleItems ||
     params.scheduleAnalysis ||
     params.withStatistics ||
@@ -326,7 +325,6 @@ export function addParticipantContext(params) {
 
       if (
         event.eventType === TEAM || // for TEAM events some individual attributes can only be derived by processing
-        params.withRankingProfile ||
         params.withScheduleItems ||
         params.scheduleAnalysis ||
         params.withStatistics ||
