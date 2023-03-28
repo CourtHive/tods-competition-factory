@@ -13,8 +13,8 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function getAwardProfile({
+  participation = {},
   awardProfiles,
-  participation,
   eventType,
   drawType,
 }) {
@@ -28,8 +28,9 @@ export function getAwardProfile({
         profile.eventTypes?.includes(eventType)) &&
       (!profile.participationOrder ||
         profile.participationOrder === participationOrder) &&
-      (!profile.flightNumbers?.length ||
-        profile.flightNumbers.includes(flightNumber))
+      (!flightNumber ||
+        !profile.flights?.flightNumbers?.length ||
+        profile.flights.flightNumbers.includes(flightNumber))
   );
 
   return { awardProfile };
@@ -38,6 +39,7 @@ export function getAwardProfile({
 export function getTournamentPoints({
   policyDefinitions,
   tournamentRecord,
+  // overload = true,
   saveSnapshot,
   level,
 }) {
@@ -90,14 +92,23 @@ export function getTournamentPoints({
 
       if (awardProfiles) {
         let requireWin = requireWinDefault;
+        const positionAwards = [];
         let totalWinsCount = 0;
         let positionPoints = 0;
         let perWinPoints = 0;
+        // let winCounts = [];
         let rangeAccessor;
 
         for (const participation of structureParticipation) {
-          const { finishingPositionRange, participantWon, winCount } =
-            participation;
+          const {
+            finishingPositionRange,
+            participationOrder,
+            participantWon,
+            winCount,
+          } = participation;
+
+          // winCounts.push(winCount);
+          // const exitProfile = winCounts.join('-');
 
           totalWinsCount += winCount || 0;
 
@@ -111,7 +122,8 @@ export function getTournamentPoints({
           if (awardProfile) {
             const accessor =
               Array.isArray(finishingPositionRange) &&
-              unique(finishingPositionRange).join('-');
+              Math.max(...finishingPositionRange);
+            const dashRange = unique(finishingPositionRange).join('-');
             const firstRound =
               accessor && finishingPositionRange?.includes(drawSize);
             if (awardProfile.requireWinDefault !== undefined)
@@ -119,15 +131,43 @@ export function getTournamentPoints({
             if (awardProfile.requireWinFirstRound !== undefined)
               requireWinFirstRound = awardProfile.requireWinFirstRound;
 
-            const { finishingPositionRanges, finishingRound, pointsPerWin } =
-              awardProfile;
+            const {
+              finishingPositionPoints = {},
+              finishingPositionRanges,
+              finishingRound,
+              pointsPerWin,
+            } = awardProfile;
+
+            const ppwProfile = awardProfile.perWinPoints?.find((pwp) =>
+              pwp.participationOrders?.includes(participationOrder)
+            );
+
+            const participationOrders =
+              finishingPositionPoints.participationOrders;
 
             let awardPoints = 0;
             let winRequired;
 
-            if (finishingPositionRanges) {
+            /*
+            const noPositionAwards = !positionAwards.length;
+
+            const decider = overload
+              ? !positionAwards.includes(accessor)
+              : noPositionAwards || participantWon;
+            */
+
+            const isValidOrder =
+              !participationOrders ||
+              participationOrders.includes(participationOrder);
+
+            if (
+              isValidOrder &&
+              finishingPositionRanges
+              //  && ((!pointsPerWin && !ppwProfile) || decider)
+            ) {
               const valueObj = finishingPositionRanges[accessor];
               if (valueObj) {
+                positionAwards.push(accessor);
                 ({ awardPoints, requireWin: winRequired } = getAwardPoints({
                   valueObj,
                   drawSize,
@@ -139,6 +179,7 @@ export function getTournamentPoints({
             if (!awardPoints && finishingRound) {
               const valueObj = finishingRound[accessor];
               if (valueObj) {
+                positionAwards.push(accessor);
                 ({ awardPoints, requireWin: winRequired } = getAwardPoints({
                   participantWon,
                   valueObj,
@@ -148,18 +189,10 @@ export function getTournamentPoints({
               }
             }
 
-            if (firstRound && requireWinFirstRound !== undefined)
+            if (firstRound && requireWinFirstRound !== undefined) {
               requireWin = requireWinFirstRound;
+            }
             if (winRequired !== undefined) requireWin = winRequired;
-            /*
-            if (firstRound)
-              console.log({
-                firstRound,
-                accessor,
-                requireWinFirstRound,
-                requireWin,
-              });
-              */
 
             if (awardPoints > positionPoints && (!requireWin || winCount)) {
               positionPoints = awardPoints;
@@ -168,6 +201,16 @@ export function getTournamentPoints({
 
             if (!awardPoints && pointsPerWin && winCount) {
               perWinPoints += winCount * pointsPerWin;
+              rangeAccessor = dashRange;
+            }
+
+            if (!awardPoints && winCount && ppwProfile) {
+              if (level && ppwProfile.levels?.[level]) {
+                const levelValue = ppwProfile.levels[level];
+                perWinPoints += winCount * levelValue;
+              } else if (ppwProfile.value) {
+                perWinPoints += winCount * ppwProfile.value;
+              }
             }
           }
 
@@ -176,7 +219,7 @@ export function getTournamentPoints({
 
         if (personId && (perWinPoints || positionPoints)) {
           if (!personPoints[personId]) personPoints[personId] = [];
-          personPoints[personId].push({
+          const award = {
             winCount: totalWinsCount,
             positionPoints,
             rangeAccessor,
@@ -184,7 +227,8 @@ export function getTournamentPoints({
             eventType,
             drawId,
             points,
-          });
+          };
+          personPoints[personId].push(award);
         }
       }
     });
@@ -198,7 +242,7 @@ export function getTournamentPoints({
     addExtension({ element: tournamentRecord, extension });
   }
 
-  return { personPoints, ...SUCCESS };
+  return { participantsWithOutcomes, personPoints, ...SUCCESS };
 }
 
 function getAwardPoints({ valueObj, drawSize, level, participantWon }) {
