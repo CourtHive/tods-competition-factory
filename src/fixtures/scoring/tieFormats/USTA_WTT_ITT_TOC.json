@@ -49,7 +49,7 @@
       "matchUpValue": 1
     }
   ],
-  "tieFormatName": "USTA_ITT_TOC",
+  "tieFormatName": "USTA_WTT_ITT_TOC",
   "winCriteria": {
     "valueGoal": 3
   }
