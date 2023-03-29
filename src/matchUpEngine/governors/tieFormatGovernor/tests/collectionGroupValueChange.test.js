@@ -3,11 +3,8 @@ import { mocksEngine, tournamentEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
 import { DELETED_MATCHUP_IDS } from '../../../../constants/topicConstants';
+import { USTA_BREWER_CUP } from '../../../../constants/tieFormatConstants';
 import { TEAM } from '../../../../constants/eventConstants';
-import {
-  USTA_BREWER_CUP,
-  USTA_WTT,
-} from '../../../../constants/tieFormatConstants';
 
 it('changing value assignment of collectionDefinition that is part of collectionGroup will delete the group', () => {
   const deletedMatchUpIds = [];
@@ -27,7 +24,9 @@ it('changing value assignment of collectionDefinition that is part of collection
     eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 2, eventType: TEAM, tieFormatName: USTA_WTT }],
+    drawProfiles: [
+      { drawSize: 2, eventType: TEAM, tieFormatName: USTA_BREWER_CUP },
+    ],
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -41,7 +40,8 @@ it('changing value assignment of collectionDefinition that is part of collection
   const { drawDefaultTieFormat } = tournamentEngine.getTieFormat({ drawId });
   const { eventDefaultTieFormat } = tournamentEngine.getTieFormat({ eventId });
   expect(drawDefaultTieFormat).toBeUndefined();
-  expect(eventDefaultTieFormat.winCriteria.valueGoal).toEqual(3);
+  expect(eventDefaultTieFormat.winCriteria.valueGoal).toEqual(4);
+  expect(eventDefaultTieFormat.collectionGroups.length).toEqual(1);
 
   // select one of the collectionDefinitions that is part of the collectionGroup
   const collectionId = eventDefaultTieFormat.collectionDefinitions.find(
@@ -60,7 +60,7 @@ it('changing value assignment of collectionDefinition that is part of collection
 
   expect(result.tieFormat.tieFormatName).toBeUndefined();
   expect(result.tieFormat.winCriteria.aggregateValue).toEqual(true);
-  expect(result.tieFormat.collectionGroups.length).toEqual(2);
+  expect(result.tieFormat.collectionGroups.length).toEqual(0);
 });
 
 it('changing value assignment of collectionDefinition that is part of collectionGroup will delete the group', () => {
