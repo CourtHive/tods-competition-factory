@@ -91,7 +91,7 @@ export function getTournamentPoints({
 
       if (awardProfiles) {
         let requireWin = requireWinDefault;
-        const positionAwards = [];
+        // const positionAwards = []; // potential use for combining ppw w/ fpp
         let totalWinsCount = 0;
         let positionPoints = 0;
         let perWinPoints = 0;
@@ -143,6 +143,8 @@ export function getTournamentPoints({
             let awardPoints = 0;
             let winRequired;
 
+            // const noPositionAwards = !positionAwards.length;
+
             const isValidOrder =
               !participationOrders ||
               participationOrders.includes(participationOrder);
@@ -150,7 +152,7 @@ export function getTournamentPoints({
             if (isValidOrder && finishingPositionRanges) {
               const valueObj = finishingPositionRanges[accessor];
               if (valueObj) {
-                positionAwards.push(accessor);
+                // positionAwards.push(accessor);
                 ({ awardPoints, requireWin: winRequired } = getAwardPoints({
                   valueObj,
                   drawSize,
@@ -162,7 +164,7 @@ export function getTournamentPoints({
             if (!awardPoints && finishingRound) {
               const valueObj = finishingRound[accessor];
               if (valueObj) {
-                positionAwards.push(accessor);
+                // positionAwards.push(accessor);
                 ({ awardPoints, requireWin: winRequired } = getAwardPoints({
                   participantWon,
                   valueObj,
