@@ -39,7 +39,6 @@ export function getAwardProfile({
 export function getTournamentPoints({
   policyDefinitions,
   tournamentRecord,
-  // overload = true,
   saveSnapshot,
   level,
 }) {
@@ -96,7 +95,6 @@ export function getTournamentPoints({
         let totalWinsCount = 0;
         let positionPoints = 0;
         let perWinPoints = 0;
-        // let winCounts = [];
         let rangeAccessor;
 
         for (const participation of structureParticipation) {
@@ -106,9 +104,6 @@ export function getTournamentPoints({
             participantWon,
             winCount,
           } = participation;
-
-          // winCounts.push(winCount);
-          // const exitProfile = winCounts.join('-');
 
           totalWinsCount += winCount || 0;
 
@@ -148,23 +143,11 @@ export function getTournamentPoints({
             let awardPoints = 0;
             let winRequired;
 
-            /*
-            const noPositionAwards = !positionAwards.length;
-
-            const decider = overload
-              ? !positionAwards.includes(accessor)
-              : noPositionAwards || participantWon;
-            */
-
             const isValidOrder =
               !participationOrders ||
               participationOrders.includes(participationOrder);
 
-            if (
-              isValidOrder &&
-              finishingPositionRanges
-              //  && ((!pointsPerWin && !ppwProfile) || decider)
-            ) {
+            if (isValidOrder && finishingPositionRanges) {
               const valueObj = finishingPositionRanges[accessor];
               if (valueObj) {
                 positionAwards.push(accessor);
@@ -255,11 +238,10 @@ function getAwardPoints({ valueObj, drawSize, level, participantWon }) {
   let requireWin;
   let s, t, d;
 
-  const winAccessor = participantWon
-    ? 'won'
-    : participantWon === false
-    ? 'lost'
-    : undefined;
+  const winAccessor =
+    (participantWon && 'won') ||
+    (participantWon === false && 'lost') ||
+    undefined;
 
   if (Array.isArray(valueObj)) {
     let sizeDefined = valueObj.find(
@@ -282,11 +264,10 @@ function getAwardPoints({ valueObj, drawSize, level, participantWon }) {
     d = getValue(defaultDef);
     awardPoints = s || t || d;
 
-    requireWin = s
-      ? sizeDefined.requireWin
-      : t
-      ? thresholdMatched.requireWin
-      : defaultDef.requireWin;
+    requireWin =
+      (s && sizeDefined.requireWin) ||
+      (t && thresholdMatched.requireWin) ||
+      defaultDef.requireWin;
   } else if (typeof valueObj === 'object') {
     let sizeDefined = valueObj?.drawSizes?.[drawSize];
     let defaultDef = valueObj;
