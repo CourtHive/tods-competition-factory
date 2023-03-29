@@ -1,6 +1,7 @@
 import { mocksEngine, tournamentEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
+import { TIE_FORMAT_MODIFICATIONS } from '../../../../constants/extensionConstants';
 import { TEAM } from '../../../../constants/eventConstants';
 import {
   CANNOT_MODIFY_TIEFORMAT,
@@ -8,7 +9,6 @@ import {
   INVALID_VALUES,
   NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import { TIE_FORMAT_MODIFICATIONS } from '../../../../constants/extensionConstants';
 
 it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () => {
   const policyDefinitions = {
