@@ -13,7 +13,7 @@ import USTA_INTERSECTIONAL from './USTA_INTERSECTIONAL.json';
 import USTA_LEVEL_1 from './USTA_LEVEL_1.json';
 import USTA_SECTION_BATTLE from './USTA_SECTION_BATTLE.json';
 import USTA_SOUTHERN_LEVEL_5 from './USTA_SOUTHERN_LEVEL_5.json';
-import USTA_ITT_TOC from './USTA_ITT_TOC.json';
+import USTA_WTT_ITT_TOC from './USTA_WTT_ITT_TOC.json';
 import USTA_ZONAL from './USTA_ZONAL.json';
 
 export const tieFormats = {
@@ -29,9 +29,9 @@ export const tieFormats = {
   USTA_COLLEGE,
   USTA_GOLD_TEAM_CHALLENGE,
   USTA_INTERSECTIONAL,
-  USTA_ITT_TOC,
   USTA_LEVEL_1,
   USTA_SECTION_BATTLE,
   USTA_SOUTHERN_LEVEL_5,
+  USTA_WTT_ITT_TOC,
   USTA_ZONAL,
 };

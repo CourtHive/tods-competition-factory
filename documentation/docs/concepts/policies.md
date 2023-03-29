@@ -26,7 +26,7 @@ The structure of a **_policyDefinitions_** object is as follows:
 - [Position Actions Policy](../policies/positionActions): Determines valid actions for positions in a draw structure
 - [Seeding Policy](../policies/positioningSeeds): Sets seeding pattern and thresholds for number of seeds allowed for draw sizes
 - [Scheduling Policy](../policies/scheduling): Defines average and rest/recovery times for matchUpFormats, categoryNames, and categoryTypes
-- [Round Robin Tally Policy](../policies/tally-policy): Configures calculations which determine participant finishing positions
+- [Round Robin Tally Policy](../policies/tallyPolicy): Configures calculations which determine participant finishing positions
 - [Feed Policy](../policies/feedPolicy): Determining the the patterns which direct participants into consolation feed rounds
 - Round Naming Policy: Specifies how rounds of draw structures should be named
 - Scoring Policy: Restricts available matchUpFormats, defines a default and conditions for "ready to score"

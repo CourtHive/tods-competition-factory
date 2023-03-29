@@ -23,10 +23,10 @@ const tieKeys = [
   { key: tieFormatConstants.USTA_COLLEGE, collectionsCount: 2 },
   { key: tieFormatConstants.USTA_GOLD_TEAM_CHALLENGE, collectionsCount: 5 },
   { key: tieFormatConstants.USTA_INTERSECTIONAL, collectionsCount: 5 },
-  { key: tieFormatConstants.USTA_ITT_TOC, collectionsCount: 6 },
   { key: tieFormatConstants.USTA_LEVEL_1, collectionsCount: 4 },
   { key: tieFormatConstants.USTA_SECTION_BATTLE, collectionsCount: 5 },
   { key: tieFormatConstants.USTA_SOUTHERN_LEVEL_5, collectionsCount: 3 },
+  { key: tieFormatConstants.USTA_WTT_ITT_TOC, collectionsCount: 6 },
   { key: tieFormatConstants.USTA_ZONAL, collectionsCount: 5 },
 ];
 
