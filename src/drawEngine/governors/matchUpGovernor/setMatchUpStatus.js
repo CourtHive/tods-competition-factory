@@ -168,7 +168,9 @@ export function setMatchUpStatus(params) {
         score,
       });
     }
+  }
 
+  if (matchUp.matchUpType === TEAM) {
     if (
       [
         AWAITING_RESULT,

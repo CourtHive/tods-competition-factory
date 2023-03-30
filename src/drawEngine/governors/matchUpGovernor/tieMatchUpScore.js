@@ -17,8 +17,8 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 export function updateTieMatchUpScore({
-  exitWhenNoValues,
   tournamentRecord,
+  exitWhenNoValues,
   drawDefinition,
   matchUpStatus,
   removeScore,
