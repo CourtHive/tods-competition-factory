@@ -10,7 +10,8 @@ import USTA_COLLEGE_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_COLL
 import USTA_INTERSECTIONAL_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_INTERSECTIONAL.json';
 import USTA_LEVEL_1_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_LEVEL_1.json';
 import USTA_SOUTHERN_LEVEL_5_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_SOUTHERN_LEVEL_5.json';
-import USTA_WTT_ITT_TOC_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_WTT_ITT_TOC.json';
+import USTA_TOC_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_TOC.json';
+import USTA_WTT_ITT_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_WTT_ITT.json';
 import USTA_ZONAL_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_ZONAL.json';
 import LAVER_CUP_TIE_FORMAT from '../../fixtures/scoring/tieFormats/LAVER_CUP.json';
 import USTA_SECTION_BATTLE_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_SECTION_BATTLE.json';
@@ -28,7 +29,8 @@ import {
   USTA_COLLEGE,
   USTA_GOLD_TEAM_CHALLENGE,
   USTA_INTERSECTIONAL,
-  USTA_WTT_ITT_TOC,
+  USTA_TOC,
+  USTA_WTT_ITT,
   USTA_LEVEL_1,
   USTA_SECTION_BATTLE,
   USTA_SOUTHERN_LEVEL_5,
@@ -99,7 +101,8 @@ const namedFormats = {
   [USTA_LEVEL_1]: USTA_LEVEL_1_TIE_FORMAT,
   [USTA_SECTION_BATTLE]: USTA_SECTION_BATTLE_TIE_FORMAT,
   [USTA_SOUTHERN_LEVEL_5]: USTA_SOUTHERN_LEVEL_5_TIE_FORMAT,
-  [USTA_WTT_ITT_TOC]: USTA_WTT_ITT_TOC_TIE_FORMAT,
+  [USTA_WTT_ITT]: USTA_WTT_ITT_TIE_FORMAT,
+  [USTA_TOC]: USTA_TOC_TIE_FORMAT,
   [USTA_ZONAL]: USTA_ZONAL_TIE_FORMAT,
 };
 
