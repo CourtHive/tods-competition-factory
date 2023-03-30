@@ -99,7 +99,7 @@ it('can discover default awardProfiles', () => {
   expect(awardProfile).not.toBeUndefined();
 });
 
-it.only('supports finishingPositionRanges definitions with or without level', () => {
+it('supports finishingPositionRanges definitions with or without level', () => {
   const drawProfiles = [{ drawType: COMPASS, drawSize: 32 }];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     completeAllMatchUps: true,
