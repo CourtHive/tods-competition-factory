@@ -1,8 +1,11 @@
+import { TEAM_EVENT } from '../../../../constants/eventConstants';
+
 // prettier-ignore
 export const awardProfileFlights = {
-  levels: [4, 5], // this awardProfile is only valid for levels 4 and 5
   drawSizes: [4, 8, 16], // this awardProfile is only valid for these drawSizes
   maxDrawSize: 16, // alternative declaration
+  levels: [4, 5], // this awardProfile is only valid for levels 4 and 5
+  maxFlightNumber: 4,
   finishingPositionRanges: {
     1: {
       level: {
@@ -26,8 +29,56 @@ export const awardProfileFlights = {
   },
 };
 
+export const awardProfilePercentageFlights = {
+  flights: { flightNumbers: [1, 2], 2: 0.65, 3: 0.5, 4: 0.35 },
+  drawSizes: [4, 8, 16], // this awardProfile is only valid for these drawSizes
+  maxDrawSize: 16, // alternative declaration
+  levels: [4, 5], // this awardProfile is only valid for levels 4 and 5
+  maxFlightNumber: 4,
+  finishingPositionRanges: {
+    1: { level: { 4: 540, 5: 300 } },
+    2: { level: { 4: 405, 5: 225 } },
+    3: { level: { 4: 324, 5: 180 } },
+    4: { level: { 4: 270, 5: 150 } },
+    8: { level: { 4: 95, 5: 53 } },
+  },
+  perWinPoints: {
+    participationOrders: [2, 3, 4, 5],
+    level: { 4: 84, 5: 47 },
+  },
+};
+
+export const awardProfileExpandedLevels = {
+  finishingPositionPoints: { participationOrders: [1] }, // only assign points for finishing positions when participationOrder: 1
+  perWinPoints: [
+    // this can be an array so that drawSize can be used to differentiate
+    {
+      participationOrders: [2, 3, 4, 5],
+      level: { 1: 105, 2: 62, 3: 32, 4: 19, 5: 11 },
+    },
+  ],
+  finishingPositionRanges: {
+    1: [{ level: { 1: 3000, 2: 1650, 3: 900, 4: 540, 5: 300 } }],
+    2: [{ level: { 1: 2400, 2: 1238, 3: 675, 4: 405, 5: 225 } }],
+    3: [{ level: { 1: 1950, 2: 990, 3: 540, 4: 324, 5: 180 } }],
+    4: [{ level: { 1: 1800, 2: 825, 3: 450, 4: 270, 5: 150 } }],
+    8: [{ level: { 1: 1110, 2: 578, 3: 315, 4: 189, 5: 105 } }],
+    16: [{ level: { 1: 750, 2: 297, 3: 162, 4: 97, 5: 54 } }],
+    32: [{ level: { 1: 450, 2: 165, 3: 90, 4: 54, 5: 30 } }],
+    64: [{ level: { 1: 270, 2: 99, 3: 54, 4: 32, 5: 18 } }],
+    128: [{ level: { 1: 120, 2: 66, 3: 36, 4: 22, 5: 12 } }],
+    256: [{ level: { 1: 90, 2: 33, 3: 18, 4: 11, 5: 6 } }],
+  },
+};
+
 export const awardProfileLevels = {
   maxlevel: 5, // this awardProfile is only valid for levels up to 5
+  perWinPoints: {
+    // this can also be an array so that drawSize can be used to differentiate (see above example)
+    participationOrders: [2, 3, 4, 5],
+    level: [105, 62, 32, 19, 11],
+  },
+  finishingPositionPoints: { participationOrders: [1] }, // only assign points for finishing positions when participationOrder: 1
   finishingPositionRanges: {
     1: { level: [3000, 1650, 900, 540, 300] },
     2: { level: [2400, 1238, 675, 405, 225] },
@@ -43,7 +94,7 @@ export const awardProfileLevels = {
 };
 
 export const awardProfileLevelLines = {
-  eventTypes: ['TEAM'],
+  eventTypes: [TEAM_EVENT],
   perWinPoints: {
     level: {
       1: { line: [300, 275, 250, 225, 200, 175] },
@@ -56,3 +107,31 @@ export const awardProfileLevelLines = {
     },
   },
 };
+
+export const awardProfileThresholds = [
+  {
+    finishingPositionRanges: {
+      1: [
+        { drawSize: 64, threshold: true, value: 3000 }, // threshold means any drawSize >= that defined will match
+        { drawSizes: [], value: 2800 },
+      ],
+      2: [
+        { drawSize: 64, threshold: true, value: 2400 },
+        { drawSize: 16, threshold: true, value: 2000 },
+        { drawSizes: [], value: 1800 },
+      ],
+      3: [{ value: 1950 }],
+      4: [
+        { drawSize: 64, threshold: true, value: 1800 },
+        { drawSizes: [32, 8], value: 1750 },
+        { drawSize: 4, threshold: true, value: 1775 },
+      ],
+      8: [{ value: 1110 }],
+      16: [{ value: 750 }],
+      32: [{ value: 450 }],
+      64: [{ value: 270 }],
+      128: [{ value: 120 }],
+      256: [{ value: 90 }],
+    },
+  },
+];

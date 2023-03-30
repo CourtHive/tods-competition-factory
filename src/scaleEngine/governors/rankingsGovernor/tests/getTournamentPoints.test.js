@@ -1,5 +1,5 @@
 import { mocksEngine, scaleEngine, tournamentEngine } from '../../../..';
-import { getAwardProfile } from '../getTournamentPoints';
+import { getAwardProfile } from '../getAwardProfile';
 import { expect, it } from 'vitest';
 
 import { MISSING_POLICY_DEFINITION } from '../../../../constants/errorConditionConstants';
@@ -19,7 +19,7 @@ const awardProfiles = [
   {
     requireWinDefault: false,
     requireWalkoverDefault: false,
-    flights: { flightNumbers: [1, 2, 3], 2: .5, 3: .25 },
+    category: { ageCategoryCodes: [], }, // applies only to these categories
     // alternative to finishingPositionRanges; can only apply to MAIN stage
     finishingRound: {
       1: { won: { value: 3000, level: { 1: 3000, 2: 1650 } }, lost: 2400 },
