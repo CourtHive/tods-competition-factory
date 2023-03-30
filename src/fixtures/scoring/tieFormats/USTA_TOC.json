@@ -6,7 +6,7 @@
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:6/TB5NOAD@5",
       "matchUpType": "DOUBLES",
-      "matchUpValue": 1
+      "scoreValue": 1
     },
     {
       "collectionName": "Male Doubles",
@@ -14,7 +14,7 @@
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:6/TB5NOAD@5",
       "matchUpType": "DOUBLES",
-      "matchUpValue": 1
+      "scoreValue": 1
     },
     {
       "collectionName": "Female Singles",
@@ -22,7 +22,7 @@
       "matchUpCount": 1,
       "matchUpFormat": "SET1-S:6/TB5NOAD@5",
       "matchUpType": "SINGLES",
-      "matchUpValue": 1
+      "scoreValue": 1
     },
     {
       "collectionName": "Male Singles",
@@ -30,7 +30,7 @@
       "gender": "MALE",
       "matchUpFormat": "SET1-S:6/TB5NOAD@5",
       "matchUpType": "SINGLES",
-      "matchUpValue": 1
+      "scoreValue": 1
     },
     {
       "collectionName": "Mixed Doubles",
@@ -38,7 +38,7 @@
       "gender": "MIXED",
       "matchUpFormat": "SET1-S:6/TB5NOAD@5",
       "matchUpType": "DOUBLES",
-      "matchUpValue": 1
+      "scoreValue": 1
     },
     {
       "collectionName": "Overtime",
@@ -46,11 +46,11 @@
       "gender": "MIXED",
       "matchUpFormat": "SET1-S:T20",
       "matchUpType": "DOUBLES",
-      "matchUpValue": 1
+      "scoreValue": 1
     }
   ],
-  "tieFormatName": "USTA_WTT_ITT_TOC",
+  "tieFormatName": "USTA_TOC",
   "winCriteria": {
-    "valueGoal": 3
+    "aggregateValue": true
   }
 }

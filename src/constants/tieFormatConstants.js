@@ -13,7 +13,8 @@ export const USTA_LEVEL_1 = 'USTA_LEVEL_1';
 export const USTA_INTERSECTIONAL = 'USTA_INTERSECTIONAL';
 export const USTA_SECTION_BATTLE = 'USTA_SECTION_BATTLE';
 export const USTA_SOUTHERN_LEVEL_5 = 'USTA_SOUTHERN_LEVEL_5';
-export const USTA_WTT_ITT_TOC = 'USTA_WTT_ITT_TOC';
+export const USTA_TOC = 'USTA_TOC';
+export const USTA_WTT_ITT = 'USTA_WTT_ITT';
 export const USTA_ZONAL = 'USTA_ZONAL';
 
 export const tieFormatConstants = {
@@ -32,7 +33,8 @@ export const tieFormatConstants = {
   USTA_LEVEL_1,
   USTA_SECTION_BATTLE,
   USTA_SOUTHERN_LEVEL_5,
-  USTA_WTT_ITT_TOC,
+  USTA_TOC,
+  USTA_WTT_ITT,
   USTA_ZONAL,
 };
 

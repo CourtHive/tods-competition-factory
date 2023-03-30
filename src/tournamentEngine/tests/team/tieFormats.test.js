@@ -26,7 +26,8 @@ const tieKeys = [
   { key: tieFormatConstants.USTA_LEVEL_1, collectionsCount: 4 },
   { key: tieFormatConstants.USTA_SECTION_BATTLE, collectionsCount: 5 },
   { key: tieFormatConstants.USTA_SOUTHERN_LEVEL_5, collectionsCount: 3 },
-  { key: tieFormatConstants.USTA_WTT_ITT_TOC, collectionsCount: 6 },
+  { key: tieFormatConstants.USTA_WTT_ITT, collectionsCount: 7 },
+  { key: tieFormatConstants.USTA_TOC, collectionsCount: 6 },
   { key: tieFormatConstants.USTA_ZONAL, collectionsCount: 5 },
 ];
 

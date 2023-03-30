@@ -38,7 +38,7 @@ const policyDefinitions = {
 const scenarios = [
   {
     drawSize: 32,
-    inspect: true,
+    inspect: false,
     pointScenarios: {
       1: [3000], 2: [2400], 3: [1950, 1920, 1110], 4: [1860, 1800, 1050], 5: [1350],
       6: [1050], '5-6': [990], 8: [930], 9: [990, 300], 10: [930, 240], '11-12': [180, 870],
@@ -47,7 +47,7 @@ const scenarios = [
   },
   {
     drawSize: 64,
-    inspect: true,
+    inspect: false,
     pointScenarios: {
       1: [3000], 2: [2400], 3: [1950, 1860], 4: [1800], 5: [1350, 1110, 990],
       6: [1050, 930], '7-8': [990, 870], 8: [930], '9-12': [810], 16: [750],
