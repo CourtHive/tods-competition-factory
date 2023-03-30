@@ -1,4 +1,5 @@
 import { mocksEngine, scaleEngine, tournamentEngine } from '../../../..';
+import { finishingPositionSort, getFpMap } from './awardTestUtils';
 import { getAwardProfile } from '../getAwardProfile';
 import { expect, it } from 'vitest';
 import {
@@ -69,26 +70,7 @@ const fpMapExpectation = [
     [[0, 0, 0, 0], '31-32', 450],
   ];
 
-const getFpMap = (participants, personPoints) =>
-  participants
-    .filter((p) => p.person)
-    .map((participant) => [
-      participant.draws[0].structureParticipation.map(
-        ({ winCount }) => winCount
-      ),
-      participant.draws[0].finishingPositionRange.join('-'),
-      personPoints[participant.person.personId]?.[0]?.points,
-    ]);
-
-const finishingPositionSort = (a, b) =>
-  a.draws[0].finishingPositionRange[0] - b.draws[0].finishingPositionRange[0];
-
-const policyDefinitions = {
-  [POLICY_TYPE_RANKING_POINTS]: {
-    requireWinDefault: false,
-    awardProfiles,
-  },
-};
+const policyDefinitions = { [POLICY_TYPE_RANKING_POINTS]: { awardProfiles } };
 
 it('can discover default awardProfiles', () => {
   const awardCriteria = {};
@@ -118,7 +100,6 @@ it('supports finishingPositionRanges definitions with or without level', () => {
   let personPoints = result.personPoints;
 
   let fpMap = getFpMap(participants, personPoints);
-
   expect(fpMap).toEqual(fpMapExpectation);
 
   // use awardProfiles with levels
@@ -131,7 +112,6 @@ it('supports finishingPositionRanges definitions with or without level', () => {
   personPoints = result.personPoints;
 
   fpMap = getFpMap(participants, personPoints);
-
   expect(fpMap).toEqual(fpMapExpectation);
 
   // use awardProfiles with levels
@@ -144,7 +124,6 @@ it('supports finishingPositionRanges definitions with or without level', () => {
   personPoints = result.personPoints;
 
   fpMap = getFpMap(participants, personPoints);
-
   expect(fpMap).toEqual(fpMapExpectation);
 });
 
