@@ -12,35 +12,15 @@ import {
 } from '../../../../constants/drawDefinitionConstants';
 
 const awardProfiles = [
+  // TODO: requireWinDefault - to get points for a default there must be at least one win
+  // TODO: requireWalkoverDefault - to get points for a default there must be at least one win
+  // TODO: flights - filter by flightNumbers and assign discount to different flights
   /*
   {
-    eventTypes: [SINGLES],
-    drawTypes: [CURTIS_CONSOLATION],
-    stages: [MAIN],
-    requireWinFirstRound: true,
     requireWinDefault: false,
-    participationOrder: 1,
-    finishingPositionRanges: {
-      1: { value: 3000 },
-      2: [
-        {
-          level: { 1: 2400, 2: 1238, 3: 900, 4: 540, 5: 300 },
-          drawSizes: [],
-          value: 2400,
-        },
-      ],
-      8: [{ drawSize: 32, threshold: true, value: 840 }],
-      16: [
-        { drawSize: 32, value: 750 },
-        { drawSize: 64, value: 750 },
-      ],
-      32: [{ drawSizes: [32, 64], value: 390 }],
-      // if requireWinFirstRound is not true then any of the following will achieve the same thing
-      // 32: [{ drawSizes: [32, 64], value: 390, requireWin: true }],
-      // 32: [{ drawSizes: [64], value: 390 }],
-      // 32: [{ drawSize: 64, value: 390 }],
-    },
-    // alternative to finishingPositionRanges
+    requireWalkoverDefault: false,
+    flights: { flightNumbers: [1, 2, 3], 2: .5, 3: .25 },
+    // alternative to finishingPositionRanges; can only apply to MAIN stage
     finishingRound: {
       1: { won: { value: 3000, level: { 1: 3000, 2: 1650 } }, lost: 2400 },
       2: { won: 2400, lost: 1800 }, // allows for different points for winning SF vs. losing in F
@@ -64,7 +44,6 @@ const awardProfiles = [
   {
     eventTypes: [SINGLES],
     drawTypes: [],
-    stages: [],
     finishingStageSequence: 1, // TODO: will need to derive for QUALIFYING
     finishingRound: { 1: { won: 30, lost: 15 }, 2: { won: 15 } },
   },

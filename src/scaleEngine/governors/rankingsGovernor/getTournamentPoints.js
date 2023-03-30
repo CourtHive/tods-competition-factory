@@ -161,7 +161,7 @@ export function getTournamentPoints({
               }
             }
 
-            if (!awardPoints && finishingRound) {
+            if (!awardPoints && finishingRound && participationOrder === 1) {
               const valueObj = finishingRound[accessor];
               if (valueObj) {
                 // positionAwards.push(accessor);
@@ -190,8 +190,8 @@ export function getTournamentPoints({
             }
 
             if (!awardPoints && winCount && ppwProfile) {
-              if (level && ppwProfile.levels?.[level]) {
-                const levelValue = ppwProfile.levels[level];
+              if (level && ppwProfile.level?.[level]) {
+                const levelValue = ppwProfile.level[level];
                 perWinPoints += winCount * levelValue;
               } else if (ppwProfile.value) {
                 perWinPoints += winCount * ppwProfile.value;
@@ -249,9 +249,12 @@ function getAwardPoints({ valueObj, drawSize, level, participantWon }) {
     let sizeDefined = valueObj.find(
       (obj) => obj.drawSize === drawSize || obj.drawSizes?.includes(drawSize)
     );
+
+    // threshold attribute allows a definition for e.g. drawSize: 16 to apply to all LARGER drawSizes
     let thresholdMatched = valueObj.find(
       (obj) => obj.drawSize && obj.threshold && drawSize > obj.drawSize
     );
+    // a default definition can be provided which has no drawSize or drawSizes
     let defaultDef = valueObj.find(
       (obj) => !obj.drawSize && !obj.drawSizes?.length
     );
@@ -269,7 +272,7 @@ function getAwardPoints({ valueObj, drawSize, level, participantWon }) {
     requireWin =
       (s && sizeDefined.requireWin) ||
       (t && thresholdMatched.requireWin) ||
-      defaultDef.requireWin;
+      defaultDef?.requireWin;
   } else if (typeof valueObj === 'object') {
     let sizeDefined = valueObj?.drawSizes?.[drawSize];
     let defaultDef = valueObj;
