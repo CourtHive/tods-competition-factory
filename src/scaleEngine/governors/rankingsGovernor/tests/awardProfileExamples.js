@@ -9,7 +9,7 @@ export const awardProfileFlights = {
   finishingPositionRanges: {
     1: {
       level: {
-        4: { flight: [540, 351, 270, 189] },
+        4: { flights: [540, 351, 270, 189] },
         5: [
           { flight: 1, v: 300 },
           { f: 2, v: 195 },
@@ -23,6 +23,7 @@ export const awardProfileFlights = {
     4: { level: { 4: { f: [270, 176, 135, 95] }, 5: { f: [150, 98, 75, 53] }}},
     8: { level: { 4: { f: [95, 61, 47, 33] }, 5: { f: [53, 34, 26, 18] }}},
   },
+  // TODO: test perWinPoints w/ Flights
   perWinPoints: {
     participationOrders: [2, 3, 4, 5],
     level: { 4: { f: [84, 54, 42, 29] }, 5: { f: [47, 30, 23, 16] }},
@@ -30,7 +31,7 @@ export const awardProfileFlights = {
 };
 
 export const awardProfilePercentageFlights = {
-  flights: { flightNumbers: [1, 2], 2: 0.65, 3: 0.5, 4: 0.35 },
+  flights: { flightNumbers: [1, 2], pct: { 2: 0.65, 3: 0.5, 4: 0.35 } },
   drawSizes: [4, 8, 16], // this awardProfile is only valid for these drawSizes
   maxDrawSize: 16, // alternative declaration
   levels: [4, 5], // this awardProfile is only valid for levels 4 and 5

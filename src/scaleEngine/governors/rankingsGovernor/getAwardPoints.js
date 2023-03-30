@@ -1,10 +1,38 @@
 import { isConvertableInteger } from '../../../utilities/math';
 import { getTargetElement } from './getTargetElement';
 
-export function getAwardPoints({ valueObj, drawSize, level, participantWon }) {
-  const getValue = (obj) => {
-    const value = obj?.value || obj?.v || (isConvertableInteger(obj) ? obj : 0);
-    return getTargetElement(level, obj?.level) || value;
+export function getAwardPoints({
+  participantWon,
+  flightNumber,
+  valueObj,
+  drawSize,
+  flights,
+  level,
+}) {
+  const getFlightValue = (flightNumber, targetElement) => {
+    if (!flightNumber) return;
+    if (Array.isArray(targetElement)) {
+      const arrayMember = targetElement.find(
+        (m) => m.flight === flightNumber || m.f === flightNumber
+      );
+      return arrayMember.value || arrayMember.v;
+    }
+    if (typeof targetElement === 'object') {
+      const flights = targetElement.flights || targetElement.f;
+      if (Array.isArray(flights)) return flights[flightNumber - 1];
+    }
+  };
+
+  const getValue = (obj, flightNumber) => {
+    const objectValue =
+      obj?.value || obj?.v || (isConvertableInteger(obj) ? obj : 0);
+    const targetElement = getTargetElement(level, obj?.level);
+    const flightValue = getFlightValue(flightNumber, targetElement);
+    const value =
+      flightValue ||
+      (isConvertableInteger(targetElement) && targetElement) ||
+      objectValue;
+    return { value };
   };
 
   let awardPoints = 0;
@@ -35,9 +63,9 @@ export function getAwardPoints({ valueObj, drawSize, level, participantWon }) {
       thresholdMatched = thresholdMatched?.[winAccessor];
       defaultDef = defaultDef?.[winAccessor];
     }
-    s = getValue(sizeDefined);
-    t = getValue(thresholdMatched);
-    d = getValue(defaultDef);
+    s = getValue(sizeDefined, flightNumber).value;
+    t = getValue(thresholdMatched, flightNumber).value;
+    d = getValue(defaultDef, flightNumber).value;
     awardPoints = s || t || d;
 
     requireWin =
@@ -51,14 +79,18 @@ export function getAwardPoints({ valueObj, drawSize, level, participantWon }) {
       sizeDefined = sizeDefined?.[winAccessor];
       defaultDef = defaultDef?.[winAccessor];
     }
-    s = getValue(sizeDefined);
-    d = getValue(defaultDef);
+    s = getValue(sizeDefined, flightNumber).value;
+    d = getValue(defaultDef, flightNumber).value;
     awardPoints = s || d;
 
     requireWin = s ? sizeDefined.requireWin : defaultDef?.requireWin;
   } else if (isConvertableInteger(valueObj)) {
     // when using participantWon non-objects are not valid
     if (winAccessor === undefined) awardPoints = valueObj;
+  }
+
+  if (flights?.pct?.[flightNumber]) {
+    awardPoints = Math.round(awardPoints * flights.pct[flightNumber]);
   }
 
   return { awardPoints, requireWin };

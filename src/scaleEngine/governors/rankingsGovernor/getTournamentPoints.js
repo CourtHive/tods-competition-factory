@@ -74,6 +74,7 @@ export function getTournamentPoints({
             finishingPositionRange,
             participationOrder,
             participantWon,
+            flightNumber,
             winCount,
           } = participation;
 
@@ -106,6 +107,7 @@ export function getTournamentPoints({
               finishingPositionRanges,
               finishingRound,
               pointsPerWin,
+              flights,
             } = awardProfile;
 
             const ppwProfile = Array.isArray(awardProfile.perWinPoints)
@@ -131,8 +133,10 @@ export function getTournamentPoints({
               if (valueObj) {
                 // positionAwards.push(accessor);
                 ({ awardPoints, requireWin: winRequired } = getAwardPoints({
+                  flightNumber,
                   valueObj,
                   drawSize,
+                  flights,
                   level,
                 }));
               }
@@ -144,8 +148,10 @@ export function getTournamentPoints({
                 // positionAwards.push(accessor);
                 ({ awardPoints, requireWin: winRequired } = getAwardPoints({
                   participantWon,
+                  flightNumber,
                   valueObj,
                   drawSize,
+                  flights,
                   level,
                 }));
               }
