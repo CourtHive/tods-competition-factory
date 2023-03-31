@@ -44,7 +44,6 @@ export function attemptToSetMatchUpStatus(params) {
   const unrecognized = !directing && !nonDirecting;
 
   // if matchUpTieId present a TEAM matchUp is being modified...
-  // at present TEAM matchUps cannot be scored directly
   const onlyModifyScore =
     params.matchUpTieId || (existingWinningSide && directing && !isDoubleExit);
 

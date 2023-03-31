@@ -1,9 +1,11 @@
-import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { updateTieMatchUpScore } from './tieMatchUpScore';
+import { setMatchUpStatus } from './setMatchUpStatus';
 
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
+import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
+import {
+  INVALID_MATCHUP,
+  MISSING_DRAW_DEFINITION,
+} from '../../../constants/errorConditionConstants';
 
 export function enableTieAutoCalc({
   tournamentRecord,
@@ -19,9 +21,10 @@ export function enableTieAutoCalc({
     event,
   });
 
-  removeExtension({ element: matchUp, name: DISABLE_AUTO_CALC });
+  if (matchUp?.matchUpType !== TEAM_MATCHUP) return { error: INVALID_MATCHUP };
 
-  return updateTieMatchUpScore({
+  return setMatchUpStatus({
+    enableAutoCalc: true,
     tournamentRecord,
     drawDefinition,
     matchUpId,

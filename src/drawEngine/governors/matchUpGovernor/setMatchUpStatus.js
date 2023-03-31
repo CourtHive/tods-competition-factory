@@ -1,6 +1,7 @@
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { getProjectedDualWinningSide } from './getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
@@ -131,6 +132,7 @@ export function setMatchUpStatus(params) {
   // Check validity of matchUpStatus considering assigned drawPositions -------
   const assignedDrawPositions = inContextMatchUp.drawPositions?.filter(Boolean);
 
+  let dualWinningSideChange;
   if (matchUp.matchUpType === TEAM) {
     if (disableAutoCalc) {
       addExtension({
@@ -138,8 +140,37 @@ export function setMatchUpStatus(params) {
         element: matchUp,
       });
     } else if (enableAutoCalc) {
+      const existingDualMatchUpWinningSide = matchUp.winningSide;
       removeExtension({ name: DISABLE_AUTO_CALC, element: matchUp });
+      const {
+        winningSide: projectedWinningSide,
+        scoreStringSide1,
+        scoreStringSide2,
+        set,
+      } = generateTieMatchUpScore({
+        matchUp,
+      });
+
+      const score = {
+        scoreStringSide1,
+        scoreStringSide2,
+        sets: set ? [set] : [],
+      };
+
+      dualWinningSideChange =
+        projectedWinningSide !== existingDualMatchUpWinningSide;
+
+      // setting these parameters will enable noDownStreamDependencies to attemptToSetWinningSide
+      Object.assign(params, {
+        winningSide: projectedWinningSide,
+        dualWinningSideChange,
+        projectedWinningSide,
+        score,
+      });
     }
+  }
+
+  if (matchUp.matchUpType === TEAM) {
     if (
       [
         AWAITING_RESULT,
@@ -221,7 +252,6 @@ export function setMatchUpStatus(params) {
     matchUp,
   });
 
-  let dualWinningSideChange;
   if (matchUpTieId) {
     const { matchUp: dualMatchUp } = findMatchUp({
       matchUpId: matchUpTieId,
@@ -261,7 +291,7 @@ export function setMatchUpStatus(params) {
     });
   }
 
-  // with propagating winningSide changes, activeDownstream only applies to eventType: TEAM
+  // with propagating winningSide changes, activeDownstream does not apply to collection matchUps
   const activeDownstream = isActiveDownstream(params);
   const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
 
@@ -329,8 +359,8 @@ export function setMatchUpStatus(params) {
   pushGlobalLog({
     method: stack,
     activeDownstream,
-    winningSide,
     matchUpWinner,
+    winningSide,
   });
 
   const result = (!activeDownstream && noDownstreamDependencies(params)) ||

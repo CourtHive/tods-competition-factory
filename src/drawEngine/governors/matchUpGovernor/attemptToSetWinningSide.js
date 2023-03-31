@@ -2,15 +2,29 @@ import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { definedAttributes } from '../../../utilities/objects';
+import { attemptToModifyScore } from './attemptToModifyScore';
 import { directParticipants } from './directParticipants';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function attemptToSetWinningSide(params) {
   const stack = 'attemptToSetWinningSide';
-  const { drawDefinition, winningSide, structure, matchUp, matchUpsMap } =
-    params;
+
+  const {
+    drawDefinition,
+    winningSide,
+    structure,
+    matchUp,
+    matchUpsMap,
+    disableAutoCalc,
+    dualMatchUp,
+  } = params;
   let connectedStructures;
+
+  // disableAutoCalc means the score is being set manually
+  if (dualMatchUp?._disableAutoCalc && !disableAutoCalc) {
+    return attemptToModifyScore(params);
+  }
 
   if (matchUp.winningSide && matchUp.winningSide !== winningSide) {
     // only applies when progression is based on WIN_RATIO, e.g. ROUND_ROBIN_WITH_PLAYOFF

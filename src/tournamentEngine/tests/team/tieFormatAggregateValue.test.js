@@ -577,7 +577,6 @@ test.each(outcomeScenarios)(
       drawId,
     });
     expect(result.success).toEqual(true);
-    expect(result.score).toEqual(automaticallyCalculatedScore);
 
     // test disabling / enabling auto calc
     matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
@@ -585,6 +584,7 @@ test.each(outcomeScenarios)(
       ({ matchUpId }) => matchUpId === teamMatchUp.matchUpId
     );
     expect(teamMatchUp._disableAutoCalc).toBeUndefined();
+    expect(teamMatchUp.score).toEqual(automaticallyCalculatedScore);
 
     result = tournamentEngine.disableTieAutoCalc({
       matchUpId: teamMatchUp.matchUpId,

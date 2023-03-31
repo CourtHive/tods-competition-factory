@@ -17,8 +17,8 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 export function updateTieMatchUpScore({
-  exitWhenNoValues,
   tournamentRecord,
+  exitWhenNoValues,
   drawDefinition,
   matchUpStatus,
   removeScore,
@@ -69,16 +69,16 @@ export function updateTieMatchUpScore({
   };
 
   const hasWinner = [1, 2].includes(winningSide);
-  const newMatchUpStatus = hasWinner
-    ? COMPLETED
-    : isActiveMatchUp({
-        matchUpStatus: matchUpStatus || matchUp.matchUpStatus,
-        tieMatchUps: matchUp.tieMatchUps,
-        winningSide: matchUp.winningSide,
-        score: scoreObject,
-      })
-    ? IN_PROGRESS
-    : TO_BE_PLAYED;
+  const newMatchUpStatus =
+    (hasWinner && COMPLETED) ||
+    (isActiveMatchUp({
+      matchUpStatus: matchUpStatus || matchUp.matchUpStatus,
+      tieMatchUps: matchUp.tieMatchUps,
+      winningSide: matchUp.winningSide,
+      score: scoreObject,
+    }) &&
+      IN_PROGRESS) ||
+    TO_BE_PLAYED;
 
   const removeWinningSide = matchUp.winningSide && !hasWinner;
   const hasResults = matchUp.tieMatchUps.find(
@@ -126,5 +126,6 @@ export function updateTieMatchUpScore({
     score: scoreObject,
     removeWinningSide,
     tieFormatRemoved,
+    winningSide,
   };
 }
