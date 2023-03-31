@@ -61,6 +61,7 @@ export function getParticipants({
     mappedMatchUps,
     matchUps,
   } = getParticipantEntries({
+    withMatchUps: withMatchUps || withRankingProfile,
     withEvents: withEvents || withRankingProfile,
     withDraws: withDraws || withRankingProfile,
     withPotentialMatchUps,
@@ -76,7 +77,6 @@ export function getParticipants({
     withStatistics,
     participantMap,
     withOpponents,
-    withMatchUps,
     withSeeding,
   }));
 
@@ -109,7 +109,10 @@ export function getParticipants({
             withEvents || withRankingProfile
               ? Object.values(events)
               : undefined,
-          matchUps: withMatchUps ? Object.values(matchUps) : undefined,
+          matchUps:
+            withMatchUps || withRankingProfile
+              ? Object.values(matchUps)
+              : undefined,
           opponents: withOpponents ? participantOpponents : undefined,
           potentialMatchUps: nextMatchUps
             ? Object.values(potentialMatchUps)
