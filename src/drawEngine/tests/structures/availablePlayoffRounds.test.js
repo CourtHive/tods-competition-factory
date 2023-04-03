@@ -239,7 +239,6 @@ it('can accurately determine available playoff rounds for CONSOLATION draw of FI
 });
 
 it('can generate only specified playoff rounds and give them custom names', () => {
-  const allMatchUps = [];
   let matchUpAddNotices = [];
 
   const subscriptions = {
@@ -247,7 +246,6 @@ it('can generate only specified playoff rounds and give them custom names', () =
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
-          allMatchUps.push(...matchUps);
         });
       }
     },
@@ -298,7 +296,6 @@ it('can generate only specified playoff rounds and give them custom names', () =
 });
 
 it('can use roundProfiles to specify depth of playoff structures', () => {
-  const allMatchUps = [];
   let matchUpAddNotices = [];
 
   const subscriptions = {
@@ -306,7 +303,6 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
-          allMatchUps.push(...matchUps);
         });
       }
     },
@@ -353,7 +349,6 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
 });
 
 it('can determine playoff structures available from playoff structures', () => {
-  const allMatchUps = [];
   let matchUpAddNotices = [];
 
   const subscriptions = {
@@ -361,7 +356,6 @@ it('can determine playoff structures available from playoff structures', () => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
-          allMatchUps.push(...matchUps);
         });
       }
     },
