@@ -523,7 +523,6 @@ drawEngine.generateDrawTypeAndModifyDrawDefinition({
     ],
   },
 
-  goesTo, // optional - defaults to true - generate winnerMatchUpId and loserMatchUpId attributes
   uuids, // optional - array of UUIDs to be used for structureIds and matchUpIds
 
   structureName, // optional - defaults to stage
