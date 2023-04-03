@@ -2077,6 +2077,64 @@ const {
 
 ---
 
+## getParticipants
+
+Returns **deepCopies** of competition participants filtered by participantFilters which are arrays of desired participant attribute values. This method is an optimization of `getCompetitionParticipants` and will replace it going forward.
+
+```js
+const participantFilters = {
+  accessorValues: [{ accessor, value }], // optional - see Accessors in Concepts
+  eventEntryStatuses, // boolean
+  participantTypes: [INDIVIDUAL],
+  participantRoles, [COMPETITOR],
+  signInStatus, // specific signIn status
+  eventIds, // events in which participants appear
+};
+const {
+  competitionParticipants,
+  participantIdsWithConflicts // returns array of participantIds which have scheduling conflicts
+} =
+  tournamentEngine.getParticipants({
+    convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
+    participantFilters, // optional - filters
+    policyDefinitions, // optional - can accept a privacy policy to filter participant attributes
+    usePublishState, // optional - BOOLEAN - don't add seeding information when not published
+    scheduleAnalysis, // optional - return scheduling conflicts
+    usePublishState,  // optional boolean
+    withDraws, // optional - defaults to true if any other context options are specified
+    withEvents, // optional - defaults to true if any other context options are specified
+    withGroupings, // optional - include membership in group, pair, and team participants
+    withIndividualParticipants, // optional - include hydrated individualParticiapnts for TEAM/PAIR participants
+    withIOC, // optional - will add IOC country code and countryName to participant persons
+    withISO2, // optional - will add ISO2 country code and countryName to participant persons
+    withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
+    withOpponents, // optional - include opponent participantIds
+    withPotentialMatchUps, // optional boolean
+    withRankingProfile, // optional boolean - include details necessary for point awards
+    withScaleValues, // optional - include { ratings, rankings } attributes extracted from timeItems
+    withSeeding, // optionsl - add event seeding
+    withScheduleItems, // optional boolean - include array of scheduled matchUp details
+    withSignInStatus, // optional boolean
+    withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
+    withTeamMatchUps // optional boolean
+  });
+```
+
+### participantFilters
+
+- enableOrFiltering: boolean - use OR logic instead of default AND
+- accessorValues: array of accessors and targeted value `[{ accessor, value }]`
+- drawEntryStatuses: array of `entryStatus` values for participantIds found in draw.entries
+- eventEntryStatuses: array of `entryStatus` values for participantIds found in event.entries
+- eventIds: array of targeted eventIds
+- participantIds: array of targeted participantIds
+- participantRoles: array of targeted participantRoles
+- participantTypes: array of targeted participantTypes
+- positionedParticipants: participantIds positioned in structures `[true, false, undefined]`
+- signInStatus: SIGNED_IN or SIGNED_OUT
+
+---
+
 ## getParticipantScaleItem
 
 Return a ranking or rating or seeding value for a participant, referenced by participantId.

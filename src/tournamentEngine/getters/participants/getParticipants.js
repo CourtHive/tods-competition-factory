@@ -30,7 +30,6 @@ export function getParticipants({
   withDraws,
   withISO2,
   withIOC,
-  // inContext, - may be deprecated in favor of `withIndividualParticipants`
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (withMatchUps) getMatchUpDependencies({ tournamentRecord }); // ensure goesTos are present
