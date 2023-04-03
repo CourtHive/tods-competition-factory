@@ -30,7 +30,6 @@ it('accurately determines winnerMatchUpId and loserMatchUpId for FIC matchUps', 
   } = mocksEngine.generateTournamentRecord({
     participantsProfile,
     drawProfiles,
-    goesTo: true,
   });
 
   const { matchUps } = tournamentEngine

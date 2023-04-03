@@ -26,9 +26,8 @@ it('returns properly ordered drawPositions for consolation structure feed rounds
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile,
-    goesTo: true,
+    drawProfiles,
   });
 
   tournamentEngine.setState(tournamentRecord);
