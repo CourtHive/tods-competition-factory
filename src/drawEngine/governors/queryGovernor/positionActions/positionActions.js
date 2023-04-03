@@ -24,7 +24,7 @@ import {
 } from './actionPolicyUtils';
 
 import { DIRECT_ENTRY_STATUSES } from '../../../../constants/entryStatusConstants';
-import { PAIR } from '../../../../constants/participantTypes';
+import { PAIR } from '../../../../constants/participantConstants';
 import {
   INVALID_DRAW_POSITION,
   MISSING_DRAW_DEFINITION,

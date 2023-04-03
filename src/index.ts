@@ -79,7 +79,7 @@ export { mocksEngine } from './mocksEngine';
 
 // START-: constants ---------------------------------------------------------------
 export { participantRoles } from './constants/participantRoles';
-export { participantTypes } from './constants/participantTypes';
+export { participantTypes } from './constants/participantConstants';
 export { factoryConstants } from './constants';
 
 export { drawDefinitionConstants } from './constants/drawDefinitionConstants';

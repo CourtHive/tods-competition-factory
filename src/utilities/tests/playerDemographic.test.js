@@ -2,9 +2,8 @@ import tournamentEngine from '../../tournamentEngine/sync';
 import mocksEngine from '../../mocksEngine';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL } from '../../constants/participantConstants';
+import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { DOUBLES } from '../../constants/eventConstants';
-import { PAIR } from '../../constants/participantTypes';
 import { MALE } from '../../constants/genderConstants';
 import { JSON2CSV } from '../json';
 
