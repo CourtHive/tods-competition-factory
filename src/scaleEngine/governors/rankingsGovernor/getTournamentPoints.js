@@ -67,6 +67,10 @@ export function getTournamentPoints({
       const drawSize = drawInfo?.drawSize;
 
       const { category, eventType } = eventInfo || {};
+      const startDate =
+        draw.startDate || eventInfo.startDate || tournamentRecord.startDate;
+      const endDate =
+        draw.endDate || eventInfo.endDate || tournamentRecord.endDate;
 
       // don't process INDIVIDUAL and PAIR participants in TEAM events
       // They are processed in the context of the TEAM in which they appear
@@ -99,9 +103,11 @@ export function getTournamentPoints({
             awardProfiles,
             participation,
             eventType,
+            startDate,
             category,
             drawSize,
             drawType,
+            endDate,
             level,
           });
 
