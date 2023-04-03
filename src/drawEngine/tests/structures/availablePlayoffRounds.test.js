@@ -56,6 +56,48 @@ it('can correctly determine positions playedOff for STANDARD_ELIMINATION', () =>
   });
 });
 
+it('can correctly determine positions played off for FMLC', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawType: FIRST_MATCH_LOSER_CONSOLATION, drawSize: 16 }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const [{ structureId }] = drawDefinition.structures;
+  let result = tournamentEngine.getAvailablePlayoffRounds({
+    structureId,
+    drawId,
+  });
+
+  const { playoffRounds, playoffRoundsRanges } = result;
+  // NOTE: Change was made to allow FMLC playoff round from 2nd round MAIN
+  expect(playoffRounds).toEqual([2, 3]);
+  expect(playoffRoundsRanges).toEqual([
+    {
+      finishingPositions: [5, 6, 7, 8],
+      finishingPositionRange: '5-8',
+      roundNumber: 2,
+    },
+    {
+      finishingPositions: [3, 4],
+      finishingPositionRange: '3-4',
+      roundNumber: 3,
+    },
+  ]);
+
+  const roundProfiles = [{ [2]: 1 }];
+  result = tournamentEngine.generateAndPopulatePlayoffStructures({
+    roundProfiles,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+});
+
 it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATION', () => {
   reset();
   initialize();
@@ -83,14 +125,14 @@ it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATIO
   expect(playoffRounds).toEqual([2, 3]);
   expect(playoffRoundsRanges).toEqual([
     {
-      roundNumber: 2,
       finishingPositions: [5, 6, 7, 8],
       finishingPositionRange: '5-8',
+      roundNumber: 2,
     },
     {
-      roundNumber: 3,
       finishingPositions: [3, 4],
       finishingPositionRange: '3-4',
+      roundNumber: 3,
     },
   ]);
 });

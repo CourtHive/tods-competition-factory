@@ -9,9 +9,9 @@ import { generateRange, unique } from '../../../utilities';
  */
 
 export function getFinishingPositionSourceRoundsMap({
+  finishingPositions,
   drawDefinition,
   structureId,
-  finishingPositions,
 }) {
   const { roundProfile } = getStructureRoundProfile({
     drawDefinition,
