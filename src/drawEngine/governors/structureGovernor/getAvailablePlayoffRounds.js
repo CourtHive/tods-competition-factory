@@ -1,3 +1,4 @@
+import { generateRange, numericSort } from '../../../utilities';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { getDrawStructures } from '../../getters/findStructure';
 import { getStructureLinks } from '../../getters/linkGetter';
@@ -82,14 +83,17 @@ function avaialblePlayoffRounds({
 
   const linkSourceRoundNumbers =
     links?.source
-      // This does not prevent generation of 3-4 playoff in FMLC drawSize: 8, for instance
-      // TODO: perhaps this should be enabled by a policyDefinition
       ?.filter((link) => link.linkCondition !== FIRST_MATCHUP)
+      .map((link) => link.source?.roundNumber) || [];
+  const potentialFirstMatchUpRounds =
+    links?.source
+      ?.filter((link) => link.linkCondition === FIRST_MATCHUP)
       .map((link) => link.source?.roundNumber) || [];
 
   const {
-    playoffSourceRounds,
-    playoffRoundsRanges: roundsRanges,
+    playoffSourceRounds: playoffRounds,
+    playoffRoundsRanges,
+    roundProfile,
     error,
   } = getSourceRounds({
     excludeRoundNumbers: linkSourceRoundNumbers,
@@ -98,39 +102,48 @@ function avaialblePlayoffRounds({
     structureId,
   });
 
-  const sourceRounds = links.source?.map(({ source }) => source.roundNumber);
-  const excludeRoundNumbers = [];
-
-  for (const roundNumber of playoffSourceRounds) {
+  for (const roundNumber of potentialFirstMatchUpRounds) {
     // sourceRounds will only include roundNumbers in the case of FMLC
     // because it should still be possible to generate 3-4 playoffs even if 2nd round losers lost in the 1st round
     // but 3-4 playoffs should not be possible to generate if there are not at least 2 matchUps where players COULD progress
-    if (sourceRounds.includes(roundNumber)) {
-      const link = links?.source.find(
-        (link) => link.source.roundNumber === roundNumber
-      );
-      const targetRoundNumber = link?.target.roundNumber;
-      const targetStructureId = link?.target.structureId;
-      const targetRoundMatchUps = matchUps.filter(
-        ({ roundNumber, structureId }) =>
-          structureId === targetStructureId && roundNumber === targetRoundNumber
-      );
-      const availableToProgress = targetRoundMatchUps.filter(({ sides }) =>
-        sides.find((side) => side.participantFed && !side.participantId)
-      ).length;
-      if (availableToProgress !== targetRoundMatchUps.length) {
-        excludeRoundNumbers.push(roundNumber);
+    const link = links?.source.find(
+      (link) => link.source.roundNumber === roundNumber
+    );
+    const targetRoundNumber = link?.target.roundNumber;
+    const targetStructureId = link?.target.structureId;
+    const targetRoundMatchUps = matchUps.filter(
+      ({ roundNumber, structureId }) =>
+        structureId === targetStructureId && roundNumber === targetRoundNumber
+    );
+    const availableToProgress = targetRoundMatchUps.filter(({ sides }) =>
+      sides.find((side) => side.participantFed && !side.participantId)
+    ).length;
+
+    if (availableToProgress === targetRoundMatchUps.length) {
+      playoffRounds.push(roundNumber);
+      const loser = roundProfile[roundNumber].finishingPositionRange?.loser;
+      if (loser) {
+        const minFinishingPosition = Math.min(...loser);
+        const maxFinishingPosition = minFinishingPosition + availableToProgress;
+        const finishingPositions = generateRange(
+          minFinishingPosition,
+          maxFinishingPosition
+        );
+        const roundsRange = {
+          finishingPositionRange: [
+            minFinishingPosition,
+            maxFinishingPosition - 1,
+          ].join('-'),
+          finishingPositions,
+          roundNumber,
+        };
+        playoffRoundsRanges.push(roundsRange);
       }
     }
   }
 
-  const playoffRounds = playoffSourceRounds.filter(
-    (roundNumber) => !excludeRoundNumbers.includes(roundNumber)
-  );
-
-  const playoffRoundsRanges = roundsRanges.filter(
-    ({ roundNumber }) => !excludeRoundNumbers.includes(roundNumber)
-  );
+  playoffRounds.sort(numericSort);
+  playoffRoundsRanges.sort((a, b) => a.roundNumber - b.roundNumber);
 
   return { playoffRounds, playoffRoundsRanges, error };
 }

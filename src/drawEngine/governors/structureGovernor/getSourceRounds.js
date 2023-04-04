@@ -88,6 +88,24 @@ export function getSourceRounds({
     .flat()
     .sort(numericSort);
 
+  const { playoffRoundsRanges } = getPlayoffRoundsRanges({
+    playoffSourceRounds,
+    roundProfile,
+  });
+
+  const sourceRounds = [...playoffSourceRounds, ...playedOffSourceRounds];
+
+  return {
+    playoffPositionsReturned,
+    playedOffSourceRounds,
+    playoffRoundsRanges,
+    playoffSourceRounds,
+    roundProfile,
+    sourceRounds,
+  };
+}
+
+export function getPlayoffRoundsRanges({ playoffSourceRounds, roundProfile }) {
   const playoffRoundsRanges = playoffSourceRounds.map((roundNumber) => {
     const rangeDefinition =
       roundProfile[roundNumber].finishingPositionRange.loser;
@@ -99,14 +117,5 @@ export function getSourceRounds({
       roundNumber,
     };
   });
-
-  const sourceRounds = [...playoffSourceRounds, ...playedOffSourceRounds];
-
-  return {
-    playoffPositionsReturned,
-    playedOffSourceRounds,
-    playoffRoundsRanges,
-    playoffSourceRounds,
-    sourceRounds,
-  };
+  return { playoffRoundsRanges };
 }

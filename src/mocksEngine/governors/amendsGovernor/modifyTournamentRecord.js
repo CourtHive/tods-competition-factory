@@ -32,7 +32,6 @@ export function modifyTournamentRecord({
   venueProfiles,
   autoSchedule,
   drawProfiles,
-  goesTo,
   uuids,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -209,7 +208,6 @@ export function modifyTournamentRecord({
           tournamentRecord,
           drawProfile,
           drawIndex,
-          goesTo,
           uuids,
         });
       if (error) return { error };

@@ -47,8 +47,21 @@ export function addGoesTo({
         }
         if (loserMatchUpId) {
           goesToMap.loserMatchUpIds[matchUp.matchUpId] = loserMatchUpId;
-          Object.assign(matchUp, { loserMatchUpId });
-          Object.assign(inContextMatchUp, { loserMatchUpId });
+          inContextMatchUp.loserMatchUpId = loserMatchUpId;
+          matchUp.loserMatchUpId = loserMatchUpId;
+
+          if (inContextMatchUp.finishingPositionRange) {
+            const loserRange = loserMatchUp.finishingPositionRange && [
+              ...inContextMatchUp.finishingPositionRange.loser,
+              ...loserMatchUp.finishingPositionRange.loser,
+            ];
+            const loser = loserRange && [
+              Math.min(...loserRange),
+              Math.max(...loserRange),
+            ];
+            inContextMatchUp.finishingPositionRange.loser = loser;
+            matchUp.finishingPositionRange.loser = loser;
+          }
         }
       }
     });

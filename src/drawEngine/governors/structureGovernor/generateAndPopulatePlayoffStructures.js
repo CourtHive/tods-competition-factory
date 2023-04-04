@@ -239,47 +239,45 @@ export function generateAndPopulatePlayoffStructures(params) {
 
   // the matchUps in the source structure must have goesTo details added
   const matchUpModifications = [];
-  if (params.goesTo !== false) {
-    const goesToMap = addGoesTo({
-      inContextDrawMatchUps,
-      drawDefinition,
-      matchUpsMap,
-    }).goesToMap;
+  const goesToMap = addGoesTo({
+    inContextDrawMatchUps,
+    drawDefinition,
+    matchUpsMap,
+  }).goesToMap;
 
-    const { structure: sourceStructure } = findStructure({
-      drawDefinition: params.drawDefinition,
-      structureId: sourceStructureId,
-    });
+  const { structure: sourceStructure } = findStructure({
+    drawDefinition: params.drawDefinition,
+    structureId: sourceStructureId,
+  });
 
-    const { matchUps: sourceStructureMatchUps } = getAllStructureMatchUps({
-      structure: sourceStructure,
-    });
+  const { matchUps: sourceStructureMatchUps } = getAllStructureMatchUps({
+    structure: sourceStructure,
+  });
 
-    sourceStructureMatchUps.forEach((matchUp) => {
-      const loserMatchUpId = goesToMap.loserMatchUpIds[matchUp.matchUpId];
-      if (loserMatchUpId && matchUp.loserMatchUpId !== loserMatchUpId) {
-        matchUp.loserMatchUpId = loserMatchUpId;
-        const modification = {
-          tournamentId: tournamentRecord?.tournamentId,
-          eventId: params.event?.eventId,
-          context: stack,
-          matchUp,
-        };
-        matchUpModifications.push(modification);
-      }
-      const winnerMatchUpId = goesToMap.winnerMatchUpIds[matchUp.matchUpId];
-      if (winnerMatchUpId && matchUp.winnerMatchUpId !== winnerMatchUpId) {
-        matchUp.winnerMatchUpId = winnerMatchUpId;
-        const modification = {
-          tournamentId: tournamentRecord?.tournamentId,
-          eventId: params.event?.eventId,
-          context: stack,
-          matchUp,
-        };
-        matchUpModifications.push(modification);
-      }
-    });
-  }
+  sourceStructureMatchUps.forEach((matchUp) => {
+    const loserMatchUpId = goesToMap.loserMatchUpIds[matchUp.matchUpId];
+    if (loserMatchUpId && matchUp.loserMatchUpId !== loserMatchUpId) {
+      matchUp.loserMatchUpId = loserMatchUpId;
+      const modification = {
+        tournamentId: tournamentRecord?.tournamentId,
+        eventId: params.event?.eventId,
+        context: stack,
+        matchUp,
+      };
+      matchUpModifications.push(modification);
+    }
+    const winnerMatchUpId = goesToMap.winnerMatchUpIds[matchUp.matchUpId];
+    if (winnerMatchUpId && matchUp.winnerMatchUpId !== winnerMatchUpId) {
+      matchUp.winnerMatchUpId = winnerMatchUpId;
+      const modification = {
+        tournamentId: tournamentRecord?.tournamentId,
+        eventId: params.event?.eventId,
+        context: stack,
+        matchUp,
+      };
+      matchUpModifications.push(modification);
+    }
+  });
 
   return {
     structures: newStructures,
