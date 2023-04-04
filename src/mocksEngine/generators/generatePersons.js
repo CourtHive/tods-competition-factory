@@ -1,8 +1,8 @@
 import { parseAgeCategoryCode } from '../../global/functions/parseAgeCategoryCode';
 import { definedAttributes } from '../../utilities/objects';
+import { generatePersonData } from './generatePersonData';
 import { dateFromDay } from '../../utilities/dateTime';
 import { countries } from '../../fixtures/countryData';
-import defaultPersonData from '../data/persons.json';
 import {
   generateRange,
   randomMember,
@@ -30,6 +30,7 @@ export function generatePersons({
 } = {}) {
   if (isNaN(count)) return { error: INVALID_VALUES };
 
+  const defaultPersonData = generatePersonData({ count: 400 }).personData;
   let validPersonData = defaultPersonData.filter(
     (person) => !sex || person.sex === sex
   );

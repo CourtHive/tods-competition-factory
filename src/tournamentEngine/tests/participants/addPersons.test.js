@@ -1,4 +1,4 @@
-import defaultPersonData from '../../../mocksEngine/data/persons.json';
+import { generatePersonData } from '../../../mocksEngine/generators/generatePersonData';
 import tournamentEngine from '../../sync';
 import { UUID } from '../../../utilities';
 import { expect, test } from 'vitest';
@@ -12,6 +12,7 @@ import {
 test('it can addPersons and create INDIVIDUAL and PAIR participants', () => {
   const personsCount = 20;
   tournamentEngine.newTournamentRecord();
+  const defaultPersonData = generatePersonData({ count: 20 }).personData;
 
   let result = tournamentEngine.addPersons();
   expect(result.error).toEqual(INVALID_VALUES);
