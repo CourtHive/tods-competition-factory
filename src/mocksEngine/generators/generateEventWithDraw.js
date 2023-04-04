@@ -59,7 +59,6 @@ export function generateEventWithDraw({
   drawProfile,
   startDate,
   drawIndex,
-  goesTo,
   uuids,
 }) {
   const drawProfileCopy = makeDeepCopy(drawProfile, false, true);
@@ -382,7 +381,6 @@ export function generateEventWithDraw({
     seedingScaleName,
     matchUpFormat,
     eventId,
-    goesTo,
     isMock,
     event,
   });

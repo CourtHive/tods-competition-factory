@@ -1,16 +1,16 @@
-import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
-import { eventConstants } from '../../../constants/eventConstants';
-import { drawEngine } from '../../../drawEngine/sync';
-import mocksEngine from '../../../mocksEngine';
-import { tournamentEngine } from '../../sync';
+import { getAppliedPolicies } from '../../../../global/functions/deducers/getAppliedPolicies';
+import { eventConstants } from '../../../../constants/eventConstants';
+import { drawEngine } from '../../../../drawEngine/sync';
+import mocksEngine from '../../../../mocksEngine';
+import { tournamentEngine } from '../../../sync';
 import { expect, it } from 'vitest';
 
-import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
-import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import { MISSING_ASSIGNMENTS } from '../../../../constants/errorConditionConstants';
+import SEEDING_ITF_POLICY from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 const { SINGLES } = eventConstants;
 
-it('can aggrgate participant finishingPositions', () => {
+it('generates correct finishingPositionRanges for SINGLE_ELIMINATION draws', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantsCount: 14 },
   });
@@ -112,8 +112,8 @@ it('can aggrgate participant finishingPositions', () => {
 
   expectations.forEach(({ roundNumber, finishingPositionRange }) => {
     const losingParticipantIds = getRoundLosingParticipantIds({
-      matchUps,
       roundNumber,
+      matchUps,
     });
     losingParticipantIds.forEach((id) => {
       expect(idMap[id].finishingPositionRange).toEqual(finishingPositionRange);

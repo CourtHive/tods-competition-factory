@@ -93,8 +93,6 @@ it.each(scenarios)(
       finishingPositionSort
     );
 
-    const encounteredRangeAccessors = [];
-
     const pointAwards = Object.keys(result.personPoints)
       .flatMap((personId) => {
         const personResults = result.personPoints[personId];
@@ -132,14 +130,15 @@ it.each(scenarios)(
       .sort((a, b) => b[0] - a[0]);
 
     // expect(Object.keys(result.personPoints).length).toEqual(24);
+    /*
     Object.values(result.personPoints).forEach((personResults) => {
       personResults.forEach((personResult) => {
         const { rangeAccessor, positionPoints, perWinPoints } = personResult;
 
-        if (positionPoints && !perWinPoints)
-          encounteredRangeAccessors.push(rangeAccessor);
+        if (positionPoints && !perWinPoints) encounteredRangeAccessors.push(rangeAccessor); 
       });
     });
+    */
 
     if (scenario.inspect) {
       console.log(pointAwards);

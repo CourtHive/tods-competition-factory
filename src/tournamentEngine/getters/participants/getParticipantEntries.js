@@ -566,7 +566,7 @@ export function getParticipantEntries({
       }
 
       if (scheduleAnalysis) {
-        const { scheduledMinutesDifference } = scheduleAnalysis || {};
+        const { scheduledMinutesDifference } = scheduleAnalysis;
 
         // iterate through participantAggregator.scheduleItems
         const scheduleItems = participantAggregator.scheduleItems || [];

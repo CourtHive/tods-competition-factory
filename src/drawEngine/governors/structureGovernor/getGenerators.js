@@ -49,13 +49,9 @@ export function getGenerators(params) {
 
   // disable feeding from MAIN final unless policy specifies
   params.skipRounds =
-    params.skipRounds !== undefined
-      ? params.skipRounds
-      : drawSize <= 4
-      ? feedPolicy?.feedMainFinal
-        ? 0
-        : 1
-      : 0;
+    params.skipRounds ||
+    (drawSize <= 4 && (feedPolicy?.feedMainFinal ? 0 : 1)) ||
+    0;
 
   const singleElimination = () => {
     const { matchUps } = treeMatchUps(params);

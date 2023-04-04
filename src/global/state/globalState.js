@@ -7,6 +7,7 @@ import {
 } from '../../constants/errorConditionConstants';
 
 const globalState = {
+  tournamentFactoryVersion: '0.0.0',
   timers: { default: { elapsedTime: 0 } },
   iterators: { makeDeepCopy: 0 },
   devContext: undefined,
@@ -37,6 +38,10 @@ const requiredStateProviderMethods = [
   'setTournamentRecord',
   'setTournamentRecords',
 ];
+
+export function setFactoryVersion(version) {
+  globalState.tournamentFactoryVersion = version;
+}
 
 export function setStateProvider(globalStateProvider) {
   if (typeof globalStateProvider !== 'object') {

@@ -1,13 +1,16 @@
+import { findTournamentExtension } from './governors/queryGovernor/extensionQueries';
 import { getAllDrawMatchUps } from '../drawEngine/getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { findEvent } from './getters/eventGetter';
 import { makeDeepCopy } from '../utilities';
 import {
   getTournamentRecord,
+  setFactoryVersion,
   setTournamentId,
   setTournamentRecords,
 } from '../global/state/globalState';
 
+import { FACTORY } from '../constants/extensionConstants';
 import {
   INVALID_OBJECT,
   MISSING_TOURNAMENT_ID,
@@ -21,6 +24,15 @@ export function setState(tournament, deepCopyOption) {
 
   const tournamentRecord =
     deepCopyOption !== false ? makeDeepCopy(tournament) : tournament;
+
+  const { extension: factoryExtension } = findTournamentExtension({
+    tournamentRecord,
+    name: FACTORY,
+  });
+
+  if (factoryExtension?.value.factoryVersion) {
+    setFactoryVersion(factoryExtension.value.factoryVersion);
+  }
 
   setTournamentRecords({ [tournamentId]: tournamentRecord });
   setTournamentId(tournamentId); // must be set AFTER tournamentRecord

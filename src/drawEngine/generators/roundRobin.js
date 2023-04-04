@@ -310,7 +310,9 @@ function generatePlayoffLink({
 }
 
 function deriveGroups({ appliedPolicies, structureOptions, drawSize }) {
-  if (appliedPolicies) true; // FUTURE: policy to set groupSizeLimit
+  if (appliedPolicies) {
+    // FUTURE: policy to set groupSizeLimit
+  }
 
   let groupSize = structureOptions?.groupSize;
   const groupSizeLimit = structureOptions?.groupSizeLimit || 8;
