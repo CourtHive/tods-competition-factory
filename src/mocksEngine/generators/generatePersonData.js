@@ -7,18 +7,22 @@ import {
   randomPop,
 } from '../../utilities';
 
+import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { FEMALE, MALE } from '../../constants/genderConstants';
 
 export function generatePersonData({ count = 100, sex } = {}) {
-  const personData = [];
-  if (!count || (sex && ![MALE, FEMALE].includes(sex))) return { personData };
+  if (!count || (sex && ![MALE, FEMALE].includes(sex)))
+    return { personData: [], error: INVALID_VALUES };
+
+  // generate 10% more than count to account for duplicated firstName/lastName
+  const buffer = Math.ceil(count * 1.1);
 
   const { lastNames, firstFemale, firstMale } = namesData;
   const ISOs = countries.map(({ iso }) => iso).filter(Boolean);
 
-  const lastNameDupeCount = Math.ceil(count / lastNames.length);
-  const femaleDupeCount = Math.ceil(count / firstFemale.length);
-  const maleDupeCount = Math.ceil(count / firstMale.length);
+  const lastNameDupeCount = Math.ceil(buffer / lastNames.length);
+  const femaleDupeCount = Math.ceil(buffer / firstFemale.length);
+  const maleDupeCount = Math.ceil(buffer / firstMale.length);
 
   const lastNameDupes = generateRange(0, lastNameDupeCount).flatMap(() => {
     const n = makeDeepCopy(lastNames, false, true); // internal use
@@ -33,13 +37,21 @@ export function generatePersonData({ count = 100, sex } = {}) {
     return generateRange(0, firstMale.length).map(() => randomPop(n));
   });
 
-  for (let i = 0; i < count; i++) {
+  const candidates = {};
+  for (let i = 0; i < buffer; i++) {
     const lastName = lastNameDupes.pop();
     const personSex = sex || randomMember([MALE, FEMALE]);
     const firstName = personSex === MALE ? maleDupes.pop() : femaleDupes.pop();
     const nationalityCode = randomMember(ISOs);
-    personData.push({ firstName, lastName, sex: personSex, nationalityCode });
+    candidates[`${firstName}${lastName}`] = {
+      firstName,
+      lastName,
+      sex: personSex,
+      nationalityCode,
+    };
   }
+
+  const personData = Object.values(candidates).slice(0, count);
 
   return { personData };
 }
