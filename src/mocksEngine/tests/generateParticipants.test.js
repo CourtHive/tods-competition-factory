@@ -1,5 +1,5 @@
+import { generatePersonData } from '../generators/generatePersonData';
 import { generateRange, UUID } from '../../utilities';
-import defaultPersonData from '../data/persons.json';
 import { expect, it, test } from 'vitest';
 import mocksEngine from '..';
 
@@ -7,6 +7,7 @@ import { FEMALE, MALE } from '../../constants/genderConstants';
 import { PAIR } from '../../constants/participantConstants';
 
 it('can generate unique participants', () => {
+  const defaultPersonData = generatePersonData().personData;
   const participantsCount = defaultPersonData.length + 10;
   const { participants } = mocksEngine.generateParticipants({
     participantsCount,
@@ -42,6 +43,7 @@ test('generateTournamentRecord passes participantsProfile.personIds', () => {
 });
 
 it('can generate use pre-defined personIds', () => {
+  const defaultPersonData = generatePersonData().personData;
   const participantsCount = defaultPersonData.length + 10;
   const personIds = generateRange(0, 9).map(() => UUID());
   const { participants } = mocksEngine.generateParticipants({
