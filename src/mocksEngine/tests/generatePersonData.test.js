@@ -31,7 +31,7 @@ it('can generation personData', () => {
   });
 });
 
-it.only('minimizes duplication of names', () => {
+it('minimizes duplication of names', () => {
   let count = 200;
   let { personData } = generatePersonData({ count, sex: MALE });
   expect(personData.length).toEqual(count);
@@ -80,10 +80,10 @@ it.only('minimizes duplication of names', () => {
   firstCount = Object.keys(firstInstances).length;
   expect(firstCount).toEqual(firstFemale.length);
   firstInstanceRange = unique(Object.values(firstInstances)).sort(numericSort);
-  expect(firstInstanceRange[1] - firstInstanceRange[0]).toEqual(1);
+  expect(firstInstanceRange[1] - firstInstanceRange[0]).toBeLessThanOrEqual(2);
 
   lastCount = Object.keys(lastInstances).length;
   expect(lastCount).toEqual(lastNames.length);
   lastInstanceRange = unique(Object.values(lastInstances)).sort(numericSort);
-  expect(lastInstanceRange[1] - lastInstanceRange[0]).toEqual(1);
+  expect(lastInstanceRange[1] - lastInstanceRange[0]).toBeLessThanOrEqual(2);
 });

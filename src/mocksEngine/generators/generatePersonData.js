@@ -14,8 +14,8 @@ export function generatePersonData({ count = 100, sex } = {}) {
   if (!count || (sex && ![MALE, FEMALE].includes(sex)))
     return { personData: [], error: INVALID_VALUES };
 
-  // generate 10% more than count to account for duplicated firstName/lastName
-  const buffer = Math.ceil(count * 1.1);
+  // generate 30% more than count to account for duplicated firstName/lastName
+  const buffer = Math.ceil(count * 1.3);
 
   const { lastNames, firstFemale, firstMale } = namesData;
   const ISOs = countries.map(({ iso }) => iso).filter(Boolean);
