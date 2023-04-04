@@ -47,11 +47,11 @@ export function setMatchUpStatus(params) {
 
   // whether or not to allow winningSide change propagation
   const allowChangePropagation =
-    params.allowChangePropagation !== undefined
-      ? params.allowChangePropagation
-      : policy?.allowChangePropagation !== undefined
-      ? policy.allowChangePropagation
-      : undefined;
+    (params.allowChangePropagation !== undefined &&
+      params.allowChangePropagation) ||
+    (policy?.allowChangePropagation !== undefined &&
+      policy.allowChangePropagation) ||
+    undefined;
 
   let { outcome } = params;
 

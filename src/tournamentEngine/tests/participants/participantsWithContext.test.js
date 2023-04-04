@@ -147,7 +147,6 @@ it('can add statistics to tournament participants', () => {
     event.drawDefinitions[0].structures[0].positionAssignments;
 
   let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    withRankingProfile: true,
     convertExtensions: true,
     withStatistics: true,
     withOpponents: true,
@@ -186,7 +185,6 @@ it('can add statistics to tournament participants', () => {
   expect(individualParticipant.statistics[0].statValue).toBeGreaterThan(0);
   expect(individualParticipant.events[0]._ustaLevel).toEqual(1);
 
-  expect(individualParticipant.draws[0].finishingPositionRange).toEqual([5, 8]);
   expect(individualParticipant.events[0].eventType).toEqual(DOUBLES);
 
   const hasPotentials = tournamentParticipants.find(

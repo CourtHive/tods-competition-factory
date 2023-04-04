@@ -22,12 +22,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 
 export function generateDrawTypeAndModifyDrawDefinition(params = {}) {
-  const {
-    modifyOriginal = true,
-    stageSequence = 1,
-    goesTo = true,
-    isMock,
-  } = params;
+  const { modifyOriginal = true, stageSequence = 1, isMock } = params;
 
   const stack = 'generateDrawTypeAndModifyDrawDefinition';
 
@@ -133,9 +128,7 @@ export function generateDrawTypeAndModifyDrawDefinition(params = {}) {
     });
   }
 
-  let inContextDrawMatchUps;
-  if (goesTo)
-    ({ inContextDrawMatchUps } = addGoesTo({ drawDefinition, matchUpsMap }));
+  const { inContextDrawMatchUps } = addGoesTo({ drawDefinition, matchUpsMap });
 
   modifyDrawNotice({ drawDefinition });
 

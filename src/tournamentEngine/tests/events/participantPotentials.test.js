@@ -20,7 +20,6 @@ it('can return event matchUps with potential participants', () => {
   const { drawIds, tournamentRecord } = generateTournamentRecord({
     inContext: true,
     drawProfiles,
-    goesTo: true,
   });
 
   const drawId = drawIds[0];
@@ -78,9 +77,8 @@ it('handles potential BYES for FMLC consolation structures', () => {
     },
   ];
   const { tournamentRecord } = generateTournamentRecord({
-    drawProfiles,
     inContext: true,
-    goesTo: true,
+    drawProfiles,
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -116,9 +114,8 @@ it('removes potential participants when side participant is known', () => {
     drawIds: [drawId],
     tournamentRecord,
   } = generateTournamentRecord({
-    drawProfiles,
     inContext: true,
-    goesTo: true,
+    drawProfiles,
   });
 
   tournamentEngine.setState(tournamentRecord);

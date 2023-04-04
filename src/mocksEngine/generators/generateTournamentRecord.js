@@ -60,7 +60,6 @@ export function generateTournamentRecord({
   autoSchedule,
   startDate,
   endDate,
-  goesTo,
   uuids,
 } = {}) {
   if (
@@ -138,7 +137,6 @@ export function generateTournamentRecord({
         drawProfile,
         startDate,
         drawIndex,
-        goesTo,
         uuids,
       });
       if (result.error) return result;

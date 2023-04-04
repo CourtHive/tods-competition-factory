@@ -4,7 +4,7 @@ import mocksEngine from '../../../../mocksEngine';
 import { expect, test } from 'vitest';
 
 import { MODIFY_PAIR_ASSIGNMENT } from '../../../../constants/positionActionConstants';
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
 import { UNGROUPED } from '../../../../constants/entryStatusConstants';
 import { DOUBLES_EVENT } from '../../../../constants/eventConstants';
 

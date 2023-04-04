@@ -31,7 +31,6 @@ import {
  */
 export function getTournamentParticipants({
   participantFilters = {},
-  withRankingProfile,
   convertExtensions,
   policyDefinitions,
   withScheduleItems,
@@ -109,7 +108,6 @@ export function getTournamentParticipants({
   let participantIdsWithConflicts, eventsPublishStatuses;
 
   const addContext =
-    withRankingProfile ||
     withScheduleItems ||
     withSignInStatus ||
     scheduleAnalysis ||
@@ -130,7 +128,6 @@ export function getTournamentParticipants({
       allTournamentParticipants,
       tournamentParticipants,
       participantFilters,
-      withRankingProfile,
       withScheduleItems,
       withSignInStatus,
       tournamentRecord,

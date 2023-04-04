@@ -4,7 +4,6 @@ import { addNationalityCode } from '../../governors/participantGovernor/addNatio
 import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 import { getDerivedSeedAssignments } from './getDerivedSeedAssignments';
-import { addRankingProfile } from './addRankingProfile';
 import { getScaleValues } from './getScaleValues';
 import { intersection } from '../../../utilities';
 
@@ -19,7 +18,6 @@ import {
 export function annotateParticipant({
   withScaleValues = true,
   eventsPublishStatuses,
-  withRankingProfile,
   withEvents = true,
   withDraws = true,
   participantIdMap,
@@ -357,15 +355,6 @@ export function annotateParticipant({
       }
     });
   });
-
-  if (withRankingProfile) {
-    addRankingProfile({
-      participantMatchUps,
-      participantDraws,
-      derivedDrawInfo,
-      matchUps,
-    });
-  }
 
   if (withStatistics) participant.statistics = [winRatioStat];
 

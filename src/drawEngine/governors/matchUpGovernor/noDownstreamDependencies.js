@@ -81,6 +81,7 @@ export function noDownstreamDependencies(params) {
     (removeWinningSide && removeDirected({ removeScore })) ||
     (matchUp && scoreModification({ ...params, removeScore: true })) ||
     (console.log('unknown condition') && { ...SUCCESS });
+
   return decorateResult({ result, stack });
 }
 

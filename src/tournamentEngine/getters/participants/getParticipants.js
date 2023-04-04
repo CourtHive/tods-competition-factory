@@ -30,10 +30,12 @@ export function getParticipants({
   withDraws,
   withISO2,
   withIOC,
-  // inContext, - may be deprecated in favor of `withIndividualParticipants`
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (withMatchUps) getMatchUpDependencies({ tournamentRecord }); // ensure goesTos are present
+
+  if (withMatchUps || withRankingProfile) {
+    getMatchUpDependencies({ tournamentRecord }); // ensure goesTos are present
+  }
 
   let { participantMap } = getParticipantMap({
     withIndividualParticipants,
@@ -61,6 +63,9 @@ export function getParticipants({
     mappedMatchUps,
     matchUps,
   } = getParticipantEntries({
+    withMatchUps: withMatchUps || withRankingProfile,
+    withEvents: withEvents || withRankingProfile,
+    withDraws: withDraws || withRankingProfile,
     withPotentialMatchUps,
     participantFilters,
     withRankingProfile,
@@ -74,10 +79,7 @@ export function getParticipants({
     withStatistics,
     participantMap,
     withOpponents,
-    withMatchUps,
     withSeeding,
-    withEvents,
-    withDraws,
   }));
 
   const nextMatchUps = scheduleAnalysis || withPotentialMatchUps;
@@ -104,14 +106,20 @@ export function getParticipants({
       return definedAttributes(
         {
           ...p.participant,
+          draws: withDraws || withRankingProfile ? participantDraws : undefined,
+          events:
+            withEvents || withRankingProfile
+              ? Object.values(events)
+              : undefined,
+          matchUps:
+            withMatchUps || withRankingProfile
+              ? Object.values(matchUps)
+              : undefined,
           opponents: withOpponents ? participantOpponents : undefined,
           potentialMatchUps: nextMatchUps
             ? Object.values(potentialMatchUps)
             : undefined,
-          matchUps: withMatchUps ? Object.values(matchUps) : undefined,
           statistics: withStatistics ? Object.values(statistics) : undefined,
-          events: withEvents ? Object.values(events) : undefined,
-          draws: withDraws ? participantDraws : undefined,
         },
         false,
         false,

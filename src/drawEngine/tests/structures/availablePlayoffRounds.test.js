@@ -56,6 +56,48 @@ it('can correctly determine positions playedOff for STANDARD_ELIMINATION', () =>
   });
 });
 
+it('can correctly determine positions played off for FMLC', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawType: FIRST_MATCH_LOSER_CONSOLATION, drawSize: 16 }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const [{ structureId }] = drawDefinition.structures;
+  let result = tournamentEngine.getAvailablePlayoffRounds({
+    structureId,
+    drawId,
+  });
+
+  const { playoffRounds, playoffRoundsRanges } = result;
+  // NOTE: Change was made to allow FMLC playoff round from 2nd round MAIN
+  expect(playoffRounds).toEqual([2, 3]);
+  expect(playoffRoundsRanges).toEqual([
+    {
+      finishingPositions: [5, 6, 7, 8],
+      finishingPositionRange: '5-8',
+      roundNumber: 2,
+    },
+    {
+      finishingPositions: [3, 4],
+      finishingPositionRange: '3-4',
+      roundNumber: 3,
+    },
+  ]);
+
+  const roundProfiles = [{ [2]: 1 }];
+  result = tournamentEngine.generateAndPopulatePlayoffStructures({
+    roundProfiles,
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+});
+
 it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATION', () => {
   reset();
   initialize();
@@ -83,14 +125,14 @@ it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATIO
   expect(playoffRounds).toEqual([2, 3]);
   expect(playoffRoundsRanges).toEqual([
     {
-      roundNumber: 2,
       finishingPositions: [5, 6, 7, 8],
       finishingPositionRange: '5-8',
+      roundNumber: 2,
     },
     {
-      roundNumber: 3,
       finishingPositions: [3, 4],
       finishingPositionRange: '3-4',
+      roundNumber: 3,
     },
   ]);
 });
@@ -239,7 +281,6 @@ it('can accurately determine available playoff rounds for CONSOLATION draw of FI
 });
 
 it('can generate only specified playoff rounds and give them custom names', () => {
-  const allMatchUps = [];
   let matchUpAddNotices = [];
 
   const subscriptions = {
@@ -247,7 +288,6 @@ it('can generate only specified playoff rounds and give them custom names', () =
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
-          allMatchUps.push(...matchUps);
         });
       }
     },
@@ -298,7 +338,6 @@ it('can generate only specified playoff rounds and give them custom names', () =
 });
 
 it('can use roundProfiles to specify depth of playoff structures', () => {
-  const allMatchUps = [];
   let matchUpAddNotices = [];
 
   const subscriptions = {
@@ -306,7 +345,6 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
-          allMatchUps.push(...matchUps);
         });
       }
     },
@@ -353,7 +391,6 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
 });
 
 it('can determine playoff structures available from playoff structures', () => {
-  const allMatchUps = [];
   let matchUpAddNotices = [];
 
   const subscriptions = {
@@ -361,7 +398,6 @@ it('can determine playoff structures available from playoff structures', () => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           matchUpAddNotices.push(matchUps.length);
-          allMatchUps.push(...matchUps);
         });
       }
     },

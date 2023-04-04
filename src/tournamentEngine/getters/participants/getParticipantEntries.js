@@ -57,6 +57,9 @@ export function getParticipantEntries({
   };
 
   const withOpts = {
+    withMatchUps: withMatchUps || withRankingProfile,
+    withEvents: withEvents || withRankingProfile,
+    withDraws: withDraws || withRankingProfile,
     withPotentialMatchUps,
     withRankingProfile,
     withScheduleTimes,
@@ -65,10 +68,7 @@ export function getParticipantEntries({
     withStatistics,
     participantMap,
     withOpponents,
-    withMatchUps,
     withSeeding,
-    withEvents,
-    withDraws,
   };
 
   const participantIdsWithConflicts = [];
@@ -101,7 +101,7 @@ export function getParticipantEntries({
     const publishedSeeding = publishStatuses?.publishedSeeding;
     if (publishStatuses) eventsPublishStatuses[eventId] = publishStatuses;
 
-    if (withEvents || withSeeding) {
+    if (withEvents || withSeeding || withRankingProfile) {
       const extensionConversions = convertExtensions
         ? Object.assign({}, ...extensionsToAttributes(extensions))
         : {};
@@ -178,7 +178,13 @@ export function getParticipantEntries({
           : undefined;
 
       for (const drawDefinition of drawDefinitions) {
-        const { drawId, entries, structures = [], drawOrder } = drawDefinition;
+        const {
+          structures = [],
+          drawOrder,
+          drawType,
+          entries,
+          drawId,
+        } = drawDefinition;
         const flightNumber = flights?.find(
           (flight) => flight.drawId === drawId
         )?.flightNumber;
@@ -281,7 +287,7 @@ export function getParticipantEntries({
             if (mainSeeding) seedAssignments[MAIN] = mainSeeding;
             if (qualifyingSeeding) seedAssignments[QUALIFYING] = mainSeeding;
 
-            if (withEvents) {
+            if (withEvents || withRankingProfile) {
               if (includeSeeding) {
                 // overwrite any event seeding with actual draw seeding (which may differ)
                 participantMap[id].events[eventId].seedValue =
@@ -294,7 +300,7 @@ export function getParticipantEntries({
               }
             }
 
-            if (withDraws) {
+            if (withDraws || withRankingProfile) {
               participantMap[id].draws[drawId] = definedAttributes(
                 {
                   seedAssignments,
@@ -334,6 +340,7 @@ export function getParticipantEntries({
           mainSeedingMap,
           flightNumber,
           drawOrder,
+          drawType,
           drawSize,
           drawId,
           // qualifyingDrawSize,
@@ -559,7 +566,7 @@ export function getParticipantEntries({
       }
 
       if (scheduleAnalysis) {
-        const { scheduledMinutesDifference } = scheduleAnalysis || {};
+        const { scheduledMinutesDifference } = scheduleAnalysis;
 
         // iterate through participantAggregator.scheduleItems
         const scheduleItems = participantAggregator.scheduleItems || [];

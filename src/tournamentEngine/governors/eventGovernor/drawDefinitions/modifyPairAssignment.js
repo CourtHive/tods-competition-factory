@@ -5,9 +5,9 @@ import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { isConvertableInteger } from '../../../../utilities/math';
 
 import { COMPETITOR } from '../../../../constants/participantRoles';
+import { PAIR } from '../../../../constants/participantConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { DOUBLES } from '../../../../constants/eventConstants';
-import { PAIR } from '../../../../constants/participantTypes';
 import {
   INVALID_DRAW_POSITION,
   INVALID_EVENT_TYPE,
@@ -103,15 +103,20 @@ export function modifyPairAssignment({
       : entry
   );
 
-  event.entries = event.entries.map((entry) =>
-    entry.participantId === participantId
-      ? // replace previous pair participantId with newPairParticipantid
-        { ...entry, participantId: newPairParticipantId }
-      : // remove replacmentIndividualParticipantId from event.entries
+  event.entries = event.entries.map(
+    (entry) =>
+      // replace previous pair participantId with newPairParticipantid
+      // remove replacmentIndividualParticipantId from event.entries
+      (entry.participantId === participantId && {
+        ...entry,
+        participantId: newPairParticipantId,
+      }) ||
       // add existingIndividualParticipantId removed from original PAIR to event.entries as UNGROUPED
-      entry.participantId === replacementIndividualParticipantId
-      ? { ...entry, participantId: existingIndividualParticipantId }
-      : entry
+      (entry.participantId === replacementIndividualParticipantId && {
+        ...entry,
+        participantId: existingIndividualParticipantId,
+      }) ||
+      entry
   );
 
   // update positionAssignments for all structures within the drawDefinition

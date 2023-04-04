@@ -1,21 +1,29 @@
-import { getTournamentParticipants } from '../../../tournamentEngine/getters/participants/getTournamentParticipants';
+import { getParticipants } from '../../../tournamentEngine/getters/participants/getParticipants';
 import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { addExtension } from '../../../global/functions/producers/addExtension';
-import { isConvertableInteger } from '../../../utilities/math';
+import { getTargetElement } from './getTargetElement';
+import { getAwardProfile } from './getAwardProfile';
+import { getAwardPoints } from './getAwardPoints';
 import { unique } from '../../../utilities';
 
 import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
 import { RANKING_POINTS } from '../../../constants/extensionConstants';
+import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_POLICY_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import {
+  PAIR,
+  TEAM_PARTICIPANT,
+} from '../../../constants/participantConstants';
 
 export function getTournamentPoints({
-  policyDefinition,
+  participantFilters,
+  policyDefinitions,
   tournamentRecord,
-  saveSnapshot,
+  saveRankings,
   level,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -26,47 +34,55 @@ export function getTournamentPoints({
   });
 
   const pointsPolicy =
-    policyDefinition?.[POLICY_TYPE_RANKING_POINTS] ||
+    policyDefinitions?.[POLICY_TYPE_RANKING_POINTS] ||
     attachedPolicies?.[POLICY_TYPE_RANKING_POINTS];
   if (!pointsPolicy) return { error: MISSING_POLICY_DEFINITION };
 
-  const { tournamentParticipants } = getTournamentParticipants({
-    withRankingProfile: true,
-    tournamentRecord,
-  });
+  const awardProfiles = pointsPolicy.awardProfiles;
+  let requireWinFirstRound = pointsPolicy.requireWinFirstRound;
+  let requireWinDefault = pointsPolicy.requireWinDefault;
 
-  const participantsWithOutcomes = tournamentParticipants.filter(
-    (p) => p.draws?.length
-  );
+  const { participants, derivedEventInfo, derivedDrawInfo, mappedMatchUps } =
+    getParticipants({
+      withRankingProfile: true,
+      participantFilters,
+      tournamentRecord,
+    });
 
-  // keep track of points earned per person
+  const participantsWithOutcomes = participants.filter((p) => p.draws?.length);
+
+  // keep track of points earned per person / per team
   const personPoints = {};
+  const teamPoints = {};
+  const pairPoints = {};
 
   for (const participant of participantsWithOutcomes) {
-    const { events, draws, person, individualParticipants } = participant;
-    const personId = person?.personId;
-    if (individualParticipants) console.log('individualParticipants');
+    const { participantType, participantId, person, draws } = participant;
 
-    draws.forEach((draw) => {
-      const { structureParticipation, drawName, drawSize, drawType, eventId } =
-        draw;
-      const event = events?.find((event) => event.eventId === eventId);
-      const { category, eventType } = event || {};
+    for (const draw of draws) {
+      const { drawId, structureParticipation, eventId } = draw;
+      const eventInfo = derivedEventInfo[eventId];
+      const drawInfo = derivedDrawInfo[drawId];
+      const drawType = drawInfo?.drawType;
+      const drawSize = drawInfo?.drawSize;
 
-      const awardProfiles =
-        pointsPolicy.categories?.[category].awardProfiles ||
-        pointsPolicy.awardProfiles;
-      let requireWinFirstRound =
-        pointsPolicy.categories?.[category].requireWinFirstRound ||
-        pointsPolicy.requireWinFirstRound;
-      let requireWinDefault =
-        pointsPolicy.categories?.[category].requireWinDefault ||
-        pointsPolicy.requireWinDefault;
+      const { category, eventType } = eventInfo || {};
+      const startDate =
+        draw.startDate || eventInfo.startDate || tournamentRecord.startDate;
+      const endDate =
+        draw.endDate || eventInfo.endDate || tournamentRecord.endDate;
+
+      // don't process INDIVIDUAL and PAIR participants in TEAM events
+      // They are processed in the context of the TEAM in which they appear
+      if (eventType === TEAM_EVENT && participantId !== TEAM_PARTICIPANT) {
+        continue;
+      }
 
       let points;
 
       if (awardProfiles) {
         let requireWin = requireWinDefault;
+        // const positionAwards = []; // potential use for combining ppw w/ fpp
         let totalWinsCount = 0;
         let positionPoints = 0;
         let perWinPoints = 0;
@@ -78,29 +94,28 @@ export function getTournamentPoints({
             participationOrder,
             participantWon,
             flightNumber,
-            rankingStage,
             winCount,
           } = participation;
 
           totalWinsCount += winCount || 0;
 
-          const awardProfile = awardProfiles.find(
-            (profile) =>
-              profile.stages.includes(rankingStage) &&
-              (!profile.drawTypes?.length ||
-                profile.drawTypes?.includes(drawType)) &&
-              (!profile.eventTypes?.length ||
-                profile.eventTypes?.includes(eventType)) &&
-              (!profile.participationOrder ||
-                profile.participationOrder === participationOrder) &&
-              (!profile.flightNumbers?.length ||
-                profile.flightNumbers.includes(flightNumber))
-          );
+          const { awardProfile } = getAwardProfile({
+            awardProfiles,
+            participation,
+            eventType,
+            startDate,
+            category,
+            drawSize,
+            drawType,
+            endDate,
+            level,
+          });
 
           if (awardProfile) {
             const accessor =
               Array.isArray(finishingPositionRange) &&
-              unique(finishingPositionRange).join('-');
+              Math.max(...finishingPositionRange);
+            const dashRange = unique(finishingPositionRange).join('-');
             const firstRound =
               accessor && finishingPositionRange?.includes(drawSize);
             if (awardProfile.requireWinDefault !== undefined)
@@ -108,47 +123,65 @@ export function getTournamentPoints({
             if (awardProfile.requireWinFirstRound !== undefined)
               requireWinFirstRound = awardProfile.requireWinFirstRound;
 
-            const { finishingPositionRanges, finishingRound, pointsPerWin } =
-              awardProfile;
+            const {
+              finishingPositionPoints = {},
+              finishingPositionRanges,
+              finishingRound,
+              pointsPerWin,
+              flights,
+            } = awardProfile;
+
+            const ppwProfile = Array.isArray(awardProfile.perWinPoints)
+              ? awardProfile.perWinPoints?.find((pwp) =>
+                  pwp.participationOrders?.includes(participationOrder)
+                )
+              : awardProfile.perWinPoints;
+
+            const participationOrders =
+              finishingPositionPoints.participationOrders;
 
             let awardPoints = 0;
             let winRequired;
 
-            if (finishingPositionRanges) {
+            // const noPositionAwards = !positionAwards.length;
+
+            const isValidOrder =
+              !participationOrders ||
+              participationOrders.includes(participationOrder);
+
+            if (isValidOrder && finishingPositionRanges) {
               const valueObj = finishingPositionRanges[accessor];
               if (valueObj) {
+                // positionAwards.push(accessor);
                 ({ awardPoints, requireWin: winRequired } = getAwardPoints({
+                  flightNumber,
                   valueObj,
                   drawSize,
+                  flights,
                   level,
                 }));
               }
             }
 
-            if (!awardPoints && finishingRound) {
+            if (!awardPoints && finishingRound && participationOrder === 1) {
               const valueObj = finishingRound[accessor];
               if (valueObj) {
+                // positionAwards.push(accessor);
                 ({ awardPoints, requireWin: winRequired } = getAwardPoints({
                   participantWon,
+                  flightNumber,
                   valueObj,
                   drawSize,
+                  flights,
                   level,
                 }));
               }
             }
 
-            if (firstRound && requireWinFirstRound !== undefined)
+            if (firstRound && requireWinFirstRound !== undefined) {
               requireWin = requireWinFirstRound;
+            }
             if (winRequired !== undefined) requireWin = winRequired;
-            /*
-            if (firstRound)
-              console.log({
-                firstRound,
-                accessor,
-                requireWinFirstRound,
-                requireWin,
-              });
-              */
 
             if (awardPoints > positionPoints && (!requireWin || winCount)) {
               positionPoints = awardPoints;
@@ -157,97 +190,85 @@ export function getTournamentPoints({
 
             if (!awardPoints && pointsPerWin && winCount) {
               perWinPoints += winCount * pointsPerWin;
+              rangeAccessor = dashRange;
+            }
+
+            if (!awardPoints && winCount && ppwProfile) {
+              const levelValue = getTargetElement(level, ppwProfile?.level);
+              if (levelValue) {
+                perWinPoints += winCount * levelValue;
+              } else if (ppwProfile.value) {
+                perWinPoints += winCount * ppwProfile.value;
+              }
             }
           }
 
           points = positionPoints + perWinPoints;
+
+          if (participantType === TEAM_PARTICIPANT) {
+            const teamStructureMatchUps = (participant.matchUps || []).filter(
+              ({ structureId }) => structureId === participation.structureId
+            );
+            for (const { matchUpId } of teamStructureMatchUps) {
+              const matchUp = mappedMatchUps[matchUpId];
+              const sideNumber = matchUp.sides.find(
+                (side) => side.participantId === participantId
+              ).sideNumber;
+
+              // for now only supporting line position awards per team win
+              if (matchUp.winningSice !== sideNumber) {
+                continue;
+              }
+
+              for (const tieMatchUp of matchUp.tieMatchUps) {
+                // ingore matchUps with no winningSide
+                if (!tieMatchUp.winningSide) continue;
+              }
+            }
+          }
         }
 
-        if (personId && (perWinPoints || positionPoints)) {
-          if (!personPoints[personId]) personPoints[personId] = [];
-          personPoints[personId].push({
+        if (perWinPoints || positionPoints) {
+          const award = {
             winCount: totalWinsCount,
             positionPoints,
             rangeAccessor,
             perWinPoints,
             eventType,
-            drawName,
+            drawId,
             points,
-          });
+          };
+
+          const personId = person?.personId;
+          if (personId) {
+            if (!personPoints[personId]) personPoints[personId] = [];
+            personPoints[personId].push(award);
+          } else if (participantType === PAIR) {
+            if (!pairPoints[participantId]) pairPoints[participantId] = [];
+            pairPoints[participantId].push(award);
+          } else if (participantType === TEAM_PARTICIPANT) {
+            if (!teamPoints[participantId]) teamPoints[participantId] = [];
+            teamPoints[participantId].push(award);
+          }
         }
       }
-    });
+    }
   }
 
-  if (saveSnapshot) {
+  if (saveRankings) {
+    // possibly also ensure ranking policy is part of applied policies
     const extension = {
       name: RANKING_POINTS,
-      value: personPoints,
+      value: { personPoints, teamPoints, pairPoints },
     };
     addExtension({ element: tournamentRecord, extension });
   }
 
-  return { personPoints, ...SUCCESS };
-}
-
-function getAwardPoints({ valueObj, drawSize, level, participantWon }) {
-  const getValue = (obj) => {
-    const value = obj?.value || (isConvertableInteger(obj) ? obj : 0);
-    return level && obj?.level ? obj.level[level] || value : value;
+  return {
+    participantsWithOutcomes,
+    personPoints,
+    pairPoints,
+    teamPoints,
+    ...SUCCESS,
   };
-
-  let awardPoints = 0;
-  let requireWin;
-  let s, t, d;
-
-  const winAccessor = participantWon
-    ? 'won'
-    : participantWon === false
-    ? 'lost'
-    : undefined;
-
-  if (Array.isArray(valueObj)) {
-    let sizeDefined = valueObj.find(
-      (obj) => obj.drawSize === drawSize || obj.drawSizes?.includes(drawSize)
-    );
-    let thresholdMatched = valueObj.find(
-      (obj) => obj.drawSize && obj.threshold && drawSize > obj.drawSize
-    );
-    let defaultDef = valueObj.find(
-      (obj) => !obj.drawSize && !obj.drawSizes?.length
-    );
-
-    if (winAccessor !== undefined) {
-      sizeDefined = sizeDefined?.[winAccessor];
-      thresholdMatched = thresholdMatched?.[winAccessor];
-      defaultDef = defaultDef?.[winAccessor];
-    }
-    s = getValue(sizeDefined);
-    t = getValue(thresholdMatched);
-    d = getValue(defaultDef);
-    awardPoints = s || t || d;
-
-    requireWin = s
-      ? sizeDefined.requireWin
-      : t
-      ? thresholdMatched.requireWin
-      : defaultDef.requireWin;
-  } else if (typeof valueObj === 'object') {
-    let sizeDefined = valueObj?.drawSizes?.[drawSize];
-    let defaultDef = valueObj;
-    if (winAccessor !== undefined) {
-      sizeDefined = sizeDefined?.[winAccessor];
-      defaultDef = defaultDef?.[winAccessor];
-    }
-    s = getValue(sizeDefined);
-    d = getValue(defaultDef);
-    awardPoints = s || d;
-
-    requireWin = s ? sizeDefined.requireWin : defaultDef.requireWin;
-  } else if (isConvertableInteger(valueObj)) {
-    // when using participantWon non-objects are not valid
-    if (winAccessor === undefined) awardPoints = valueObj;
-  }
-
-  return { awardPoints, requireWin };
 }
