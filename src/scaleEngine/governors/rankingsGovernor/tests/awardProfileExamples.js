@@ -2,6 +2,7 @@ import { TEAM_EVENT } from '../../../../constants/eventConstants';
 
 // prettier-ignore
 export const awardProfileFlights = {
+  dateRanges: [{ startDate: undefined, endDate: undefined }], // optional
   drawSizes: [4, 8, 16], // this awardProfile is only valid for these drawSizes
   maxDrawSize: 16, // alternative declaration
   levels: [4, 5], // this awardProfile is only valid for levels 4 and 5
@@ -31,6 +32,7 @@ export const awardProfileFlights = {
 };
 
 export const awardProfilePercentageFlights = {
+  dateRanges: [{ startDate: undefined, endDate: undefined }], // optional
   flights: { flightNumbers: [1, 2], pct: { 2: 0.65, 3: 0.5, 4: 0.35 } },
   drawSizes: [4, 8, 16], // this awardProfile is only valid for these drawSizes
   maxDrawSize: 16, // alternative declaration
@@ -50,6 +52,7 @@ export const awardProfilePercentageFlights = {
 };
 
 export const awardProfileExpandedLevels = {
+  dateRanges: [{ startDate: undefined, endDate: undefined }], // optional
   finishingPositionPoints: { participationOrders: [1] }, // only assign points for finishing positions when participationOrder: 1
   perWinPoints: [
     // this can be an array so that drawSize can be used to differentiate
@@ -73,6 +76,7 @@ export const awardProfileExpandedLevels = {
 };
 
 export const awardProfileLevels = {
+  dateRanges: [{ startDate: undefined, endDate: undefined }], // optional
   maxlevel: 5, // this awardProfile is only valid for levels up to 5
   perWinPoints: {
     // this can also be an array so that drawSize can be used to differentiate (see above example)
@@ -95,6 +99,7 @@ export const awardProfileLevels = {
 };
 
 export const awardProfileLevelLines = {
+  dateRanges: [{ startDate: undefined, endDate: undefined }], // optional
   eventTypes: [TEAM_EVENT],
   perWinPoints: {
     level: {
@@ -109,30 +114,29 @@ export const awardProfileLevelLines = {
   },
 };
 
-export const awardProfileThresholds = [
-  {
-    finishingPositionRanges: {
-      1: [
-        { drawSize: 64, threshold: true, value: 3000 }, // threshold means any drawSize >= that defined will match
-        { drawSizes: [], value: 2800 },
-      ],
-      2: [
-        { drawSize: 64, threshold: true, value: 2400 },
-        { drawSize: 16, threshold: true, value: 2000 },
-        { drawSizes: [], value: 1800 },
-      ],
-      3: [{ value: 1950 }],
-      4: [
-        { drawSize: 64, threshold: true, value: 1800 },
-        { drawSizes: [32, 8], value: 1750 },
-        { drawSize: 4, threshold: true, value: 1775 },
-      ],
-      8: [{ value: 1110 }],
-      16: [{ value: 750 }],
-      32: [{ value: 450 }],
-      64: [{ value: 270 }],
-      128: [{ value: 120 }],
-      256: [{ value: 90 }],
-    },
+export const awardProfileThresholds = {
+  dateRanges: [{ startDate: undefined, endDate: undefined }], // optional
+  finishingPositionRanges: {
+    1: [
+      { drawSize: 64, threshold: true, value: 3000 }, // threshold means any drawSize >= that defined will match
+      { drawSizes: [], value: 2800 },
+    ],
+    2: [
+      { drawSize: 64, threshold: true, value: 2400 },
+      { drawSize: 16, threshold: true, value: 2000 },
+      { drawSizes: [], value: 1800 },
+    ],
+    3: [{ value: 1950 }],
+    4: [
+      { drawSize: 64, threshold: true, value: 1800 },
+      { drawSizes: [32, 8], value: 1750 },
+      { drawSize: 4, threshold: true, value: 1775 },
+    ],
+    8: [{ value: 1110 }],
+    16: [{ value: 750 }],
+    32: [{ value: 450 }],
+    64: [{ value: 270 }],
+    128: [{ value: 120 }],
+    256: [{ value: 90 }],
   },
-];
+};

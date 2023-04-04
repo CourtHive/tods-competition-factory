@@ -8,16 +8,22 @@ import { unique } from '../../../utilities';
 
 import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
 import { RANKING_POINTS } from '../../../constants/extensionConstants';
+import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_POLICY_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import {
+  PAIR,
+  TEAM_PARTICIPANT,
+} from '../../../constants/participantConstants';
 
 export function getTournamentPoints({
+  participantFilters,
   policyDefinitions,
   tournamentRecord,
-  saveSnapshot,
+  saveRankings,
   level,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -32,22 +38,28 @@ export function getTournamentPoints({
     attachedPolicies?.[POLICY_TYPE_RANKING_POINTS];
   if (!pointsPolicy) return { error: MISSING_POLICY_DEFINITION };
 
-  const { participants, derivedEventInfo, derivedDrawInfo } = getParticipants({
-    withRankingProfile: true,
-    tournamentRecord,
-  });
+  const awardProfiles = pointsPolicy.awardProfiles;
+  let requireWinFirstRound = pointsPolicy.requireWinFirstRound;
+  let requireWinDefault = pointsPolicy.requireWinDefault;
+
+  const { participants, derivedEventInfo, derivedDrawInfo, mappedMatchUps } =
+    getParticipants({
+      withRankingProfile: true,
+      participantFilters,
+      tournamentRecord,
+    });
 
   const participantsWithOutcomes = participants.filter((p) => p.draws?.length);
 
-  // keep track of points earned per person
+  // keep track of points earned per person / per team
   const personPoints = {};
+  const teamPoints = {};
+  const pairPoints = {};
 
   for (const participant of participantsWithOutcomes) {
-    const { draws, person, individualParticipants } = participant;
-    const personId = person?.personId;
-    if (individualParticipants) console.log('individualParticipants');
+    const { participantType, participantId, person, draws } = participant;
 
-    draws.forEach((draw) => {
+    for (const draw of draws) {
       const { drawId, structureParticipation, eventId } = draw;
       const eventInfo = derivedEventInfo[eventId];
       const drawInfo = derivedDrawInfo[drawId];
@@ -55,9 +67,16 @@ export function getTournamentPoints({
       const drawSize = drawInfo?.drawSize;
 
       const { category, eventType } = eventInfo || {};
-      const awardProfiles = pointsPolicy.awardProfiles;
-      let requireWinFirstRound = pointsPolicy.requireWinFirstRound;
-      let requireWinDefault = pointsPolicy.requireWinDefault;
+      const startDate =
+        draw.startDate || eventInfo.startDate || tournamentRecord.startDate;
+      const endDate =
+        draw.endDate || eventInfo.endDate || tournamentRecord.endDate;
+
+      // don't process INDIVIDUAL and PAIR participants in TEAM events
+      // They are processed in the context of the TEAM in which they appear
+      if (eventType === TEAM_EVENT && participantId !== TEAM_PARTICIPANT) {
+        continue;
+      }
 
       let points;
 
@@ -84,9 +103,11 @@ export function getTournamentPoints({
             awardProfiles,
             participation,
             eventType,
+            startDate,
             category,
             drawSize,
             drawType,
+            endDate,
             level,
           });
 
@@ -183,10 +204,31 @@ export function getTournamentPoints({
           }
 
           points = positionPoints + perWinPoints;
+
+          if (participantType === TEAM_PARTICIPANT) {
+            const teamStructureMatchUps = (participant.matchUps || []).filter(
+              ({ structureId }) => structureId === participation.structureId
+            );
+            for (const { matchUpId } of teamStructureMatchUps) {
+              const matchUp = mappedMatchUps[matchUpId];
+              const sideNumber = matchUp.sides.find(
+                (side) => side.participantId === participantId
+              ).sideNumber;
+
+              // for now only supporting line position awards per team win
+              if (matchUp.winningSice !== sideNumber) {
+                continue;
+              }
+
+              for (const tieMatchUp of matchUp.tieMatchUps) {
+                // ingore matchUps with no winningSide
+                if (!tieMatchUp.winningSide) continue;
+              }
+            }
+          }
         }
 
-        if (personId && (perWinPoints || positionPoints)) {
-          if (!personPoints[personId]) personPoints[personId] = [];
+        if (perWinPoints || positionPoints) {
           const award = {
             winCount: totalWinsCount,
             positionPoints,
@@ -196,19 +238,37 @@ export function getTournamentPoints({
             drawId,
             points,
           };
-          personPoints[personId].push(award);
+
+          const personId = person?.personId;
+          if (personId) {
+            if (!personPoints[personId]) personPoints[personId] = [];
+            personPoints[personId].push(award);
+          } else if (participantType === PAIR) {
+            if (!pairPoints[participantId]) pairPoints[participantId] = [];
+            pairPoints[participantId].push(award);
+          } else if (participantType === TEAM_PARTICIPANT) {
+            if (!teamPoints[participantId]) teamPoints[participantId] = [];
+            teamPoints[participantId].push(award);
+          }
         }
       }
-    });
+    }
   }
 
-  if (saveSnapshot) {
+  if (saveRankings) {
+    // possibly also ensure ranking policy is part of applied policies
     const extension = {
       name: RANKING_POINTS,
-      value: personPoints,
+      value: { personPoints, teamPoints, pairPoints },
     };
     addExtension({ element: tournamentRecord, extension });
   }
 
-  return { participantsWithOutcomes, personPoints, ...SUCCESS };
+  return {
+    participantsWithOutcomes,
+    personPoints,
+    pairPoints,
+    teamPoints,
+    ...SUCCESS,
+  };
 }

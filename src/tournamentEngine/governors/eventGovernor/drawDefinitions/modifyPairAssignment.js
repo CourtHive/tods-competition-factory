@@ -5,9 +5,9 @@ import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { isConvertableInteger } from '../../../../utilities/math';
 
 import { COMPETITOR } from '../../../../constants/participantRoles';
+import { PAIR } from '../../../../constants/participantConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { DOUBLES } from '../../../../constants/eventConstants';
-import { PAIR } from '../../../../constants/participantTypes';
 import {
   INVALID_DRAW_POSITION,
   INVALID_EVENT_TYPE,

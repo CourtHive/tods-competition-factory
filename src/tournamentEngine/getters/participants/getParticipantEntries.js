@@ -57,6 +57,7 @@ export function getParticipantEntries({
   };
 
   const withOpts = {
+    withMatchUps: withMatchUps || withRankingProfile,
     withEvents: withEvents || withRankingProfile,
     withDraws: withDraws || withRankingProfile,
     withPotentialMatchUps,
@@ -67,7 +68,6 @@ export function getParticipantEntries({
     withStatistics,
     participantMap,
     withOpponents,
-    withMatchUps,
     withSeeding,
   };
 

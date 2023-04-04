@@ -188,8 +188,9 @@ it.each(scenarios)('supports drawSize thresholds', (scenario) => {
     .participants.sort(finishingPositionSort);
 
   // use awardProfiles with thresholds
-  policyDefinitions[POLICY_TYPE_RANKING_POINTS].awardProfiles =
-    awardProfileThresholds;
+  policyDefinitions[POLICY_TYPE_RANKING_POINTS].awardProfiles = [
+    awardProfileThresholds,
+  ];
 
   result = scaleEngine.getTournamentPoints({ policyDefinitions });
   expect(result.success).toEqual(true);
