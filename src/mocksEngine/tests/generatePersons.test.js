@@ -1,3 +1,4 @@
+import { generatePersonData } from '../generators/generatePersonData';
 import { generatePersons } from '../generators/generatePersons';
 import { tournamentEngine } from '../..';
 import { UUID } from '../../utilities';
@@ -7,7 +8,6 @@ import mocksEngine from '..';
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { ROUND_ROBIN } from '../../constants/drawDefinitionConstants';
 import { MALE } from '../../constants/genderConstants';
-import defaultPersonData from '../data/persons.json';
 
 test('basic person generation', () => {
   let result = generatePersons();
@@ -75,6 +75,7 @@ test('basic person generation', () => {
   expect(result.error).toEqual(INVALID_VALUES);
 });
 
+const defaultPersonData = generatePersonData({ count: 8 }).personData;
 const personData = defaultPersonData
   .slice(0, 8)
   .map((person) => Object.assign(person, { personId: UUID() }));
