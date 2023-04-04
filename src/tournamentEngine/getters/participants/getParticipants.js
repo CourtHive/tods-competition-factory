@@ -32,7 +32,10 @@ export function getParticipants({
   withIOC,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (withMatchUps) getMatchUpDependencies({ tournamentRecord }); // ensure goesTos are present
+
+  if (withMatchUps || withRankingProfile) {
+    getMatchUpDependencies({ tournamentRecord }); // ensure goesTos are present
+  }
 
   let { participantMap } = getParticipantMap({
     withIndividualParticipants,
