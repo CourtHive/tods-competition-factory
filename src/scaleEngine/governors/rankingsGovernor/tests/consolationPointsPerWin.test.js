@@ -29,7 +29,7 @@ const awardProfiles = [
 const policyDefinitions = {
   [POLICY_TYPE_RANKING_POINTS]: {
     requireWinFirstRound: true,
-    requireWinDefault: false,
+    requireWinForPoints: false,
     awardProfiles,
   },
 };
