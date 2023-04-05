@@ -88,7 +88,7 @@ export function treeMatchUps({
     roundNumber++;
   }
 
-  const roundsCount = roundNumber - 1;
+  const roundsCount = roundNumber - 1; // because roundNumber was incremented at the end of the while loop
 
   matchUps = addFinishingRounds({
     finishingPositionOffset,

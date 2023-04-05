@@ -145,6 +145,7 @@ export function feedInMatchUps({
     nodes = roundNodes;
   }
 
+  // because roundNumber was incremented at the end of the while loop
   if (roundsCount !== roundNumber - 1) console.log('ERROR');
 
   // if this is a feed-in consolation then finishing drawPositions must be offset ...
