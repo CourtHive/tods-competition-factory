@@ -25,21 +25,33 @@ export function addFinishingRounds({
     roundsCount = maxRoundNumber;
   }
 
+  // for qualifying, offset the final round so that qualifyinground is finishingRound
+  const finishingRoundOffset = roundLimit ? roundsCount - roundLimit : 0;
+
+  // for QUALIFYING draws the best finishingPosition is equal to the number of matchUps in the final round of the structure
+  const minQualifyingPosition =
+    finishingRoundOffset &&
+    roundProfile[roundsCount - finishingRoundOffset]?.matchUpsCount;
+
   // array of # of matchUps (value) for eaach round (index)
   const roundMatchUpsCountArray = Object.values(roundProfile).map(
     ({ matchUpsCount }) => matchUpsCount
   );
 
   // returns a range for array of possible finishing drawPositions
-  const finishingRange = (positionRange) => {
+  const finishingRange = (positionRange, winner) => {
+    let minFinishingPosition = Math.min(...positionRange);
+
+    // only modify for qualifying when the minFinishingPosition is 1
+    // and when the finishingRange is being calculated for a matchUp winner
+    if (minQualifyingPosition && winner && minFinishingPosition === 1) {
+      minFinishingPosition = minQualifyingPosition;
+    }
     let maxFinishingPosition = Math.max(...positionRange);
     if (maxFinishingPosition > finishingPositionLimit)
       maxFinishingPosition = finishingPositionLimit;
-    return [Math.min(...positionRange), maxFinishingPosition];
+    return [minFinishingPosition, maxFinishingPosition];
   };
-
-  // for qualifying, offset the final round so that qualifyinground is finishingRound
-  const finishingRoundOffset = roundLimit ? roundsCount - roundLimit : 0;
 
   const roundFinishingData = Object.assign(
     {},
@@ -65,7 +77,7 @@ export function addFinishingRounds({
       );
       const slicer = upcomingMatchUps + finalPosition - matchUpsCount;
       const loser = finishingRange(positionRange.slice(slicer));
-      const winner = finishingRange(positionRange.slice(0, slicer));
+      const winner = finishingRange(positionRange.slice(0, slicer), true);
       finishingData.finishingPositionRange = { loser, winner };
 
       return { [roundNumber]: finishingData };
