@@ -61,7 +61,7 @@ export function getRoundMatchUps({ matchUps = [], interpolate }) {
         .map((key) => parseInt(key))
         .filter((f) => !isNaN(f))
     );
-    const maxRoundMatchUpsCount = roundMatchUps[maxRoundNumber].length;
+    const maxRoundMatchUpsCount = roundMatchUps[maxRoundNumber]?.length;
     // when considering a structue, if rounds do not progress to a final round which contains one matchUp
     // and if the last provided round has power-of-two matchUpsCount, add details for the matchUps which are "missing"
     if (maxRoundMatchUpsCount > 1 && isPowerOf2(maxRoundMatchUpsCount)) {
