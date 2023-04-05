@@ -7,6 +7,7 @@ import { getAwardPoints } from './getAwardPoints';
 import { unique } from '../../../utilities';
 
 import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
+import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { RANKING_POINTS } from '../../../constants/extensionConstants';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -64,7 +65,6 @@ export function getTournamentPoints({
       const eventInfo = derivedEventInfo[eventId];
       const drawInfo = derivedDrawInfo[drawId];
       const drawType = drawInfo?.drawType;
-      const drawSize = drawInfo?.drawSize;
 
       const { category, eventType } = eventInfo || {};
       const startDate =
@@ -94,10 +94,13 @@ export function getTournamentPoints({
             participationOrder,
             participantWon,
             flightNumber,
+            rankingStage,
             winCount,
           } = participation;
 
           totalWinsCount += winCount || 0;
+
+          const drawSize = drawInfo?.drawSize;
 
           const { awardProfile } = getAwardProfile({
             awardProfiles,
@@ -120,8 +123,12 @@ export function getTournamentPoints({
               Array.isArray(finishingPositionRange) &&
               Math.max(...finishingPositionRange);
             const dashRange = unique(finishingPositionRange || []).join('-');
+
             const firstRound =
-              accessor && finishingPositionRange?.includes(drawSize);
+              accessor &&
+              rankingStage !== QUALIFYING &&
+              finishingPositionRange?.includes(drawSize);
+
             if (awardProfile.requireWinForPoints !== undefined)
               requireWin = awardProfile.requireWinForPoints;
             if (awardProfile.requireWinFirstRound !== undefined)
