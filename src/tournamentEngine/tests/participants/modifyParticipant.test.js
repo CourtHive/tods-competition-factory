@@ -8,7 +8,7 @@ import { MALE } from '../../../constants/genderConstants';
 
 tournamentEngine.devContext(true);
 
-it('can retrieve tournament participants', () => {
+it('can modify participants', () => {
   const participantsProfile = {
     participantsCount: 10,
     participantType: PAIR,
