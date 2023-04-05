@@ -2,6 +2,7 @@ import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConsta
 import { definedAttributes } from '../../../utilities/objects';
 import {
   chunkArray,
+  generateRange,
   intersection,
   isPowerOf2,
   numericSort,
@@ -10,7 +11,7 @@ import {
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 
-export function getRoundMatchUps({ matchUps = [] }) {
+export function getRoundMatchUps({ matchUps = [], interpolate }) {
   if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
 
   // create an array of arrays of matchUps grouped by roundNumber
@@ -43,8 +44,8 @@ export function getRoundMatchUps({ matchUps = [] }) {
   const finishingRoundMap = matchUps.reduce((mapping, matchUp) => {
     if (!mapping[matchUp.roundNumber])
       mapping[matchUp.roundNumber] = definedAttributes({
-        finishingRound: matchUp.finishingRound,
         abbreviatedRoundName: matchUp.abbreviatedRoundName,
+        finishingRound: matchUp.finishingRound,
         roundName: matchUp.roundName,
       });
     return mapping;
@@ -52,6 +53,30 @@ export function getRoundMatchUps({ matchUps = [] }) {
 
   // convert roundMatchUpsArray into an object with roundNumber keys
   const roundMatchUps = Object.assign({}, ...roundMatchUpsArray);
+
+  if (interpolate) {
+    // console.log(roundMatchUpsArray[roundMatchUpsArray.length - 1]);
+    const maxRoundNumber = Math.max(
+      ...Object.keys(roundMatchUps)
+        .map((key) => parseInt(key))
+        .filter((f) => !isNaN(f))
+    );
+    const maxRoundMatchUpsCount = roundMatchUps[maxRoundNumber].length;
+    // when considering a structue, if rounds do not progress to a final round which contains one matchUp
+    // and if the last provided round has power-of-two matchUpsCount, add details for the matchUps which are "missing"
+    if (maxRoundMatchUpsCount > 1 && isPowerOf2(maxRoundMatchUpsCount)) {
+      const nextRound = maxRoundNumber + 1;
+      const lastRound = nextRound + maxRoundMatchUpsCount / 2;
+      const roundsToInterpolate = generateRange(nextRound, lastRound);
+      roundsToInterpolate.forEach((roundNumber, i) => {
+        roundMatchUps[roundNumber] = generateRange(
+          0,
+          maxRoundMatchUpsCount / (2 + i * 2)
+        ).map(() => ({})); // add dummy objects for padding out the array
+      });
+    }
+  }
+
   let maxMatchUpsCount = 0;
 
   // create a profle object with roundNubmer keys
@@ -99,11 +124,11 @@ export function getRoundMatchUps({ matchUps = [] }) {
       : 1;
 
     roundProfile[roundNumber].finishingRound =
-      finishingRoundMap[roundNumber].finishingRound;
+      finishingRoundMap[roundNumber]?.finishingRound;
     roundProfile[roundNumber].roundName =
-      finishingRoundMap[roundNumber].roundName;
+      finishingRoundMap[roundNumber]?.roundName;
     roundProfile[roundNumber].abbreviatedRoundName =
-      finishingRoundMap[roundNumber].abbreviatedRoundName;
+      finishingRoundMap[roundNumber]?.abbreviatedRoundName;
 
     roundProfile[roundNumber].finishingPositionRange =
       roundMatchUps[roundNumber][0].finishingPositionRange;
