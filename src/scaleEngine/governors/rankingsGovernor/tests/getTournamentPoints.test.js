@@ -51,7 +51,7 @@ const awardProfiles = [
 
 const policyDefinitions = {
   [POLICY_TYPE_RANKING_POINTS]: {
-    requireWinDefault: false,
+    requireWinForPoints: false,
     awardProfiles,
   },
 };

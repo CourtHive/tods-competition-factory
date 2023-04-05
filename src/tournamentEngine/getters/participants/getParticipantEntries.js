@@ -516,7 +516,7 @@ export function getParticipantEntries({
       }
 
       if (withRankingProfile) {
-        const diff = (range) => Math.abs(range[0] - range[1]);
+        const diff = (range = []) => Math.abs(range[0] - range[1]);
         for (const drawId of Object.keys(participantAggregator.draws)) {
           const { orderedStructureIds = [], flightNumber } =
             derivedDrawInfo[drawId] || {};

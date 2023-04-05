@@ -14,15 +14,13 @@ export function addFinishingRounds({
   fmlc,
 }) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
-  const { roundProfile, roundNumbers } = getRoundMatchUps({ matchUps });
+  const { roundProfile, roundNumbers } = getRoundMatchUps({
+    interpolate: true, // for structures which do not contain a final round of one matchUps (structure winner)
+    matchUps,
+  });
 
   if (!roundsCount) {
-    const maxRoundNumber = matchUps?.reduce(
-      (matchUp, roundNumber) =>
-        matchUp.roundNumber > roundNumber ? matchUp.roundNumber : roundNumber,
-      0
-    );
-    roundsCount = maxRoundNumber;
+    roundsCount = Math.max(...roundNumbers);
   }
 
   // for qualifying, offset the final round so that qualifyinground is finishingRound

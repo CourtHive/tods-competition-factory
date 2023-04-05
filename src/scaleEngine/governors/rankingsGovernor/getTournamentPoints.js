@@ -40,7 +40,7 @@ export function getTournamentPoints({
 
   const awardProfiles = pointsPolicy.awardProfiles;
   let requireWinFirstRound = pointsPolicy.requireWinFirstRound;
-  let requireWinDefault = pointsPolicy.requireWinDefault;
+  let requireWinForPoints = pointsPolicy.requireWinForPoints;
 
   const { participants, derivedEventInfo, derivedDrawInfo, mappedMatchUps } =
     getParticipants({
@@ -81,7 +81,7 @@ export function getTournamentPoints({
       let points;
 
       if (awardProfiles) {
-        let requireWin = requireWinDefault;
+        let requireWin = requireWinForPoints;
         // const positionAwards = []; // potential use for combining ppw w/ fpp
         let totalWinsCount = 0;
         let positionPoints = 0;
@@ -112,14 +112,18 @@ export function getTournamentPoints({
           });
 
           if (awardProfile) {
+            // NOTE: for now drawSize: 0 indicates qualifying structure with no MAIN structure
+            // TODO: support for qualifying stage awardProfiles
+            if (!drawSize) continue;
+
             const accessor =
               Array.isArray(finishingPositionRange) &&
               Math.max(...finishingPositionRange);
-            const dashRange = unique(finishingPositionRange).join('-');
+            const dashRange = unique(finishingPositionRange || []).join('-');
             const firstRound =
               accessor && finishingPositionRange?.includes(drawSize);
-            if (awardProfile.requireWinDefault !== undefined)
-              requireWin = awardProfile.requireWinDefault;
+            if (awardProfile.requireWinForPoints !== undefined)
+              requireWin = awardProfile.requireWinForPoints;
             if (awardProfile.requireWinFirstRound !== undefined)
               requireWinFirstRound = awardProfile.requireWinFirstRound;
 
