@@ -5,8 +5,11 @@ import { expect, test } from 'vitest';
 
 import { MODIFY_PAIR_ASSIGNMENT } from '../../../../constants/positionActionConstants';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import { UNGROUPED } from '../../../../constants/entryStatusConstants';
 import { DOUBLES_EVENT } from '../../../../constants/eventConstants';
+import {
+  DIRECT_ACCEPTANCE,
+  UNGROUPED,
+} from '../../../../constants/entryStatusConstants';
 
 test('postionAction for replacing participant within PAIR', () => {
   const participantsCount = 10;
@@ -117,4 +120,28 @@ test('postionAction for replacing participant within PAIR', () => {
   expect(drawPositionAssignment.participantId).toEqual(
     result.newPairParticipantId
   );
+
+  ({ event, drawDefinition } = tournamentEngine.getEvent({ drawId }));
+
+  const pairParticipantId = event.entries.find(
+    ({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE
+  ).participantId;
+  const pairParticipant = tournamentEngine.getParticipants({
+    participantFilters: { participantIds: [pairParticipantId] },
+  }).participants[0];
+
+  const availableIndividualParticipantIds =
+    event?.entries
+      ?.filter(({ entryStatus }) => [UNGROUPED].includes(entryStatus))
+      .map(({ participantId }) => participantId) || [];
+
+  result = tournamentEngine.modifyPairAssignment({
+    existingIndividualParticipantId:
+      pairParticipant.individualParticipantIds[0],
+    replacementIndividualParticipantId: availableIndividualParticipantIds[0],
+    participantId: pairParticipantId,
+    eventId,
+  });
+
+  expect(result.success).toEqual(true);
 });

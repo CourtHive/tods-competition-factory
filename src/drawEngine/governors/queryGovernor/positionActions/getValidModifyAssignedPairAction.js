@@ -1,10 +1,13 @@
 import { definedAttributes } from '../../../../utilities';
 
-import { UNGROUPED } from '../../../../constants/entryStatusConstants';
 import {
   MODIFY_PAIR_ASSIGNMENT,
   MODIFY_PAIR_ASSIGNMENT_METHOD,
 } from '../../../../constants/positionActionConstants';
+import {
+  UNGROUPED,
+  UNPAIRED,
+} from '../../../../constants/entryStatusConstants';
 
 export function getValidModifyAssignedPairAction({
   tournamentParticipants,
@@ -17,7 +20,7 @@ export function getValidModifyAssignedPairAction({
   // only ungrouped individuals who are event.entries are valid
   const availableIndividualParticipantIds =
     event?.entries
-      ?.filter(({ entryStatus }) => entryStatus === UNGROUPED)
+      ?.filter(({ entryStatus }) => [UNGROUPED, UNPAIRED].includes(entryStatus))
       .map(({ participantId }) => participantId) || [];
 
   if (availableIndividualParticipantIds.length) {
