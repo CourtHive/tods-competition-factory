@@ -82,6 +82,7 @@ import { resetDrawDefinition } from './drawDefinitions/resetDrawDefinition';
 import { pruneDrawDefinition } from './drawDefinitions/pruneDrawDefinition';
 import { updateDrawIdsOrder } from './drawDefinitions/updateDrawIdsOrder';
 import { setOrderOfFinish } from './drawDefinitions/setOrderOfFinish';
+import { generateLineUps } from '../../generators/generateLineUps';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { modifyEventEntries } from './entries/modifyEventEntries';
@@ -194,6 +195,7 @@ const eventGovernor = {
   updateDrawIdsOrder,
   getFlightProfile,
   getScaledEntries,
+  generateLineUps,
   addFlight,
 
   generateAdHocMatchUps,
