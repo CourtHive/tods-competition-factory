@@ -9,10 +9,10 @@ import { generatePersons } from './generatePersons';
 import { nameMocks } from '../utilities/nameMocks';
 
 import defaultRatingsParameters from '../../fixtures/ratings/ratingsParameters';
+import { DOUBLES_EVENT, SINGLES_EVENT } from '../../constants/eventConstants';
 import { RANKING, RATING, SCALE } from '../../constants/scaleConstants';
+import { DOUBLES_MATCHUP } from '../../constants/matchUpTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
-import { SINGLES } from '../../constants/eventConstants';
-import { DOUBLES } from '../../constants/matchUpTypes';
 import {
   GROUP,
   INDIVIDUAL,
@@ -39,7 +39,7 @@ import {
  * @param {string} consideredDate - date from which category ageMaxDate and ageMinDate should be calculated (typically tournament.startDate or .endDate)
  * @param {object} category - optional - { categoryName, ageCategoryCode, ratingType, ratingMax, ratingMin }
  * @param {number[]} rankingRankge - optional - range within which ranking numbers should be generated for specified category (non-rating)
- * @param {number} scaledParticipantsCount - optional - number of participants to assign rankings/ratings - defaults to ~25
+ * @param {number} scaledParticipantsCount - optional - number of participants to assign rankings/ratings
  *
  */
 export function generateParticipants({
@@ -60,6 +60,7 @@ export function generateParticipants({
 
   personExtensions,
   addressProps,
+  gendersCount, // internally calculated
   matchUpType,
   personData,
   sex,
@@ -70,8 +71,9 @@ export function generateParticipants({
 
   rankingRange, // range of ranking positions to generate
   scaledParticipantsCount, // number of participants to assign rankings/ratings
+  scaleAllParticipants, // optional boolean
 }) {
-  const doubles = participantType === PAIR || matchUpType === DOUBLES;
+  const doubles = participantType === PAIR || matchUpType === DOUBLES_MATCHUP;
   const team = participantType === TEAM || matchUpType === TEAM;
 
   if (
@@ -83,6 +85,9 @@ export function generateParticipants({
     rankingRange = undefined;
   }
 
+  scaledParticipantsCount = scaleAllParticipants
+    ? participantsCount
+    : scaledParticipantsCount;
   const defaultRankingRange = 1000;
   const rankingUpperBound =
     scaledParticipantsCount && scaledParticipantsCount > defaultRankingRange
@@ -102,6 +107,7 @@ export function generateParticipants({
     count: individualParticipantsCount,
     personExtensions,
     consideredDate,
+    gendersCount,
     personData,
     category,
     sex,
@@ -381,14 +387,14 @@ export function generateParticipants({
 
       addScaleItem({
         scaleValue: singlesRanking,
-        eventType: SINGLES,
+        eventType: SINGLES_EVENT,
         scaleType: RANKING,
         participant,
         category,
       });
       addScaleItem({
         scaleValue: doublesRanking,
-        eventType: DOUBLES,
+        eventType: DOUBLES_EVENT,
         scaleType: RANKING,
         participant,
         category,
@@ -399,14 +405,14 @@ export function generateParticipants({
 
       addScaleItem({
         scaleValue: singlesRating,
-        eventType: SINGLES,
+        eventType: SINGLES_EVENT,
         scaleType: RATING,
         participant,
         category,
       });
       addScaleItem({
         scaleValue: doublesRating,
-        eventType: DOUBLES,
+        eventType: DOUBLES_EVENT,
         scaleType: RATING,
         participant,
         category,
