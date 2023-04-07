@@ -1,5 +1,5 @@
+import { isNumeric, randomInt, skewedDistribution } from '../../utilities/math';
 import { cityMocks, stateMocks, postalCodeMocks } from '../utilities/address';
-import { randomInt, skewedDistribution } from '../../utilities/math';
 import { generateRange, shuffleArray, UUID } from '../../utilities';
 import { isValidDateString } from '../../utilities/dateTime';
 import { definedAttributes } from '../../utilities/objects';
@@ -68,12 +68,27 @@ export function generateParticipants({
   withISO2,
   withIOC,
 
-  rankingRange = [1, 100], // range of ranking positions to generate
+  rankingRange, // range of ranking positions to generate
   scaledParticipantsCount, // number of participants to assign rankings/ratings
 }) {
   const doubles = participantType === PAIR || matchUpType === DOUBLES;
   const team = participantType === TEAM || matchUpType === TEAM;
 
+  if (
+    rankingRange &&
+    (!Array.isArray(rankingRange) ||
+      !rankingRange.every((r) => isNumeric(r)) ||
+      rankingRange.length !== 2)
+  ) {
+    rankingRange = undefined;
+  }
+
+  const defaultRankingRange = 1000;
+  const rankingUpperBound =
+    scaledParticipantsCount && scaledParticipantsCount > defaultRankingRange
+      ? scaledParticipantsCount
+      : defaultRankingRange;
+  rankingRange = rankingRange || [1, rankingUpperBound];
   rankingRange[1] += 1; // so that behavior is as expected
 
   const individualParticipantsCount =
