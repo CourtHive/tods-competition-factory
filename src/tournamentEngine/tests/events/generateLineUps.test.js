@@ -1,19 +1,17 @@
 import { tournamentEngine, mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
+import { DOMINANT_DUO_MIXED } from '../../../constants/tieFormatConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { RANKING } from '../../../constants/scaleConstants';
 import { ASC } from '../../../constants/sortingConstants';
 
 it('can generate lineUps for TEAM events', () => {
-  let participantsCount = 100;
-
   const categoryName = '18U';
   const participantsProfile = {
-    scaledParticipantsCount: participantsCount,
     category: { categoryName },
-    participantsCount,
+    scaleAllParticipants: true,
   };
   const {
     tournamentRecord,
@@ -24,7 +22,7 @@ it('can generate lineUps for TEAM events', () => {
     drawProfiles: [
       {
         category: { ageCategoryCode: categoryName },
-        tieFormatName: 'DOMINANT_DUO',
+        tieFormatName: DOMINANT_DUO_MIXED,
         eventType: TEAM_EVENT,
         drawSize: 8,
       },
@@ -53,4 +51,6 @@ it('can generate lineUps for TEAM events', () => {
   });
 
   // TODO: for DOUBLES collectionPositions need to have two participants assigned to them
+
+  // console.log(result.lineUps);
 });

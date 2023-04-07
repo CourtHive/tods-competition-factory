@@ -40,7 +40,7 @@ export function generateLineUps({
   if (typeof scaleAccessor !== 'object')
     return { error: INVALID_VALUES, context: { scaleAccessor } };
 
-  const lineUps = [];
+  const lineUps = {};
 
   const targetEntries = (drawDefinition?.entries || event.entries).filter(
     (entry) => entry?.entryStatus === DIRECT_ACCEPTANCE
@@ -115,7 +115,8 @@ export function generateLineUps({
       collectionAssignments: participantAssignments[participantId],
       participantId,
     }));
-    lineUps.push(lineUp);
+
+    lineUps[teamParticipant.participantId] = lineUp;
   }
 
   return { ...SUCCESS, lineUps };

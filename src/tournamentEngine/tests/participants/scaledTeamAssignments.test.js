@@ -6,7 +6,7 @@ import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import { TEAM_PARTICIPANT } from '../../../constants/participantConstants';
-import { SINGLES, TEAM as TEAM_EVENT } from '../../../constants/eventConstants';
+import { SINGLES, TEAM_EVENT } from '../../../constants/eventConstants';
 import { UNGROUPED } from '../../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { RANKING } from '../../../constants/scaleConstants';

@@ -2,6 +2,13 @@ import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaul
 import { UUID } from '../../utilities';
 
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import {
+  FEMALE,
+  MIXED,
+  OTHER,
+  MALE,
+  ANY,
+} from '../../constants/genderConstants';
 
 export function processTieFormat({
   alternatesCount = 0,
@@ -15,7 +22,8 @@ export function processTieFormat({
   let singlesMatchUpTotal = 0,
     doublesMatchUpTotal = 0;
 
-  let categories = 0;
+  let categories = {};
+  const genders = { [MALE]: 0, [FEMALE]: 0, [MIXED]: 0, [OTHER]: 0, [ANY]: 0 };
 
   tieFormat =
     typeof tieFormat === 'object'
@@ -25,10 +33,17 @@ export function processTieFormat({
   tieFormat?.collectionDefinitions
     ?.filter(Boolean)
     .forEach((collectionDefinition) => {
-      const { category, collectionId, matchUpType, matchUpCount } =
+      const { category, collectionId, matchUpType, matchUpCount, gender } =
         collectionDefinition;
 
-      if (category) categories += 1;
+      if (gender) {
+        genders[gender] += matchUpCount * (matchUpType === DOUBLES ? 2 : 1);
+      }
+
+      if (category) {
+        const categoryString = JSON.stringify(category);
+        categories[categoryString] = category;
+      }
 
       // ensure every collectionDefinition has a collectionId
       if (!collectionId) collectionDefinition.collectionId = UUID();
@@ -46,7 +61,7 @@ export function processTieFormat({
       }
     });
 
-  const teamSize = categories
+  const teamSize = Object.keys(categories).length
     ? Math.max(singlesMatchUpTotal, doublesMatchUpTotal * 2)
     : Math.max(maxSinglesCount, maxDoublesCount * 2);
   const maxDoublesDraw = maxDoublesCount * (drawSize + alternatesCount);
@@ -56,5 +71,6 @@ export function processTieFormat({
     maxDoublesDraw,
     maxSinglesDraw,
     teamSize,
+    genders,
   };
 }
