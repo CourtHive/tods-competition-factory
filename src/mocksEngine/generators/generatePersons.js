@@ -40,6 +40,7 @@ export function generatePersons({
     (maleCount &&
       generatePersonData({
         count: maleCount,
+        sex: MALE,
       }).personData) ||
     [];
 
@@ -47,6 +48,7 @@ export function generatePersons({
     (femaleCount &&
       generatePersonData({
         count: femaleCount,
+        sex: FEMALE,
       }).personData) ||
     [];
 

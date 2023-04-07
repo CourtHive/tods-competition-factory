@@ -34,6 +34,7 @@ import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
+import { FEMALE, MALE } from '../../constants/genderConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { SEEDING } from '../../constants/timeItemConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -156,15 +157,21 @@ export function generateEventWithDraw({
     const drawParticipantsCount =
       (participantsCount || 0) + alternatesCount + qualifyingParticipantsCount;
     let individualParticipantCount = drawParticipantsCount;
-    let teamSize;
+    const gendersCount = { [MALE]: 0, [FEMALE]: 0 };
+    let teamSize, genders;
 
     if (eventType === TEAM) {
-      ({ teamSize } = processTieFormat({
+      ({ teamSize, genders } = processTieFormat({
         alternatesCount,
         tieFormatName,
         tieFormat,
         drawSize,
       }));
+      Object.keys(genders).forEach((key) => {
+        if ([MALE, FEMALE].includes(key)) {
+          gendersCount[key] = drawSize * genders[key];
+        }
+      });
       individualParticipantCount =
         teamSize * ((drawSize || 0) + qualifyingParticipantsCount);
     }
@@ -185,6 +192,7 @@ export function generateEventWithDraw({
       uuids: drawProfile.uuids || uuids,
       ratingsParameters,
       participantType,
+      gendersCount,
       idPrefix,
       category,
     });
@@ -207,22 +215,61 @@ export function generateEventWithDraw({
     targetParticipants = unique;
 
     if (eventType === TEAM) {
-      const allIndividualParticipantIds = unique
+      const maleIndividualParticipantIds = genders[MALE]
+        ? unique
+            .filter(
+              ({ participantType, person }) =>
+                participantType === INDIVIDUAL && person.sex === MALE
+            )
+            .map(getParticipantId)
+        : [];
+      const femaleIndividualParticipantIds = genders[FEMALE]
+        ? unique
+            .filter(
+              ({ participantType, person }) =>
+                participantType === INDIVIDUAL && person.sex === FEMALE
+            )
+            .map(getParticipantId)
+        : [];
+      const remainingParticipantIds = unique
         .filter(({ participantType }) => participantType === INDIVIDUAL)
-        .map(getParticipantId);
+        .map(getParticipantId)
+        .filter(
+          (participantId) =>
+            !maleIndividualParticipantIds.includes(participantId) &&
+            !femaleIndividualParticipantIds.includes(participantId)
+        );
+
+      const mixedCount = teamSize - (genders[MALE] + genders[FEMALE]);
+      // use indices to keep track of positions within pId arrays
+      let fIndex = 0,
+        mIndex = 0,
+        rIndex = 0;
       const teamParticipants = generateRange(0, drawParticipantsCount).map(
         (teamIndex) => {
-          const individualParticipantIds = allIndividualParticipantIds.slice(
-            teamIndex * teamSize,
-            (teamIndex + 1) * teamSize
+          const fPIDs = femaleIndividualParticipantIds.slice(
+            fIndex,
+            fIndex + genders[FEMALE]
           );
+          const mPIDs = maleIndividualParticipantIds.slice(
+            mIndex,
+            mIndex + genders[MALE]
+          );
+          const rIDs = remainingParticipantIds.slice(
+            rIndex,
+            rIndex + mixedCount
+          );
+          fIndex += genders[FEMALE];
+          mIndex += genders[MALE];
+          rIndex += mixedCount;
+
           return {
-            participantName: `Team ${teamIndex + 1}`,
+            individualParticipantIds: [...fPIDs, ...mPIDs, ...rIDs],
             participantOtherName: `TM${teamIndex + 1}`,
+            participantName: `Team ${teamIndex + 1}`,
             participantRole: COMPETITOR,
             participantType: TEAM,
             participantId: UUID(),
-            individualParticipantIds,
           };
         }
       );
