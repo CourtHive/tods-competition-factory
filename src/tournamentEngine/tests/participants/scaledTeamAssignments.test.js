@@ -22,6 +22,7 @@ it('can automatically assign participants to teams using individualParticipantId
   const participantsProfile = {
     scaledParticipantsCount: participantsCount,
     category: { categoryName: '18U' },
+    rankingRange: [1, 100],
     participantsCount,
   };
 
@@ -133,6 +134,7 @@ it('can automatically assign participants to teams using scaledParticipants', ()
   const participantsProfile = {
     scaledParticipantsCount: participantsCount,
     category: { categoryName: '18U' },
+    rankingRange: [1, 100],
     participantsCount,
   };
 
@@ -230,6 +232,7 @@ it('will cleanup UNGROUPED participant entries if TEAM entry is added AFTER team
   const participantsProfile = {
     scaledParticipantsCount: participantsCount,
     category: { categoryName: '18U' },
+    rankingRange: [1, 100],
     participantsCount,
   };
 
