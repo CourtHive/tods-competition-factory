@@ -19,6 +19,7 @@ import { requestConstants } from './requestConstants';
 import { resultConstants } from './resultConstants';
 import { scaleConstants } from './scaleConstants';
 import { scheduleConstants } from './scheduleConstants';
+import { sortingConstants } from './sortingConstants';
 import { surfaceConstants } from './surfaceConstants';
 import { tieFormatConstants } from './tieFormatConstants';
 import { timeItemConstants } from './timeItemConstants';
@@ -67,6 +68,7 @@ export const factoryConstants = {
   resultConstants,
   scaleConstants,
   scheduleConstants,
+  sortingConstants,
   surfaceConstants,
   tieFormatConstants,
   timeItemConstants,
