@@ -168,7 +168,7 @@ export function generateEventWithDraw({
         drawSize,
       }));
       Object.keys(genders).forEach((key) => {
-        if ([MALE, FEMALE].includes(key)) {
+        if ([MALE, FEMALE].includes(key) && genders[key]) {
           gendersCount[key] = drawSize * genders[key];
         }
       });
