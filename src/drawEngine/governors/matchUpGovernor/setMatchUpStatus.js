@@ -268,8 +268,9 @@ export function setMatchUpStatus(params) {
       undefined;
 
     const { projectedWinningSide } = getProjectedDualWinningSide({
-      winningSide,
+      matchUpStatus,
       dualMatchUp,
+      winningSide,
       tieFormat,
       structure,
       matchUp,
