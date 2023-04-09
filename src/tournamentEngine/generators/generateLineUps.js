@@ -6,6 +6,7 @@ import { generateRange } from '../../utilities';
 
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
+import { FEMALE, MALE, MIXED } from '../../constants/genderConstants';
 import { DESCENDING } from '../../constants/sortingConstants';
 import { TEAM_EVENT } from '../../constants/eventConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -92,22 +93,37 @@ export function generateLineUps({
 
     const participantAssignments = {};
     for (const collectionDefinition of collectionDefinitions) {
-      const { collectionId, matchUpCount, matchUpType } = collectionDefinition;
-      generateRange(0, matchUpCount).forEach((i) => {
-        const collectionPosition = i + 1;
-        const typeSort =
-          matchUpType === SINGLES_MATCHUP ? singlesSort : doublesSort;
-        const participantId = typeSort[i]?.participantId;
+      const collectionParticipantIds = [];
+      const { collectionId, matchUpCount, matchUpType, gender } =
+        collectionDefinition;
+      const singlesMatchUp = matchUpType === SINGLES_MATCHUP;
 
-        // TODO: for DOUBLES collectionPositions need to have two participants assigned to them
-        if (participantId) {
-          if (!participantAssignments[participantId])
-            participantAssignments[participantId] = [];
-          participantAssignments[participantId].push({
-            collectionPosition,
-            collectionId,
-          });
-        }
+      generateRange(0, matchUpCount).forEach((i) => {
+        const typeSort = singlesMatchUp ? singlesSort : doublesSort;
+        const collectionPosition = i + 1;
+
+        generateRange(0, singlesMatchUp ? 1 : 2).forEach((i) => {
+          const nextParticipantId = typeSort.find((participant) => {
+            const targetGender =
+              ([MALE, FEMALE].includes(gender) && gender) ||
+              (gender === MIXED && [MALE, FEMALE][i]);
+            return (
+              (!targetGender || targetGender === participant.person.sex) &&
+              !collectionParticipantIds.includes(participant.participantId)
+            );
+          }).participantId;
+
+          // keep track of participantIds which have already been assigned
+          if (nextParticipantId) {
+            collectionParticipantIds.push(nextParticipantId);
+            if (!participantAssignments[nextParticipantId])
+              participantAssignments[nextParticipantId] = [];
+            participantAssignments[nextParticipantId].push({
+              collectionPosition,
+              collectionId,
+            });
+          }
+        });
       });
     }
 

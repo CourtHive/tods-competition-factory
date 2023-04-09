@@ -36,8 +36,12 @@ export function processTieFormat({
       const { category, collectionId, matchUpType, matchUpCount, gender } =
         collectionDefinition;
 
-      if (gender) {
-        genders[gender] += matchUpCount * (matchUpType === DOUBLES ? 2 : 1);
+      if ([MALE, FEMALE].includes(gender)) {
+        const required = matchUpCount * (matchUpType === DOUBLES ? 2 : 1);
+        if (genders[gender] < required) genders[gender] = required;
+      } else if (gender === MIXED) {
+        if (genders[MALE] < matchUpCount) genders[MALE] = matchUpCount;
+        if (genders[FEMALE] < matchUpCount) genders[FEMALE] = matchUpCount;
       }
 
       if (category) {
