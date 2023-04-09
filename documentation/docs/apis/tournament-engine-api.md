@@ -2719,6 +2719,22 @@ tournamentEngine.devContext(true).modifyIndividualParticipantIds({
 
 ---
 
+## modifyPairAssignment
+
+Modifies an individualParticipantId within a PAIR particiapnt entered into an event or draw. Will clean up (delete) any PAIR participants that are not entered into any other draws or events.
+
+```js
+tournamentEngine.modifyPairAssignment({
+  replacementIndividualParticipantId,
+  existingIndividualParticipantId,
+  participantId, // only valid to pass a participantId when { participantType: PAIR }
+  eventId, // optional if drawId is provided
+  drawId, // optional if eventId is provided; scopes change to specified draw
+});
+```
+
+---
+
 ## modifyParticipant
 
 Modifies attributes of a participant with integrity checks to ensure valid values for e.g. `{ participantType, participantRole }`. Adds participant if not found.
