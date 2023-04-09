@@ -110,7 +110,7 @@
     "c8": "7.13.0",
     "chalk": "^5.2.0",
     "esbuild": "0.17.15",
-    "eslint": "8.37.0",
+    "eslint": "8.38.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-import-resolver-typescript": "3.5.5",
     "eslint-module-utils": "2.7.4",
