@@ -339,7 +339,7 @@ export function setMatchUpStatus(params) {
     }
   }
 
-  const validWinningSideChange =
+  const validWinningSideSwap =
     matchUp.matchUpType !== TEAM &&
     !dualWinningSideChange &&
     winningSide &&
@@ -348,7 +348,7 @@ export function setMatchUpStatus(params) {
 
   if (
     allowChangePropagation &&
-    validWinningSideChange &&
+    validWinningSideSwap &&
     matchUp.roundPosition // not round robin if matchUp.roundPosition
   ) {
     return swapWinnerLoser(params);

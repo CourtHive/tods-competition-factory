@@ -4,14 +4,17 @@ import { isDirectingMatchUpStatus } from './checkStatusType';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { isAdHoc } from '../queryGovernor/isAdHoc';
 
-import { COMPLETED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
+import {
+  ABANDONED,
+  CANCELLED,
+  COMPLETED,
+  WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
 
 export function attemptToModifyScore(params) {
-  const matchUpStatusIsValid = isDirectingMatchUpStatus({
-    matchUpStatus: params.matchUpStatus,
-  });
   const {
+    dualWinningSideChange,
     matchUpStatusCodes,
     tournamentRecord,
     drawDefinition,
@@ -24,6 +27,10 @@ export function attemptToModifyScore(params) {
     event,
     score,
   } = params;
+  const matchUpStatusIsValid =
+    isDirectingMatchUpStatus({ matchUpStatus }) ||
+    // in the case that CANCELLED or ABANDONED causes TEAM participant to advance
+    ([CANCELLED, ABANDONED].includes(matchUpStatus) && dualWinningSideChange);
 
   const stack = 'attemptToModifyScore';
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
