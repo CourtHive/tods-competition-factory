@@ -1,4 +1,7 @@
 import { validateTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+import { getPairedParticipant } from '../governors/participantGovernor/getPairedParticipant';
+import { addParticipant } from '../governors/participantGovernor/addParticipants';
+import { addExtension } from '../../global/functions/producers/addExtension';
 import { getParticipants } from '../getters/participants/getParticipants';
 import { getParticipantId } from '../../global/functions/extractors';
 import { isNumeric } from '../../utilities/math';
@@ -7,8 +10,11 @@ import { generateRange } from '../../utilities';
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
 import { FEMALE, MALE, MIXED } from '../../constants/genderConstants';
+import { COMPETITOR } from '../../constants/participantRoles';
 import { DESCENDING } from '../../constants/sortingConstants';
+import { LINEUPS } from '../../constants/extensionConstants';
 import { TEAM_EVENT } from '../../constants/eventConstants';
+import { PAIR } from '../../constants/participantConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { RANKING } from '../../constants/scaleConstants';
 import {
@@ -26,6 +32,7 @@ export function generateLineUps({
   scaleAccessor, // e.g. { scaleType: 'RANKINGS', scaleName: 'U18', accessor: 'wtnRating', sortOrder: 'ASC' }
   singlesOnly, // use singles scale for doubles events
   tieFormat,
+  attach, // boolean - when true attach LINEUPS extension to drawDefinition and add new PAIR participants (where necessary)
   event,
 }) {
   if (event?.eventType !== TEAM_EVENT) return { error: INVALID_EVENT_TYPE };
@@ -48,13 +55,15 @@ export function generateLineUps({
   );
 
   const participantIds = targetEntries.map(getParticipantId);
-  const teamParticipants =
-    getParticipants({
-      participantFilters: { participantIds },
-      withIndividualParticipants: true,
-      withScaleValues: true,
-      tournamentRecord,
-    }).participants || [];
+  const { participants = [] } = getParticipants({
+    withIndividualParticipants: true,
+    withScaleValues: true,
+    tournamentRecord,
+  });
+
+  const teamParticipants = participants.filter(({ participantId }) =>
+    participantIds.includes(participantId)
+  );
 
   const formatScaleType = (type) => (type === RANKING ? 'rankings' : 'ratings');
 
@@ -83,6 +92,7 @@ export function generateLineUps({
   const singlesScaleSort = (a, b) => sortMethod(a, b, SINGLES_MATCHUP);
   const doublesScaleSort = (a, b) => sortMethod(a, b, DOUBLES_MATCHUP);
 
+  const participantIdPairs = [];
   const collectionDefinitions = tieFormat.collectionDefinitions || [];
   for (const teamParticipant of teamParticipants) {
     const singlesSort =
@@ -102,6 +112,7 @@ export function generateLineUps({
         const typeSort = singlesMatchUp ? singlesSort : doublesSort;
         const collectionPosition = i + 1;
 
+        const participantIds = [];
         generateRange(0, singlesMatchUp ? 1 : 2).forEach((i) => {
           const nextParticipantId = typeSort.find((participant) => {
             const targetGender =
@@ -115,6 +126,7 @@ export function generateLineUps({
 
           // keep track of participantIds which have already been assigned
           if (nextParticipantId) {
+            participantIds.push(nextParticipantId);
             collectionParticipantIds.push(nextParticipantId);
             if (!participantAssignments[nextParticipantId])
               participantAssignments[nextParticipantId] = [];
@@ -124,6 +136,7 @@ export function generateLineUps({
             });
           }
         });
+        if (!singlesMatchUp) participantIdPairs.push(participantIds);
       });
     }
 
@@ -135,5 +148,32 @@ export function generateLineUps({
     lineUps[teamParticipant.participantId] = lineUp;
   }
 
-  return { ...SUCCESS, lineUps };
+  const participantsToAdd = [];
+  for (const pairParticipantIds of participantIdPairs) {
+    const { participant: existingPairParticipant } = getPairedParticipant({
+      tournamentParticipants: participants,
+      participantIds: pairParticipantIds,
+    });
+    if (!existingPairParticipant) {
+      const newPairParticipant = {
+        individualParticipantIds: pairParticipantIds,
+        participantRole: COMPETITOR,
+        participantType: PAIR,
+      };
+      participantsToAdd.push(newPairParticipant);
+    }
+  }
+
+  if (attach) {
+    while (participantsToAdd.length) {
+      addParticipant({
+        participant: participantsToAdd.pop(),
+        tournamentRecord,
+      });
+    }
+    const extension = { name: LINEUPS, value: lineUps };
+    addExtension({ element: drawDefinition, extension });
+  }
+
+  return { ...SUCCESS, lineUps, participantsToAdd };
 }
