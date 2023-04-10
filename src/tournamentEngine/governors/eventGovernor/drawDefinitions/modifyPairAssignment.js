@@ -2,21 +2,23 @@ import { getPairedParticipant } from '../../participantGovernor/getPairedPartici
 import { deleteParticipants } from '../../participantGovernor/deleteParticipants';
 import { addParticipant } from '../../participantGovernor/addParticipants';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
-import { isConvertableInteger } from '../../../../utilities/math';
 
 import { COMPETITOR } from '../../../../constants/participantRoles';
 import { PAIR } from '../../../../constants/participantConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { DOUBLES } from '../../../../constants/eventConstants';
 import {
-  INVALID_DRAW_POSITION,
   INVALID_EVENT_TYPE,
   INVALID_PARTICIPANT,
-  MISSING_DRAW_DEFINITION,
+  INVALID_PARTICIPANT_ID,
   MISSING_EVENT,
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
+import {
+  UNGROUPED,
+  UNPAIRED,
+} from '../../../../constants/entryStatusConstants';
 
 export function modifyPairAssignment({
   replacementIndividualParticipantId,
@@ -24,11 +26,9 @@ export function modifyPairAssignment({
   tournamentRecord,
   drawDefinition,
   participantId,
-  drawPosition,
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!event) return { error: MISSING_EVENT };
   if (event.eventType !== DOUBLES) return { error: INVALID_EVENT_TYPE };
   if (
@@ -40,8 +40,18 @@ export function modifyPairAssignment({
   ) {
     return { error: MISSING_PARTICIPANT_ID };
   }
-  if (!isConvertableInteger(drawPosition)) {
-    return { error: INVALID_DRAW_POSITION };
+
+  // ensure that replacementIndividualPartiicpant is UNPAIRED
+  const availableIndividualParticipantIds =
+    event?.entries
+      ?.filter(({ entryStatus }) => [UNGROUPED, UNPAIRED].includes(entryStatus))
+      .map(({ participantId }) => participantId) || [];
+  if (
+    !availableIndividualParticipantIds.includes(
+      replacementIndividualParticipantId
+    )
+  ) {
+    return { error: INVALID_PARTICIPANT_ID };
   }
 
   const participant = (tournamentRecord.participants || []).find(
@@ -84,24 +94,36 @@ export function modifyPairAssignment({
     newPairParticipantId = existingPairParticipant.participantId;
   }
 
-  // modify all positionAssignments in event, drawDefinition and flight
   const { flightProfile } = getFlightProfile({ event });
-  const flight = flightProfile?.flights?.find(
-    ({ drawId }) => drawId === drawDefinition.drawId
-  );
-  if (flight) {
-    flight.drawEntries = flight.drawEntries.map((entry) =>
+  if (drawDefinition) {
+    // modify all positionAssignments in event, drawDefinition and flight
+    const flight = flightProfile?.flights?.find(
+      ({ drawId }) => drawId === drawDefinition.drawId
+    );
+    if (flight) {
+      flight.drawEntries = flight.drawEntries.map((entry) =>
+        entry.participantId === participantId
+          ? { ...entry, participantId: newPairParticipantId }
+          : entry
+      );
+    }
+
+    drawDefinition.entries = drawDefinition.entries.map((entry) =>
       entry.participantId === participantId
         ? { ...entry, participantId: newPairParticipantId }
         : entry
     );
-  }
 
-  drawDefinition.entries = drawDefinition.entries.map((entry) =>
-    entry.participantId === participantId
-      ? { ...entry, participantId: newPairParticipantId }
-      : entry
-  );
+    // update positionAssignments for all structures within the drawDefinition
+    for (const structure of drawDefinition.structures || []) {
+      structure.positionAssignments = (structure.positionAssignments || []).map(
+        (assignment) =>
+          assignment.participantId === participantId
+            ? { ...assignment, participantId: newPairParticipantId }
+            : assignment
+      );
+    }
+  }
 
   event.entries = event.entries.map(
     (entry) =>
@@ -119,22 +141,12 @@ export function modifyPairAssignment({
       entry
   );
 
-  // update positionAssignments for all structures within the drawDefinition
-  for (const structure of drawDefinition.structures || []) {
-    structure.positionAssignments = (structure.positionAssignments || []).map(
-      (assignment) =>
-        assignment.participantId === participantId
-          ? { ...assignment, participantId: newPairParticipantId }
-          : assignment
-    );
-  }
-
   // if participant has no other entries then the pair can be destroyed
   const participantOtherEntries = tournamentRecord.events.some(
     ({ entries, eventId, drawDefinitions }) => {
       if (event.eventId === eventId) {
         return drawDefinitions.some(({ drawId, entries }) =>
-          drawId === drawDefinition.drawId
+          drawId === drawDefinition?.drawId
             ? false
             : entries?.find((entry) => entry.participantId === participantId)
         );

@@ -1,7 +1,7 @@
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 export function addStructureParticipation({
-  finishingPositionRange: matchUpFinishingPositionRanges,
+  finishingPositionRange: matchUpFinishingPositionRanges = {},
   participantMap,
   finishingRound,
   participantWon,

@@ -22,6 +22,7 @@ export function addTournamentParticipants({
     participantType,
     largestTeamDraw,
     largestTeamSize,
+    gendersCount,
   } = getParticipantsCount({
     participantsProfile,
     eventProfiles,
@@ -36,6 +37,7 @@ export function addTournamentParticipants({
     consideredDate: startDate,
     participantsCount,
     participantType,
+    gendersCount,
   });
 
   let addedCount = 0;

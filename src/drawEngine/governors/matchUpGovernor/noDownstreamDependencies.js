@@ -11,6 +11,7 @@ import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/sc
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ABANDONED,
+  CANCELLED,
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   INCOMPLETE,
@@ -74,8 +75,13 @@ export function noDownstreamDependencies(params) {
     return scoreModification(params);
   }
 
+  const triggerDualWinningSide =
+    [CANCELLED, ABANDONED].includes(matchUpStatus) &&
+    params.dualWinningSideChange;
+
   const result =
-    (winningSide && attemptToSetWinningSide(params)) ||
+    ((winningSide || triggerDualWinningSide) &&
+      attemptToSetWinningSide(params)) ||
     (scoreWithNoWinningSide && removeDirected({ removeScore })) ||
     (statusNotTBP && attemptToSetMatchUpStatus(params)) ||
     (removeWinningSide && removeDirected({ removeScore })) ||

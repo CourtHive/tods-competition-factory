@@ -11,13 +11,13 @@ export function attemptToSetWinningSide(params) {
   const stack = 'attemptToSetWinningSide';
 
   const {
+    disableAutoCalc,
     drawDefinition,
+    matchUpsMap,
+    dualMatchUp,
     winningSide,
     structure,
     matchUp,
-    matchUpsMap,
-    disableAutoCalc,
-    dualMatchUp,
   } = params;
   let connectedStructures;
 

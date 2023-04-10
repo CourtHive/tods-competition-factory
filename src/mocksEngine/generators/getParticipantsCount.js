@@ -4,6 +4,13 @@ import { processTieFormat } from './processTieFormat';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { DOUBLES, TEAM } from '../../constants/eventConstants';
+import {
+  FEMALE,
+  MIXED,
+  OTHER,
+  MALE,
+  ANY,
+} from '../../constants/genderConstants';
 
 export function getParticipantsCount({
   participantsProfile,
@@ -14,6 +21,13 @@ export function getParticipantsCount({
     participantsProfile || {};
   const specifiedParicipantsCount = participantsCount || 0; // capture this to ensure calculated participantsCount is not below
 
+  const gendersCount = {
+    [FEMALE]: 0,
+    [MIXED]: 0,
+    [OTHER]: 0,
+    [MALE]: 0,
+    [ANY]: 0,
+  };
   let largestDoublesDraw = 0,
     largestSinglesDraw = 0,
     largestTeamSize = 0,
@@ -33,14 +47,64 @@ export function getParticipantsCount({
   }) => {
     const isDoubles = eventType === DOUBLES;
     const isTeam = eventType === TEAM;
-    const requiresUniqueParticipants =
-      uniqueParticipants || stage === QUALIFYING || category || gender;
+    const requiresUniqueParticipants = Boolean(
+      uniqueParticipants || stage === QUALIFYING || category || gender
+    );
 
+    if (isTeam) {
+      largestTeamDraw = Math.max(largestTeamDraw, drawSize + alternatesCount);
+
+      tieFormat =
+        typeof tieFormat === 'object'
+          ? tieFormat
+          : tieFormatDefaults({ namedFormat: tieFormatName });
+
+      const { teamSize, maxDoublesDraw, maxSinglesDraw, genders } =
+        processTieFormat({
+          alternatesCount,
+          tieFormatName,
+          tieFormat,
+          drawSize,
+        });
+      largestTeamSize = Math.max(largestTeamSize, teamSize);
+      largestSinglesDraw = Math.max(largestSinglesDraw, maxSinglesDraw);
+      if (!requiresUniqueParticipants) {
+        largestDoublesDraw = Math.max(largestDoublesDraw, maxDoublesDraw);
+      }
+      Object.keys(genders).forEach(
+        (key) => (gendersCount[key] += genders[key])
+      );
+    } else if (isDoubles) {
+      if (requiresUniqueParticipants) {
+        const additionalParticipantsCount = (drawSize + alternatesCount) * 2;
+        uniqueParticipantsCount += additionalParticipantsCount;
+        if (gender) gendersCount[gender] += additionalParticipantsCount;
+      } else if (
+        drawSize + alternatesCount &&
+        drawSize + alternatesCount > largestDoublesDraw
+      ) {
+        largestDoublesDraw = drawSize + alternatesCount;
+      }
+    } else {
+      if (requiresUniqueParticipants) {
+        const additionalParticipantsCount = drawSize + alternatesCount;
+        if (gender) gendersCount[gender] += additionalParticipantsCount;
+        uniqueParticipantsCount += additionalParticipantsCount;
+      } else if (drawSize && drawSize > largestSinglesDraw) {
+        largestSinglesDraw = drawSize + alternatesCount;
+      }
+    }
+
+    /*
     if (requiresUniqueParticipants) {
       if (isDoubles) {
-        uniqueParticipantsCount += (drawSize + alternatesCount) * 2;
+        const additionalParticipantsCount = (drawSize + alternatesCount) * 2;
+        uniqueParticipantsCount += additionalParticipantsCount;
+        if (gender) gendersCount[gender] += additionalParticipantsCount;
       } else {
-        uniqueParticipantsCount += drawSize + alternatesCount;
+        const additionalParticipantsCount = drawSize + alternatesCount;
+        if (gender) gendersCount[gender] += additionalParticipantsCount;
+        uniqueParticipantsCount += additionalParticipantsCount;
       }
     } else {
       if (isTeam) {
@@ -51,15 +115,19 @@ export function getParticipantsCount({
             ? tieFormat
             : tieFormatDefaults({ namedFormat: tieFormatName });
 
-        const { teamSize, maxDoublesDraw, maxSinglesDraw } = processTieFormat({
-          alternatesCount,
-          tieFormatName,
-          tieFormat,
-          drawSize,
-        });
+        const { teamSize, maxDoublesDraw, maxSinglesDraw, genders } =
+          processTieFormat({
+            alternatesCount,
+            tieFormatName,
+            tieFormat,
+            drawSize,
+          });
         largestTeamSize = Math.max(largestTeamSize, teamSize);
         largestDoublesDraw = Math.max(largestDoublesDraw, maxDoublesDraw);
         largestSinglesDraw = Math.max(largestSinglesDraw, maxSinglesDraw);
+        Object.keys(genders).forEach(
+          (key) => (gendersCount[key] += genders[key])
+        );
       }
 
       if (
@@ -74,6 +142,7 @@ export function getParticipantsCount({
         largestSinglesDraw = drawSize + alternatesCount;
       }
     }
+    */
   };
 
   let categories = []; // use when generating participants
@@ -157,10 +226,11 @@ export function getParticipantsCount({
     participantsCount = specifiedParicipantsCount;
 
   return {
+    uniqueParticipantsCount,
+    participantsCount,
     largestTeamDraw,
     largestTeamSize,
-    participantsCount,
     participantType,
-    uniqueParticipantsCount,
+    gendersCount,
   };
 }

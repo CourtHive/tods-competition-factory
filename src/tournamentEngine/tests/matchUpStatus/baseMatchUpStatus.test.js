@@ -108,8 +108,8 @@ it('removes scores for CANCELLED and WALKOVER outcomes', () => {
   const { matchUps } = tournamentEngine
     .setState(tournamentRecord)
     .allTournamentMatchUps({
-      drawId,
       inContext: true,
+      drawId,
     });
 
   const abandoned = matchUps.find(

@@ -6,8 +6,8 @@ import { countries } from '../../fixtures/countryData';
 import {
   generateRange,
   randomMember,
-  randomPop,
   shuffleArray,
+  randomPop,
 } from '../../utilities';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
@@ -23,6 +23,7 @@ export function generatePersons({
   personExtensions,
   consideredDate,
   isMock = true,
+  gendersCount,
   personData,
   count = 1,
   category,
@@ -30,9 +31,39 @@ export function generatePersons({
 } = {}) {
   if (isNaN(count)) return { error: INVALID_VALUES };
 
-  const defaultPersonData = generatePersonData({ count: 400 }).personData;
+  const maleCount = gendersCount ? gendersCount[MALE] : 0;
+  const femaleCount = gendersCount ? gendersCount[FEMALE] : 0;
+  count = Math.max(count, maleCount + femaleCount);
+  const defaultCount = count - (maleCount + femaleCount);
+
+  const defaultMalePersonData =
+    (maleCount &&
+      generatePersonData({
+        count: maleCount,
+        sex: MALE,
+      }).personData) ||
+    [];
+
+  const defaultFemalePersonData =
+    (femaleCount &&
+      generatePersonData({
+        count: femaleCount,
+        sex: FEMALE,
+      }).personData) ||
+    [];
+
+  const defaultPersonData = [
+    ...defaultMalePersonData,
+    ...defaultFemalePersonData,
+    ...((defaultCount &&
+      generatePersonData({
+        count: defaultCount,
+      }).personData) ||
+      []),
+  ];
+
   let validPersonData = defaultPersonData.filter(
-    (person) => !sex || person.sex === sex
+    (person) => !sex || (maleCount && femaleCount) || person.sex === sex
   );
 
   let nationalityCodes = [];

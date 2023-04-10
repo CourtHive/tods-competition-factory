@@ -91,5 +91,5 @@ it('can generate draws with unique TEAM participants', () => {
       participantFilters: { participantTypes: [TEAM] },
     }
   );
-  expect(tournamentParticipants.length).toEqual(4);
+  expect(tournamentParticipants.length).toEqual(8);
 });

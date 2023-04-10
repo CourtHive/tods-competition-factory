@@ -104,13 +104,12 @@ export function getValidSeedBlocks({
   const fedSeedBlockPositions = seedRangeDrawPositionBlocks.flat(Infinity);
   const fedSeedNumberOffset = isFeedIn ? fedSeedBlockPositions?.length : 0;
   const countLimit = allPositions ? positionsCount : seedsCount;
-  const firstRoundSeedsCount = isLucky
-    ? 0
-    : !isFeedIn
-    ? countLimit
-    : fedSeedBlockPositions.length < countLimit
-    ? countLimit - fedSeedBlockPositions.length
-    : 0;
+  const firstRoundSeedsCount =
+    (isLucky && 0) ||
+    (!isFeedIn && countLimit) ||
+    (fedSeedBlockPositions.length < countLimit &&
+      countLimit - fedSeedBlockPositions.length) ||
+    0;
 
   if (qualifyingBlocks) {
     const seedingBlocksCount = structure.matchUps.filter(

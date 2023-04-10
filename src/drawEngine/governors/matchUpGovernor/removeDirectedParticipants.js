@@ -12,8 +12,8 @@ import { instanceCount } from '../../../utilities';
 import { isAdHoc } from '../queryGovernor/isAdHoc';
 
 import { MISSING_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
-import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function removeDirectedParticipants(params) {
