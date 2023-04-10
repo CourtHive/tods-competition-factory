@@ -382,6 +382,10 @@ tournamentEngine.addMatchUpStopTime({
 
 Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants. Includes integrity checks for `{ participantType: PAIR }` to ensure `participant.individualParticipantIds` are valid.
 
+:::note
+To add PAIR participants it is only necessary to provide an array of 2 valid individualParticipantIds, participantType and participantRole.
+:::
+
 ```js
 const participantId = UUID();
 const participant = {
@@ -1508,6 +1512,26 @@ const {
 Object.assign(drawDefinitionValues, flight);
 const { drawDefinition } =
   tournamentEngine.generateDrawDefinition(drawDefinitionValues);
+```
+
+---
+
+## generateLineUps
+
+Generates lineUps for TEAM events which have selected teams with ranked or rated individualParticipants. Individual TEAM participants are assigned line positions based on the scale specified.
+
+```js
+const scaleAccessor = {
+  scaleName: categoryName,
+  scaleType: RANKING,
+  sortOrder, // optional - ASCENDING or DESCENDING - defaults to ASCENDING
+};
+const { lineUps, participantsToAdd } = tournamentEngine.generateLineUps({
+  scaleAccessor, // see above
+  singlesOnly, // optional boolean - when true SINGLES rankings will be used for DOUBLES position assignment
+  attach, // optional boolean - when true the lineUps will be attached to the drawDefinition specified by drawId
+  drawId,
+});
 ```
 
 ---
