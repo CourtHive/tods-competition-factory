@@ -1414,6 +1414,7 @@ const drawDefinitionValues = {
   matchUpType, // optional - SINGLES, DOUBLES, or TEAM
   matchUpFormat, // optional - default matchUpFormatCode for all contained matchUps
   playoffMatchUpFormat, // optional - relevant for ROUND_ROBIN_WITH_PLAYOFFS
+  hydrateCollections, // optional - propagate { category, gender } for event to collectionDefinitions in tieFormats
   tieFormat, // optional - { collectionDefinitions, winCriteria } for 'dual' or 'tie' matchUps
   seedsCount, // optional - number of seeds to generate if no seededParticipants provided
   seededParticipants, // optional - { participantId, seedNumber, seedValue }
@@ -2713,6 +2714,22 @@ Modify `individualParticipantIds` of a grouping participant `{ participantType: 
 tournamentEngine.devContext(true).modifyIndividualParticipantIds({
   groupingParticipantId, // participant (TEAM or GROUP) to which participantIds are to be added
   individualParticipantIds: newIndividualParticipantIds,
+});
+```
+
+---
+
+## modifyPairAssignment
+
+Modifies an individualParticipantId within a PAIR particiapnt entered into an event or draw. Will clean up (delete) any PAIR participants that are not entered into any other draws or events.
+
+```js
+tournamentEngine.modifyPairAssignment({
+  replacementIndividualParticipantId,
+  existingIndividualParticipantId,
+  participantId, // only valid to pass a participantId when { participantType: PAIR }
+  eventId, // optional if drawId is provided
+  drawId, // optional if eventId is provided; scopes change to specified draw
 });
 ```
 

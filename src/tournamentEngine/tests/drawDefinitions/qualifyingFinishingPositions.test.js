@@ -4,6 +4,7 @@ import { expect, it } from 'vitest';
 
 it('generates expected finishingPositions for qualifying structures', () => {
   let { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
     drawProfiles: [
       {
         ignoreDefaults: true, // suppress default generation of MAIN
@@ -34,4 +35,18 @@ it('generates expected finishingPositions for qualifying structures', () => {
     1: { loser: [5, 8], winner: [2, 4] },
     2: { loser: [3, 4], winner: [2, 2] },
   });
+
+  const { participants } = tournamentEngine.getParticipants({
+    withRankingProfile: true,
+  });
+  const qualifyingParticipant = participants.find((p) => {
+    const structureParticipation = p.draws?.[0]?.structureParticipation?.[0];
+    return (
+      structureParticipation.finishingRound === 1 &&
+      structureParticipation.participantWon
+    );
+  });
+  expect(
+    qualifyingParticipant.draws[0].structureParticipation[0].winCount
+  ).toEqual(2);
 });

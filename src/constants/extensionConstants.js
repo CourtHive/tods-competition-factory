@@ -9,7 +9,7 @@ export const DRAW_DELETIONS = 'drawDeletions';
 export const DRAW_PROFILE = 'drawProfile';
 export const ENTRY_PROFILE = 'entryProfile';
 export const EVENT_PROFILE = 'eventProfile';
-export const FACTORY = 'factory';
+export const VERSIONS = 'versions';
 export const FLIGHT_PROFILE = 'flightProfile';
 export const GROUPING_ATTRIBUTE = 'groupingAttribute';
 export const LINEUPS = 'lineUps';
@@ -38,7 +38,6 @@ export const extensionConstants = {
   DRAW_PROFILE,
   ENTRY_PROFILE, // used for drawGeneration; not relevant for anonymized tournaments
   EVENT_PROFILE,
-  FACTORY, // used for capturing factory version and historical processing notes
   FLIGHT_PROFILE,
   GROUPING_ATTRIBUTE, // for generating teams; not relevant for anonymized tournaments
   LINEUPS,
@@ -54,6 +53,7 @@ export const extensionConstants = {
   SUB_ORDER,
   TALLY,
   TIE_FORMAT_MODIFICATIONS, // for auditing, not important when anonymized
+  VERSIONS, // used for capturing versioning of factory and other TODS document processors
 };
 
 export const internalExtensions = [

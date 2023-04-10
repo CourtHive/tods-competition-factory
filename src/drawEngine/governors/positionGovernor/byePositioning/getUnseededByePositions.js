@@ -150,12 +150,10 @@ export function getUnseededByePositions({
     unfilledSeedBlocks = validBlockDrawPositions.map((block) =>
       block.filter(unfilledDrawPosition)
     );
-  } else if (isLucky) {
-    // console.log({ isLucky });
-    unfilledSeedBlocks = validBlockDrawPositions
-      .map(quarterSeparateBlock)
-      .filter((block) => block.length);
   } else {
+    if (isLucky) {
+      // console.log({ isLucky });
+    }
     unfilledSeedBlocks = validBlockDrawPositions
       .map(quarterSeparateBlock)
       .filter((block) => block.length);

@@ -13,6 +13,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function directParticipants(params) {
   const result = attemptToModifyScore(params);
+
   if (result.error) return result;
   const matchUpStatusIsValid = isDirectingMatchUpStatus({
     matchUpStatus: params.matchUpStatus,

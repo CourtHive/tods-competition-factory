@@ -10,7 +10,7 @@ import {
   setTournamentRecords,
 } from '../global/state/globalState';
 
-import { FACTORY } from '../constants/extensionConstants';
+import { VERSIONS } from '../constants/extensionConstants';
 import {
   INVALID_OBJECT,
   MISSING_TOURNAMENT_ID,
@@ -25,13 +25,17 @@ export function setState(tournament, deepCopyOption) {
   const tournamentRecord =
     deepCopyOption !== false ? makeDeepCopy(tournament) : tournament;
 
-  const { extension: factoryExtension } = findTournamentExtension({
+  const { extension: versionsExtension } = findTournamentExtension({
     tournamentRecord,
-    name: FACTORY,
+    name: VERSIONS,
   });
 
-  if (factoryExtension?.value.factoryVersion) {
-    setFactoryVersion(factoryExtension.value.factoryVersion);
+  if (versionsExtension?.value.factory?.version) {
+    // this is setting the version of the incoming document
+    // which can be compared to factoryVersion() where necessary
+    // and the versions extension can be updated if necessary when mutations are made
+    // this is a stub for future document validation processes...
+    setFactoryVersion(versionsExtension.value.factory.version);
   }
 
   setTournamentRecords({ [tournamentId]: tournamentRecord });
