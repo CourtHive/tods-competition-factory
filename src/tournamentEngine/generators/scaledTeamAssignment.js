@@ -3,7 +3,7 @@ import { getParticipantId } from '../../global/functions/extractors';
 import { getFlightProfile } from '../getters/getFlightProfile';
 import { isConvertableInteger } from '../../utilities/math';
 
-import { TEAM as TEAM_EVENT } from '../../constants/eventConstants';
+import { TEAM_EVENT } from '../../constants/eventConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_PARTICIPANT_TYPE,
@@ -16,7 +16,7 @@ import {
 } from '../../constants/errorConditionConstants';
 import {
   INDIVIDUAL,
-  TEAM as TEAM_PARTICIPANT,
+  TEAM_PARTICIPANT,
 } from '../../constants/participantConstants';
 
 /*
@@ -28,25 +28,28 @@ the parameter is generalized... as long as there is a `participantId` and a `sca
   participantId: '60f3e684-b6d2-47fc-a579-d0ab8f020810',
   scaleValue: 1
 }
+
+scaleAttributes can include { accessor: 'attribute' } which will return scaleItem.scaleValue[accessor] for scaleValue
 */
 
 export function scaledTeamAssignment({
-  teamParticipantIds,
-  tournamentRecord,
-
   clearExistingAssignments = true, // by default remove all existing individualParticipantIds from targeted teams
-  reverseAssignmentOrder, // optional - reverses team order; useful for sequential assignment of participant groupings to ensure balanced distribution
-  descendingScaleSort, // sort direction; by default sort least to greatest, followed by undefined
-  initialTeamIndex = 0,
-
-  scaledParticipants, // optional - either scaledParticipants or (individualParticipantIds and scaleName) must be provided
-
   individualParticipantIds, // if scaledParticipants are provided, individualParticipants is ignored
-  scaleAttributes, // if scaledParticipants are provided, scaleName is ignored
+  reverseAssignmentOrder, // optional - reverses team order; useful for sequential assignment of participant groupings to ensure balanced distribution
+  initialTeamIndex = 0, // optional - allows assignment to begin at a specified array index; useful for sequential assignment of groups of scaledParticipants
+  scaledParticipants, // optional - either scaledParticipants or (individualParticipantIds and scaleName) must be provided
+  teamParticipantIds, // optional, IF teamsCount is provided then teams will be created
+  tournamentRecord,
+  scaleAttributes, // ignored if scaledParticipants are provided; { scaleName, scaleType, sortOrder, eventType }
+  teamNameBase, // optional - defaults to '[categoryName] TEAM #', where categoryName is derived from eventId (if supplied)
+  teamsCount, // optional - derived from teamParticipantIds (if provided) - create # of teams if teamParticipantIds provided are insufficient
+  eventId, // optional - source teamParticipantIds from DIRECT_ACCEPTANCE participants in a TEAM event
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (
-    !Array.isArray(teamParticipantIds) ||
+    (!Array.isArray(teamParticipantIds) &&
+      !isConvertableInteger(teamsCount) &&
+      !eventId) ||
     !isConvertableInteger(initialTeamIndex) ||
     (scaledParticipants && !Array.isArray(scaledParticipants)) ||
     (scaleAttributes && typeof scaleAttributes !== 'object')
@@ -77,12 +80,18 @@ export function scaledTeamAssignment({
     .concat(...teamParticipantIds.slice(0, initialTeamIndex));
 
   const relevantTeams = [];
+  // build up an array of targeted TEAM participants
   for (const participant of tournamentRecord.participants || []) {
     const { participantId, participantType } = participant;
     if (!orderedTeamParticipantIds.includes(participantId)) continue;
     if (participantType !== TEAM_PARTICIPANT)
       return { error: INVALID_PARTICIPANT_TYPE, participant };
     relevantTeams.push(participant);
+  }
+
+  if (teamsCount && relevantTeams.length < teamsCount) {
+    // add teamParticipants
+    console.log({ teamNameBase });
   }
 
   if (!relevantTeams.length) return { error: TEAM_NOT_FOUND };
@@ -121,8 +130,14 @@ export function scaledTeamAssignment({
       if (participantType !== INDIVIDUAL)
         return { error: INVALID_PARTICIPANT_TYPE, participant };
 
-      const scaleValue = participantScaleItem({ participant, scaleAttributes })
-        ?.scaleItem?.scaleValue;
+      const scaleItem = participantScaleItem({
+        scaleAttributes,
+        participant,
+      })?.scaleItem;
+
+      const scaleValue = scaleAttributes.accessor
+        ? scaleItem?.scaleValue?.[scaleAttributes.accessor]
+        : scaleItem?.scaleValue;
 
       const scaledParticipant = { participantId, scaleValue };
       relevantIndividualParticipants.push(scaledParticipant);
@@ -143,16 +158,14 @@ export function scaledTeamAssignment({
 
     scaledParticipants = participantsWithScaleValues
       .sort((a, b) =>
-        descendingScaleSort
+        scaleAttributes.sortOrder
           ? b.scaleValue - a.scaleValue
           : a.scaleValue - b.scaleValue
       )
       .concat(...participantsNoScaleValues);
   }
 
-  for (const scaledParticipant of scaledParticipants.sort(
-    (a, b) => a.scaleValue - b.scaleValue
-  )) {
+  for (const scaledParticipant of scaledParticipants) {
     if (!scaledParticipant.participantId)
       return { error: INVALID_VALUES, scaledParticipant };
   }
@@ -205,5 +218,5 @@ export function scaledTeamAssignment({
     }
   }
 
-  return { ...SUCCESS };
+  return { ...SUCCESS, scaledParticipants };
 }
