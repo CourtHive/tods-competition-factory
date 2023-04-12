@@ -1,7 +1,7 @@
 import {
+  nonDirectingMatchUpStatuses,
   directingMatchUpStatuses,
   activeMatchUpStatuses,
-  nonDirectingMatchUpStatuses,
 } from '../../../constants/matchUpStatusConstants';
 
 export function isDirectingMatchUpStatus({ matchUpStatus }) {
