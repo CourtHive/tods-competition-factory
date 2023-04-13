@@ -18,7 +18,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function addExtension({ tournamentRecords, extension }) {
-  if (!isValidExtension(extension)) return { error: INVALID_VALUES };
+  if (!isValidExtension({ extension })) return { error: INVALID_VALUES };
   const stack = 'addExtension';
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
@@ -63,7 +63,7 @@ export function removeExtension({ tournamentRecords, name }) {
 
 export function addEventExtension({ tournamentRecords, eventId, extension }) {
   if (typeof eventId !== 'string') return { error: MISSING_EVENT };
-  if (!isValidExtension(extension)) return { error: INVALID_VALUES };
+  if (!isValidExtension({ extension })) return { error: INVALID_VALUES };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { event } = findEvent({ tournamentRecord, eventId });
