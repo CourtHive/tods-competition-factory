@@ -59,10 +59,10 @@ export const validMatchUpStatuses = [
 
 export const directingMatchUpStatuses = [
   BYE,
+  DOUBLE_WALKOVER, // directing because of a produced WALKOVER
+  DOUBLE_DEFAULT, // directing because of a produced WALKOVER
   COMPLETED,
   DEFAULTED,
-  DOUBLE_WALKOVER,
-  DOUBLE_DEFAULT,
   RETIRED,
   WALKOVER,
 ];

@@ -167,8 +167,8 @@ export function generateEventWithFlights({
   if (result.error) return result;
 
   result = generateFlightDrawDefinitions({
-    completeAllMatchUps,
     matchUpStatusProfile,
+    completeAllMatchUps,
     randomWinningSide,
     tournamentRecord,
     drawProfiles,
