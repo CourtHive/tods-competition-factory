@@ -41,6 +41,7 @@ import {
   BYE,
   CANCELLED,
   COMPLETED,
+  DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   INCOMPLETE,
   particicipantsRequiredMatchUpStatuses,
@@ -300,7 +301,8 @@ export function setMatchUpStatus(params) {
     if (
       activeDownstream &&
       !winningSide &&
-      isNonDirectingMatchUpStatus({ matchUpStatus })
+      (isNonDirectingMatchUpStatus({ matchUpStatus }) ||
+        [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUpStatus))
     ) {
       return {
         error: INCOMPATIBLE_MATCHUP_STATUS,

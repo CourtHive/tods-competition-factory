@@ -3319,17 +3319,19 @@ Modifying team assignments has "global" effect, meaning that if a team appears i
 const scaleAttributes = {
   scaleType: RANKING,
   eventType: SINGLES,
-  scaleName: '18U',
+  scaleName: 'U18',
+  sortOrder: ASCENDING, // defaults to ASCENDING; use case for DESCENDING is unclear!
 };
 tournamentEngine.scaledTeamAssignment({
-  reverseAssignmentOrder, // optional - reverses team order; useful for sequential assignment of participant groupings to ensure balanced distribution
-  initialTeamIndex, // optional - allows assignment to begin at a specified array index; useful for sequential assignment of groups of scaledParticipants
   clearExistingAssignments, // optional - true by default remove all existing individualParticipantIds from targeted teams
-  descendingScaleSort, // optional - allow use of scales where the higher value denotes a stronger participant
-
-  individualParticipantIds,
-  teamParticipantIds,
-  scaleAttributes,
+  individualParticipantIds, // individuals to be sorted by scaleAttributes and assigned to teams (WATERFALL)
+  reverseAssignmentOrder, // optional - reverses team order; useful for sequential assignment of participant groupings to ensure balanced distribution
+  teamParticipantIds, // optional, IF teamsCount is provided then teams will be created
+  initialTeamIndex, // optional - allows assignment to begin at a specified array index; useful for sequential assignment of groups of scaledParticipants
+  scaleAttributes, // ignored if scaledParticipants are provided; { scaleName, scaleType, sortOrder, eventType }
+  teamNameBase, // optional - defaults to '[categoryName] TEAM #', where categoryName is derived from eventId (if supplied)
+  teamsCount, // optional - derived from teamParticipantIds (if provided) - create # of teams if teamParticipantIds provided are insufficient
+  eventId, // optional - source team participants from DIRECT_ACCEPTANCE entries for specified event
 });
 ```
 
@@ -3339,7 +3341,7 @@ tournamentEngine.scaledTeamAssignment({
 const scaleAttributes = {
   scaleType: RANKING,
   eventType: SINGLES,
-  scaleName: '18U',
+  scaleName: 'U18',
 };
 
 const scaledParticipants = individualParticipants.map((participant) => ({
