@@ -1,3 +1,4 @@
+import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 import { modifyEventMatchUpFormatTiming } from './matchUpFormatTiming/modifyEventMatchUpFormatTiming';
 import { removeEventMatchUpFormatTiming } from './matchUpFormatTiming/removeEventMatchUpFormatTiming';
 import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFormatTimingUpdate';
@@ -54,6 +55,7 @@ const scheduleGovernor = {
   modifyEventMatchUpFormatTiming,
   removeEventMatchUpFormatTiming,
   getMatchUpFormatTimingUpdate,
+  getMatchUpDependencies,
 
   getMatchUpDailyLimits, // document
   setMatchUpDailyLimits, // document
