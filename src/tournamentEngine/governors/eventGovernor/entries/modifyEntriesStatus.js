@@ -75,7 +75,11 @@ export function modifyEntriesStatus({
       stack,
     });
 
-  if (extension && !isValidExtension(extension))
+  if (
+    extension &&
+    !isValidExtension({ extension, rquiredAttributes: ['name'] })
+  )
+    // valid without value (will remove extension)
     return decorateResult({
       result: { error: INVALID_VALUES },
       info: 'Invalid extension',

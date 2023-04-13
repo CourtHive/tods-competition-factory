@@ -1930,6 +1930,30 @@ const { competitiveness } = tournamentEngine.getMatchUpCompetitiveness({
 
 ---
 
+## getMatchUpDependencies
+
+For each `matchUpId` returns an array of other `matchUpIds` which occur earlier in the draw.
+
+Optionally returns an array of `participantIds` which could potentially appear in each `matchUp`;
+used internally to ensure that auto scheduling respects the `timeAfterRecovery` of all potential participants.
+
+```js
+const {
+  matchUpDependencies: {
+    [matchUpId]: {
+      matchUpIds: [matchUpIdDependency], // array of all matchUpIds which occur prior to this matchUpId in the draw; crosses all structures
+      participantIds: [potentialParticipantIds], // array of all participantIds which could potentially appear in this matchUp
+      dependentMatchUpIds: [dependentMatchUpId], // array of matchUpIds which occur after this matchUpId in the draw; crosses all structures
+    },
+  },
+} = tournamentEngine.getMatchUpDependencies({
+  includeParticipantDependencies, // boolean - defaults to false
+  drawIds, // optional array of drawIds to scope the analysis
+});
+```
+
+---
+
 ## getMatchUpFormat
 
 Returns `matchUpFormat` codes for specified context(s). Refer to `getMatchUpFormat.test.js` for specfic use cases.
