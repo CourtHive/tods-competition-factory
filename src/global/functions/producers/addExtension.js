@@ -9,7 +9,7 @@ import {
 export function addExtension({ element, extension, creationTime = true } = {}) {
   if (!element) return { error: MISSING_VALUE };
   if (typeof element !== 'object') return { error: INVALID_VALUES };
-  if (!isValidExtension(extension))
+  if (!isValidExtension({ extension }))
     return { error: INVALID_VALUES, info: 'invalid extension' };
 
   if (!element.extensions) element.extensions = [];

@@ -67,7 +67,7 @@ export function addDrawEntry({
     return { error: spaceAvailable.error };
   }
 
-  if (extension && !isValidExtension(extension))
+  if (extension && !isValidExtension({ extension }))
     return decorateResult({
       result: { error: INVALID_VALUES },
       info: 'Invalid extension',

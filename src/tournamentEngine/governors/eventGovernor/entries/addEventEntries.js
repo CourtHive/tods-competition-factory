@@ -72,7 +72,7 @@ export function addEventEntries(params) {
   if (
     (extensions &&
       (!Array.isArray(extensions) || !extensions.every(isValidExtension))) ||
-    (extension && !isValidExtension(extension))
+    (extension && !isValidExtension({ extension }))
   ) {
     return decorateResult({
       result: { error: INVALID_VALUES },
