@@ -1,0 +1,2841 @@
+{
+  "tournamentId": "aeec1a80-6454-4e31-8329-b0738ba53a84",
+  "tournamentName": "Dominant Duo",
+  "startDate": "2023-04-14",
+  "endDate": "2023-04-21",
+  "participants": [
+    {
+      "participantId": "63099478-c8c5-4bf7-bbe8-7bf1f46308fc",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Melba Wirt",
+      "person": {
+        "addresses": [
+          {
+            "city": "Diomira",
+            "state": "LT",
+            "postalCode": "43739",
+            "countryCode": "NIC"
+          }
+        ],
+        "personId": "690c9739-c477-4527-a10e-f12e905defc1",
+        "standardFamilyName": "Wirt",
+        "standardGivenName": "Melba",
+        "nationalityCode": "NIC",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 1
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "21744f23-7994-48f8-a447-0f09eb22e284",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Lilith Crane",
+      "person": {
+        "addresses": [
+          {
+            "city": "Inverness",
+            "state": "FN",
+            "postalCode": "15320",
+            "countryCode": "UGA"
+          }
+        ],
+        "personId": "2f423e9a-fb6c-4d60-acf0-27cc8c21996a",
+        "standardFamilyName": "Crane",
+        "standardGivenName": "Lilith",
+        "nationalityCode": "UGA",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 2
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "d182dcea-11a5-46e9-bf68-827c35bdd30f",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Rosalind Lem",
+      "person": {
+        "addresses": [
+          {
+            "city": "El Dorado",
+            "state": "LU",
+            "postalCode": "16394",
+            "countryCode": "CAN"
+          }
+        ],
+        "personId": "6df717c4-2292-4eda-9989-b5b258c8c544",
+        "standardFamilyName": "Lem",
+        "standardGivenName": "Rosalind",
+        "nationalityCode": "CAN",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 3
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "80f5a452-3c10-48a5-a550-e0849a1ec66c",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Portia Jensen",
+      "person": {
+        "addresses": [
+          {
+            "city": "Monowi",
+            "state": "TH",
+            "postalCode": "96896",
+            "countryCode": "GIB"
+          }
+        ],
+        "personId": "ada4cabe-4f50-41fa-97c4-200f85febcb7",
+        "standardFamilyName": "Jensen",
+        "standardGivenName": "Portia",
+        "nationalityCode": "GIB",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 4
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "0e185dc9-17c8-4ec4-a3b8-3a1c38d33544",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Rincewind Ampleforth",
+      "person": {
+        "addresses": [
+          {
+            "city": "Braavos",
+            "state": "DW",
+            "postalCode": "06446",
+            "countryCode": "GEO"
+          }
+        ],
+        "personId": "c79ff7bb-175b-4574-b271-c216a05b23b2",
+        "standardFamilyName": "Ampleforth",
+        "standardGivenName": "Rincewind",
+        "nationalityCode": "GEO",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 5
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "fb9bab79-665e-40bb-9e1a-23cde8ab5282",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Uhura Wormwood",
+      "person": {
+        "addresses": [
+          {
+            "city": "Supilinn",
+            "state": "GO",
+            "postalCode": "65353",
+            "countryCode": "VAT"
+          }
+        ],
+        "personId": "b372e516-534c-42bd-935c-8da1bf5dd2fc",
+        "standardFamilyName": "Wormwood",
+        "standardGivenName": "Uhura",
+        "nationalityCode": "VAT",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 6
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "adb7bbfa-d9d9-43be-9b81-bfeaffc2f5d4",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Paul Stratton",
+      "person": {
+        "addresses": [
+          {
+            "city": "New New York",
+            "state": "HO",
+            "postalCode": "11905",
+            "countryCode": "DZA"
+          }
+        ],
+        "personId": "b5ca5465-e6b1-4942-ae00-b7103e16444d",
+        "standardFamilyName": "Stratton",
+        "standardGivenName": "Paul",
+        "nationalityCode": "DZA",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 7
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "4228ff0a-81c5-488f-b3f7-827fabc7e1df",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Vizzini Cummings",
+      "person": {
+        "addresses": [
+          {
+            "city": "Xanadu",
+            "state": "BS",
+            "postalCode": "43574",
+            "countryCode": "LTU"
+          }
+        ],
+        "personId": "e14d653c-bce2-42bd-9a1f-3e0c86890c72",
+        "standardFamilyName": "Cummings",
+        "standardGivenName": "Vizzini",
+        "nationalityCode": "LTU",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 8
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "ad6462b3-34c5-4e42-a4fa-2ac39045a149",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Matilda Langer",
+      "person": {
+        "addresses": [
+          {
+            "city": "Elista",
+            "state": "EA",
+            "postalCode": "38809",
+            "countryCode": "BRB"
+          }
+        ],
+        "personId": "ade38b5d-69fc-4120-82cd-dafcde6c8db3",
+        "standardFamilyName": "Langer",
+        "standardGivenName": "Matilda",
+        "nationalityCode": "BRB",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 9
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "f193426f-41c9-4179-a268-ac473e9ff7a1",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Kirkpatrick Waterhouse",
+      "person": {
+        "addresses": [
+          {
+            "city": "Springfield",
+            "state": "VA",
+            "postalCode": "99464",
+            "countryCode": "CHN"
+          }
+        ],
+        "personId": "fcc97118-3ade-4aa4-b4f9-03664cbf6064",
+        "standardFamilyName": "Waterhouse",
+        "standardGivenName": "Kirkpatrick",
+        "nationalityCode": "CHN",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 10
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "a9f3d7de-812b-4888-b530-f30c82411445",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Helmholtz Paz",
+      "person": {
+        "addresses": [
+          {
+            "city": "Ilium",
+            "state": "GR",
+            "postalCode": "45535",
+            "countryCode": "LIE"
+          }
+        ],
+        "personId": "a4b3b89b-6820-4aea-a8e5-ea85291340fa",
+        "standardFamilyName": "Paz",
+        "standardGivenName": "Helmholtz",
+        "nationalityCode": "LIE",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 11
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "da8fb74b-d600-441d-925a-bd7f12cd80eb",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Rachael Lovelace",
+      "person": {
+        "addresses": [
+          {
+            "city": "Wobegon",
+            "state": "GA",
+            "postalCode": "56990",
+            "countryCode": "GIB"
+          }
+        ],
+        "personId": "0a852011-4fc8-4ad2-b132-efda126e5b01",
+        "standardFamilyName": "Lovelace",
+        "standardGivenName": "Rachael",
+        "nationalityCode": "GIB",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 12
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "cac0c147-4fad-4134-9bf5-649d1a0db924",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Ada Earhart",
+      "person": {
+        "addresses": [
+          {
+            "city": "Kowloon",
+            "state": "BV",
+            "postalCode": "73531",
+            "countryCode": "VIR"
+          }
+        ],
+        "personId": "696d380d-27dd-44bd-b1dd-6e0859e6da80",
+        "standardFamilyName": "Earhart",
+        "standardGivenName": "Ada",
+        "nationalityCode": "VIR",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 13
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "51847a15-857d-4132-9f37-0af7baeeca98",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Neil Montoya",
+      "person": {
+        "addresses": [
+          {
+            "city": "Pseudopolis",
+            "state": "NV",
+            "postalCode": "35059",
+            "countryCode": "SMX"
+          }
+        ],
+        "personId": "a01fb2bf-19f4-4d2a-92ed-447cc2c79cb7",
+        "standardFamilyName": "Montoya",
+        "standardGivenName": "Neil",
+        "nationalityCode": "SMX",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 14
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "93b21370-8478-4875-bdb9-63fac92c3fea",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Xena Catton",
+      "person": {
+        "addresses": [
+          {
+            "city": "Trantor",
+            "state": "GL",
+            "postalCode": "56591",
+            "countryCode": "TJK"
+          }
+        ],
+        "personId": "dc6bb1fe-2de7-4182-9138-2f147760b2ad",
+        "standardFamilyName": "Catton",
+        "standardGivenName": "Xena",
+        "nationalityCode": "TJK",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 15
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "ece7b557-f55b-414e-9837-3895449087f9",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Axel Goldstein",
+      "person": {
+        "addresses": [
+          {
+            "city": "Longyearbyen",
+            "state": "FA",
+            "postalCode": "46441",
+            "countryCode": "SWZ"
+          }
+        ],
+        "personId": "9d7ab323-5ae0-4df7-a179-f54448f4ff97",
+        "standardFamilyName": "Goldstein",
+        "standardGivenName": "Axel",
+        "nationalityCode": "SWZ",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 16
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantName": "Team 1",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "c13d8905-4fe3-4857-9f7b-5fa2a56acba6",
+      "individualParticipantIds": [
+        "63099478-c8c5-4bf7-bbe8-7bf1f46308fc",
+        "21744f23-7994-48f8-a447-0f09eb22e284"
+      ],
+      "timeItems": []
+    },
+    {
+      "participantName": "Team 2",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "8c33f3c2-8b24-4f21-b881-1b5f4e6916d9",
+      "individualParticipantIds": [
+        "d182dcea-11a5-46e9-bf68-827c35bdd30f",
+        "80f5a452-3c10-48a5-a550-e0849a1ec66c"
+      ],
+      "timeItems": []
+    },
+    {
+      "participantName": "Team 3",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "cfb31e6e-757c-4e8d-a30f-2d12bf891a40",
+      "individualParticipantIds": [
+        "0e185dc9-17c8-4ec4-a3b8-3a1c38d33544",
+        "fb9bab79-665e-40bb-9e1a-23cde8ab5282"
+      ],
+      "timeItems": []
+    },
+    {
+      "participantName": "Team 4",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "c66ff2b1-058e-40f2-9756-f30882e53c3b",
+      "individualParticipantIds": [
+        "adb7bbfa-d9d9-43be-9b81-bfeaffc2f5d4",
+        "4228ff0a-81c5-488f-b3f7-827fabc7e1df"
+      ],
+      "timeItems": []
+    },
+    {
+      "participantName": "Team 5",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "955ff5f8-eff6-40bb-8d3e-1d2443492d3e",
+      "individualParticipantIds": [
+        "ad6462b3-34c5-4e42-a4fa-2ac39045a149",
+        "f193426f-41c9-4179-a268-ac473e9ff7a1"
+      ],
+      "timeItems": []
+    },
+    {
+      "participantName": "Team 6",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "b58dc2c0-c8ff-461a-9261-46133fcd2065",
+      "individualParticipantIds": [
+        "a9f3d7de-812b-4888-b530-f30c82411445",
+        "da8fb74b-d600-441d-925a-bd7f12cd80eb"
+      ],
+      "timeItems": []
+    },
+    {
+      "participantName": "Team 7",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "fbc1e220-bb5d-4b98-9fc3-1b57aa897b1a",
+      "individualParticipantIds": [
+        "cac0c147-4fad-4134-9bf5-649d1a0db924",
+        "51847a15-857d-4132-9f37-0af7baeeca98"
+      ],
+      "timeItems": []
+    },
+    {
+      "participantName": "Team 8",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "8ede590a-3eeb-4f8f-a414-849713aeec11",
+      "individualParticipantIds": [
+        "93b21370-8478-4875-bdb9-63fac92c3fea",
+        "ece7b557-f55b-414e-9837-3895449087f9"
+      ],
+      "timeItems": []
+    },
+    {
+      "participantId": "4397f800-6843-417d-b912-f7216ab9f0e9",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "America Curie",
+      "person": {
+        "addresses": [
+          {
+            "city": "Nagoro",
+            "state": "BM",
+            "postalCode": "86912",
+            "countryCode": "JEY"
+          }
+        ],
+        "personId": "9b5c1086-f8c5-4d93-af8c-6002949032db",
+        "standardFamilyName": "Curie",
+        "standardGivenName": "America",
+        "nationalityCode": "JEY",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 1
+          }
+        ],
+        "birthDate": "2006-10-10",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 842,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "c98a8346-b1fc-4e32-90ea-6e3cc9e3fbeb",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Uhura Mond",
+      "person": {
+        "addresses": [
+          {
+            "city": "Hadleyburg",
+            "state": "ZA",
+            "postalCode": "03739",
+            "countryCode": "PSE"
+          }
+        ],
+        "personId": "08a004d3-9f59-44e8-8db9-b3bc58467878",
+        "standardFamilyName": "Mond",
+        "standardGivenName": "Uhura",
+        "nationalityCode": "PSE",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 2
+          }
+        ],
+        "birthDate": "2006-11-17",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 929,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "48947e8e-c2ed-4d7c-8af3-7d1fa662d20b",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Fezzik Ophuls",
+      "person": {
+        "addresses": [
+          {
+            "city": "Castle Rock",
+            "state": "OA",
+            "postalCode": "73656",
+            "countryCode": "GIN"
+          }
+        ],
+        "personId": "86582957-da84-4431-ab25-caf0284ce8d5",
+        "standardFamilyName": "Ophuls",
+        "standardGivenName": "Fezzik",
+        "nationalityCode": "GIN",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 3
+          }
+        ],
+        "birthDate": "2006-07-05",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 764,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "e5cbfcde-bfb1-426a-a309-fa657b1949b1",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Beatrice Lovelace",
+      "person": {
+        "addresses": [
+          {
+            "city": "Roswell",
+            "state": "GA",
+            "postalCode": "51073",
+            "countryCode": "BVT"
+          }
+        ],
+        "personId": "3d3c55ca-65e0-4a49-af5c-92fb3bf403ac",
+        "standardFamilyName": "Lovelace",
+        "standardGivenName": "Beatrice",
+        "nationalityCode": "BVT",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 4
+          }
+        ],
+        "birthDate": "2006-08-22",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 506,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "e49d5d4a-77ec-4160-a116-943b4272f97a",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Frito Veblen",
+      "person": {
+        "addresses": [
+          {
+            "city": "Navarre",
+            "state": "KA",
+            "postalCode": "80328",
+            "countryCode": "ERI"
+          }
+        ],
+        "personId": "81cf8d81-7441-4641-890c-f1a50e0e51e3",
+        "standardFamilyName": "Veblen",
+        "standardGivenName": "Frito",
+        "nationalityCode": "ERI",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 5
+          }
+        ],
+        "birthDate": "2005-09-26",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 754,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "ca041913-1723-4e0f-bafb-16a1a673b77d",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Matilda Watson",
+      "person": {
+        "addresses": [
+          {
+            "city": "Nimbin",
+            "state": "DW",
+            "postalCode": "78917",
+            "countryCode": "PCN"
+          }
+        ],
+        "personId": "154289d7-44b2-4488-9f04-a55051a262f1",
+        "standardFamilyName": "Watson",
+        "standardGivenName": "Matilda",
+        "nationalityCode": "PCN",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 6
+          }
+        ],
+        "birthDate": "2005-10-23",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 464,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "918e0b11-b2be-4abb-93ee-b7837dafe187",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Virginia Pendejo",
+      "person": {
+        "addresses": [
+          {
+            "city": "Pseudopolis",
+            "state": "GU",
+            "postalCode": "24508",
+            "countryCode": "DMA"
+          }
+        ],
+        "personId": "b3576ade-9027-4991-9f3c-b360271a92e5",
+        "standardFamilyName": "Pendejo",
+        "standardGivenName": "Virginia",
+        "nationalityCode": "DMA",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 7
+          }
+        ],
+        "birthDate": "2005-09-04",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 726,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "3aa1de2c-acd3-4fb7-9577-d5104b7d0902",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Lenina Crowne",
+      "person": {
+        "addresses": [
+          {
+            "city": "Wobegon",
+            "state": "VA",
+            "postalCode": "59778",
+            "countryCode": "MTQ"
+          }
+        ],
+        "personId": "0b62d614-08b8-4012-8094-5f4e835240c9",
+        "standardFamilyName": "Crowne",
+        "standardGivenName": "Lenina",
+        "nationalityCode": "MTQ",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 8
+          }
+        ],
+        "birthDate": "2006-03-28",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 172,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "4ca6bc61-8e07-40bb-a54a-7fc96d904b44",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Aldous Bukowski",
+      "person": {
+        "addresses": [
+          {
+            "city": "Zion",
+            "state": "EP",
+            "postalCode": "72204",
+            "countryCode": "GAB"
+          }
+        ],
+        "personId": "bd7cc7d3-c944-4af2-949c-546b3ffec0b9",
+        "standardFamilyName": "Bukowski",
+        "standardGivenName": "Aldous",
+        "nationalityCode": "GAB",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 9
+          }
+        ],
+        "birthDate": "2006-03-31",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 153,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "73426b8b-182a-46bf-8cc6-0d520bda3beb",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Korben Huxley",
+      "person": {
+        "addresses": [
+          {
+            "city": "Hallstatt",
+            "state": "ER",
+            "postalCode": "92320",
+            "countryCode": "NLD"
+          }
+        ],
+        "personId": "82579b78-4529-4731-934a-3220a7508142",
+        "standardFamilyName": "Huxley",
+        "standardGivenName": "Korben",
+        "nationalityCode": "NLD",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 10
+          }
+        ],
+        "birthDate": "2005-09-30",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 776,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "465b934d-218a-4da8-8afc-5a80eadef15d",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Mary Shelley",
+      "person": {
+        "addresses": [
+          {
+            "city": "Hierusalem",
+            "state": "BV",
+            "postalCode": "12835",
+            "countryCode": "MUS"
+          }
+        ],
+        "personId": "f96c89a0-589c-46d1-93e5-10db4d4b1dac",
+        "standardFamilyName": "Shelley",
+        "standardGivenName": "Mary",
+        "nationalityCode": "MUS",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 11
+          }
+        ],
+        "birthDate": "2005-05-21",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 996,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "ca34d473-fa1e-4948-92da-121267fcd86e",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Zoe Wormwood",
+      "person": {
+        "addresses": [
+          {
+            "city": "Chefchaouen",
+            "state": "UA",
+            "postalCode": "07025",
+            "countryCode": "OMN"
+          }
+        ],
+        "personId": "b6eef327-4a78-496c-b8b6-2a77e8a55aef",
+        "standardFamilyName": "Wormwood",
+        "standardGivenName": "Zoe",
+        "nationalityCode": "OMN",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 12
+          }
+        ],
+        "birthDate": "2007-08-16",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 438,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "a2778a60-adf3-4fd6-acdb-e240d345157c",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Mustapha Jeffers",
+      "person": {
+        "addresses": [
+          {
+            "city": "Springfield",
+            "state": "EA",
+            "postalCode": "10407",
+            "countryCode": "LVA"
+          }
+        ],
+        "personId": "fe5d8cc3-e902-44ca-b1af-4ef0acc0b86c",
+        "standardFamilyName": "Jeffers",
+        "standardGivenName": "Mustapha",
+        "nationalityCode": "LVA",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 13
+          }
+        ],
+        "birthDate": "2005-09-05",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 233,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "51a93ba0-b9c4-4ca2-a36f-80b0a3e320c0",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Winston Banks",
+      "person": {
+        "addresses": [
+          {
+            "city": "Kowloon",
+            "state": "GD",
+            "postalCode": "98430",
+            "countryCode": "NLD"
+          }
+        ],
+        "personId": "60422e40-822a-4fc1-b832-71bd73b9afc6",
+        "standardFamilyName": "Banks",
+        "standardGivenName": "Winston",
+        "nationalityCode": "NLD",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 14
+          }
+        ],
+        "birthDate": "2005-10-07",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 127,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "db3a3cce-4767-473a-9cd9-1c1a6c99a596",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Anne Diamond",
+      "person": {
+        "addresses": [
+          {
+            "city": "Dictionopolis",
+            "state": "OV",
+            "postalCode": "22562",
+            "countryCode": "KWT"
+          }
+        ],
+        "personId": "4cce34aa-6e7f-4e8b-b4b7-eefb6123a3c1",
+        "standardFamilyName": "Diamond",
+        "standardGivenName": "Anne",
+        "nationalityCode": "KWT",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 15
+          }
+        ],
+        "birthDate": "2005-02-17",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 316,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "7ccd3ff0-3540-49ca-8c58-455c9ca2a8d8",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Italo Holmgren",
+      "person": {
+        "addresses": [
+          {
+            "city": "Shangri-La",
+            "state": "OS",
+            "postalCode": "89062",
+            "countryCode": "SMX"
+          }
+        ],
+        "personId": "ccd1b262-c57d-4c58-9888-355605b0700c",
+        "standardFamilyName": "Holmgren",
+        "standardGivenName": "Italo",
+        "nationalityCode": "SMX",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 16
+          }
+        ],
+        "birthDate": "2006-12-11",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 712,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "individualParticipantIds": [
+        "4397f800-6843-417d-b912-f7216ab9f0e9",
+        "c98a8346-b1fc-4e32-90ea-6e3cc9e3fbeb"
+      ],
+      "participantOtherName": "TM1",
+      "participantName": "Team 1",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "6b1d9558-3053-4bd5-a233-613cc78eeb8d",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "48947e8e-c2ed-4d7c-8af3-7d1fa662d20b",
+        "e5cbfcde-bfb1-426a-a309-fa657b1949b1"
+      ],
+      "participantOtherName": "TM2",
+      "participantName": "Team 2",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "4ae63094-16f3-4892-8011-49a684096df6",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "e49d5d4a-77ec-4160-a116-943b4272f97a",
+        "ca041913-1723-4e0f-bafb-16a1a673b77d"
+      ],
+      "participantOtherName": "TM3",
+      "participantName": "Team 3",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "e9dd23a5-9e22-4b1c-b782-7da5d2318450",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "918e0b11-b2be-4abb-93ee-b7837dafe187",
+        "3aa1de2c-acd3-4fb7-9577-d5104b7d0902"
+      ],
+      "participantOtherName": "TM4",
+      "participantName": "Team 4",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "e3237404-4c09-48f2-b7ec-f3cdbdfab560",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "4ca6bc61-8e07-40bb-a54a-7fc96d904b44",
+        "73426b8b-182a-46bf-8cc6-0d520bda3beb"
+      ],
+      "participantOtherName": "TM5",
+      "participantName": "Team 5",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "175e99a6-c297-4127-8237-9460041903c5",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "465b934d-218a-4da8-8afc-5a80eadef15d",
+        "ca34d473-fa1e-4948-92da-121267fcd86e"
+      ],
+      "participantOtherName": "TM6",
+      "participantName": "Team 6",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "6974bb90-43de-4b77-89dd-d963bdb49d4a",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "a2778a60-adf3-4fd6-acdb-e240d345157c",
+        "51a93ba0-b9c4-4ca2-a36f-80b0a3e320c0"
+      ],
+      "participantOtherName": "TM7",
+      "participantName": "Team 7",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "c4b399cb-8770-49c5-8a77-de5a00c8d0cc",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "db3a3cce-4767-473a-9cd9-1c1a6c99a596",
+        "7ccd3ff0-3540-49ca-8c58-455c9ca2a8d8"
+      ],
+      "participantOtherName": "TM8",
+      "participantName": "Team 8",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "62155127-4c83-494d-a5c9-abb991b9ac3c",
+      "timeItems": []
+    },
+    {
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "individualParticipantIds": [
+        "4ca6bc61-8e07-40bb-a54a-7fc96d904b44",
+        "73426b8b-182a-46bf-8cc6-0d520bda3beb"
+      ],
+      "participantId": "14422c1a-eec6-4849-afcb-7d1be998141b",
+      "participantName": "Bukowski/Huxley"
+    },
+    {
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "individualParticipantIds": [
+        "e49d5d4a-77ec-4160-a116-943b4272f97a",
+        "ca041913-1723-4e0f-bafb-16a1a673b77d"
+      ],
+      "participantId": "5926842c-114c-4d3f-adf8-0c659a43fe97",
+      "participantName": "Veblen/Watson"
+    }
+  ],
+  "events": [
+    {
+      "startDate": "2023-04-14",
+      "endDate": "2023-04-21",
+      "eventType": "TEAM",
+      "entries": [
+        {
+          "participantId": "6b1d9558-3053-4bd5-a233-613cc78eeb8d",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 1
+        },
+        {
+          "participantId": "4ae63094-16f3-4892-8011-49a684096df6",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 2
+        },
+        {
+          "participantId": "e9dd23a5-9e22-4b1c-b782-7da5d2318450",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 3
+        },
+        {
+          "participantId": "e3237404-4c09-48f2-b7ec-f3cdbdfab560",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 4
+        },
+        {
+          "participantId": "175e99a6-c297-4127-8237-9460041903c5",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 5
+        },
+        {
+          "participantId": "6974bb90-43de-4b77-89dd-d963bdb49d4a",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 6
+        },
+        {
+          "participantId": "c4b399cb-8770-49c5-8a77-de5a00c8d0cc",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 7
+        },
+        {
+          "participantId": "62155127-4c83-494d-a5c9-abb991b9ac3c",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 8
+        }
+      ],
+      "eventName": "Duo Draw",
+      "tieFormat": {
+        "collectionDefinitions": [
+          {
+            "collectionName": "Doubles",
+            "matchUpCount": 1,
+            "matchUpFormat": "SET1-S:8/TB7",
+            "matchUpType": "DOUBLES",
+            "matchUpValue": 1,
+            "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+            "category": {
+              "ageCategoryCode": "U18",
+              "categoryName": "U18"
+            }
+          },
+          {
+            "collectionName": "Singles",
+            "matchUpCount": 2,
+            "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+            "matchUpType": "SINGLES",
+            "matchUpValue": 1,
+            "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+            "category": {
+              "ageCategoryCode": "U18",
+              "categoryName": "U18"
+            }
+          }
+        ],
+        "tieFormatName": "DOMINANT_DUO",
+        "winCriteria": {
+          "valueGoal": 2
+        }
+      },
+      "category": {
+        "ageCategoryCode": "U18",
+        "categoryName": "U18"
+      },
+      "eventId": "aeec1a80-event-1",
+      "drawDefinitions": [
+        {
+          "drawName": "SINGLE_ELIMINATION",
+          "drawId": "e76855f1-fe67-4632-8792-a7a7618427a4",
+          "structures": [
+            {
+              "structureId": "e8a969ef-0833-4303-ac1c-d0ba3dec91a6",
+              "finishingPosition": "ROUND_OUTCOME",
+              "seedAssignments": [],
+              "stageSequence": 1,
+              "structureName": "MAIN",
+              "stage": "MAIN",
+              "matchUps": [
+                {
+                  "drawPositions": [1, 2],
+                  "matchUpStatus": "IN_PROGRESS",
+                  "matchUpId": "e0f0de73-8285-4b16-a8bb-f3d1b3566f9d",
+                  "roundPosition": 1,
+                  "roundNumber": 1,
+                  "isMock": true,
+                  "finishingRound": 3,
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "tieMatchUps": [
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "924a3b55-7e86-40cc-8277-ae38dba88b99",
+                      "collectionPosition": 1,
+                      "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                      "matchUpType": "DOUBLES",
+                      "isMock": true
+                    },
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "f865a15d-aa42-4491-878f-0f6f36d49ee5",
+                      "collectionPosition": 1,
+                      "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                      "matchUpType": "SINGLES",
+                      "isMock": true
+                    },
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "44ecf8a8-50ed-4de5-b730-1a7185641ed6",
+                      "collectionPosition": 2,
+                      "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                      "matchUpType": "SINGLES",
+                      "isMock": true,
+                      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                      "score": {
+                        "scoreStringSide1": "6-3 6-3",
+                        "scoreStringSide2": "3-6 3-6",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 6,
+                            "side2Score": 3,
+                            "winningSide": 1
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 6,
+                            "side2Score": 3,
+                            "winningSide": 1
+                          }
+                        ]
+                      },
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "winningSide": 1
+                    }
+                  ],
+                  "matchUpType": "TEAM",
+                  "winnerMatchUpId": "02d07e50-8a68-40bb-a948-ecbe37d54599",
+                  "sides": [
+                    {
+                      "sideNumber": 1,
+                      "lineUp": [
+                        {
+                          "participantId": "4ca6bc61-8e07-40bb-a54a-7fc96d904b44",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                              "collectionPosition": 1
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "73426b8b-182a-46bf-8cc6-0d520bda3beb",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                              "collectionPosition": 2
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "sideNumber": 2,
+                      "lineUp": [
+                        {
+                          "participantId": "e49d5d4a-77ec-4160-a116-943b4272f97a",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                              "collectionPosition": 1
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "ca041913-1723-4e0f-bafb-16a1a673b77d",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                              "collectionPosition": 2
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  "tieFormat": {
+                    "collectionDefinitions": [
+                      {
+                        "collectionName": "Doubles",
+                        "matchUpCount": 1,
+                        "matchUpFormat": "SET1-S:8/TB7",
+                        "matchUpType": "DOUBLES",
+                        "matchUpValue": 1,
+                        "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                        "category": {
+                          "ageCategoryCode": "U18",
+                          "categoryName": "U18"
+                        }
+                      },
+                      {
+                        "collectionName": "Singles",
+                        "matchUpCount": 2,
+                        "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                        "matchUpType": "SINGLES",
+                        "matchUpValue": 1,
+                        "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                        "category": {
+                          "ageCategoryCode": "U18",
+                          "categoryName": "U18"
+                        }
+                      }
+                    ],
+                    "tieFormatName": "DOMINANT_DUO",
+                    "winCriteria": {
+                      "valueGoal": 2
+                    }
+                  },
+                  "score": {
+                    "scoreStringSide1": "1-0",
+                    "scoreStringSide2": "0-1",
+                    "sets": [
+                      {
+                        "side1Score": 1,
+                        "side2Score": 0
+                      }
+                    ]
+                  }
+                },
+                {
+                  "drawPositions": [3, 4],
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "matchUpId": "05bbbccf-f552-4728-9d9d-39098952de65",
+                  "roundPosition": 2,
+                  "roundNumber": 1,
+                  "isMock": true,
+                  "finishingRound": 3,
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "tieMatchUps": [
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "5dbde109-3bc1-4941-b0b0-3250d40d3cfb",
+                      "collectionPosition": 1,
+                      "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                      "matchUpType": "DOUBLES",
+                      "isMock": true
+                    },
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "8262a1ea-ae5d-4fc6-9722-4067aab9d774",
+                      "collectionPosition": 1,
+                      "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                      "matchUpType": "SINGLES",
+                      "isMock": true
+                    },
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "ab025746-3450-4128-b252-4acdbc233313",
+                      "collectionPosition": 2,
+                      "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                      "matchUpType": "SINGLES",
+                      "isMock": true
+                    }
+                  ],
+                  "matchUpType": "TEAM",
+                  "winnerMatchUpId": "02d07e50-8a68-40bb-a948-ecbe37d54599",
+                  "sides": [
+                    {
+                      "sideNumber": 1
+                    },
+                    {
+                      "sideNumber": 2
+                    }
+                  ]
+                },
+                {
+                  "drawPositions": [5, 6],
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "matchUpId": "39763970-59d5-4fb8-b202-1fd19e56c726",
+                  "roundPosition": 3,
+                  "roundNumber": 1,
+                  "isMock": true,
+                  "finishingRound": 3,
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "tieMatchUps": [
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "e43b332c-2912-4d2b-aabc-c6524a48c45c",
+                      "collectionPosition": 1,
+                      "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                      "matchUpType": "DOUBLES",
+                      "isMock": true
+                    },
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "db8b3ce0-319a-44a5-ac93-21f3ae316181",
+                      "collectionPosition": 1,
+                      "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                      "matchUpType": "SINGLES",
+                      "isMock": true
+                    },
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "b4be0c28-6653-4f1a-8644-2711596cce27",
+                      "collectionPosition": 2,
+                      "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                      "matchUpType": "SINGLES",
+                      "isMock": true
+                    }
+                  ],
+                  "matchUpType": "TEAM",
+                  "winnerMatchUpId": "8cde3f61-2e4f-426f-a59e-c05c43741612",
+                  "sides": [
+                    {
+                      "sideNumber": 1
+                    },
+                    {
+                      "sideNumber": 2
+                    }
+                  ]
+                },
+                {
+                  "drawPositions": [7, 8],
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "matchUpId": "a3a70f26-7aac-4f3d-88a1-01ffd8d237ae",
+                  "roundPosition": 4,
+                  "roundNumber": 1,
+                  "isMock": true,
+                  "finishingRound": 3,
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "tieMatchUps": [
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "2828d222-9a1b-46c8-a0f5-fb7a5adda61f",
+                      "collectionPosition": 1,
+                      "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                      "matchUpType": "DOUBLES",
+                      "isMock": true
+                    },
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "d1ecbe0d-9c58-445c-a064-d7613e5169a2",
+                      "collectionPosition": 1,
+                      "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                      "matchUpType": "SINGLES",
+                      "isMock": true
+                    },
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "5c1f086d-96a0-4284-a386-4ffb7da755c0",
+                      "collectionPosition": 2,
+                      "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                      "matchUpType": "SINGLES",
+                      "isMock": true
+                    }
+                  ],
+                  "matchUpType": "TEAM",
+                  "winnerMatchUpId": "8cde3f61-2e4f-426f-a59e-c05c43741612",
+                  "sides": [
+                    {
+                      "sideNumber": 1
+                    },
+                    {
+                      "sideNumber": 2
+                    }
+                  ]
+                },
+                {
+                  "drawPositions": [],
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "matchUpId": "02d07e50-8a68-40bb-a948-ecbe37d54599",
+                  "roundPosition": 1,
+                  "roundNumber": 2,
+                  "isMock": true,
+                  "finishingRound": 2,
+                  "finishingPositionRange": {
+                    "loser": [3, 4],
+                    "winner": [1, 2]
+                  },
+                  "tieMatchUps": [
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "fa028d46-dbb8-44e8-a89a-8b9aa9a2a126",
+                      "collectionPosition": 1,
+                      "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                      "matchUpType": "DOUBLES",
+                      "isMock": true
+                    },
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "f46b7846-6d48-4656-bfbc-e60fa08f1689",
+                      "collectionPosition": 1,
+                      "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                      "matchUpType": "SINGLES",
+                      "isMock": true
+                    },
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "9310e2cc-95b7-4a8f-8a4d-b286bf4cbd69",
+                      "collectionPosition": 2,
+                      "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                      "matchUpType": "SINGLES",
+                      "isMock": true
+                    }
+                  ],
+                  "matchUpType": "TEAM",
+                  "winnerMatchUpId": "4f55dfe6-ab06-45a1-a85c-bc7375ef6068"
+                },
+                {
+                  "drawPositions": [],
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "matchUpId": "8cde3f61-2e4f-426f-a59e-c05c43741612",
+                  "roundPosition": 2,
+                  "roundNumber": 2,
+                  "isMock": true,
+                  "finishingRound": 2,
+                  "finishingPositionRange": {
+                    "loser": [3, 4],
+                    "winner": [1, 2]
+                  },
+                  "tieMatchUps": [
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "eb13cd1a-b576-4429-963b-2bb857e3503a",
+                      "collectionPosition": 1,
+                      "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                      "matchUpType": "DOUBLES",
+                      "isMock": true
+                    },
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "6af8dbb7-f390-43f7-8cb7-96c6ac09a5e7",
+                      "collectionPosition": 1,
+                      "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                      "matchUpType": "SINGLES",
+                      "isMock": true
+                    },
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "69468115-46b4-45d1-a706-3ff07ce9689f",
+                      "collectionPosition": 2,
+                      "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                      "matchUpType": "SINGLES",
+                      "isMock": true
+                    }
+                  ],
+                  "matchUpType": "TEAM",
+                  "winnerMatchUpId": "4f55dfe6-ab06-45a1-a85c-bc7375ef6068"
+                },
+                {
+                  "drawPositions": [],
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "matchUpId": "4f55dfe6-ab06-45a1-a85c-bc7375ef6068",
+                  "roundPosition": 1,
+                  "roundNumber": 3,
+                  "isMock": true,
+                  "finishingRound": 1,
+                  "finishingPositionRange": {
+                    "loser": [2, 2],
+                    "winner": [1, 1]
+                  },
+                  "tieMatchUps": [
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "0bbe7d69-c7ee-4392-83a9-085940fcd0eb",
+                      "collectionPosition": 1,
+                      "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                      "matchUpType": "DOUBLES",
+                      "isMock": true
+                    },
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "745d8008-9bb3-4a2e-8761-fbc5b1019b33",
+                      "collectionPosition": 1,
+                      "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                      "matchUpType": "SINGLES",
+                      "isMock": true
+                    },
+                    {
+                      "sides": [
+                        {
+                          "sideNumber": 1
+                        },
+                        {
+                          "sideNumber": 2
+                        }
+                      ],
+                      "matchUpId": "8993bb32-52a7-46a8-aee7-cc4db89b5a39",
+                      "collectionPosition": 2,
+                      "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                      "matchUpType": "SINGLES",
+                      "isMock": true
+                    }
+                  ],
+                  "matchUpType": "TEAM"
+                }
+              ],
+              "positionAssignments": [
+                {
+                  "drawPosition": 1,
+                  "participantId": "175e99a6-c297-4127-8237-9460041903c5"
+                },
+                {
+                  "drawPosition": 2,
+                  "participantId": "e9dd23a5-9e22-4b1c-b782-7da5d2318450"
+                },
+                {
+                  "drawPosition": 3,
+                  "participantId": "c4b399cb-8770-49c5-8a77-de5a00c8d0cc"
+                },
+                {
+                  "drawPosition": 4,
+                  "participantId": "e3237404-4c09-48f2-b7ec-f3cdbdfab560"
+                },
+                {
+                  "drawPosition": 5,
+                  "participantId": "6974bb90-43de-4b77-89dd-d963bdb49d4a"
+                },
+                {
+                  "drawPosition": 6,
+                  "participantId": "4ae63094-16f3-4892-8011-49a684096df6"
+                },
+                {
+                  "drawPosition": 7,
+                  "participantId": "62155127-4c83-494d-a5c9-abb991b9ac3c"
+                },
+                {
+                  "drawPosition": 8,
+                  "participantId": "6b1d9558-3053-4bd5-a233-613cc78eeb8d"
+                }
+              ],
+              "updatedAt": "2023-04-14T18:41:21.146Z",
+              "seedLimit": 0
+            }
+          ],
+          "entries": [
+            {
+              "participantId": "6b1d9558-3053-4bd5-a233-613cc78eeb8d",
+              "entryPosition": 1,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "4ae63094-16f3-4892-8011-49a684096df6",
+              "entryPosition": 2,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "e9dd23a5-9e22-4b1c-b782-7da5d2318450",
+              "entryPosition": 3,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "e3237404-4c09-48f2-b7ec-f3cdbdfab560",
+              "entryPosition": 4,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "175e99a6-c297-4127-8237-9460041903c5",
+              "entryPosition": 5,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "6974bb90-43de-4b77-89dd-d963bdb49d4a",
+              "entryPosition": 6,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "c4b399cb-8770-49c5-8a77-de5a00c8d0cc",
+              "entryPosition": 7,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "62155127-4c83-494d-a5c9-abb991b9ac3c",
+              "entryPosition": 8,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            }
+          ],
+          "links": [],
+          "drawType": "SINGLE_ELIMINATION",
+          "extensions": [
+            {
+              "name": "appliedPolicies",
+              "value": {
+                "seeding": {
+                  "validSeedPositions": {
+                    "ignore": true
+                  },
+                  "duplicateSeedNumbers": true,
+                  "drawSizeProgression": true,
+                  "seedingProfile": "SEPARATE",
+                  "policyName": "USTA SEEDING",
+                  "seedsCountThresholds": [
+                    {
+                      "drawSize": 4,
+                      "minimumParticipantCount": 3,
+                      "seedsCount": 2
+                    },
+                    {
+                      "drawSize": 16,
+                      "minimumParticipantCount": 12,
+                      "seedsCount": 4
+                    },
+                    {
+                      "drawSize": 32,
+                      "minimumParticipantCount": 24,
+                      "seedsCount": 8
+                    },
+                    {
+                      "drawSize": 64,
+                      "minimumParticipantCount": 48,
+                      "seedsCount": 16
+                    },
+                    {
+                      "drawSize": 128,
+                      "minimumParticipantCount": 96,
+                      "seedsCount": 32
+                    },
+                    {
+                      "drawSize": 256,
+                      "minimumParticipantCount": 192,
+                      "seedsCount": 64
+                    }
+                  ]
+                }
+              },
+              "createdAt": "2023-04-14T18:39:41.348Z"
+            },
+            {
+              "name": "entryProfile",
+              "value": {
+                "MAIN": {
+                  "drawSize": 8,
+                  "alternates": true
+                }
+              },
+              "createdAt": "2023-04-14T18:39:41.348Z"
+            },
+            {
+              "name": "lineUps",
+              "value": {
+                "175e99a6-c297-4127-8237-9460041903c5": [
+                  {
+                    "participantId": "4ca6bc61-8e07-40bb-a54a-7fc96d904b44",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "73426b8b-182a-46bf-8cc6-0d520bda3beb",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  }
+                ],
+                "e9dd23a5-9e22-4b1c-b782-7da5d2318450": [
+                  {
+                    "participantId": "e49d5d4a-77ec-4160-a116-943b4272f97a",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "ca041913-1723-4e0f-bafb-16a1a673b77d",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "6bd3d633-1bdb-44ac-866c-40dcd9fd589d",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "af0ae416-7e91-4534-911b-898ad50626d5",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  }
+                ]
+              },
+              "createdAt": "2023-04-14T18:40:03.169Z"
+            }
+          ],
+          "updatedAt": "2023-04-14T18:41:21.146Z",
+          "drawOrder": 1
+        }
+      ],
+      "extensions": [
+        {
+          "name": "flightProfile",
+          "value": {
+            "flights": [
+              {
+                "manuallyAdded": true,
+                "flightNumber": 1,
+                "drawEntries": [
+                  {
+                    "participantId": "6b1d9558-3053-4bd5-a233-613cc78eeb8d",
+                    "entryPosition": 1,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "4ae63094-16f3-4892-8011-49a684096df6",
+                    "entryPosition": 2,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "e9dd23a5-9e22-4b1c-b782-7da5d2318450",
+                    "entryPosition": 3,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "e3237404-4c09-48f2-b7ec-f3cdbdfab560",
+                    "entryPosition": 4,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "175e99a6-c297-4127-8237-9460041903c5",
+                    "entryPosition": 5,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "6974bb90-43de-4b77-89dd-d963bdb49d4a",
+                    "entryPosition": 6,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "c4b399cb-8770-49c5-8a77-de5a00c8d0cc",
+                    "entryPosition": 7,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "62155127-4c83-494d-a5c9-abb991b9ac3c",
+                    "entryPosition": 8,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  }
+                ],
+                "drawName": "SINGLE_ELIMINATION",
+                "drawId": "e76855f1-fe67-4632-8792-a7a7618427a4"
+              }
+            ]
+          },
+          "createdAt": "2023-04-14T18:39:41.356Z"
+        }
+      ]
+    }
+  ],
+  "venues": [
+    {
+      "venueName": "Club Courts",
+      "venueAbbreviation": "CC",
+      "venueId": "e8e4c0b0-216c-426f-bba2-18e16caa74b8",
+      "courts": [
+        {
+          "courtId": "3cfe4cb0-4c10-4939-bec4-ed962d353138",
+          "courtName": "Court 1",
+          "dateAvailability": [
+            {
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-14",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-15",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-16",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-17",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-18",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-19",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-20",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-21",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            }
+          ],
+          "onlineResources": [],
+          "venueId": "e8e4c0b0-216c-426f-bba2-18e16caa74b8"
+        },
+        {
+          "courtId": "958427e4-7a99-4061-99a3-5229c3623929",
+          "courtName": "Court 2",
+          "dateAvailability": [
+            {
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-14",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-15",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-16",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-17",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-18",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-19",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-20",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-21",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            }
+          ],
+          "onlineResources": [],
+          "venueId": "e8e4c0b0-216c-426f-bba2-18e16caa74b8"
+        },
+        {
+          "courtId": "6744a433-a623-4fc9-8ad4-bebf25c8e665",
+          "courtName": "Court 3",
+          "dateAvailability": [
+            {
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-14",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-15",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-16",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-17",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-18",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-19",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-20",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-21",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            }
+          ],
+          "onlineResources": [],
+          "venueId": "e8e4c0b0-216c-426f-bba2-18e16caa74b8"
+        },
+        {
+          "courtId": "bc84c684-4a97-4f44-99ff-6e0c430cd969",
+          "courtName": "Court 4",
+          "dateAvailability": [
+            {
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-14",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-15",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-16",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-17",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-18",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-19",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-20",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-21",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            }
+          ],
+          "onlineResources": [],
+          "venueId": "e8e4c0b0-216c-426f-bba2-18e16caa74b8"
+        },
+        {
+          "courtId": "c1ea5b05-46f6-4b4f-a2bd-10fb5679ae1f",
+          "courtName": "Court 5",
+          "dateAvailability": [
+            {
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-14",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-15",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-16",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-17",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-18",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-19",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-20",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-21",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            }
+          ],
+          "onlineResources": [],
+          "venueId": "e8e4c0b0-216c-426f-bba2-18e16caa74b8"
+        },
+        {
+          "courtId": "8e8edba3-58ba-4e90-8815-02b768a9d993",
+          "courtName": "Court 6",
+          "dateAvailability": [
+            {
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-14",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-15",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-16",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-17",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-18",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-19",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-20",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-04-21",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            }
+          ],
+          "onlineResources": [],
+          "venueId": "e8e4c0b0-216c-426f-bba2-18e16caa74b8"
+        }
+      ]
+    }
+  ],
+  "extensions": [
+    {
+      "name": "appliedPolicies",
+      "value": {
+        "scheduling": {
+          "defaultTimes": {
+            "averageTimes": [
+              {
+                "categoryNames": [],
+                "minutes": {
+                  "default": 90
+                }
+              }
+            ],
+            "recoveryTimes": [
+              {
+                "minutes": {
+                  "DOUBLES": 30,
+                  "default": 60
+                }
+              }
+            ]
+          },
+          "defaultDailyLimits": {},
+          "matchUpAverageTimes": [
+            {
+              "matchUpFormatCodes": ["SET5-S:6/TB7-F:6/TB10"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 120
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:6/TB7", "SET3-S:6/TB7@5-F:TB10"],
+              "averageTimes": [
+                {
+                  "categoryTypes": ["ADULT", "JUNIOR"],
+                  "minutes": {
+                    "default": 90
+                  }
+                },
+                {
+                  "categoryTypes": ["WHEELCHAIR"],
+                  "minutes": {
+                    "default": 120
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:6/TB7-F:TB10"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 85
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:6/TB7-F:TB7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 70
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:4/TB7", "SET3-S:6/TB7@5"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET3-S:4NOAD-F:TB7",
+                "SET3-S:4/TB7-F:TB10"
+              ],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 55
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:4/TB7-F:TB7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 50
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET3-S:4/TB5NOAD@3",
+                "SET1-S:6/TB5NOAD@5",
+                "SET3-S:4/TB7@3"
+              ],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 45
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:8/TB7", "SET1-S:8/TB7@7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 40
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET1-S:5/TB5NOAD@4",
+                "SET1-S:T20",
+                "SET1-S:6/TB7",
+                "SET1-S:6NOAD"
+              ],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 30
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET1-S:4/TB7",
+                "SET1-S:4/TB5@3",
+                "SET3-S:TB10",
+                "SET1-S:4NOAD"
+              ],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 20
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:TB10"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 10
+                  }
+                }
+              ]
+            }
+          ],
+          "matchUpRecoveryTimes": [
+            {
+              "matchUpFormatCodes": [
+                "SET5-S:6/TB7-F:6/TB10",
+                "SET3-S:6/TB7@5-F:TB10"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET3-S:6/TB7",
+                "SET3-S:6/TB7-F:TB10",
+                "SET3-S:6/TB7-F:TB7"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryTypes": ["ADULT", "WHEELCHAIR"],
+                  "minutes": {
+                    "default": 60,
+                    "DOUBLES": 30
+                  }
+                },
+                {
+                  "categoryTypes": ["JUNIOR"],
+                  "minutes": {
+                    "default": 60,
+                    "DOUBLES": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET3-S:4/TB7-F:TB7",
+                "SET3-S:4/TB7-F:TB10",
+                "SET3-S:4NOAD-F:TB7",
+                "SET3-S:4/TB7",
+                "SET3-S:4/TB5NOAD@3"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryTypes": ["ADULT", "WHEELCHAIR"],
+                  "minutes": {
+                    "default": 30
+                  }
+                },
+                {
+                  "categoryTypes": ["JUNIOR"],
+                  "minutes": {
+                    "default": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET1-S:8/TB7",
+                "SET1-S:8/TB7@7",
+                "SET1-S:5/TB5NOAD@4",
+                "SET1-S:6/TB7",
+                "SET1-S:6NOAD",
+                "SET1-S:4/TB7",
+                "SET1-S:4NOAD",
+                "SET3-S:TB10",
+                "SET3-S:6/TB7@5",
+                "SET1-S:6/TB5NOAD@5",
+                "SET3-S:4/TB7@3"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 30
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:4/TB5@3"],
+              "recoveryTimes": [
+                {
+                  "categoryTypes": ["ADULT", "JUNIOR"],
+                  "minutes": {
+                    "default": 30
+                  }
+                },
+                {
+                  "categoryTypes": ["WHEELCHAIR"],
+                  "minutes": {
+                    "default": 15
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:TB10", "SET1-S:T20"],
+              "recoveryTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 15
+                  }
+                }
+              ]
+            }
+          ],
+          "matchUpDailyLimits": []
+        },
+        "roundNaming": {
+          "policyName": "Round Naming Default",
+          "roundNamingMap": {
+            "1": "F",
+            "2": "SF",
+            "4": "QF"
+          },
+          "affixes": {
+            "roundNumber": "R",
+            "preFeedRound": "Q"
+          },
+          "stageConstants": {
+            "MAIN": "",
+            "QUALIFYING": "Q",
+            "CONSOLATION": "C",
+            "PLAY_OFF": "PL"
+          }
+        }
+      }
+    },
+    {
+      "name": "level",
+      "value": {
+        "currentOrgLevelConfiguration": {
+          "allowBackdrawMovements": true,
+          "allowGeneratePlayOffForBackDraws": true,
+          "allowQualifyingDraws": true,
+          "allowSplitDraws": true,
+          "allowTeamSubstitutions": true,
+          "allowWildcards": true,
+          "doublesEventFormats": [],
+          "doublesScoreFormats": [],
+          "eventFormats": [],
+          "firstMatchLoserConsolation": true,
+          "goldSilverBronzeDrawsEnabled": true,
+          "ntrpEnabled": true,
+          "playTracker": true,
+          "rankingsEnabled": true,
+          "scoreFormats": [],
+          "teamScoreFormats": [],
+          "wtnRankingsEnabled": true
+        }
+      }
+    }
+  ]
+}

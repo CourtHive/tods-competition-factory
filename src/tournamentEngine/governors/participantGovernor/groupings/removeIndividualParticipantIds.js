@@ -1,13 +1,24 @@
+import { scoreHasValue } from '../../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { addExtension } from '../../../../global/functions/producers/addExtension';
+import { getParticipants } from '../../../getters/participants/getParticipants';
 import { addEventEntries } from '../../eventGovernor/entries/addEventEntries';
 import { decorateResult } from '../../../../global/functions/decorateResult';
+import { findExtension } from '../../queryGovernor/extensionQueries';
+import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 import { addNotice } from '../../../../global/state/globalState';
+import {
+  addDrawNotice,
+  modifyMatchUpNotice,
+} from '../../../../drawEngine/notifications/drawNotifications';
 
 import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
 import { GROUP, TEAM } from '../../../../constants/participantConstants';
 import { UNGROUPED } from '../../../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../../../constants/participantRoles';
+import { LINEUPS } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
+  CANNOT_REMOVE_PARTICIPANTS,
   INVALID_PARTICIPANT_TYPE,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
@@ -20,6 +31,7 @@ import {
  * @param {object} tournamentRecord - passed in automatically by tournamentEngine
  * @param {string} groupingParticipantId - grouping participant from which participantIds are to be removed
  * @param {string[]} individualParticipantIds - individual participantIds to be removed to grouping participant
+ * @param {boolean} suppressErrors - do not throw an error if an individualParticipant cannot be removed
  *
  */
 export function removeIndividualParticipantIds({
@@ -27,6 +39,7 @@ export function removeIndividualParticipantIds({
   individualParticipantIds,
   groupingParticipantId,
   tournamentRecord,
+  suppressErrors,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!groupingParticipantId || !individualParticipantIds)
@@ -52,10 +65,15 @@ export function removeIndividualParticipantIds({
     });
   }
 
-  const { removed, error } = removeParticipantIdsFromGroupingParticipant({
+  const result = removeParticipantIdsFromGroupingParticipant({
     individualParticipantIds,
     groupingParticipant,
+    tournamentRecord,
+    suppressErrors,
   });
+  const { removed, error } = result;
+
+  if (error) return decorateResult({ result, stack });
 
   if (addIndividualParticipantsToEvents) {
     for (const event of tournamentRecord.events || []) {
@@ -77,8 +95,6 @@ export function removeIndividualParticipantIds({
     }
   }
 
-  if (error) return decorateResult({ result: { error }, stack });
-
   if (removed) {
     addNotice({
       topic: MODIFY_PARTICIPANTS,
@@ -89,31 +105,125 @@ export function removeIndividualParticipantIds({
     });
   }
 
-  return { ...SUCCESS, removed };
+  return { ...SUCCESS, ...result };
 }
 
-// TODO: consider situations where it would be invalid to remove an individualParticipantId
-// for instance in a team competition where an individual is part of a matchUp within a tieMatchUp
 function removeParticipantIdsFromGroupingParticipant({
   individualParticipantIds = [],
   groupingParticipant,
+  tournamentRecord,
+  suppressErrors,
 }) {
   let removed = [];
-  let notRemoved = [];
   if (!groupingParticipant) return { removed };
-  if (!groupingParticipant.individualParticipantIds)
-    groupingParticipant.individualParticipantIds = [];
+  let notRemoved = [];
+  let cannotRemove = [];
+
+  const { participants, mappedMatchUps } = getParticipants({
+    withMatchUps: true,
+    tournamentRecord,
+    withEvents: true,
+  });
+
+  const inContextGroupingParticipant = participants.find(
+    ({ participantId }) => participantId === groupingParticipant.participantId
+  );
+
+  const groupingParticipantEventIds = inContextGroupingParticipant.events.map(
+    ({ eventId }) => eventId
+  );
+
+  const updatedIndividualParticipantIds = (
+    groupingParticipant.individualParticipantIds || []
+  ).filter((participantId) => {
+    const targetParticipant = individualParticipantIds?.includes(participantId);
+    const scoredParticipantGroupingMatchUps =
+      targetParticipant &&
+      participants
+        .find((participant) => participant.participantId === participantId)
+        .matchUps.filter(({ eventId }) =>
+          groupingParticipantEventIds.includes(eventId)
+        )
+        .map(({ matchUpId }) => mappedMatchUps[matchUpId])
+        .filter(
+          ({ winningSide, score }) => winningSide || scoreHasValue({ score })
+        );
+
+    const removeParticipant =
+      targetParticipant && !scoredParticipantGroupingMatchUps.length;
+
+    if (targetParticipant && !removeParticipant) {
+      cannotRemove.push(participantId);
+    }
+
+    if (removeParticipant) {
+      removed.push(participantId);
+
+      for (const event of tournamentRecord.events || []) {
+        for (const drawDefinition of event.drawDefinitions || []) {
+          const { extension } = findExtension({
+            element: drawDefinition,
+            name: LINEUPS,
+          });
+          let lineUp = extension?.value[groupingParticipant.participantId];
+          if (lineUp) {
+            lineUp = lineUp.filter(
+              (assignment) => assignment.participantId !== participantId
+            );
+            addExtension({ element: drawDefinition, extension });
+            addDrawNotice({ drawDefinition });
+          }
+
+          const matchUps =
+            allDrawMatchUps({ drawDefinition, inContext: false }).matchUps ||
+            [];
+
+          for (const matchUp of matchUps) {
+            const sides = matchUp.sides || [];
+            for (const side of sides) {
+              const lineUp = side.lineUp || [];
+              const containsParticipant = lineUp.find(
+                (assignment) => assignment.participantId === participantId
+              );
+              if (containsParticipant) {
+                side.lineUp = side.lineUp.filter(
+                  (assignment) => assignment.participantId !== participantId
+                );
+                modifyMatchUpNotice({
+                  tournamentId: tournamentRecord?.tournamentId,
+                  drawDefinition,
+                  matchUp,
+                });
+              }
+            }
+          }
+        }
+      }
+    } else {
+      notRemoved.push(participantId);
+    }
+    return !removeParticipant;
+  });
 
   groupingParticipant.individualParticipantIds =
-    groupingParticipant.individualParticipantIds.filter((participantId) => {
-      const removeParticipant =
-        individualParticipantIds?.includes(participantId);
-      if (removeParticipant) removed.push(participantId);
-      return !removeParticipant;
-    });
-  if (notRemoved.length) return { error: NO_PARTICIPANT_REMOVED, notRemoved };
+    updatedIndividualParticipantIds;
 
-  return { groupingParticipant, removed };
+  const result = {
+    groupingParticipantId: groupingParticipant.participantId,
+    cannotRemove,
+    notRemoved,
+    removed,
+  };
+
+  return (
+    (cannotRemove.length &&
+      !suppressErrors && {
+        ...result,
+        cannotRemove,
+        error: CANNOT_REMOVE_PARTICIPANTS,
+      }) ||
+    result
+  );
 }
 
 export function removeParticipantIdsFromAllTeams({
@@ -138,6 +248,7 @@ export function removeParticipantIdsFromAllTeams({
       const { removed } = removeParticipantIdsFromGroupingParticipant({
         groupingParticipant: grouping,
         individualParticipantIds,
+        tournamentRecord,
       });
       if (removed) modifications++;
     });
