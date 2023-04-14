@@ -24,9 +24,9 @@ import {
  *
  */
 export function modifyIndividualParticipantIds({
-  tournamentRecord,
-  groupingParticipantId,
   individualParticipantIds,
+  groupingParticipantId,
+  tournamentRecord,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!groupingParticipantId || !individualParticipantIds)
@@ -74,16 +74,16 @@ export function modifyIndividualParticipantIds({
     });
 
   const addResult = addIndividualParticipantIds({
-    tournamentRecord,
-    groupingParticipantId,
     individualParticipantIds: individualParticipantIdsToAdd,
+    groupingParticipantId,
+    tournamentRecord,
   });
   if (addResult.error) return addResult;
 
   const removeResult = removeIndividualParticipantIds({
-    tournamentRecord,
-    groupingParticipantId,
     individualParticipantIds: individualParticipantIdsToRemove,
+    groupingParticipantId,
+    tournamentRecord,
   });
   if (removeResult.error) return removeResult;
 

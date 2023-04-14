@@ -3162,14 +3162,17 @@ tournamentEngine.removeEventPolicy({ policyType });
 
 ## removeIndividualParticipantIds
 
-Remove an array of individualParticipantIds from a grouping participant [TEAM, GROUP]
+Remove an array of individualParticipantIds from a grouping participant [TEAM, GROUP].
+If an individualParticipant is in a matchUp with a result they cannot be removed.
 
 ```js
-tournamentEngine.removeIndividualParticipantIds({
-  addIndividualParticipantsToEvents, // optional boolean
-  individualParticipantIds,
-  groupingParticipantId,
-});
+const { removed, notRemoved, cannotRemove } =
+  tournamentEngine.removeIndividualParticipantIds({
+    addIndividualParticipantsToEvents, // optional boolean
+    individualParticipantIds,
+    groupingParticipantId,
+    suppressErrors, // optional boolean - do not throw an error if an individualParticipant cannot be removed
+  });
 ```
 
 ---
