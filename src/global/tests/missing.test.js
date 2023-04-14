@@ -76,6 +76,7 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
         const onList = [
           'validateSchedulingProfile',
           'generateDrawDefinition',
+          'getMatchUpDependencies',
           'newTournamentRecord',
           'getAppliedPolicies',
           'filterParticipants',
