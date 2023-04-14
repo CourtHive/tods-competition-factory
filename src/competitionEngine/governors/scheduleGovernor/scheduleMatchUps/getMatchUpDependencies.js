@@ -16,7 +16,6 @@ import {
   MISSING_DRAW_ID,
   MISSING_MATCHUPS,
   MISSING_MATCHUP_IDS,
-  MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
 
 /**
@@ -50,10 +49,6 @@ export function getMatchUpDependencies({
 
   if (tournamentRecord && !Object.keys(tournamentRecords).length)
     tournamentRecords = { [tournamentRecord.tournamentId]: tournamentRecord };
-
-  if (!Object.keys(tournamentRecords).length) {
-    return { error: MISSING_TOURNAMENT_RECORD };
-  }
 
   const allTournamentRecords = Object.values(tournamentRecords);
 
