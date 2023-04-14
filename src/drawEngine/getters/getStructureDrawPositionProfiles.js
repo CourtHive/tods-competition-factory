@@ -83,7 +83,7 @@ export function getStructureDrawPositionProfiles({
       activeMatchUps.push(matchUp);
       activeDependentMatchUpIdsCollection.push(
         matchUp.matchUpId,
-        ...(matchUpDependencies[matchUp.matchUpId]?.matchUpIds || [])
+        ...(matchUpDependencies?.[matchUp?.matchUpId]?.matchUpIds || [])
       );
     }
   }
