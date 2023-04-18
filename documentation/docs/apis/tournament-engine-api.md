@@ -3296,6 +3296,7 @@ Removes all scores from `tieMatchUps` within a TEAM `matchUp`; preserves `lineUp
 
 ```js
 tournamentEngine.resetScorecard({
+  tiebreakReset, // optional boolean - check for tiebreak scenarios and reset tieFormat
   matchUpId,
   drawId,
 });
