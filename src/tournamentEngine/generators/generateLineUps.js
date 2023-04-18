@@ -27,6 +27,7 @@ import {
 
 // by default if there are no scaleValues matching the scaleAccessor then participants will be assigned in the array order of [team].individidualParticipantIds
 export function generateLineUps({
+  useDefaultEventRanking,
   tournamentRecord,
   drawDefinition,
   scaleAccessor, // e.g. { scaleType: 'RANKINGS', scaleName: 'U18', accessor: 'wtnRating', sortOrder: 'ASC' }
@@ -45,7 +46,7 @@ export function generateLineUps({
   if (validateTieFormat({ tieFormat }).error)
     return { error: INVALID_TIE_FORMAT };
 
-  if (typeof scaleAccessor !== 'object')
+  if (typeof scaleAccessor !== 'object' && !useDefaultEventRanking)
     return { error: INVALID_VALUES, context: { scaleAccessor } };
 
   const lineUps = {};
@@ -67,11 +68,25 @@ export function generateLineUps({
 
   const formatScaleType = (type) => (type === RANKING ? 'rankings' : 'ratings');
 
-  const { scaleType, scaleName, sortOrder, accessor } = scaleAccessor;
+  const defaultScaleName =
+    event?.category?.categoryName || event?.category?.ageCategoryCode;
+  const {
+    scaleName = defaultScaleName,
+    scaleType = RANKING,
+    sortOrder,
+    accessor,
+  } = scaleAccessor || {};
+
   const formattedScaleType = formatScaleType(scaleType);
   const getScaleValue = (individualParticipant, matchUpType) => {
-    const matchUpTypeScales =
+    let matchUpTypeScales =
       individualParticipant[formattedScaleType]?.[matchUpType];
+
+    // if { userDefaultEventRanking: true } fallback to SINGLES if no values for DOUBLES
+    if (!matchUpTypeScales && useDefaultEventRanking) {
+      matchUpTypeScales =
+        individualParticipant[formattedScaleType]?.[SINGLES_MATCHUP];
+    }
 
     if (Array.isArray(matchUpTypeScales)) {
       const scaleValue = matchUpTypeScales.find(
@@ -84,6 +99,7 @@ export function generateLineUps({
     }
     return 0;
   };
+
   const sortMethod = (a, b, matchUpType) => {
     const x = sortOrder === DESCENDING ? b : a;
     const y = sortOrder === DESCENDING ? a : b;

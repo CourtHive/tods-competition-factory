@@ -22,7 +22,7 @@ export function attemptToSetWinningSide(params) {
   let connectedStructures;
 
   // disableAutoCalc means the score is being set manually
-  if (dualMatchUp?._disableAutoCalc && !disableAutoCalc) {
+  if (dualMatchUp?._disableAutoCalc && disableAutoCalc !== false) {
     return attemptToModifyScore(params);
   }
 

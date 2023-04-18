@@ -1,12 +1,13 @@
+import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
-import { removeDoubleExit } from './removeDoubleExit';
+import { attemptToModifyScore } from './attemptToModifyScore';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
-import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { removeDoubleExit } from './removeDoubleExit';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -51,7 +52,13 @@ export function noDownstreamDependencies(params) {
 
   const removeDirected = ({ removeScore } = {}) => {
     let connectedStructures;
-    const { structure, drawDefinition } = params;
+    const { structure, drawDefinition, dualMatchUp, disableAutoCalc } = params;
+
+    // disableAutoCalc means the score is being set manually
+    if (dualMatchUp?._disableAutoCalc && disableAutoCalc !== false) {
+      return attemptToModifyScore(params);
+    }
+
     const { connectedStructureIds } = checkConnectedStructures({
       drawDefinition,
       structure,

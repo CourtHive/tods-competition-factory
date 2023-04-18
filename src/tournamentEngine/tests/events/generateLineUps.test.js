@@ -15,6 +15,7 @@ import {
   DOMINANT_DUO_MIXED,
   USTA_GOLD_TEAM_CHALLENGE,
 } from '../../../constants/tieFormatConstants';
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 it('can generate lineUps for TEAM events', () => {
   const categoryName = '18U';
@@ -67,6 +68,19 @@ it('can generate lineUps for TEAM events', () => {
       'MALE',
     ])
   );
+
+  result = tournamentEngine.generateLineUps({
+    singlesOnly: true,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.generateLineUps({
+    useDefaultEventRanking: true,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.participantsToAdd.length).toEqual(8);
 
   const scaleAccessor = {
     scaleName: categoryName,
