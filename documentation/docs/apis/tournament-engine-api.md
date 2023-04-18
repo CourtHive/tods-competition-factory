@@ -1527,6 +1527,7 @@ const scaleAccessor = {
   sortOrder, // optional - ASCENDING or DESCENDING - defaults to ASCENDING
 };
 const { lineUps, participantsToAdd } = tournamentEngine.generateLineUps({
+  useDefaultEventRanking, // optional boolen; when true scaleAccessor is not required
   scaleAccessor, // see above
   singlesOnly, // optional boolean - when true SINGLES rankings will be used for DOUBLES position assignment
   attach, // optional boolean - when true the lineUps will be attached to the drawDefinition specified by drawId
