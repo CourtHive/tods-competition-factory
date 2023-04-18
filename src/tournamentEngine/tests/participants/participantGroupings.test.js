@@ -6,6 +6,7 @@ import { expect, it } from 'vitest';
 import { GROUP, INDIVIDUAL } from '../../../constants/participantConstants';
 import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 import { COMPETITOR, OTHER } from '../../../constants/participantRoles';
+import { TEAM } from '../../../constants/eventConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,
@@ -13,7 +14,6 @@ import {
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { TEAM } from '../../../constants/eventConstants';
 
 let participantModifyEventsCounter = 0;
 setSubscriptions({
@@ -157,8 +157,8 @@ it('can add a GROUP participant and remove individualParticipantIds', () => {
 
   // attempting to remove a non-existent individualParticipantId is SUCCESS
   result = tournamentEngine.removeIndividualParticipantIds({
-    groupingParticipantId,
     individualParticipantIds: ['abc'],
+    groupingParticipantId,
   });
   expect(result.success).toEqual(true);
 

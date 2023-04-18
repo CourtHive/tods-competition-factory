@@ -1,6 +1,7 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import { mocksEngine, tournamentEngine } from '../../../..';
 import { expect, it, test } from 'vitest';
+import fs from 'fs';
 
 import { NO_MODIFICATIONS_APPLIED } from '../../../../constants/errorConditionConstants';
 import { DELETED_MATCHUP_IDS } from '../../../../constants/topicConstants';
@@ -498,4 +499,43 @@ test('removing collection when matchUps are scored and team participant has adva
   }).matchUps;
 
   expect(secondRoundDualMatchUps[0].drawPositions).toEqual([1]);
+});
+
+test('removing collectionDefinition will not recalculate score or remove advanced winner if there is a manual scoring override', () => {
+  const tournamentRecordJSON = fs.readFileSync(
+    './src/matchUpEngine/governors/tieFormatGovernor/tests/removeCollectionDisableAutoCalc.tods.json',
+    'utf-8'
+  );
+  const tournamentRecord = JSON.parse(tournamentRecordJSON);
+  let result = tournamentEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+
+  const matchUpId = '919dfd11-9434-4d1d-80c4-f46c8837f7b5';
+  const drawId = '5c20bb27-bdb7-489a-b68d-3646ffa11023';
+  const params = {
+    collectionId: '9798bdd1-acc9-4b27-8730-a0f2f7c9002e',
+    updateInProgressMatchUps: true,
+    tieFormatName: 'USTA_COLLEGE',
+    matchUpId,
+    drawId,
+  };
+
+  result = tournamentEngine.findMatchUp({ matchUpId, drawId });
+  expect(result.matchUp.winningSide).toEqual(1);
+
+  const round2MatchUpId = '87ff5673-aa79-4a1e-991f-56a0c410d8dc';
+  result = tournamentEngine.findMatchUp({ matchUpId: round2MatchUpId, drawId });
+  expect(result.matchUp.drawPositions).toEqual([7]);
+
+  result = tournamentEngine.removeCollectionDefinition(params);
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpIds: [matchUpId] },
+  });
+  result = tournamentEngine.findMatchUp({ matchUpId, drawId });
+  expect(result.matchUp.winningSide).toEqual(1);
+
+  result = tournamentEngine.findMatchUp({ matchUpId: round2MatchUpId, drawId });
+  expect(result.matchUp.drawPositions).toEqual([7]);
 });

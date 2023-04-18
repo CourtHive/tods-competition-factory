@@ -64,4 +64,10 @@ test('it can allocate courts to a TEAM matchUp', () => {
       ({ courtId }) => courtId
     )
   ).toEqual(courtIds);
+
+  result.courtsData.forEach((court) =>
+    expect(
+      court.matchUps.map(({ matchUpId }) => matchUpId).includes(matchUpId)
+    ).toEqual(true)
+  );
 });

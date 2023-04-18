@@ -181,7 +181,11 @@ export function competitionScheduleMatchUps(params) {
 
   function getCourtMatchUps({ courtId }) {
     const courtMatchUps = dateMatchUps.filter(
-      (matchUp) => matchUp.schedule?.courtId === courtId
+      (matchUp) =>
+        matchUp.schedule?.courtId === courtId ||
+        matchUp.schedule?.allocatedCourts
+          ?.map(({ courtId }) => courtId)
+          .includes(courtId)
     );
     return sortCourtsData
       ? scheduledSortedMatchUps({

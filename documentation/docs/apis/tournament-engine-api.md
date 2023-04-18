@@ -1527,6 +1527,7 @@ const scaleAccessor = {
   sortOrder, // optional - ASCENDING or DESCENDING - defaults to ASCENDING
 };
 const { lineUps, participantsToAdd } = tournamentEngine.generateLineUps({
+  useDefaultEventRanking, // optional boolen; when true scaleAccessor is not required
   scaleAccessor, // see above
   singlesOnly, // optional boolean - when true SINGLES rankings will be used for DOUBLES position assignment
   attach, // optional boolean - when true the lineUps will be attached to the drawDefinition specified by drawId
@@ -3162,14 +3163,17 @@ tournamentEngine.removeEventPolicy({ policyType });
 
 ## removeIndividualParticipantIds
 
-Remove an array of individualParticipantIds from a grouping participant [TEAM, GROUP]
+Remove an array of individualParticipantIds from a grouping participant [TEAM, GROUP].
+If an individualParticipant is in a matchUp with a result they cannot be removed.
 
 ```js
-tournamentEngine.removeIndividualParticipantIds({
-  addIndividualParticipantsToEvents, // optional boolean
-  individualParticipantIds,
-  groupingParticipantId,
-});
+const { removed, notRemoved, cannotRemove } =
+  tournamentEngine.removeIndividualParticipantIds({
+    addIndividualParticipantsToEvents, // optional boolean
+    individualParticipantIds,
+    groupingParticipantId,
+    suppressErrors, // optional boolean - do not throw an error if an individualParticipant cannot be removed
+  });
 ```
 
 ---
@@ -3293,6 +3297,7 @@ Removes all scores from `tieMatchUps` within a TEAM `matchUp`; preserves `lineUp
 
 ```js
 tournamentEngine.resetScorecard({
+  tiebreakReset, // optional boolean - check for tiebreak scenarios and reset tieFormat
   matchUpId,
   drawId,
 });
