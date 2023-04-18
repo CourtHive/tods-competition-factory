@@ -501,8 +501,7 @@ test('removing collection when matchUps are scored and team participant has adva
   expect(secondRoundDualMatchUps[0].drawPositions).toEqual([1]);
 });
 
-test.only('removing collectionDefinition will not recalculate score or remove advanced winner if there is a manual scoring override', () => {
-  console.log('REMOVE ONLY');
+test('removing collectionDefinition will not recalculate score or remove advanced winner if there is a manual scoring override', () => {
   const tournamentRecordJSON = fs.readFileSync(
     './src/matchUpEngine/governors/tieFormatGovernor/tests/removeCollectionDisableAutoCalc.tods.json',
     'utf-8'
