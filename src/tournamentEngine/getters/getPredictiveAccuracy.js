@@ -31,8 +31,7 @@ export function getPredictiveAccuracy({
   drawId,
   event,
 }) {
-  if (!tournamentRecord && !matchUps)
-    return { error: MISSING_TOURNAMENT_RECORD };
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   if (matchUpType && ![SINGLES, DOUBLES].includes(matchUpType))
     return { error: INVALID_VALUES, info: { matchUpType } };
@@ -41,7 +40,7 @@ export function getPredictiveAccuracy({
   const contextFilters = {
     matchUpTypes: matchUpType ? [matchUpType] : [SINGLES, DOUBLES],
   };
-  const participants = tournamentRecord?.participants;
+  const participants = tournamentRecord.participants;
 
   if (matchUps) {
     if (matchUpType) {
@@ -50,31 +49,27 @@ export function getPredictiveAccuracy({
       );
     }
   } else {
-    matchUps =
-      (drawId &&
-        allDrawMatchUps({
+    matchUps = drawId
+      ? allDrawMatchUps({
           inContext: true,
           drawDefinition,
           contextFilters,
           contextProfile,
           participants,
-        })?.matchUps) ||
-      [] ||
-      (eventId &&
-        allEventMatchUps({
+        })?.matchUps || []
+      : eventId
+      ? allEventMatchUps({
           inContext: true,
           contextFilters,
           contextProfile,
           participants,
           event,
-        })?.matchUps) ||
-      [] ||
-      allTournamentMatchUps({
-        tournamentRecord,
-        contextFilters,
-        contextProfile,
-      })?.matchUps ||
-      [];
+        })?.matchUps || []
+      : allTournamentMatchUps({
+          tournamentRecord,
+          contextFilters,
+          contextProfile,
+        })?.matchUps || [];
   }
 
   const relevantMatchUps = matchUps.filter(
@@ -201,12 +196,7 @@ function getSideValues({
           }
         }
 
-        return {
-          participantName: participant.participantName,
-          exclusionValues,
-          scaleValues,
-          value,
-        };
+        return { scaleValues, value, exclusionValues };
       } else if (participant) {
         const { scaleValue, value } = getSideValue({
           valueAccessor,
@@ -217,12 +207,7 @@ function getSideValues({
         const { exclude, exclusionValue } = checkExcludeParticipant(scaleValue);
         if (exclude) exclusionValues.push(exclusionValue);
 
-        return {
-          participantName: participant.participantName,
-          exclusionValues,
-          scaleValue,
-          value,
-        };
+        return { scaleValue, value, exclusionValues };
       } else {
         return {};
       }
