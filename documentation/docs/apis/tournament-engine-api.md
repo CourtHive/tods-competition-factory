@@ -745,6 +745,7 @@ tournamentEngine.assignTieMatchUpParticipantId({
   teamParticipantId, // optional - participant team can be derived from participantId. This supports assigning "borrowed" players from other teams.
   participantId, // participantId of INDIVIDUAL or PAIR participant to be assigned to a matchUp
   tieMatchUpId, // matchUpId of a SINGLES or DOUBLES that is part of a matchUp between teams
+  sideNumber, // optional - only necessary if a participant is part of both teams (edge case!)
   drawId, // identifies draw in which matchUp is present
 });
 ```

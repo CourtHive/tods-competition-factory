@@ -19,6 +19,7 @@ import { PAIR } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 import {
+  EXISTING_PARTICIPANT,
   INVALID_PARTICIPANT_TYPE,
   MISSING_PARTICIPANT_ID,
   NOT_FOUND,
@@ -133,6 +134,15 @@ export function replaceTieMatchUpParticipantId(params) {
       },
       stack,
     });
+  }
+
+  const allTieIndividualParticipantIds = inContextTieMatchUp.sides?.flatMap(
+    ({ participant }) =>
+      participant?.individualParticipantIds || participant?.participantId || []
+  );
+
+  if (allTieIndividualParticipantIds.includes(newParticipantId)) {
+    return decorateResult({ result: { error: EXISTING_PARTICIPANT }, stack });
   }
 
   const teamParticipantId = inContextDualMatchUp.sides?.find(
