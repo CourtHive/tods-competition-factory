@@ -59,8 +59,8 @@ export function getPredictiveAccuracy({
           contextProfile,
           participants,
         })?.matchUps) ||
-      [] ||
-      (eventId &&
+      (!drawId &&
+        eventId &&
         allEventMatchUps({
           inContext: true,
           contextFilters,
@@ -68,7 +68,6 @@ export function getPredictiveAccuracy({
           participants,
           event,
         })?.matchUps) ||
-      [] ||
       allTournamentMatchUps({
         tournamentRecord,
         contextFilters,
