@@ -7,7 +7,10 @@ import tournamentEngine from '../../sync';
 import { expect, it, test } from 'vitest';
 
 import { SWAP_PARTICIPANTS } from '../../../constants/positionActionConstants';
-import { TEAM_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import {
+  EXISTING_PARTICIPANT,
+  TEAM_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { LINEUPS } from '../../../constants/extensionConstants';
@@ -330,7 +333,9 @@ test('participants for other teams cannot be assigned without teamParticipantId'
   });
 
   expect(errors.length).toBeGreaterThan(0);
-  errors.forEach((error) => expect(error).toEqual(TEAM_NOT_FOUND));
+  errors.forEach((error) =>
+    expect([TEAM_NOT_FOUND, EXISTING_PARTICIPANT].includes(error)).toEqual(true)
+  );
 });
 
 test('tieFormat with scoreValue calculation', () => {

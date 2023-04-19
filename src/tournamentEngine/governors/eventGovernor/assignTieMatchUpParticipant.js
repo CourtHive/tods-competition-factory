@@ -18,7 +18,9 @@ import { COMPETITOR } from '../../../constants/participantRoles';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  EXISTING_PARTICIPANT,
   INVALID_PARTICIPANT_TYPE,
+  INVALID_SIDE_NUMBER,
   MISSING_COLLECTION_DEFINITION,
   MISSING_PARTICIPANT_ID,
   MISSING_TIE_FORMAT,
@@ -34,8 +36,13 @@ export function assignTieMatchUpParticipantId(params) {
   let teamParticipantId = params.teamParticipantId;
   const { tournamentRecord, drawDefinition, participantId } = params;
 
-  if (!participantId)
+  if (!participantId) {
     return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
+  }
+
+  if (params.sideNumber && ![1, 2].includes(params.sideNumber)) {
+    return decorateResult({ result: { error: INVALID_SIDE_NUMBER }, stack });
+  }
 
   const {
     inContextDualMatchUp,
@@ -48,6 +55,22 @@ export function assignTieMatchUpParticipantId(params) {
     dualMatchUp,
     tieFormat,
   } = matchUpContext;
+
+  const allTieIndividualParticipantIds = inContextTieMatchUp.sides?.flatMap(
+    ({ participant }) =>
+      participant?.individualParticipantIds || participant?.participantId || []
+  );
+
+  if (allTieIndividualParticipantIds.includes(participantId)) {
+    return decorateResult({ result: { error: EXISTING_PARTICIPANT }, stack });
+  }
+
+  teamParticipantId =
+    teamParticipantId ||
+    (params.sideNumber &&
+      inContextDualMatchUp.sides.find(
+        (side) => side.sideNumber === params.sideNumber
+      )?.participantId);
 
   const {
     tournamentParticipants: [participantToAssign],
@@ -72,13 +95,14 @@ export function assignTieMatchUpParticipantId(params) {
   const relevantParticipantIds =
     participantType === INDIVIDUAL ? [participantId] : individualParticipantIds;
 
-  const participantTeam = teamParticipantId
-    ? teamParticipants.find(
+  const participantTeam =
+    (teamParticipantId &&
+      teamParticipants.find(
         ({ participantId }) => participantId === teamParticipantId
-      )
-    : teamParticipants.find(({ individualParticipantIds }) =>
-        overlap(relevantParticipantIds, individualParticipantIds)
-      );
+      )) ||
+    teamParticipants.find(({ individualParticipantIds }) =>
+      overlap(relevantParticipantIds, individualParticipantIds)
+    );
 
   if (!participantTeam) {
     return { error: TEAM_NOT_FOUND };
@@ -94,7 +118,7 @@ export function assignTieMatchUpParticipantId(params) {
   const teamSide = inContextTieMatchUp.sides?.find(
     ({ drawPosition }) => drawPosition === teamDrawPosition
   );
-  const sideNumber = teamSide?.sideNumber;
+  const sideNumber = params.sideNumber || teamSide?.sideNumber;
 
   if (!tieFormat) {
     return { error: MISSING_TIE_FORMAT };

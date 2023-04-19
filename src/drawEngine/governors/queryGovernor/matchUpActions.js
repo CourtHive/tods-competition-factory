@@ -408,6 +408,13 @@ export function matchUpActions({
 
   if (isCollectionMatchUp) {
     const matchUpType = inContextMatchUp.matchUpType;
+    const allParticipants = inContextMatchUp.sides
+      .flatMap(
+        (side) => side.participant?.individualParticipants || side.participant
+      )
+      .filter(Boolean);
+    const allParticipantIds = allParticipants.map(getParticipantId);
+
     const existingParticipants = inContextMatchUp.sides
       .filter((side) => !sideNumber || side.sideNumber === sideNumber)
       .flatMap(
@@ -452,12 +459,20 @@ export function matchUpActions({
           (matchUpType === DOUBLES_MATCHUP &&
             existingParticipantIds.length < 4)));
 
-    if (assignmentAvailable) {
+    // extra step to avoid edge case where individual participant is part of both teams
+    const availableIds = availableParticipantIds.filter(
+      (id) => !allParticipantIds.includes(id)
+    );
+    const available = availableParticipants.filter(({ participantId }) =>
+      availableIds.includes(participantId)
+    );
+
+    if (assignmentAvailable && availableIds.length) {
       validActions.push({
+        availableParticipantIds: availableIds,
         method: ASSIGN_TEAM_POSITION_METHOD,
+        availableParticipants: available,
         type: ASSIGN_PARTICIPANT,
-        availableParticipantIds,
-        availableParticipants,
         payload: {
           participantId: undefined,
           tieMatchUpId: matchUpId,
@@ -487,7 +502,9 @@ export function matchUpActions({
       (sideNumber && side?.participant)
     ) {
       validActions.push({
+        availableParticipantIds: availableIds,
         method: REPLACE_TEAM_POSITION_METHOD,
+        availableParticipants: available,
         type: REPLACE_PARTICIPANT,
         existingParticipantIds,
         payload: {
