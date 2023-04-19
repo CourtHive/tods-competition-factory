@@ -12,8 +12,8 @@ export function removeCollectionAssignments({
 }) {
   if (!collectionId || !collectionPosition || !Array.isArray(participantIds))
     return {
-      error: INVALID_VALUES,
       modifiedLineUp: dualMatchUpSide?.lineUp || [],
+      error: INVALID_VALUES,
     };
 
   const lineUp =
@@ -29,6 +29,7 @@ export function removeCollectionAssignments({
   const modifiedLineUp =
     lineUp
       ?.map((teamCompetitor) => {
+        // don't modify an individual team competitor unless it appears in participantIds
         if (!participantIds.includes(teamCompetitor.participantId)) {
           return teamCompetitor;
         }
@@ -38,13 +39,15 @@ export function removeCollectionAssignments({
             const target =
               assignment.collectionId === collectionId &&
               assignment.collectionPosition === collectionPosition;
-            if (target)
-              if (assignment.previousParticipantId)
+            if (target) {
+              if (assignment.previousParticipantId) {
                 previousParticipantIds.push(assignment.previousParticipantId);
-            assignmentsRemoved.push({
-              participantId: teamCompetitor.participantId,
-              ...assignment,
-            });
+              }
+              assignmentsRemoved.push({
+                participantId: teamCompetitor.participantId,
+                ...assignment,
+              });
+            }
             return !target;
           });
         return {
