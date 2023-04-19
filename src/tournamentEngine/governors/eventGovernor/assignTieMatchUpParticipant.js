@@ -144,16 +144,19 @@ export function assignTieMatchUpParticipantId(params) {
       drawDefinition,
     })?.lineUp;
 
-  const assignedParticipantIds = lineUp
-    ?.filter((participantAssignment) =>
-      participantAssignment.collectionAssignments?.find(
-        (assignment) =>
-          assignment.collectionId === collectionId &&
-          assignment.collectionPosition === collectionPosition
-      )
+  const targetAssignments = lineUp?.filter((participantAssignment) =>
+    participantAssignment.collectionAssignments?.find(
+      (assignment) =>
+        assignment.collectionPosition === collectionPosition &&
+        assignment.collectionId === collectionId &&
+        !assignment.previousParticipantId
     )
-    ?.map((assignment) => assignment?.participantId);
+  );
+  const assignedParticipantIds = targetAssignments?.map(
+    (assignment) => assignment?.participantId
+  );
 
+  // participantIds is an array of ids for individual team participants whose assignments should be modified
   const participantIds =
     (assignedParticipantIds?.length > 1 && assignedParticipantIds) ||
     (participantType === PAIR
@@ -161,14 +164,20 @@ export function assignTieMatchUpParticipantId(params) {
       : [participantId]);
 
   // first filter out any collectionAssignment with equivalent collectionId/collectionPosition/participantId
-  const modifiedLineUp = removeCollectionAssignments({
+  const removeResult = removeCollectionAssignments({
     collectionPosition,
     teamParticipantId,
     dualMatchUpSide,
+    participantType,
     drawDefinition,
     participantIds,
     collectionId,
-  })?.modifiedLineUp;
+    matchUpType,
+  });
+  if (removeResult.error)
+    return decorateResult({ result: removeResult, stack });
+
+  const { modifiedLineUp } = removeResult;
 
   let deleteParticipantId;
 
@@ -183,7 +192,7 @@ export function assignTieMatchUpParticipantId(params) {
         collectionId,
         tieFormat,
       });
-      if (result?.error) return result;
+      if (result?.error) return decorateResult({ result, stack });
 
       result = addParticipantId2Pair({
         side: tieMatchUpSide,
@@ -247,9 +256,9 @@ export function assignTieMatchUpParticipantId(params) {
 
     if (!side.participant) {
       const newPairParticipant = {
-        participantType: PAIR,
-        participantRole: COMPETITOR,
         individualParticipantIds: [participantId],
+        participantRole: COMPETITOR,
+        participantType: PAIR,
       };
       const result = addParticipant({
         participant: newPairParticipant,

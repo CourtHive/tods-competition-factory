@@ -8,9 +8,9 @@ const tournamentRecordJSON = fs.readFileSync(
   './src/global/testHarness/assignTieMatchUpParticipant.tods.json',
   'utf-8'
 );
+const tournamentRecord = JSON.parse(tournamentRecordJSON);
 
 it.skip('populates matchUp sides', () => {
-  const tournamentRecord = JSON.parse(tournamentRecordJSON);
   tournamentEngine.setState(tournamentRecord);
 
   const {
@@ -45,10 +45,8 @@ it.skip('populates matchUp sides', () => {
 });
 
 it('assignMatchUpParticipantId will remove prior assignments', () => {
-  const tournamentRecord = JSON.parse(tournamentRecordJSON);
-  tournamentEngine.setState(tournamentRecord);
-
-  let result, params;
+  let result = tournamentEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
 
   const {
     matchUps: [matchUp],
@@ -58,7 +56,7 @@ it('assignMatchUpParticipantId will remove prior assignments', () => {
   const lineUps = matchUp.sides.map(({ lineUp }) => lineUp);
   const originalLineUp = lineUps[1];
 
-  params = {
+  let params = {
     drawId: 'b64103e5-7e63-4a9f-a62c-8569b0a2fcae',
     participantId: 'A84C3E42-C60C-4772-BEAF-135E313CB90B',
     tieMatchUpId: '9e3b56a2-69a5-45ce-b363-c3d67c5a5d26',
@@ -92,4 +90,28 @@ it('assignMatchUpParticipantId will remove prior assignments', () => {
   result = tournamentEngine.assignTieMatchUpParticipantId(params);
   expect(originalLineUp).not.toEqual(result.modifiedLineUp);
   expect(result.success).toEqual(true);
+});
+
+it('can add a participant to a partial pair with a Substitute', () => {
+  const tournamentJSON = fs.readFileSync(
+    './src/global/testHarness/assignTieMatchUpParticipantSub.tods.json',
+    'utf-8'
+  );
+  const tournament = JSON.parse(tournamentJSON);
+  let result = tournamentEngine.setState(tournament);
+  expect(result.success).toEqual(true);
+
+  let params = {
+    participantId: '32b181af-0f31-4b97-881b-4e9caa4180de',
+    tieMatchUpId: '69b0156b-3cb1-4e0a-b148-8d796e2929c4',
+    drawId: '21d8e860-41d8-4b2d-8f79-94c5758e2ad2',
+  };
+
+  result = tournamentEngine.assignTieMatchUpParticipantId(params);
+  expect(result.success).toEqual(true);
+
+  // there should be 3 participants which have assignments
+  expect(
+    result.modifiedLineUp.filter((l) => l.collectionAssignments.length).length
+  ).toEqual(3);
 });

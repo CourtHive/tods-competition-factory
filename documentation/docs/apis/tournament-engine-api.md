@@ -3382,8 +3382,8 @@ const scaledParticipants = individualParticipants.map((participant) => ({
 const teamParticipantIds = teamParticipants.map(getParticipantId);
 
 tournamentEngine.scaledTeamAssignment({
-  teamParticipantIds,
   scaledParticipants, // [{ participantId, scaleValue}]
+  teamParticipantIds,
 });
 ```
 
@@ -3393,16 +3393,16 @@ In this scenario scaled MALE participants are assigned in a waterfall pattern be
 
 ```js
 tournamentEngine.scaledTeamAssignment({
-  teamParticipantIds,
   scaledParticipants: maleScaleParticipants,
+  teamParticipantIds,
 });
 
 tournamentEngine.scaledTeamAssignment({
-  teamParticipantIds,
   scaledParticipants: femaleScaleParticipants,
   clearExistingAssignments: false,
   reverseAssignmentOrder: true,
   initialTeamIndex: 7,
+  teamParticipantIds,
 });
 ```
 
