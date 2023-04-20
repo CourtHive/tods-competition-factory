@@ -127,7 +127,11 @@ export function setMatchUpStatus(params) {
   if (!matchUp || !inContextDrawMatchUps) return { error: MATCHUP_NOT_FOUND };
 
   if ((matchUp.winningSide || winningSide) && matchUpStatus === BYE) {
-    return { error: INCOMPATIBLE_MATCHUP_STATUS, matchUpStatus };
+    return {
+      context: 'Cannot have Bye with winningSide',
+      error: INCOMPATIBLE_MATCHUP_STATUS,
+      matchUpStatus,
+    };
   }
 
   // Check validity of matchUpStatus considering assigned drawPositions -------
@@ -318,6 +322,7 @@ export function setMatchUpStatus(params) {
       !directingMatchUpStatus
     ) {
       return {
+        context: 'winningSide must include directing matchUpStatus',
         error: INCOMPATIBLE_MATCHUP_STATUS,
         directingMatchUpStatus,
         matchUpStatus,
