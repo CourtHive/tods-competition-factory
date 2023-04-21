@@ -62,7 +62,7 @@ export function addParticipantContext(params) {
   });
 
   // optimize when filtering participants by participantIds
-  // by only returning relevantParticpantIds related to specified particpantIds
+  // by only returning relevantParticipantIds related to specified participantIds
   const targetParticipantIds = participantFilters?.participantIds;
   const getRelevantParticipantIds = (participantId) => {
     const relevantParticipantIds =

@@ -3333,7 +3333,7 @@ tournamentEngine.resetVoluntaryConsolationStructure({
 
 ## scaledTeamAssignment
 
-Assigns individual participants to teams using a waterfall pattern; removes UNGROUPED entries as appropriate for TEAM events. May be called with either `individualParticpantIds` and `scaleAttributes` or with an array of `scaledParticipants`.
+Assigns individual participants to teams using a waterfall pattern; removes UNGROUPED entries as appropriate for TEAM events. May be called with either `individualParticipantIds` and `scaleAttributes` or with an array of `scaledParticipants`.
 
 :::info
 By default existing `individualParticipant` assignments are cleared. If existing assignments are retained, any `individualParticipant` already assigned will be excluded from further assignment. It may be desirable to retain existing assignments if sequential assignment of different groups of `individualParticipants` is desired.
