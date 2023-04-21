@@ -4,6 +4,7 @@ export { attributeFilter } from './attributeFilter';
 export { tidyScore } from './tidyScore/tidyScore';
 export { generateTimeCode } from './timeCode';
 export { makeDeepCopy } from './makeDeepCopy';
+export { undefinedToNull } from './objects';
 export { numericSort } from './sorting';
 export { JSON2CSV } from './json';
 export { UUID } from './UUID';
