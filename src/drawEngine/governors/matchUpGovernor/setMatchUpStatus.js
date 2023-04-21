@@ -25,6 +25,7 @@ import {
 
 import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
+import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
@@ -246,8 +247,29 @@ export function setMatchUpStatus(params) {
     event,
   });
 
+  if (typeof params.policyDefinitions === 'object') {
+    Object.assign(appliedPolicies, params.policyDefinitions);
+  }
+
+  const qualifyingMatch =
+    inContextMatchUp.stage === QUALIFYING &&
+    inContextMatchUp.finishingRound === 1;
+  const qualifierAdvancing = qualifyingMatch && winningSide;
+  const removingQualifier =
+    qualifyingMatch && // oop
+    matchUp.winningSide &&
+    !winningSide && // function calls last
+    isNonDirectingMatchUpStatus(matchUp) &&
+    !scoreHasValue(matchUp);
+  const qualifierChanging =
+    qualifierAdvancing && // oop
+    winningSide !== matchUp.winningSide &&
+    matchUp.winningSide;
+
   Object.assign(params, {
     inContextDrawMatchUps,
+    qualifierChanging,
+    removingQualifier,
     inContextMatchUp,
     appliedPolicies,
     matchUpTieId,
