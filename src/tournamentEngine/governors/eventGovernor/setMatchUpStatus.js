@@ -24,6 +24,7 @@ import {
  */
 export function setMatchUpStatus(params) {
   const {
+    policyDefinitions,
     tournamentRecords,
     tournamentRecord,
     disableAutoCalc,
@@ -84,6 +85,7 @@ export function setMatchUpStatus(params) {
     winningSide: outcome?.winningSide,
     allowChangePropagation,
     score: outcome?.score,
+    policyDefinitions,
     tournamentRecords,
     tournamentRecord,
     disableAutoCalc,

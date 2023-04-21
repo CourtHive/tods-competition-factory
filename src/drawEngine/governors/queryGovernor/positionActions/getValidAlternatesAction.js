@@ -44,7 +44,7 @@ export function getValidAlternatesAction({
     appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS]
       ?.restrictQualifyingAlternates;
 
-  const drawEnteredParticpantIds = (drawDefinition.entries || [])
+  const drawEnteredParticipantIds = (drawDefinition.entries || [])
     .filter(
       ({ entryStage }) =>
         !restrictQualifyingAlternates ||
@@ -66,7 +66,7 @@ export function getValidAlternatesAction({
     .map((assignment) => assignment.participantId)
     .filter(Boolean);
 
-  const availableDrawEnteredParticipantIds = drawEnteredParticpantIds.filter(
+  const availableDrawEnteredParticipantIds = drawEnteredParticipantIds.filter(
     (participantId) =>
       [QUALIFYING, MAIN, PLAY_OFF].includes(structure.stage)
         ? !allPositionedParticipantIds.includes(participantId)
@@ -108,7 +108,7 @@ export function getValidAlternatesAction({
             (entry) =>
               entry.participantId &&
               ![WITHDRAWN, UNGROUPED, UNPAIRED].includes(entry.entryStatus) &&
-              !drawEnteredParticpantIds.includes(entry.participantId)
+              !drawEnteredParticipantIds.includes(entry.participantId)
           )
           .map(({ participantId }) => participantId)
       )
