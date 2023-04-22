@@ -75,7 +75,9 @@ function getSideValue({
     Object.assign(side, seeding, { participantId });
   } else if (assignment.bye) {
     Object.assign(side, { bye: true });
-  } else if (assignment.qualifier) {
+  }
+
+  if (assignment.qualifier) {
     Object.assign(side, { qualifier: true });
   }
 

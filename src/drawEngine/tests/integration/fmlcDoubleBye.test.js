@@ -259,9 +259,9 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
 
   // remove outcome
   let result = tournamentEngine.setMatchUpStatus({
-    drawId,
-    matchUpId,
     outcome: toBePlayed,
+    matchUpId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 

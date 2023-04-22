@@ -259,8 +259,9 @@ export function setMatchUpStatus(params) {
     qualifyingMatch && // oop
     matchUp.winningSide &&
     !winningSide && // function calls last
-    isNonDirectingMatchUpStatus(matchUp) &&
-    !scoreHasValue(matchUp);
+    (!params.matchUpStatus ||
+      isNonDirectingMatchUpStatus(params.matchUpStatus)) &&
+    !scoreHasValue(params.outcome);
   const qualifierChanging =
     qualifierAdvancing && // oop
     winningSide !== matchUp.winningSide &&
@@ -268,6 +269,7 @@ export function setMatchUpStatus(params) {
 
   Object.assign(params, {
     inContextDrawMatchUps,
+    qualifierAdvancing,
     qualifierChanging,
     removingQualifier,
     inContextMatchUp,

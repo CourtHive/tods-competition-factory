@@ -1,3 +1,5 @@
+import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
+import { getParticipantId } from '../../../global/functions/extractors';
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -7,8 +9,7 @@ import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POL
 import { QUALIFYING_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { MODIFY_POSITION_ASSIGNMENTS } from '../../../constants/topicConstants';
 import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
 it('generates expected finishingPositions for qualifying structures', () => {
   let assignmentNotifications = [];
@@ -70,7 +71,7 @@ it('generates expected finishingPositions for qualifying structures', () => {
   const qualifierAssingmentAction = result.validActions.find(
     ({ type }) => type === QUALIFYING_PARTICIPANT
   );
-  const qualifyingParticipantId =
+  let qualifyingParticipantId =
     qualifierAssingmentAction.qualifyingParticipantIds[0];
   const payload = {
     ...qualifierAssingmentAction.payload,
@@ -81,7 +82,7 @@ it('generates expected finishingPositions for qualifying structures', () => {
   expect(result.context.removedParticipantId).toBeUndefined(); // there was no participant present in drawPosition
 
   // Find the match in the final round of qualifying which was won by qualifyingParticipant
-  const qualifyingMatchUp = matchUps.find(
+  let qualifyingMatchUp = matchUps.find(
     ({ finishingRound, sides }) =>
       finishingRound === 1 &&
       sides.some(
@@ -129,9 +130,67 @@ it('generates expected finishingPositions for qualifying structures', () => {
   // refresh matchUps to enable discovery of MAIN matchUp with qualifying participant REPLACED
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
 
-  const mainDrawMatchUp = matchUps.find(
+  let mainDrawMatchUp = matchUps.find(
     ({ matchUpId }) => matchUpId === mainDrawMatchUpId
   );
-  const participantIds = mainDrawMatchUp.sides.map(getParticipantId);
+  let participantIds = mainDrawMatchUp.sides
+    .map(getParticipantId)
+    .filter(Boolean);
   expect(participantIds.includes(qualifyingParticipantId)).toEqual(false);
+  expect(participantIds.length).toEqual(2);
+
+  // remove winner of qualifying match and expect previous qualifier to be removed from MAIN
+  result = tournamentEngine.setMatchUpStatus({
+    policyDefinitions: {
+      [POLICY_TYPE_PROGRESSION]: { autoRemoveQualifiers: true },
+    },
+    matchUpId: qualifyingMatchUp.matchUpId,
+    outcome: toBePlayed,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.qualifierRemoved).toEqual(true);
+
+  // refresh matchUps to enable discovery of MAIN matchUp with qualifying participant REMOVED
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+
+  mainDrawMatchUp = matchUps.find(
+    ({ matchUpId }) => matchUpId === mainDrawMatchUpId
+  );
+  participantIds = mainDrawMatchUp.sides.map(getParticipantId).filter(Boolean);
+  expect(participantIds.length).toEqual(1);
+
+  // now auto place qualifier in MAIN draw
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: qualifyingMatchUp.matchUpId,
+    policyDefinitions: {
+      [POLICY_TYPE_PROGRESSION]: { autoPlaceQualifiers: true },
+    },
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.qualifierPlaced).toEqual(true);
+
+  // refresh matchUps to enable discovery of MAIN matchUp with qualifying participant PLACED
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+
+  qualifyingMatchUp = matchUps.find(
+    ({ matchUpId }) => matchUpId === qualifyingMatchUp.matchUpId
+  );
+  expect(qualifyingMatchUp.stage).toEqual(QUALIFYING);
+  qualifyingParticipantId = qualifyingMatchUp.sides.find(
+    (side) => side.sideNumber === qualifyingMatchUp.winningSide
+  ).participantId;
+  mainDrawMatchUp = matchUps.find(
+    ({ sides, stage }) =>
+      stage === MAIN &&
+      sides.some((side) => side.participantId === qualifyingParticipantId)
+  );
+  const qualifyingSide = mainDrawMatchUp.sides.find(
+    (side) => side.participantId === qualifyingParticipantId
+  );
+  expect(qualifyingSide).not.toBeUndefined();
+  expect(qualifyingSide.qualifier).toEqual(true);
+  expect(qualifyingSide.participant.entryStage).toEqual(QUALIFYING);
 });
