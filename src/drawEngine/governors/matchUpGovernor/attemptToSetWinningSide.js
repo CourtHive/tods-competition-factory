@@ -4,13 +4,18 @@ import { checkConnectedStructures } from './checkConnectedStructures';
 import { definedAttributes } from '../../../utilities/objects';
 import { attemptToModifyScore } from './attemptToModifyScore';
 import { directParticipants } from './directParticipants';
+import { replaceQualifier } from './replaceQualifier';
+import { placeQualifier } from './placeQualifier';
 
+import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function attemptToSetWinningSide(params) {
   const stack = 'attemptToSetWinningSide';
+  let connectedStructures;
 
   const {
+    appliedPolicies,
     disableAutoCalc,
     drawDefinition,
     matchUpsMap,
@@ -19,7 +24,6 @@ export function attemptToSetWinningSide(params) {
     structure,
     matchUp,
   } = params;
-  let connectedStructures;
 
   // disableAutoCalc means the score is being set manually
   if (dualMatchUp?._disableAutoCalc && disableAutoCalc !== false) {
@@ -48,8 +52,28 @@ export function attemptToSetWinningSide(params) {
   const result = directParticipants(params);
   if (result.error) return decorateResult({ result, stack });
 
+  let qualifierReplaced, qualifierPlaced;
+  if (
+    params.qualifierChanging &&
+    appliedPolicies?.[POLICY_TYPE_PROGRESSION]?.autoReplaceQualifiers
+  ) {
+    qualifierReplaced = replaceQualifier(params).qualifierReplaced;
+  }
+
+  if (
+    params.qualifierAdvancing &&
+    appliedPolicies?.[POLICY_TYPE_PROGRESSION]?.autoPlaceQualifiers
+  ) {
+    qualifierPlaced = placeQualifier(params).qualifierPlaced;
+  }
+
   return decorateResult({
-    result: definedAttributes({ ...SUCCESS, connectedStructures }),
+    result: definedAttributes({
+      connectedStructures,
+      qualifierReplaced,
+      qualifierPlaced,
+      ...SUCCESS,
+    }),
     stack,
   });
 }

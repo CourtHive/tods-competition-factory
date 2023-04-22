@@ -8,7 +8,9 @@ import { attemptToModifyScore } from './attemptToModifyScore';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { removeDoubleExit } from './removeDoubleExit';
+import { removeQualifier } from './removeQualifier';
 
+import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ABANDONED,
@@ -74,6 +76,16 @@ export function noDownstreamDependencies(params) {
     Object.assign(params, { removeScore });
     const result = removeDirectedParticipants(params);
     if (result.error) return result;
+
+    if (
+      params.removingQualifier &&
+      params.appliedPolicies?.[POLICY_TYPE_PROGRESSION]?.autoRemoveQualifiers
+    ) {
+      const result = removeQualifier(params);
+      if (result.error) return result;
+      return { ...SUCCESS, connectedStructures, ...result };
+    }
+
     return { ...SUCCESS, connectedStructures };
   };
 

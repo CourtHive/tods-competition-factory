@@ -33,6 +33,26 @@ export function definedAttributes(
   );
 }
 
+// useful in notifications where back end does not recognize undefined for updates
+export function undefinedToNull(obj, shallow) {
+  if (obj === undefined) return null;
+  if (typeof obj !== 'object' || obj === null) return obj;
+
+  const definedKeys = Object.keys(obj);
+  const notNull = (value) => (value === undefined ? null : value);
+
+  return Object.assign(
+    {},
+    ...definedKeys.map((key) => {
+      return Array.isArray(obj[key])
+        ? {
+            [key]: shallow ? obj[key] : obj[key].map((m) => undefinedToNull(m)),
+          }
+        : { [key]: shallow ? notNull(obj[key]) : undefinedToNull(obj[key]) };
+    })
+  );
+}
+
 function countKeys(o) {
   if (Array.isArray(o)) {
     return o.length + o.map(countKeys).reduce((a, b) => a + b, 0);

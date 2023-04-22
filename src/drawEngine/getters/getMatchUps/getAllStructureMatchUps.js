@@ -24,7 +24,6 @@ import { getSide } from './getSide';
 
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { TEAM } from '../../../constants/eventConstants';
@@ -564,7 +563,10 @@ export function getAllStructureMatchUps({
                 (entry) => entry.participantId === side.participantId
               );
               if (entry?.entryStatus) {
-                participant.entryStatus = entry.entryStatus || ALTERNATE;
+                participant.entryStatus = entry.entryStatus;
+              }
+              if (entry?.entryStage) {
+                participant.entryStage = entry.entryStage;
               }
             }
             Object.assign(side, { participant });

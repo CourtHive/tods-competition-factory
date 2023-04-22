@@ -163,6 +163,9 @@ function addNotice({ topic, payload, key }) {
       (notice) => !(notice.topic === topic && notice.key === key)
     );
   }
+  // NOTE: when backend does not recognize undefined for updates
+  // params = undefinedToNull(params) // => see object.js utils
+
   instanceState.notices.push({ topic, payload, key });
 
   return { success: true };

@@ -188,7 +188,7 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   );
 
   let { method, payload, availableParticipantIds } = assignmentAction;
-  // expect the avialbleParticpantIds to equl the number of entered participants
+  // expect the avialbleParticipantIds to equl the number of entered participants
   expect(availableParticipantIds.length).toEqual(drawSize);
 
   // expect an error when the participantId is not added to the payload

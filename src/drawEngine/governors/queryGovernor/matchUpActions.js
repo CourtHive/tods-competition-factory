@@ -87,6 +87,7 @@ export function matchUpActions({
   inContextDrawMatchUps,
   tournamentRecord,
   drawDefinition,
+  participantId,
   matchUpsMap,
   sideNumber,
   matchUpId,
@@ -532,16 +533,18 @@ export function matchUpActions({
         .map((sub) => sub.participantId)
         .filter((id) => sideIndividualParticipantIds.includes(id));
 
-      validActions.push({
-        method: REMOVE_TEAM_POSITION_METHOD,
-        type: REMOVE_SUBSTITUTION,
-        substitutedParticipantIds,
-        payload: {
-          participantId: undefined,
-          tieMatchUpId: matchUpId,
-          drawId,
-        },
-      });
+      if (!participantId || substitutedParticipantIds.includes(participantId)) {
+        validActions.push({
+          method: REMOVE_TEAM_POSITION_METHOD,
+          type: REMOVE_SUBSTITUTION,
+          substitutedParticipantIds,
+          payload: {
+            participantId: undefined,
+            tieMatchUpId: matchUpId,
+            drawId,
+          },
+        });
+      }
     }
 
     const matchUpActionPolicy =

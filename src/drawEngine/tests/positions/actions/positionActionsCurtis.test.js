@@ -20,7 +20,7 @@ test.each([
     [1, 2, 3, 6, 8, 10, 11, 14, 16, 17, 18, 25, 26, 27, 28, 31],
   ],
 ])(
-  'pass specific bye replaceent scenarios',
+  'pass specific bye replacement scenarios',
   (drawSize, drawType, positionsToReplaceWithBye) => {
     let result = replacementTest({
       drawType,

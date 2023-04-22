@@ -25,6 +25,7 @@ import {
 
 import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
+import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
@@ -127,7 +128,11 @@ export function setMatchUpStatus(params) {
   if (!matchUp || !inContextDrawMatchUps) return { error: MATCHUP_NOT_FOUND };
 
   if ((matchUp.winningSide || winningSide) && matchUpStatus === BYE) {
-    return { error: INCOMPATIBLE_MATCHUP_STATUS, matchUpStatus };
+    return {
+      context: 'Cannot have Bye with winningSide',
+      error: INCOMPATIBLE_MATCHUP_STATUS,
+      matchUpStatus,
+    };
   }
 
   // Check validity of matchUpStatus considering assigned drawPositions -------
@@ -242,8 +247,31 @@ export function setMatchUpStatus(params) {
     event,
   });
 
+  if (typeof params.policyDefinitions === 'object') {
+    Object.assign(appliedPolicies, params.policyDefinitions);
+  }
+
+  const qualifyingMatch =
+    inContextMatchUp.stage === QUALIFYING &&
+    inContextMatchUp.finishingRound === 1;
+  const qualifierAdvancing = qualifyingMatch && winningSide;
+  const removingQualifier =
+    qualifyingMatch && // oop
+    matchUp.winningSide &&
+    !winningSide && // function calls last
+    (!params.matchUpStatus ||
+      isNonDirectingMatchUpStatus(params.matchUpStatus)) &&
+    !scoreHasValue(params.outcome);
+  const qualifierChanging =
+    qualifierAdvancing && // oop
+    winningSide !== matchUp.winningSide &&
+    matchUp.winningSide;
+
   Object.assign(params, {
     inContextDrawMatchUps,
+    qualifierAdvancing,
+    qualifierChanging,
+    removingQualifier,
     inContextMatchUp,
     appliedPolicies,
     matchUpTieId,
@@ -318,6 +346,7 @@ export function setMatchUpStatus(params) {
       !directingMatchUpStatus
     ) {
       return {
+        context: 'winningSide must include directing matchUpStatus',
         error: INCOMPATIBLE_MATCHUP_STATUS,
         directingMatchUpStatus,
         matchUpStatus,

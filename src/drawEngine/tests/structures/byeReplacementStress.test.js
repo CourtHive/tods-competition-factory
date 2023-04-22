@@ -54,7 +54,7 @@ test.skip.each([
   [8, MODIFIED_FEED_IN_CHAMPIONSHIP, [5, 6, 3, 1]],
   [8, FIRST_MATCH_LOSER_CONSOLATION, [5, 6, 3, 1]],
 ])(
-  'pass specific bye replaceent scenarios',
+  'pass specific bye replacement scenarios',
   (drawSize, drawType, positionsToReplaceWithBye) => {
     pushGlobalLog(
       {
