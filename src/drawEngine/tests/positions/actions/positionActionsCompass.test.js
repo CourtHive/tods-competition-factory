@@ -9,7 +9,7 @@ test.each([
   [8, COMPASS, [5, 6, 3, 1]],
   [16, COMPASS, [8, 6, 15, 3, 11, 10, 5, 4]],
 ])(
-  'pass specific bye replaceent scenarios',
+  'pass specific bye replacement scenarios',
   (drawSize, drawType, positionsToReplaceWithBye) => {
     let result = replacementTest({
       drawType,

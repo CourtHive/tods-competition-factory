@@ -15,7 +15,7 @@ test.each([
   [16, FEED_IN_CHAMPIONSHIP, [15, 7, 1, 10, 11, 13, 16, 8]],
   [16, FEED_IN_CHAMPIONSHIP, [6, 15, 4, 1, 3, 12, 5, 9]],
 ])(
-  'pass specific bye replaceent scenarios',
+  'pass specific bye replacement scenarios',
   (drawSize, drawType, positionsToReplaceWithBye) => {
     let result = replacementTest({
       drawType,
