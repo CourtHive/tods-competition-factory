@@ -124,7 +124,7 @@
     "lint-staged": "13.2.1",
     "np": "7.7.0",
     "pinst": "3.0.0",
-    "prettier": "2.8.7",
+    "prettier": "2.8.8",
     "prettier-eslint": "15.0.1",
     "quicktype": "23.0.21",
     "rimraf": "5.0.0",
