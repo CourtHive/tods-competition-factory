@@ -1,5 +1,5 @@
 import { newTournamentRecord } from './generators/newTournamentRecord';
-import { getState, paramsMiddleWare, setState } from './stateMethods';
+import { getState, paramsMiddleware, setState } from './stateMethods';
 import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import participantGovernor from './governors/participantGovernor';
@@ -98,7 +98,7 @@ export const tournamentEngine = (function () {
     delete engine.error;
 
     const start = Date.now();
-    const augmentedParams = paramsMiddleWare(tournamentRecord, params);
+    const augmentedParams = paramsMiddleware(tournamentRecord, params);
     const result = method({
       ...augmentedParams,
       tournamentRecord,
@@ -157,11 +157,19 @@ export const tournamentEngine = (function () {
 
     if (result?.error && snapshot) setState(snapshot);
 
+    const timeStamp = Date.now();
+    // set factory extension on tournamentRecord with timeStamp
+
     const notify =
       result?.success &&
       params?.delayNotify !== true &&
       params?.doNotNotify !== true;
-    if (notify) notifySubscribers();
+    if (notify)
+      notifySubscribers({
+        tournamentId: tournamentRecord.tournamentId,
+        directives: [{ method, params }],
+        timeStamp,
+      });
     if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 
     return result;
@@ -200,6 +208,7 @@ export const tournamentEngine = (function () {
     const snapshot =
       rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
+    let timeStamp;
     const results = [];
     for (const directive of directives) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
@@ -230,9 +239,11 @@ export const tournamentEngine = (function () {
         return { ...result, rolledBack: !!snapshot };
       }
       results.push(result);
+      timeStamp = Date.now();
+      // set factory extension on tournamentRecord with timeStamp
     }
 
-    notifySubscribers();
+    notifySubscribers({ directives, timeStamp, tournamentId });
     deleteNotices();
 
     return { results };

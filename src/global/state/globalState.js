@@ -39,10 +39,6 @@ const requiredStateProviderMethods = [
   'setTournamentRecords',
 ];
 
-export function setFactoryVersion(version) {
-  globalState.tournamentFactoryVersion = version;
-}
-
 export function setStateProvider(globalStateProvider) {
   if (typeof globalStateProvider !== 'object') {
     throw new Error(`Global state provider can not be undefined or null`);

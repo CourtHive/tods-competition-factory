@@ -1,6 +1,6 @@
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { newTournamentRecord } from './generators/newTournamentRecord';
-import { setState, getState, paramsMiddleWare } from './stateMethods';
+import { setState, getState, paramsMiddleware } from './stateMethods';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import participantGovernor from './governors/participantGovernor';
 import publishingGovernor from './governors/publishingGovernor';
@@ -102,7 +102,7 @@ export function tournamentEngineAsync(test) {
     delete engine.success;
     delete engine.error;
 
-    const augmentedParams = paramsMiddleWare(tournamentRecord, params);
+    const augmentedParams = paramsMiddleware(tournamentRecord, params);
 
     const result = await method({
       ...augmentedParams,
@@ -131,11 +131,19 @@ export function tournamentEngineAsync(test) {
 
     if (result?.error && snapshot) setState(snapshot);
 
+    const timeStamp = Date.now();
+    // set factory extension on tournamentRecord with timeStamp
+
     const notify =
       result?.success &&
       params?.delayNotify !== true &&
       params?.doNotNotify !== true;
-    if (notify) await notifySubscribersAsync();
+    if (notify)
+      await notifySubscribersAsync({
+        tournamentId: tournamentRecord.tournamentId,
+        directives: [{ method, params }],
+        timeStamp,
+      });
     if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 
     return result;
@@ -177,6 +185,7 @@ export function tournamentEngineAsync(test) {
     const snapshot =
       rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
+    let timeStamp;
     const results = [];
     for (const directive of directives) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
@@ -196,9 +205,12 @@ export function tournamentEngineAsync(test) {
         return { ...result, rolledBack: !!snapshot };
       }
       results.push(result);
+
+      timeStamp = Date.now();
+      // set factory extension on tournamentRecord with timeStamp
     }
 
-    await notifySubscribersAsync();
+    await notifySubscribersAsync({ directives, timeStamp, tournamentId });
     deleteNotices();
 
     return { results };
