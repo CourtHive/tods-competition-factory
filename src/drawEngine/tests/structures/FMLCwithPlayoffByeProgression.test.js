@@ -48,9 +48,9 @@ it('will place a BYE in CONSOLATION if participant has progressed to 3-4 playoff
   }).matchUps;
   expect(matchUps.length).toEqual(2);
 
-  result = tournamentEngine.getAvailablePlayoffRounds({ drawId });
+  result = tournamentEngine.getAvailablePlayoffProfiles({ drawId });
   const { positionsPlayedOff } = result;
-  const { playoffRounds, structureId } = result.availablePlayoffRounds[0];
+  const { playoffRounds, structureId } = result.availablePlayoffProfiles[0];
 
   expect(positionsPlayedOff).toEqual([1, 2, 5, 6]);
   expect(playoffRounds).toEqual([2]);

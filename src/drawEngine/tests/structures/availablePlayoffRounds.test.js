@@ -1,4 +1,4 @@
-import { getAvailablePlayoffRounds } from '../../governors/structureGovernor/getAvailablePlayoffRounds';
+import { getAvailablePlayoffProfiles } from '../../governors/structureGovernor/getAvailablePlayoffProfiles';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
@@ -34,7 +34,7 @@ it('can correctly determine positions playedOff for STANDARD_ELIMINATION', () =>
     structures: [{ structureId }],
   } = result;
 
-  const { playoffRounds, playoffRoundsRanges } = getAvailablePlayoffRounds({
+  const { playoffRounds, playoffRoundsRanges } = getAvailablePlayoffProfiles({
     drawDefinition,
     structureId,
   });
@@ -68,7 +68,7 @@ it('can correctly determine positions played off for FMLC', () => {
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const [{ structureId }] = drawDefinition.structures;
-  let result = tournamentEngine.getAvailablePlayoffRounds({
+  let result = tournamentEngine.getAvailablePlayoffProfiles({
     structureId,
     drawId,
   });
@@ -114,7 +114,7 @@ it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATIO
   const { drawDefinition } = drawEngine.getState();
 
   const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } =
-    getAvailablePlayoffRounds({
+    getAvailablePlayoffProfiles({
       drawDefinition,
       structureId,
     });
@@ -154,10 +154,10 @@ it('will allow generation of 3-4 playoffs in FMLC if there are players who COULD
   let result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  result = tournamentEngine.getAvailablePlayoffRounds({ drawId });
+  result = tournamentEngine.getAvailablePlayoffProfiles({ drawId });
   const { positionsPlayedOff } = result;
   const { playoffRounds, playoffRoundsRanges } =
-    result.availablePlayoffRounds[0];
+    result.availablePlayoffProfiles[0];
 
   expect(positionsPlayedOff).toEqual([1, 2, 5, 6]);
 
@@ -210,10 +210,10 @@ it('will exclude playoff rounds where participants have progressed to other stru
   });
   expect(result.matchUps.length).toEqual(3);
 
-  result = tournamentEngine.getAvailablePlayoffRounds({ drawId });
+  result = tournamentEngine.getAvailablePlayoffProfiles({ drawId });
   const { positionsPlayedOff } = result;
   const { playoffRounds, playoffRoundsRanges } =
-    result.availablePlayoffRounds[0];
+    result.availablePlayoffProfiles[0];
 
   expect(positionsPlayedOff).toEqual([1, 2, 5, 6]);
   expect(playoffRounds).toEqual([]);
@@ -243,7 +243,7 @@ it('can accurately determine no playoff rounds available for MAIN draw of FIC', 
     .getDrawStructures({ stage: MAIN, stageSequence: 1 });
 
   const { structureId } = mainStructure;
-  const result = tournamentEngine.getAvailablePlayoffRounds({
+  const result = tournamentEngine.getAvailablePlayoffProfiles({
     drawDefinition,
     structureId,
   });
@@ -273,7 +273,7 @@ it('can accurately determine available playoff rounds for CONSOLATION draw of FI
     .getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
 
   const { structureId } = consolationStructure;
-  const result = tournamentEngine.getAvailablePlayoffRounds({
+  const result = tournamentEngine.getAvailablePlayoffProfiles({
     drawDefinition,
     structureId,
   });
@@ -423,7 +423,7 @@ it('can determine playoff structures available from playoff structures', () => {
   const mainStructure = drawDefinition.structures[0];
   let { structureId } = mainStructure;
 
-  let { playoffRoundsRanges } = tournamentEngine.getAvailablePlayoffRounds({
+  let { playoffRoundsRanges } = tournamentEngine.getAvailablePlayoffProfiles({
     drawId,
     structureId,
   });
@@ -447,7 +447,7 @@ it('can determine playoff structures available from playoff structures', () => {
 
   ({ structureId } = drawDefinition.structures[1]);
 
-  ({ playoffRoundsRanges } = tournamentEngine.getAvailablePlayoffRounds({
+  ({ playoffRoundsRanges } = tournamentEngine.getAvailablePlayoffProfiles({
     structureId,
     drawId,
   }));
@@ -481,7 +481,7 @@ it('can determine available playoff rounds for CONSOLATION draw of FEED_IN', () 
     .getDrawStructures({ stage: MAIN, stageSequence: 1 });
 
   const { structureId } = mainStructure;
-  const { playoffRounds } = tournamentEngine.getAvailablePlayoffRounds({
+  const { playoffRounds } = tournamentEngine.getAvailablePlayoffProfiles({
     drawDefinition,
     structureId,
   });
@@ -502,15 +502,15 @@ it('can determine playoff structures available from playoff structures', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { positionsPlayedOff, availablePlayoffRounds } =
-    tournamentEngine.getAvailablePlayoffRounds({
+  let { positionsPlayedOff, availablePlayoffProfiles } =
+    tournamentEngine.getAvailablePlayoffProfiles({
       drawId,
     });
 
   expect(positionsPlayedOff).toEqual([1, 2, 9, 10]);
-  expect(availablePlayoffRounds.length).toEqual(2);
-  expect(availablePlayoffRounds[0].playoffRounds).toEqual([4, 5]);
-  expect(availablePlayoffRounds[1].playoffRounds).toEqual([1, 2, 3, 4, 5, 6]);
+  expect(availablePlayoffProfiles.length).toEqual(2);
+  expect(availablePlayoffProfiles[0].playoffRounds).toEqual([4, 5]);
+  expect(availablePlayoffProfiles[1].playoffRounds).toEqual([1, 2, 3, 4, 5, 6]);
 });
 
 it('can determine playoff structures available from Round Robin playoff structures', () => {
@@ -538,17 +538,18 @@ it('can determine playoff structures available from Round Robin playoff structur
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { positionsPlayedOff, availablePlayoffRounds } =
-    tournamentEngine.getAvailablePlayoffRounds({
+  let { positionsPlayedOff, availablePlayoffProfiles } =
+    tournamentEngine.getAvailablePlayoffProfiles({
       drawId,
     });
 
   expect(positionsPlayedOff).toEqual([
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
   ]);
-  availablePlayoffRounds.forEach((round) =>
-    expect(round.playoffRoundsRanges).toEqual([])
-  );
+  availablePlayoffProfiles.forEach((round) => {
+    if (round.playoffRoundsRanges)
+      expect(round.playoffRoundsRanges).toEqual([]);
+  });
   const finishingPositionRanges = tournamentEngine
     .allTournamentMatchUps({
       contextFilters: { stages: [PLAY_OFF], roundNumber: 1 },

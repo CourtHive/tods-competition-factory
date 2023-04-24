@@ -1,10 +1,12 @@
 import { addVoluntaryConsolationStructure } from '../../generators/addVoluntaryConsolationStructure';
+import { generateDrawTypeAndModifyDrawDefinition } from './generateDrawTypeAndModifyDrawDefinition';
 import { generateAndPopulatePlayoffStructures } from './generateAndPopulatePlayoffStructures';
+import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
 import { generateVoluntaryConsolation } from './generateVoluntaryConsolation';
 import { generateQualifyingStructure } from './generateQualifyingStructure';
+import { getAvailablePlayoffProfiles } from './getAvailablePlayoffProfiles';
 import { attachQualifyingStructure } from './attachQualifyingStructure';
-import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
 import { getQualifiersCount } from '../../getters/getQualifiersCount';
 import { buildDrawHierarchy } from '../../generators/drawHierarchy';
 import { addQualifyingStructure } from './addQualifyingStructure';
@@ -20,9 +22,6 @@ import {
   generateAdHocMatchUps,
 } from '../../generators/generateAdHocMatchUps';
 
-import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
-import { generateDrawTypeAndModifyDrawDefinition } from './generateDrawTypeAndModifyDrawDefinition';
-
 const structureGovernor = {
   generateAndPopulatePlayoffStructures,
   attachPlayoffStructures,
@@ -32,11 +31,12 @@ const structureGovernor = {
   attachQualifyingStructure,
   addQualifyingStructure,
 
+  getAvailablePlayoffRounds: getAvailablePlayoffProfiles, // to be deprecated,
+  getAvailablePlayoffProfiles,
   getSourceRounds,
   getDrawStructures,
   getPositionsPlayedOff,
   getQualifiersCount,
-  getAvailablePlayoffRounds,
   removeStructure,
 
   generateAdHocMatchUps,

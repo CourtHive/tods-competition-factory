@@ -363,8 +363,8 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
   const groupSize = 4;
   const groupsCount = drawSize / groupSize;
   const structureOptions = {
-    groupSize,
     playoffGroups: [{ finishingPositions: [1], structureName: 'Gold Flight' }],
+    groupSize,
   };
 
   const drawProfiles = [

@@ -17,12 +17,12 @@ it('will not allow attaching structures with links duplicating existing links', 
 
   tournamentEngine.setState(tournamentRecord);
 
-  let result = tournamentEngine.getAvailablePlayoffRounds({ drawId });
+  let result = tournamentEngine.getAvailablePlayoffProfiles({ drawId });
+  const { playoffRounds, structureId } = result.availablePlayoffProfiles[0];
   const { positionsPlayedOff } = result;
-  const { playoffRounds, structureId } = result.availablePlayoffRounds[0];
 
-  expect(positionsPlayedOff).toEqual([1, 2]);
   expect(playoffRounds).toEqual([1, 2, 3, 4]);
+  expect(positionsPlayedOff).toEqual([1, 2]);
 
   let roundProfiles = [{ [3]: 1 }];
   result = tournamentEngine.generateAndPopulatePlayoffStructures({

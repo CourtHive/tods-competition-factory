@@ -2,15 +2,25 @@ import { getStructureRoundProfile } from '../../getters/getMatchUps/getStructure
 import { generateRange, numericSort } from '../../../utilities';
 import { roundValues } from './structureUtils';
 
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import {
+  INVALID_VALUES,
+  MISSING_DRAW_DEFINITION,
+} from '../../../constants/errorConditionConstants';
 
-export function getPositionsPlayedOff({ drawDefinition }) {
+export function getPositionsPlayedOff({ drawDefinition, structureIds }) {
+  if (structureIds && !Array.isArray(structureIds))
+    return { error: INVALID_VALUES, context: { structureIds } };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const allFinishingPositionRanges = (drawDefinition.structures || [])
-    .filter((structure) => structure.structureType !== QUALIFYING)
-    .map(({ structureId }) => {
+  structureIds =
+    structureIds ||
+    (drawDefinition.structures || [])
+      .filter((structure) => structure.structureType !== QUALIFYING)
+      .map(({ structureId }) => structureId);
+
+  const allFinishingPositionRanges = structureIds
+    .map((structureId) => {
       const { roundProfile } = getStructureRoundProfile({
         drawDefinition,
         structureId,
