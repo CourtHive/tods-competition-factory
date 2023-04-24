@@ -37,8 +37,8 @@ import { qualifierDrawPositionAssignment } from './drawDefinitions/qualifierDraw
 import { alternateDrawPositionAssignment } from './drawDefinitions/alternateDrawPositionAssignment';
 import { removeDrawPositionAssignment } from './drawDefinitions/removeDrawPositionAssignment';
 import { swapDrawPositionAssignments } from './drawDefinitions/swapDrawPositionAssignments';
+import { getAvailablePlayoffProfiles } from './drawDefinitions/getAvailablePlayoffProfiles';
 import { addDrawDefinitionTimeItem } from './drawDefinitions/addDrawDefinitionTimeItem';
-import { getAvailablePlayoffRounds } from './drawDefinitions/getAvailablePlayoffRounds';
 import { setPositionAssignments } from './drawDefinitions/setPositionAssignments';
 import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
 import { modifyPairAssignment } from './drawDefinitions/modifyPairAssignment';
@@ -158,12 +158,13 @@ const eventGovernor = {
   removeSeeding,
   autoSeeding,
 
-  modifyDrawName,
-  addDrawDefinition,
-  addPlayoffStructures,
+  getAvailablePlayoffRounds: getAvailablePlayoffProfiles, // to be deprecated
+  getAvailablePlayoffProfiles,
   deleteDrawDefinitions,
-  getAvailablePlayoffRounds,
+  addPlayoffStructures,
+  addDrawDefinition,
   removeStructure,
+  modifyDrawName,
 
   generateAndPopulatePlayoffStructures,
 

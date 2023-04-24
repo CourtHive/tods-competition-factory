@@ -146,7 +146,7 @@ it.each([32, 64])(
     const [{ structureId }] = structures;
 
     let { positionsPlayedOff, playoffRounds, playoffRoundsRanges } =
-      tournamentEngine.getAvailablePlayoffRounds({
+      tournamentEngine.getAvailablePlayoffProfiles({
         structureId,
         drawId,
       });
@@ -168,7 +168,7 @@ it.each([32, 64])(
     });
 
     ({ positionsPlayedOff, playoffRounds, playoffRoundsRanges } =
-      tournamentEngine.getAvailablePlayoffRounds({
+      tournamentEngine.getAvailablePlayoffProfiles({
         structureId,
         drawId,
       }));
