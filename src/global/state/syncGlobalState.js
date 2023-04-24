@@ -11,12 +11,14 @@ const syncGlobalState = {
   tournamentId: undefined,
   tournamentRecords: {},
   subscriptions: {},
+  modified: false,
   notices: [],
 };
 
 export default {
   addNotice,
   callListener,
+  cycleMutationStatus,
   deleteNotice,
   deleteNotices,
   disableNotifications,
@@ -105,7 +107,14 @@ export function setSubscriptions({ subscriptions = {} } = {}) {
   return { ...SUCCESS };
 }
 
+export function cycleMutationStatus() {
+  const status = syncGlobalState.modified;
+  syncGlobalState.modified = false;
+  return status;
+}
+
 export function addNotice({ topic, payload, key }) {
+  syncGlobalState.modified = true;
   if (typeof topic !== 'string' || typeof payload !== 'object') {
     return;
   }

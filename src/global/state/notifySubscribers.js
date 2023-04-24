@@ -18,18 +18,36 @@ import {
   UNPUBLISH_EVENT_SEEDING,
   UNPUBLISH_EVENT,
   UNPUBLISH_ORDER_OF_PLAY,
+  MUTATIONS,
 } from '../../constants/topicConstants';
 
-export function notifySubscribers() {
+export function notifySubscribers({
+  mutationStatus,
+  tournamentId,
+  directives,
+  timeStamp,
+} = {}) {
   const { topics } = getTopics();
 
   for (const topic of [...topics].sort(topicSort)) {
     const notices = getNotices({ topic });
     if (notices) callListener({ topic, notices });
   }
+
+  if (mutationStatus && timeStamp && topics.includes(MUTATIONS)) {
+    callListener({
+      notices: [{ tournamentId, directives, timeStamp }],
+      topic: MUTATIONS,
+    });
+  }
 }
 
-export async function notifySubscribersAsync() {
+export async function notifySubscribersAsync({
+  mutationStatus,
+  tournamentId,
+  directives,
+  timeStamp,
+} = {}) {
   const { topics } = getTopics();
 
   for (const topic of [...topics].sort(topicSort)) {
@@ -37,6 +55,13 @@ export async function notifySubscribersAsync() {
     // won't show up in test coverage
     const notices = getNotices({ topic });
     if (notices) await callListener({ topic, notices });
+  }
+
+  if (mutationStatus && timeStamp && topics.includes(MUTATIONS)) {
+    callListener({
+      notices: [{ tournamentId, directives, timeStamp }],
+      topic: MUTATIONS,
+    });
   }
 }
 

@@ -1,5 +1,5 @@
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
-import { setState, getState, paramsMiddleWare } from './stateMethods';
+import { setState, getState, paramsMiddleware } from './stateMethods';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import { makeDeepCopy } from '../utilities';
 import {
@@ -62,7 +62,7 @@ export function scaleEngineAsync(test) {
     delete engine.success;
     delete engine.error;
 
-    const augmentedParams = paramsMiddleWare(tournamentRecord, params);
+    const augmentedParams = paramsMiddleware(tournamentRecord, params);
 
     const result = await method({
       ...augmentedParams,

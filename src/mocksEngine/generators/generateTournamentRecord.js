@@ -7,6 +7,7 @@ import { formatDate, isValidDateString } from '../../utilities/dateTime';
 import { addTournamentParticipants } from './addTournamentParticipants';
 import { generateSchedulingProfile } from './generateSchedulingProfile';
 import { generateEventWithFlights } from './generateEventWithFlights';
+import { cycleMutationStatus } from '../../global/state/globalState';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { definedAttributes } from '../../utilities/objects';
 import { generateVenues } from './generateVenues';
@@ -220,6 +221,9 @@ export function generateTournamentRecord({
       });
     }
   }
+
+  // clear globalState modified flag;
+  cycleMutationStatus();
 
   return definedAttributes({
     ...SUCCESS,

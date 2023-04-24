@@ -9,11 +9,11 @@ export function matchUpAllocatedCourts({
   matchUp,
 }) {
   const { itemValue: allocatedCourts, timeStamp: itemTimeStamp } =
-    latestVisibleTimeItemValue(
-      matchUp?.timeItems || [],
-      ALLOCATE_COURTS,
-      visibilityThreshold
-    );
+    latestVisibleTimeItemValue({
+      timeItems: matchUp?.timeItems || [],
+      itemType: ALLOCATE_COURTS,
+      visibilityThreshold,
+    });
 
   return !schedule || (itemTimeStamp && timeStamp && itemTimeStamp > timeStamp)
     ? { allocatedCourts }

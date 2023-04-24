@@ -8,7 +8,7 @@ import scoreGovernor from '../matchUpEngine/governors/scoreGovernor';
 import entryGovernor from './governors/entryGovernor';
 import linkGovernor from './governors/linkGovernor';
 
-import { newDrawDefinition, paramsMiddleWare, setState } from './stateMethods';
+import { newDrawDefinition, paramsMiddleware, setState } from './stateMethods';
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import { makeDeepCopy } from '../utilities';
@@ -140,7 +140,7 @@ export function drawEngineAsync(test) {
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(drawDefinition, false, true);
 
-    const additionalParams = prefetch ? paramsMiddleWare(drawDefinition) : {};
+    const additionalParams = prefetch ? paramsMiddleware(drawDefinition) : {};
 
     params = {
       ...params,

@@ -42,7 +42,7 @@ export function newDrawDefinition({
   return Object.assign(drawDefinition, { drawId, drawType, matchUpType });
 }
 
-export function paramsMiddleWare(drawDefinition) {
+export function paramsMiddleware(drawDefinition) {
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({

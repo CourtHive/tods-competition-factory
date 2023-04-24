@@ -4,11 +4,11 @@ function getTimeStamp(item) {
   return !item.createdAt ? 0 : new Date(item.createdAt).getTime();
 }
 
-export function latestVisibleTimeItemValue(
+export function latestVisibleTimeItemValue({
   timeItems,
   itemType,
-  visibilityThreshold
-) {
+  visibilityThreshold,
+}) {
   // TODO: should visibilityThreshold be combination of scheduled date/time
 
   const latestVisible = timeItems

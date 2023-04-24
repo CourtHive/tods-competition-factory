@@ -1,3 +1,4 @@
+import { updateFactoryExtension } from '../tournamentEngine/governors/tournamentGovernor/updateFactoryExtension';
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import competitionGovernor from './governors/competitionsGovernor';
@@ -17,6 +18,7 @@ import {
   setTournamentRecords,
   getTournamentRecords,
   getTournamentId,
+  cycleMutationStatus,
 } from '../global/state/globalState';
 import {
   getState,
@@ -116,7 +118,26 @@ export function competitionEngineAsync(test) {
       result?.success &&
       params?.delayNotify !== true &&
       params?.doNotNotify !== true;
-    if (notify) await notifySubscribersAsync();
+    const mutationStatus = cycleMutationStatus();
+    const timeStamp = Date.now();
+
+    if (mutationStatus) {
+      Object.values(tournamentRecords).forEach((tournamentRecord) => {
+        updateFactoryExtension({
+          tournamentRecord,
+          value: {
+            version: factoryVersion(),
+            timeStamp,
+          },
+        });
+      });
+      result.modificationsApplied = true;
+    }
+    if (notify)
+      await notifySubscribersAsync({
+        directives: [{ method, params }],
+        mutationStatus,
+      });
     if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 
     return result;
@@ -158,6 +179,8 @@ export function competitionEngineAsync(test) {
     const snapshot =
       rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
 
+    let timeStamp;
+    const result = {};
     const results = [];
     for (const directive of directives) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
@@ -176,12 +199,26 @@ export function competitionEngineAsync(test) {
         return { ...result, rolledBack: !!snapshot };
       }
       results.push(result);
+      timeStamp = Date.now();
     }
 
-    await notifySubscribersAsync();
+    const mutationStatus = cycleMutationStatus();
+    if (mutationStatus) {
+      Object.values(tournamentRecords).forEach((tournamentRecord) => {
+        updateFactoryExtension({
+          tournamentRecord,
+          value: {
+            version: factoryVersion(),
+            timeStamp,
+          },
+        });
+      });
+      result.modificationsApplied = true;
+    }
+    await notifySubscribersAsync({ directives, mutationStatus, timeStamp });
     deleteNotices();
 
-    return { results };
+    return { result, results };
   }
 
   return engine;
