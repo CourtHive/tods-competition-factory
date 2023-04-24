@@ -81,8 +81,8 @@ function availablePlayoffProfiles({
   if (structure.structureType === CONTAINER || structure.structures) {
     const positionsCount = getPositionAssignments({ structure })
       .positionAssignments.length;
-    const groupsCount = structure.structures.length;
-    const groupSize = positionsCount / groupsCount;
+    const groupCount = structure.structures.length;
+    const groupSize = positionsCount / groupCount;
     const finishingPositionsPlayedOff =
       links.source?.flatMap(({ source }) => source?.finishingPositions || []) ||
       [];
@@ -139,7 +139,7 @@ function availablePlayoffProfiles({
       finishingPositionsAvailable,
       finishingPositionsPlayedOff,
       positionsPlayedOff,
-      groupsCount,
+      groupCount,
       groupSize,
     };
   }
