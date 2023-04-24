@@ -21,7 +21,12 @@ import {
   MUTATIONS,
 } from '../../constants/topicConstants';
 
-export function notifySubscribers({ tournamentId, directives, timeStamp }) {
+export function notifySubscribers({
+  mutationStatus,
+  tournamentId,
+  directives,
+  timeStamp,
+} = {}) {
   const { topics } = getTopics();
 
   for (const topic of [...topics].sort(topicSort)) {
@@ -29,7 +34,7 @@ export function notifySubscribers({ tournamentId, directives, timeStamp }) {
     if (notices) callListener({ topic, notices });
   }
 
-  if (topics.includes(MUTATIONS) && timeStamp) {
+  if (mutationStatus && timeStamp && topics.includes(MUTATIONS)) {
     callListener({
       notices: [{ tournamentId, directives, timeStamp }],
       topic: MUTATIONS,
@@ -38,10 +43,11 @@ export function notifySubscribers({ tournamentId, directives, timeStamp }) {
 }
 
 export async function notifySubscribersAsync({
+  mutationStatus,
   tournamentId,
   directives,
   timeStamp,
-}) {
+} = {}) {
   const { topics } = getTopics();
 
   for (const topic of [...topics].sort(topicSort)) {
@@ -51,7 +57,7 @@ export async function notifySubscribersAsync({
     if (notices) await callListener({ topic, notices });
   }
 
-  if (topics.includes(MUTATIONS) && timeStamp) {
+  if (mutationStatus && timeStamp && topics.includes(MUTATIONS)) {
     callListener({
       notices: [{ tournamentId, directives, timeStamp }],
       topic: MUTATIONS,

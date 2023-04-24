@@ -15,6 +15,7 @@ export const MODIFY_MATCHUP = 'modifyMatchUp';
 export const MODIFY_PARTICIPANTS = 'modifyParticipants';
 export const MODIFY_POSITION_ASSIGNMENTS = 'modifyPositionAssignments';
 export const MODIFY_SEED_ASSIGNMENTS = 'modifySeedAssignments';
+export const MODIFY_TOURNAMENT_DETAIL = 'modifyTournamentDetail';
 export const MODIFY_VENUE = 'modifyVenue';
 export const MUTATIONS = 'mutations';
 export const PUBLISH_EVENT = 'publishEvent';
@@ -42,6 +43,7 @@ export const topicConstants = {
   MODIFY_PARTICIPANTS,
   MODIFY_POSITION_ASSIGNMENTS,
   MODIFY_SEED_ASSIGNMENTS,
+  MODIFY_TOURNAMENT_DETAIL,
   MODIFY_VENUE,
   MUTATIONS,
   PUBLISH_EVENT_SEEDING,

@@ -61,8 +61,8 @@ it('generateDrawDefinition will find seeding policy attached to tournamentRecord
   });
 
   tournamentEngine.setState(tournamentRecord);
-  expect(tournamentRecord.extensions.length).toEqual(1);
-  expect(tournamentRecord.extensions[0].name).toEqual(APPLIED_POLICIES);
+  const extensionNames = tournamentRecord.extensions.map(({ name }) => name);
+  expect(extensionNames.includes(APPLIED_POLICIES)).toEqual(true);
   const appliedPolicies = tournamentRecord.extensions.find(
     ({ name }) => name === APPLIED_POLICIES
   );

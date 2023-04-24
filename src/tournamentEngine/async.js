@@ -1,3 +1,4 @@
+import { updateFactoryExtension } from './governors/tournamentGovernor/updateFactoryExtension';
 import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { newTournamentRecord } from './generators/newTournamentRecord';
 import { setState, getState, paramsMiddleware } from './stateMethods';
@@ -23,6 +24,7 @@ import {
   removeTournamentRecord,
   setTournamentId,
   setTournamentRecord,
+  cycleMutationStatus,
 } from '../global/state/globalState';
 
 import { SUCCESS } from '../constants/resultConstants';
@@ -113,11 +115,12 @@ export function tournamentEngineAsync(test) {
   }
 
   async function engineInvoke(method, params, methodName) {
+    const tournamentId = getTournamentId();
     const tournamentRecord =
       params?.sandBoxRecord ||
       params?.sandboxRecord ||
       params?.sandboxTournament ||
-      getTournamentRecord(getTournamentId());
+      getTournamentRecord(tournamentId);
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
@@ -131,17 +134,28 @@ export function tournamentEngineAsync(test) {
 
     if (result?.error && snapshot) setState(snapshot);
 
-    const timeStamp = Date.now();
-    // set factory extension on tournamentRecord with timeStamp
-
     const notify =
       result?.success &&
       params?.delayNotify !== true &&
       params?.doNotNotify !== true;
+    const mutationStatus = cycleMutationStatus();
+    const timeStamp = Date.now();
+
+    if (mutationStatus) {
+      updateFactoryExtension({
+        tournamentRecord,
+        value: {
+          version: factoryVersion(),
+          timeStamp,
+        },
+      });
+    }
+
     if (notify)
       await notifySubscribersAsync({
-        tournamentId: tournamentRecord.tournamentId,
         directives: [{ method, params }],
+        mutationStatus,
+        tournamentId,
         timeStamp,
       });
     if (notify || !result?.success || params?.doNotNotify) deleteNotices();
@@ -185,7 +199,6 @@ export function tournamentEngineAsync(test) {
     const snapshot =
       rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
-    let timeStamp;
     const results = [];
     for (const directive of directives) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
@@ -205,12 +218,25 @@ export function tournamentEngineAsync(test) {
         return { ...result, rolledBack: !!snapshot };
       }
       results.push(result);
-
-      timeStamp = Date.now();
-      // set factory extension on tournamentRecord with timeStamp
     }
 
-    await notifySubscribersAsync({ directives, timeStamp, tournamentId });
+    const mutationStatus = cycleMutationStatus();
+    const timeStamp = Date.now();
+    if (mutationStatus) {
+      updateFactoryExtension({
+        tournamentRecord,
+        value: {
+          version: factoryVersion(),
+          timeStamp,
+        },
+      });
+    }
+    await notifySubscribersAsync({
+      mutationStatus,
+      tournamentId,
+      directives,
+      timeStamp,
+    });
     deleteNotices();
 
     return { results };

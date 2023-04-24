@@ -4,6 +4,7 @@ import mocksEngine from '../../mocksEngine';
 import { expect, it, test } from 'vitest';
 import { UUID } from '../UUID';
 
+import { APPLIED_POLICIES } from '../../constants/extensionConstants';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { MALE } from '../../constants/genderConstants';
@@ -23,7 +24,8 @@ it('can convert extensions during deepCopy', () => {
   expect(result.success).toEqual(true);
 
   ({ tournamentRecord } = tournamentEngine.getState());
-  expect(tournamentRecord.extensions.length).toEqual(1);
+  const extensionNames = tournamentRecord.extensions.map(({ name }) => name);
+  expect(extensionNames.includes(APPLIED_POLICIES)).toEqual(true);
 
   ({ tournamentRecord } = tournamentEngine.getState({
     convertExtensions: true,
@@ -78,7 +80,8 @@ it('can remove extensions', () => {
   expect(result.success).toEqual(true);
 
   ({ tournamentRecord } = tournamentEngine.getState());
-  expect(tournamentRecord.extensions.length).toEqual(1);
+  const extensionNames = tournamentRecord.extensions.map(({ name }) => name);
+  expect(extensionNames.includes(APPLIED_POLICIES)).toEqual(true);
 
   ({ tournamentRecord } = tournamentEngine.getState({
     removeExtensions: true,

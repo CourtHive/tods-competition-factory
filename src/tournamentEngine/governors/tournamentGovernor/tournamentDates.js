@@ -1,8 +1,10 @@
 import { clearScheduledMatchUps } from '../scheduleGovernor/clearScheduledMatchUps';
 import { updateCourtAvailability } from '../venueGovernor/updateCourtAvailability';
-import { dateValidation } from '../../../fixtures/validations/regex';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
+import { dateValidation } from '../../../fixtures/validations/regex';
+import { addNotice } from '../../../global/state/globalState';
 
+import { MODIFY_TOURNAMENT_DETAIL } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_DATE,
@@ -65,6 +67,11 @@ export function setTournamentDates({ tournamentRecord, startDate, endDate }) {
     removeInvalidScheduling({ tournamentRecord })?.unscheduledMatchUpIds;
 
   updateCourtAvailability({ tournamentRecord });
+
+  addNotice({
+    topic: MODIFY_TOURNAMENT_DETAIL,
+    payload: { startDate, endDate },
+  });
 
   return { ...SUCCESS, unscheduledMatchUpIds };
 }
