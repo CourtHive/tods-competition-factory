@@ -25,6 +25,7 @@ let _globalStateProvider = syncGlobalState;
 const requiredStateProviderMethods = [
   'addNotice',
   'callListener',
+  'cycleMutationStatus',
   'deleteNotice',
   'deleteNotices',
   'getNotices',
@@ -38,10 +39,6 @@ const requiredStateProviderMethods = [
   'setTournamentRecord',
   'setTournamentRecords',
 ];
-
-export function setFactoryVersion(version) {
-  globalState.tournamentFactoryVersion = version;
-}
 
 export function setStateProvider(globalStateProvider) {
   if (typeof globalStateProvider !== 'object') {
@@ -201,6 +198,10 @@ export function deepCopyEnabled() {
 export function setSubscriptions({ subscriptions } = {}) {
   if (!subscriptions) return { error: MISSING_VALUE };
   return _globalStateProvider.setSubscriptions({ subscriptions });
+}
+
+export function cycleMutationStatus() {
+  return _globalStateProvider.cycleMutationStatus();
 }
 
 export function addNotice(notice) {

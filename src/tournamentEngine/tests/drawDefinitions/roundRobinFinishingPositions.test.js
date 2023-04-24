@@ -83,7 +83,7 @@ test('ROUND_ROBIN_WITH_PLAYOFFS will have accurate playoff finishingPositionRang
   ).structureId;
 
   const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } =
-    tournamentEngine.getAvailablePlayoffRounds({
+    tournamentEngine.getAvailablePlayoffProfiles({
       structureId,
       drawId,
     });

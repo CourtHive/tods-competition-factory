@@ -10,7 +10,7 @@ export function qualifierDrawPositionAssignment({
   return positionParticipantAction({
     positionActionName: 'qualifierDrawPositionAssignment',
     participantId: qualifyingParticipantId,
-    isQualifierPoasition: true,
+    isQualifierPosition: true,
     tournamentRecord,
     drawDefinition,
     drawPosition,

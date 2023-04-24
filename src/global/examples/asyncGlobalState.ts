@@ -33,6 +33,7 @@ function createInstanceState() {
     tournamentId: undefined,
     tournamentRecords: {},
     subscriptions: {},
+    modified: false,
     notices: [],
   };
 
@@ -53,6 +54,7 @@ export default {
   addNotice,
   callListener,
   createInstanceState,
+  cycleMutationStatus,
   deleteNotice,
   deleteNotices,
   disableNotifications,
@@ -149,12 +151,21 @@ function setSubscriptions({ subscriptions = {} } = {}) {
   return { success: true };
 }
 
+function cycleMutationStatus() {
+  const instanceState = getInstanceState();
+  const status = instanceState.modified;
+  instanceState.modified = false;
+  return status;
+}
+
 function addNotice({ topic, payload, key }) {
+  const instanceState = getInstanceState();
+  instanceState.modified = true;
+
   if (typeof topic !== 'string' || typeof payload !== 'object') {
     return;
   }
 
-  const instanceState = getInstanceState();
   if (instanceState.disableNotifications || !instanceState.subscriptions[topic])
     return;
 

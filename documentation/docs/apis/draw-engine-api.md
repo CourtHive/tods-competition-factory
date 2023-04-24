@@ -288,7 +288,7 @@ Attaches the results of `generateAndPopulatePlayoffStructures` to a `drawDefinit
 Used primarily when multiple instances of `drawEngine` are in use and the generation step is performed by one instance.
 
 :::note
-`drawEngine.addPlayoffStructures()` calls both `generateAndPoplulatePlayoffStructures` and `attachPlayoffStructures` and is used when there is only one instance of `drawEngine`.
+`drawEngine.addPlayoffStructures()` calls both `generateAndPopulatePlayoffStructures` and `attachPlayoffStructures` and is used when there is only one instance of `drawEngine`.
 :::
 
 ```js
@@ -544,13 +544,13 @@ drawEngine.generateQualifyingLink({
 
 ---
 
-## getAvailablePlayoffRounds
+## getAvailablePlayoffProfiles
 
 If provided a `structureId`, returns rounds of the selected structure which are available for adding playoff structures.
 
 ```js
 const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } =
-  drawEngine.getAvailablePlayoffRounds({
+  drawEngine.getAvailablePlayoffProfiles({
     structureId,
   });
 ```
@@ -569,11 +569,11 @@ const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } =
 
 ```
 
-When no `structureId` is provided, returns an array of `availablePlayoffRounds` with entries for each structure in a loaded `drawDefinition`.
+When no `structureId` is provided, returns an array of `availablePlayoffProfiles` with entries for each structure in a loaded `drawDefinition`.
 
 ```js
-const { availablePlayoffRounds, positionsPlayedOff } =
-  drawEngine.getAvailablePlayoffRounds();
+const { availablePlayoffProfiles, positionsPlayedOff } =
+  drawEngine.getAvailablePlayoffProfiles();
 ```
 
 ---

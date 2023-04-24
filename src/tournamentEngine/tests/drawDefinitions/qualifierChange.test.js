@@ -21,6 +21,7 @@ it('generates expected finishingPositions for qualifying structures', () => {
 
   setSubscriptions({ subscriptions });
 
+  const qualifyingPositions = 2;
   let {
     tournamentRecord,
     drawIds: [drawId],
@@ -33,7 +34,7 @@ it('generates expected finishingPositions for qualifying structures', () => {
           {
             roundTarget: 1,
             structureProfiles: [
-              { stageSequence: 1, drawSize: 8, qualifyingPositions: 2 },
+              { stageSequence: 1, drawSize: 8, qualifyingPositions },
             ],
           },
         ],
@@ -55,6 +56,13 @@ it('generates expected finishingPositions for qualifying structures', () => {
   );
 
   const structureId = matchUpWithQualifier.structureId;
+  let positionAssignments = tournamentEngine.getPositionAssignments({
+    structureId,
+    drawId,
+  }).positionAssignments;
+  expect(
+    positionAssignments.filter(({ qualifier }) => qualifier).length
+  ).toEqual(qualifyingPositions);
   const drawPosition = matchUpWithQualifier.sides.find(
     ({ qualifier }) => qualifier
   )?.drawPosition;
@@ -93,12 +101,13 @@ it('generates expected finishingPositions for qualifying structures', () => {
   // refresh matchUps to enable discovery of MAIN matchUp with qualifying participant placed
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
 
-  const mainDrawMatchUpId = matchUps.find(
+  let mainDrawMatchUp = matchUps.find(
     ({ stage, roundNumber, sides }) =>
       stage === MAIN &&
       roundNumber === 1 &&
       sides.some((side) => side.participantId === qualifyingParticipantId)
-  ).matchUpId;
+  );
+  const { matchUpId: mainDrawMatchUpId } = mainDrawMatchUp;
 
   // generate an outcome where the opposite side wins the qualifying matchUp
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
@@ -130,14 +139,20 @@ it('generates expected finishingPositions for qualifying structures', () => {
   // refresh matchUps to enable discovery of MAIN matchUp with qualifying participant REPLACED
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
 
-  let mainDrawMatchUp = matchUps.find(
+  mainDrawMatchUp = matchUps.find(
     ({ matchUpId }) => matchUpId === mainDrawMatchUpId
   );
   let participantIds = mainDrawMatchUp.sides
     .map(getParticipantId)
     .filter(Boolean);
   expect(participantIds.includes(qualifyingParticipantId)).toEqual(false);
-  expect(participantIds.length).toEqual(2);
+  positionAssignments = tournamentEngine.getPositionAssignments({
+    structureId,
+    drawId,
+  }).positionAssignments;
+  expect(
+    positionAssignments.filter(({ qualifier }) => qualifier).length
+  ).toEqual(qualifyingPositions);
 
   // remove winner of qualifying match and expect previous qualifier to be removed from MAIN
   result = tournamentEngine.setMatchUpStatus({
