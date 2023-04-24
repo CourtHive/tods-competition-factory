@@ -25,6 +25,7 @@ let _globalStateProvider = syncGlobalState;
 const requiredStateProviderMethods = [
   'addNotice',
   'callListener',
+  'cycleMutationStatus',
   'deleteNotice',
   'deleteNotices',
   'getNotices',
@@ -197,6 +198,10 @@ export function deepCopyEnabled() {
 export function setSubscriptions({ subscriptions } = {}) {
   if (!subscriptions) return { error: MISSING_VALUE };
   return _globalStateProvider.setSubscriptions({ subscriptions });
+}
+
+export function cycleMutationStatus() {
+  return _globalStateProvider.cycleMutationStatus();
 }
 
 export function addNotice(notice) {
