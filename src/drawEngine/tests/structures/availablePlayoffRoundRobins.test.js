@@ -2,8 +2,15 @@ import { tournamentEngine, mocksEngine } from '../../../';
 import { expect, it } from 'vitest';
 
 import {
+  INVALID_VALUES,
+  MISSING_VALUE,
+} from '../../../constants/errorConditionConstants';
+import {
+  COMPASS,
+  MAIN,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
+  SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
 
 const scenarios = [
@@ -14,6 +21,13 @@ const scenarios = [
       participantsCount: 8,
       drawSize: 32,
     },
+    finishingPositionProfiles: [
+      {
+        finishingPositions: [2, 3],
+        structureName: 'Silver',
+        drawType: COMPASS,
+      },
+    ],
     expectation: {
       playoffFinishingPositionRanges: [
         {
@@ -41,6 +55,13 @@ const scenarios = [
       participantsCount: 8,
       drawSize: 8,
     },
+    finishingPositionProfiles: [
+      {
+        finishingPositions: [1],
+        structureName: '3-4 Playoff',
+        drawType: SINGLE_ELIMINATION,
+      },
+    ],
     expectation: {
       playoffFinishingPositionRanges: [
         {
@@ -71,7 +92,7 @@ const scenarios = [
 it.each(scenarios)(
   'can determine available playoff rounds for ROUND_ROBIN structures',
   (scenario) => {
-    const { drawProfile, expectation } = scenario;
+    const { drawProfile, expectation, finishingPositionProfiles } = scenario;
     const {
       tournamentRecord,
       drawIds: [drawId],
@@ -82,6 +103,11 @@ it.each(scenarios)(
     let result = tournamentEngine.setState(tournamentRecord);
     expect(result.success).toEqual(true);
 
+    const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+    const mainStructureId = drawDefinition.structures.find(
+      ({ stage }) => stage === MAIN
+    ).structureId;
+
     result = tournamentEngine.getAvailablePlayoffProfiles({ drawId });
 
     if (expectation) {
@@ -89,5 +115,45 @@ it.each(scenarios)(
         result.availablePlayoffProfiles[0].playoffFinishingPositionRanges
       ).toEqual(expectation.playoffFinishingPositionRanges);
     }
+
+    // calling with structureId returns scoped values
+    result = tournamentEngine.getAvailablePlayoffProfiles({
+      structureId: mainStructureId,
+      drawId,
+    });
+    expect(result.playoffFinishingPositionRanges).toEqual(
+      expectation.playoffFinishingPositionRanges
+    );
+    const availableFinishingPositions =
+      result.playoffFinishingPositionRanges.map(
+        ({ finishingPosition }) => finishingPosition
+      );
+
+    result = tournamentEngine.generateAndPopulatePlayoffStructures({
+      structureId: mainStructureId,
+      drawId,
+    });
+    expect(result.error).toEqual(MISSING_VALUE);
+    expect(result.error.info).not.toBeUndefined();
+
+    const invalidFinishingPosition =
+      Math.max(...availableFinishingPositions, 0) + 1;
+    result = tournamentEngine.generateAndPopulatePlayoffStructures({
+      finishingPositionProfiles: [
+        { finishingPositions: [invalidFinishingPosition] },
+      ],
+      structureId: mainStructureId,
+      drawId,
+    });
+    expect(result.error).toEqual(INVALID_VALUES);
+
+    if (finishingPositionProfiles) {
+      result = tournamentEngine.generateAndPopulatePlayoffStructures({
+        structureId: mainStructureId,
+        finishingPositionProfiles,
+        drawId,
+      });
+    }
+    expect(result.success).toEqual(true);
   }
 );

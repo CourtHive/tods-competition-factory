@@ -1,9 +1,11 @@
 import { matchUpIsComplete } from '../../../matchUpEngine/governors/queryGovernor/matchUpIsComplete';
+import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { generatePlayoffStructures } from '../../generators/playoffStructures';
+import { getAvailablePlayoffProfiles } from './getAvailablePlayoffProfiles';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { directParticipants } from '../matchUpGovernor/directParticipants';
-import { getAvailablePlayoffProfiles } from './getAvailablePlayoffProfiles';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
@@ -17,8 +19,10 @@ import { TEAM } from '../../../constants/matchUpTypes';
 import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
+  STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
+  CONTAINER,
   LOSER,
   PLAY_OFF,
   TOP_DOWN,
@@ -38,23 +42,17 @@ import {
  *
  */
 export function generateAndPopulatePlayoffStructures(params) {
-  if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const stack = 'genPlayoffStructure';
+  if (!params.drawDefinition)
+    return decorateResult({
+      result: { error: MISSING_DRAW_DEFINITION },
+      stack,
+    });
 
-  const {
-    playoffRoundsRanges: availablePlayoffRoundsRanges,
-    playoffRounds: availablePlayoffRounds,
-    error: playoffRoundsError,
-  } = getAvailablePlayoffProfiles(params);
-  if (playoffRoundsError) return { error: playoffRoundsError };
-
-  const {
-    playoffSourceRounds,
-    playoffRoundsRanges,
-    playoffPositionsReturned,
-    error: sourceRoundsError,
-  } = getSourceRounds(params);
-  if (sourceRoundsError) return { error: sourceRoundsError };
+  const availabilityResult = getAvailablePlayoffProfiles(params);
+  if (availabilityResult.error) {
+    return decorateResult({ result: availabilityResult, stack });
+  }
 
   const {
     structureId: sourceStructureId,
@@ -77,6 +75,37 @@ export function generateAndPopulatePlayoffStructures(params) {
   // populate the newly created structures with participants which should advance into them
   const drawDefinition = makeDeepCopy(params.drawDefinition, false, true);
 
+  const { structure } = findStructure({
+    structureId: sourceStructureId,
+    drawDefinition,
+  });
+
+  if (!structure)
+    return decorateResult({ result: { error: STRUCTURE_NOT_FOUND } });
+
+  if (structure.structureType === CONTAINER || structure.structures) {
+    return generateAndPopulateRRplayoffStructures({
+      ...params,
+      ...availabilityResult,
+    });
+  }
+
+  const {
+    playoffRoundsRanges: availablePlayoffRoundsRanges,
+    playoffRounds: availablePlayoffRounds,
+  } = availabilityResult;
+
+  const {
+    playoffPositionsReturned,
+    error: sourceRoundsError,
+    playoffSourceRounds,
+    playoffRoundsRanges,
+  } = getSourceRounds(params);
+
+  if (sourceRoundsError) {
+    return decorateResult({ result: { error: sourceRoundsError }, stack });
+  }
+
   const roundProfile =
     roundProfiles?.length && Object.assign({}, ...roundProfiles);
 
@@ -91,25 +120,32 @@ export function generateAndPopulatePlayoffStructures(params) {
 
   if (validRoundNumbers) {
     if (!Array.isArray(validRoundNumbers))
-      return { error: INVALID_VALUES, validRoundNumbers };
+      return decorateResult({
+        result: { error: INVALID_VALUES },
+        context: { validRoundNumbers },
+        stack,
+      });
 
     validRoundNumbers.forEach((roundNumber) => {
-      if (!availablePlayoffRounds.includes(roundNumber))
-        return { error: INVALID_VALUES, roundNumber };
+      if (!availablePlayoffRounds?.includes(roundNumber))
+        return decorateResult({
+          result: { error: INVALID_VALUES },
+          context: { roundNumber },
+          stack,
+        });
     });
   }
 
   if (playoffPositions) {
     playoffPositions.forEach((playoffPosition) => {
       if (!playoffPositionsReturned.includes(playoffPosition))
-        return { error: INVALID_VALUES, playoffPosition };
+        return decorateResult({
+          result: { error: INVALID_VALUES },
+          context: { playoffPosition },
+          stack,
+        });
     });
   }
-
-  const { structure } = findStructure({
-    structureId: sourceStructureId,
-    drawDefinition,
-  });
 
   const sourceRounds = validRoundNumbers || playoffSourceRounds;
   const roundsRanges = validRoundNumbers
@@ -120,10 +156,15 @@ export function generateAndPopulatePlayoffStructures(params) {
   const newLinks = [];
 
   for (const roundNumber of sourceRounds) {
-    const roundInfo = roundsRanges.find(
+    const roundInfo = roundsRanges?.find(
       (roundInfo) => roundInfo.roundNumber === roundNumber
     );
-    if (!roundInfo) return { error: INVALID_VALUES, context: { roundNumber } };
+    if (!roundInfo)
+      return decorateResult({
+        result: { error: INVALID_VALUES },
+        context: { roundNumber },
+        stack,
+      });
     const drawSize = roundInfo.finishingPositions.length;
     const finishingPositionOffset =
       Math.min(...roundInfo.finishingPositions) - 1;
@@ -151,7 +192,7 @@ export function generateAndPopulatePlayoffStructures(params) {
       isMock,
       uuids,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
 
     const { structures, links } = result;
 
@@ -176,7 +217,12 @@ export function generateAndPopulatePlayoffStructures(params) {
     }
   }
 
-  if (!newStructures.length) return { error: INVALID_VALUES };
+  if (!newStructures.length)
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      info: 'No structures generated',
+      stack,
+    });
 
   drawDefinition.structures.push(...newStructures);
   drawDefinition.links.push(...newLinks);
