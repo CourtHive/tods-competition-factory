@@ -85,8 +85,10 @@ export function generateAndPopulatePlayoffStructures(params) {
 
   if (structure.structureType === CONTAINER || structure.structures) {
     return generateAndPopulateRRplayoffStructures({
+      sourceStructureId: structure.structureId,
       ...params,
       ...availabilityResult,
+      drawDefinition, // order is important!
     });
   }
 

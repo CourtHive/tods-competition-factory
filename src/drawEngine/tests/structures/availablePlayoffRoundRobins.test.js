@@ -16,9 +16,8 @@ import {
 const scenarios = [
   {
     drawProfile: {
-      structureOptions: { groupSize: 4 },
       drawType: ROUND_ROBIN_WITH_PLAYOFF,
-      participantsCount: 8,
+      structureOptions: { groupSize: 4 },
       drawSize: 32,
     },
     finishingPositionProfiles: [
@@ -52,7 +51,6 @@ const scenarios = [
     drawProfile: {
       structureOptions: { groupSize: 4 },
       drawType: ROUND_ROBIN,
-      participantsCount: 8,
       drawSize: 8,
     },
     finishingPositionProfiles: [
@@ -155,5 +153,7 @@ it.each(scenarios)(
       });
     }
     expect(result.success).toEqual(true);
+
+    console.log({ drawDefinition: result.drawDefinition });
   }
 );
