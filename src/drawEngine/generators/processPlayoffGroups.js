@@ -136,18 +136,19 @@ export function processPlayoffGroups({
       // TODO: test this
       console.log('RRw/PO FIRST_MATCH_LOSER_CONSOLATION');
       const uuidsFMLC = [uuids?.pop(), uuids?.pop()];
-      const { structures, links: feedInLinks } = feedInChampionship({
-        structureName: playoffGroup.structureName,
-        idPrefix: idPrefix && `${idPrefix}-po`,
-        finishingPositionOffset,
-        uuids: uuidsFMLC,
-        stage: PLAY_OFF,
-        feedRounds: 1,
-        matchUpType,
-        feedPolicy,
-        fmlc: true,
-        drawSize,
-      });
+      const { structures: champitionShipStructures, links: feedInLinks } =
+        feedInChampionship({
+          structureName: playoffGroup.structureName,
+          idPrefix: idPrefix && `${idPrefix}-po`,
+          finishingPositionOffset,
+          uuids: uuidsFMLC,
+          stage: PLAY_OFF,
+          feedRounds: 1,
+          matchUpType,
+          feedPolicy,
+          fmlc: true,
+          drawSize,
+        });
       const [playoffStructure] = structures;
       const playoffLink = generatePlayoffLink({
         playoffStructureId: playoffStructure.structureId,
@@ -157,7 +158,7 @@ export function processPlayoffGroups({
 
       links.push(playoffLink);
       links.push(...feedInLinks);
-      structures.push(...structures);
+      structures.push(...champitionShipStructures);
 
       // update *after* value has been passed into current playoff structure generator
       finishingPositionOffset += participantsInDraw;

@@ -28,6 +28,7 @@ const scenarios = [
       },
     ],
     expectation: {
+      generatedStructuresCount: 10, // original 2 plus 8 for COMPASS
       playoffFinishingPositionRanges: [
         {
           finishingPosition: 2,
@@ -61,6 +62,7 @@ const scenarios = [
       },
     ],
     expectation: {
+      generatedStructuresCount: 2,
       playoffFinishingPositionRanges: [
         {
           finishingPosition: 1,
@@ -90,7 +92,8 @@ const scenarios = [
 it.each(scenarios)(
   'can determine available playoff rounds for ROUND_ROBIN structures',
   (scenario) => {
-    const { drawProfile, expectation, finishingPositionProfiles } = scenario;
+    const { finishingPositionProfiles, drawProfile, expectation } = scenario;
+
     const {
       tournamentRecord,
       drawIds: [drawId],
@@ -154,6 +157,10 @@ it.each(scenarios)(
     }
     expect(result.success).toEqual(true);
 
-    console.log({ drawDefinition: result.drawDefinition });
+    if (expectation.generatedStructuresCount) {
+      expect(result.drawDefinition.structures.length).toEqual(
+        expectation.generatedStructuresCount
+      );
+    }
   }
 );
