@@ -17,7 +17,7 @@ test('it can allocate courts to a TEAM matchUp', () => {
     matchUpFilters: { matchUpTypes: [TEAM_MATCHUP] },
   }).matchUps;
   const teamMatchUp = teamMatchUps[0];
-  const { matchUpId, drawId } = teamMatchUp;
+  const { matchUpId, tournamentId, drawId } = teamMatchUp;
 
   const { courts } = tournamentEngine.getVenuesAndCourts();
   const courtIds = courts.map(({ courtId }) => courtId);
@@ -70,4 +70,30 @@ test('it can allocate courts to a TEAM matchUp', () => {
       court.matchUps.map(({ matchUpId }) => matchUpId).includes(matchUpId)
     ).toEqual(true)
   );
+
+  result = competitionEngine.removeMatchUpCourtAssignment({
+    courtId: courtIds[0],
+    tournamentId,
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = competitionEngine.competitionScheduleMatchUps({ matchUpFilters });
+  expect(result.dateMatchUps.length).toEqual(1);
+  let updatedCourtIds = result.dateMatchUps[0].schedule.allocatedCourts.map(
+    ({ courtId }) => courtId
+  );
+  expect(updatedCourtIds.includes(courtIds[0])).toEqual(false);
+
+  result = competitionEngine.removeMatchUpCourtAssignment({
+    // not passing courtId will remove all allocatedCourts
+    tournamentId,
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = competitionEngine.competitionScheduleMatchUps({ matchUpFilters });
+  expect(result.dateMatchUps[0].schedule.allocatedCourts).toBeUndefined();
 });

@@ -9,11 +9,11 @@ export function matchUpAssignedCourtId({
   matchUp,
 }) {
   const { itemValue: courtId, timeStamp: itemTimeStamp } =
-    latestVisibleTimeItemValue(
-      matchUp?.timeItems || [],
-      ASSIGN_COURT,
-      visibilityThreshold
-    );
+    latestVisibleTimeItemValue({
+      timeItems: matchUp?.timeItems || [],
+      itemType: ASSIGN_COURT,
+      visibilityThreshold,
+    });
 
   return !schedule || (itemTimeStamp && timeStamp && itemTimeStamp > timeStamp)
     ? { courtId }

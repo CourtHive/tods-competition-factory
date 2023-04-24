@@ -9,11 +9,11 @@ export function scheduledMatchUpDate({
   matchUp,
 }) {
   const { itemValue: scheduledDate, timeStamp: itemTimeStamp } =
-    latestVisibleTimeItemValue(
-      matchUp?.timeItems || [],
-      SCHEDULED_DATE,
-      visibilityThreshold
-    );
+    latestVisibleTimeItemValue({
+      timeItems: matchUp?.timeItems || [],
+      itemType: SCHEDULED_DATE,
+      visibilityThreshold,
+    });
 
   return !schedule || (itemTimeStamp && timeStamp && itemTimeStamp > timeStamp)
     ? { scheduledDate }

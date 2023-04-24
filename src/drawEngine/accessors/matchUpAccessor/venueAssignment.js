@@ -9,11 +9,11 @@ export function matchUpAssignedVenueId({
   schedule,
 }) {
   const { itemValue: venueId, timeStamp: itemTimeStamp } =
-    latestVisibleTimeItemValue(
-      matchUp?.timeItems || [],
-      ASSIGN_VENUE,
-      visibilityThreshold
-    );
+    latestVisibleTimeItemValue({
+      timeItems: matchUp?.timeItems || [],
+      itemType: ASSIGN_VENUE,
+      visibilityThreshold,
+    });
 
   return !schedule || (itemTimeStamp && timeStamp && itemTimeStamp > timeStamp)
     ? { venueId }
