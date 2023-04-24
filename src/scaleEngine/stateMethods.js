@@ -42,7 +42,7 @@ export function getState({
   };
 }
 
-export function paramsMiddleWare(tournamentRecord, params) {
+export function paramsMiddleware(tournamentRecord, params) {
   if (params) {
     if (params.someParam) {
       params = {

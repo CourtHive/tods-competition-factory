@@ -1,16 +1,13 @@
-import { findTournamentExtension } from './governors/queryGovernor/extensionQueries';
 import { getAllDrawMatchUps } from '../drawEngine/getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { findEvent } from './getters/eventGetter';
 import { makeDeepCopy } from '../utilities';
 import {
   getTournamentRecord,
-  setFactoryVersion,
   setTournamentId,
   setTournamentRecords,
 } from '../global/state/globalState';
 
-import { VERSIONS } from '../constants/extensionConstants';
 import {
   INVALID_OBJECT,
   MISSING_TOURNAMENT_ID,
@@ -24,19 +21,6 @@ export function setState(tournament, deepCopyOption) {
 
   const tournamentRecord =
     deepCopyOption !== false ? makeDeepCopy(tournament) : tournament;
-
-  const { extension: versionsExtension } = findTournamentExtension({
-    tournamentRecord,
-    name: VERSIONS,
-  });
-
-  if (versionsExtension?.value.factory?.version) {
-    // this is setting the version of the incoming document
-    // which can be compared to factoryVersion() where necessary
-    // and the versions extension can be updated if necessary when mutations are made
-    // this is a stub for future document validation processes...
-    setFactoryVersion(versionsExtension.value.factory.version);
-  }
 
   setTournamentRecords({ [tournamentId]: tournamentRecord });
   setTournamentId(tournamentId); // must be set AFTER tournamentRecord
@@ -62,7 +46,7 @@ export function getState({
 }
 
 // prefetch can be triggered based on method governor, e.g. not necessary for query
-export function paramsMiddleWare(tournamentRecord, params, prefetch) {
+export function paramsMiddleware(tournamentRecord, params, prefetch) {
   if (params) {
     const { drawId } = params || (params.matchUp && params.matchUp.drawId);
 

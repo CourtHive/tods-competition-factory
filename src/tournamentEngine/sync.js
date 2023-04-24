@@ -1,5 +1,6 @@
+import { updateFactoryExtension } from './governors/tournamentGovernor/updateFactoryExtension';
 import { newTournamentRecord } from './generators/newTournamentRecord';
-import { getState, paramsMiddleWare, setState } from './stateMethods';
+import { getState, paramsMiddleware, setState } from './stateMethods';
 import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import participantGovernor from './governors/participantGovernor';
@@ -23,6 +24,7 @@ import {
   setTournamentId,
   setTournamentRecord,
   getDeepCopyIterations,
+  cycleMutationStatus,
 } from '../global/state/globalState';
 
 import { SUCCESS } from '../constants/resultConstants';
@@ -98,7 +100,7 @@ export const tournamentEngine = (function () {
     delete engine.error;
 
     const start = Date.now();
-    const augmentedParams = paramsMiddleWare(tournamentRecord, params);
+    const augmentedParams = paramsMiddleware(tournamentRecord, params);
     const result = method({
       ...augmentedParams,
       tournamentRecord,
@@ -139,11 +141,12 @@ export const tournamentEngine = (function () {
   }
 
   function engineInvoke(method, params, methodName) {
+    const tournamentId = getTournamentId();
     const tournamentRecord =
       params?.sandBoxRecord ||
       params?.sandboxRecord ||
       params?.sandboxTournament ||
-      getTournamentRecord(getTournamentId());
+      getTournamentRecord(tournamentId);
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
@@ -161,7 +164,25 @@ export const tournamentEngine = (function () {
       result?.success &&
       params?.delayNotify !== true &&
       params?.doNotNotify !== true;
-    if (notify) notifySubscribers();
+    const mutationStatus = cycleMutationStatus();
+    const timeStamp = Date.now();
+
+    if (mutationStatus) {
+      updateFactoryExtension({
+        tournamentRecord,
+        value: {
+          version: factoryVersion(),
+          timeStamp,
+        },
+      });
+    }
+    if (notify)
+      notifySubscribers({
+        directives: [{ method, params }],
+        mutationStatus,
+        tournamentId,
+        timeStamp,
+      });
     if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 
     return result;
@@ -232,7 +253,19 @@ export const tournamentEngine = (function () {
       results.push(result);
     }
 
-    notifySubscribers();
+    const mutationStatus = cycleMutationStatus();
+    const timeStamp = Date.now();
+
+    if (mutationStatus) {
+      updateFactoryExtension({
+        tournamentRecord,
+        value: {
+          version: factoryVersion(),
+          timeStamp,
+        },
+      });
+    }
+    notifySubscribers({ directives, mutationStatus, timeStamp, tournamentId });
     deleteNotices();
 
     return { results };

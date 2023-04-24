@@ -16,6 +16,7 @@ import {
   getTournamentRecords,
   setTournamentRecords,
   getTournamentId,
+  cycleMutationStatus,
 } from '../global/state/globalState';
 
 import {
@@ -155,7 +156,14 @@ export const competitionEngine = (function () {
       result?.success &&
       params?.delayNotify !== true &&
       params?.doNotNotify !== true;
-    if (notify) notifySubscribers();
+    const mutationStatus = cycleMutationStatus();
+    const timeStamp = Date.now();
+    if (notify)
+      notifySubscribers({
+        directives: [{ method, params }],
+        mutationStatus,
+        timeStamp,
+      });
     if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 
     return result;
@@ -193,6 +201,7 @@ export const competitionEngine = (function () {
     const snapshot =
       rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
 
+    let timeStamp;
     const results = [];
     for (const directive of directives) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
@@ -223,9 +232,11 @@ export const competitionEngine = (function () {
         return { ...result, rolledBack: !!snapshot };
       }
       results.push(result);
+      timeStamp = Date.now();
     }
 
-    notifySubscribers();
+    const mutationStatus = cycleMutationStatus();
+    notifySubscribers({ directives, mutationStatus, timeStamp });
     deleteNotices();
 
     return { results };

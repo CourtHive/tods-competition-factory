@@ -8,7 +8,7 @@ import scoreGovernor from '../matchUpEngine/governors/scoreGovernor';
 import entryGovernor from './governors/entryGovernor';
 import linkGovernor from './governors/linkGovernor';
 
-import { newDrawDefinition, paramsMiddleWare, setState } from './stateMethods';
+import { newDrawDefinition, paramsMiddleware, setState } from './stateMethods';
 import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import { makeDeepCopy } from '../utilities';
@@ -131,7 +131,7 @@ export const drawEngine = (function () {
       params?.rollbackOnError && makeDeepCopy(drawDefinition, false, true);
 
     // TODO: perhaps prefetch based on targeted methods (e.g. specific governors)
-    const additionalParams = prefetch ? paramsMiddleWare(drawDefinition) : {};
+    const additionalParams = prefetch ? paramsMiddleware(drawDefinition) : {};
 
     params = {
       ...params,
