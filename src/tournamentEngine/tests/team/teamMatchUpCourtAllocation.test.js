@@ -2,6 +2,7 @@ import { competitionEngine, mocksEngine } from '../../..';
 import tournamentEngine from '../../sync';
 import { expect, test } from 'vitest';
 
+import { FACTORY } from '../../../constants/extensionConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
 
@@ -96,4 +97,10 @@ test('it can allocate courts to a TEAM matchUp', () => {
 
   result = competitionEngine.competitionScheduleMatchUps({ matchUpFilters });
   expect(result.dateMatchUps[0].schedule.allocatedCourts).toBeUndefined();
+
+  result = tournamentEngine.getState();
+  expect(
+    result.tournamentRecord.extensions.filter(({ name }) => name === FACTORY)
+      .length
+  ).toEqual(1);
 });
