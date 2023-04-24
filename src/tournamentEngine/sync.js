@@ -175,6 +175,7 @@ export const tournamentEngine = (function () {
           timeStamp,
         },
       });
+      result.modificationsApplied = true;
     }
     if (notify)
       notifySubscribers({
@@ -221,6 +222,7 @@ export const tournamentEngine = (function () {
     const snapshot =
       rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
+    const result = {};
     const results = [];
     for (const directive of directives) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
@@ -264,11 +266,12 @@ export const tournamentEngine = (function () {
           timeStamp,
         },
       });
+      result.modificationsApplied = true;
     }
     notifySubscribers({ directives, mutationStatus, timeStamp, tournamentId });
     deleteNotices();
 
-    return { results };
+    return { result, results };
   }
 })();
 

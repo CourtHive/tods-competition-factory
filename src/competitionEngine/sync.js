@@ -1,3 +1,4 @@
+import { updateFactoryExtension } from '../tournamentEngine/governors/tournamentGovernor/updateFactoryExtension';
 import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import competitionGovernor from './governors/competitionsGovernor';
@@ -158,6 +159,18 @@ export const competitionEngine = (function () {
       params?.doNotNotify !== true;
     const mutationStatus = cycleMutationStatus();
     const timeStamp = Date.now();
+    if (mutationStatus) {
+      Object.values(tournamentRecords).forEach((tournamentRecord) => {
+        updateFactoryExtension({
+          tournamentRecord,
+          value: {
+            version: factoryVersion(),
+            timeStamp,
+          },
+        });
+      });
+      result.modificationsApplied = true;
+    }
     if (notify)
       notifySubscribers({
         directives: [{ method, params }],
@@ -202,6 +215,7 @@ export const competitionEngine = (function () {
       rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
 
     let timeStamp;
+    const result = {};
     const results = [];
     for (const directive of directives) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
@@ -236,10 +250,22 @@ export const competitionEngine = (function () {
     }
 
     const mutationStatus = cycleMutationStatus();
+    if (mutationStatus) {
+      Object.values(tournamentRecords).forEach((tournamentRecord) => {
+        updateFactoryExtension({
+          tournamentRecord,
+          value: {
+            version: factoryVersion(),
+            timeStamp,
+          },
+        });
+      });
+      result.modificationsApplied = true;
+    }
     notifySubscribers({ directives, mutationStatus, timeStamp });
     deleteNotices();
 
-    return { results };
+    return { result, results };
   }
 })();
 
