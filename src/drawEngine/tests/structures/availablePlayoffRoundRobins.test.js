@@ -20,6 +20,8 @@ const scenarios = [
       structureOptions: { groupSize: 4 },
       drawSize: 32,
     },
+    completeAllMatchUps: true,
+    allPositionsAssigned: true,
     finishingPositionProfiles: [
       {
         finishingPositions: [2, 3],
@@ -54,6 +56,8 @@ const scenarios = [
       drawType: ROUND_ROBIN,
       drawSize: 8,
     },
+    completeAllMatchUps: true,
+    allPositionsAssigned: true,
     finishingPositionProfiles: [
       {
         finishingPositions: [1],
@@ -92,13 +96,20 @@ const scenarios = [
 it.each(scenarios)(
   'can determine available playoff rounds for ROUND_ROBIN structures',
   (scenario) => {
-    const { finishingPositionProfiles, drawProfile, expectation } = scenario;
+    const {
+      finishingPositionProfiles,
+      allPositionsAssigned,
+      completeAllMatchUps,
+      drawProfile,
+      expectation,
+    } = scenario;
 
     const {
       tournamentRecord,
       drawIds: [drawId],
     } = mocksEngine.generateTournamentRecord({
       drawProfiles: [drawProfile],
+      completeAllMatchUps,
     });
 
     let result = tournamentEngine.setState(tournamentRecord);
@@ -156,6 +167,12 @@ it.each(scenarios)(
       });
     }
     expect(result.success).toEqual(true);
+
+    expect(
+      result.structures[0].positionAssignments.every(
+        ({ participantId }) => participantId
+      )
+    ).toEqual(allPositionsAssigned);
 
     if (expectation.generatedStructuresCount) {
       expect(result.drawDefinition.structures.length).toEqual(

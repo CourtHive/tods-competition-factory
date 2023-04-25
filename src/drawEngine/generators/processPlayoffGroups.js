@@ -37,6 +37,7 @@ export function processPlayoffGroups({
   feedPolicy = feedPolicy || policyDefinitions?.[POLICY_TYPE_FEED_IN];
 
   let finishingPositionOffset = 0;
+  const finishingPositionTargets = [];
   const structures = [];
   const links = [];
 
@@ -88,6 +89,10 @@ export function processPlayoffGroups({
       links.push(playoffLink);
       // update *after* value has been passed into current playoff structure generator
       finishingPositionOffset += participantsInDraw;
+      finishingPositionTargets.push({
+        structureId: playoffStructure.structureId,
+        finishingPositions,
+      });
     } else if ([COMPASS, OLYMPIC, PLAY_OFF].includes(playoffDrawType)) {
       const { structureName } = playoffGroup;
 
@@ -122,13 +127,17 @@ export function processPlayoffGroups({
       if (result.structures?.length) structures.push(...result.structures);
       structures.sort(structureSort);
 
-      if (result.structure) {
+      if (result.structureId) {
         const playoffLink = generatePlayoffLink({
           playoffStructureId: result.structureId,
           finishingPositions,
           sourceStructureId,
         });
         links.push(playoffLink);
+        finishingPositionTargets.push({
+          structureId: result.structureId,
+          finishingPositions,
+        });
       }
       // update *after* value has been passed into current playoff structure generator
       finishingPositionOffset += participantsInDraw;
@@ -159,13 +168,17 @@ export function processPlayoffGroups({
       links.push(playoffLink);
       links.push(...feedInLinks);
       structures.push(...champitionShipStructures);
+      finishingPositionTargets.push({
+        structureId: playoffStructure.structureId,
+        finishingPositions,
+      });
 
       // update *after* value has been passed into current playoff structure generator
       finishingPositionOffset += participantsInDraw;
     }
   }
 
-  return { structures, links };
+  return { finishingPositionTargets, structures, links };
 }
 
 function generatePlayoffLink({
