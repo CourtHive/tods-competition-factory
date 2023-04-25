@@ -2,19 +2,35 @@ import { tournamentEngine, mocksEngine } from '../../../';
 import { expect, it } from 'vitest';
 
 import {
+  INVALID_VALUES,
+  MISSING_VALUE,
+} from '../../../constants/errorConditionConstants';
+import {
+  COMPASS,
+  MAIN,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
+  SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
 
 const scenarios = [
   {
     drawProfile: {
-      structureOptions: { groupSize: 4 },
       drawType: ROUND_ROBIN_WITH_PLAYOFF,
-      participantsCount: 8,
+      structureOptions: { groupSize: 4 },
       drawSize: 32,
     },
+    completeAllMatchUps: true,
+    allPositionsAssigned: true,
+    finishingPositionProfiles: [
+      {
+        finishingPositions: [2, 3],
+        structureName: 'Silver',
+        drawType: COMPASS,
+      },
+    ],
     expectation: {
+      generatedStructuresCount: 10, // original 2 plus 8 for COMPASS
       playoffFinishingPositionRanges: [
         {
           finishingPosition: 2,
@@ -38,10 +54,19 @@ const scenarios = [
     drawProfile: {
       structureOptions: { groupSize: 4 },
       drawType: ROUND_ROBIN,
-      participantsCount: 8,
       drawSize: 8,
     },
+    completeAllMatchUps: true,
+    allPositionsAssigned: true,
+    finishingPositionProfiles: [
+      {
+        finishingPositions: [1],
+        structureName: '3-4 Playoff',
+        drawType: SINGLE_ELIMINATION,
+      },
+    ],
     expectation: {
+      generatedStructuresCount: 2,
       playoffFinishingPositionRanges: [
         {
           finishingPosition: 1,
@@ -71,16 +96,29 @@ const scenarios = [
 it.each(scenarios)(
   'can determine available playoff rounds for ROUND_ROBIN structures',
   (scenario) => {
-    const { drawProfile, expectation } = scenario;
+    const {
+      finishingPositionProfiles,
+      allPositionsAssigned,
+      completeAllMatchUps,
+      drawProfile,
+      expectation,
+    } = scenario;
+
     const {
       tournamentRecord,
       drawIds: [drawId],
     } = mocksEngine.generateTournamentRecord({
       drawProfiles: [drawProfile],
+      completeAllMatchUps,
     });
 
     let result = tournamentEngine.setState(tournamentRecord);
     expect(result.success).toEqual(true);
+
+    const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+    const mainStructureId = drawDefinition.structures.find(
+      ({ stage }) => stage === MAIN
+    ).structureId;
 
     result = tournamentEngine.getAvailablePlayoffProfiles({ drawId });
 
@@ -88,6 +126,58 @@ it.each(scenarios)(
       expect(
         result.availablePlayoffProfiles[0].playoffFinishingPositionRanges
       ).toEqual(expectation.playoffFinishingPositionRanges);
+    }
+
+    // calling with structureId returns scoped values
+    result = tournamentEngine.getAvailablePlayoffProfiles({
+      structureId: mainStructureId,
+      drawId,
+    });
+    expect(result.playoffFinishingPositionRanges).toEqual(
+      expectation.playoffFinishingPositionRanges
+    );
+    const availableFinishingPositions =
+      result.playoffFinishingPositionRanges.map(
+        ({ finishingPosition }) => finishingPosition
+      );
+
+    result = tournamentEngine.generateAndPopulatePlayoffStructures({
+      structureId: mainStructureId,
+      drawId,
+    });
+    expect(result.error).toEqual(MISSING_VALUE);
+    expect(result.error.info).not.toBeUndefined();
+
+    const invalidFinishingPosition =
+      Math.max(...availableFinishingPositions, 0) + 1;
+    result = tournamentEngine.generateAndPopulatePlayoffStructures({
+      finishingPositionProfiles: [
+        { finishingPositions: [invalidFinishingPosition] },
+      ],
+      structureId: mainStructureId,
+      drawId,
+    });
+    expect(result.error).toEqual(INVALID_VALUES);
+
+    if (finishingPositionProfiles) {
+      result = tournamentEngine.generateAndPopulatePlayoffStructures({
+        structureId: mainStructureId,
+        finishingPositionProfiles,
+        drawId,
+      });
+    }
+    expect(result.success).toEqual(true);
+
+    expect(
+      result.structures[0].positionAssignments.every(
+        ({ participantId }) => participantId
+      )
+    ).toEqual(allPositionsAssigned);
+
+    if (expectation.generatedStructuresCount) {
+      expect(result.drawDefinition.structures.length).toEqual(
+        expectation.generatedStructuresCount
+      );
     }
   }
 );
