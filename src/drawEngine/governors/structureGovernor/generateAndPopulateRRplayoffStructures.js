@@ -17,19 +17,19 @@ import {
 
 export function generateAndPopulateRRplayoffStructures(params) {
   const stack = 'generateAndPopulateRRplayoffStructures';
-  if (!params.finishingPositionProfiles) {
+  if (!params.playoffGroups) {
     return decorateResult({
-      info: 'finishingPositionProfiles required',
+      info: 'playoffGroups required',
       result: { error: MISSING_VALUE },
       stack,
     });
   }
   const {
-    finishingPositionProfiles: playoffGroups,
     playoffFinishingPositionRanges,
     // finishingPositionsAvailable,
     // finishingPositionsPlayedOff,
     sourceStructureId,
+    playoffGroups,
     groupCount,
     groupSize,
     event,

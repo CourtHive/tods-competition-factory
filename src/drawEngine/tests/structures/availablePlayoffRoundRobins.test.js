@@ -22,7 +22,7 @@ const scenarios = [
     },
     completeAllMatchUps: true,
     allPositionsAssigned: true,
-    finishingPositionProfiles: [
+    playoffGroups: [
       {
         finishingPositions: [2, 3],
         structureName: 'Silver',
@@ -58,7 +58,7 @@ const scenarios = [
     },
     completeAllMatchUps: true,
     allPositionsAssigned: true,
-    finishingPositionProfiles: [
+    playoffGroups: [
       {
         finishingPositions: [1],
         structureName: '3-4 Playoff',
@@ -97,7 +97,7 @@ it.each(scenarios)(
   'can determine available playoff rounds for ROUND_ROBIN structures',
   (scenario) => {
     const {
-      finishingPositionProfiles,
+      playoffGroups,
       allPositionsAssigned,
       completeAllMatchUps,
       drawProfile,
@@ -151,18 +151,16 @@ it.each(scenarios)(
     const invalidFinishingPosition =
       Math.max(...availableFinishingPositions, 0) + 1;
     result = tournamentEngine.generateAndPopulatePlayoffStructures({
-      finishingPositionProfiles: [
-        { finishingPositions: [invalidFinishingPosition] },
-      ],
+      playoffGroups: [{ finishingPositions: [invalidFinishingPosition] }],
       structureId: mainStructureId,
       drawId,
     });
     expect(result.error).toEqual(INVALID_VALUES);
 
-    if (finishingPositionProfiles) {
+    if (playoffGroups) {
       result = tournamentEngine.generateAndPopulatePlayoffStructures({
         structureId: mainStructureId,
-        finishingPositionProfiles,
+        playoffGroups,
         drawId,
       });
     }
