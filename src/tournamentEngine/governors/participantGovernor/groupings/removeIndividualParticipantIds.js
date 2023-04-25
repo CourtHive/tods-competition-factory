@@ -113,17 +113,21 @@ function removeParticipantIdsFromGroupingParticipant({
   groupingParticipant,
   tournamentRecord,
   suppressErrors,
+  mappedMatchUps,
+  participants,
 }) {
   let removed = [];
   if (!groupingParticipant) return { removed };
   let notRemoved = [];
   let cannotRemove = [];
 
-  const { participants, mappedMatchUps } = getParticipants({
-    withMatchUps: true,
-    tournamentRecord,
-    withEvents: true,
-  });
+  if (!participants) {
+    ({ participants, mappedMatchUps } = getParticipants({
+      withMatchUps: true,
+      tournamentRecord,
+      withEvents: true,
+    }));
+  }
 
   const inContextGroupingParticipant = participants.find(
     ({ participantId }) => participantId === groupingParticipant.participantId
@@ -235,6 +239,12 @@ export function removeParticipantIdsFromAllTeams({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const tournamentParticipants = tournamentRecord.participants || [];
 
+  const { participants, mappedMatchUps } = getParticipants({
+    withMatchUps: true,
+    tournamentRecord,
+    withEvents: true,
+  });
+
   let modifications = 0;
   tournamentParticipants
     .filter((participant) => {
@@ -249,6 +259,8 @@ export function removeParticipantIdsFromAllTeams({
         groupingParticipant: grouping,
         individualParticipantIds,
         tournamentRecord,
+        mappedMatchUps,
+        participants,
       });
       if (removed) modifications++;
     });
