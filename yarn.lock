@@ -6211,10 +6211,10 @@ quick-lru@^4.0.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
   integrity sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==
 
-quicktype-core@23.0.21:
-  version "23.0.21"
-  resolved "https://registry.yarnpkg.com/quicktype-core/-/quicktype-core-23.0.21.tgz#be29ed5ff04377bf2508a4ec225fe2ed6581351d"
-  integrity sha512-KWvhTtRSEqbeYJEK/Lq1YM3+vK1iqPU2N3TpOOLC0mPnWEo/He+wl8qcm/W6FcGNDZDrnw98kJIw9PO8zDYqcA==
+quicktype-core@23.0.26:
+  version "23.0.26"
+  resolved "https://registry.yarnpkg.com/quicktype-core/-/quicktype-core-23.0.26.tgz#3404dbc78b1133bd389b500cf1909906bf4dac7e"
+  integrity sha512-wQkN7Ek8mfCWKDn0gss1Nmdk0oghKTaVWHUWJWt7bUdtigSpKPDXIzUSNJ/qHP+li4OwY+UgMxGOfC07J3h32w==
   dependencies:
     "@glideapps/ts-necessities" "2.1.2"
     "@types/urijs" "^1.19.19"
@@ -6232,28 +6232,28 @@ quicktype-core@23.0.21:
     wordwrap "^1.0.0"
     yaml "^2.2.1"
 
-quicktype-graphql-input@23.0.21:
-  version "23.0.21"
-  resolved "https://registry.yarnpkg.com/quicktype-graphql-input/-/quicktype-graphql-input-23.0.21.tgz#67a2ce9d371d833c4e727ffecef7f6fc2db7c04a"
-  integrity sha512-LZwYUea/BHjlZYYUqX+m/2XSu2RMjRlb98bqBcFW+f/WOxrSBmCiy7p6iytAabx2l166GR8dbQ/wyIu6Xt8OIg==
+quicktype-graphql-input@23.0.26:
+  version "23.0.26"
+  resolved "https://registry.yarnpkg.com/quicktype-graphql-input/-/quicktype-graphql-input-23.0.26.tgz#ff8650e302dfeb1a25b65cde98b7cbd6daa175c1"
+  integrity sha512-H/29UB2ZF6DGWrVtcwIg5qpniIt9cVDFwDC+QJxTP20190QoOVdY80m5BQjFmGUpeBi0/yP3eTYK/WMIy4De9w==
   dependencies:
     collection-utils "^1.0.1"
     graphql "^0.11.7"
-    quicktype-core "23.0.21"
+    quicktype-core "23.0.26"
 
-quicktype-typescript-input@23.0.21:
-  version "23.0.21"
-  resolved "https://registry.yarnpkg.com/quicktype-typescript-input/-/quicktype-typescript-input-23.0.21.tgz#84dbae09a1a92182c94409b942ec1b22a98661fc"
-  integrity sha512-QjTDK/hD2ZRS+0BqT/wQOGf3ujtOCr6xtxvv3sU5zmIrBCCTvKG4aIlGuIWnKdY9g5ZlpiOfiQlAhbH2vx36+g==
+quicktype-typescript-input@23.0.26:
+  version "23.0.26"
+  resolved "https://registry.yarnpkg.com/quicktype-typescript-input/-/quicktype-typescript-input-23.0.26.tgz#0a6665048565e5f145e7fd2d99a4d93babfde937"
+  integrity sha512-7WVbUFDjxTPFGpQ9ay8rUwCzqaZkA1/V2sWZVkyl3gdEPu/Jpfh2MbyFhWrHi7iuT2FMlmau+7fy1se/1WPA1w==
   dependencies:
     "@mark.probst/typescript-json-schema" "0.55.0"
-    quicktype-core "23.0.21"
+    quicktype-core "23.0.26"
     typescript "4.9.5"
 
-quicktype@23.0.21:
-  version "23.0.21"
-  resolved "https://registry.yarnpkg.com/quicktype/-/quicktype-23.0.21.tgz#fbac81a10037bf674906920e812634a9b210ef45"
-  integrity sha512-5BmOWG43w0DKdAXz5WCRj1LA6lkYSsbaiyoyaRsheUqtVoeCdfnoqGfPK93JKZ/6eyDzddsPENmPkR+SZxFvyQ==
+quicktype@23.0.26:
+  version "23.0.26"
+  resolved "https://registry.yarnpkg.com/quicktype/-/quicktype-23.0.26.tgz#a74558ba3b1eff493d3d451e1e114f2446523e08"
+  integrity sha512-X1PLhGiO1QsN3UdiXeRVNv5doacbP/n5CwY50EJ2SwY4zzWR6dyqZ/A7jCFglRTlRyDo/XLKQYJmbflYyAV5VA==
   dependencies:
     "@glideapps/ts-necessities" "^2.1.2"
     chalk "^4.1.2"
@@ -6264,9 +6264,9 @@ quicktype@23.0.21:
     graphql "^0.11.7"
     lodash "^4.17.21"
     moment "^2.29.4"
-    quicktype-core "23.0.21"
-    quicktype-graphql-input "23.0.21"
-    quicktype-typescript-input "23.0.21"
+    quicktype-core "23.0.26"
+    quicktype-graphql-input "23.0.26"
+    quicktype-typescript-input "23.0.26"
     readable-stream "^4.3.0"
     stream-json "1.7.5"
     string-to-stream "^3.0.1"
