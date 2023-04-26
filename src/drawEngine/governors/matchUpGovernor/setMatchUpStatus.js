@@ -428,7 +428,7 @@ function applyMatchUpValues(params) {
     !params.winningSide &&
     !scoreHasValue({ score: params.score });
   const newMatchUpStatus = params.isCollectionMatchUp
-    ? params.matchUpStatus || (removeWinningSide && TO_BE_PLAYED)
+    ? params.matchUpStatus || (removeWinningSide && TO_BE_PLAYED) || COMPLETED
     : params.matchUpStatus || COMPLETED;
   const removeScore =
     params.removeScore ||
