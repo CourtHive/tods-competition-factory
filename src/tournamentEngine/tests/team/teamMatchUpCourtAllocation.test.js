@@ -1,4 +1,5 @@
 import { competitionEngine, mocksEngine } from '../../..';
+import { unique } from '../../../utilities';
 import tournamentEngine from '../../sync';
 import { expect, test } from 'vitest';
 
@@ -86,6 +87,19 @@ test('it can allocate courts to a TEAM matchUp', () => {
     ({ courtId }) => courtId
   );
   expect(updatedCourtIds.includes(courtIds[0])).toEqual(false);
+
+  result.dateMatchUps[0].schedule.allocatedCourts.forEach((court) => {
+    const attrs = Object.keys(court);
+    expect(attrs).toEqual(['venueId', 'courtId', 'venueName', 'courtName']);
+  });
+
+  expect(
+    unique(
+      result.dateMatchUps[0].schedule.allocatedCourts.map(
+        ({ venueId }) => venueId
+      )
+    ).length
+  ).toEqual(1);
 
   result = competitionEngine.removeMatchUpCourtAssignment({
     // not passing courtId will remove all allocatedCourts

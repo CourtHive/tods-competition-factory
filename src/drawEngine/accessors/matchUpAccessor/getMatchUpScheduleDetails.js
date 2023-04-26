@@ -131,6 +131,7 @@ export function getMatchUpScheduleDetails({
 
     const isoDateString = getIsoDateString({ scheduledDate, scheduledTime });
 
+    const venueDataMap = {};
     const venueData =
       (
         tournamentRecord &&
@@ -138,11 +139,28 @@ export function getMatchUpScheduleDetails({
         getVenueData({ tournamentRecord, venueId })
       )?.venueData || {};
 
+    if (venueId) venueDataMap[venueId] = venueData;
     const { venueName, venueAbbreviation, courtsInfo } = venueData;
 
     const courtInfo =
       courtId && courtsInfo?.find((courtInfo) => courtInfo.courtId === courtId);
     const courtName = courtInfo?.courtName;
+
+    for (const allocatedCourt of allocatedCourts || []) {
+      if (!tournamentRecord) break;
+      if (allocatedCourt.venueId && !venueDataMap[allocatedCourt.venueid]) {
+        venueDataMap[allocatedCourt.venueId] = getVenueData({
+          venueId: allocatedCourt.venueId,
+          tournamentRecord,
+        })?.venueData;
+      }
+      const vData = venueDataMap[allocatedCourt.venueId];
+      allocatedCourt.venueName = vData?.venueName;
+      const courtInfo = vData?.courtsInfo?.find(
+        (courtInfo) => courtInfo.courtId === allocatedCourt.courtId
+      );
+      allocatedCourt.courtName = courtInfo?.courtName;
+    }
 
     schedule = definedAttributes({
       typeChangeTimeAfterRecovery,
