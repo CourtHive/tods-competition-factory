@@ -303,7 +303,7 @@ export interface MatchUp {
   createdAt?: Date;
   drawPositions?: number[];
   /**
-   * Date on which the machUp ends
+   * Date on which the matchUp ends
    */
   endDate?: string;
   extensions?: Extension[];

@@ -602,7 +602,7 @@ const {
 
     withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
     withScaleValues, // optional - include { ratings, rankings } attributes extracted from timeItems
-    withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
+    withStatistics, // optional - adds events, matchUps and statistics, e.g. 'winRatio'
     withGroupings, // optional - include membership in group, pair, and team participants
     withOpponents, // optional - include opponent participantIds
     withSeeding, // optionsl - add event seeding
@@ -816,7 +816,7 @@ const {
     withSeeding, // optionsl - add event seeding
     withScheduleItems, // optional boolean - include array of scheduled matchUp details
     withSignInStatus, // optional boolean
-    withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
+    withStatistics, // optional - adds events, matchUps and statistics, e.g. 'winRatio'
     withTeamMatchUps // optional boolean
   });
 ```

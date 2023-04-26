@@ -188,7 +188,7 @@ export function setMatchUpStatus(params) {
     ) {
       return {
         error: INVALID_VALUES,
-        info: 'Not supported for machUpType: TEAM',
+        info: 'Not supported for matchUpType: TEAM',
       };
     }
   }
@@ -428,7 +428,7 @@ function applyMatchUpValues(params) {
     !params.winningSide &&
     !scoreHasValue({ score: params.score });
   const newMatchUpStatus = params.isCollectionMatchUp
-    ? params.machUpStatus || (removeWinningSide && TO_BE_PLAYED)
+    ? params.matchUpStatus || (removeWinningSide && TO_BE_PLAYED)
     : params.matchUpStatus || COMPLETED;
   const removeScore =
     params.removeScore ||

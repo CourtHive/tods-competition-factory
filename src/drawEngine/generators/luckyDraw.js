@@ -1,7 +1,7 @@
 import { isConvertableInteger } from '../../utilities/math';
 import { generateRange, isPowerOf2 } from '../../utilities';
 import { addFinishingRounds } from './addFinishingRounds';
-import { generateMatchUpId } from './generateMachUpId';
+import { generateMatchUpId } from './generateMatchUpId';
 import { treeMatchUps } from './eliminationTree';
 import { buildRound } from './buildRound';
 
