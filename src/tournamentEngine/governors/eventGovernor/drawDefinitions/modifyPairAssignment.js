@@ -32,8 +32,8 @@ export function modifyPairAssignment({
 }) {
   if (!event) return { error: MISSING_EVENT };
   if (event?.eventType !== DOUBLES) return { error: INVALID_EVENT_TYPE };
+  if (uuids && !Array.isArray(uuids)) return { error: INVALID_VALUES };
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!Array.isArray(uuids)) return { error: INVALID_VALUES };
   if (
     ![
       replacementIndividualParticipantId,
