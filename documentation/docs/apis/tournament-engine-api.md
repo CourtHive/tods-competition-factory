@@ -2780,6 +2780,7 @@ tournamentEngine.modifyPairAssignment({
   participantId, // only valid to pass a participantId when { participantType: PAIR }
   eventId, // optional if drawId is provided
   drawId, // optional if eventId is provided; scopes change to specified draw
+  uuids, // optional array of uuids for use when generating new participant
 });
 ```
 

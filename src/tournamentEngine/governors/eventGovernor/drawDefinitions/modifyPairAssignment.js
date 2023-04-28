@@ -11,6 +11,7 @@ import {
   INVALID_EVENT_TYPE,
   INVALID_PARTICIPANT,
   INVALID_PARTICIPANT_ID,
+  INVALID_VALUES,
   MISSING_EVENT,
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
@@ -27,10 +28,12 @@ export function modifyPairAssignment({
   drawDefinition,
   participantId,
   event,
+  uuids,
 }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
-  if (event.eventType !== DOUBLES) return { error: INVALID_EVENT_TYPE };
+  if (event?.eventType !== DOUBLES) return { error: INVALID_EVENT_TYPE };
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!Array.isArray(uuids)) return { error: INVALID_VALUES };
   if (
     ![
       replacementIndividualParticipantId,
@@ -79,9 +82,10 @@ export function modifyPairAssignment({
   let newPairParticipantId;
   if (!existingPairParticipant) {
     const newPairParticipant = {
-      participantType: PAIR,
+      participantId: uuids?.pop(),
       participantRole: COMPETITOR,
       individualParticipantIds,
+      participantType: PAIR,
     };
     const result = addParticipant({
       participant: newPairParticipant,
