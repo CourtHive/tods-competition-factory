@@ -2141,10 +2141,7 @@ const participantFilters = {
   signInStatus, // specific signIn status
   eventIds, // events in which participants appear
 };
-const {
-  competitionParticipants,
-  participantIdsWithConflicts // returns array of participantIds which have scheduling conflicts
-} =
+const { participants } =
   tournamentEngine.getParticipants({
     convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
     participantFilters, // optional - filters
