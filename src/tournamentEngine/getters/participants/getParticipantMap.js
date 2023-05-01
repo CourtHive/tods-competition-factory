@@ -106,7 +106,7 @@ function signedIn(participant) {
     element: participant,
   });
 
-  return timeItem?.itemValue !== SIGNED_IN;
+  return timeItem?.itemValue === SIGNED_IN;
 }
 
 function addIndividualParticipants({ participantMap }) {
