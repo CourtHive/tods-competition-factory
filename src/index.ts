@@ -10,7 +10,6 @@ import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItem
 import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
 import { nearestPowerOf2, isPowerOf2, isNumeric } from './utilities/math';
 import { addExtension } from './global/functions/producers/addExtension';
-import { generateHashCode, generateTimeCode } from './utilities';
 import { dateTime, dateRange } from './utilities/dateTime';
 import { JSON2CSV, flattenJSON } from './utilities/json';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
@@ -29,6 +28,11 @@ import {
   shuffleArray,
   unique,
 } from './utilities/arrays';
+import {
+  definedAttributes,
+  generateHashCode,
+  generateTimeCode,
+} from './utilities';
 
 export const utilities = {
   structureSort,
@@ -37,6 +41,7 @@ export const utilities = {
   countValues,
   dateRange,
   dateTime,
+  definedAttributes,
   dehydrateMatchUps,
   findExtension,
   garman,
