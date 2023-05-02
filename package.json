@@ -136,7 +136,7 @@
     "tslib": "2.5.0",
     "typescript": "5.0.4",
     "variable-diff": "^2.0.2",
-    "vite": "4.3.4",
+    "vite": "4.3.3",
     "vitest": "0.27.3"
   },
   "lint-staged": {
