@@ -120,12 +120,23 @@ export function modifyPairAssignment({
 
     // update positionAssignments for all structures within the drawDefinition
     for (const structure of drawDefinition.structures || []) {
-      structure.positionAssignments = (structure.positionAssignments || []).map(
-        (assignment) =>
-          assignment.participantId === participantId
-            ? { ...assignment, participantId: newPairParticipantId }
-            : assignment
-      );
+      if (structure.positionAssignments) {
+        structure.positionAssignments = structure.positionAssignments.map(
+          (assignment) =>
+            assignment.participantId === participantId
+              ? { ...assignment, participantId: newPairParticipantId }
+              : assignment
+        );
+      } else if (structure.structures) {
+        for (const subStructure of structure.structures) {
+          subStructure.positionAssignments =
+            subStructure.positionAssignments.map((assignment) =>
+              assignment.participantId === participantId
+                ? { ...assignment, participantId: newPairParticipantId }
+                : assignment
+            );
+        }
+      }
     }
   }
 
