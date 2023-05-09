@@ -3,13 +3,13 @@ import { expect, it } from 'vitest';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES_EVENT } from '../../constants/eventConstants';
+import { WALKOVER } from '../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../constants/matchUpTypes';
 import { JSON2CSV } from '../json';
 import {
   FORMAT_ATP_DOUBLES,
   FORMAT_STANDARD,
 } from '../../fixtures/scoring/matchUpFormats';
-import { WALKOVER } from '../../constants/matchUpStatusConstants';
 
 it('can create CSV from shallow JSON objects', () => {
   const csv = JSON2CSV([{ a: '1', b: '2' }]);

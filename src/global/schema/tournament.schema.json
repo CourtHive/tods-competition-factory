@@ -884,7 +884,7 @@
         },
         "endDate": {
           "type": "string",
-          "description": "Date on which the machUp ends",
+          "description": "Date on which the matchUp ends",
           "anyOf": [
             {
               "format": "date-time"

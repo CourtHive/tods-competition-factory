@@ -24,6 +24,7 @@ export function getParticipantEntries({
   policyDefinitions,
   tournamentRecord,
   usePublishState,
+  contextProfile,
   participantMap,
 
   withPotentialMatchUps,
@@ -79,7 +80,7 @@ export function getParticipantEntries({
   let matchUps = [];
 
   const getRanking = ({ eventType, scaleNames, participantId }) =>
-    participantMap[participantId].participant.rankings?.[eventType]?.find(
+    participantMap[participantId]?.participant.rankings?.[eventType]?.find(
       (ranking) => scaleNames.includes(ranking.scaleName)
     )?.scaleValue;
 
@@ -363,6 +364,7 @@ export function getParticipantEntries({
         policyDefinitions,
         tournamentRecord,
         inContext: true,
+        contextProfile,
         participantMap,
         nextMatchUps,
         event,

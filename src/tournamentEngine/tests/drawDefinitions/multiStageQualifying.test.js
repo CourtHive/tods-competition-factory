@@ -242,7 +242,7 @@ it('can advance participants through multi-stage qualifying structures', () => {
     expect(result.context.removedParticipantId).toBeUndefined();
   }
 
-  // depdending on where the qualifiers are placed there could be 1 or 2 machUps TO_BE_PLAYED
+  // depdending on where the qualifiers are placed there could be 1 or 2 matchUps TO_BE_PLAYED
   matchUps = tournamentEngine.allTournamentMatchUps({
     contextFilters: { stages: [QUALIFYING], stageSequences: [2] },
     matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },

@@ -57,7 +57,7 @@ export function allocateTeamMatchUpCourts({
       return { error: INVALID_VALUES, context: { courtIds } };
     }
     itemValue = specifiedCourts.map((court) => ({
-      venueId: court.venue?.venueId,
+      venueId: court.venueId,
       courtId: court.courtId,
     }));
   }

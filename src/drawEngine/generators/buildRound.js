@@ -1,4 +1,4 @@
-import { generateMatchUpId } from './generateMachUpId';
+import { generateMatchUpId } from './generateMatchUpId';
 
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 

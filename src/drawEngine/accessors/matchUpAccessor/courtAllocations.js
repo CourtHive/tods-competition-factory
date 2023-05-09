@@ -1,4 +1,5 @@
 import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
+import { makeDeepCopy } from '../../../utilities';
 
 import { ALLOCATE_COURTS } from '../../../constants/timeItemConstants';
 
@@ -16,6 +17,6 @@ export function matchUpAllocatedCourts({
     });
 
   return !schedule || (itemTimeStamp && timeStamp && itemTimeStamp > timeStamp)
-    ? { allocatedCourts }
+    ? { allocatedCourts: makeDeepCopy(allocatedCourts, false, true) }
     : schedule;
 }

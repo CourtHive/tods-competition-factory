@@ -1,4 +1,4 @@
-import { generateMatchUpId } from './generateMachUpId';
+import { generateMatchUpId } from './generateMatchUpId';
 import { generateRange } from '../../utilities';
 
 export function buildFeedRound({

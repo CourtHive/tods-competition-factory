@@ -28,7 +28,7 @@ test('ROUND_ROBIN matchUps have equivalent finishingPositionRanges', () => {
   }
 });
 
-test('ROUND_ROBIN_WITH_PLAYOFFS will have accurate playoff finishingPositionRanges', () => {
+test('ROUND_ROBIN_WITH_PLAYOFF will have accurate playoff finishingPositionRanges', () => {
   let matchUpAddNotices = [];
 
   const subscriptions = {

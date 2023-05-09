@@ -2141,10 +2141,7 @@ const participantFilters = {
   signInStatus, // specific signIn status
   eventIds, // events in which participants appear
 };
-const {
-  competitionParticipants,
-  participantIdsWithConflicts // returns array of participantIds which have scheduling conflicts
-} =
+const { participants } =
   tournamentEngine.getParticipants({
     convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
     participantFilters, // optional - filters
@@ -2166,7 +2163,7 @@ const {
     withSeeding, // optionsl - add event seeding
     withScheduleItems, // optional boolean - include array of scheduled matchUp details
     withSignInStatus, // optional boolean
-    withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
+    withStatistics, // optional - adds events, matchUps and statistics, e.g. 'winRatio'
     withTeamMatchUps // optional boolean
   });
 ```
@@ -2445,7 +2442,7 @@ const {
 
   withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
   withScaleValues, // optional - include { ratings, rankings } attributes extracted from timeItems
-  withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
+  withStatistics, // optional - adds events, matchUps and statistics, e.g. 'winRatio'
   withGroupings, // optional - include membership in group, pair, and team participants
   withOpponents, // optional - include opponent participantIds
   withSeeding, // optionsl - add event seeding
@@ -2780,6 +2777,7 @@ tournamentEngine.modifyPairAssignment({
   participantId, // only valid to pass a participantId when { participantType: PAIR }
   eventId, // optional if drawId is provided
   drawId, // optional if eventId is provided; scopes change to specified draw
+  uuids, // optional array of uuids for use when generating new participant
 });
 ```
 

@@ -1,7 +1,9 @@
 import { competitionEngine, mocksEngine } from '../../..';
+import { unique } from '../../../utilities';
 import tournamentEngine from '../../sync';
 import { expect, test } from 'vitest';
 
+import { FACTORY } from '../../../constants/extensionConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
 
@@ -86,6 +88,19 @@ test('it can allocate courts to a TEAM matchUp', () => {
   );
   expect(updatedCourtIds.includes(courtIds[0])).toEqual(false);
 
+  result.dateMatchUps[0].schedule.allocatedCourts.forEach((court) => {
+    const attrs = Object.keys(court);
+    expect(attrs).toEqual(['venueId', 'courtId', 'venueName', 'courtName']);
+  });
+
+  expect(
+    unique(
+      result.dateMatchUps[0].schedule.allocatedCourts.map(
+        ({ venueId }) => venueId
+      )
+    ).length
+  ).toEqual(1);
+
   result = competitionEngine.removeMatchUpCourtAssignment({
     // not passing courtId will remove all allocatedCourts
     tournamentId,
@@ -96,4 +111,10 @@ test('it can allocate courts to a TEAM matchUp', () => {
 
   result = competitionEngine.competitionScheduleMatchUps({ matchUpFilters });
   expect(result.dateMatchUps[0].schedule.allocatedCourts).toBeUndefined();
+
+  result = tournamentEngine.getState();
+  expect(
+    result.tournamentRecord.extensions.filter(({ name }) => name === FACTORY)
+      .length
+  ).toEqual(1);
 });

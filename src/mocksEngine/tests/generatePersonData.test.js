@@ -50,6 +50,7 @@ it('minimizes duplication of names', () => {
   const { lastNames, firstFemale, firstMale } = namesData;
 
   let firstCount = Object.keys(firstInstances).length;
+  // fails if there are any duplicated firstMale names
   expect(firstCount).toEqual(firstMale.length);
   let firstInstanceRange = unique(Object.values(firstInstances)).sort(
     numericSort
@@ -57,6 +58,7 @@ it('minimizes duplication of names', () => {
   expect(firstInstanceRange[1] - firstInstanceRange[0]).toEqual(1);
 
   let lastCount = Object.keys(lastInstances).length;
+  // fails if there are any duplicated lastNames
   expect(lastCount).toEqual(lastNames.length);
   let lastInstanceRange = unique(Object.values(lastInstances)).sort(
     numericSort
@@ -78,6 +80,7 @@ it('minimizes duplication of names', () => {
   lastInstances = instanceCount(last);
 
   firstCount = Object.keys(firstInstances).length;
+  // fails if there are any duplicated firstFemale names
   expect(firstCount).toEqual(firstFemale.length);
   firstInstanceRange = unique(Object.values(firstInstances)).sort(numericSort);
   expect(firstInstanceRange[1] - firstInstanceRange[0]).toBeLessThanOrEqual(2);

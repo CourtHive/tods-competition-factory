@@ -149,6 +149,7 @@ export function tournamentEngineAsync(test) {
           timeStamp,
         },
       });
+      result.modificationsApplied = true;
     }
 
     if (notify)
@@ -199,6 +200,7 @@ export function tournamentEngineAsync(test) {
     const snapshot =
       rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
+    const result = {};
     const results = [];
     for (const directive of directives) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
@@ -230,6 +232,7 @@ export function tournamentEngineAsync(test) {
           timeStamp,
         },
       });
+      result.tournammentModified = true;
     }
     await notifySubscribersAsync({
       mutationStatus,
@@ -239,7 +242,7 @@ export function tournamentEngineAsync(test) {
     });
     deleteNotices();
 
-    return { results };
+    return { result, results };
   }
 }
 

@@ -93,6 +93,7 @@ export function modifyMatchUpScore({
   }
 
   if (
+    !matchUp.winningSide &&
     scoreHasValue(matchUp) &&
     !completedMatchUpStatuses.includes(matchUpStatus) &&
     ![AWAITING_RESULT, SUSPENDED].includes(matchUpStatus)

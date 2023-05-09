@@ -91,15 +91,13 @@ export function assignMatchUpDrawPosition({
     [WALKOVER, DEFAULTED].includes(matchUp.matchUpStatus) &&
     updatedDrawPositions.filter(Boolean).length < 2;
 
-  matchUpStatus = isByeMatchUp
-    ? BYE
-    : matchUpStatus
-    ? matchUpStatus
-    : isDoubleExitExit
-    ? matchUp.matchUpStatus
-    : [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus)
-    ? matchUp.matchUpStatus
-    : TO_BE_PLAYED;
+  matchUpStatus =
+    (isByeMatchUp && BYE) ||
+    matchUpStatus ||
+    (isDoubleExitExit && matchUp.matchUpStatus) ||
+    ([DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus) &&
+      matchUp.matchUpStatus) ||
+    TO_BE_PLAYED;
 
   if (positionAdded) {
     // necessary to update inContextDrawMatchUps
