@@ -25,6 +25,7 @@ import { getSide } from './getSide';
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import { MIXED } from '../../../constants/genderConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { TEAM } from '../../../constants/eventConstants';
 import {
@@ -601,7 +602,7 @@ export function getAllStructureMatchUps({
 
       const inferGender =
         contextProfile?.inferGender &&
-        !matchUpWithContext.gender &&
+        (!matchUpWithContext.gender || matchUpWithContext.gender === MIXED) &&
         matchUpWithContext.sides?.length === 2 &&
         matchUpWithContext.matchUpType !== TEAM;
 
