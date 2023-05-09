@@ -24,7 +24,6 @@ import {
   INVALID_PARTICIPANT,
   INVALID_PARTICIPANT_IDS,
   MISSING_PARTICIPANT_ID,
-  NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
@@ -106,7 +105,7 @@ export function removeTieMatchUpParticipantId(params) {
       ? [participantId]
       : participantToRemove.individualParticipantIds;
 
-  if (!dualMatchUp.sides) {
+  if (!dualMatchUp.sides?.length) {
     const { extension } = findExtension({
       element: drawDefinition,
       name: LINEUPS,
@@ -155,7 +154,8 @@ export function removeTieMatchUpParticipantId(params) {
   }
 
   if (!dualMatchUpSide) {
-    return { error: NOT_FOUND, participantId };
+    console.log({ teamParticipantId, teamParticipants });
+    return { error: PARTICIPANT_NOT_FOUND, participantId };
   }
 
   const { modifiedLineUp, previousParticipantIds } =
