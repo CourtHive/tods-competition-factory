@@ -80,7 +80,7 @@ export function getParticipantEntries({
   let matchUps = [];
 
   const getRanking = ({ eventType, scaleNames, participantId }) =>
-    participantMap[participantId]?.participant.rankings?.[eventType]?.find(
+    participantMap[participantId].participant?.rankings?.[eventType]?.find(
       (ranking) => scaleNames.includes(ranking.scaleName)
     )?.scaleValue;
 
@@ -122,6 +122,7 @@ export function getParticipantEntries({
 
       for (const entry of entries) {
         const { participantId } = entry;
+        if (!participantId || !participantMap[participantId]) continue; // handle bad data
 
         // get event ranking; this is the same for pairs, teams and all individual participants
         const ranking = getRanking({ eventType, scaleNames, participantId });
