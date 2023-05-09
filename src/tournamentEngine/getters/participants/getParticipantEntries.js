@@ -24,6 +24,7 @@ export function getParticipantEntries({
   policyDefinitions,
   tournamentRecord,
   usePublishState,
+  contextProfile,
   participantMap,
 
   withPotentialMatchUps,
@@ -363,6 +364,7 @@ export function getParticipantEntries({
         policyDefinitions,
         tournamentRecord,
         inContext: true,
+        contextProfile,
         participantMap,
         nextMatchUps,
         event,
