@@ -68,7 +68,11 @@
     "build": "rimraf dist && rollup --config",
     "test": "vitest",
     "coverage": "vitest run --coverage",
-    "lint": "eslint src",
+    "format": "prettier --write src",
+    "lint:staged": "TZ=UTC lint-staged",
+    "lint:tsc": "tsc --project tsconfig.json",
+    "lint": "eslint src --fix --cache",
+    "lint:report": "eslint src & eslint --cache src -f json > eslint-report.json",
     "prepare": "rimraf dist && rollup --config",
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
     "postinstall": "husky install",
@@ -140,7 +144,7 @@
     "vitest": "0.27.3"
   },
   "lint-staged": {
-    "*.{js,ts}": "eslint",
+    "*.{js,ts}": "eslint --cache --fix",
     "*": "prettier --ignore-unknown --write"
   },
   "browserslist": [
