@@ -12,6 +12,7 @@ import { SEEDING } from '../../../constants/scaleConstants';
 import {
   CONSOLATION,
   MAIN,
+  PLAY_OFF,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
 import {
@@ -154,11 +155,11 @@ export function getStructureReports({
                 ?.filter(
                   (s) =>
                     s.stageSequence === 1 &&
-                    [QUALIFYING, MAIN, CONSOLATION].includes(s.stage)
+                    [QUALIFYING, MAIN, CONSOLATION, PLAY_OFF].includes(s.stage)
                 )
                 .map((s) => {
                   const finalMatchUp =
-                    s.stage === MAIN &&
+                    [MAIN, PLAY_OFF].includes(s.stage) &&
                     matchUps.find(
                       (matchUp) =>
                         matchUp.structureId === s.structureId &&
