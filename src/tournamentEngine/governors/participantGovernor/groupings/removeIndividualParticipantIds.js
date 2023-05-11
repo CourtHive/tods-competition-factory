@@ -145,7 +145,7 @@ function removeParticipantIdsFromGroupingParticipant({
       targetParticipant &&
       participants
         .find((participant) => participant.participantId === participantId)
-        .matchUps.filter(({ eventId }) =>
+        ?.matchUps.filter(({ eventId }) =>
           groupingParticipantEventIds.includes(eventId)
         )
         .map(({ matchUpId }) => mappedMatchUps[matchUpId])
