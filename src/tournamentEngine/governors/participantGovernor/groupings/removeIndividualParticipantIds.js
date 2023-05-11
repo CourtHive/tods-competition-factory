@@ -154,7 +154,7 @@ function removeParticipantIdsFromGroupingParticipant({
         );
 
     const removeParticipant =
-      targetParticipant && !scoredParticipantGroupingMatchUps.length;
+      targetParticipant && !scoredParticipantGroupingMatchUps?.length;
 
     if (targetParticipant && !removeParticipant) {
       cannotRemove.push(participantId);
