@@ -460,6 +460,7 @@ export function positionActions(params) {
       appliedPolicies,
       drawDefinition,
       drawPosition,
+      validActions,
       structureId,
       structure,
       drawId,
