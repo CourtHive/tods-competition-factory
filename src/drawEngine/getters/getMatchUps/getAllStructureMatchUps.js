@@ -610,9 +610,12 @@ export function getAllStructureMatchUps({
         const sideGenders = matchUpWithContext.sides.map((side) => {
           if (matchUpWithContext.matchUpType === SINGLES)
             return side.participant?.person?.sex;
-          if (side.individualParticipants?.length === 2) {
+
+          if (side.participant?.individualParticipants?.length === 2) {
             const pairGenders = unique(
-              side.individualParticipants.map(({ sex }) => sex)
+              side.participant.individualParticipants.map(
+                (participant) => participant.person?.sex
+              )
             ).filter(Boolean);
             if (pairGenders.length === 1) return pairGenders[0];
           }
