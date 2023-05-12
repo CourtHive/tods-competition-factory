@@ -264,7 +264,7 @@ const { matchUps } = competitionEngine.allCompetitionMatchUps({
   afterRecoveryTimes, // optional boolean; include participant recovery times for each matchUp
   matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   nextMatchUps, // include winnerTo and loserTo matchUps
-  contextProfile, // optional: { inferGender: true, contextProfile: ['attribute', 'to', 'exclude'], withScaleValues }
+  contextProfile, // optional: { inferGender: true, withCompetitiveness: true, withScaleValues, true, exclude: ['attribute', 'to', 'exclude']}
 });
 ```
 
