@@ -10,6 +10,7 @@ dist
 *.code-workspace
 *.VSCodeCounter
 .nvim*
+.eslintcache
 documentation/.docusaurus
 documentation/build
 .DS_Store

@@ -220,6 +220,7 @@ const { matchUps } = drawEngine.allDrawMatchUps({
   tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
   requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
   tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps
+  contextProfile, // optional: { inferGender: true, withCompetitiveness: true, withScaleValues, true, exclude: ['attribute', 'to', 'exclude']}
 });
 ```
 

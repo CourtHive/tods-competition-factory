@@ -145,7 +145,7 @@ function removeParticipantIdsFromGroupingParticipant({
       targetParticipant &&
       participants
         .find((participant) => participant.participantId === participantId)
-        .matchUps.filter(({ eventId }) =>
+        ?.matchUps.filter(({ eventId }) =>
           groupingParticipantEventIds.includes(eventId)
         )
         .map(({ matchUpId }) => mappedMatchUps[matchUpId])
@@ -154,7 +154,7 @@ function removeParticipantIdsFromGroupingParticipant({
         );
 
     const removeParticipant =
-      targetParticipant && !scoredParticipantGroupingMatchUps.length;
+      targetParticipant && !scoredParticipantGroupingMatchUps?.length;
 
     if (targetParticipant && !removeParticipant) {
       cannotRemove.push(participantId);

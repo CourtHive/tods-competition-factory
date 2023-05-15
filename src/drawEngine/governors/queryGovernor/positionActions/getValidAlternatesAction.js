@@ -13,6 +13,7 @@ import {
 import {
   ALTERNATE_PARTICIPANT,
   ALTERNATE_PARTICIPANT_METHOD,
+  ASSIGN_PARTICIPANT,
 } from '../../../../constants/positionActionConstants';
 import {
   ALTERNATE,
@@ -30,12 +31,17 @@ export function getValidAlternatesAction({
   appliedPolicies,
   drawDefinition,
   drawPosition,
+  validActions,
   structureId,
   structure,
   drawId,
   event,
 }) {
   if (activeDrawPositions.includes(drawPosition)) return {};
+
+  const validAssignmentParticipantIds = validActions.find(
+    (action) => action.type === ASSIGN_PARTICIPANT
+  )?.availableParticipantIds;
 
   // TODO: document policy options
   const otherFlightEntries =
@@ -92,7 +98,7 @@ export function getValidAlternatesAction({
     )
     .map((entry) => entry.participantId);
 
-  const availableAlternatesParticipantIds = unique(
+  let availableAlternatesParticipantIds = unique(
     availableDrawEnteredParticipantIds.concat(
       availableEventAlternatesParticipantIds
     )
@@ -122,6 +128,15 @@ export function getValidAlternatesAction({
       );
     }
   }
+
+  // ensure that participantId is not available in multiple assignment options
+  if (validAssignmentParticipantIds?.length) {
+    availableAlternatesParticipantIds =
+      availableAlternatesParticipantIds.filter(
+        (id) => !validAssignmentParticipantIds.includes(id)
+      );
+  }
+
   const availableAlternates = returnParticipants
     ? tournamentParticipants?.filter((participant) =>
         availableAlternatesParticipantIds.includes(participant.participantId)
