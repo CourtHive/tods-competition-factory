@@ -27,7 +27,9 @@ itemType is a string, while itemSubTypes is an array of strings. In Competition 
 ```js
 itemType: 'SCHEDULE.ASSIGNMENT.VENUE',
 itemType: 'SCHEDULE.ASSIGNMENT.COURT',
+itemType: 'SCHEDULE.ALLOCATION.COURTS', // team events
 itemType: 'SCHEDULE.ASSIGNMENT.OFFICIAL',
+itemType: 'SCHEDULE.COURT.ORDER', // pro-scheduling ORDER OF PLAY
 itemType: 'SCHEDULE.DATE',
 itemType: 'SCHEDULE.TIME.SCHEDULED',
 itemType: 'SCHEDULE.TIME.START',
@@ -79,11 +81,9 @@ tournamentEngine.addEventTimeItem({ eventId, timeItem });
 #### Retrieving a timeITem from an event
 
 ```js
-const {
-  timeItem: retrievedTimeItem,
-  message,
-} = tournamentEngine.getEventTimeItem({
-  itemType: 'RETRIEVAL.RANKING.SINGLES.U18',
-  eventId,
-});
+const { timeItem: retrievedTimeItem, message } =
+  tournamentEngine.getEventTimeItem({
+    itemType: 'RETRIEVAL.RANKING.SINGLES.U18',
+    eventId,
+  });
 ```

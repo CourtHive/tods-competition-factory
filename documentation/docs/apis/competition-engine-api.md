@@ -270,6 +270,23 @@ const { matchUps } = competitionEngine.allCompetitionMatchUps({
 
 ---
 
+## addMatchUpCourtOrder
+
+When using Pro-scheduling, assign order on court
+
+```js
+competitionEngine.addMatchUpCourtOrder({
+  removePriorValues, // optional boolean
+  drawId, // drawId where matchUp is found
+  tournamentId,
+  courtOrder,
+  matchUpId,
+  courtId,
+});
+```
+
+---
+
 ## assignMatchUpCourt
 
 ```js

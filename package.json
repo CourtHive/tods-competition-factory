@@ -22,7 +22,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "0.493.0",
+  "version": "0.496.0",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/tods-competition-factory/",
@@ -105,7 +105,7 @@
     "@rollup/plugin-json": "6.0.0",
     "@rollup/plugin-node-resolve": "15.0.2",
     "@rollup/plugin-typescript": "11.1.1",
-    "@types/node": "18.16.9",
+    "@types/node": "18.16.12",
     "@typescript-eslint/eslint-plugin": "5.59.6",
     "@typescript-eslint/parser": "5.59.6",
     "@vitest/coverage-c8": "0.27.3",
@@ -130,9 +130,9 @@
     "pinst": "3.0.0",
     "prettier": "2.8.8",
     "prettier-eslint": "15.0.1",
-    "quicktype": "23.0.30",
+    "quicktype": "23.0.32",
     "rimraf": "5.0.0",
-    "rollup": "3.21.7",
+    "rollup": "3.21.8",
     "rollup-plugin-dts": "5.3.0",
     "rollup-plugin-esbuild": "5.0.0",
     "rollup-plugin-terser": "7.0.2",
@@ -140,7 +140,7 @@
     "tslib": "2.5.0",
     "typescript": "5.0.4",
     "variable-diff": "^2.0.2",
-    "vite": "4.3.6",
+    "vite": "4.3.7",
     "vitest": "0.27.3"
   },
   "lint-staged": {

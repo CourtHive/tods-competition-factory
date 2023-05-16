@@ -3,7 +3,11 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, test } from 'vitest';
 
-import { MISSING_DATE } from '../../../constants/errorConditionConstants';
+import { IN_PROGRESS } from '../../../constants/tournamentConstants';
+import {
+  INVALID_VALUES,
+  MISSING_DATE,
+} from '../../../constants/errorConditionConstants';
 
 test('tournamentEngine can set tournament startDate and endDate', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -34,6 +38,17 @@ test('tournamentEngine can set tournament startDate and endDate', () => {
   result = tournamentEngine.setTournamentEndDate({ endDate: anEarlierEndDate });
   expect(result.success).toEqual(true);
 
+  result = tournamentEngine.setTournamentStatus({ status: 'UNKNOWN' });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.setTournamentStatus();
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.setTournamentStatus({ status: IN_PROGRESS });
+  expect(result.success).toEqual(true);
+
   ({ tournamentInfo } = tournamentEngine.getTournamentInfo());
   expect(tournamentInfo.startDate).toEqual(anEarlierEndDate);
+
+  expect(tournamentInfo.tournamentStatus).toEqual(IN_PROGRESS);
 });

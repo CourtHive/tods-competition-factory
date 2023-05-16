@@ -1,5 +1,6 @@
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { convertPointEight } from './conversion/convertPointEight';
+import { setTournamentStatus } from './setTournamentStatus';
 import { addNotes, removeNotes } from './addRemoveNotes';
 import { analyzeTournament } from './analyzeTournament';
 import { analyzeDraws } from './analysis/analyzeDraws';
@@ -70,6 +71,7 @@ const tournamentGovernor = {
   addDrawDefinitionExtension,
   removeDrawDefinitionExtension,
 
+  setTournamentStatus,
   convertPointEight,
 };
 

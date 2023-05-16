@@ -684,6 +684,22 @@ tournamentEngine.assignDrawPosition({
 
 ---
 
+## addMatchUpCourtOrder
+
+When using Pro-scheduling, assign order on court
+
+```js
+tournamentEngine.addMatchUpCourtOrder({
+  removePriorValues, // optional boolean
+  drawId, // drawId where matchUp is found
+  courtOrder,
+  matchUpId,
+  courtId,
+});
+```
+
+---
+
 ## assignMatchUpCourt
 
 ```js
@@ -3780,6 +3796,14 @@ Accepts an ISO String Date;
 
 ```js
 tournamentEngine.setTournamentStartDate({ StartDate });
+```
+
+---
+
+## setTournamentStatus
+
+```js
+tournamentEngine.setTournamentStatus({ status: CANCELLED });
 ```
 
 ---

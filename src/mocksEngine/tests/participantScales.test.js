@@ -279,7 +279,7 @@ it('can get predictiveAccuracy for DOUBLES events', () => {
   );
   expect(matchUpStatuses).toEqual([COMPLETED]);
 
-  const { accuracy } = tournamentEngine.getPredictiveAccuracy({
+  let { accuracy } = tournamentEngine.getPredictiveAccuracy({
     valueAccessor: 'wtnRating',
     scaleName: WTN,
   });
@@ -287,6 +287,30 @@ it('can get predictiveAccuracy for DOUBLES events', () => {
   expect(matchUps.length).toEqual(
     accuracy.affirmative.length + accuracy.negative.length
   );
+
+  ({ accuracy } = tournamentEngine.getPredictiveAccuracy({
+    valueAccessor: 'wtnRating',
+    scaleName: WTN,
+    drawId: 'none',
+  }));
+
+  expect(
+    accuracy.affirmative.length +
+      accuracy.negative.length +
+      accuracy.excluded.length
+  ).toEqual(0);
+
+  ({ accuracy } = tournamentEngine.getPredictiveAccuracy({
+    valueAccessor: 'wtnRating',
+    scaleName: WTN,
+    eventId: 'none',
+  }));
+
+  expect(
+    accuracy.affirmative.length +
+      accuracy.negative.length +
+      accuracy.excluded.length
+  ).toEqual(0);
 });
 
 it('can pass matchUps array into predictiveAccuracy', () => {

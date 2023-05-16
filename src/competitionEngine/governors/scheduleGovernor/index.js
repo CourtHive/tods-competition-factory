@@ -37,6 +37,7 @@ import {
   addMatchUpResumeTime,
   addMatchUpOfficial,
   addMatchUpScheduleItems,
+  addMatchUpCourtOrder,
   allocateTeamMatchUpCourts,
   assignMatchUpVenue,
   assignMatchUpCourt,
@@ -84,6 +85,7 @@ const scheduleGovernor = {
   addMatchUpScheduleItems, // test
   addMatchUpScheduledDate,
   addMatchUpScheduledTime,
+  addMatchUpCourtOrder,
   addMatchUpStartTime,
   addMatchUpStopTime,
   addMatchUpResumeTime,
