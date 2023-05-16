@@ -248,6 +248,7 @@ it('can add events, venues, and schedule matchUps', () => {
 
   ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
   expect(upcomingMatchUps[0].timeItems.length).toEqual(13);
+  expect(upcomingMatchUps[0].schedule.courtOrder).toEqual(1);
 
   result = competitionEngine.matchUpScheduleChange();
   expect(result.error).toEqual(MISSING_VALUE);
