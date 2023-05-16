@@ -17,6 +17,12 @@ export const STOP_TIME = 'SCHEDULE.TIME.STOP';
 export const RESUME_TIME = 'SCHEDULE.TIME.RESUME';
 export const END_TIME = 'SCHEDULE.TIME.END';
 
+export const TIME_MODIFIERS = 'SCHEDULE.TIME.MODIFIERS';
+export const AFTER_REST = 'AFTER_REST';
+export const FOLLOWED_BY = 'FOLLOWED_BY';
+export const NEXT_AVAILABLE = 'NEXT_AVAILABLE';
+export const NOT_BEFORE = 'NOT_BEFORE';
+
 export const ELIGIBILITY = 'ELIGIBILITY';
 export const REGISTRATION = 'REGISTRATION';
 export const SUSPENSION = 'SUSPENSION';
