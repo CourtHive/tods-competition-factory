@@ -9,6 +9,7 @@ import { matchUpAllocatedCourts } from './courtAllocations';
 import { matchUpAssignedCourtId } from './courtAssignment';
 import { matchUpAssignedVenueId } from './venueAssignment';
 import { matchUpDuration } from './matchUpDuration';
+import { matchUpCourtOrder } from './courtOrder';
 import { matchUpStartTime } from './startTime';
 import { matchUpEndTime } from './endTime';
 import {
@@ -82,8 +83,9 @@ export function getMatchUpScheduleDetails({
     const { allocatedCourts } = matchUpAllocatedCourts(scheduleSource);
     const { scheduledTime } = scheduledMatchUpTime(scheduleSource);
     let { scheduledDate } = scheduledMatchUpDate(scheduleSource);
-    const { courtId } = matchUpAssignedCourtId(scheduleSource);
     const { venueId } = matchUpAssignedVenueId(scheduleSource);
+    const { courtId } = matchUpAssignedCourtId(scheduleSource);
+    const { courtOrder } = matchUpCourtOrder(scheduleSource);
 
     let timeAfterRecovery,
       averageMinutes,
@@ -173,6 +175,7 @@ export function getMatchUpScheduleDetails({
       venueAbbreviation,
       venueName,
       venueId,
+      courtOrder,
       courtName,
       courtId,
 

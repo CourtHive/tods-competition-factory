@@ -12,6 +12,7 @@ import {
   addMatchUpStopTime as addStopTime,
   addMatchUpOfficial as addOfficial,
   addMatchUpScheduleItems as addScheduleItems,
+  addMatchUpCourtOrder as addCourtOrder,
 } from '../../../../tournamentEngine/governors/scheduleGovernor/scheduleItems';
 
 import {
@@ -191,6 +192,31 @@ export function allocateTeamMatchUpCourts(params) {
     courtDayDate,
     matchUpId,
     courtIds,
+  });
+}
+
+export function addMatchUpCourtOrder(params) {
+  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
+  if (error) return { error };
+
+  const {
+    removePriorValues,
+    tournamentRecords,
+    disableNotice,
+    courtOrder,
+    matchUpId,
+    courtId,
+  } = params;
+
+  return addCourtOrder({
+    removePriorValues,
+    tournamentRecords,
+    tournamentRecord,
+    drawDefinition,
+    disableNotice,
+    courtOrder,
+    matchUpId,
+    courtId,
   });
 }
 

@@ -1,6 +1,7 @@
 import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 import { modifyEventMatchUpFormatTiming } from './matchUpFormatTiming/modifyEventMatchUpFormatTiming';
 import { removeEventMatchUpFormatTiming } from './matchUpFormatTiming/removeEventMatchUpFormatTiming';
+import { addMatchUpCourtOrder } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFormatTimingUpdate';
 import { validateSchedulingProfile } from '../../../global/validation/validateSchedulingProfile';
 import { getModifiedMatchUpFormatTiming } from './matchUpFormatTiming/getModifiedMatchUpTiming';
@@ -35,6 +36,7 @@ import {
 
 const scheduleGovernor = {
   allocateTeamMatchUpCourts,
+  addMatchUpCourtOrder,
   assignMatchUpCourt,
   assignMatchUpVenue,
 

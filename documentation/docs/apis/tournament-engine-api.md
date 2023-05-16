@@ -684,6 +684,22 @@ tournamentEngine.assignDrawPosition({
 
 ---
 
+## addMatchUpCourtOrder
+
+When using Pro-scheduling, assign order on court
+
+```js
+tournamentEngine.addMatchUpCourtOrder({
+  removePriorValues, // optional boolean
+  drawId, // drawId where matchUp is found
+  courtOrder,
+  matchUpId,
+  courtId,
+});
+```
+
+---
+
 ## assignMatchUpCourt
 
 ```js

@@ -9,6 +9,7 @@ import {
   addMatchUpStopTime as addStopTime,
   addMatchUpOfficial as addOfficial,
   addMatchUpEndTime as addEndTime,
+  addMatchUpCourtOrder as addCourtOrder,
 } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 
 import { INDIVIDUAL } from '../../../constants/participantConstants';
@@ -128,6 +129,23 @@ export function addMatchUpResumeTime({
     drawDefinition,
     disableNotice,
     resumeTime,
+    matchUpId,
+  });
+  return result;
+}
+
+export function addMatchUpCourtOrder({
+  tournamentRecord,
+  drawDefinition,
+  disableNotice,
+  courtOrder,
+  matchUpId,
+}) {
+  const result = addCourtOrder({
+    tournamentRecord,
+    drawDefinition,
+    disableNotice,
+    courtOrder,
     matchUpId,
   });
   return result;

@@ -1,4 +1,5 @@
 import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
+import { allocateTeamMatchUpCourts } from '../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
 import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
@@ -32,6 +33,7 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_VALUE,
   ANACHRONISM,
+  INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
 import {
   START_TIME,
@@ -40,8 +42,9 @@ import {
   END_TIME,
   SCHEDULED_TIME,
   SCHEDULED_DATE,
+  COURT_ORDER,
 } from '../../../constants/timeItemConstants';
-import { allocateTeamMatchUpCourts } from '../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
+import { isNumeric } from '../../../utilities/math';
 
 function timeDate(value, scheduledDate) {
   const time = validTimeString.test(value) ? value : extractTime(value);
@@ -82,6 +85,7 @@ export function addMatchUpScheduleItems({
     endTime,
     courtId,
     courtIds,
+    courtOrder,
     resumeTime,
     scheduledDate,
     scheduledTime,
@@ -222,6 +226,18 @@ export function addMatchUpScheduleItems({
     });
     if (result?.error) return { error: result.error, venueId };
   }
+  if (courtOrder !== undefined) {
+    const result = addMatchUpCourtOrder({
+      disableNotice: true,
+      tournamentRecords,
+      tournamentRecord,
+      drawDefinition,
+      courtOrder,
+      matchUpId,
+      event,
+    });
+    if (result?.error) return { error: result.error, venueId };
+  }
 
   if (!disableNotice) {
     modifyMatchUpNotice({
@@ -256,6 +272,34 @@ export function addMatchUpScheduledDate({
   const timeItem = {
     itemType: SCHEDULED_DATE,
     itemValue: scheduledDate,
+  };
+
+  return addMatchUpTimeItem({
+    duplicateValues: false,
+    tournamentRecord,
+    drawDefinition,
+    disableNotice,
+    matchUpId,
+    timeItem,
+  });
+}
+
+export function addMatchUpCourtOrder({
+  tournamentRecord,
+  drawDefinition,
+  disableNotice,
+  courtOrder,
+  matchUpId,
+}) {
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+
+  if (courtOrder && !isNumeric(courtOrder))
+    return { error: INVALID_VALUES, info: 'courtOrder must be numeric' };
+
+  const itemValue = courtOrder;
+  const timeItem = {
+    itemType: COURT_ORDER,
+    itemValue,
   };
 
   return addMatchUpTimeItem({

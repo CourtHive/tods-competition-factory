@@ -2,9 +2,11 @@ export const CHECK_IN = 'CHECK_IN';
 export const CHECK_OUT = 'CHECK_OUT';
 
 export const SCHEDULE = 'SCHEDULE';
+export const ASSIGN_VENUE = 'SCHEDULE.ASSIGNMENT.VENUE';
 export const ALLOCATE_COURTS = 'SCHEDULE.ALLOCATION.COURTS';
 export const ASSIGN_COURT = 'SCHEDULE.ASSIGNMENT.COURT';
-export const ASSIGN_VENUE = 'SCHEDULE.ASSIGNMENT.VENUE';
+export const COURT_ORDER = 'SCHEDULE.COURT.ORDER';
+
 export const SCHEDULED_DATE = 'SCHEDULE.DATE';
 export const COMPLETED_DATE = 'COMPLETED.DATE'; // considering adding this timeItem on completed score entry provided date is between tournament startDate/endDate
 
