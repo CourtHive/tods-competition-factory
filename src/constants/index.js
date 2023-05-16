@@ -24,6 +24,7 @@ import { surfaceConstants } from './surfaceConstants';
 import { tieFormatConstants } from './tieFormatConstants';
 import { timeItemConstants } from './timeItemConstants';
 import { topicConstants } from './topicConstants';
+import { tournamentConstants } from './tournamentConstants';
 import { venueConstants } from './venueConstants';
 
 import {
@@ -73,6 +74,7 @@ export const factoryConstants = {
   tieFormatConstants,
   timeItemConstants,
   topicConstants,
+  tournamentConstants,
   upcomingMatchUpStatuses,
   validMatchUpStatuses,
   venueConstants,
