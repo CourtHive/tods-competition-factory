@@ -6,9 +6,15 @@ import {
 } from './matchUpsGetter';
 
 import { COMPETITIVE, DECISIVE, ROUTINE } from '../../constants/statsConstants';
-import { RETIRED, WALKOVER } from '../../constants/matchUpStatusConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { SUCCESS } from '../../constants/resultConstants';
+import {
+  ABANDONED,
+  DEAD_RUBBER,
+  DEFAULTED,
+  RETIRED,
+  WALKOVER,
+} from '../../constants/matchUpStatusConstants';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
@@ -43,42 +49,43 @@ export function getPredictiveAccuracy({
   };
   const participants = tournamentRecord?.participants;
 
-  if (matchUps) {
-    if (matchUpType) {
-      matchUps = matchUps.filter(
-        (matchUp) => matchUp.matchUpType === matchUpType
-      );
-    }
-  } else {
-    matchUps =
-      (drawId &&
-        allDrawMatchUps({
-          inContext: true,
-          drawDefinition,
-          contextFilters,
-          contextProfile,
-          participants,
-        })?.matchUps) ||
-      (!drawId &&
-        eventId &&
-        allEventMatchUps({
-          inContext: true,
-          contextFilters,
-          contextProfile,
-          participants,
-          event,
-        })?.matchUps) ||
-      allTournamentMatchUps({
-        tournamentRecord,
+  matchUps =
+    matchUps ||
+    (drawId &&
+      allDrawMatchUps({
+        inContext: true,
+        drawDefinition,
         contextFilters,
         contextProfile,
-      })?.matchUps ||
-      [];
+        participants,
+      })?.matchUps) ||
+    (!drawId &&
+      eventId &&
+      allEventMatchUps({
+        inContext: true,
+        contextFilters,
+        contextProfile,
+        participants,
+        event,
+      })?.matchUps) ||
+    allTournamentMatchUps({
+      tournamentRecord,
+      contextFilters,
+      contextProfile,
+    })?.matchUps ||
+    [];
+
+  if (matchUpType) {
+    matchUps = matchUps.filter(
+      (matchUp) => matchUp.matchUpType === matchUpType
+    );
   }
 
   const relevantMatchUps = matchUps.filter(
     ({ winningSide, score, sides, matchUpStatus }) =>
-      ![RETIRED, WALKOVER].includes(matchUpStatus) &&
+      ![RETIRED, DEFAULTED, WALKOVER, DEAD_RUBBER, ABANDONED].includes(
+        matchUpStatus
+      ) &&
       scoreHasValue({ score }) &&
       sides?.length === 2 &&
       winningSide
