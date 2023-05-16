@@ -3800,6 +3800,14 @@ tournamentEngine.setTournamentStartDate({ StartDate });
 
 ---
 
+## setTournamentStatus
+
+```js
+tournamentEngine.setTournamentStatus({ status: CANCELLED });
+```
+
+---
+
 ## toggleParticipantCheckInState
 
 ```js

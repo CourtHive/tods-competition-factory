@@ -9,6 +9,7 @@ export function getTournamentInfo({ tournamentRecord }) {
   const tournamentInfo = (({
     tournamentId,
     tournamentRank,
+    tournamentStatus,
 
     formalName,
     tournamentName,
@@ -25,6 +26,7 @@ export function getTournamentInfo({ tournamentRecord }) {
   }) => ({
     tournamentId,
     tournamentRank,
+    tournamentStatus,
 
     formalName,
     tournamentName,
