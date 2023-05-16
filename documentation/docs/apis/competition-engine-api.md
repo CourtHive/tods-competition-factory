@@ -425,6 +425,7 @@ const matchUpFilters = {
 const { completedMatchUps, dateMatchUps, courtsData, venues } =
   competitionEngine.competitionScheduleMatchUps({
     alwaysReturnCompleted, // boolean - when true return completed matchUps regardless of publish state
+    courtCompletedMatchUps, // boolean - include completed matchUps in court.matchUps - useful for pro-scheduling
     participantsProfile, // optional - ability to specify additions to context (see parameters of tournamentEngine.getTournamentParticipants())
     sortDateMatchUps, // boolean - optional - defaults to `true`
     usePublishState, // boolean - when true filter out events and dates that have not been published

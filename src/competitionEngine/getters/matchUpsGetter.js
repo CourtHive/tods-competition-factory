@@ -59,6 +59,7 @@ export function competitionScheduleMatchUps(params) {
   const { matchUpFilters = {}, contextFilters = {} } = params;
   const {
     sortDateMatchUps = true,
+    courtCompletedMatchUps,
     alwaysReturnCompleted,
     tournamentRecords,
     activeTournamentId,
@@ -174,13 +175,16 @@ export function competitionScheduleMatchUps(params) {
     courtsData,
     completedMatchUps: alwaysReturnCompleted
       ? allCompletedMatchUps
-      : completedMatchUps,
-    dateMatchUps,
+      : completedMatchUps, // completed matchUps for the filter date
+    dateMatchUps, // all incomplete matchUps for the filter date
     venues,
   };
 
   function getCourtMatchUps({ courtId }) {
-    const courtMatchUps = dateMatchUps.filter(
+    const matchUpsToConsider = courtCompletedMatchUps
+      ? dateMatchUps.concat(completedMatchUps || [])
+      : dateMatchUps;
+    const courtMatchUps = matchUpsToConsider.filter(
       (matchUp) =>
         matchUp.schedule?.courtId === courtId ||
         matchUp.schedule?.allocatedCourts
