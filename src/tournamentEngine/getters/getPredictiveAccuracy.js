@@ -49,31 +49,40 @@ export function getPredictiveAccuracy({
   };
   const participants = tournamentRecord?.participants;
 
-  matchUps =
-    matchUps ||
-    (drawId &&
-      allDrawMatchUps({
-        inContext: true,
-        drawDefinition,
+  if (matchUps && matchUps[0].hasContext) {
+    if (drawId) {
+      matchUps = matchUps.filter((matchUp) => matchUp.drawId === drawId);
+    } else if (eventId) {
+      matchUps = matchUps.filter((matchUp) => matchUp.eventId === eventId);
+    }
+  } else {
+    matchUps =
+      (drawId && !drawDefinition && []) ||
+      (!drawId && eventId && !event && []) ||
+      (drawId &&
+        allDrawMatchUps({
+          inContext: true,
+          drawDefinition,
+          contextFilters,
+          contextProfile,
+          participants,
+        })?.matchUps) ||
+      (!drawId &&
+        eventId &&
+        allEventMatchUps({
+          inContext: true,
+          contextFilters,
+          contextProfile,
+          participants,
+          event,
+        })?.matchUps) ||
+      allTournamentMatchUps({
+        tournamentRecord,
         contextFilters,
         contextProfile,
-        participants,
-      })?.matchUps) ||
-    (!drawId &&
-      eventId &&
-      allEventMatchUps({
-        inContext: true,
-        contextFilters,
-        contextProfile,
-        participants,
-        event,
-      })?.matchUps) ||
-    allTournamentMatchUps({
-      tournamentRecord,
-      contextFilters,
-      contextProfile,
-    })?.matchUps ||
-    [];
+      })?.matchUps ||
+      [];
+  }
 
   if (matchUpType) {
     matchUps = matchUps.filter(
