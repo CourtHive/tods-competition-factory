@@ -17,6 +17,7 @@ import { setMatchUpStatus } from './setMatchUpStatus';
 import { setOrderOfFinish } from './setOrderOfFinish';
 import { setMatchUpFormat } from './setMatchUpFormat';
 import { resetScorecard } from './resetScorecard';
+import { addGoesTo } from './addGoesTo';
 
 import {
   addMatchUpScheduledDate,
@@ -53,6 +54,7 @@ const matchUpGovernor = {
   addMatchUpEndTime,
   addMatchUpStopTime,
   addMatchUpResumeTime,
+  addGoesTo,
 
   setOrderOfFinish,
   setDelegatedOutcome,
