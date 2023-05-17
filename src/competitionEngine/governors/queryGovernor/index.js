@@ -1,3 +1,4 @@
+import { competitionScheduleMatchUps } from '../../getters/competitionScheduleMatchUps';
 import { getParticipantScaleItem } from '../../getters/getParticipantScaleItem';
 import { getSchedulingProfileIssues } from './getSchedulingProfileIssues';
 import { getCompetitionDateRange } from './getCompetitionDateRange';
@@ -11,7 +12,6 @@ import {
 import {
   allCompetitionMatchUps,
   competitionMatchUps,
-  competitionScheduleMatchUps,
 } from '../../getters/matchUpsGetter';
 
 import { SUCCESS } from '../../../constants/resultConstants';

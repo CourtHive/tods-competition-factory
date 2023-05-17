@@ -1,7 +1,7 @@
 import { matchUpFormatTimes } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduleTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
+import { competitionScheduleMatchUps } from '../../../getters/competitionScheduleMatchUps';
 import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength';
-import { competitionScheduleMatchUps } from '../../../getters/matchUpsGetter';
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
 import { getMatchUpId } from '../../../../global/functions/extractors';
 import { getScheduleTimes } from '../garman/getScheduleTimes';
@@ -185,11 +185,9 @@ export function calculateScheduleTimes({
 
   // if a single venue specified, or only one venue available, return venueId
   const venueId =
-    venueIds?.length === 1
-      ? venueIds[0]
-      : venues?.length === 1
-      ? venues[0].venueId
-      : undefined;
+    (venueIds?.length === 1 && venueIds[0]) ||
+    (venues?.length === 1 && venues[0].venueId) ||
+    undefined;
 
   const dateScheduledMatchUpIds = relevantMatchUps.map(getMatchUpId);
 

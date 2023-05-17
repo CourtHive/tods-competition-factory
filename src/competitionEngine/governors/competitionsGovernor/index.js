@@ -1,5 +1,6 @@
 import { bulkScheduleMatchUps } from '../scheduleGovernor/bulkScheduleMatchUps';
 import { bulkMatchUpStatusUpdate, setMatchUpStatus } from './setMatchUpStatus';
+import { courtGridRows } from '../../generators/courtGridRows';
 import { addDrawDefinition } from './addDrawDefinition';
 import { addParticipant } from './addParticipant';
 import {
@@ -41,6 +42,7 @@ const competitionGovernor = {
   getCompetitionParticipants,
   getParticipants,
   addParticipant,
+  courtGridRows,
 
   setMatchUpStatus,
   bulkMatchUpStatusUpdate,
