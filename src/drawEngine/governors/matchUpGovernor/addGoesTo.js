@@ -3,11 +3,15 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { addFinishingRounds } from '../../generators/addFinishingRounds';
 import { positionTargets } from '../positionGovernor/positionTargets';
 
+import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+
 export function addGoesTo({
   inContextDrawMatchUps,
   drawDefinition,
   matchUpsMap,
 }) {
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+
   const goesToMap = { loserMatchUpIds: {}, winnerMatchUpIds: [] };
 
   if (!inContextDrawMatchUps) {

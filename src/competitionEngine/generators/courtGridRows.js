@@ -1,6 +1,9 @@
 import { generateRange } from '../../utilities';
 
+import { INVALID_VALUES } from '../../constants/errorConditionConstants';
+
 export function courtGridRows({ courtsData, courtPrefix = 'C|' }) {
+  if (!Array.isArray(courtsData)) return { error: INVALID_VALUES };
   const maxCourtOrder = courtsData?.reduce((order, court) => {
     const matchUps = court.matchUps || [];
     const courtOrder = Math.max(
