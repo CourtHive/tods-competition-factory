@@ -453,6 +453,18 @@ const { completedMatchUps, dateMatchUps, courtsData, venues } =
 
 ---
 
+## courtGridRows
+
+Method can be invoked by passing `({ withCourtGridRows: true })` to method `competitionEngine.competitionScheduledMatchUps`.
+
+```js
+const { rows } = competitionEngine.courtGridRows({
+  courtsData, // produced by "competitionEngine.competitionScheduleMatchUps" method
+});
+```
+
+---
+
 ## deleteCourt
 
 ```js
