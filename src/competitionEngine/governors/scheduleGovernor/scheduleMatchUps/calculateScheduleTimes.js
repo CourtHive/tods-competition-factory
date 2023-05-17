@@ -1,7 +1,7 @@
 import { matchUpFormatTimes } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduleTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
+import { competitionScheduleMatchUps } from '../../../getters/competitionScheduleMatchUps';
 import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength';
-import { competitionScheduleMatchUps } from '../../../getters/matchUpsGetter';
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
 import { getMatchUpId } from '../../../../global/functions/extractors';
 import { getScheduleTimes } from '../garman/getScheduleTimes';
