@@ -139,6 +139,14 @@ test.each([competitionEngineSync])(
       showGlobalLog: false,
     });
 
+    result = competitionEngine.competitionScheduleMatchUps({
+      nextMatchUps: true,
+    });
+    expect(
+      result.dateMatchUps.find((m) => m.winnerMatchUpId && !m.readyToScore)
+        ?.potentialParticipants.length
+    ).toBeGreaterThan(1);
+
     const { matchUps } = competitionEngine.allCompetitionMatchUps({
       afterRecoveryTimes: true,
     });
