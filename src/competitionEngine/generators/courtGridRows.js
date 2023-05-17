@@ -26,9 +26,11 @@ export function courtGridRows({
       const courtInfo = courtsData[courtIndex];
       const { courtId, venueId } = courtInfo;
       return {
-        courtOrder: rowIndex + 1,
-        venueId,
-        courtId,
+        schedule: {
+          courtOrder: rowIndex + 1,
+          venueId,
+          courtId,
+        },
       };
     }),
   }));
