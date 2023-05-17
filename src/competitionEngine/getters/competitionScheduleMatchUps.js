@@ -147,7 +147,8 @@ export function competitionScheduleMatchUps(params) {
   };
 
   if (withCourtGridRows) {
-    const { rows } = courtGridRows({ courtsData });
+    const { rows, courtPrefix } = courtGridRows({ courtsData });
+    result.courtPrefix = courtPrefix; // pass through for access to internal defaults by consumer
     result.rows = rows;
   }
 

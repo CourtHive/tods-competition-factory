@@ -28,6 +28,7 @@ export function courtGridRows({ courtsData, courtPrefix = 'C|' }) {
   });
 
   return {
+    courtPrefix,
     rows: rowBuilder.map((row) =>
       Object.assign(
         {},
