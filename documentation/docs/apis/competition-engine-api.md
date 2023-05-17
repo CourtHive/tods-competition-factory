@@ -444,7 +444,9 @@ const { completedMatchUps, dateMatchUps, courtsData, venues } =
     alwaysReturnCompleted, // boolean - when true return completed matchUps regardless of publish state
     courtCompletedMatchUps, // boolean - include completed matchUps in court.matchUps - useful for pro-scheduling
     participantsProfile, // optional - ability to specify additions to context (see parameters of tournamentEngine.getTournamentParticipants())
-    sortDateMatchUps, // boolean - optional - defaults to `true`
+    withCourtGridRows, // optional boolean - return { rows } of matchUps for courts layed out as a grid, with empty cells
+    minCourtGridRows, // optional integer - minimum number of rows to return (compared to auto-calculated rows)
+    sortDateMatchUps, // boolean boolean - optional - defaults to `true`
     usePublishState, // boolean - when true filter out events and dates that have not been published
     matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
     sortCourtsData, // boolean - optional
@@ -459,6 +461,7 @@ Method can be invoked by passing `({ withCourtGridRows: true })` to method `comp
 
 ```js
 const { rows } = competitionEngine.courtGridRows({
+  minRowCount, // optional integer - minimum number of rows to return (compared to auto-calculated rows)
   courtsData, // produced by "competitionEngine.competitionScheduleMatchUps" method
 });
 ```

@@ -29,6 +29,7 @@ export function competitionScheduleMatchUps(params) {
     activeTournamentId,
     tournamentRecords,
     withCourtGridRows,
+    minCourtGridRows,
     usePublishState,
     status = PUBLIC,
     sortCourtsData,
@@ -131,9 +132,9 @@ export function competitionScheduleMatchUps(params) {
   const courtsData = courts.map((court) => {
     const matchUps = getCourtMatchUps(court);
     return {
-      ...court,
-      matchUps,
       surfaceCategory: court?.surfaceCategory || '',
+      matchUps,
+      ...court,
     };
   });
 
@@ -147,7 +148,11 @@ export function competitionScheduleMatchUps(params) {
   };
 
   if (withCourtGridRows) {
-    const { rows } = courtGridRows({ courtsData });
+    const { rows, courtPrefix } = courtGridRows({
+      minRowsCount: minCourtGridRows,
+      courtsData,
+    });
+    result.courtPrefix = courtPrefix; // pass through for access to internal defaults by consumer
     result.rows = rows;
   }
 

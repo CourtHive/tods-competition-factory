@@ -2,7 +2,11 @@ import { generateRange } from '../../utilities';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 
-export function courtGridRows({ courtsData, courtPrefix = 'C|' }) {
+export function courtGridRows({
+  courtPrefix = 'C|',
+  minRowsCount,
+  courtsData,
+}) {
   if (!Array.isArray(courtsData)) return { error: INVALID_VALUES };
   const maxCourtOrder = courtsData?.reduce((order, court) => {
     const matchUps = court.matchUps || [];
@@ -13,9 +17,20 @@ export function courtGridRows({ courtsData, courtPrefix = 'C|' }) {
     return courtOrder > order ? courtOrder : order;
   }, 1);
 
-  const rowBuilder = generateRange(0, maxCourtOrder).map((i) => ({
-    rownumber: i + 1,
-    matchUps: [],
+  const rowsCount = minRowsCount
+    ? Math.max(minRowsCount, maxCourtOrder)
+    : maxCourtOrder;
+
+  const rowBuilder = generateRange(0, rowsCount).map((rowIndex) => ({
+    matchUps: generateRange(0, courtsData.length).map((courtIndex) => {
+      const courtInfo = courtsData[courtIndex];
+      const { courtId, venueId } = courtInfo;
+      return {
+        courtOrder: rowIndex + 1,
+        venueId,
+        courtId,
+      };
+    }),
   }));
 
   courtsData.forEach((courtInfo, i) => {
@@ -27,12 +42,15 @@ export function courtGridRows({ courtsData, courtPrefix = 'C|' }) {
     }
   });
 
-  return rowBuilder.map((row) =>
-    Object.assign(
-      {},
-      ...row.matchUps.map((matchUp, i) => ({
-        [`${courtPrefix}${i}`]: matchUp,
-      }))
-    )
-  );
+  return {
+    courtPrefix,
+    rows: rowBuilder.map((row) =>
+      Object.assign(
+        {},
+        ...row.matchUps.map((matchUp, i) => ({
+          [`${courtPrefix}${i}`]: matchUp,
+        }))
+      )
+    ),
+  };
 }
