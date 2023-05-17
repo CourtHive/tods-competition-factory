@@ -27,12 +27,14 @@ export function courtGridRows({ courtsData, courtPrefix = 'C|' }) {
     }
   });
 
-  return rowBuilder.map((row) =>
-    Object.assign(
-      {},
-      ...row.matchUps.map((matchUp, i) => ({
-        [`${courtPrefix}${i}`]: matchUp,
-      }))
-    )
-  );
+  return {
+    rows: rowBuilder.map((row) =>
+      Object.assign(
+        {},
+        ...row.matchUps.map((matchUp, i) => ({
+          [`${courtPrefix}${i}`]: matchUp,
+        }))
+      )
+    ),
+  };
 }
