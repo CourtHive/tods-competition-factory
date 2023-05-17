@@ -21,9 +21,16 @@ export function courtGridRows({
     ? Math.max(minRowsCount, maxCourtOrder)
     : maxCourtOrder;
 
-  const rowBuilder = generateRange(0, rowsCount).map((i) => ({
-    rownumber: i + 1,
-    matchUps: [],
+  const rowBuilder = generateRange(0, rowsCount).map((rowIndex) => ({
+    matchUps: generateRange(0, courtsData.length).map((courtIndex) => {
+      const courtInfo = courtsData[courtIndex];
+      const { courtId, venueId } = courtInfo;
+      return {
+        courtOrder: rowIndex + 1,
+        venueId,
+        courtId,
+      };
+    }),
   }));
 
   courtsData.forEach((courtInfo, i) => {

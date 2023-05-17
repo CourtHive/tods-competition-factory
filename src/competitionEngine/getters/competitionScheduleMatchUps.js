@@ -132,9 +132,9 @@ export function competitionScheduleMatchUps(params) {
   const courtsData = courts.map((court) => {
     const matchUps = getCourtMatchUps(court);
     return {
-      ...court,
-      matchUps,
       surfaceCategory: court?.surfaceCategory || '',
+      matchUps,
+      ...court,
     };
   });
 
@@ -149,7 +149,7 @@ export function competitionScheduleMatchUps(params) {
 
   if (withCourtGridRows) {
     const { rows, courtPrefix } = courtGridRows({
-      minimumRows: minCourtGridRows,
+      minRowsCount: minCourtGridRows,
       courtsData,
     });
     result.courtPrefix = courtPrefix; // pass through for access to internal defaults by consumer

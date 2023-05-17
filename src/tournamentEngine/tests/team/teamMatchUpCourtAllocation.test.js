@@ -59,13 +59,23 @@ test('it can allocate courts to a TEAM matchUp', () => {
   ).toEqual(courtIds);
 
   const matchUpFilters = { scheduledDate };
-  result = competitionEngine.competitionScheduleMatchUps({ matchUpFilters });
+  const minCourtGridRows = 5;
+  result = competitionEngine.competitionScheduleMatchUps({
+    withCourtGridRows: true,
+    minCourtGridRows,
+    matchUpFilters,
+  });
   expect(result.dateMatchUps.length).toEqual(1);
   expect(
     result.dateMatchUps[0].schedule.allocatedCourts.map(
       ({ courtId }) => courtId
     )
   ).toEqual(courtIds);
+
+  expect(result.rows.length).toEqual(minCourtGridRows);
+  expect(Object.values(result.rows[0]).length).toEqual(
+    result.courtsData.length
+  );
 
   result.courtsData.forEach((court) =>
     expect(
