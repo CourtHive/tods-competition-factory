@@ -2,7 +2,7 @@ import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 
-it('can get competitionScheduleMatchUps', () => {
+it('test structureReports seedingBasis', () => {
   let tournamentRecordJSON = fs.readFileSync(
     './src/tournamentEngine/tests/reports/seedingBasis.tods.json',
     'utf-8'
