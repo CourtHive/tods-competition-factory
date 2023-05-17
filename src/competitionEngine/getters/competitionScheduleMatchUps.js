@@ -29,6 +29,7 @@ export function competitionScheduleMatchUps(params) {
     activeTournamentId,
     tournamentRecords,
     withCourtGridRows,
+    minCourtGridRows,
     usePublishState,
     status = PUBLIC,
     sortCourtsData,
@@ -147,7 +148,10 @@ export function competitionScheduleMatchUps(params) {
   };
 
   if (withCourtGridRows) {
-    const { rows, courtPrefix } = courtGridRows({ courtsData });
+    const { rows, courtPrefix } = courtGridRows({
+      minimumRows: minCourtGridRows,
+      courtsData,
+    });
     result.courtPrefix = courtPrefix; // pass through for access to internal defaults by consumer
     result.rows = rows;
   }
