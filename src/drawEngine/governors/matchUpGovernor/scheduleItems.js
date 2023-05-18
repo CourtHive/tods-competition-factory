@@ -6,6 +6,7 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { isNumeric } from '../../../utilities/math';
 import { addMatchUpTimeItem } from './timeItems';
 import {
   extractDate,
@@ -44,7 +45,6 @@ import {
   SCHEDULED_DATE,
   COURT_ORDER,
 } from '../../../constants/timeItemConstants';
-import { isNumeric } from '../../../utilities/math';
 
 function timeDate(value, scheduledDate) {
   const time = validTimeString.test(value) ? value : extractTime(value);
@@ -63,6 +63,7 @@ export function addMatchUpScheduleItems({
   errorOnAnachronism = false,
   checkChronology = true,
   matchUpDependencies,
+  removePriorValues,
   tournamentRecords,
   tournamentRecord,
   drawDefinition,
@@ -129,8 +130,9 @@ export function addMatchUpScheduleItems({
 
   if (scheduledDate !== undefined) {
     const result = addMatchUpScheduledDate({
-      tournamentRecord,
       disableNotice: true,
+      removePriorValues,
+      tournamentRecord,
       drawDefinition,
       scheduledDate,
       matchUpId,
@@ -141,6 +143,7 @@ export function addMatchUpScheduleItems({
   if (scheduledTime !== undefined) {
     const result = addMatchUpScheduledTime({
       disableNotice: true,
+      removePriorValues,
       tournamentRecord,
       drawDefinition,
       scheduledTime,
@@ -151,6 +154,7 @@ export function addMatchUpScheduleItems({
   if (startTime !== undefined) {
     const result = addMatchUpStartTime({
       disableNotice: true,
+      removePriorValues,
       tournamentRecord,
       drawDefinition,
       matchUpId,
@@ -162,6 +166,7 @@ export function addMatchUpScheduleItems({
   if (stopTime !== undefined) {
     const result = addMatchUpStopTime({
       disableNotice: true,
+      removePriorValues,
       tournamentRecord,
       drawDefinition,
       matchUpId,
@@ -173,6 +178,7 @@ export function addMatchUpScheduleItems({
   if (resumeTime !== undefined) {
     const result = addMatchUpResumeTime({
       disableNotice: true,
+      removePriorValues,
       tournamentRecord,
       drawDefinition,
       resumeTime,
@@ -184,6 +190,7 @@ export function addMatchUpScheduleItems({
   if (endTime !== undefined) {
     const result = addMatchUpEndTime({
       disableNotice: true,
+      removePriorValues,
       tournamentRecord,
       drawDefinition,
       matchUpId,
@@ -195,6 +202,7 @@ export function addMatchUpScheduleItems({
   if (courtIds !== undefined) {
     const result = allocateTeamMatchUpCourts({
       disableNotice: true,
+      removePriorValues,
       tournamentRecord,
       drawDefinition,
       matchUpId,
@@ -206,6 +214,7 @@ export function addMatchUpScheduleItems({
     const result = assignMatchUpCourt({
       courtDayDate: scheduledDate,
       disableNotice: true,
+      removePriorValues,
       tournamentRecords,
       tournamentRecord,
       drawDefinition,
@@ -217,6 +226,7 @@ export function addMatchUpScheduleItems({
   } else if (venueId !== undefined) {
     const result = assignMatchUpVenue({
       disableNotice: true,
+      removePriorValues,
       tournamentRecords,
       tournamentRecord,
       drawDefinition,
@@ -229,6 +239,7 @@ export function addMatchUpScheduleItems({
   if (courtOrder !== undefined) {
     const result = addMatchUpCourtOrder({
       disableNotice: true,
+      removePriorValues,
       tournamentRecords,
       tournamentRecord,
       drawDefinition,
@@ -253,6 +264,7 @@ export function addMatchUpScheduleItems({
 }
 
 export function addMatchUpScheduledDate({
+  removePriorValues,
   tournamentRecord,
   drawDefinition,
   disableNotice,
@@ -276,6 +288,7 @@ export function addMatchUpScheduledDate({
 
   return addMatchUpTimeItem({
     duplicateValues: false,
+    removePriorValues,
     tournamentRecord,
     drawDefinition,
     disableNotice,
@@ -285,6 +298,7 @@ export function addMatchUpScheduledDate({
 }
 
 export function addMatchUpCourtOrder({
+  removePriorValues,
   tournamentRecord,
   drawDefinition,
   disableNotice,
@@ -304,6 +318,7 @@ export function addMatchUpCourtOrder({
 
   return addMatchUpTimeItem({
     duplicateValues: false,
+    removePriorValues,
     tournamentRecord,
     drawDefinition,
     disableNotice,
@@ -313,6 +328,7 @@ export function addMatchUpCourtOrder({
 }
 
 export function addMatchUpScheduledTime({
+  removePriorValues,
   tournamentRecord,
   drawDefinition,
   disableNotice,
@@ -334,6 +350,7 @@ export function addMatchUpScheduledTime({
 
   return addMatchUpTimeItem({
     duplicateValues: false,
+    removePriorValues,
     tournamentRecord,
     drawDefinition,
     disableNotice,
@@ -343,6 +360,7 @@ export function addMatchUpScheduledTime({
 }
 
 export function addMatchUpOfficial({
+  removePriorValues,
   tournamentRecord,
   drawDefinition,
   disableNotice,
@@ -362,6 +380,7 @@ export function addMatchUpOfficial({
 
   return addMatchUpTimeItem({
     duplicateValues: false,
+    removePriorValues,
     tournamentRecord,
     drawDefinition,
     disableNotice,
@@ -371,6 +390,7 @@ export function addMatchUpOfficial({
 }
 
 export function addMatchUpStartTime({
+  removePriorValues,
   tournamentRecord,
   drawDefinition,
   disableNotice,
@@ -410,6 +430,7 @@ export function addMatchUpStartTime({
     const timeItem = { itemType: START_TIME, itemValue: startTime };
     return addMatchUpTimeItem({
       duplicateValues: false,
+      removePriorValues,
       tournamentRecord,
       drawDefinition,
       disableNotice,
@@ -423,6 +444,7 @@ export function addMatchUpStartTime({
 
 export function addMatchUpEndTime({
   validateTimeSeries = true,
+  removePriorValues,
   tournamentRecord,
   drawDefinition,
   disableNotice,
@@ -463,6 +485,7 @@ export function addMatchUpEndTime({
     const timeItem = { itemType: END_TIME, itemValue: endTime };
     return addMatchUpTimeItem({
       duplicateValues: false,
+      removePriorValues,
       tournamentRecord,
       drawDefinition,
       disableNotice,
@@ -475,6 +498,7 @@ export function addMatchUpEndTime({
 }
 
 export function addMatchUpStopTime({
+  removePriorValues,
   tournamentRecord,
   drawDefinition,
   disableNotice,
@@ -540,6 +564,7 @@ export function addMatchUpStopTime({
 
     return addMatchUpTimeItem({
       duplicateValues: true,
+      removePriorValues,
       tournamentRecord,
       drawDefinition,
       disableNotice,
@@ -552,6 +577,7 @@ export function addMatchUpStopTime({
 }
 
 export function addMatchUpResumeTime({
+  removePriorValues,
   tournamentRecord,
   drawDefinition,
   disableNotice,
@@ -617,6 +643,7 @@ export function addMatchUpResumeTime({
 
     return addMatchUpTimeItem({
       duplicateValues: true,
+      removePriorValues,
       tournamentRecord,
       drawDefinition,
       disableNotice,
