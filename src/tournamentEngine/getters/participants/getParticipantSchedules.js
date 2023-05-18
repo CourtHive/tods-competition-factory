@@ -104,7 +104,7 @@ export function getParticipantSchedules({
 
   const participantSchedules = Object.values(participantAggregator).filter(
     ({ participant }) => {
-      return (
+      return !(
         (participantFilters.participantIds &&
           !participantFilters.participantIds.includes(
             participant.participantId
