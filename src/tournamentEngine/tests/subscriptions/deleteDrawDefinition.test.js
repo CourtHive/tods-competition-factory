@@ -3,9 +3,9 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
+import { DRAW_DEFINITION_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { AUDIT, DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
-import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { DRAW_DELETIONS } from '../../../constants/extensionConstants';
 
 it('can notify subscriber when drawDefinitions are deleted', () => {
@@ -48,7 +48,7 @@ it('can notify subscriber when drawDefinitions are deleted', () => {
     drawIds: [],
     auditData,
   });
-  expect(result.error).toEqual(MISSING_VALUE);
+  expect(result.error).toEqual(DRAW_DEFINITION_NOT_FOUND);
 
   result = tournamentEngine.deleteDrawDefinitions({
     auditData,
