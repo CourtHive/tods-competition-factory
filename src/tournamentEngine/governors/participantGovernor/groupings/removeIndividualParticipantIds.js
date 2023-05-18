@@ -41,11 +41,14 @@ export function removeIndividualParticipantIds({
   tournamentRecord,
   suppressErrors,
 }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!groupingParticipantId || !individualParticipantIds)
-    return { error: MISSING_VALUE };
-
   const stack = 'removeIndividualParticipantIds';
+  if (!tournamentRecord)
+    return decorateResult({
+      result: { error: MISSING_TOURNAMENT_RECORD },
+      stack,
+    });
+  if (!groupingParticipantId || !individualParticipantIds)
+    return decorateResult({ result: { error: MISSING_VALUE }, stack });
 
   const tournamentParticipants = tournamentRecord.participants || [];
 

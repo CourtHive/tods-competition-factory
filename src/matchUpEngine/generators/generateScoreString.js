@@ -34,7 +34,7 @@ export function generateScoreString(params) {
     sets,
   } = params;
 
-  if (!sets) return { error: MISSING_VALUE };
+  if (!sets) return { error: MISSING_VALUE, info: 'missing sets' };
 
   const parsedFormat = matchUpFormat && parse(matchUpFormat);
   const { bestOf, finalSetFormat, setFormat } = parsedFormat || {};

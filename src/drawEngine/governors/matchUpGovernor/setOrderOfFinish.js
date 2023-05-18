@@ -2,6 +2,7 @@ import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatc
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpId } from '../../../global/functions/extractors';
+import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../../utilities/math';
 import { uniqueValues } from '../../../utilities/arrays';
 
@@ -27,7 +28,7 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
       result: {
         error: INVALID_VALUES,
       },
-      info: 'finishingOrder must be an array',
+      info: mustBeAnArray('finishingOrder'),
       stack,
     });
 

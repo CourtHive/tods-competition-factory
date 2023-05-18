@@ -6,7 +6,7 @@ export function toggleParticipantCheckInState(params) {
   const { tournamentRecords } = params;
   const { participantId, tournamentId, matchUpId, drawId } = params;
   if (!tournamentRecords || !tournamentId || !participantId || !matchUpId)
-    return { error: MISSING_VALUE };
+    return { error: MISSING_VALUE, stack: 'toggleParticipantCheckInState' };
 
   const tournamentRecord = tournamentRecords[tournamentId];
   const { drawDefinition } = getDrawDefinition({

@@ -1,4 +1,5 @@
 import { isValidExtension } from '../../validation/isValidExtension';
+import { decorateResult } from '../decorateResult';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -7,10 +8,16 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function addExtension({ element, extension, creationTime = true } = {}) {
-  if (!element) return { error: MISSING_VALUE };
-  if (typeof element !== 'object') return { error: INVALID_VALUES };
+  const stack = 'addExtension';
+  if (!element)
+    return decorateResult({ result: { error: MISSING_VALUE }, stack });
+  if (typeof element !== 'object')
+    return decorateResult({ result: { error: INVALID_VALUES }, stack });
   if (!isValidExtension({ extension }))
-    return { error: INVALID_VALUES, info: 'invalid extension' };
+    return decorateResult({
+      result: { error: INVALID_VALUES, info: 'invalid extension' },
+      stack,
+    });
 
   if (!element.extensions) element.extensions = [];
 

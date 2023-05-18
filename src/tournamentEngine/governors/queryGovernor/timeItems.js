@@ -18,7 +18,7 @@ export function getTimeItem({
   itemType,
   element,
 }) {
-  if (!element) return { error: MISSING_VALUE };
+  if (!element) return { error: MISSING_VALUE, info: 'element required' };
   if (itemSubTypes && !Array.isArray(itemSubTypes))
     return { error: INVALID_VALUES, context: { itemSubTypes } };
   if (!Array.isArray(element.timeItems)) return { error: MISSING_TIME_ITEMS };

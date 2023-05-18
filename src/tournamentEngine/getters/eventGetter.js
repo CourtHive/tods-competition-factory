@@ -46,6 +46,7 @@ export function getEvents({ tournamentRecord, context, inContext }) {
 }
 
 export function findEvent({ tournamentRecord, eventId, drawId }) {
+  const stack = 'findEvent';
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const events = tournamentRecord?.events || [];
 
@@ -82,7 +83,7 @@ export function findEvent({ tournamentRecord, eventId, drawId }) {
     return { event };
   }
 
-  return { error: MISSING_VALUE };
+  return decorateResult({ result: { error: MISSING_VALUE }, stack });
 }
 
 export function getDrawDefinition({ tournamentRecord, drawId }) {

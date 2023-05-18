@@ -71,7 +71,8 @@ export function setEventEndDate({ tournamentRecord, event, endDate }) {
 export function setEventDates({ tournamentRecord, event, startDate, endDate }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
-  if (!startDate && !endDate) return { error: MISSING_VALUE };
+  if (!startDate && !endDate)
+    return { error: MISSING_VALUE, info: 'missing date' };
   if (startDate && !dateValidation.test(startDate))
     return { error: INVALID_DATE };
   if (endDate && !dateValidation.test(endDate)) return { error: INVALID_DATE };

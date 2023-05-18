@@ -7,6 +7,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
+import { decorateResult } from '../../global/functions/decorateResult';
 
 /**
  *
@@ -31,7 +32,10 @@ export function getTieFormat({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId && !event && !structureId && !matchUpId)
-    return { error: MISSING_VALUE };
+    return decorateResult({
+      result: { error: MISSING_VALUE },
+      stack: 'getTieFormat',
+    });
 
   if (eventId && !event) {
     event = tournamentRecord.events?.find((event) => event.eventId === eventId);

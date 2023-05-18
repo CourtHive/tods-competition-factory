@@ -1,4 +1,5 @@
 import { analyzeScore } from '../../matchUpEngine/getters/analyzeScore';
+import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';
 import { unique } from '../../utilities';
 
@@ -24,7 +25,7 @@ export function validateScore({
     return { error: INVALID_VALUES, info: 'scoreString must be a string!' };
 
   if (sets !== undefined && !Array.isArray(sets))
-    return { error: INVALID_VALUES, info: 'sets must be an array' };
+    return { error: INVALID_VALUES, info: mustBeAnArray('sets') };
 
   if (sets?.length) {
     const setNumbers = sets.map((set) => set?.setNumber).filter(Boolean);

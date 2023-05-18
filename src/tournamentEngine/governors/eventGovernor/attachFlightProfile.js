@@ -1,4 +1,5 @@
 import { addEventExtension } from '../tournamentGovernor/addRemoveExtensions';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { makeDeepCopy } from '../../../utilities';
 
@@ -12,15 +13,21 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function attachFlightProfile({ deleteExisting, event, flightProfile }) {
-  if (!flightProfile) return { error: MISSING_VALUE };
-  if (!event) return { error: MISSING_EVENT };
+  const stack = 'attachFlightProfile';
+  if (!flightProfile)
+    return decorateResult({ result: { error: MISSING_VALUE }, stack });
+  if (!event)
+    return decorateResult({ result: { error: MISSING_EVENT }, stack });
 
   const { flightProfile: existingFlightProfile } = getFlightProfile({ event });
   if (existingFlightProfile && attachFlightProfile && !deleteExisting)
-    return { error: EXISTING_PROFILE };
+    return decorateResult({ result: { error: EXISTING_PROFILE }, stack });
 
   if (event.drawDefinitions?.length)
-    return { error: EXISTING_DRAW_DEFINITIONS };
+    return decorateResult({
+      result: { error: EXISTING_DRAW_DEFINITIONS },
+      stack,
+    });
 
   const extension = {
     name: FLIGHT_PROFILE,

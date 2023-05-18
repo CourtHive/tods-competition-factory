@@ -19,7 +19,7 @@ export function addTimeItem({
   element,
 }) {
   if (!timeItem) return { error: MISSING_TIME_ITEM };
-  if (!element) return { error: MISSING_VALUE };
+  if (!element) return { error: MISSING_VALUE, info: 'element required' };
 
   const timeItemAttributes = timeItem && Object.keys(timeItem);
   const requiredAttributes = ['itemType', 'itemValue'];

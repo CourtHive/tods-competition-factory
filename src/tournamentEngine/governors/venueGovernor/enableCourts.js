@@ -11,7 +11,8 @@ import {
 
 export function enableCourts({ tournamentRecord, courtIds, enableAll, dates }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!Array.isArray(courtIds) && !enableAll) return { error: MISSING_VALUE };
+  if (!Array.isArray(courtIds) && !enableAll)
+    return { error: MISSING_VALUE, info: 'courtIds must be an array' };
 
   for (const venue of tournamentRecord.venues || []) {
     for (const court of venue.courts || []) {

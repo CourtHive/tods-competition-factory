@@ -1,4 +1,5 @@
 import { getParticipantId } from '../../../../global/functions/extractors';
+import { mustBeAnArray } from '../../../../utilities/mustBeAnArray';
 import { unique } from '../../../../utilities/arrays';
 
 import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
@@ -25,7 +26,7 @@ export function validateLineUp({ lineUp, tieFormat }) {
       return false;
     }
     if (!Array.isArray(collectionAssignments)) {
-      errors.push('collectionAssignments must be an array');
+      errors.push(mustBeAnArray('collectionAssignments'));
       return false;
     }
 

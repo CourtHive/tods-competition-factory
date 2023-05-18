@@ -14,7 +14,8 @@ import {
 export function deleteEvents({ tournamentRecord, eventIds }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.events) return { error: EVENT_NOT_FOUND };
-  if (!Array.isArray(eventIds)) return { error: MISSING_VALUE };
+  if (!Array.isArray(eventIds))
+    return { error: MISSING_VALUE, info: 'drawIds must be an array' };
 
   const auditTrail = [];
   const deletedEventDetails = [];

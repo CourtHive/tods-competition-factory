@@ -1,4 +1,5 @@
 import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
+import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { findTournamentId } from './findTournamentId';
 import {
   bulkMatchUpStatusUpdate as bulkUpdate,
@@ -32,7 +33,8 @@ export function setMatchUpStatus(params) {
 
 export function bulkMatchUpStatusUpdate(params) {
   const { tournamentRecords, outcomes } = params;
-  if (!Array.isArray(outcomes)) return { error: MISSING_VALUE };
+  if (!Array.isArray(outcomes))
+    return { error: MISSING_VALUE, info: mustBeAnArray('outcomes') };
 
   const tournamentIds = outcomes.reduce(
     (tournamentIds, outcome) =>

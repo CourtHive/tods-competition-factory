@@ -196,7 +196,8 @@ export function deepCopyEnabled() {
 }
 
 export function setSubscriptions({ subscriptions } = {}) {
-  if (!subscriptions) return { error: MISSING_VALUE };
+  if (!subscriptions)
+    return { error: MISSING_VALUE, info: 'missing subscriptions' };
   return _globalStateProvider.setSubscriptions({ subscriptions });
 }
 

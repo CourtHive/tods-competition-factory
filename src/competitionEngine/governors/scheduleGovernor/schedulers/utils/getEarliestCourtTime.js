@@ -16,7 +16,8 @@ export function getEarliestCourtTime({
   court,
   date,
 }) {
-  if (!Array.isArray(court.dateAvailability)) return { error: MISSING_VALUE };
+  if (!Array.isArray(court.dateAvailability))
+    return { error: MISSING_VALUE, stack: 'getEarliestCourtTime' };
 
   const courtStartTime = getDateTimeBoundary({
     scheduleDate: date,

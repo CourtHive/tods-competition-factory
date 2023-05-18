@@ -1,4 +1,5 @@
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { addNotice, getTopics } from '../../../../global/state/globalState';
 import { updateTeamEventEntries } from './updateTeamEventEntries';
 import { makeDeepCopy } from '../../../../utilities';
@@ -32,21 +33,30 @@ export function addIndividualParticipantIds({
   removeFromOtherTeams,
   tournamentRecord,
 }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  const stack = 'addIndividualParticipantIds';
+  if (!tournamentRecord)
+    return decorateResult({
+      result: { error: MISSING_TOURNAMENT_RECORD },
+      stack,
+    });
   if (!groupingParticipantId || !individualParticipantIds)
-    return { error: MISSING_VALUE };
+    return decorateResult({ result: { error: MISSING_VALUE }, stack });
 
   const tournamentParticipants = tournamentRecord.participants || [];
   const groupingParticipant = tournamentParticipants.find(
     (participant) => participant.participantId === groupingParticipantId
   );
-  if (!groupingParticipant) return { error: PARTICIPANT_NOT_FOUND };
+  if (!groupingParticipant)
+    return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
 
   if (![TEAM, GROUP].includes(groupingParticipant.participantType)) {
-    return {
-      error: INVALID_PARTICIPANT_TYPE,
-      participantType: groupingParticipant.participantType,
-    };
+    return decorateResult({
+      result: {
+        error: INVALID_PARTICIPANT_TYPE,
+      },
+      context: { participantType: groupingParticipant.participantType },
+      stack,
+    });
   }
 
   // integrity chck to ensure only individuals can be added to groupings
@@ -61,7 +71,10 @@ export function addIndividualParticipantIds({
   );
 
   if (invalidParticipantIds.length)
-    return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIds };
+    return decorateResult({
+      result: { error: INVALID_PARTICIPANT_IDS, invalidParticipantIds },
+      stack,
+    });
 
   if (!groupingParticipant.individualParticipantIds)
     groupingParticipant.individualParticipantIds = [];

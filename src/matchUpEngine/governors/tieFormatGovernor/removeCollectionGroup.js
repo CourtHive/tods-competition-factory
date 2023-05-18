@@ -1,5 +1,6 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getTieFormat } from '../../../tournamentEngine/getters/getTieFormat';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { collectionGroupUpdate } from './collectionGroupUpdate';
 import { definedAttributes } from '../../../utilities/objects';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
@@ -38,7 +39,7 @@ export function removeCollectionGroup({
       eventId,
       event,
     });
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
 
   const { structure } = result;
   matchUp = matchUp || result.matchUp;
@@ -48,7 +49,7 @@ export function removeCollectionGroup({
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
 
   const modifiedCollectionIds = [];
   // remove the collectionGroup and all references to it in other collectionDefinitions
@@ -99,5 +100,8 @@ export function removeCollectionGroup({
     }
   }
 
-  return { ...result, modifiedCollectionIds };
+  return decorateResult({
+    result: { ...result, modifiedCollectionIds },
+    stack,
+  });
 }

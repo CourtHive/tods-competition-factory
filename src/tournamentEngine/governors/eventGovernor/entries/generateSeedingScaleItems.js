@@ -8,7 +8,8 @@ export function generateSeedingScaleItems({
   seedsCount,
   scaleName,
 }) {
-  if (!scaleAttributes) return { error: MISSING_VALUE };
+  if (!scaleAttributes)
+    return { error: MISSING_VALUE, info: 'missing scaleAttributes' };
 
   const seededEntries = Object.assign(
     {},

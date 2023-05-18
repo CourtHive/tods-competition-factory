@@ -1,4 +1,5 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_EVENT,
@@ -8,8 +9,11 @@ import {
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
+const stack = 'extensionQueries';
+
 export function findExtension({ element, name }) {
-  if (!element || !name) return { error: MISSING_VALUE };
+  if (!element || !name)
+    return decorateResult({ result: { error: MISSING_VALUE }, stack });
   if (!Array.isArray(element.extensions)) return { info: NOT_FOUND };
 
   const extension = element.extensions.find(
@@ -32,7 +36,8 @@ export function findTournamentExtension({ tournamentRecord, name }) {
  *
  */
 export function findEventExtension({ event, name }) {
-  if (!event) return { error: MISSING_EVENT };
+  if (!event)
+    return decorateResult({ result: { error: MISSING_EVENT }, stack });
   return findExtension({ element: event, name });
 }
 
@@ -43,7 +48,11 @@ export function findEventExtension({ event, name }) {
  *
  */
 export function findDrawDefinitionExtension({ drawDefinition, name }) {
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  if (!drawDefinition)
+    return decorateResult({
+      result: { error: MISSING_DRAW_DEFINITION },
+      stack,
+    });
   return findExtension({ element: drawDefinition, name });
 }
 
@@ -52,8 +61,13 @@ export function findParticipantExtension({
   participantId,
   name,
 }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
+  if (!tournamentRecord)
+    return decorateResult({
+      result: { error: MISSING_TOURNAMENT_RECORD },
+      stack,
+    });
+  if (!participantId)
+    return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
 
   const { participant } = findTournamentParticipant({
     tournamentRecord,

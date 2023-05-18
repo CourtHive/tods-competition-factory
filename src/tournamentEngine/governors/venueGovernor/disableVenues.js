@@ -1,4 +1,5 @@
 import { addExtension } from '../../../global/functions/producers/addExtension';
+import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 
 import { DISABLED } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -9,7 +10,8 @@ import {
 
 export function disableVenues({ tournamentRecord, venueIds }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!Array.isArray(venueIds)) return { error: MISSING_VALUE };
+  if (!Array.isArray(venueIds))
+    return { error: MISSING_VALUE, info: mustBeAnArray('venueIds') };
 
   for (const venue of tournamentRecord.venues || []) {
     if (venueIds?.includes(venue.venueId)) {

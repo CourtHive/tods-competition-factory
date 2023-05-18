@@ -38,7 +38,8 @@ export function getScheduledRoundsDetails({
 }) {
   if (typeof tournamentRecords !== 'object')
     return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(rounds)) return { error: MISSING_VALUE };
+  if (!Array.isArray(rounds))
+    return { error: MISSING_VALUE, info: 'rounds must be an array' };
 
   const hashes = [];
   const orderedMatchUpIds = [];

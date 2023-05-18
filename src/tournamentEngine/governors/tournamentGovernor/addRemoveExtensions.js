@@ -15,7 +15,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function removeExtension({ element, name } = {}) {
-  if (!element) return { error: MISSING_VALUE };
+  if (!element) return { error: MISSING_VALUE, info: 'element required' };
   if (typeof element !== 'object') return { error: INVALID_VALUES };
   if (!name) return { error: MISSING_VALUE, info: 'Missing name' };
   if (!element.extensions) return { ...SUCCESS, info: NOT_FOUND };

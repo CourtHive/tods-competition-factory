@@ -8,7 +8,8 @@ import {
 
 export function enableVenues({ tournamentRecords, venueIds, enableAll }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!enableAll && !Array.isArray(venueIds)) return { error: MISSING_VALUE };
+  if (!enableAll && !Array.isArray(venueIds))
+    return { error: MISSING_VALUE, info: 'venueIds must be an array' };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     venuesEnable({ tournamentRecord, venueIds, enableAll });

@@ -1,3 +1,4 @@
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { collectionGroupUpdate } from './collectionGroupUpdate';
 import { validateTieFormat } from './tieFormatUtilities';
 import { copyTieFormat } from './copyTieFormat';
@@ -21,7 +22,9 @@ export function addCollectionGroup({
   eventId,
   event,
 }) {
-  if (!Array.isArray(collectionIds)) return { error: MISSING_VALUE };
+  const stack = 'addCollectionGroup';
+  if (!Array.isArray(collectionIds))
+    return decorateResult({ result: { error: MISSING_VALUE }, stack });
 
   // TODO: validate groupDefinition
 
@@ -35,7 +38,7 @@ export function addCollectionGroup({
       eventId,
       event,
     });
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
 
   const { structure } = result;
   matchUp = matchUp || result.matchUp;
@@ -44,16 +47,19 @@ export function addCollectionGroup({
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
 
   // if any of the collectionIds are already part of a different collectionGroup, throw an error
   for (const collectionDefinition of tieFormat.collectionDefinitions) {
     const { collectionId, collectionGroupNumber } = collectionDefinition;
     if (collectionGroupNumber && collectionIds.includes(collectionId))
-      return {
-        error: INVALID_VALUES,
-        info: 'collectionIds cannot be part of other collectionGroups',
-      };
+      return decorateResult({
+        result: {
+          error: INVALID_VALUES,
+          info: 'collectionIds cannot be part of other collectionGroups',
+        },
+        stack,
+      });
     // TODO: calculate the total value of the collectionDefinition
     // either matchUpCount * matchUpValue or collectionValue or collectionValueProfile total
     // if not gropuDEfinition.winCriteria.aggregateValue then caluculate valueGoal automatically
