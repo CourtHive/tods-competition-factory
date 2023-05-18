@@ -44,6 +44,7 @@ import {
   SCHEDULED_TIME,
   SCHEDULED_DATE,
   COURT_ORDER,
+  TIME_MODIFIERS,
 } from '../../../constants/timeItemConstants';
 
 function timeDate(value, scheduledDate) {
@@ -93,6 +94,7 @@ export function addMatchUpScheduleItems({
     scheduledTime,
     startTime,
     stopTime,
+    timeModifiers,
     venueId,
   } = schedule;
 
@@ -263,6 +265,21 @@ export function addMatchUpScheduleItems({
       return decorateResult({ result, stack, context: { courtOrder } });
   }
 
+  if (timeModifiers !== undefined && Array.isArray(timeModifiers)) {
+    const result = addMatchUpTimeModifiers({
+      disableNotice: true,
+      removePriorValues,
+      tournamentRecords,
+      tournamentRecord,
+      drawDefinition,
+      timeModifiers,
+      matchUpId,
+      event,
+    });
+    if (result?.error)
+      return decorateResult({ result, stack, context: { timeModifiers } });
+  }
+
   if (!disableNotice) {
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
@@ -326,6 +343,36 @@ export function addMatchUpCourtOrder({
   const itemValue = courtOrder;
   const timeItem = {
     itemType: COURT_ORDER,
+    itemValue,
+  };
+
+  return addMatchUpTimeItem({
+    duplicateValues: false,
+    removePriorValues,
+    tournamentRecord,
+    drawDefinition,
+    disableNotice,
+    matchUpId,
+    timeItem,
+  });
+}
+
+export function addMatchUpTimeModifiers({
+  removePriorValues,
+  tournamentRecord,
+  drawDefinition,
+  disableNotice,
+  timeModifiers,
+  matchUpId,
+}) {
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+
+  if (timeModifiers && !Array.isArray(timeModifiers))
+    return { error: INVALID_VALUES, info: 'timeModifiers must be an array' };
+
+  const itemValue = timeModifiers;
+  const timeItem = {
+    itemType: TIME_MODIFIERS,
     itemValue,
   };
 
