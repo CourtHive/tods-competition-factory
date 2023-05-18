@@ -6,7 +6,7 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { isNumeric } from '../../../utilities/math';
+import { isConvertableInteger } from '../../../utilities/math';
 import { addMatchUpTimeItem } from './timeItems';
 import {
   extractDate,
@@ -76,6 +76,7 @@ export function addMatchUpScheduleItems({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!schedule) return { error: MISSING_VALUE };
+
   const stack = 'addMatchUpScheduleItems';
   let warning;
 
@@ -223,7 +224,9 @@ export function addMatchUpScheduleItems({
       event,
     });
     if (result?.error) return { error: result.error, courtId };
-  } else if (venueId !== undefined) {
+  }
+
+  if (venueId !== undefined) {
     const result = assignMatchUpVenue({
       disableNotice: true,
       removePriorValues,
@@ -236,7 +239,8 @@ export function addMatchUpScheduleItems({
     });
     if (result?.error) return { error: result.error, venueId };
   }
-  if (courtOrder !== undefined) {
+
+  if (courtOrder !== undefined && isConvertableInteger(courtOrder)) {
     const result = addMatchUpCourtOrder({
       disableNotice: true,
       removePriorValues,
@@ -247,7 +251,7 @@ export function addMatchUpScheduleItems({
       matchUpId,
       event,
     });
-    if (result?.error) return { error: result.error, venueId };
+    if (result?.error) return { error: result.error, courtOrder };
   }
 
   if (!disableNotice) {
@@ -307,7 +311,7 @@ export function addMatchUpCourtOrder({
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
-  if (courtOrder && !isNumeric(courtOrder))
+  if (courtOrder && !isConvertableInteger(courtOrder))
     return { error: INVALID_VALUES, info: 'courtOrder must be numeric' };
 
   const itemValue = courtOrder;
