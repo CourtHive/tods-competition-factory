@@ -63,15 +63,16 @@ export function setParticipantScaleItem({
     }
   }
 
-  return equivalentValue
-    ? {
-        ...SUCCESS,
-        info: VALUE_UNCHANGED,
-        existingValue: scaleItem.scaleValue,
-      }
-    : participant
-    ? { ...SUCCESS, newValue: scaleItem.scaleValue }
-    : { error: PARTICIPANT_NOT_FOUND };
+  return (
+    (equivalentValue && {
+      ...SUCCESS,
+      info: VALUE_UNCHANGED,
+      existingValue: scaleItem.scaleValue,
+    }) ||
+    (participant && { ...SUCCESS, newValue: scaleItem.scaleValue }) || {
+      error: PARTICIPANT_NOT_FOUND,
+    }
+  );
 }
 
 export function setParticipantScaleItems({
@@ -159,10 +160,8 @@ export function setParticipantScaleItems({
     }
   }
 
-  if (auditData) {
-    if (topics.includes(AUDIT)) {
-      addNotice({ topic: AUDIT, payload: auditData });
-    }
+  if (auditData && topics.includes(AUDIT)) {
+    addNotice({ topic: AUDIT, payload: auditData });
   }
 
   return definedAttributes({ ...SUCCESS, modificationsApplied, info });
