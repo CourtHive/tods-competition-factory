@@ -247,6 +247,9 @@ function getDrawDefinition({ tournamentRecords, tournamentId, drawId }) {
 
   const result = findEvent({ tournamentRecord, drawId });
   if (result.error)
-    return decorateResult({ result, stack: 'getDrawDefinition' });
+    return decorateResult({
+      stack: 'addScheduleItems.getDrawDefinition',
+      result,
+    });
   return { drawDefinition: result.drawDefinition, tournamentRecord };
 }
