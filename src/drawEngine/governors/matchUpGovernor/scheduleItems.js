@@ -73,9 +73,9 @@ export function addMatchUpScheduleItems({
   schedule,
   event,
 }) {
+  if (!schedule) return { error: MISSING_VALUE, info: 'Missing schedule' };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-  if (!schedule) return { error: MISSING_VALUE };
 
   const stack = 'addMatchUpScheduleItems';
   let warning;
@@ -150,7 +150,8 @@ export function addMatchUpScheduleItems({
       scheduledTime,
       matchUpId,
     });
-    if (result?.error) return { error: result.error, scheduledTime };
+    if (result?.error)
+      return decorateResult({ result, stack, context: { scheduledTime } });
   }
   if (startTime !== undefined) {
     const result = addMatchUpStartTime({
@@ -162,7 +163,8 @@ export function addMatchUpScheduleItems({
       startTime,
       event,
     });
-    if (result?.error) return { error: result.error, startTime };
+    if (result?.error)
+      return decorateResult({ result, stack, context: { startTime } });
   }
   if (stopTime !== undefined) {
     const result = addMatchUpStopTime({
@@ -174,7 +176,8 @@ export function addMatchUpScheduleItems({
       stopTime,
       event,
     });
-    if (result?.error) return { error: result.error, stopTime };
+    if (result?.error)
+      return decorateResult({ result, stack, context: { stopTime } });
   }
   if (resumeTime !== undefined) {
     const result = addMatchUpResumeTime({
@@ -186,7 +189,8 @@ export function addMatchUpScheduleItems({
       matchUpId,
       event,
     });
-    if (result?.error) return { error: result.error, resumeTime };
+    if (result?.error)
+      return decorateResult({ result, stack, context: { resumeTime } });
   }
   if (endTime !== undefined) {
     const result = addMatchUpEndTime({
@@ -198,7 +202,8 @@ export function addMatchUpScheduleItems({
       endTime,
       event,
     });
-    if (result?.error) return { error: result.error, endTime };
+    if (result?.error)
+      return decorateResult({ result, stack, context: { endTime } });
   }
   if (courtIds !== undefined) {
     const result = allocateTeamMatchUpCourts({
@@ -209,7 +214,8 @@ export function addMatchUpScheduleItems({
       matchUpId,
       courtIds,
     });
-    if (result?.error) return { error: result.error, context: { courtIds } };
+    if (result?.error)
+      return decorateResult({ result, stack, context: { courtIds } });
   }
   if (courtId !== undefined && scheduledDate !== undefined) {
     const result = assignMatchUpCourt({
@@ -223,7 +229,8 @@ export function addMatchUpScheduleItems({
       courtId,
       event,
     });
-    if (result?.error) return { error: result.error, courtId };
+    if (result?.error)
+      return decorateResult({ result, stack, context: { courtId } });
   }
 
   if (venueId !== undefined) {
@@ -237,7 +244,8 @@ export function addMatchUpScheduleItems({
       venueId,
       event,
     });
-    if (result?.error) return { error: result.error, venueId };
+    if (result?.error)
+      return decorateResult({ result, stack, context: { venueId } });
   }
 
   if (courtOrder !== undefined && isConvertableInteger(courtOrder)) {
@@ -251,7 +259,8 @@ export function addMatchUpScheduleItems({
       matchUpId,
       event,
     });
-    if (result?.error) return { error: result.error, courtOrder };
+    if (result?.error)
+      return decorateResult({ result, stack, context: { courtOrder } });
   }
 
   if (!disableNotice) {
