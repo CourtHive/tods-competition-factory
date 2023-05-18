@@ -40,14 +40,11 @@ export function makeDeepCopy(
     if (
       (iteration > (devContext.iterationThreshold || 15) ||
         (devContext.firstIteration && iteration === 0)) &&
-      devContext.log
+      devContext.log &&
+      (!devContext.notInternalUse ||
+        (devContext.notInternalUse && !internalUse))
     ) {
-      if (
-        !devContext.notInternalUse ||
-        (devContext.notInternalUse && !internalUse)
-      ) {
-        console.log({ devContext, iteration, internalUse }, sourceObject);
-      }
+      console.log({ devContext, iteration, internalUse }, sourceObject);
     }
   }
 
