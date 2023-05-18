@@ -2,6 +2,7 @@ import { allocateTeamMatchUpCourts as allocateCourts } from '../../../../tournam
 import { assignMatchUpVenue as assignVenue } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { assignMatchUpCourt as assignCourt } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { findTournamentId } from '../../competitionsGovernor/findTournamentId';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import {
   addMatchUpScheduledDate as addScheduledDate,
@@ -16,6 +17,7 @@ import {
 } from '../../../../tournamentEngine/governors/scheduleGovernor/scheduleItems';
 
 import {
+  MISSING_DRAW_ID,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
@@ -233,6 +235,7 @@ export function addMatchUpCourtOrder(params) {
 
 function getDrawDefinition({ tournamentRecords, tournamentId, drawId }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (!drawId) return { error: MISSING_DRAW_ID };
   if (typeof tournamentId !== 'string') {
     // find tournamentId by brute force if not provided
     tournamentId = findTournamentId({ tournamentRecords, drawId });
@@ -242,6 +245,8 @@ function getDrawDefinition({ tournamentRecords, tournamentId, drawId }) {
   const tournamentRecord = tournamentRecords[tournamentId];
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
-  const { drawDefinition, error } = findEvent({ tournamentRecord, drawId });
-  return { drawDefinition, error, tournamentRecord };
+  const result = findEvent({ tournamentRecord, drawId });
+  if (result.error)
+    return decorateResult({ result, stack: 'getDrawDefinition' });
+  return { drawDefinition: result.drawDefinition, tournamentRecord };
 }

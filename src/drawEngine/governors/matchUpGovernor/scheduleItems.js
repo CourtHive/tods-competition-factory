@@ -32,7 +32,6 @@ import {
   INVALID_DATE,
   INVALID_TIME,
   MISSING_DRAW_DEFINITION,
-  MATCHUP_NOT_FOUND,
   MISSING_VALUE,
   ANACHRONISM,
   INVALID_VALUES,
@@ -79,11 +78,12 @@ export function addMatchUpScheduleItems({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
-  const stack = 'addMatchUpScheduleItems';
+  const stack = 'drawEngine.addMatchUpScheduleItems';
   let warning;
 
-  const { matchUp } = findMatchUp({ drawDefinition, event, matchUpId });
-  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
+  const result = findMatchUp({ drawDefinition, event, matchUpId });
+  if (result.error) return result;
+  const matchUp = result.matchUp;
 
   const {
     endTime,

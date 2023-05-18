@@ -9,7 +9,6 @@ import {
   MISSING_DRAW_ID,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-  MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 
 export function getEvent({ tournamentRecord, drawDefinition, event, context }) {
@@ -47,7 +46,11 @@ export function getEvents({ tournamentRecord, context, inContext }) {
 
 export function findEvent({ tournamentRecord, eventId, drawId }) {
   const stack = 'findEvent';
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!tournamentRecord)
+    return decorateResult({
+      result: { error: MISSING_TOURNAMENT_RECORD },
+      stack,
+    });
   const events = tournamentRecord?.events || [];
 
   if (drawId) {
@@ -79,11 +82,16 @@ export function findEvent({ tournamentRecord, eventId, drawId }) {
 
   if (eventId) {
     const event = events.find((event) => event.eventId === eventId);
-    if (!event) return { error: EVENT_NOT_FOUND };
+    if (!event)
+      return decorateResult({ result: { error: EVENT_NOT_FOUND }, stack });
     return { event };
   }
 
-  return decorateResult({ result: { error: MISSING_VALUE }, stack });
+  return decorateResult({
+    result: { error: DRAW_DEFINITION_NOT_FOUND },
+    context: { drawId, eventId },
+    stack,
+  });
 }
 
 export function getDrawDefinition({ tournamentRecord, drawId }) {
