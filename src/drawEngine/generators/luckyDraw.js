@@ -64,12 +64,11 @@ export function luckyDraw(params) {
         uuids,
       });
 
-      const newMatchUp = {
+      return {
         roundPosition,
         roundNumber,
         matchUpId,
       };
-      return newMatchUp;
     });
 
     matchUps.push(...roundMatchUps);

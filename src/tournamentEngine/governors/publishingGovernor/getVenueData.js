@@ -14,10 +14,10 @@ export function getVenueData({ tournamentRecord, venueId }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!venueId) return { error: MISSING_VENUE_ID };
 
-  const { venue, error } = findVenue({ tournamentRecord, venueId });
-  if (error) return { error };
+  const result = findVenue({ tournamentRecord, venueId });
+  if (result.error) return result;
 
-  const courts = venue.courts || [];
+  const courts = result.venue.courts || [];
   const courtsInfo = courts.map((court) =>
     (({ courtInfo }) => ({
       ...courtInfo,
@@ -34,7 +34,7 @@ export function getVenueData({ tournamentRecord, venueId }) {
     venueId,
     venueName,
     venueAbbreviation,
-  }))(venue);
+  }))(result.venue);
 
   const venueData = { ...venueInfo, courtsInfo };
 

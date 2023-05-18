@@ -13,11 +13,15 @@ import {
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  ELEMENT_REQUIRED,
+  MISSING_NAME,
+} from '../../../constants/infoConstants';
 
 export function removeExtension({ element, name } = {}) {
-  if (!element) return { error: MISSING_VALUE, info: 'element required' };
+  if (!element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
   if (typeof element !== 'object') return { error: INVALID_VALUES };
-  if (!name) return { error: MISSING_VALUE, info: 'Missing name' };
+  if (!name) return { error: MISSING_VALUE, info: MISSING_NAME };
   if (!element.extensions) return { ...SUCCESS, info: NOT_FOUND };
 
   element.extensions = element.extensions.filter(

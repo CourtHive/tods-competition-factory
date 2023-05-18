@@ -280,7 +280,7 @@ export function modifyEntriesStatus({
         return true;
       });
     }
-    if (error) return { error };
+    if (error) return decorateResult({ result: { error }, stack });
   }
 
   if (autoEntryPositions) autoPosition({ flight, drawDefinition });

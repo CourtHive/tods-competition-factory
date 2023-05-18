@@ -8,6 +8,7 @@ import {
   removeTournamentExtension,
 } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
+import { MISSING_NAME } from '../../../constants/infoConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
@@ -30,7 +31,7 @@ export function addExtension({ tournamentRecords, extension }) {
 }
 
 export function findExtension({ tournamentRecords, name }) {
-  if (!name) return { error: MISSING_VALUE, info: 'Missing name' };
+  if (!name) return { error: MISSING_VALUE, info: MISSING_NAME };
 
   let foundExtension;
   const tournamentId = Object.keys(tournamentRecords).find((tournamentId) => {
@@ -47,7 +48,7 @@ export function findExtension({ tournamentRecords, name }) {
 }
 
 export function removeExtension({ tournamentRecords, name }) {
-  if (!name) return { error: MISSING_VALUE, info: 'Missing name' };
+  if (!name) return { error: MISSING_VALUE, info: MISSING_NAME };
 
   let removed = 0;
   for (const tournamentId of Object.keys(tournamentRecords)) {

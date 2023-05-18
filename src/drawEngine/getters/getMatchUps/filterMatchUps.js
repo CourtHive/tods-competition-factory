@@ -107,7 +107,7 @@ export function filterMatchUps(params) {
     ? structureIds.filter(Boolean)
     : [];
 
-  const filteredMatchUps = matchUps.filter((matchUp) => {
+  return matchUps.filter((matchUp) => {
     if (
       readyToScore &&
       matchUp.matchUpType !== TEAM_MATCHUP &&
@@ -266,6 +266,4 @@ export function filterMatchUps(params) {
 
     return true;
   });
-
-  return filteredMatchUps;
 }

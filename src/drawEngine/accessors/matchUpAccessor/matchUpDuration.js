@@ -15,8 +15,7 @@ import {
 function timeDate(value) {
   if (validTimeString.test(value)) {
     const dateString = getUTCdateString();
-    const td = new Date(`${dateString}T${value}`);
-    return td;
+    return new Date(`${dateString}T${value}`);
   } else {
     return new Date(value);
   }

@@ -94,7 +94,7 @@ export function generateFlightProfile({
   }
 
   function getDrawEntries(entriesChunk) {
-    const entries = (entriesChunk || [])
+    return (entriesChunk || [])
       .map(({ participantId, scaleValue }) => {
         const entry = eventEntries.find(
           (entry) => entry.participantId === participantId
@@ -107,7 +107,6 @@ export function generateFlightProfile({
         if (entry.scaleValue) entry.seedNumber = i + 1;
         return entry;
       });
-    return entries;
   }
 
   const flights = generateRange(0, flightsCount).map((index) => {

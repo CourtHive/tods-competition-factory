@@ -50,7 +50,7 @@ export function getAvailablePlayoffProfiles({ drawDefinition, structureId }) {
       matchUps,
     });
     const { error, ...values } = result;
-    if (error) return { error };
+    if (error) return result;
 
     available[structureId] = {
       structureId,

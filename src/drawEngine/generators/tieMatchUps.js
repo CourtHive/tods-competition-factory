@@ -24,9 +24,9 @@ export function generateCollectionMatchUps({
 
   const numberToGenerate = matchUpsLimit || matchUpCount || 0;
 
-  const matchUps = generateRange(0, numberToGenerate).map((index) => {
+  return generateRange(0, numberToGenerate).map((index) => {
     const collectionPosition = index + 1;
-    const matchUp = {
+    return {
       sides: [{ sideNumber: 1 }, { sideNumber: 2 }],
       matchUpId: uuids?.pop() || UUID(),
       collectionPosition,
@@ -34,9 +34,5 @@ export function generateCollectionMatchUps({
       matchUpType,
       isMock,
     };
-
-    return matchUp;
   });
-
-  return matchUps;
 }

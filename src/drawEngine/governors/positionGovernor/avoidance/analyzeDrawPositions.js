@@ -10,7 +10,7 @@ function getPositionProfiles({
   positionAssignments,
   groupsToAvoid,
 }) {
-  const positionProfiles = Object.assign(
+  return Object.assign(
     {},
     ...positionAssignments
       .filter((assignment) => assignment?.participantId)
@@ -26,7 +26,6 @@ function getPositionProfiles({
         return { [drawPosition]: { participantGroups, includesGroupsToAvoid } };
       })
   );
-  return positionProfiles;
 }
 
 /**
@@ -93,7 +92,7 @@ export function analyzeRoundRobinDrawPositions(params) {
   const { unfilledPositions, chunkedDrawPositions } = params;
   const profiledPositions = getPositionProfiles(params);
 
-  const checkedChunk = chunkedDrawPositions.map((chunkedGrouping) => {
+  return chunkedDrawPositions.map((chunkedGrouping) => {
     const unassigned = unfilledPositions.filter((unfilledPosition) =>
       chunkedGrouping.includes(unfilledPosition)
     );
@@ -105,8 +104,6 @@ export function analyzeRoundRobinDrawPositions(params) {
     const pairedNoConflict = conflictsCount ? [] : unassigned;
     return { unassigned, unpaired, pairedNoConflict, conflictsCount };
   });
-
-  return checkedChunk;
 }
 
 /**

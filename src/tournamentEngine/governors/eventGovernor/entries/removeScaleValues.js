@@ -57,11 +57,9 @@ export function removeScaleValues({
 
   const participantIds = stageEntries.map(getParticipantId);
 
-  const result = removeParticipantsScaleItems({
+  return removeParticipantsScaleItems({
     tournamentRecord,
     scaleAttributes,
     participantIds,
   });
-
-  return result;
 }

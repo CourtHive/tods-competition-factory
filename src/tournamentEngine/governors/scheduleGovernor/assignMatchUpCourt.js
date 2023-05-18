@@ -23,13 +23,13 @@ export function assignMatchUpCourt({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   if (courtId) {
-    const { venue, error } = findCourt({
+    const result = findCourt({
       tournamentRecords,
       tournamentRecord,
       courtId,
     });
-    if (error) return { error };
-    const venueId = venue?.venueId;
+    if (result.error) return result;
+    const venueId = result.venue?.venueId;
 
     assignMatchUpVenue({
       tournamentRecord,

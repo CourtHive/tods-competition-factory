@@ -85,12 +85,7 @@ export function modifyTournamentRecord({
       );
 
       if (!event) {
-        const {
-          error,
-          eventId,
-          drawIds: generatedDrawIds,
-          uniqueParticipantIds,
-        } = generateEventWithFlights({
+        const result = generateEventWithFlights({
           startDate: tournamentRecord.startDate,
           allUniqueParticipantIds,
           matchUpStatusProfile,
@@ -104,7 +99,13 @@ export function modifyTournamentRecord({
           eventIndex,
           uuids,
         });
-        if (error) return { error };
+        if (result.error) return result;
+
+        const {
+          eventId,
+          drawIds: generatedDrawIds,
+          uniqueParticipantIds,
+        } = result;
 
         if (generatedDrawIds) drawIds.push(...generatedDrawIds);
         eventIds.push(eventId);
@@ -194,25 +195,26 @@ export function modifyTournamentRecord({
       .reduce((a, b) => a + b, 0);
 
     for (const drawProfile of drawProfiles) {
-      const { drawId, eventId, event, error, uniqueParticipantIds } =
-        generateEventWithDraw({
-          startDate: tournamentRecord.startDate,
-          allUniqueParticipantIds,
-          matchUpStatusProfile,
-          participantsProfile,
-          completeAllMatchUps,
-          autoEntryPositions,
-          hydrateCollections,
-          randomWinningSide,
-          ratingsParameters,
-          tournamentRecord,
-          drawProfile,
-          drawIndex,
-          uuids,
-        });
-      if (error) return { error };
+      let result = generateEventWithDraw({
+        startDate: tournamentRecord.startDate,
+        allUniqueParticipantIds,
+        matchUpStatusProfile,
+        participantsProfile,
+        completeAllMatchUps,
+        autoEntryPositions,
+        hydrateCollections,
+        randomWinningSide,
+        ratingsParameters,
+        tournamentRecord,
+        drawProfile,
+        drawIndex,
+        uuids,
+      });
+      if (result.error) return result;
 
-      const result = addEvent({ tournamentRecord, event });
+      const { drawId, eventId, event, uniqueParticipantIds } = result;
+
+      result = addEvent({ tournamentRecord, event });
       if (result.error) return result;
 
       if (drawId) drawIds.push(drawId);

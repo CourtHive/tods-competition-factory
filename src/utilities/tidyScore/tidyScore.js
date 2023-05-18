@@ -62,14 +62,13 @@ function joinFloatingTiebreak(score) {
       const scores = prior.split('');
       const diff = Math.abs(scores.reduce((a, b) => +a - +b));
       if (diff === 1) {
-        const bits = [
+        return [
           parts.slice(0, index - 1),
           [prior, floatingTiebreak].join(''),
           parts.slice(index + 1),
         ]
           .flat()
           .join(' ');
-        return bits;
       }
     }
   }

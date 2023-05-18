@@ -14,8 +14,9 @@ export function deleteCourt({
   courtId,
   force,
 }) {
-  const { venue, error } = findCourt({ tournamentRecord, courtId });
-  if (error) return { error };
+  const result = findCourt({ tournamentRecord, courtId });
+  if (result.error) return result;
+  const venue = result.venue;
 
   const { matchUps } = getScheduledCourtMatchUps({
     tournamentRecord,

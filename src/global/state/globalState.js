@@ -93,7 +93,7 @@ export function timeKeeper(action = 'reset', timer = 'default') {
   if (action === 'report') {
     if (timer === 'allTimers') {
       const timers = Object.keys(globalState.timers);
-      const report = timers
+      return timers
         .filter(
           (timer) => timer !== 'default' || globalState.timers[timer].startTime
         )
@@ -111,7 +111,6 @@ export function timeKeeper(action = 'reset', timer = 'default') {
             state: globalState.timers[timer].state,
           };
         });
-      return report;
     } else {
       const elapsedPeriod =
         globalState.timers[timer].state === 'stopped'

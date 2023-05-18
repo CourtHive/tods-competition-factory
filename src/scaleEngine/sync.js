@@ -57,12 +57,10 @@ export const scaleEngine = (function () {
     delete engine.error;
 
     const augmentedParams = paramsMiddleware(tournamentRecord, params);
-    const result = method({
+    return method({
       ...augmentedParams,
       tournamentRecord,
     });
-
-    return result;
   }
 
   function engineInvoke(method, params) {

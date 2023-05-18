@@ -69,8 +69,9 @@ export function orderCollectionDefinitions({
       });
     }
   } else if (structureId) {
-    const { error, structure } = findStructure({ drawDefinition, structureId });
-    if (error) return { error };
+    const result = findStructure({ drawDefinition, structureId });
+    if (result.error) return result;
+    const structure = result.structure;
 
     if (structure?.tieFormat) {
       structure.tieFormat = getOrderedTieFormat({

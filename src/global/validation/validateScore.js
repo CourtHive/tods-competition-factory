@@ -17,12 +17,13 @@ export function validateScore({
 }) {
   if (typeof score !== 'object') return { error: INVALID_VALUES };
   const { sets, scoreStringSide1, scoreStringSide2 } = score;
+  const info = 'scoreString must be a string!';
 
   if (scoreStringSide1 !== undefined && typeof scoreStringSide1 !== 'string')
-    return { error: INVALID_VALUES, info: 'scoreString must be a string!' };
+    return { error: INVALID_VALUES, info };
 
   if (scoreStringSide2 !== undefined && typeof scoreStringSide2 !== 'string')
-    return { error: INVALID_VALUES, info: 'scoreString must be a string!' };
+    return { error: INVALID_VALUES, info };
 
   if (sets !== undefined && !Array.isArray(sets))
     return { error: INVALID_VALUES, info: mustBeAnArray('sets') };

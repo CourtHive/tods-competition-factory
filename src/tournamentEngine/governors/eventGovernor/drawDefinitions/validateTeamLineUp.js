@@ -7,7 +7,7 @@ import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
 export function validateLineUp({ lineUp, tieFormat }) {
   let errors = [];
   if (!Array.isArray(lineUp)) {
-    errors.push('lineUp must be an array of objects');
+    errors.push(mustBeAnArray('lineUp'));
     return { valid: false, errors, error: INVALID_VALUES };
   }
 

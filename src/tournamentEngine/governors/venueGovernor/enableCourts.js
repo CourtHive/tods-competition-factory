@@ -1,6 +1,7 @@
 import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { removeExtension } from '../tournamentGovernor/addRemoveExtensions';
+import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 
 import { DISABLED } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -12,7 +13,7 @@ import {
 export function enableCourts({ tournamentRecord, courtIds, enableAll, dates }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(courtIds) && !enableAll)
-    return { error: MISSING_VALUE, info: 'courtIds must be an array' };
+    return { error: MISSING_VALUE, info: mustBeAnArray('courtIds') };
 
   for (const venue of tournamentRecord.venues || []) {
     for (const court of venue.courts || []) {

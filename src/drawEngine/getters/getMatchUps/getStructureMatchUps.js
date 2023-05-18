@@ -43,7 +43,7 @@ export function getStructureMatchUps({
     ({ structure } = findStructure({ drawDefinition, structureId }));
   }
 
-  const { matchUps, error } = getAllStructureMatchUps({
+  const result = getAllStructureMatchUps({
     tournamentAppliedPolicies,
     scheduleVisibilityFilters,
     tournamentParticipants,
@@ -64,7 +64,8 @@ export function getStructureMatchUps({
     context,
     event,
   });
-  if (error) return { error };
+  if (result.error) return result;
+  const { matchUps } = result;
 
   const { assignedPositions } = structureAssignedDrawPositions({ structure });
   const participantAssignedDrawPositions = assignedPositions

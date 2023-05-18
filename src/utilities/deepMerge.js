@@ -9,7 +9,7 @@ export function deepMerge(existing, incoming, arrayMerge) {
 
   const keys = unique(Object.keys(existing).concat(Object.keys(incoming)));
 
-  const merged = keys.reduce((merged, key) => {
+  return keys.reduce((merged, key) => {
     if (!incoming[key]) {
       merged[key] = existing[key];
     } else if (!existing[key]) {
@@ -38,6 +38,4 @@ export function deepMerge(existing, incoming, arrayMerge) {
     }
     return merged;
   }, {});
-
-  return merged;
 }

@@ -117,7 +117,7 @@ function getOrderedByePositions({
     )
     .filter(Boolean);
 
-  const orderedByePositions = seedOrderSortedDrawPositionPairs
+  return seedOrderSortedDrawPositionPairs
     .map((drawPositions) => {
       return drawPositions?.reduce((byePosition, drawPosition) => {
         return orderedSeedDrawPositions.includes(drawPosition)
@@ -126,6 +126,4 @@ function getOrderedByePositions({
       }, undefined);
     })
     .filter(Boolean);
-
-  return orderedByePositions;
 }

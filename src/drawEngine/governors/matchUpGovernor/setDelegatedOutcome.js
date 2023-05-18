@@ -20,12 +20,12 @@ export function setDelegatedOutcome({
   if (!matchUp && !matchUpId) return { error: MISSING_MATCHUP };
 
   if (!matchUp) {
-    const { error, matchUp: sourceMatchUp } = findMatchUp({
+    const result = findMatchUp({
       drawDefinition,
       matchUpId,
     });
-    if (error) return { error };
-    matchUp = sourceMatchUp;
+    if (result.error) return result;
+    matchUp = result.matchUp;
   }
 
   if (

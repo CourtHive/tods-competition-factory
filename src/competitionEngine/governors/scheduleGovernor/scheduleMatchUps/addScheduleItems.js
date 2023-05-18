@@ -22,15 +22,17 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 export function addMatchUpScheduleItems(params) {
-  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
-  if (error) return { error };
+  const result = getDrawDefinition(params);
+  if (result.error) return result;
+  const { tournamentRecord, drawDefinition } = result;
 
   return addScheduleItems({ ...params, tournamentRecord, drawDefinition });
 }
 
 export function addMatchUpScheduledDate(params) {
-  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
-  if (error) return { error };
+  const result = getDrawDefinition(params);
+  if (result.error) return result;
+  const { tournamentRecord, drawDefinition } = result;
 
   const { disableNotice, scheduledDate, matchUpId, removePriorValues } = params;
   return addScheduledDate({
@@ -44,8 +46,9 @@ export function addMatchUpScheduledDate(params) {
 }
 
 export function addMatchUpScheduledTime(params) {
-  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
-  if (error) return { error };
+  const result = getDrawDefinition(params);
+  if (result.error) return result;
+  const { tournamentRecord, drawDefinition } = result;
 
   const { disableNotice, scheduledTime, matchUpId, removePriorValues } = params;
   return addScheduledTime({
@@ -59,8 +62,9 @@ export function addMatchUpScheduledTime(params) {
 }
 
 export function addMatchUpStartTime(params) {
-  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
-  if (error) return { error };
+  const result = getDrawDefinition(params);
+  if (result.error) return result;
+  const { tournamentRecord, drawDefinition } = result;
 
   const { disableNotice, startTime, matchUpId } = params;
   return addStartTime({
@@ -73,8 +77,9 @@ export function addMatchUpStartTime(params) {
 }
 
 export function addMatchUpEndTime(params) {
-  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
-  if (error) return { error };
+  const result = getDrawDefinition(params);
+  if (result.error) return result;
+  const { tournamentRecord, drawDefinition } = result;
 
   const { disableNotice, endTime, matchUpId } = params;
   return addEndTime({
@@ -87,8 +92,9 @@ export function addMatchUpEndTime(params) {
 }
 
 export function addMatchUpStopTime(params) {
-  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
-  if (error) return { error };
+  const result = getDrawDefinition(params);
+  if (result.error) return result;
+  const { tournamentRecord, drawDefinition } = result;
 
   const { disableNotice, stopTime, matchUpId } = params;
   return addStopTime({
@@ -101,8 +107,9 @@ export function addMatchUpStopTime(params) {
 }
 
 export function addMatchUpResumeTime(params) {
-  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
-  if (error) return { error };
+  const result = getDrawDefinition(params);
+  if (result.error) return result;
+  const { tournamentRecord, drawDefinition } = result;
 
   const { disableNotice, resumeTime, matchUpId } = params;
   return addResumeTime({
@@ -115,8 +122,9 @@ export function addMatchUpResumeTime(params) {
 }
 
 export function addMatchUpOfficial(params) {
-  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
-  if (error) return { error };
+  const result = getDrawDefinition(params);
+  if (result.error) return result;
+  const { tournamentRecord, drawDefinition } = result;
 
   const { disableNotice, participantId, officialType, matchUpId } = params;
   return addOfficial({
@@ -130,9 +138,9 @@ export function addMatchUpOfficial(params) {
 }
 
 export function assignMatchUpVenue(params) {
-  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
-  if (error) return { error };
-
+  const result = getDrawDefinition(params);
+  if (result.error) return result;
+  const { tournamentRecord, drawDefinition } = result;
   const { matchUpId, venueId, disableNotice, removePriorValues } = params;
 
   return assignVenue({
@@ -146,8 +154,9 @@ export function assignMatchUpVenue(params) {
 }
 
 export function assignMatchUpCourt(params) {
-  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
-  if (error) return { error };
+  const result = getDrawDefinition(params);
+  if (result.error) return result;
+  const { tournamentRecord, drawDefinition } = result;
 
   const {
     removePriorValues,
@@ -171,8 +180,9 @@ export function assignMatchUpCourt(params) {
 }
 
 export function allocateTeamMatchUpCourts(params) {
-  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
-  if (error) return { error };
+  const result = getDrawDefinition(params);
+  if (result.error) return result;
+  const { tournamentRecord, drawDefinition } = result;
 
   const {
     removePriorValues,
@@ -196,8 +206,9 @@ export function allocateTeamMatchUpCourts(params) {
 }
 
 export function addMatchUpCourtOrder(params) {
-  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
-  if (error) return { error };
+  const result = getDrawDefinition(params);
+  if (result.error) return result;
+  const { tournamentRecord, drawDefinition } = result;
 
   const {
     removePriorValues,

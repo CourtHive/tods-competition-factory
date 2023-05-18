@@ -34,8 +34,7 @@ export function findMatchUpFormatTiming({
       eventType,
       event,
     });
-    const foundTiming = timing?.averageMinutes || timing?.recoveryMinutes;
-    return foundTiming;
+    return timing?.averageMinutes || timing?.recoveryMinutes;
   });
 
   return {

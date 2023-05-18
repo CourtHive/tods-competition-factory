@@ -156,7 +156,7 @@ export function calculateScheduleTimes({
       const { courtId, venueId } = schedule;
       const startTime = extractTime(schedule.scheduledTime);
       const endTime = addMinutesToTimeString(startTime, averageMinutes);
-      const booking = {
+      return {
         recoveryMinutes,
         averageMinutes,
         periodLength,
@@ -165,7 +165,6 @@ export function calculateScheduleTimes({
         courtId,
         venueId,
       };
-      return booking;
     }
   );
 

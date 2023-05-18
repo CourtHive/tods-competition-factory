@@ -33,11 +33,12 @@ export function directWinner({
       targetMatchUpDrawPositions[winnerMatchUpDrawPositionIndex];
 
     const sourceStructureId = winnerTargetLink.source.structureId;
-    const { structure, error } = findStructure({
+    const result = findStructure({
       structureId: sourceStructureId,
       drawDefinition,
     });
-    if (error) return { error };
+    if (result.error) return result;
+    const { structure } = result;
 
     const { positionAssignments: sourcePositionAssignments } =
       structureAssignedDrawPositions({

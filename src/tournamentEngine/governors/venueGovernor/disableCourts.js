@@ -12,7 +12,7 @@ export function disableCourts({ tournamentRecord, courtIds, dates }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(courtIds))
     return {
-      info: mustBeAnArray('courtIds must be an array'),
+      info: mustBeAnArray('courtIds'),
       error: MISSING_VALUE,
     };
 

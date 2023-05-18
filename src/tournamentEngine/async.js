@@ -106,12 +106,10 @@ export function tournamentEngineAsync(test) {
 
     const augmentedParams = paramsMiddleware(tournamentRecord, params);
 
-    const result = await method({
+    return await method({
       ...augmentedParams,
       tournamentRecord,
     });
-
-    return result;
   }
 
   async function engineInvoke(method, params, methodName) {
@@ -171,21 +169,9 @@ export function tournamentEngineAsync(test) {
       for (const methodName of governorMethods) {
         engine[methodName] = async (params) => {
           if (getDevContext()) {
-            const result = await engineInvoke(
-              governor[methodName],
-              params,
-              methodName
-            );
-
-            return result;
+            return await engineInvoke(governor[methodName], params, methodName);
           } else {
-            const result = await engineInvoke(
-              governor[methodName],
-              params,
-              methodName
-            );
-
-            return result;
+            return await engineInvoke(governor[methodName], params, methodName);
           }
         };
       }

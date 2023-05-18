@@ -46,8 +46,7 @@ export function getFloatValue(matchUp) {
 
   // floatValue ensures that allParticipantsCheckedIn always floats to top as millisecond
   // differences are not always enough to differentiate
-  const floatValue = checkedInParticipantsCount + allParticipantsCheckedIn;
-  return floatValue;
+  return checkedInParticipantsCount + allParticipantsCheckedIn;
 }
 
 export function competitionMatchUps({
@@ -79,18 +78,13 @@ export function competitionMatchUps({
     });
   });
 
-  const matchUpGroupings = tournamentsMatchUps.reduce(
-    (groupings, matchUpGroupings) => {
-      const keys = Object.keys(matchUpGroupings);
-      keys.forEach((key) => {
-        if (!groupings[key]) groupings[key] = [];
-        groupings[key] = groupings[key].concat(matchUpGroupings[key]);
-      });
+  return tournamentsMatchUps.reduce((groupings, matchUpGroupings) => {
+    const keys = Object.keys(matchUpGroupings);
+    keys.forEach((key) => {
+      if (!groupings[key]) groupings[key] = [];
+      groupings[key] = groupings[key].concat(matchUpGroupings[key]);
+    });
 
-      return groupings;
-    },
-    {}
-  );
-
-  return matchUpGroupings;
+    return groupings;
+  }, {});
 }

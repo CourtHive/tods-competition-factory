@@ -81,11 +81,13 @@ export function bulkRescheduleMatchUps({
 
   const dayTotalMinutes = 1440;
   for (const drawId of Object.keys(drawIdMap)) {
-    const { drawDefinition, error } = getDrawDefinition({
+    const result = getDrawDefinition({
       tournamentRecord,
       drawId,
     });
-    if (error) return { error };
+    if (result.error) return result;
+    const drawDefinition = result.drawDefinition;
+
     const drawMatchUpIds = drawIdMap[drawId].filter((matchUpId) =>
       matchUpIds.includes(matchUpId)
     );

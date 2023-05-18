@@ -1,13 +1,13 @@
 import { findDrawDefinitionExtension } from '../../queryGovernor/extensionQueries';
 
 export function getDrawParticipantRepresentativeIds({ drawDefinition }) {
-  const { extension, error } = findDrawDefinitionExtension({
+  const result = findDrawDefinitionExtension({
     drawDefinition,
     name: 'participantRepresentatives',
   });
-  if (error) return { error };
+  if (result.error) return result;
 
-  const representativeParticipantIds = extension?.value || [];
+  const representativeParticipantIds = result.extension?.value || [];
 
   return { representativeParticipantIds };
 }

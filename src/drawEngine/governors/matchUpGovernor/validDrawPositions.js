@@ -30,8 +30,8 @@ export function validDrawPositions({ matchUps }) {
 }
 
 function validDrawPosition(drawPosition) {
-  const isValid =
+  return (
     drawPosition !== null &&
-    (drawPosition === undefined || !isNaN(drawPosition));
-  return isValid;
+    (drawPosition === undefined || !isNaN(drawPosition))
+  );
 }

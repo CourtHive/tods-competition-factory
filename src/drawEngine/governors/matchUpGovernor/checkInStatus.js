@@ -48,14 +48,14 @@ export function checkInParticipant({
       event,
     });
     if (!matchUp) return { error: MATCHUP_NOT_FOUND };
-    const { error, checkedInParticipantIds, allRelevantParticipantIds } =
-      getCheckedInParticipantIds({
-        matchUp,
-      });
+    const result = getCheckedInParticipantIds({
+      matchUp,
+    });
+    if (result.error) return result;
+    const { checkedInParticipantIds, allRelevantParticipantIds } = result;
 
     if (!allRelevantParticipantIds.includes(participantId))
       return { error: INVALID_PARTICIPANT_ID };
-    if (error) return { error };
     if (checkedInParticipantIds.includes(participantId)) {
       return { error: PARTICIPANT_ALREADY_CHECKED_IN };
     }

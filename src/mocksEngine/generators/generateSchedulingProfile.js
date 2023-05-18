@@ -34,7 +34,7 @@ export function generateSchedulingProfile({
             winnerFinishingPositionRange.split('-').map((x) => +x);
           const range = matchUp.finishingPositionRange?.winner;
 
-          const target =
+          return (
             matchUp.drawId === drawId &&
             (!round.roundNumber || matchUp.roundNumber === round.roundNumber) &&
             (!range ||
@@ -42,9 +42,8 @@ export function generateSchedulingProfile({
               intersection(range, targetRange).length === 2 ||
               (unique(range).length === unique(targetRange).length &&
                 intersection(range, targetRange).length ===
-                  unique(range).length));
-
-          return target;
+                  unique(range).length))
+          );
         });
 
         const targetMatchUp = targetMatchUps[0];

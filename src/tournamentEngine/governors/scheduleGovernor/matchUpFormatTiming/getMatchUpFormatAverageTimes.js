@@ -40,11 +40,9 @@ export function getMatchUpFormatAverageTimes({
     defaultTiming?.averageTimes,
   ];
 
-  const averageTimes = findCategoryTiming({
+  return findCategoryTiming({
     categoryName,
     categoryType,
     timesBlockArray,
   });
-
-  return averageTimes;
 }

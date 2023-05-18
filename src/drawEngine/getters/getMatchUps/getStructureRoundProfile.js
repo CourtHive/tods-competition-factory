@@ -3,13 +3,13 @@ import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { findStructure } from '../findStructure';
 
 export function getStructureRoundProfile({ drawDefinition, structureId }) {
-  const { structure, error } = findStructure({
+  const result = findStructure({
     drawDefinition,
     structureId,
   });
-  if (error) return { error };
+  if (result.error) return result;
 
   // DEV-NOTE cannot pass drawDefinition parameter in this scenario; callstack error
-  const { matchUps } = getAllStructureMatchUps({ structure });
+  const { matchUps } = getAllStructureMatchUps({ structure: result.structure });
   return getRoundMatchUps({ matchUps });
 }

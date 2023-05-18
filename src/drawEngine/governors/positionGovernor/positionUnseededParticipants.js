@@ -118,7 +118,7 @@ export function positionUnseededParticipants({
   }
 
   if (avoidance && participants) {
-    const result = randomUnseededSeparation({
+    return randomUnseededSeparation({
       provisionalPositioning,
       unseededParticipantIds,
       inContextDrawMatchUps,
@@ -133,9 +133,8 @@ export function positionUnseededParticipants({
       avoidance,
       entries,
     });
-    return result;
   } else {
-    const result = randomUnseededDistribution({
+    return randomUnseededDistribution({
       provisionalPositioning,
       unseededParticipantIds,
       inContextDrawMatchUps,
@@ -148,7 +147,6 @@ export function positionUnseededParticipants({
       matchUpsMap,
       event,
     });
-    return result;
   }
 }
 

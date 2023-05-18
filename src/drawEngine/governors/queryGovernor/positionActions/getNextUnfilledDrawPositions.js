@@ -22,12 +22,13 @@ export function getNextUnfilledDrawPositions({
     return { error, nextUnfilledDrawPositions: [] };
   }
 
-  const { structure, error } = findStructure({ drawDefinition, structureId });
-  if (error) return { error };
+  const result = findStructure({ drawDefinition, structureId });
+  if (result.error) return result;
 
-  const result = structureAssignedDrawPositions({ structure });
-  const positionAssignments = result?.positionAssignments || [];
-  console.log('gnudp', { provisionalPositioning });
+  const { positionAssignments = [] } = structureAssignedDrawPositions({
+    structure: result.structure,
+  });
+  // console.log('gnudp', { provisionalPositioning });
   const { unfilledPositions } = getNextSeedBlock({
     provisionalPositioning,
     randomize: true,

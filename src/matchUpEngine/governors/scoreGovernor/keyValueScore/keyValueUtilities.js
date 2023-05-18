@@ -231,11 +231,11 @@ export function checkValidMatchTiebreak({ scoreString }) {
   const lastJoinerIndex = Math.max(
     ...arrayIndices(MATCH_TIEBREAK_JOINER, splitScore)
   );
-  const isValid =
+  return (
     isNumericEnding &&
     lastOpenBracketIndex > lastCloseBracketIndex &&
-    lastJoinerIndex > lastOpenBracketIndex;
-  return isValid;
+    lastJoinerIndex > lastOpenBracketIndex
+  );
 }
 
 export function lastNumericIndex(str) {
@@ -256,8 +256,7 @@ export function getHighTiebreakValue({
   if (lowValue + 1 >= tiebreakTo) {
     return lowValue + winBy;
   }
-  const highValue = parseInt(tiebreakTo);
-  return highValue;
+  return parseInt(tiebreakTo);
 }
 
 export function getMatchUpWinner({

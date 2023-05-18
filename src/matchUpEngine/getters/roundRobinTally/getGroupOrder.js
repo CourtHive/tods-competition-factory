@@ -164,9 +164,7 @@ export function getGroupOrder(params) {
         Math.pow(10, GEMScoreValueMap[attribute].toFixed(3))
     );
 
-    const ratioHash = attributeValues.reduce((a, b) => a + b, 0);
-
-    return ratioHash;
+    return attributeValues.reduce((a, b) => a + b, 0);
   }
 }
 
@@ -290,7 +288,7 @@ function headToHeadWinner({ participantIds, participantResults }) {
 
 function getGroups({ participantResults, participantIds, attribute }) {
   const resultsArray = getResultsArray({ participantResults, participantIds });
-  const groups = resultsArray.reduce((groups, participantResult) => {
+  return resultsArray.reduce((groups, participantResult) => {
     const { participantId, results } = participantResult;
     const value = results?.[attribute];
     if (!isNaN(value) && participantId) {
@@ -302,7 +300,6 @@ function getGroups({ participantResults, participantIds, attribute }) {
     }
     return groups;
   }, {});
-  return groups;
 }
 
 function getResultsArray({ participantResults, participantIds }) {

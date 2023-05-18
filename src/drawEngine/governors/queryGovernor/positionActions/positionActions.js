@@ -86,7 +86,7 @@ export function positionActions(params) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!params.structureId) return { error: MISSING_STRUCTURE_ID };
 
-  const result = findStructure({
+  let result = findStructure({
     structureId: params.structureId,
     drawDefinition,
   });
@@ -95,26 +95,26 @@ export function positionActions(params) {
   const structure = result.containingStructure || result.structure;
   const structureId = structure.structureId;
 
+  result = getStructureDrawPositionProfiles({
+    tournamentRecord,
+    drawDefinition,
+    structureId,
+  });
+
+  if (drawPosition === undefined && !result.isAdHoc) {
+    return { error: MISSING_DRAW_POSITION };
+  }
+
+  if (result.isAdHoc) return matchUpActions(params);
+  if (result.error) return result;
+
   const {
     drawPositionInitialRounds,
     qualifyingDrawPositions,
     inactiveDrawPositions,
     activeDrawPositions,
     byeDrawPositions,
-    isAdHoc,
-    error,
-  } = getStructureDrawPositionProfiles({
-    tournamentRecord,
-    drawDefinition,
-    structureId,
-  });
-
-  if (drawPosition === undefined && !isAdHoc) {
-    return { error: MISSING_DRAW_POSITION };
-  }
-
-  if (isAdHoc) return matchUpActions(params);
-  if (error) return { error };
+  } = result;
 
   const { appliedPolicies } = getAppliedPolicies({
     tournamentRecord,

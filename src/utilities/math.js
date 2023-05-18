@@ -91,6 +91,5 @@ export function skewedDistribution(
 
   if (step) num = stepRound(num, step);
 
-  const fixedDecimals = parseFloat(num.toFixed(significantDecimals));
-  return fixedDecimals;
+  return parseFloat(num.toFixed(significantDecimals));
 }

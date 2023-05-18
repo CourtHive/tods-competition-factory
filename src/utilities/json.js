@@ -143,7 +143,7 @@ export function JSON2CSV(arrayOfJSON, config) {
 
   const columnValueCounts = [];
   const processRow = (row) => {
-    const columnsMap = Object.values(
+    return Object.values(
       tranformedHeaderRow.reduce((columnsMap, columnName, columnIndex) => {
         const accessors = columnTransform[columnName];
         const value =
@@ -166,7 +166,6 @@ export function JSON2CSV(arrayOfJSON, config) {
         return columnsMap;
       }, {})
     );
-    return columnsMap;
   };
 
   let flattenedRows = flattened.map(processRow);
@@ -188,14 +187,13 @@ export function JSON2CSV(arrayOfJSON, config) {
   const rows = flattenedRows.map((row) => row.join(columnJoiner));
 
   if (returnTransformedJSON) {
-    const flattenedJSON = rows.map((row) => {
+    return rows.map((row) => {
       const columnValues = row.split(columnJoiner);
       return Object.assign(
         {},
         ...columnValues.map((v, i) => ({ [mappedHeaderRow[i]]: v }))
       );
     });
-    return flattenedJSON;
   }
 
   return includeHeaderRow

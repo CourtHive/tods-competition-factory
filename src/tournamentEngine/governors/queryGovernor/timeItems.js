@@ -1,5 +1,6 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 
+import { ELEMENT_REQUIRED } from '../../../constants/infoConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
@@ -18,7 +19,7 @@ export function getTimeItem({
   itemType,
   element,
 }) {
-  if (!element) return { error: MISSING_VALUE, info: 'element required' };
+  if (!element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
   if (itemSubTypes && !Array.isArray(itemSubTypes))
     return { error: INVALID_VALUES, context: { itemSubTypes } };
   if (!Array.isArray(element.timeItems)) return { error: MISSING_TIME_ITEMS };

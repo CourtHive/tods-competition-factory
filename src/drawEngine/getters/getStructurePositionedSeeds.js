@@ -18,7 +18,7 @@ export function getStructurePositionedSeeds({
       .filter((assignment) => assignment.participantId)
       .map((assignment) => ({ [assignment.participantId]: assignment }))
   );
-  const positionedSeeds = positionAssignments
+  return positionAssignments
     .map((assignment) => {
       return !seedMap[assignment.participantId]
         ? ''
@@ -29,5 +29,4 @@ export function getStructurePositionedSeeds({
           };
     })
     .filter(Boolean);
-  return positionedSeeds;
 }

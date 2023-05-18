@@ -86,7 +86,7 @@ export function generateBookings({
       const { courtId, venueId } = schedule;
       const startTime = extractTime(schedule.scheduledTime);
       const endTime = addMinutesToTimeString(startTime, averageMinutes);
-      const booking = {
+      return {
         recoveryMinutes,
         averageMinutes,
         periodLength,
@@ -95,7 +95,6 @@ export function generateBookings({
         endTime,
         venueId,
       };
-      return booking;
     })
     .filter(Boolean);
 

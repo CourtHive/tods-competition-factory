@@ -17,18 +17,15 @@ export function getUnfilledPositions({
     }))
   );
 
-  const unpairedPositions = drawPositionGroups
+  return drawPositionGroups
     .map((drawPositions) => {
-      const unfilled = drawPositions
+      return drawPositions
         .filter(Boolean)
         .map((drawPosition) => assignmentMap[drawPosition])
         .filter(Boolean)
         .filter((assignment) => !assignment.participantId && !assignment.bye)
         .map((assignment) => assignment.drawPosition);
-      return unfilled;
     })
     .flat()
     .filter(Boolean);
-
-  return unpairedPositions;
 }

@@ -34,13 +34,13 @@ export function assignSeedPositions(params) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId) return { error: MISSING_DRAW_ID };
 
-  console.log('asp', { provisionalPositioning });
-  const { seedAssignments, seedLimit, error } = getStructureSeedAssignments({
+  const result = getStructureSeedAssignments({
     provisionalPositioning,
     drawDefinition,
     structureId,
   });
-  if (error) return { error };
+  if (result.error) return result;
+  const { seedAssignments, seedLimit } = result;
 
   /**
    * mergeObject and seedLimit ensure that new assignments do not go beyond already established number of seeds

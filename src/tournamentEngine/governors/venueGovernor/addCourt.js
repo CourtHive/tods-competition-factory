@@ -64,12 +64,8 @@ export function addCourt({
       if (court[attribute]) {
         if (attribute === 'dateAvailability') {
           const result = validDateAvailability({ dateAvailability });
-          const { valid, error } = result;
-          if (valid) {
-            courtRecord.dateAvailability = dateAvailability;
-          } else {
-            if (error) return { error };
-          }
+          if (!result.valid && result.error) return result;
+          courtRecord.dateAvailability = dateAvailability;
         } else {
           courtRecord[attribute] = court[attribute];
         }
@@ -122,11 +118,10 @@ export function addCourts({
     if (courtTiming && startTime && endTime)
       courtAvailability.push({ startTime, endTime });
 
-    const court = {
+    return {
       courtName: courtNames[i] || `Court ${i + 1}`,
       dateAvailability: courtAvailability,
     };
-    return court;
   });
 
   const result = courts.map((court, i) => {

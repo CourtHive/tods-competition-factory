@@ -349,7 +349,7 @@ export function tournamentMatchUps({
       });
     });
 
-  const matchUpGroupings = eventsDrawsMatchUps.reduce(
+  return eventsDrawsMatchUps.reduce(
     (matchUps, eventMatchUps) => {
       const keys =
         eventMatchUps &&
@@ -366,8 +366,6 @@ export function tournamentMatchUps({
     },
     { matchUpsCount: 0 }
   );
-
-  return matchUpGroupings;
 }
 
 export function eventMatchUps({
@@ -428,40 +426,35 @@ export function eventMatchUps({
     });
 
   const drawDefinitions = event.drawDefinitions || [];
-  const matchUpGroupings = drawDefinitions.reduce(
-    (matchUps, drawDefinition) => {
-      const drawMatchUps = getDrawMatchUps({
-        context: additionalContext,
-        tournamentAppliedPolicies,
-        scheduleVisibilityFilters,
-        tournamentParticipants,
-        participantsProfile,
-        afterRecoveryTimes,
-        policyDefinitions,
-        tournamentRecord,
-        drawDefinition,
-        contextContent,
-        contextFilters,
-        contextProfile,
-        matchUpFilters,
-        participantMap,
-        nextMatchUps,
-        inContext,
-        event,
-      });
+  return drawDefinitions.reduce((matchUps, drawDefinition) => {
+    const drawMatchUps = getDrawMatchUps({
+      context: additionalContext,
+      tournamentAppliedPolicies,
+      scheduleVisibilityFilters,
+      tournamentParticipants,
+      participantsProfile,
+      afterRecoveryTimes,
+      policyDefinitions,
+      tournamentRecord,
+      drawDefinition,
+      contextContent,
+      contextFilters,
+      contextProfile,
+      matchUpFilters,
+      participantMap,
+      nextMatchUps,
+      inContext,
+      event,
+    });
 
-      const keys = Object.keys(drawMatchUps);
-      keys?.forEach((key) => {
-        if (!matchUps[key]) matchUps[key] = [];
-        matchUps[key] = matchUps[key].concat(drawMatchUps[key]);
-      });
+    const keys = Object.keys(drawMatchUps);
+    keys?.forEach((key) => {
+      if (!matchUps[key]) matchUps[key] = [];
+      matchUps[key] = matchUps[key].concat(drawMatchUps[key]);
+    });
 
-      return matchUps;
-    },
-    {}
-  );
-
-  return matchUpGroupings;
+    return matchUps;
+  }, {});
 }
 
 export function drawMatchUps({

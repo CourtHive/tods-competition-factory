@@ -143,10 +143,9 @@ function findOverlappingBooking(virtualCourts) {
       const endMinutes = timeStringMinutes(booking.endTime);
       const overlap = bookings.some(({ startTime }) => {
         const bookingStartMinutes = timeStringMinutes(startTime);
-        const hasOverlap =
-          bookingStartMinutes > startMinutes &&
-          bookingStartMinutes < endMinutes;
-        return hasOverlap;
+        return (
+          bookingStartMinutes > startMinutes && bookingStartMinutes < endMinutes
+        );
       });
       if (overlap) return true;
     }

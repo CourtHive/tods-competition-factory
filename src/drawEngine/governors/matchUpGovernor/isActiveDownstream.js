@@ -87,7 +87,5 @@ export function isActiveDownstream(params) {
       drawDefinition,
     });
 
-  const isActive = !!(winnerActive || loserActive);
-
-  return isActive;
+  return !!(winnerActive || loserActive);
 }

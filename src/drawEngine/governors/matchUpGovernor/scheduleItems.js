@@ -6,6 +6,7 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../../utilities/math';
 import { addMatchUpTimeItem } from './timeItems';
 import {
@@ -368,7 +369,7 @@ export function addMatchUpTimeModifiers({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   if (timeModifiers && !Array.isArray(timeModifiers))
-    return { error: INVALID_VALUES, info: 'timeModifiers must be an array' };
+    return { error: INVALID_VALUES, info: mustBeAnArray('timeModifiers') };
 
   const itemValue = timeModifiers;
   const timeItem = {

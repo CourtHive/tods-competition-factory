@@ -41,14 +41,14 @@ export function setParticipantScaleItem({
     );
 
     if (participant) {
-      const { valueChanged, error } = addParticipantScaleItem({
+      const result = addParticipantScaleItem({
         removePriorValues,
         participant,
         scaleItem,
       });
-      if (error) return { error };
+      if (result.error) return result;
 
-      equivalentValue = !valueChanged;
+      equivalentValue = !result.valueChanged;
 
       const { topics } = getTopics();
       if (topics.includes(MODIFY_PARTICIPANTS)) {

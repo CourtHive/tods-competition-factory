@@ -125,7 +125,7 @@ function modifyScheduling({
         recoveryTimes: formatRecoveryTimes,
       });
 
-  const updatedScheduling = {
+  return {
     matchUpAverageTimes:
       (updatedMatchUpAverageTimes?.length && updatedMatchUpAverageTimes) ||
       matchUpAverageTimes,
@@ -133,6 +133,4 @@ function modifyScheduling({
       (updatedMatchUpRecoveryTimes?.length && updatedMatchUpRecoveryTimes) ||
       matchUpRecoveryTimes,
   };
-
-  return updatedScheduling;
 }

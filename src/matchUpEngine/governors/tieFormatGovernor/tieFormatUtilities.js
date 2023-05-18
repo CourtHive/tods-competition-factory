@@ -1,4 +1,5 @@
 import { decorateResult } from '../../../global/functions/decorateResult';
+import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { matchUpFormatCode } from '../matchUpFormatGovernor';
 import { unique, UUID } from '../../../utilities';
 
@@ -36,7 +37,7 @@ export function validateTieFormat({
   }
 
   if (!Array.isArray(tieFormat.collectionDefinitions)) {
-    errors.push('tieFormat.collectionDefinitiosn must be an array of objects');
+    errors.push(mustBeAnArray('tieFormat.collectionDefinitions'));
     return decorateResult({
       result: {
         error: INVALID_TIE_FORMAT,

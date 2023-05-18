@@ -45,12 +45,12 @@ export function allocateTeamMatchUpCourts({
     const tournaments = tournamentRecords || {
       [tournamentRecord.tournamentId]: tournamentRecord,
     };
-    const { courts, error } = getVenuesAndCourts({
+    const result = getVenuesAndCourts({
       tournamentRecords: tournaments,
     });
-    if (error) return { error };
+    if (result.error) return result;
 
-    const specifiedCourts = courts.filter((court) =>
+    const specifiedCourts = result.courts.filter((court) =>
       courtIds.includes(court.courtId)
     );
     if (specifiedCourts.length !== courtIds.length) {

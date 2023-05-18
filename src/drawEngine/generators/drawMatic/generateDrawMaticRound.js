@@ -124,7 +124,7 @@ function getSideRatings({
   eventType,
   pairing,
 }) {
-  const ratings = pairing.split('|').map((participantId) => {
+  return pairing.split('|').map((participantId) => {
     if (eventType === DOUBLES) {
       const individualParticipantIds = tournamentParticipants?.find(
         (participant) => participant.participantId === participantId
@@ -138,7 +138,6 @@ function getSideRatings({
       return adHocRatings[participantId] || DEFAULT_RATING;
     }
   });
-  return ratings;
 }
 
 function getPairings({

@@ -108,10 +108,10 @@ export function generateVoluntaryConsolation(params = {}) {
     })
   );
 
-  const { generators, error } = getGenerators(params);
-  if (error) return { error };
+  const result = getGenerators(params);
+  if (result.error) return result;
 
-  const generator = generators[drawType];
+  const generator = result.generators[drawType];
   if (!generator) return { error: UNRECOGNIZED_DRAW_TYPE };
 
   const generatorResult = generator && generator();

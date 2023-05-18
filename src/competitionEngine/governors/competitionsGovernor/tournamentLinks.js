@@ -56,8 +56,9 @@ export function linkTournaments({ tournamentRecords }) {
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
 
-  const { tournamentIds, error } = getTournamentIds(tournamentRecords);
-  if (error) return { error };
+  const result = getTournamentIds(tournamentRecords);
+  if (result.error) return result;
+  const { tournamentIds } = result;
 
   if (tournamentIds?.length > 1) {
     const extension = {
@@ -93,8 +94,9 @@ export function unlinkTournament({ tournamentRecords, tournamentId }) {
   if (typeof tournamentRecords !== 'object') return { error: INVALID_VALUES };
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
 
-  const { tournamentIds, error } = getTournamentIds(tournamentRecords);
-  if (error) return { error };
+  const result = getTournamentIds(tournamentRecords);
+  if (result.error) return result;
+  const { tournamentIds } = result;
 
   if (!tournamentIds.includes(tournamentId))
     return { error: MISSING_TOURNAMENT_ID };

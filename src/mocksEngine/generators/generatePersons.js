@@ -172,7 +172,7 @@ export function generatePersons({
     const birthDay = randomPop(generateRange(0, 365));
     const birthDate = birthYear && dateFromDay(birthYear, birthDay);
 
-    const updatedPerson = Object.assign(
+    return Object.assign(
       definedAttributes({
         extensions: personExtensions || [{ name: 'regionCode', value: i + 1 }],
         birthDate,
@@ -180,8 +180,6 @@ export function generatePersons({
       }),
       person
     );
-
-    return updatedPerson;
   });
 
   return {

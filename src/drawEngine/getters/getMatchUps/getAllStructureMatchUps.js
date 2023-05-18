@@ -519,13 +519,11 @@ export function getAllStructureMatchUps({
           sourceDrawPositionRoundRanges &&
           sourceDrawPositionRoundRanges[columnPosition];
 
-        const sideValue = onlyDefined({
+        return onlyDefined({
           sourceDrawPositionRange,
           ...existingSide,
           ...side,
         });
-
-        return sideValue;
       });
 
       Object.assign(matchUpWithContext, makeDeepCopy({ sides }, true, true));

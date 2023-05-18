@@ -46,8 +46,7 @@ function parseSetFormat(formatstring) {
         return { tiebreakSet: parseTiebreakFormat(setFormatString) };
       const timedSet = setFormatString.indexOf('T') === 0;
       if (timedSet) {
-        const timedSetFormat = parseTimedSet(setFormatString);
-        return timedSetFormat;
+        return parseTimedSet(setFormatString);
       }
       const parts = formatstring.match(/^[FS]{1}:(\d+)([A-Za-z]*)/);
       const NoAD = (parts && isNoAD(parts[2])) || false;

@@ -98,7 +98,7 @@ export function clearDrawPosition({
     }));
   }
 
-  const { drawPositionCleared, error } = drawPositionRemovals({
+  const result = drawPositionRemovals({
     inContextDrawMatchUps,
     tournamentRecord,
     drawDefinition,
@@ -107,9 +107,9 @@ export function clearDrawPosition({
     matchUpsMap,
     event,
   });
-  if (error) return { error };
+  if (result.error) return result;
 
-  if (!drawPositionCleared) return { error: DRAW_POSITION_NOT_CLEARED };
+  if (!result.drawPositionCleared) return { error: DRAW_POSITION_NOT_CLEARED };
 
   modifyPositionAssignmentsNotice({
     tournamentId: tournamentRecord?.tournamentId,

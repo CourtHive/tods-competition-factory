@@ -33,12 +33,13 @@ export function setMatchUpFormat(params) {
   const stack = 'setMatchUpFormat';
 
   if (matchUpId) {
-    const { matchUp, error } = findMatchUp({
+    const result = findMatchUp({
       drawDefinition,
       matchUpId,
       event,
     });
-    if (error) return { error };
+    if (result.error) return result;
+    const matchUp = result.matchUp;
     if (matchUp?.matchUpType === TEAM)
       return {
         error: INVALID_MATCHUP,
@@ -55,12 +56,12 @@ export function setMatchUpFormat(params) {
     });
   } else if (structureId) {
     if (event?.eventType === TEAM) return { error: INVALID_EVENT_TYPE };
-    const { structure, error } = findStructure({ drawDefinition, structureId });
-    if (error) return { error };
-    if (!structure) {
+    const result = findStructure({ drawDefinition, structureId });
+    if (result.error) return result;
+    if (!result.structure) {
       return { error: STRUCTURE_NOT_FOUND };
     } else {
-      structure.matchUpFormat = matchUpFormat;
+      result.structure.matchUpFormat = matchUpFormat;
     }
   } else if (drawDefinition) {
     drawDefinition.matchUpFormat = matchUpFormat;

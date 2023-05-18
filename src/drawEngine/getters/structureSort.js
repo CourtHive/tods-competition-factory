@@ -30,7 +30,7 @@ export function structureSort(a, b, config = {}) {
       completedMatchUpStatuses.includes(matchUpStatus) ? 1 : -1
     );
 
-  const comparison =
+  return (
     (completed && completedStructure(a) - completedStructure(b)) ||
     (aggregate && protocolSequence(a) - protocolSequence(b)) ||
     (orderProtocol[a?.stage] || 0) - (orderProtocol[b?.stage] || 0) ||
@@ -41,9 +41,8 @@ export function structureSort(a, b, config = {}) {
         (a?.positionAssignments?.length || Infinity)) ||
     (a?.stageSequence || 0) - (b?.stageSequence || 0) ||
     (getMinFinishingPositionRange(a) || 0) -
-      (getMinFinishingPositionRange(b) || 0);
-
-  return comparison;
+      (getMinFinishingPositionRange(b) || 0)
+  );
 }
 
 export function getMinFinishingPositionRange(structure) {
