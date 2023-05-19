@@ -19,6 +19,7 @@ import {
   UNPUBLISH_EVENT,
   UNPUBLISH_ORDER_OF_PLAY,
   MUTATIONS,
+  UPDATE_INCONTEXT_MATCHUP,
 } from '../../constants/topicConstants';
 
 export function notifySubscribers({
@@ -75,6 +76,7 @@ const topicValues = {
   [MODIFY_DRAW_ENTRIES]: 5,
   [MODIFY_EVENT_ENTRIES]: 5,
   [MODIFY_MATCHUP]: 1,
+  [UPDATE_INCONTEXT_MATCHUP]: 1,
   [MODIFY_PARTICIPANTS]: 5,
   [MODIFY_VENUE]: 5,
   [DELETED_MATCHUP_IDS]: 4,

@@ -3,11 +3,18 @@ import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/sc
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
 import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
+import { decorateResult } from '../../../global/functions/decorateResult';
+import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { getTopics } from '../../../global/state/globalState';
+import {
+  modifyMatchUpNotice,
+  updateInContextMatchUp,
+} from '../../notifications/drawNotifications';
 
+import { UPDATE_INCONTEXT_MATCHUP } from '../../../constants/topicConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
@@ -153,11 +160,33 @@ export function modifyMatchUpScore({
     if (result.error) return decorateResult({ result, stack });
   }
 
+  const tournamentId = tournamentRecord?.tournamentId;
+  const sendInContext = getTopics().topics.includes(UPDATE_INCONTEXT_MATCHUP);
+  if (sendInContext) {
+    const matchUpsMap = getMatchUpsMap({ drawDefinition });
+    const inContextMatchUp = getAllDrawMatchUps({
+      // client will not normally be receiving participants for the first time...
+      // ... and should therefore already have groupings / ratings / rankings for participants
+      // participantsProfile: { withGroupings: true },
+      matchUpFilters: { matchUpIds: [matchUpId] },
+      includeByeMatchUps: true,
+      nextMatchUps: true,
+      tournamentRecord, // required to hydrate participants
+      inContext: true,
+      drawDefinition,
+      matchUpsMap,
+    }).matchUps?.[0];
+
+    if (inContextMatchUp) {
+      updateInContextMatchUp({ tournamentId, inContextMatchUp });
+    }
+  }
+
   modifyMatchUpNotice({
-    tournamentId: tournamentRecord?.tournamentId,
     eventId: event?.eventId,
     context: stack,
     drawDefinition,
+    tournamentId,
     matchUp,
   });
 

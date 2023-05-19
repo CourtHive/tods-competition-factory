@@ -17,6 +17,7 @@ import {
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
   FEED_IN_CHAMPIONSHIP,
   MAIN,
@@ -27,8 +28,9 @@ const debugLog = debug ? console.log : () => {};
 
 let matchUpNotifications = [];
 let notificationsCounter = 0;
+
 const subscriptions = {
-  modifyMatchUp: (results) => {
+  [MODIFY_MATCHUP]: (results) => {
     matchUpNotifications.push(...results);
     notificationsCounter += 1;
   },

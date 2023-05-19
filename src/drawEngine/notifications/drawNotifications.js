@@ -10,6 +10,7 @@ import {
   MODIFY_MATCHUP,
   MODIFY_POSITION_ASSIGNMENTS,
   MODIFY_SEED_ASSIGNMENTS,
+  UPDATE_INCONTEXT_MATCHUP,
 } from '../../constants/topicConstants';
 import {
   MISSING_DRAW_DEFINITION,
@@ -94,6 +95,17 @@ export function modifyMatchUpNotice({
     topic: MODIFY_MATCHUP,
     payload: { matchUp, tournamentId, context },
     key: matchUp.matchUpId,
+  });
+}
+
+export function updateInContextMatchUp({ tournamentId, inContextMatchUp }) {
+  if (!inContextMatchUp) {
+    return { error: MISSING_MATCHUP };
+  }
+  addNotice({
+    topic: UPDATE_INCONTEXT_MATCHUP,
+    payload: { inContextMatchUp, tournamentId },
+    key: inContextMatchUp.matchUpId,
   });
 }
 
