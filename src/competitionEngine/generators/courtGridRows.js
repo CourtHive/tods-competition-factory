@@ -46,9 +46,9 @@ export function courtGridRows({
 
   return {
     courtPrefix,
-    rows: rowBuilder.map((row) =>
+    rows: rowBuilder.map((row, i) =>
       Object.assign(
-        {},
+        { rowId: `rowId-${i + 1}` },
         ...row.matchUps.map((matchUp, i) => ({
           [`${courtPrefix}${i}`]: matchUp,
         }))
