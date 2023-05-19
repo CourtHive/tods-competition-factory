@@ -33,7 +33,7 @@ export function addMatchUpScheduledDate({
 }) {
   // TODO: check that scheduledDate is within range of event dates / tournament dates
 
-  const result = addScheduledDate({
+  return addScheduledDate({
     removePriorValues,
     tournamentRecord,
     drawDefinition,
@@ -41,8 +41,6 @@ export function addMatchUpScheduledDate({
     scheduledDate,
     matchUpId,
   });
-
-  return result;
 }
 
 export function addMatchUpScheduledTime({
@@ -55,7 +53,7 @@ export function addMatchUpScheduledTime({
 }) {
   // TODO: check that scheduledTime is within range of event dates / tournament dates
 
-  const result = addScheduledTime({
+  return addScheduledTime({
     removePriorValues,
     tournamentRecord,
     drawDefinition,
@@ -63,7 +61,6 @@ export function addMatchUpScheduledTime({
     disableNotice,
     matchUpId,
   });
-  return result;
 }
 
 export function addMatchUpStartTime({
@@ -73,14 +70,13 @@ export function addMatchUpStartTime({
   matchUpId,
   startTime,
 }) {
-  const result = addStartTime({
+  return addStartTime({
     tournamentRecord,
     drawDefinition,
     disableNotice,
     matchUpId,
     startTime,
   });
-  return result;
 }
 
 export function addMatchUpEndTime({
@@ -90,14 +86,13 @@ export function addMatchUpEndTime({
   matchUpId,
   endTime,
 }) {
-  const result = addEndTime({
+  return addEndTime({
     tournamentRecord,
     drawDefinition,
     disableNotice,
     matchUpId,
     endTime,
   });
-  return result;
 }
 
 export function addMatchUpStopTime({
@@ -107,14 +102,13 @@ export function addMatchUpStopTime({
   matchUpId,
   stopTime,
 }) {
-  const result = addStopTime({
+  return addStopTime({
     tournamentRecord,
     drawDefinition,
     disableNotice,
     matchUpId,
     stopTime,
   });
-  return result;
 }
 
 export function addMatchUpResumeTime({
@@ -124,14 +118,13 @@ export function addMatchUpResumeTime({
   resumeTime,
   matchUpId,
 }) {
-  const result = addResumeTime({
+  return addResumeTime({
     tournamentRecord,
     drawDefinition,
     disableNotice,
     resumeTime,
     matchUpId,
   });
-  return result;
 }
 
 export function addMatchUpCourtOrder({
@@ -141,14 +134,13 @@ export function addMatchUpCourtOrder({
   courtOrder,
   matchUpId,
 }) {
-  const result = addCourtOrder({
+  return addCourtOrder({
     tournamentRecord,
     drawDefinition,
     disableNotice,
     courtOrder,
     matchUpId,
   });
-  return result;
 }
 
 export function addMatchUpOfficial({
@@ -176,12 +168,11 @@ export function addMatchUpOfficial({
 
   if (!participant) return { error: PARTICIPANT_NOT_FOUND };
 
-  const result = addOfficial({
+  return addOfficial({
     drawDefinition,
     disableNotice,
     participantId,
     officialType,
     matchUpId,
   });
-  return result;
 }

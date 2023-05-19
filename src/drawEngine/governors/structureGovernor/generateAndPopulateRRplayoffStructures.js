@@ -19,8 +19,8 @@ export function generateAndPopulateRRplayoffStructures(params) {
   const stack = 'generateAndPopulateRRplayoffStructures';
   if (!params.playoffGroups) {
     return decorateResult({
-      info: 'playoffGroups required',
       result: { error: MISSING_VALUE },
+      info: 'playoffGroups required',
       stack,
     });
   }

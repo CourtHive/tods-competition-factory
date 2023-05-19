@@ -1,4 +1,5 @@
 import { removeIndividualParticipantIds } from './removeIndividualParticipantIds';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { addIndividualParticipantIds } from './addIndividualParticipantIds';
 import { addNotice, getTopics } from '../../../../global/state/globalState';
 
@@ -28,22 +29,31 @@ export function modifyIndividualParticipantIds({
   groupingParticipantId,
   tournamentRecord,
 }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  const stack = 'modifyIndividualParticipantIds';
+  if (!tournamentRecord)
+    return decorateResult({
+      result: { error: MISSING_TOURNAMENT_RECORD },
+      stack,
+    });
   if (!groupingParticipantId || !individualParticipantIds)
-    return { error: MISSING_VALUE };
+    return decorateResult({ result: { error: MISSING_VALUE }, stack });
 
   const tournamentParticipants = tournamentRecord.participants || [];
 
   const groupingParticipant = tournamentParticipants.find((participant) => {
     return participant.participantId === groupingParticipantId;
   });
-  if (!groupingParticipant) return { error: PARTICIPANT_NOT_FOUND };
+  if (!groupingParticipant)
+    return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
 
   if (![TEAM, GROUP].includes(groupingParticipant.participantType)) {
-    return {
-      error: INVALID_PARTICIPANT_TYPE,
-      participantType: groupingParticipant.participantType,
-    };
+    return decorateResult({
+      result: { error: INVALID_PARTICIPANT_TYPE },
+      context: {
+        participantType: groupingParticipant.participantType,
+      },
+      stack,
+    });
   }
 
   // integrity chck to ensure only individuals can be added to groupings
@@ -57,7 +67,10 @@ export function modifyIndividualParticipantIds({
     }
   );
   if (invalidParticipantIds.length)
-    return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIds };
+    return decorateResult({
+      result: { error: INVALID_PARTICIPANT_IDS, invalidParticipantIds },
+      stack,
+    });
 
   const existingIndividualParticipantIds =
     groupingParticipant.individualParticipantIds || [];
@@ -78,14 +91,15 @@ export function modifyIndividualParticipantIds({
     groupingParticipantId,
     tournamentRecord,
   });
-  if (addResult.error) return addResult;
+  if (addResult.error) return decorateResult({ result: addResult, stack });
 
   const removeResult = removeIndividualParticipantIds({
     individualParticipantIds: individualParticipantIdsToRemove,
     groupingParticipantId,
     tournamentRecord,
   });
-  if (removeResult.error) return removeResult;
+  if (removeResult.error)
+    return decorateResult({ result: removeResult, stack });
 
   const { topics } = getTopics();
   if (topics.includes(MODIFY_PARTICIPANTS)) {

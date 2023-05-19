@@ -45,11 +45,9 @@ export function getMatchUpFormatRecoveryTimes({
     defaultTiming?.recoveryTimes,
   ];
 
-  const recoveryTimes = findCategoryTiming({
+  return findCategoryTiming({
     categoryName,
     categoryType,
     timesBlockArray,
   });
-
-  return recoveryTimes;
 }

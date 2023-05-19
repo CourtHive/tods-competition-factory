@@ -23,15 +23,16 @@ export function modifyCourtAvailability({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!courtId) return { error: MISSING_COURT_ID };
 
-  const result = validDateAvailability({ dateAvailability });
+  let result = validDateAvailability({ dateAvailability });
   if (result.error) return result;
 
   const { updatedDateAvailability, totalMergeCount } =
     sortAndMergeDateAvailability(dateAvailability);
   dateAvailability = updatedDateAvailability;
 
-  const { court, venue, error } = findCourt({ tournamentRecord, courtId });
-  if (error) return { error };
+  result = findCourt({ tournamentRecord, courtId });
+  if (result.error) return result;
+  const { court, venue } = result;
 
   const { matchUps: courtMatchUps } = getScheduledCourtMatchUps({
     tournamentRecord,

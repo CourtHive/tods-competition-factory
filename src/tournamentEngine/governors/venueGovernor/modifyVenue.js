@@ -37,8 +37,9 @@ export function modifyVenue({
     venueId,
   });
 
-  const { venue, error } = findVenue({ tournamentRecord, venueId });
-  if (error) return { error };
+  const result = findVenue({ tournamentRecord, venueId });
+  if (result.error) return result;
+  const venue = result.venue;
 
   // not valid to modify a venueId
   const validAttributes = Object.keys(venueTemplate()).filter(

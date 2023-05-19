@@ -10,9 +10,8 @@ export function setMatchUpDailyLimits({ tournamentRecord, dailyLimits }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof dailyLimits !== 'object') return { error: INVALID_OBJECT };
 
-  const result = addTournamentExtension({
+  return addTournamentExtension({
     extension: { name: SCHEDULE_LIMITS, value: { dailyLimits } },
     tournamentRecord,
   });
-  return result;
 }

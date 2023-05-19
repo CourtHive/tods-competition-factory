@@ -41,14 +41,14 @@ export function setParticipantScaleItem({
     );
 
     if (participant) {
-      const { valueChanged, error } = addParticipantScaleItem({
+      const result = addParticipantScaleItem({
         removePriorValues,
         participant,
         scaleItem,
       });
-      if (error) return { error };
+      if (result.error) return result;
 
-      equivalentValue = !valueChanged;
+      equivalentValue = !result.valueChanged;
 
       const { topics } = getTopics();
       if (topics.includes(MODIFY_PARTICIPANTS)) {
@@ -63,15 +63,16 @@ export function setParticipantScaleItem({
     }
   }
 
-  return equivalentValue
-    ? {
-        ...SUCCESS,
-        info: VALUE_UNCHANGED,
-        existingValue: scaleItem.scaleValue,
-      }
-    : participant
-    ? { ...SUCCESS, newValue: scaleItem.scaleValue }
-    : { error: PARTICIPANT_NOT_FOUND };
+  return (
+    (equivalentValue && {
+      ...SUCCESS,
+      info: VALUE_UNCHANGED,
+      existingValue: scaleItem.scaleValue,
+    }) ||
+    (participant && { ...SUCCESS, newValue: scaleItem.scaleValue }) || {
+      error: PARTICIPANT_NOT_FOUND,
+    }
+  );
 }
 
 export function setParticipantScaleItems({
@@ -159,10 +160,8 @@ export function setParticipantScaleItems({
     }
   }
 
-  if (auditData) {
-    if (topics.includes(AUDIT)) {
-      addNotice({ topic: AUDIT, payload: auditData });
-    }
+  if (auditData && topics.includes(AUDIT)) {
+    addNotice({ topic: AUDIT, payload: auditData });
   }
 
   return definedAttributes({ ...SUCCESS, modificationsApplied, info });

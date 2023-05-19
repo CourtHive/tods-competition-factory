@@ -46,7 +46,7 @@ export function checkDailyLimits({
     (participantId) => {
       const profile = individualParticipantProfiles[participantId];
       if (profile) {
-        const limitReached = [matchUpType, TOTAL].find((counterName) => {
+        return [matchUpType, TOTAL].find((counterName) => {
           const participantCount =
             (profile.counters && profile.counters[counterName]) || 0;
           const dailyLimit = matchUpDailyLimits[counterName] || 0;
@@ -54,7 +54,6 @@ export function checkDailyLimits({
             participantCount && dailyLimit && participantCount >= dailyLimit
           );
         });
-        return limitReached;
       }
     }
   );

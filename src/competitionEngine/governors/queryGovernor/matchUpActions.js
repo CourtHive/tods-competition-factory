@@ -25,16 +25,16 @@ export function matchUpActions({
   const tournamentRecord = tournamentRecords[tournamentId];
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
-  const { drawDefinition, error } = findEvent({
+  const result = findEvent({
     tournamentRecord,
     eventId,
     drawId,
   });
-  if (error) return { error };
+  if (result.error) return result;
 
   return tournamentMatchUpActions({
+    drawDefinition: result.drawDefinition,
     tournamentRecord,
-    drawDefinition,
     participantId,
     sideNumber,
     matchUpId,

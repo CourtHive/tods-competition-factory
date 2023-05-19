@@ -70,7 +70,7 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
       const matchUpsToGenerate = Math.pow(2, finishingRound - 1);
       const roundNumber = maxRound + additionalRounds - finishingRound + 1;
       return generateRange(1, matchUpsToGenerate + 1).map((roundPosition) => {
-        const matchUp = {
+        return {
           drawId,
           structureId,
           matchUpId: UUID(),
@@ -80,8 +80,6 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
           roundPosition,
           finishingRound,
         };
-
-        return matchUp;
       });
     }
   );
@@ -143,7 +141,7 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
       const sides = drawPositions?.map((drawPosition) => {
         return entrySides[drawPosition] || { bye: true, drawPosition };
       });
-      const matchUp = {
+      return {
         sides,
         drawId,
         structureId,
@@ -156,7 +154,6 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
         sideNumber: index + 1,
         finishingPositionRange,
       };
-      return matchUp;
     });
 
     matchUps = matchUps.concat(...missingMatchUps);
@@ -259,18 +256,13 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
 
 function getAdvancingParticipantId(matchUp) {
   if (matchUp.matchUpStatus === BYE) {
-    const participantId = matchUp.sides.reduce(
-      (p, c) => c.participantId || p,
-      undefined
-    );
-    return participantId;
+    return matchUp.sides.reduce((p, c) => c.participantId || p, undefined);
   }
   if (!matchUp.winningSide) return undefined;
-  const participantId = matchUp.sides.reduce(
+  return matchUp.sides.reduce(
     (p, c) => (c.sideNumber === matchUp.winningSide ? c.participantId : p),
     undefined
   );
-  return participantId;
 }
 
 export function collapseHierarchy(node, depth) {

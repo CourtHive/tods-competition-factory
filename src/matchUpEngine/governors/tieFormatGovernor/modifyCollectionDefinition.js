@@ -19,6 +19,7 @@ import {
   MISSING_VALUE,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { decorateResult } from '../../../global/functions/decorateResult';
 
 // all child matchUps need to be checked for collectionAssignments / collectionPositions which need to be removed when collectionDefinition.collectionIds are removed
 export function modifyCollectionDefinition({
@@ -73,13 +74,16 @@ export function modifyCollectionDefinition({
     !collectionName &&
     !matchUpFormat
   )
-    return { error: MISSING_VALUE };
+    return decorateResult({ result: { error: MISSING_VALUE }, stack });
 
   if (Object.values(valueAssignments).filter(Boolean).length > 1)
-    return {
-      error: INVALID_VALUES,
-      info: 'Only one value assignment allowed per collectionDefinition',
-    };
+    return decorateResult({
+      result: {
+        error: INVALID_VALUES,
+        info: 'Only one value assignment allowed per collectionDefinition',
+      },
+      stack,
+    });
 
   let result = getTieFormat({
     drawDefinition,
@@ -88,7 +92,7 @@ export function modifyCollectionDefinition({
     eventId,
     event,
   });
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
 
   const { matchUp, structure, tieFormat: existingTieFormat } = result;
   const tieFormat = copyTieFormat(existingTieFormat);
@@ -96,7 +100,8 @@ export function modifyCollectionDefinition({
   const collectionDefinition = tieFormat.collectionDefinitions.find(
     (collectionDefinition) => collectionDefinition.collectionId === collectionId
   );
-  if (!collectionDefinition) return { error: NOT_FOUND };
+  if (!collectionDefinition)
+    return decorateResult({ result: { error: NOT_FOUND }, stack });
 
   const value = collectionValue || matchUpValue || scoreValue || setValue;
   if (value || collectionValueProfile) {
@@ -108,7 +113,10 @@ export function modifyCollectionDefinition({
         collectionValueProfile,
       });
       if (result.errors) {
-        return { error: INVALID_VALUES, info: result.errors };
+        return decorateResult({
+          result: { error: INVALID_VALUES, info: result.errors },
+          stack,
+        });
       }
     }
 
@@ -168,7 +176,7 @@ export function modifyCollectionDefinition({
 
   const prunedTieFormat = definedAttributes(tieFormat);
   result = validateTieFormat({ tieFormat: prunedTieFormat });
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
 
   result = updateTieFormat({
     tieFormat: prunedTieFormat,
@@ -196,5 +204,5 @@ export function modifyCollectionDefinition({
     }
   }
 
-  return result;
+  return decorateResult({ result, stack });
 }

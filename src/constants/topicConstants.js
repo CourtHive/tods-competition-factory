@@ -24,6 +24,7 @@ export const PUBLISH_ORDER_OF_PLAY = 'publishOrderOfPlay';
 export const UNPUBLISH_EVENT = 'unPublishEvent';
 export const UNPUBLISH_EVENT_SEEDING = 'unPublishEventSeeding';
 export const UNPUBLISH_ORDER_OF_PLAY = 'unPublishOrderOfPlay';
+export const UPDATE_INCONTEXT_MATCHUP = 'updateInContextMatchUp';
 
 export const topicConstants = {
   ADD_DRAW_DEFINITION,
@@ -52,4 +53,5 @@ export const topicConstants = {
   UNPUBLISH_EVENT_SEEDING,
   UNPUBLISH_EVENT,
   UNPUBLISH_ORDER_OF_PLAY,
+  UPDATE_INCONTEXT_MATCHUP,
 };

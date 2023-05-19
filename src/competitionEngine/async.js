@@ -150,12 +150,10 @@ export function competitionEngineAsync(test) {
         engine[method] = async function (params) {
           // if devContext is true then don't trap errors
           if (getDevContext()) {
-            const engineResult = await engineInvoke(governor[method], params);
-            return engineResult;
+            return await engineInvoke(governor[method], params);
           } else {
             try {
-              const engineResult = await engineInvoke(governor[method], params);
-              return engineResult;
+              return await engineInvoke(governor[method], params);
             } catch (err) {
               const error = err.toString();
               console.log('ERROR', {

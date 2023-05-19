@@ -6,11 +6,10 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 export function validUpdate({ matchUp, updateInProgressMatchUps }) {
-  const valid =
+  return (
     !matchUp.winningSide &&
     ![completedMatchUpStatuses].includes(matchUp.matchUpStatus) &&
     (updateInProgressMatchUps ||
-      (matchUp.matchUpStatus !== IN_PROGRESS && !scoreHasValue(matchUp)));
-
-  return valid;
+      (matchUp.matchUpStatus !== IN_PROGRESS && !scoreHasValue(matchUp)))
+  );
 }

@@ -211,7 +211,7 @@ test('eventProfiles and participantsProfile work as expected', () => {
       const { city, state, postalCode } = participant.person.addresses[0];
       const nationalityCode = participant.person.nationalityCode;
       const { cities, states, postalCodes, nationalityCodes } = components;
-      const values = {
+      return {
         cities: cities.includes(city) ? cities : cities.concat(city),
         states: states.includes(state) ? states : states.concat(state),
         postalCodes: postalCodes.includes(postalCode)
@@ -221,7 +221,6 @@ test('eventProfiles and participantsProfile work as expected', () => {
           ? nationalityCodes
           : nationalityCodes.concat(nationalityCode),
       };
-      return values;
     },
     { cities: [], states: [], postalCodes: [], nationalityCodes: [] }
   );

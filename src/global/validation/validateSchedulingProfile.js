@@ -28,7 +28,7 @@ export function validateSchedulingProfile({
     if (!isValidDateString(scheduleDate)) {
       return false;
     }
-    const validVenues = venues.every((venueProfile) => {
+    return venues.every((venueProfile) => {
       const { venueId, rounds } = venueProfile;
       if (typeof venueId !== 'string') {
         info = 'venueId should be a string';
@@ -81,8 +81,6 @@ export function validateSchedulingProfile({
 
       return true;
     });
-
-    return validVenues;
   });
 
   if (!isValid && !error) {

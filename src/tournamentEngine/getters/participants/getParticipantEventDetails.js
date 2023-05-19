@@ -35,11 +35,7 @@ export function getParticipantEventDetails({
       const enteredParticipantIds = (event?.entries || []).map(
         (entry) => entry.participantId
       );
-      const presentInEvent = overlap(
-        enteredParticipantIds,
-        relevantParticipantIds
-      );
-      return presentInEvent;
+      return overlap(enteredParticipantIds, relevantParticipantIds);
     })
     .map((event) => ({ eventName: event.eventName, eventId: event.eventId }));
 

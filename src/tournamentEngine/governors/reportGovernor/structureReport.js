@@ -289,8 +289,7 @@ export function getStructureReports({
 }
 
 function getPositionManipulations({ extensions }) {
-  const positionManipulations = extensions
+  return extensions
     ?.find(({ name }) => name === AUDIT_POSITION_ACTIONS)
     ?.value?.slice(1);
-  return positionManipulations;
 }

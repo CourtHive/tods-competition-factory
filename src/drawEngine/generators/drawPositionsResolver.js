@@ -28,8 +28,8 @@ import { MISSING_VALUE } from '../../constants/errorConditionConstants';
  */
 
 export function resolveDrawPositions({
-  participantFactors,
   positionAssignments,
+  participantFactors,
 }) {
   if (!participantFactors || !positionAssignments)
     return { error: MISSING_VALUE };

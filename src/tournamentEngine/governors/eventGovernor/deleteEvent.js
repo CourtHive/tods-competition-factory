@@ -1,5 +1,6 @@
 import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 import { addTournamentTimeItem } from '../tournamentGovernor/addTimeItem';
+import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { addNotice } from '../../../global/state/globalState';
 
 import { DELETE_EVENTS } from '../../../constants/auditConstants';
@@ -14,7 +15,8 @@ import {
 export function deleteEvents({ tournamentRecord, eventIds }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.events) return { error: EVENT_NOT_FOUND };
-  if (!Array.isArray(eventIds)) return { error: MISSING_VALUE };
+  if (!Array.isArray(eventIds))
+    return { error: MISSING_VALUE, info: mustBeAnArray('drawIds') };
 
   const auditTrail = [];
   const deletedEventDetails = [];

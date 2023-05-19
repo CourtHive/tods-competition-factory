@@ -1,6 +1,7 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 import { getTimeItem } from '../queryGovernor/timeItems';
 
+import { ELEMENT_REQUIRED } from '../../../constants/infoConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
@@ -19,7 +20,7 @@ export function addTimeItem({
   element,
 }) {
   if (!timeItem) return { error: MISSING_TIME_ITEM };
-  if (!element) return { error: MISSING_VALUE };
+  if (!element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
 
   const timeItemAttributes = timeItem && Object.keys(timeItem);
   const requiredAttributes = ['itemType', 'itemValue'];

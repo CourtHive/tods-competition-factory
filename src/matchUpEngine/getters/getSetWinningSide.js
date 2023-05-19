@@ -25,7 +25,7 @@ export function checkSetIsComplete({
   isDecidingSet,
   set,
 }) {
-  if (!set) return { error: MISSING_VALUE };
+  if (!set) return { error: MISSING_VALUE, info: 'missing set' };
   matchUpScoringFormat = matchUpScoringFormat || matchUpFormat;
 
   const setFormat =

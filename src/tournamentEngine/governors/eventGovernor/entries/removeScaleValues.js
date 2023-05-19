@@ -2,6 +2,7 @@ import { removeParticipantsScaleItems } from '../../participantGovernor/removeSc
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getParticipantId } from '../../../../global/functions/extractors';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
+import { mustBeAnArray } from '../../../../utilities/mustBeAnArray';
 
 import {
   INVALID_VALUES,
@@ -30,7 +31,7 @@ export function removeScaleValues({
   if (entryStatuses && !Array.isArray(entryStatuses))
     return decorateResult({
       result: { error: INVALID_VALUES },
-      info: 'entryStatus must be an array',
+      info: mustBeAnArray('entryStatus'),
       stack: 'removeScaleValues',
     });
 
@@ -56,11 +57,9 @@ export function removeScaleValues({
 
   const participantIds = stageEntries.map(getParticipantId);
 
-  const result = removeParticipantsScaleItems({
+  return removeParticipantsScaleItems({
     tournamentRecord,
     scaleAttributes,
     participantIds,
   });
-
-  return result;
 }

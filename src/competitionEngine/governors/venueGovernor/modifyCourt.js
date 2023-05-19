@@ -14,7 +14,7 @@ export function modifyCourt({
   force,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!courtId) return { error: MISSING_VALUE };
+  if (!courtId) return { error: MISSING_VALUE, info: 'missing courtId' };
 
   let courtModified;
   let error;

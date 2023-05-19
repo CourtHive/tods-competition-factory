@@ -9,7 +9,8 @@ import {
 
 export function removeEventMatchUpFormatTiming({ tournamentRecords, eventId }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (typeof eventId !== 'string') return { error: MISSING_VALUE };
+  if (typeof eventId !== 'string')
+    return { error: MISSING_VALUE, info: 'missing eventId' };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { event } = findEvent({ tournamentRecord, eventId });

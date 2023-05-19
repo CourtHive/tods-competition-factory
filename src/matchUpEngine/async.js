@@ -74,14 +74,10 @@ export function matchUpEngineAsync(test) {
       for (const governorMethod of governorMethods) {
         engine[governorMethod] = async (params) => {
           if (getDevContext()) {
-            const result = await invoke({ params, governor, governorMethod });
-
-            return result;
+            return await invoke({ params, governor, governorMethod });
           } else {
             try {
-              const result = await invoke({ params, governor, governorMethod });
-
-              return result;
+              return await invoke({ params, governor, governorMethod });
             } catch (err) {
               const error = err.toString();
               console.log('ERROR', {

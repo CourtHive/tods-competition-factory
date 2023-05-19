@@ -1,5 +1,5 @@
 export function credits() {
-  const thanks = `
+  return `
     This project would not have been possible without the generous input and patience
     of tournament organizers and directors who worked with early versions of CourtHive/TMX.
 
@@ -18,6 +18,4 @@ export function credits() {
     And a special thanks to my family for putting up with the long days and weeks and months of coding
     and conversations at all hours.
   `;
-
-  return thanks;
 }

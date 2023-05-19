@@ -42,11 +42,11 @@ export function getCheckedInParticipantIds({ matchUp }) {
   // first determine whether each timeItemParticipantId is checkedIn
   const checkedInParticipantIds = timeItemParticipantIds.filter(
     (participantId) => {
-      const participantCheckedIn =
+      return (
         checkInItems
           .filter((timeItem) => timeItem?.itemValue === participantId)
-          .reverse()[0].itemType === CHECK_IN;
-      return participantCheckedIn;
+          .reverse()[0].itemType === CHECK_IN
+      );
     }
   );
 

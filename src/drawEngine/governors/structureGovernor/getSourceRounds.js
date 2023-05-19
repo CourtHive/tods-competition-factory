@@ -20,11 +20,12 @@ export function getSourceRounds({
   if (!playoffPositions)
     return { error: MISSING_VALUE, info: 'missing playoffPositions' };
 
-  const { positionsPlayedOff, error } = getPositionsPlayedOff({
+  const result = getPositionsPlayedOff({
     drawDefinition,
   });
 
-  if (error) return { error };
+  if (result.error) return result;
+  const positionsPlayedOff = result.positionsPlayedOff;
 
   // filter out playoff positions which are already being played off
   const relevantPlayoffPositions = playoffPositions.filter(

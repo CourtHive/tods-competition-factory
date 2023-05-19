@@ -34,7 +34,8 @@ export const getSetComplement = (params) => {
 
 export const getTiebreakComplement = (params) => {
   const { isSide1, lowValue, tiebreakTo, tiebreakNoAd } = params;
-  if (lowValue === undefined) return { error: MISSING_VALUE };
+  if (lowValue === undefined)
+    return { error: MISSING_VALUE, info: 'missing lowValue' };
   let valueAsNumber = parseInt(lowValue);
 
   // do not accept low values greater than two digits;

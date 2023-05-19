@@ -14,6 +14,7 @@ import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { newDrawDefinition } from '../../drawEngine/stateMethods';
+import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { nextPowerOf2 } from '../../utilities';
@@ -494,7 +495,7 @@ export function generateDrawDefinition(params) {
       if (!Array.isArray(roundTargetProfile.structureProfiles))
         return decorateResult({
           result: { error: MISSING_VALUE },
-          info: 'structureProfiles must be an array',
+          info: mustBeAnArray('structureProfiles'),
         });
 
       roundTarget = roundTargetProfile.roundTarget || roundTarget;

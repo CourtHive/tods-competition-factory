@@ -364,7 +364,7 @@ function getRoundTiming({ round, matchUps, events, tournamentRecords }) {
   let roundMinutes = 0;
   Object.keys(formatCounts).map((matchUpFormat) => {
     const formatCount = formatCounts[matchUpFormat];
-    const { averageMinutes, error } = findMatchUpFormatTiming({
+    const result = findMatchUpFormatTiming({
       categoryName: categoryName || ageCategoryCode,
       tournamentId: round.tournamentId,
       eventId: round.eventId,
@@ -373,8 +373,8 @@ function getRoundTiming({ round, matchUps, events, tournamentRecords }) {
       categoryType,
       eventType,
     });
-    if (error) return { error };
-    const formatMinutes = averageMinutes * formatCount;
+    if (result.error) return result;
+    const formatMinutes = result.averageMinutes * formatCount;
     if (!isNaN(roundMinutes)) roundMinutes += formatMinutes;
   });
   return { roundMinutes };

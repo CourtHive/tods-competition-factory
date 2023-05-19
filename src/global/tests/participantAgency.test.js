@@ -95,8 +95,7 @@ it.each([
           const range = generateRange(0, unassignedDrawPositions.length - 1);
           const preferences = [1, 2, 3].map(() => {
             const index = randomPop(range);
-            const drawPosition = unassignedDrawPositions[index];
-            return drawPosition;
+            return unassignedDrawPositions[index];
           });
           return { [participantId]: { preferences } };
         })

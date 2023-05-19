@@ -28,7 +28,7 @@ export function feedInLinks({
   const roundFeedProfiles = feedPolicy?.roundFeedProfiles;
 
   // range excludes final round which is final matchUp
-  const links = generateRange(1 + roundOffset, roundsCount + 1 + roundOffset)
+  return generateRange(1 + roundOffset, roundsCount + 1 + roundOffset)
     .map((roundNumber) => {
       const feedProfile =
         roundFeedProfiles && roundFeedProfiles[roundNumber - 1]
@@ -68,6 +68,4 @@ export function feedInLinks({
       return roundsFed.includes(targetRound) ? link : undefined;
     })
     .filter(Boolean);
-
-  return links;
 }

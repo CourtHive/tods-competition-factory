@@ -20,12 +20,12 @@ export function assignMatchUpVenue({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   if (venueId) {
-    const { error } = findVenue({
+    const result = findVenue({
       tournamentRecords,
       tournamentRecord,
       venueId,
     });
-    if (error) return { error };
+    if (result.error) return result;
   }
 
   const timeItem = {

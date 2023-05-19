@@ -27,13 +27,11 @@ export function getParticipantMembership({ tournamentRecord, participantId }) {
     return participant.individualParticipantIds?.includes(participantId);
   });
 
-  const groupingTypeMap = memberOf.reduce((groupingTypesMap, participant) => {
+  return memberOf.reduce((groupingTypesMap, participant) => {
     const { participantType } = participant;
     if (!groupingTypesMap[participantType])
       groupingTypesMap[participantType] = [];
     groupingTypesMap[participantType].push(participant);
     return groupingTypesMap;
   }, {});
-
-  return groupingTypeMap;
 }

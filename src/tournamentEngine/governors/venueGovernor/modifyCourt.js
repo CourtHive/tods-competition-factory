@@ -26,8 +26,10 @@ export function modifyCourt({
   if (!modifications || typeof modifications !== 'object')
     return { error: INVALID_OBJECT };
 
-  const { court, venue, error } = findCourt({ tournamentRecord, courtId });
-  if (error) return { error };
+  const result = findCourt({ tournamentRecord, courtId });
+  if (result.error) return result;
+
+  const { court, venue } = result;
 
   // not valid to modify a courtId
   const validAttributes = Object.keys(courtTemplate()).filter(

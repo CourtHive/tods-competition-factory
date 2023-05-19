@@ -190,14 +190,11 @@ export function getRoundMatchUps({ matchUps = [], interpolate }) {
           targetChunkIndex + 2
         );
 
-        const orderedPositions = targetChunks.map((chunk) => {
-          const drawPositionInChunk = filteredDrawPositions?.find(
-            (drawPosition) => chunk.includes(drawPosition)
+        return targetChunks.map((chunk) => {
+          return filteredDrawPositions?.find((drawPosition) =>
+            chunk.includes(drawPosition)
           );
-          return drawPositionInChunk;
         });
-
-        return orderedPositions;
       });
 
       roundProfile[roundNumber].drawPositions = roundDrawPositions?.flat();

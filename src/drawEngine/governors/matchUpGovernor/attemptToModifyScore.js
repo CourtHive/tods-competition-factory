@@ -27,6 +27,7 @@ export function attemptToModifyScore(params) {
     event,
     score,
   } = params;
+
   const matchUpStatusIsValid =
     isDirectingMatchUpStatus({ matchUpStatus }) ||
     // in the case that CANCELLED or ABANDONED causes TEAM participant to advance

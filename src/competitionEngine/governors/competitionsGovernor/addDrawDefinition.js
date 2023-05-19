@@ -26,14 +26,14 @@ export function addDrawDefinition({
   const tournamentRecord = tournamentRecords[tournamentId];
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
-  const { event, error } = findEvent({ tournamentRecord, eventId });
-  if (error) return { error };
+  const result = findEvent({ tournamentRecord, eventId });
+  if (result.error) return result;
 
   return addDefinition({
+    event: result.event,
     existingDrawCount,
     allowReplacement,
     drawDefinition,
     flight,
-    event,
   });
 }

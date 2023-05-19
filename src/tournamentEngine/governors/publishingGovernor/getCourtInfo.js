@@ -11,8 +11,8 @@ export function getCourtInfo({ tournamentRecord, courtId, internalUse }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!courtId) return { error: MISSING_COURT_ID };
 
-  const { court, error } = findCourt({ tournamentRecord, courtId });
-  if (error) return { error };
+  const result = findCourt({ tournamentRecord, courtId });
+  if (result.error) return result;
 
   const courtInfo = (({
     altitude,
@@ -38,7 +38,7 @@ export function getCourtInfo({ tournamentRecord, courtId, internalUse }) {
     surfaceDate,
     pace,
     notes,
-  }))(court);
+  }))(result.court);
 
   return { ...SUCCESS, courtInfo: makeDeepCopy(courtInfo, false, internalUse) };
 }

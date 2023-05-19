@@ -15,12 +15,12 @@ export function getIndividualParticipantIds(matchUp) {
     : [];
   const enteredIndividualParticipantIds = (sides || [])
     .map((side) => {
-      const sideIndividualParticipantIds =
+      return (
         (matchUpType === DOUBLES &&
           (side?.participant?.individualParticipantIds || [])) ||
         (side?.participantId && [side.participantId]) ||
-        [];
-      return sideIndividualParticipantIds;
+        []
+      );
     })
     .flat();
 

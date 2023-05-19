@@ -26,11 +26,10 @@ export function setState(definition, deepCopyOption = true) {
 
 function validDefinitionKeys(definition) {
   const definitionKeys = Object.keys(definition);
-  const valid = keyValidation.reduce(
+  return keyValidation.reduce(
     (p, key) => (!definitionKeys.includes(key) ? false : p),
     true
   );
-  return valid;
 }
 
 export function newDrawDefinition({
@@ -52,10 +51,8 @@ export function paramsMiddleware(drawDefinition) {
     matchUpsMap,
   });
 
-  const additionalParams = {
+  return {
     inContextDrawMatchUps,
     matchUpsMap,
   };
-
-  return additionalParams;
 }

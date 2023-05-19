@@ -34,7 +34,7 @@ export function autoSeeding({
   sortDescending,
   scaleSortMethod,
 }) {
-  const { error, entries, seedsCount, stageEntries } = getEntriesAndSeedsCount({
+  const result = getEntriesAndSeedsCount({
     policyDefinitions,
     drawDefinition,
     drawSize,
@@ -43,7 +43,8 @@ export function autoSeeding({
     stage,
   });
 
-  if (error) return { error };
+  if (result.error) return result;
+  const { entries, seedsCount, stageEntries } = result;
 
   const { scaledEntries } = getScaledEntries({
     tournamentRecord,

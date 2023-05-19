@@ -17,16 +17,18 @@ export function getTieFormat({
   if ((matchUpId || structureId) && !drawDefinition)
     return { error: MISSING_DRAW_DEFINITION };
 
-  let error, matchUp, structure, tieFormat;
+  let matchUp, structure, tieFormat;
 
   if (eventId && event?.tieFormat) {
     tieFormat = event.tieFormat;
   } else if (matchUpId) {
-    ({ error, matchUp, structure } = findMatchUp({
+    const result = findMatchUp({
       drawDefinition,
       matchUpId,
-    }));
-    if (error) return { error };
+    });
+    if (result.error) return result;
+
+    ({ matchUp, structure } = result);
 
     tieFormat =
       matchUp.tieFormat ||

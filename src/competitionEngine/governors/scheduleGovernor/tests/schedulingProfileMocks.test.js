@@ -187,10 +187,9 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
     for (const target of roundsToSchedule) {
       const range = target.indexOf('-') > 0 && target.split('-').map((x) => +x);
       const matchUp = drawMatchUps.find(({ finishingPositionRange }) => {
-        let result = range
+        return range
           ? intersection(range, finishingPositionRange.winner).length === 2
           : undefined;
-        return result;
       });
 
       if (matchUp) {

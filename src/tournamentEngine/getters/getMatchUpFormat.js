@@ -1,3 +1,4 @@
+import { decorateResult } from '../../global/functions/decorateResult';
 import { findStructure } from '../../drawEngine/getters/findStructure';
 import { findMatchUp } from './matchUpsGetter';
 import {
@@ -27,7 +28,10 @@ export function getMatchUpFormat({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId && !event && !structureId && !matchUpId)
-    return { error: MISSING_VALUE };
+    return decorateResult({
+      result: { error: MISSING_VALUE },
+      stack: 'getMatchUpFormat',
+    });
 
   const matchUpResult = findMatchUp({
     tournamentRecord,

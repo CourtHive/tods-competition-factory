@@ -37,7 +37,7 @@ export function findMatchUp({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (typeof matchUpId !== 'string') return { error: INVALID_VALUES };
 
-  const { structures } = getDrawStructures({ drawDefinition });
+  const { structures = [] } = getDrawStructures({ drawDefinition });
 
   if (contextProfile && !contextContent)
     contextContent = getContextContent({ contextProfile, drawDefinition });
@@ -59,5 +59,6 @@ export function findMatchUp({
 
     if (matchUp) return { matchUp, structure };
   }
+
   return { error: MATCHUP_NOT_FOUND };
 }

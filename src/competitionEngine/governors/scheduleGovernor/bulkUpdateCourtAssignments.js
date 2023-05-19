@@ -1,5 +1,6 @@
 import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
+import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -16,7 +17,8 @@ export function bulkUpdateCourtAssignments({
   courtDayDate,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(courtAssignments)) return { error: MISSING_VALUE };
+  if (!Array.isArray(courtAssignments))
+    return { error: MISSING_VALUE, info: mustBeAnArray('courtAssignments') };
 
   const tournamentMap = courtAssignments.reduce((tournamentMap, assignment) => {
     const { tournamentId } = assignment;

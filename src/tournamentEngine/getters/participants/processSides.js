@@ -207,24 +207,22 @@ export function processSides({
           individualParticipantIds.forEach(addTeamMatchUp);
         }
 
-        if (withDraws) {
-          if (!participantMap[participantId].draws[drawId]) {
-            const teamParticipantId = matchUpSides.find(
-              (s) => s.sideNumber === sideNumber
-            )?.participant?.participantId;
-            const teamEntryStatus =
-              participantMap[teamParticipantId]?.draws?.[drawId]?.entryStatus;
+        if (withDraws && !participantMap[participantId].draws[drawId]) {
+          const teamParticipantId = matchUpSides.find(
+            (s) => s.sideNumber === sideNumber
+          )?.participant?.participantId;
+          const teamEntryStatus =
+            participantMap[teamParticipantId]?.draws?.[drawId]?.entryStatus;
 
-            const addDrawData = (participantId) =>
-              (participantMap[participantId].draws[drawId] = {
-                entryStatus: teamEntryStatus,
-                // add positions played in lineUp collections
-                eventId,
-                drawId,
-              });
-            addDrawData(participantId);
-            individualParticipantIds.forEach(addDrawData);
-          }
+          const addDrawData = (participantId) =>
+            (participantMap[participantId].draws[drawId] = {
+              entryStatus: teamEntryStatus,
+              // add positions played in lineUp collections
+              eventId,
+              drawId,
+            });
+          addDrawData(participantId);
+          individualParticipantIds.forEach(addDrawData);
         }
       }
 

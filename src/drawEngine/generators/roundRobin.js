@@ -174,12 +174,12 @@ export function getValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
       const byesCount = groupsCount * groupSize - drawSize;
       const maxParticipantsPerGroup = Math.ceil(drawSize / groupsCount);
       const maxByesPerGroup = Math.ceil(byesCount / groupsCount);
-      const valid =
+      return (
         (!byesCount || byesCount < groupSize) &&
         maxParticipantsPerGroup === groupSize &&
         maxParticipantsPerGroup >= 3 &&
-        maxByesPerGroup < 2;
-      return valid;
+        maxByesPerGroup < 2
+      );
     }
   );
   return { ...SUCCESS, validGroupSizes };
@@ -286,7 +286,7 @@ function groupRounds({ groupSize, drawPositionOffset }) {
   bRow = [].concat(...bRow, aDown);
 
   const sum = (x) => x[0].reduce((a, b) => a + b);
-  const orderedRounds = rounds
+  return rounds
     .reverse()
     .sort((a, b) => sum(a) - sum(b))
     .map((round) =>
@@ -301,5 +301,4 @@ function groupRounds({ groupSize, drawPositionOffset }) {
           return drawPositionsHash(drawPositions);
         })
     );
-  return orderedRounds;
 }

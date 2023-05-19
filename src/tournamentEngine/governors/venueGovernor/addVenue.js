@@ -13,7 +13,7 @@ import {
 
 export function addVenue({ tournamentRecord, context, disableNotice, venue }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!venue) return { error: MISSING_VALUE };
+  if (!venue) return { error: MISSING_VALUE, info: 'missing venue' };
 
   if (!tournamentRecord.venues) tournamentRecord.venues = [];
   if (!venue.venueId) venue.venueId = UUID();

@@ -40,7 +40,7 @@ export function doubleEliminationLinks({
 
   const initialRounds = [1, 2].map((roundNumber) => {
     const feedProfile = roundNumber % 2 ? TOP_DOWN : BOTTOM_UP;
-    const link = {
+    return {
       linkType: LOSER,
       source: {
         roundNumber,
@@ -53,7 +53,6 @@ export function doubleEliminationLinks({
         structureId: consolationStructure.structureId,
       },
     };
-    return link;
   });
 
   const fedRounds = roundsFed.slice(1).map((roundNumber, i) => {
@@ -61,7 +60,7 @@ export function doubleEliminationLinks({
     const feedProfile = roundsFedIndex % 2 ? TOP_DOWN : BOTTOM_UP;
     const sourceRoundNumber = 3 + i;
 
-    const link = {
+    return {
       linkType: LOSER,
       source: {
         roundNumber: sourceRoundNumber,
@@ -73,7 +72,6 @@ export function doubleEliminationLinks({
         structureId: consolationStructure.structureId,
       },
     };
-    return link;
   });
 
   const finalistsLink = {
@@ -116,12 +114,5 @@ export function doubleEliminationLinks({
     },
   ];
 
-  const links = [
-    ...initialRounds,
-    ...fedRounds,
-    finalistsLink,
-    ...deciderLinks,
-  ];
-
-  return links;
+  return [...initialRounds, ...fedRounds, finalistsLink, ...deciderLinks];
 }

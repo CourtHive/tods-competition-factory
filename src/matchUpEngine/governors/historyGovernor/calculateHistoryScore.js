@@ -139,8 +139,7 @@ export function calculateHistoryScore({ matchUp, updateScore }) {
       const getTiebreakServingSide = () => {
         const pointsCount = sidePoints.reduce((a, b) => a + b);
         const value = (pointsCount % 4) / 4;
-        const sideNumber = value > 0.5 ? servingSide : 3 - servingSide;
-        return sideNumber;
+        return value > 0.5 ? servingSide : 3 - servingSide;
       };
 
       const winningIndex = winningSide - 1;

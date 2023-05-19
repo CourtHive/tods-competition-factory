@@ -6,6 +6,7 @@ import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
 import { getMatchUpId } from '../../../../global/functions/extractors';
+import { mustBeAnArray } from '../../../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../../../utilities/math';
 import { isPowerOf2 } from '../../../../utilities';
 
@@ -38,7 +39,8 @@ export function getScheduledRoundsDetails({
 }) {
   if (typeof tournamentRecords !== 'object')
     return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(rounds)) return { error: MISSING_VALUE };
+  if (!Array.isArray(rounds))
+    return { error: MISSING_VALUE, info: mustBeAnArray('rounds') };
 
   const hashes = [];
   const orderedMatchUpIds = [];

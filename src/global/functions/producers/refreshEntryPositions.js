@@ -16,7 +16,7 @@ export function refreshEntryPositions({ entries = [] } = {}) {
 
   const validEntryPosition = (entryPosition) =>
     !isNaN(entryPosition) ? entryPosition : Infinity;
-  const positionedEntries = Object.keys(stagedEntries)
+  return Object.keys(stagedEntries)
     .map((entryHash) => {
       return stagedEntries[entryHash]
         .sort(
@@ -30,6 +30,4 @@ export function refreshEntryPositions({ entries = [] } = {}) {
         });
     })
     .flat();
-
-  return positionedEntries;
 }

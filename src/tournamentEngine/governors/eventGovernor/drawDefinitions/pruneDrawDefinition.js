@@ -59,7 +59,7 @@ export function pruneDrawDefinition({
           ({ roundNumber }) =>
             !structureData.inactiveRounds.includes(roundNumber)
         )
-        .filter(({ winningSide }) => !isMatchPlay || winningSide);
+        .filter(({ winningSide }) => winningSide);
 
       const matchPlayMatchUpIds = matchPlayMatchUps.map(getMatchUpId);
       const matchUpIdsToDelete = relevantMatchUpIds.filter(

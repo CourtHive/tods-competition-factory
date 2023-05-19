@@ -1,6 +1,7 @@
 import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { getMatchUpId } from '../../global/functions/extractors';
 import { generateRange, overlap, UUID } from '../../utilities';
+import { mustBeAnArray } from '../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../utilities/math';
 import { definedAttributes } from '../../utilities/objects';
 import {
@@ -141,7 +142,7 @@ export function addAdHocMatchUps({
   if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
 
   if (!Array.isArray(matchUps))
-    return { error: INVALID_VALUES, info: 'matchUps must be an array' };
+    return { error: INVALID_VALUES, info: mustBeAnArray('matchUps') };
 
   const structure = drawDefinition.structures?.find(
     (structure) => structure.structureId === structureId

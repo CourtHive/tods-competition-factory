@@ -64,12 +64,10 @@ export function scaleEngineAsync(test) {
 
     const augmentedParams = paramsMiddleware(tournamentRecord, params);
 
-    const result = await method({
+    return await method({
       ...augmentedParams,
       tournamentRecord,
     });
-
-    return result;
   }
 
   async function engineInvoke(method, params) {
@@ -103,13 +101,9 @@ export function scaleEngineAsync(test) {
       for (const governorMethod of governorMethods) {
         engine[governorMethod] = async (params) => {
           if (getDevContext()) {
-            const result = await engineInvoke(governor[governorMethod], params);
-
-            return result;
+            return await engineInvoke(governor[governorMethod], params);
           } else {
-            const result = await engineInvoke(governor[governorMethod], params);
-
-            return result;
+            return await engineInvoke(governor[governorMethod], params);
           }
         };
       }

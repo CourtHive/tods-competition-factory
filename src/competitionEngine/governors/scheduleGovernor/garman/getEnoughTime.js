@@ -15,8 +15,7 @@ export function getEnoughTime({
       courtDate,
     });
     const availableTimeSlots = timeSlots.filter(validTimeSlot);
-    const enough = !!availableTimeSlots.length;
-    return enough;
+    return !!availableTimeSlots.length;
   };
 
   function validTimeSlot(timeSlot) {

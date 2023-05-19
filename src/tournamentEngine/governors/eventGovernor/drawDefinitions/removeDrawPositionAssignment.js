@@ -43,41 +43,39 @@ export function removeDrawPositionAssignment(params) {
   const { participantId } = result;
   const { drawPosition, event, structureId } = params;
 
-  if ([ALTERNATE, WITHDRAWN].includes(entryStatus)) {
-    if (participantId) {
-      const { tournamentRecord } = params;
-      const { participant } = findTournamentParticipant({
-        tournamentRecord,
-        participantId,
-      });
-      const { participantType, individualParticipantIds } = participant || {};
+  if ([ALTERNATE, WITHDRAWN].includes(entryStatus) && participantId) {
+    const { tournamentRecord } = params;
+    const { participant } = findTournamentParticipant({
+      tournamentRecord,
+      participantId,
+    });
+    const { participantType, individualParticipantIds } = participant || {};
 
-      if (destroyPair && participantType === PAIR) {
-        const result = destroyPairEntry({
-          tournamentRecord,
-          drawDefinition,
-          participantId,
-          event,
-        });
-        if (result.error) return decorateResult({ result, stack });
-        modifyEntriesStatus({
-          participantIds: individualParticipantIds,
-          tournamentRecord,
-          drawDefinition,
-          entryStatus,
-          drawId,
-          event,
-        });
-      } else {
-        modifyEntriesStatus({
-          participantIds: [participantId],
-          tournamentRecord,
-          drawDefinition,
-          entryStatus,
-          drawId,
-          event,
-        });
-      }
+    if (destroyPair && participantType === PAIR) {
+      const result = destroyPairEntry({
+        tournamentRecord,
+        drawDefinition,
+        participantId,
+        event,
+      });
+      if (result.error) return decorateResult({ result, stack });
+      modifyEntriesStatus({
+        participantIds: individualParticipantIds,
+        tournamentRecord,
+        drawDefinition,
+        entryStatus,
+        drawId,
+        event,
+      });
+    } else {
+      modifyEntriesStatus({
+        participantIds: [participantId],
+        tournamentRecord,
+        drawDefinition,
+        entryStatus,
+        drawId,
+        event,
+      });
     }
   }
 

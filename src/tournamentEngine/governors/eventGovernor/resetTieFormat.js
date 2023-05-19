@@ -79,7 +79,6 @@ export function resetTieFormat({
       deletedMatchUpIds.push(
         ...existingCollectionMatchUps.slice(3).map(getMatchUpId)
       );
-      continue;
     } else {
       tieMatchUps.push(...existingCollectionMatchUps);
 

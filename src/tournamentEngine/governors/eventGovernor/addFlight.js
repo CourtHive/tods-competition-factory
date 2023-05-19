@@ -1,4 +1,5 @@
 import { addEventExtension } from '../tournamentGovernor/addRemoveExtensions';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { getParticipantIds } from '../../../global/functions/extractors';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { intersection, UUID } from '../../../utilities';
@@ -31,8 +32,11 @@ export function addFlight({
   event,
   stage,
 }) {
-  if (!event) return { error: MISSING_EVENT };
-  if (!drawName) return { error: MISSING_VALUE };
+  const stack = 'addFlight';
+  if (!event)
+    return decorateResult({ result: { error: MISSING_EVENT }, stack });
+  if (!drawName)
+    return decorateResult({ result: { error: MISSING_VALUE }, stack });
 
   if (drawEntries?.length) {
     // check that all drawEntries are in event.entries
@@ -42,7 +46,7 @@ export function addFlight({
       intersection(flightParticipantIds, enteredParticipantIds).length !==
       flightParticipantIds.length
     ) {
-      return { error: INVALID_VALUES };
+      return decorateResult({ result: { error: INVALID_VALUES }, stack });
     }
   }
 
@@ -72,7 +76,8 @@ export function addFlight({
   const flightExists = (flightProfile?.flights || []).find(
     ({ drawId }) => drawId === flight.drawId
   );
-  if (flightExists) return { error: EXISTING_FLIGHT };
+  if (flightExists)
+    return decorateResult({ result: { error: EXISTING_FLIGHT }, stack });
 
   const flights = (flightProfile?.flights || []).concat(flight);
 

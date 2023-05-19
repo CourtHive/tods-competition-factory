@@ -33,12 +33,8 @@ export function removeLineUpSubstitutions({ lineUp }) {
     });
   });
 
-  const prunedLineUp = Object.keys(participantAssignments).map(
-    (participantId) => ({
-      participantId,
-      collectionAssignments: participantAssignments[participantId],
-    })
-  );
-
-  return prunedLineUp;
+  return Object.keys(participantAssignments).map((participantId) => ({
+    participantId,
+    collectionAssignments: participantAssignments[participantId],
+  }));
 }

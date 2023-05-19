@@ -1,5 +1,6 @@
 import { addMatchUpScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
+import { decorateResult } from '../../../global/functions/decorateResult';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -15,15 +16,20 @@ import {
  * 2. that either a match has moved from the bottom of the group to the top or vice-versa
  */
 export function reorderUpcomingMatchUps(params) {
+  const stack = 'reorderUpcomingMatchUps';
   const { tournamentRecords } = params;
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
   )
-    return { error: MISSING_TOURNAMENT_RECORDS };
+    return decorateResult({
+      result: { error: MISSING_TOURNAMENT_RECORDS },
+      stack,
+    });
 
   const { matchUpsContextIds, firstToLast } = params;
-  if (!matchUpsContextIds) return { error: MISSING_VALUE };
+  if (!matchUpsContextIds)
+    return decorateResult({ result: { error: MISSING_VALUE }, stack });
 
   const matchUpsCount = matchUpsContextIds?.length;
   if (!matchUpsCount) return { ...SUCCESS };
@@ -51,7 +57,7 @@ export function reorderUpcomingMatchUps(params) {
 
   return matchUpsModified === matchUpsCount
     ? SUCCESS
-    : { error: MODIFICATIONS_FAILED };
+    : decorateResult({ result: { error: MODIFICATIONS_FAILED }, stack });
 
   function assignMatchUpScheduledTime({
     tournamentId,

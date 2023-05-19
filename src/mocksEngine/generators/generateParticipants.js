@@ -99,11 +99,7 @@ export function generateParticipants({
   const individualParticipantsCount =
     participantsCount * (doubles ? 2 : team ? 8 : 1);
 
-  const {
-    nationalityCodes: personNationalityCodes,
-    persons: mockedPersons,
-    error,
-  } = generatePersons({
+  const result = generatePersons({
     count: individualParticipantsCount,
     personExtensions,
     consideredDate,
@@ -112,7 +108,10 @@ export function generateParticipants({
     category,
     sex,
   });
-  if (error) return { error };
+  if (result.error) return result;
+
+  const { nationalityCodes: personNationalityCodes, persons: mockedPersons } =
+    result;
 
   // generated arrays of rankings and ratings to be attached as scaleItems
   let doublesRankings = [],

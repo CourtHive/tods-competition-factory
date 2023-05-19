@@ -116,7 +116,7 @@ export function publicFindParticipant({
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (typeof participantId !== 'string' && typeof personId !== 'string')
-    return { error: MISSING_VALUE };
+    return { error: MISSING_VALUE, stack: 'publicFindParticipant' };
 
   let participant, tournamentId;
   for (const tournamentRecord of Object.values(tournamentRecords)) {

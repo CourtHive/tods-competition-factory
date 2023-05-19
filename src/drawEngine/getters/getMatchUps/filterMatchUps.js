@@ -85,16 +85,15 @@ export function filterMatchUps(params) {
   const targetVenueIds = Array.isArray(venueIds)
     ? venueIds.filter(Boolean)
     : [];
-  const targetMatchUpFormats = Array.isArray(matchUpFormats)
-    ? matchUpFormats.filter(Boolean)
-    : typeof matchUpFormat === 'string'
-    ? [matchUpFormat]
-    : [];
-  const targetScheduledDates = Array.isArray(scheduledDates)
-    ? scheduledDates.filter(Boolean)
-    : typeof scheduledDate === 'string' && scheduledDate.length
-    ? [scheduledDate]
-    : [];
+  const targetMatchUpFormats =
+    (Array.isArray(matchUpFormats) && matchUpFormats.filter(Boolean)) ||
+    (typeof matchUpFormat === 'string' && [matchUpFormat]) ||
+    [];
+  const targetScheduledDates =
+    (Array.isArray(scheduledDates) && scheduledDates.filter(Boolean)) ||
+    (typeof scheduledDate === 'string' &&
+      scheduledDate.length && [scheduledDate]) ||
+    [];
 
   const targetTournamentIds = Array.isArray(tournamentIds)
     ? tournamentIds.filter(Boolean)
@@ -107,7 +106,7 @@ export function filterMatchUps(params) {
     ? structureIds.filter(Boolean)
     : [];
 
-  const filteredMatchUps = matchUps.filter((matchUp) => {
+  return matchUps.filter((matchUp) => {
     if (
       readyToScore &&
       matchUp.matchUpType !== TEAM_MATCHUP &&
@@ -266,6 +265,4 @@ export function filterMatchUps(params) {
 
     return true;
   });
-
-  return filteredMatchUps;
 }

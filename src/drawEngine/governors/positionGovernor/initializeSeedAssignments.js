@@ -21,8 +21,9 @@ export function initializeStructureSeedAssignments({
   structureId,
   seedsCount,
 }) {
-  const { structure, error } = findStructure({ drawDefinition, structureId });
-  if (error) return { error };
+  const result = findStructure({ drawDefinition, structureId });
+  if (result.error) return result;
+  const structure = result.structure;
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const drawSize = positionAssignments.length;

@@ -13,7 +13,7 @@ export function getSwapOptions({
       const moveableParticipants = conflict.filter((placedParticipant) =>
         potentialDrawPositions.includes(placedParticipant.drawPosition)
       );
-      const swapOptions = moveableParticipants
+      return moveableParticipants
         .map((moveableParticipant) => {
           const possibleDrawPositions = potentialDrawPositions.filter(
             (position) => !drawPositions?.includes(position)
@@ -47,10 +47,10 @@ export function getSwapOptions({
                 isRoundRobin,
                 groupedParticipants: [possibleExistingOpponentGroup],
               });
-              const noConflicts =
+              return (
                 !conflictPotential.length &&
-                !existingOpponentConflictPotential.length;
-              return noConflicts;
+                !existingOpponentConflictPotential.length
+              );
             }
           );
 
@@ -64,8 +64,6 @@ export function getSwapOptions({
           return undefined;
         })
         .filter(Boolean);
-
-      return swapOptions;
     })
     .flat(1);
 }

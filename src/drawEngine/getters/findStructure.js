@@ -1,4 +1,5 @@
 import { findExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { decorateResult } from '../../global/functions/decorateResult';
 import { structureSort } from './structureSort';
 
 import { ITEM, validStages } from '../../constants/drawDefinitionConstants';
@@ -59,7 +60,8 @@ export function getDrawStructures({
     ? MISSING_STRUCTURES
     : undefined;
 
-  if (error) return { error };
+  if (error)
+    return decorateResult({ result: { error }, stack: 'getDrawStructure' });
 
   const isRoundTarget = (structure) => {
     const value = findExtension({

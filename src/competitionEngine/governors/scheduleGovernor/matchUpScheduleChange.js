@@ -1,5 +1,6 @@
 import { assignMatchUpCourt as assignCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
+import { decorateResult } from '../../../global/functions/decorateResult';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -9,6 +10,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function matchUpScheduleChange(params) {
+  const stack = 'matchUpScheduleChange';
   const { tournamentRecords } = params;
   if (
     typeof tournamentRecords !== 'object' ||
@@ -36,7 +38,8 @@ export function matchUpScheduleChange(params) {
     tournamentId: targetTournamentId,
   } = targetMatchUpContextIds || {};
 
-  if (!sourceMatchUpId && !targetMatchUpId) return { error: MISSING_VALUE };
+  if (!sourceMatchUpId && !targetMatchUpId)
+    return decorateResult({ result: { error: MISSING_VALUE }, stack });
 
   let matchUpsModified = 0;
 
@@ -50,7 +53,7 @@ export function matchUpScheduleChange(params) {
       courtDayDate,
     });
     if (result?.success) matchUpsModified++;
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   } else if (
     sourceCourtId &&
     targetCourtId &&
@@ -66,7 +69,8 @@ export function matchUpScheduleChange(params) {
       courtDayDate,
     });
     if (sourceResult.success) matchUpsModified++;
-    if (sourceResult.error) return sourceResult;
+    if (sourceResult.error)
+      return decorateResult({ result: sourceResult, stack, info: 'source' });
 
     const targetResult = assignMatchUpCourt({
       tournamentId: targetTournamentId,
@@ -77,13 +81,16 @@ export function matchUpScheduleChange(params) {
       courtDayDate,
     });
     if (targetResult.success) matchUpsModified++;
-    if (targetResult.error) return targetResult;
+    if (targetResult.error)
+      return decorateResult({ result: targetResult, stack, info: 'target' });
   } else {
     // no modification
     // console.log('matcUpScheduleChange', params);
   }
 
-  return matchUpsModified ? SUCCESS : { error: NO_MODIFICATIONS_APPLIED };
+  return matchUpsModified
+    ? SUCCESS
+    : decorateResult({ result: { error: NO_MODIFICATIONS_APPLIED }, stack });
 
   function assignMatchUpCourt({
     tournamentRecords,

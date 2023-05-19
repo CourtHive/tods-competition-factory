@@ -104,7 +104,7 @@ export function getParticipantSchedules({
 
   const participantSchedules = Object.values(participantAggregator).filter(
     ({ participant }) => {
-      if (
+      return !(
         (participantFilters.participantIds &&
           !participantFilters.participantIds.includes(
             participant.participantId
@@ -113,11 +113,7 @@ export function getParticipantSchedules({
           !participantFilters.participantTypes.includes(
             participant.participantType
           ))
-      ) {
-        return false;
-      }
-
-      return true;
+      );
     }
   );
 

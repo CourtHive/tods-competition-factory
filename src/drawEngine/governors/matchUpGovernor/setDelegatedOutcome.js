@@ -16,16 +16,16 @@ export function setDelegatedOutcome({
   matchUp,
 }) {
   if (!matchUp && !drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  if (!outcome) return { error: MISSING_VALUE, info: 'missing outcome' };
   if (!matchUp && !matchUpId) return { error: MISSING_MATCHUP };
-  if (!outcome) return { error: MISSING_VALUE };
 
   if (!matchUp) {
-    const { error, matchUp: sourceMatchUp } = findMatchUp({
+    const result = findMatchUp({
       drawDefinition,
       matchUpId,
     });
-    if (error) return { error };
-    matchUp = sourceMatchUp;
+    if (result.error) return result;
+    matchUp = result.matchUp;
   }
 
   if (

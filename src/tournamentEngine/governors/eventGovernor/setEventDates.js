@@ -16,9 +16,9 @@ export function setEventStartDate({ tournamentRecord, event, startDate }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
   if (!dateValidation.test(startDate)) return { error: INVALID_DATE };
-  const { tournamentStartDate, tournamentEndDate, error } =
-    getTournamentDates(tournamentRecord);
-  if (error) return { error };
+  const result = getTournamentDates(tournamentRecord);
+  if (result.error) return result;
+  const { tournamentStartDate, tournamentEndDate } = result;
 
   // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison
   const newEventStartDate = new Date(extractDate(startDate));
@@ -44,9 +44,9 @@ export function setEventEndDate({ tournamentRecord, event, endDate }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
   if (!dateValidation.test(endDate)) return { error: INVALID_DATE };
-  const { tournamentStartDate, tournamentEndDate, error } =
-    getTournamentDates(tournamentRecord);
-  if (error) return { error };
+  const result = getTournamentDates(tournamentRecord);
+  if (result.error) return result;
+  const { tournamentStartDate, tournamentEndDate } = result;
 
   // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison
   const newEventEndDate = new Date(extractDate(endDate));
@@ -71,7 +71,8 @@ export function setEventEndDate({ tournamentRecord, event, endDate }) {
 export function setEventDates({ tournamentRecord, event, startDate, endDate }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
-  if (!startDate && !endDate) return { error: MISSING_VALUE };
+  if (!startDate && !endDate)
+    return { error: MISSING_VALUE, info: 'missing date' };
   if (startDate && !dateValidation.test(startDate))
     return { error: INVALID_DATE };
   if (endDate && !dateValidation.test(endDate)) return { error: INVALID_DATE };
@@ -83,13 +84,13 @@ export function setEventDates({ tournamentRecord, event, startDate, endDate }) {
   }
 
   if (startDate) {
-    const { error } = setEventStartDate({ tournamentRecord, event, startDate });
-    if (error) return { error };
+    const result = setEventStartDate({ tournamentRecord, event, startDate });
+    if (result.error) return result;
   }
 
   if (endDate) {
-    const { error } = setEventEndDate({ tournamentRecord, event, endDate });
-    if (error) return { error };
+    const result = setEventEndDate({ tournamentRecord, event, endDate });
+    if (result.error) return result;
   }
 
   return { ...SUCCESS };

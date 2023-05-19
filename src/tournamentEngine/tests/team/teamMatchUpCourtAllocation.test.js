@@ -74,7 +74,7 @@ test('it can allocate courts to a TEAM matchUp', () => {
 
   expect(result.rows.length).toEqual(minCourtGridRows);
   expect(Object.values(result.rows[0]).length).toEqual(
-    result.courtsData.length
+    result.courtsData.length + 1 // addition of rowId
   );
 
   result.courtsData.forEach((court) =>

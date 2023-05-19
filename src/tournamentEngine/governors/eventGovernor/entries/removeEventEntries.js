@@ -49,11 +49,10 @@ export function removeEventEntries({
       (event) => event.eventId === eventId
     );
     const drawIds = eventObject?.drawIds || [];
-    const enteredInDraw = participant.draws.filter(
+    return participant.draws.filter(
       (drawInfo) =>
         drawIds.includes(drawInfo.drawId) && drawInfo.positionAssignments
     ).length;
-    return enteredInDraw;
   });
 
   if (enteredParticipantIds) {
