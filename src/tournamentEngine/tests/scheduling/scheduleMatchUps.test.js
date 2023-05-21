@@ -529,11 +529,13 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
       ],
     },
   ];
-  let { courts } = tournamentEngine.addCourts({
-    venueId,
-    courtsCount: 3,
+  result = tournamentEngine.addCourts({
     dateAvailability,
+    courtsCount: 3,
+    venueId,
   });
+  expect(result.success).toEqual(true);
+  let courts = result.courts;
   expect(courts.length).toEqual(3);
 
   ({ courts } = tournamentEngine.getCourts());

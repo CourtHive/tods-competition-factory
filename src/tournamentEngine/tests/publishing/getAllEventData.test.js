@@ -16,7 +16,7 @@ it('can return all event data', () => {
   });
 
   const myCourts = { venueName: 'My Courts' };
-  const result = tournamentEngine
+  let result = tournamentEngine
     .setState(tournamentRecord)
     .devContext({ addVenue: true })
     .addVenue({ venue: myCourts });
@@ -38,11 +38,13 @@ it('can return all event data', () => {
       ],
     },
   ];
-  tournamentEngine.addCourts({
-    venueId,
-    courtsCount: 3,
+  result = tournamentEngine.addCourts({
     dateAvailability,
+    courtsCount: 3,
+    venueId,
   });
+
+  expect(result.success).toEqual(true);
 
   const {
     allEventData: { tournamentInfo, eventsData, venuesData },
