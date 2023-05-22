@@ -47,7 +47,7 @@ test('recognizes scheduling conflicts', () => {
   });
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps({
-    matchUpFilters: { eventIds: [eventIds[0]] },
+    contextFilters: { eventIds: [eventIds[0]] },
   });
   let { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
 
@@ -69,7 +69,7 @@ test('recognizes scheduling conflicts', () => {
   expect(result.success).toEqual(true);
 
   ({ matchUps } = competitionEngine.allCompetitionMatchUps({
-    matchUpFilters: { eventIds: [eventIds[0]] },
+    contextFilters: { eventIds: [eventIds[0]] },
     afterRecoveryTimes: true,
     nextMatchUps: true,
   }));

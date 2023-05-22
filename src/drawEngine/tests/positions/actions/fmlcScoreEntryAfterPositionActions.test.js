@@ -6,25 +6,25 @@ import {
   getOrderedDrawPositionPairs,
 } from '../../testingUtilities';
 
-import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 
 // tests that manual placement of a BYE in consolation structure does not prevent
 // entry of scores in main draw matchUps with links disabled by consolation positionActions
 it('able to enter MAIN structure score after manually placing BYE in CONSOLATION', () => {
   const drawProfiles = [
     {
-      drawSize: 8,
-      participantsCount: 8,
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
+      participantsCount: 8,
+      drawSize: 8,
     },
   ];
   const {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     inContext: true,
+    drawProfiles,
   });
 
   let {

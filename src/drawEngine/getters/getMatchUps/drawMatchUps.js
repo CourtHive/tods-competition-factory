@@ -120,9 +120,10 @@ export function getDrawMatchUps({
       completedMatchUps,
       abandonedMatchUps,
     } = getStructureMatchUps({
-      // if nextMatchUps then the filter can't be applied at this level
+      // if nextMatchUps then the filters can't be applied at this level
       matchUpFilters: !nextMatchUps ? matchUpFilters : undefined,
-      inContext: inContext || nextMatchUps,
+      contextFilters: !nextMatchUps ? contextFilters : undefined,
+      inContext: inContext || nextMatchUps || contextFilters,
       tournamentAppliedPolicies,
       scheduleVisibilityFilters,
       tournamentParticipants,
@@ -131,7 +132,6 @@ export function getDrawMatchUps({
       includeByeMatchUps,
       policyDefinitions,
       tournamentRecord,
-      contextFilters,
       contextProfile,
       contextContent,
       drawDefinition,
@@ -153,11 +153,18 @@ export function getDrawMatchUps({
 
   // only apply this filter if filters haven't already been applied
   const applyFilter = (matchUps) => {
-    return (
-      (!matchUpFilters && !nextMatchUps && (matchUps || [])) ||
-      // must processContext to pick up e.g. eventId filters
-      filterMatchUps({ matchUps, ...matchUpFilters, processContext: true })
-    );
+    if (!matchUpFilters && !nextMatchUps && !contextFilters) return matchUps;
+    if (matchUpFilters) {
+      matchUps = filterMatchUps({ matchUps, ...matchUpFilters });
+    }
+    if (contextFilters) {
+      matchUps = filterMatchUps({
+        matchUps,
+        ...contextFilters,
+        processContext: true,
+      });
+    }
+    return matchUps;
   };
 
   const matchUpGroups = {
