@@ -95,9 +95,11 @@ test.each([competitionEngineSync])(
 
     result = competitionEngine.competitionScheduleMatchUps({
       usePublishState: true,
+      nextMatchUps: true,
       matchUpFilters,
     });
     expect(result.dateMatchUps.length).toEqual(23);
+    expect(result.dateMatchUps[0].winnerTo).toBeDefined();
 
     result = competitionEngine.unPublishOrderOfPlay();
     expect(result.success).toEqual(true);

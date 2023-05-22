@@ -78,22 +78,10 @@ test('recognizes scheduling conflicts', () => {
   );
 
   ({ roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps }));
-  console.log(
-    matchUps.map((m) => m.drawId),
-    matchUps.length,
-    roundMatchUps[1].length,
-    roundMatchUps[2].length
-  );
   roundMatchUps[1].forEach((firstRoundMatchUp) => {
-    console.log(
-      typeof firstRoundMatchUp.winnerTo.schedule.scheduleConflict === 'string',
-      firstRoundMatchUp.winnerTo.schedule.scheduleConflict
-    );
-    /*
     expect(typeof firstRoundMatchUp.winnerTo.schedule.scheduleConflict).toEqual(
       'string'
     );
-    */
   });
   roundMatchUps[2].forEach((secondRoundMatchUp) => {
     expect(

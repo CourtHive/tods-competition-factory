@@ -5,6 +5,7 @@ import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getStructureMatchUps } from './getStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
+import { filterMatchUps } from './filterMatchUps';
 import { getMatchUpsMap } from './getMatchUpsMap';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
@@ -119,6 +120,8 @@ export function getDrawMatchUps({
       completedMatchUps,
       abandonedMatchUps,
     } = getStructureMatchUps({
+      // if nextMatchUps then the filter can't be applied at this level
+      matchUpFilters: !nextMatchUps ? matchUpFilters : undefined,
       inContext: inContext || nextMatchUps,
       tournamentAppliedPolicies,
       scheduleVisibilityFilters,
@@ -132,7 +135,6 @@ export function getDrawMatchUps({
       contextProfile,
       contextContent,
       drawDefinition,
-      matchUpFilters,
       participantMap,
       scheduleTiming,
       exitProfiles,
@@ -149,18 +151,27 @@ export function getDrawMatchUps({
     allByeMatchUps = allByeMatchUps.concat(...byeMatchUps);
   });
 
+  // only apply this filter if filters haven't already been applied
+  const applyFilter = (matchUps) => {
+    return (
+      (!matchUpFilters && !nextMatchUps && (matchUps || [])) ||
+      // must processContext to pick up e.g. eventId filters
+      filterMatchUps({ matchUps, ...matchUpFilters, processContext: true })
+    );
+  };
+
   const matchUpGroups = {
-    abandonedMatchUps: allAbandonedMatchUps,
-    completedMatchUps: allCompletedMatchUps,
-    upcomingMatchUps: allUpcomingMatchUps,
-    pendingMatchUps: allPendingMatchUps,
-    byeMatchUps: allByeMatchUps,
+    abandonedMatchUps: applyFilter(allAbandonedMatchUps),
+    completedMatchUps: applyFilter(allCompletedMatchUps),
+    upcomingMatchUps: applyFilter(allUpcomingMatchUps),
+    pendingMatchUps: applyFilter(allPendingMatchUps),
+    byeMatchUps: applyFilter(allByeMatchUps),
     matchUpsMap,
     ...SUCCESS,
   };
 
   if (nextMatchUps) {
-    const nextFilter = (typeof nextMatchUps === 'object' && nextMatchUps) || {
+    const nextFilter = typeof nextMatchUps === 'object' || {
       abandoned: true,
       completed: true,
       upcoming: true,
@@ -169,13 +180,16 @@ export function getDrawMatchUps({
     };
     const { abandoned, completed, upcoming, pending, bye } = nextFilter;
     const matchUps = [].concat(
-      ...((abandoned && matchUpGroups.abandonedMatchUps) || []),
-      ...((completed && matchUpGroups.completedMatchUps) || []),
-      ...((upcoming && matchUpGroups.upcomingMatchUps) || []),
-      ...((pending && matchUpGroups.pendingMatchUps) || []),
-      ...((bye && matchUpGroups.byeMatchUps) || [])
+      ...((abandoned && allAbandonedMatchUps) || []),
+      ...((completed && allCompletedMatchUps) || []),
+      ...((upcoming && allUpcomingMatchUps) || []),
+      ...((pending && allPendingMatchUps) || []),
+      ...((bye && allByeMatchUps) || [])
     );
-    addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps: matchUps });
+    addUpcomingMatchUps({
+      inContextDrawMatchUps: matchUps,
+      drawDefinition,
+    });
   }
 
   return matchUpGroups;
