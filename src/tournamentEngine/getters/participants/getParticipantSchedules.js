@@ -16,10 +16,10 @@ export function getParticipantSchedules({
   if (typeof participantFilters !== 'object')
     return { error: INVALID_OBJECT, context: { participantFilters } };
 
-  const matchUpFilters = { eventIds: participantFilters.eventIds };
+  const contextFilters = { eventIds: participantFilters.eventIds };
   const matchUps = allTournamentMatchUps({
     tournamentRecord,
-    matchUpFilters,
+    contextFilters,
   }).matchUps;
   const matchUpsMap = Object.assign(
     {},

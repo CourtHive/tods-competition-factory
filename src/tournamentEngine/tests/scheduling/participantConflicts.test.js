@@ -1,4 +1,5 @@
 import { getMatchUpIds } from '../../../global/functions/extractors';
+import { eventConstants } from '../../../constants/eventConstants';
 import competitionEngine from '../../../competitionEngine/sync';
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
@@ -7,7 +8,6 @@ import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { eventConstants } from '../../../constants/eventConstants';
 
 const { SINGLES, DOUBLES } = eventConstants;
 
@@ -47,7 +47,7 @@ test('recognizes scheduling conflicts', () => {
   });
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps({
-    matchUpFilters: { eventIds: [eventIds[0]] },
+    contextFilters: { eventIds: [eventIds[0]] },
   });
   let { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
 
@@ -69,7 +69,7 @@ test('recognizes scheduling conflicts', () => {
   expect(result.success).toEqual(true);
 
   ({ matchUps } = competitionEngine.allCompetitionMatchUps({
-    matchUpFilters: { eventIds: [eventIds[0]] },
+    contextFilters: { eventIds: [eventIds[0]] },
     afterRecoveryTimes: true,
     nextMatchUps: true,
   }));
@@ -83,11 +83,11 @@ test('recognizes scheduling conflicts', () => {
       'string'
     );
   });
-  roundMatchUps[2].forEach((secondRoundMatchUp) =>
-    expect(typeof secondRoundMatchUp.schedule.scheduleConflict).toEqual(
-      'string'
-    )
-  );
+  roundMatchUps[2].forEach((secondRoundMatchUp) => {
+    expect(
+      typeof secondRoundMatchUp.winnerTo.schedule.scheduleConflict === 'string'
+    ).toEqual(false);
+  });
 
   let { tournamentParticipants, participantIdsWithConflicts } =
     tournamentEngine.getTournamentParticipants({

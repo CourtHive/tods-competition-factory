@@ -1,3 +1,4 @@
+import { getMatchUpId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
@@ -125,6 +126,12 @@ it('will remove redundant tieFormat on matchUp with no results', () => {
       scoreStringSide2: '0-0',
       sets: [{ side1Score: 0, side2Score: 0 }],
     });
-    expect(dualMatchUp.tieFormat).toBeUndefined();
   });
+
+  const matchUpIds = firstRoundDualMatchUps.map(getMatchUpId);
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpIds },
+    inContext: false, // tieFormat will not be hydrated from draw or event
+  });
+  matchUps.forEach((matchUp) => expect(matchUp.tieFormat).toBeUndefined());
 });

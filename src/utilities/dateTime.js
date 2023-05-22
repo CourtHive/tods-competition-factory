@@ -114,11 +114,9 @@ export function offsetTime(date) {
 export function isDate(dateArg) {
   if (typeof dateArg == 'boolean') return false;
   const t =
-    dateArg instanceof Date
-      ? dateArg
-      : !isNaN(dateArg)
-      ? new Date(dateArg)
-      : false;
+    (dateArg instanceof Date && dateArg) ||
+    (!isNaN(dateArg) && new Date(dateArg)) ||
+    false;
   return t && !isNaN(t.valueOf());
 }
 
@@ -138,8 +136,7 @@ export function dateRange(startDt, endDt) {
 
   if (!error) {
     const currentDate = startDate;
-    const end = endDate;
-    while (currentDate <= end && iterations < 300) {
+    while (currentDate <= endDate && iterations < 300) {
       iterations += 1;
       // must be a *new* Date otherwise it is an array of the same object
       between.push(new Date(currentDate));

@@ -135,20 +135,15 @@ export function addCourts({
     });
   });
   const courtRecords = result.map((outcome) => outcome.court).filter(Boolean);
-
-  if (courtRecords.length === courtsCount) {
-    const { venue } = findVenue({ tournamentRecord, venueId });
-    addNotice({
-      payload: { venue, tournamentId: tournamentRecord.tournamentId },
-      topic: MODIFY_VENUE,
-      key: venue.venueId,
-    });
-    return { ...SUCCESS, courts: makeDeepCopy(courtRecords) };
-  } else {
-    return Object.assign(
-      {},
-      { courts: makeDeepCopy(courtRecords) },
-      { error: result }
-    );
+  if (courtRecords.length !== parseInt(courtsCount)) {
+    return { error: 'Not all courts could be generated', result };
   }
+
+  const { venue } = findVenue({ tournamentRecord, venueId });
+  addNotice({
+    payload: { venue, tournamentId: tournamentRecord.tournamentId },
+    topic: MODIFY_VENUE,
+    key: venue.venueId,
+  });
+  return { ...SUCCESS, courts: makeDeepCopy(courtRecords) };
 }
