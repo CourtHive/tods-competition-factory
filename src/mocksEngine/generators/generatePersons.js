@@ -31,8 +31,10 @@ export function generatePersons({
 } = {}) {
   if (isNaN(count)) return { error: INVALID_VALUES };
 
-  const maleCount = gendersCount ? gendersCount[MALE] : 0;
-  const femaleCount = gendersCount ? gendersCount[FEMALE] : 0;
+  const maleCount =
+    (gendersCount && gendersCount[MALE]) || (sex === MALE && count) || 0;
+  const femaleCount =
+    (gendersCount && gendersCount[FEMALE]) || (sex === FEMALE && count) || 0;
   count = Math.max(count, maleCount + femaleCount);
   const defaultCount = count - (maleCount + femaleCount);
 
@@ -98,6 +100,7 @@ export function generatePersons({
   const shuffledPersons = shuffleArray(validPersonData);
 
   if (shuffledPersons.length < count) {
+    console.log('LESS', shuffledPersons.length, count);
     const {
       maleFirstNames,
       maleLastNames,

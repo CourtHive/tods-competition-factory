@@ -44,10 +44,10 @@ export function generatePersonData({ count = 100, sex } = {}) {
     const firstName = personSex === MALE ? maleDupes.pop() : femaleDupes.pop();
     const nationalityCode = randomMember(ISOs);
     candidates[`${firstName}${lastName}`] = {
+      nationalityCode,
+      sex: personSex,
       firstName,
       lastName,
-      sex: personSex,
-      nationalityCode,
     };
   }
 

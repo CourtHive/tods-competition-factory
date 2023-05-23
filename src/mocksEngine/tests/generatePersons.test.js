@@ -1,13 +1,26 @@
 import { generatePersonData } from '../generators/generatePersonData';
 import { generatePersons } from '../generators/generatePersons';
+import { UUID, instanceCount } from '../../utilities';
+import namesData from '../data/names.json';
 import { tournamentEngine } from '../..';
-import { UUID } from '../../utilities';
 import { expect, test } from 'vitest';
 import mocksEngine from '..';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { ROUND_ROBIN } from '../../constants/drawDefinitionConstants';
 import { MALE } from '../../constants/genderConstants';
+
+test('lastName uniqueness', () => {
+  const counts = Object.assign(
+    {},
+    ...Object.keys(namesData).map((key) => ({ [key]: namesData[key].length }))
+  );
+  const { persons } = generatePersons({ count: counts.lastNames, sex: MALE });
+  const lastNames = Math.max(
+    ...Object.values(instanceCount(persons.map((p) => p.lastName)))
+  );
+  expect(lastNames).toEqual(1);
+});
 
 test('basic person generation', () => {
   let result = generatePersons();
@@ -40,9 +53,9 @@ test('basic person generation', () => {
     personData: [
       {
         firstName: 'Buckminster',
+        nationalityCode: 'USA',
         lastName: 'Fuller',
         sex: MALE,
-        nationalityCode: 'USA',
       },
     ],
   });
@@ -52,9 +65,9 @@ test('basic person generation', () => {
     personData: [
       {
         firstName: 'Buckminster',
+        nationalityCode: 'USSR',
         lastName: 'Fuller',
         sex: MALE,
-        nationalityCode: 'USSR',
       },
     ],
   });
@@ -65,9 +78,9 @@ test('basic person generation', () => {
     personData: [
       {
         firstName: 'Buckminster',
+        nationalityCode: 'XXX',
         lastName: 'Fuller',
         sex: MALE,
-        nationalityCode: 'XXX',
       },
     ],
   });
