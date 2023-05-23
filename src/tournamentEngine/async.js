@@ -18,7 +18,6 @@ import {
   deleteNotices,
   setDeepCopy,
   setDevContext,
-  getDevContext,
   getTournamentId,
   getTournamentRecord,
   removeTournamentRecord,
@@ -112,7 +111,7 @@ export function tournamentEngineAsync(test) {
     });
   }
 
-  async function engineInvoke(method, params, methodName) {
+  async function engineInvoke(method, params) {
     const tournamentId = getTournamentId();
     const tournamentRecord =
       params?.sandBoxRecord ||
@@ -123,12 +122,7 @@ export function tournamentEngineAsync(test) {
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
-    const result = await executeFunctionAsync(
-      tournamentRecord,
-      method,
-      params,
-      methodName
-    );
+    const result = await executeFunctionAsync(tournamentRecord, method, params);
 
     if (result?.error && snapshot) setState(snapshot);
 
@@ -168,11 +162,7 @@ export function tournamentEngineAsync(test) {
 
       for (const methodName of governorMethods) {
         engine[methodName] = async (params) => {
-          if (getDevContext()) {
-            return await engineInvoke(governor[methodName], params, methodName);
-          } else {
-            return await engineInvoke(governor[methodName], params, methodName);
-          }
+          return await engineInvoke(governor[methodName], params);
         };
       }
     }
@@ -197,8 +187,7 @@ export function tournamentEngineAsync(test) {
       const result = await executeFunctionAsync(
         tournamentRecord,
         engine[method],
-        params,
-        method
+        params
       );
 
       if (result?.error) {

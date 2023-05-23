@@ -9,7 +9,6 @@ import {
   getTournamentId,
   setTournamentId,
   deleteNotices,
-  getDevContext,
   setDeepCopy,
 } from '../global/state/globalState';
 
@@ -100,11 +99,7 @@ export function scaleEngineAsync(test) {
 
       for (const governorMethod of governorMethods) {
         engine[governorMethod] = async (params) => {
-          if (getDevContext()) {
-            return await engineInvoke(governor[governorMethod], params);
-          } else {
-            return await engineInvoke(governor[governorMethod], params);
-          }
+          return await engineInvoke(governor[governorMethod], params);
         };
       }
     }
