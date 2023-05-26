@@ -43,19 +43,22 @@ export function getPredictiveAccuracy({
   if (matchUpType && ![SINGLES, DOUBLES].includes(matchUpType))
     return { error: INVALID_VALUES, info: { matchUpType } };
 
+  if (!Array.isArray(matchUps) && matchUps)
+    return { error: INVALID_VALUES, context: { matchUps } };
+
   const contextProfile = { withScaleValues: true, withCompetitiveness: true };
   const contextFilters = {
     matchUpTypes: matchUpType ? [matchUpType] : [SINGLES, DOUBLES],
   };
   const participants = tournamentRecord?.participants;
 
-  if (matchUps && matchUps[0].hasContext) {
+  if (matchUps?.[0]?.hasContext) {
     if (drawId) {
       matchUps = matchUps.filter((matchUp) => matchUp.drawId === drawId);
     } else if (eventId) {
       matchUps = matchUps.filter((matchUp) => matchUp.eventId === eventId);
     }
-  } else {
+  } else if (matchUps === undefined) {
     matchUps =
       (drawId && !drawDefinition && []) ||
       (!drawId && eventId && !event && []) ||

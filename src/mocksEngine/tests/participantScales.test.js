@@ -9,6 +9,7 @@ import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { ELO, NTRP, UTR, WTN } from '../../constants/ratingConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 
 // prettier-ignore
 const rankingsScenarios = [
@@ -217,6 +218,31 @@ it('can assess predictive accuracy of scaleValues', () => {
   ).length;
 
   expect(participantsWithTimeItemsCount).toEqual(drawSize - 4);
+
+  // test whether it can handle being passed an array of empty matchUps
+  let result = tournamentEngine.getPredictiveAccuracy({
+    exclusionRule: { valueAccessor: 'confidence', range: [0, 70] },
+    matchUpFilters: { matchUpStatuses: [COMPLETED] },
+    ascending: true, // scale goes from low to high
+    valueAccessor: 'wtnRating',
+    scaleName: WTN,
+    zoneMargin: 3,
+    matchUps: [],
+  });
+  expect(result.success).toEqual(true);
+  expect(result.relevantMatchUps.length).toEqual(0);
+
+  // test behevior when matchUps is not an array and not undefined
+  result = tournamentEngine.getPredictiveAccuracy({
+    exclusionRule: { valueAccessor: 'confidence', range: [0, 70] },
+    matchUpFilters: { matchUpStatuses: [COMPLETED] },
+    ascending: true, // scale goes from low to high
+    valueAccessor: 'wtnRating',
+    scaleName: WTN,
+    zoneMargin: 3,
+    matchUps: { boo: 1 },
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
 
   const { accuracy, zoneDistribution } = tournamentEngine.getPredictiveAccuracy(
     {

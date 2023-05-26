@@ -1,4 +1,5 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { decorateResult } from '../../../global/functions/decorateResult';
 import { genderConstants } from '../../../constants/genderConstants';
 import { isConvertableInteger } from '../../../utilities/math';
 import { definedAttributes } from '../../../utilities/objects';
@@ -19,7 +20,6 @@ import {
   MISSING_VALUE,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { decorateResult } from '../../../global/functions/decorateResult';
 
 // all child matchUps need to be checked for collectionAssignments / collectionPositions which need to be removed when collectionDefinition.collectionIds are removed
 export function modifyCollectionDefinition({
