@@ -189,7 +189,7 @@ a participant with `entryStatus: DIRECT_ACCEPTANCE`.
 tournamentEngine.addEventEntries({
   eventId,
   participantIds,
-  stage: MAIN, // optional
+  entryStage: MAIN, // optional
   entryStatus: ALTERNATE, // optional
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
   drawId, // optional - will add participantIds to specified flightProfile.flight[].drawEntries and drawDefinition.entries (if possible)
