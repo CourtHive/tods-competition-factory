@@ -141,7 +141,7 @@
     "tslib": "2.5.2",
     "typescript": "5.0.4",
     "variable-diff": "^2.0.2",
-    "vite": "4.3.8",
+    "vite": "4.3.9",
     "vitest": "0.27.3"
   },
   "lint-staged": {
