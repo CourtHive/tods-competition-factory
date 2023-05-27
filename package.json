@@ -127,7 +127,7 @@
     "fs-extra": "11.1.1",
     "husky": "8.0.3",
     "lint-staged": "13.2.2",
-    "np": "7.7.0",
+    "np": "8.0.0",
     "pinst": "3.0.0",
     "prettier": "2.8.8",
     "prettier-eslint": "15.0.1",
