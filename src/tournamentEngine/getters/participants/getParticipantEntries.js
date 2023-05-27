@@ -85,6 +85,12 @@ export function getParticipantEntries({
     )?.scaleValue;
 
   for (const event of tournamentRecord?.events || []) {
+    if (
+      participantFilters?.eventIds &&
+      !participantFilters.eventIds.includes(event.eventId)
+    )
+      continue;
+
     const {
       drawDefinitions = [],
       extensions,

@@ -189,7 +189,7 @@ a participant with `entryStatus: DIRECT_ACCEPTANCE`.
 tournamentEngine.addEventEntries({
   eventId,
   participantIds,
-  stage: MAIN, // optional
+  entryStage: MAIN, // optional
   entryStatus: ALTERNATE, // optional
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
   drawId, // optional - will add participantIds to specified flightProfile.flight[].drawEntries and drawDefinition.entries (if possible)
@@ -1431,6 +1431,7 @@ const drawDefinitionValues = {
   drawSize, // number of drawPositions in the first draw structure
   drawType, // optional - defaults to SINGLE_ELIMINATION
   drawName, // cutom name for generated draw structure(s)
+  drawEntries, // array of entries, equal to or a subset of event.entries
   automated, // optional - whether or not to automatically place participants in structures; true/false or 'truthy' { seedsOnly: true }
   matchUpType, // optional - SINGLES, DOUBLES, or TEAM
   matchUpFormat, // optional - default matchUpFormatCode for all contained matchUps
