@@ -216,6 +216,8 @@ export function competitionEngineAsync(test) {
     await notifySubscribersAsync({ directives, mutationStatus, timeStamp });
     deleteNotices();
 
+    result.success = results.every((r) => r.success);
+
     return { result, results };
   }
 

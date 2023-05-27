@@ -43,7 +43,7 @@ export function addParticipantGroupings({
           (individualParticipantId) => {
             if (
               individualParticipantId === participantId &&
-              !participant.teamParticipantIds.includes(team.participantId)
+              !participant.teamParticipantIds?.includes(team.participantId)
             ) {
               participant.teamParticipantIds.push(team.participantId);
               participant.teams.push({
