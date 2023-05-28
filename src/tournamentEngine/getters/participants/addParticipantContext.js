@@ -110,10 +110,10 @@ export function addParticipantContext(params) {
               teamParticipantId
             )
           ) {
-            participantIdMap[participantId].teamParticipantIds.push(
+            participantIdMap[participantId]?.teamParticipantIds.push(
               teamParticipantId
             );
-            participantIdMap[participantId].teams.push({
+            participantIdMap[participantId]?.teams.push({
               participantRoleResponsibilities:
                 participant.participantRoleResponsibilities,
               participantOtherName: participant.participantOtherName,
