@@ -25,7 +25,7 @@
   "engines": {
     "node": ">=18.14.0 <19"
   },
-  "version": "0.501.2",
+  "version": "0.501.3",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/tods-competition-factory/",
