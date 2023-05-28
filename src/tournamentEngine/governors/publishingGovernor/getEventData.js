@@ -79,7 +79,7 @@ export function getEventData({
     )
     .map(({ structures, ...drawData }) => ({
       ...drawData,
-      structures: structures.filter(structureFilter),
+      structures: structures?.filter(structureFilter),
     }))
     .filter((drawData) => drawData.structures?.length);
 
