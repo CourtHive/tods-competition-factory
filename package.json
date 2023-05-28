@@ -22,9 +22,6 @@
     "seeding",
     "tennis"
   ],
-  "engines": {
-    "node": ">=18.14.0 <19"
-  },
   "version": "0.501.4",
   "license": "MIT",
   "private": false,
