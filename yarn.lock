@@ -6189,10 +6189,10 @@ normalize-url@^8.0.0:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-8.0.0.tgz#593dbd284f743e8dcf6a5ddf8fadff149c82701a"
   integrity sha512-uVFpKhj5MheNBJRTiMZ9pE/7hD1QTeEvugSJW/OmLzAp78PB5O6adfMNTvmfKhXBkvCzC+rqifWcVYpGFwTjnw==
 
-np@8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/np/-/np-8.0.0.tgz#7b61dabce8963aaa36ba11faed7ffb0988293fa7"
-  integrity sha512-mVebUNW3MwaYC9PcUzTOHT3fxtEKecOuwXFHnjtfJgVl0OQXwT4VKP3E4VFFaGQu66xfXR/Z8JBOD7ZKh/eAfw==
+np@8.0.1:
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/np/-/np-8.0.1.tgz#e022b061598be29b371efc93aed628d210ca0728"
+  integrity sha512-5Vd3p5LlymIUhQjKIVhcf/Zh1/Mpeuo4agQ53LWXokPnGlWH3SAjZx5jmy56B904uwnKXyM/220GJae5p7/NhA==
   dependencies:
     chalk "^5.2.0"
     cosmiconfig "^8.1.3"
