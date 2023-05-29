@@ -22,7 +22,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "0.501.6",
+  "version": "0.501.8",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/tods-competition-factory/",
@@ -63,7 +63,9 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "release": "npm publish",
+    "release:major": "npm version $(semver $npm_package_version -i major) && ./addVersion $npm_package_version && npm publish --tag latest",
+    "release:minor": "npm version $(semver $npm_package_version -i minor) && ./addVersion $npm_package_version && npm publish --tag latest",
+    "release:patch": "npm version $(semver $npm_package_version -i patch) && ./addVersion $npm_package_version && npm publish --tag latest",
     "start": "rollup --config -w",
     "build": "rimraf dist && rollup --config",
     "test": "vitest",
@@ -74,7 +76,7 @@
     "lint": "eslint src --fix --cache",
     "lint:report": "eslint src & eslint --cache src -f json > eslint-report.json",
     "prepare": "rimraf dist && rollup --config",
-    "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
+    "prepublishOnly": "pinst --disable",
     "postinstall": "husky install",
     "postpublish": "pinst --enable",
     "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy",
@@ -137,6 +139,7 @@
     "rollup-plugin-dts": "5.3.0",
     "rollup-plugin-esbuild": "5.0.0",
     "rollup-plugin-terser": "7.0.2",
+    "semver": "^7.5.1",
     "source-map-resolve": "0.6.0",
     "tslib": "2.5.2",
     "typescript": "5.0.4",
