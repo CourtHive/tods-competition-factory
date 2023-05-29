@@ -59,8 +59,6 @@ export function generateScoreString(params) {
 
   function setString(currentSet) {
     const isFinalSet = bestOf && currentSet.setNumber === bestOf;
-    if (isFinalSet) true;
-
     const format = isFinalSet && finalSetFormat ? finalSetFormat : setFormat;
     const hasGameScores = (set) =>
       isNumeric(set?.side1Score) || isNumeric(set?.side2Score);
