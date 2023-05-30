@@ -63,9 +63,9 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "release:major": "npm version $(semver $npm_package_version -i major) && $(./addVersion $npm_package_version) && npm publish --tag latest",
-    "release:minor": "npm version $(semver $npm_package_version -i minor) && $(./addVersion $npm_package_version) && npm publish --tag latest",
-    "release:patch": "npm version $(semver $npm_package_version -i patch) && $(./addVersion $npm_package_version) && npm publish --tag latest",
+    "release:major": "npm version $(semver $npm_package_version -i major) && npm publish --tag latest",
+    "release:minor": "npm version $(semver $npm_package_version -i minor) && npm publish --tag latest",
+    "release:patch": "npm version $(semver $npm_package_version -i patch) && npm publish --tag latest",
     "start": "rollup --config -w",
     "build": "rimraf dist && rollup --config",
     "test": "vitest",
@@ -75,7 +75,7 @@
     "lint:tsc": "tsc --project tsconfig.json",
     "lint": "eslint src --fix --cache",
     "lint:report": "eslint src & eslint --cache src -f json > eslint-report.json",
-    "prepare": "rimraf dist && rollup --config",
+    "prepare": "rimraf dist && rollup --config && $(./addVersion $npm_package_version)",
     "postinstall": "husky install",
     "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy",
     "generate-types": "quicktype -s schema src/global/schema/tournament.schema.json -o src/types/tournamentFromSchema.ts --just-types -t Tournament",
