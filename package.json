@@ -63,9 +63,9 @@
     "registry": "https://registry.npmjs.org"
   },
   "scripts": {
-    "release:major": "npm version $(semver $npm_package_version -i major) && ./addVersion $npm_package_version && npm publish --tag latest",
-    "release:minor": "npm version $(semver $npm_package_version -i minor) && ./addVersion $npm_package_version && npm publish --tag latest",
-    "release:patch": "npm version $(semver $npm_package_version -i patch) && ./addVersion $npm_package_version && npm publish --tag latest",
+    "release:major": "npm version $(semver $npm_package_version -i major) && $(./addVersion $npm_package_version) && npm publish --tag latest",
+    "release:minor": "npm version $(semver $npm_package_version -i minor) && $(./addVersion $npm_package_version) && npm publish --tag latest",
+    "release:patch": "npm version $(semver $npm_package_version -i patch) && $(./addVersion $npm_package_version) && npm publish --tag latest",
     "start": "rollup --config -w",
     "build": "rimraf dist && rollup --config",
     "test": "vitest",
