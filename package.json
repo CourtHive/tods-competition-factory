@@ -156,5 +156,7 @@
     "defaults and supports es6-module",
     "maintained node versions"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "pinst": "^3.0.0"
+  }
 }
