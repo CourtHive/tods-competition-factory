@@ -6880,6 +6880,11 @@ picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.3.1:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
 
+pinst@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/pinst/-/pinst-3.0.0.tgz#80dec0a85f1f993c6084172020f3dbf512897eec"
+  integrity sha512-cengSmBxtCyaJqtRSvJorIIZXMXg+lJ3sIljGmtBGUVonMnMsVJbnzl6jGN1HkOWwxNuJynCJ2hXxxqCQrFDdw==
+
 pkg-dir@^4.1.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-4.2.0.tgz#f099133df7ede422e81d1d8448270eeb3e4261f3"
@@ -8555,10 +8560,12 @@ tods-competition-factory@0.326.0:
   resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.326.0.tgz#840b44bc4d947c57ad898dc5cd309e4f2165e083"
   integrity sha512-vkzF5OZRtsDuP9XyfjYoHImuQ6l5G52YSj6XLK2EgEZTPeKkzDBDaEcrQNZhIn9Ypda0qRDFgheWGHz/VjVFjg==
 
-tods-competition-factory@0.502.3:
-  version "0.502.3"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.502.3.tgz#86f87cd66c155191f0dbc79d988f7d9cea3ae7f7"
-  integrity sha512-3o8TnDFljp9jExl6yU88jmDpRWrldgkh/xNG/xH8A63i29jCb4lQOksKBkV0srnArX+ry0knR91hKxYCL6k3hg==
+tods-competition-factory@0.503.1:
+  version "0.503.1"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.503.1.tgz#216ac89153b2d2a5b70beb7bc80b435d66171d65"
+  integrity sha512-sikU3DLnfYpcSDI9FrxPnqHpsTEAROckVAdZ4HUrlmpjD/OvpMi0RN2R7JqdcvZDtrYlKYBfAFLfNVOgclDPBQ==
+  dependencies:
+    pinst "^3.0.0"
 
 tods-score-grid@0.10.0:
   version "0.10.0"
