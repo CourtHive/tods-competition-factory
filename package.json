@@ -76,9 +76,7 @@
     "lint": "eslint src --fix --cache",
     "lint:report": "eslint src & eslint --cache src -f json > eslint-report.json",
     "prepare": "rimraf dist && rollup --config",
-    "prepublishOnly": "pinst --disable",
     "postinstall": "husky install",
-    "postpublish": "pinst --enable",
     "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy",
     "generate-types": "quicktype -s schema src/global/schema/tournament.schema.json -o src/types/tournamentFromSchema.ts --just-types -t Tournament",
     "check-types": "tsc --noEmit"
@@ -130,7 +128,6 @@
     "husky": "8.0.3",
     "lint-staged": "13.2.2",
     "np": "8.0.1",
-    "pinst": "3.0.0",
     "prettier": "2.8.8",
     "prettier-eslint": "15.0.1",
     "quicktype": "23.0.37",
