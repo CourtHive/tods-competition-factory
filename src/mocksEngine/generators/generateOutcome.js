@@ -224,7 +224,8 @@ function generateSet({
     winningSideNumber = weightedRange[weightIndex] + 1;
 
     // sides could be tied
-    let highSide = scores[0] > scores[1] ? 1 : scores[1] > scores[0] ? 2 : 0;
+    let highSide =
+      (scores[0] > scores[1] && 1) || (scores[1] > scores[0] && 2) || 0;
 
     if (incomplete) {
       const [side1Score, side2Score] = scores;
