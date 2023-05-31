@@ -81,7 +81,6 @@
     "lint:report": "eslint src & eslint --cache src -f json > eslint-report.json",
     "prepare": "rimraf dist && rollup --config && $(./addVersion $npm_package_version)",
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
-    "postinstall": "husky install",
     "postpublish": "pinst --enable",
     "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy",
     "generate-types": "quicktype -s schema src/global/schema/tournament.schema.json -o src/types/tournamentFromSchema.ts --just-types -t Tournament",
