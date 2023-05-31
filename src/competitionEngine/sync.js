@@ -265,9 +265,9 @@ export const competitionEngine = (function () {
     notifySubscribers({ directives, mutationStatus, timeStamp });
     deleteNotices();
 
-    result.success = results.every((r) => r.success);
+    const success = results.every((r) => r.success);
 
-    return { result, results };
+    return { success, results };
   }
 })();
 
