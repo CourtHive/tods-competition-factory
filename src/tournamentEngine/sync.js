@@ -271,9 +271,9 @@ export const tournamentEngine = (function () {
     notifySubscribers({ directives, mutationStatus, timeStamp, tournamentId });
     deleteNotices();
 
-    result.success = results.every((r) => r.success);
+    const success = results.every((r) => r.success);
 
-    return { result, results };
+    return { success, results };
   }
 })();
 

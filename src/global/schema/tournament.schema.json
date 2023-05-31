@@ -67,6 +67,9 @@
             "$ref": "#/definitions/MatchUp"
           }
         },
+        "parentOrganisation": {
+          "$ref": "#/definitions/Organisation"
+        },
         "onlineResources": {
           "type": "array",
           "items": {
@@ -2305,6 +2308,53 @@
       "type": "string",
       "enum": ["SOCIAL_MEDIA", "URL", "EMAIL", "OTHER"]
     },
+    "Organisation": {
+      "type": "object",
+      "properties": {
+        "addresses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Address"
+          }
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Contact"
+          }
+        },
+        "organisationName": {
+          "type": "string"
+        },
+        "organisationAbbreviation": {
+          "type": "string"
+        },
+        "organisationId": {
+          "type": "string"
+        },
+        "organisationType": {
+          "$ref": "#/definitions/OrganisationTypeEnum"
+        },
+        "onlineResources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OnlineResource"
+          }
+        },
+        "parentOrganisationId": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Extension"
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
     "Participant": {
       "type": "object",
       "properties": {
@@ -2875,6 +2925,10 @@
     "ParticipantTypeEnum": {
       "type": "string",
       "enum": ["INDIVIDUAL", "PAIR", "TEAM", "GROUP"]
+    },
+    "OrganisationTypeEnum": {
+      "type": "string",
+      "enum": ["NATIONAL_ASSOCIATION", "SCHOOL", "CLUB"]
     },
     "RegistrationProfile": {
       "type": "object",

@@ -1,6 +1,6 @@
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { tallyParticipantResults } from '../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
+import { getPolicyDefinitions } from '../../../global/functions/deducers/getAppliedPolicies';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { createSubOrderMap } from './createSubOrderMap';

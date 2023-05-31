@@ -23,6 +23,7 @@ import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
 import { matchUpScheduleChange } from './matchUpScheduleChange';
 import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
+import { proConflicts } from './proScheduling/proConflicts';
 import {
   addSchedulingProfileRound,
   getSchedulingProfile,
@@ -58,6 +59,8 @@ const scheduleGovernor = {
   getMatchUpDependencies,
   generateVirtualCourts,
   generateBookings,
+
+  proConflicts,
 
   matchUpScheduleChange,
   calculateScheduleTimes,

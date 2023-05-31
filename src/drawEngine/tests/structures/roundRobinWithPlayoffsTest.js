@@ -150,7 +150,6 @@ export function roundRobinWithPlayoffsTest({
   });
 
   const finishingPositionGroups = {};
-  const structureParticipantGroupings = [];
 
   const orderValues = generateRange(1, groupSize + 1);
   mainStructure.structures.forEach((structure) => {
@@ -166,7 +165,6 @@ export function roundRobinWithPlayoffsTest({
     });
 
     const structureParticipantIds = Object.keys(participantResults);
-    structureParticipantGroupings.push(structureParticipantIds);
 
     structureParticipantIds.forEach((key) => {
       const { groupOrder } = participantResults[key];
