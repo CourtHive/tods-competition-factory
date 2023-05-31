@@ -2295,6 +2295,18 @@ const { accuracy, zoneDistribution } = tournamentEngine.getPredictiveAccuracy({
 
 ---
 
+## getRoundMatchUps
+
+Organizes matchUps by roundNumber. **roundMatchUps** contains matchUp objects; **roundProfile** provides an overview of drawPositions which have advanced to each round, a matchUpsCount, finishingPositionRange for winners and losers, and finishingRound.
+
+```js
+const { roundMatchUps, roundProfile } = tournamentEngine.getRoundMatchUps({
+  matchUps,
+});
+```
+
+---
+
 ## getScaledEntries
 
 See [Scale Items](../concepts/scaleItems).
