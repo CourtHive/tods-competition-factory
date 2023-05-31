@@ -1,5 +1,6 @@
 import { generateRange } from '../../../../utilities';
 
+import { MISSING_MATCHUPS } from '../../../../constants/errorConditionConstants';
 import {
   SCHEDULE_CONFLICT,
   SCHEDULE_ERROR,
@@ -7,6 +8,7 @@ import {
 } from '../../../../constants/scheduleConstants';
 
 export function proConflicts({ matchUps }) {
+  if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
   const maxCourtOrder = Math.max(
     ...matchUps
       .map(({ schedule }) => schedule.courtOrder)
