@@ -12,6 +12,19 @@ import {
   TEAM,
 } from '../../../constants/participantConstants';
 
+it('can generate TEAMs from attributes', () => {
+  let result = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 64 }],
+  });
+  tournamentEngine.setState(result.tournamentRecord);
+
+  result = tournamentEngine.generateTeamsFromParticipantAttribute({
+    accessor: 'person.addresses.city',
+    addParticipants: false,
+  });
+  expect(result.success).toEqual(true);
+});
+
 it('can generate TEAM events', () => {
   const personExtensions = [{ name: 'districtCode', value: 'Z' }];
   const nationalityCodesCount = 10;
