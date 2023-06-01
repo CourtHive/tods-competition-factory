@@ -14,7 +14,6 @@ export function proConflicts({ matchUps }) {
       .map(({ schedule }) => schedule.courtOrder)
       .map((order) => parseInt(order))
   );
-
   const filteredRows = generateRange(1, maxCourtOrder + 1).map((courtOrder) =>
     matchUps.filter((m) => parseInt(m.schedule.courtOrder) === courtOrder)
   );

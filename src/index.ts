@@ -3,6 +3,7 @@ export { factoryVersion as version } from './global/functions/factoryVersion';
 export { scoreGovernor } from './matchUpEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
+import { proConflicts } from './competitionEngine/governors/scheduleGovernor/proScheduling/proConflicts';
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
 import { findExtension } from './tournamentEngine/governors/queryGovernor/extensionQueries';
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
@@ -38,6 +39,7 @@ import {
 export const utilities = {
   structureSort,
   matchUpSort,
+  proConflicts,
   addExtension,
   chunkArray,
   countValues,
