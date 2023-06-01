@@ -107,7 +107,7 @@ export function generateTeamsFromParticipantAttribute({
     const participant = teams[attributeValue];
     const { participantId } = participant;
     if (!overlappingTeamParticipantIds.includes(participantId)) {
-      tournamentRecord.participants.push(participant);
+      if (addParticipants) tournamentRecord.participants.push(participant);
       newParticipants.push(participant);
       participantsAdded++;
     }
