@@ -11,7 +11,7 @@ import { COMPETITOR } from '../../constants/participantRoles';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
-  PARTICIPANT_NOT_FOUND,
+  NO_PARTICIPANTS_GENERATED,
 } from '../../constants/errorConditionConstants';
 
 /**
@@ -24,6 +24,7 @@ import {
  * @returns { success: true } or { error }
  */
 export function generateTeamsFromParticipantAttribute({
+  addParticipants = true, // optional boolean to disable add
   participantAttribute,
   tournamentRecord,
   personAttribute,
@@ -42,10 +43,13 @@ export function generateTeamsFromParticipantAttribute({
   let teamIndex = 0;
 
   for (const individualParticipant of individualParticipants) {
-    const { value: accessorValue } = getAccessorValue({
-      element: individualParticipant,
-      accessor,
-    });
+    const accessorValue =
+      accessor &&
+      getAccessorValue({
+        element: individualParticipant,
+        accessor,
+      })?.value;
+
     const attributeValue =
       accessorValue ||
       (personAttribute
@@ -57,9 +61,9 @@ export function generateTeamsFromParticipantAttribute({
         teams[attributeValue] = {
           participantName: teamNames?.[teamIndex] || attributeValue,
           participantId: uuids?.pop() || UUID(),
-          participantType: TEAM,
-          participantRole: COMPETITOR,
           individualParticipantIds: [],
+          participantRole: COMPETITOR,
+          participantType: TEAM,
         };
 
         const extension = {
@@ -97,8 +101,8 @@ export function generateTeamsFromParticipantAttribute({
     })
     .filter(Boolean);
 
-  const newParticipants = [];
   let participantsAdded = 0;
+  const newParticipants = [];
   Object.keys(teams).forEach((attributeValue) => {
     const participant = teams[attributeValue];
     const { participantId } = participant;
@@ -109,7 +113,7 @@ export function generateTeamsFromParticipantAttribute({
     }
   });
 
-  if (participantsAdded) {
+  if (addParticipants && participantsAdded) {
     addNotice({
       payload: {
         tournamentId: tournamentRecord.tournamentId,
@@ -117,11 +121,10 @@ export function generateTeamsFromParticipantAttribute({
       },
       topic: ADD_PARTICIPANTS,
     });
-  }
-
-  if (participantsAdded) {
     return { ...SUCCESS, participantsAdded };
+  } else if (newParticipants.length) {
+    return { ...SUCCESS, newParticipants };
   } else {
-    return { error: PARTICIPANT_NOT_FOUND };
+    return { error: NO_PARTICIPANTS_GENERATED };
   }
 }
