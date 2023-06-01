@@ -884,7 +884,7 @@ Used by `mocksEngine` for automatically scoring all matchUps in connected draw s
 
 ```js
 const { matchUps } = drawEngine.allDrawMatchUps();
-const sortedMatchUps = matchUps.sort(drawEngine.matchUpSort);
+const sortedMatchUps = drawEngine.matchUpSort(matchUps);
 ```
 
 ---

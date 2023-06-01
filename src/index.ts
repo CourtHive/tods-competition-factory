@@ -10,10 +10,11 @@ import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItem
 import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
 import { nearestPowerOf2, isPowerOf2, isNumeric } from './utilities/math';
 import { addExtension } from './global/functions/producers/addExtension';
+import { structureSort } from './drawEngine/getters/structureSort';
+import { matchUpSort } from './drawEngine/getters/matchUpSort';
 import { dateTime, dateRange } from './utilities/dateTime';
 import { JSON2CSV, flattenJSON } from './utilities/json';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
-import { structureSort } from './forge/transform';
 import { numericSort } from './utilities/sorting';
 import { UUID, UUIDS } from './utilities/UUID';
 import {
@@ -36,6 +37,7 @@ import {
 
 export const utilities = {
   structureSort,
+  matchUpSort,
   addExtension,
   chunkArray,
   countValues,

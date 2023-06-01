@@ -3,6 +3,7 @@ export { bulkRescheduleMatchUps } from '../../competitionEngine/governors/schedu
 export { setMatchUpDailyLimits } from '../../competitionEngine/governors/scheduleGovernor/setMatchUpDailyLimits';
 export { addFinishingRounds } from '../../drawEngine/generators/addFinishingRounds';
 export { structureSort } from '../../drawEngine/getters/structureSort';
+export { matchUpSort } from '../../drawEngine/getters/matchUpSort';
 export { attributeFilter } from '../../utilities';
 export { tidyScore } from '../../utilities';
 export {

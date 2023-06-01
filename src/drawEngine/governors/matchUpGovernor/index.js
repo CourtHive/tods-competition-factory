@@ -31,6 +31,8 @@ import {
 } from './scheduleItems';
 
 const matchUpGovernor = {
+  matchUpSort: (matchUps) => matchUps.sort(matchUpSort),
+
   resetScorecard,
   setMatchUpStatus,
   setMatchUpFormat,
@@ -61,7 +63,6 @@ const matchUpGovernor = {
   removeDelegatedOutcome,
 
   drawMatic,
-  matchUpSort,
   addMatchUpOfficial,
 
   findMatchUp: publicFindMatchUp,
