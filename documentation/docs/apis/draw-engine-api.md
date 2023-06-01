@@ -876,19 +876,6 @@ const {
 
 ---
 
-## matchUpSort
-
-Sorting function to arrange matchUps by stage, stageSequence, roundNumber, roundPosition (where applicable)
-
-Used by `mocksEngine` for automatically scoring all matchUps in connected draw structures as part of test suites.
-
-```js
-const { matchUps } = drawEngine.allDrawMatchUps();
-const sortedMatchUps = drawEngine.matchUpSort(matchUps);
-```
-
----
-
 ## newDrawDefinition
 
 Creates a new drawDefinition within drawEngine state.
