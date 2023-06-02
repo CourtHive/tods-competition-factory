@@ -102,7 +102,7 @@ export function addCourts({
   let result = findVenue({ tournamentRecord, venueId });
   if (result.error) return result;
 
-  const { venue, venueAbbreviation } = result.venue;
+  const { venue, venueAbbreviation } = result;
 
   if (!isNumeric(courtsCount) || !courtNames)
     return { error: MISSING_COURTS_INFO };
