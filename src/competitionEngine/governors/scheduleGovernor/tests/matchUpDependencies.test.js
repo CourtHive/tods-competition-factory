@@ -3,7 +3,10 @@ import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
-import { COMPASS } from '../../../../constants/drawDefinitionConstants';
+import {
+  COMPASS,
+  SINGLE_ELIMINATION,
+} from '../../../../constants/drawDefinitionConstants';
 
 it.each([
   { drawSize: 4, dependencyMap: { 1: 0, 2: 2 } },
@@ -71,4 +74,29 @@ it('can build a dependency map across structures', () => {
       expect(roundNumber).toEqual(1);
       expect([1, 2].includes(roundPosition)).toEqual(true);
     });
+});
+
+it('can capture distance between matchUps', () => {
+  const drawSize = 16;
+  const drawProfiles = [
+    { drawSize, drawType: SINGLE_ELIMINATION, idPrefix: 'dist' },
+  ];
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let { matchUpDependencies } = tournamentEngine.getMatchUpDependencies();
+  const sourceDistance = (a, b) =>
+    matchUpDependencies[a].sources.reduce(
+      (distance, round, index) => (round.includes(b) && index + 1) || distance,
+      0
+    );
+  const getDistance = (x, y) => sourceDistance(x, y) || sourceDistance(y, x);
+  expect(getDistance('dist-4-1', 'dist-1-1')).toEqual(3);
+  expect(getDistance('dist-3-1', 'dist-1-1')).toEqual(2);
+  expect(getDistance('dist-2-1', 'dist-1-1')).toEqual(1);
+  expect(getDistance('dist-2-2', 'dist-2-1')).toEqual(0);
+  expect(getDistance('dist-1-1', 'dist-4-1')).toEqual(3);
 });

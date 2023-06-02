@@ -103,15 +103,20 @@ export function getMatchUpDependencies({
         dependentMatchUpIds: [],
         participantIds: [],
         matchUpIds: [],
+        sources: [],
       };
       sourceMatchUpIds[matchUpId] = [];
     }
   };
 
   const propagateDependencies = (matchUpId, targetMatchUpId) => {
-    matchUpDependencies[matchUpId].matchUpIds.forEach((matchUpIdDependency) =>
-      matchUpDependencies[targetMatchUpId].matchUpIds.push(matchUpIdDependency)
-    );
+    const propagatedMatchUpIds = matchUpDependencies[matchUpId].matchUpIds;
+
+    // push all existing dependents onto target dependents
+    propagatedMatchUpIds.forEach((matchUpIdDependency) => {
+      matchUpDependencies[targetMatchUpId].matchUpIds.push(matchUpIdDependency);
+    });
+
     matchUpDependencies[targetMatchUpId].matchUpIds.push(matchUpId);
     matchUpDependencies[matchUpId].dependentMatchUpIds.push(targetMatchUpId);
 
@@ -152,6 +157,17 @@ export function getMatchUpDependencies({
           propagateDependencies(matchUpId, loserMatchUpId);
           sourceMatchUpIds[loserMatchUpId].push(matchUpId);
         }
+
+        matchUpDependencies[matchUpId].sources.push(
+          sourceMatchUpIds[matchUpId]
+        );
+        const s1 = sourceMatchUpIds[matchUpId]
+          .map((id) => matchUpDependencies[id].sources[0])
+          .flat();
+        const s2 = sourceMatchUpIds[matchUpId]
+          .map((id) => matchUpDependencies[id].sources[1])
+          .flat();
+        matchUpDependencies[matchUpId].sources.push(...[s1, s2]);
 
         if (processSourceStructures) {
           const relevantStructureId =
