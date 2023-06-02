@@ -157,5 +157,5 @@ export function generateVirtualCourts({
     })
   );
 
-  return { virtualCourts };
+  return { virtualCourts, assignedBookings };
 }

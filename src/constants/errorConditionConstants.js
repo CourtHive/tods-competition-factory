@@ -425,6 +425,10 @@ export const NO_PARTICIPANTS = {
   message: 'Tournament has no participants',
   code: 'ERR_NO_TOURNAMENT_PARTICIPANTS',
 };
+export const NO_PARTICIPANTS_GENERATED = {
+  message: 'No participants generated',
+  code: 'ERR_NO_PARTICIPANTS_GENERATED',
+};
 export const CANNOT_MODIFY_TIEFORMAT = {
   message: 'Cannot modify tieFormat',
   code: 'ERR_UNCHANGED_CANNOT_MODIFY_TIEFORMAT',

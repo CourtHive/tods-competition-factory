@@ -12,6 +12,41 @@ import {
   TEAM,
 } from '../../../constants/participantConstants';
 
+it('can generate TEAMs from attributes', () => {
+  let result = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 64 }],
+  });
+  tournamentEngine.setState(result.tournamentRecord);
+
+  let participantsCount =
+    tournamentEngine.getParticipants().participants.length;
+  expect(participantsCount).toEqual(64);
+
+  result = tournamentEngine.generateTeamsFromParticipantAttribute({
+    accessor: 'person.addresses.city',
+    addParticipants: false,
+  });
+
+  participantsCount = tournamentEngine.getParticipants().participants.length;
+  expect(participantsCount).toEqual(64);
+
+  expect(result.success).toEqual(true);
+  expect(result.newParticipants.length).toBeGreaterThan(0);
+  expect(result.participantsAdded).toBeUndefined();
+  expect(result.modificationsApplied).toBeUndefined();
+
+  result = tournamentEngine.generateTeamsFromParticipantAttribute({
+    accessor: 'person.addresses.city',
+  });
+
+  participantsCount = tournamentEngine.getParticipants().participants.length;
+  expect(participantsCount).toBeGreaterThan(64);
+
+  expect(result.participantsAdded).toBeGreaterThan(0);
+  expect(result.newParticipants).toBeUndefined();
+  expect(result.modificationsApplied).toEqual(true);
+});
+
 it('can generate TEAM events', () => {
   const personExtensions = [{ name: 'districtCode', value: 'Z' }];
   const nationalityCodesCount = 10;

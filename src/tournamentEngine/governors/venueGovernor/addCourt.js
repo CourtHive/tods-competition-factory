@@ -99,6 +99,11 @@ export function addCourts({
   dates,
 }) {
   if (!venueId) return { error: MISSING_VENUE_ID };
+  let result = findVenue({ tournamentRecord, venueId });
+  if (result.error) return result;
+
+  const { venue, venueAbbreviation } = result;
+
   if (!isNumeric(courtsCount) || !courtNames)
     return { error: MISSING_COURTS_INFO };
 
@@ -119,12 +124,15 @@ export function addCourts({
       courtAvailability.push({ startTime, endTime });
 
     return {
-      courtName: courtNames[i] || `Court ${i + 1}`,
+      courtName:
+        courtNames[i] ||
+        (venueAbbreviation && `${venueAbbreviation} ${i + 1}`) ||
+        `Court ${i + 1}`,
       dateAvailability: courtAvailability,
     };
   });
 
-  const result = courts.map((court, i) => {
+  result = courts.map((court, i) => {
     const courtId = courtIds?.pop() || (idPrefix && `${idPrefix}-${i + 1}`);
     return addCourt({
       disableNotice: true,
@@ -139,7 +147,6 @@ export function addCourts({
     return { error: 'Not all courts could be generated', result };
   }
 
-  const { venue } = findVenue({ tournamentRecord, venueId });
   addNotice({
     payload: { venue, tournamentId: tournamentRecord.tournamentId },
     topic: MODIFY_VENUE,

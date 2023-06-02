@@ -11,7 +11,6 @@ import { setDelegatedOutcome } from './setDelegatedOutcome';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { validDrawPositions } from './validDrawPositions';
 import { disableTieAutoCalc } from './disableTieAutoCalc';
-import { matchUpSort } from '../../getters/matchUpSort';
 import { enableTieAutoCalc } from './enableTieAutoCalc';
 import { setMatchUpStatus } from './setMatchUpStatus';
 import { setOrderOfFinish } from './setOrderOfFinish';
@@ -61,7 +60,6 @@ const matchUpGovernor = {
   removeDelegatedOutcome,
 
   drawMatic,
-  matchUpSort,
   addMatchUpOfficial,
 
   findMatchUp: publicFindMatchUp,

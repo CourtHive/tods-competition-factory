@@ -3,6 +3,7 @@ export { factoryVersion as version } from './global/functions/factoryVersion';
 export { scoreGovernor } from './matchUpEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
+import { proConflicts } from './competitionEngine/governors/scheduleGovernor/proScheduling/proConflicts';
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
 import { findExtension } from './tournamentEngine/governors/queryGovernor/extensionQueries';
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
@@ -10,10 +11,11 @@ import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItem
 import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
 import { nearestPowerOf2, isPowerOf2, isNumeric } from './utilities/math';
 import { addExtension } from './global/functions/producers/addExtension';
+import { structureSort } from './drawEngine/getters/structureSort';
+import { matchUpSort } from './drawEngine/getters/matchUpSort';
 import { dateTime, dateRange } from './utilities/dateTime';
 import { JSON2CSV, flattenJSON } from './utilities/json';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
-import { structureSort } from './forge/transform';
 import { numericSort } from './utilities/sorting';
 import { UUID, UUIDS } from './utilities/UUID';
 import {
@@ -36,6 +38,8 @@ import {
 
 export const utilities = {
   structureSort,
+  matchUpSort,
+  proConflicts,
   addExtension,
   chunkArray,
   countValues,
