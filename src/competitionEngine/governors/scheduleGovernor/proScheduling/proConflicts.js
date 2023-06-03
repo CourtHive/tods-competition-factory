@@ -6,11 +6,14 @@ import { MISSING_MATCHUPS } from '../../../../constants/errorConditionConstants'
 import {
   SCHEDULE_CONFLICT,
   SCHEDULE_ERROR,
+  SCHEDULE_ISSUE,
+  SCHEDULE_STATE,
   SCHEDULE_WARNING,
 } from '../../../../constants/scheduleConstants';
 
 export function proConflicts({ matchUps }) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
+
   const maxCourtOrder = Math.max(
     ...matchUps
       .map(({ schedule }) => schedule?.courtOrder || 1)
@@ -19,22 +22,28 @@ export function proConflicts({ matchUps }) {
   const filteredRows = generateRange(1, maxCourtOrder + 1).map((courtOrder) =>
     matchUps.filter((m) => parseInt(m.schedule?.courtOrder) === courtOrder)
   );
+
   const matchUpsMap = {};
+  const rowIndices = {};
+  const courtIssues = {};
 
   const sortedFiltered = filteredRows.flat().filter(Boolean).sort(matchUpSort);
-  sortedFiltered.forEach(({ schedule }) => {
-    delete schedule[SCHEDULE_CONFLICT];
-    delete schedule[SCHEDULE_WARNING];
-    delete schedule[SCHEDULE_ERROR];
-  });
+
+  sortedFiltered.forEach(({ schedule }) => delete schedule[SCHEDULE_STATE]);
 
   const drawIds = unique(matchUps.map(({ drawId }) => drawId));
-  const deps = getMatchUpDependencies({ drawIds }).matchUpDependencies;
-
-  const rowProfiles = filteredRows.map((row) =>
+  const deps = getMatchUpDependencies({
+    drawIds,
+  }).matchUpDependencies;
+  const rowProfiles = filteredRows.map((row, rowIndex) =>
     row.reduce(
       (profile, matchUp) => {
-        const { matchUpId, winnerMatchUpId, loserMatchUpId } = matchUp;
+        const { matchUpId, winnerMatchUpId, loserMatchUpId, schedule } =
+          matchUp;
+        const courtId = schedule?.courtId;
+        rowIndices[matchUpId] = rowIndex;
+        courtIssues[courtId] = [];
+
         profile.matchUpIds.push(matchUpId);
         matchUpsMap[matchUpId] = matchUp;
 
@@ -51,20 +60,40 @@ export function proConflicts({ matchUps }) {
     )
   );
 
-  const annotate = (id, attr) => (matchUpsMap[id].schedule[attr] = true);
+  const sourceDistance = (a, b) =>
+    deps[a].sources.reduce(
+      (distance, round, index) => (round.includes(b) && index + 1) || distance,
+      0
+    );
 
-  rowProfiles.forEach((row, i) => {
+  const rowIssues = rowProfiles.map(() => []);
+  const annotate = (id, issue) => {
+    if (!matchUpsMap[id].schedule[SCHEDULE_STATE]) {
+      matchUpsMap[id].schedule[SCHEDULE_STATE] = issue;
+      rowIssues[rowIndices[id]].push(issue);
+      courtIssues[matchUpsMap[id].schedule.courtId] = issue;
+    }
+  };
+
+  rowProfiles.forEach((row, rowIndex) => {
     row.matchUpIds.forEach((matchUpId) => {
       const sourceMatchUpIds = deps[matchUpId].matchUpIds;
-      const { winnerMatchUpId, loserMatchUpId } = matchUpsMap[matchUpId];
-      const previousRow = i && rowProfiles[i - 1];
-      const subsequentRows = rowProfiles.slice(i + 1);
+      const previousRow = rowIndex ? rowProfiles[rowIndex - 1] : undefined;
+      const subsequentRows = rowProfiles.slice(rowIndex + 1);
 
-      // if the winner or loser matchUpId are part of row matchUpIds => conflict
-      [winnerMatchUpId, loserMatchUpId].forEach(
-        (id) =>
-          row.matchUpIds.includes(id) && annotate(matchUpId, SCHEDULE_CONFLICT)
-      );
+      // IMPORTANT: maintain order of annotations
+      // SCHEDULE_STATE values progress from ERROR => CONFLICT => WARNING
+
+      for (const subsequentRow of subsequentRows) {
+        const sourceAfter = subsequentRow.matchUpIds.filter((id) =>
+          sourceMatchUpIds.includes(id)
+        );
+        if (sourceAfter?.length) {
+          sourceAfter.forEach((id) => annotate(id, SCHEDULE_ERROR));
+          annotate(matchUpId, SCHEDULE_ERROR);
+        }
+      }
+
       // if the matchUpId is part of the sources for other row matchUps => conflict
       if (row.sourceMatchUpIds.includes(matchUpId)) {
         annotate(matchUpId, SCHEDULE_CONFLICT);
@@ -81,7 +110,7 @@ export function proConflicts({ matchUps }) {
         const warningMatchUpIds = sourceMatchUpIds.filter((id) =>
           previousRow.matchUpIds.includes(id)
         );
-        const allSameCourt = warningMatchUpIds.every(
+        const allSameCourt = warningMatchUpIds.some(
           (id) => matchUpsMap[id].schedule.courtId === consideredCourtId
         );
         if (!allSameCourt) {
@@ -90,15 +119,15 @@ export function proConflicts({ matchUps }) {
         }
       }
 
-      for (const subsequentRow of subsequentRows) {
-        const sourceAfter = subsequentRow.matchUpIds.filter((id) =>
-          sourceMatchUpIds.includes(id)
-        );
-        if (sourceAfter?.length) {
-          sourceAfter.forEach((id) => annotate(id, SCHEDULE_ERROR));
-          annotate(matchUpId, SCHEDULE_ERROR);
-        }
+      const insufficientGap = previousRow?.matchUpIds?.filter(
+        (id) => sourceDistance(matchUpId, id) > 1
+      );
+      if (insufficientGap?.length) {
+        annotate(matchUpId, SCHEDULE_ISSUE);
+        insufficientGap.forEach((id) => annotate(id, SCHEDULE_ISSUE));
       }
     });
   });
+
+  return { courtIssues, rowIssues };
 }
