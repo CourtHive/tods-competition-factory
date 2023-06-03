@@ -4,11 +4,12 @@ import { generateRange, unique } from '../../../../utilities';
 
 import { MISSING_MATCHUPS } from '../../../../constants/errorConditionConstants';
 import {
+  SCHEDULE_ISSUE_IDS,
   SCHEDULE_CONFLICT,
+  SCHEDULE_WARNING,
   SCHEDULE_ERROR,
   SCHEDULE_ISSUE,
   SCHEDULE_STATE,
-  SCHEDULE_WARNING,
 } from '../../../../constants/scheduleConstants';
 
 export function proConflicts({ matchUps }) {
@@ -38,6 +39,8 @@ export function proConflicts({ matchUps }) {
   const rowProfiles = filteredRows.map((row, rowIndex) =>
     row.reduce(
       (profile, matchUp) => {
+        if (!matchUp.matchUpId) return profile;
+
         const { matchUpId, winnerMatchUpId, loserMatchUpId, schedule } =
           matchUp;
         const courtId = schedule?.courtId;
@@ -67,10 +70,11 @@ export function proConflicts({ matchUps }) {
     );
 
   const rowIssues = rowProfiles.map(() => []);
-  const annotate = (id, issue) => {
+  const annotate = (id, issue, issueIds) => {
     if (!matchUpsMap[id].schedule[SCHEDULE_STATE]) {
       matchUpsMap[id].schedule[SCHEDULE_STATE] = issue;
-      rowIssues[rowIndices[id]].push(issue);
+      matchUpsMap[id].schedule[SCHEDULE_ISSUE_IDS] = issueIds;
+      rowIssues[rowIndices[id]].push({ matchUpId: id, issue, issueIds });
       courtIssues[matchUpsMap[id].schedule.courtId] = issue;
     }
   };
@@ -89,17 +93,32 @@ export function proConflicts({ matchUps }) {
           sourceMatchUpIds.includes(id)
         );
         if (sourceAfter?.length) {
-          sourceAfter.forEach((id) => annotate(id, SCHEDULE_ERROR));
-          annotate(matchUpId, SCHEDULE_ERROR);
+          sourceAfter.forEach((id) =>
+            annotate(id, SCHEDULE_ERROR, [matchUpId])
+          );
+          annotate(matchUpId, SCHEDULE_ERROR, sourceAfter);
         }
       }
 
       // if the matchUpId is part of the sources for other row matchUps => conflict
       if (row.sourceMatchUpIds.includes(matchUpId)) {
-        annotate(matchUpId, SCHEDULE_CONFLICT);
+        const sources = row.matchUpIds.filter((id) =>
+          deps[id].matchUpIds.includes(matchUpId)
+        );
+        annotate(matchUpId, SCHEDULE_CONFLICT, sources);
         row.matchUpIds
           .filter((id) => deps[id].matchUpIds.includes(matchUpId))
-          .forEach((id) => annotate(id, SCHEDULE_CONFLICT));
+          .forEach((id) => annotate(id, SCHEDULE_CONFLICT, [matchUpId]));
+      }
+
+      const insufficientGap = previousRow?.matchUpIds?.filter(
+        (id) => sourceDistance(matchUpId, id) > 1
+      );
+      if (insufficientGap?.length) {
+        annotate(matchUpId, SCHEDULE_ISSUE, insufficientGap);
+        insufficientGap.forEach((id) =>
+          annotate(id, SCHEDULE_ISSUE, [matchUpId])
+        );
       }
 
       if (previousRow?.targetMatchUpIds?.includes(matchUpId)) {
@@ -114,17 +133,11 @@ export function proConflicts({ matchUps }) {
           (id) => matchUpsMap[id].schedule.courtId === consideredCourtId
         );
         if (!allSameCourt) {
-          warningMatchUpIds.forEach((id) => annotate(id, SCHEDULE_WARNING));
-          annotate(matchUpId, SCHEDULE_WARNING);
+          warningMatchUpIds.forEach((id) =>
+            annotate(id, SCHEDULE_WARNING, [matchUpId])
+          );
+          annotate(matchUpId, SCHEDULE_WARNING, warningMatchUpIds);
         }
-      }
-
-      const insufficientGap = previousRow?.matchUpIds?.filter(
-        (id) => sourceDistance(matchUpId, id) > 1
-      );
-      if (insufficientGap?.length) {
-        annotate(matchUpId, SCHEDULE_ISSUE);
-        insufficientGap.forEach((id) => annotate(id, SCHEDULE_ISSUE));
       }
     });
   });
