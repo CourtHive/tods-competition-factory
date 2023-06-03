@@ -31,6 +31,7 @@ import {
 } from './utilities/arrays';
 import {
   nearestPowerOf2,
+  nextPowerOf2,
   isPowerOf2,
   isNumeric,
   isConvertableInteger,
@@ -67,6 +68,7 @@ export const utilities = {
   flattenJSON,
   makeDeepCopy,
   nearestPowerOf2,
+  nextPowerOf2,
   numericSort,
   overlap,
   parseAgeCategoryCode,
