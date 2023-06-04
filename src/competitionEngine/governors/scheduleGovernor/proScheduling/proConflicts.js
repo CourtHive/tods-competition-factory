@@ -12,7 +12,7 @@ import {
   SCHEDULE_STATE,
 } from '../../../../constants/scheduleConstants';
 
-export function proConflicts({ matchUps }) {
+export function proConflicts({ tournamentRecords, matchUps }) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
 
   const maxCourtOrder = Math.max(
@@ -34,8 +34,10 @@ export function proConflicts({ matchUps }) {
 
   const drawIds = unique(matchUps.map(({ drawId }) => drawId));
   const deps = getMatchUpDependencies({
+    tournamentRecords,
     drawIds,
   }).matchUpDependencies;
+
   const rowProfiles = filteredRows.map((row, rowIndex) =>
     row.reduce(
       (profile, matchUp) => {
