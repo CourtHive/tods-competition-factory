@@ -9,7 +9,6 @@ import { findExtension } from './tournamentEngine/governors/queryGovernor/extens
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
 import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
-import { nearestPowerOf2, isPowerOf2, isNumeric } from './utilities/math';
 import { addExtension } from './global/functions/producers/addExtension';
 import { structureSort } from './drawEngine/getters/structureSort';
 import { matchUpSort } from './drawEngine/getters/matchUpSort';
@@ -30,6 +29,13 @@ import {
   shuffleArray,
   unique,
 } from './utilities/arrays';
+import {
+  nearestPowerOf2,
+  nextPowerOf2,
+  isPowerOf2,
+  isNumeric,
+  isConvertableInteger,
+} from './utilities/math';
 import {
   definedAttributes,
   generateHashCode,
@@ -56,11 +62,13 @@ export const utilities = {
   instanceCount,
   intersection,
   isNumeric,
+  isConvertableInteger,
   isPowerOf2,
   JSON2CSV,
   flattenJSON,
   makeDeepCopy,
   nearestPowerOf2,
+  nextPowerOf2,
   numericSort,
   overlap,
   parseAgeCategoryCode,
