@@ -20,7 +20,6 @@ import {
   FEED_IN,
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
-  DOUBLE_ELIMINATION,
   ROUND_ROBIN_WITH_PLAYOFF,
   MULTI_STRUCTURE_DRAWS,
   LUCKY_DRAW,
@@ -155,8 +154,6 @@ export function generateDrawStructuresAndLinks(params = {}) {
     definedAttributes({ drawSize, matchUpType, tieFormat })
   );
 
-  const validDoubleEliminationSize = isPowerOf2((drawSize * 2) / 3);
-
   // check that drawSize is a valid value
   const invalidDrawSize =
     drawType !== AD_HOC &&
@@ -166,12 +163,7 @@ export function generateDrawStructuresAndLinks(params = {}) {
         ![FEED_IN, LUCKY_DRAW].includes(drawType) &&
         (([ROUND_ROBIN_WITH_PLAYOFF, ROUND_ROBIN].includes(drawType) &&
           drawSize < 3) ||
-          (drawType === DOUBLE_ELIMINATION && !validDoubleEliminationSize) ||
-          (![
-            ROUND_ROBIN,
-            DOUBLE_ELIMINATION,
-            ROUND_ROBIN_WITH_PLAYOFF,
-          ].includes(drawType) &&
+          (![ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF].includes(drawType) &&
             !isPowerOf2(drawSize)))));
 
   if (invalidDrawSize && !qualifyingDrawPositionsCount) {
