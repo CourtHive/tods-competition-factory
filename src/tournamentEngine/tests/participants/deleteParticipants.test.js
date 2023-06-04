@@ -1,3 +1,4 @@
+import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../mocksEngine';
 import { unique } from '../../../utilities';
 import tournamentEngine from '../../sync';
@@ -6,8 +7,8 @@ import { expect, it } from 'vitest';
 import { EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT } from '../../../constants/errorConditionConstants';
 import { DOMINANT_DUO } from '../../../constants/tieFormatConstants';
 import { UNGROUPED } from '../../../constants/entryStatusConstants';
-import { PAIR } from '../../../constants/participantConstants';
-import { TEAM } from '../../../constants/eventConstants';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
+import { DOUBLES, TEAM } from '../../../constants/eventConstants';
 
 it('can delete participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -121,4 +122,48 @@ it('will clean up entries when participants are deleted', () => {
   expect(unique(event.entries.map(({ entryStatus }) => entryStatus))).toEqual([
     UNGROUPED,
   ]);
+});
+
+it('will clean up pairParticipants when individual participants are deleted', () => {
+  const { tournamentRecord, eventIds } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 32, eventType: DOUBLES }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let result = tournamentEngine.deleteEvents({ eventIds });
+  expect(result.success).toEqual(true);
+
+  const event = {
+    eventName: 'Test Event',
+    eventType: 'SINGLES',
+    eventGender: 'MALE',
+  };
+
+  const {
+    event: { eventId },
+  } = tournamentEngine.addEvent({ event });
+
+  let eventData = tournamentEngine.getEventData({ eventId }).eventData;
+  expect(eventData).toBeDefined();
+
+  const individualParticipants = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  }).participants;
+  const participantIds = individualParticipants.map(getParticipantId);
+  result = tournamentEngine.deleteParticipants({
+    participantIds,
+  });
+  expect(result.success).toEqual(true);
+
+  // originally to create test condition to confirm gracefully handling bad data
+  // bad data in this case was pairParticipants being present when no individuals participants are present
+  eventData = tournamentEngine.getEventData({ eventId }).eventData;
+  expect(eventData).toBeDefined();
+
+  const pairParticipants = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  }).participants;
+
+  expect(pairParticipants.length).toEqual(0);
 });

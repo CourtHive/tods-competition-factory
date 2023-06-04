@@ -163,7 +163,7 @@ export function directLoser(params) {
   } else {
     return decorateResult({
       result: { error: INVALID_DRAW_POSITION },
-      context: { loserDrawPosition },
+      context: { loserDrawPosition, loserTargetLink },
       stack,
     });
   }

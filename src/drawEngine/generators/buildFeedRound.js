@@ -1,6 +1,8 @@
 import { generateMatchUpId } from './generateMatchUpId';
 import { generateRange } from '../../utilities';
 
+import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+
 export function buildFeedRound({
   includeMatchUpType,
   drawPosition,
@@ -44,6 +46,7 @@ export function buildFeedRound({
     const newMatchUp = {
       roundPosition: position.roundPosition,
       drawPositions: [feedDrawPosition],
+      matchUpStatus: TO_BE_PLAYED,
       roundNumber,
       matchUpId,
     };

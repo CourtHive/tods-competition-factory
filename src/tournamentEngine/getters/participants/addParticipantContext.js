@@ -129,6 +129,7 @@ export function addParticipantContext(params) {
         const pairParticipantId = participant.participantId;
         participant?.individualParticipantIds?.forEach((participantId) => {
           if (
+            participantIdMap[participantId] &&
             !participantIdMap[participantId].pairParticipantIds.includes(
               pairParticipantId
             )

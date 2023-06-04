@@ -8,6 +8,8 @@ import {
   MAIN,
   BACKDRAW,
   DECIDER,
+  CONSOLATION,
+  PLAY_OFF,
 } from '../../constants/drawDefinitionConstants';
 
 export function generateDoubleElimination({
@@ -55,9 +57,9 @@ export function generateDoubleElimination({
     matchUps: consolationMatchUps,
     structureId: uuids?.pop(),
     structureName: BACKDRAW,
+    stage: CONSOLATION,
     stageSequence: 2,
     matchUpType,
-    stage: MAIN,
   });
 
   structures.push(consolationStructure);
@@ -73,7 +75,7 @@ export function generateDoubleElimination({
     structureId: uuids?.pop(),
     structureName: DECIDER,
     stageSequence: 3,
-    stage: MAIN,
+    stage: PLAY_OFF,
     matchUpType,
   });
 

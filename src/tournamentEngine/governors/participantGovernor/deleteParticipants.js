@@ -91,9 +91,27 @@ export function deleteParticipants({
 
   tournamentRecord.participants = tournamentRecord.participants.filter(
     (participant) => {
-      const participantToRemove = participantIds.includes(
-        participant.participantId
-      );
+      const participantToRemove =
+        participantIds.includes(participant.participantId) ||
+        (participant.participantType === PAIR &&
+          participant.individualParticipantIds.some((id) =>
+            participantIds.includes(id)
+          ));
+
+      // remove deleted individualParticipantIds from TEAMs
+      if (
+        !participantToRemove &&
+        participant.participantType === TEAM &&
+        participant.individualParticipantIds.some((id) =>
+          participantIds.includes(id)
+        )
+      ) {
+        participant.individualParticipantIds =
+          participant.individualParticipantIds.filter(
+            (id) => !participantIds.includes(id)
+          );
+      }
+
       if (
         participantToRemove &&
         addIndividualParticipantsToEvents &&
