@@ -4,8 +4,8 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { definedAttributes } from '../../../utilities/objects';
 import { structureSort } from '../../getters/structureSort';
-import { isPowerOf2 } from '../../../utilities';
 import { getGenerators } from './getGenerators';
+import { isPowerOf2 } from '../../../utilities';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
@@ -20,7 +20,6 @@ import {
   FEED_IN,
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
-  DOUBLE_ELIMINATION,
   ROUND_ROBIN_WITH_PLAYOFF,
   MULTI_STRUCTURE_DRAWS,
   LUCKY_DRAW,
@@ -155,24 +154,19 @@ export function generateDrawStructuresAndLinks(params = {}) {
     definedAttributes({ drawSize, matchUpType, tieFormat })
   );
 
-  const validDoubleEliminationSize = isPowerOf2((drawSize * 2) / 3);
-
   // check that drawSize is a valid value
   const invalidDrawSize =
-    drawType !== AD_HOC &&
-    (isNaN(drawSize) ||
-      drawSize < 2 ||
-      (!staggeredEntry &&
-        ![FEED_IN, LUCKY_DRAW].includes(drawType) &&
-        (([ROUND_ROBIN_WITH_PLAYOFF, ROUND_ROBIN].includes(drawType) &&
-          drawSize < 3) ||
-          (drawType === DOUBLE_ELIMINATION && !validDoubleEliminationSize) ||
-          (![
-            ROUND_ROBIN,
-            DOUBLE_ELIMINATION,
-            ROUND_ROBIN_WITH_PLAYOFF,
-          ].includes(drawType) &&
-            !isPowerOf2(drawSize)))));
+    drawType === AD_HOC
+      ? false
+      : drawSize < 2 ||
+        isNaN(drawSize) ||
+        (drawSize < 3 &&
+          ([ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF].includes(drawType) ||
+            (![FEED_IN, LUCKY_DRAW].includes(drawType) && !staggeredEntry))) ||
+        (!isPowerOf2(drawSize) &&
+          ![ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF, LUCKY_DRAW].includes(
+            drawType
+          ));
 
   if (invalidDrawSize && !qualifyingDrawPositionsCount) {
     return decorateResult({
