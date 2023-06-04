@@ -38,6 +38,7 @@ export function doubleEliminationLinks({
     undefined
   );
 
+  /*
   const initialRounds = [1, 2].map((roundNumber) => {
     const feedProfile = roundNumber % 2 ? TOP_DOWN : BOTTOM_UP;
     return {
@@ -54,11 +55,12 @@ export function doubleEliminationLinks({
       },
     };
   });
+  */
 
-  const fedRounds = roundsFed.slice(1).map((roundNumber, i) => {
+  const fedRounds = roundsFed.map((roundNumber, i) => {
     const roundsFedIndex = roundsFed.indexOf(roundNumber);
     const feedProfile = roundsFedIndex % 2 ? TOP_DOWN : BOTTOM_UP;
-    const sourceRoundNumber = 3 + i;
+    const sourceRoundNumber = 1 + i;
 
     return {
       linkType: LOSER,
@@ -114,5 +116,6 @@ export function doubleEliminationLinks({
     },
   ];
 
-  return [...initialRounds, ...fedRounds, finalistsLink, ...deciderLinks];
+  // return [...initialRounds, ...fedRounds, finalistsLink, ...deciderLinks];
+  return [...fedRounds, finalistsLink, ...deciderLinks];
 }
