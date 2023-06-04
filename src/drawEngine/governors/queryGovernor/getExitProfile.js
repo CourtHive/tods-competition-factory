@@ -36,18 +36,27 @@ export function getExitProfiles({ drawDefinition }) {
     // a CONSOLATION structure with multiple feed rounds will have multiple exitProfiles referring to it
     const exitProfile = '0';
 
-    addExitProfiles(exitProfiles, exitProfile, stage, structureId, 0);
+    addExitProfiles({
+      aggregator: {},
+      targetRound: 0,
+      exitProfiles,
+      exitProfile,
+      structureId,
+      stage,
+    });
+    // console.log({ exitProfiles });
   }
 
   return { exitProfiles };
 
-  function addExitProfiles(
+  function addExitProfiles({
     exitProfiles,
     exitProfile,
-    stage,
     structureId,
-    targetRound
-  ) {
+    targetRound,
+    aggregator,
+    stage,
+  }) {
     if (!exitProfiles[structureId]) exitProfiles[structureId] = [];
 
     // initialStructure of CONSOLATION and PLAY_OFF do not need to be captured
@@ -67,13 +76,18 @@ export function getExitProfiles({ drawDefinition }) {
         (structure) => structure.structureId === targetStructureId
       ).stage;
 
-      addExitProfiles(
+      const fp = [stage, targetStructureId, targetRound, exitRound].join('|');
+      if (aggregator[fp]) return;
+      aggregator[fp] = true;
+
+      addExitProfiles({
+        exitProfile: `${exitProfile}-${exitRound}`,
+        structureId: targetStructureId,
         exitProfiles,
-        `${exitProfile}-${exitRound}`,
+        targetRound,
+        aggregator,
         stage,
-        targetStructureId,
-        targetRound
-      );
+      });
     }
   }
 }
