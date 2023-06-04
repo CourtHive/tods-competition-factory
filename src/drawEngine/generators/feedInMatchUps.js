@@ -165,7 +165,7 @@ export function feedInMatchUps({
     fmlc,
   });
 
-  const draw = roundNodes && roundNodes.length ? roundNodes[0] : roundNodes;
+  const draw = roundNodes?.length ? roundNodes[0] : roundNodes;
   if (draw) {
     draw.roundNumber = roundNumber - 1;
     draw.matchUps = matchUps;
