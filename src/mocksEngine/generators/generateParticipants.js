@@ -60,7 +60,7 @@ export function generateParticipants({
 
   personExtensions,
   addressProps,
-  gendersCount, // internally calculated
+  gendersCount, // used by mocksEngine; internally calculated
   matchUpType,
   personData,
   sex,
