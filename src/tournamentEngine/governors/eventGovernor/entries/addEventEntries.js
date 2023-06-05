@@ -43,6 +43,7 @@ export function addEventEntries(params) {
     autoEntryPositions = true,
     participantIds = [],
     entryStageSequence,
+    ignoreEventGender,
     entryStage = MAIN,
     tournamentRecord,
     ignoreStageSpace,
@@ -99,7 +100,9 @@ export function addEventEntries(params) {
 
         if (
           validSingles &&
-          (!event.gender || event.gender === participant.person?.sex)
+          (!event.gender ||
+            ignoreEventGender ||
+            event.gender === participant.person?.sex)
         ) {
           return true;
         }
@@ -119,6 +122,7 @@ export function addEventEntries(params) {
         if (
           validSingles &&
           event.gender &&
+          !ignoreEventGender &&
           event.gender !== participant.person?.sex
         ) {
           misMatchedGenderIds.push(participant.participantId);

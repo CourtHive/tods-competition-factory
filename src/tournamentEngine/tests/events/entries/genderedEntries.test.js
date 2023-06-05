@@ -43,4 +43,11 @@ it('throws an error on misgendered entries', () => {
     participantIds: maleParticipantIds,
   });
   expect(result.success).toEqual(true);
+
+  result = tournamentEngine.addEventEntries({
+    ignoreEventGender: true,
+    participantIds,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
 });
