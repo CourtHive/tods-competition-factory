@@ -21,6 +21,7 @@ import {
   PAIR,
   participantTypes,
 } from '../../../constants/participantConstants';
+import { countries } from '../../../fixtures/countryData';
 
 export function modifyParticipant({
   updateParticipantName = true,
@@ -185,13 +186,15 @@ function updatePerson({
   if (personId && typeof personId === 'string') {
     newPersonValues.personId = personId;
   }
+
   if (
     nationalityCode &&
     typeof nationalityCode === 'string' &&
-    nationalityCode.length < 4
+    (validNationalityCode(nationalityCode) || nationalityCode === '') // empty string to remove value
   ) {
     newPersonValues.nationalityCode = nationalityCode;
   }
+
   if (
     standardFamilyName &&
     typeof standardFamilyName === 'string' &&
@@ -214,5 +217,13 @@ function updatePerson({
     const participantName = `${newPersonValues.standardGivenName} ${newPersonValues.standardFamilyName}`;
     newValues.participantName = participantName;
   }
+
   Object.assign(existingParticipant.person, newPersonValues);
+}
+
+export function validNationalityCode(code) {
+  return countries
+    .flatMap(({ iso, ioc }) => [iso, ioc])
+    .filter(Boolean)
+    .includes(code);
 }
