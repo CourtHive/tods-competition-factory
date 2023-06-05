@@ -909,7 +909,7 @@ const { personRequests } = competitionEngine.getPersonRequests({
 
 ## getState
 
-Returns a deep copy `tournamentRecords` which have been loaded, along with currently selected `tournamentId`.
+Returns a deep copy of `tournamentRecords` which have been loaded, along with currently selected `tournamentId`.
 
 :::note
 `competitionEngine` and `tournamentEngine` share state; `tournamentId` points to the `tournamentRecord` that

@@ -131,5 +131,5 @@ export function addPersons({
   const addedCount =
     addedIndividualParticipantsCount + addedPairParticipantsCount;
 
-  return { ...SUCCESS, addedCount };
+  return { ...SUCCESS, addedCount, newPersonIds };
 }

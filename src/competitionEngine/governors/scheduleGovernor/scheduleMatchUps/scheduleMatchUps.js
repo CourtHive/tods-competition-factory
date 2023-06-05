@@ -330,12 +330,12 @@ export function scheduleMatchUps({
       const mappedRecoveryMinutes = recoveryMinutesMap?.[matchUp.matchUpId];
 
       updateTimeAfterRecovery({
+        recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
         matchUpPotentialParticipantIds,
         individualParticipantProfiles,
         matchUpNotBeforeTimes,
         averageMatchUpMinutes,
         matchUpDependencies,
-        recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
         scheduleDate,
         scheduleTime,
         matchUp,

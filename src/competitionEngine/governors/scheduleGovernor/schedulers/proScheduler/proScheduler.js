@@ -503,9 +503,9 @@ export function proScheduler({
 
   const autoSchedulingAudit = {
     timeStamp: Date.now(),
-    schedulingProfile,
-    scheduledMatchUpIds,
     overLimitMatchUpIds,
+    scheduledMatchUpIds,
+    schedulingProfile,
     noTimeMatchUpIds,
     requestConflicts,
     scheduledDates,
@@ -522,8 +522,8 @@ export function proScheduler({
     recoveryTimeDeferredMatchUpIds,
     dependencyDeferredMatchUpIds,
     matchUpScheduleTimes,
-    scheduledMatchUpIds,
     overLimitMatchUpIds,
+    scheduledMatchUpIds,
     noTimeMatchUpIds,
     requestConflicts,
     scheduledDates,

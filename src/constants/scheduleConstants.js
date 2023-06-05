@@ -2,6 +2,8 @@ export const DOUBLES_SINGLES = 'DOUBLES_SINGLES';
 export const SINGLES_DOUBLES = 'SINGLES_DOUBLES';
 export const TOTAL = 'total';
 
+export const CONFLICT_PARTICIPANTS = 'participantConflict';
+export const CONFLICT_MATCHUP_ORDER = 'matchUpConflict';
 export const SCHEDULE_ISSUE_IDS = 'ISSUE_IDS';
 export const SCHEDULE_CONFLICT = 'CONFLICT';
 export const SCHEDULE_WARNING = 'WARNING';
@@ -12,10 +14,14 @@ export const SCHEDULE_STATE = 'STATE';
 export const scheduleConstants = {
   SINGLES_DOUBLES,
   DOUBLES_SINGLES,
+  TOTAL,
 
+  CONFLICT_MATCHUP_ORDER,
+  CONFLICT_PARTICIPANTS,
+  SCHEDULE_ISSUE_IDS,
   SCHEDULE_CONFLICT,
   SCHEDULE_WARNING,
   SCHEDULE_ERROR,
+  SCHEDULE_ISSUE,
   SCHEDULE_STATE,
-  TOTAL,
 };

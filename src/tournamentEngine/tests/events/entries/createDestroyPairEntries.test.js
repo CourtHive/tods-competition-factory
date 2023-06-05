@@ -18,13 +18,15 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 
+const startDate = '2020-01-01';
+const endDate = '2020-01-06';
 let result;
 
 it('can add doubles events to a tournament record', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    startDate: '2020-01-01',
-    endDate: '2020-01-06',
     participantsProfile: { participantType: PAIR, participantsCount: 32 },
+    startDate,
+    endDate,
   });
   const { participants } = tournamentRecord;
 
@@ -117,14 +119,14 @@ it('can destroy pair entries in doubles events', () => {
   const doublesId = 'doublesId';
   const teamId = 'teamId';
   const { eventIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
-    startDate: '2020-01-01',
-    endDate: '2020-01-06',
     participantsProfile: { participantType: PAIR, participantsCount: 32 },
     eventProfiles: [
       { eventType: SINGLES, eventId: singlesId },
       { eventType: DOUBLES, eventId: doublesId },
       { eventType: TEAM, eventId: teamId },
     ],
+    startDate,
+    endDate,
   });
   const { participants } = tournamentRecord;
   expect(eventIds).toEqual([singlesId, doublesId, teamId]);
@@ -235,8 +237,6 @@ it('can destroy pair entries in doubles events', () => {
 
 it('can create pair entries in doubles events', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    startDate: '2020-01-01',
-    endDate: '2020-01-06',
     eventProfiles: [
       { eventType: DOUBLES, eventId: 'firstDoublesId' },
       {
@@ -250,6 +250,8 @@ it('can create pair entries in doubles events', () => {
         drawProfiles: [{ drawSize: 32, uniqueParticipants: true }],
       },
     ],
+    startDate,
+    endDate,
   });
   tournamentEngine.setState(tournamentRecord);
   const eventId = 'firstDoublesId';
@@ -348,8 +350,8 @@ it('can create pair entries in doubles events', () => {
 it('can allow duplicateParticipantIdsPairs and add them to events', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantType: PAIR, participantsCount: 32 },
-    startDate: '2020-01-01',
-    endDate: '2020-01-06',
+    startDate,
+    endDate,
   });
 
   tournamentEngine.setState(tournamentRecord);

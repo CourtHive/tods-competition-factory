@@ -375,12 +375,12 @@ export function jinnScheduler({
 
   const autoSchedulingAudit = {
     timeStamp: Date.now(),
-    schedulingProfile,
-    scheduledDates,
-    noTimeMatchUpIds,
-    scheduledMatchUpIds,
     overLimitMatchUpIds,
+    scheduledMatchUpIds,
+    schedulingProfile,
+    noTimeMatchUpIds,
     requestConflicts,
+    scheduledDates,
   };
 
   auditAutoScheduling({ tournamentRecords, autoSchedulingAudit });
@@ -396,8 +396,8 @@ export function jinnScheduler({
     recoveryTimeDeferredMatchUpIds,
     dependencyDeferredMatchUpIds,
     matchUpScheduleTimes,
-    scheduledMatchUpIds,
     overLimitMatchUpIds,
+    scheduledMatchUpIds,
     noTimeMatchUpIds,
     requestConflicts,
     scheduledDates,

@@ -91,4 +91,20 @@ it('can modify participants', () => {
       result.participant.individualParticipantIds
     ).length
   ).toEqual(1);
+
+  const modifiedSecondIndividual = makeDeepCopy(updatedSecondIndividual);
+  let nationalityCode = modifiedSecondIndividual.person.nationalityCode;
+
+  modifiedSecondIndividual.person.nationalityCode = 'XXX';
+  result = tournamentEngine.modifyParticipant({
+    participant: modifiedSecondIndividual,
+  });
+  // fail silently, do not apply invalid nationalityCode
+  expect(result.participant.person.nationalityCode).toEqual(nationalityCode);
+
+  modifiedSecondIndividual.person.nationalityCode = 'USA';
+  result = tournamentEngine.modifyParticipant({
+    participant: modifiedSecondIndividual,
+  });
+  expect(result.participant.person.nationalityCode).toEqual('USA');
 });

@@ -43,6 +43,7 @@ export function addEventEntries(params) {
     autoEntryPositions = true,
     participantIds = [],
     entryStageSequence,
+    ignoreEventGender,
     entryStage = MAIN,
     tournamentRecord,
     ignoreStageSpace,
@@ -83,23 +84,33 @@ export function addEventEntries(params) {
   }
 
   const checkTypedParticipants = !!tournamentRecord;
+  const misMatchedGenderIds = [];
+  let info;
 
   const typedParticipantIds =
     tournamentRecord?.participants
       ?.filter((participant) => {
-        if (
+        const validSingles =
           event.eventType === SINGLES &&
-          participant.participantType === INDIVIDUAL
-        ) {
-          return true;
-        }
+          participant.participantType === INDIVIDUAL &&
+          !isUngrouped(entryStatus);
+
+        const validDoubles =
+          event.eventType === DOUBLES && participant.participantType === PAIR;
+
         if (
-          event.eventType === DOUBLES &&
-          participant.participantType === PAIR &&
-          !isUngrouped(entryStatus)
+          validSingles &&
+          (!event.gender ||
+            ignoreEventGender ||
+            event.gender === participant.person?.sex)
         ) {
           return true;
         }
+
+        if (validDoubles && !isUngrouped(entryStatus)) {
+          return true;
+        }
+
         if (
           event.eventType === DOUBLES &&
           participant.participantType === INDIVIDUAL &&
@@ -107,6 +118,17 @@ export function addEventEntries(params) {
         ) {
           return true;
         }
+
+        if (
+          validSingles &&
+          event.gender &&
+          !ignoreEventGender &&
+          event.gender !== participant.person?.sex
+        ) {
+          misMatchedGenderIds.push(participant.participantId);
+          return false;
+        }
+
         return (
           event.eventType === TEAM &&
           (participant.participantType === TEAM ||
@@ -151,7 +173,6 @@ export function addEventEntries(params) {
     }
   });
 
-  let info;
   if (drawId && !isUngrouped(entryStage)) {
     const result = addDrawEntries({
       participantIds: validParticipantIds,
@@ -209,7 +230,12 @@ export function addEventEntries(params) {
   const invalidParticipantIds =
     validParticipantIds.length !== participantIds.length;
 
-  if (invalidParticipantIds) return { error: INVALID_PARTICIPANT_IDS };
+  if (invalidParticipantIds)
+    return decorateResult({
+      result: { error: INVALID_PARTICIPANT_IDS },
+      context: { misMatchedGenderIds },
+      stack,
+    });
 
   if (autoEntryPositions) {
     event.entries = refreshEntryPositions({
