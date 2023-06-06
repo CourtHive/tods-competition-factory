@@ -99,6 +99,7 @@ export function getParticipantEntries({
       category,
       entries,
       eventId,
+      gender,
     } = event;
 
     const { flightProfile } = getFlightProfile({ event });
@@ -119,6 +120,7 @@ export function getParticipantEntries({
         eventType,
         category,
         eventId,
+        gender,
       };
 
       const scaleNames = [

@@ -44,11 +44,10 @@ export function getParticipants(params) {
     participants.push(tournamentParticipants);
     matchUps.push(...tournamentMatchUps);
 
-    idsWithConflicts &&
-      idsWithConflicts.forEach((participantId) => {
-        if (!participantIdsWithConflicts.includes(participantId))
-          participantIdsWithConflicts.push(participantId);
-      });
+    idsWithConflicts?.forEach((participantId) => {
+      if (!participantIdsWithConflicts.includes(participantId))
+        participantIdsWithConflicts.push(participantId);
+    });
   }
   return {
     participantIdsWithConflicts,
