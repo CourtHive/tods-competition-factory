@@ -111,11 +111,11 @@ export function generateDrawDefinition(params) {
       [...STRUCTURE_ENTERED_TYPES, QUALIFIER].includes(entry.entryStatus)
     ) || [];
 
-  const consideredEntries =
-    (qualifyingOnly && []) ||
-    (drawEntries || (considerEventEntries && eventEntries) || []).filter(
-      ({ entryStage }) => !entryStage || entryStage === MAIN
-    );
+  const consideredEntries = qualifyingOnly
+    ? []
+    : (drawEntries || (considerEventEntries ? eventEntries : [])).filter(
+        ({ entryStage }) => !entryStage || entryStage === MAIN
+      );
 
   const derivedDrawSize =
     !params.drawSize &&
@@ -487,7 +487,6 @@ export function generateDrawDefinition(params) {
 
     // keep track of structures already prepared in case of multiple matching structures
     const preparedStructureIds = [];
-    let stageSequence = 1;
     let roundTarget = 1;
 
     for (const roundTargetProfile of params.qualifyingProfiles.sort(
@@ -500,6 +499,7 @@ export function generateDrawDefinition(params) {
         });
 
       roundTarget = roundTargetProfile.roundTarget || roundTarget;
+      let stageSequence = 1;
 
       const sortedStructureProfiles =
         roundTargetProfile.structureProfiles?.sort(sequenceSort) || [];
