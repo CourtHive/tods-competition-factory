@@ -71,8 +71,8 @@ export function positionByes({
 
   const isOdd = (x) => x % 2;
   // method determines whether candidate c is paired to elements in an array
-  const isNotPaired = (arr = [], c) =>
-    arr.every((a) => (isOdd(a) ? c !== a + 1 : c !== a - 1));
+  const isNotPaired = (arr, c) =>
+    (arr || []).every((a) => (isOdd(a) ? c !== a + 1 : c !== a - 1));
 
   // first add all drawPositions paired with sorted seeds drawPositions
   // then add quarter separated and evenly distributed drawPositions
