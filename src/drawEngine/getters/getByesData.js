@@ -26,7 +26,7 @@ export function getByesData({
     structure,
     event,
   });
-  const firstRoundMatchUps = (roundMatchUps && roundMatchUps[1]) || [];
+  const firstRoundMatchUps = roundMatchUps?.[1] || [];
 
   // firstRoundMatchUps don't work for CONTAINER / ROUND_ROBIN structures
 
@@ -75,13 +75,10 @@ export function getByesData({
   const positionsToAvoidDoubleBye = relevantMatchUps
     .map((matchUp) => matchUp.drawPositions)
     .filter((drawPositions) => {
-      return (
-        drawPositions &&
-        drawPositions?.reduce(
-          (noBye, drawPosition) =>
-            !placedByePositions.includes(drawPosition) && noBye,
-          true
-        )
+      return drawPositions?.reduce(
+        (noBye, drawPosition) =>
+          !placedByePositions.includes(drawPosition) && noBye,
+        true
       );
     })
     .flat(Infinity)

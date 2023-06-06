@@ -86,8 +86,7 @@ export function verifyStructure({
   if (expectedRoundMatchUpsCounts) {
     expectedRoundMatchUpsCounts.forEach((expectation, index) => {
       const roundNumber = index + 1;
-      const roundMatchUpsCount =
-        (roundMatchUps[roundNumber] && roundMatchUps[roundNumber].length) || 0;
+      const roundMatchUpsCount = roundMatchUps[roundNumber]?.length || 0;
       expect(roundMatchUpsCount).toEqual(expectation);
     });
   }
