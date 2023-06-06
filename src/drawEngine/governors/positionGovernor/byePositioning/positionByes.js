@@ -6,12 +6,15 @@ import { findStructure } from '../../../getters/findStructure';
 import { getByesData } from '../../../getters/getByesData';
 import { shuffleArray } from '../../../../utilities';
 
-import { CONTAINER, ITEM } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import {
+  CONTAINER,
+  ITEM,
+  QUALIFYING,
+} from '../../../../constants/drawDefinitionConstants';
 
 export function positionByes({
   provisionalPositioning,
-  blockOrdered = false,
   tournamentRecord,
   appliedPolicies,
   drawDefinition,
@@ -26,6 +29,10 @@ export function positionByes({
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
   if (!structureId) ({ structureId } = structure);
+
+  const blockOrdered = !(
+    structure.structures || structure.stage === QUALIFYING
+  );
 
   const { byesCount, placedByes, relevantMatchUps } = getByesData({
     provisionalPositioning,
@@ -48,18 +55,22 @@ export function positionByes({
     appliedPolicies,
     drawDefinition,
     seedBlockInfo,
+    byesToPlace,
     structure,
   });
 
   const ignoreSeededByes =
     [CONTAINER, ITEM].includes(structure.structureType) &&
     appliedPolicies?.seeding?.containerByesIgnoreSeeding;
-  const seedOrderByePositions = blockOrdered
-    ? blockSeedOrderByePositions
-    : strictSeedOrderByePositions;
+
+  const seedOrderByePositions =
+    blockOrdered && blockSeedOrderByePositions?.length
+      ? blockSeedOrderByePositions
+      : strictSeedOrderByePositions;
 
   let { unseededByePositions } = getUnseededByePositions({
     provisionalPositioning,
+    seedOrderByePositions,
     ignoreSeededByes,
     appliedPolicies,
     drawDefinition,
@@ -104,7 +115,7 @@ export function positionByes({
   }
 
   // then take only the number of required byes
-  let byeDrawPositions = byePositions.slice(0, byesToPlace);
+  const byeDrawPositions = byePositions.slice(0, byesToPlace);
 
   for (const drawPosition of byeDrawPositions) {
     const result = assignDrawPositionBye({

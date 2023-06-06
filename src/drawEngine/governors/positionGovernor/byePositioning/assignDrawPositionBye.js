@@ -96,7 +96,9 @@ export function assignDrawPositionBye({
     (assignment) => assignment.drawPosition === drawPosition
   );
 
-  if (currentAssignment?.bye) return { ...SUCCESS };
+  if (currentAssignment?.bye) {
+    return { ...SUCCESS };
+  }
 
   // ################### Check error conditions ######################
   const drawPositionIsActive = activeDrawPositions?.includes(drawPosition);
