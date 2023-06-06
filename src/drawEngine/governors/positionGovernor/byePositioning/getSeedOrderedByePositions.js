@@ -9,6 +9,7 @@ export function getSeedOrderByePositions({
   appliedPolicies,
   drawDefinition,
   seedBlockInfo,
+  byesToPlace,
   structure,
 }) {
   if (!seedBlockInfo) {
@@ -37,13 +38,10 @@ export function getSeedOrderByePositions({
     return relevantDrawPositions.includes(positionedSeed.drawPosition);
   });
 
-  const blockSortedRandomDrawPositions = []
-    .concat(
-      ...validSeedBlocks.map((seedBlock) =>
-        shuffleArray(seedBlock.drawPositions)
-      )
-    )
-    .filter((drawPosition) => relevantDrawPositions.includes(drawPosition));
+  const blockSortedRandomDrawPositions = [].concat(
+    ...validSeedBlocks.map((seedBlock) => shuffleArray(seedBlock.drawPositions))
+  );
+  //     .filter((drawPosition) => relevantDrawPositions.includes(drawPosition));
 
   // within seedBlocks positionedSeeds are sorted by seedValue to handle the situation
   // where there are multiple players seeded with the same seedValue which have been
@@ -74,6 +72,8 @@ export function getSeedOrderByePositions({
   const strictSeedOrderByePositions = getOrderedByePositions({
     orderedSeedDrawPositions: orderedSortedFirstRoundSeededDrawPositions,
     relevantMatchUps,
+    validSeedBlocks,
+    byesToPlace,
   }).slice(0, positionedSeeds.length);
 
   // returns list of bye positions where the seedBlocks are ordered but
@@ -81,6 +81,8 @@ export function getSeedOrderByePositions({
   const blockSeedOrderByePositions = getOrderedByePositions({
     orderedSeedDrawPositions: blockSortedRandomDrawPositions,
     relevantMatchUps,
+    validSeedBlocks,
+    byesToPlace,
   }).slice(0, positionedSeeds.length);
 
   return {
@@ -95,6 +97,8 @@ export function getSeedOrderByePositions({
 function getOrderedByePositions({
   orderedSeedDrawPositions,
   relevantMatchUps,
+  // validSeedBlocks,
+  // byesToPlace,
 }) {
   // if relevantMatchUps excludes FEED_IN rounds...
   // matchUpDrawPositions will equal firstRoundDrawPositions

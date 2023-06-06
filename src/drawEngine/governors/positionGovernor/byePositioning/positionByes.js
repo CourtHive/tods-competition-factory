@@ -48,6 +48,7 @@ export function positionByes({
     appliedPolicies,
     drawDefinition,
     seedBlockInfo,
+    byesToPlace,
     structure,
   });
 
