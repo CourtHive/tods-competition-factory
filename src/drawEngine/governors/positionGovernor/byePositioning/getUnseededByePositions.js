@@ -20,6 +20,7 @@ import {
 
 export function getUnseededByePositions({
   provisionalPositioning,
+  seedOrderByePositions,
   appliedPolicies,
   drawDefinition,
   seedLimit,
@@ -41,7 +42,7 @@ export function getUnseededByePositions({
     matchUpFilters,
     structure,
   });
-  const firstRoundMatchUps = (roundMatchUps && roundMatchUps[1]) || [];
+  const firstRoundMatchUps = roundMatchUps?.[1] || [];
 
   // firstRoundMatchUps don't work for CONTAINER / ROUND_ROBIN structures
   const relevantMatchUps =
@@ -88,6 +89,8 @@ export function getUnseededByePositions({
     ];
     return { newlyFilteredChunks, drawPosition };
   };
+  const notSeedByePosition = (drawPosition) =>
+    !seedOrderByePositions.includes(drawPosition);
   const unfilledDrawPosition = (drawPosition) =>
     !filledRelevantDrawPositions.includes(drawPosition);
   const quarterSeparateBlock = (block) => {
@@ -177,6 +180,7 @@ export function getUnseededByePositions({
     .map((block) => block.map(findDrawPositionPair))
     .flat(Infinity)
     .filter(unfilledDrawPosition)
+    .filter(notSeedByePosition)
     .filter(Boolean);
 
   if (isQualifying) {

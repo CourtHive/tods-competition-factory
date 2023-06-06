@@ -4,7 +4,8 @@ import { expect, it } from 'vitest';
 
 const scenarios = [
   { drawSize: 128, participantsCount: 116, seedsCount: 32 },
-  // { drawSize: 32, participantsCount: 26, seedsCount: 6 },
+  { drawSize: 64, participantsCount: 58, seedsCount: 16 },
+  { drawSize: 32, participantsCount: 26, seedsCount: 6 },
 ];
 
 it.each(scenarios)(
@@ -35,23 +36,8 @@ it.each(scenarios)(
       },
       [[], []]
     );
-    console.log(splitbyeAssignments);
-
-    const participantDrawPositions = Object.assign(
-      {},
-      ...positionAssignments
-        .map(
-          ({ participantId, drawPosition }) =>
-            participantId && { [participantId]: drawPosition }
-        )
-        .filter(Boolean)
+    expect(splitbyeAssignments[0].length).toEqual(
+      splitbyeAssignments[1].length
     );
-    const seedAssignments = drawDefinition.structures[0].seedAssignments
-      .map(({ seedValue, participantId }) => ({
-        seedValue,
-        drawPosition: participantDrawPositions[participantId],
-      }))
-      .sort((a, b) => a.drawPosition - b.drawPosition);
-    console.log(seedAssignments);
   }
 );
