@@ -457,10 +457,10 @@ function advanceWinner({
 
   const drawPositions = twoDrawPositions
     .map((position) => {
-      if (!position && !drawPositionAssigned) {
-        drawPositionAssigned = true;
-        return drawPositionToAdvance;
-      } else if (position === drawPositionToAdvance) {
+      if (
+        (!position && !drawPositionAssigned) ||
+        position === drawPositionToAdvance
+      ) {
         drawPositionAssigned = true;
         return drawPositionToAdvance;
       } else {
@@ -539,36 +539,33 @@ function advanceWinner({
         drawDefinition,
         matchUpsMap,
       });
-    } else if (drawPositionIsBye) {
-      if (loserTargetLink && loserMatchUp) {
-        if (loserMatchUp.feedRound) {
-          assignFedDrawPositionBye({
-            loserTargetDrawPosition,
-            tournamentRecord,
-            loserTargetLink,
-            drawDefinition,
-            loserMatchUp,
-            matchUpsMap,
-          });
-        } else {
-          const sourceStructureRoundPosition = winnerMatchUp.roundPosition;
-          // loser drawPosition in target structure is determined bye even/odd
-          const targetDrawPositionIndex =
-            1 - (sourceStructureRoundPosition % 2);
-          const targetDrawPosition =
-            loserMatchUp.drawPositions[targetDrawPositionIndex];
+    } else if (drawPositionIsBye && loserTargetLink && loserMatchUp) {
+      if (loserMatchUp.feedRound) {
+        assignFedDrawPositionBye({
+          loserTargetDrawPosition,
+          tournamentRecord,
+          loserTargetLink,
+          drawDefinition,
+          loserMatchUp,
+          matchUpsMap,
+        });
+      } else {
+        const sourceStructureRoundPosition = winnerMatchUp.roundPosition;
+        // loser drawPosition in target structure is determined bye even/odd
+        const targetDrawPositionIndex = 1 - (sourceStructureRoundPosition % 2);
+        const targetDrawPosition =
+          loserMatchUp.drawPositions[targetDrawPositionIndex];
 
-          const result = assignDrawPositionBye({
-            structureId: loserTargetLink.target.structureId,
-            drawPosition: targetDrawPosition,
-            loserTargetDrawPosition,
-            iterative: 'brightgreen',
-            tournamentRecord,
-            drawDefinition,
-            event,
-          });
-          if (result.error) return result;
-        }
+        const result = assignDrawPositionBye({
+          structureId: loserTargetLink.target.structureId,
+          drawPosition: targetDrawPosition,
+          loserTargetDrawPosition,
+          iterative: 'brightgreen',
+          tournamentRecord,
+          drawDefinition,
+          event,
+        });
+        if (result.error) return result;
       }
     }
   }

@@ -167,29 +167,28 @@ export function prepareStage({
     const scaledEntriesCount = scaledEntries?.length || 0;
     if (scaledEntriesCount < seedsCount) seedsCount = scaledEntriesCount;
 
-    scaledEntries &&
-      scaledEntries
-        .filter(({ participantId }) =>
-          enteredParticipantIds.includes(participantId)
-        )
-        .slice(0, assignSeedsCount || seedsCount)
-        .forEach((scaledEntry, index) => {
-          const seedNumber = index + 1;
-          const { participantId, scaleValue } = scaledEntry;
-          const seedValue =
-            seedAssignmentProfile?.[seedNumber] || scaleValue || seedNumber;
-          assignSeed({
-            provisionalPositioning,
-            tournamentRecord,
-            drawDefinition,
-            seedingProfile,
-            participantId,
-            structureId,
-            seedNumber,
-            seedValue,
-            event,
-          });
+    scaledEntries
+      ?.filter(({ participantId }) =>
+        enteredParticipantIds.includes(participantId)
+      )
+      .slice(0, assignSeedsCount || seedsCount)
+      .forEach((scaledEntry, index) => {
+        const seedNumber = index + 1;
+        const { participantId, scaleValue } = scaledEntry;
+        const seedValue =
+          seedAssignmentProfile?.[seedNumber] || scaleValue || seedNumber;
+        assignSeed({
+          provisionalPositioning,
+          tournamentRecord,
+          drawDefinition,
+          seedingProfile,
+          participantId,
+          structureId,
+          seedNumber,
+          seedValue,
+          event,
         });
+      });
   }
 
   let positionAssignments;

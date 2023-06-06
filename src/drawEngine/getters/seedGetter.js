@@ -426,7 +426,7 @@ export function getNextSeedBlock({
         unplacedSeedAssignments,
         selectedParticipantIds
       );
-      const participantId = assignment && assignment.participantId;
+      const participantId = assignment?.participantId;
       if (participantId) selectedParticipantIds.push(participantId);
       return participantId;
     })
@@ -437,7 +437,7 @@ export function getNextSeedBlock({
       placedSeedParticipantIds.includes(assignment.participantId)
     )
     .map((assignment) => assignment.seedNumber);
-  const blockSeedNumbers = (nextSeedBlock && nextSeedBlock.seedNumbers) || [];
+  const blockSeedNumbers = nextSeedBlock?.seedNumbers || [];
 
   // unplacedSeedNumbers and unplacedSeedNumberIds will only be used
   // when policy specifies that seedNumbers/seedValues must be unique

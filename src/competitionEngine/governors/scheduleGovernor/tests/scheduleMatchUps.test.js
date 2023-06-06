@@ -17,7 +17,6 @@ import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-  NO_MODIFICATIONS_APPLIED,
   PARTICIPANT_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import {
@@ -256,7 +255,7 @@ it('can add events, venues, and schedule matchUps', () => {
   result = competitionEngine.matchUpScheduleChange({
     sourceMatchUpContextIds: { drawId, matchUpId, tournamentId },
   });
-  expect(result.error).toEqual(NO_MODIFICATIONS_APPLIED);
+  expect(result.error).toEqual(MISSING_VALUE);
 
   result = competitionEngine.matchUpScheduleChange({
     sourceMatchUpContextIds: { drawId, matchUpId, tournamentId },
