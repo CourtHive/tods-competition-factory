@@ -200,7 +200,7 @@ export function generateDrawStructuresAndLinks(params = {}) {
   const generator = generators[drawType];
   if (!generator) return { error: UNRECOGNIZED_DRAW_TYPE };
 
-  const generatorResult = generator && generator();
+  const generatorResult = generator?.();
   if (generatorResult.error) return generatorResult;
 
   const { structures: generatedStructures, links: generatedLinks } =
