@@ -958,7 +958,12 @@ const schedule = {
   scheduledDate: '2021-01-01T00:00', // best practice to provide ISO date string
   venueId,
 };
-tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+const matchUpDetails = [{ matchUpId, schedule }];
+tournamentEngine.bulkScheduleMatchUps({
+  matchUpDetails, // optional - for use when matchUps have different scheduling details
+  matchUpIds, // optional - used together with schedule when all matchUps will have the same schedule details applied
+  schedule, // optiona - used together with matchUpIds when all matchUps will ahve the same schedule details applied
+});
 ```
 
 ## bulkUpdatePublishedEventIds
