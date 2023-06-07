@@ -1,5 +1,46 @@
 import { chunkArray } from '../../../../utilities';
 
+/*
+  seedBlocks for 32 seeds in a draw of 128 are as follows:
+
+  [
+    { drawPositions: [ 1 ], seedNumbers: [ 1 ] },
+    { drawPositions: [ 128 ], seedNumbers: [ 2 ] },
+    { drawPositions: [ 33, 96 ], seedNumbers: [ 3, 4 ] },
+    { drawPositions: [ 17, 49, 80, 112 ], seedNumbers: [ 5, 6, 7, 8 ] },
+    {
+      drawPositions: [ 9, 25,  41,  57, 72, 88, 104, 120 ],
+      seedNumbers: [ 9, 10, 11, 12, 13, 14, 15, 16 ] },
+    {
+      drawPositions: [ 5,  13, 21, 29, 37, 45, 53, 61, 68, 76, 84, 92, 100, 108, 116, 124 ],
+      seedNumbers: [ 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32 ]
+    }
+  ]
+
+  When the number of BYEs to be distributed for a seedBlock is LESS than the number of seed position in the block
+  it is necessary to evenly distribute the BYEs across all divisions, e.g. 1/2, 1/4, 1/8
+
+  For instance, in a draw of 128 with 116 participants there are 12 BYEs.  The first 8 BYEs are consumed by the
+  first four seedBlocks leaving 4 BYEs to b distributed  across the 8 drawPositions claimed by seeds 9-16.
+
+  The drawPositions for seeds 9-16 are:
+  [ 9, 25,  41,  57, 72, 88, 104, 120 ]
+
+  These are sorted low to high and grouped in chunks of 2 drawPositions: 
+  [9, 25],  [41,  57], [72, 88], [104, 120]
+
+  These are then transformed into nested arrays which are each level an array of 2 items:
+  [[9, 25],  [41, 57]], [[72, 88], [104, 120]]
+
+  This nesting corresponds to the initial round of elimination structures which always contains power-of-2 drawPositions
+
+  An even distribution of BYEs to seeded drawPositions is achieved by iteratively popping a drawPosition from the nested structure,
+  at each level comparing the flattened length of the 2 items of the array
+
+  For comparison, the nesting of seed 17-32 would be as follows:
+  [[[5,  13], [21, 29]], [[37, 45], [53, 61]]], [[[68, 76], [84, 92]], [[100, 108], [116, 124]]],
+ */
+
 export function getBlockSortedRandomDrawPositions({
   validSeedBlocks,
   byesToPlace,
@@ -10,11 +51,11 @@ export function getBlockSortedRandomDrawPositions({
     if (leftToPlace > seedBlock.drawPositions.length) {
       drawPositions.push(...seedBlock.drawPositions);
     } else {
-      const nestedDrawPositions = arrayChunks(
+      const nestedDrawPositions = nestArray(
         chunkArray(seedBlock.drawPositions, 2)
       );
       let drawPosition;
-      while ((drawPosition = sideWithMore(nestedDrawPositions))) {
+      while ((drawPosition = popFromLargerSide(nestedDrawPositions))) {
         drawPositions.push(drawPosition);
       }
     }
@@ -22,20 +63,20 @@ export function getBlockSortedRandomDrawPositions({
   return drawPositions.flat(Infinity);
 }
 
-function sideWithMore(arr) {
+function popFromLargerSide(arr) {
   if (Array.isArray(arr) && arr.length !== 2) return arr.pop();
   if (!Array.isArray(arr[0]))
     return Math.round(Math.random()) ? arr.pop() : arr.shift();
 
   const side1 = arr[0].flat(Infinity).length;
   const side2 = arr[1].flat(Infinity).length;
-  if (side1 === side2) return sideWithMore(arr[Math.round(Math.random())]);
-  return side1 < side2 ? sideWithMore(arr[1]) : sideWithMore(arr[0]);
+  if (side1 === side2) return popFromLargerSide(arr[Math.round(Math.random())]);
+  return side1 < side2 ? popFromLargerSide(arr[1]) : popFromLargerSide(arr[0]);
 }
 
-function arrayChunks(arr) {
+function nestArray(arr) {
   const midPoint = Math.floor(arr.length / 2);
   return arr.length > 2
-    ? [arrayChunks(arr.slice(0, midPoint)), arrayChunks(arr.slice(midPoint))]
+    ? [nestArray(arr.slice(0, midPoint)), nestArray(arr.slice(midPoint))]
     : arr;
 }
