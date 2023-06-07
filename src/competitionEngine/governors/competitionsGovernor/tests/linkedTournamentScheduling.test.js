@@ -16,9 +16,10 @@ import {
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 
-const U18retrieval = 'RETRIEVAL.RANKING.SINGLES.U18';
-const tournamentId = 'id-challenger';
-const cpsCourt1 = cpsCourt1;
+const U18rankingsRetrieval = 'RETRIEVAL.RANKING.SINGLES.U18';
+const cpsCourt1 = 'cps-court-1';
+const tid = 'id-challenger';
+
 const venueProfiles = [
   {
     venueId: 'cc-venue-id', // ensure consistent venueId for courts shared across tournaments
@@ -31,24 +32,25 @@ const venueProfiles = [
   },
 ];
 const startDate = formatDate(new Date());
-
 const mockProfiles = [
   {
-    tournamentAttributes: { tournamentId },
+    tournamentAttributes: { tournamentId: tid },
     tournamentName: 'Challenger',
     drawProfiles: [
       {
         eventType: DOUBLES,
         eventName: 'U18 Boys Doubles',
         category: { categoryName: 'U18' },
-        timeItems: [{ itemType: U18retrieval, itemValue: startDate }],
+        timeItems: [{ itemType: U18rankingsRetrieval, itemValue: startDate }],
         gender: MALE,
         drawSize: 16,
       },
       {
         eventName: 'U16 Girls Singles',
         category: { categoryName: 'U16' },
-        timeItems: [{ itemType: U18retrieval, itemValue: startDate }],
+        timeItems: [
+          { itemType: 'RETRIEVAL.RANKING.SINGLES.U16', itemValue: startDate },
+        ],
         drawType: FIRST_MATCH_LOSER_CONSOLATION,
         gender: FEMALE,
         drawSize: 32,
@@ -66,13 +68,15 @@ const mockProfiles = [
     venueProfiles,
   },
   {
-    tournamentAttributes: { tournamentId },
+    tournamentAttributes: {
+      tournamentId: 'id-championships',
+    },
     tournamentName: 'Championships',
     drawProfiles: [
       {
         eventName: 'U18 Girls Singles',
         category: { categoryName: 'U18' },
-        timeItems: [{ itemType: U18retrieval, itemValue: startDate }],
+        timeItems: [{ itemType: U18rankingsRetrieval, itemValue: startDate }],
         drawType: FEED_IN_CHAMPIONSHIP,
         gender: FEMALE,
         drawSize: 32,
@@ -80,7 +84,7 @@ const mockProfiles = [
       {
         eventName: 'U16 Boys Singles',
         category: { categoryName: 'U16' },
-        timeItems: [{ itemType: U18retrieval, itemValue: startDate }],
+        timeItems: [{ itemType: U18rankingsRetrieval, itemValue: startDate }],
         drawType: COMPASS,
         gender: MALE,
         drawSize: 16,
@@ -120,7 +124,7 @@ const mockProfiles = [
       {
         eventName: 'U18 Girls Singles',
         category: { categoryName: 'U18' },
-        timeItems: [{ itemType: U18retrieval, itemValue: startDate }],
+        timeItems: [{ itemType: U18rankingsRetrieval, itemValue: startDate }],
         drawType: CURTIS_CONSOLATION,
         participantsCount: 58,
         gender: FEMALE,
@@ -129,7 +133,7 @@ const mockProfiles = [
       {
         eventName: 'U18 Boys Singles',
         category: { categoryName: 'U18' },
-        timeItems: [{ itemType: U18retrieval, itemValue: startDate }],
+        timeItems: [{ itemType: U18rankingsRetrieval, itemValue: startDate }],
         drawType: CURTIS_CONSOLATION,
         participantsCount: 58,
         gender: MALE,
@@ -138,7 +142,7 @@ const mockProfiles = [
       {
         eventName: 'U16 Girls Singles',
         category: { categoryName: 'U16' },
-        timeItems: [{ itemType: U18retrieval, itemValue: startDate }],
+        timeItems: [{ itemType: U18rankingsRetrieval, itemValue: startDate }],
         participantsCount: 58,
         drawType: COMPASS,
         gender: FEMALE,
@@ -147,7 +151,7 @@ const mockProfiles = [
       {
         eventName: 'U16 Boys Singles',
         category: { categoryName: 'U16' },
-        timeItems: [{ itemType: U18retrieval, itemValue: startDate }],
+        timeItems: [{ itemType: U18rankingsRetrieval, itemValue: startDate }],
         participantsCount: 58,
         drawType: COMPASS,
         gender: MALE,
@@ -195,7 +199,8 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
       await competitionEngine.setTournamentRecord(tournamentRecord);
     }
     await competitionEngine.linkTournaments();
-    tournamentEngine.setTournamentId(tournamentId);
+
+    tournamentEngine.setTournamentId(tid);
     let { venues } = tournamentEngine.getVenuesAndCourts();
     expect(venues.length).toEqual(1);
 
@@ -204,7 +209,7 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
     expect(court).not.toBeUndefined();
 
     const { upcomingMatchUps } = await competitionEngine.competitionMatchUps({
-      contextFilters: { tournamentIds: [tournamentId] },
+      contextFilters: { tournamentIds: [tid] },
     });
     let courtMatchUps = upcomingMatchUps.filter(
       (matchUp) => matchUp.schedule?.courtId === cpsCourt1
@@ -228,12 +233,12 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
     });
     expect(result.success).toEqual(true);
 
-    tournamentEngine.setTournamentId(tournamentId);
+    tournamentEngine.setTournamentId(tid);
     venues = tournamentEngine.getVenuesAndCourts().venues;
     expect(venues.length).toEqual(2);
 
     result = await competitionEngine.competitionMatchUps({
-      contextFilters: { tournamentIds: [tournamentId] },
+      contextFilters: { tournamentIds: [tid] },
     });
     courtMatchUps = result.upcomingMatchUps.filter(
       (matchUp) => matchUp.schedule?.courtId === cpsCourt1
