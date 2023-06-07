@@ -23,17 +23,19 @@ export function bulkScheduleMatchUps({
   matchUpDependencies,
   tournamentRecords,
   tournamentRecord,
+  matchUpDetails,
   matchUpIds,
   schedule,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!matchUpIds || !Array.isArray(matchUpIds))
+  if (!matchUpDetails && (!matchUpIds || !Array.isArray(matchUpIds)))
     return { error: MISSING_MATCHUP_IDS };
 
-  if (!schedule || typeof schedule !== 'object')
+  if (!matchUpDetails && (!schedule || typeof schedule !== 'object'))
     return { error: MISSING_SCHEDULE };
 
   const warnings = [];
+  let scheduled = 0;
 
   matchUpDependencies =
     checkChronology &&
@@ -55,17 +57,24 @@ export function bulkScheduleMatchUps({
     return drawIdMap;
   }, {});
 
+  const detailMatchUpIds = matchUpDetails?.map((detail) => detail.matchUpId);
+
   for (const drawId of Object.keys(drawIdMap)) {
     const { drawDefinition } = getDrawDefinition({
       tournamentRecord,
       drawId,
     });
-    const drawMatchUpIds = drawIdMap[drawId].filter((matchUpId) =>
-      matchUpIds.includes(matchUpId)
+    const drawMatchUpIds = drawIdMap[drawId].filter(
+      (matchUpId) =>
+        matchUpIds?.includes(matchUpId) || detailMatchUpIds?.includes(matchUpId)
     );
 
     for (const matchUpId of drawMatchUpIds) {
+      const matchUpSchedule =
+        matchUpDetails?.find((details) => details.matchUpId === matchUpId)
+          ?.schedule || schedule;
       const result = addMatchUpScheduleItems({
+        schedule: matchUpSchedule,
         matchUpDependencies,
         errorOnAnachronism,
         tournamentRecords,
@@ -74,12 +83,14 @@ export function bulkScheduleMatchUps({
         drawDefinition,
         matchUpId,
         matchUps,
-        schedule,
       });
       if (result.warnings?.length) warnings.push(...result.warnings);
+      if (result.success) scheduled += 1;
       if (result.error) return result;
     }
   }
 
-  return warnings.length ? { ...SUCCESS, warnings } : { ...SUCCESS };
+  return warnings.length
+    ? { ...SUCCESS, scheduled, warnings }
+    : { ...SUCCESS, scheduled };
 }

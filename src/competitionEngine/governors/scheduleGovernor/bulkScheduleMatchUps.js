@@ -6,6 +6,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
+  MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
 export function bulkScheduleMatchUps({
@@ -13,11 +14,17 @@ export function bulkScheduleMatchUps({
   matchUpContextIds,
   tournamentRecords,
   checkChronology,
+  matchUpDetails,
   schedule,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(matchUpContextIds)) return { error: INVALID_VALUES };
+  if (!Array.isArray(matchUpContextIds) && !Array.isArray(matchUpDetails))
+    return { error: INVALID_VALUES };
+  if ((!matchUpDetails || matchUpContextIds) && !schedule)
+    return { error: MISSING_VALUE, info: 'schedule is required' };
+
   const warnings = [];
+  let scheduled = 0;
 
   const { matchUpDependencies } = getMatchUpDependencies({
     tournamentRecords,
@@ -26,11 +33,16 @@ export function bulkScheduleMatchUps({
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { tournamentId } = tournamentRecord;
     const matchUpIds = matchUpContextIds
-      .filter((contextIds) => contextIds.tournamentId === tournamentId)
+      ?.filter((contextIds) => contextIds.tournamentId === tournamentId)
       .map(getMatchUpId);
 
-    if (matchUpIds?.length) {
+    const tournamentMatchUpDetails = matchUpDetails?.filter(
+      (details) => details?.tournamentId === tournamentId
+    );
+
+    if (matchUpIds?.length || tournamentMatchUpDetails?.length) {
       const result = bulkSchedule({
+        matchUpDetails: tournamentMatchUpDetails,
         matchUpDependencies,
         errorOnAnachronism,
         tournamentRecord,
@@ -39,9 +51,12 @@ export function bulkScheduleMatchUps({
         schedule,
       });
       if (result.warnings?.length) warnings.push(...result.warnings);
+      if (result.scheduled) scheduled += result.scheduled;
       if (result.error) return result;
     }
   }
 
-  return warnings.length ? { ...SUCCESS, warnings } : { ...SUCCESS };
+  return warnings.length
+    ? { ...SUCCESS, scheduled, warnings }
+    : { ...SUCCESS, scheduled };
 }
