@@ -184,8 +184,7 @@ export function getAllStructureMatchUps({
     inContext,
   });
 
-  const roundNamingPolicy =
-    appliedPolicies && appliedPolicies[POLICY_TYPE_ROUND_NAMING];
+  const roundNamingPolicy = appliedPolicies?.[POLICY_TYPE_ROUND_NAMING];
   const result = getRoundContextProfile({
     roundNamingPolicy,
     drawDefinition,
@@ -321,7 +320,7 @@ export function getAllStructureMatchUps({
       );
 
     const matchUpFormat = matchUp.collectionId
-      ? collectionDefinition && collectionDefinition.matchUpFormat
+      ? collectionDefinition?.matchUpFormat
       : matchUp.matchUpFormat ||
         structure.matchUpFormat ||
         drawDefinition?.matchUpFormat ||
@@ -363,22 +362,19 @@ export function getAllStructureMatchUps({
       });
 
     const roundName =
-      (roundNamingProfile && roundNamingProfile[roundNumber]?.roundName) ||
+      roundNamingProfile?.[roundNumber]?.roundName ||
       additionalContext.roundName;
     const abbreviatedRoundName =
-      (roundNamingProfile &&
-        roundNamingProfile[roundNumber]?.abbreviatedRoundName) ||
+      roundNamingProfile?.[roundNumber]?.abbreviatedRoundName ||
       additionalContext.abbreviatedRoundName;
     const feedRound = roundProfile?.[roundNumber]?.feedRound;
     const preFeedRound = roundProfile?.[roundNumber]?.preFeedRound;
     const roundFactor = roundProfile?.[roundNumber]?.roundFactor;
 
-    const drawPositionsRoundRanges =
-      drawPositionsRanges && drawPositionsRanges[roundNumber];
-    const drawPositionsRange =
-      drawPositionsRoundRanges && drawPositionsRoundRanges[roundPosition];
+    const drawPositionsRoundRanges = drawPositionsRanges?.[roundNumber];
+    const drawPositionsRange = drawPositionsRoundRanges?.[roundPosition];
     const sourceDrawPositionRoundRanges =
-      sourceDrawPositionRanges && sourceDrawPositionRanges[roundNumber];
+      sourceDrawPositionRanges?.[roundNumber];
 
     // if part of a tie matchUp and collectionDefinition has a category definition, prioritize
     const matchUpCategory = collectionDefinition?.category
@@ -483,8 +479,7 @@ export function getAllStructureMatchUps({
         roundNumber,
       });
 
-      const isFeedRound =
-        roundProfile[roundNumber] && roundProfile[roundNumber].feedRound;
+      const isFeedRound = roundProfile[roundNumber]?.feedRound;
       const reversedDisplayOrder = displayOrder[0] !== orderedDrawPositions[0];
 
       // ensure there are two sides generated
@@ -516,8 +511,7 @@ export function getAllStructureMatchUps({
         // columnPosition gives an ordered position value relative to a single column
         const columnPosition = (roundPosition - 1) * 2 + index + 1;
         const sourceDrawPositionRange =
-          sourceDrawPositionRoundRanges &&
-          sourceDrawPositionRoundRanges[columnPosition];
+          sourceDrawPositionRoundRanges?.[columnPosition];
 
         return onlyDefined({
           sourceDrawPositionRange,
@@ -688,8 +682,8 @@ export function getAllStructureMatchUps({
 
     const hasParticipants =
       matchUpWithContext.sides &&
-      matchUpWithContext.sides.filter((side) => side && side.participantId)
-        .length === 2;
+      matchUpWithContext.sides.filter((side) => side?.participantId).length ===
+        2;
     const hasNoWinner = !matchUpWithContext.winningSide;
     const readyToScore = scoringActive && hasParticipants && hasNoWinner;
     Object.assign(matchUpWithContext, { readyToScore, hasContext: true });
