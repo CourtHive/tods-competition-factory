@@ -45,9 +45,7 @@ export function generatePlayoffStructures({
   uuids,
 }) {
   const generateStructure =
-    !playoffAttributes ||
-    !exitProfileLimit ||
-    (playoffAttributes && playoffAttributes[exitProfile]);
+    !playoffAttributes || !exitProfileLimit || playoffAttributes?.[exitProfile];
 
   if (
     !generateStructure ||
@@ -65,11 +63,10 @@ export function generatePlayoffStructures({
   const finishingPositionsFrom = finishingPositionOffset + 1;
   const finishingPositionsTo = finishingPositionOffset + drawSize;
   const finishingPositionRange = `${finishingPositionsFrom}-${finishingPositionsTo}`;
-  const attributeProfile = playoffAttributes && playoffAttributes[exitProfile];
+  const attributeProfile = playoffAttributes?.[exitProfile];
   const base =
     (playoffStructureNameBase && `${playoffStructureNameBase} `) || '';
-  const customNaming =
-    finishingPositionNaming && finishingPositionNaming[finishingPositionRange];
+  const customNaming = finishingPositionNaming?.[finishingPositionRange];
 
   const structureName =
     customNaming?.name ||
