@@ -1,7 +1,11 @@
 import { generateScoreString } from '../../generators/generateScoreString';
 import { definedAttributes } from '../../../utilities';
 
-export function reverseScore({ score }) {
+import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+
+export function reverseScore({ score } = {}) {
+  if (!score) return { error: MISSING_VALUE };
   const { sets } = score;
   const reversedSets = sets.map((set) => {
     const {
@@ -29,5 +33,6 @@ export function reverseScore({ score }) {
 
   return {
     reversedScore: { sets: reversedSets, scoreStringSide1, scoreStringSide2 },
+    ...SUCCESS,
   };
 }

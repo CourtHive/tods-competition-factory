@@ -121,6 +121,7 @@ it.each([asyncDrawEngine, drawEngineSync])(
           'getValidGroupSizes',
           'newDrawDefinition',
           'getSeedBlocks',
+          'reverseScore',
           'assignSeed',
           'reset',
         ].includes(method);
