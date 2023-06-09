@@ -6,7 +6,6 @@ export { addFinishingRounds } from '../../drawEngine/generators/addFinishingRoun
 export { structureSort } from '../../drawEngine/getters/structureSort';
 export { matchUpSort } from '../../drawEngine/getters/matchUpSort';
 export { attributeFilter } from '../../utilities';
-export { tidyScore } from '../../utilities';
 export {
   linkTournaments,
   unlinkTournament,

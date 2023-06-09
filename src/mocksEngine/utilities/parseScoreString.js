@@ -15,26 +15,21 @@ export function parseScoreString({ scoreString, tiebreakTo = 7 }) {
         .split(']')[0]
         .split('-')
         .map((sideScore) => parseInt(sideScore));
-    const setString = set.includes('(')
-      ? set.split('(')[0]
-      : set.includes('[')
-      ? set.split('[')[0]
-      : set;
+    const setString =
+      (set.includes('(') && set.split('(')[0]) ||
+      (set.includes('[') && set.split('[')[0]) ||
+      set;
     const setScores =
       !matchTiebreak &&
       setString.split('-').map((sideScore) => parseInt(sideScore));
 
     const winningSide = matchTiebreak
-      ? matchTiebreak[0] > matchTiebreak[1]
-        ? 1
-        : matchTiebreak[0] < matchTiebreak[1]
-        ? 2
-        : undefined
-      : setScores[0] > setScores[1]
-      ? 1
-      : setScores[0] < setScores[1]
-      ? 2
-      : undefined;
+      ? (matchTiebreak[0] > matchTiebreak[1] && 1) ||
+        (matchTiebreak[0] < matchTiebreak[1] && 2) ||
+        undefined
+      : (setScores[0] > setScores[1] && 1) ||
+        (setScores[0] < setScores[1] && 2) ||
+        undefined;
 
     const setTiebreakLowScore =
       set.includes('(') && set.split('(')[1].split(')')[0];
