@@ -18,6 +18,7 @@ const scores = [
 
   // { score: '7 6(5)5 7 6 3', expectation: { score: '7-6(5) 5-7 6-3' } }, // fix handleNumeric
 
+  { score: '6-1;7-6(10)', expectation: { score: '6-1 7-6(10)' } },
   { score: '6-2;2-6;10-2', expectation: { score: '6-2 2-6 [10-2]' } },
   { score: '5 7 6 2 10-2', expectation: { score: '5-7 6-2 [10-2]' } },
   { score: '2 6 6 4 10-5', expectation: { score: '2-6 6-4 [10-5]' } },
