@@ -35,6 +35,18 @@ drawEngine.addDrawEntry({
 
 ---
 
+## addFinishingRounds
+
+```js
+addFinishingRounds({
+  finishingPositionOffset = 0, // required for sub-structures; e.g. consolation fed from R32 would have { finishingPositionOffset: 16 }
+  roundLimit, // for qualifying, offset the final round so that qualifyinground is finishingRound
+  matchUps, // required - matchUps belonging to a single structure
+});
+```
+
+---
+
 ## addMatchUpEndTime
 
 ```js

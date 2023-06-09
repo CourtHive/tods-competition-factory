@@ -172,3 +172,16 @@ const { participantResults } = matchUpEngine.tallyParticipantResults({
 ```
 
 ---
+
+## validateScore
+
+```js
+const { valid, error } = validateScore({
+  matchUpFormat,
+  matchUpStatus,
+  winningSide,
+  score,
+});
+```
+
+---

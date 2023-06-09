@@ -19,9 +19,7 @@ export function addFinishingRounds({
     matchUps,
   });
 
-  if (!roundsCount) {
-    roundsCount = Math.max(...roundNumbers);
-  }
+  roundsCount = roundsCount || Math.max(...roundNumbers);
 
   // for qualifying, offset the final round so that qualifyinground is finishingRound
   const finishingRoundOffset = roundLimit ? roundsCount - roundLimit : 0;

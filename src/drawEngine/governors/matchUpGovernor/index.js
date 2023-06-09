@@ -4,6 +4,7 @@ import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
 import { checkInParticipant, checkOutParticipant } from './checkInStatus';
 import { publicFindMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { addFinishingRounds } from '../../generators/addFinishingRounds';
+import { validateScore } from '../../../global/validation/validateScore';
 import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
 import { removeDelegatedOutcome } from './removeDelegatedOutcome';
 import { drawMatic } from '../../generators/drawMatic/drawMatic';
@@ -66,6 +67,7 @@ const matchUpGovernor = {
   getRoundMatchUps,
 
   validDrawPositions,
+  validateScore,
 };
 
 export default matchUpGovernor;
