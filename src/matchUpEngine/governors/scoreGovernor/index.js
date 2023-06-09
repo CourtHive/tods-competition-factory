@@ -2,6 +2,7 @@ import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGove
 import { generateTieMatchUpScore } from '../../../drawEngine/generators/generateTieMatchUpScore';
 import { validateTieFormat } from '../tieFormatGovernor/tieFormatUtilities';
 import { generateScoreString } from '../../generators/generateScoreString';
+import { validateScore } from '../../../global/validation/validateScore';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
 import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 import { analyzeSet } from '../../getters/analyzeSet';
@@ -29,6 +30,7 @@ export const scoreGovernor = {
   getSetComplement,
   scoreHasValue,
   keyValueScore,
+  validateScore,
   reverseScore,
   analyzeSet,
 };

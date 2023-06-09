@@ -54,11 +54,7 @@ export function analyzeScore({
       const { finalSetFormat, setFormat } = matchUpScoringFormat;
       const setValues = isFinalSet ? finalSetFormat || setFormat : setFormat;
 
-      if (maxSetScore > setValues.setTo + 1) {
-        return false;
-      }
-
-      return true;
+      return maxSetScore > setValues.setTo + 1 ? false : true;
     });
 
   const calculatedWinningSide =
