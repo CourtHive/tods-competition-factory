@@ -138,6 +138,14 @@ matchUpEngine.removeCollectionGroup({
 
 ---
 
+## reverseScore
+
+```js
+const { reversedScore } = machUpEngine.reverseScore({ score });
+```
+
+---
+
 ## scoreHasValue
 
 Returns boolean whether or not a `matchUp.score` contains a point, game or set value.
