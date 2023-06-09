@@ -7,8 +7,10 @@ import { proConflicts } from './competitionEngine/governors/scheduleGovernor/pro
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
 import { findExtension } from './tournamentEngine/governors/queryGovernor/extensionQueries';
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
+import { generateScoreString } from './matchUpEngine/generators/generateScoreString';
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
 import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
+import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
 import { addExtension } from './global/functions/producers/addExtension';
 import { structureSort } from './drawEngine/getters/structureSort';
 import { tidyScore } from './utilities/scoreParser/scoreParser';
@@ -47,6 +49,8 @@ export const utilities = {
   structureSort,
   matchUpSort,
   tidyScore,
+  generateScoreString,
+  parseScoreString,
   proConflicts,
   addExtension,
   chunkArray,
