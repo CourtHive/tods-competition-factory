@@ -5,6 +5,7 @@ import { generateScoreString } from '../../generators/generateScoreString';
 import { checkSetIsComplete, keyValueScore } from './keyValueScore';
 import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 import { analyzeSet } from '../../getters/analyzeSet';
+import { reverseScore } from './reverseScore';
 import {
   getSetComplement,
   getTiebreakComplement,
@@ -26,8 +27,9 @@ export const scoreGovernor = {
   checkSetIsComplete,
   validateTieFormat,
   getSetComplement,
-  keyValueScore,
   scoreHasValue,
+  keyValueScore,
+  reverseScore,
   analyzeSet,
 };
 

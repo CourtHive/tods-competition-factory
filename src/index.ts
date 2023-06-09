@@ -11,6 +11,7 @@ import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItem
 import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
 import { addExtension } from './global/functions/producers/addExtension';
 import { structureSort } from './drawEngine/getters/structureSort';
+import { tidyScore } from './utilities/scoreParser/scoreParser';
 import { matchUpSort } from './drawEngine/getters/matchUpSort';
 import { dateTime, dateRange } from './utilities/dateTime';
 import { JSON2CSV, flattenJSON } from './utilities/json';
@@ -45,6 +46,7 @@ import {
 export const utilities = {
   structureSort,
   matchUpSort,
+  tidyScore,
   proConflicts,
   addExtension,
   chunkArray,
