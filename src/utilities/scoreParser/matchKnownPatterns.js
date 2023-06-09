@@ -16,6 +16,11 @@ export function matchKnownPatterns({ score, applied }) {
     }
   }
 
+  if (score.includes(';')) {
+    score = score.split(';').join(' ');
+    applied.push('semicolon set separation');
+  }
+
   const smashSlash = /(^|\s)(\d)\/(\d)(\d)\/(\d)(\(|$)/;
   if (smashSlash.test(score)) {
     const [before, s1, s2, s3, s4, after] = score.match(smashSlash).slice(1);
