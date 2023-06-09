@@ -1,9 +1,12 @@
 {
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/**/*.js"],
   "compilerOptions": {
     "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "src",
     "declaration": false,
     "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "lib": ["dom", "esnext"],
     "module": "esnext",
@@ -14,6 +17,7 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "resolveJsonModule": true,
     "outDir": "./scratch",
     "rootDir": "./src",
     "sourceMap": false,
