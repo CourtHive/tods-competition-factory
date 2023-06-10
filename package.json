@@ -22,7 +22,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "0.510.1",
+  "version": "0.510.2",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/tods-competition-factory/",
@@ -60,7 +60,7 @@
     "contents": "."
   },
   "engines": {
-    "node": ">=18.14.0 < 19"
+    "node": ">=16.16.0 < 19"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
@@ -106,12 +106,12 @@
     "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^17.3.0",
     "@rollup/plugin-babel": "6.0.3",
-    "@rollup/plugin-commonjs": "25.0.0",
+    "@rollup/plugin-commonjs": "25.0.1",
     "@rollup/plugin-json": "6.0.0",
     "@rollup/plugin-node-resolve": "15.1.0",
     "@rollup/plugin-terser": "^0.4.3",
     "@rollup/plugin-typescript": "11.1.1",
-    "@types/node": "18.16.16",
+    "@types/node": "18.16.17",
     "@typescript-eslint/eslint-plugin": "5.59.9",
     "@typescript-eslint/parser": "5.59.9",
     "@vitest/coverage-c8": "0.27.3",
