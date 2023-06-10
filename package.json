@@ -60,7 +60,7 @@
     "contents": "."
   },
   "engines": {
-    "node": ">=18.14.0 < 19"
+    "node": ">=16.16.0 < 19"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
