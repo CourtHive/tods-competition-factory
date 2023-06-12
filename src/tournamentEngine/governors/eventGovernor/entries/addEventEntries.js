@@ -85,7 +85,7 @@ export function addEventEntries(params) {
   }
 
   const checkTypedParticipants = !!tournamentRecord;
-  const misMatchedGenderIds = [];
+  const misMatchedGender = [];
   let info;
 
   const typedParticipantIds =
@@ -128,7 +128,10 @@ export function addEventEntries(params) {
           ![MIXED, ANY].includes(event.gender) &&
           event.gender !== participant.person?.sex
         ) {
-          misMatchedGenderIds.push(participant.participantId);
+          misMatchedGender.push({
+            participantId: participant.participantId,
+            sex: participant.person?.sex,
+          });
           return false;
         }
 
@@ -236,7 +239,7 @@ export function addEventEntries(params) {
   if (invalidParticipantIds)
     return decorateResult({
       result: { error: INVALID_PARTICIPANT_IDS },
-      context: { misMatchedGenderIds },
+      context: { misMatchedGender, gender: event.gender },
       stack,
     });
 
