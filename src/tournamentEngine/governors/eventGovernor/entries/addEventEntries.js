@@ -103,7 +103,7 @@ export function addEventEntries(params) {
           validSingles &&
           (!event.gender ||
             ignoreEventGender ||
-            event.gender === MIXED ||
+            [MIXED, ANY].includes(event.gender) ||
             event.gender === participant.person?.sex)
         ) {
           return true;
