@@ -59,14 +59,14 @@ export function addEventEntries(params) {
   const stack = 'addEventEntries';
 
   if (!event) return { error: MISSING_EVENT };
-  if (!participantIds || !participantIds.length) {
+  if (!participantIds?.length) {
     return decorateResult({
       result: { error: MISSING_PARTICIPANT_IDS },
       stack,
     });
   }
 
-  if (!event || !event.eventId) return { error: EVENT_NOT_FOUND };
+  if (!event?.eventId) return { error: EVENT_NOT_FOUND };
 
   const removedEntries = [];
   const addedEntries = [];
@@ -91,6 +91,8 @@ export function addEventEntries(params) {
   const typedParticipantIds =
     tournamentRecord?.participants
       ?.filter((participant) => {
+        if (!participantIds.includes(participant.participantId)) return false;
+
         const validSingles =
           event.eventType === SINGLES &&
           participant.participantType === INDIVIDUAL &&
@@ -151,7 +153,7 @@ export function addEventEntries(params) {
 
   if (!event.entries) event.entries = [];
   const existingIds = event.entries.map(
-    (e) => e.participantId || (e.participant && e.participant.participantId)
+    (e) => e.participantId || e.participant?.participantId
   );
 
   validParticipantIds.forEach((participantId) => {
