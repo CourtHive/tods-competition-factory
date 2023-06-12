@@ -33,7 +33,7 @@ it('throws an error on misgendered entries', () => {
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
-  expect(result.misMatchedGenderIds.length).toBeGreaterThan(0);
+  expect(result.misMatchedGender.length).toBeGreaterThan(0);
 
   const maleParticipantIds = participants
     .filter(({ person }) => person.sex === MALE)
