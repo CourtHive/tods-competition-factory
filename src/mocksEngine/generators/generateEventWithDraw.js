@@ -130,7 +130,7 @@ export function generateEventWithDraw({
       : drawProfile.participantsCount) || 0;
 
   const eventId = drawProfileCopy.eventId || UUID();
-  let event = { eventName, eventType, tieFormat, category, eventId };
+  let event = { eventName, eventType, tieFormat, category, eventId, gender };
 
   if (Array.isArray(timeItems)) {
     timeItems.forEach((timeItem) => addEventTimeItem({ event, timeItem }));

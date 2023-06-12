@@ -94,55 +94,6 @@ export function getParticipantsCount({
         largestSinglesDraw = drawSize + alternatesCount;
       }
     }
-
-    /*
-    if (requiresUniqueParticipants) {
-      if (isDoubles) {
-        const additionalParticipantsCount = (drawSize + alternatesCount) * 2;
-        uniqueParticipantsCount += additionalParticipantsCount;
-        if (gender) gendersCount[gender] += additionalParticipantsCount;
-      } else {
-        const additionalParticipantsCount = drawSize + alternatesCount;
-        if (gender) gendersCount[gender] += additionalParticipantsCount;
-        uniqueParticipantsCount += additionalParticipantsCount;
-      }
-    } else {
-      if (isTeam) {
-        largestTeamDraw = Math.max(largestTeamDraw, drawSize + alternatesCount);
-
-        tieFormat =
-          typeof tieFormat === 'object'
-            ? tieFormat
-            : tieFormatDefaults({ namedFormat: tieFormatName });
-
-        const { teamSize, maxDoublesDraw, maxSinglesDraw, genders } =
-          processTieFormat({
-            alternatesCount,
-            tieFormatName,
-            tieFormat,
-            drawSize,
-          });
-        largestTeamSize = Math.max(largestTeamSize, teamSize);
-        largestDoublesDraw = Math.max(largestDoublesDraw, maxDoublesDraw);
-        largestSinglesDraw = Math.max(largestSinglesDraw, maxSinglesDraw);
-        Object.keys(genders).forEach(
-          (key) => (gendersCount[key] += genders[key])
-        );
-      }
-
-      if (
-        isDoubles &&
-        drawSize + alternatesCount &&
-        drawSize + alternatesCount > largestDoublesDraw
-      ) {
-        largestDoublesDraw = drawSize + alternatesCount;
-      }
-
-      if (!isDoubles && !isTeam && drawSize && drawSize > largestSinglesDraw) {
-        largestSinglesDraw = drawSize + alternatesCount;
-      }
-    }
-    */
   };
 
   let categories = []; // use when generating participants
