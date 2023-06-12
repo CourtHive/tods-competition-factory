@@ -1,6 +1,6 @@
-import { chunkArray, instanceCount } from '../arrays';
+import { chunkArray, instanceCount } from '../../utilities/arrays';
 import { setBuilder } from './setBuilder';
-import { parseSuper } from './transforms';
+import { parseSuper } from './parseSuper';
 import { isNumeric } from '../math';
 
 export function handleNumeric({ score, applied, matchUpStatus }) {

@@ -12,7 +12,7 @@ import { ROUND_TARGET } from '../../../../constants/extensionConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { MIXED } from '../../../../constants/genderConstants';
+import { ANY, MIXED } from '../../../../constants/genderConstants';
 import {
   EVENT_NOT_FOUND,
   INVALID_PARTICIPANT_IDS,
@@ -125,7 +125,7 @@ export function addEventEntries(params) {
           validSingles &&
           event.gender &&
           !ignoreEventGender &&
-          event.gender !== MIXED &&
+          ![MIXED, ANY].includes(event.gender) &&
           event.gender !== participant.person?.sex
         ) {
           misMatchedGenderIds.push(participant.participantId);
