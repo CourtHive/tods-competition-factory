@@ -296,7 +296,7 @@ export function tournamentMatchUps({
   const tournamentId =
     tournamentRecord.unifiedTournamentId?.tournamentId ||
     tournamentRecord.tournamentId;
-  const events = (tournamentRecord && tournamentRecord.events) || [];
+  const events = tournamentRecord?.events || [];
 
   const { participants, participantMap } = getParticipants({
     participantsProfile,
@@ -317,7 +317,7 @@ export function tournamentMatchUps({
   const { appliedPolicies: tournamentAppliedPolicies } = getAppliedPolicies({
     tournamentRecord,
   });
-  const filteredEventIds = (contextFilters && contextFilters.eventIds) || [];
+  const filteredEventIds = contextFilters?.eventIds || [];
   const eventsDrawsMatchUps = events
     .filter((event) => !filteredEventIds.includes(event.eventId))
     .map((event) => {
