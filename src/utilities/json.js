@@ -27,6 +27,9 @@ import { INVALID_VALUES } from '../constants/errorConditionConstants';
  */
 export function JSON2CSV(arrayOfJSON, config) {
   if (config && typeof config !== 'object') return INVALID_VALUES;
+
+  let { columnTransform = {} } = config || {};
+
   const {
     includeTransformAccessors,
     includeHeaderRow = true,
@@ -35,7 +38,6 @@ export function JSON2CSV(arrayOfJSON, config) {
     onlyHeaderRow,
 
     columnAccessors = [],
-    columnTransform = {},
     functionMap = {},
     columnMap = {},
     valuesMap = {},
@@ -61,6 +63,21 @@ export function JSON2CSV(arrayOfJSON, config) {
     typeof delimiter !== 'string'
   )
     return INVALID_VALUES;
+
+  // ensure all column transformers are arrays
+  columnTransform = Object.assign(
+    {},
+    ...Object.keys(columnTransform)
+      .reverse() // reverse so that exported CSV columns are in the order as defined
+      .map((key) => ({
+        [key]: Array.isArray(columnTransform[key])
+          ? columnTransform[key]
+          : [
+              // ensure transform attributes are strings
+              typeof columnTransform[key] === 'string' && columnTransform[key],
+            ].filter(Boolean),
+      }))
+  );
 
   const flattened = arrayOfJSON
     .filter(Boolean)
