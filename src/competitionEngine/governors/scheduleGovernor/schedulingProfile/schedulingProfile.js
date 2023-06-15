@@ -3,6 +3,7 @@ import { getCompetitionDateRange } from '../../queryGovernor/getCompetitionDateR
 import { getEventIdsAndDrawIds } from '../../../getters/getEventIdsAndDrawIds';
 import { getCompetitionVenues } from '../../../getters/venuesAndCourtsGetter';
 import { decorateResult } from '../../../../global/functions/decorateResult';
+import { isObject } from '../../../../utilities/objects';
 import {
   extractDate,
   isValidDateString,
@@ -134,12 +135,7 @@ export function addSchedulingProfileRound({
     Object.keys(r)
       .filter((key) => !excludeKeys.includes(key))
       .sort()
-      .map((k) => {
-        if (typeof r[k] === 'object') {
-          return hashRound(r[k]);
-        }
-        return r[k];
-      })
+      .map((k) => (isObject(r[k]) ? hashRound(r[k]) : r[k]))
       .flat()
       .join('|');
 

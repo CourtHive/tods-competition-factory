@@ -1,5 +1,9 @@
 import { deepCopyEnabled } from '../global/state/globalState';
 
+export function isObject(obj) {
+  return typeof obj === 'object';
+}
+
 export function definedAttributes(
   obj,
   ignoreFalse,

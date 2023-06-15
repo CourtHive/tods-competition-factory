@@ -14,7 +14,7 @@ import {
   CONFLICT_PARTICIPANTS,
 } from '../../../../constants/scheduleConstants';
 
-export function proConflicts({ tournamentRecords, matchUps }) {
+export function proConflicts({ tournamentRecords, matchUps } = {}) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
 
   const maxCourtOrder = Math.max(

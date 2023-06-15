@@ -124,13 +124,12 @@ const renderTypeDef = (raw) => {
     const obj = JSON.parse(JSON.parse(raw));
     const required = obj.required === 'true' ? '' : '? ';
     const array = obj.array === 'true' ? '[]' : '';
-    const type = ['any', 'boolean', 'number', 'string'].includes(obj.type)
-      ? obj.type
-      : obj.type === 'object'
-      ? obj.object || 'Object'
-      : obj.type === 'enum'
-      ? `enum ${obj.enum}`
-      : '';
+    const type =
+      (['any', 'boolean', 'number', 'string'].includes(obj.type) && obj.type) ||
+      (obj.type === 'object' && obj.object && 'Object') ||
+      obj.type === 'enum'
+        ? `enum ${obj.enum}`
+        : '';
     const note = obj.note ? ` \\\\ ${obj.note}` : '';
     return `${required}: ${type}${array}${note}`;
   } catch (err) {
