@@ -192,11 +192,14 @@ export const competitionEngine = (function () {
             try {
               return engineInvoke(governor[methodName], params, methodName);
             } catch (err) {
+              const activeTournamentId = getTournamentId();
               const error = err.toString();
+
               console.log('ERROR', {
-                error,
-                methodName,
                 params: JSON.stringify(params),
+                activeTournamentId,
+                methodName,
+                error,
               });
             }
           }

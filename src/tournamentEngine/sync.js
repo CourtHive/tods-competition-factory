@@ -199,11 +199,14 @@ export const tournamentEngine = (function () {
             try {
               return engineInvoke(governor[methodName], params, methodName);
             } catch (err) {
+              const tournamentId = getTournamentId();
               const error = err.toString();
+
               console.log('ERROR', {
-                error,
-                methodName,
                 params: JSON.stringify(params),
+                tournamentId,
+                methodName,
+                error,
               });
             }
           }

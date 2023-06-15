@@ -2,6 +2,7 @@ import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps'
 import { generateRange } from '../../utilities';
 
 import { MISSING_MATCHUPS } from '../../constants/errorConditionConstants';
+import { getDevContext } from '../../global/state/globalState';
 
 export function addFinishingRounds({
   finishingPositionOffset = 0,
@@ -80,8 +81,10 @@ export function addFinishingRounds({
     })
   );
 
+  const devContext = getDevContext({ finishingRound: true });
   matchUps.filter(Boolean).forEach((matchUp) => {
     const roundData = roundFinishingData[matchUp.roundNumber];
+    if (devContext && !roundData) console.log({ roundFinishingData, matchUp });
     matchUp.finishingRound = roundData?.finishingRound;
     matchUp.finishingPositionRange = roundData?.finishingPositionRange;
   });
