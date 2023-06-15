@@ -205,7 +205,6 @@ export const tournamentEngine = (function () {
                 methodName,
                 params: JSON.stringify(params),
               });
-              console.log(err);
             }
           }
         };

@@ -92,10 +92,10 @@ export const scaleEngine = (function () {
       Object.keys(governor).forEach((method) => {
         engine[method] = (params) => {
           if (getDevContext()) {
-            return engineInvoke(governor[method], params, method);
+            return engineInvoke(governor[method], params);
           } else {
             try {
-              return engineInvoke(governor[method], params, method);
+              return engineInvoke(governor[method], params);
             } catch (err) {
               const error = err.toString();
               console.log('ERROR', {
@@ -103,7 +103,6 @@ export const scaleEngine = (function () {
                 method,
                 params: JSON.stringify(params),
               });
-              console.log(err);
             }
           }
         };

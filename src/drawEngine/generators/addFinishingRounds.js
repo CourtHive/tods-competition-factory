@@ -80,10 +80,10 @@ export function addFinishingRounds({
     })
   );
 
-  matchUps.forEach((matchUp) => {
+  matchUps.filter(Boolean).forEach((matchUp) => {
     const roundData = roundFinishingData[matchUp.roundNumber];
-    matchUp.finishingRound = roundData.finishingRound;
-    matchUp.finishingPositionRange = roundData.finishingPositionRange;
+    matchUp.finishingRound = roundData?.finishingRound;
+    matchUp.finishingPositionRange = roundData?.finishingPositionRange;
   });
 
   return matchUps;

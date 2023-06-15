@@ -121,7 +121,6 @@ export function drawEngineAsync(test) {
                 method: governorMethod,
                 params: JSON.stringify(params),
               });
-              console.log(err);
             }
           }
         };

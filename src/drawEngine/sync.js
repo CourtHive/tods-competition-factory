@@ -115,7 +115,6 @@ export const drawEngine = (function () {
                 method: governorMethod,
                 params: JSON.stringify(params),
               });
-              console.log(err);
             }
           }
         };

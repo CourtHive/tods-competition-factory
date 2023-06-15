@@ -85,7 +85,6 @@ export function matchUpEngineAsync(test) {
                 method: governorMethod,
                 params: JSON.stringify(params),
               });
-              console.log(err);
             }
           }
         };

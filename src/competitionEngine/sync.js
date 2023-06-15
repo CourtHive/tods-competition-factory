@@ -198,7 +198,6 @@ export const competitionEngine = (function () {
                 methodName,
                 params: JSON.stringify(params),
               });
-              console.log(err);
             }
           }
         };

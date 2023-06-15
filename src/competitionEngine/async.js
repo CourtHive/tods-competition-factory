@@ -161,7 +161,6 @@ export function competitionEngineAsync(test) {
                 method,
                 params: JSON.stringify(params),
               });
-              console.log(err);
             }
           }
         };

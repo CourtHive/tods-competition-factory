@@ -57,7 +57,6 @@ export const mocksEngine = (function () {
               method,
               params: JSON.stringify(params),
             });
-            console.log(err);
           }
         };
       });

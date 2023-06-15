@@ -79,7 +79,6 @@ export const matchUpEngine = (function () {
                 method: governorMethod,
                 params: JSON.stringify(params),
               });
-              console.log(err);
             }
           }
         };
