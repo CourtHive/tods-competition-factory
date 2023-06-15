@@ -20,6 +20,7 @@ import { generateBookings } from './schedulers/utils/generateBookings';
 import { reorderUpcomingMatchUps } from './reorderUpcomingMatchUps';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
+import { proAutoSchedule } from './proScheduling/proAutoSchedule';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
 import { matchUpScheduleChange } from './matchUpScheduleChange';
 import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
@@ -60,6 +61,7 @@ const scheduleGovernor = {
   generateVirtualCourts,
   generateBookings,
 
+  proAutoSchedule,
   proConflicts,
 
   matchUpScheduleChange,

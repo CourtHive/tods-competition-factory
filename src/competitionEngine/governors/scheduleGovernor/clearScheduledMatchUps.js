@@ -1,5 +1,6 @@
 import { clearScheduledMatchUps as clearSchedules } from '../../../tournamentEngine/governors/scheduleGovernor/clearScheduledMatchUps';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { isObject } from '../../../utilities/objects';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -12,7 +13,7 @@ export function clearScheduledMatchUps({
   venueIds,
 }) {
   const tournamentIds =
-    typeof tournamentRecords === 'object' &&
+    isObject(tournamentRecords) &&
     Object.values(tournamentRecords)
       .map(({ tournamentId }) => tournamentId)
       .filter(Boolean);
