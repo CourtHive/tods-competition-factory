@@ -10,7 +10,11 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
-export function proAutoSchedule({ matchUps, scheduledDate } = {}) {
+export function proAutoSchedule({
+  tournamentRecords,
+  scheduledDate,
+  matchUps,
+} = {}) {
   if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
   if (matchUps.some(({ hasContext }) => !hasContext)) {
     return {
@@ -25,6 +29,7 @@ export function proAutoSchedule({ matchUps, scheduledDate } = {}) {
     withCourtGridRows: true,
     minCourtGridRows: 10,
     nextMatchUps: true,
+    tournamentRecords,
     matchUpFilters,
   });
   if (result.error) return result;
@@ -74,8 +79,9 @@ export function proAutoSchedule({ matchUps, scheduledDate } = {}) {
   matchUps.sort(matchUpSort);
 
   const deps = getMatchUpDependencies({
-    includeParticipantDependencies: true,
     matchUps: matchUps.concat(gridMatchUps),
+    includeParticipantDependencies: true,
+    tournamentRecords,
   }).matchUpDependencies;
 
   const previousRowMatchUpIds = [];
@@ -143,7 +149,7 @@ export function proAutoSchedule({ matchUps, scheduledDate } = {}) {
     })
   );
 
-  result = bulkScheduleMatchUps({ matchUpDetails });
+  result = bulkScheduleMatchUps({ tournamentRecords, matchUpDetails });
 
   return { ...result, scheduled, notScheduled };
 }
