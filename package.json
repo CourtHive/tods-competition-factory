@@ -74,6 +74,7 @@
     "build": "rimraf dist && rollup --config",
     "test": "vitest",
     "test:ui": "TZ=UTC vitest --ui --coverage.enabled",
+    "tui": "TZ=UTC vitest --ui",
     "coverage": "vitest run --coverage",
     "format": "prettier --write src",
     "lint:staged": "TZ=UTC lint-staged",
