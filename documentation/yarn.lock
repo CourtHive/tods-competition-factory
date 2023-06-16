@@ -2932,10 +2932,10 @@ autoprefixer@^10.3.7, autoprefixer@^10.4.7:
     picocolors "^1.0.0"
     postcss-value-parser "^4.2.0"
 
-axios@^0.25.0, axios@^0.27.0:
-  version "0.27.2"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.27.2.tgz#207658cc8621606e586c85db4b41a750e756d972"
-  integrity sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==
+axios@0.27.0, axios@^0.25.0:
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.27.0.tgz#973ca980dee9077410189340390ea77964af6b29"
+  integrity sha512-XV/WrPxXfzgZ8j4lcB5i6LyaXmi90yetmV/Fem0kmglGx+mpY06CiweL3YxU6wOTNLmqLUePW4G8h45nGZ/+pA==
   dependencies:
     follow-redirects "^1.14.9"
     form-data "^4.0.0"
@@ -8560,10 +8560,10 @@ tods-competition-factory@0.326.0:
   resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.326.0.tgz#840b44bc4d947c57ad898dc5cd309e4f2165e083"
   integrity sha512-vkzF5OZRtsDuP9XyfjYoHImuQ6l5G52YSj6XLK2EgEZTPeKkzDBDaEcrQNZhIn9Ypda0qRDFgheWGHz/VjVFjg==
 
-tods-competition-factory@0.512.7:
-  version "0.512.7"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.512.7.tgz#a6fe8ba502ca400fff010e15ec0e21d196651841"
-  integrity sha512-NKQUG0f1qzEMey4p/1boeLHEi0AGD8TK98dlwAfqxM3Jv9aqtEu2eGj1n3s6wQvzMXwXQ1VCgzW0DzT0Je5w6Q==
+tods-competition-factory@0.512.8:
+  version "0.512.8"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.512.8.tgz#243e2de39016e96b051d9c8e793a4a8288c3ba83"
+  integrity sha512-hnlUa8kInIIR6od28CjVr5TWWE+a2+sCgCzq82Cwsv/kcPfUGBaCjtkIvLVr9R0j3pEDSdxwX36/Ku1BsBnE1Q==
 
 tods-score-grid@0.10.0:
   version "0.10.0"
