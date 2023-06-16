@@ -108,7 +108,7 @@ export const competitionEngine = (function () {
     const elapsed = Date.now() - start;
     const devContext = getDevContext();
 
-    const log = { methodName };
+    const log = { method: methodName };
     const logErrors =
       typeof devContext.result === 'object' && devContext.result.error;
     if (
