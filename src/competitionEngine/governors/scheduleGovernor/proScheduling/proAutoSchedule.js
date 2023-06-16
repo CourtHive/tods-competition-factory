@@ -85,7 +85,6 @@ export function proAutoSchedule({
   }).matchUpDependencies;
 
   const previousRowMatchUpIds = [];
-  const notScheduled = [];
   const scheduled = [];
 
   while (matchUps.length && gridRows.length) {
@@ -150,6 +149,8 @@ export function proAutoSchedule({
   );
 
   result = bulkScheduleMatchUps({ tournamentRecords, matchUpDetails });
+
+  const notScheduled = matchUps;
 
   return { ...result, scheduled, notScheduled };
 }

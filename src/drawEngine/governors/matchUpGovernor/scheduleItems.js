@@ -341,7 +341,7 @@ export function addMatchUpCourtOrder({
   if (courtOrder && !isConvertableInteger(courtOrder))
     return { error: INVALID_VALUES, info: 'courtOrder must be numeric' };
 
-  const itemValue = courtOrder;
+  const itemValue = parseInt(courtOrder);
   const timeItem = {
     itemType: COURT_ORDER,
     itemValue,
