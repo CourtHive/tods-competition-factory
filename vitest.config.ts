@@ -18,6 +18,7 @@ export default defineConfig({
         'src/**/*.test.{js,ts,jsx,tsx}',
         '**/conversion/**',
         '**/examples/**',
+        '**/scratch/**',
         'src/forge/**',
         '**/types/**',
       ],
