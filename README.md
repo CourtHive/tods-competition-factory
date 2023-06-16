@@ -48,5 +48,5 @@ Alternatively, factory methods are exported directly via [the Forge](./forge).
 ## Installation
 
 ```sh
-yarn install tods-competition-factory
+yarn add tods-competition-factory
 ```
