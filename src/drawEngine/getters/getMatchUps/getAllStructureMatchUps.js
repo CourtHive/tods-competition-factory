@@ -32,6 +32,7 @@ import {
   POLICY_TYPE_PARTICIPANT,
   POLICY_TYPE_ROUND_NAMING,
 } from '../../../constants/policyConstants';
+import { isConvertableInteger } from '../../../utilities/math';
 
 /*
   return all matchUps within a structure and its child structures
@@ -413,8 +414,8 @@ export function getAllStructureMatchUps({
         tieFormat: matchUp.matchUpType !== TEAM ? undefined : tieFormat,
         roundOfPlay:
           stage !== QUALIFYING &&
-          initialRoundOfPlay !== undefined &&
-          initialRoundOfPlay + roundNumber,
+          isConvertableInteger(initialRoundOfPlay) &&
+          initialRoundOfPlay + (roundNumber || 0),
         endDate: matchUp.endDate || endDate,
         gender: collectionDefinition?.gender,
         discipline: event?.discipline,
