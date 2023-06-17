@@ -15,11 +15,11 @@ Server deployments support highly scaleable asynchronous processing models in **
 ## Data Standards
 
 The Competition Factory utilizes the **[Tennis Open Data Standards](https://itftennis.atlassian.net/wiki/spaces/TODS/overview)**, **(TODS)**,
-which provide a document-based representation of all of the elements of a tournament including participants, events, draws, matchUps, contacts, and references to online resources. Although the data standard is emerging in the sport of Tennis, **_the data structures apply to tournaments in many sports_**.
+which provide a document-based representation of all of the elements of a tournament or a league including participants, events, draws, matchUps, contacts, and references to online resources. Although the data standard is emerging in the sport of Tennis, **_the data structures apply to tournaments in many sports_**.
 
 ## Time Capsule
 
-After a tournament has been completed, a **TODS** file can be considered a "time capsule" of all the information related to the constructrion and management of a tournament. This means that complete historical data is available in one cross-platform, database-independent JSON file, removing all concerns about keeping software maintenance contracts active in order to retain access to data, as well as any reliance on applications which interpret database schemas.
+After a tournament has been completed, a **TODS** file can be considered a "time capsule" of all the information related to the constructrion and management of a tournament or a league. This means that complete historical data is available in one cross-platform, database-independent JSON file, removing all concerns about keeping software maintenance contracts active in order to retain access to data, as well as any reliance on applications which interpret database schemas.
 
 ## State Engines
 
@@ -40,7 +40,7 @@ Alternatively, factory methods are exported directly via [the Forge](./forge).
 ## Other Utilities
 
 1. [**mocksEngine**](./overview/mocks-engine-overview) - generates complete tournament objects, or tournamentRecords, as well as mock persons, participants and matchUp outcomes.
-   It is used extensively in the ~1400 tests that are run against the factory methods before every package release.
+   It is used extensively in the ~1800 tests that are run against the factory methods before every package release.
 2. [**scoreGovernor**](./scoreGovernor) - is a collection of scoring related utilities which provide analysis/validation or generate values, but do not make any mutations.
 3. [**matchUpFormatCode**](./codes/matchup-format) - is an ITF matchUp format code parser, stringifier, and validator.
 4. [**ageCategoryCode**](./codes/age-category) - is an ITF ageCategoryCode parser.
@@ -48,5 +48,5 @@ Alternatively, factory methods are exported directly via [the Forge](./forge).
 ## Installation
 
 ```sh
-yarn install tods-competition-factory
+yarn add tods-competition-factory
 ```

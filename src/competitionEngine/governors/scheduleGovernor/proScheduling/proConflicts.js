@@ -2,7 +2,10 @@ import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependenci
 import { generateRange, instanceCount, unique } from '../../../../utilities';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
 
-import { MISSING_MATCHUPS } from '../../../../constants/errorConditionConstants';
+import {
+  MISSING_CONTEXT,
+  MISSING_MATCHUPS,
+} from '../../../../constants/errorConditionConstants';
 import {
   SCHEDULE_ISSUE_IDS,
   SCHEDULE_CONFLICT,
@@ -14,8 +17,15 @@ import {
   CONFLICT_PARTICIPANTS,
 } from '../../../../constants/scheduleConstants';
 
+// NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
 export function proConflicts({ tournamentRecords, matchUps } = {}) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
+  if (matchUps.some(({ hasContext }) => !hasContext)) {
+    return {
+      info: 'matchUps must have { inContext: true, nextMatchUps: true }',
+      error: MISSING_CONTEXT,
+    };
+  }
 
   const maxCourtOrder = Math.max(
     ...matchUps

@@ -111,11 +111,11 @@ export const drawEngine = (function () {
             } catch (err) {
               const error = err.toString();
               console.log('ERROR', {
-                error,
-                method: governorMethod,
                 params: JSON.stringify(params),
+                drawId: drawDefinition?.drawId,
+                method: governorMethod,
+                error,
               });
-              console.log(err);
             }
           }
         };

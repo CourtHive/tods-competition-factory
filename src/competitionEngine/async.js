@@ -155,13 +155,15 @@ export function competitionEngineAsync(test) {
             try {
               return await engineInvoke(governor[method], params);
             } catch (err) {
+              const activeTournamentId = getTournamentId();
               const error = err.toString();
+
               console.log('ERROR', {
-                error,
-                method,
                 params: JSON.stringify(params),
+                activeTournamentId,
+                method,
+                error,
               });
-              console.log(err);
             }
           }
         };

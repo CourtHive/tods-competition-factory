@@ -73,9 +73,7 @@ it('can set and honor matchUpDailyLimits', () => {
   expect(result.success).toEqual(true);
 
   const { dateMatchUps } = competitionEngine.competitionScheduleMatchUps({
-    matchUpFilters: {
-      scheduledDate: startDate,
-    },
+    matchUpFilters: { scheduledDate: startDate },
   });
 
   const scheduledRounds = unique(dateMatchUps.map((m) => m.roundName));

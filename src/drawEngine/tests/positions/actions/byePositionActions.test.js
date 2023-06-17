@@ -9,6 +9,7 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../../constants/matchUpStatusConstants';
+import POLICY_PROGRESSION_DEFAULT from '../../../../fixtures/policies/POLICY_PROGRESSION_DEFAULT';
 
 it('will not allow BYE removal when there are active matchUps in connected structures', () => {
   const policyDefinitions = POLICY_POSITION_ACTIONS_UNRESTRICTED;
@@ -77,6 +78,7 @@ it('will not allow BYE removal when there are active matchUps in connected struc
 
   result = tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: WALKOVER, winningSide: 1 },
+    policyDefinitions: POLICY_PROGRESSION_DEFAULT,
     matchUpId: targetMatchUp.matchUpId,
     drawId,
   });

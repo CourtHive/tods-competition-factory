@@ -108,7 +108,7 @@ export const tournamentEngine = (function () {
     const elapsed = Date.now() - start;
     const devContext = getDevContext();
 
-    const log = { methodName };
+    const log = { method: methodName };
     const logErrors =
       typeof devContext.result === 'object' && devContext.result.error;
     if (
@@ -199,13 +199,15 @@ export const tournamentEngine = (function () {
             try {
               return engineInvoke(governor[methodName], params, methodName);
             } catch (err) {
+              const tournamentId = getTournamentId();
               const error = err.toString();
+
               console.log('ERROR', {
-                error,
-                methodName,
                 params: JSON.stringify(params),
+                tournamentId,
+                methodName,
+                error,
               });
-              console.log(err);
             }
           }
         };

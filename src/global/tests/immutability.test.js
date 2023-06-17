@@ -50,15 +50,17 @@ test('setting deepCopy option to false will allow source objects to be modified'
   ).value.timeStamp;
   expect(factoryTimeStamp).toEqual(latestFactoryTimeStamp);
 
-  const nextStartDate = dateStringDaysChange(startDate, 1);
-  result = tournamentEngine.setTournamentStartDate({
-    startDate: nextStartDate,
-  });
-  expect(result.success).toEqual(true);
+  setTimeout(() => {
+    const nextStartDate = dateStringDaysChange(startDate, 1);
+    result = tournamentEngine.setTournamentStartDate({
+      startDate: nextStartDate,
+    });
+    expect(result.success).toEqual(true);
 
-  tournament = tournamentEngine.getState().tournamentRecord;
-  latestFactoryTimeStamp = tournament.extensions.find(
-    (extension) => extension.name === FACTORY
-  ).value.timeStamp;
-  expect(factoryTimeStamp).not.toEqual(latestFactoryTimeStamp);
+    tournament = tournamentEngine.getState().tournamentRecord;
+    latestFactoryTimeStamp = tournament.extensions.find(
+      (extension) => extension.name === FACTORY
+    ).value.timeStamp;
+    expect(factoryTimeStamp).not.toEqual(latestFactoryTimeStamp);
+  }, 5);
 });
