@@ -131,16 +131,14 @@ export function addParticipant({
           ).length === 2
       );
 
-    if (existingPairParticipant) {
-      if (!allowDuplicateParticipantIdPairs) {
-        return {
-          ...SUCCESS,
-          existingParticipant: true,
-          participant:
-            returnParticipant &&
-            makeDeepCopy(existingPairParticipant.participant),
-        };
-      }
+    if (existingPairParticipant && !allowDuplicateParticipantIdPairs) {
+      return {
+        ...SUCCESS,
+        existingParticipant: true,
+        participant:
+          returnParticipant &&
+          makeDeepCopy(existingPairParticipant.participant),
+      };
     }
 
     if (!participant.participantName) {
