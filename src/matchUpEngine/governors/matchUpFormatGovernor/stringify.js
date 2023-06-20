@@ -1,12 +1,11 @@
 import { SET, NOAD } from './constants';
 
 export function stringify(matchUpFormatObject, preserveRedundant) {
-  if (matchUpFormatObject && typeof matchUpFormatObject === 'object') {
-    if (matchUpFormatObject.timed && !isNaN(matchUpFormatObject.minutes))
-      return timedSetFormat(matchUpFormatObject);
-    if (matchUpFormatObject.bestOf && matchUpFormatObject.setFormat)
-      return getSetFormat(matchUpFormatObject, preserveRedundant);
-  }
+  if (typeof matchUpFormatObject !== 'object') return;
+  if (matchUpFormatObject.timed && !isNaN(matchUpFormatObject.minutes))
+    return timedSetFormat(matchUpFormatObject);
+  if (matchUpFormatObject.bestOf && matchUpFormatObject.setFormat)
+    return getSetFormat(matchUpFormatObject, preserveRedundant);
 }
 
 function getNumber(formatstring) {
@@ -48,34 +47,32 @@ function getSetFormat(matchUpFormatObject, preserveRedundant) {
 }
 
 function stringifySet(setObject, preserveRedundant) {
-  if (setObject) {
-    if (typeof setObject === 'object') {
-      if (setObject.timed) return timedSetFormat(setObject);
-      if (setObject.tiebreakSet) return tiebreakFormat(setObject.tiebreakSet);
-      const setToValue = getNumber(setObject.setTo);
-      if (setToValue) {
-        const NoAD = (setObject.NoAD && NOAD) || '';
-        const setTiebreakValue = tiebreakFormat(setObject.tiebreakFormat);
-        const setTiebreakCode =
-          (setTiebreakValue &&
-            !setTiebreakValue.invalid &&
-            `/${setTiebreakValue}`) ||
-          '';
-        const tiebreakAtValue = getNumber(setObject.tiebreakAt);
-        const tiebreakAtCode =
-          (tiebreakAtValue &&
-            (tiebreakAtValue !== setToValue || preserveRedundant) &&
-            `@${tiebreakAtValue}`) ||
-          '';
-        const valid = !setTiebreakValue || !setTiebreakValue.invalid;
-        if (valid) {
-          return `${setToValue}${NoAD}${setTiebreakCode}${tiebreakAtCode}`;
-        } else {
-          return { invalid: true };
-        }
+  if (typeof setObject === 'object' && Object.keys(setObject).length) {
+    if (setObject.timed) return timedSetFormat(setObject);
+    if (setObject.tiebreakSet) return tiebreakFormat(setObject.tiebreakSet);
+    const setToValue = getNumber(setObject.setTo);
+    if (setToValue) {
+      const NoAD = (setObject.NoAD && NOAD) || '';
+      const setTiebreakValue = tiebreakFormat(setObject.tiebreakFormat);
+      const setTiebreakCode =
+        (setTiebreakValue &&
+          !setTiebreakValue.invalid &&
+          `/${setTiebreakValue}`) ||
+        '';
+      const tiebreakAtValue = getNumber(setObject.tiebreakAt);
+      const tiebreakAtCode =
+        (tiebreakAtValue &&
+          (tiebreakAtValue !== setToValue || preserveRedundant) &&
+          `@${tiebreakAtValue}`) ||
+        '';
+      const valid = !setTiebreakValue || !setTiebreakValue.invalid;
+      if (valid) {
+        return `${setToValue}${NoAD}${setTiebreakCode}${tiebreakAtCode}`;
       } else {
         return { invalid: true };
       }
+    } else {
+      return { invalid: true };
     }
   }
 }

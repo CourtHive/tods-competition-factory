@@ -13,9 +13,11 @@ const MatchUpFormatForm = ({ disabled, matchUpFormatParsed, onChange }) => {
   const classes = useStyles();
 
   const defaultMatchUpFormats = matchUpFormats().formats;
+  const timed =
+    matchUpFormatParsed?.timed || matchUpFormatParsed?.setFormat?.timed;
 
   const updateMatchUpFormat = (matchUpFormat) => {
-    onChange && onChange(matchUpFormat);
+    onChange?.(matchUpFormat);
   };
 
   const setsUpdate = (matchUpFormat) => updateMatchUpFormat(matchUpFormat);
@@ -59,7 +61,7 @@ const MatchUpFormatForm = ({ disabled, matchUpFormatParsed, onChange }) => {
               onChange={setsUpdate}
               hasFinalSet={hasFinalSet}
             />
-            {!hasFinalSet || matchUpFormatParsed.timed ? null : (
+            {!((hasFinalSet || timed) && null) || (
               <SetFormatSelector
                 matchUpFormatParsed={matchUpFormatParsed}
                 disabled={disabled}
@@ -119,10 +121,10 @@ const MatchUpFormatForm = ({ disabled, matchUpFormatParsed, onChange }) => {
   return (
     <>
       <Grid
-        container
-        direction="row"
-        justify="flex-start"
+        justify-content="flex-start"
         className={classes.row}
+        direction="row"
+        container
       >
         <Grid item className={classes.minimums}>
           {renderPreDefinedScoring()}
