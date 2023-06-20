@@ -2,8 +2,10 @@
 title: Installation
 ---
 
+Add to a project:
+
 ```sh
-yarn install tods-competition-factory
+yarn add tods-competition-factory
 ```
 
 ## Test
@@ -13,5 +15,6 @@ The **Competition Factory** is built following a Test Driven Development process
 These tests are good references for how to use the APIs provided by the `drawEngine`, `tournamentEngine`, `competitionEngine`, `mocksEngine` and `scoreGovernor`.
 
 ```sh
+// fork and clone or download from github; expand; and:
 yarn test
 ```

@@ -85,7 +85,9 @@ function tiebreakFormat(tieobject) {
       typeof tieobject === 'object' &&
       getNumber(tieobject.tiebreakTo)
     ) {
-      return `TB${tieobject.tiebreakTo}${tieobject.NoAD ? NOAD : ''}`;
+      let value = `TB${tieobject.tiebreakTo}${tieobject.NoAD ? NOAD : ''}`;
+      if (tieobject.modifier) value += `@${tieobject.modifier}`;
+      return value;
     } else {
       return { invalid: true };
     }
