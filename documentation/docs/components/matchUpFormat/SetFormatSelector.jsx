@@ -27,15 +27,17 @@ const SetFormatSelector = ({
     matchUpFormatParsed?.finalSetFormat &&
     matchUpFormatParsed?.finalSetFormat?.noTiebreak;
 
+  const timed = matchUpFormatParsed?.timed || setFormat?.timed;
+
   const initialState = {
     exact: matchUpFormatParsed?.bestOf === 1 ? 'exact' : 'bestof',
     what:
       (setsAreTiebreakSets && 'TB') ||
       (setFormat?.setTo && 'S') ||
-      ((matchUpFormatParsed?.timed || matchUpFormatParsed?.setFormat?.timed) &&
-        'T') ||
+      (timed && 'T') ||
       'S',
   };
+
   const [commonState, setCommonState] = useState(initialState);
 
   const counts =
@@ -108,14 +110,14 @@ const SetFormatSelector = ({
 
   // populates the tiebreak to selector
   const tiebreakTo = [5, 7, 9, 10, 12].map((key) => ({
-    key,
     name: `TB to: ${key}`,
+    key,
   }));
 
   // populates the tiebreak at selector
   const tiebreakAt = getTiebreakOptions(setFormat?.setTo).map((key) => ({
-    key,
     name: `@ ${key}`,
+    key,
   }));
 
   // ad / no ad in regular set value
@@ -146,7 +148,7 @@ const SetFormatSelector = ({
     setCommonState({ ...commonState, exact: event.target.value });
   };
   const handleChangeBestOf = (event) => {
-    onChange({ ...matchUpFormatParsed, bestOf: event.target.value });
+    onChange({ ...matchUpFormatParsed, bestOf: event.target.value || 1 });
   };
   const handleChangeDefaultAd = (event) => {
     onChange({
@@ -198,10 +200,10 @@ const SetFormatSelector = ({
   const handleChangeWhatTo = (event) => {
     const eventValue = event.target.value;
     const tiebreakAt = getTiebreakOptions(eventValue).reverse()[0];
-    if (matchUpFormatParsed?.timed) {
+    if (timed) {
       onChange({
         ...matchUpFormatParsed,
-        minutes: eventValue,
+        setFormat: { timed: true, minutes: eventValue },
       });
     } else if (isFinalSet) {
       const existingSetFormat = matchUpFormatParsed?.finalSetFormat || {};
@@ -230,16 +232,9 @@ const SetFormatSelector = ({
     setCommonState({ ...commonState, what: value });
 
     if (value === 'T') {
-      const setFormatUndefined = {
-        tiebreakAt: undefined,
-        setTo: undefined,
-      };
       onChange({
-        bestOf: undefined,
-        setFormat: setFormatUndefined,
-        finalSetFormat: setFormatUndefined,
-        timed: true,
-        minutes: 10,
+        setFormat: { timed: true, minutes: 10 },
+        bestOf: 1,
       });
     } else if (value === 'TB') {
       const newSetFormat = !isFinalSet
@@ -252,8 +247,6 @@ const SetFormatSelector = ({
         bestOf: bestOfValue,
         setFormat: newSetFormat,
         finalSetFormat: newFinalSetFormat,
-        timed: false,
-        minutes: undefined,
       });
     } else if (value === 'S') {
       const newSetFormat = !isFinalSet
@@ -268,8 +261,6 @@ const SetFormatSelector = ({
         bestOf: bestOfValue,
         setFormat: newSetFormat,
         finalSetFormat: newFinalSetFormat,
-        timed: false,
-        minutes: undefined,
       });
     }
   };
@@ -284,9 +275,12 @@ const SetFormatSelector = ({
   // methods used to determine which value should be selected on render
   // used for values from common state and to determine what type of set is it
   const activeWhatTo = () => {
-    if (matchUpFormatParsed?.timed) {
+    if (timed) {
       return whatTo.reduce((p, c) =>
-        c.key === matchUpFormatParsed?.minutes ? c : p
+        c.key === matchUpFormatParsed?.minutes ||
+        c.key === matchUpFormatParsed?.setFormat?.minutes
+          ? c
+          : p
       ).key;
     } else if (commonState.what === 'TB') {
       return whatTo.reduce((p, c) => (c.key === setTiebreakTo ? c : p)).key;

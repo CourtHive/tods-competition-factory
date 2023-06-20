@@ -127,7 +127,7 @@ export function matchUpFormats() {
     {
       key: 'timed10',
       name: 'Timed 10 minute game - game based',
-      format: 'T10',
+      format: 'SET1-S:T10',
     },
   ];
   const lookup = (key) =>
