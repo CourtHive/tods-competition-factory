@@ -2,10 +2,11 @@ import { matchUpFormatCode } from '..';
 import { isValid } from '../isValid';
 import { expect, it } from 'vitest';
 
+const standard = 'SET3-S:6/TB7';
 const validFormats = [
   {
     name: 'Standard Match',
-    format: 'SET3-S:6/TB7',
+    format: standard,
     obj: {
       bestOf: 3,
       setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } },
@@ -296,10 +297,10 @@ it('will not include final set code when equivalent to other sets', () => {
       tiebreakFormat: { tiebreakTo: 7 },
     },
   };
-  expect(matchUpFormatCode.stringify(obj)).toEqual('SET3-S:6/TB7');
+  expect(matchUpFormatCode.stringify(obj)).toEqual(standard);
 });
 
 it('can preserve redundant tiebreakAt detail', () => {
   expect(isValid('SET3-S:6/TB7@6')).toEqual(true);
-  expect(isValid('SET3-S:6/TB7')).toEqual(true);
+  expect(isValid(standard)).toEqual(true);
 });
