@@ -161,29 +161,33 @@ const singleSetTimed = [
   {
     format: 'T120',
     obj: {
-      bestOf: 1,
       setFormat: { timed: true, minutes: 120 },
+      simplified: true,
+      bestOf: 1,
     },
   },
   {
     format: 'T90',
     obj: {
-      bestOf: 1,
       setFormat: { timed: true, minutes: 90 },
+      simplified: true,
+      bestOf: 1,
     },
   },
   {
     format: 'T60',
     obj: {
-      bestOf: 1,
       setFormat: { timed: true, minutes: 60 },
+      simplified: true,
+      bestOf: 1,
     },
   },
   {
     format: 'T30',
     obj: {
-      bestOf: 1,
       setFormat: { timed: true, minutes: 30 },
+      simplified: true,
+      bestOf: 1,
     },
   },
 ];
@@ -221,7 +225,10 @@ it('recognizes invalid formats', () => {
 
 it('recognizes valid timed formats', () => {
   singleSetTimed.forEach(({ format }) => {
+    const parsed = matchUpFormatCode.parse(format);
+    const stringified = matchUpFormatCode.stringify(format);
     const valid = matchUpFormatCode.isValid(format);
+    if (!valid) console.log({ format, parsed, stringified });
     expect(valid).toEqual(true);
   });
 });
@@ -229,20 +236,20 @@ it('recognizes valid timed formats', () => {
 it('match format suite', () => {
   // round trip conversion tests
   validFormats.forEach((sf) => {
-    expect(
-      matchUpFormatCode.stringify(matchUpFormatCode.parse(sf.format))
-    ).toEqual(sf.format);
+    const parsed = matchUpFormatCode.parse(sf.format);
+    const stringified = matchUpFormatCode.stringify(parsed);
+    expect(stringified).toEqual(sf.format);
   });
 
   // return expected objects
-  validFormats.forEach((sf) => {
-    if (sf.obj)
-      expect(matchUpFormatCode.parse(sf.format)).toMatchObject(sf.obj);
-  });
+  validFormats.forEach(
+    (sf) =>
+      sf.obj && expect(matchUpFormatCode.parse(sf.format)).toMatchObject(sf.obj)
+  );
 
-  singleSetTimed.forEach((sf) => {
-    expect(matchUpFormatCode.parse(sf.format)).toEqual(sf.obj);
-  });
+  singleSetTimed.forEach((sf) =>
+    expect(matchUpFormatCode.parse(sf.format)).toEqual(sf.obj)
+  );
 
   // recognize invalid formats and return undefined
   invalidFormats.forEach((sf) => {
@@ -303,4 +310,32 @@ it('will not include final set code when equivalent to other sets', () => {
 it('can preserve redundant tiebreakAt detail', () => {
   expect(isValid('SET3-S:6/TB7@6')).toEqual(true);
   expect(isValid(standard)).toEqual(true);
+});
+
+it('supports matchUpFormatCode timed annotations', () => {
+  let format = 'T30P';
+  let parsed = matchUpFormatCode.parse(format);
+  let stringified = matchUpFormatCode.stringify(parsed);
+  expect(stringified).toEqual(format);
+  const valid = matchUpFormatCode.isValid(format);
+  expect(valid).toEqual(true);
+});
+
+it('supports simplified matchUpFormatCode timed sets', () => {
+  let format = 'T120';
+  let parsed = matchUpFormatCode.parse(format);
+  let stringified = matchUpFormatCode.stringify(parsed);
+  expect(stringified).toEqual(format);
+
+  const valid = matchUpFormatCode.isValid(format);
+  expect(valid).toEqual(true);
+});
+
+it('supports modifiers for timed sets', () => {
+  let format = 'T90@RALLY';
+  let parsed = matchUpFormatCode.parse(format);
+  let stringified = matchUpFormatCode.stringify(parsed);
+  expect(stringified).toEqual(format);
+  const valid = matchUpFormatCode.isValid(format);
+  expect(valid).toEqual(true);
 });

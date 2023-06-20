@@ -13,11 +13,21 @@ function getNumber(formatstring) {
 }
 
 function timedSetFormat(matchUpFormatObject) {
-  return `T${matchUpFormatObject.minutes}`;
+  let value = `T${matchUpFormatObject.minutes}`;
+  if (matchUpFormatObject.based) value += matchUpFormatObject.based;
+  if (matchUpFormatObject.modifier) value += `@${matchUpFormatObject.modifier}`;
+  return value;
 }
 
 function getSetFormat(matchUpFormatObject, preserveRedundant) {
   const bestOfValue = getNumber(matchUpFormatObject.bestOf);
+  if (
+    matchUpFormatObject.setFormat?.timed &&
+    matchUpFormatObject.simplified &&
+    bestOfValue === 1
+  ) {
+    return timedSetFormat(matchUpFormatObject.setFormat);
+  }
   const bestOfCode = (bestOfValue && `${SET}${bestOfValue}`) || '';
   const setCountValue = stringifySet(
     matchUpFormatObject.setFormat,
