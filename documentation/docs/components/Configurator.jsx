@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
 const Configurator = () => {
   const classes = useStyles();
   const [matchUpFormatParsed, setMatchUpFormatParsed] = useState(
-    matchUpFormatCode.parse('SET3-S:6')
+    matchUpFormatCode.parse('SET3-S:6/TB7')
   );
 
   const handleOnChange = (value) => setMatchUpFormatParsed(value);

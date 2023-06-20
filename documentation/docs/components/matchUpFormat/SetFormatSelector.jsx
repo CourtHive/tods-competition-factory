@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
-
-import Grid from '@material-ui/core/Grid';
-import Select from '@material-ui/core/Select';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Select from '@material-ui/core/Select';
+import Grid from '@material-ui/core/Grid';
+import React, { useState } from 'react';
 
 import { getTiebreakOptions, hasTiebreakObjectBuilder } from './utils';
 
 const SetFormatSelector = ({
-  disabled,
   matchUpFormatParsed,
-  isFinalSet,
   hasFinalSet,
+  isFinalSet,
+  disabled,
   onChange,
 }) => {
   const setFormat = isFinalSet
@@ -28,35 +27,35 @@ const SetFormatSelector = ({
     matchUpFormatParsed?.finalSetFormat &&
     matchUpFormatParsed?.finalSetFormat?.noTiebreak;
 
-  const [commonState, setCommonState] = useState({
+  const initialState = {
     exact: matchUpFormatParsed?.bestOf === 1 ? 'exact' : 'bestof',
-    what: setsAreTiebreakSets
-      ? 'TB'
-      : setFormat?.setTo
-      ? 'S'
-      : matchUpFormatParsed?.timed || matchUpFormatParsed?.setFormat?.timed
-      ? 'T'
-      : 'S',
-  });
+    what:
+      (setsAreTiebreakSets && 'TB') ||
+      (setFormat?.setTo && 'S') ||
+      ((matchUpFormatParsed?.timed || matchUpFormatParsed?.setFormat?.timed) &&
+        'T') ||
+      'S',
+  };
+  const [commonState, setCommonState] = useState(initialState);
 
   const counts =
-    ['S', 'TB'].indexOf(commonState.what) >= 0
-      ? [1, 3, 5].map((key) => ({ key, name: key }))
-      : [1, 3, 5].map((key) => ({ key, name: key }));
+    (['S', 'TB'].indexOf(commonState.what) >= 0 &&
+      [1, 3, 5].map((key) => ({ key, name: key }))) ||
+    [1, 3, 5].map((key) => ({ key, name: key }));
   const whatTo =
     commonState.what === 'T'
       ? [10, 15, 20, 25, 30, 45, 60, 90].map((key) => ({
-          key,
           name: `${key} Minutes`,
+          key,
         }))
       : commonState.what === 'TB'
-      ? [5, 7, 9, 10, 12].map((key) => ({
-          key,
+      ? [5, 7, 9, 10, 11, 12, 15, 21].map((key) => ({
           name: `to ${key}`,
+          key,
         }))
       : [1, 2, 3, 4, 5, 6, 7, 8, 9].map((key) => ({
-          key,
           name: `to ${key}`,
+          key,
         }));
 
   const finalFixed = 'final';
@@ -74,9 +73,9 @@ const SetFormatSelector = ({
     { key: 'S', name: 'Set' },
     { key: 'TB', name: 'Tiebreak' },
     {
-      key: 'T',
-      name: 'Timed Set',
       disabled: isDisabled('timed') || isFinalSet,
+      name: 'Timed Set',
+      key: 'T',
     },
   ];
   const bestOfPlural = [
@@ -94,6 +93,7 @@ const SetFormatSelector = ({
     isFinalSet
       ? bestOfSingular
       : bestOfPlural;
+
   const adnoad = [
     { key: false, name: 'Ad' },
     { key: true, name: 'No Ad' },
@@ -119,12 +119,11 @@ const SetFormatSelector = ({
   }));
 
   // ad / no ad in regular set value
-  const NoAD = setFormat && setFormat?.NoAD;
+  const NoAD = setFormat?.NoAD;
 
   // ad / no ad in tiebreak value
   const NoADTiebreak =
-    !!(setFormat?.tiebreakFormat && setFormat?.tiebreakFormat.NoAD) ||
-    !!(setFormat?.tiebreakSet && setFormat?.tiebreakSet.NoAD);
+    !!setFormat?.tiebreakFormat?.NoAD || !!setFormat?.tiebreakSet?.NoAD;
 
   // determines if set is noTiebreak
   const hasTiebreak = (event) => {

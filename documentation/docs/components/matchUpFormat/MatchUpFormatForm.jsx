@@ -15,7 +15,7 @@ const MatchUpFormatForm = ({ disabled, matchUpFormatParsed, onChange }) => {
   const defaultMatchUpFormats = matchUpFormats().formats;
 
   const updateMatchUpFormat = (matchUpFormat) => {
-    onChange && onChange(matchUpFormat);
+    onChange?.(matchUpFormat);
   };
 
   const setsUpdate = (matchUpFormat) => updateMatchUpFormat(matchUpFormat);
