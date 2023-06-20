@@ -36,18 +36,18 @@ function setsMatch(formatstring) {
 }
 
 function parseSetFormat(formatstring) {
-  if (formatstring && formatstring[1] === ':') {
+  if (formatstring?.[1] === ':') {
     const parts = formatstring.split(':');
     const setType = setTypes[parts[0]];
     const setFormatString = parts[1];
     if (setType && setFormatString) {
-      const tiebreakSet = setFormatString.indexOf('TB') === 0;
+      const tiebreakSet = setFormatString.startsWith('TB');
       if (tiebreakSet)
         return { tiebreakSet: parseTiebreakFormat(setFormatString) };
-      const timedSet = setFormatString.indexOf('T') === 0;
-      if (timedSet) {
-        return parseTimedSet(setFormatString);
-      }
+
+      const timedSet = setFormatString.startsWith('T');
+      if (timedSet) return parseTimedSet(setFormatString);
+
       const parts = formatstring.match(/^[FS]{1}:(\d+)([A-Za-z]*)/);
       const NoAD = (parts && isNoAD(parts[2])) || false;
       const validNoAD = !parts || !parts[2] || NoAD;
@@ -59,6 +59,7 @@ function parseSetFormat(formatstring) {
       const tiebreakFormat = parseTiebreakFormat(setFormatString.split('/')[1]);
       const validTiebreak = !tiebreakFormat || !tiebreakFormat.invalid;
       const result = { setTo };
+
       if (NoAD) result.NoAD = true;
       if (tiebreakFormat) {
         result.tiebreakFormat = tiebreakFormat;
@@ -76,35 +77,35 @@ function parseSetFormat(formatstring) {
   }
 }
 
-function parseTiebreakAt(setFormatString) {
+function parseTiebreakAt(setFormatString, expectNumber = true) {
   const tiebreakAtValue =
-    setFormatString &&
-    setFormatString.indexOf('@') > 0 &&
-    setFormatString.split('@');
+    setFormatString?.includes('@') && setFormatString.split('@')?.[1];
   if (tiebreakAtValue) {
-    const tiebreakAt = getNumber(tiebreakAtValue[1]);
+    const tiebreakAt = expectNumber
+      ? getNumber(tiebreakAtValue)
+      : tiebreakAtValue;
     return tiebreakAt || { invalid: true };
   }
 }
 
 function parseTiebreakFormat(formatstring) {
-  if (formatstring) {
-    if (formatstring.indexOf('TB') === 0) {
-      const parts = formatstring.match(/^TB(\d+)([A-Za-z]*)/);
-      const tiebreakToString = parts && parts[1];
-      const NoAD = parts && isNoAD(parts[2]);
-      const validNoAD = !parts || !parts[2] || NoAD;
-      const tiebreakTo = getNumber(tiebreakToString);
-      if (tiebreakTo && validNoAD) {
-        const result = { tiebreakTo };
-        if (NoAD) result.NoAD = true;
-        return result;
-      } else {
-        return { invalid: true };
-      }
+  if (formatstring?.startsWith('TB')) {
+    const modifier = parseTiebreakAt(formatstring, false);
+    const parts = formatstring.match(/^TB(\d+)([A-Za-z]*)/);
+    const tiebreakToString = parts && parts[1];
+    const NoAD = parts && isNoAD(parts[2]);
+    const validNoAD = !parts || !parts[2] || NoAD;
+    const tiebreakTo = getNumber(tiebreakToString);
+    if (tiebreakTo && validNoAD) {
+      const result = { tiebreakTo };
+      if (modifier) result.modifier = modifier;
+      if (NoAD) result.NoAD = true;
+      return result;
     } else {
       return { invalid: true };
     }
+  } else {
+    return { invalid: true };
   }
 }
 
@@ -115,7 +116,7 @@ function parseTimedSet(formatstring) {
 }
 
 function isNoAD(formatstring) {
-  return formatstring && formatstring.indexOf(NOAD) >= 0;
+  return formatstring && formatstring.includes(NOAD);
 }
 
 function getNumber(formatstring) {
