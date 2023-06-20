@@ -21,6 +21,7 @@ const features = [
   {
     title: 'Proven in production',
     imageUrl: 'img/tmx.png',
+    imageLink: 'https://courthive.github.io/TMX/#/',
     description: (
       <>
         Based on years of experience running thousands of events for governing
@@ -31,7 +32,7 @@ const features = [
   },
   {
     title: 'Rigorously tested',
-    imageUrl: 'img/jest.png',
+    imageUrl: 'img/vitest-logo.svg',
     description: (
       <>
         Built following a Test Driven Development process utilizing Jest. With

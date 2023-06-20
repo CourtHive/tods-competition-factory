@@ -29,7 +29,6 @@ The **competitionEngine**, **tournamentEngine** and **scaleEngine** share a stat
 while the **drawEngine** and **matchUpEngine** have their own state.
 
 By default a deep copy of documents are made as they are loaded into each state engine. This behavior can be overridden such that the engines operate on original documents.
-Alternatively, factory methods are exported directly via [the Forge](./forge).
 
 1. [**competitionEngine**](./engines/competition-engine-overview) - manages resources which may be shared across multiple linked tournaments, such as venues (courts & other locations); includes advanced scheduling and cross-tournament reporting.
 2. [**tournamentEngine**](./engines/tournament-engine-overview) - manages tournament metadata, participants, events (including the generation of complex draw types and "flights" within events), and reporting.

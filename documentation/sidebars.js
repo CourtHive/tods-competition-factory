@@ -6,8 +6,8 @@ module.exports = {
       items: [
         'introduction',
         'state-engines',
-        'forge',
         'features',
+        'tmx',
         'installation',
       ],
     },
