@@ -13,7 +13,6 @@ import { addDrawEntries } from './drawDefinitions/addDrawEntries';
 import { addEventEntryPairs } from './entries/addEventEntryPairs';
 import { removeEventEntries } from './entries/removeEventEntries';
 import { checkValidEntries } from './entries/checkValidEntries';
-import { destroyPairEntry } from './entries/destroyPairEntry';
 import { assignSeedPositions } from './assignSeedPositions';
 import { addEventEntries } from './entries/addEventEntries';
 import { deleteEvents } from './deleteEvent';
@@ -22,6 +21,10 @@ import {
   checkInParticipant,
   checkOutParticipant,
 } from './participantCheckInState';
+import {
+  destroyPairEntries,
+  destroyPairEntry,
+} from './entries/destroyPairEntry';
 import {
   automatedPositioning,
   automatedPlayoffPositioning,
@@ -175,6 +178,7 @@ const eventGovernor = {
   promoteAlternate,
   promoteAlternates,
   destroyPairEntry,
+  destroyPairEntries,
   setEntryPosition,
   setEntryPositions,
   addEventEntryPairs,
