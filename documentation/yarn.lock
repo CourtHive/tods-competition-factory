@@ -4788,6 +4788,11 @@ find-up@^5.0.0:
     locate-path "^6.0.0"
     path-exists "^4.0.0"
 
+flag-icons@^6.7.0:
+  version "6.7.0"
+  resolved "https://registry.yarnpkg.com/flag-icons/-/flag-icons-6.7.0.tgz#ce80897e21fda3f541e1f0471b295da7dfb940bb"
+  integrity sha512-+KXrrrXN2jiETFxisFl+3f83Bq7tj5nuIWnbv9fX59k05lvldEXRCOffybb5hAIjMWt4nmG0E8OfKt7Flm99Eg==
+
 flux@^4.0.1:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/flux/-/flux-4.0.3.tgz#573b504a24982c4768fdfb59d8d2ea5637d72ee7"
@@ -7375,11 +7380,6 @@ react-base16-styling@^0.9.1:
     csstype "^3.0.10"
     lodash.curry "^4.1.1"
 
-react-country-flag@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/react-country-flag/-/react-country-flag-3.1.0.tgz#f0c4c332934a77d3e894ba4800634f7a887e53d4"
-  integrity sha512-JWQFw1efdv9sTC+TGQvTKXQg1NKbDU2mBiAiRWcKM9F1sK+/zjhP2yGmm8YDddWyZdXVkR8Md47rPMJmo4YO5g==
-
 react-dev-utils@^12.0.1:
   version "12.0.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-12.0.1.tgz#ba92edb4a1f379bd46ccd6bcd4e7bc398df33e73"
@@ -8557,10 +8557,10 @@ tods-competition-factory@1.0.3, tods-competition-factory@^1.0.3:
   resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.0.3.tgz#9884ef599df32fd0aca33b7ed02c0cdd7069de9b"
   integrity sha512-RIhJjSiZ/p61i2Ag0SEDcYBYkKtrIsnzgGJs0gb2ApHOzF/WsaZv9RV2CoxYB9BjgRmE0I88L4tSs5mQC8ZNLw==
 
-tods-score-grid@0.11.1:
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/tods-score-grid/-/tods-score-grid-0.11.1.tgz#84b8802ddc911243283e41cceadbec2311002354"
-  integrity sha512-q5K+CXx0r6kLbZ1MnDh2Wxit6iSF96tU4pQqaItYpDwpmnKmE2bfPpRXuqojoJwT0/t/fkFLm/Jr0NsSentbAw==
+tods-score-grid@0.11.7:
+  version "0.11.7"
+  resolved "https://registry.yarnpkg.com/tods-score-grid/-/tods-score-grid-0.11.7.tgz#1d8cf21fad07bf6cdd86a5cc7455f668dd0a32be"
+  integrity sha512-ZT+xjvR3BdBl3b43DN1Kiod/cVahB8vXZ1uKi+s3ovFPJH+vyx5zuTZi3baG5FXjZDTcPaMo9igxZaoVfZXZPw==
   dependencies:
     "@radix-ui/colors" "^0.1.7"
     "@radix-ui/react-dropdown-menu" "^1.0.0"
@@ -8569,7 +8569,7 @@ tods-score-grid@0.11.1:
     "@stitches/react" "^1.2.5"
     classnames "^2.3.1"
     dayjs "^1.10.7"
-    react-country-flag "^3.1.0"
+    flag-icons "^6.7.0"
     tods-competition-factory "^1.0.3"
 
 toidentifier@1.0.1:
