@@ -1151,8 +1151,8 @@ Removes a `{ participantType: PAIR }` entry from an event and adds the individua
 
 ```js
 tournamentEngine.destroyPairEntry({
-  eventId,
   participantId,
+  eventId,
 });
 ```
 

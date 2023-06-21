@@ -1,6 +1,7 @@
 import { destroyGroupEntry } from './destroyGroupEntry';
 
 import { UNGROUPED } from '../../../../constants/entryStatusConstants';
+import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 
 /**
  *
@@ -8,7 +9,6 @@ import { UNGROUPED } from '../../../../constants/entryStatusConstants';
  * @param {string} participantId - id of TEAM/PAIR participant to remove
  * @param {string} eventId - resolved to { event } by tournamentEngine
  * @param {string} drawId - optional - resolved to { drawDefinition }
- * @param {string} entryStatus - assign to individuals removed from destroyed team
  * @param {boolean} removeGroupParticipant - whether to also remove grouping participant from tournamentRecord.participants
  *
  */
@@ -18,7 +18,6 @@ export function destroyPairEntry({
   tournamentRecord,
   drawDefinition,
   participantId,
-  entryStatus,
   drawId,
   event,
 }) {
@@ -28,8 +27,21 @@ export function destroyPairEntry({
     tournamentRecord,
     drawDefinition,
     participantId,
-    entryStatus,
     drawId,
     event,
   });
+}
+
+export function destroyPairEntries(params) {
+  if (!params.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+
+  const { participantIds, ...rest } = params;
+
+  let destroyedCount = 0;
+  for (const participantId of participantIds) {
+    const result = destroyGroupEntry({ participantId, ...rest });
+    if (result.success) destroyedCount += 1;
+  }
+
+  return { destroyedCount };
 }

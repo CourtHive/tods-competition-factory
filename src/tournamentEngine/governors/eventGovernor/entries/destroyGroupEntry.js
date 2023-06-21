@@ -30,7 +30,6 @@ import {
  * @param {string} participantId - id of TEAM/PAIR participant to remove
  * @param {string} eventId - resolved to { event } by tournamentEngine
  * @param {string} drawId - optional - resolved to { drawDefinition }
- * @param {string} entryStatus - assign to individuals removed from destroyed team
  * @param {boolean} removeGroupParticipant - whether to also remove grouping participant from tournamentRecord.participants
  *
  */
@@ -40,7 +39,6 @@ export function destroyGroupEntry({
   tournamentRecord,
   drawDefinition,
   participantId,
-  entryStatus,
   drawId,
   stage,
   event,
@@ -71,8 +69,6 @@ export function destroyGroupEntry({
   ) {
     return { error: INVALID_PARTICIPANT_TYPE };
   }
-
-  const defaultEntryStatus = UNGROUPED;
 
   const eventEntries = event.entries || [];
   const entry = eventEntries.find(
@@ -119,7 +115,7 @@ export function destroyGroupEntry({
   if (individualParticipantIds.length) {
     result = addEventEntries({
       participantIds: individualParticipantIds,
-      entryStatus: entryStatus || defaultEntryStatus,
+      entryStatus: UNGROUPED,
       entryStage: entry.entryStage,
       tournamentRecord,
       drawDefinition,
