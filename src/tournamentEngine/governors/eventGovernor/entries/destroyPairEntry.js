@@ -2,6 +2,7 @@ import { destroyGroupEntry } from './destroyGroupEntry';
 
 import { UNGROUPED } from '../../../../constants/entryStatusConstants';
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 /**
  *
@@ -38,10 +39,13 @@ export function destroyPairEntries(params) {
   const { participantIds, ...rest } = params;
 
   let destroyedCount = 0;
+  const errors = [];
+
   for (const participantId of participantIds) {
     const result = destroyGroupEntry({ participantId, ...rest });
     if (result.success) destroyedCount += 1;
+    if (result.error) errors.push(result.error);
   }
 
-  return { destroyedCount };
+  return destroyedCount ? { destroyedCount, ...SUCCESS } : { error: errors };
 }
