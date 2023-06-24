@@ -20,7 +20,7 @@ import {
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
 export function proConflicts({ tournamentRecords, matchUps } = {}) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
-  if (matchUps.some(({ hasContext }) => !hasContext)) {
+  if (matchUps.some(({ matchUpId, hasContext }) => matchUpId && !hasContext)) {
     return {
       info: 'matchUps must have { inContext: true, nextMatchUps: true }',
       error: MISSING_CONTEXT,
