@@ -58,7 +58,18 @@ function timeDate(value, scheduledDate) {
 }
 
 function validTimeValue(value) {
-  return !!(value === undefined || timeValidation.test(value));
+  const spaceSplit = typeof value === 'string' && value?.split(' ');
+  if (
+    value &&
+    spaceSplit?.length > 1 &&
+    !['AM', 'PM'].includes(spaceSplit[1].toUpperCase())
+  )
+    return false;
+
+  return !!(
+    // value === undefined || timeValidation.test(convertTime(value, true, true))
+    (!value || timeValidation.test(convertTime(value, true, true)))
+  );
 }
 
 export function addMatchUpScheduleItems({
