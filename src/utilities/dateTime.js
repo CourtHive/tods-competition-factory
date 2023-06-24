@@ -243,6 +243,8 @@ export function militaryTime(value) {
 
 export function regularTime(value) {
   const time = splitTime(value);
+  if (typeof time === 'object' && !Object.keys(time).length) return undefined;
+
   if (time.ampm) return value;
   if (time.hours > 12) {
     time.hours -= 12;
@@ -255,15 +257,22 @@ export function regularTime(value) {
   } else {
     time.ampm = 'AM';
   }
-  if (time.hours[0] === '0') {
+  if (time.hours?.[0] === '0') {
     time.hours = time.hours.slice(1);
   }
 
   return `${time.hours || '12'}:${time.minutes || '00'} ${time.ampm}`;
 }
 
-export function convertTime(value, time24) {
-  return time24 ? militaryTime(value) : regularTime(value);
+export function convertTime(value, time24, keepDate) {
+  const hasDate = extractDate(value);
+  const timeString = extractTime(value);
+  const timeValue = hasDate ? timeString : value;
+
+  return !value
+    ? undefined
+    : (time24 && ((hasDate && keepDate && value) || militaryTime(timeValue))) ||
+        regularTime(timeValue);
 }
 
 export function timeSort(a, b) {

@@ -434,9 +434,9 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   await forceDelay();
 
   result = tournamentEngine.addMatchUpScheduledTime({
-    drawId,
-    matchUpId,
     scheduledTime: undefined,
+    matchUpId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 

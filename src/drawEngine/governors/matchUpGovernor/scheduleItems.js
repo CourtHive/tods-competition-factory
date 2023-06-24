@@ -10,6 +10,7 @@ import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../../utilities/math';
 import { addMatchUpTimeItem } from './timeItems';
 import {
+  convertTime,
   extractDate,
   extractTime,
   formatDate,
@@ -388,6 +389,7 @@ export function addMatchUpTimeModifiers({
   });
 }
 
+// TODO: if scheduledDate and scheduleTime includes date, must be on same day as scheduledDate
 export function addMatchUpScheduledTime({
   removePriorValues,
   tournamentRecord,
@@ -401,9 +403,9 @@ export function addMatchUpScheduledTime({
   // must support undefined as a value so that scheduledTime can be cleared
   if (!validTimeValue(scheduledTime)) return { error: INVALID_TIME };
 
-  // TODO: if scheduledDate and scheduleTime includes date, must be on same day as scheduledDate
-
-  const itemValue = scheduledTime;
+  // All times stored as military time
+  const militaryTime = convertTime(scheduledTime, true, true);
+  const itemValue = militaryTime;
   const timeItem = {
     itemType: SCHEDULED_TIME,
     itemValue,
@@ -488,7 +490,10 @@ export function addMatchUpStartTime({
         (timeItem) => timeItem.itemType !== START_TIME
       );
     }
-    const timeItem = { itemType: START_TIME, itemValue: startTime };
+
+    const militaryTime = convertTime(startTime, true, true);
+    const timeItem = { itemType: START_TIME, itemValue: militaryTime };
+
     return addMatchUpTimeItem({
       duplicateValues: false,
       removePriorValues,
@@ -543,7 +548,11 @@ export function addMatchUpEndTime({
         (timeItem) => timeItem.itemType !== END_TIME
       );
     }
-    const timeItem = { itemType: END_TIME, itemValue: endTime };
+
+    // All times stored as military time
+    const militaryTime = convertTime(endTime, true, true);
+    const timeItem = { itemType: END_TIME, itemValue: militaryTime };
+
     return addMatchUpTimeItem({
       duplicateValues: false,
       removePriorValues,
@@ -618,9 +627,11 @@ export function addMatchUpStopTime({
       );
     }
 
+    // All times stored as military time
+    const militaryTime = convertTime(stopTime, true, true);
     const timeItem = {
+      itemValue: militaryTime,
       itemType: STOP_TIME,
-      itemValue: stopTime,
     };
 
     return addMatchUpTimeItem({
@@ -697,9 +708,11 @@ export function addMatchUpResumeTime({
       );
     }
 
+    // All times stored as military time
+    const militaryTime = convertTime(resumeTime, true, true);
     const timeItem = {
+      itemValue: militaryTime,
       itemType: RESUME_TIME,
-      itemValue: resumeTime,
     };
 
     return addMatchUpTimeItem({

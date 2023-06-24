@@ -84,6 +84,11 @@ test('DateHHMM returns formatted time string from seconds', () => {
   expect(result).toEqual('02:46:40');
 });
 
+test('converTime will not fail on invalid time string', () => {
+  let result = convertTime('08:00 x y z');
+  expect(result).toBeUndefined();
+});
+
 test('converTime supports both 12 and 24 hour formats', () => {
   let result = convertTime('1:00 PM', true);
   expect(result).toEqual('13:00');
