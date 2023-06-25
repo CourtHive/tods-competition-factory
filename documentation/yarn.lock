@@ -8557,10 +8557,10 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-tods-competition-factory@1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.0.6.tgz#d4a7bf0504d247af0d327434b76e956728aedf2c"
-  integrity sha512-y7YqlUKNIOK2Exk4hF22n38GlnF5xx7/1G9R+X0hkpimOs5c2y02mBB/XTmt6NapxL0vbLHpawPU52DP77VKNg==
+tods-competition-factory@1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.0.8.tgz#63a9c98740e27c7f93a545a91f09c51f816238fe"
+  integrity sha512-dFNCbe5koB1Sa6solqorz5XER9RymJB71iJOsfClyVV8ev4LedzaNQ7J83UL6bv3lbFJpvB3Yjtf5qXNIvE13Q==
 
 tods-competition-factory@^1.0.3:
   version "1.0.3"
