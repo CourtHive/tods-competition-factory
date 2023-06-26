@@ -16,6 +16,4 @@ it('can schedule', () => {
 
   const result = competitionEngine.scheduleProfileRounds();
   expect(result.success).toEqual(true);
-
-  expect(true);
 });

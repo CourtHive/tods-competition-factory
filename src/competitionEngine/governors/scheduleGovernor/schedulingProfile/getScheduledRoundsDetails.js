@@ -1,6 +1,5 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { filterMatchUps } from '../../../../drawEngine/getters/getMatchUps/filterMatchUps';
-import { getMatchUpFormat } from '../../../../tournamentEngine/getters/getMatchUpFormat';
 import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
@@ -62,17 +61,18 @@ export function getScheduledRoundsDetails({
 
   if (!matchUps) {
     ({ matchUps } = allCompetitionMatchUps({
-      tournamentRecords,
       nextMatchUps: true,
+      tournamentRecords,
     }));
   }
   // ---------------------------------------------------------
 
-  const minutesMap = {};
+  let greatestAverageMinutes = 0;
   const recoveryMinutesMap = {};
   const averageMinutesMap = {};
-  let greatestAverageMinutes = 0;
-  const scheduledRoundsDetails = sortedRounds.map((round) => {
+  const minutesMap = {};
+
+  const scheduledRoundsDetails = sortedRounds.flatMap((round) => {
     const roundPeriodLength = round.periodLength || periodLength;
     const structureIds = containedStructureIds[round.structureId] || [
       round.structureId,
@@ -86,9 +86,9 @@ export function getScheduledRoundsDetails({
       structureIds,
     };
     let roundMatchUps = filterMatchUps({
-      matchUps,
-      processContext: true,
       ...roundMatchUpFilters,
+      processContext: true,
+      matchUps,
     }).sort(matchUpSort);
 
     // filter by roundSegment
@@ -112,70 +112,77 @@ export function getScheduledRoundsDetails({
     }
 
     const tournamentRecord = tournamentRecords[round.tournamentId];
-    const { drawDefinition, event } = findEvent({
+    const { event } = findEvent({
       drawId: round.drawId,
       tournamentRecord,
     });
-    const { matchUpFormat } = getMatchUpFormat({
-      structureId: round.structureId,
-      tournamentRecord,
-      drawDefinition,
-      event,
-    });
 
-    const { eventType, category, categoryType } = event || {};
-    const { categoryName, ageCategoryCode } = category || {};
-    const {
-      typeChangeRecoveryMinutes,
-      recoveryMinutes,
-      averageMinutes,
-      error,
-    } = findMatchUpFormatTiming({
-      categoryName: categoryName || ageCategoryCode,
-      tournamentId: round.tournamentId,
-      eventId: round.eventId,
-      tournamentRecords,
-      matchUpFormat,
-      categoryType,
-      eventType,
-    });
-    if (error) return { error, round };
+    const matchUpFormatOrder = [];
+    const matchUpFormatCohorts = {};
+    for (const matchUp of roundMatchUps) {
+      const matchUpFormat = matchUp.matchUpFormat;
+      if (!matchUpFormatCohorts[matchUpFormat]) {
+        matchUpFormatCohorts[matchUpFormat] = [];
+        matchUpFormatOrder.push(matchUpFormat);
+      }
+      matchUpFormatOrder.push(matchUp);
+    }
 
-    const matchUpIds = roundMatchUps
-      .filter(
-        ({ matchUpStatus }) =>
-          // don't attempt to scheduled completed matchUpstatuses unless explicit override
-          (scheduleCompletedMatchUps ||
-            !completedMatchUpStatuses.includes(matchUpStatus)) &&
-          matchUpStatus !== BYE
-      )
-      .map(getMatchUpId);
-
-    matchUpIds.forEach((matchUpId) => {
-      minutesMap[matchUpId] = {
+    for (const matchUpFormat of matchUpFormatOrder) {
+      const { eventType, category, categoryType } = event || {};
+      const { categoryName, ageCategoryCode } = category || {};
+      const {
         typeChangeRecoveryMinutes,
         recoveryMinutes,
         averageMinutes,
+        error,
+      } = findMatchUpFormatTiming({
+        categoryName: categoryName || ageCategoryCode,
+        tournamentId: round.tournamentId,
+        eventId: round.eventId,
+        tournamentRecords,
+        matchUpFormat,
+        categoryType,
+        eventType,
+      });
+      if (error) return { error, round };
+
+      const matchUpIds = roundMatchUps
+        .filter(
+          ({ matchUpStatus }) =>
+            // don't attempt to scheduled completed matchUpstatuses unless explicit override
+            (scheduleCompletedMatchUps ||
+              !completedMatchUpStatuses.includes(matchUpStatus)) &&
+            matchUpStatus !== BYE
+        )
+        .map(getMatchUpId);
+
+      matchUpIds.forEach((matchUpId) => {
+        minutesMap[matchUpId] = {
+          typeChangeRecoveryMinutes,
+          recoveryMinutes,
+          averageMinutes,
+        };
+        recoveryMinutesMap[matchUpId] = recoveryMinutes;
+        averageMinutesMap[matchUpId] = averageMinutes;
+      });
+      orderedMatchUpIds.push(...matchUpIds);
+
+      greatestAverageMinutes = Math.max(
+        averageMinutes || 0,
+        greatestAverageMinutes
+      );
+      const hash = `${averageMinutes}|${roundPeriodLength}`;
+      if (!hashes.includes(hash)) hashes.push(hash);
+
+      return {
+        roundPeriodLength,
+        recoveryMinutes,
+        averageMinutes,
+        matchUpIds,
+        hash,
       };
-      recoveryMinutesMap[matchUpId] = recoveryMinutes;
-      averageMinutesMap[matchUpId] = averageMinutes;
-    });
-    orderedMatchUpIds.push(...matchUpIds);
-
-    greatestAverageMinutes = Math.max(
-      averageMinutes || 0,
-      greatestAverageMinutes
-    );
-    const hash = `${averageMinutes}|${roundPeriodLength}`;
-    if (!hashes.includes(hash)) hashes.push(hash);
-
-    return {
-      roundPeriodLength,
-      recoveryMinutes,
-      averageMinutes,
-      matchUpIds,
-      hash,
-    };
+    }
   });
 
   return {

@@ -30,7 +30,7 @@ export function getVenueSchedulingDetails({
 
   // first pass through all venues is to build up an array of all matchUpIds in the schedulingProfile for current scheduleDate
   for (const venue of venues) {
-    const { rounds = [], venueId } = venue;
+    const { rounds = [], venueId } = venue; // rounds derives from dateSchedulingProfile
     const {
       scheduledRoundsDetails,
       greatestAverageMinutes,
