@@ -86,15 +86,17 @@ export function addCourt({
 }
 
 export function addCourts({
+  courtNameRoot = 'Court',
   dateAvailability = [],
+  venueAbbreviationRoot,
   tournamentRecord,
   courtNames = [],
   courtTimings,
   courtsCount,
   startTime,
-  idPrefix,
   courtIds,
   endTime,
+  idPrefix,
   venueId,
   dates,
 }) {
@@ -126,8 +128,10 @@ export function addCourts({
     return {
       courtName:
         courtNames[i] ||
-        (venue.venueAbbreviation && `${venue.venueAbbreviation} ${i + 1}`) ||
-        `Court ${i + 1}`,
+        (venueAbbreviationRoot &&
+          venue.venueAbbreviation &&
+          `${venue.venueAbbreviation} ${i + 1}`) ||
+        `${courtNameRoot} ${i + 1}`,
       dateAvailability: courtAvailability,
     };
   });

@@ -98,9 +98,11 @@ const dateAvailability = [
   },
 ];
 tournamentEngine.addCourts({
+  venueAbbreviationRoot, // optional boolean; whether to use venue.venueAbbreviation in court naming
+  dateAvailability, // optional -- see definition in Tournament Engine API
+  courtNameRoot, // optional; defaults to 'Court'
   courtNames: ['Court 1', 'Court 2', 'Court 3'], // optional
   courtsCount: 3, // optional, can be added/modified later; also can be derived from courtNames.length
-  dateAvailability, // optional
   venueId,
 });
 ```

@@ -12,10 +12,12 @@ Convenience function to bulk add courts to a Venue. Only adds **dateAvailability
 
 ```js
 competitionEngine.addCourts({
-  venueId,
-  courtsCount: 3, // optional, can be added/modified later
-  courtNames: ['Court 1', 'Court 2', 'Court 3'], // optional
+  venueAbbreviationRoot, // optional boolean; whether to use venue.venueAbbreviation in court naming
   dateAvailability, // optional -- see definition in Tournament Engine API
+  courtsCount: 3, // optional, can be added/modified later
+  courtNameRoot, // optional; defaults to 'Court'
+  courtNames: ['Court 1', 'Court 2', 'Court 3'], // optional
+  venueId,
 });
 ```
 
