@@ -18,9 +18,10 @@ export const RESUME_TIME = 'SCHEDULE.TIME.RESUME';
 export const END_TIME = 'SCHEDULE.TIME.END';
 
 export const TIME_MODIFIERS = 'SCHEDULE.TIME.MODIFIERS';
-export const AFTER_REST = 'AFTER_REST';
-export const FOLLOWED_BY = 'FOLLOWED_BY';
+export const TO_BE_ANNOUNCED = 'TO_BE_ANNOUNCED';
 export const NEXT_AVAILABLE = 'NEXT_AVAILABLE';
+export const FOLLOWED_BY = 'FOLLOWED_BY';
+export const AFTER_REST = 'AFTER_REST';
 export const NOT_BEFORE = 'NOT_BEFORE';
 
 export const ELIGIBILITY = 'ELIGIBILITY';
@@ -43,15 +44,22 @@ export const RETRIEVAL = 'RETRIEVAL';
 export const OTHER = 'other';
 
 export const timeItemConstants = {
+  AFTER_REST,
   ALLOCATE_COURTS,
   ASSIGN_COURT,
   ASSIGN_OFFICIAL,
   ASSIGN_VENUE,
   CHECK_IN,
   CHECK_OUT,
+  COMPLETED_DATE,
+  COURT_ORDER,
   ELIGIBILITY,
   END_TIME,
+  FOLLOWED_BY,
   MEDICAL,
+  MODIFICATION,
+  NEXT_AVAILABLE,
+  NOT_BEFORE,
   OTHER,
   PENALTY,
   PUBLIC,
@@ -62,6 +70,7 @@ export const timeItemConstants = {
   RESUME_TIME,
   RETRIEVAL,
   SCALE,
+  SCHEDULE,
   SCHEDULED_DATE,
   SCHEDULED_TIME,
   SEEDING,
@@ -69,4 +78,6 @@ export const timeItemConstants = {
   STATUS,
   STOP_TIME,
   SUSPENSION,
+  TIME_MODIFIERS,
+  TO_BE_ANNOUNCED,
 };
