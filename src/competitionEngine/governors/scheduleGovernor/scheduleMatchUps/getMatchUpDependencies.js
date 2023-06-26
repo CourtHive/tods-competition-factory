@@ -5,8 +5,8 @@
 
 import { addGoesTo } from '../../../../drawEngine/governors/matchUpGovernor/addGoesTo';
 import { allDrawMatchUps } from '../../../../tournamentEngine/getters/matchUpsGetter';
-import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
+import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
 

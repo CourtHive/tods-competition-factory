@@ -73,13 +73,14 @@ export function addMatchUpScheduleItems({
   errorOnAnachronism = false,
   checkChronology = true,
   matchUpDependencies,
+  inContextMatchUps,
   removePriorValues,
   tournamentRecords,
   tournamentRecord,
   drawDefinition,
   disableNotice,
+  drawMatchUps,
   matchUpId,
-  matchUps,
   schedule,
   event,
 }) {
@@ -88,11 +89,17 @@ export function addMatchUpScheduleItems({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   const stack = 'drawEngine.addMatchUpScheduleItems';
-  let warning;
+  let matchUp, warning;
 
-  const result = findMatchUp({ drawDefinition, event, matchUpId });
-  if (result.error) return result;
-  const matchUp = result.matchUp;
+  if (!drawMatchUps) {
+    const result = findMatchUp({ drawDefinition, event, matchUpId });
+    if (result.error) return result;
+    matchUp = result.matchUp;
+  } else {
+    matchUp = drawMatchUps.find(
+      (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
+    );
+  }
 
   const {
     endTime,
@@ -108,15 +115,16 @@ export function addMatchUpScheduleItems({
     venueId,
   } = schedule;
 
-  if (checkChronology && (!matchUpDependencies || !matchUps)) {
-    ({ matchUpDependencies, matchUps } = getMatchUpDependencies({
-      drawDefinition,
-    }));
+  if (checkChronology && (!matchUpDependencies || !inContextMatchUps)) {
+    ({ matchUpDependencies, matchUps: inContextMatchUps } =
+      getMatchUpDependencies({
+        drawDefinition,
+      }));
   }
 
   const priorMatchUpIds = matchUpDependencies?.[matchUpId]?.matchUpIds;
   if (schedule.scheduledDate && checkChronology && priorMatchUpIds) {
-    const priorMatchUpTimes = matchUps
+    const priorMatchUpTimes = inContextMatchUps
       .filter(
         (matchUp) =>
           (matchUp.schedule?.scheduledDate ||
