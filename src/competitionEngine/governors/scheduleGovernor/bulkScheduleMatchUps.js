@@ -20,6 +20,7 @@ export function bulkScheduleMatchUps({
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(matchUpContextIds) && !Array.isArray(matchUpDetails))
     return { error: INVALID_VALUES };
+
   if ((!matchUpDetails || matchUpContextIds) && !schedule)
     return { error: MISSING_VALUE, info: 'schedule is required' };
 

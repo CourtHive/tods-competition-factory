@@ -1,10 +1,10 @@
 import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 import { addMatchUpScheduleItems } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
+import { getDrawDefinition } from '../../getters/eventGetter';
 import {
   allDrawMatchUps,
   allTournamentMatchUps,
 } from '../../getters/matchUpsGetter';
-import { getDrawDefinition } from '../../getters/eventGetter';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

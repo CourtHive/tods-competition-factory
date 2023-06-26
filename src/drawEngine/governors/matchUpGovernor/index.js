@@ -19,9 +19,10 @@ import { setMatchUpFormat } from './setMatchUpFormat';
 import { resetScorecard } from './resetScorecard';
 import { addGoesTo } from './addGoesTo';
 
+import { addMatchUpScheduledTime } from './scheduleTimeItems/scheduledTime';
+import { addMatchUpTimeModifiers } from './scheduleTimeItems/timeModifiers';
 import {
   addMatchUpScheduledDate,
-  addMatchUpScheduledTime,
   addMatchUpStartTime,
   addMatchUpEndTime,
   addMatchUpStopTime,
@@ -54,6 +55,7 @@ const matchUpGovernor = {
   addMatchUpEndTime,
   addMatchUpStopTime,
   addMatchUpResumeTime,
+  addMatchUpTimeModifiers,
   addGoesTo,
 
   setOrderOfFinish,

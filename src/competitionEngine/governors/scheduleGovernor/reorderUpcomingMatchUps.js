@@ -1,4 +1,4 @@
-import { addMatchUpScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
+import { addMatchUpScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleTimeItems/scheduledTime';
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 import { decorateResult } from '../../../global/functions/decorateResult';
 
