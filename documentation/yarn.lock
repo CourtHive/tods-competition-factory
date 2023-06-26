@@ -8756,10 +8756,10 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-tods-competition-factory@1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.0.9.tgz#509e0193ab2c07cf21542e3d49c2bde35b17bbb7"
-  integrity sha512-G+R1Mor+Ud2EhIQh2Y7wNZOQJDoLtRnUR98XVhHZikPxlp/nhx20X9y2COqOZGL8e4vE5UADhhokxM+anWBIiw==
+tods-competition-factory@1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.0.10.tgz#fdcb27ce08d438bb24eda4dae6d2e0629f837299"
+  integrity sha512-PC5USulcL9Ebm0Urb7ipbDytHfH/GLPg7bSGGAn7UzOB5iVGCOXIlWrdB/J9KN3WjRKVYXlRBDelqkkFxt48Aw==
 
 tods-competition-factory@^1.0.3:
   version "1.0.3"
