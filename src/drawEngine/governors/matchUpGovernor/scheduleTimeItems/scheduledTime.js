@@ -41,9 +41,11 @@ export function addMatchUpScheduledTime({
 
   if (timeDate) {
     const scheduledDate = scheduledMatchUpDate({ matchUp }).scheduledDate;
-    if (scheduledDate !== timeDate) {
+    if (scheduledDate && scheduledDate !== timeDate) {
+      // console.log({ scheduledDate, timeDate });
+      // !!decorateResult && stack;
       return decorateResult({
-        info: 'date in time does not corresponde to scheduledDate',
+        info: `date in time: ${timeDate} does not corresponde to scheduledDate: ${scheduledDate}`,
         result: { error: INVALID_TIME },
         stack,
       });

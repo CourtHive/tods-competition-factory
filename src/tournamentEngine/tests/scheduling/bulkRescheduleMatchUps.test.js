@@ -154,14 +154,14 @@ it('can bulk reschedule matchUps that have been auto-scheduled', () => {
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.bulkRescheduleMatchUps({
-    matchUpIds,
     scheduleChange: { daysChange: -1, minutesChange: 0 },
+    matchUpIds,
   });
   expect(result.notRescheduled.length).toEqual(scheduledMatchUps.length);
 
   result = tournamentEngine.bulkRescheduleMatchUps({
-    matchUpIds,
     scheduleChange: { daysChange: 1, minutesChange: 0 },
+    matchUpIds,
   });
   expect(result.rescheduled.length).toEqual(scheduledMatchUps.length);
 

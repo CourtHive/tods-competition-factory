@@ -302,11 +302,11 @@ export function addMatchUpScheduleItems({
 }
 
 export function addMatchUpScheduledDate({
+  scheduledDate: dateToSchedule,
   removePriorValues,
   tournamentRecord,
   drawDefinition,
   disableNotice,
-  scheduledDate,
   matchUpId,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -316,12 +316,14 @@ export function addMatchUpScheduledDate({
   // TODO: check that 1) scheduledDate is valid date and 2) is in range for tournament
   // this must be done in tournamentEngine wrapper
 
-  const validDate = dateValidation.test(scheduledDate);
-  if (scheduledDate && !validDate) return { error: INVALID_DATE };
+  const validDate = dateValidation.test(dateToSchedule);
+  if (dateToSchedule && !validDate) return { error: INVALID_DATE };
+
+  const scheduledDate = extractDate(dateToSchedule);
 
   const timeItem = {
-    itemType: SCHEDULED_DATE,
     itemValue: scheduledDate,
+    itemType: SCHEDULED_DATE,
   };
 
   return addMatchUpTimeItem({

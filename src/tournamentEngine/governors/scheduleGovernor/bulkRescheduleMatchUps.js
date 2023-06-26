@@ -101,6 +101,15 @@ export function bulkRescheduleMatchUps({
         const { scheduledTime, scheduledDate } = schedule;
 
         let doNotReschedule, newScheduledTime, newScheduledDate;
+        if (!doNotReschedule && daysChange && scheduledDate) {
+          const currentDate = extractDate(scheduledDate);
+          newScheduledDate = dateStringDaysChange(currentDate, daysChange);
+
+          doNotReschedule =
+            new Date(newScheduledDate) < new Date(startDate) ||
+            new Date(newScheduledDate) > new Date(endDate);
+        }
+
         if (minutesChange && scheduledTime) {
           const scheduledTimeDate = extractDate(scheduledTime);
           const currentDayMinutes = timeStringMinutes(
@@ -114,19 +123,11 @@ export function bulkRescheduleMatchUps({
               scheduledTime,
               minutesChange
             );
-            newScheduledTime = scheduledTimeDate
-              ? `${scheduledTimeDate}T${timeString}`
-              : timeString;
+            newScheduledTime =
+              scheduledTimeDate && newScheduledDate
+                ? `${newScheduledDate}T${timeString}`
+                : timeString;
           }
-        }
-
-        if (!doNotReschedule && daysChange && scheduledDate) {
-          const currentDate = extractDate(scheduledDate);
-          newScheduledDate = dateStringDaysChange(currentDate, daysChange);
-
-          doNotReschedule =
-            new Date(newScheduledDate) < new Date(startDate) ||
-            new Date(newScheduledDate) > new Date(endDate);
         }
 
         if (doNotReschedule) {
