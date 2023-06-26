@@ -1,9 +1,9 @@
+import { addMatchUpScheduledTime as addScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleTimeItems/scheduledTime';
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import {
   addMatchUpScheduleItems as addScheduleItems,
   addMatchUpScheduledDate as addScheduledDate,
-  addMatchUpScheduledTime as addScheduledTime,
   addMatchUpResumeTime as addResumeTime,
   addMatchUpStartTime as addStartTime,
   addMatchUpStopTime as addStopTime,

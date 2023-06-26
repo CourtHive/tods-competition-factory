@@ -3,10 +3,10 @@ import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
 import { ASSIGN_VENUE } from '../../../constants/timeItemConstants';
 
 export function matchUpAssignedVenueId({
-  matchUp,
   visibilityThreshold,
   timeStamp,
   schedule,
+  matchUp,
 }) {
   const { itemValue: venueId, timeStamp: itemTimeStamp } =
     latestVisibleTimeItemValue({

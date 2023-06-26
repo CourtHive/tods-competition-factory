@@ -37,6 +37,7 @@ export function addMatchUpScheduledDate(params) {
   const { tournamentRecord, drawDefinition } = result;
 
   const { disableNotice, scheduledDate, matchUpId, removePriorValues } = params;
+
   return addScheduledDate({
     removePriorValues,
     tournamentRecord,

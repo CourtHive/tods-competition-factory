@@ -2,11 +2,12 @@ import { getMatchUpDependencies } from '../../../competitionEngine/governors/sch
 import { allocateTeamMatchUpCourts } from '../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
 import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
+import { addMatchUpScheduledTime } from './scheduleTimeItems/scheduledTime';
+import { addMatchUpTimeModifiers } from './scheduleTimeItems/timeModifiers';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { isConvertableInteger } from '../../../utilities/math';
 import { addMatchUpTimeItem } from './timeItems';
 import {
@@ -15,10 +16,10 @@ import {
   extractTime,
   formatDate,
   getIsoDateString,
+  validTimeValue,
 } from '../../../utilities/dateTime';
 import {
   dateValidation,
-  timeValidation,
   validTimeString,
 } from '../../../fixtures/validations/regex';
 
@@ -42,10 +43,8 @@ import {
   STOP_TIME,
   RESUME_TIME,
   END_TIME,
-  SCHEDULED_TIME,
   SCHEDULED_DATE,
   COURT_ORDER,
-  TIME_MODIFIERS,
 } from '../../../constants/timeItemConstants';
 
 function timeDate(value, scheduledDate) {
@@ -57,29 +56,18 @@ function timeDate(value, scheduledDate) {
   return new Date(`${date}T${time}`);
 }
 
-function validTimeValue(value) {
-  const spaceSplit = typeof value === 'string' && value?.split(' ');
-  if (
-    value &&
-    spaceSplit?.length > 1 &&
-    !['AM', 'PM'].includes(spaceSplit[1].toUpperCase())
-  )
-    return false;
-
-  return !!(!value || timeValidation.test(convertTime(value, true, true)));
-}
-
 export function addMatchUpScheduleItems({
   errorOnAnachronism = false,
   checkChronology = true,
   matchUpDependencies,
+  inContextMatchUps,
   removePriorValues,
   tournamentRecords,
   tournamentRecord,
   drawDefinition,
   disableNotice,
+  drawMatchUps,
   matchUpId,
-  matchUps,
   schedule,
   event,
 }) {
@@ -88,11 +76,17 @@ export function addMatchUpScheduleItems({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   const stack = 'drawEngine.addMatchUpScheduleItems';
-  let warning;
+  let matchUp, warning;
 
-  const result = findMatchUp({ drawDefinition, event, matchUpId });
-  if (result.error) return result;
-  const matchUp = result.matchUp;
+  if (!drawMatchUps) {
+    const result = findMatchUp({ drawDefinition, event, matchUpId });
+    if (result.error) return result;
+    matchUp = result.matchUp;
+  } else {
+    matchUp = drawMatchUps.find(
+      (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
+    );
+  }
 
   const {
     endTime,
@@ -108,15 +102,16 @@ export function addMatchUpScheduleItems({
     venueId,
   } = schedule;
 
-  if (checkChronology && (!matchUpDependencies || !matchUps)) {
-    ({ matchUpDependencies, matchUps } = getMatchUpDependencies({
-      drawDefinition,
-    }));
+  if (checkChronology && (!matchUpDependencies || !inContextMatchUps)) {
+    ({ matchUpDependencies, matchUps: inContextMatchUps } =
+      getMatchUpDependencies({
+        drawDefinition,
+      }));
   }
 
   const priorMatchUpIds = matchUpDependencies?.[matchUpId]?.matchUpIds;
   if (schedule.scheduledDate && checkChronology && priorMatchUpIds) {
-    const priorMatchUpTimes = matchUps
+    const priorMatchUpTimes = inContextMatchUps
       .filter(
         (matchUp) =>
           (matchUp.schedule?.scheduledDate ||
@@ -127,6 +122,7 @@ export function addMatchUpScheduleItems({
         const isoDateString = getIsoDateString(schedule);
         return new Date(isoDateString).getTime();
       });
+
     if (priorMatchUpTimes?.length) {
       const isoDateString = getIsoDateString(schedule);
       const matchUpTime = new Date(isoDateString).getTime();
@@ -161,6 +157,7 @@ export function addMatchUpScheduleItems({
       drawDefinition,
       scheduledTime,
       matchUpId,
+      matchUp,
     });
     if (result?.error)
       return decorateResult({ result, stack, context: { scheduledTime } });
@@ -173,6 +170,7 @@ export function addMatchUpScheduleItems({
       drawDefinition,
       matchUpId,
       startTime,
+      matchUp,
       event,
     });
     if (result?.error)
@@ -186,6 +184,7 @@ export function addMatchUpScheduleItems({
       drawDefinition,
       matchUpId,
       stopTime,
+      matchUp,
       event,
     });
     if (result?.error)
@@ -199,6 +198,7 @@ export function addMatchUpScheduleItems({
       drawDefinition,
       resumeTime,
       matchUpId,
+      matchUp,
       event,
     });
     if (result?.error)
@@ -212,6 +212,7 @@ export function addMatchUpScheduleItems({
       drawDefinition,
       matchUpId,
       endTime,
+      matchUp,
       event,
     });
     if (result?.error)
@@ -239,7 +240,6 @@ export function addMatchUpScheduleItems({
       drawDefinition,
       matchUpId,
       courtId,
-      event,
     });
     if (result?.error)
       return decorateResult({ result, stack, context: { courtId } });
@@ -254,7 +254,6 @@ export function addMatchUpScheduleItems({
       drawDefinition,
       matchUpId,
       venueId,
-      event,
     });
     if (result?.error)
       return decorateResult({ result, stack, context: { venueId } });
@@ -269,13 +268,12 @@ export function addMatchUpScheduleItems({
       drawDefinition,
       courtOrder,
       matchUpId,
-      event,
     });
     if (result?.error)
       return decorateResult({ result, stack, context: { courtOrder } });
   }
 
-  if (timeModifiers !== undefined && Array.isArray(timeModifiers)) {
+  if (timeModifiers !== undefined) {
     const result = addMatchUpTimeModifiers({
       disableNotice: true,
       removePriorValues,
@@ -284,7 +282,7 @@ export function addMatchUpScheduleItems({
       drawDefinition,
       timeModifiers,
       matchUpId,
-      event,
+      matchUp,
     });
     if (result?.error)
       return decorateResult({ result, stack, context: { timeModifiers } });
@@ -304,11 +302,11 @@ export function addMatchUpScheduleItems({
 }
 
 export function addMatchUpScheduledDate({
+  scheduledDate: dateToSchedule,
   removePriorValues,
   tournamentRecord,
   drawDefinition,
   disableNotice,
-  scheduledDate,
   matchUpId,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -318,12 +316,14 @@ export function addMatchUpScheduledDate({
   // TODO: check that 1) scheduledDate is valid date and 2) is in range for tournament
   // this must be done in tournamentEngine wrapper
 
-  const validDate = dateValidation.test(scheduledDate);
-  if (scheduledDate && !validDate) return { error: INVALID_DATE };
+  const validDate = dateValidation.test(dateToSchedule);
+  if (dateToSchedule && !validDate) return { error: INVALID_DATE };
+
+  const scheduledDate = extractDate(dateToSchedule);
 
   const timeItem = {
-    itemType: SCHEDULED_DATE,
     itemValue: scheduledDate,
+    itemType: SCHEDULED_DATE,
   };
 
   return addMatchUpTimeItem({
@@ -353,69 +353,6 @@ export function addMatchUpCourtOrder({
   const itemValue = parseInt(courtOrder);
   const timeItem = {
     itemType: COURT_ORDER,
-    itemValue,
-  };
-
-  return addMatchUpTimeItem({
-    duplicateValues: false,
-    removePriorValues,
-    tournamentRecord,
-    drawDefinition,
-    disableNotice,
-    matchUpId,
-    timeItem,
-  });
-}
-
-export function addMatchUpTimeModifiers({
-  removePriorValues,
-  tournamentRecord,
-  drawDefinition,
-  disableNotice,
-  timeModifiers,
-  matchUpId,
-}) {
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-
-  if (timeModifiers && !Array.isArray(timeModifiers))
-    return { error: INVALID_VALUES, info: mustBeAnArray('timeModifiers') };
-
-  const itemValue = timeModifiers;
-  const timeItem = {
-    itemType: TIME_MODIFIERS,
-    itemValue,
-  };
-
-  return addMatchUpTimeItem({
-    duplicateValues: false,
-    removePriorValues,
-    tournamentRecord,
-    drawDefinition,
-    disableNotice,
-    matchUpId,
-    timeItem,
-  });
-}
-
-// TODO: if scheduledDate and scheduleTime includes date, must be on same day as scheduledDate
-export function addMatchUpScheduledTime({
-  removePriorValues,
-  tournamentRecord,
-  drawDefinition,
-  disableNotice,
-  scheduledTime,
-  matchUpId,
-}) {
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-
-  // must support undefined as a value so that scheduledTime can be cleared
-  if (!validTimeValue(scheduledTime)) return { error: INVALID_TIME };
-
-  // All times stored as military time
-  const militaryTime = convertTime(scheduledTime, true, true);
-  const itemValue = militaryTime;
-  const timeItem = {
-    itemType: SCHEDULED_TIME,
     itemValue,
   };
 

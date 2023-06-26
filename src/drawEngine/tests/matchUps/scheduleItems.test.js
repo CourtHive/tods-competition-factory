@@ -2,6 +2,7 @@ import { drawEngine } from '../../sync';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
+import { INVALID_TIME } from '../../../constants/errorConditionConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
 import { ERROR } from '../../../constants/resultConstants';
 
@@ -30,8 +31,15 @@ it('can add schedule items', () => {
   } = drawEngine.findMatchUp({ matchUpId });
   expect(timeItems.length).toEqual(1);
 
-  // TODO: should the scheduled time include the scheduled day?
-  const scheduledTime = '08:00';
+  let scheduledTime = '2020-01-02T08:00';
+  result = drawEngine.addMatchUpScheduledTime({ matchUpId, scheduledTime });
+  expect(result.error).toEqual(INVALID_TIME);
+
+  scheduledTime = '2020-01-01T08:00';
+  result = drawEngine.addMatchUpScheduledTime({ matchUpId, scheduledTime });
+  expect(result.success).toEqual(true);
+
+  scheduledTime = '08:00';
   result = drawEngine.addMatchUpScheduledTime({ matchUpId, scheduledTime });
   expect(result.success).toEqual(true);
 
@@ -52,7 +60,7 @@ it('can add schedule items', () => {
   ({ matchUp } = drawEngine.findMatchUp({ matchUpId }));
   let { schedule } = drawEngine.getMatchUpScheduleDetails({ matchUp });
   expect(schedule.scheduledDate).toEqual('2020-01-01');
-  expect(schedule.scheduledTime).toEqual('08:00');
+  expect(schedule.scheduledTime).toEqual(scheduledTime);
 
   ({ milliseconds, time, relevantTimeItems } = drawEngine.matchUpDuration({
     matchUp,

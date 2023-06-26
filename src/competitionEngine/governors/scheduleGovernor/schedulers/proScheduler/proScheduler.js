@@ -1,5 +1,5 @@
+import { addMatchUpScheduledTime } from '../../../../../drawEngine/governors/matchUpGovernor/scheduleTimeItems/scheduledTime';
 import { assignMatchUpCourt } from '../../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
-import { addMatchUpScheduledTime } from '../../../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
 import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
 import { getDrawDefinition } from '../../../../../tournamentEngine/getters/eventGetter';

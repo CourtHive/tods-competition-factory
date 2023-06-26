@@ -22,7 +22,16 @@ export const TO_BE_ANNOUNCED = 'TO_BE_ANNOUNCED';
 export const NEXT_AVAILABLE = 'NEXT_AVAILABLE';
 export const FOLLOWED_BY = 'FOLLOWED_BY';
 export const AFTER_REST = 'AFTER_REST';
+export const RAIN_DELAY = 'RAIN_DELAY';
 export const NOT_BEFORE = 'NOT_BEFORE';
+
+export const MUTUALLY_EXCLUSIVE_TIME_MODIFIERS = [
+  TO_BE_ANNOUNCED,
+  NEXT_AVAILABLE,
+  FOLLOWED_BY,
+  AFTER_REST,
+  RAIN_DELAY,
+];
 
 export const ELIGIBILITY = 'ELIGIBILITY';
 export const REGISTRATION = 'REGISTRATION';
@@ -44,6 +53,7 @@ export const RETRIEVAL = 'RETRIEVAL';
 export const OTHER = 'other';
 
 export const timeItemConstants = {
+  MUTUALLY_EXCLUSIVE_TIME_MODIFIERS,
   AFTER_REST,
   ALLOCATE_COURTS,
   ASSIGN_COURT,
@@ -66,6 +76,7 @@ export const timeItemConstants = {
   PUBLISH,
   RANKING,
   RATING,
+  RAIN_DELAY,
   REGISTRATION,
   RESUME_TIME,
   RETRIEVAL,

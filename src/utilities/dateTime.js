@@ -1,4 +1,8 @@
-import { dateValidation, validDateString } from '../fixtures/validations/regex';
+import {
+  dateValidation,
+  timeValidation,
+  validDateString,
+} from '../fixtures/validations/regex';
 
 export function getIsoDateString(schedule) {
   let { scheduledDate, scheduledTime } = schedule;
@@ -19,6 +23,18 @@ export function isDateObject(value) {
     const datePrototype = Object.prototype.toString.call(value);
     return datePrototype === '[object Date]';
   }
+}
+
+export function validTimeValue(value) {
+  const spaceSplit = typeof value === 'string' && value?.split(' ');
+  if (
+    value &&
+    spaceSplit?.length > 1 &&
+    !['AM', 'PM'].includes(spaceSplit[1].toUpperCase())
+  )
+    return false;
+
+  return !!(!value || timeValidation.test(convertTime(value, true, true)));
 }
 
 export function isValidDateString(scheduleDate) {
@@ -522,4 +538,8 @@ export const dateTime = {
   timeStringMinutes,
   timeToDate,
   timeUTC,
+  validTimeValue,
+  validDateString,
+  timeValidation,
+  dateValidation,
 };

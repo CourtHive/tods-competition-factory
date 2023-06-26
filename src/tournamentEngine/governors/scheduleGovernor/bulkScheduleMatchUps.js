@@ -1,7 +1,10 @@
 import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 import { addMatchUpScheduleItems } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
 import { getDrawDefinition } from '../../getters/eventGetter';
+import {
+  allDrawMatchUps,
+  allTournamentMatchUps,
+} from '../../getters/matchUpsGetter';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -34,20 +37,29 @@ export function bulkScheduleMatchUps({
   if (!matchUpDetails && (!schedule || typeof schedule !== 'object'))
     return { error: MISSING_SCHEDULE };
 
+  let inContextMatchUps;
   const warnings = [];
   let scheduled = 0;
 
-  matchUpDependencies =
-    checkChronology &&
-    (matchUpDependencies ||
-      getMatchUpDependencies({
-        tournamentRecords,
-      }).matchUpDependencies);
+  // Optimize getting matchUps for all tournamentRecords
+  // if matchUpDependencies are provided, skip this step
+  if (checkChronology && !matchUpDependencies) {
+    const result = getMatchUpDependencies({ tournamentRecords });
+    matchUpDependencies = result.matchUpDependencies;
+    inContextMatchUps = result.matchUps;
+  }
 
-  const { matchUps } = allTournamentMatchUps({ tournamentRecord });
+  // Optimize getting matchUps for all tournamentRecords
+  // if inContextMatchUps retrieved in previous step, skip this step
+  if (!inContextMatchUps) {
+    inContextMatchUps =
+      allTournamentMatchUps({
+        tournamentRecord,
+      })?.matchUps || [];
+  }
 
   // first organize matchUpIds by drawId
-  const drawIdMap = matchUps.reduce((drawIdMap, matchUp) => {
+  const drawIdMap = inContextMatchUps.reduce((drawIdMap, matchUp) => {
     const { matchUpId, drawId } = matchUp;
     if (drawIdMap[drawId]) {
       drawIdMap[drawId].push(matchUpId);
@@ -69,6 +81,12 @@ export function bulkScheduleMatchUps({
         matchUpIds?.includes(matchUpId) || detailMatchUpIds?.includes(matchUpId)
     );
 
+    // optimize matchUp retrieval
+    const drawMatchUps = allDrawMatchUps({
+      inContext: false,
+      drawDefinition,
+    }).matchUps;
+
     for (const matchUpId of drawMatchUpIds) {
       const matchUpSchedule =
         matchUpDetails?.find((details) => details.matchUpId === matchUpId)
@@ -77,12 +95,13 @@ export function bulkScheduleMatchUps({
         schedule: matchUpSchedule,
         matchUpDependencies,
         errorOnAnachronism,
+        inContextMatchUps,
         tournamentRecords,
         tournamentRecord,
         checkChronology,
         drawDefinition,
+        drawMatchUps,
         matchUpId,
-        matchUps,
       });
       if (result.warnings?.length) warnings.push(...result.warnings);
       if (result.success) scheduled += 1;
