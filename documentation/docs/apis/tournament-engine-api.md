@@ -3828,6 +3828,20 @@ tournamentEngine.setTournamentStatus({ status: CANCELLED });
 
 ---
 
+## swapDrawPositionAssignments
+
+Swaps the `participantIds` of two `drawPositions`.
+
+```js
+tournamentEngine.swapDrawPositionAssignments({
+  drawPositions,
+  structureId,
+  drawId,
+});
+```
+
+---
+
 ## toggleParticipantCheckInState
 
 ```js

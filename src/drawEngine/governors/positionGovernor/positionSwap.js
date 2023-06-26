@@ -7,6 +7,7 @@ import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
+import { updateSideLineUp } from './updateSideLineUp';
 import { cleanupLineUps } from './cleanupLineUps';
 import { makeDeepCopy } from '../../../utilities';
 import {
@@ -24,7 +25,6 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { updateSideLineUp } from './updateSideLineUp';
 
 export function swapDrawPositionAssignments({
   tournamentRecord,
