@@ -1,5 +1,7 @@
 import { matchUpTimeModifiers } from '../../../accessors/matchUpAccessor/timeModifiers';
+import { decorateResult } from '../../../../global/functions/decorateResult';
 import { scheduledMatchUpDate } from '../../../accessors/matchUpAccessor';
+import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
 import { addMatchUpTimeModifiers } from './timeModifiers';
 import { addMatchUpTimeItem } from '../timeItems';
 import {
@@ -28,10 +30,24 @@ export function addMatchUpScheduledTime({
   // must support undefined as a value so that scheduledTime can be cleared
   if (!validTimeValue(scheduledTime)) return { error: INVALID_TIME };
 
-  const timeDate = extractDate(scheduledMatchUpDate);
+  if (!matchUp) {
+    const result = findMatchUp({ drawDefinition, matchUpId });
+    if (result.error) return result;
+    matchUp = result.matchUp;
+  }
+
+  const timeDate = extractDate(scheduledTime);
+  const stack = 'addMatchUpScheduledTime';
+
   if (timeDate) {
-    const scheduledDate = scheduledMatchUpDate({ matchUp });
-    console.log('***********************', { timeDate, scheduledDate });
+    const scheduledDate = scheduledMatchUpDate({ matchUp }).scheduledDate;
+    if (scheduledDate !== timeDate) {
+      return decorateResult({
+        info: 'date in time does not corresponde to scheduledDate',
+        result: { error: INVALID_TIME },
+        stack,
+      });
+    }
   }
 
   let existingTimeModifiers =

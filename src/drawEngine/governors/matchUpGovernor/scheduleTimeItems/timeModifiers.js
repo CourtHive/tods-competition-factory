@@ -29,7 +29,6 @@ export function addMatchUpTimeModifiers({
 
   let existingTimeModifiers =
     matchUpTimeModifiers({ matchUp }).timeModifiers || [];
-  console.log(Array.isArray(timeModifiers), { timeModifiers });
   const toBeAdded = timeModifiers.filter(
     (modifier) => !existingTimeModifiers.includes(modifier)
   );
