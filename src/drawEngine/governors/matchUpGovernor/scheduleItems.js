@@ -66,10 +66,7 @@ function validTimeValue(value) {
   )
     return false;
 
-  return !!(
-    // value === undefined || timeValidation.test(convertTime(value, true, true))
-    (!value || timeValidation.test(convertTime(value, true, true)))
-  );
+  return !!(!value || timeValidation.test(convertTime(value, true, true)));
 }
 
 export function addMatchUpScheduleItems({
