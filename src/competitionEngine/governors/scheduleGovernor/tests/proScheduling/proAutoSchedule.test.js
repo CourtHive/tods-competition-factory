@@ -32,7 +32,7 @@ it('will not scheduled earlier rounds after later rounds', () => {
     tournamentId,
   });
 
-  let result = tournamentEngine.setState(tournamentRecord);
+  let result = competitionEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
   const matchUpId = 'matchUp-2-1';
@@ -102,7 +102,7 @@ it('will not save overlapping timeModifiers', () => {
     tournamentId,
   });
 
-  let result = tournamentEngine.setState(tournamentRecord);
+  let result = competitionEngine.reset().setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
   let matchUps = competitionEngine.allCompetitionMatchUps({
