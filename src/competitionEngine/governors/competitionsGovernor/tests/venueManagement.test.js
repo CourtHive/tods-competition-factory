@@ -50,9 +50,9 @@ test('competitionEngine can modify venues', () => {
   ];
 
   result = competitionEngine.addCourts({
-    venueId,
-    courtsCount: 3,
     dateAvailability,
+    courtsCount: 3,
+    venueId,
   });
   expect(result.success).toEqual(true);
 

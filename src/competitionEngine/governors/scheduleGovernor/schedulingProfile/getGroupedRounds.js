@@ -13,7 +13,7 @@ export function getGroupedRounds({
   let roundPeriodLength;
   let groupedRounds = [];
 
-  for (const roundDetails of scheduledRoundsDetails) {
+  for (const roundDetails of scheduledRoundsDetails.filter(Boolean)) {
     if (!lastHash) lastHash = roundDetails.hash;
     if (roundDetails.hash === lastHash || garmanSinglePass) {
       groupedMatchUpIds = groupedMatchUpIds.concat(roundDetails.matchUpIds);
