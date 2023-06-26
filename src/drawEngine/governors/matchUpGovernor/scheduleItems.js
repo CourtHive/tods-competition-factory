@@ -2,14 +2,16 @@ import { getMatchUpDependencies } from '../../../competitionEngine/governors/sch
 import { allocateTeamMatchUpCourts } from '../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
 import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
-import { addMatchUpScheduledTime } from './scheduleTimeItems/scheduledTime';
-import { addMatchUpTimeModifiers } from './scheduleTimeItems/timeModifiers';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isConvertableInteger } from '../../../utilities/math';
 import { addMatchUpTimeItem } from './timeItems';
+import {
+  addMatchUpScheduledTime,
+  addMatchUpTimeModifiers,
+} from './scheduleTimeItems/scheduledTime';
 import {
   convertTime,
   extractDate,

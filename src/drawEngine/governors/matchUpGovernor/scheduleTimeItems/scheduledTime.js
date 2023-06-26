@@ -2,7 +2,7 @@ import { matchUpTimeModifiers } from '../../../accessors/matchUpAccessor/timeMod
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { scheduledMatchUpDate } from '../../../accessors/matchUpAccessor';
 import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
-import { addMatchUpTimeModifiers } from './timeModifiers';
+import { mustBeAnArray } from '../../../../utilities/mustBeAnArray';
 import { addMatchUpTimeItem } from '../timeItems';
 import {
   convertTime,
@@ -10,9 +10,15 @@ import {
   validTimeValue,
 } from '../../../../utilities/dateTime';
 
-import { SCHEDULED_TIME } from '../../../../constants/timeItemConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
+import {
+  MUTUALLY_EXCLUSIVE_TIME_MODIFIERS,
+  SCHEDULED_TIME,
+  TIME_MODIFIERS,
+} from '../../../../constants/timeItemConstants';
 import {
   INVALID_TIME,
+  INVALID_VALUES,
   MISSING_MATCHUP_ID,
 } from '../../../../constants/errorConditionConstants';
 
@@ -73,6 +79,69 @@ export function addMatchUpScheduledTime({
   const itemValue = militaryTime;
   const timeItem = {
     itemType: SCHEDULED_TIME,
+    itemValue,
+  };
+
+  return addMatchUpTimeItem({
+    duplicateValues: false,
+    removePriorValues,
+    tournamentRecord,
+    drawDefinition,
+    disableNotice,
+    matchUpId,
+    timeItem,
+  });
+}
+
+export function addMatchUpTimeModifiers({
+  removePriorValues,
+  tournamentRecord,
+  drawDefinition,
+  disableNotice,
+  timeModifiers,
+  matchUpId,
+  matchUp,
+}) {
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+
+  if (timeModifiers !== undefined && !Array.isArray(timeModifiers))
+    return { error: INVALID_VALUES, info: mustBeAnArray('timeModifiers') };
+
+  let existingTimeModifiers =
+    matchUpTimeModifiers({ matchUp }).timeModifiers || [];
+  const toBeAdded = timeModifiers.filter(
+    (modifier) => !existingTimeModifiers.includes(modifier)
+  );
+  if (timeModifiers.length && !toBeAdded.length) return { ...SUCCESS };
+
+  // remove all existing exclusives if incoming includes exclusive
+  const containsExclusive = toBeAdded.some((modifier) =>
+    MUTUALLY_EXCLUSIVE_TIME_MODIFIERS.includes(modifier)
+  );
+  if (containsExclusive) {
+    existingTimeModifiers = existingTimeModifiers.filter(
+      (modifier) => !MUTUALLY_EXCLUSIVE_TIME_MODIFIERS.includes(modifier)
+    );
+
+    // scheduledTime should be removed for exclusive timeModifiers
+    const result = addMatchUpScheduledTime({
+      disableNotice: true,
+      removePriorValues,
+      scheduledTime: '',
+      tournamentRecord,
+      drawDefinition,
+      matchUpId,
+    });
+    if (result.error) return result;
+  }
+
+  // undefined value when array is empty;
+  const itemValue = !timeModifiers?.length
+    ? undefined
+    : [...toBeAdded, ...existingTimeModifiers];
+
+  const timeItem = {
+    itemType: TIME_MODIFIERS,
     itemValue,
   };
 
