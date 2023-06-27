@@ -7,6 +7,7 @@ import { calculateWinCriteria } from './matchUpEngine/governors/tieFormatGoverno
 import { proConflicts } from './competitionEngine/governors/scheduleGovernor/proScheduling/proConflicts';
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
 import { findExtension } from './tournamentEngine/governors/queryGovernor/extensionQueries';
+import { getScaleValues } from './tournamentEngine/getters/participants/getScaleValues';
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
 import { generateScoreString } from './matchUpEngine/generators/generateScoreString';
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
@@ -53,6 +54,7 @@ export const utilities = {
   generateScoreString,
   calculateWinCriteria,
   parseScoreString,
+  getScaleValues,
   proConflicts,
   addExtension,
   chunkArray,
