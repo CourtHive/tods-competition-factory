@@ -191,6 +191,7 @@ export function getParticipantEntries({
         const {
           structures = [],
           drawOrder,
+          drawName,
           drawType,
           entries,
           drawId,
@@ -350,6 +351,7 @@ export function getParticipantEntries({
           mainSeedingMap,
           flightNumber,
           drawOrder,
+          drawName,
           drawType,
           drawSize,
           drawId,
