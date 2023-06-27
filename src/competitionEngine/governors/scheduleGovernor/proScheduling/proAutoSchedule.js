@@ -5,12 +5,17 @@ import { matchUpSort } from '../../../../forge/transform';
 import { isObject } from '../../../../utilities/objects';
 
 import {
+  BYE,
+  completedMatchUpStatuses,
+} from '../../../../constants/matchUpStatusConstants';
+import {
   INVALID_VALUES,
   MISSING_CONTEXT,
 } from '../../../../constants/errorConditionConstants';
 
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
 export function proAutoSchedule({
+  scheduleCompletedMatchUps,
   tournamentRecords,
   scheduledDate,
   matchUps,
@@ -76,7 +81,14 @@ export function proAutoSchedule({
     });
   }, []);
 
-  matchUps.sort(matchUpSort);
+  matchUps
+    .filter(
+      ({ matchUpStatus }) =>
+        matchUpStatus !== BYE &&
+        (scheduleCompletedMatchUps ||
+          !completedMatchUpStatuses.includes(matchUpStatus))
+    )
+    .sort(matchUpSort);
 
   const deps = getMatchUpDependencies({
     matchUps: matchUps.concat(gridMatchUps),
