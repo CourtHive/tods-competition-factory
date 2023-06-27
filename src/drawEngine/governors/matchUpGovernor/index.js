@@ -19,8 +19,10 @@ import { setMatchUpFormat } from './setMatchUpFormat';
 import { resetScorecard } from './resetScorecard';
 import { addGoesTo } from './addGoesTo';
 
-import { addMatchUpScheduledTime } from './scheduleTimeItems/scheduledTime';
-import { addMatchUpTimeModifiers } from './scheduleTimeItems/timeModifiers';
+import {
+  addMatchUpScheduledTime,
+  addMatchUpTimeModifiers,
+} from './scheduleTimeItems/scheduledTime';
 import {
   addMatchUpScheduledDate,
   addMatchUpStartTime,
