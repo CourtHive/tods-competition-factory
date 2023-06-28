@@ -254,7 +254,7 @@ export const tournamentEngine = (function () {
         if (snapshot) setState(snapshot);
         return { ...result, rolledBack: !!snapshot };
       }
-      results.push(result);
+      results.push({ ...result, methodName });
     }
 
     const mutationStatus = cycleMutationStatus();
