@@ -111,13 +111,16 @@ function scoreModification(params) {
   // recalculate dualMatchUp score if isCollectionMatchUp
   if (isCollectionMatchUp) {
     const { matchUpTieId, drawDefinition } = params;
-    const result = updateTieMatchUpScore({
+    const tieMatchUpResult = updateTieMatchUpScore({
       tournamentRecord: params.tournamentRecord,
       matchUpId: matchUpTieId,
       event: params.event,
       drawDefinition,
     });
-    if (result.error) return decorateResult({ result, stack });
+    if (tieMatchUpResult.error) {
+      return decorateResult({ result: tieMatchUpResult, stack });
+    }
+    Object.assign(result, { tieMatchUpResult });
   }
 
   return decorateResult({ result, stack });

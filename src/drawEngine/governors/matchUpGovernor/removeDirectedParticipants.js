@@ -52,15 +52,17 @@ export function removeDirectedParticipants(params) {
   });
   if (result.error) return result;
 
+  let tieMatchUpResult;
   if (isCollectionMatchUp) {
     const { matchUpTieId } = params;
-    const { removeWinningSide } = updateTieMatchUpScore({
+    tieMatchUpResult = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       tournamentRecord,
       drawDefinition,
       event,
     });
-    if (!dualWinningSideChange && !removeWinningSide) return { ...SUCCESS };
+    if (!dualWinningSideChange && !tieMatchUpResult.removeWinningSide)
+      return { ...SUCCESS };
   }
 
   if (isAdHocMatchUp) return { ...SUCCESS };
@@ -173,7 +175,8 @@ export function removeDirectedParticipants(params) {
     }
   }
 
-  return { ...SUCCESS };
+  const annotate = tieMatchUpResult && { tieMatchUpResult };
+  return { ...SUCCESS, ...annotate };
 }
 
 export function removeDirectedWinner({
