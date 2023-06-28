@@ -247,7 +247,7 @@ export const competitionEngine = (function () {
         if (snapshot) setState(snapshot);
         return { ...result, rolledBack: !!snapshot };
       }
-      results.push(result);
+      results.push({ ...result, methodName });
       timeStamp = Date.now();
     }
 

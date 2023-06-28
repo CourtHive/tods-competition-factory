@@ -199,12 +199,12 @@ export function tournamentEngineAsync(test) {
     for (const directive of directives) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
 
-      const { method, params } = directive;
-      if (!engine[method]) return { error: METHOD_NOT_FOUND };
+      const { method: methodName, params } = directive;
+      if (!engine[methodName]) return { error: METHOD_NOT_FOUND };
 
       const result = await executeFunctionAsync(
         tournamentRecord,
-        engine[method],
+        engine[methodName],
         params
       );
 
@@ -212,7 +212,7 @@ export function tournamentEngineAsync(test) {
         if (snapshot) setState(snapshot);
         return { ...result, rolledBack: !!snapshot };
       }
-      results.push(result);
+      results.push({ ...result, methodName });
     }
 
     const mutationStatus = cycleMutationStatus();
