@@ -69,10 +69,11 @@ export function attemptToSetWinningSide(params) {
 
   return decorateResult({
     result: definedAttributes({
+      ...SUCCESS,
+      ...result, // capture attributes from directParticipants
       connectedStructures,
       qualifierReplaced,
       qualifierPlaced,
-      ...SUCCESS,
     }),
     stack,
   });
