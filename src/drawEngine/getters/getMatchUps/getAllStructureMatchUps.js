@@ -4,20 +4,21 @@ import { getDrawPositionCollectionAssignment } from './getDrawPositionCollection
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getCollectionPositionMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
-import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { parse } from '../../../matchUpEngine/governors/matchUpFormatGovernor/parse';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { findParticipant } from '../../../global/functions/deducers/findParticipant';
 import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
-import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
 import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
+import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
 import { attributeFilter, makeDeepCopy, unique } from '../../../utilities';
 import { structureAssignedDrawPositions } from '../positionsGetter';
 import { getOrderedDrawPositions } from './getOrderedDrawPositions';
-import { getRoundContextProfile } from './getRoundContextProfile';
 import { getDrawPositionsRanges } from './getDrawPositionsRanges';
 import { getCheckedInParticipantIds } from '../matchUpTimeItems';
+import { getRoundContextProfile } from './getRoundContextProfile';
+import { isConvertableInteger } from '../../../utilities/math';
 import { definedAttributes } from '../../../utilities/objects';
 import { filterMatchUps } from './filterMatchUps';
 import { getSide } from './getSide';
@@ -32,7 +33,6 @@ import {
   POLICY_TYPE_PARTICIPANT,
   POLICY_TYPE_ROUND_NAMING,
 } from '../../../constants/policyConstants';
-import { isConvertableInteger } from '../../../utilities/math';
 
 /*
   return all matchUps within a structure and its child structures
