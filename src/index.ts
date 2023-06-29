@@ -5,6 +5,7 @@ export { fixtures } from './fixtures';
 
 import { calculateWinCriteria } from './matchUpEngine/governors/tieFormatGovernor/calculateWinCriteria';
 import { proConflicts } from './competitionEngine/governors/scheduleGovernor/proScheduling/proConflicts';
+import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
 import { findExtension } from './tournamentEngine/governors/queryGovernor/extensionQueries';
 import { getScaleValues } from './tournamentEngine/getters/participants/getScaleValues';
@@ -53,6 +54,7 @@ export const utilities = {
   tidyScore,
   generateScoreString,
   calculateWinCriteria,
+  compareTieFormats,
   parseScoreString,
   getScaleValues,
   proConflicts,
