@@ -444,10 +444,9 @@ function applyMatchUpValues(params) {
   if (result.error) return result;
 
   // recalculate dualMatchUp score if isCollectionMatchUp
-  let tieMatchUpResult;
   if (params.isCollectionMatchUp) {
     const { matchUpTieId, drawDefinition } = params;
-    tieMatchUpResult = updateTieMatchUpScore({
+    const tieMatchUpResult = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       tournamentRecord,
       drawDefinition,

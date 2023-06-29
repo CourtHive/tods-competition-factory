@@ -1,5 +1,7 @@
 import { generateRange, UUID } from '../../utilities';
 
+import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+
 export function generateTieMatchUps({ tieFormat, uuids, isMock }) {
   const { collectionDefinitions } = tieFormat || {};
 
@@ -29,6 +31,7 @@ export function generateCollectionMatchUps({
     return {
       sides: [{ sideNumber: 1 }, { sideNumber: 2 }],
       matchUpId: uuids?.pop() || UUID(),
+      matchUpStatus: TO_BE_PLAYED,
       collectionPosition,
       collectionId,
       matchUpType,
