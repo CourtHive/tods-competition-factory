@@ -37,6 +37,8 @@ import {
   USTA_ZONAL,
 } from '../../constants/tieFormatConstants';
 
+const bestOf3tbSets = 'SET3-S:6/TB7';
+
 const namedFormats = {
   STANDARD: {
     hydrate: true,
@@ -54,7 +56,7 @@ const namedFormats = {
     singles: {
       matchUpCount: 6,
       matchUpValue: 1,
-      matchUpFormat: 'SET3-S:6/TB7',
+      matchUpFormat: bestOf3tbSets,
     },
     tieFormatName: 'COLLEGE_D3',
     valueGoal: 5,
@@ -64,12 +66,12 @@ const namedFormats = {
     doubles: {
       matchUpCount: 3,
       collectionValue: 1,
-      matchUpFormat: 'SET1-S:6/TB7',
+      matchUpFormat: bestOf3tbSets,
     },
     singles: {
       matchUpCount: 6,
       matchUpValue: 1,
-      matchUpFormat: 'SET3-S:6/TB7',
+      matchUpFormat: bestOf3tbSets,
     },
     tieFormatName: 'COLLEGE_DEFAULT',
     valueGoal: 4,
@@ -84,7 +86,7 @@ const namedFormats = {
     singles: {
       matchUpCount: 6,
       matchUpValue: 1,
-      matchUpFormat: 'SET3-S:6/TB7',
+      matchUpFormat: bestOf3tbSets,
     },
     tieFormatName: 'COLLEGE_JUCO',
     valueGoal: 5,
@@ -133,16 +135,16 @@ export const tieFormatDefaults = ({
       collectionDefinitions: [
         {
           collectionId: uuids?.pop() || UUID(),
+          matchUpFormat: 'SET3-S:6/TB7-F:TB10',
           collectionName: 'Doubles',
           matchUpType: DOUBLES,
-          matchUpFormat: 'SET3-S:6/TB7-F:TB10',
           ...template.doubles,
         },
         {
           collectionId: uuids?.pop() || UUID(),
+          matchUpFormat: bestOf3tbSets,
           collectionName: 'Singles',
           matchUpType: SINGLES,
-          matchUpFormat: 'SET3-S:6/TB7',
           ...template.singles,
         },
       ],

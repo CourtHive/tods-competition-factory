@@ -124,17 +124,15 @@ export function resetScorecard(params) {
     const inheritedTieFormat =
       structure?.tieFormat || drawDefinition.tieFormat || event?.tieFormat;
     if (inheritedTieFormat) {
-      const { ancestorDifferences, descendantDifferences } = compareTieFormats({
+      const {
+        matchUpCountDifference,
+        descendantDifferences,
+        ancestorDifferences,
+        valueDifference,
+      } = compareTieFormats({
         descendant: matchUp.tieFormat,
         ancestor: inheritedTieFormat,
       });
-
-      const valueDifference =
-        descendantDifferences.collectionsValue.totalValue -
-        ancestorDifferences.collectionsValue.totalValue;
-      const matchUpCountDifference =
-        descendantDifferences.collectionsValue.totalMatchUps -
-        ancestorDifferences.collectionsValue.totalMatchUps;
 
       if (
         descendantDifferences.collectionIds.length === 1 &&
