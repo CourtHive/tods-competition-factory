@@ -10,6 +10,7 @@ import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
 import { validateTieFormat } from './tieFormatUtilities';
+import { compareTieFormats } from './compareTieFormats';
 import { copyTieFormat } from './copyTieFormat';
 import { getTieFormat } from './getTieFormat';
 import {
@@ -90,7 +91,9 @@ export function removeCollectionDefinition({
     tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map(
       (collectionDefinition) => {
         const { collectionGroupNumber, ...rest } = collectionDefinition;
-        if (collectionGroupNumber) true;
+        if (collectionGroupNumber) {
+          // collectionGroupNumber removed
+        }
         return rest;
       }
     );
@@ -149,12 +152,21 @@ export function removeCollectionDefinition({
     );
     const collectionScore = collectionMatchUps.some(scoreHasValue);
 
+    const tieFormatDifference = matchUp.tieFormat
+      ? compareTieFormats({
+          descendant: matchUp.tieFormat,
+          ancestor: tieFormat,
+        })?.different
+      : false;
+
     return (
       (updateInProgressMatchUps && !collectionScore) ||
       (!matchUp.winningSide &&
         matchUp.matchUpStatus !== COMPLETED &&
         (updateInProgressMatchUps ||
-          (matchUp.matchUpStatus !== IN_PROGRESS && !scoreHasValue(matchUp))))
+          (matchUp.matchUpStatus !== IN_PROGRESS &&
+            !scoreHasValue(matchUp) &&
+            !tieFormatDifference)))
     );
   });
 
@@ -162,29 +174,27 @@ export function removeCollectionDefinition({
     return { error: NO_MODIFICATIONS_APPLIED };
   }
 
-  if (matchUpId && matchUp) {
-    if (updateInProgressMatchUps) {
-      const collectionMatchUps = matchUp.tieMatchUps.filter(
-        (tieMatchUp) => tieMatchUp.collectionId === collectionId
-      );
-      for (const collectionMatchUp of collectionMatchUps) {
-        let result = setMatchUpStatus({
-          matchUpId: collectionMatchUp.matchUpId,
-          tieMatchUpId: matchUp.matchUpId,
-          winningSide: undefined,
-          removeScore: true,
-          tournamentRecord,
-          drawDefinition,
-          event,
-        });
-        if (result.error) return result;
-        result = findMatchUp({
-          drawDefinition,
-          matchUpId,
-        });
-        if (result.error) return result;
-        matchUp = result.matchUp;
-      }
+  if (matchUpId && matchUp && updateInProgressMatchUps) {
+    const collectionMatchUps = matchUp.tieMatchUps.filter(
+      (tieMatchUp) => tieMatchUp.collectionId === collectionId
+    );
+    for (const collectionMatchUp of collectionMatchUps) {
+      let result = setMatchUpStatus({
+        matchUpId: collectionMatchUp.matchUpId,
+        tieMatchUpId: matchUp.matchUpId,
+        winningSide: undefined,
+        removeScore: true,
+        tournamentRecord,
+        drawDefinition,
+        event,
+      });
+      if (result.error) return result;
+      result = findMatchUp({
+        drawDefinition,
+        matchUpId,
+      });
+      if (result.error) return result;
+      matchUp = result.matchUp;
     }
   }
 

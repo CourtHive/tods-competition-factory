@@ -1,4 +1,5 @@
-import { difference } from '../../../utilities/arrays';
+import { getTieFormatDesc } from '../../../tournamentEngine/governors/reportGovernor/getTieFormatDescription';
+import { difference, unique } from '../../../utilities/arrays';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 
@@ -6,15 +7,39 @@ export function compareTieFormats({ ancestor, descendant }) {
   const descendantDifferences = {};
   const ancestorDifferences = {};
 
+  const {
+    matchUpFormats: descendantMatchUpFormats,
+    tieFormatDesc: descendantDesc,
+  } = getTieFormatDesc(descendant);
+
+  const {
+    matchUpFormats: ancestorMatchUpFormats,
+    tieFormatDesc: ancestorDesc,
+  } = getTieFormatDesc(ancestor);
+
+  const matchUpFormatDifferences = unique(
+    (descendantMatchUpFormats || [])
+      .filter((format) => !(ancestorMatchUpFormats || []).includes(format))
+      .concat(
+        (ancestorMatchUpFormats || []).filter(
+          (format) => !(descendantMatchUpFormats || []).includes(format)
+        )
+      )
+  );
+
+  const different = ancestorDesc !== descendantDesc;
+
   const descendantCollectionDefinitions = Object.assign(
     {},
-    ...descendant.collectionDefinitions.map((collectionDefinition) => ({
-      [collectionDefinition.collectionId]: collectionDefinition,
-    }))
+    ...(descendant?.collectionDefinitions || []).map(
+      (collectionDefinition) => ({
+        [collectionDefinition.collectionId]: collectionDefinition,
+      })
+    )
   );
   const ancestorCollectionDefinitions = Object.assign(
     {},
-    ...ancestor.collectionDefinitions.map((collectionDefinition) => ({
+    ...(ancestor?.collectionDefinitions || []).map((collectionDefinition) => ({
       [collectionDefinition.collectionId]: collectionDefinition,
     }))
   );
@@ -39,13 +64,32 @@ export function compareTieFormats({ ancestor, descendant }) {
   );
 
   descendantDifferences.groupsCount =
-    ancestor.collectionGroups?.length ||
-    0 - descendant.collectionGroups?.length ||
+    ancestor?.collectionGroups?.length ||
+    0 - descendant?.collectionGroups?.length ||
     0;
 
-  ancestorDifferences.groupsCount = -1 * descendantDifferences.groupsCount;
+  ancestorDifferences.groupsCount = descendantDifferences.groupsCount
+    ? -1 * descendantDifferences.groupsCount
+    : 0;
 
-  return { ...SUCCESS, ancestorDifferences, descendantDifferences };
+  const valueDifference =
+    descendantDifferences.collectionsValue.totalValue -
+    ancestorDifferences.collectionsValue.totalValue;
+  const matchUpCountDifference =
+    descendantDifferences.collectionsValue.totalMatchUps -
+    ancestorDifferences.collectionsValue.totalMatchUps;
+
+  return {
+    matchUpFormatDifferences,
+    matchUpCountDifference,
+    descendantDifferences,
+    ancestorDifferences,
+    valueDifference,
+    descendantDesc,
+    ancestorDesc,
+    ...SUCCESS,
+    different,
+  };
 }
 
 function getCollectionsValue(definitions, aggregator) {
