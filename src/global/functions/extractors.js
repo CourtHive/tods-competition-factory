@@ -10,7 +10,3 @@ export const getParticipantId = (o = {}) => extractor(o)('participantId');
 export const getDrawPosition = (o = {}) => extractor(o)('drawPosition');
 export const getEntryStatus = (o = {}) => extractor(o)('entryStatus');
 export const getMatchUpId = (o = {}) => extractor(o)('matchUpId');
-
-export function extractAttributes(o, attrs = []) {
-  return Object.assign({}, ...attrs.map((attr) => ({ [attr]: o[attr] })));
-}

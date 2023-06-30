@@ -4,6 +4,21 @@ export function isObject(obj) {
   return typeof obj === 'object';
 }
 
+// e.g. result.find(hav({ attr: value })) -or- result.filter(hav({ attr: value }))
+export const hasAttributeValues = (a) => (o) =>
+  Object.keys(a).every((key) => o[key] === a[key]);
+
+// extracts targeted attributes
+// e.g. const byeAssignments = positionAssignments.filter(xa('bye')).map(xa('drawPosition'));
+// supports xa('string'), xa(['string', 'string']), xa({ attr1: true, attr2: true })
+export const extractAttributes = (atz) => (o) =>
+  !atz || typeof o !== 'object'
+    ? undefined
+    : (Array.isArray(atz) && atz.map((a) => ({ [a]: o[a] }))) ||
+      (typeof atz === 'object' &&
+        Object.keys(atz).map((key) => ({ [key]: o[key] }))) ||
+      (typeof atz === 'string' && o[atz]);
+
 export function definedAttributes(
   obj,
   ignoreFalse,

@@ -44,11 +44,15 @@ import {
 } from './utilities/math';
 import {
   definedAttributes,
+  extractAttributes,
   generateHashCode,
   generateTimeCode,
+  hasAttributeValues,
 } from './utilities';
 
 export const utilities = {
+  hasAttributeValues,
+  extractAttributes,
   structureSort,
   matchUpSort,
   tidyScore,
