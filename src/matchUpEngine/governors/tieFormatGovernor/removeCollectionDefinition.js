@@ -37,13 +37,14 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 /*
- * collectionDefinition will be removed from an event tieFormat (if present)
+ * if an eventId is provided, will be removed from an event tieFormat
+ * if a drawId is provided, will be removed from a draw tieFormat
  * if a matchUpId is provided, will be removed from matchUp.tieFormat
  * if a structureId is provided, will be removed from structure.tieFormat
- * TODO: determine whether all contained instances of tieFormat should be updated
  */
 export function removeCollectionDefinition({
   updateInProgressMatchUps = true,
+  updateUnscoredMatchUps,
   tournamentRecord,
   drawDefinition,
   tieFormatName,
@@ -152,12 +153,13 @@ export function removeCollectionDefinition({
     );
     const collectionScore = collectionMatchUps.some(scoreHasValue);
 
-    const tieFormatDifference = matchUp.tieFormat
-      ? compareTieFormats({
-          descendant: matchUp.tieFormat,
-          ancestor: tieFormat,
-        })?.different
-      : false;
+    const tieFormatDifference =
+      updateUnscoredMatchUps && matchUp.tieFormat
+        ? compareTieFormats({
+            descendant: matchUp.tieFormat,
+            ancestor: tieFormat,
+          })?.different
+        : false;
 
     return (
       (updateInProgressMatchUps && !collectionScore) ||
