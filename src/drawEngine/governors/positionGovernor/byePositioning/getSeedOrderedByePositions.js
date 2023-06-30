@@ -39,11 +39,6 @@ export function getSeedOrderByePositions({
     return relevantDrawPositions.includes(positionedSeed.drawPosition);
   });
 
-  const blockSortedRandomDrawPositions = getBlockSortedRandomDrawPositions({
-    validSeedBlocks,
-    byesToPlace,
-  });
-
   // within seedBlocks positionedSeeds are sorted by seedValue to handle the situation
   // where there are multiple players seeded with the same seedValue which have been
   // randomly assigned to different seedBlocks
@@ -68,6 +63,12 @@ export function getSeedOrderByePositions({
       (positionedSeed) => positionedSeed.drawPosition
     );
 
+  const blockSortedRandomDrawPositions = getBlockSortedRandomDrawPositions({
+    orderedSortedFirstRoundSeededDrawPositions,
+    validSeedBlocks,
+    byesToPlace,
+  });
+
   // returns list of bye positions which strictly follows where seeds
   // have been placed according to sorted seedNumbers
   const strictSeedOrderByePositions = getOrderedByePositions({
@@ -81,8 +82,9 @@ export function getSeedOrderByePositions({
   }).slice(0, positionedSeeds.length);
 
   return {
-    blockSeedOrderByePositions,
     strictSeedOrderByePositions,
+    blockSeedOrderByePositions,
+    positionedSeeds,
     isContainer,
     isFeedIn,
     isLucky,
