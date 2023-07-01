@@ -18,7 +18,6 @@ import { COMPETITOR } from '../../../constants/participantRoles';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
-  EXISTING_PARTICIPANT,
   INVALID_PARTICIPANT_TYPE,
   INVALID_SIDE_NUMBER,
   MISSING_COLLECTION_DEFINITION,
@@ -62,7 +61,7 @@ export function assignTieMatchUpParticipantId(params) {
   );
 
   if (allTieIndividualParticipantIds.includes(participantId)) {
-    return decorateResult({ result: { error: EXISTING_PARTICIPANT }, stack });
+    return decorateResult({ result: { ...SUCCESS }, stack });
   }
 
   teamParticipantId =
