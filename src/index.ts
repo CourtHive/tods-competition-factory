@@ -9,6 +9,7 @@ import { compareTieFormats } from './matchUpEngine/governors/tieFormatGovernor/c
 import { dehydrateMatchUps } from './tournamentEngine/governors/tournamentGovernor/dehydrate';
 import { findExtension } from './tournamentEngine/governors/queryGovernor/extensionQueries';
 import { getScaleValues } from './tournamentEngine/getters/participants/getScaleValues';
+import { scoreHasValue } from './matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
 import { generateScoreString } from './matchUpEngine/generators/generateScoreString';
 import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItems';
@@ -60,6 +61,7 @@ export const utilities = {
   calculateWinCriteria,
   compareTieFormats,
   parseScoreString,
+  scoreHasValue,
   getScaleValues,
   proConflicts,
   addExtension,
