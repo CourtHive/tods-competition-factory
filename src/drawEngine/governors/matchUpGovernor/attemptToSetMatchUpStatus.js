@@ -73,9 +73,7 @@ export function attemptToSetMatchUpStatus(params) {
     (!directing && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
     (isDoubleExit && modifyScoreAndAdvanceDoubleExit(params)) ||
     decorateResult({
-      result: {
-        error: INVALID_MATCHUP_STATUS,
-      },
+      result: { error: INVALID_MATCHUP_STATUS },
       stack,
     })
   );
