@@ -6,6 +6,7 @@ import { participantRoles } from '../../../constants/participantRoles';
 import { genderConstants } from '../../../constants/genderConstants';
 import { definedAttributes } from '../../../utilities/objects';
 import { addNotice } from '../../../global/state/globalState';
+import { countries } from '../../../fixtures/countryData';
 import { addParticipant } from './addParticipants';
 import { makeDeepCopy } from '../../../utilities';
 
@@ -13,6 +14,7 @@ import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
+  CANNOT_MODIFY_PARTICIPANT_TYPE,
   MISSING_PARTICIPANT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
@@ -21,7 +23,6 @@ import {
   PAIR,
   participantTypes,
 } from '../../../constants/participantConstants';
-import { countries } from '../../../fixtures/countryData';
 
 export function modifyParticipant({
   updateParticipantName = true,
@@ -38,8 +39,8 @@ export function modifyParticipant({
     return addParticipant({ tournamentRecord, participant });
 
   const { participant: existingParticipant } = findTournamentParticipant({
-    tournamentRecord,
     participantId: participant.participantId,
+    tournamentRecord,
   });
 
   if (!existingParticipant)
@@ -57,6 +58,12 @@ export function modifyParticipant({
     person,
   } = participant;
 
+  if (
+    participantType &&
+    existingParticipant.participantType !== participantType
+  )
+    return { error: CANNOT_MODIFY_PARTICIPANT_TYPE };
+
   const newValues = {};
 
   // validate participant attributes
@@ -71,8 +78,8 @@ export function modifyParticipant({
   if (Array.isArray(individualParticipantIds)) {
     const { tournamentParticipants: individualParticipants } =
       getTournamentParticipants({
-        tournamentRecord,
         participantFilters: { participantTypes: [participantTypes.INDIVIDUAL] },
+        tournamentRecord,
       });
     const allIndividualParticipantIds =
       individualParticipants?.map(getParticipantId);
@@ -86,7 +93,9 @@ export function modifyParticipant({
       );
 
       if (
-        [GROUP, TEAM].includes(participantType) ||
+        [GROUP, TEAM].includes(
+          participantType || existingParticipant.participantType
+        ) ||
         (participantType === PAIR &&
           (updatedIndividualParticipantIds.length === 2 || pairOverride))
       ) {
@@ -129,10 +138,10 @@ export function modifyParticipant({
 
   if (groupingParticipantId) {
     addIndividualParticipantIds({
-      tournamentRecord,
-      groupingParticipantId,
       individualParticipantIds: [existingParticipant.participantId],
+      groupingParticipantId,
       removeFromOtherTeams,
+      tournamentRecord,
     });
   }
 
@@ -145,8 +154,8 @@ export function modifyParticipant({
   });
 
   return {
-    ...SUCCESS,
     participant: makeDeepCopy(existingParticipant),
+    ...SUCCESS,
   };
 }
 
@@ -173,11 +182,11 @@ function updatePerson({
 }) {
   const newPersonValues = {};
   const {
-    sex,
-    personId,
-    nationalityCode,
     standardFamilyName,
     standardGivenName,
+    nationalityCode,
+    personId,
+    sex,
   } = person;
   if (sex && Object.keys(genderConstants).includes(sex))
     newPersonValues.sex = sex;

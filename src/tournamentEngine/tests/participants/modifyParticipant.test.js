@@ -3,12 +3,17 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { MALE } from '../../../constants/genderConstants';
+import {
+  INDIVIDUAL,
+  PAIR,
+  TEAM,
+} from '../../../constants/participantConstants';
+import { CANNOT_MODIFY_PARTICIPANT_TYPE } from '../../../constants/errorConditionConstants';
 
 tournamentEngine.devContext(true);
 
-it('can modify participants', () => {
+it('can modify PAIR participants', () => {
   const participantsProfile = {
     participantsCount: 10,
     participantType: PAIR,
@@ -107,4 +112,74 @@ it('can modify participants', () => {
     participant: modifiedSecondIndividual,
   });
   expect(result.participant.person.nationalityCode).toEqual('USA');
+});
+
+it('can modify TEAM participants', () => {
+  const participantsProfile = {
+    participantsCount: 10,
+    participantType: TEAM,
+    sex: MALE,
+  };
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { tournamentParticipants: teamParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [TEAM] },
+    });
+  expect(teamParticipants.length).toEqual(10);
+
+  const firstTeam = teamParticipants[0];
+  const individualParticipantIds = firstTeam.individualParticipantIds;
+  const reversedIndividualParticipants = makeDeepCopy(
+    individualParticipantIds,
+    false,
+    true
+  ).reverse();
+
+  expect(individualParticipantIds).not.toEqual(reversedIndividualParticipants);
+  expect(individualParticipantIds[0]).toEqual(
+    reversedIndividualParticipants[reversedIndividualParticipants.length - 1]
+  );
+  const result = tournamentEngine.modifyParticipant({
+    participant: {
+      individualParticipantIds: reversedIndividualParticipants,
+      participantId: firstTeam.participantId,
+    },
+  });
+
+  expect(reversedIndividualParticipants).toEqual(
+    result.participant.individualParticipantIds
+  );
+});
+
+it('will not modify participantType', () => {
+  const participantsProfile = {
+    participantsCount: 10,
+    participantType: TEAM,
+    sex: MALE,
+  };
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { tournamentParticipants: teamParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [TEAM] },
+    });
+  expect(teamParticipants.length).toEqual(10);
+
+  const firstTeam = teamParticipants[0];
+  let result = tournamentEngine.modifyParticipant({
+    participant: {
+      participantId: firstTeam.participantId,
+      participantType: PAIR,
+    },
+  });
+  expect(result.error).toEqual(CANNOT_MODIFY_PARTICIPANT_TYPE);
 });

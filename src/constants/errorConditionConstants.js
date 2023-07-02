@@ -433,6 +433,10 @@ export const CANNOT_MODIFY_TIEFORMAT = {
   message: 'Cannot modify tieFormat',
   code: 'ERR_UNCHANGED_CANNOT_MODIFY_TIEFORMAT',
 };
+export const CANNOT_MODIFY_PARTICIPANT_TYPE = {
+  message: 'Cannot modify participantType',
+  code: 'ERR_UNCHANGED_CANNOT_MODIFY_PARTICIPANT_TYPE',
+};
 export const CANNOT_REMOVE_PARTICIPANTS = {
   message: 'Cannot remove participants',
   code: 'ERR_UNCHANGED_CANNOT_REMOVE_PARTICIPANTS',
@@ -760,6 +764,7 @@ export const errorConditionConstants = {
   ANACHRONISM,
   CANNOT_CHANGE_WINNING_SIDE,
   CANNOT_MODIFY_TIEFORMAT,
+  CANNOT_MODIFY_PARTICIPANT_TYPE,
   CANNOT_REMOVE_MAIN_STRUCTURE,
   CANNOT_REMOVE_PARTICIPANTS,
   COURT_EXISTS,
