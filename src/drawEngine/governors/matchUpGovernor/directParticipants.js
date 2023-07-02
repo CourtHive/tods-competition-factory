@@ -41,25 +41,27 @@ export function directParticipants(params) {
   const isAdHocMatchUp = isAdHoc({ drawDefinition, structure });
   let drawPositions = matchUp.drawPositions;
 
-  let tieMatchUpResult;
+  let annotate;
   if (isCollectionMatchUp) {
     const { matchUpTieId } = params;
-    tieMatchUpResult = updateTieMatchUpScore({
+    const tieMatchUpResult = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       tournamentRecord,
       drawDefinition,
       event,
     });
+    annotate = tieMatchUpResult && { tieMatchUpResult };
     const matchUpTie = inContextDrawMatchUps.find(
       ({ matchUpId }) => matchUpId === matchUpTieId
     );
     drawPositions = matchUpTie?.drawPositions;
-    if (!dualWinningSideChange)
-      return decorateResult({ result: { ...SUCCESS }, stack });
+    if (!dualWinningSideChange) {
+      return decorateResult({ result: { ...SUCCESS, ...annotate }, stack });
+    }
   }
 
   if (isAdHocMatchUp) {
-    return decorateResult({ result: { ...SUCCESS }, stack });
+    return decorateResult({ result: { ...SUCCESS, ...annotate }, stack });
   }
 
   if (drawPositions) {
@@ -142,6 +144,5 @@ export function directParticipants(params) {
     return decorateResult({ result: { error: MISSING_DRAW_POSITIONS }, stack });
   }
 
-  const annotate = tieMatchUpResult && { tieMatchUpResult };
   return decorateResult({ result: { ...SUCCESS, ...annotate }, stack });
 }
