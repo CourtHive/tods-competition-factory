@@ -10,30 +10,28 @@ Policy Definitions can be attached to a [tournament record](../apis/tournament-e
 const roundRobinTally = {
   groupOrderKey: 'matchUpsWon', // possible to group by matchUpsWon, setsWon, gamesWon, or pointsWon
   groupTotalSetsPlayed: false, // optional - when true will calculate % of sets won based on total group sets played rather than participant sets played
-  headToHead: {
-    disabled: false,
-    tallyDirectives: [
-      // these are the default values if no tallyDirectives provided; edit to suit
-      // idsFilter scopes the tally calculations to only tied participants
-      // with { idsFilter: false } the ratio is calculated from all group matchUps
-      // with { idsFilter: true } the ratio is calculated from matchUps including tied participants
-      // any attribute/idsFilter combination can be selectively disabled for Head to Head calculations
-      { attribute: 'matchUpsPct', idsFilter: false, disbleHeadToHead: false },
-      {
-        attribute: 'tieMatchUpsPct',
-        idsFilter: false,
-        disbleHeadToHead: false,
-      },
-      { attribute: 'setsPct', idsFilter: false, disbleHeadToHead: false },
-      { attribute: 'gamesPct', idsFilter: false, disbleHeadToHead: false },
-      { attribute: 'pointsRatio', idsFilter: false, disbleHeadToHead: false },
-      { attribute: 'matchUpsPct', idsFilter: true, disbleHeadToHead: false },
-      { attribute: 'tieMatchUpsPct', idsFilter: true, disbleHeadToHead: false },
-      { attribute: 'setsPct', idsFilter: true, disbleHeadToHead: false },
-      { attribute: 'gamesPct', idsFilter: true, disbleHeadToHead: false },
-      { attribute: 'pointsRatio', idsFilter: true, disbleHeadToHead: false },
-    ],
-  },
+  headToHead: { disabled: false },
+  tallyDirectives: [
+    // these are the default values if no tallyDirectives provided; edit to suit
+    // idsFilter scopes the tally calculations to only tied participants
+    // with { idsFilter: false } the ratio is calculated from all group matchUps
+    // with { idsFilter: true } the ratio is calculated from matchUps including tied participants
+    // any attribute/idsFilter combination can be selectively disabled for Head to Head calculations
+    { attribute: 'matchUpsPct', idsFilter: false, disbleHeadToHead: false },
+    {
+      attribute: 'tieMatchUpsPct',
+      idsFilter: false,
+      disbleHeadToHead: false,
+    },
+    { attribute: 'setsPct', idsFilter: false, disbleHeadToHead: false },
+    { attribute: 'gamesPct', idsFilter: false, disbleHeadToHead: false },
+    { attribute: 'pointsRatio', idsFilter: false, disbleHeadToHead: false },
+    { attribute: 'matchUpsPct', idsFilter: true, disbleHeadToHead: false },
+    { attribute: 'tieMatchUpsPct', idsFilter: true, disbleHeadToHead: false },
+    { attribute: 'setsPct', idsFilter: true, disbleHeadToHead: false },
+    { attribute: 'gamesPct', idsFilter: true, disbleHeadToHead: false },
+    { attribute: 'pointsRatio', idsFilter: true, disbleHeadToHead: false },
+  ],
   disqualifyDefaults: true, // disqualified participants are pushed to the bottom of the group order
   disqualifyWalkovers: true, // disqualified participants are pushed to the bottom of the group order
   setsCreditForDefaults: false, // whether or not to award e.g. 2 sets won for participant who wins by opponent DEFAULT
