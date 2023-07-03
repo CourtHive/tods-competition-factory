@@ -1,0 +1,5109 @@
+{
+  "tournamentId": "aeec1a80-6454-4e31-8329-b0738ba53a84",
+  "tournamentName": "Dominant Duo",
+  "startDate": "2023-07-03",
+  "endDate": "2023-07-10",
+  "participants": [
+    {
+      "participantId": "adf74d2e-3907-4b64-a33e-c15b958e8d74",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Mustapha Waterhouse",
+      "person": {
+        "addresses": [
+          {
+            "city": "Chronopolis",
+            "state": "SR",
+            "postalCode": "41703",
+            "countryCode": "MNG"
+          }
+        ],
+        "personId": "92d67466-220a-4603-8f1f-a7ad85216e6d",
+        "standardFamilyName": "Waterhouse",
+        "standardGivenName": "Mustapha",
+        "nationalityCode": "MNG",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 1
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "21b01b30-05a8-4ada-9855-c3468a1691d9",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Jared Ogden",
+      "person": {
+        "addresses": [
+          {
+            "city": "Nagoro",
+            "state": "ZK",
+            "postalCode": "27474",
+            "countryCode": "SLE"
+          }
+        ],
+        "personId": "61208daf-f713-428d-83f2-be0392d095c7",
+        "standardFamilyName": "Ogden",
+        "standardGivenName": "Jared",
+        "nationalityCode": "SLE",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 2
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "b5e22623-bc19-46d1-8106-61f3ff9c8e5d",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Susanne Murry",
+      "person": {
+        "addresses": [
+          {
+            "city": "Hallstatt",
+            "state": "QA",
+            "postalCode": "69011",
+            "countryCode": "ESP"
+          }
+        ],
+        "personId": "15afe925-3cbe-4766-bb39-77fd0c38f89d",
+        "standardFamilyName": "Murry",
+        "standardGivenName": "Susanne",
+        "nationalityCode": "ESP",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 3
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "a484c8f3-be0c-4694-8cb6-a521c2ea14d4",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Palmer Bukowski",
+      "person": {
+        "addresses": [
+          {
+            "city": "Shangri-La",
+            "state": "PG",
+            "postalCode": "73160",
+            "countryCode": "AFG"
+          }
+        ],
+        "personId": "0c1403f3-3069-4abf-9073-7ee472fb2de2",
+        "standardFamilyName": "Bukowski",
+        "standardGivenName": "Palmer",
+        "nationalityCode": "AFG",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 4
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "03cb0c89-af29-4d45-b60a-08979dff421c",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Robinson Wormwood",
+      "person": {
+        "addresses": [
+          {
+            "city": "Nimbin",
+            "state": "ZA",
+            "postalCode": "77782",
+            "countryCode": "RUS"
+          }
+        ],
+        "personId": "e5f63af8-7d08-41db-9cb5-8ded2e5c1021",
+        "standardFamilyName": "Wormwood",
+        "standardGivenName": "Robinson",
+        "nationalityCode": "RUS",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 5
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "bf499292-e9d2-4246-b819-3b48b1d388d7",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Emmie Ampleforth",
+      "person": {
+        "addresses": [
+          {
+            "city": "Hierusalem",
+            "state": "SA",
+            "postalCode": "48382",
+            "countryCode": "BWA"
+          }
+        ],
+        "personId": "af71bb47-5ced-483e-96d6-8e32bfe146ec",
+        "standardFamilyName": "Ampleforth",
+        "standardGivenName": "Emmie",
+        "nationalityCode": "BWA",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 6
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "43be679e-91d5-4462-9a21-bf715951fcbf",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Antoina Le Guin",
+      "person": {
+        "addresses": [
+          {
+            "city": "Maycomb",
+            "state": "GT",
+            "postalCode": "16135",
+            "countryCode": "MCO"
+          }
+        ],
+        "personId": "c3d640ac-5da3-4fbd-a32b-4cc305b905fd",
+        "standardFamilyName": "Le Guin",
+        "standardGivenName": "Antoina",
+        "nationalityCode": "MCO",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 7
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "270a70fc-76bd-425f-855f-a7615e0d2f91",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Lizzie Cummings",
+      "person": {
+        "addresses": [
+          {
+            "city": "Centralia",
+            "state": "FA",
+            "postalCode": "79621",
+            "countryCode": "PAK"
+          }
+        ],
+        "personId": "392cdded-36c5-47e7-9118-11029c8f062b",
+        "standardFamilyName": "Cummings",
+        "standardGivenName": "Lizzie",
+        "nationalityCode": "PAK",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 8
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "840fa1ee-0116-4880-94ea-9f242c4e32b2",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Ernst Perfect",
+      "person": {
+        "addresses": [
+          {
+            "city": "Inverness",
+            "state": "LI",
+            "postalCode": "92156",
+            "countryCode": "CHE"
+          }
+        ],
+        "personId": "4fb241b1-044b-4a81-b4d4-e04a572299e7",
+        "standardFamilyName": "Perfect",
+        "standardGivenName": "Ernst",
+        "nationalityCode": "CHE",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 9
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "ac448d5f-0ee7-4f04-99fb-d8f6bf55282d",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Barda Eyre",
+      "person": {
+        "addresses": [
+          {
+            "city": "Springfield",
+            "state": "EP",
+            "postalCode": "10267",
+            "countryCode": "BOL"
+          }
+        ],
+        "personId": "bcc9be05-3bb9-4bb5-9416-a6ba5b1e4022",
+        "standardFamilyName": "Eyre",
+        "standardGivenName": "Barda",
+        "nationalityCode": "BOL",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 10
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "5dc1b697-7039-411b-8391-b22dbed20669",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Beatrice Frank",
+      "person": {
+        "addresses": [
+          {
+            "city": "Gotham",
+            "state": "FG",
+            "postalCode": "75075",
+            "countryCode": "STP"
+          }
+        ],
+        "personId": "425a8965-26d7-459f-aeeb-d52d0762c8b6",
+        "standardFamilyName": "Frank",
+        "standardGivenName": "Beatrice",
+        "nationalityCode": "STP",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 11
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "27201a75-5482-476c-b043-b6813ddecdf2",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Virginia Illich",
+      "person": {
+        "addresses": [
+          {
+            "city": "Matmata",
+            "state": "BV",
+            "postalCode": "52511",
+            "countryCode": "PCN"
+          }
+        ],
+        "personId": "8138cc33-66b8-47f2-a020-97b15621fbe8",
+        "standardFamilyName": "Illich",
+        "standardGivenName": "Virginia",
+        "nationalityCode": "PCN",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 12
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "3b321448-df3e-494a-9c26-8d6c7e953899",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Glen Constant",
+      "person": {
+        "addresses": [
+          {
+            "city": "Pemberley",
+            "state": "KG",
+            "postalCode": "64080",
+            "countryCode": "VNM"
+          }
+        ],
+        "personId": "4d794353-e3ce-48b8-adea-67bcf7ae3978",
+        "standardFamilyName": "Constant",
+        "standardGivenName": "Glen",
+        "nationalityCode": "VNM",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 13
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "5ccd705e-b07a-427b-b871-a8d97d7dd01c",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Uhura Johnson",
+      "person": {
+        "addresses": [
+          {
+            "city": "Miyake-jima",
+            "state": "BI",
+            "postalCode": "63659",
+            "countryCode": "PHL"
+          }
+        ],
+        "personId": "e4ddf937-051a-4b29-9a0d-acd32fe1886d",
+        "standardFamilyName": "Johnson",
+        "standardGivenName": "Uhura",
+        "nationalityCode": "PHL",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 14
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "5aeb850f-82a5-4370-bb57-f1c26ff8b885",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Valentina Peet",
+      "person": {
+        "addresses": [
+          {
+            "city": "Longyearbyen",
+            "state": "SD",
+            "postalCode": "60274",
+            "countryCode": "CIV"
+          }
+        ],
+        "personId": "4a02c662-4ff4-44cf-90b7-c625e4483a98",
+        "standardFamilyName": "Peet",
+        "standardGivenName": "Valentina",
+        "nationalityCode": "CIV",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 15
+          }
+        ],
+        "sex": "FEMALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "89b6bdc0-fa34-4998-a352-256a956b0238",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "David Turing",
+      "person": {
+        "addresses": [
+          {
+            "city": "Trantor",
+            "state": "VA",
+            "postalCode": "14846",
+            "countryCode": "IMN"
+          }
+        ],
+        "personId": "4c55e220-6e75-454c-9ff1-67dc093b3014",
+        "standardFamilyName": "Turing",
+        "standardGivenName": "David",
+        "nationalityCode": "IMN",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 16
+          }
+        ],
+        "sex": "MALE"
+      },
+      "timeItems": []
+    },
+    {
+      "participantId": "0e391c24-ab19-4430-80f4-0374525a026d",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Anne Runciter",
+      "person": {
+        "addresses": [
+          {
+            "city": "Atlantis",
+            "state": "OS",
+            "postalCode": "47105",
+            "countryCode": "GNQ"
+          }
+        ],
+        "personId": "6b20dd2c-d85e-452d-bb18-d75c07462575",
+        "standardFamilyName": "Runciter",
+        "standardGivenName": "Anne",
+        "nationalityCode": "GNQ",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 1
+          }
+        ],
+        "birthDate": "2005-02-17",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 443,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "62fe5f89-7263-4cec-af5a-f25d2dbe4ba6",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Vizzini Beer",
+      "person": {
+        "addresses": [
+          {
+            "city": "Longyearbyen",
+            "state": "HO",
+            "postalCode": "01977",
+            "countryCode": "BEL"
+          }
+        ],
+        "personId": "84aed1b9-1409-45d1-95f2-dff89dfb21e6",
+        "standardFamilyName": "Beer",
+        "standardGivenName": "Vizzini",
+        "nationalityCode": "BEL",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 2
+          }
+        ],
+        "birthDate": "2005-07-31",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 930,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "1c55c5ac-126f-4413-b94c-30e2fc0dd00f",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Pris Tillich",
+      "person": {
+        "addresses": [
+          {
+            "city": "Rivendell",
+            "state": "SD",
+            "postalCode": "24570",
+            "countryCode": "BOL"
+          }
+        ],
+        "personId": "dba4a183-6890-4eb8-8d98-ef3d628d4834",
+        "standardFamilyName": "Tillich",
+        "standardGivenName": "Pris",
+        "nationalityCode": "BOL",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 3
+          }
+        ],
+        "birthDate": "2005-04-26",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 115,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "c872a091-e8b5-4bc7-bd4c-9d2821326dfe",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Estlin Shaftoe",
+      "person": {
+        "addresses": [
+          {
+            "city": "Coober Pedy",
+            "state": "EA",
+            "postalCode": "01020",
+            "countryCode": "AGO"
+          }
+        ],
+        "personId": "91091b1e-e369-4411-9ef6-d8409aa6471c",
+        "standardFamilyName": "Shaftoe",
+        "standardGivenName": "Estlin",
+        "nationalityCode": "AGO",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 4
+          }
+        ],
+        "birthDate": "2006-09-07",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 353,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "c6448caa-015d-4e1c-99af-a11a3f1ad219",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Uhura Le Guin",
+      "person": {
+        "addresses": [
+          {
+            "city": "El Dorado",
+            "state": "LT",
+            "postalCode": "55794",
+            "countryCode": "THA"
+          }
+        ],
+        "personId": "35878199-1cf4-428e-a9dc-1f222c46f9ba",
+        "standardFamilyName": "Le Guin",
+        "standardGivenName": "Uhura",
+        "nationalityCode": "THA",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 5
+          }
+        ],
+        "birthDate": "2007-10-31",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 595,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "1da31830-d156-4f89-8479-8d1baf248ac5",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Ivan Jovovich",
+      "person": {
+        "addresses": [
+          {
+            "city": "Gotham",
+            "state": "VA",
+            "postalCode": "12923",
+            "countryCode": "NAM"
+          }
+        ],
+        "personId": "6652b0ed-a931-46fd-bb7e-300dd0d61598",
+        "standardFamilyName": "Jovovich",
+        "standardGivenName": "Ivan",
+        "nationalityCode": "NAM",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 6
+          }
+        ],
+        "birthDate": "2007-05-13",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 975,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "89d3db06-d8c3-40b3-a670-a9c6c1297394",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "George Rugen",
+      "person": {
+        "addresses": [
+          {
+            "city": "Pseudopolis",
+            "state": "FK",
+            "postalCode": "71423",
+            "countryCode": "TCA"
+          }
+        ],
+        "personId": "66147261-a48e-48a7-a9fa-43f378949268",
+        "standardFamilyName": "Rugen",
+        "standardGivenName": "George",
+        "nationalityCode": "TCA",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 7
+          }
+        ],
+        "birthDate": "2007-03-25",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 817,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "65af89ea-4f01-4468-87ce-5bc16185a419",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Kurt Shelley",
+      "person": {
+        "addresses": [
+          {
+            "city": "Maycomb",
+            "state": "PA",
+            "postalCode": "52568",
+            "countryCode": "MDG"
+          }
+        ],
+        "personId": "1e2f6157-357c-4155-8b1b-c4a4f714188d",
+        "standardFamilyName": "Shelley",
+        "standardGivenName": "Kurt",
+        "nationalityCode": "MDG",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 8
+          }
+        ],
+        "birthDate": "2006-12-12",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 739,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "d422d1ca-c9d2-469a-a69c-5d03c2f6f4f8",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Aldous Paz",
+      "person": {
+        "addresses": [
+          {
+            "city": "Ilium",
+            "state": "IL",
+            "postalCode": "57520",
+            "countryCode": "YEM"
+          }
+        ],
+        "personId": "1d5a8ff4-744f-49b6-91ea-8f2a81485edd",
+        "standardFamilyName": "Paz",
+        "standardGivenName": "Aldous",
+        "nationalityCode": "YEM",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 9
+          }
+        ],
+        "birthDate": "2005-02-12",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 921,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "ff872035-b02c-4de5-a16a-35e1bf0329e4",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Neil Sale",
+      "person": {
+        "addresses": [
+          {
+            "city": "Chefchaouen",
+            "state": "GT",
+            "postalCode": "94603",
+            "countryCode": "TKM"
+          }
+        ],
+        "personId": "12a0020c-cafe-458d-8b0d-5d44dc63ed27",
+        "standardFamilyName": "Sale",
+        "standardGivenName": "Neil",
+        "nationalityCode": "TKM",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 10
+          }
+        ],
+        "birthDate": "2007-09-28",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 370,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "24815e7f-8ed8-4fd9-92ad-c54f500c18be",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Rebecca Turing",
+      "person": {
+        "addresses": [
+          {
+            "city": "Navarre",
+            "state": "TH",
+            "postalCode": "20952",
+            "countryCode": "PER"
+          }
+        ],
+        "personId": "2c1de367-4dce-40fe-a042-c0c9d026385f",
+        "standardFamilyName": "Turing",
+        "standardGivenName": "Rebecca",
+        "nationalityCode": "PER",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 11
+          }
+        ],
+        "birthDate": "2005-04-29",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 668,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "662b6723-f69a-462c-a90a-513b3b0a430a",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Italo Stratton",
+      "person": {
+        "addresses": [
+          {
+            "city": "Matmata",
+            "state": "LH",
+            "postalCode": "56629",
+            "countryCode": "QAT"
+          }
+        ],
+        "personId": "a7621d65-1691-4ce4-bb80-8fdfb440ae61",
+        "standardFamilyName": "Stratton",
+        "standardGivenName": "Italo",
+        "nationalityCode": "QAT",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 12
+          }
+        ],
+        "birthDate": "2006-06-02",
+        "sex": "MALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 789,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "17de6822-1fc1-4641-9787-a22223e86971",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Brienne Berry",
+      "person": {
+        "addresses": [
+          {
+            "city": "Centralia",
+            "state": "KS",
+            "postalCode": "90729",
+            "countryCode": "ARM"
+          }
+        ],
+        "personId": "9301119a-b6af-4230-b896-bcb6f54d937d",
+        "standardFamilyName": "Berry",
+        "standardGivenName": "Brienne",
+        "nationalityCode": "ARM",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 13
+          }
+        ],
+        "birthDate": "2007-03-30",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 176,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "36024967-56bc-4a93-818f-3014819ac6c6",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Heather Waterhouse",
+      "person": {
+        "addresses": [
+          {
+            "city": "Nimbin",
+            "state": "BS",
+            "postalCode": "82579",
+            "countryCode": "WSM"
+          }
+        ],
+        "personId": "13cca3d8-751e-4824-ac4d-f76a352e2855",
+        "standardFamilyName": "Waterhouse",
+        "standardGivenName": "Heather",
+        "nationalityCode": "WSM",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 14
+          }
+        ],
+        "birthDate": "2007-09-23",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 561,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "ccd5edee-fc5d-4766-a63f-241b682d75c9",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Jasmine Huxley",
+      "person": {
+        "addresses": [
+          {
+            "city": "Shangri-La",
+            "state": "BV",
+            "postalCode": "73666",
+            "countryCode": "ATG"
+          }
+        ],
+        "personId": "d389e13b-af90-40aa-b2c8-54a8d7fe3a69",
+        "standardFamilyName": "Huxley",
+        "standardGivenName": "Jasmine",
+        "nationalityCode": "ATG",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 15
+          }
+        ],
+        "birthDate": "2005-12-13",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 212,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "participantId": "d5500bba-d1a9-47b3-a925-ae9d969e9965",
+      "participantRole": "COMPETITOR",
+      "participantType": "INDIVIDUAL",
+      "participantName": "Marie Wirt",
+      "person": {
+        "addresses": [
+          {
+            "city": "Lys",
+            "state": "BM",
+            "postalCode": "08315",
+            "countryCode": "FLK"
+          }
+        ],
+        "personId": "9c869db6-622c-42e2-ae6f-61a36e2d22f6",
+        "standardFamilyName": "Wirt",
+        "standardGivenName": "Marie",
+        "nationalityCode": "FLK",
+        "extensions": [
+          {
+            "name": "regionCode",
+            "value": 16
+          }
+        ],
+        "birthDate": "2006-01-16",
+        "sex": "FEMALE"
+      },
+      "timeItems": [
+        {
+          "itemValue": 336,
+          "itemType": "SCALE.RANKING.SINGLES.U18"
+        }
+      ]
+    },
+    {
+      "individualParticipantIds": [
+        "0e391c24-ab19-4430-80f4-0374525a026d",
+        "62fe5f89-7263-4cec-af5a-f25d2dbe4ba6"
+      ],
+      "participantOtherName": "TM1",
+      "participantName": "Team 1",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "8e1beb85-ca84-4139-9468-89b68e22c9c8",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "1c55c5ac-126f-4413-b94c-30e2fc0dd00f",
+        "c872a091-e8b5-4bc7-bd4c-9d2821326dfe"
+      ],
+      "participantOtherName": "TM2",
+      "participantName": "Team 2",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "5953b9d2-214f-4b8a-a0d8-2c68d060f68a",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "c6448caa-015d-4e1c-99af-a11a3f1ad219",
+        "1da31830-d156-4f89-8479-8d1baf248ac5"
+      ],
+      "participantOtherName": "TM3",
+      "participantName": "Team 3",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "cf942d85-5d2e-4121-9f6a-51d48f808db2",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "89d3db06-d8c3-40b3-a670-a9c6c1297394",
+        "65af89ea-4f01-4468-87ce-5bc16185a419"
+      ],
+      "participantOtherName": "TM4",
+      "participantName": "Team 4",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "9c1e8428-9fee-4cca-8b74-e2e42f73deb6",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "d422d1ca-c9d2-469a-a69c-5d03c2f6f4f8",
+        "ff872035-b02c-4de5-a16a-35e1bf0329e4"
+      ],
+      "participantOtherName": "TM5",
+      "participantName": "Team 5",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "3828174e-96fc-43ea-90b0-8712a581ad2a",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "24815e7f-8ed8-4fd9-92ad-c54f500c18be",
+        "662b6723-f69a-462c-a90a-513b3b0a430a"
+      ],
+      "participantOtherName": "TM6",
+      "participantName": "Team 6",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "2a10ad2d-f9bd-44fa-a481-48058389963e",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "17de6822-1fc1-4641-9787-a22223e86971",
+        "36024967-56bc-4a93-818f-3014819ac6c6"
+      ],
+      "participantOtherName": "TM7",
+      "participantName": "Team 7",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "a5383769-d8a1-42bb-876c-35d646223c4e",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "ccd5edee-fc5d-4766-a63f-241b682d75c9",
+        "d5500bba-d1a9-47b3-a925-ae9d969e9965"
+      ],
+      "participantOtherName": "TM8",
+      "participantName": "Team 8",
+      "participantRole": "COMPETITOR",
+      "participantType": "TEAM",
+      "participantId": "2e15570f-888c-4e05-84a3-dae8884e8ba9",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "89d3db06-d8c3-40b3-a670-a9c6c1297394",
+        "65af89ea-4f01-4468-87ce-5bc16185a419"
+      ],
+      "participantRole": "COMPETITOR",
+      "participantType": "PAIR",
+      "participantId": "74c22bc5-9bbb-4f2c-92c6-4fa07a162cb1",
+      "participantName": "Rugen/Shelley"
+    },
+    {
+      "individualParticipantIds": [
+        "0e391c24-ab19-4430-80f4-0374525a026d",
+        "62fe5f89-7263-4cec-af5a-f25d2dbe4ba6"
+      ],
+      "participantRole": "COMPETITOR",
+      "participantType": "PAIR",
+      "participantId": "4de17ab6-5890-412b-8b76-2f9b86aaadf3",
+      "participantName": "Beer/Runciter"
+    },
+    {
+      "individualParticipantIds": [
+        "ccd5edee-fc5d-4766-a63f-241b682d75c9",
+        "d5500bba-d1a9-47b3-a925-ae9d969e9965"
+      ],
+      "participantRole": "COMPETITOR",
+      "participantType": "PAIR",
+      "participantId": "64bd50da-5a1f-4b84-9139-3996fa4f07ef",
+      "participantName": "Huxley/Wirt"
+    },
+    {
+      "individualParticipantIds": [
+        "24815e7f-8ed8-4fd9-92ad-c54f500c18be",
+        "662b6723-f69a-462c-a90a-513b3b0a430a"
+      ],
+      "participantRole": "COMPETITOR",
+      "participantType": "PAIR",
+      "participantId": "0c04877f-d9e7-437c-857c-220183094dbf",
+      "participantName": "Stratton/Turing"
+    },
+    {
+      "individualParticipantIds": [
+        "17de6822-1fc1-4641-9787-a22223e86971",
+        "36024967-56bc-4a93-818f-3014819ac6c6"
+      ],
+      "participantRole": "COMPETITOR",
+      "participantType": "PAIR",
+      "participantId": "19dff632-c041-476d-b42d-cba518208cc4",
+      "participantName": "Berry/Waterhouse"
+    },
+    {
+      "individualParticipantIds": [
+        "1c55c5ac-126f-4413-b94c-30e2fc0dd00f",
+        "c872a091-e8b5-4bc7-bd4c-9d2821326dfe"
+      ],
+      "participantRole": "COMPETITOR",
+      "participantType": "PAIR",
+      "participantId": "4392ae40-ccb3-4f62-ba0d-c2df13b05cb7",
+      "participantName": "Shaftoe/Tillich"
+    },
+    {
+      "individualParticipantIds": [
+        "c6448caa-015d-4e1c-99af-a11a3f1ad219",
+        "1da31830-d156-4f89-8479-8d1baf248ac5"
+      ],
+      "participantRole": "COMPETITOR",
+      "participantType": "PAIR",
+      "participantId": "1b51d4e6-ad36-4307-b5c0-3ebbbe12f4e3",
+      "participantName": "Jovovich/Le Guin"
+    },
+    {
+      "individualParticipantIds": [
+        "d422d1ca-c9d2-469a-a69c-5d03c2f6f4f8",
+        "ff872035-b02c-4de5-a16a-35e1bf0329e4"
+      ],
+      "participantRole": "COMPETITOR",
+      "participantType": "PAIR",
+      "participantId": "8904271c-3d7f-4b61-a58c-0e4e5e5c2800",
+      "participantName": "Paz/Sale"
+    }
+  ],
+  "events": [
+    {
+      "startDate": "2023-07-03",
+      "endDate": "2023-07-10",
+      "eventType": "TEAM",
+      "entries": [
+        {
+          "participantId": "8e1beb85-ca84-4139-9468-89b68e22c9c8",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 1
+        },
+        {
+          "participantId": "5953b9d2-214f-4b8a-a0d8-2c68d060f68a",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 2
+        },
+        {
+          "participantId": "cf942d85-5d2e-4121-9f6a-51d48f808db2",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 3
+        },
+        {
+          "participantId": "9c1e8428-9fee-4cca-8b74-e2e42f73deb6",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 4
+        },
+        {
+          "participantId": "3828174e-96fc-43ea-90b0-8712a581ad2a",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 5
+        },
+        {
+          "participantId": "2a10ad2d-f9bd-44fa-a481-48058389963e",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 6
+        },
+        {
+          "participantId": "a5383769-d8a1-42bb-876c-35d646223c4e",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 7
+        },
+        {
+          "participantId": "2e15570f-888c-4e05-84a3-dae8884e8ba9",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 8
+        }
+      ],
+      "eventName": "Duo Draw",
+      "tieFormat": {
+        "collectionDefinitions": [
+          {
+            "collectionName": "Doubles",
+            "matchUpCount": 1,
+            "matchUpFormat": "SET1-S:8/TB7",
+            "matchUpType": "DOUBLES",
+            "matchUpValue": 1,
+            "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+            "category": {
+              "ageCategoryCode": "U18",
+              "categoryName": "U18"
+            }
+          },
+          {
+            "collectionName": "Singles",
+            "matchUpCount": 2,
+            "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+            "matchUpType": "SINGLES",
+            "matchUpValue": 1,
+            "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+            "category": {
+              "ageCategoryCode": "U18",
+              "categoryName": "U18"
+            }
+          }
+        ],
+        "tieFormatName": "DOMINANT_DUO",
+        "winCriteria": {
+          "valueGoal": 2
+        }
+      },
+      "category": {
+        "ageCategoryCode": "U18",
+        "categoryName": "U18"
+      },
+      "eventId": "aeec1a80-event-1",
+      "drawDefinitions": [
+        {
+          "drawName": "Draw 1",
+          "drawId": "796c1238-8166-46bb-acc1-e7552139627f",
+          "structures": [
+            {
+              "structureId": "de58f29f-dcfc-4ab7-9dd7-f2daadfba8ba",
+              "finishingPosition": "WIN_RATIO",
+              "seedAssignments": [],
+              "stageSequence": 1,
+              "structureName": "MAIN",
+              "stage": "MAIN",
+              "structureType": "CONTAINER",
+              "structures": [
+                {
+                  "structureId": "2b04c7b4-79fd-4150-b90e-1ed9a716e2dd",
+                  "finishingPosition": "WIN_RATIO",
+                  "seedAssignments": [],
+                  "stageSequence": 1,
+                  "structureName": "Group 1",
+                  "structureType": "ITEM",
+                  "matchUps": [
+                    {
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpType": "TEAM",
+                      "finishingPositionRange": {
+                        "winner": [1, 8],
+                        "loser": [1, 8]
+                      },
+                      "drawPositions": [1, 2],
+                      "roundNumber": 1,
+                      "matchUpId": "9dbd8ae5-62db-422b-8eec-36a9dd6b056c",
+                      "tieMatchUps": [
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "cfb6b207-8972-4af8-8795-145cb3dff37d",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                          "matchUpType": "DOUBLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 7,
+                                "side2Score": 9,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              }
+                            ],
+                            "scoreStringSide1": "7-9",
+                            "scoreStringSide2": "9-7"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "7ca3889f-e03f-4212-8081-fc4d5dcb8df0",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 4,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 4,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "4-6 4-6",
+                            "scoreStringSide2": "6-4 6-4"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "95fa54f6-bcff-4dd8-b108-9116184da042",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 2,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 5,
+                                "side2Score": 7,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 5,
+                                "side2Score": 7,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "5-7 5-7",
+                            "scoreStringSide2": "7-5 7-5"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        }
+                      ],
+                      "sides": [
+                        {
+                          "drawPosition": 1,
+                          "sideNumber": 1,
+                          "displaySideNumber": 1,
+                          "lineUp": [
+                            {
+                              "participantId": "89d3db06-d8c3-40b3-a670-a9c6c1297394",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 1
+                                }
+                              ]
+                            },
+                            {
+                              "participantId": "65af89ea-4f01-4468-87ce-5bc16185a419",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 2
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "drawPosition": 2,
+                          "sideNumber": 2,
+                          "displaySideNumber": 2,
+                          "lineUp": [
+                            {
+                              "participantId": "0e391c24-ab19-4430-80f4-0374525a026d",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 1
+                                }
+                              ]
+                            },
+                            {
+                              "participantId": "62fe5f89-7263-4cec-af5a-f25d2dbe4ba6",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 2
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "tieFormat": {
+                        "collectionDefinitions": [
+                          {
+                            "collectionName": "Doubles",
+                            "matchUpCount": 1,
+                            "matchUpFormat": "SET1-S:8/TB7",
+                            "matchUpType": "DOUBLES",
+                            "matchUpValue": 1,
+                            "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          },
+                          {
+                            "collectionName": "Singles",
+                            "matchUpCount": 2,
+                            "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                            "matchUpType": "SINGLES",
+                            "matchUpValue": 1,
+                            "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          }
+                        ],
+                        "tieFormatName": "DOMINANT_DUO",
+                        "winCriteria": {
+                          "valueGoal": 2
+                        }
+                      },
+                      "score": {
+                        "scoreStringSide1": "0-3",
+                        "scoreStringSide2": "3-0",
+                        "sets": [
+                          {
+                            "side1Score": 0,
+                            "side2Score": 3,
+                            "winningSide": 2
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpType": "TEAM",
+                      "finishingPositionRange": {
+                        "winner": [1, 8],
+                        "loser": [1, 8]
+                      },
+                      "drawPositions": [3, 4],
+                      "roundNumber": 1,
+                      "matchUpId": "cf790066-be0c-4c99-8af0-2bfa769cf458",
+                      "tieMatchUps": [
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "5f7972e4-ade9-4f71-b5fc-abce55bbf415",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                          "matchUpType": "DOUBLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 8,
+                                "side2Score": 2,
+                                "winningSide": 1,
+                                "setNumber": 1
+                              }
+                            ],
+                            "scoreStringSide1": "8-2",
+                            "scoreStringSide2": "2-8"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 1
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "2b3810cd-b7c5-4003-b95e-ffd2f3a75f28",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 6,
+                                "side2Score": 2,
+                                "winningSide": 1,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 6,
+                                "side2Score": 2,
+                                "winningSide": 1,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "6-2 6-2",
+                            "scoreStringSide2": "2-6 2-6"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 1
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "3f04abda-f511-4908-b326-088b575061af",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 2,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 6,
+                                "side2Score": 2,
+                                "winningSide": 1,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 6,
+                                "side2Score": 2,
+                                "winningSide": 1,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "6-2 6-2",
+                            "scoreStringSide2": "2-6 2-6"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 1
+                        }
+                      ],
+                      "sides": [
+                        {
+                          "drawPosition": 3,
+                          "sideNumber": 1,
+                          "displaySideNumber": 1,
+                          "lineUp": [
+                            {
+                              "participantId": "ccd5edee-fc5d-4766-a63f-241b682d75c9",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                }
+                              ]
+                            },
+                            {
+                              "participantId": "d5500bba-d1a9-47b3-a925-ae9d969e9965",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 2
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "drawPosition": 4,
+                          "sideNumber": 2,
+                          "displaySideNumber": 2,
+                          "lineUp": [
+                            {
+                              "participantId": "24815e7f-8ed8-4fd9-92ad-c54f500c18be",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 1
+                                }
+                              ]
+                            },
+                            {
+                              "participantId": "662b6723-f69a-462c-a90a-513b3b0a430a",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 2
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "tieFormat": {
+                        "collectionDefinitions": [
+                          {
+                            "collectionName": "Doubles",
+                            "matchUpCount": 1,
+                            "matchUpFormat": "SET1-S:8/TB7",
+                            "matchUpType": "DOUBLES",
+                            "matchUpValue": 1,
+                            "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          },
+                          {
+                            "collectionName": "Singles",
+                            "matchUpCount": 2,
+                            "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                            "matchUpType": "SINGLES",
+                            "matchUpValue": 1,
+                            "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          }
+                        ],
+                        "tieFormatName": "DOMINANT_DUO",
+                        "winCriteria": {
+                          "valueGoal": 2
+                        }
+                      },
+                      "score": {
+                        "scoreStringSide1": "3-0",
+                        "scoreStringSide2": "0-3",
+                        "sets": [
+                          {
+                            "side1Score": 3,
+                            "side2Score": 0,
+                            "winningSide": 1
+                          }
+                        ]
+                      },
+                      "winningSide": 1
+                    },
+                    {
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpType": "TEAM",
+                      "finishingPositionRange": {
+                        "winner": [1, 8],
+                        "loser": [1, 8]
+                      },
+                      "drawPositions": [1, 3],
+                      "roundNumber": 2,
+                      "matchUpId": "ab9c2893-bb8f-4121-9802-d7fe10358657",
+                      "tieMatchUps": [
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "28cfd9b0-72c4-4026-9bb4-63b84a39113b",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                          "matchUpType": "DOUBLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 7,
+                                "side2Score": 9,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              }
+                            ],
+                            "scoreStringSide1": "7-9",
+                            "scoreStringSide2": "9-7"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "9d31cb4d-a384-4d27-a521-b2998be9dc78",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 4,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 4,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "4-6 4-6",
+                            "scoreStringSide2": "6-4 6-4"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "21a7a471-fb11-48f7-ac56-2b90db375289",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 2,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 5,
+                                "side2Score": 7,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 6,
+                                "side2Score": 7,
+                                "side1TiebreakScore": 3,
+                                "side2TiebreakScore": 7,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "5-7 6-7(3)",
+                            "scoreStringSide2": "7-5 7-6(3)"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        }
+                      ],
+                      "sides": [
+                        {
+                          "drawPosition": 1,
+                          "sideNumber": 1,
+                          "displaySideNumber": 1,
+                          "lineUp": [
+                            {
+                              "participantId": "89d3db06-d8c3-40b3-a670-a9c6c1297394",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                }
+                              ]
+                            },
+                            {
+                              "participantId": "65af89ea-4f01-4468-87ce-5bc16185a419",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 2
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "drawPosition": 3,
+                          "sideNumber": 2,
+                          "displaySideNumber": 2,
+                          "lineUp": [
+                            {
+                              "participantId": "ccd5edee-fc5d-4766-a63f-241b682d75c9",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 1
+                                }
+                              ]
+                            },
+                            {
+                              "participantId": "d5500bba-d1a9-47b3-a925-ae9d969e9965",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 2
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "tieFormat": {
+                        "collectionDefinitions": [
+                          {
+                            "collectionName": "Doubles",
+                            "matchUpCount": 1,
+                            "matchUpFormat": "SET1-S:8/TB7",
+                            "matchUpType": "DOUBLES",
+                            "matchUpValue": 1,
+                            "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          },
+                          {
+                            "collectionName": "Singles",
+                            "matchUpCount": 2,
+                            "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                            "matchUpType": "SINGLES",
+                            "matchUpValue": 1,
+                            "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          }
+                        ],
+                        "tieFormatName": "DOMINANT_DUO",
+                        "winCriteria": {
+                          "valueGoal": 2
+                        }
+                      },
+                      "score": {
+                        "scoreStringSide1": "0-3",
+                        "scoreStringSide2": "3-0",
+                        "sets": [
+                          {
+                            "side1Score": 0,
+                            "side2Score": 3,
+                            "winningSide": 2
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpType": "TEAM",
+                      "finishingPositionRange": {
+                        "winner": [1, 8],
+                        "loser": [1, 8]
+                      },
+                      "drawPositions": [2, 4],
+                      "roundNumber": 2,
+                      "matchUpId": "f07af747-8c0d-4848-9d30-31219215eea0",
+                      "tieMatchUps": [
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "74903023-4c3a-4b8c-aa54-77fa3b7dc8e8",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                          "matchUpType": "DOUBLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 1,
+                                "side2Score": 8,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              }
+                            ],
+                            "scoreStringSide1": "1-8",
+                            "scoreStringSide2": "8-1"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "37d22409-3760-44fd-9a9f-ef592ee8d8b3",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 3,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 3,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "3-6 3-6",
+                            "scoreStringSide2": "6-3 6-3"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "b09d6d32-178e-468a-a6de-94cb0ecb4ec6",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 2,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 2,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 2,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "2-6 2-6",
+                            "scoreStringSide2": "6-2 6-2"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        }
+                      ],
+                      "tieFormat": {
+                        "collectionDefinitions": [
+                          {
+                            "collectionName": "Doubles",
+                            "matchUpCount": 1,
+                            "matchUpFormat": "SET1-S:8/TB7",
+                            "matchUpType": "DOUBLES",
+                            "matchUpValue": 1,
+                            "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          },
+                          {
+                            "collectionName": "Singles",
+                            "matchUpCount": 2,
+                            "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                            "matchUpType": "SINGLES",
+                            "matchUpValue": 1,
+                            "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          }
+                        ],
+                        "tieFormatName": "DOMINANT_DUO",
+                        "winCriteria": {
+                          "valueGoal": 2
+                        }
+                      },
+                      "score": {
+                        "scoreStringSide1": "0-3",
+                        "scoreStringSide2": "3-0",
+                        "sets": [
+                          {
+                            "side1Score": 0,
+                            "side2Score": 3,
+                            "winningSide": 2
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpType": "TEAM",
+                      "finishingPositionRange": {
+                        "winner": [1, 8],
+                        "loser": [1, 8]
+                      },
+                      "drawPositions": [2, 3],
+                      "roundNumber": 3,
+                      "matchUpId": "e1b78359-4349-4bac-aae1-352089431049",
+                      "tieMatchUps": [
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "30ad7b95-655f-45e0-8737-3a914fb24e59",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                          "matchUpType": "DOUBLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 8,
+                                "side2Score": 3,
+                                "winningSide": 1,
+                                "setNumber": 1
+                              }
+                            ],
+                            "scoreStringSide1": "8-3",
+                            "scoreStringSide2": "3-8"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 1
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "b1479610-e59f-42bb-9adc-29e63a3b69c0",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 6,
+                                "side2Score": 2,
+                                "winningSide": 1,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 6,
+                                "side2Score": 3,
+                                "winningSide": 1,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "6-2 6-3",
+                            "scoreStringSide2": "2-6 3-6"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 1
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "7238291f-1faa-44cf-a270-13a1f53f6b95",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 2,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 6,
+                                "side2Score": 3,
+                                "winningSide": 1,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 6,
+                                "side2Score": 2,
+                                "winningSide": 1,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "6-3 6-2",
+                            "scoreStringSide2": "3-6 2-6"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 1
+                        }
+                      ],
+                      "tieFormat": {
+                        "collectionDefinitions": [
+                          {
+                            "collectionName": "Doubles",
+                            "matchUpCount": 1,
+                            "matchUpFormat": "SET1-S:8/TB7",
+                            "matchUpType": "DOUBLES",
+                            "matchUpValue": 1,
+                            "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          },
+                          {
+                            "collectionName": "Singles",
+                            "matchUpCount": 2,
+                            "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                            "matchUpType": "SINGLES",
+                            "matchUpValue": 1,
+                            "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          }
+                        ],
+                        "tieFormatName": "DOMINANT_DUO",
+                        "winCriteria": {
+                          "valueGoal": 2
+                        }
+                      },
+                      "score": {
+                        "scoreStringSide1": "3-0",
+                        "scoreStringSide2": "0-3",
+                        "sets": [
+                          {
+                            "side1Score": 3,
+                            "side2Score": 0,
+                            "winningSide": 1
+                          }
+                        ]
+                      },
+                      "winningSide": 1
+                    },
+                    {
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpType": "TEAM",
+                      "finishingPositionRange": {
+                        "winner": [1, 8],
+                        "loser": [1, 8]
+                      },
+                      "drawPositions": [1, 4],
+                      "roundNumber": 3,
+                      "matchUpId": "283e9f7d-3afb-4fa9-843c-14f62c17a2c9",
+                      "tieMatchUps": [
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "0ba960b2-fe19-43ca-b541-1f80b6f63a11",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                          "matchUpType": "DOUBLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 7,
+                                "side2Score": 9,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              }
+                            ],
+                            "scoreStringSide1": "7-9",
+                            "scoreStringSide2": "9-7"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "ccf0b5f7-dc8f-4008-9246-9ed6177fd555",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 4,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 4,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "4-6 4-6",
+                            "scoreStringSide2": "6-4 6-4"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "6bf54435-27ff-4df4-9f30-618e463911d9",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 2,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 5,
+                                "side2Score": 7,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 5,
+                                "side2Score": 7,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "5-7 5-7",
+                            "scoreStringSide2": "7-5 7-5"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        }
+                      ],
+                      "tieFormat": {
+                        "collectionDefinitions": [
+                          {
+                            "collectionName": "Doubles",
+                            "matchUpCount": 1,
+                            "matchUpFormat": "SET1-S:8/TB7",
+                            "matchUpType": "DOUBLES",
+                            "matchUpValue": 1,
+                            "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          },
+                          {
+                            "collectionName": "Singles",
+                            "matchUpCount": 2,
+                            "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                            "matchUpType": "SINGLES",
+                            "matchUpValue": 1,
+                            "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          }
+                        ],
+                        "tieFormatName": "DOMINANT_DUO",
+                        "winCriteria": {
+                          "valueGoal": 2
+                        }
+                      },
+                      "score": {
+                        "scoreStringSide1": "0-3",
+                        "scoreStringSide2": "3-0",
+                        "sets": [
+                          {
+                            "side1Score": 0,
+                            "side2Score": 3,
+                            "winningSide": 2
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    }
+                  ],
+                  "positionAssignments": [
+                    {
+                      "drawPosition": 1,
+                      "participantId": "9c1e8428-9fee-4cca-8b74-e2e42f73deb6",
+                      "extensions": [
+                        {
+                          "value": {
+                            "allDefaults": 0,
+                            "defaults": 0,
+                            "defeats": [
+                              "8e1beb85-ca84-4139-9468-89b68e22c9c8",
+                              "2e15570f-888c-4e05-84a3-dae8884e8ba9",
+                              "2a10ad2d-f9bd-44fa-a481-48058389963e"
+                            ],
+                            "gamesLost": 105,
+                            "gamesWon": 76,
+                            "matchUpsCancelled": 0,
+                            "matchUpsLost": 3,
+                            "matchUpsWon": 0,
+                            "pointsLost": 7,
+                            "pointsWon": 3,
+                            "retirements": 0,
+                            "setsLost": 15,
+                            "setsWon": 0,
+                            "tieMatchUpsLost": 9,
+                            "tieMatchUpsWon": 0,
+                            "victories": [],
+                            "walkovers": 0,
+                            "setsPct": 0,
+                            "tieMatchUpsPct": 0,
+                            "matchUpsPct": 0,
+                            "gamesPct": 0.42,
+                            "pointsRatio": 0.429,
+                            "result": "0/3",
+                            "groupOrder": 4,
+                            "rankOrder": 4,
+                            "GEMscore": 42004290
+                          },
+                          "name": "tally",
+                          "createdAt": "2023-07-03T20:46:31.492Z"
+                        }
+                      ]
+                    },
+                    {
+                      "drawPosition": 2,
+                      "participantId": "8e1beb85-ca84-4139-9468-89b68e22c9c8",
+                      "extensions": [
+                        {
+                          "value": {
+                            "allDefaults": 0,
+                            "defaults": 0,
+                            "defeats": ["2a10ad2d-f9bd-44fa-a481-48058389963e"],
+                            "gamesLost": 70,
+                            "gamesWon": 78,
+                            "matchUpsCancelled": 0,
+                            "matchUpsLost": 1,
+                            "matchUpsWon": 2,
+                            "pointsLost": 0,
+                            "pointsWon": 0,
+                            "retirements": 0,
+                            "setsLost": 5,
+                            "setsWon": 10,
+                            "tieMatchUpsLost": 3,
+                            "tieMatchUpsWon": 6,
+                            "victories": [
+                              "9c1e8428-9fee-4cca-8b74-e2e42f73deb6",
+                              "2e15570f-888c-4e05-84a3-dae8884e8ba9"
+                            ],
+                            "walkovers": 0,
+                            "setsPct": 0.667,
+                            "tieMatchUpsPct": 0.667,
+                            "matchUpsPct": 0.667,
+                            "gamesPct": 0.527,
+                            "pointsRatio": 0,
+                            "result": "2/1",
+                            "groupOrder": 3,
+                            "rankOrder": 3,
+                            "GEMscore": 66706670667052696000
+                          },
+                          "name": "tally",
+                          "createdAt": "2023-07-03T20:46:31.492Z"
+                        }
+                      ]
+                    },
+                    {
+                      "drawPosition": 3,
+                      "participantId": "2e15570f-888c-4e05-84a3-dae8884e8ba9",
+                      "extensions": [
+                        {
+                          "value": {
+                            "allDefaults": 0,
+                            "defaults": 0,
+                            "defeats": ["8e1beb85-ca84-4139-9468-89b68e22c9c8"],
+                            "gamesLost": 68,
+                            "gamesWon": 80,
+                            "matchUpsCancelled": 0,
+                            "matchUpsLost": 1,
+                            "matchUpsWon": 2,
+                            "pointsLost": 3,
+                            "pointsWon": 7,
+                            "retirements": 0,
+                            "setsLost": 5,
+                            "setsWon": 10,
+                            "tieMatchUpsLost": 3,
+                            "tieMatchUpsWon": 6,
+                            "victories": [
+                              "2a10ad2d-f9bd-44fa-a481-48058389963e",
+                              "9c1e8428-9fee-4cca-8b74-e2e42f73deb6"
+                            ],
+                            "walkovers": 0,
+                            "setsPct": 0.667,
+                            "tieMatchUpsPct": 0.667,
+                            "matchUpsPct": 0.667,
+                            "gamesPct": 0.541,
+                            "pointsRatio": 2.333,
+                            "result": "2/1",
+                            "groupOrder": 1,
+                            "rankOrder": 1,
+                            "GEMscore": 66706670667054120000
+                          },
+                          "name": "tally",
+                          "createdAt": "2023-07-03T20:46:31.492Z"
+                        }
+                      ]
+                    },
+                    {
+                      "drawPosition": 4,
+                      "participantId": "2a10ad2d-f9bd-44fa-a481-48058389963e",
+                      "extensions": [
+                        {
+                          "value": {
+                            "allDefaults": 0,
+                            "defaults": 0,
+                            "defeats": ["2e15570f-888c-4e05-84a3-dae8884e8ba9"],
+                            "gamesLost": 68,
+                            "gamesWon": 77,
+                            "matchUpsCancelled": 0,
+                            "matchUpsLost": 1,
+                            "matchUpsWon": 2,
+                            "pointsLost": 0,
+                            "pointsWon": 0,
+                            "retirements": 0,
+                            "setsLost": 5,
+                            "setsWon": 10,
+                            "tieMatchUpsLost": 3,
+                            "tieMatchUpsWon": 6,
+                            "victories": [
+                              "8e1beb85-ca84-4139-9468-89b68e22c9c8",
+                              "9c1e8428-9fee-4cca-8b74-e2e42f73deb6"
+                            ],
+                            "walkovers": 0,
+                            "setsPct": 0.667,
+                            "tieMatchUpsPct": 0.667,
+                            "matchUpsPct": 0.667,
+                            "gamesPct": 0.531,
+                            "pointsRatio": 0,
+                            "result": "2/1",
+                            "groupOrder": 2,
+                            "rankOrder": 2,
+                            "GEMscore": 66706670667053100000
+                          },
+                          "name": "tally",
+                          "createdAt": "2023-07-03T20:46:31.492Z"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "structureId": "1134778e-c425-466b-9c0a-88ab362bbd5b",
+                  "finishingPosition": "WIN_RATIO",
+                  "seedAssignments": [],
+                  "stageSequence": 1,
+                  "structureName": "Group 2",
+                  "structureType": "ITEM",
+                  "matchUps": [
+                    {
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpType": "TEAM",
+                      "finishingPositionRange": {
+                        "winner": [1, 8],
+                        "loser": [1, 8]
+                      },
+                      "drawPositions": [5, 6],
+                      "roundNumber": 1,
+                      "matchUpId": "cb1a4561-6f1a-458b-88b9-7d4e375e09d9",
+                      "tieMatchUps": [
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "658121e4-389e-4221-8d12-6fe3b4d04098",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                          "matchUpType": "DOUBLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 8,
+                                "side2Score": 3,
+                                "winningSide": 1,
+                                "setNumber": 1
+                              }
+                            ],
+                            "scoreStringSide1": "8-3",
+                            "scoreStringSide2": "3-8"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 1
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "4f657fd3-c908-462f-8261-961daa5d83e7",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 3,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 3,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "3-6 3-6",
+                            "scoreStringSide2": "6-3 6-3"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "c2a36a1b-a41d-482e-bbbf-adabc919f861",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 2,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 1,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 1,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "1-6 1-6",
+                            "scoreStringSide2": "6-1 6-1"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        }
+                      ],
+                      "sides": [
+                        {
+                          "drawPosition": 5,
+                          "sideNumber": 1,
+                          "displaySideNumber": 1,
+                          "lineUp": [
+                            {
+                              "participantId": "17de6822-1fc1-4641-9787-a22223e86971",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 1
+                                }
+                              ]
+                            },
+                            {
+                              "participantId": "36024967-56bc-4a93-818f-3014819ac6c6",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 2
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "drawPosition": 6,
+                          "sideNumber": 2,
+                          "displaySideNumber": 2,
+                          "lineUp": [
+                            {
+                              "participantId": "1c55c5ac-126f-4413-b94c-30e2fc0dd00f",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 1
+                                }
+                              ]
+                            },
+                            {
+                              "participantId": "c872a091-e8b5-4bc7-bd4c-9d2821326dfe",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 2
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "tieFormat": {
+                        "collectionDefinitions": [
+                          {
+                            "collectionName": "Doubles",
+                            "matchUpCount": 1,
+                            "matchUpFormat": "SET1-S:8/TB7",
+                            "matchUpType": "DOUBLES",
+                            "matchUpValue": 1,
+                            "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          },
+                          {
+                            "collectionName": "Singles",
+                            "matchUpCount": 2,
+                            "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                            "matchUpType": "SINGLES",
+                            "matchUpValue": 1,
+                            "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          }
+                        ],
+                        "tieFormatName": "DOMINANT_DUO",
+                        "winCriteria": {
+                          "valueGoal": 2
+                        }
+                      },
+                      "score": {
+                        "scoreStringSide1": "1-2",
+                        "scoreStringSide2": "2-1",
+                        "sets": [
+                          {
+                            "side1Score": 1,
+                            "side2Score": 2,
+                            "winningSide": 2
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpType": "TEAM",
+                      "finishingPositionRange": {
+                        "winner": [1, 8],
+                        "loser": [1, 8]
+                      },
+                      "drawPositions": [7, 8],
+                      "roundNumber": 1,
+                      "matchUpId": "34a1d92c-2cab-4be6-931c-f180c21aa507",
+                      "tieMatchUps": [
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "59d38066-5bb7-41a9-8f2a-e3c7fdd1f091",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                          "matchUpType": "DOUBLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 3,
+                                "side2Score": 8,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              }
+                            ],
+                            "scoreStringSide1": "3-8",
+                            "scoreStringSide2": "8-3"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "2ca87440-2747-4042-85c8-8320a635b7b1",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 2,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 3,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "2-6 3-6",
+                            "scoreStringSide2": "6-2 6-3"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "642b1a23-5960-47bf-bbd3-5821565291b5",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 2,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 3,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 2,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "3-6 2-6",
+                            "scoreStringSide2": "6-3 6-2"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        }
+                      ],
+                      "sides": [
+                        {
+                          "drawPosition": 7,
+                          "sideNumber": 1,
+                          "displaySideNumber": 1,
+                          "lineUp": [
+                            {
+                              "participantId": "c6448caa-015d-4e1c-99af-a11a3f1ad219",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                }
+                              ]
+                            },
+                            {
+                              "participantId": "1da31830-d156-4f89-8479-8d1baf248ac5",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 2
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "drawPosition": 8,
+                          "sideNumber": 2,
+                          "displaySideNumber": 2,
+                          "lineUp": [
+                            {
+                              "participantId": "d422d1ca-c9d2-469a-a69c-5d03c2f6f4f8",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 1
+                                }
+                              ]
+                            },
+                            {
+                              "participantId": "ff872035-b02c-4de5-a16a-35e1bf0329e4",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 2
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "tieFormat": {
+                        "collectionDefinitions": [
+                          {
+                            "collectionName": "Doubles",
+                            "matchUpCount": 1,
+                            "matchUpFormat": "SET1-S:8/TB7",
+                            "matchUpType": "DOUBLES",
+                            "matchUpValue": 1,
+                            "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          },
+                          {
+                            "collectionName": "Singles",
+                            "matchUpCount": 2,
+                            "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                            "matchUpType": "SINGLES",
+                            "matchUpValue": 1,
+                            "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          }
+                        ],
+                        "tieFormatName": "DOMINANT_DUO",
+                        "winCriteria": {
+                          "valueGoal": 2
+                        }
+                      },
+                      "score": {
+                        "scoreStringSide1": "0-3",
+                        "scoreStringSide2": "3-0",
+                        "sets": [
+                          {
+                            "side1Score": 0,
+                            "side2Score": 3,
+                            "winningSide": 2
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpType": "TEAM",
+                      "finishingPositionRange": {
+                        "winner": [1, 8],
+                        "loser": [1, 8]
+                      },
+                      "drawPositions": [5, 7],
+                      "roundNumber": 2,
+                      "matchUpId": "46ab1734-8651-422e-9552-8430375c7105",
+                      "tieMatchUps": [
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "3fc02c8b-0eb5-49b9-bea6-cd4dc843f610",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                          "matchUpType": "DOUBLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 8,
+                                "side2Score": 3,
+                                "winningSide": 1,
+                                "setNumber": 1
+                              }
+                            ],
+                            "scoreStringSide1": "8-3",
+                            "scoreStringSide2": "3-8"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 1
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "f6485526-bfc9-4fd6-bd01-ca6f4624389a",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 3,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 3,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "3-6 3-6",
+                            "scoreStringSide2": "6-3 6-3"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "a0faa9a5-a3ea-486d-a826-e4dc7d687f8e",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 2,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 3,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 3,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "3-6 3-6",
+                            "scoreStringSide2": "6-3 6-3"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        }
+                      ],
+                      "sides": [
+                        {
+                          "drawPosition": 5,
+                          "sideNumber": 1,
+                          "displaySideNumber": 1,
+                          "lineUp": [
+                            {
+                              "participantId": "17de6822-1fc1-4641-9787-a22223e86971",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                }
+                              ]
+                            },
+                            {
+                              "participantId": "36024967-56bc-4a93-818f-3014819ac6c6",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 2
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "drawPosition": 7,
+                          "sideNumber": 2,
+                          "displaySideNumber": 2,
+                          "lineUp": [
+                            {
+                              "participantId": "c6448caa-015d-4e1c-99af-a11a3f1ad219",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 1
+                                }
+                              ]
+                            },
+                            {
+                              "participantId": "1da31830-d156-4f89-8479-8d1baf248ac5",
+                              "collectionAssignments": [
+                                {
+                                  "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                                  "collectionPosition": 1
+                                },
+                                {
+                                  "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                                  "collectionPosition": 2
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ],
+                      "tieFormat": {
+                        "collectionDefinitions": [
+                          {
+                            "collectionName": "Doubles",
+                            "matchUpCount": 1,
+                            "matchUpFormat": "SET1-S:8/TB7",
+                            "matchUpType": "DOUBLES",
+                            "matchUpValue": 1,
+                            "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          },
+                          {
+                            "collectionName": "Singles",
+                            "matchUpCount": 2,
+                            "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                            "matchUpType": "SINGLES",
+                            "matchUpValue": 1,
+                            "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          }
+                        ],
+                        "tieFormatName": "DOMINANT_DUO",
+                        "winCriteria": {
+                          "valueGoal": 2
+                        }
+                      },
+                      "score": {
+                        "scoreStringSide1": "1-2",
+                        "scoreStringSide2": "2-1",
+                        "sets": [
+                          {
+                            "side1Score": 1,
+                            "side2Score": 2,
+                            "winningSide": 2
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpType": "TEAM",
+                      "finishingPositionRange": {
+                        "winner": [1, 8],
+                        "loser": [1, 8]
+                      },
+                      "drawPositions": [6, 8],
+                      "roundNumber": 2,
+                      "matchUpId": "31f733a2-fbc5-492e-8bde-8eea30c7205c",
+                      "tieMatchUps": [
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "012a9753-a6df-490e-9814-303170411687",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                          "matchUpType": "DOUBLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 8,
+                                "side2Score": 3,
+                                "winningSide": 1,
+                                "setNumber": 1
+                              }
+                            ],
+                            "scoreStringSide1": "8-3",
+                            "scoreStringSide2": "3-8"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 1
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "6afa4983-53e2-4f2e-9eb0-c6c22c2851fa",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 6,
+                                "side2Score": 2,
+                                "winningSide": 1,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 6,
+                                "side2Score": 3,
+                                "winningSide": 1,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "6-2 6-3",
+                            "scoreStringSide2": "2-6 3-6"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 1
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "e0b2fe48-4ecd-4c15-aef2-160ac40ed67d",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 2,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 6,
+                                "side2Score": 2,
+                                "winningSide": 1,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 6,
+                                "side2Score": 3,
+                                "winningSide": 1,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "6-2 6-3",
+                            "scoreStringSide2": "2-6 3-6"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 1
+                        }
+                      ],
+                      "tieFormat": {
+                        "collectionDefinitions": [
+                          {
+                            "collectionName": "Doubles",
+                            "matchUpCount": 1,
+                            "matchUpFormat": "SET1-S:8/TB7",
+                            "matchUpType": "DOUBLES",
+                            "matchUpValue": 1,
+                            "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          },
+                          {
+                            "collectionName": "Singles",
+                            "matchUpCount": 2,
+                            "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                            "matchUpType": "SINGLES",
+                            "matchUpValue": 1,
+                            "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          }
+                        ],
+                        "tieFormatName": "DOMINANT_DUO",
+                        "winCriteria": {
+                          "valueGoal": 2
+                        }
+                      },
+                      "score": {
+                        "scoreStringSide1": "3-0",
+                        "scoreStringSide2": "0-3",
+                        "sets": [
+                          {
+                            "side1Score": 3,
+                            "side2Score": 0,
+                            "winningSide": 1
+                          }
+                        ]
+                      },
+                      "winningSide": 1
+                    },
+                    {
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpType": "TEAM",
+                      "finishingPositionRange": {
+                        "winner": [1, 8],
+                        "loser": [1, 8]
+                      },
+                      "drawPositions": [6, 7],
+                      "roundNumber": 3,
+                      "matchUpId": "666c9206-3ebc-411c-80ca-6e1a01e50886",
+                      "tieMatchUps": [
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "4bbe3a52-fd6c-4551-8cc7-a8c51fe77c1b",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                          "matchUpType": "DOUBLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 3,
+                                "side2Score": 8,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              }
+                            ],
+                            "scoreStringSide1": "3-8",
+                            "scoreStringSide2": "8-3"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "373e9ac2-7cbe-4c3d-98c5-7ad07bfb0a53",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 2,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 3,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "2-6 3-6",
+                            "scoreStringSide2": "6-2 6-3"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "3dd5761c-c531-41ac-95fe-02dbb474322d",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 2,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 2,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 3,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "2-6 3-6",
+                            "scoreStringSide2": "6-2 6-3"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        }
+                      ],
+                      "tieFormat": {
+                        "collectionDefinitions": [
+                          {
+                            "collectionName": "Doubles",
+                            "matchUpCount": 1,
+                            "matchUpFormat": "SET1-S:8/TB7",
+                            "matchUpType": "DOUBLES",
+                            "matchUpValue": 1,
+                            "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          },
+                          {
+                            "collectionName": "Singles",
+                            "matchUpCount": 2,
+                            "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                            "matchUpType": "SINGLES",
+                            "matchUpValue": 1,
+                            "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          }
+                        ],
+                        "tieFormatName": "DOMINANT_DUO",
+                        "winCriteria": {
+                          "valueGoal": 2
+                        }
+                      },
+                      "score": {
+                        "scoreStringSide1": "0-3",
+                        "scoreStringSide2": "3-0",
+                        "sets": [
+                          {
+                            "side1Score": 0,
+                            "side2Score": 3,
+                            "winningSide": 2
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpType": "TEAM",
+                      "finishingPositionRange": {
+                        "winner": [1, 8],
+                        "loser": [1, 8]
+                      },
+                      "drawPositions": [5, 8],
+                      "roundNumber": 3,
+                      "matchUpId": "4abe39b9-4383-419d-9c8c-504a4c1f5b71",
+                      "tieMatchUps": [
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "a461b924-5b5a-4024-9403-0daaac874c58",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                          "matchUpType": "DOUBLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 8,
+                                "side2Score": 3,
+                                "winningSide": 1,
+                                "setNumber": 1
+                              }
+                            ],
+                            "scoreStringSide1": "8-3",
+                            "scoreStringSide2": "3-8"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 1
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "8affca37-8231-48ae-a014-74a9bdcd63d9",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 1,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 1,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 1,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "1-6 1-6",
+                            "scoreStringSide2": "6-1 6-1"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        },
+                        {
+                          "sides": [
+                            {
+                              "sideNumber": 1
+                            },
+                            {
+                              "sideNumber": 2
+                            }
+                          ],
+                          "matchUpId": "001dc4f0-4b84-460c-b80b-cc40ef1f6bbb",
+                          "matchUpStatus": "COMPLETED",
+                          "collectionPosition": 2,
+                          "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                          "matchUpType": "SINGLES",
+                          "score": {
+                            "sets": [
+                              {
+                                "side1Score": 3,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 1
+                              },
+                              {
+                                "side1Score": 3,
+                                "side2Score": 6,
+                                "winningSide": 2,
+                                "setNumber": 2
+                              }
+                            ],
+                            "scoreStringSide1": "3-6 3-6",
+                            "scoreStringSide2": "6-3 6-3"
+                          },
+                          "matchUpStatusCodes": [],
+                          "winningSide": 2
+                        }
+                      ],
+                      "tieFormat": {
+                        "collectionDefinitions": [
+                          {
+                            "collectionName": "Doubles",
+                            "matchUpCount": 1,
+                            "matchUpFormat": "SET1-S:8/TB7",
+                            "matchUpType": "DOUBLES",
+                            "matchUpValue": 1,
+                            "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          },
+                          {
+                            "collectionName": "Singles",
+                            "matchUpCount": 2,
+                            "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                            "matchUpType": "SINGLES",
+                            "matchUpValue": 1,
+                            "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                            "category": {
+                              "ageCategoryCode": "U18",
+                              "categoryName": "U18"
+                            }
+                          }
+                        ],
+                        "tieFormatName": "DOMINANT_DUO",
+                        "winCriteria": {
+                          "valueGoal": 2
+                        }
+                      },
+                      "score": {
+                        "scoreStringSide1": "1-2",
+                        "scoreStringSide2": "2-1",
+                        "sets": [
+                          {
+                            "side1Score": 1,
+                            "side2Score": 2,
+                            "winningSide": 2
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    }
+                  ],
+                  "positionAssignments": [
+                    {
+                      "drawPosition": 5,
+                      "participantId": "a5383769-d8a1-42bb-876c-35d646223c4e",
+                      "extensions": [
+                        {
+                          "value": {
+                            "allDefaults": 0,
+                            "defaults": 0,
+                            "defeats": [
+                              "5953b9d2-214f-4b8a-a0d8-2c68d060f68a",
+                              "cf942d85-5d2e-4121-9f6a-51d48f808db2",
+                              "3828174e-96fc-43ea-90b0-8712a581ad2a"
+                            ],
+                            "gamesLost": 81,
+                            "gamesWon": 52,
+                            "matchUpsCancelled": 0,
+                            "matchUpsLost": 3,
+                            "matchUpsWon": 0,
+                            "pointsLost": 0,
+                            "pointsWon": 0,
+                            "retirements": 0,
+                            "setsLost": 12,
+                            "setsWon": 3,
+                            "tieMatchUpsLost": 6,
+                            "tieMatchUpsWon": 3,
+                            "victories": [],
+                            "walkovers": 0,
+                            "setsPct": 0.2,
+                            "tieMatchUpsPct": 0.333,
+                            "matchUpsPct": 0,
+                            "gamesPct": 0.391,
+                            "pointsRatio": 0,
+                            "result": "0/3",
+                            "groupOrder": 4,
+                            "rankOrder": 4,
+                            "GEMscore": 3330200039100000
+                          },
+                          "name": "tally",
+                          "createdAt": "2023-07-03T20:43:25.923Z"
+                        }
+                      ]
+                    },
+                    {
+                      "drawPosition": 6,
+                      "participantId": "5953b9d2-214f-4b8a-a0d8-2c68d060f68a",
+                      "extensions": [
+                        {
+                          "value": {
+                            "allDefaults": 0,
+                            "defaults": 0,
+                            "defeats": ["cf942d85-5d2e-4121-9f6a-51d48f808db2"],
+                            "gamesLost": 61,
+                            "gamesWon": 72,
+                            "matchUpsCancelled": 0,
+                            "matchUpsLost": 1,
+                            "matchUpsWon": 2,
+                            "pointsLost": 0,
+                            "pointsWon": 0,
+                            "retirements": 0,
+                            "setsLost": 6,
+                            "setsWon": 9,
+                            "tieMatchUpsLost": 4,
+                            "tieMatchUpsWon": 5,
+                            "victories": [
+                              "a5383769-d8a1-42bb-876c-35d646223c4e",
+                              "3828174e-96fc-43ea-90b0-8712a581ad2a"
+                            ],
+                            "walkovers": 0,
+                            "setsPct": 0.6,
+                            "tieMatchUpsPct": 0.556,
+                            "matchUpsPct": 0.667,
+                            "gamesPct": 0.541,
+                            "pointsRatio": 0,
+                            "result": "2/1",
+                            "groupOrder": 1,
+                            "rankOrder": 1,
+                            "GEMscore": 66705560600054100000
+                          },
+                          "name": "tally",
+                          "createdAt": "2023-07-03T20:43:25.923Z"
+                        }
+                      ]
+                    },
+                    {
+                      "drawPosition": 7,
+                      "participantId": "cf942d85-5d2e-4121-9f6a-51d48f808db2",
+                      "extensions": [
+                        {
+                          "value": {
+                            "allDefaults": 0,
+                            "defaults": 0,
+                            "defeats": ["3828174e-96fc-43ea-90b0-8712a581ad2a"],
+                            "gamesLost": 65,
+                            "gamesWon": 72,
+                            "matchUpsCancelled": 0,
+                            "matchUpsLost": 1,
+                            "matchUpsWon": 2,
+                            "pointsLost": 0,
+                            "pointsWon": 0,
+                            "retirements": 0,
+                            "setsLost": 6,
+                            "setsWon": 9,
+                            "tieMatchUpsLost": 4,
+                            "tieMatchUpsWon": 5,
+                            "victories": [
+                              "a5383769-d8a1-42bb-876c-35d646223c4e",
+                              "5953b9d2-214f-4b8a-a0d8-2c68d060f68a"
+                            ],
+                            "walkovers": 0,
+                            "setsPct": 0.6,
+                            "tieMatchUpsPct": 0.556,
+                            "matchUpsPct": 0.667,
+                            "gamesPct": 0.526,
+                            "pointsRatio": 0,
+                            "result": "2/1",
+                            "groupOrder": 3,
+                            "rankOrder": 3,
+                            "GEMscore": 66705560600052605000
+                          },
+                          "name": "tally",
+                          "createdAt": "2023-07-03T20:43:25.923Z"
+                        }
+                      ]
+                    },
+                    {
+                      "drawPosition": 8,
+                      "participantId": "3828174e-96fc-43ea-90b0-8712a581ad2a",
+                      "extensions": [
+                        {
+                          "value": {
+                            "allDefaults": 0,
+                            "defaults": 0,
+                            "defeats": ["5953b9d2-214f-4b8a-a0d8-2c68d060f68a"],
+                            "gamesLost": 61,
+                            "gamesWon": 72,
+                            "matchUpsCancelled": 0,
+                            "matchUpsLost": 1,
+                            "matchUpsWon": 2,
+                            "pointsLost": 0,
+                            "pointsWon": 0,
+                            "retirements": 0,
+                            "setsLost": 6,
+                            "setsWon": 9,
+                            "tieMatchUpsLost": 4,
+                            "tieMatchUpsWon": 5,
+                            "victories": [
+                              "cf942d85-5d2e-4121-9f6a-51d48f808db2",
+                              "a5383769-d8a1-42bb-876c-35d646223c4e"
+                            ],
+                            "walkovers": 0,
+                            "setsPct": 0.6,
+                            "tieMatchUpsPct": 0.556,
+                            "matchUpsPct": 0.667,
+                            "gamesPct": 0.541,
+                            "pointsRatio": 0,
+                            "result": "2/1",
+                            "groupOrder": 2,
+                            "rankOrder": 2,
+                            "GEMscore": 66705560600054100000
+                          },
+                          "name": "tally",
+                          "createdAt": "2023-07-03T20:43:25.923Z"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "updatedAt": "2023-07-03T20:48:00.178Z",
+              "seedLimit": 0
+            }
+          ],
+          "entries": [
+            {
+              "participantId": "8e1beb85-ca84-4139-9468-89b68e22c9c8",
+              "entryPosition": 1,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "5953b9d2-214f-4b8a-a0d8-2c68d060f68a",
+              "entryPosition": 2,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "cf942d85-5d2e-4121-9f6a-51d48f808db2",
+              "entryPosition": 3,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "9c1e8428-9fee-4cca-8b74-e2e42f73deb6",
+              "entryPosition": 4,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "3828174e-96fc-43ea-90b0-8712a581ad2a",
+              "entryPosition": 5,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "2a10ad2d-f9bd-44fa-a481-48058389963e",
+              "entryPosition": 6,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "a5383769-d8a1-42bb-876c-35d646223c4e",
+              "entryPosition": 7,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            },
+            {
+              "participantId": "2e15570f-888c-4e05-84a3-dae8884e8ba9",
+              "entryPosition": 8,
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryStage": "MAIN"
+            }
+          ],
+          "links": [],
+          "drawType": "ROUND_ROBIN",
+          "extensions": [
+            {
+              "name": "appliedPolicies",
+              "value": {
+                "seeding": {
+                  "validSeedPositions": {
+                    "ignore": true
+                  },
+                  "duplicateSeedNumbers": true,
+                  "drawSizeProgression": true,
+                  "seedingProfile": "SEPARATE",
+                  "policyName": "USTA SEEDING",
+                  "seedsCountThresholds": [
+                    {
+                      "drawSize": 4,
+                      "minimumParticipantCount": 3,
+                      "seedsCount": 2
+                    },
+                    {
+                      "drawSize": 16,
+                      "minimumParticipantCount": 12,
+                      "seedsCount": 4
+                    },
+                    {
+                      "drawSize": 32,
+                      "minimumParticipantCount": 24,
+                      "seedsCount": 8
+                    },
+                    {
+                      "drawSize": 64,
+                      "minimumParticipantCount": 48,
+                      "seedsCount": 16
+                    },
+                    {
+                      "drawSize": 128,
+                      "minimumParticipantCount": 96,
+                      "seedsCount": 32
+                    },
+                    {
+                      "drawSize": 256,
+                      "minimumParticipantCount": 192,
+                      "seedsCount": 64
+                    }
+                  ]
+                }
+              },
+              "createdAt": "2023-07-03T20:39:11.773Z"
+            },
+            {
+              "name": "entryProfile",
+              "value": {
+                "MAIN": {
+                  "drawSize": 8,
+                  "alternates": true
+                }
+              },
+              "createdAt": "2023-07-03T20:39:11.775Z"
+            },
+            {
+              "name": "lineUps",
+              "value": {
+                "9c1e8428-9fee-4cca-8b74-e2e42f73deb6": [
+                  {
+                    "participantId": "89d3db06-d8c3-40b3-a670-a9c6c1297394",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "65af89ea-4f01-4468-87ce-5bc16185a419",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  }
+                ],
+                "8e1beb85-ca84-4139-9468-89b68e22c9c8": [
+                  {
+                    "participantId": "0e391c24-ab19-4430-80f4-0374525a026d",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "62fe5f89-7263-4cec-af5a-f25d2dbe4ba6",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  }
+                ],
+                "2e15570f-888c-4e05-84a3-dae8884e8ba9": [
+                  {
+                    "participantId": "ccd5edee-fc5d-4766-a63f-241b682d75c9",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "d5500bba-d1a9-47b3-a925-ae9d969e9965",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  }
+                ],
+                "2a10ad2d-f9bd-44fa-a481-48058389963e": [
+                  {
+                    "participantId": "24815e7f-8ed8-4fd9-92ad-c54f500c18be",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "662b6723-f69a-462c-a90a-513b3b0a430a",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  }
+                ],
+                "a5383769-d8a1-42bb-876c-35d646223c4e": [
+                  {
+                    "participantId": "17de6822-1fc1-4641-9787-a22223e86971",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "36024967-56bc-4a93-818f-3014819ac6c6",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  }
+                ],
+                "5953b9d2-214f-4b8a-a0d8-2c68d060f68a": [
+                  {
+                    "participantId": "1c55c5ac-126f-4413-b94c-30e2fc0dd00f",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "c872a091-e8b5-4bc7-bd4c-9d2821326dfe",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  }
+                ],
+                "cf942d85-5d2e-4121-9f6a-51d48f808db2": [
+                  {
+                    "participantId": "c6448caa-015d-4e1c-99af-a11a3f1ad219",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "1da31830-d156-4f89-8479-8d1baf248ac5",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  }
+                ],
+                "3828174e-96fc-43ea-90b0-8712a581ad2a": [
+                  {
+                    "participantId": "d422d1ca-c9d2-469a-a69c-5d03c2f6f4f8",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "ff872035-b02c-4de5-a16a-35e1bf0329e4",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "aaf43fc4-9d00-49dc-9c01-72965e7311e5",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "cff9bb94-dff0-491e-bb11-7437492d808d",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  }
+                ]
+              },
+              "createdAt": "2023-07-03T20:40:10.106Z"
+            }
+          ],
+          "updatedAt": "2023-07-03T20:48:00.178Z",
+          "drawOrder": 1
+        }
+      ],
+      "extensions": [
+        {
+          "name": "flightProfile",
+          "value": {
+            "flights": [
+              {
+                "manuallyAdded": true,
+                "flightNumber": 1,
+                "drawEntries": [
+                  {
+                    "participantId": "8e1beb85-ca84-4139-9468-89b68e22c9c8",
+                    "entryPosition": 1,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "5953b9d2-214f-4b8a-a0d8-2c68d060f68a",
+                    "entryPosition": 2,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "cf942d85-5d2e-4121-9f6a-51d48f808db2",
+                    "entryPosition": 3,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "9c1e8428-9fee-4cca-8b74-e2e42f73deb6",
+                    "entryPosition": 4,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "3828174e-96fc-43ea-90b0-8712a581ad2a",
+                    "entryPosition": 5,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "2a10ad2d-f9bd-44fa-a481-48058389963e",
+                    "entryPosition": 6,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "a5383769-d8a1-42bb-876c-35d646223c4e",
+                    "entryPosition": 7,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "2e15570f-888c-4e05-84a3-dae8884e8ba9",
+                    "entryPosition": 8,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  }
+                ],
+                "drawName": "Draw 1",
+                "drawId": "796c1238-8166-46bb-acc1-e7552139627f"
+              }
+            ]
+          },
+          "createdAt": "2023-07-03T20:22:06.365Z"
+        },
+        {
+          "name": "drawDeletions",
+          "value": [
+            {
+              "deletedDrawsDetail": [
+                {
+                  "tournamentId": "aeec1a80-6454-4e31-8329-b0738ba53a84",
+                  "eventId": "aeec1a80-event-1",
+                  "positionAssignments": [
+                    {
+                      "drawPosition": 1,
+                      "participantId": "5953b9d2-214f-4b8a-a0d8-2c68d060f68a"
+                    },
+                    {
+                      "drawPosition": 2,
+                      "participantId": "8e1beb85-ca84-4139-9468-89b68e22c9c8"
+                    },
+                    {
+                      "drawPosition": 3,
+                      "participantId": "2a10ad2d-f9bd-44fa-a481-48058389963e"
+                    },
+                    {
+                      "drawPosition": 4,
+                      "participantId": "cf942d85-5d2e-4121-9f6a-51d48f808db2"
+                    },
+                    {
+                      "drawPosition": 5,
+                      "participantId": "9c1e8428-9fee-4cca-8b74-e2e42f73deb6"
+                    },
+                    {
+                      "drawPosition": 6,
+                      "participantId": "a5383769-d8a1-42bb-876c-35d646223c4e"
+                    },
+                    {
+                      "drawPosition": 7,
+                      "participantId": "2e15570f-888c-4e05-84a3-dae8884e8ba9"
+                    },
+                    {
+                      "drawPosition": 8,
+                      "participantId": "3828174e-96fc-43ea-90b0-8712a581ad2a"
+                    }
+                  ],
+                  "drawType": "SINGLE_ELIMINATION",
+                  "drawName": "SINGLE_ELIMINATION",
+                  "drawId": "8a7f0284-a4b4-4b7f-8416-a6f9c9384ae3"
+                }
+              ]
+            },
+            {
+              "deletedDrawsDetail": [
+                {
+                  "tournamentId": "aeec1a80-6454-4e31-8329-b0738ba53a84",
+                  "eventId": "aeec1a80-event-1",
+                  "positionAssignments": [
+                    {
+                      "drawPosition": 1,
+                      "participantId": "5953b9d2-214f-4b8a-a0d8-2c68d060f68a"
+                    },
+                    {
+                      "drawPosition": 2,
+                      "participantId": "3828174e-96fc-43ea-90b0-8712a581ad2a"
+                    },
+                    {
+                      "drawPosition": 3,
+                      "participantId": "2e15570f-888c-4e05-84a3-dae8884e8ba9"
+                    },
+                    {
+                      "drawPosition": 4,
+                      "participantId": "cf942d85-5d2e-4121-9f6a-51d48f808db2"
+                    },
+                    {
+                      "drawPosition": 5,
+                      "participantId": "9c1e8428-9fee-4cca-8b74-e2e42f73deb6"
+                    },
+                    {
+                      "drawPosition": 6,
+                      "participantId": "2a10ad2d-f9bd-44fa-a481-48058389963e"
+                    },
+                    {
+                      "drawPosition": 7,
+                      "participantId": "8e1beb85-ca84-4139-9468-89b68e22c9c8"
+                    },
+                    {
+                      "drawPosition": 8,
+                      "participantId": "a5383769-d8a1-42bb-876c-35d646223c4e"
+                    }
+                  ],
+                  "drawType": "SINGLE_ELIMINATION",
+                  "drawName": "Draw 1",
+                  "drawId": "f0d9f0e5-f49e-4ae8-83b1-c9cfc1f3e9c6"
+                }
+              ]
+            }
+          ],
+          "createdAt": "2023-07-03T20:31:28.108Z"
+        }
+      ]
+    }
+  ],
+  "venues": [
+    {
+      "venueName": "Club Courts",
+      "venueAbbreviation": "CC",
+      "venueId": "e8e4c0b0-216c-426f-bba2-18e16caa74b8",
+      "courts": [
+        {
+          "courtId": "1e102671-e2f7-42f9-8596-ceab584ab37e",
+          "courtName": "Court 1",
+          "dateAvailability": [
+            {
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-03",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-04",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-05",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-06",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-07",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-08",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-09",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-10",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            }
+          ],
+          "onlineResources": [],
+          "venueId": "e8e4c0b0-216c-426f-bba2-18e16caa74b8"
+        },
+        {
+          "courtId": "44070977-426d-41a8-8197-0c5e8af17633",
+          "courtName": "CC 2",
+          "dateAvailability": [
+            {
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-03",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-04",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-05",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-06",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-07",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-08",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-09",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-10",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            }
+          ],
+          "onlineResources": [],
+          "venueId": "e8e4c0b0-216c-426f-bba2-18e16caa74b8"
+        },
+        {
+          "courtId": "3be2b370-24df-46d1-8f03-b006524eeafe",
+          "courtName": "CC 3",
+          "dateAvailability": [
+            {
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-03",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-04",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-05",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-06",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-07",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-08",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-09",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-10",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            }
+          ],
+          "onlineResources": [],
+          "venueId": "e8e4c0b0-216c-426f-bba2-18e16caa74b8"
+        },
+        {
+          "courtId": "1b6c7bf6-b3e1-47d2-aa87-1cd159c7feae",
+          "courtName": "CC 4",
+          "dateAvailability": [
+            {
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-03",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-04",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-05",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-06",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-07",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-08",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-09",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-10",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            }
+          ],
+          "onlineResources": [],
+          "venueId": "e8e4c0b0-216c-426f-bba2-18e16caa74b8"
+        },
+        {
+          "courtId": "97451cb4-7eb9-49a5-998d-b4dccd052c9e",
+          "courtName": "CC 5",
+          "dateAvailability": [
+            {
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-03",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-04",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-05",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-06",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-07",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-08",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-09",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-10",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            }
+          ],
+          "onlineResources": [],
+          "venueId": "e8e4c0b0-216c-426f-bba2-18e16caa74b8"
+        },
+        {
+          "courtId": "7952bc7f-0f83-4266-9d72-14172827a2e5",
+          "courtName": "CC 6",
+          "dateAvailability": [
+            {
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-03",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-04",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-05",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-06",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-07",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-08",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-09",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            },
+            {
+              "date": "2023-07-10",
+              "startTime": "08:00",
+              "endTime": "20:00"
+            }
+          ],
+          "onlineResources": [],
+          "venueId": "e8e4c0b0-216c-426f-bba2-18e16caa74b8"
+        }
+      ]
+    }
+  ],
+  "extensions": [
+    {
+      "name": "appliedPolicies",
+      "value": {
+        "roundNaming": {
+          "policyName": "Round Naming Default",
+          "roundNamingMap": {
+            "1": "F",
+            "2": "SF",
+            "4": "QF"
+          },
+          "affixes": {
+            "roundNumber": "R",
+            "preFeedRound": "Q"
+          },
+          "stageConstants": {
+            "MAIN": "",
+            "QUALIFYING": "Q",
+            "CONSOLATION": "C",
+            "PLAY_OFF": "PL"
+          }
+        },
+        "progression": {
+          "doubleExitPropagateBye": false,
+          "autoPlaceQualifiers": true,
+          "autoReplaceQualifiers": true,
+          "autoRemoveQualifiers": true
+        },
+        "scheduling": {
+          "defaultTimes": {
+            "averageTimes": [
+              {
+                "categoryNames": [],
+                "minutes": {
+                  "default": 90
+                }
+              }
+            ],
+            "recoveryTimes": [
+              {
+                "minutes": {
+                  "DOUBLES": 30,
+                  "default": 60
+                }
+              }
+            ]
+          },
+          "defaultDailyLimits": {},
+          "matchUpAverageTimes": [
+            {
+              "matchUpFormatCodes": ["SET5-S:6/TB7-F:6/TB10"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 120
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:6/TB7", "SET3-S:6/TB7@5-F:TB10"],
+              "averageTimes": [
+                {
+                  "categoryTypes": ["ADULT", "JUNIOR"],
+                  "minutes": {
+                    "default": 90
+                  }
+                },
+                {
+                  "categoryTypes": ["WHEELCHAIR"],
+                  "minutes": {
+                    "default": 120
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:6/TB7-F:TB10"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 85
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:6/TB7-F:TB7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 70
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:4/TB7", "SET3-S:6/TB7@5"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET3-S:4NOAD-F:TB7",
+                "SET3-S:4/TB7-F:TB10"
+              ],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 55
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:4/TB7-F:TB7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 50
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET3-S:4/TB5NOAD@3",
+                "SET1-S:6/TB5NOAD@5",
+                "SET3-S:4/TB7@3"
+              ],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 45
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:8/TB7", "SET1-S:8/TB7@7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 40
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET1-S:5/TB5NOAD@4",
+                "SET1-S:T20",
+                "SET1-S:6/TB7",
+                "SET1-S:6NOAD"
+              ],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 30
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET1-S:4/TB7",
+                "SET1-S:4/TB5@3",
+                "SET3-S:TB10",
+                "SET1-S:4NOAD"
+              ],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 20
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:TB10"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 10
+                  }
+                }
+              ]
+            }
+          ],
+          "matchUpRecoveryTimes": [
+            {
+              "matchUpFormatCodes": [
+                "SET5-S:6/TB7-F:6/TB10",
+                "SET3-S:6/TB7@5-F:TB10"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET3-S:6/TB7",
+                "SET3-S:6/TB7-F:TB10",
+                "SET3-S:6/TB7-F:TB7"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryTypes": ["ADULT", "WHEELCHAIR"],
+                  "minutes": {
+                    "default": 60,
+                    "DOUBLES": 30
+                  }
+                },
+                {
+                  "categoryTypes": ["JUNIOR"],
+                  "minutes": {
+                    "default": 60,
+                    "DOUBLES": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET3-S:4/TB7-F:TB7",
+                "SET3-S:4/TB7-F:TB10",
+                "SET3-S:4NOAD-F:TB7",
+                "SET3-S:4/TB7",
+                "SET3-S:4/TB5NOAD@3"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryTypes": ["ADULT", "WHEELCHAIR"],
+                  "minutes": {
+                    "default": 30
+                  }
+                },
+                {
+                  "categoryTypes": ["JUNIOR"],
+                  "minutes": {
+                    "default": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET1-S:8/TB7",
+                "SET1-S:8/TB7@7",
+                "SET1-S:5/TB5NOAD@4",
+                "SET1-S:6/TB7",
+                "SET1-S:6NOAD",
+                "SET1-S:4/TB7",
+                "SET1-S:4NOAD",
+                "SET3-S:TB10",
+                "SET3-S:6/TB7@5",
+                "SET1-S:6/TB5NOAD@5",
+                "SET3-S:4/TB7@3"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 30
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:4/TB5@3"],
+              "recoveryTimes": [
+                {
+                  "categoryTypes": ["ADULT", "JUNIOR"],
+                  "minutes": {
+                    "default": 30
+                  }
+                },
+                {
+                  "categoryTypes": ["WHEELCHAIR"],
+                  "minutes": {
+                    "default": 15
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:TB10", "SET1-S:T20"],
+              "recoveryTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 15
+                  }
+                }
+              ]
+            }
+          ],
+          "matchUpDailyLimits": []
+        }
+      }
+    },
+    {
+      "name": "level",
+      "value": {
+        "currentOrgLevelConfiguration": {
+          "allowBackdrawMovements": true,
+          "allowGeneratePlayOffForBackDraws": true,
+          "allowQualifyingDraws": true,
+          "allowSplitDraws": true,
+          "allowTeamSubstitutions": true,
+          "allowWildcards": true,
+          "doublesEventFormats": [],
+          "doublesScoreFormats": [],
+          "eventFormats": [],
+          "firstMatchLoserConsolation": true,
+          "goldSilverBronzeDrawsEnabled": true,
+          "ntrpEnabled": true,
+          "playTracker": true,
+          "rankingsEnabled": true,
+          "scoreFormats": [],
+          "teamScoreFormats": [],
+          "wtnRankingsEnabled": true
+        }
+      }
+    },
+    {
+      "name": "factory",
+      "value": {
+        "version": "1.0.20",
+        "timeStamp": 1688417280178
+      },
+      "createdAt": "2023-07-03T20:25:30.648Z"
+    }
+  ]
+}
