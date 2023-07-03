@@ -2,6 +2,7 @@ import { countGames, countSets, countPoints } from './scoreCounters';
 import { calculatePercentages } from './calculatePercentages';
 import { intersection } from '../../../utilities';
 
+import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import {
   completedMatchUpStatuses,
   DEFAULTED,
@@ -81,6 +82,22 @@ export function getParticipantResults({
                 );
                 participantResults[tieWinningParticipantId].tieMatchUpsWon += 1;
                 participantResults[tieLosingParticipantId].tieMatchUpsLost += 1;
+
+                if (tieMatchUp.matchUpType === SINGLES) {
+                  participantResults[
+                    tieWinningParticipantId
+                  ].tieSinglesWon += 1;
+                  participantResults[
+                    tieLosingParticipantId
+                  ].tieSinglesLost += 1;
+                } else if (tieMatchUp.matchUpType === DOUBLES) {
+                  participantResults[
+                    tieWinningParticipantId
+                  ].tieDoublesWon += 1;
+                  participantResults[
+                    tieLosingParticipantId
+                  ].tieDoublesLost += 1;
+                }
               }
             }
 
@@ -102,16 +119,44 @@ export function getParticipantResults({
         perPlayer = 0; // if any matchUps are matchUpType: TEAM don't calculate perPlayer
 
         for (const tieMatchUp of tieMatchUps) {
+          const { matchUpType } = tieMatchUp;
+          const isDoubles = matchUpType === DOUBLES;
+          const isSingles = matchUpType === SINGLES;
+
+          // logic ensures that losing TEAM participant gets credit for tieMatchUps won & etc.
           if (tieMatchUp.winningSide === winningSide) {
-            if (winningParticipantId)
+            if (winningParticipantId) {
               participantResults[winningParticipantId].tieMatchUpsWon += 1;
-            if (losingParticipantId)
+              if (isSingles)
+                participantResults[winningParticipantId].tieSinglesWon += 1;
+              if (isDoubles)
+                participantResults[winningParticipantId].tieDoublesWon += 1;
+            }
+            if (losingParticipantId) {
               participantResults[losingParticipantId].tieMatchUpsLost += 1;
-          } else if (tieMatchUp.winningSide === 3 - winningSide) {
-            if (losingParticipantId)
+              if (isSingles)
+                participantResults[losingParticipantId].tieSinglesLost += 1;
+              if (isDoubles) {
+                participantResults[losingParticipantId].tieDoublesLost += 1;
+              }
+            }
+          } else if (tieMatchUp.winningSide !== winningSide) {
+            if (losingParticipantId) {
               participantResults[losingParticipantId].tieMatchUpsWon += 1;
-            if (winningParticipantId)
+              if (isSingles)
+                participantResults[losingParticipantId].tieSinglesWon += 1;
+              if (isDoubles) {
+                participantResults[losingParticipantId].tieDoublesWon += 1;
+              }
+            }
+            if (winningParticipantId) {
               participantResults[winningParticipantId].tieMatchUpsLost += 1;
+              if (isSingles)
+                participantResults[winningParticipantId].tieSinglesLost += 1;
+              if (isDoubles) {
+                participantResults[winningParticipantId].tieDoublesLost += 1;
+              }
+            }
           }
 
           processMatchUp({
@@ -134,10 +179,10 @@ export function getParticipantResults({
         });
       } else {
         processMatchUp({
+          matchUpFormat: matchUp.matchUpFormat || matchUpFormat,
           winningParticipantId,
           losingParticipantId,
           participantResults,
-          matchUpFormat,
           matchUpStatus,
           tallyPolicy,
           winningSide,
@@ -197,6 +242,10 @@ function checkInitializeParticipant(participantResults, participantId) {
       retirements: 0,
       setsLost: 0,
       setsWon: 0,
+      tieSinglesWon: 0,
+      tieSinglesLost: 0,
+      tieDoublesWon: 0,
+      tieDoublesLost: 0,
       tieMatchUpsLost: 0,
       tieMatchUpsWon: 0,
       victories: [],

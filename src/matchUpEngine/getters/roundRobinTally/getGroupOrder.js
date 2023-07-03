@@ -4,18 +4,18 @@ import { instanceCount } from '../../../utilities';
 /*
 Round Robin group tally logic by default implements the following guidelines:
 
-The player who wins the most matches is the winner.
+The participant who wins the most matches is the winner.
 If two players are tied, then the winner of their head-to-head match is the winner.
 
 If three or more players are tied, tie are broken as follows:
 • The head-to-head win-loss record in matches involving just the tied players;
-• The player with the highest percentage of sets won of all sets completed;
+• The participant with the highest percentage of sets won of all sets completed;
 • The head-to-head win-loss record in matches involving the players who remain tied;
-• The player with the highest percentage of games won of all games completed;
+• The participant with the highest percentage of games won of all games completed;
 • The head-to-head win-loss record in matches involving the players who remain tied;
-• The player with the highest percentage of sets won of sets completed among players in the group under consideration;
+• The participant with the highest percentage of sets won of sets completed among players in the group under consideration;
 • The head-to-head win-loss record in matches involving the players who remain tied;
-• The player with the highest percentage of games won of games completed among the players under consideration; and
+• The participant with the highest percentage of games won of games completed among the players under consideration; and
 • The head-to-head win-loss record in matches involving the players who remain tied.
 
 After initial separation of participants by `matchUpsWon`,
@@ -44,6 +44,7 @@ const headToHeadTallyDirectives = [
   { attribute: 'pointsRatio', idsFilter: true },
 ];
 
+// defines offsets for generating large integer for comparison
 const GEMScoreValueMap = {
   matchUpsPct: 20,
   tieMatchUpsPct: 16,
@@ -73,6 +74,9 @@ export function getGroupOrder(params) {
   if (requireCompletion && !isComplete(params)) return;
 
   const attribute = [
+    'tieMatchUpsWon',
+    'tieSinglesWon',
+    'tieDoublesWon',
     'matchUpsWon',
     'pointsWon',
     'gamesWon',
@@ -151,6 +155,8 @@ export function getGroupOrder(params) {
 
   return groupOrder;
 
+  // NOTE: TallyPolicy.GEMscore could be an object instead of an array of attributes
+  // which would allow for custom valueMaps... or valueMap could use index as multiplier
   function getRatioHash(result) {
     const attributes = Array.isArray(tallyPolicy?.GEMscore)
       ? Object.keys(GEMScoreValueMap).filter((attribute) =>
@@ -233,16 +239,13 @@ function groupSubSort({
 }) {
   if (participantIds?.length === 1)
     return { resolved: true, participantId: participantIds[0] };
-  if (participantIds?.length === 2) {
-    if (
-      !tallyPolicy?.headToHead ||
-      (!tallyPolicy.headToHead.disabled && !disableHeadToHead)
-    ) {
-      const result = headToHeadWinner({ participantIds, participantResults });
-      if (result) return result;
-    }
-    // if logic leads us here then the participants did not face each other => double walkover or cancelled
-    // determine wins by sets... then games...
+  if (
+    participantIds?.length === 2 &&
+    (!tallyPolicy?.headToHead ||
+      (!tallyPolicy.headToHead.disabled && !disableHeadToHead))
+  ) {
+    const result = headToHeadWinner({ participantIds, participantResults });
+    if (result) return result;
   }
 
   let result;

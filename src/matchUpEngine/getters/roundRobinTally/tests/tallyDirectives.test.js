@@ -6,32 +6,6 @@ import fs from 'fs';
 
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../../constants/policyConstants';
 
-const fewestGamesLostWinReversed = {
-  headToHead: { disabled: true },
-  tallyDirectives: [
-    { attribute: 'gamesLost', reversed: true, idsFilter: false },
-    { attribute: 'gamesWon', reversed: true, idsFilter: false },
-  ],
-  GEMscore: ['matchUpsPct', 'tieMatchUpsPct', 'gamesWon', 'gamesPct'],
-};
-
-const fewestGamesLost = {
-  headToHead: { disabled: true },
-  tallyDirectives: [
-    { attribute: 'gamesLost', reversed: true, idsFilter: false },
-    { attribute: 'gamesWon', reversed: false, idsFilter: false },
-  ],
-  GEMscore: ['matchUpsPct', 'tieMatchUpsPct', 'gamesWon', 'gamesPct'],
-};
-
-const mostDoublesWon = {
-  groupOrderKey: 'tieDoublesWon',
-  headToHead: { disabled: true },
-  tallyDirectives: [
-    { attribute: 'gamesWon', reversed: false, idsFilter: false },
-  ],
-};
-
 it('supports multiple policy configurations', () => {
   const tournamentJSON = fs.readFileSync(
     './src/matchUpEngine/getters/roundRobinTally/tests/dominantDuo.tods.json',
@@ -41,18 +15,21 @@ it('supports multiple policy configurations', () => {
   let result = tournamentEngine.setState(tournament);
   expect(result.success).toEqual(true);
 
-  const structureIds =
-    tournament.events[0].drawDefinitions[0].structures[0].structures.map(
-      xa('structureId')
-    );
+  const RR = tournament.events[0].drawDefinitions[0].structures[0];
+  const structureIds = RR.structures.map(xa('structureId'));
 
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   const structure1MatchUps = matchUps.filter(
     (m) => m.structureId === structureIds[0]
   );
   const structure2MatchUps = matchUps.filter(
-    (m) => m.structureId === structureIds[0]
+    (m) => m.structureId === structureIds[1]
   );
+
+  const getGroupOrder = (structure) =>
+    structure.positionAssignments.map(
+      (assignment) => participantResults[assignment.participantId].groupOrder
+    );
 
   let participantResults;
 
@@ -60,16 +37,16 @@ it('supports multiple policy configurations', () => {
     matchUps: structure1MatchUps,
   }).participantResults;
 
-  console.log(
-    'standard',
-    Object.values(participantResults).map(xa('groupOrder'))
-  );
+  expect(getGroupOrder(RR.structures[0])).toEqual([4, 3, 1, 2]);
 
-  /*
-  expect(Object.values(participantResults).map(xa('groupOrder'))).toEqual([
-    1, 2, 3, 4,
-  ]);
-  */
+  const fewestGamesLostWinReversed = {
+    headToHead: { disabled: true },
+    tallyDirectives: [
+      { attribute: 'gamesLost', reversed: true, idsFilter: false },
+      { attribute: 'gamesWon', reversed: true, idsFilter: false },
+    ],
+    GEMscore: ['matchUpsPct', 'tieMatchUpsPct', 'gamesWon', 'gamesPct'],
+  };
 
   participantResults = matchUpEngine.tallyParticipantResults({
     policyDefinitions: {
@@ -78,15 +55,16 @@ it('supports multiple policy configurations', () => {
     matchUps: structure1MatchUps,
   }).participantResults;
 
-  console.log(
-    'fewstGaesLostWinReversed',
-    Object.values(participantResults).map(xa('groupOrder'))
-  );
-  /*
-  expect(Object.values(participantResults).map(xa('groupOrder'))).toEqual([
-    2, 1, 3, 4,
-  ]);
-  */
+  expect(getGroupOrder(RR.structures[0])).toEqual([4, 3, 2, 1]);
+
+  const fewestGamesLost = {
+    headToHead: { disabled: true },
+    tallyDirectives: [
+      { attribute: 'gamesLost', reversed: true, idsFilter: false },
+      { attribute: 'gamesWon', reversed: false, idsFilter: false },
+    ],
+    GEMscore: ['matchUpsPct', 'tieMatchUpsPct', 'gamesWon', 'gamesPct'],
+  };
 
   participantResults = matchUpEngine.tallyParticipantResults({
     policyDefinitions: {
@@ -95,15 +73,13 @@ it('supports multiple policy configurations', () => {
     matchUps: structure1MatchUps,
   }).participantResults;
 
-  console.log(
-    'fewestGanesLost',
-    Object.values(participantResults).map(xa('groupOrder'))
-  );
-  /*
-  expect(Object.values(participantResults).map(xa('groupOrder'))).toEqual([
-    2, 1, 4, 3,
-  ]);
-  */
+  expect(getGroupOrder(RR.structures[0])).toEqual([4, 3, 1, 2]);
+
+  const mostDoublesWon = {
+    groupOrderKey: 'tieDoublesWon',
+    headToHead: { disabled: true },
+    tallyDirectives: [{ attribute: 'gamesPct', idsFilter: false }],
+  };
 
   participantResults = matchUpEngine.tallyParticipantResults({
     policyDefinitions: {
@@ -112,16 +88,5 @@ it('supports multiple policy configurations', () => {
     matchUps: structure2MatchUps,
   }).participantResults;
 
-  console.log(
-    'mostDoublesWon',
-    Object.values(participantResults).map(xa('groupOrder'))
-  );
-  console.log(Object.values(participantResults).map(xa('tieDoublesWon')));
-  console.log(Object.values(participantResults).map(xa('tieDoublesLost')));
-  console.log(Object.values(participantResults).map(xa('groupOrder')));
-  /*
-  expect(Object.values(participantResults).map(xa('groupOrder'))).toEqual([
-    2, 1, 4, 3,
-  ]);
-  */
+  expect(getGroupOrder(RR.structures[1])).toEqual([1, 2, 4, 2]);
 });

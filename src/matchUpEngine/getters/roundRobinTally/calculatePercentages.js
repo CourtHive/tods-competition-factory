@@ -53,9 +53,14 @@ export function calculatePercentages({
       ) / 1000;
     if (pointsRatio === Infinity || isNaN(pointsRatio)) pointsRatio = 0;
 
+    participantResults[participantId].setsWon = setsWon;
+    participantResults[participantId].setsLost = setsLost;
     participantResults[participantId].setsPct = setsPct;
+    participantResults[participantId].tieMatchUpsWon = tieMatchUpsWon;
     participantResults[participantId].tieMatchUpsPct = tieMatchUpsPct;
     participantResults[participantId].matchUpsPct = matchUpsPct;
+    participantResults[participantId].gamesWon = gamesWon;
+    participantResults[participantId].gamesLost = gamesLost;
     participantResults[participantId].gamesPct = gamesPct;
     participantResults[participantId].pointsRatio = pointsRatio;
     participantResults[

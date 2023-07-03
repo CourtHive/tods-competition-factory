@@ -168,8 +168,8 @@ Processes `matchUps` of `{ drawType: 'ROUND_ROBIN' }` from a single grouping wit
 
 ```js
 const { participantResults } = matchUpEngine.tallyParticipantResults({
-  policyDefinitions, // optional - can configure determination of winner when tied values
   matchUpFormat, // required for accurate calculations
+  tallyPolicy, // optional - can configure determination of winner when tied values
   subOrderMap, // map { [participantId]: subOrder } // manual determination of order when ties cannot be broken
   matchUps, // optional - array of Group matchUps; will use matchUps in state when not provided
 });
