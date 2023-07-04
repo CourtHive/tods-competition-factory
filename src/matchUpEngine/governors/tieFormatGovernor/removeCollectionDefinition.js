@@ -44,7 +44,7 @@ import {
  */
 export function removeCollectionDefinition({
   updateInProgressMatchUps = true,
-  updateUnscoredMatchUps,
+  tieFormatComparison,
   tournamentRecord,
   drawDefinition,
   tieFormatName,
@@ -154,7 +154,7 @@ export function removeCollectionDefinition({
     const collectionScore = collectionMatchUps.some(scoreHasValue);
 
     const tieFormatDifference =
-      updateUnscoredMatchUps && matchUp.tieFormat
+      tieFormatComparison && matchUp.tieFormat
         ? compareTieFormats({
             descendant: matchUp.tieFormat,
             ancestor: tieFormat,

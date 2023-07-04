@@ -3091,7 +3091,7 @@ tournamentEngine.qualifierDrawPositionAssignment({
 ```js
 tournamentEngine.removeCollectionDefinition({
   updateInProgressMatchUps, // optional; defaults to true
-  updateUnscoredMatchUps, // optional; defaults to false
+  tieFormatComparison, // optional; defaults to false; when true will not delete unique collections on unscored matchUps
   tieFormatName, // any time a collectionDefinition is modified a new name must be provided
   collectionId, // required - id of collectionDefinition to be removed
   structureId, // optional - if removing from tieFormat associated with a specific structure

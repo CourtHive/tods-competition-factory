@@ -40,6 +40,12 @@ export function getParticipantMap({
   const filterAttributes = participantAttributes?.participant;
 
   const participantMap = {};
+  // initialize all participants first, to preserve order
+  for (const participant of tournamentRecord.participants || []) {
+    const participantId = participant?.participantId;
+    participantId && initializeParticipantId({ participantMap, participantId });
+  }
+
   for (const participant of tournamentRecord.participants || []) {
     const participantCopy = makeDeepCopy(
       participant,
@@ -55,8 +61,6 @@ export function getParticipantMap({
 
     const { participantId, individualParticipantIds, participantType } =
       filteredParticipant;
-
-    initializeParticipantId({ participantMap, participantId });
 
     Object.assign(
       participantMap[participantId].participant,
@@ -130,10 +134,6 @@ function processIndividualParticipantIds({
   participantId,
 }) {
   for (const individualParticipantId of individualParticipantIds) {
-    initializeParticipantId({
-      participantId: individualParticipantId,
-      participantMap,
-    });
     const individualParticipant =
       participantMap[individualParticipantId].participant;
     individualParticipant[typeMap[participantType]].push(participantId);
