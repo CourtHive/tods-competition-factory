@@ -61,7 +61,7 @@ const MatchUpFormatForm = ({ disabled, matchUpFormatParsed, onChange }) => {
               onChange={setsUpdate}
               hasFinalSet={hasFinalSet}
             />
-            {!((hasFinalSet || timed) && null) || (
+            {!hasFinalSet || timed ? null : (
               <SetFormatSelector
                 matchUpFormatParsed={matchUpFormatParsed}
                 disabled={disabled}
