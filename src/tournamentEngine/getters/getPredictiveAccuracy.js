@@ -273,13 +273,13 @@ function getGroupingAccuracy({
     const { matchUpType, sides, score, winningSide } = matchUp;
     if (!winningSide) continue;
 
-    if (exclusionRule) {
-      if (!exclusionRule.valueAccessor || !exclusionRule.range)
+    if (exclusionRule && (!exclusionRule.valueAccessor || !exclusionRule.range)) {
         return {
           info: 'exclusionRule requires valueAccessor and range',
           error: MISSING_VALUE,
         };
     }
+    
     const winningIndex = winningSide - 1;
 
     const sideValues = getSideValues({

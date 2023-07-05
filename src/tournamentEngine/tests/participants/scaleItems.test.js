@@ -12,6 +12,8 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { RATING } from '../../../constants/scaleConstants';
 
+const scaleDate = '2020-06-06';
+
 it('can set participant scaleItems', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantsCount: 100 },
@@ -30,7 +32,7 @@ it('can set participant scaleItems', () => {
     scaleName: 'WTN',
     scaleType: RATING,
     eventType: SINGLES,
-    scaleDate: '2020-06-06',
+    scaleDate,
   };
 
   let result = tournamentEngine.setParticipantScaleItem({
@@ -83,7 +85,7 @@ it('can set participant scaleItems', () => {
     scaleName: 'WTN',
     scaleType: RATING,
     eventType: SINGLES,
-    scaleDate: '2020-06-06',
+    scaleDate,
   };
 
   result = tournamentEngine.setParticipantScaleItem({
@@ -97,7 +99,7 @@ it('can set participant scaleItems', () => {
     scaleName: 'WTN',
     scaleType: RATING,
     eventType: SINGLES,
-    scaleDate: '2020-06-06',
+    scaleDate,
   };
 
   result = tournamentEngine.setParticipantScaleItem({
@@ -112,7 +114,7 @@ it('can set participant scaleItems', () => {
     scaleName: 'WTN',
     scaleType: RATING,
     eventType: SINGLES,
-    scaleDate: '2020-06-06',
+    scaleDate,
   };
 
   result = tournamentEngine.setParticipantScaleItem({
@@ -126,7 +128,7 @@ it('can set participant scaleItems', () => {
     scaleName: 'U16',
     scaleType: RANKING,
     eventType: SINGLES,
-    scaleDate: '2020-06-06',
+    scaleDate,
   };
 
   result = tournamentEngine.setParticipantScaleItem({

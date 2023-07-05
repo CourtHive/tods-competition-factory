@@ -137,16 +137,17 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
             // -----------------------------------------------------
             // when targetMatchUpIds are not present in source data
             // winnerMatchUp / loserMatchUp are not original objects
-
-            if (!targetData.targetMatchUpIds && loserMatchUp) {
+            if (!targetData.targetMatchUpIds) {
               winnerMatchUp = inContextDrawMatchUps.find(
                 ({ matchUpId }) => matchUpId === loserMatchUp.matchUpId
               );
             }
             // -----------------------------------------------------
 
-            if (!loserMatchUp.potentialParticipants)
+            if (!loserMatchUp.potentialParticipants) {
               loserMatchUp.potentialParticipants = [];
+            }
+
             loserMatchUp.potentialParticipants.push(loserPotentials);
           }
         }

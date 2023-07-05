@@ -176,21 +176,20 @@ export function setMatchUpStatus(params) {
     }
   }
 
-  if (matchUp.matchUpType === TEAM) {
-    if (
-      [
-        AWAITING_RESULT,
-        // for the following statuses should all tieMatchUp results be removed?
-        // CANCELLED,
-        // DOUBLE_WALKOVER,
-        // WALKOVER,
-      ].includes(matchUpStatus)
-    ) {
-      return {
-        error: INVALID_VALUES,
-        info: 'Not supported for matchUpType: TEAM',
-      };
-    }
+  if (
+    matchUp.matchUpType === TEAM &&
+    [
+      AWAITING_RESULT,
+      // for the following statuses should all tieMatchUp results be removed?
+      // CANCELLED,
+      // DOUBLE_WALKOVER,
+      // WALKOVER,
+    ].includes(matchUpStatus)
+  ) {
+    return {
+      error: INVALID_VALUES,
+      info: 'Not supported for matchUpType: TEAM',
+    };
   }
 
   const matchUpTieId = inContextMatchUp.matchUpTieId;

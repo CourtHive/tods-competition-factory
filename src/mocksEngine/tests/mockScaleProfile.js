@@ -1,3 +1,5 @@
+const itemValue = '2021-10-30T18:18:46.928Z';
+
 export const mockProfile = {
   drawProfiles: [
     {
@@ -11,8 +13,7 @@ export const mockProfile = {
         timeItems: [
           {
             itemType: 'RETRIEVAL.RANKING.SINGLES.U18',
-            itemValue: '2021-10-30T18:18:46.928Z',
-            createdAt: '2021-10-30T18:18:46.928Z',
+            itemValue,
           },
         ],
       },
@@ -29,8 +30,7 @@ export const mockProfile = {
         timeItems: [
           {
             itemType: 'RETRIEVAL.RATING.SINGLES.WTN',
-            itemValue: '2021-10-30T18:18:46.928Z',
-            createdAt: '2021-10-30T18:18:46.928Z',
+            itemValue,
           },
         ],
       },
@@ -48,8 +48,7 @@ export const mockProfile = {
         timeItems: [
           {
             itemType: 'RETRIEVAL.RATING.SINGLES.NTRP',
-            itemValue: '2021-10-30T18:18:46.928Z',
-            createdAt: '2021-10-30T18:18:46.928Z',
+            itemValue,
           },
         ],
       },

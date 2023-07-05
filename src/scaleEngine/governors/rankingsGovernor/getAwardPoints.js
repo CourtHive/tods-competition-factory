@@ -84,9 +84,9 @@ export function getAwardPoints({
     awardPoints = s || d;
 
     requireWin = s ? sizeDefined.requireWin : defaultDef?.requireWin;
-  } else if (isConvertableInteger(valueObj)) {
+  } else if (isConvertableInteger(valueObj) && winAccessor === undefined) {
     // when using participantWon non-objects are not valid
-    if (winAccessor === undefined) awardPoints = valueObj;
+    awardPoints = valueObj;
   }
 
   if (flights?.pct?.[flightNumber]) {

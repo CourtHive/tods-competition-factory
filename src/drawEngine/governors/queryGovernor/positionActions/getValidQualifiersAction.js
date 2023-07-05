@@ -187,7 +187,7 @@ export function getValidQualifiersAction({
     );
   }
 
-  return { validAssignmentActions };
+  return { validAssignmentActions, sourceStructureIds };
 }
 
 /*
