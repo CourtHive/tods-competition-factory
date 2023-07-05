@@ -7,18 +7,11 @@ import { UUID } from '../../utilities';
 
 export function newTournamentRecord(params = {}) {
   if (!params.tournamentId) Object.assign(params, { tournamentId: UUID() });
-  if (params.startDate) {
-    if (
-      !isISODateString(params.startDate) &&
-      !validDateString.test(params.startDate)
-    )
+  if (params.startDate && (!isISODateString(params.startDate) && !validDateString.test(params.startDate))) {
       return { error: INVALID_DATE };
   }
-  if (params.endDate) {
-    if (
-      !isISODateString(params.endDate) &&
-      !validDateString.test(params.endDate)
-    )
+
+  if (params.endDate && (!isISODateString(params.endDate) && !validDateString.test(params.endDate))) {
       return { error: INVALID_DATE };
   }
 

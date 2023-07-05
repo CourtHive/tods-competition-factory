@@ -320,7 +320,7 @@ export function matchUpActions({
 
   const hasParticipants =
     matchUp.sides &&
-    matchUp.sides.filter((side) => side && side.participantId).length === 2;
+    matchUp.sides.filter((side) => side?.participantId).length === 2;
 
   let activeDownstream;
   const isDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(
@@ -562,29 +562,28 @@ export function matchUpActions({
         (sideNumber && side?.participant)) &&
       (substituteWithoutScore || scoreHasValue(matchUp)) &&
       (substituteAfterCompleted ||
-        !completedMatchUpStatuses.includes(matchUp.matchUpStatus))
+        !completedMatchUpStatuses.includes(matchUp.matchUpStatus)) &&
+      existingParticipants.length &&
+      availableParticipants.length
     ) {
       // action is not valid if there are no existing assignments or no available substitutions
-      if (existingParticipants.length && availableParticipants.length) {
-        const existingParticipantIds =
-          existingParticipants.map(getParticipantId);
-        validActions.push({
-          info: 'list of team players available for substitution',
-          method: SUBSTITUTION_METHOD,
-          availableParticipantIds,
-          existingParticipantIds,
-          availableParticipants,
-          existingParticipants,
-          type: SUBSTITUTION,
-          payload: {
-            substituteParticipantId: undefined,
-            existingParticipantId: undefined,
-            sideNumber,
-            matchUpId,
-            drawId,
-          },
-        });
-      }
+      const existingParticipantIds = existingParticipants.map(getParticipantId);
+      validActions.push({
+        info: 'list of team players available for substitution',
+        method: SUBSTITUTION_METHOD,
+        availableParticipantIds,
+        existingParticipantIds,
+        availableParticipants,
+        existingParticipants,
+        type: SUBSTITUTION,
+        payload: {
+          substituteParticipantId: undefined,
+          existingParticipantId: undefined,
+          sideNumber,
+          matchUpId,
+          drawId,
+        },
+      });
     }
   }
 

@@ -91,13 +91,11 @@ export function setMatchUpFormat({
       )
         continue;
 
-      if (structureIds.length) {
-        if (structure.matchUpFormat !== matchUpFormat) {
+      if (structureIds.length && structure.matchUpFormat !== matchUpFormat) {
           structure.matchUpFormat = matchUpFormat;
           modifiedStructureIds.push(structure.structureId);
           modificationsCount += 1;
         }
-      }
 
       const matchUps =
         (force || scheduledDates) &&
@@ -139,12 +137,10 @@ export function setMatchUpFormat({
       }
     }
 
-    if (!modifiedStructureIds.length) {
-      if (drawDefinition.matchUpFormat !== matchUpFormat) {
+    if (!modifiedStructureIds.length && drawDefinition.matchUpFormat !== matchUpFormat) {
         drawDefinition.matchUpFormat = matchUpFormat;
         modificationsCount += 1;
       }
-    }
 
     return modifiedStructureIds;
   };

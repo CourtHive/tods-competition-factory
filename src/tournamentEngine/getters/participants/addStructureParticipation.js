@@ -44,15 +44,13 @@ export function addStructureParticipation({
     }
   }
 
-  if (finishingPositionRange) {
-    if (
+  if (finishingPositionRange && (
       !structureParticipation.finishingPositionRange ||
       diff(finishingPositionRange) <
         diff(structureParticipation.finishingPositionRange)
-    ) {
+    )) {
       structureParticipation.finishingPositionRange = finishingPositionRange;
     }
-  }
 
   if (finishingRound) {
     if (
