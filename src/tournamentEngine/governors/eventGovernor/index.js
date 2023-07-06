@@ -115,6 +115,7 @@ import { modifyCollectionDefinition } from '../../../matchUpEngine/governors/tie
 import { addCollectionDefinition } from '../../../matchUpEngine/governors/tieFormatGovernor/addCollectionDefinition';
 import { removeCollectionGroup } from '../../../matchUpEngine/governors/tieFormatGovernor/removeCollectionGroup';
 import { addCollectionGroup } from '../../../matchUpEngine/governors/tieFormatGovernor/addCollectionGroup';
+import { modifyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/modifyTieFormat';
 import { resetScorecard } from './resetScorecard';
 import { resetTieFormat } from './resetTieFormat';
 
@@ -145,6 +146,7 @@ const eventGovernor = {
   addCollectionDefinition,
   removeCollectionGroup,
   addCollectionGroup,
+  modifyTieFormat,
   resetScorecard,
   resetTieFormat,
 
