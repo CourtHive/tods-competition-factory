@@ -29,9 +29,10 @@ export function modifyCollectionDefinition({
   collectionName,
   drawDefinition,
   matchUpFormat,
-  matchUpCount,
   tieFormatName,
+  matchUpCount,
   collectionId,
+  matchUpType,
   structureId,
   matchUpId,
   category,
@@ -163,19 +164,18 @@ export function modifyCollectionDefinition({
     (originalValueGoal && originalValueGoal !== valueGoal) ||
     (aggregateValue && !wasAggregateValue)
   ) {
-    if (tieFormatName) {
-      tieFormat.tieFormatName = tieFormatName;
-    } else {
-      delete tieFormat.tieFormatName;
-    }
+    delete tieFormat.tieFormatName;
   }
+
+  if (tieFormatName) tieFormat.tieFormatName = tieFormatName;
 
   if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
   if (collectionName) collectionDefinition.collectionName = collectionName;
   if (matchUpFormat) collectionDefinition.matchUpFormat = matchUpFormat;
-  if (matchUpCount) collectionDefinition.matchUpCount = matchUpCount;
+  // if (matchUpCount) collectionDefinition.matchUpCount = matchUpCount; // TODO: need to calculate tieMatchUp additions/deletions
+  if (matchUpType) collectionDefinition.matchUpType = matchUpType;
   if (category) collectionDefinition.category = category;
-  if (gender) collectionDefinition.gender = gender;
+  if (gender) collectionDefinition.gender = gender; // TODO: remove all inappropriately gendered participants
 
   const prunedTieFormat = definedAttributes(tieFormat);
   result = validateTieFormat({ tieFormat: prunedTieFormat });

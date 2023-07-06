@@ -19,7 +19,7 @@ import {
   MISSING_TIE_FORMAT,
 } from '../../../constants/errorConditionConstants';
 
-// used to determine that all collectionIds have the same matchUpsCount
+// used to determine that all collections have the same collectionIds
 function mapsCheck(map1, map2) {
   const referenceKeys = Object.keys(map1);
   return (
@@ -39,8 +39,8 @@ export function updateTieFormat({
   event,
 }) {
   const stack = 'updateTieFormat';
-  let modifiedCount = 0;
   let modifiedStructuresCount = 0;
+  let modifiedCount = 0;
 
   const collectionMap = tieFormat?.collectionDefinitions.reduce(
     (instanceMap, def) => {
@@ -182,6 +182,16 @@ export function updateTieFormat({
         matchUp.tieFormat = copyTieFormat(tieFormat);
         modified = true;
       }
+
+      /*
+      const map1ValuesTotal = Object.values(map1).reduce(
+        (a, b) => (a || 0) + (b || 0)
+      );
+      const map2ValuesTotal = Object.values(map2).reduce(
+        (a, b) => (a || 0) + (b || 0)
+      );
+      */
+
       if (modified) {
         modifiedCount += 1;
         modifyMatchUpNotice({
@@ -193,6 +203,7 @@ export function updateTieFormat({
         });
       }
     }
+
     return modifiedCount;
   }
 }
