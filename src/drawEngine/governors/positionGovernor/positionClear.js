@@ -202,8 +202,7 @@ export function drawPositionRemovals({
       const pairedDrawPositionIsBye = pairedDrawPositionAssignment?.bye;
       // whether or not the pairedDrawPosition is present in the next round
       const pairedDrawPositionInNextRound =
-        nextRoundProfile &&
-        nextRoundProfile.pairedDrawPositions.find((pairedPositions) =>
+        nextRoundProfile?.pairedDrawPositions.find((pairedPositions) =>
           pairedPositions.includes(pairedDrawPosition)
         );
       // pairedDrawPosition is a transitiveBye if it is a BYE and if it is present in next round
@@ -459,15 +458,57 @@ function removeDrawPosition({
 
   if (
     loserMatchUp &&
-    loserMatchUp.structureId !== targetData.matchUp.structureId
+    loserMatchUp.structureId !== targetData.matchUp.structureId &&
+    !matchUpContainsBye
   ) {
-    // if source matchUp contains BYE don't removed directed BYE
-    if (!matchUpContainsBye) {
-      const { drawPositions, roundNumber } = loserMatchUp;
+    const { drawPositions, roundNumber } = loserMatchUp;
 
-      if (roundNumber === 1) {
-        const loserMatchUpDrawPosition =
-          drawPositions[loserMatchUpDrawPositionIndex];
+    if (roundNumber === 1) {
+      const loserMatchUpDrawPosition =
+        drawPositions[loserMatchUpDrawPositionIndex];
+
+      drawPositionRemovals({
+        structureId: loserMatchUp.structureId,
+        drawPosition: loserMatchUpDrawPosition,
+        inContextDrawMatchUps,
+        tournamentRecord,
+        drawDefinition,
+        matchUpsMap,
+      });
+    } else {
+      // for fed rounds the loserMatchUpDrawPosiiton is always the fed drawPosition
+      // which is always the lowest numerical drawPosition
+      const loserMatchUpDrawPosition = Math.min(
+        ...drawPositions.filter(Boolean)
+      );
+
+      const result = consolationCleanup({
+        loserMatchUpDrawPosition,
+        inContextDrawMatchUps,
+        tournamentRecord,
+        drawDefinition,
+        loserMatchUp,
+        matchUpsMap,
+        event,
+      });
+      if (result.error) return decorateResult({ result, stack });
+
+      const mappedMatchUps = matchUpsMap?.mappedMatchUps || {};
+      const loserStructureMatchUps =
+        mappedMatchUps[loserMatchUp.structureId].matchUps;
+
+      const { initialRoundNumber } = getInitialRoundNumber({
+        drawPosition: loserMatchUpDrawPosition,
+        matchUps: loserStructureMatchUps,
+      });
+
+      // if clearing a drawPosition from a feed round the initialRoundNumber for the drawPosition must be { roundNumber: 1 }
+      if (initialRoundNumber === 1) {
+        pushGlobalLog({
+          method: stack,
+          color: 'brightyellow',
+          loserMatchUpDrawPosition,
+        });
 
         drawPositionRemovals({
           structureId: loserMatchUp.structureId,
@@ -477,50 +518,6 @@ function removeDrawPosition({
           drawDefinition,
           matchUpsMap,
         });
-      } else {
-        // for fed rounds the loserMatchUpDrawPosiiton is always the fed drawPosition
-        // which is always the lowest numerical drawPosition
-        const loserMatchUpDrawPosition = Math.min(
-          ...drawPositions.filter(Boolean)
-        );
-
-        const result = consolationCleanup({
-          loserMatchUpDrawPosition,
-          inContextDrawMatchUps,
-          tournamentRecord,
-          drawDefinition,
-          loserMatchUp,
-          matchUpsMap,
-          event,
-        });
-        if (result.error) return decorateResult({ result, stack });
-
-        const mappedMatchUps = matchUpsMap?.mappedMatchUps || {};
-        const loserStructureMatchUps =
-          mappedMatchUps[loserMatchUp.structureId].matchUps;
-
-        const { initialRoundNumber } = getInitialRoundNumber({
-          drawPosition: loserMatchUpDrawPosition,
-          matchUps: loserStructureMatchUps,
-        });
-
-        // if clearing a drawPosition from a feed round the initialRoundNumber for the drawPosition must be { roundNumber: 1 }
-        if (initialRoundNumber === 1) {
-          pushGlobalLog({
-            method: stack,
-            color: 'brightyellow',
-            loserMatchUpDrawPosition,
-          });
-
-          drawPositionRemovals({
-            structureId: loserMatchUp.structureId,
-            drawPosition: loserMatchUpDrawPosition,
-            inContextDrawMatchUps,
-            tournamentRecord,
-            drawDefinition,
-            matchUpsMap,
-          });
-        }
       }
     }
   }

@@ -69,8 +69,7 @@ export function getCourts({ tournamentRecord, venueId, venueIds }) {
     .filter((venue) => {
       if (venueId) return venue.venueId === venueId;
       if (venueIds) return venueIds.includes(venue.venueId);
-      if (!venueId && !venueIds) return true;
-      return false;
+      return (!venueId && !venueIds) ? true : false;
     })
     .map((venue) => {
       const { venueId } = venue;

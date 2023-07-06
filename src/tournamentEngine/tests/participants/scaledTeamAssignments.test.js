@@ -16,10 +16,12 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
+const EVENT_NAME = 'Team Event';
+
 it('can automatically assign participants to teams using individualParticipantIds and scaleAttributes', () => {
   let participantsCount = 100;
 
-  const eventProfiles = [{ eventName: 'Team Event', eventType: TEAM_EVENT }];
+  const eventProfiles = [{ eventName: EVENT_NAME, eventType: TEAM_EVENT }];
   const participantsProfile = {
     scaledParticipantsCount: participantsCount,
     category: { categoryName: '18U' },
@@ -131,7 +133,7 @@ it('can automatically assign participants to teams using individualParticipantId
 it('can automatically assign participants to teams using scaledParticipants', () => {
   let participantsCount = 100;
 
-  const eventProfiles = [{ eventName: 'Team Event', eventType: TEAM_EVENT }];
+  const eventProfiles = [{ eventName: EVENT_NAME, eventType: TEAM_EVENT }];
   const participantsProfile = {
     scaledParticipantsCount: participantsCount,
     category: { categoryName: '18U' },
@@ -229,7 +231,7 @@ it('can automatically assign participants to teams using scaledParticipants', ()
 it('will cleanup UNGROUPED participant entries if TEAM entry is added AFTER team assignments are made', () => {
   let participantsCount = 100;
 
-  const eventProfiles = [{ eventName: 'Team Event', eventType: TEAM_EVENT }];
+  const eventProfiles = [{ eventName: EVENT_NAME, eventType: TEAM_EVENT }];
   const participantsProfile = {
     scaledParticipantsCount: participantsCount,
     category: { categoryName: '18U' },
@@ -330,7 +332,7 @@ it('will cleanup UNGROUPED participant entries if TEAM entry is added AFTER team
 it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
   let participantsCount = 100;
 
-  const eventProfiles = [{ eventName: 'Team Event', eventType: TEAM_EVENT }];
+  const eventProfiles = [{ eventName: EVENT_NAME, eventType: TEAM_EVENT }];
   const participantsProfile = {
     scaledParticipantsCount: participantsCount,
     category: { categoryName: '18U' },
@@ -412,7 +414,7 @@ it('will generate teams for scaledTeamAssignment when given teamsCount', () => {
 it('can determine teams from DIRECT_ACCEPTANCE entries of a TEAM event', () => {
   let participantsCount = 100;
 
-  const eventProfiles = [{ eventName: 'Team Event', eventType: TEAM_EVENT }];
+  const eventProfiles = [{ eventName: EVENT_NAME, eventType: TEAM_EVENT }];
   const participantsProfile = {
     scaledParticipantsCount: participantsCount,
     category: { categoryName: '18U' },

@@ -43,12 +43,10 @@ export function getState({
 }
 
 export function paramsMiddleware(tournamentRecord, params) {
-  if (params) {
-    if (params.someParam) {
-      params = {
-        ...params,
-      };
-    }
+  if (params?.someParam) {
+    params = {
+      ...params,
+    };
   }
 
   return params;

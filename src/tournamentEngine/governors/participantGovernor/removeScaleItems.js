@@ -26,13 +26,11 @@ export function removeParticipantsScaleItems({
   const { scaleType, eventType, scaleName } = scaleAttributes;
   const itemType = [SCALE, scaleType, eventType, scaleName].join('.');
   tournamentRecord.participants?.forEach((participant) => {
-    if (participantIds.includes(participant.participantId)) {
-      if (participant.timeItems) {
+    if (participantIds.includes(participant.participantId) && participant.timeItems) {
         participant.timeItems = participant.timeItems.filter((timeItem) => {
           return timeItem && timeItem?.itemType !== itemType;
         });
       }
-    }
   });
 
   return { ...SUCCESS };

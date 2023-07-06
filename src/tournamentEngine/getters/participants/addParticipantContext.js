@@ -177,7 +177,7 @@ export function addParticipantContext(params) {
       const { eventId, eventName, eventType, category } = event;
       const eventInfo = { eventId, eventName, eventType, category };
       const extensionKeys =
-        event && Object.keys(event).filter((key) => key[0] === '_');
+        event && Object.keys(event).filter((key) => key.startsWith('_'));
       extensionKeys?.forEach(
         (extensionKey) => (eventInfo[extensionKey] = event[extensionKey])
       );
@@ -383,9 +383,12 @@ export function addParticipantContext(params) {
 
     if (params.scheduleAnalysis) {
       participant.scheduleConflicts = scheduleConflicts;
-      if (scheduleConflicts?.length) {
-        if (!participantIdsWithConflicts.includes(participant.participantId))
-          participantIdsWithConflicts.push(participant.participantId);
+
+      if (
+        scheduleConflicts?.length &&
+        !participantIdsWithConflicts.includes(participant.participantId)
+      ) {
+        participantIdsWithConflicts.push(participant.participantId);
       }
     }
 

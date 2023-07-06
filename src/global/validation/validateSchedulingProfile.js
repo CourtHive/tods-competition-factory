@@ -57,10 +57,7 @@ export function validateSchedulingProfile({
         } = round;
 
         const rounds =
-          tournamentsMap[tournamentId] &&
-          tournamentsMap[tournamentId][eventId] &&
-          tournamentsMap[tournamentId][eventId][drawId] &&
-          tournamentsMap[tournamentId][eventId][drawId][structureId];
+          tournamentsMap?.[tournamentId]?.[eventId]?.[drawId]?.[structureId];
 
         const validRound = rounds?.includes(roundNumber);
         if (!validRound) info = 'Invalid rounds';
@@ -75,11 +72,8 @@ export function validateSchedulingProfile({
         if (!validSegment) info = 'Invalid segment';
         return validRound && validSegment;
       });
-      if (!validRounds) {
-        return false;
-      }
 
-      return true;
+      return !validRounds ? false : true;
     });
   });
 
