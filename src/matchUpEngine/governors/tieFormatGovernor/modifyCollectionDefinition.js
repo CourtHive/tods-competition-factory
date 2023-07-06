@@ -29,6 +29,7 @@ export function modifyCollectionDefinition({
   collectionName,
   drawDefinition,
   matchUpFormat,
+  matchUpCount,
   tieFormatName,
   collectionId,
   structureId,
@@ -72,6 +73,7 @@ export function modifyCollectionDefinition({
     !Object.values(valueAssignments).filter(Boolean).length &&
     !collectionOrder &&
     !collectionName &&
+    !matchUpCount &&
     !matchUpFormat
   )
     return decorateResult({ result: { error: MISSING_VALUE }, stack });
@@ -171,6 +173,7 @@ export function modifyCollectionDefinition({
   if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
   if (collectionName) collectionDefinition.collectionName = collectionName;
   if (matchUpFormat) collectionDefinition.matchUpFormat = matchUpFormat;
+  if (matchUpCount) collectionDefinition.matchUpCount = matchUpCount;
   if (category) collectionDefinition.category = category;
   if (gender) collectionDefinition.gender = gender;
 

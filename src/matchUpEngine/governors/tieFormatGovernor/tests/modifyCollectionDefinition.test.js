@@ -375,7 +375,18 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
     structureId,
     drawId,
   });
-  expect(result.success).toEqual(true);
-  expect(result.modifiedCount).toEqual(1);
   expect(result.modifiedStructuresCount).toEqual(1);
+  expect(result.modifiedCount).toEqual(1);
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.modifyCollectionDefinition({
+    updateInProgressMatchUps: true,
+    matchUpCount: 8,
+    collectionId,
+    structureId,
+    drawId,
+  });
+  expect(result.modifiedStructuresCount).toEqual(1);
+  expect(result.modifiedCount).toEqual(1);
+  expect(result.success).toEqual(true);
 });
