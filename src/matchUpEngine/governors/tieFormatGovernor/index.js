@@ -5,6 +5,7 @@ import { addCollectionDefinition } from './addCollectionDefinition';
 import { removeCollectionGroup } from './removeCollectionGroup';
 import { calculateWinCriteria } from './calculateWinCriteria';
 import { addCollectionGroup } from './addCollectionGroup';
+import { modifyTieFormat } from './modifyTieFormat';
 
 export const tieFormatGovernor = {
   modifyCollectionDefinition,
@@ -14,6 +15,7 @@ export const tieFormatGovernor = {
   removeCollectionGroup,
   calculateWinCriteria,
   addCollectionGroup,
+  modifyTieFormat,
 };
 
 export default tieFormatGovernor;
