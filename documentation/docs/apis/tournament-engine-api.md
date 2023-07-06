@@ -2617,8 +2617,8 @@ const {
 } = tournamentEngine.matchUpActions({
   restrictAdHocRoundParticipants, // optional - true by default; applies to AD_HOC; disallow the same participant being in the same round multiple times
   sideNumber, // optional - select side to which action should apply; applies to AD_HOC position assignments
+  matchUpId, // required - reference to targeted matchUp
   drawId, // optional - not strictly required; method will find matchUp by brute force without it
-  matchUpId,
 });
 
 const {
@@ -2710,9 +2710,9 @@ const result = tournamentEngine.modifyCourtAvailability({
 
 ```js
 tournamentEngine.modifyDrawName({
+  drawName,
   eventId,
   drawId,
-  drawName,
 });
 ```
 
@@ -2722,10 +2722,10 @@ tournamentEngine.modifyDrawName({
 
 ```js
 tournamentEngine.modifyEventMatchUpFormatTiming({
-  eventId,
-  matchUpFormat,
-  averageMinutes,
   recoveryMinutes,
+  averageMinutes,
+  matchUpFormat,
+  eventId,
 });
 ```
 
@@ -2760,16 +2760,15 @@ Modify the entryStatus of participants already in an event or flight/draw. Does 
 
 ```js
 const result = tournamentEngine.modifyEntriesStatus({
+  autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
   participantIds, // ids of participants whose entryStatus will be modified
   entryStatus, // new entryStatus
   entryStage, // optional - e.g. QUALIFYING
+  eventSync, // optional - if there is only a single drawDefinition in event, keep event.entries in sync
   extension, // optional - { name, value } - add if value; removes if value is undefined
   eventId, // id of event where the modification(s) will occur
   drawId, // optional - scope to a specific flight/draw
   stage, // optional - scope to a specific stage
-
-  eventSync, // optional - if there is only a single drawDefinition in event, keep event.entries in sync
-  autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
 });
 ```
 
@@ -2874,10 +2873,26 @@ The rationale for `seedValue` is to be able to, for instance, represent the fift
 
 ```js
 tournamentEngine.modifySeedAssignment({
-  drawId,
-  structureId,
   participantId,
+  structureId,
   seedValue, // display representation such as '5-8'
+  drawId,
+});
+```
+
+---
+
+## modifyTieFormat
+
+Both modifies the `tieFormat` on the target `event`, `drawDefinition`, `structure` or `matchUp` and adds/deletes `tieMatchUps` as necessary.
+
+```js
+tournamentEngine.modifyTieFormat({
+  modifiedTieFormat, // will be compared to existing tieFormat that is targeted and differences calculated
+  structureId, // required if modifying tieFormat for a structure
+  matchUpId, // required if modifying tieFormat for a matchUp
+  eventId, // required if modifying tieFormat for a event
+  drawId, // required if modifying tieFormat for a drawDefinition or a structure
 });
 ```
 
@@ -2889,8 +2904,9 @@ See [Scheduling](/docs/concepts/scheduling).
 
 ```js
 const modifications = {
-  venueName,
   venueAbbreviation,
+  venueName,
+
   courts: [
     {
       courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
@@ -2905,6 +2921,7 @@ const modifications = {
     },
   ],
 };
+
 tournamentEngine.modifyVenue({ venueId, modifications });
 ```
 
