@@ -193,7 +193,7 @@ export function getDrawData({
               ].includes(matchUp.matchUpStatus)
             );
           },
-          true
+          !!matchUps.length
         );
 
         if (structureInfo.structureActive) drawActive = true;
