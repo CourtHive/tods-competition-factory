@@ -122,5 +122,13 @@ export function modifyTieFormat({
     if (result.tieFormat) processedTieFormat = result.tieFormat;
   }
 
+  processedTieFormat.collectionDefinitions =
+    processedTieFormat.collectionDefinitions
+      .sort(
+        (a, b) =>
+          (a.collectionOrder || Infinity) - (b.collectionOrder || Infinity)
+      )
+      .map((def, i) => ({ ...def, collectionOrder: i + 1 }));
+
   return { ...SUCCESS, processedTieFormat };
 }
