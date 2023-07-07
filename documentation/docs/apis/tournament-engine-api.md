@@ -1204,6 +1204,8 @@ tournamentEngine.disableVenues({ venueIds });
 ```js
 const { matchUps } = tournamentEngine.drawMatic({
   addToStructure, // optional - defaults to true
+  structureId, // optional; if no structureId is specified find the latest AD_HOC stage which has matchUps
+  scaleName, // optional; custom rating name to seed dynamic ratings
   drawId,
 });
 ```
