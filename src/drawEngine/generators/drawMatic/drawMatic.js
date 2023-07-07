@@ -1,10 +1,10 @@
 import { participantScaleItem } from '../../../tournamentEngine/accessors/participantScaleItem';
-import { AD_HOC, stageOrder } from '../../../constants/drawDefinitionConstants';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { generateDrawMaticRound } from './generateDrawMaticRound';
 import { isAdHoc } from '../../governors/queryGovernor/isAdHoc';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
+import { AD_HOC, stageOrder } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { RATING } from '../../../constants/scaleConstants';
 import {
@@ -121,8 +121,8 @@ export function drawMatic({
     participantIds,
     maxIterations,
     adHocRatings,
-    matchUpIds,
     structureId,
+    matchUpIds,
     structure,
     eventType,
   });

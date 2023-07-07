@@ -66,6 +66,26 @@ export function modifyTieFormat({
 
   const tieFormatName = modifiedTieFormat.tieFormatName;
 
+  let processedTieFormat;
+
+  // TODO: if matchUpCount is changing pre-check for cmopleted tieMatchUps
+  // TODO: if gender is changing pre-check for misgendered collectionAssignments
+  for (const collectionDefinition of modifiedCollectionDefinitions) {
+    const result = modifyCollectionDefinition({
+      updateInProgressMatchUps,
+      ...collectionDefinition,
+      tournamentRecord,
+      drawDefinition,
+      tieFormatName,
+      structureId,
+      matchUpId,
+      eventId,
+      event,
+    });
+    if (result.error) return decorateResult({ result, stack });
+    if (result.tieFormat) processedTieFormat = result.tieFormat;
+  }
+
   for (const collectionDefinition of addedCollectionDefinitions) {
     const result = addCollectionDefinition({
       updateInProgressMatchUps,
@@ -81,6 +101,7 @@ export function modifyTieFormat({
       event,
     });
     if (result.error) return decorateResult({ result, stack });
+    if (result.tieFormat) processedTieFormat = result.tieFormat;
   }
 
   for (const collectionId of removedCollectionIds) {
@@ -98,22 +119,16 @@ export function modifyTieFormat({
       event,
     });
     if (result.error) return decorateResult({ result, stack });
+    if (result.tieFormat) processedTieFormat = result.tieFormat;
   }
 
-  for (const collectionDefinition of addedCollectionDefinitions) {
-    const result = modifyCollectionDefinition({
-      updateInProgressMatchUps,
-      ...collectionDefinition,
-      tournamentRecord,
-      drawDefinition,
-      tieFormatName,
-      structureId,
-      matchUpId,
-      eventId,
-      event,
-    });
-    if (result.error) return decorateResult({ result, stack });
-  }
+  processedTieFormat.collectionDefinitions =
+    processedTieFormat.collectionDefinitions
+      .sort(
+        (a, b) =>
+          (a.collectionOrder || Infinity) - (b.collectionOrder || Infinity)
+      )
+      .map((def, i) => ({ ...def, collectionOrder: i + 1 }));
 
-  return { ...SUCCESS };
+  return { ...SUCCESS, processedTieFormat };
 }

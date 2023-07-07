@@ -16,6 +16,7 @@ import { getTimeItem } from './tournamentEngine/governors/queryGovernor/timeItem
 import { parseAgeCategoryCode } from './global/functions/parseAgeCategoryCode';
 import { parseScoreString } from './mocksEngine/utilities/parseScoreString';
 import { addExtension } from './global/functions/producers/addExtension';
+import { isAdHoc } from './drawEngine/governors/queryGovernor/isAdHoc';
 import { structureSort } from './drawEngine/getters/structureSort';
 import { tidyScore } from './utilities/scoreParser/scoreParser';
 import { matchUpSort } from './drawEngine/getters/matchUpSort';
@@ -93,6 +94,7 @@ export const utilities = {
   randomMember,
   randomPop,
   shuffleArray,
+  isAdHoc,
   unique,
   UUID,
   UUIDS,
