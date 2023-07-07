@@ -3,7 +3,11 @@ import { difference, unique } from '../../../utilities/arrays';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function compareTieFormats({ ancestor, descendant }) {
+export function compareTieFormats({
+  considerations = {},
+  descendant,
+  ancestor,
+}) {
   const descendantDifferences = {};
   const ancestorDifferences = {};
 
@@ -27,7 +31,17 @@ export function compareTieFormats({ ancestor, descendant }) {
       )
   );
 
-  const different = ancestorDesc !== descendantDesc;
+  const orderDifference = !!(
+    considerations?.collectionOrder &&
+    descendant.collectionDefinitions
+      .map(({ collectionOrder }) => collectionOrder)
+      .join('|') !==
+      ancestor.collectionDefinitions
+        .map(({ collectionOrder }) => collectionOrder)
+        .join('|')
+  );
+
+  const different = orderDifference || ancestorDesc !== descendantDesc;
 
   const descendantCollectionDefinitions = Object.assign(
     {},
@@ -84,6 +98,7 @@ export function compareTieFormats({ ancestor, descendant }) {
     matchUpCountDifference,
     descendantDifferences,
     ancestorDifferences,
+    orderDifference,
     valueDifference,
     descendantDesc,
     ancestorDesc,
