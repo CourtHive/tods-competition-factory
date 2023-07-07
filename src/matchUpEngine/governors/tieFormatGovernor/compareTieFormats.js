@@ -31,6 +31,16 @@ export function compareTieFormats({
       )
   );
 
+  const nameDifference = !!(
+    considerations?.collectionName &&
+    descendant.collectionDefinitions
+      .map(({ collectionName }) => collectionName)
+      .join('|') !==
+      ancestor.collectionDefinitions
+        .map(({ collectionName }) => collectionName)
+        .join('|')
+  );
+
   const orderDifference = !!(
     considerations?.collectionOrder &&
     descendant.collectionDefinitions
@@ -41,7 +51,8 @@ export function compareTieFormats({
         .join('|')
   );
 
-  const different = orderDifference || ancestorDesc !== descendantDesc;
+  const different =
+    nameDifference || orderDifference || ancestorDesc !== descendantDesc;
 
   const descendantCollectionDefinitions = Object.assign(
     {},
@@ -100,6 +111,7 @@ export function compareTieFormats({
     ancestorDifferences,
     orderDifference,
     valueDifference,
+    nameDifference,
     descendantDesc,
     ancestorDesc,
     ...SUCCESS,
