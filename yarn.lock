@@ -6569,10 +6569,10 @@ quick-lru@^6.1.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-6.1.1.tgz#f8e5bf9010376c126c80c1a62827a526c0e60adf"
   integrity sha512-S27GBT+F0NTRiehtbrgaSE1idUAJ5bX8dPAQTdylEyNlrdcH5X4Lz7Edz3DYzecbsCluD5zO8ZNEe04z3D3u6Q==
 
-quicktype-core@23.0.49:
-  version "23.0.49"
-  resolved "https://registry.yarnpkg.com/quicktype-core/-/quicktype-core-23.0.49.tgz#3153cad5e0501ad486b034effa84c423dd01e1d0"
-  integrity sha512-lzPhHqqrqCvelt1+Hb/vsxyQtnv4nObcRCAItB3kOVQGYBYIfS8DQMG2t8FfC/fLW5o8xkhl6PF7CdHcejsFmg==
+quicktype-core@23.0.54:
+  version "23.0.54"
+  resolved "https://registry.yarnpkg.com/quicktype-core/-/quicktype-core-23.0.54.tgz#2996de332bd5e09763a9a38c0ca6b88a68a57bf0"
+  integrity sha512-sQzGy+HyUpGeE6dPcUVgmcbN2saLsnyO4Vvy3NyqmoNJJQzR6uYnQQtmAYnaiR3SCUyMuy1/WPGssB89CcCQ7g==
   dependencies:
     "@glideapps/ts-necessities" "2.1.3"
     "@types/urijs" "^1.19.19"
@@ -6588,30 +6588,30 @@ quicktype-core@23.0.49:
     unicode-properties "^1.4.1"
     urijs "^1.19.1"
     wordwrap "^1.0.0"
-    yaml "^2.2.2"
+    yaml "^2.3.1"
 
-quicktype-graphql-input@23.0.49:
-  version "23.0.49"
-  resolved "https://registry.yarnpkg.com/quicktype-graphql-input/-/quicktype-graphql-input-23.0.49.tgz#e55e7e2a7faeee76fda6a1ee25b9180a12a219f2"
-  integrity sha512-3KtF6wOV8K7SSl1v5LG/CzgxzUNuslpibtKtzfUFiMwxfdQiG9vDhsiewdkoetCB+13HOiNCKysXfSgELPPMzg==
+quicktype-graphql-input@23.0.54:
+  version "23.0.54"
+  resolved "https://registry.yarnpkg.com/quicktype-graphql-input/-/quicktype-graphql-input-23.0.54.tgz#764c5e936d4f57ba613e9280f085581a8f546941"
+  integrity sha512-gmn2wnS+45dnR6p9UaK7g+I4QZMlQDRHtLKYWWRTG4hU/Nbpc4UMpuEIyChX7Qc/hzx3j7f3A1Gt3S7QNGo6Kw==
   dependencies:
     collection-utils "^1.0.1"
     graphql "^0.11.7"
-    quicktype-core "23.0.49"
+    quicktype-core "23.0.54"
 
-quicktype-typescript-input@23.0.49:
-  version "23.0.49"
-  resolved "https://registry.yarnpkg.com/quicktype-typescript-input/-/quicktype-typescript-input-23.0.49.tgz#b40898b49a3d2b9481e180a99fc977659d254a23"
-  integrity sha512-/hSUpeharpOxhls+S7KBKw0d9ig8Pm662OZ5a20eROtUl/qS5s/hSshxt+pW+R3RjD5fZw2SiyaWDY5L+LgfVQ==
+quicktype-typescript-input@23.0.54:
+  version "23.0.54"
+  resolved "https://registry.yarnpkg.com/quicktype-typescript-input/-/quicktype-typescript-input-23.0.54.tgz#856ba40ae7963255853afb5550c72e444b9e6b56"
+  integrity sha512-3nUtrmNdU9MnK82yL4sIt6jghmgI5vcBEK+3Y4K0Elw3s4EK57K92OnXs1AzW7mkBYc6Yz+9MWK+vG72FB1BBg==
   dependencies:
     "@mark.probst/typescript-json-schema" "0.55.0"
-    quicktype-core "23.0.49"
+    quicktype-core "23.0.54"
     typescript "4.9.5"
 
-quicktype@23.0.49:
-  version "23.0.49"
-  resolved "https://registry.yarnpkg.com/quicktype/-/quicktype-23.0.49.tgz#048d04d95d45eea9dc027e249e58530dee33f65b"
-  integrity sha512-SWF3MRBiW1JuIhQPFwN8cY6xHo6SogEF/9Y6m6XNunqaJrT7Lbp9gERpNR5wrkMyJb0KYYDOLo49HXWzi4jGCA==
+quicktype@23.0.54:
+  version "23.0.54"
+  resolved "https://registry.yarnpkg.com/quicktype/-/quicktype-23.0.54.tgz#7cd05bfd3aa67d33666aed399d92355d571592ed"
+  integrity sha512-StZHz09bmf6AxZsuSvB4dWNksB4HYTjitv5LTPW4wKD3nMdTwsMWPP3TLNdpX78wkK7iHL94r7txxawVulAtDQ==
   dependencies:
     "@glideapps/ts-necessities" "^2.1.3"
     chalk "^4.1.2"
@@ -6622,11 +6622,11 @@ quicktype@23.0.49:
     graphql "^0.11.7"
     lodash "^4.17.21"
     moment "^2.29.4"
-    quicktype-core "23.0.49"
-    quicktype-graphql-input "23.0.49"
-    quicktype-typescript-input "23.0.49"
+    quicktype-core "23.0.54"
+    quicktype-graphql-input "23.0.54"
+    quicktype-typescript-input "23.0.54"
     readable-stream "^4.3.0"
-    stream-json "1.7.5"
+    stream-json "1.8.0"
     string-to-stream "^3.0.1"
     typescript "4.9.5"
 
@@ -7308,10 +7308,10 @@ stream-chain@^2.2.5:
   resolved "https://registry.yarnpkg.com/stream-chain/-/stream-chain-2.2.5.tgz#b30967e8f14ee033c5b9a19bbe8a2cba90ba0d09"
   integrity sha512-1TJmBx6aSWqZ4tx7aTpBDXK0/e2hhcNSTV8+CbFJtDjbb+I1mZ8lHit0Grw9GRT+6JbIrrDd8esncgBi8aBXGA==
 
-stream-json@1.7.5:
-  version "1.7.5"
-  resolved "https://registry.yarnpkg.com/stream-json/-/stream-json-1.7.5.tgz#2ff0563011f22cea4f6a28dbfc0344a53c761fe4"
-  integrity sha512-NSkoVduGakxZ8a+pTPUlcGEeAGQpWL9rKJhOFCV+J/QtdQUEU5vtBgVg6eJXn8JB8RZvpbJWZGvXkhz70MLWoA==
+stream-json@1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/stream-json/-/stream-json-1.8.0.tgz#53f486b2e3b4496c506131f8d7260ba42def151c"
+  integrity sha512-HZfXngYHUAr1exT4fxlbc1IOce1RYxp2ldeaf97LYCOPSoOqY/1Psp7iGvpb+6JIOgkra9zDYnPX01hGAHzEPw==
   dependencies:
     stream-chain "^2.2.5"
 
@@ -8282,6 +8282,11 @@ yaml@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.2.2.tgz#ec551ef37326e6d42872dad1970300f8eb83a073"
   integrity sha512-CBKFWExMn46Foo4cldiChEzn7S7SRV+wqiluAb6xmueD/fGyRHIhX8m14vVGgeFWjN540nKCNVj6P21eQjgTuA==
+
+yaml@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.3.1.tgz#02fe0975d23cd441242aa7204e09fc28ac2ac33b"
+  integrity sha512-2eHWfjaoXgTBC2jNM1LRef62VQa0umtvRiDSk6HSzW7RvS5YtkabJrwYLLEKWBc8a5U2PTSCs+dJjUTJdlHsWQ==
 
 yargs-parser@^20.2.2, yargs-parser@^20.2.3, yargs-parser@^20.2.9:
   version "20.2.9"
