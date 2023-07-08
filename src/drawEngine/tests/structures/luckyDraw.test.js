@@ -1,10 +1,11 @@
+import { getPositionAssignments } from '../../getters/positionsGetter';
 import { mocksEngine, tournamentEngine } from '../../..';
 import { expect, test } from 'vitest';
 import drawEngine from '../../sync';
 
 import { LUCKY_DRAW } from '../../../constants/drawDefinitionConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
-import { getPositionAssignments } from '../../getters/positionsGetter';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 
 // prettier-ignore
 const scenarios = [
@@ -59,6 +60,11 @@ test.each(scenarios)(
     tournamentEngine.setState(tournamentRecord);
 
     const { matchUps } = tournamentEngine.allTournamentMatchUps();
+    const firstRoundByeMatchUps = matchUps.filter(
+      ({ roundNumber, matchUpStatus }) =>
+        roundNumber === 1 && matchUpStatus === BYE
+    );
+    expect(firstRoundByeMatchUps.length).toBeLessThanOrEqual(1);
 
     const { roundProfile } = drawEngine.getRoundMatchUps({
       matchUps,
