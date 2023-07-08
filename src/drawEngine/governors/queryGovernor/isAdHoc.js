@@ -6,6 +6,6 @@ export function isAdHoc({ drawDefinition, structure }) {
   return (
     !structure?.structures &&
     !(drawDefinition?.drawType && drawDefinition.drawType !== AD_HOC) &&
-    !structure?.matchUps.find(({ roundPosition }) => !!roundPosition)
+    !structure?.matchUps?.find(({ roundPosition }) => !!roundPosition)
   );
 }
