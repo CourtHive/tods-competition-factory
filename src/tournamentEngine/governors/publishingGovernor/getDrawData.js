@@ -53,10 +53,17 @@ export function getDrawData({
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const drawInfo = (({ drawId, drawName, matchUpFormat, updatedAt }) => ({
+  const drawInfo = (({
+    matchUpFormat,
+    updatedAt,
+    drawType,
+    drawName,
+    drawId,
+  }) => ({
     matchUpFormat,
     updatedAt,
     drawName,
+    drawType,
     drawId,
   }))(drawDefinition);
 
