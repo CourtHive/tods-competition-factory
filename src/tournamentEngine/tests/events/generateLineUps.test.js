@@ -3,6 +3,7 @@ import { instanceCount, unique } from '../../../utilities';
 import { tournamentEngine, mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { RANKING } from '../../../constants/scaleConstants';
 import { ASC } from '../../../constants/sortingConstants';
@@ -15,7 +16,6 @@ import {
   DOMINANT_DUO_MIXED,
   USTA_GOLD_TEAM_CHALLENGE,
 } from '../../../constants/tieFormatConstants';
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 it('can generate lineUps for TEAM events', () => {
   const categoryName = '18U';

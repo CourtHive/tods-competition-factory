@@ -174,7 +174,7 @@ export function generateParticipants({
       const skew = inverted ? 2 : 0.5;
       const [min, max] = range.slice().sort();
       const generateRatings = () =>
-        generateRange(0, 1000)
+        generateRange(0, 2000) // overgenerate because filter and restricted range will impact final count
           .map(() => skewedDistribution(min, max, skew, step, decimalsCount))
           .filter(
             (rating) =>
