@@ -12,6 +12,7 @@ export function getNextUnfilledDrawPositions({
   drawDefinition,
   seedBlockInfo,
   structureId,
+  event,
 }) {
   if (!drawDefinition) {
     const error = MISSING_DRAW_DEFINITION;
@@ -35,6 +36,7 @@ export function getNextUnfilledDrawPositions({
     drawDefinition,
     seedBlockInfo,
     structureId,
+    event,
   });
 
   const unfilledDrawPositions = positionAssignments

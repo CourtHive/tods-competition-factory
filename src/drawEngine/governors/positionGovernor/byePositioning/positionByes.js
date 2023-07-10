@@ -57,6 +57,7 @@ export function positionByes({
     seedBlockInfo,
     byesToPlace,
     structure,
+    event,
   });
 
   const ignoreSeededByes =
@@ -78,6 +79,7 @@ export function positionByes({
     structure,
     isFeedIn,
     isLucky,
+    event,
   });
 
   const isOdd = (x) => x % 2;

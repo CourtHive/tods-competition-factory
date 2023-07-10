@@ -44,6 +44,7 @@ export function positionUnseededParticipants({
     provisionalPositioning,
     drawDefinition,
     structure,
+    event,
   });
 
   const assignedSeedParticipantIds = seedAssignments

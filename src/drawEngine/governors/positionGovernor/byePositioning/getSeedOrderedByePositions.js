@@ -12,6 +12,7 @@ export function getSeedOrderByePositions({
   seedBlockInfo,
   byesToPlace,
   structure,
+  event,
 }) {
   if (!seedBlockInfo) {
     seedBlockInfo = getValidSeedBlocks({
@@ -19,6 +20,7 @@ export function getSeedOrderByePositions({
       appliedPolicies,
       drawDefinition,
       structure,
+      event,
     });
   }
 
@@ -30,6 +32,7 @@ export function getSeedOrderByePositions({
     provisionalPositioning,
     drawDefinition,
     structure,
+    event,
   });
 
   const relevantDrawPositions = unique(

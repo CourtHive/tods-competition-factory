@@ -35,6 +35,7 @@ export function assignSeed({
     provisionalPositioning,
     drawDefinition,
     structure,
+    event,
   });
   const seedNumbers = seedAssignments.map(
     (assignment) => assignment.seedNumber

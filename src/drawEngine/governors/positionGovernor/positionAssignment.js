@@ -86,6 +86,7 @@ export function assignDrawPosition({
     provisionalPositioning,
     drawDefinition,
     structure,
+    event,
   });
 
   const relevantAssignment = seedAssignments.find(

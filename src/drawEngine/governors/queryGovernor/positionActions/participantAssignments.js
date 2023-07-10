@@ -47,6 +47,7 @@ export function getValidAssignmentActions({
       randomize: true,
       drawDefinition,
       structureId,
+      event,
     });
     ({
       unplacedSeedParticipantIds,
