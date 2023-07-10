@@ -116,6 +116,7 @@ export function automatedPositioning({
     appliedPolicies,
     drawDefinition,
     structure,
+    event,
   });
   if (seedBlockInfo.error) return seedBlockInfo;
   const { validSeedBlocks } = seedBlockInfo;

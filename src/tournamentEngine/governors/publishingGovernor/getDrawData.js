@@ -86,6 +86,7 @@ export function getDrawData({
         const { seedAssignments } = getStructureSeedAssignments({
           drawDefinition,
           structure,
+          event,
         });
 
         // capture the seedAssignments for MAIN/QUALIFYING { stageSequence: 1 }

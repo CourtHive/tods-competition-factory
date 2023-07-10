@@ -22,6 +22,7 @@ export function verifyStructure({
   drawDefinition,
   expectedSeeds,
   structureId,
+  event,
 }) {
   if (!drawDefinition) {
     ({ drawDefinition } = drawEngine.getState());
@@ -31,6 +32,7 @@ export function verifyStructure({
   const { seedAssignments } = getStructureSeedAssignments({
     drawDefinition,
     structure,
+    event,
   });
 
   const positionsAssignedCount = positionAssignments.reduce(
@@ -118,6 +120,7 @@ export function verifyStructure({
   const positionedSeeds = getStructurePositionedSeeds({
     drawDefinition,
     structure,
+    event,
   });
   const seedDrawPositionsWithBye = seedPairedDrawPositionsWithBye.map(
     (drawPosition) => {

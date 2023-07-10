@@ -27,6 +27,7 @@ export function getUnseededByePositions({
   structure,
   isFeedIn,
   isLucky,
+  event,
 }) {
   const seedingProfile = appliedPolicies?.seeding?.seedingProfile;
   const isQualifying = structure.stage === QUALIFYING;
@@ -123,6 +124,7 @@ export function getUnseededByePositions({
     appliedPolicies,
     drawDefinition,
     structure,
+    event,
   });
 
   const validBlockDrawPositions = validSeedBlocks.map((block) =>

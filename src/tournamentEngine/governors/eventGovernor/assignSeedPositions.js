@@ -38,6 +38,7 @@ export function assignSeedPositions(params) {
     provisionalPositioning,
     drawDefinition,
     structureId,
+    event,
   });
   if (result.error) return result;
   const { seedAssignments, seedLimit } = result;

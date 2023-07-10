@@ -82,6 +82,7 @@ export function prepareStage({
     appliedPolicies,
     drawDefinition,
     structure,
+    event,
   });
 
   const { seedLimit } = initializeStructureSeedAssignments({

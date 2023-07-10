@@ -49,6 +49,7 @@ export function modifySeedAssignment({
   const { seedAssignments } = getStructureSeedAssignments({
     drawDefinition,
     structure,
+    event,
   });
   const seedNumbers = seedAssignments.map(
     (assignment) => assignment.seedNumber

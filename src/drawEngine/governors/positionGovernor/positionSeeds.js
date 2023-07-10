@@ -40,6 +40,7 @@ export function positionSeedBlocks({
       appliedPolicies,
       drawDefinition,
       structure,
+      event,
     });
     if (result.error) errors.push(result.error);
     validSeedBlocks = result.validSeedBlocks;
@@ -94,6 +95,7 @@ function positionSeedBlock({
     drawDefinition,
     seedBlockInfo,
     structureId,
+    event,
   });
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
