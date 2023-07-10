@@ -118,7 +118,7 @@ it('can bulk schedule matchUps', () => {
   expect(matchUpsWithScheduledTime.length).toEqual(0);
 });
 
-test('recognizes scheduling conflicts', () => {
+test.only('recognizes scheduling conflicts', () => {
   const visibilityThreshold = Date.now();
 
   const eventProfiles = [
@@ -215,9 +215,12 @@ test('recognizes scheduling conflicts', () => {
     participantIdsWithConflicts: gpConflicts,
     mappedMatchUps,
     participantMap,
+    participants,
   } = competitionEngine.getParticipants({
-    scheduleAnalysis: true,
+    scheduleAnalysis: { scheduledMinutesDifference: Infinity },
   });
+  expect(Object.values(participantMap).length).toEqual(16);
+  expect(participants.length).toEqual(16);
   expect(gpConflicts.length).toEqual(16);
 
   ({
@@ -261,6 +264,24 @@ test('recognizes scheduling conflicts', () => {
 
   ({ participantIdsWithConflicts: gpConflicts } =
     tournamentEngine.getParticipants({
+      scheduleAnalysis: { scheduledMinutesDifference: 60 },
+    }));
+  expect(gpConflicts.length).toEqual(16);
+
+  ({ participantIdsWithConflicts: gpConflicts } =
+    tournamentEngine.getParticipants({
+      scheduleAnalysis: { scheduledMinutesDifference: 50 },
+    }));
+  expect(gpConflicts.length).toEqual(0);
+
+  ({ participantIdsWithConflicts: gpConflicts } =
+    competitionEngine.getParticipants({
+      scheduleAnalysis: { scheduledMinutesDifference: 60 },
+    }));
+  expect(gpConflicts.length).toEqual(16);
+
+  ({ participantIdsWithConflicts: gpConflicts } =
+    competitionEngine.getParticipants({
       scheduleAnalysis: { scheduledMinutesDifference: 50 },
     }));
   expect(gpConflicts.length).toEqual(0);
