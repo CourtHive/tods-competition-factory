@@ -118,7 +118,7 @@ it('can bulk schedule matchUps', () => {
   expect(matchUpsWithScheduledTime.length).toEqual(0);
 });
 
-test.only('recognizes scheduling conflicts', () => {
+test('recognizes scheduling conflicts', () => {
   const visibilityThreshold = Date.now();
 
   const eventProfiles = [
