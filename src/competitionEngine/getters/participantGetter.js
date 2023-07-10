@@ -20,7 +20,7 @@ export function getParticipants(params) {
 
   const derivedEventInfo = {};
   const derivedDrawInfo = {};
-  const partiicipantMap = {};
+  const participantMap = {};
   const mappedMatchUps = {};
   const participants = [];
   const matchUps = [];
@@ -30,18 +30,19 @@ export function getParticipants(params) {
     const {
       participantIdsWithConflicts: idsWithConflicts,
       mappedMatchUps: tournamentMappedMatchUps,
-      participantMap: tournamentParticipants,
+      participantMap: tournamentParticipantMap,
+      participants: tournamentParticipants,
       matchUps: tournamentMatchUps,
       derivedEventInfo: eventInfo,
       derivedDrawInfo: drawInfo,
-      participants,
     } = participantGetter({ tournamentRecord, ...params });
 
     Object.assign(mappedMatchUps, tournamentMappedMatchUps);
+    Object.assign(participantMap, tournamentParticipantMap);
     Object.assign(derivedEventInfo, eventInfo);
     Object.assign(derivedDrawInfo, drawInfo);
 
-    participants.push(tournamentParticipants);
+    participants.push(...tournamentParticipants);
     matchUps.push(...tournamentMatchUps);
 
     idsWithConflicts?.forEach((participantId) => {
@@ -53,7 +54,7 @@ export function getParticipants(params) {
     participantIdsWithConflicts,
     derivedEventInfo,
     derivedDrawInfo,
-    partiicipantMap,
+    participantMap,
     mappedMatchUps,
     participants,
     ...SUCCESS,

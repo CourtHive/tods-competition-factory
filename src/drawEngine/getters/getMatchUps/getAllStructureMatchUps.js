@@ -156,6 +156,7 @@ export function getAllStructureMatchUps({
       drawDefinition,
       matchUpsMap,
       structure,
+      event,
     });
 
   // enables passing in seedAssignments rather than using structureSeedAssignments

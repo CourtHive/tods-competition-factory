@@ -44,6 +44,7 @@ export function getValidSeedBlocks({
   drawDefinition,
   allPositions,
   structure,
+  event,
 }) {
   let validSeedBlocks = [];
 
@@ -58,6 +59,7 @@ export function getValidSeedBlocks({
     provisionalPositioning,
     drawDefinition,
     structure,
+    event,
   });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const positionsCount = positionAssignments.length;
@@ -356,12 +358,14 @@ export function getNextSeedBlock({
   seedBlockInfo,
   structureId,
   randomize,
+  event,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { seedAssignments } = getStructureSeedAssignments({
     provisionalPositioning,
     drawDefinition,
     structure,
+    event,
   });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const positionsWithParticipants = positionAssignments.filter(
@@ -380,6 +384,7 @@ export function getNextSeedBlock({
       appliedPolicies,
       drawDefinition,
       structure,
+      event,
     })?.validSeedBlocks;
   const unfilledSeedBlocks = (validSeedBlocks || []).filter((seedBlock) => {
     const unfilledPositions = seedBlock.drawPositions.filter(

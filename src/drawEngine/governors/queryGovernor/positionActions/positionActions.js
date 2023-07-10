@@ -343,6 +343,7 @@ export function positionActions(params) {
       const { seedAssignments } = getStructureSeedAssignments({
         drawDefinition,
         structure,
+        event,
       });
       const { seedNumber, seedValue } =
         seedAssignments.find(
@@ -378,6 +379,7 @@ export function positionActions(params) {
       const { seedAssignments } = getStructureSeedAssignments({
         drawDefinition,
         structure,
+        event,
       });
       const { seedNumber } =
         seedAssignments.find(

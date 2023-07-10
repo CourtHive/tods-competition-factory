@@ -6,9 +6,10 @@ import { getEventPublishStatuses } from './getEventPublishStatuses';
 import { getEventSeedAssignments } from './getEventSeedAssignments';
 import { structureSort } from '../../../forge/transform';
 import { processEventEntry } from './processEventEntry';
-import { getFlightProfile } from '../getFlightProfile';
+import { isObject } from '../../../utilities/objects';
 import { definedAttributes } from '../../../utilities';
 import { allEventMatchUps } from '../matchUpsGetter';
+import { getFlightProfile } from '../getFlightProfile';
 import { addScheduleItem } from './addScheduleItem';
 import { processSides } from './processSides';
 
@@ -369,9 +370,9 @@ export function getParticipantEntries({
       withMatchUps ||
       withDraws
     ) {
-      const nextMatchUps = scheduleAnalysis || withPotentialMatchUps;
+      const nextMatchUps = !!scheduleAnalysis || withPotentialMatchUps;
       const eventMatchUps = allEventMatchUps({
-        afterRecoveryTimes: scheduleAnalysis,
+        afterRecoveryTimes: !!scheduleAnalysis,
         policyDefinitions,
         tournamentRecord,
         inContext: true,
@@ -455,7 +456,7 @@ export function getParticipantEntries({
 
         if (
           Array.isArray(potentialParticipants) &&
-          (nextMatchUps || scheduleAnalysis || withScheduleTimes)
+          (nextMatchUps || !!scheduleAnalysis || withScheduleTimes)
         ) {
           const potentialParticipantIds = getParticipantIds(
             potentialParticipants.flat()
@@ -475,7 +476,7 @@ export function getParticipantEntries({
               });
             });
 
-            if (scheduleAnalysis || withScheduleTimes) {
+            if (!!scheduleAnalysis || withScheduleTimes) {
               addScheduleItem({
                 potential: true,
                 participantMap,
@@ -499,7 +500,7 @@ export function getParticipantEntries({
     }
   }
 
-  if (withStatistics || withRankingProfile || scheduleAnalysis) {
+  if (withStatistics || withRankingProfile || !!scheduleAnalysis) {
     for (const participantAggregator of Object.values(participantMap)) {
       const {
         wins,
@@ -579,7 +580,9 @@ export function getParticipantEntries({
       }
 
       if (scheduleAnalysis) {
-        const { scheduledMinutesDifference } = scheduleAnalysis;
+        const scheduledMinutesDifference = isObject(scheduleAnalysis)
+          ? scheduleAnalysis.scheduledMinutesDifference
+          : 0;
 
         // iterate through participantAggregator.scheduleItems
         const scheduleItems = participantAggregator.scheduleItems || [];
@@ -629,7 +632,7 @@ export function getParticipantEntries({
               potentialMatchUps[consideredItem.matchUpId];
 
             const nextMinutes = timeStringMinutes(consideredItem.scheduledTime);
-            const minutesDifference = nextMinutes - scheduledMinutes;
+            const minutesDifference = Math.abs(nextMinutes - scheduledMinutes);
 
             // Conflicts can be determined in two ways:
             // 1. scheduledMinutesDifference - the minutes difference between two scheduledTimes
