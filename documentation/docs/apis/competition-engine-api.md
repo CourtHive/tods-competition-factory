@@ -832,15 +832,24 @@ const participantFilters = {
   eventIds, // events in which participants appear
 };
 const {
+  participantIdsWithConflicts, // returns array of participantIds which have scheduling conflicts
   competitionParticipants,
-  participantIdsWithConflicts // returns array of participantIds which have scheduling conflicts
+  eventsPublishStatuses,
+  derivedEventInfo,
+  derivedDrawInfo,
+  participantsMap, // object { [participantId]: participant }
+  mappedMatchUps, // object { [matchUpId]: matchUp }; when { withMatchUps: true }
+  participants, // array of participants
+  matchUps, // array of all matchUps; when { withMatchUps: true }
 } =
   competitionEngine.getParticipants({
     convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
     participantFilters, // optional - filters
     policyDefinitions, // optional - can accept a privacy policy to filter participant attributes
     usePublishState, // optional - BOOLEAN - don't add seeding information when not published
-    scheduleAnalysis, // optional - return scheduling conflicts
+    scheduleAnalysis: {
+      scheduledMinutesDifference // optional - scheduling conflicts determined by scheduledTime difference between matchUps
+    },
     usePublishState,  // optional boolean
     withDraws, // optional - defaults to true if any other context options are specified
     withEvents, // optional - defaults to true if any other context options are specified
