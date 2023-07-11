@@ -2169,7 +2169,17 @@ const participantFilters = {
   signInStatus, // specific signIn status
   eventIds, // events in which participants appear
 };
-const { participants } =
+const {
+  participantIdsWithConflicts, // returns array of participantIds which have scheduling conflicts
+  competitionParticipants,
+  eventsPublishStatuses,
+  derivedEventInfo,
+  derivedDrawInfo,
+  participantsMap, // object { [participantId]: participant }
+  mappedMatchUps, // object { [matchUpId]: matchUp }; when { withMatchUps: true }
+  participants, // array of participants
+  matchUps, // array of all matchUps; when { withMatchUps: true }
+ } =
   tournamentEngine.getParticipants({
     convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
     participantFilters, // optional - filters

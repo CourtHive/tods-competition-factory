@@ -6465,7 +6465,7 @@ postcss@^8.4.23:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-postcss@^8.4.24:
+postcss@^8.4.25:
   version "8.4.25"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.25.tgz#4a133f5e379eda7f61e906c3b1aaa9b81292726f"
   integrity sha512-7taJ/8t2av0Z+sQEvNzCkpDynl0tX3uJMCODi6nT3PfASC7dYCWV9aQ+uiCf+KBD4SEFcu+GvJdGdwzQ6OSjCw==
@@ -6595,10 +6595,10 @@ quick-lru@^6.1.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-6.1.1.tgz#f8e5bf9010376c126c80c1a62827a526c0e60adf"
   integrity sha512-S27GBT+F0NTRiehtbrgaSE1idUAJ5bX8dPAQTdylEyNlrdcH5X4Lz7Edz3DYzecbsCluD5zO8ZNEe04z3D3u6Q==
 
-quicktype-core@23.0.54:
-  version "23.0.54"
-  resolved "https://registry.yarnpkg.com/quicktype-core/-/quicktype-core-23.0.54.tgz#2996de332bd5e09763a9a38c0ca6b88a68a57bf0"
-  integrity sha512-sQzGy+HyUpGeE6dPcUVgmcbN2saLsnyO4Vvy3NyqmoNJJQzR6uYnQQtmAYnaiR3SCUyMuy1/WPGssB89CcCQ7g==
+quicktype-core@23.0.59:
+  version "23.0.59"
+  resolved "https://registry.yarnpkg.com/quicktype-core/-/quicktype-core-23.0.59.tgz#4a2b24e9884817463f84d61fd543730ade8ed0a5"
+  integrity sha512-D8DwNyJkDi3kcQ0kY3QYHx/REobwa1kJ+2udTo7it1ofqtjQVNncRsjKN0urml6hByqdDCOT7IiFgOB7i0M2Nw==
   dependencies:
     "@glideapps/ts-necessities" "2.1.3"
     "@types/urijs" "^1.19.19"
@@ -6616,28 +6616,28 @@ quicktype-core@23.0.54:
     wordwrap "^1.0.0"
     yaml "^2.3.1"
 
-quicktype-graphql-input@23.0.54:
-  version "23.0.54"
-  resolved "https://registry.yarnpkg.com/quicktype-graphql-input/-/quicktype-graphql-input-23.0.54.tgz#764c5e936d4f57ba613e9280f085581a8f546941"
-  integrity sha512-gmn2wnS+45dnR6p9UaK7g+I4QZMlQDRHtLKYWWRTG4hU/Nbpc4UMpuEIyChX7Qc/hzx3j7f3A1Gt3S7QNGo6Kw==
+quicktype-graphql-input@23.0.59:
+  version "23.0.59"
+  resolved "https://registry.yarnpkg.com/quicktype-graphql-input/-/quicktype-graphql-input-23.0.59.tgz#b5c4c057aa2225510296aa7a223ecbe4af40f246"
+  integrity sha512-uf+a3EcufLO4t0EI4wzt7Ldstmc7C4MtVjngyn0I0gAJ++9xmIO9dskXlS0JKux1MkvlAhPvQTdi6Vu63hyU3Q==
   dependencies:
     collection-utils "^1.0.1"
     graphql "^0.11.7"
-    quicktype-core "23.0.54"
+    quicktype-core "23.0.59"
 
-quicktype-typescript-input@23.0.54:
-  version "23.0.54"
-  resolved "https://registry.yarnpkg.com/quicktype-typescript-input/-/quicktype-typescript-input-23.0.54.tgz#856ba40ae7963255853afb5550c72e444b9e6b56"
-  integrity sha512-3nUtrmNdU9MnK82yL4sIt6jghmgI5vcBEK+3Y4K0Elw3s4EK57K92OnXs1AzW7mkBYc6Yz+9MWK+vG72FB1BBg==
+quicktype-typescript-input@23.0.59:
+  version "23.0.59"
+  resolved "https://registry.yarnpkg.com/quicktype-typescript-input/-/quicktype-typescript-input-23.0.59.tgz#f0508459bd2b57b0164e8f6f9291f28b20a73d7a"
+  integrity sha512-JB8ae7cUb/iiwYAd2h0dNE9kHojeU0fr8rJ+AnUIkLrmEQ0qxmnB2DjadmaA6kbzV7PBq2UGtZjeGkYchq4m2Q==
   dependencies:
     "@mark.probst/typescript-json-schema" "0.55.0"
-    quicktype-core "23.0.54"
+    quicktype-core "23.0.59"
     typescript "4.9.5"
 
-quicktype@23.0.54:
-  version "23.0.54"
-  resolved "https://registry.yarnpkg.com/quicktype/-/quicktype-23.0.54.tgz#7cd05bfd3aa67d33666aed399d92355d571592ed"
-  integrity sha512-StZHz09bmf6AxZsuSvB4dWNksB4HYTjitv5LTPW4wKD3nMdTwsMWPP3TLNdpX78wkK7iHL94r7txxawVulAtDQ==
+quicktype@23.0.59:
+  version "23.0.59"
+  resolved "https://registry.yarnpkg.com/quicktype/-/quicktype-23.0.59.tgz#850ded7e365a584273f117d5106351ba0d69fb0c"
+  integrity sha512-fTo7eNzFByP7x5xGkpiKDaNaqMejIiMuMcxtqurUaxbDSC0fPf3E3oGk0cMoWA3LK0Idu53BTayBd/Md7JhnEg==
   dependencies:
     "@glideapps/ts-necessities" "^2.1.3"
     chalk "^4.1.2"
@@ -6648,9 +6648,9 @@ quicktype@23.0.54:
     graphql "^0.11.7"
     lodash "^4.17.21"
     moment "^2.29.4"
-    quicktype-core "23.0.54"
-    quicktype-graphql-input "23.0.54"
-    quicktype-typescript-input "23.0.54"
+    quicktype-core "23.0.59"
+    quicktype-graphql-input "23.0.59"
+    quicktype-typescript-input "23.0.59"
     readable-stream "^4.3.0"
     stream-json "1.8.0"
     string-to-stream "^3.0.1"
@@ -8083,13 +8083,13 @@ vite-node@0.33.0:
     picocolors "^1.0.0"
     vite "^3.0.0 || ^4.0.0"
 
-vite@4.4.2:
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-4.4.2.tgz#acd47de771c498aec80e4900f30133d9529b278a"
-  integrity sha512-zUcsJN+UvdSyHhYa277UHhiJ3iq4hUBwHavOpsNUGsTgjBeoBlK8eDt+iT09pBq0h9/knhG/SPrZiM7cGmg7NA==
+vite@4.4.3:
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-4.4.3.tgz#dfaf86f4cba3058bf2724e2e2c88254fb0f21a5a"
+  integrity sha512-IMnXQXXWgLi5brBQx/4WzDxdzW0X3pjO4nqFJAuNvwKtxzAmPzFE1wszW3VDpAGQJm3RZkm/brzRdyGsnwgJIA==
   dependencies:
     esbuild "^0.18.10"
-    postcss "^8.4.24"
+    postcss "^8.4.25"
     rollup "^3.25.2"
   optionalDependencies:
     fsevents "~2.3.2"

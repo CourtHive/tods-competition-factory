@@ -139,7 +139,7 @@
     "pinst": "^3.0.0",
     "prettier": "3.0.0",
     "prettier-eslint": "15.0.1",
-    "quicktype": "23.0.54",
+    "quicktype": "23.0.59",
     "rimraf": "5.0.1",
     "rollup": "3.26.2",
     "rollup-plugin-dts": "5.3.0",
@@ -149,7 +149,7 @@
     "tslib": "2.6.0",
     "typescript": "5.1.6",
     "variable-diff": "^2.0.2",
-    "vite": "4.4.2",
+    "vite": "4.4.3",
     "vitest": "^0.33.0"
   },
   "lint-staged": {
