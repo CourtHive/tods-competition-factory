@@ -170,6 +170,7 @@ export function processMatchUp({
     filteredRelevantParticipantIds?.forEach(
       ({ relevantParticipantId, participantType }) => {
         const { entryStage, entryStatus, entryPosition } = drawEntry || {};
+        if (!participantIdMap[relevantParticipantId]) return;
 
         if (!participantIdMap[relevantParticipantId].draws[drawId]) {
           const positionAssignments = getDerivedPositionAssignments({
