@@ -116,9 +116,9 @@ export function generateAndPopulatePlayoffStructures(params) {
     (typeof roundProfiles === 'object' &&
       roundProfiles.map((p) => Object.keys(p)).flat());
 
-  const validRoundNumbers = targetRoundNumbers
-    ?.map((p) => !isNaN(p) && parseInt(p))
-    .filter(Boolean);
+  const validRoundNumbers =
+    Array.isArray(targetRoundNumbers) &&
+    targetRoundNumbers.map((p) => !isNaN(p) && parseInt(p)).filter(Boolean);
 
   if (validRoundNumbers) {
     if (!Array.isArray(validRoundNumbers))
