@@ -116,9 +116,9 @@ export function generateAndPopulatePlayoffStructures(params) {
     (typeof roundProfiles === 'object' &&
       roundProfiles.map((p) => Object.keys(p)).flat());
 
-  const validRoundNumbers =
-    targetRoundNumbers &&
-    targetRoundNumbers.map((p) => !isNaN(p) && parseInt(p)).filter(Boolean);
+  const validRoundNumbers = targetRoundNumbers
+    ?.map((p) => !isNaN(p) && parseInt(p))
+    .filter(Boolean);
 
   if (validRoundNumbers) {
     if (!Array.isArray(validRoundNumbers))
@@ -173,8 +173,7 @@ export function generateAndPopulatePlayoffStructures(params) {
 
     const stageSequence = 2;
     const sequenceLimit =
-      roundProfile &&
-      roundProfile[roundNumber] &&
+      roundProfile?.[roundNumber] &&
       stageSequence + roundProfile[roundNumber] - 1;
 
     const result = generatePlayoffStructures({
