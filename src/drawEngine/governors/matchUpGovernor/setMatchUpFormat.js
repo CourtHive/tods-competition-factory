@@ -18,6 +18,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function setMatchUpFormat(params) {
+  let structureIds = params.structureIds;
   const {
     tournamentRecord,
     drawDefinition,
@@ -54,6 +55,17 @@ export function setMatchUpFormat(params) {
       drawDefinition,
       matchUp,
     });
+  } else if (Array.isArray(structureIds)) {
+    if (event?.eventType === TEAM) return { error: INVALID_EVENT_TYPE };
+    for (const structureId of structureIds) {
+      const result = findStructure({ drawDefinition, structureId });
+      if (result.error) return result;
+      if (!result.structure) {
+        return { error: STRUCTURE_NOT_FOUND };
+      } else {
+        result.structure.matchUpFormat = matchUpFormat;
+      }
+    }
   } else if (structureId) {
     if (event?.eventType === TEAM) return { error: INVALID_EVENT_TYPE };
     const result = findStructure({ drawDefinition, structureId });
@@ -67,7 +79,7 @@ export function setMatchUpFormat(params) {
     drawDefinition.matchUpFormat = matchUpFormat;
   }
 
-  const structureIds = structureId ? [structureId] : undefined;
+  structureIds = structureIds || (structureId ? [structureId] : undefined);
   modifyDrawNotice({ drawDefinition, structureIds });
 
   return { ...SUCCESS };
