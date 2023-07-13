@@ -123,38 +123,40 @@ export function getParticipantResults({
           const isDoubles = matchUpType === DOUBLES;
           const isSingles = matchUpType === SINGLES;
 
-          // logic ensures that losing TEAM participant gets credit for tieMatchUps won & etc.
-          if (tieMatchUp.winningSide === winningSide) {
-            if (winningParticipantId) {
-              participantResults[winningParticipantId].tieMatchUpsWon += 1;
-              if (isSingles)
-                participantResults[winningParticipantId].tieSinglesWon += 1;
-              if (isDoubles)
-                participantResults[winningParticipantId].tieDoublesWon += 1;
-            }
-            if (losingParticipantId) {
-              participantResults[losingParticipantId].tieMatchUpsLost += 1;
-              if (isSingles)
-                participantResults[losingParticipantId].tieSinglesLost += 1;
-              if (isDoubles) {
-                participantResults[losingParticipantId].tieDoublesLost += 1;
+          if (tieMatchUp.winningSide) {
+            // logic ensures that losing TEAM participant gets credit for tieMatchUps won & etc.
+            if (tieMatchUp.winningSide === winningSide) {
+              if (winningParticipantId) {
+                participantResults[winningParticipantId].tieMatchUpsWon += 1;
+                if (isSingles)
+                  participantResults[winningParticipantId].tieSinglesWon += 1;
+                if (isDoubles)
+                  participantResults[winningParticipantId].tieDoublesWon += 1;
               }
-            }
-          } else if (tieMatchUp.winningSide !== winningSide) {
-            if (losingParticipantId) {
-              participantResults[losingParticipantId].tieMatchUpsWon += 1;
-              if (isSingles)
-                participantResults[losingParticipantId].tieSinglesWon += 1;
-              if (isDoubles) {
-                participantResults[losingParticipantId].tieDoublesWon += 1;
+              if (losingParticipantId) {
+                participantResults[losingParticipantId].tieMatchUpsLost += 1;
+                if (isSingles)
+                  participantResults[losingParticipantId].tieSinglesLost += 1;
+                if (isDoubles) {
+                  participantResults[losingParticipantId].tieDoublesLost += 1;
+                }
               }
-            }
-            if (winningParticipantId) {
-              participantResults[winningParticipantId].tieMatchUpsLost += 1;
-              if (isSingles)
-                participantResults[winningParticipantId].tieSinglesLost += 1;
-              if (isDoubles) {
-                participantResults[winningParticipantId].tieDoublesLost += 1;
+            } else if (tieMatchUp.winningSide !== winningSide) {
+              if (losingParticipantId) {
+                participantResults[losingParticipantId].tieMatchUpsWon += 1;
+                if (isSingles)
+                  participantResults[losingParticipantId].tieSinglesWon += 1;
+                if (isDoubles) {
+                  participantResults[losingParticipantId].tieDoublesWon += 1;
+                }
+              }
+              if (winningParticipantId) {
+                participantResults[winningParticipantId].tieMatchUpsLost += 1;
+                if (isSingles)
+                  participantResults[winningParticipantId].tieSinglesLost += 1;
+                if (isDoubles) {
+                  participantResults[winningParticipantId].tieDoublesLost += 1;
+                }
               }
             }
           }

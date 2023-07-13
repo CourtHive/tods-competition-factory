@@ -4,6 +4,8 @@ import { expect, it } from 'vitest';
 
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
+import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { TALLY } from '../../../constants/extensionConstants';
 
 it('supports disabling and then re-enabling auto-Calc', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -58,6 +60,7 @@ it('supports disabling and then re-enabling auto-Calc', () => {
     matchUpId,
   }).matchUp;
   expect(targetTeamMatchUp.winningSide).toEqual(3 - originalWinningSide);
+
   winnerTeamMatchUp = tournamentEngine.findMatchUp({
     matchUpId: winnerTeamMatchUpId,
     drawId,
@@ -171,4 +174,111 @@ it('disabled auto calc with manually advanced team will not advance calculated w
     drawId,
   }).matchUp;
   expect(winnerTeamMatchUp.drawPositions).not.toEqual([originalDrawPositions]);
+});
+
+it('will properly tally team games when automated scoring is disabled', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    eventProfiles: [
+      {
+        eventType: TEAM_EVENT,
+        drawProfiles: [
+          {
+            drawType: ROUND_ROBIN,
+            completionGoal: 5,
+            drawSize: 4,
+          },
+        ],
+      },
+    ],
+  });
+
+  const checkTally = (tally) => {
+    expect(tally.tieMatchUpsLost).toEqual(0);
+    expect(tally.tieMatchUpsWon).toEqual(5);
+    expect(tally.tieSinglesLost).toEqual(0);
+    expect(tally.tieDoublesLost).toEqual(0);
+    expect(tally.tieSinglesWon).toEqual(2);
+    expect(tally.tieDoublesWon).toEqual(3);
+  };
+
+  let result = tournamentEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+
+  const { completedMatchUps } = tournamentEngine.tournamentMatchUps();
+  expect(completedMatchUps.length).toEqual(6);
+
+  let targetTeamMatchUp = completedMatchUps.find(
+    ({ matchUpType }) => matchUpType === TEAM_MATCHUP
+  );
+
+  const { winningSide, sides, structureId, matchUpId, drawId } =
+    targetTeamMatchUp;
+  expect(winningSide).toEqual(1);
+
+  let side = sides.find(({ sideNumber }) => sideNumber === winningSide);
+  let { positionAssignments } = tournamentEngine.getPositionAssignments({
+    structureId,
+    drawId,
+  });
+
+  let assignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === side.drawPosition
+  );
+  let tally = assignment.extensions.find(({ name }) => name === TALLY).value;
+  checkTally(tally);
+
+  const methods = [
+    {
+      method: 'setMatchUpStatus',
+      params: {
+        matchUpId,
+        drawId,
+
+        outcome: {
+          winningSide: 2,
+          score: {
+            scoreStringSide1: '0-2',
+            scoreStringSide2: '2-0',
+            sets: [
+              {
+                games: [],
+                side1Score: 0,
+                side2Score: 2,
+                winningSide: 2,
+              },
+            ],
+          },
+        },
+        disableAutoCalc: true,
+      },
+    },
+  ];
+
+  result = tournamentEngine.executionQueue(methods);
+  expect(result.success).toEqual(true);
+
+  targetTeamMatchUp = tournamentEngine.findMatchUp({
+    drawId,
+    matchUpId,
+  }).matchUp;
+
+  expect(targetTeamMatchUp.score).toEqual({
+    sets: [{ games: [], side1Score: 0, side2Score: 2, winningSide: 2 }],
+    scoreStringSide1: '0-2',
+    scoreStringSide2: '2-0',
+  });
+
+  side = targetTeamMatchUp.sides.find(
+    ({ sideNumber }) => sideNumber === winningSide
+  );
+  positionAssignments = tournamentEngine.getPositionAssignments({
+    structureId,
+    drawId,
+  }).positionAssignments;
+
+  assignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === side.drawPosition
+  );
+  tally = assignment.extensions.find(({ name }) => name === TALLY).value;
+  checkTally(tally);
 });
