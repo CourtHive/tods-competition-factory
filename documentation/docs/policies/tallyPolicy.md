@@ -25,12 +25,12 @@ const roundRobinTally = {
     },
     { attribute: 'setsPct', idsFilter: false, disbleHeadToHead: false },
     { attribute: 'gamesPct', idsFilter: false, disbleHeadToHead: false },
-    { attribute: 'pointsRatio', idsFilter: false, disbleHeadToHead: false },
+    { attribute: 'pointsPct', idsFilter: false, disbleHeadToHead: false },
     { attribute: 'matchUpsPct', idsFilter: true, disbleHeadToHead: false },
     { attribute: 'tieMatchUpsPct', idsFilter: true, disbleHeadToHead: false },
     { attribute: 'setsPct', idsFilter: true, disbleHeadToHead: false },
     { attribute: 'gamesPct', idsFilter: true, disbleHeadToHead: false },
-    { attribute: 'pointsRatio', idsFilter: true, disbleHeadToHead: false },
+    { attribute: 'pointsPct', idsFilter: true, disbleHeadToHead: false },
   ],
   disqualifyDefaults: true, // disqualified participants are pushed to the bottom of the group order
   disqualifyWalkovers: true, // disqualified participants are pushed to the bottom of the group order
@@ -45,7 +45,7 @@ const roundRobinTally = {
     'tieMatchUpsPct',
     'setsPct',
     'gamesPct',
-    'pointsRatio',
+    'pointsPct',
   ],
 };
 

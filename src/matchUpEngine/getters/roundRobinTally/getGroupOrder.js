@@ -37,11 +37,11 @@ const headToHeadTallyDirectives = [
   { attribute: 'retirements', reversed: true, idsFilter: false },
   { attribute: 'setsPct', idsFilter: false },
   { attribute: 'gamesPct', idsFilter: false },
-  { attribute: 'pointsRatio', idsFilter: false },
+  { attribute: 'pointsPct', idsFilter: false },
   { attribute: 'matchUpsPct', idsFilter: true },
   { attribute: 'setsPct', idsFilter: true },
   { attribute: 'gamesPct', idsFilter: true },
-  { attribute: 'pointsRatio', idsFilter: true },
+  { attribute: 'pointsPct', idsFilter: true },
 ];
 
 // defines offsets for generating large integer for comparison
@@ -50,7 +50,7 @@ const GEMScoreValueMap = {
   tieMatchUpsPct: 16,
   setsPct: 12,
   gamesPct: 8,
-  pointsRatio: 4,
+  pointsPct: 4,
 };
 
 /**
@@ -83,7 +83,7 @@ export function getGroupOrder(params) {
     'setsWon',
     'gamesPct',
     'setsPct',
-    'pointsRatio',
+    'pointsPct',
     'matchUpsPct',
   ].includes(tallyPolicy?.groupOrderKey)
     ? tallyPolicy.groupOrderKey
