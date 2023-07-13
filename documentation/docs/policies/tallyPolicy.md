@@ -16,6 +16,7 @@ const roundRobinTally = {
     // idsFilter scopes the tally calculations to only tied participants
     // with { idsFilter: false } the ratio is calculated from all group matchUps
     // with { idsFilter: true } the ratio is calculated from matchUps including tied participants
+    // when { maxParticipants: 2 } is defined, the rule only applies when # of participants is <= maxParticipants
     // any attribute/idsFilter combination can be selectively disabled for Head to Head calculations
     { attribute: 'matchUpsPct', idsFilter: false, disbleHeadToHead: false },
     {
