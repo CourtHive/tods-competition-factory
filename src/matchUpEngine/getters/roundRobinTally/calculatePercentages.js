@@ -45,13 +45,13 @@ export function calculatePercentages({
     let gamesPct = Math.round((gamesWon / gamesTotal) * 1000) / 1000;
     if (gamesPct === Infinity || isNaN(gamesPct)) gamesPct = 0;
 
-    let pointsRatio =
+    let pointsPct =
       Math.round(
         (participantResults[participantId].pointsWon /
           participantResults[participantId].pointsLost) *
           1000
       ) / 1000;
-    if (pointsRatio === Infinity || isNaN(pointsRatio)) pointsRatio = 0;
+    if (pointsPct === Infinity || isNaN(pointsPct)) pointsPct = 0;
 
     participantResults[participantId].setsWon = setsWon;
     participantResults[participantId].setsLost = setsLost;
@@ -62,7 +62,7 @@ export function calculatePercentages({
     participantResults[participantId].gamesWon = gamesWon;
     participantResults[participantId].gamesLost = gamesLost;
     participantResults[participantId].gamesPct = gamesPct;
-    participantResults[participantId].pointsRatio = pointsRatio;
+    participantResults[participantId].pointsPct = pointsPct;
     participantResults[
       participantId
     ].result = `${participantResults[participantId].matchUpsWon}/${participantResults[participantId].matchUpsLost}`;

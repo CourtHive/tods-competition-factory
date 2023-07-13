@@ -1,5 +1,6 @@
 import { getParticipantResults } from './getParticipantResults';
 import { instanceCount } from '../../../utilities';
+import { isNumeric } from '../../../utilities/math';
 
 /*
 Round Robin group tally logic by default implements the following guidelines:
@@ -27,6 +28,7 @@ The algorithm relies on the values avaialble in the calculated `participantResul
 • groups of two participants are resolved by head-to-head (if not disabled/if participants faced each other)
 • groups of three or more search for an attribute that will separate them into smaller groups
 • participantResults scoped to the members of a group and recalculated when `{ idsFilter: true }`
+• when { maxParticipants: 2 } is defined the rule is skipped if there are more than maxParticipants tied
 */
 
 const headToHeadTallyDirectives = [
@@ -37,11 +39,11 @@ const headToHeadTallyDirectives = [
   { attribute: 'retirements', reversed: true, idsFilter: false },
   { attribute: 'setsPct', idsFilter: false },
   { attribute: 'gamesPct', idsFilter: false },
-  { attribute: 'pointsRatio', idsFilter: false },
+  { attribute: 'pointsPct', idsFilter: false },
   { attribute: 'matchUpsPct', idsFilter: true },
   { attribute: 'setsPct', idsFilter: true },
   { attribute: 'gamesPct', idsFilter: true },
-  { attribute: 'pointsRatio', idsFilter: true },
+  { attribute: 'pointsPct', idsFilter: true },
 ];
 
 // defines offsets for generating large integer for comparison
@@ -50,7 +52,7 @@ const GEMScoreValueMap = {
   tieMatchUpsPct: 16,
   setsPct: 12,
   gamesPct: 8,
-  pointsRatio: 4,
+  pointsPct: 4,
 };
 
 /**
@@ -83,7 +85,7 @@ export function getGroupOrder(params) {
     'setsWon',
     'gamesPct',
     'setsPct',
-    'pointsRatio',
+    'pointsPct',
     'matchUpsPct',
   ].includes(tallyPolicy?.groupOrderKey)
     ? tallyPolicy.groupOrderKey
@@ -249,8 +251,14 @@ function groupSubSort({
   }
 
   let result;
-  (tallyPolicy?.tallyDirectives || headToHeadTallyDirectives).every(
-    ({ attribute, reversed, idsFilter, disableHeadToHead }) => {
+  (tallyPolicy?.tallyDirectives || headToHeadTallyDirectives)
+    .filter(({ maxParticipants }) =>
+      // if maxParticipants is defined, filter out the rule if # of participants is greater than maxParticipants
+      isNumeric(maxParticipants) && participantIds?.length > maxParticipants
+        ? false
+        : true
+    )
+    .every(({ attribute, reversed, idsFilter, disableHeadToHead }) => {
       result = processAttribute({
         disableHeadToHead,
         participantIds,
@@ -262,8 +270,7 @@ function groupSubSort({
         reversed,
       });
       return result ? false : true;
-    }
-  );
+    });
   if (result) return result;
 
   return participantIds?.map((participantId) => ({ participantId }));

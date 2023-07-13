@@ -19,11 +19,11 @@ export const POLICY_TYPE_ROUND_ROBIN_TALLY_DEFAULT = {
       { attribute: 'retirements', reversed: true, idsFilter: false },
       { attribute: 'setsPct', idsFilter: false },
       { attribute: 'gamesPct', idsFilter: false },
-      { attribute: 'pointsRatio', idsFilter: false },
+      { attribute: 'pointsPct', idsFilter: false },
       { attribute: 'matchUpsPct', idsFilter: true },
       { attribute: 'setsPct', idsFilter: true },
       { attribute: 'gamesPct', idsFilter: true },
-      { attribute: 'pointsRatio', idsFilter: true },
+      { attribute: 'pointsPct', idsFilter: true },
     ],
     disqualifyDefaults: true, // disqualified participants are pushed to the bottom of the group order
     disqualifyWalkovers: true, // disqualified participants are pushed to the bottom of the group order
@@ -38,7 +38,7 @@ export const POLICY_TYPE_ROUND_ROBIN_TALLY_DEFAULT = {
       'tieMatchUpsPct',
       'setsPct',
       'gamesPct',
-      'pointsRatio',
+      'pointsPct',
     ],
   },
 };
