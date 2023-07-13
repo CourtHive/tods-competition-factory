@@ -1,5 +1,5 @@
-import { SEPARATE } from '../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
+import { SEPARATE } from '../../constants/drawDefinitionConstants';
 
 export const POLICY_SEEDING_USTA = {
   [POLICY_TYPE_SEEDING]: {

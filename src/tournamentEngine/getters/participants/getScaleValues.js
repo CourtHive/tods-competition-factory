@@ -34,9 +34,9 @@ export function getScaleValues({ participant }) {
       if (scaleItem) {
         const [, type, format, scaleName] = scaleItem.itemType.split('.');
         const scaleType =
-          type === (SEEDING && 'seedings') || type === RANKING
-            ? 'rankings'
-            : 'ratings';
+          (type === SEEDING && 'seedings') ||
+          (type === RANKING && 'rankings') ||
+          'ratings';
 
         if (!scales[scaleType][format]) scales[scaleType][format] = [];
         scales[scaleType][format].push({
