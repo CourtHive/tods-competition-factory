@@ -3338,6 +3338,15 @@ tournamentEngine.removeTournamentExtension({ name });
 
 ---
 
+## renameStructures
+
+```js
+tournamentEngine.renameStructures({
+  structureDetails: [{ structureId, structureName }],
+  drawId,
+});
+```
+
 ## replaceTieMatchUpParticipantId
 
 ```js

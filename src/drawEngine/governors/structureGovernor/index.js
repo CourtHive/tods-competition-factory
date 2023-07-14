@@ -15,6 +15,7 @@ import { getDrawStructures } from '../../getters/findStructure';
 import { addPlayoffStructures } from './addPlayoffStructures';
 import { attachPlayoffStructures } from './attachStructures';
 import { deleteAdHocMatchUps } from './deleteAdHocMatchUps';
+import { renameStructures } from './renameStructures';
 import { removeStructure } from './removeStructure';
 import { getSourceRounds } from './getSourceRounds';
 import {
@@ -26,6 +27,7 @@ const structureGovernor = {
   generateAndPopulatePlayoffStructures,
   attachPlayoffStructures,
   addPlayoffStructures,
+  renameStructures,
 
   generateQualifyingStructure,
   attachQualifyingStructure,

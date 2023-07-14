@@ -125,6 +125,7 @@ import { generateQualifyingStructure } from './drawDefinitions/generateQualifyin
 import { attachQualifyingStructure } from './drawDefinitions/attachQualifyingStructure';
 import { addQualifyingStructure } from './drawDefinitions/addQualifyingStructure';
 import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
+import { renameStructures } from './drawDefinitions/renameStructures';
 
 import { updateTieMatchUpScore } from './updateTieMatchUpScore';
 import { disableTieAutoCalc } from './disableTieAutoCalc';
@@ -136,6 +137,7 @@ const eventGovernor = {
   attachPlayoffStructures,
   attachStructures,
   addQualifyingStructure,
+  renameStructures,
 
   disableTieAutoCalc,
   enableTieAutoCalc,
