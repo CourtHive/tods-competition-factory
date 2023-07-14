@@ -950,6 +950,14 @@ const { removedMatchUpIds } = drawEngine.removeStructure({
 
 ---
 
+## renameStructures
+
+```js
+drawEngine.renameStructures({
+  structureDetails: [{ structureId, structureName }],
+});
+```
+
 ## reset
 
 Clears the drawEngine state.
