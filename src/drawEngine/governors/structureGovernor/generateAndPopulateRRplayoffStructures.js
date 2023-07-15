@@ -153,7 +153,7 @@ export function generateAndPopulateRRplayoffStructures(params) {
   });
 
   // attempt automated positioning but fail silently if source structure is incomplete
-  if (result.error?.code !== INCOMPLETE_SOURCE_STRUCTURE.code) {
+  if (result.error && result.error?.code !== INCOMPLETE_SOURCE_STRUCTURE.code) {
     return decorateResult({ result, stack });
   }
 
