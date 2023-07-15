@@ -120,7 +120,9 @@ it.each(scenarios)(
       ({ stage }) => stage === MAIN
     ).structureId;
 
-    result = tournamentEngine.getAvailablePlayoffProfiles({ drawId });
+    result = tournamentEngine
+      .devContext(true)
+      .getAvailablePlayoffProfiles({ drawId });
 
     if (expectation) {
       expect(

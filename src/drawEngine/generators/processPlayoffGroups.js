@@ -1,10 +1,13 @@
+import { getPositionRangeMap } from '../governors/structureGovernor/getPositionRangeMap';
+import { decorateResult } from '../../global/functions/decorateResult';
 import { generatePlayoffStructures } from './playoffStructures';
-import { generateRange, nextPowerOf2 } from '../../utilities';
 import { structureSort } from '../getters/structureSort';
 import structureTemplate from './structureTemplate';
 import { feedInChampionship } from './feedInChamp';
 import { treeMatchUps } from './eliminationTree';
+import { nextPowerOf2 } from '../../utilities';
 
+import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { POLICY_TYPE_FEED_IN } from '../../constants/policyConstants';
 import {
   COMPASS,
@@ -25,41 +28,61 @@ export function processPlayoffGroups({
   sourceStructureId,
   policyDefinitions,
   stageSequence,
+  drawDefinition,
   playoffGroups,
   matchUpType,
   feedPolicy,
   groupCount,
-  groupSize,
   idPrefix,
   isMock,
   uuids,
 }) {
   feedPolicy = feedPolicy || policyDefinitions?.[POLICY_TYPE_FEED_IN];
+  const stack = 'processPlayoffGroups';
 
   let finishingPositionOffset = 0;
   const finishingPositionTargets = [];
   const structures = [];
   const links = [];
 
+  const { error, positionRangeMap } = getPositionRangeMap({
+    structureId: sourceStructureId,
+    drawDefinition,
+    playoffGroups,
+  });
+
+  if (error) return decorateResult({ result: { error }, stack });
+
+  const validFinishingPositions =
+    !positionRangeMap ||
+    playoffGroups?.every((profile) => {
+      const { finishingPositions } = profile;
+      return finishingPositions.every((position) => positionRangeMap[position]);
+    });
+
+  if (!validFinishingPositions) {
+    return decorateResult({
+      context: { validFinishingPositions: Object.values(positionRangeMap) },
+      result: { error: INVALID_VALUES },
+      stack,
+    });
+  }
+
   for (const playoffGroup of playoffGroups) {
-    const validFinishingPositions = generateRange(1, groupSize + 1);
     const finishingPositions = playoffGroup.finishingPositions;
-
-    const finishingPositionsAreValid = finishingPositions.reduce(
-      (p, finishingPosition) => {
-        return validFinishingPositions.includes(finishingPosition) && p;
-      },
-      true
-    );
-
-    // playoffGroup finishingPositions are not valid if not present in GroupSize
-    if (!finishingPositionsAreValid) {
-      return undefined;
-    }
+    const positionsPlayedOff =
+      positionRangeMap &&
+      finishingPositions
+        .map((p) => positionRangeMap[p]?.finishingPositions)
+        .flat();
 
     const playoffDrawType = playoffGroup.drawType || SINGLE_ELIMINATION;
     const participantsInDraw = groupCount * finishingPositions.length;
     const drawSize = nextPowerOf2(participantsInDraw);
+
+    if (positionsPlayedOff) {
+      finishingPositionOffset = Math.min(...positionsPlayedOff) - 1;
+    }
 
     if (playoffDrawType === SINGLE_ELIMINATION) {
       const { matchUps } = treeMatchUps({
@@ -87,8 +110,10 @@ export function processPlayoffGroups({
         sourceStructureId,
       });
       links.push(playoffLink);
+
       // update *after* value has been passed into current playoff structure generator
       finishingPositionOffset += participantsInDraw;
+
       finishingPositionTargets.push({
         structureId: playoffStructure.structureId,
         finishingPositions,
@@ -172,13 +197,12 @@ export function processPlayoffGroups({
         structureId: playoffStructure.structureId,
         finishingPositions,
       });
-
       // update *after* value has been passed into current playoff structure generator
       finishingPositionOffset += participantsInDraw;
     }
   }
 
-  return { finishingPositionTargets, structures, links };
+  return { finishingPositionTargets, positionRangeMap, structures, links };
 }
 
 function generatePlayoffLink({

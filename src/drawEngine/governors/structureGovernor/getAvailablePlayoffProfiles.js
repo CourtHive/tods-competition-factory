@@ -1,8 +1,9 @@
+import { allDrawMatchUps } from '../../../tournamentEngine/getters/matchUpsGetter';
 import { chunkArray, generateRange, numericSort } from '../../../utilities';
+import { getPositionAssignments } from '../../getters/positionsGetter';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { getDrawStructures } from '../../getters/findStructure';
 import { getStructureLinks } from '../../getters/linkGetter';
-import { allDrawMatchUps, getPositionAssignments } from '../../../forge/query';
 import { getSourceRounds } from './getSourceRounds';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
@@ -81,6 +82,7 @@ function availablePlayoffProfiles({
   if (structure.structureType === CONTAINER || structure.structures) {
     const positionsCount = getPositionAssignments({ structure })
       .positionAssignments.length;
+
     const groupCount = structure.structures.length;
     const groupSize = positionsCount / groupCount;
     const finishingPositionsPlayedOff =
@@ -95,20 +97,20 @@ function availablePlayoffProfiles({
     const targetStructureIds = links?.source.map(
       ({ target }) => target.structureId
     );
-    const { positionsNotPlayedOff, positionsPlayedOff } = getPositionsPlayedOff(
+    const { positionsPlayedOff, positionsNotPlayedOff } = getPositionsPlayedOff(
       {
         structureIds: targetStructureIds,
         drawDefinition,
       }
     );
-    const excludePlayoffPositions = [
-      ...positionsNotPlayedOff,
+    const positionsInTargetStructures = [
       ...positionsPlayedOff,
+      ...positionsNotPlayedOff,
     ];
     const availablePlayoffPositions = generateRange(
       positionRange[0],
       positionRange[1] + 1
-    ).filter((position) => !excludePlayoffPositions.includes(position));
+    ).filter((position) => !positionsInTargetStructures.includes(position));
 
     const positionChunks = chunkArray(
       availablePlayoffPositions,
