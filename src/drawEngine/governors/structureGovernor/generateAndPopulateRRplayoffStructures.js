@@ -112,12 +112,11 @@ export function generateAndPopulateRRplayoffStructures(params) {
   });
   const finishingPositionParticipantIds = {};
   positionAssignments.forEach((assignment) => {
-    const {
-      extension: { value: participantResult },
-    } = findExtension({
+    const result = findExtension({
       element: assignment,
       name: TALLY,
     });
+    const participantResult = result?.extension?.value;
     const groupOrder = participantResult?.groupOrder;
     if (groupOrder) {
       if (!finishingPositionParticipantIds[groupOrder])
