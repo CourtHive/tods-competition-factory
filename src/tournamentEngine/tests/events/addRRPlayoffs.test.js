@@ -78,7 +78,6 @@ it('cann add ROUND_ROBIN playoff structures', () => {
             structureName: 'Playoff 5-6',
           },
         ],
-        playoffStructureNameBase: 'Playoff',
       },
     },
   ];
@@ -95,4 +94,30 @@ it('cann add ROUND_ROBIN playoff structures', () => {
 
   result = tournamentEngine.executionQueue([getAvailablePlayoffs]);
   expect(result.results[0].positionsNotPlayedOff).toEqual([3, 4, 7, 8]);
+
+  methods = [
+    {
+      method: 'addPlayoffStructures',
+      params: {
+        structureId,
+        drawId,
+
+        playoffGroups: [
+          {
+            finishingPositions: [2],
+            drawType: 'SINGLE_ELIMINATION',
+            structureName: 'Playoff 3-4',
+          },
+          {
+            finishingPositions: [4],
+            drawType: 'SINGLE_ELIMINATION',
+            structureName: 'Playoff 7-8',
+          },
+        ],
+      },
+    },
+  ];
+
+  result = tournamentEngine.executionQueue(methods);
+  expect(result.success).toEqual(true);
 });

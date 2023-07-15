@@ -34,7 +34,7 @@ export function attachStructures({
   const linkHash = (link) =>
     [
       link.source.structureId,
-      link.source.roundNumber,
+      link.source.roundNumber || link.source.finishingPositions?.join('|'),
       link.target.roundNumber,
     ].join('|');
 
