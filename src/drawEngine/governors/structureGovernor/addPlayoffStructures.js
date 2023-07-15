@@ -2,8 +2,10 @@ import { generateAndPopulatePlayoffStructures } from './generateAndPopulatePlayo
 import { attachPlayoffStructures } from './attachStructures';
 
 export function addPlayoffStructures(params) {
-  const { structures, links, matchUpModifications } =
+  const { structures, links, matchUpModifications, error } =
     generateAndPopulatePlayoffStructures(params);
+  if (error) return { error };
+
   const drawDefinition = params.drawDefinition;
 
   return attachPlayoffStructures({

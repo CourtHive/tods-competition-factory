@@ -11,6 +11,7 @@ import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { TALLY } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  INCOMPLETE_SOURCE_STRUCTURE,
   INVALID_VALUES,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
@@ -150,7 +151,11 @@ export function generateAndPopulateRRplayoffStructures(params) {
     event: params.event,
     drawDefinition,
   });
-  if (result.error) return decorateResult({ result, stack });
+
+  // attempt automated positioning but fail silently if source structure is incomplete
+  if (result.error?.code !== INCOMPLETE_SOURCE_STRUCTURE.code) {
+    return decorateResult({ result, stack });
+  }
 
   return {
     structures: playoffStructures,
