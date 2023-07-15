@@ -1,6 +1,6 @@
 import { getStructureRoundProfile } from '../../getters/getMatchUps/getStructureRoundProfile';
-import { generateRange, numericSort } from '../../../utilities';
-import { roundValues } from './structureUtils';
+import { numericSort, unique } from '../../../utilities';
+import { roundValueRanges } from './structureUtils';
 
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import {
@@ -8,6 +8,7 @@ import {
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/errorConditionConstants';
 
+// NOTE: positionsNotPlayedOff is not accurate when structureIds are are provided
 export function getPositionsPlayedOff({ drawDefinition, structureIds }) {
   if (structureIds && !Array.isArray(structureIds))
     return { error: INVALID_VALUES, context: { structureIds } };
@@ -25,7 +26,7 @@ export function getPositionsPlayedOff({ drawDefinition, structureIds }) {
         drawDefinition,
         structureId,
       });
-      return Object.values(roundProfile).map(roundValues).flat();
+      return Object.values(roundProfile).map(roundValueRanges).flat();
     })
     .flat();
 
@@ -34,13 +35,13 @@ export function getPositionsPlayedOff({ drawDefinition, structureIds }) {
     .sort(numericSort)
     .flat();
 
-  const allRangeValues = allFinishingPositionRanges.flat();
-  const minRangeValue = Math.min(...allRangeValues);
-  const maxRangeValue = Math.max(...allRangeValues);
-  const positionsNotPlayedOff = generateRange(
-    minRangeValue,
-    maxRangeValue + 1
-  ).filter((position) => !positionsPlayedOff.includes(position));
+  const allRangeValues = unique(allFinishingPositionRanges.flat());
+  const positionsNotPlayedOff = allRangeValues.filter(
+    (position) => !positionsPlayedOff.includes(position)
+  );
 
-  return { positionsNotPlayedOff, positionsPlayedOff };
+  return {
+    positionsNotPlayedOff,
+    positionsPlayedOff,
+  };
 }

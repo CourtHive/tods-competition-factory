@@ -38,10 +38,12 @@ it('can generate Round Robins 32 with playoffs', () => {
       { finishingPositions: [2], structureName: 'Silver Flight' },
     ],
   };
-  const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
-    structureOptions,
-    drawType,
-  });
+  const result = drawEngine
+    .devContext(true)
+    .generateDrawTypeAndModifyDrawDefinition({
+      structureOptions,
+      drawType,
+    });
   const { structures: playoffStructures, links } = result;
   const mainStructure = playoffStructures.shift();
   expect(mainStructure.stage).toEqual(MAIN);
