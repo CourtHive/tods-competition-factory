@@ -12,7 +12,6 @@ import { TALLY } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INCOMPLETE_SOURCE_STRUCTURE,
-  INVALID_VALUES,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
@@ -26,40 +25,20 @@ export function generateAndPopulateRRplayoffStructures(params) {
     });
   }
   const {
-    playoffFinishingPositionRanges,
-    // finishingPositionsAvailable,
-    // finishingPositionsPlayedOff,
     sourceStructureId,
+    drawDefinition,
     playoffGroups,
     groupCount,
     groupSize,
     event,
   } = params;
 
-  const positionRangeMap = playoffFinishingPositionRanges.reduce(
-    (positionMap, positionDetail) => {
-      positionMap[positionDetail.finishingPosition] = positionDetail;
-      return positionMap;
-    },
-    {}
-  );
-  const validFinishingPositions = playoffGroups?.every((profile) => {
-    const { finishingPositions } = profile;
-    return finishingPositions.every((position) => positionRangeMap[position]);
-  });
-
-  if (!validFinishingPositions) {
-    return decorateResult({
-      context: { validFinishingPositions: Object.values(positionRangeMap) },
-      result: { error: INVALID_VALUES },
-      stack,
-    });
-  }
-
   const {
-    structures: playoffStructures,
-    // finishingPositionTargets,
-    links: playoffLinks,
+    structures: playoffStructures = [],
+    links: playoffLinks = [],
+    finishingPositionTargets,
+    positionRangeMap,
+    error,
   } = processPlayoffGroups({
     sourceStructureId,
     playoffGroups,
@@ -68,7 +47,16 @@ export function generateAndPopulateRRplayoffStructures(params) {
     ...params,
   });
 
-  const drawDefinition = params.drawDefinition;
+  if (error) return { error };
+
+  const positionsPlayedOff = finishingPositionTargets
+    ?.map(({ finishingPositions }) => finishingPositions)
+    .flat()
+    .map(
+      (finishingPosition) =>
+        positionRangeMap[finishingPosition].finishingPositions
+    )
+    .flat();
 
   drawDefinition.structures.push(...playoffStructures);
   drawDefinition.links.push(...playoffLinks);
@@ -160,6 +148,7 @@ export function generateAndPopulateRRplayoffStructures(params) {
   return {
     structures: playoffStructures,
     links: playoffLinks,
+    positionsPlayedOff,
     drawDefinition,
     ...SUCCESS,
   };

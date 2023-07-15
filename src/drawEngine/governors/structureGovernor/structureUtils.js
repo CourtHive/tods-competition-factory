@@ -59,3 +59,9 @@ export function roundValues(values) {
     unique(values?.finishingPositionRange?.winner || []),
   ];
 }
+
+export function roundValueRanges(values) {
+  return roundValues(values).map((arr) =>
+    generateRange(arr[0], (arr[1] && arr[1] + 1) || arr[0] + 1)
+  );
+}

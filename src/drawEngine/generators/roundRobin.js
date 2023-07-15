@@ -1,7 +1,7 @@
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
 import { addExtension } from '../../global/functions/producers/addExtension';
-import { generateRange, UUID } from '../../utilities';
 import { processPlayoffGroups } from './processPlayoffGroups';
+import { generateRange, UUID } from '../../utilities';
 import {
   getRoundRobinGroupMatchUps,
   drawPositionsHash,
@@ -100,7 +100,7 @@ export function generateRoundRobin({
 // future iteration should allow structureOptions to specify
 // groups of finishing drawPositions which playoff
 export function generateRoundRobinWithPlayOff(params) {
-  const { structureOptions } = params;
+  const { drawDefinition, structureOptions } = params;
 
   const mainDrawProperties = Object.assign(
     { structureName: MAIN }, // default structureName
@@ -124,6 +124,7 @@ export function generateRoundRobinWithPlayOff(params) {
 
   const { structures: playoffStructures, links } = processPlayoffGroups({
     sourceStructureId: mainStructure.structureId,
+    drawDefinition,
     playoffGroups,
     groupCount,
     groupSize,
