@@ -57,7 +57,10 @@ export function processPlayoffGroups({
     !positionRangeMap ||
     playoffGroups?.every((profile) => {
       const { finishingPositions } = profile;
-      return finishingPositions.every((position) => positionRangeMap[position]);
+      return (
+        finishingPositions.length &&
+        finishingPositions.every((position) => positionRangeMap[position])
+      );
     });
 
   if (!validFinishingPositions) {
