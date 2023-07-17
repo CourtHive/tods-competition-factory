@@ -568,8 +568,8 @@ export function generateDrawDefinition(params) {
     });
     const { link } = generateQualifyingLink({
       sourceStructureId: qualifyingStructure.structureId,
-      sourceRoundNumber: 0,
       targetStructureId: structureId,
+      sourceRoundNumber: 0,
       linkType: POSITION,
     });
     drawDefinition.structures.push(qualifyingStructure);
