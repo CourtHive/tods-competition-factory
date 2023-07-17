@@ -17,7 +17,7 @@ export function renameStructures({ drawDefinition, structureDetails }) {
       .map((detail) => {
         if (!isObject(detail)) return;
         const { structureId, structureName } = detail || {};
-        if (!structureId && structureName) return;
+        if (!structureId || !structureName) return;
         return { [structureId]: structureName };
       })
       .filter(Boolean)
