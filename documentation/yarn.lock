@@ -9368,7 +9368,12 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-tods-competition-factory@1.2.17, tods-competition-factory@^1.2.17:
+tods-competition-factory@1.2.19:
+  version "1.2.19"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.2.19.tgz#2f8567be69b2499c0f53647a93f4bd4c47f7a814"
+  integrity sha512-/dQgSafn+OyfxU/dXo/98Vz++4gcUNNscZM3nIlfJk1qG9l14+jy43flFxNX/A45D5bEOwbhMA7ygpjA1gGQvQ==
+
+tods-competition-factory@^1.2.17:
   version "1.2.17"
   resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.2.17.tgz#54fe7311154ee958a2e874a17aa674348ce357b5"
   integrity sha512-awDo0R2EfTA2TJGUFP/QxyPIjcRPHbDcklWcM2AmeX4rSUzY6y2zS+XTmYWtY+sPOMJ77FjgROIcg2+Y1Bp6tg==
