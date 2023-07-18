@@ -27,6 +27,7 @@ export const POLICY_ROUND_ROBIN_TALLY_DEFAULT = {
     ],
     disqualifyDefaults: true, // disqualified participants are pushed to the bottom of the group order
     disqualifyWalkovers: true, // disqualified participants are pushed to the bottom of the group order
+    excludeMatchUpStatuses: [], // matchUpStatuses to exclude from calculations, e.g. ABANDONED, INCOMPLETE
     setsCreditForDefaults: false, // whether or not to award e.g. 2 sets won for participant who wins by opponent DEFAULT
     setsCreditForWalkovers: false, // whether or not to award e.g. 2 sets won for participant who wins by opponent WALKOVER
     setsCreditForRetirements: false, // whether or not to award e.g. 2 sets won for participant who wins by opponent RETIREMENT

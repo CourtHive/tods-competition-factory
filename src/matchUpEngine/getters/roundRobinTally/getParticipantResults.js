@@ -23,19 +23,31 @@ export function getParticipantResults({
 }) {
   const participantResults = {};
 
+  const excludeMatchUpStatuses = tallyPolicy?.excludeMatchUpStatuses || [];
+
   const filteredMatchUps = matchUps.filter((matchUp) => {
     return (
-      !participantIds?.length ||
-      intersection(participantIds, [
-        getSideId(matchUp, 0),
-        getSideId(matchUp, 1),
-      ]).length === 2
+      // Do not filter out team matchUps based on matchUpStatus
+      (matchUp.tieMatchUps ||
+        !excludeMatchUpStatuses.includes(matchUp.matchUpStatus)) &&
+      // include if no participantIds (idsFilter active) have been specified
+      // if idsFilter is active then exclude matchUps which are not between specified participantIds
+      (!participantIds?.length ||
+        intersection(participantIds, [
+          getSideId(matchUp, 0),
+          getSideId(matchUp, 1),
+        ]).length === 2)
     );
   });
 
-  const allSets = matchUps.flatMap(({ score, tieMatchUps }) =>
+  const allSets = filteredMatchUps.flatMap(({ score, tieMatchUps }) =>
     tieMatchUps
-      ? tieMatchUps.flatMap(({ score }) => score?.sets?.length || 0)
+      ? tieMatchUps
+          .filter(
+            ({ matchUpStatus }) =>
+              !excludeMatchUpStatuses.includes(matchUpStatus)
+          )
+          .flatMap(({ score }) => score?.sets?.length || 0)
       : score?.sets?.length || 0
   );
   const totalSets = allSets.reduce((a, b) => a + b, 0);

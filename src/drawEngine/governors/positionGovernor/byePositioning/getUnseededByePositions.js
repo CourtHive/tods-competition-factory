@@ -185,7 +185,7 @@ export function getUnseededByePositions({
     .filter(notSeedByePosition)
     .filter(Boolean);
 
-  if (isQualifying) {
+  if (isQualifying && !structure.structures) {
     // need to know how many qualifying blocks so that unseededByePositions can be shuffled
     // (after removing blocks.length time blocks which had seeds placed)
     // console.log(validBlockDrawPositions.length, unseededByePositions.length);
