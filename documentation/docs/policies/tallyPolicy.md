@@ -8,7 +8,7 @@ Policy Definitions can be attached to a [tournament record](../apis/tournament-e
 
 ```js
 const roundRobinTally = {
-  groupOrderKey: 'matchUpsWon', // possible to group by matchUpsWon, setsWon, gamesWon, or pointsWon
+  groupOrderKey: 'matchUpsWon', // possible to group by tieMatchUpsWon, tieSinglesWon, tieDoublesWon, matchUpsWon, pointsWon, gamesWon, setsWon, gamesPct, setsPct, pointsPct, matchUpsPct
   groupTotalSetsPlayed: false, // optional - when true will calculate % of sets won based on total group sets played rather than participant sets played
   headToHead: { disabled: false },
   tallyDirectives: [
