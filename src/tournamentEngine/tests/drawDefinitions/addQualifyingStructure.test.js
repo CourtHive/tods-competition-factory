@@ -69,6 +69,50 @@ it('drawProfile qualifiersCount will override qualifyingProfile if greater', () 
   expect(mainStructureQualifiers.length).toEqual(8);
 });
 
+it('will place BYEs properly in ROUND_ROBIN qualifying structure', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawSize: 32,
+        qualifiersCount: 8,
+        qualifyingProfiles: [
+          {
+            roundTarget: 1,
+            structureProfiles: [
+              { stageSequence: 1, drawSize: 14, drawType: ROUND_ROBIN },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const mainStructure = drawDefinition.structures.find(
+    ({ stage }) => stage === MAIN
+  );
+  const mainStructureQualifiers = mainStructure.positionAssignments.filter(
+    ({ qualifier }) => qualifier
+  );
+  expect(mainStructureQualifiers.length).toEqual(8);
+
+  const qualifyingStructure = drawDefinition.structures.find(
+    ({ stage }) => stage === QUALIFYING
+  );
+  const byePositionAssignments = tournamentEngine
+    .getPositionAssignments({
+      drawId,
+      structureId: qualifyingStructure.structureId,
+    })
+    .positionAssignments.filter(({ bye }) => bye);
+  expect(byePositionAssignments.length).toEqual(2);
+});
+
 it('can add a qualifying structure to an existing drawDefinition', () => {
   const {
     tournamentRecord,

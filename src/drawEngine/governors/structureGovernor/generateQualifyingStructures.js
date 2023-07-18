@@ -89,7 +89,7 @@ export function generateQualifyingStructures({
             structureName:
               structureProfile.structureName || qualifyingStructureName,
             structureId: structureId || uuids?.pop(),
-            qualifyingPositions, // TODO: use
+            qualifyingPositions,
             stage: QUALIFYING,
             structureOptions,
             appliedPolicies,
