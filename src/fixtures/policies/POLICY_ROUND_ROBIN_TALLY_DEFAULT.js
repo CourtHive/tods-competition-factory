@@ -3,7 +3,7 @@ import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../constants/policyConstants';
 export const POLICY_ROUND_ROBIN_TALLY_DEFAULT = {
   [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
     policyName: 'Default Round Robin Tally',
-    groupOrderKey: 'matchUpsWon', // possible to group by matchUpsWon, tieMatchUpsWon, tieSinglesWon, tieDoublesWon, setsWon, gamesWon, or pointsWon
+    groupOrderKey: 'matchUpsWon', // possible to group by tieMatchUpsWon, tieSinglesWon, tieDoublesWon, matchUpsWon, pointsWon, gamesWon, setsWon, gamesPct, setsPct, pointsPct, matchUpsPct
     groupTotalSetsPlayed: false, // optional - when true will calculate % of sets won based on total group sets played rather than participant sets played
     headToHead: { disabled: false },
     tallyDirectives: [

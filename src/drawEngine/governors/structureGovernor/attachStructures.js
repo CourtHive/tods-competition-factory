@@ -1,5 +1,6 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
+import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
@@ -76,6 +77,8 @@ export function attachStructures({
     ({ structureId }) => !existingStructureIds.includes(structureId)
   );
   if (newStructures.length) drawDefinition.structures.push(...newStructures);
+
+  addGoesTo({ drawDefinition });
 
   const matchUps = structures
     .map((structure) => getAllStructureMatchUps({ structure })?.matchUps || [])
