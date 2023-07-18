@@ -125,7 +125,7 @@ it('can generate and attach a qualifying structure to an existing drawDefinition
   tournamentEngine.setState(tournamentRecord);
 
   let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const mainStructure = drawDefinition.structures.find(
+  let mainStructure = drawDefinition.structures.find(
     ({ stage }) => stage === MAIN
   );
   const mainStructureQualifiers = mainStructure.positionAssignments.filter(
@@ -159,6 +159,22 @@ it('can generate and attach a qualifying structure to an existing drawDefinition
   });
   const { roundMatchUps } = getRoundMatchUps({ matchUps });
   expect(Object.keys(roundMatchUps)).toEqual(['1', '2']);
+
+  const qualifyingStructure = drawDefinition.structures.find(
+    ({ stage }) => stage === QUALIFYING
+  );
+  result = tournamentEngine.removeStructure({
+    drawId,
+    structureId: qualifyingStructure.structureId,
+  });
+  expect(result.success).toEqual(true);
+
+  // expect main structure to remain
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  expect(drawDefinition.links.length).toEqual(0);
+
+  mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
+  expect(mainStructure).toBeDefined();
 });
 
 it('will ignore drawProfile qualifiersCount if qualifyingProfile.qualifiersCount is greater', () => {

@@ -33,7 +33,7 @@ it('allows deletion of non-qualifying structures', () => {
     drawIds: [drawId],
   } = result;
 
-  tournamentEngine.setState(tournamentRecord);
+  tournamentEngine.devContext(true).setState(tournamentRecord);
   let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.entries.length).toEqual(16);
   expect(event.entries.length).toEqual(16);

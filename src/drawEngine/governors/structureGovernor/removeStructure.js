@@ -26,21 +26,14 @@ export function removeStructure({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
-  const { hasQualifying, mainStageSequence1 } =
-    drawDefinition.structures.reduce((result, structure) => {
-      const { stage, stageSequence } = structure;
-      if (stage === QUALIFYING) result.hasQualifying = true;
-      if (
-        structure.structureId === structureId &&
-        stage === MAIN &&
-        stageSequence === 1
-      ) {
-        result.mainStageSequence1 = structure;
-      }
-      return result;
-    }, {});
+  const structures = drawDefinition.structures || [];
+  const mainStageSequence1 = structures.find(
+    ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
+  );
+  const isMainStageSequence1 = structureId === mainStageSequence1.structureId;
+  const hasQualifying = structures.find(({ stage }) => stage === QUALIFYING);
 
-  if (mainStageSequence1 && !hasQualifying) {
+  if (isMainStageSequence1 && !hasQualifying) {
     return { error: CANNOT_REMOVE_MAIN_STRUCTURE };
   }
 
@@ -50,12 +43,13 @@ export function removeStructure({
     drawDefinition.links
       ?.map(
         (link) =>
-          link.source.structureId === structureId && link.target.structureId
+          link.source.structureId === structureId &&
+          link.target.structureId !== mainStageSequence1.structureId &&
+          link.target.structureId
       )
       .filter(Boolean);
 
-  const structureIds =
-    drawDefinition.structures?.map(({ structureId }) => structureId) || [];
+  const structureIds = structures.map(({ structureId }) => structureId);
 
   const targetedStructureIdsMap = Object.assign(
     {},
@@ -74,7 +68,7 @@ export function removeStructure({
     const matchUpIds = getMatchUpIds(matchUps);
     removedMatchUpIds.push(...matchUpIds);
 
-    if (!mainStageSequence1 || idBeingRemoved !== structureId) {
+    if (!isMainStageSequence1 || idBeingRemoved !== structureId) {
       drawDefinition.links =
         drawDefinition.links?.filter(
           (link) =>
@@ -82,7 +76,7 @@ export function removeStructure({
             link.target.structureId !== idBeingRemoved
         ) || [];
 
-      drawDefinition.structures = (drawDefinition.structures || []).filter(
+      drawDefinition.structures = structures.filter(
         (structure) => structure.structureId !== idBeingRemoved
       );
     }
@@ -103,7 +97,7 @@ export function removeStructure({
   });
 
   // if this is MAIN stageSequence: 1 there must be qualifying, return to empty state
-  if (mainStageSequence1) {
+  if (isMainStageSequence1) {
     mainStageSequence1.positionAssignments = [];
     mainStageSequence1.seedAssignments = [];
     mainStageSequence1.matchUps = [];
