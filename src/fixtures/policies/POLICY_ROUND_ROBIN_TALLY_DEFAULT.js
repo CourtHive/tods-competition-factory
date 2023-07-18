@@ -1,6 +1,6 @@
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../constants/policyConstants';
 
-export const POLICY_TYPE_ROUND_ROBIN_TALLY_DEFAULT = {
+export const POLICY_ROUND_ROBIN_TALLY_DEFAULT = {
   [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
     policyName: 'Default Round Robin Tally',
     groupOrderKey: 'matchUpsWon', // possible to group by matchUpsWon, tieMatchUpsWon, tieSinglesWon, tieDoublesWon, setsWon, gamesWon, or pointsWon
