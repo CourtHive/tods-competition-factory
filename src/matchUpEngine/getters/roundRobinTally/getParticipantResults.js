@@ -53,7 +53,13 @@ export function getParticipantResults({
   const totalSets = allSets.reduce((a, b) => a + b, 0);
 
   filteredMatchUps.forEach((matchUp) => {
-    const { matchUpStatus, tieMatchUps, score, winningSide, sides } = matchUp;
+    const { matchUpStatus, tieMatchUps, tieFormat, score, winningSide, sides } =
+      matchUp;
+
+    const manualGamesOverride =
+      tieFormat &&
+      matchUp._disableAutoCalc &&
+      tieFormat.collectionDefinitions.every(({ scoreValue }) => scoreValue);
 
     const winningParticipantId = winningSide && getWinningSideId(matchUp);
     const losingParticipantId = winningSide && getLosingSideId(matchUp);
@@ -116,11 +122,17 @@ export function getParticipantResults({
             processScore({
               score: tieMatchUp.score,
               participantResults,
+              manualGamesOverride,
               sides, // use sides from the TEAM matchUp
             });
           }
         } else {
-          processScore({ score, sides, participantResults });
+          processScore({
+            score,
+            sides,
+            participantResults,
+            manualGamesOverride,
+          });
         }
       }
     } else {
@@ -181,6 +193,7 @@ export function getParticipantResults({
             losingParticipantId,
             participantResults,
             isTieMatchUp: true,
+            manualGamesOverride,
             tallyPolicy,
             winningSide,
           });
@@ -197,12 +210,39 @@ export function getParticipantResults({
           winningParticipantId,
           losingParticipantId,
           participantResults,
+          manualGamesOverride,
           matchUpStatus,
           tallyPolicy,
           winningSide,
           score,
         });
       }
+    }
+
+    if (manualGamesOverride) {
+      const side1participantId = sides.find(
+        ({ sideNumber }) => sideNumber === 1
+      )?.participantId;
+      const side2participantId = sides.find(
+        ({ sideNumber }) => sideNumber === 2
+      )?.participantId;
+
+      checkInitializeParticipant(participantResults, side1participantId);
+      checkInitializeParticipant(participantResults, side2participantId);
+
+      const gamesWonSide1 = score.sets.reduce(
+        (total, set) => total + set.side1Score,
+        0
+      );
+      const gamesWonSide2 = score.sets.reduce(
+        (total, set) => total + set.side2Score,
+        0
+      );
+
+      participantResults[side1participantId].gamesWon += gamesWonSide1;
+      participantResults[side2participantId].gamesWon += gamesWonSide2;
+      participantResults[side1participantId].gamesLost += gamesWonSide2;
+      participantResults[side2participantId].gamesLost += gamesWonSide1;
     }
   });
 
@@ -267,7 +307,12 @@ function checkInitializeParticipant(participantResults, participantId) {
     };
 }
 
-function processScore({ score, sides, participantResults }) {
+function processScore({
+  score,
+  sides,
+  participantResults,
+  manualGamesOverride,
+}) {
   const { sets } = score || {};
   const gamesTally = [[], []];
   const setsTally = [0, 0];
@@ -290,8 +335,10 @@ function processScore({ score, sides, participantResults }) {
       checkInitializeParticipant(participantResults, participantId);
       participantResults[participantId].setsWon += setsTally[i];
       participantResults[participantId].setsLost += setsTally[1 - i];
-      participantResults[participantId].gamesWon += gamesTotal[i];
-      participantResults[participantId].gamesLost += gamesTotal[1 - i];
+      if (!manualGamesOverride) {
+        participantResults[participantId].gamesWon += gamesTotal[i];
+        participantResults[participantId].gamesLost += gamesTotal[1 - i];
+      }
     }
   });
 }
@@ -300,6 +347,7 @@ function processMatchUp({
   winningParticipantId,
   losingParticipantId,
   participantResults,
+  manualGamesOverride,
   matchUpFormat,
   matchUpStatus,
   isTieMatchUp,
@@ -341,10 +389,12 @@ function processMatchUp({
     participantResults[winningParticipantId].setsLost +=
       setsTally[losingSideIndex];
 
-    participantResults[winningParticipantId].gamesWon +=
-      gamesTally[winningSideIndex];
-    participantResults[winningParticipantId].gamesLost +=
-      gamesTally[losingSideIndex];
+    if (!manualGamesOverride) {
+      participantResults[winningParticipantId].gamesWon +=
+        gamesTally[winningSideIndex];
+      participantResults[winningParticipantId].gamesLost +=
+        gamesTally[losingSideIndex];
+    }
 
     participantResults[winningParticipantId].pointsWon +=
       pointsTally[winningSideIndex];
@@ -357,10 +407,12 @@ function processMatchUp({
     participantResults[losingParticipantId].setsLost +=
       setsTally[winningSideIndex];
 
-    participantResults[losingParticipantId].gamesWon +=
-      gamesTally[losingSideIndex];
-    participantResults[losingParticipantId].gamesLost +=
-      gamesTally[winningSideIndex];
+    if (!manualGamesOverride) {
+      participantResults[losingParticipantId].gamesWon +=
+        gamesTally[losingSideIndex];
+      participantResults[losingParticipantId].gamesLost +=
+        gamesTally[winningSideIndex];
+    }
 
     participantResults[losingParticipantId].pointsWon +=
       pointsTally[losingSideIndex];
