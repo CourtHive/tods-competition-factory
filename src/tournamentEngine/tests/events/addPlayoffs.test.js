@@ -140,7 +140,7 @@ it.each([32, 64])(
     });
 
     tournamentEngine.setState(tournamentRecord);
-    const {
+    let {
       drawDefinition: { structures },
     } = tournamentEngine.getEvent({ drawId });
     const [{ structureId }] = structures;
@@ -159,6 +159,9 @@ it.each([32, 64])(
       .filter(({ stageSequence }) => stageSequence === 2)
       .map(({ structureId }) => structureId);
 
+    const expectedRemainingStructuresCount =
+      structures.length - stageSequence2structureIds.length;
+
     stageSequence2structureIds.forEach((structureId) => {
       const result = tournamentEngine.removeStructure({
         structureId,
@@ -167,12 +170,19 @@ it.each([32, 64])(
       expect(result.success).toEqual(true);
     });
 
-    ({ positionsPlayedOff, playoffRounds, playoffRoundsRanges } =
+    structures = tournamentEngine.getEvent({ drawId }).drawDefinition
+      .structures;
+    expect(structures.length).toEqual(expectedRemainingStructuresCount);
+
+    ({ playoffRounds, playoffRoundsRanges } =
       tournamentEngine.getAvailablePlayoffProfiles({
         structureId,
         drawId,
       }));
-    expect(positionsPlayedOff).toEqual([1, 2]);
+
+    // only the SF round is left to play off
+    expect(playoffRoundsRanges[0].finishingPositionRange).toEqual('3-4');
+    expect(playoffRounds.length).toEqual(1);
   }
 );
 
