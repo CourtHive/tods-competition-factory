@@ -653,11 +653,13 @@ export function getParticipantEntries({
           }
         }
 
+        const pid = participantAggregator.participant.participantId;
         if (participantAggregator.scheduleConflicts.length) {
-          participantIdsWithConflicts.push(
-            participantAggregator.participant.participantId
-          );
+          participantIdsWithConflicts.push(pid);
         }
+
+        participantMap[pid].scheduleConflicts =
+          participantAggregator.scheduleConflicts;
       }
     }
   }

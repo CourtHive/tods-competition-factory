@@ -44,8 +44,7 @@ export function tallyParticipantResults({
   // if bracket is incomplete don't use expected matchUps perPlayer for calculating
   if (!bracketComplete) perPlayer = 0;
 
-  const tallyPolicy =
-    policyDefinitions && policyDefinitions[POLICY_TYPE_ROUND_ROBIN_TALLY];
+  const tallyPolicy = policyDefinitions?.[POLICY_TYPE_ROUND_ROBIN_TALLY];
 
   const consideredMatchUps = matchUps.filter(
     (matchUp) => matchUpIsComplete({ matchUp }) || matchUp.matchUpType === TEAM

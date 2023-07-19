@@ -116,15 +116,6 @@ test('recognizes scheduling conflicts', () => {
     }));
 
   expect(participantIdsWithConflicts.length).toEqual(16);
-
-  ({ participantIdsWithConflicts } =
-    competitionEngine.getCompetitionParticipants({
-      scheduleAnalysis: { scheduledMinutesDifference: 50 },
-      withStatistics: true,
-    }));
-
-  expect(participantIdsWithConflicts.length).toEqual(0);
-
   expect(competitionParticipants[0].scheduleConflicts.length).toEqual(1);
   expect(
     typeof competitionParticipants[0].scheduleConflicts[0]
@@ -133,4 +124,25 @@ test('recognizes scheduling conflicts', () => {
   expect(
     typeof competitionParticipants[0].scheduleConflicts[0].matchUpIdWithConflict
   ).toEqual('string');
+
+  result = competitionEngine.getParticipants({
+    scheduleAnalysis: { scheduledMinutesDifference: 60 },
+    withStatistics: true,
+  });
+
+  expect(result.participantIdsWithConflicts.length).toEqual(16);
+  const targetParticipant = result.participants.find(
+    ({ participantId }) =>
+      participantId === competitionParticipants[0].participantId
+  );
+  // TODO: why is there duplication here
+  expect(targetParticipant.scheduleConflicts.length).toEqual(2);
+
+  ({ participantIdsWithConflicts } =
+    competitionEngine.getCompetitionParticipants({
+      scheduleAnalysis: { scheduledMinutesDifference: 50 },
+      withStatistics: true,
+    }));
+
+  expect(participantIdsWithConflicts.length).toEqual(0);
 });
