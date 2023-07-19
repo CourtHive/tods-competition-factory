@@ -88,6 +88,7 @@ export function getParticipants({
   const processedParticipants = Object.values(participantMap).map(
     ({
       potentialMatchUps,
+      scheduleConflicts,
       statistics,
       opponents,
       matchUps,
@@ -108,6 +109,7 @@ export function getParticipants({
       return definedAttributes(
         {
           ...p.participant,
+          scheduleConflicts: scheduleAnalysis ? scheduleConflicts : undefined,
           draws: withDraws || withRankingProfile ? participantDraws : undefined,
           events:
             withEvents || withRankingProfile
