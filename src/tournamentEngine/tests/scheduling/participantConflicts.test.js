@@ -127,16 +127,19 @@ test('recognizes scheduling conflicts', () => {
 
   result = competitionEngine.getParticipants({
     scheduleAnalysis: { scheduledMinutesDifference: 60 },
+    withPotentialMatchUps: true,
     withStatistics: true,
   });
 
   expect(result.participantIdsWithConflicts.length).toEqual(16);
+
   const targetParticipant = result.participants.find(
     ({ participantId }) =>
       participantId === competitionParticipants[0].participantId
   );
   // TODO: why is there duplication here
   expect(targetParticipant.scheduleConflicts.length).toEqual(2);
+  expect(targetParticipant.potentialMatchUps.length).toEqual(2);
 
   ({ participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({

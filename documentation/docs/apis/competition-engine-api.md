@@ -850,7 +850,6 @@ const {
     scheduleAnalysis: {
       scheduledMinutesDifference // optional - scheduling conflicts determined by scheduledTime difference between matchUps
     },
-    nextMatchUps, // optional boolean - return { potentialMatchUps }
     usePublishState,  // optional boolean
     withDraws, // optional - defaults to true if any other context options are specified
     withEvents, // optional - defaults to true if any other context options are specified
