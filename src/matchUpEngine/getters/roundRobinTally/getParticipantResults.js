@@ -52,7 +52,7 @@ export function getParticipantResults({
   );
   const totalSets = allSets.reduce((a, b) => a + b, 0);
 
-  filteredMatchUps.forEach((matchUp) => {
+  for (const matchUp of filteredMatchUps) {
     const { matchUpStatus, tieMatchUps, tieFormat, score, winningSide, sides } =
       matchUp;
 
@@ -121,17 +121,17 @@ export function getParticipantResults({
 
             processScore({
               score: tieMatchUp.score,
-              participantResults,
               manualGamesOverride,
+              participantResults,
               sides, // use sides from the TEAM matchUp
             });
           }
         } else {
           processScore({
+            manualGamesOverride,
+            participantResults,
             score,
             sides,
-            participantResults,
-            manualGamesOverride,
           });
         }
       }
@@ -244,7 +244,7 @@ export function getParticipantResults({
       participantResults[side1participantId].gamesLost += gamesWonSide2;
       participantResults[side2participantId].gamesLost += gamesWonSide1;
     }
-  });
+  }
 
   calculatePercentages({
     participantResults,
@@ -268,7 +268,7 @@ function getLosingSideId(matchUp) {
 }
 
 function getSideId(matchUp, index) {
-  if (!matchUp || !matchUp.sides) {
+  if (!matchUp?.sides) {
     console.log('no sides:', { matchUp });
     return 'foo';
   }
@@ -308,10 +308,10 @@ function checkInitializeParticipant(participantResults, participantId) {
 }
 
 function processScore({
+  manualGamesOverride,
+  participantResults,
   score,
   sides,
-  participantResults,
-  manualGamesOverride,
 }) {
   const { sets } = score || {};
   const gamesTally = [[], []];
