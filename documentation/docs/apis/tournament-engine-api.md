@@ -2189,7 +2189,6 @@ const {
       scheduledMinutesDifference // optional - scheduling conflicts determined by scheduledTime difference between matchUps
     },
     usePublishState,  // optional boolean
-    nextMatchUps, // optional boolean - return { potentialMatchUps }
     withDraws, // optional - defaults to true if any other context options are specified
     withEvents, // optional - defaults to true if any other context options are specified
     withGroupings, // optional - include membership in group, pair, and team participants
