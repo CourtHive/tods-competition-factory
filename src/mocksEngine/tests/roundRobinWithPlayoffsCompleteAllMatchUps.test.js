@@ -38,12 +38,24 @@ it('can complete matchUps in playoff structures', () => {
   });
 
   let result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId,
     outcome,
+    drawId,
   });
 
   expect(result.connectedStructures).toEqual(true);
+
+  const {
+    eventData: { drawsData },
+  } = tournamentEngine.getEventData({
+    includePositionAssignments: true,
+    drawId,
+  });
+  expect(
+    drawsData[0].structures.filter(
+      ({ positionAssignments }) => positionAssignments
+    ).length
+  ).toEqual(2);
 });
 
 function generateScenario({ drawSize, structureOptions }) {
@@ -61,8 +73,8 @@ function generateScenario({ drawSize, structureOptions }) {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     completeAllMatchUps: true,
+    drawProfiles,
   });
 
   const { drawDefinition } = tournamentEngine

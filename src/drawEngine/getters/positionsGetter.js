@@ -38,6 +38,7 @@ export function getPositionAssignments({
     ({ structure, error } = findStructure({ drawDefinition, structureId }));
     if (error) return { positionAssignments, error };
   }
+
   if (structure.structures) {
     positionAssignments = [].concat(
       ...structure.structures.map((structure) => {

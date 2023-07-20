@@ -153,23 +153,22 @@ export function getDrawData({
           .filter((f) => f?.participantResult);
 
         const structureInfo = (({
-          stage,
           stageSequence,
           structureName,
           structureType,
           matchUpFormat,
-          positionAssignments,
+          stage,
         }) => ({
-          stage,
           stageSequence,
           structureName,
           structureType,
           matchUpFormat,
-          positionAssignments,
+          stage,
         }))(structure);
 
         structureInfo.sourceStructureIds = sourceStructureIds[structureId];
         structureInfo.hasDrawFeedProfile = hasDrawFeedProfile[structureId];
+        structureInfo.positionAssignments = positionAssignments;
 
         structureInfo.structureActive = matchUps.reduce((active, matchUp) => {
           const activeMatchUpStatus = [
