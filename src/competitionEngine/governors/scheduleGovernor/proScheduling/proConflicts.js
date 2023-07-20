@@ -56,8 +56,14 @@ export function proConflicts({ tournamentRecords, matchUps } = {}) {
       (profile, matchUp) => {
         if (!matchUp.matchUpId) return profile;
 
-        const { matchUpId, winnerMatchUpId, loserMatchUpId, schedule } =
-          matchUp;
+        const {
+          matchUpId,
+          winnerMatchUpId,
+          loserMatchUpId,
+          schedule,
+          sides,
+          potentialParticipants,
+        } = matchUp;
         const courtId = schedule?.courtId;
         rowIndices[matchUpId] = rowIndex;
         courtIssues[courtId] = [];
@@ -69,7 +75,28 @@ export function proConflicts({ tournamentRecords, matchUps } = {}) {
         sourceMatchUpIds.length &&
           profile.sourceMatchUpIds.push(...sourceMatchUpIds);
 
-        profile.participantIds.push(...deps[matchUpId].participantIds);
+        const matchUpParticipantIds =
+          sides
+            ?.map(({ participantId, participant }) => [
+              participant?.individualParticipantIds,
+              participantId,
+            ])
+            .flat()
+            .filter(Boolean) || [];
+        const potentialMatchUpParticipantIds =
+          potentialParticipants
+            ?.flat()
+            .map(({ individualParticipantIds, participantId }) => [
+              individualParticipantIds,
+              participantId,
+            ])
+            .flat()
+            .filter(Boolean) || [];
+
+        profile.participantIds.push(
+          ...potentialMatchUpParticipantIds,
+          ...matchUpParticipantIds
+        );
 
         winnerMatchUpId && profile.targetMatchUpIds.push(winnerMatchUpId);
         loserMatchUpId && profile.targetMatchUpIds.push(loserMatchUpId);
@@ -77,10 +104,10 @@ export function proConflicts({ tournamentRecords, matchUps } = {}) {
         return profile;
       },
       {
-        matchUpIds: [],
         sourceMatchUpIds: [],
         targetMatchUpIds: [],
         participantIds: [],
+        matchUpIds: [],
       }
     )
   );

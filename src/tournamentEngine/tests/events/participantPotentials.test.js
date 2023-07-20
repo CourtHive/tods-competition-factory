@@ -71,9 +71,9 @@ it('participant object include potentials', () => {
 it('handles potential BYES for FMLC consolation structures', () => {
   const drawProfiles = [
     {
-      drawSize: 16,
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
       participantsCount: 14,
+      drawSize: 16,
     },
   ];
   const { tournamentRecord } = generateTournamentRecord({
@@ -102,9 +102,9 @@ it('removes potential participants when side participant is known', () => {
       drawSize: 8,
       outcomes: [
         {
-          roundNumber: 1,
-          roundPosition: 1,
           scoreString: '6-1 6-2',
+          roundPosition: 1,
+          roundNumber: 1,
           winningSide: 1,
         },
       ],
@@ -121,8 +121,8 @@ it('removes potential participants when side participant is known', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const { matchUps } = tournamentEngine.allDrawMatchUps({
-    drawId,
     nextMatchUps: true,
+    drawId,
   });
 
   const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
