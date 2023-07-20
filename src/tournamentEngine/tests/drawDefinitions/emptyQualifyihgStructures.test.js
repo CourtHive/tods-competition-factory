@@ -1,4 +1,4 @@
-import { getStructureGroups } from '../../governors/publishingGovernor/getDrawData';
+import { getStructureGroups } from '../../governors/publishingGovernor/getStructureGroups';
 import { instanceCount } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';

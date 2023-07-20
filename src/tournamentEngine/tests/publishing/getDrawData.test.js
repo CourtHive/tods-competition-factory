@@ -1,9 +1,7 @@
+import { getStructureGroups } from '../../governors/publishingGovernor/getStructureGroups';
+import { getDrawData } from '../../governors/publishingGovernor/getDrawData';
 import { expect, it } from 'vitest';
 import fs from 'fs';
-import {
-  getDrawData,
-  getStructureGroups,
-} from '../../governors/publishingGovernor/getDrawData';
 
 const elimination = fs.readFileSync(
   './src/tournamentEngine/tests/publishing/eliminationMock.json'

@@ -1,9 +1,9 @@
 import { getStructureDrawPositionProfiles } from '../../../../drawEngine/getters/getStructureDrawPositionProfiles';
 import { getRoundMatchUps } from '../../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionAssignments } from '../../../../drawEngine/getters/positionsGetter';
+import { getStructureGroups } from '../../publishingGovernor/getStructureGroups';
 import { getStructureLinks } from '../../../../drawEngine/getters/linkGetter';
 import { stageOrder } from '../../../../constants/drawDefinitionConstants';
-import { getStructureGroups } from '../../publishingGovernor/getDrawData';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';

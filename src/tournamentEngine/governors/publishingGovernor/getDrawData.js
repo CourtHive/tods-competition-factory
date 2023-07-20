@@ -5,13 +5,8 @@ import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
 import { hasParticipantId } from '../../../global/functions/filters';
 import { findExtension } from '../queryGovernor/extensionQueries';
-import {
-  generateRange,
-  intersection,
-  makeDeepCopy,
-  overlap,
-  unique,
-} from '../../../utilities';
+import { getStructureGroups } from './getStructureGroups';
+import { makeDeepCopy } from '../../../utilities';
 
 import { TALLY } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -36,7 +31,6 @@ import {
   MAIN,
   PLAY_OFF,
   QUALIFYING,
-  VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 
 export function getDrawData({
@@ -68,9 +62,10 @@ export function getDrawData({
   }))(drawDefinition);
 
   let mainStageSeedAssignments, qualificationStageSeedAssignments;
-  const { structureGroups, allStructuresLinked } = getStructureGroups({
-    drawDefinition,
-  });
+  const { structureGroups, allStructuresLinked, sourceStructureIds } =
+    getStructureGroups({
+      drawDefinition,
+    });
 
   if (!allStructuresLinked) {
     const error = { error: UNLINKED_STRUCTURES };
@@ -80,6 +75,7 @@ export function getDrawData({
   let drawActive = false;
   let participantPlacements = false; // if any positionAssignments include a participantId
   const groupedStructures = structureGroups.map((structureIds) => {
+    const completedStructures = {};
     const structures = structureIds
       .map((structureId) => {
         const { structure } = findStructure({ drawDefinition, structureId });
@@ -168,6 +164,7 @@ export function getDrawData({
           positionAssignments,
         }))(structure);
 
+        structureInfo.sourceStructureIds = sourceStructureIds[structureId];
         structureInfo.structureActive = matchUps.reduce((active, matchUp) => {
           const activeMatchUpStatus = [
             COMPLETED,
@@ -187,22 +184,16 @@ export function getDrawData({
           );
         }, false);
 
-        structureInfo.structureCompleted = matchUps.reduce(
-          (completed, matchUp) => {
-            return (
-              completed &&
-              [
-                BYE,
-                COMPLETED,
-                RETIRED,
-                WALKOVER,
-                DEFAULTED,
-                ABANDONED,
-              ].includes(matchUp.matchUpStatus)
-            );
-          },
-          !!matchUps.length
-        );
+        const structureCompleted = matchUps.reduce((completed, matchUp) => {
+          return (
+            completed &&
+            [BYE, COMPLETED, RETIRED, WALKOVER, DEFAULTED, ABANDONED].includes(
+              matchUp.matchUpStatus
+            )
+          );
+        }, !!matchUps.length);
+        structureInfo.structureCompleted = structureCompleted;
+        completedStructures[structureId] = structureCompleted;
 
         if (structureInfo.structureActive) drawActive = true;
 
@@ -216,10 +207,13 @@ export function getDrawData({
         };
       });
 
-    if (!includePositionAssignments) {
-      // cleanup attribute used for sorting
-      structures.forEach((structure) => delete structure.positionAssignments);
-    }
+    // cleanup attribute used for sorting
+    structures.forEach((structure) => {
+      if (!includePositionAssignments) delete structure.positionAssignments;
+      structure.sourceStructuresComplete = structure.sourceStructureIds?.every(
+        (id) => completedStructures[id]
+      );
+    });
 
     return structures;
   });
@@ -241,70 +235,4 @@ export function getDrawData({
     drawInfo: noDeepCopy ? drawInfo : makeDeepCopy(drawInfo, false, true),
     ...SUCCESS,
   };
-}
-
-/**
- * return an array of arrays of grouped structureIds => structureGroups
- * the expectation is that all structures within a drawDefintion are linked
- * return a boolean whether this condition is met => allSructuresLinked
- */
-export function getStructureGroups({ drawDefinition }) {
-  const links = drawDefinition.links || [];
-
-  let linkedStructureIds = links.map((link) => [
-    link.source.structureId,
-    link.target.structureId,
-  ]);
-
-  // iterate through all groups of structureIds to flatten tree of links between structures
-  const iterations = linkedStructureIds.length;
-  generateRange(0, Math.ceil(iterations / 2)).forEach(() => {
-    linkedStructureIds = generateRange(0, iterations).map((index) => {
-      const structureIds = linkedStructureIds[index];
-      const mergedWithOverlappingIds =
-        linkedStructureIds.reduce((biggest, ids) => {
-          const hasOverlap = overlap(structureIds, ids);
-          return hasOverlap ? biggest.concat(...ids) : biggest;
-        }, []) || [];
-      return unique(structureIds.concat(...mergedWithOverlappingIds));
-    });
-  });
-
-  // at this point all linkedStructureIds arrays should be equivalent
-  // use the first of these as the identity array
-  const groupedStructureIds = linkedStructureIds[0];
-
-  // utility method to recognize equivalent arrays of structureIds
-  const identityLink = (a, b) => intersection(a, b).length === a.length;
-
-  // check that all arrays of linkedStructureIds are equivalent to identity array
-  const allLinkStructuresLinked = linkedStructureIds
-    .slice(1)
-    .reduce((allLinkStructuresLinked, ids) => {
-      return allLinkStructuresLinked && identityLink(ids, groupedStructureIds);
-    }, true);
-
-  // if a drawDefinition contains no links then no structure groups will exist
-  // filter out undefined when there are no links in a drawDefinition
-  const structureGroups = [groupedStructureIds].filter(Boolean);
-
-  // this is the same as structureGroups, but excludes VOLUNTARY_CONSOLATION
-  const linkCheck = [groupedStructureIds].filter(Boolean);
-
-  // iterate through all structures to add missing structureIds
-  const structures = drawDefinition.structures || [];
-  structures.forEach((structure) => {
-    const { structureId, stage } = structure;
-    const existingGroup = structureGroups.find((group) => {
-      return group.includes(structureId);
-    });
-    if (!existingGroup) {
-      structureGroups.push([structureId]);
-      if (stage !== VOLUNTARY_CONSOLATION) linkCheck.push(structureId);
-    }
-  });
-
-  const allStructuresLinked = allLinkStructuresLinked && linkCheck.length === 1;
-
-  return { structureGroups, allStructuresLinked };
 }
