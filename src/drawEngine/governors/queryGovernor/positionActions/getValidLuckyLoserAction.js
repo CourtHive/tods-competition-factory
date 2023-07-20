@@ -13,7 +13,7 @@ import {
 
 export function getValidLuckyLosersAction({
   tournamentParticipants = [],
-  sourceStructuresCompleted,
+  sourceStructuresComplete,
   possiblyDisablingAction,
   isWinRatioFedStructure,
   activeDrawPositions,
@@ -28,7 +28,7 @@ export function getValidLuckyLosersAction({
   if (
     activeDrawPositions.includes(drawPosition) ||
     // can't be a lucky loser if still have matches to play in a round robin structure!!
-    (isWinRatioFedStructure && !sourceStructuresCompleted)
+    (isWinRatioFedStructure && !sourceStructuresComplete)
   ) {
     return {};
   }
