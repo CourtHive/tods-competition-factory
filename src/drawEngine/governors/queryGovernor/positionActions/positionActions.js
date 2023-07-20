@@ -149,10 +149,10 @@ export function positionActions(params) {
       structureId,
     }) || {};
 
-  let sourceStructuresCompleted;
+  let sourceStructuresComplete;
   if (positionSourceStructureIds?.length) {
     // EVERY: this can probably be changed to .every
-    sourceStructuresCompleted = positionSourceStructureIds.reduce(
+    sourceStructuresComplete = positionSourceStructureIds.reduce(
       (ready, sourceStructureId) => {
         const completed = isCompletedStructure({
           structureId: sourceStructureId,
@@ -166,7 +166,7 @@ export function positionActions(params) {
 
   const isWinRatioFedStructure = positionSourceStructureIds.length;
   const disablePlacementActions =
-    positionSourceStructureIds.length && !sourceStructuresCompleted;
+    positionSourceStructureIds.length && !sourceStructuresComplete;
 
   const { policyActions } = getPolicyActions({
     enabledStructures,
@@ -476,7 +476,7 @@ export function positionActions(params) {
     !disablePlacementActions
   ) {
     const { validLuckyLosersAction } = getValidLuckyLosersAction({
-      sourceStructuresCompleted,
+      sourceStructuresComplete,
       possiblyDisablingAction,
       isWinRatioFedStructure,
       tournamentParticipants,
