@@ -62,10 +62,14 @@ export function getDrawData({
   }))(drawDefinition);
 
   let mainStageSeedAssignments, qualificationStageSeedAssignments;
-  const { structureGroups, allStructuresLinked, sourceStructureIds } =
-    getStructureGroups({
-      drawDefinition,
-    });
+  const {
+    allStructuresLinked,
+    sourceStructureIds,
+    hasDrawFeedProfile,
+    structureGroups,
+  } = getStructureGroups({
+    drawDefinition,
+  });
 
   if (!allStructuresLinked) {
     const error = { error: UNLINKED_STRUCTURES };
@@ -165,6 +169,8 @@ export function getDrawData({
         }))(structure);
 
         structureInfo.sourceStructureIds = sourceStructureIds[structureId];
+        structureInfo.hasDrawFeedProfile = hasDrawFeedProfile[structureId];
+
         structureInfo.structureActive = matchUps.reduce((active, matchUp) => {
           const activeMatchUpStatus = [
             COMPLETED,
