@@ -5,7 +5,10 @@ import {
   unique,
 } from '../../../utilities';
 
-import { VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import {
+  DRAW,
+  VOLUNTARY_CONSOLATION,
+} from '../../../constants/drawDefinitionConstants';
 
 /**
  * return an array of arrays of grouped structureIds => structureGroups
@@ -16,9 +19,12 @@ export function getStructureGroups({ drawDefinition }) {
   const links = drawDefinition.links || [];
 
   const sourceStructureIds = {};
+  const hasDrawFeedProfile = {};
   let linkedStructureIds = links.map((link) => {
     const sourceId = link.source.structureId;
     const targetId = link.target.structureId;
+    hasDrawFeedProfile[targetId] =
+      hasDrawFeedProfile[targetId] || link.target.feedProfile === DRAW;
     sourceStructureIds[targetId] = unique([
       ...(sourceStructureIds[targetId] || []),
       sourceId,
@@ -77,5 +83,10 @@ export function getStructureGroups({ drawDefinition }) {
 
   const allStructuresLinked = allLinkStructuresLinked && linkCheck.length === 1;
 
-  return { structureGroups, allStructuresLinked, sourceStructureIds };
+  return {
+    allStructuresLinked,
+    sourceStructureIds,
+    hasDrawFeedProfile,
+    structureGroups,
+  };
 }
