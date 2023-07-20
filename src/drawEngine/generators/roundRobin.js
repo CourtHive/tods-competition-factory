@@ -1,20 +1,17 @@
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
 import { addExtension } from '../../global/functions/producers/addExtension';
-import { processPlayoffGroups } from './processPlayoffGroups';
 import { generateRange, UUID } from '../../utilities';
 import {
   getRoundRobinGroupMatchUps,
   drawPositionsHash,
 } from './roundRobinGroups';
 
-import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
   ITEM,
-  PLAY_OFF,
   WIN_RATIO,
   CONTAINER,
 } from '../../constants/drawDefinitionConstants';
@@ -93,50 +90,6 @@ export function generateRoundRobin({
     links: [],
     groupSize,
     ...SUCCESS,
-  };
-}
-
-// first iteration only links to a single playoff structure
-// future iteration should allow structureOptions to specify
-// groups of finishing drawPositions which playoff
-export function generateRoundRobinWithPlayOff(params) {
-  const { drawDefinition, structureOptions } = params;
-
-  const mainDrawProperties = Object.assign(
-    { structureName: MAIN }, // default structureName
-    params,
-    { stage: MAIN }
-  );
-  const { structures, groupCount, groupSize } =
-    generateRoundRobin(mainDrawProperties);
-
-  // TODO: test for and handle this situation
-  if (groupCount < 1) {
-    console.log(INVALID_CONFIGURATION);
-  }
-
-  // define a default playoff group if none specified
-  const playoffGroups = (structureOptions &&
-    structureOptions.playoffGroups) || [
-    { finishingPositions: [1], structureName: PLAY_OFF },
-  ];
-  const [mainStructure] = structures;
-
-  const { structures: playoffStructures, links } = processPlayoffGroups({
-    sourceStructureId: mainStructure.structureId,
-    drawDefinition,
-    playoffGroups,
-    groupCount,
-    groupSize,
-    ...params,
-  });
-
-  structures.push(...playoffStructures);
-
-  return {
-    ...SUCCESS,
-    structures,
-    links,
   };
 }
 

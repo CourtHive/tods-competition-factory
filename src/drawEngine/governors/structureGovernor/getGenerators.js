@@ -1,17 +1,15 @@
+import { generateRoundRobinWithPlayOff } from '../../generators/generateRoundRobinWithPlayoff';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserConsolation';
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
 import { generatePlayoffStructures } from '../../generators/playoffStructures';
 import structureTemplate from '../../generators/structureTemplate';
+import { generateRoundRobin } from '../../generators/roundRobin';
 import { feedInChampionship } from '../../generators/feedInChamp';
 import { feedInMatchUps } from '../../generators/feedInMatchUps';
 import { treeMatchUps } from '../../generators/eliminationTree';
 import { luckyDraw } from '../../generators/luckyDraw';
-import {
-  generateRoundRobin,
-  generateRoundRobinWithPlayOff,
-} from '../../generators/roundRobin';
 
 import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
