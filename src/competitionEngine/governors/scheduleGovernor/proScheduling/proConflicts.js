@@ -56,7 +56,7 @@ export function proConflicts({ tournamentRecords, matchUps } = {}) {
       (profile, matchUp) => {
         if (!matchUp.matchUpId) return profile;
 
-        const { matchUpId, winnerMatchUpId, loserMatchUpId, schedule } =
+        const { matchUpId, winnerMatchUpId, loserMatchUpId, schedule, sides } =
           matchUp;
         const courtId = schedule?.courtId;
         rowIndices[matchUpId] = rowIndex;
@@ -69,7 +69,18 @@ export function proConflicts({ tournamentRecords, matchUps } = {}) {
         sourceMatchUpIds.length &&
           profile.sourceMatchUpIds.push(...sourceMatchUpIds);
 
-        profile.participantIds.push(...deps[matchUpId].participantIds);
+        const matchUpParticipantIds =
+          sides
+            ?.map(({ participantId, participant }) => [
+              ...(participant?.individualParticipantIds || []),
+              participantId,
+            ])
+            .filter(Boolean) || [];
+        profile.participantIds.push(...matchUpParticipantIds);
+
+        // NOTE: this is all participantIds in all matchUps leading to this matchUp
+        // ...clearly not appopriate here... should dependencies have degrees of separation (round sepration count?)
+        // profile.participantIds.push(...deps[matchUpId].participantIds);
 
         winnerMatchUpId && profile.targetMatchUpIds.push(winnerMatchUpId);
         loserMatchUpId && profile.targetMatchUpIds.push(loserMatchUpId);
@@ -77,10 +88,10 @@ export function proConflicts({ tournamentRecords, matchUps } = {}) {
         return profile;
       },
       {
-        matchUpIds: [],
         sourceMatchUpIds: [],
         targetMatchUpIds: [],
         participantIds: [],
+        matchUpIds: [],
       }
     )
   );
