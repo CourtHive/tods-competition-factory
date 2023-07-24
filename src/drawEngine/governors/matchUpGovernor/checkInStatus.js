@@ -31,6 +31,7 @@ export function checkInParticipant({
   drawDefinition,
   participantId,
   matchUpId,
+  matchUp,
   event,
 }) {
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
@@ -40,14 +41,17 @@ export function checkInParticipant({
     tournamentParticipants || tournamentRecord?.participants;
 
   if (tournamentParticipants && tournamentParticipants.length) {
-    const { matchUp } = findMatchUp({
-      tournamentParticipants,
-      inContext: true,
-      drawDefinition,
-      matchUpId,
-      event,
-    });
-    if (!matchUp) return { error: MATCHUP_NOT_FOUND };
+    if (!matchUp) {
+      const result = findMatchUp({
+        tournamentParticipants,
+        inContext: true,
+        drawDefinition,
+        matchUpId,
+        event,
+      });
+      if (!result.matchUp) return { error: MATCHUP_NOT_FOUND };
+      matchUp = result.matchUp;
+    }
     const result = getCheckedInParticipantIds({
       matchUp,
     });
@@ -80,23 +84,29 @@ export function checkOutParticipant({
   drawDefinition,
   participantId,
   matchUpId,
+  matchUp,
   event,
 }) {
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+  if (!matchUpId && !matchUp) return { error: MISSING_MATCHUP_ID };
 
   tournamentParticipants =
     tournamentParticipants || tournamentRecord?.participants;
 
-  const { matchUp } = findMatchUp({
-    tournamentParticipants,
-    inContext: true,
-    drawDefinition,
-    matchUpId,
-    event,
-  });
+  if (!matchUp) {
+    const result = findMatchUp({
+      tournamentParticipants,
+      inContext: true,
+      drawDefinition,
+      matchUpId,
+      event,
+    });
+    if (result.error) return result;
+    matchUp = result.matchUp;
+  }
 
   const { matchUpStatus, score } = matchUp;
+
   if (
     activeMatchUpStatuses.includes(matchUpStatus) ||
     completedMatchUpStatuses.includes(matchUpStatus) ||
