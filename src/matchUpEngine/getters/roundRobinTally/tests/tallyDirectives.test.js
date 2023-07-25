@@ -26,7 +26,7 @@ it('supports multiple policy configurations', () => {
     (m) => m.structureId === structureIds[1]
   );
 
-  const getGroupOrder = (structure) =>
+  const structureGroupOrder = (structure) =>
     structure.positionAssignments.map(
       (assignment) => participantResults[assignment.participantId].groupOrder
     );
@@ -37,7 +37,7 @@ it('supports multiple policy configurations', () => {
     matchUps: structure1MatchUps,
   }).participantResults;
 
-  expect(getGroupOrder(RR.structures[0])).toEqual([4, 3, 1, 2]);
+  expect(structureGroupOrder(RR.structures[0])).toEqual([4, 3, 1, 2]);
 
   const fewestGamesLostWinReversed = {
     headToHead: { disabled: true },
@@ -55,7 +55,7 @@ it('supports multiple policy configurations', () => {
     matchUps: structure1MatchUps,
   }).participantResults;
 
-  expect(getGroupOrder(RR.structures[0])).toEqual([4, 3, 2, 1]);
+  expect(structureGroupOrder(RR.structures[0])).toEqual([4, 3, 2, 1]);
 
   const fewestGamesLost = {
     headToHead: { disabled: true },
@@ -73,7 +73,7 @@ it('supports multiple policy configurations', () => {
     matchUps: structure1MatchUps,
   }).participantResults;
 
-  expect(getGroupOrder(RR.structures[0])).toEqual([4, 3, 1, 2]);
+  expect(structureGroupOrder(RR.structures[0])).toEqual([4, 3, 1, 2]);
 
   const mostDoublesWon = {
     groupOrderKey: 'tieDoublesWon',
@@ -88,5 +88,5 @@ it('supports multiple policy configurations', () => {
     matchUps: structure2MatchUps,
   }).participantResults;
 
-  expect(getGroupOrder(RR.structures[1])).toEqual([1, 2, 4, 2]);
+  expect(structureGroupOrder(RR.structures[1])).toEqual([1, 2, 4, 2]);
 });
