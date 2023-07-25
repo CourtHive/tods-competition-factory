@@ -33,6 +33,7 @@ export function toggleParticipantCheckInState(params) {
       drawDefinition,
       participantId,
       matchUpId,
+      matchUp,
     });
   } else {
     return checkInParticipant({
@@ -41,6 +42,7 @@ export function toggleParticipantCheckInState(params) {
       drawDefinition,
       participantId,
       matchUpId,
+      matchUp,
     });
   }
 }
