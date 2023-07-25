@@ -3,7 +3,9 @@ import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import {
+  INVALID_VALUES,
   MISSING_PARTICIPANT_ID,
+  MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
@@ -26,6 +28,18 @@ it('can sign participants in and out', () => {
     participantId,
   });
   expect(result).toBeUndefined();
+
+  result = tournamentEngine.modifyParticipantsSignInStatus({
+    // participantIds: [participantId],
+    signInState: SIGNED_IN,
+  });
+  expect(result.error).toEqual(MISSING_VALUE);
+
+  result = tournamentEngine.modifyParticipantsSignInStatus({
+    participantIds: ['foo'],
+    signInState: SIGNED_IN,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
 
   result = tournamentEngine.modifyParticipantsSignInStatus({
     participantIds: [participantId],

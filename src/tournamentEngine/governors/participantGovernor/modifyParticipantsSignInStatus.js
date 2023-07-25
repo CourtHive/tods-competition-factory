@@ -1,5 +1,6 @@
 import { addParticipantTimeItem } from '../tournamentGovernor/addTimeItem';
 import { addNotice, getTopics } from '../../../global/state/globalState';
+import { getParticipantId } from '../../../global/functions/extractors';
 
 import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -28,6 +29,13 @@ export function modifyParticipantsSignInStatus({
 
   const participants = tournamentRecord.participants || [];
   if (!participants.length) return { error: MISSING_PARTICIPANTS };
+
+  const allParticipantIds = participants.map(getParticipantId);
+  const invalidParticipantIds = participantIds.filter(
+    (participantId) => !allParticipantIds.includes(participantId)
+  );
+  if (invalidParticipantIds.length)
+    return { error: INVALID_VALUES, context: { invalidParticipantIds } };
 
   const modifiedParticipants = [];
   const createdAt = new Date().toISOString();
