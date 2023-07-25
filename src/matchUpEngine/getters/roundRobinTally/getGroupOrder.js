@@ -72,8 +72,10 @@ export function getGroupOrder(params) {
     tallyPolicy,
   } = params;
 
+  const report = [];
+
   // if not all opponents have completed their matchUps, no orders are assigned
-  if (requireCompletion && !isComplete(params)) return;
+  if (requireCompletion && !isComplete(params)) return {};
 
   const attribute = [
     'tieMatchUpsWon',
@@ -96,11 +98,17 @@ export function getGroupOrder(params) {
     attribute,
   });
 
+  report.push({ attribute, groups: orderedTallyGroups });
+
   const groupOrder = Object.keys(orderedTallyGroups)
     .map((key) => parseFloat(key))
     .sort((a, b) => b - a)
     .map((key) => orderedTallyGroups[key])
-    .map((participantIds) => groupSubSort({ participantIds, ...params }))
+    .map((participantIds) => {
+      const result = groupSubSort({ participantIds, ...params });
+      report.push(result.report);
+      return result.order;
+    })
     .flat(Infinity);
 
   let groupPosition = 1;
@@ -155,7 +163,7 @@ export function getGroupOrder(params) {
     }
   });
 
-  return groupOrder;
+  return { groupOrder, report: report.flat(Infinity).filter(Boolean) };
 
   // NOTE: TallyPolicy.GEMscore could be an object instead of an array of attributes
   // which would allow for custom valueMaps... or valueMap could use index as multiplier
@@ -211,14 +219,17 @@ function processAttribute({
     attribute,
   });
 
+  const report = [{ attribute, reversed, groups, idsFilter }];
+  let order;
+
   if (Object.keys(groups).length > 1 && participantIds.length) {
     // separation by attribute was successful
-    return Object.keys(groups)
+    order = Object.keys(groups)
       .map((key) => parseFloat(key))
       .sort((a, b) => (reversed ? a - b : b - a))
       .map((key) => groups[key])
       .map((participantIds) => {
-        return groupSubSort({
+        const result = groupSubSort({
           participantResults,
           disableHeadToHead,
           participantIds,
@@ -226,9 +237,13 @@ function processAttribute({
           tallyPolicy,
           matchUps,
         });
+        report.push(result.report);
+        return result.order;
       })
       .flat(Infinity);
   }
+
+  return { order, report };
 }
 
 function groupSubSort({
@@ -239,26 +254,45 @@ function groupSubSort({
   tallyPolicy,
   matchUps,
 }) {
-  if (participantIds?.length === 1)
-    return { resolved: true, participantId: participantIds[0] };
+  if (participantIds?.length === 1) {
+    const participantId = participantIds[0];
+    return {
+      order: [{ resolved: true, participantId }],
+    };
+  }
   if (
     participantIds?.length === 2 &&
     (!tallyPolicy?.headToHead ||
       (!tallyPolicy.headToHead.disabled && !disableHeadToHead))
   ) {
     const result = headToHeadWinner({ participantIds, participantResults });
-    if (result) return result;
+    if (result)
+      return { order: [result], headToHeadWinner: result[0].participantId };
   }
 
+  const directives = tallyPolicy?.tallyDirectives || headToHeadTallyDirectives;
+
+  const excludedDirectives = [];
+  const report = [];
   let result;
-  (tallyPolicy?.tallyDirectives || headToHeadTallyDirectives)
-    .filter(({ maxParticipants }) =>
-      // if maxParticipants is defined, filter out the rule if # of participants is greater than maxParticipants
-      isNumeric(maxParticipants) && participantIds?.length > maxParticipants
+
+  const filteredDirectives = directives.filter((directive) => {
+    // if maxParticipants is defined, filter out the rule if # of participants is greater than maxParticipants
+    const keepDirective =
+      isNumeric(directive.maxParticipants) &&
+      participantIds?.length > directive.maxParticipants
         ? false
-        : true
-    )
-    .every(({ attribute, reversed, idsFilter, disableHeadToHead }) => {
+        : true;
+
+    if (!keepDirective) excludedDirectives.push(directive);
+    return keepDirective;
+  });
+
+  if (excludedDirectives.length)
+    report.push({ excludedDirectives, participantIds });
+
+  filteredDirectives.every(
+    ({ attribute, reversed, idsFilter, disableHeadToHead }) => {
       result = processAttribute({
         disableHeadToHead,
         participantIds,
@@ -269,11 +303,19 @@ function groupSubSort({
         matchUps,
         reversed,
       });
-      return result ? false : true;
-    });
-  if (result) return result;
+      report.push(result.report);
 
-  return participantIds?.map((participantId) => ({ participantId }));
+      // return false if a rule has successfully broken the tie
+      return result.order ? false : true;
+    }
+  );
+
+  if (result.order) return { order: result.order, report };
+
+  return {
+    order: participantIds?.map((participantId) => ({ participantId })),
+    report,
+  };
 }
 
 // NOTE: This currently considers one victory rather than a head2head win/loss record (considering rounds of play where participants may encounter each other more than once)

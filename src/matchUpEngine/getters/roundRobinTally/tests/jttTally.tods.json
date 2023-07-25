@@ -1,0 +1,2514 @@
+{
+  "createdAt": "2023-07-25T03:48:07.585Z",
+  "extensions": [
+    {
+      "name": "sectionCode",
+      "value": "015"
+    },
+    {
+      "name": "districtCode",
+      "value": "034"
+    },
+    {
+      "name": "level",
+      "value": {
+        "level": {
+          "id": "00000000-0000-0000-0000-000000000200",
+          "category": "JUNIOR",
+          "isRanking": false,
+          "locked": true,
+          "name": "Unsanctioned",
+          "onlineRegistrationMandatory": false,
+          "orderIndex": 200,
+          "shortName": "Unsanctioned",
+          "__typename": "Level",
+          "configuration": {
+            "ageCategories": [
+              {
+                "maximumAge": 8,
+                "todsCode": "U8",
+                "type": "INDIVIDUAL",
+                "__typename": "AgeCategory"
+              },
+              {
+                "maximumAge": 10,
+                "todsCode": "U10",
+                "type": "INDIVIDUAL",
+                "__typename": "AgeCategory"
+              },
+              {
+                "maximumAge": 12,
+                "todsCode": "U12",
+                "type": "INDIVIDUAL",
+                "__typename": "AgeCategory"
+              },
+              {
+                "maximumAge": 14,
+                "todsCode": "U14",
+                "type": "INDIVIDUAL",
+                "__typename": "AgeCategory"
+              },
+              {
+                "maximumAge": 16,
+                "todsCode": "U16",
+                "type": "INDIVIDUAL",
+                "__typename": "AgeCategory"
+              },
+              {
+                "maximumAge": 18,
+                "todsCode": "U18",
+                "type": "INDIVIDUAL",
+                "__typename": "AgeCategory"
+              }
+            ],
+            "allowCustomAgeCategories": false,
+            "allowWildcards": false,
+            "allowsNonConsecutiveDays": false,
+            "ballColours": ["RED", "ORANGE", "GREEN", "YELLOW"],
+            "checkInRequired": "FORBIDDEN",
+            "closeTimeDefaults": {
+              "isEditable": true,
+              "time": 1079,
+              "timeZone": "America/New_York",
+              "__typename": "TimeDefaults"
+            },
+            "description": "Low Intermediate, 1 day, Green or Yellow ball, 12s - 18s",
+            "doublesEventFormats": [
+              "CC",
+              "RRPO",
+              "FIC16",
+              "FICSF",
+              "KO",
+              "FMLC",
+              "COMP",
+              "MFIC",
+              "RR",
+              "VC"
+            ],
+            "doublesScoreFormats": [
+              "SET1-S:6/TB7",
+              "SET3-S:6/TB7-F:TB7",
+              "SET3-S:4/TB7",
+              "SET1-S:4/TB7",
+              "SET3-S:6/TB7",
+              "SET3-S:6/TB7-F:TB10",
+              "SET1-S:4/TB5@3",
+              "SET1-S:TB10",
+              "SET3-S:TB10",
+              "SET3-S:4/TB7-F:TB7",
+              "SET3-S:4/TB7-F:TB10",
+              "SET1-S:T20",
+              "SET1-S:8/TB7"
+            ],
+            "doublesSelectionProcessConstraints": [
+              "BOTTOM_UP_BY_RATING",
+              "FIRST_COME_FIRST_SERVED",
+              "MANUAL",
+              "TOP_DOWN_BY_RATING",
+              "BOTTOM_UP_BY_RANKING",
+              "TOP_DOWN_BY_RANKING"
+            ],
+            "enabled": true,
+            "eventFormats": [
+              "VC",
+              "KO",
+              "COMP",
+              "FICQ",
+              "FICSF",
+              "MFIC",
+              "CC",
+              "FIC16",
+              "RR",
+              "FMLC",
+              "RRPO"
+            ],
+            "eventLengthRange": {
+              "__typename": "EventLengthRange"
+            },
+            "eventTypes": ["TEAM", "DOUBLES", "SINGLES"],
+            "genders": ["BOYS", "MIXED", "GIRLS", "COED"],
+            "goldSilverBronzeDrawsEnabled": false,
+            "allowSplitDraws": true,
+            "headTax": {
+              "fixedFee": 0,
+              "percentageFee": 0,
+              "__typename": "HeadTax"
+            },
+            "id": 0,
+            "lockedProperties": ["AUTO_APPROVE", "ALLOW_SPLIT_DRAWS"],
+            "sanctionType": "SECTION",
+            "scoreFormats": [
+              "SET1-S:6/TB7",
+              "SET3-S:6/TB7-F:TB7",
+              "SET1-S:4/TB5@3",
+              "SET1-S:TB10",
+              "SET3-S:4/TB7-F:TB7",
+              "SET3-S:TB10",
+              "SET1-S:T20",
+              "SET3-S:4/TB7-F:TB10",
+              "SET3-S:4/TB7",
+              "SET1-S:4/TB7",
+              "SET3-S:6/TB7-F:TB10",
+              "SET3-S:6/TB7",
+              "SET1-S:8/TB7"
+            ],
+            "selectionProcessConstraints": [
+              "TOP_DOWN_BY_RANKING",
+              "FIRST_COME_FIRST_SERVED",
+              "BOTTOM_UP_BY_RATING",
+              "BOTTOM_UP_BY_RANKING",
+              "MANUAL",
+              "TOP_DOWN_BY_RATING"
+            ],
+            "skillLevel": "LOW_INTERMEDIATE",
+            "submissionWindow": {
+              "timeZone": "America/New_York",
+              "__typename": "DateRangeWithTimeZone"
+            },
+            "teamEventFormats": [
+              "VC",
+              "KO",
+              "FICQ",
+              "COMP",
+              "FICSF",
+              "MFIC",
+              "FIC16",
+              "FMLC",
+              "RR",
+              "RRPO"
+            ],
+            "teamSelectionProcessConstraints": [
+              "BOTTOM_UP_BY_RANKING",
+              "FIRST_COME_FIRST_SERVED",
+              "BOTTOM_UP_BY_RATING",
+              "TOP_DOWN_BY_RANKING",
+              "MANUAL",
+              "TOP_DOWN_BY_RATING"
+            ],
+            "tournamentFee": 0,
+            "allowGeneratePlayOffForBackDraws": false,
+            "firstMatchLoserConsolation": false,
+            "__typename": "LevelConfiguration"
+          }
+        }
+      }
+    },
+    {
+      "name": "sanctioning",
+      "value": {
+        "approvalHierarchy": [
+          {
+            "id": "96A7C92E-92CB-4965-8284-8E5A33761130",
+            "name": "National",
+            "regionCode": "N00",
+            "__typename": "Organisation"
+          },
+          {
+            "id": "8FE5A334-FF54-492D-A370-D6D9518C2AC1",
+            "name": "Florida",
+            "regionCode": "015",
+            "__typename": "Organisation"
+          }
+        ]
+      }
+    },
+    {
+      "name": "timings",
+      "value": {
+        "entriesOpenDateTime": "2023-07-22T16:00:00.000Z",
+        "entriesCloseDateTime": "2023-07-23T21:59:00.000Z",
+        "__typename": "TournamentTimings",
+        "startDateTime": "2023-07-27T04:00:00.000Z",
+        "endDateTime": "2023-07-29T03:59:00.000Z",
+        "timeZone": "America/New_York"
+      }
+    },
+    {
+      "name": "appliedPolicies",
+      "value": {
+        "scheduling": {
+          "defaultTimes": {
+            "averageTimes": [
+              {
+                "categoryNames": [],
+                "minutes": {
+                  "default": 90
+                }
+              }
+            ],
+            "recoveryTimes": [
+              {
+                "minutes": {
+                  "DOUBLES": 30,
+                  "default": 60
+                }
+              }
+            ]
+          },
+          "matchUpAverageTimes": [
+            {
+              "matchUpFormatCodes": ["SET5-S:6/TB7-F:6/TB10"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 120
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:6/TB7", "SET3-S:6/TB7@5-F:TB10"],
+              "averageTimes": [
+                {
+                  "categoryTypes": ["ADULT", "JUNIOR"],
+                  "minutes": {
+                    "default": 90
+                  }
+                },
+                {
+                  "categoryTypes": ["WHEELCHAIR"],
+                  "minutes": {
+                    "default": 120
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:6/TB7-F:TB10"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 85
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:6/TB7-F:TB7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 70
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:4/TB7", "SET3-S:6/TB7@5"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET3-S:4NOAD-F:TB7",
+                "SET3-S:4/TB7-F:TB10"
+              ],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 55
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:4/TB7-F:TB7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 50
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET3-S:4/TB5NOAD@3",
+                "SET1-S:6/TB5NOAD@5",
+                "SET3-S:4/TB7@3"
+              ],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 45
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:8/TB7", "SET1-S:8/TB7@7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 40
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET1-S:5/TB5NOAD@4",
+                "SET1-S:T20",
+                "SET1-S:6/TB7",
+                "SET1-S:6NOAD",
+                "SET1-S:TB15NOAD",
+                "SET1-S:TB15",
+                "SET1-S:TB11NOAD",
+                "SET1-S:TB11",
+                "SET3-S:TB11NOAD",
+                "SET3-S:TB11",
+                "SET3-S:TB11NOAD-F:TB7NOAD",
+                "SET3-S:TB11-F:TB7"
+              ],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 30
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET1-S:4/TB7",
+                "SET1-S:4/TB5@3",
+                "SET3-S:TB10",
+                "SET1-S:4NOAD"
+              ],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 20
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:TB10"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 10
+                  }
+                }
+              ]
+            }
+          ],
+          "matchUpRecoveryTimes": [
+            {
+              "matchUpFormatCodes": [
+                "SET5-S:6/TB7-F:6/TB10",
+                "SET3-S:6/TB7@5-F:TB10"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET3-S:6/TB7",
+                "SET3-S:6/TB7-F:TB10",
+                "SET3-S:6/TB7-F:TB7"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryTypes": ["ADULT", "WHEELCHAIR"],
+                  "minutes": {
+                    "default": 60,
+                    "DOUBLES": 30
+                  }
+                },
+                {
+                  "categoryTypes": ["JUNIOR"],
+                  "minutes": {
+                    "default": 60,
+                    "DOUBLES": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET3-S:4/TB7-F:TB7",
+                "SET3-S:4/TB7-F:TB10",
+                "SET3-S:4NOAD-F:TB7",
+                "SET3-S:4/TB7",
+                "SET3-S:4/TB5NOAD@3"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryTypes": ["ADULT", "WHEELCHAIR"],
+                  "minutes": {
+                    "default": 30
+                  }
+                },
+                {
+                  "categoryTypes": ["JUNIOR"],
+                  "minutes": {
+                    "default": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET1-S:8/TB7",
+                "SET1-S:8/TB7@7",
+                "SET1-S:5/TB5NOAD@4",
+                "SET1-S:6/TB7",
+                "SET1-S:6NOAD",
+                "SET1-S:4/TB7",
+                "SET1-S:4NOAD",
+                "SET3-S:TB10",
+                "SET3-S:6/TB7@5",
+                "SET1-S:6/TB5NOAD@5",
+                "SET3-S:4/TB7@3",
+                "SET1-S:TB15NOAD",
+                "SET1-S:TB15",
+                "SET1-S:TB11NOAD",
+                "SET1-S:TB11",
+                "SET3-S:TB11NOAD",
+                "SET3-S:TB11",
+                "SET3-S:TB11NOAD-F:TB7NOAD",
+                "SET3-S:TB11-F:TB7"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 30
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:4/TB5@3"],
+              "recoveryTimes": [
+                {
+                  "categoryTypes": ["ADULT", "JUNIOR"],
+                  "minutes": {
+                    "default": 30
+                  }
+                },
+                {
+                  "categoryTypes": ["WHEELCHAIR"],
+                  "minutes": {
+                    "default": 15
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:TB10", "SET1-S:T20"],
+              "recoveryTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 15
+                  }
+                }
+              ]
+            }
+          ],
+          "matchUpDailyLimits": []
+        },
+        "roundNaming": {
+          "policyName": "Round Naming Default",
+          "roundNamingMap": {
+            "1": "F",
+            "2": "SF",
+            "4": "QF"
+          },
+          "affixes": {
+            "roundNumber": "R",
+            "preFeedRound": "Q"
+          },
+          "stageConstants": {
+            "MAIN": "",
+            "QUALIFYING": "Q",
+            "CONSOLATION": "C",
+            "PLAY_OFF": "PL"
+          }
+        }
+      }
+    },
+    {
+      "name": "factory",
+      "value": {
+        "version": "1.2.13",
+        "timeStamp": 1690259854292
+      }
+    },
+    {
+      "name": "upcomingMatchUpSortOrder",
+      "value": []
+    }
+  ],
+  "timeItems": [
+    {
+      "itemSubTypes": [],
+      "itemType": "RETRIEVAL.RATING.SINGLES.WTN",
+      "itemValue": "2023-07-24T23:48"
+    }
+  ],
+  "updatedAt": "2023-07-25T04:37:34.300Z",
+  "endDate": "2023-07-28T00:00:00.000Z",
+  "events": [
+    {
+      "extensions": [
+        {
+          "name": "division",
+          "value": {
+            "ageCategory": {
+              "maximumAge": 18,
+              "type": "INDIVIDUAL",
+              "__typename": "AgeCategory",
+              "todsCode": "U18"
+            },
+            "gender": "BOYS",
+            "eventType": "TEAM",
+            "ballColour": "YELLOW",
+            "__typename": "Division"
+          }
+        },
+        {
+          "name": "flightProfile",
+          "value": {
+            "flights": [
+              {
+                "manuallyAdded": true,
+                "flightNumber": 1,
+                "drawEntries": [
+                  {
+                    "participantId": "673AAD54-FF87-43C9-AEE9-38AC31F6CDF4",
+                    "entryPosition": 1,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "D63DE90D-2607-4589-8E37-0DBB43BECC04",
+                    "entryPosition": 2,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  }
+                ],
+                "drawName": "Draw",
+                "drawId": "da46a850-0188-41a4-a896-678000a1b1a4"
+              }
+            ]
+          }
+        },
+        {
+          "name": "drawDeletions",
+          "value": [
+            {
+              "auditReason": "d d d",
+              "userId": {
+                "ID": "68cc9317-01d7-4799-9a3e-940fa2b2f3e0"
+              },
+              "createdAt": "2023-07-25T04:30:37.813Z",
+              "deletedDrawsDetail": [
+                {
+                  "tournamentId": "21C5E4C4-1F1E-43D6-A3AF-3B87D66C34DD",
+                  "eventId": "23683899-71BE-4201-846E-650843147288",
+                  "positionAssignments": [
+                    {
+                      "drawPosition": 1,
+                      "participantId": "D63DE90D-2607-4589-8E37-0DBB43BECC04"
+                    },
+                    {
+                      "drawPosition": 2,
+                      "participantId": "673AAD54-FF87-43C9-AEE9-38AC31F6CDF4"
+                    }
+                  ],
+                  "auditData": {
+                    "auditReason": "d d d",
+                    "userId": {
+                      "ID": "68cc9317-01d7-4799-9a3e-940fa2b2f3e0"
+                    },
+                    "createdAt": "2023-07-25T04:30:37.813Z"
+                  },
+                  "drawType": "SINGLE_ELIMINATION",
+                  "drawName": "Draw",
+                  "drawId": "4164f620-19bc-4272-9b29-19bc99590a02"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "timeItems": [
+        {
+          "createdAt": "2023-07-25T04:30:43.669Z",
+          "itemSubTypes": [],
+          "itemType": "PUBLISH.STATUS",
+          "itemValue": {
+            "PUBLIC": {
+              "drawIds": [],
+              "structureIds": []
+            }
+          }
+        }
+      ],
+      "allowedDrawTypes": ["COMPASS"],
+      "category": {
+        "ageCategoryCode": "U18",
+        "ballType": "T2STANDARD_PRESSURISED",
+        "subType": "JUNIOR",
+        "type": "AGE"
+      },
+      "drawDefinitions": [
+        {
+          "extensions": [
+            {
+              "name": "appliedPolicies",
+              "value": {
+                "seeding": {
+                  "policyName": "USTA",
+                  "duplicateSeedNumbers": true,
+                  "drawSizeProgression": true,
+                  "validSeedPositions": {
+                    "ignore": true
+                  },
+                  "seedsCountThresholds": [
+                    {
+                      "drawSize": 4,
+                      "minimumParticipantCount": 3,
+                      "seedsCount": 2
+                    },
+                    {
+                      "drawSize": 16,
+                      "minimumParticipantCount": 12,
+                      "seedsCount": 4
+                    },
+                    {
+                      "drawSize": 32,
+                      "minimumParticipantCount": 24,
+                      "seedsCount": 8
+                    },
+                    {
+                      "drawSize": 64,
+                      "minimumParticipantCount": 48,
+                      "seedsCount": 16
+                    },
+                    {
+                      "drawSize": 128,
+                      "minimumParticipantCount": 96,
+                      "seedsCount": 32
+                    },
+                    {
+                      "drawSize": 256,
+                      "minimumParticipantCount": 192,
+                      "seedsCount": 64
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "entryProfile",
+              "value": {
+                "MAIN": {
+                  "drawSize": 2,
+                  "alternates": true
+                }
+              }
+            },
+            {
+              "name": "lineUps",
+              "value": {
+                "673AAD54-FF87-43C9-AEE9-38AC31F6CDF4": [
+                  {
+                    "participantId": "10C2569F-C5A7-4CEE-BFF0-0470CD0DCBC1",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "1cfd5566-4d1e-4f6b-9975-26a0b9f81196",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "186b4153-5f82-4ad1-aa82-6f97444f55e4",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "337a82a8-cb4d-46cd-8e5b-a282682c607b",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "0cde261a-316f-4d9a-94a9-912ad3638d59",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "F22B5624-389A-43BD-8ECB-3D6483F3DE4A",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "337a82a8-cb4d-46cd-8e5b-a282682c607b",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "0cde261a-316f-4d9a-94a9-912ad3638d59",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  }
+                ],
+                "D63DE90D-2607-4589-8E37-0DBB43BECC04": [
+                  {
+                    "participantId": "76D01BBA-9D23-49D5-9F2E-B8DFC38D7CF8",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "1cfd5566-4d1e-4f6b-9975-26a0b9f81196",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "337a82a8-cb4d-46cd-8e5b-a282682c607b",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "0cde261a-316f-4d9a-94a9-912ad3638d59",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "4B8D877C-C9F9-4E63-9937-08A560406E41",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "186b4153-5f82-4ad1-aa82-6f97444f55e4",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "85B2B414-05E4-447C-888C-C6FED0B77D76",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "337a82a8-cb4d-46cd-8e5b-a282682c607b",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "0cde261a-316f-4d9a-94a9-912ad3638d59",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "updatedAt": "2023-07-25T04:37:34.292Z",
+          "automated": true,
+          "drawId": "da46a850-0188-41a4-a896-678000a1b1a4",
+          "drawName": "Draw",
+          "drawOrder": 1,
+          "drawRepresentativeIds": [],
+          "drawType": "SINGLE_ELIMINATION",
+          "entries": [
+            {
+              "entryPosition": 1,
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "participantId": "673AAD54-FF87-43C9-AEE9-38AC31F6CDF4"
+            },
+            {
+              "entryPosition": 2,
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "participantId": "D63DE90D-2607-4589-8E37-0DBB43BECC04"
+            }
+          ],
+          "links": [],
+          "matchUps": [],
+          "structures": [
+            {
+              "updatedAt": "2023-07-25T04:37:34.292Z",
+              "finishingPosition": "ROUND_OUTCOME",
+              "matchUps": [
+                {
+                  "matchUpId": "bd741f7a-f4d5-4c24-afae-18292a57c998",
+                  "createdAt": "2023-07-25T04:33:03.282Z",
+                  "drawPositions": [1, 2],
+                  "finishingPositionRange": {
+                    "loser": [2, 2],
+                    "winner": [1, 1]
+                  },
+                  "finishingRound": 1,
+                  "losers": [],
+                  "matchUpStatus": "IN_PROGRESS",
+                  "matchUpStatusCodes": [],
+                  "matchUpType": "TEAM",
+                  "processCodes": [],
+                  "roundNumber": 1,
+                  "roundPosition": 1,
+                  "sides": [
+                    {
+                      "lineUp": [
+                        {
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "1cfd5566-4d1e-4f6b-9975-26a0b9f81196",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "186b4153-5f82-4ad1-aa82-6f97444f55e4",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "337a82a8-cb4d-46cd-8e5b-a282682c607b",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "0cde261a-316f-4d9a-94a9-912ad3638d59",
+                              "collectionPosition": 1
+                            }
+                          ],
+                          "participantId": "10C2569F-C5A7-4CEE-BFF0-0470CD0DCBC1"
+                        },
+                        {
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "337a82a8-cb4d-46cd-8e5b-a282682c607b",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "0cde261a-316f-4d9a-94a9-912ad3638d59",
+                              "collectionPosition": 1
+                            }
+                          ],
+                          "participantId": "F22B5624-389A-43BD-8ECB-3D6483F3DE4A"
+                        }
+                      ],
+                      "sideNumber": 1
+                    },
+                    {
+                      "lineUp": [
+                        {
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "1cfd5566-4d1e-4f6b-9975-26a0b9f81196",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "337a82a8-cb4d-46cd-8e5b-a282682c607b",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "0cde261a-316f-4d9a-94a9-912ad3638d59",
+                              "collectionPosition": 1
+                            }
+                          ],
+                          "participantId": "76D01BBA-9D23-49D5-9F2E-B8DFC38D7CF8"
+                        },
+                        {
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "186b4153-5f82-4ad1-aa82-6f97444f55e4",
+                              "collectionPosition": 1
+                            }
+                          ],
+                          "participantId": "4B8D877C-C9F9-4E63-9937-08A560406E41"
+                        },
+                        {
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "337a82a8-cb4d-46cd-8e5b-a282682c607b",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "0cde261a-316f-4d9a-94a9-912ad3638d59",
+                              "collectionPosition": 1
+                            }
+                          ],
+                          "participantId": "85B2B414-05E4-447C-888C-C6FED0B77D76"
+                        }
+                      ],
+                      "sideNumber": 2
+                    }
+                  ],
+                  "tieMatchUps": [
+                    {
+                      "matchUpId": "e5623c0b-701e-48d3-9df2-3397b8b59398",
+                      "collectionId": "1cfd5566-4d1e-4f6b-9975-26a0b9f81196",
+                      "collectionPosition": 1,
+                      "createdAt": "2023-07-25T04:33:03.282Z",
+                      "drawPositions": [],
+                      "losers": [],
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "SINGLES",
+                      "processCodes": [],
+                      "sides": [
+                        {
+                          "sideNumber": 1,
+                          "lineUp": []
+                        },
+                        {
+                          "sideNumber": 2,
+                          "lineUp": []
+                        }
+                      ],
+                      "tieMatchUps": [],
+                      "updatedAt": "2023-07-25T04:35:05.984Z",
+                      "winners": [],
+                      "matchUpFormat": "SET3-S:4NOAD-F:TB7",
+                      "score": {
+                        "scoreStringSide1": "4-3 3-4 [7-4]",
+                        "scoreStringSide2": "3-4 4-3 [4-7]",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 4,
+                            "side2Score": 3,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 3,
+                            "side2Score": 4,
+                            "winningSide": 2,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 3,
+                            "side1TiebreakScore": 7,
+                            "side2TiebreakScore": 4,
+                            "winningSide": 1,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 1
+                    },
+                    {
+                      "matchUpId": "79dbe8b2-c9f4-4d4e-a499-c26e72dbed99",
+                      "collectionId": "186b4153-5f82-4ad1-aa82-6f97444f55e4",
+                      "collectionPosition": 1,
+                      "createdAt": "2023-07-25T04:33:03.282Z",
+                      "drawPositions": [],
+                      "losers": [],
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "SINGLES",
+                      "processCodes": [],
+                      "sides": [
+                        {
+                          "sideNumber": 1,
+                          "lineUp": []
+                        },
+                        {
+                          "sideNumber": 2,
+                          "lineUp": []
+                        }
+                      ],
+                      "tieMatchUps": [],
+                      "updatedAt": "2023-07-25T04:36:29.993Z",
+                      "winners": [],
+                      "matchUpFormat": "SET3-S:4/TB5NOAD@3",
+                      "score": {
+                        "scoreStringSide1": "3-4(3) 4-3(3) 3-4(3)",
+                        "scoreStringSide2": "4-3(3) 3-4(3) 4-3(3)",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 3,
+                            "side1TiebreakScore": 3,
+                            "side2Score": 4,
+                            "side2TiebreakScore": 5,
+                            "winningSide": 2,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 4,
+                            "side1TiebreakScore": 5,
+                            "side2Score": 3,
+                            "side2TiebreakScore": 3,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 3,
+                            "side1Score": 3,
+                            "side1TiebreakScore": 3,
+                            "side2Score": 4,
+                            "side2TiebreakScore": 5,
+                            "winningSide": 2,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "matchUpId": "66151e44-0f57-435a-8ee8-3759781a0b3f",
+                      "collectionId": "337a82a8-cb4d-46cd-8e5b-a282682c607b",
+                      "collectionPosition": 1,
+                      "createdAt": "2023-07-25T04:33:03.282Z",
+                      "drawPositions": [],
+                      "losers": [],
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "DOUBLES",
+                      "processCodes": [],
+                      "sides": [
+                        {
+                          "sideNumber": 1,
+                          "lineUp": []
+                        },
+                        {
+                          "sideNumber": 2,
+                          "lineUp": []
+                        }
+                      ],
+                      "tieMatchUps": [],
+                      "updatedAt": "2023-07-25T04:36:53.461Z",
+                      "winners": [],
+                      "matchUpFormat": "SET3-S:4/TB5NOAD@3",
+                      "score": {
+                        "scoreStringSide1": "0-4 4-3(3) 0-4",
+                        "scoreStringSide2": "4-0 3-4(3) 4-0",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 0,
+                            "side2Score": 4,
+                            "winningSide": 2,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 4,
+                            "side1TiebreakScore": 5,
+                            "side2Score": 3,
+                            "side2TiebreakScore": 3,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 3,
+                            "side1Score": 0,
+                            "side2Score": 4,
+                            "winningSide": 2,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "matchUpId": "c01a2d06-960a-4472-8e79-9bf33cf70fd3",
+                      "collectionId": "0cde261a-316f-4d9a-94a9-912ad3638d59",
+                      "collectionPosition": 1,
+                      "createdAt": "2023-07-25T04:33:03.282Z",
+                      "drawPositions": [],
+                      "losers": [],
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "DOUBLES",
+                      "processCodes": [],
+                      "sides": [
+                        {
+                          "sideNumber": 1,
+                          "lineUp": []
+                        },
+                        {
+                          "sideNumber": 2,
+                          "lineUp": []
+                        }
+                      ],
+                      "tieMatchUps": [],
+                      "updatedAt": "2023-07-25T04:37:34.292Z",
+                      "winners": [],
+                      "matchUpFormat": "SET3-S:4/TB5NOAD@3",
+                      "score": {
+                        "scoreStringSide1": "4-0 4-1",
+                        "scoreStringSide2": "0-4 1-4",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 4,
+                            "side2Score": 0,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 4,
+                            "side2Score": 1,
+                            "winningSide": 1,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 1
+                    }
+                  ],
+                  "updatedAt": "2023-07-25T04:37:34.292Z",
+                  "winners": [],
+                  "score": {
+                    "scoreStringSide1": "30-30",
+                    "scoreStringSide2": "30-30",
+                    "sets": [
+                      {
+                        "side1Score": 30,
+                        "side2Score": 30,
+                        "games": []
+                      }
+                    ]
+                  },
+                  "tieFormat": {
+                    "collectionDefinitions": [
+                      {
+                        "collectionId": "1cfd5566-4d1e-4f6b-9975-26a0b9f81196",
+                        "collectionName": "Male singles",
+                        "collectionOrder": 1,
+                        "gender": "MALE",
+                        "matchUpCount": 1,
+                        "matchUpFormat": "SET3-S:4/TB5NOAD@3",
+                        "matchUpType": "SINGLES",
+                        "scoreValue": 1,
+                        "category": {
+                          "ageCategoryCode": "U18",
+                          "ballType": "T2STANDARD_PRESSURISED",
+                          "subType": "JUNIOR",
+                          "type": "AGE"
+                        },
+                        "processCodes": [],
+                        "collectionValueProfiles": []
+                      },
+                      {
+                        "collectionId": "186b4153-5f82-4ad1-aa82-6f97444f55e4",
+                        "collectionName": "Female Singles",
+                        "collectionOrder": 2,
+                        "gender": "MALE",
+                        "matchUpCount": 1,
+                        "matchUpFormat": "SET3-S:4/TB5NOAD@3",
+                        "matchUpType": "SINGLES",
+                        "scoreValue": 1,
+                        "category": {
+                          "ageCategoryCode": "U18",
+                          "ballType": "T2STANDARD_PRESSURISED",
+                          "subType": "JUNIOR",
+                          "type": "AGE"
+                        },
+                        "processCodes": [],
+                        "collectionValueProfiles": []
+                      },
+                      {
+                        "collectionId": "337a82a8-cb4d-46cd-8e5b-a282682c607b",
+                        "collectionName": "Female doubles",
+                        "collectionOrder": 3,
+                        "gender": "MALE",
+                        "matchUpCount": 1,
+                        "matchUpFormat": "SET3-S:4/TB5NOAD@3",
+                        "matchUpType": "DOUBLES",
+                        "scoreValue": 1,
+                        "category": {
+                          "ageCategoryCode": "U18",
+                          "ballType": "T2STANDARD_PRESSURISED",
+                          "subType": "JUNIOR",
+                          "type": "AGE"
+                        },
+                        "processCodes": [],
+                        "collectionValueProfiles": []
+                      },
+                      {
+                        "collectionId": "0cde261a-316f-4d9a-94a9-912ad3638d59",
+                        "collectionName": "Male Doubles ",
+                        "collectionOrder": 4,
+                        "gender": "MALE",
+                        "matchUpCount": 1,
+                        "matchUpFormat": "SET3-S:4/TB5NOAD@3",
+                        "matchUpType": "DOUBLES",
+                        "scoreValue": 1,
+                        "category": {
+                          "ageCategoryCode": "U18",
+                          "ballType": "T2STANDARD_PRESSURISED",
+                          "subType": "JUNIOR",
+                          "type": "AGE"
+                        },
+                        "processCodes": [],
+                        "collectionValueProfiles": []
+                      }
+                    ],
+                    "winCriteria": {
+                      "aggregateValue": true
+                    },
+                    "tieFormatName": "CUSTOM"
+                  }
+                }
+              ],
+              "positionAssignments": [
+                {
+                  "drawPosition": 1,
+                  "participantId": "673AAD54-FF87-43C9-AEE9-38AC31F6CDF4"
+                },
+                {
+                  "drawPosition": 2,
+                  "participantId": "D63DE90D-2607-4589-8E37-0DBB43BECC04"
+                }
+              ],
+              "seedAssignments": [],
+              "seedLimit": 0,
+              "stage": "MAIN",
+              "stageSequence": 1,
+              "structureId": "2ac3ef24-08bc-41b8-891e-7699815da4e0",
+              "structureName": "MAIN"
+            }
+          ],
+          "tieFormat": {
+            "collectionDefinitions": [
+              {
+                "collectionId": "1cfd5566-4d1e-4f6b-9975-26a0b9f81196",
+                "collectionName": "Male singles",
+                "collectionOrder": 1,
+                "gender": "MALE",
+                "matchUpCount": 1,
+                "matchUpFormat": "SET3-S:4/TB5NOAD@3",
+                "matchUpType": "SINGLES",
+                "scoreValue": 1,
+                "category": {
+                  "ageCategoryCode": "U18",
+                  "ballType": "T2STANDARD_PRESSURISED",
+                  "subType": "JUNIOR",
+                  "type": "AGE"
+                },
+                "processCodes": [],
+                "collectionValueProfiles": []
+              },
+              {
+                "collectionId": "186b4153-5f82-4ad1-aa82-6f97444f55e4",
+                "collectionName": "Female Singles",
+                "collectionOrder": 2,
+                "gender": "MALE",
+                "matchUpCount": 1,
+                "matchUpFormat": "SET3-S:4/TB5NOAD@3",
+                "matchUpType": "SINGLES",
+                "scoreValue": 1,
+                "category": {
+                  "ageCategoryCode": "U18",
+                  "ballType": "T2STANDARD_PRESSURISED",
+                  "subType": "JUNIOR",
+                  "type": "AGE"
+                },
+                "processCodes": [],
+                "collectionValueProfiles": []
+              },
+              {
+                "collectionId": "337a82a8-cb4d-46cd-8e5b-a282682c607b",
+                "collectionName": "Female doubles",
+                "collectionOrder": 3,
+                "gender": "MALE",
+                "matchUpCount": 1,
+                "matchUpFormat": "SET3-S:4/TB5NOAD@3",
+                "matchUpType": "DOUBLES",
+                "scoreValue": 1,
+                "category": {
+                  "ageCategoryCode": "U18",
+                  "ballType": "T2STANDARD_PRESSURISED",
+                  "subType": "JUNIOR",
+                  "type": "AGE"
+                },
+                "processCodes": [],
+                "collectionValueProfiles": []
+              },
+              {
+                "collectionId": "0cde261a-316f-4d9a-94a9-912ad3638d59",
+                "collectionName": "Male Doubles ",
+                "collectionOrder": 4,
+                "gender": "MALE",
+                "matchUpCount": 1,
+                "matchUpFormat": "SET3-S:4/TB5NOAD@3",
+                "matchUpType": "DOUBLES",
+                "scoreValue": 1,
+                "category": {
+                  "ageCategoryCode": "U18",
+                  "ballType": "T2STANDARD_PRESSURISED",
+                  "subType": "JUNIOR",
+                  "type": "AGE"
+                },
+                "processCodes": [],
+                "collectionValueProfiles": []
+              }
+            ],
+            "winCriteria": {
+              "aggregateValue": true
+            },
+            "tieFormatName": "CUSTOM"
+          },
+          "processCodes": []
+        }
+      ],
+      "endDate": "2023-07-28T00:00:00.000Z",
+      "entries": [
+        {
+          "extensions": [
+            {
+              "name": "statusDetail",
+              "value": "available"
+            }
+          ],
+          "entryId": "42A7D8C7-8F77-4FA2-B129-9FD3B8164CC9",
+          "entryPosition": 1,
+          "entryStatus": "UNGROUPED",
+          "participantId": "70CFEC01-137B-4828-A233-CEB4BA7F9F81"
+        },
+        {
+          "extensions": [
+            {
+              "name": "statusDetail",
+              "value": "available"
+            }
+          ],
+          "entryId": "75495504-9BDE-4BE5-965F-D8A138D93A77",
+          "entryPosition": 2,
+          "entryStatus": "UNGROUPED",
+          "participantId": "24A6FA75-8DBD-4B36-A57F-77801C606E37"
+        },
+        {
+          "entryPosition": 1,
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "673AAD54-FF87-43C9-AEE9-38AC31F6CDF4"
+        },
+        {
+          "entryPosition": 2,
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "D63DE90D-2607-4589-8E37-0DBB43BECC04"
+        }
+      ],
+      "eventId": "23683899-71BE-4201-846E-650843147288",
+      "eventName": "Boys' 18 & under team",
+      "eventType": "TEAM",
+      "gender": "MALE",
+      "links": [],
+      "startDate": "2023-07-27T00:00:00.000Z",
+      "tennisOfficialIds": [],
+      "processCodes": []
+    }
+  ],
+  "localTimeZone": "America/New_York",
+  "matchUps": [],
+  "onlineResources": [],
+  "parentOrganisation": {
+    "organisationId": "C4AD332C-A4AF-4548-9134-24C318044FE6",
+    "createdAt": "2020-12-04T19:31:15.210Z",
+    "extensions": [
+      {
+        "name": "category",
+        "description": "Category property received from Tournament service."
+      }
+    ],
+    "organisationName": "Sam UAT",
+    "parentOrganisation": "5fca8e83359e4eef370ea2d2",
+    "updatedAt": "2020-12-04T19:31:15.210Z",
+    "addresses": [],
+    "contacts": [],
+    "onlineResources": [
+      {
+        "name": "urlSegment",
+        "identifier": "SamUAT",
+        "resourceType": "URL"
+      }
+    ]
+  },
+  "rootOrganisationId": "96A7C92E-92CB-4965-8284-8E5A33761130",
+  "participants": [
+    {
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "62B4771F-4A9E-4997-8A70-3FDB9183DF98",
+      "participantName": "Little Elliott",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "62B4771F-4A9E-4997-8A70-3FDB9183DF98",
+      "person": {
+        "extensions": [],
+        "birthDate": "2008-01-13T00:00:00.000Z",
+        "personId": "62B4771F-4A9E-4997-8A70-3FDB9183DF98",
+        "personOtherIds": [
+          {
+            "personId": "1200037030",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "1200037030",
+        "sex": "FEMALE",
+        "standardFamilyName": "Elliott",
+        "standardGivenName": "Little"
+      },
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2023-07-24T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 19.58,
+            "confidence": 10,
+            "gameZoneLower": 22.74,
+            "gameZoneUpper": 16.42,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2023-07-24T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 21.82,
+            "confidence": 10,
+            "gameZoneLower": 23.81,
+            "gameZoneUpper": 19.83,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "10C2569F-C5A7-4CEE-BFF0-0470CD0DCBC1",
+      "participantName": "Grxxx Lorxxx",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "10C2569F-C5A7-4CEE-BFF0-0470CD0DCBC1",
+      "person": {
+        "extensions": [
+          {
+            "name": "ustaSection",
+            "value": {
+              "code": "40",
+              "name": "Missouri Valley"
+            }
+          },
+          {
+            "name": "ustaDistrict",
+            "value": {
+              "code": "48",
+              "sectionCode": "40",
+              "name": "Oklahoma"
+            }
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Oklahoma City",
+            "countryCode": "USA",
+            "postalCode": "73142-6817",
+            "state": "OK"
+          }
+        ],
+        "birthDate": "2006-08-27T00:00:00.000Z",
+        "personId": "10C2569F-C5A7-4CEE-BFF0-0470CD0DCBC1",
+        "personOtherIds": [
+          {
+            "personId": "2010415674",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "2010415674",
+        "standardFamilyName": "Lorxxx",
+        "standardGivenName": "Grxxx",
+        "tennisId": "LOR1462111",
+        "wheelchair": false
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2023-07-24T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 22.5,
+            "confidence": 10,
+            "gameZoneLower": 24.47,
+            "gameZoneUpper": 20.53,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2023-07-24T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 27.34,
+            "confidence": 10,
+            "gameZoneLower": 29.34,
+            "gameZoneUpper": 25.35,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "F22B5624-389A-43BD-8ECB-3D6483F3DE4A",
+      "participantName": "Yanxxx Alvaxxx",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "F22B5624-389A-43BD-8ECB-3D6483F3DE4A",
+      "person": {
+        "extensions": [
+          {
+            "name": "ustaSection",
+            "value": {
+              "code": "70",
+              "name": "Southern"
+            }
+          },
+          {
+            "name": "ustaDistrict",
+            "value": {
+              "code": "34",
+              "sectionCode": "70",
+              "name": "Georgia"
+            }
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Cumming",
+            "countryCode": "USA",
+            "postalCode": "30040-7423",
+            "state": "GA"
+          }
+        ],
+        "birthDate": "2008-10-12T00:00:00.000Z",
+        "personId": "F22B5624-389A-43BD-8ECB-3D6483F3DE4A",
+        "personOtherIds": [
+          {
+            "personId": "2010861009",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "2010861009",
+        "sex": "MALE",
+        "standardFamilyName": "Alvaxxx",
+        "standardGivenName": "Yanxxx",
+        "tennisId": "ALV4204387",
+        "wheelchair": false
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "3198B919-E332-4A3E-AF95-60716C6F7CA8",
+      "participantName": "Holly Elliott",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "3198B919-E332-4A3E-AF95-60716C6F7CA8",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-12-03T00:00:00.000Z",
+        "personId": "3198B919-E332-4A3E-AF95-60716C6F7CA8",
+        "personOtherIds": [
+          {
+            "personId": "1200216780",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "1200216780",
+        "sex": "FEMALE",
+        "standardFamilyName": "Elliott",
+        "standardGivenName": "Holly"
+      },
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2023-07-24T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 22.24,
+            "confidence": 10,
+            "gameZoneLower": 24.2,
+            "gameZoneUpper": 20.28,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2023-07-24T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 28.38,
+            "confidence": 10,
+            "gameZoneLower": 30.39,
+            "gameZoneUpper": 26.38,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "CE2430C2-5853-4DF5-9EE1-9E6375ADCC96",
+      "participantName": "Jxxx Secxxx",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "CE2430C2-5853-4DF5-9EE1-9E6375ADCC96",
+      "person": {
+        "extensions": [
+          {
+            "name": "ustaSection",
+            "value": {
+              "code": "85",
+              "name": "Midwest"
+            }
+          },
+          {
+            "name": "ustaDistrict",
+            "value": {
+              "code": "54",
+              "sectionCode": "85",
+              "name": "Chicago"
+            }
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Lake Forest",
+            "countryCode": "USA",
+            "postalCode": "60045-3482",
+            "state": "IL"
+          }
+        ],
+        "birthDate": "2008-09-11T00:00:00.000Z",
+        "personId": "CE2430C2-5853-4DF5-9EE1-9E6375ADCC96",
+        "personOtherIds": [
+          {
+            "personId": "2010377583",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "2010377583",
+        "sex": "MALE",
+        "standardFamilyName": "Secxxx",
+        "standardGivenName": "Jxxx",
+        "tennisId": "SEC2419892",
+        "wheelchair": false
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "24A6FA75-8DBD-4B36-A57F-77801C606E37",
+      "participantName": "LUCY AT",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "24A6FA75-8DBD-4B36-A57F-77801C606E37",
+      "person": {
+        "extensions": [],
+        "birthDate": "2016-11-12T00:00:00.000Z",
+        "personId": "24A6FA75-8DBD-4B36-A57F-77801C606E37",
+        "personOtherIds": [
+          {
+            "personId": "1200125840",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "1200125840",
+        "sex": "MALE",
+        "standardFamilyName": "AT",
+        "standardGivenName": "LUCY"
+      },
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2023-07-20T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 26.78,
+            "confidence": 60,
+            "gameZoneLower": 28.57,
+            "gameZoneUpper": 24.98,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2023-07-20T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.35,
+            "confidence": 30,
+            "gameZoneLower": 32.21,
+            "gameZoneUpper": 28.48,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "4B8D877C-C9F9-4E63-9937-08A560406E41",
+      "participantName": "Lxxx Gooxxx",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "4B8D877C-C9F9-4E63-9937-08A560406E41",
+      "person": {
+        "extensions": [
+          {
+            "name": "ustaSection",
+            "value": {
+              "code": "70",
+              "name": "Southern"
+            }
+          },
+          {
+            "name": "ustaDistrict",
+            "value": {
+              "code": "34",
+              "sectionCode": "70",
+              "name": "Georgia"
+            }
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Atlanta",
+            "countryCode": "USA",
+            "postalCode": "30350-5505",
+            "state": "GA"
+          }
+        ],
+        "birthDate": "2013-04-21T00:00:00.000Z",
+        "personId": "4B8D877C-C9F9-4E63-9937-08A560406E41",
+        "personOtherIds": [
+          {
+            "personId": "2017268490",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "2017268490",
+        "sex": "MALE",
+        "standardFamilyName": "Gooxxx",
+        "standardGivenName": "Lxxx",
+        "tennisId": "GOO7528497",
+        "wheelchair": false
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "85B2B414-05E4-447C-888C-C6FED0B77D76",
+      "participantName": "Bennxxx A'lxxx",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "85B2B414-05E4-447C-888C-C6FED0B77D76",
+      "person": {
+        "extensions": [
+          {
+            "name": "ustaSection",
+            "value": {
+              "code": "70",
+              "name": "Southern"
+            }
+          },
+          {
+            "name": "ustaDistrict",
+            "value": {
+              "code": "34",
+              "sectionCode": "70",
+              "name": "Georgia"
+            }
+          }
+        ],
+        "addresses": [
+          {
+            "countryCode": "USA",
+            "postalCode": "30088"
+          }
+        ],
+        "birthDate": "2012-11-24T00:00:00.000Z",
+        "personId": "85B2B414-05E4-447C-888C-C6FED0B77D76",
+        "personOtherIds": [
+          {
+            "personId": "2018315111",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "2018315111",
+        "sex": "FEMALE",
+        "standardFamilyName": "A'lxxx",
+        "standardGivenName": "Bennxxx",
+        "tennisId": "ALA8442538",
+        "wheelchair": false
+      },
+      "timeItems": []
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "76D01BBA-9D23-49D5-9F2E-B8DFC38D7CF8",
+      "participantName": "Richard Elliott",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "76D01BBA-9D23-49D5-9F2E-B8DFC38D7CF8",
+      "person": {
+        "extensions": [],
+        "birthDate": "2007-03-07T00:00:00.000Z",
+        "personId": "76D01BBA-9D23-49D5-9F2E-B8DFC38D7CF8",
+        "personOtherIds": [
+          {
+            "personId": "1200215821",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "1200215821",
+        "sex": "MALE",
+        "standardFamilyName": "Elliott",
+        "standardGivenName": "Richard"
+      },
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2023-07-20T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.66,
+            "confidence": 20,
+            "gameZoneLower": 34.54,
+            "gameZoneUpper": 30.78,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "842A18D0-38D9-4CAC-BFBD-04C08ECE9048",
+      "participantName": "Yosexxx Oblxxx",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "842A18D0-38D9-4CAC-BFBD-04C08ECE9048",
+      "person": {
+        "extensions": [
+          {
+            "name": "ustaSection",
+            "value": {
+              "code": "50",
+              "name": "Northern California"
+            }
+          },
+          {
+            "name": "ustaDistrict",
+            "value": {
+              "code": "83",
+              "sectionCode": "50",
+              "name": "Northern California"
+            }
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Modesto",
+            "countryCode": "USA",
+            "postalCode": "95350-1757",
+            "state": "CA"
+          }
+        ],
+        "birthDate": "2011-08-22T00:00:00.000Z",
+        "personId": "842A18D0-38D9-4CAC-BFBD-04C08ECE9048",
+        "personOtherIds": [
+          {
+            "personId": "2010937803",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "2010937803",
+        "sex": "FEMALE",
+        "standardFamilyName": "Oblxxx",
+        "standardGivenName": "Yosexxx",
+        "tennisId": "OBL6695028",
+        "wheelchair": false
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2023-07-20T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.12,
+            "confidence": 60,
+            "gameZoneLower": 33.9,
+            "gameZoneUpper": 30.34,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2023-07-20T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 25.67,
+            "confidence": 20,
+            "gameZoneLower": 27.54,
+            "gameZoneUpper": 23.79,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "3C5AC9F7-56E6-40F8-A2BB-50D1539038DE",
+      "participantName": "Karxxx Khaxxx",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "3C5AC9F7-56E6-40F8-A2BB-50D1539038DE",
+      "person": {
+        "extensions": [
+          {
+            "name": "ustaSection",
+            "value": {
+              "code": "15",
+              "name": "Florida"
+            }
+          },
+          {
+            "name": "ustaDistrict",
+            "value": {
+              "code": "34",
+              "sectionCode": "15",
+              "name": "Region 4"
+            }
+          }
+        ],
+        "addresses": [
+          {
+            "city": "South Daytona",
+            "countryCode": "USA",
+            "postalCode": "32119-3005",
+            "state": "FL"
+          }
+        ],
+        "birthDate": "2011-12-20T00:00:00.000Z",
+        "personId": "3C5AC9F7-56E6-40F8-A2BB-50D1539038DE",
+        "personOtherIds": [
+          {
+            "personId": "2018140035",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "2018140035",
+        "sex": "FEMALE",
+        "standardFamilyName": "Khaxxx",
+        "standardGivenName": "Karxxx",
+        "tennisId": "KHA9254836",
+        "wheelchair": false
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2023-07-24T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 20.22,
+            "confidence": 10,
+            "gameZoneLower": 22.19,
+            "gameZoneUpper": 18.26,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2023-07-24T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 24.82,
+            "confidence": 10,
+            "gameZoneLower": 26.8,
+            "gameZoneUpper": 22.83,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "FA803BF2-85BA-44D7-8AA3-10409B313F34",
+      "participantName": "Navnxxx Raghuxxx",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "FA803BF2-85BA-44D7-8AA3-10409B313F34",
+      "person": {
+        "extensions": [
+          {
+            "name": "ustaSection",
+            "value": {
+              "code": "15",
+              "name": "Florida"
+            }
+          },
+          {
+            "name": "ustaDistrict",
+            "value": {
+              "code": "36",
+              "sectionCode": "15",
+              "name": "Region 6"
+            }
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Port Saint Lucie",
+            "countryCode": "USA",
+            "postalCode": "34952-5919",
+            "state": "FL"
+          }
+        ],
+        "birthDate": "2009-02-25T00:00:00.000Z",
+        "personId": "FA803BF2-85BA-44D7-8AA3-10409B313F34",
+        "personOtherIds": [
+          {
+            "personId": "2010634557",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "2010634557",
+        "sex": "MALE",
+        "standardFamilyName": "Raghuxxx",
+        "standardGivenName": "Navnxxx",
+        "tennisId": "RAG7334654",
+        "wheelchair": false
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "570ACF18-BD03-4587-9A3C-29383102BF7D",
+      "participantName": "Boy Elliott",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "570ACF18-BD03-4587-9A3C-29383102BF7D",
+      "person": {
+        "extensions": [],
+        "birthDate": "2007-11-02T00:00:00.000Z",
+        "personId": "570ACF18-BD03-4587-9A3C-29383102BF7D",
+        "personOtherIds": [
+          {
+            "personId": "1200216779",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "1200216779",
+        "sex": "MALE",
+        "standardFamilyName": "Elliott",
+        "standardGivenName": "Boy"
+      },
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2023-07-24T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 25.98,
+            "confidence": 10,
+            "gameZoneLower": 29.14,
+            "gameZoneUpper": 22.82,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2023-07-24T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.54,
+            "confidence": 10,
+            "gameZoneLower": 32.58,
+            "gameZoneUpper": 28.51,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "49C864EF-9040-48BF-9571-BAA473B787AE",
+      "participantName": "Nathanxxx xxx",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "49C864EF-9040-48BF-9571-BAA473B787AE",
+      "person": {
+        "extensions": [
+          {
+            "name": "ustaSection",
+            "value": {
+              "code": "65",
+              "name": "Southern California"
+            }
+          },
+          {
+            "name": "ustaDistrict",
+            "value": {
+              "code": "17",
+              "sectionCode": "65",
+              "name": "Southern California"
+            }
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Orange",
+            "countryCode": "USA",
+            "postalCode": "92867-1922",
+            "state": "CA"
+          }
+        ],
+        "birthDate": "2009-04-27T00:00:00.000Z",
+        "personId": "49C864EF-9040-48BF-9571-BAA473B787AE",
+        "personOtherIds": [
+          {
+            "personId": "2010854055",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "2010854055",
+        "sex": "MALE",
+        "standardFamilyName": "xxx",
+        "standardGivenName": "Nathanxxx",
+        "tennisId": "SUH1534490",
+        "wheelchair": false
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2023-07-20T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.41,
+            "confidence": 20,
+            "gameZoneLower": 33.28,
+            "gameZoneUpper": 29.54,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "70CFEC01-137B-4828-A233-CEB4BA7F9F81",
+      "participantName": "Karen A Elliott",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "70CFEC01-137B-4828-A233-CEB4BA7F9F81",
+      "person": {
+        "extensions": [
+          {
+            "name": "ustaSection",
+            "value": {
+              "code": "15",
+              "name": "Florida"
+            }
+          },
+          {
+            "name": "ustaDistrict",
+            "value": {
+              "code": "34",
+              "sectionCode": "15",
+              "name": "Region 4"
+            }
+          }
+        ],
+        "addresses": [
+          {
+            "city": "Orlando",
+            "countryCode": "USA",
+            "postalCode": "32801-1400",
+            "state": "FL"
+          }
+        ],
+        "birthDate": "1982-11-08T00:00:00.000Z",
+        "personId": "70CFEC01-137B-4828-A233-CEB4BA7F9F81",
+        "personOtherIds": [
+          {
+            "personId": "2018370000",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "externalId": "2018370000",
+        "sex": "FEMALE",
+        "standardFamilyName": "Elliott",
+        "standardGivenName": "Karen A",
+        "tennisId": "ELL9215156",
+        "wheelchair": false
+      }
+    },
+    {
+      "contacts": [
+        {
+          "emailAddress": "abrod@mailinator.com",
+          "telephone": "5135045524"
+        }
+      ],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "0FC1CDE3-CB82-4BD5-A6C1-9EF9A2227041",
+      "participantName": "Alanna Broderick",
+      "participantRole": "OFFICIAL",
+      "participantRoleResponsibilities": ["TournamentDirector"],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "9D76BB9D-3307-46D2-A7D2-60C274A01FD7",
+      "person": {
+        "otherNames": [],
+        "previousNames": [],
+        "personOtherIds": [
+          {
+            "personId": "2018369895",
+            "organisationId": "505916e7-d79c-4284-b6cf-23c3d1344d34"
+          }
+        ],
+        "standardGivenName": "Alanna",
+        "birthDate": "1980-07-14T00:00:00.000Z",
+        "sex": "MALE",
+        "standardFamilyName": "Broderick",
+        "personId": "9D76BB9D-3307-46D2-A7D2-60C274A01FD7",
+        "contacts": [
+          {
+            "emailAddress": "abrod@mailinator.com",
+            "telephone": "5135045524"
+          }
+        ],
+        "addresses": [],
+        "onlineResources": [],
+        "createdAt": "2022-09-09T08:09:43.328Z",
+        "updatedAt": "2022-09-09T08:09:43.328Z"
+      },
+      "timeItems": []
+    },
+    {
+      "contacts": [
+        {
+          "emailAddress": "",
+          "name": "",
+          "telephone": ""
+        }
+      ],
+      "individualParticipantIds": [
+        "62B4771F-4A9E-4997-8A70-3FDB9183DF98",
+        "10C2569F-C5A7-4CEE-BFF0-0470CD0DCBC1",
+        "F22B5624-389A-43BD-8ECB-3D6483F3DE4A",
+        "3198B919-E332-4A3E-AF95-60716C6F7CA8",
+        "CE2430C2-5853-4DF5-9EE1-9E6375ADCC96"
+      ],
+      "participantId": "673AAD54-FF87-43C9-AEE9-38AC31F6CDF4",
+      "participantName": "Eastern",
+      "participantOtherName": "",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantType": "TEAM",
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "contacts": [
+        {
+          "emailAddress": "",
+          "name": "",
+          "telephone": ""
+        }
+      ],
+      "individualParticipantIds": [
+        "4B8D877C-C9F9-4E63-9937-08A560406E41",
+        "85B2B414-05E4-447C-888C-C6FED0B77D76",
+        "76D01BBA-9D23-49D5-9F2E-B8DFC38D7CF8",
+        "842A18D0-38D9-4CAC-BFBD-04C08ECE9048",
+        "3C5AC9F7-56E6-40F8-A2BB-50D1539038DE",
+        "FA803BF2-85BA-44D7-8AA3-10409B313F34",
+        "570ACF18-BD03-4587-9A3C-29383102BF7D",
+        "49C864EF-9040-48BF-9571-BAA473B787AE"
+      ],
+      "participantId": "D63DE90D-2607-4589-8E37-0DBB43BECC04",
+      "participantName": "Florida",
+      "participantOtherName": "",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantType": "TEAM",
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "76D01BBA-9D23-49D5-9F2E-B8DFC38D7CF8",
+        "85B2B414-05E4-447C-888C-C6FED0B77D76"
+      ],
+      "participantId": "4681f09c-2910-440b-9e76-d4d8718263ea",
+      "participantName": "A'lxxx/Elliott",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantType": "PAIR",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "F22B5624-389A-43BD-8ECB-3D6483F3DE4A",
+        "10C2569F-C5A7-4CEE-BFF0-0470CD0DCBC1"
+      ],
+      "participantId": "7a78c486-5b00-4b52-8a01-3151cc3e3865",
+      "participantName": "Alvaxxx/Lorxxx",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantType": "PAIR",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "3198B919-E332-4A3E-AF95-60716C6F7CA8",
+        "F22B5624-389A-43BD-8ECB-3D6483F3DE4A"
+      ],
+      "participantId": "9303a069-32c2-4e42-9e58-0c44f5d7b8fd",
+      "participantName": "Alvaxxx/Elliott",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantType": "PAIR",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    }
+  ],
+  "registrationProfile": [
+    {
+      "entriesClose": "2023-07-23T00:00:00.000Z"
+    }
+  ],
+  "startDate": "2023-07-27T00:00:00.000Z",
+  "totalPrizeMoney": [],
+  "tournamentCategories": [],
+  "tournamentGroups": [],
+  "tournamentId": "21C5E4C4-1F1E-43D6-A3AF-3B87D66C34DD",
+  "tournamentName": "JTT Tie Test",
+  "tournamentExternalId": "23-70927",
+  "tournamentOtherIds": [],
+  "processCodes": [],
+  "deleted": false,
+  "venueIds": ["86078EDA-25EA-428C-BE1A-8213D2614290"],
+  "venues": [
+    {
+      "addresses": [
+        {
+          "addressLine1": "HUDSON RIVER GREENWAY",
+          "addressLine2": "",
+          "city": "NEW YORK",
+          "latitude": "40.799186",
+          "longitude": "-73.975314",
+          "postalCode": "10025",
+          "state": "NY",
+          "timeZone": "America/New_York"
+        }
+      ],
+      "courts": [],
+      "venueAbbreviation": "9SRC",
+      "venueId": "86078EDA-25EA-428C-BE1A-8213D2614290",
+      "venueName": "96th Street Red Clay Tennis Courts",
+      "venueOtherIds": []
+    }
+  ]
+}

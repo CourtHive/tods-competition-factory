@@ -1,6 +1,8 @@
 import { matchUpIsComplete } from '../../governors/queryGovernor/matchUpIsComplete';
+import { getDevContext } from '../../../global/state/globalState';
 import { getParticipantResults } from './getParticipantResults';
 import { unique } from '../../../utilities/arrays';
+import { getTallyReport } from './getTallyReport';
 import { getGroupOrder } from './getGroupOrder';
 
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../constants/policyConstants';
@@ -13,6 +15,7 @@ import {
 
 export function tallyParticipantResults({
   policyDefinitions,
+  generateReport,
   matchUpFormat,
   matchUps = [],
   subOrderMap,
@@ -27,7 +30,8 @@ export function tallyParticipantResults({
         : structureIds.concat(structureId),
     []
   );
-  if (structureIds.length !== 1) return { error: INVALID_VALUES };
+  if (structureIds.length !== 1)
+    return { error: INVALID_VALUES, info: 'Maximum one structureId' };
 
   const relevantMatchUps = matchUps.filter(
     (matchUp) => matchUp && matchUp.matchUpStatus !== BYE
@@ -56,7 +60,9 @@ export function tallyParticipantResults({
     perPlayer,
   });
 
-  const groupOrder = getGroupOrder({
+  let report, order;
+
+  const { groupOrder, report: groupOrderReport } = getGroupOrder({
     matchUps: consideredMatchUps,
     participantResults,
     participantsCount,
@@ -67,6 +73,9 @@ export function tallyParticipantResults({
 
   // do not add groupOrder if bracket is not complete
   if (bracketComplete && groupOrder) {
+    report = groupOrderReport;
+    order = groupOrder;
+
     groupOrder.forEach((finishingPosition) => {
       const { participantId, groupOrder, rankOrder, subOrder, ties, GEMscore } =
         finishingPosition;
@@ -80,18 +89,22 @@ export function tallyParticipantResults({
       });
     });
   } else {
-    const provionalOrder = getGroupOrder({
-      requireCompletion: false,
-      participantResults,
-      participantsCount,
-      matchUpFormat,
-      tallyPolicy,
-      subOrderMap,
-      matchUps,
-    });
+    const { groupOrder: provisionalOrder, report: provisionalOrderReport } =
+      getGroupOrder({
+        requireCompletion: false,
+        participantResults,
+        participantsCount,
+        matchUpFormat,
+        tallyPolicy,
+        subOrderMap,
+        matchUps,
+      });
 
-    if (provionalOrder) {
-      provionalOrder.forEach((finishingPosition) => {
+    report = provisionalOrderReport;
+    order = provisionalOrder;
+
+    if (provisionalOrder) {
+      provisionalOrder.forEach((finishingPosition) => {
         const { participantId, groupOrder, GEMscore } = finishingPosition;
         const participantResult = participantResults[participantId];
         Object.assign(participantResult, {
@@ -102,5 +115,13 @@ export function tallyParticipantResults({
     }
   }
 
-  return { participantResults, bracketComplete };
+  const result = { participantResults, bracketComplete, report };
+
+  if (generateReport || getDevContext({ tally: true })) {
+    const readable = getTallyReport({ matchUps, report, order });
+    if (getDevContext({ tally: true })) console.log(readable);
+    result.readableReport = readable;
+  }
+
+  return result;
 }
