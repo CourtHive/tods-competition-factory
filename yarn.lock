@@ -3441,12 +3441,12 @@ create-require@^1.1.0:
   resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
 
-cross-fetch@^3.1.5:
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.5.tgz#e1389f44d9e7ba767907f7af8454787952ab534f"
-  integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
+cross-fetch@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-4.0.0.tgz#f037aef1580bb3a1a35164ea2a848ba81b445983"
+  integrity sha512-e4a5N8lVvuLgAWgnCrLr2PP0YyDOTHa9H/Rj54dirp61qXnNq46m82bRhNqIA5VccJtWBvPTFRV3TtvHUKPB1g==
   dependencies:
-    node-fetch "2.6.7"
+    node-fetch "^2.6.12"
 
 cross-spawn@^7.0.0, cross-spawn@^7.0.2, cross-spawn@^7.0.3:
   version "7.0.3"
@@ -6062,10 +6062,10 @@ new-github-release-url@^2.0.0:
   dependencies:
     type-fest "^2.5.1"
 
-node-fetch@2.6.7:
-  version "2.6.7"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
-  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
+node-fetch@^2.6.12:
+  version "2.6.12"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.12.tgz#02eb8e22074018e3d5a83016649d04df0e348fba"
+  integrity sha512-C/fGU2E8ToujUivIO0H+tpQ6HWo4eEmchoPIoXtxCrVghxdKq+QOHqEZW7tuP3KlV3bC8FRMO5nMCC7Zm1VP6g==
   dependencies:
     whatwg-url "^5.0.0"
 
@@ -6773,63 +6773,63 @@ quick-lru@^6.1.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-6.1.1.tgz#f8e5bf9010376c126c80c1a62827a526c0e60adf"
   integrity sha512-S27GBT+F0NTRiehtbrgaSE1idUAJ5bX8dPAQTdylEyNlrdcH5X4Lz7Edz3DYzecbsCluD5zO8ZNEe04z3D3u6Q==
 
-quicktype-core@23.0.59:
-  version "23.0.59"
-  resolved "https://registry.yarnpkg.com/quicktype-core/-/quicktype-core-23.0.59.tgz#4a2b24e9884817463f84d61fd543730ade8ed0a5"
-  integrity sha512-D8DwNyJkDi3kcQ0kY3QYHx/REobwa1kJ+2udTo7it1ofqtjQVNncRsjKN0urml6hByqdDCOT7IiFgOB7i0M2Nw==
+quicktype-core@23.0.63:
+  version "23.0.63"
+  resolved "https://registry.yarnpkg.com/quicktype-core/-/quicktype-core-23.0.63.tgz#7efcf1dffcca36e3cec9a70fc25ca1d8ef19ad68"
+  integrity sha512-bVJMCkFE1va8uTNQzTLeJZt0hXfdipkVDxO5g3O/T7DCSVO3oP/yI+Ymv/5+wpS1rcyDBu1pxroedKup6f7htQ==
   dependencies:
     "@glideapps/ts-necessities" "2.1.3"
     "@types/urijs" "^1.19.19"
     browser-or-node "^2.1.1"
     collection-utils "^1.0.1"
-    cross-fetch "^3.1.5"
+    cross-fetch "^4.0.0"
     is-url "^1.2.4"
     js-base64 "^3.7.5"
     lodash "^4.17.21"
     pako "^1.0.6"
     pluralize "^8.0.0"
-    readable-stream "4.3.0"
+    readable-stream "4.4.2"
     unicode-properties "^1.4.1"
     urijs "^1.19.1"
     wordwrap "^1.0.0"
     yaml "^2.3.1"
 
-quicktype-graphql-input@23.0.59:
-  version "23.0.59"
-  resolved "https://registry.yarnpkg.com/quicktype-graphql-input/-/quicktype-graphql-input-23.0.59.tgz#b5c4c057aa2225510296aa7a223ecbe4af40f246"
-  integrity sha512-uf+a3EcufLO4t0EI4wzt7Ldstmc7C4MtVjngyn0I0gAJ++9xmIO9dskXlS0JKux1MkvlAhPvQTdi6Vu63hyU3Q==
+quicktype-graphql-input@23.0.63:
+  version "23.0.63"
+  resolved "https://registry.yarnpkg.com/quicktype-graphql-input/-/quicktype-graphql-input-23.0.63.tgz#9a6860b546fa88e602e2d8d13129934f9e43049f"
+  integrity sha512-4EjqeQn6xM/UzG7RKj8a0WVnezq/41j5l4qmThBobM9EAqdbCGVoukxvjAznz6YDMAze1t1bFnoLzifU8TxrEQ==
   dependencies:
     collection-utils "^1.0.1"
     graphql "^0.11.7"
-    quicktype-core "23.0.59"
+    quicktype-core "23.0.63"
 
-quicktype-typescript-input@23.0.59:
-  version "23.0.59"
-  resolved "https://registry.yarnpkg.com/quicktype-typescript-input/-/quicktype-typescript-input-23.0.59.tgz#f0508459bd2b57b0164e8f6f9291f28b20a73d7a"
-  integrity sha512-JB8ae7cUb/iiwYAd2h0dNE9kHojeU0fr8rJ+AnUIkLrmEQ0qxmnB2DjadmaA6kbzV7PBq2UGtZjeGkYchq4m2Q==
+quicktype-typescript-input@23.0.63:
+  version "23.0.63"
+  resolved "https://registry.yarnpkg.com/quicktype-typescript-input/-/quicktype-typescript-input-23.0.63.tgz#2278d306f0e2a64770faafbc0f72cc49b766f4d1"
+  integrity sha512-VVKlMzMWbXvdWtL+00yOUwAtZC7piC75Ik3bHzdqY0V7bm1j3Lodguq07j4ed96saxqWRh6rfeXXsdbOhRyXRA==
   dependencies:
     "@mark.probst/typescript-json-schema" "0.55.0"
-    quicktype-core "23.0.59"
+    quicktype-core "23.0.63"
     typescript "4.9.5"
 
-quicktype@23.0.59:
-  version "23.0.59"
-  resolved "https://registry.yarnpkg.com/quicktype/-/quicktype-23.0.59.tgz#850ded7e365a584273f117d5106351ba0d69fb0c"
-  integrity sha512-fTo7eNzFByP7x5xGkpiKDaNaqMejIiMuMcxtqurUaxbDSC0fPf3E3oGk0cMoWA3LK0Idu53BTayBd/Md7JhnEg==
+quicktype@23.0.63:
+  version "23.0.63"
+  resolved "https://registry.yarnpkg.com/quicktype/-/quicktype-23.0.63.tgz#2f6695dd5d4a458f2cdd7dfd436545a036495df3"
+  integrity sha512-ncTNNEHeQJPGZm7uoHdE5RpFNCmOb0DUSp2vi8Dd+IGNwJtHtf5AOIIWWN6f7PnficD+wY8huMmVRYDDxFpjnQ==
   dependencies:
     "@glideapps/ts-necessities" "^2.1.3"
     chalk "^4.1.2"
     collection-utils "^1.0.1"
     command-line-args "^5.2.1"
     command-line-usage "^7.0.1"
-    cross-fetch "^3.1.5"
+    cross-fetch "^4.0.0"
     graphql "^0.11.7"
     lodash "^4.17.21"
     moment "^2.29.4"
-    quicktype-core "23.0.59"
-    quicktype-graphql-input "23.0.59"
-    quicktype-typescript-input "23.0.59"
-    readable-stream "^4.3.0"
+    quicktype-core "23.0.63"
+    quicktype-graphql-input "23.0.63"
+    quicktype-typescript-input "23.0.63"
+    readable-stream "^4.4.2"
     stream-json "1.8.0"
     string-to-stream "^3.0.1"
     typescript "4.9.5"
@@ -6929,15 +6929,16 @@ readable-stream@3, readable-stream@^3.0.0:
     string_decoder "^1.1.1"
     util-deprecate "^1.0.1"
 
-readable-stream@4.3.0, readable-stream@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-4.3.0.tgz#0914d0c72db03b316c9733bb3461d64a3cc50cba"
-  integrity sha512-MuEnA0lbSi7JS8XM+WNJlWZkHAAdm7gETHdFK//Q/mChGyj2akEFtdLZh32jSdkWGbRwCW9pn6g3LWDdDeZnBQ==
+readable-stream@4.4.2, readable-stream@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-4.4.2.tgz#e6aced27ad3b9d726d8308515b9a1b98dc1b9d13"
+  integrity sha512-Lk/fICSyIhodxy1IDK2HazkeGjSmezAWX2egdtJnYhtzKEsBPJowlI6F6LPb5tqIQILrMbx22S5o3GuJavPusA==
   dependencies:
     abort-controller "^3.0.0"
     buffer "^6.0.3"
     events "^3.3.0"
     process "^0.11.10"
+    string_decoder "^1.3.0"
 
 readable-stream@^3.4.0:
   version "3.6.0"
@@ -7615,7 +7616,7 @@ string.prototype.trimstart@^1.0.5:
     define-properties "^1.1.4"
     es-abstract "^1.19.5"
 
-string_decoder@^1.1.1:
+string_decoder@^1.1.1, string_decoder@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.3.0.tgz#42f114594a46cf1a8e30b0a84f56c78c3edac21e"
   integrity sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==
