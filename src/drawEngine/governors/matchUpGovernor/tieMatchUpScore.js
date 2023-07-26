@@ -1,6 +1,6 @@
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
-import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
+import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
 import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isActiveMatchUp } from '../../getters/activeMatchUp';

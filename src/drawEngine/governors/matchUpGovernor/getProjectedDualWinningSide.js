@@ -1,4 +1,4 @@
-import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
+import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { makeDeepCopy } from '../../../utilities';
