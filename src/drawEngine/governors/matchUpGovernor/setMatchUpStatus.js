@@ -155,6 +155,7 @@ export function setMatchUpStatus(params) {
         set,
       } = generateTieMatchUpScore({
         drawDefinition,
+        matchUpsMap,
         matchUp,
       });
 
@@ -299,6 +300,7 @@ export function setMatchUpStatus(params) {
     const { projectedWinningSide } = getProjectedDualWinningSide({
       matchUpStatus,
       dualMatchUp,
+      matchUpsMap,
       winningSide,
       tieFormat,
       structure,
@@ -445,11 +447,12 @@ function applyMatchUpValues(params) {
 
   // recalculate dualMatchUp score if isCollectionMatchUp
   if (params.isCollectionMatchUp) {
-    const { matchUpTieId, drawDefinition } = params;
+    const { matchUpTieId, drawDefinition, matchUpsMap } = params;
     const tieMatchUpResult = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       tournamentRecord,
       drawDefinition,
+      matchUpsMap,
       event,
     });
 

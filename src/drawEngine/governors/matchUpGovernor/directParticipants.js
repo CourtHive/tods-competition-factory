@@ -43,11 +43,12 @@ export function directParticipants(params) {
 
   let annotate;
   if (isCollectionMatchUp) {
-    const { matchUpTieId } = params;
+    const { matchUpTieId, matchUpsMap } = params;
     const tieMatchUpResult = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       tournamentRecord,
       drawDefinition,
+      matchUpsMap,
       event,
     });
     annotate = tieMatchUpResult && { tieMatchUpResult };

@@ -6,6 +6,7 @@ import { makeDeepCopy } from '../../../utilities';
 export function getProjectedDualWinningSide({
   drawDefinition,
   matchUpStatus,
+  matchUpsMap,
   winningSide,
   dualMatchUp,
   tieFormat,
@@ -37,6 +38,7 @@ export function getProjectedDualWinningSide({
   const { winningSide: projectedWinningSide } = generateTieMatchUpScore({
     matchUp: projectedDualMatchUp,
     drawDefinition,
+    matchUpsMap,
     tieFormat,
     event,
   });

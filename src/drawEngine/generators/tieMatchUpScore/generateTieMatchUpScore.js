@@ -26,6 +26,7 @@ export function generateTieMatchUpScore({
   sideAdjustments = [0, 0], // currently unused?
   separator = '-',
   drawDefinition,
+  matchUpsMap,
   tieFormat,
   matchUp,
 }) {
@@ -125,12 +126,14 @@ export function generateTieMatchUpScore({
     }
 
     if (!winningSide && tallyDirectives) {
+      const matchUpId = matchUp.matchUpId;
       const inContextMatchUp = matchUp.hasContext
         ? matchUp
-        : findMatchUp({
-            matchUpId: matchUp.matchUpId,
+        : matchUpsMap?.matchUpId ||
+          findMatchUp({
             inContext: true,
             drawDefinition,
+            matchUpId,
           })?.matchUp;
 
       if (inContextMatchUp) {
@@ -142,7 +145,6 @@ export function generateTieMatchUpScore({
           winningSide = inContextMatchUp.sides.find(
             ({ participantId }) => participantId === winningParticipantId
           )?.sideNumber;
-          console.log({ winningParticipantId, winningSide });
         }
       }
     }
@@ -157,17 +159,3 @@ export function generateTieMatchUpScore({
     set,
   };
 }
-
-/*
-function getCollectionPositionValue({
-  collectionDefinition,
-  collectionPosition,
-}) {
-  const collectionValueProfiles =
-    collectionDefinition.collectionValueProfiles || [];
-  const profile = collectionValueProfiles?.find(
-    (profile) => profile.collectionPosition === collectionPosition
-  );
-  return profile?.matchUpValue;
-}
-*/
