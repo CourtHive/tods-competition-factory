@@ -154,6 +154,7 @@ export function setMatchUpStatus(params) {
         scoreStringSide2,
         set,
       } = generateTieMatchUpScore({
+        drawDefinition,
         matchUp,
       });
 

@@ -1,6 +1,8 @@
 import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
+import { tallyParticipantResults } from '../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { evaluateCollectionResult } from './evaluateCollectionResult';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { getGroupValueGroups } from '../getGroupValueGroups';
 
 import {
@@ -23,6 +25,7 @@ import {
 export function generateTieMatchUpScore({
   sideAdjustments = [0, 0], // currently unused?
   separator = '-',
+  drawDefinition,
   tieFormat,
   matchUp,
 }) {
@@ -41,9 +44,9 @@ export function generateTieMatchUpScore({
   const result = validateTieFormat({ tieFormat });
   if (result.error) return result;
 
-  const sideTieValues = [0, 0];
-  const tieMatchUps = matchUp?.tieMatchUps || [];
   const collectionDefinitions = tieFormat?.collectionDefinitions || [];
+  const tieMatchUps = matchUp?.tieMatchUps || [];
+  const sideTieValues = [0, 0];
 
   const { groupValueGroups, groupValueNumbers } =
     getGroupValueGroups(tieFormat);
@@ -103,7 +106,8 @@ export function generateTieMatchUpScore({
   // now calculate if there is a winningSide
   let winningSide;
   if (tieFormat?.winCriteria) {
-    const { valueGoal, aggregateValue } = tieFormat.winCriteria;
+    const { valueGoal, aggregateValue, tallyDirectives } =
+      tieFormat.winCriteria;
     if (valueGoal) {
       const sideThatWon = sideScores
         .map((points, sideIndex) => ({ sideNumber: sideIndex + 1, points }))
@@ -117,6 +121,29 @@ export function generateTieMatchUpScore({
       );
       if (allTieMatchUpsCompleted && sideScores[0] !== sideScores[1]) {
         winningSide = sideScores[0] > sideScores[1] ? 1 : 2;
+      }
+    }
+
+    if (!winningSide && tallyDirectives) {
+      const inContextMatchUp = matchUp.hasContext
+        ? matchUp
+        : findMatchUp({
+            matchUpId: matchUp.matchUpId,
+            inContext: true,
+            drawDefinition,
+          })?.matchUp;
+
+      if (inContextMatchUp) {
+        const { completedTieMatchUps, order } = tallyParticipantResults({
+          matchUps: [inContextMatchUp],
+        });
+        if (completedTieMatchUps && order.length) {
+          const winningParticipantId = order[0].participantId;
+          winningSide = inContextMatchUp.sides.find(
+            ({ participantId }) => participantId === winningParticipantId
+          )?.sideNumber;
+          console.log({ winningParticipantId, winningSide });
+        }
       }
     }
   }

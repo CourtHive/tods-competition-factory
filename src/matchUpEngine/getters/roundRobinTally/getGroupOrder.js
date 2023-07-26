@@ -75,7 +75,9 @@ export function getGroupOrder(params) {
   const report = [];
 
   // if not all opponents have completed their matchUps, no orders are assigned
-  if (requireCompletion && !isComplete(params)) return {};
+  if (requireCompletion && !isComplete(params)) {
+    return {};
+  }
 
   const attribute = [
     'tieMatchUpsWon',

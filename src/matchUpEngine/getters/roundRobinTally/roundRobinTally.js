@@ -48,6 +48,12 @@ export function tallyParticipantResults({
   // if bracket is incomplete don't use expected matchUps perPlayer for calculating
   if (!bracketComplete) perPlayer = 0;
 
+  const completedTieMatchUps = matchUps.every(
+    ({ matchUpType, tieMatchUps }) =>
+      matchUpType === TEAM &&
+      tieMatchUps.every((matchUp) => matchUpIsComplete({ matchUp }))
+  );
+
   const tallyPolicy = policyDefinitions?.[POLICY_TYPE_ROUND_ROBIN_TALLY];
 
   const consideredMatchUps = matchUps.filter(
@@ -115,7 +121,16 @@ export function tallyParticipantResults({
     }
   }
 
-  const result = { participantResults, bracketComplete, report };
+  const result = {
+    completedTieMatchUps,
+    participantResults,
+    bracketComplete,
+    report,
+  };
+
+  if (bracketComplete || completedTieMatchUps) {
+    result.order = order;
+  }
 
   if (generateReport || getDevContext({ tally: true })) {
     const readable = getTallyReport({ matchUps, report, order });
