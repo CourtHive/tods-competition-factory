@@ -26,6 +26,7 @@ export function generateAndPopulateRRplayoffStructures(params) {
   }
   const {
     sourceStructureId,
+    requireSequential,
     drawDefinition,
     playoffGroups,
     groupCount,
@@ -40,6 +41,7 @@ export function generateAndPopulateRRplayoffStructures(params) {
     positionRangeMap,
     error,
   } = processPlayoffGroups({
+    requireSequential,
     sourceStructureId,
     playoffGroups,
     groupCount,

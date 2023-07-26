@@ -1415,6 +1415,7 @@ Generates values but does not attach them to the `drawDefinition`. Used in conju
 ```js
 const { structures, links, matchUpModifications } =
   tournamentEngine.generateAndPopulatePlayoffStructures({
+    requireSequential, // boolean defaults to true; only applies to Round Robin; require finishingPositions to be sequential
     roundNumbers: [3], // optional if playoffPositions not provided; roundNumbers of structure to be played off.
     roundProfiles, // optional - source roundNumbers as Object.keys with depth as Object.values, e.g. [{ 1: 2}, {2: 1}]
     playoffPositions: [3, 4], // optional if roundNumbers not provided; finishing positions to be played off.
