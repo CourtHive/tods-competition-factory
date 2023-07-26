@@ -31,6 +31,14 @@ export function attemptToSetMatchUpStatus(params) {
     matchUp,
   } = params;
 
+  const teamRoundRobinContext = !!(
+    matchUp.tieMatchUps &&
+    !matchUp.rondPosition &&
+    params.inContextDrawMatchUps.find(
+      (icdm) => icdm.matchUpId === matchUp.matchUpId
+    ).containerStructureId
+  );
+
   const stack = 'attemptToSetMatchUpStatus';
 
   const isBYE = matchUpStatus === BYE;
@@ -72,6 +80,7 @@ export function attemptToSetMatchUpStatus(params) {
       })) ||
     (!directing && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
     (isDoubleExit && modifyScoreAndAdvanceDoubleExit(params)) ||
+    (teamRoundRobinContext && scoreModification(params)) ||
     decorateResult({
       result: { error: INVALID_MATCHUP_STATUS },
       stack,

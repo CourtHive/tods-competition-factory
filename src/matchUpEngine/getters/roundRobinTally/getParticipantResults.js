@@ -76,7 +76,6 @@ export function getParticipantResults({
           checkInitializeParticipant(participantResults, participantIdSide2);
           participantResults[participantIdSide2].matchUpsCancelled += 1;
         }
-        return;
       } else {
         if (tieMatchUps?.length) {
           perPlayer = 0; // if any matchUps are matchUpType: TEAM don't calculate perPlayer
