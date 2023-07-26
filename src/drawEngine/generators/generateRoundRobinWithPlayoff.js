@@ -10,7 +10,7 @@ import { MAIN, PLAY_OFF } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function generateRoundRobinWithPlayOff(params) {
-  const { drawDefinition, structureOptions } = params;
+  const { drawDefinition, structureOptions, requireSequential } = params;
 
   const mainDrawProperties = Object.assign(
     { structureName: MAIN }, // default structureName
@@ -26,14 +26,14 @@ export function generateRoundRobinWithPlayOff(params) {
   }
 
   // define a default playoff group if none specified
-  const playoffGroups = (structureOptions &&
-    structureOptions.playoffGroups) || [
+  const playoffGroups = structureOptions?.playoffGroups || [
     { finishingPositions: [1], structureName: PLAY_OFF },
   ];
   const [mainStructure] = structures;
 
   const { structures: playoffStructures, links } = processPlayoffGroups({
     sourceStructureId: mainStructure.structureId,
+    requireSequential,
     drawDefinition,
     playoffGroups,
     groupCount,

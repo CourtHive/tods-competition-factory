@@ -115,6 +115,7 @@ export function resetScorecard(params) {
     removeScore: true,
     tournamentRecord,
     drawDefinition,
+    matchUpsMap,
     matchUpId,
   });
   if (result.error) return decorateResult({ result, stack });

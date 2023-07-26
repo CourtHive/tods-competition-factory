@@ -1,4 +1,4 @@
-import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
+import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { makeDeepCopy } from '../../../utilities';
@@ -6,6 +6,7 @@ import { makeDeepCopy } from '../../../utilities';
 export function getProjectedDualWinningSide({
   drawDefinition,
   matchUpStatus,
+  matchUpsMap,
   winningSide,
   dualMatchUp,
   tieFormat,
@@ -37,6 +38,7 @@ export function getProjectedDualWinningSide({
   const { winningSide: projectedWinningSide } = generateTieMatchUpScore({
     matchUp: projectedDualMatchUp,
     drawDefinition,
+    matchUpsMap,
     tieFormat,
     event,
   });

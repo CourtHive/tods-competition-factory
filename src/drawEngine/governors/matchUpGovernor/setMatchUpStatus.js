@@ -1,7 +1,7 @@
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
-import { generateTieMatchUpScore } from '../../generators/generateTieMatchUpScore';
+import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { getProjectedDualWinningSide } from './getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
@@ -154,6 +154,8 @@ export function setMatchUpStatus(params) {
         scoreStringSide2,
         set,
       } = generateTieMatchUpScore({
+        drawDefinition,
+        matchUpsMap,
         matchUp,
       });
 
@@ -298,6 +300,7 @@ export function setMatchUpStatus(params) {
     const { projectedWinningSide } = getProjectedDualWinningSide({
       matchUpStatus,
       dualMatchUp,
+      matchUpsMap,
       winningSide,
       tieFormat,
       structure,
@@ -444,11 +447,12 @@ function applyMatchUpValues(params) {
 
   // recalculate dualMatchUp score if isCollectionMatchUp
   if (params.isCollectionMatchUp) {
-    const { matchUpTieId, drawDefinition } = params;
+    const { matchUpTieId, drawDefinition, matchUpsMap } = params;
     const tieMatchUpResult = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       tournamentRecord,
       drawDefinition,
+      matchUpsMap,
       event,
     });
 

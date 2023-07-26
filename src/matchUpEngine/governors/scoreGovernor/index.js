@@ -1,5 +1,5 @@
 import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
-import { generateTieMatchUpScore } from '../../../drawEngine/generators/generateTieMatchUpScore';
+import { generateTieMatchUpScore } from '../../../drawEngine/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { validateTieFormat } from '../tieFormatGovernor/tieFormatUtilities';
 import { generateScoreString } from '../../generators/generateScoreString';
 import { validateScore } from '../../../global/validation/validateScore';

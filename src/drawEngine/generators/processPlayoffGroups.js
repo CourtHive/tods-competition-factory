@@ -37,6 +37,7 @@ import {
 export function processPlayoffGroups({
   compassAttributes = COMPASS_ATTRIBUTES,
   olympicAttributes = OLYMPIC_ATTRIBUTES,
+  requireSequential = true,
   playoffMatchUpFormat,
   sourceStructureId,
   policyDefinitions,
@@ -69,9 +70,16 @@ export function processPlayoffGroups({
   const validFinishingPositions =
     !positionRangeMap ||
     playoffGroups?.every((profile) => {
-      const { finishingPositions } = profile;
+      const { finishingPositions = [] } = profile;
+      if (!finishingPositions.length) return false;
+
+      const sequential = finishingPositions
+        .sort()
+        .map((pos, i) => (finishingPositions[i + 1] || pos) - pos)
+        .every((val) => val < 2);
+
       return (
-        finishingPositions.length &&
+        (!requireSequential || sequential) &&
         finishingPositions.every((position) => positionRangeMap[position])
       );
     });

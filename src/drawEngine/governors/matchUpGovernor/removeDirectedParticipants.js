@@ -54,11 +54,12 @@ export function removeDirectedParticipants(params) {
 
   let tieMatchUpResult;
   if (isCollectionMatchUp) {
-    const { matchUpTieId } = params;
+    const { matchUpTieId, matchUpsMap } = params;
     tieMatchUpResult = updateTieMatchUpScore({
       matchUpId: matchUpTieId,
       tournamentRecord,
       drawDefinition,
+      matchUpsMap,
       event,
     });
     if (!dualWinningSideChange && !tieMatchUpResult.removeWinningSide)

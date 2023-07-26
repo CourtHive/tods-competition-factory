@@ -219,8 +219,8 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   expect(drawPositions).toMatchObject([1, 3]);
 
   drawEngine.setMatchUpStatus({
-    matchUpId,
     matchUpStatus: RETIRED,
+    matchUpId,
   });
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId,
