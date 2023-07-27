@@ -54,7 +54,10 @@ export function analyzeScore({
       const { finalSetFormat, setFormat } = matchUpScoringFormat;
       const setValues = isFinalSet ? finalSetFormat || setFormat : setFormat;
 
-      return maxSetScore > setValues.setTo + 1 ? false : true;
+      // TODO: need to consider AD sets which have no tiebreak...
+      return setValues.setTo && maxSetScore > setValues.setTo + 1
+        ? false
+        : true;
     });
 
   const calculatedWinningSide =
