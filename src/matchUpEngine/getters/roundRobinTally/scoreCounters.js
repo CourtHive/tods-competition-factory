@@ -49,6 +49,7 @@ export function countGames({
   tallyPolicy,
   score,
 }) {
+  // IMPORTANT: recognize finalSetFormat
   const { sets } = score || {};
   const matchUpWinnerIndex = matchUpWinningSide - 1;
   const parsedMatchUpFormat = parse(matchUpFormat);
