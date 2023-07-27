@@ -1,5 +1,7 @@
 import { validateScore } from '../../../global/validation/validateScore';
-import { test, expect } from 'vitest';
+import { analyzeScore } from '../../../matchUpEngine/getters/analyzeScore';
+import mocksEngine from '../../../mocksEngine';
+import { it, test, expect } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 
@@ -31,3 +33,23 @@ test.each(scenarios)(
     }
   }
 );
+
+it('recognizes no AD sets with no tiebreak as valid', () => {
+  let score = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '6-1 1-6 10-8',
+  }).outcome.score;
+
+  let result = analyzeScore({
+    matchUpFormat: 'SET3-S:6/TB7',
+    winningSide: 1,
+    score,
+  });
+  expect(result.valid).toEqual(false);
+
+  result = analyzeScore({
+    matchUpFormat: 'SET3-S:6/TB7-F:6',
+    winningSide: 1,
+    score,
+  });
+  expect(result.valid).toEqual(true);
+});
