@@ -79,7 +79,7 @@ test('drawProfiles support generate: false', () => {
 
   eventIds.forEach((eventId) => {
     const { event } = tournamentEngine.getEvent({ eventId });
-    expect(event.drawDefinitions).toBeUndefined();
+    expect(event.drawDefinitions).toEqual([]);
     const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
     expect(flightProfile).not.toBeUndefined();
   });
@@ -272,7 +272,7 @@ test('eventProfiles will skip drawGeneration when { generate: false }', () => {
   const [eventId] = eventIds;
   const { event } = tournamentEngine.getEvent({ eventId });
   expect(event.eventName).toEqual(categoryName);
-  expect(event.drawDefinitions).toBeUndefined();
+  expect(event.drawDefinitions).toEqual([]);
 
   const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
   expect(flightProfile.flights.length).toEqual(2);

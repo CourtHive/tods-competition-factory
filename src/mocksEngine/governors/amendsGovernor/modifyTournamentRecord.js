@@ -214,7 +214,7 @@ export function modifyTournamentRecord({
 
       const { drawId, eventId, event, uniqueParticipantIds } = result;
 
-      result = addEvent({ tournamentRecord, event });
+      result = addEvent({ tournamentRecord, event, internalUse: true });
       if (result.error) return result;
 
       if (drawId) drawIds.push(drawId);
