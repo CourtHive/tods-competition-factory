@@ -68,5 +68,4 @@ test('team ROUND_robin with 3 teams', () => {
   }).matchUp;
   expect(tieMatchUp.matchUpStatus).toEqual(COMPLETED);
   expect(tieMatchUp.winningSide).toBeUndefined();
-  console.log(tieMatchUp);
 });
