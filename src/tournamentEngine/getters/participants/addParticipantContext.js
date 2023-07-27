@@ -6,7 +6,7 @@ import { getDerivedSeedAssignments } from './getDerivedSeedAssignments';
 import { definedAttributes } from '../../../utilities/objects';
 import { annotateParticipant } from './annotateParticipant';
 import { getFlightProfile } from '../getFlightProfile';
-import { allEventMatchUps } from '../matchUpsGetter';
+import { allEventMatchUps } from '../matchUpsGetter/matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities';
 import { getDrawDetails } from './getDrawDetails';
 import { processMatchUp } from './processMatchUp';

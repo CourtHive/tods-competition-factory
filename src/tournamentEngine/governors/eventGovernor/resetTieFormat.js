@@ -1,5 +1,5 @@
 import { generateCollectionMatchUps } from '../../../drawEngine/generators/tieMatchUps';
-import { findMatchUp } from '../../getters/matchUpsGetter';
+import { findMatchUp } from '../../getters/matchUpsGetter/findMatchUp';
 import { getMatchUpId } from '../../../global/functions/extractors';
 import {
   addMatchUpsNotice,

@@ -9,11 +9,11 @@ export function toggleParticipantCheckInState(params) {
     return { error: MISSING_VALUE, stack: 'toggleParticipantCheckInState' };
 
   const tournamentRecord = tournamentRecords[tournamentId];
-  const { drawDefinition } = getDrawDefinition({
+  const { drawDefinition, event } = getDrawDefinition({
     tournamentRecord,
     drawId,
   });
-  Object.assign(params, { drawDefinition, tournamentRecord });
+  Object.assign(params, { drawDefinition, event, tournamentRecord });
 
   return toggle(params);
 }

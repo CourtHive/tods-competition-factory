@@ -1,6 +1,6 @@
 import { scheduledSortedMatchUps } from '../../../global/sorting/scheduledSortedMatchUps';
 import { getSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
+import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 
 import {
   MISSING_COURT_ID,

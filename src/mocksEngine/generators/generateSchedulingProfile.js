@@ -1,6 +1,6 @@
 import { addSchedulingProfileRound } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { getContainedStructures } from '../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
-import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
+import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { intersection, unique } from '../../utilities';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';

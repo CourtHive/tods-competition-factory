@@ -21,7 +21,7 @@ import {
 import {
   allDrawMatchUps,
   allEventMatchUps,
-} from '../../../tournamentEngine/getters/matchUpsGetter';
+} from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

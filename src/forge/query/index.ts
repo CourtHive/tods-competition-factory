@@ -49,4 +49,4 @@ export {
   eventMatchUps,
   findMatchUp,
   tournamentMatchUps,
-} from '../../tournamentEngine/getters/matchUpsGetter';
+} from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';

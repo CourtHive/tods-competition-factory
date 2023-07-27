@@ -3,7 +3,7 @@ import {
   allDrawMatchUps,
   allEventMatchUps,
   allTournamentMatchUps,
-} from './matchUpsGetter';
+} from './matchUpsGetter/matchUpsGetter';
 
 import { COMPETITIVE, DECISIVE, ROUTINE } from '../../constants/statsConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
@@ -273,13 +273,16 @@ function getGroupingAccuracy({
     const { matchUpType, sides, score, winningSide } = matchUp;
     if (!winningSide) continue;
 
-    if (exclusionRule && (!exclusionRule.valueAccessor || !exclusionRule.range)) {
-        return {
-          info: 'exclusionRule requires valueAccessor and range',
-          error: MISSING_VALUE,
-        };
+    if (
+      exclusionRule &&
+      (!exclusionRule.valueAccessor || !exclusionRule.range)
+    ) {
+      return {
+        info: 'exclusionRule requires valueAccessor and range',
+        error: MISSING_VALUE,
+      };
     }
-    
+
     const winningIndex = winningSide - 1;
 
     const sideValues = getSideValues({

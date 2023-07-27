@@ -1,4 +1,4 @@
-import { allTournamentMatchUps } from '../getters/matchUpsGetter';
+import { allTournamentMatchUps } from '../getters/matchUpsGetter/matchUpsGetter';
 import mocksEngine from '../../mocksEngine';
 import tournamentEngine from '../sync';
 import { expect, it } from 'vitest';

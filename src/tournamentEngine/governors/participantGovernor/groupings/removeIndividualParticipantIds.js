@@ -4,7 +4,7 @@ import { getParticipants } from '../../../getters/participants/getParticipants';
 import { addEventEntries } from '../../eventGovernor/entries/addEventEntries';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { findExtension } from '../../queryGovernor/extensionQueries';
-import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
+import { allDrawMatchUps } from '../../../getters/matchUpsGetter/matchUpsGetter';
 import { addNotice } from '../../../../global/state/globalState';
 import {
   addDrawNotice,

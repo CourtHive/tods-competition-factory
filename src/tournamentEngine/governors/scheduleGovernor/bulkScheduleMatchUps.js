@@ -4,7 +4,7 @@ import { getDrawDefinition } from '../../getters/eventGetter';
 import {
   allDrawMatchUps,
   allTournamentMatchUps,
-} from '../../getters/matchUpsGetter';
+} from '../../getters/matchUpsGetter/matchUpsGetter';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

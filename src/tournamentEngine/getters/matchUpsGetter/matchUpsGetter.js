@@ -1,26 +1,18 @@
-import { addParticipantGroupings } from '../../drawEngine/governors/positionGovernor/avoidance/addParticipantGroupings';
-import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps/findMatchUp';
-import { getScheduleTiming } from '../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
-import { addNationalityCode } from '../governors/participantGovernor/addNationalityCode';
-import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
-import { getParticipantMap } from './participants/getParticipantMap';
-import { getScaleValues } from './participants/getScaleValues';
-import { definedAttributes } from '../../utilities/objects';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
-import { getContextContent } from './getContextContent';
-import { getFlightProfile } from './getFlightProfile';
-import { findEvent } from './eventGetter';
+import { getScheduleTiming } from '../../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import { definedAttributes } from '../../../utilities/objects';
+import { hydrateParticipants } from './hydrateParticipants';
+import { getContextContent } from '../getContextContent';
+import { getFlightProfile } from '../getFlightProfile';
 import {
   getAllDrawMatchUps,
   getDrawMatchUps,
-} from '../../drawEngine/getters/getMatchUps/drawMatchUps';
+} from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
 
 import {
-  MATCHUP_NOT_FOUND,
   MISSING_EVENT,
-  MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 
 export function allTournamentMatchUps({
   scheduleVisibilityFilters,
@@ -46,7 +38,7 @@ export function allTournamentMatchUps({
   const events = tournamentRecord?.events || [];
 
   if (!participants) {
-    ({ participants, participantMap } = getParticipants({
+    ({ participants, participantMap } = hydrateParticipants({
       participantsProfile,
       policyDefinitions,
       useParticipantMap,
@@ -143,10 +135,10 @@ export function allDrawMatchUps({
 
   if (!tournamentParticipants?.length && !participantMap && tournamentRecord) {
     ({ participants: tournamentParticipants = [], participantMap } =
-      getParticipants({
+      hydrateParticipants({
         participantsProfile,
-        policyDefinitions,
         useParticipantMap,
+        policyDefinitions,
         tournamentRecord,
         contextProfile,
         inContext,
@@ -234,10 +226,10 @@ export function allEventMatchUps({
   }
 
   if (!participants?.length && !participantMap && tournamentRecord) {
-    ({ participants, participantMap } = getParticipants({
+    ({ participants, participantMap } = hydrateParticipants({
       participantsProfile,
-      policyDefinitions,
       useParticipantMap,
+      policyDefinitions,
       tournamentRecord,
       contextProfile,
       inContext,
@@ -300,7 +292,7 @@ export function tournamentMatchUps({
     tournamentRecord.tournamentId;
   const events = tournamentRecord?.events || [];
 
-  const { participants, participantMap } = getParticipants({
+  const { participants, participantMap } = hydrateParticipants({
     participantsProfile,
     policyDefinitions,
     useParticipantMap,
@@ -407,16 +399,15 @@ export function eventMatchUps({
   };
 
   if (!tournamentParticipants && tournamentRecord) {
-    ({ participants: tournamentParticipants, participantMap } = getParticipants(
-      {
+    ({ participants: tournamentParticipants, participantMap } =
+      hydrateParticipants({
         participantsProfile,
         policyDefinitions,
         useParticipantMap,
         tournamentRecord,
         contextProfile,
         inContext,
-      }
-    ));
+      }));
   }
 
   if (contextProfile && !contextContent)
@@ -497,16 +488,15 @@ export function drawMatchUps({
   };
 
   if (!tournamentParticipants?.length && tournamentRecord) {
-    ({ participants: tournamentParticipants, participantMap } = getParticipants(
-      {
+    ({ participants: tournamentParticipants, participantMap } =
+      hydrateParticipants({
         participantsProfile,
         policyDefinitions,
         useParticipantMap,
         tournamentRecord,
         contextProfile,
         inContext,
-      }
-    ));
+      }));
   }
 
   if (contextProfile && !contextContent)
@@ -537,115 +527,4 @@ export function drawMatchUps({
     inContext,
     event,
   });
-}
-
-function getParticipants({
-  participantsProfile,
-  policyDefinitions,
-  useParticipantMap,
-  tournamentRecord,
-  contextProfile,
-  inContext,
-}) {
-  if (useParticipantMap) {
-    const participantMap = getParticipantMap({
-      ...participantsProfile,
-      ...contextProfile,
-      policyDefinitions,
-      tournamentRecord,
-      inContext,
-    })?.participantMap;
-
-    return { participantMap };
-  }
-
-  let participants = tournamentRecord.participants || [];
-
-  if (participantsProfile?.withIOC || participantsProfile?.withISO2)
-    participants.forEach((participant) =>
-      addNationalityCode({ participant, ...participantsProfile })
-    );
-
-  if (
-    (inContext || participantsProfile?.withGroupings) &&
-    participants?.length
-  ) {
-    participants = addParticipantGroupings({
-      participantsProfile,
-      participants,
-    });
-  }
-
-  if (participantsProfile?.withScaleValues && participants?.length) {
-    for (const participant of participants) {
-      const { ratings, rankings } = getScaleValues({ participant });
-      participant.rankings = rankings;
-      participant.ratings = ratings;
-    }
-  }
-
-  return { participants };
-}
-
-export function publicFindMatchUp(params) {
-  Object.assign(params, { inContext: true });
-  const { matchUp, error } = findMatchUp(params);
-  return { matchUp: makeDeepCopy(matchUp, true, true), error };
-}
-
-export function findMatchUp({
-  participantsProfile,
-  afterRecoveryTimes,
-  tournamentRecord,
-  contextProfile,
-  contextContent,
-  nextMatchUps,
-  matchUpId,
-  inContext,
-}) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
-
-  const { matchUps } = allTournamentMatchUps({ tournamentRecord });
-
-  const inContextMatchUp = matchUps.find(
-    (matchUp) => matchUp.matchUpId === matchUpId
-  );
-  if (!inContextMatchUp) return { error: MATCHUP_NOT_FOUND };
-
-  // since drawEngineFindMatchUp is being used, additional context needs to be provided
-  const { eventId, drawId } = inContextMatchUp;
-  const { event, drawDefinition } = findEvent({
-    tournamentRecord,
-    eventId,
-    drawId,
-  });
-
-  if (contextProfile && !contextContent)
-    contextContent = getContextContent({ tournamentRecord, contextProfile });
-
-  const additionalContext = {
-    surfaceCategory: event.surfaceCategory || tournamentRecord.surfaceCategory,
-    indoorOutDoor: event.indoorOutDoor || tournamentRecord.indoorOutDoor,
-    endDate: event.endDate || tournamentRecord.endDate,
-    tournamentId: tournamentRecord.tournamentId,
-    eventId,
-    drawId,
-  };
-
-  const tournamentParticipants = tournamentRecord.participants || [];
-  const { matchUp, structure } = drawEngineFindMatchUp({
-    context: inContext && additionalContext,
-    tournamentParticipants,
-    participantsProfile,
-    afterRecoveryTimes,
-    drawDefinition,
-    contextProfile,
-    contextContent,
-    nextMatchUps,
-    matchUpId,
-    inContext,
-    event,
-  });
-  return { matchUp, structure, drawDefinition };
 }

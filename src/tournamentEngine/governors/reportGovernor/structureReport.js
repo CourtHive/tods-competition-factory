@@ -1,6 +1,6 @@
 import { findTournamentExtension } from '../queryGovernor/extensionQueries';
 import { getAccessorValue } from '../../../utilities/getAccessorValue';
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
+import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getTieFormatDesc } from './getTieFormatDescription';
 import { getTimeItem } from '../queryGovernor/timeItems';
 import { getDetailsWTN } from './getDetailsWTN';

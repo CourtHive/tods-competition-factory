@@ -8,7 +8,7 @@ import { structureSort } from '../../../forge/transform';
 import { processEventEntry } from './processEventEntry';
 import { isObject } from '../../../utilities/objects';
 import { definedAttributes } from '../../../utilities';
-import { allEventMatchUps } from '../matchUpsGetter';
+import { allEventMatchUps } from '../matchUpsGetter/matchUpsGetter';
 import { getFlightProfile } from '../getFlightProfile';
 import { addScheduleItem } from './addScheduleItem';
 import { processSides } from './processSides';

@@ -1,5 +1,5 @@
 import { getCheckedInParticipantIds } from '../../../../drawEngine/getters/matchUpTimeItems';
-import { findMatchUp } from '../../../getters/matchUpsGetter';
+import { findMatchUp } from '../../../getters/matchUpsGetter/findMatchUp';
 import {
   checkInParticipant,
   checkOutParticipant,
@@ -12,16 +12,21 @@ import {
 
 export function toggleParticipantCheckInState(params) {
   if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  const { tournamentRecord, participantId, matchUpId, drawDefinition } = params;
+  const { tournamentRecord, participantId, matchUpId, drawDefinition, event } =
+    params;
   const tournamentParticipants = tournamentRecord.participants || [];
 
-  const { matchUp } = findMatchUp({
+  const result = findMatchUp({
     tournamentRecord,
+    inContext: true,
     drawDefinition,
     matchUpId,
-    inContext: true,
+    event,
   });
-  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
+  if (!result.matchUp) return { error: MATCHUP_NOT_FOUND };
+
+  const matchUp = result.matchUp;
+
   const { checkedInParticipantIds = [] } = getCheckedInParticipantIds({
     matchUp,
   });

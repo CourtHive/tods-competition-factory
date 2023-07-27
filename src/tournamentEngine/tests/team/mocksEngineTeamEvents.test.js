@@ -134,11 +134,12 @@ it('can generate TEAM events', () => {
   const { pendingMatchUps } = tournamentEngine.tournamentMatchUps();
   expect(pendingMatchUps.length).toEqual(65);
 
-  const { matchUp } = tournamentEngine.findMatchUp({
-    drawId,
-    matchUpId,
+  result = tournamentEngine.devContext(true).findMatchUp({
     inContext: true,
+    matchUpId,
+    drawId,
   });
+  const matchUp = result.matchUp;
 
   expect(matchUp.eventId).toEqual(eventId);
   expect(matchUp.tournamentId).toEqual(tournamentId);
