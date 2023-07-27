@@ -53,11 +53,11 @@ export function analyzeScore({
 
       const { finalSetFormat, setFormat } = matchUpScoringFormat;
       const setValues = isFinalSet ? finalSetFormat || setFormat : setFormat;
+      if (!setValues.setTo) return true;
 
-      // TODO: need to consider AD sets which have no tiebreak...
-      return setValues.setTo && maxSetScore > setValues.setTo + 1
-        ? false
-        : true;
+      const excessiveSetScore =
+        !setValues.noTiebreak && maxSetScore > setValues.setTo + 1;
+      return excessiveSetScore ? false : true;
     });
 
   const calculatedWinningSide =
@@ -67,11 +67,12 @@ export function analyzeScore({
     undefined;
 
   const valid =
-    (winningSide &&
+    validSets &&
+    ((winningSide &&
       winningSideSetsCount > losingSideSetsCount &&
       winningSide === calculatedWinningSide) ||
-    (!winningSide && !calculatedWinningSide && validSets) ||
-    irregularEnding;
+      (!winningSide && !calculatedWinningSide) ||
+      irregularEnding);
 
   return { valid };
 }
