@@ -1,7 +1,7 @@
 import {
   allTournamentMatchUps,
   tournamentMatchUps,
-} from '../../tournamentEngine/getters/matchUpsGetter';
+} from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 

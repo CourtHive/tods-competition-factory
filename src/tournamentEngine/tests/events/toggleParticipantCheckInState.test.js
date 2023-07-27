@@ -1,9 +1,10 @@
 import competitionEngine from '../../../competitionEngine/sync';
-import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
+
+import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 it('can toggle participant check-in state', () => {
   const drawProfiles = [
@@ -15,18 +16,21 @@ it('can toggle participant check-in state', () => {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     inContext: true,
+    drawProfiles,
   });
 
   const { tournamentId } = tournamentRecord;
 
   let {
     upcomingMatchUps: [matchUp],
-  } = tournamentEngine.setState(tournamentRecord).drawMatchUps({
-    drawId,
-    inContext: true,
-  });
+  } = tournamentEngine
+    .devContext(true)
+    .setState(tournamentRecord)
+    .drawMatchUps({
+      inContext: true,
+      drawId,
+    });
 
   const participantIds = matchUp.sides.map(
     ({ participantId }) => participantId
@@ -38,17 +42,17 @@ it('can toggle participant check-in state', () => {
   expect(checkedInParticipantIds.length).toEqual(0);
 
   let result = tournamentEngine.toggleParticipantCheckInState({
-    drawId,
-    matchUpId: matchUp.matchUpId,
     participantId: participantIds[0],
+    matchUpId: matchUp.matchUpId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
   ({
     upcomingMatchUps: [matchUp],
   } = tournamentEngine.drawMatchUps({
-    drawId,
     inContext: true,
+    drawId,
   }));
 
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
@@ -57,17 +61,17 @@ it('can toggle participant check-in state', () => {
   expect(checkedInParticipantIds.length).toEqual(1);
 
   result = tournamentEngine.toggleParticipantCheckInState({
-    drawId,
-    matchUpId: matchUp.matchUpId,
     participantId: participantIds[1],
+    matchUpId: matchUp.matchUpId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
   ({
     upcomingMatchUps: [matchUp],
   } = tournamentEngine.drawMatchUps({
-    drawId,
     inContext: true,
+    drawId,
   }));
 
   ({ allParticipantsCheckedIn, checkedInParticipantIds } =
@@ -76,51 +80,51 @@ it('can toggle participant check-in state', () => {
   expect(checkedInParticipantIds.length).toEqual(2);
 
   result = tournamentEngine.toggleParticipantCheckInState({
-    drawId,
-    matchUpId: matchUp.matchUpId,
     participantId: participantIds[1],
+    matchUpId: matchUp.matchUpId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.toggleParticipantCheckInState({
-    drawId,
-    matchUpId: matchUp.matchUpId,
     participantId: participantIds[1],
+    matchUpId: matchUp.matchUpId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
   result = competitionEngine.toggleParticipantCheckInState({
+    participantId: participantIds[1],
+    matchUpId: matchUp.matchUpId,
     tournamentId,
     drawId,
-    matchUpId: matchUp.matchUpId,
-    participantId: participantIds[1],
-  });
-  expect(result.success).toEqual(true);
-
-  // do it a second time for testing code coverage
-  result = competitionEngine.toggleParticipantCheckInState({
-    tournamentId,
-    drawId,
-    matchUpId: matchUp.matchUpId,
-    participantId: participantIds[1],
   });
   expect(result.success).toEqual(true);
 
   // do it a second time for testing code coverage
   result = competitionEngine.toggleParticipantCheckInState({
-    tournamentId,
-    drawId,
     matchUpId: matchUp.matchUpId,
     participantId: participantIds[1],
+    tournamentId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
   // do it a second time for testing code coverage
   result = competitionEngine.toggleParticipantCheckInState({
+    participantId: participantIds[1],
+    matchUpId: matchUp.matchUpId,
     tournamentId,
     drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  // do it a second time for testing code coverage
+  result = competitionEngine.toggleParticipantCheckInState({
+    participantId: participantIds[1],
     matchUpId: 'bogusId',
-    participantId: participantIds[1],
+    tournamentId,
+    drawId,
   });
   expect(result.error).toEqual(MATCHUP_NOT_FOUND);
 });

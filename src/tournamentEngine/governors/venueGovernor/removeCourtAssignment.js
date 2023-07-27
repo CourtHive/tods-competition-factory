@@ -1,7 +1,7 @@
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
+import { tournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
 import { getMatchUp } from '../../../drawEngine/accessors/matchUpAccessor';
-import { tournamentMatchUps } from '../../getters/matchUpsGetter';
 import { findEvent } from '../../getters/eventGetter';
 
 import { SUCCESS } from '../../../constants/resultConstants';

@@ -1,4 +1,4 @@
-import { allDrawMatchUps } from '../../getters/matchUpsGetter';
+import { allDrawMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getPositionAssignments } from '../../../forge/query';
 import { avoidanceTest } from '../primitives/avoidanceTest';
 import { eventConstants } from '../../..';

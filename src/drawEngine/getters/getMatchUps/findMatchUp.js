@@ -24,9 +24,9 @@ export function publicFindMatchUp(params) {
 export function findMatchUp({
   tournamentParticipants,
   afterRecoveryTimes,
-  drawDefinition,
-  contextProfile,
   contextContent,
+  contextProfile,
+  drawDefinition,
   matchUpsMap,
   matchUpId,
   inContext,
@@ -46,9 +46,9 @@ export function findMatchUp({
     const { matchUps } = getAllStructureMatchUps({
       tournamentParticipants,
       afterRecoveryTimes,
+      contextContent,
       drawDefinition,
       contextProfile,
-      contextContent,
       matchUpsMap,
       inContext,
       structure,

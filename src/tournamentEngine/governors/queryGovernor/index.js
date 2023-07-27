@@ -6,8 +6,9 @@ import { getMatchUpCompetitiveness } from '../../getters/getMatchUpCompetitivene
 import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { participantScheduledMatchUps } from './participantScheduledMatchUps';
 import { getPositionAssignments } from '../../getters/getPositionAssignments';
-import { participantScaleItem } from '../../accessors/participantScaleItem';
 import { getPredictiveAccuracy } from '../../getters/getPredictiveAccuracy';
+import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { publicFindMatchUp } from '../../getters/matchUpsGetter/findMatchUp';
 import { getVenuesAndCourts, findVenue } from '../../getters/venueGetter';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { getParticipantScaleItem } from './getParticipantScaleItem';
@@ -28,14 +29,13 @@ import {
   getTournamentStructures,
 } from '../../getters/structureGetter';
 import {
-  publicFindMatchUp,
   allTournamentMatchUps,
   tournamentMatchUps,
   allEventMatchUps,
   allDrawMatchUps,
   eventMatchUps,
   drawMatchUps,
-} from '../../getters/matchUpsGetter';
+} from '../../getters/matchUpsGetter/matchUpsGetter';
 import {
   findEventExtension,
   findTournamentExtension,

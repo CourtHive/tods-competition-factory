@@ -1,6 +1,6 @@
 import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
+import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { getMatchUpId } from '../../../global/functions/extractors';
 
 import { SUCCESS } from '../../../constants/resultConstants';

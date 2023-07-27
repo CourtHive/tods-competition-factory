@@ -24,8 +24,9 @@ export { participantScaleItem } from '../../tournamentEngine/accessors/participa
 export { getCompetitionVenues } from '../../competitionEngine/getters/venuesAndCourtsGetter';
 export { getPolicyDefinitions } from '../../global/functions/deducers/getAppliedPolicies';
 export { getTimeItem } from '../../tournamentEngine/governors/queryGovernor/timeItems';
-export { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
+export { findMatchUp } from '../../tournamentEngine/getters/matchUpsGetter/findMatchUp';
 export { getPositionAssignments } from '../../drawEngine/getters/positionsGetter';
+export { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 export { findExtension } from '../../global/functions/deducers/findExtension';
 export { getValidGroupSizes } from '../../drawEngine/generators/roundRobin';
 export { getTieFormat } from '../../tournamentEngine/getters/getTieFormat';
@@ -47,6 +48,5 @@ export {
   allEventMatchUps,
   drawMatchUps,
   eventMatchUps,
-  findMatchUp,
   tournamentMatchUps,
-} from '../../tournamentEngine/getters/matchUpsGetter';
+} from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';

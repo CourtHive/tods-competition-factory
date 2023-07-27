@@ -2,7 +2,7 @@ import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotif
 import {
   allDrawMatchUps,
   allTournamentMatchUps,
-} from '../../getters/matchUpsGetter';
+} from '../../getters/matchUpsGetter/matchUpsGetter';
 
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

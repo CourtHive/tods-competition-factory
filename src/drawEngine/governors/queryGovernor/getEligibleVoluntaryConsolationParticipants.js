@@ -3,7 +3,7 @@ import { getStageEntries } from '../../getters/stageGetter';
 import {
   allDrawMatchUps,
   allEventMatchUps,
-} from '../../../tournamentEngine/getters/matchUpsGetter';
+} from '../../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 
 import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../../constants/policyConstants';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';

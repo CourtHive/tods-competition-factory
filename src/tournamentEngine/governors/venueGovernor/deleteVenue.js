@@ -1,4 +1,4 @@
-import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
+import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
 import { removeCourtAssignment } from './removeCourtAssignment';
 import { addNotice } from '../../../global/state/globalState';
 import { deletionMessage } from './deletionMessage';

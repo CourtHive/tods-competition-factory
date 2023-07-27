@@ -1,4 +1,4 @@
-import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
+import { allTournamentMatchUps } from '../../tournamentEngine/getters/matchUpsGetter/matchUpsGetter';
 import { getMatchUpId } from '../../global/functions/extractors';
 import { generateRange, overlap, UUID } from '../../utilities';
 import { mustBeAnArray } from '../../utilities/mustBeAnArray';

@@ -10,7 +10,7 @@ import { addEventTimeItem } from '../../tournamentGovernor/addTimeItem';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { publishEvent } from '../../publishingGovernor/publishEvent';
 import { definedAttributes } from '../../../../utilities/objects';
-import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
+import { allDrawMatchUps } from '../../../getters/matchUpsGetter/matchUpsGetter';
 import { addNotice } from '../../../../global/state/globalState';
 import { getTimeItem } from '../../queryGovernor/timeItems';
 import { findEvent } from '../../../getters/eventGetter';

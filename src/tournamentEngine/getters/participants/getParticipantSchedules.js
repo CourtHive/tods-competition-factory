@@ -1,5 +1,5 @@
 import { getMatchUpDependencies } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
-import { allTournamentMatchUps } from '../matchUpsGetter';
+import { allTournamentMatchUps } from '../matchUpsGetter/matchUpsGetter';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
