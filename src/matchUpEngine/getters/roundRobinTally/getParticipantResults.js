@@ -380,7 +380,7 @@ function processMatchUp({
     winningSide,
     score,
   });
-  const pointsTally = countPoints({ score, tallyPolicy });
+  const pointsTally = countPoints({ score, matchUpFormat, tallyPolicy });
 
   if (winningParticipantId) {
     participantResults[winningParticipantId].setsWon +=
