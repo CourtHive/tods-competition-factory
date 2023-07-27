@@ -140,6 +140,7 @@ export function generateEventWithFlights({
 
   let result = addEvent({
     suppressNotifications: false,
+    internalUse: true,
     tournamentRecord,
     event: newEvent,
   });

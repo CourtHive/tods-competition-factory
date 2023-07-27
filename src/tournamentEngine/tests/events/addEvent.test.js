@@ -3,6 +3,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import {
   FEED_IN,
   MAIN,
@@ -62,9 +63,12 @@ it('can generate an event with a draw and attach it to a tournamentRecord', () =
 
   const event = { drawDefinitions: [drawDefinition] };
   let result = tournamentEngine.addEvent({ event });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.addEvent({ event, internalUse: true });
   expect(result.success).toEqual(true);
 
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
   expect(matchUpAddNotices).toEqual([123]);
   expect(matchUps.length).toEqual(123);
 

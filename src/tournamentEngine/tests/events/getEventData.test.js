@@ -53,7 +53,7 @@ it('returns eventData when there is no drawsData', () => {
   expect(eventData.drawsData.length).toEqual(0);
 
   const { event } = tournamentEngine.getEvent({ eventId });
-  expect(event.drawDefinitions).toBeUndefined();
+  expect(event.drawDefinitions).toEqual([]);
 });
 
 it('returns team information for participants in SINGLES and DOUBLES matchUps in non-TEAM events', () => {

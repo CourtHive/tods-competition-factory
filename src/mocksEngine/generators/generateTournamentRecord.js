@@ -146,6 +146,7 @@ export function generateTournamentRecord({
 
       result = addEvent({
         suppressNotifications: false,
+        internalUse: true,
         tournamentRecord,
         event,
       });

@@ -263,7 +263,7 @@ it('can account for individuals appearing in multiple doubles pairs', () => {
   expect(individualParticipants.length).toEqual(16);
   expect(pairParticipants.length).toEqual(8);
 
-  expect(tournamentRecord.events[0].drawDefinitions).toBeUndefined();
+  expect(tournamentRecord.events[0].drawDefinitions).toEqual([]);
 
   let { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
 
@@ -478,7 +478,7 @@ it('disallows invalid entryTypes for TEAM events', () => {
   });
 
   let { event } = tournamentEngine.getEvent({ eventId });
-  expect(event.drawDefinitions).toBeUndefined();
+  expect(event.drawDefinitions).toEqual([]);
   expect(event.entries.length).toEqual(4);
 
   let result = tournamentEngine.addEventEntries({
