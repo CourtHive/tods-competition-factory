@@ -22,7 +22,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "1.2.29",
+  "version": "1.2.30",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/tods-competition-factory/",
@@ -124,7 +124,7 @@
     "chalk": "^5.2.0",
     "esbuild": "0.18.17",
     "eslint": "8.45.0",
-    "eslint-config-prettier": "8.8.0",
+    "eslint-config-prettier": "8.9.0",
     "eslint-import-resolver-typescript": "3.5.5",
     "eslint-module-utils": "2.8.0",
     "eslint-plugin-compat": "4.1.4",
