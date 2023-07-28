@@ -1,8 +1,8 @@
 import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
+import { getDevContext } from '../../global/state/globalState';
 import { generateRange } from '../../utilities';
 
 import { MISSING_MATCHUPS } from '../../constants/errorConditionConstants';
-import { getDevContext } from '../../global/state/globalState';
 
 export function addFinishingRounds({
   finishingPositionOffset = 0,

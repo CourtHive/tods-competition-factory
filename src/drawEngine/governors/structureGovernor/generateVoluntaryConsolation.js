@@ -114,7 +114,7 @@ export function generateVoluntaryConsolation(params = {}) {
   const generator = result.generators[drawType];
   if (!generator) return { error: UNRECOGNIZED_DRAW_TYPE };
 
-  const generatorResult = generator && generator();
+  const generatorResult = generator?.();
   if (generatorResult.error) return generatorResult;
 
   let { structures, links } = generatorResult;

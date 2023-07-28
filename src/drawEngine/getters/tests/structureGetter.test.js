@@ -1,5 +1,5 @@
-import { findStructure, getDrawStructures } from '../findStructure';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
+import { findStructure, getDrawStructures } from '../findStructure';
 import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
 import {

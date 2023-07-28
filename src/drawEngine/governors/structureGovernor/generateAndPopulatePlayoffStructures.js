@@ -2,9 +2,9 @@ import { matchUpIsComplete } from '../../../matchUpEngine/governors/queryGoverno
 import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { generatePlayoffStructures } from '../../generators/playoffStructures';
-import { getAvailablePlayoffProfiles } from './getAvailablePlayoffProfiles';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { directParticipants } from '../matchUpGovernor/directParticipants';
+import { getAvailablePlayoffProfiles } from './getAvailablePlayoffProfiles';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { getMatchUpId } from '../../../global/functions/extractors';

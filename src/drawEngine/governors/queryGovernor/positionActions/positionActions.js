@@ -7,8 +7,8 @@ import { getValidModifyAssignedPairAction } from './getValidModifyAssignedPairAc
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getValidLuckyLosersAction } from './getValidLuckyLoserAction';
 import { getValidAlternatesAction } from './getValidAlternatesAction';
-import { getValidQualifiersAction } from './getValidQualifiersAction';
 import { getValidAssignmentActions } from './participantAssignments';
+import { getValidQualifiersAction } from './getValidQualifiersAction';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
 import { getStageEntries } from '../../../getters/stageGetter';
 import { findStructure } from '../../../getters/findStructure';

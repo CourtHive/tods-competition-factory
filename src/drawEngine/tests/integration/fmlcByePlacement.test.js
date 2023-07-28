@@ -281,17 +281,16 @@ function checkAssignments({
   participantsCount,
   byesCount,
 }) {
-  completionValues &&
-    completionValues.forEach((values) => {
-      const [roundNumber, roundPosition, winningSide, success] = values;
-      const result = completeMatchUp({
-        roundNumber,
-        roundPosition,
-        winningSide,
-        structureId,
-      });
-      expect(result.success).toEqual(success);
+  completionValues?.forEach((values) => {
+    const [roundNumber, roundPosition, winningSide, success] = values;
+    const result = completeMatchUp({
+      roundNumber,
+      roundPosition,
+      winningSide,
+      structureId,
     });
+    expect(result.success).toEqual(success);
+  });
 
   const {
     structures: [consolationStructure],

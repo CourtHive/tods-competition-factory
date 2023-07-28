@@ -10,9 +10,9 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { assignSeed } from '../entryGovernor/seedAssignment';

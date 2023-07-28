@@ -4,8 +4,8 @@ import { expect, test } from 'vitest';
 import drawEngine from '../../sync';
 
 import { LUCKY_DRAW } from '../../../constants/drawDefinitionConstants';
-import { DOUBLES } from '../../../constants/eventConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import { DOUBLES } from '../../../constants/eventConstants';
 
 // prettier-ignore
 const scenarios = [

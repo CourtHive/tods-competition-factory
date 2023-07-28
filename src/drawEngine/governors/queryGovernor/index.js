@@ -1,20 +1,15 @@
 import { getEligibleVoluntaryConsolationParticipants } from './getEligibleVoluntaryConsolationParticipants';
+import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
 import { getNextUnfilledDrawPositions } from './positionActions/getNextUnfilledDrawPositions';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
-import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 import { getEliminationDrawSize } from '../../getters/getEliminationDrawSize';
 import { getParticipantIdFinishingPositions } from './finishingPositions';
 import { positionActions } from './positionActions/positionActions';
 import { getParticipantIdMatchUps } from './participantIdMatchUps';
 import { getValidGroupSizes } from '../../generators/roundRobin';
-import {
-  getSeedBlocks,
-  getSeedGroups,
-  getSeedingThresholds,
-} from '../positionGovernor/getSeedBlocks';
 import { findStructure } from '../../getters/findStructure';
 import { credits } from '../../../fixtures/credits';
 import { getExitProfiles } from './getExitProfile';
@@ -23,6 +18,11 @@ import {
   getAllDrawMatchUps,
   getDrawMatchUps,
 } from '../../getters/getMatchUps/drawMatchUps';
+import {
+  getSeedBlocks,
+  getSeedGroups,
+  getSeedingThresholds,
+} from '../positionGovernor/getSeedBlocks';
 import {
   matchUpDuration,
   getMatchUpScheduleDetails,

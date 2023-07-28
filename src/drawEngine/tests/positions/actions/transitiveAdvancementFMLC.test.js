@@ -73,7 +73,7 @@ it('can advance participants when double BYEs are created removing 3-4', () => {
     ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
   );
   expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -91,7 +91,7 @@ it('can advance participants when double BYEs are created removing 3-4', () => {
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -188,7 +188,7 @@ it('can advance participants when double BYEs are created removing 5-6', () => {
     ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
   );
   expect(finalMatchUp.drawPositions).toEqual([1, undefined]);
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -206,7 +206,7 @@ it('can advance participants when double BYEs are created removing 5-6', () => {
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -302,7 +302,7 @@ it('does not remove CONSOLATION BYE if at least one source position is a BYE', (
   if (finalMatchUp.drawPositions) {
     expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   }
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -321,7 +321,7 @@ it('does not remove CONSOLATION BYE if at least one source position is a BYE', (
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -346,7 +346,7 @@ it('does not remove CONSOLATION BYE if at least one source position is a BYE', (
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],

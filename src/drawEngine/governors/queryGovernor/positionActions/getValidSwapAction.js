@@ -91,9 +91,7 @@ export function getValidSwapAction({
   );
 
   const availableAssignments = filteredAssignments.map((assignment) => {
-    const participant =
-      availableParticipantsMap &&
-      availableParticipantsMap[assignment.participantId];
+    const participant = availableParticipantsMap?.[assignment.participantId];
 
     const sourceDrawPositionRange =
       sourceDrawPositionRangeMap[assignment.drawPosition];

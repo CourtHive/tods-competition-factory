@@ -1,10 +1,10 @@
+import drawEngine from '../../../sync';
+import { expect, it } from 'vitest';
 import {
   reset,
   initialize,
   mainDrawPositions,
 } from '../../primitives/primitives';
-import drawEngine from '../../../sync';
-import { expect, it } from 'vitest';
 
 import {
   ITEM,

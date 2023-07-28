@@ -6,6 +6,7 @@ import mocksEngine from '../../../mocksEngine';
 import drawEngine from '../../sync';
 import { expect, it } from 'vitest';
 
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
@@ -34,7 +35,7 @@ it('correctly assigns positions for Elimination structure', () => {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    matchUpFormat: 'SET3-S:6/TB7',
+    matchUpFormat: FORMAT_STANDARD,
     drawType: ELIMINATION,
     drawSize,
     eventId,
@@ -77,7 +78,7 @@ it('correctly assigns BYE positions in consolation structure', () => {
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     drawType: FIRST_ROUND_LOSER_CONSOLATION,
-    matchUpFormat: 'SET3-S:6/TB7',
+    matchUpFormat: FORMAT_STANDARD,
     drawSize,
     eventId,
   });
@@ -141,8 +142,8 @@ it('correctly assigns BYE positions in consolation structure', () => {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    matchUpFormat: 'SET3-S:6/TB7',
     drawType: FIRST_ROUND_LOSER_CONSOLATION,
+    matchUpFormat: FORMAT_STANDARD,
     drawSize,
     eventId,
   });

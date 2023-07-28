@@ -115,7 +115,7 @@ export function checkOutParticipant({
     return { error: INVALID_ACTION };
   }
 
-  if (tournamentParticipants && tournamentParticipants.length) {
+  if (tournamentParticipants?.length) {
     const { checkedInParticipantIds, allRelevantParticipantIds } =
       getCheckedInParticipantIds({ matchUp });
     if (!allRelevantParticipantIds.includes(participantId))

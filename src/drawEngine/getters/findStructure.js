@@ -54,11 +54,10 @@ export function getDrawStructures({
   stages,
   stage,
 }) {
-  const error = !drawDefinition
-    ? MISSING_DRAW_DEFINITION
-    : !drawDefinition.structures
-    ? MISSING_STRUCTURES
-    : undefined;
+  const error =
+    (!drawDefinition && MISSING_DRAW_DEFINITION) ||
+    (!drawDefinition.structures && MISSING_STRUCTURES) ||
+    undefined;
 
   if (error)
     return decorateResult({ result: { error }, stack: 'getDrawStructure' });

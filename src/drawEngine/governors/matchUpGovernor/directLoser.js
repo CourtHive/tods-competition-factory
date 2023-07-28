@@ -3,9 +3,9 @@ import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assign
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
 import { decorateResult } from '../../../global/functions/decorateResult';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { assignSeed } from '../entryGovernor/seedAssignment';
 import { findStructure } from '../../getters/findStructure';
 import { numericSort } from '../../../utilities';

@@ -27,9 +27,9 @@ export function getEligibleVoluntaryConsolationParticipants({
   tournamentRecord,
   drawDefinition,
   matchUpsLimit,
-  allEntries, // boolean - consider all entries, regardless of whether placed in draw
   requirePlay,
   requireLoss,
+  allEntries, // boolean - consider all entries, regardless of whether placed in draw
   winsLimit,
   event,
 }) {
@@ -92,19 +92,13 @@ export function getEligibleVoluntaryConsolationParticipants({
   roundNumberLimit = roundNumberLimit || policy?.roundNumberLimit;
   matchUpsLimit = matchUpsLimit || policy?.matchUpsLimit;
 
-  requirePlay =
-    requirePlay === false
-      ? false
-      : policy?.requirePlay !== undefined
-      ? policy.requirePlay
-      : true;
+  if (requirePlay === undefined) {
+    requirePlay = policy?.requirePlay !== undefined ? policy.requirePlay : true;
+  }
 
-  requireLoss =
-    requireLoss === false
-      ? false
-      : policy?.requireLoss !== undefined
-      ? policy.requireLoss
-      : true;
+  if (requireLoss === undefined) {
+    requireLoss = policy?.requireLoss !== undefined ? policy.requireLoss : true;
+  }
   // end policy support
 
   winsLimit = winsLimit || policy?.winsLimit;
@@ -187,7 +181,8 @@ export function getEligibleVoluntaryConsolationParticipants({
     ? tournamentRecord?.participants.filter(({ participantId }) =>
         enteredParticipantIds.includes(participantId)
       )
-    : Object.values(requireLoss ? losingParticipants : matchUpParticipants);
+    : (requireLoss && Object.values(losingParticipants)) ||
+      Object.values(matchUpParticipants);
 
   const satisfiesLoss = (participantId) =>
     !requireLoss || losingParticipantIds.includes(participantId);

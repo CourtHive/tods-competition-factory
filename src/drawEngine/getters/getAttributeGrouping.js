@@ -88,10 +88,7 @@ export function extractAttributeValues({
       // extractedValues are values to be avoided
       // e.g. for { directive: 'pairParticipants' } the extractedValues would be [ 'partnerParticipantId' ]
       const includeIds = policyAttribute?.includeIds;
-      const collectionIds = (
-        (idCollections && idCollections[directive]) ||
-        []
-      ).filter(
+      const collectionIds = (idCollections?.[directive] || []).filter(
         (participantId) => !includeIds || includeIds.includes(participantId)
       );
       if (collectionIds?.length && participants?.length) {
@@ -124,7 +121,7 @@ export function extractAttributeValues({
 
   function processKeys({ value, keys = [], significantCharacters }) {
     for (const [index, key] of keys.entries()) {
-      if (value && value[key]) {
+      if (value?.[key]) {
         if (Array.isArray(value[key])) {
           const values = value[key];
           const remainingKeys = keys.slice(index);

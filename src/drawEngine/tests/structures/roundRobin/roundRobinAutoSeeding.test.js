@@ -3,11 +3,11 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';
 
+import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
 import { RANKING, RATING } from '../../../../constants/scaleConstants';
 import { SINGLES_EVENT } from '../../../../constants/eventConstants';
 import { WTN } from '../../../../constants/ratingConstants';
-import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 
 it('can autoSeed by Rankings and then generate Round Robin', () => {
   const participantsCount = 32;

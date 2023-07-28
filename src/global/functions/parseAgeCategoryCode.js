@@ -49,7 +49,9 @@ export function parseAgeCategoryCode({ consideredDate, category } = {}) {
   // construct min or max date with or without year
   const isYYMM = (datePart) => datePart.match(/^\d{2}-\d{2}$/);
   const constructedDate = (y, d, df) =>
-    isValidDateString(d) ? d : d && isYYMM(d) ? `${y}-${d}` : `${y}-${df}`;
+    (isValidDateString(d) && d) ||
+    (d && isYYMM(d) && `${y}-${d}`) ||
+    `${y}-${df}`;
 
   const uPre = (ageInt) => {
     const ageMinYear = consideredYear - ageInt;

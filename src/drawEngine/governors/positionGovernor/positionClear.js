@@ -414,13 +414,12 @@ function removeDrawPosition({
     (assignment) => assignment.bye
   ).length;
 
-  const newMatchUpStatus = matchUpContainsBye
-    ? BYE
-    : [DEFAULTED, WALKOVER].includes(targetMatchUp.matchUpStatus)
-    ? targetMatchUp.matcHUpStatus
-    : targetMatchUp.drawPositions.length === 2
-    ? TO_BE_PLAYED
-    : undefined;
+  const newMatchUpStatus =
+    (matchUpContainsBye && BYE) ||
+    ([DEFAULTED, WALKOVER].includes(targetMatchUp.matchUpStatus) &&
+      targetMatchUp.matcHUpStatus) ||
+    (targetMatchUp.drawPositions.length === 2 && TO_BE_PLAYED) ||
+    undefined;
 
   targetMatchUp.matchUpStatus = newMatchUpStatus;
 

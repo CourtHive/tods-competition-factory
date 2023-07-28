@@ -58,8 +58,7 @@ it('can add drawPositionsRange to inContext matchUps in a SINGLE_ELIMINATION str
     const { drawPositions, drawPositionsRange, roundNumber, roundPosition } =
       matchUp;
 
-    const expectation =
-      expectations[roundNumber] && expectations[roundNumber][roundPosition];
+    const expectation = expectations?.[roundNumber][roundPosition];
     if (expectation) {
       expect(expectation).toEqual(
         drawPositionsRange.firstRoundDrawPositionsRange
@@ -116,8 +115,7 @@ it('can add drawPositionsRange to inContext matchUps in a FEED_IN_CHAMPIONSHIP_T
     const { drawPositions, drawPositionsRange, roundNumber, roundPosition } =
       matchUp;
 
-    const expectation =
-      expectations[roundNumber] && expectations[roundNumber][roundPosition];
+    const expectation = expectations?.[roundNumber][roundPosition];
     if (expectation) {
       expect(expectation).toEqual(
         drawPositionsRange.firstRoundDrawPositionsRange

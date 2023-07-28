@@ -24,14 +24,11 @@ export function updateMatchUpStatusCodes({
     const sourceSideNumber =
       sourceMatchUp?.structureId === pairedMatchUp?.structureId
         ? // if structureIds are equivalent then sideNumber is inferred from roundPositions
-          sourceMatchUp?.roundPosition < pairedMatchUp?.roundPosition
-          ? 1
-          : 2
+          (sourceMatchUp?.roundPosition < pairedMatchUp?.roundPosition && 1) ||
+          2
         : // if different structureIds then structureId that is not equivalent to noContextWinnerMatchUp.structureId is fed
-        // ... and fed positions are always sideNumber 1
-        sourceMatchUp.structureId === pairedMatchUp?.structureId
-        ? 2
-        : 1;
+          // ... and fed positions are always sideNumber 1
+          (sourceMatchUp.structureId === pairedMatchUp?.structureId && 2) || 1;
 
     matchUp.matchUpStatusCodes = matchUp.matchUpStatusCodes.map((code) => {
       if (code.sideNumber === sourceSideNumber) {

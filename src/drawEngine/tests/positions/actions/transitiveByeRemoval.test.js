@@ -52,7 +52,7 @@ it('supports transitive BYE removal in large structures', () => {
     expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   }
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs();
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -92,7 +92,7 @@ it('supports transitive BYE removal in large structures', () => {
     drawPosition: 8,
   });
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs());
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -163,7 +163,7 @@ function swapTest({ swapPosition }) {
   );
   expect(finalMatchUp.drawPositions).toEqual([1, undefined]);
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs();
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -179,7 +179,7 @@ function swapTest({ swapPosition }) {
     replaceWithBye: true,
   });
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs());
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -231,7 +231,7 @@ function swapTest({ swapPosition }) {
   swapPositions({ drawPosition: 5, swapPosition, drawId, structureId });
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs());
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4], // should be drawPosition 5's previous participantId and a bye
     [5, 6],

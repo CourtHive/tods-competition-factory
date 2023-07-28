@@ -42,7 +42,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -52,7 +52,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,
   }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [4, 5],
     [6, 7],
     [2],

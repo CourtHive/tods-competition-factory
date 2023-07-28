@@ -1,16 +1,16 @@
-import { modifyDrawNotice } from './notifications/drawNotifications';
+import scoreGovernor from '../matchUpEngine/governors/scoreGovernor';
 import structureGovernor from './governors/structureGovernor';
 import positionGovernor from './governors/positionGovernor';
 import matchUpGovernor from './governors/matchUpGovernor';
 import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
-import scoreGovernor from '../matchUpEngine/governors/scoreGovernor';
 import entryGovernor from './governors/entryGovernor';
 import linkGovernor from './governors/linkGovernor';
 
 import { newDrawDefinition, paramsMiddleware, setState } from './stateMethods';
 import { notifySubscribers } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
+import { modifyDrawNotice } from './notifications/drawNotifications';
 import { makeDeepCopy } from '../utilities';
 import {
   setDeepCopy,

@@ -26,6 +26,8 @@ import {
   REMOVE_ASSIGNMENT,
 } from '../../../../constants/positionActionConstants';
 
+const goldFlight = 'Gold Flight';
+
 it('disables placement actions for Round Robin Playoffs until all groups are complete', () => {
   reset();
   initialize();
@@ -37,7 +39,7 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
   const structureOptions = {
     groupSize,
     playoffGroups: [
-      { finishingPositions: [1], structureName: 'Gold Flight' },
+      { finishingPositions: [1], structureName: goldFlight },
       { finishingPositions: [2], structureName: 'Silver Flight' },
       { finishingPositions: [3], structureName: 'Bronze Flight' },
       { finishingPositions: [4], structureName: 'Green Flight' },
@@ -107,7 +109,7 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
     (link) => link.linkType === POSITION
   );
 
-  let drawPosition = 1;
+  const drawPosition = 1;
   result = tournamentEngine.positionActions({
     policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
     structureId: playoffStructureIds[0],
@@ -146,7 +148,6 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
   mainStructure.structures.slice(0, 2).forEach((structure, structureOrder) => {
     completeStructures(structure, structureOrder);
   });
-  drawPosition = 1;
   result = tournamentEngine.positionActions({
     policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
     structureId: playoffStructureIds[0],
@@ -167,7 +168,6 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
     });
   });
 
-  drawPosition = 1;
   result = tournamentEngine.positionActions({
     policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
     structureId: playoffStructureIds[0],
@@ -185,7 +185,7 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
   const groupsCount = drawSize / groupSize;
   const structureOptions = {
     groupSize,
-    playoffGroups: [{ finishingPositions: [1], structureName: 'Gold Flight' }],
+    playoffGroups: [{ finishingPositions: [1], structureName: goldFlight }],
   };
 
   const drawProfiles = [
@@ -363,7 +363,7 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
   const groupSize = 4;
   const groupsCount = drawSize / groupSize;
   const structureOptions = {
-    playoffGroups: [{ finishingPositions: [1], structureName: 'Gold Flight' }],
+    playoffGroups: [{ finishingPositions: [1], structureName: goldFlight }],
     groupSize,
   };
 

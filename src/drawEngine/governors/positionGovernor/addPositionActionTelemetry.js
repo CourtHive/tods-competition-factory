@@ -1,5 +1,5 @@
-import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { addExtension } from '../../../global/functions/producers/addExtension';
+import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 
 import { AUDIT_POSITION_ACTIONS } from '../../../constants/extensionConstants';

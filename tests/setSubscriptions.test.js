@@ -24,7 +24,7 @@ it('can set subscriptions in global state outside of engines', () => {
 
   setSubscriptions({ subscriptions });
 
-  tournamentEngine.newTournamentRecord();
+  tournamentEngine.devContext(true).newTournamentRecord();
   let participant = {
     participantRole: 'COMPETITOR',
     participantType: 'INDIVIDUAL',
