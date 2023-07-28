@@ -1,20 +1,20 @@
-import { allPlayoffPositionsFilled } from '../../governors/queryGovernor/structureActions';
-import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
-import tournamentEngine from '../../../tournamentEngine/sync';
-import { reset, initialize } from '../primitives/primitives';
-import matchUpEngine from '../../../matchUpEngine/sync';
-import { generateRange } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import { allPlayoffPositionsFilled } from '../../../governors/queryGovernor/structureActions';
+import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
+import tournamentEngine from '../../../../tournamentEngine/sync';
+import { reset, initialize } from '../../primitives/primitives';
+import matchUpEngine from '../../../../matchUpEngine/sync';
+import { generateRange } from '../../../../utilities';
+import mocksEngine from '../../../../mocksEngine';
 import { expect } from 'vitest';
 
-import { SINGLES } from '../../../constants/eventConstants';
+import { SINGLES } from '../../../../constants/eventConstants';
 import {
   MAIN,
   PLAY_OFF,
   POSITION,
   WATERFALL,
   ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../../../constants/drawDefinitionConstants';
 
 export function roundRobinWithPlayoffsTest({
   finishingGroupSizes,

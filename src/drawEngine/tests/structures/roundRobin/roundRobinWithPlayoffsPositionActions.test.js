@@ -1,30 +1,30 @@
-import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
-import { getPositionAssignments } from '../../getters/positionsGetter';
-import tournamentEngine from '../../../tournamentEngine/sync';
-import { reset, initialize } from '../primitives/primitives';
+import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
+import { getPositionAssignments } from '../../../getters/positionsGetter';
+import tournamentEngine from '../../../../tournamentEngine/sync';
+import { reset, initialize } from '../../primitives/primitives';
 import { setsValues } from './roundRobinSetsValues.js';
-import { intersection } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import { intersection } from '../../../../utilities';
+import mocksEngine from '../../../../mocksEngine';
 import { expect, it } from 'vitest';
 
-import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
-import POLICY_SEEDING_NATIONAL from '../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
-import POLICY_SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
-import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
-import { LUCKY_LOSER } from '../../../constants/entryStatusConstants';
-import { SINGLES } from '../../../constants/eventConstants';
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import POLICY_SEEDING_NATIONAL from '../../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
+import POLICY_SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
+import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
+import { LUCKY_LOSER } from '../../../../constants/entryStatusConstants';
+import { SINGLES } from '../../../../constants/eventConstants';
 import {
   MAIN,
   PLAY_OFF,
   POSITION,
   WATERFALL,
   ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../../../constants/drawDefinitionConstants';
 import {
   ASSIGN_BYE,
   ASSIGN_PARTICIPANT,
   REMOVE_ASSIGNMENT,
-} from '../../../constants/positionActionConstants';
+} from '../../../../constants/positionActionConstants';
 
 it('disables placement actions for Round Robin Playoffs until all groups are complete', () => {
   reset();

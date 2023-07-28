@@ -113,7 +113,7 @@ export function getEligibleVoluntaryConsolationParticipants({
     if (
       requirePlay &&
       ![1, 2].includes(matchUp.winningSide) &&
-      !matchUp.matchUpStatus === DOUBLE_WALKOVER
+      matchUp.matchUpStatus !== DOUBLE_WALKOVER
     )
       continue;
     if (

@@ -1,7 +1,7 @@
 import { roundRobinWithPlayoffsTest } from './roundRobinWithPlayoffsTest';
 import { it } from 'vitest';
 
-import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
+import { SINGLE_ELIMINATION } from '../../../../constants/drawDefinitionConstants';
 
 it('can generate Playoffs for Round Robin with 2 groups of 5, each with BYE', () => {
   const playoffGroups = [

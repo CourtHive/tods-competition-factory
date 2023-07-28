@@ -1,13 +1,13 @@
-import tournamentEngine from '../../../tournamentEngine/sync';
-import mocksEngine from '../../../mocksEngine';
-import { unique } from '../../../utilities';
+import tournamentEngine from '../../../../tournamentEngine/sync';
+import mocksEngine from '../../../../mocksEngine';
+import { unique } from '../../../../utilities';
 import { expect, it } from 'vitest';
 
-import POLICY_SEEDING_BYES from '../../../fixtures/policies/POLICY_SEEDING_BYES';
-import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
-import { BYE } from '../../../constants/matchUpStatusConstants';
-import { SEEDING } from '../../../constants/scaleConstants';
-import { SINGLES } from '../../../constants/eventConstants';
+import POLICY_SEEDING_BYES from '../../../../fixtures/policies/POLICY_SEEDING_BYES';
+import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
+import { BYE } from '../../../../constants/matchUpStatusConstants';
+import { SEEDING } from '../../../../constants/scaleConstants';
+import { SINGLES } from '../../../../constants/eventConstants';
 
 const scenario = [
   {
