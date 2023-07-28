@@ -17,11 +17,11 @@ import {
 } from './constants';
 
 export function getScoreAnalysis({
-  sets,
+  matchUpFormat,
   scoreString,
   winningSide,
-  matchUpFormat,
   value,
+  sets,
 }) {
   const completedSets = sets?.filter((set) => set?.winningSide)?.length || 0;
   const setNumber = completedSets + (winningSide ? 0 : 1);
@@ -38,18 +38,17 @@ export function getScoreAnalysis({
   const finalSetIsComplete = finalSet?.winningSide;
 
   const { isTiebreakEntry: isSetTiebreakEntry } = testTiebreakEntry({
-    scoreString,
     brackets: SET_TIEBREAK_BRACKETS,
+    scoreString,
   });
   const { isTiebreakEntry: isMatchTiebreakEntry } = testTiebreakEntry({
-    scoreString,
     brackets: MATCH_TIEBREAK_BRACKETS,
+    scoreString,
   });
   const isTiebreakEntry = isSetTiebreakEntry || isMatchTiebreakEntry;
 
   const isTiebreakSet = !!setFormat.tiebreakSet;
-  const lastScoreChar =
-    scoreString && scoreString[scoreString.length - 1].trim();
+  const lastScoreChar = scoreString?.[scoreString.length - 1]?.trim();
   const isNumericEnding = scoreString && !isNaN(lastScoreChar);
 
   const isIncompleteSetScore =

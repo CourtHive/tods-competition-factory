@@ -69,23 +69,23 @@ export function removeFromScore({ analysis, scoreString, sets, lowSide }) {
   const { tiebreakTo, NoAD } = tiebreakSet || {};
 
   const { isTiebreakEntry: isMatchTiebreak } = testTiebreakEntry({
-    scoreString,
     brackets: MATCH_TIEBREAK_BRACKETS,
+    scoreString,
   });
 
   const index = lastNumericIndex(scoreString);
   if (index >= 0) {
     newScore = scoreString.slice(0, index);
     const { isTiebreakEntry: openSetTiebreak } = testTiebreakEntry({
-      scoreString: newScore,
       brackets: SET_TIEBREAK_BRACKETS,
+      scoreString: newScore,
     });
     const {
       lastOpenBracketIndex: lastMatchTiebreakOpenBracketIndex,
       isTiebreakEntry: openMatchTiebreak,
     } = testTiebreakEntry({
-      scoreString: newScore,
       brackets: MATCH_TIEBREAK_BRACKETS,
+      scoreString: newScore,
     });
     const lastNewScoreChar = newScore && newScore[newScore.length - 1].trim();
     const remainingNumbers = newScore && !isNaN(lastNewScoreChar);
@@ -206,10 +206,10 @@ export function removeFromScore({ analysis, scoreString, sets, lowSide }) {
 }
 
 export function testTiebreakEntry({
-  scoreString,
   brackets = SET_TIEBREAK_BRACKETS,
+  scoreString,
 }) {
-  if (!scoreString) return false;
+  if (!scoreString) return {};
   const [open, close] = brackets.split('');
   const splitScore = scoreString.split('');
   const lastOpenBracketIndex = Math.max(...arrayIndices(open, splitScore));

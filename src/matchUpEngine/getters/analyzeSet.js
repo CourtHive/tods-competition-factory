@@ -62,7 +62,7 @@ export function analyzeSet(params) {
 
   const isTiebreakSet = !!(tiebreakScoresCount && !gameScoresCount);
 
-  const isCompletedSet = !!(setObject && setObject?.winningSide);
+  const isCompletedSet = !!setObject?.winningSide;
   const { error: standardSetError, result: isValidStandardSetOutcome } =
     checkValidStandardSetOutcome({
       setObject,
@@ -177,10 +177,8 @@ function checkValidStandardSetOutcome({
   const setTiebreakDefined = tiebreakAt && tiebreakFormat;
   const validTiebreakScores =
     sideTiebreakScores?.filter((s) => !isNaN(s)).length === 2;
-  const winningSideTiebreakScore =
-    sideTiebreakScores && sideTiebreakScores[winningSideIndex];
-  const losingSideTiebreakScore =
-    sideTiebreakScores && sideTiebreakScores[losingSideIndex];
+  const winningSideTiebreakScore = sideTiebreakScores?.[winningSideIndex];
+  const losingSideTiebreakScore = sideTiebreakScores?.[losingSideIndex];
 
   const hasTiebreakCondition =
     tiebreakAt &&
