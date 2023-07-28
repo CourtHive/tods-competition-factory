@@ -1,6 +1,6 @@
 import { getContextContent } from '../../../tournamentEngine/getters/getContextContent';
-import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { getMatchUp } from '../../accessors/matchUpAccessor/matchUps';
+import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
 import { makeDeepCopy } from '../../../utilities';
 import {

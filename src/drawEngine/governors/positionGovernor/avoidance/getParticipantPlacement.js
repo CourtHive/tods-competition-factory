@@ -1,8 +1,8 @@
 import { organizeDrawPositionOptions } from './organizeDrawPositionOptions';
 import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { getParticipantGroups } from './analyzeDrawPositions';
-import { getUnfilledPositions } from './getUnfilledPositions';
 import { getNextParticipantId } from './getNextParticipantId';
+import { getUnfilledPositions } from './getUnfilledPositions';
 import { randomPop } from '../../../../utilities/arrays';
 
 export function getParticipantPlacement({

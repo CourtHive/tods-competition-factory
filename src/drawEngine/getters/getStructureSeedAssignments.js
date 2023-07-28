@@ -37,28 +37,30 @@ export function getStructureSeedAssignments({
       structureId,
       stage,
     });
-  const seedProxies =
-    entries &&
-    entries
-      .filter((entry) => entry.placementGroup === 1)
-      .sort((a, b) => {
-        // GEMscore is used here because headToHead encounters are not relevant
-        // when the participants are derived from more than one RR group
-        return (
-          (a.GEMscore < b.GEMscore && 1) || (a.GEMscore > b.GEMscore && -1) || 0
-        );
-      })
-      .map((entry, index) => {
-        const seedNumber = index + 1;
-        return {
-          participantId: entry.participantId,
-          seedValue: seedNumber,
-          seedNumber,
-          seedProxy: true, // flag so that proxy seeding information doesn't get used externally
-        };
-      });
+  const seedProxies = entries
+    ? entries
+        .filter((entry) => entry.placementGroup === 1)
+        .sort((a, b) => {
+          // GEMscore is used here because headToHead encounters are not relevant
+          // when the participants are derived from more than one RR group
+          return (
+            (a.GEMscore < b.GEMscore && 1) ||
+            (a.GEMscore > b.GEMscore && -1) ||
+            0
+          );
+        })
+        .map((entry, index) => {
+          const seedNumber = index + 1;
+          return {
+            participantId: entry.participantId,
+            seedValue: seedNumber,
+            seedNumber,
+            seedProxy: true, // flag so that proxy seeding information doesn't get used externally
+          };
+        })
+    : [];
 
-  if (seedProxies?.length) {
+  if (seedProxies.length) {
     // seedProxies are only found in PLAY_OFF when ROUND_ROBIN is MAIN stage
     seedAssignments = seedProxies;
   } else if (structure.seedAssignments) {

@@ -1,7 +1,7 @@
 import { getStructureRoundProfile } from '../../getters/getMatchUps/getStructureRoundProfile';
 import { getFinishingPositionSourceRoundsMap } from './structureUtils';
-import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { generateRange, numericSort } from '../../../utilities';
+import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 
 import {
   MISSING_DRAW_DEFINITION,

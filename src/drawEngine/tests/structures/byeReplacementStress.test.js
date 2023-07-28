@@ -21,7 +21,7 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 it('can run stress tests when JEST_STRESS=true', () => {
-  if (process.env.JEST_STRESS !== true) {
+  if (!process.env.JEST_STRESS) {
     ['brightyellow', 'brightgreen', 'brightmagenta', 'brightblue'].forEach(
       (color) => {
         pushGlobalLog(

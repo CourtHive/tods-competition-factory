@@ -48,7 +48,7 @@ export function getState({
 // prefetch can be triggered based on method governor, e.g. not necessary for query
 export function paramsMiddleware(tournamentRecord, params, prefetch) {
   if (params) {
-    const { drawId } = params || (params.matchUp && params.matchUp.drawId);
+    const drawId = params.drawId || params.matchUp?.drawId;
 
     if (drawId) {
       const { event, drawDefinition } = findEvent({

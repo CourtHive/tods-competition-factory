@@ -5,8 +5,8 @@ import { getExitProfiles } from '../../governors/queryGovernor/getExitProfile';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { getStructureMatchUps } from './getStructureMatchUps';
 import { getDrawStructures } from '../findStructure';
-import { filterMatchUps } from './filterMatchUps';
 import { getMatchUpsMap } from './getMatchUpsMap';
+import { filterMatchUps } from './filterMatchUps';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

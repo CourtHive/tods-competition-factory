@@ -45,11 +45,7 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
 
       const { eventId } = event;
       const publishedDrawIds = eventIdsMap[eventId].filter((drawId) => {
-        return (
-          pubState &&
-          pubState[PUBLIC] &&
-          pubState[PUBLIC].drawIds?.includes(drawId)
-        );
+        return pubState?.[PUBLIC]?.drawIds?.includes(drawId);
       });
 
       return publishedDrawIds.length;

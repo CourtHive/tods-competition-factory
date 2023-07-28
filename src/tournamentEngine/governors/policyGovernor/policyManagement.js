@@ -91,7 +91,7 @@ export function removeEventPolicy({ event, policyType }) {
   let policyRemoved;
   if (event.extensions) {
     const { appliedPolicies } = getAppliedPolicies({ event });
-    if (appliedPolicies && appliedPolicies[policyType]) {
+    if (appliedPolicies?.[policyType]) {
       delete appliedPolicies[policyType];
       policyRemoved = true;
 

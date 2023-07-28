@@ -40,7 +40,7 @@ export function checkInParticipant({
   tournamentParticipants =
     tournamentParticipants || tournamentRecord?.participants;
 
-  if (tournamentParticipants && tournamentParticipants.length) {
+  if (tournamentParticipants?.length) {
     if (!matchUp) {
       const result = findMatchUp({
         tournamentParticipants,
@@ -115,7 +115,7 @@ export function checkOutParticipant({
     return { error: INVALID_ACTION };
   }
 
-  if (tournamentParticipants && tournamentParticipants.length) {
+  if (tournamentParticipants?.length) {
     const { checkedInParticipantIds, allRelevantParticipantIds } =
       getCheckedInParticipantIds({ matchUp });
     if (!allRelevantParticipantIds.includes(participantId))

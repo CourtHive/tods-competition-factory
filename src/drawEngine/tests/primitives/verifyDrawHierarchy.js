@@ -34,9 +34,7 @@ export function verifyDrawHierarchy({ matchUps, hierarchyVerification = [] }) {
 
 function navigateToChildNode({ drawHierarchy, navigationProfile, attribute }) {
   const node = navigationProfile.reduce((node, whichChild) => {
-    return node.children && node.children[whichChild]
-      ? node.children[whichChild]
-      : node;
+    return node.children?.[whichChild] ? node.children[whichChild] : node;
   }, drawHierarchy);
-  return (node && node[attribute]) || node;
+  return node?.[attribute] || node;
 }

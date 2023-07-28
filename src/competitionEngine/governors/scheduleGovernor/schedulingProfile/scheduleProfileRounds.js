@@ -119,7 +119,9 @@ export function scheduleProfileRounds({
       return profileDates.includes(scheduleDate);
     })
     .sort((a, b) => {
-      new Date(a.scheduleDate).getTime() - new Date(b.scheduleDate).getTime();
+      return (
+        new Date(a.scheduleDate).getTime() - new Date(b.scheduleDate).getTime()
+      );
     });
 
   const params = {

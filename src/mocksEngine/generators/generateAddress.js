@@ -2,9 +2,9 @@ export function generateAddress(addressAttributes) {
   const { cities, states, postalCodes, nationalityCode, participantIndex } =
     addressAttributes;
   return {
-    city: cities && cities[participantIndex],
-    state: states && states[participantIndex],
-    postalCode: postalCodes && postalCodes[participantIndex],
+    postalCode: postalCodes?.[participantIndex],
+    state: states?.[participantIndex],
+    city: cities?.[participantIndex],
     countryCode: nationalityCode,
   };
 }

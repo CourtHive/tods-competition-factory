@@ -1,5 +1,5 @@
-import { parse } from '../../matchUpFormatGovernor/parse';
 import { arrayIndices } from '../../../../utilities/arrays';
+import { parse } from '../../matchUpFormatGovernor/parse';
 import {
   checkValidMatchTiebreak,
   testTiebreakEntry,
@@ -17,11 +17,11 @@ import {
 } from './constants';
 
 export function getScoreAnalysis({
-  sets,
+  matchUpFormat,
   scoreString,
   winningSide,
-  matchUpFormat,
   value,
+  sets,
 }) {
   const completedSets = sets?.filter((set) => set?.winningSide)?.length || 0;
   const setNumber = completedSets + (winningSide ? 0 : 1);
@@ -35,21 +35,20 @@ export function getScoreAnalysis({
   const isTimedSet = setFormat?.timed || matchUpScoringFormat.timed;
 
   const finalSet = isDecidingSet && sets[matchUpScoringFormat?.bestOf - 1];
-  const finalSetIsComplete = finalSet && finalSet.winningSide;
+  const finalSetIsComplete = finalSet?.winningSide;
 
   const { isTiebreakEntry: isSetTiebreakEntry } = testTiebreakEntry({
-    scoreString,
     brackets: SET_TIEBREAK_BRACKETS,
+    scoreString,
   });
   const { isTiebreakEntry: isMatchTiebreakEntry } = testTiebreakEntry({
-    scoreString,
     brackets: MATCH_TIEBREAK_BRACKETS,
+    scoreString,
   });
   const isTiebreakEntry = isSetTiebreakEntry || isMatchTiebreakEntry;
 
   const isTiebreakSet = !!setFormat.tiebreakSet;
-  const lastScoreChar =
-    scoreString && scoreString[scoreString.length - 1].trim();
+  const lastScoreChar = scoreString?.[scoreString.length - 1]?.trim();
   const isNumericEnding = scoreString && !isNaN(lastScoreChar);
 
   const isIncompleteSetScore =
@@ -61,7 +60,7 @@ export function getScoreAnalysis({
   const isPartialMatchTiebreakValue =
     isMatchTiebreakEntry && lastScoreChar === MATCH_TIEBREAK_JOINER;
 
-  const splitScore = scoreString && scoreString.split('');
+  const splitScore = scoreString?.split('');
   const [open] = MATCH_TIEBREAK_BRACKETS.split('');
   const lastOpenBracketIndex =
     splitScore && Math.max(...arrayIndices(open, splitScore));

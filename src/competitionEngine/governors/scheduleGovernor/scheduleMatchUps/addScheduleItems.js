@@ -1,8 +1,8 @@
 import { allocateTeamMatchUpCourts as allocateCourts } from '../../../../tournamentEngine/governors/scheduleGovernor/allocateTeamMatchUpCourts';
 import { assignMatchUpVenue as assignVenue } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { assignMatchUpCourt as assignCourt } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
-import { findTournamentId } from '../../competitionsGovernor/findTournamentId';
 import { decorateResult } from '../../../../global/functions/decorateResult';
+import { findTournamentId } from '../../competitionsGovernor/findTournamentId';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import {
   addMatchUpScheduledDate as addScheduledDate,

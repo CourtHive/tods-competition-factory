@@ -62,17 +62,14 @@ export function modifySeedAssignment({
   if (existingAssginment) {
     const newValue =
       typeof seedValue === 'string'
-        ? seedValue.includes('-')
-          ? seedValue
+        ? (seedValue.includes('-') &&
+            seedValue
               .split('-')
               .map((v) => parseInt(v))
-              .join('-')
-          : seedValue > 0
-          ? parseInt(seedValue)
-          : ''
-        : seedValue > 0
-        ? parseInt(seedValue)
-        : '';
+              .join('-')) ||
+          (seedValue > 0 && parseInt(seedValue)) ||
+          ''
+        : (seedValue > 0 && parseInt(seedValue)) || '';
     existingAssginment.seedValue = newValue;
   } else {
     const seedNumber = Math.max(0, ...seedNumbers) + 1;

@@ -62,7 +62,7 @@ export function addCollectionDefinition({
       eventId,
       event,
     });
-  if (result.error) return result;
+  if (result?.error) return { error: result.error };
 
   const { structure } = result;
   matchUp = matchUp || result.matchUp;
@@ -70,7 +70,7 @@ export function addCollectionDefinition({
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
-  if (result.error) return result;
+  if (result?.error) return { error: result.error };
 
   if (!collectionDefinition.collectionId) {
     collectionDefinition.collectionId = UUID();
@@ -80,8 +80,8 @@ export function addCollectionDefinition({
     );
     if (collectionIds.includes(collectionDefinition.collectionId))
       return {
-        error: DUPLICATE_VALUE,
         collectionId: collectionDefinition.collectionId,
+        error: DUPLICATE_VALUE,
       };
   }
 
@@ -118,7 +118,7 @@ export function addCollectionDefinition({
 
   const prunedTieFormat = definedAttributes(tieFormat);
   result = validateTieFormat({ tieFormat: prunedTieFormat });
-  if (result.error) return result;
+  if (result?.error) return { error: result.error };
 
   if (eventId) {
     event.tieFormat = prunedTieFormat;

@@ -1,20 +1,24 @@
-import { tallyParticipantResults } from '../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
-import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
-import { chunkArray, intersection } from '../../../utilities/arrays';
-import tournamentEngine from '../../../tournamentEngine/sync';
-import { findStructure } from '../../getters/findStructure';
-import matchUpEngine from '../../../matchUpEngine/sync';
+import { tallyParticipantResults } from '../../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
+import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
+import { chunkArray, intersection } from '../../../../utilities/arrays';
+import tournamentEngine from '../../../../tournamentEngine/sync';
+import { findStructure } from '../../../getters/findStructure';
+import matchUpEngine from '../../../../matchUpEngine/sync';
 import { setsValues } from './roundRobinSetsValues.js';
-import mocksEngine from '../../../mocksEngine';
-import drawEngine from '../../sync';
+import mocksEngine from '../../../../mocksEngine';
+import drawEngine from '../../../sync';
 import { expect, it } from 'vitest';
 import {
   allPlayoffPositionsFilled,
   isCompletedStructure,
-} from '../../governors/queryGovernor/structureActions';
+} from '../../../governors/queryGovernor/structureActions';
+import {
+  reset,
+  initialize,
+  mainDrawPositions,
+} from '../../primitives/primitives';
 
-import { SINGLES } from '../../../constants/eventConstants';
+import { SINGLES } from '../../../../constants/eventConstants';
 import {
   DRAW,
   MAIN,
@@ -24,7 +28,12 @@ import {
   ROUND_OUTCOME,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../../../constants/drawDefinitionConstants';
+
+const bronzeFlight = 'Bronze Flight';
+const silverFlight = 'Silver Flight';
+const greenFlight = 'Green Flight';
+const goldFlight = 'Gold Flight';
 
 it('can generate Round Robins 32 with playoffs', () => {
   reset();
@@ -34,8 +43,8 @@ it('can generate Round Robins 32 with playoffs', () => {
   mainDrawPositions({ drawSize });
   const structureOptions = {
     playoffGroups: [
-      { finishingPositions: [1], structureName: 'Gold Flight' },
-      { finishingPositions: [2], structureName: 'Silver Flight' },
+      { finishingPositions: [1], structureName: goldFlight },
+      { finishingPositions: [2], structureName: silverFlight },
     ],
   };
   const result = drawEngine
@@ -50,8 +59,8 @@ it('can generate Round Robins 32 with playoffs', () => {
   expect(mainStructure.structures.length).toEqual(8);
 
   expect(playoffStructures.length).toEqual(2);
-  expect(playoffStructures[0].structureName).toEqual('Gold Flight');
-  expect(playoffStructures[1].structureName).toEqual('Silver Flight');
+  expect(playoffStructures[0].structureName).toEqual(goldFlight);
+  expect(playoffStructures[1].structureName).toEqual(silverFlight);
 
   expect(playoffStructures[0].stage).toEqual(PLAY_OFF);
   expect(playoffStructures[0].finishingPosition).toEqual(ROUND_OUTCOME);
@@ -77,8 +86,8 @@ it('can generate Round Robins 16 with playoffs', () => {
   mainDrawPositions({ drawSize: 16 });
   const structureOptions = {
     playoffGroups: [
-      { finishingPositions: [1], structureName: 'Gold Flight' },
-      { finishingPositions: [2], structureName: 'Silver Flight' },
+      { finishingPositions: [1], structureName: goldFlight },
+      { finishingPositions: [2], structureName: silverFlight },
     ],
   };
   const result = drawEngine.generateDrawTypeAndModifyDrawDefinition({
@@ -92,8 +101,8 @@ it('can generate Round Robins 16 with playoffs', () => {
   expect(mainStructure.structures.length).toEqual(4);
 
   expect(playoffStructures.length).toEqual(2);
-  expect(playoffStructures[0].structureName).toEqual('Gold Flight');
-  expect(playoffStructures[1].structureName).toEqual('Silver Flight');
+  expect(playoffStructures[0].structureName).toEqual(goldFlight);
+  expect(playoffStructures[1].structureName).toEqual(silverFlight);
 
   expect(playoffStructures[0].stage).toEqual(PLAY_OFF);
   expect(playoffStructures[0].finishingPosition).toEqual(ROUND_OUTCOME);
@@ -121,10 +130,10 @@ it('can generate Round Robin with Playoffs', () => {
   const structureOptions = {
     groupSize,
     playoffGroups: [
-      { finishingPositions: [1], structureName: 'Gold Flight' },
-      { finishingPositions: [2], structureName: 'Silver Flight' },
-      { finishingPositions: [3], structureName: 'Bronze Flight' },
-      { finishingPositions: [4], structureName: 'Green Flight' },
+      { finishingPositions: [1], structureName: goldFlight },
+      { finishingPositions: [2], structureName: silverFlight },
+      { finishingPositions: [3], structureName: bronzeFlight },
+      { finishingPositions: [4], structureName: greenFlight },
       { finishingPositions: [5], structureName: 'Yellow Flight' },
     ],
   };
@@ -162,10 +171,10 @@ it('can advance players in Round Robin with Playoffs', () => {
   const structureOptions = {
     groupSize,
     playoffGroups: [
-      { finishingPositions: [1], structureName: 'Gold Flight' },
-      { finishingPositions: [2], structureName: 'Silver Flight' },
-      { finishingPositions: [3], structureName: 'Bronze Flight' },
-      { finishingPositions: [4], structureName: 'Green Flight' },
+      { finishingPositions: [1], structureName: goldFlight },
+      { finishingPositions: [2], structureName: silverFlight },
+      { finishingPositions: [3], structureName: bronzeFlight },
+      { finishingPositions: [4], structureName: greenFlight },
     ],
   };
 
@@ -370,16 +379,16 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
     playoffGroups: [
       {
         finishingPositions: [1],
-        structureName: 'Gold Flight',
+        structureName: goldFlight,
         // drawType: FIRST_MATCH_LOSER_CONSOLATION, // TODO: figure out why this is breaking
       },
       {
         finishingPositions: [2],
-        structureName: 'Silver Flight',
+        structureName: silverFlight,
         drawType: SINGLE_ELIMINATION,
       },
-      { finishingPositions: [3], structureName: 'Bronze Flight' },
-      { finishingPositions: [4], structureName: 'Green Flight' },
+      { finishingPositions: [3], structureName: bronzeFlight },
+      { finishingPositions: [4], structureName: greenFlight },
     ],
   };
 

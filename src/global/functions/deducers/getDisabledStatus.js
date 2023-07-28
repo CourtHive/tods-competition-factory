@@ -13,6 +13,6 @@ export function getDisabledStatus({ extension, dates = [] }) {
       extension.value.dates.includes(date)
     );
     // only if all provided dates appear in disabled dates is the court considered disabled
-    return disabledDates.length;
+    return !!disabledDates.length;
   }
 }

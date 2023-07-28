@@ -113,7 +113,7 @@ export function analyzeRoundRobinDrawPositions(params) {
  * Returns paired position for first round matches in elimination structures
  */
 function getPairedPosition(drawPosition) {
-  return drawPosition % 2 ? drawPosition + 1 : drawPosition - 1;
+  return Number(drawPosition % 2 ? drawPosition + 1 : drawPosition - 1);
 }
 
 /**

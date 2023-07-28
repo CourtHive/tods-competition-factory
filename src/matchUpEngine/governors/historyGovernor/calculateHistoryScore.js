@@ -98,9 +98,10 @@ export function calculateHistoryScore({ matchUp, updateScore }) {
     const completeSet = (winningSide) => {
       set.winningSide = winningSide;
 
-      // strip out shorthand
       const { s, ...rest } = set;
-      if (s) true;
+      if (s) {
+        // strip out shorthand
+      }
 
       score.sets.push(rest);
       point = newPoint();
@@ -112,9 +113,10 @@ export function calculateHistoryScore({ matchUp, updateScore }) {
     const completeGame = (winningSide) => {
       game.winningSide = winningSide;
 
-      // strip out shorthand
       const { g, ...rest } = game;
-      if (g) true;
+      if (g) {
+        // strip out shorthand
+      }
 
       set.games.push(rest);
       point = newPoint();
@@ -128,9 +130,10 @@ export function calculateHistoryScore({ matchUp, updateScore }) {
     const completePoint = (winningSide) => {
       point.winningSide = winningSide;
 
-      // strip out shorthand
       const { p, ...rest } = point;
-      if (p) true;
+      if (p) {
+        // strip out shorthand
+      }
 
       game.points.push(rest);
       point = newPoint();

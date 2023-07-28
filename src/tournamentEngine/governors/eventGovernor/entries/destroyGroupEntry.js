@@ -2,8 +2,8 @@ import { deleteParticipants } from '../../participantGovernor/deleteParticipants
 import { getStageEntries } from '../../../getters/participants/getStageEntries';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getParticipantId } from '../../../../global/functions/extractors';
-import { removeEventEntries } from './removeEventEntries';
 import { arrayIndices } from '../../../../utilities/arrays';
+import { removeEventEntries } from './removeEventEntries';
 import { addEventEntries } from './addEventEntries';
 
 import { TEAM, DOUBLES } from '../../../../constants/eventConstants';

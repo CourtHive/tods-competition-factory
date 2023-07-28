@@ -1,5 +1,5 @@
-import { findPolicy } from '../governors/policyGovernor/findPolicy';
 import { getBand, getScoreComponents, pctSpread } from './scoreComponents';
+import { findPolicy } from '../governors/policyGovernor/findPolicy';
 
 import POLICY_COMPETITIVE_BANDS_DEFAULT from '../../fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
 import { POLICY_TYPE_COMPETITIVE_BANDS } from '../../constants/policyConstants';

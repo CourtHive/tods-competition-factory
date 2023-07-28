@@ -4,9 +4,9 @@ import drawEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import { FEED_IN_CHAMPIONSHIP } from '../../../constants/drawDefinitionConstants';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { MALE } from '../../../constants/genderConstants';
-import { BYE } from '../../../constants/matchUpStatusConstants';
 
 it('returns properly ordered drawPositions for consolation structure feed rounds', () => {
   const participantsProfile = {

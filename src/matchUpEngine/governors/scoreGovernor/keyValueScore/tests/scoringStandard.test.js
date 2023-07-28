@@ -1,5 +1,5 @@
-import { keyValueMatchUpScore } from '..';
 import { stressTests } from './standardStress';
+import { keyValueMatchUpScore } from '..';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';

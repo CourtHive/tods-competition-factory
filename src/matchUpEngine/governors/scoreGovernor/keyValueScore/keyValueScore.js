@@ -1,5 +1,21 @@
+import { processIncompleteSetScore } from './processIncompleteSetScore';
+import { keyValueTimedSetScore } from './keyValueTimedSetScore';
+import { getWinningSide, getLeadingSide } from './winningSide';
 import { arrayIndices } from '../../../../utilities/arrays';
+import { processTiebreakSet } from './processTiebreakSet';
+import { keyValueSetScore } from './keyValueSetScore';
+import { getScoreAnalysis } from './scoreAnalysis';
+import { processOutcome } from './processOutcome';
+import {
+  getMatchUpWinner,
+  removeFromScore,
+  getHighTiebreakValue,
+} from './keyValueUtilities';
 
+import {
+  INCOMPLETE,
+  TO_BE_PLAYED,
+} from '../../../../constants/matchUpStatusConstants';
 import {
   SET_TIEBREAK_BRACKETS,
   MATCH_TIEBREAK_BRACKETS,
@@ -18,24 +34,6 @@ import {
   STATUS_INTERRUPTED,
   STATUS_ABANDONED,
 } from './constants';
-
-import { keyValueSetScore } from './keyValueSetScore';
-import { processOutcome } from './processOutcome';
-
-import {
-  getMatchUpWinner,
-  removeFromScore,
-  getHighTiebreakValue,
-} from './keyValueUtilities';
-import { getWinningSide, getLeadingSide } from './winningSide';
-import { processTiebreakSet } from './processTiebreakSet';
-import { processIncompleteSetScore } from './processIncompleteSetScore';
-import { getScoreAnalysis } from './scoreAnalysis';
-import { keyValueTimedSetScore } from './keyValueTimedSetScore';
-import {
-  INCOMPLETE,
-  TO_BE_PLAYED,
-} from '../../../../constants/matchUpStatusConstants';
 
 export function keyValueMatchUpScore(params) {
   const { auto, checkFormat, shiftFirst, lowSide, value, matchUp } = params;

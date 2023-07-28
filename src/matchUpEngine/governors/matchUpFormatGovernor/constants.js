@@ -1,8 +1,8 @@
-export const SET = 'SET';
-export const NOAD = 'NOAD';
+export const NORMAL = 'normal';
 export const TIMED = 'timed';
 export const FINAL = 'final';
-export const NORMAL = 'normal';
+export const NOAD = 'NOAD';
+export const SET = 'SET';
 export const setTypes = {
   S: NORMAL,
   F: FINAL,

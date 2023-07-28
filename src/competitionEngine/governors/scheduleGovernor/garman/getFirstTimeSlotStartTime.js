@@ -27,10 +27,10 @@ export function getFirstTimeSlotStartTime({
     const dateStartTime = timeToDate(startTime);
     const dateEndTime = timeToDate(endTime);
     for (const court of courts || []) {
-      if (!Array.isArray(court.dateAvailability)) return false;
+      if (!Array.isArray(court.dateAvailability)) continue;
       const courtDate = getCourtDateAvailability({ court, date });
       const timeSlots = generateTimeSlots({ courtDate });
-      timeSlots.find((timeSlot) => {
+      timeSlots.forEach((timeSlot) => {
         const timeSlotStartTime = timeToDate(timeSlot.startTime);
         const timeSlotEndTime = timeToDate(timeSlot.endTime);
         if (
@@ -50,7 +50,6 @@ export function getFirstTimeSlotStartTime({
             firstTimeSlotStartTime = timeString;
           }
         }
-        return available;
       });
     }
   }

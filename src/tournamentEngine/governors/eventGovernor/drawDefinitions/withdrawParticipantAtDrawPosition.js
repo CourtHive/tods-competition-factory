@@ -1,4 +1,5 @@
 import { removeDrawPositionAssignment } from './removeDrawPositionAssignment';
+
 import { WITHDRAWN } from '../../../../constants/entryStatusConstants';
 
 /*

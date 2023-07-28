@@ -1,17 +1,17 @@
-import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
-import { chunkArray, intersection } from '../../../utilities/arrays';
-import tournamentEngine from '../../../tournamentEngine/sync';
-import { reset, initialize } from '../primitives/primitives';
-import { findStructure } from '../../getters/findStructure';
-import matchUpEngine from '../../../matchUpEngine/sync';
+import { generateMatchUpOutcome } from '../../primitives/generateMatchUpOutcome';
+import { chunkArray, intersection } from '../../../../utilities/arrays';
+import tournamentEngine from '../../../../tournamentEngine/sync';
+import { reset, initialize } from '../../primitives/primitives';
+import { findStructure } from '../../../getters/findStructure';
+import matchUpEngine from '../../../../matchUpEngine/sync';
 import { setsValues } from './roundRobinSetsValues.js';
-import mocksEngine from '../../../mocksEngine';
-import drawEngine from '../../sync';
+import mocksEngine from '../../../../mocksEngine';
+import drawEngine from '../../../sync';
 import { expect, it } from 'vitest';
 import {
   allPlayoffPositionsFilled,
   isCompletedStructure,
-} from '../../governors/queryGovernor/structureActions';
+} from '../../../governors/queryGovernor/structureActions';
 
 import {
   MAIN,
@@ -20,9 +20,9 @@ import {
   WATERFALL,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../../../constants/drawDefinitionConstants';
 
-import { SINGLES } from '../../../constants/eventConstants';
+import { SINGLES } from '../../../../constants/eventConstants';
 
 it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
   reset();

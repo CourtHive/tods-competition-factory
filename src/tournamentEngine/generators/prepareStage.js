@@ -9,9 +9,9 @@ import { decorateResult } from '../../global/functions/decorateResult';
 import { getParticipantId } from '../../global/functions/extractors';
 
 import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
+import { AD_HOC, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
-import { AD_HOC, QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 export function prepareStage({
   preparedStructureIds = [],

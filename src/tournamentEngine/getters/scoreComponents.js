@@ -8,13 +8,12 @@ import {
 const add = (a, b) => (a || 0) + (b || 0);
 
 export function getBand(spread, bandProfiles) {
-  return isNaN(spread)
-    ? WALKOVER
-    : spread <= bandProfiles[DECISIVE]
-    ? DECISIVE
-    : spread <= bandProfiles[ROUTINE]
-    ? ROUTINE
-    : COMPETITIVE;
+  return (
+    (isNaN(spread) && WALKOVER) ||
+    (spread <= bandProfiles[DECISIVE] && DECISIVE) ||
+    (spread <= bandProfiles[ROUTINE] && ROUTINE) ||
+    COMPETITIVE
+  );
 }
 
 export function getScoreComponents({ score }) {

@@ -41,15 +41,10 @@ function getSetFormat(matchUpFormatObject, preserveRedundant) {
   const finalSetCode =
     (bestOfValue > 1 &&
       finalSetCountValue &&
-      !finalSetCountValue.invalid &&
       setCountValue !== finalSetCountValue && // don't include final set code if equivalent to other sets
       `F:${finalSetCountValue}`) ||
     '';
-  const valid =
-    bestOfCode &&
-    setCountValue &&
-    !setCountValue.invalid &&
-    (!finalSetCountValue || !finalSetCountValue.invalid);
+  const valid = bestOfCode && setCountValue;
 
   if (valid) {
     return [bestOfCode, setCode, finalSetCode].filter((f) => f).join('-');
@@ -65,24 +60,16 @@ function stringifySet(setObject, preserveRedundant) {
       const NoAD = (setObject.NoAD && NOAD) || '';
       const setTiebreakValue = tiebreakFormat(setObject.tiebreakFormat);
       const setTiebreakCode =
-        (setTiebreakValue &&
-          !setTiebreakValue.invalid &&
-          `/${setTiebreakValue}`) ||
-        '';
+        (setTiebreakValue && `/${setTiebreakValue}`) || '';
       const tiebreakAtValue = getNumber(setObject.tiebreakAt);
       const tiebreakAtCode =
         (tiebreakAtValue &&
           (tiebreakAtValue !== setToValue || preserveRedundant) &&
           `@${tiebreakAtValue}`) ||
         '';
-      const valid = !setTiebreakValue || !setTiebreakValue.invalid;
-      if (valid) {
+      if (setTiebreakValue !== false) {
         return `${setToValue}${NoAD}${setTiebreakCode}${tiebreakAtCode}`;
-      } else {
-        return { invalid: true };
       }
-    } else {
-      return { invalid: true };
     }
   }
 }
@@ -99,7 +86,7 @@ function tiebreakFormat(tieobject) {
       if (tieobject.modifier) value += `@${tieobject.modifier}`;
       return value;
     } else {
-      return { invalid: true };
+      return false;
     }
   }
 }

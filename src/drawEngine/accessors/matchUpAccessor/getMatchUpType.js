@@ -14,13 +14,10 @@ export function getMatchUpType({ matchUp = {} } = {}) {
     const participant = side?.participant;
     const participantType = participant?.participantType;
     matchUpType =
-      participantType === INDIVIDUAL
-        ? SINGLES
-        : participantType === PAIR
-        ? DOUBLES
-        : participantType === TEAM
-        ? TEAM
-        : undefined;
+      (participantType === INDIVIDUAL && SINGLES) ||
+      (participantType === PAIR && DOUBLES) ||
+      (participantType === TEAM && TEAM) ||
+      undefined;
   }
 
   return { matchUpType };

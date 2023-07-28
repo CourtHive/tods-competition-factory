@@ -7,21 +7,24 @@ import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { FEMALE, MALE } from '../../constants/genderConstants';
 import { TEAM } from '../../constants/eventConstants';
 
+const oneElevenOhOne = '1111-01-01';
+const two2222 = '2222-02-02';
+
 it('can generate team events using participantsProfile.teamKey and personData', () => {
   // prettier-ignore
   const personData = [
-    { firstName: 'Male', lastName: 'One Team 1', sex: MALE, birthDate: '1111-01-01' },
-    { firstName: 'Male', lastName: 'Two Team 1', sex: MALE, birthDate: '1111-01-01' },
-    { firstName: 'Male', lastName: 'Three Team 1', sex: MALE, birthDate: '1111-01-01' },
-    { firstName: 'Female', lastName: 'One Team 1', sex: FEMALE, birthDate: '1111-01-01' },
-    { firstName: 'Female', lastName: 'Two Team 1', sex: FEMALE, birthDate: '1111-01-01' },
-    { firstName: 'Female', lastName: 'Three Team 1', sex: FEMALE, birthDate: '1111-01-01' },
-    { firstName: 'Male', lastName: 'One Team 2', sex: MALE, birthDate: '2222-02-02' },
-    { firstName: 'Male', lastName: 'Two Team 2', sex: MALE, birthDate: '2222-02-02' },
-    { firstName: 'Male', lastName: 'Three Team 2', sex: MALE, birthDate: '2222-02-02' },
-    { firstName: 'Female', lastName: 'One Team 2', sex: FEMALE, birthDate: '2222-02-02' },
-    { firstName: 'Female', lastName: 'Two Team 2', sex: FEMALE, birthDate: '2222-02-02' },
-    { firstName: 'Female', lastName: 'Three Team 2', sex: FEMALE, birthDate: '2222-02-02' },
+    { firstName: 'Male', lastName: 'One Team 1', sex: MALE, birthDate: oneElevenOhOne },
+    { firstName: 'Male', lastName: 'Two Team 1', sex: MALE, birthDate: oneElevenOhOne },
+    { firstName: 'Male', lastName: 'Three Team 1', sex: MALE, birthDate: oneElevenOhOne },
+    { firstName: 'Female', lastName: 'One Team 1', sex: FEMALE, birthDate: oneElevenOhOne },
+    { firstName: 'Female', lastName: 'Two Team 1', sex: FEMALE, birthDate: oneElevenOhOne },
+    { firstName: 'Female', lastName: 'Three Team 1', sex: FEMALE, birthDate: oneElevenOhOne },
+    { firstName: 'Male', lastName: 'One Team 2', sex: MALE, birthDate: two2222 },
+    { firstName: 'Male', lastName: 'Two Team 2', sex: MALE, birthDate: two2222 },
+    { firstName: 'Male', lastName: 'Three Team 2', sex: MALE, birthDate: two2222 },
+    { firstName: 'Female', lastName: 'One Team 2', sex: FEMALE, birthDate: two2222 },
+    { firstName: 'Female', lastName: 'Two Team 2', sex: FEMALE, birthDate: two2222 },
+    { firstName: 'Female', lastName: 'Three Team 2', sex: FEMALE, birthDate: two2222 },
   ];
 
   const mockProfile = {
@@ -70,8 +73,6 @@ it('can generate team events using participantsProfile.teamKey and personData', 
 
   const { tournamentPersons } = tournamentEngine.getTournamentPersons();
   tournamentPersons.forEach((person) =>
-    expect(['1111-01-01', '2222-02-02'].includes(person.birthDate)).toEqual(
-      true
-    )
+    expect([oneElevenOhOne, two2222].includes(person.birthDate)).toEqual(true)
   );
 });

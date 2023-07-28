@@ -51,16 +51,16 @@ function parseSetFormat(formatstring) {
       if (timedSet) {
         return parseTimedSet(setFormatString);
       }
-      const parts = formatstring.match(/^[FS]{1}:(\d+)([A-Za-z]*)/);
+      const parts = formatstring.match(/^[FS]:(\d+)([A-Za-z]*)/);
       const NoAD = (parts && isNoAD(parts[2])) || false;
-      const validNoAD = !parts || !parts[2] || NoAD;
+      const validNoAD = !parts?.[2] || NoAD;
       const setTo = parts && getNumber(parts[1]);
       const tiebreakAtValue = parseTiebreakAt(setFormatString);
       const validTiebreakAt =
         !tiebreakAtValue || (tiebreakAtValue && !tiebreakAtValue.invalid);
       const tiebreakAt = (validTiebreakAt && tiebreakAtValue) || setTo;
       const tiebreakFormat = parseTiebreakFormat(setFormatString.split('/')[1]);
-      const validTiebreak = !tiebreakFormat || !tiebreakFormat.invalid;
+      const validTiebreak = !tiebreakFormat?.invalid;
       const result = { setTo };
       if (NoAD) result.NoAD = true;
       if (tiebreakFormat) {
@@ -95,9 +95,9 @@ function parseTiebreakFormat(formatstring) {
     if (formatstring.startsWith('TB')) {
       const modifier = parseTiebreakAt(formatstring, false);
       const parts = formatstring.match(/^TB(\d+)([A-Za-z]*)/);
-      const tiebreakToString = parts && parts[1];
+      const tiebreakToString = parts?.[1];
       const NoAD = parts && isNoAD(parts[2]);
-      const validNoAD = !parts || !parts[2] || NoAD;
+      const validNoAD = !parts?.[2] || NoAD;
       const tiebreakTo = getNumber(tiebreakToString);
       if (tiebreakTo && validNoAD) {
         const result = { tiebreakTo };
@@ -140,5 +140,5 @@ function isNoAD(formatstring) {
 }
 
 function getNumber(formatstring) {
-  return !isNaN(Number(formatstring)) && Number(formatstring);
+  return !isNaN(Number(formatstring)) ? Number(formatstring) : 0;
 }

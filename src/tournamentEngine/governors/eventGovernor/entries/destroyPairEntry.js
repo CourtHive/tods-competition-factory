@@ -1,7 +1,7 @@
 import { destroyGroupEntry } from './destroyGroupEntry';
 
-import { UNGROUPED } from '../../../../constants/entryStatusConstants';
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
+import { UNGROUPED } from '../../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 /**

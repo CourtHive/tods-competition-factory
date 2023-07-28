@@ -7,12 +7,12 @@ import {
   findTournamentExtension,
 } from '../../queryGovernor/extensionQueries';
 
+import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
-import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function modifyMatchUpFormatTiming({
   tournamentRecord,

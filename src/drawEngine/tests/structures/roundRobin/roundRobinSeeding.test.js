@@ -1,11 +1,11 @@
-import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
-import tournamentEngine from '../../../tournamentEngine/sync';
-import { chunkArray, unique } from '../../../utilities';
-import mocksEngine from '../../../mocksEngine';
+import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
+import tournamentEngine from '../../../../tournamentEngine/sync';
+import { chunkArray, unique } from '../../../../utilities';
+import mocksEngine from '../../../../mocksEngine';
 import { it, expect } from 'vitest';
 
-import POLICY_SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
-import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import POLICY_SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
+import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 
 const scenarios = [
   { drawProfiles: [{ drawSize: 32, drawType: ROUND_ROBIN, seedsCount: 8 }] },

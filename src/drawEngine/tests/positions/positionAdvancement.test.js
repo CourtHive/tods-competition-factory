@@ -1,8 +1,8 @@
-import { getDrawStructures } from '../../getters/findStructure';
-import { feedInChampionship } from '../../tests/primitives/feedIn';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
+import { positionTargets } from '../../governors/positionGovernor/positionTargets';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { feedInChampionship } from '../../tests/primitives/feedIn';
+import { getDrawStructures } from '../../getters/findStructure';
 import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
 import {

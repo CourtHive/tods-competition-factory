@@ -21,8 +21,7 @@ export function removeDrawEntries({
 }) {
   if (!event) return { error: MISSING_EVENT };
   if (!drawId) return { error: MISSING_DRAW_ID };
-  if (!participantIds || !participantIds.length)
-    return { error: MISSING_PARTICIPANT_IDS };
+  if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
 
   const assignedParticipantIds = getAssignedParticipantIds({
     drawDefinition,

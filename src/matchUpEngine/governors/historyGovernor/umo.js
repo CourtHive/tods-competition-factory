@@ -1,5 +1,5 @@
 export const umo = {
-  addPoint: () => {},
-  addPoints: () => {},
   scoreboard: () => {},
+  addPoints: () => {},
+  addPoint: () => {},
 };

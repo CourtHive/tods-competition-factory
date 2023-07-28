@@ -1,20 +1,20 @@
 import { makeDeepCopy, UUID } from '../../utilities';
 
+import USTA_GOLD_TEAM_CHALLENGE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_GOLD_TEAM_CHALLENGE.json';
 import TEAM_AGGREGATION_TIE_FORMAT from '../../fixtures/scoring/tieFormats/TEAM_DOUBLES_3_AGGREGATION.json';
-import DOMINANT_DUO_TIE_FORMAT from '../../fixtures/scoring/tieFormats/DOMINANT_DUO.json';
+import USTA_SOUTHERN_LEVEL_5_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_SOUTHERN_LEVEL_5.json';
+import USTA_SECTION_BATTLE_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_SECTION_BATTLE.json';
+import USTA_INTERSECTIONAL_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_INTERSECTIONAL.json';
 import DOMINANT_DUO_MIXED_TIE_FORMAT from '../../fixtures/scoring/tieFormats/DOMINANT_DUO_MIXED.json';
 import USTA_BREWER_CUP_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_BREWER_CUP.json';
 import USTA_OZAKI_CUP_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_OZAKI_CUP.json';
-import USTA_GOLD_TEAM_CHALLENGE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_GOLD_TEAM_CHALLENGE.json';
+import DOMINANT_DUO_TIE_FORMAT from '../../fixtures/scoring/tieFormats/DOMINANT_DUO.json';
 import USTA_COLLEGE_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_COLLEGE.json';
-import USTA_INTERSECTIONAL_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_INTERSECTIONAL.json';
 import USTA_LEVEL_1_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_LEVEL_1.json';
-import USTA_SOUTHERN_LEVEL_5_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_SOUTHERN_LEVEL_5.json';
-import USTA_TOC_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_TOC.json';
 import USTA_WTT_ITT_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_WTT_ITT.json';
 import USTA_ZONAL_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_ZONAL.json';
 import LAVER_CUP_TIE_FORMAT from '../../fixtures/scoring/tieFormats/LAVER_CUP.json';
-import USTA_SECTION_BATTLE_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_SECTION_BATTLE.json';
+import USTA_TOC_TIE_FORMAT from '../../fixtures/scoring/tieFormats/USTA_TOC.json';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import {
   COLLEGE_D3,

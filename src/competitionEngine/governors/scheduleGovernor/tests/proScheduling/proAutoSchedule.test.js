@@ -192,7 +192,7 @@ it('will not save overlapping timeModifiers', () => {
   expect(firstRowMatchUps.every(({ schedule }) => schedule.scheduledTime));
   expect(
     secondRowMatchUps.every(
-      ({ schedule }) => schedule.timeModifiers === [FOLLOWED_BY]
+      ({ schedule }) => schedule.timeModifiers?.[0] === FOLLOWED_BY
     )
   );
 

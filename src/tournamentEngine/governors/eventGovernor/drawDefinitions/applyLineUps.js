@@ -79,7 +79,7 @@ export function applyLineUps({
         (participant) => participant.participantId === participantId
       );
       if (!participant) return { error: PARTICIPANT_NOT_FOUND };
-      if (!participant.participantType === INDIVIDUAL)
+      if (participant.participantType !== INDIVIDUAL)
         return { error: INVALID_PARTICIPANT_TYPE };
 
       const sideNumber = inContextMatchUp.sides?.find((side) =>
@@ -151,11 +151,9 @@ export function applyLineUps({
     // allows for some team members to be "borrowed"
     const instances = instanceCount(sideNumbers);
     const sideNumber =
-      (instances[1] || 0) > (instances[2] || 0)
-        ? 1
-        : (instances[2] || 0) > (instances[1] || 0)
-        ? 2
-        : undefined;
+      ((instances[1] || 0) > (instances[2] || 0) && 1) ||
+      ((instances[2] || 0) > (instances[1] || 0) && 2) ||
+      undefined;
 
     // if side not previously assigned, map sideNumber to lineUp
     if (sideNumber && !Object.keys(sideAssignments).includes(sideNumber)) {

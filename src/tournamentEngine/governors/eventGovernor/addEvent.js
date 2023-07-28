@@ -1,6 +1,6 @@
 import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
-import tieFormatDefaults from '../../generators/tieFormatDefaults';
 import { allEventMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
+import tieFormatDefaults from '../../generators/tieFormatDefaults';
 import { getTopics } from '../../../global/state/globalState';
 import {
   addDrawNotice,

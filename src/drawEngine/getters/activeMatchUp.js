@@ -1,5 +1,5 @@
-import { isActiveMatchUpStatus } from '../governors/matchUpGovernor/checkStatusType';
 import { scoreHasValue } from '../../matchUpEngine/governors/queryGovernor/scoreHasValue';
+import { isActiveMatchUpStatus } from '../governors/matchUpGovernor/checkStatusType';
 
 import {
   DEFAULTED,

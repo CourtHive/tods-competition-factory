@@ -54,15 +54,13 @@ export function analyzeSet(params) {
 
   const leadingSide =
     hasTiebreakCondition &&
-    (sideGameScores[0] > sideGameScores[1]
-      ? 1
-      : sideGameScores[1] > sideGameScores[0]
-      ? 2
-      : undefined);
+    ((sideGameScores[0] > sideGameScores[1] && 1) ||
+      (sideGameScores[1] > sideGameScores[0] && 2) ||
+      undefined);
 
   const isTiebreakSet = !!(tiebreakScoresCount && !gameScoresCount);
 
-  const isCompletedSet = !!(setObject && setObject?.winningSide);
+  const isCompletedSet = !!setObject?.winningSide;
   const { error: standardSetError, result: isValidStandardSetOutcome } =
     checkValidStandardSetOutcome({
       setObject,
@@ -177,10 +175,8 @@ function checkValidStandardSetOutcome({
   const setTiebreakDefined = tiebreakAt && tiebreakFormat;
   const validTiebreakScores =
     sideTiebreakScores?.filter((s) => !isNaN(s)).length === 2;
-  const winningSideTiebreakScore =
-    sideTiebreakScores && sideTiebreakScores[winningSideIndex];
-  const losingSideTiebreakScore =
-    sideTiebreakScores && sideTiebreakScores[losingSideIndex];
+  const winningSideTiebreakScore = sideTiebreakScores?.[winningSideIndex];
+  const losingSideTiebreakScore = sideTiebreakScores?.[losingSideIndex];
 
   const hasTiebreakCondition =
     tiebreakAt &&
@@ -256,10 +252,7 @@ function checkValidStandardSetOutcome({
     }
 
     const hasTiebreakGameScore = winningSideGameScore > setTo;
-    if (
-      hasTiebreakGameScore &&
-      (!setTiebreakDefined || !hasTiebreakCondition)
-    ) {
+    if (hasTiebreakGameScore && !hasTiebreakCondition) {
       return {
         result: false,
         error: { message: 'invalid winning game scoreString (2)' },

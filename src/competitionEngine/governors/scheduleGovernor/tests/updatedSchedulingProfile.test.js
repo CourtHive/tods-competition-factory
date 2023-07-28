@@ -10,6 +10,7 @@ import {
   INVALID_VALUES,
 } from '../../../../constants/errorConditionConstants';
 
+const scheduleDate = '2022-01-03';
 it('can update a schedulingProfile when venues change', () => {
   const drawProfiles = [{ drawSize: 16 }];
   const venueProfiles = [
@@ -33,15 +34,15 @@ it('can update a schedulingProfile when venues change', () => {
 
   let result = competitionEngine.addSchedulingProfileRound({
     round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
-    scheduleDate: '2022-01-03',
     venueId: venueIds[0],
+    scheduleDate,
   });
   expect(result.success).toEqual(true);
 
   result = competitionEngine.addSchedulingProfileRound({
     round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
-    scheduleDate: '2022-01-03',
     venueId: venueIds[1],
+    scheduleDate,
   });
   expect(result.success).toEqual(true);
 
@@ -61,8 +62,8 @@ it('can update a schedulingProfile when venues change', () => {
   expect(result.error).toEqual(INVALID_DATE);
 
   result = competitionEngine.addSchedulingProfileRound({
-    scheduleDate: '2022-01-03',
     venueId: venueIds[0],
+    scheduleDate,
     round: {
       tournamentId,
       eventId,

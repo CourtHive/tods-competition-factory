@@ -97,11 +97,12 @@ function promoteWithinElement({
   // if no participantId is provided, take the alternate with the lowest entryPosition
   const alternateEntry = alternates.reduce((participantEntry, entry) => {
     const { entryPosition } = entry;
-    return isNaN(entryPosition)
-      ? participantEntry
-      : !participantEntry || entryPosition < participantEntry.entryPosition
-      ? entry
-      : participantEntry;
+    return (
+      (isNaN(entryPosition) && participantEntry) ||
+      ((!participantEntry || entryPosition < participantEntry.entryPosition) &&
+        entry) ||
+      participantEntry
+    );
   }, undefined);
 
   const participantEntries = targetedEntries.length

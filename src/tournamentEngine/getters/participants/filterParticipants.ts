@@ -107,11 +107,9 @@ export function filterParticipants({
           positionedParticipantIds.includes(participantId)) ||
         (positionedParticipants === false &&
           !positionedParticipantIds.includes(participantId)) ||
-        (drawEnteredParticipantIds &&
-          drawEnteredParticipantIds.includes(participantId)) ||
-        (eventEnteredParticipantIds &&
-          eventEnteredParticipantIds.includes(participantId)) ||
-        (participantIds && participantIds.includes(participantId)) ||
+        drawEnteredParticipantIds?.includes(participantId) ||
+        eventEnteredParticipantIds?.includes(participantId) ||
+        participantIds?.includes(participantId) ||
         (signInStatus && participantSignInStatus === signInStatus) ||
         (participantTypes &&
           isValidFilterArray(participantTypes) &&
@@ -122,8 +120,8 @@ export function filterParticipants({
         (participantRoleResponsibilities &&
           isValidFilterArray(responsibilities) &&
           isValidFilterArray(participantRoleResponsibilities) &&
-          participantRoleResponsibilities.find((roleResponsbility) =>
-            responsibilities?.includes(roleResponsbility)
+          participantRoleResponsibilities.find(
+            (roleResponsbility) => responsibilities?.includes(roleResponsbility)
           )) ||
         (accessorValues?.length &&
           isValidFilterArray(accessorValues) &&
@@ -152,8 +150,9 @@ export function filterParticipants({
         (!participantRoleResponsibilities ||
           (isValidFilterArray(responsibilities) &&
             isValidFilterArray(participantRoleResponsibilities) &&
-            participantRoleResponsibilities.find((roleResponsbility) =>
-              responsibilities?.includes(roleResponsbility)
+            participantRoleResponsibilities.find(
+              (roleResponsbility) =>
+                responsibilities?.includes(roleResponsbility)
             ))) &&
         (!accessorValues?.length ||
           (isValidFilterArray(accessorValues) &&

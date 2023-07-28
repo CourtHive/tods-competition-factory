@@ -3,7 +3,7 @@ import { getEntryProfile } from './getEntryProfile';
 
 export function getStageDrawPositionsCount({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
-  return (entryProfile && entryProfile[stage]?.drawSize) || 0;
+  return entryProfile?.[stage]?.drawSize || 0;
 }
 
 // drawSize - qualifyingPositions

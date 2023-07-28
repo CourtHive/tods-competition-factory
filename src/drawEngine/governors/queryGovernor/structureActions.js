@@ -1,8 +1,8 @@
 import { getPlayoffStructures } from '../../../tournamentEngine/getters/structureGetter';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
+import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 
 /**
@@ -25,7 +25,7 @@ export function structureActions(params) {
  * @param {string} structureId
  */
 export function isCompletedStructure(params) {
-  if (!params?.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  if (!params?.drawDefinition) return false;
   const structureMatchUps = getStructureMatchUps(params);
 
   let {

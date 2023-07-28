@@ -2,11 +2,11 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { expect, it } from 'vitest';
 
+import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import {
   CONSOLATION,
   FIRST_MATCH_LOSER_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
-import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 it('supports first loss after receiving WALKVOER or DEFAULT in first round', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

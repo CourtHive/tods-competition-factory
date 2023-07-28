@@ -1,5 +1,5 @@
-import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { getStructureDrawPositionProfiles } from '../../../getters/getStructureDrawPositionProfiles';
+import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';

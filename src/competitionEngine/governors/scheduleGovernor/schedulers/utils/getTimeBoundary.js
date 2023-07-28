@@ -7,7 +7,8 @@ export function getDateTimeBoundary({
   endTime,
   courts,
 }) {
-  const accessor = startTime ? 'startTime' : endTime ? 'endTime' : undefined;
+  const accessor =
+    (startTime && 'startTime') || (endTime && 'endTime') || undefined;
   return courts.reduce((boundaryTime, court) => {
     const dateAvailability = getCourtDateAvailability({
       date: scheduleDate,
@@ -18,10 +19,10 @@ export function getDateTimeBoundary({
 
     return comparisonTime &&
       (!boundaryTime ||
-        (startTime
-          ? timeStringMinutes(comparisonTime) < timeStringMinutes(boundaryTime)
-          : timeStringMinutes(comparisonTime) >
-            timeStringMinutes(boundaryTime)))
+        (startTime &&
+          timeStringMinutes(comparisonTime) <
+            timeStringMinutes(boundaryTime)) ||
+        timeStringMinutes(comparisonTime) > timeStringMinutes(boundaryTime))
       ? comparisonTime
       : boundaryTime;
   }, undefined);
@@ -32,17 +33,18 @@ export function getCourtsTimeBoundary({ startTime, endTime, courts }) {
     const comparisonTime = getCourtTimeBoundary({ startTime, endTime, court });
     return comparisonTime &&
       (!boundaryTime ||
-        (startTime
-          ? timeStringMinutes(comparisonTime) < timeStringMinutes(boundaryTime)
-          : timeStringMinutes(comparisonTime) >
-            timeStringMinutes(boundaryTime)))
+        (startTime &&
+          timeStringMinutes(comparisonTime) <
+            timeStringMinutes(boundaryTime)) ||
+        timeStringMinutes(comparisonTime) > timeStringMinutes(boundaryTime))
       ? comparisonTime
       : boundaryTime;
   }, undefined);
 }
 
 export function getCourtTimeBoundary({ startTime, endTime, court }) {
-  const accessor = startTime ? 'startTime' : endTime ? 'endTime' : undefined;
+  const accessor =
+    (startTime && 'startTime') || (endTime && 'endTime') || undefined;
   return court.dateAvailability?.reduce((boundary, availability) => {
     const candidate = availability?.[accessor];
 

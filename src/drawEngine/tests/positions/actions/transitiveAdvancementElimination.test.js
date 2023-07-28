@@ -28,7 +28,7 @@ it('can advance participants when double BYEs are created', () => {
   const structureId = structures[0].structureId;
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -45,7 +45,7 @@ it('can advance participants when double BYEs are created', () => {
   });
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
 
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -81,7 +81,7 @@ it('can advance participants when double BYEs are created', () => {
   });
   expect(result.success).toEqual(true);
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],

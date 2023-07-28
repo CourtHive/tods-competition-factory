@@ -1,8 +1,8 @@
 import { removeParticipantsScaleItems } from '../../participantGovernor/removeScaleItems';
 import { decorateResult } from '../../../../global/functions/decorateResult';
 import { getParticipantId } from '../../../../global/functions/extractors';
-import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { mustBeAnArray } from '../../../../utilities/mustBeAnArray';
+import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import {
   INVALID_VALUES,

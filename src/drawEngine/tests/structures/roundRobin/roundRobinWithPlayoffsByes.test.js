@@ -1,7 +1,7 @@
 import { roundRobinWithPlayoffsTest } from './roundRobinWithPlayoffsTest';
 import { expect, it } from 'vitest';
 
-import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
+import { SINGLE_ELIMINATION } from '../../../../constants/drawDefinitionConstants';
 
 it.skip('can generate Playoffs for Round Robins when BYEs are present (1)', () => {
   const playoffGroups = [

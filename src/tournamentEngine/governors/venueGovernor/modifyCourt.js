@@ -1,6 +1,6 @@
+import { addNotice } from '../../../global/state/globalState';
 import { modifyCourtAvailability } from './courtAvailability';
 import courtTemplate from '../../generators/courtTemplate';
-import { addNotice } from '../../../global/state/globalState';
 import { findCourt } from '../../getters/courtGetter';
 import { makeDeepCopy } from '../../../utilities';
 

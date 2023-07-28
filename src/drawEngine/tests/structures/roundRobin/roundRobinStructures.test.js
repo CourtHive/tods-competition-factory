@@ -1,13 +1,17 @@
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
-import drawEngine from '../../sync';
+import drawEngine from '../../../sync';
 import { expect, it } from 'vitest';
+import {
+  reset,
+  initialize,
+  mainDrawPositions,
+} from '../../primitives/primitives';
 
 import {
   ITEM,
   CONTAINER,
   WIN_RATIO,
   ROUND_ROBIN,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../../../constants/drawDefinitionConstants';
 
 it('can generate Round Robin Main Draws', () => {
   reset();

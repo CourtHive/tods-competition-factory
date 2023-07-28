@@ -44,8 +44,7 @@ export function getRoundContextProfile({
 
   const stageInitial = stage && stage !== MAIN && stage[0];
   const stageConstants = roundNamingPolicy?.stageConstants;
-  const stageConstant =
-    (stageConstants && stageConstants[stage]) || stageInitial;
+  const stageConstant = stageConstants?.[stage] || stageInitial;
 
   if (isRoundRobin || isAdHocStructure || isLuckyStructure) {
     Object.assign(

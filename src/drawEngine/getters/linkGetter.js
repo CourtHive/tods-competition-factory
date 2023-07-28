@@ -1,3 +1,4 @@
+import { decorateResult } from '../../global/functions/decorateResult';
 import { overlap } from '../../utilities';
 
 import { LOSER, WINNER } from '../../constants/drawDefinitionConstants';
@@ -6,7 +7,6 @@ import {
   MISSING_DRAW_DEFINITION,
   INVALID_VALUES,
 } from '../../constants/errorConditionConstants';
-import { decorateResult } from '../../global/functions/decorateResult';
 
 /**
  *

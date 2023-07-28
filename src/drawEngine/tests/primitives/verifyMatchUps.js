@@ -130,14 +130,13 @@ export function verifySideNumbers({
 
   const roundNumbers =
     expectedDrawPositions && Object.keys(expectedDrawPositions);
-  roundNumbers &&
-    roundNumbers.forEach((roundNumber) => {
-      const profile = roundMatchUps[roundNumber].map((matchUp) => [
-        matchUp.drawPositions,
-        matchUp.sides?.map((side) => side?.sideNumber).filter(Boolean),
-      ]);
-      expect(profile).toMatchObject(expectedDrawPositions[roundNumber]);
-    });
+  roundNumbers?.forEach((roundNumber) => {
+    const profile = roundMatchUps[roundNumber].map((matchUp) => [
+      matchUp.drawPositions,
+      matchUp.sides?.map((side) => side?.sideNumber).filter(Boolean),
+    ]);
+    expect(profile).toMatchObject(expectedDrawPositions[roundNumber]);
+  });
 }
 
 function verifyRoundCounts({ roundMatchUps, expectedRounds }) {
@@ -167,8 +166,8 @@ export function getMatchUpWinnerLoserIds({ drawDefinition, matchUpId }) {
       return side.sideNumber === 3 - winningSide ? side : sideLosing;
     }, undefined);
 
-  const winningParticipantId = sideWinning && sideWinning.participantId;
-  const losingParticipantId = sideLosing && sideLosing.participantId;
+  const winningParticipantId = sideWinning?.participantId;
+  const losingParticipantId = sideLosing?.participantId;
 
   return { winningParticipantId, losingParticipantId };
 }

@@ -1,6 +1,6 @@
 import { clearScheduledMatchUps } from '../scheduleGovernor/clearScheduledMatchUps';
-import { updateCourtAvailability } from '../venueGovernor/updateCourtAvailability';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
+import { updateCourtAvailability } from '../venueGovernor/updateCourtAvailability';
 import { dateValidation } from '../../../fixtures/validations/regex';
 import { addNotice } from '../../../global/state/globalState';
 

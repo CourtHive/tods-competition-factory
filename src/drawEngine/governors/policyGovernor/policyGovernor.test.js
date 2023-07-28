@@ -2,9 +2,9 @@ import { getAppliedPolicies } from '../../../global/functions/deducers/getApplie
 import { drawEngine } from '../../sync';
 import { expect, it } from 'vitest';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can set and reset policy governor', () => {
   expect(drawEngine).toHaveProperty('attachPolicies');

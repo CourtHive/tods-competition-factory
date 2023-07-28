@@ -1,5 +1,5 @@
-import { singleSetStressTests } from './standardStress';
 import { scoreMatchUp, enterValues } from './primitives';
+import { singleSetStressTests } from './standardStress';
 import { expect, it } from 'vitest';
 
 import { FORMAT_PRO_SET } from '../../../../../fixtures/scoring/matchUpFormats';

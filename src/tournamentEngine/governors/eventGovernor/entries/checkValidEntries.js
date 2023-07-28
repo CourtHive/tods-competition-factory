@@ -1,10 +1,17 @@
 import { isUngrouped } from '../../../../global/functions/isUngrouped';
 
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
 import { WITHDRAWN } from '../../../../constants/entryStatusConstants';
 import { FEMALE, MALE } from '../../../../constants/genderConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import {
+  INDIVIDUAL,
+  PAIR,
+  TEAM,
+} from '../../../../constants/participantConstants';
+import {
+  DOUBLES_EVENT,
+  TEAM_EVENT,
+} from '../../../../constants/eventConstants';
 import {
   INVALID_ENTRIES,
   INVALID_VALUES,
@@ -19,7 +26,9 @@ export function checkValidEntries({ event, participants, ignoreGender }) {
 
   const { eventType, gender: eventGender } = event;
   const participantType =
-    eventType === SINGLES ? INDIVIDUAL : eventType === DOUBLES ? PAIR : TEAM;
+    (eventType === TEAM_EVENT && TEAM) ||
+    (eventType === DOUBLES_EVENT && PAIR) ||
+    INDIVIDUAL;
 
   const entryStatusMap = Object.assign(
     {},
@@ -36,7 +45,7 @@ export function checkValidEntries({ event, participants, ignoreGender }) {
   const invalidEntries = enteredParticipants.filter((participant) => {
     const entryStatus = entryStatusMap[participant.participantId];
     const ungroupedParticipant =
-      [DOUBLES, TEAM].includes(eventType) &&
+      [DOUBLES_EVENT, TEAM_EVENT].includes(eventType) &&
       participant.participantType === INDIVIDUAL &&
       (isUngrouped(entryStatus) || entryStatus === WITHDRAWN);
     const mismatch =

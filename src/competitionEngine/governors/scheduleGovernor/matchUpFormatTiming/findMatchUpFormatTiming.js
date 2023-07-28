@@ -23,7 +23,8 @@ export function findMatchUpFormatTiming({
   );
 
   let timing;
-  tournamentIds.find((currentTournamentId) => {
+  tournamentIds.forEach((currentTournamentId) => {
+    if (timing) return;
     const tournamentRecord = tournamentRecords[currentTournamentId];
     const event = eventId && findEvent({ tournamentRecord, eventId })?.event;
     timing = getMatchUpFormatTiming({

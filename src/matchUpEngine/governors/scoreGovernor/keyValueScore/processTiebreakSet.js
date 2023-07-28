@@ -1,6 +1,6 @@
-import { MATCH_TIEBREAK_BRACKETS, MATCH_TIEBREAK_JOINER } from './constants';
-
 import { getHighTiebreakValue, testTiebreakEntry } from './keyValueUtilities';
+
+import { MATCH_TIEBREAK_BRACKETS, MATCH_TIEBREAK_JOINER } from './constants';
 
 export function processTiebreakSet({
   analysis,
@@ -40,8 +40,8 @@ export function processTiebreakSet({
   } else {
     // if not auto-calculating high scores add new value at the end of string
     const { lastOpenBracketIndex } = testTiebreakEntry({
-      scoreString,
       brackets: MATCH_TIEBREAK_BRACKETS,
+      scoreString,
     });
     const matchTiebreakScoreString =
       scoreString.slice(lastOpenBracketIndex + 1) + (auto ? '' : value);
