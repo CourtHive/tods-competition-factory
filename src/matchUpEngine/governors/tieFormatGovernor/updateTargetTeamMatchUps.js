@@ -1,5 +1,5 @@
-import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { updateTieMatchUpScore } from '../../../drawEngine/governors/matchUpGovernor/tieMatchUpScore';
+import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { copyTieFormat } from './copyTieFormat';
 
 export function updateTargetTeamMatchUps({

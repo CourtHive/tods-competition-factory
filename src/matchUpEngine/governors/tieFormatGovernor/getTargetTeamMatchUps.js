@@ -16,7 +16,6 @@ export function getTargetTeamMatchUps({
   matchUpId,
   matchUp,
 }) {
-  scoreHasValue;
   let matchUps = [];
   if (matchUpId && matchUp) {
     matchUps = [matchUp];

@@ -1,6 +1,6 @@
-import { MATCH_TIEBREAK_BRACKETS, MATCH_TIEBREAK_JOINER } from './constants';
-
 import { getHighTiebreakValue, testTiebreakEntry } from './keyValueUtilities';
+
+import { MATCH_TIEBREAK_BRACKETS, MATCH_TIEBREAK_JOINER } from './constants';
 
 export function processTiebreakSet({
   analysis,

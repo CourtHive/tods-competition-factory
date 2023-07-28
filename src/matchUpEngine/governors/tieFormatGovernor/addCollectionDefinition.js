@@ -62,7 +62,7 @@ export function addCollectionDefinition({
       eventId,
       event,
     });
-  if (result.error) return result;
+  if (result?.error) return result;
 
   const { structure } = result;
   matchUp = matchUp || result.matchUp;
@@ -80,8 +80,8 @@ export function addCollectionDefinition({
     );
     if (collectionIds.includes(collectionDefinition.collectionId))
       return {
-        error: DUPLICATE_VALUE,
         collectionId: collectionDefinition.collectionId,
+        error: DUPLICATE_VALUE,
       };
   }
 

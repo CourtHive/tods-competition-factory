@@ -17,13 +17,13 @@ export const getSetComplement = (params) => {
     calculatedValue = valueAsNumber < setTo ? setTo : setTo - 1;
   } else {
     calculatedValue =
-      valueAsNumber + 1 < setTo
-        ? setTo
-        : tiebreakAt && tiebreakAt < setTo && valueAsNumber === tiebreakAt
-        ? setTo
-        : !tiebreakAt
-        ? valueAsNumber + 2
-        : setTo + 1;
+      (valueAsNumber + 1 < setTo && setTo) ||
+      (tiebreakAt &&
+        tiebreakAt < setTo &&
+        valueAsNumber === tiebreakAt &&
+        setTo) ||
+      (!tiebreakAt && valueAsNumber + 2) ||
+      setTo + 1;
   }
 
   const side1Result = isSide1 ? valueAsNumber : calculatedValue;

@@ -1,5 +1,5 @@
-import { keyValueMatchUpScore } from '..';
 import { enterValues } from './primitives';
+import { keyValueMatchUpScore } from '..';
 import { expect, it } from 'vitest';
 
 it('can enter single timed set', () => {

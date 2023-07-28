@@ -1,6 +1,6 @@
-import { SPACE_CHARACTER, SET_TIEBREAK_BRACKETS } from './constants';
-
 import { getWinningSide } from './winningSide';
+
+import { SPACE_CHARACTER, SET_TIEBREAK_BRACKETS } from './constants';
 
 export function processIncompleteSetScore({
   analysis,

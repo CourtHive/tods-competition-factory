@@ -1,5 +1,5 @@
-import { processOutcome } from './processOutcome';
 import { removeFromScore } from './keyValueUtilities';
+import { processOutcome } from './processOutcome';
 
 import { BACKSPACE, OUTCOMEKEYS, SCORE_JOINER, SPACE_KEY } from './constants';
 
@@ -53,7 +53,9 @@ export function keyValueTimedSetScore({
       const { side1Score, side2Score } = lastSet;
       if (side1Score && side2Score) {
         const winningSide =
-          side1Score > side2Score ? 1 : side2Score > side1Score ? 2 : undefined;
+          (side1Score > side2Score && 1) ||
+          (side2Score > side1Score && 2) ||
+          undefined;
         if (winningSide) {
           lastSet.winningSide = winningSide;
           sets.push({ setNumber: sets.length + 1 });
@@ -80,7 +82,9 @@ export function keyValueTimedSetScore({
     const lastSet = sets[sets.length - 1] || {};
     const { side1Score, side2Score } = lastSet;
     const setWinningSide =
-      side1Score > side2Score ? 1 : side2Score > side1Score ? 2 : undefined;
+      (side1Score > side2Score && 1) ||
+      (side2Score > side1Score && 2) ||
+      undefined;
 
     if (setWinningSide && !winningSide && !analysis.isIncompleteSetScore) {
       sets[sets.length - 1].winningSide = setWinningSide;

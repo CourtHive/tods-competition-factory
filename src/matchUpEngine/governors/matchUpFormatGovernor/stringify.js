@@ -49,7 +49,7 @@ function getSetFormat(matchUpFormatObject, preserveRedundant) {
     bestOfCode &&
     setCountValue &&
     !setCountValue.invalid &&
-    (!finalSetCountValue || !finalSetCountValue.invalid);
+    !finalSetCountValue?.invalid;
 
   if (valid) {
     return [bestOfCode, setCode, finalSetCode].filter((f) => f).join('-');
@@ -75,7 +75,7 @@ function stringifySet(setObject, preserveRedundant) {
           (tiebreakAtValue !== setToValue || preserveRedundant) &&
           `@${tiebreakAtValue}`) ||
         '';
-      const valid = !setTiebreakValue || !setTiebreakValue.invalid;
+      const valid = !setTiebreakValue?.invalid;
       if (valid) {
         return `${setToValue}${NoAD}${setTiebreakCode}${tiebreakAtCode}`;
       } else {

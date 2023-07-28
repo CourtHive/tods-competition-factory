@@ -1,5 +1,5 @@
-import { parse } from '../../matchUpFormatGovernor/parse';
 import { arrayIndices } from '../../../../utilities/arrays';
+import { parse } from '../../matchUpFormatGovernor/parse';
 
 import {
   SET_TIEBREAK_BRACKETS,
@@ -40,7 +40,7 @@ function removeOutcome({ scoreString }) {
     if (index >= 0) removed = true;
   }
 
-  if (!scoreString || !scoreString.trim()) scoreString = '';
+  if (!scoreString?.trim()) scoreString = '';
 
   return { scoreString, removed };
 }
@@ -268,16 +268,14 @@ export function getMatchUpWinner({
   const matchUpScoringFormat = parse(matchUpFormat);
   const { bestOf } = matchUpScoringFormat;
   const scoreGoal = Math.ceil(bestOf / 2);
-  const sideScores =
-    sets &&
-    sets.reduce(
-      (scores, set) => {
-        const { winningSide } = set;
-        if (winningSide) scores[winningSide - 1]++;
-        return scores;
-      },
-      [0, 0]
-    );
+  const sideScores = sets?.reduce(
+    (scores, set) => {
+      const { winningSide } = set;
+      if (winningSide) scores[winningSide - 1]++;
+      return scores;
+    },
+    [0, 0]
+  );
 
   let matchUpWinningSide = sideScores?.indexOf(scoreGoal) + 1 || undefined;
   if (WINNING_STATUSES.includes(matchUpStatus) && winningSide) {

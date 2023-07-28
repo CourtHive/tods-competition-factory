@@ -1,5 +1,5 @@
-import { instanceCount } from '../../utilities/arrays';
 import { parse } from '../governors/matchUpFormatGovernor/parse';
+import { instanceCount } from '../../utilities/arrays';
 import { analyzeSet } from './analyzeSet';
 
 import { MISSING_MATCHUP } from '../../constants/errorConditionConstants';
@@ -74,14 +74,12 @@ export function analyzeMatchUp(params) {
         sideTiebreakScores[sideIndex]));
   const hasExistingValue = !!existingValue;
 
-  const completedSetsHaveValidOutcomes =
-    completedSets &&
-    completedSets
-      .map(
-        (setObject) =>
-          analyzeSet({ setObject, matchUpScoringFormat }).isValidSetOutcome
-      )
-      .reduce((valid, validOutcome) => valid && validOutcome, true);
+  const completedSetsHaveValidOutcomes = completedSets
+    ?.map(
+      (setObject) =>
+        analyzeSet({ setObject, matchUpScoringFormat }).isValidSetOutcome
+    )
+    .reduce((valid, validOutcome) => valid && validOutcome, true);
 
   const setsWinCounts = completedSets.reduce(
     (counts, set) => {
@@ -118,19 +116,19 @@ export function analyzeMatchUp(params) {
     validMatchUpWinningSide;
 
   return {
-    isActiveSet,
-    isExistingSet,
-    existingValue,
-    hasExistingValue,
-    isValidSideNumber,
+    completedSetsHaveValidOutcomes,
+    validMatchUpWinningSide,
+    calculatedWinningSide,
+    matchUpScoringFormat,
+    validMatchUpOutcome,
+    isLastSetWithValues,
     completedSetsCount,
     isCompletedMatchUp,
-    isLastSetWithValues,
-    validMatchUpOutcome,
-    matchUpScoringFormat,
-    calculatedWinningSide,
-    validMatchUpWinningSide,
-    completedSetsHaveValidOutcomes,
+    isValidSideNumber,
+    hasExistingValue,
+    existingValue,
+    isExistingSet,
+    isActiveSet,
     ...specifiedSetAnalysis,
   };
 }
