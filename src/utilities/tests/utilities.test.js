@@ -354,13 +354,13 @@ it('can replace NULLs in an array with undefined', () => {
 
 it('can determine intersection and overlap', () => {
   let result = intersection();
-  expect(result).toEqual(0);
+  expect(result).toEqual([]);
   result = intersection(1, 2);
-  expect(result).toEqual(0);
+  expect(result).toEqual([]);
   result = intersection([1], 2);
-  expect(result).toEqual(0);
+  expect(result).toEqual([]);
   result = intersection(1, [2]);
-  expect(result).toEqual(0);
+  expect(result).toEqual([]);
 
   result = overlap();
   expect(result).toEqual(false);

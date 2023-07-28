@@ -74,17 +74,17 @@ export function arrayIndices(val, arr) {
   }, []);
 }
 export function intersection(a, b) {
-  if (!Array.isArray(a) || !Array.isArray(b)) return 0;
+  if (!Array.isArray(a) || !Array.isArray(b)) return [];
   return a
     .filter((n) => b.indexOf(n) !== -1)
     .filter((e, i, c) => c.indexOf(e) === i);
 }
 export function difference(a, b) {
-  if (!Array.isArray(a) || !Array.isArray(b)) return 0;
+  if (!Array.isArray(a) || !Array.isArray(b)) return [];
   return a.filter((x) => !b.includes(x));
 }
 export function symmetricDifference(a, b) {
-  if (!Array.isArray(a) || !Array.isArray(b)) return 0;
+  if (!Array.isArray(a) || !Array.isArray(b)) return [];
   return a
     .filter((x) => !b.includes(x))
     .concat(b.filter((x) => !a.includes(x)));
