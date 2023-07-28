@@ -41,7 +41,7 @@ export function participantScaleItem({
 
     if (timeItem) {
       const [itemSubject, scaleType, eventType, scaleName] =
-        timeItem.itemType?.split('.') || [];
+        timeItem.itemType?.split('.') ?? [];
 
       if (itemSubject !== SCALE) return { error: INVALID_SCALE_ITEM };
 

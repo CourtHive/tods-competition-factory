@@ -211,7 +211,7 @@ function getSideValues({
           if (exclude) exclusionValues.push(exclusionValue);
           scaleValues.push(scaleValue);
 
-          if (pValue && value !== undefined) {
+          if (pValue && !isNaN(value)) {
             value += pValue;
           } else {
             value = undefined;

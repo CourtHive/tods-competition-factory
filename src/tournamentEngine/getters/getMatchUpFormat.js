@@ -1,6 +1,7 @@
 import { decorateResult } from '../../global/functions/decorateResult';
 import { findStructure } from '../../drawEngine/getters/findStructure';
 import { findMatchUp } from './matchUpsGetter/findMatchUp';
+
 import {
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,

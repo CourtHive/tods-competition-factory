@@ -174,7 +174,7 @@ it('can accept custom personData', () => {
       person.standardGivenName === 'Jennifer' &&
       person.standardFamilyName === 'Jameson'
   );
-  expect([samIndex, jennyIndex].sort()).toEqual([0, 1]);
+  expect([samIndex, jennyIndex].sort((a, b) => a - b)).toEqual([0, 1]);
 
   expect(participants[0].person.iocNationalityCode).not.toBeUndefined();
   expect(participants[0].person.countryName).not.toBeUndefined();

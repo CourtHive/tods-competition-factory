@@ -1,3 +1,4 @@
+import { decorateResult } from '../../global/functions/decorateResult';
 import { findStructure } from '../../drawEngine/getters/findStructure';
 import { findMatchUp } from './matchUpsGetter/findMatchUp';
 
@@ -7,7 +8,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import { decorateResult } from '../../global/functions/decorateResult';
 
 /**
  *

@@ -5,21 +5,23 @@ import { unique } from '../../utilities';
 import { expect, it, test } from 'vitest';
 import mocksEngine from '..';
 
+import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
 import { ELO, NTRP, UTR, WTN } from '../../constants/ratingConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
-import { INVALID_VALUES } from '../../constants/errorConditionConstants';
+
+const WTN_RATING = 'SCALE.RATING.SINGLES.WTN';
 
 // prettier-ignore
 const rankingsScenarios = [
   { category: { categoryName: 'U18' }, expectation: { timeItem: { itemType: 'SCALE.RANKING.SINGLES.U18' } }},
   { category: { categoryName: '18U' }, expectation: { timeItem: { itemType: 'SCALE.RANKING.SINGLES.18U' } }},
-  { category: { ratingType: WTN }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.WTN' }, accessor: true }},
+  { category: { ratingType: WTN }, expectation: { timeItem: { itemType: WTN_RATING }, accessor: true }},
   { category: { ratingType: UTR }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.UTR' } }},
   { category: { ratingType: NTRP }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.NTRP' }, accessor: true }},
-  { category: { ratingType: WTN, ratingMin: 5, ratingMax: 8 }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.WTN' }, accessor: true }},
-  { category: { ratingType: WTN, ratingMin: 8, ratingMax: 9 }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.WTN' }, accessor: true }},
+  { category: { ratingType: WTN, ratingMin: 5, ratingMax: 8 }, expectation: { timeItem: { itemType: WTN_RATING }, accessor: true }},
+  { category: { ratingType: WTN, ratingMin: 8, ratingMax: 9 }, expectation: { timeItem: { itemType: WTN_RATING }, accessor: true }},
   { category: { ratingType: UTR, ratingMin: 9, ratingMax: 13 }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.UTR' } }},
   { category: { ratingType: ELO, ratingMin: 1200, ratingMax: 1400 }, expectation: { timeItem: { itemType: 'SCALE.RATING.SINGLES.ELO' } }},
 ];
@@ -64,8 +66,8 @@ const categoryName = '12U';
 const mockScenarios = [
    { drawProfiles: [{ drawSize: 4, category: { categoryName }, rankingRange: [1, 15] }], expectation: { itemType: 'SCALE.RANKING.SINGLES.12U' }},
    { eventProfiles: [{ drawProfiles: [{ drawSize: 4 }], category: { categoryName }, rankingRange: [1, 15] }], expectation: { itemType: 'SCALE.RANKING.SINGLES.12U' }},
-   { drawProfiles: [{ drawSize: 4, category: { ratingType }, rankingRange: [1, 15] }], expectation: { itemType: 'SCALE.RATING.SINGLES.WTN' }},
-   { eventProfiles: [{ drawProfiles: [{ drawSize: 4 }], category: { ratingType }, rankingRange: [1, 15] }], expectation: { itemType: 'SCALE.RATING.SINGLES.WTN' }}
+   { drawProfiles: [{ drawSize: 4, category: { ratingType }, rankingRange: [1, 15] }], expectation: { itemType: WTN_RATING }},
+   { eventProfiles: [{ drawProfiles: [{ drawSize: 4 }], category: { ratingType }, rankingRange: [1, 15] }], expectation: { itemType: WTN_RATING }}
 ];
 
 it.each(mockScenarios)(
@@ -110,10 +112,7 @@ test('generates participants with rankings and ratings with additional embellish
   const tournamentParticipantsCount = tournamentParticipants.length;
 
   const scaleItems = tournamentParticipants
-    .map(
-      (p) =>
-        p.timeItems && p.timeItems.filter((i) => i.itemType.startsWith('SCALE'))
-    )
+    .map((p) => p.timeItems?.filter((i) => i.itemType.startsWith('SCALE')))
     .filter(Boolean)
     .flat();
 
@@ -124,7 +123,7 @@ test('generates participants with rankings and ratings with additional embellish
     if (itemType === 'SCALE.RANKING.SINGLES.U18') {
       expect(itemValue).toEqual(Math.round(itemValue));
       typesCount += 1;
-    } else if (itemType === 'SCALE.RATING.SINGLES.WTN') {
+    } else if (itemType === WTN_RATING) {
       const decimalValue = itemValue.wtnRating.toString().split('.')[1];
       decimalValue &&
         expect([1, 2].includes(decimalValue?.length)).toEqual(true);
@@ -145,11 +144,11 @@ test('generates participants with rankings and ratings with additional embellish
   let withRatings = 0;
   let withRankings = 0;
   tournamentParticipants.forEach((participant) => {
-    if (participant.rankings && participant.rankings[SINGLES]) {
+    if (participant?.rankings[SINGLES]) {
       withRankings += 1;
       expect(participant.rankings[SINGLES].length).toEqual(1);
     }
-    if (participant.ratings && participant.ratings[SINGLES]) {
+    if (participant?.ratings[SINGLES]) {
       withRatings += 1;
       expect(participant.ratings[SINGLES].length).toEqual(1);
     }

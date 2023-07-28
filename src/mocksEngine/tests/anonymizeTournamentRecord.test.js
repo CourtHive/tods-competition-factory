@@ -99,8 +99,7 @@ test.each(mockProfiles)('it can anonymize tournamentRecords', (mockProfile) => {
 
 const sourcePath = './src/global/testHarness';
 const filenames = fs.readdirSync(sourcePath).filter(
-  (filename) =>
-    filename.indexOf('.tods.json') > 0 && filename.indexOf('.8') === undefined // skip v0.8
+  (filename) => filename.indexOf('.tods.json') > 0 && filename.indexOf('.8') > 0 // skip v0.8
 );
 
 it.each(filenames)(

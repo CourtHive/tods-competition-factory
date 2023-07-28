@@ -80,7 +80,7 @@ it('can export CSV files with player demographic data', () => {
   const rows = csvParticipants.split(rowJoiner);
   expect(rows.length).toEqual(65);
   expect(rows[0]).toEqual(
-    'city,state,personId,lastName,firstName,district,section,birthDate,sex'
+    'state,city,personId,lastName,firstName,district,section,birthDate,sex'
   );
   expect(rows[1].split(columnJoiner).reverse()[0]).toEqual(MALE);
 });

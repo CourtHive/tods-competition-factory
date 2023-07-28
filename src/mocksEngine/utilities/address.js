@@ -1,6 +1,6 @@
 import { generateRange, randomMember, shuffleArray } from '../../utilities';
-import { randomInt } from '../../utilities/math';
 import statesData from '../data/territories.json';
+import { randomInt } from '../../utilities/math';
 import citiesData from '../data/cities.json';
 
 export function address() {

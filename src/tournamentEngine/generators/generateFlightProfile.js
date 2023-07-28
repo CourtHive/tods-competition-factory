@@ -2,8 +2,8 @@ import { attachFlightProfile as attachProfile } from '../governors/eventGovernor
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
 import { chunkArray, generateRange, chunkByNth, UUID } from '../../utilities';
 import { getParticipantId } from '../../global/functions/extractors';
-import { getFlightProfile } from '../getters/getFlightProfile';
 import { getDevContext } from '../../global/state/globalState';
+import { getFlightProfile } from '../getters/getFlightProfile';
 
 import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';

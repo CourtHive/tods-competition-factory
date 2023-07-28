@@ -1,13 +1,13 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../drawEngine/governors/structureGovernor/generateDrawTypeAndModifyDrawDefinition';
 import { generateQualifyingStructures } from '../../drawEngine/governors/structureGovernor/generateQualifyingStructures';
 import { addVoluntaryConsolationStructure } from '../governors/eventGovernor/addVoluntaryConsolationStructure';
-import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/setMatchUpFormat';
+import { addDrawDefinition } from '../governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { getTournamentParticipants } from '../getters/participants/getTournamentParticipants';
 import { generateQualifyingLink } from '../../drawEngine/generators/generateQualifyingLink';
 import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attachPolicies';
-import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
+import { getAppliedPolicies } from '../../global/functions/deducers/getAppliedPolicies';
 import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEntries';
 import { getQualifiersCount } from '../../drawEngine/getters/getQualifiersCount';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
@@ -349,8 +349,8 @@ export function generateDrawDefinition(params) {
       ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1
     );
     const { qualifiersCount: existingQualifiersCount } = getQualifiersCount({
-      drawDefinition,
       stageSequence: 1,
+      drawDefinition,
       structureId,
       stage: MAIN,
     });
@@ -499,11 +499,11 @@ export function generateDrawDefinition(params) {
         });
 
       roundTarget = roundTargetProfile.roundTarget || roundTarget;
-      let stageSequence = 1;
 
       const sortedStructureProfiles =
         roundTargetProfile.structureProfiles?.sort(sequenceSort) || [];
 
+      let sequence = 1;
       for (const structureProfile of sortedStructureProfiles) {
         const {
           qualifyingRoundNumber,
@@ -520,6 +520,7 @@ export function generateDrawDefinition(params) {
         const qualifyingStageResult = prepareStage({
           ...drawTypeResult,
           ...params,
+          stageSequence: sequence,
           qualifyingRoundNumber,
           preparedStructureIds,
           qualifyingPositions,
@@ -530,7 +531,6 @@ export function generateDrawDefinition(params) {
           drawDefinition,
           qualifyingOnly,
           seedingProfile,
-          stageSequence,
           seedByRanking,
           participants,
           roundTarget,
@@ -548,7 +548,7 @@ export function generateDrawDefinition(params) {
           preparedStructureIds.push(qualifyingStageResult.structureId);
         }
 
-        stageSequence += 1;
+        sequence += 1;
 
         if (qualifyingStageResult.conflicts?.length)
           qualifyingConflicts.push(...qualifyingStageResult.conflicts);
