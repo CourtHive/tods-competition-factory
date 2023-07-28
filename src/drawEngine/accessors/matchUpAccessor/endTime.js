@@ -13,7 +13,7 @@ export function matchUpEndTime({ matchUp }) {
     return earlierStartTimeItem ? endTimeCandidate : endTimeItem;
   }, undefined);
 
-  const endTime = endTimeItem && endTimeItem.itemValue;
+  const endTime = endTimeItem?.itemValue;
 
   return { endTime };
 }

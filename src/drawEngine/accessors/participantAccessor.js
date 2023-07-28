@@ -28,9 +28,7 @@ export function getMatchUpParticipantIds({ matchUp }) {
       .filter(Boolean);
 
     const nestedIndividualParticipants = matchUp.sides
-      .map(
-        (side) => side.participant && side.participant.individualParticipants
-      )
+      .map((side) => side.participant?.individualParticipants)
       .filter(Boolean);
 
     nestedIndividualParticipantIds = nestedIndividualParticipants.map(

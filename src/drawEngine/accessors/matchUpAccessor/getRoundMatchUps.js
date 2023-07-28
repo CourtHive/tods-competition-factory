@@ -33,10 +33,10 @@ export function getRoundMatchUps({ matchUps = [], interpolate }) {
       const consideredMatchUps = hasTeamMatchUps
         ? roundMatchUps.filter(({ matchUpType }) => matchUpType === TEAM)
         : roundMatchUps;
+      const getSorted = (items) =>
+        items.sort((a, b) => numericSort(a.roundPosition, b.roundPosition));
       return {
-        [roundNumber]: consideredMatchUps.sort((a, b) =>
-          numericSort(a.roundPosition, b.roundPosition)
-        ),
+        [roundNumber]: getSorted(consideredMatchUps),
       };
     });
 

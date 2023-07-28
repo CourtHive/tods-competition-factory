@@ -13,7 +13,7 @@ export function matchUpStartTime({ matchUp }) {
     return earlierStartTimeItem ? startTimeCandidate : startTimeItem;
   }, undefined);
 
-  const startTime = startTimeItem && startTimeItem.itemValue;
+  const startTime = startTimeItem?.itemValue;
 
   return { startTime };
 }

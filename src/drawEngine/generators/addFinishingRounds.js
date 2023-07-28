@@ -2,8 +2,6 @@ import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps'
 import { getDevContext } from '../../global/state/globalState';
 import { generateRange } from '../../utilities';
 
-import { MISSING_MATCHUPS } from '../../constants/errorConditionConstants';
-
 export function addFinishingRounds({
   finishingPositionOffset = 0,
   finishingPositionLimit,
@@ -14,7 +12,8 @@ export function addFinishingRounds({
   lucky,
   fmlc,
 }) {
-  if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
+  if (!Array.isArray(matchUps)) return [];
+
   const { roundProfile, roundNumbers } = getRoundMatchUps({
     interpolate: true, // for structures which do not contain a final round of one matchUps (structure winner)
     matchUps,
