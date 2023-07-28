@@ -1,7 +1,7 @@
 import { addTournamentExtension } from '../../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { findTournamentExtension } from '../../../../tournamentEngine/governors/queryGovernor/extensionQueries';
-import { removeExtension } from '../../competitionsGovernor/competitionExtentions';
 import { findParticipant } from '../../../../global/functions/deducers/findParticipant';
+import { removeExtension } from '../../competitionsGovernor/competitionExtentions';
 import { extractDate, extractTime } from '../../../../utilities/dateTime';
 import { generateTimeCode } from '../../../../utilities';
 

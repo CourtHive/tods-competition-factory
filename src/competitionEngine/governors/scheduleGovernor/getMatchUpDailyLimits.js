@@ -15,14 +15,13 @@ export function getMatchUpDailyLimits({ tournamentRecords, tournamentId }) {
   );
 
   let dailyLimits;
-  tournamentIds.find((tournamentId) => {
+  tournamentIds.forEach((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
 
     const { matchUpDailyLimits } = getDailyLimit({
       tournamentRecord,
     });
     dailyLimits = matchUpDailyLimits;
-    return true;
   });
 
   return { matchUpDailyLimits: dailyLimits };

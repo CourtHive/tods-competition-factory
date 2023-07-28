@@ -7,7 +7,8 @@ export function getDateTimeBoundary({
   endTime,
   courts,
 }) {
-  const accessor = startTime ? 'startTime' : endTime ? 'endTime' : undefined;
+  const accessor =
+    (startTime && 'startTime') || (endTime && 'endTime') || undefined;
   return courts.reduce((boundaryTime, court) => {
     const dateAvailability = getCourtDateAvailability({
       date: scheduleDate,
@@ -42,7 +43,8 @@ export function getCourtsTimeBoundary({ startTime, endTime, courts }) {
 }
 
 export function getCourtTimeBoundary({ startTime, endTime, court }) {
-  const accessor = startTime ? 'startTime' : endTime ? 'endTime' : undefined;
+  const accessor =
+    (startTime && 'startTime') || (endTime && 'endTime') || undefined;
   return court.dateAvailability?.reduce((boundary, availability) => {
     const candidate = availability?.[accessor];
 

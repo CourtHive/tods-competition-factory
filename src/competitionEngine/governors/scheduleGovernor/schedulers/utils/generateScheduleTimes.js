@@ -93,11 +93,9 @@ export function generateScheduleTimes({
 
   // if a single venue specified, or only one venue available, return venueId
   const venueId =
-    venueIds?.length === 1
-      ? venueIds[0]
-      : venues?.length === 1
-      ? venues[0].venueId
-      : undefined;
+    (venueIds?.length === 1 && venueIds[0]) ||
+    (venues?.length === 1 && venues[0].venueId) ||
+    undefined;
 
   const dateScheduledMatchUpIds = dateScheduledMatchUps?.map(getMatchUpId);
 

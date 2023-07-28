@@ -124,9 +124,8 @@ export function getScheduleTimes({
     // if available courts but no previously available courts then newCourts;
     const calculationDifference = !availableToScheduleCount
       ? 0
-      : previousAvailableCourts
-      ? calculatedTotal - previousCalculation
-      : newCourts;
+      : (previousAvailableCourts && calculatedTotal - previousCalculation) ||
+        newCourts;
 
     previousCalculation = calculatedTotal;
     previousAvailableCourts = availableToScheduleCount;
