@@ -107,11 +107,8 @@ export function processMatchUps({
 
     const maxCountables = considerGames ? bestOf & setsTo : bestOf;
 
-    const countables = score?.sets
-      ? aggregateSets(score.sets)
-      : winningSide === 1
-      ? [1, 0]
-      : [0, 1];
+    const countables = (score?.sets && aggregateSets(score.sets)) ||
+      (winningSide === 1 && [1, 0]) || [0, 1];
 
     const winningSideParticipantIds = sideParticipantIds[winningSide];
     const losingSideParticipantIds = sideParticipantIds[3 - winningSide];

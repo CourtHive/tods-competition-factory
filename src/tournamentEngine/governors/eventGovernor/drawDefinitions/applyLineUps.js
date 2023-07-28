@@ -79,7 +79,7 @@ export function applyLineUps({
         (participant) => participant.participantId === participantId
       );
       if (!participant) return { error: PARTICIPANT_NOT_FOUND };
-      if (!participant.participantType === INDIVIDUAL)
+      if (participant.participantType !== INDIVIDUAL)
         return { error: INVALID_PARTICIPANT_TYPE };
 
       const sideNumber = inContextMatchUp.sides?.find((side) =>

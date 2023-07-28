@@ -40,7 +40,7 @@ export function checkInParticipant({
   tournamentParticipants =
     tournamentParticipants || tournamentRecord?.participants;
 
-  if (tournamentParticipants && tournamentParticipants.length) {
+  if (tournamentParticipants?.length) {
     if (!matchUp) {
       const result = findMatchUp({
         tournamentParticipants,
