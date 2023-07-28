@@ -54,11 +54,9 @@ export function analyzeSet(params) {
 
   const leadingSide =
     hasTiebreakCondition &&
-    (sideGameScores[0] > sideGameScores[1]
-      ? 1
-      : sideGameScores[1] > sideGameScores[0]
-      ? 2
-      : undefined);
+    ((sideGameScores[0] > sideGameScores[1] && 1) ||
+      (sideGameScores[1] > sideGameScores[0] && 2) ||
+      undefined);
 
   const isTiebreakSet = !!(tiebreakScoresCount && !gameScoresCount);
 
@@ -254,10 +252,7 @@ function checkValidStandardSetOutcome({
     }
 
     const hasTiebreakGameScore = winningSideGameScore > setTo;
-    if (
-      hasTiebreakGameScore &&
-      (!setTiebreakDefined || !hasTiebreakCondition)
-    ) {
+    if (hasTiebreakGameScore && !hasTiebreakCondition) {
       return {
         result: false,
         error: { message: 'invalid winning game scoreString (2)' },

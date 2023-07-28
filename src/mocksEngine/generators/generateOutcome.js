@@ -306,24 +306,29 @@ function generateSet({
       const lowValue = range[randomInt(0, range.length - 1)];
       let scores = getTiebreakComplement({
         isSide1: true,
-        lowValue,
-        tiebreakTo,
         tiebreakNoAd,
+        tiebreakTo,
+        lowValue,
       });
 
-      if (isTiebreakSet) {
-        const highSide = scores[0] > scores[1] ? 1 : 2; // sides are not tied
-        if (specifiedWinningSide) {
-          if (highSide !== specifiedWinningSide) scores.reverse();
-        } else if (reverseScores) {
-          scores.reverse();
+      if (scores) {
+        if (isTiebreakSet) {
+          const highSide = scores[0] > scores[1] ? 1 : 2; // sides are not tied
+          if (specifiedWinningSide) {
+            if (highSide !== specifiedWinningSide) scores.reverse();
+          } else if (reverseScores) {
+            scores.reverse();
+          }
+          [set.side1TiebreakScore, set.side2TiebreakScore] = scores;
+          tiebreakWinningSide =
+            (scores[0] > scores[1] && 1) ||
+            (scores[1] > scores[0] && 2) ||
+            undefined;
+        } else if (setAnalysis.leadingSide === 2) {
+          [set.side1TiebreakScore, set.side2TiebreakScore] = scores;
+        } else {
+          [set.side2TiebreakScore, set.side1TiebreakScore] = scores;
         }
-        [set.side1TiebreakScore, set.side2TiebreakScore] = scores;
-        tiebreakWinningSide = scores[0] > scores[1] ? 1 : 2;
-      } else if (setAnalysis.leadingSide === 2) {
-        [set.side1TiebreakScore, set.side2TiebreakScore] = scores;
-      } else {
-        [set.side2TiebreakScore, set.side1TiebreakScore] = scores;
       }
     }
 

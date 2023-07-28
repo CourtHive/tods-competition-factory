@@ -41,15 +41,10 @@ function getSetFormat(matchUpFormatObject, preserveRedundant) {
   const finalSetCode =
     (bestOfValue > 1 &&
       finalSetCountValue &&
-      !finalSetCountValue.invalid &&
       setCountValue !== finalSetCountValue && // don't include final set code if equivalent to other sets
       `F:${finalSetCountValue}`) ||
     '';
-  const valid =
-    bestOfCode &&
-    setCountValue &&
-    !setCountValue.invalid &&
-    !finalSetCountValue?.invalid;
+  const valid = bestOfCode && setCountValue;
 
   if (valid) {
     return [bestOfCode, setCode, finalSetCode].filter((f) => f).join('-');
@@ -78,11 +73,7 @@ function stringifySet(setObject, preserveRedundant) {
       const valid = !setTiebreakValue?.invalid;
       if (valid) {
         return `${setToValue}${NoAD}${setTiebreakCode}${tiebreakAtCode}`;
-      } else {
-        return { invalid: true };
       }
-    } else {
-      return { invalid: true };
     }
   }
 }
