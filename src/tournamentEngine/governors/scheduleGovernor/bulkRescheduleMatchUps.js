@@ -1,7 +1,7 @@
 import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { getTournamentInfo } from '../publishingGovernor/getTournamentInfo';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter/matchUpsGetter';
+import { getTournamentInfo } from '../publishingGovernor/getTournamentInfo';
 import { getDrawDefinition } from '../../getters/eventGetter';
 import {
   addMinutesToTimeString,

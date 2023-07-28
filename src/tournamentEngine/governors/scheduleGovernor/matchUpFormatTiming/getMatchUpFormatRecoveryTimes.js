@@ -1,16 +1,14 @@
-import { findCategoryTiming } from './findCategoryTiming';
 import { findMatchupFormatRecoveryTimes } from './findMatchUpFormatTimes';
+import { findCategoryTiming } from './findCategoryTiming';
 
 export function getMatchUpFormatRecoveryTimes({
+  tournamentScheduling,
+  eventScheduling,
+  averageMinutes,
+  defaultTiming,
   matchUpFormat,
   categoryName,
   categoryType,
-
-  averageMinutes,
-
-  defaultTiming,
-  tournamentScheduling,
-  eventScheduling,
   policy,
 }) {
   const eventRecoveryTimes =

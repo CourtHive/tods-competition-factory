@@ -159,9 +159,8 @@ export function addParticipant({
     }
   } else if (participantType === INDIVIDUAL) {
     if (
-      !participant.person ||
-      !participant.person.standardFamilyName ||
-      !participant.person.standardGivenName
+      !participant.person?.standardFamilyName ||
+      !participant.person?.standardGivenName
     )
       return { error: MISSING_PERSON_DETAILS };
 

@@ -1,6 +1,6 @@
+import { addNotice, getTopics } from '../../../global/state/globalState';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { hasParticipantId } from '../../../global/functions/filters';
-import { addNotice, getTopics } from '../../../global/state/globalState';
 import { deepMerge } from '../../../utilities/deepMerge';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
