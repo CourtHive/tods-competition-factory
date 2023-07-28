@@ -60,18 +60,14 @@ function stringifySet(setObject, preserveRedundant) {
       const NoAD = (setObject.NoAD && NOAD) || '';
       const setTiebreakValue = tiebreakFormat(setObject.tiebreakFormat);
       const setTiebreakCode =
-        (setTiebreakValue &&
-          !setTiebreakValue.invalid &&
-          `/${setTiebreakValue}`) ||
-        '';
+        (setTiebreakValue && `/${setTiebreakValue}`) || '';
       const tiebreakAtValue = getNumber(setObject.tiebreakAt);
       const tiebreakAtCode =
         (tiebreakAtValue &&
           (tiebreakAtValue !== setToValue || preserveRedundant) &&
           `@${tiebreakAtValue}`) ||
         '';
-      const valid = !setTiebreakValue?.invalid;
-      if (valid) {
+      if (setTiebreakValue !== false) {
         return `${setToValue}${NoAD}${setTiebreakCode}${tiebreakAtCode}`;
       }
     }
@@ -90,7 +86,7 @@ function tiebreakFormat(tieobject) {
       if (tieobject.modifier) value += `@${tieobject.modifier}`;
       return value;
     } else {
-      return { invalid: true };
+      return false;
     }
   }
 }

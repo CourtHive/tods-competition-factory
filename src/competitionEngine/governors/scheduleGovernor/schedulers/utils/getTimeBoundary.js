@@ -19,10 +19,10 @@ export function getDateTimeBoundary({
 
     return comparisonTime &&
       (!boundaryTime ||
-        (startTime
-          ? timeStringMinutes(comparisonTime) < timeStringMinutes(boundaryTime)
-          : timeStringMinutes(comparisonTime) >
-            timeStringMinutes(boundaryTime)))
+        (startTime &&
+          timeStringMinutes(comparisonTime) <
+            timeStringMinutes(boundaryTime)) ||
+        timeStringMinutes(comparisonTime) > timeStringMinutes(boundaryTime))
       ? comparisonTime
       : boundaryTime;
   }, undefined);
@@ -33,10 +33,10 @@ export function getCourtsTimeBoundary({ startTime, endTime, courts }) {
     const comparisonTime = getCourtTimeBoundary({ startTime, endTime, court });
     return comparisonTime &&
       (!boundaryTime ||
-        (startTime
-          ? timeStringMinutes(comparisonTime) < timeStringMinutes(boundaryTime)
-          : timeStringMinutes(comparisonTime) >
-            timeStringMinutes(boundaryTime)))
+        (startTime &&
+          timeStringMinutes(comparisonTime) <
+            timeStringMinutes(boundaryTime)) ||
+        timeStringMinutes(comparisonTime) > timeStringMinutes(boundaryTime))
       ? comparisonTime
       : boundaryTime;
   }, undefined);
