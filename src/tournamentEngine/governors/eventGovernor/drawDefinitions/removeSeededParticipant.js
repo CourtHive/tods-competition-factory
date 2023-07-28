@@ -1,6 +1,6 @@
 import { isConvertableInteger } from '../../../../utilities/math';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_DRAW_POSITION,
   MISSING_DRAW_DEFINITION,

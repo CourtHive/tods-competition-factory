@@ -1,8 +1,8 @@
 import { getPairedParticipant } from '../../participantGovernor/getPairedParticipant';
 import { addParticipants } from '../../participantGovernor/addParticipants';
 import { getParticipantId } from '../../../../global/functions/extractors';
-import { intersection } from '../../../../utilities/arrays';
 import { addNotice } from '../../../../global/state/globalState';
+import { intersection } from '../../../../utilities/arrays';
 import { addEventEntries } from './addEventEntries';
 
 import { DOUBLES } from '../../../../constants/matchUpTypes';
