@@ -56,4 +56,22 @@ module.exports = {
       },
     ],
   ],
+  plugins: [
+    [
+      // require.resolve('docusaurus-plugin-search-local'), // typescript fork
+      require.resolve('@cmfcmf/docusaurus-search-local'),
+      {
+        // docusaurus-plugin-search-local (typscript fork)
+        // highlightSearchTermsOnTargetPage: false,
+        // docsRouteBasePath: '/docs',
+        // docsDir: 'docs',
+        // hashed: false,
+
+        // @cmfcmf/docusaurus-search-local (original project)
+        maxSearchResults: 8,
+        indexBlog: false,
+        style: undefined,
+      },
+    ],
+  ],
 };

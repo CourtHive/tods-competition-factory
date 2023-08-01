@@ -160,7 +160,5 @@
     "defaults and supports es6-module",
     "maintained node versions"
   ],
-  "dependencies": {
-    "docusaurus-plugin-search-local": "^1.0.1"
-  }
+  "dependencies": {}
 }
