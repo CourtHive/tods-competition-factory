@@ -1,13 +1,14 @@
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
-import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
 import { addExtension } from '../../../global/functions/producers/addExtension';
 import { getProjectedDualWinningSide } from './getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { validateScore } from '../../../global/validation/validateScore';
+import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { pushGlobalLog } from '../../../global/functions/globalLog';
@@ -225,9 +226,22 @@ export function setMatchUpStatus(params) {
     }
   }
 
+  const positionAssignments = !matchUp?.sides
+    ? getPositionAssignments({
+        drawDefinition,
+        structureId,
+      }).positionAssignments
+    : [];
+
   const bothSideParticipants =
     matchUp.sides?.map((side) => side.participantId).filter(Boolean).length ===
-      2 || assignedDrawPositions?.length === 2;
+      2 ||
+    (assignedDrawPositions?.length === 2 &&
+      positionAssignments
+        ?.filter((assignment) =>
+          assignedDrawPositions.includes(assignment.drawPosition)
+        )
+        .every((assignment) => assignment.participantId));
 
   if (
     matchUpStatus &&

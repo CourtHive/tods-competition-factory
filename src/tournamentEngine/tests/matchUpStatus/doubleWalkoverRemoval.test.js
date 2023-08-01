@@ -892,9 +892,9 @@ test('consolation fed player advanced by WO/WO will be removed when WO/WO cleare
   let completionGoal = 6;
   let drawProfiles = [
     {
-      drawSize: 8,
       drawType: FEED_IN_CHAMPIONSHIP_TO_SF,
       completionGoal,
+      drawSize: 8,
       outcomes: [
         {
           matchUpStatus: DOUBLE_WALKOVER,
