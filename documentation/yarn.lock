@@ -9621,10 +9621,10 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-tods-competition-factory@1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.3.0.tgz#7caef47d30803de8b68ed156d15f3670cc3ce47b"
-  integrity sha512-zeUjZ/qxv8flPIhrm6+E5SE0jS3sXCkAbhvH4nOLglXEZXhtjI2fiE8IGoMmGY7zDjdzt1GNST6Jxthbyu63Yg==
+tods-competition-factory@1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.3.1.tgz#3070f0537dabc9944e96904150de9dd91e980908"
+  integrity sha512-OrNlXcnht07Roe1o5/6ZxnX22eS0ktqVA9TACYsEwCDQjdF3bl5jhhvvSSxBVcg+YMUtjjfAiB35dqRYAPGk1g==
 
 tods-competition-factory@^1.2.23:
   version "1.2.23"
