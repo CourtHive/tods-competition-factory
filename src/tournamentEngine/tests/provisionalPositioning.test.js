@@ -171,8 +171,8 @@ test.each([
       drawProfiles: [
         {
           drawType: ROUND_ROBIN_WITH_PLAYOFF,
-          drawSize: 16,
           completionGoal,
+          drawSize: 16,
         },
       ],
     };

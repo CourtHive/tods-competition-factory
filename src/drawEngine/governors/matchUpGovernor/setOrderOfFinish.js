@@ -97,7 +97,7 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
     return validMatchUpId && validOrderOfFinish;
   });
 
-  if (!validValues)
+  if (!validValues) {
     return decorateResult({
       result: {
         error: !validMatchUpId ? INVALID_MATCHUP_STATUS : INVALID_VALUES,
@@ -109,6 +109,7 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
         : undefined,
       stack,
     });
+  }
 
   // get other matchUps in the same logical grouping
   const otherCohortMatchUps = completedMatchUps.filter(
