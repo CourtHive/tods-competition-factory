@@ -102,11 +102,11 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }) {
       result: {
         error: !validMatchUpId ? INVALID_MATCHUP_STATUS : INVALID_VALUES,
       },
-      info: !validMatchUpId
-        ? 'matchUps must be completed'
-        : !validOrderOfFinish
-        ? 'orderOfFinish must be integer > 0 or undefined'
-        : undefined,
+      info:
+        (!validMatchUpId && 'matchUps must be completed') ||
+        (!validOrderOfFinish &&
+          'orderOfFinish must be integer > 0 or undefined') ||
+        undefined,
       stack,
     });
   }
