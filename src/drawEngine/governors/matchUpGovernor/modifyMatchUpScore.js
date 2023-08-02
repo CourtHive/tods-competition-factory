@@ -2,7 +2,7 @@ import { addNotes } from '../../../tournamentEngine/governors/tournamentGovernor
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
-import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
+// import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { decorateResult } from '../../../global/functions/decorateResult';
@@ -144,6 +144,7 @@ export function modifyMatchUpScore({
     if (result.error) return decorateResult({ result, stack });
   }
 
+  /*
   const winningSideChanged = winningSide !== matchUp.winningSide;
   if (winningSideChanged) {
     const { flightProfile } = getFlightProfile({ event });
@@ -154,6 +155,7 @@ export function modifyMatchUpScore({
       console.log('recalculate team point tallies');
     }
   }
+  */
 
   if (notes) {
     const result = addNotes({ element: matchUp, notes });
