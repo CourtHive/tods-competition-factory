@@ -235,11 +235,11 @@ tournamentEngine.addEventExtension({
 
 ```js
 tournamentEngine.addFlight({
-  eventId,
-  stage,
-  drawName,
-  drawId, // optional -- if scenario involves client and server side tournamentEngines, provide { drawId: UUID() }
   drawEntries, // optional
+  drawName,
+  eventId,
+  drawId, // optional -- if scenario involves client and server side tournamentEngines, provide { drawId: UUID() }
+  stage,
 });
 ```
 
@@ -251,8 +251,8 @@ Adds individualParticipantIds to GROUP or TEAM participants
 
 ```js
 tournamentEngine.addIndividualParticipantIds({
-  groupingParticipantId,
   individualParticipantIds,
+  groupingParticipantId,
   removeFromOtherTeams, // optional boolean
 });
 ```
@@ -278,11 +278,11 @@ tournamentEngine.addMatchUpEndTime({
 
 ```js
 tournamentEngine.addMatchUpOfficial({
-  drawId,
-  matchUpId,
+  disableNotice, // when disabled subscribers will not be notified
   participantId,
   officialType,
-  disableNotice, // when disabled subscribers will not be notified
+  matchUpId,
+  drawId,
 });
 ```
 
@@ -293,10 +293,10 @@ tournamentEngine.addMatchUpOfficial({
 ```js
 const resumeTime = '2020-01-01T09:00:00Z';
 tournamentEngine.addMatchUpResumeTime({
-  drawId,
-  matchUpId,
-  resumeTime,
   disableNotice, // when disabled subscribers will not be notified
+  resumeTime,
+  matchUpId,
+  drawId,
 });
 ```
 
@@ -307,10 +307,10 @@ tournamentEngine.addMatchUpResumeTime({
 ```js
 const scheduledDate = '2020-01-01';
 tournamentEngine.addMatchUpScheduledDate({
-  drawId,
-  matchUpId,
-  scheduledDate,
   disableNotice, // when disabled subscribers will not be notified
+  scheduledDate,
+  matchUpId,
+  drawId,
 });
 ```
 
@@ -321,10 +321,10 @@ tournamentEngine.addMatchUpScheduledDate({
 ```js
 const scheduledTime = '08:00';
 tournamentEngine.addMatchUpScheduledTime({
-  drawId,
-  matchUpId,
-  scheduledTime,
   disableNotice, // when disabled subscribers will not be notified
+  scheduledTime,
+  matchUpId,
+  drawId,
 });
 ```
 
@@ -336,15 +336,15 @@ Convenience function to add several schedule items at once.
 
 ```js
 tournamentEngine.addMatchUpScheduleItems({
-  drawId,
   matchUpId,
+  drawId,
   schedule: {
-    courtIds, // applies only to TEAM matchUps
-    courtId, // requires scheduledDate
-    venueId,
     scheduledTime,
     scheduledDate,
     startTime,
+    courtIds, // applies only to TEAM matchUps
+    courtId, // requires scheduledDate
+    venueId,
     endTime,
   },
   disableNotice, // when disabled subscribers will not be notified
@@ -427,8 +427,8 @@ const createdAt = new Date().toISOString();
 const penaltyData = {
   refereeParticipantId, // optional
   participantIds: [participantId],
-  penaltyType: BALL_ABUSE,
   penaltyCode: 'Organization specific code', // optional
+  penaltyType: BALL_ABUSE,
   matchUpId,
   issuedAt, // optional ISO timeStamp for time issued to participant
   createdAt,
