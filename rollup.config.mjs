@@ -11,14 +11,14 @@ import path from 'path';
 
 const esmBundle = (config) => ({
   external: (id) => !/^[./]/.test(id),
-  input: config.input,
   plugins: [esbuild(), json()],
+  input: config.input,
   output: [
     {
-      file: config.outputFile,
       name: config.outputName,
-      format: 'es',
+      file: config.outputFile,
       sourcemap: true,
+      format: 'es',
     },
   ],
 });
@@ -26,24 +26,24 @@ const esmBundle = (config) => ({
 const esmProfile = [
   { input: 'src/index.ts', outputFile: 'dist/index.mjs' },
   {
+    outputFile: 'dist/forge/utilities.mjs',
     input: 'src/utilities/index.ts',
     outputName: 'utilities',
-    outputFile: 'dist/forge/utilities.mjs',
   },
   {
+    outputFile: 'dist/forge/generate.mjs',
     input: 'src/forge/generate/index.ts',
     outputName: 'generate',
-    outputFile: 'dist/forge/generate.mjs',
   },
   {
+    outputFile: 'dist/forge/transform.mjs',
     input: 'src/forge/transform/index.ts',
     outputName: 'transform',
-    outputFile: 'dist/forge/transform.mjs',
   },
   {
+    outputFile: 'dist/forge/query.mjs',
     input: 'src/forge/query/index.ts',
     outputName: 'query',
-    outputFile: 'dist/forge/query.mjs',
   },
 ];
 
@@ -63,14 +63,14 @@ const buildOutput = ({
   const file = `${distPath}${subFolder}/${packageName}.${development}${format}.js`;
 
   const base = {
-    file,
-    format,
+    name: packageName,
+    exports: 'named',
     sourcemap: true,
     esModule: true,
     freeze: false,
-    name: packageName,
     globals: {},
-    exports: 'named',
+    format,
+    file,
   };
 
   if (format === 'cjs' && minified) writeCjsIndex({ subFolder, packageName });
