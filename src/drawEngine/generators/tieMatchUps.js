@@ -21,7 +21,7 @@ export function generateCollectionMatchUps({
   isMock,
   uuids,
 }) {
-  const { matchUpCount, matchUpType, collectionId } =
+  const { matchUpCount, matchUpType, collectionId, processCodes } =
     collectionDefinition || {};
 
   const numberToGenerate = matchUpsLimit || matchUpCount || 0;
@@ -34,6 +34,7 @@ export function generateCollectionMatchUps({
       matchUpStatus: TO_BE_PLAYED,
       collectionPosition,
       collectionId,
+      processCodes,
       matchUpType,
       isMock,
     };

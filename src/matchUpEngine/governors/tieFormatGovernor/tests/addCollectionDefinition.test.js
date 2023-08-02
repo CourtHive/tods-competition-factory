@@ -14,6 +14,9 @@ import {
   ROUND_ROBIN,
 } from '../../../../constants/drawDefinitionConstants';
 
+const MIXED_DOUBLES = 'Mixed Doubles';
+const PRO_SET = 'SET1-S:8/TB7@7';
+
 it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   const {
     drawIds: [drawId],
@@ -38,8 +41,8 @@ it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   expect(matchUp.tieMatchUps.length).toEqual(9);
 
   const collectionDefinition = {
-    collectionName: 'Mixed Doubles',
-    matchUpFormat: 'SET1-S:8/TB7@7',
+    collectionName: MIXED_DOUBLES,
+    matchUpFormat: PRO_SET,
     matchUpType: DOUBLES,
     matchUpCount: 3,
     matchUpValue: 1,
@@ -237,10 +240,10 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   expect(secondRoundDualMatchUps[0].drawPositions).toEqual([1]);
 
   let collectionDefinition = {
-    collectionName: 'Mixed Doubles',
-    matchUpCount: 3,
-    matchUpFormat: 'SET1-S:8/TB7@7',
+    collectionName: MIXED_DOUBLES,
+    matchUpFormat: PRO_SET,
     matchUpType: DOUBLES,
+    matchUpCount: 3,
     matchUpValue: 1,
   };
 
@@ -331,9 +334,9 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
 
   collectionDefinition = {
     collectionName: 'More Singles',
-    matchUpCount: 3,
-    matchUpFormat: 'SET1-S:8/TB7@7',
+    matchUpFormat: PRO_SET,
     matchUpType: SINGLES,
+    matchUpCount: 3,
     matchUpValue: 1,
   };
 
@@ -451,10 +454,10 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
   expect(result.success).toEqual(true);
 
   const collectionDefinition = {
-    collectionName: 'Mixed Doubles',
-    matchUpCount: 3,
-    matchUpFormat: 'SET1-S:8/TB7@7',
+    collectionName: MIXED_DOUBLES,
+    matchUpFormat: PRO_SET,
     matchUpType: DOUBLES,
+    matchUpCount: 3,
     matchUpValue: 1,
   };
 
