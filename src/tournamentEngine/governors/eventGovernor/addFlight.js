@@ -16,7 +16,6 @@ import {
  *
  * @param {number} qualifyingPositions - optional - number of positions in draw to be reserved for qualifiers
  * @param {object[]} drawEntries - [{ entryPosition, entryStatus, participantId }]
- * @param {number} matchUpValue - point value of each matchUp (for team scoring)
  * @param {number} drawName - name to be applied to draw generated from profile
  * @param {string} drawId - optional - will be generated if not supplied
  * @param {object} event - event to which fligh is being added
@@ -26,7 +25,7 @@ import {
 export function addFlight({
   qualifyingPositions,
   drawEntries = [],
-  matchUpValue,
+  // matchUpValue,
   drawName,
   drawId,
   event,
@@ -65,7 +64,7 @@ export function addFlight({
   const flight = {
     drawId: flightDrawId,
     flightNumber,
-    matchUpValue,
+    // matchUpValue,
     drawEntries,
     drawName,
   };
