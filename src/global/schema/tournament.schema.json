@@ -142,6 +142,9 @@
         "tournamentLevel": {
           "$ref": "#/definitions/TournamentLevelEnum"
         },
+        "tournamentStatus": {
+          "$ref": "#/definitions/TournamentStatusEnum"
+        },
         "tournamentName": {
           "type": "string"
         },
@@ -458,7 +461,13 @@
     },
     "DisciplineEnum": {
       "type": "string",
-      "enum": ["BEACH_TENNIS", "TENNIS", "WHEELCHAIR_TENNIS"]
+      "enum": [
+        "BEACH_TENNIS",
+        "PADEL",
+        "PICKLEBALL",
+        "TENNIS",
+        "WHEELCHAIR_TENNIS"
+      ]
     },
     "DrawDefinition": {
       "type": "object",
@@ -2001,6 +2010,10 @@
         "RECREATIONAL"
       ]
     },
+    "TournamentStatusEnum": {
+      "type": "string",
+      "enum": ["ABANDONED", "CANCELLED"]
+    },
     "EventTypeEnum": {
       "type": "string",
       "enum": ["DOUBLES", "SINGLES", "TEAM"]
@@ -2137,6 +2150,7 @@
         "KNA",
         "KOR",
         "KOS",
+        "KRI",
         "KWT",
         "LAO",
         "LBN",
