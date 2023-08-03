@@ -137,7 +137,7 @@
     "lint-staged": "13.2.3",
     "np": "8.0.4",
     "pinst": "^3.0.0",
-    "prettier": "3.0.0",
+    "prettier": "3.0.1",
     "prettier-eslint": "15.0.1",
     "quicktype": "23.0.63",
     "rimraf": "5.0.1",
