@@ -573,6 +573,12 @@
             "$ref": "#/definitions/Structure"
           }
         },
+        "tieFormats": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/TieFormat"
+          }
+        },
         "tieFormat": {
           "$ref": "#/definitions/TieFormat"
         }
@@ -1534,6 +1540,9 @@
           }
         },
         "notes": {
+          "type": "string"
+        },
+        "tieFormatId": {
           "type": "string"
         },
         "timeItems": {
