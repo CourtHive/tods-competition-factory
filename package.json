@@ -37,19 +37,30 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
       "import": "./dist/index.mjs",
       "default": "./dist/index.js"
     },
-    "./generate": "./dist/forge/generate.mjs",
-    "./transform": "./dist/forge/transform.mjs",
-    "./query": "./dist/forge/query.mjs",
-    "./utilities": "./dist/forge/utilities.mjs"
+    "./*": {
+      "import": {
+        "types": "./dist/forge/*.d.ts",
+        "default": "./dist/forge/*.mjs"
+      },
+      "types": "./dist/forge/*.d.ts",
+      "default": "./dist/forge/*.mjs"
+    }
   },
   "typesVersions": {
     "*": {
       "query": [
-        "dist/forge/query.mjs"
+        "./dist/query.d.ts"
+      ],
+      "generate": [
+        "./dist/generate.d.ts"
+      ],
+      "transform": [
+        "./dist/transform.d.ts"
       ]
     }
   },
