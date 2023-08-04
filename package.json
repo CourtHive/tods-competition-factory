@@ -22,7 +22,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "1.3.3",
+  "version": "1.3.4-beta.1",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/tods-competition-factory/",
@@ -37,19 +37,30 @@
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "exports": {
+    "./package.json": "./package.json",
     ".": {
       "import": "./dist/index.mjs",
       "default": "./dist/index.js"
     },
-    "./generate": "./dist/forge/generate.mjs",
-    "./transform": "./dist/forge/transform.mjs",
-    "./query": "./dist/forge/query.mjs",
-    "./utilities": "./dist/forge/utilities.mjs"
+    "./*": {
+      "import": {
+        "types": "./dist/forge/*.d.ts",
+        "default": "./dist/forge/*.mjs"
+      },
+      "types": "./dist/forge/*.d.ts",
+      "default": "./dist/forge/*.mjs"
+    }
   },
   "typesVersions": {
     "*": {
       "query": [
-        "dist/forge/query.mjs"
+        "./dist/query.d.ts"
+      ],
+      "generate": [
+        "./dist/generate.d.ts"
+      ],
+      "transform": [
+        "./dist/transform.d.ts"
       ]
     }
   },
@@ -139,7 +150,7 @@
     "pinst": "^3.0.0",
     "prettier": "3.0.1",
     "prettier-eslint": "15.0.1",
-    "quicktype": "23.0.63",
+    "quicktype": "23.0.64",
     "rimraf": "5.0.1",
     "rollup": "3.27.1",
     "rollup-plugin-dts": "5.3.1",
