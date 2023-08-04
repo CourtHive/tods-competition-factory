@@ -5,7 +5,7 @@ import { babel } from '@rollup/plugin-babel';
 import esbuild from 'rollup-plugin-esbuild';
 import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
-// import dts from 'rollup-plugin-dts';
+import dts from 'rollup-plugin-dts';
 import fs from 'fs-extra';
 import path from 'path';
 
@@ -132,11 +132,24 @@ const cjsExports = [{ input: 'src/index.ts', cjs: true }].map(createExport);
 export default [
   ...cjsExports,
   ...esmExports,
-  /*
   {
     input: 'src/forge/query/index.ts',
-    output: [{ file: `${distPath}/forge/query/index.d.ts`, format: 'es' }],
+    output: [{ file: `${distPath}/forge/query.d.ts`, format: 'es' }],
     plugins: [dts()],
   },
-  */
+  {
+    input: 'src/forge/transform/index.ts',
+    output: [{ file: `${distPath}/forge/transform.d.ts`, format: 'es' }],
+    plugins: [dts()],
+  },
+  {
+    input: 'src/forge/generate/index.ts',
+    output: [{ file: `${distPath}/forge/generate.d.ts`, format: 'es' }],
+    plugins: [dts()],
+  },
+  {
+    input: 'src/utilities/index.ts',
+    output: [{ file: `${distPath}/forge/utilities.d.ts`, format: 'es' }],
+    plugins: [dts()],
+  },
 ];
