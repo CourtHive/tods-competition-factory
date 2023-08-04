@@ -1,7 +1,7 @@
 import { stringify } from './stringify';
 import { parse } from './parse';
 
-export function isValid(matchUpFormat) {
+export function isValid(matchUpFormat: string): boolean {
   if (typeof matchUpFormat !== 'string') return false;
   const parsedFormat = parse(matchUpFormat);
 
