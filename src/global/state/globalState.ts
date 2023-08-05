@@ -6,13 +6,43 @@ import {
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 
-const globalState = {
+type iteratorsType = {
+  makeDeepCopy: number;
+  [key: string]: any;
+};
+
+type timer = {
+  elapsedTime: number;
+  startTime?: number;
+  state?: string;
+};
+type timersType = {
+  [key: string]: timer;
+  default: timer;
+};
+
+type deepCopyType = {
+  threshold?: number;
+  modulate?: number;
+  stringify: string[];
+  ignore: string[];
+  toJSON: string[];
+};
+
+type globalStateTypes = {
+  tournamentFactoryVersion: string;
+  deepCopyAttributes: deepCopyType;
+  devContext?: object | boolean;
+  iterators: iteratorsType;
+  timers: timersType;
+  deepCopy: boolean;
+};
+
+const globalState: globalStateTypes = {
   tournamentFactoryVersion: '0.0.0',
   timers: { default: { elapsedTime: 0 } },
   iterators: { makeDeepCopy: 0 },
-  devContext: undefined,
   deepCopyAttributes: {
-    threshold: undefined,
     stringify: [],
     ignore: [],
     toJSON: [],
@@ -81,7 +111,7 @@ export function getDevContext(contextCriteria) {
     if (typeof globalState.devContext !== 'object') return false;
     return (
       Object.keys(contextCriteria).every(
-        (key) => globalState.devContext[key] === contextCriteria[key]
+        (key) => globalState.devContext?.[key] === contextCriteria[key]
       ) && globalState.devContext
     );
   }
@@ -102,26 +132,27 @@ export function timeKeeper(action = 'reset', timer = 'default') {
           const elapsedPeriod =
             currentTimer.state === 'stopped'
               ? 0
-              : (timeNow - currentTimer.startTime) / 1000;
+              : (timeNow - (currentTimer?.startTime || 0)) / 1000;
+
+          const elapsedTime = currentTimer.elapsedTime + elapsedPeriod;
           return {
-            elapsedTime: parseFloat(
-              currentTimer.elapsedTime + elapsedPeriod
-            ).toFixed(2),
-            timer,
             state: globalState.timers[timer].state,
+            elapsedTime: elapsedTime.toFixed(2),
+            timer,
           };
         });
     } else {
       const elapsedPeriod =
         globalState.timers[timer].state === 'stopped'
           ? 0
-          : (timeNow - globalState.timers[timer].startTime) / 1000;
+          : (timeNow - (globalState.timers[timer]?.startTime || 0)) / 1000;
+
+      const elapsedTime = globalState.timers[timer].elapsedTime + elapsedPeriod;
+
       return {
-        elapsedTime: parseFloat(
-          globalState.timers[timer].elapsedTime + elapsedPeriod
-        ).toFixed(2),
-        timer,
         state: globalState.timers[timer].state,
+        elapsedTime: elapsedTime.toFixed(2),
+        timer,
       };
     }
   }
@@ -132,18 +163,21 @@ export function timeKeeper(action = 'reset', timer = 'default') {
       return true;
     } else {
       globalState.timers[timer] = {
-        elapsedTime: 0,
         startTime: timeNow,
         state: 'active',
+        elapsedTime: 0,
       };
     }
   }
+
+  if (!globalState.timers[timer].elapsedTime)
+    globalState.timers[timer].elapsedTime = 0;
 
   action === 'stop' &&
     globalState.timers[timer].state !== 'stopped' &&
     (globalState.timers[timer].state = 'stopped') &&
     (globalState.timers[timer].elapsedTime +=
-      (timeNow - globalState.timers[timer].startTime) / 1000);
+      (timeNow - (globalState.timers[timer]?.startTime || 0)) / 1000);
   action === 'start' &&
     (globalState.timers[timer].startTime = timeNow) &&
     (globalState.timers[timer].state = 'active');
@@ -194,7 +228,7 @@ export function deepCopyEnabled() {
   };
 }
 
-export function setSubscriptions({ subscriptions } = {}) {
+export function setSubscriptions({ subscriptions = undefined } = {}) {
   if (!subscriptions)
     return { error: MISSING_VALUE, info: 'missing subscriptions' };
   return _globalStateProvider.setSubscriptions({ subscriptions });
