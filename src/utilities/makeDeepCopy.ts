@@ -5,20 +5,12 @@ import {
   setDeepCopyIterations,
 } from '../global/state/globalState';
 
-/**
- *
- * @param {object} sourceObject - arbitrary JSON object; functions will be stripped.
- * @param {boolean} convertExtensions - optional - all extension objects converted to attributes ._key
- * @param {boolean} removeExtensions - optional - strip all extension attributes
- * @param {boolean} internalUse - disregard deepCopy being disabled within the engine - necessary for query results
- * @returns
- */
 export function makeDeepCopy(
-  sourceObject,
-  convertExtensions,
-  internalUse,
-  removeExtensions,
-  iteration = 0
+  sourceObject, // arbitrary JSON object; functions will be stripped.
+  convertExtensions, // optional - all extension objects converted to attributes ._key
+  internalUse, // disregard deepCopy being disabled within the engine - necessary for query results
+  removeExtensions, // optional - strip all extension attributes
+  iteration = 0 // escape hatch - check against iteration threshold
 ) {
   const deepCopy = deepCopyEnabled();
 
@@ -38,6 +30,7 @@ export function makeDeepCopy(
   if (devContext) {
     setDeepCopyIterations(iteration);
     if (
+      typeof devContext === 'object' &&
       (iteration > (devContext.iterationThreshold || 15) ||
         (devContext.firstIteration && iteration === 0)) &&
       devContext.log &&
@@ -106,7 +99,7 @@ export function makeDeepCopy(
   return targetObject;
 }
 
-export function extensionsToAttributes(extensions = []) {
+export function extensionsToAttributes(extensions) {
   return extensions
     ?.map((extension) => {
       const { name, value } = extension;

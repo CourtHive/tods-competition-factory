@@ -23,16 +23,23 @@ type timersType = {
 
 type deepCopyType = {
   threshold?: number;
-  modulate?: number;
+  modulate?: any;
   stringify: string[];
-  ignore: string[];
+  ignore: any;
   toJSON: string[];
+};
+
+type devContextType = {
+  iterationThreshold: number;
+  firstIteration: boolean;
+  notInternalUse: boolean;
+  log: boolean;
 };
 
 type globalStateTypes = {
   tournamentFactoryVersion: string;
   deepCopyAttributes: deepCopyType;
-  devContext?: object | boolean;
+  devContext?: devContextType | boolean;
   iterators: iteratorsType;
   timers: timersType;
   deepCopy: boolean;
