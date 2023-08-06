@@ -104,7 +104,7 @@ export function createInstanceState() {
 /**
  * if contextCriteria, check whether all contextCriteria keys values are equivalent with globalState.devContext object
  */
-export function getDevContext(contextCriteria) {
+export function getDevContext(contextCriteria?) {
   if (!contextCriteria || typeof contextCriteria !== 'object') {
     return globalState.devContext || false;
   } else {
