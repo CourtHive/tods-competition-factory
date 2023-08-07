@@ -64,7 +64,7 @@ export function addParticipant({
 
   const { participantType, participantRole } = participant;
   if (
-    participantType &&
+    !participantType ||
     !Object.keys(participantTypes).includes(participantType)
   )
     return { error: INVALID_PARTICIPANT_TYPE, participantType };
