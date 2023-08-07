@@ -134,11 +134,7 @@ export { keyValueConstants } from './matchUpEngine/governors/scoreGovernor/keyVa
 export { matchUpActionConstants } from './constants/matchUpActionConstants';
 export { matchUpStatusConstants } from './constants/matchUpStatusConstants';
 export { matchUpTypes } from './constants/matchUpTypes';
-export {
-  participantConstants,
-  ParticipantTypeEnum,
-  SignedInStatusEnum,
-} from './constants/participantConstants';
+export { participantConstants } from './constants/participantConstants';
 export { penaltyConstants } from './constants/penaltyConstants';
 export { policyConstants } from './constants/policyConstants';
 export { positionActionConstants } from './constants/positionActionConstants';

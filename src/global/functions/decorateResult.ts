@@ -1,24 +1,24 @@
 import { definedAttributes } from '../../utilities';
 
+import { ErrorType } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
-type errorType = {
-  message: string;
-  info?: string;
-  code: string;
-};
-
-type resultType = {
-  [key: string]: any;
-  result?: resultType;
-  context?: object;
-  error?: errorType;
-  success?: boolean;
+export type ResultType = {
   stack?: string | string[];
+  result?: ResultType;
+  [key: string]: any;
+  error?: ErrorType;
+  success?: boolean;
+  context?: object;
   info?: string;
 };
 
-export function decorateResult({ result, stack, context, info }: resultType) {
+export function decorateResult({
+  context,
+  result,
+  stack,
+  info,
+}: ResultType): ResultType {
   if (result && !Array.isArray(result?.stack)) result.stack = [];
   if (result && Array.isArray(result?.stack) && typeof stack === 'string') {
     result.stack.push(stack);
