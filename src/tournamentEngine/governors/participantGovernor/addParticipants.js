@@ -27,6 +27,19 @@ import {
   EXISTING_PARTICIPANT,
 } from '../../../constants/errorConditionConstants';
 
+/*
+import { Participant, Tournament } from '../../../types/tournamentFromSchema';
+
+type addParticipantType = {
+  allowDuplicateParticipantIdPairs?: boolean;
+  returnParticipant?: boolean;
+  tournamentRecord: Tournament;
+  participant: Participant;
+  disableNotice?: boolean;
+  pairOverride?: boolean;
+};
+*/
+
 export function addParticipant({
   allowDuplicateParticipantIdPairs,
   returnParticipant,
@@ -35,6 +48,7 @@ export function addParticipant({
   pairOverride,
   participant,
 }) {
+  // }: addParticipantType) {
   const stack = 'addParticipant';
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -144,7 +158,7 @@ export function addParticipant({
     if (!participant.participantName) {
       const individualParticipants = tournamentParticipants.filter(
         (tournamentParticipant) =>
-          participant.individualParticipantIds.includes(
+          participant.individualParticipantIds?.includes(
             tournamentParticipant.participantId
           )
       );
@@ -169,11 +183,10 @@ export function addParticipant({
         participant.person.standardGivenName
       }`;
       participant.participantName = participantName;
-      participant.name = participantName; // backwards compatabilty
     }
   } else if ([TEAM, GROUP].includes(participantType)) {
     if (!individualParticipantIds) participant.individualParticipantIds = [];
-    if (participant.individualParticipantIds.length) {
+    if (participant.individualParticipantIds?.length) {
       for (const individualParticipantId of participant.individualParticipantIds) {
         if (typeof individualParticipantId !== 'string') {
           return decorateResult({

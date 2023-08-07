@@ -47,6 +47,7 @@
     "sonarjs/no-identical-expressions": "warn",
     "sonarjs/no-identical-functions": "warn",
     "sonarjs/no-ignored-return": "off",
+    "sonarjs/no-misleading-array-reverse": "off",
     "sonarjs/no-nested-template-literals": "warn",
     "sonarjs/no-redundant-boolean": "warn",
     "sonarjs/no-redundant-jump": "warn",
