@@ -15,10 +15,9 @@ import {
   MISSING_VALUE,
 } from '../../../../constants/errorConditionConstants';
 
-/*
 import { Tournament } from '../../../../types/tournamentFromSchema';
 
-type createGroupParticipantType = {
+type CreateGroupParticipantType = {
   participantRoleResponsibilities?: string[];
   individualParticipantIds: string[];
   tournamentRecord: Tournament;
@@ -26,7 +25,6 @@ type createGroupParticipantType = {
   participantId: string;
   groupName: string;
 };
-*/
 
 export function createGroupParticipant({
   individualParticipantIds = [],
@@ -35,8 +33,7 @@ export function createGroupParticipant({
   tournamentRecord,
   participantId,
   groupName,
-}) {
-  // }: createGroupParticipantType) {
+  }: CreateGroupParticipantType) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!groupName) return { error: MISSING_VALUE, info: 'Missing groupName' };
   if (!Array.isArray(individualParticipantIds))
