@@ -160,7 +160,7 @@
     "tslib": "2.6.1",
     "typescript": "5.1.6",
     "variable-diff": "^2.0.2",
-    "vite": "4.4.8",
+    "vite": "4.4.9",
     "vitest": "^0.34.0"
   },
   "lint-staged": {
