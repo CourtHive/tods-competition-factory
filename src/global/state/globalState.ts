@@ -6,22 +6,22 @@ import {
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 
-type iteratorsType = {
+type IteratorsType = {
   makeDeepCopy: number;
   [key: string]: any;
 };
 
-type timer = {
+type TimerType = {
   elapsedTime: number;
   startTime?: number;
   state?: string;
 };
 type timersType = {
-  [key: string]: timer;
-  default: timer;
+  [key: string]: TimerType;
+  default: TimerType;
 };
 
-type deepCopyType = {
+type DeepCopyType = {
   threshold?: number;
   modulate?: any;
   stringify: string[];
@@ -29,23 +29,23 @@ type deepCopyType = {
   toJSON: string[];
 };
 
-type devContextType = {
+type DevContextType = {
   iterationThreshold: number;
   firstIteration: boolean;
   notInternalUse: boolean;
   log: boolean;
 };
 
-type globalStateTypes = {
+type GlobalStateTypes = {
   tournamentFactoryVersion: string;
-  deepCopyAttributes: deepCopyType;
-  devContext?: devContextType | boolean;
-  iterators: iteratorsType;
+  deepCopyAttributes: DeepCopyType;
+  devContext?: DevContextType | boolean;
+  iterators: IteratorsType;
   timers: timersType;
   deepCopy: boolean;
 };
 
-const globalState: globalStateTypes = {
+const globalState: GlobalStateTypes = {
   tournamentFactoryVersion: '0.0.0',
   timers: { default: { elapsedTime: 0 } },
   iterators: { makeDeepCopy: 0 },

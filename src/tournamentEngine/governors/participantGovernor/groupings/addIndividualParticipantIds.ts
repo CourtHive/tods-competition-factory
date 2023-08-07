@@ -19,23 +19,20 @@ import {
   TEAM,
 } from '../../../../constants/participantConstants';
 
-/*
 import { Tournament } from '../../../../types/tournamentFromSchema';
 
-type addIndividualParticipantIdsType = {
+type AddIndividualParticipantIdsType = {
   individualParticipantIds: string[]; // individual participantIds to be added to grouping participant
   removeFromOtherTeams?: boolean; // optional -whether or not to remove from other teams
   groupingParticipantId: string; // grouping participant to which participantIds are to be added
   tournamentRecord: Tournament; // passed in automatically by tournamentEngine
 };
-*/
 export function addIndividualParticipantIds({
   individualParticipantIds,
   groupingParticipantId,
   removeFromOtherTeams,
   tournamentRecord,
-  // }: addIndividualParticipantIdsType) {
-}) {
+}: AddIndividualParticipantIdsType) {
   const stack = 'addIndividualParticipantIds';
   if (!tournamentRecord)
     return decorateResult({
@@ -52,7 +49,10 @@ export function addIndividualParticipantIds({
   if (!groupingParticipant)
     return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
 
-  if (![TEAM, GROUP].includes(groupingParticipant.participantType)) {
+  if (
+    groupingParticipant?.participantType &&
+    ![TEAM, GROUP].includes(groupingParticipant.participantType)
+  ) {
     return decorateResult({
       result: {
         error: INVALID_PARTICIPANT_TYPE,
