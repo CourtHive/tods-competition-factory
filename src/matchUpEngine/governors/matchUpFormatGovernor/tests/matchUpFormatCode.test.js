@@ -253,7 +253,8 @@ it('match format suite', () => {
 
   // recognize invalid formats and return undefined
   invalidFormats.forEach((sf) => {
-    expect(matchUpFormatCode.parse(sf)).toEqual(undefined);
+    const parsedFormat = matchUpFormatCode.parse(sf);
+    expect(parsedFormat).toEqual(undefined);
   });
 });
 

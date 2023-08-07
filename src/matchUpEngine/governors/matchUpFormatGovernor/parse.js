@@ -2,6 +2,35 @@ import { isConvertableInteger } from '../../../utilities/math';
 
 import { SET, NOAD, TIMED, setTypes } from './constants';
 
+/*
+type TiebreakFormat = {
+  tiebreakTo: number;
+  modifier?: string;
+  NoAD?: boolean;
+  invalid?: boolean;
+};
+
+type SetFormat = {
+  tiebreakFormat?: TiebreakFormat;
+  tiebreakSet?: TiebreakFormat;
+  tiebreakAt?: string | number;
+  noTiebreak?: boolean;
+  modifier?: string;
+  minutes?: number;
+  timed?: boolean;
+  based?: string;
+  NoAD?: boolean;
+  setTo?: number;
+};
+
+type ParsedFormat = {
+  finalSetFormat?: any;
+  simplified?: boolean;
+  setFormat?: any;
+  bestOf: number;
+};
+*/
+
 export function parse(matchUpFormatCode) {
   if (typeof matchUpFormatCode === 'string') {
     const type =
@@ -20,6 +49,8 @@ export function parse(matchUpFormatCode) {
     }
     if (type === SET) return setsMatch(matchUpFormatCode);
   }
+
+  return undefined;
 }
 
 function setsMatch(formatstring) {
@@ -30,8 +61,8 @@ function setsMatch(formatstring) {
   const finalSetFormat = parts && parseSetFormat(parts[2]);
   const validBestOf = bestOf && bestOf < 6;
   const validFinalSet =
-    !parts[2] || (finalSetFormat && !finalSetFormat.invalid);
-  const validSetsFormat = setFormat && !setFormat.invalid;
+    !parts[2] || (finalSetFormat && finalSetFormat !== false);
+  const validSetsFormat = setFormat && setFormat !== false;
 
   const result = { bestOf, setFormat };
   if (finalSetFormat) result.finalSetFormat = finalSetFormat;
@@ -56,11 +87,10 @@ function parseSetFormat(formatstring) {
       const validNoAD = !parts?.[2] || NoAD;
       const setTo = parts && getNumber(parts[1]);
       const tiebreakAtValue = parseTiebreakAt(setFormatString);
-      const validTiebreakAt =
-        !tiebreakAtValue || (tiebreakAtValue && !tiebreakAtValue.invalid);
+      const validTiebreakAt = tiebreakAtValue !== false;
       const tiebreakAt = (validTiebreakAt && tiebreakAtValue) || setTo;
       const tiebreakFormat = parseTiebreakFormat(setFormatString.split('/')[1]);
-      const validTiebreak = !tiebreakFormat?.invalid;
+      const validTiebreak = tiebreakFormat !== false;
       const result = { setTo };
       if (NoAD) result.NoAD = true;
       if (tiebreakFormat) {
@@ -71,12 +101,13 @@ function parseSetFormat(formatstring) {
       }
 
       return (
-        (setTo && validNoAD && validTiebreak && validTiebreakAt && result) || {
-          invalid: true,
-        }
+        (setTo && validNoAD && validTiebreak && validTiebreakAt && result) ||
+        false
       );
     }
   }
+
+  return undefined;
 }
 
 function parseTiebreakAt(setFormatString, expectNumber = true) {
@@ -86,8 +117,10 @@ function parseTiebreakAt(setFormatString, expectNumber = true) {
     const tiebreakAt = expectNumber
       ? getNumber(tiebreakAtValue[1])
       : tiebreakAtValue[1];
-    return tiebreakAt || { invalid: true };
+    return tiebreakAt || false;
   }
+
+  return undefined;
 }
 
 function parseTiebreakFormat(formatstring) {
@@ -107,12 +140,14 @@ function parseTiebreakFormat(formatstring) {
         if (NoAD) result.NoAD = true;
         return result;
       } else {
-        return { invalid: true };
+        return false;
       }
     } else {
-      return { invalid: true };
+      return false;
     }
   }
+
+  return undefined;
 }
 
 function parseTimedSet(formatstring) {
