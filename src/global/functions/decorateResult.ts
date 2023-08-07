@@ -18,12 +18,7 @@ type resultType = {
   info?: string;
 };
 
-export function decorateResult({
-  result,
-  stack,
-  context,
-  info,
-}: resultType): resultType {
+export function decorateResult({ result, stack, context, info }: resultType) {
   if (result && !Array.isArray(result?.stack)) result.stack = [];
   if (result && Array.isArray(result?.stack) && typeof stack === 'string') {
     result.stack.push(stack);
