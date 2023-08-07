@@ -19,19 +19,22 @@ import {
   TEAM,
 } from '../../../../constants/participantConstants';
 
-/**
- *
- * @param {object} tournamentRecord - passed in automatically by tournamentEngine
- * @param {string} groupingParticipantId - grouping participant to which participantIds are to be added
- * @param {string[]} individualParticipantIds - individual participantIds to be added to grouping participant
- * @param {boolean} removeFromOtherTeams - whether or not to remove from other teams
- *
- */
+/*
+import { Tournament } from '../../../../types/tournamentFromSchema';
+
+type addIndividualParticipantIdsType = {
+  individualParticipantIds: string[]; // individual participantIds to be added to grouping participant
+  removeFromOtherTeams?: boolean; // optional -whether or not to remove from other teams
+  groupingParticipantId: string; // grouping participant to which participantIds are to be added
+  tournamentRecord: Tournament; // passed in automatically by tournamentEngine
+};
+*/
 export function addIndividualParticipantIds({
   individualParticipantIds,
   groupingParticipantId,
   removeFromOtherTeams,
   tournamentRecord,
+  // }: addIndividualParticipantIdsType) {
 }) {
   const stack = 'addIndividualParticipantIds';
   if (!tournamentRecord)

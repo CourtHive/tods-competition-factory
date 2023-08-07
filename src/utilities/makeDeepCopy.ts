@@ -7,9 +7,9 @@ import {
 
 export function makeDeepCopy(
   sourceObject, // arbitrary JSON object; functions will be stripped.
-  convertExtensions, // optional - all extension objects converted to attributes ._key
-  internalUse, // disregard deepCopy being disabled within the engine - necessary for query results
-  removeExtensions, // optional - strip all extension attributes
+  convertExtensions?, // optional - all extension objects converted to attributes ._key
+  internalUse?, // disregard deepCopy being disabled within the engine - necessary for query results
+  removeExtensions?, // optional - strip all extension attributes
   iteration = 0 // escape hatch - check against iteration threshold
 ) {
   const deepCopy = deepCopyEnabled();

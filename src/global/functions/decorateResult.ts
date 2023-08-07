@@ -9,6 +9,7 @@ type errorType = {
 };
 
 type resultType = {
+  [key: string]: any;
   result?: resultType;
   context?: object;
   error?: errorType;
