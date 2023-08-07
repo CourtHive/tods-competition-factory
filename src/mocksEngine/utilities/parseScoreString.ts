@@ -1,15 +1,26 @@
 import { getTiebreakComplement } from '../../matchUpEngine/getters/getComplement';
 
-type parseScoreArgs = {
+type ParseScoreArgs = {
   scoreString: string;
   tiebreakTo: number;
 };
 
+/*
+type ParsedSetString = {
+  side1Score: number;
+  side2Score: number;
+  side1TiebreakScore: number;
+  side2TiebreakScore: number;
+  winningSide: number;
+  setNumber: number;
+};
+*/
+
 // utility function just to allow testing with string score entry
 export function parseScoreString({
-  scoreString,
   tiebreakTo = 7,
-}: parseScoreArgs) {
+  scoreString,
+}: ParseScoreArgs) {
   return scoreString
     .split(' ')
     .filter(Boolean)
