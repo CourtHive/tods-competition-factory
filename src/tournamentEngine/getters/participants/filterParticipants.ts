@@ -8,12 +8,15 @@ import { unique } from '../../../utilities';
 import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
-import type { Participant } from '../../../types/tournamentFromSchema';
+import type {
+  Participant,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 type FilterParticipantsArgs = {
+  tournamentRecord: Tournament;
   participants: Participant[];
   participantFilters: any;
-  tournamentRecord: any;
 };
 
 export function filterParticipants({

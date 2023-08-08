@@ -8,13 +8,23 @@ import {
   INVALID_VALUES,
 } from '../../constants/errorConditionConstants';
 
+import type { Score } from '../../types/tournamentFromSchema';
+
+type validateScoreTypes = {
+  existingMatchUpStatus: string;
+  matchUpFormat: string;
+  matchUpStatus: string;
+  winningSide: number;
+  score: Score;
+};
+
 export function validateScore({
   existingMatchUpStatus,
   matchUpFormat,
   matchUpStatus,
   winningSide,
   score,
-}) {
+}: validateScoreTypes) {
   if (typeof score !== 'object') return { error: INVALID_VALUES };
   const { sets, scoreStringSide1, scoreStringSide2 } = score;
   const info = 'scoreString must be a string!';

@@ -1,13 +1,35 @@
 import { getTiebreakComplement } from '../../matchUpEngine/getters/getComplement';
 
+type ParseScoreArgs = {
+  scoreString: string;
+  tiebreakTo: number;
+};
+
+type ParsedSetString = {
+  winningSide: number | undefined;
+  side1TiebreakScore?: number;
+  side2TiebreakScore?: number;
+  side1Score?: number;
+  side2Score?: number;
+  setNumber: number;
+};
+
+type ParseSetArgs = {
+  setNumber: number;
+  set: string;
+};
+
 // utility function just to allow testing with string score entry
-export function parseScoreString({ scoreString, tiebreakTo = 7 }) {
+export function parseScoreString({
+  tiebreakTo = 7,
+  scoreString,
+}: ParseScoreArgs) {
   return scoreString
     .split(' ')
     .filter(Boolean)
     .map((set, index) => parseSet({ set, setNumber: index + 1 }));
 
-  function parseSet({ set, setNumber }) {
+  function parseSet({ set, setNumber }: ParseSetArgs): ParsedSetString {
     const matchTiebreak =
       set?.startsWith('[') &&
       set
@@ -31,14 +53,15 @@ export function parseScoreString({ scoreString, tiebreakTo = 7 }) {
         (setScores[0] < setScores[1] && 2) ||
         undefined;
 
-    const setTiebreakLowScore =
-      set.includes('(') && set.split('(')[1].split(')')[0];
+    const setTiebreakLowScore = set.includes('(')
+      ? set.split('(')[1].split(')')[0]
+      : undefined;
 
     const side1TiebreakPerspective =
-      ![false, undefined].includes(setTiebreakLowScore) &&
+      setTiebreakLowScore &&
       getTiebreakComplement({
-        isSide1: winningSide === 2,
         lowValue: setTiebreakLowScore,
+        isSide1: winningSide === 2,
         tiebreakTo,
       });
 

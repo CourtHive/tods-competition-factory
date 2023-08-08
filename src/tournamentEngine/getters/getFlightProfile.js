@@ -4,12 +4,6 @@ import { makeDeepCopy } from '../../utilities';
 import { MISSING_EVENT } from '../../constants/errorConditionConstants';
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 
-/**
- *
- * @param {string} eventId - indicates that invocation is via tournamentEngine
- * @param {object} event - an event object, attached automatically by tournamentEngine
- * @returns {object} flightProfile containg flights for each draw either generated or to be generated
- */
 export function getFlightProfile({ event, eventId }) {
   if (!event) return { error: MISSING_EVENT };
 

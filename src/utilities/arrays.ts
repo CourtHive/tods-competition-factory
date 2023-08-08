@@ -61,7 +61,7 @@ export function randomMember(arr) {
 }
 
 export function generateRange(start, end) {
-  return Array.from({ length: end - start }, (v, k) => k + start);
+  return Array.from({ length: end - start }, (_, k) => k + start);
 }
 export function sizedRange(size, start) {
   return Array.from(Array(size).keys()).map((i) => i + start);
@@ -115,7 +115,7 @@ export function inPlaceSubSort(arr, i, n, sortFx) {
     ...arr.slice(i + n, arr.length)
   );
   arr.length = 0;
-  arr.push.apply(arr, newarray); // use spread operator instead?
+  arr.push(...newarray); // use spread operator instead?
   return arr;
 }
 export function chunkArray(arr, chunksize) {
@@ -127,7 +127,10 @@ export function chunkArray(arr, chunksize) {
 }
 
 // will break an array of items into chunks following pattern [size1, size2, ...]
-export function chunkSizeProfile(arr, [size, ...otherSizes]) {
+export function chunkSizeProfile(
+  arr: number[],
+  [size, ...otherSizes]: number[]
+) {
   return arr.length
     ? [
         arr.slice(0, size),
@@ -183,7 +186,7 @@ export function noNumeric(arr) {
  * @param {number} chunksCount - number of chunks to create
  * @param {boolean} shuttle - whether or not to "shuttle" as in the movment of a shuttle in a loom
  */
-export function chunkByNth(arr, chunksCount, shuttle) {
+export function chunkByNth(arr: any[], chunksCount: number, shuttle?: boolean) {
   return arr.reduce((chunks, entry, index) => {
     const reverseDirection = shuttle
       ? !!(Math.floor(index / chunksCount) % 2)
@@ -209,9 +212,3 @@ export function getRanges(array) {
       return ranges;
     }, []);
 }
-
-/*
-export function numArr(count) {
-  return [...Array(count)].map((_, i) => i);
-}
-*/

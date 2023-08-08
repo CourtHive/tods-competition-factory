@@ -1,3 +1,9 @@
+export type ErrorType = {
+  message: string;
+  info?: string;
+  code: string;
+};
+
 export const ANACHRONISM = {
   message: 'Chronological error; time violation.',
   code: 'ANACHRONISM',

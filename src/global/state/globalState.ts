@@ -6,13 +6,50 @@ import {
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 
-const globalState = {
+type IteratorsType = {
+  makeDeepCopy: number;
+  [key: string]: any;
+};
+
+type TimerType = {
+  elapsedTime: number;
+  startTime?: number;
+  state?: string;
+};
+type timersType = {
+  [key: string]: TimerType;
+  default: TimerType;
+};
+
+type DeepCopyType = {
+  threshold?: number;
+  modulate?: any;
+  stringify: string[];
+  ignore: any;
+  toJSON: string[];
+};
+
+type DevContextType = {
+  iterationThreshold: number;
+  firstIteration: boolean;
+  notInternalUse: boolean;
+  log: boolean;
+};
+
+type GlobalStateTypes = {
+  tournamentFactoryVersion: string;
+  deepCopyAttributes: DeepCopyType;
+  devContext?: DevContextType | boolean;
+  iterators: IteratorsType;
+  timers: timersType;
+  deepCopy: boolean;
+};
+
+const globalState: GlobalStateTypes = {
   tournamentFactoryVersion: '0.0.0',
   timers: { default: { elapsedTime: 0 } },
   iterators: { makeDeepCopy: 0 },
-  devContext: undefined,
   deepCopyAttributes: {
-    threshold: undefined,
     stringify: [],
     ignore: [],
     toJSON: [],
@@ -74,14 +111,14 @@ export function createInstanceState() {
 /**
  * if contextCriteria, check whether all contextCriteria keys values are equivalent with globalState.devContext object
  */
-export function getDevContext(contextCriteria) {
+export function getDevContext(contextCriteria?) {
   if (!contextCriteria || typeof contextCriteria !== 'object') {
     return globalState.devContext || false;
   } else {
     if (typeof globalState.devContext !== 'object') return false;
     return (
       Object.keys(contextCriteria).every(
-        (key) => globalState.devContext[key] === contextCriteria[key]
+        (key) => globalState.devContext?.[key] === contextCriteria[key]
       ) && globalState.devContext
     );
   }
@@ -102,26 +139,27 @@ export function timeKeeper(action = 'reset', timer = 'default') {
           const elapsedPeriod =
             currentTimer.state === 'stopped'
               ? 0
-              : (timeNow - currentTimer.startTime) / 1000;
+              : (timeNow - (currentTimer?.startTime || 0)) / 1000;
+
+          const elapsedTime = currentTimer.elapsedTime + elapsedPeriod;
           return {
-            elapsedTime: parseFloat(
-              currentTimer.elapsedTime + elapsedPeriod
-            ).toFixed(2),
-            timer,
             state: globalState.timers[timer].state,
+            elapsedTime: elapsedTime.toFixed(2),
+            timer,
           };
         });
     } else {
       const elapsedPeriod =
         globalState.timers[timer].state === 'stopped'
           ? 0
-          : (timeNow - globalState.timers[timer].startTime) / 1000;
+          : (timeNow - (globalState.timers[timer]?.startTime || 0)) / 1000;
+
+      const elapsedTime = globalState.timers[timer].elapsedTime + elapsedPeriod;
+
       return {
-        elapsedTime: parseFloat(
-          globalState.timers[timer].elapsedTime + elapsedPeriod
-        ).toFixed(2),
-        timer,
         state: globalState.timers[timer].state,
+        elapsedTime: elapsedTime.toFixed(2),
+        timer,
       };
     }
   }
@@ -132,18 +170,21 @@ export function timeKeeper(action = 'reset', timer = 'default') {
       return true;
     } else {
       globalState.timers[timer] = {
-        elapsedTime: 0,
         startTime: timeNow,
         state: 'active',
+        elapsedTime: 0,
       };
     }
   }
+
+  if (!globalState.timers[timer].elapsedTime)
+    globalState.timers[timer].elapsedTime = 0;
 
   action === 'stop' &&
     globalState.timers[timer].state !== 'stopped' &&
     (globalState.timers[timer].state = 'stopped') &&
     (globalState.timers[timer].elapsedTime +=
-      (timeNow - globalState.timers[timer].startTime) / 1000);
+      (timeNow - (globalState.timers[timer]?.startTime || 0)) / 1000);
   action === 'start' &&
     (globalState.timers[timer].startTime = timeNow) &&
     (globalState.timers[timer].state = 'active');
@@ -194,7 +235,7 @@ export function deepCopyEnabled() {
   };
 }
 
-export function setSubscriptions({ subscriptions } = {}) {
+export function setSubscriptions({ subscriptions = undefined } = {}) {
   if (!subscriptions)
     return { error: MISSING_VALUE, info: 'missing subscriptions' };
   return _globalStateProvider.setSubscriptions({ subscriptions });
