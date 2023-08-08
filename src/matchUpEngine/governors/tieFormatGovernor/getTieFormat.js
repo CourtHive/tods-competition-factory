@@ -11,35 +11,42 @@ export function getTieFormat({
   drawDefinition,
   structureId,
   matchUpId,
-  eventId,
+  eventId, // optional - if an eventId is present only return tieFormat for event
   event,
 }) {
+  let matchUp, structure, tieFormat;
+
+  structureId = structure?.structureId || structureId;
+  matchUpId = matchUp?.matchUpId || matchUpId;
+
   if ((matchUpId || structureId) && !drawDefinition)
     return { error: MISSING_DRAW_DEFINITION };
 
-  let matchUp, structure, tieFormat;
-
-  if (eventId && event?.tieFormat) {
-    tieFormat = event.tieFormat;
+  if (eventId && event) {
+    tieFormat = getObjectTieFormat(event);
   } else if (matchUpId) {
-    const result = findMatchUp({
-      drawDefinition,
-      matchUpId,
-    });
-    if (result.error) return result;
+    // if matchUpId is present, structure and drawDefinition are always required
+    if (!matchUp || !structure) {
+      const result = findMatchUp({
+        drawDefinition,
+        matchUpId,
+      });
+      if (result.error) return result;
 
-    ({ matchUp, structure } = result);
+      ({ matchUp, structure } = result);
+    }
 
     tieFormat =
-      matchUp.tieFormat ||
-      structure?.tieFormat ||
-      drawDefinition?.tieFormat ||
-      event?.tieFormat;
+      getItemTieFormat({ item: matchUp, drawDefinition, event }) ||
+      getItemTieFormat({ item: structure, drawDefinition, event }) ||
+      getObjectTieFormat(drawDefinition) ||
+      getObjectTieFormat(event);
   } else if (drawDefinition && structureId) {
-    const result = findStructure({ drawDefinition, structureId });
-    if (result.error) return result;
-
-    structure = result?.structure;
+    if (!structure) {
+      const result = findStructure({ drawDefinition, structureId });
+      if (result.error) return result;
+      structure = result?.structure;
+    }
     tieFormat =
       structure?.tieFormat || drawDefinition.tieFormat || event?.tieFormat;
   } else {
@@ -49,4 +56,30 @@ export function getTieFormat({
   if (!tieFormat) return { error: MISSING_TIE_FORMAT };
 
   return { ...SUCCESS, tieFormat, matchUp, structure };
+}
+
+function getObjectTieFormat(obj) {
+  if (!obj) return;
+  const { tieFormatId, tieFormats } = obj;
+  if (obj.tieFormat) {
+    return obj.tieFormat;
+  } else if (tieFormatId && Array.isArray(tieFormats)) {
+    return tieFormats.find((tf) => tf.tieFormatId === tieFormatId);
+  }
+}
+
+function getItemTieFormat({ item, drawDefinition, event }) {
+  if (!item) return;
+  if (item.tieFormat) return item.tieFormat;
+  if (item.tieFormatId) {
+    let tieFormat;
+    if (drawDefinition.tieFormat) return drawDefinition.tieFormat;
+    tieFormat = drawDefinition.tieFormats?.find(
+      (tf) => item.tieFormatId === tf.tieFormatId
+    );
+    if (tieFormat) return tieFormat;
+
+    if (event.tieFormat) return event.tieFormat;
+    return event.tieFormats?.find((tf) => item.tieFormatId === tf.tieFormatId);
+  }
 }
