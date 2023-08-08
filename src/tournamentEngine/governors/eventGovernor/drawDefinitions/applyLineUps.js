@@ -47,7 +47,7 @@ export function applyLineUps({
   if (!drawPositions?.length) return { error: MISSING_DRAW_POSITIONS };
 
   const tieFormat =
-    inContextMatchUp.tieFormat ||
+    inContextMatchUp.tieFormat || // NOTE: there should never be a time when tieFormat is not part of inContext dual matchUp
     structure.tieFormat ||
     drawDefinition.tieFormat ||
     event.tieFormat ||
