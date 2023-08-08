@@ -3,9 +3,12 @@ import { findStructure } from '../../../drawEngine/getters/findStructure';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  ErrorType,
   MISSING_DRAW_DEFINITION,
   MISSING_TIE_FORMAT,
 } from '../../../constants/errorConditionConstants';
+
+import { MatchUp, Structure } from '../../../types/tournamentFromSchema';
 
 export function getTieFormat({
   drawDefinition,
@@ -27,7 +30,11 @@ export function getTieFormat({
   } else if (matchUpId) {
     // if matchUpId is present, structure and drawDefinition are always required
     if (!matchUp || !structure) {
-      const result = findMatchUp({
+      const result: {
+        matchUp?: MatchUp;
+        error?: ErrorType;
+        structure?: Structure;
+      } = findMatchUp({
         drawDefinition,
         matchUpId,
       });
@@ -58,7 +65,7 @@ export function getTieFormat({
   return { ...SUCCESS, tieFormat, matchUp, structure };
 }
 
-function getObjectTieFormat(obj) {
+export function getObjectTieFormat(obj) {
   if (!obj) return;
   const { tieFormatId, tieFormats } = obj;
   if (obj.tieFormat) {
@@ -68,13 +75,12 @@ function getObjectTieFormat(obj) {
   }
 }
 
-function getItemTieFormat({ item, drawDefinition, event }) {
+export function getItemTieFormat({ item, drawDefinition, event }) {
   if (!item) return;
   if (item.tieFormat) return item.tieFormat;
   if (item.tieFormatId) {
-    let tieFormat;
     if (drawDefinition.tieFormat) return drawDefinition.tieFormat;
-    tieFormat = drawDefinition.tieFormats?.find(
+    const tieFormat = drawDefinition.tieFormats?.find(
       (tf) => item.tieFormatId === tf.tieFormatId
     );
     if (tieFormat) return tieFormat;
