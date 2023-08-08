@@ -6,16 +6,21 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
+import { Tournament } from '../../../types/tournamentFromSchema';
+
 /**
  * Returns { eventDetails: { eventName, eventId }} for events in which participantId or TEAM/PAIR including participantId appears
- *
- * @param {object} tournamentRecord - tournament object (passed automatically from tournamentEngine state)
- * @param {string} participantId - id of participant for which events (eventName, eventId) are desired
  */
+
+type getParticipantEventDetailsType = {
+  tournamentRecord: Tournament;
+  participantId: string;
+};
+
 export function getParticipantEventDetails({
   tournamentRecord,
   participantId,
-}) {
+}: getParticipantEventDetailsType) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
@@ -24,6 +29,7 @@ export function getParticipantEventDetails({
     (tournamentRecord.participants || [])
       .filter(
         (participant) =>
+          participant?.participantType &&
           [TEAM, PAIR].includes(participant.participantType) &&
           participant.individualParticipantIds?.includes(participantId)
       )
