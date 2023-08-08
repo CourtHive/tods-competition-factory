@@ -1,7 +1,20 @@
-export const getSetComplement = (params) => {
+type SetComplementArgs = {
+  lowValue?: string | number;
+  tiebreakAt?: number;
+  isSide1?: boolean;
+  NoAD?: boolean;
+  setTo: number;
+};
+
+export const getSetComplement = (
+  params: SetComplementArgs
+): number[] | false => {
   const { isSide1, lowValue, setTo, tiebreakAt, NoAD } = params;
   if (lowValue === undefined) return false;
-  let valueAsNumber = parseInt(lowValue);
+  let valueAsNumber =
+    typeof lowValue === 'string' ? parseInt(lowValue) : lowValue;
+
+  // Not necessary?
   if (valueAsNumber?.toString().length > 2) {
     valueAsNumber = parseInt(valueAsNumber.toString().slice(0, 2));
   }
@@ -30,11 +43,22 @@ export const getSetComplement = (params) => {
   return [side1Result, side2Result];
 };
 
-export const getTiebreakComplement = (params) => {
+type TiebreakComplementArgs = {
+  lowValue?: number | string;
+  tiebreakNoAd?: boolean;
+  tiebreakTo: number;
+  isSide1?: boolean;
+};
+
+export const getTiebreakComplement = (
+  params: TiebreakComplementArgs
+): number[] | false => {
   const { isSide1, lowValue, tiebreakTo, tiebreakNoAd } = params;
   if (lowValue === undefined) return false;
-  let valueAsNumber = parseInt(lowValue);
+  let valueAsNumber =
+    typeof lowValue === 'string' ? parseInt(lowValue) : lowValue;
 
+  // Not necessary?
   // do not accept low values greater than two digits;
   if (valueAsNumber?.toString().length > 2) {
     valueAsNumber = parseInt(valueAsNumber.toString().slice(0, 2));
@@ -55,7 +79,13 @@ export const getTiebreakComplement = (params) => {
   return [side1Result, side2Result];
 };
 
-function getHighTiebreakValue(params) {
+type HighTiebreakValueArgs = {
+  tiebreakTo: number;
+  lowValue: number;
+  NoAD?: boolean;
+};
+
+function getHighTiebreakValue(params: HighTiebreakValueArgs): number {
   const { lowValue, NoAD, tiebreakTo } = params;
   const winBy = NoAD ? 1 : 2;
   if (lowValue + 1 >= tiebreakTo) {
