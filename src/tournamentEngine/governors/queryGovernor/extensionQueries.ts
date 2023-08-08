@@ -1,5 +1,8 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  ResultType,
+  decorateResult,
+} from '../../../global/functions/decorateResult';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_EVENT,
@@ -7,11 +10,29 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   NOT_FOUND,
+  ErrorType,
 } from '../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  Extension,
+  Tournament,
+} from '../../../types/tournamentFromSchema';
 
 const stack = 'extensionQueries';
 
-export function findExtension({ element, name }) {
+type FindExtensionType = {
+  element: any;
+  name: string;
+};
+
+export function findExtension({
+  element,
+  name,
+}: FindExtensionType):
+  | Extension
+  | ErrorType
+  | ResultType
+  | { info: ErrorType | undefined } {
   if (!element || !name)
     return decorateResult({ result: { error: MISSING_VALUE }, stack });
   if (!Array.isArray(element.extensions)) return { info: NOT_FOUND };
@@ -25,29 +46,38 @@ export function findExtension({ element, name }) {
   return { extension, info };
 }
 
-export function findTournamentExtension({ tournamentRecord, name }) {
+type FindTournamentExtensionType = {
+  tournamentRecord: Tournament;
+  name: string;
+};
+
+export function findTournamentExtension({
+  tournamentRecord,
+  name,
+}: FindTournamentExtensionType) {
   return findExtension({ element: tournamentRecord, name });
 }
 
-/**
- *
- * @param {string} eventId - tournamentEngine will resolve eventId to event
- * @param {string} name
- *
- */
-export function findEventExtension({ event, name }) {
+type FindEventExtensionType = {
+  event: Event;
+  name: string;
+};
+
+export function findEventExtension({ event, name }: FindEventExtensionType) {
   if (!event)
     return decorateResult({ result: { error: MISSING_EVENT }, stack });
   return findExtension({ element: event, name });
 }
 
-/**
- *
- * @param {string} drawId - tournamentEngine will resolve drawId to draw
- * @param {string} name
- *
- */
-export function findDrawDefinitionExtension({ drawDefinition, name }) {
+type FindDrawDefinitionExtensionType = {
+  drawDefinition: DrawDefinition;
+  name: string;
+};
+
+export function findDrawDefinitionExtension({
+  drawDefinition,
+  name,
+}: FindDrawDefinitionExtensionType): any | ResultType {
   if (!drawDefinition)
     return decorateResult({
       result: { error: MISSING_DRAW_DEFINITION },
@@ -56,11 +86,17 @@ export function findDrawDefinitionExtension({ drawDefinition, name }) {
   return findExtension({ element: drawDefinition, name });
 }
 
+type FindParticipantExtensionType = {
+  tournamentRecord: Tournament;
+  participantId: string;
+  name: string;
+};
+
 export function findParticipantExtension({
   tournamentRecord,
   participantId,
   name,
-}) {
+}: FindParticipantExtensionType) {
   if (!tournamentRecord)
     return decorateResult({
       result: { error: MISSING_TOURNAMENT_RECORD },
