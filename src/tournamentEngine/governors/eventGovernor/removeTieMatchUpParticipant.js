@@ -48,7 +48,7 @@ export function removeTieMatchUpParticipantId(params) {
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
   const substitutionProcessCodes =
-    matchUpActionsPolicy?.substitutionProcessCodes;
+    matchUpActionsPolicy?.processCodes?.substitution;
 
   const {
     inContextDualMatchUp,

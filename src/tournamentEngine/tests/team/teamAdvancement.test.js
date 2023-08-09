@@ -78,7 +78,7 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
   expect(firstRoundDualMatchUps.length).toBeGreaterThan(0);
 
   // get positionAssignments to determine drawPositions
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
   const { positionAssignments } = drawDefinition.structures[0];
 
   let { tournamentParticipants: teamParticipants } =
@@ -119,7 +119,7 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
   firstRoundDualMatchUps.forEach(assignParticipants);
 
   if (expectLineUps) {
-    ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+    ({ drawDefinition, event } = tournamentEngine.getEvent({ drawId }));
     const { extension } = findExtension({
       element: drawDefinition,
       name: LINEUPS,
@@ -279,7 +279,7 @@ it.each(scenarios)('can advance teamParticipants', (scenario) => {
         collectionDefinition.collectionValue = 1;
       }
     });
-    const result = generateTieMatchUpScore({ matchUp });
+    const result = generateTieMatchUpScore({ matchUp, drawDefinition, event });
     expect(result.scoreStringSide1).toEqual(scenario.scoreStringSide1);
   }
 });
@@ -818,24 +818,6 @@ test('does not propagate matchUpStatusCodes from SINGLE/DOUBLES to TEAM matchUps
 });
 
 it('can set matchUpStatus of TEAM matchUps', () => {
-  let matchUpModifyNotices = [];
-
-  const subscriptions = {
-    modifyMatchUp: (payload) => {
-      if (Array.isArray(payload)) {
-        payload.forEach(({ matchUp }) => {
-          const { matchUpType, matchUpStatusCodes, score } = matchUp;
-          if (matchUpStatusCodes || score)
-            matchUpModifyNotices.push(
-              [matchUpType, matchUpStatusCodes, score].filter(Boolean)
-            );
-        });
-      }
-    },
-  };
-
-  setSubscriptions({ subscriptions });
-
   const {
     tournamentRecord,
     drawIds: [drawId],
@@ -908,24 +890,6 @@ it('can set matchUpStatus of TEAM matchUps', () => {
 });
 
 it('can set score of TEAM matchUps', () => {
-  let matchUpModifyNotices = [];
-
-  const subscriptions = {
-    modifyMatchUp: (payload) => {
-      if (Array.isArray(payload)) {
-        payload.forEach(({ matchUp }) => {
-          const { matchUpType, matchUpStatusCodes, score } = matchUp;
-          if (matchUpStatusCodes || score)
-            matchUpModifyNotices.push(
-              [matchUpType, matchUpStatusCodes, score].filter(Boolean)
-            );
-        });
-      }
-    },
-  };
-
-  setSubscriptions({ subscriptions });
-
   const {
     tournamentRecord,
     drawIds: [drawId],

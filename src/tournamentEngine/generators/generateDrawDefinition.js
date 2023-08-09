@@ -161,6 +161,7 @@ export function generateDrawDefinition(params) {
     if (result.error) return decorateResult({ result, stack });
   }
 
+  // TODO: implement use of tieFormatId and tieFormats array
   if (matchUpType === TEAM && eventType === TEAM) {
     // if there is an existingDrawDefinition which has a tieFormat on MAIN structure
     // use this tieFormat ONLY when no tieFormat is specified in params

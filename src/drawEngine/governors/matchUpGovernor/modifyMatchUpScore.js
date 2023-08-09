@@ -2,7 +2,7 @@ import { addNotes } from '../../../tournamentEngine/governors/tournamentGovernor
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
-// import { getFlightProfile } from '../../../tournamentEngine/getters/getFlightProfile';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { decorateResult } from '../../../global/functions/decorateResult';
@@ -15,6 +15,7 @@ import {
 } from '../../notifications/drawNotifications';
 
 import { UPDATE_INCONTEXT_MATCHUP } from '../../../constants/topicConstants';
+import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
@@ -24,6 +25,7 @@ import {
   DOUBLE_WALKOVER,
   IN_PROGRESS,
   SUSPENDED,
+  DEFAULTED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
@@ -35,11 +37,18 @@ import {
  * Moving forward this will be used for integrity checks and any middleware that needs to execute
  *
  * @param {object} drawDefinition
- * @param {object} matchUp
- * @param {object} score
- * @param {string} matchUpStatus - e.g. COMPLETED, BYE, TO_BE_PLAYED, WALKOVER, DEFAULTED
- * @param {string[]} matchUpStatusCodes - optional - organization specific
- * @param {number} winningSide - optional - 1 or 2
+ * @param {object=} matchUp
+ * @param {object=} event
+ * @param {string=} matchUpId
+ * @param {object=} score
+ * @param {string=} matchUpStatus - e.g. COMPLETED, BYE, TO_BE_PLAYED, WALKOVER, DEFAULTED
+ * @param {string[]=} matchUpStatusCodes - optional - organization specific
+ * @param {number=} winningSide - optional - 1 or 2
+ * @param {boolean=} removeWinningSide
+ * @param {boolean=} removeScore
+ * @param {object=} tournamentRecord
+ * @param {string=} matchUpFormat
+ * @param {string[]=} notes
  */
 
 export function modifyMatchUpScore({
@@ -85,6 +94,12 @@ export function modifyMatchUpScore({
   } else if (score) {
     matchUp.score = score;
   }
+
+  const wasDefaulted =
+    matchUpStatus &&
+    matchUp?.matchUpStatus === DEFAULTED &&
+    matchUpStatus !== DEFAULTED;
+
   if (matchUpStatus) matchUp.matchUpStatus = matchUpStatus;
   if (matchUpFormat) matchUp.matchUpFormat = matchUpFormat;
   if (matchUpStatusCodes) matchUp.matchUpStatusCodes = matchUpStatusCodes;
@@ -108,8 +123,26 @@ export function modifyMatchUpScore({
     matchUp.matchUpStatus = IN_PROGRESS;
   }
 
+  let defaultedProcessCodes;
+  if (
+    (wasDefaulted && matchUp?.processCodes?.length) ||
+    matchUpStatus === DEFAULTED
+  ) {
+    const appliedPolicies = getAppliedPolicies({
+      tournamentRecord,
+      drawDefinition,
+      structure,
+      event,
+    })?.appliedPolicies;
+
+    defaultedProcessCodes =
+      appliedPolicies?.[POLICY_TYPE_SCORING]?.processCodes
+        ?.incompleteAssignmentsOnDefault;
+  }
+
   // if the matchUp has a collectionId it is a tieMatchUp contained in a dual matchUp
   if (structure?.structureType === CONTAINER && !matchUp.collectionId) {
+    // matchUpFormat set here is only used in updateAssignmentParticipantResults
     matchUpFormat = isDualMatchUp
       ? 'SET1-S:T100'
       : matchUpFormat ||
@@ -144,19 +177,6 @@ export function modifyMatchUpScore({
     if (result.error) return decorateResult({ result, stack });
   }
 
-  /*
-  const winningSideChanged = winningSide !== matchUp.winningSide;
-  if (winningSideChanged) {
-    const { flightProfile } = getFlightProfile({ event });
-    const flight = flightProfile?.flights?.find(
-      (flight) => flight.drawId === drawDefinition.drawId
-    );
-    if (flight?.matchUpValue) {
-      console.log('recalculate team point tallies');
-    }
-  }
-  */
-
   if (notes) {
     const result = addNotes({ element: matchUp, notes });
     if (result.error) return decorateResult({ result, stack });
@@ -164,9 +184,12 @@ export function modifyMatchUpScore({
 
   const tournamentId = tournamentRecord?.tournamentId;
   const sendInContext = getTopics().topics.includes(UPDATE_INCONTEXT_MATCHUP);
-  if (sendInContext) {
-    const matchUpsMap = getMatchUpsMap({ drawDefinition });
-    const inContextMatchUp = getAllDrawMatchUps({
+  const matchUpsMap =
+    (sendInContext || defaultedProcessCodes) &&
+    getMatchUpsMap({ drawDefinition });
+  const inContextMatchUp =
+    matchUpsMap &&
+    getAllDrawMatchUps({
       // client will not normally be receiving participants for the first time...
       // ... and should therefore already have groupings / ratings / rankings for participants
       // participantsProfile: { withGroupings: true },
@@ -179,8 +202,27 @@ export function modifyMatchUpScore({
       matchUpsMap,
     }).matchUps?.[0];
 
-    if (inContextMatchUp) {
-      updateInContextMatchUp({ tournamentId, inContextMatchUp });
+  if (sendInContext && inContextMatchUp) {
+    updateInContextMatchUp({ tournamentId, inContextMatchUp });
+  }
+
+  if (
+    Array.isArray(defaultedProcessCodes) &&
+    inContextMatchUp &&
+    !inContextMatchUp.sides?.every(({ participantId }) => participantId)
+  ) {
+    if (matchUpStatus === DEFAULTED) {
+      if (matchUp.processCodes) {
+        matchUp.processCodes.push(...defaultedProcessCodes);
+      } else {
+        matchUp.processCodes = defaultedProcessCodes;
+      }
+    } else {
+      for (const processCode of defaultedProcessCodes || []) {
+        const codeIndex = matchUp.processCodes.lastIndexOf(processCode);
+        // remove only one instance of processCode
+        matchUp.processCodes.splice(codeIndex, 1);
+      }
     }
   }
 

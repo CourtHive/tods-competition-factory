@@ -1,3 +1,4 @@
+import { getTieFormat } from '../../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat';
 import { modifyMatchUpNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import { getPairedParticipant } from '../../participantGovernor/getPairedParticipant';
 import { findMatchUp } from '../../../../drawEngine/getters/getMatchUps/findMatchUp';
@@ -46,12 +47,12 @@ export function applyLineUps({
   if (matchUpType !== TEAM) return { error: INVALID_MATCHUP };
   if (!drawPositions?.length) return { error: MISSING_DRAW_POSITIONS };
 
-  const tieFormat =
-    inContextMatchUp.tieFormat ||
-    structure.tieFormat ||
-    drawDefinition.tieFormat ||
-    event.tieFormat ||
-    tournamentRecord.tieFormat;
+  const tieFormat = getTieFormat({
+    matchUp: inContextMatchUp,
+    drawDefinition,
+    structure,
+    event,
+  })?.tieFormat;
 
   // verify integrity of lineUps...
   // 1. all participantIds must be valid individualParticipantIds

@@ -1,10 +1,13 @@
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
+import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
-import { expect, it } from 'vitest';
+import { expect, test, it } from 'vitest';
 
 import POLICY_SCORING_DEFAULT from '../../../fixtures/policies/POLICY_SCORING_DEFAULT';
 import AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
-import { SINGLES } from '../../../constants/eventConstants';
+import { SINGLES, TEAM_EVENT } from '../../../constants/eventConstants';
+import { DEFAULTED } from '../../../constants/matchUpStatusConstants';
+import { SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
 import {
   EXISTING_POLICY_TYPE,
   MISSING_EVENT,
@@ -125,8 +128,8 @@ it('can set and remove policies from tournamentRecords and events', () => {
   expect(result.error).toEqual(POLICY_NOT_FOUND);
 
   result = tournamentEngine.removeEventPolicy({
-    eventId: eventState.eventId,
     policyType: POLICY_TYPE_AVOIDANCE,
+    eventId: eventState.eventId,
   });
   expect(result.success).toEqual(true);
 
@@ -135,14 +138,14 @@ it('can set and remove policies from tournamentRecords and events', () => {
   expect(updatedRecord3.events[0].extensions.length).toEqual(0);
 
   result = tournamentEngine.attachEventPolicies({
-    eventId,
     policyDefinitions: { ...AVOIDANCE_COUNTRY, ...POLICY_SCORING_DEFAULT },
+    eventId,
   });
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.removeEventPolicy({
-    eventId: eventState.eventId,
     policyType: POLICY_TYPE_AVOIDANCE,
+    eventId: eventState.eventId,
   });
   expect(result.success).toEqual(true);
 
@@ -188,14 +191,14 @@ it('can find policies whether on event or tournamentRecord', () => {
 
   // expect to find the policy attached to the tournament even when passing eventId
   ({ policy } = tournamentEngine.findPolicy({
-    eventId,
     policyType: POLICY_TYPE_SCORING,
+    eventId,
   }));
   expect(policy.policyName).toEqual(testPolicyName);
 
   result = tournamentEngine.attachEventPolicies({
-    eventId,
     policyDefinitions: AVOIDANCE_COUNTRY,
+    eventId,
   });
   expect(result.success).toEqual(true);
 
@@ -219,14 +222,57 @@ it('can find policies whether on event or tournamentRecord', () => {
   expect(result.policy).toBeUndefined();
 
   ({ policy } = tournamentEngine.findPolicy({
-    eventId,
     policyType: POLICY_TYPE_AVOIDANCE,
+    eventId,
   }));
   expect(policy.policyName).toEqual('Nationality Code');
 
   result = tournamentEngine.attachEventPolicies({
-    eventId,
     policyDefinitions: scoringPolicy,
+    eventId,
   });
   expect(result.success).toEqual(true);
+});
+
+test('Scoring policy can control attachment of process codes to matchUps', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ eventType: TEAM_EVENT, drawSize: 2 }],
+    policyDefinitions: POLICY_SCORING_DEFAULT,
+  });
+  let result = tournamentEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+
+  const {
+    matchUps: [matchUp],
+  } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [SINGLES_MATCHUP] },
+  });
+  expect(matchUp.processCodes).toBeUndefined();
+
+  // no assignments have been made
+  expect(matchUp.sides.every((side) => !side.participantId)).toEqual(true);
+
+  result = tournamentEngine.setMatchUpStatus({
+    outcome: { matchUpStatus: DEFAULTED, winningSide: 1 },
+    matchUpId: matchUp.matchUpId,
+    drawId: matchUp.drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpIds: [matchUp.matchUpId] },
+  });
+  expect(result.matchUps[0].processCodes).toEqual(['RANKING.IGNORE']);
+
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: matchUp.matchUpId,
+    drawId: matchUp.drawId,
+    outcome: {},
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpIds: [matchUp.matchUpId] },
+  });
+  expect(result.matchUps[0].processCodes).toBeUndefined();
 });
