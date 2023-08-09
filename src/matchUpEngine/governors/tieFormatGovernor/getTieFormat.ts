@@ -42,12 +42,23 @@ export function getTieFormat({
       });
       if (result.error) return result;
 
-      ({ matchUp, structure } = result);
+      if (!structure) structure = result.structure;
+      if (!matchUp) matchUp = result.matchUp;
     }
 
     tieFormat =
-      getItemTieFormat({ item: matchUp, drawDefinition, event }) ||
-      getItemTieFormat({ item: structure, drawDefinition, event }) ||
+      getItemTieFormat({
+        item: matchUp,
+        drawDefinition,
+        structure,
+        event,
+      }) ||
+      getItemTieFormat({
+        item: structure,
+        drawDefinition,
+        structure,
+        event,
+      }) ||
       getObjectTieFormat(drawDefinition) ||
       getObjectTieFormat(event);
   } else if (drawDefinition && structureId) {
@@ -57,7 +68,14 @@ export function getTieFormat({
       structure = result?.structure;
     }
     tieFormat =
-      structure?.tieFormat || drawDefinition.tieFormat || event?.tieFormat;
+      getItemTieFormat({
+        item: structure,
+        drawDefinition,
+        structure,
+        event,
+      }) ||
+      getObjectTieFormat(drawDefinition) ||
+      getObjectTieFormat(event);
   } else {
     tieFormat = drawDefinition?.tieFormat || event?.tieFormat;
   }
@@ -77,9 +95,11 @@ export function getObjectTieFormat(obj) {
   }
 }
 
-export function getItemTieFormat({ item, drawDefinition, event }) {
+export function getItemTieFormat({ item, drawDefinition, structure, event }) {
   if (!item) return;
   if (item.tieFormat) return item.tieFormat;
+
+  // if there is a tieFormatId, only possible to look for referenced tieFormat in tieFormats on drawDefinition and event
   if (item.tieFormatId) {
     if (drawDefinition.tieFormat) return drawDefinition.tieFormat;
     const tieFormat = drawDefinition.tieFormats?.find(
@@ -89,5 +109,12 @@ export function getItemTieFormat({ item, drawDefinition, event }) {
 
     if (event.tieFormat) return event.tieFormat;
     return event.tieFormats?.find((tf) => item.tieFormatId === tf.tieFormatId);
+  }
+  if (structure.tieFormat) return structure.tieFormat;
+  if (structure.tieFormatId) {
+    const structureTieFormat = drawDefinition.tieFormats?.find(
+      (tf) => structure.tieFormatId === tf.tieFormatId
+    );
+    if (structureTieFormat) return structureTieFormat;
   }
 }

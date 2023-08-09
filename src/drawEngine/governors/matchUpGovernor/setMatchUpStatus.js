@@ -1,5 +1,6 @@
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
+import { getTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { addExtension } from '../../../global/functions/producers/addExtension';
@@ -136,6 +137,9 @@ export function setMatchUpStatus(params) {
     };
   }
 
+  const structureId = inContextMatchUp.structureId;
+  const { structure } = findStructure({ drawDefinition, structureId });
+
   // Check validity of matchUpStatus considering assigned drawPositions -------
   const assignedDrawPositions = inContextMatchUp.drawPositions?.filter(Boolean);
 
@@ -157,7 +161,9 @@ export function setMatchUpStatus(params) {
       } = generateTieMatchUpScore({
         drawDefinition,
         matchUpsMap,
+        structure,
         matchUp,
+        event,
       });
 
       const score = {
@@ -203,9 +209,6 @@ export function setMatchUpStatus(params) {
     inContextDrawMatchUps,
     drawDefinition,
   });
-
-  const structureId = inContextMatchUp.structureId;
-  const { structure } = findStructure({ drawDefinition, structureId });
 
   if (score && matchUp.matchUpType !== TEAM && !disableScoreValidation) {
     const matchUpFormat =
@@ -304,12 +307,12 @@ export function setMatchUpStatus(params) {
       matchUpsMap,
       event,
     });
-    const tieFormat =
-      dualMatchUp?.tieFormat ||
-      structure?.tieFormat ||
-      drawDefinition?.tieFormat ||
-      event?.tieFormat ||
-      undefined;
+    const tieFormat = getTieFormat({
+      matchUp: dualMatchUp,
+      drawDefinition,
+      structure,
+      event,
+    })?.tieFormat;
 
     const { projectedWinningSide } = getProjectedDualWinningSide({
       matchUpStatus,

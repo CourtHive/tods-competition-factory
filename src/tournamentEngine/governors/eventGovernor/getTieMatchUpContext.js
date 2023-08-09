@@ -1,4 +1,5 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
+import { getTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat';
 import { getMatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
@@ -86,12 +87,12 @@ export function getTieMatchUpContext({
     matchUpsMap,
   });
 
-  const tieFormat =
-    dualMatchUp.tieFormat ||
-    structure.tieFormat ||
-    drawDefinition.tieFormat ||
-    event.tieFormat ||
-    undefined;
+  const tieFormat = getTieFormat({
+    matchUp: dualMatchUp,
+    drawDefinition,
+    structure,
+    event,
+  })?.tieFormat;
 
   return {
     inContextDualMatchUp,

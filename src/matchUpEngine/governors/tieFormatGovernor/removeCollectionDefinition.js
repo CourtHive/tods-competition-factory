@@ -258,6 +258,7 @@ export function removeCollectionDefinition({
   result = validateTieFormat({ tieFormat: prunedTieFormat });
   if (result.error) return result;
 
+  // TODO: implement use of tieFormats and tieFormatId
   if (eventId) {
     event.tieFormat = prunedTieFormat;
     // NOTE: there is not a modifyEventNotice
