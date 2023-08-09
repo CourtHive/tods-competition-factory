@@ -2,13 +2,16 @@ import { POLICY_TYPE_SCORING } from '../../constants/policyConstants';
 import { MAIN } from '../../constants/drawDefinitionConstants';
 
 /**
- * default SCORING_POLICY requires all stage:MAIN, stageSequence:1 drawPositions to be assigned **BEFORE** scoring is enabled,
- * while allowing scoring in consolation and compass/playoff structures when not all drawPositions have been filled
+ * without a SCORING_POLICY which sets { requireAllPositionsAssigned: false },  all stage:MAIN, stageSequence:1 drawPositions must be assigned **BEFORE** scoring is enabled,
+ * scoring is enabled in consolation and compass/playoff structures when not all drawPositions have been filled
  */
 export const POLICY_SCORING_DEFAULT = {
   [POLICY_TYPE_SCORING]: {
     defaultMatchUpFormat: 'SET3-S:6/TB7',
     requireAllPositionsAssigned: false,
+    processCodes: {
+      incompleteAssignmentsOnDefault: ['RANKING.IGNORE'],
+    },
     stage: {
       [MAIN]: {
         stageSequence: {
