@@ -1,6 +1,7 @@
 import { getTournamentParticipants } from '../../../tournamentEngine/getters/participants/getTournamentParticipants';
 import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
+import { getTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { automatedPositioning } from '../positionGovernor/automatedPositioning';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
@@ -78,7 +79,9 @@ export function generateVoluntaryConsolation(params = {}) {
     if (result.error) return result;
   }
 
-  tieFormat = copyTieFormat(tieFormat || drawDefinition.tieFormat || undefined);
+  tieFormat = copyTieFormat(
+    tieFormat || getTieFormat({ drawDefinition })?.tieFormat
+  );
   matchUpType = matchUpType || drawDefinition.matchUpType || SINGLES;
 
   const { structures: stageStructures } = getDrawStructures({

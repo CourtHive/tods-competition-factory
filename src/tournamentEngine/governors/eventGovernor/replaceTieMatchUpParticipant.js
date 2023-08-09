@@ -96,7 +96,7 @@ export function replaceTieMatchUpParticipantId(params) {
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
   const substitutionProcessCodes =
-    matchUpActionsPolicy?.substitutionProcessCodes;
+    matchUpActionsPolicy?.processCodes?.substitution;
 
   const { extension } = findExtension({
     element: drawDefinition,

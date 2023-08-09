@@ -18,9 +18,20 @@ export function publicFindMatchUp(params) {
   return { matchUp: makeDeepCopy(findMatchUp(params).matchUp, false, true) };
 }
 
-/*
-  function to find a matchUp within a draw
-*/
+/**
+ * 
+  // function to find a matchUp within a draw
+  @param {Object=} tournamentParticipants
+  @param {boolean=} afterRecoveryTimes
+  @param {Object=} contextContent
+  @param {Object=} contextProfile
+  @param {Object} drawDefinition
+  @param {Object=} matchUpsMap
+  @param {string} matchUpId
+  @param {boolean=} inContext
+  @param {Object=} context
+  @param {Object=} event
+ */
 export function findMatchUp({
   tournamentParticipants,
   afterRecoveryTimes,

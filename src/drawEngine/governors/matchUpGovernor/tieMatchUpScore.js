@@ -1,6 +1,7 @@
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
 import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
+import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
+import { getTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat';
 import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isActiveMatchUp } from '../../getters/activeMatchUp';
@@ -46,17 +47,23 @@ export function updateTieMatchUpScore({
     }
   }
 
-  const tieFormat =
-    matchUp.tieFormat ||
-    structure?.tieFormat ||
-    drawDefinition?.tieFormat ||
-    event?.tieFormat ||
-    undefined;
+  const tieFormat = getTieFormat({
+    drawDefinition,
+    structure,
+    matchUp,
+    event,
+  })?.tieFormat;
 
   matchUp.tieFormat = copyTieFormat(tieFormat);
 
   const { winningSide, set, scoreStringSide1, scoreStringSide2 } =
-    generateTieMatchUpScore({ drawDefinition, matchUp, matchUpsMap });
+    generateTieMatchUpScore({
+      drawDefinition,
+      matchUpsMap,
+      structure,
+      matchUp,
+      event,
+    });
 
   const setHasValue = set?.side1Score || set?.side2Score;
   if (exitWhenNoValues && !matchUp.score && !setHasValue) {

@@ -130,6 +130,7 @@ export function generateEventWithDraw({
       : drawProfile.participantsCount) || 0;
 
   const eventId = drawProfileCopy.eventId || UUID();
+  // TODO: implement use of tieFormats and tieFormatId
   let event = { eventName, eventType, tieFormat, category, eventId, gender };
 
   if (Array.isArray(timeItems)) {

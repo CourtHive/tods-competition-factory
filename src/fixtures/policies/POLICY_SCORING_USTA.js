@@ -1,5 +1,5 @@
-import { MAIN } from '../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_SCORING } from '../../constants/policyConstants';
+import { MAIN } from '../../constants/drawDefinitionConstants';
 
 export const POLICY_SCORING_USTA = {
   [POLICY_TYPE_SCORING]: {
@@ -16,10 +16,10 @@ export const POLICY_SCORING_USTA = {
     defaultMatchUpFormat: 'SET3-S:6/TB7',
     matchUpFormats: [
       {
-        categoryNames: [],
-        categoryTypes: [],
         description: 'Best of 3 tiebreak sets',
         matchUpFormat: 'SET3-S:6/TB7',
+        categoryNames: [],
+        categoryTypes: [],
       },
       {
         description: 'Two tiebreak sets, 7-point match tiebreak at one set all',
