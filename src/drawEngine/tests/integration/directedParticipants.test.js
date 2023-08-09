@@ -211,9 +211,9 @@ it('advances paired drawPositions when BYE is assigned first', () => {
 
   // check that winning player was advanced
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber: 2,
     roundPosition: 1,
+    roundNumber: 2,
+    structureId,
   }));
   const { drawPositions } = matchUp;
   expect(drawPositions).toMatchObject([1, 3]);
@@ -223,9 +223,9 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     matchUpId,
   });
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber: 1,
     roundPosition: 2,
+    roundNumber: 1,
+    structureId,
   }));
   ({ matchUpStatus, score } = matchUp);
   expect(matchUpStatus).toEqual(RETIRED);
@@ -233,16 +233,16 @@ it('advances paired drawPositions when BYE is assigned first', () => {
 
   // change winning side; score must be included when changing winning side
   result = drawEngine.setMatchUpStatus({
-    matchUpId,
-    winningSide: 2,
     matchUpStatus: DEFAULTED,
+    winningSide: 2,
+    matchUpId,
   });
   expect(result.success).toEqual(true);
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
-    roundNumber: 1,
     roundPosition: 2,
+    roundNumber: 1,
+    structureId,
   }));
   ({ matchUpStatus, winningSide, score } = matchUp);
   expect(matchUpStatus).toEqual(DEFAULTED);

@@ -9,26 +9,16 @@ import {
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 
-/**
- *
- * @param {object} tournamentRecord - passed in automatically by tournamentEngine
- * @param {string} drawId - optional - avoid brute force search for matchUp
- * @param {object} drawDefinition - passed in automatically by tournamentEngine when drawId provided
- * @param {string} eventId - optional - if only the default matchUpFormat for an event is required
- * @param {object} event - passed in automatically by tournamentEngine when drawId or eventId provided
- * @param {string} structureId - optional - if only the default matchUpFormat for a structure is required
- * @param {string} matchUpId - id of matchUp for which the scoped matchUpFormat(s) are desired
- *
- */
+// method exclusively for external use
 export function getTieFormat({
-  tournamentRecord,
-  drawDefinition,
-  structureId,
-  matchUpId,
-  structure,
-  eventId,
-  drawId,
-  event,
+  tournamentRecord, // passed in automatically by tournamentEngine
+  drawDefinition, // passed in automatically by tournamentEngine when drawId provided
+  structureId, // optional - if only the default matchUpFormat for a structure is required
+  matchUpId, // id of matchUp for which the scoped matchUpFormat(s) are desired
+  structure, // optional optimization - when structure already known
+  eventId, // optional - if only the default matchUpFormat for an event is required
+  drawId, // avoid brute force search for matchUp
+  event, // passed in automatically by tournamentEngine when drawId or eventId provided
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId && !event && !structureId && !matchUpId)
