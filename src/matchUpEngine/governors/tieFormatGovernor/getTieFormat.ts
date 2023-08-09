@@ -14,10 +14,12 @@ export function getTieFormat({
   drawDefinition,
   structureId,
   matchUpId,
+  structure,
+  matchUp,
   eventId, // optional - if an eventId is present only return tieFormat for event
   event,
 }) {
-  let matchUp, structure, tieFormat;
+  let tieFormat;
 
   structureId = structure?.structureId || structureId;
   matchUpId = matchUp?.matchUpId || matchUpId;
