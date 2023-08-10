@@ -6,7 +6,6 @@ import RenderJSON from '../../../docs/components/RenderJSON';
 import RenderCSV from '../../../docs/components/RenderCSV';
 import Draw from '../../../docs/components/DrawDefinition';
 import MatchUps from '../../../docs/components/MatchUps';
-import { Draw as DrawStructures } from 'tods-score-grid';
 import React from 'react';
 import {
   competitionEngine,
@@ -30,7 +29,6 @@ const ReactLiveScope = {
   competitionEngine,
   tournamentEngine,
   scoreGovernor,
-  DrawStructures,
   ConstantsViewer,
   Configurator,
   Participants,
