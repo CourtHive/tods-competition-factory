@@ -49,13 +49,18 @@ it('can count values and determine active drawPositions', () => {
   expect(activeDrawPositions).toMatchObject([1, 5]);
 });
 
+const date070101 = '2007-01-01';
+const date201229 = '2020-12-29';
+const date200101 = '2020-01-01';
+const date200102 = '2020-01-02';
+
 test('isDate recognizes Invalid Date', () => {
   // only date objects and valid time values return true
-  let date = new Date('2007-01-01');
+  let date = new Date(date070101);
   let result = isDate(date);
   expect(result).toEqual(true);
 
-  date = new Date('2007-01-01').getTime();
+  date = new Date(date070101).getTime();
   result = isDate(date);
   expect(result).toEqual(true);
 
@@ -66,7 +71,7 @@ test('isDate recognizes Invalid Date', () => {
   expect(result).toEqual(false);
 
   // date strings are not date objects
-  result = isDate('2007-01-01');
+  result = isDate(date070101);
   expect(result).toEqual(false);
 
   // 'Invalid Date' is not a date
@@ -130,11 +135,11 @@ test('miscellaneous date/time tests', () => {
   result = weekDays('');
   expect(result).toEqual([]);
 
-  result = weekDays(new Date('2020-12-29'));
+  result = weekDays(new Date(date201229));
   expect(result).toEqual([
     '2020-12-27',
     '2020-12-28',
-    '2020-12-29',
+    date201229,
     '2020-12-30',
     '2020-12-31',
     '2021-01-01',
@@ -142,10 +147,10 @@ test('miscellaneous date/time tests', () => {
   ]);
 
   // first day of week 1 => Monday
-  result = weekDays(new Date('2020-12-29'), 1);
+  result = weekDays(new Date(date201229), 1);
   expect(result).toEqual([
     '2020-12-28',
-    '2020-12-29',
+    date201229,
     '2020-12-30',
     '2020-12-31',
     '2021-01-01',
@@ -156,7 +161,7 @@ test('miscellaneous date/time tests', () => {
   let date = '2020-01-01T00:00';
   result = addWeek(date);
   expect(result).toEqual('2020-01-08');
-  date = '2020-01-02';
+  date = date200102;
   result = addWeek(date);
   expect(result).toEqual('2020-01-09');
   date = '2019-12-31';
@@ -178,30 +183,30 @@ test('miscellaneous date/time tests', () => {
 
   result = localizeDate();
   expect(result).toEqual(false);
-  result = localizeDate('2020-01-01');
+  result = localizeDate(date200101);
   // expect(result).toEqual('Wednesday, January 1, 2020');
-  result = localizeDate(new Date('2020-01-01'));
+  result = localizeDate(new Date(date200101));
   // expect(result).toEqual('Wednesday, January 1, 2020');
 
   result = dateRange();
   expect(result).toEqual([]);
 
-  result = dateRange('2020-01-01', '2020-02-01');
+  result = dateRange(date200101, '2020-02-01');
   expect(result.length).toEqual(32);
 });
 
 test('formatDate supports multiple formats', () => {
   let result = formatDate('2020-01-01T00:00');
-  expect(result).toEqual('2020-01-01');
-  result = formatDate('2020-01-02', undefined, 'MDY');
+  expect(result).toEqual(date200101);
+  result = formatDate(date200102, undefined, 'MDY');
   expect(result).toEqual('01-02-2020');
-  result = formatDate('2020-01-02', undefined, 'DMY');
+  result = formatDate(date200102, undefined, 'DMY');
   expect(result).toEqual('02-01-2020');
-  result = formatDate('2020-01-02', undefined, 'YDM');
+  result = formatDate(date200102, undefined, 'YDM');
   expect(result).toEqual('2020-02-01');
-  result = formatDate('2020-01-02', undefined, 'DYM');
+  result = formatDate(date200102, undefined, 'DYM');
   expect(result).toEqual('02-2020-01');
-  result = formatDate('2020-01-02', undefined, 'MYD');
+  result = formatDate(date200102, undefined, 'MYD');
   expect(result).toEqual('01-2020-02');
 });
 

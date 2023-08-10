@@ -1,3 +1,4 @@
+import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { compareTieFormats } from '../../../matchUpEngine/governors/tieFormatGovernor/compareTieFormats';
 import { resetTieFormat } from '../../../tournamentEngine/governors/eventGovernor/resetTieFormat';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
@@ -122,8 +123,12 @@ export function resetScorecard(params) {
 
   if (params.tiebreakReset && !result.tieFormatRemoved) {
     // check for scenarios where an added "Tiebreaker" collectionDefinition/matchUp has been added
-    const inheritedTieFormat =
-      structure?.tieFormat || drawDefinition.tieFormat || event?.tieFormat;
+    const inheritedTieFormat = resolveTieFormat({
+      drawDefinition,
+      structure,
+      event,
+    })?.tieFormat;
+
     if (inheritedTieFormat) {
       const {
         matchUpCountDifference,

@@ -2,7 +2,7 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { collectionGroupUpdate } from './collectionGroupUpdate';
 import { validateTieFormat } from './tieFormatUtilities';
 import { copyTieFormat } from './copyTieFormat';
-import { getTieFormat } from './getTieFormat';
+import { getTieFormat } from './getTieFormat/getTieFormat';
 
 import {
   INVALID_VALUES,
@@ -42,7 +42,7 @@ export function addCollectionGroup({
 
   const { structure } = result;
   matchUp = matchUp || result.matchUp;
-  const existingTieFormat = result.tieFormat || matchUp?.tieFormat;
+  const existingTieFormat = result.tieFormat;
   const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
   const tieFormat = copyTieFormat(existingTieFormat);
 

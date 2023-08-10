@@ -2,8 +2,9 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
 
 // categoryTypes
 const ADULT = 'ADULT';
@@ -12,22 +13,22 @@ const WHEELCHAIR = 'WHEELCHAIR';
 
 it.each([
   {
-    matchUpFormat: 'SET3-S:6/TB7',
+    matchUpFormat: FORMAT_STANDARD,
     categoryType: JUNIOR,
     averageMinutes: 90,
     recoveryMinutes: 60,
     eventType: DOUBLES,
   },
   {
-    matchUpFormat: 'SET3-S:6/TB7',
+    matchUpFormat: FORMAT_STANDARD,
     categoryType: JUNIOR,
     averageMinutes: 90,
     recoveryMinutes: 60,
     eventType: SINGLES,
   },
-  { matchUpFormat: 'SET3-S:6/TB7', categoryType: ADULT, averageMinutes: 90 },
+  { matchUpFormat: FORMAT_STANDARD, categoryType: ADULT, averageMinutes: 90 },
   {
-    matchUpFormat: 'SET3-S:6/TB7',
+    matchUpFormat: FORMAT_STANDARD,
     categoryType: WHEELCHAIR,
     averageMinutes: 90,
   },

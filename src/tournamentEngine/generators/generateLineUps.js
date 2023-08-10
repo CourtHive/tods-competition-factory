@@ -1,6 +1,6 @@
+import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { validateTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { getPairedParticipant } from '../governors/participantGovernor/getPairedParticipant';
-import { getTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat';
 import { addParticipant } from '../governors/participantGovernor/addParticipants';
 import { addExtension } from '../../global/functions/producers/addExtension';
 import { getParticipants } from '../getters/participants/getParticipants';
@@ -42,7 +42,8 @@ export function generateLineUps({
   if (!tieFormat && !drawDefinition)
     return { error: DRAW_DEFINITION_NOT_FOUND };
 
-  tieFormat = tieFormat || getTieFormat({ drawDefinition, event })?.tieFormat;
+  tieFormat =
+    tieFormat || resolveTieFormat({ drawDefinition, event })?.tieFormat;
 
   if (validateTieFormat({ tieFormat }).error)
     return { error: INVALID_TIE_FORMAT };

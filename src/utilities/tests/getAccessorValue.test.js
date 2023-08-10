@@ -1,13 +1,15 @@
 import { getAccessorValue } from '../getAccessorValue';
 import { expect, it } from 'vitest';
 
+const MAIN_STREET = 'Main Street';
+
 it('can extract values from nested objects', () => {
   const element = {
     person: {
       name: 'Name',
       addresses: [
-        { street: 'Main Street', city: 'New York' },
-        { street: 'Main Street', city: 'San Francisco' },
+        { street: MAIN_STREET, city: 'New York' },
+        { street: MAIN_STREET, city: 'San Francisco' },
       ],
     },
   };
@@ -23,8 +25,8 @@ it('can extract values from nested objects', () => {
     element,
     accessor: 'person.addresses.street',
   }));
-  expect(value).toEqual('Main Street');
-  expect(values).toEqual(['Main Street']);
+  expect(value).toEqual(MAIN_STREET);
+  expect(values).toEqual([MAIN_STREET]);
 
   ({ value, values } = getAccessorValue({
     element,

@@ -14,10 +14,12 @@ import { makeDeepCopy, overlap } from '../../../utilities';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  INVALID_PARTICIPANT,
   INVALID_PARTICIPANT_TYPE,
   INVALID_SIDE_NUMBER,
   MISSING_COLLECTION_DEFINITION,
@@ -26,6 +28,17 @@ import {
   PARTICIPANT_NOT_FOUND,
   TEAM_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+
+/**
+ * @param {object} tournamentRecord
+ * @param {string} participantId
+ * @param {object} drawDefinition
+ * @param {string} tieMatchUpId
+ * @param {number=} sideNumber
+ * @param {string} matchUpId
+ * @param {string=} drawId
+ * @param {object} event
+ */
 
 export function assignTieMatchUpParticipantId(params) {
   const matchUpContext = getTieMatchUpContext(params);
@@ -82,6 +95,13 @@ export function assignTieMatchUpParticipantId(params) {
 
   if (!participantToAssign) {
     return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
+  }
+
+  if (
+    [MALE, FEMALE].includes(inContextTieMatchUp.gender) &&
+    inContextTieMatchUp.gender !== participantToAssign.person?.sex
+  ) {
+    return { error: INVALID_PARTICIPANT, info: 'Gender mismatch' };
   }
 
   const { individualParticipantIds, participantType } = participantToAssign;

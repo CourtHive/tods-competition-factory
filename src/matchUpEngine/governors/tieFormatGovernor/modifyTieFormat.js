@@ -2,10 +2,10 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 import { modifyCollectionDefinition } from './modifyCollectionDefinition';
 import { removeCollectionDefinition } from './removeCollectionDefinition';
 import { addCollectionDefinition } from './addCollectionDefinition';
+import { getTieFormat } from './getTieFormat/getTieFormat';
 import { validateTieFormat } from './tieFormatUtilities';
 import { compareTieFormats } from './compareTieFormats';
 import { copyTieFormat } from './copyTieFormat';
-import { getTieFormat } from './getTieFormat';
 
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
