@@ -2,13 +2,14 @@
 title: Draw Generation
 ---
 
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import DrawType from '../components/DrawType';
 
 ## Example
 
-Visualization of a Compass draw by [tods-score-grid](https://courthive.github.io/tods-score-grid/?path=/story/score-grid-draw).
+Themed visualization of draws by [courthive-components](https://github.com/CourtHive/courthive-components).
 
-<DrawType drawType="COMPASS" drawSize={8} />
+<BrowserOnly>{() => <DrawType drawType="COMPASS" drawSize={8} />}</BrowserOnly>
 
 ## Draw Types
 

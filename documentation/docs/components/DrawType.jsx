@@ -1,9 +1,10 @@
+import { compositions, renderStructure } from 'courthive-components';
+
 import {
   tournamentEngine,
   mocksEngine,
   utilities,
 } from 'tods-competition-factory';
-import { ScoreGrid } from 'tods-score-grid';
 import React from 'react';
 
 const DrawType = ({ drawType, drawSize = 8 }) => {
@@ -30,6 +31,14 @@ const DrawType = ({ drawType, drawSize = 8 }) => {
       eventId,
     }) || {};
 
+  const structures = eventData?.drawsData?.[0]?.structures || [];
+  const initialStructureId = structures[0]?.structureId;
+  const structure = structures?.find(
+    (structure) => structure.structureId === initialStructureId
+  );
+  const roundMatchUps = structure?.roundMatchUps;
+  const matchUps = roundMatchUps ? Object.values(roundMatchUps)?.flat() : [];
+
   const compositionName = utilities.randomMember([
     'Australian',
     'Wimbledon',
@@ -39,12 +48,20 @@ const DrawType = ({ drawType, drawSize = 8 }) => {
     'ITF',
   ]);
 
+  const newNode = renderStructure({
+    composition: compositions[compositionName],
+    matchUps,
+  });
+
   return (
     <div style={{ zoom: 0.9 }}>
-      <ScoreGrid
-        compositionName={compositionName}
-        eventData={eventData}
-        events={{}}
+      <div
+        ref={(nodeElement) => {
+          while (nodeElement?.firstChild) {
+            nodeElement.removeChild(nodeElement.firstChild);
+          }
+          nodeElement && nodeElement.appendChild(newNode);
+        }}
       />
     </div>
   );

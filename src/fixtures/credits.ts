@@ -1,4 +1,4 @@
-export function credits() {
+export function credits(): string {
   return `
     This project would not have been possible without the generous input and patience
     of tournament organizers and directors who worked with early versions of CourtHive/TMX.
