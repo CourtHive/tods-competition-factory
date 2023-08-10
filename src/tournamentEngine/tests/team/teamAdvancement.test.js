@@ -572,7 +572,7 @@ test('properly removes lineUps when team drawPositions are swapped', () => {
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
       {
-        tieFormatName: USTA_GOLD_TEAM_CHALLENGE,
+        tieFormatName: USTA_BREWER_CUP,
         eventType: TEAM,
         drawSize: 4,
       },
@@ -652,7 +652,7 @@ test('properly removes lineUps when team drawPositions are swapped', () => {
   const side2LineUp = targetMatchUp.sides[1].lineUp.map(
     ({ participantId }) => participantId
   );
-  targetMatchUp.sides.forEach((side) => expect(side.lineUp.length).toEqual(8));
+  targetMatchUp.sides.forEach((side) => expect(side.lineUp.length).toEqual(6));
 
   let drawPosition = 1;
   const { structureId } = firstRoundDualMatchUps[0];
@@ -686,7 +686,7 @@ test('properly removes lineUps when team drawPositions are swapped', () => {
 
   targetMatchUp = firstRoundDualMatchUps[0];
 
-  targetMatchUp.sides.forEach((side) => expect(side.lineUp.length).toEqual(8));
+  targetMatchUp.sides.forEach((side) => expect(side.lineUp.length).toEqual(6));
   const newSide1LineUp = targetMatchUp.sides[0].lineUp.map(
     ({ participantId }) => participantId
   );
