@@ -1,7 +1,7 @@
+import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
-import { getTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat';
 import { findExtension } from '../../../global/functions/deducers/findExtension';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isActiveMatchUp } from '../../getters/activeMatchUp';
@@ -47,7 +47,7 @@ export function updateTieMatchUpScore({
     }
   }
 
-  const tieFormat = getTieFormat({
+  const tieFormat = resolveTieFormat({
     drawDefinition,
     structure,
     matchUp,
@@ -101,16 +101,17 @@ export function updateTieMatchUpScore({
 
   if (matchUp.tieFormat && !hasWinner && !hasResults) {
     // if matchUp.tieFormat is equivalent to hierarchical tieFormat, remove
-    const inheritedTieFormat =
-      structure?.tieFormat ||
-      drawDefinition?.tieFormat ||
-      event?.tieFormat ||
-      undefined;
+    const inheritedTieFormat = resolveTieFormat({
+      drawDefinition,
+      structure,
+      event,
+    })?.tieFormat;
 
     if (
       inheritedTieFormat &&
       JSON.stringify(tieFormat) === JSON.stringify(inheritedTieFormat)
     ) {
+      matchUp.tieFormatId = undefined;
       matchUp.tieFormat = undefined;
       tieFormatRemoved = true;
     }

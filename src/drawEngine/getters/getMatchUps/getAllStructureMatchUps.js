@@ -1,6 +1,6 @@
+import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { getMatchUpCompetitiveness } from '../../../tournamentEngine/getters/getMatchUpCompetitiveness';
 import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/getMatchUpScheduleDetails';
-import { getTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat';
 import { getDrawPositionCollectionAssignment } from './getDrawPositionCollectionAssignment';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getCollectionPositionMatchUps } from '../../accessors/matchUpAccessor/matchUps';
@@ -282,7 +282,7 @@ export function getAllStructureMatchUps({
     ({ roundMatchUps } = getRoundMatchUps({ matchUps }));
   }
 
-  if (getTieFormat({ drawDefinition, structure, event })?.tieFormat) {
+  if (resolveTieFormat({ drawDefinition, structure, event })?.tieFormat) {
     ({ collectionPositionMatchUps } = getCollectionPositionMatchUps({
       matchUps,
     }));
@@ -308,7 +308,7 @@ export function getAllStructureMatchUps({
     matchUp,
     event,
   }) {
-    const tieFormat = getTieFormat({
+    const tieFormat = resolveTieFormat({
       drawDefinition,
       structure,
       matchUp,

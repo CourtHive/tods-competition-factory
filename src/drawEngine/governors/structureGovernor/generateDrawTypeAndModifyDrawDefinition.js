@@ -1,6 +1,6 @@
+import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { copyTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/copyTieFormat';
-import { getTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat';
 import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
 import { getStageDrawPositionsCount } from '../../getters/getStageDrawPositions';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
@@ -44,7 +44,7 @@ export function generateDrawTypeAndModifyDrawDefinition(params = {}) {
   }
 
   tieFormat = copyTieFormat(
-    tieFormat || getTieFormat({ drawDefinition })?.tieFormat
+    tieFormat || resolveTieFormat({ drawDefinition })?.tieFormat
   );
   matchUpType = matchUpType || drawDefinition.matchUpType || SINGLES;
   params.tieFormat = tieFormat;

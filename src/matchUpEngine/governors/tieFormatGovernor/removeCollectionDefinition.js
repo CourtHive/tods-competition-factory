@@ -8,11 +8,11 @@ import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp
 import { definedAttributes } from '../../../utilities/objects';
 import { scoreHasValue } from '../queryGovernor/scoreHasValue';
 import { calculateWinCriteria } from './calculateWinCriteria';
+import { getTieFormat } from './getTieFormat/getTieFormat';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
 import { validateTieFormat } from './tieFormatUtilities';
 import { compareTieFormats } from './compareTieFormats';
 import { copyTieFormat } from './copyTieFormat';
-import { getTieFormat } from './getTieFormat';
 import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
@@ -69,7 +69,7 @@ export function removeCollectionDefinition({
 
   const { structure } = result;
   matchUp = matchUp || result.matchUp;
-  const existingTieFormat = result.tieFormat || matchUp?.tieFormat;
+  const existingTieFormat = result.tieFormat;
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });
