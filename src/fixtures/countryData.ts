@@ -1,6 +1,6 @@
 // ISO- 3166-1 alpha-2
 
-export function countryToFlag(isoCode) {
+export function countryToFlag(isoCode: string): string {
   return isoCode && typeof String.fromCodePoint !== 'undefined'
     ? isoCode
         .toUpperCase()
@@ -10,7 +10,7 @@ export function countryToFlag(isoCode) {
     : isoCode;
 }
 
-export function flagIOC(ioc) {
+export function flagIOC(ioc: string): string {
   const ioc2iso = Object.assign(
     {},
     ...countries.filter((c) => c.ioc).map((c) => ({ [c.ioc]: c.iso }))
