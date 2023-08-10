@@ -50,9 +50,9 @@ it('can count values and determine active drawPositions', () => {
 });
 
 const date070101 = '2007-01-01';
+const date201229 = '2020-12-29';
 const date200101 = '2020-01-01';
 const date200102 = '2020-01-02';
-const date201229 = '2020-12-29';
 
 test('isDate recognizes Invalid Date', () => {
   // only date objects and valid time values return true
@@ -135,7 +135,7 @@ test('miscellaneous date/time tests', () => {
   result = weekDays('');
   expect(result).toEqual([]);
 
-  result = weekDays(new Date(date070101));
+  result = weekDays(new Date(date201229));
   expect(result).toEqual([
     '2020-12-27',
     '2020-12-28',
