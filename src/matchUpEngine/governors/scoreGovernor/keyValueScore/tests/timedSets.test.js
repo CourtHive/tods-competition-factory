@@ -2,6 +2,8 @@ import { enterValues } from './primitives';
 import { keyValueMatchUpScore } from '..';
 import { expect, it } from 'vitest';
 
+const TIMED3x10 = 'SET3-S:T10';
+
 it('can enter single timed set', () => {
   const matchUpFormat = 'SET1-S:T10';
   let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
@@ -20,7 +22,7 @@ it('can enter single timed set', () => {
 });
 
 it('can enter best of three timed sets', () => {
-  const matchUpFormat = 'SET3-S:T10';
+  const matchUpFormat = TIMED3x10;
   let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
@@ -44,7 +46,7 @@ it('can enter best of three timed sets', () => {
 });
 
 it('supports adding outcomes', () => {
-  const matchUpFormat = 'SET3-S:T10';
+  const matchUpFormat = TIMED3x10;
   let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
@@ -59,7 +61,7 @@ it('supports adding outcomes', () => {
   expect(matchUp?.winningSide).toEqual(1);
 });
 it('can handle adding and removing outcome', () => {
-  const matchUpFormat = 'SET3-S:T10';
+  const matchUpFormat = TIMED3x10;
   let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
@@ -85,7 +87,7 @@ it('can handle adding and removing outcome', () => {
 });
 
 it('does not consider tied scoreString to be complete set', () => {
-  const matchUpFormat = 'SET3-S:T10';
+  const matchUpFormat = TIMED3x10;
   let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
@@ -109,7 +111,7 @@ it('does not consider tied scoreString to be complete set', () => {
 });
 
 it('handles zeros properly', () => {
-  const matchUpFormat = 'SET3-S:T10';
+  const matchUpFormat = TIMED3x10;
   let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
@@ -133,7 +135,7 @@ it('handles zeros properly', () => {
 });
 
 it('ignores leading zeroes', () => {
-  const matchUpFormat = 'SET3-S:T10';
+  const matchUpFormat = TIMED3x10;
   let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
