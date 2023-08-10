@@ -68,7 +68,6 @@ export function findMatchUp({
 
   const { participants: tournamentParticipants = [] } = hydrateParticipants({
     participantsProfile,
-    // policyDefinitions,
     tournamentRecord,
     contextProfile,
     inContext,

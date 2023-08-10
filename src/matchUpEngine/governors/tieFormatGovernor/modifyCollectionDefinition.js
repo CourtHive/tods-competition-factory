@@ -4,11 +4,11 @@ import { genderConstants } from '../../../constants/genderConstants';
 import { isConvertableInteger } from '../../../utilities/math';
 import { definedAttributes } from '../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
+import { getTieFormat } from './getTieFormat/getTieFormat';
 import { isValid } from '../matchUpFormatGovernor/isValid';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
 import { updateTieFormat } from './updateTieFormat';
 import { copyTieFormat } from './copyTieFormat';
-import { getTieFormat } from './getTieFormat';
 import {
   validateCollectionValueProfile,
   validateTieFormat,

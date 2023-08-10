@@ -3,9 +3,9 @@ import { getAppliedPolicies } from '../../../global/functions/deducers/getApplie
 import { generateCollectionMatchUps } from '../../../drawEngine/generators/tieMatchUps';
 import { definedAttributes } from '../../../utilities/objects';
 import { calculateWinCriteria } from './calculateWinCriteria';
+import { getTieFormat } from './getTieFormat/getTieFormat';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
 import { copyTieFormat } from './copyTieFormat';
-import { getTieFormat } from './getTieFormat';
 import { validUpdate } from './validUpdate';
 import { UUID } from '../../../utilities';
 import {
@@ -66,7 +66,7 @@ export function addCollectionDefinition({
 
   const { structure } = result;
   matchUp = matchUp || result.matchUp;
-  const existingTieFormat = result.tieFormat || matchUp.tieFormat;
+  const existingTieFormat = result.tieFormat;
   const tieFormat = copyTieFormat(existingTieFormat);
 
   result = validateTieFormat({ tieFormat });

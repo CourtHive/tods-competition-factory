@@ -1,6 +1,6 @@
+import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { removeExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateTieMatchUpScore } from '../../generators/tieMatchUpScore/generateTieMatchUpScore';
-import { getTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { addExtension } from '../../../global/functions/producers/addExtension';
@@ -307,7 +307,7 @@ export function setMatchUpStatus(params) {
       matchUpsMap,
       event,
     });
-    const tieFormat = getTieFormat({
+    const tieFormat = resolveTieFormat({
       matchUp: dualMatchUp,
       drawDefinition,
       structure,

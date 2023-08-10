@@ -1,3 +1,4 @@
+import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { generateCollectionMatchUps } from '../../../drawEngine/generators/tieMatchUps';
 import { findMatchUp } from '../../getters/matchUpsGetter/findMatchUp';
 import { getMatchUpId } from '../../../global/functions/extractors';
@@ -49,8 +50,11 @@ export function resetTieFormat({
   // if there is no tieFormat there is nothing to do
   if (!matchUp.tieFormat) return { ...SUCCESS };
 
-  const tieFormat =
-    structure.tieFormat || drawDefinition?.tieFormat || event?.tieFormat;
+  const tieFormat = resolveTieFormat({
+    structure,
+    drawDefinition,
+    event,
+  })?.tieFormat;
 
   if (!tieFormat) return { error: NOT_FOUND, info: 'No inherited tieFormat' };
 
@@ -119,6 +123,7 @@ export function resetTieFormat({
   }
 
   matchUp.tieMatchUps = tieMatchUps;
+  matchUp.tieFormatId = undefined;
   matchUp.tieFormat = undefined;
 
   modifyMatchUpNotice({

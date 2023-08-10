@@ -1,8 +1,8 @@
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { instanceCount, intersection } from '../../../utilities';
+import { getTieFormat } from './getTieFormat/getTieFormat';
 import { copyTieFormat } from './copyTieFormat';
-import { getTieFormat } from './getTieFormat';
 import { validUpdate } from './validUpdate';
 import {
   modifyDrawNotice,
