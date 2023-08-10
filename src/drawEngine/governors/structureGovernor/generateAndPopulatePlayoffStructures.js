@@ -1,6 +1,6 @@
+import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { matchUpIsComplete } from '../../../matchUpEngine/governors/queryGovernor/matchUpIsComplete';
 import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
-import { getTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { generatePlayoffStructures } from '../../generators/playoffStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
@@ -245,7 +245,7 @@ export function generateAndPopulatePlayoffStructures(params) {
   );
 
   if (addedMatchUps.length) {
-    const tieFormat = getTieFormat({ drawDefinition, event })?.tieFormat;
+    const tieFormat = resolveTieFormat({ drawDefinition, event })?.tieFormat;
 
     if (tieFormat) {
       addedMatchUps.forEach((matchUp) => {

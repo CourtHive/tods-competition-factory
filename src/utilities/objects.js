@@ -17,7 +17,16 @@ export const extractAttributes = (atz) => (o) =>
     : (Array.isArray(atz) && atz.map((a) => ({ [a]: o[a] }))) ||
       (typeof atz === 'object' &&
         Object.keys(atz).map((key) => ({ [key]: o[key] }))) ||
-      (typeof atz === 'string' && o[atz]);
+      (typeof atz === 'string' && getAttr(o, atz));
+
+function getAttr(o, attr) {
+  const attrs = attr.split('.');
+  for (const a of attrs) {
+    o = o?.[a];
+    if (!o) return;
+  }
+  return o;
+}
 
 export function definedAttributes(
   obj,

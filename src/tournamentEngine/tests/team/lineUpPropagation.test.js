@@ -29,36 +29,6 @@ it('can propagate and remove lineUps', () => {
       participantFilters: { participantTypes: [TEAM] },
     });
 
-  const assignParticipants = (dualMatchUp) => {
-    const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
-      ({ matchUpType }) => matchUpType === SINGLES
-    );
-    singlesMatchUps.forEach((singlesMatchUp, i) => {
-      const tieMatchUpId = singlesMatchUp.matchUpId;
-      singlesMatchUp.sides.forEach((side) => {
-        const { drawPosition } = side;
-        const teamParticipant = teamParticipants.find((teamParticipant) => {
-          const { participantId } = teamParticipant;
-          const assignment = positionAssignments.find(
-            (assignment) => assignment.participantId === participantId
-          );
-          return assignment.drawPosition === drawPosition;
-        });
-        if (teamParticipant) {
-          const individualParticipantId =
-            teamParticipant.individualParticipantIds[i];
-          const result = tournamentEngine.assignTieMatchUpParticipantId({
-            participantId: individualParticipantId,
-            tieMatchUpId,
-            drawId,
-          });
-          if (!result.success) console.log(result);
-          expect(result.success).toEqual(true);
-        }
-      });
-    });
-  };
-
   let { matchUps: teamMatchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: {
       matchUpTypes: [TEAM],
@@ -81,7 +51,14 @@ it('can propagate and remove lineUps', () => {
       ({ stageSequence, roundNumber }) =>
         stageSequence === 1 && roundNumber === 1
     )
-    .forEach(assignParticipants);
+    .forEach((dualMatchUp) =>
+      assignParticipants({
+        positionAssignments,
+        teamParticipants,
+        dualMatchUp,
+        drawId,
+      })
+    );
 
   let outcome = {
     winningSide,
@@ -185,36 +162,6 @@ it('can propagate COMPASS lineUps properly', () => {
       participantFilters: { participantTypes: [TEAM] },
     });
 
-  const assignParticipants = (dualMatchUp) => {
-    const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
-      ({ matchUpType }) => matchUpType === SINGLES
-    );
-    singlesMatchUps.forEach((singlesMatchUp, i) => {
-      const tieMatchUpId = singlesMatchUp.matchUpId;
-      singlesMatchUp.sides.forEach((side) => {
-        const { drawPosition } = side;
-        const teamParticipant = teamParticipants.find((teamParticipant) => {
-          const { participantId } = teamParticipant;
-          const assignment = positionAssignments.find(
-            (assignment) => assignment.participantId === participantId
-          );
-          return assignment.drawPosition === drawPosition;
-        });
-        if (teamParticipant) {
-          const individualParticipantId =
-            teamParticipant.individualParticipantIds[i];
-          const result = tournamentEngine.assignTieMatchUpParticipantId({
-            participantId: individualParticipantId,
-            tieMatchUpId,
-            drawId,
-          });
-          if (!result.success) console.log(result);
-          expect(result.success).toEqual(true);
-        }
-      });
-    });
-  };
-
   let { matchUps: teamMatchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: {
       matchUpTypes: [TEAM],
@@ -227,7 +174,14 @@ it('can propagate COMPASS lineUps properly', () => {
       ({ stageSequence, roundNumber }) =>
         stageSequence === 1 && roundNumber === 1
     )
-    .forEach(assignParticipants);
+    .forEach((dualMatchUp) =>
+      assignParticipants({
+        positionAssignments,
+        teamParticipants,
+        dualMatchUp,
+        drawId,
+      })
+    );
 
   let outcome = {
     winningSide: 1,
@@ -269,3 +223,38 @@ it('can propagate COMPASS lineUps properly', () => {
       expect(sides[0].lineUp).not.toEqual(sides[1].lineUp);
     });
 });
+
+function assignParticipants({
+  positionAssignments,
+  teamParticipants,
+  dualMatchUp,
+  drawId,
+}) {
+  const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
+    ({ matchUpType }) => matchUpType === SINGLES
+  );
+  singlesMatchUps.forEach((singlesMatchUp, i) => {
+    const tieMatchUpId = singlesMatchUp.matchUpId;
+    singlesMatchUp.sides.forEach((side) => {
+      const { drawPosition } = side;
+      const teamParticipant = teamParticipants.find((teamParticipant) => {
+        const { participantId } = teamParticipant;
+        const assignment = positionAssignments.find(
+          (assignment) => assignment.participantId === participantId
+        );
+        return assignment.drawPosition === drawPosition;
+      });
+      if (teamParticipant) {
+        const individualParticipantId =
+          teamParticipant.individualParticipantIds[i];
+        const result = tournamentEngine.assignTieMatchUpParticipantId({
+          participantId: individualParticipantId,
+          tieMatchUpId,
+          drawId,
+        });
+        if (!result.success) console.log(result);
+        expect(result.success).toEqual(true);
+      }
+    });
+  });
+}

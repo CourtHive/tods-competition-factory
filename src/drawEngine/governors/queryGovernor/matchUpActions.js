@@ -21,6 +21,7 @@ import {
 } from './positionActions/actionPolicyUtils';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
+import { ANY, MIXED } from '../../../constants/genderConstants';
 import {
   ADD_PENALTY,
   ADD_PENALTY_METHOD,
@@ -76,8 +77,17 @@ import {
  *
  * return an array of all validActions for a given matchUp
  *
+ * @param {boolean=} restrictAdHocRoundParticipants
+ * @param {object[]=} tournamentParticipants
+ * @param {object[]=} inContextDrawMatchUps
+ * @param {object=} tournamentRecord
+ * @param {object=} policyDefinitions
+ * @param {string=} participantId
  * @param {object} drawDefinition
+ * @param {object=} matchUpsMap
+ * @param {number=} sideNumber
  * @param {string} matchUpId
+ * @param {object=} event
  *
  */
 export function matchUpActions({
@@ -143,6 +153,7 @@ export function matchUpActions({
       inContext: true,
       drawDefinition,
       matchUpsMap,
+      event,
     }));
   }
 
@@ -408,7 +419,16 @@ export function matchUpActions({
   }
 
   if (isCollectionMatchUp) {
+    const assignedGender =
+      inContextMatchUp.gender === MIXED &&
+      inContextMatchUp.sideNumber &&
+      inContextMatchUp.sides.filter(({ particiapntId }) => particiapntId)
+        .length === 1 &&
+      inContextMatchUp.sides.find((side) => side.participant)?.participant
+        ?.person?.sex;
     const matchUpType = inContextMatchUp.matchUpType;
+    const gender = inContextMatchUp.gender;
+
     const allParticipants = inContextMatchUp.sides
       .flatMap(
         (side) => side.participant?.individualParticipants || side.participant
@@ -430,7 +450,15 @@ export function matchUpActions({
     const availableIndividualParticipants = inContextDualMatchUp.sides.map(
       (side) =>
         side.participant.individualParticipants.filter(
-          ({ participantId }) => !existingParticipantIds.includes(participantId)
+          ({ participantId, person }) =>
+            !existingParticipantIds.includes(participantId) &&
+            (!gender ||
+              gender === ANY ||
+              person.sex === gender ||
+              // case where one gendered member has been assigned
+              (gender === MIXED &&
+                assignedGender &&
+                person.sex !== assignedGender))
         )
     );
 

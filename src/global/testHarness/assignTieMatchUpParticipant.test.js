@@ -56,36 +56,39 @@ it('assignMatchUpParticipantId will remove prior assignments', () => {
   const lineUps = matchUp.sides.map(({ lineUp }) => lineUp);
   const originalLineUp = lineUps[1];
 
+  const tieMatchUpId = '9e3b56a2-69a5-45ce-b363-c3d67c5a5d26';
+  const drawId = 'b64103e5-7e63-4a9f-a62c-8569b0a2fcae';
+
   let params = {
-    drawId: 'b64103e5-7e63-4a9f-a62c-8569b0a2fcae',
     participantId: 'A84C3E42-C60C-4772-BEAF-135E313CB90B',
-    tieMatchUpId: '9e3b56a2-69a5-45ce-b363-c3d67c5a5d26',
+    tieMatchUpId,
+    drawId,
   };
 
   result = tournamentEngine.assignTieMatchUpParticipantId(params);
   expect(originalLineUp).not.toEqual(result.modifiedLineUp);
 
   params = {
-    drawId: 'b64103e5-7e63-4a9f-a62c-8569b0a2fcae',
     participantId: '24641B6A-6EFB-4599-8052-802576F8F332',
-    tieMatchUpId: '9e3b56a2-69a5-45ce-b363-c3d67c5a5d26',
+    tieMatchUpId,
+    drawId,
   };
   result = tournamentEngine.assignTieMatchUpParticipantId(params);
   expect(originalLineUp).not.toEqual(result.modifiedLineUp);
 
   params = {
-    drawId: 'b64103e5-7e63-4a9f-a62c-8569b0a2fcae',
     participantId: '51FC341B-506B-4598-9880-AF7A9F4B8243',
-    tieMatchUpId: '9e3b56a2-69a5-45ce-b363-c3d67c5a5d26',
+    tieMatchUpId,
+    drawId,
   };
 
   result = tournamentEngine.assignTieMatchUpParticipantId(params);
   expect(originalLineUp).not.toEqual(result.modifiedLineUp);
 
   params = {
-    drawId: 'b64103e5-7e63-4a9f-a62c-8569b0a2fcae',
     participantId: '24641B6A-6EFB-4599-8052-802576F8F332',
-    tieMatchUpId: '9e3b56a2-69a5-45ce-b363-c3d67c5a5d26',
+    tieMatchUpId,
+    drawId,
   };
   result = tournamentEngine.assignTieMatchUpParticipantId(params);
   expect(originalLineUp).not.toEqual(result.modifiedLineUp);

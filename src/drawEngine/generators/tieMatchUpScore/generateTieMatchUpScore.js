@@ -1,6 +1,6 @@
+import { resolveTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { validateTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/tieFormatUtilities';
 import { tallyParticipantResults } from '../../../matchUpEngine/getters/roundRobinTally/roundRobinTally';
-import { getTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { evaluateCollectionResult } from './evaluateCollectionResult';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
@@ -43,8 +43,8 @@ export function generateTieMatchUpScore({
 
   if (!matchUp) return { error: MISSING_MATCHUP };
   tieFormat =
-    getTieFormat({ matchUp, drawDefinition, structure, event })?.tieFormat ||
-    tieFormat;
+    resolveTieFormat({ matchUp, drawDefinition, structure, event })
+      ?.tieFormat || tieFormat;
 
   if (!tieFormat) return { error: MISSING_TIE_FORMAT };
 

@@ -43,7 +43,7 @@ export function removeCollectionGroup({
 
   const { structure } = result;
   matchUp = matchUp || result.matchUp;
-  const existingTieFormat = result.tieFormat || matchUp?.tieFormat;
+  const existingTieFormat = result.tieFormat;
   const originalValueGoal = existingTieFormat.winCriteria.valueGoal;
   const wasAggregateValue = existingTieFormat.winCriteria.aggregateValue;
   const tieFormat = copyTieFormat(existingTieFormat);

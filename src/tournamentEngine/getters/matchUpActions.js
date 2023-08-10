@@ -16,6 +16,10 @@ import {
  * @param {string} drawId - if provided then drawDefinition will be found automatically
  * @param {object} drawDefinition
  * @param {string} matchUpId - id of matchUp for which validActions will be returned
+ * @param {object=} policyDefinitions
+ * @param {string=} participantId
+ * @param {number=} sideNumber
+ * @param {object=} event
  *
  */
 export function matchUpActions({
@@ -62,6 +66,7 @@ export function matchUpActions({
       sideNumber,
       matchUpId,
       drawId,
+      event,
     });
   } else {
     return { error: DRAW_DEFINITION_NOT_FOUND };
