@@ -1,5 +1,6 @@
 import { getMatchUpCompetitiveness } from '../../../tournamentEngine/getters/getMatchUpCompetitiveness';
 import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/getMatchUpScheduleDetails';
+import { getTieFormat } from '../../../matchUpEngine/governors/tieFormatGovernor/getTieFormat';
 import { getDrawPositionCollectionAssignment } from './getDrawPositionCollectionAssignment';
 import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { getCollectionPositionMatchUps } from '../../accessors/matchUpAccessor/matchUps';
@@ -281,7 +282,7 @@ export function getAllStructureMatchUps({
     ({ roundMatchUps } = getRoundMatchUps({ matchUps }));
   }
 
-  if (structure.tieFormat || drawDefinition?.tieFormat || event?.tieFormat) {
+  if (getTieFormat({ drawDefinition, structure, event })?.tieFormat) {
     ({ collectionPositionMatchUps } = getCollectionPositionMatchUps({
       matchUps,
     }));
@@ -307,12 +308,12 @@ export function getAllStructureMatchUps({
     matchUp,
     event,
   }) {
-    const tieFormat =
-      matchUp.tieFormat ||
-      structure.tieFormat ||
-      drawDefinition?.tieFormat ||
-      event?.tieFormat ||
-      undefined;
+    const tieFormat = getTieFormat({
+      drawDefinition,
+      structure,
+      matchUp,
+      event,
+    })?.tieFormat;
 
     const collectionDefinitions = tieFormat?.collectionDefinitions;
     const collectionDefinition =
