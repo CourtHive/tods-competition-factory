@@ -1,3 +1,4 @@
+import { resolveTieFormat } from '../../matchUpEngine/governors/tieFormatGovernor/getTieFormat/resolveTieFormat';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { findStructure } from '../../drawEngine/getters/findStructure';
 import { findMatchUp } from './matchUpsGetter/findMatchUp';
@@ -53,15 +54,23 @@ export function getTieFormat({
     structure = structureResult.structure;
   }
 
-  const structureDefaultTieFormat = structure?.tieFormat;
-  const drawDefaultTieFormat = drawDefinition?.tieFormat;
-  const eventDefaultTieFormat = event?.tieFormat;
-  const tieFormat =
-    matchUpResult?.matchUp?.tieFormat ||
-    structureDefaultTieFormat ||
-    drawDefaultTieFormat ||
-    eventDefaultTieFormat ||
-    undefined;
+  const structureDefaultTieFormat =
+    (structure?.tieFormat || structure?.tieFormatId) &&
+    resolveTieFormat({ structure, drawDefinition, event })?.tieFormat;
+  const drawDefaultTieFormat =
+    (drawDefinition?.tieFormat || drawDefinition?.tieFormatId) &&
+    resolveTieFormat({
+      drawDefinition,
+      event,
+    })?.tieFormat;
+  const eventDefaultTieFormat = resolveTieFormat({ event })?.tieFormat;
+
+  const tieFormat = resolveTieFormat({
+    matchUp: matchUpResult?.matchUp,
+    drawDefinition,
+    structure,
+    event,
+  })?.tieFormat;
 
   return {
     ...SUCCESS,
