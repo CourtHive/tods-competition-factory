@@ -4,15 +4,20 @@ function getInt(value) {
   return parseInt(value);
 }
 
-export function validTimePeriod({ startTime, endTime } = {}) {
-  if (!timeValidation.test(startTime) || !timeValidation.test(endTime))
+export function validTimePeriod({ startTime = '', endTime = '' } = {}) {
+  if (
+    !startTime ||
+    !endTime ||
+    !timeValidation.test(startTime) ||
+    !timeValidation.test(endTime)
+  )
     return false;
 
   const [startHour, startMinute] = startTime.split(':').map(getInt);
   const [endHour, endMinute] = endTime.split(':').map(getInt);
 
   if (endHour < startHour) return false;
-  return (startHour === endHour && endMinute < startMinute) ? false : true;
+  return startHour === endHour && endMinute < startMinute ? false : true;
 }
 
 export function startTimeSort(a, b) {
