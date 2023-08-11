@@ -1325,10 +1325,10 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
-"@braintree/sanitize-url@^6.0.2":
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/@braintree/sanitize-url/-/sanitize-url-6.0.2.tgz#6110f918d273fe2af8ea1c4398a88774bb9fc12f"
-  integrity sha512-Tbsj02wXCbqGmzdnXNk0SOF19ChhRU70BsroIi4Pm6Ehp56in6vch94mfbdQ17DozxkL3BAVjbZ4Qc1a0HFRAg==
+"@braintree/sanitize-url@^6.0.1":
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/@braintree/sanitize-url/-/sanitize-url-6.0.4.tgz#923ca57e173c6b232bbbb07347b1be982f03e783"
+  integrity sha512-s3jaWicZd0pkP0jf5ysyHUI/RE7MHos6qlToFcGWXVp+ykHOy77OUMrfbgJ9it2C5bow7OIQwYYaHjk9XlBQ2A==
 
 "@cmfcmf/docusaurus-search-local@^1.1.0":
   version "1.1.0"
@@ -3660,9 +3660,9 @@ cosmiconfig@^7.0.0, cosmiconfig@^7.0.1:
     yaml "^1.10.0"
 
 courthive-components@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/courthive-components/-/courthive-components-0.2.4.tgz#7e4adb5270bb257221bd1bc201a32b792c86246f"
-  integrity sha512-7wJ3/92Tmiqb4epaJHPmjFQx5Yp2voW3vQws5SayKsE0E647PjEWpLAVNYvH+beqU2xrRGNYSeEjXIiwADG2CQ==
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/courthive-components/-/courthive-components-0.2.6.tgz#d0d67ca3c386c3e69878ecba4952a86b6a46635a"
+  integrity sha512-nJAMR3UkdgjFFDVcH92pWukEi5TE+eid9nVTioLrSj1QlvnQp1tx+hSZJI5OZceukZooBFoi4V7f/yAZItetEQ==
   dependencies:
     "@stitches/core" "^1.2.8"
     bulma "^0.9.4"
@@ -4401,7 +4401,7 @@ domhandler@^5.0.1, domhandler@^5.0.2, domhandler@^5.0.3:
   dependencies:
     domelementtype "^2.3.0"
 
-dompurify@3.0.5:
+dompurify@^3.0.5:
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.0.5.tgz#eb3d9cfa10037b6e73f32c586682c4b2ab01fbed"
   integrity sha512-F9e6wPGtY+8KNMRAVfxeCOHU0/NPWMSENNq4pQctuXRqqdEPW7q3CrLbR5Nse044WwacyjHGOMlvNsBe1y6z9A==
@@ -6492,12 +6492,12 @@ merge2@^1.3.0, merge2@^1.4.1:
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
 
-mermaid@10.3.0:
-  version "10.3.0"
-  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-10.3.0.tgz#45c1399fc8b95818822cbbd7b03a6093d15685a9"
-  integrity sha512-H5quxuQjwXC8M1WuuzhAp2TdqGg74t5skfDBrNKJ7dt3z8Wprl5S6h9VJsRhoBUTSs1TMtHEdplLhCqXleZZLw==
+mermaid@10.3.1:
+  version "10.3.1"
+  resolved "https://registry.yarnpkg.com/mermaid/-/mermaid-10.3.1.tgz#2f3c7e9f6bd7a8da2bef71cce2a542c8eba2a62e"
+  integrity sha512-hkenh7WkuRWPcob3oJtrN3W+yzrrIYuWF1OIfk/d0xGE8UWlvDhfexaHmDwwe8DKQgqMLI8DWEPwGprxkumjuw==
   dependencies:
-    "@braintree/sanitize-url" "^6.0.2"
+    "@braintree/sanitize-url" "^6.0.1"
     "@types/d3-scale" "^4.0.3"
     "@types/d3-scale-chromatic" "^3.0.0"
     cytoscape "^3.23.0"
@@ -6507,7 +6507,7 @@ mermaid@10.3.0:
     d3-sankey "^0.12.3"
     dagre-d3-es "7.0.10"
     dayjs "^1.11.7"
-    dompurify "3.0.5"
+    dompurify "^3.0.5"
     elkjs "^0.8.2"
     khroma "^2.0.0"
     lodash-es "^4.17.21"
@@ -9098,7 +9098,12 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-tods-competition-factory@1.4.1, tods-competition-factory@^1.2.32:
+tods-competition-factory@1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.4.3.tgz#5d5535fc1e095cd1095fc7030f95798794900730"
+  integrity sha512-3ZL0IYzCtda+q6r6aGOkkxXi6Cri5Hj/vbAbsSwEB641g1/SALkEm+vBqERmW2Nc5wsKD27tJhVkyGXVxueRAw==
+
+tods-competition-factory@^1.2.32:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.4.1.tgz#55d62ec1552cef842cb350086078a75bcada30ed"
   integrity sha512-HACZTvckG6ajqyxfxzhTEmkbWHKsffH0Nh347Ib5XuT+UscNSSkFJS1hsWQ+VcjlC52rVyuqwZqf8YrcAajpnA==

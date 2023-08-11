@@ -8,7 +8,6 @@ import {
 import React from 'react';
 
 const DrawType = ({ drawType, drawSize = 8 }) => {
-  console.log('boo');
   const drawProfile = {
     seedsCount: 4,
     drawType,

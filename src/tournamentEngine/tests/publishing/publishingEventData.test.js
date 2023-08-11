@@ -3,6 +3,7 @@ import tournamentEngine from '../../sync';
 import { expect, it } from 'vitest';
 
 import PARTICIPANT_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
@@ -21,6 +22,18 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   WATERFALL,
 } from '../../../constants/drawDefinitionConstants';
+
+const startDate = '2021-01-01';
+const endDate = '2021-01-02';
+
+const court1 = {
+  courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
+  courtName: 'Custom Court 1',
+};
+const court2 = {
+  courtId: '886068ac-c176-4cd6-be96-768fa895d0c1',
+  courtName: 'Custom Court 2',
+};
 
 it('can generate payload for publishing a Round Robin with Playoffs', () => {
   const drawSize = 16;
@@ -63,34 +76,32 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
     venueAbbreviation,
     courts: [
       {
-        courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
-        courtName: 'Custom Court 1',
+        ...court1,
         dateAvailability: [
           {
-            date: '2021-01-01',
             startTime: '16:30',
             endTime: '17:30',
+            date: startDate,
           },
           {
-            date: '2021-01-02',
             startTime: '16:30',
             endTime: '17:30',
+            date: endDate,
           },
         ],
       },
       {
-        courtId: '886068ac-c176-4cd6-be96-768fa895d0c1',
-        courtName: 'Custom Court 2',
+        ...court2,
         dateAvailability: [
           {
-            date: '2021-01-01',
             startTime: '16:30',
             endTime: '17:30',
+            date: startDate,
           },
           {
-            date: '2021-01-02',
             startTime: '16:30',
             endTime: '17:30',
+            date: endDate,
           },
         ],
       },
@@ -111,7 +122,7 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
-  const matchUpFormat = 'SET3-S:6/TB7';
+  const matchUpFormat = FORMAT_STANDARD;
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     seedingProfile: { positioning: WATERFALL },
     structureOptions,
@@ -240,34 +251,32 @@ it('can generate payload for publishing a compass draw', () => {
     venueAbbreviation,
     courts: [
       {
-        courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
-        courtName: 'Custom Court 1',
+        ...court1,
         dateAvailability: [
           {
-            date: '2021-01-01',
             startTime: '16:30',
             endTime: '17:30',
+            date: startDate,
           },
           {
-            date: '2021-01-02',
             startTime: '16:30',
             endTime: '17:30',
+            date: endDate,
           },
         ],
       },
       {
-        courtId: '886068ac-c176-4cd6-be96-768fa895d0c1',
-        courtName: 'Custom Court 2',
+        ...court2,
         dateAvailability: [
           {
-            date: '2021-01-01',
             startTime: '16:30',
             endTime: '17:30',
+            date: startDate,
           },
           {
-            date: '2021-01-02',
             startTime: '16:30',
             endTime: '17:30',
+            date: endDate,
           },
         ],
       },
@@ -373,32 +382,30 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
     venueAbbreviation,
     courts: [
       {
-        courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
-        courtName: 'Custom Court 1',
+        ...court1,
         dateAvailability: [
           {
-            date: '2021-01-01',
+            date: startDate,
             startTime: '16:30',
             endTime: '17:30',
           },
           {
-            date: '2021-01-02',
+            date: endDate,
             startTime: '16:30',
             endTime: '17:30',
           },
         ],
       },
       {
-        courtId: '886068ac-c176-4cd6-be96-768fa895d0c1',
-        courtName: 'Custom Court 2',
+        ...court2,
         dateAvailability: [
           {
-            date: '2021-01-01',
+            date: startDate,
             startTime: '16:30',
             endTime: '17:30',
           },
           {
-            date: '2021-01-02',
+            date: endDate,
             startTime: '16:30',
             endTime: '17:30',
           },

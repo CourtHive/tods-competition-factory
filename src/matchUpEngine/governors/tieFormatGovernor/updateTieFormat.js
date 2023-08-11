@@ -109,7 +109,10 @@ export function updateTieFormat({
     // attaching a tieFormat to the structure must ensure that affected TEAM matchUps within the structure all have appropriate tieMatchUps
     // therefore those that fail to match the modified tieFormat MUST have an appropriate tieFormat attached from higher in the hierarchy
     const inheritedTieFormat = drawDefaultTieFormat || eventDefaultTieFormat;
-    const modified = processStructure({ inheritedTieFormat, structure });
+    const modified = processStructure({
+      inheritedTieFormat,
+      structure,
+    })?.modifiedCount;
     modifiedStructuresCount += modified;
 
     structure.tieFormat = tieFormat;
@@ -135,7 +138,10 @@ export function updateTieFormat({
       // if a sub-structure has a tieFormat then setting drawDefinition.tieFormat will have no effect
       if (structure.tieFormat) continue;
       const inheritedTieFormat = eventDefaultTieFormat;
-      const modifiedCount = processStructure({ inheritedTieFormat, structure });
+      const modifiedCount = processStructure({
+        inheritedTieFormat,
+        structure,
+      })?.modifiedCount;
       if (modifiedCount) {
         modifiedStructuresCount += modifiedCount;
         modifiedStructureIds.push(structure.structureId);
@@ -204,6 +210,6 @@ export function updateTieFormat({
       }
     }
 
-    return modifiedCount;
+    return { modifiedCount };
   }
 }

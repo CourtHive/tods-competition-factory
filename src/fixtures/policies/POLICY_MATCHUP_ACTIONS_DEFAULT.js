@@ -15,6 +15,10 @@ export const POLICY_MATCHUP_ACTIONS_DEFAULT = {
       },
     ],
 
+    participants: {
+      enforceGender: true, // disallow placing FEMALEs in MALE events and vice versa
+    },
+
     processCodes: {
       substitution: ['RANKING.IGNORE', 'RATING.IGNORE'],
     },
