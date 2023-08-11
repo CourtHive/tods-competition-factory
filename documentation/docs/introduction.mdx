@@ -3,6 +3,7 @@ title: Introduction
 slug: /
 ---
 
+import BrowserOnly from '@docusaurus/BrowserOnly';
 import DrawType from './components/DrawType';
 
 ## Tournament Business Rules
@@ -14,7 +15,7 @@ The rules governing the creation of draws, seeding, and participant movement can
 An entire tournament management solution [can run in a browser](https://courthive.github.io/TMX), or a client can communicate with a server which utilizes a database, or simply the file system.
 Server deployments support highly scaleable asynchronous processing models in **Node.js**.
 
-<DrawType drawSize={4} />
+<BrowserOnly>{() => <DrawType drawSize={4} />}</BrowserOnly>
 
 ## Data Standards
 

@@ -137,7 +137,6 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     START,
     END,
     REMOVE_PARTICIPANT,
-    REPLACE_PARTICIPANT,
   ]);
 
   // add an incomplete outcome and confirm SUBSTITUTION for SINGLES_MATCHUP
@@ -165,7 +164,6 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     SCORE,
     START,
     END,
-    REPLACE_PARTICIPANT,
     SUBSTITUTION,
   ]);
 });
