@@ -511,7 +511,7 @@ export function matchUpActions({
     }
 
     if (
-      // isInComplete && // TODO: determin whether removal should be disallowed for completed matchUps => policy consideration?
+      // isInComplete && // TODO: determine whether removal should be disallowed for completed matchUps => policy consideration?
       existingParticipantIds?.length &&
       (!scoreHasValue(matchUp) || side?.substitutions?.length)
     ) {
@@ -527,8 +527,9 @@ export function matchUpActions({
       });
     }
     if (
-      (!sideNumber && existingParticipantIds?.length) ||
-      (sideNumber && side?.participant)
+      available?.length &&
+      ((!sideNumber && existingParticipantIds?.length) ||
+        (sideNumber && side?.participant))
     ) {
       validActions.push({
         availableParticipantIds: availableIds,

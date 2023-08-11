@@ -209,7 +209,6 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     START,
     END,
     REMOVE_PARTICIPANT,
-    REPLACE_PARTICIPANT,
   ]);
 
   result = tournamentEngine.matchUpActions({
@@ -272,7 +271,6 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     SCORE,
     START,
     END,
-    REPLACE_PARTICIPANT,
     SUBSTITUTION,
   ]);
 
@@ -320,7 +318,6 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     START,
     END,
     REMOVE_PARTICIPANT,
-    REPLACE_PARTICIPANT,
   ]);
 
   result = tournamentEngine.matchUpActions({
@@ -342,7 +339,6 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     START,
     END,
     REMOVE_PARTICIPANT,
-    REPLACE_PARTICIPANT,
     SUBSTITUTION,
   ]);
 
@@ -367,7 +363,6 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     SCORE,
     START,
     END,
-    REPLACE_PARTICIPANT,
     SUBSTITUTION,
   ]);
 
