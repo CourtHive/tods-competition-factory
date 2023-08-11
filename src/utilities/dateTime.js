@@ -53,7 +53,7 @@ export function HHMMSS(s, format) {
   const minutes = Math.floor((secondNumber - hours * 3600) / 60);
   const seconds = secondNumber - hours * 3600 - minutes * 60;
 
-  const displaySeconds = !format || (format && format.displaySeconds);
+  const displaySeconds = !format || format?.displaySeconds;
   const timeString = displaySeconds
     ? hours + ':' + minutes + ':' + seconds
     : hours + ':' + minutes;
@@ -82,7 +82,7 @@ export function timeUTC(date) {
 
 export function localizeDate(submittedDate, dateLocalization, locale) {
   const date = new Date(submittedDate);
-  if (!isDate(date)) return false;
+  if (!isDate(date)) return undefined;
   const defaultLocalization = {
     weekday: 'long',
     year: 'numeric',
@@ -143,20 +143,21 @@ export function dateRange(startDt, endDt) {
   const endDateString = extractDate(endDt) + 'T00:00';
   const startDate = new Date(startDateString);
   const endDate = new Date(endDateString);
-  const error =
-    isDate(endDate) && isDate(startDate) && isValidDateRange(startDate, endDate)
-      ? false
-      : true;
+  const process =
+    isDate(endDate) &&
+    isDate(startDate) &&
+    isValidDateRange(startDate, endDate);
   const between = [];
   let iterations = 0;
 
-  if (!error) {
+  if (process) {
     const currentDate = startDate;
-    while (currentDate <= endDate && iterations < 300) {
+    let dateSecs = currentDate.getTime();
+    while (dateSecs <= endDate.getTime() && iterations < 300) {
       iterations += 1;
       // must be a *new* Date otherwise it is an array of the same object
       between.push(new Date(currentDate));
-      currentDate.setDate(currentDate.getDate() + 1);
+      dateSecs = currentDate.setDate(currentDate.getDate() + 1);
     }
   }
 
@@ -180,12 +181,12 @@ function isTimeString(timeString) {
   const noZ = timeString.split('Z')[0];
   const parts = noZ.split(':');
   const isNumeric = parts.every((part) => !isNaN(part));
-  return parts.length < 2 ||
+  const invalid =
+    parts.length < 2 ||
     !isNumeric ||
     parseInt(parts[0]) > 23 ||
-    parseInt(parts[1]) > 60
-    ? false
-    : true;
+    parseInt(parts[1]) > 60;
+  return !invalid;
 }
 
 export function timeStringMinutes(timeString) {

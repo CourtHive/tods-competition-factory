@@ -19,7 +19,7 @@ export function getAccessorValue({ element, accessor }) {
     significantCharacters,
   }) {
     for (const [index, attribute] of attributes.entries()) {
-      if (targetElement && targetElement[attribute]) {
+      if (targetElement?.[attribute]) {
         if (Array.isArray(targetElement[attribute])) {
           const values = targetElement[attribute];
           const remainingKeys = attributes.slice(index);

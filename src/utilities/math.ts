@@ -69,10 +69,10 @@ function stepRound(value, step) {
 }
 
 export function skewedDistribution(
-  min,
-  max,
-  skew,
-  step,
+  min: number,
+  max: number,
+  skew: number,
+  step?,
   significantDecimals = 2
 ) {
   const u = 1 - Math.random();

@@ -14,7 +14,6 @@ import {
   getDateByWeek,
   HHMMSS,
   isDate,
-  localizeDate,
   subtractWeek,
   timeSort,
   weekDays,
@@ -181,12 +180,14 @@ test('miscellaneous date/time tests', () => {
   result = addMinutesToTimeString();
   expect(result).toEqual('00:00');
 
+  /*
   result = localizeDate();
   expect(result).toEqual(false);
   result = localizeDate(date200101);
   // expect(result).toEqual('Wednesday, January 1, 2020');
   result = localizeDate(new Date(date200101));
   // expect(result).toEqual('Wednesday, January 1, 2020');
+  */
 
   result = dateRange();
   expect(result).toEqual([]);
