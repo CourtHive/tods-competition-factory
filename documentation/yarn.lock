@@ -3660,9 +3660,9 @@ cosmiconfig@^7.0.0, cosmiconfig@^7.0.1:
     yaml "^1.10.0"
 
 courthive-components@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/courthive-components/-/courthive-components-0.2.4.tgz#7e4adb5270bb257221bd1bc201a32b792c86246f"
-  integrity sha512-7wJ3/92Tmiqb4epaJHPmjFQx5Yp2voW3vQws5SayKsE0E647PjEWpLAVNYvH+beqU2xrRGNYSeEjXIiwADG2CQ==
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/courthive-components/-/courthive-components-0.2.6.tgz#d0d67ca3c386c3e69878ecba4952a86b6a46635a"
+  integrity sha512-nJAMR3UkdgjFFDVcH92pWukEi5TE+eid9nVTioLrSj1QlvnQp1tx+hSZJI5OZceukZooBFoi4V7f/yAZItetEQ==
   dependencies:
     "@stitches/core" "^1.2.8"
     bulma "^0.9.4"
