@@ -1,4 +1,5 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
+import { getAppliedPolicies } from '../../../global/functions/deducers/getAppliedPolicies';
 import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { deleteParticipants } from '../participantGovernor/deleteParticipants';
@@ -12,6 +13,8 @@ import { getTeamLineUp } from './drawDefinitions/getTeamLineUp';
 import { getTieMatchUpContext } from './getTieMatchUpContext';
 import { makeDeepCopy, overlap } from '../../../utilities';
 
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
@@ -46,7 +49,7 @@ export function assignTieMatchUpParticipantId(params) {
   const stack = 'assignTieMatchUpParticipantId';
 
   let teamParticipantId = params.teamParticipantId;
-  const { tournamentRecord, drawDefinition, participantId } = params;
+  const { tournamentRecord, drawDefinition, participantId, event } = params;
 
   if (!participantId) {
     return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
@@ -97,7 +100,18 @@ export function assignTieMatchUpParticipantId(params) {
     return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
   }
 
+  const { appliedPolicies } = getAppliedPolicies({
+    tournamentRecord,
+    drawDefinition,
+    event,
+  });
+
+  const matchUpActionsPolicy =
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
+    POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
+
   if (
+    matchUpActionsPolicy?.participants?.enforceGender &&
     [MALE, FEMALE].includes(inContextTieMatchUp.gender) &&
     inContextTieMatchUp.gender !== participantToAssign.person?.sex
   ) {

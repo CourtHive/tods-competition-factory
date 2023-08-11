@@ -14,6 +14,9 @@ import {
   timeSort,
 } from '../dateTime';
 
+const date200101 = '2020-01-01';
+const date201001 = '2020-10-01';
+
 it('extracts time properly', () => {
   let time = extractTime('2001-01-01T10:00');
   expect(time).toEqual('10:00');
@@ -24,9 +27,9 @@ it('extracts time properly', () => {
 });
 
 test('dateRange reliably generates a range', () => {
-  let result = dateRange('2020-01-01', '2020-01-04');
+  let result = dateRange(date200101, '2020-01-04');
   expect(result).toEqual([
-    '2020-01-01',
+    date200101,
     '2020-01-02',
     '2020-01-03',
     '2020-01-04',
@@ -54,17 +57,17 @@ test('functions with bad data', () => {
   expect(result).toEqual('01:00');
   result = militaryTime('1:00 pm');
   expect(result).toEqual('13:00');
-  result = getUTCdateString(new Date('2020-10-01'));
-  expect(result).toEqual('2020-10-01');
-  result = getUTCdateString('2020-10-01');
-  expect(result).toEqual('2020-10-01');
+  result = getUTCdateString(new Date(date201001));
+  expect(result).toEqual(date201001);
+  result = getUTCdateString(date201001);
+  expect(result).toEqual(date201001);
   result = getUTCdateString(new Date('2020-09-01'));
   expect(result).toEqual('2020-09-01');
   result = timeUTC();
   expect(!isNaN(result)).toEqual(true);
-  result = timeUTC('2020-01-01');
+  result = timeUTC(date200101);
   expect(!isNaN(result)).toEqual(true);
-  result = timeUTC(new Date('2020-01-01'));
+  result = timeUTC(new Date(date200101));
   expect(!isNaN(result)).toEqual(true);
 });
 

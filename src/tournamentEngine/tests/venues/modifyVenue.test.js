@@ -15,10 +15,23 @@ import {
   VENUE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
+const court1 = {
+  courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
+  courtName: 'Custom Court 1',
+};
+const court2 = {
+  courtId: '886068ac-c176-4cd6-be96-768fa895d0c1',
+  courtName: 'Custom Court 2',
+};
+
+const startDate = '2021-01-01';
+const midDate = '2021-01-02';
+const endDate = '2021-01-03';
+
 it('can define and modify a venue', () => {
   let result = tournamentEngine.newTournamentRecord({
-    startDate: '2021-01-01',
-    endDate: '2021-01-03',
+    startDate,
+    endDate,
   });
   expect(result.success).toEqual(true);
 
@@ -38,8 +51,7 @@ it('can define and modify a venue', () => {
     venueAbbreviation,
     courts: [
       {
-        courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
-        courtName: 'Custom Court 1',
+        ...court1,
         dateAvailability: [
           {
             startTime: '04:30 pm',
@@ -68,32 +80,30 @@ it('can define and modify a venue', () => {
     venueAbbreviation,
     courts: [
       {
-        courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
-        courtName: 'Custom Court 1',
+        ...court1,
         dateAvailability: [
           {
-            date: '2021-01-01',
             startTime: '16:30',
             endTime: '17:30',
+            date: startDate,
           },
           {
-            date: '2021-01-02',
             startTime: '16:30',
             endTime: '17:30',
+            date: midDate,
           },
         ],
       },
       {
-        courtId: '886068ac-c176-4cd6-be96-768fa895d0c1',
-        courtName: 'Custom Court 2',
+        ...court2,
         dateAvailability: [
           {
-            date: '2021-01-01',
+            date: startDate,
             startTime: '16:30',
             endTime: '17:30',
           },
           {
-            date: '2021-01-02',
+            date: midDate,
             startTime: '16:30',
             endTime: '17:30',
           },
@@ -110,18 +120,17 @@ it('can define and modify a venue', () => {
   modifications = {
     courts: [
       {
-        courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
-        courtName: 'Custom Court 1',
+        ...court1,
         dateAvailability: [
           {
-            date: '2021-01-01',
             startTime: '16:30',
             endTime: '17:30',
+            date: startDate,
           },
           {
-            date: '2021-01-02',
             startTime: '16:30',
             endTime: '17:30',
+            date: midDate,
           },
         ],
       },
@@ -139,23 +148,22 @@ it('can define and modify a venue', () => {
   modifications = {
     courts: [
       {
-        courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
-        courtName: 'Custom Court 1',
+        ...court1,
         dateAvailability: [
           {
-            date: '2021-01-01',
             startTime: '16:30',
             endTime: '17:30',
+            date: startDate,
           },
           {
-            date: '2021-01-02',
             startTime: '16:30',
             endTime: '17:30',
+            date: midDate,
           },
           {
-            date: '2021-01-03',
             startTime: '16:30',
             endTime: '17:30',
+            date: endDate,
           },
         ],
       },
@@ -173,23 +181,22 @@ it('can define and modify a venue', () => {
   modifications = {
     courts: [
       {
-        courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
-        courtName: 'Custom Court 1',
+        ...court1,
         dateAvailability: [
           {
-            date: '2021-01-01',
             startTime: '08:30',
             endTime: '12:30',
+            date: startDate,
           },
           {
-            date: '2021-01-01',
             startTime: '13:30',
             endTime: '15:30',
+            date: startDate,
           },
           {
-            date: '2021-01-01',
             startTime: '16:30',
             endTime: '18:30',
+            date: startDate,
           },
         ],
       },
@@ -222,30 +229,29 @@ it('can define and modify a venue', () => {
         courtName: 'Custom Court 1',
         dateAvailability: [
           {
-            date: '2021-01-01',
             startTime: '16:30',
             endTime: '17:30',
+            date: startDate,
           },
           {
-            date: '2021-01-02',
             startTime: '16:30',
             endTime: '17:30',
+            date: midDate,
           },
         ],
       },
       {
-        courtId: '886068ac-c176-4cd6-be96-768fa895d0c1',
-        courtName: 'Custom Court 2',
+        ...court2,
         dateAvailability: [
           {
-            date: '2021-01-01',
             startTime: '16:30',
             endTime: '17:30',
+            date: startDate,
           },
           {
-            date: '2021-01-02',
             startTime: '16:30',
             endTime: '17:30',
+            date: midDate,
           },
         ],
       },
@@ -284,10 +290,10 @@ it('can define and modify a venue', () => {
   });
   expect(result.error).toEqual(INVALID_DATE_AVAILABILITY);
 
-  const { startDate, endDate } =
+  const { startDate: sd, endDate: ed } =
     tournamentEngine.getTournamentInfo().tournamentInfo;
-  expect(startDate).toEqual('2021-01-01');
-  expect(endDate).toEqual('2021-01-03');
+  expect(startDate).toEqual(sd);
+  expect(endDate).toEqual(ed);
 
   // dateAvailability does not have to be within tournament dates
   result = tournamentEngine.modifyCourtAvailability({

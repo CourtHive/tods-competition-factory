@@ -20,6 +20,7 @@ import {
   MATCHUP_ACTION,
 } from './positionActions/actionPolicyUtils';
 
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { ANY, MIXED } from '../../../constants/genderConstants';
 import {
@@ -130,6 +131,10 @@ export function matchUpActions({
   });
 
   Object.assign(appliedPolicies, specifiedPolicyDefinitions || {});
+
+  const matchUpActionsPolicy =
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
+    POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
 
   const { enabledStructures } = getEnabledStructures({
     actionType: MATCHUP_ACTION,
@@ -427,7 +432,9 @@ export function matchUpActions({
       inContextMatchUp.sides.find((side) => side.participant)?.participant
         ?.person?.sex;
     const matchUpType = inContextMatchUp.matchUpType;
-    const gender = inContextMatchUp.gender;
+    const gender = matchUpActionsPolicy?.participants?.enforceGender
+      ? inContextMatchUp.gender
+      : undefined;
 
     const allParticipants = inContextMatchUp.sides
       .flatMap(

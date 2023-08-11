@@ -13,6 +13,7 @@ import { makeDeepCopy } from '../../../utilities';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
+import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { LINEUPS } from '../../../constants/extensionConstants';
 import { PAIR } from '../../../constants/participantConstants';
@@ -20,6 +21,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 import {
   EXISTING_PARTICIPANT,
+  INVALID_PARTICIPANT,
   INVALID_PARTICIPANT_TYPE,
   MISSING_PARTICIPANT_ID,
   NOT_FOUND,
@@ -94,6 +96,17 @@ export function replaceTieMatchUpParticipantId(params) {
   const matchUpActionsPolicy =
     appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ||
     POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
+
+  const newParticipant = targetParticipants.find(
+    ({ participantId }) => participantId === newParticipantId
+  );
+  if (
+    matchUpActionsPolicy?.participants?.enforceGender &&
+    [MALE, FEMALE].includes(inContextTieMatchUp.gender) &&
+    inContextTieMatchUp.gender !== newParticipant.person?.sex
+  ) {
+    return { error: INVALID_PARTICIPANT, info: 'Gender mismatch' };
+  }
 
   const substitutionProcessCodes =
     matchUpActionsPolicy?.processCodes?.substitution;
