@@ -1,15 +1,15 @@
 import { getDevContext } from '../state/globalState';
 import { logColors } from './logColors';
 
-const globalLog = [];
+const globalLog: any[] = [];
 
-export function pushGlobalLog(value, devContextOverride) {
+export function pushGlobalLog(value: any, devContextOverride) {
   if (typeof value === 'string') value = { method: value };
   if (devContextOverride || getDevContext()) globalLog.push(value);
 }
 
-export function popGlobalLog(value) {
-  return globalLog.pop(value);
+export function popGlobalLog() {
+  return globalLog.pop();
 }
 
 export function getGlobalLog(purge) {

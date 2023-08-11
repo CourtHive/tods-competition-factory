@@ -4,11 +4,19 @@ import { isNumeric } from '../../utilities/math';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 
+import { Category } from '../../types/tournamentFromSchema';
+
 const typeMatch = (arr, type) =>
   arr.filter(Boolean).every((i) => typeof i === type);
 const allNumeric = (arr) => arr.filter(Boolean).every(isNumeric);
 
-export function parseAgeCategoryCode({ consideredDate, category } = {}) {
+type ParseArgs = {
+  consideredDate: string;
+  category?: Category;
+};
+export function parseAgeCategoryCode(
+  { consideredDate, category }: ParseArgs = { consideredDate: '' }
+) {
   const invalid = { error: INVALID_VALUES, ageMin: 8, ageMax: 99 };
   if (typeof category !== 'object' || !isValidDateString(consideredDate))
     return invalid;
@@ -16,17 +24,11 @@ export function parseAgeCategoryCode({ consideredDate, category } = {}) {
   const consideredYear = parseInt(consideredDate.split('-')[0]);
 
   // collect errors; e.g. provided ageMin does not equal calculated ageMin
-  const errors = [];
+  const errors: string[] = [];
 
+  let { ageCategoryCode, ageMaxDate, ageMinDate, ageMax, ageMin } = category;
+  const categoryName = category.categoryName;
   let combinedAge;
-  let {
-    ageCategoryCode,
-    categoryName,
-    ageMaxDate,
-    ageMinDate,
-    ageMax,
-    ageMin,
-  } = category;
 
   if (
     !typeMatch(
@@ -37,12 +39,12 @@ export function parseAgeCategoryCode({ consideredDate, category } = {}) {
   )
     return invalid;
 
-  ageCategoryCode = ageCategoryCode || categoryName;
+  ageCategoryCode = ageCategoryCode ?? categoryName;
 
   const prePost = /^([UO]?)(\d{1,2})([UO]?)$/;
   const extractCombined = /^C(\d{1,2})-(\d{1,2})$/;
 
-  const isBetween = ageCategoryCode?.indexOf('-') > 0;
+  const isBetween = ageCategoryCode?.includes('-');
   const isCombined = isBetween && ageCategoryCode?.match(extractCombined);
   const isCoded = ageCategoryCode?.match(prePost);
 
@@ -97,19 +99,18 @@ export function parseAgeCategoryCode({ consideredDate, category } = {}) {
   };
 
   if (isCombined) {
-    const [lowAge, highAge] = ageCategoryCode
-      .match(extractCombined)
+    const [lowAge, highAge] = (ageCategoryCode?.match(extractCombined) ?? [])
       .slice(1)
       .map((n) => parseInt(n));
     if (lowAge <= highAge) {
-      ageMin = ageMin || lowAge;
-      ageMax = ageMax || highAge;
+      ageMin = ageMin ?? lowAge;
+      ageMax = ageMax ?? highAge;
       combinedAge = true;
     } else {
       errors.push(`Invalid combined age range ${ageCategoryCode}`);
     }
   } else if (isBetween) {
-    ageCategoryCode.split('-').forEach(processCode);
+    ageCategoryCode?.split('-').forEach(processCode);
   } else if (isCoded) {
     processCode(ageCategoryCode);
   }
