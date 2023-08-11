@@ -29,10 +29,8 @@ export const rgbColors = {
   tomato: [255, 99, 71],
 };
 
-/*
-const rgbToHex = (rgb) =>
+export const rgbToHex = (rgb) =>
   rgb.reduce((accum, colorVal) => {
     accum += colorVal.toString(16);
     return accum;
   }, '');
-*/

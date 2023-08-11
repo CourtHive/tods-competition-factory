@@ -1,15 +1,21 @@
 import { makeDeepCopy } from './makeDeepCopy';
 
+type ProcessKeysArgs = {
+  targetElement: any;
+  attributes: string[];
+  significantCharacters?: boolean;
+};
+
 export function getAccessorValue({ element, accessor }) {
   if (typeof accessor !== 'string') return { values: [] };
   const targetElement = makeDeepCopy(element);
   const attributes = accessor.split('.');
 
-  let value,
-    values = [];
+  const values: any[] = [];
+  let value;
   processKeys({ targetElement, attributes });
 
-  const result = { value };
+  const result: any = { value };
   if (values.length) result.values = values;
   return result;
 
@@ -17,9 +23,9 @@ export function getAccessorValue({ element, accessor }) {
     targetElement,
     attributes = [],
     significantCharacters,
-  }) {
+  }: ProcessKeysArgs) {
     for (const [index, attribute] of attributes.entries()) {
-      if (targetElement && targetElement[attribute]) {
+      if (targetElement?.[attribute]) {
         if (Array.isArray(targetElement[attribute])) {
           const values = targetElement[attribute];
           const remainingKeys = attributes.slice(index);

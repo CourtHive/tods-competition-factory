@@ -83,11 +83,6 @@ export function JSON2CSV(arrayOfJSON, config) {
     .filter(Boolean)
     .map((obj) => flattenJSON(obj, keyJoiner));
 
-  /*
-  if (returnFlattenedJSON) {
-    return flattened;
-  }*/
-
   const transformColumns = Object.values(columnTransform).flat();
   if (includeTransformAccessors) columnAccessors.push(...transformColumns);
 
@@ -158,7 +153,7 @@ export function JSON2CSV(arrayOfJSON, config) {
 
   const withDelimiter = (value) => `${delimiter}${value}${delimiter}`;
 
-  const columnValueCounts = [];
+  const columnValueCounts: number[] = [];
   const processRow = (row) => {
     return Object.values(
       tranformedHeaderRow.reduce((columnsMap, columnName, columnIndex) => {
@@ -196,7 +191,7 @@ export function JSON2CSV(arrayOfJSON, config) {
 
   if (indicesToRemove) {
     const purge = (row) =>
-      row.filter((value, index) => !indicesToRemove.includes(index));
+      row.filter((_, index) => !indicesToRemove.includes(index));
     flattenedRows = flattenedRows.map(purge);
     mappedHeaderRow = purge(mappedHeaderRow);
   }
@@ -220,10 +215,10 @@ export function JSON2CSV(arrayOfJSON, config) {
     : rows.join(rowJoiner);
 }
 
-export function flattenJSON(obj, keyJoiner, path = []) {
+export function flattenJSON(obj, keyJoiner: string, path: string[] = []) {
   return (
     typeof obj === 'object' &&
-    Object.keys(obj).reduce((result, key) => {
+    Object.keys(obj).reduce((result, key: string) => {
       if (typeof obj[key] !== 'object') {
         result[path.concat(key).join(keyJoiner)] = obj[key];
         return result;

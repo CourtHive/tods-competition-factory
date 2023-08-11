@@ -114,11 +114,11 @@ function removeDrawPosition({
     (assignment) => assignment.bye
   ).length;
 
-  matchUp.matchUpStatus = matchUpContainsBye
-    ? BYE
-    : [DEFAULTED, WALKOVER].includes(matchUp.matchUpStatus)
-    ? matchUp.matchUpStatus
-    : TO_BE_PLAYED;
+  matchUp.matchUpStatus =
+    (matchUpContainsBye && BYE) ||
+    ([DEFAULTED, WALKOVER].includes(matchUp.matchUpStatus) &&
+      matchUp.matchUpStatus) ||
+    TO_BE_PLAYED;
 
   // if the matchUpStatus is WALKOVER then it is DOUBLE_WALKOVER produced
   // ... and the winningSide must be removed

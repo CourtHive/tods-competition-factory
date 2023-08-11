@@ -29,16 +29,16 @@ function getAttr(o, attr) {
 }
 
 export function definedAttributes(
-  obj,
-  ignoreFalse,
-  ignoreEmptyArrays,
-  shallow
+  obj: object,
+  ignoreFalse?: boolean,
+  ignoreEmptyArrays?: boolean,
+  shallow?: boolean
 ) {
   if (typeof obj !== 'object' || obj === null) return obj;
   const deepCopy = deepCopyEnabled();
   if (!deepCopy?.enabled) shallow = true;
 
-  const ignoreValues = ['', undefined, null];
+  const ignoreValues: any[] = ['', undefined, null];
   if (ignoreFalse) ignoreValues.push(false);
 
   const definedKeys = Object.keys(obj).filter(
@@ -62,7 +62,7 @@ export function definedAttributes(
 }
 
 // useful in notifications where back end does not recognize undefined for updates
-export function undefinedToNull(obj, shallow) {
+export function undefinedToNull(obj: object, shallow?: boolean) {
   if (obj === undefined) return null;
   if (typeof obj !== 'object' || obj === null) return obj;
 

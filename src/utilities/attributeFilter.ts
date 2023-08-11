@@ -1,4 +1,4 @@
-export function attributeFilter(params) {
+export function attributeFilter(params?: any) {
   if (params === null) return {};
   const { source, template } = params || {};
   if (!template) return source;
@@ -9,7 +9,7 @@ export function attributeFilter(params) {
   return target;
 
   function attributeCopy(valuesObject, templateObject, outputObject) {
-    if (!valuesObject || !templateObject) return;
+    if (!valuesObject || !templateObject) return undefined;
     const vKeys = Object.keys(valuesObject);
     const oKeys = Object.keys(templateObject);
 
@@ -24,11 +24,11 @@ export function attributeFilter(params) {
     const allKeys = oKeys.concat(...Object.keys(orMap));
     const wildcard = allKeys.includes('*');
 
-    for (let k = 0; k < vKeys.length; k++) {
-      if (allKeys.indexOf(vKeys[k]) >= 0 || wildcard) {
-        const templateKey = orMap[vKeys[k]] || vKeys[k];
+    for (const vKey of vKeys) {
+      if (allKeys.indexOf(vKey) >= 0 || wildcard) {
+        const templateKey = orMap[vKey] || vKey;
         const tobj = templateObject[templateKey] || wildcard;
-        const vobj = valuesObject[vKeys[k]];
+        const vobj = valuesObject[vKey];
 
         if (
           typeof tobj === 'object' &&
@@ -40,27 +40,28 @@ export function attributeFilter(params) {
               .map((arrayMember) => {
                 const target = {};
                 const result = attributeCopy(arrayMember, tobj, target);
-                if (result !== false) return target;
+                return result !== false ? target : undefined;
               })
               .filter(Boolean);
-            outputObject[vKeys[k]] = mappedElements;
+            outputObject[vKey] = mappedElements;
           } else if (vobj) {
-            outputObject[vKeys[k]] = {};
-            attributeCopy(vobj, tobj, outputObject[vKeys[k]]);
+            outputObject[vKey] = {};
+            attributeCopy(vobj, tobj, outputObject[vKey]);
           }
         } else {
-          const value = valuesObject[vKeys[k]];
+          const value = valuesObject[vKey];
           const exclude = Array.isArray(tobj) && !tobj.includes(value);
           if (exclude) return false;
 
           if (
-            templateObject[vKeys[k]] ||
-            (wildcard && templateObject[vKeys[k]] !== false)
+            templateObject[vKey] ||
+            (wildcard && templateObject[vKey] !== false)
           ) {
-            outputObject[vKeys[k]] = value;
+            outputObject[vKey] = value;
           }
         }
       }
     }
+    return undefined;
   }
 }

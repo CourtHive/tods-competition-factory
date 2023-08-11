@@ -5,6 +5,7 @@
     "allowSyntheticDefaultImports": true,
     // "baseUrl": "src",
     "declaration": false,
+    "downlevelIteration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
