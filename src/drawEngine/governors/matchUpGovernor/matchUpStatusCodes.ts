@@ -2,7 +2,7 @@ import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousM
 
 import { MatchUp } from '../../../types/tournamentFromSchema';
 
-type updateMatchUpStatusCodesArgs = {
+type UpdateMatchUpStatusCodesArgs = {
   inContextDrawMatchUps: any[];
   sourceMatchUpStatus: string;
   sourceMatchUpId: string;
@@ -16,7 +16,7 @@ export function updateMatchUpStatusCodes({
   sourceMatchUpId,
   matchUpsMap,
   matchUp,
-}: updateMatchUpStatusCodesArgs): undefined {
+}: UpdateMatchUpStatusCodesArgs): undefined {
   // find sourceMatchUp and matchUp paired with sourceMatchUp to workout sourceSideNumber
   const sourceMatchUp = inContextDrawMatchUps.find(
     (matchUp) => matchUp.matchUpId === sourceMatchUpId
