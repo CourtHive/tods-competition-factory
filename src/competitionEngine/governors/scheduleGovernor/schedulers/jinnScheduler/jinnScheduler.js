@@ -10,7 +10,7 @@ import { getVenueSchedulingDetails } from '../utils/getVenueSchedulingDetails';
 import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
 import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
-import { auditAutoScheduling } from '../auditAutoSccheduling';
+import { auditAutoScheduling } from '../auditAutoScheduling';
 import {
   extractDate,
   sameDay,
