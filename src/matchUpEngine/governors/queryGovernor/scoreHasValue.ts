@@ -1,5 +1,6 @@
-export function scoreHasValue({ matchUp, score } = {}) {
-  score = score || matchUp?.score;
+export function scoreHasValue(params) {
+  const matchUp = params?.matchUp;
+  const score = params?.score || matchUp?.score;
 
   const firstSet = score?.sets?.[0];
   const {

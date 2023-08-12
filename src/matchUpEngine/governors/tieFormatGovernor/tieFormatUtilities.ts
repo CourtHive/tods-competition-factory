@@ -1,4 +1,7 @@
-import { decorateResult } from '../../../global/functions/decorateResult';
+import {
+  decorateResult,
+  ResultType,
+} from '../../../global/functions/decorateResult';
 import { mustBeAnArray } from '../../../utilities/mustBeAnArray';
 import { matchUpFormatCode } from '../matchUpFormatGovernor';
 import { unique, UUID } from '../../../utilities';
@@ -7,12 +10,21 @@ import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function validateTieFormat({
-  checkCollectionIds = true,
-  tieFormat,
-} = {}) {
+import { TieFormat } from '../../../types/tournamentFromSchema';
+
+type ValidateTieFormatArgs = {
+  checkCollectionIds?: boolean;
+  tieFormat?: TieFormat;
+};
+
+export function validateTieFormat(
+  params: ValidateTieFormatArgs
+): ResultType | { errors?: string[]; valid?: boolean; error?: string } {
+  const checkCollectionIds = params?.checkCollectionIds;
+  const tieFormat = params?.tieFormat;
+
   const stack = 'validateTieFormat';
-  const errors = [];
+  const errors: string[] = [];
 
   if (typeof tieFormat !== 'object') {
     errors.push('tieFormat must be an object');
@@ -58,12 +70,13 @@ export function validateTieFormat({
           collectionDefinition,
           checkCollectionIds,
         });
+
       if (valid) {
         return true;
-      } else {
+      } else if (Array.isArray(collectionDefinitionErrors)) {
         errors.push(...collectionDefinitionErrors);
-        return false;
       }
+      return false;
     }
   );
 
@@ -108,9 +121,8 @@ export function validateTieFormat({
         stack,
       },
     });
-  } else {
-    return result;
   }
+  return result;
 }
 
 export function validateCollectionDefinition({
@@ -118,7 +130,7 @@ export function validateCollectionDefinition({
   collectionDefinition,
   checkCollectionIds,
 }) {
-  const errors = [];
+  const errors: string[] = [];
 
   if (typeof collectionDefinition !== 'object') {
     errors.push(
@@ -216,7 +228,7 @@ export function validateCollectionValueProfile({
   collectionValueProfile,
   matchUpCount,
 }) {
-  const errors = [];
+  const errors: string[] = [];
   if (!Array.isArray(collectionValueProfile)) {
     errors.push(
       `collectionValueProfile is not an array: ${collectionValueProfile}`

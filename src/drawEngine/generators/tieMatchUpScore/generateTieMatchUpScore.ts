@@ -12,27 +12,47 @@ import {
   MISSING_TIE_FORMAT,
 } from '../../../constants/errorConditionConstants';
 
+import { ResultType } from '../../../global/functions/decorateResult';
+
 /**
  * Calculates the number of wins per side and winningSide. When provided with `sideAdjustments`
  * will calculate prjected score and winningSide which is necessary for checking validity of score
  *
  * @param {object} matchUp - TODS matchUp: { matchUpType: 'TEAM', tieMatchUps: [] }
- * @param {object} tieFormat - TODS tieFormat which defines the winCriteria for determining a winningSide
+ * @param {object=} tieFormat - TODS tieFormat which defines the winCriteria for determining a winningSide
  * @param {string} separator - used to separate the two side scores in a scoreString
  * @param {number[]} sideAdjustments - used for projecting the score of a TEAM matchUp; sideAdjustments is only relevant for winCriteria based on matchUp winningSide
+ * @param {any} drawDefinition
+ * @param {string=} separator
+ * @param {number[]=} sideAdjustments
+ * @param {any=} matchUpsMap
+ * @param {any=} event
  *
- * @returns scoreObject: { sets, winningSide, scoreStringSide1, scoreStringSide 2 }
  */
-export function generateTieMatchUpScore({
-  sideAdjustments = [0, 0], // currently unused?
-  separator = '-',
-  drawDefinition,
-  matchUpsMap,
-  structure,
-  tieFormat,
-  matchUp,
-  event,
-}) {
+
+type TieMatchUpScore = {
+  scoreStringSide1: string;
+  scoreStringSide2: string;
+  winningSide?: number;
+  set: any;
+};
+
+export function generateTieMatchUpScore(
+  params
+):
+  | TieMatchUpScore
+  | ResultType
+  | { errors?: string[]; valid?: boolean; error?: string } {
+  const {
+    sideAdjustments = [0, 0], // currently unused?
+    separator = '-',
+    drawDefinition,
+    matchUpsMap,
+    structure,
+    matchUp,
+    event,
+  } = params;
+
   if (
     !Array.isArray(sideAdjustments) ||
     sideAdjustments.length !== 2 ||
@@ -42,9 +62,9 @@ export function generateTieMatchUpScore({
   }
 
   if (!matchUp) return { error: MISSING_MATCHUP };
-  tieFormat =
+  const tieFormat =
     resolveTieFormat({ matchUp, drawDefinition, structure, event })
-      ?.tieFormat || tieFormat;
+      ?.tieFormat || params?.tieFormat;
 
   if (!tieFormat) return { error: MISSING_TIE_FORMAT };
 
@@ -71,7 +91,7 @@ export function generateTieMatchUpScore({
   // process each relevant group for groupValue
   for (const groupNumber of groupValueNumbers) {
     const group = groupValueGroups[groupNumber];
-    let {
+    const {
       allGroupMatchUpsCompleted,
       groupValue,
       matchUpCount,
@@ -106,7 +126,11 @@ export function generateTieMatchUpScore({
     (sideTieValue, i) => sideTieValue + sideAdjustments[i]
   );
 
-  const set = { side1Score: sideScores[0], side2Score: sideScores[1] };
+  const set = {
+    side1Score: sideScores[0],
+    side2Score: sideScores[1],
+    winningSide: undefined,
+  };
   const scoreStringSide1 = sideScores.join(separator);
   const scoreStringSide2 = sideScores.slice().reverse().join(separator);
 

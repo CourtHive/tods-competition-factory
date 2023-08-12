@@ -9,7 +9,7 @@ export function getTallyReport({ matchUps, order, report }) {
     });
   });
 
-  const readable = [];
+  const readable: string[] = [];
 
   if (Array.isArray(report)) {
     report.forEach((step, i) => {

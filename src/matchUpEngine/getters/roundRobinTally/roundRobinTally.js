@@ -13,6 +13,17 @@ import {
   MISSING_MATCHUPS,
 } from '../../../constants/errorConditionConstants';
 
+/**
+ *
+ * @param {any=} policyDefinitions
+ * @param {boolean=} generateReport
+ * @param {string=} matchUpFormat
+ * @param {any[]} matchUps
+ * @param {any=} subOrderMap
+ * @param {boolean=} perPlayer
+ * @returns
+ */
+
 export function tallyParticipantResults({
   policyDefinitions,
   generateReport,
