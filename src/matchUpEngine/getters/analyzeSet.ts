@@ -43,9 +43,8 @@ export function analyzeSet(params) {
   ).length;
 
   const gameScoresCount = sideGameScores?.filter((s) => !isNaN(s)).length;
-  const tiebreakScoresCount = sideTiebreakScores?.filter(
-    (s) => !isNaN(s)
-  ).length;
+  const tiebreakScoresCount = sideTiebreakScores?.filter((s) => !isNaN(s))
+    .length;
 
   const { tiebreakAt } = setFormat || {};
   const hasTiebreakCondition =
@@ -93,7 +92,7 @@ export function analyzeSet(params) {
     setObject,
   });
 
-  const analysis = {
+  const analysis: { [key: string]: any } = {
     expectTiebreakSet,
     expectTimedSet,
     hasTiebreakCondition,

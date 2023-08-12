@@ -7,13 +7,21 @@ import {
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
+type CountSetsArgs = {
+  matchUpFormat?: string;
+  matchUpStatus?: string;
+  winningSide: number;
+  tallyPolicy?: any;
+  score?: any;
+};
+
 export function countSets({
   winningSide: matchUpWinningSide,
   matchUpFormat = FORMAT_STANDARD,
   matchUpStatus,
   tallyPolicy,
   score,
-}) {
+}: CountSetsArgs) {
   const setsTally = [0, 0];
   const { sets } = score || {};
   const matchUpWinnerIndex = matchUpWinningSide - 1;
@@ -42,13 +50,20 @@ export function countSets({
   return setsTally;
 }
 
+interface CountGames {
+  matchUpFormat?: string;
+  matchUpStatus?: string;
+  winningSide: number;
+  tallyPolicy?: any;
+  score: any;
+}
 export function countGames({
   winningSide: matchUpWinningSide,
   matchUpFormat = FORMAT_STANDARD,
   matchUpStatus,
   tallyPolicy,
   score,
-}) {
+}: CountGames) {
   // IMPORTANT: recognize finalSetFormat
   const { sets } = score || {};
   if (!sets) return [0, 0];

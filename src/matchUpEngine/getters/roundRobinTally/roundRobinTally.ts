@@ -21,7 +21,6 @@ import {
  * @param {any[]} matchUps
  * @param {any=} subOrderMap
  * @param {boolean=} perPlayer
- * @returns
  */
 
 type TallyParticipantResultsArgs = {

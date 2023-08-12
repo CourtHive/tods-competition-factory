@@ -1,11 +1,19 @@
 import { MISSING_VALUE } from '../../constants/errorConditionConstants';
+import { parse } from '../governors/matchUpFormatGovernor/parse';
+
+type GetSetWinningSideArgs = {
+  matchUpScoringFormat: any;
+  isTiebreakSet?: boolean;
+  isDecidingSet?: boolean;
+  setObject: any;
+};
 
 export function getSetWinningSide({
   matchUpScoringFormat,
   isDecidingSet,
   isTiebreakSet,
   setObject,
-}) {
+}: GetSetWinningSideArgs) {
   if (!setObject) return undefined;
   const leadingSide = getLeadingSide({ set: setObject });
   const setIsComplete = checkSetIsComplete({
@@ -17,6 +25,15 @@ export function getSetWinningSide({
   return (setIsComplete && leadingSide) || undefined;
 }
 
+type CheckSetIsCompleteArgs = {
+  matchUpScoringFormat: any;
+  ignoreTiebreak?: boolean;
+  isDecidingSet?: boolean;
+  isTiebreakSet?: boolean;
+  matchUpFormat?: string;
+  set: any;
+};
+
 export function checkSetIsComplete({
   ignoreTiebreak = false,
   matchUpScoringFormat,
@@ -24,9 +41,10 @@ export function checkSetIsComplete({
   isTiebreakSet,
   isDecidingSet,
   set,
-}) {
+}: CheckSetIsCompleteArgs) {
   if (!set) return { error: MISSING_VALUE, info: 'missing set' };
-  matchUpScoringFormat = matchUpScoringFormat || matchUpFormat;
+  matchUpScoringFormat =
+    matchUpScoringFormat || (matchUpFormat && parse(matchUpFormat));
 
   const setFormat =
     (isDecidingSet && matchUpScoringFormat.finalSetFormat) ||

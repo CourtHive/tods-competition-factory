@@ -251,7 +251,7 @@ function generateScenario({ outcomeValues }) {
       outcomes,
     },
   ];
-  let {
+  const {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
@@ -259,10 +259,10 @@ function generateScenario({ outcomeValues }) {
     participantsProfile: { participantsCount: 5 },
   });
 
-  let { eventData } = tournamentEngine
+  const { eventData } = tournamentEngine
     .setState(tournamentRecord)
     .getEventData({ drawId });
-  let participantResults =
+  const participantResults =
     eventData.drawsData[0].structures[0].participantResults.sort(
       (a, b) => a.participantResult.groupOrder - b.participantResult.groupOrder
     );

@@ -26,7 +26,7 @@ it('can count normal sets', () => {
         },
       ],
     },
-    winnignSide: 1,
+    winningSide: 1,
   };
   expect(countSets(matchUp)).toEqual([2, 0]);
 });
@@ -60,7 +60,7 @@ it('can count tiebreak sets', () => {
         },
       ],
     },
-    winnignSide: 1,
+    winningSide: 1,
   };
   expect(countSets(matchUp)).toEqual([2, 1]);
 });
