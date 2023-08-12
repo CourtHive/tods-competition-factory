@@ -2,14 +2,21 @@ import { getTieFormatDesc } from '../../../tournamentEngine/governors/reportGove
 import { difference, unique } from '../../../utilities/arrays';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { TieFormat } from '../../../types/tournamentFromSchema';
+
+type CompareTieFormatsArgs = {
+  considerations?: any;
+  descendant: TieFormat;
+  ancestor: TieFormat;
+};
 
 export function compareTieFormats({
   considerations = {},
   descendant,
   ancestor,
-}) {
-  const descendantDifferences = {};
-  const ancestorDifferences = {};
+}: CompareTieFormatsArgs) {
+  const descendantDifferences: any = {};
+  const ancestorDifferences: any = {};
 
   const {
     matchUpFormats: descendantMatchUpFormats,
@@ -90,7 +97,7 @@ export function compareTieFormats({
 
   descendantDifferences.groupsCount =
     ancestor?.collectionGroups?.length ||
-    0 - descendant?.collectionGroups?.length ||
+    0 - (descendant?.collectionGroups?.length || 0) ||
     0;
 
   ancestorDifferences.groupsCount = descendantDifferences.groupsCount
@@ -134,12 +141,18 @@ function getCollectionsValue(definitions, aggregator) {
     totalMatchUps += matchUpCount;
 
     if (collectionValueProfile)
-      return collectionValueProfile.reduce(
-        (total, profile) => total + profile.value,
-        0
+      return (
+        total +
+        collectionValueProfile.reduce(
+          (total, profile) => total + profile.value,
+          0
+        )
       );
-    if (matchUpValue && matchUpCount) return matchUpValue * matchUpCount;
-    return collectionValue;
+
+    if (matchUpValue && matchUpCount)
+      return total + matchUpValue * matchUpCount;
+
+    return total + collectionValue;
   }, 0);
 
   return { totalValue, totalMatchUps };

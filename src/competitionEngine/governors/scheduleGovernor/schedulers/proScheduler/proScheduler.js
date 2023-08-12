@@ -12,7 +12,7 @@ import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../global/functions/extractors';
 import { generateVirtualCourts } from '../utils/generateVirtualCourts';
 import { getEarliestCourtTime } from '../utils/getEarliestCourtTime';
-import { auditAutoScheduling } from '../auditAutoSccheduling';
+import { auditAutoScheduling } from '../auditAutoScheduling';
 import { generateBookings } from '../utils/generateBookings';
 import {
   addMinutesToTimeString,

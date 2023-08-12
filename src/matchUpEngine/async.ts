@@ -3,7 +3,7 @@ import historyGovernor from './governors/historyGovernor';
 import queryGovernor from './governors/queryGovernor';
 import scoreGovernor from './governors/scoreGovernor';
 
-import { notifySubscribers } from '../global/state/notifySubscribers';
+import { notifySubscribersAsync } from '../global/state/notifySubscribers';
 import { factoryVersion } from '../global/functions/factoryVersion';
 import { makeDeepCopy } from '../utilities';
 import {
@@ -11,24 +11,40 @@ import {
   setDevContext,
   getDevContext,
   deleteNotices,
+  createInstanceState,
 } from '../global/state/globalState';
 import {
-  getMatchUps,
   getMatchUp,
-  setState,
+  getMatchUps,
   getState,
   reset,
+  setState,
 } from './stateMethods';
 
 import { SUCCESS } from '../constants/resultConstants';
 
-export const matchUpEngine = (function () {
+export function matchUpEngineAsync(test) {
+  const result = createInstanceState();
+  if (result.error && !test) return result;
+
   const engine = {
-    getState: () => getState(),
+    getState: (params) => getState(params),
     version: () => factoryVersion(),
     reset: () => {
       reset();
       return { ...SUCCESS };
+    },
+    drawId: undefined,
+    error: undefined,
+    success: false,
+    devContext: (contextCriteria) => {
+      setDevContext(contextCriteria);
+      return engine;
+    },
+    setState: (definition, deepCopyOption, deepCopyAttributes) => {
+      setDeepCopy(deepCopyOption, deepCopyAttributes);
+      const result = setState(definition);
+      return processResult(result);
     },
   };
 
@@ -51,44 +67,41 @@ export const matchUpEngine = (function () {
     scoreGovernor,
   ]);
 
-  engine.devContext = (contextCriteria) => {
-    setDevContext(contextCriteria);
-    return engine;
-  };
-  engine.setState = (definition, deepCopyOption, deepCopyAttributes) => {
-    setDeepCopy(deepCopyOption, deepCopyAttributes);
-    const result = setState(definition);
-    return processResult(result);
-  };
-
   return engine;
 
-  function importGovernors(governors) {
-    governors.forEach((governor) => {
-      Object.keys(governor).forEach((governorMethod) => {
-        engine[governorMethod] = (params) => {
+  async function importGovernors(governors) {
+    for (const governor of governors) {
+      const governorMethods = Object.keys(governor);
+
+      for (const governorMethod of governorMethods) {
+        engine[governorMethod] = async (params) => {
           if (getDevContext()) {
-            return invoke({ params, governor, governorMethod });
+            return await invoke({ params, governor, governorMethod });
           } else {
             try {
-              return invoke({ params, governor, governorMethod });
+              return await invoke({ params, governor, governorMethod });
             } catch (err) {
-              const error = err.toString();
+              let error;
+              if (typeof err === 'string') {
+                error = err.toUpperCase();
+              } else if (err instanceof Error) {
+                error = err.message;
+              }
               console.log('ERROR', {
-                error,
-                method: governorMethod,
                 params: JSON.stringify(params),
+                method: governorMethod,
+                error,
               });
             }
           }
         };
-      });
-    });
+      }
+    }
   }
 
-  function invoke({ params, governor, governorMethod }) {
-    delete engine.success;
-    delete engine.error;
+  async function invoke({ params, governor, governorMethod }) {
+    engine.success = false;
+    engine.error = undefined;
 
     const matchUp = params?.matchUp || getMatchUp();
     const matchUps = params?.matchUps || getMatchUps();
@@ -114,11 +127,11 @@ export const matchUpEngine = (function () {
       result?.success &&
       params?.delayNotify !== true &&
       params?.doNotNotify !== true;
-    if (notify) notifySubscribers();
+    if (notify) await notifySubscribersAsync();
     if (notify || !result?.success || params?.doNotNotify) deleteNotices();
 
     return result;
   }
-})();
+}
 
-export default matchUpEngine;
+export default matchUpEngineAsync;
