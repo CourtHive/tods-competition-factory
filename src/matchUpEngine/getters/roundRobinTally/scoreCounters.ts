@@ -7,13 +7,21 @@ import {
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
+type CountSetsArgs = {
+  matchUpFormat?: string;
+  matchUpStatus?: string;
+  winningSide: number;
+  tallyPolicy?: any;
+  score?: any;
+};
+
 export function countSets({
   winningSide: matchUpWinningSide,
   matchUpFormat = FORMAT_STANDARD,
   matchUpStatus,
   tallyPolicy,
   score,
-}) {
+}: CountSetsArgs) {
   const setsTally = [0, 0];
   const { sets } = score || {};
   const matchUpWinnerIndex = matchUpWinningSide - 1;
@@ -42,13 +50,20 @@ export function countSets({
   return setsTally;
 }
 
+interface CountGames {
+  matchUpFormat?: string;
+  matchUpStatus?: string;
+  winningSide: number;
+  tallyPolicy?: any;
+  score: any;
+}
 export function countGames({
   winningSide: matchUpWinningSide,
   matchUpFormat = FORMAT_STANDARD,
   matchUpStatus,
   tallyPolicy,
   score,
-}) {
+}: CountGames) {
   // IMPORTANT: recognize finalSetFormat
   const { sets } = score || {};
   if (!sets) return [0, 0];
@@ -59,7 +74,7 @@ export function countGames({
   const setsToWin = getSetsToWin(bestOf);
   const tiebreakAt = parsedMatchUpFormat?.setFormat?.tiebreakAt || 0;
 
-  const gamesTally = [[], []];
+  const gamesTally: number[][] = [[], []];
   if (
     (matchUpStatus === DEFAULTED && tallyPolicy?.gamesCreditForDefaults) ||
     (matchUpStatus === WALKOVER && tallyPolicy?.gamesCreditForWalkovers)
@@ -102,13 +117,14 @@ export function countGames({
 
       const setsTally = countSets({
         winningSide: matchUpWinningSide,
+        score: { sets },
         matchUpStatus,
         matchUpFormat,
-        sets,
+        tallyPolicy,
       });
       const loserLeadSet = gamesTally
         .map((g) => g[matchUpWinnerIndex] <= g[1 - matchUpWinnerIndex])
-        .reduce((a, b) => a + b, 0);
+        .reduce((a, b) => a + (b ? 1 : 0), 0);
       // if sets where loser lead > awarded sets, adjust last game to winner
       if (loserLeadSet > setsTally[1 - matchUpWinnerIndex]) {
         const talliedGames = gamesTally[matchUpWinnerIndex].length;

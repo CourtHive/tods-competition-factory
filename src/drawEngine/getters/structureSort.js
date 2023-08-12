@@ -11,7 +11,7 @@ import {
   MAIN,
 } from '../../constants/drawDefinitionConstants';
 
-export function structureSort(a, b, config = {}) {
+export function structureSort(a, b, config) {
   const getRoundTarget = (element) =>
     findExtension({ element, name: ROUND_TARGET })?.extension?.value;
 

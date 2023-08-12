@@ -29,7 +29,7 @@ it('can count games in normal sets', () => {
         },
       ],
     },
-    winnignSide: 1,
+    winningSide: 1,
   };
   expect(countGames(matchUp)).toEqual([12, 2]);
 
@@ -54,13 +54,13 @@ it('can count games in normal sets', () => {
         },
       ],
     },
-    winnignSide: 2,
+    winningSide: 2,
   };
   expect(countGames(matchUp)).toEqual([2, 12]);
 });
 
 it('can count games in short sets', () => {
-  let matchUp = {
+  const matchUp = {
     matchUpStatus: COMPLETED,
     matchUpFormat: FORMAT_SHORT_SETS,
     score: {
@@ -81,13 +81,13 @@ it('can count games in short sets', () => {
         },
       ],
     },
-    winnignSide: 1,
+    winningSide: 1,
   };
   expect(countGames(matchUp)).toEqual([8, 2]);
 });
 
 it('can count games with tiebreaks in short sets', () => {
-  let matchUp = {
+  const matchUp = {
     matchUpStatus: COMPLETED,
     matchUpFormat: FORMAT_SHORT_SETS,
     score: {
@@ -115,7 +115,7 @@ it('can count games with tiebreaks in short sets', () => {
         },
       ],
     },
-    winnignSide: 1,
+    winningSide: 1,
   };
   expect(countGames(matchUp)).toEqual([6, 5]);
 });
@@ -149,7 +149,7 @@ it('can count games in tiebreak sets', () => {
         },
       ],
     },
-    winnignSide: 1,
+    winningSide: 1,
   };
   expect(countGames(matchUp)).toEqual([7, 7]);
 });

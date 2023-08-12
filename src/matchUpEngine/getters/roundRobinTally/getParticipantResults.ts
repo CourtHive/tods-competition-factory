@@ -14,13 +14,22 @@ import {
 TODO: for TEAM matchUps, what are now games won/lost should be tieMatchUps won/lost
 and the games/sets of all tieMatchUps should be aggregated
 */
+
+type GetParticipantResultsArgs = {
+  participantIds?: string[];
+  matchUpFormat?: string;
+  perPlayer?: number;
+  tallyPolicy?: any;
+  matchUps: any[];
+};
+
 export function getParticipantResults({
   participantIds,
   matchUpFormat,
   tallyPolicy,
   perPlayer,
   matchUps,
-}) {
+}: GetParticipantResultsArgs) {
   const participantResults = {};
 
   const excludeMatchUpStatuses = tallyPolicy?.excludeMatchUpStatuses || [];
@@ -206,10 +215,11 @@ export function getParticipantResults({
       } else {
         processMatchUp({
           matchUpFormat: matchUp.matchUpFormat || matchUpFormat,
+          isTieMatchUp: undefined,
           winningParticipantId,
+          manualGamesOverride,
           losingParticipantId,
           participantResults,
-          manualGamesOverride,
           matchUpStatus,
           tallyPolicy,
           winningSide,
@@ -313,7 +323,7 @@ function processScore({
   sides,
 }) {
   const { sets } = score || {};
-  const gamesTally = [[], []];
+  const gamesTally: number[][] = [[], []];
   const setsTally = [0, 0];
 
   for (const set of sets || []) {
@@ -380,7 +390,7 @@ function processMatchUp({
     winningSide,
     score,
   });
-  const pointsTally = countPoints({ score, matchUpFormat, tallyPolicy });
+  const pointsTally = countPoints({ score, matchUpFormat });
 
   if (winningParticipantId) {
     participantResults[winningParticipantId].setsWon +=

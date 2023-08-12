@@ -62,7 +62,6 @@ const GEMScoreValueMap = {
  * @param {number} participantsCount - number of participants in round robin group
  * @param {object} subOrderMap - { [participantId]: subOrder }
  *
- * @returns {object[]} groupOrder - array of objects [{ participantId, position }]
  */
 
 export function getGroupOrder(params) {
