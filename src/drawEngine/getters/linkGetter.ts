@@ -8,17 +8,18 @@ import {
   INVALID_VALUES,
 } from '../../constants/errorConditionConstants';
 
-/**
- *
- * Return links which govern movement for a given matchUp either as a source or a target
- *
- * @param {object} drawDefinition - passed automatically by drawEngine
- * @param {object} matchUp - matchUp for which links are sought
- * @param {string} structureId - optional - structureId within which matchUp occurs
- * @param {number} roundNumber - optional - filter for only links that apply to roundNumber
- *
- */
-export function getRoundLinks({ drawDefinition, roundNumber, structureId }) {
+type GetRoundLinksArgs = {
+  roundNumber?: number;
+  structureId: string;
+  drawDefinition: any;
+};
+
+// Return links which govern movement for a given matchUp either as a source or a target
+export function getRoundLinks({
+  drawDefinition, // passed automatically by drawEngine
+  roundNumber, // optional - filter for only links that apply to roundNumber
+  structureId, // structureId within which matchUp occurs
+}: GetRoundLinksArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
@@ -37,12 +38,19 @@ export function getRoundLinks({ drawDefinition, roundNumber, structureId }) {
   return { links: { source, target } };
 }
 
+type GetTargetLinkArgs = {
+  finishingPositions?: any;
+  linkCondition?: string;
+  linkType?: string;
+  source: any[];
+};
+
 export function getTargetLink({
   finishingPositions,
   linkCondition,
   linkType,
   source,
-}) {
+}: GetTargetLinkArgs) {
   const result = source.find((link) => {
     const positionCondition =
       !link.source?.finishingPositions ||
@@ -65,18 +73,18 @@ export function getTargetLink({
   return result;
 }
 
-/**
- * Returns all links for which a structure is either a source or a target; optionally filter by roundNumber
- *
- * @param {object} drawDefinition - passed automatically by drawEngine
- * @param {string} structureId - id of structure for which links are desired
- * @param {number} roundNumber - optional - filter for links to or from specific rounds
- */
+type GetStructureLinksArgs = {
+  roundNumber?: number;
+  structureId: string;
+  drawDefinition: any;
+};
+
+// Returns all links for which a structure is either a source or a target; optionally filter by roundNumber
 export function getStructureLinks({
-  drawDefinition,
-  structureId,
-  roundNumber,
-}) {
+  drawDefinition, //passed automatically by drawEngine
+  structureId, // id of structure for which links are desired
+  roundNumber, // optional - filter for links to or from specific rounds
+}: GetStructureLinksArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
   const links = drawDefinition.links || [];
