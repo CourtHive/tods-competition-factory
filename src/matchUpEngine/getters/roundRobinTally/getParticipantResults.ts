@@ -206,10 +206,11 @@ export function getParticipantResults({
       } else {
         processMatchUp({
           matchUpFormat: matchUp.matchUpFormat || matchUpFormat,
+          isTieMatchUp: undefined,
           winningParticipantId,
+          manualGamesOverride,
           losingParticipantId,
           participantResults,
-          manualGamesOverride,
           matchUpStatus,
           tallyPolicy,
           winningSide,
@@ -313,7 +314,7 @@ function processScore({
   sides,
 }) {
   const { sets } = score || {};
-  const gamesTally = [[], []];
+  const gamesTally: number[][] = [[], []];
   const setsTally = [0, 0];
 
   for (const set of sets || []) {
@@ -380,7 +381,7 @@ function processMatchUp({
     winningSide,
     score,
   });
-  const pointsTally = countPoints({ score, matchUpFormat, tallyPolicy });
+  const pointsTally = countPoints({ score, matchUpFormat });
 
   if (winningParticipantId) {
     participantResults[winningParticipantId].setsWon +=
