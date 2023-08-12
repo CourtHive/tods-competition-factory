@@ -14,13 +14,22 @@ import {
 TODO: for TEAM matchUps, what are now games won/lost should be tieMatchUps won/lost
 and the games/sets of all tieMatchUps should be aggregated
 */
+
+type GetParticipantResultsArgs = {
+  participantIds?: string[];
+  matchUpFormat?: string;
+  perPlayer?: number;
+  tallyPolicy?: any;
+  matchUps: any[];
+};
+
 export function getParticipantResults({
   participantIds,
   matchUpFormat,
   tallyPolicy,
   perPlayer,
   matchUps,
-}) {
+}: GetParticipantResultsArgs) {
   const participantResults = {};
 
   const excludeMatchUpStatuses = tallyPolicy?.excludeMatchUpStatuses || [];

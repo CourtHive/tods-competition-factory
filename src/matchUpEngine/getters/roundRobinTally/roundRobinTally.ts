@@ -24,6 +24,15 @@ import {
  * @returns
  */
 
+type TallyParticipantResultsArgs = {
+  generateReport?: boolean;
+  policyDefinitions?: any;
+  matchUpFormat?: string;
+  perPlayer?: number;
+  subOrderMap?: any;
+  matchUps: any[];
+};
+
 export function tallyParticipantResults({
   policyDefinitions,
   generateReport,
@@ -31,7 +40,7 @@ export function tallyParticipantResults({
   matchUps = [],
   subOrderMap,
   perPlayer,
-}) {
+}: TallyParticipantResultsArgs) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
 
   const structureIds = matchUps.reduce(
@@ -134,8 +143,10 @@ export function tallyParticipantResults({
 
   const result = {
     completedTieMatchUps,
+    readableReport: '',
     participantResults,
     bracketComplete,
+    order: undefined,
     report,
   };
 
