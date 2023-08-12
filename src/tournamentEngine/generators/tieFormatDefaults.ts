@@ -37,10 +37,13 @@ import {
   USTA_ZONAL,
 } from '../../constants/tieFormatConstants';
 
+import { Category, GenderEnum } from '../../types/tournamentFromSchema';
+
 const bestOf3tbSets = 'SET3-S:6/TB7';
+const STANDARD = 'STANDARD';
 
 const namedFormats = {
-  STANDARD: {
+  [STANDARD]: {
     hydrate: true,
     doubles: { matchUpCount: 3, matchUpValue: 1 },
     singles: { matchUpCount: 6, matchUpValue: 1 },
@@ -58,7 +61,7 @@ const namedFormats = {
       matchUpValue: 1,
       matchUpFormat: bestOf3tbSets,
     },
-    tieFormatName: 'COLLEGE_D3',
+    tieFormatName: COLLEGE_D3,
     valueGoal: 5,
   },
   [COLLEGE_DEFAULT]: {
@@ -73,7 +76,7 @@ const namedFormats = {
       matchUpValue: 1,
       matchUpFormat: bestOf3tbSets,
     },
-    tieFormatName: 'COLLEGE_DEFAULT',
+    tieFormatName: COLLEGE_DEFAULT,
     valueGoal: 4,
   },
   [COLLEGE_JUCO]: {
@@ -88,7 +91,7 @@ const namedFormats = {
       matchUpValue: 1,
       matchUpFormat: bestOf3tbSets,
     },
-    tieFormatName: 'COLLEGE_JUCO',
+    tieFormatName: COLLEGE_JUCO,
     valueGoal: 5,
   },
   [LAVER_CUP]: LAVER_CUP_TIE_FORMAT,
@@ -108,18 +111,24 @@ const namedFormats = {
   [USTA_ZONAL]: USTA_ZONAL_TIE_FORMAT,
 };
 
-export const tieFormatDefaults = ({
-  hydrateCollections,
-  namedFormat,
-  event = {},
-  uuids = [],
-} = {}) => {
-  if (!Object.keys(namedFormats).includes(namedFormat))
-    namedFormat = 'STANDARD';
-  if (!Array.isArray(uuids)) uuids = [];
+type TieFormatDefaultArgs = {
+  hydrateCollections?: boolean;
+  namedFormat?: string;
+  event?: { category: Category; gender: GenderEnum };
+  uuids?: string[];
+};
+
+export const tieFormatDefaults = (params: TieFormatDefaultArgs) => {
+  const namedFormat =
+    params?.namedFormat &&
+    Object.keys(namedFormats).includes(params.namedFormat)
+      ? params.namedFormat
+      : STANDARD;
+
+  const uuids = Array.isArray(params?.uuids) ? params.uuids : [];
 
   let tieFormat;
-  const { category, gender } = event;
+  const { category, gender } = params?.event || {};
   const template = makeDeepCopy(namedFormats[namedFormat], false, true);
 
   if (!template.hydrate) {
@@ -154,7 +163,7 @@ export const tieFormatDefaults = ({
       tieFormat.tieFormatName = template.tieFormatName;
   }
 
-  if (hydrateCollections) {
+  if (params?.hydrateCollections) {
     tieFormat.collectionDefinitions.forEach((collectionDefinition) => {
       if (category && !collectionDefinition.category)
         collectionDefinition.category = category;

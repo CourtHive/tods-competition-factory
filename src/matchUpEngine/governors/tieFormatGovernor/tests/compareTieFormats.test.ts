@@ -8,10 +8,10 @@ import {
 } from '../../../../constants/tieFormatConstants';
 
 it('can find differences in tieFormats', () => {
-  const ancestor = tieFormatDefaults({ namedFormat: COLLEGE_D3 });
   const descendant = tieFormatDefaults({ namedFormat: COLLEGE_DEFAULT });
+  const ancestor = tieFormatDefaults({ namedFormat: COLLEGE_D3 });
 
-  let result = compareTieFormats({ ancestor, descendant });
+  const result = compareTieFormats({ ancestor, descendant });
   expect(result.matchUpFormatDifferences).toEqual(['SET1-S:8/TB7@7']);
   expect(result.different).toEqual(true);
 });

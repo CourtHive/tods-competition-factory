@@ -55,7 +55,7 @@ export function reset() {
   keyedMatchUps = {};
 }
 
-export function getState(params) {
+export function getState(params?) {
   return makeDeepCopy(
     keyedMatchUps[matchUpId],
     params?.convertExtensions,
