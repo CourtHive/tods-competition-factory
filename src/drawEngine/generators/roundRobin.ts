@@ -1,12 +1,11 @@
-import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
 import { addExtension } from '../../global/functions/producers/addExtension';
+import { structureTemplate } from './structureTemplate';
 import { generateRange, UUID } from '../../utilities';
 import {
   getRoundRobinGroupMatchUps,
   drawPositionsHash,
 } from './roundRobinGroups';
 
-import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -15,6 +14,27 @@ import {
   WIN_RATIO,
   CONTAINER,
 } from '../../constants/drawDefinitionConstants';
+import {
+  MatchUp,
+  MatchUpStatusEnum,
+  TypeEnum,
+} from '../../types/tournamentFromSchema';
+
+type GenerateRoundRobinArgs = {
+  structureName?: string;
+  stageSequence?: number;
+  structureOptions?: any;
+  appliedPolicies?: any;
+  matchUpType: TypeEnum;
+  roundTarget?: string;
+  seedingProfile?: any;
+  structureId: string;
+  drawSize: number;
+  idPrefix?: string;
+  isMock?: boolean;
+  uuids?: string[];
+  stage?: string;
+};
 
 export function generateRoundRobin({
   structureName = MAIN,
@@ -30,7 +50,7 @@ export function generateRoundRobin({
   idPrefix,
   isMock,
   uuids,
-}) {
+}: GenerateRoundRobinArgs) {
   const { groupCount, groupSize } = deriveGroups({
     structureOptions,
     appliedPolicies,
@@ -60,7 +80,6 @@ export function generateRoundRobin({
       structureType: ITEM,
       finishingPosition,
       structureOrder,
-      matchUpType,
       matchUps,
     });
   });
@@ -72,7 +91,6 @@ export function generateRoundRobin({
     seedingProfile,
     structureName,
     stageSequence,
-    matchUpType,
     structures,
     stage,
   });
@@ -95,7 +113,7 @@ export function generateRoundRobin({
 
 function deriveGroups({ appliedPolicies, structureOptions, drawSize }) {
   if (appliedPolicies) {
-    // FUTURE: policy to set groupSizeLimit
+    // TODO: policy to set groupSizeLimit
   }
 
   let groupSize = structureOptions?.groupSize;
@@ -139,15 +157,25 @@ export function getValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
   return { ...SUCCESS, validGroupSizes };
 }
 
+type RoundRobinMatchUpsArgs = {
+  structureOrder: number;
+  matchUpType: TypeEnum;
+  groupSize: number;
+  drawSize: number;
+  idPrefix?: string;
+  isMock?: boolean;
+  uuids?: string[];
+};
+
 function roundRobinMatchUps({
   structureOrder,
   matchUpType,
   groupSize,
-  idPrefix,
   drawSize,
+  idPrefix,
   isMock,
   uuids,
-}) {
+}: RoundRobinMatchUpsArgs) {
   const drawPositionOffset = (structureOrder - 1) * groupSize;
   const drawPositions = generateRange(
     1 + drawPositionOffset,
@@ -157,7 +185,7 @@ function roundRobinMatchUps({
   const { uniqueMatchUpGroupings } = getRoundRobinGroupMatchUps({
     drawPositions,
   });
-  const rounds = groupRounds({ groupSize, drawPositionOffset });
+  const rounds: any[] = groupRounds({ groupSize, drawPositionOffset });
 
   const matchUps = uniqueMatchUpGroupings
     .map(positionMatchUp)
@@ -185,8 +213,10 @@ function roundRobinMatchUps({
       uuids,
     });
 
-    const matchUp = {
-      matchUpStatus: roundNumber ? TO_BE_PLAYED : BYE,
+    const matchUp: MatchUp = {
+      matchUpStatus: roundNumber
+        ? MatchUpStatusEnum.ToBePlayed
+        : MatchUpStatusEnum.Bye,
       matchUpType, // does not (perhaps) need to be included; but because structures[].structure unsure about derivation inContext
       // finishingPositionRange in RR is not very useful, but provided for consistency
       finishingPositionRange: { winner: range, loser: range },
@@ -216,28 +246,30 @@ function roundRobinMatchUpId({
 
 function groupRounds({ groupSize, drawPositionOffset }) {
   const numArr = (count) => [...Array(count)].map((_, i) => i);
-  const groupPositions = numArr(2 * Math.round(groupSize / 2) + 1).slice(1);
-  const rounds = numArr(groupPositions.length - 1).map(() => []);
+  const groupPositions: number[] = numArr(
+    2 * Math.round(groupSize / 2) + 1
+  ).slice(1);
+  const rounds: any[] = numArr(groupPositions.length - 1).map(() => []);
 
   let aRow = groupPositions.slice(0, groupPositions.length / 2);
   let bRow = groupPositions.slice(groupPositions.length / 2);
 
-  groupPositions.slice(1).forEach((p, i) => {
-    aRow.forEach((a, j) => {
+  groupPositions.slice(1).forEach((_, i) => {
+    aRow.forEach((_, j) => {
       rounds[i].push([aRow[j], bRow[j]]);
     });
     const aHead = aRow.shift();
     const aDown = aRow.pop();
     const bUp = bRow.shift();
-    aRow = [].concat(aHead, bUp, ...aRow);
-    bRow = [].concat(...bRow, aDown);
+    aRow = [aHead, bUp, ...aRow].filter(Boolean) as number[];
+    bRow = [...bRow, aDown].filter(Boolean) as number[];
   });
 
   const aHead = aRow.shift();
   const aDown = aRow.pop();
   const bUp = bRow.shift();
-  aRow = [].concat(aHead, bUp, ...aRow);
-  bRow = [].concat(...bRow, aDown);
+  aRow = [aHead, bUp, ...aRow].filter(Boolean) as number[];
+  bRow = [...bRow, aDown].filter(Boolean) as number[];
 
   const sum = (x) => x[0].reduce((a, b) => a + b);
   return rounds
