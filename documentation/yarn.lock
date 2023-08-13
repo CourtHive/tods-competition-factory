@@ -9098,10 +9098,10 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-tods-competition-factory@1.4.4:
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.4.4.tgz#1fe5c2832257c7a09f19d6e1a6b5cc542c18416e"
-  integrity sha512-hi3L9pciqkJHYnAkuaFKG9ew5UgGencp5gSXqVla6qE5fffmJ/ClJFLnDCun70PEiapzQSsmt9ovS97UPjsbAA==
+tods-competition-factory@1.4.5:
+  version "1.4.5"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-1.4.5.tgz#aedbf62c2157aba874b03aecf188b6efdf8d9e94"
+  integrity sha512-Fwfeqki26BXiG+R7vwYlUJNPwHi0oeBhAdUV3MpHe24vWr5T9CytatKyZ5/yvkrYzHd6gKNbvnSFFlB3ub5Yig==
 
 tods-competition-factory@^1.2.32:
   version "1.4.1"
