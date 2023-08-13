@@ -67,9 +67,9 @@ export function generateCurtisConsolation({
       structures.push(consolationStructure);
 
       const links = feedInLinks({
-        mainStructure,
         consolationStructure,
         roundsCount: 2,
+        mainStructure,
         roundOffset,
       });
 
