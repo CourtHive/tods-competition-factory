@@ -9,11 +9,11 @@ import {
 
 // Does NOT include potential participandIds
 export function getMatchUpParticipantIds({ matchUp }) {
-  let error;
-  let sideParticipantIds = [];
-  let individualParticipantIds = [];
-  let allRelevantParticipantIds = [];
   let nestedIndividualParticipantIds = [];
+  let allRelevantParticipantIds = [];
+  let individualParticipantIds = [];
+  let sideParticipantIds = [];
+  let error;
 
   if (!matchUp) error = MISSING_MATCHUP;
   if (matchUp && !matchUp.sides) error = INVALID_MATCHUP;
@@ -51,10 +51,10 @@ export function getMatchUpParticipantIds({ matchUp }) {
   }
 
   return {
-    error,
-    sideParticipantIds,
-    individualParticipantIds,
-    allRelevantParticipantIds,
     nestedIndividualParticipantIds,
+    allRelevantParticipantIds,
+    individualParticipantIds,
+    sideParticipantIds,
+    error,
   };
 }
