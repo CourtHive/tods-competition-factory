@@ -13,6 +13,8 @@ import {
   MISSING_MATCHUPS,
 } from '../../../constants/errorConditionConstants';
 
+import { ResultType } from '../../../global/functions/decorateResult';
+
 /**
  *
  * @param {any=} policyDefinitions
@@ -32,6 +34,15 @@ type TallyParticipantResultsArgs = {
   matchUps: any[];
 };
 
+type TallyResultType = {
+  completedTieMatchUps?: boolean;
+  bracketComplete?: boolean;
+  participantResults: any;
+  readableReport?: string;
+  report?: string[];
+  order?: string[];
+};
+
 export function tallyParticipantResults({
   policyDefinitions,
   generateReport,
@@ -39,7 +50,7 @@ export function tallyParticipantResults({
   matchUps = [],
   subOrderMap,
   perPlayer,
-}: TallyParticipantResultsArgs) {
+}: TallyParticipantResultsArgs): TallyResultType | ResultType {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
 
   const structureIds = matchUps.reduce(
@@ -145,7 +156,7 @@ export function tallyParticipantResults({
     readableReport: '',
     participantResults,
     bracketComplete,
-    order: undefined,
+    order: [],
     report,
   };
 
