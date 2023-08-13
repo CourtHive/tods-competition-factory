@@ -1,4 +1,5 @@
 import { getParticipantResults } from './getParticipantResults';
+import { getGroups, getResultsArray } from './getGroups';
 import { isNumeric } from '../../../utilities/math';
 import { instanceCount } from '../../../utilities';
 
@@ -61,7 +62,6 @@ const GEMScoreValueMap = {
  * @param {number} participantsCount - number of participants in round robin group
  * @param {object} subOrderMap - { [participantId]: subOrder }
  *
- * @returns {object[]} groupOrder - array of objects [{ participantId, position }]
  */
 
 export function getGroupOrder(params) {
@@ -188,7 +188,7 @@ export function getGroupOrder(params) {
 
 function isComplete({ participantResults, participantsCount }) {
   const resultsArray = getResultsArray({ participantResults });
-  let participantsFinished = resultsArray.filter(
+  const participantsFinished = resultsArray.filter(
     (r) =>
       participantsCount - 1 ===
       r.results.matchUpsWon +
@@ -338,28 +338,4 @@ function headToHeadWinner({ participantIds, participantResults }) {
       .reverse()
       .map((participantId) => ({ resolved: true, participantId }));
   }
-}
-
-function getGroups({ participantResults, participantIds, attribute }) {
-  const resultsArray = getResultsArray({ participantResults, participantIds });
-  return resultsArray.reduce((groups, participantResult) => {
-    const { participantId, results } = participantResult;
-    const value = results?.[attribute];
-    if (!isNaN(value) && participantId) {
-      if (groups[value]) {
-        groups[value].push(participantId);
-      } else {
-        groups[value] = [participantId];
-      }
-    }
-    return groups;
-  }, {});
-}
-
-function getResultsArray({ participantResults, participantIds }) {
-  participantIds = participantIds || Object.keys(participantResults);
-  return participantIds.reduce((arr, participantId, i) => {
-    arr.push({ participantId, i, results: participantResults[participantId] });
-    return arr;
-  }, []);
 }

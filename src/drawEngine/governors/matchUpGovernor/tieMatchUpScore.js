@@ -56,14 +56,15 @@ export function updateTieMatchUpScore({
 
   matchUp.tieFormat = copyTieFormat(tieFormat);
 
-  const { winningSide, set, scoreStringSide1, scoreStringSide2 } =
-    generateTieMatchUpScore({
-      drawDefinition,
-      matchUpsMap,
-      structure,
-      matchUp,
-      event,
-    });
+  const scoreResult = generateTieMatchUpScore({
+    drawDefinition,
+    matchUpsMap,
+    structure,
+    matchUp,
+    event,
+  });
+
+  const { winningSide, set, scoreStringSide1, scoreStringSide2 } = scoreResult;
 
   const setHasValue = set?.side1Score || set?.side2Score;
   if (exitWhenNoValues && !matchUp.score && !setHasValue) {

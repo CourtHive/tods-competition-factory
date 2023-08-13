@@ -22,7 +22,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "1.4.3",
+  "version": "1.4.5",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/tods-competition-factory/",
@@ -119,12 +119,12 @@
     "@commitlint/cli": "^17.7.0",
     "@commitlint/config-conventional": "^17.7.0",
     "@rollup/plugin-babel": "6.0.3",
-    "@rollup/plugin-commonjs": "25.0.3",
+    "@rollup/plugin-commonjs": "25.0.4",
     "@rollup/plugin-json": "6.0.0",
     "@rollup/plugin-node-resolve": "15.1.0",
     "@rollup/plugin-terser": "^0.4.3",
     "@rollup/plugin-typescript": "11.1.2",
-    "@types/node": "18.17.4",
+    "@types/node": "18.17.5",
     "@typescript-eslint/eslint-plugin": "6.3.0",
     "@typescript-eslint/parser": "6.3.0",
     "@vitest/coverage-v8": "^0.34.0",
@@ -165,7 +165,8 @@
   },
   "lint-staged": {
     "*.{js,ts}": "eslint --cache --fix",
-    "*": "prettier --ignore-unknown --write"
+    "*": "prettier --ignore-unknown --write",
+    "**/*.ts": "tsc --noEmit"
   },
   "browserslist": [
     "defaults and supports es6-module",
