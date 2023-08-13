@@ -165,7 +165,8 @@
   },
   "lint-staged": {
     "*.{js,ts}": "eslint --cache --fix",
-    "*": "prettier --ignore-unknown --write"
+    "*": "prettier --ignore-unknown --write",
+    "**/*.ts": "tsc --noEmit"
   },
   "browserslist": [
     "defaults and supports es6-module",
