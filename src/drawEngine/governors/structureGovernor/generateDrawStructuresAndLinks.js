@@ -205,6 +205,7 @@ export function generateDrawStructuresAndLinks(params = {}) {
 
   const { structures: generatedStructures, links: generatedLinks } =
     generatorResult;
+
   if (generatedStructures?.length) {
     const generatedMainStructure = generatedStructures.find(
       ({ stage, stageSequence }) => stage === MAIN && stageSequence === 1

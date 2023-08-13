@@ -22,8 +22,8 @@ import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 
-export function generateDrawTypeAndModifyDrawDefinition(params = {}) {
-  const { modifyOriginal = true, stageSequence = 1, isMock } = params;
+export function generateDrawTypeAndModifyDrawDefinition(params) {
+  const { modifyOriginal = true, stageSequence = 1, isMock } = params || {};
 
   const stack = 'generateDrawTypeAndModifyDrawDefinition';
 
@@ -75,10 +75,6 @@ export function generateDrawTypeAndModifyDrawDefinition(params = {}) {
   }
 
   const { structures, links, qualifyingResult } = result;
-  /*
-  const stageHash = ({ stage, stageSequence }) => `${stage}|${stageSequence}`;
-  const stageHashes = unique(drawDefinition.structures.map(stageHash));
-  */
   drawDefinition.structures = structures;
   drawDefinition.links = links;
 

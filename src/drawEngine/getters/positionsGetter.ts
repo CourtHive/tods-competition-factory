@@ -92,11 +92,11 @@ export function structureAssignedDrawPositions({
   });
 
   return {
-    byePositions,
+    allPositionsAssigned,
+    positionAssignments,
+    unassignedPositions,
     assignedPositions,
     qualifierPositions,
-    unassignedPositions,
-    positionAssignments,
-    allPositionsAssigned,
+    byePositions,
   };
 }

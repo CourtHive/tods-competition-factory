@@ -1,12 +1,39 @@
 import { unique, UUID } from '../../utilities';
+
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
+import {
+  MatchUp,
+  SeedAssignment,
+  Structure,
+} from '../../types/tournamentFromSchema';
+
+type StructureTemplateArgs = {
+  seedAssignments?: SeedAssignment[];
+  qualifyingRoundNumber?: number;
+  structureAbbreviation?: string;
+  finishingPosition?: string;
+  structures?: Structure[];
+  structureOrder?: number;
+  matchUpFormat?: string;
+  stageSequence?: number;
+  structureName?: string;
+  structureType?: string;
+  matchUps?: MatchUp[];
+  roundOffset?: number;
+  structureId?: string;
+  seedingProfile?: any;
+  roundLimit?: number;
+  stageOrder?: number;
+  stage?: string;
+};
 
 export const structureTemplate = ({
   finishingPosition = ROUND_OUTCOME,
+  qualifyingRoundNumber,
   structureAbbreviation,
   seedAssignments = [],
   stageSequence = 1,
-  qualifyingRoundNumber,
+  structureOrder,
   seedingProfile,
   matchUpFormat,
   structureType,
@@ -18,8 +45,8 @@ export const structureTemplate = ({
   stageOrder,
   structures,
   stage,
-}) => {
-  const structure = {
+}: StructureTemplateArgs) => {
+  const structure: any = {
     structureId: structureId || UUID(),
     structureAbbreviation,
     finishingPosition,
@@ -29,24 +56,26 @@ export const structureTemplate = ({
     structureName,
   };
 
-  if (stage) structure.stage = stage;
-  if (stageOrder) structure.stageOrder = stageOrder;
-  if (roundLimit) structure.roundLimit = roundLimit;
-  if (roundOffset) structure.roundOffset = roundOffset;
+  if (structureOrder) structure.structureOrder = structureOrder;
   if (structureType) structure.structureType = structureType;
   if (seedingProfile) structure.seedingProfile = seedingProfile;
+  if (roundOffset) structure.roundOffset = roundOffset;
+  if (stageOrder) structure.stageOrder = stageOrder;
+  if (roundLimit) structure.roundLimit = roundLimit;
+  if (stage) structure.stage = stage;
+
   if (qualifyingRoundNumber)
     structure.qualifyingRoundNumber = qualifyingRoundNumber;
 
-  const positionAssignments = []
-    .concat(...matchUps.map((matchUp) => matchUp.drawPositions))
+  const drawPositions = matchUps
+    .flatMap(({ drawPositions }) => drawPositions)
     .filter(Boolean);
 
   if (structures) {
     structure.structures = structures;
   } else {
     structure.matchUps = matchUps;
-    structure.positionAssignments = unique(positionAssignments)
+    structure.positionAssignments = unique(drawPositions)
       .sort((a, b) => a - b)
       .map((drawPosition) => ({ drawPosition }));
   }

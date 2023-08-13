@@ -19,15 +19,15 @@ it('can generate and verify curtis structures', () => {
     drawDefinition;
 
   ({
-    drawDefinition,
-    mainStructureId,
     consolation1stStructureId,
     consolation2ndStructureId,
+    mainStructureId,
+    drawDefinition,
   } = generateCurtis({
-    drawSize: 32,
-    seedsCount: 8,
-    assignSeeds: 8,
     participantsCount: 30,
+    assignSeeds: 8,
+    seedsCount: 8,
+    drawSize: 32,
   }));
 
   const { seedAssignments } = drawEngine.getStructureSeedAssignments({
@@ -36,14 +36,14 @@ it('can generate and verify curtis structures', () => {
   expect(seedAssignments.length).toEqual(8);
 
   verifyStructure({
-    drawDefinition,
-    structureId: mainStructureId,
-    expectedSeeds: 8,
-    expectedSeedsWithByes: 2,
-    expectedByeAssignments: 2,
-    expectedSeedValuesWithBye: [1, 2],
-    expectedPositionsAssignedCount: 32,
     expectedRoundMatchUpsCounts: [16, 8, 4, 2, 1],
+    expectedPositionsAssignedCount: 32,
+    expectedSeedValuesWithBye: [1, 2],
+    structureId: mainStructureId,
+    expectedByeAssignments: 2,
+    expectedSeedsWithByes: 2,
+    expectedSeeds: 8,
+    drawDefinition,
   });
 
   verifyStructure({
@@ -140,11 +140,11 @@ it('can generate and verify curtis structures', () => {
 });
 
 function generateCurtis({
-  drawSize,
-  seedsCount,
-  assignSeeds,
-  participantsCount,
   seedAssignmentProfile = {},
+  participantsCount,
+  assignSeeds,
+  seedsCount,
+  drawSize,
 }) {
   const stage = MAIN;
   const drawType = CURTIS;
@@ -158,6 +158,7 @@ function generateCurtis({
     withStageGrouping: true,
   });
   expect(Object.keys(stageStructures).length).toEqual(drawSize === 64 ? 3 : 2);
+
   const {
     structures: [mainStructure],
   } = drawEngine.getDrawStructures({ stage, stageSequence: 1 });
@@ -198,9 +199,9 @@ function generateCurtis({
     const seedValue = seedAssignmentProfile[seedNumber] || seedNumber;
     drawEngine.assignSeed({
       structureId: mainStructureId,
+      participantId,
       seedNumber,
       seedValue,
-      participantId,
     });
   });
 
@@ -209,10 +210,10 @@ function generateCurtis({
   const { drawDefinition } = drawEngine.getState();
 
   return {
-    drawDefinition,
-    mainStructureId,
-    playoffStructureId,
     consolation1stStructureId,
     consolation2ndStructureId,
+    playoffStructureId,
+    mainStructureId,
+    drawDefinition,
   };
 }

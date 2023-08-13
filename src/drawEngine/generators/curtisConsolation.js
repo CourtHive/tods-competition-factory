@@ -38,11 +38,11 @@ export function generateCurtisConsolation({
 
   const mainStructure = structureTemplate({
     structureId: structureId || uuids?.pop(),
-    matchUps,
-    matchUpType,
-    stage: MAIN,
     structureName,
     stageSequence,
+    matchUpType,
+    stage: MAIN,
+    matchUps,
   });
 
   const structures = [mainStructure];
@@ -107,9 +107,9 @@ export function generateCurtisConsolation({
           structureId: mainStructure.structureId,
         },
         target: {
-          roundNumber: 1,
-          feedProfile: TOP_DOWN,
           structureId: playoffStructure.structureId,
+          feedProfile: TOP_DOWN,
+          roundNumber: 1,
         },
       };
 
