@@ -646,6 +646,7 @@ export interface Structure {
   structureId: string;
   structureName?: string;
   structures?: Structure[];
+  structureOrder?: number;
   structureType?: StructureTypeEnum;
   tieFormat?: TieFormat;
   timeItems?: TimeItem[];
