@@ -1,6 +1,26 @@
+import { MatchUp } from '../../types/tournamentFromSchema';
 import { generateRange, isPowerOf2 } from '../../utilities';
 import { addFinishingRounds } from './addFinishingRounds';
 import { buildRound } from './buildRound';
+
+type TreeMatchUpsArgs = {
+  finishingPositionOffset?: number;
+  finishingPositionLimit?: number;
+  qualifyingRoundNumber?: number;
+  qualifyingPositions?: number;
+  matchUpType: string;
+  roundLimit?: number;
+  idPrefix?: string;
+  drawSize: number;
+  isMock?: boolean;
+  uuids?: string[];
+};
+type TreeMatchUpsReturn = {
+  matchUps: MatchUp[];
+  roundsCount: number;
+  roundLimit?: number;
+  drawSize?: number;
+};
 
 export function treeMatchUps({
   finishingPositionOffset,
@@ -13,7 +33,7 @@ export function treeMatchUps({
   drawSize,
   isMock,
   uuids,
-}) {
+}: TreeMatchUpsArgs): TreeMatchUpsReturn {
   if (
     isNaN(drawSize) ||
     drawSize < 2 ||
@@ -34,6 +54,8 @@ export function treeMatchUps({
   }
 
   const isValidQualifying =
+    qualifyingRoundNumber &&
+    qualifyingPositions &&
     !(drawSize % 2) &&
     (!isNaN(qualifyingPositions) || !isNaN(qualifyingRoundNumber)) &&
     (drawSize / qualifyingPositions ===
@@ -45,14 +67,12 @@ export function treeMatchUps({
     return { matchUps: [], roundsCount: 0 };
   }
 
-  const nodes = generateRange(1, parseInt(drawSize) + 1).map(
-    (drawPosition) => ({
-      drawPosition,
-    })
-  );
+  const nodes = generateRange(1, drawSize + 1).map((drawPosition) => ({
+    drawPosition,
+  }));
 
   let roundNodes;
-  let matchUps = [];
+  let matchUps: MatchUp[] = [];
   let roundNumber = 1;
 
   ({ roundNodes, matchUps } = buildRound({
@@ -69,7 +89,10 @@ export function treeMatchUps({
   roundLimit =
     roundLimit ||
     qualifyingRoundNumber ||
-    (qualifyingPositions > 1 ? drawSize / 2 / qualifyingPositions : undefined);
+    (qualifyingPositions &&
+      (qualifyingPositions > 1
+        ? drawSize / 2 / qualifyingPositions
+        : undefined));
 
   while (roundNodes.length > 1) {
     if (qualifyingPositions && roundNodes.length === qualifyingPositions) {
@@ -99,7 +122,9 @@ export function treeMatchUps({
   });
 
   if (roundLimit) {
-    matchUps = matchUps.filter((matchUp) => matchUp.roundNumber <= roundLimit);
+    matchUps = matchUps.filter(
+      (matchUp) => !roundLimit || (matchUp.roundNumber || 0) <= roundLimit
+    );
   } else {
     // this is the case { qualifyingPositions : 1 }
     // subtract one to account for the last ++
@@ -108,22 +133,3 @@ export function treeMatchUps({
 
   return { drawSize, matchUps, roundsCount, roundLimit };
 }
-
-/*
-export function feedDrawSize({ opponentCount }) {
-  const baseRanges = generateRange(0, 10).map((i) => {
-    const positionsBase = Math.pow(2, i);
-    const feedPositions = positionsBase - 1;
-    const maxByes = positionsBase / 2 - 1;
-    const maxPositions = positionsBase + feedPositions;
-    const positionRange = { positionsBase, maxPositions, maxByes };
-    return positionRange;
-  });
-  const positionsBase = baseRanges.reduce((p, c) => {
-    return opponentCount >= c.positionsBase && opponentCount <= c.maxPositions
-      ? c
-      : p;
-  }, undefined);
-  return positionsBase;
-}
-*/

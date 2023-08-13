@@ -12,6 +12,7 @@ import {
 it.each([COMPASS, CURTIS_CONSOLATION])(
   'can accurately sort matchUps by stage and then stageSequence',
   (drawType) => {
+    tournamentEngine.devContext(true);
     const drawSize = 32;
     const drawProfiles = [{ drawType, drawSize }];
     const { tournamentRecord } = mocksEngine.generateTournamentRecord({
