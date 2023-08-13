@@ -8,7 +8,7 @@ import {
 
 // use with resolved objects, not uuid references to objects
 
-type resolveTieFormatArgs = {
+type ResolveTieFormatArgs = {
   drawDefinition: DrawDefinition;
   structure: Structure;
   matchUp?: object;
@@ -20,7 +20,7 @@ export function resolveTieFormat({
   structure,
   matchUp,
   event,
-}: resolveTieFormatArgs) {
+}: ResolveTieFormatArgs) {
   return {
     tieFormat:
       getItemTieFormat({

@@ -1889,6 +1889,9 @@
         "structureName": {
           "type": "string"
         },
+        "structureOrder": {
+          "type": "number"
+        },
         "structureAbbreviation": {
           "type": "string"
         },

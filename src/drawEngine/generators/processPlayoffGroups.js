@@ -158,7 +158,6 @@ export function processPlayoffGroups({
         structureId: uuids?.pop(),
         stage: PLAY_OFF,
         stageSequence,
-        matchUpType,
         matchUps,
       });
       structures.push(playoffStructure);
@@ -299,7 +298,6 @@ export function processPlayoffGroups({
         stage: PLAY_OFF,
         stageSequence,
         matchUps: [],
-        matchUpType,
       });
       updateStructureAndLinks({
         playoffStructures: [structure],

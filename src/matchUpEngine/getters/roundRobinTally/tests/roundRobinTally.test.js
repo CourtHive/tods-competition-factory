@@ -40,7 +40,7 @@ it('can recalculate participantResults when outcomes are removed', () => {
       ],
     },
   ];
-  let {
+  const {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
@@ -226,13 +226,15 @@ it('properly calculates short sets', () => {
   expect(dp1.result).toEqual('0/1');
 });
 
+const shortSets3rdTB = 'SET3-S:4/TB7-F:TB7';
+
 it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', () => {
   const drawProfiles = [
     {
       drawSize: 5,
       eventType: SINGLES,
       participantsCount: 5,
-      matchUpFormat: 'SET3-S:4/TB7-F:TB7',
+      matchUpFormat: shortSets3rdTB,
       drawType: ROUND_ROBIN,
       structureOptions: { groupSize: 5 },
       outcomes: [
@@ -740,7 +742,7 @@ it('properly handles walkovers in calculating participant positions', () => {
       drawSize: 5,
       eventType: SINGLES,
       participantsCount: 5,
-      matchUpFormat: 'SET3-S:4/TB7-F:TB7',
+      matchUpFormat: shortSets3rdTB,
       drawType: ROUND_ROBIN,
       structureOptions: { groupSize: 5 },
       outcomes: [
@@ -848,7 +850,7 @@ it('properly handles DEFAULTS in calculating participant positions', () => {
       drawSize: 5,
       eventType: SINGLES,
       participantsCount: 5,
-      matchUpFormat: 'SET3-S:4/TB7-F:TB7',
+      matchUpFormat: shortSets3rdTB,
       drawType: ROUND_ROBIN,
       structureOptions: { groupSize: 5 },
       outcomes: [
