@@ -10,6 +10,7 @@ import {
   IN_PROGRESS,
 } from '../../../constants/matchUpStatusConstants';
 
+const SET1T20 = 'SET1-S:T20';
 const tieFormats = {
   aggregateDuo: {
     collectionDefinitions: [
@@ -49,7 +50,7 @@ const tieFormats = {
         collectionId: 'cid1',
         collectionName: 'Round 1',
         matchUpCount: 3,
-        matchUpFormat: 'SET1-S:T20',
+        matchUpFormat: SET1T20,
         matchUpType: DOUBLES,
         scoreValue: 1,
       },
@@ -57,7 +58,7 @@ const tieFormats = {
         collectionId: 'cid2',
         collectionName: 'Round 2',
         matchUpCount: 3,
-        matchUpFormat: 'SET1-S:T20',
+        matchUpFormat: SET1T20,
         matchUpType: DOUBLES,
         scoreValue: 1,
       },
@@ -65,7 +66,7 @@ const tieFormats = {
         collectionId: 'cid3',
         collectionName: 'Round 3',
         matchUpCount: 3,
-        matchUpFormat: 'SET1-S:T20',
+        matchUpFormat: SET1T20,
         matchUpType: DOUBLES,
         scoreValue: 1,
       },
@@ -88,7 +89,7 @@ const tieFormats = {
         collectionId: 'cid2',
         collectionName: 'Round 2',
         matchUpCount: 3,
-        matchUpFormat: 'SET1-S:T20',
+        matchUpFormat: SET1T20,
         matchUpType: DOUBLES,
         scoreValue: 1,
       },
@@ -96,7 +97,7 @@ const tieFormats = {
         collectionId: 'cid3',
         collectionName: 'Round 3',
         matchUpCount: 3,
-        matchUpFormat: 'SET1-S:T20',
+        matchUpFormat: SET1T20,
         matchUpType: DOUBLES,
         scoreValue: 1,
       },
@@ -111,7 +112,7 @@ const tieFormats = {
         collectionId: 'cid1',
         collectionName: 'Round 1',
         matchUpCount: 3,
-        matchUpFormat: 'SET1-S:T20',
+        matchUpFormat: SET1T20,
         matchUpType: DOUBLES,
         collectionValue: 1,
         winCriteria: {
@@ -122,7 +123,7 @@ const tieFormats = {
         collectionId: 'cid2',
         collectionName: 'Round 2',
         matchUpCount: 3,
-        matchUpFormat: 'SET1-S:T20',
+        matchUpFormat: SET1T20,
         matchUpType: DOUBLES,
         scoreValue: 1,
       },
@@ -130,7 +131,7 @@ const tieFormats = {
         collectionId: 'cid3',
         collectionName: 'Round 3',
         matchUpCount: 3,
-        matchUpFormat: 'SET1-S:T20',
+        matchUpFormat: SET1T20,
         matchUpType: DOUBLES,
         scoreValue: 1,
       },

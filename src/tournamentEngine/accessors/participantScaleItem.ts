@@ -1,6 +1,7 @@
 import { getAccessorValue } from '../../utilities/getAccessorValue';
 
 import type { Participant } from '../../types/tournamentFromSchema';
+import { ResultType } from '../../global/functions/decorateResult';
 import { SCALE } from '../../constants/scaleConstants';
 import { ScaleAttributes } from '../../types/scales';
 import {
@@ -11,16 +12,28 @@ import {
 } from '../../constants/errorConditionConstants';
 
 export interface ParticipantScaleItemArgs {
-  requireTimeStamp: boolean;
+  requireTimeStamp?: boolean;
   scaleAttributes: ScaleAttributes;
   participant: Participant;
 }
+
+type ScaleItem = {
+  scaleDate: string;
+  scaleValue: string;
+  scaleName: string;
+  scaleType: string;
+  eventType: string;
+};
+
+type ParticipantScaleItem = {
+  scaleItem: ScaleItem;
+};
 
 export function participantScaleItem({
   requireTimeStamp,
   scaleAttributes,
   participant,
-}: ParticipantScaleItemArgs) {
+}: ParticipantScaleItemArgs): ParticipantScaleItem | ResultType {
   if (!participant) return { error: MISSING_PARTICIPANT };
   if (typeof scaleAttributes !== 'object') return { error: INVALID_VALUES };
 
@@ -51,10 +64,10 @@ export function participantScaleItem({
 
       const scaleItem = {
         scaleDate: timeItem.itemDate,
+        scaleValue,
         scaleName,
         scaleType,
         eventType,
-        scaleValue,
       };
       return { scaleItem };
     } else {

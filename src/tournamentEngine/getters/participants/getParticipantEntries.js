@@ -1,14 +1,13 @@
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { definedAttributes, extractAttributes } from '../../../utilities';
 import { timeSort, timeStringMinutes } from '../../../utilities/dateTime';
 import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
-import { getParticipantIds } from '../../../global/functions/extractors';
 import { getEventPublishStatuses } from './getEventPublishStatuses';
 import { getEventSeedAssignments } from './getEventSeedAssignments';
 import { allEventMatchUps } from '../matchUpsGetter/matchUpsGetter';
 import { structureSort } from '../../../forge/transform';
 import { processEventEntry } from './processEventEntry';
 import { isObject } from '../../../utilities/objects';
-import { definedAttributes } from '../../../utilities';
 import { getFlightProfile } from '../getFlightProfile';
 import { addScheduleItem } from './addScheduleItem';
 import { processSides } from './processSides';
@@ -458,9 +457,9 @@ export function getParticipantEntries({
           Array.isArray(potentialParticipants) &&
           (nextMatchUps || !!scheduleAnalysis || withScheduleTimes)
         ) {
-          const potentialParticipantIds = getParticipantIds(
-            potentialParticipants.flat()
-          );
+          const potentialParticipantIds = potentialParticipants
+            .flat()
+            .map(extractAttributes('participantId'));
           potentialParticipantIds?.forEach((participantId) => {
             const relevantParticipantIds =
               getRelevantParticipantIds(participantId);
