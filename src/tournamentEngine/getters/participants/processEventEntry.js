@@ -1,3 +1,4 @@
+import { extensionsToAttributes } from '../../../utilities/makeDeepCopy';
 import { definedAttributes } from '../../../utilities';
 
 export function processEventEntry({
@@ -10,17 +11,22 @@ export function processEventEntry({
   ranking,
   entry,
 }) {
-  const { entryStatus, entryStage, entryPosition } = entry;
+  const { entryStatus, entryStage, entryPosition, extensions } = entry;
 
+  const entryExtensions = extensions?.length
+    ? Object.assign({}, ...extensionsToAttributes(extensions))
+    : {};
+
+  const attributes = Object.assign(entryExtensions, {
+    ...extensionConversions, // this should be deprecated and clients should use derivedEventInfo
+    entryPosition,
+    entryStatus,
+    entryStage,
+    ranking,
+    eventId,
+  });
   participant.events[eventId] = definedAttributes(
-    {
-      ...extensionConversions, // this should be deprecated and clients should use derivedEventInfo
-      entryPosition,
-      entryStatus,
-      entryStage,
-      ranking,
-      eventId,
-    },
+    attributes,
     false,
     false,
     true
