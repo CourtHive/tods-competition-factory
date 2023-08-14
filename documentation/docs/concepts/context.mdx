@@ -1,16 +1,25 @@
 ---
-title: Context
+title: Context / Hydration
 ---
 
-When **matchUps** and **tournamentParticipants** are returned **inContext**
-it means that they include contextual information that is not part of the TODS document node from which they originated.
+When **matchUps** and **tournamentParticipants** are returned with `{ inContext: true }`
+they will include contextual information that is not part of the TODS document node from which they originated; the process is also referred to as "hydration".
+
+Contextual information for `matchUps` includes information about the `structures, drawDefinitions` and `events` within which they are embeded;
+`drawPositions` are resolved using `positionAssignments` to the `participants`.
+
+Contextual information for `participants` can include `events, drawDefinitions` and `matchUps` in which each `participant` appears,
+as well as `ratings` and `rankings` converted from `timeItems`.
+
+Additional contextual information can be passed into methods for retrieving `matchUps` and `participants` via the `context` attribute,
+and any `extensions` can be converted to attributes accessible as attributes beginning with an underscore.
 
 ## matchUps
 
 All API calls which return **matchUps** return deep copies with context.
-Attributes that are added for **matchUps** include: structureId, structureName, drawId, eventId, eventName, tournamentId and tournamentName.
+Attributes that are added for **matchUps** include: `structureId, structureName, drawId, eventId, eventName, tournamentId` and `tournamentName`.
 
-In the **Live Editor** example below, `inContext: false` overrides the default behavior.
+In the **Live Editor** example below, `{ inContext: false }` overrides the default behavior.
 Change the value to `true` and compare the `matchUp` objects to see the difference when context is added.
 
 ```jsx live
