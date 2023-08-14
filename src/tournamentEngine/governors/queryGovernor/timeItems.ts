@@ -1,5 +1,6 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 
+import { ResultType } from '../../../global/functions/decorateResult';
 import { ELEMENT_REQUIRED } from '../../../constants/infoConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -13,12 +14,27 @@ import {
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
+type TimeItemResult = {
+  timeItem?: { name: string; value: any };
+  previousItems?: any;
+  success?: boolean;
+  code?: string;
+  info?: any;
+};
+
+type TimeItemArgs = {
+  returnPreviousValues?: boolean;
+  itemSubTypes?: string[];
+  itemType: string;
+  element: any;
+};
+
 export function getTimeItem({
   returnPreviousValues,
   itemSubTypes,
   itemType,
   element,
-}) {
+}: TimeItemArgs): TimeItemResult | ResultType {
   if (!element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
   if (itemSubTypes && !Array.isArray(itemSubTypes))
     return { error: INVALID_VALUES, context: { itemSubTypes } };
@@ -29,14 +45,15 @@ export function getTimeItem({
     .filter(
       (timeItem) =>
         !itemSubTypes?.length ||
-        itemSubTypes.some((subType) =>
-          timeItem?.itemSubTypes?.includes(subType)
+        itemSubTypes.some(
+          (subType) => timeItem?.itemSubTypes?.includes(subType)
         )
     )
-    .sort(
-      (a, b) =>
-        new Date(a.createdAt || undefined) - new Date(b.createdAt || undefined)
-    );
+    .sort((a, b) => {
+      const aDate = new Date(a.createdAt || undefined).getTime();
+      const bDate = new Date(b.createdAt || undefined).getTime();
+      return aDate - bDate;
+    });
 
   const timeItem = filteredSorted.pop();
 
