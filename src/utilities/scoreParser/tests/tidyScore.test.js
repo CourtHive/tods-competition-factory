@@ -11,6 +11,12 @@ const end = 0;
 // '64 67(7)' => '6-4 7-6(7)' recognize that there cannot be a winner unless 2nd set score is flipped
 // NEXT: new method to process sets and start to guess at matchUpFormat
 
+const s62673107 = '6-2 6-7(3) [10-7]';
+const s4676530 = '4-6 7-6(5) 3-0';
+const s5445411 = '5-4(4) 5-4(11)';
+const s6157108 = '6-1 5-7 [10-8]';
+const s64768 = '6-4 7-6(8)';
+
 const scores = [
   // { score: '7567108', expectation: { score: '7-5 6-7(8)' } },
   // { score: '7567()108', expectation: { score: '7-5 6-7(8)' } },
@@ -214,10 +220,10 @@ const scores = [
   { score: '62 36 10 6', expectation: { score: '6-2 3-6 [10-6]' } },
   { score: '46 60 10 6', expectation: { score: '4-6 6-0 [10-6]' } },
 
-  { score: '6157 108()', expectation: { score: '6-1 5-7 [10-8]' } },
-  { score: '6157108', expectation: { score: '6-1 5-7 [10-8]' } },
-  { score: '6157 108', expectation: { score: '6-1 5-7 [10-8]' } },
-  { score: '6157 [10-8]', expectation: { score: '6-1 5-7 [10-8]' } },
+  { score: '6157 108()', expectation: { score: s6157108 } },
+  { score: '6157108', expectation: { score: s6157108 } },
+  { score: '6157 108', expectation: { score: s6157108 } },
+  { score: '6157 [10-8]', expectation: { score: s6157108 } },
 
   { score: '1440119', expectation: { score: '1-4 4-0 [11-9]' } },
   { score: '2441108', expectation: { score: '2-4 4-1 [10-8]' } },
@@ -320,17 +326,17 @@ const scores = [
   { score: '(6/2) (7/6) (3/7) (10/7)', expectation: { score: '6-2 7-6(3)' } }, // recognize both tiebreak and supertiebreak
   {
     score: '(6-2) (6-7) (3/7) (10/7)',
-    expectation: { score: '6-2 6-7(3) [10-7]' },
+    expectation: { score: s62673107 },
   }, // recognize both tiebreak and supertiebreak
 
   // recognize set tiebreak and match tiebreak
   {
     score: '(6-2) (6-7) (3-7) (10/7)',
-    expectation: { score: '6-2 6-7(3) [10-7]' },
+    expectation: { score: s62673107 },
   }, // recognize both tiebreak and supertiebreak
   {
     score: '(6-2) (6-7) (3-7) (10-7)',
-    expectation: { score: '6-2 6-7(3) [10-7]' },
+    expectation: { score: s62673107 },
   }, // recognize both tiebreak and supertiebreak
 
   // pattern /\d+,\s?\d/+\/\d+\s?\d+/
@@ -421,8 +427,8 @@ const scores = [
   { score: '6 4 3 6 13 11', expectation: { score: '6-4 3-6 [13-11]' } },
   { score: '46 76(12) 76 (2)', expectation: { score: '4-6 7-6(12) 7-6(2)' } },
   { score: '4-6, 6-1- 7-6(5)', expectation: { score: '4-6 6-1 7-6(5)' } },
-  { score: '6-47-6(8)', expectation: { score: '6-4 7-6(8)' } },
-  { score: '6/47/6(8)', expectation: { score: '6-4 7-6(8)' } },
+  { score: '6-47-6(8)', expectation: { score: s64768 } },
+  { score: '6/47/6(8)', expectation: { score: s64768 } },
   { score: '7 6(75)', expectation: { score: '7-6(5)' } },
   { score: '7 6( 7 5)', expectation: { score: '7-6(5)' } },
   { score: '7-6(75)', expectation: { score: '7-6(5)' } },
@@ -439,7 +445,7 @@ const scores = [
   { score: '1676(10)108', expectation: { score: '1-6 7-6(10) [10-8]' } },
   { score: '(6-3) (1-6) (7-5)[1-7]', expectation: { score: '6-3 1-6 7-6(1)' } }, // 7-5 with tiebreak has been corrected
   { score: '61 26 10-13', expectation: { score: '6-1 2-6 [10-3]' } },
-  { score: '5/4 [7-4], 5/4 [12-11]', expectation: { score: '5-4(4) 5-4(11)' } },
+  { score: '5/4 [7-4], 5/4 [12-11]', expectation: { score: s5445411 } },
   { score: '6 3, 7 5', expectation: { score: '6-3 7-5' } },
   { score: '6-1, 2-6(10-1)', expectation: { score: '6-1 2-6 [10-1]' } },
   { score: '6-2, 2-6(13-11)', expectation: { score: '6-2 2-6 [13-11]' } },
@@ -538,7 +544,7 @@ const scores = [
   { score: '(9-8)(3)', expectation: { score: '9-8(3)' } }, //
   { score: '6, 4)(7, 5', expectation: { score: '6-4 7-5' } },
   { score: '96-2, 6-4)', expectation: { score: '6-2 6-4' } }, // starts with a '9' instead of '('
-  { score: '(6, 4)(7, 6)([10, 8]', expectation: { score: '6-4 7-6(8)' } }, // see dev notes on superSquare
+  { score: '(6, 4)(7, 6)([10, 8]', expectation: { score: s64768 } }, // see dev notes on superSquare
   { score: '((6, 2)(7, 6)(2))', expectation: { score: '6-2 7-6(2)' } },
   { score: ')6, 4)(6, 2)', expectation: { score: '6-4 6-2' } }, //
   { score: '(8-7(2)', expectation: { score: '8-7(2)' } }, //
@@ -568,8 +574,8 @@ const scores = [
   { score: '7/6(11/9), 5/7, 6/2', expectation: { score: '7-6(9) 5-7 6-2' } },
   { score: '6/0, 7/6[7]', expectation: { score: '6-0 7-6(7)' } },
   { score: '6/0, 7/6[7-3]', expectation: { score: '6-0 7-6(3)' } },
-  { score: '5/4 [7-4], 5/4 [12-11]', expectation: { score: '5-4(4) 5-4(11)' } },
-  { score: '5/4 (7-4), 5/4 (12-11)', expectation: { score: '5-4(4) 5-4(11)' } },
+  { score: '5/4 [7-4], 5/4 [12-11]', expectation: { score: s5445411 } },
+  { score: '5/4 (7-4), 5/4 (12-11)', expectation: { score: s5445411 } },
   { score: '8 30 am', expectation: { score: '' } }, // => should reject
   { score: '9-8 (7-0)', expectation: { score: '9-8(0)' } },
   { score: '9/8 [7/0]', expectation: { score: '9-8(0)' } },
@@ -580,15 +586,15 @@ const scores = [
   // matchUpStatus
   {
     score: '(4, 6)(7, 6)(75)(3, 0) con',
-    expectation: { score: '4-6 7-6(5) 3-0', matchUpStatus: 'RETIRED' },
+    expectation: { score: s4676530, matchUpStatus: 'RETIRED' },
   },
   {
     score: '(4, 6)(7, 6)[75)(3, 0) con',
-    expectation: { score: '4-6 7-6(5) 3-0', matchUpStatus: 'RETIRED' },
+    expectation: { score: s4676530, matchUpStatus: 'RETIRED' },
   },
   {
     score: '(4, 6)(7, 6)[75](3, 0) con',
-    expectation: { score: '4-6 7-6(5) 3-0', matchUpStatus: 'RETIRED' },
+    expectation: { score: s4676530, matchUpStatus: 'RETIRED' },
   },
   {
     score: '4-6, 7-6(5), 2-0 concede',
