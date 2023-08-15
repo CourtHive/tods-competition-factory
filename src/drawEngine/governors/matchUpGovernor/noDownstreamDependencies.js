@@ -1,3 +1,4 @@
+import { lastSetFormatIsTimed } from '../../../matchUpEngine/governors/matchUpFormatGovernor/lastSetFormatisTimed';
 import { scoreHasValue } from '../../../matchUpEngine/governors/queryGovernor/scoreHasValue';
 import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { decorateResult } from '../../../global/functions/decorateResult';
@@ -40,9 +41,14 @@ export function noDownstreamDependencies(params) {
     ((params.isCollectionMatchUp && !params.projectedWinningSide) ||
       !winningSide);
 
+  const timedTieMatchUp =
+    params?.inContextMatchUp?.collectionId &&
+    lastSetFormatIsTimed(params.inContextMatchUp);
+
   const removeScore =
     params.removeScore ||
-    ![INCOMPLETE, ABANDONED].includes(matchUpStatus || INCOMPLETE);
+    (!timedTieMatchUp &&
+      ![INCOMPLETE, ABANDONED].includes(matchUpStatus || INCOMPLETE));
 
   const removeWinningSide =
     (params.isCollectionMatchUp &&
