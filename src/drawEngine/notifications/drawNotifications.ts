@@ -2,6 +2,7 @@ import { addNotice, deleteNotice } from '../../global/state/globalState';
 import { getPositionAssignments } from '../getters/positionsGetter';
 
 import { DrawDefinition, MatchUp } from '../../types/tournamentFromSchema';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   ADD_DRAW_DEFINITION,
   ADD_MATCHUPS,
@@ -23,7 +24,7 @@ function drawUpdatedAt(
   drawDefinition: DrawDefinition,
   structureIds?: string[]
 ) {
-  if (!drawDefinition) return;
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   let timeStamp = Date.now();
   if (
@@ -44,6 +45,8 @@ function drawUpdatedAt(
       structure.updatedAt = updatedAt;
     }
   });
+
+  return { ...SUCCESS };
 }
 export function addMatchUpsNotice({
   drawDefinition,
@@ -56,6 +59,8 @@ export function addMatchUpsNotice({
     payload: { matchUps, tournamentId, eventId },
     topic: ADD_MATCHUPS,
   });
+
+  return { ...SUCCESS };
 }
 export function deleteMatchUpsNotice({
   drawDefinition,
@@ -77,6 +82,8 @@ export function deleteMatchUpsNotice({
   for (const matchUpId of matchUpIds) {
     deleteNotice({ key: matchUpId });
   }
+
+  return { ...SUCCESS };
 }
 
 type ModifyMatchUpNoticeArgs = {
@@ -114,6 +121,8 @@ export function modifyMatchUpNotice({
     payload: { matchUp, tournamentId, context },
     key: matchUp.matchUpId,
   });
+
+  return { ...SUCCESS };
 }
 
 export function updateInContextMatchUp({ tournamentId, inContextMatchUp }) {
@@ -125,6 +134,8 @@ export function updateInContextMatchUp({ tournamentId, inContextMatchUp }) {
     payload: { inContextMatchUp, tournamentId },
     key: inContextMatchUp.matchUpId,
   });
+
+  return { ...SUCCESS };
 }
 
 export function addDrawNotice({ tournamentId, eventId, drawDefinition }) {
@@ -138,6 +149,8 @@ export function addDrawNotice({ tournamentId, eventId, drawDefinition }) {
     topic: ADD_DRAW_DEFINITION,
     key: drawDefinition.drawId,
   });
+
+  return { ...SUCCESS };
 }
 
 export function deleteDrawNotice({ tournamentId, eventId, drawId }) {
@@ -147,6 +160,8 @@ export function deleteDrawNotice({ tournamentId, eventId, drawId }) {
     key: drawId,
   });
   deleteNotice({ key: drawId });
+
+  return { ...SUCCESS };
 }
 
 type ModifyDrawNoticeArgs = {
@@ -170,6 +185,8 @@ export function modifyDrawNotice({
     topic: MODIFY_DRAW_DEFINITION,
     key: drawDefinition.drawId,
   });
+
+  return { ...SUCCESS };
 }
 
 export function modifySeedAssignmentsNotice({
@@ -196,6 +213,8 @@ export function modifySeedAssignmentsNotice({
     tournamentId,
     eventId,
   });
+
+  return { ...SUCCESS };
 }
 
 export function modifyPositionAssignmentsNotice({
@@ -230,4 +249,6 @@ export function modifyPositionAssignmentsNotice({
     tournamentId,
     eventId,
   });
+
+  return { ...SUCCESS };
 }
